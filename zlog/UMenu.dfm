@@ -13,7 +13,7 @@ object MenuForm: TMenuForm
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
-  Position = poScreenCenter
+  Position = poOwnerFormCenter
   Scaled = False
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress

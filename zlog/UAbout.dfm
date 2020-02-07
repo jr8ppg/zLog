@@ -166,9 +166,10 @@ object AboutBox: TAboutBox
     object Label6: TLabel
       Left = 8
       Top = 9
-      Width = 241
+      Width = 287
       Height = 26
-      Caption = 'zLog for Windows Version 2.3 '#20196#21644' Edition based on 2.2h'
+      AutoSize = False
+      Caption = 'zLog for Windows Version 2.3.0.0 '#20196#21644' Edition based on 2.2h'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -183,7 +184,7 @@ object AboutBox: TAboutBox
       Top = 41
       Width = 287
       Height = 13
-      Caption = 'Portions created by JR8PPG are Copyright (C) 2019 JR8PPG'
+      Caption = 'Portions created by JR8PPG are Copyright (C) 2020 JR8PPG'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11

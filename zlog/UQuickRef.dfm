@@ -26,9 +26,11 @@ object QuickRef: TQuickRef
     Font.Height = -12
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Style = []
+    ImeMode = imDisable
     Lines.Strings = (
       'Memo')
     ParentFont = False
+    ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 0
     OnKeyPress = MemoKeyPress

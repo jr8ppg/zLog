@@ -10,16 +10,17 @@ uses
   UOptions, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
   OEdit, URigControl, UConsolePad, URenewThread, USpotClass,
-  UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2,
+  UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UQuickRef,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, System.Actions,
   Vcl.ActnList;
 
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
+  WM_ZLOG_SETGRIDCOL = (WM_USER + 101);
 
 const
-  MaxGridQSO = 5000;
+  MaxGridQSO = 3000;
 
 var
   GLOBALSERIAL : integer = 0;
@@ -57,7 +58,6 @@ type
     NumberWid : integer;
     BandWid : integer;
     ModeWid : integer;
-    PowerWid : integer;
     NewPowerWid : integer;
     PointWid : integer;
     OpWid : integer;
@@ -576,6 +576,13 @@ type
     actionPlayMessageB12: TAction;
     actionCheckMulti: TAction;
     actionCheckPartial: TAction;
+    menuClearCallAndRst: TMenuItem;
+    actionInsertBandScope: TAction;
+    actionInsertBandScope2: TAction;
+    actionInsertBandScope3: TAction;
+    DecreaseFontSize1: TMenuItem;
+    actionIncreaseFontSize: TAction;
+    actionDecreaseFontSize: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -724,7 +731,6 @@ type
     procedure mnHideCWPhToolBarClick(Sender: TObject);
     procedure mnHideMenuToolbarClick(Sender: TObject);
     procedure Scratchsheet1Click(Sender: TObject);
-    procedure IncreaseFontSize1Click(Sender: TObject);
     procedure mnMMTTYClick(Sender: TObject);
     procedure mnTTYConsoleClick(Sender: TObject);
     procedure SwitchCWBank(Action : integer);
@@ -736,11 +742,17 @@ type
     procedure CreateELogJARL2Click(Sender: TObject);
 
     procedure OnZLogInit( var Message: TMessage ); message WM_ZLOG_INIT;
+    procedure OnZLogSetGridCol( var Message: TMessage ); message WM_ZLOG_SETGRIDCOL;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
     procedure actionCheckMultiExecute(Sender: TObject);
     procedure actionCheckPartialExecute(Sender: TObject);
+    procedure menuClearCallAndRstClick(Sender: TObject);
+    procedure actionInsertBandScopeExecute(Sender: TObject);
+    procedure actionInsertBandScope3Execute(Sender: TObject);
+    procedure actionIncreaseFontSizeExecute(Sender: TObject);
+    procedure actionDecreaseFontSizeExecute(Sender: TObject);
   private
     TempQSOList : TList;
     clStatusLine : TColor;
@@ -753,6 +765,9 @@ type
     LastTabPress: TDateTime;
 
     FPostContest: Boolean;
+
+    // Quick Reference
+    FQuickRef: TQuickRef;
 
     procedure MyIdleEvent(Sender: TObject; var Done: boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: boolean);
@@ -783,6 +798,8 @@ type
     function GetNumOfAvailableBands(): Integer;
     procedure AdjustActiveBands();
     function GetFirstAvailableBand(): TBand;
+    procedure SetWindowCaption();
+    procedure RestoreWindowsPos();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -805,7 +822,6 @@ type
     procedure WriteStatusLineRed(S : string; WriteConsole : boolean);
     procedure CallsignSentProc(Sender: TObject); // called when callsign is sent;
     procedure Update10MinTimer; //10 min countdown
-    procedure SetDispHeight(H : integer); // sets grid's row height 18..40 pts
     procedure ProcessConsoleCommand(S : string);
     procedure UpdateBand(B : TBand); // takes care of window disp
     procedure UpdateMode(M : TMode);
@@ -822,6 +838,7 @@ type
     procedure SwitchLastQSOBandMode;
     procedure IncFontSize();
     procedure DecFontSize();
+    procedure SetFontSize(font_size: Integer);
     procedure AutoInput(D : TBSData);
     procedure ConsoleRigBandSet(B: TBand);
 
@@ -833,6 +850,7 @@ type
 
     procedure QSY(b: TBand; m: TMode);
     procedure PlayMessage(bank: Integer; no: Integer);
+    procedure InsertBandScope(fShiftKey: Boolean);
   end;
 
 var
@@ -854,7 +872,7 @@ uses UPartials, UALLJAEditDialog, UAbout, URateDialog, UMenu, UACAGMulti,
   UIARUScore, UAllAsianScore, UIOTAMulti, {UIOTACategory,} UARRL10Multi,
   UARRL10Score, UFreqList, UCheckCall2, UCheckCountry, UCheckMulti,
   UBandScope2, UIntegerDialog, UNewPrefix, UKCJScore, UScratchSheet,
-  UWAEScore, UWAEMulti, UQuickRef, USummaryInfo,
+  UWAEScore, UWAEMulti, USummaryInfo,
   UAgeDialog, UMultipliers, UUTCDialog, UZServerInquiry, UNewIOTARef;
 
 {$R *.DFM}
@@ -2759,23 +2777,18 @@ begin
       ColCount := 10;
       Height := 291;
       DefaultRowHeight := 17;
-      // Height := 256;
-      // DefaultRowHeight := 16;
 
       SerialWid := 4;
-      TimeWid := 4;
-      // CallSignWid := 10;
-      CallSignWid := 9;
-      rcvdRSTWid := 3;
-      // NumberWid := 5;
-      NumberWid := 6;
+      TimeWid := 6;
+      CallSignWid := 12;
+      rcvdRSTWid := 4;
+      NumberWid := 10;
       BandWid := 4;
-      ModeWid := 3;
-      PowerWid := 0;
+      ModeWid := 4;
       NewPowerWid := 2;
       PointWid := 3;
-      OpWid := 6;
-      MemoWid := 7;
+      OpWid := 8;
+      MemoWid := 10;
       NewMulti1Wid := 3;
       NewMulti2Wid := 0;
    end;
@@ -2967,86 +2980,96 @@ begin
 end;
 
 procedure TBasicEdit.SetGridWidth;
+var
+   i: Integer;
+   nColWidth: Integer;
+   nRowHeight: Integer;
 begin
    with MainForm.Grid do begin
+
+      nColWidth := Canvas.TextWidth('0') + 1;
+      nRowHeight := Canvas.TextHeight('0') + 4;
+
+      DefaultRowHeight := nRowHeight;
+
       if colSerial >= 0 then begin
          Cells[colSerial, 0] := 'serial';
-         ColWidths[colSerial] := SerialWid * CWid;
+         ColWidths[colSerial] := SerialWid * nColWidth;
       end;
       MainForm.SerialEdit.Tag := colSerial;
 
       if colTime >= 0 then begin
          Cells[colTime, 0] := 'time';
-         ColWidths[colTime] := TimeWid * CWid;
+         ColWidths[colTime] := TimeWid * nColWidth;
       end;
       MainForm.TimeEdit.Tag := colTime;
 
       if colCall >= 0 then begin
          Cells[colCall, 0] := 'call';
-         ColWidths[colCall] := CallSignWid * CWid;
+         ColWidths[colCall] := CallSignWid * nColWidth;
       end;
       MainForm.CallsignEdit.Tag := colCall;
 
       if colrcvdRST >= 0 then begin
          Cells[colrcvdRST, 0] := 'RST';
-         ColWidths[colrcvdRST] := rcvdRSTWid * CWid;
+         ColWidths[colrcvdRST] := rcvdRSTWid * nColWidth;
       end;
       MainForm.RcvdRSTEdit.Tag := colrcvdRST;
 
       if colrcvdNumber >= 0 then begin
          Cells[colrcvdNumber, 0] := 'rcvd';
-         ColWidths[colrcvdNumber] := NumberWid * CWid;
+         ColWidths[colrcvdNumber] := NumberWid * nColWidth;
       end;
       MainForm.NumberEdit.Tag := colrcvdNumber;
 
       if colBand >= 0 then begin
          Cells[colBand, 0] := 'band';
-         ColWidths[colBand] := BandWid * CWid;
+         ColWidths[colBand] := BandWid * nColWidth;
       end;
       MainForm.BandEdit.Tag := colBand;
 
       if colMode >= 0 then begin
          Cells[colMode, 0] := 'mod';
-         ColWidths[colMode] := ModeWid * CWid;
+         ColWidths[colMode] := ModeWid * nColWidth;
       end;
       MainForm.ModeEdit.Tag := colMode;
 
       if colNewPower >= 0 then begin
          Cells[colNewPower, 0] := 'pwr';
-         ColWidths[colNewPower] := NewPowerWid * CWid;
+         ColWidths[colNewPower] := NewPowerWid * nColWidth;
       end;
       MainForm.NewPowerEdit.Tag := colNewPower;
 
       if colPoint >= 0 then begin
          Cells[colPoint, 0] := 'pts';
-         ColWidths[colPoint] := PointWid * CWid;
+         ColWidths[colPoint] := PointWid * nColWidth;
       end;
       MainForm.PointEdit.Tag := colPoint;
 
       if colNewMulti1 >= 0 then begin
          Cells[colNewMulti1, 0] := 'new';
-         ColWidths[colNewMulti1] := NewMulti1Wid * CWid;
+         ColWidths[colNewMulti1] := NewMulti1Wid * nColWidth;
       end;
 
       if colNewMulti2 >= 0 then begin
          Cells[colNewMulti2, 0] := 'new';
-         ColWidths[colNewMulti2] := NewMulti2Wid * CWid;
+         ColWidths[colNewMulti2] := NewMulti2Wid * nColWidth;
       end;
 
       if colOp >= 0 then begin
          Cells[colOp, 0] := 'op';
-         ColWidths[colOp] := OpWid * CWid;
+         ColWidths[colOp] := OpWid * nColWidth;
       end;
       MainForm.OpEdit.Tag := colOp;
 
       if colMemo >= 0 then begin
          Cells[colMemo, 0] := 'memo';
-         ColWidths[colMemo] := MemoWid * CWid;
+         ColWidths[colMemo] := MemoWid * nColWidth;
       end;
       MainForm.MemoEdit.Tag := colMemo;
 
+      Refresh();
    end;
-//   MainForm.Width := 46 * CWid + 36;
 end;
 
 function TBasicEdit.GetLeft(col: integer): integer;
@@ -3064,53 +3087,69 @@ begin
 end;
 
 Procedure TBasicEdit.SetEditFields;
+var
+   h: Integer;
 begin
    with MainForm do begin
+      h := MainForm.Grid.RowHeights[0];
+      EditPanel.Height := h + 10;
+
       if colSerial >= 0 then begin
          SerialEdit.Width := MainForm.Grid.ColWidths[colSerial];
+         SerialEdit.Height := h;
          SerialEdit.Left := GetLeft(colSerial);
       end;
       if colTime >= 0 then begin
          TimeEdit.Width := MainForm.Grid.ColWidths[colTime];
+         TimeEdit.Height := h;
          TimeEdit.Left := GetLeft(colTime);
          DateEdit.Width := TimeEdit.Width;
          DateEdit.Left := TimeEdit.Left;
       end;
       if colCall >= 0 then begin
          CallsignEdit.Width := MainForm.Grid.ColWidths[colCall];
+         CallsignEdit.Height := h;
          CallsignEdit.Left := GetLeft(colCall);
       end;
       if colrcvdRST >= 0 then begin
          RcvdRSTEdit.Width := MainForm.Grid.ColWidths[colrcvdRST];
+         RcvdRSTEdit.Height := h;
          RcvdRSTEdit.Left := GetLeft(colrcvdRST);
       end;
       if colrcvdNumber >= 0 then begin
          NumberEdit.Width := MainForm.Grid.ColWidths[colrcvdNumber];
+         NumberEdit.Height := h;
          NumberEdit.Left := GetLeft(colrcvdNumber);
       end;
       if colBand >= 0 then begin
          BandEdit.Width := MainForm.Grid.ColWidths[colBand];
+         BandEdit.Height := h;
          BandEdit.Left := GetLeft(colBand);
       end;
       if colMode >= 0 then begin
          ModeEdit.Width := MainForm.Grid.ColWidths[colMode];
+         ModeEdit.Height := h;
          ModeEdit.Left := GetLeft(colMode);
       end;
       if colNewPower >= 0 then begin
          NewPowerEdit.Width := MainForm.Grid.ColWidths[colNewPower];
+         NewPowerEdit.Height := h;
          NewPowerEdit.Left := GetLeft(colNewPower);
       end;
       if colPoint >= 0 then begin
          PointEdit.Width := MainForm.Grid.ColWidths[colPoint];
+         PointEdit.Height := h;
          PointEdit.Left := GetLeft(colPoint);
       end;
       if colOp >= 0 then begin
          OpEdit.Width := MainForm.Grid.ColWidths[colOp];
+         OpEdit.Height := h;
          OpEdit.Left := GetLeft(colOp);
       end;
       if colMemo >= 0 then begin
          MemoEdit.Left := GetLeft(colMemo);
          MemoEdit.Width := EditPanel.Width - MemoEdit.Left - 3;
+         MemoEdit.Height := h;
       end;
    end;
 end;
@@ -3715,7 +3754,12 @@ begin
       end;
    end;
 
+   FQuickRef := TQuickRef.Create(Self);
+
    TempQSOList := TList.Create;
+
+   RestoreWindowsPos();
+
    dmZLogKeyer.ControlPTT(False);
 end;
 
@@ -3757,7 +3801,7 @@ begin
       LoadNewContestFromFile(OpenDialog.filename);
       MyContest.Renew;
       WriteStatusLine('', False);
-      Caption := 'zLog for Windows  ' + ExtractFileName(OpenDialog.filename);
+      SetWindowCaption();
    end;
 end;
 
@@ -3777,7 +3821,7 @@ begin
    if SaveDialog.Execute then begin
       Log.SaveToFile(SaveDialog.filename);
       dmZLogGlobal.SetLogFileName(SaveDialog.filename);
-      Caption := 'zLog for Windows  ' + ExtractFileName(SaveDialog.filename);
+      SetWindowCaption();
       { Add code to save current file under SaveDialog.FileName }
    end;
 end;
@@ -3934,22 +3978,6 @@ begin
    Q.Free;
 end;
 
-procedure TMainForm.SetDispHeight(H: integer);
-var
-   i: integer;
-begin
-   Grid.DefaultRowHeight := H;
-   EditPanel.Height := H + 9;
-
-   for i := 0 to EditPanel.ControlCount - 1 do begin
-      EditPanel.Controls[i].Height := H;
-   end;
-
-   dmZlogGlobal.Settings._mainrowheight := H;
-   dmZlogGlobal.SaveCurrentSettings()
-   // dmZlogGlobal.Ini.SetInteger('Preferences','RowHeight', dmZlogGlobal.Settings._mainrowheight);
-end;
-
 procedure TMainForm.ProcessConsoleCommand(S: string);
 var
    i: double;
@@ -4035,20 +4063,6 @@ begin
       ExitMMTTY;
    end;
 
-   if Pos('HEIGHT', S) = 1 then begin
-      temp := S;
-      Delete(temp, 1, 6);
-      temp := TrimLeft(temp);
-      try
-         j := StrToInt(temp);
-      except
-         on EConvertError do
-            exit;
-      end;
-      if (j > 17) and (j < 41) then
-         SetDispHeight(j);
-   end;
-
    if S = 'MMCLR' then begin
       MMTTYBuffer := '';
    end;
@@ -4084,7 +4098,7 @@ begin
             SerialEdit.Text := CurrentQSO.SerialStr;
          end;
 
-      Caption := 'zLog for Windows - Multi station  ' + ExtractFileName(CurrentFileName);
+      SetWindowCaption();
       ReEvaluateCountDownTimer;
       ReEvaluateQSYCount;
    end;
@@ -4101,7 +4115,7 @@ begin
             SerialEdit.Text := CurrentQSO.SerialStr;
          end;
 
-      Caption := 'zLog for Windows - Running station  ' + ExtractFileName(CurrentFileName);
+      SetWindowCaption();
       ReEvaluateCountDownTimer;
       ReEvaluateQSYCount;
    end;
@@ -4409,11 +4423,7 @@ begin
       j := 9;
    end;
 
-   EditPanel.Font.Size := j;
-   Grid.Font.Size := j;
-
-   dmZlogGlobal.Settings._mainfontsize := j;
-   dmZlogGlobal.SaveCurrentSettings()
+   SetFontSize(j);
 end;
 
 procedure TMainForm.DecFontSize();
@@ -4428,11 +4438,19 @@ begin
       j := 21;
    end;
 
-   EditPanel.Font.Size := j;
-   Grid.Font.Size := j;
+   SetFontSize(j);
+end;
 
-   dmZlogGlobal.Settings._mainfontsize := j;
-   dmZlogGlobal.SaveCurrentSettings()
+procedure TMainForm.SetFontSize(font_size: Integer);
+begin
+   EditPanel.Font.Size := font_size;
+   Grid.Font.Size := font_size;
+   Grid.Refresh();
+
+   dmZlogGlobal.Settings._mainfontsize := font_size;
+   dmZlogGlobal.SaveCurrentSettings();
+
+   PostMessage(Handle, WM_ZLOG_SETGRIDCOL, 0, 0);
 end;
 
 procedure TMainForm.SwitchCWBank(Action: integer); // 0 : toggle; 1,2 bank#)
@@ -4477,13 +4495,7 @@ end;
 
 procedure TMainForm.EditKeyPress(Sender: TObject; var Key: Char);
 var
-   j: integer;
-   E: Extended;
    Q: TQSO;
-   boo: boolean;
-   F: TIntegerDialog;
-label
-   jjj;
 begin
    CommonEditKeyProcess(Sender, Key);
 
@@ -4553,65 +4565,8 @@ begin
          Key := #0;
       end;
 
-      // フォントサイズ変更
-      ^S: begin
-         if (GetAsyncKeyState(VK_SHIFT) < 0) then begin
-            DecFontSize();
-         end
-         else begin
-            IncFontSize;
-         end;
-         Key := #0;
-      end;
-
       '+', ';': begin
          DownKeyPress;
-         Key := #0;
-      end;
-
-      ^N: begin // insert band scope
-         if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-            boo := True;
-         end
-         else begin
-            boo := False;
-         end;
-
-         if RigControl.Rig <> nil then begin
-            j := RigControl.Rig.CurrentFreqHz;
-            if j > 0 then begin
-               BandScope2.CreateBSData(CurrentQSO, j);
-            end
-            else
-               goto jjj;
-
-            if boo then begin
-               CallsignEdit.Clear;
-               NumberEdit.Clear;
-            end;
-         end
-         else begin// no rig control
-         jjj:
-            F := TIntegerDialog.Create(Self);
-            try
-               F.SetLabel('Enter frequency in kHz');
-               if F.ShowModal() <> mrOK then begin
-                  Exit;
-               end;
-               E := F.GetValueExtended;
-            finally
-               F.Release();
-            end;
-
-            if E > 1000 then begin
-               BandScope2.CreateBSData(CurrentQSO, round(E * 1000));
-            end;
-
-            if boo then begin
-               CallsignEdit.Clear;
-               NumberEdit.Clear;
-            end;
-         end;
          Key := #0;
       end;
 
@@ -4783,6 +4738,7 @@ begin
          end;
       end;
 
+      // Enter / SHIFT+Enter
       Char($0D): begin
          if CallsignEdit.Focused and (Pos(',', CallsignEdit.Text) = 1) then begin
             ProcessConsoleCommand(CallsignEdit.Text);
@@ -5506,27 +5462,7 @@ begin
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
-var
-   X, Y, W, H: Integer;
-   B, BB: Boolean;
 begin
-   dmZlogGlobal.ReadMainFormState(X, Y, W, H, B, BB);
-   if (W > 0) and (H > 0) then begin
-      if B then begin
-         mnHideCWPhToolBar.Checked := True;
-         CWToolBar.Height := 1;
-         SSBToolBar.Height := 1;
-      end;
-      if BB then begin
-         mnHideMenuToolbar.Checked := True;
-         MainToolBar.Height := 1;
-      end;
-      Left := X;
-      top := Y;
-      Width := W;
-      Height := H;
-   end;
-
    if FPostContest then begin
       MessageDlg('To change the date, double click the time field.', mtInformation, [mbOK], 0); { HELP context 0 }
    end;
@@ -5554,6 +5490,7 @@ end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
+   FQuickRef.Release();
 //   dmZLogKeyer.CloseBGK;
 end;
 
@@ -6171,6 +6108,8 @@ begin
 
       // リグコントロール開始
       RigControl.ImplementOptions;
+
+      SetWindowCaption();
 
       LastFocus.SetFocus;
    finally
@@ -6969,11 +6908,6 @@ begin
    end;
 end;
 
-procedure TMainForm.IncreaseFontSize1Click(Sender: TObject);
-begin
-   IncFontSize;
-end;
-
 procedure TMainForm.mnMMTTYClick(Sender: TObject);
 begin
    if mnMMTTY.Tag = 0 then begin
@@ -7022,6 +6956,14 @@ begin
    end;
 end;
 
+procedure TMainForm.menuClearCallAndRstClick(Sender: TObject);
+begin
+   CallsignEdit.Clear();
+   NumberEdit.Clear();
+   WriteStatusLine('', False);
+   CallsignEdit.SetFocus;
+end;
+
 procedure TMainForm.mnNewBandScopeClick(Sender: TObject);
 var
    i: integer;
@@ -7048,15 +6990,8 @@ begin
 end;
 
 procedure TMainForm.menuQuickReferenceClick(Sender: TObject);
-var
-   f: TQuickRef;
 begin
-   f := TQuickRef.Create(Self);
-   try
-      f.ShowModal();
-   finally
-      f.Release();
-   end;
+   FQuickRef.Show();
 end;
 
 procedure TMainForm.Timer2Timer(Sender: TObject);
@@ -7338,6 +7273,8 @@ begin
             if FileExists(OpenDialog.FileName) then begin
                LoadNewContestFromFile(OpenDialog.FileName);
             end;
+
+            SetWindowCaption();
          end
          else begin // user hit cancel
             MessageDlg('Data will NOT be saved until you enter the file name', mtWarning, [mbOK], 0); { HELP context 0 }
@@ -7405,9 +7342,8 @@ begin
       // CurrentQSO.QSO.Serial := SerialArray[b19]; // in case SERIALSTART is defined. SERIALSTART applies to all bands.
       SerialEdit.Text := CurrentQSO.SerialStr;
 
-      EditPanel.Font.Size := dmZlogGlobal.Settings._mainfontsize;
-      Grid.Font.Size := dmZlogGlobal.Settings._mainfontsize;
-      SetDispHeight(dmZlogGlobal.Settings._mainrowheight);
+      // フォントサイズの設定
+      SetFontSize(dmZlogGlobal.Settings._mainfontsize);
 
       EditScreen.ResetTopRow; // added 2.2e
       EditScreen.RefreshScreen; // added 2,2e
@@ -7433,6 +7369,12 @@ begin
    finally
       menu.Release();
    end;
+end;
+
+procedure TMainForm.OnZLogSetGridCol( var Message: TMessage );
+begin
+   EditScreen.SetGridWidth();
+   EditScreen.SetEditFields();
 end;
 
 procedure TMainForm.InitALLJA();
@@ -7869,6 +7811,30 @@ begin
    Result := b19;
 end;
 
+procedure TMainForm.SetWindowCaption();
+var
+   strCap: string;
+begin
+   strCap := 'zLog for Windows';
+
+   if dmZlogGlobal.Settings._multistation = True then begin
+      strCap := strCap + ' - Multi station';
+   end
+   else begin
+      strCap := strCap + ' - Running station';
+   end;
+
+   if dmZlogGlobal.Settings._zlinkport <> 0 then begin
+      if dmZlogGlobal.Settings._pcname <> '' then begin
+          strCap := strCap + ' [' + dmZlogGlobal.Settings._pcname + ']';
+      end;
+   end;
+
+   strCap := strCap + ' - ' + ExtractFileName(CurrentFileName);
+
+   Caption := strCap;
+end;
+
 procedure TMainForm.QSY(b: TBand; m: TMode);
 begin
    if CurrentQSO.QSO.band <> b then begin
@@ -7999,6 +7965,132 @@ begin
       else begin
          // NO OPERATION
       end;
+   end;
+end;
+
+// CTRL+Enter, CTRL+N
+procedure TMainForm.actionInsertBandScopeExecute(Sender: TObject);
+begin
+   InsertBandScope(False);
+end;
+
+// CTRL+SHIFT+N
+procedure TMainForm.actionInsertBandScope3Execute(Sender: TObject);
+begin
+   InsertBandScope(True);
+end;
+
+// バンドスコープへ追加
+procedure TMainForm.InsertBandScope(fShiftKey: Boolean);
+var
+   nFreq: Integer;
+
+   function InputFreq(): Boolean;
+   var
+      E: Extended;
+      F: TIntegerDialog;
+   begin
+      F := TIntegerDialog.Create(Self);
+      try
+         F.SetLabel('Enter frequency in kHz');
+
+         if F.ShowModal() <> mrOK then begin
+            Result := False;
+            Exit;
+         end;
+
+         E := F.GetValueExtended;
+      finally
+         F.Release();
+      end;
+
+      if E > 1000 then begin
+         BandScope2.CreateBSData(CurrentQSO, round(E * 1000));
+      end;
+
+      Result := True;
+   end;
+begin
+   if RigControl.Rig <> nil then begin
+      nFreq := RigControl.Rig.CurrentFreqHz;
+      if nFreq > 0 then begin
+         BandScope2.CreateBSData(CurrentQSO, nFreq);
+      end
+      else begin
+         if InputFreq() = False then begin
+            Exit;
+         end;
+      end;
+   end
+   else begin// no rig control
+      if InputFreq() = False then begin
+         Exit;
+      end;
+   end;
+
+   if fShiftKey = False then begin
+      CallsignEdit.Clear;
+      CallsignEdit.SetFocus();
+      NumberEdit.Clear;
+   end;
+end;
+
+// CTRL+S フォントサイズ↑
+procedure TMainForm.actionIncreaseFontSizeExecute(Sender: TObject);
+begin
+   IncFontSize;
+end;
+
+// CTRL+SHIFT+S フォントサイズ↓
+procedure TMainForm.actionDecreaseFontSizeExecute(Sender: TObject);
+begin
+   DecFontSize();
+end;
+
+procedure TMainForm.RestoreWindowsPos();
+var
+   X, Y, W, H: Integer;
+   B, BB: Boolean;
+   mon: TMonitor;
+   pt: TPoint;
+begin
+   dmZlogGlobal.ReadMainFormState(X, Y, W, H, B, BB);
+
+   if (W > 0) and (H > 0) then begin
+      pt.X := X;
+      pt.Y := Y;
+      mon := Screen.MonitorFromPoint(pt, mdNearest);
+      if X < mon.Left then begin
+         X := mon.Left;
+      end;
+      if X > (mon.Left + mon.Width) then begin
+         X := (mon.Left + mon.Width) - W;
+      end;
+      if Y < mon.Top then begin
+         Y := mon.Top;
+      end;
+      if Y > (mon.Top + mon.Height) then begin
+         Y := (mon.Top + mon.Height) - H;
+      end;
+
+      if B then begin
+         mnHideCWPhToolBar.Checked := True;
+         CWToolBar.Height := 1;
+         SSBToolBar.Height := 1;
+      end;
+
+      if BB then begin
+         mnHideMenuToolbar.Checked := True;
+         MainToolBar.Height := 1;
+      end;
+      Position := poDesigned;
+      Left := X;
+      top := Y;
+      Width := W;
+      Height := H;
+   end
+   else begin
+      Position := poScreenCenter;
    end;
 end;
 

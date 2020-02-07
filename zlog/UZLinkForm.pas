@@ -475,6 +475,7 @@ begin
           Log.AddQue(aQSO);
           Log.ProcessQue;
           MyContest.Renew;
+          MainForm.EditScreen.Renew;
           aQSO.Free;
         end;
       if pos('INSQSOAT ', temp) = 1 then
@@ -519,6 +520,7 @@ begin
           Log.AddQue(aQSO);
           Log.ProcessQue;
           MyContest.Renew;
+          MainForm.EditScreen.Renew;
           aQSO.Free;
         end;
       if pos('INSQSO ', temp) = 1 then
@@ -530,6 +532,7 @@ begin
           Log.AddQue(aQSO);
           Log.ProcessQue;
           MyContest.Renew;
+          MainForm.EditScreen.Renew;
           aQSO.Free;
         end;
       if pos('PUTLOG ', temp) = 1 then

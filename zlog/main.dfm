@@ -9227,6 +9227,11 @@ object MainForm: TMainForm
         Visible = False
         OnClick = QTC1Click
       end
+      object menuClearCallAndRst: TMenuItem
+        Caption = 'clear call and rst'
+        ShortCut = 32855
+        OnClick = menuClearCallAndRstClick
+      end
     end
     object Windows1: TMenuItem
       Caption = '&Windows'
@@ -9366,9 +9371,10 @@ object MainForm: TMainForm
         OnClick = mnHideMenuToolbarClick
       end
       object IncreaseFontSize1: TMenuItem
-        Caption = 'Increase Font Size'
-        ShortCut = 16467
-        OnClick = IncreaseFontSize1Click
+        Action = actionIncreaseFontSize
+      end
+      object DecreaseFontSize1: TMenuItem
+        Action = actionDecreaseFontSize
       end
     end
     object Help1: TMenuItem
@@ -9946,6 +9952,31 @@ object MainForm: TMainForm
       Caption = 'actionPlayMessageB12'
       ShortCut = 8315
       OnExecute = actionPlayMessageBExecute
+    end
+    object actionInsertBandScope: TAction
+      Caption = 'actionInsertBandScope'
+      ShortCut = 16397
+      OnExecute = actionInsertBandScopeExecute
+    end
+    object actionInsertBandScope2: TAction
+      Caption = 'actionInsertBandScope2'
+      ShortCut = 16462
+      OnExecute = actionInsertBandScopeExecute
+    end
+    object actionInsertBandScope3: TAction
+      Caption = 'actionInsertBandScope3'
+      ShortCut = 24654
+      OnExecute = actionInsertBandScope3Execute
+    end
+    object actionIncreaseFontSize: TAction
+      Caption = 'Increase Font Size'
+      ShortCut = 16467
+      OnExecute = actionIncreaseFontSizeExecute
+    end
+    object actionDecreaseFontSize: TAction
+      Caption = 'Decrease Font Size'
+      ShortCut = 24659
+      OnExecute = actionDecreaseFontSizeExecute
     end
   end
 end

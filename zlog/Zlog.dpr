@@ -88,7 +88,8 @@ uses
   UzLogGlobal in 'UzLogGlobal.pas' {dmZLogGlobal: TDataModule},
   UELogJarl1 in 'UELogJarl1.pas' {formELogJarl1},
   UELogJarl2 in 'UELogJarl2.pas' {formELogJarl2},
-  UzLogKeyer in 'UzLogKeyer.pas' {dmZLogKeyer: TDataModule};
+  UzLogKeyer in 'UzLogKeyer.pas' {dmZLogKeyer: TDataModule},
+  DialogHook in 'DialogHook.pas';
 
 {$R *.RES}
 

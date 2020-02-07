@@ -94,8 +94,6 @@ const
   actLock = $AA;
   actUnlock = $BB;
 
-  CWid : byte = 9; {11}
-
   LineBreakCode : array [0..2] of string
     = (Chr($0d)+Chr($0a), Chr($0d), Chr($0a));
   _sep = '~'; {separator character}
