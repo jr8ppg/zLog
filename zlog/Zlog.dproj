@@ -89,9 +89,9 @@
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <VerInfo_MajorVer>2</VerInfo_MajorVer>
         <VerInfo_MinorVer>3</VerInfo_MinorVer>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.3.3.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by JJ1MED/AD6AJ, 2019-2020 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.3.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.3.4.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by JJ1MED/AD6AJ, 2019-2020 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.3.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <VerInfo_Release>3</VerInfo_Release>
+        <VerInfo_Release>4</VerInfo_Release>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
@@ -100,13 +100,14 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.3.0.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by JJ1MED/AD6AJ, 2019-2020 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.3.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.3.4.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by JJ1MED/AD6AJ, 2019-2020 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.3.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <VerInfo_MajorVer>2</VerInfo_MajorVer>
         <VerInfo_MinorVer>3</VerInfo_MinorVer>
         <VerInfo_Debug>true</VerInfo_Debug>
+        <VerInfo_Release>4</VerInfo_Release>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">

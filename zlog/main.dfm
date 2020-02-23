@@ -9538,23 +9538,25 @@ object MainForm: TMainForm
     end
   end
   object GridMenu: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     OnPopup = GridMenuPopup
     Left = 64
     Top = 296
     object EditQSO: TMenuItem
-      Caption = 'Edit QSO'
+      Caption = '&Edit QSO'
       OnClick = EditQSOClick
     end
     object DeleteQSO1: TMenuItem
-      Caption = 'Delete QSO'
+      Caption = '&Delete QSO'
       OnClick = DeleteQSO1Click
     end
     object InsertQSO1: TMenuItem
-      Caption = 'Insert QSO'
+      Caption = '&Insert QSO'
       OnClick = InsertQSO1Click
     end
     object GBand: TMenuItem
-      Caption = 'Change band'
+      Caption = 'Change &Band'
       object G1R9MHz: TMenuItem
         Caption = '1.9 MHz'
         OnClick = GridBandChangeClick
@@ -9639,7 +9641,7 @@ object MainForm: TMainForm
       end
     end
     object Changemode: TMenuItem
-      Caption = 'Change mode'
+      Caption = 'Change &Mode'
       object CW2: TMenuItem
         Caption = 'CW'
         OnClick = GridModeChangeClick
@@ -9671,7 +9673,7 @@ object MainForm: TMainForm
       end
     end
     object mChangePower: TMenuItem
-      Caption = 'Change power'
+      Caption = 'Change &Power'
       object H2: TMenuItem
         Caption = 'P (QRP)'
         OnClick = GridPowerChangeClick
@@ -9693,22 +9695,22 @@ object MainForm: TMainForm
       end
     end
     object GOperator: TMenuItem
-      Caption = 'Change operator'
+      Caption = 'Change &Operator'
       object Clear1: TMenuItem
         Caption = 'Clear'
         OnClick = GridOperatorClick
       end
     end
     object mnChangeTXNr: TMenuItem
-      Caption = 'Change TX#'
+      Caption = 'Change &TX#'
       OnClick = mnChangeTXNrClick
     end
     object SendSpot1: TMenuItem
-      Caption = 'Send Spot'
+      Caption = 'Send &Spot'
       OnClick = SendSpot1Click
     end
     object mnGridAddNewPX: TMenuItem
-      Caption = 'Add new prefix'
+      Caption = '&Add new prefix'
       OnClick = mnGridAddNewPXClick
     end
   end
