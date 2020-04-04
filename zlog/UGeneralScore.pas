@@ -457,8 +457,12 @@ begin
 
          if com = 'DAT' then begin
             tstr := opr;
-            if pos('.', tstr) = 0 then
+            if pos('.', tstr) = 0 then begin
                tstr := tstr + '.DAT';
+            end;
+
+            tstr := ExtractFilePath(Filename) + tstr;
+
             formMulti.LoadDAT(tstr);
          end;
 

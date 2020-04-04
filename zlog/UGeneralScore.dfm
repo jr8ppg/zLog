@@ -6,6 +6,8 @@ inherited GeneralScore: TGeneralScore
   PixelsPerInch = 96
   TextHeight = 12
   inherited Panel1: TPanel
+    ExplicitTop = 196
+    ExplicitWidth = 278
     inherited StayOnTop: TCheckBox
       Caption = 'Stay on Top'
     end
