@@ -5857,6 +5857,7 @@ begin
    MyContest.Renew;
    Grid.TopRow := i;
    EditScreen.RefreshScreen;
+   Log.Saved := False;
 end;
 
 procedure TMainForm.ZLinkmonitor1Click(Sender: TObject);
@@ -6149,6 +6150,7 @@ begin
    MyContest.Renew;
    Grid.TopRow := i;
    EditScreen.RefreshScreen;
+   Log.Saved := False;
 end;
 
 procedure TMainForm.GridOperatorClick(Sender: TObject);
@@ -6197,6 +6199,7 @@ begin
    MyContest.Renew;
    Grid.TopRow := i;
    EditScreen.RefreshScreen;
+   Log.Saved := False;
 end;
 
 procedure TMainForm.SendSpot1Click(Sender: TObject);
@@ -6469,6 +6472,7 @@ begin
    MyContest.Renew;
    Grid.TopRow := i;
    EditScreen.RefreshScreen;
+   Log.Saved := False;
 end;
 
 procedure TMainForm.RigControl1Click(Sender: TObject);
@@ -6611,6 +6615,7 @@ begin
       MyContest.Renew;
       Grid.TopRow := i;
       EditScreen.RefreshScreen;
+      Log.Saved := False;
    finally
       F.Release();
    end;
