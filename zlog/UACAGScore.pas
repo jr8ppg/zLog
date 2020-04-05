@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Controls, Forms,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Menus, Buttons;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Menus, Buttons,
+  UzLogConst, UzLogGlobal, UzLOgQSO;
 
 type
   TACAGScore = class(TBasicScore)
@@ -34,12 +35,12 @@ var
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
-   band := aQSO.QSO.band;
-   aQSO.QSO.points := 1;
+   band := aQSO.band;
+   aQSO.points := 1;
    Inc(Points[band]);
 end;
 

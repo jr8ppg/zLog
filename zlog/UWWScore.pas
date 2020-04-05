@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, UzLogGlobal, Grids, StdCtrls, ExtCtrls, Buttons;
+  Grids, StdCtrls, ExtCtrls, Buttons,
+  UBasicScore, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TWWScore = class(TBasicScore)
@@ -55,15 +56,15 @@ var
 begin
    Reset;
    for i := 1 to Log.TotalQSO do begin
-      band := TQSO(Log.List[i]).QSO.band;
+      band := Log.Items[i].band;
       inc(QSO[band]);
-      inc(Points[band],TQSO(Log.List[i]).QSO.Points);
+      inc(Points[band],Log.Items[i].Points);
 
-      if TQSO(Log.List[i]).QSO.NewMulti1 then begin
+      if Log.Items[i].NewMulti1 then begin
         inc(Multi[band]);
       end;
 
-      if TQSO(Log.List[i]).QSO.NewMulti2 then begin
+      if Log.Items[i].NewMulti2 then begin
         inc(Multi2[band]);
       end;
    end;
@@ -90,16 +91,16 @@ begin
    {BasicScore.AddNoUpdate(aQSO);}
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       exit;
    end;
 
-   band := aQSO.QSO.band;
-   if aQSO.QSO.NewMulti2 then begin
+   band := aQSO.band;
+   if aQSO.NewMulti2 then begin
       Inc(Multi2[band]);
    end;
 
-   Inc(Points[band], aQSO.QSO.Points); {Points calculated in WWMulti.AddNoUpdate}
+   Inc(Points[band], aQSO.Points); {Points calculated in WWMulti.AddNoUpdate}
 end;
 
 procedure TWWScore.Update;

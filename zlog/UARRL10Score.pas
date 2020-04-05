@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, Cologrid, StdCtrls, ExtCtrls, UzLogGlobal, Buttons;
+  UBasicScore, Grids, Cologrid, StdCtrls, ExtCtrls,  Buttons,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TARRL10Score = class(TBasicScore)
@@ -42,23 +43,23 @@ var i : integer;
 begin
   {BasicScore.AddNoUpdate(aQSO);}
   inherited;
-  aQSO.QSO.Points := 0;
-  if aQSO.QSO.Dupe then
+  aQSO.Points := 0;
+  if aQSO.Dupe then
     exit;
-  if aQSO.QSO.Mode = mCW then
+  if aQSO.Mode = mCW then
     begin
-      i := length(aQSO.QSO.Callsign) - 1;
-      if (pos('/N', aQSO.QSO.Callsign) = i) or (pos('/T', aQSO.QSO.Callsign) = i) then
-        aQSO.QSO.Points := 8 // novice or technician cw qso : 8pts
+      i := length(aQSO.Callsign) - 1;
+      if (pos('/N', aQSO.Callsign) = i) or (pos('/T', aQSO.Callsign) = i) then
+        aQSO.Points := 8 // novice or technician cw qso : 8pts
       else
-        aQSO.QSO.Points := 4;
+        aQSO.Points := 4;
     end
   else
-    if aQSO.QSO.Mode in [mSSB, mFM, mAM] then
+    if aQSO.Mode in [mSSB, mFM, mAM] then
       begin
-        aQSO.QSO.Points := 2;
+        aQSO.Points := 2;
       end;
-  inc(Points[b28], aQSO.QSO.Points);
+  inc(Points[b28], aQSO.Points);
 end;
 
 

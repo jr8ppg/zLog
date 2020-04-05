@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UIARUScore, Grids, Cologrid, StdCtrls, ExtCtrls, UzLogGlobal, Buttons;
+  UIARUScore, Grids, Cologrid, StdCtrls, ExtCtrls, Buttons,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TAllAsianScore = class(TIARUScore)
@@ -25,11 +26,11 @@ implementation
 
 procedure TAllAsianScore.CalcPoints(var aQSO : TQSO);
 begin
-  case aQSO.QSO.Band of
-    b19 : aQSO.QSO.Points := 3;
-    b35 : aQSO.QSO.Points := 2;
+  case aQSO.Band of
+    b19 : aQSO.Points := 3;
+    b35 : aQSO.Points := 2;
   else
-    aQSO.QSO.Points := 1;
+    aQSO.Points := 1;
   end;
 end;
 
@@ -37,29 +38,29 @@ procedure TAllAsianScore.AddNoUpdate(var aQSO : TQSO);
 var B : TBand;
 begin
   //BasicScore.AddNoUpdate(aQSO);
-  B := aQSO.QSO.band;
+  B := aQSO.band;
   inc(QSO[B]);
-  if aQSO.QSO.mode = mCW then
+  if aQSO.mode = mCW then
     inc(CWQSO[B]);
-  if aQSO.QSO.NewMulti1 then
+  if aQSO.NewMulti1 then
     inc(Multi[B]);
   //inherited;
-  //aQSO.QSO.Points := 0;
-  if aQSO.QSO.Dupe then
+  //aQSO.Points := 0;
+  if aQSO.Dupe then
     exit;
-  //B := aQSO.QSO.band;
+  //B := aQSO.band;
   //CalcPoints(aQSO);
   {
   case B of
-    b19 : aQSO.QSO.Points := 3;
-    b35 : aQSO.QSO.Points := 2;
+    b19 : aQSO.Points := 3;
+    b35 : aQSO.Points := 2;
   else
-    aQSO.QSO.Points := 1;
+    aQSO.Points := 1;
   end;
   }
-  {if aQSO.QSO.NewMulti2 then
+  {if aQSO.NewMulti2 then
     inc(Multi2[band]);}
-  inc(Points[B], aQSO.QSO.Points);
+  inc(Points[B], aQSO.Points);
 end;
 
 

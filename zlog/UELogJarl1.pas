@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, UzLogGlobal, IniFiles;
+  Dialogs, StdCtrls, ExtCtrls, IniFiles,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TformELogJarl1 = class(TForm)
@@ -361,40 +362,40 @@ var
    S: string;
 begin
    S := '';
-   S := S + FormatDateTime('yyyy/mm/dd hh":"nn ', q.QSO.Time);
-   S := S + FillRight(q.QSO.CallSign, 13);
-   S := S + FillRight(IntToStr(q.QSO.RSTSent), 4);
-   S := S + FillRight(q.QSO.NrSent, 8);
-   S := S + FillRight(IntToStr(q.QSO.RSTRcvd), 4);
-   S := S + FillRight(q.QSO.NrRcvd, 8);
+   S := S + FormatDateTime('yyyy/mm/dd hh":"nn ', q.Time);
+   S := S + FillRight(q.CallSign, 13);
+   S := S + FillRight(IntToStr(q.RSTSent), 4);
+   S := S + FillRight(q.NrSent, 8);
+   S := S + FillRight(IntToStr(q.RSTRcvd), 4);
+   S := S + FillRight(q.NrRcvd, 8);
 
-   if q.QSO.NewMulti1 then begin
-      S := S + FillRight(q.QSO.Multi1, 6);
+   if q.NewMulti1 then begin
+      S := S + FillRight(q.Multi1, 6);
    end
    else begin
       S := S + '-     ';
    end;
 
-   if q.QSO.NewMulti2 then begin
-      S := S + FillRight(q.QSO.Multi2, 6);
+   if q.NewMulti2 then begin
+      S := S + FillRight(q.Multi2, 6);
    end
    else begin
       S := S + '-     ';
    end;
 
-   S := S + FillRight(MHzString[q.QSO.Band], 5);
-   S := S + FillRight(ModeString[q.QSO.Mode], 5);
-   S := S + FillRight(IntToStr(q.QSO.Points), 3);
+   S := S + FillRight(MHzString[q.Band], 5);
+   S := S + FillRight(ModeString[q.Mode], 5);
+   S := S + FillRight(IntToStr(q.Points), 3);
 
-   if q.QSO.Operator <> '' then begin
-      S := S + FillRight('%%' + q.QSO.Operator + '%%', 19);
+   if q.Operator <> '' then begin
+      S := S + FillRight('%%' + q.Operator + '%%', 19);
    end;
 
    if dmZlogGlobal.MultiOp > 0 then begin
-      S := S + FillRight('TX#' + IntToStr(q.QSO.TX), 6);
+      S := S + FillRight('TX#' + IntToStr(q.TX), 6);
    end;
 
-   S := S + q.QSO.Memo;
+   S := S + q.Memo;
 
    Result := S;
 end;

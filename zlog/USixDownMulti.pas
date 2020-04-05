@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UFDMulti, StdCtrls, checklst, JLLabel, ExtCtrls, UzLogGlobal,
-  Grids, Cologrid, UMultipliers;
+  UFDMulti, StdCtrls, checklst, JLLabel, ExtCtrls, Grids, Cologrid,
+  UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers;
 
 type
   TSixDownMulti = class(TFDMulti)

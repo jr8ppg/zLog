@@ -4,8 +4,9 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ExtCtrls, Console2, StdCtrls, ComCtrls, UzLogGlobal,
-  UScratchSheet, OverbyteIcsWndControl, OverbyteIcsWSocket;
+  ExtCtrls, Console2, StdCtrls, ComCtrls,
+  OverbyteIcsWndControl, OverbyteIcsWSocket,
+  UzLogConst, UzLogGlobal, UzLogQSO, UScratchSheet;
 
 type
   TQSOID = class
@@ -329,9 +330,9 @@ begin
               for j := 0 to MergeTempList.Count - 1 do
                 begin
                   qid := TQSOID(MergeTempList[j]);
-                  if (aQSO.QSO.Reserve3 div 100) = qid.QSOIDwoCounter then
+                  if (aQSO.Reserve3 div 100) = qid.QSOIDwoCounter then
                     begin
-                      if aQSO.QSO.Reserve3 = qid.FullQSOID then // exactly the same qso
+                      if aQSO.Reserve3 = qid.FullQSOID then // exactly the same qso
                         begin
                           MergeTempList.Delete(j);
                           qid.free;
@@ -340,7 +341,7 @@ begin
                         end
                       else // counter is different
                         begin
-                          if qid.FullQSOID > aQSO.QSO.Reserve3 then // serverdata is newer
+                          if qid.FullQSOID > aQSO.Reserve3 then // serverdata is newer
                             begin
                               boo := true;
                               WriteData(ZLinkHeader+' '+'SENDQSOIDEDIT '+
@@ -471,7 +472,7 @@ begin
           Delete(temp, 1, 7);
           //temp := copy(temp, 8, 255);
           aQSO.TextToQSO(temp);
-          aQSO.QSO.Reserve := actDelete;
+          aQSO.Reserve := actDelete;
           Log.AddQue(aQSO);
           Log.ProcessQue;
           MyContest.Renew;
@@ -483,7 +484,7 @@ begin
           aQSO := TQSO.Create;
           Delete(temp, 1, 9);
           aQSO.TextToQSO(temp);
-          aQSO.QSO.Reserve := actInsert;
+          aQSO.Reserve := actInsert;
           Log.AddQue(aQSO);
           //Log.ProcessQue;
           //MyContest.Renew;
@@ -494,7 +495,7 @@ begin
           aQSO := TQSO.Create;
           temp := copy(temp, 9, 255);
           aQSO.TextToQSO(temp);
-          aQSO.QSO.Reserve := actLock;
+          aQSO.Reserve := actLock;
           Log.AddQue(aQSO);
           Log.ProcessQue;
           MyContest.Renew;
@@ -505,7 +506,7 @@ begin
           aQSO := TQSO.Create;
           temp := copy(temp, 11, 255);
           aQSO.TextToQSO(temp);
-          aQSO.QSO.Reserve := actUnlock;
+          aQSO.Reserve := actUnlock;
           Log.AddQue(aQSO);
           Log.ProcessQue;
           MyContest.Renew;
@@ -516,7 +517,7 @@ begin
           aQSO := TQSO.Create;
           temp := copy(temp, 11, 255);
           aQSO.TextToQSO(temp);
-          aQSO.QSO.Reserve := actEdit;
+          aQSO.Reserve := actEdit;
           Log.AddQue(aQSO);
           Log.ProcessQue;
           MyContest.Renew;
@@ -528,7 +529,7 @@ begin
           aQSO := TQSO.Create;
           Delete(temp, 1, 7);
           aQSO.TextToQSO(temp);
-          aQSO.QSO.Reserve := actInsert;
+          aQSO.Reserve := actInsert;
           Log.AddQue(aQSO);
           Log.ProcessQue;
           MyContest.Renew;
@@ -541,7 +542,7 @@ begin
           aQSO := TQSO.Create;
           Delete(temp, 1, 7);
           aQSO.TextToQSO(temp);
-          aQSO.QSO.Reserve := actAdd;
+          aQSO.Reserve := actAdd;
           Log.AddQue(aQSO);
           aQSO.Free;
         end;
@@ -602,7 +603,7 @@ var
    str : string;
 begin
    if dmZlogGlobal.Settings._zlinkport in [1..7] then begin
-      str := ZLinkHeader + ' BAND '+IntToStr(ord(Main.CurrentQSO.QSO.Band));
+      str := ZLinkHeader + ' BAND '+IntToStr(ord(Main.CurrentQSO.Band));
       WriteData(str+LineBreakCode[ord(Console.LineBreak)]);
    end;
 end;
@@ -612,7 +613,7 @@ var
    str : string;
 begin
    if dmZlogGlobal.Settings._zlinkport in [1..7] then begin
-      str := ZLinkHeader + ' OPERATOR '+Main.CurrentQSO.QSO.Operator;
+      str := ZLinkHeader + ' OPERATOR '+Main.CurrentQSO.Operator;
       WriteData(str+LineBreakCode[ord(Console.LineBreak)]);
    end;
 end;

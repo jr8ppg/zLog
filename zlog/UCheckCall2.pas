@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UCheckWin, StdCtrls, ExtCtrls, UzLogGlobal, Main;
+  UCheckWin, StdCtrls, ExtCtrls, Main,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TCheckCall2 = class(TCheckWin)
@@ -30,15 +31,15 @@ var PartialStr : string;
 begin
   ResetListBox;
 
-  if pos(',',aQSO.QSO.Callsign) = 1 then
+  if pos(',',aQSO.Callsign) = 1 then
     exit;
 
   aQ := TQSO.Create;
-  aQ.QSO := aQSO.QSO;
+  aQ.Assign(aQSO);
   for B := b19 to HiBand do
     if BandRow[B] >= 0 then
       begin
-        aQ.QSO.Band := B;
+        aQ.Band := B;
         Q := Log.QuickDupe(aQ);
         if Q <> nil then
           begin
@@ -58,7 +59,7 @@ var PartialStr : string;
     aQ, Q : TQSO;
 begin
   Result := '';
-  if aQSO.QSO.Callsign <> 'JA1ZLO' then
+  if aQSO.Callsign <> 'JA1ZLO' then
     exit;
   aQ := TQSO.Create;
   aQ.QSO := aQSO.QSO;

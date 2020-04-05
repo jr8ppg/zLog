@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, UzLogGlobal, URigControl;
+  StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal, UzLogQSO, URigControl;
 
 type
   TSpotForm = class(TForm)
@@ -40,7 +40,7 @@ procedure TSpotForm.Open(aQSO : TQSO);
 var str : string;
 begin
   str := 'Frequency';
-  case aQSO.QSO.Band of
+  case aQSO.Band of
     b19 : str := '19';
     b35 : str := '35';
     b7 : str := '7';
@@ -59,7 +59,7 @@ begin
     b10g : str := '10';
   end;
   FreqEdit.Text := str;
-  CallSignEdit.Text := aQSO.QSO.CallSign;
+  CallSignEdit.Text := aQSO.CallSign;
   CommentEdit.Text := '';
   ShowModal;
 end;

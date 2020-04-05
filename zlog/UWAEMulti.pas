@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UARRLWMulti, Grids, Cologrid, StdCtrls, ExtCtrls, JLLabel, UMultipliers,
-  UzLogGlobal;
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TWAEMulti = class(TARRLWMulti)
@@ -37,30 +37,29 @@ var str : string;
     i, j : integer;
     C : TCountry;
 begin
-  aQSO.QSO.NewMulti1 := False;
-  aQSO.QSO.NewMulti2 := False;
+  aQSO.NewMulti1 := False;
+  aQSO.NewMulti2 := False;
 
   i := GetCountryIndex(aQSO);
 
   C := TCountry(CountryList.List[i]);
   if C.Continent <> 'EU' then
     begin
-      aQSO.QSO.Points := 0;
-      aQSO.QSO.Multi1 := 'Non-EU';
+      aQSO.Points := 0;
+      aQSO.Multi1 := 'Non-EU';
       exit;
     end;
-  aQSO.QSO.Multi1 := C.Country;
+  aQSO.Multi1 := C.Country;
 
-  if aQSO.QSO.Dupe then
+  if aQSO.Dupe then
     exit;
 
-
-  B := aQSO.QSO.Band;
+  B := aQSO.Band;
 
   if C.Worked[B] = False then
     begin
       C.Worked[B] := True;
-      aQSO.QSO.NewMulti1 := True;
+      aQSO.NewMulti1 := True;
       //Grid.Cells[0,C.GridIndex] := C.Summary;
     end;
 end;
@@ -88,7 +87,7 @@ begin
     end;
 
   temp2 := '';
-  if C.Worked[aQSO.QSO.Band] = false then
+  if C.Worked[aQSO.Band] = false then
     temp2 := 'CTY';
 
   if temp2 <> '' then

@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicMulti, StdCtrls, ExtCtrls, UzLogGlobal;
+  UBasicMulti, StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TJA0Multi = class(TBasicMulti)
@@ -41,7 +41,7 @@ var str : string;
     B : TBand;
     i : integer;
 begin
-  str := aQSO.QSO.NrRcvd;
+  str := aQSO.NrRcvd;
   try
     i := StrToInt(str);
   except
@@ -58,22 +58,22 @@ procedure TJA0Multi.AddNoUpdate(var aQSO : TQSO);
 var str : string;
 begin
   str := GetPrefix(aQSO);
-  aQSO.QSO.NewMulti1 := False;
-  aQSO.QSO.Multi1 := str;
+  aQSO.NewMulti1 := False;
+  aQSO.Multi1 := str;
 
-  if aQSO.QSO.Dupe then
+  if aQSO.Dupe then
     exit;
 
   {if (str = '') or (PXList.IndexOf(str) >= 0) then
     exit;}
-  if (str = '') or (PXListX[aQSO.QSO.Band].IndexOf(str) >= 0) then
+  if (str = '') or (PXListX[aQSO.Band].IndexOf(str) >= 0) then
     exit;
 
 
   //PXList.Add(str);
-  PXListX[aQSO.QSO.Band].Add(str);
+  PXListX[aQSO.Band].Add(str);
 
-  aQSO.QSO.NewMulti1 := True;
+  aQSO.NewMulti1 := True;
 end;
 
 
@@ -81,7 +81,7 @@ procedure TJA0Multi.Update;
 var i, j : integer;
     band : TBand;
 begin
-  band := Main.CurrentQSO.QSO.Band;
+  band := Main.CurrentQSO.Band;
   ListBox.Items.Clear;
   {if PXList.Count = 0 then
     exit;}
@@ -107,7 +107,7 @@ end;
 function TJA0Multi.GetPrefix(aQSO : TQSO) : string;
 var c : string;
 begin
-  c := aQSO.QSO.Callsign;
+  c := aQSO.Callsign;
   Result := '';
   if JA0 then
     begin

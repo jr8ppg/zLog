@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UWWMulti, UMultipliers, StdCtrls, ExtCtrls, JLLabel, Grids, Cologrid,
-  UzLogGlobal;
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
 
@@ -152,8 +152,8 @@ var str, str2 : string;
     B : TBand;
     boo : boolean;
 begin
-  str := aQSO.QSO.NrRcvd;
-  B := aQSO.QSO.band;
+  str := aQSO.NrRcvd;
+  B := aQSO.band;
   boo := false;
   for j := 0 to ZoneList.List.Count - 1 do
     begin
@@ -190,7 +190,7 @@ begin
   else
     str2 := 'Zone ';
   str2 := str2 + str+ ' : ';
-  if TIARUZone(ZoneList.List[j]).Worked[aQSO.QSO.Band] then
+  if TIARUZone(ZoneList.List[j]).Worked[aQSO.Band] then
     str2 := str2 + 'Worked on this band. '
   else
     str2 := str2 + 'Needed on this band. ';
@@ -215,7 +215,7 @@ begin
       exit;
     end;
   C := TCountry(CountryList.List[P.Index]);
-  str := aQSO.QSO.CallSign;
+  str := aQSO.CallSign;
   i := C.Zone;
 
   if (C.Country = 'W') or (C.Country = 'K') then
@@ -274,7 +274,7 @@ end;
 
 function TIARUMulti.ValidMulti(aQSO : TQSO) : boolean;
 begin
-  if aQSO.QSO.NrRcvd <> '' then
+  if aQSO.NrRcvd <> '' then
     Result := True
   else
     Result := False;
@@ -328,7 +328,7 @@ begin
   if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your call sign') then
     begin
       aQSO := TQSO.Create;
-      aQSO.QSO.callsign := Uppercase(dmZlogGlobal.Settings._mycall);
+      aQSO.callsign := Uppercase(dmZlogGlobal.Settings._mycall);
 
       P := GetPrefix(aQSO);
       //i := GetCountryIndex(aQSO);
@@ -414,14 +414,14 @@ var str : string;
     boo, HQ : boolean;
     M : TIARUZone;
 begin
-  aQSO.QSO.NewMulti1 := False;
-  str := aQSO.QSO.NrRcvd;
-  aQSO.QSO.Multi1 := str;
+  aQSO.NewMulti1 := False;
+  str := aQSO.NrRcvd;
+  aQSO.Multi1 := str;
 
-  if aQSO.QSO.Dupe then
+  if aQSO.Dupe then
     exit;
 
-  B := aQSO.QSO.band;
+  B := aQSO.band;
   try
     i := StrToInt(str);
   except
@@ -443,10 +443,10 @@ begin
       if TIARUZone(ZoneList.List[j]).Multi = str then
         begin
           boo := true;
-          if TIARUZone(ZoneList.List[j]).Worked[aQSO.QSO.Band] = False then
+          if TIARUZone(ZoneList.List[j]).Worked[aQSO.Band] = False then
             begin
-              TIARUZone(ZoneList.List[j]).Worked[aQSO.QSO.Band] := True;
-              aQSO.QSO.NewMulti1 := True;
+              TIARUZone(ZoneList.List[j]).Worked[aQSO.Band] := True;
+              aQSO.NewMulti1 := True;
               break;
             end;
         end;
@@ -456,8 +456,8 @@ begin
     begin
       M := TIARUZone.Create;
       M.Multi := str;
-      M.Worked[aQSO.QSO.Band] := True;
-      aQSO.QSO.NewMulti1 := True;
+      M.Worked[aQSO.Band] := True;
+      aQSO.NewMulti1 := True;
       ZoneList.Add(M);
       Update;
       //Grid.Cells[0,ZoneList.List.Count-1] := M.Summary;
@@ -480,12 +480,12 @@ begin
       _cont := P.OvrContinent;
 
   if (MyZone = str) or (HQ = True) then
-    aQSO.QSO.Points := 1
+    aQSO.Points := 1
   else
     if MyContinent = _cont then
-      aQSO.QSO.Points := 3
+      aQSO.Points := 3
     else
-      aQSO.QSO.points := 5;
+      aQSO.points := 5;
 
 end;
 
@@ -517,7 +517,7 @@ procedure TIARUMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
 var B : TBand;
 begin
   //inherited;
-  B := Main.CurrentQSO.QSO.Band;
+  B := Main.CurrentQSO.Band;
   if TIARUZone(ZoneList.List[ARow]).Worked[B] then
     FColor := clRed
   else
@@ -540,7 +540,7 @@ procedure TIARUMulti.Add(var aQSO : TQSO);
 begin
   AddNoUpdate(aQSO);
   {
-  if (aQSO.QSO.Reserve2 <> $AA) and (MostRecentCty <> nil) then
+  if (aQSO.Reserve2 <> $AA) and (MostRecentCty <> nil) then
     Grid.TopRow := MostRecentCty.GridIndex;
   }
   RefreshGrid;

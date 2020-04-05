@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UWWMulti, UMultipliers, StdCtrls, JLLabel, ExtCtrls, Grids, Cologrid,
-  UzLogGlobal;
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TJIDXMulti = class(TWWMulti)
@@ -51,7 +51,7 @@ begin
 
    if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your callsign') then begin
       aQSO := TQSO.Create;
-      aQSO.QSO.callsign := UpperCase(dmZlogGlobal.Settings._mycall);
+      aQSO.callsign := UpperCase(dmZlogGlobal.Settings._mycall);
       i := GetCountryIndex(aQSO);
       if i > 0 then begin
          MyCountry := TCountry(CountryList.List[i]).Country;
@@ -68,22 +68,22 @@ var
    i: integer;
    C: TCountry;
 begin
-   aQSO.QSO.NewMulti1 := False;
-   aQSO.QSO.NewMulti2 := False;
-   str := aQSO.QSO.NrRcvd;
-   aQSO.QSO.Multi1 := str;
+   aQSO.NewMulti1 := False;
+   aQSO.NewMulti2 := False;
+   str := aQSO.NrRcvd;
+   aQSO.Multi1 := str;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       exit;
    end;
 
-   B := aQSO.QSO.band;
+   B := aQSO.band;
    i := StrToIntDef(str, 0);
 
    if i in [1..MAXCQZONE] then begin
       if Zone[B,i] = False then begin
          Zone[B,i] := True;
-         aQSO.QSO.NewMulti1 := True;
+         aQSO.NewMulti1 := True;
          FZoneForm.Mark(B,i);
       end;
    end;
@@ -93,7 +93,7 @@ begin
    C := TCountry(CountryList.List[i]);
    MostRecentCty := C;
 
-   aQSO.QSO.Multi2 := C.Country;
+   aQSO.Multi2 := C.Country;
 
    if i = 0 then begin // unknown cty. e.g. MM
       exit;
@@ -101,7 +101,7 @@ begin
 
    if C.Worked[B] = False then begin
       C.Worked[B] := True;
-      aQSO.QSO.NewMulti2 := True;
+      aQSO.NewMulti2 := True;
       Grid.Cells[0,C.GridIndex] := C.Summary;
    end;
 end;

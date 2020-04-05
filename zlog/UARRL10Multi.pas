@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UzLogGlobal, UARRLDXMulti, UWWMulti, UMultipliers, Grids, Cologrid,
-  StdCtrls, ExtCtrls, JLLabel;
+  StdCtrls, ExtCtrls, Grids, Cologrid, JLLabel,
+  UzLogConst, UzLogGlobal, UzLogQSO, UARRLDXMulti, UWWMulti, UMultipliers;
 
 type
   TARRL10Multi = class(TWWMulti)
@@ -67,12 +67,12 @@ var i, j : integer;
 begin
   Result := False;
 
-  if aQSO.QSO.NrRcvd = '' then
+  if aQSO.NrRcvd = '' then
     exit;
 
-  if IsMM(aQSO.QSO.Callsign) then
+  if IsMM(aQSO.Callsign) then
     begin
-      if (aQSO.QSO.NrRcvd = '1') or (aQSO.QSO.NrRcvd = '2') or (aQSO.QSO.NrRcvd = '3') then
+      if (aQSO.NrRcvd = '1') or (aQSO.NrRcvd = '2') or (aQSO.NrRcvd = '3') then
         Result := True
       else
         Result := False;
@@ -90,7 +90,7 @@ begin
     else // not W/VE serial number
       begin
         try
-          j := StrToInt(aQSO.QSO.NrRcvd);
+          j := StrToInt(aQSO.NrRcvd);
         except
           on EConvertError do
             j := 0;
@@ -107,47 +107,47 @@ var str : string;
     C : TCountry;
     S : TState;
 begin
-  aQSO.QSO.NewMulti1 := False;
-  aQSO.QSO.NewMulti2 := False;
+  aQSO.NewMulti1 := False;
+  aQSO.NewMulti2 := False;
 
   i := GetCountryIndex(aQSO);
 
   C := TCountry(CountryList.List[i]);
 
-  if aQSO.QSO.Mode = mCW then
+  if aQSO.Mode = mCW then
     B := b35
   else
     B := b19;
 
-  if aQSO.QSO.Dupe then
+  if aQSO.Dupe then
     exit;
 
-  if IsWVE(C.Country) or IsMM(aQSO.QSO.Callsign) then
+  if IsWVE(C.Country) or IsMM(aQSO.Callsign) then
     begin
       S := GetState(aQSO, StateList);
       if S = nil then
         begin
-          aQSO.QSO.Multi1 := '';
-          aQSO.QSO.Memo := 'INVALID EXCHANGE '+aQSO.QSO.Memo;
+          aQSO.Multi1 := '';
+          aQSO.Memo := 'INVALID EXCHANGE '+aQSO.Memo;
         end
       else
         begin
-          aQSO.QSO.Multi1 := S.StateAbbrev;
+          aQSO.Multi1 := S.StateAbbrev;
           if S.Worked[B] = False then
             begin
               S.Worked[B] := True;
-              aQSO.QSO.NewMulti1 := True;
+              aQSO.NewMulti1 := True;
               LastMulti := S.Index;
             end;
         end;
     end
   else
     begin
-      aQSO.QSO.Multi1 := C.Country;
+      aQSO.Multi1 := C.Country;
       if C.Worked[B] = False then
         begin
           C.Worked[B] := True;
-          aQSO.QSO.NewMulti1 := True;
+          aQSO.NewMulti1 := True;
           LastMulti := C.GridIndex;
           //Grid.Cells[0,C.GridIndex] := C.SummaryARRL10;
         end;
@@ -212,7 +212,7 @@ begin
   if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your callsign') then
     begin
       aQSO := TQSO.Create;
-      aQSO.QSO.callsign := Uppercase(dmZlogGlobal.Settings._mycall);
+      aQSO.callsign := Uppercase(dmZlogGlobal.Settings._mycall);
       i := GetCountryIndex(aQSO);
       if i > 0 then
         begin
@@ -273,7 +273,7 @@ begin
   AddNoUpdate(aQSO);
   Grid.TopRow := LastMulti;
 {
-  if (aQSO.QSO.Reserve2 <> $AA) and (MostRecentCty <> nil) then
+  if (aQSO.Reserve2 <> $AA) and (MostRecentCty <> nil) then
     Grid.TopRow := MostRecentCty.GridIndex;
 }
   RefreshGrid;
@@ -313,7 +313,7 @@ procedure TARRL10Multi.GridSetting(ARow, Acol: Integer;
   var Fcolor: Integer; var Bold, Italic, underline: Boolean);
 var B : TBand;
 begin
-  if Main.CurrentQSO.QSO.Mode = mCW then
+  if Main.CurrentQSO.Mode = mCW then
     B := b35
   else
     B := b19;
@@ -371,7 +371,7 @@ begin
   Result := '';
   i := GetCountryIndex(aQSO);
   C := TCountry(CountryList.List[i]);
-  if IsWVE(C.Country) or IsMM(aQSO.QSO.Callsign) then
+  if IsWVE(C.Country) or IsMM(aQSO.Callsign) then
     begin
       S := GetState(aQSO, StateList);
       if S <> nil then

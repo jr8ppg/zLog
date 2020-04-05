@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  Grids, StdCtrls, ExtCtrls, UzLogGlobal;
+  Grids, StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TKCJZone = class(TForm)

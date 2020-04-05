@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, UMMTTY, UzLogGlobal, Console2, Menus, UzLogCW;
+  StdCtrls, ExtCtrls, Menus, UMMTTY, UzLogConst, UzLogGlobal, Console2, UzLogCW;
 
 const ttyMMTTY = 0;
       ttyPSK31 = 1;

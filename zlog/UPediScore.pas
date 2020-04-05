@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Buttons;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
+  UzLogCOnst, UzLogGlobal, UzLogQSO;
 
 type
   TPediScore = class(TBasicScore)
@@ -131,8 +132,8 @@ end;
 
 procedure TPediScore.AddNoUpdate(var aQSO: TQSO);
 begin
-   aQSO.QSO.points := 1;
-   Inc(Stats[aQSO.QSO.band, aQSO.QSO.Mode]);
+   aQSO.points := 1;
+   Inc(Stats[aQSO.band, aQSO.Mode]);
 end;
 
 procedure TPediScore.Reset;

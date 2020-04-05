@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Buttons,
-  UWPXMulti;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
+  UzLogConst, UzLogGlobal, UzLogQSO, UWPXMulti;
 
 type
   TWPXScore = class(TBasicScore)
@@ -43,23 +43,23 @@ procedure TWPXScore.AddNoUpdate(var aQSO : TQSO);
 begin
    inherited; {points are calculated in WPXMulti}
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
    if AllAsianDXMode then begin
-      case aQSO.QSO.Band of
-         b19: aQSO.QSO.Points := 3;
-         b35, b28 : aQSO.QSO.Points := 2;
-         b7..b21 : aQSO.QSO.Points := 1;
+      case aQSO.Band of
+         b19: aQSO.Points := 3;
+         b35, b28 : aQSO.Points := 2;
+         b7..b21 : aQSO.Points := 1;
       end;
 
-      if aQSO.QSO.Power2 = 777 then begin // asia. see uwpxmulti.addnoupdate
-         aQSO.QSO.Points := 0;
+      if aQSO.Power2 = 777 then begin // asia. see uwpxmulti.addnoupdate
+         aQSO.Points := 0;
       end;
    end;
 
-   Inc(Points[aQSO.QSO.Band], aQSO.QSO.Points);
+   Inc(Points[aQSO.Band], aQSO.Points);
 end;
 
 procedure TWPXScore.Update;

@@ -3,7 +3,7 @@ unit UzLogCW;
 interface
 
 uses
-  SysUtils, UzLogGlobal, UzLogKeyer, UOptions;
+  SysUtils, UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, UOptions;
 
 var CtrlZCQLoop : boolean;
     QTHString : string[255];
@@ -39,8 +39,8 @@ begin
   txnr := dmZLogGlobal.Settings._txnr;
   for i := Log.TotalQSO downto 1 do
     begin
-      if TQSO(Log.List[i]).QSO.TX = txnr then
-        Result := TQSO(Log.List[i]).QSO.Callsign;
+      if TQSO(Log.List[i]).TX = txnr then
+        Result := TQSO(Log.List[i]).Callsign;
       exit;
     end;
 end;
@@ -145,7 +145,7 @@ begin
     begin
       i := Pos('$B',temp);
       Delete(temp, i, 2);
-      Insert(Main.CurrentQSO.QSO.Callsign, temp, i);
+      Insert(Main.CurrentQSO.Callsign, temp, i);
     end;
   while Pos('$X',temp) > 0 do
     begin
@@ -163,7 +163,7 @@ begin
     begin
       i := Pos('$F',temp);
       Delete(temp, i, 2);
-      Insert(Abbreviate(aQSO.QSO.NrRcvd), temp, i);
+      Insert(Abbreviate(aQSO.NrRcvd), temp, i);
     end;
   while Pos('$Z',temp) > 0 do
     begin
@@ -195,7 +195,7 @@ begin
     begin
       i := Pos('$O',temp);
       Delete(temp, i, 2);
-      Insert(aQSO.QSO.Operator, temp, i);
+      Insert(aQSO.Operator, temp, i);
     end;
   while Pos('$S',temp) > 0 do
     begin
@@ -235,8 +235,8 @@ begin
     begin
       i := Pos('$C',temp);
       Delete(temp, i, 2);
-      if aQSO.QSO.mode = mRTTY then
-        Insert(aQSO.QSO.Callsign, temp, i)
+      if aQSO.mode = mRTTY then
+        Insert(aQSO.Callsign, temp, i)
       else
         Insert(':***************', temp, i);
     end;
@@ -245,10 +245,10 @@ begin
     begin
       i := Pos('$E',temp);
       Delete(temp, i, 2);
-      if aQSO.QSO.Callsign = '' then
+      if aQSO.Callsign = '' then
         insert(LastCallsign, temp, i);
       if EditedSinceTABPressed = tabstate_tabpressedandedited then
-        Insert(aQSO.QSO.Callsign, temp, i);
+        Insert(aQSO.Callsign, temp, i);
 {
       if EditedSinceTABPressed = tabstate_tabpressedandedited then
         Insert(':************', temp, i);
@@ -299,13 +299,13 @@ begin
     begin
       i := Pos('$F',temp);
       Delete(temp, i, 2);
-      Insert(aQSO.QSO.NrRcvd, temp, i);
+      Insert(aQSO.NrRcvd, temp, i);
     end;
   while Pos('$O',temp) > 0 do
     begin
       i := Pos('$O',temp);
       Delete(temp, i, 2);
-      Insert(aQSO.QSO.Operator, temp, i);
+      Insert(aQSO.Operator, temp, i);
     end;
 
   while Pos('$A',temp) > 0 do   // all asian age
@@ -349,7 +349,7 @@ begin
     begin
       i := Pos('$C',temp);
       Delete(temp, i, 2);
-      Insert(aQSO.QSO.Callsign, temp, i);
+      Insert(aQSO.Callsign, temp, i);
     end;
   while Pos('$M',temp) > 0 do
     begin
@@ -368,7 +368,7 @@ begin
   else
     dmZLogKeyer.SendStr(S);
 
-  dmZLogKeyer.SetCallSign(ShortString(Main.CurrentQSO.QSO.Callsign));
+  dmZLogKeyer.SetCallSign(ShortString(Main.CurrentQSO.Callsign));
   dmZLogKeyer.ResumeCW;
 end;
 

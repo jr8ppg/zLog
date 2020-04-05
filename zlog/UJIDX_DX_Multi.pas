@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicMulti, StdCtrls, checklst, ComCtrls, ExtCtrls, UzLogGlobal, JLLabel;
+  UBasicMulti, StdCtrls, checklst, ComCtrls, ExtCtrls,
+  UzLogConst, UzLogGlobal, UzLogQSO, JLLabel;
 
 type
   TJIDX_DX_Multi = class(TBasicMulti)
@@ -126,7 +127,7 @@ begin
   inherited;
   if TabControl.TabIndex <> 6 then
     begin
-      TabControl.TabIndex := OldBandOrd(Main.CurrentQSO.QSO.Band);
+      TabControl.TabIndex := OldBandOrd(Main.CurrentQSO.Band);
       UpdateCheckListBox;
     end;
   {if TabControl.TabIndex <> 6  then
@@ -143,14 +144,14 @@ var str, temp : string;
     M : Integer;
     B : TBand;
 begin
-  aQSO.QSO.NewMulti1 := False;
-  str := aQSO.QSO.NrRcvd;
-  aQSO.QSO.Multi1 := str;
+  aQSO.NewMulti1 := False;
+  str := aQSO.NrRcvd;
+  aQSO.Multi1 := str;
 
-  if aQSO.QSO.Dupe then
+  if aQSO.Dupe then
     exit;
   
-  if not(NotWARC(aQSO.QSO.Band)) then
+  if not(NotWARC(aQSO.Band)) then
     exit;
   M := 0;
   try
@@ -161,10 +162,10 @@ begin
   if not (M in [1..50]) then
     exit;
 
-  if MultiTable[aQSO.QSO.band, M] = False then
+  if MultiTable[aQSO.band, M] = False then
     begin
-      MultiTable[aQSO.QSO.band, M] := True;
-      aQSO.QSO.NewMulti1 := True;
+      MultiTable[aQSO.band, M] := True;
+      aQSO.NewMulti1 := True;
       temp := '';
       for B := b19 to b28 do
         begin
@@ -178,7 +179,7 @@ begin
           ListBox.Items.Delete(M-1);
           ListBox.Items.Insert(M-1, str + ' ' + temp);
        end;
-       if OldBandOrd(aQSO.QSO.Band) = TabControl.TabIndex then
+       if OldBandOrd(aQSO.Band) = TabControl.TabIndex then
          CheckListBox.Checked[M-1] := True;
       //Update;
     end;
@@ -205,8 +206,8 @@ var str : string;
     M : integer;
 begin
   Result := False;
-  str := aQSO.QSO.NrRcvd;
-  if not(NotWARC(aQSO.QSO.Band)) then
+  str := aQSO.NrRcvd;
+  if not(NotWARC(aQSO.Band)) then
     exit;
   M := 0;
   try
@@ -264,7 +265,7 @@ var str : string;
     M : integer;
     B : TBand;
 begin
-  str := aQSO.QSO.NrRcvd;
+  str := aQSO.NrRcvd;
   M := 0;
   try
     M := StrToInt(str);
@@ -278,7 +279,7 @@ begin
     end;
 
   str := KenNames[M];
-  if MultiTable[aQSO.QSO.band,M] = True then
+  if MultiTable[aQSO.band,M] = True then
     str := str + '   Worked on this band. Worked on : '
   else
     str := str + '   Needed on this band. Worked on : ';

@@ -2,7 +2,7 @@ unit USpotClass;
 
 interface
 
-uses SysUtils, Windows, Classes, UzLogGlobal;
+uses SysUtils, Windows, Classes, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TBaseSpot = class
@@ -353,7 +353,7 @@ begin
    for i := 1 to Log.TotalQSO do begin
       Q := TQSO(Log.List[i]);
 
-      if (Sp.Call = Q.QSO.Callsign) and (Sp.Band = Q.QSO.Band) then begin
+      if (Sp.Call = Q.Callsign) and (Sp.Band = Q.Band) then begin
          Result := True;
          Exit;
       end;

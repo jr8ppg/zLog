@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, UzLogGlobal;
+  StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal;
 
 type
   TChatForm = class(TForm)

@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UACAGMulti, StdCtrls, JLLabel, ExtCtrls, UzLogGlobal, checklst, Grids,
-  Cologrid, UWPXMulti, UMultipliers, Menus;
+  UACAGMulti, StdCtrls, JLLabel, ExtCtrls, checklst, Grids, Menus,
+  UzLogConst, UzLogGlobal, UzLogQSO, Cologrid, UWPXMulti, UMultipliers;
 
 const  MAXLOCAL = 31;
        PX_WPX    = 1;
@@ -62,7 +62,7 @@ var
    i, slash : integer;
 begin
    Result := '';
-   s := aQSO.QSO.Callsign;
+   s := aQSO.Callsign;
    if s = '' then
       exit;
 
@@ -184,7 +184,7 @@ var
    str : string;
    i : integer;
 begin
-   str := aQSO.QSO.NrRcvd;
+   str := aQSO.NrRcvd;
 
    if PXMulti <> 0 then begin
       Result := GetPX(aQSO);
@@ -246,16 +246,16 @@ var
    boo : Boolean;
 label aaa;
 begin
-   aQSO.QSO.NewMulti1 := False;
+   aQSO.NewMulti1 := False;
    if NoMulti then exit;
-   aQSO.QSO.Power2 := 2; // not local CTY
+   aQSO.Power2 := 2; // not local CTY
 
    if _DXTEST then begin
       i := GetCountryIndex(aQSO);
       if i > 0 then begin
          Cty := TCountry(CountryList.List[i]);
 
-         aQSO.QSO.Power2 := i;
+         aQSO.Power2 := i;
 
          if NoCtyMulti = '*' then
             goto aaa;
@@ -264,9 +264,9 @@ begin
             goto aaa;
 
 
-         aQSO.QSO.Multi1 := Cty.Country;
+         aQSO.Multi1 := Cty.Country;
 
-         if aQSO.QSO.Dupe then
+         if aQSO.Dupe then
             exit;
 
          LatestMultiAddition := CityList.List.Count + i;
@@ -281,14 +281,14 @@ begin
             end;
 
             if boo = false then begin
-               aQSO.QSO.NewMulti1 := True;
-               Cty.Worked[aQSO.QSO.Band] := True;
+               aQSO.NewMulti1 := True;
+               Cty.Worked[aQSO.Band] := True;
             end;
          end
          else begin // new multi each band
-            if Cty.Worked[aQSO.QSO.Band] = False then begin
-               aQSO.QSO.NewMulti1 := True;
-               Cty.Worked[aQSO.QSO.Band] := True;
+            if Cty.Worked[aQSO.Band] = False then begin
+               aQSO.NewMulti1 := True;
+               Cty.Worked[aQSO.Band] := True;
             end;
          end;
 
@@ -298,9 +298,9 @@ begin
 
 aaa:
    str := ExtractMulti(aQSO);
-   aQSO.QSO.Multi1 := str;
+   aQSO.Multi1 := str;
 
-   if aQSO.QSO.Dupe then
+   if aQSO.Dupe then
       exit;
 
    for i := 0 to CityList.List.Count-1 do begin
@@ -308,9 +308,9 @@ aaa:
 
       str2 := ','+C.CityNumber+',';         //  for alternative exchange
       if pos (','+str+',', str2) > 0 then begin
-         if C.Worked[aQSO.QSO.band] = False then begin
-            C.Worked[aQSO.QSO.band] := True;
-            aQSO.QSO.NewMulti1 := True;
+         if C.Worked[aQSO.band] = False then begin
+            C.Worked[aQSO.band] := True;
+            aQSO.NewMulti1 := True;
          end;
 
          LatestMultiAddition := C.Index;
@@ -327,9 +327,9 @@ aaa:
    if UndefMulti or (PXMulti <> 0) then begin
       C := TCity.Create;
       C.CityNumber := str;
-      C.Worked[aQSO.QSO.Band] := True;
+      C.Worked[aQSO.Band] := True;
       i := CityList.AddAndSort(C);
-      aQSO.QSO.NewMulti1 := True;
+      aQSO.NewMulti1 := True;
       LatestMultiAddition := C.Index;
    end;
 end;
@@ -342,7 +342,7 @@ begin
 
    if _DXTEST then begin
       if LocalCTY <> '' then begin
-         i := aQSO.QSO.Power2;
+         i := aQSO.Power2;
          if i < CountryList.List.Count then
             if pos(',' + TCountry(CountryList.List[i]).Country + ',', ',' + LocalCTY + ',') > 0 then begin
                Result := True;
@@ -351,7 +351,7 @@ begin
       end;
 
       if LocalCONT <> '' then begin
-         i := aQSO.QSO.Power2;
+         i := aQSO.Power2;
          if i < CountryList.List.Count then
             if pos(',' + TCountry(CountryList.List[i]).Continent + ',', ',' + LocalCONT + ',') > 0 then begin
                Result := True;
@@ -365,8 +365,8 @@ begin
          exit;
       end
       else begin
-         if (Pos(LocalString[i], aQSO.QSO.NrRcvd) = 1) and
-            (Length(aQSO.QSO.NrRcvd) >= MinLocalLen) then begin
+         if (Pos(LocalString[i], aQSO.NrRcvd) = 1) and
+            (Length(aQSO.NrRcvd) >= MinLocalLen) then begin
             Result := True;
             exit;
          end;
@@ -496,7 +496,7 @@ begin
    if ValidMulti(aQSO) then
       str := ExtractMulti(aQSO)
    else
-      str := aQSO.QSO.NrRcvd;
+      str := aQSO.NrRcvd;
 
    if str = '' then
       exit;
@@ -507,7 +507,7 @@ begin
          Grid.TopRow := i;
          str := C.Summary2;
 
-         if C.Worked[aQSO.QSO.Band] then
+         if C.Worked[aQSO.Band] then
             Insert('Worked on this band. ',str, 27)
          else
             Insert('Needed on this band. ',str, 27);
@@ -530,7 +530,7 @@ var
    C : TCountry;
 begin
    //inherited;
-   B := Main.CurrentQSO.QSO.Band;
+   B := Main.CurrentQSO.Band;
    if _DXTEST then begin
       if ARow > CityList.List.Count - 1 then begin
          C := TCountry(CountryList.List[ARow - CityList.List.Count]);

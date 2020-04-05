@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Buttons;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TARRLDXScore = class(TBasicScore)
@@ -33,11 +34,11 @@ var
 begin
    Reset;
    for i := 1 to Log.TotalQSO do begin
-      band := TQSO(Log.List[i]).QSO.band;
+      band := TQSO(Log.List[i]).band;
       Inc(QSO[band]);
-      Inc(Points[band], TQSO(Log.List[i]).QSO.Points);
+      Inc(Points[band], TQSO(Log.List[i]).Points);
 
-      if TQSO(Log.List[i]).QSO.NewMulti1 then begin
+      if TQSO(Log.List[i]).NewMulti1 then begin
          Inc(Multi[band]);
       end;
    end;
@@ -57,7 +58,7 @@ end;
 
 procedure TARRLDXScore.CalcPoints(var aQSO: TQSO);
 begin
-   aQSO.QSO.Points := 3;
+   aQSO.Points := 3;
 end;
 
 procedure TARRLDXScore.FormShow(Sender: TObject);
@@ -73,12 +74,12 @@ procedure TARRLDXScore.AddNoUpdate(var aQSO: TQSO);
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
    CalcPoints(aQSO);
-   Inc(Points[aQSO.QSO.band], aQSO.QSO.Points);
+   Inc(Points[aQSO.band], aQSO.Points);
 end;
 
 procedure TARRLDXScore.Update;

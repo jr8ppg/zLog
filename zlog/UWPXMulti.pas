@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UWWMulti, UMultipliers, StdCtrls, JLLabel, ExtCtrls, Grids, Cologrid,
-  UComm, USpotClass, UzLogGlobal;
+  UComm, USpotClass, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TWPXMulti = class(TWWMulti)
@@ -73,7 +73,7 @@ var str, temp : string;
     i, j, k : integer;
     boo : boolean;
 begin
-  str := aQSO.QSO.CallSign;
+  str := aQSO.CallSign;
   i := pos('/', str);
   if i > 0 then
     begin
@@ -190,7 +190,7 @@ begin
   if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your call sign') then
     begin
       aQSO := TQSO.Create;
-      aQSO.QSO.callsign := UpperCase(dmZlogGlobal.Settings._mycall);
+      aQSO.callsign := UpperCase(dmZlogGlobal.Settings._mycall);
       i := GetCountryIndex(aQSO);
       if i > 0 then
         begin
@@ -220,12 +220,12 @@ var str : string;
     P : TPrefix;
     _cont : string[3];
 begin
-  aQSO.QSO.NewMulti1 := False;
+  aQSO.NewMulti1 := False;
   str := GetWPXPrefix(aQSO);
-  aQSO.QSO.Multi1 := str;
-  aQSO.QSO.Points := 0;
+  aQSO.Multi1 := str;
+  aQSO.Points := 0;
 
-  if aQSO.QSO.Dupe then
+  if aQSO.Dupe then
     exit;
 
   if WPXList.IndexOf(str) >= 0 then
@@ -234,13 +234,13 @@ begin
   else
     begin
       WPXList.Add(str);
-      aQSO.QSO.NewMulti1 := True;
+      aQSO.NewMulti1 := True;
     end;
 
   P := GetPrefix(aQSO);
   if P = nil then  // /MM
     begin
-      aQSO.QSO.Points := 0;
+      aQSO.Points := 0;
       exit;
     end;
   C := TCountry(CountryList.List[P.Index]);
@@ -251,32 +251,32 @@ begin
     _cont := P.OvrContinent;
 
   if _cont = 'AS' then
-    aQSO.QSO.Power2 := 777; // flag for all asian mode (dx side)
+    aQSO.Power2 := 777; // flag for all asian mode (dx side)
 
 //MAINFORM.WRITESTATUSLINE(C.COUNTRY);
 
   if C.Country = MyCountry then
     begin
-      aQSO.QSO.Points := 1;
+      aQSO.Points := 1;
       exit;
     end;
 
   if MyContinent = _cont then
     if MyContinent = 'NA' then
-      if aQSO.QSO.Band in [b19..b7] then
-        aQSO.QSO.Points := 4
+      if aQSO.Band in [b19..b7] then
+        aQSO.Points := 4
       else
-        aQSO.QSO.Points := 2
+        aQSO.Points := 2
     else
-      if aQSO.QSO.Band in [b19..b7] then
-        aQSO.QSO.Points := 2
+      if aQSO.Band in [b19..b7] then
+        aQSO.Points := 2
       else
-        aQSO.QSO.Points := 1
+        aQSO.Points := 1
    else
-     if aQSO.QSO.Band in [b19..b7] then
-       aQSO.QSO.Points := 6
+     if aQSO.Band in [b19..b7] then
+       aQSO.Points := 6
      else
-       aQSO.QSO.Points := 3;
+       aQSO.Points := 3;
 
 end;
 
@@ -285,7 +285,7 @@ var
    str : string;
    i : integer;
 begin
-   str := aQSO.QSO.NrRcvd;
+   str := aQSO.NrRcvd;
    i := StrToIntDef(str, -1);
    if i >= 0 then
       Result := True
@@ -300,8 +300,8 @@ var Z, C, i : integer;
     aQSO : TQSO;
 begin
   aQSO := TQSO.Create;
-  aQSO.QSO.Callsign := Sp.Call;
-  aQSO.QSO.Band := Sp.Band;
+  aQSO.Callsign := Sp.Call;
+  aQSO.Band := Sp.Band;
 
   Sp.NewCty := False;
   Sp.NewZone := False;
@@ -313,7 +313,7 @@ begin
       exit;
     end;
 
-  temp := aQSO.QSO.CallSign;
+  temp := aQSO.CallSign;
 
   px := GetWPXPrefix(aQSO);
 
@@ -328,7 +328,7 @@ begin
     end;
   if Sp.NewMulti {Pos('new', temp) > 0} then
     begin
-      temp := temp + ' at ' + MHzString[aQSO.QSO.band]+ 'MHz';
+      temp := temp + ' at ' + MHzString[aQSO.band]+ 'MHz';
       CommForm.WriteStatusLine(temp);
       //CommForm.Show;
     end;

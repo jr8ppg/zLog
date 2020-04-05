@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Buttons;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TALLJAScore = class(TBasicScore)
@@ -31,12 +32,12 @@ var
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
-   band := aQSO.QSO.band;
-   aQSO.QSO.points := 1;
+   band := aQSO.band;
+   aQSO.points := 1;
    Inc(points[band]);
 end;
 

@@ -4,10 +4,9 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, Console, ExtCtrls, UzLogGlobal, ComCtrls,
-  Console2, USpotClass, CPDrv, Menus, AnsiStrings,
+  StdCtrls, Console, ExtCtrls, Menus, AnsiStrings, ComCtrls,
+  Console2, USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO,
   OverbyteIcsWndControl, OverbyteIcsTnCnx;
-
 
 const
   SPOTMAX = 2000;
@@ -382,13 +381,13 @@ begin
    end;
 
    // 現在のバンドと同じ場合、交信済みか確認する
-   if Sp.Band = CurrentQSO.QSO.Band then begin
+   if Sp.Band = CurrentQSO.Band then begin
       Sp.Worked := IsWorkedSpot(Sp);
    end;
 
    SpotList.Add(Sp);
 
-   if cbNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.QSO.Band) then begin
+   if cbNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
    end
    else begin
       MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
@@ -589,7 +588,7 @@ begin
    end;
 
    MainForm.UpdateBand(Sp.Band);
-   Main.CurrentQSO.QSO.CallSign := Sp.Call;
+   Main.CurrentQSO.CallSign := Sp.Call;
    MainForm.CallsignEdit.Text := Sp.Call;
    MainForm.NumberEdit.Text := '';
 

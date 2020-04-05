@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UCheckWin, StdCtrls, ExtCtrls, UzLogGlobal;
+  UCheckWin, StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal;
 
 type
   TFreqList = class(TCheckWin)

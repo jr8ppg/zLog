@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UzLogGlobal, Menus, UComm, USpotClass;
+  UzLogGlobal, UzLogQSO, Menus, UComm, USpotClass;
 
 type
   TBasicMulti = class(TForm)
@@ -75,7 +75,7 @@ end;
 
 function TBasicMulti.ExtractMulti(aQSO : TQSO) : string;
 begin
-  Result := aQSO.QSO.NrRcvd;
+  Result := aQSO.NrRcvd;
 end;
 
 procedure TBasicMulti.Add(var aQSO : TQSO);
@@ -119,10 +119,10 @@ procedure TBasicMulti.ProcessSpotData(var S : TBaseSpot);
 var aQSO : TQSO;
 begin
   aQSO := TQSO.Create;
-  aQSO.QSO.Callsign := S.Call;
-  aQSO.QSO.NrRcvd := S.Number;
-  aQSO.QSO.Band := S.Band;
-  aQSO.QSO.Mode := S.Mode;
+  aQSO.Callsign := S.Call;
+  aQSO.NrRcvd := S.Number;
+  aQSO.Band := S.Band;
+  aQSO.Mode := S.Mode;
 
   S.NewCty := False;
   S.NewZone := False;
@@ -172,7 +172,7 @@ var i : integer;
     boo : boolean;
 begin
   boo := false;
-  if aQSO.QSO.NewMulti1 or aQSO.QSO.NewMulti2 then
+  if aQSO.NewMulti1 or aQSO.NewMulti2 then
     begin
       RenewBandScope;
       RenewCluster;
@@ -182,7 +182,7 @@ begin
   for i := 0 to USpotClass.BSList2.Count - 1 do
     begin
       S := TBaseSpot(USpotClass.BSList2[i]);
-      if (S.Call = aQSO.QSO.callsign) and (S.band = aQSO.QSO.band) then
+      if (S.Call = aQSO.callsign) and (S.band = aQSO.band) then
         begin
           S.NewCty := False;
           S.NewZone := False;
@@ -213,7 +213,7 @@ begin
   for i := 0 to CommForm.SpotList.Count - 1 do
     begin
       S := TBaseSpot(CommForm.SpotList[i]);
-      if (S.Call = aQSO.QSO.callsign) and (S.band = aQSO.QSO.band) then
+      if (S.Call = aQSO.callsign) and (S.band = aQSO.band) then
         begin
           S.NewCty := False;
           S.NewZone := False;

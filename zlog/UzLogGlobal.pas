@@ -4,224 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
-  UzLogKeyer;
-
-type
-  TMode = (mCW, mSSB, mFM, mAM, mRTTY, mOther);
-  TBand = (b19, b35, b7, b10, b14, b18, b21, b24, b28, b50, b144, b430, b1200, b2400, b5600, b10g);
-  TPower = (p001, p002, p005, p010, p020, p025, p050, p100, p200, p500, p1000);
-
-const  HiBand = b10g;
-
-type
-  TBandBool = array[b19..HiBand] of boolean;
-
-const
-  // SerialContestType
-  _USEUTC = 32767;
-  _CR = Chr($0d); // carriage return
-  _LF = Chr($0a);
-  SER_ALL = 1;
-  SER_BAND = 2;
-  SER_MS = 3;    // separate serial for run/multi stns
-
-const
-  RIGNAMEMAX = 51;
-  RIGNAMES : array[0..RIGNAMEMAX] of string =
-('None',
- 'TS-690/450',
- 'TS-850',
- 'TS-790',
- 'TS-2000',
- 'TS-2000/P',
- 'FT-817',
- 'FT-847',
- 'FT-920',
- 'FT-100',
- 'FT-1000',
- 'FT-1000MP',
- 'MarkV/FT-1000MP',
- 'FT-1000MP Mark-V Field',
- 'FT-2000',
- 'IC-706',
- 'IC-706MkII',
- 'IC-706MkII-G',
- 'IC-721',
- 'IC-726',
- 'IC-731',
- 'IC-736',
- 'IC-746',
- 'IC-746PRO',
- 'IC-7100',
- 'IC-7300',
- 'IC-7400',
- 'IC-7410',
- 'IC-750',
- 'IC-756',
- 'IC-756PRO',
- 'IC-756PROII',
- 'IC-756PRO3',
- 'IC-760',
- 'IC-760PRO',
- 'IC-775',
- 'IC-780',
- 'IC-7610',
- 'IC-7700',
- 'IC-7800',
- 'IC-7851',
- 'IC-820',
- 'IC-821',
- 'IC-910',
- 'IC-970',
- 'IC-9100',
- 'IC-9700',
- 'IC-275',
- 'IC-375',
- 'JST-145',
- 'JST-245',
- 'Omni-Rig');
-
-const maxbank = 3; // bank 3 reserved for rtty
-      maxstr = 8;
-      maxmaxstr = 12; // f11 and f12 only accessible via zlog.ini
-
-const
-  ZLinkHeader = '#ZLOG#';
-  actAdd = $0A;
-  actDelete = $0D;
-  actInsert = $07;
-  actEdit = $0E;
-  actLock = $AA;
-  actUnlock = $BB;
-
-  LineBreakCode : array [0..2] of string
-    = (Chr($0d)+Chr($0a), Chr($0d), Chr($0a));
-  _sep = '~'; {separator character}
-
-const
-  NewPowerString : array[p001..p1000] of string =
-                       ('P', 'L', 'M', 'H',  '',  '',  '',  '',  '',  '',  '');
-
-const
-  MHzString: array[b19..HiBand] of string = ('1.9','3.5','7','10','14',
-                                             '18','21','24','28','50','144',
-                                             '430','1200','2400','5600','10G');
-
-  BandString: array[b19..HiBand] of string = ('1.9 MHz','3.5 MHz','7 MHz','10 MHz',
-                                             '14 MHz', '18 MHz','21 MHz','24 MHz','28 MHz',
-                                             '50 MHz','144 MHz','430 MHz','1200 MHz','2400 MHz',
-                                             '5600 MHz','10 GHz & up');
-
-  ADIFBandString : array[b19..HiBand] of string = ('160m','80m','40m','30m',
-                                             '20m', '17m','15m','12m','10m',
-                                             '6m','2m','70cm','23cm','13cm',
-                                             '6cm','3cm');
-
-  ModeString : array[mCW..mOther] of string = ('CW','SSB','FM','AM','RTTY','Other');
-
-  pwrP = TPower(0);
-  pwrL = TPower(1);
-  pwrM = TPower(2);
-  pwrH = TPower(3);
-
-type
-  TQSOData = record
-    Time : TDateTime;
-    CallSign : string[12];  {13 bytes}
-    NrSent : string[30];
-    NrRcvd : string[30];
-    RSTSent : Smallint;//word;  {2 bytes}
-    RSTRcvd : word;
-    Serial : integer;  {4 bytes ?}
-    Mode : TMode;  {1 byte}
-    Band : TBand;  {1 byte}
-    Power : TPower; {1 byte}
-    Multi1 : string[30];
-    Multi2 : string[30];
-    NewMulti1 : boolean;
-    NewMulti2 : boolean;
-    Points : byte;
-    Operator : string[14]; {Operator's name}
-    Memo : string[64]; {max 64 char = 65 bytes}
-    CQ : boolean; {not used yet}
-    Dupe : boolean;
-    Reserve : byte; {used for z-link commands}
-    TX : byte; {Transmitter number for 2 TX category}
-    Power2 : integer; {used by ARRL DX side only}
-    Reserve2 : integer; { $FF when forcing to log}
-    Reserve3 : integer; {QSO ID#}
-                        {TTSSSSRRCC   TT:TX#(00-21) SSSS:Serial counter
-                                      RR:Random(00-99) CC:Edit counter 00 and up}
-  end;
-
-  TQSO = class
-    QSO : TQSOData;
-    constructor Create;
-    procedure IncTime;
-    procedure DecTime;
-    function SerialStr : string;
-    function TimeStr : string;
-    function DateStr : string;
-    function BandStr : string;
-    function ModeStr : string;
-    function PowerStr : string;
-    function NewPowerStr : string;
-    function PointStr : string;
-    function RSTStr : string;
-    function RSTSentStr : string;
-    function PartialSummary(DispDate: boolean) : string;
-    function CheckCallSummary : string;
-    procedure UpdateTime;
-    function zLogALL : string;
-    function DOSzLogText : string;
-    function DOSzLogTextShort : string;
-    function QSOinText : string; {for data transfer}
-    procedure TextToQSO(str : string); {convert text to bin}
-    function QTCStr : string;
-  end;
-
-  TQSOList = class
-    Saved : boolean;
-    List : TList;
-    QueList : TList;
-    QueOK : boolean;
-    AcceptDifferentMode : Boolean;
-    CountHigherPoints : Boolean;
-    DifferentModePointer : integer; //points to a qso on a different mode but not dupe
-    DupeCheckList : array[b19..HiBand] of TStringList;
-    function Year: integer; //returns the year of the 1st qso
-    function TotalQSO : integer;
-    function TotalPoints : integer;
-    function TotalCW : integer;
-    function TotalMulti1 : integer;
-    function TotalMulti2 : integer;
-    constructor Create(memo : string);
-    destructor Destroy; override;
-    procedure Add(aQSO : TQSO);
-    procedure Delete(i : integer);
-    procedure Insert(i : integer; aQSO : TQSO);
-    procedure SaveToFile(Filename : string);
-    procedure SaveToFilezLogDOSTXT(Filename : string);
-    procedure SaveToFilezLogALL(Filename : string);
-    procedure SaveToFileByTX(Filename : string);
-    procedure LoadFromFile(Filename : string);
-    function IsDupe(aQSO : TQSO) : integer;
-    function IsDupe2(aQSO : TQSO; index : integer; var dupeindex : integer) : boolean;
-    procedure AddQue(aQSO : TQSO);
-    procedure ProcessQue;
-    procedure Clear; // deletes all QSOs without destroying the List. Keeps List[0] intact
-    procedure SortByTime;
-    function ContainBand : TBandBool;
-    procedure SetDupeFlags;
-    procedure DeleteBand(B : TBand);
-    function CheckQSOID(i : integer) : boolean;
-    procedure RebuildDupeCheckList;
-    procedure ClearDupeCheckList;
-    function QuickDupe(aQSO : TQSO) : TQSO;
-    procedure RemoveDupes;
-    function OpQSO(OpName : string) : integer;
-  end;
-
+  UzLogKeyer, UzlogConst, UzLogQSO;
 
 type
   TCWSettingsParam = record
@@ -363,6 +146,10 @@ var
   SerialArray : array [b19..HiBand] of integer;  // initialized in TContest.Create;
   SerialArrayTX : array[0..64] of integer;
 
+var
+  GLOBALSERIAL : integer = 0;
+  ZLOCOUNT : integer = 0;
+
 type
   TdmZLogGlobal = class(TDataModule)
     procedure DataModuleCreate(Sender: TObject);
@@ -449,6 +236,8 @@ public
 
     procedure CreateLog();
     procedure SetLogFileName(filename: string);
+
+    function NewQSOID(): Integer;
   end;
 
 function Log(): TQSOList;
@@ -457,7 +246,7 @@ function Random10 : integer;
 function UTCOffset : integer;   //in minutes; utc = localtime + utcoffset
 function ContainsDoubleByteChar(S : string) : boolean;
 function kHzStr(Hz : integer) : string;
-procedure IncEditCounter(var aQSO : TQSO);
+procedure IncEditCounter(aQSO : TQSO);
 function ExtractKenNr(S : string) : string; //extracts ken nr from aja#+power
 function ExtractPower(S : string) : string;
 function IsSHF(B : TBand) : boolean; // true if b >= 2400MHz
@@ -469,8 +258,6 @@ function CurrentTime : TDateTime; {returns in UTC or local time }
 function LowCase(C : Char) : Char;
 function OldBandOrd(band : TBand) : integer;
 function NotWARC(band : TBand) : boolean;
-function SameQSO(aQSO, bQSO : TQSO) : boolean;
-function SameQSOID(aQSO, bQSO : TQSO) : boolean;
 function StrMore(a, b : string) : boolean; // true if a>b
 function PXMore(a, b : string) : boolean; // JA1 > XE
 function PXIndex(s : string) : integer; // AA = 0 AB = 1 etc
@@ -484,8 +271,6 @@ function GetUTC: TDateTime;
 function GetContestName(Filename: string) : string;
 function CoreCall(call : string) : string;
 function UsesCoeff(Filename: string) : boolean;
-function SameMode(aQSO, bQSO: TQSO): Boolean;
-function SameMode2(aMode, bMode : TMode) : boolean;
 procedure CenterWindow(formParent, formChild: TForm);
 function Power(base, Power: integer): integer;
 
@@ -1417,12 +1202,12 @@ var
 begin
    Result := '??';
 
-   if aQSO.QSO.Operator = '' then begin
+   if aQSO.Operator = '' then begin
       Result := Settings._age;
    end
    else begin
       for i := 0 to OpList.Count - 1 do begin
-         if TrimRight(Copy(OpList.Strings[i], 1, 20)) = aQSO.QSO.Operator then begin
+         if TrimRight(Copy(OpList.Strings[i], 1, 20)) = aQSO.Operator then begin
             str := OpList.Strings[i];
             if length(str) <= 20 then begin
                exit;
@@ -1444,7 +1229,7 @@ var
    P: char;
 begin
    for i := 0 to OpList.Count - 1 do begin
-      if TrimRight(Copy(OpList.Strings[i], 1, 20)) = aQSO.QSO.Operator then begin
+      if TrimRight(Copy(OpList.Strings[i], 1, 20)) = aQSO.Operator then begin
          str := OpList.Strings[i];
          if length(str) <= 20 then begin
             exit;
@@ -1452,20 +1237,20 @@ begin
 
          System.Delete(str, 1, 20);
 
-         if OldBandOrd(aQSO.QSO.Band) + 1 <= length(str) then
-            P := str[OldBandOrd(aQSO.QSO.Band) + 1]
+         if OldBandOrd(aQSO.Band) + 1 <= length(str) then
+            P := str[OldBandOrd(aQSO.Band) + 1]
          else
             P := UpCase(str[1]);
 
          case P of
             'P':
-               aQSO.QSO.Power := pwrP;
+               aQSO.Power := pwrP;
             'L':
-               aQSO.QSO.Power := pwrL;
+               aQSO.Power := pwrL;
             'M':
-               aQSO.QSO.Power := pwrM;
+               aQSO.Power := pwrM;
             'H':
-               aQSO.QSO.Power := pwrH;
+               aQSO.Power := pwrH;
          end;
       end;
    end;
@@ -1492,7 +1277,7 @@ var
 begin
    Settings._band := b;
    if b > 0 then begin
-      Main.CurrentQSO.QSO.Band := TBand(b - 1);
+      Main.CurrentQSO.Band := TBand(b - 1);
       MainForm.BandEdit.Text := Main.CurrentQSO.BandStr;
       for BB := b19 to HiBand do
          MainForm.BandMenu.Items[ord(BB)].Enabled := False;
@@ -1575,7 +1360,7 @@ end;
 procedure TdmZLogGlobal.SetScoreCoeff(E: extended);
 begin
    Settings._scorecoeff := E;
-   TQSO(Log.List[0]).QSO.RSTRcvd := Trunc(E * 100);
+   TQSO(Log.List[0]).RSTRcvd := Trunc(E * 100);
 end;
 
 procedure TdmZLogGlobal.SetWeight(i: integer);
@@ -1787,6 +1572,24 @@ begin
    FCurrentFileName := filename;
 end;
 
+function TdmZLogGlobal.NewQSOID(): Integer;
+var
+   tt, ss, rr: integer;
+begin
+   tt := Settings._txnr;
+   if tt > 21 then
+      tt := 21;
+
+   ss := GLOBALSERIAL;
+   inc(GLOBALSERIAL);
+   if GLOBALSERIAL > 9999 then
+      GLOBALSERIAL := 0;
+
+   rr := random(100);
+
+   Result := tt * 100000000 + ss * 10000 + rr * 100;
+end;
+
 function Log(): TQSOList;
 begin
    Result := dmZLogGlobal.FLog;
@@ -1838,10 +1641,11 @@ begin
       Result := IntToStr(k) + '.' + IntToStr(kk);
 end;
 
-procedure IncEditCounter(var aQSO: TQSO);
+procedure IncEditCounter(aQSO: TQSO);
 begin
-   if aQSO.QSO.Reserve3 mod 100 < 99 then
-      inc(aQSO.QSO.Reserve3);
+   if aQSO.Reserve3 mod 100 < 99 then begin
+      aQSO.Reserve3 := aQSO.Reserve3 + 1;
+   end;
 end;
 
 function ExtractKenNr(S: string): string; // extracts ken nr from aja#+power
@@ -1968,23 +1772,6 @@ begin
    // fractional component so we can add them together in
    // this situation
    Result := EncodeDate(stUTC.wYear, stUTC.wMonth, stUTC.wDay) + EncodeTime(stUTC.wHour, stUTC.wMinute, stUTC.wSecond, stUTC.wMilliseconds);
-end;
-
-function SameQSO(aQSO, bQSO: TQSO): Boolean;
-begin
-   if (aQSO.QSO.Band = bQSO.QSO.Band) and (aQSO.QSO.CallSign = bQSO.QSO.CallSign) and (aQSO.QSO.Mode = bQSO.QSO.Mode) and
-      (aQSO.QSO.Dupe = bQSO.QSO.Dupe) and (aQSO.QSO.Serial = bQSO.QSO.Serial) then
-      Result := True
-   else
-      Result := false;
-end;
-
-function SameQSOID(aQSO, bQSO: TQSO): Boolean;
-begin
-   if (aQSO.QSO.Reserve3 div 100) = (bQSO.QSO.Reserve3 div 100) then
-      Result := True
-   else
-      Result := false;
 end;
 
 function StrMore(A, B: string): Boolean; { true if a>b }
@@ -2210,44 +1997,6 @@ begin
    end;
 end;
 
-function SameMode(aQSO, bQSO: TQSO): Boolean;
-begin
-   Result := false;
-   case aQSO.QSO.Mode of
-      mCW:
-         if bQSO.QSO.Mode = mCW then
-            Result := True;
-      mSSB, mFM, mAM:
-         if bQSO.QSO.Mode in [mSSB, mFM, mAM] then
-            Result := True;
-      mRTTY:
-         if bQSO.QSO.Mode = mRTTY then
-            Result := True;
-      mOther:
-         if bQSO.QSO.Mode = mOther then
-            Result := True;
-   end;
-end;
-
-function SameMode2(aMode, bMode: TMode): Boolean;
-begin
-   Result := false;
-   case aMode of
-      mCW:
-         if bMode = mCW then
-            Result := True;
-      mSSB, mFM, mAM:
-         if bMode in [mSSB, mFM, mAM] then
-            Result := True;
-      mRTTY:
-         if bMode = mRTTY then
-            Result := True;
-      mOther:
-         if bMode = mOther then
-            Result := True;
-   end;
-end;
-
 procedure CenterWindow(formParent, formChild: TForm);
 begin
    formChild.Left := formParent.Left + ((formParent.Width - formChild.Width) div 2);
@@ -2262,1017 +2011,6 @@ begin
    for i := 1 to Power do
       j := j * base;
    Result := j;
-end;
-
-procedure TQSO.IncTime;
-var
-   T: TDateTime;
-begin
-   Self.QSO.Time := Self.QSO.Time + 1.0 / (24 * 60);
-end;
-
-procedure TQSO.DecTime;
-var
-   T: TDateTime;
-begin
-   Self.QSO.Time := Self.QSO.Time - 1.0 / (24 * 60);
-end;
-
-function TQSO.QSOinText: string; { for data transfer }
-var
-   str: string;
-begin
-   str := 'ZLOGQSODATA:' + _sep;
-   // str := str + DateTimeToStr(QSO.Time) + _sep;
-   str := str + FloatToStr(QSO.Time) + _sep;
-   str := str + QSO.CallSign + _sep;
-   str := str + QSO.NrSent + _sep;
-   str := str + QSO.NrRcvd + _sep;
-   str := str + IntToStr(QSO.RSTSent) + _sep;
-   str := str + IntToStr(QSO.RSTRcvd) + _sep;
-   str := str + IntToStr(QSO.Serial) + _sep;
-   str := str + IntToStr(ord(QSO.Mode)) + _sep;
-   str := str + IntToStr(ord(QSO.Band)) + _sep;
-   str := str + IntToStr(ord(QSO.Power)) + _sep;
-   str := str + QSO.Multi1 + _sep;
-   str := str + QSO.Multi2 + _sep;
-   if QSO.NewMulti1 then
-      str := str + '1' + _sep
-   else
-      str := str + '0' + _sep;
-   if QSO.NewMulti2 then
-      str := str + '1' + _sep
-   else
-      str := str + '0' + _sep;
-   str := str + IntToStr(QSO.Points) + _sep;
-   str := str + QSO.Operator + _sep;
-   str := str + QSO.Memo + _sep;
-   if QSO.CQ then
-      str := str + '1' + _sep
-   else
-      str := str + '0' + _sep;
-   if QSO.Dupe then
-      str := str + '1' + _sep
-   else
-      str := str + '0' + _sep;
-   str := str + IntToStr(QSO.Reserve) + _sep;
-   str := str + IntToStr(QSO.TX) + _sep;
-   str := str + IntToStr(QSO.Power2) + _sep;
-   str := str + IntToStr(QSO.Reserve2) + _sep;
-   str := str + IntToStr(QSO.Reserve3);
-
-   Result := str;
-end;
-
-procedure TQSO.TextToQSO(str: string); { convert text to bin }
-var
-   _Items: array [0 .. 25] of string;
-   i, j: integer;
-begin
-   for i := 0 to 25 do
-      _Items[i] := '';
-   j := 0;
-   for i := 1 to length(str) do begin
-      if str[i] = _sep then
-         inc(j)
-      else
-         _Items[j] := _Items[j] + str[i];
-   end;
-
-   if _Items[0] <> 'ZLOGQSODATA:' then
-      exit;
-   // QSO.Time := StrToDateTime(_Items[1]);
-   try
-      QSO.Time := StrToFloat(_Items[1]);
-      QSO.CallSign := _Items[2];
-      QSO.NrSent := _Items[3];
-      QSO.NrRcvd := _Items[4];
-      QSO.RSTSent := StrToInt(_Items[5]);
-      QSO.RSTRcvd := StrToInt(_Items[6]);
-      QSO.Serial := StrToInt(_Items[7]);
-      QSO.Mode := TMode(StrToInt(_Items[8]));
-      QSO.Band := TBand(StrToInt(_Items[9]));
-      QSO.Power := TPower(StrToInt(_Items[10]));
-      QSO.Multi1 := _Items[11];
-      QSO.Multi2 := _Items[12];
-      QSO.NewMulti1 := StrToInt(_Items[13]) = 1;
-      QSO.NewMulti2 := StrToInt(_Items[14]) = 1;
-      QSO.Points := StrToInt(_Items[15]);
-      QSO.Operator := _Items[16];
-      QSO.Memo := _Items[17];
-      QSO.CQ := StrToInt(_Items[18]) = 1;
-      QSO.Dupe := StrToInt(_Items[19]) = 1;
-      QSO.Reserve := StrToInt(_Items[20]);
-      QSO.TX := StrToInt(_Items[21]);
-      QSO.Power2 := StrToInt(_Items[22]);
-      QSO.Reserve2 := StrToInt(_Items[23]);
-      QSO.Reserve3 := StrToInt(_Items[24]);
-   except
-      on EConvertError do
-         QSO.Memo := 'Convert Error!';
-   end;
-   { if QSO.Dupe then
-     str := str + '1' + _sep
-     else
-     str := str + '0' + _sep;
-     str := str + IntToStr(QSO.Reserve); }
-end;
-
-constructor TQSO.Create;
-begin
-   with QSO do begin
-      Time := Date + Time;
-      CallSign := '';
-      { NrSent := ''; }
-      NrRcvd := '';
-      if Mode = mCW then begin
-         RSTSent := 599;
-         RSTRcvd := 599;
-      end
-      else begin
-         RSTSent := 59;
-         RSTRcvd := 59;
-      end;
-
-      Serial := 1;
-      { Mode := mCW;
-        Band := b7; }
-      Multi1 := '';
-      Multi2 := '';
-      NewMulti1 := false;
-      NewMulti2 := false;
-      Points := 1;
-      { Operator := ''; }
-      Memo := '';
-      CQ := false;
-      Dupe := false;
-      Reserve := 0;
-      TX := 0;
-      Power2 := 500;
-      Reserve2 := 0;
-      Reserve3 := 0;
-   end;
-end;
-
-procedure TQSO.UpdateTime;
-begin
-   if UseUTC then
-      QSO.Time := GetUTC
-   else
-      QSO.Time := Now;
-end;
-
-function TQSO.SerialStr: string;
-var
-   S: string;
-begin
-   S := IntToStr(Self.QSO.Serial);
-   case length(S) of
-      1:
-         S := '00' + S;
-      2:
-         S := '0' + S;
-   end;
-   Result := S;
-end;
-
-function TQSO.QTCStr: string;
-begin
-   Result := FormatDateTime('hhnn', Self.QSO.Time) + ' ' + Self.QSO.CallSign + ' ' + Self.QSO.NrRcvd;
-end;
-
-function TQSO.TimeStr: string;
-begin
-   Result := FormatDateTime('hh:nn', Self.QSO.Time);
-end;
-
-function TQSO.DateStr: string;
-begin
-   Result := FormatDateTime('yy/mm/dd', Self.QSO.Time);
-end;
-
-function TQSO.BandStr: string;
-begin
-   Result := MHzString[Self.QSO.Band];
-end;
-
-function TQSO.ModeStr: string;
-begin
-   Result := ModeString[Self.QSO.Mode];
-end;
-
-function TQSO.PowerStr: string;
-var
-   i: integer;
-begin
-   i := Self.QSO.Power2;
-   case i of
-      9999:
-         Result := 'KW';
-      10000:
-         Result := '1KW';
-      10001:
-         Result := 'K';
-      else
-         Result := IntToStr(i);
-   end;
-end;
-
-function TQSO.NewPowerStr: string;
-begin
-   Result := NewPowerString[Self.QSO.Power];
-end;
-
-function TQSO.PointStr: string;
-begin
-   Result := IntToStr(Self.QSO.Points);
-end;
-
-function TQSO.RSTStr: string;
-begin
-   Result := IntToStr(Self.QSO.RSTRcvd);
-end;
-
-function TQSO.RSTSentStr: string;
-begin
-   Result := IntToStr(Self.QSO.RSTSent);
-end;
-
-function TQSO.PartialSummary(DispDate: Boolean): string;
-var
-   S: string;
-begin
-   if DispDate then
-      S := DateStr + ' '
-   else
-      S := '';
-   S := S + TimeStr + ' ';
-   S := S + FillRight(Self.QSO.CallSign, 12);
-   S := S + FillRight(Self.QSO.NrRcvd, 15);
-   S := S + FillRight(BandStr, 5);
-   S := S + FillRight(ModeStr, 5);
-   Result := S;
-end;
-
-function TQSO.CheckCallSummary: string;
-var
-   S: string;
-begin
-   S := '';
-   S := S + FillRight(BandStr, 5);
-   S := S + TimeStr + ' ';
-   S := S + FillRight(Self.QSO.CallSign, 12);
-   S := S + FillRight(Self.QSO.NrRcvd, 15);
-   S := S + FillRight(ModeStr, 5);
-   Result := S;
-end;
-
-function TQSO.DOSzLogText: string;
-var
-   S, temp: string;
-   Year, Month, Day, Hour, Min, Sec, MSec: word;
-begin
-   S := '';
-   DecodeDate(Self.QSO.Time, Year, Month, Day);
-   DecodeTime(Self.QSO.Time, Hour, Min, Sec, MSec);
-   S := S + FillLeft(IntToStr(Month), 3) + ' ' + FillLeft(IntToStr(Day), 3) + ' ';
-
-   temp := IntToStr(Hour * 100 + Min);
-   case length(temp) of
-      1:
-         temp := '000' + temp;
-      2:
-         temp := '00' + temp;
-      3:
-         temp := '0' + temp;
-   end;
-
-   S := S + temp + ' ';
-   S := S + FillRight(Self.QSO.CallSign, 11);
-   S := S + FillLeft(IntToStr(Self.QSO.RSTSent), 3);
-   S := S + FillRight(Self.QSO.NrSent, 31);
-   S := S + FillLeft(IntToStr(Self.QSO.RSTRcvd), 3);
-   S := S + FillRight(Self.QSO.NrRcvd, 31);
-
-   if Self.QSO.NewMulti1 then
-      S := S + FillLeft(Self.QSO.Multi1, 6)
-   else
-      S := S + '      ';
-   S := S + '  ' + FillLeft(MHzString[Self.QSO.Band], 4);
-   S := S + '  ' + FillRight(ModeString[Self.QSO.Mode], 3);
-   S := S + ' ' + FillRight(IntToStr(Self.QSO.Points), 2);
-   if Self.QSO.Operator <> '' then
-      // S := S + ' ' + '%%'+ Self.QSO.Operator +'%%';
-      S := S + '%%' + Self.QSO.Operator + '%%';
-   // S := S + ' ' + Self.QSO.memo;
-   S := S + Self.QSO.Memo;
-   Result := S;
-end;
-
-function TQSO.DOSzLogTextShort: string;
-var
-   S, temp: string;
-   Year, Month, Day, Hour, Min, Sec, MSec: word;
-begin
-   S := '';
-   DecodeDate(Self.QSO.Time, Year, Month, Day);
-   DecodeTime(Self.QSO.Time, Hour, Min, Sec, MSec);
-   S := S + FillLeft(IntToStr(Month), 3) + ' ' + FillLeft(IntToStr(Day), 3) + ' ';
-
-   temp := IntToStr(Hour * 100 + Min);
-   case length(temp) of
-      1:
-         temp := '000' + temp;
-      2:
-         temp := '00' + temp;
-      3:
-         temp := '0' + temp;
-   end;
-
-   S := S + temp + ' ';
-   S := S + FillRight(Self.QSO.CallSign, 11);
-   S := S + FillLeft(IntToStr(Self.QSO.RSTSent), 3);
-   S := S + FillRight(Self.QSO.NrSent, 10);
-   S := S + FillLeft(IntToStr(Self.QSO.RSTRcvd), 3);
-   S := S + FillRight(Self.QSO.NrRcvd, 10);
-
-   if Self.QSO.NewMulti1 then
-      S := S + FillLeft(Self.QSO.Multi1, 6)
-   else
-      S := S + '      ';
-   S := S + '  ' + FillLeft(MHzString[Self.QSO.Band], 4);
-   S := S + '  ' + FillRight(ModeString[Self.QSO.Mode], 3);
-   S := S + ' ' + FillRight(IntToStr(Self.QSO.Points), 2);
-   if Self.QSO.Operator <> '' then
-      S := S + '  ' + '%%' + Self.QSO.Operator + '%%';
-   S := S + '  ' + Self.QSO.Memo;
-   Result := S;
-end;
-
-function TQSO.zLogALL: string;
-var
-   S, temp: string;
-   nrlen: integer;
-begin
-   nrlen := 7;
-   S := '';
-   S := S + FormatDateTime('yyyy/mm/dd hh":"nn ', Self.QSO.Time);
-   S := S + FillRight(Self.QSO.CallSign, 13);
-   S := S + FillRight(IntToStr(Self.QSO.RSTSent), 4);
-   S := S + FillRight(Self.QSO.NrSent, nrlen + 1);
-   S := S + FillRight(IntToStr(Self.QSO.RSTRcvd), 4);
-   S := S + FillRight(Self.QSO.NrRcvd, nrlen + 1);
-
-   if Self.QSO.NewMulti1 then
-      S := S + FillRight(Self.QSO.Multi1, 6)
-   else
-      S := S + '-     ';
-   if Self.QSO.NewMulti2 then
-      S := S + FillRight(Self.QSO.Multi2, 6)
-   else
-      S := S + '-     ';
-   S := S + FillRight(MHzString[Self.QSO.Band], 5);
-   S := S + FillRight(ModeString[Self.QSO.Mode], 5);
-   S := S + FillRight(IntToStr(Self.QSO.Points), 3);
-   if Self.QSO.Operator <> '' then
-      S := S + FillRight('%%' + Self.QSO.Operator + '%%', 19);
-
-   if dmZlogGlobal.MultiOp > 0 then begin
-      S := S + FillRight('TX#' + IntToStr(Self.QSO.TX), 6);
-   end;
-
-   S := S + Self.QSO.Memo;
-   Result := S;
-end;
-
-function TQSOList.ContainBand: TBandBool;
-var
-   R: TBandBool;
-   B: TBand;
-   i: integer;
-begin
-   for B := b19 to HiBand do begin
-      R[B] := false;
-   end;
-
-   for i := 1 to TotalQSO do begin
-      R[TQSO(List[i]).QSO.Band] := True;
-   end;
-
-   Result := R;
-end;
-
-constructor TQSOList.Create(Memo: string);
-var
-   Q: TQSO;
-   B: TBand;
-begin
-   // ADIF_FieldName := 'qth';
-   List := TList.Create;
-   QueList := TList.Create;
-
-   for B := b19 to HiBand do begin
-      DupeCheckList[B] := TStringList.Create;
-      DupeCheckList[B].Sorted := True;
-      DupeCheckList[B].Duplicates := dupAccept;
-   end;
-
-   Q := TQSO.Create;
-   Q.QSO.Memo := Memo;
-   Q.QSO.Time := 1.0000;
-   Q.QSO.Time := -1;
-   Q.QSO.RSTSent := 0;
-   List.Add(Q);
-
-   Saved := True;
-   QueOK := True;
-   AcceptDifferentMode := false;
-   CountHigherPoints := false;
-   DifferentModePointer := 0;
-end;
-
-function TQSOList.Year: integer;
-var
-   T: TDateTime;
-   y, M, d: word;
-begin
-   Result := 0;
-   if TotalQSO > 0 then
-      T := TQSO(List[1]).QSO.Time
-   else
-      exit;
-   DecodeDate(T, y, M, d);
-   Result := y;
-end;
-
-procedure TQSOList.SortByTime;
-var
-   i: integer;
-   boo: Boolean;
-begin
-   if TotalQSO < 2 then
-      exit;
-   boo := True;
-   while boo do begin
-      boo := false;
-      for i := 1 to TotalQSO - 1 do
-         if TQSO(List[i]).QSO.Time > TQSO(List[i + 1]).QSO.Time then begin
-            List.Exchange(i, i + 1);
-            boo := True;
-         end;
-   end;
-end;
-
-procedure TQSOList.Clear;
-var
-   i, max: integer;
-   aQSO: TQSO;
-begin
-   max := List.Count - 1;
-   For i := 1 to max do begin
-      aQSO := List[1];
-      aQSO.Free;
-      List.Delete(1);
-   end;
-   List.Pack;
-   ClearDupeCheckList;
-   Saved := false;
-end;
-
-procedure TQSOList.ClearDupeCheckList;
-var
-   B: TBand;
-begin
-   for B := b19 to HiBand do
-      DupeCheckList[B].Clear;
-end;
-
-procedure TQSOList.Add(aQSO: TQSO);
-var
-   xQSO: TQSO;
-begin
-   xQSO := TQSO.Create;
-   xQSO.QSO := aQSO.QSO;
-   List.Add(xQSO);
-
-   DupeCheckList[xQSO.QSO.Band].AddObject(CoreCall(xQSO.QSO.CallSign), xQSO);
-
-   Saved := false;
-end;
-
-procedure TQSOList.AddQue(aQSO: TQSO);
-var
-   xQSO: TQSO;
-begin
-   xQSO := TQSO.Create;
-   xQSO.QSO := aQSO.QSO;
-   // xQSO.QSO.Reserve := actAdd;
-   QueList.Add(xQSO);
-   Saved := false;
-end;
-
-procedure TQSOList.ProcessQue;
-var
-   xQSO, yQSO, zQSO, wQSO: TQSO;
-   i, j, id: integer;
-begin
-   if QueList.Count = 0 then
-      exit;
-   Repeat
-   until QueOK;
-   while QueList.Count > 0 do begin
-      xQSO := TQSO(QueList[0]);
-      case xQSO.QSO.Reserve of
-         actAdd:
-            Add(xQSO);
-         actDelete: begin
-               for i := 1 to TotalQSO do begin
-                  yQSO := TQSO(List[i]);
-                  if SameQSOID(xQSO, yQSO) then begin
-                     Self.Delete(i);
-                     break;
-                  end;
-               end;
-            end;
-         actEdit: begin
-               for i := 1 to TotalQSO do begin
-                  yQSO := TQSO(List[i]);
-                  if SameQSOID(xQSO, yQSO) then begin
-                     // TQSO(List[i]).QSO := xQSO.QSO;
-                     yQSO.QSO := xQSO.QSO;
-                     RebuildDupeCheckList;
-                     break;
-                  end;
-               end;
-               {
-                 if QueList.Count = 1 then
-                 exit;
-                 for j := 1 to QueList.Count - 1 do
-                 if TQSO(QueList[j]).QSO.Reserve = actEdit then
-                 break;
-                 yQSO := TQSO(QueList[j]);
-                 if yQSO.QSO.Reserve <> actEdit then exit;
-
-                 for i := 1 to TotalQSO do
-                 begin
-                 zQSO := TQSO(List[i]);
-                 if SameQSO(xQSO, zQSO) then
-                 begin
-                 TQSO(List[i]).QSO := yQSO.QSO;
-                 break;
-                 end;
-                 end;
-
-                 QueList.Delete(j); }
-            end;
-         actInsert: begin
-               for i := 1 to TotalQSO do begin
-                  yQSO := TQSO(List[i]);
-                  id := xQSO.QSO.Reserve2 div 100;
-                  if id = (yQSO.QSO.Reserve3 div 100) then begin
-                     wQSO := TQSO.Create;
-                     wQSO.QSO := xQSO.QSO;
-                     Insert(i, wQSO);
-                     break;
-                  end;
-               end;
-               {
-                 if QueList.Count = 1 then
-                 exit;
-                 for j := 1 to QueList.Count - 1 do
-                 if TQSO(QueList[j]).QSO.Reserve = actInsert then
-                 break;
-                 yQSO := TQSO(QueList[j]);
-                 if yQSO.QSO.Reserve <> actInsert then exit;
-
-
-                 for i := 1 to TotalQSO do
-                 begin
-                 zQSO := TQSO(List[i]);
-                 if SameQSO(xQSO, zQSO) then
-                 begin
-                 wQSO := TQSO.Create;
-                 wQSO.QSO := yQSO.QSO;
-                 Insert(i, wQSO);
-                 break;
-                 end;
-                 end;
-                 QueList.Delete(j); }
-            end;
-         actLock: begin
-               for i := 1 to TotalQSO do begin
-                  zQSO := TQSO(List[i]);
-                  if SameQSOID(xQSO, zQSO) then begin
-                     TQSO(List[i]).QSO.Reserve := actLock;
-                     break;
-                  end;
-               end;
-            end;
-         actUnlock: begin
-               for i := 1 to TotalQSO do begin
-                  zQSO := TQSO(List[i]);
-                  if SameQSOID(xQSO, zQSO) then begin
-                     TQSO(List[i]).QSO.Reserve := 0;
-                     break;
-                  end;
-               end;
-            end;
-      end;
-      TQSO(QueList[0]).Free; // added 0.23
-      QueList.Delete(0);
-      QueList.Pack;
-   end;
-   Saved := false;
-end;
-
-procedure TQSOList.Delete(i: integer);
-var
-   aQSO: TQSO;
-begin
-   if i <= TotalQSO then begin
-      aQSO := TQSO(List[i]);
-      aQSO.Free;
-      List.Delete(i);
-      List.Pack;
-      { List[i]:=nil;
-        List.Pack; }
-      Saved := false;
-      RebuildDupeCheckList;
-   end;
-end;
-
-procedure TQSOList.RemoveDupes;
-var
-   i: integer;
-   aQSO: TQSO;
-begin
-   for i := 1 to TotalQSO do begin
-      aQSO := TQSO(List[i]);
-      if Pos('-DUPE-', aQSO.QSO.Memo) > 0 then begin
-         List[i] := nil;
-         aQSO.Free;
-      end;
-   end;
-   List.Pack;
-   Saved := false;
-   RebuildDupeCheckList;
-end;
-
-procedure TQSOList.DeleteBand(B: TBand);
-var
-   i: integer;
-begin
-   for i := 1 to TotalQSO do
-      if TQSO(List[i]).QSO.Band = B then begin
-         TQSO(List[i]).Free;
-         List[i] := nil;
-         Saved := false;
-      end;
-   RebuildDupeCheckList;
-   List.Pack;
-end;
-
-function TQSOList.CheckQSOID(i: integer): Boolean;
-var
-   j, id: integer;
-begin
-   Result := false;
-   id := i div 100; // last two digits are edit counter
-   for j := 1 to TotalQSO do begin
-      if id = (TQSO(List[j]).QSO.Reserve3 div 100) then begin
-         Result := True;
-         break;
-      end;
-   end;
-end;
-
-procedure TQSOList.Insert(i: integer; aQSO: TQSO);
-begin
-   List.Insert(i, aQSO);
-   RebuildDupeCheckList;
-   Saved := false;
-end;
-
-procedure TQSOList.SaveToFile(Filename: string);
-var
-   f: file of TQSOData;
-   i: integer;
-   back: string;
-begin
-   back := ChangeFileExt(Filename, '.BAK');
-   if FileExists(back) then begin
-      System.SysUtils.DeleteFile(back);
-   end;
-   RenameFile(Filename, back);
-
-   AssignFile(f, Filename);
-   Rewrite(f);
-
-   for i := 0 to TotalQSO do begin // changed from 1 to TotalQSO to 0 to TotalQSO
-      Write(f, TQSO(List[i]).QSO);
-   end;
-
-   CloseFile(f);
-
-   Saved := True;
-end;
-
-procedure TQSOList.SaveToFilezLogDOSTXT(Filename: string);
-var
-   f: textfile;
-   str: string;
-   i, j, max: integer;
-const
-   LongHeader = 'mon day time  callsign      sent                              rcvd                           multi   MHz mode pts memo';
-   ShortHeader = 'mon day time  callsign      sent         rcvd      multi   MHz mode pts memo';
-begin
-   AssignFile(f, Filename);
-   Rewrite(f);
-   { str := 'zLog for Windows Text File'; }
-   max := 0;
-   for i := 1 to TotalQSO do begin
-      j := length(TQSO(List[i]).QSO.NrRcvd);
-      if j > max then
-         max := j;
-      j := length(TQSO(List[i]).QSO.NrSent);
-      if j > max then
-         max := j;
-   end;
-   if j >= 10 then begin
-      writeln(f, LongHeader);
-      for i := 1 to TotalQSO do
-         writeln(f, TQSO(List[i]).DOSzLogText);
-   end
-   else begin
-      writeln(f, ShortHeader);
-      for i := 1 to TotalQSO do
-         writeln(f, TQSO(List[i]).DOSzLogTextShort);
-   end;
-   CloseFile(f);
-end;
-
-procedure TQSOList.SaveToFilezLogALL(Filename: string);
-var
-   f: textfile;
-   Header: string;
-   i, max: integer;
-begin
-   Header := 'zLog for Windows '; // +Options.Settings._mycall;
-   AssignFile(f, Filename);
-   Rewrite(f);
-   { str := 'zLog for Windows Text File'; }
-   max := 0;
-   writeln(f, Header);
-   for i := 1 to TotalQSO do
-      writeln(f, TQSO(List[i]).zLogALL);
-   CloseFile(f);
-end;
-
-procedure TQSOList.SaveToFileByTX(Filename: string);
-var
-   f: textfile;
-   Header: string;
-   i, j: integer;
-   txset: set of byte;
-begin
-   txset := [];
-   for i := 1 to TotalQSO do
-      txset := txset + [TQSO(List[i]).QSO.TX];
-   Header := 'zLog for Windows '; // +Options.Settings._mycall;
-   System.Delete(Filename, length(Filename) - 2, 3);
-   for i := 0 to 255 do
-      if i in txset then begin
-         AssignFile(f, Filename + '.' + IntToStr(i) + '.TX');
-         Rewrite(f);
-         writeln(f, Header + ' TX# ' + IntToStr(i));
-         for j := 1 to TotalQSO do
-            if TQSO(List[j]).QSO.TX = i then
-               writeln(f, TQSO(List[j]).zLogALL);
-         CloseFile(f);
-      end;
-end;
-
-procedure TQSOList.LoadFromFile(Filename: string);
-begin
-end;
-
-destructor TQSOList.Destroy;
-var
-   i: integer;
-begin
-   for i := 0 to List.Count - 1 do begin
-      if List[i] <> nil then
-         TQSO(List[i]).Free;
-   end;
-   List.Free;
-end;
-
-procedure TQSOList.RebuildDupeCheckList;
-var
-   i: integer;
-   Q: TQSO;
-begin
-   ClearDupeCheckList;
-   for i := 0 to List.Count - 1 do begin
-      Q := TQSO(List[i]);
-      DupeCheckList[Q.QSO.Band].AddObject(CoreCall(Q.QSO.CallSign), Q);
-   end;
-end;
-
-function TQSOList.QuickDupe(aQSO: TQSO): TQSO;
-var
-   i: integer;
-   S: string;
-   Q, Q2: TQSO;
-begin
-   Result := nil;
-   Q := nil;
-   S := CoreCall(aQSO.QSO.CallSign);
-   i := DupeCheckList[aQSO.QSO.Band].IndexOf(S);
-   if (i >= 0) and (i < DupeCheckList[aQSO.QSO.Band].Count) then begin
-      Q := TQSO(DupeCheckList[aQSO.QSO.Band].Objects[i]);
-      if Q.QSO.Band = aQSO.QSO.Band then
-         Result := Q;
-   end;
-
-   if AcceptDifferentMode and (Q <> nil) then begin
-      if aQSO.QSO.Mode <> Q.QSO.Mode then begin
-         Result := nil;
-         for i := 0 to DupeCheckList[aQSO.QSO.Band].Count - 1 do begin
-            if S = DupeCheckList[aQSO.QSO.Band][i] then begin
-               Q2 := TQSO(DupeCheckList[aQSO.QSO.Band].Objects[i]);
-               if aQSO.QSO.Mode = Q2.QSO.Mode then begin
-                  Result := Q2;
-                  exit;
-               end;
-            end;
-         end;
-      end;
-   end;
-end;
-
-function TQSOList.OpQSO(OpName: string): integer;
-var
-   i, j: integer;
-begin
-   j := 0;
-   for i := 1 to TotalQSO do
-      if TQSO(List[i]).QSO.Operator = OpName then
-         inc(j);
-   Result := j;
-end;
-
-function TQSOList.IsDupe(aQSO: TQSO): integer;
-var
-   x: integer;
-   i: word;
-   str: string;
-begin
-   DifferentModePointer := 0;
-   x := 0;
-   str := CoreCall(aQSO.QSO.CallSign);
-   for i := 1 to TotalQSO do begin
-      if (aQSO.QSO.Band = TQSO(List[i]).QSO.Band) and (str = CoreCall(TQSO(List[i]).QSO.CallSign)) then begin
-         if Not(AcceptDifferentMode) then begin
-            x := i;
-            break;
-         end
-         else begin
-            if SameMode(aQSO, TQSO(List[i])) then begin
-               x := i;
-               break;
-            end
-            else { different mode qso exists but not dupe }
-            begin
-               DifferentModePointer := i;
-            end;
-         end;
-      end;
-   end;
-   Result := x;
-end;
-
-function TQSOList.IsDupe2(aQSO: TQSO; index: integer; var dupeindex: integer): Boolean;
-var
-   boo: Boolean;
-   i: word;
-   str: string;
-begin
-   boo := false;
-   str := CoreCall(aQSO.QSO.CallSign);
-   for i := 1 to TotalQSO do begin
-      if (aQSO.QSO.Band = TQSO(List[i]).QSO.Band) and (str = CoreCall(TQSO(List[i]).QSO.CallSign)) and ((index <= 0) or (index <> i)) then begin
-         if Not(AcceptDifferentMode) or (AcceptDifferentMode and SameMode(aQSO, TQSO(List[i]))) then begin
-            boo := True;
-            if index > 0 then
-               dupeindex := i;
-            break;
-         end;
-      end;
-   end;
-   Result := boo;
-end;
-
-procedure TQSOList.SetDupeFlags;
-var
-   i, j: integer;
-   str, temp: string;
-   aQSO: TQSO;
-   TempList: array [ord('A') .. ord('Z')] of TStringList;
-   ch: Char;
-   core: string;
-begin
-   if TotalQSO = 0 then
-      exit;
-   for i := ord('A') to ord('Z') do begin
-      TempList[i] := TStringList.Create;
-      TempList[i].Sorted := True;
-      TempList[i].Capacity := 200;
-   end;
-
-   for i := 1 to TotalQSO do begin
-      aQSO := TQSO(List[i]);
-      core := CoreCall(aQSO.QSO.CallSign);
-      if AcceptDifferentMode then
-         str := core + aQSO.BandStr + aQSO.ModeStr
-      else
-         str := core + aQSO.BandStr;
-
-      if core = '' then
-         ch := 'Z'
-      else
-         ch := core[length(core)];
-
-      if not(ch in ['A' .. 'Z']) then
-         ch := 'Z';
-
-      if TempList[ord(ch)].Find(str, j) = True then begin
-         aQSO.QSO.Points := 0;
-         aQSO.QSO.Dupe := True;
-         temp := aQSO.QSO.Memo;
-         if Pos('-DUPE-', temp) = 0 then
-            aQSO.QSO.Memo := '-DUPE- ' + temp;
-      end
-      else begin
-         aQSO.QSO.Dupe := false;
-         temp := aQSO.QSO.Memo;
-         if Pos('-DUPE-', temp) = 1 then
-            aQSO.QSO.Memo := copy(temp, 8, 255);
-         TempList[ord(ch)].Add(str);
-      end;
-   end;
-   for i := ord('A') to ord('Z') do begin
-      TempList[i].Clear;
-      TempList[i].Free;
-   end;
-end;
-
-function TQSOList.TotalQSO: integer;
-begin
-   Result := List.Count - 1;
-end;
-
-function TQSOList.TotalPoints: integer;
-var
-   Count, i: integer;
-begin
-   Count := 0;
-   for i := 1 to TotalQSO do
-      Count := TQSO(List.Items[i]).QSO.Points + Count;
-   Result := Count;
-end;
-
-function TQSOList.TotalCW: integer;
-var
-   Count, i: integer;
-begin
-   Count := 0;
-   for i := 1 to TotalQSO do
-      if TQSO(List.Items[i]).QSO.Mode = mCW then
-         inc(Count);
-   Result := Count;
-end;
-
-function TQSOList.TotalMulti1: integer;
-var
-   Count, i: integer;
-begin
-   Count := 0;
-   for i := 1 to TotalQSO do
-      if TQSO(List.Items[i]).QSO.NewMulti1 then
-         inc(Count);
-   Result := Count;
-end;
-
-function TQSOList.TotalMulti2: integer;
-var
-   Count, i: integer;
-begin
-   Count := 0;
-   for i := 1 to TotalQSO do
-      if TQSO(List.Items[i]).QSO.NewMulti2 then
-         inc(Count);
-   Result := Count;
 end;
 
 function StrToBandDef(strMHz: string; defband: TBand): TBand;

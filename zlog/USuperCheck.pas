@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Spin, UzLogGlobal;
+  StdCtrls, ExtCtrls, Spin, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TSuperData = class
@@ -92,7 +92,7 @@ begin
   HitNumber := 0;
   HitCall := '';
   ListBox.Items.Clear;
-  PartialStr := aQSO.QSO.Callsign;
+  PartialStr := aQSO.Callsign;
 
   if dmZlogGlobal.Settings._searchafter >= length(PartialStr) then
     exit;

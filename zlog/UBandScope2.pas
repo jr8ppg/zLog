@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, Grids, Menus, Cologrid,
-  USpotClass, UzLogGlobal;
+  USpotClass, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TBandScope2 = class(TForm)
@@ -173,10 +173,10 @@ var D : TBSData;
 begin
   D := TBSData.Create;
   D.FreqHz := Hz;
-  D.Band := aQSO.QSO.Band;
-  D.Mode := aQSO.QSO.Mode;
-  D.Call := aQSO.QSO.Callsign;
-  D.Number := aQSO.QSO.NrRcvd;
+  D.Band := aQSO.Band;
+  D.Mode := aQSO.Mode;
+  D.Call := aQSO.Callsign;
+  D.Number := aQSO.NrRcvd;
   //D.Time := Now;
   Main.MyContest.MultiForm.ProcessSpotData(TBaseSpot(D));
   AddAndDisplay(D);
@@ -280,7 +280,7 @@ begin
             str := FillRight(str, 20) + '+';
           Grid.Cells[0,j] := str;
 
-          if (Main.CurrentQSO.QSO.CQ = False) and ((D.FreqHz - CurrentRigFrequency) <= 100) then
+          if (Main.CurrentQSO.CQ = False) and ((D.FreqHz - CurrentRigFrequency) <= 100) then
             begin
               MainForm.AutoInput(D);
             end;
@@ -402,7 +402,7 @@ procedure TBandScope2.FixedBandClick(Sender: TObject);
 begin
   DisplayMode := 3;
   FixedBand := TBand(TMenuItem(Sender).Tag);
-  SetBandMode(FixedBand, Main.CurrentQSO.QSO.Mode);
+  SetBandMode(FixedBand, Main.CurrentQSO.Mode);
   BSRefresh(Self);
 end;
 

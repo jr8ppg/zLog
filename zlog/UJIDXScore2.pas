@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Buttons;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TJIDXScore2 = class(TBasicScore)
@@ -53,15 +54,15 @@ begin
    Reset;
 
    for i := 1 to Log.TotalQSO do begin
-      band := TQSO(Log.List[i]).QSO.band;
+      band := TQSO(Log.List[i]).band;
       Inc(QSO[band]);
-      Inc(Points[band],TQSO(Log.List[i]).QSO.Points);
+      Inc(Points[band],TQSO(Log.List[i]).Points);
 
-      if TQSO(Log.List[i]).QSO.NewMulti1 then begin
+      if TQSO(Log.List[i]).NewMulti1 then begin
          Inc(Multi[band]);
       end;
 
-      if TQSO(Log.List[i]).QSO.NewMulti2 then begin
+      if TQSO(Log.List[i]).NewMulti2 then begin
          Inc(Multi2[band]);
       end;
    end;
@@ -82,13 +83,13 @@ end;
 
 procedure TJIDXScore2.CalcPoints(var aQSO : TQSO);
 begin
-   case aQSO.QSO.Band of
-      b19 : aQSO.QSO.Points := 4;
-      b35 : aQSO.QSO.Points := 2;
-      b7..b21 : aQSO.QSO.Points := 1;
-      b28 : aQSO.QSO.Points := 2;
+   case aQSO.Band of
+      b19 : aQSO.Points := 4;
+      b35 : aQSO.Points := 2;
+      b7..b21 : aQSO.Points := 1;
+      b28 : aQSO.Points := 2;
       else
-         aQSO.QSO.Points := 0;
+         aQSO.Points := 0;
    end;
 end;
 
@@ -96,17 +97,17 @@ procedure TJIDXScore2.AddNoUpdate(var aQSO : TQSO);
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
-   if aQSO.QSO.NewMulti2 then begin
-      Inc(Multi2[aQSO.QSO.Band]);
+   if aQSO.NewMulti2 then begin
+      Inc(Multi2[aQSO.Band]);
    end;
 
    CalcPoints(aQSO);
 
-   Inc(Points[aQSO.QSO.Band], aQSO.QSO.Points);
+   Inc(Points[aQSO.Band], aQSO.Points);
 end;
 
 procedure TJIDXScore2.Update;

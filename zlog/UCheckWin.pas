@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, UzLogGlobal;
+  StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TCheckWin = class(TForm)
@@ -21,12 +21,12 @@ type
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
-   public
+  public
     { Public declarations }
-   ListCWandPh : boolean;
-   BandRow : array[b19..HiBand] of Integer;
-   procedure ResetListBox;
-   procedure Renew(aQSO : TQSO); virtual;
+    ListCWandPh : boolean;
+    BandRow : array[b19..HiBand] of Integer;
+    procedure ResetListBox;
+    procedure Renew(aQSO : TQSO); virtual;
   end;
 
 implementation

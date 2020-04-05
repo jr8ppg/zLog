@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UWWMulti, UMultipliers, StdCtrls, ExtCtrls, JLLabel, Grids, Cologrid,
-  UzLogGlobal;
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TARRLWMulti = class(TWWMulti)
@@ -42,7 +42,7 @@ end;
 
 function TARRLWMulti.ValidMulti(aQSO : TQSO) : boolean;
 begin
-  if aQSO.QSO.NrRcvd <> '' then
+  if aQSO.NrRcvd <> '' then
     Result := True
   else
     Result := False;
@@ -54,56 +54,56 @@ var str : string;
     i, j : integer;
     C : TCountry;
 begin
-  aQSO.QSO.NewMulti1 := False;
-  aQSO.QSO.NewMulti2 := False;
+  aQSO.NewMulti1 := False;
+  aQSO.NewMulti2 := False;
 
   i := GetCountryIndex(aQSO);
 
   C := TCountry(CountryList.List[i]);
-  aQSO.QSO.Multi1 := C.Country;
+  aQSO.Multi1 := C.Country;
 
-  if aQSO.QSO.Dupe then
+  if aQSO.Dupe then
     exit;
 
   if ALLASIANFLAG = True then
     begin
-      aQSO.QSO.Points := 0;
+      aQSO.Points := 0;
       //MainForm.Caption := C.Country+';'+MyCOuntry+';';
       if C.Country = MyCountry then
         begin
-          aQSO.QSO.Points := 0;
+          aQSO.Points := 0;
           exit;
         end
       else
         begin
           if C.Continent = 'AS' then
             begin
-              case aQSO.QSO.Band of
-                b19 : aQSO.QSO.Points := 3;
-                b35, b28 : aQSO.QSO.Points := 2;
+              case aQSO.Band of
+                b19 : aQSO.Points := 3;
+                b35, b28 : aQSO.Points := 2;
               else
-                aQSO.QSO.Points := 1;
+                aQSO.Points := 1;
               end;
             end
           else
             begin
-              case aQSO.QSO.Band of
-                b19 : aQSO.QSO.Points := 9;
-                b35, b28 : aQSO.QSO.Points := 6;
+              case aQSO.Band of
+                b19 : aQSO.Points := 9;
+                b35, b28 : aQSO.Points := 6;
               else
-                aQSO.QSO.Points := 3;
+                aQSO.Points := 3;
               end;
             end;
         end;
     end;
 
 
-  B := aQSO.QSO.Band;
+  B := aQSO.Band;
 
   if C.Worked[B] = False then
     begin
       C.Worked[B] := True;
-      aQSO.QSO.NewMulti1 := True;
+      aQSO.NewMulti1 := True;
       //Grid.Cells[0,C.GridIndex] := C.Summary;
     end;
 end;
@@ -140,7 +140,7 @@ begin
   if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your callsign') then
     begin
       aQSO := TQSO.Create;
-      aQSO.QSO.callsign := UpperCase(dmZlogGlobal.Settings._mycall);
+      aQSO.callsign := UpperCase(dmZlogGlobal.Settings._mycall);
       i := GetCountryIndex(aQSO);
       if i > 0 then
         begin

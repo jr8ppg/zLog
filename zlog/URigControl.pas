@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, AnsiStrings,
-  UzLogGlobal, UzLogKeyer, CPDrv, OmniRig_TLB, Vcl.Grids;
+  StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB;
 
 type
   TIcomInfo = record
@@ -469,18 +469,18 @@ begin
       ss := '30';
    end
    else begin
-      ss := IntToStr(Ord(Main.CurrentQSO.QSO.Band));
+      ss := IntToStr(Ord(Main.CurrentQSO.Band));
    end;
 
    ss := FillRight(ss, 3);
 
    S := ss + S;
-   S := S + FillRight(MHzString[Main.CurrentQSO.QSO.Band], 5);
+   S := S + FillRight(MHzString[Main.CurrentQSO.Band], 5);
    S := S + FillRight(IntToStr(kHz), 8);
-   S := S + FillRight(ModeString[Main.CurrentQSO.QSO.Mode], 5);
+   S := S + FillRight(ModeString[Main.CurrentQSO.Mode], 5);
 
    ss := TimeToStr(CurrentTime);
-   if Main.CurrentQSO.QSO.CQ then begin
+   if Main.CurrentQSO.CQ then begin
       ss := 'CQ ' + ss + ' ';
    end
    else begin
@@ -502,17 +502,17 @@ begin
       ss := '30';
    end
    else begin
-      ss := IntToStr(Ord(Main.CurrentQSO.QSO.Band));
+      ss := IntToStr(Ord(Main.CurrentQSO.Band));
    end;
 
    ss := FillRight(ss, 3);
    S := ss + S;
-   S := S + FillRight(MHzString[Main.CurrentQSO.QSO.Band], 5);
+   S := S + FillRight(MHzString[Main.CurrentQSO.Band], 5);
    S := S + FillRight(FloatToStrF(Hz / 1000.0, ffFixed, 12, 1), 8);
-   S := S + FillRight(ModeString[Main.CurrentQSO.QSO.Mode], 5);
+   S := S + FillRight(ModeString[Main.CurrentQSO.Mode], 5);
    ss := TimeToStr(CurrentTime);
 
-   if Main.CurrentQSO.QSO.CQ then begin
+   if Main.CurrentQSO.CQ then begin
       ss := 'CQ ' + ss + ' ';
    end
    else begin
@@ -563,7 +563,7 @@ begin
    end;
 
    if FCurrentRig <> nil then begin
-      str := Main.CurrentQSO.QSO.Callsign;
+      str := Main.CurrentQSO.Callsign;
       if length(str) > 0 then begin
          if str[1] = ',' then begin
             str := '';
@@ -574,7 +574,7 @@ begin
    end
    else begin // could be virtual rig
       if _currentrig > 0 then begin
-         str := Main.CurrentQSO.QSO.Callsign;
+         str := Main.CurrentQSO.Callsign;
          if length(str) > 0 then begin
             if str[1] = ',' then begin
                str := '';
@@ -582,8 +582,8 @@ begin
          end;
 
          VirtualRig[_currentrig].Callsign := str;
-         VirtualRig[_currentrig].Band := Main.CurrentQSO.QSO.Band;
-         VirtualRig[_currentrig].Mode := Main.CurrentQSO.QSO.Mode;
+         VirtualRig[_currentrig].Band := Main.CurrentQSO.Band;
+         VirtualRig[_currentrig].Mode := Main.CurrentQSO.Mode;
       end;
    end;
 
@@ -645,7 +645,7 @@ begin
       end;
 
       3: begin
-         B := Main.CurrentQSO.QSO.Band;
+         B := Main.CurrentQSO.Band;
       end;
    end;
 
@@ -831,11 +831,11 @@ procedure TFT2000.SetMode(Q: TQSO);
 var
    m: Integer;
 begin
-   case Q.QSO.Mode of
+   case Q.Mode of
       mCW: m := 3;
 
       mSSB: begin
-         if Q.QSO.Band <= b7 then begin
+         if Q.Band <= b7 then begin
             m := 1;
          end
          else begin
@@ -1457,10 +1457,10 @@ begin
    TerminatorCode := ';';
    BufferString := '';
 
-   _currentmode := Main.CurrentQSO.QSO.Mode; // mCW;
+   _currentmode := Main.CurrentQSO.Mode; // mCW;
 
    _currentband := b19;
-   B := Main.CurrentQSO.QSO.Band;
+   B := Main.CurrentQSO.Band;
    if (B >= _minband) and (B <= _maxband) then begin
       _currentband := B;
    end;
@@ -1829,9 +1829,9 @@ var
 begin
    { 1=LSB, 2=USB, 3=CW, 4=FM, 5=AM, 6=FSK, 7=CW-R, 8=FSK=R }
    para := '3';
-   case Q.QSO.Mode of
+   case Q.Mode of
       mSSB:
-         if Q.QSO.Band <= b7 then
+         if Q.Band <= b7 then
             para := '1'
          else
             para := '2';
@@ -1857,9 +1857,9 @@ var
    para: AnsiString;
 begin
    para := '';
-   case Q.QSO.Mode of
+   case Q.Mode of
       mSSB:
-         if Q.QSO.Band <= b7 then
+         if Q.Band <= b7 then
             para := 'D3'
          else
             para := 'D2';
@@ -1886,9 +1886,9 @@ var
    para: byte;
 begin
    para := 3;
-   case Q.QSO.Mode of
+   case Q.Mode of
       mSSB:
-         if Q.QSO.Band <= b7 then
+         if Q.Band <= b7 then
             para := 0
          else
             para := 1;
@@ -1904,8 +1904,8 @@ begin
 
    Command := AnsiChar($06) + AnsiChar(para);
 
-   if ModeWidth[Q.QSO.Mode] in [1 .. 3] then begin
-      Command := Command + AnsiChar(ModeWidth[Q.QSO.Mode]);
+   if ModeWidth[Q.Mode] in [1 .. 3] then begin
+      Command := Command + AnsiChar(ModeWidth[Q.Mode]);
    end;
 
    ICOMWriteData(Command);
@@ -1920,9 +1920,9 @@ var
 begin
    para := 0;
 
-   case Q.QSO.Mode of
+   case Q.Mode of
       mSSB:
-         if Q.QSO.Band <= b7 then
+         if Q.Band <= b7 then
             para := 0
          else
             para := 1;
@@ -1946,20 +1946,20 @@ procedure TRig.SetBand(Q: TQSO);
 var
    f, ff: LongInt;
 begin
-   if (Q.QSO.Band < _minband) or (Q.QSO.Band > _maxband) then begin
+   if (Q.Band < _minband) or (Q.Band > _maxband) then begin
       Exit;
    end;
 
-   _currentband := Q.QSO.Band; // ver 2.0e
+   _currentband := Q.Band; // ver 2.0e
 
-   if FreqMem[Q.QSO.Band, Q.QSO.Mode] > 0 then begin
-      f := FreqMem[Q.QSO.Band, Q.QSO.Mode];
+   if FreqMem[Q.Band, Q.Mode] > 0 then begin
+      f := FreqMem[Q.Band, Q.Mode];
    end
    else begin
       ff := (_currentfreq[_currentvfo] + _freqoffset) mod 1000000;
       if ff > 500000 then
          ff := 0;
-      f := BaseMHz[Q.QSO.Band] + ff;
+      f := BaseMHz[Q.Band] + ff;
    end;
 
    SetFreq(f);
@@ -2183,10 +2183,10 @@ begin
    TerminatorCode := ';';
    BufferString := '';
 
-   _currentmode := Main.CurrentQSO.QSO.Mode; // mCW;
+   _currentmode := Main.CurrentQSO.Mode; // mCW;
 
    _currentband := b19;
-   B := Main.CurrentQSO.QSO.Band;
+   B := Main.CurrentQSO.Band;
    if (B >= _minband) and (B <= _maxband) then
       _currentband := B;
 
@@ -2273,9 +2273,9 @@ begin
       o_RIG := RigControl.OmniRig.Rig2;
    end;
 
-   case Q.QSO.Mode of
+   case Q.Mode of
       mSSB:
-         if Q.QSO.Band <= b7 then
+         if Q.Band <= b7 then
             o_RIG.Mode := PM_SSB_L
          else
             o_RIG.Mode := PM_SSB_U;
@@ -2973,9 +2973,9 @@ var
    Command: AnsiString;
    para: byte;
 begin
-   case Q.QSO.Mode of
+   case Q.Mode of
       mSSB:
-         if Q.QSO.Band <= b7 then
+         if Q.Band <= b7 then
             para := 0
          else
             para := 1;
@@ -3032,12 +3032,12 @@ var
    S: string;
 begin
    RigControl.dispVFO.Caption := VFOString[_currentvfo];
-   if _currentmode <> Main.CurrentQSO.QSO.Mode then begin
+   if _currentmode <> Main.CurrentQSO.Mode then begin
       MainForm.UpdateMode(_currentmode);
    end;
 
    RigControl.dispMode.Caption := ModeString[_currentmode];
-   if Main.CurrentQSO.QSO.Band <> _currentband then begin
+   if Main.CurrentQSO.Band <> _currentband then begin
       MainForm.UpdateBand(_currentband);
    end;
 

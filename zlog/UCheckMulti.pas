@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UCheckWin, StdCtrls, ExtCtrls, UzLogGlobal, Main;
+  UCheckWin, StdCtrls, ExtCtrls, Main, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TCheckMulti = class(TCheckWin)
@@ -37,13 +37,13 @@ begin
   if str <> '' then
     begin
       for i := Log.TotalQSO downto 1 do
-        if str = TQSO(Log.List[i]).QSO.multi1 then
+        if str = TQSO(Log.List[i]).multi1 then
           begin
-            B := TQSO(Log.List[i]).QSO.Band;
+            B := TQSO(Log.List[i]).Band;
             r := BandRow[B];
 
             if (r >= 0) and ListCWandPh then
-              if TQSO(Log.List[i]).QSO.Mode = mCW then
+              if TQSO(Log.List[i]).Mode = mCW then
                 r := r * 2
               else
                 r := r * 2 + 1;

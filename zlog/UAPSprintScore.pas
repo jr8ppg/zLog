@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Buttons,
-  UWPXMulti;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
+  UWPXMulti, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TAPSprintScore = class(TBasicScore)
@@ -41,12 +41,12 @@ procedure TAPSprintScore.AddNoUpdate(var aQSO : TQSO);
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
-   aQSO.QSO.Points := 1;
-   Inc(Points[aQSO.QSO.Band]);
+   aQSO.Points := 1;
+   Inc(Points[aQSO.Band]);
 end;
 
 procedure TAPSprintScore.Update;

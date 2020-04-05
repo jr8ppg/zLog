@@ -4,7 +4,8 @@ interface
 
 uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
-  StdCtrls, ExtCtrls, Forms, ComCtrls, UzLogGlobal, UBasicMulti, JLLabel;
+  StdCtrls, ExtCtrls, Forms, ComCtrls,
+  UzLogConst, UzLogGlobal, UzLogQSO, UBasicMulti, JLLabel;
 
 type
 
@@ -94,7 +95,7 @@ var band, B : TBand;
     K : TKen;
 begin
   //inherited;
-  band := Main.CurrentQSO.QSO.Band;
+  band := Main.CurrentQSO.Band;
   if not(band in [b35, b7, b14, b21, b28, b50]) then
     band := b35;
   if PageControl.ActivePage <> TabAll then
@@ -122,7 +123,7 @@ function TALLJAMulti.ExtractMulti(aQSO : TQSO) : string;
 var str : string;
 begin
   Result := '';
-  str := aQSO.QSO.NrRcvd;
+  str := aQSO.NrRcvd;
   if str = '' then
     exit;
   if not(str[length(str)] in ['0'..'9']) then
@@ -137,15 +138,15 @@ var str : string;
     B : TBand;
     i : integer;
 begin
-  aQSO.QSO.NewMulti1 := False;
-  str := aQSO.QSO.NrRcvd;
+  aQSO.NewMulti1 := False;
+  str := aQSO.NrRcvd;
   Delete(str,length(str),1);
-  aQSO.QSO.Multi1 := str;
+  aQSO.Multi1 := str;
 
-  if aQSO.QSO.Dupe then
+  if aQSO.Dupe then
     exit;
 
-  if not(NotWARC(aQSO.QSO.Band)) then
+  if not(NotWARC(aQSO.Band)) then
     exit;
   M := 0;
   try
@@ -159,10 +160,10 @@ begin
   else
     exit;
   end;
-  if MultiTable[aQSO.QSO.band,K] = False then
+  if MultiTable[aQSO.band,K] = False then
     begin
-      MultiTable[aQSO.QSO.band,K] := True;
-      aQSO.QSO.NewMulti1 := True;
+      MultiTable[aQSO.band,K] := True;
+      aQSO.NewMulti1 := True;
     end;
 end;
 
@@ -245,7 +246,7 @@ var str : string;
     K : TKen;
 begin
   Result := False;
-  str := aQSO.QSO.NrRcvd;
+  str := aQSO.NrRcvd;
   if not(length(str) in [3..4]) then
     exit;
   if not(str[length(str)] in ['P','L','M','H']) then
@@ -272,8 +273,8 @@ end;
 procedure TALLJAMulti.FormShow(Sender: TObject);
 begin
   inherited;
-  if Main.CurrentQSO.QSO.Band in [b35, b7, b14, b21, b28, b50] then
-    PageControl.ActivePage := PageControl.Pages[OldBandOrd(Main.CurrentQSO.QSO.band)-1];
+  if Main.CurrentQSO.Band in [b35, b7, b14, b21, b28, b50] then
+    PageControl.ActivePage := PageControl.Pages[OldBandOrd(Main.CurrentQSO.band)-1];
 end;
 
 
@@ -284,7 +285,7 @@ var M : integer;
     str : string;
 begin
   Result := False;
-  str := aQSO.QSO.NrRcvd;
+  str := aQSO.NrRcvd;
   if str = '' then
     exit;
   if str[length(str)] in ['P', 'L', 'M', 'H'] then
@@ -304,7 +305,7 @@ begin
     end;
   end;
 
-  if MultiTable[aQSO.QSO.band,K] = False then
+  if MultiTable[aQSO.band,K] = False then
     Result := True;
 
 end;
@@ -315,7 +316,7 @@ var str : string;
     K : TKen;
     B : TBand;
 begin
-  str := aQSO.QSO.NrRcvd;
+  str := aQSO.NrRcvd;
 
   if str = '' then
     exit;
@@ -340,7 +341,7 @@ begin
 
 
   str := KenNames[K];
-  if MultiTable[aQSO.QSO.band,K] = True then
+  if MultiTable[aQSO.band,K] = True then
     str := str + '   Worked on this band. Worked on : '
   else
     str := str + '   Needed on this band. Worked on : ';

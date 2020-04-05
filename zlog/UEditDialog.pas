@@ -5,7 +5,7 @@ interface
 uses
   Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, Menus,
-  UzLogGlobal, UzLogCW, UzLogKeyer;
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer;
 
 
 const _ActInsert = 0;
@@ -94,10 +94,13 @@ uses Main, UOptions, UZLinkForm, UPartials, URigControl;
 
 procedure TEditDialog.ChangePower;
 begin
-  if workQSO.QSO.Power = pwrH then
-    workQSO.QSO.Power := pwrP
-  else
-    inc(workQSO.QSO.Power);
+  if workQSO.Power = pwrH then begin
+    workQSO.Power := pwrP;
+  end
+  else begin
+    workQSO.Power := TPower(Integer(workQSO.Power) + 1);
+  end;
+
   NewPowerEdit.Text := workQSO.NewPowerStr;
 end;
 
@@ -117,14 +120,14 @@ begin
 
   workQSO := TQSO.Create;
   origQSO := TQSO.Create;
-  workQSO.QSO := aQSO.QSO;
-  origQSO.QSO := aQSO.QSO;
+  workQSO.Assign(aQSO);
+  origQSO.Assign(aQSO);
 
   if Action = _ActInsert then
     begin
-      workQSO.QSO.Callsign := '';
-      workQSO.QSO.NRRcvd := '';
-      workQSO.QSO.memo := '';
+      workQSO.Callsign := '';
+      workQSO.NRRcvd := '';
+      workQSO.memo := '';
     end;
 
   TimeEdit.Visible := True;
@@ -134,16 +137,16 @@ begin
   SerialEdit.Text := workQSO.SerialStr;
   TimeEdit.Text := workQSO.TimeStr;
   DateEdit.Text := workQSO.DateStr;
-  CallsignEdit.Text := workQSO.QSO.callsign;
+  CallsignEdit.Text := workQSO.callsign;
   RcvdRSTEdit.Text := workQSO.RSTStr;
-  NumberEdit.Text := workQSO.QSO.NrRcvd;
+  NumberEdit.Text := workQSO.NrRcvd;
   ModeEdit.Text := workQSO.ModeStr;
   BandEdit.Text := workQSO.BandStr;
   PowerEdit.Text := workQSO.PowerStr;
   NewPowerEdit.Text := workQSO.NewPowerStr;
   PointEdit.Text := workQSO.PointStr;
-  MemoEdit.Text := workQSO.QSO.memo;
-  OpEdit.Text := workQSO.QSO.Operator;
+  MemoEdit.Text := workQSO.memo;
+  OpEdit.Text := workQSO.Operator;
 end;
 
 procedure TEditDialog.CancelBtnClick(Sender: TObject);
@@ -173,7 +176,7 @@ begin
       i := 0;
   end;
   if i > 0 then
-    workQSO.QSO.Serial := i;
+    workQSO.Serial := i;
 
   if Action = _ActChange then
     begin
@@ -182,8 +185,8 @@ begin
       ZLinkForm.EditQSObyID(workQSO);
       //ZLinkForm.EditQSO(TQSO(Log.List[index]), workQSO); {ZLinkForm takes care of Z-Link availability}
       //TQSO(Log.List[index]).QSO := workQSO.QSO;
-      origQSO.QSO.Reserve := actEdit;
-      workQSO.QSO.Reserve := actEdit;
+      origQSO.Reserve := actEdit;
+      workQSO.Reserve := actEdit;
       //Log.AddQue(origQSO);
       Log.AddQue(workQSO);
       Log.ProcessQue;
@@ -201,14 +204,15 @@ begin
   if Action = _ActInsert then
     begin
       //ZLinkForm.InsertQSO(origQSO, workQSO);
-      origQSO.QSO.Reserve := actInsert;
-      workQSO.QSO.Reserve := actInsert;
+      origQSO.Reserve := actInsert;
+      workQSO.Reserve := actInsert;
+
       repeat
-        j := MainForm.NewQSOID;
+        j := dmZlogGlobal.NewQSOID();
       until Log.CheckQSOID(j) = False;
 
-      workQSO.QSO.Reserve2 := origQSO.QSO.Reserve3;
-      workQSO.QSO.Reserve3 := j;
+      workQSO.Reserve2 := origQSO.Reserve3;
+      workQSO.Reserve3 := j;
 
       ZLinkForm.InsertQSO(workQSO);
       //Log.AddQue(origQSO);
@@ -246,7 +250,7 @@ end;
 
 procedure TEditDialog.CallsignEditChange(Sender: TObject);
 begin
-  workQSO.QSO.Callsign := CallsignEdit.Text;
+  workQSO.Callsign := CallsignEdit.Text;
 end;
 
 procedure TEditDialog.EditKeyPress(Sender: TObject; var Key: Char);
@@ -315,7 +319,7 @@ begin
       begin
         if HiWord(GetKeyState(VK_SHIFT))<>0 then
           begin
-            if Main.CurrentQSO.QSO.mode = mCW then
+            if Main.CurrentQSO.mode = mCW then
               begin
                 MainForm.CQRepeatClick1(Sender);
               end
@@ -327,7 +331,7 @@ begin
       end;
     ^Z :
        begin
-         if Main.CurrentQSO.QSO.mode = mCW then
+         if Main.CurrentQSO.mode = mCW then
            MainForm.CQRepeatClick2(Sender);
          Key := #0;
        end;
@@ -402,8 +406,8 @@ begin
           begin
             // ChangeBand(True);
             //MainForm.SetQSOBand(workQSO, True);
-            workQSO.QSO.Band := MainForm.GetNextBand(workQSO.QSO.Band, True);
-            BandEdit.Text := MHzString[workQSO.QSO.Band];
+            workQSO.Band := MainForm.GetNextBand(workQSO.Band, True);
+            BandEdit.Text := MHzString[workQSO.Band];
             Key := #0;
           end;
       end;
@@ -431,17 +435,17 @@ begin
           begin
             // ChangeMode;
             MainForm.SetQSOMode(workQSO);
-            ModeEdit.Text := ModeString[workQSO.QSO.Mode];
-            if workQSO.QSO.Mode in [mSSB, mFM, mAM] then
+            ModeEdit.Text := ModeString[workQSO.Mode];
+            if workQSO.Mode in [mSSB, mFM, mAM] then
               begin
-                workQSO.QSO.RSTrcvd := 59;
-                workQSO.QSO.RSTsent := 59;
+                workQSO.RSTrcvd := 59;
+                workQSO.RSTsent := 59;
                 RcvdRSTEdit.Text := '59';
               end
             else
               begin
-                workQSO.QSO.RSTrcvd := 599;
-                workQSO.QSO.RSTsent := 599;
+                workQSO.RSTrcvd := 599;
+                workQSO.RSTsent := 599;
                 RcvdRSTEdit.Text := '599';
               end;
             Key := #0;
@@ -473,7 +477,7 @@ end;
 
 procedure TEditDialog.NumberEditChange(Sender: TObject);
 begin
-  workQSO.QSO.NrRcvd := NumberEdit.Text;
+  workQSO.NrRcvd := NumberEdit.Text;
 end;
 
 procedure TEditDialog.NumberEditKeyPress(Sender: TObject; var Key: Char);
@@ -501,7 +505,7 @@ begin
   O := TMenuItem(Sender).Caption;
   if O = 'Clear' then O := '';
   OpEdit.Text := O;
-  workQSO.QSO.Operator := O;
+  workQSO.Operator := O;
 end;
 
 procedure TEditDialog.BandMenuClick(Sender: TObject);
@@ -511,7 +515,7 @@ begin
   T := TMenuItem(Sender).Tag;
   B := TBand(T);
   BandEdit.Text := MHzString[B];
-  workQSO.QSO.band := B;
+  workQSO.band := B;
 end;
 
 procedure TEditDialog.ModeMenuClick(Sender: TObject);
@@ -519,17 +523,17 @@ var T : byte;
     M : TMode;
 begin
   ModeEdit.Text := ModeString[TMode(TMenuItem(Sender).Tag)];
-  workQSO.QSO.mode := TMode(TMenuItem(Sender).Tag);
+  workQSO.mode := TMode(TMenuItem(Sender).Tag);
   If TMenuItem(Sender).Tag in [1..3] then
     begin
-      workQSO.QSO.RSTrcvd := 59;
-      workQSO.QSO.RSTsent := 59;
+      workQSO.RSTrcvd := 59;
+      workQSO.RSTsent := 59;
       RcvdRSTEdit.Text := '59';
     end
   else
     begin
-      workQSO.QSO.RSTrcvd := 599;
-      workQSO.QSO.RSTsent := 599;
+      workQSO.RSTrcvd := 599;
+      workQSO.RSTsent := 599;
       RcvdRSTEdit.Text := '599';
     end;
 end;
@@ -643,13 +647,13 @@ begin
   except
     on EConvertError do
       begin
-        if workQSO.QSO.mode in [mCW, mRTTY] then
+        if workQSO.mode in [mCW, mRTTY] then
           I := 599
         else
           I := 59;
       end;
    end;
-   workQSO.QSO.RSTRcvd := I;
+   workQSO.RSTRcvd := I;
 end;
 
 procedure TEditDialog.FormCreate(Sender: TObject);
@@ -704,19 +708,19 @@ end;
 
 procedure TEditDialog.MemoEditChange(Sender: TObject);
 begin
-  workQSO.QSO.memo := MemoEdit.Text;
+  workQSO.memo := MemoEdit.Text;
 end;
 
 procedure TEditDialog.TimeEditChange(Sender: TObject);
 var T : TDateTime;
 begin
-   T := StrToTimeDef(TimeEdit.Text, workQSO.QSO.Time);
+   T := StrToTimeDef(TimeEdit.Text, workQSO.Time);
 
    if workQSO.TimeStr = FormatDateTime('hh:nn',T) then begin
       exit;
    end;
 
-   workQSO.QSO.Time := Trunc(workQSO.QSO.Time)+Frac(T); //(T-Trunc(T));
+   workQSO.Time := Trunc(workQSO.Time)+Frac(T); //(T-Trunc(T));
 end;
 
 procedure TEditDialog.DateEditChange(Sender: TObject);
@@ -724,13 +728,13 @@ var T : TDateTime;
 begin
    FormatSettings.ShortDateFormat := 'y/m/d';
 
-   T := StrToDateDef(DateEdit.Text, workQSO.QSO.Time);
+   T := StrToDateDef(DateEdit.Text, workQSO.Time);
 
    if workQSO.DateStr = FormatDateTime('yy/mm/dd', T) then begin
       Exit;
    end;
 
-   workQSO.QSO.Time := Int(T) + Frac(workQSO.QSO.Time);
+   workQSO.Time := Int(T) + Frac(workQSO.Time);
 end;
 
 
@@ -763,7 +767,7 @@ begin
 
       VK_F1..VK_F8, VK_F11, VK_F12: begin
          i := Key - VK_F1 + 1;
-         if workQSO.QSO.Mode = mCW then begin
+         if workQSO.Mode = mCW then begin
 
             cb := dmZlogGlobal.Settings.CW.CurrentBank;
 
@@ -842,7 +846,7 @@ procedure TEditDialog.NewPowerMenuClick(Sender: TObject);
 //    M : TMode;
 begin
   NewPowerEdit.Text := NewPowerString[TPower(TMenuItem(Sender).Tag)];
-  workQSO.QSO.power := TPower(TMenuItem(Sender).Tag);
+  workQSO.power := TPower(TMenuItem(Sender).Tag);
 end;
 
 procedure TEditDialog.NewPowerEditClick(Sender: TObject);
@@ -868,7 +872,7 @@ begin
 
   if i > 0 then
     begin
-      workQSO.QSO.Power2 := i;
+      workQSO.Power2 := i;
       exit;
     end;
 
@@ -877,7 +881,7 @@ begin
   except
     i := 0;
   end;
-  workQSO.QSO.Power2 := i;
+  workQSO.Power2 := i;
 end;
 
 procedure TEditDialog.op1Click(Sender: TObject);

@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicMulti, Grids, StdCtrls, ExtCtrls, UzLogGlobal, UKCJZone;
+  UBasicMulti, Grids, StdCtrls, ExtCtrls,
+  UzLogConst, UzLogGlobal, UzLogQSO, UKCJZone;
 
 const maxindex = 70;
 
@@ -92,7 +93,7 @@ procedure TKCJMulti.Update;
 var
    B: TBand;
 begin
-   B := Main.CurrentQSO.QSO.Band;
+   B := Main.CurrentQSO.Band;
 
    combBand.ItemIndex := GetBandIndex(B);
 
@@ -108,15 +109,15 @@ var
    str: string;
    K: Integer;
 begin
-   aQSO.QSO.NewMulti1 := False;
-   str := aQSO.QSO.NrRcvd;
-   aQSO.QSO.Multi1 := str;
+   aQSO.NewMulti1 := False;
+   str := aQSO.NrRcvd;
+   aQSO.Multi1 := str;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
-   if not(NotWARC(aQSO.QSO.Band)) then begin
+   if not(NotWARC(aQSO.Band)) then begin
       Exit;
    end;
 
@@ -125,9 +126,9 @@ begin
       Exit;
    end;
 
-   if MultiArray[aQSO.QSO.Band, K] = False then begin
-      MultiArray[aQSO.QSO.Band, K] := True;
-      aQSO.QSO.NewMulti1 := True;
+   if MultiArray[aQSO.Band, K] = False then begin
+      MultiArray[aQSO.Band, K] := True;
+      aQSO.NewMulti1 := True;
    end;
 end;
 
@@ -135,7 +136,7 @@ function TKCJMulti.ValidMulti(aQSO: TQSO): boolean;
 var
    str: string;
 begin
-   str := aQSO.QSO.NrRcvd;
+   str := aQSO.NrRcvd;
    Result := (KCJCode(str) >= 0)
 end;
 
@@ -157,7 +158,7 @@ var
    M: Integer;
    B: TBand;
 begin
-   str := aQSO.QSO.NrRcvd;
+   str := aQSO.NrRcvd;
 
    if str = '' then begin
       Exit;
@@ -171,7 +172,7 @@ begin
    end;
 
    str := KenNames[M];
-   if MultiArray[aQSO.QSO.Band, M] = True then begin
+   if MultiArray[aQSO.Band, M] = True then begin
       str := str + '   Worked on this band. Worked on : ';
    end
    else begin

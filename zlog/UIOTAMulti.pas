@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UACAGMulti, Grids, Cologrid, StdCtrls, JLLabel, ExtCtrls, UzLogGlobal,
-  UMultipliers, UzLogCW;
+  UACAGMulti, Grids, Cologrid, StdCtrls, JLLabel, ExtCtrls,
+  UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers, UzLogCW;
 
 type
   TIsland = class
@@ -162,7 +162,7 @@ function TIOTAMulti.ExtractMulti(aQSO : TQSO) : string;
 var i, k : integer;
     S, work, cont : string;
 begin
-  S := aQSO.QSO.NrRcvd;
+  S := aQSO.NrRcvd;
   Result := '';
   for i := 1 to length(S) do
     if S[i] in ['A'..'Z'] then
@@ -213,20 +213,20 @@ var str, str2 : string;
 begin
    F := TNewIOTARef.Create(Self);
    try
-      aQSO.QSO.NewMulti1 := False;
+      aQSO.NewMulti1 := False;
       str := ExtractMulti(aQSO);
 
       if str = '' then
-         aQSO.QSO.Points := 3
+         aQSO.Points := 3
       else
          if str = MyIOTA then
-            aQSO.QSO.Points := 3
+            aQSO.Points := 3
          else
-            aQSO.QSO.Points := 15;
+            aQSO.Points := 15;
 
-      aQSO.QSO.Multi1 := str;
+      aQSO.Multi1 := str;
 
-      if aQSO.QSO.Dupe then
+      if aQSO.Dupe then
          exit;
 
       if str = '' then
@@ -235,9 +235,9 @@ begin
       for i := 0 to IslandList.List.Count-1 do begin
          C := TIsland(IslandList.List[i]);
          if str = C.RefNumber then begin
-            if C.Worked[aQSO.QSO.band, aQSO.QSO.Mode] = False then begin
-               C.Worked[aQSO.QSO.band, aQSO.QSO.Mode] := True;
-               aQSO.QSO.NewMulti1 := True;
+            if C.Worked[aQSO.band, aQSO.Mode] = False then begin
+               C.Worked[aQSO.band, aQSO.Mode] := True;
+               aQSO.NewMulti1 := True;
             end;
             LatestMultiAddition := i;
             Exit;
@@ -252,8 +252,8 @@ begin
       C := TIsland.Create;
       C.Name := F.GetName;
       C.RefNumber := str;
-      C.Worked[aQSO.QSO.band, aQSO.QSO.Mode] := True;
-      aQSO.QSO.NewMulti1 := True;
+      C.Worked[aQSO.band, aQSO.Mode] := True;
+      aQSO.NewMulti1 := True;
 
       // Å´Ç«Ç§çlÇ¶ÇƒÇ‡ÉoÉOÇ¡ÇƒÇ¢ÇÈ
       for i := 0 to IslandList.List.Count-1 do begin
@@ -330,7 +330,7 @@ begin
   if CountryList.List.Count = 0 then exit;
 
   Q := TQSO.Create;
-  Q.QSO.Callsign := UpperCase(dmZLogGlobal.MyCall);
+  Q.Callsign := UpperCase(dmZLogGlobal.MyCall);
   P := GetPrefixX(Q, PrefixList);
   MyDXCC := TCountry(CountryList.List[P.Index]).Country;
   Q.Free;
@@ -354,8 +354,8 @@ var B : TBand;
     M : TMode;
 begin
   //inherited;
-  B := Main.CurrentQSO.QSO.Band;
-  M := Main.CurrentQSO.QSO.Mode;
+  B := Main.CurrentQSO.Band;
+  M := Main.CurrentQSO.Mode;
   if TIsland(IslandList.List[ARow]).Worked[B, M] then
     FColor := clRed
   else
@@ -401,7 +401,7 @@ begin
           //ListBox.TopIndex := i;
           Grid.TopRow := i;
           str := C.Summary;
-          if C.Worked[aQSO.QSO.Band, aQSO.QSO.Mode] then
+          if C.Worked[aQSO.Band, aQSO.Mode] then
             str := str + 'Worked on this band/mode.'
           else
             str := str + 'Needed on this band/mode.';

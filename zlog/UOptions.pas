@@ -6,7 +6,7 @@ uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin,
   Dialogs, Menus, FileCtrl,
-  UIntegerDialog, UzLogGlobal;
+  UIntegerDialog, UzLogConst, UzLogGlobal;
 
 type
   TformOptions = class(TForm)

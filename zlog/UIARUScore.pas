@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Cologrid,
-  Buttons;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons, Cologrid,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TIARUScore = class(TBasicScore)
@@ -32,12 +32,14 @@ var band : TBand;
 begin
   {BasicScore.AddNoUpdate(aQSO);}
   inherited;
-  if aQSO.QSO.Dupe then
+  if aQSO.Dupe then
     exit;
-  band := aQSO.QSO.band;
+
+  band := aQSO.band;
   {if aQSO.QSO.NewMulti2 then
     inc(Multi2[band]);}
-  inc(Points[band], aQSO.QSO.Points); {Points calculated in WWMulti.AddNoUpdate}
+
+  inc(Points[band], aQSO.Points); {Points calculated in WWMulti.AddNoUpdate}
 end;
 
 procedure TIARUScore.InitGrid(B0, B1 : TBand);

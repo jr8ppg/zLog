@@ -3,7 +3,8 @@ unit UMultipliers;
 interface
 
 uses
-  SysUtils, Windows, Classes, Dialogs, Forms, UITypes, UzLogGlobal;
+  SysUtils, Windows, Classes, Dialogs, Forms, UITypes,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 const testCQWW = $03;
       MAXCQZONE = 40;
@@ -662,7 +663,7 @@ var
    boo: boolean;
 begin
    Result := nil;
-   str := aQSO.QSO.CallSign;
+   str := aQSO.CallSign;
    if str = '' then
       exit;
    pind := PXIndex(str);
@@ -832,7 +833,7 @@ begin
    end
    else
       C := TCountry(CountryList.List[p.Index]);
-   str := aQSO.QSO.CallSign;
+   str := aQSO.CallSign;
    i := C.Zone;
 
    if (C.Country = 'W') or (C.Country = 'K') then begin
@@ -937,7 +938,7 @@ begin
 
    if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your call sign') then begin
       aQSO := TQSO.Create;
-      aQSO.QSO.CallSign := Uppercase(dmZlogGlobal.Settings._mycall);
+      aQSO.CallSign := Uppercase(dmZlogGlobal.Settings._mycall);
 
       p := GetPrefix(aQSO);
       // i := GetCountryIndex(aQSO);
@@ -1156,12 +1157,15 @@ var
    i: integer;
    fullpath: string;
 begin
-   fullpath := dmZLogGlobal.Settings._cfgdatpath + fileName;
+   fullpath := filename;
    if FileExists(fullpath) = False then begin
-      fullpath := ExtractFilePath(Application.ExeName) + filename;
+      fullpath := dmZLogGlobal.Settings._cfgdatpath + filename;
       if FileExists(fullpath) = False then begin
-         MessageDlg('DAT file [' + fileName + '] cannot be opened', mtError, [mbOK], 0);
-         Exit;
+         fullpath := ExtractFilePath(Application.ExeName) + filename;
+         if FileExists(fullpath) = False then begin
+            MessageDlg('DAT file [' + fullpath + '] cannot be opened', mtError, [mbOK], 0);
+            Exit;
+         end;
       end;
    end;
 

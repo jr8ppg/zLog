@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, UzLogGlobal, UzLogCW, ClipBrd, UzLogKeyer;
+  StdCtrls, ExtCtrls, ClipBrd,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer;
 
 type
   TCWKeyBoard = class(TForm)
@@ -116,7 +117,7 @@ begin
           begin
             i := Pos(':***********',S);
             Delete(S, i, 12);
-            Insert(CurrentQSO.QSO.Callsign, S, i);
+            Insert(CurrentQSO.Callsign, S, i);
           end;
         ClipBoard.AsText := S;
         Console.PasteFromClipBoard;

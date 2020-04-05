@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UzLogGlobal, StdCtrls, ExtCtrls, Buttons;
+  UzLogConst, UzLogGlobal, UzLogQSO, StdCtrls, ExtCtrls, Buttons;
 
 type
   TBasicScore = class(TForm)
@@ -156,10 +156,10 @@ var
 begin
    Reset;
    for i := 1 to Log.TotalQSO do begin
-      band := TQSO(Log.List[i]).QSO.band;
+      band := TQSO(Log.List[i]).band;
       inc(QSO[band]);
-      inc(Points[band], TQSO(Log.List[i]).QSO.Points);
-      if TQSO(Log.List[i]).QSO.NewMulti1 then
+      inc(Points[band], TQSO(Log.List[i]).Points);
+      if TQSO(Log.List[i]).NewMulti1 then
          inc(Multi[band]);
    end;
 end;
@@ -172,15 +172,19 @@ procedure TBasicScore.AddNoUpdate(var aQSO: TQSO);
 var
    B: TBand;
 begin
-   B := aQSO.QSO.band;
+   B := aQSO.band;
    inc(QSO[B]);
-   if aQSO.QSO.mode = mCW then
+
+   if aQSO.mode = mCW then
       inc(CWQSO[B]);
-   if aQSO.QSO.mode = mFM then
+
+   if aQSO.mode = mFM then
       inc(FMQSO[B]);
-   if aQSO.QSO.NewMulti1 then
+
+   if aQSO.NewMulti1 then
       inc(Multi[B]);
-   { if aQSO.QSO.NewMulti2 then
+
+   { if aQSO.NewMulti2 then
      inc(Multi2[B]); }
 end;
 

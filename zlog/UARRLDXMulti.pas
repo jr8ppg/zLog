@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UACAGMulti, StdCtrls, checklst, JLLabel, ExtCtrls, UzLogGlobal, Grids,
-  Cologrid;
+  UACAGMulti, StdCtrls, checklst, JLLabel, ExtCtrls, Grids,
+  Cologrid, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TState = class
@@ -60,7 +60,7 @@ var i : integer;
     S : TState;
 begin
   Result := nil;
-  str := aQSO.QSO.NrRcvd;
+  str := aQSO.NrRcvd;
   for i := 0 to SL.List.Count-1 do
     begin
       S := TState(SL.List[i]);
@@ -127,7 +127,7 @@ begin
       exit;
     end;
   str := S.Summary2;
-  if S.Worked[aQSO.QSO.Band] then
+  if S.Worked[aQSO.Band] then
     Insert('Worked on this band. ',str, 27)
   else
     Insert('Needed on this band. ',str, 27);
@@ -140,25 +140,25 @@ var str : string;
     j : integer;
     S : TState;
 begin
-  aQSO.QSO.NewMulti1 := False;
+  aQSO.NewMulti1 := False;
 
-  if aQSO.QSO.Dupe then
+  if aQSO.Dupe then
     exit;
 
   S := GetState(aQSO, StateList);
   if S <> nil then
     begin
-      aQSO.QSO.Multi1 := S.StateAbbrev;
-      if S.Worked[aQSO.QSO.Band] = false then
+      aQSO.Multi1 := S.StateAbbrev;
+      if S.Worked[aQSO.Band] = false then
         begin
-          S.Worked[aQSO.QSO.band] := True;
-          aQSO.QSO.NewMulti1 := True;
+          S.Worked[aQSO.band] := True;
+          aQSO.NewMulti1 := True;
         end;
     end
   else
     begin
-      aQSO.QSO.Multi1 := '';
-      aQSO.QSO.Memo := 'INVALID EXCHANGE '+aQSO.QSO.Memo;
+      aQSO.Multi1 := '';
+      aQSO.Memo := 'INVALID EXCHANGE '+aQSO.Memo;
     end;
 end;
 
@@ -294,7 +294,7 @@ procedure TARRLDXMulti.GridSetting(ARow, Acol: Integer;
 var B : TBand;
 begin
   //inherited;
-  B := Main.CurrentQSO.QSO.Band;
+  B := Main.CurrentQSO.Band;
   if TState(StateList.List[ARow]).Worked[B] then
     FColor := clRed
   else

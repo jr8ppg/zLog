@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, Buttons, ExtCtrls, UzLogGlobal;
+  UBasicScore, Grids, StdCtrls, Buttons, ExtCtrls,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 const
   BandFactor : array[b19..b28] of integer =
@@ -47,14 +48,14 @@ var
 begin
    Reset;
    for i := 1 to Log.TotalQSO do begin
-      band := TQSO(Log.List[i]).QSO.band;
+      band := TQSO(Log.List[i]).band;
       Inc(QSO[band]);
-      Inc(Points[band], TQSO(Log.List[i]).QSO.Points);
+      Inc(Points[band], TQSO(Log.List[i]).Points);
 
-      if TQSO(Log.List[i]).QSO.NewMulti1 then begin
+      if TQSO(Log.List[i]).NewMulti1 then begin
          Inc(Multi[band]);
       end;
-      if pos('[QTC', TQSO(Log.List[i]).QSO.Memo) > 0 then begin
+      if pos('[QTC', TQSO(Log.List[i]).Memo) > 0 then begin
          Inc(QTCs[band]);
       end;
    end;
@@ -66,19 +67,19 @@ var
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
-   if aQSO.QSO.Multi1 = 'Non-EU' then begin
+   if aQSO.Multi1 = 'Non-EU' then begin
       Exit;
    end;
 
-   band := aQSO.QSO.band;
-   aQSO.QSO.Points := 1;
+   band := aQSO.band;
+   aQSO.Points := 1;
    Inc(Points[band]);
 
-   if pos('[QTC', aQSO.QSO.Memo) > 0 then begin
+   if pos('[QTC', aQSO.Memo) > 0 then begin
       Inc(QTCs[band]);
    end;
 end;

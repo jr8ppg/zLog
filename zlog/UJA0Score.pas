@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Buttons;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TJA0Score = class(TBasicScore)
@@ -42,7 +43,7 @@ end;
 
 function TJA0Score.IsJA0(aQSO : TQSO) : boolean;
 begin
-   if Pos('0',aQSO.QSO.CallSign) > 0 then begin
+   if Pos('0',aQSO.CallSign) > 0 then begin
       Result := True;
    end
    else begin
@@ -54,18 +55,18 @@ procedure TJA0Score.AddNoUpdate(var aQSO : TQSO);
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
    if IsJA0(aQSO) then begin
-      aQSO.QSO.Points := 3;
+      aQSO.Points := 3;
    end
    else begin
-      aQSO.QSO.Points := 1;
+      aQSO.Points := 1;
    end;
 
-   Inc(Points[aQSO.QSO.band], aQSO.QSO.Points);
+   Inc(Points[aQSO.band], aQSO.Points);
 end;
 
 procedure TJA0Score.Update;

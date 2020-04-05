@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, UzLogGlobal, ExtCtrls, Buttons, Spin;
+  StdCtrls, ExtCtrls, Buttons, Spin,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 const sortTime = 1;
       sortBand = 2;
@@ -109,11 +110,11 @@ procedure TPartialCheck.SortByCall(var QSOList : TList);
   begin
     Lo := iLo;
     Hi := iHi;
-    Mid := TQSO(QSOList[(Lo + Hi) div 2]).QSO.Callsign;
+    Mid := TQSO(QSOList[(Lo + Hi) div 2]).Callsign;
     repeat
-      while CompareText(TQSO(QSOList[Lo]).QSO.CallSign, Mid) < 0 do
+      while CompareText(TQSO(QSOList[Lo]).CallSign, Mid) < 0 do
         inc(Lo);
-      while CompareText(TQSO(QSOList[Hi]).QSO.CallSign, Mid) > 0 do
+      while CompareText(TQSO(QSOList[Hi]).CallSign, Mid) > 0 do
         dec(Hi);
       if Lo <= Hi then
         begin
@@ -138,11 +139,11 @@ procedure TPartialCheck.SortByTime(var QSOList : TList);
   begin
     Lo := iLo;
     Hi := iHi;
-    Mid := TQSO(QSOList[(Lo + Hi) div 2]).QSO.Time;
+    Mid := TQSO(QSOList[(Lo + Hi) div 2]).Time;
     repeat
-      while (TQSO(QSOList[Lo]).QSO.Time < Mid) do
+      while (TQSO(QSOList[Lo]).Time < Mid) do
         inc(Lo);
-      while (TQSO(QSOList[Hi]).QSO.Time > Mid) do
+      while (TQSO(QSOList[Hi]).Time > Mid) do
         dec(Hi);
       if Lo <= Hi then
         begin
@@ -169,11 +170,11 @@ var BandOrder : array[b19..b10g] of integer;
   begin
     Lo := iLo;
     Hi := iHi;
-    Mid := BandOrder[TQSO(QSOList[(Lo + Hi) div 2]).QSO.Band];
+    Mid := BandOrder[TQSO(QSOList[(Lo + Hi) div 2]).Band];
     repeat
-      while (BandOrder[TQSO(QSOList[Lo]).QSO.Band] < Mid) do
+      while (BandOrder[TQSO(QSOList[Lo]).Band] < Mid) do
         inc(Lo);
-      while (BandOrder[TQSO(QSOList[Hi]).QSO.Band] > Mid) do
+      while (BandOrder[TQSO(QSOList[Hi]).Band] > Mid) do
         dec(Hi);
       if Lo <= Hi then
         begin
@@ -189,7 +190,7 @@ var BandOrder : array[b19..b10g] of integer;
 begin
   for b := b19 to b10g do
     BandOrder[b] := ord(b)+1;
-  BandOrder[Main.CurrentQSO.QSO.Band] := 0;
+  BandOrder[Main.CurrentQSO.Band] := 0;
 
   QuickSortBand(QSOList,0,QSOList.Count-1);
 end;
@@ -225,7 +226,7 @@ begin
   TempQSO := aQSO;
   TempList := TList.Create;
   // ListBox.Items.Clear;
-  PartialStr := aQSO.QSO.NrRcvd;
+  PartialStr := aQSO.NrRcvd;
   if PartialStr <> '' then
     begin
 
@@ -245,8 +246,8 @@ begin
 }
 
       for i := 1 to Log.TotalQSO do
-        if Pos(PartialStr, TQSO(Log.List[i]).QSO.NrRcvd) > 0 then
-          if AllBand or (not(AllBand) and (aQSO.QSO.band = TQSO(Log.List[i]).QSO.band)) then
+        if Pos(PartialStr, TQSO(Log.List[i]).NrRcvd) > 0 then
+          if AllBand or (not(AllBand) and (aQSO.band = TQSO(Log.List[i]).band)) then
             begin
               TempList.Add(TQSO(Log.List[i]));
               if _count >= DispMax then
@@ -292,7 +293,7 @@ begin
   for i := 0 to QSOList.Count-1 do
     begin
       S := TQSO(QSOList[i]).PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
-      if TQSO(QSOList[i]).QSO.Band = Main.CurrentQSO.QSO.Band then
+      if TQSO(QSOList[i]).Band = Main.CurrentQSO.Band then
         S := '*' + S;
       ListBox.Items.Add(S);
     end;
@@ -312,7 +313,7 @@ begin
   _count := 0;
   TempQSO := aQSO;
   //ListBox.Items.Clear;
-  PartialStr := aQSO.QSO.Callsign;
+  PartialStr := aQSO.Callsign;
   if dmZlogGlobal.Settings._searchafter >= length(PartialStr) then
     begin
       ListBox.Items.Clear;
@@ -327,8 +328,8 @@ begin
     begin
       for i := 1 to Log.TotalQSO do
 //      if Pos(PartialStr, TQSO(Log.List[i]).QSO.Callsign) > 0 then
-        if PartialMatch(PartialStr, TQSO(Log.List[i]).QSO.Callsign) then
-          if AllBand or (not(AllBand) and (aQSO.QSO.band = TQSO(Log.List[i]).QSO.band)) then
+        if PartialMatch(PartialStr, TQSO(Log.List[i]).Callsign) then
+          if AllBand or (not(AllBand) and (aQSO.band = TQSO(Log.List[i]).band)) then
             begin
               //ListBox.Items.Add(TQSO(Log.List[i]).PartialSummary);
               TempList.Add(TQSO(Log.List[i]));
@@ -364,7 +365,7 @@ disp :
 
   RenewListBox(TempList);
 
-  HitCall := TQSO(TempList.Items[0]).QSO.Callsign;
+  HitCall := TQSO(TempList.Items[0]).Callsign;
 
   TempList.Free;
 end;

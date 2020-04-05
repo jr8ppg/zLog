@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Buttons;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
+  UzLOgConst, UzLogGlobal, UzLogQSO;
 
 type
   TKCJScore = class(TBasicScore)
@@ -29,21 +30,21 @@ var
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
-   band := aQSO.QSO.band;
-   // aQSO.QSO.points := 1;
+   band := aQSO.band;
+   // aQSO.points := 1;
 
-   if pos(aQSO.QSO.NrRcvd + '$', 'AS$NA$SA$EU$AF$OC$') > 0 then begin
-      aQSO.QSO.Points := 5;
+   if pos(aQSO.NrRcvd + '$', 'AS$NA$SA$EU$AF$OC$') > 0 then begin
+      aQSO.Points := 5;
    end
    else begin
-      aQSO.QSO.Points := 1;
+      aQSO.Points := 1;
    end;
 
-   Inc(Points[band], aQSO.QSO.Points);
+   Inc(Points[band], aQSO.Points);
 end;
 
 procedure TKCJScore.Update;

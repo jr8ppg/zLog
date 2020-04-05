@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UCheckWin, StdCtrls, ExtCtrls, UWWMulti, UMultipliers, UzLogGlobal, Main;
+  UCheckWin, StdCtrls, ExtCtrls, UWWMulti, UMultipliers, Main,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TCheckCountry = class(TCheckWin)
@@ -38,7 +39,7 @@ var cty : string;
     BoxFlags : array[0..20] of boolean;
 begin
   ResetListBox;
-  if length(aQSO.QSO.Callsign) = 0 then
+  if length(aQSO.Callsign) = 0 then
     exit;
   for i := 0 to 20 do
     BoxFlags[i] := False;
@@ -49,13 +50,13 @@ begin
   TempCountry := C;
   Caption := C.Country+': '+C.CountryName+' '+C.Continent;
   cty := C.Country;
-  PartialStr := aQSO.QSO.Callsign;
+  PartialStr := aQSO.Callsign;
   if cty <> '' then
     begin
       for i := Log.TotalQSO downto 1 do
-        if cty = TQSO(Log.List[i]).QSO.Multi2 then
+        if cty = TQSO(Log.List[i]).Multi2 then
           begin
-            B := TQSO(Log.List[i]).QSO.Band;
+            B := TQSO(Log.List[i]).Band;
             row := BandRow[B];
             if row >= 0 then
               begin
@@ -67,7 +68,7 @@ begin
                   end
                 else
                   begin
-                    if TQSO(Log.List[i]).QSO.Callsign = PartialStr then
+                    if TQSO(Log.List[i]).Callsign = PartialStr then
                       begin
                         ListBox.Items.Delete(row);
                         ListBox.Items.Insert(row, Main.MyContest.CheckWinSummary(TQSO(Log.List[i])));
@@ -78,7 +79,7 @@ begin
     end;
   z := 0;
   try
-    z := StrToInt(aQSO.QSO.NrRcvd);
+    z := StrToInt(aQSO.NrRcvd);
   except
     on EConvertError do
       z := 0;

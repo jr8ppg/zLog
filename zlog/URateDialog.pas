@@ -3,7 +3,7 @@ unit URateDialog;
 interface
 
 uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, wsaGraph, UOptions, UzLogGlobal;
+  Buttons, ExtCtrls, wsaGraph, UOptions, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TRateDialog = class(TForm)
@@ -72,7 +72,7 @@ begin
    k := 0;
    repeat
       aQSO := TQSO(Log.List[i]);
-      if aQSO.QSO.TX = mytx then begin
+      if aQSO.TX = mytx then begin
          inc(k);
       end;
 
@@ -81,7 +81,7 @@ begin
 
   if (k = 10) then
     begin
-      Last := aQSO.QSO.time;
+      Last := aQSO.time;
       Diff := (CurrentTime - Last) * 24.0 ;
       Rate := 10 / Diff;
       if Rate > _Max10 then
@@ -98,7 +98,7 @@ begin
   k := 0;
   repeat
     aQSO := TQSO(Log.List[i]);
-    if aQSO.QSO.TX = mytx then
+    if aQSO.TX = mytx then
       begin
         inc(k);
       end;
@@ -107,7 +107,7 @@ begin
 
   if k = 100 then
     begin
-      Last := aQSO.QSO.time;
+      Last := aQSO.time;
       Diff := (CurrentTime - Last) * 24.0 ;
       Rate := 100 / Diff;
       If Rate > _Max100 then
@@ -187,7 +187,7 @@ begin
   Result := 0;
   for i := 1 to Log.TotalQSO do
     begin
-      T := TQSO(Log.List[i]).QSO.Time;
+      T := TQSO(Log.List[i]).Time;
       if (T >= _start) and (T < _end) then
         inc(Result);
     end;
@@ -210,7 +210,7 @@ begin
 
   if Log.TotalQSO = 0 then
     exit;
-  if TQSO(Log.List[Log.TotalQSO]).QSO.Time < _Start then
+  if TQSO(Log.List[Log.TotalQSO]).Time < _Start then
     exit;
 
   for k := 0 to ShowLast - 1 do

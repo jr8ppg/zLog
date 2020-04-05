@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Buttons;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TSixDownScore = class(TBasicScore)
@@ -31,19 +32,19 @@ var
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
-   band := aQSO.QSO.band;
+   band := aQSO.band;
    if band in [b2400 .. HiBand] then begin
-      aQSO.QSO.points := 2;
+      aQSO.points := 2;
    end
    else begin
-      aQSO.QSO.points := 1;
+      aQSO.points := 1;
    end;
 
-   inc(points[band], aQSO.QSO.points);
+   inc(points[band], aQSO.points);
 end;
 
 procedure TSixDownScore.Update;

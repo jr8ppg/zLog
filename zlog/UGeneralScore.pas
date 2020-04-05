@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, StdCtrls, ExtCtrls, UzLogGlobal, Menus, Grids, UITypes,
-  UMultipliers, Buttons, UGeneralMulti2;
+  UBasicScore, StdCtrls, ExtCtrls, Menus, Grids, UITypes, Buttons,
+  UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers, UGeneralMulti2;
 
 
 type
@@ -457,15 +457,19 @@ begin
 
          if com = 'DAT' then begin
             tstr := opr;
-            if pos('.', tstr) = 0 then
+            if pos('.', tstr) = 0 then begin
                tstr := tstr + '.DAT';
+            end;
+
+            tstr := ExtractFilePath(Filename) + tstr;
+
             formMulti.LoadDAT(tstr);
          end;
 
          if com = 'TIME' then
             if opr = 'UTC' then begin
                UseUTC := true;
-               TQSO(Log.List[0]).QSO.RSTSent := _USEUTC; // JST = 0; UTC = $FFFF
+               TQSO(Log.List[0]).RSTSent := _USEUTC; // JST = 0; UTC = $FFFF
             end;
 
          if com = 'CTY' then begin
@@ -751,40 +755,40 @@ end;
 procedure TGeneralScore.CalcPoints(var aQSO: TQSO);
 var
    i: Integer;
-   ch: AnsiChar;
+   ch: Char;
    C: TCountry;
 begin
-   aQSO.QSO.Points := PointsTable[aQSO.QSO.band, aQSO.QSO.Mode];
+   aQSO.Points := PointsTable[aQSO.band, aQSO.Mode];
 
    if formMulti._DXTEST then begin
       if SameCTYPoints or SameCONTPoints then begin
-         i := aQSO.QSO.Power2;
+         i := aQSO.Power2;
          if (i < CountryList.List.Count) and (i >= 0) then begin
             C := TCountry(CountryList.List[i]);
             if SameCTYPoints and (C.Country = MyCountry) then
-               aQSO.QSO.Points := SameCTYPointsTable[aQSO.QSO.band, aQSO.QSO.Mode]
+               aQSO.Points := SameCTYPointsTable[aQSO.band, aQSO.Mode]
             else if SameCONTPoints and (C.Continent = MyContinent) then
-               aQSO.QSO.Points := SameCONTPointsTable[aQSO.QSO.band, aQSO.QSO.Mode];
+               aQSO.Points := SameCONTPointsTable[aQSO.band, aQSO.Mode];
          end;
       end;
    end;
 
    if formMulti.IsLocal(aQSO) then
-      aQSO.QSO.Points := LocalPointsTable[aQSO.QSO.band, aQSO.QSO.Mode];
+      aQSO.Points := LocalPointsTable[aQSO.band, aQSO.Mode];
 
    if AlphabetPoints then begin
-      aQSO.QSO.Points := 0;
-      i := length(aQSO.QSO.NrRcvd);
+      aQSO.Points := 0;
+      i := length(aQSO.NrRcvd);
       if i > 0 then begin
-         ch := aQSO.QSO.NrRcvd[i];
+         ch := aQSO.NrRcvd[i];
          if ch in ['0' .. 'Z'] then
-            aQSO.QSO.Points := AlphabetPointsTable[ord(ch)];
+            aQSO.Points := AlphabetPointsTable[ord(ch)];
       end;
    end;
 
    if SpecialCalls <> '' then begin
-      if pos(',' + aQSO.QSO.Callsign + ',', ',' + SpecialCalls + ',') > 0 then
-         aQSO.QSO.Points := SpecialCallPointsTable[aQSO.QSO.band, aQSO.QSO.Mode];
+      if pos(',' + aQSO.Callsign + ',', ',' + SpecialCalls + ',') > 0 then
+         aQSO.Points := SpecialCallPointsTable[aQSO.band, aQSO.Mode];
    end;
 end;
 
@@ -795,7 +799,7 @@ var
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then
+   if aQSO.Dupe then
       exit;
 
    CalcPoints(aQSO);
@@ -803,18 +807,18 @@ begin
    if Log.CountHigherPoints = true then begin
       i := Log.DifferentModePointer;
       If i > 0 then begin
-         if TQSO(Log.List[i]).QSO.Points < aQSO.QSO.Points then begin
+         if TQSO(Log.List[i]).Points < aQSO.Points then begin
             tempQSO := TQSO(Log.List[i]);
-            Dec(Points[tempQSO.QSO.band], tempQSO.QSO.Points);
-            TQSO(Log.List[i]).QSO.Points := 0;
+            Dec(Points[tempQSO.band], tempQSO.Points);
+            TQSO(Log.List[i]).Points := 0;
             // NeedRefresh := True;
          end
          else
-            aQSO.QSO.Points := 0;
+            aQSO.Points := 0;
       end;
    end;
 
-   inc(Points[aQSO.QSO.band], aQSO.QSO.Points);
+   inc(Points[aQSO.band], aQSO.Points);
 end;
 
 procedure TGeneralScore.Reset;

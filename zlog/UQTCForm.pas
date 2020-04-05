@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, Spin, UzLogGlobal, uzLogCW, UZLinkForm, UzLogKeyer;
+  StdCtrls, Spin,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UZLinkForm, UzLogKeyer;
 
 type
   TQTCForm = class(TForm)
@@ -56,11 +57,11 @@ begin
   for i := 1 to Log.TotalQSO do
     begin
       QQ := TQSO(Log.List[i]);
-      if QQ.QSO.Dupe or (QQ.QSO.Points = 0) then goto BYPASS;
-      j := pos('[QTC', QQ.QSO.memo);
+      if QQ.Dupe or (QQ.Points = 0) then goto BYPASS;
+      j := pos('[QTC', QQ.memo);
       if j = 0 then
         begin
-          if CoreCall(QQ.QSO.CallSign) <> CoreCall(Q.QSO.Callsign) then
+          if CoreCall(QQ.CallSign) <> CoreCall(Q.Callsign) then
             begin
               if QTCList.Count < 10 then
                 QTCList.Add(QQ);
@@ -68,7 +69,7 @@ begin
         end
       else // get QTC Series and check for QTCs sent in the past
         begin
-          SS := QQ.QSO.Memo;
+          SS := QQ.Memo;
           Delete(SS, 1, j-1); // SS = [QTC??/?? CALLSIGN date time band]
           j := pos('/', SS);
           if j > 0 then
@@ -91,7 +92,7 @@ begin
                     if j > 0 then
                       begin
                         SSS := copy(SS, 1, j-1);
-                        if CoreCall(Q.QSO.Callsign) = CoreCall(SSS) then
+                        if CoreCall(Q.Callsign) = CoreCall(SSS) then
                           inc(PastQTC);
                       end;
                 end;
@@ -106,7 +107,7 @@ begin
     ListBox.Items[i] := TQSO(QTCList[i]).QTCStr;
 
   if PastQTC > 0 then
-    Label2.Caption := IntToStr(PastQTC) + ' QTCs have been sent to ' + Q.QSO.Callsign + ' already'
+    Label2.Caption := IntToStr(PastQTC) + ' QTCs have been sent to ' + Q.Callsign + ' already'
   else
     Label2.Caption := '';
 
@@ -117,7 +118,7 @@ begin
   if QTCList.Count > 0 then
     begin
       Inc(QTCSeries);
-      Label1.Caption := Q.QSO.Callsign + ' QTC ' + IntToStr(QTCSeries) + '/' +
+      Label1.Caption := Q.Callsign + ' QTC ' + IntToStr(QTCSeries) + '/' +
                         IntToStr(SpinEdit.Value);
     end;
 end;
@@ -136,9 +137,9 @@ begin
 
   if QTCToBeSent = 0 then
     begin
-      if QTCReqStn.QSO.Mode = mCW then
+      if QTCReqStn.Mode = mCW then
         begin
-          S := '   '+QTCReqStn.QSO.Callsign + ' QTC ' + IntToStr(QTCSeries) + '/' +
+          S := '   '+QTCReqStn.Callsign + ' QTC ' + IntToStr(QTCSeries) + '/' +
                IntToStr(SpinEdit.Value);
           zLogSendStr(S+'"');
 
@@ -156,14 +157,14 @@ begin
     begin
       ListBox.Selected[QTCToBeSent-1] := True;
       cQ := TQSO(QTCList[QTCToBeSent-1]);
-      if pos('[QTC', cQ.QSO.Memo) = 0 then
-        cQ.QSO.Memo := '[QTC'+IntToSTr(QTCSeries)+'/'+IntToStr(SpinEdit.Value) + ' ' + QTCReqStn.QSO.Callsign +
-                       FormatDateTime(' yyyy-mm-dd hhnn ', CurrentTime) + ADIFBandString[QTCReqStn.QSO.Band] + ']'
-                       +cQ.QSO.Memo;
+      if pos('[QTC', cQ.Memo) = 0 then
+        cQ.Memo := '[QTC'+IntToSTr(QTCSeries)+'/'+IntToStr(SpinEdit.Value) + ' ' + QTCReqStn.Callsign +
+                       FormatDateTime(' yyyy-mm-dd hhnn ', CurrentTime) + ADIFBandString[QTCReqStn.Band] + ']'
+                       +cQ.Memo;
 
       ZLinkForm.EditQSObyID(cQ);
 
-      if QTCReqStn.QSO.Mode = mCW then
+      if QTCReqStn.Mode = mCW then
         begin
           //S := SetStr(cQ.QTCStr, cQ);
           S := cQ.QTCStr;
@@ -201,7 +202,7 @@ begin
   if btnSend.Caption = 'Done' then
     btnSend.Caption := 'Send';
   if QTCToBeSent = 0 then
-    Label1.Caption := QTCReqStn.QSO.Callsign + ' QTC ' + IntToStr(QTCSeries) + '/' +
+    Label1.Caption := QTCReqStn.Callsign + ' QTC ' + IntToStr(QTCSeries) + '/' +
                      IntToStr(SpinEdit.Value)
   else
     Label1.Caption := '[QTC ' + IntToStr(QTCSeries) + '/' +
@@ -222,7 +223,7 @@ begin
     ListBox.Items[i] := TQSO(QTCList[i]).QTCStr;
   for i := SpinEdit.Value to 9 do
     ListBox.Items[i] := '';
-  Label1.Caption := QTCReqStn.QSO.Callsign + ' QTC ' + IntToStr(QTCSeries) + '/' +
+  Label1.Caption := QTCReqStn.Callsign + ' QTC ' + IntToStr(QTCSeries) + '/' +
     IntToStr(SpinEdit.Value);
 end;
 
@@ -238,7 +239,7 @@ begin
        for i := 0 to QTCtoBeSent - 2 do
          begin
            Q := TQSO(QTCList[i]);
-           S := Q.QSO.Memo;
+           S := Q.Memo;
            j := pos('[QTC', S);
            if j > 0 then
              begin
@@ -246,7 +247,7 @@ begin
                if SpinEdit.Value = 10 then
                  Delete(S, xpos, 1);
                S[xpos] := IntToStr(QTCtobeSent-1)[1];
-               Q.QSO.Memo := S;
+               Q.Memo := S;
              end;
          end;
      end;

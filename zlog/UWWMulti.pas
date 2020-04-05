@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicMulti, StdCtrls, JLLabel, ExtCtrls, UzLogGlobal, Grids, Cologrid,
-  USpotClass, UComm, UMultipliers, UWWZone;
+  UBasicMulti, StdCtrls, JLLabel, ExtCtrls, Grids, Cologrid,
+  UzLogConst, UzLogGlobal, UzLogQSO, USpotClass, UComm, UMultipliers, UWWZone;
 
 
 type
@@ -190,7 +190,7 @@ procedure TWWMulti.Add(var aQSO : TQSO);
 begin
    AddNoUpdate(aQSO);
 
-   if (aQSO.QSO.Reserve2 <> $AA) and (MostRecentCty <> nil) then begin
+   if (aQSO.Reserve2 <> $AA) and (MostRecentCty <> nil) then begin
       Grid.TopRow := MostRecentCty.GridIndex;
    end;
 
@@ -426,42 +426,42 @@ var
    P: TPrefix;
    _cont: string[3];
 begin
-   aQSO.QSO.NewMulti1 := False;
-   aQSO.QSO.NewMulti2 := False;
-   str := aQSO.QSO.NrRcvd;
-   aQSO.QSO.Multi1 := str;
-   aQSO.QSO.Multi2 := '';
+   aQSO.NewMulti1 := False;
+   aQSO.NewMulti2 := False;
+   str := aQSO.NrRcvd;
+   aQSO.Multi1 := str;
+   aQSO.Multi2 := '';
 
-   if aQSO.QSO.Dupe then
+   if aQSO.Dupe then
       exit;
 
-   B := aQSO.QSO.band;
+   B := aQSO.band;
    i := StrToIntDef(str, 0);
 
    if i in [1..MAXCQZONE] then begin
       if Zone[B,i] = False then begin
         Zone[B,i] := True;
-        aQSO.QSO.NewMulti1 := True;
+        aQSO.NewMulti1 := True;
       end;
    end;
 
    P := GetPrefix(aQSO);
 
    if P = nil then begin
-      aQSO.QSO.Points := 0;
-      aQSO.QSO.Multi1 := 'Unknown';
-      aQSO.QSO.Memo := '** UNKNOWN CTY ** '+aQSO.QSO.Memo;
+      aQSO.Points := 0;
+      aQSO.Multi1 := 'Unknown';
+      aQSO.Memo := '** UNKNOWN CTY ** '+aQSO.Memo;
       exit;
    end;
 
    C := TCountry(CountryList.List[P.Index]);
    MostRecentCty := C;
 
-   aQSO.QSO.Multi2 := C.Country;
+   aQSO.Multi2 := C.Country;
 
    if C.Worked[B] = False then begin
       C.Worked[B] := True;
-      aQSO.QSO.NewMulti2 := True;
+      aQSO.NewMulti2 := True;
       //Grid.Cells[0,C.GridIndex] := C.Summary;
     end;
 
@@ -471,16 +471,16 @@ begin
       _cont := P.OvrContinent;
 
    if MyCountry = C.Country then
-      aQSO.QSO.points := 0
+      aQSO.points := 0
    else begin
       if MyContinent = _cont then begin
          if MyContinent = 'NA' then
-            aQSO.QSO.points := 2
+            aQSO.points := 2
          else
-            aQSO.QSO.points := 1;
+            aQSO.points := 1;
       end
       else begin
-         aQSO.QSO.points := 3;
+         aQSO.points := 3;
       end;
    end;
 end;
@@ -490,7 +490,7 @@ var
    str : string;
    i : integer;
 begin
-   str := aQSO.QSO.NrRcvd;
+   str := aQSO.NrRcvd;
    i := StrToIntDef(str, 0);
 
    if i in [1..MAXCQZONE] then begin
@@ -532,12 +532,12 @@ begin
    temp := C.Country+' '+C.Continent+ ' ';
 
    temp2 := '';
-   if C.Worked[aQSO.QSO.Band] = false then
+   if C.Worked[aQSO.Band] = false then
       temp2 := 'CTY';
 
-   i := StrToIntDef(aQSO.QSO.NrRcvd, 0);
+   i := StrToIntDef(aQSO.NrRcvd, 0);
    if i in [1..40] then begin
-      if Zone[aQSO.QSO.Band, i] = False then begin
+      if Zone[aQSO.Band, i] = False then begin
          temp2 := temp2 + ' ZONE';
       end;
    end;
@@ -589,8 +589,8 @@ var
 begin
    aQSO := TQSO.Create;
    try
-      aQSO.QSO.Callsign := Sp.Call;
-      aQSO.QSO.Band := Sp.Band;
+      aQSO.Callsign := Sp.Call;
+      aQSO.Band := Sp.Band;
 
       Sp.NewCty := False;
       Sp.NewZone := False;
@@ -611,19 +611,19 @@ begin
       if C > 0 then
          Sp.CtyIndex := C;
 
-      temp := aQSO.QSO.CallSign;
-      if (Z > 0) and (Zone[aQSO.QSO.band, Z] = False) then begin {and not singlebander on other band}
+      temp := aQSO.CallSign;
+      if (Z > 0) and (Zone[aQSO.band, Z] = False) then begin {and not singlebander on other band}
          temp := temp + '  new zone : ' + GuessZone(aQSO);
          Sp.NewZone := True;
       end;
 
-      if (C > 0) and (TCountry(CountryList.List[C]).Worked[aQSO.QSO.Band] = false) then begin
+      if (C > 0) and (TCountry(CountryList.List[C]).Worked[aQSO.Band] = false) then begin
          temp := temp + '  new country : ' + (TCountry(CountryList.List[C]).Country);
          Sp.NewCty := True;
       end;
 
       if Sp.NewMulti{Pos('new', temp) > 0} then begin
-         temp := temp + ' at ' + MHzString[aQSO.QSO.band]+ 'MHz';
+         temp := temp + ' at ' + MHzString[aQSO.band]+ 'MHz';
          CommForm.WriteStatusLine(temp);
          MainForm.WriteStatusLineRed(temp, true);
       end;
@@ -651,12 +651,12 @@ var
    i : integer;
    B : TBand;
 begin
-   str := aQSO.QSO.NrRcvd;
+   str := aQSO.NrRcvd;
    i := StrToIntDef(str, 0);
 
    if i in [1..MAXCQZONE] then begin
       str := 'Zone '+IntToStr(i)+ ' : ';
-      if Zone[aQSO.QSO.Band, i] then
+      if Zone[aQSO.Band, i] then
          str := str + 'Worked on this band. '
       else
          str := str + 'Needed on this band. ';
@@ -690,7 +690,7 @@ var
 begin
    Inherited;
 
-   B := Main.CurrentQSO.QSO.Band;
+   B := Main.CurrentQSO.Band;
    if GridReverse[ARow] < 0 then begin
       exit;
    end;
