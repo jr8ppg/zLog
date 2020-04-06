@@ -10,7 +10,7 @@ uses
   UOptions, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
   OEdit, URigControl, UConsolePad, URenewThread, USpotClass,
-  UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UQuickRef,
+  UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UQuickRef, UZAnalyze,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst,
   System.Actions, Vcl.ActnList;
 
@@ -582,6 +582,7 @@ type
     DecreaseFontSize1: TMenuItem;
     actionIncreaseFontSize: TAction;
     actionDecreaseFontSize: TAction;
+    menuAnalyze: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -752,6 +753,7 @@ type
     procedure actionInsertBandScope3Execute(Sender: TObject);
     procedure actionIncreaseFontSizeExecute(Sender: TObject);
     procedure actionDecreaseFontSizeExecute(Sender: TObject);
+    procedure menuAnalyzeClick(Sender: TObject);
   private
     TempQSOList : TQSOList;
     clStatusLine : TColor;
@@ -767,6 +769,9 @@ type
 
     // Quick Reference
     FQuickRef: TQuickRef;
+
+    // Analyze window
+    FZAnalyze: TZAnalyze;
 
     procedure MyIdleEvent(Sender: TObject; var Done: boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: boolean);
@@ -3602,6 +3607,8 @@ begin
 
    FQuickRef := TQuickRef.Create(Self);
 
+   FZAnalyze := TZAnalyze.Create(Self);
+
    TempQSOList := TQSOList.Create('default');
    dmZLogKeyer.ControlPTT(False);
 end;
@@ -5336,6 +5343,7 @@ procedure TMainForm.FormDestroy(Sender: TObject);
 begin
    TempQSOList.Free();
    FQuickRef.Release();
+   FZAnalyze.Release();
 //   dmZLogKeyer.CloseBGK;
 end;
 
@@ -5892,6 +5900,11 @@ begin
    finally
       f.Release();
    end;
+end;
+
+procedure TMainForm.menuAnalyzeClick(Sender: TObject);
+begin
+   FZAnalyze.Show();
 end;
 
 procedure TMainForm.DateEditChange(Sender: TObject);

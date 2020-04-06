@@ -9330,6 +9330,10 @@ object MainForm: TMainForm
         Visible = False
         OnClick = mnTTYConsoleClick
       end
+      object menuAnalyze: TMenuItem
+        Caption = 'Analyze'
+        OnClick = menuAnalyzeClick
+      end
     end
     object Network1: TMenuItem
       Caption = 'Network'

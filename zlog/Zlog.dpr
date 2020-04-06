@@ -89,7 +89,10 @@ uses
   UELogJarl1 in 'UELogJarl1.pas' {formELogJarl1},
   UELogJarl2 in 'UELogJarl2.pas' {formELogJarl2},
   UzLogKeyer in 'UzLogKeyer.pas' {dmZLogKeyer: TDataModule},
-  DialogHook in 'DialogHook.pas';
+  DialogHook in 'DialogHook.pas',
+  UZAnalyze in 'UZAnalyze.pas' {ZAnalyze},
+  UzlogConst in 'UzlogConst.pas',
+  UzLogQSO in 'UzLogQSO.pas';
 
 {$R *.RES}
 
