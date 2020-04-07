@@ -34,9 +34,6 @@ begin
 end;
 
 procedure TARRLWMulti.CheckMulti(aQSO : TQSO);
-var str : string;
-    i : integer;
-    B : TBand;
 begin
 end;
 
@@ -49,10 +46,10 @@ begin
 end;
 
 procedure TARRLWMulti.AddNoUpdate(var aQSO : TQSO);
-var str : string;
-    B : TBand;
-    i, j : integer;
-    C : TCountry;
+var
+    B: TBand;
+    i: integer;
+    C: TCountry;
 begin
   aQSO.NewMulti1 := False;
   aQSO.NewMulti2 := False;

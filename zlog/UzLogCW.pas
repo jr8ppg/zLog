@@ -6,7 +6,7 @@ uses
   SysUtils, UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, UOptions;
 
 var CtrlZCQLoop : boolean;
-    QTHString : string[255];
+    QTHString : string;
     SpeedBefore : integer;
 
 const tabstate_normal = 0;
@@ -22,7 +22,7 @@ var
 function LastCallsign : string;
 function SetStr(S : string; aQSO : TQSO) : String;
 function SetStrNoAbbrev(S : string; aQSO : TQSO) : String; {for QSO.NrSent}
-procedure zLogSendStr(S : shortstring);
+procedure zLogSendStr(S: string);
 procedure CtrlZBreak;
 procedure IncCWSpeed;
 procedure DecCWSpeed;
@@ -92,23 +92,28 @@ begin
    MainForm.SpeedLabel.Caption := IntToStr(i)+' wpm';
 end;
 
-function Abbreviate(S : shortstring) : shortstring;
-var ss : shortstring;
-    i : integer;
+function Abbreviate(S: string): string;
+var
+  ss: string;
+  i: integer;
 begin
   SS := S;
-  for i := 1 to length(SS) do
+
+  for i := 1 to length(SS) do begin
     case SS[i] of
-      '0' : SS[i] := AnsiChar(dmZLogGlobal.Settings.CW._zero);
-      '1' : SS[i] := AnsiChar(dmZLogGlobal.Settings.CW._one);
-      '9' : SS[i] := AnsiChar(dmZLogGlobal.Settings.CW._nine);
+      '0' : SS[i] := dmZLogGlobal.Settings.CW._zero;
+      '1' : SS[i] := dmZLogGlobal.Settings.CW._one;
+      '9' : SS[i] := dmZLogGlobal.Settings.CW._nine;
     end;
+  end;
+
   Result := SS;
 end;
 
 function SetStr(S : string; aQSO : TQSO) : string;
-var temp : shortstring;
-    i : integer;
+var
+  temp: string;
+  i: integer;
 begin
   temp := UpperCase(S);
   while Pos('[AR]',temp) > 0 do
@@ -264,8 +269,9 @@ begin
 end;
 
 function SetStrNoAbbrev(S : string; aQSO : TQSO) : string;
-var temp : shortstring;
-    i : integer;
+var
+  temp: string;
+  i : integer;
 begin
   temp := UpperCase(S);
   if pos('$X', dmZLogGlobal.Settings._sentstr) = 0 then
@@ -360,15 +366,16 @@ begin
   Result := (temp);
 end;
 
-procedure zLogSendStr(S : shortstring);
+procedure zLogSendStr(S: string);
 begin
   dmZLogKeyer.PauseCW;
+
   if dmZLogGlobal.FIFO then
     dmZLogKeyer.SendStrFIFO(S)
   else
     dmZLogKeyer.SendStr(S);
 
-  dmZLogKeyer.SetCallSign(ShortString(Main.CurrentQSO.Callsign));
+  dmZLogKeyer.SetCallSign(Main.CurrentQSO.Callsign);
   dmZLogKeyer.ResumeCW;
 end;
 

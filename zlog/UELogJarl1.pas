@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, IniFiles,
+  Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
 type

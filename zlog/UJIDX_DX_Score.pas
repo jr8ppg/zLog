@@ -19,7 +19,7 @@ type
     procedure Renew; override;
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure CalcPoints(var aQSO : TQSO); virtual;
   end;
 
@@ -95,7 +95,7 @@ begin
    Inc(Points[aQSO.band], aQSO.Points);
 end;
 
-procedure TJIDX_DX_Score.Update;
+procedure TJIDX_DX_Score.UpdateData;
 var
    band: TBand;
    TotQSO, TotPts, TotMulti: LongInt;

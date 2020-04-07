@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ExtCtrls, Console2, StdCtrls, ComCtrls,
+  ExtCtrls, Console2, StdCtrls, ComCtrls, UITypes,
   OverbyteIcsWndControl, OverbyteIcsWSocket,
   UzLogConst, UzLogGlobal, UzLogQSO, UScratchSheet;
 
@@ -42,7 +42,7 @@ type
     procedure ZSocketSessionConnected(Sender: TObject; Error: Word);
   private
     { Private declarations }
-    CommTemp : string[255]; {command work string}
+    CommTemp : string; {command work string}
     CommStarted : boolean;
   public
     { Public declarations }
@@ -266,15 +266,14 @@ begin
 end;
 
 procedure TZLinkForm.ProcessCommand;
-var temp, temp2 : string;
-    aQSO : TQSO;
-    i, j : integer;
-    B : TBand;
-    qid : TQSOID;
-    boo, needtorenew : boolean;
+var
+   temp, temp2 : string;
+   aQSO : TQSO;
+   i, j : integer;
+   qid : TQSOID;
+   boo, needtorenew : boolean;
 begin
-  while CommandQue.Count > 0 do
-    begin
+   while CommandQue.Count > 0 do begin
       temp := CommandQue.Strings[0];
       temp := copy(temp, length(ZLinkHeader)+2, 255);
 
@@ -296,14 +295,12 @@ begin
             end;
         end;  }
 
-      if pos('FREQ', temp) = 1 then
-        begin
+      if pos('FREQ', temp) = 1 then begin
           temp := copy(temp, 6, 255);
           FreqList.ProcessFreqData(temp);
-        end;
+      end;
 
-      if pos('QSOIDS', temp) = 1 then
-        begin
+      if pos('QSOIDS', temp) = 1 then begin
           Delete(temp, 1, 7);
           i := pos(' ', temp);
           while i > 1 do
@@ -317,92 +314,83 @@ begin
               MergeTempList.Add(qid);
               i := pos(' ', temp);
             end;
-        end;
+      end;
 
-      if pos('ENDQSOIDS', temp) = 1 then
-        begin
-          for i := 1 to Log.TotalQSO do
-            begin
-              aQSO := TQSO(Log.List[i]);
+      if pos('ENDQSOIDS', temp) = 1 then begin
+         needtorenew := false;
 
-              boo := false;
-              needtorenew := false;
-              for j := 0 to MergeTempList.Count - 1 do
-                begin
-                  qid := TQSOID(MergeTempList[j]);
-                  if (aQSO.Reserve3 div 100) = qid.QSOIDwoCounter then
-                    begin
-                      if aQSO.Reserve3 = qid.FullQSOID then // exactly the same qso
-                        begin
-                          MergeTempList.Delete(j);
-                          qid.free;
-                          boo := true;
-                          break;
-                        end
-                      else // counter is different
-                        begin
-                          if qid.FullQSOID > aQSO.Reserve3 then // serverdata is newer
-                            begin
-                              boo := true;
-                              WriteData(ZLinkHeader+' '+'SENDQSOIDEDIT '+
-                                        IntToStr(qid.FullQSOID)+LineBreakCode[ord(Console.LineBreak)]);
-                              qid.free;
-                              break;
-                              // qid qso must be sent as editqsoto command;
-                            end
-                          else  // local data is newer
-                            begin
-                              boo := true;
-                              MergeTempList.Delete(j);
-                              WriteData(ZLinkHeader+' '+'EDITQSOTO '+aQSO.QSOinText+LineBreakCode[ord(Console.LineBreak)]);
-                              qid.free;
-                              break;
-                              // aQSO moved to ToSendList (but edit)
-                              // or just ask to send immediately
-                            end;
-                        end;
-                    end;
-                end;
-                if boo = false then
-                  begin
-                    SendQSO_PUTLOG(aQSO);
-                    needtorenew := true;
-                    // add aQSO to ToSendList;
-                    // or just send putlog ...
-                    // renew after done.
+         for i := 1 to Log.TotalQSO do begin
+            aQSO := TQSO(Log.List[i]);
+
+            boo := false;
+
+            for j := 0 to MergeTempList.Count - 1 do begin
+               qid := TQSOID(MergeTempList[j]);
+               if (aQSO.Reserve3 div 100) = qid.QSOIDwoCounter then begin
+                  if aQSO.Reserve3 = qid.FullQSOID then begin // exactly the same qso
+                     MergeTempList.Delete(j);
+                     qid.free;
+                     boo := true;
+                     break;
+                  end
+                  else begin // counter is different
+                     if qid.FullQSOID > aQSO.Reserve3 then begin // serverdata is newer
+                        boo := true;
+                        WriteData(ZLinkHeader+' '+'SENDQSOIDEDIT '+
+                            IntToStr(qid.FullQSOID)+LineBreakCode[ord(Console.LineBreak)]);
+                        qid.free;
+                        break;
+                        // qid qso must be sent as editqsoto command;
+                     end
+                     else begin  // local data is newer
+                        boo := true;
+                        MergeTempList.Delete(j);
+                        WriteData(ZLinkHeader+' '+'EDITQSOTO '+aQSO.QSOinText+LineBreakCode[ord(Console.LineBreak)]);
+                        qid.free;
+                        break;
+                        // aQSO moved to ToSendList (but edit)
+                        // or just ask to send immediately
+                     end;
                   end;
+               end;
             end;
-          // getqsos from MergeTempList; (whatever is left)
-          // Free MergeTempList;
-          if needtorenew then
-            WriteData(ZLinkHeader+' '+'RENEW'+LineBreakCode[ord(Console.LineBreak)]);
-          SendMergeTempList;
-        end;
 
-      if pos('PROMPTUPDATE', temp) = 1 then  // file loaded on ZServer
-        begin
+            if boo = false then begin
+               SendQSO_PUTLOG(aQSO);
+               needtorenew := true;
+               // add aQSO to ToSendList;
+               // or just send putlog ...
+               // renew after done.
+            end;
+         end;
+
+         // getqsos from MergeTempList; (whatever is left)
+         // Free MergeTempList;
+         if needtorenew then begin
+            WriteData(ZLinkHeader+' '+'RENEW'+LineBreakCode[ord(Console.LineBreak)]);
+         end;
+
+          SendMergeTempList;
+      end;
+
+      if pos('PROMPTUPDATE', temp) = 1 then begin // file loaded on ZServer
          { if MessageDlg('The file on Z-Server has been updated. Do you want to download the data now?',
                            mtConfirmation, [mbYes, mbNo], 0) = mrYes then
             LoadLogFromZServer; }
-        end;
-      if pos('NEWPX', temp) = 1 then
-        begin
+      end;
+
+      if pos('NEWPX', temp) = 1 then begin
           Delete(temp, 1, 6);
-          try
-            i := StrToInt(TrimRight(copy(temp, 1, 6)));
-          except
-            on EConvertError do
-              i := -1;
-          end;
-          if i >= 0 then
-            begin
+
+          i := StrToIntDef(TrimRight(copy(temp, 1, 6)), -1);
+          if i >= 0 then begin
               Delete(temp, 1, 6);
               if temp <> '' then
                 MyContest.MultiForm.AddNewPrefix(temp, i);
             end;
-        end;
-      if pos('PUTMESSAGE', temp) = 1 then
-        begin
+      end;
+
+      if pos('PUTMESSAGE', temp) = 1 then begin
           Delete(temp, 1, 11);
           if pos('!', temp) = 1 then
             begin
@@ -412,62 +400,62 @@ begin
           else
             MainForm.WriteStatusLine(temp, false);
           ChatForm.Add(temp);
-        end;
-      if pos('POSTWANTED', temp) = 1 then
-        begin
+      end;
+
+      if pos('POSTWANTED', temp) = 1 then begin
           temp := copy(temp, 12, 255);
           MyContest.PostWanted(temp);
-        end;
-      if pos('DELWANTED', temp) = 1 then
-        begin
+      end;
+
+      if pos('DELWANTED', temp) = 1 then begin
           temp := copy(temp, 11, 255);
           MyContest.DelWanted(temp);
-        end;
-      if pos('SPOT ', temp) = 1 then
-        begin
+      end;
+
+      if pos('SPOT ', temp) = 1 then begin
           temp := copy(temp, 6, 255);
           CommForm.PreProcessSpotFromZLink(temp);
-        end;
-      if pos('BSDATA ', temp) = 1 then
-        begin
+      end;
+
+      if pos('BSDATA ', temp) = 1 then begin
           temp := copy(temp, 8, 255);
           BandScope2.ProcessBSDataFromNetwork(temp);
-        end;
-      if pos('SENDSPOT ', temp) = 1 then
-        begin
+      end;
+
+      if pos('SENDSPOT ', temp) = 1 then begin
           temp := copy(temp, 10, 255);
           CommForm.WriteLine(temp);
-        end;
-      if pos('SENDCLUSTER ', temp) = 1 then // remote manipulation of cluster console
-        begin
+      end;
+
+      if pos('SENDCLUSTER ', temp) = 1 then begin // remote manipulation of cluster console
           temp := copy(temp, 13, 255);
           CommForm.WriteLine(temp);
-        end;
-      if pos('SENDPACKET ', temp) = 1 then
-        begin
+      end;
+
+      if pos('SENDPACKET ', temp) = 1 then begin
           temp := copy(temp, 12, 255);
           CommForm.WriteLineConsole(temp);
-        end;
-      if pos('SENDSCRATCH ', temp) = 1 then
-        begin
+      end;
+
+      if pos('SENDSCRATCH ', temp) = 1 then begin
           temp := copy(temp, 13, 255);
           ScratchSheet.AddBuffer(temp);
-          ScratchSheet.Update;
-        end;
-       if pos('CONNECTCLUSTER', temp) = 1 then
-         begin
+          ScratchSheet.UpdateData;
+      end;
+
+      if pos('CONNECTCLUSTER', temp) = 1 then begin
            CommForm.RemoteConnectButtonPush;
-         end;
-      if pos('PUTQSO ', temp) = 1 then
-        begin
+      end;
+
+      if pos('PUTQSO ', temp) = 1 then begin
           aQSO := TQSO.Create;
           temp := copy(temp, 8, 255);
           aQSO.TextToQSO(temp);
           MyContest.LogQSO(aQSO, False);
           aQSO.Free;
-        end;
-      if pos('DELQSO ', temp) = 1 then
-        begin
+      end;
+
+      if pos('DELQSO ', temp) = 1 then begin
           aQSO := TQSO.Create;
           Delete(temp, 1, 7);
           //temp := copy(temp, 8, 255);
@@ -478,7 +466,8 @@ begin
           MyContest.Renew;
           MainForm.EditScreen.Renew;
           aQSO.Free;
-        end;
+      end;
+
       if pos('INSQSOAT ', temp) = 1 then
         begin
           aQSO := TQSO.Create;
@@ -524,8 +513,7 @@ begin
           MainForm.EditScreen.Renew;
           aQSO.Free;
         end;
-      if pos('INSQSO ', temp) = 1 then
-        begin
+      if pos('INSQSO ', temp) = 1 then begin
           aQSO := TQSO.Create;
           Delete(temp, 1, 7);
           aQSO.TextToQSO(temp);
@@ -535,9 +523,9 @@ begin
           MyContest.Renew;
           MainForm.EditScreen.Renew;
           aQSO.Free;
-        end;
-      if pos('PUTLOG ', temp) = 1 then
-        begin
+      end;
+
+      if pos('PUTLOG ', temp) = 1 then begin
           //ZLinkForm.caption := 'PUTLOG';
           aQSO := TQSO.Create;
           Delete(temp, 1, 7);
@@ -545,15 +533,15 @@ begin
           aQSO.Reserve := actAdd;
           Log.AddQue(aQSO);
           aQSO.Free;
-        end;
-      if pos('RENEW', temp) = 1 then
-        begin
+      end;
+
+      if pos('RENEW', temp) = 1 then begin
           Log.ProcessQue;
           MyContest.Renew;
           MainForm.EditScreen.Renew;
-        end;
-      if pos('SENDLOG', temp) = 1 then
-        begin
+      end;
+
+      if pos('SENDLOG', temp) = 1 then begin
           for i := 1 to Log.TotalQSO do
             begin
               //repeat until AsyncComm.OutQueCount = 0;
@@ -561,9 +549,10 @@ begin
             end;
           //repeat until AsyncComm.OutQueCount = 0;
           WriteData(ZLinkHeader+' '+'RENEW'+LineBreakCode[ord(Console.LineBreak)]);
-        end;
+      end;
+
       CommandQue.Delete(0);
-    end;
+   end;
 end;
 
 procedure TZLinkForm.DeleteQSO(aQSO : TQSO);
@@ -720,7 +709,7 @@ end;
 procedure TZLinkForm.CommProcess;
 var
    max , i, j, x : integer;
-   str, currstr : string;
+   str: string;
 begin
    CommProcessing := True;
    max := CommBuffer.Count - 1;
@@ -875,7 +864,7 @@ procedure TZLinkForm.ZSocketDataAvailable(Sender: TObject; Error: Word);
 var
    Buf : array[0..2047] of AnsiChar;
    str : string;
-   Count, i : integer;
+   Count: integer;
    P: PAnsiChar;
 begin
    if Error <> 0 then begin
@@ -889,13 +878,12 @@ begin
 
    Buf[Count] := #0;
    P := @Buf[0];
-   str := StrPas(P);
+   str := string(AnsiString(P));
+//   str := StrPas(P);
    CommBuffer.Add(str);
 end;
 
 procedure TZLinkForm.ZSocketSessionClosed(Sender: TObject; Error: Word);
-var
-   R : word;
 begin
    Console.WriteString('disconnected...');
    Button.Caption := 'Connect';
@@ -904,8 +892,7 @@ begin
    MainForm.DisableNetworkMenus;
 
    if DisconnectedByMenu = False then begin
-      R := MessageDlg('Z-Server connection failed.', mtError,
-                  [mbOK], 0); {HELP context 0}
+      MessageDlg('Z-Server connection failed.', mtError, [mbOK], 0); {HELP context 0}
    end
    else begin
       DisconnectedByMenu := False;

@@ -28,7 +28,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Add(var aQSO : TQSO); override;
     procedure Reset; override;
@@ -39,7 +39,7 @@ type
     procedure UpdateCheckListBox;
   end;
 
-const KenNames : array[1..50] of string[19] =
+const KenNames : array[1..50] of string =
 ('01 Hokkaido','02 Aomori','03 Iwate','04 Akita','05 Yamagata','06 Miyagi',
  '07 Fukushima','08 Niigata','09 Nagano','10 Tokyo','11 Kanagawa',
  '12 Chiba','13 Saitama','14 Ibaraki','15 Tochigi','16 Gumma','17 Yamanashi',
@@ -83,19 +83,26 @@ begin
 end;
 
 procedure TJIDX_DX_Multi.UpdateCheckListBox;
-var i : integer;
-    B : TBand;
+var
+  i : integer;
+  B : TBand;
 begin
   i := TabControl.TabIndex;
   if i > 5 then exit;
+
   case i of
     0..2 : B := TBand(i);
     3 : B := b14;
     4 : B := b21;
     5 : B := b28;
+    else begin
+       Exit;
+    end;
   end;
-  for i := 1 to 50 do
+
+  for i := 1 to 50 do begin
     CheckListBox.Checked[i-1] := MultiTable[B, i];
+  end;
 end;
 
 procedure TJIDX_DX_Multi.UpdateListBox;
@@ -121,8 +128,7 @@ begin
     end;
 end;
 
-procedure TJIDX_DX_Multi.Update;
-var i : integer;
+procedure TJIDX_DX_Multi.UpdateData;
 begin
   inherited;
   if TabControl.TabIndex <> 6 then
@@ -130,13 +136,6 @@ begin
       TabControl.TabIndex := OldBandOrd(Main.CurrentQSO.Band);
       UpdateCheckListBox;
     end;
-  {if TabControl.TabIndex <> 6  then
-    UpdateListBox
-  else
-    begin
-      TabControl.TabIndex := OldBandOrd(Main.CurrentQSO.QSO.Band);
-      UpdateCheckListBox;
-    end;}
 end;
 
 procedure TJIDX_DX_Multi.AddNoUpdate(var aQSO : TQSO);
@@ -153,12 +152,9 @@ begin
   
   if not(NotWARC(aQSO.Band)) then
     exit;
-  M := 0;
-  try
-    M := StrToInt(str);
-  except
-    on EConvertError do M := 0;
-  end;
+
+  M := StrToIntDef(str, 0);
+
   if not (M in [1..50]) then
     exit;
 
@@ -209,12 +205,9 @@ begin
   str := aQSO.NrRcvd;
   if not(NotWARC(aQSO.Band)) then
     exit;
-  M := 0;
-  try
-    M := StrToInt(str);
-  except
-    on EConvertError do M := 0;
-  end;
+
+  M := StrToIntDef(str, 0);
+
   if (M in [1..50]) then
     Result := True;
 end;
@@ -266,12 +259,9 @@ var str : string;
     B : TBand;
 begin
   str := aQSO.NrRcvd;
-  M := 0;
-  try
-    M := StrToInt(str);
-  except
-    on EConvertError do M := 0;
-  end;
+
+  M := StrToIntDef(str, 0);
+
   if not(M in [1..50]) then
     begin
       MainForm.WriteStatusLine('Invalid number', false);

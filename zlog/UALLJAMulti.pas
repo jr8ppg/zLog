@@ -49,7 +49,7 @@ type
    { Private declarations }
   public
     procedure UpdateBand(B : TBand);
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Add(var aQSO : TQSO); override;
     procedure Reset; override;
@@ -61,7 +61,7 @@ type
     { Public declarations }
   end;
 
-const KenNames : array[m101..m50] of string[15] =
+const KenNames : array[m101..m50] of string =
 ('101 è@íJ','102 óØñG','103 è„êÏ','104 ñ‘ëñ','105 ãÛím','106 êŒéÎ','107 ç™é∫',
  '108 å„éu','109 è\èü','110 ã˙òH','111 ì˙çÇ','112 í_êU','113 ïOéR','114 ìnìá',
  '02  ê¬êX','03  ä‚éË','04  èHìc','05  éRå`','06  ã{èÈ','07  ïüìá','08  êVäÉ',
@@ -89,7 +89,7 @@ begin
       KenLabels[B, K].Font.Color := clBlack;
 end;
 
-procedure TALLJAMulti.Update;
+procedure TALLJAMulti.UpdateData;
 var band, B : TBand;
     str : string;
     K : TKen;
@@ -120,14 +120,17 @@ begin
 end;
 
 function TALLJAMulti.ExtractMulti(aQSO : TQSO) : string;
-var str : string;
+var
+  str : string;
 begin
   Result := '';
   str := aQSO.NrRcvd;
   if str = '' then
     exit;
-  if not(str[length(str)] in ['0'..'9']) then
+
+  if not CharInSet(str[length(str)], ['0'..'9']) then
     Delete(str, length(str),1);
+
   Result := str;
 end;
 
@@ -135,8 +138,6 @@ procedure TALLJAMulti.AddNoUpdate(var aQSO : TQSO);
 var str : string;
     M : integer;
     K : TKen;
-    B : TBand;
-    i : integer;
 begin
   aQSO.NewMulti1 := False;
   str := aQSO.NrRcvd;
@@ -148,12 +149,9 @@ begin
 
   if not(NotWARC(aQSO.Band)) then
     exit;
-  M := 0;
-  try
-    M := StrToInt(str);
-  except
-    on EConvertError do M := 0;
-  end;
+
+  M := StrToIntDef(str, 0);
+
   case M of
     101..114 : K := TKen(M-101);
     2..50 :    K := TKen(M - 2 + ord(m02));
@@ -177,7 +175,7 @@ begin
   case PageControl.ActivePage.Tag of
     ord(b35)..ord(b50) : UpdateBand(TBand(PageControl.ActivePage.Tag));
   else
-    Update;
+    UpdateData;
   end;
 end;
 
@@ -243,21 +241,19 @@ end;
 function TALLJAMulti.ValidMulti(aQSO : TQSO) : boolean;
 var str : string;
     M : integer;
-    K : TKen;
 begin
   Result := False;
   str := aQSO.NrRcvd;
   if not(length(str) in [3..4]) then
     exit;
-  if not(str[length(str)] in ['P','L','M','H']) then
+
+  if not CharInSet(str[length(str)], ['P','L','M','H']) then
     exit;
+
   Delete(str, length(str), 1);
-  M := 0;
-  try
-    M := StrToInt(str);
-  except
-    on EConvertError do M := 0;
-  end;
+
+  M := StrToIntDef(str, 0);
+
   if M in [2..50, 101..114] then
     Result := True
   else
@@ -279,23 +275,21 @@ end;
 
 
 function TALLJAMulti.IsNewMulti(aQSO : TQSO) : boolean;
-var M : integer;
-    K : TKen;
-    B : TBand;
-    str : string;
+var
+  M : integer;
+  K : TKen;
+  str : string;
 begin
   Result := False;
   str := aQSO.NrRcvd;
   if str = '' then
     exit;
-  if str[length(str)] in ['P', 'L', 'M', 'H'] then
+
+  if CharInSet(str[length(str)], ['P', 'L', 'M', 'H']) then
     Delete(str,length(str),1);
-  M := 0;
-  try
-    M := StrToInt(str);
-  except
-    on EConvertError do M := 0;
-  end;
+
+  M := StrToIntDef(str, 0);
+
   case M of
     101..114 : K := TKen(M-101);
     2..50 :    K := TKen(M - 2 + ord(m02));
@@ -321,14 +315,11 @@ begin
   if str = '' then
     exit;
 
-  if str[length(str)] in ['P', 'L', 'M', 'H'] then
+  if CharInSet(str[length(str)], ['P', 'L', 'M', 'H']) then
     Delete(str,length(str),1);
-  M := 0;
-  try
-    M := StrToInt(str);
-  except
-    on EConvertError do M := 0;
-  end;
+
+  M := StrToIntDef(str, 0);
+
   case M of
     101..114 : K := TKen(M-101);
     2..50 :    K := TKen(M - 2 + ord(m02));

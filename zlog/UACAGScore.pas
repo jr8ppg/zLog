@@ -17,7 +17,7 @@ type
   public
     { Public declarations }
     procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure Reset; override;
     procedure Add(var aQSO : TQSO); override;
   end;
@@ -44,7 +44,7 @@ begin
    Inc(Points[band]);
 end;
 
-procedure TACAGScore.Update;
+procedure TACAGScore.UpdateData;
 var
    band: TBand;
    TotQSO, TotPoints, TotMulti: Integer;

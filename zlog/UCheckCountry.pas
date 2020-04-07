@@ -77,13 +77,8 @@ begin
               end;
           end;
     end;
-  z := 0;
-  try
-    z := StrToInt(aQSO.NrRcvd);
-  except
-    on EConvertError do
-      z := 0;
-  end;
+
+  z := StrToIntDef(aQSO.NrRcvd, 0);
   TempZone := z;
   if z in [1..40] then
     begin

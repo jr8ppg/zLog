@@ -29,7 +29,7 @@ type
     NoCTYMulti : string; // use citylist for these countries
     LocalCTY, LocalCONT : string;
 
-    LocalString : array[0..MAXLOCAL] of string[30];
+    LocalString : array[0..MAXLOCAL] of string;
     MinLocalLen : integer;
     _cut, _lcut, _tail, _ltail : integer;
     UndefMulti : boolean; //
@@ -46,7 +46,7 @@ type
     function ValidMulti(aQSO : TQSO) : boolean; override;
     procedure CheckMulti(aQSO : TQSO); override;
     procedure Reset; override;
-    procedure Update; override;
+    procedure UpdateData; override;
     { Public declarations }
   end;
 
@@ -90,7 +90,7 @@ begin
    end;
 end;
 
-procedure TGeneralMulti2.Update;
+procedure TGeneralMulti2.UpdateData;
 var
    i, j : integer;
    C : TCity;
@@ -133,6 +133,9 @@ begin
 
    if CityList.List.Count = 0 then begin
       i := 0;
+   end
+   else begin
+      i := CityList.List.Count - 1;
    end;
 
    if _DXTEST and (NoCTYMulti <> '*') then begin
@@ -328,7 +331,7 @@ aaa:
       C := TCity.Create;
       C.CityNumber := str;
       C.Worked[aQSO.Band] := True;
-      i := CityList.AddAndSort(C);
+      CityList.AddAndSort(C);
       aQSO.NewMulti1 := True;
       LatestMultiAddition := C.Index;
    end;
@@ -576,7 +579,7 @@ procedure TGeneralMulti2.FormShow(Sender: TObject);
 begin
    inherited;
    LatestMultiAddition := 0;
-   Update;
+   UpdateData;
 end;
 
 end.

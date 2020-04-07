@@ -270,7 +270,7 @@ type
   private
     TempVoiceFiles : array[1..10] of string;
     TempCurrentBank : integer;
-    TempCWStrBank : array[1..maxbank,1..maxmaxstr] of string[255]; // used temporarily while options window is open
+    TempCWStrBank : array[1..maxbank,1..maxmaxstr] of string; // used temporarily while options window is open
 
     FTempClusterTelnet: TCommParam;
     FTempClusterCom: TCommParam;

@@ -23,7 +23,7 @@ type
     procedure Reset; override;
     procedure Renew; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure SummaryWriteScore(FileName : string); override;
   end;
 
@@ -84,7 +84,7 @@ begin
    end;
 end;
 
-procedure TWAEScore.Update;
+procedure TWAEScore.UpdateData;
 var
    band: TBand;
    TotQSO, TotMulti, TotQTCs: LongInt;

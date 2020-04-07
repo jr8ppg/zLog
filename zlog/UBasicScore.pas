@@ -29,9 +29,9 @@ type
     Points : array[b19..HiBand] of LongInt;
     Multi : array[b19..HiBand] of LongInt;
     ShowCWRatio : boolean;
-    constructor Create(AOwner: TComponent); virtual;
+    constructor Create(AOwner: TComponent); override;
     procedure Renew; virtual;
-    procedure Update; virtual;
+    procedure UpdateData; virtual;
     procedure AddNoUpdate(var aQSO : TQSO); virtual;
     procedure Add(var aQSO : TQSO); virtual; {calculates points}
     procedure Reset; virtual;
@@ -164,7 +164,7 @@ begin
    end;
 end;
 
-procedure TBasicScore.Update;
+procedure TBasicScore.UpdateData;
 begin
 end;
 
@@ -191,7 +191,7 @@ end;
 procedure TBasicScore.Add(var aQSO: TQSO);
 begin
    AddNoUpdate(aQSO);
-   Update;
+   UpdateData;
 end;
 
 procedure TBasicScore.Reset;
@@ -262,7 +262,8 @@ begin
       ShowCWRatio := True
    else
       ShowCWRatio := False;
-   Update;
+
+   UpdateData;
 end;
 
 function TBasicScore.QPMStr(B: TBand): string; // returns QSO,Pts,Mult for JARL E-log

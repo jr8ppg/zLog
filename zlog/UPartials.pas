@@ -55,7 +55,7 @@ type
     procedure SortByCall(var QSOList : TList);
     procedure SortByTime(var QSOList : TList);
     procedure SortByBand(var QSOList : TList);
-    procedure Update(aQSO : TQSO); // calls either checkpartial or checkpartialnumber
+    procedure UpdateData(aQSO : TQSO); // calls either checkpartial or checkpartialnumber
                                    // depending on _CheckCall value;
     { Public declarations }
   end;
@@ -216,7 +216,6 @@ end;
 procedure TPartialCheck.CheckPartialNumber(aQSO : TQSO);
 var PartialStr : string;
     i : LongInt;
-    B : TBand;
     _count : integer;
     TempList : TList;
 label disp;
@@ -302,7 +301,6 @@ end;
 procedure TPartialCheck.CheckPartial(aQSO : TQSO);
 var PartialStr : string;
     i : LongInt;
-    B : TBand;
     _count : integer;
     TempList : TList;
 label disp;
@@ -426,7 +424,7 @@ begin
   DispMax := ShowMaxEdit.Value;
 end;
 
-procedure TPartialCheck.Update(aQSO : TQSO);
+procedure TPartialCheck.UpdateData(aQSO : TQSO);
 begin
   //MainForm.PartialClick(Self);
   {if MainForm.ActiveControl = MainForm.NumberEdit then
@@ -441,7 +439,7 @@ end;
 
 procedure TPartialCheck.rbSortClick(Sender: TObject);
 begin
-  Update(Main.CurrentQSO);
+  UpdateData(Main.CurrentQSO);
 end;
 
 procedure TPartialCheck.ListBoxDrawItem(Control: TWinControl;

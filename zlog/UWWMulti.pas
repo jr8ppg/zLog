@@ -58,7 +58,7 @@ type
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Add(var aQSO : TQSO); override; // only calls addnoupdate but no update
-    procedure Update; override;
+    procedure UpdateData; override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
     function GuessZone(aQSO : TQSO) : string; override;
     function GetInfo(aQSO : TQSO): string; override;
@@ -200,7 +200,7 @@ begin
    AddSpot(aQSO);
 end;
 
-procedure TWWMulti.Update;
+procedure TWWMulti.UpdateData;
 begin
    case SortBy.ItemIndex of
       0 : SortDefault;
@@ -251,7 +251,7 @@ end;
 procedure TWWMulti.SortContinent;
 var
    i, j, x: integer;
-   cont : array[0..5] of string[3];
+   cont : array[0..5] of string;
 begin
    cont[0] := 'AS';
    cont[1] := 'AF';
@@ -424,7 +424,7 @@ var
    i: integer;
    C: TCountry;
    P: TPrefix;
-   _cont: string[3];
+   _cont: string;
 begin
    aQSO.NewMulti1 := False;
    aQSO.NewMulti2 := False;

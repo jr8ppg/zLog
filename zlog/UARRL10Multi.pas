@@ -22,7 +22,7 @@ type
     StateList : TStateList;
     IsUSA : boolean;
     LastMulti : integer; // grid top
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure Add(var aQSO : TQSO); override;
     procedure SortDefault; override;
     procedure SortZone; override;
@@ -89,21 +89,16 @@ begin
       end
     else // not W/VE serial number
       begin
-        try
-          j := StrToInt(aQSO.NrRcvd);
-        except
-          on EConvertError do
-            j := 0;
-        end;
+        j := StrToIntDef(aQSO.NrRcvd, 0);
         if j > 0 then
           Result := True;
       end;
 end;
 
 procedure TARRL10Multi.AddNoUpdate(var aQSO : TQSO);
-var str : string;
+var
     B : TBand;
-    i, j : integer;
+    i : integer;
     C : TCountry;
     S : TState;
 begin
@@ -230,7 +225,7 @@ begin
 end;
 
 procedure TARRL10Multi.SortDefault;
-var B : TBand;
+var
     i, j, offset : integer;
     S : string;
 begin
@@ -259,7 +254,7 @@ begin
   Grid.TopRow := j;
 end;
 
-procedure TARRL10Multi.Update;
+procedure TARRL10Multi.UpdateData;
 begin
   SortDefault;
   RefreshGrid;

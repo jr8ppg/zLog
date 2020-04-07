@@ -298,8 +298,6 @@ begin
           Grid.Cells[0, j] := '>>'+ kHzStr(CurrentRigFrequency);
           GridBoldArray[j] := True;
           GridColorArray[j] := clBlack;
-          Marked := True;
-          inc(j);
         end;
 
   if toprow <= Grid.RowCount - 1 then
@@ -424,10 +422,8 @@ end;
 
 procedure TBandScope2.GridDblClick(Sender: TObject);
 var i, j : integer;
-    FKHz : LongInt;
     F : Extended;
     str, fstr, cstr, nstr : string;
-    D : TBSData;
 begin
   str := Grid.Cells[0, Grid.Selection.Top];
   if pos('+', str) > 0 then

@@ -18,7 +18,7 @@ type
     //function GetTXNr(S : string) : integer;
     function GetPCName(S : string) : string;
   public
-    procedure Update;
+    procedure UpdateData;
     procedure ProcessFreqData(S : string);
     { Public declarations }
   end;
@@ -30,7 +30,7 @@ implementation
 
 {$R *.DFM}
 
-procedure TFreqList.Update;
+procedure TFreqList.UpdateData;
 var B : integer;
     s : string;
 begin
@@ -43,21 +43,6 @@ begin
         ListBox.Items.Add(s);
       end;
 end;
-
-{function TFreqList.GetTXNr(S : string) : integer;
-var ss : string;
-    i : integer;
-begin
-  ss := copy(S, 7, 2);
-  ss := TrimRight(ss);
-  try
-    i := StrToInt(ss);
-  except
-    on EConvertError do
-      i := 0;
-  end;
-  Result := i;
-end;}
 
 function TFreqList.GetPCName(S : string) : string;
 var ss : string;
@@ -78,7 +63,6 @@ end;
 
 procedure TFreqList.ProcessFreqData(S : string);
 var ss : string;
-    tx : integer;
     pcname : string;
     B : Integer;
 begin
@@ -108,14 +92,14 @@ begin
             break;
           end;
     end;
-  Update;
 
+  UpdateData;
 end;
 
 procedure TFreqList.FormShow(Sender: TObject);
 begin
   //inherited;
-  Update;
+  UpdateData;
 end;
 
 procedure TFreqList.FormCreate(Sender: TObject);
@@ -131,7 +115,8 @@ begin
   //inherited;
   for B := 0 to 30 do
     FreqArray[B] := '';
-  Update;
+
+  UpdateData;
 end;
 
 end.

@@ -10,7 +10,7 @@ uses
 type
 
   TIARUZone = class
-    Multi : string[30];
+    Multi : string;
     Worked : array[b19..b28] of boolean;
     function Summary : string;
     constructor Create;
@@ -38,7 +38,7 @@ type
     procedure Add(var aQSO : TQSO); override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
     function GuessZone(aQSO : TQSO) : string; override;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure RefreshGrid; override;
     function GetInfo(aQSO : TQSO) : string; override;
     procedure CheckMulti(aQSO : TQSO); override;
@@ -64,19 +64,14 @@ begin
 end;
 
 function TIARUZone.Summary : string;
-var i : integer;
-    str : string;
-    B : TBand;
+var
+  i : integer;
+  str : string;
+  B : TBand;
 begin
   str := '';
 
-  if (Multi[1] in ['0'..'9']) then
-    try
-      i := StrToInt(Multi);
-    except
-      on EConvertError do
-        i := 0;
-    end;
+  i := StrToIntDef(Multi, 0);
 
   if (i in [1..90]) then
     str := 'ITU Zone '+FillLeft(Multi,2)
@@ -148,12 +143,11 @@ end;
 
 procedure TIARUMulti.CheckMulti(aQSO : TQSO);
 var str, str2 : string;
-    i, j, z : integer;
+    j, z : integer;
     B : TBand;
     boo : boolean;
 begin
   str := aQSO.NrRcvd;
-  B := aQSO.band;
   boo := false;
   for j := 0 to ZoneList.List.Count - 1 do
     begin
@@ -170,13 +164,7 @@ begin
     end;
 
 
-  try
-    z := StrToInt(str);
-  except
-    on EConvertError do
-      z := 0;
-  end;
-
+  z := StrToIntDef(str, 0);
   if z = 0 then
     begin
       if str = 'AC' then
@@ -294,10 +282,10 @@ begin
 end;
 
 procedure TIARUMulti.FormCreate(Sender: TObject);
-var i : integer;
-    aQSO : TQSO;
-    P : TPrefix;
-    C : TCountry;
+var
+  i : integer;
+  aQSO : TQSO;
+  P : TPrefix;
 begin
   //inherited;
   CountryList := TCountryList.Create;
@@ -394,8 +382,9 @@ begin
   Result := str;
 end;
 
-procedure TIARUMulti.Update;
-var j, k : integer;
+procedure TIARUMulti.UpdateData;
+var
+  j: integer;
 begin
   Grid.RowCount := ZoneList.List.Count;
   for j := 0 to ZoneList.List.Count - 1 do
@@ -406,11 +395,10 @@ end;
 
 procedure TIARUMulti.AddNoUpdate(var aQSO : TQSO);
 var str : string;
-    B : TBand;
     i, j : integer;
     C : TCountry;
     P : TPrefix;
-    _cont : string[3];
+    _cont : string;
     boo, HQ : boolean;
     M : TIARUZone;
 begin
@@ -421,13 +409,7 @@ begin
   if aQSO.Dupe then
     exit;
 
-  B := aQSO.band;
-  try
-    i := StrToInt(str);
-  except
-    on EConvertError do
-      i := 0;
-  end;
+  i := StrToIntDef(str, 0);
 
   HQ := True;
   if i in [1..90] then
@@ -459,7 +441,7 @@ begin
       M.Worked[aQSO.Band] := True;
       aQSO.NewMulti1 := True;
       ZoneList.Add(M);
-      Update;
+      UpdateData;
       //Grid.Cells[0,ZoneList.List.Count-1] := M.Summary;
     end;
 
@@ -527,7 +509,7 @@ end;
 procedure TIARUMulti.RefreshGrid;
 begin
   //inherit
-  Update;
+  UpdateData;
 end;
 
 procedure TIARUMulti.GridTopLeftChanged(Sender: TObject);

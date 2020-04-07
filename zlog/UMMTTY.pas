@@ -69,14 +69,16 @@ implementation
 
 
 procedure InitializeMMTTY(_Handle : THandle);
-var H : THandle;
+var
   zFileName, zParams, zDir: array[0..79] of Char;
 begin
   if MMTTYRunning then
     exit;
-  H := ShellExecute(_Handle, nil,
+
+  ShellExecute(_Handle, nil,
     StrPCopy(zFileName, 'MMTTY'), StrPCopy(zParams, '-r'),
     StrPCopy(zDir, ''), SW_SHOW);
+
   MyHandle := _Handle;
   MSG_MMTTY := RegisterWindowMessage('MMTTY');
   MMTTYInitialized := True;

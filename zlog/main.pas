@@ -5,15 +5,13 @@ interface
 uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
-  ShlObj, ComObj,
+  ShlObj, ComObj, System.Actions, Vcl.ActnList,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
   OEdit, URigControl, UConsolePad, URenewThread, USpotClass,
   UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UQuickRef, UZAnalyze,
-  UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst,
-  System.Actions, Vcl.ActnList;
-
+  UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -25,47 +23,47 @@ const
 type
   TBasicEdit = class
   private
-    colSerial : integer;
-    colTime : integer;
-    colCall : integer;
-    colrcvdRST : integer;
-    colrcvdNumber : integer;
-    colMode : integer;
-    colPower : integer;
-    colNewPower : integer;
-    colBand : integer;
-    colPoint : integer;
-    colMemo : integer;
-    colOp : integer;
-    colNewMulti1 : integer;
-    colNewMulti2 : integer;
-    colsentRST : integer;
-    colsentNumber : integer;
-    colCQ : integer;
-    DispQSO : integer;
-    function GetLeft(col : integer) : integer;
-    Procedure WriteQSO(R: integer; aQSO : TQSO);
+    colSerial : Integer;
+    colTime : Integer;
+    colCall : Integer;
+    colrcvdRST : Integer;
+    colrcvdNumber : Integer;
+    colMode : Integer;
+    colPower : Integer;
+    colNewPower : Integer;
+    colBand : Integer;
+    colPoint : Integer;
+    colMemo : Integer;
+    colOp : Integer;
+    colNewMulti1 : Integer;
+    colNewMulti2 : Integer;
+    colsentRST : Integer;
+    colsentNumber : Integer;
+    colCQ : Integer;
+    DispQSO : Integer;
+    function GetLeft(col : Integer) : Integer;
+    Procedure WriteQSO(R: Integer; aQSO : TQSO);
   public
     IndexArray : array[1..MaxGridQSO] of word; {contains the index to Log}
-    SerialWid : integer;
-    TimeWid : integer;
-    CallSignWid : integer;
-    rcvdRSTWid : integer;
-    NumberWid : integer;
-    BandWid : integer;
-    ModeWid : integer;
-    NewPowerWid : integer;
-    PointWid : integer;
-    OpWid : integer;
-    MemoWid : integer;
-    NewMulti1Wid : integer;
-    NewMulti2Wid : integer;
+    SerialWid : Integer;
+    TimeWid : Integer;
+    CallSignWid : Integer;
+    rcvdRSTWid : Integer;
+    NumberWid : Integer;
+    BandWid : Integer;
+    ModeWid : Integer;
+    NewPowerWid : Integer;
+    PointWid : Integer;
+    OpWid : Integer;
+    MemoWid : Integer;
+    NewMulti1Wid : Integer;
+    NewMulti2Wid : Integer;
 
-    DirectEdit : boolean;
+    DirectEdit : Boolean;
     BeforeEdit : string; // temp var for directedit mode
 
     constructor Create(AOwner: TComponent); virtual;
-    procedure SetDirectEdit(Direct : boolean);
+    procedure SetDirectEdit(Direct : Boolean);
     procedure Add(aQSO : TQSO); virtual;
     procedure ResetTopRow;
     procedure Renew; virtual;
@@ -177,8 +175,8 @@ type
     ZoneForm: TWWZone;
 
     Name : string;
-    SameExchange : boolean; // true by default. false when serial number etc
-    MultiFound : boolean; // used in spacebarproc
+    SameExchange : Boolean; // true by default. false when serial number etc
+    MultiFound : Boolean; // used in spacebarproc
 
     constructor Create(N : string); virtual;
     destructor Destroy; override;
@@ -186,13 +184,13 @@ type
     procedure DelWanted(S : string);
     procedure ClearWanted;
     function QTHString : string; virtual;
-    procedure LogQSO(var aQSO : TQSO; Local : boolean); virtual;
+    procedure LogQSO(var aQSO : TQSO; Local : Boolean); virtual;
     procedure ShowScore; virtual;
     procedure ShowMulti; virtual;
     procedure Renew; virtual;
     {procedure LoadFromFile(FileName : string); virtual; }
     procedure EditCurrentRow; virtual;
-    procedure ChangeBand(Up : boolean); virtual;
+    procedure ChangeBand(Up : Boolean); virtual;
     procedure ChangeMode; virtual;
     procedure ChangePower; virtual;
     procedure DispExchangeOnOtherBands; virtual;
@@ -247,7 +245,7 @@ type
   end;
 
   TGeneralContest = class(TContest)
-    constructor Create(N, CFGFileName: string);
+    constructor Create(N, CFGFileName: string); reintroduce;
     procedure SetPoints(var aQSO : TQSO); override;
   end;
 
@@ -634,7 +632,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure CWStopButtonClick(Sender: TObject);
     procedure VoiceStopButtonClick(Sender: TObject);
-    procedure SetCQ(CQ : boolean);
+    procedure SetCQ(CQ : Boolean);
     procedure CQRepeatClick1(Sender: TObject);
     procedure CQRepeatClick2(Sender: TObject);
     procedure SpeedButton12Click(Sender: TObject);
@@ -733,7 +731,7 @@ type
     procedure Scratchsheet1Click(Sender: TObject);
     procedure mnMMTTYClick(Sender: TObject);
     procedure mnTTYConsoleClick(Sender: TObject);
-    procedure SwitchCWBank(Action : integer);
+    procedure SwitchCWBank(Action : Integer);
     procedure QTC1Click(Sender: TObject);
     procedure mnNewBandScopeClick(Sender: TObject);
     procedure menuQuickReferenceClick(Sender: TObject);
@@ -761,8 +759,8 @@ type
     defaultTextColor : TColor;
 
     SaveInBackGround: Boolean;
-    TabPressed: boolean;
-    TabPressed2: boolean; // for moving focus to numberedit
+    TabPressed: Boolean;
+    TabPressed2: Boolean; // for moving focus to numberedit
     LastTabPress: TDateTime;
 
     FPostContest: Boolean;
@@ -773,8 +771,8 @@ type
     // Analyze window
     FZAnalyze: TZAnalyze;
 
-    procedure MyIdleEvent(Sender: TObject; var Done: boolean);
-    procedure MyMessageEvent(var Msg: TMsg; var Handled: boolean);
+    procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
+    procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
     procedure DeleteCurrentRow;
     Procedure MultipleDelete(A, B : LongInt);
@@ -817,12 +815,12 @@ type
     procedure SetR(var aQSO : TQSO); // RST
     procedure SetS(var aQSO : TQSO);
 
-    //procedure SetQSOBand(var aQSO : TQSO; Up : boolean);
-    function GetNextBand(BB : TBand; Up : boolean) : TBand;
+    //procedure SetQSOBand(var aQSO : TQSO; Up : Boolean);
+    function GetNextBand(BB : TBand; Up : Boolean) : TBand;
 
     procedure SetQSOMode(aQSO : TQSO);
-    procedure WriteStatusLine(S : string; WriteConsole : boolean);
-    procedure WriteStatusLineRed(S : string; WriteConsole : boolean);
+    procedure WriteStatusLine(S : string; WriteConsole : Boolean);
+    procedure WriteStatusLineRed(S : string; WriteConsole : Boolean);
     procedure CallsignSentProc(Sender: TObject); // called when callsign is sent;
     procedure Update10MinTimer; //10 min countdown
     procedure ProcessConsoleCommand(S : string);
@@ -880,7 +878,7 @@ uses UPartials, UALLJAEditDialog, UAbout, URateDialog, UMenu, UACAGMulti,
 
 procedure TMainForm.ReEvaluateCountDownTimer;
 var
-   mytx, i: integer;
+   mytx, i: Integer;
    TL: TQSOList;
    Q, QQ: TQSO;
 begin
@@ -893,7 +891,6 @@ begin
          end;
       end;
 
-      Q := nil;
       if TL.Count = 0 then begin
          CountDownStartTime := 0;
          Exit;
@@ -919,7 +916,7 @@ end;
 
 procedure TMainForm.ReEvaluateQSYCount;
 var
-   mytx, i: integer;
+   mytx, i: Integer;
    TL: TQSOList;
    Q, QQ: TQSO;
    aTime: TDateTime;
@@ -938,7 +935,6 @@ begin
          end;
       end;
 
-      Q := nil;
       QSYCount := 0;
       if TL.Count = 0 then begin
          exit;
@@ -969,7 +965,7 @@ begin
    end;
 end;
 
-procedure TMainForm.WriteStatusLine(S: string; WriteConsole: boolean);
+procedure TMainForm.WriteStatusLine(S: string; WriteConsole: Boolean);
 begin
    if ContainsDoubleByteChar(S) then begin
       StatusLine.Font.Name := 'ＭＳ Ｐゴシック';
@@ -985,7 +981,7 @@ begin
       ConsolePad.AddLine(S);
 end;
 
-procedure TMainForm.WriteStatusLineRed(S: string; WriteConsole: boolean);
+procedure TMainForm.WriteStatusLineRed(S: string; WriteConsole: Boolean);
 begin
    clStatusLine := clRed;
    if ContainsDoubleByteChar(S) then begin
@@ -1005,11 +1001,9 @@ procedure TMainForm.PushQSO(aQSO: TQSO);
 const
    TEMPQSOMAX = 5;
 var
-   i: integer;
+   i: Integer;
    Q: TQSO;
 begin
-   i := TempQSOList.Count;
-
    Q := TQSO.Create;
    Q.Assign(aQSO);
    TempQSOList.Insert(0, Q);
@@ -1024,7 +1018,7 @@ end;
 
 procedure TMainForm.PullQSO;
 var
-   i: integer;
+   i: Integer;
 begin
    i := TempQSOList.Count;
    if i > 0 then begin
@@ -1061,7 +1055,7 @@ end;
 
 procedure TMainForm.RenewCWToolBar;
 var
-   i: integer;
+   i: Integer;
 begin
    SpeedBar.Position := dmZlogGlobal.Speed;
    SpeedLabel.Caption := IntToStr(dmZlogGlobal.Speed) + ' wpm';
@@ -1204,7 +1198,7 @@ var
 begin
    str := MainForm.NumberEdit.Text;
    if str <> '' then begin
-      if str[length(str)] in ['H', 'M', 'L', 'P'] then begin
+      if CharInSet(str[length(str)], ['H', 'M', 'L', 'P']) then begin
          MainForm.NumberEdit.SelStart := length(str) - 1;
          MainForm.NumberEdit.SelLength := 1;
       end;
@@ -1212,8 +1206,6 @@ begin
 end;
 
 procedure TACAGContest.DispExchangeOnOtherBands;
-var
-   str: string;
 begin
    Inherited;
 
@@ -1222,8 +1214,6 @@ begin
 end;
 
 procedure TALLJAContest.DispExchangeOnOtherBands;
-var
-   str: string;
 begin
    Inherited;
 
@@ -1233,10 +1223,9 @@ end;
 
 Procedure TFDContest.DispExchangeOnOtherBands;
 var
-   j: integer;
-   B: TBand;
+   j: Integer;
    str: string;
-   currshf: boolean;
+   currshf: Boolean;
    pastQSO, tempQSO: TQSO;
 begin
    currshf := IsSHF(CurrentQSO.Band);
@@ -1287,10 +1276,9 @@ end;
 
 Procedure TSixDownContest.DispExchangeOnOtherBands;
 var
-   j: integer;
-   B: TBand;
+   j: Integer;
    str: string;
-   currshf: boolean;
+   currshf: Boolean;
    pastQSO, tempQSO: TQSO;
 begin
    currshf := IsSHF(CurrentQSO.Band);
@@ -1367,7 +1355,7 @@ end;
 
 procedure TMainForm.SetR(var aQSO: TQSO); // r of RST
 var
-   i: integer;
+   i: Integer;
 begin
    i := aQSO.RSTRcvd;
 
@@ -1390,7 +1378,7 @@ end;
 
 procedure TMainForm.SetS(var aQSO: TQSO);
 var
-   i: integer;
+   i: Integer;
 begin
    i := aQSO.RSTRcvd;
    if i < 100 then begin
@@ -1410,10 +1398,10 @@ begin
    // RcvdRSTEdit.Text := CurrentQSO.RSTStr;
 end;
 
-function TMainForm.GetNextBand(BB: TBand; Up: boolean): TBand;
+function TMainForm.GetNextBand(BB: TBand; Up: Boolean): TBand;
 var
-   B0, B: TBand;
-   boo: boolean;
+   B0, B, BX: TBand;
+   boo: Boolean;
 label
    xxx;
 label
@@ -1440,21 +1428,30 @@ top:
          B0 := b19
       else
          inc(B0);
-      for B := B0 to HiBand do
-         if BandMenu.Items[Ord(B)].Visible and BandMenu.Items[Ord(B)].Enabled then begin
-            if dmZlogGlobal.Settings._dontallowsameband and RigControl.CheckSameBand(B) then begin
-            end
-            else
-               goto xxx;
-         end;
 
-      for B := b19 to B0 do
+      for B := B0 to HiBand do begin
          if BandMenu.Items[Ord(B)].Visible and BandMenu.Items[Ord(B)].Enabled then begin
             if dmZlogGlobal.Settings._dontallowsameband and RigControl.CheckSameBand(B) then begin
             end
-            else
+            else begin
+               BX := B;
                goto xxx;
+            end;
          end;
+      end;
+
+      for B := b19 to B0 do begin
+         if BandMenu.Items[Ord(B)].Visible and BandMenu.Items[Ord(B)].Enabled then begin
+            if dmZlogGlobal.Settings._dontallowsameband and RigControl.CheckSameBand(B) then begin
+            end
+            else begin
+               BX := B;
+               goto xxx;
+            end;
+         end;
+      end;
+
+      BX := B0;
    end
    else begin
       if B0 = b19 then
@@ -1466,8 +1463,10 @@ top:
          if BandMenu.Items[Ord(B)].Visible and BandMenu.Items[Ord(B)].Enabled then begin
             if dmZlogGlobal.Settings._dontallowsameband and RigControl.CheckSameBand(B) then begin
             end
-            else
+            else begin
+               BX := B;
                goto xxx;
+            end;
          end;
       end;
 
@@ -1475,22 +1474,26 @@ top:
          if BandMenu.Items[Ord(B)].Visible and BandMenu.Items[Ord(B)].Enabled then begin
             if dmZlogGlobal.Settings._dontallowsameband and RigControl.CheckSameBand(B) then begin
             end
-            else
+            else begin
+               BX := B;
                goto xxx;
+            end;
          end;
       end;
+
+      BX := B0;
    end;
 
 xxx:
 
    if RigControl.Rig <> nil then begin // keep band within Rig
-      if (B > RigControl.Rig.MaxBand) or (B < RigControl.Rig.MinBand) then begin
-         B0 := B;
+      if (BX > RigControl.Rig.MaxBand) or (BX < RigControl.Rig.MinBand) then begin
+         B0 := BX;
          goto top;
       end;
    end;
 
-   Result := B;
+   Result := BX;
 end;
 
 procedure TMainForm.BandMenuClick(Sender: TObject);
@@ -1536,12 +1539,12 @@ begin
 
    if MyContest <> nil then begin
       if MyContest.MultiForm.Visible then begin
-         MyContest.MultiForm.Update;
+         MyContest.MultiForm.UpdateData;
       end;
    end;
 
    if PartialCheck.Visible then begin
-      PartialCheck.Update(CurrentQSO);
+      PartialCheck.UpdateData(CurrentQSO);
    end;
 
    if ShowCurrentBandOnly.Checked then begin
@@ -1587,7 +1590,7 @@ begin
 
    if MyContest <> nil then begin
       if MyContest.MultiForm.Visible then begin
-         MyContest.MultiForm.Update;
+         MyContest.MultiForm.UpdateData;
       end;
    end;
 
@@ -1601,7 +1604,7 @@ begin
    BandScope2.SetBandMode(CurrentQSO.Band, CurrentQSO.mode);
 end;
 
-procedure TContest.ChangeBand(Up: boolean);
+procedure TContest.ChangeBand(Up: Boolean);
 begin
    MainForm.UpdateBand(MainForm.GetNextBand(CurrentQSO.Band, Up));
    if RigControl.Rig <> nil then begin
@@ -1667,7 +1670,7 @@ end;
 
 constructor TContest.Create(N: string);
 var
-   i: integer;
+   i: Integer;
    B: TBand;
 begin
    MultiForm := nil;
@@ -1705,7 +1708,7 @@ end;
 procedure TContest.PostWanted(S: string);
 var
    ss, mm: string;
-   i, BB: integer;
+   i, BB: Integer;
    W: TWanted;
 
 begin
@@ -1734,7 +1737,7 @@ end;
 procedure TContest.DelWanted(S: string);
 var
    ss, mm: string;
-   i, BB: integer;
+   i, BB: Integer;
    W: TWanted;
 begin
    ss := copy(S, 1, 2);
@@ -1763,7 +1766,7 @@ end;
 procedure TContest.ClearWanted;
 var
    W: TWanted;
-   i: integer;
+   i: Integer;
 begin
    for i := 0 to WantedList.Count - 1 do begin
       W := TWanted(WantedList[i]);
@@ -1860,9 +1863,9 @@ procedure TContest.ADIF_Export(filename: string);
 var
    f: textfile;
    Header, S, temp: string;
-   i: integer;
+   i: Integer;
    aQSO: TQSO;
-   offsetmin: integer;
+   offsetmin: Integer;
    dbl: double;
 begin
    Header := 'ADIF export from zLog for Windows'; // +dmZlogGlobal.Settings._mycall;
@@ -1936,11 +1939,10 @@ begin
    CloseFile(f);
 end;
 
-procedure TContest.LogQSO(var aQSO: TQSO; Local: boolean);
+procedure TContest.LogQSO(var aQSO: TQSO; Local: Boolean);
 var
-   i, T, mytx: integer;
-   R: word;
-   boo: boolean;
+   i, T, mytx: Integer;
+   boo: Boolean;
 begin
    if Log.TotalQSO > 0 then begin
       T := Log.TotalQSO;
@@ -2007,11 +2009,12 @@ begin
    if RateDialog.Visible then
       RateDialog.UpdateGraph;
 
-   if dmZlogGlobal.Settings._multistation then
+   if dmZlogGlobal.Settings._multistation then begin
       if Local { (mytx = aQSO.TX) } and (aQSO.NewMulti1 = False) and (aQSO.NewMulti2 = False) and (dmZlogGlobal.Settings._multistationwarning)
       then begin
-         R := MessageDlg('This station is not a new multiplier, but will be logged anyway.', mtError, [mbOK], 0); { HELP context 0 }
+         MessageDlg('This station is not a new multiplier, but will be logged anyway.', mtError, [mbOK], 0); { HELP context 0 }
       end;
+   end;
 end;
 
 procedure TContest.ShowScore;
@@ -2026,7 +2029,7 @@ end;
 
 procedure TContest.Renew;
 var
-   i, j: integer;
+   i: Integer;
    aQSO: TQSO;
 begin
    if dmZlogGlobal.Settings._renewbythread then begin
@@ -2043,22 +2046,22 @@ begin
       aQSO := TQSO(Log.List[i]);
 
       if Log.CountHigherPoints = True then begin
-         j := Log.IsDupe(aQSO); // called to set log.differentmodepointer
+         Log.IsDupe(aQSO); // called to set log.differentmodepointer
       end;
 
       MultiForm.AddNoUpdate(aQSO);
       ScoreForm.AddNoUpdate(aQSO);
    end;
 
-   MultiForm.Update;
-   ScoreForm.Update;
+   MultiForm.UpdateData;
+   ScoreForm.UpdateData;
    MultiForm.RenewBandScope;
 end;
 
 procedure TContest.EditCurrentRow;
 var
-   R: integer;
-   _top, _row: integer;
+   R: Integer;
+   _top, _row: Integer;
 begin
    // R := MainForm.Grid.Row;
    _row := MainForm.Grid.Row;
@@ -2382,8 +2385,6 @@ begin
 end;
 
 procedure TWAEContest.SpaceBarProc;
-var
-   temp: string;
 begin
    inherited;
    if CheckCountry.Visible then
@@ -2592,7 +2593,7 @@ end;
 
 constructor TBasicEdit.Create(AOwner: TComponent);
 var
-   i, j: integer;
+   i, j: Integer;
 begin
    Inherited Create();
 
@@ -2653,7 +2654,7 @@ begin
          MainForm.Grid.Cells[j, i] := '';
 end;
 
-procedure TBasicEdit.SetDirectEdit(Direct: boolean);
+procedure TBasicEdit.SetDirectEdit(Direct: Boolean);
 begin
    if Direct then begin
       MainForm.Grid.Options := MainForm.Grid.Options + [goEditing { , goAlwaysShowEditor } ];
@@ -2669,7 +2670,7 @@ end;
 
 procedure TBasicEdit.Add(aQSO: TQSO);
 var
-   i: integer;
+   i: Integer;
 begin
    if MainForm.ShowCurrentBandOnly.Checked and (aQSO.Band <> CurrentQSO.Band) then begin
       Exit;
@@ -2704,7 +2705,7 @@ begin
    end;
 end;
 
-Procedure TBasicEdit.WriteQSO(R: integer; aQSO: TQSO);
+Procedure TBasicEdit.WriteQSO(R: Integer; aQSO: TQSO);
 var
    temp: string;
 begin
@@ -2755,7 +2756,7 @@ end;
 
 procedure TBasicEdit.RefreshScreen;
 var
-   i, j: integer;
+   i, j: Integer;
 begin
    with MainForm.Grid do begin
       for i := TopRow to TopRow + VisibleRowCount - 1 do begin
@@ -2777,7 +2778,7 @@ end;
 
 procedure TBasicEdit.ResetTopRow;
 var
-   i: integer;
+   i: Integer;
 begin
    i := DispQSO - MainForm.Grid.VisibleRowCount + 1;
    if i > 0 then begin
@@ -2791,7 +2792,7 @@ end;
 procedure TBasicEdit.Renew;
 var
    R: word;
-   i, _row: integer;
+   i, _row: Integer;
 begin
    for i := 1 to MaxGridQSO do begin
       IndexArray[i] := 0;
@@ -2832,7 +2833,6 @@ end;
 
 procedure TBasicEdit.SetGridWidth;
 var
-   i: Integer;
    nColWidth: Integer;
    nRowHeight: Integer;
 begin
@@ -2923,9 +2923,9 @@ begin
    end;
 end;
 
-function TBasicEdit.GetLeft(col: integer): integer;
+function TBasicEdit.GetLeft(col: Integer): Integer;
 var
-   i, j: integer;
+   i, j: Integer;
 begin
    if col = 0 then begin
       Result := 0;
@@ -3519,7 +3519,7 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 var
-   i, j, mSec: integer;
+   i, j, mSec: Integer;
    M: TMenuItem;
    S, ss: string;
 begin
@@ -3676,7 +3676,7 @@ begin
    end;
 end;
 
-function ExecuteFile(const filename, Params, DefaultDir: string; ShowCmd: integer): THandle;
+function ExecuteFile(const filename, Params, DefaultDir: string; ShowCmd: Integer): THandle;
 var
    zFileName, zParams, zDir: array [0 .. 79] of Char;
 begin
@@ -3685,7 +3685,7 @@ end;
 
 procedure TMainForm.FilePrint(Sender: TObject);
 var
-   R: integer;
+   R: Integer;
    S: string;
 begin
 
@@ -3722,7 +3722,7 @@ end;
 
 procedure TMainForm.RestoreWindowStates;
 var
-   X: integer;
+   X: Integer;
 begin
    dmZlogGlobal.ReadWindowState(CheckCall2);
    dmZlogGlobal.ReadWindowState(PartialCheck);
@@ -3831,7 +3831,7 @@ end;
 procedure TMainForm.ProcessConsoleCommand(S: string);
 var
    i: double;
-   j: integer;
+   j: Integer;
    temp, temp2: string;
 begin
    Delete(S, 1, 1);
@@ -4204,7 +4204,7 @@ end;
 procedure TMainForm.CommonEditKeyProcess(Sender: TObject; var Key: Char);
 var
    E: TEdit;
-   i: integer;
+   i: Integer;
    str: string;
 begin
    E := TEdit(Sender);
@@ -4263,7 +4263,7 @@ end;
 
 procedure TMainForm.IncFontSize();
 var
-   j: integer;
+   j: Integer;
 begin
    j := EditPanel.Font.Size;
    if j < 21 then begin
@@ -4278,7 +4278,7 @@ end;
 
 procedure TMainForm.DecFontSize();
 var
-   j: integer;
+   j: Integer;
 begin
    j := EditPanel.Font.Size;
    if j > 9 then begin
@@ -4303,9 +4303,9 @@ begin
    PostMessage(Handle, WM_ZLOG_SETGRIDCOL, 0, 0);
 end;
 
-procedure TMainForm.SwitchCWBank(Action: integer); // 0 : toggle; 1,2 bank#)
+procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
 var
-   j: integer;
+   j: Integer;
 begin
    if Action = 0 then begin
       if dmZlogGlobal.Settings.CW.CurrentBank = 1 then
@@ -4658,7 +4658,7 @@ end;
 
 procedure TMainForm.GridMenuPopup(Sender: TObject);
 var
-   i: integer;
+   i: Integer;
    M: TMenuItem;
 begin
    SendSpot1.Enabled := CommForm.MaybeConnected;
@@ -4698,11 +4698,8 @@ end;
 
 procedure TMainForm.LoadNewContestFromFile(filename: string);
 var
-   f: file of TQSOdata;
-   D: TQSOdata;
    Q: TQSO;
-   i: word;
-   boo, Boo2: boolean;
+   boo, Boo2: Boolean;
 begin
    // 一度はCreateLogされてる前提
    Q := Log.Items[0];
@@ -4755,7 +4752,7 @@ end;
 
 Procedure TMainForm.DeleteCurrentRow;
 var
-   R: integer;
+   R: Integer;
 begin
    { ZLinkForm.DeleteQSO(TQSO(Log.List[Grid.Row]));
      Log.Delete(Grid.Row);
@@ -4790,11 +4787,10 @@ end;
 
 procedure TMainForm.DeleteQSO1Click(Sender: TObject);
 var
-   _top, _bottom, _oldtop: LongInt;
+   _top, _bottom: LongInt;
    R: word;
 begin
    with Grid do begin
-      _oldtop := TopRow;
       _top := Selection.top;
       _bottom := Selection.Bottom;
    end;
@@ -4866,7 +4862,7 @@ end;
 
 procedure TMainForm.OnTabPress;
 var
-   S: ShortString;
+   S: String;
    Q: TQSO;
 begin
    { not dupe }
@@ -4931,7 +4927,7 @@ end;
 
 procedure TMainForm.DownKeyPress;
 var
-   S: ShortString;
+   S: String;
 begin
    if CallsignEdit.Text = '' then begin
       exit;
@@ -5118,8 +5114,8 @@ end;
 
 procedure TMainForm.LogButtonClick(Sender: TObject);
 var
-   _dupe, i, j: integer;
-   workedZLO: boolean;
+   _dupe, i, j: Integer;
+   workedZLO: Boolean;
    st, st2: string;
    B: TBand;
 label
@@ -5323,8 +5319,8 @@ end;
 
 procedure TMainForm.CWFButtonClick(Sender: TObject);
 var
-   i: integer;
-   S: string[255];
+   i: Integer;
+   S: string;
 begin
    i := THemisphereButton(Sender).Tag;
    if i in [1 .. 9] then begin
@@ -5370,12 +5366,12 @@ begin
 end;
 
 procedure TMainForm.VoiceStopButtonClick(Sender: TObject);
-// var i : integer;
+// var i : Integer;
 begin
    // UzLogVoice.StopVoice;
 end;
 
-procedure TMainForm.SetCQ(CQ: boolean);
+procedure TMainForm.SetCQ(CQ: Boolean);
 begin
    CurrentQSO.CQ := CQ;
 
@@ -5399,7 +5395,7 @@ end;
 
 procedure TMainForm.CQRepeatClick1(Sender: TObject);
 var
-   S: ShortString;
+   S: String;
 begin
    S := dmZlogGlobal.CWMessage(1, 1);
    S := SetStr(UpperCase(S), CurrentQSO);
@@ -5409,7 +5405,7 @@ end;
 
 procedure TMainForm.CQRepeatClick2(Sender: TObject);
 var
-   S: ShortString;
+   S: String;
 begin
    CtrlZCQLoop := True;
    S := dmZlogGlobal.CWMessage(1, 1);
@@ -5556,7 +5552,7 @@ end;
 procedure TMainForm.Update10MinTimer;
 var
    Diff: TDateTime;
-   Min, Sec: integer;
+   Min, Sec: Integer;
    S: string;
 begin
    S := TimeToStr(CurrentTime);
@@ -5574,7 +5570,7 @@ begin
          else begin
             if Diff > 0 then begin
                Min := Trunc(10 - Diff * 24 * 60);
-               Sec := Trunc(integer(round(600 - Diff * 24 * 60 * 60)) mod 60);
+               Sec := Trunc(Integer(round(600 - Diff * 24 * 60 * 60)) mod 60);
                if Min = 10 then
                   S := S + IntToStr(Min)
                else
@@ -5605,7 +5601,7 @@ end;
 procedure TMainForm.CallsignSentProc(Sender: TObject);
 var
    Q: TQSO;
-   S: ShortString;
+   S: String;
 begin
    try
       if CallsignEdit.Focused then begin
@@ -5646,7 +5642,7 @@ end;
 
 procedure TMainForm.Timer1Timer(Sender: TObject);
 var
-   S: ShortString;
+   S: String;
 begin
    Update10MinTimer;
 
@@ -5662,7 +5658,7 @@ end;
 procedure TMainForm.InsertQSO1Click(Sender: TObject);
 var
    _top, _bottom, _oldtop: LongInt;
-   R: integer;
+   R: Integer;
 begin
    with Grid do begin
       _oldtop := TopRow;
@@ -5813,7 +5809,7 @@ end;
 
 procedure TMainForm.SerialEditChange(Sender: TObject);
 var
-   i: integer;
+   i: Integer;
 begin
    i := StrToIntDef(SerialEdit.Text, 0);
 
@@ -5824,7 +5820,7 @@ end;
 
 procedure TMainForm.GridBandChangeClick(Sender: TObject);
 var
-   i, j, _top, _bottom: integer;
+   i, j, _top, _bottom: Integer;
    R: word;
    B: TBand;
    aQSO: TQSO;
@@ -5938,7 +5934,7 @@ end;
 
 procedure TMainForm.FormResize(Sender: TObject);
 var
-   i: integer;
+   i: Integer;
 begin
    i := ClientWidth - Grid.GridWidth;
    if i <> 0 then begin
@@ -5962,8 +5958,8 @@ begin
       RenewCWToolBar;
       RenewVoiceToolBar;
 
-      MyContest.ScoreForm.Update();
-      MyContest.MultiForm.Update();
+      MyContest.ScoreForm.UpdateData();
+      MyContest.MultiForm.UpdateData();
 
       // リグコントロール開始
       RigControl.ImplementOptions;
@@ -6014,12 +6010,12 @@ begin
    end;
 end;
 
-procedure TMainForm.CWF1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
+procedure TMainForm.CWF1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
    CWFMenu.Items[0].Tag := THemisphereButton(Sender).Tag;
 end;
 
-procedure TMainForm.HemisphereButton8MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
+procedure TMainForm.HemisphereButton8MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
    CWFMenu.Items[0].Tag := 1;
 end;
@@ -6045,7 +6041,7 @@ end;
 
 procedure TMainForm.EditEnter(Sender: TObject);
 var
-   P: integer;
+   P: Integer;
 begin
    LastFocus := TEdit(Sender);
    if TEdit(Sender).Name = 'CallsignEdit' then begin
@@ -6094,7 +6090,7 @@ end;
 
 procedure TMainForm.GridModeChangeClick(Sender: TObject);
 var
-   i, j, _top, _bottom: integer;
+   i, j, _top, _bottom: Integer;
    R: word;
    M: TMode;
    aQSO: TQSO;
@@ -6168,7 +6164,7 @@ end;
 
 procedure TMainForm.GridOperatorClick(Sender: TObject);
 var
-   i, j, _top, _bottom: integer;
+   i, j, _top, _bottom: Integer;
    R: word;
    OpName: string;
    aQSO: TQSO;
@@ -6217,7 +6213,7 @@ end;
 
 procedure TMainForm.SendSpot1Click(Sender: TObject);
 var
-   _top, _bottom: integer;
+   _top, _bottom: Integer;
    R: word;
 begin
    with Grid do begin
@@ -6279,7 +6275,7 @@ end;
 
 procedure TMainForm.CreateDupeCheckSheetZPRINT1Click(Sender: TObject);
 var
-   R: integer;
+   R: Integer;
    S: string;
 begin
    if Log.Saved = False then begin
@@ -6352,7 +6348,7 @@ end;
 
 procedure TMainForm.TXTSaveDialogTypeChange(Sender: TObject);
 var
-   i: integer;
+   i: Integer;
 begin
    i := TXTSaveDialog.FilterIndex;
    if i = 2 then
@@ -6361,7 +6357,7 @@ begin
       TXTSaveDialog.DefaultExt := 'all';
 end;
 
-procedure TMainForm.GridMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
+procedure TMainForm.GridMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
    if EditScreen <> nil then
       EditScreen.SetEditFields;
@@ -6444,7 +6440,7 @@ end;
 
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
 var
-   i, j, _top, _bottom: integer;
+   i, j, _top, _bottom: Integer;
    R: word;
    P: TPower;
    aQSO: TQSO;
@@ -6501,7 +6497,7 @@ end;
 procedure TMainForm.MergeFile1Click(Sender: TObject);
 var
    ff: string;
-   i: integer;
+   i: Integer;
 begin
    OpenDialog.Title := 'Merge file';
    if OpenDialog.Execute then begin
@@ -6561,7 +6557,7 @@ end;
 
 procedure TMainForm.mnChangeTXNrClick(Sender: TObject);
 var
-   i, j, _top, _bottom, NewTX, R: integer;
+   i, j, _top, _bottom, NewTX, R: Integer;
    aQSO: TQSO;
    F: TIntegerDialog;
 begin
@@ -6598,7 +6594,7 @@ begin
             if R = mrNo then
                exit;
 
-            aQSO := TQSO(Log.List[EditScreen.IndexArray[_top]]);
+//            aQSO := TQSO(Log.List[EditScreen.IndexArray[_top]]);
 
             F.Init(dmZlogGlobal.Settings._txnr, 'Enter new TX#');
             if F.ShowModal <> mrOK then begin
@@ -6665,7 +6661,7 @@ begin
    end;
 end;
 
-procedure TMainForm.GridSelectCell(Sender: TObject; col, Row: integer; var CanSelect: boolean);
+procedure TMainForm.GridSelectCell(Sender: TObject; col, Row: Integer; var CanSelect: Boolean);
 begin
    if EditScreen.DirectEdit then begin
       EditScreen.BeforeEdit := Grid.Cells[col, Row];
@@ -6681,12 +6677,12 @@ begin
    end;
 end;
 
-procedure TMainForm.GridSetEditText(Sender: TObject; ACol, ARow: integer; const Value: String);
+procedure TMainForm.GridSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: String);
 begin
    WriteStatusLine('SetEditTextCalled', False);
 end;
 
-procedure TMainForm.GridGetEditText(Sender: TObject; ACol, ARow: integer; var Value: String);
+procedure TMainForm.GridGetEditText(Sender: TObject; ACol, ARow: Integer; var Value: String);
 begin
    WriteStatusLine('GetEditTextCalled', False);
 end;
@@ -6740,8 +6736,8 @@ end;
 
 procedure TMainForm.SwitchLastQSOBandMode;
 var
-   T, mytx, i: integer;
-   boo: boolean;
+   T, mytx, i: Integer;
+   boo: Boolean;
 begin
    if Log.TotalQSO > 0 then begin
       T := Log.TotalQSO;
@@ -6831,7 +6827,7 @@ end;
 
 procedure TMainForm.mnNewBandScopeClick(Sender: TObject);
 var
-   i: integer;
+   i: Integer;
 begin
    for i := 1 to BSMax do begin // BS2test...
       if uBandScope2.BandScopeArray[i] = nil then begin
@@ -6888,9 +6884,9 @@ begin
    end;
 end;
 
-procedure TMainForm.MyIdleEvent(Sender: TObject; var Done: boolean);
+procedure TMainForm.MyIdleEvent(Sender: TObject; var Done: Boolean);
 var
-   boo: boolean;
+   boo: Boolean;
 begin
    boo := dmZlogKeyer.IsPlaying;
 
@@ -6946,7 +6942,7 @@ begin
    Done := True;
 end;
 
-procedure TMainForm.MyMessageEvent(var Msg: TMsg; var Handled: boolean);
+procedure TMainForm.MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 begin
    if MMTTYInitialized then begin
       UMMTTY.ProcessMMTTYMessage(Msg, Handled);
@@ -7217,8 +7213,8 @@ begin
       UpdateMode(CurrentQSO.mode);
       BandScope2.SetBandMode(CurrentQSO.Band, CurrentQSO.mode);
 
-      MyContest.ScoreForm.Update();
-      MyContest.MultiForm.Update();
+      MyContest.ScoreForm.UpdateData();
+      MyContest.MultiForm.UpdateData();
 
       if FPostContest then begin
          TimeEdit.SetFocus;

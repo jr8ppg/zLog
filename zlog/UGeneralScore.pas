@@ -36,7 +36,7 @@ type
     procedure SetPointsTable(var PT : TPointsTable; str : string);
     procedure CalcPoints(var aQSO : TQSO);
     procedure AddNoUpdate(var aQSO : TQSO); override;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure Reset; override;
     procedure Add(var aQSO : TQSO); override; {calculates points}
     procedure LoadCFG(Filename : string);
@@ -647,7 +647,7 @@ begin
    System.close(zfile);
 end;
 
-procedure TGeneralScore.Update;
+procedure TGeneralScore.UpdateData;
 var
    band: TBand;
    TotQSO, TotPoints, TotMulti: LongInt;
@@ -781,7 +781,7 @@ begin
       i := length(aQSO.NrRcvd);
       if i > 0 then begin
          ch := aQSO.NrRcvd[i];
-         if ch in ['0' .. 'Z'] then
+         if CharInSet(ch, ['0' .. 'Z']) then
             aQSO.Points := AlphabetPointsTable[ord(ch)];
       end;
    end;

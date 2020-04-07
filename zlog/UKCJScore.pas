@@ -17,7 +17,7 @@ type
   public
     { Public declarations }
     procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure Update; override;
+    procedure UpdateData; override;
   end;
 
 implementation
@@ -47,7 +47,7 @@ begin
    Inc(Points[band], aQSO.Points);
 end;
 
-procedure TKCJScore.Update;
+procedure TKCJScore.UpdateData;
 var
    band: TBand;
    TotPoints, TotMulti: LongInt;

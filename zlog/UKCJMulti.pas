@@ -9,7 +9,7 @@ uses
 
 const maxindex = 70;
 
-const KenNames : array[0..maxindex] of string[15] =
+const KenNames : array[0..maxindex] of string =
 ('SY @’J','RM —¯–G','KK ãì','AB –Ô‘–','SC ‹ó’m','IS Îë','NM ªº',
  'SB Œãu','TC \Ÿ','KR ‹ú˜H','HD “ú‚','IR ’_U','HY •OR','OM “n“‡',
  'AM ÂX','IT Šâè','AT H“c','YM RŒ`','MG ‹{é','FS •Ÿ“‡','NI VŠƒ',
@@ -49,7 +49,7 @@ type
   public
     { Public declarations }
     MultiArray : array[b19..b50, 0..maxindex] of boolean;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Reset; override;
     procedure CheckMulti(aQSO : TQSO); override;
@@ -89,7 +89,7 @@ begin
    end;
 end;
 
-procedure TKCJMulti.Update;
+procedure TKCJMulti.UpdateData;
 var
    B: TBand;
 begin
@@ -98,7 +98,7 @@ begin
    combBand.ItemIndex := GetBandIndex(B);
 
    if MultiMap.Visible then begin
-      MultiMap.Update;
+      MultiMap.UpdateData;
    end;
 
    Grid.Refresh();

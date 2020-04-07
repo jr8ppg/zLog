@@ -38,8 +38,6 @@ begin
 end;
 
 function TIntegerDialog.GetValue: integer;
-var
-   v: integer;
 begin
    if Cancelled then begin
       Result := 0;
@@ -62,8 +60,6 @@ begin
    w := Width - Label1.Width;
    if w > 0 then
       Label1.Left := w div 2
-   else
-      w := 2;
 end;
 
 procedure TIntegerDialog.FormCreate(Sender: TObject);

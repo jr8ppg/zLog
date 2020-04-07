@@ -4,12 +4,12 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UACAGMulti, Grids, Cologrid, StdCtrls, JLLabel, ExtCtrls,
+  UACAGMulti, Grids, Cologrid, StdCtrls, JLLabel, ExtCtrls, UITypes,
   UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers, UzLogCW;
 
 type
   TIsland = class
-    RefNumber : string[7];
+    RefNumber : string;
     Name : string;
     Worked : array[b19..HiBand, mCW..mSSB] of boolean;
     constructor Create;
@@ -39,7 +39,7 @@ type
     MyIOTA, MyDXCC : string;
     function ExtractMulti(aQSO : TQSO) : string; override;
     procedure Reset; override;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
     procedure CheckMulti(aQSO : TQSO); override;
@@ -70,7 +70,7 @@ end;
 
 function TIsland.Summary : string;
 var str : string;
-    strname : string[30];
+    strname : string;
     B : TBand;
     M : TMode;
 begin
@@ -165,7 +165,7 @@ begin
   S := aQSO.NrRcvd;
   Result := '';
   for i := 1 to length(S) do
-    if S[i] in ['A'..'Z'] then
+    if CharInSet(S[i], ['A'..'Z']) then
       begin
         work := S;
         Delete(work, 1, i - 1);
@@ -205,10 +205,9 @@ begin
 end;
 
 procedure TIOTAMulti.AddNoUpdate(var aQSO : TQSO);
-var str, str2 : string;
-    i, j : integer;
+var str : string;
+    i : integer;
     C : TIsland;
-    P : TPrefix;
    F: TNewIOTARef;
 begin
    F := TNewIOTARef.Create(Self);
@@ -293,7 +292,7 @@ begin
   Grid.TopRow := j;
 end;
 
-procedure TIOTAMulti.Update;
+procedure TIOTAMulti.UpdateData;
 var i : integer;
     C : TIsland;
     str : string;

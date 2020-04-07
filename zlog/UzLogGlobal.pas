@@ -21,8 +21,8 @@ type
     _zero : char;
     _one : char;
     _nine : char;
-    CWStrBank : array[1..maxbank,1..maxmaxstr] of string[255]; //bank 3 is for rtty
-    CQStrBank : array[0..2] of string[255];
+    CWStrBank : array[1..maxbank,1..maxmaxstr] of string; //bank 3 is for rtty
+    CQStrBank : array[0..2] of string;
     CurrentBank : integer; {for future use?}
     _spacefactor : word; {factor in % for default space between characters}
     _eispacefactor : word;
@@ -51,11 +51,11 @@ type
     _band : integer; {0 = all band; 1 = 1.9MHz 2 = 3.5MHz ...}
     _mode : integer; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
     _contestmenuno : integer; {selected contest in the menu}
-    _mycall : string[15];
-    _prov : string[15];
-    _city : string[50];
-    _cqzone : string[3];
-    _iaruzone : string[3];
+    _mycall : string;
+    _prov : string;
+    _city : string;
+    _cqzone : string;
+    _iaruzone : string;
     _sendfreq : double;
 
     _autobandmap: boolean;
@@ -92,7 +92,7 @@ type
     _pcname : string;
     _saveevery : word;
     _scorecoeff : extended;
-    _age : string[3]; // all asian
+    _age : string; // all asian
     _allowdupe : boolean;
     _countdown : boolean;
     _qsycount : boolean;
@@ -224,7 +224,7 @@ public
     procedure SetPaddleReverse(boo : boolean);
     procedure ReversePaddle();
 
-    function CWMessage(bank, i : integer) : shortstring;
+    function CWMessage(bank, i : integer): string;
 
     procedure ReadWindowState(form: TForm; strWindowName: string = ''; fPositionOnly: Boolean = False);
     procedure WriteWindowState(form: TForm; strWindowName: string = '');
@@ -1455,7 +1455,7 @@ begin
    SetPaddleReverse(not(Settings.CW._paddlereverse));
 end;
 
-function TdmZLogGlobal.CWMessage(bank, i: integer): shortstring;
+function TdmZLogGlobal.CWMessage(bank, i: integer): string;
 begin
    Result := Settings.CW.CWStrBank[bank, i];
 end;
@@ -1660,10 +1660,14 @@ end;
 function ExtractPower(S: string): string; // extracts power code. returns '' if no power
 begin
    Result := '';
-   if S = '' then
+
+   if S = '' then begin
       exit;
-   if S[length(S)] in ['H', 'M', 'L', 'P'] then
+   end;
+
+   if CharInSet(S[length(S)], ['H', 'M', 'L', 'P']) then begin
       Result := S[length(S)];
+   end;
 end;
 
 function IsSHF(B: TBand): Boolean; // true if b >= 2400MHz
@@ -1733,7 +1737,7 @@ end;
 
 function LowCase(C: Char): Char;
 begin
-   if C in ['A' .. 'Z'] then
+   if CharInSet(C, ['A' .. 'Z']) then
       Result := Chr(ord(C) - ord('A') + ord('a'))
    else
       Result := C;
@@ -1776,7 +1780,7 @@ end;
 
 function StrMore(A, B: string): Boolean; { true if a>b }
 var
-   i, j: integer;
+   i: Integer;
 begin
    for i := 1 to Less(length(A), length(B)) do begin
       if ord(A[i]) > ord(B[i]) then begin
@@ -1795,21 +1799,23 @@ begin
 end;
 
 function PXMore(A, B: string): Boolean; { true if a>b }
-var
-   i, j: integer;
 begin
    if A[1] = B[1] then begin
       if length(A) > length(B) then begin
          Result := false;
          exit;
       end;
+
       if length(A) < length(B) then begin
          Result := True;
          exit;
       end;
+
       Result := StrMore(A, B);
+
       exit;
    end;
+
    Result := StrMore(A, B);
 end;
 
@@ -1855,7 +1861,7 @@ end;
 
 function PXMoreX(A, B: string): Boolean; { true if a>b }
 var
-   i, j, PXA, PXB: integer;
+   PXA, PXB: integer;
 begin
    PXA := PXIndex(A);
    PXB := PXIndex(B);
@@ -1918,7 +1924,7 @@ var
    sjis: AnsiString;
 begin
    sjis := AnsiString(S);
-   sjis := sjis + DupeString(' ', len);
+   sjis := sjis + AnsiString(DupeString(' ', len));
    sjis := Copy(sjis, 1, len);
    Result := String(sjis);
 end;
@@ -1928,7 +1934,7 @@ var
    sjis: AnsiString;
 begin
    sjis := AnsiString(S);
-   sjis := DupeString(' ', len) + sjis;
+   sjis := AnsiString(DupeString(' ', len)) + sjis;
    sjis := Copy(sjis, Length(sjis) - len + 1, len);
    Result := String(sjis);
 end;

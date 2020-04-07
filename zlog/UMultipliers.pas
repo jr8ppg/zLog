@@ -16,10 +16,10 @@ var
 
 type
   TCountry = class
-    Country : string[40]; {JA, KH6 etc}
-    CountryName : string[40]; {Japan, Hawaii, etc}
+    Country : string; {JA, KH6 etc}
+    CountryName : string; {Japan, Hawaii, etc}
     Zone : integer;
-    Continent : string[3];
+    Continent : string;
     Worked : array[b19..HiBand] of boolean;
     GridIndex : integer;  // where it is listed in the Grid (row)
     constructor Create;
@@ -39,11 +39,11 @@ type
   end;
 
   TPrefix = class
-    Prefix : string[12];
+    Prefix : string;
     Index : integer;
     Length : integer;
     OvrZone : integer;         // override zone
-    OvrContinent : string[3];  // override continent
+    OvrContinent : string;  // override continent
     constructor Create;
   end;
 
@@ -85,7 +85,7 @@ type
 var
   CountryList : TCountryList;
   PrefixList : TPrefixList;
-  MyCountry, MyContinent, MyZone : string[255];
+  MyCountry, MyContinent, MyZone: string;
 
 procedure LoadCTY_DAT(TEST : byte; var L : TCountryList; var PL : TPrefixList);
 procedure LoadCountryDataFromFile(filename : string; var L : TCountryList; var PL : TPrefixList);
@@ -103,9 +103,8 @@ uses
 
 procedure TPrefixList.AddListX(PX: TPrefix);
 var
-   j, k: integer;
+   j: integer;
    p: string;
-   boo: boolean;
 begin
    p := PX.Prefix;
    if List.Count = 0 then begin
@@ -113,10 +112,7 @@ begin
       exit;
    end
    else begin
-      boo := false;
-      if boo = false then
-         k := 0;
-      for j := k to List.Count - 1 do begin
+      for j := 0 to List.Count - 1 do begin
          if PXMoreX(p, TPrefix(List[j]).Prefix) = false then begin
             List.Insert(j, PX);
             exit;
@@ -217,7 +213,7 @@ function TCountry.SummaryGeneral: string;
 var
    temp: string;
    B: TBand;
-   temp2: string[15];
+   temp2: string;
 begin
    if CountryName = 'Unknown' then begin
       Result := 'Unknown Country';
@@ -558,7 +554,7 @@ var
    str, temp: string;
    C: TCountry;
    p: TPrefix;
-   i, mii, j: integer;
+   i, mii: integer;
 begin
    _DATFileName := filename;
    System.assign(f, filename);
@@ -651,7 +647,6 @@ begin
          until mii = Length(str) + 1;
       until str[mii - 1] = ';';
    end;
-   mii := 0;
    close(f);
    PL.InitIndexX;
 end;
@@ -666,7 +661,9 @@ begin
    str := aQSO.CallSign;
    if str = '' then
       exit;
+
    pind := PXIndex(str);
+
    i := pos('/', str);
    if i > 0 then begin
       // if there's a perfect match then go with it
@@ -700,7 +697,7 @@ begin
          begin // if the first part exactly matches with a prefix, it will return that prefix
             boo := false;
             firststr := copy(str, 1, 4);
-            if x >= 0 then
+            if x >= 0 then begin
                for k := x to PL.List.Count - 1 do begin
                   if TPrefix(PL.List[k]).Prefix = firststr then begin
                      boo := true;
@@ -709,9 +706,11 @@ begin
                   if PXIndex(TPrefix(PL.List[k]).Prefix) <> pind then
                      break;
                end;
-            if boo then begin
-               Result := TPrefix(PL.List[k]);
-               exit;
+
+               if boo then begin
+                  Result := TPrefix(PL.List[k]);
+                  exit;
+               end;
             end;
          end;
          str := temp;

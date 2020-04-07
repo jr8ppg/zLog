@@ -17,7 +17,7 @@ type
   public
     { Public declarations }
     procedure Renew; virtual;
-    procedure Update; virtual;
+    procedure UpdateData; virtual;
     function ExtractMulti(aQSO : TQSO) : string; virtual;
     procedure AddNoUpdate(var aQSO : TQSO); virtual;
     procedure Add(var aQSO : TQSO); virtual; {NewMulti}
@@ -25,8 +25,8 @@ type
     procedure Reset; virtual;
     procedure CheckMulti(aQSO : TQSO); virtual;
     procedure ProcessCluster(var Sp : TBaseSpot); virtual;
-    function GuessZone(aQSO : TQSO) : string; virtual; abstract;
-    function GetInfo(aQSO : TQSO): string; virtual; abstract;
+    function GuessZone(aQSO : TQSO) : string; virtual;
+    function GetInfo(aQSO : TQSO): string; virtual;
     procedure RenewCluster; virtual;
     procedure RenewBandScope; virtual;
     procedure ProcessSpotData(var S : TBaseSpot); virtual;
@@ -65,7 +65,7 @@ procedure TBasicMulti.Renew;
 begin
 end;
 
-procedure TBasicMulti.Update;
+procedure TBasicMulti.UpdateData;
 begin
 end;
 
@@ -81,7 +81,7 @@ end;
 procedure TBasicMulti.Add(var aQSO : TQSO);
 begin
   AddNoUpdate(aQSO);
-  Update;
+  UpdateData;
   AddSpot(aQSO);
 end;
 
@@ -113,6 +113,16 @@ end;
 
 procedure TBasicMulti.ProcessCluster(var Sp : TBaseSpot);
 begin
+end;
+
+function TBasicMulti.GuessZone(aQSO : TQSO): string;
+begin
+   Result := '';
+end;
+
+function TBasicMulti.GetInfo(aQSO : TQSO): string;
+begin
+   Result := '';
 end;
 
 procedure TBasicMulti.ProcessSpotData(var S : TBaseSpot);
@@ -232,13 +242,15 @@ begin
 end;
 
 procedure TBasicMulti.SetNumberEditFocusJARL;
-var S : string;
+var
+  S : string;
 begin
   MainForm.NumberEdit.SetFocus;
   S := MainForm.NumberEdit.Text;
   if S = '' then
     exit;
-  if S[length(S)] in ['A'..'Z'] then
+
+  if CharInSet(S[length(S)], ['A'..'Z']) then
     begin
       MainForm.NumberEdit.SelStart := length(S) - 1;
       MainForm.NumberEdit.SelLength := 1;

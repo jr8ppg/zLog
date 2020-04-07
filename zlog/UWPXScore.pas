@@ -20,7 +20,7 @@ type
     AllAsianDXMode : Boolean;
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure SummaryWriteScore(FileName : string); override;
     property MultiForm: TWPXMulti read FMultiForm write FMultiForm;
   end;
@@ -62,7 +62,7 @@ begin
    Inc(Points[aQSO.Band], aQSO.Points);
 end;
 
-procedure TWPXScore.Update;
+procedure TWPXScore.UpdateData;
 var
    band : TBand;
    TotQSO, TotPts : Integer;

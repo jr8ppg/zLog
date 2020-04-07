@@ -16,7 +16,7 @@ type
     { Public declarations }
     procedure AddNoUpdate(var aQSO : TQSO); override;
     function GetInfo(aQSO : TQSO) : string; override;
-    procedure Update; override;
+    procedure UpdateData; override;
   end;
 
 implementation
@@ -32,9 +32,9 @@ begin
 end;
 
 procedure TWAEMulti.AddNoUpdate(var aQSO : TQSO);
-var str : string;
+var
     B : TBand;
-    i, j : integer;
+    i : integer;
     C : TCountry;
 begin
   aQSO.NewMulti1 := False;
@@ -67,7 +67,6 @@ end;
 function TWAEMulti.GetInfo(aQSO : TQSO) : string;
 var temp, temp2 : string;
     B : TBand;
-    i : integer;
     C : TCountry;
 begin
   C := TCountry(CountryList.List[GetCountryIndex(aQSO)]);
@@ -105,7 +104,7 @@ end;
 
 
 
-procedure TWAEMulti.Update;
+procedure TWAEMulti.UpdateData;
 begin
   ShowContinent('EU');
   RefreshGrid;

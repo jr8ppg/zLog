@@ -17,7 +17,7 @@ type
   public
     { Public declarations }
     procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure Reset; override;
     procedure Add(var aQSO : TQSO); override;
   end;
@@ -47,7 +47,7 @@ begin
    inc(points[band], aQSO.points);
 end;
 
-procedure TSixDownScore.Update;
+procedure TSixDownScore.UpdateData;
 var
    band: TBand;
    TotMulti, TotPoints: Integer;

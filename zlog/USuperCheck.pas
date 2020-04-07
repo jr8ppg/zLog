@@ -8,8 +8,8 @@ uses
 
 type
   TSuperData = class
-    callsign : string[15];
-    number : string[30];
+    callsign : string;
+    number : string;
     function Summary : string;
   end;
 
@@ -93,6 +93,7 @@ begin
   HitCall := '';
   ListBox.Items.Clear;
   PartialStr := aQSO.Callsign;
+  FirstData := nil;
 
   if dmZlogGlobal.Settings._searchafter >= length(PartialStr) then
     exit;

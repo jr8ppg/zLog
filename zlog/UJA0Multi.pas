@@ -23,11 +23,11 @@ type
     //PXList : TStringList;
     PXListX : array[b35..b28] of TStringList;
     // function TotalPrefix : integer;
-    function ValidMulti(aQSO : TQSO) : boolean;
+    function ValidMulti(aQSO : TQSO) : boolean; reintroduce;
     function GetPrefix(aQSO : TQSO) : string;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Reset; override;
-    procedure Update; override;
+    procedure UpdateData; override;
   end;
 
 implementation
@@ -37,17 +37,12 @@ uses Main;
 {$R *.DFM}
 
 function TJA0Multi.ValidMulti(aQSO : TQSO) : boolean;
-var str : string;
-    B : TBand;
-    i : integer;
+var
+  str : string;
+  i : integer;
 begin
   str := aQSO.NrRcvd;
-  try
-    i := StrToInt(str);
-  except
-    on EConvertError do
-      i := 0;
-  end;
+  i := StrToIntDef(str, 0);
   if i > 0 then
     Result := True
   else
@@ -77,9 +72,10 @@ begin
 end;
 
 
-procedure TJA0Multi.Update;
-var i, j : integer;
-    band : TBand;
+procedure TJA0Multi.UpdateData;
+var
+  i: integer;
+  band : TBand;
 begin
   band := Main.CurrentQSO.Band;
   ListBox.Items.Clear;
@@ -119,7 +115,7 @@ begin
         exit;
       if length(c) >= 6 then
         begin
-          if c[6] in ['A'..'Z'] then
+          if CharInSet(c[6], ['A'..'Z']) then
             Result := c[2]+'*'+c[6]
           else
             Result := c[2]+'*'+c[5];
@@ -128,7 +124,8 @@ begin
         begin
           if length(c) < 5 then
             exit;
-          if c[5] in ['A'..'Z'] then
+
+          if CharInSet(c[5], ['A'..'Z']) then
             Result := c[2]+'*'+c[5]
         end;
     end;

@@ -1609,7 +1609,7 @@ begin
 
    CloseFile(f);
 
-   Result := i;
+   Result := Log.Count;
 end;
 
 function TQSOList.MergeFile(filename: string): Integer;

@@ -21,7 +21,7 @@ type
     procedure AddNoUpdate(var aQSO : TQSO); override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
     procedure CheckMulti(aQSO : TQSO); override;
-    procedure Update; override;
+    procedure UpdateData; override;
   end;
 
 implementation
@@ -41,7 +41,7 @@ begin
   if str = '' then
     exit;
 
-  if str[length(str)] in ['H', 'P', 'L', 'M'] then
+  if CharInSet(str[length(str)], ['H', 'P', 'L', 'M']) then
     System.Delete(str, length(str), 1);
 
   if aQSO.Band in [b19..b1200] then
@@ -80,8 +80,7 @@ end;
 
 function TFDMulti.ValidMulti(aQSO : TQSO) : boolean;
 var str : string;
-    B : TBand;
-    i, j : integer;
+    i: integer;
     C : TCity;
     boo : boolean;
 begin
@@ -97,8 +96,10 @@ begin
       if not(length(str) in [5..7]) then
         exit;
     end;
-  if not(str[length(str)] in ['P','L','M','H']) then
+
+  if not CharInSet(str[length(str)], ['P','L','M','H']) then
     exit;
+
   Delete(str, length(str), 1);
 
   boo := false;
@@ -116,10 +117,9 @@ end;
 
 
 procedure TFDMulti.AddNoUpdate(var aQSO : TQSO);
-var str, str2 : string;
-    B : TBand;
-    i, j : integer;
-    C : TCity;
+var
+  str: string;
+  C : TCity;
 begin
   aQSO.NewMulti1 := False;
   str := aQSO.NrRcvd;
@@ -182,7 +182,6 @@ end;
 
 
 procedure TFDMulti.FormCreate(Sender: TObject);
-var i : integer;
 begin
   // inherited;
   sband := b35;
@@ -191,15 +190,9 @@ begin
   CityList.LoadFromFile('ACAG.DAT');
   if CityList.List.Count = 0 then exit;
   Reset;
-  {
-  for i := 0 to CityList.List.Count-1 do
-    begin
-      ListBox.Items.Add(TCity(CityList.List[i]).FDSummary(sband));
-    end;
-  }
 end;
 
-procedure TFDMulti.Update;
+procedure TFDMulti.UpdateData;
 var B : TBand;
     i : integer;
     C : TCity;

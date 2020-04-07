@@ -18,7 +18,7 @@ type
     BLo, BHi : TBand;
   public
     procedure InitGrid(B0, B1 : TBand);
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
     { Public declarations }
   end;
@@ -79,7 +79,7 @@ begin
   //ShowCWRatio := True;
 end;
 
-procedure TIARUScore.Update;
+procedure TIARUScore.UpdateData;
 var band : TBand;
     TotQSO, TotPts, TotMulti : LongInt;
     row : integer;

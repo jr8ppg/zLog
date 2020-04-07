@@ -169,12 +169,7 @@ begin
 
   MyContest.SetNrSent(workQSO);
 
-  try
-    i := StrToInt(SerialEdit.Text);
-  except
-    on EConvertError do
-      i := 0;
-  end;
+  i := StrToIntDef(SerialEdit.Text, 0);
   if i > 0 then
     workQSO.Serial := i;
 
@@ -519,8 +514,6 @@ begin
 end;
 
 procedure TEditDialog.ModeMenuClick(Sender: TObject);
-var T : byte;
-    M : TMode;
 begin
   ModeEdit.Text := ModeString[TMode(TMenuItem(Sender).Tag)];
   workQSO.mode := TMode(TMenuItem(Sender).Tag);
@@ -757,7 +750,7 @@ end;
 procedure TEditDialog.EditKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 var
    i, cb : integer;
-   S : string[255];
+   S : string;
 begin
    case Key of
       {MUHENKAN KEY}

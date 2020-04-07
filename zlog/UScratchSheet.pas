@@ -21,7 +21,7 @@ type
   public
     procedure AddBuffer(S : string);
     procedure AddLine(S : string); override;
-    procedure Update;
+    procedure UpdateData;
     { Public declarations }
   end;
 
@@ -40,7 +40,6 @@ begin
 end;
 
 procedure TScratchSheet.EditKeyPress(Sender: TObject; var Key: Char);
-var str : string;
 begin
   case Key of
     Chr($0D) :
@@ -48,7 +47,7 @@ begin
         //AddLine(Edit.Text);
         Buffer.Add('&'+Edit.Text);
         ZLinkForm.SendScratchMessage(Edit.Text);
-        Update;
+        UpdateData;
         Edit.Text := '';
         //MainForm.ProcessConsoleCommand(str);
         Key := #0;
@@ -76,7 +75,7 @@ begin
   Buffer := TStringList.Create;
 end;
 
-procedure TScratchSheet.Update;
+procedure TScratchSheet.UpdateData;
 var i, _VisRows, _TopRow : integer;
     str : string;
     count : integer;
@@ -121,14 +120,14 @@ procedure TScratchSheet.LocalOnlyClick(Sender: TObject);
 begin
   //inherited;
   LocalOnly.Checked := Not(LocalOnly.Checked);
-  Update;
+  UpdateData;
 end;
 
 procedure TScratchSheet.Clear1Click(Sender: TObject);
 begin
   inherited;
   Buffer.Clear;
-  Update;
+  UpdateData;
 end;
 
 end.

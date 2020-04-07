@@ -19,7 +19,7 @@ type
     JA0Band : TBand;
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure Update; override;
+    procedure UpdateData; override;
     function IsJA0(aQSO : TQSO) : boolean;
     procedure SetBand(B : TBand);
   end;
@@ -69,7 +69,7 @@ begin
    Inc(Points[aQSO.band], aQSO.Points);
 end;
 
-procedure TJA0Score.Update;
+procedure TJA0Score.UpdateData;
 begin
    // å©èoÇµçs
    Grid.Cells[0,0] := 'MHz';

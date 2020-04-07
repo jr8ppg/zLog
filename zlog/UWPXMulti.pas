@@ -25,7 +25,7 @@ type
     procedure AddNoUpdate(var aQSO : TQSO); override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
     procedure ProcessCluster(var Sp : TBaseSpot); override;
-    procedure Update; override;
+    procedure UpdateData; override;
   end;
 
 function GetWPXPrefix(aQSO : TQSO) : string;
@@ -69,98 +69,101 @@ begin
 end;
 
 function GetWPXPrefix(aQSO : TQSO) : string;
-var str, temp : string;
-    i, j, k : integer;
-    boo : boolean;
+var
+   str, temp : string;
+   i, j, k : integer;
+   boo : boolean;
 begin
-  str := aQSO.CallSign;
-  i := pos('/', str);
-  if i > 0 then
-    begin
+   str := aQSO.CallSign;
+   i := pos('/', str);
+   if i > 0 then begin
       temp := copy(str, i + 1, 255);
-      if (temp='AA') or (temp='AT') or (temp='AG') or (temp='AA') or
-         (temp='AE') or (temp='M') or (temp='P') or (temp='AM') or
-         (temp='QRP') or (temp='A') or (temp='KT') or (temp='MM')  then
-        str := copy(str, 1, i - 1)  {cut /AA /M etc}
-      else
-        if (length(temp) = 1) and (temp[1] in ['0'..'9']) then {JA1ZLO/2}
-          begin
+      if (temp = 'AA') or (temp = 'AT') or (temp = 'AG') or (temp = 'AA') or
+         (temp = 'AE') or (temp = 'M') or (temp = 'P') or (temp = 'AM') or
+         (temp = 'QRP') or (temp = 'A') or (temp = 'KT') or (temp = 'MM')  then begin
+         str := copy(str, 1, i - 1)  {cut /AA /M etc}
+      end
+      else begin
+         if (length(temp) = 1) and CharInSet(temp[1], ['0'..'9']) then begin {JA1ZLO/2}
             j := 1;
+
             repeat
-              inc(j);
-            until (str[j] in ['0'..'9']) or (length(str) < j);
+               inc(j);
+            until CharInSet(str[j], ['0'..'9']) or (length(str) < j);
+
             str := copy(str, 1, j);
             str[j] := temp[1];
             Result := str;
             exit;
-          end
-        else
-          if i > 4 then {JA1ZLO/JD1, KH0AM/W6 etc NOT KH0/AD6AJ}
-            begin
-              boo := false;
-              for j := 1 to length(temp) do
-                if temp[j] in ['0'..'9'] then
-                  begin
-                    k := j; // holds the pos of last numeral
-                    boo := true;
+         end
+         else begin
+            if i > 4 then begin {JA1ZLO/JD1, KH0AM/W6 etc NOT KH0/AD6AJ}
+               boo := false;
+               k := 0;
+               for j := 1 to length(temp) do begin
+                  if CharInSet(temp[j], ['0'..'9']) then begin
+                     k := j; // holds the pos of last numeral
+                     boo := true;
                   end;
-              if boo = False then
-                temp := temp + '0'  {AD6AJ/PA => PA0}
-              else
-                begin
-                  if temp[length(temp)] in ['A'..'Z'] then // /VP2E etc
-                    temp := copy(temp, 1, k);
-                end;
-              Result := temp;
-              exit;
-            end
-          else  {KH0/AD6AJ}
-            begin
-              temp := copy(str, 1, i-1);
-              boo := false;
-              for j := 1 to length(temp) do
-                if temp[j] in ['0'..'9'] then
-                  begin
-                    boo := true;
-                    k := j;
+               end;
+
+               if boo = False then begin
+                  temp := temp + '0'  {AD6AJ/PA => PA0}
+               end
+               else begin
+                  if CharInSet(temp[length(temp)], ['A'..'Z']) then begin // /VP2E etc
+                     temp := copy(temp, 1, k);
                   end;
-              if boo = False then
-                temp := temp + '0'  {PA/AD6AJ => PA0}
-              else
-                begin
-                  if temp[length(temp)] in ['A'..'Z'] then
-                    temp := copy(temp, 1, k);
-                end;
-              Result := temp;
-              exit;
+               end;
+
+               Result := temp;
+               exit;
             end
-    end;
-  j := 1;
+            else begin  {KH0/AD6AJ}
+               temp := copy(str, 1, i-1);
+               boo := false;
+               k := 0;
+               for j := 1 to length(temp) do begin
+                  if CharInSet(temp[j], ['0'..'9']) then begin
+                     boo := true;
+                     k := j;
+                  end;
+               end;
 
-  repeat
-    inc(j);
-  until (length(str) < j) or (str[j] in ['0'..'9']);
+               if boo = False then begin
+                  temp := temp + '0'  {PA/AD6AJ => PA0}
+               end
+               else begin
+                  if CharInSet(temp[length(temp)], ['A'..'Z']) then begin
+                     temp := copy(temp, 1, k);
+                  end;
+               end;
 
-  if j > length(str) then {XEFTA etc => XE0}
-    begin
+               Result := temp;
+               exit;
+            end;
+         end;
+      end;
+   end;
+
+   j := 1;
+
+   repeat
+      inc(j);
+   until (length(str) < j) or CharInSet(str[j], ['0'..'9']);
+
+   if j > length(str) then begin {XEFTA etc => XE0}
       Result := copy(str, 1, 2) + '0';
       exit;
-    end;
+   end;
 
-  j := length(str) + 1;
+   j := length(str) + 1;
 
-  repeat
-    dec(j);
-  until (j = 1) or ( (str[j]) in ['0'..'9'] );
+   repeat
+      dec(j);
+   until (j = 1) or CharInSet(str[j], ['0'..'9']);
 
-  {while (j < length(str)) and (str[j+1] in ['0'..'9']) do
-    inc(j);}
-
-  {if j + 1 <= length(str) then
-    if str[j+1] in ['0'..'9'] then
-      inc(j);}
-
-  Result := copy(str, 1, j);
+   Result := copy(str, 1, j);
 end;
 
 procedure TWPXMulti.FormCreate(Sender: TObject);
@@ -208,17 +211,17 @@ begin
   WPXList.Clear;
 end;
 
-procedure TWPXMulti.Update;
+procedure TWPXMulti.UpdateData;
 begin
   RefreshGrid;
 end;
 
 procedure TWPXMulti.AddNoUpdate(var aQSO : TQSO);
-var str : string;
-    i, max : integer;
-    C : TCountry;
-    P : TPrefix;
-    _cont : string[3];
+var
+  str : string;
+  C : TCountry;
+  P : TPrefix;
+  _cont : string;
 begin
   aQSO.NewMulti1 := False;
   str := GetWPXPrefix(aQSO);
@@ -294,10 +297,11 @@ begin
 end;
 
 procedure TWPXMulti.ProcessCluster(var Sp : TBaseSpot);
-var Z, C, i : integer;
-    temp, px : string;
-    boo : boolean;
-    aQSO : TQSO;
+var
+  i : integer;
+  temp, px : string;
+  boo : boolean;
+  aQSO : TQSO;
 begin
   aQSO := TQSO.Create;
   aQSO.Callsign := Sp.Call;

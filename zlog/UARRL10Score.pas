@@ -17,7 +17,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
   end;
 
@@ -28,7 +28,7 @@ implementation
 
 {$R *.DFM}
 
-procedure TARRL10Score.Update;
+procedure TARRL10Score.UpdateData;
 begin
   Grid.Cells[1,0] := IntToStr(QSO[b28]);
   Grid.Cells[1,1] := IntToStr(QSO[b28] - CWQSO[b28]);

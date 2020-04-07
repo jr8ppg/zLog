@@ -9,9 +9,9 @@ uses
 
 type
   TState = class
-    StateName : string[23];
-    StateAbbrev : string[3];
-    AltAbbrev : string[80];
+    StateName : string;
+    StateAbbrev : string;
+    AltAbbrev : string;
     Worked : array[b19..HiBand] of boolean;
     Index : integer;
     constructor Create;
@@ -39,7 +39,7 @@ type
     { Public declarations }
     StateList : TStateList;
     function ExtractMulti(aQSO : TQSO) : string; override;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure CheckMulti(aQSO : TQSO); override;
     procedure Reset; override;
@@ -117,7 +117,6 @@ end;
 
 procedure TARRLDXMulti.CheckMulti(aQSO : TQSO);
 var str : string;
-    i : integer;
     S : TState;
 begin
   S := GetState(aQSO, StateList);
@@ -135,10 +134,8 @@ begin
 end;
 
 procedure TARRLDXMulti.AddNoUpdate(var aQSO : TQSO);
-var str : string;
-    B : TBand;
-    j : integer;
-    S : TState;
+var
+  S : TState;
 begin
   aQSO.NewMulti1 := False;
 
@@ -259,7 +256,7 @@ begin
           readln(f, str);
           str := TrimRight(str);
           str := TrimLeft(str);
-          if not(str[length(str)] in ['a'..'z','A'..'Z','0'..'9']) then
+          if not CharInSet(str[length(str)], ['a'..'z','A'..'Z','0'..'9']) then
             System.Delete(str,length(str),1);
           S.AltAbbrev := str;
         end;
@@ -277,7 +274,7 @@ begin
   Reset;
 end;
 
-procedure TARRLDXMulti.Update;
+procedure TARRLDXMulti.UpdateData;
 var i : integer;
     str : string;
 begin

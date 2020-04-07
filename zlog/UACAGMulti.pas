@@ -43,7 +43,7 @@ type
   public
     LatestMultiAddition : integer; // Grid.TopRow
     CityList : TCityList;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Add(var aQSO : TQSO); override; {NewMulti}
     function ValidMulti(aQSO : TQSO) : boolean; override;
@@ -66,7 +66,7 @@ begin
    inherited;
 end;
 
-procedure TACAGMulti.Update;
+procedure TACAGMulti.UpdateData;
 var
    i: Integer;
    C: TCity;
@@ -268,7 +268,7 @@ procedure TACAGMulti.FormShow(Sender: TObject);
 begin
    inherited;
    LatestMultiAddition := 0;
-   Update;
+   UpdateData;
 end;
 
 procedure TACAGMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer; var Bold, Italic, underline: Boolean);

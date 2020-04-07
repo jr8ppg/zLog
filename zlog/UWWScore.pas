@@ -21,7 +21,7 @@ type
     procedure Renew; override;
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure SummaryWriteScore(FileName : string); override;
   end;
 
@@ -85,7 +85,6 @@ end;
 
 procedure TWWScore.AddNoUpdate(var aQSO : TQSO);
 var
-   P: Integer;
    band: TBand;
 begin
    {BasicScore.AddNoUpdate(aQSO);}
@@ -103,7 +102,7 @@ begin
    Inc(Points[band], aQSO.Points); {Points calculated in WWMulti.AddNoUpdate}
 end;
 
-procedure TWWScore.Update;
+procedure TWWScore.UpdateData;
 var
    band : TBand;
    TotQSO, TotPts, TotMulti, TotMulti2: Integer;

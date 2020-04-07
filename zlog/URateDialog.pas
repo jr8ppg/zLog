@@ -32,7 +32,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure ShowLastComboChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure CreateParams(var Params: TCreateParams);
+    procedure CreateParams(var Params: TCreateParams); override;
   private
     _max10, _max100 : double;
     function CountQSOs(_start, _end : TDateTime) : integer;
@@ -54,12 +54,12 @@ uses Main;
 {$R *.DFM}
 
 procedure TRateDialog.TimerTimer(Sender: TObject);
-var Last : TDateTime;
-    Diff, Rate : double;
-    temp : string;
-    i : LongInt;
-    mytx, k : integer;
-    aQSO : TQSO;
+var
+   Last : TDateTime;
+   Diff, Rate : double;
+   i : LongInt;
+   mytx, k : integer;
+   aQSO : TQSO;
 begin
    if not(Visible) then exit;
    i := Log.TotalQSO;
@@ -79,79 +79,46 @@ begin
       dec(i)
    until (i = 0) or (k = 10);
 
-  if (k = 10) then
-    begin
+   if (k = 10) then begin
       Last := aQSO.time;
       Diff := (CurrentTime - Last) * 24.0 ;
       Rate := 10 / Diff;
       if Rate > _Max10 then
         _Max10 := Rate;
-      Str(Rate : 3:2, temp);
-      Last10.Caption := temp + ' QSOs/hr';
-      Str(_Max10 : 3:2, temp);
-      Max10.Caption := 'max '+temp + ' QSOs/hr';
-    end
-  else
-    exit;
 
-  i := Log.TotalQSO;
-  k := 0;
-  repeat
-    aQSO := TQSO(Log.List[i]);
-    if aQSO.TX = mytx then
-      begin
-        inc(k);
+      Last10.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
+      Max10.Caption := 'max '+ Format('%3.2f', [_Max10]) + ' QSOs/hr';
+   end
+   else begin
+      exit;
+   end;
+
+   i := Log.TotalQSO;
+   k := 0;
+   repeat
+      aQSO := TQSO(Log.List[i]);
+      if aQSO.TX = mytx then begin
+         inc(k);
       end;
-    dec(i)
-  until (i = 0) or (k = 100);
+      dec(i);
+   until (i = 0) or (k = 100);
 
-  if k = 100 then
-    begin
+   if k = 100 then begin
       Last := aQSO.time;
       Diff := (CurrentTime - Last) * 24.0 ;
       Rate := 100 / Diff;
       If Rate > _Max100 then
-        _Max100 := Rate;
-      Str(Rate : 3:2, temp);
-      Last100.Caption := temp + ' QSOs/hr';
-      Str(_Max100 : 3:2, temp);
-      Max100.Caption := 'max '+temp + ' QSOs/hr';
-    end;
+         _Max100 := Rate;
 
-
-{
-  if i >= 10 then
-    begin
-      Last := TQSO(Log.List[i-9]).QSO.time;
-      Diff := (CurrentTime - Last) * 24.0 ;
-      Rate := 10 / Diff;
-      if Rate > _Max10 then
-        _Max10 := Rate;
-      Str(Rate : 3:2, temp);
-      Last10.Caption := temp + ' QSOs/hr';
-      Str(_Max10 : 3:2, temp);
-      Max10.Caption := 'max '+temp + ' QSOs/hr';
-    end;
-  if i >= 100 then
-    begin
-      Last := TQSO(Log.List[i-99]).QSO.time;
-      Diff := (CurrentTime - Last) * 24.0 ;
-      Rate := 100 / Diff;
-      If Rate > _Max100 then
-        _Max100 := Rate;
-      Str(Rate : 3:2, temp);
-      Last100.Caption := temp + ' QSOs/hr';
-      Str(_Max100 : 3:2, temp);
-      Max100.Caption := 'max '+temp + ' QSOs/hr';
-    end;
-}
-
+      Last100.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
+      Max100.Caption := 'max ' + Format('%3.2f', [_Max100]) + ' QSOs/hr';
+   end;
 end;
 
 procedure TRateDialog.OKBtnClick(Sender: TObject);
 begin
-  Close;
-  MainForm.LastFocus.SetFocus;
+   Close;
+   MainForm.LastFocus.SetFocus;
 end;
 
 procedure TRateDialog.FormCreate(Sender: TObject);
@@ -236,15 +203,8 @@ begin
 end;
 
 procedure TRateDialog.ShowLastComboChange(Sender: TObject);
-var i : integer;
 begin
-  try
-    i := StrToInt(ShowLastCombo.Text);
-  except
-    on EConvertError do
-      i := 12;
-  end;
-  ShowLast := i;
+  ShowLast := StrToIntDef(ShowLastCombo.Text, 12);
   UpdateGraph;
 end;
 

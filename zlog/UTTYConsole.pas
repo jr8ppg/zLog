@@ -85,8 +85,8 @@ var i, j : integer;
     S : string;
 label xxxx;
 begin
-  if C in [Chr(0)..Chr($09), Chr($0b)..Chr($0c),
-           Chr($0e)..Chr($1F), Chr($80)..Chr($FF)] then
+  if C in [AnsiChar(0)..AnsiChar($09), AnsiChar($0b)..AnsiChar($0c),
+           AnsiChar($0e)..AnsiChar($1F), AnsiChar($80)..AnsiChar($FF)] then
     exit;
   RXLog.WriteChar(C);
 
@@ -127,11 +127,11 @@ xxxx:
           //Caption := Caption + '*' + S;
           if S <> '' then
             begin
-              if S[1] in [' ', '/', '-', '|'] then
+              if CharInSet(S[1], [' ', '/', '-', '|']) then
                 Delete(S, 1, 1);
 
               for i := 1 to length(S) do
-                if S[i] in ['-', '/'] then
+                if CharInSet(S[i], ['-', '/']) then
                   S[i] := ' ';
 
               i := pos(' ', S);
@@ -162,7 +162,7 @@ procedure TTTYConsole.TXChar(C : AnsiChar);
 begin
   //Clipboard.AsText := C;
   //TXLog.PasteFromClipboard;
-  TXLog.Text := TXLog.Text + C;
+  TXLog.Text := TXLog.Text + Char(C);
 end;
 
 
@@ -354,6 +354,7 @@ end;
 
 function TTTYConsole.Sending : boolean;
 begin
+  Result := False;
   case TTYMode of
     ttyMMTTY :
       begin

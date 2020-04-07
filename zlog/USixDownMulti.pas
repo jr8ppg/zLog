@@ -22,7 +22,6 @@ implementation
 
 
 procedure TSixDownMulti.FormCreate(Sender: TObject);
-var i : integer;
 begin
   sband := b50;
   CityList := TCityList.Create;

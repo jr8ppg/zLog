@@ -24,8 +24,7 @@ implementation
 {$R *.DFM}
 
 procedure TCheckCall2.Renew(aQSO : TQSO);
-var PartialStr : string;
-    i : LongInt;
+var
     B : TBand;
     aQ, Q : TQSO;
 begin

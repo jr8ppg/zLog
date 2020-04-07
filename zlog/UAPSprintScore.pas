@@ -19,7 +19,7 @@ type
     { Public declarations }
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure Update; override;
+    procedure UpdateData; override;
     property MultiForm: TWPXMulti read FMultiForm write FMultiForm;
   end;
 
@@ -49,7 +49,7 @@ begin
    Inc(Points[aQSO.Band]);
 end;
 
-procedure TAPSprintScore.Update;
+procedure TAPSprintScore.UpdateData;
 var
    TotPts : LongInt;
 begin
@@ -57,7 +57,6 @@ begin
    Grid.Cells[0, 0] := 'MHz';
    Grid.Cells[1, 0] := 'Points';
 
-   TotPts := 0;
    Grid.Cells[0, 1] := '7';
    Grid.Cells[1, 1] := IntToStr3(Points[b7]);
 

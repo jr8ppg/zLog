@@ -121,7 +121,7 @@ type
     ModeWidth : array[mCW..mOther] of Integer; // used in icom
   public
     constructor Create(RigNum : Integer); virtual;
-    destructor Destroy; virtual;
+    destructor Destroy; override;
     procedure Initialize(); virtual;
     function Selected : boolean;
     function CurrentFreqHz : LongInt; //in Hz
@@ -863,6 +863,7 @@ var
    M: TMode;
    i: Integer;
    j: Integer;
+   strTemp: string;
 begin
    try
       if Length(S) <> 27 then begin
@@ -870,7 +871,8 @@ begin
       end;
 
       // モード
-      case StrToIntDef(S[21], 99) of
+      strTemp := string(S[21]);
+      case StrToIntDef(strTemp, 99) of
          1, 2: M := mSSB;
          3, 7: M := mCW;
          4:    M := mFM;
@@ -881,7 +883,8 @@ begin
       _currentmode := M;
 
       // 周波数(Hz)
-      i := StrToIntDef(Copy(S, 6, 8), 0);
+      strTemp := string(Copy(S, 6, 8));
+      i := StrToIntDef(strTemp, 0);
       _currentfreq[0] := i;
 
       // バンド(VFO-A)
@@ -940,7 +943,7 @@ const
 var
    freq: AnsiString;
 begin
-   freq := RightStr(DupeString('0', 8) + IntToStr(Hz), 8);
+   freq := RightStr(AnsiString(DupeString('0', 8)) + AnsiString(IntToStr(Hz)), 8);
    WriteData(cmd[_currentvfo] + freq + ';');
 end;
 
@@ -2024,7 +2027,7 @@ var
    fstr: AnsiString;
 begin
    LastFreq := _currentfreq[_currentvfo];
-   fstr := IntToStr(Hz);
+   fstr := AnsiString(IntToStr(Hz));
    while length(fstr) < 11 do begin
       fstr := '0' + fstr;
    end;
@@ -2040,7 +2043,7 @@ var
    fstr: AnsiString;
 begin
    LastFreq := _currentfreq[_currentvfo];
-   fstr := IntToStr(Hz);
+   fstr := AnsiString(IntToStr(Hz));
    while length(fstr) < 8 do begin
       fstr := '0' + fstr;
    end;
@@ -2389,7 +2392,7 @@ end;
 procedure TTS690.ExecuteCommand(S: AnsiString);
 var
    Command: AnsiString;
-   temp: AnsiString;
+   strTemp: string;
    i, j: LongInt;
    aa: Integer;
    M: TMode;
@@ -2407,8 +2410,8 @@ begin
       else
          aa := 1;
 
-      temp := copy(S, 3, 11);
-      i := StrToIntDef(temp, 0);
+      strTemp := string(Copy(S, 3, 11));
+      i := StrToIntDef(strTemp, 0);
       _currentfreq[aa] := i;
       i := i + _freqoffset; // transverter
 
@@ -2451,8 +2454,8 @@ begin
          // '2' : memory
       end;
 
-      temp := copy(S, 3, 11);
-      i := StrToIntDef(temp, 0);
+      strTemp := string(copy(S, 3, 11));
+      i := StrToIntDef(strTemp, 0);
       _currentfreq[_currentvfo] := i;
       i := i + _freqoffset; // transverter
 
@@ -2461,34 +2464,44 @@ begin
          _currentband := TBand(j);
       end;
 
-      temp := copy(S, 30, 1);
       case S[30] of
-         '1', '2':
+         '1', '2': begin
             M := mSSB;
+         end;
+
          '3': begin
-               M := mCW;
-               _CWR := False;
-            end;
+            M := mCW;
+            _CWR := False;
+         end;
+
          '7': begin
-               M := mCW;
-               _CWR := True;
-            end;
-         '4':
+            M := mCW;
+            _CWR := True;
+         end;
+
+         '4': begin
             M := mFM;
-         '5':
+         end;
+
+         '5': begin
             M := mAM;
-         '6', '8':
+         end;
+
+         '6', '8': begin
             M := mRTTY;
-         else
+         end;
+
+         else begin
             M := mOther;
+         end;
       end;
       _currentmode := M;
 
       FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
 
-      if Selected then
+      if Selected then begin
          UpdateStatus;
-
+      end;
    end;
 
    if Command = 'MD' then begin
@@ -2523,7 +2536,7 @@ end;
 procedure TJST145.ExecuteCommand(S: AnsiString);
 var
    Command: AnsiString;
-   temp: AnsiString;
+   strTemp: string;
    i, j: LongInt;
    aa: Integer;
    // B : TBand;
@@ -2546,8 +2559,8 @@ begin
       if Command = 'I' then
          aa := _currentvfo;
 
-      temp := copy(ss, 4, 8);
-      i := StrToIntDef(temp, 0);
+      strTemp := string(copy(ss, 4, 8));
+      i := StrToIntDef(strTemp, 0);
       _currentfreq[aa] := i;
       i := i + _freqoffset;
 

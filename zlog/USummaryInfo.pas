@@ -60,7 +60,6 @@ end;
 procedure TSummaryInfo.FormShow(Sender: TObject);
 var
    str : string;
-   i : integer;
    Y, M, D : word;
 begin
    if TQSO(Log.List[0]).RSTSent = 0 then begin // JST = 0; UTC = $FFFF

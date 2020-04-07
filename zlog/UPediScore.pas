@@ -17,7 +17,7 @@ type
     Stats: array[b19..HiBand, mCW..mOther] of integer;
   public
     { Public declarations }
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Reset; override;
     procedure SummaryWriteScore(FileName : string); override;
@@ -79,7 +79,7 @@ begin
    CloseFile(f);
 end;
 
-procedure TPediScore.Update;
+procedure TPediScore.UpdateData;
 var
    b: TBand;
    M: TMode;

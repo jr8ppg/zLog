@@ -25,7 +25,7 @@ type
   public
     { Public declarations }
     MultiForm: TForm;
-    procedure Update;
+    procedure UpdateData;
   end;
 
 implementation
@@ -71,7 +71,7 @@ begin
    end;
 end;
 
-procedure TKCJZone.Update;
+procedure TKCJZone.UpdateData;
 var
    i: integer;
    B: TBand;
@@ -152,7 +152,7 @@ begin
       end;
    end;
 
-   Update;
+   UpdateData;
 end;
 
 procedure TKCJZone.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
