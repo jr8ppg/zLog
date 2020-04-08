@@ -52,176 +52,179 @@ uses Main, UNewIOTARef, UOptions, UIOTACategory;
 
 {$R *.DFM}
 
-function TIOTAMulti.ValidMulti(aQSO : TQSO) : boolean;
+function TIOTAMulti.ValidMulti(aQSO: TQSO): boolean;
 begin
-  Result := True;
+   Result := True;
 end;
 
 constructor TIsland.Create;
-var B : TBand;
-    M : TMode;
+var
+   B: TBand;
+   M: TMode;
 begin
-  RefNumber := '';
-  Name := '';
-  for B := b19 to HiBand do
-    for M := mCW to mSSB do
-      Worked[B, M] := False;
+   RefNumber := '';
+   Name := '';
+   for B := b19 to HiBand do
+      for M := mCW to mSSB do
+         Worked[B, M] := False;
 end;
 
-function TIsland.Summary : string;
-var str : string;
-    strname : string;
-    B : TBand;
-    M : TMode;
+function TIsland.Summary: string;
+var
+   str: string;
+   strname: string;
+   B: TBand;
+   M: TMode;
 begin
-  strname := Name;
-  str := FillRight(RefNumber,6) + FillRight(strname, 31);
-  for B := b35 to b28 do
-    if NotWARC(B) then
-      for M := mCW to mSSB do
-        if Worked[B, M] = True then
-          str := str + '* '
-        else
-          str := str + '. ';
-  Result := str;
+   strname := Name;
+   str := FillRight(RefNumber, 6) + FillRight(strname, 31);
+   for B := b35 to b28 do begin
+      if NotWARC(B) then begin
+         for M := mCW to mSSB do begin
+            if Worked[B, M] = True then
+               str := str + '* '
+            else
+               str := str + '. ';
+         end;
+      end;
+   end;
+
+   Result := str;
 end;
 
 constructor TIslandList.Create;
 begin
-  List := TList.Create;
+   List := TList.Create;
 end;
 
 destructor TIslandList.Destroy;
-var i : integer;
+var
+   i: Integer;
 begin
-  for i := 0 to List.Count - 1 do
-    begin
+   for i := 0 to List.Count - 1 do begin
       if List[i] <> nil then
-        TIsland(List[i]).Free;
-    end;
-  List.Free;
+         TIsland(List[i]).Free;
+   end;
+   List.Free;
 end;
 
-procedure TIslandList.LoadFromFile(filename : string);
-var f : textfile;
-    str : string;
-    I : TIsland;
+procedure TIslandList.LoadFromFile(filename: string);
+var
+   f: textfile;
+   str: string;
+   i: TIsland;
 begin
-  assign(f, filename);
-  try
-    reset(f);
-  except
-    on EFOpenError do
-      begin
-        MessageDlg('DAT file '+filename+' cannot be opened', mtError,
-                   [mbOK], 0);
-        exit;    {Alert that the file cannot be opened \\}
+   assign(f, filename);
+   try
+      Reset(f);
+   except
+      on EFOpenError do begin
+         MessageDlg('DAT file ' + filename + ' cannot be opened', mtError, [mbOK], 0);
+         exit; { Alert that the file cannot be opened \\ }
       end;
-  end;
-  readln(f, str);
-  while not(eof(f)) do
-    begin
+   end;
+   readln(f, str);
+   while not(eof(f)) do begin
       readln(f, str);
-      if Pos('end of file', LowerCase(str))>0 then break;
-      I := TIsland.Create;
-      I.RefNumber := Copy(str, 1, 5);
+      if Pos('end of file', LowerCase(str)) > 0 then
+         break;
+      i := TIsland.Create;
+      i.RefNumber := Copy(str, 1, 5);
       Delete(str, 1, 6);
-      I.Name := str;
-      List.Add(I);
-    end;
-  system.close(f);
+      i.Name := str;
+      List.Add(i);
+   end;
+   system.close(f);
 end;
 
-procedure TIslandList.SaveToFile(filename : string);
-var f : textfile;
-    str : string;
-    I : TIsland;
-    j : integer;
+procedure TIslandList.SaveToFile(filename: string);
+var
+   f: textfile;
+   str: string;
+   i: TIsland;
+   j: Integer;
 begin
-  assign(f, filename);
-  try
-    rewrite(f);
-  except
-    on EFOpenError do
-      begin
-        MessageDlg('DAT file '+filename+' cannot be opened', mtError,
-                   [mbOK], 0);
-        exit;    {Alert that the file cannot be opened \\}
+   assign(f, filename);
+   try
+      rewrite(f);
+   except
+      on EFOpenError do begin
+         MessageDlg('DAT file ' + filename + ' cannot be opened', mtError, [mbOK], 0);
+         exit; { Alert that the file cannot be opened \\ }
       end;
-  end;
-  for j := 0 to List.Count - 1 do
-    begin
-      I := TIsland(List[j]);
-      str := I.RefNumber + ' ' + I.Name;
+   end;
+   for j := 0 to List.Count - 1 do begin
+      i := TIsland(List[j]);
+      str := i.RefNumber + ' ' + i.Name;
       writeln(f, str);
-    end;
-  system.close(f);
+   end;
+   system.close(f);
 end;
 
-function TIOTAMulti.ExtractMulti(aQSO : TQSO) : string;
-var i, k : integer;
-    S, work, cont : string;
+function TIOTAMulti.ExtractMulti(aQSO: TQSO): string;
+var
+   i, k: Integer;
+   S, work, cont: string;
 begin
-  S := aQSO.NrRcvd;
-  Result := '';
-  for i := 1 to length(S) do
-    if CharInSet(S[i], ['A'..'Z']) then
-      begin
-        work := S;
-        Delete(work, 1, i - 1);
-        if pos('-',work) > 0 then
-          Delete(work, pos('-',work), 1);
+   S := aQSO.NrRcvd;
+   Result := '';
 
-        cont := copy(work, 1, 2);
-        if pos(cont, 'AF;AS;AN;EU;OC;NA;SA') = 0 then
-          exit;
-        Delete(work,1,2);
-        if length(work) in [1..3] then
-          begin
+   for i := 1 to length(S) do begin
+      if CharInSet(S[i], ['A' .. 'Z']) then begin
+         work := S;
+         Delete(work, 1, i - 1);
+         if Pos('-', work) > 0 then
+            Delete(work, Pos('-', work), 1);
+
+         cont := Copy(work, 1, 2);
+         if Pos(cont, 'AF;AS;AN;EU;OC;NA;SA') = 0 then
+            exit;
+         Delete(work, 1, 2);
+         if length(work) in [1 .. 3] then begin
             try
-              k := StrToInt(work);
+               k := StrToInt(work);
             except
-              on EConvertError do
-                exit; // not a number
+               on EConvertError do
+                  exit; // not a number
             end;
+
             case k of
-              0..9 : work := '00'+IntToStr(k);
-              10..99 : work := '0'+IntToStr(k);
-            else
-              work := IntToStr(k);
+               0 .. 9:
+                  work := '00' + IntToStr(k);
+               10 .. 99:
+                  work := '0' + IntToStr(k);
+               else
+                  work := IntToStr(k);
             end;
             work := cont + work;
-          end
-        else // not one to three digit
-          exit;
-        {
-        if length(work) <> 5 then
-          exit;
-        for j := 3 to 5 do
-          if not(work[j] in ['0'..'9']) then
-            exit; }
-        Result := work;
+         end
+         else begin // not one to three digit
+            exit;
+         end;
+
+         Result := work;
       end;
+   end;
 end;
 
-procedure TIOTAMulti.AddNoUpdate(var aQSO : TQSO);
-var str : string;
-    i : integer;
-    C : TIsland;
-   F: TNewIOTARef;
+procedure TIOTAMulti.AddNoUpdate(var aQSO: TQSO);
+var
+   str: string;
+   i: Integer;
+   C: TIsland;
+   f: TNewIOTARef;
 begin
-   F := TNewIOTARef.Create(Self);
+   f := TNewIOTARef.Create(Self);
    try
       aQSO.NewMulti1 := False;
       str := ExtractMulti(aQSO);
 
       if str = '' then
          aQSO.Points := 3
+      else if str = MyIOTA then
+         aQSO.Points := 3
       else
-         if str = MyIOTA then
-            aQSO.Points := 3
-         else
-            aQSO.Points := 15;
+         aQSO.Points := 15;
 
       aQSO.Multi1 := str;
 
@@ -231,7 +234,7 @@ begin
       if str = '' then
          exit;
 
-      for i := 0 to IslandList.List.Count-1 do begin
+      for i := 0 to IslandList.List.Count - 1 do begin
          C := TIsland(IslandList.List[i]);
          if str = C.RefNumber then begin
             if C.Worked[aQSO.band, aQSO.Mode] = False then begin
@@ -239,177 +242,179 @@ begin
                aQSO.NewMulti1 := True;
             end;
             LatestMultiAddition := i;
-            Exit;
+            exit;
          end;
       end;
 
-      F.SetNewRef(str);
-      if F.ShowModal <> mrOK then begin
-         Exit;
+      f.SetNewRef(str);
+      if f.ShowModal <> mrOK then begin
+         exit;
       end;
 
       C := TIsland.Create;
-      C.Name := F.GetName;
+      C.Name := f.GetName;
       C.RefNumber := str;
       C.Worked[aQSO.band, aQSO.Mode] := True;
       aQSO.NewMulti1 := True;
 
       // Å´Ç«Ç§çlÇ¶ÇƒÇ‡ÉoÉOÇ¡ÇƒÇ¢ÇÈ
-      for i := 0 to IslandList.List.Count-1 do begin
+      for i := 0 to IslandList.List.Count - 1 do begin
          if StrMore(str, TIsland(IslandList.List[i]).RefNumber) = False then begin
-            IslandList.List.Insert(i,C);
+            IslandList.List.Insert(i, C);
             IslandList.SaveToFile('IOTA.DAT');
-            Exit;
+            exit;
          end;
 
          IslandList.List.Add(C);
          IslandList.SaveToFile('IOTA.DAT');
-         Exit;
+         exit;
       end;
    finally
-      F.Release();
+      f.Release();
    end;
 end;
 
 procedure TIOTAMulti.Reset;
-var i, j : integer;
-    M : TMode;
-    B : TBand;
-    str : string;
+var
+   i, j: Integer;
+   M: TMode;
+   B: TBand;
+   str: string;
 begin
-  if IslandList.List.Count = 0 then exit;
-  j := Grid.TopRow;
-  Grid.RowCount := 0;
-  Grid.RowCount := IslandList.List.Count;
-  for i := 0 to IslandList.List.Count-1 do
-    begin
+   if IslandList.List.Count = 0 then
+      exit;
+
+   j := Grid.TopRow;
+   Grid.RowCount := 0;
+   Grid.RowCount := IslandList.List.Count;
+   for i := 0 to IslandList.List.Count - 1 do begin
       for B := b19 to HiBand do
-        for M := mCW to mSSB do
-          TIsland(IslandList.List[i]).Worked[B, M] := false;
+         for M := mCW to mSSB do
+            TIsland(IslandList.List[i]).Worked[B, M] := False;
       str := TIsland(IslandList.List[i]).Summary;
-      Grid.Cells[0,i] := str;
-    end;
-  Grid.TopRow := j;
+      Grid.Cells[0, i] := str;
+   end;
+   Grid.TopRow := j;
 end;
 
 procedure TIOTAMulti.UpdateData;
-var i : integer;
-    C : TIsland;
-    str : string;
+var
+   i: Integer;
+   C: TIsland;
+   str: string;
 begin
-  for i := 0 to IslandList.List.Count-1 do
-    begin
+   for i := 0 to IslandList.List.Count - 1 do begin
       C := TIsland(IslandList.List[i]);
       str := C.Summary;
-      Grid.Cells[0,i] := str;
-    end;
-  Grid.TopRow := LatestMultiAddition;
+      Grid.Cells[0, i] := str;
+   end;
+   Grid.TopRow := LatestMultiAddition;
 end;
 
 procedure TIOTAMulti.FormCreate(Sender: TObject);
-var Q : TQSO;
-    P : TPrefix;
+var
+   Q: TQSO;
+   P: TPrefix;
 begin
-  //inherited;
-  IslandList := TIslandList.Create;
-  IslandList.LoadFromFile('IOTA.DAT');
-  Reset;
+   // inherited;
+   IslandList := TIslandList.Create;
+   IslandList.LoadFromFile('IOTA.DAT');
+   Reset;
 
-  CountryList := TCountryLIst.Create;
-  PrefixList := TPrefixList.Create;
+   CountryList := TCountryList.Create;
+   PrefixList := TPrefixList.Create;
 
-  if FileExists('CTY.DAT') then
-    begin
+   if FileExists('CTY.DAT') then begin
       LoadCTY_DAT(testDXCCWWZone, CountryList, PrefixList);
-      MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-    end
-  else
-    LoadCountryDataFromFile('DXCC.DAT', CountryList, PrefixList);
+      MainForm.WriteStatusLine('Loaded CTY.DAT', True);
+   end
+   else begin
+      LoadCountryDataFromFile('DXCC.DAT', CountryList, PrefixList);
+   end;
 
-  if CountryList.List.Count = 0 then exit;
+   if CountryList.List.Count = 0 then
+      exit;
 
-  Q := TQSO.Create;
-  Q.Callsign := UpperCase(dmZLogGlobal.MyCall);
-  P := GetPrefixX(Q, PrefixList);
-  MyDXCC := TCountry(CountryList.List[P.Index]).Country;
-  Q.Free;
+   Q := TQSO.Create;
+   Q.Callsign := UpperCase(dmZLogGlobal.MyCall);
+   P := GetPrefixX(Q, PrefixList);
+   MyDXCC := TCountry(CountryList.List[P.Index]).Country;
+   Q.Free;
 
-  MyIOTA := '';
+   MyIOTA := '';
 
-  Application.CreateForm(TIOTACategory, IOTACategory);
-  IOTACategory.Label1.Caption := MyDXCC;
+   Application.CreateForm(TIOTACategory, IOTACategory);
+   IOTACategory.Label1.Caption := MyDXCC;
 
-  if IOTACategory.ShowModal = mrOK then
-    MyIOTA := IOTACategory.GetIOTA;
+   if IOTACategory.ShowModal = mrOK then
+      MyIOTA := IOTACategory.GetIOTA;
 
-  IOTACategory.Free;
+   IOTACategory.Free;
 
-  UzLogCW.QTHString := MyIOTA;
+   UzLogCW.QTHString := MyIOTA;
 end;
 
-procedure TIOTAMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
-  var Bold, Italic, underline: Boolean);
-var B : TBand;
-    M : TMode;
+procedure TIOTAMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer; var Bold, Italic, underline: boolean);
+var
+   B: TBand;
+   M: TMode;
 begin
-  //inherited;
-  B := Main.CurrentQSO.Band;
-  M := Main.CurrentQSO.Mode;
-  if TIsland(IslandList.List[ARow]).Worked[B, M] then
-    FColor := clRed
-  else
-    FColor := clBlack;
+   // inherited;
+   B := Main.CurrentQSO.band;
+   M := Main.CurrentQSO.Mode;
+   if TIsland(IslandList.List[ARow]).Worked[B, M] then
+      Fcolor := clRed
+   else
+      Fcolor := clBlack;
 end;
 
 procedure TIOTAMulti.GoButtonClick2(Sender: TObject);
-var temp : string;
-    i : integer;
+var
+   temp: string;
+   i: Integer;
 begin
-  temp := Edit1.Text;
-  for i := 0 to IslandList.List.Count-1 do
-    begin
-      if pos(temp,TIsland(IslandList.List[i]).RefNumber) = 1 then
-        begin
-          Grid.TopRow := i;
-          break;
-        end;
-    end;
+   temp := Edit1.Text;
+   for i := 0 to IslandList.List.Count - 1 do begin
+      if Pos(temp, TIsland(IslandList.List[i]).RefNumber) = 1 then begin
+         Grid.TopRow := i;
+         break;
+      end;
+   end;
 end;
 
 procedure TIOTAMulti.FormDestroy(Sender: TObject);
 begin
-  inherited;
-  PrefixList.Destroy;
-  CountryList.Destroy;
-  IslandList.Destroy;
+   inherited;
+   PrefixList.Destroy;
+   CountryList.Destroy;
+   IslandList.Destroy;
 end;
 
-procedure TIOTAMulti.CheckMulti(aQSO : TQSO);
-var str : string;
-    i : integer;
-    C : TIsland;
+procedure TIOTAMulti.CheckMulti(aQSO: TQSO);
+var
+   str: string;
+   i: Integer;
+   C: TIsland;
 begin
-  str := ExtractMulti(aQSO);
-  if str = '' then
-    exit;
-  for i := 0 to IslandList.List.Count-1 do
-    begin
+   str := ExtractMulti(aQSO);
+   if str = '' then
+      exit;
+   for i := 0 to IslandList.List.Count - 1 do begin
       C := TIsland(IslandList.List[i]);
-      if str = C.RefNumber then
-        begin
-          //ListBox.TopIndex := i;
-          Grid.TopRow := i;
-          str := C.Summary;
-          if C.Worked[aQSO.Band, aQSO.Mode] then
+      if str = C.RefNumber then begin
+         // ListBox.TopIndex := i;
+         Grid.TopRow := i;
+         str := C.Summary;
+         if C.Worked[aQSO.band, aQSO.Mode] then
             str := str + 'Worked on this band/mode.'
-          else
+         else
             str := str + 'Needed on this band/mode.';
-          MainForm.WriteStatusLine(str, false);
-          exit;
-        end;
-    end;
-  MainForm.WriteStatusLine('Invalid number', false);
-end;
+         MainForm.WriteStatusLine(str, False);
+         exit;
+      end;
+   end;
 
+   MainForm.WriteStatusLine('Invalid number', False);
+end;
 
 end.

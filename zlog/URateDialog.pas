@@ -55,13 +55,14 @@ uses Main;
 
 procedure TRateDialog.TimerTimer(Sender: TObject);
 var
-   Last : TDateTime;
-   Diff, Rate : double;
-   i : LongInt;
-   mytx, k : integer;
-   aQSO : TQSO;
+   Last: TDateTime;
+   Diff, Rate: double;
+   i: LongInt;
+   mytx, k: integer;
+   aQSO: TQSO;
 begin
-   if not(Visible) then exit;
+   if not(Visible) then
+      exit;
    i := Log.TotalQSO;
    if i < 10 then begin
       exit;
@@ -81,13 +82,13 @@ begin
 
    if (k = 10) then begin
       Last := aQSO.time;
-      Diff := (CurrentTime - Last) * 24.0 ;
+      Diff := (CurrentTime - Last) * 24.0;
       Rate := 10 / Diff;
-      if Rate > _Max10 then
-        _Max10 := Rate;
+      if Rate > _max10 then
+         _max10 := Rate;
 
       Last10.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
-      Max10.Caption := 'max '+ Format('%3.2f', [_Max10]) + ' QSOs/hr';
+      Max10.Caption := 'max ' + Format('%3.2f', [_max10]) + ' QSOs/hr';
    end
    else begin
       exit;
@@ -105,13 +106,13 @@ begin
 
    if k = 100 then begin
       Last := aQSO.time;
-      Diff := (CurrentTime - Last) * 24.0 ;
+      Diff := (CurrentTime - Last) * 24.0;
       Rate := 100 / Diff;
-      If Rate > _Max100 then
-         _Max100 := Rate;
+      If Rate > _max100 then
+         _max100 := Rate;
 
       Last100.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
-      Max100.Caption := 'max ' + Format('%3.2f', [_Max100]) + ' QSOs/hr';
+      Max100.Caption := 'max ' + Format('%3.2f', [_max100]) + ' QSOs/hr';
    end;
 end;
 
@@ -123,100 +124,105 @@ end;
 
 procedure TRateDialog.FormCreate(Sender: TObject);
 begin
-  _max10 := 0;
-  _max100 := 0;
-  ShowLast := 12;
-  TimeIncrement := 60;
-  Graph.BackGroundColor := clBtnFace;
-  Graph.GraphColor := clNavy;
+   _max10 := 0;
+   _max100 := 0;
+   ShowLast := 12;
+   TimeIncrement := 60;
+   Graph.BackGroundColor := clBtnFace;
+   Graph.GraphColor := clNavy;
 end;
 
-procedure TRateDialog.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TRateDialog.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  case Key of
-    VK_ESCAPE : MainForm.LastFocus.SetFocus;
-  end;
+   case Key of
+      VK_ESCAPE:
+         MainForm.LastFocus.SetFocus;
+   end;
 end;
 
 procedure TRateDialog.StayOnTopClick(Sender: TObject);
 begin
-  If StayOnTop.Checked then
-    FormStyle := fsStayOnTop
-  else
-    FormStyle := fsNormal;
+   If StayOnTop.Checked then
+      FormStyle := fsStayOnTop
+   else
+      FormStyle := fsNormal;
 end;
 
-function TRateDialog.CountQSOs(_start, _end : TDateTime) : integer;
-var i : integer;
-    T : TDateTime;
+function TRateDialog.CountQSOs(_start, _end: TDateTime): integer;
+var
+   i: integer;
+   T: TDateTime;
 begin
-  Result := 0;
-  for i := 1 to Log.TotalQSO do
-    begin
-      T := TQSO(Log.List[i]).Time;
+   Result := 0;
+
+   for i := 1 to Log.TotalQSO do begin
+      T := TQSO(Log.List[i]).time;
       if (T >= _start) and (T < _end) then
-        inc(Result);
-    end;
+         inc(Result);
+   end;
 end;
 
 procedure TRateDialog.UpdateGraph;
-var j, k : Integer;
-    str : string;
-    _Now : TDateTime;
-    _Start : TDateTime;
+var
+   j, k: integer;
+   str: string;
+   _Now: TDateTime;
+   _start: TDateTime;
 
-var H, M, S, ms : word;
+var
+   H, M, S, ms: Word;
 
 begin
-  Graph.ClearGraph;
-  _Now := CurrentTime;
-  _Start := _Now - (ShowLast - 1) / 24;
-  DecodeTime(_Start,H, M, S, ms);
-  _Start := Int(_Start) + EncodeTime(H, 0, 0, 0);
+   Graph.ClearGraph;
+   _Now := CurrentTime;
+   _start := _Now - (ShowLast - 1) / 24;
+   DecodeTime(_start, H, M, S, ms);
+   _start := Int(_start) + EncodeTime(H, 0, 0, 0);
 
-  if Log.TotalQSO = 0 then
-    exit;
-  if TQSO(Log.List[Log.TotalQSO]).Time < _Start then
-    exit;
+   if Log.TotalQSO = 0 then
+      exit;
 
-  for k := 0 to ShowLast - 1 do
-    begin
-      j := CountQSOs(_Start + (1 / 24)*k, _Start + (1 / 24)*(k + 1));
-      str := IntToStr(GetHour(_Start + (1 / 24)*k));
+   if TQSO(Log.List[Log.TotalQSO]).time < _start then
+      exit;
+
+   for k := 0 to ShowLast - 1 do begin
+      j := CountQSOs(_start + (1 / 24) * k, _start + (1 / 24) * (k + 1));
+      str := IntToStr(GetHour(_start + (1 / 24) * k));
+
       if ShowLast > 12 then
-        if (GetHour(_Start + (1 / 24) * k) mod 2) = 1 then
-          str := '';
-      if ShowLast > 24 then
-        if (GetHour(_Start + (1 / 24) * k) mod 4) <> 0 then
-          str := '';
-      Graph.AddData(k + 1, j, str);
-    end;
-  Graph.PlotGraph;
-end;
+         if (GetHour(_start + (1 / 24) * k) mod 2) = 1 then
+            str := '';
 
+      if ShowLast > 24 then
+         if (GetHour(_start + (1 / 24) * k) mod 4) <> 0 then
+            str := '';
+
+      Graph.AddData(k + 1, j, str);
+   end;
+   Graph.PlotGraph;
+end;
 
 procedure TRateDialog.FormShow(Sender: TObject);
 begin
-  UpdateGraph;
-  Timer.Enabled := True;
+   UpdateGraph;
+   Timer.Enabled := True;
 end;
 
 procedure TRateDialog.ShowLastComboChange(Sender: TObject);
 begin
-  ShowLast := StrToIntDef(ShowLastCombo.Text, 12);
-  UpdateGraph;
+   ShowLast := StrToIntDef(ShowLastCombo.Text, 12);
+   UpdateGraph;
 end;
 
 procedure TRateDialog.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  Timer.Enabled := False;
+   Timer.Enabled := False;
 end;
 
 procedure TRateDialog.CreateParams(var Params: TCreateParams);
 begin
-  inherited CreateParams(Params);
-  Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+   inherited CreateParams(Params);
+   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
 end.

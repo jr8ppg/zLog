@@ -47,18 +47,18 @@ uses Main, uBandScope2;
 
 {$R *.DFM}
 
-procedure TBasicMulti.SelectAndAddNewPrefix(Call : string);
+procedure TBasicMulti.SelectAndAddNewPrefix(Call: string);
 begin
 end;
 
-procedure TBasicMulti.AddNewPrefix(PX : string; CtyIndex : integer);
+procedure TBasicMulti.AddNewPrefix(PX: string; CtyIndex: integer);
 begin
 end;
 
 procedure TBasicMulti.CreateParams(var Params: TCreateParams);
 begin
-  inherited CreateParams(Params);
-  Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+   inherited CreateParams(Params);
+   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
 procedure TBasicMulti.Renew;
@@ -69,203 +69,199 @@ procedure TBasicMulti.UpdateData;
 begin
 end;
 
-procedure TBasicMulti.AddNoUpdate(var aQSO : TQSO);
+procedure TBasicMulti.AddNoUpdate(var aQSO: TQSO);
 begin
 end;
 
-function TBasicMulti.ExtractMulti(aQSO : TQSO) : string;
+function TBasicMulti.ExtractMulti(aQSO: TQSO): string;
 begin
-  Result := aQSO.NrRcvd;
+   Result := aQSO.NrRcvd;
 end;
 
-procedure TBasicMulti.Add(var aQSO : TQSO);
+procedure TBasicMulti.Add(var aQSO: TQSO);
 begin
-  AddNoUpdate(aQSO);
-  UpdateData;
-  AddSpot(aQSO);
+   AddNoUpdate(aQSO);
+   UpdateData;
+   AddSpot(aQSO);
 end;
 
-function TBasicMulti.ValidMulti(aQSO : TQSO) : boolean;
+function TBasicMulti.ValidMulti(aQSO: TQSO): boolean;
 begin
-  result := true;
+   Result := true;
 end;
 
-procedure TBasicMulti.CheckMulti(aQSO : TQSO);
+procedure TBasicMulti.CheckMulti(aQSO: TQSO);
 begin
 end;
 
-function TBasicMulti.IsNewMulti(aQSO : TQSO) : boolean;
+function TBasicMulti.IsNewMulti(aQSO: TQSO): boolean;
 begin
-  Result := False;
+   Result := False;
 end;
 
 procedure TBasicMulti.Reset;
 begin
 end;
 
-procedure TBasicMulti.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TBasicMulti.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  case Key of
-    VK_ESCAPE : MainForm.LastFocus.SetFocus;
-  end;
+   case Key of
+      VK_ESCAPE:
+         MainForm.LastFocus.SetFocus;
+   end;
 end;
 
-procedure TBasicMulti.ProcessCluster(var Sp : TBaseSpot);
+procedure TBasicMulti.ProcessCluster(var Sp: TBaseSpot);
 begin
 end;
 
-function TBasicMulti.GuessZone(aQSO : TQSO): string;
+function TBasicMulti.GuessZone(aQSO: TQSO): string;
 begin
    Result := '';
 end;
 
-function TBasicMulti.GetInfo(aQSO : TQSO): string;
+function TBasicMulti.GetInfo(aQSO: TQSO): string;
 begin
    Result := '';
 end;
 
-procedure TBasicMulti.ProcessSpotData(var S : TBaseSpot);
-var aQSO : TQSO;
+procedure TBasicMulti.ProcessSpotData(var S: TBaseSpot);
+var
+   aQSO: TQSO;
 begin
-  aQSO := TQSO.Create;
-  aQSO.Callsign := S.Call;
-  aQSO.NrRcvd := S.Number;
-  aQSO.Band := S.Band;
-  aQSO.Mode := S.Mode;
+   aQSO := TQSO.Create;
+   aQSO.Callsign := S.Call;
+   aQSO.NrRcvd := S.Number;
+   aQSO.Band := S.Band;
+   aQSO.Mode := S.Mode;
 
-  S.NewCty := False;
-  S.NewZone := False;
-  S.Worked := False;
+   S.NewCty := False;
+   S.NewZone := False;
+   S.Worked := False;
 
-  if Log.QuickDupe(aQSO) <> nil then
-  //if Log.IsDupe(aQSO) > 0 then
-    S.Worked := True;
-  S.NewCty := IsNewMulti(aQSO);
+   if Log.QuickDupe(aQSO) <> nil then
+      // if Log.IsDupe(aQSO) > 0 then
+      S.Worked := true;
+   S.NewCty := IsNewMulti(aQSO);
 
-  aQSO.Free;
+   aQSO.Free;
 end;
 
 procedure TBasicMulti.RenewCluster;
-var S : TSpot;
-    i : integer;
+var
+   S: TSpot;
+   i: integer;
 begin
-  for i := 0 to CommForm.SpotList.Count - 1 do
-    begin
+   for i := 0 to CommForm.SpotList.Count - 1 do begin
       S := TSpot(CommForm.SpotList[i]);
       ProcessSpotData(TBaseSpot(S));
-    end;
-  if CommForm.Visible then
-    CommForm.Renew;
+   end;
+
+   if CommForm.Visible then
+      CommForm.Renew;
 end;
 
 procedure TBasicMulti.RenewBandScope;
-var S : TBSData;
-    i : integer;
+var
+   S: TBSData;
+   i: integer;
 begin
-{  for i := 0 to USpotClass.BSList.Count - 1 do
-    begin
-      S := TBSData(USpotClass.BSList[i]);
-      ProcessSpotData(TBaseSpot(S));
-    end;}
-  for i := 0 to USpotClass.BSList2.Count - 1 do
-    begin
+   { for i := 0 to USpotClass.BSList.Count - 1 do
+     begin
+     S := TBSData(USpotClass.BSList[i]);
+     ProcessSpotData(TBaseSpot(S));
+     end; }
+
+   for i := 0 to USpotClass.BSList2.Count - 1 do begin
       S := TBSData(USpotClass.BSList2[i]);
       ProcessSpotData(TBaseSpot(S));
-    end;
-  UBandScope2.BSRefresh(Self);
+   end;
+
+   uBandScope2.BSRefresh(Self);
 end;
 
-procedure TBasicMulti.AddSpot(aQSO : TQSO); // renews cluster & bs when adding a qso w/o renewing
-var i : integer;
-    S : TBaseSpot;
-    boo : boolean;
+procedure TBasicMulti.AddSpot(aQSO: TQSO); // renews cluster & bs when adding a qso w/o renewing
+var
+   i: integer;
+   S: TBaseSpot;
+   boo: boolean;
 begin
-  boo := false;
-  if aQSO.NewMulti1 or aQSO.NewMulti2 then
-    begin
+   boo := False;
+   if aQSO.NewMulti1 or aQSO.NewMulti2 then begin
       RenewBandScope;
       RenewCluster;
-      //exit;
-    end;
+      // exit;
+   end;
 
-  for i := 0 to USpotClass.BSList2.Count - 1 do
-    begin
+   for i := 0 to USpotClass.BSList2.Count - 1 do begin
       S := TBaseSpot(USpotClass.BSList2[i]);
-      if (S.Call = aQSO.callsign) and (S.band = aQSO.band) then
-        begin
-          S.NewCty := False;
-          S.NewZone := False;
-          S.Worked := True;
-          boo := true;
-        end;
-    end;
+      if (S.Call = aQSO.Callsign) and (S.Band = aQSO.Band) then begin
+         S.NewCty := False;
+         S.NewZone := False;
+         S.Worked := true;
+         boo := true;
+      end;
+   end;
 
-{  for i := 0 to USpotClass.BSList.Count - 1 do
-    begin
-      S := TBaseSpot(USpotClass.BSList[i]);
-      if (S.Call = aQSO.QSO.callsign) and (S.band = aQSO.QSO.band) then
-        begin
-          S.NewCty := False;
-          S.NewZone := False;
-          S.Worked := True;
-          boo := true;
-        end;
-    end;   }
+   { for i := 0 to USpotClass.BSList.Count - 1 do
+     begin
+     S := TBaseSpot(USpotClass.BSList[i]);
+     if (S.Call = aQSO.QSO.callsign) and (S.band = aQSO.QSO.band) then
+     begin
+     S.NewCty := False;
+     S.NewZone := False;
+     S.Worked := True;
+     boo := true;
+     end;
+     end; }
 
+   if boo then begin
+      uBandScope2.BSRefresh(Self);
+   end;
 
-  if boo then
-    begin
-      UBandScope2.BSRefresh(Self);
-    end;
-  
-  boo := False;
-  for i := 0 to CommForm.SpotList.Count - 1 do
-    begin
+   boo := False;
+   for i := 0 to CommForm.SpotList.Count - 1 do begin
       S := TBaseSpot(CommForm.SpotList[i]);
-      if (S.Call = aQSO.callsign) and (S.band = aQSO.band) then
-        begin
-          S.NewCty := False;
-          S.NewZone := False;
-          S.Worked := True;
-          boo := True;
-        end;
-    end;
-  if boo then
-    CommForm.Renew;
-end;
+      if (S.Call = aQSO.Callsign) and (S.Band = aQSO.Band) then begin
+         S.NewCty := False;
+         S.NewZone := False;
+         S.Worked := true;
+         boo := true;
+      end;
+   end;
 
+   if boo then
+      CommForm.Renew;
+end;
 
 procedure TBasicMulti.FormCreate(Sender: TObject);
 begin
-  MainForm.mnGridAddNewPX.Visible := False;
+   MainForm.mnGridAddNewPX.Visible := False;
 end;
 
 procedure TBasicMulti.SetNumberEditFocusJARL;
 var
-  S : string;
+   S: string;
 begin
-  MainForm.NumberEdit.SetFocus;
-  S := MainForm.NumberEdit.Text;
-  if S = '' then
-    exit;
+   MainForm.NumberEdit.SetFocus;
+   S := MainForm.NumberEdit.Text;
+   if S = '' then
+      exit;
 
-  if CharInSet(S[length(S)], ['A'..'Z']) then
-    begin
+   if CharInSet(S[length(S)], ['A' .. 'Z']) then begin
       MainForm.NumberEdit.SelStart := length(S) - 1;
       MainForm.NumberEdit.SelLength := 1;
-    end
-  else
-    begin
+   end
+   else begin
       MainForm.NumberEdit.SelStart := length(S);
       MainForm.NumberEdit.SelLength := 0;
-    end;
+   end;
 end;
 
 procedure TBasicMulti.SetNumberEditFocus;
 begin
-  MainForm.NumberEdit.SetFocus;
-  MainForm.NumberEdit.SelectAll;
+   MainForm.NumberEdit.SetFocus;
+   MainForm.NumberEdit.SelectAll;
 end;
 
 end.

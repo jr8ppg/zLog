@@ -2,7 +2,7 @@ unit UNewIOTARef;
 
 interface
 
-uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls, 
+uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls;
 
 type
@@ -27,21 +27,20 @@ implementation
 
 {$R *.DFM}
 
-
-procedure TNewIOTARef.SetNewRef(S : string);
+procedure TNewIOTARef.SetNewRef(S: string);
 begin
-  NewRef := S;
-  Label1.Caption := 'Add '+S+' as a new IOTA reference number?'
+   NewRef := S;
+   Label1.Caption := 'Add ' + S + ' as a new IOTA reference number?'
 end;
 
-function TNewIOTARef.GetName : string;
+function TNewIOTARef.GetName: string;
 begin
-  Result := Edit1.Text;
+   Result := Edit1.Text;
 end;
 
 procedure TNewIOTARef.FormShow(Sender: TObject);
 begin
-  Edit1.SetFocus;
+   Edit1.SetFocus;
 end;
 
 end.

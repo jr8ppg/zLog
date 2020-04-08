@@ -60,228 +60,224 @@ uses Main;
 
 {$R *.DFM}
 
-
-
 procedure TJIDX_DX_Multi.HideLabels;
 begin
-  RotateLabel1.Visible := False;
-  RotateLabel2.Visible := False;
-  RotateLabel3.Visible := False;
-  RotateLabel4.Visible := False;
-  RotateLabel5.Visible := False;
-  RotateLabel6.Visible := False;
+   RotateLabel1.Visible := False;
+   RotateLabel2.Visible := False;
+   RotateLabel3.Visible := False;
+   RotateLabel4.Visible := False;
+   RotateLabel5.Visible := False;
+   RotateLabel6.Visible := False;
 end;
 
 procedure TJIDX_DX_Multi.ShowLabels;
 begin
-  RotateLabel1.Visible := True;
-  RotateLabel2.Visible := True;
-  RotateLabel3.Visible := True;
-  RotateLabel4.Visible := True;
-  RotateLabel5.Visible := True;
-  RotateLabel6.Visible := True;
+   RotateLabel1.Visible := True;
+   RotateLabel2.Visible := True;
+   RotateLabel3.Visible := True;
+   RotateLabel4.Visible := True;
+   RotateLabel5.Visible := True;
+   RotateLabel6.Visible := True;
 end;
 
 procedure TJIDX_DX_Multi.UpdateCheckListBox;
 var
-  i : integer;
-  B : TBand;
+   i: integer;
+   B: TBand;
 begin
-  i := TabControl.TabIndex;
-  if i > 5 then exit;
+   i := TabControl.TabIndex;
+   if i > 5 then
+      exit;
 
-  case i of
-    0..2 : B := TBand(i);
-    3 : B := b14;
-    4 : B := b21;
-    5 : B := b28;
-    else begin
-       Exit;
-    end;
-  end;
+   case i of
+      0 .. 2:
+         B := TBand(i);
+      3:
+         B := b14;
+      4:
+         B := b21;
+      5:
+         B := b28;
+      else begin
+            exit;
+         end;
+   end;
 
-  for i := 1 to 50 do begin
-    CheckListBox.Checked[i-1] := MultiTable[B, i];
-  end;
+   for i := 1 to 50 do begin
+      CheckListBox.Checked[i - 1] := MultiTable[B, i];
+   end;
 end;
 
 procedure TJIDX_DX_Multi.UpdateListBox;
-var i : integer;
-    B : TBand;
-    temp, str : string;
+var
+   i: integer;
+   B: TBand;
+   temp, str: string;
 begin
-  for i := 1 to 50 do
-    begin
+   for i := 1 to 50 do begin
       temp := '';
-      for B := b19 to b28 do
-        begin
-          if NotWARC(B) then
+      for B := b19 to b28 do begin
+         if NotWARC(B) then
             if MultiTable[B, i] then
-              temp := temp + '* '
+               temp := temp + '* '
             else
-              temp := temp + '. ';
-          str := copy(ListBox.Items[i-1], 1, 19);
-          FillRight(str, 19);
-          ListBox.Items.Delete(i-1);
-          ListBox.Items.Insert(i-1, str + ' ' + temp);
-       end;
-    end;
+               temp := temp + '. ';
+         str := copy(ListBox.Items[i - 1], 1, 19);
+         FillRight(str, 19);
+         ListBox.Items.Delete(i - 1);
+         ListBox.Items.Insert(i - 1, str + ' ' + temp);
+      end;
+   end;
 end;
 
 procedure TJIDX_DX_Multi.UpdateData;
 begin
-  inherited;
-  if TabControl.TabIndex <> 6 then
-    begin
+   inherited;
+   if TabControl.TabIndex <> 6 then begin
       TabControl.TabIndex := OldBandOrd(Main.CurrentQSO.Band);
       UpdateCheckListBox;
-    end;
+   end;
 end;
 
-procedure TJIDX_DX_Multi.AddNoUpdate(var aQSO : TQSO);
-var str, temp : string;
-    M : Integer;
-    B : TBand;
+procedure TJIDX_DX_Multi.AddNoUpdate(var aQSO: TQSO);
+var
+   str, temp: string;
+   M: integer;
+   B: TBand;
 begin
-  aQSO.NewMulti1 := False;
-  str := aQSO.NrRcvd;
-  aQSO.Multi1 := str;
+   aQSO.NewMulti1 := False;
+   str := aQSO.NrRcvd;
+   aQSO.Multi1 := str;
 
-  if aQSO.Dupe then
-    exit;
-  
-  if not(NotWARC(aQSO.Band)) then
-    exit;
+   if aQSO.Dupe then
+      exit;
 
-  M := StrToIntDef(str, 0);
+   if not(NotWARC(aQSO.Band)) then
+      exit;
 
-  if not (M in [1..50]) then
-    exit;
+   M := StrToIntDef(str, 0);
+   if not(M in [1 .. 50]) then
+      exit;
 
-  if MultiTable[aQSO.band, M] = False then
-    begin
-      MultiTable[aQSO.band, M] := True;
+   if MultiTable[aQSO.Band, M] = False then begin
+      MultiTable[aQSO.Band, M] := True;
       aQSO.NewMulti1 := True;
       temp := '';
-      for B := b19 to b28 do
-        begin
-          if NotWARC(B) then
+
+      for B := b19 to b28 do begin
+         if NotWARC(B) then
             if MultiTable[B, M] then
-              temp := temp + '* '
+               temp := temp + '* '
             else
-              temp := temp + '. ';
-          str := copy(ListBox.Items[M-1], 1, 19);
-          FillRight(str, 19);
-          ListBox.Items.Delete(M-1);
-          ListBox.Items.Insert(M-1, str + ' ' + temp);
-       end;
-       if OldBandOrd(aQSO.Band) = TabControl.TabIndex then
-         CheckListBox.Checked[M-1] := True;
-      //Update;
-    end;
+               temp := temp + '. ';
+         str := copy(ListBox.Items[M - 1], 1, 19);
+         FillRight(str, 19);
+         ListBox.Items.Delete(M - 1);
+         ListBox.Items.Insert(M - 1, str + ' ' + temp);
+      end;
+
+      if OldBandOrd(aQSO.Band) = TabControl.TabIndex then
+         CheckListBox.Checked[M - 1] := True;
+      // Update;
+   end;
 end;
 
-procedure TJIDX_DX_Multi.Add(var aQSO : TQSO);
+procedure TJIDX_DX_Multi.Add(var aQSO: TQSO);
 begin
-  inherited;
+   inherited;
 end;
 
 procedure TJIDX_DX_Multi.Reset;
-var B : TBand;
-    i : integer;
+var
+   B: TBand;
+   i: integer;
 begin
-  for B := b19 to b28 do
-    for i := 1 to 50 do
-      MultiTable[B, i] := False;
-  UpdateListBox;
-  UpdateCheckListBox;
+   for B := b19 to b28 do
+      for i := 1 to 50 do
+         MultiTable[B, i] := False;
+
+   UpdateListBox;
+   UpdateCheckListBox;
 end;
 
-function TJIDX_DX_Multi.ValidMulti(aQSO : TQSO) : boolean;
-var str : string;
-    M : integer;
+function TJIDX_DX_Multi.ValidMulti(aQSO: TQSO): boolean;
+var
+   str: string;
+   M: integer;
 begin
-  Result := False;
-  str := aQSO.NrRcvd;
-  if not(NotWARC(aQSO.Band)) then
-    exit;
+   Result := False;
+   str := aQSO.NrRcvd;
+   if not(NotWARC(aQSO.Band)) then
+      exit;
 
-  M := StrToIntDef(str, 0);
-
-  if (M in [1..50]) then
-    Result := True;
+   M := StrToIntDef(str, 0);
+   if (M in [1 .. 50]) then
+      Result := True;
 end;
-
 
 procedure TJIDX_DX_Multi.TabControlChange(Sender: TObject);
 begin
-  inherited;
-  //TabControl.TabIndex := OldBandOrd(Main.CurrentQSO.QSO.Band);
-  if TabControl.TabIndex = 6 then
-    begin
-      if ListBox.Visible = False then
-        begin
-          ShowLabels;
-          CheckListBox.Align := alNone;
-          CheckListBox.Visible := False;
-          ListBox.Align := alClient;
-          ListBox.Visible := True;
-        end;
-    end
-  else
-    begin
-      if CheckListBox.Visible = False then
-        begin
-          HideLabels;
-          ListBox.Align := alNone;
-          ListBox.Visible := False;
-          CheckListBox.Align := alClient;
-          CheckListBox.Visible := True;
-          UpdateCheckListBox;
-        end
-      else
-        begin
-          UpdateCheckListBox;
-        end;
-    end;
+   inherited;
+
+   // TabControl.TabIndex := OldBandOrd(Main.CurrentQSO.QSO.Band);
+   if TabControl.TabIndex = 6 then begin
+      if ListBox.Visible = False then begin
+         ShowLabels;
+         CheckListBox.Align := alNone;
+         CheckListBox.Visible := False;
+         ListBox.Align := alClient;
+         ListBox.Visible := True;
+      end;
+   end
+   else begin
+      if CheckListBox.Visible = False then begin
+         HideLabels;
+         ListBox.Align := alNone;
+         ListBox.Visible := False;
+         CheckListBox.Align := alClient;
+         CheckListBox.Visible := True;
+         UpdateCheckListBox;
+      end
+      else begin
+         UpdateCheckListBox;
+      end;
+   end;
 end;
 
 procedure TJIDX_DX_Multi.CheckListBoxClickCheck(Sender: TObject);
 begin
-  inherited;
-  UpdateCheckListBox;
+   inherited;
+   UpdateCheckListBox;
 end;
 
-
-procedure TJIDX_DX_Multi.CheckMulti(aQSO : TQSO);
-var str : string;
-    M : integer;
-    B : TBand;
+procedure TJIDX_DX_Multi.CheckMulti(aQSO: TQSO);
+var
+   str: string;
+   M: integer;
+   B: TBand;
 begin
-  str := aQSO.NrRcvd;
+   str := aQSO.NrRcvd;
 
-  M := StrToIntDef(str, 0);
-
-  if not(M in [1..50]) then
-    begin
-      MainForm.WriteStatusLine('Invalid number', false);
+   M := StrToIntDef(str, 0);
+   if not(M in [1 .. 50]) then begin
+      MainForm.WriteStatusLine('Invalid number', False);
       exit;
-    end;
+   end;
 
-  str := KenNames[M];
-  if MultiTable[aQSO.band,M] = True then
-    str := str + '   Worked on this band. Worked on : '
-  else
-    str := str + '   Needed on this band. Worked on : ';
+   str := KenNames[M];
+   if MultiTable[aQSO.Band, M] = True then
+      str := str + '   Worked on this band. Worked on : '
+   else
+      str := str + '   Needed on this band. Worked on : ';
 
-  for B := b19 to b28 do
-    if MultiTable[B, M] then
-      str := str + MHzString[B]+' '
-    else
-      str := str + '';
-  MainForm.WriteStatusLine(str, false);
+   for B := b19 to b28 do begin
+      if MultiTable[B, M] then
+         str := str + MHzString[B] + ' '
+      else
+         str := str + '';
+   end;
 
+   MainForm.WriteStatusLine(str, False);
 end;
-
 
 end.

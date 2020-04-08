@@ -30,41 +30,40 @@ implementation
 
 {$R *.DFM}
 
-procedure TNewPrefix.Init(CL : TCountryList; PX : string);
-var i : integer;
-    C : TCountry;
-    s : string;
+procedure TNewPrefix.Init(CL: TCountryList; PX: string);
+var
+   i: integer;
+   C: TCountry;
+   s: string;
 begin
-  cbCountry.Items.Clear;
-  for i := 0 to CL.List.Count - 1 do
-    begin
+   cbCountry.Items.Clear;
+   for i := 0 to CL.List.Count - 1 do begin
       C := TCountry(CL.List[i]);
-      s := FillRight(C.Country, 10)+C.CountryName;
+      s := FillRight(C.Country, 10) + C.CountryName;
       cbCountry.Items.Add(s);
-    end;
-  cbCountry.ItemIndex := -1;
-  cbCountry.Text := 'Select a country';
-  PXEdit.Text := PX;
+   end;
+   cbCountry.ItemIndex := -1;
+   cbCountry.Text := 'Select a country';
+   PXEdit.Text := PX;
 end;
 
 procedure TNewPrefix.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  cbCountry.Items.Clear;
+   cbCountry.Items.Clear;
 end;
 
 procedure TNewPrefix.OKButtonClick(Sender: TObject);
 begin
-  CtyIndex := cbCountry.ItemIndex;
-  Prefix := PXEdit.Text;
-  Close;
+   CtyIndex := cbCountry.ItemIndex;
+   Prefix := PXEdit.Text;
+   Close;
 end;
-
 
 procedure TNewPrefix.CancelButtonClick(Sender: TObject);
 begin
-  CtyIndex := -1;
-  Prefix := '';
-  Close;
+   CtyIndex := -1;
+   Prefix := '';
+   Close;
 end;
 
 end.

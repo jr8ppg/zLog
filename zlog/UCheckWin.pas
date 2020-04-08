@@ -37,84 +37,83 @@ uses Main;
 
 procedure TCheckWin.CreateParams(var Params: TCreateParams);
 begin
-  inherited CreateParams(Params);
-  Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+   inherited CreateParams(Params);
+   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
 procedure TCheckWin.Button3Click(Sender: TObject);
 begin
-  Close;
+   Close;
 end;
 
 procedure TCheckWin.StayOnTopClick(Sender: TObject);
 begin
-  If StayOnTop.Checked then
-    FormStyle := fsStayOnTop
-  else
-    FormStyle := fsNormal;
+   If StayOnTop.Checked then
+      FormStyle := fsStayOnTop
+   else
+      FormStyle := fsNormal;
 end;
 
 procedure TCheckWin.ResetListBox;
-var B : TBand;
+var
+   B: TBand;
 begin
-  ListBox.Items.Clear;
-  if ListCWandPh then
-    begin
-      for B := b19 to HiBand do
-        if BandRow[B] >= 0 then
-          begin
-            ListBox.Items.Add(FillRight(MHzString[B], 5)+' CW');
-            ListBox.Items.Add(FillRight(MHzString[B], 5)+' Ph');
-          end;
-    end
-  else
-    begin
-      for B := b19 to HiBand do
-        if BandRow[B] >= 0 then
-          ListBox.Items.Add(MHzString[B]);
-    end;
+   ListBox.Items.Clear;
+   if ListCWandPh then begin
+      for B := b19 to HiBand do begin
+         if BandRow[B] >= 0 then begin
+            ListBox.Items.Add(FillRight(MHzString[B], 5) + ' CW');
+            ListBox.Items.Add(FillRight(MHzString[B], 5) + ' Ph');
+         end;
+      end;
+   end
+   else begin
+      for B := b19 to HiBand do begin
+         if BandRow[B] >= 0 then
+            ListBox.Items.Add(MHzString[B]);
+      end;
+   end;
 end;
 
-procedure TCheckWin.Renew(aQSO : TQSO);
+procedure TCheckWin.Renew(aQSO: TQSO);
 begin
 end;
 
 procedure TCheckWin.FormShow(Sender: TObject);
-var i : integer;
-    B : TBand;
+var
+   i: Integer;
+   B: TBand;
 begin
-
-  i := 0;
-  for B := b19 to HiBand do
-    if (MainForm.BandMenu.Items[ord(B)].Enabled) and
-       (MainForm.BandMenu.Items[ord(B)].Visible) then
-      begin
-        BandRow[B] := i;
-        inc(i);
+   i := 0;
+   for B := b19 to HiBand do begin
+      if (MainForm.BandMenu.Items[ord(B)].Enabled) and (MainForm.BandMenu.Items[ord(B)].Visible) then begin
+         BandRow[B] := i;
+         inc(i);
       end
-    else
-      BandRow[B] := -1;
+      else
+         BandRow[B] := -1;
+   end;
 
-  if ListCWandPh then
-    Height := 28*i + 59
-  else
-    Height := 14*i + 59;
+   if ListCWandPh then
+      Height := 28 * i + 59
+   else
+      Height := 14 * i + 59;
 
-  ResetListBox;
-  Renew(Main.CurrentQSO);
+   ResetListBox;
+   Renew(Main.CurrentQSO);
 end;
 
-procedure TCheckWin.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TCheckWin.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  case Key of
-    VK_ESCAPE : MainForm.LastFocus.SetFocus;
-  end;
+   case Key of
+      VK_ESCAPE:
+         MainForm.LastFocus.SetFocus;
+   end;
 end;
 
 procedure TCheckWin.FormCreate(Sender: TObject);
 begin
-  ListCWandPh := False;
+   ListCWandPh := False;
 end;
 
 end.

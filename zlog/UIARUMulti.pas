@@ -56,479 +56,476 @@ uses Main, UOptions;
 {$R *.DFM}
 
 constructor TIARUZone.Create;
-var B : TBand;
+var
+   B: TBand;
 begin
-  for B := b19 to b28 do
-    Worked[B] := False;
-  Multi := '';
+   for B := b19 to b28 do
+      Worked[B] := False;
+
+   Multi := '';
 end;
 
-function TIARUZone.Summary : string;
+function TIARUZone.Summary: string;
 var
-  i : integer;
-  str : string;
-  B : TBand;
+   i: Integer;
+   str: string;
+   B: TBand;
 begin
-  str := '';
+   str := '';
 
-  i := StrToIntDef(Multi, 0);
+   i := StrToIntDef(Multi, 0);
 
-  if (i in [1..90]) then
-    str := 'ITU Zone '+FillLeft(Multi,2)
-  else
-    if (Multi = 'AC') then
+   if (i in [1 .. 90]) then
+      str := 'ITU Zone ' + FillLeft(Multi, 2)
+   else if (Multi = 'AC') then
       str := 'Admin. Council AC'
-    else
-      if (Multi = 'R1') or (Multi = 'R2') or (Multi = 'R3') then
-        str := 'Reg. Exec. Committee '+Multi
-      else
-        str := 'IARU HQ Station '+Multi;
+   else if (Multi = 'R1') or (Multi = 'R2') or (Multi = 'R3') then
+      str := 'Reg. Exec. Committee ' + Multi
+   else
+      str := 'IARU HQ Station ' + Multi;
 
-  str := FillRight(str, 24);
+   str := FillRight(str, 24);
 
-  for B := b19 to b28 do
-    if NotWARC(B) then
-      if Worked[B] then
-        str := str + '* '
-      else
-        str := str + '. ';
+   for B := b19 to b28 do begin
+      if NotWARC(B) then
+         if Worked[B] then
+            str := str + '* '
+         else
+            str := str + '. ';
+   end;
 
-  Result := str;
+   Result := str;
 end;
 
 constructor TIARUZoneList.Create;
-var M : TIARUZone;
-    i : integer;
+var
+   M: TIARUZone;
+   i: Integer;
 begin
-  List := TList.Create;
-  for i := 1 to 90 do
-    begin
+   List := TList.Create;
+   for i := 1 to 90 do begin
       M := TIARUZone.Create;
       M.Multi := IntToStr(i);
       List.Add(M);
-    end;
-  M := TIARUZone.Create;
-  M.Multi := 'AC';
-  List.Add(M);
-  M := TIARUZone.Create;
-  M.Multi := 'R1';
-  List.Add(M);
-  M := TIARUZone.Create;
-  M.Multi := 'R2';
-  List.Add(M);
-  M := TIARUZone.Create;
-  M.Multi := 'R3';
-  List.Add(M);
+   end;
+   M := TIARUZone.Create;
+   M.Multi := 'AC';
+   List.Add(M);
+   M := TIARUZone.Create;
+   M.Multi := 'R1';
+   List.Add(M);
+   M := TIARUZone.Create;
+   M.Multi := 'R2';
+   List.Add(M);
+   M := TIARUZone.Create;
+   M.Multi := 'R3';
+   List.Add(M);
 end;
 
-procedure TIARUZoneList.Add(M : TIARUZone);
-var i, j : integer;
+procedure TIARUZoneList.Add(M: TIARUZone);
+var
+   i, j: Integer;
 begin
-//  List.Add(M);
-  j := List.Count;
-  if j > 94 then
-    begin
-      for i := 94 to j-1 do
-        if StrMore(M.Multi, TIARUZone(List[i]).Multi) = False then
-          begin
-            List.Insert(i,M);
+   // List.Add(M);
+   j := List.Count;
+   if j > 94 then begin
+      for i := 94 to j - 1 do
+         if StrMore(M.Multi, TIARUZone(List[i]).Multi) = False then begin
+            List.Insert(i, M);
             exit;
-          end;
+         end;
       List.Add(M);
       exit;
-    end
-  else
-    List.Add(M);
+   end
+   else begin
+      List.Add(M);
+   end;
 end;
 
-procedure TIARUMulti.CheckMulti(aQSO : TQSO);
-var str, str2 : string;
-    j, z : integer;
-    B : TBand;
-    boo : boolean;
+procedure TIARUMulti.CheckMulti(aQSO: TQSO);
+var
+   str, str2: string;
+   j, z: Integer;
+   B: TBand;
+   boo: boolean;
 begin
-  str := aQSO.NrRcvd;
-  boo := false;
-  for j := 0 to ZoneList.List.Count - 1 do
-    begin
-      if TIARUZone(ZoneList.List[j]).Multi = str then
-        begin
-          boo := true;
-          break;
-        end;
-    end;
-  if boo = False then
-    begin
-      MainForm.WriteStatusLine('HQ '+str+' is not worked on any band', false);
+   str := aQSO.NrRcvd;
+   boo := False;
+   for j := 0 to ZoneList.List.Count - 1 do begin
+      if TIARUZone(ZoneList.List[j]).Multi = str then begin
+         boo := true;
+         break;
+      end;
+   end;
+
+   if boo = False then begin
+      MainForm.WriteStatusLine('HQ ' + str + ' is not worked on any band', False);
       exit;
-    end;
+   end;
 
-
-  z := StrToIntDef(str, 0);
-  if z = 0 then
-    begin
+   z := StrToIntDef(str, 0);
+   if z = 0 then begin
       if str = 'AC' then
-        str2 := 'Admin. Council '
+         str2 := 'Admin. Council '
+      else if (str = 'R1') or (str = 'R2') or (str = 'R3') then
+         str2 := 'Reg. Exec. Committee '
       else
-        if (str = 'R1') or (str = 'R2') or (str = 'R3') then
-          str2 := 'Reg. Exec. Committee '
-        else
-          str2 := 'HQ ';
-    end
-  else
-    str2 := 'Zone ';
-  str2 := str2 + str+ ' : ';
-  if TIARUZone(ZoneList.List[j]).Worked[aQSO.Band] then
-    str2 := str2 + 'Worked on this band. '
-  else
-    str2 := str2 + 'Needed on this band. ';
-  str2 := str2 + 'Worked on : ';
-  for B := b19 to b28 do
-    if TIARUZone(ZoneList.List[j]).Worked[B] then
-      str2 := str2 + MHzString[B]+' ';
+         str2 := 'HQ ';
+   end
+   else
+      str2 := 'Zone ';
 
-  MainForm.WriteStatusLine(str2, false);
+   str2 := str2 + str + ' : ';
+   if TIARUZone(ZoneList.List[j]).Worked[aQSO.Band] then
+      str2 := str2 + 'Worked on this band. '
+   else
+      str2 := str2 + 'Needed on this band. ';
+
+   str2 := str2 + 'Worked on : ';
+   for B := b19 to b28 do
+      if TIARUZone(ZoneList.List[j]).Worked[B] then
+         str2 := str2 + MHzString[B] + ' ';
+
+   MainForm.WriteStatusLine(str2, False);
 end;
 
-function TIARUMulti.GuessZone(aQSO : TQSO) : string;
-var i, k : integer;
-    C : TCountry;
-    P : TPrefix;
-    str : string;
+function TIARUMulti.GuessZone(aQSO: TQSO): string;
+var
+   i, k: Integer;
+   C: TCountry;
+   P: TPrefix;
+   str: string;
 begin
-  P := GetPrefix(aQSO);
-  if P = nil then
-    begin
+   P := GetPrefix(aQSO);
+   if P = nil then begin
       Result := '';
       exit;
-    end;
-  C := TCountry(CountryList.List[P.Index]);
-  str := aQSO.CallSign;
-  i := C.Zone;
+   end;
 
-  if (C.Country = 'W') or (C.Country = 'K') then
-    begin
+   C := TCountry(CountryList.List[P.Index]);
+   str := aQSO.CallSign;
+   i := C.Zone;
+
+   if (C.Country = 'W') or (C.Country = 'K') then begin
       k := GetArea(str);
       case k of
-        1..4    : i := 8;
-        5,8,9,0 : i := 7;
-        6,7     : i := 6;
+         1 .. 4:
+            i := 8;
+         5, 8, 9, 0:
+            i := 7;
+         6, 7:
+            i := 6;
       end;
-    end;
+   end;
 
-  if C.Country = 'VE' then
-    begin
+   if C.Country = 'VE' then begin
       k := GetArea(str);
       case k of
-        1,2     : i := 8;
-        3..6    : i := 3;
-        7       : i := 2;
-        8       : i := 2;
-        9       : i := 9;
-        0       : i := 4;
+         1, 2:
+            i := 8;
+         3 .. 6:
+            i := 3;
+         7:
+            i := 2;
+         8:
+            i := 2;
+         9:
+            i := 9;
+         0:
+            i := 4;
       end;
-    end;
+   end;
 
-  if C.Country = 'VK' then
-    begin
+   if C.Country = 'VK' then begin
       k := GetArea(str);
       case k of
-        1..5,7  : i := 55;
-        6,8     : i := 58;
-        9,0     : i := 30;{Should not happen}
+         1 .. 5, 7:
+            i := 55;
+         6, 8:
+            i := 58;
+         9, 0:
+            i := 30; { Should not happen }
       end;
-    end;
+   end;
 
-{
-  if C.Country = 'BY' then
-    begin
-      k := GetArea(str);
-      case k of
-        1..8    : i := 33;
-        9,0     : i := 33;
-      end;
-    end;
-}
+   {
+     if C.Country = 'BY' then
+     begin
+     k := GetArea(str);
+     case k of
+     1..8    : i := 33;
+     9,0     : i := 33;
+     end;
+     end;
+   }
 
-  if P.OvrZone > 0 then
-    i := P.OvrZone;
+   if P.OvrZone > 0 then
+      i := P.OvrZone;
 
-  if i = 0 then
-    Result := ''
-  else
-    Result := IntToStr(i);
+   if i = 0 then
+      Result := ''
+   else
+      Result := IntToStr(i);
 end;
 
-
-function TIARUMulti.ValidMulti(aQSO : TQSO) : boolean;
+function TIARUMulti.ValidMulti(aQSO: TQSO): boolean;
 begin
-  if aQSO.NrRcvd <> '' then
-    Result := True
-  else
-    Result := False;
+   if aQSO.NrRcvd <> '' then
+      Result := true
+   else
+      Result := False;
 end;
 
 procedure TIARUMulti.Reset;
-var i : integer;
-    B : TBand;
+var
+   i: Integer;
+   B: TBand;
 begin
-  for i := 0 to ZoneList.List.Count-1 do
-    for B := b19 to b28 do
-      TIARUZone(ZoneList.List[i]).Worked[B] := False;
-  Grid.RowCount := ZoneList.List.Count;
-  for i := 0 to ZoneList.List.Count-1 do
-    Grid.Cells[0, i] := (TIARUZone(ZoneList.List[i]).Summary);
-    //ListBox.Items[i] := (TIARUZone(ZoneList.List[i]).Summary);
+   for i := 0 to ZoneList.List.Count - 1 do
+      for B := b19 to b28 do
+         TIARUZone(ZoneList.List[i]).Worked[B] := False;
+   Grid.RowCount := ZoneList.List.Count;
+   for i := 0 to ZoneList.List.Count - 1 do
+      Grid.Cells[0, i] := (TIARUZone(ZoneList.List[i]).Summary);
+   // ListBox.Items[i] := (TIARUZone(ZoneList.List[i]).Summary);
 end;
 
 procedure TIARUMulti.FormCreate(Sender: TObject);
 var
-  i : integer;
-  aQSO : TQSO;
-  P : TPrefix;
+   i: Integer;
+   aQSO: TQSO;
+   P: TPrefix;
 begin
-  //inherited;
-  CountryList := TCountryList.Create;
-  PrefixList := TPrefixList.Create;
-  if FileExists('CTY.DAT') then
-    begin
+   // inherited;
+   CountryList := TCountryList.Create;
+   PrefixList := TPrefixList.Create;
+   if FileExists('CTY.DAT') then begin
       LoadCTY_DAT(testIARU, CountryList, PrefixList);
       MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-    end
-  else
-    LoadCountryDataFromFile('IARU.DAT', CountryList, PrefixList);
+   end
+   else
+      LoadCountryDataFromFile('IARU.DAT', CountryList, PrefixList);
 
- {if CountryList.List.Count = 0 then exit;
-  for i := 0 to CountryList.List.Count-1 do
-    begin
-      ListBox.Items.Add(TCountry(CountryList.List[i]).Summary);
-    end;}
-  ZoneList := TIARUZoneList.Create;
-  {for i := 0 to ZoneList.List.Count-1 do
-    ListBox.Items.Add(TIARUZone(ZoneList.List[i]).Summary);}
+   { if CountryList.List.Count = 0 then exit;
+     for i := 0 to CountryList.List.Count-1 do
+     begin
+     ListBox.Items.Add(TCountry(CountryList.List[i]).Summary);
+     end; }
+   ZoneList := TIARUZoneList.Create;
+   { for i := 0 to ZoneList.List.Count-1 do
+     ListBox.Items.Add(TIARUZone(ZoneList.List[i]).Summary); }
 
-  Reset;
+   Reset;
 
-  MyContinent := 'AS';
-  MyCountry := 'JA';
-  MyZone := '25';
+   MyContinent := 'AS';
+   MyCountry := 'JA';
+   MyZone := '25';
 
-  if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your call sign') then
-    begin
+   if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your call sign') then begin
       aQSO := TQSO.Create;
-      aQSO.callsign := Uppercase(dmZlogGlobal.Settings._mycall);
+      aQSO.CallSign := Uppercase(dmZlogGlobal.Settings._mycall);
 
       P := GetPrefix(aQSO);
-      //i := GetCountryIndex(aQSO);
+      // i := GetCountryIndex(aQSO);
       if P = nil then
-        i := 0
+         i := 0
       else
-        i := P.Index;
-      if i > 0 then
-        begin
-          MyCountry := TCountry(CountryList.List[i]).Country;
-          //MyZone := IntToStr(TCountry(CountryList.List[i]).Zone);
+         i := P.Index;
 
-          if dmZlogGlobal.Settings._iaruzone = '' then
+      if i > 0 then begin
+         MyCountry := TCountry(CountryList.List[i]).Country;
+         // MyZone := IntToStr(TCountry(CountryList.List[i]).Zone);
+
+         if dmZlogGlobal.Settings._iaruzone = '' then
             dmZlogGlobal.Settings._iaruzone := GuessZone(aQSO);
-          MyZone := dmZlogGlobal.Settings._iaruzone;
+         MyZone := dmZlogGlobal.Settings._iaruzone;
 
-          //MyContinent := TCountry(CountryList.List[i]).Continent;
-          if P.OvrContinent = '' then
+         // MyContinent := TCountry(CountryList.List[i]).Continent;
+         if P.OvrContinent = '' then
             MyContinent := TCountry(CountryList.List[i]).Continent
-          else
+         else
             MyContinent := P.OvrContinent;
-        end;
+      end;
       aQSO.Free;
-    end;
+   end;
 
-  //WWZone.Reset;
+   // WWZone.Reset;
 end;
 
-function TIARUMulti.GetInfo(aQSO : TQSO) : string;
-var i, k : integer;
-    C : TCountry;
-    P : TPrefix;
-    str, z : string;
-    B : TBand;
+function TIARUMulti.GetInfo(aQSO: TQSO): string;
+var
+   i, k: Integer;
+   C: TCountry;
+   P: TPrefix;
+   str, z: string;
+   B: TBand;
 begin
-  P := GetPrefix(aQSO);
-  if P = nil then
-    begin
+   P := GetPrefix(aQSO);
+   if P = nil then begin
       Result := 'Unknown prefix';
       exit;
-    end;
-  C := TCountry(CountryList.List[P.Index]);
-  str := 'Continent: ';
-  if P.OvrContinent <> '' then
-    str := str + P.OvrContinent
-  else
-    str := str + C.Continent;
-  z := GuessZone(aQSO);
-  str := str + '   ITU Zone/Multi: '+z+ '  Worked on: ';
-  for i := 0 to ZoneList.List.Count - 1 do
-    begin
-      if TIARUZone(ZoneList.List[i]).Multi = z then
-        begin
-          for B := b19 to b28 do
+   end;
+
+   C := TCountry(CountryList.List[P.Index]);
+   str := 'Continent: ';
+
+   if P.OvrContinent <> '' then
+      str := str + P.OvrContinent
+   else
+      str := str + C.Continent;
+
+   z := GuessZone(aQSO);
+   str := str + '   ITU Zone/Multi: ' + z + '  Worked on: ';
+   for i := 0 to ZoneList.List.Count - 1 do begin
+      if TIARUZone(ZoneList.List[i]).Multi = z then begin
+         for B := b19 to b28 do
             if NotWARC(B) then
-              if TIARUZone(ZoneList.List[i]).Worked[B] then
-                str := str + MHzString[B] + ' '
-              else
-                for k := 1 to length(MHzString[B]) do
-                  str := str + ' ';
-        end;
-    end;
-  Result := str;
+               if TIARUZone(ZoneList.List[i]).Worked[B] then
+                  str := str + MHzString[B] + ' '
+               else
+                  for k := 1 to length(MHzString[B]) do
+                     str := str + ' ';
+      end;
+   end;
+
+   Result := str;
 end;
 
 procedure TIARUMulti.UpdateData;
 var
-  j: integer;
+   j: Integer;
 begin
-  Grid.RowCount := ZoneList.List.Count;
-  for j := 0 to ZoneList.List.Count - 1 do
-    Grid.Cells[0, j] {ListBox.Items[j]} := TIARUZone(ZoneList.List[j]).Summary;
-  RenewCluster;
-  RenewBandScope;
+   Grid.RowCount := ZoneList.List.Count;
+   for j := 0 to ZoneList.List.Count - 1 do
+      Grid.Cells[0, j] { ListBox.Items[j] } := TIARUZone(ZoneList.List[j]).Summary;
+   RenewCluster;
+   RenewBandScope;
 end;
 
-procedure TIARUMulti.AddNoUpdate(var aQSO : TQSO);
-var str : string;
-    i, j : integer;
-    C : TCountry;
-    P : TPrefix;
-    _cont : string;
-    boo, HQ : boolean;
-    M : TIARUZone;
+procedure TIARUMulti.AddNoUpdate(var aQSO: TQSO);
+var
+   str: string;
+   i, j: Integer;
+   C: TCountry;
+   P: TPrefix;
+   _cont: string;
+   boo, HQ: boolean;
+   M: TIARUZone;
 begin
-  aQSO.NewMulti1 := False;
-  str := aQSO.NrRcvd;
-  aQSO.Multi1 := str;
+   aQSO.NewMulti1 := False;
+   str := aQSO.NrRcvd;
+   aQSO.Multi1 := str;
 
-  if aQSO.Dupe then
-    exit;
+   if aQSO.Dupe then
+      exit;
 
-  i := StrToIntDef(str, 0);
+   i := StrToIntDef(str, 0);
 
-  HQ := True;
-  if i in [1..90] then
-    begin
+   HQ := true;
+   if i in [1 .. 90] then begin
       str := IntToStr(i);
-      HQ := false;
-    end;
+      HQ := False;
+   end;
 
+   boo := False;
+   for j := 0 to ZoneList.List.Count - 1 do begin
+      if TIARUZone(ZoneList.List[j]).Multi = str then begin
+         boo := true;
+         if TIARUZone(ZoneList.List[j]).Worked[aQSO.Band] = False then begin
+            TIARUZone(ZoneList.List[j]).Worked[aQSO.Band] := true;
+            aQSO.NewMulti1 := true;
+            break;
+         end;
+      end;
+   end;
 
-  boo := false;
-  for j := 0 to ZoneList.List.Count - 1 do
-    begin
-      if TIARUZone(ZoneList.List[j]).Multi = str then
-        begin
-          boo := true;
-          if TIARUZone(ZoneList.List[j]).Worked[aQSO.Band] = False then
-            begin
-              TIARUZone(ZoneList.List[j]).Worked[aQSO.Band] := True;
-              aQSO.NewMulti1 := True;
-              break;
-            end;
-        end;
-    end;
-
-  if boo = false then
-    begin
+   if boo = False then begin
       M := TIARUZone.Create;
       M.Multi := str;
-      M.Worked[aQSO.Band] := True;
-      aQSO.NewMulti1 := True;
+      M.Worked[aQSO.Band] := true;
+      aQSO.NewMulti1 := true;
       ZoneList.Add(M);
       UpdateData;
-      //Grid.Cells[0,ZoneList.List.Count-1] := M.Summary;
-    end;
+      // Grid.Cells[0,ZoneList.List.Count-1] := M.Summary;
+   end;
 
-  P := GetPrefix(aQSO);
-  if P = nil then  // /MM results in p = nil !!
-    i := 0
-  else
-    i := P.Index;
+   P := GetPrefix(aQSO);
+   if P = nil then // /MM results in p = nil !!
+      i := 0
+   else
+      i := P.Index;
 
-  C := TCountry(CountryList.List[i]);
+   C := TCountry(CountryList.List[i]);
 
-  if P = nil then
-    _cont := C.Continent
-  else
-    if P.OvrContinent = '' then
+   if P = nil then
       _cont := C.Continent
-    else
+   else if P.OvrContinent = '' then
+      _cont := C.Continent
+   else
       _cont := P.OvrContinent;
 
-  if (MyZone = str) or (HQ = True) then
-    aQSO.Points := 1
-  else
-    if MyContinent = _cont then
+   if (MyZone = str) or (HQ = true) then
+      aQSO.Points := 1
+   else if MyContinent = _cont then
       aQSO.Points := 3
-    else
-      aQSO.points := 5;
-
+   else
+      aQSO.Points := 5;
 end;
-
-
 
 procedure TIARUMulti.FormShow(Sender: TObject);
 begin
-  // inherited;
+   // inherited;
 end;
 
 procedure TIARUMulti.GoButtonClick(Sender: TObject);
-var i : integer;
-    temp : string;
+var
+   i: Integer;
+   temp: string;
 begin
-  temp := Edit1.Text;
-  for i := 0 to ZoneList.List.Count-1 do
-    begin
-      if pos(temp,TIARUZone(ZoneList.List[i]).Multi) = 1 then
-        begin
-          //ListBox.TopIndex := i;
-          Grid.TopRow := i;
-          break;
-        end;
-    end;
+   temp := Edit1.Text;
+   for i := 0 to ZoneList.List.Count - 1 do begin
+      if pos(temp, TIARUZone(ZoneList.List[i]).Multi) = 1 then begin
+         // ListBox.TopIndex := i;
+         Grid.TopRow := i;
+         break;
+      end;
+   end;
 end;
 
-procedure TIARUMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
-  var Bold, Italic, underline: Boolean);
-var B : TBand;
+procedure TIARUMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer; var Bold, Italic, underline: boolean);
+var
+   B: TBand;
 begin
-  //inherited;
-  B := Main.CurrentQSO.Band;
-  if TIARUZone(ZoneList.List[ARow]).Worked[B] then
-    FColor := clRed
-  else
-    FColor := clBlack;
+   // inherited;
+   B := Main.CurrentQSO.Band;
+   if TIARUZone(ZoneList.List[ARow]).Worked[B] then
+      Fcolor := clRed
+   else
+      Fcolor := clBlack;
 end;
 
 procedure TIARUMulti.RefreshGrid;
 begin
-  //inherit
-  UpdateData;
+   // inherit
+   UpdateData;
 end;
 
 procedure TIARUMulti.GridTopLeftChanged(Sender: TObject);
 begin
-  //inherited;
-  //Update;
+   // inherited;
+   // Update;
 end;
 
-procedure TIARUMulti.Add(var aQSO : TQSO);
+procedure TIARUMulti.Add(var aQSO: TQSO);
 begin
-  AddNoUpdate(aQSO);
-  {
-  if (aQSO.Reserve2 <> $AA) and (MostRecentCty <> nil) then
-    Grid.TopRow := MostRecentCty.GridIndex;
-  }
-  RefreshGrid;
-  //RefreshZone;
-  AddSpot(aQSO);
+   AddNoUpdate(aQSO);
+   {
+     if (aQSO.Reserve2 <> $AA) and (MostRecentCty <> nil) then
+     Grid.TopRow := MostRecentCty.GridIndex;
+   }
+   RefreshGrid;
+   // RefreshZone;
+   AddSpot(aQSO);
 end;
-
 
 end.

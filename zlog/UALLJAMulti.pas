@@ -80,284 +80,282 @@ uses Main;
 {$R *.DFM}
 
 procedure TALLJAMulti.UpdateBand(B : TBand);
-var K : TKen;
+var
+   K : TKen;
 begin
-  for K := m101 to m50 do
-    if MultiTable[B, K] then
-      KenLabels[B, K].Font.Color := clRed
-    else
-      KenLabels[B, K].Font.Color := clBlack;
+   for K := m101 to m50 do begin
+      if MultiTable[B, K] then
+         KenLabels[B, K].Font.Color := clRed
+      else
+         KenLabels[B, K].Font.Color := clBlack;
+   end;
 end;
 
 procedure TALLJAMulti.UpdateData;
-var band, B : TBand;
-    str : string;
-    K : TKen;
-begin
-  //inherited;
-  band := Main.CurrentQSO.Band;
-  if not(band in [b35, b7, b14, b21, b28, b50]) then
-    band := b35;
-  if PageControl.ActivePage <> TabAll then
-    begin
-      PageControl.ActivePage := PageControl.Pages[OldBandOrd(band)-1];
-      UpdateBand(band);
-    end
-  else
-    begin
-      for K := m101 to m50 do
-        begin
-          str := FillRight(KenNames[K],14);
-          for B := b35 to b50 do
-            if NotWARC(B) then
-              if MultiTable[B,K] then
-                str := str + '* '
-              else
-                str := str + '. ';
-          ListBox.Items[ord(K)] := str;
-        end;
-    end;
-end;
-
-function TALLJAMulti.ExtractMulti(aQSO : TQSO) : string;
 var
-  str : string;
+   band, B: TBand;
+   str: string;
+   K: TKen;
 begin
-  Result := '';
-  str := aQSO.NrRcvd;
-  if str = '' then
-    exit;
-
-  if not CharInSet(str[length(str)], ['0'..'9']) then
-    Delete(str, length(str),1);
-
-  Result := str;
+   // inherited;
+   band := Main.CurrentQSO.band;
+   if not(band in [b35, b7, b14, b21, b28, b50]) then
+      band := b35;
+   if PageControl.ActivePage <> TabALL then begin
+      PageControl.ActivePage := PageControl.Pages[OldBandOrd(band) - 1];
+      UpdateBand(band);
+   end
+   else begin
+      for K := m101 to m50 do begin
+         str := FillRight(KenNames[K], 14);
+         for B := b35 to b50 do
+            if NotWARC(B) then
+               if MultiTable[B, K] then
+                  str := str + '* '
+               else
+                  str := str + '. ';
+         ListBox.Items[ord(K)] := str;
+      end;
+   end;
 end;
 
-procedure TALLJAMulti.AddNoUpdate(var aQSO : TQSO);
-var str : string;
-    M : integer;
-    K : TKen;
+function TALLJAMulti.ExtractMulti(aQSO: TQSO): string;
+var
+   str: string;
 begin
-  aQSO.NewMulti1 := False;
-  str := aQSO.NrRcvd;
-  Delete(str,length(str),1);
-  aQSO.Multi1 := str;
+   Result := '';
+   str := aQSO.NrRcvd;
+   if str = '' then
+      exit;
 
-  if aQSO.Dupe then
-    exit;
+   if not CharInSet(str[length(str)], ['0' .. '9']) then
+      Delete(str, length(str), 1);
 
-  if not(NotWARC(aQSO.Band)) then
-    exit;
+   Result := str;
+end;
 
-  M := StrToIntDef(str, 0);
+procedure TALLJAMulti.AddNoUpdate(var aQSO: TQSO);
+var
+   str: string;
+   M: integer;
+   K: TKen;
+begin
+   aQSO.NewMulti1 := False;
+   str := aQSO.NrRcvd;
+   Delete(str, length(str), 1);
+   aQSO.Multi1 := str;
 
-  case M of
-    101..114 : K := TKen(M-101);
-    2..50 :    K := TKen(M - 2 + ord(m02));
-  else
-    exit;
-  end;
-  if MultiTable[aQSO.band,K] = False then
-    begin
-      MultiTable[aQSO.band,K] := True;
+   if aQSO.Dupe then
+      exit;
+
+   if not(NotWARC(aQSO.band)) then
+      exit;
+
+   M := StrToIntDef(str, 0);
+
+   case M of
+      101 .. 114:
+         K := TKen(M - 101);
+      2 .. 50:
+         K := TKen(M - 2 + ord(m02));
+      else
+         exit;
+   end;
+
+   if MultiTable[aQSO.band, K] = False then begin
+      MultiTable[aQSO.band, K] := True;
       aQSO.NewMulti1 := True;
-    end;
+   end;
 end;
 
-procedure TALLJAMulti.Add(var aQSO : TQSO);
+procedure TALLJAMulti.Add(var aQSO: TQSO);
 begin
-  inherited;
+   inherited;
 end;
 
 procedure TALLJAMulti.PageControlChange(Sender: TObject);
 begin
-  case PageControl.ActivePage.Tag of
-    ord(b35)..ord(b50) : UpdateBand(TBand(PageControl.ActivePage.Tag));
-  else
-    UpdateData;
-  end;
+   case PageControl.ActivePage.Tag of
+      ord(b35) .. ord(b50):
+         UpdateBand(TBand(PageControl.ActivePage.Tag));
+      else
+         UpdateData;
+   end;
 end;
 
 procedure TALLJAMulti.FormCreate(Sender: TObject);
-var band : TBand;
-    ken : TKen;
-    x, y : integer;
+var
+   band: TBand;
+   ken: TKen;
+   x, y: integer;
 begin
-  for band := b35 to b50 do
-    begin
-      for ken := m101 to m50 do
-        begin
-          MultiTable[band, ken] := false;
-        end;
+   for band := b35 to b50 do begin
+      for ken := m101 to m50 do begin
+         MultiTable[band, ken] := False;
+      end;
       if NotWARC(band) then
-        for x := 1 to 5 do
-          for y := 1 to 16 do
-            begin
-              ken := TKen(16*(x-1)+y-1);
-                if ken <= m50 then
-                  begin
-                    KenLabels[band,ken] := TLabel.Create(Self);
-                    KenLabels[band,ken].Font.Size := 9;
-                    KenLabels[band,ken].ParentFont := True;
-                    KenLabels[band,ken].Parent := PageControl.Pages[OldBandOrd(band)-1];
-                    {if MultiTable[TBand(PageControl.ActivePage.Tag),ken] then
-                      KenLabels[band,ken].Font.Color := clRed
-                    else}
-                    KenLabels[band,ken].Font.Color := clBlack;
-                    KenLabels[band,ken].Left := 77*(x-1) + 8;
-                    KenLabels[band,ken].Top := 8+16*(y-1);
-                    KenLabels[band,ken].Caption := KenNames[ken];
-                  end;
+         for x := 1 to 5 do
+            for y := 1 to 16 do begin
+               ken := TKen(16 * (x - 1) + y - 1);
+               if ken <= m50 then begin
+                  KenLabels[band, ken] := TLabel.Create(Self);
+                  KenLabels[band, ken].Font.Size := 9;
+                  KenLabels[band, ken].ParentFont := True;
+                  KenLabels[band, ken].Parent := PageControl.Pages[OldBandOrd(band) - 1];
+                  { if MultiTable[TBand(PageControl.ActivePage.Tag),ken] then
+                    KenLabels[band,ken].Font.Color := clRed
+                    else }
+                  KenLabels[band, ken].Font.Color := clBlack;
+                  KenLabels[band, ken].Left := 77 * (x - 1) + 8;
+                  KenLabels[band, ken].Top := 8 + 16 * (y - 1);
+                  KenLabels[band, ken].Caption := KenNames[ken];
+               end;
             end;
-    end;
+   end;
 
-  for ken := m101 to m50 do
-    begin
-      ListBox.Items.Add(FillRight(KenNames[ken],14)+'. . . . . . ');
-    end;
-
-    {Label1.caption := KenLabels[b35,m10].Font.name;}
+   for ken := m101 to m50 do begin
+      ListBox.Items.Add(FillRight(KenNames[ken], 14) + '. . . . . . ');
+   end;
 end;
 
 procedure TALLJAMulti.Reset;
-var band : TBand;
-    ken : TKen;
+var
+   band: TBand;
+   ken: TKen;
 begin
-  for band := b35 to b50 do
-    if NotWARC(band) then
-      for ken := m101 to m50 do
-        begin
-          MultiTable[band, ken] := false;
-          //KenLabels[band, ken].Font.Color := clBlack;
-        end;
-  {ListBox.Items.Clear;
-  for ken := m101 to m50 do
-    begin
-      ListBox.Items.Add(FillRight(KenNames[ken],14)+'. . . . . . ');
-    end;}
+   for band := b35 to b50 do
+      if NotWARC(band) then
+         for ken := m101 to m50 do begin
+            MultiTable[band, ken] := False;
+            // KenLabels[band, ken].Font.Color := clBlack;
+         end;
+   { ListBox.Items.Clear;
+     for ken := m101 to m50 do
+     begin
+     ListBox.Items.Add(FillRight(KenNames[ken],14)+'. . . . . . ');
+     end; }
 end;
 
-function TALLJAMulti.ValidMulti(aQSO : TQSO) : boolean;
-var str : string;
-    M : integer;
+function TALLJAMulti.ValidMulti(aQSO: TQSO): boolean;
+var
+   str: string;
+   M: integer;
 begin
-  Result := False;
-  str := aQSO.NrRcvd;
-  if not(length(str) in [3..4]) then
-    exit;
+   Result := False;
+   str := aQSO.NrRcvd;
 
-  if not CharInSet(str[length(str)], ['P','L','M','H']) then
-    exit;
+   if not(length(str) in [3 .. 4]) then
+      exit;
 
-  Delete(str, length(str), 1);
+   if not CharInSet(str[length(str)], ['P', 'L', 'M', 'H']) then
+      exit;
 
-  M := StrToIntDef(str, 0);
+   Delete(str, length(str), 1);
 
-  if M in [2..50, 101..114] then
-    Result := True
-  else
-    Result := False;
+   M := StrToIntDef(str, 0);
+
+   if M in [2 .. 50, 101 .. 114] then
+      Result := True
+   else
+      Result := False;
 end;
-
 
 procedure TALLJAMulti.Button2Click(Sender: TObject);
 begin
-  Close;
+   Close;
 end;
 
 procedure TALLJAMulti.FormShow(Sender: TObject);
 begin
-  inherited;
-  if Main.CurrentQSO.Band in [b35, b7, b14, b21, b28, b50] then
-    PageControl.ActivePage := PageControl.Pages[OldBandOrd(Main.CurrentQSO.band)-1];
+   inherited;
+   if Main.CurrentQSO.band in [b35, b7, b14, b21, b28, b50] then
+      PageControl.ActivePage := PageControl.Pages[OldBandOrd(Main.CurrentQSO.band) - 1];
 end;
 
-
-function TALLJAMulti.IsNewMulti(aQSO : TQSO) : boolean;
+function TALLJAMulti.IsNewMulti(aQSO: TQSO): boolean;
 var
-  M : integer;
-  K : TKen;
-  str : string;
+   M: integer;
+   K: TKen;
+   str: string;
 begin
-  Result := False;
-  str := aQSO.NrRcvd;
-  if str = '' then
-    exit;
-
-  if CharInSet(str[length(str)], ['P', 'L', 'M', 'H']) then
-    Delete(str,length(str),1);
-
-  M := StrToIntDef(str, 0);
-
-  case M of
-    101..114 : K := TKen(M-101);
-    2..50 :    K := TKen(M - 2 + ord(m02));
-  else
-    begin
+   Result := False;
+   str := aQSO.NrRcvd;
+   if str = '' then
       exit;
-    end;
-  end;
 
-  if MultiTable[aQSO.band,K] = False then
-    Result := True;
+   if CharInSet(str[length(str)], ['P', 'L', 'M', 'H']) then
+      Delete(str, length(str), 1);
 
+   M := StrToIntDef(str, 0);
+
+   case M of
+      101 .. 114:
+         K := TKen(M - 101);
+      2 .. 50:
+         K := TKen(M - 2 + ord(m02));
+      else begin
+            exit;
+         end;
+   end;
+
+   if MultiTable[aQSO.band, K] = False then
+      Result := True;
 end;
 
-procedure TALLJAMulti.CheckMulti(aQSO : TQSO);
-var str : string;
-    M : integer;
-    K : TKen;
-    B : TBand;
+procedure TALLJAMulti.CheckMulti(aQSO: TQSO);
+var
+   str: string;
+   M: integer;
+   K: TKen;
+   B: TBand;
 begin
-  str := aQSO.NrRcvd;
+   str := aQSO.NrRcvd;
 
-  if str = '' then
-    exit;
-
-  if CharInSet(str[length(str)], ['P', 'L', 'M', 'H']) then
-    Delete(str,length(str),1);
-
-  M := StrToIntDef(str, 0);
-
-  case M of
-    101..114 : K := TKen(M-101);
-    2..50 :    K := TKen(M - 2 + ord(m02));
-  else
-    begin
-      MainForm.WriteStatusLine('Invalid number', false);
+   if str = '' then
       exit;
-    end;
-  end;
 
+   if CharInSet(str[length(str)], ['P', 'L', 'M', 'H']) then
+      Delete(str, length(str), 1);
 
-  str := KenNames[K];
-  if MultiTable[aQSO.band,K] = True then
-    str := str + '   Worked on this band. Worked on : '
-  else
-    str := str + '   Needed on this band. Worked on : ';
+   M := StrToIntDef(str, 0);
 
-  for B := b35 to b50 do
-    if MultiTable[B,K] then
-      str := str + MHzString[B]+' '
-    else
-      str := str + '';
-  MainForm.WriteStatusLine(str, false);
+   case M of
+      101 .. 114:
+         K := TKen(M - 101);
+      2 .. 50:
+         K := TKen(M - 2 + ord(m02));
+      else begin
+            MainForm.WriteStatusLine('Invalid number', False);
+            exit;
+         end;
+   end;
 
+   str := KenNames[K];
+   if MultiTable[aQSO.band, K] = True then
+      str := str + '   Worked on this band. Worked on : '
+   else
+      str := str + '   Needed on this band. Worked on : ';
+
+   for B := b35 to b50 do
+      if MultiTable[B, K] then
+         str := str + MHzString[B] + ' '
+      else
+         str := str + '';
+
+   MainForm.WriteStatusLine(str, False);
 end;
 
 procedure TALLJAMulti.cbStayOnTopClick(Sender: TObject);
 begin
-  if cbStayOnTop.Checked then
-    Self.FormStyle := fsStayOnTop
-  else
-    Self.FormStyle := fsNormal;
+   if cbStayOnTop.Checked then
+      Self.FormStyle := fsStayOnTop
+   else
+      Self.FormStyle := fsNormal;
 end;
 
 procedure TALLJAMulti.SetNumberEditFocus;
 begin
-  SetNumberEditFocusJARL;
+   SetNumberEditFocusJARL;
 end;
 
-initialization
 end.

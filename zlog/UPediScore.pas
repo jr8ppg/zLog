@@ -23,9 +23,6 @@ type
     procedure SummaryWriteScore(FileName : string); override;
   end;
 
-//var
-//  PediScore: TPediScore;
-
 implementation
 
 {$R *.DFM}

@@ -36,19 +36,20 @@ uses Main;
 { TRenewThread }
 
 procedure TRenewThread.SyncProc;
-var boo : boolean;
+var
+   boo: boolean;
 begin
-  Main.MyContest.MultiForm.UpdateData;
-  Main.MyContest.ScoreForm.UpdateData;
-  boo := false;
-  if MainForm.Grid.Focused then
-    boo := True;
-  MainForm.EditScreen.Renew;
-  MainForm.ReevaluateCountDownTimer;
-  MainForm.ReevaluateQSYCount;
+   Main.MyContest.MultiForm.UpdateData;
+   Main.MyContest.ScoreForm.UpdateData;
+   boo := False;
+   if MainForm.Grid.Focused then
+      boo := True;
+   MainForm.EditScreen.Renew;
+   MainForm.ReevaluateCountDownTimer;
+   MainForm.ReevaluateQSYCount;
 
-  if boo then
-    MainForm.Grid.SetFocus;
+   if boo then
+      MainForm.Grid.SetFocus;
 end;
 
 procedure TRenewThread.Execute;
@@ -58,8 +59,8 @@ var
 begin
    FreeOnTerminate := True;
 
-   Repeat until
-      Renewing = False;
+   Repeat
+   until Renewing = False;
 
    Renewing := True;
 
@@ -75,9 +76,9 @@ begin
       Main.MyContest.ScoreForm.AddNoUpdate(aQSO);
    end;
 
-  Synchronize(SyncProc);
-  Renewing := False;
-  { Place thread code here }
+   Synchronize(SyncProc);
+   Renewing := False;
+   { Place thread code here }
 end;
 
 procedure RequestRenewThread;

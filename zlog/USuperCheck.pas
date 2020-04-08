@@ -53,116 +53,115 @@ uses Main, UOptions;
 
 {$R *.DFM}
 
-function TSuperData.Summary : string;
+function TSuperData.Summary: string;
 begin
-  Result := FillRight(callsign, 11) + number;
+   Result := FillRight(callsign, 11) + number;
 end;
 
 procedure TSuperCheck.CreateParams(var Params: TCreateParams);
 begin
-  inherited CreateParams(Params);
-  Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+   inherited CreateParams(Params);
+   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
-function PartialMatch(A, B : string) : boolean;
-var i : integer;
+function PartialMatch(A, B: string): boolean;
+var
+   i: integer;
 begin
-  Result := False;
-  if (Pos('.', A) = 0) {and (Pos('?',A)=0)} then
-    Result := (Pos(A, B) > 0)
-  else
-    begin
+   Result := False;
+   if (Pos('.', A) = 0) { and (Pos('?',A)=0) } then
+      Result := (Pos(A, B) > 0)
+   else begin
       if length(A) > length(B) then
-        exit;
+         exit;
+
       for i := 1 to length(A) do
-        if A[i] <> '.' then
-          if A[i] <> B[i] then
-            exit;
+         if A[i] <> '.' then
+            if A[i] <> B[i] then
+               exit;
+
       Result := True;
-    end;
+   end;
 end;
 
-procedure TSuperCheck.CheckSuper(aQSO : TQSO);
-var PartialStr : string;
-    i : integer;
-    maxhit, hit : integer;
-    sd, FirstData : TSuperData;
-    L : TList;
+procedure TSuperCheck.CheckSuper(aQSO: TQSO);
+var
+   PartialStr: string;
+   i: integer;
+   maxhit, hit: integer;
+   sd, FirstData: TSuperData;
+   L: TList;
 begin
-  HitNumber := 0;
-  HitCall := '';
-  ListBox.Items.Clear;
-  PartialStr := aQSO.Callsign;
-  FirstData := nil;
+   HitNumber := 0;
+   HitCall := '';
+   ListBox.Items.Clear;
+   PartialStr := aQSO.callsign;
+   FirstData := nil;
 
-  if dmZlogGlobal.Settings._searchafter >= length(PartialStr) then
-    exit;
+   if dmZlogGlobal.Settings._searchafter >= length(PartialStr) then
+      exit;
 
-  if pos(',',PartialStr) = 1 then
-    exit;
+   if Pos(',', PartialStr) = 1 then
+      exit;
 
-  maxhit := dmZlogGlobal.Settings._maxsuperhit;
+   maxhit := dmZlogGlobal.Settings._maxsuperhit;
 
-  if PartialStr <> '' then
-    begin
+   if PartialStr <> '' then begin
       ListBox.Enabled := False;
       hit := 0;
 
-      if (Length(PartialStr) >= 2) and (pos('.', PartialStr) = 0) then
-        L := TwoLetterMatrix[Ord(PartialStr[1]), Ord(PartialStr[2])]
+      if (length(PartialStr) >= 2) and (Pos('.', PartialStr) = 0) then
+         L := TwoLetterMatrix[Ord(PartialStr[1]), Ord(PartialStr[2])]
       else
-        L := SuperCheckList2;
+         L := SuperCheckList2;
 
-      for i := 0 to L.Count-1 do
-        begin
-          sd := TSuperData(L[i]);
-          if ListBox.Items.Count = 0 then
+      for i := 0 to L.Count - 1 do begin
+         sd := TSuperData(L[i]);
+         if ListBox.Items.Count = 0 then
             FirstData := sd;
 
-          if PartialMatch(PartialStr, sd.callsign) then
-            begin
-              if hit = 0 then
-                HitCall := sd.callsign;
-              ListBox.Items.Add(sd.Summary);
-              inc(hit);
-              if hit >= maxhit then break;
-            end;
-        end;
+         if PartialMatch(PartialStr, sd.callsign) then begin
+            if hit = 0 then
+               HitCall := sd.callsign;
+            ListBox.Items.Add(sd.Summary);
+            inc(hit);
+            if hit >= maxhit then
+               break;
+         end;
+      end;
 
       HitNumber := hit;
 
       FirstDataCall := '';
       Rcvd_Estimate := '';
-      if HitNumber > 0 then
-        begin
-          FirstDataCall := FirstData.Callsign;
-          Rcvd_Estimate := FirstData.number;
-        end;
+      if HitNumber > 0 then begin
+         FirstDataCall := FirstData.callsign;
+         Rcvd_Estimate := FirstData.number;
+      end;
 
       ListBox.Enabled := True;
-    end;
+   end;
 end;
-
-
 
 procedure TSuperCheck.Button3Click(Sender: TObject);
 begin
-  Close;
+   Close;
 end;
 
 procedure TSuperCheck.FormCreate(Sender: TObject);
-var f : textfile;
-    str : string;
-    i, j, x, y : integer;
-    sd : TSuperData;
-    filename: string;
+var
+   f: textfile;
+   str: string;
+   i, j, x, y: integer;
+   sd: TSuperData;
+   filename: string;
 begin
    SuperCheckList2 := TList.Create;
 
    Rcvd_Estimate := '';
    FirstDataCall := '';
 
-   for i := 0 to 255 do begin       // 2.1f
+   for i := 0 to 255 do begin // 2.1f
       for j := 0 to 255 do begin
          TwoLetterMatrix[i, j] := TList.Create;
       end;
@@ -170,7 +169,7 @@ begin
 
    filename := ExtractFilePath(Application.EXEName) + 'ZLOG.SPC';
    if FileExists(filename) = False then begin
-      Exit;
+      exit;
    end;
 
    AssignFile(f, filename);
@@ -181,15 +180,15 @@ begin
          Continue;
       end;
 
-      if str[1] =  ';' then begin
+      if str[1] = ';' then begin
          Continue;
       end;
 
-      i := pos(' ',str);
+      i := Pos(' ', str);
       sd := TSuperData.Create;
       if i = 0 then begin
-                sd.callsign := str;
-                sd.number := '';
+         sd.callsign := str;
+         sd.number := '';
       end
       else begin
          sd.callsign := copy(str, 1, i - 1);
@@ -200,13 +199,13 @@ begin
       for i := 1 to length(sd.callsign) - 1 do begin
          x := Ord(sd.callsign[i]);
          y := Ord(sd.callsign[i + 1]);
-         if TwoLetterMatrix[x,y].Count > 0 then begin
-            if TSuperData(TwoLetterMatrix[x,y].Last).callsign <> sd.callsign then begin
-               TwoLetterMatrix[x,y].Add(sd);
+         if TwoLetterMatrix[x, y].Count > 0 then begin
+            if TSuperData(TwoLetterMatrix[x, y].Last).callsign <> sd.callsign then begin
+               TwoLetterMatrix[x, y].Add(sd);
             end;
          end
          else begin
-            TwoLetterMatrix[x,y].Add(sd);
+            TwoLetterMatrix[x, y].Add(sd);
          end;
       end;
    end;
@@ -216,51 +215,52 @@ end;
 
 procedure TSuperCheck.FormDestroy(Sender: TObject);
 var
-   i, j: Integer;
+   i, j: integer;
 begin
    SuperCheckList2.Free();
-   for i := 0 to 255 do begin       // 2.1f
+   for i := 0 to 255 do begin // 2.1f
       for j := 0 to 255 do begin
          TwoLetterMatrix[i, j].Free();
       end;
    end;
 end;
 
-procedure TSuperCheck.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TSuperCheck.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  case Key of
-    VK_ESCAPE : MainForm.LastFocus.SetFocus;
-  end;
+   case Key of
+      VK_ESCAPE:
+         MainForm.LastFocus.SetFocus;
+   end;
 end;
 
 procedure TSuperCheck.ListBoxDblClick(Sender: TObject);
-var i, j : integer;
-    str : string;
+var
+   i, j: integer;
+   str: string;
 begin
-  i := ListBox.ItemIndex;
-  str := ListBox.Items[i];
-  j := pos(' ', str);
-  if j > 0 then
-    str := copy(str, 1, j - 1);
-  MainForm.CallsignEdit.Text := str;
-end;
+   i := ListBox.ItemIndex;
+   str := ListBox.Items[i];
+   j := Pos(' ', str);
+   if j > 0 then
+      str := copy(str, 1, j - 1);
 
+   MainForm.CallsignEdit.Text := str;
+end;
 
 procedure TSuperCheck.StayOnTopClick(Sender: TObject);
 begin
-  If StayOnTop.Checked then
-    FormStyle := fsStayOnTop
-  else
-    FormStyle := fsNormal;
+   If StayOnTop.Checked then
+      FormStyle := fsStayOnTop
+   else
+      FormStyle := fsNormal;
 end;
 
 procedure TSuperCheck.SpinEditChange(Sender: TObject);
 begin
-  if SpinEdit.Value <= 1 then
-    ListBox.Columns := 0
-  else
-    ListBox.Columns := SpinEdit.Value;
+   if SpinEdit.Value <= 1 then
+      ListBox.Columns := 0
+   else
+      ListBox.Columns := SpinEdit.Value;
 end;
 
 end.

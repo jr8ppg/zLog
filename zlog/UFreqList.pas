@@ -31,92 +31,95 @@ implementation
 {$R *.DFM}
 
 procedure TFreqList.UpdateData;
-var B : integer;
-    s : string;
+var
+   B: integer;
+   S: string;
 begin
-  ListBox.Items.Clear;
-  for B := 0 to 30 do
-    if FreqArray[B] <> '' then
-      begin
-        s := FreqArray[B];
-        Delete(s, 1, 3);
-        ListBox.Items.Add(s);
+   ListBox.Items.Clear;
+   for B := 0 to 30 do begin
+      if FreqArray[B] <> '' then begin
+         S := FreqArray[B];
+         Delete(S, 1, 3);
+         ListBox.Items.Add(S);
       end;
+   end;
 end;
 
-function TFreqList.GetPCName(S : string) : string;
-var ss : string;
-    i, j : integer;
+function TFreqList.GetPCName(S: string): string;
+var
+   ss: string;
+   i, j: integer;
 begin
-  ss := '';
-  i := pos('[',S);
-  j := pos(']',S);
-  if (i > 0) and (j > 0) and (j > i) then
-    begin
+   ss := '';
+   i := pos('[', S);
+   j := pos(']', S);
+   if (i > 0) and (j > 0) and (j > i) then begin
       ss := S;
       Delete(ss, 1, i);
       j := pos(']', ss);
-      ss := copy(ss, 1, j-1);
-    end;
-  Result := ss;
+      ss := copy(ss, 1, j - 1);
+   end;
+   Result := ss;
 end;
 
-procedure TFreqList.ProcessFreqData(S : string);
-var ss : string;
-    pcname : string;
-    B : Integer;
+procedure TFreqList.ProcessFreqData(S: string);
+var
+   ss: string;
+   pcname: string;
+   B: integer;
 begin
-  if length(S) < 30 then
-    exit;
+   if length(S) < 30 then
+      exit;
 
-  //tx := GetTXNr(S);
-  pcname := GetPCName(S);
-  //label1.caption := pcname+'*';
+   // tx := GetTXNr(S);
+   pcname := GetPCName(S);
+   // label1.caption := pcname+'*';
 
-  for B := 0 to 30 do
-    if FreqArray[B] <> '' then
-      if pcname = GetPCName(FreqArray[B]){GetTXNr(FreqArray[B]) = tx} then
-        FreqArray[B] := '';
+   for B := 0 to 30 do
+      if FreqArray[B] <> '' then
+         if pcname = GetPCName(FreqArray[B]) { GetTXNr(FreqArray[B]) = tx } then
+            FreqArray[B] := '';
 
-  ss := copy(S, 1, 2);
-  ss := TrimRight(ss);
-  B := StrToInt(ss);
-  if B <= ord(HiBand) then
-    FreqArray[B] := S
-  else // substation
-    begin
-      for B := Ord(HiBand)+1 to 30 do
-        if FreqArray[B] = '' then
-          begin
+   ss := copy(S, 1, 2);
+   ss := TrimRight(ss);
+   B := StrToInt(ss);
+   if B <= ord(HiBand) then
+      FreqArray[B] := S
+   else // substation
+   begin
+      for B := ord(HiBand) + 1 to 30 do
+         if FreqArray[B] = '' then begin
             FreqArray[B] := S;
             break;
-          end;
-    end;
+         end;
+   end;
 
-  UpdateData;
+   UpdateData;
 end;
 
 procedure TFreqList.FormShow(Sender: TObject);
 begin
-  //inherited;
-  UpdateData;
+   // inherited;
+   UpdateData;
 end;
 
 procedure TFreqList.FormCreate(Sender: TObject);
-var B : integer;
+var
+   B: integer;
 begin
-  for B := 0 to 30 do
-    FreqArray[B] := '';
+   for B := 0 to 30 do
+      FreqArray[B] := '';
 end;
 
 procedure TFreqList.ClearBtnClick(Sender: TObject);
-var B : integer;
+var
+   B: integer;
 begin
-  //inherited;
-  for B := 0 to 30 do
-    FreqArray[B] := '';
+   // inherited;
+   for B := 0 to 30 do
+      FreqArray[B] := '';
 
-  UpdateData;
+   UpdateData;
 end;
 
 end.

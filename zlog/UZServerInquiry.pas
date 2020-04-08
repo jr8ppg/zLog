@@ -33,36 +33,31 @@ uses UZLinkForm;
 
 procedure TZServerInquiry.Button2Click(Sender: TObject);
 begin
-  Close;
+   Close;
 end;
 
 procedure TZServerInquiry.Button1Click(Sender: TObject);
 begin
-  if rbMerge.Checked then
-    begin
+   if rbMerge.Checked then begin
       ZLinkForm.MergeLogWithZServer;
-    end;
-  if rbDownload.Checked then
-    begin
+   end;
+   if rbDownload.Checked then begin
       ZLinkForm.LoadLogFromZLink;
-    end;
-  Close;
+   end;
+   Close;
 end;
 
 procedure TZServerInquiry.FormShow(Sender: TObject);
 begin
-  if Log.TotalQSO = 0 then
-    begin
+   if Log.TotalQSO = 0 then begin
       rbMerge.Checked := False;
       rbDownload.Checked := True;
-    end
-  else
-    begin
+   end
+   else begin
       rbMerge.Checked := True;
       rbDownload.Checked := False;
-    end;
-  rbMerge.Enabled := True;
+   end;
+   rbMerge.Enabled := True;
 end;
-
 
 end.
