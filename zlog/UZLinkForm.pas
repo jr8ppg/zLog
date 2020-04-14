@@ -846,7 +846,7 @@ begin
       exit;
    end;
 
-   Log.Clear;
+   Log.Clear2();
    WriteData(ZLinkHeader + ' ' + 'SENDLOG' + LineBreakCode[Ord(Console.LineBreak)]);
 end;
 

@@ -323,6 +323,10 @@ object formOptions: TformOptions
     end
     object TabSheet2: TTabSheet
       Caption = 'Categories'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label14: TLabel
         Left = 248
         Top = 92
@@ -1294,6 +1298,10 @@ object formOptions: TformOptions
     end
     object TabSheet5: TTabSheet
       Caption = 'Hardware'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox6: TGroupBox
         Left = 5
         Top = 0
@@ -1812,10 +1820,6 @@ object formOptions: TformOptions
     end
     object tbMisc: TTabSheet
       Caption = 'Misc'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label47: TLabel
         Left = 16
         Top = 88
@@ -1888,11 +1892,11 @@ object formOptions: TformOptions
       end
       object cbUpdateThread: TCheckBox
         Left = 16
-        Top = 232
+        Top = 272
         Width = 161
         Height = 17
         Caption = 'Update using a thread'
-        TabOrder = 3
+        TabOrder = 6
       end
       object spSpotExpire: TSpinEdit
         Left = 160
@@ -1902,7 +1906,7 @@ object formOptions: TformOptions
         AutoSize = False
         MaxValue = 99999
         MinValue = 1
-        TabOrder = 4
+        TabOrder = 3
         Value = 60
       end
       object cbDisplayDatePartialCheck: TCheckBox
@@ -1911,12 +1915,65 @@ object formOptions: TformOptions
         Width = 169
         Height = 17
         Caption = 'Display date in partial check'
+        TabOrder = 4
+      end
+      object GroupBox8: TGroupBox
+        Left = 16
+        Top = 192
+        Width = 317
+        Height = 74
+        Caption = 'Super Check'
         TabOrder = 5
+        object buttonSuperCheckFolderRef: TSpeedButton
+          Left = 291
+          Top = 43
+          Width = 21
+          Height = 21
+          Caption = '...'
+          OnClick = buttonSuperCheckFolderRefClick
+        end
+        object radioSuperCheck0: TRadioButton
+          Left = 12
+          Top = 20
+          Width = 41
+          Height = 17
+          Caption = 'SPC'
+          Checked = True
+          TabOrder = 0
+          TabStop = True
+        end
+        object radioSuperCheck1: TRadioButton
+          Left = 64
+          Top = 20
+          Width = 41
+          Height = 17
+          Caption = 'ZLO'
+          TabOrder = 1
+        end
+        object editSuperCheckFolder: TEdit
+          Left = 12
+          Top = 43
+          Width = 273
+          Height = 21
+          TabOrder = 3
+        end
+        object radioSuperCheck2: TRadioButton
+          Left = 116
+          Top = 20
+          Width = 41
+          Height = 17
+          Caption = 'Both'
+          TabOrder = 2
+        end
       end
     end
     object tabsheetQuickQSY: TTabSheet
       Caption = 'Quick QSY'
       ImageIndex = 8
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label54: TLabel
         Left = 98
         Top = 3
@@ -2187,11 +2244,11 @@ object formOptions: TformOptions
   end
   object OpenDialog: TOpenDialog
     Filter = 'wav files|*.wav'
-    Left = 304
-    Top = 288
+    Left = 312
+    Top = 312
   end
   object OpenDialog1: TOpenDialog
-    Left = 308
-    Top = 248
+    Left = 280
+    Top = 312
   end
 end

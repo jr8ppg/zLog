@@ -2,7 +2,7 @@ object SuperCheck: TSuperCheck
   Left = 472
   Top = 79
   Caption = 'Super Check'
-  ClientHeight = 275
+  ClientHeight = 332
   ClientWidth = 243
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,9 +20,9 @@ object SuperCheck: TSuperCheck
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 244
+    Top = 297
     Width = 243
-    Height = 31
+    Height = 35
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
@@ -67,14 +67,13 @@ object SuperCheck: TSuperCheck
     Left = 0
     Top = 0
     Width = 243
-    Height = 244
+    Height = 297
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -12
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Style = []
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     ItemHeight = 12
     ParentFont = False
     TabOrder = 1

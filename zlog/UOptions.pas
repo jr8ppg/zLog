@@ -6,7 +6,7 @@ uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin,
   Dialogs, Menus, FileCtrl,
-  UIntegerDialog, UzLogConst, UzLogGlobal;
+  UIntegerDialog, UzLogConst, UzLogGlobal, Vcl.Buttons;
 
 type
   TformOptions = class(TForm)
@@ -237,6 +237,12 @@ type
     comboQuickQsyMode08: TComboBox;
     Label54: TLabel;
     Label33: TLabel;
+    GroupBox8: TGroupBox;
+    radioSuperCheck0: TRadioButton;
+    radioSuperCheck1: TRadioButton;
+    editSuperCheckFolder: TEdit;
+    radioSuperCheck2: TRadioButton;
+    buttonSuperCheckFolderRef: TSpeedButton;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -267,6 +273,7 @@ type
     procedure comboRig1NameChange(Sender: TObject);
     procedure comboRig2NameChange(Sender: TObject);
     procedure checkUseQuickQSYClick(Sender: TObject);
+    procedure buttonSuperCheckFolderRefClick(Sender: TObject);
   private
     TempVoiceFiles : array[1..10] of string;
     TempCurrentBank : integer;
@@ -485,6 +492,18 @@ begin
             Settings.FQuickQSY[i].FMode := TMode(FQuickQSYMode[i].ItemIndex);
          end;
       end;
+
+      // SuperCheck
+      if radioSuperCheck0.Checked = True then begin
+         Settings.FSuperCheck.FSuperCheckMethod := 0;
+      end
+      else if radioSuperCheck1.Checked = True then begin
+         Settings.FSuperCheck.FSuperCheckMethod := 1;
+      end
+      else begin
+         Settings.FSuperCheck.FSuperCheckMethod := 2;
+      end;
+      Settings.FSuperCheck.FSuperCheckFolder := editSuperCheckFolder.Text;
    end;
 end;
 
@@ -692,6 +711,14 @@ begin
          FQuickQSYBand[i].Enabled := FQuickQSYCheck[i].Checked;
          FQuickQSYMode[i].Enabled := FQuickQSYCheck[i].Checked;
       end;
+
+      // SuperCheck
+      case Settings.FSuperCheck.FSuperCheckMethod of
+         0: radioSuperCheck0.Checked := True;
+         1: radioSuperCheck1.Checked := True;
+         else radioSuperCheck2.Checked := True;
+      end;
+      editSuperCheckFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
    end;
 end;
 
@@ -875,6 +902,21 @@ begin
          f.Release();
       end;
    end;
+end;
+
+procedure TformOptions.buttonSuperCheckFolderRefClick(Sender: TObject);
+var
+   fResult: Boolean;
+   strSelected: string;
+begin
+   strSelected := editSuperCheckFolder.Text;
+
+   fResult := SelectDirectory('SuperCheck用のファイルが保存されているフォルダを選択して下さい', '', strSelected, [sdNewUI, sdNewFolder, sdValidateDir], Self);
+   if fResult = False then begin
+      Exit;
+   end;
+
+   editSuperCheckFolder.Text := strSelected;
 end;
 
 procedure TformOptions.ZLinkComboChange(Sender: TObject);

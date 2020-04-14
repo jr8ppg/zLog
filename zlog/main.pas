@@ -2077,12 +2077,16 @@ begin
       PastEditForm.Init(TQSO(Log.List[R]), R, _ActChange);
 
       if PastEditForm.ShowModal = mrOK then begin
-         if PartialCheck.Visible and PartialCheck._CheckCall then
+         if PartialCheck.Visible and PartialCheck._CheckCall then begin
             PartialCheck.CheckPartial(CurrentQSO);
+         end;
+
          { if SuperCheck.Visible then
            SuperCheck.CheckSuper(CurrentQSO); }
-         if CheckCall2.Visible then
+
+         if CheckCall2.Visible then begin
             CheckCall2.Renew(CurrentQSO);
+         end;
       end;
 
       MainForm.Grid.TopRow := _top;
@@ -4301,6 +4305,8 @@ begin
    dmZlogGlobal.SaveCurrentSettings();
 
    PostMessage(Handle, WM_ZLOG_SETGRIDCOL, 0, 0);
+
+   SuperCheck.FontSize := font_size;
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
@@ -5965,6 +5971,9 @@ begin
       RigControl.ImplementOptions;
 
       SetWindowCaption();
+
+      // SuperCheckçƒÉçÅ[Éh
+      SuperCheck.Renew();
 
       LastFocus.SetFocus;
    finally

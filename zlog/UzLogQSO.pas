@@ -182,7 +182,7 @@ type
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
     procedure AddQue(aQSO : TQSO);
     procedure ProcessQue;
-    procedure Clear; // deletes all QSOs without destroying the List. Keeps List[0] intact
+    procedure Clear2(); // deletes all QSOs without destroying the List. Keeps List[0] intact
     procedure SortByTime;
     function ContainBand : TBandBool;
     procedure SetDupeFlags;
@@ -985,7 +985,7 @@ begin
    end;
 end;
 
-procedure TQSOList.Clear;
+procedure TQSOList.Clear2();
 var
    i, max: Integer;
    aQSO: TQSO;
@@ -1600,7 +1600,7 @@ begin
          Q.Reserve3 := dmZLogGlobal.NewQSOID;
       end;
 
-      Log.Add(Q);
+      Add(Q);
    end;
 
    if Q <> nil then begin
@@ -1609,7 +1609,7 @@ begin
 
    CloseFile(f);
 
-   Result := Log.Count;
+   Result := Count;
 end;
 
 function TQSOList.MergeFile(filename: string): Integer;

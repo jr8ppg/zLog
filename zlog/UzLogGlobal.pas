@@ -43,6 +43,11 @@ type
     FMode: TMode;
   end;
 
+  TSuperCheckParam = record
+    FSuperCheckMethod: Integer;
+    FSuperCheckFolder: string;
+  end;
+
   TSettingsParam = record
     _AFSK : boolean; // Use AFSK instead of RTTY for rig control
     _dontallowsameband : boolean; // same band on two rigs?
@@ -128,6 +133,7 @@ type
     _super_check_columns: Integer;
 
     FQuickQSY: array[1..8] of TQuickQSY;
+    FSuperCheck: TSuperCheckParam;
   end;
 
 var
@@ -772,6 +778,10 @@ begin
          Settings.FQuickQSY[i].FBand := StrToBandDef(slParam[1], b35);
          Settings.FQuickQSY[i].FMode := StrToModeDef(slParam[2], mSSB);
       end;
+
+      // SuperCheck
+      Settings.FSuperCheck.FSuperCheckMethod := ini.ReadInteger('SuperCheck', 'Method', 0);
+      Settings.FSuperCheck.FSuperCheckFolder := ini.ReadString('SuperCheck', 'Folder', '');
    finally
       ini.Free();
       slParam.Free();
@@ -1076,6 +1086,10 @@ begin
          slParam.Add( MODEString[ Settings.FQuickQSY[i].FMode ]);
          ini.WriteString('QuickQSY', '#' + IntToStr(i), slParam.CommaText);
       end;
+
+      // SuperCheck
+      ini.WriteInteger('SuperCheck', 'Method', Settings.FSuperCheck.FSuperCheckMethod);
+      ini.WriteString('SuperCheck', 'Folder', Settings.FSuperCheck.FSuperCheckFolder);
    finally
       ini.Free();
       slParam.Free();
