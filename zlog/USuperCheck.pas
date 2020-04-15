@@ -1,5 +1,8 @@
 unit USuperCheck;
 
+{$WARN SYMBOL_DEPRECATED OFF}
+{$WARN SYMBOL_PLATFORM OFF}
+
 interface
 
 uses
@@ -24,18 +27,20 @@ type
     property Text: string read GetText;
   end;
 
-  TSuperList = class(TObjectList<TSuperData>)
-  private
-  public
-    constructor Create(OwnsObjects: Boolean = True);
-    function IndexOf(SD: TSuperData): Integer;
-    function ObjectOf(SD: TSuperData): TSuperData;
-    procedure SortByCallsign();
-  end;
-
   TSuperListComparer1 = class(TComparer<TSuperData>)
   public
     function Compare(const Left, Right: TSuperData): Integer; override;
+  end;
+
+  TSuperList = class(TObjectList<TSuperData>)
+  private
+    FCallsignComparer: TSuperListComparer1;
+  public
+    constructor Create(OwnsObjects: Boolean = True);
+    destructor Destroy(); override;
+    function IndexOf(SD: TSuperData): Integer;
+    function ObjectOf(SD: TSuperData): TSuperData;
+    procedure SortByCallsign();
   end;
 
   TSuperCheck = class(TForm)
@@ -58,7 +63,7 @@ type
     FSuperCheckList: TSuperList;
     FTwoLetterMatrix: array[0..255, 0..255] of TSuperList; // 2.1f
     function PartialMatch(A, B: string): boolean;
-    procedure LoadSpcFile();
+    procedure LoadSpcFile(strStartFoler: string);
     procedure LoadLogFiles(strStartFoler: string);
     procedure ListToTwoMatrix(L: TQSOList);
     procedure SetTwoMatrix(D: TDateTime; C, N: string);
@@ -136,13 +141,13 @@ begin
    end
    else begin
       if length(A) > length(B) then begin
-         exit;
+         Exit;
       end;
 
       for i := 1 to length(A) do begin
          if A[i] <> '.' then begin
             if A[i] <> B[i] then begin
-               exit;
+               Exit;
             end;
          end;
       end;
@@ -167,12 +172,12 @@ begin
 
    // 検索対象がserchafter以下 searchafterは0,1,2
    if dmZlogGlobal.Settings._searchafter >= length(PartialStr) then begin
-      exit;
+      Exit;
    end;
 
    // ,で始まるコマンド
    if Pos(',', PartialStr) = 1 then begin
-      exit;
+      Exit;
    end;
 
    // Max super check search デフォルトは1
@@ -234,6 +239,7 @@ procedure TSuperCheck.Renew();
 var
    i: Integer;
    j: Integer;
+   strFolder: string;
 begin
    ListBox.Clear();
 
@@ -247,21 +253,23 @@ begin
       end;
    end;
 
+   strFolder := dmZlogGlobal.Settings.FSuperCheck.FSuperCheckFolder;
+
    case dmZlogGlobal.Settings.FSuperCheck.FSuperCheckMethod of
       // SPC
       0: begin
-         LoadSpcFile();
+         LoadSpcFile(strFolder);
       end;
 
       // ZLO
       1: begin
-         LoadLogFiles(dmZlogGlobal.Settings.FSuperCheck.FSuperCheckFolder);
+         LoadLogFiles(strFolder);
       end
 
       // Both
       else begin
-         LoadSpcFile();
-         LoadLogFiles(dmZlogGlobal.Settings.FSuperCheck.FSuperCheckFolder);
+         LoadSpcFile(strFolder);
+         LoadLogFiles(strFolder);
       end;
    end;
 end;
@@ -301,9 +309,11 @@ var
 begin
    i := ListBox.ItemIndex;
    str := ListBox.Items[i];
+
    j := Pos(' ', str);
-   if j > 0 then
+   if j > 0 then begin
       str := copy(str, 1, j - 1);
+   end;
 
    MainForm.CallsignEdit.Text := str;
 end;
@@ -324,18 +334,26 @@ begin
       ListBox.Columns := SpinEdit.Value;
 end;
 
-procedure TSuperCheck.LoadSpcFile();
+procedure TSuperCheck.LoadSpcFile(strStartFoler: string);
 var
    F: TextFile;
    filename: string;
    C, N: string;
    i: Integer;
    str: string;
+   dtNow: TDateTime;
 begin
-   filename := ExtractFilePath(Application.EXEName) + 'ZLOG.SPC';
+   // 指定フォルダ優先
+   filename := IncludeTrailingPathDelimiter(strStartFoler) + 'ZLOG.SPC';
    if FileExists(filename) = False then begin
-      exit;
+      // 無ければZLOG.EXEを同じ場所（従来通り）
+      filename := ExtractFilePath(Application.EXEName) + 'ZLOG.SPC';
+      if FileExists(filename) = False then begin
+         Exit;
+      end;
    end;
+
+   dtNow := Now;
 
    AssignFile(F, filename);
    Reset(F);
@@ -365,7 +383,7 @@ begin
          N := TrimLeft(copy(str, i, 30));
       end;
 
-      SetTwoMatrix(0, C, N);
+      SetTwoMatrix(dtNow, C, N);
    end;
 
    CloseFile(F);
@@ -395,7 +413,7 @@ begin
             L.Clear();
 
             // listにロードする
-            L.LoadFromFile(S + F.Name);
+            L.MergeFile(S + F.Name);
 
             {$IFDEF DEBUG}
             OutputDebugString(PChar(F.Name + ' L=' + IntToStr(L.Count)));
@@ -432,22 +450,37 @@ var
    i: Integer;
    x: Integer;
    y: Integer;
+   O: TSuperData;
 begin
    sd := TSuperData.Create(D, C, N);
 
    // リストに追加
-   if FSuperCheckList.IndexOf(sd) = -1 then begin
+   O := FSuperCheckList.ObjectOf(sd);
+   if O = nil then begin
       FSuperCheckList.Add(sd);
       FSuperCheckList.SortByCallsign();
+   end
+   else begin
+      if O.Date < D then begin
+         O.Date := D;
+         O.Number := N;
+      end;
    end;
 
    // TwoLetterリストに追加
    for i := 1 to length(sd.callsign) - 1 do begin
       x := Ord(sd.callsign[i]);
       y := Ord(sd.callsign[i + 1]);
-      if FTwoLetterMatrix[x, y].IndexOf(sd) = -1 then begin
+      O := FTwoLetterMatrix[x, y].ObjectOf(sd);
+      if O = nil then begin
          FTwoLetterMatrix[x, y].Add(sd);
          FTwoLetterMatrix[x, y].SortByCallsign();
+      end
+      else begin
+         if O.Date < D then begin
+            O.Date := D;
+            O.Number := N;
+         end;
       end;
    end;
 end;
@@ -480,13 +513,20 @@ end;
 constructor TSuperList.Create(OwnsObjects: Boolean);
 begin
    Inherited Create(OwnsObjects);
+   FCallsignComparer := TSuperListComparer1.Create();
+end;
+
+destructor TSuperList.Destroy();
+begin
+   Inherited;
+   FCallsignComparer.Free();
 end;
 
 function TSuperList.IndexOf(SD: TSuperData): Integer;
 var
    Index: Integer;
 begin
-   if BinarySearch(SD, Index, TSuperListComparer1.Create()) = True then begin
+   if BinarySearch(SD, Index, FCallsignComparer) = True then begin
       Result := Index;
    end
    else begin
@@ -498,7 +538,7 @@ function TSuperList.ObjectOf(SD: TSuperData): TSuperData;
 var
    Index: Integer;
 begin
-   if BinarySearch(SD, Index, TSuperListComparer1.Create()) = True then begin
+   if BinarySearch(SD, Index, FCallsignComparer) = True then begin
       Result := Items[Index];
    end
    else begin
@@ -508,7 +548,7 @@ end;
 
 procedure TSuperList.SortByCallsign();
 begin
-   Sort(TSuperListComparer1.Create());
+   Sort(FCallsignComparer);
 end;
 
 { TSuperListComparer1 }
