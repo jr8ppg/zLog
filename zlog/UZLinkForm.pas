@@ -40,6 +40,7 @@ type
     procedure ZSocketDataAvailable(Sender: TObject; Error: Word);
     procedure ZSocketSessionClosed(Sender: TObject; Error: Word);
     procedure ZSocketSessionConnected(Sender: TObject; Error: Word);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     CommTemp : string; {command work string}
@@ -766,6 +767,12 @@ begin
    CommTemp := '';
    Timer1.Enabled := true;
    ImplementOptions;
+end;
+
+procedure TZLinkForm.FormDestroy(Sender: TObject);
+begin
+   CommBuffer.Free();
+   CommandQue.Free();
 end;
 
 procedure TZLinkForm.ImplementOptions;

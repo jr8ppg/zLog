@@ -1287,11 +1287,13 @@ var
    txset: set of byte;
 begin
    txset := [];
-   for i := 1 to TotalQSO do
+   for i := 1 to TotalQSO do begin
       txset := txset + [TQSO(List[i]).FTX];
+   end;
+
    Header := 'zLog for Windows '; // +Options.Settings._mycall;
    System.Delete(Filename, length(Filename) - 2, 3);
-   for i := 0 to 255 do
+   for i := 0 to 255 do begin
       if i in txset then begin
          AssignFile(f, Filename + '.' + IntToStr(i) + '.TX');
          Rewrite(f);
@@ -1301,17 +1303,18 @@ begin
                writeln(f, TQSO(List[j]).zLogALL);
          CloseFile(f);
       end;
+   end;
 end;
 
 destructor TQSOList.Destroy;
-//var
-//   i: Integer;
+var
+   B: TBand;
 begin
-//   for i := 0 to Count - 1 do begin
-//      if List[i] <> nil then begin
-//         TQSO(List[i]).Free;
-//      end;
-//   end;
+   for B := b19 to HiBand do begin
+      FDupeCheckList[B].Free();
+   end;
+
+   FQueList.Free();
 end;
 
 procedure TQSOList.RebuildDupeCheckList;

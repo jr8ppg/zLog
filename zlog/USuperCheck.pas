@@ -249,7 +249,7 @@ begin
 
    for i := 0 to 255 do begin // 2.1f
       for j := 0 to 255 do begin
-         FTwoLetterMatrix[i, j] := TSuperList.Create(False);
+         FTwoLetterMatrix[i, j] := TSuperList.Create(True);
       end;
    end;
 
@@ -446,18 +446,19 @@ end;
 
 procedure TSuperCheck.SetTwoMatrix(D: TDateTime; C, N: string);
 var
-   sd: TSuperData;
+   sd1: TSuperData;
+   sd2: TSuperData;
    i: Integer;
    x: Integer;
    y: Integer;
    O: TSuperData;
 begin
-   sd := TSuperData.Create(D, C, N);
+   sd1 := TSuperData.Create(D, C, N);
 
    // リストに追加
-   O := FSuperCheckList.ObjectOf(sd);
+   O := FSuperCheckList.ObjectOf(sd1);
    if O = nil then begin
-      FSuperCheckList.Add(sd);
+      FSuperCheckList.Add(sd1);
       FSuperCheckList.SortByCallsign();
    end
    else begin
@@ -465,15 +466,17 @@ begin
          O.Date := D;
          O.Number := N;
       end;
+      sd1.Free();
    end;
 
    // TwoLetterリストに追加
-   for i := 1 to length(sd.callsign) - 1 do begin
-      x := Ord(sd.callsign[i]);
-      y := Ord(sd.callsign[i + 1]);
-      O := FTwoLetterMatrix[x, y].ObjectOf(sd);
+   for i := 1 to length(sd1.callsign) - 1 do begin
+      sd2 := TSuperData.Create(D, C, N);
+      x := Ord(sd2.callsign[i]);
+      y := Ord(sd2.callsign[i + 1]);
+      O := FTwoLetterMatrix[x, y].ObjectOf(sd2);
       if O = nil then begin
-         FTwoLetterMatrix[x, y].Add(sd);
+         FTwoLetterMatrix[x, y].Add(sd2);
          FTwoLetterMatrix[x, y].SortByCallsign();
       end
       else begin
@@ -481,6 +484,7 @@ begin
             O.Date := D;
             O.Number := N;
          end;
+         sd2.Free();
       end;
    end;
 end;

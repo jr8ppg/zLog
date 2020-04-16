@@ -15,6 +15,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
   public
@@ -146,6 +147,17 @@ begin
    for b := b35 to b28 do begin
       PXListX[b] := TStringList.Create;
       PXListX[b].Sorted := True;
+   end;
+end;
+
+procedure TJA0Multi.FormDestroy(Sender: TObject);
+var
+   b: TBand;
+begin
+   inherited;
+
+   for b := b35 to b28 do begin
+      PXListX[b].Free();
    end;
 end;
 

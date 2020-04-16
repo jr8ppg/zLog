@@ -1779,6 +1779,8 @@ destructor TContest.Destroy;
 begin
    inherited;
 
+   WantedList.Free();
+
    if Assigned(MultiForm) then begin
       MultiForm.Release();
    end;

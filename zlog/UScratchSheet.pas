@@ -15,6 +15,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure LocalOnlyClick(Sender: TObject);
     procedure Clear1Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     Buffer : TStringList;
@@ -70,6 +71,12 @@ begin
    inherited;
    MaxLines := 25;
    Buffer := TStringList.Create;
+end;
+
+procedure TScratchSheet.FormDestroy(Sender: TObject);
+begin
+   inherited;
+   Buffer.Free();
 end;
 
 procedure TScratchSheet.UpdateData;

@@ -484,6 +484,8 @@ begin
    inherited;
    ClusterComm.Disconnect;
    ClusterComm.Free;
+   SpotList.Free();
+   CommBuffer.Free();
 end;
 
 procedure TCommForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
