@@ -470,7 +470,7 @@ begin
    end;
 
    // TwoLetterƒŠƒXƒg‚É’Ç‰Á
-   for i := 1 to length(sd1.callsign) - 1 do begin
+   for i := 1 to length(C) - 1 do begin
       sd2 := TSuperData.Create(D, C, N);
       x := Ord(sd2.callsign[i]);
       y := Ord(sd2.callsign[i + 1]);

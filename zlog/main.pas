@@ -5351,6 +5351,7 @@ end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
+   EditScreen.Free();
    FTempQSOList.Free();
    FQuickRef.Release();
    FZAnalyze.Release();
