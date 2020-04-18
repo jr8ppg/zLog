@@ -200,9 +200,9 @@ begin
 
    if PartialStr <> '' then begin
       for i := 1 to Log.TotalQSO do begin
-         if Pos(PartialStr, TQSO(Log.List[i]).NrRcvd) > 0 then begin
-            if AllBand or (not(AllBand) and (aQSO.Band = TQSO(Log.List[i]).Band)) then begin
-               TempList.Add(TQSO(Log.List[i]));
+         if Pos(PartialStr, Log.QsoList[i].NrRcvd) > 0 then begin
+            if AllBand or (not(AllBand) and (aQSO.Band = Log.QsoList[i].Band)) then begin
+               TempList.Add(Log.QsoList[i]);
                if _count >= DispMax then
                   goto disp
                   // exit
@@ -284,10 +284,10 @@ begin
    if (PartialStr <> '') then begin
       for i := 1 to Log.TotalQSO do
          // if Pos(PartialStr, TQSO(Log.List[i]).QSO.Callsign) > 0 then
-         if PartialMatch(PartialStr, TQSO(Log.List[i]).Callsign) then
-            if AllBand or (not(AllBand) and (aQSO.Band = TQSO(Log.List[i]).Band)) then begin
+         if PartialMatch(PartialStr, Log.QsoList[i].Callsign) then
+            if AllBand or (not(AllBand) and (aQSO.Band = Log.QsoList[i].Band)) then begin
                // ListBox.Items.Add(TQSO(Log.List[i]).PartialSummary);
-               TempList.Add(TQSO(Log.List[i]));
+               TempList.Add(Log.QsoList[i]);
                if _count >= DispMax then
                   goto disp
                   // exit

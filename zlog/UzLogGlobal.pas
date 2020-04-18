@@ -195,7 +195,7 @@ type
 public
     { Public êÈåæ }
     FCurrentFileName : string;
-    FLog : TQSOList;
+    FLog : TLog;
 
     CurrentPower : array[b19..HiBand] of TPower;
     CurrentPower2 : array[b19..HiBand] of integer; {Power2 for ARRLDX}
@@ -246,7 +246,7 @@ public
     function NewQSOID(): Integer;
   end;
 
-function Log(): TQSOList;
+function Log(): TLog;
 function CurrentFileName(): string;
 function Random10 : integer;
 function UTCOffset : integer;   //in minutes; utc = localtime + utcoffset
@@ -302,7 +302,7 @@ var
 begin
    FCurrentFileName := '';
    FLog := nil;
-   CreateLog();
+//   CreateLog();
 
    for b := b19 to b10g do begin
       CurrentPower[b] := pwrP;
@@ -1374,7 +1374,7 @@ end;
 procedure TdmZLogGlobal.SetScoreCoeff(E: extended);
 begin
    Settings._scorecoeff := E;
-   TQSO(Log.List[0]).RSTRcvd := Trunc(E * 100);
+   Log.QsoList[0].RSTRcvd := Trunc(E * 100);
 end;
 
 procedure TdmZLogGlobal.SetWeight(i: integer);
@@ -1578,7 +1578,7 @@ begin
    if FLog <> nil then begin
       FLog.Free();
    end;
-   FLog := TQSOList.Create('default');
+   FLog := TLog.Create('default');
 end;
 
 procedure TdmZLogGlobal.SetLogFileName(filename: string);
@@ -1604,7 +1604,7 @@ begin
    Result := tt * 100000000 + ss * 10000 + rr * 100;
 end;
 
-function Log(): TQSOList;
+function Log(): TLog;
 begin
    Result := dmZLogGlobal.FLog;
 end;

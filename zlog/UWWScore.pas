@@ -56,15 +56,15 @@ var
 begin
    Reset;
    for i := 1 to Log.TotalQSO do begin
-      band := Log.Items[i].band;
+      band := Log.QsoList[i].band;
       inc(QSO[band]);
-      inc(Points[band],Log.Items[i].Points);
+      inc(Points[band],Log.QsoList[i].Points);
 
-      if Log.Items[i].NewMulti1 then begin
+      if Log.QsoList[i].NewMulti1 then begin
         inc(Multi[band]);
       end;
 
-      if Log.Items[i].NewMulti2 then begin
+      if Log.QsoList[i].NewMulti2 then begin
         inc(Multi2[band]);
       end;
    end;

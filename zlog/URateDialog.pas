@@ -72,7 +72,7 @@ begin
 
    k := 0;
    repeat
-      aQSO := TQSO(Log.List[i]);
+      aQSO := Log.QsoList[i];
       if aQSO.TX = mytx then begin
          inc(k);
       end;
@@ -97,7 +97,7 @@ begin
    i := Log.TotalQSO;
    k := 0;
    repeat
-      aQSO := TQSO(Log.List[i]);
+      aQSO := Log.QsoList[i];
       if aQSO.TX = mytx then begin
          inc(k);
       end;
@@ -156,7 +156,7 @@ begin
    Result := 0;
 
    for i := 1 to Log.TotalQSO do begin
-      T := TQSO(Log.List[i]).time;
+      T := Log.QsoList[i].time;
       if (T >= _start) and (T < _end) then
          inc(Result);
    end;
@@ -182,7 +182,7 @@ begin
    if Log.TotalQSO = 0 then
       exit;
 
-   if TQSO(Log.List[Log.TotalQSO]).time < _start then
+   if Log.QsoList[Log.TotalQSO].time < _start then
       exit;
 
    for k := 0 to ShowLast - 1 do begin

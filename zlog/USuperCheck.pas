@@ -400,7 +400,7 @@ begin
       Exit;
    end;
 
-   L := TQSOList.Create('');
+   L := TQSOList.Create();
    try
       S := IncludeTrailingPathDelimiter(strStartFoler);
 

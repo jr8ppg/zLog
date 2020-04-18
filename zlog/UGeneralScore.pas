@@ -469,7 +469,7 @@ begin
          if com = 'TIME' then
             if opr = 'UTC' then begin
                UseUTC := true;
-               TQSO(Log.List[0]).RSTSent := _USEUTC; // JST = 0; UTC = $FFFF
+               Log.QsoList[0].RSTSent := _USEUTC; // JST = 0; UTC = $FFFF
             end;
 
          if com = 'CTY' then begin
@@ -807,10 +807,10 @@ begin
    if Log.CountHigherPoints = true then begin
       i := Log.DifferentModePointer;
       If i > 0 then begin
-         if TQSO(Log.List[i]).Points < aQSO.Points then begin
-            tempQSO := TQSO(Log.List[i]);
+         if Log.QsoList[i].Points < aQSO.Points then begin
+            tempQSO := Log.QsoList[i];
             Dec(Points[tempQSO.band], tempQSO.Points);
-            TQSO(Log.List[i]).Points := 0;
+            Log.QsoList[i].Points := 0;
             // NeedRefresh := True;
          end
          else

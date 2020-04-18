@@ -10,14 +10,15 @@ uses
 type
   TWPXMulti = class(TWWMulti)
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure GoButtonClick(Sender: TObject);
     procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
       var Bold, Italic, underline: Boolean);
   private
     { Private declarations }
+    WPXList : TStringList;
   public
     { Public declarations }
-    WPXList : TStringList;
     procedure RefreshGrid; override;
     procedure SavePXList(filename : string);
     function TotalPrefix : integer;
@@ -201,6 +202,12 @@ begin
    end;
 
    // WWZone.Reset;
+end;
+
+procedure TWPXMulti.FormDestroy(Sender: TObject);
+begin
+   inherited;
+   WPXList.Free();
 end;
 
 procedure TWPXMulti.Reset;

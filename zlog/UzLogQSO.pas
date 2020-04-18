@@ -152,16 +152,24 @@ type
   end;
 
   TQSOList = class(TObjectList<TQSO>)
+  public
+    constructor Create(OwnsObjects: Boolean = True);
+    function IndexOf(C: string): Integer; overload;
+    function MergeFile(filename: string): Integer;
+  end;
+
+  TLog = class(TObject)
   private
     FSaved : Boolean;
-    FQueList : TList;
+    FQsoList: TQSOList;
+    FQueList: TQSOList;
     FQueOK : Boolean;
     FAcceptDifferentMode : Boolean;
     FCountHigherPoints : Boolean;
     FDifferentModePointer : Integer; //points to a qso on a different mode but not dupe
-    FDupeCheckList : array[b19..HiBand] of TStringList;
+    FDupeCheckList: array[b19..HiBand] of TQSOList;
   public
-    constructor Create(memo : string; OwnsObjects: Boolean = True);
+    constructor Create(memo : string);
     destructor Destroy; override;
 
     function Year: Integer; //returns the year of the 1st qso
@@ -186,7 +194,7 @@ type
     procedure SortByTime;
     function ContainBand : TBandBool;
     procedure SetDupeFlags;
-    procedure DeleteBand(B : TBand);
+//    procedure DeleteBand(B : TBand);
     function CheckQSOID(i : Integer) : Boolean;
     procedure RebuildDupeCheckList;
     procedure ClearDupeCheckList;
@@ -198,12 +206,14 @@ type
     function ObjectOf(callsign: string): TQSO; overload;
 
     function LoadFromFile(filename: string): Integer;
-    function MergeFile(filename: string): Integer;
+//    function MergeFile(filename: string): Integer;
 
     property Saved: Boolean read FSaved write FSaved;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode write FAcceptDifferentMode;
     property CountHigherPoints: Boolean read FCountHigherPoints write FCountHigherPoints;
     property DifferentModePointer: Integer read FDifferentModePointer write FDifferentModePointer; //points to a qso on a different mode but not dupe
+
+    property QsoList: TQSOList read FQsoList;
   end;
 
 implementation
@@ -904,20 +914,73 @@ end;
 
 { TQSOList }
 
-constructor TQSOList.Create(Memo: string; OwnsObjects: Boolean);
+constructor TQSOList.Create(OwnsObjects: Boolean);
+begin
+   Inherited Create(OwnsObjects);
+end;
+
+function TQSOList.IndexOf(C: string): Integer;
+var
+   i: Integer;
+begin
+   for i := 0 to Count - 1 do begin
+      if Items[i].CallSign = C then begin
+         Result := i;
+         Exit;
+      end;
+   end;
+
+   Result := -1;
+end;
+
+function TQSOList.MergeFile(filename: string): Integer;
+var
+   qso: TQSO;
+   dat: TQSOData;
+   f: file of TQSOData;
+   i, merged: integer;
+begin
+   merged := 0;
+
+   AssignFile(f, filename);
+   Reset(f);
+   Read(f, dat); // first qso comment
+
+   for i := 1 to FileSize(f) - 1 do begin
+      Read(f, dat);
+
+      qso := TQSO.Create;
+      qso.FileRecord := dat;
+
+      if IndexOf(qso.Callsign) = -1 then begin
+         Add(qso);
+         Inc(merged);
+      end
+      else begin
+         qso.Free();
+      end;
+   end;
+
+   System.close(f);
+   Result := merged;
+end;
+
+{ TLog }
+
+constructor TLog.Create(Memo: string);
 var
    Q: TQSO;
    B: TBand;
 begin
-   Inherited Create(OwnsObjects);
+   Inherited Create();
 
    // ADIF_FieldName := 'qth';
-   FQueList := TList.Create;
+
+   FQsoList := TQSOList.Create();
+   FQueList := TQSOList.Create();
 
    for B := b19 to HiBand do begin
-      FDupeCheckList[B] := TStringList.Create;
-      FDupeCheckList[B].Sorted := True;
-      FDupeCheckList[B].Duplicates := dupAccept;
+      FDupeCheckList[B] := TQSOList.Create();
    end;
 
    Q := TQSO.Create;
@@ -934,7 +997,25 @@ begin
    FDifferentModePointer := 0;
 end;
 
-function TQSOList.ContainBand: TBandBool;
+destructor TLog.Destroy;
+var
+   B: TBand;
+begin
+   for B := b19 to HiBand do begin
+      FDupeCheckList[B].Free();
+   end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('QsoList=' + IntToStr(FQsoList.Count)));
+   {$ENDIF}
+
+   FQsoList.Free();
+   FQueList.Free();
+
+   Inherited;
+end;
+
+function TLog.ContainBand: TBandBool;
 var
    R: TBandBool;
    B: TBand;
@@ -945,20 +1026,20 @@ begin
    end;
 
    for i := 1 to TotalQSO do begin
-      R[TQSO(List[i]).FBand] := True;
+      R[FQSOList[i].FBand] := True;
    end;
 
    Result := R;
 end;
 
-function TQSOList.Year: Integer;
+function TLog.Year: Integer;
 var
    T: TDateTime;
    y, M, d: word;
 begin
    Result := 0;
    if TotalQSO > 0 then
-      T := TQSO(List[1]).FTime
+      T := FQSOList[1].FTime
    else
       exit;
 
@@ -966,7 +1047,7 @@ begin
    Result := y;
 end;
 
-procedure TQSOList.SortByTime;
+procedure TLog.SortByTime;
 var
    i: Integer;
    boo: Boolean;
@@ -978,31 +1059,28 @@ begin
    while boo do begin
       boo := False;
       for i := 1 to TotalQSO - 1 do
-         if TQSO(List[i]).FTime > TQSO(List[i + 1]).FTime then begin
-            Exchange(i, i + 1);
+         if FQSOList[i].FTime > FQSOList[i + 1].FTime then begin
+            FQSOList.Exchange(i, i + 1);
             boo := True;
          end;
    end;
 end;
 
-procedure TQSOList.Clear2();
+procedure TLog.Clear2();
 var
    i, max: Integer;
    aQSO: TQSO;
 begin
-   max := Count - 1;
-   For i := 1 to max do begin
-      aQSO := List[1];
-      aQSO.Free;
-      Delete(1);
+   max := FQSOList.Count - 1;
+   For i := FQSOList.Count - 1 downto 1 do begin
+      Delete(i);
    end;
 
-   Pack;
    ClearDupeCheckList;
    FSaved := False;
 end;
 
-procedure TQSOList.ClearDupeCheckList;
+procedure TLog.ClearDupeCheckList;
 var
    B: TBand;
 begin
@@ -1011,21 +1089,21 @@ begin
    end;
 end;
 
-procedure TQSOList.Add(aQSO: TQSO);
+procedure TLog.Add(aQSO: TQSO);
 var
    xQSO: TQSO;
 begin
-   Inherited Add(aQSO);
+   FQsoList.Add(aQSO);
 
    xQSO := TQSO.Create;
    xQSO.Assign(aQSO);
 
-   FDupeCheckList[xQSO.FBand].AddObject(CoreCall(xQSO.CallSign), xQSO);
+   FDupeCheckList[xQSO.FBand].Add(xQSO);
 
    FSaved := False;
 end;
 
-procedure TQSOList.AddQue(aQSO: TQSO);
+procedure TLog.AddQue(aQSO: TQSO);
 var
    xQSO: TQSO;
 begin
@@ -1036,7 +1114,7 @@ begin
    FSaved := False;
 end;
 
-procedure TQSOList.ProcessQue;
+procedure TLog.ProcessQue;
 var
    xQSO, yQSO, zQSO, wQSO: TQSO;
    i, id: Integer;
@@ -1050,7 +1128,7 @@ begin
 
    while FQueList.Count > 0 do begin
 
-      xQSO := TQSO(FQueList[0]);
+      xQSO := FQueList[0];
 
       case xQSO.FReserve of
          actAdd: begin
@@ -1059,9 +1137,9 @@ begin
 
          actDelete: begin
                for i := 1 to TotalQSO do begin
-                  yQSO := TQSO(List[i]);
+                  yQSO := FQsoList[i];
                   if xQSO.SameQSOID(yQSO) then begin
-                     Self.Delete(i);
+                     Delete(i);
                      break;
                   end;
                end;
@@ -1069,9 +1147,9 @@ begin
 
          actEdit: begin
             for i := 1 to TotalQSO do begin
-               yQSO := TQSO(List[i]);
+               yQSO := FQsoList[i];
                if xQSO.SameQSOID(yQSO) then begin
-                  // TQSO(List[i]).QSO := xQSO.QSO;
+                  // FQsoList[i].QSO := xQSO.QSO;
                   yQSO.Assign(xQSO);
                   RebuildDupeCheckList;
                   break;
@@ -1081,7 +1159,7 @@ begin
 
          actInsert: begin
             for i := 1 to TotalQSO do begin
-               yQSO := TQSO(List[i]);
+               yQSO := FQsoList[i];
                id := xQSO.FReserve2 div 100;
                if id = (yQSO.FReserve3 div 100) then begin
                   wQSO := TQSO.Create;
@@ -1094,9 +1172,9 @@ begin
 
          actLock: begin
             for i := 1 to TotalQSO do begin
-               zQSO := TQSO(List[i]);
+               zQSO := FQsoList[i];
                if xQSO.SameQSOID(zQSO) then begin
-                  TQSO(List[i]).FReserve := actLock;
+                  FQsoList[i].FReserve := actLock;
                   break;
                end;
             end;
@@ -1104,94 +1182,87 @@ begin
 
          actUnlock: begin
             for i := 1 to TotalQSO do begin
-               zQSO := TQSO(List[i]);
+               zQSO := FQsoList[i];
                if xQSO.SameQSOID(zQSO) then begin
-                  TQSO(List[i]).FReserve := 0;
+                  FQsoList[i].FReserve := 0;
                   break;
                end;
             end;
          end;
       end;
 
-      TQSO(FQueList[0]).Free; // added 0.23
+//      FQueList[0].Free; // added 0.23
       FQueList.Delete(0);
-      FQueList.Pack;
    end;
 
    FSaved := False;
 end;
 
-procedure TQSOList.Delete(i: Integer);
-var
-   aQSO: TQSO;
+procedure TLog.Delete(i: Integer);
 begin
-   if i <= TotalQSO then begin
-      aQSO := TQSO(List[i]);
-      aQSO.Free;
-      Delete(i);
-      Pack;
-
-      FSaved := False;
-      RebuildDupeCheckList;
+   if i > TotalQSO then begin
+      Exit;
    end;
+
+   FQsoList.Delete(i);
+   FSaved := False;
+   RebuildDupeCheckList;
 end;
 
-procedure TQSOList.RemoveDupes;
+procedure TLog.RemoveDupes;
 var
    i: Integer;
    aQSO: TQSO;
 begin
    for i := 1 to TotalQSO do begin
-      aQSO := Items[i];
+      aQSO := FQsoList[i];
       if Pos('-DUPE-', aQSO.Memo) > 0 then begin
          Delete(i);
-         aQSO.Free;
       end;
    end;
-   Pack;
 
    FSaved := False;
    RebuildDupeCheckList;
 end;
 
-procedure TQSOList.DeleteBand(B: TBand);
-var
-   i: Integer;
-begin
-   for i := 1 to TotalQSO do begin
-      if TQSO(List[i]).FBand = B then begin
-         TQSO(List[i]).Free;
-         List[i] := nil;
-         FSaved := False;
-      end;
-   end;
+//procedure TLog.DeleteBand(B: TBand);
+//var
+//   i: Integer;
+//begin
+//   for i := 1 to TotalQSO do begin
+//      if FQsoList[i].FBand = B then begin
+//         FQsoList[i].Free;
+//         FQsoList[i] := nil;
+//         FSaved := False;
+//      end;
+//   end;
+//
+//   RebuildDupeCheckList;
+//   FQsoList.Pack;
+//end;
 
-   RebuildDupeCheckList;
-   Pack;
-end;
-
-function TQSOList.CheckQSOID(i: Integer): Boolean;
+function TLog.CheckQSOID(i: Integer): Boolean;
 var
    j, id: Integer;
 begin
    Result := False;
    id := i div 100; // last two digits are edit counter
    for j := 1 to TotalQSO do begin
-      if id = (TQSO(List[j]).FReserve3 div 100) then begin
+      if id = (FQsoList[j].FReserve3 div 100) then begin
          Result := True;
          break;
       end;
    end;
 end;
 
-procedure TQSOList.Insert(i: Integer; aQSO: TQSO);
+procedure TLog.Insert(i: Integer; aQSO: TQSO);
 begin
-   Insert(i, aQSO);
+   FQsoList.Insert(i, aQSO);
    RebuildDupeCheckList;
    FSaved := False;
 end;
 
-procedure TQSOList.SaveToFile(Filename: string);
+procedure TLog.SaveToFile(Filename: string);
 var
    D: TQSOData;
    f: file of TQSOData;
@@ -1208,7 +1279,7 @@ begin
    Rewrite(f);
 
    for i := 0 to TotalQSO do begin // changed from 1 to TotalQSO to 0 to TotalQSO
-      D := Items[i].FileRecord;
+      D := FQsoList[i].FileRecord;
       Write(f, D);
    end;
 
@@ -1217,7 +1288,7 @@ begin
    FSaved := True;
 end;
 
-procedure TQSOList.SaveToFilezLogDOSTXT(Filename: string);
+procedure TLog.SaveToFilezLogDOSTXT(Filename: string);
 var
    f: textfile;
    i, j, max: Integer;
@@ -1232,12 +1303,12 @@ begin
    max := 0;
    j := 0;
    for i := 1 to TotalQSO do begin
-      j := length(TQSO(List[i]).FNrRcvd);
+      j := length(FQsoList[i].FNrRcvd);
       if j > max then begin
          max := j;
       end;
 
-      j := length(TQSO(List[i]).FNrSent);
+      j := length(FQsoList[i].FNrSent);
       if j > max then begin
          max := j;
       end;
@@ -1246,20 +1317,20 @@ begin
    if j >= 10 then begin
       writeln(f, LongHeader);
       for i := 1 to TotalQSO do begin
-         writeln(f, TQSO(List[i]).DOSzLogText);
+         writeln(f, FQsoList[i].DOSzLogText);
       end;
    end
    else begin
       writeln(f, ShortHeader);
       for i := 1 to TotalQSO do begin
-         writeln(f, TQSO(List[i]).DOSzLogTextShort);
+         writeln(f, FQsoList[i].DOSzLogTextShort);
       end;
    end;
 
    CloseFile(f);
 end;
 
-procedure TQSOList.SaveToFilezLogALL(Filename: string);
+procedure TLog.SaveToFilezLogALL(Filename: string);
 var
    f: textfile;
    Header: string;
@@ -1273,13 +1344,13 @@ begin
    writeln(f, Header);
 
    for i := 1 to TotalQSO do begin
-      writeln(f, TQSO(List[i]).zLogALL);
+      writeln(f, FQsoList[i].zLogALL);
    end;
 
    CloseFile(f);
 end;
 
-procedure TQSOList.SaveToFileByTX(Filename: string);
+procedure TLog.SaveToFileByTX(Filename: string);
 var
    f: textfile;
    Header: string;
@@ -1288,7 +1359,7 @@ var
 begin
    txset := [];
    for i := 1 to TotalQSO do begin
-      txset := txset + [TQSO(List[i]).FTX];
+      txset := txset + [FQsoList[i].FTX];
    end;
 
    Header := 'zLog for Windows '; // +Options.Settings._mycall;
@@ -1299,37 +1370,28 @@ begin
          Rewrite(f);
          writeln(f, Header + ' TX# ' + IntToStr(i));
          for j := 1 to TotalQSO do
-            if TQSO(List[j]).FTX = i then
-               writeln(f, TQSO(List[j]).zLogALL);
+            if FQsoList[j].FTX = i then
+               writeln(f, FQsoList[j].zLogALL);
          CloseFile(f);
       end;
    end;
 end;
 
-destructor TQSOList.Destroy;
-var
-   B: TBand;
-begin
-   for B := b19 to HiBand do begin
-      FDupeCheckList[B].Free();
-   end;
-
-   FQueList.Free();
-end;
-
-procedure TQSOList.RebuildDupeCheckList;
+procedure TLog.RebuildDupeCheckList;
 var
    i: Integer;
    Q: TQSO;
 begin
    ClearDupeCheckList;
-   for i := 0 to Count - 1 do begin
-      Q := TQSO(List[i]);
-      FDupeCheckList[Q.FBand].AddObject(CoreCall(Q.CallSign), Q);
+
+   for i := 1 to FQsoList.Count - 1 do begin
+      Q := TQSO.Create();
+      Q.Assign(FQsoList[i]);
+      FDupeCheckList[Q.FBand].Add(Q);
    end;
 end;
 
-function TQSOList.QuickDupe(aQSO: TQSO): TQSO;
+function TLog.QuickDupe(aQSO: TQSO): TQSO;
 var
    i: Integer;
    S: string;
@@ -1338,9 +1400,10 @@ begin
    Result := nil;
    Q := nil;
    S := CoreCall(aQSO.CallSign);
+
    i := FDupeCheckList[aQSO.FBand].IndexOf(S);
    if (i >= 0) and (i < FDupeCheckList[aQSO.FBand].Count) then begin
-      Q := TQSO(FDupeCheckList[aQSO.FBand].Objects[i]);
+      Q := FDupeCheckList[aQSO.FBand].Items[i];
       if Q.FBand = aQSO.FBand then
          Result := Q;
    end;
@@ -1349,8 +1412,8 @@ begin
       if aQSO.FMode <> Q.FMode then begin
          Result := nil;
          for i := 0 to FDupeCheckList[aQSO.FBand].Count - 1 do begin
-            if S = FDupeCheckList[aQSO.FBand][i] then begin
-               Q2 := TQSO(FDupeCheckList[aQSO.FBand].Objects[i]);
+            if S = FDupeCheckList[aQSO.FBand][i].Callsign then begin
+               Q2 := FDupeCheckList[aQSO.FBand].Items[i];
                if aQSO.FMode = Q2.FMode then begin
                   Result := Q2;
                   exit;
@@ -1361,14 +1424,14 @@ begin
    end;
 end;
 
-function TQSOList.OpQSO(OpName: string): Integer;
+function TLog.OpQSO(OpName: string): Integer;
 var
    i, j: Integer;
 begin
    j := 0;
 
    for i := 1 to TotalQSO do begin
-      if TQSO(List[i]).Operator = OpName then begin
+      if FQsoList[i].Operator = OpName then begin
          inc(j);
       end;
    end;
@@ -1376,7 +1439,7 @@ begin
    Result := j;
 end;
 
-function TQSOList.IsDupe(aQSO: TQSO): Integer;
+function TLog.IsDupe(aQSO: TQSO): Integer;
 var
    x: Integer;
    i: word;
@@ -1387,13 +1450,13 @@ begin
    str := CoreCall(aQSO.CallSign);
 
    for i := 1 to TotalQSO do begin
-      if (aQSO.FBand = TQSO(List[i]).Band) and (str = CoreCall(TQSO(List[i]).CallSign)) then begin
+      if (aQSO.FBand = FQsoList[i].Band) and (str = CoreCall(FQsoList[i].CallSign)) then begin
          if Not(FAcceptDifferentMode) then begin
             x := i;
             break;
          end
          else begin
-            if aQSO.SameMode(TQSO(List[i])) then begin
+            if aQSO.SameMode(FQsoList[i]) then begin
                x := i;
                break;
             end
@@ -1407,7 +1470,7 @@ begin
    Result := x;
 end;
 
-function TQSOList.IsDupe2(aQSO: TQSO; index: Integer; var dupeindex: Integer): Boolean;
+function TLog.IsDupe2(aQSO: TQSO; index: Integer; var dupeindex: Integer): Boolean;
 var
    boo: Boolean;
    i: word;
@@ -1417,8 +1480,8 @@ begin
    str := CoreCall(aQSO.CallSign);
 
    for i := 1 to TotalQSO do begin
-      if (aQSO.FBand = TQSO(List[i]).Band) and (str = CoreCall(TQSO(List[i]).CallSign)) and ((index <= 0) or (index <> i)) then begin
-         if Not(AcceptDifferentMode) or (AcceptDifferentMode and aQSO.SameMode(Items[i])) then begin
+      if (aQSO.FBand = FQsoList[i].Band) and (str = CoreCall(FQsoList[i].CallSign)) and ((index <= 0) or (index <> i)) then begin
+         if Not(AcceptDifferentMode) or (AcceptDifferentMode and aQSO.SameMode(FQsoList[i])) then begin
             boo := True;
             if index > 0 then
                dupeindex := i;
@@ -1429,7 +1492,7 @@ begin
    Result := boo;
 end;
 
-procedure TQSOList.SetDupeFlags;
+procedure TLog.SetDupeFlags;
 var
    i, j: Integer;
    str, temp: string;
@@ -1448,7 +1511,7 @@ begin
    end;
 
    for i := 1 to TotalQSO do begin
-      aQSO := TQSO(List[i]);
+      aQSO := FQsoList[i];
       core := CoreCall(aQSO.CallSign);
 
       if AcceptDifferentMode then
@@ -1490,31 +1553,31 @@ begin
    end;
 end;
 
-function TQSOList.TotalQSO: Integer;
+function TLog.TotalQSO: Integer;
 begin
-   Result := Count - 1;
+   Result := FQsoList.Count - 1;
 end;
 
-function TQSOList.TotalPoints: Integer;
+function TLog.TotalPoints: Integer;
 var
    points, i: Integer;
 begin
    points := 0;
 
    for i := 1 to TotalQSO do begin
-      points := points + TQSO(Items[i]).FPoints;
+      points := points + FQsoList[i].FPoints;
    end;
 
    Result := points;
 end;
 
-function TQSOList.TotalCW: Integer;
+function TLog.TotalCW: Integer;
 var
    cnt, i: Integer;
 begin
    cnt := 0;
    for i := 1 to TotalQSO do begin
-      if TQSO(Items[i]).FMode = mCW then begin
+      if FQsoList[i].FMode = mCW then begin
          Inc(cnt);
       end;
    end;
@@ -1522,13 +1585,13 @@ begin
    Result := cnt;
 end;
 
-function TQSOList.TotalMulti1: Integer;
+function TLog.TotalMulti1: Integer;
 var
    cnt, i: Integer;
 begin
    cnt := 0;
    for i := 1 to TotalQSO do begin
-      if TQSO(Items[i]).FNewMulti1 then begin
+      if FQsoList[i].FNewMulti1 then begin
          Inc(cnt);
       end;
    end;
@@ -1536,13 +1599,13 @@ begin
    Result := cnt;
 end;
 
-function TQSOList.TotalMulti2: Integer;
+function TLog.TotalMulti2: Integer;
 var
    cnt, i: Integer;
 begin
    cnt := 0;
    for i := 1 to TotalQSO do begin
-      if TQSO(Items[i]).FNewMulti2 then begin
+      if FQsoList[i].FNewMulti2 then begin
          Inc(cnt);
       end;
    end;
@@ -1550,12 +1613,12 @@ begin
    Result := cnt;
 end;
 
-function TQSOList.IndexOf(aQSO: TQSO): Integer;
+function TLog.IndexOf(aQSO: TQSO): Integer;
 var
    i: Integer;
 begin
    for i := 1 to TotalQSO do begin
-      if Items[i].SameQSO(aQSO) then begin
+      if FQsoList[i].SameQSO(aQSO) then begin
          Result := i;
          Exit;
       end;
@@ -1564,13 +1627,13 @@ begin
    Result := -1;
 end;
 
-function TQSOList.ObjectOf(callsign: string): TQSO;
+function TLog.ObjectOf(callsign: string): TQSO;
 var
    i: Integer;
 begin
    for i := 1 to TotalQSO do begin
-      if Items[i].Callsign = callsign then begin
-         Result := Items[i];
+      if FQsoList[i].Callsign = callsign then begin
+         Result := FQsoList[i];
          Exit;
       end;
    end;
@@ -1579,7 +1642,7 @@ begin
 end;
 
 
-function TQSOList.LoadFromFile(filename: string): Integer;
+function TLog.LoadFromFile(filename: string): Integer;
 var
    Q: TQSO;
    D: TQSOData;
@@ -1612,39 +1675,7 @@ begin
 
    CloseFile(f);
 
-   Result := Count;
-end;
-
-function TQSOList.MergeFile(filename: string): Integer;
-var
-   qso: TQSO;
-   dat: TQSOData;
-   f: file of TQSOData;
-   i, merged: integer;
-begin
-   merged := 0;
-
-   AssignFile(f, filename);
-   Reset(f);
-   Read(f, dat); // first qso comment
-
-   for i := 1 to FileSize(f) - 1 do begin
-      Read(f, dat);
-
-      qso := TQSO.Create;
-      qso.FileRecord := dat;
-
-      if IndexOf(qso) = -1 then begin
-         Add(qso);
-         Inc(merged);
-      end
-      else begin
-         qso.Free();
-      end;
-   end;
-
-   System.close(f);
-   Result := merged;
+   Result := FQsoList.Count;
 end;
 
 end.

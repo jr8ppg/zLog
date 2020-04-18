@@ -39,12 +39,12 @@ begin
 
    if str <> '' then begin
       for i := Log.TotalQSO downto 1 do begin
-         if str = TQSO(Log.List[i]).multi1 then begin
-            B := TQSO(Log.List[i]).Band;
+         if str = Log.QsoList[i].multi1 then begin
+            B := Log.QsoList[i].Band;
             r := BandRow[B];
 
             if (r >= 0) and ListCWandPh then
-               if TQSO(Log.List[i]).Mode = mCW then
+               if Log.QsoList[i].Mode = mCW then
                   r := r * 2
                else
                   r := r * 2 + 1;
@@ -52,7 +52,7 @@ begin
             if r >= 0 then begin
                if length(ListBox.Items[r]) < 15 then begin
                   ListBox.Items.Delete(r);
-                  ListBox.Items.Insert(r, Main.MyContest.CheckWinSummary(TQSO(Log.List[i])));
+                  ListBox.Items.Insert(r, Main.MyContest.CheckWinSummary(Log.QsoList[i]));
                end;
             end;
          end;

@@ -39,8 +39,8 @@ begin
   txnr := dmZLogGlobal.Settings._txnr;
   for i := Log.TotalQSO downto 1 do
     begin
-      if TQSO(Log.List[i]).TX = txnr then
-        Result := TQSO(Log.List[i]).Callsign;
+      if Log.QsoList[i].TX = txnr then
+        Result := Log.QsoList[i].Callsign;
       exit;
     end;
 end;

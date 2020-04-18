@@ -56,7 +56,7 @@ begin
    PastQTC := 0;
    QTCToBeSent := 0;
    for i := 1 to Log.TotalQSO do begin
-      QQ := TQSO(Log.List[i]);
+      QQ := Log.QsoList[i];
       if QQ.Dupe or (QQ.Points = 0) then
          goto BYPASS;
 

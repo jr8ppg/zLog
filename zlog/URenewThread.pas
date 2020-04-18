@@ -67,7 +67,7 @@ begin
    Log.SetDupeFlags;
 
    for i := 1 to Log.TotalQSO do begin
-      aQSO := TQSO(Log.List[i]);
+      aQSO := Log.QsoList[i];
       if Log.CountHigherPoints = True then begin
          Log.IsDupe(aQSO); // called to set log.differentmodepointer
       end;

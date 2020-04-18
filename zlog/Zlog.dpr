@@ -97,6 +97,9 @@ uses
 {$R *.RES}
 
 begin
+  {$IFDEF DEBUG}
+  ReportMemoryLeaksOnShutdown := True;
+  {$ENDIF}
   CoInitialize(nil); // <-- manually call CoInitialize()
   Application.Initialize;
   Application.Title := 'zLog for Windows';

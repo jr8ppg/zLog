@@ -322,7 +322,7 @@ begin
 
    WriteLn(f, 'DATE(JST)' + TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVNo');
    for i := 1 to Log.TotalQSO do begin
-      s := FormatQSO(TQSO(Log.List[i]));
+      s := FormatQSO(Log.QsoList[i]);
       WriteLn(f, s);
    end;
 

@@ -53,7 +53,7 @@ begin
    Label6.Caption := 'zLog for Windows Version ' + ver.FileVersion + ' —ß˜a Edition based on 2.2h';
    ver.Free();
 
-   Label2.Caption := TQSO(Log.List[0]).memo;
+   Label2.Caption := Log.QsoList[0].memo;
 end;
 
 procedure TAboutBox.LinkLabel1LinkClick(Sender: TObject; const Link: string;

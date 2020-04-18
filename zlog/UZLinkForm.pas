@@ -159,7 +159,7 @@ begin
 
    for i := 1 to Log.TotalQSO do begin
       // repeat until AsyncComm.OutQueCount = 0;
-      SendQSO_PUTLOG(TQSO(Log.List[i]));
+      SendQSO_PUTLOG(Log.QsoList[i]);
    end;
 
    for B := b19 to HiBand do
@@ -327,11 +327,11 @@ begin
          needtorenew := false;
 
          for i := 1 to Log.TotalQSO do begin
-            aQSO := TQSO(Log.List[i]);
+            aQSO := Log.QsoList[i];
 
             boo := false;
 
-            for j := 0 to MergeTempList.count - 1 do begin
+            for j := 0 to MergeTempList.Count - 1 do begin
                qid := TQSOID(MergeTempList[j]);
                if (aQSO.Reserve3 div 100) = qid.QSOIDwoCounter then begin
                   if aQSO.Reserve3 = qid.FullQSOID then begin // exactly the same qso
@@ -545,7 +545,7 @@ begin
       if pos('SENDLOG', temp) = 1 then begin
          for i := 1 to Log.TotalQSO do begin
             // repeat until AsyncComm.OutQueCount = 0;
-            SendQSO_PUTLOG(TQSO(Log.List[i]));
+            SendQSO_PUTLOG(Log.QsoList[i]);
          end;
          // repeat until AsyncComm.OutQueCount = 0;
          WriteData(ZLinkHeader + ' ' + 'RENEW' + LineBreakCode[Ord(Console.LineBreak)]);
@@ -837,7 +837,7 @@ var
 begin
    for i := 1 to Log.TotalQSO do begin
       // repeat until AsyncComm.OutQueCount = 0;
-      SendQSO(TQSO(Log.List[i]));
+      SendQSO(Log.QsoList[i]);
    end;
 
    // repeat until AsyncComm.OutQueCount = 0;

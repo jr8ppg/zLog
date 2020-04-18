@@ -82,7 +82,7 @@ end;
 
 procedure TZAnalyze.FormShow(Sender: TObject);
 begin
-   TotalTimeChart(Log);
+   TotalTimeChart(Log.QsoList);
    ShowAll(Memo1.Lines);
 end;
 
@@ -93,7 +93,7 @@ end;
 
 procedure TZAnalyze.buttonUpdateClick(Sender: TObject);
 begin
-   TotalTimeChart(Log);
+   TotalTimeChart(Log.QsoList);
    ShowAll(Memo1.Lines);
 end;
 

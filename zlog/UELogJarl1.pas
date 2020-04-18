@@ -350,7 +350,7 @@ begin
 
    WriteLn(f, 'Date       Time  Callsign    RSTs ExSent RSTr ExRcvd  Mult  Mult2 MHz  Mode Pt Memo');
    for i := 1 to Log.TotalQSO do begin
-      s := FormatQSO(TQSO(Log.List[i]));
+      s := FormatQSO(Log.QsoList[i]);
       WriteLn(f, s);
    end;
 

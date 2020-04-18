@@ -351,7 +351,7 @@ var
    Q: TQSO;
 begin
    for i := 1 to Log.TotalQSO do begin
-      Q := TQSO(Log.List[i]);
+      Q := Log.QsoList[i];
 
       if (Sp.Call = Q.Callsign) and (Sp.Band = Q.Band) then begin
          Result := True;

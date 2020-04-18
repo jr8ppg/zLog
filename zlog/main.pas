@@ -753,7 +753,7 @@ type
     procedure actionDecreaseFontSizeExecute(Sender: TObject);
     procedure menuAnalyzeClick(Sender: TObject);
   private
-    TempQSOList : TQSOList;
+    FTempQSOList: TQSOList;
     clStatusLine : TColor;
     OldCallsign, OldNumber : string;
     defaultTextColor : TColor;
@@ -882,12 +882,14 @@ var
    TL: TQSOList;
    Q, QQ: TQSO;
 begin
-   TL := TQSOList.Create('default');
+   TL := TQSOList.Create();
    try
       mytx := dmZlogGlobal.TXNr;
       for i := 1 to Log.TotalQSO do begin
-         if Log.Items[i].TX = mytx then begin
-            TL.Add(Log.Items[i]);
+         if Log.QsoList[i].TX = mytx then begin
+            Q := TQSO.Create();
+            Q.Assign(Log.QsoList[i]);
+            TL.Add(Q);
          end;
       end;
 
@@ -897,7 +899,7 @@ begin
       end;
 
       Q := TL[TL.Count - 1];
-      for i := TL.Count - 2 downto 0 do begin // if there's only 1 qso then it won't loop
+      for i := TL.Count - 1 downto 0 do begin // if there's only 1 qso then it won't loop
          QQ := TL[i];
          if QQ.Band <> Q.Band then begin
             CountDownStartTime := Q.Time;
@@ -925,13 +927,15 @@ begin
    if dmZlogGlobal.Settings._qsycount = False then
       exit;
 
-   TL := TQSOList.Create('default');
+   TL := TQSOList.Create();
    try
       mytx := dmZlogGlobal.TXNr;
 
       for i := 1 to Log.TotalQSO do begin
-         if Log.Items[i].TX = mytx then begin
-            TL.Add(Log.Items[i]);
+         if Log.QsoList[i].TX = mytx then begin
+            Q := TQSO.Create();
+            Q.Assign(Log.QsoList[i]);
+            TL.Add(Q);
          end;
       end;
 
@@ -947,7 +951,7 @@ begin
       aTime := EncodeTime(Hr, 0, 0, 0);
       aTime := Int(CurrentTime) + aTime;
 
-      for i := TL.Count - 2 downto 0 do // if there's only 1 qso then it won't loop
+      for i := TL.Count - 1 downto 0 do // if there's only 1 qso then it won't loop
       begin
          QQ := TL[i];
          if QQ.Time < aTime then begin
@@ -1006,12 +1010,12 @@ var
 begin
    Q := TQSO.Create;
    Q.Assign(aQSO);
-   TempQSOList.Insert(0, Q);
+   FTempQSOList.Insert(0, Q);
 
-   if TempQSOList.Count > TEMPQSOMAX then begin
-      i := TempQSOList.Count;
-      Q := TQSO(TempQSOList[i - 1]);
-      TempQSOList.Delete(i - 1);
+   if FTempQSOList.Count > TEMPQSOMAX then begin
+      i := FTempQSOList.Count;
+      Q := FTempQSOList[i - 1];
+      FTempQSOList.Delete(i - 1);
       Q.Free;
    end;
 end;
@@ -1020,9 +1024,9 @@ procedure TMainForm.PullQSO;
 var
    i: Integer;
 begin
-   i := TempQSOList.Count;
+   i := FTempQSOList.Count;
    if i > 0 then begin
-      CurrentQSO.Assign(TempQSOList[0]);
+      CurrentQSO.Assign(FTempQSOList[0]);
 
       CallsignEdit.Text := CurrentQSO.Callsign;
       NumberEdit.Text := CurrentQSO.NrRcvd;
@@ -1049,7 +1053,7 @@ begin
          SSBToolBar.Visible := False;
          Grid.Align := alClient;
       end;
-      TempQSOList.Move(0, i - 1);
+      FTempQSOList.Move(0, i - 1);
    end;
 end;
 
@@ -1233,13 +1237,13 @@ begin
    tempQSO := nil;
 
    for j := 1 to Log.TotalQSO do begin
-      if CurrentQSO.Callsign = Log.Items[j].Callsign then begin
-         if currshf = IsSHF(Log.Items[j].Band) then begin
-            pastQSO := Log.Items[j];
+      if CurrentQSO.Callsign = Log.QsoList[j].Callsign then begin
+         if currshf = IsSHF(Log.QsoList[j].Band) then begin
+            pastQSO := Log.QsoList[j];
             break;
          end
          else begin
-            tempQSO := Log.Items[j];
+            tempQSO := Log.QsoList[j];
          end;
       end;
    end;
@@ -1286,13 +1290,13 @@ begin
    tempQSO := nil;
 
    for j := 1 to Log.TotalQSO do begin
-      if CurrentQSO.Callsign = Log.Items[j].Callsign then begin
-         if currshf = IsSHF(Log.Items[j].Band) then begin
-            pastQSO := Log.Items[j];
+      if CurrentQSO.Callsign = Log.QsoList[j].Callsign then begin
+         if currshf = IsSHF(Log.QsoList[j].Band) then begin
+            pastQSO := Log.QsoList[j];
             break;
          end
          else begin
-            tempQSO := Log.Items[j];
+            tempQSO := Log.QsoList[j];
          end;
       end;
    end;
@@ -1691,10 +1695,10 @@ begin
    Log.AcceptDifferentMode := False;
    Log.CountHigherPoints := False;
 
-   TQSO(Log.List[0]).Callsign := dmZlogGlobal.Settings._mycall; // Callsign
-   TQSO(Log.List[0]).Memo := N; // Contest name
-//   TQSO(Log.List[0]).RSTsent := UTCOffset; // UTC = $FFFF else UTC + x hrs;
-   TQSO(Log.List[0]).RSTRcvd := 0; // or Field Day coefficient
+   Log.QsoList[0].Callsign := dmZlogGlobal.Settings._mycall; // Callsign
+   Log.QsoList[0].Memo := N; // Contest name
+//   Log.QsoList[0].RSTsent := UTCOffset; // UTC = $FFFF else UTC + x hrs;
+   Log.QsoList[0].RSTRcvd := 0; // or Field Day coefficient
 
    SerialContestType := 0;
 
@@ -1881,7 +1885,7 @@ begin
    WriteLn(f, 'Yohei Yokobayashi AD6AJ/JJ1MED');
    WriteLn(f, '<eoh>');
 
-   offsetmin := TQSO(Log.List[0]).RSTsent;
+   offsetmin := Log.QsoList[0].RSTsent;
    { if offsetmin = 0 then // default JST for older versions
      offsetmin := -1*9*60; }
    if offsetmin = _USEUTC then // already recorded in utc
@@ -1889,7 +1893,7 @@ begin
    dbl := offsetmin / (24 * 60);
 
    for i := 1 to Log.TotalQSO do begin
-      aQSO := TQSO(Log.List[i]);
+      aQSO := Log.QsoList[i];
       S := '<qso_date:8>';
       S := S + FormatDateTime('yyyymmdd', aQSO.Time + dbl);
       S := S + '<time_on:4>' + FormatDateTime('hhnn', aQSO.Time + dbl);
@@ -1953,12 +1957,12 @@ begin
       begin
          boo := False;
          for i := T downto 1 do begin
-            if Log.Items[i].TX = mytx then begin
+            if Log.QsoList[i].TX = mytx then begin
                boo := True;
                break;
             end;
          end;
-         if (boo = False) or (boo and (Log.Items[i].Band <> aQSO.Band)) then begin
+         if (boo = False) or (boo and (Log.QsoList[i].Band <> aQSO.Band)) then begin
             CountDownStartTime := CurrentTime; // Now;
          end;
       end;
@@ -2045,7 +2049,7 @@ begin
    Log.SetDupeFlags;
 
    for i := 1 to Log.TotalQSO do begin
-      aQSO := TQSO(Log.List[i]);
+      aQSO := Log.QsoList[i];
 
       if Log.CountHigherPoints = True then begin
          Log.IsDupe(aQSO); // called to set log.differentmodepointer
@@ -2071,12 +2075,12 @@ begin
    _top := MainForm.Grid.TopRow;
 
    if (R <= Log.TotalQSO) and (R > 0) then begin
-      if TQSO(Log.List[R]).Reserve = actLock then begin
+      if Log.QsoList[R].Reserve = actLock then begin
          MainForm.WriteStatusLine('This QSO is currently locked', False);
          exit;
       end;
 
-      PastEditForm.Init(TQSO(Log.List[R]), R, _ActChange);
+      PastEditForm.Init(Log.QsoList[R], R, _ActChange);
 
       if PastEditForm.ShowModal = mrOK then begin
          if PartialCheck.Visible and PartialCheck._CheckCall then begin
@@ -2107,7 +2111,7 @@ begin
    TJIDXMulti(MultiForm).ZoneForm := ZoneForm;
    CheckCountry.ParentMulti := TWWMulti(MultiForm);
    UseUTC := True;
-   Log.Items[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
 end;
 
 procedure TJIDXContest.SetPoints(var aQSO: TQSO);
@@ -2123,7 +2127,7 @@ begin
    PastEditForm := TALLJAEditDialog.Create(MainForm);
 
    UseUTC := True;
-   Log.Items[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
 end;
 
 constructor TARRLDXContestW.Create(N: string);
@@ -2136,7 +2140,7 @@ begin
    ZoneForm := TWWZone.Create(MainForm);
 
    UseUTC := True;
-   Log.Items[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
 end;
 
 constructor TAllAsianContest.Create(N: string);
@@ -2150,7 +2154,7 @@ begin
    PastEditForm := TALLJAEditDialog.Create(MainForm);
 
    UseUTC := True;
-   Log.Items[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
 end;
 
 procedure TAllAsianContest.SetPoints(var aQSO: TQSO);
@@ -2171,7 +2175,7 @@ begin
    ScoreForm := TJIDX_DX_Score.Create(MainForm);
    PastEditForm := TALLJAEditDialog.Create(MainForm);
    UseUTC := True;
-   Log.Items[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
 end;
 
 procedure TJIDXContestDX.SetPoints(var aQSO: TQSO);
@@ -2192,8 +2196,8 @@ begin
    TWPXScore(ScoreForm).MultiForm := TWPXMulti(MultiForm);
 
    UseUTC := True;
-   Log.Items[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   Log.Items[0].Serial := $01; // uses serial number
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].Serial := $01; // uses serial number
    SerialContestType := SER_ALL;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
@@ -2210,8 +2214,8 @@ begin
    QTCForm := TQTCForm.Create(MainForm);
 
    UseUTC := True;
-   Log.Items[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   Log.Items[0].Serial := $01; // uses serial number
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].Serial := $01; // uses serial number
    SerialContestType := SER_ALL;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
@@ -2238,8 +2242,8 @@ begin
 
    UseUTC := True;
    Log.AcceptDifferentMode := True;
-   Log.Items[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   Log.Items[0].Serial := $01; // uses serial number
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].Serial := $01; // uses serial number
    SerialContestType := SER_ALL;
 end;
 
@@ -2256,8 +2260,8 @@ begin
 
    UseUTC := True;
    Log.AcceptDifferentMode := True;
-   Log.Items[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   Log.Items[0].Serial := $01; // uses serial number
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].Serial := $01; // uses serial number
    SerialContestType := SER_ALL;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
@@ -2270,7 +2274,7 @@ begin
    ScoreForm := TJA0Score.Create(MainForm);
    PastEditForm := TALLJAEditDialog.Create(MainForm);
 
-   Log.Items[0].Serial := $01; // uses serial number
+   Log.QsoList[0].Serial := $01; // uses serial number
    SerialContestType := SER_ALL;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
@@ -2282,7 +2286,7 @@ begin
 
    TJA0Multi(MultiForm).JA0 := True;
 
-   Log.Items[0].Serial := $01; // uses serial number
+   Log.QsoList[0].Serial := $01; // uses serial number
    SerialContestType := SER_ALL;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
@@ -2331,8 +2335,8 @@ begin
    TAPSprintScore(ScoreForm).MultiForm := TWPXMulti(MultiForm);
 
    UseUTC := True;
-   Log.Items[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   Log.Items[0].Serial := $01; // uses serial number
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].Serial := $01; // uses serial number
    SerialContestType := SER_ALL;
 
    SameExchange := False;
@@ -2353,7 +2357,7 @@ begin
    PastEditForm := TALLJAEditDialog.Create(MainForm);
 
    UseUTC := True;
-   Log.Items[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
 end;
 
 procedure TCQWWContest.SpaceBarProc;
@@ -2437,7 +2441,7 @@ begin
 
    UseUTC := True;
    Log.AcceptDifferentMode := True;
-   Log.Items[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
 end;
 
 procedure TIARUContest.SpaceBarProc;
@@ -2468,13 +2472,13 @@ begin
 
    Log.AcceptDifferentMode := True;
    if UseUTC then
-      Log.Items[0].RSTsent := _USEUTC
+      Log.QsoList[0].RSTsent := _USEUTC
    else
-      Log.Items[0].RSTsent := UTCOffset;
+      Log.QsoList[0].RSTsent := UTCOffset;
    // UTC = $FFFF else UTC + x hrs;
    {
      UseUTC := True;
-     Log.Items[0].RSTSent := $FFFF; //JST = 0; UTC = $FFFF
+     Log.QsoList[0].RSTSent := $FFFF; //JST = 0; UTC = $FFFF
    }
 end;
 
@@ -2586,7 +2590,7 @@ begin
    else begin
       MainForm.EditScreen := TSerialGeneralEdit.Create(MainForm);
       TSerialGeneralEdit(MainForm.EditScreen).formMulti := TGeneralMulti2(MultiForm);
-      Log.Items[0].Serial := $01; // uses serial number
+      Log.QsoList[0].Serial := $01; // uses serial number
       SameExchange := False;
       dmZlogGlobal.Settings._sameexchange := SameExchange;
    end;
@@ -2771,7 +2775,7 @@ begin
          end;
 
          if (IndexArray[i] > 0) and (IndexArray[i] < Log.TotalQSO + 1) then begin
-            WriteQSO(i, TQSO(Log.List[IndexArray[i]]));
+            WriteQSO(i, Log.QsoList[IndexArray[i]]);
          end
          else begin
             for j := 0 to ColCount - 1 do begin
@@ -2814,7 +2818,7 @@ begin
 
       for i := 1 to R do begin
          if MainForm.ShowCurrentBandOnly.Checked then begin
-            if CurrentQSO.Band = Log.Items[i].Band then begin
+            if CurrentQSO.Band = Log.QsoList[i].Band then begin
                inc(DispQSO);
                IndexArray[DispQSO] := i;
             end;
@@ -3615,7 +3619,7 @@ begin
 
    FZAnalyze := TZAnalyze.Create(Self);
 
-   TempQSOList := TQSOList.Create('default');
+   FTempQSOList := TQSOList.Create();
    dmZLogKeyer.ControlPTT(False);
 end;
 
@@ -4710,7 +4714,8 @@ var
    boo, Boo2: Boolean;
 begin
    // 一度はCreateLogされてる前提
-   Q := Log.Items[0];
+   Q := TQSO.Create();
+   Q.Assign(Log.QsoList[0]);
    boo := Log.AcceptDifferentMode;
    Boo2 := Log.CountHigherPoints;
 
@@ -4718,12 +4723,13 @@ begin
 
    Log.AcceptDifferentMode := boo;
    Log.CountHigherPoints := Boo2;
-   Log.Items[0].Assign(Q); // contest info is set to current contest.
+   Log.QsoList[0].Assign(Q); // contest info is set to current contest.
+   Q.Free();
 
    Log.LoadFromFile(filename);
 
    // 最後のレコード取りだし
-   Q := Log.Items[Log.TotalQSO];
+   Q := Log.QsoList[Log.TotalQSO];
 
    // 現在QSOへセット
    CurrentQSO.Assign(Q);
@@ -4767,7 +4773,7 @@ begin
      MyContest.Renew; }
    R := EditScreen.IndexArray[Grid.Row];
    if (R > 0) and (R <= Log.TotalQSO) then begin
-      ZLinkForm.DeleteQSO(TQSO(Log.List[R]));
+      ZLinkForm.DeleteQSO(Log.QsoList[R]);
       Log.Delete(R);
       MyContest.Renew;
       Dec(EditScreen.DispQSO);
@@ -4780,11 +4786,11 @@ var
 begin
    for i := B downto A do begin
       j := EditScreen.IndexArray[i];
-      if Log.Items[j].Reserve = actLock then begin
+      if Log.QsoList[j].Reserve = actLock then begin
       end
       else begin
          if (j > 0) and (j <= Log.TotalQSO) then begin
-            ZLinkForm.DeleteQSO(Log.Items[j]);
+            ZLinkForm.DeleteQSO(Log.QsoList[j]);
             Log.Delete(j);
             Dec(EditScreen.DispQSO);
          end;
@@ -4803,7 +4809,7 @@ begin
       _bottom := Selection.Bottom;
    end;
    if _top = _bottom then begin
-      if TQSO(Log.List[EditScreen.IndexArray[_top]]).Reserve = actLock then begin
+      if Log.QsoList[EditScreen.IndexArray[_top]].Reserve = actLock then begin
          WriteStatusLine('This QSO is currently locked', True);
          exit;
       end;
@@ -5345,9 +5351,10 @@ end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
-   TempQSOList.Free();
+   FTempQSOList.Free();
    FQuickRef.Release();
    FZAnalyze.Release();
+   CurrentQSO.Free();
 //   dmZLogKeyer.CloseBGK;
 end;
 
@@ -5677,7 +5684,7 @@ begin
    if _top = _bottom then begin
       R := EditScreen.IndexArray[Grid.Row];
       if R <= Log.TotalQSO then begin
-         MyContest.PastEditForm.Init(TQSO(Log.List[R]), R, _ActInsert);
+         MyContest.PastEditForm.Init(Log.QsoList[R], R, _ActInsert);
          MyContest.PastEditForm.ShowModal;
          EditScreen.Renew;
       end;
@@ -5842,7 +5849,7 @@ begin
    if _top = _bottom then begin
       R := EditScreen.IndexArray[_top];
       if (R > 0) and (R <= Log.TotalQSO) then begin
-         aQSO := TQSO(Log.List[R]);
+         aQSO := Log.QsoList[R];
          IncEditCounter(aQSO);
          aQSO.Band := B;
          ZLinkForm.EditQSObyID(aQSO); // added 0.24
@@ -5856,7 +5863,7 @@ begin
          for i := _top to _bottom do begin
             j := EditScreen.IndexArray[i]; // 1.4b
             if (j > 0) and (j <= Log.TotalQSO) then begin
-               aQSO := Log.Items[j];
+               aQSO := Log.QsoList[j];
                aQSO.Band := B;
                IncEditCounter(aQSO);
                ZLinkForm.EditQSObyID(aQSO); // 0.24
@@ -6115,7 +6122,7 @@ begin
    if _top = _bottom then begin
       R := EditScreen.IndexArray[_top];
       if (R > 0) and (R <= Log.TotalQSO) then begin
-         aQSO := TQSO(Log.List[R]); // added 0.24
+         aQSO := Log.QsoList[R]; // added 0.24
 
          if M in [mSSB, mAM, mFM] then begin
             if not(aQSO.mode in [mSSB, mAM, mFM]) then begin
@@ -6143,7 +6150,7 @@ begin
          for i := _top to _bottom do begin
             j := EditScreen.IndexArray[i];
             if (j > 0) and (j <= Log.TotalQSO) then begin
-               aQSO := Log.Items[j]; // 0.24
+               aQSO := Log.QsoList[j]; // 0.24
 
                if M in [mSSB, mAM, mFM] then begin
                   if not(aQSO.mode in [mSSB, mAM, mFM]) then begin
@@ -6191,7 +6198,7 @@ begin
    if _top = _bottom then begin
       R := EditScreen.IndexArray[_top];
       if (R > 0) and (R <= Log.TotalQSO) then begin
-         aQSO := TQSO(Log.List[R]); // added 0.24
+         aQSO := Log.QsoList[R]; // added 0.24
          aQSO.Operator := OpName;
          IncEditCounter(aQSO);
          ZLinkForm.EditQSObyID(aQSO); // added 0.24
@@ -6206,7 +6213,7 @@ begin
          for i := _top to _bottom do begin
             j := EditScreen.IndexArray[i];
             if (j > 0) and (j <= Log.TotalQSO) then begin
-               aQSO := Log.Items[j]; // 0.24
+               aQSO := Log.QsoList[j]; // 0.24
                aQSO.Operator := OpName;
                IncEditCounter(aQSO);
                ZLinkForm.EditQSObyID(aQSO); // 0.24
@@ -6235,7 +6242,7 @@ begin
    if _top = _bottom then begin
       R := EditScreen.IndexArray[Grid.Row];
       if R <= Log.TotalQSO then begin
-         SpotForm.Open(TQSO(Log.List[R]));
+         SpotForm.Open(Log.QsoList[R]);
       end;
    end;
 end;
@@ -6276,7 +6283,7 @@ begin
    if not(CheckCall2.Visible) then
       exit;
    // CheckCall.Renew(TQSO(Log.List[Grid.Row]));
-   CheckCall2.Renew(TQSO(Log.List[EditScreen.IndexArray[Grid.Row]]));
+   CheckCall2.Renew(Log.QsoList[EditScreen.IndexArray[Grid.Row]]);
 end;
 
 procedure TMainForm.FormActivate(Sender: TObject);
@@ -6465,7 +6472,7 @@ begin
    if _top = _bottom then begin
       R := EditScreen.IndexArray[_top];
       if (R > 0) and (R <= Log.TotalQSO) then begin
-         aQSO := TQSO(Log.List[R]); // added 0.24
+         aQSO := Log.QsoList[R]; // added 0.24
          aQSO.Power := P;
          IncEditCounter(aQSO);
          ZLinkForm.EditQSObyID(aQSO); // added 0.24
@@ -6479,7 +6486,7 @@ begin
          for i := _top to _bottom do begin
             j := EditScreen.IndexArray[i];
             if (j > 0) and (j <= Log.TotalQSO) then begin
-               aQSO := Log.Items[j];
+               aQSO := Log.QsoList[j];
                aQSO.Power := P;
                IncEditCounter(aQSO);
                ZLinkForm.EditQSObyID(aQSO);
@@ -6519,7 +6526,7 @@ begin
          exit;
       end;
 
-      i := Log.MergeFile(ff);
+      i := Log.QsoList.MergeFile(ff);
       if i > 0 then begin
          Log.SortByTime;
          MyContest.Renew;
@@ -6582,7 +6589,7 @@ begin
       if _top = _bottom then begin
          R := EditScreen.IndexArray[_top];
          if (R > 0) and (R <= Log.TotalQSO) then begin
-            aQSO := TQSO(Log.List[R]);
+            aQSO := Log.QsoList[R];
 
             F.Init(dmZlogGlobal.Settings._txnr, 'Enter new TX#');
             if F.ShowModal <> mrOK then begin
@@ -6621,7 +6628,7 @@ begin
             for i := _top to _bottom do begin
                j := EditScreen.IndexArray[i]; // 1.4b
                if (j > 0) and (j <= Log.TotalQSO) then begin
-                  aQSO := Log.Items[j];
+                  aQSO := Log.QsoList[j];
                   aQSO.TX := NewTX;
                   // aQSO.Memo := 'TX#'+IntToStr(aQSO.TX)+' '+aQSO.Memo;
                   IncEditCounter(aQSO);
@@ -6666,7 +6673,7 @@ begin
    if Row > 0 then begin
       ind := EditScreen.IndexArray[Row];
       if (ind > 0) and (ind <= Log.TotalQSO) then begin
-         S := Log.Items[ind].Callsign;
+         S := Log.QsoList[ind].Callsign;
          MyContest.MultiForm.SelectAndAddNewPrefix(S);
       end;
    end;
@@ -6755,7 +6762,7 @@ begin
       mytx := dmZlogGlobal.TXNr;
       boo := False;
       for i := T downto 1 do begin
-         if Log.Items[i].TX = mytx then begin
+         if Log.QsoList[i].TX = mytx then begin
             boo := True;
             break;
          end;
@@ -6763,14 +6770,14 @@ begin
 
       if boo = True then begin
 
-         UpdateBand(Log.Items[i].Band);
+         UpdateBand(Log.QsoList[i].Band);
          if RigControl.Rig <> nil then begin
             RigControl.Rig.SetBand(CurrentQSO);
             if CurrentQSO.mode = mSSB then
                RigControl.Rig.SetMode(CurrentQSO);
          end;
 
-         UpdateMode(Log.Items[i].mode);
+         UpdateMode(Log.QsoList[i].mode);
 
          if RigControl.Rig <> nil then
             RigControl.Rig.SetMode(CurrentQSO);
@@ -6820,7 +6827,7 @@ begin
    TWAEContest(MyContest).QTCForm.Show;
    if CurrentQSO.Callsign = '' then begin
       if Log.TotalQSO >= 2 then begin
-         TWAEContest(MyContest).QTCForm.OpenQTC(TQSO(Log.List[Log.TotalQSO]));
+         TWAEContest(MyContest).QTCForm.OpenQTC(Log.QsoList[Log.TotalQSO]);
       end;
    end
    else begin
@@ -6995,9 +7002,6 @@ begin
          end;
       end;
 
-      E := menu.ScoreCoeff;
-      dmZlogGlobal.SetScoreCoeff(E);
-
       FPostContest := menu.PostContest;
 
       dmZlogGlobal.SaveCurrentSettings;
@@ -7008,6 +7012,9 @@ begin
       end;
 
       dmZLogGlobal.CreateLog();
+
+      E := menu.ScoreCoeff;
+      dmZlogGlobal.SetScoreCoeff(E);
 
       for r := 0 to Grid.RowCount - 1 do begin
          for c := 0 to Grid.ColCount - 1 do begin
@@ -7478,7 +7485,7 @@ begin
 
    MyContest := TAPSprint.Create('Asia Pacific Sprint');
    QTHString := dmZlogGlobal.Settings._city;
-   // Log.Items[0].memo := 'WPX Contest';
+   // Log.QsoList[0].memo := 'WPX Contest';
    dmZlogGlobal.Settings._sentstr := '$S';
 end;
 

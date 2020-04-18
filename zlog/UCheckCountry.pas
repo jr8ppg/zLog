@@ -55,19 +55,19 @@ begin
    PartialStr := aQSO.Callsign;
    if cty <> '' then begin
       for i := Log.TotalQSO downto 1 do begin
-         if cty = TQSO(Log.List[i]).Multi2 then begin
-            B := TQSO(Log.List[i]).Band;
+         if cty = Log.QsoList[i].Multi2 then begin
+            B := Log.QsoList[i].Band;
             row := BandRow[B];
             if row >= 0 then begin
                if BoxFlags[row] = False then begin
                   ListBox.Items.Delete(row);
-                  ListBox.Items.Insert(row, Main.MyContest.CheckWinSummary(TQSO(Log.List[i])));
+                  ListBox.Items.Insert(row, Main.MyContest.CheckWinSummary(Log.QsoList[i]));
                   BoxFlags[row] := True;
                end
                else begin
-                  if TQSO(Log.List[i]).Callsign = PartialStr then begin
+                  if Log.QsoList[i].Callsign = PartialStr then begin
                      ListBox.Items.Delete(row);
-                     ListBox.Items.Insert(row, Main.MyContest.CheckWinSummary(TQSO(Log.List[i])));
+                     ListBox.Items.Insert(row, Main.MyContest.CheckWinSummary(Log.QsoList[i]));
                   end;
                end;
             end;
