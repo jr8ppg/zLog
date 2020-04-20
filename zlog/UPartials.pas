@@ -7,10 +7,6 @@ uses
   StdCtrls, ExtCtrls, Buttons, Spin,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
-const sortTime = 1;
-      sortBand = 2;
-      sortCall = 3;
-
 type
   TPartialCheck = class(TForm)
     ListBox: TListBox;
@@ -40,24 +36,21 @@ type
     procedure StayOnTopClick(Sender: TObject);
 
   private
+    { Private declarations }
     TempQSO : TQSO;
     DispMax : word;
-    { Private declarations }
-    function SortBy : byte;
+    procedure RenewListBox(QSOList : TQSOList);
+    function SortBy: TSortMethod;
   public
+    { Public declarations }
     _CheckCall : boolean;
     AllBand : boolean;
     HitNumber : integer;
     HitCall : string;
-    procedure RenewListBox(QSOList : TList);
     procedure CheckPartial(aQSO : TQSO);
     procedure CheckPartialNumber(aQSO : TQSO);
-    procedure SortByCall(var QSOList : TList);
-    procedure SortByTime(var QSOList : TList);
-    procedure SortByBand(var QSOList : TList);
     procedure UpdateData(aQSO : TQSO); // calls either checkpartial or checkpartialnumber
                                    // depending on _CheckCall value;
-    { Public declarations }
   end;
 
 var
@@ -69,111 +62,17 @@ uses Main, UOptions;
 
 {$R *.DFM}
 
-procedure TPartialCheck.SortByCall(var QSOList: TList);
-
-   procedure QuickSortCall(var QSOList: TList; iLo, iHi: Integer);
-   var
-      Lo, Hi: Integer;
-      Mid: string;
-   begin
-      Lo := iLo;
-      Hi := iHi;
-      Mid := TQSO(QSOList[(Lo + Hi) div 2]).Callsign;
-      repeat
-         while CompareText(TQSO(QSOList[Lo]).Callsign, Mid) < 0 do
-            inc(Lo);
-         while CompareText(TQSO(QSOList[Hi]).Callsign, Mid) > 0 do
-            dec(Hi);
-         if Lo <= Hi then begin
-            QSOList.Exchange(Lo, Hi);
-            inc(Lo);
-            dec(Hi);
-         end;
-      until Lo > Hi;
-      if Hi > iLo then
-         QuickSortCall(QSOList, iLo, Hi);
-      if Lo < iHi then
-         QuickSortCall(QSOList, Lo, iHi);
-   end;
+function TPartialCheck.SortBy(): TSortMethod;
 begin
-   QuickSortCall(QSOList, 0, QSOList.Count - 1);
-end;
+   Result := soTime;
 
-procedure TPartialCheck.SortByTime(var QSOList: TList);
-
-   procedure QuickSortTime(var QSOList: TList; iLo, iHi: Integer);
-   var
-      Lo, Hi: Integer;
-      Mid: TDateTime;
-   begin
-      Lo := iLo;
-      Hi := iHi;
-      Mid := TQSO(QSOList[(Lo + Hi) div 2]).Time;
-      repeat
-         while (TQSO(QSOList[Lo]).Time < Mid) do
-            inc(Lo);
-         while (TQSO(QSOList[Hi]).Time > Mid) do
-            dec(Hi);
-         if Lo <= Hi then begin
-            QSOList.Exchange(Lo, Hi);
-            inc(Lo);
-            dec(Hi);
-         end;
-      until Lo > Hi;
-      if Hi > iLo then
-         QuickSortTime(QSOList, iLo, Hi);
-      if Lo < iHi then
-         QuickSortTime(QSOList, Lo, iHi);
+   if rbBand.Checked then begin
+      Result := soBand;
    end;
 
-begin
-   QuickSortTime(QSOList, 0, QSOList.Count - 1);
-end;
-
-procedure TPartialCheck.SortByBand(var QSOList: TList);
-var
-   BandOrder: array [b19 .. b10g] of Integer;
-   b: TBand;
-
-   procedure QuickSortBand(var QSOList: TList; iLo, iHi: Integer);
-   var
-      Lo, Hi: Integer;
-      Mid: Integer { TBand };
-   begin
-      Lo := iLo;
-      Hi := iHi;
-      Mid := BandOrder[TQSO(QSOList[(Lo + Hi) div 2]).Band];
-      repeat
-         while (BandOrder[TQSO(QSOList[Lo]).Band] < Mid) do
-            inc(Lo);
-         while (BandOrder[TQSO(QSOList[Hi]).Band] > Mid) do
-            dec(Hi);
-         if Lo <= Hi then begin
-            QSOList.Exchange(Lo, Hi);
-            inc(Lo);
-            dec(Hi);
-         end;
-      until Lo > Hi;
-      if Hi > iLo then
-         QuickSortBand(QSOList, iLo, Hi);
-      if Lo < iHi then
-         QuickSortBand(QSOList, Lo, iHi);
+   if rbCall.Checked then begin
+      Result := soCallsign;
    end;
-begin
-   for b := b19 to b10g do
-      BandOrder[b] := ord(b) + 1;
-   BandOrder[Main.CurrentQSO.Band] := 0;
-
-   QuickSortBand(QSOList, 0, QSOList.Count - 1);
-end;
-
-function TPartialCheck.SortBy: byte;
-begin
-   Result := sortTime;
-   if rbBand.Checked then
-      Result := sortBand;
-   if rbCall.Checked then
-      Result := sortCall;
 end;
 
 procedure TPartialCheck.CreateParams(var Params: TCreateParams);
@@ -187,71 +86,69 @@ var
    PartialStr: string;
    i: LongInt;
    _count: Integer;
-   TempList: TList;
+   TempList: TQSOList;
 label
    disp;
 begin
-   _CheckCall := False;
-   _count := 0;
-   TempQSO := aQSO;
-   TempList := TList.Create;
-   // ListBox.Items.Clear;
-   PartialStr := aQSO.NrRcvd;
+   TempList := TQSOList.Create(False);
+   try
+      _CheckCall := False;
+      _count := 0;
+      TempQSO := aQSO;
 
-   if PartialStr <> '' then begin
-      for i := 1 to Log.TotalQSO do begin
-         if Pos(PartialStr, Log.QsoList[i].NrRcvd) > 0 then begin
-            if AllBand or (not(AllBand) and (aQSO.Band = Log.QsoList[i].Band)) then begin
-               TempList.Add(Log.QsoList[i]);
-               if _count >= DispMax then
-                  goto disp
-                  // exit
-               else
-                  inc(_count);
+      PartialStr := aQSO.NrRcvd;
+
+      if PartialStr <> '' then begin
+         for i := 1 to Log.TotalQSO do begin
+            if Pos(PartialStr, Log.QsoList[i].NrRcvd) > 0 then begin
+               if AllBand or (not(AllBand) and (aQSO.Band = Log.QsoList[i].Band)) then begin
+                  TempList.Add(Log.QsoList[i]);
+                  if _count >= DispMax then
+                     goto disp
+                     // exit
+                  else
+                     inc(_count);
+               end;
             end;
          end;
+      end
+      else begin
+         ListBox.Clear;
+         TempList.Free;
+         exit;
       end;
-   end
-   else begin
-      ListBox.Clear;
+
+   disp:
+      if TempList.Count = 0 then begin
+         ListBox.Clear;
+         exit;
+      end;
+
+      TempList.Sort(SortBy);
+
+      RenewListBox(TempList);
+   finally
       TempList.Free;
-      exit;
    end;
-
-disp:
-   if TempList.Count = 0 then begin
-      ListBox.Clear;
-      TempList.Free;
-      exit;
-   end;
-
-   case SortBy of
-      sortTime:
-         SortByTime(TempList);
-      sortBand: begin
-            SortByBand(TempList);
-            // PushUpCurrentBand(TempList,aQSO.QSO.Band);
-         end;
-      sortCall:
-         SortByCall(TempList);
-   end;
-
-   RenewListBox(TempList);
-   TempList.Free;
 end;
 
-procedure TPartialCheck.RenewListBox(QSOList: TList);
+procedure TPartialCheck.RenewListBox(QSOList: TQSOList);
 var
    i: Integer;
    S: string;
 begin
    ListBox.Items.Clear;
-   if QSOList.Count = 0 then
+
+   if QSOList.Count = 0 then begin
       exit;
+   end;
+
    for i := 0 to QSOList.Count - 1 do begin
-      S := TQSO(QSOList[i]).PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
-      if TQSO(QSOList[i]).Band = Main.CurrentQSO.Band then
+      S := QSOList[i].PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
+      if QSOList[i].Band = Main.CurrentQSO.Band then begin
          S := '*' + S;
+      end;
+
       ListBox.Items.Add(S);
    end;
 end;
@@ -261,7 +158,7 @@ var
    PartialStr: string;
    i: LongInt;
    _count: Integer;
-   TempList: TList;
+   TempList: TQSOList;
 label
    disp;
 begin
@@ -280,50 +177,44 @@ begin
    if Pos(',', PartialStr) = 1 then
       exit;
 
-   TempList := TList.Create;
-   if (PartialStr <> '') then begin
-      for i := 1 to Log.TotalQSO do
-         // if Pos(PartialStr, TQSO(Log.List[i]).QSO.Callsign) > 0 then
-         if PartialMatch(PartialStr, Log.QsoList[i].Callsign) then
-            if AllBand or (not(AllBand) and (aQSO.Band = Log.QsoList[i].Band)) then begin
-               // ListBox.Items.Add(TQSO(Log.List[i]).PartialSummary);
-               TempList.Add(Log.QsoList[i]);
-               if _count >= DispMax then
-                  goto disp
-                  // exit
-               else
-                  inc(_count);
-            end;
-   end
-   else begin { PartialStr = '' }
-      ListBox.Clear;
+   TempList := TQSOList.Create(False);
+   try
+      if (PartialStr <> '') then begin
+         for i := 1 to Log.TotalQSO do
+            // if Pos(PartialStr, TQSO(Log.List[i]).QSO.Callsign) > 0 then
+            if PartialMatch(PartialStr, Log.QsoList[i].Callsign) then
+               if AllBand or (not(AllBand) and (aQSO.Band = Log.QsoList[i].Band)) then begin
+                  // ListBox.Items.Add(TQSO(Log.List[i]).PartialSummary);
+                  TempList.Add(Log.QsoList[i]);
+                  if _count >= DispMax then
+                     goto disp
+                     // exit
+                  else
+                     inc(_count);
+               end;
+      end
+      else begin { PartialStr = '' }
+         ListBox.Clear;
+         TempList.Free;
+         exit;
+      end;
+
+   disp:
+      if TempList.Count = 0 then begin
+         ListBox.Clear;
+         exit;
+      end;
+
+      HitNumber := TempList.Count;
+
+      TempList.Sort(SortBy);
+
+      RenewListBox(TempList);
+
+      HitCall := TempList.Items[0].Callsign;
+   finally
       TempList.Free;
-      exit;
    end;
-
-disp:
-   if TempList.Count = 0 then begin
-      ListBox.Clear;
-      TempList.Free;
-      exit;
-   end;
-
-   HitNumber := TempList.Count;
-
-   case SortBy of
-      sortTime:
-         SortByTime(TempList);
-      sortBand:
-         SortByBand(TempList);
-      sortCall:
-         SortByCall(TempList);
-   end;
-
-   RenewListBox(TempList);
-
-   HitCall := TQSO(TempList.Items[0]).Callsign;
-
-   TempList.Free;
 end;
 
 procedure TPartialCheck.FormCreate(Sender: TObject);

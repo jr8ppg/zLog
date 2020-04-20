@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
-  Generics.Collections, Generics.Defaults,
+  System.DateUtils, Generics.Collections, Generics.Defaults,
   UzlogConst;
 
 type
@@ -151,11 +151,34 @@ type
     property FileRecord: TQSOData read GetFileRecord write SetFileRecord;
   end;
 
+  TQSOCallsignComparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
+  TQSOTimeComparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
+  TQSOBandComparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
+  TSortMethod = ( soCallsign = 0, soTime, soBand );
+
   TQSOList = class(TObjectList<TQSO>)
+  private
+    FCallsignComparer: TQSOCallsignComparer;
+    FTimeComparer: TQSOTimeComparer;
+    FBandComparer: TQSOBandComparer;
   public
     constructor Create(OwnsObjects: Boolean = True);
+    destructor Destroy(); override;
     function IndexOf(C: string): Integer; overload;
     function MergeFile(filename: string): Integer;
+    procedure Sort(SortMethod: TSortMethod); overload;
   end;
 
   TLog = class(TObject)
@@ -917,6 +940,17 @@ end;
 constructor TQSOList.Create(OwnsObjects: Boolean);
 begin
    Inherited Create(OwnsObjects);
+   FCallsignComparer := TQSOCallsignComparer.Create();
+   FTimeComparer := TQSOTimeComparer.Create();
+   FBandComparer := TQSOBandComparer.Create();
+end;
+
+destructor TQSOList.Destroy();
+begin
+   Inherited;
+   FCallsignComparer.Free();
+   FTimeComparer.Free();
+   FBandComparer.Free();
 end;
 
 function TQSOList.IndexOf(C: string): Integer;
@@ -963,6 +997,23 @@ begin
 
    System.close(f);
    Result := merged;
+end;
+
+procedure TQSOList.Sort(SortMethod: TSortMethod);
+begin
+   case SortMethod of
+      soCallsign: begin
+         Sort(FCallsignComparer);
+      end;
+
+      soTime: begin
+         Sort(FTimeComparer);
+      end;
+
+      soBand: begin
+         Sort(FBandComparer);
+      end;
+   end;
 end;
 
 { TLog }
@@ -1128,7 +1179,8 @@ begin
 
    while FQueList.Count > 0 do begin
 
-      xQSO := FQueList[0];
+      xQSO := TQSO.Create();
+      xQSO.Assign(FQueList[0]);
 
       case xQSO.FReserve of
          actAdd: begin
@@ -1676,6 +1728,27 @@ begin
    CloseFile(f);
 
    Result := FQsoList.Count;
+end;
+
+{ TQSOCallsignComparer }
+
+function TQSOCallsignComparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   Result := CompareText(Left.Callsign, Right.Callsign);
+end;
+
+{ TQSOTimeComparer }
+
+function TQSOTimeComparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   Result := CompareDateTime(Left.Time, Right.Time);
+end;
+
+{ TQSOBandComparer }
+
+function TQSOBandComparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   Result := Integer(Left.Band) - Integer(Right.Band);
 end;
 
 end.
