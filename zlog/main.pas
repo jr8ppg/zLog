@@ -40,9 +40,10 @@ type
     colsentRST : Integer;
     colsentNumber : Integer;
     colCQ : Integer;
-    DispQSO : Integer;
+    FDispQSO: Integer;
     function GetLeft(col : Integer) : Integer;
-    Procedure WriteQSO(R: Integer; aQSO : TQSO);
+    procedure WriteQSO(R: Integer; aQSO : TQSO);
+    procedure ClearQSO(R: Integer);
   public
     IndexArray : array[1..MaxGridQSO] of word; {contains the index to Log}
     SerialWid : Integer;
@@ -2068,19 +2069,22 @@ procedure TContest.EditCurrentRow;
 var
    R: Integer;
    _top, _row: Integer;
+   aQSO: TQSO;
 begin
-   // R := MainForm.Grid.Row;
-   _row := MainForm.Grid.Row;
-   R := MainForm.EditScreen.IndexArray[_row];
    _top := MainForm.Grid.TopRow;
+   _row := MainForm.Grid.Row;
+
+   aQSO := TQSO(MainForm.Grid.Objects[0, _row]);
+
+   R := MainForm.EditScreen.IndexArray[_row];
 
    if (R <= Log.TotalQSO) and (R > 0) then begin
-      if Log.QsoList[R].Reserve = actLock then begin
+      if aQSO.Reserve = actLock then begin
          MainForm.WriteStatusLine('This QSO is currently locked', False);
          exit;
       end;
 
-      PastEditForm.Init(Log.QsoList[R], R, _ActChange);
+      PastEditForm.Init(aQSO, R, _ActChange);
 
       if PastEditForm.ShowModal = mrOK then begin
          if PartialCheck.Visible and PartialCheck._CheckCall then begin
@@ -2607,10 +2611,11 @@ var
 begin
    Inherited Create();
 
-   for i := 1 to MaxGridQSO do
+   for i := 1 to MaxGridQSO do begin
       IndexArray[i] := 0;
+   end;
 
-   DispQSO := 0;
+   FDispQSO := 0;
    DirectEdit := False;
 
    with MainForm.Grid do begin
@@ -2688,12 +2693,12 @@ begin
 
    with MainForm.Grid do begin
 
-      inc(DispQSO);
+      inc(FDispQSO);
 
-      WriteQSO(DispQSO, aQSO);
-      IndexArray[DispQSO] := Log.TotalQSO;
+      WriteQSO(FDispQSO, aQSO);
+      IndexArray[FDispQSO] := Log.TotalQSO;
 
-      i := DispQSO - VisibleRowCount;
+      i := FDispQSO - VisibleRowCount;
 
       if (MainForm.Grid.Focused = False) and (aQSO.Reserve2 <> $AA) { local } then begin
          if i > 0 then
@@ -2715,31 +2720,43 @@ begin
    end;
 end;
 
-Procedure TBasicEdit.WriteQSO(R: Integer; aQSO: TQSO);
+procedure TBasicEdit.WriteQSO(R: Integer; aQSO: TQSO);
 var
    temp: string;
 begin
    with MainForm.Grid do begin
+      Objects[0, R] := aQSO;
+
       if colSerial >= 0 then
          Cells[colSerial, R] := aQSO.SerialStr;
+
       if colTime >= 0 then
          Cells[colTime, R] := aQSO.TimeStr;
+
       if colCall >= 0 then
          Cells[colCall, R] := aQSO.Callsign;
+
       if colrcvdRST >= 0 then
          Cells[colrcvdRST, R] := aQSO.RSTStr;
+
       if colrcvdNumber >= 0 then
          Cells[colrcvdNumber, R] := aQSO.NrRcvd;
+
       if colBand >= 0 then
          Cells[colBand, R] := aQSO.BandStr;
+
       if colMode >= 0 then
          Cells[colMode, R] := aQSO.ModeStr;
+
       if colPower >= 0 then
          Cells[colPower, R] := aQSO.PowerStr;
+
       if colNewPower >= 0 then
          Cells[colNewPower, R] := aQSO.NewPowerStr;
+
       if colPoint >= 0 then
          Cells[colPoint, R] := aQSO.PointStr;
+
       if colOp >= 0 then begin
          temp := IntToStr(aQSO.TX);
          if dmZlogGlobal.Settings._multiop = 2 then begin
@@ -2759,30 +2776,76 @@ begin
 
       if colMemo >= 0 then
          Cells[colMemo, R] := aQSO.Memo; // + IntToStr(aQSO.Reserve3);
+
       if aQSO.Reserve = actLock then
          Cells[colMemo, R] := 'locked';
+   end;
+end;
+
+procedure TBasicEdit.ClearQSO(R: Integer);
+var
+   i: Integer;
+begin
+   with MainForm.Grid do begin
+      Objects[0, R] := nil;
+      for i := 0 to ColCount - 1 do begin
+         Cells[i, R] := '';
+      end;
    end;
 end;
 
 procedure TBasicEdit.RefreshScreen;
 var
    i, j: Integer;
+   SelectedRow: Integer;
+   R: Integer;
 begin
    with MainForm.Grid do begin
-      for i := TopRow to TopRow + VisibleRowCount - 1 do begin
-         if (i > RowCount - 1) or (i = 0) then begin
-            exit;
-         end;
+      SelectedRow := Row;
 
-         if (IndexArray[i] > 0) and (IndexArray[i] < Log.TotalQSO + 1) then begin
-            WriteQSO(i, Log.QsoList[IndexArray[i]]);
+      R := 1;
+      for i := 1 to Log.TotalQSO do begin
+         if MainForm.ShowCurrentBandOnly.Checked then begin
+            if CurrentQSO.Band = Log.QsoList[i].Band then begin
+               IndexArray[R] := i;
+               WriteQSO(R, Log.QsoList[i]);
+               Inc(R);
+            end;
          end
          else begin
-            for j := 0 to ColCount - 1 do begin
-               Cells[j, i] := '';
-            end;
+            IndexArray[R] := i;
+            WriteQSO(R, Log.QsoList[i]);
+            Inc(R);
          end;
       end;
+
+      for i := R to RowCount - 1 do begin
+         ClearQSO(i);
+      end;
+
+//      Row := SelectedRow;
+
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('TopRow=' + IntToStr(TopRow) + ',R=' + IntToStr(R) + ',VisibleRowCount=' + IntToStr(VisibleRowCount)));
+      {$ENDIF}
+      FDispQSO := R;
+//      ResetTopRow();
+//      Row := R - 1;
+
+//      for i := TopRow to TopRow + VisibleRowCount - 1 do begin
+//         if (i > RowCount - 1) or (i = 0) then begin
+//            exit;
+//         end;
+//
+//         if (IndexArray[i] > 0) and (IndexArray[i] < Log.TotalQSO + 1) then begin
+//            WriteQSO(i, Log.QsoList[IndexArray[i]]);
+//         end
+//         else begin
+//            for j := 0 to ColCount - 1 do begin
+//               Cells[j, i] := '';
+//            end;
+//         end;
+//      end;
    end;
 end;
 
@@ -2790,13 +2853,16 @@ procedure TBasicEdit.ResetTopRow;
 var
    i: Integer;
 begin
-   i := DispQSO - MainForm.Grid.VisibleRowCount + 1;
+   i := FDispQSO - MainForm.Grid.VisibleRowCount + 1;
    if i > 0 then begin
+      MainForm.Grid.Row := i - 1;
       MainForm.Grid.TopRow := i;
    end
    else begin
+      MainForm.Grid.Row := 0;
       MainForm.Grid.TopRow := 1;
    end;
+
 end;
 
 procedure TBasicEdit.Renew;
@@ -2808,7 +2874,7 @@ begin
       IndexArray[i] := 0;
    end;
 
-   DispQSO := 0;
+   FDispQSO := 0;
    R := Log.TotalQSO;
 
    with MainForm.Grid do begin
@@ -2816,27 +2882,28 @@ begin
       _row := Row;
       Enabled := False;
 
-      for i := 1 to R do begin
-         if MainForm.ShowCurrentBandOnly.Checked then begin
-            if CurrentQSO.Band = Log.QsoList[i].Band then begin
-               inc(DispQSO);
-               IndexArray[DispQSO] := i;
-            end;
-         end
-         else begin
-            inc(DispQSO);
-            IndexArray[i] := i;
-         end;
-      end;
+//      for i := 1 to R do begin
+//         if MainForm.ShowCurrentBandOnly.Checked then begin
+//            if CurrentQSO.Band = Log.QsoList[i].Band then begin
+//               inc(DispQSO);
+//               IndexArray[DispQSO] := i;
+//            end;
+//         end
+//         else begin
+//            inc(DispQSO);
+//            IndexArray[i] := i;
+//         end;
+//      end;
 
       Enabled := True;
 
       RefreshScreen; // this is not enough!!!!
 
-      if _row > RowCount - 1 then
-         Row := RowCount - 1
-      else
-         Row := _row;
+//      if _row > RowCount - 1 then
+//         Row := RowCount - 1
+//      else
+//         Row := _row;
+
       // Refresh;
    end;
 end;
@@ -4776,7 +4843,7 @@ begin
       ZLinkForm.DeleteQSO(Log.QsoList[R]);
       Log.Delete(R);
       MyContest.Renew;
-      Dec(EditScreen.DispQSO);
+      Dec(EditScreen.FDispQSO);
    end;
 end;
 
@@ -4792,7 +4859,7 @@ begin
          if (j > 0) and (j <= Log.TotalQSO) then begin
             ZLinkForm.DeleteQSO(Log.QsoList[j]);
             Log.Delete(j);
-            Dec(EditScreen.DispQSO);
+            Dec(EditScreen.FDispQSO);
          end;
       end;
    end;
@@ -5550,6 +5617,10 @@ procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
    R: Integer;
 begin
+   if Log = nil then begin
+      Exit;
+   end;
+
    if Log.Saved = False then begin
       R := MessageDlg('Save changes to ' + CurrentFileName + ' ?', mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
       case R of
@@ -5959,6 +6030,10 @@ begin
          EditScreen.SetEditFields;
       end;
    end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('FormResize():VisibleRowCount=' + IntToStr(MainForm.Grid.VisibleRowCount)));
+   {$ENDIF}
 end;
 
 procedure TMainForm.menuOptionsClick(Sender: TObject);
@@ -6359,7 +6434,7 @@ end;
 
 procedure TMainForm.GridTopLeftChanged(Sender: TObject);
 begin
-   EditScreen.RefreshScreen;
+//   EditScreen.RefreshScreen;
 
    if Grid.LeftCol <> 0 then
       Grid.LeftCol := 0;
@@ -7224,6 +7299,7 @@ begin
 
       // フォントサイズの設定
       SetFontSize(dmZlogGlobal.Settings._mainfontsize);
+      Application.ProcessMessages();
 
       EditScreen.ResetTopRow; // added 2.2e
       EditScreen.RefreshScreen; // added 2,2e
