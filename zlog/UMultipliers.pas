@@ -1156,12 +1156,15 @@ var
    i: integer;
    fullpath: string;
 begin
-   fullpath := dmZLogGlobal.Settings._cfgdatpath + fileName;
+   fullpath := filename;
    if FileExists(fullpath) = False then begin
-      fullpath := ExtractFilePath(Application.ExeName) + filename;
+      fullpath := dmZLogGlobal.Settings._cfgdatpath + filename;
       if FileExists(fullpath) = False then begin
-         MessageDlg('DAT file [' + fileName + '] cannot be opened', mtError, [mbOK], 0);
-         Exit;
+         fullpath := ExtractFilePath(Application.ExeName) + filename;
+         if FileExists(fullpath) = False then begin
+            MessageDlg('DAT file [' + fullpath + '] cannot be opened', mtError, [mbOK], 0);
+            Exit;
+         end;
       end;
    end;
 
