@@ -334,6 +334,7 @@ var
    slLine: TStringList;
 begin
    slLine := TStringList.Create();
+   slLine.StrictDelimiter := True;
    slLine.Delimiter := TAB;
    try
       slLine.Add(FormatDateTime('yyyy-mm-dd', q.Time));
@@ -343,8 +344,8 @@ begin
       slLine.Add(ModeString[q.Mode]);
       slLine.Add(q.Callsign);
 
-      slLine.Add(IntToStr(q.RSTsent) + q.NrSent);
-      slLine.Add(IntToStr(q.RSTrcvd) + q.NrRcvd);
+      slLine.Add(IntToStr(q.RSTsent) + ' ' + q.NrSent);
+      slLine.Add(IntToStr(q.RSTrcvd) + ' ' + q.NrRcvd);
 
       Result := slLine.DelimitedText;
    finally
