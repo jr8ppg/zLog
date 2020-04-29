@@ -99,7 +99,7 @@ begin
    if ShowCWRatio then begin
       Grid.Cells[3, row] := IntToStr3(TotalCWQSOs);
       if TotPoints > 0 then begin
-         Grid.Cells[4, row] := FloatToStrF(100 * (TotalCWQSOs / TotPoints), ffFixed, 1000, 1);
+         Grid.Cells[4, row] := FloatToStrF(100 * (TotalCWQSOs / TotalQSOs), ffFixed, 1000, 1);
       end
       else begin
          Grid.Cells[4, row] := '-';
