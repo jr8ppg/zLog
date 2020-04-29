@@ -26,7 +26,7 @@ const
   SER_MS = 3;    // separate serial for run/multi stns
 
 const
-  RIGNAMEMAX = 51;
+  RIGNAMEMAX = 14;
   RIGNAMES : array[0..RIGNAMEMAX] of string =
 ('None',
  'TS-690/450',
@@ -42,44 +42,8 @@ const
  'FT-1000MP',
  'MarkV/FT-1000MP',
  'FT-1000MP Mark-V Field',
- 'FT-2000',
- 'IC-706',
- 'IC-706MkII',
- 'IC-706MkII-G',
- 'IC-721',
- 'IC-726',
- 'IC-731',
- 'IC-736',
- 'IC-746',
- 'IC-746PRO',
- 'IC-7100',
- 'IC-7300',
- 'IC-7400',
- 'IC-7410',
- 'IC-750',
- 'IC-756',
- 'IC-756PRO',
- 'IC-756PROII',
- 'IC-756PRO3',
- 'IC-760',
- 'IC-760PRO',
- 'IC-775',
- 'IC-780',
- 'IC-7610',
- 'IC-7700',
- 'IC-7800',
- 'IC-7851',
- 'IC-820',
- 'IC-821',
- 'IC-910',
- 'IC-970',
- 'IC-9100',
- 'IC-9700',
- 'IC-275',
- 'IC-375',
- 'JST-145',
- 'JST-245',
- 'Omni-Rig');
+ 'FT-2000'
+ );
 
 const maxbank = 3; // bank 3 reserved for rtty
       maxstr = 8;

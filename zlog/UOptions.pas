@@ -280,6 +280,7 @@ type
     FQuickQSYBand: array[1..8] of TComboBox;
     FQuickQSYMode: array[1..8] of TComboBox;
     procedure RenewCWStrBankDisp();
+    procedure InitRigNames();
   public
     procedure RenewSettings; {Reads controls and updates Settings}
   end;
@@ -765,13 +766,7 @@ begin
 
    PageControl.ActivePage := PrefTabSheet;
 
-   comboRig1Name.Items.Clear;
-   comboRig2Name.Items.Clear;
-
-   for i := 0 to RIGNAMEMAX do begin
-      comboRig1Name.Items.Add(RIGNAMES[i]);
-      comboRig2Name.Items.Add(RIGNAMES[i]);
-   end;
+   InitRigNames();
 end;
 
 procedure TformOptions.buttonCancelClick(Sender: TObject);
@@ -1063,6 +1058,28 @@ begin
    no := TCheckBox(Sender).Tag;
    FQuickQSYBand[no].Enabled := FQuickQSYCheck[no].Checked;
    FQuickQSYMode[no].Enabled := FQuickQSYCheck[no].Checked;
+end;
+
+procedure TformOptions.InitRigNames();
+var
+   i: Integer;
+begin
+   comboRig1Name.Items.Clear;
+   comboRig2Name.Items.Clear;
+
+   for i := Low(RIGNAMES) to High(RIGNAMES) do begin
+      comboRig1Name.Items.Add(RIGNAMES[i]);
+   end;
+
+   for i := Low(ICOMLIST) to High(ICOMLIST) do begin
+      comboRig1Name.Items.Add(ICOMLIST[i].name);
+   end;
+
+   comboRig1Name.Items.Add('JST-145');
+   comboRig1Name.Items.Add('JST-245');
+   comboRig1Name.Items.Add('Omni-Rig');
+
+   comboRig2Name.Items.Assign(comboRig1Name.Items);
 end;
 
 end.
