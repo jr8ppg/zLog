@@ -1017,15 +1017,15 @@ end;
 
 procedure TformOptions.comboRig1NameChange(Sender: TObject);
 begin
-   if comboRig1Name.ItemIndex = RIGNAMEMAX then begin
-      comboRig2Name.ItemIndex := RIGNAMEMAX;
+   if comboRig1Name.ItemIndex = comboRig1Name.Items.Count - 1 then begin
+      comboRig2Name.ItemIndex := comboRig2Name.Items.Count - 1;
       comboRig1Port.ItemIndex := 0;
       comboRig1Port.Enabled := False;
       comboRig2Port.Enabled := False;
    end
    else begin
       comboRig1Port.Enabled := True;
-      if comboRig2Name.ItemIndex = RIGNAMEMAX then begin
+      if comboRig2Name.ItemIndex = comboRig2Name.Items.Count - 1 then begin
          comboRig2Name.ItemIndex := 0;
          comboRig2Port.ItemIndex := 0;
          comboRig2Port.Enabled := True;
@@ -1035,15 +1035,15 @@ end;
 
 procedure TformOptions.comboRig2NameChange(Sender: TObject);
 begin
-   if comboRig2Name.ItemIndex = RIGNAMEMAX then begin
-      comboRig1Name.ItemIndex := RIGNAMEMAX;
+   if comboRig2Name.ItemIndex = comboRig2Name.Items.Count - 1 then begin
+      comboRig1Name.ItemIndex := comboRig1Name.Items.Count - 1;
       comboRig2Port.ItemIndex := 0;
       comboRig2Port.Enabled := False;
       comboRig1Port.Enabled := False;
    end
    else begin
       comboRig2Port.Enabled := True;
-      if comboRig1Name.ItemIndex = RIGNAMEMAX then begin
+      if comboRig1Name.ItemIndex = comboRig1Name.Items.Count - 1 then begin
          comboRig1Name.ItemIndex := 0;
          comboRig1Port.ItemIndex := 0;
          comboRig1Port.Enabled := True;

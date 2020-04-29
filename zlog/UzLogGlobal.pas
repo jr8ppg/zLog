@@ -26,8 +26,7 @@ const
   SER_MS = 3;    // separate serial for run/multi stns
 
 const
-  RIGNAMEMAX = 14;
-  RIGNAMES : array[0..RIGNAMEMAX] of string =
+  RIGNAMES : array[0..14] of string =
 ('None',
  'TS-690/450',
  'TS-850',
