@@ -1614,26 +1614,17 @@ end;
 
 function TQSODupeWithoutModeComparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   if (Left.Callsign = Right.Callsign) and (Left.Band = Right.Band) then begin
-      Result := 0;
-   end
-   else begin
-      Result := CompareText(Left.Callsign, Right.Callsign) + (Integer(Left.Band) - Integer(Right.Band));
-   end;
+   Result := CompareText(Left.Callsign, Right.Callsign) +
+             ((Integer(Left.Band) - Integer(Right.Band)) * 10);
 end;
 
 { TQSODupeWithModeComparer }
 
 function TQSODupeWithModeComparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   if (Left.Callsign = Right.Callsign) and (Left.Band = Right.Band) and (Left.Mode = Right.Mode) then begin
-      Result := 0;
-   end
-   else begin
-      Result := CompareText(Left.Callsign, Right.Callsign) +
-                ((Integer(Left.Band) - Integer(Right.Band)) * 10) +
-                ((Integer(Left.Mode) - Integer(Right.Mode)) * 100);
-   end;
+   Result := CompareText(Left.Callsign, Right.Callsign) +
+             ((Integer(Left.Band) - Integer(Right.Band)) * 10) +
+             ((Integer(Left.Mode) - Integer(Right.Mode)) * 100);
 end;
 
 end.
