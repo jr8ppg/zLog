@@ -10,86 +10,61 @@ uses
 type
   TQSOData = record
     Time : TDateTime;
-    CallSign : string[12];  {13 bytes}
-    NrSent : string[30];
-    NrRcvd : string[30];
-    RSTSent : Smallint;//word;  {2 bytes}
-    RSTRcvd : word;
-    Serial : Integer;  {4 bytes ?}
-    Mode : TMode;  {1 byte}
-    Band : TBand;  {1 byte}
-    Power : TPower; {1 byte}
-    Multi1 : string[30];
-    Multi2 : string[30];
-    NewMulti1 : Boolean;
-    NewMulti2 : Boolean;
-    Points : byte;
-    Operator : string[14]; {Operator's name}
-    Memo : string[64]; {max 64 char = 65 bytes}
-    CQ : Boolean; {not used yet}
-    Dupe : Boolean;
-    Reserve : byte; {used for z-link commands}
-    TX : byte; {Transmitter number for 2 TX category}
-    Power2 : Integer; {used by ARRL DX side only}
-    Reserve2 : Integer; { $FF when forcing to log}
-    Reserve3 : Integer; {QSO ID#}
-                        {TTSSSSRRCC   TT:TX#(00-21) SSSS:Serial counter
-                                      RR:Random(00-99) CC:Edit counter 00 and up}
+    CallSign: string[12]; { 13 bytes }
+    NrSent: string[30];
+    NrRcvd: string[30];
+    RSTSent: Smallint; // word;  {2 bytes}
+    RSTRcvd: word;
+    Serial: Integer; { 4 bytes ? }
+    Mode: TMode; { 1 byte }
+    Band: TBand; { 1 byte }
+    Power: TPower; { 1 byte }
+    Multi1: string[30];
+    Multi2: string[30];
+    NewMulti1: Boolean;
+    NewMulti2: Boolean;
+    Points: byte;
+    Operator: string[14]; { Operator's name }
+    Memo: string[64]; { max 64 char = 65 bytes }
+    CQ: Boolean; { not used yet }
+    Dupe: Boolean;
+    Reserve: byte; { used for z-link commands }
+    TX: byte; { Transmitter number for 2 TX category }
+    Power2: Integer; { used by ARRL DX side only }
+    Reserve2: Integer; { $FF when forcing to log }
+    Reserve3: Integer; { QSO ID# }
+    {TTSSSSRRCC   TT:TX#(00-21) SSSS:Serial counter
+                                     RR:Random(00-99) CC:Edit counter 00 and up}
   end;
 
-  TQSO = class
+  TQSO = class(TObject)
   private
-    FTime : TDateTime;
-    FCallSign : string[12];  {13 bytes}
-    FNrSent : string[30];
-    FNrRcvd : string[30];
-    FRSTSent : Smallint;//word;  {2 bytes}
-    FRSTRcvd : word;
-    FSerial : Integer;  {4 bytes ?}
-    FMode : TMode;  {1 byte}
-    FBand : TBand;  {1 byte}
-    FPower : TPower; {1 byte}
-    FMulti1 : string[30];
-    FMulti2 : string[30];
-    FNewMulti1 : Boolean;
-    FNewMulti2 : Boolean;
-    FPoints : byte;
-    FOperator : string[14]; {Operator's name}
-    FMemo : string[64]; {max 64 char = 65 bytes}
-    FCQ : Boolean; {not used yet}
-    FDupe : Boolean;
-    FReserve : byte; {used for z-link commands}
-    FTX : byte; {Transmitter number for 2 TX category}
-    FPower2 : Integer; {used by ARRL DX side only}
-    FReserve2 : Integer; { $FF when forcing to log}
-    FReserve3 : Integer; {QSO ID#}
-                         {TTSSSSRRCC   TT:TX#(00-21) SSSS:Serial counter
+    FTime: TDateTime;
+    FCallSign: string; { 13 bytes }
+    FNrSent: string;
+    FNrRcvd: string;
+    FRSTSent: Integer; // word;  {2 bytes}
+    FRSTRcvd: Integer;
+    FSerial: Integer; { 4 bytes ? }
+    FMode: TMode; { 1 byte }
+    FBand: TBand; { 1 byte }
+    FPower: TPower; { 1 byte }
+    FMulti1: string;
+    FMulti2: string;
+    FNewMulti1: Boolean;
+    FNewMulti2: Boolean;
+    FPoints: Integer;
+    FOperator: string; { Operator's name }
+    FMemo: string; { max 64 char = 65 bytes }
+    FCQ: Boolean; { not used yet }
+    FDupe: Boolean;
+    FReserve: Integer; { used for z-link commands }
+    FTX: Integer; { Transmitter number for 2 TX category }
+    FPower2: Integer; { used by ARRL DX side only }
+    FReserve2: Integer; { $FF when forcing to log }
+    FReserve3: Integer; { QSO ID# }
+    {TTSSSSRRCC   TT:TX#(00-21) SSSS:Serial counter
                                       RR:Random(00-99) CC:Edit counter 00 and up}
-    function GetCallsign(): string;
-    procedure SetCallsign(v: string);
-    function GetNrSent(): string;
-    procedure SetNrSent(v: string);
-    function GetNrRcvd(): string;
-    procedure SetNrRcvd(v: string);
-    function GetRSTSent(): Integer;
-    procedure SetRSTSent(v: Integer);
-    function GetRSTRcvd(): Integer;
-    procedure SetRSTRcvd(v: Integer);
-    function GetMulti1(): string;
-    procedure SetMulti1(v: string);
-    function GetMulti2(): string;
-    procedure SetMulti2(v: string);
-    function GetPoints(): Integer;
-    procedure SetPoints(v: Integer);
-    function GetOperator(): string;
-    procedure SetOperator(v: string);
-    function GetMemo(): string;
-    procedure SetMemo(v: string);
-    function GetReserve(): Integer;
-    procedure SetReserve(v: Integer);
-    function GetTX(): Integer;
-    procedure SetTX(v: Integer);
-
     function GetFileRecord(): TQSOData;
     procedure SetFileRecord(src: TQSOData);
   public
@@ -124,26 +99,26 @@ type
     procedure Assign(src: TQSO);
 
     property Time: TDateTime read FTime write FTime;
-    property Callsign: string read GetCallsign write SetCallsign;
-    property NrSent: string read GetNrSent write SetNrSent;
-    property NrRcvd: string read GetNrRcvd write SetNrRcvd;
-    property RSTSent: Integer read GetRSTSent write SetRSTSent;
-    property RSTRcvd: Integer read GetRSTRcvd write SetRSTRcvd;
+    property Callsign: string read FCallsign write FCallsign;
+    property NrSent: string read FNrSent write FNrSent;
+    property NrRcvd: string read FNrRcvd write FNrRcvd;
+    property RSTSent: Integer read FRSTSent write FRSTSent;
+    property RSTRcvd: Integer read FRSTRcvd write FRSTRcvd;
     property Serial: Integer read FSerial write FSerial;
     property Mode: TMode read FMode write FMode;
     property Band: TBand read FBand write FBand;
     property Power: TPower read FPower write FPower;
-    property Multi1: string read GetMulti1 write SetMulti1;
-    property Multi2: string read GetMulti2 write SetMulti2;
+    property Multi1: string read FMulti1 write FMulti1;
+    property Multi2: string read FMulti2 write FMulti2;
     property NewMulti1: Boolean read FNewMulti1 write FNewMulti1;
     property NewMulti2: Boolean read FNewMulti2 write FNewMulti2;
-    property Points: Integer read GetPoints write SetPoints;
-    property Operator: string read GetOperator write SetOperator;
-    property Memo: string read GetMemo write SetMemo;
+    property Points: Integer read FPoints write FPoints;
+    property Operator: string read FOperator write FOperator;
+    property Memo: string read FMemo write FMemo;
     property CQ: Boolean read FCQ write FCQ;
     property Dupe: Boolean read FDupe write FDupe;
-    property Reserve: Integer read GetReserve write SetReserve;
-    property TX: Integer read GetTX write SetTX;
+    property Reserve: Integer read FReserve write FReserve;
+    property TX: Integer read FTX write FTX;
     property Power2: Integer read FPower2 write FPower2;
     property Reserve2: Integer read FReserve2 write FReserve2;
     property Reserve3: Integer read FReserve3 write FReserve3;
@@ -166,19 +141,32 @@ type
     function Compare(const Left, Right: TQSO): Integer; override;
   end;
 
-  TSortMethod = ( soCallsign = 0, soTime, soBand );
+  TQSODupeWithoutModeComparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
+  TQSODupeWithModeComparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
+  TSortMethod = ( soCallsign = 0, soTime, soBand, soDupeCheck );
 
   TQSOList = class(TObjectList<TQSO>)
   private
     FCallsignComparer: TQSOCallsignComparer;
     FTimeComparer: TQSOTimeComparer;
     FBandComparer: TQSOBandComparer;
+    FDupeWithoutModeComparer: TQSODupeWithoutModeComparer;
+    FDupeWithModeComparer: TQSODupeWithModeComparer;
   public
     constructor Create(OwnsObjects: Boolean = True);
     destructor Destroy(); override;
     function IndexOf(C: string): Integer; overload;
     function MergeFile(filename: string): Integer;
-    procedure Sort(SortMethod: TSortMethod); overload;
+    procedure Sort(SortMethod: TSortMethod; fWithMode: Boolean = False); overload;
+    function DupeCheck(aQSO: TQSO; fWithMode: Boolean): TQSO;
   end;
 
   TLog = class(TObject)
@@ -248,6 +236,8 @@ uses
 
 constructor TQSO.Create;
 begin
+   Inherited;
+
    FTime := Date + Time;
    FCallSign := '';
    { FNrSent := ''; }
@@ -291,107 +281,90 @@ end;
 
 function TQSO.QSOinText: string; { for data transfer }
 var
-   str: string;
+   slText: TStringList;
 begin
-   str := 'ZLOGQSODATA:' + _sep;
-   // str := str + DateTimeToStr(QSO.Time) + _sep;
-   str := str + FloatToStr(Time) + _sep;
-   str := str + CallSign + _sep;
-   str := str + NrSent + _sep;
-   str := str + NrRcvd + _sep;
-   str := str + IntToStr(RSTSent) + _sep;
-   str := str + IntToStr(RSTRcvd) + _sep;
-   str := str + IntToStr(Serial) + _sep;
-   str := str + IntToStr(ord(Mode)) + _sep;
-   str := str + IntToStr(ord(Band)) + _sep;
-   str := str + IntToStr(ord(Power)) + _sep;
-   str := str + Multi1 + _sep;
-   str := str + Multi2 + _sep;
+   slText := TStringList.Create();
+   slText.StrictDelimiter := True;
+   slText.Delimiter := _sep;
+   try
+      slText.Add('ZLOGQSODATA:');
+      slText.Add(FloatToStr(Time));
+      slText.Add(Callsign);
+      slText.Add(NrSent);
+      slText.Add(NrRcvd);
+      slText.Add(IntToStr(RSTSent));
+      slText.Add(IntToStr(RSTRcvd));
+      slText.Add(IntToStr(Serial));
+      slText.Add(IntToStr(ord(Mode)));
+      slText.Add(IntToStr(ord(Band)));
+      slText.Add(IntToStr(ord(Power)));
+      slText.Add(Multi1);
+      slText.Add(Multi2);
+      slText.Add(BoolToStr(NewMulti1));
+      slText.Add(BoolToStr(NewMulti2));
+      slText.Add(IntToStr(Points));
+      slText.Add(Operator);
+      slText.Add(Memo);
+      slText.Add(BoolToStr(CQ));
+      slText.Add(BoolToStr(Dupe));
+      slText.Add(IntToStr(Reserve));
+      slText.Add(IntToStr(TX));
+      slText.Add(IntToStr(Power2));
+      slText.Add(IntToStr(Reserve2));
+      slText.Add(IntToStr(Reserve3));
 
-   if NewMulti1 then
-      str := str + '1' + _sep
-   else
-      str := str + '0' + _sep;
-
-   if NewMulti2 then
-      str := str + '1' + _sep
-   else
-      str := str + '0' + _sep;
-
-   str := str + IntToStr(Points) + _sep;
-   str := str + Operator + _sep;
-   str := str + Memo + _sep;
-
-   if CQ then
-      str := str + '1' + _sep
-   else
-      str := str + '0' + _sep;
-
-   if Dupe then
-      str := str + '1' + _sep
-   else
-      str := str + '0' + _sep;
-
-   str := str + IntToStr(Reserve) + _sep;
-   str := str + IntToStr(TX) + _sep;
-   str := str + IntToStr(Power2) + _sep;
-   str := str + IntToStr(Reserve2) + _sep;
-   str := str + IntToStr(Reserve3);
-
-   Result := str;
+      Result := slText.DelimitedText;
+   finally
+      slText.Free();
+   end;
 end;
 
 procedure TQSO.TextToQSO(str: string); { convert text to bin }
 var
-   _Items: array [0 .. 25] of string;
-   i, j: Integer;
+   slText: TStringList;
 begin
-   for i := 0 to 25 do begin
-      _Items[i] := '';
-   end;
-
-   j := 0;
-   for i := 1 to length(str) do begin
-      if str[i] = _sep then
-         inc(j)
-      else
-         _Items[j] := _Items[j] + str[i];
-   end;
-
-   if _Items[0] <> 'ZLOGQSODATA:' then begin
-      exit;
-   end;
-
-   // QSO.Time := StrToDateTime(_Items[1]);
+   slText := TStringList.Create();
+   slText.StrictDelimiter := True;
+   slText.Delimiter := _sep;
    try
-      Time := StrToFloat(_Items[1]);
-      CallSign := _Items[2];
-      NrSent := _Items[3];
-      NrRcvd := _Items[4];
-      RSTSent := StrToInt(_Items[5]);
-      RSTRcvd := StrToInt(_Items[6]);
-      Serial := StrToInt(_Items[7]);
-      Mode := TMode(StrToInt(_Items[8]));
-      Band := TBand(StrToInt(_Items[9]));
-      Power := TPower(StrToInt(_Items[10]));
-      Multi1 := _Items[11];
-      Multi2 := _Items[12];
-      NewMulti1 := StrToInt(_Items[13]) = 1;
-      NewMulti2 := StrToInt(_Items[14]) = 1;
-      Points := StrToInt(_Items[15]);
-      Operator := _Items[16];
-      Memo := _Items[17];
-      CQ := StrToInt(_Items[18]) = 1;
-      Dupe := StrToInt(_Items[19]) = 1;
-      Reserve := StrToInt(_Items[20]);
-      TX := StrToInt(_Items[21]);
-      Power2 := StrToInt(_Items[22]);
-      Reserve2 := StrToInt(_Items[23]);
-      Reserve3 := StrToInt(_Items[24]);
+   try
+      slText.DelimitedText := str;
+
+      if slText[0] <> 'ZLOGQSODATA:' then begin
+         Exit;
+      end;
+
+      Time     := StrToFloat(slText[1]);
+      CallSign := slText[2];
+      NrSent   := slText[3];
+      NrRcvd   := slText[4];
+      RSTSent  := StrToInt(slText[5]);
+      RSTRcvd  := StrToInt(slText[6]);
+      Serial   := StrToInt(slText[7]);
+      Mode     := TMode(StrToInt(slText[8]));
+      Band     := TBand(StrToInt(slText[9]));
+      Power    := TPower(StrToInt(slText[10]));
+      Multi1   := slText[11];
+      Multi2   := slText[12];
+      NewMulti1 := StrToBool(slText[13]);
+      NewMulti2 := StrToBool(slText[14]);
+      Points   := StrToInt(slText[15]);
+      Operator := slText[16];
+      Memo     := slText[17];
+      CQ       := StrToBool(slText[18]);
+      Dupe     := StrToBool(slText[19]);
+      Reserve  := StrToInt(slText[20]);
+      TX       := StrToInt(slText[21]);
+      Power2   := StrToInt(slText[22]);
+      Reserve2 := StrToInt(slText[23]);
+      Reserve3 := StrToInt(slText[24]);
    except
       on EConvertError do begin
          FMemo := 'Convert Error!';
       end;
+   end;
+   finally
+      slText.Free();
    end;
 end;
 
@@ -486,15 +459,19 @@ function TQSO.PartialSummary(DispDate: Boolean): string;
 var
    S: string;
 begin
-   if DispDate then
-      S := DateStr + ' '
-   else
+   if DispDate then begin
+      S := DateStr + ' ';
+   end
+   else begin
       S := '';
-   S := S + TimeStr + ' ';
-   S := S + FillRight(Self.CallSign, 12);
-   S := S + FillRight(Self.NrRcvd, 15);
-   S := S + FillRight(BandStr, 5);
-   S := S + FillRight(ModeStr, 5);
+   end;
+
+   S := S + TimeStr + ' ' +
+        FillRight(Self.CallSign, 12) +
+        FillRight(Self.NrRcvd, 15) +
+        FillRight(BandStr, 5) +
+        FillRight(ModeStr, 5);
+
    Result := S;
 end;
 
@@ -502,12 +479,12 @@ function TQSO.CheckCallSummary: string;
 var
    S: string;
 begin
-   S := '';
-   S := S + FillRight(BandStr, 5);
-   S := S + TimeStr + ' ';
-   S := S + FillRight(Self.CallSign, 12);
-   S := S + FillRight(Self.NrRcvd, 15);
-   S := S + FillRight(ModeStr, 5);
+   S := FillRight(BandStr, 5) +
+        TimeStr + ' ' +
+        FillRight(Self.CallSign, 12) +
+        FillRight(Self.NrRcvd, 15) +
+        FillRight(ModeStr, 5);
+
    Result := S;
 end;
 
@@ -759,180 +736,60 @@ begin
    FReserve3 := src.FReserve3;
 end;
 
-function TQSO.GetCallsign(): string;
-begin
-   Result := string(FCallsign);
-end;
-
-procedure TQSO.SetCallsign(v: string);
-begin
-   FCallsign := ShortString(v);
-end;
-
-function TQSO.GetNrSent(): string;
-begin
-   Result := string(FNrSent);
-end;
-
-procedure TQSO.SetNrSent(v: string);
-begin
-   FNrSent := ShortString(v);
-end;
-
-function TQSO.GetNrRcvd(): string;
-begin
-   Result := string(FNrRcvd);
-end;
-
-procedure TQSO.SetNrRcvd(v: string);
-begin
-   FNrRcvd := ShortString(v);
-end;
-
-function TQSO.GetRSTSent(): Integer;
-begin
-   Result := Integer(FRSTSent);
-end;
-
-procedure TQSO.SetRSTSent(v: Integer);
-begin
-   FRSTSent := SmallInt(v);
-end;
-
-function TQSO.GetRSTRcvd(): Integer;
-begin
-   Result := Integer(FRSTRcvd);
-end;
-
-procedure TQSO.SetRSTRcvd(v: Integer);
-begin
-   FRSTRcvd := Word(v);
-end;
-
-function TQSO.GetMulti1(): string;
-begin
-   Result := string(FMulti1);
-end;
-
-procedure TQSO.SetMulti1(v: string);
-begin
-   FMulti1 := ShortString(v);
-end;
-
-function TQSO.GetMulti2(): string;
-begin
-   Result := string(FMulti2);
-end;
-
-procedure TQSO.SetMulti2(v: string);
-begin
-   FMulti2 := ShortString(v);
-end;
-
-function TQSO.GetPoints(): Integer;
-begin
-   Result := Integer(FPoints);
-end;
-
-procedure TQSO.SetPoints(v: Integer);
-begin
-   FPoints := Byte(v);
-end;
-
-function TQSO.GetOperator(): string;
-begin
-   Result := string(FOperator);
-end;
-
-procedure TQSO.SetOperator(v: string);
-begin
-   FOperator := ShortString(v);
-end;
-
-function TQSO.GetMemo(): string;
-begin
-   Result := string(FMemo);
-end;
-
-procedure TQSO.SetMemo(v: string);
-begin
-   FMemo := ShortString(v);
-end;
-
-function TQSO.GetReserve(): Integer;
-begin
-   Result := Integer(FReserve);
-end;
-
-procedure TQSO.SetReserve(v: Integer);
-begin
-   FReserve := Byte(v);
-end;
-
-function TQSO.GetTX(): Integer;
-begin
-   Result := Integer(FTX);
-end;
-
-procedure TQSO.SetTX(v: Integer);
-begin
-   FTX := Byte(v);
-end;
-
 function TQSO.GetFileRecord(): TQSOData;
 begin
-   Result.Time := FTime;
-   Result.CallSign := FCallSign;
-   Result.NrSent := FNrSent;
-   Result.NrRcvd := FNrRcvd;
-   Result.RSTSent := FRSTSent;
-   Result.RSTRcvd := FRSTRcvd;
-   Result.Serial := FSerial;
-   Result.Mode := FMode;
-   Result.Band := FBand;
-   Result.Power := FPower;
-   Result.Multi1 := FMulti1;
-   Result.Multi2 := FMulti2;
-   Result.NewMulti1 := FNewMulti1;
-   Result.NewMulti2 := FNewMulti2;
-   Result.Points := FPoints;
-   Result.Operator := FOperator;
-   Result.Memo := FMemo;
-   Result.CQ := FCQ;
-   Result.Dupe := FDupe;
-   Result.Reserve := FReserve;
-   Result.TX := FTX;
-   Result.Power2 := FPower2;
-   Result.Reserve2 := FReserve2;
-   Result.Reserve3 := FReserve3;
+   Result.Time       := FTime;
+   Result.CallSign   := ShortString(FCallSign);
+   Result.NrSent     := ShortString(FNrSent);
+   Result.NrRcvd     := ShortString(FNrRcvd);
+   Result.RSTSent    := SmallInt(FRSTSent);
+   Result.RSTRcvd    := Word(FRSTRcvd);
+   Result.Serial     := FSerial;
+   Result.Mode       := FMode;
+   Result.Band       := FBand;
+   Result.Power      := FPower;
+   Result.Multi1     := ShortString(FMulti1);
+   Result.Multi2     := ShortString(FMulti2);
+   Result.NewMulti1  := FNewMulti1;
+   Result.NewMulti2  := FNewMulti2;
+   Result.Points     := Byte(FPoints);
+   Result.Operator   := ShortString(FOperator);
+   Result.Memo       := ShortString(FMemo);
+   Result.CQ         := FCQ;
+   Result.Dupe       := FDupe;
+   Result.Reserve    := Byte(FReserve);
+   Result.TX         := Byte(FTX);
+   Result.Power2     := FPower2;
+   Result.Reserve2   := FReserve2;
+   Result.Reserve3   := FReserve3;
 end;
 
 procedure TQSO.SetFileRecord(src: TQSOData);
 begin
-   FTime := src.Time;
-   FCallSign := src.CallSign;
-   FNrSent := src.NrSent;
-   FNrRcvd := src.NrRcvd;
-   FRSTSent := src.RSTSent;
-   FRSTRcvd := src.RSTRcvd;
-   FSerial := src.Serial;
-   FMode := src.Mode;
-   FBand := src.Band;
-   FPower := src.Power;
-   FMulti1 := src.Multi1;
-   FMulti2 := src.Multi2;
-   FNewMulti1 := src.NewMulti1;
-   FNewMulti2 := src.NewMulti2;
-   FPoints := src.Points;
-   FOperator := src.Operator;
-   FMemo := src.Memo;
-   FCQ := src.CQ;
-   FDupe := src.Dupe;
-   FReserve := src.Reserve;
-   FTX := src.TX;
-   FPower2 := src.Power2;
-   FReserve2 := src.Reserve2;
-   FReserve3 := src.Reserve3;
+   FTime       := src.Time;
+   FCallSign   := string(src.CallSign);
+   FNrSent     := string(src.NrSent);
+   FNrRcvd     := string(src.NrRcvd);
+   FRSTSent    := Integer(src.RSTSent);
+   FRSTRcvd    := Integer(src.RSTRcvd);
+   FSerial     := src.Serial;
+   FMode       := src.Mode;
+   FBand       := src.Band;
+   FPower      := src.Power;
+   FMulti1     := string(src.Multi1);
+   FMulti2     := string(src.Multi2);
+   FNewMulti1  := src.NewMulti1;
+   FNewMulti2  := src.NewMulti2;
+   FPoints     := Integer(src.Points);
+   FOperator   := string(src.Operator);
+   FMemo       := string(src.Memo);
+   FCQ         := src.CQ;
+   FDupe       := src.Dupe;
+   FReserve    := Integer(src.Reserve);
+   FTX         := Integer(src.TX);
+   FPower2     := src.Power2;
+   FReserve2   := src.Reserve2;
+   FReserve3   := src.Reserve3;
 end;
 
 { TQSOList }
@@ -943,6 +800,8 @@ begin
    FCallsignComparer := TQSOCallsignComparer.Create();
    FTimeComparer := TQSOTimeComparer.Create();
    FBandComparer := TQSOBandComparer.Create();
+   FDupeWithoutModeComparer := TQSODupeWithoutModeComparer.Create();
+   FDupeWithModeComparer := TQSODupeWithModeComparer.Create();
 end;
 
 destructor TQSOList.Destroy();
@@ -951,6 +810,8 @@ begin
    FCallsignComparer.Free();
    FTimeComparer.Free();
    FBandComparer.Free();
+   FDupeWithoutModeComparer.Free();
+   FDupeWithModeComparer.Free();
 end;
 
 function TQSOList.IndexOf(C: string): Integer;
@@ -999,7 +860,7 @@ begin
    Result := merged;
 end;
 
-procedure TQSOList.Sort(SortMethod: TSortMethod);
+procedure TQSOList.Sort(SortMethod: TSortMethod; fWithMode: Boolean);
 begin
    case SortMethod of
       soCallsign: begin
@@ -1013,6 +874,44 @@ begin
       soBand: begin
          Sort(FBandComparer);
       end;
+
+      soDupeCheck: begin
+         if fWithMode = True then begin
+            Sort(FDupeWithModeComparer);
+         end
+         else begin
+            Sort(FDupeWithoutModeComparer);
+         end;
+      end;
+   end;
+end;
+
+function TQSOList.DupeCheck(aQSO: TQSO; fWithMode: Boolean): TQSO;
+var
+   Index: Integer;
+   Q: TQSO;
+   C: TComparer<TQSO>;
+begin
+   Q := TQSO.Create();
+   try
+      Q.Assign(aQSO);
+      Q.Callsign := CoreCall(Q.Callsign);
+
+      if fWithMode = True then begin
+         C := FDupeWithModeComparer;
+      end
+      else begin
+         C := FDupeWithoutModeComparer;
+      end;
+
+      if BinarySearch(Q, Index, C) = True then begin
+         Result := Items[Index];
+      end
+      else begin
+         Result := nil;
+      end;
+   finally
+      Q.Free();
    end;
 end;
 
@@ -1035,9 +934,9 @@ begin
    end;
 
    Q := TQSO.Create;
+   Q.Callsign := '';
    Q.Memo := Memo;
-   Q.Time := 1.0000;
-   Q.Time := -1;
+   Q.Time := 0;
    Q.RSTSent := 0;
    Add(Q);
 
@@ -1099,30 +998,18 @@ begin
 end;
 
 procedure TLog.SortByTime;
-var
-   i: Integer;
-   boo: Boolean;
 begin
-   if TotalQSO < 2 then
+   if TotalQSO < 2 then begin
       exit;
-
-   boo := True;
-   while boo do begin
-      boo := False;
-      for i := 1 to TotalQSO - 1 do
-         if FQSOList[i].FTime > FQSOList[i + 1].FTime then begin
-            FQSOList.Exchange(i, i + 1);
-            boo := True;
-         end;
    end;
+
+   FQSOList.Sort(soTime);
 end;
 
 procedure TLog.Clear2();
 var
-   i, max: Integer;
-   aQSO: TQSO;
+   i: Integer;
 begin
-   max := FQSOList.Count - 1;
    For i := FQSOList.Count - 1 downto 1 do begin
       Delete(i);
    end;
@@ -1148,8 +1035,9 @@ begin
 
    xQSO := TQSO.Create;
    xQSO.Assign(aQSO);
-
+   xQSO.Callsign := CoreCall(xQSO.Callsign);
    FDupeCheckList[xQSO.FBand].Add(xQSO);
+   FDupeCheckList[xQSO.FBand].Sort(soDupeCheck, FAcceptDifferentMode);
 
    FSaved := False;
 end;
@@ -1276,22 +1164,6 @@ begin
    FSaved := False;
    RebuildDupeCheckList;
 end;
-
-//procedure TLog.DeleteBand(B: TBand);
-//var
-//   i: Integer;
-//begin
-//   for i := 1 to TotalQSO do begin
-//      if FQsoList[i].FBand = B then begin
-//         FQsoList[i].Free;
-//         FQsoList[i] := nil;
-//         FSaved := False;
-//      end;
-//   end;
-//
-//   RebuildDupeCheckList;
-//   FQsoList.Pack;
-//end;
 
 function TLog.CheckQSOID(i: Integer): Boolean;
 var
@@ -1433,47 +1305,34 @@ procedure TLog.RebuildDupeCheckList;
 var
    i: Integer;
    Q: TQSO;
+   B: TBand;
 begin
    ClearDupeCheckList;
 
    for i := 1 to FQsoList.Count - 1 do begin
       Q := TQSO.Create();
       Q.Assign(FQsoList[i]);
+      Q.Callsign := CoreCall(Q.Callsign);
       FDupeCheckList[Q.FBand].Add(Q);
+   end;
+
+   for B := b19 to HiBand do begin
+      FDupeCheckList[B].Sort(soDupeCheck, FAcceptDifferentMode);
    end;
 end;
 
 function TLog.QuickDupe(aQSO: TQSO): TQSO;
 var
-   i: Integer;
-   S: string;
-   Q, Q2: TQSO;
+   Q: TQSO;
 begin
-   Result := nil;
-   Q := nil;
-   S := CoreCall(aQSO.CallSign);
-
-   i := FDupeCheckList[aQSO.FBand].IndexOf(S);
-   if (i >= 0) and (i < FDupeCheckList[aQSO.FBand].Count) then begin
-      Q := FDupeCheckList[aQSO.FBand].Items[i];
-      if Q.FBand = aQSO.FBand then
-         Result := Q;
+   // 同一バンドで交信済みか
+   Q := FDupeCheckList[aQSO.FBand].DupeCheck(aQSO, FAcceptDifferentMode);
+   if Q = nil then begin   // 未交信
+      Result := nil;
+      Exit;
    end;
 
-   if FAcceptDifferentMode and (Q <> nil) then begin
-      if aQSO.FMode <> Q.FMode then begin
-         Result := nil;
-         for i := 0 to FDupeCheckList[aQSO.FBand].Count - 1 do begin
-            if S = FDupeCheckList[aQSO.FBand][i].Callsign then begin
-               Q2 := FDupeCheckList[aQSO.FBand].Items[i];
-               if aQSO.FMode = Q2.FMode then begin
-                  Result := Q2;
-                  exit;
-               end;
-            end;
-         end;
-      end;
-   end;
+   Result := Q;
 end;
 
 function TLog.OpQSO(OpName: string): Integer;
@@ -1749,6 +1608,32 @@ end;
 function TQSOBandComparer.Compare(const Left, Right: TQSO): Integer;
 begin
    Result := Integer(Left.Band) - Integer(Right.Band);
+end;
+
+{ TQSODupeWithoutModeComparer }
+
+function TQSODupeWithoutModeComparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   if (Left.Callsign = Right.Callsign) and (Left.Band = Right.Band) then begin
+      Result := 0;
+   end
+   else begin
+      Result := CompareText(Left.Callsign, Right.Callsign) + (Integer(Left.Band) - Integer(Right.Band));
+   end;
+end;
+
+{ TQSODupeWithModeComparer }
+
+function TQSODupeWithModeComparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   if (Left.Callsign = Right.Callsign) and (Left.Band = Right.Band) and (Left.Mode = Right.Mode) then begin
+      Result := 0;
+   end
+   else begin
+      Result := CompareText(Left.Callsign, Right.Callsign) +
+                ((Integer(Left.Band) - Integer(Right.Band)) * 10) +
+                ((Integer(Left.Mode) - Integer(Right.Mode)) * 100);
+   end;
 end;
 
 end.
