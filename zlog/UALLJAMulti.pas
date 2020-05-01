@@ -172,7 +172,6 @@ end;
 function TALLJAMulti.ExtractMulti(aQSO: TQSO): string;
 var
    str: string;
-   ch: Char;
 begin
    Result := '';
 
@@ -249,7 +248,6 @@ function TALLJAMulti.ValidMulti(aQSO: TQSO): Boolean;
 var
    str: string;
    K: TKen;
-   ch: Char;
 begin
    Result := False;
 
@@ -282,7 +280,6 @@ function TALLJAMulti.IsNewMulti(aQSO: TQSO): Boolean;
 var
    K: TKen;
    str: string;
-   ch: Char;
 begin
    Result := False;
 
@@ -308,7 +305,6 @@ var
    str: string;
    K: TKen;
    B: TBand;
-   ch: Char;
 begin
    str := aQSO.QSO.NrRcvd;
    if str = '' then begin
