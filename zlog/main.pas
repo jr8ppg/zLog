@@ -3885,6 +3885,7 @@ begin
    dmZlogGlobal.ReadWindowState(FreqList);
    dmZlogGlobal.ReadWindowState(CommForm);
    dmZlogGlobal.ReadWindowState(ScratchSheet);
+   dmZlogGlobal.ReadWindowState(RateDialog);
 
    X := dmZlogGlobal.SuperCheckColumns;
    SuperCheck.ListBox.Columns := X;
@@ -3904,6 +3905,7 @@ begin
    dmZlogGlobal.WriteWindowState(FreqList);
    dmZlogGlobal.WriteWindowState(CommForm);
    dmZlogGlobal.WriteWindowState(ScratchSheet);
+   dmZlogGlobal.WriteWindowState(RateDialog);
 
    dmZlogGlobal.WriteMainFormState(Left, top, Width, Height, mnHideCWPhToolBar.Checked, mnHideMenuToolbar.Checked);
    dmZlogGlobal.SuperCheckColumns := SuperCheck.ListBox.Columns;
