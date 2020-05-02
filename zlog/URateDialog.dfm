@@ -1,11 +1,12 @@
 object RateDialog: TRateDialog
   Left = 69
   Top = 213
-  BorderStyle = bsDialog
   Caption = 'QSO rate'
-  ClientHeight = 249
-  ClientWidth = 275
+  ClientHeight = 261
+  ClientWidth = 334
   Color = clBtnFace
+  Constraints.MinHeight = 300
+  Constraints.MinWidth = 350
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -20,36 +21,11 @@ object RateDialog: TRateDialog
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Graph: TwsaGraph
-    Left = 0
-    Top = 41
-    Width = 275
-    Height = 148
-    Align = alClient
-    BackgroundColor = 16777215
-    HeaderFontName = 'MS Sans Serif'
-    HeaderFontSize = 15
-    HeaderFontColor = 16711680
-    FooterFontSize = 15
-    FooterFontColor = 16711680
-    LeftFontName = 'MS Sans Serif'
-    LeftFontSize = 0
-    LeftFontColor = 0
-    XFontSize = 8
-    YFontSize = 8
-    XFontColor = 0
-    YFontColor = 0
-    YAxisFontName = 'MS Sans Serif'
-    XAxisFontName = 'MS Sans Serif'
-    ShowHorizLines = False
-    ShowVertLines = False
-    GraphColor = 32768
-  end
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 275
-    Height = 41
+    Width = 334
+    Height = 37
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
@@ -98,12 +74,31 @@ object RateDialog: TRateDialog
   end
   object Panel2: TPanel
     Left = 0
-    Top = 219
-    Width = 275
+    Top = 231
+    Width = 334
     Height = 30
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    DesignSize = (
+      334
+      30)
+    object Label4: TLabel
+      Left = 255
+      Top = 8
+      Width = 26
+      Height = 13
+      Anchors = [akRight]
+      Caption = 'hours'
+    end
+    object Label3: TLabel
+      Left = 159
+      Top = 8
+      Width = 46
+      Height = 13
+      Anchors = [akRight]
+      Caption = 'Show last'
+    end
     object OKBtn: TButton
       Left = 7
       Top = 5
@@ -116,46 +111,25 @@ object RateDialog: TRateDialog
       OnClick = OKBtnClick
     end
     object StayOnTop: TCheckBox
-      Left = 80
-      Top = 5
+      Left = 72
+      Top = 6
       Width = 81
       Height = 17
       Caption = 'Stay on top'
       TabOrder = 1
       OnClick = StayOnTopClick
     end
-  end
-  object Panel3: TPanel
-    Left = 0
-    Top = 189
-    Width = 275
-    Height = 30
-    Align = alBottom
-    BevelOuter = bvNone
-    TabOrder = 2
-    object Label3: TLabel
-      Left = 8
-      Top = 8
-      Width = 46
-      Height = 13
-      Caption = 'Show last'
-    end
-    object Label4: TLabel
-      Left = 112
-      Top = 8
-      Width = 26
-      Height = 13
-      Caption = 'hours'
-    end
     object ShowLastCombo: TComboBox
-      Left = 58
-      Top = 4
-      Width = 49
+      Left = 209
+      Top = 5
+      Width = 41
       Height = 21
+      Style = csDropDownList
+      Anchors = [akRight]
       Ctl3D = True
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ItemIndex = 2
       ParentCtl3D = False
-      TabOrder = 0
+      TabOrder = 2
       Text = '12'
       OnChange = ShowLastComboChange
       Items.Strings = (
@@ -166,12 +140,69 @@ object RateDialog: TRateDialog
         '24'
         '48')
     end
+    object check3D: TCheckBox
+      Left = 295
+      Top = 6
+      Width = 33
+      Height = 17
+      Anchors = [akTop, akRight]
+      Caption = '3D'
+      TabOrder = 3
+      OnClick = check3DClick
+    end
+  end
+  object Chart1: TChart
+    Left = 0
+    Top = 37
+    Width = 334
+    Height = 194
+    LeftWall.Color = clWhite
+    Legend.Visible = False
+    Title.Text.Strings = (
+      'TChart')
+    BottomAxis.MinorTickCount = 0
+    LeftAxis.AxisValuesFormat = '#,###'
+    LeftAxis.MinorTickCount = 0
+    RightAxis.MinorTickCount = 0
+    View3D = False
+    Align = alClient
+    BevelOuter = bvNone
+    TabOrder = 2
+    DefaultCanvas = 'TGDIPlusCanvas'
+    ColorPaletteIndex = 13
+    object Series1: TBarSeries
+      Marks.Font.Color = 14811135
+      Marks.Transparent = True
+      Marks.Style = smsValue
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      ValueFormat = '#,###'
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      TickLines.Color = clDefault
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series2: TLineSeries
+      Brush.BackColor = clDefault
+      Pointer.HorizSize = 3
+      Pointer.InflateMargins = True
+      Pointer.Style = psRectangle
+      Pointer.VertSize = 3
+      Pointer.Visible = True
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Y'
+      YValues.Order = loNone
+    end
   end
   object Timer: TTimer
     Enabled = False
     Interval = 2000
     OnTimer = TimerTimer
-    Left = 216
-    Top = 56
+    Left = 288
+    Top = 12
   end
 end
