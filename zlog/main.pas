@@ -1698,7 +1698,7 @@ begin
 
    Log.QsoList[0].Callsign := dmZlogGlobal.Settings._mycall; // Callsign
    Log.QsoList[0].Memo := N; // Contest name
-//   Log.QsoList[0].RSTsent := UTCOffset; // UTC = $FFFF else UTC + x hrs;
+   Log.QsoList[0].RSTsent := UTCOffset; // UTC = $FFFF else UTC + x hrs;
    Log.QsoList[0].RSTRcvd := 0; // or Field Day coefficient
 
    SerialContestType := 0;
