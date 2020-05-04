@@ -1844,7 +1844,7 @@ begin
 
    TQSO(Log.List[0]).QSO.Callsign := dmZlogGlobal.Settings._mycall; // Callsign
    TQSO(Log.List[0]).QSO.Memo := N; // Contest name
-//   TQSO(Log.List[0]).QSO.RSTsent := UTCOffset; // UTC = $FFFF else UTC + x hrs;
+   TQSO(Log.List[0]).QSO.RSTsent := UTCOffset; // UTC = $FFFF else UTC + x hrs;
    TQSO(Log.List[0]).QSO.RSTRcvd := 0; // or Field Day coefficient
 
    SerialContestType := 0;
@@ -3885,6 +3885,7 @@ begin
    dmZlogGlobal.ReadWindowState(FreqList);
    dmZlogGlobal.ReadWindowState(CommForm);
    dmZlogGlobal.ReadWindowState(ScratchSheet);
+   dmZlogGlobal.ReadWindowState(RateDialog);
 
    X := dmZlogGlobal.SuperCheckColumns;
    SuperCheck.ListBox.Columns := X;
@@ -3904,6 +3905,7 @@ begin
    dmZlogGlobal.WriteWindowState(FreqList);
    dmZlogGlobal.WriteWindowState(CommForm);
    dmZlogGlobal.WriteWindowState(ScratchSheet);
+   dmZlogGlobal.WriteWindowState(RateDialog);
 
    dmZlogGlobal.WriteMainFormState(Left, top, Width, Height, mnHideCWPhToolBar.Checked, mnHideMenuToolbar.Checked);
    dmZlogGlobal.SuperCheckColumns := SuperCheck.ListBox.Columns;

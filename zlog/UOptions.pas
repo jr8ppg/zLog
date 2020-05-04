@@ -280,6 +280,7 @@ type
     FQuickQSYBand: array[1..8] of TComboBox;
     FQuickQSYMode: array[1..8] of TComboBox;
     procedure RenewCWStrBankDisp();
+    procedure InitRigNames();
   public
     procedure RenewSettings; {Reads controls and updates Settings}
   end;
@@ -765,13 +766,7 @@ begin
 
    PageControl.ActivePage := PrefTabSheet;
 
-   comboRig1Name.Items.Clear;
-   comboRig2Name.Items.Clear;
-
-   for i := 0 to RIGNAMEMAX do begin
-      comboRig1Name.Items.Add(RIGNAMES[i]);
-      comboRig2Name.Items.Add(RIGNAMES[i]);
-   end;
+   InitRigNames();
 end;
 
 procedure TformOptions.buttonCancelClick(Sender: TObject);
@@ -1022,15 +1017,15 @@ end;
 
 procedure TformOptions.comboRig1NameChange(Sender: TObject);
 begin
-   if comboRig1Name.ItemIndex = RIGNAMEMAX then begin
-      comboRig2Name.ItemIndex := RIGNAMEMAX;
+   if comboRig1Name.ItemIndex = comboRig1Name.Items.Count - 1 then begin
+      comboRig2Name.ItemIndex := comboRig2Name.Items.Count - 1;
       comboRig1Port.ItemIndex := 0;
       comboRig1Port.Enabled := False;
       comboRig2Port.Enabled := False;
    end
    else begin
       comboRig1Port.Enabled := True;
-      if comboRig2Name.ItemIndex = RIGNAMEMAX then begin
+      if comboRig2Name.ItemIndex = comboRig2Name.Items.Count - 1 then begin
          comboRig2Name.ItemIndex := 0;
          comboRig2Port.ItemIndex := 0;
          comboRig2Port.Enabled := True;
@@ -1040,15 +1035,15 @@ end;
 
 procedure TformOptions.comboRig2NameChange(Sender: TObject);
 begin
-   if comboRig2Name.ItemIndex = RIGNAMEMAX then begin
-      comboRig1Name.ItemIndex := RIGNAMEMAX;
+   if comboRig2Name.ItemIndex = comboRig2Name.Items.Count - 1 then begin
+      comboRig1Name.ItemIndex := comboRig1Name.Items.Count - 1;
       comboRig2Port.ItemIndex := 0;
       comboRig2Port.Enabled := False;
       comboRig1Port.Enabled := False;
    end
    else begin
       comboRig2Port.Enabled := True;
-      if comboRig1Name.ItemIndex = RIGNAMEMAX then begin
+      if comboRig1Name.ItemIndex = comboRig1Name.Items.Count - 1 then begin
          comboRig1Name.ItemIndex := 0;
          comboRig1Port.ItemIndex := 0;
          comboRig1Port.Enabled := True;
@@ -1063,6 +1058,28 @@ begin
    no := TCheckBox(Sender).Tag;
    FQuickQSYBand[no].Enabled := FQuickQSYCheck[no].Checked;
    FQuickQSYMode[no].Enabled := FQuickQSYCheck[no].Checked;
+end;
+
+procedure TformOptions.InitRigNames();
+var
+   i: Integer;
+begin
+   comboRig1Name.Items.Clear;
+   comboRig2Name.Items.Clear;
+
+   for i := Low(RIGNAMES) to High(RIGNAMES) do begin
+      comboRig1Name.Items.Add(RIGNAMES[i]);
+   end;
+
+   for i := Low(ICOMLIST) to High(ICOMLIST) do begin
+      comboRig1Name.Items.Add(ICOMLIST[i].name);
+   end;
+
+   comboRig1Name.Items.Add('JST-145');
+   comboRig1Name.Items.Add('JST-245');
+   comboRig1Name.Items.Add('Omni-Rig');
+
+   comboRig2Name.Items.Assign(comboRig1Name.Items);
 end;
 
 end.
