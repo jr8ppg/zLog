@@ -243,6 +243,8 @@ public
     procedure CreateLog();
     procedure SetLogFileName(filename: string);
 
+    procedure MakeRigList(sl: TStrings);
+
     function NewQSOID(): Integer;
   end;
 
@@ -1392,8 +1394,16 @@ begin
 end;
 
 function TdmZLogGlobal.GetRigNameStr(Index: Integer): string; // returns the selected rig name
+var
+   sl: TStringList;
 begin
-   Result := RIGNAMES[Settings._rigname[Index]];
+   sl := TStringList.Create();
+   try
+      dmZlogGlobal.MakeRigList(sl);
+      Result := sl[Settings._rigname[Index]];
+   finally
+      sl.Free();
+   end;
 end;
 
 function TdmZLogGlobal.GetSuperCheckColumns(): Integer;
@@ -1584,6 +1594,25 @@ end;
 procedure TdmZLogGlobal.SetLogFileName(filename: string);
 begin
    FCurrentFileName := filename;
+end;
+
+procedure TdmZLogGlobal.MakeRigList(sl: TStrings);
+var
+   i: Integer;
+begin
+   sl.Clear();
+
+   for i := Low(RIGNAMES) to High(RIGNAMES) do begin
+      sl.Add(RIGNAMES[i]);
+   end;
+
+   for i := Low(ICOMLIST) to High(ICOMLIST) do begin
+      sl.Add(ICOMLIST[i].name);
+   end;
+
+   sl.Add('JST-145');
+   sl.Add('JST-245');
+   sl.Add('Omni-Rig');
 end;
 
 function TdmZLogGlobal.NewQSOID(): Integer;
