@@ -493,6 +493,7 @@ end;
 procedure TGeneralMulti2.CheckMulti(aQSO : TQSO);
 var
    str : string;
+   strSjis: AnsiString;
    i : integer;
    C : TCity;
 begin
@@ -509,12 +510,14 @@ begin
       if pos(','+str+',', ','+C.CityNumber+',') > 0 then begin
          Grid.TopRow := i;
          str := C.Summary2;
+         strSjis := AnsiString(str);
 
          if C.Worked[aQSO.Band] then
-            Insert('Worked on this band. ',str, 27)
+            Insert('Worked on this band. ',strSjis, 27)
          else
-            Insert('Needed on this band. ',str, 27);
+            Insert('Needed on this band. ',strSjis, 27);
 
+         str := String(strSjis);
          MainForm.WriteStatusLine(str, false);
          exit;
       end;
