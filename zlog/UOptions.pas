@@ -1061,23 +1061,11 @@ begin
 end;
 
 procedure TformOptions.InitRigNames();
-var
-   i: Integer;
 begin
    comboRig1Name.Items.Clear;
    comboRig2Name.Items.Clear;
 
-   for i := Low(RIGNAMES) to High(RIGNAMES) do begin
-      comboRig1Name.Items.Add(RIGNAMES[i]);
-   end;
-
-   for i := Low(ICOMLIST) to High(ICOMLIST) do begin
-      comboRig1Name.Items.Add(ICOMLIST[i].name);
-   end;
-
-   comboRig1Name.Items.Add('JST-145');
-   comboRig1Name.Items.Add('JST-245');
-   comboRig1Name.Items.Add('Omni-Rig');
+   dmZlogGlobal.MakeRigList(comboRig1Name.Items);
 
    comboRig2Name.Items.Assign(comboRig1Name.Items);
 end;
