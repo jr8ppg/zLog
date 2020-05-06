@@ -22,12 +22,10 @@ type
     { Public declarations }
   end;
 
-var
-  ZServerInquiry: TZServerInquiry;
-
 implementation
 
-uses UZLinkForm;
+uses
+  Main, UZLinkForm;
 
 {$R *.DFM}
 
@@ -39,10 +37,10 @@ end;
 procedure TZServerInquiry.Button1Click(Sender: TObject);
 begin
    if rbMerge.Checked then begin
-      ZLinkForm.MergeLogWithZServer;
+      MainForm.ZLinkForm.MergeLogWithZServer;
    end;
    if rbDownload.Checked then begin
-      ZLinkForm.LoadLogFromZLink;
+      MainForm.ZLinkForm.LoadLogFromZLink;
    end;
    Close;
 end;

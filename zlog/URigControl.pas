@@ -403,9 +403,6 @@ type
 
 function GetBand(Hz : LongInt) : integer;  //Returns -1 if Hz is outside ham bands
 
-var
-  RigControl: TRigControl;
-
 implementation
 
 uses
@@ -716,7 +713,7 @@ end;
 
 function TRig.Selected: Boolean;
 begin
-   if _rignumber = RigControl._currentrig then
+   if _rignumber = MainForm.RigControl._currentrig then
       Result := True
    else
       Result := False;
@@ -1456,13 +1453,13 @@ begin
    _rignumber := RigNum;
    if _rignumber = 1 then begin
       prtnr := dmZlogGlobal.Settings._rigport[1];
-      FComm := RigControl.ZCom1;
-      FPollingTimer := RigControl.PollingTimer1;
+      FComm := MainForm.RigControl.ZCom1;
+      FPollingTimer := MainForm.RigControl.PollingTimer1;
    end
    else begin
       prtnr := dmZlogGlobal.Settings._rigport[2];
-      FComm := RigControl.ZCom2;
-      FPollingTimer := RigControl.PollingTimer2;
+      FComm := MainForm.RigControl.ZCom2;
+      FPollingTimer := MainForm.RigControl.PollingTimer2;
    end;
 
    FPollingInterval := 200;   // milisec
@@ -2218,7 +2215,7 @@ begin
       end;
    end;
 
-   With RigControl do begin
+   With MainForm.RigControl do begin
       ZCom1.Disconnect;
       ZCom2.Disconnect;
       OmniRig.OnVisibleChange := VisibleChangeEvent;
@@ -2230,10 +2227,10 @@ begin
    end;
 
    if _rignumber = 1 then begin
-      Self.name := 'Omni-Rig: ' + RigControl.OmniRig.Rig1.Get_RigType;
+      Self.name := 'Omni-Rig: ' + MainForm.RigControl.OmniRig.Rig1.Get_RigType;
    end
    else begin
-      Self.name := 'OMni-Rig: ' + RigControl.OmniRig.Rig2.Get_RigType;
+      Self.name := 'OMni-Rig: ' + MainForm.RigControl.OmniRig.Rig2.Get_RigType;
    end;
 end;
 
@@ -2253,10 +2250,10 @@ end;
 procedure TOmni.RitClear;
 begin
    if _rignumber = 1 then begin
-      RigControl.OmniRig.Rig1.ClearRit;
+      MainForm.RigControl.OmniRig.Rig1.ClearRit;
    end
    else if _rignumber = 2 then begin
-      RigControl.OmniRig.Rig2.ClearRit;
+      MainForm.RigControl.OmniRig.Rig2.ClearRit;
    end;
 end;
 
@@ -2265,10 +2262,10 @@ var
    o_RIG: IRigX;
 begin
    if _rignumber = 1 then begin
-      o_RIG := RigControl.OmniRig.Rig1;
+      o_RIG := MainForm.RigControl.OmniRig.Rig1;
    end
    else begin
-      o_RIG := RigControl.OmniRig.Rig2;
+      o_RIG := MainForm.RigControl.OmniRig.Rig2;
    end;
 
    LastFreq := _currentfreq[_currentvfo];
@@ -2284,10 +2281,10 @@ var
    o_RIG: IRigX;
 begin
    if _rignumber = 1 then begin
-      o_RIG := RigControl.OmniRig.Rig1;
+      o_RIG := MainForm.RigControl.OmniRig.Rig1;
    end
    else begin
-      o_RIG := RigControl.OmniRig.Rig2;
+      o_RIG := MainForm.RigControl.OmniRig.Rig2;
    end;
 
    case Q.Mode of
@@ -2312,10 +2309,10 @@ var
    o_RIG: IRigX;
 begin
    if _rignumber = 1 then begin
-      o_RIG := RigControl.OmniRig.Rig1;
+      o_RIG := MainForm.RigControl.OmniRig.Rig1;
    end
    else begin
-      o_RIG := RigControl.OmniRig.Rig2;
+      o_RIG := MainForm.RigControl.OmniRig.Rig2;
    end;
 
    if (i > 1) or (i < 0) then begin
@@ -2344,10 +2341,11 @@ var
 begin
    inherited;
    if _rignumber = 1 then
-      _rname := RigControl.OmniRig.Rig1.RigType
+      _rname := MainForm.RigControl.OmniRig.Rig1.RigType
    else
-      _rname := RigControl.OmniRig.Rig2.RigType;
-   RigControl.RigLabel.Caption := 'Current rig : ' + IntToStr(RigControl._currentrig) + ' Omni-Rig: ' + _rname;
+      _rname := MainForm.RigControl.OmniRig.Rig2.RigType;
+
+   MainForm.RigControl.RigLabel.Caption := 'Current rig : ' + IntToStr(MainForm.RigControl._currentrig) + ' Omni-Rig: ' + _rname;
 end;
 
 procedure TOmni.Reset;
@@ -3058,26 +3056,26 @@ procedure TRig.UpdateStatus;
 var
    S: string;
 begin
-   RigControl.dispVFO.Caption := VFOString[_currentvfo];
+   MainForm.RigControl.dispVFO.Caption := VFOString[_currentvfo];
    if _currentmode <> Main.CurrentQSO.Mode then begin
       MainForm.UpdateMode(_currentmode);
    end;
 
-   RigControl.dispMode.Caption := ModeString[_currentmode];
+   MainForm.RigControl.dispMode.Caption := ModeString[_currentmode];
    if Main.CurrentQSO.Band <> _currentband then begin
       MainForm.UpdateBand(_currentband);
    end;
 
-   RigControl.dispFreqA.Caption := kHzStr(_freqoffset + _currentfreq[0]) + ' kHz';
-   RigControl.dispFreqB.Caption := kHzStr(_freqoffset + _currentfreq[1]) + ' kHz';
+   MainForm.RigControl.dispFreqA.Caption := kHzStr(_freqoffset + _currentfreq[0]) + ' kHz';
+   MainForm.RigControl.dispFreqB.Caption := kHzStr(_freqoffset + _currentfreq[1]) + ' kHz';
 
    if _currentvfo = 0 then begin
-      RigControl.dispFreqA.Font.Style := [fsBold];
-      RigControl.dispFreqB.Font.Style := [];
+      MainForm.RigControl.dispFreqA.Font.Style := [fsBold];
+      MainForm.RigControl.dispFreqB.Font.Style := [];
    end
    else begin
-      RigControl.dispFreqB.Font.Style := [fsBold];
-      RigControl.dispFreqA.Font.Style := [];
+      MainForm.RigControl.dispFreqB.Font.Style := [fsBold];
+      MainForm.RigControl.dispFreqA.Font.Style := [];
    end;
 
    S := 'R' + IntToStr(_rignumber) + ' ' + 'V';
@@ -3091,7 +3089,7 @@ begin
    MainForm.StatusLine.Panels[1].Text := S;
 
    BSRefresh(Self);
-   BandScope2.MarkCurrentFreq(_freqoffset + _currentfreq[_currentvfo]);
+   MainForm.BandScope2.MarkCurrentFreq(_freqoffset + _currentfreq[_currentvfo]);
 end;
 
 procedure TRigControl.FormCreate(Sender: TObject);
@@ -3144,7 +3142,7 @@ end;
 
 procedure TRigControl.Timer1Timer(Sender: TObject);
 begin
-   ZLinkForm.SendRigStatus;
+   MainForm.ZLinkForm.SendRigStatus;
 end;
 
 procedure TRigControl.PollingTimerTimer(Sender: TObject);
@@ -3181,7 +3179,7 @@ end;
 
 procedure TRigControl.btnOmniRigClick(Sender: TObject);
 begin
-   RigControl.OmniRig.DialogVisible := True;
+   MainForm.RigControl.OmniRig.DialogVisible := True;
 end;
 
 procedure TRigControl.CreateParams(var Params: TCreateParams);

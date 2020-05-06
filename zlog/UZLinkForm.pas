@@ -90,9 +90,6 @@ type
     procedure PushRemoteConnect; // connect button in cluster win
   end;
 
-var
-  ZLinkForm: TZLinkForm;
-
 implementation
 
 uses
@@ -305,7 +302,7 @@ begin
 
       if pos('FREQ', temp) = 1 then begin
          temp := copy(temp, 6, 255);
-         FreqList.ProcessFreqData(temp);
+         MainForm.FreqList.ProcessFreqData(temp);
       end;
 
       if pos('QSOIDS', temp) = 1 then begin
@@ -404,7 +401,7 @@ begin
          end
          else
             MainForm.WriteStatusLine(temp, false);
-         ChatForm.Add(temp);
+         MainForm.ChatForm.Add(temp);
       end;
 
       if pos('POSTWANTED', temp) = 1 then begin
@@ -419,37 +416,37 @@ begin
 
       if pos('SPOT ', temp) = 1 then begin
          temp := copy(temp, 6, 255);
-         CommForm.PreProcessSpotFromZLink(temp);
+         MainForm.CommForm.PreProcessSpotFromZLink(temp);
       end;
 
       if pos('BSDATA ', temp) = 1 then begin
          temp := copy(temp, 8, 255);
-         BandScope2.ProcessBSDataFromNetwork(temp);
+         MainForm.BandScope2.ProcessBSDataFromNetwork(temp);
       end;
 
       if pos('SENDSPOT ', temp) = 1 then begin
          temp := copy(temp, 10, 255);
-         CommForm.WriteLine(temp);
+         MainForm.CommForm.WriteLine(temp);
       end;
 
       if pos('SENDCLUSTER ', temp) = 1 then begin // remote manipulation of cluster console
          temp := copy(temp, 13, 255);
-         CommForm.WriteLine(temp);
+         MainForm.CommForm.WriteLine(temp);
       end;
 
       if pos('SENDPACKET ', temp) = 1 then begin
          temp := copy(temp, 12, 255);
-         CommForm.WriteLineConsole(temp);
+         MainForm.CommForm.WriteLineConsole(temp);
       end;
 
       if pos('SENDSCRATCH ', temp) = 1 then begin
          temp := copy(temp, 13, 255);
-         ScratchSheet.AddBuffer(temp);
-         ScratchSheet.UpdateData;
+         MainForm.ScratchSheet.AddBuffer(temp);
+         MainForm.ScratchSheet.UpdateData;
       end;
 
       if pos('CONNECTCLUSTER', temp) = 1 then begin
-         CommForm.RemoteConnectButtonPush;
+         MainForm.CommForm.RemoteConnectButtonPush;
       end;
 
       if pos('PUTQSO ', temp) = 1 then begin
@@ -469,7 +466,7 @@ begin
          Log.AddQue(aQSO);
          Log.ProcessQue;
          MyContest.Renew;
-         MainForm.EditScreen.Renew;
+         MainForm.EditScreen.RefreshScreen;
          aQSO.Free;
       end;
 
@@ -511,7 +508,7 @@ begin
          Log.AddQue(aQSO);
          Log.ProcessQue;
          MyContest.Renew;
-         MainForm.EditScreen.Renew;
+         MainForm.EditScreen.RefreshScreen;
          aQSO.Free;
       end;
       if pos('INSQSO ', temp) = 1 then begin
@@ -522,7 +519,7 @@ begin
          Log.AddQue(aQSO);
          Log.ProcessQue;
          MyContest.Renew;
-         MainForm.EditScreen.Renew;
+         MainForm.EditScreen.RefreshScreen;
          aQSO.Free;
       end;
 
@@ -539,7 +536,7 @@ begin
       if pos('RENEW', temp) = 1 then begin
          Log.ProcessQue;
          MyContest.Renew;
-         MainForm.EditScreen.Renew;
+         MainForm.EditScreen.RefreshScreen;
       end;
 
       if pos('SENDLOG', temp) = 1 then begin
@@ -616,14 +613,14 @@ begin
 
    if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
       if Hz > 60000 then
-         str := RigControl.StatusSummaryFreq(round(Hz / 1000))
+         str := MainForm.RigControl.StatusSummaryFreq(round(Hz / 1000))
       else
-         str := RigControl.StatusSummaryFreqHz(Hz);
+         str := MainForm.RigControl.StatusSummaryFreqHz(Hz);
 
       if str = '' then
          exit;
 
-      FreqList.ProcessFreqData(str);
+      MainForm.FreqList.ProcessFreqData(str);
       str := ZLinkHeader + ' FREQ ' + str;
       WriteData(str + LineBreakCode[Ord(Console.LineBreak)]);
    end;
@@ -634,12 +631,12 @@ var
    str: string;
 begin
    if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
-      str := RigControl.StatusSummary;
+      str := MainForm.RigControl.StatusSummary;
       if str = '' then begin
          exit;
       end;
 
-      FreqList.ProcessFreqData(str);
+      MainForm.FreqList.ProcessFreqData(str);
       str := ZLinkHeader + ' FREQ ' + str;
       WriteData(str + LineBreakCode[Ord(Console.LineBreak)]);
    end;
@@ -912,7 +909,7 @@ begin
    Console.WriteString('connected to ' + ZSocket.Addr + LineBreakCode[Ord(Console.LineBreak)]);
    SendBand; { tell Z-Server current band }
    SendOperator;
-   ZServerInquiry.ShowModal;
+   MainForm.ZServerInquiry.ShowModal;
    MainForm.ZServerIcon.Visible := true;
    MainForm.EnableNetworkMenus;
 end;

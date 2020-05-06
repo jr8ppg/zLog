@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UCheckWin, StdCtrls, ExtCtrls, UWWMulti, UMultipliers, Main,
+  UCheckWin, StdCtrls, ExtCtrls, UWWMulti, UMultipliers,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
@@ -21,10 +21,10 @@ type
     function NotNewMulti(B : TBand) : boolean;
   end;
 
-var
-  CheckCountry: TCheckCountry;
-
 implementation
+
+uses
+  Main;
 
 {$R *.DFM}
 

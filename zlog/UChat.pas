@@ -36,9 +36,6 @@ type
     { Public declarations }
   end;
 
-var
-  ChatForm: TChatForm;
-
 implementation
 
 uses Main, UZLinkForm, UOptions;
@@ -83,7 +80,7 @@ begin
       ListBox.Items.Add(str);
       Delete(str, 1, 1);
       str := ZLinkHeader + ' ' + str;
-      ZLinkForm.WriteData(str + LineBreakCode[ord(ZLinkForm.Console.LineBreak)]);
+      MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
       exit;
    end;
 
@@ -93,14 +90,14 @@ begin
       Delete(str, 1, 1);
       str := ZLinkHeader + ' PUTMESSAGE !' + t + FillRight(Main.CurrentQSO.BandStr + 'MHz>', 9) + str;
       Add(Copy(str, Length(ZLinkHeader + ' PUTMESSAGE !') + 1, 255));
-      ZLinkForm.WriteData(str + LineBreakCode[ord(ZLinkForm.Console.LineBreak)]);
+      MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
       exit;
    end;
 
    str := ZLinkHeader + ' PUTMESSAGE ' + t + FillRight(Main.CurrentQSO.BandStr + 'MHz>', 9) + Edit.Text;
    // ListBox.Items.Add(Copy(str, length(ZLinkHeader+' PUTMESSAGE ')+1, 255));
    Add(Copy(str, Length(ZLinkHeader + ' PUTMESSAGE ') + 1, 255));
-   ZLinkForm.WriteData(str + LineBreakCode[ord(ZLinkForm.Console.LineBreak)]);
+   MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
 end;
 
 procedure TChatForm.EditKeyPress(Sender: TObject; var Key: Char);

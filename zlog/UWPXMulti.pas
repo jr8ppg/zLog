@@ -331,7 +331,7 @@ begin
 
    if Sp.NewMulti { Pos('new', temp) > 0 } then begin
       temp := temp + ' at ' + MHzString[aQSO.Band] + 'MHz';
-      CommForm.WriteStatusLine(temp);
+      MainForm.CommForm.WriteStatusLine(temp);
       // CommForm.Show;
    end;
 

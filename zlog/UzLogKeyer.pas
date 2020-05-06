@@ -240,7 +240,7 @@ const
 implementation
 
 uses
-  URigControl;
+  Main, URigControl;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -369,11 +369,11 @@ begin
    end;
 
    if FKeyingPort in [tkpSerial1..tkpSerial20] then begin
-      if RigControl.ZCom3 = nil then begin
+      if MainForm.RigControl.ZCom3 = nil then begin
          Exit;
       end;
 
-      RigControl.ZCom3.ToggleRTS(PTTON);
+      MainForm.RigControl.ZCom3.ToggleRTS(PTTON);
 
       Exit;
    end;
@@ -599,7 +599,7 @@ procedure TdmZLogKeyer.CW_ON;
 begin
    case FKeyingPort of
       tkpSerial1..tkpSerial20: begin
-         RigControl.ZCom3.ToggleDTR(True);
+         MainForm.RigControl.ZCom3.ToggleDTR(True);
       end;
 
       tkpUSB: begin
@@ -612,7 +612,7 @@ procedure TdmZLogKeyer.CW_OFF;
 begin
    case FKeyingPort of
       tkpSerial1..tkpSerial20: begin
-         RigControl.ZCom3.ToggleDTR(False);
+         MainForm.RigControl.ZCom3.ToggleDTR(False);
       end;
 
       tkpUSB: begin

@@ -26,12 +26,10 @@ type
     procedure Open(aQSO : TQSO);
   end;
 
-var
-  SpotForm: TSpotForm;
-
 implementation
 
-uses UComm;
+uses
+  Main, UComm;
 
 {$R *.DFM}
 
@@ -91,7 +89,7 @@ var
 begin
    sendstr := 'DX ' + FreqEdit.Text + ' ' + CallsignEdit.Text + ' ' + CommentEdit.Text;
    // CommForm.WriteLine(sendstr);
-   CommForm.TransmitSpot(sendstr);
+   MainForm.CommForm.TransmitSpot(sendstr);
    Close;
 end;
 

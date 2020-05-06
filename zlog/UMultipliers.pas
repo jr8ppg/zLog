@@ -155,7 +155,7 @@ var
    temp: string;
    B: TBand;
 begin
-   if pos('WAEDC', CONTESTNAME) > 0 then begin
+   if pos('WAEDC', MyContest.Name) > 0 then begin
       Result := SummaryWAE;
       exit;
    end;

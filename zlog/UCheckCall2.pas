@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UCheckWin, StdCtrls, ExtCtrls, Main,
+  UCheckWin, StdCtrls, ExtCtrls,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
@@ -16,10 +16,10 @@ type
     { Public declarations }
   end;
 
-var
-  CheckCall2: TCheckCall2;
-
 implementation
+
+uses
+  Main;
 
 {$R *.DFM}
 

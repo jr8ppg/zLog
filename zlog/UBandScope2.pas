@@ -70,7 +70,6 @@ procedure BSRefresh(Sender : TObject);
 const BSMax = 15;
 var
   CurrentRigFrequency : Integer; // in Hertz
-  BandScope2 : TBandScope2;
   BandScopeArray : array[1..BSMax] of TBandscope2;
 
 implementation
@@ -85,16 +84,16 @@ var
    DispMode: Integer;
    RR: TRig;
 begin
-   BandScope2.RewriteBandScope;
+   MainForm.BandScope2.RewriteBandScope;
    for i := 1 to BSMax do begin
       if BandScopeArray[i] <> nil then begin
          DispMode := BandScopeArray[i].DisplayMode;
          RR := nil;
          case DispMode of
             1:
-               RR := RigControl.Rig1;
+               RR := MainForm.RigControl.Rig1;
             2:
-               RR := RigControl.Rig2;
+               RR := MainForm.RigControl.Rig2;
          end;
          if RR <> nil then
             BandScopeArray[i].SetBandMode(RR.CurrentBand, RR.CurrentMode)
@@ -181,7 +180,7 @@ begin
    // D.Time := Now;
    Main.MyContest.MultiForm.ProcessSpotData(TBaseSpot(D));
    AddAndDisplay(D);
-   ZLinkForm.SendBandScopeData(D.InText);
+   MainForm.ZLinkForm.SendBandScopeData(D.InText);
    // Send spot data to other radios!
 end;
 
@@ -473,8 +472,8 @@ begin
 
    MainForm.CallsignEdit.Text := cstr;
    MainForm.NumberEdit.Text := nstr;
-   if RigControl.Rig <> nil then
-      RigControl.Rig.SetFreq(round(F * 1000));
+   if MainForm.RigControl.Rig <> nil then
+      MainForm.RigControl.Rig.SetFreq(round(F * 1000));
 
    Main.MyContest.MultiForm.SetNumberEditFocus;
    MainForm.UpdateBand(TBand(GetBand(round(F * 1000))));

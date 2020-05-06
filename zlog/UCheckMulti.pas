@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UCheckWin, StdCtrls, ExtCtrls, Main, UzLogConst, UzLogGlobal, UzLogQSO;
+  UCheckWin, StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TCheckMulti = class(TCheckWin)
@@ -15,10 +15,10 @@ type
     procedure Renew(aQSO : TQSO); override;
   end;
 
-var
-  CheckMulti: TCheckMulti;
-
 implementation
+
+uses
+  Main;
 
 {$R *.DFM}
 

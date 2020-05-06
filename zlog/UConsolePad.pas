@@ -23,9 +23,6 @@ type
     procedure AddLine(S : string); virtual;
   end;
 
-var
-  ConsolePad: TConsolePad;
-
 implementation
 
 uses Main;

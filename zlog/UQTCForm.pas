@@ -152,7 +152,7 @@ begin
          cQ.memo := '[QTC' + IntToStr(QTCSeries) + '/' + IntToStr(SpinEdit.Value) + ' ' + QTCReqStn.CallSign +
             FormatDateTime(' yyyy-mm-dd hhnn ', CurrentTime) + ADIFBandString[QTCReqStn.Band] + ']' + cQ.memo;
 
-      ZLinkForm.EditQSObyID(cQ);
+      MainForm.ZLinkForm.EditQSObyID(cQ);
 
       if QTCReqStn.Mode = mCW then begin
          // S := SetStr(cQ.QTCStr, cQ);

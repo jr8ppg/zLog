@@ -81,9 +81,6 @@ type
     property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
-var
-  SuperCheck: TSuperCheck;
-
 implementation
 
 uses

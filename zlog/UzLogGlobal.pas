@@ -137,10 +137,6 @@ type
   end;
 
 var
-  DEBUGMODE : boolean = false;
-  CONTESTNAME : string = '';
-
-var
   CountDownStartTime : TDateTime = 0.0;
   QSYCount : integer = 0;
 
@@ -1123,17 +1119,17 @@ begin
          Main.MyContest.SameExchange := Settings._sameexchange;
       end;
 
-      RigControl.SetBandMask;
+      MainForm.RigControl.SetBandMask;
 
       if Settings._zlinkport in [1 .. 6] then begin // zlinkport rs232c
          // ZLinkForm.Transparent := True;
          // no rs232c anymore
       end;
 
-      CommForm.EnableConnectButton(Settings._clusterport = 7);
+      MainForm.CommForm.EnableConnectButton(Settings._clusterport = 7);
 
-      CommForm.ImplementOptions;
-      ZLinkForm.ImplementOptions;
+      MainForm.CommForm.ImplementOptions;
+      MainForm.ZLinkForm.ImplementOptions;
       dmZlogKeyer.UseSideTone := False;
 
       Case Settings._lptnr of
@@ -1142,7 +1138,7 @@ begin
          end;
 
          1 .. 20: begin
-            RigControl.SetSerialCWKeying(Settings._lptnr);
+            MainForm.RigControl.SetSerialCWKeying(Settings._lptnr);
             dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
          end;
 
@@ -1447,8 +1443,8 @@ procedure TdmZLogGlobal.SetSendFreq(r: double);
 begin
    Settings._sendfreq := r;
 
-   RigControl.Timer1.Interval := Trunc(r * 60000);
-   RigControl.Timer1.Enabled := False;
+   MainForm.RigControl.Timer1.Interval := Trunc(r * 60000);
+   MainForm.RigControl.Timer1.Enabled := False;
 
    if r = 0 then begin
       exit;
@@ -1457,7 +1453,7 @@ begin
    if Settings._rigport[1] <> 0 then begin
       if Settings._zlinkport <> 0 then begin
          if Settings._rigname[1] <> 0 then begin
-            RigControl.Timer1.Enabled := True;
+            MainForm.RigControl.Timer1.Enabled := True;
          end;
       end;
    end;

@@ -16,6 +16,7 @@ object EditDialog: TEditDialog
   Position = poScreenCenter
   Scaled = False
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13

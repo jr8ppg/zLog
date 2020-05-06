@@ -48,9 +48,6 @@ type
     procedure UpdateGraph;
   end;
 
-var
-  RateDialog: TRateDialog;
-
 implementation
 
 uses

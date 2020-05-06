@@ -152,13 +152,13 @@ var
    S: TSpot;
    i: integer;
 begin
-   for i := 0 to CommForm.SpotList.Count - 1 do begin
-      S := TSpot(CommForm.SpotList[i]);
+   for i := 0 to MainForm.CommForm.SpotList.Count - 1 do begin
+      S := TSpot(MainForm.CommForm.SpotList[i]);
       ProcessSpotData(TBaseSpot(S));
    end;
 
-   if CommForm.Visible then
-      CommForm.Renew;
+   if MainForm.CommForm.Visible then
+      MainForm.CommForm.Renew;
 end;
 
 procedure TBasicMulti.RenewBandScope;
@@ -220,8 +220,8 @@ begin
    end;
 
    boo := False;
-   for i := 0 to CommForm.SpotList.Count - 1 do begin
-      S := TBaseSpot(CommForm.SpotList[i]);
+   for i := 0 to MainForm.CommForm.SpotList.Count - 1 do begin
+      S := TBaseSpot(MainForm.CommForm.SpotList[i]);
       if (S.Call = aQSO.Callsign) and (S.Band = aQSO.Band) then begin
          S.NewCty := False;
          S.NewZone := False;
@@ -231,7 +231,7 @@ begin
    end;
 
    if boo then
-      CommForm.Renew;
+      MainForm.CommForm.Renew;
 end;
 
 procedure TBasicMulti.FormCreate(Sender: TObject);

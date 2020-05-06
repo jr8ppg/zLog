@@ -72,16 +72,16 @@ type
     procedure PowerEditChange(Sender: TObject);
     procedure op1Click(Sender: TObject);
     procedure OpEditClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
-  public
-    index :  integer;
     workQSO : TQSO;
     origQSO : TQSO;
     Action : integer;
-    procedure Init(aQSO : TQSO; index_ : integer; Action_ : integer); virtual;
-    procedure ChangePower; virtual;
+  public
     { Public declarations }
+    procedure Init(aQSO : TQSO; Action_ : integer); virtual;
+    procedure ChangePower; virtual;
   end;
 
 implementation
@@ -102,24 +102,18 @@ begin
    NewPowerEdit.Text := workQSO.NewPowerStr;
 end;
 
-procedure TEditDialog.Init(aQSO: TQSO; index_: integer; Action_: integer);
+procedure TEditDialog.Init(aQSO: TQSO; Action_: integer);
 begin
    Action := Action_;
-   ZLinkForm.LockQSO(aQSO); // lock it anyway
-   { if Action = _ActChange then
-     begin
-     ZLinkForm.LockQSO(aQSO);
-     end; }
+   MainForm.ZLinkForm.LockQSO(aQSO); // lock it anyway
+
    case Action of
       _ActChange:
          Caption := 'Edit QSO';
       _ActInsert:
          Caption := 'Insert QSO';
    end;
-   index := index_;
 
-   workQSO := TQSO.Create;
-   origQSO := TQSO.Create;
    workQSO.Assign(aQSO);
    origQSO.Assign(aQSO);
 
@@ -150,10 +144,8 @@ end;
 
 procedure TEditDialog.CancelBtnClick(Sender: TObject);
 begin
-   workQSO.Free;
    MainForm.LastFocus.SetFocus;
-   ZLinkForm.UnlockQSO(origQSO);
-   origQSO.Free;
+   MainForm.ZLinkForm.UnlockQSO(origQSO);
    ModalResult := mrCancel;
    Close;
 end;
@@ -163,40 +155,23 @@ var
    i, j: integer;
    // aQSO : TQSO;
 begin
-
-   // Main.StartDebugTimer;
-
    MyContest.SetNrSent(workQSO);
 
    i := StrToIntDef(SerialEdit.Text, 0);
-   if i > 0 then
+   if i > 0 then begin
       workQSO.Serial := i;
+   end;
 
    if Action = _ActChange then begin
       IncEditCounter(workQSO);
-      // ZLinkForm.EditQSO(origQSO, workQSO); {ZLinkForm takes care of Z-Link availability}
-      ZLinkForm.EditQSObyID(workQSO);
-      // ZLinkForm.EditQSO(TQSO(Log.List[index]), workQSO); {ZLinkForm takes care of Z-Link availability}
-      // TQSO(Log.List[index]).QSO := workQSO.QSO;
+      MainForm.ZLinkForm.EditQSObyID(workQSO);
       origQSO.Reserve := actEdit;
       workQSO.Reserve := actEdit;
-      // Log.AddQue(origQSO);
       Log.AddQue(workQSO);
       Log.ProcessQue;
-      {
-        for i := 1 to Log.TotalQSO do
-        begin
-        if SameQSO(TQSO(Log.List[i]), origQSO) then
-        TQSO(Log.List[i]).QSO := workQSO.QSO;
-        break;
-        end; }
-      workQSO.Free;
-      ZLinkForm.UnlockQSO(origQSO);
-      // Main.EndDebugTimer;
    end;
 
    if Action = _ActInsert then begin
-      // ZLinkForm.InsertQSO(origQSO, workQSO);
       origQSO.Reserve := actInsert;
       workQSO.Reserve := actInsert;
 
@@ -207,27 +182,17 @@ begin
       workQSO.Reserve2 := origQSO.Reserve3;
       workQSO.Reserve3 := j;
 
-      ZLinkForm.InsertQSO(workQSO);
-      // Log.AddQue(origQSO);
+      MainForm.ZLinkForm.InsertQSO(workQSO);
       Log.AddQue(workQSO);
       Log.ProcessQue;
-      workQSO.Free;
-      ZLinkForm.UnlockQSO(origQSO);
-
-      { aQSO := TQSO.Create;
-        aQSO.QSO := workQSO.QSO;
-        Log.Insert(index, aQSO);
-        ZLinkForm.InsertQSO(workQSO, index);
-        workQSO.Free; }
    end;
 
-   origQSO.Free;
-   // Main.StartDebugTimer;
+   MainForm.ZLinkForm.UnlockQSO(origQSO);
+
    MyContest.Renew;
-   // Main.EndDebugTimer;
-   // MainForm.EditScreen.RefreshScreen;
    MainForm.Grid.SetFocus;
    ModalResult := mrOK;
+
    Close;
 end;
 
@@ -249,15 +214,15 @@ begin
 
       'X', 'x': begin
          if HiWord(GetKeyState(VK_SHIFT)) <> 0 then begin
-            RigControl.ToggleCurrentRig;
+            MainForm.RigControl.ToggleCurrentRig;
             Key := #0;
          end;
       end;
 
       'V', 'v': begin
          if HiWord(GetKeyState(VK_SHIFT)) <> 0 then begin
-            if RigControl.Rig <> nil then
-               RigControl.Rig.ToggleVFO;
+            if MainForm.RigControl.Rig <> nil then
+               MainForm.RigControl.Rig.ToggleVFO;
             Key := #0;
          end;
       end;
@@ -340,7 +305,7 @@ begin
             if NumberEdit.Text = '' then begin
             end;
             Key := Chr(0);
-            if Log.IsDupe2(workQSO, index, dupeindex) then begin
+            if Log.IsDupe2(workQSO, 1, dupeindex) then begin
                CallsignEdit.SelectAll;
                exit;
             end;
@@ -619,6 +584,9 @@ var
    i: integer;
    M: TMenuItem;
 begin
+   workQSO := TQSO.Create;
+   origQSO := TQSO.Create;
+
    if MainForm.OpMenu.Items.Count > 0 then begin
       for i := 0 to MainForm.OpMenu.Items.Count - 1 do begin
          M := TMenuItem.Create(Self);
@@ -660,6 +628,12 @@ begin
       M.Tag := MainForm.NewPowerMenu.Items[i].Tag;
       NewPowerMenu.Items.Add(M);
    end;
+end;
+
+procedure TEditDialog.FormDestroy(Sender: TObject);
+begin
+   workQSO.Free;
+   origQSO.Free;
 end;
 
 procedure TEditDialog.MemoEditChange(Sender: TObject);
@@ -743,12 +717,12 @@ begin
       end;
 
       VK_F10: begin
-         PartialCheck.Show;
+         MainForm.PartialCheck.Show;
          if TEdit(Sender).Name = 'NumberEdit' then begin
-            PartialCheck.CheckPartialNumber(workQSO);
+            MainForm.PartialCheck.CheckPartialNumber(workQSO);
          end
          else begin
-            PartialCheck.CheckPartial(workQSO);
+            MainForm.PartialCheck.CheckPartial(workQSO);
          end;
 
          TEdit(Sender).SetFocus;

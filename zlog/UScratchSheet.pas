@@ -26,9 +26,6 @@ type
     { Public declarations }
   end;
 
-var
-  ScratchSheet: TScratchSheet;
-
 implementation
 
 uses Main, UZLinkForm;
@@ -46,7 +43,7 @@ begin
       Chr($0D): begin
          // AddLine(Edit.Text);
          Buffer.Add('&' + Edit.Text);
-         ZLinkForm.SendScratchMessage(Edit.Text);
+         MainForm.ZLinkForm.SendScratchMessage(Edit.Text);
          UpdateData;
          Edit.Text := '';
          // MainForm.ProcessConsoleCommand(str);

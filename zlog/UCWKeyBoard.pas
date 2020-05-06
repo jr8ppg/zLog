@@ -28,9 +28,6 @@ type
     { Public declarations }
   end;
 
-var
-  CWKeyBoard: TCWKeyBoard;
-
 implementation
 
 uses Main, UOptions;

@@ -87,9 +87,6 @@ type
     { Public declarations }
   end;
 
-var
-  CommForm: TCommForm;
-
 implementation
 
 uses
@@ -215,7 +212,7 @@ begin
       end;
 
       if noport then begin
-         ZLinkForm.SendRemoteCluster(Edit.Text);
+         MainForm.ZLinkForm.SendRemoteCluster(Edit.Text);
       end
       else begin
          WriteData(Edit.Text+LineBreakCode[ord(Console.LineBreak)]);
@@ -234,7 +231,7 @@ begin
       ^M, ^N, ^O, ^P, ^Q, ^R, ^S, ^T, ^U, ^V, ^W, ^X, ^Y, ^Z: begin
          s := s + Key;
          if noport then begin
-            ZLinkForm.SendRemoteCluster(s);
+            MainForm.ZLinkForm.SendRemoteCluster(s);
          end
          else begin
             WriteData(s);
@@ -404,13 +401,13 @@ begin
    D.NewZone := Sp.NewZone;
    D.Worked := Sp.Worked;
    D.ClusterData := True;
-   BandScope2.AddAndDisplay(D);
+   MainForm.BandScope2.AddAndDisplay(D);
 end;
 
 procedure TCommForm.TransmitSpot(S : string); // local or via network
 begin
    if dmZlogGlobal.Settings._clusterport = 0 then begin
-      ZLinkForm.SendSpotViaNetwork(S);
+      MainForm.ZLinkForm.SendSpotViaNetwork(S);
    end
    else begin
       WriteLine(S);
@@ -449,14 +446,14 @@ begin
       for j := 1 to length(str) do begin
          if (str[j] = Chr($0D)) or (str[j] = Chr($0A)) then begin
             if _RelayPacketData then begin
-               ZLinkForm.SendPacketData(TrimCRLF(CommTemp));
+               MainForm.ZLinkForm.SendPacketData(TrimCRLF(CommTemp));
             end;
 
             Sp := TSpot.Create;
             if Sp.Analyze(CommTemp) = True then begin
                ProcessSpot(Sp);
                if Relay.Checked then begin
-                  ZLinkForm.RelaySpot(CommTemp);
+                  MainForm.ZLinkForm.RelaySpot(CommTemp);
                end;
             end
             else begin
@@ -505,7 +502,7 @@ begin
    Edit.SetFocus;
 
    if dmZlogGlobal.Settings._clusterport = 0 then begin
-      ZLinkForm.PushRemoteConnect;
+      MainForm.ZLinkForm.PushRemoteConnect;
       exit;
    end;
 
@@ -584,8 +581,8 @@ begin
    Sp := TSpot(SpotList[i]);
 
    if Sp.FreqHz > 0 then begin
-      if RigControl.Rig <> nil then begin
-         RigControl.Rig.SetFreq(Sp.FreqHz);
+      if MainForm.RigControl.Rig <> nil then begin
+         MainForm.RigControl.Rig.SetFreq(Sp.FreqHz);
       end;
    end;
 

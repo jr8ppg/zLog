@@ -169,6 +169,8 @@ type
     function DupeCheck(aQSO: TQSO; fWithMode: Boolean): TQSO;
   end;
 
+  TQSOListArray = array[b19..HiBand] of TQSOList;
+
   TLog = class(TObject)
   private
     FSaved : Boolean;
@@ -179,6 +181,8 @@ type
     FCountHigherPoints : Boolean;
     FDifferentModePointer : Integer; //points to a qso on a different mode but not dupe
     FDupeCheckList: array[b19..HiBand] of TQSOList;
+    FBandList: TQSOListArray;
+    procedure Delete(i : Integer);
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -191,8 +195,10 @@ type
     function TotalMulti2 : Integer;
 
     procedure Add(aQSO : TQSO);
-    procedure Delete(i : Integer);
     procedure Insert(i : Integer; aQSO : TQSO);
+
+    procedure DeleteQSO(aQSO: TQSO);
+
     procedure SaveToFile(Filename : string);
     procedure SaveToFilezLogDOSTXT(Filename : string);
     procedure SaveToFilezLogALL(Filename : string);
@@ -225,6 +231,7 @@ type
     property DifferentModePointer: Integer read FDifferentModePointer write FDifferentModePointer; //points to a qso on a different mode but not dupe
 
     property QsoList: TQSOList read FQsoList;
+    property BandList: TQSOListArray read FBandList;
   end;
 
 implementation
@@ -931,6 +938,7 @@ begin
 
    for B := b19 to HiBand do begin
       FDupeCheckList[B] := TQSOList.Create();
+      FBandList[B] := TQSOList.Create(False);
    end;
 
    Q := TQSO.Create;
@@ -939,6 +947,10 @@ begin
    Q.Time := 0;
    Q.RSTSent := 0;
    Add(Q);
+
+   for B := b19 to HiBand do begin
+      FBandList[B].Add(Q);
+   end;
 
    FSaved := True;
    FQueOK := True;
@@ -953,6 +965,7 @@ var
 begin
    for B := b19 to HiBand do begin
       FDupeCheckList[B].Free();
+      FBandList[B].Free();
    end;
 
    {$IFDEF DEBUG}
@@ -1038,6 +1051,8 @@ begin
    xQSO.Callsign := CoreCall(xQSO.Callsign);
    FDupeCheckList[xQSO.FBand].Add(xQSO);
    FDupeCheckList[xQSO.FBand].Sort(soDupeCheck, FAcceptDifferentMode);
+
+   FBandList[xQSO.Band].Add(aQSO);
 
    FSaved := False;
 end;
@@ -1139,12 +1154,41 @@ begin
 end;
 
 procedure TLog.Delete(i: Integer);
+var
+   aQSO: TQSO;
+   Index: Integer;
 begin
    if i > TotalQSO then begin
       Exit;
    end;
 
+   aQSO := FQsoList[i];
+
+   Index := FBandList[aQSO.Band].IndexOf(aQSO);
+   if Index > -1 then begin
+      FBandList[aQSO.Band].Delete(Index);
+   end;
+
    FQsoList.Delete(i);
+
+   FSaved := False;
+   RebuildDupeCheckList;
+end;
+
+procedure TLog.DeleteQSO(aQSO: TQSO);
+var
+   Index: Integer;
+begin
+   Index := FBandList[aQSO.Band].IndexOf(aQSO);
+   if Index > -1 then begin
+      FBandList[aQSO.Band].Delete(Index);
+   end;
+
+   Index := FQSOList.IndexOf(aQSO);
+   if Index > -1 then begin
+      FQsoList.Delete(Index);
+   end;
+
    FSaved := False;
    RebuildDupeCheckList;
 end;

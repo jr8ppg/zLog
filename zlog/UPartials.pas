@@ -34,6 +34,8 @@ type
       Rect: TRect; State: TOwnerDrawState);
     procedure ListBoxDblClick(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
+    procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer;
+      var Height: Integer);
 
   private
     { Private declarations }
@@ -41,6 +43,8 @@ type
     DispMax : word;
     procedure RenewListBox(QSOList : TQSOList);
     function SortBy: TSortMethod;
+    function GetFontSize(): Integer;
+    procedure SetFontSize(v: Integer);
   public
     { Public declarations }
     _CheckCall : boolean;
@@ -51,10 +55,8 @@ type
     procedure CheckPartialNumber(aQSO : TQSO);
     procedure UpdateData(aQSO : TQSO); // calls either checkpartial or checkpartialnumber
                                    // depending on _CheckCall value;
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
-
-var
-  PartialCheck: TPartialCheck;
 
 implementation
 
@@ -289,27 +291,46 @@ end;
 
 procedure TPartialCheck.ListBoxDrawItem(Control: TWinControl; Index: Integer; Rect: TRect; State: TOwnerDrawState);
 var
-   OffSet: Integer;
+   XOffSet: Integer;
+   YOffSet: Integer;
    S: string;
+   H: Integer;
 begin
    with (Control as TListBox).Canvas do begin
       FillRect(Rect); { clear the rectangle }
-      OffSet := 2; { provide default offset }
+      XOffSet := 2; { provide default offset }
+
+      H := Rect.Bottom - Rect.Top;
+      YOffset := (H - Abs(TListBox(Control).Font.Height)) div 2;
       S := (Control as TListBox).Items[Index];
+
       if S[1] = '*' then begin
          Delete(S, 1, 1);
-         Font.Color := clPurple;
-         // Font.Style := [fsBold];
+         if odSelected in State then begin
+            Font.Color := clYellow;
+         end
+         else begin
+            Font.Color := clPurple;
+            // Font.Style := [fsBold];
+         end;
       end
-      else
-         Font.Color := clWindowText;
-      // Font.Style := [];
-      { if Index = ListBox.ItemIndex then
-        Font.Color := clHighlightText
-        else
-        Font.Color := clWindowText; }
-      TextOut(Rect.Left + OffSet, Rect.Top, S) { display the text }
+      else begin
+         if odSelected in State then begin
+            Font.Color := clWhite;
+         end
+         else begin
+            Font.Color := clWindowText;
+         end;
+      end;
+
+      TextOut(Rect.Left + XOffSet, Rect.Top + YOffSet, S) { display the text }
    end;
+end;
+
+procedure TPartialCheck.ListBoxMeasureItem(Control: TWinControl; Index: Integer;
+  var Height: Integer);
+begin
+   Height := Abs(TListBox(Control).Font.Height) + 4;
 end;
 
 procedure TPartialCheck.ListBoxDblClick(Sender: TObject);
@@ -329,6 +350,16 @@ begin
       FormStyle := fsStayOnTop
    else
       FormStyle := fsNormal;
+end;
+
+function TPartialCheck.GetFontSize(): Integer;
+begin
+   Result := ListBox.Font.Size;
+end;
+
+procedure TPartialCheck.SetFontSize(v: Integer);
+begin
+   ListBox.Font.Size := v;
 end;
 
 end.

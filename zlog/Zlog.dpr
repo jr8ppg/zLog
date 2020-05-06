@@ -106,23 +106,6 @@ begin
   Application.CreateForm(TdmZLogGlobal, dmZLogGlobal);
   Application.CreateForm(TdmZLogKeyer, dmZLogKeyer);
   Application.CreateForm(TMainForm, MainForm);
-  Application.CreateForm(TRigControl, RigControl);
-  Application.CreateForm(TPartialCheck, PartialCheck);
-  Application.CreateForm(TRateDialog, RateDialog);
-  Application.CreateForm(TSuperCheck, SuperCheck);
-  Application.CreateForm(TCommForm, CommForm);
-  Application.CreateForm(TCWKeyBoard, CWKeyBoard);
-  Application.CreateForm(TChatForm, ChatForm);
-  Application.CreateForm(TZServerInquiry, ZServerInquiry);
-  Application.CreateForm(TZLinkForm, ZLinkForm);
-  Application.CreateForm(TSpotForm, SpotForm);
-  Application.CreateForm(TConsolePad, ConsolePad);
-  Application.CreateForm(TFreqList, FreqList);
-  Application.CreateForm(TCheckCall2, CheckCall2);
-  Application.CreateForm(TCheckMulti, CheckMulti);
-  Application.CreateForm(TCheckCountry, CheckCountry);
-  Application.CreateForm(TScratchSheet, ScratchSheet);
-  Application.CreateForm(TBandScope2, BandScope2);
   Application.ShowMainForm := False;
 //  Application.MainFormOnTaskBar := True;
 
