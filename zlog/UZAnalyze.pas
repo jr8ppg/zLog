@@ -120,6 +120,9 @@ begin
          ShowZAQ(sl);
       end;
    end;
+
+   Memo1.SelStart := 0;
+   Memo1.SelLength := 0;
 end;
 
 procedure TZAnalyze.InitTimeChart();
@@ -145,12 +148,15 @@ var
    t: Integer;
    base_dt: TDateTime;
    dt: TDateTime;
+   offset_hour: Integer;
 begin
    if Log.Count = 1 then begin
       Exit;
    end;
 
    base_dt := Log.List[1].Time;
+
+   offset_hour := HourOf(base_dt) - 1;
 
    for i := 1 to Log.Count - 1 do begin
       qso := Log.List[i];
@@ -159,10 +165,10 @@ begin
       dt := qso.Time;
 
       if DayOf(base_dt) = DayOf(dt) then begin
-         t := HourOf(dt) - 20;
+         t := HourOf(dt) - offset_hour;
       end
       else begin
-         t := HourOf(dt) + 4;
+         t := HourOf(dt) + 24 - offset_hour;
       end;
 
       if (t < 1) or (t > 24) then begin
