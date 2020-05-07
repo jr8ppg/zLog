@@ -56,14 +56,19 @@ type
       DataSize: Cardinal);
     procedure TelnetDataAvailable(Sender: TTnCnx; Buffer: Pointer;
       Len: Integer);
+    procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer;
+      var Height: Integer);
   private
+    { Private declarations }
     SpotIndex : array[0..SPOTMAX] of integer;
     CommBuffer : TStringList;
     CommTemp : string; {command work string}
     CommStarted : boolean;
     _RelayPacketData : boolean;
-    { Private declarations }
+    function GetFontSize(): Integer;
+    procedure SetFontSize(v: Integer);
   public
+    { Public declarations }
     SpotList : TList;
     procedure DeleteSpot(_from, _to : integer);
     procedure AddListBox(S : string);
@@ -84,7 +89,7 @@ type
     procedure WriteStatusLine(S : string);
     procedure Renew; // red or black
     procedure RemoteConnectButtonPush;
-    { Public declarations }
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -607,29 +612,56 @@ begin
    end;
 end;
 
+procedure TCommForm.ListBoxMeasureItem(Control: TWinControl; Index: Integer;
+  var Height: Integer);
+begin
+   Height := Abs(TListBox(Control).Font.Height) + 4;
+end;
+
 procedure TCommForm.ListBoxDrawItem(Control: TWinControl; Index: Integer;
   Rect: TRect; State: TOwnerDrawState);
 var
-   Offset : integer;
+   XOffSet: Integer;
+   YOffSet: Integer;
    S : string;
+   H: Integer;
 begin
    with (Control as TListBox).Canvas do begin
       FillRect(Rect);								{ clear the rectangle }
-      Offset := 2;								{ provide default offset }
+      XOffset := 2;								{ provide default offset }
+
+      H := Rect.Bottom - Rect.Top;
+      YOffset := (H - Abs(TListBox(Control).Font.Height)) div 2;
+
       S := (Control as TListBox).Items[Index];
       if TSpot(SpotList[Index]).NewMulti then begin
+         if odSelected in State then begin
+            Font.Color := clFuchsia;
+         end
+         else begin
          Font.Color := clRed;
+         end;
       end
       else begin
          if TSpot(SpotList[Index]).Worked then begin
+            if odSelected in State then begin
+               Font.Color := clWhite;
+            end
+            else begin
             Font.Color := clBlack;
+            end;
+         end
+         else begin
+            if odSelected in State then begin
+               Font.Color := clYellow;
          end
          else begin
             Font.Color := clGreen;
+            end;
          end;
       end;
 
-      TextOut(Rect.Left + Offset, Rect.Top, S)								{ display the text }
+      TextOut(Rect.Left + XOffset, Rect.Top + YOffSet, S)								{ display the text }
    end;
 end;
 
@@ -667,6 +699,17 @@ var
 begin
    str := string(AnsiStrings.StrPas(PAnsiChar(Buffer)));
    CommBuffer.Add(str);
+end;
+
+function TCommForm.GetFontSize(): Integer;
+begin
+   Result := ListBox.Font.Size;
+end;
+
+procedure TCommForm.SetFontSize(v: Integer);
+begin
+   ListBox.Font.Size := v;
+   Console.Font.Size := v;
 end;
 
 end.

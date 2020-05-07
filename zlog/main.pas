@@ -4371,6 +4371,7 @@ begin
 
    FSuperCheck.FontSize := font_size;
    FPartialCheck.FontSize := font_size;
+   FCommForm.FontSize := font_size;
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
