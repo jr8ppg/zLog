@@ -138,6 +138,7 @@ object RateDialog: TRateDialog
         '12'
         '18'
         '24'
+        '36'
         '48')
     end
     object check3D: TCheckBox
