@@ -333,6 +333,10 @@ var
    i, j: integer;
    str: string;
 begin
+   if FSuperChecked = False then begin
+      Exit;
+   end;
+
    i := ListBox.ItemIndex;
    str := ListBox.Items[i];
 
