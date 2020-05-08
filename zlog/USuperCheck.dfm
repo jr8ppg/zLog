@@ -16,6 +16,7 @@ object SuperCheck: TSuperCheck
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -28,7 +29,7 @@ object SuperCheck: TSuperCheck
     TabOrder = 0
     object Label1: TLabel
       Left = 163
-      Top = 10
+      Top = 11
       Width = 40
       Height = 13
       Caption = 'Columns'
@@ -53,7 +54,7 @@ object SuperCheck: TSuperCheck
     end
     object SpinEdit: TSpinEdit
       Left = 208
-      Top = 6
+      Top = 7
       Width = 33
       Height = 22
       MaxValue = 5

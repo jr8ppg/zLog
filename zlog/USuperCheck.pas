@@ -11,6 +11,9 @@ uses
   Generics.Collections, Generics.Defaults,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
+const
+  WM_SPCCHK_RENEW = (WM_USER + 100);
+
 type
   TSuperData = class(TObject)
   private
@@ -58,16 +61,21 @@ type
     procedure StayOnTopClick(Sender: TObject);
     procedure SpinEditChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
+    FDataLoading: Boolean;
+    FSuperChecked: Boolean;
     FSuperCheckList: TSuperList;
     FTwoLetterMatrix: array[0..255, 0..255] of TSuperList; // 2.1f
+    procedure OnSpcChkRenew( var Message: TMessage ); message WM_SPCCHK_RENEW;
     function PartialMatch(A, B: string): boolean;
     procedure LoadSpcFile(strStartFoler: string);
     procedure LoadLogFiles(strStartFoler: string);
     procedure ListToTwoMatrix(L: TQSOList);
     procedure SetTwoMatrix(D: TDateTime; C, N: string);
     procedure FreeData();
+    procedure DataLoad();
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
   public
@@ -100,14 +108,13 @@ var
 begin
    Rcvd_Estimate := '';
    FirstDataCall := '';
+   FSuperChecked := False;
    FSuperCheckList := nil;
    for i := 0 to 255 do begin
       for j := 0 to 255 do begin
          FTwoLetterMatrix[i, j] := nil;
       end;
    end;
-
-   Renew();
 end;
 
 procedure TSuperCheck.FormDestroy(Sender: TObject);
@@ -121,6 +128,11 @@ begin
       VK_ESCAPE:
          MainForm.LastFocus.SetFocus;
    end;
+end;
+
+procedure TSuperCheck.FormShow(Sender: TObject);
+begin
+   Renew();
 end;
 
 procedure TSuperCheck.Button3Click(Sender: TObject);
@@ -229,45 +241,62 @@ begin
       Rcvd_Estimate := FirstData.number;
    end;
 
-   ListBox.Enabled := True;
+   FSuperChecked := True;
 end;
 
 procedure TSuperCheck.Renew();
+begin
+   if FDataLoading = True then begin
+      Exit;
+   end;
+
+   PostMessage(Handle, WM_SPCCHK_RENEW, 0, 0);
+end;
+
+procedure TSuperCheck.DataLoad();
 var
    i: Integer;
    j: Integer;
    strFolder: string;
 begin
-   ListBox.Clear();
+   FDataLoading := True;
+   FSuperChecked := False;
+   try
+      ListBox.Clear();
 
-   FreeData();
+      FreeData();
 
-   FSuperCheckList := TSuperList.Create(True);
+      FSuperCheckList := TSuperList.Create(True);
 
-   for i := 0 to 255 do begin // 2.1f
-      for j := 0 to 255 do begin
-         FTwoLetterMatrix[i, j] := TSuperList.Create(True);
-      end;
-   end;
-
-   strFolder := dmZlogGlobal.Settings.FSuperCheck.FSuperCheckFolder;
-
-   case dmZlogGlobal.Settings.FSuperCheck.FSuperCheckMethod of
-      // SPC
-      0: begin
-         LoadSpcFile(strFolder);
+      for i := 0 to 255 do begin // 2.1f
+         for j := 0 to 255 do begin
+            FTwoLetterMatrix[i, j] := TSuperList.Create(True);
+         end;
       end;
 
-      // ZLO
-      1: begin
-         LoadLogFiles(strFolder);
-      end
+      strFolder := dmZlogGlobal.Settings.FSuperCheck.FSuperCheckFolder;
 
-      // Both
-      else begin
-         LoadSpcFile(strFolder);
-         LoadLogFiles(strFolder);
+      case dmZlogGlobal.Settings.FSuperCheck.FSuperCheckMethod of
+         // SPC
+         0: begin
+            LoadSpcFile(strFolder);
+         end;
+
+         // ZLO
+         1: begin
+            LoadLogFiles(strFolder);
+         end
+
+         // Both
+         else begin
+            LoadSpcFile(strFolder);
+            LoadLogFiles(strFolder);
+         end;
       end;
+
+      ListBox.Items.Add(IntToStr(FSuperCheckList.Count) + ' QSOs Merged');
+   finally
+      FDataLoading := False;
    end;
 end;
 
@@ -339,6 +368,7 @@ var
    i: Integer;
    str: string;
    dtNow: TDateTime;
+   cnt: Integer;
 begin
    // 指定フォルダ優先
    filename := IncludeTrailingPathDelimiter(strStartFoler) + 'ZLOG.SPC';
@@ -351,6 +381,8 @@ begin
    end;
 
    dtNow := Now;
+
+   cnt := 0;
 
    AssignFile(F, filename);
    Reset(F);
@@ -381,7 +413,10 @@ begin
       end;
 
       SetTwoMatrix(dtNow, C, N);
+      Inc(cnt);
    end;
+
+   ListBox.Items.Add(filename + ' ' + IntToStr(cnt) + ' QSOs Loaded');
 
    CloseFile(F);
 end;
@@ -403,6 +438,8 @@ begin
 
       ret := FindFirst(S + '*.ZLO', faAnyFile, F);
       while ret = 0 do begin
+         Application.ProcessMessages();
+
          if ((F.Attr and faDirectory) = 0) and
             ((F.Attr and faVolumeID) = 0) and
             ((F.Attr and faSysFile) = 0) then begin
@@ -419,6 +456,8 @@ begin
             // TwoMatrixに展開
             ListToTwoMatrix(L);
          end;
+
+         ListBox.Items.Add(F.Name + ' ' + IntToStr(L.Count) + ' QSOs Loaded');
 
          // 次のファイル
          ret := FindNext(F);
@@ -484,6 +523,11 @@ begin
          sd2.Free();
       end;
    end;
+end;
+
+procedure TSuperCheck.OnSpcChkRenew( var Message: TMessage );
+begin
+   DataLoad();
 end;
 
 { TSuperData }
