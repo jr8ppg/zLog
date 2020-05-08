@@ -2833,6 +2833,8 @@ begin
          L := Log.QsoList;
       end;
 
+      Grid.RowCount := (((L.Count div 50) + 1) * 50) + 1;
+
       for i := 1 to L.Count - 1 do begin
          WriteQSO(i, L.Items[i]);
       end;
