@@ -39,6 +39,8 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 # 令和 Edition
 ## ビルド方法 de JR8PPG
 
+(0)バージョン 2.3.6.0よりTeeChart Standardコンポーネントを使用しています。Delphiに付属していますが、Delphiインストール時に指定してインストールするか、インストール後は、ウェルカムページ内の「機能拡張」－「プラットフォーム＆拡張マネージャ」をクリックすると、「RAD Studio 追加オプション」ウインドウが表示されるので、「追加オプション」タブ内にある「TeeChart Standard」をチェックONとし、「適用」ボタンクリックでコンポーネントをインストールできます。
+
 (1)Delphi 10.3.2でビルドするにあたり、ICSは下記のサイトのICSV8.58を使用
 
 http://www.overbyte.eu/frame_index.html?redirTo=/products/ics.html
@@ -99,11 +101,11 @@ JEDI-Install.txt参照
 ## 動作確認済み無線機
 
 ### ICOM
-* IC-706mkII,IC-756PRO,IC-756PRO2,IC-7100,IC-7300
+* IC-706mkII,IC-756PRO,IC-756PRO2,IC-7100,IC-7200,IC-7300
 ### KENWOOD
 * TS-570
 ### YAESU
-* FT-2000/FT-950/FT-450
+* FT-2000/FT-950/FT-450/FTDX-5000
 * FT-920
 * FT-1000MP
 
