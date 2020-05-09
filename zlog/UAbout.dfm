@@ -3,7 +3,7 @@ object AboutBox: TAboutBox
   Top = 271
   BorderStyle = bsDialog
   Caption = 'About zLog for Windows'
-  ClientHeight = 309
+  ClientHeight = 324
   ClientWidth = 321
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object AboutBox: TAboutBox
   OnShow = FormShow
   DesignSize = (
     321
-    309)
+    324)
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -138,7 +138,7 @@ object AboutBox: TAboutBox
   end
   object OKButton: TButton
     Left = 128
-    Top = 284
+    Top = 299
     Width = 65
     Height = 22
     Anchors = [akLeft, akBottom]
@@ -147,12 +147,13 @@ object AboutBox: TAboutBox
     ModalResult = 1
     TabOrder = 1
     OnClick = OKButtonClick
+    ExplicitTop = 284
   end
   object Panel2: TPanel
     Left = 8
     Top = 175
     Width = 305
-    Height = 106
+    Height = 118
     BevelInner = bvRaised
     BevelOuter = bvLowered
     Font.Charset = DEFAULT_CHARSET
@@ -196,15 +197,19 @@ object AboutBox: TAboutBox
     object Label5: TLabel
       Left = 8
       Top = 80
-      Width = 247
-      Height = 12
-      Caption = #21332#21147':JH1KVQ,JE1BJP,JR8VSE,JG8LOL,JR8LRQ'
+      Width = 287
+      Height = 36
+      AutoSize = False
+      Caption = 
+        #21332#21147':JH1KVQ, JE1BJP, JR8VSE, JG8LOL, JR8LRQ, JL1LNC, 7M4KSC, JA1AB' +
+        'C'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
       Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
+      WordWrap = True
     end
     object LinkLabel1: TLinkLabel
       Left = 8

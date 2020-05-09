@@ -620,14 +620,29 @@ begin
       Offset := 2;								{ provide default offset }
       S := (Control as TListBox).Items[Index];
       if TSpot(SpotList[Index]).NewMulti then begin
-         Font.Color := clRed;
+         if odSelected in State then begin
+            Font.Color := clFuchsia;
+         end
+         else begin
+            Font.Color := clRed;
+         end;
       end
       else begin
          if TSpot(SpotList[Index]).Worked then begin
-            Font.Color := clBlack;
+            if odSelected in State then begin
+               Font.Color := clWhite;
+            end
+            else begin
+               Font.Color := clBlack;
+            end;
          end
          else begin
-            Font.Color := clGreen;
+            if odSelected in State then begin
+               Font.Color := clYellow;
+            end
+            else begin
+               Font.Color := clGreen;
+            end;
          end;
       end;
 

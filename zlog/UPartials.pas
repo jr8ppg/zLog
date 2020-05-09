@@ -37,6 +37,8 @@ type
       Rect: TRect; State: TOwnerDrawState);
     procedure ListBoxDblClick(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
+    procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer;
+      var Height: Integer);
 
   private
     TempQSO : TQSO;
@@ -443,31 +445,48 @@ begin
   Update(Main.CurrentQSO);
 end;
 
-procedure TPartialCheck.ListBoxDrawItem(Control: TWinControl;
-  Index: Integer; Rect: TRect; State: TOwnerDrawState);
-var OffSet : integer;
+procedure TPartialCheck.ListBoxDrawItem(Control: TWinControl; Index: Integer; Rect: TRect; State: TOwnerDrawState);
+var
+   XOffSet: Integer;
+   YOffSet: Integer;
     S : string;
+   H: Integer;
 begin
-with (Control as TListBox).Canvas do
-  begin
+   with (Control as TListBox).Canvas do begin
     FillRect(Rect);								{ clear the rectangle }
-    Offset := 2;								{ provide default offset }
+      XOffSet := 2; { provide default offset }
+
+      H := Rect.Bottom - Rect.Top;
+      YOffset := (H - Abs(TListBox(Control).Font.Height)) div 2;
     S := (Control as TListBox).Items[Index];
-    if S[1] = '*' then
-      begin
+
+      if S[1] = '*' then begin
         Delete(S, 1, 1);
+         if odSelected in State then begin
+            Font.Color := clYellow;
+         end
+         else begin
         Font.Color := clPurple;
         //Font.Style := [fsBold];
+         end;
       end
-    else
+      else begin
+         if odSelected in State then begin
+            Font.Color := clWhite;
+      end
+         else begin
       Font.Color := clWindowText;
-      //Font.Style := [];
-      {if Index = ListBox.ItemIndex then
-        Font.Color := clHighlightText
-      else
-        Font.Color := clWindowText;}
-    TextOut(Rect.Left + Offset, Rect.Top, S)								{ display the text }
   end;
+end;
+
+      TextOut(Rect.Left + XOffSet, Rect.Top + YOffSet, S) { display the text }
+   end;
+end;
+
+procedure TPartialCheck.ListBoxMeasureItem(Control: TWinControl; Index: Integer;
+  var Height: Integer);
+begin
+   Height := Abs(TListBox(Control).Font.Height) + 4;
 end;
 
 procedure TPartialCheck.ListBoxDblClick(Sender: TObject);

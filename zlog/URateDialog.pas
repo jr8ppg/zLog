@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, System.Math,
+  Buttons, ExtCtrls, System.Math, System.DateUtils,
   VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart,
   UOptions, UzLogGlobal, VCLTee.Series;
 
@@ -226,6 +226,7 @@ var
    Str: string;
    _start: TDateTime;
    H, M, S, ms: Word;
+   D: Integer;
    i: Integer;
    aQSO: TQSO;
    diff: TDateTime;
@@ -265,6 +266,8 @@ begin
       else begin
          diff := aQSO.QSO.Time - _start;
          DecodeTime(diff, H, M, S, ms);
+         D := Trunc(DaySpan(aQSO.QSO.Time, _start));
+         H := H + (D * 24);
          if (H > 47) then begin
             Continue;
          end;

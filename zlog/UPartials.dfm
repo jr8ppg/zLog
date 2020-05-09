@@ -21,7 +21,7 @@ object PartialCheck: TPartialCheck
     Top = 0
     Width = 303
     Height = 190
-    Style = lbOwnerDrawFixed
+    Style = lbOwnerDrawVariable
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -29,12 +29,12 @@ object PartialCheck: TPartialCheck
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Pitch = fpFixed
     Font.Style = []
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     ItemHeight = 13
     ParentFont = False
     TabOrder = 0
     OnDblClick = ListBoxDblClick
     OnDrawItem = ListBoxDrawItem
+    OnMeasureItem = ListBoxMeasureItem
   end
   object Panel: TPanel
     Left = 0

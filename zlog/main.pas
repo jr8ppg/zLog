@@ -7330,6 +7330,9 @@ begin
       BandEdit.Text := MHzString[CurrentQSO.QSO.Band];
       CurrentQSO.QSO.TX := dmZlogGlobal.TXNr;
 
+      // ç≈èâÇÕCQÉÇÅ[ÉhÇ©ÇÁ
+      SetCQ(True);
+
       if CurrentQSO.QSO.mode in [mCW, mRTTY] then begin
          Grid.Align := alNone;
          CWToolBar.Visible := True;
