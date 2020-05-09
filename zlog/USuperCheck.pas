@@ -197,7 +197,6 @@ begin
       Exit;
    end;
 
-   ListBox.Enabled := False;
    hit := 0;
 
    if (length(PartialStr) >= 2) and (Pos('.', PartialStr) = 0) then begin
