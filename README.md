@@ -36,30 +36,44 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 ここにMITライセンスによるオープンソースとして公開します．有志による改良を期待します．
 
 ------
-# 令和 Edition
-## ビルド方法 de JR8PPG
+# 令和 Second Edition
+## Delphi 10.3.3 Community Editionでのビルド方法 de JR8PPG
 
-(0)バージョン 2.3.6.0よりTeeChart Standardコンポーネントを使用しています。Delphiに付属していますが、Delphiインストール時に指定してインストールするか、インストール後は、ウェルカムページ内の「機能拡張」－「プラットフォーム＆拡張マネージャ」をクリックすると、「RAD Studio 追加オプション」ウインドウが表示されるので、「追加オプション」タブ内にある「TeeChart Standard」をチェックONとし、「適用」ボタンクリックでコンポーネントをインストールできます。
+1. TeeChart Standard（Delphi付属）のインストール
+   - Delphiインストール時に指定するか、インストール後にウェルカムページ内の「機能拡張」－「プラットフォーム＆拡張マネージャ」よりインストール。（「RAD Studio 追加オプション」ウインドウの「追加オプション」タブ内にある「TeeChart Standard」をチェックON）
 
-(1)Delphi 10.3.2でビルドするにあたり、ICSは下記のサイトのICSV8.58を使用
+2. ICS for VCL 8.62 のインストール
+   - ウェルカムページの「GetItからアドオンを取得する」をクリック。
+   - 「GetItパッケージマネージャ」ウインドウで「ICS for VCL 8.62」を選択し、「インストール」ボタンをクリック。
+   - 後は画面の指示に従ってインストールする。
 
-http://www.overbyte.eu/frame_index.html?redirTo=/products/ics.html
+3. JEDI Code Library 3.3 のインストール
 
-InstallフォルダのD103Install.groupprojを開き、ビルド→インストール 
+   - ウェルカムページの「GetItからアドオンを取得する」をクリック。
+   - 「GetItパッケージマネージャ」ウインドウで「JEDI Code Library 3.3」を選択し、「インストール」ボタンをクリック。
+   - 後は画面の指示に従ってインストールする。
+   - RAD Studioを再起動するようにとのメッセージが出るので、Delphiを終了する。
+   - 終了させるとJEDIインストーラがいるので、指示に従ってインストールを完了させる。
+   - インストール後、Delphiを起動する。
 
-(2)Project-JEDIよりJCL/JVCLを入手し、インストール
+4. JEDI Visual Component Library 3.8 のインストール
 
-https://github.com/project-jedi
+   - ウェルカムページの「GetItからアドオンを取得する」をクリック。
+   - 「GetItパッケージマネージャ」ウインドウで「JEDI Visual Component Library 3.8」を選択し、「インストール」ボタンをクリック。
+   - 後は画面の指示に従ってインストールする。
+   - RAD Studioを再起動するようにとのメッセージが出るので、Delphiを終了する。
+   - 終了させるとJVCLインストーラがいるので、指示に従ってインストールを完了させる。
+   - インストール後、Delphiを起動する。
+   - 時間かかります。
 
-JEDI-Install.txt参照
+5. zlog_requires のインストール
 
-(3)VCLフォルダのzlog_requires.dpkを開き、ビルド→インストール
+   - VCLフォルダのzlog_requires.dpkを開き、ビルド→インストール
+   - オプション－言語－DelphiでライブラリパスにVCLフォルダとその下を追加
 
-(4)オプション－言語－DelphiでライブラリパスにVCLフォルダとその下を追加
+6. zlogフォルダのzlog.dprojを開き、ビルド
 
-(5)zlogフォルダのzlog.dprojを開き、ビルド
-
-(6)完成
+7. 完成
 
 ## オリジナルからの変更点
 
