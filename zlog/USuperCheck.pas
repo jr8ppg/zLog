@@ -375,7 +375,7 @@ var
 begin
    // 指定フォルダ優先
    filename := IncludeTrailingPathDelimiter(strStartFoler) + 'ZLOG.SPC';
-   if FileExists(filename) = False then begin
+   if (strStartFoler = '') or (FileExists(filename) = False) then begin
       // 無ければZLOG.EXEを同じ場所（従来通り）
       filename := ExtractFilePath(Application.EXEName) + 'ZLOG.SPC';
       if FileExists(filename) = False then begin
