@@ -4371,7 +4371,6 @@ begin
    Grid.Refresh();
 
    dmZlogGlobal.Settings._mainfontsize := font_size;
-   dmZlogGlobal.SaveCurrentSettings();
 
    PostMessage(Handle, WM_ZLOG_SETGRIDCOL, 0, 0);
 
@@ -7044,8 +7043,6 @@ begin
       end;
 
       FPostContest := menu.PostContest;
-
-      dmZlogGlobal.SaveCurrentSettings;
 
       { Open New Contest from main menu }
       if MyContest <> nil then begin

@@ -317,6 +317,7 @@ end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
 begin
+   SaveCurrentSettings();
    OpList.Free();
    FLog.Free();
 end;
