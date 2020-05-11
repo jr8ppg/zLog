@@ -4544,11 +4544,11 @@ begin
       end;
 
       ^Z: begin
-         if CurrentQSO.mode = mCW then
-            CQRepeatClick2(Sender)
-         else
-            // CQRepeatVoice2Click(Sender);
-            Key := #0;
+         if CurrentQSO.mode = mCW then begin
+            CQRepeatClick2(Sender);
+         end;
+
+         Key := #0;
       end;
 
       ^T: begin
@@ -5806,8 +5806,10 @@ begin
       end;
 
       ^Z: begin
-         if CurrentQSO.mode = mCW then
+         if CurrentQSO.mode = mCW then begin
             CQRepeatClick2(Sender);
+         end;
+
          Key := #0;
       end;
 
