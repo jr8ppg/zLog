@@ -24,10 +24,10 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 325
-    ActivePage = PrefTabSheet
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
-    object PrefTabSheet: TTabSheet
+    object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
       object Label40: TLabel
         Left = 184
@@ -321,12 +321,8 @@ object formOptions: TformOptions
         TabOrder = 7
       end
     end
-    object TabSheet2: TTabSheet
+    object tabsheetCategories: TTabSheet
       Caption = 'Categories'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label14: TLabel
         Left = 248
         Top = 92
@@ -571,12 +567,8 @@ object formOptions: TformOptions
         TabOrder = 9
       end
     end
-    object CWTabSheet: TTabSheet
+    object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -1002,13 +994,9 @@ object formOptions: TformOptions
         TabOrder = 13
       end
     end
-    object VoiceTabSheet: TTabSheet
+    object tabsheetVoice: TTabSheet
       Caption = 'Voice'
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 8
         Top = 8
@@ -1296,12 +1284,8 @@ object formOptions: TformOptions
         end
       end
     end
-    object TabSheet5: TTabSheet
+    object tabsheetHardware: TTabSheet
       Caption = 'Hardware'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox6: TGroupBox
         Left = 5
         Top = 0
@@ -1661,12 +1645,8 @@ object formOptions: TformOptions
         end
       end
     end
-    object tbRigControl: TTabSheet
+    object tabsheetRigControl: TTabSheet
       Caption = 'Rig control'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label45: TLabel
         Left = 8
         Top = 138
@@ -1748,12 +1728,8 @@ object formOptions: TformOptions
         TabOrder = 6
       end
     end
-    object TabSheet1: TTabSheet
+    object tabsheetPath: TTabSheet
       Caption = 'Path'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label50: TLabel
         Left = 16
         Top = 18
@@ -1818,7 +1794,7 @@ object formOptions: TformOptions
         OnClick = BrowsePathClick
       end
     end
-    object tbMisc: TTabSheet
+    object tabsheetMisc: TTabSheet
       Caption = 'Misc'
       object Label47: TLabel
         Left = 16
@@ -1970,10 +1946,6 @@ object formOptions: TformOptions
     object tabsheetQuickQSY: TTabSheet
       Caption = 'Quick QSY'
       ImageIndex = 8
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label54: TLabel
         Left = 98
         Top = 3

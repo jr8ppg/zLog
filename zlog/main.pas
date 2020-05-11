@@ -6030,6 +6030,8 @@ var
 begin
    f := TformOptions.Create(Self);
    try
+      f.CWEditMode := 0;
+
       if f.ShowModal() <> mrOK then begin
          Exit;
       end;
@@ -6060,25 +6062,7 @@ var
 begin
    f := TformOptions.Create(Self);
    try
-      f.PageControl.ActivePage := f.CWTabSheet;
-      case TMenuItem(Sender).Tag of
-         1:
-            f.Edit1.SetFocus;
-         2:
-            f.Edit2.SetFocus;
-         3:
-            f.Edit3.SetFocus;
-         4:
-            f.Edit4.SetFocus;
-         5:
-            f.Edit5.SetFocus;
-         6:
-            f.Edit6.SetFocus;
-         7:
-            f.Edit7.SetFocus;
-         8:
-            f.Edit8.SetFocus;
-      end;
+      f.CWEditMode := TMenuItem(Sender).Tag;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
@@ -6086,6 +6070,7 @@ begin
 
       RenewCWToolBar;
       RenewVoiceToolBar;
+
       LastFocus.SetFocus;
    finally
       f.Release();

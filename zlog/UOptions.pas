@@ -11,12 +11,12 @@ uses
 type
   TformOptions = class(TForm)
     PageControl: TPageControl;
-    PrefTabSheet: TTabSheet;
-    TabSheet2: TTabSheet;
-    CWTabSheet: TTabSheet;
-    VoiceTabSheet: TTabSheet;
-    TabSheet5: TTabSheet;
-    tbRigControl: TTabSheet;
+    tabsheetPreferences: TTabSheet;
+    tabsheetCategories: TTabSheet;
+    tabsheetCW: TTabSheet;
+    tabsheetVoice: TTabSheet;
+    tabsheetHardware: TTabSheet;
+    tabsheetRigControl: TTabSheet;
     Panel1: TPanel;
     buttonOK: TButton;
     buttonCancel: TButton;
@@ -166,7 +166,7 @@ type
     comboRig2Port: TComboBox;
     comboRig2Name: TComboBox;
     Label44: TLabel;
-    tbMisc: TTabSheet;
+    tabsheetMisc: TTabSheet;
     cbRITClear: TCheckBox;
     rgBandData: TRadioGroup;
     cbDontAllowSameBand: TCheckBox;
@@ -186,7 +186,7 @@ type
     cbRecordRigFreq: TCheckBox;
     cbTransverter1: TCheckBox;
     cbTransverter2: TCheckBox;
-    TabSheet1: TTabSheet;
+    tabsheetPath: TTabSheet;
     Label50: TLabel;
     edCFGDATPath: TEdit;
     btnBrowseCFGDATPath: TButton;
@@ -275,6 +275,7 @@ type
     procedure checkUseQuickQSYClick(Sender: TObject);
     procedure buttonSuperCheckFolderRefClick(Sender: TObject);
   private
+    FCWEditMode: Integer;
     TempVoiceFiles : array[1..10] of string;
     TempCurrentBank : integer;
     TempCWStrBank : array[1..maxbank,1..maxmaxstr] of string; // used temporarily while options window is open
@@ -290,6 +291,7 @@ type
     procedure InitRigNames();
   public
     procedure RenewSettings; {Reads controls and updates Settings}
+    property CWEditMode: Integer read FCWEditMode write FCWEditMode;
   end;
 
 implementation
@@ -721,6 +723,42 @@ begin
       end;
       editSuperCheckFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
    end;
+
+   if FCWEditMode = 0 then begin
+      tabsheetPreferences.TabVisible := True;
+      tabsheetCategories.TabVisible := True;
+      tabsheetCW.TabVisible := True;
+      tabsheetVoice.TabVisible := False;
+      tabsheetHardware.TabVisible := True;
+      tabsheetRigControl.TabVisible := True;
+      tabsheetPath.TabVisible := True;
+      tabsheetMisc.TabVisible := True;
+      tabsheetQuickQSY.TabVisible := True;
+   end
+   else begin
+      PageControl.ActivePage := tabsheetCW;
+
+      tabsheetPreferences.TabVisible := False;
+      tabsheetCategories.TabVisible := False;
+      tabsheetCW.TabVisible := True;
+      tabsheetVoice.TabVisible := False;
+      tabsheetHardware.TabVisible := False;
+      tabsheetRigControl.TabVisible := False;
+      tabsheetPath.TabVisible := False;
+      tabsheetMisc.TabVisible := False;
+      tabsheetQuickQSY.TabVisible := False;
+
+      case FCWEditMode of
+         1: Edit1.SetFocus;
+         2: Edit2.SetFocus;
+         3: Edit3.SetFocus;
+         4: Edit4.SetFocus;
+         5: Edit5.SetFocus;
+         6: Edit6.SetFocus;
+         7: Edit7.SetFocus;
+         8: Edit8.SetFocus;
+      end;
+   end;
 end;
 
 procedure TformOptions.AddClick(Sender: TObject);
@@ -791,9 +829,11 @@ begin
 
    OpListBox.Items.Assign(dmZlogGlobal.OpList);
 
-   PageControl.ActivePage := PrefTabSheet;
+   PageControl.ActivePage := tabsheetPreferences;
 
    InitRigNames();
+
+   FCWEditMode := 0;
 end;
 
 procedure TformOptions.buttonCancelClick(Sender: TObject);
