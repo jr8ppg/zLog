@@ -3254,15 +3254,15 @@ begin
    colOp := 8;
    colMemo := 9;
 
-   SerialWid := 4;
-   TimeWid := 4;
-   CallSignWid := 8;
-   rcvdRSTWid := 3;
-   NumberWid := 4;
-   BandWid := 3;
-   PointWid := 2;
-   OpWid := 6;
-   MemoWid := 7;
+   SerialWid := 5;
+   TimeWid := 6;
+   CallSignWid := 12;
+   rcvdRSTWid := 4;
+   NumberWid := 6;
+   BandWid := 4;
+   PointWid := 3;
+   OpWid := 8;
+   MemoWid := 10;
    NewMulti1Wid := 5;
 
    MainForm.Grid.Cells[colNewMulti1, 0] := 'prefix';
