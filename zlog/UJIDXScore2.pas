@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons, Math,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
@@ -12,6 +12,9 @@ type
     Grid: TStringGrid;
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure FormShow(Sender: TObject);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
   public
@@ -23,6 +26,7 @@ type
     procedure AddNoUpdate(var aQSO : TQSO);  override;
     procedure UpdateData; override;
     procedure CalcPoints(var aQSO : TQSO);
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -44,6 +48,12 @@ procedure TJIDXScore2.FormShow(Sender: TObject);
 begin
    inherited;
    CWButton.Visible := False;
+end;
+
+procedure TJIDXScore2.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   inherited;
+   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
 end;
 
 procedure TJIDXScore2.Renew;
@@ -115,6 +125,8 @@ var
    band: TBand;
    TotQSO, TotPts, TotMulti, TotMulti2: Integer;
    row: Integer;
+   w: Integer;
+   strScore: string;
 begin
    TotQSO := 0;
    TotPts := 0;
@@ -145,49 +157,46 @@ begin
       end;
    end;
 
+   // 合計行
    Grid.Cells[0, 7] := 'Total';
    Grid.Cells[1, 7] := IntToStr3(TotQSO);
    Grid.Cells[2, 7] := IntToStr3(TotPts);
    Grid.Cells[3, 7] := IntToStr3(TotMulti);
    Grid.Cells[4, 7] := IntToStr3(TotMulti2);
 
+   // スコア行
+   strScore := IntToStr(TotPts * (TotMulti + TotMulti2));
    Grid.Cells[0, 8] := 'Score';
    Grid.Cells[1, 8] := '';
    Grid.Cells[2, 8] := '';
    Grid.Cells[3, 8] := '';
-   Grid.Cells[4, 8] := IntToStr(TotPts * (TotMulti + TotMulti2));
+   Grid.Cells[4, 8] := strScore;
 
    Grid.ColCount := 5;
    Grid.RowCount := 9;
-   ClientWidth := (Grid.DefaultColWidth * Grid.ColCount) + (Grid.ColCount * Grid.GridLineWidth);
-   ClientHeight := (Grid.DefaultRowHeight * Grid.RowCount) + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
+
+   // カラム幅をセット
+   w := Grid.Canvas.TextWidth('9');
+   Grid.ColWidths[0] := w * 6;
+   Grid.ColWidths[1] := w * 7;
+   Grid.ColWidths[2] := w * 7;
+   Grid.ColWidths[3] := w * 7;
+   Grid.ColWidths[4] := w * Max(8, Length(strScore)+1);
+
+   // グリッドサイズ調整
+   AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
 end;
 
-procedure TJIDXScore2.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-var
-   strText: string;
+function TJIDXScore2.GetFontSize(): Integer;
 begin
-   inherited;
-   strText := TStringGrid(Sender).Cells[ACol, ARow];
+   Result := Grid.Font.Size;
+end;
 
-   with TStringGrid(Sender).Canvas do begin
-      Brush.Color := TStringGrid(Sender).Color;
-      Brush.Style := bsSolid;
-      FillRect(Rect);
-
-      Font.Name := 'ＭＳ ゴシック';
-      Font.Size := 11;
-
-      if Copy(strText, 1, 1) = '*' then begin
-         strText := Copy(strText, 2);
-         Font.Color := clBlue;
-      end
-      else begin
-         Font.Color := clBlack;
-      end;
-
-      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
-   end;
+procedure TJIDXScore2.SetFontSize(v: Integer);
+begin
+   Inherited;
+   SetGridFontSize(Grid, v);
+   UpdateData();
 end;
 
 end.

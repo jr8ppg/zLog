@@ -111,6 +111,7 @@ begin
 
    MainForm.Show();
    Application.Run;
+   MainForm.Release();
 
    CoUnInitialize; // <-- free memory
    dmZlogKeyer.Free();

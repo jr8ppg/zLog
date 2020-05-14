@@ -8,8 +8,8 @@ inherited SixDownScore: TSixDownScore
   object Grid: TStringGrid
     Left = 0
     Top = 0
-    Width = 278
-    Height = 196
+    Width = 281
+    Height = 202
     Align = alClient
     DefaultDrawing = False
     FixedCols = 0
@@ -25,7 +25,5 @@ inherited SixDownScore: TSixDownScore
     ScrollBars = ssNone
     TabOrder = 1
     OnDrawCell = GridDrawCell
-    ExplicitTop = -153
-    ExplicitHeight = 382
   end
 end

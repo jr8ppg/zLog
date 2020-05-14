@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons, Math,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
@@ -12,6 +12,9 @@ type
     Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
   public
@@ -20,11 +23,26 @@ type
     procedure UpdateData; override;
     procedure Reset; override;
     procedure Add(var aQSO : TQSO); override;
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
 
 {$R *.DFM}
+
+procedure TALLJAScore.FormShow(Sender: TObject);
+begin
+   inherited;
+   Button1.SetFocus;
+   Grid.Col := 1;
+   Grid.Row := 1;
+end;
+
+procedure TALLJAScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   inherited;
+   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
+end;
 
 procedure TALLJAScore.AddNoUpdate(var aQSO: TQSO);
 var
@@ -46,6 +64,9 @@ var
    band: TBand;
    TotPoints, TotMulti: Integer;
    row: Integer;
+   w: Integer;
+   strScore: string;
+   DispColCount: Integer;
 begin
    TotPoints := 0;
    TotMulti := 0;
@@ -59,10 +80,12 @@ begin
    if ShowCWRatio then begin
       Grid.Cells[3, 0] := 'CW Q''s';
       Grid.Cells[4, 0] := 'CW %';
+      DispColCount := 5;
    end
    else begin
       Grid.Cells[3,0] := '';
       Grid.Cells[4,0] := '';
+      DispColCount := 3;
    end;
 
    // バンド別スコア行
@@ -112,16 +135,27 @@ begin
    Inc(row);
 
    // スコア行
+   strScore := IntToStr3(TotPoints * TotMulti);
    Grid.Cells[0, row] := 'Score';
    Grid.Cells[1, row] := '';
-   Grid.Cells[2, row] := IntToStr3(TotPoints * TotMulti);
+   Grid.Cells[2, row] := strScore;
    Grid.Cells[3, row] := '';
    Grid.Cells[4, row] := '';
    Inc(row);
 
+   // 行数をセット
    Grid.RowCount := row;
-   ClientWidth := (Grid.DefaultColWidth * Grid.ColCount) + (Grid.ColCount * Grid.GridLineWidth);
-   ClientHeight := (Grid.DefaultRowHeight * Grid.RowCount) + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
+
+   // カラム幅をセット
+   w := Grid.Canvas.TextWidth('9');
+   Grid.ColWidths[0] := w * 6;
+   Grid.ColWidths[1] := w * 7;
+   Grid.ColWidths[2] := w * Max(8, Length(strScore)+1);
+   Grid.ColWidths[3] := w * 7;
+   Grid.ColWidths[4] := w * 7;
+
+   // グリッドサイズ調整
+   AdjustGridSize(Grid, DispColCount, Grid.RowCount);
 end;
 
 procedure TALLJAScore.Reset;
@@ -134,39 +168,16 @@ begin
    inherited;
 end;
 
-procedure TALLJAScore.FormShow(Sender: TObject);
+function TALLJAScore.GetFontSize(): Integer;
 begin
-   inherited;
-   Button1.SetFocus;
-   Grid.Col := 1;
-   Grid.Row := 1;
+   Result := Grid.Font.Size;
 end;
 
-procedure TALLJAScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-var
-   strText: string;
+procedure TALLJAScore.SetFontSize(v: Integer);
 begin
-   inherited;
-   strText := TStringGrid(Sender).Cells[ACol, ARow];
-
-   with TStringGrid(Sender).Canvas do begin
-      Brush.Color := TStringGrid(Sender).Color;
-      Brush.Style := bsSolid;
-      FillRect(Rect);
-
-      Font.Name := 'ＭＳ ゴシック';
-      Font.Size := 11;
-
-      if Copy(strText, 1, 1) = '*' then begin
-         strText := Copy(strText, 2);
-         Font.Color := clBlue;
-      end
-      else begin
-         Font.Color := clBlack;
-      end;
-
-      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
-   end;
+   Inherited;
+   SetGridFontSize(Grid, v);
+   UpdateData();
 end;
 
 end.

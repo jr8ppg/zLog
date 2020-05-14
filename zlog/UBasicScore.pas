@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UzLogConst, UzLogGlobal, UzLogQSO, StdCtrls, ExtCtrls, Buttons;
+  UzLogConst, UzLogGlobal, UzLogQSO, StdCtrls, ExtCtrls, Buttons, Math, Grids;
 
 type
   TBasicScore = class(TForm)
@@ -19,6 +19,13 @@ type
     procedure FormCreate(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
     procedure CWButtonClick(Sender: TObject);
+  protected
+    FFontSize: Integer;
+    function GetFontSize(): Integer; virtual;
+    procedure SetFontSize(v: Integer); virtual;
+    procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
+    procedure AdjustGridSize(Grid: TStringGrid; ColCount, RowCount: Integer);
+    procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
   private
     { Private declarations }
   public
@@ -44,6 +51,7 @@ type
     function _TotalMulti : integer;
     function _TotalPoints : integer;
     function IntToStr3(v: Integer): string;
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -223,6 +231,7 @@ end;
 
 procedure TBasicScore.FormCreate(Sender: TObject);
 begin
+   FFontSize := 9;
    StayOnTop.Checked := False;
 end;
 
@@ -319,6 +328,83 @@ begin
    end;
 
    Result := strFormatedText;
+end;
+
+function TBasicScore.GetFontSize(): Integer;
+begin
+   Result := FFontSize;
+end;
+
+procedure TBasicScore.SetFontSize(v: Integer);
+begin
+   FFontSize := v;
+end;
+
+
+procedure TBasicScore.Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
+var
+   strText: string;
+begin
+   strText := Grid.Cells[ACol, ARow];
+
+   with Grid.Canvas do begin
+      Font.Name := 'ÇlÇr ÉSÉVÉbÉN';
+      Brush.Color := Grid.Color;
+      Brush.Style := bsSolid;
+      FillRect(Rect);
+
+      Font.Size := FFontSize;
+
+      if Copy(strText, 1, 1) = '*' then begin
+         strText := Copy(strText, 2);
+         Font.Color := clBlue;
+      end
+      else begin
+         Font.Color := clBlack;
+      end;
+
+      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
+   end;
+end;
+
+procedure TBasicScore.AdjustGridSize(Grid: TStringGrid; ColCount, RowCount: Integer);
+var
+   i: Integer;
+   h: Integer;
+   w: Integer;
+begin
+   // ïùí≤êÆ
+   w := 0;
+   for i := 0 to ColCount - 1 do begin
+      w := w + Grid.ColWidths[i];
+   end;
+   w := w + (Grid.ColCount * Grid.GridLineWidth) + 2;
+   ClientWidth := Max(w, 200);
+
+   // çÇÇ≥í≤êÆ
+   h := 0;
+   for i := 0 to RowCount - 1 do begin
+      h := h + Grid.RowHeights[i];
+   end;
+   h := h + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
+   ClientHeight := h;
+end;
+
+procedure TBasicScore.SetGridFontSize(Grid: TStringGrid; font_size: Integer);
+var
+   i: Integer;
+   h: Integer;
+begin
+   Grid.Font.Size := font_size;
+   Grid.Canvas.Font.size := font_size;
+
+   h := Abs(Grid.Font.Height) + 6;
+
+   Grid.DefaultRowHeight := h;
+
+   for i := 0 to Grid.RowCount - 1 do begin
+      Grid.RowHeights[i] := h;
+   end;
 end;
 
 end.

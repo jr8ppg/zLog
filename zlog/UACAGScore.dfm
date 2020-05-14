@@ -31,6 +31,5 @@ inherited ACAGScore: TACAGScore
     ScrollBars = ssNone
     TabOrder = 1
     OnDrawCell = GridDrawCell
-    ExplicitWidth = 278
   end
 end

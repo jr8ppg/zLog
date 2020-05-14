@@ -2211,7 +2211,7 @@ end;
 
 procedure TJIDXContestDX.SetPoints(var aQSO: TQSO);
 begin
-   JIDX_DX_Score.CalcPoints(aQSO);
+   TJIDX_DX_Score(ScoreForm).CalcPoints(aQSO);
 end;
 
 constructor TCQWPXContest.Create(N: string);
@@ -4377,6 +4377,9 @@ begin
    FSuperCheck.FontSize := font_size;
    FPartialCheck.FontSize := font_size;
    FCommForm.FontSize := font_size;
+   if MyContest <> nil then begin
+      MyContest.ScoreForm.FontSize := font_size;
+   end;
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
@@ -7196,6 +7199,8 @@ begin
       else begin
          MyContest.ScoreForm.CWButton.Visible := False;
       end;
+
+      MyContest.ScoreForm.FontSize := Grid.Font.Size;
 
       // ê›íËîΩâf
       dmZlogGlobal.ImplementSettings(False);
