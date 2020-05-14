@@ -33,6 +33,7 @@ type
     procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
       var Bold, Italic, underline: Boolean);
     procedure GoButtonClick2(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
   public
@@ -287,6 +288,12 @@ begin
    StateList := TStateList.Create;
    StateList.LoadFromFile('ARDX.DAT');
    Reset;
+end;
+
+procedure TARRLDXMulti.FormDestroy(Sender: TObject);
+begin
+   inherited;
+   StateList.Free();
 end;
 
 procedure TARRLDXMulti.UpdateData;
