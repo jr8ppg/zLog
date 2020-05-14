@@ -196,7 +196,7 @@ begin
    inherited;
    Reset;
    combBand.ItemIndex := 0;
-   MultiMap := TKCJZone.Create(Owner);
+   MultiMap := TKCJZone.Create(Self);
    MultiMap.MultiForm := Self;
 end;
 
