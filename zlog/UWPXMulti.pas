@@ -208,6 +208,8 @@ procedure TWPXMulti.FormDestroy(Sender: TObject);
 begin
    inherited;
    WPXList.Free();
+   CountryList.Free();
+   PrefixList.Free();
 end;
 
 procedure TWPXMulti.Reset;
