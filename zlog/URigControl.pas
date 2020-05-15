@@ -21,11 +21,12 @@ const
   _nil3  = AnsiChar(0)+AnsiChar(0)+AnsiChar(0);
   _nil4  = AnsiChar(0)+AnsiChar(0)+AnsiChar(0)+AnsiChar(0);
 
-  MAXICOM = 50;
+  MAXICOM = 51;
 
   ICOMLIST : array[1..MAXICOM] of TIcomInfo =
      (
        (name: 'IC-703';       addr: $68; minband: b19; maxband: b50),
+       (name: 'IC-705';       addr: $A4; minband: b19; maxband: b430),
        (name: 'IC-706';       addr: $48; minband: b19; maxband: b144),
        (name: 'IC-706MkII';   addr: $4E; minband: b19; maxband: b144),
        (name: 'IC-706MkII-G'; addr: $58; minband: b19; maxband: b430),
