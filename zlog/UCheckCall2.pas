@@ -30,8 +30,13 @@ var
 begin
    ResetListBox;
 
-   if pos(',', aQSO.Callsign) = 1 then
+   if aQSO.Callsign = '' then begin
+      Exit;
+   end;
+
+   if pos(',', aQSO.Callsign) = 1 then begin
       exit;
+   end;
 
    aQ := TQSO.Create;
    aQ.Assign(aQSO);
