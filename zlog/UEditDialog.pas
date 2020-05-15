@@ -205,7 +205,6 @@ procedure TEditDialog.EditKeyPress(Sender: TObject; var Key: Char);
 var
    dupeindex: integer;
 begin
-   MainForm.CommonEditKeyProcess(Sender, Key);
    case Key of
       '\': begin
          dmZLogKeyer.ControlPTT(not(dmZLogKeyer.PTTIsOn)); // toggle PTT;

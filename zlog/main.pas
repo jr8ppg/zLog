@@ -338,10 +338,6 @@ type
     FilePrintItem: TMenuItem;
     FilePrintSetupItem: TMenuItem;
     FileExitItem: TMenuItem;
-    EditUndoItem: TMenuItem;
-    EditCutItem: TMenuItem;
-    EditCopyItem: TMenuItem;
-    EditPasteItem: TMenuItem;
     StatusLine: TStatusBar;
     OpenDialog: TOpenDialog;
     SaveDialog: TSaveDialog;
@@ -373,10 +369,10 @@ type
     SpeedButton4: TSpeedButton;
     SpeedButton5: TSpeedButton;
     SpeedButton6: TSpeedButton;
-    SpeedButton1: TSpeedButton;
-    SpeedButton3: TSpeedButton;
+    PartialCheckButton: TSpeedButton;
+    ScoreButton: TSpeedButton;
     MultiButton: TSpeedButton;
-    SpeedButton8: TSpeedButton;
+    RateButton: TSpeedButton;
     CWToolBar: TPanel;
     LogButton: TSpeedButton;
     EditPanel: TPanel;
@@ -401,7 +397,7 @@ type
     Export1: TMenuItem;
     TXTSaveDialog: TSaveDialog;
     SerialEdit: TEdit;
-    SpeedButton2: TSpeedButton;
+    PacketClusterButton: TSpeedButton;
     CWF1: THemisphereButton;
     CWF2: THemisphereButton;
     CWF3: THemisphereButton;
@@ -477,26 +473,19 @@ type
     H1: TMenuItem;
     CheckCall1: TMenuItem;
     CreateDupeCheckSheetZPRINT1: TMenuItem;
-    memo1: TMenuItem;
-    rst1: TMenuItem;
-    callsign1: TMenuItem;
     View1: TMenuItem;
     ShowCurrentBandOnly: TMenuItem;
     SortbyTime1: TMenuItem;
-    pushqso1: TMenuItem;
-    pullqso1: TMenuItem;
     CallsignEdit: TOvrEdit;
     NumberEdit: TOvrEdit;
     MemoEdit: TOvrEdit;
     TimeEdit: TOvrEdit;
     DateEdit: TOvrEdit;
     ZServerIcon: TImage;
-    memo21: TMenuItem;
     PrintLogSummaryzLog1: TMenuItem;
     GeneralSaveDialog: TSaveDialog;
     mPXListWPX: TMenuItem;
     mSummaryFile: TMenuItem;
-    op1: TMenuItem;
     mChangePower: TMenuItem;
     H2: TMenuItem;
     M2: TMenuItem;
@@ -527,7 +516,6 @@ type
     Bandscope1: TMenuItem;
     mnChangeTXNr: TMenuItem;
     mnGridAddNewPX: TMenuItem;
-    Togglerig1: TMenuItem;
     mnHideCWPhToolBar: TMenuItem;
     mnHideMenuToolbar: TMenuItem;
     Scratchsheet1: TMenuItem;
@@ -535,7 +523,6 @@ type
     IncreaseFontSize1: TMenuItem;
     mnMMTTY: TMenuItem;
     mnTTYConsole: TMenuItem;
-    QTC1: TMenuItem;
     mnNewBandScope: TMenuItem;
     menuQuickReference: TMenuItem;
     CreateELogJARL1: TMenuItem;
@@ -570,8 +557,7 @@ type
     actionPlayMessageB11: TAction;
     actionPlayMessageB12: TAction;
     actionCheckMulti: TAction;
-    actionCheckPartial: TAction;
-    menuClearCallAndRst: TMenuItem;
+    actionShowCheckPartial: TAction;
     actionInsertBandScope: TAction;
     actionInsertBandScope2: TAction;
     actionInsertBandScope3: TAction;
@@ -579,6 +565,53 @@ type
     actionIncreaseFontSize: TAction;
     actionDecreaseFontSize: TAction;
     menuAnalyze: TMenuItem;
+    actionPageUp: TAction;
+    actionPageDown: TAction;
+    actionMoveTop: TAction;
+    actionMoveLeft: TAction;
+    actionMoveRight: TAction;
+    actionMoveLast: TAction;
+    actionDeleteOneChar: TAction;
+    actionPullQso: TAction;
+    actionDeleteLeftOneChar: TAction;
+    actionGetPartialCheck: TAction;
+    actionDeleteRight: TAction;
+    actionClearCallAndRpt: TAction;
+    actionShowCurrentBandOnly: TAction;
+    actionIncreaseTime: TAction;
+    actionDecreaseTime: TAction;
+    actionQTC: TAction;
+    actionReversePaddle: TAction;
+    actionPushQso: TAction;
+    actionFieldClear: TAction;
+    actionCQRepeat: TAction;
+    actionCwTune: TAction;
+    actionShowSuperCheck: TAction;
+    actionShowZlinkMonitor: TAction;
+    actionBackup: TAction;
+    actionFocusCallsign: TAction;
+    actionFocusMemo: TAction;
+    actionFocusNumber: TAction;
+    actionFocusOp: TAction;
+    actionShowCWKeyboard: TAction;
+    actionShowPacketCluster: TAction;
+    actionShowConsolePad: TAction;
+    actionFocusRst: TAction;
+    actionShowScratchSheet: TAction;
+    actionShowRigControl: TAction;
+    actoinClearCallAndNumAftFocus: TAction;
+    actionShowZServerChat: TAction;
+    actionToggleRig: TAction;
+    actionShowTeletypeConsole: TAction;
+    actionShowBandScope: TAction;
+    actionShowFreqList: TAction;
+    actionShowAnalyze: TAction;
+    actionShowScore: TAction;
+    actionShowMultipliers: TAction;
+    actionShowQsoRate: TAction;
+    actionShowCheckCall: TAction;
+    actionShowCheckMulti: TAction;
+    actionShowCheckCountry: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -589,15 +622,10 @@ type
     procedure FilePrint(Sender: TObject);
     procedure FilePrintSetup(Sender: TObject);
     procedure FileExit(Sender: TObject);
-    procedure EditUndo(Sender: TObject);
-    procedure EditCut(Sender: TObject);
-    procedure EditCopy(Sender: TObject);
-    procedure EditPaste(Sender: TObject);
     procedure HelpContents(Sender: TObject);
     procedure HelpSearch(Sender: TObject);
     procedure HelpHowToUse(Sender: TObject);
     procedure HelpAbout(Sender: TObject);
-    procedure CommonEditKeyProcess(Sender: TObject; var Key: Char);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure CallsignEditChange(Sender: TObject);
     procedure NumberEditChange(Sender: TObject);
@@ -614,15 +642,10 @@ type
     procedure EditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure GridDblClick(Sender: TObject);
-    procedure PartialClick(Sender: TObject);
     procedure CallsignEditKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure ScoreClick(Sender: TObject);
-    procedure MultiClick(Sender: TObject);
-    procedure RateClick(Sender: TObject);
     procedure LogButtonClick(Sender: TObject);
     procedure OptionsButtonClick(Sender: TObject);
-    procedure SuperCheckButtonClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure CWFButtonClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -650,11 +673,9 @@ type
     procedure VoiceFButtonClick(Sender: TObject);
     procedure TimeEditChange(Sender: TObject);
     procedure Export1Click(Sender: TObject);
-    procedure ClusterClick(Sender: TObject);
     procedure SpeedButton9Click(Sender: TObject);
     procedure SerialEditChange(Sender: TObject);
     procedure GridBandChangeClick(Sender: TObject);
-    procedure ZLinkmonitor1Click(Sender: TObject);
     procedure Load1Click(Sender: TObject);
     procedure SortbyTime1Click(Sender: TObject);
     procedure menuAboutClick(Sender: TObject);
@@ -667,11 +688,8 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure HemisphereButton8MouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure Backup1Click(Sender: TObject);
-    procedure CWKeyboard1Click(Sender: TObject);
     procedure EditEnter(Sender: TObject);
     procedure mnMergeClick(Sender: TObject);
-    procedure ZServer1Click(Sender: TObject);
     procedure ConnecttoZServer1Click(Sender: TObject);
     procedure GridModeChangeClick(Sender: TObject);
     procedure GridOperatorClick(Sender: TObject);
@@ -681,39 +699,24 @@ type
     procedure NewPowerMenuClick(Sender: TObject);
     procedure NewPowerEditClick(Sender: TObject);
     procedure OpEditClick(Sender: TObject);
-    procedure CheckCall1Click(Sender: TObject);
     procedure GridClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure CreateDupeCheckSheetZPRINT1Click(Sender: TObject);
     procedure MemoHotKeyEnter(Sender: TObject);
-    procedure memo1Click(Sender: TObject);
-    procedure rst1Click(Sender: TObject);
-    procedure callsign1Click(Sender: TObject);
-    procedure ShowCurrentBandOnlyClick(Sender: TObject);
-    procedure pushqso1Click(Sender: TObject);
-    procedure pullqso1Click(Sender: TObject);
     procedure GridTopLeftChanged(Sender: TObject);
     procedure TXTSaveDialogTypeChange(Sender: TObject);
     procedure GridMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure memo21Click(Sender: TObject);
     procedure StatusLineResize(Sender: TObject);
     procedure PrintLogSummaryzLog1Click(Sender: TObject);
     procedure CQRepeatVoice2Click(Sender: TObject);
     procedure CQRepeatVoice1Click(Sender: TObject);
     procedure mPXListWPXClick(Sender: TObject);
     procedure mSummaryFileClick(Sender: TObject);
-    procedure op1Click(Sender: TObject);
     procedure GridPowerChangeClick(Sender: TObject);
-    procedure RigControl1Click(Sender: TObject);
-    procedure Console1Click(Sender: TObject);
     procedure MergeFile1Click(Sender: TObject);
-    procedure RunningFrequencies1Click(Sender: TObject);
-    procedure mnCheckCountryClick(Sender: TObject);
-    procedure mnCheckMultiClick(Sender: TObject);
     procedure StatusLineDrawPanel(StatusBar: TStatusBar;
       Panel: TStatusPanel; const Rect: TRect);
-    procedure Bandscope1Click(Sender: TObject);
     procedure mnChangeTXNrClick(Sender: TObject);
     procedure GridKeyPress(Sender: TObject; var Key: Char);
     procedure mnGridAddNewPXClick(Sender: TObject);
@@ -723,14 +726,10 @@ type
       const Value: String);
     procedure GridGetEditText(Sender: TObject; ACol, ARow: Integer;
       var Value: String);
-    procedure Togglerig1Click(Sender: TObject);
     procedure mnHideCWPhToolBarClick(Sender: TObject);
     procedure mnHideMenuToolbarClick(Sender: TObject);
-    procedure Scratchsheet1Click(Sender: TObject);
     procedure mnMMTTYClick(Sender: TObject);
-    procedure mnTTYConsoleClick(Sender: TObject);
     procedure SwitchCWBank(Action : Integer);
-    procedure QTC1Click(Sender: TObject);
     procedure mnNewBandScopeClick(Sender: TObject);
     procedure menuQuickReferenceClick(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
@@ -743,13 +742,60 @@ type
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
     procedure actionCheckMultiExecute(Sender: TObject);
-    procedure actionCheckPartialExecute(Sender: TObject);
-    procedure menuClearCallAndRstClick(Sender: TObject);
+    procedure actionShowCheckPartialExecute(Sender: TObject);
     procedure actionInsertBandScopeExecute(Sender: TObject);
     procedure actionInsertBandScope3Execute(Sender: TObject);
     procedure actionIncreaseFontSizeExecute(Sender: TObject);
     procedure actionDecreaseFontSizeExecute(Sender: TObject);
-    procedure menuAnalyzeClick(Sender: TObject);
+    procedure actionPageUpExecute(Sender: TObject);
+    procedure actionPageDownExecute(Sender: TObject);
+    procedure FormDeactivate(Sender: TObject);
+    procedure actionMoveTopExecute(Sender: TObject);
+    procedure actionMoveLeftExecute(Sender: TObject);
+    procedure actionDeleteOneCharExecute(Sender: TObject);
+    procedure actionMoveRightExecute(Sender: TObject);
+    procedure actionMoveLastExecute(Sender: TObject);
+    procedure actionPullQsoExecute(Sender: TObject);
+    procedure actionDeleteLeftOneCharExecute(Sender: TObject);
+    procedure actionGetPartialCheckExecute(Sender: TObject);
+    procedure actionDeleteRightExecute(Sender: TObject);
+    procedure actionClearCallAndRptExecute(Sender: TObject);
+    procedure actionShowCurrentBandOnlyExecute(Sender: TObject);
+    procedure actionDecreaseTimeExecute(Sender: TObject);
+    procedure actionIncreaseTimeExecute(Sender: TObject);
+    procedure actionQTCExecute(Sender: TObject);
+    procedure actionReversePaddleExecute(Sender: TObject);
+    procedure actionPushQsoExecute(Sender: TObject);
+    procedure actionFieldClearExecute(Sender: TObject);
+    procedure actionCQRepeatExecute(Sender: TObject);
+    procedure actionCwTuneExecute(Sender: TObject);
+    procedure actionUpKeyExecute(Sender: TObject);
+    procedure actionShowSuperCheckExecute(Sender: TObject);
+    procedure actionShowZlinkMonitorExecute(Sender: TObject);
+    procedure actionBackupExecute(Sender: TObject);
+    procedure actionFocusCallsignExecute(Sender: TObject);
+    procedure actionFocusMemoExecute(Sender: TObject);
+    procedure actionFocusNumberExecute(Sender: TObject);
+    procedure actionFocusOpExecute(Sender: TObject);
+    procedure actionShowCWKeyboardExecute(Sender: TObject);
+    procedure actionShowPacketClusterExecute(Sender: TObject);
+    procedure actionShowConsolePadExecute(Sender: TObject);
+    procedure actionFocusRstExecute(Sender: TObject);
+    procedure actionShowScratchSheetExecute(Sender: TObject);
+    procedure actionShowRigControlExecute(Sender: TObject);
+    procedure actoinClearCallAndNumAftFocusExecute(Sender: TObject);
+    procedure actionShowZServerChatExecute(Sender: TObject);
+    procedure actionToggleRigExecute(Sender: TObject);
+    procedure actionShowTeletypeConsoleExecute(Sender: TObject);
+    procedure actionShowBandScopeExecute(Sender: TObject);
+    procedure actionShowFreqListExecute(Sender: TObject);
+    procedure actionShowAnalyzeExecute(Sender: TObject);
+    procedure actionShowScoreExecute(Sender: TObject);
+    procedure actionShowMultipliersExecute(Sender: TObject);
+    procedure actionShowQsoRateExecute(Sender: TObject);
+    procedure actionShowCheckCallExecute(Sender: TObject);
+    procedure actionShowCheckMultiExecute(Sender: TObject);
+    procedure actionShowCheckCountryExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -814,6 +860,7 @@ type
     function GetFirstAvailableBand(): TBand;
     procedure SetWindowCaption();
     procedure RestoreWindowsPos();
+    procedure SetActionEnabled(fEnabled: Boolean);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -3837,26 +3884,6 @@ begin
    Close();
 end;
 
-procedure TMainForm.EditUndo(Sender: TObject);
-begin
-   { Add code to perform Edit Undo }
-end;
-
-procedure TMainForm.EditCut(Sender: TObject);
-begin
-   { Add code to perform Edit Cut }
-end;
-
-procedure TMainForm.EditCopy(Sender: TObject);
-begin
-   { Add code to perform Edit Copy }
-end;
-
-procedure TMainForm.EditPaste(Sender: TObject);
-begin
-   { Add code to perform Edit Paste }
-end;
-
 procedure TMainForm.HelpContents(Sender: TObject);
 begin
    Application.HelpCommand(HELP_CONTENTS, 0);
@@ -4076,8 +4103,9 @@ begin
       if RigControl.Rig <> nil then
          RigControl.Rig.FILO := not(RigControl.Rig.FILO);
 
-   if S = 'SC' then
-      SuperCheckButtonClick(Self);
+   if S = 'SC' then begin
+      actionShowSuperCheck.Execute();
+   end;
 
    if S = 'RESET' then
       if RigControl.Rig <> nil then
@@ -4274,66 +4302,6 @@ begin
    end;
 end;
 
-procedure TMainForm.CommonEditKeyProcess(Sender: TObject; var Key: Char);
-var
-   E: TEdit;
-   i: Integer;
-   str: string;
-begin
-   E := TEdit(Sender);
-
-   case Key of
-      ^A: begin
-         E.SelStart := 0;
-         E.SelLength := 0;
-         Key := #0;
-      end;
-
-      ^E: begin
-         E.SelStart := length(E.Text);
-         E.SelLength := 0;
-         Key := #0;
-      end;
-
-      ^B: begin
-         i := E.SelStart;
-         if i > 0 then
-            E.SelStart := i - 1;
-         Key := #0;
-      end;
-
-      ^f: begin
-         i := E.SelStart;
-         if i < length(E.Text) then
-            E.SelStart := i + 1;
-         Key := #0;
-      end;
-
-      ^H: begin
-         Key := Chr($08);
-      end;
-
-      ^D: begin
-         i := E.SelStart;
-         str := E.Text;
-         if i < length(E.Text) then
-            Delete(str, i + 1, 1);
-         E.Text := str;
-         E.SelStart := i;
-         Key := #0;
-      end;
-
-      ^j: begin
-         i := E.SelStart;
-         str := E.Text;
-         str := copy(str, 1, i);
-         E.Text := str;
-         E.SelStart := length(str);
-         Key := #0;
-      end;
-   end;
-end;
-
 procedure TMainForm.IncFontSize();
 var
    j: Integer;
@@ -4426,8 +4394,6 @@ procedure TMainForm.EditKeyPress(Sender: TObject; var Key: Char);
 var
    Q: TQSO;
 begin
-   CommonEditKeyProcess(Sender, Key);
-
    if CallsignEdit.Font.Color = clGrayText then begin
       if Key <> ' ' then begin
          CallsignEdit.Text := OldCallsign;
@@ -4478,60 +4444,9 @@ begin
          end;
       end;
 
-      ^i: begin
-         if FPartialCheck.Visible then begin
-            if FPartialCheck.HitNumber > 0 then
-               CallsignEdit.Text := FPartialCheck.HitCall
-            else if FSuperCheck.Visible then
-               if FSuperCheck.HitNumber > 0 then
-                  CallsignEdit.Text := FSuperCheck.HitCall;
-         end
-         else begin // partial check is not visible
-            if FSuperCheck.Visible then
-               if FSuperCheck.HitNumber > 0 then
-                  CallsignEdit.Text := FSuperCheck.HitCall;
-         end;
-         Key := #0;
-      end;
-
       '+', ';': begin
          DownKeyPress;
          Key := #0;
-      end;
-
-      ^O: begin
-         CurrentQSO.DecTime;
-         TimeEdit.Text := CurrentQSO.TimeStr;
-         DateEdit.Text := CurrentQSO.DateStr;
-         Key := #0;
-      end;
-
-      ^P: begin
-         CurrentQSO.IncTime;
-         TimeEdit.Text := CurrentQSO.TimeStr;
-         DateEdit.Text := CurrentQSO.DateStr;
-         Key := #0;
-      end;
-
-      ^W: begin
-         TEdit(Sender).Clear;
-         WriteStatusLine('', False);
-         Key := #0;
-      end;
-
-      ^R: begin
-         dmZlogGlobal.ReversePaddle;
-         Key := #0;
-      end;
-
-      ^K: begin
-         EditedSinceTABPressed := tabstate_normal;
-         CallsignEdit.Clear;
-         NumberEdit.Clear;
-         MemoEdit.Clear;
-         Key := #0;
-         CallsignEdit.SetFocus;
-         WriteStatusLine('', False);
       end;
 
       'Z', 'z': begin
@@ -4544,19 +4459,6 @@ begin
             end;
             Key := #0;
          end;
-      end;
-
-      ^Z: begin
-         if CurrentQSO.mode = mCW then begin
-            CQRepeatClick2(Sender);
-         end;
-
-         Key := #0;
-      end;
-
-      ^T: begin
-         CtrlZCQLoop := True;
-         dmZLogKeyer.TuneOn;
       end;
 
       Char($1B): { ESC } begin
@@ -5103,72 +5005,57 @@ begin
    case Key of
       { MUHENKAN KEY }
       29: begin
-            dmZLogKeyer.ControlPTT(not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
-         end;
+         dmZLogKeyer.ControlPTT(not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
+      end;
 
       VK_DOWN: begin
-            DownKeyPress;
-            Key := 0;
-         end;
+         DownKeyPress;
+         Key := 0;
+      end;
 
-      VK_INSERT: begin {
-              if TEdit(Sender).Name = 'CallsignEdit' then
-              begin
-              OnTabPress;
-              Key := 0;
-              end;
-            }
-         end;
+      VK_INSERT: begin
+      end;
 
       VK_UP: begin
-            Grid.Row := Grid.RowCount - 1;
-            if EditScreen.DirectEdit then begin
-               Grid.col := TEdit(Sender).Tag;
-            end;
-
-            LastFocus := TEdit(Sender);
-            Grid.SetFocus;
-
-            Key := 0;
+         Grid.Row := Log.QsoList.Count - 1;
+         if EditScreen.DirectEdit then begin
+            Grid.col := TEdit(Sender).Tag;
          end;
 
+         LastFocus := TEdit(Sender);
+         Grid.SetFocus;
+
+         Key := 0;
+      end;
+
       Ord('A') .. Ord('Z'), Ord('0') .. Ord('9'): begin
-            if Shift <> [] then begin
-               exit;
-            end;
+         if Shift <> [] then begin
+            exit;
+         end;
 
-            if (CtrlZCQLoop = True) and (TEdit(Sender).Name = 'CallsignEdit') then begin
-               CtrlZBreak;
-            end;
+         if (CtrlZCQLoop = True) and (TEdit(Sender).Name = 'CallsignEdit') then begin
+            CtrlZBreak;
+         end;
 
-            // if (CtrlZCQLoopVoice = True) and (TEdit(Sender).Name = 'CallsignEdit') then begin
-            // CtrlZBreakVoice;
-            // end;
+         // if (CtrlZCQLoopVoice = True) and (TEdit(Sender).Name = 'CallsignEdit') then begin
+         // CtrlZBreakVoice;
+         // end;
 
-            if (dmZlogGlobal.Settings._jmode) and (TEdit(Sender).Name = 'CallsignEdit') then begin
-               if CallsignEdit.Text = '' then begin
-                  if Key <> Ord('7') then begin
-                     CallsignEdit.Text := 'J';
-                     CallsignEdit.SelStart := 1;
-                  end;
+         if (dmZlogGlobal.Settings._jmode) and (TEdit(Sender).Name = 'CallsignEdit') then begin
+            if CallsignEdit.Text = '' then begin
+               if Key <> Ord('7') then begin
+                  CallsignEdit.Text := 'J';
+                  CallsignEdit.SelStart := 1;
                end;
             end;
          end;
+      end;
    end;
 end;
 
 procedure TMainForm.GridDblClick(Sender: TObject);
 begin
    MyContest.EditCurrentRow;
-end;
-
-procedure TMainForm.PartialClick(Sender: TObject);
-begin
-   FPartialCheck.Show;
-   if ActiveControl = NumberEdit then
-      FPartialCheck.CheckPartialNumber(CurrentQSO)
-   else
-      FPartialCheck.CheckPartial(CurrentQSO);
 end;
 
 procedure TMainForm.CallsignEditKeyUp(Sender: TObject; var Key: word; Shift: TShiftState);
@@ -5179,21 +5066,6 @@ begin
      SuperCheck.CheckSuper(CurrentQSO);
      if CheckCall2.Visible then
      CheckCall2.Renew(CurrentQSO); }
-end;
-
-procedure TMainForm.ScoreClick(Sender: TObject);
-begin
-   MyContest.ShowScore;
-end;
-
-procedure TMainForm.MultiClick(Sender: TObject);
-begin
-   MyContest.ShowMulti;
-end;
-
-procedure TMainForm.RateClick(Sender: TObject);
-begin
-   FRateDialog.Show;
 end;
 
 procedure TMainForm.LogButtonClick(Sender: TObject);
@@ -5366,12 +5238,6 @@ begin
    menuOptions.Click();
 end;
 
-procedure TMainForm.SuperCheckButtonClick(Sender: TObject);
-begin
-   FSuperCheck.Show;
-   FSuperCheck.CheckSuper(CurrentQSO);
-end;
-
 procedure TMainForm.FormShow(Sender: TObject);
 var
    X, Y, W, H: Integer;
@@ -5417,6 +5283,11 @@ begin
       S := SetStr(S, CurrentQSO);
       zLogSendStr(S);
    end;
+end;
+
+procedure TMainForm.FormDeactivate(Sender: TObject);
+begin
+   SetActionEnabled(False);
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
@@ -5767,7 +5638,6 @@ end;
 
 procedure TMainForm.MemoEditKeyPress(Sender: TObject; var Key: Char);
 begin
-   CommonEditKeyProcess(Sender, Key);
    case Key of
       'X', 'x': begin
          if GetAsyncKeyState(VK_SHIFT) < 0 then begin
@@ -5786,33 +5656,6 @@ begin
 
       '+', ';': begin
          DownKeyPress;
-         Key := #0;
-      end;
-
-      ^W: begin
-         TEdit(Sender).Clear;
-         Key := #0;
-      end;
-
-      ^R: begin
-         dmZlogGlobal.ReversePaddle;
-         Key := #0;
-      end;
-
-      ^K: begin
-         EditedSinceTABPressed := tabstate_normal;
-         CallsignEdit.Clear;
-         NumberEdit.Clear;
-         MemoEdit.Clear;
-         Key := #0;
-         CallsignEdit.SetFocus;
-      end;
-
-      ^Z: begin
-         if CurrentQSO.mode = mCW then begin
-            CQRepeatClick2(Sender);
-         end;
-
          Key := #0;
       end;
 
@@ -5883,11 +5726,6 @@ begin
    end;
 end;
 
-procedure TMainForm.ClusterClick(Sender: TObject);
-begin
-   FCommForm.Show;
-end;
-
 procedure TMainForm.SpeedButton9Click(Sender: TObject);
 begin
    FZLinkForm.Show;
@@ -5945,11 +5783,6 @@ begin
    Log.Saved := False;
 end;
 
-procedure TMainForm.ZLinkmonitor1Click(Sender: TObject);
-begin
-   FZLinkForm.Show;
-end;
-
 procedure TMainForm.Load1Click(Sender: TObject);
 begin
    FZLinkForm.LoadLogFromZLink;
@@ -5976,11 +5809,6 @@ begin
    finally
       f.Release();
    end;
-end;
-
-procedure TMainForm.menuAnalyzeClick(Sender: TObject);
-begin
-   FZAnalyze.Show();
 end;
 
 procedure TMainForm.DateEditChange(Sender: TObject);
@@ -6092,25 +5920,6 @@ begin
    CWFMenu.Items[0].Tag := 1;
 end;
 
-procedure TMainForm.Backup1Click(Sender: TObject);
-var
-   P: string;
-begin
-   P := dmZlogGlobal.Settings._backuppath;
-   if (P = '') or (P = '\') then begin
-      P := ExtractFilePath(Application.ExeName);
-   end;
-
-   ForceDirectories(P);
-
-   Log.SaveToFile(P + ExtractFileName(CurrentFileName));
-end;
-
-procedure TMainForm.CWKeyboard1Click(Sender: TObject);
-begin
-   FCWKeyBoard.Show;
-end;
-
 procedure TMainForm.EditEnter(Sender: TObject);
 var
    P: Integer;
@@ -6128,11 +5937,6 @@ end;
 procedure TMainForm.mnMergeClick(Sender: TObject);
 begin
    FZLinkForm.MergeLogWithZServer;
-end;
-
-procedure TMainForm.ZServer1Click(Sender: TObject);
-begin
-   FChatForm.Show;
 end;
 
 procedure TMainForm.ConnecttoZServer1Click(Sender: TObject);
@@ -6315,11 +6119,6 @@ begin
    OpMenu.Popup(Left + OpEdit.Left + 20, Top + EditPanel.top + OpEdit.top);
 end;
 
-procedure TMainForm.CheckCall1Click(Sender: TObject);
-begin
-   FCheckCall2.Show;
-end;
-
 procedure TMainForm.GridClick(Sender: TObject);
 var
    aQSO: TQSO;
@@ -6329,11 +6128,16 @@ begin
    end;
 
    aQSO := TQSO(Grid.Objects[0, Grid.Row]);
+   if aQSO = nil then begin
+      Exit;
+   end;
+
    FCheckCall2.Renew(aQSO);
 end;
 
 procedure TMainForm.FormActivate(Sender: TObject);
 begin
+   SetActionEnabled(True);
    LastFocus.SetFocus;
 end;
 
@@ -6370,37 +6174,6 @@ begin
    MemoEdit.SetFocus;
 end;
 
-procedure TMainForm.memo1Click(Sender: TObject);
-begin
-   MemoEdit.SetFocus;
-end;
-
-procedure TMainForm.rst1Click(Sender: TObject);
-begin
-   RcvdRSTEdit.SetFocus;
-end;
-
-procedure TMainForm.callsign1Click(Sender: TObject);
-begin
-   CallsignEdit.SetFocus;
-end;
-
-procedure TMainForm.ShowCurrentBandOnlyClick(Sender: TObject);
-begin
-   ShowCurrentBandOnly.Checked := not(ShowCurrentBandOnly.Checked);
-   EditScreen.RefreshScreen;
-end;
-
-procedure TMainForm.pushqso1Click(Sender: TObject);
-begin
-   PushQSO(CurrentQSO);
-end;
-
-procedure TMainForm.pullqso1Click(Sender: TObject);
-begin
-   PullQSO;
-end;
-
 procedure TMainForm.GridTopLeftChanged(Sender: TObject);
 begin
 //   EditScreen.RefreshScreen;
@@ -6424,11 +6197,6 @@ procedure TMainForm.GridMouseUp(Sender: TObject; Button: TMouseButton; Shift: TS
 begin
    if EditScreen <> nil then
       EditScreen.SetEditFields;
-end;
-
-procedure TMainForm.memo21Click(Sender: TObject);
-begin
-   NumberEdit.SetFocus;
 end;
 
 procedure TMainForm.StatusLineResize(Sender: TObject);
@@ -6496,11 +6264,6 @@ begin
       MyContest.ScoreForm.SaveSummary(GeneralSaveDialog.filename);
 end;
 
-procedure TMainForm.op1Click(Sender: TObject);
-begin
-   OpEditClick(Self);
-end;
-
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
 var
    i, _top, _bottom: Integer;
@@ -6543,16 +6306,6 @@ begin
    Log.Saved := False;
 end;
 
-procedure TMainForm.RigControl1Click(Sender: TObject);
-begin
-   RigControl.Show;
-end;
-
-procedure TMainForm.Console1Click(Sender: TObject);
-begin
-   FConsolePad.Show;
-end;
-
 procedure TMainForm.MergeFile1Click(Sender: TObject);
 var
    ff: string;
@@ -6579,25 +6332,10 @@ begin
    end;
 end;
 
-procedure TMainForm.RunningFrequencies1Click(Sender: TObject);
-begin
-   FFreqList.Show;
-end;
-
 procedure TMainForm.SaveFileAndBackUp;
 begin
    Log.SaveToFile(CurrentFileName); // this is where the file is saved!!!
-   Backup1Click(Self); // 0.32
-end;
-
-procedure TMainForm.mnCheckCountryClick(Sender: TObject);
-begin
-   MainForm.FCheckCountry.Show;
-end;
-
-procedure TMainForm.mnCheckMultiClick(Sender: TObject);
-begin
-   FCheckMulti.Show;
+   actionBackup.Execute();
 end;
 
 procedure TMainForm.StatusLineDrawPanel(StatusBar: TStatusBar; Panel: TStatusPanel; const Rect: TRect);
@@ -6606,12 +6344,6 @@ begin
       StatusBar.Canvas.Font.Color := clStatusLine;
       StatusBar.Canvas.TextOut(Rect.Left + 1, Rect.top + 1, Panel.Text);
    end;
-end;
-
-procedure TMainForm.Bandscope1Click(Sender: TObject);
-begin
-   // BandScope.Show;
-   FBandScope2.Show; // BS2 test
 end;
 
 procedure TMainForm.mnChangeTXNrClick(Sender: TObject);
@@ -6735,12 +6467,6 @@ begin
    WriteStatusLine('GetEditTextCalled', False);
 end;
 
-procedure TMainForm.Togglerig1Click(Sender: TObject);
-begin
-   // WriteStatusLine('Alt+.',False);
-   RigControl.ToggleCurrentRig;
-end;
-
 procedure TMainForm.mnHideCWPhToolBarClick(Sender: TObject);
 begin
    if mnHideCWPhToolBar.Checked = False then begin
@@ -6775,11 +6501,6 @@ begin
       Grid.Align := alClient;
    end;
    FormResize(Self);
-end;
-
-procedure TMainForm.Scratchsheet1Click(Sender: TObject);
-begin
-   FScratchSheet.Show;
 end;
 
 procedure TMainForm.SwitchLastQSOBandMode;
@@ -6841,36 +6562,6 @@ begin
       ExitMMTTY;
       exit;
    end;
-end;
-
-procedure TMainForm.mnTTYConsoleClick(Sender: TObject);
-begin
-   TTYConsole.Show;
-end;
-
-procedure TMainForm.QTC1Click(Sender: TObject);
-begin
-   if MyContest.Name <> 'WAEDC Contest' then begin
-      Exit;
-   end;
-
-   TWAEContest(MyContest).QTCForm.Show;
-   if CurrentQSO.Callsign = '' then begin
-      if Log.TotalQSO >= 2 then begin
-         TWAEContest(MyContest).QTCForm.OpenQTC(Log.QsoList[Log.TotalQSO]);
-      end;
-   end
-   else begin
-      TWAEContest(MyContest).QTCForm.OpenQTC(Main.CurrentQSO);
-   end;
-end;
-
-procedure TMainForm.menuClearCallAndRstClick(Sender: TObject);
-begin
-   CallsignEdit.Clear();
-   NumberEdit.Clear();
-   WriteStatusLine('', False);
-   CallsignEdit.SetFocus;
 end;
 
 procedure TMainForm.mnNewBandScopeClick(Sender: TObject);
@@ -7769,6 +7460,32 @@ begin
    end;
 end;
 
+// PageUp
+procedure TMainForm.actionPageDownExecute(Sender: TObject);
+var
+   p: Integer;
+begin
+   p := Grid.TopRow;
+   p := p + (Grid.VisibleRowCount div 2);
+   if p > (Log.QsoList.Count - Grid.VisibleRowCount) then begin
+      p := (Log.QsoList.Count - Grid.VisibleRowCount);
+   end;
+   Grid.TopRow := p
+end;
+
+// PageDown
+procedure TMainForm.actionPageUpExecute(Sender: TObject);
+var
+   p: Integer;
+begin
+   p := Grid.TopRow;
+   p := p - (Grid.VisibleRowCount div 2);
+   if p < 0 then begin
+      p := 1;
+   end;
+   Grid.TopRow := p
+end;
+
 // F1～F8
 procedure TMainForm.actionPlayMessageAExecute(Sender: TObject);
 var
@@ -7798,7 +7515,7 @@ begin
 end;
 
 // F10
-procedure TMainForm.actionCheckPartialExecute(Sender: TObject);
+procedure TMainForm.actionShowCheckPartialExecute(Sender: TObject);
 begin
    FPartialCheck.Show;
 
@@ -7854,6 +7571,21 @@ begin
    LastFocus.SetFocus;
 end;
 
+// Super Check Ctrl+F10 / Alt+E
+procedure TMainForm.actionShowSuperCheckExecute(Sender: TObject);
+begin
+   FSuperCheck.Show;
+   FSuperCheck.CheckSuper(CurrentQSO);
+
+   LastFocus.SetFocus;
+end;
+
+// Z-Link Monitor Ctrl+F12
+procedure TMainForm.actionShowZlinkMonitorExecute(Sender: TObject);
+begin
+   FZLinkForm.Show;
+end;
+
 procedure TMainForm.PlayMessage(bank: Integer; no: Integer);
 var
    S: string;
@@ -7881,6 +7613,424 @@ begin
          // NO OPERATION
       end;
    end;
+end;
+
+
+// フィールドの先頭へ移動
+procedure TMainForm.actionMoveTopExecute(Sender: TObject);
+begin
+   if ActiveControl is TOvrEdit then begin
+      TOvrEdit(ActiveControl).SelStart := 0;
+      TOvrEdit(ActiveControl).SelLength := 0;
+   end;
+end;
+
+// キャレットを左に移動
+procedure TMainForm.actionMoveLeftExecute(Sender: TObject);
+var
+   i: Integer;
+begin
+   if ActiveControl is TOvrEdit then begin
+      i := TOvrEdit(ActiveControl).SelStart;
+      if i > 0 then begin
+         TOvrEdit(ActiveControl).SelStart := i - 1;
+      end;
+   end;
+end;
+
+// キャレット位置の文字を消去
+procedure TMainForm.actionDeleteOneCharExecute(Sender: TObject);
+var
+   i: Integer;
+   str: string;
+begin
+   if ActiveControl is TOvrEdit then begin
+      i := TOvrEdit(ActiveControl).SelStart;
+      str := TOvrEdit(ActiveControl).Text;
+
+      if i < Length(TOvrEdit(ActiveControl).Text) then begin
+         Delete(str, i + 1, 1);
+      end;
+
+      TOvrEdit(ActiveControl).Text := str;
+      TOvrEdit(ActiveControl).SelStart := i;
+   end;
+end;
+
+// キャレットを最後に移動
+procedure TMainForm.actionMoveLastExecute(Sender: TObject);
+begin
+   if ActiveControl is TOvrEdit then begin
+      TOvrEdit(ActiveControl).SelStart := Length(TOvrEdit(ActiveControl).Text);
+      TOvrEdit(ActiveControl).SelLength := 0;
+   end;
+end;
+
+// キャレットを右に移動
+procedure TMainForm.actionMoveRightExecute(Sender: TObject);
+var
+   i: Integer;
+begin
+   if ActiveControl is TOvrEdit then begin
+      i := TOvrEdit(ActiveControl).SelStart;
+      if i < Length(TOvrEdit(ActiveControl).Text) then begin
+         TOvrEdit(ActiveControl).SelStart := i + 1;
+      end;
+   end;
+end;
+
+// 一時メモリーよりＱＳＯ呼び出し
+procedure TMainForm.actionPullQsoExecute(Sender: TObject);
+begin
+   PullQSO();
+end;
+
+// キャレットの左一文字を削除(BackSpaceと同じ)
+procedure TMainForm.actionDeleteLeftOneCharExecute(Sender: TObject);
+var
+   i: Integer;
+   str: string;
+begin
+   if ActiveControl is TOvrEdit then begin
+      i := TOvrEdit(ActiveControl).SelStart;
+      if i > 0 then begin
+         str := TOvrEdit(ActiveControl).Text;
+         Delete(str, i, 1);
+         TOvrEdit(ActiveControl).Text := str;
+         TOvrEdit(ActiveControl).SelStart := i;
+      end;
+   end;
+end;
+
+// パーシャルチェックorスーパーチェックより取り込み
+procedure TMainForm.actionGetPartialCheckExecute(Sender: TObject);
+   procedure SetCallsign(strCallsign: string);
+   begin
+      CallsignEdit.Text := strCallsign;
+      CallSignEdit.SelStart := Length(CallsignEdit.Text);
+   end;
+begin
+   if FPartialCheck.Visible then begin
+      if FPartialCheck.HitNumber > 0 then begin
+         SetCallsign(FPartialCheck.HitCall);
+      end
+      else if FSuperCheck.Visible then begin
+         if FSuperCheck.HitNumber > 0 then begin
+            SetCallsign(FSuperCheck.HitCall);
+         end;
+      end;
+   end
+   else begin // partial check is not visible
+      if FSuperCheck.Visible then begin
+         if FSuperCheck.HitNumber > 0 then begin
+            SetCallsign(FSuperCheck.HitCall);
+         end;
+      end;
+   end;
+end;
+
+// キャレット位置より右を削除
+procedure TMainForm.actionDeleteRightExecute(Sender: TObject);
+var
+   i: Integer;
+   str: string;
+begin
+   if ActiveControl is TOvrEdit then begin
+      i := TOvrEdit(ActiveControl).SelStart;
+      str := TOvrEdit(ActiveControl).Text;
+      str := Copy(str, 1, i);
+      TOvrEdit(ActiveControl).Text := str;
+      TOvrEdit(ActiveControl).SelStart := Length(str);
+   end;
+end;
+
+// コールサインフィールドとナンバーフィールドの内容をすべて削除
+procedure TMainForm.actionClearCallAndRptExecute(Sender: TObject);
+begin
+   EditedSinceTABPressed := tabstate_normal;
+   CallsignEdit.Clear;
+   NumberEdit.Clear;
+   MemoEdit.Clear;
+   CallsignEdit.SetFocus;
+   WriteStatusLine('', False);
+end;
+
+// 同じバンドのみ表示
+procedure TMainForm.actionShowCurrentBandOnlyExecute(Sender: TObject);
+begin
+   ShowCurrentBandOnly.Checked := not(ShowCurrentBandOnly.Checked);
+   EditScreen.RefreshScreen;
+end;
+
+// 時刻を１分戻す
+procedure TMainForm.actionDecreaseTimeExecute(Sender: TObject);
+begin
+   CurrentQSO.DecTime;
+   TimeEdit.Text := CurrentQSO.TimeStr;
+   DateEdit.Text := CurrentQSO.DateStr;
+end;
+
+// 時刻を１分進める
+procedure TMainForm.actionIncreaseTimeExecute(Sender: TObject);
+begin
+   CurrentQSO.IncTime;
+   TimeEdit.Text := CurrentQSO.TimeStr;
+   DateEdit.Text := CurrentQSO.DateStr;
+end;
+
+// QTC送信
+procedure TMainForm.actionQTCExecute(Sender: TObject);
+begin
+   if MyContest.Name <> 'WAEDC Contest' then begin
+      Exit;
+   end;
+
+   TWAEContest(MyContest).QTCForm.Show;
+   if CurrentQSO.Callsign = '' then begin
+      if Log.TotalQSO >= 2 then begin
+         TWAEContest(MyContest).QTCForm.OpenQTC(Log.QsoList[Log.TotalQSO]);
+      end;
+   end
+   else begin
+      TWAEContest(MyContest).QTCForm.OpenQTC(Main.CurrentQSO);
+   end;
+end;
+
+// パドルリバース
+procedure TMainForm.actionReversePaddleExecute(Sender: TObject);
+begin
+   dmZlogGlobal.ReversePaddle;
+end;
+
+// CW Tune
+procedure TMainForm.actionCwTuneExecute(Sender: TObject);
+begin
+   if CurrentQSO.mode = mCW then begin
+      CtrlZCQLoop := True;
+      dmZLogKeyer.TuneOn;
+   end;
+end;
+
+// 全ての入力フィールドの内容を一時メモリに保存（最大5つ）
+procedure TMainForm.actionPushQsoExecute(Sender: TObject);
+begin
+   PushQSO(CurrentQSO);
+end;
+
+// 現在の入力フィールドをクリア
+procedure TMainForm.actionFieldClearExecute(Sender: TObject);
+begin
+   if ActiveControl is TOvrEdit then begin
+      TOvrEdit(ActiveControl).Clear;
+      WriteStatusLine('', False);
+   end;
+   if ActiveControl is TEdit then begin
+      TEdit(ActiveControl).Clear;
+      WriteStatusLine('', False);
+   end;
+end;
+
+// ＣＱ送出
+procedure TMainForm.actionCQRepeatExecute(Sender: TObject);
+begin
+   if CurrentQSO.mode = mCW then begin
+      CQRepeatClick2(Sender);
+   end;
+end;
+
+// ↑キー
+procedure TMainForm.actionUpKeyExecute(Sender: TObject);
+begin
+   if ActiveControl is TOvrEdit then begin
+      Grid.Row := Log.QsoList.Count - 1;
+      if EditScreen.DirectEdit then begin
+         Grid.col := TEdit(Sender).Tag;
+      end;
+
+      LastFocus := TEdit(ActiveControl);
+      Grid.SetFocus;
+   end;
+end;
+
+// Backup / Alt+B
+procedure TMainForm.actionBackupExecute(Sender: TObject);
+var
+   P: string;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('---actionBackupExecute---'));
+   {$ENDIF}
+
+   P := dmZlogGlobal.Settings._backuppath;
+   if (P = '') or (P = '\') then begin
+      P := ExtractFilePath(Application.ExeName);
+   end;
+
+   ForceDirectories(P);
+
+   Log.SaveToFile(P + ExtractFileName(CurrentFileName));
+end;
+
+// Callsignにフォーカス移動 / Alt+C
+procedure TMainForm.actionFocusCallsignExecute(Sender: TObject);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('---actionFocusCallsignExecute---'));
+   {$ENDIF}
+   CallsignEdit.SetFocus;
+end;
+
+// CW Keyboard / Alt+K
+procedure TMainForm.actionShowCWKeyboardExecute(Sender: TObject);
+begin
+   FCWKeyBoard.Show;
+end;
+
+// Memo欄にフォーカス移動 / Alt+M
+procedure TMainForm.actionFocusMemoExecute(Sender: TObject);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('---actionFocusMemoExecute---'));
+   {$ENDIF}
+   MemoEdit.SetFocus;
+end;
+
+// Number欄にフォーカス移動 / Alt+N
+procedure TMainForm.actionFocusNumberExecute(Sender: TObject);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('---actionFocusNumberExecute---'));
+   {$ENDIF}
+   NumberEdit.SetFocus;
+end;
+
+// OP欄にフォーカス移動
+procedure TMainForm.actionFocusOpExecute(Sender: TObject);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('---actionFocusOpExecute---'));
+   {$ENDIF}
+   OpEditClick(Self);
+end;
+
+// Packet Cluster / Alt+P
+procedure TMainForm.actionShowPacketClusterExecute(Sender: TObject);
+begin
+   FCommForm.Show;
+   LastFocus.SetFocus();
+end;
+
+// Console Pad / Alt+Q
+procedure TMainForm.actionShowConsolePadExecute(Sender: TObject);
+begin
+   FConsolePad.Show;
+end;
+
+// RST欄にフォーカス移動 / Alt+R
+procedure TMainForm.actionFocusRstExecute(Sender: TObject);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('---actionFocusRstExecute---'));
+   {$ENDIF}
+   RcvdRSTEdit.SetFocus;
+end;
+
+// Scratch Sheet / Alt+S
+procedure TMainForm.actionShowScratchSheetExecute(Sender: TObject);
+begin
+   FScratchSheet.Show;
+end;
+
+// RIG Control / Alt+T
+procedure TMainForm.actionShowRigControlExecute(Sender: TObject);
+begin
+   RigControl.Show;
+   LastFocus.SetFocus();
+end;
+
+// CallsignとNumberをクリアしてコールサイン欄にフォーカス / Alt+W
+procedure TMainForm.actoinClearCallAndNumAftFocusExecute(Sender: TObject);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('---actoinClearCallAndNumAftFocusExecute---'));
+   {$ENDIF}
+   CallsignEdit.Clear();
+   NumberEdit.Clear();
+   WriteStatusLine('', False);
+   CallsignEdit.SetFocus;
+end;
+
+// Z-Serverのチャットウインドウ / Alt+Z
+procedure TMainForm.actionShowZServerChatExecute(Sender: TObject);
+begin
+   FChatForm.Show;
+end;
+
+// RIG切り替え / Alt+.
+procedure TMainForm.actionToggleRigExecute(Sender: TObject);
+begin
+   // WriteStatusLine('Alt+.',False);
+   RigControl.ToggleCurrentRig;
+end;
+
+// BandScope
+procedure TMainForm.actionShowBandScopeExecute(Sender: TObject);
+begin
+   FBandScope2.Show; // BS2 test
+end;
+
+// Running Frequencies
+procedure TMainForm.actionShowFreqListExecute(Sender: TObject);
+begin
+   FFreqList.Show;
+end;
+
+// Teletype Console
+procedure TMainForm.actionShowTeletypeConsoleExecute(Sender: TObject);
+begin
+   TTYConsole.Show;
+end;
+
+// analyzeウインドウ
+procedure TMainForm.actionShowAnalyzeExecute(Sender: TObject);
+begin
+   FZAnalyze.Show();
+end;
+
+// Scoreウインドウ
+procedure TMainForm.actionShowScoreExecute(Sender: TObject);
+begin
+   MyContest.ShowScore;
+end;
+
+// マルチウインドウ
+procedure TMainForm.actionShowMultipliersExecute(Sender: TObject);
+begin
+   MyContest.ShowMulti;
+end;
+
+// QSO Rateウインドウ
+procedure TMainForm.actionShowQsoRateExecute(Sender: TObject);
+begin
+   FRateDialog.Show;
+end;
+
+// Check Callウインドウ
+procedure TMainForm.actionShowCheckCallExecute(Sender: TObject);
+begin
+   FCheckCall2.Show;
+end;
+
+// Check Multiウインドウ
+procedure TMainForm.actionShowCheckMultiExecute(Sender: TObject);
+begin
+   FCheckMulti.Show;
+end;
+
+// Check Countryウインドウ
+procedure TMainForm.actionShowCheckCountryExecute(Sender: TObject);
+begin
+   FCheckCountry.Show;
 end;
 
 // CTRL+Enter, CTRL+N
@@ -8007,6 +8157,52 @@ begin
    else begin
       Position := poScreenCenter;
    end;
+end;
+
+procedure TMainForm.SetActionEnabled(fEnabled: Boolean);
+var
+   i: Integer;
+begin
+   for i := 0 to ActionList1.ActionCount - 1 do begin
+      ActionList1.Actions[i].Enabled := fEnabled;
+   end;
+//   actionQuickQSY01.Enabled := fEnabled;
+//   actionQuickQSY02.Enabled := fEnabled;
+//   actionQuickQSY03.Enabled := fEnabled;
+//   actionQuickQSY04.Enabled := fEnabled;
+//   actionQuickQSY05.Enabled := fEnabled;
+//   actionQuickQSY06.Enabled := fEnabled;
+//   actionQuickQSY07.Enabled := fEnabled;
+//   actionQuickQSY08.Enabled := fEnabled;
+//   actionPlayMessageA01.Enabled := fEnabled;
+//   actionPlayMessageA02.Enabled := fEnabled;
+//   actionPlayMessageA03.Enabled := fEnabled;
+//   actionPlayMessageA04.Enabled := fEnabled;
+//   actionPlayMessageA05.Enabled := fEnabled;
+//   actionPlayMessageA06.Enabled := fEnabled;
+//   actionPlayMessageA07.Enabled := fEnabled;
+//   actionPlayMessageA08.Enabled := fEnabled;
+//   actionCheckMulti.Enabled := fEnabled;
+//   actionShowCheckPartial.Enabled := fEnabled;
+//   actionPlayMessageA11.Enabled := fEnabled;
+//   actionPlayMessageA12.Enabled := fEnabled;
+//   actionPlayMessageB01.Enabled := fEnabled;
+//   actionPlayMessageB02.Enabled := fEnabled;
+//   actionPlayMessageB03.Enabled := fEnabled;
+//   actionPlayMessageB04.Enabled := fEnabled;
+//   actionPlayMessageB05.Enabled := fEnabled;
+//   actionPlayMessageB06.Enabled := fEnabled;
+//   actionPlayMessageB07.Enabled := fEnabled;
+//   actionPlayMessageB08.Enabled := fEnabled;
+//   actionPlayMessageB11.Enabled := fEnabled;
+//   actionPlayMessageB12.Enabled := fEnabled;
+//   actionInsertBandScope.Enabled := fEnabled;
+//   actionInsertBandScope2.Enabled := fEnabled;
+//   actionInsertBandScope3.Enabled := fEnabled;
+//   actionIncreaseFontSize.Enabled := fEnabled;
+//   actionDecreaseFontSize.Enabled := fEnabled;
+//   actionPageUp.Enabled := fEnabled;
+//   actionPageDown.Enabled := fEnabled;
 end;
 
 end.

@@ -21,6 +21,7 @@ object MainForm: TMainForm
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnDeactivate = FormDeactivate
   OnKeyDown = FormKeyDown
   OnKeyUp = FormKeyUp
   OnResize = FormResize
@@ -471,12 +472,11 @@ object MainForm: TMainForm
       ShowHint = True
       OnClick = FileExit
     end
-    object SpeedButton1: TSpeedButton
+    object PartialCheckButton: TSpeedButton
       Left = 184
       Top = 4
       Width = 25
       Height = 25
-      Hint = 'Partial check'
       Glyph.Data = {
         42010000424D4201000000000000760000002800000011000000110000000100
         040000000000CC00000000000000000000001000000010000000000000000000
@@ -491,9 +491,9 @@ object MainForm: TMainForm
         777770000000}
       ParentShowHint = False
       ShowHint = True
-      OnClick = PartialClick
+      OnClick = actionShowCheckPartialExecute
     end
-    object SpeedButton3: TSpeedButton
+    object ScoreButton: TSpeedButton
       Left = 104
       Top = 4
       Width = 25
@@ -515,7 +515,7 @@ object MainForm: TMainForm
       NumGlyphs = 2
       ParentShowHint = False
       ShowHint = True
-      OnClick = ScoreClick
+      OnClick = actionShowScoreExecute
     end
     object MultiButton: TSpeedButton
       Left = 128
@@ -532,9 +532,9 @@ object MainForm: TMainForm
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
-      OnClick = MultiClick
+      OnClick = actionShowMultipliersExecute
     end
-    object SpeedButton8: TSpeedButton
+    object RateButton: TSpeedButton
       Left = 152
       Top = 4
       Width = 25
@@ -554,7 +554,7 @@ object MainForm: TMainForm
         DDDDD0000000}
       ParentShowHint = False
       ShowHint = True
-      OnClick = RateClick
+      OnClick = actionShowQsoRateExecute
     end
     object LogButton: TSpeedButton
       Left = 280
@@ -607,7 +607,6 @@ object MainForm: TMainForm
       Top = 4
       Width = 25
       Height = 25
-      Hint = 'Super check'
       Glyph.Data = {
         42010000424D4201000000000000760000002800000011000000110000000100
         040000000000CC00000000000000000000001000000010000000000000000000
@@ -622,9 +621,9 @@ object MainForm: TMainForm
         777770000000}
       ParentShowHint = False
       ShowHint = True
-      OnClick = SuperCheckButtonClick
+      OnClick = actionShowSuperCheckExecute
     end
-    object SpeedButton2: TSpeedButton
+    object PacketClusterButton: TSpeedButton
       Left = 352
       Top = 4
       Width = 25
@@ -646,7 +645,7 @@ object MainForm: TMainForm
       NumGlyphs = 2
       ParentShowHint = False
       ShowHint = True
-      OnClick = ClusterClick
+      OnClick = actionShowPacketClusterExecute
     end
     object ZServerIcon: TImage
       Left = 384
@@ -4181,9 +4180,7 @@ object MainForm: TMainForm
         OnClick = MergeFile1Click
       end
       object Backup1: TMenuItem
-        Caption = '&Back up'
-        ShortCut = 32834
-        OnClick = Backup1Click
+        Action = actionBackup
       end
       object Export1: TMenuItem
         Caption = '&Export...'
@@ -4243,136 +4240,34 @@ object MainForm: TMainForm
         OnClick = FileExit
       end
     end
-    object EditMenu: TMenuItem
-      Caption = '&Edit'
-      Visible = False
-      object EditUndoItem: TMenuItem
-        Caption = '&Undo'
-        Enabled = False
-        Hint = 'Undo the last action'
-        OnClick = EditUndo
-      end
-      object N2: TMenuItem
-        Caption = '-'
-      end
-      object EditCutItem: TMenuItem
-        Caption = 'Cu&t'
-        Enabled = False
-        Hint = 'Delete selected item'
-        OnClick = EditCut
-      end
-      object EditCopyItem: TMenuItem
-        Caption = '&Copy'
-        Enabled = False
-        Hint = 'Copy selected item to clipboard'
-        OnClick = EditCopy
-      end
-      object EditPasteItem: TMenuItem
-        Caption = '&Paste'
-        Enabled = False
-        Hint = 'Paste contents of clipboard'
-        OnClick = EditPaste
-      end
-      object memo1: TMenuItem
-        Caption = 'memo'
-        ShortCut = 32845
-        Visible = False
-        OnClick = memo1Click
-      end
-      object rst1: TMenuItem
-        Caption = 'rst'
-        ShortCut = 32850
-        Visible = False
-        OnClick = rst1Click
-      end
-      object callsign1: TMenuItem
-        Caption = 'callsign'
-        ShortCut = 32835
-        Visible = False
-        OnClick = callsign1Click
-      end
-      object pushqso1: TMenuItem
-        Caption = 'push qso'
-        ShortCut = 16469
-        Visible = False
-        OnClick = pushqso1Click
-      end
-      object pullqso1: TMenuItem
-        Caption = 'pull qso'
-        ShortCut = 16455
-        Visible = False
-        OnClick = pullqso1Click
-      end
-      object memo21: TMenuItem
-        Caption = 'number'
-        ShortCut = 32846
-        Visible = False
-        OnClick = memo21Click
-      end
-      object op1: TMenuItem
-        Caption = 'op'
-        ShortCut = 32847
-        Visible = False
-        OnClick = op1Click
-      end
-      object Togglerig1: TMenuItem
-        Caption = 'Toggle rig'
-        ShortCut = 32958
-        Visible = False
-        OnClick = Togglerig1Click
-      end
-      object QTC1: TMenuItem
-        Caption = 'QTC'
-        ShortCut = 16465
-        Visible = False
-        OnClick = QTC1Click
-      end
-      object menuClearCallAndRst: TMenuItem
-        Caption = 'clear call and rst'
-        ShortCut = 32855
-        OnClick = menuClearCallAndRstClick
-      end
-    end
     object Windows1: TMenuItem
       Caption = '&Windows'
       object Score1: TMenuItem
-        Caption = '&Score'
-        OnClick = ScoreClick
+        Action = actionShowScore
       end
       object Multipliers1: TMenuItem
-        Caption = '&Multipliers'
-        OnClick = MultiClick
+        Action = actionShowMultipliers
       end
       object QSOrate1: TMenuItem
-        Caption = 'QSO &Rate'
-        OnClick = RateClick
+        Action = actionShowQsoRate
       end
       object SuperCheck1: TMenuItem
-        Caption = 'Super Check'
-        ShortCut = 32837
-        OnClick = SuperCheckButtonClick
+        Action = actionShowSuperCheck
       end
       object PartialCheck1: TMenuItem
-        Caption = 'Partial Check'
-        OnClick = PartialClick
+        Action = actionShowCheckPartial
       end
       object CheckCall1: TMenuItem
-        Caption = 'Check Call'
-        OnClick = CheckCall1Click
+        Action = actionShowCheckCall
       end
       object mnCheckMulti: TMenuItem
-        Caption = 'Check Multi'
-        OnClick = mnCheckMultiClick
+        Action = actionShowCheckMulti
       end
       object mnCheckCountry: TMenuItem
-        Caption = 'Check Country'
-        Visible = False
-        OnClick = mnCheckCountryClick
+        Action = actionShowCheckCountry
       end
       object CWKeyboard1: TMenuItem
-        Caption = '&CW Keyboard'
-        ShortCut = 32843
-        OnClick = CWKeyboard1Click
+        Action = actionShowCWKeyboard
       end
       object menuOptions: TMenuItem
         Caption = '&Options'
@@ -4382,57 +4277,39 @@ object MainForm: TMainForm
         Caption = '-'
       end
       object RigControl1: TMenuItem
-        Caption = '&Rig Control'
-        ShortCut = 32852
-        OnClick = RigControl1Click
+        Action = actionShowRigControl
       end
       object PacketCluster1: TMenuItem
-        Caption = '&Packet Cluster'
-        ShortCut = 32848
-        OnClick = ClusterClick
+        Action = actionShowPacketCluster
       end
       object ZLinkmonitor1: TMenuItem
-        Caption = '&Z-Link Monitor'
-        ShortCut = 16507
-        Visible = False
-        OnClick = ZLinkmonitor1Click
+        Action = actionShowZlinkMonitor
       end
       object ZServer1: TMenuItem
-        Caption = 'Z-Server Messages'
-        ShortCut = 32858
-        OnClick = ZServer1Click
+        Action = actionShowZServerChat
       end
       object Console1: TMenuItem
-        Caption = 'Console'
-        ShortCut = 32849
-        OnClick = Console1Click
+        Action = actionShowConsolePad
       end
       object Scratchsheet1: TMenuItem
-        Caption = 'Scratch Sheet'
-        ShortCut = 32851
-        OnClick = Scratchsheet1Click
+        Action = actionShowScratchSheet
       end
       object Bandscope1: TMenuItem
-        Caption = '&Band Scope'
-        OnClick = Bandscope1Click
+        Action = actionShowBandScope
       end
       object mnNewBandScope: TMenuItem
         Caption = 'New Band Scope'
+        Visible = False
         OnClick = mnNewBandScopeClick
       end
       object RunningFrequencies1: TMenuItem
-        Caption = 'Running Frequencies'
-        OnClick = RunningFrequencies1Click
+        Action = actionShowFreqList
       end
       object mnTTYConsole: TMenuItem
-        Caption = 'Teletype Console'
-        ShortCut = 32855
-        Visible = False
-        OnClick = mnTTYConsoleClick
+        Action = actionShowTeletypeConsole
       end
       object menuAnalyze: TMenuItem
-        Caption = 'Analyze'
-        OnClick = menuAnalyzeClick
+        Action = actionShowAnalyze
       end
     end
     object Network1: TMenuItem
@@ -4458,9 +4335,7 @@ object MainForm: TMainForm
     object View1: TMenuItem
       Caption = '&View'
       object ShowCurrentBandOnly: TMenuItem
-        Caption = 'Show Current Band Only'
-        ShortCut = 16460
-        OnClick = ShowCurrentBandOnlyClick
+        Action = actionShowCurrentBandOnly
       end
       object SortbyTime1: TMenuItem
         Caption = 'Sort by Time'
@@ -4929,6 +4804,18 @@ object MainForm: TMainForm
       ShortCut = 16503
       OnExecute = actionQuickQSYExecute
     end
+    object actionShowSuperCheck: TAction
+      Caption = 'Super Check'
+      SecondaryShortCuts.Strings = (
+        'Alt+E')
+      ShortCut = 16505
+      OnExecute = actionShowSuperCheckExecute
+    end
+    object actionShowZlinkMonitor: TAction
+      Caption = '&Z-Link Monitor'
+      ShortCut = 16507
+      OnExecute = actionShowZlinkMonitorExecute
+    end
     object actionPlayMessageA01: TAction
       Tag = 1
       Caption = 'actionPlayMessageA01'
@@ -4982,10 +4869,10 @@ object MainForm: TMainForm
       ShortCut = 120
       OnExecute = actionCheckMultiExecute
     end
-    object actionCheckPartial: TAction
-      Caption = 'actionCheckPartial'
+    object actionShowCheckPartial: TAction
+      Caption = 'Partial Check'
       ShortCut = 121
-      OnExecute = actionCheckPartialExecute
+      OnExecute = actionShowCheckPartialExecute
     end
     object actionPlayMessageA11: TAction
       Tag = 11
@@ -5083,6 +4970,221 @@ object MainForm: TMainForm
       Caption = 'Decrease Font Size'
       ShortCut = 24659
       OnExecute = actionDecreaseFontSizeExecute
+    end
+    object actionPageUp: TAction
+      Caption = 'actionPageUp'
+      ShortCut = 33
+      OnExecute = actionPageUpExecute
+    end
+    object actionPageDown: TAction
+      Caption = 'actionPageDown'
+      ShortCut = 34
+      OnExecute = actionPageDownExecute
+    end
+    object actionMoveTop: TAction
+      Caption = 'actionMoveTop'
+      ShortCut = 16449
+      OnExecute = actionMoveTopExecute
+    end
+    object actionMoveLeft: TAction
+      Caption = 'actionMoveLeft'
+      ShortCut = 16450
+      OnExecute = actionMoveLeftExecute
+    end
+    object actionDeleteOneChar: TAction
+      Caption = 'actionDeleteOneChar'
+      ShortCut = 16452
+      OnExecute = actionDeleteOneCharExecute
+    end
+    object actionMoveLast: TAction
+      Caption = 'actionMoveLast'
+      ShortCut = 16453
+      OnExecute = actionMoveLastExecute
+    end
+    object actionMoveRight: TAction
+      Caption = 'actionMoveRight'
+      ShortCut = 16454
+      OnExecute = actionMoveRightExecute
+    end
+    object actionPullQso: TAction
+      Caption = 'pull qso'
+      ShortCut = 16455
+      OnExecute = actionPullQsoExecute
+    end
+    object actionDeleteLeftOneChar: TAction
+      Caption = 'actionDeleteLeftOneChar'
+      ShortCut = 16456
+      OnExecute = actionDeleteLeftOneCharExecute
+    end
+    object actionGetPartialCheck: TAction
+      Caption = 'actionGetPartialCheck'
+      ShortCut = 16457
+      OnExecute = actionGetPartialCheckExecute
+    end
+    object actionDeleteRight: TAction
+      Caption = 'actionDeleteRight'
+      ShortCut = 16458
+      OnExecute = actionDeleteRightExecute
+    end
+    object actionClearCallAndRpt: TAction
+      Caption = 'actionClearCallAndRpt'
+      ShortCut = 16459
+      OnExecute = actionClearCallAndRptExecute
+    end
+    object actionShowCurrentBandOnly: TAction
+      Caption = 'Show Current Band Only'
+      ShortCut = 16460
+      OnExecute = actionShowCurrentBandOnlyExecute
+    end
+    object actionDecreaseTime: TAction
+      Caption = 'actionDecreaseTime'
+      ShortCut = 16463
+      OnExecute = actionDecreaseTimeExecute
+    end
+    object actionIncreaseTime: TAction
+      Caption = 'actionIncreaseTime'
+      ShortCut = 16464
+      OnExecute = actionIncreaseTimeExecute
+    end
+    object actionQTC: TAction
+      Caption = 'QTC'
+      ShortCut = 16465
+      OnExecute = actionQTCExecute
+    end
+    object actionReversePaddle: TAction
+      Caption = 'actionReversePaddle'
+      ShortCut = 16466
+      OnExecute = actionReversePaddleExecute
+    end
+    object actionCwTune: TAction
+      Caption = 'actionCwTune'
+      ShortCut = 16468
+      OnExecute = actionCwTuneExecute
+    end
+    object actionPushQso: TAction
+      Caption = 'push qso'
+      ShortCut = 16469
+      OnExecute = actionPushQsoExecute
+    end
+    object actionFieldClear: TAction
+      Caption = 'actionFieldClear'
+      ShortCut = 16471
+      OnExecute = actionFieldClearExecute
+    end
+    object actionCQRepeat: TAction
+      Caption = 'actionCQRepeat'
+      ShortCut = 16474
+      OnExecute = actionCQRepeatExecute
+    end
+    object actionBackup: TAction
+      Caption = '&Back up'
+      ShortCut = 32834
+      OnExecute = actionBackupExecute
+    end
+    object actionFocusCallsign: TAction
+      Caption = 'actionFocusCallsign'
+      ShortCut = 32835
+      OnExecute = actionFocusCallsignExecute
+    end
+    object actionShowCWKeyboard: TAction
+      Caption = '&CW Keyboard'
+      ShortCut = 32843
+      OnExecute = actionShowCWKeyboardExecute
+    end
+    object actionFocusMemo: TAction
+      Caption = 'actionFocusMemo'
+      ShortCut = 32845
+      OnExecute = actionFocusMemoExecute
+    end
+    object actionFocusNumber: TAction
+      Caption = 'actionFocusNumber'
+      ShortCut = 32846
+      OnExecute = actionFocusNumberExecute
+    end
+    object actionFocusOp: TAction
+      Caption = 'actionFocusOp'
+      ShortCut = 32847
+      OnExecute = actionFocusOpExecute
+    end
+    object actionShowPacketCluster: TAction
+      Caption = '&Packet Cluster'
+      ShortCut = 32848
+      OnExecute = actionShowPacketClusterExecute
+    end
+    object actionShowConsolePad: TAction
+      Caption = 'Console'
+      ShortCut = 32849
+      OnExecute = actionShowConsolePadExecute
+    end
+    object actionFocusRst: TAction
+      Caption = 'actionFocusRst'
+      ShortCut = 32850
+      OnExecute = actionFocusRstExecute
+    end
+    object actionShowScratchSheet: TAction
+      Caption = 'Scratch Sheet'
+      ShortCut = 32851
+      OnExecute = actionShowScratchSheetExecute
+    end
+    object actionShowRigControl: TAction
+      Caption = '&Rig Control'
+      ShortCut = 32852
+      OnExecute = actionShowRigControlExecute
+    end
+    object actoinClearCallAndNumAftFocus: TAction
+      Caption = 'actoinClearCallAndNumAftFocus'
+      ShortCut = 32855
+      OnExecute = actoinClearCallAndNumAftFocusExecute
+    end
+    object actionShowZServerChat: TAction
+      Caption = 'Z-Server Messages'
+      ShortCut = 32858
+      OnExecute = actionShowZServerChatExecute
+    end
+    object actionToggleRig: TAction
+      Caption = 'actionToggleRig'
+      ShortCut = 32958
+      OnExecute = actionToggleRigExecute
+    end
+    object actionShowBandScope: TAction
+      Caption = '&Band Scope'
+      OnExecute = actionShowBandScopeExecute
+    end
+    object actionShowFreqList: TAction
+      Caption = 'Running Frequencies'
+      OnExecute = actionShowFreqListExecute
+    end
+    object actionShowTeletypeConsole: TAction
+      Caption = 'Teletype Console'
+      OnExecute = actionShowTeletypeConsoleExecute
+    end
+    object actionShowAnalyze: TAction
+      Caption = 'Analyze'
+      OnExecute = actionShowAnalyzeExecute
+    end
+    object actionShowScore: TAction
+      Caption = '&Score'
+      OnExecute = actionShowScoreExecute
+    end
+    object actionShowMultipliers: TAction
+      Caption = '&Multipliers'
+      OnExecute = actionShowMultipliersExecute
+    end
+    object actionShowQsoRate: TAction
+      Caption = 'QSO &Rate'
+      OnExecute = actionShowQsoRateExecute
+    end
+    object actionShowCheckCall: TAction
+      Caption = 'Check Call'
+      OnExecute = actionShowCheckCallExecute
+    end
+    object actionShowCheckMulti: TAction
+      Caption = 'Check Multi'
+      OnExecute = actionShowCheckMultiExecute
+    end
+    object actionShowCheckCountry: TAction
+      Caption = 'Check Country'
+      OnExecute = actionShowCheckCountryExecute
     end
   end
 end
