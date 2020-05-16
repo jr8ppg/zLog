@@ -864,43 +864,45 @@ type
     procedure SetWindowCaption();
     procedure RestoreWindowsPos();
     procedure SetActionEnabled(fEnabled: Boolean);
-  public
-    EditScreen : TBasicEdit;
-    LastFocus : TEdit;
+
     procedure LoadNewContestFromFile(FileName : string);
     procedure RenewCWToolBar;
     procedure RenewVoiceToolBar;
     procedure RenewBandMenu();
-    procedure OnTabPress;
-    procedure DownKeyPress;
     procedure PushQSO(aQSO : TQSO);
     procedure PullQSO;
+    procedure OnTabPress;
+    procedure DownKeyPress;
+    procedure RestoreWindowStates;
+    procedure RecordWindowStates;
+    procedure SwitchLastQSOBandMode;
+    procedure CallsignSentProc(Sender: TObject); // called when callsign is sent;
+    procedure Update10MinTimer; //10 min countdown
+    procedure SaveFileAndBackUp;
+    procedure IncFontSize();
+    procedure DecFontSize();
+    procedure SetFontSize(font_size: Integer);
+    procedure QSY(b: TBand; m: TMode);
+    procedure PlayMessage(bank: Integer; no: Integer);
+    procedure InsertBandScope(fShiftKey: Boolean);
+  public
+    EditScreen : TBasicEdit;
+    LastFocus : TEdit;
     procedure SetR(var aQSO : TQSO); // RST
     procedure SetS(var aQSO : TQSO);
 
-    //procedure SetQSOBand(var aQSO : TQSO; Up : Boolean);
     function GetNextBand(BB : TBand; Up : Boolean) : TBand;
 
     procedure SetQSOMode(aQSO : TQSO);
     procedure WriteStatusLine(S : string; WriteConsole : Boolean);
     procedure WriteStatusLineRed(S : string; WriteConsole : Boolean);
-    procedure CallsignSentProc(Sender: TObject); // called when callsign is sent;
-    procedure Update10MinTimer; //10 min countdown
     procedure ProcessConsoleCommand(S : string);
     procedure UpdateBand(B : TBand); // takes care of window disp
     procedure UpdateMode(M : TMode);
-    {procedure LogQSO(aQSO : TQSO);  }
     procedure DisableNetworkMenus;
     procedure EnableNetworkMenus;
-    procedure SaveFileAndBackUp;
     procedure ReEvaluateCountDownTimer;
     procedure ReEvaluateQSYCount;
-    procedure RestoreWindowStates;
-    procedure RecordWindowStates;
-    procedure SwitchLastQSOBandMode;
-    procedure IncFontSize();
-    procedure DecFontSize();
-    procedure SetFontSize(font_size: Integer);
     procedure AutoInput(D : TBSData);
     procedure ConsoleRigBandSet(B: TBand);
 
@@ -909,10 +911,6 @@ type
     procedure HideBandMenuHF();
     procedure HideBandMenuWARC();
     procedure HideBandMenuVU(fInclude50: Boolean = True);
-
-    procedure QSY(b: TBand; m: TMode);
-    procedure PlayMessage(bank: Integer; no: Integer);
-    procedure InsertBandScope(fShiftKey: Boolean);
 
     property RigControl: TRigControl read FRigControl;
     property PartialCheck: TPartialCheck read FPartialCheck;
