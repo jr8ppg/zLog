@@ -5199,5 +5199,10 @@ object MainForm: TMainForm
       ShortCut = 40
       OnExecute = actionQsoCompleteExecute
     end
+    object actionNop: TAction
+      Caption = 'actionNop'
+      ShortCut = 16461
+      OnExecute = actionNopExecute
+    end
   end
 end

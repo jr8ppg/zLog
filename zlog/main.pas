@@ -614,6 +614,7 @@ type
     actionShowCheckCountry: TAction;
     actionQsoStart: TAction;
     actionQsoComplete: TAction;
+    actionNop: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -799,6 +800,7 @@ type
     procedure actionQsoStartExecute(Sender: TObject);
     procedure actionQsoCompleteExecute(Sender: TObject);
     procedure EditExit(Sender: TObject);
+    procedure actionNopExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -8028,6 +8030,12 @@ end;
 procedure TMainForm.actionShowCheckCountryExecute(Sender: TObject);
 begin
    FCheckCountry.Show;
+end;
+
+// No Operation
+procedure TMainForm.actionNopExecute(Sender: TObject);
+begin
+   //
 end;
 
 // CTRL+Enter, CTRL+N

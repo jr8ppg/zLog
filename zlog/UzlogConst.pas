@@ -86,7 +86,7 @@ const
   pwrH = TPower(3);
 
 const
-  default_primary_shortcut: array[0..83] of string = (
+  default_primary_shortcut: array[0..84] of string = (
     'Ctrl+F1',
     'Ctrl+F2',
     'Ctrl+F3',
@@ -170,10 +170,11 @@ const
     '',
     '',
     'Tab',
-    'Down'
+    'Down',
+    'Ctrl+M'
   );
 
-  default_secondary_shortcut: array[0..83] of string = (
+  default_secondary_shortcut: array[0..84] of string = (
     '',
     '',
     '',
@@ -183,6 +184,7 @@ const
     '',
     '',
     'Alt+E',
+    '',
     '',
     '',
     '',
