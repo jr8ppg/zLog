@@ -22,7 +22,6 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnDeactivate = FormDeactivate
-  OnKeyDown = FormKeyDown
   OnKeyUp = FormKeyUp
   OnResize = FormResize
   OnShow = FormShow
@@ -2491,6 +2490,7 @@ object MainForm: TMainForm
       TabOrder = 7
       OnChange = CallsignEditChange
       OnEnter = EditEnter
+      OnExit = EditExit
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
       OnKeyUp = CallsignEditKeyUp
@@ -2511,6 +2511,7 @@ object MainForm: TMainForm
       Text = 'NUMBER'
       OnChange = NumberEditChange
       OnEnter = EditEnter
+      OnExit = EditExit
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
       OnKeyUp = NumberEditKeyUp
@@ -5185,6 +5186,18 @@ object MainForm: TMainForm
     object actionShowCheckCountry: TAction
       Caption = 'Check Country'
       OnExecute = actionShowCheckCountryExecute
+    end
+    object actionQsoStart: TAction
+      Tag = 1
+      Caption = 'actionQsoStart'
+      ShortCut = 9
+      OnExecute = actionQsoStartExecute
+    end
+    object actionQsoComplete: TAction
+      Tag = 1
+      Caption = 'actionQsoComplete'
+      ShortCut = 40
+      OnExecute = actionQsoCompleteExecute
     end
   end
 end

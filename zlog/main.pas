@@ -612,6 +612,8 @@ type
     actionShowCheckCall: TAction;
     actionShowCheckMulti: TAction;
     actionShowCheckCountry: TAction;
+    actionQsoStart: TAction;
+    actionQsoComplete: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -659,8 +661,6 @@ type
     procedure SpeedButton12Click(Sender: TObject);
     procedure SpeedButton15Click(Sender: TObject);
     procedure OpMenuClick(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure CWPauseButtonClick(Sender: TObject);
     procedure CWPlayButtonClick(Sender: TObject);
     procedure RcvdRSTEditChange(Sender: TObject);
@@ -796,6 +796,9 @@ type
     procedure actionShowCheckCallExecute(Sender: TObject);
     procedure actionShowCheckMultiExecute(Sender: TObject);
     procedure actionShowCheckCountryExecute(Sender: TObject);
+    procedure actionQsoStartExecute(Sender: TObject);
+    procedure actionQsoCompleteExecute(Sender: TObject);
+    procedure EditExit(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -4448,7 +4451,7 @@ begin
       end;
 
       '+', ';': begin
-         DownKeyPress;
+         actionQsoComplete.Execute();
          Key := #0;
       end;
 
@@ -5011,14 +5014,6 @@ begin
          dmZLogKeyer.ControlPTT(not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
       end;
 
-      VK_DOWN: begin
-         DownKeyPress;
-         Key := 0;
-      end;
-
-      VK_INSERT: begin
-      end;
-
       VK_UP: begin
          Grid.Row := Log.QsoList.Count - 1;
          if EditScreen.DirectEdit then begin
@@ -5429,18 +5424,6 @@ begin
    dmZlogGlobal.SetOpPower(CurrentQSO);
    NewPowerEdit.Text := CurrentQSO.NewPowerStr;
    FZLinkForm.SendOperator;
-end;
-
-procedure TMainForm.FormKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
-begin
-   { if ActiveControl is TEdit then
-     if (TEdit(ActiveControl) = CallsignEdit) or
-     (TEdit(ActiveControl) = NumberEdit) then
-     if Key = VK_DOWN then
-     begin
-     Key := 0;
-     DownKeyPress;
-     end; }
 end;
 
 procedure TMainForm.CWPauseButtonClick(Sender: TObject);
@@ -5935,6 +5918,15 @@ begin
          CallsignEdit.SelLength := 1;
       end;
    end;
+
+   actionQsoStart.Enabled:= True;
+   actionQsoComplete.Enabled:= True;
+end;
+
+procedure TMainForm.EditExit(Sender: TObject);
+begin
+   actionQsoStart.Enabled:= False;
+   actionQsoComplete.Enabled:= False;
 end;
 
 procedure TMainForm.mnMergeClick(Sender: TObject);
@@ -6668,16 +6660,6 @@ begin
          if TTYConsole.Sending = False then begin
             TabPressed := False;
          end;
-      end;
-   end;
-
-   if HiWord(GetKeyState(VK_TAB)) <> 0 then begin
-      if not(TabPressed) and (CallsignEdit.Focused or NumberEdit.Focused) then begin
-         if Trunc((Now - LastTabPress) * 24 * 60 * 60 * 1000) > 100 then begin
-            OnTabPress;
-         end;
-
-         LastTabPress := Now;
       end;
    end;
 
@@ -8113,6 +8095,33 @@ end;
 procedure TMainForm.actionDecreaseFontSizeExecute(Sender: TObject);
 begin
    DecFontSize();
+end;
+
+// 交信開始 / TAB
+// 相手のコールサインとナンバーを送信し(F2)ナンバーフィールドに移動、ただしデュープならばQSO B4を送信(F4)
+procedure TMainForm.actionQsoStartExecute(Sender: TObject);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('---actionQsoStartExecute---'));
+   {$ENDIF}
+
+   if not(TabPressed) and (CallsignEdit.Focused or NumberEdit.Focused) then begin
+      if Trunc((Now - LastTabPress) * 24 * 60 * 60 * 1000) > 100 then begin
+         OnTabPress;
+      end;
+
+      LastTabPress := Now;
+   end;
+end;
+
+// 交信完了 / ↓
+// TUと自局のコールサインを送信し(F3)QSOを確定、ただしナンバーが有効でない場合はNR?を送信(F5)
+procedure TMainForm.actionQsoCompleteExecute(Sender: TObject);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('---actionQsoCompleteExecute---'));
+   {$ENDIF}
+   DownKeyPress;
 end;
 
 procedure TMainForm.RestoreWindowsPos();
