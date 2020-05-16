@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
-  ShlObj, ComObj, System.Actions, Vcl.ActnList,
+  ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
@@ -885,6 +885,9 @@ type
     procedure QSY(b: TBand; m: TMode);
     procedure PlayMessage(bank: Integer; no: Integer);
     procedure InsertBandScope(fShiftKey: Boolean);
+    procedure WriteKeymap();
+    procedure ReadKeymap();
+    procedure ResetKeymap();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -4302,6 +4305,18 @@ begin
          dmZlogGlobal.Settings._multistationwarning := False
       else
          dmZlogGlobal.Settings._multistationwarning := True;
+   end;
+
+   if S = 'WRITEKEYMAP' then begin
+      WriteKeymap();
+   end;
+
+   if S = 'READKEYMAP' then begin
+      ReadKeymap();
+   end;
+
+   if S = 'RESETKEYMAP' then begin
+      ResetKeymap();
    end;
 end;
 
@@ -8175,43 +8190,90 @@ begin
    for i := 0 to ActionList1.ActionCount - 1 do begin
       ActionList1.Actions[i].Enabled := fEnabled;
    end;
-//   actionQuickQSY01.Enabled := fEnabled;
-//   actionQuickQSY02.Enabled := fEnabled;
-//   actionQuickQSY03.Enabled := fEnabled;
-//   actionQuickQSY04.Enabled := fEnabled;
-//   actionQuickQSY05.Enabled := fEnabled;
-//   actionQuickQSY06.Enabled := fEnabled;
-//   actionQuickQSY07.Enabled := fEnabled;
-//   actionQuickQSY08.Enabled := fEnabled;
-//   actionPlayMessageA01.Enabled := fEnabled;
-//   actionPlayMessageA02.Enabled := fEnabled;
-//   actionPlayMessageA03.Enabled := fEnabled;
-//   actionPlayMessageA04.Enabled := fEnabled;
-//   actionPlayMessageA05.Enabled := fEnabled;
-//   actionPlayMessageA06.Enabled := fEnabled;
-//   actionPlayMessageA07.Enabled := fEnabled;
-//   actionPlayMessageA08.Enabled := fEnabled;
-//   actionCheckMulti.Enabled := fEnabled;
-//   actionShowCheckPartial.Enabled := fEnabled;
-//   actionPlayMessageA11.Enabled := fEnabled;
-//   actionPlayMessageA12.Enabled := fEnabled;
-//   actionPlayMessageB01.Enabled := fEnabled;
-//   actionPlayMessageB02.Enabled := fEnabled;
-//   actionPlayMessageB03.Enabled := fEnabled;
-//   actionPlayMessageB04.Enabled := fEnabled;
-//   actionPlayMessageB05.Enabled := fEnabled;
-//   actionPlayMessageB06.Enabled := fEnabled;
-//   actionPlayMessageB07.Enabled := fEnabled;
-//   actionPlayMessageB08.Enabled := fEnabled;
-//   actionPlayMessageB11.Enabled := fEnabled;
-//   actionPlayMessageB12.Enabled := fEnabled;
-//   actionInsertBandScope.Enabled := fEnabled;
-//   actionInsertBandScope2.Enabled := fEnabled;
-//   actionInsertBandScope3.Enabled := fEnabled;
-//   actionIncreaseFontSize.Enabled := fEnabled;
-//   actionDecreaseFontSize.Enabled := fEnabled;
-//   actionPageUp.Enabled := fEnabled;
-//   actionPageDown.Enabled := fEnabled;
+end;
+
+procedure TMainForm.WriteKeymap();
+var
+   i: Integer;
+   ini: TIniFile;
+begin
+   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'keymap.ini');
+   try
+      for i := 0 to ActionList1.ActionCount - 1 do begin
+         ini.WriteString('shortcut', IntToStr(i), ShortcutToText(ActionList1.Actions[i].ShortCut));
+         ini.WriteString('secondary', IntToStr(i), ActionList1.Actions[i].SecondaryShortCuts.CommaText);
+      end;
+   finally
+      ini.Free();
+   end;
+end;
+
+procedure TMainForm.ReadKeymap();
+var
+   i: Integer;
+   ini: TIniFile;
+   filename: string;
+   shortcut: TShortcut;
+
+   procedure ClearShortcut();
+   var
+      i: Integer;
+   begin
+      for i := 0 to ActionList1.ActionCount - 1 do begin
+         ActionList1.Actions[i].ShortCut := 0;
+      end;
+   end;
+
+   function IsShortcutUsed(shortcut: TShortcut): Boolean;
+   var
+      i: Integer;
+   begin
+      for i := 0 to ActionList1.ActionCount - 1 do begin
+         if ActionList1.Actions[i].ShortCut = shortcut then begin
+            Result := True;
+            Exit;
+         end;
+      end;
+
+      Result := False;
+   end;
+begin
+   filename := ExtractFilePath(Application.ExeName) + 'keymap.ini';
+   if FileExists(filename) = False then begin
+      Exit;
+   end;
+
+   ini := TIniFile.Create(filename);
+   try
+      // 一旦全部クリア
+      ClearShortcut();
+
+      for i := 0 to ActionList1.ActionCount - 1 do begin
+         // shortcut設定読み込み
+         shortcut := TextToShortcut(ini.ReadString('shortcut', IntToStr(i), ''));
+
+         // そのshortcutは使用済みなら次
+         if IsShortcutUsed(shortcut) = True then begin
+            Continue;
+         end;
+
+         // 未使用なら設定
+         ActionList1.Actions[i].ShortCut := shortcut;
+         ActionList1.Actions[i].SecondaryShortCuts.CommaText := ini.ReadString('secondary', IntToStr(i), '');
+      end;
+   finally
+      ini.Free();
+   end;
+end;
+
+procedure TMainForm.ResetKeymap();
+var
+   i: Integer;
+begin
+   for i := 0 to ActionList1.ActionCount - 1 do begin
+      ActionList1.Actions[i].ShortCut := TextToShortcut(default_primary_shortcut[i]);
+      ActionList1.Actions[i].SecondaryShortCuts.CommaText := default_secondary_shortcut[i];
+   end;
 end;
 
 end.
