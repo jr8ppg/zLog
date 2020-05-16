@@ -3652,6 +3652,8 @@ begin
    FQuickRef      := TQuickRef.Create(Self);
    FZAnalyze      := TZAnalyze.Create(Self);
 
+   ReadKeymap();
+
    defaultTextColor := CallsignEdit.Font.Color;
    OldCallsign := '';
    OldNumber := '';
@@ -8205,7 +8207,7 @@ var
    i: Integer;
    ini: TIniFile;
 begin
-   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'keymap.ini');
+   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_key.ini');
    try
       for i := 0 to ActionList1.ActionCount - 1 do begin
          ini.WriteString('shortcut', IntToStr(i), ShortcutToText(ActionList1.Actions[i].ShortCut));
@@ -8246,7 +8248,7 @@ var
       Result := False;
    end;
 begin
-   filename := ExtractFilePath(Application.ExeName) + 'keymap.ini';
+   filename := ExtractFilePath(Application.ExeName) + 'zlog_key.ini';
    if FileExists(filename) = False then begin
       Exit;
    end;
