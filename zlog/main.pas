@@ -4079,8 +4079,7 @@ begin
    end;
 
    if S = 'TUNE' then begin
-      CtrlZCQLoop := True;
-      dmZLogKeyer.TuneOn;
+      actionCwTune.Execute();
    end;
 
    if (S = 'LF') or (S = 'LASTF') then
