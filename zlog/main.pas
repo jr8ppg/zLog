@@ -4771,7 +4771,7 @@ var
    aQSO: TQSO;
 begin
    for i := B downto A do begin
-      aQSO := TQSO(Grid.Cells[0, i]);
+      aQSO := TQSO(Grid.Objects[0, i]);
       if aQSO.Reserve = actLock then begin
          //
       end
