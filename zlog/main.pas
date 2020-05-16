@@ -2153,6 +2153,9 @@ begin
    _row := MainForm.Grid.Row;
 
    aQSO := TQSO(MainForm.Grid.Objects[0, _row]);
+   if aQSO = nil then begin
+      Exit;
+   end;
 
    if aQSO.Reserve = actLock then begin
       MainForm.WriteStatusLine('This QSO is currently locked', False);
