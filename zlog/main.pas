@@ -5053,7 +5053,7 @@ begin
 
          if (dmZlogGlobal.Settings._jmode) and (TEdit(Sender).Name = 'CallsignEdit') then begin
             if CallsignEdit.Text = '' then begin
-               if Key <> Ord('7') then begin
+               if (Key <> Ord('7')) and (Key <> Ord('8')) then begin
                   CallsignEdit.Text := 'J';
                   CallsignEdit.SelStart := 1;
                end;
