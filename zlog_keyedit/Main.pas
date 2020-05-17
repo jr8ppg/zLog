@@ -53,10 +53,16 @@ uses
 procedure TformMain.FormCreate(Sender: TObject);
 var
    ini: TIniFile;
+   filename: string;
 begin
    PageControl1.ActivePageIndex := 0;
 
-   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_key.ini');
+   filename := ExtractFilePath(Application.ExeName) + 'zlog_key.ini';
+   if FileExists(filename) = False then begin
+      Exit;
+   end;
+
+   ini := TIniFile.Create(filename);
    try
       ReadKeymap(ini, vleLogging);
       ReadKeymap(ini, vleInformation);
