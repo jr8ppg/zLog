@@ -33,7 +33,8 @@ type
     procedure FormCreate(Sender: TObject);
   private
     { Private 宣言 }
-    function IsShortcutUsed(strKey: string): Boolean;
+    function IsShortcutUsed(strKey: string; var strFuncName: string): Boolean;
+    procedure ClearKeymap(strFuncName: string);
     procedure ReadKeymap(ini: TIniFile; vle: TValueListEditor);
     procedure WriteKeymap(ini: TIniFile; vle: TValueListEditor);
   public
@@ -82,6 +83,7 @@ var
    R: Integer;
    strKey: string;
    strKeyBackup: string;
+   strFuncName: string;
 begin
    dlg := TformKeyEditDlg.Create(Self);
    try
@@ -92,15 +94,19 @@ begin
       dlg.Key := strKeyBackup;
 
       if dlg.ShowModal() <> mrOK then begin
+         TValueListEditor(Sender).Cells[1, R] := strKeyBackup;
          Exit;
       end;
 
       strKey := dlg.Key;
 
-      if IsShortcutUsed(strKey) = True then begin
-         MessageBox(Handle, PChar(strKey + 'キーは既に使用されています'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-         TValueListEditor(Sender).Cells[1, R] := strKeyBackup;
-         Exit;
+      if (strKey <> '') and (IsShortcutUsed(strKey, strFuncName) = True) then begin
+         if MessageBox(Handle, PChar(strKey + ' キーは既に ' + strFuncName + ' で使用されています。横取りしますか？'), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+            TValueListEditor(Sender).Cells[1, R] := strKeyBackup;
+            Exit;
+         end;
+
+         ClearKeymap(strFuncName);
       end;
 
       TValueListEditor(Sender).Cells[1, R] := strKey;
@@ -134,12 +140,13 @@ begin
    Close();
 end;
 
-function TformMain.IsShortcutUsed(strKey: string): Boolean;
+function TformMain.IsShortcutUsed(strKey: string; var strFuncName: string): Boolean;
 var
    i: Integer;
 begin
    for i := 1 to vleLogging.RowCount - 1 do begin
       if vleLogging.Cells[1, i] = strKey then begin
+         strFuncName := vleLogging.Cells[0, i];
          Result := True;
          Exit;
       end;
@@ -147,6 +154,7 @@ begin
 
    for i := 1 to vleInformation.RowCount - 1 do begin
       if vleInformation.Cells[1, i] = strKey then begin
+         strFuncName := vleInformation.Cells[0, i];
          Result := True;
          Exit;
       end;
@@ -154,6 +162,7 @@ begin
 
    for i := 1 to vleCwKeying.RowCount - 1 do begin
       if vleCwKeying.Cells[1, i] = strKey then begin
+         strFuncName := vleCwKeying.Cells[0, i];
          Result := True;
          Exit;
       end;
@@ -161,6 +170,7 @@ begin
 
    for i := 1 to vleRigControl.RowCount - 1 do begin
       if vleRigControl.Cells[1, i] = strKey then begin
+         strFuncName := vleRigControl.Cells[0, i];
          Result := True;
          Exit;
       end;
@@ -168,6 +178,7 @@ begin
 
    for i := 1 to vleEdit.RowCount - 1 do begin
       if vleEdit.Cells[1, i] = strKey then begin
+         strFuncName := vleEdit.Cells[0, i];
          Result := True;
          Exit;
       end;
@@ -175,6 +186,7 @@ begin
 
    for i := 1 to vlePostContest.RowCount - 1 do begin
       if vlePostContest.Cells[1, i] = strKey then begin
+         strFuncName := vlePostContest.Cells[0, i];
          Result := True;
          Exit;
       end;
@@ -182,12 +194,68 @@ begin
 
    for i := 1 to vleOther.RowCount - 1 do begin
       if vleOther.Cells[1, i] = strKey then begin
+         strFuncName := vleOther.Cells[0, i];
          Result := True;
          Exit;
       end;
    end;
 
+   strFuncName := '';
    Result := False;
+end;
+
+procedure TformMain.ClearKeymap(strFuncName: string);
+var
+   i: Integer;
+begin
+   for i := 1 to vleLogging.RowCount - 1 do begin
+      if vleLogging.Cells[0, i] = strFuncName then begin
+         vleLogging.Cells[1, i] := '';
+         Exit;
+      end;
+   end;
+
+   for i := 1 to vleInformation.RowCount - 1 do begin
+      if vleInformation.Cells[0, i] = strFuncName then begin
+         vleInformation.Cells[1, i] := '';
+         Exit;
+      end;
+   end;
+
+   for i := 1 to vleCwKeying.RowCount - 1 do begin
+      if vleCwKeying.Cells[0, i] = strFuncName then begin
+         vleCwKeying.Cells[1, i] := '';
+         Exit;
+      end;
+   end;
+
+   for i := 1 to vleRigControl.RowCount - 1 do begin
+      if vleRigControl.Cells[0, i] = strFuncName then begin
+         vleRigControl.Cells[1, i] := '';
+         Exit;
+      end;
+   end;
+
+   for i := 1 to vleEdit.RowCount - 1 do begin
+      if vleEdit.Cells[0, i] = strFuncName then begin
+         vleEdit.Cells[1, i] := '';
+         Exit;
+      end;
+   end;
+
+   for i := 1 to vlePostContest.RowCount - 1 do begin
+      if vlePostContest.Cells[0, i] = strFuncName then begin
+         vlePostContest.Cells[1, i] := '';
+         Exit;
+      end;
+   end;
+
+   for i := 1 to vleOther.RowCount - 1 do begin
+      if vleOther.Cells[0, i] = strFuncName then begin
+         vleOther.Cells[1, i] := '';
+         Exit;
+      end;
+   end;
 end;
 
 procedure TformMain.ReadKeymap(ini: TIniFile; vle: TValueListEditor);

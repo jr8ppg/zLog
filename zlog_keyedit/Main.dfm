@@ -25,6 +25,10 @@ object formMain: TformMain
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #12525#12462#12531#12464
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vleLogging: TValueListEditor
         Left = 0
         Top = 0
