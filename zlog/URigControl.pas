@@ -1801,12 +1801,12 @@ end;
 
 procedure TFT1000MP.PollingProcess;
 begin
-   WriteData(_nil3 + Chr($03) + Chr($10));
+   WriteData(_nil3 + AnsiChar($03) + AnsiChar($10));
 end;
 
 procedure TFT847.PollingProcess;
 begin
-   WriteData(_nil4 + Chr($03));
+   WriteData(_nil4 + AnsiChar($03));
 end;
 
 procedure TTS2000P.PollingProcess;
@@ -1995,7 +1995,7 @@ end;
 
 procedure TFT1000MP.RitClear;
 begin
-   WriteData(_nil2 + Chr($0F) + Chr($0) + Chr($09));
+   WriteData(_nil2 + AnsiChar($0F) + AnsiChar($0) + AnsiChar($09));
 end;
 
 procedure TTS690.InquireStatus;
@@ -2790,9 +2790,9 @@ begin
 
    _currentvfo := i;
    if i = 0 then
-      WriteData(_nil3 + Chr(0) + Chr($05))
+      WriteData(_nil3 + AnsiChar(0) + AnsiChar($05))
    else
-      WriteData(_nil3 + Chr(1) + Chr($05));
+      WriteData(_nil3 + AnsiChar(1) + AnsiChar($05));
    if Selected then
       UpdateStatus;
 end;
