@@ -26,6 +26,7 @@ type
     N21MHz1: TMenuItem;
     N28MHz1: TMenuItem;
     N50MHz1: TMenuItem;
+    Timer1: TTimer;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
       var Bold, Italic, underline: Boolean);
@@ -36,20 +37,20 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure GridDblClick(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
     { Private éŒ¾ }
+    FProcessing: Boolean;
     MinFreq, MaxFreq : Integer; // in Hz
 
-//    curr : integer; // test variable
-//    ClickedIndex : integer; // points to the bsdata clicked by mouse
-
-//    currFreq : Integer;
     currBand : TBand;
     currMode : TMode;
 
     GridColorArray : array[0..999] of TColor;
     GridBoldArray : array[0..999] of Boolean;
     procedure AddBSList(D : TBSData);
+    function GetFontSize(): Integer;
+    procedure SetFontSize(v: Integer);
   public
     { Public éŒ¾ }
     ArrayNumber : integer;
@@ -63,6 +64,8 @@ type
     procedure RewriteBandScope;
     procedure MarkCurrentFreq(Hz : integer);
     procedure ProcessBSDataFromNetwork(BSText : string);
+
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 procedure BSRefresh(Sender : TObject);
@@ -164,7 +167,7 @@ begin
    BSList2.Pack;
    AddBSList(D);
    // FormPaint(Self);
-   BSRefresh(Self);
+//   BSRefresh(Self);
 end;
 
 procedure TBandScope2.CreateBSData(aQSO: TQSO; Hz: LongInt);
@@ -201,43 +204,16 @@ begin
    dmZlogGlobal.Settings._bsMaxFreqArray[currBand, currMode] := max div 1000;
 end;
 
-function GetBand(Hz: LongInt): Integer; // Returns -1 if Hz is outside ham bands
-var
-   i: LongInt;
+procedure TBandScope2.Timer1Timer(Sender: TObject);
 begin
-   i := -1;
-   case Hz of
-      1800000 .. 1999999:
-         i := 0;
-      3000000 .. 3999999:
-         i := 1;
-      6900000 .. 7999999:
-         i := 2;
-      9900000 .. 11000000:
-         i := 3;
-      13900000 .. 14999999:
-         i := 4;
-      17500000 .. 18999999:
-         i := 5;
-      20900000 .. 21999999:
-         i := 6;
-      23500000 .. 24999999:
-         i := 7;
-      27800000 .. 29999999:
-         i := 8;
-      49000000 .. 59000000:
-         i := 9;
-      140000000 .. 149999999:
-         i := 10;
-      400000000 .. 450000000:
-         i := 11;
-      1200000000 .. 1299999999:
-         i := 12; {
-        2400000000..2499999999 : i := 13;
-        5600000000..5699999999 : i := 14;
-        10000000000..90000000000 : i := 15; }
+   Timer1.Enabled := False;
+   try
+      if FProcessing = False then begin
+         BSRefresh(Self);
+      end;
+   finally
+      Timer1.Enabled := True;
    end;
-   Result := i;
 end;
 
 procedure TBandScope2.RewriteBandScope;
@@ -245,73 +221,82 @@ var
    D: TBSData;
    i, j: Integer;
    toprow: Integer;
+   currow: Integer;
    str: string;
    MarkCurrent: Boolean;
    Marked: Boolean;
 begin
-   toprow := Grid.toprow;
-   for j := 0 to Grid.RowCount - 1 do
-      Grid.Cells[0, j] := '';
-   j := 0;
+   toprow := Grid.TopRow;
+   currow := Grid.Row;
 
-   if GetBand(CurrentRigFrequency) = ord(currBand) then
+   for j := 0 to Grid.RowCount - 1 do begin
+      Grid.Cells[0, j] := '';
+   end;
+
+   if GetBandIndex(CurrentRigFrequency) = ord(currBand) then
       MarkCurrent := true
    else
       MarkCurrent := false;
+
    Marked := false;
 
+   Grid.RowCount := 0;
+   j := 0;
    for i := 0 to BSList2.Count - 1 do begin
       D := TBSData(BSList2[i]);
-      if D.Band = currBand then begin
-         if MarkCurrent and Not(Marked) then begin
-            if D.FreqHz >= CurrentRigFrequency then begin
-               Grid.RowCount := j + 1;
-               Grid.Cells[0, j] := '>>' + kHzStr(CurrentRigFrequency);
-               GridBoldArray[j] := true;
-               GridColorArray[j] := clBlack;
-               Marked := true;
-               inc(j);
-            end;
-         end;
-         Grid.RowCount := j + 1;
-         str := D.LabelStr;
-
-         if D.NewMulti then
-            GridColorArray[j] := clRed
-         else if D.Worked then
-            GridColorArray[j] := clBlack
-         else
-            GridColorArray[j] := clGreen;
-
-         if D.Bold then
-            GridBoldArray[j] := true
-         else
-            GridBoldArray[j] := false;
-
-         if D.ClusterData then
-            str := FillRight(str, 20) + '+';
-
-         Grid.Cells[0, j] := str;
-
-         if (Main.CurrentQSO.CQ = false) and ((D.FreqHz - CurrentRigFrequency) <= 100) then begin
-            MainForm.AutoInput(D);
-         end;
-
-         inc(j);
-      end
-      else begin
+      if D.Band <> currBand then begin
+         Continue;
       end;
+
+      if MarkCurrent and Not(Marked) then begin
+         if D.FreqHz >= CurrentRigFrequency then begin
+            Grid.RowCount := Grid.RowCount + 1;
+            Grid.Cells[0, j] := '>>' + kHzStr(CurrentRigFrequency);
+            GridBoldArray[j] := true;
+            GridColorArray[j] := clBlack;
+            Marked := true;
+            inc(j);
+         end;
+      end;
+
+      Grid.RowCount := Grid.RowCount + 1;
+      str := D.LabelStr;
+
+      if D.NewMulti then
+         GridColorArray[j] := clRed
+      else if D.Worked then
+         GridColorArray[j] := clBlack
+      else
+         GridColorArray[j] := clGreen;
+
+      if D.Bold then
+         GridBoldArray[j] := true
+      else
+         GridBoldArray[j] := false;
+
+      if D.ClusterData then
+         str := FillRight(str, 20) + '+';
+
+      Grid.Cells[0, j] := str;
+
+      if (Main.CurrentQSO.CQ = false) and ((D.FreqHz - CurrentRigFrequency) <= 100) then begin
+         MainForm.AutoInput(D);
+      end;
+
+      inc(j);
    end;
 
    if MarkCurrent and Not(Marked) then begin
-      Grid.RowCount := j + 1;
+      Grid.RowCount := Grid.RowCount + 1;
       Grid.Cells[0, j] := '>>' + kHzStr(CurrentRigFrequency);
       GridBoldArray[j] := true;
       GridColorArray[j] := clBlack;
    end;
 
-   if toprow <= Grid.RowCount - 1 then
-      Grid.toprow := toprow;
+   if toprow <= Grid.RowCount - 1 then begin
+      Grid.TopRow := toprow;
+      Grid.Row := currow;
+   end;
 end;
 
 procedure TBandScope2.GridSetting(ARow, Acol: Integer; var Fcolor: Integer; var Bold, Italic, underline: Boolean);
@@ -416,6 +401,7 @@ begin
    FixedBand := b19;
    ArrayNumber := 0;
    DisplayMode := 0; // current rig
+   FProcessing := False;
 end;
 
 procedure TBandScope2.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -432,68 +418,78 @@ var
    F: Extended;
    str, fstr, cstr, nstr: string;
 begin
-   str := Grid.Cells[0, Grid.Selection.Top];
-   if pos('+', str) > 0 then
-      str := TrimRight(copy(str, 1, length(str) - 1));
-
-   { ver 2.2d stop scanning BSList2. just read freq from the string }
-
-   fstr := '';
-   cstr := '';
-   nstr := '';
-
-   i := pos('[', str); // extract number if any
-   if i > 0 then begin
-      j := pos(']', str);
-      if j > i then
-         nstr := copy(str, i + 1, j - i - 1);
-   end;
-
-   i := pos(' ', str); // extract frequency in kHz
-   if i > 0 then
-      fstr := copy(str, 1, i)
-   else
-      exit;
-
-   Delete(str, 1, i); // extract callsign
-   i := pos(' ', str);
-   if i > 0 then
-      cstr := copy(str, 1, i - 1)
-   else
-      cstr := str;
-
+   FProcessing := True;
    try
-      F := StrToFloat(fstr);
-   except
-      on EConvertError do begin
-         exit;
+      str := Grid.Cells[0, Grid.Selection.Top];
+      if pos('+', str) > 0 then
+         str := TrimRight(copy(str, 1, length(str) - 1));
+
+      { ver 2.2d stop scanning BSList2. just read freq from the string }
+
+      fstr := '';
+      cstr := '';
+      nstr := '';
+
+      i := pos('[', str); // extract number if any
+      if i > 0 then begin
+         j := pos(']', str);
+         if j > i then
+            nstr := copy(str, i + 1, j - i - 1);
       end;
+
+      i := pos(' ', str); // extract frequency in kHz
+      if i > 0 then
+         fstr := copy(str, 1, i)
+      else
+         exit;
+
+      Delete(str, 1, i); // extract callsign
+      i := pos(' ', str);
+      if i > 0 then
+         cstr := copy(str, 1, i - 1)
+      else
+         cstr := str;
+
+      try
+         F := StrToFloat(fstr);
+      except
+         on EConvertError do begin
+            exit;
+         end;
+      end;
+
+      MainForm.CallsignEdit.Text := cstr;
+      MainForm.NumberEdit.Text := nstr;
+      if MainForm.RigControl.Rig <> nil then
+         MainForm.RigControl.Rig.SetFreq(round(F * 1000));
+
+      Main.MyContest.MultiForm.SetNumberEditFocus;
+      MainForm.UpdateBand(TBand(GetBandIndex(round(F * 1000))));
+   finally
+      FProcessing := False;
    end;
+end;
 
-   MainForm.CallsignEdit.Text := cstr;
-   MainForm.NumberEdit.Text := nstr;
-   if MainForm.RigControl.Rig <> nil then
-      MainForm.RigControl.Rig.SetFreq(round(F * 1000));
+function TBandScope2.GetFontSize(): Integer;
+begin
+   Result := Grid.Font.Size;
+end;
 
-   Main.MyContest.MultiForm.SetNumberEditFocus;
-   MainForm.UpdateBand(TBand(GetBand(round(F * 1000))));
+procedure TBandScope2.SetFontSize(v: Integer);
+var
+   i: Integer;
+   h: Integer;
+begin
+   Grid.Font.Size := v;
+   Grid.Canvas.Font.size := v;
 
-   { for i := 0 to BSList2.Count - 1 do
-     begin
-     D := TBSData(BSList2[i]);
-     if D.LabelStr = str then
-     begin
-     MainForm.CallsignEdit.Text := D.Call;
-     MainForm.NumberEdit.Text := D.Number;
-     MainForm.UpdateMode(D.Mode);
-     MainForm.UpdateBand(D.Band);
-     if RigControl.Rig <> nil then
-     RigControl.Rig.SetFreq(D.FreqHz);
-     Main.MyContest.MultiForm.SetNumberEditFocus;
-     break;
-     end;
-     end; }
+   h := Abs(Grid.Font.Height) + 2;
 
+   Grid.DefaultRowHeight := h;
+
+   for i := 0 to Grid.RowCount - 1 do begin
+      Grid.RowHeights[i] := h;
+   end;
 end;
 
 initialization

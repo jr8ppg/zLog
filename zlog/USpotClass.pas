@@ -20,7 +20,6 @@ type
     ClusterData : boolean; // true if data from PacketCluster
     constructor Create; virtual;
     function FreqKHzStr : string;
-    function _GetBand : TBand;
     function NewMulti : boolean; // newcty or newzone
     function InText : string; virtual; abstract;
     procedure FromText(S : string); virtual; abstract;
@@ -49,8 +48,6 @@ type
 
 var
   BSList2 : TList;
-
-function IsWorkedSpot(Sp: TSpot): Boolean;
 
 implementation
 
@@ -140,7 +137,7 @@ begin
          on EConvertError do
             exit;
       end;
-      Band := _getband;
+      Band := TBand(GetBandIndex(FreqHz, 0));
 
       Delete(temp, 1, i);
       temp := TrimLeft(temp);
@@ -203,7 +200,7 @@ begin
          on EConvertError do
             exit;
       end;
-      Band := _getband;
+      Band := TBand(GetBandIndex(FreqHz, 0));
 
       Delete(temp, 1, i);
       temp := TrimLeft(temp);
@@ -259,31 +256,6 @@ end;
 procedure TSpot.FromText(S : string);
 begin
    //
-end;
-
-Function TBaseSpot._GetBand : TBand;
-begin
-   Result := b19;
-
-   case FreqHz div 1000 of
-      1800..1999 : Result := b19;
-      3000..3999 : Result := b35;
-      7000..7999 : Result := b7;
-      10000..10999 : Result := b10;
-      14000..14999 : Result := b14;
-      18000..18999 : Result := b18;
-      21000..21999 : Result := b21;
-      24000..24999 : Result := b24;
-      28000..28999 : Result := b28;
-      50000..59999 : Result := b50;
-      140000..149999 : Result := b144;
-      420000..499999 : Result := b430;
-      1200000..1299999 : Result := b1200;
-      2400000..2499999 : Result := b2400;
-      5600000..5799999 : Result := b5600;
-      else begin
-      end;
-   end;
 end;
 
 Function TBaseSpot.NewMulti : boolean;
@@ -345,26 +317,20 @@ begin
    end;
 end;
 
-function IsWorkedSpot(Sp: TSpot): Boolean;
+procedure FreeBSList();
 var
    i: Integer;
-   Q: TQSO;
 begin
-   for i := 1 to Log.TotalQSO do begin
-      Q := Log.QsoList[i];
-
-      if (Sp.Call = Q.Callsign) and (Sp.Band = Q.Band) then begin
-         Result := True;
-         Exit;
-      end;
+   for i := 0 to BSList2.Count - 1 do begin
+      TSpot(BSList2[i]).Free();
    end;
-   Result := False;
+   BSList2.Free();
 end;
 
 initialization
    BSList2 := TList.Create;
 
 finalization
-   BSList2.Free();
+   FreeBSList();
 
 end.

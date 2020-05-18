@@ -225,6 +225,8 @@ type
     function LoadFromFile(filename: string): Integer;
 //    function MergeFile(filename: string): Integer;
 
+    function IsWorked(strCallsign: string; band: TBand): Boolean;
+
     property Saved: Boolean read FSaved write FSaved;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode write FAcceptDifferentMode;
     property CountHigherPoints: Boolean read FCountHigherPoints write FCountHigherPoints;
@@ -1631,6 +1633,35 @@ begin
    CloseFile(f);
 
    Result := FQsoList.Count;
+end;
+
+function TLog.IsWorked(strCallsign: string; band: TBand): Boolean;
+var
+   Q: TQSO;
+begin
+   Q := TQSO.Create();
+   try
+      if Integer(band) = -1 then begin
+         Result := False;
+         Exit;
+      end;
+
+      Q.Callsign := strCallsign;
+      Q.Band := band;
+
+      if FDupeCheckList[band].DupeCheck(Q, False) <> nil then begin
+         Result := True;
+      end
+      else begin
+         Result := False;
+      end;
+
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('*** IsWorked() = ' + strCallsign + ' ' + BoolToStr(Result, True) + ' ***'));
+      {$ENDIF}
+   finally
+      Q.Free();
+   end;
 end;
 
 { TQSOCallsignComparer }

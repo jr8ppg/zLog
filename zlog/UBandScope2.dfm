@@ -5,6 +5,7 @@ object BandScope2: TBandScope2
   ClientHeight = 416
   ClientWidth = 130
   Color = clBtnFace
+  DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -121,5 +122,10 @@ object BandScope2: TBandScope2
         end
       end
     end
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 72
+    Top = 96
   end
 end

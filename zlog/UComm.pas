@@ -384,7 +384,7 @@ begin
 
    // 現在のバンドと同じ場合、交信済みか確認する
    if Sp.Band = CurrentQSO.Band then begin
-      Sp.Worked := IsWorkedSpot(Sp);
+      Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
    end;
 
    SpotList.Add(Sp);
@@ -482,10 +482,15 @@ begin
 end;
 
 procedure TCommForm.FormDestroy(Sender: TObject);
+var
+   i: Integer;
 begin
    inherited;
    ClusterComm.Disconnect;
    ClusterComm.Free;
+   for i := 0 to SpotList.Count - 1 do begin
+      TSpot(SpotList[i]).Free();
+   end;
    SpotList.Free();
    CommBuffer.Free();
 end;
@@ -615,7 +620,7 @@ end;
 procedure TCommForm.ListBoxMeasureItem(Control: TWinControl; Index: Integer;
   var Height: Integer);
 begin
-   Height := Abs(TListBox(Control).Font.Height) + 4;
+   Height := Abs(TListBox(Control).Font.Height) + 2;
 end;
 
 procedure TCommForm.ListBoxDrawItem(Control: TWinControl; Index: Integer;
