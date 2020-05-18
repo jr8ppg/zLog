@@ -17,9 +17,9 @@ type
 const
   MAXVIRTUALRIG = 10;
   _nil : AnsiChar = AnsiChar($00);
-  _nil2 : AnsiString = AnsiChar($0) + AnsiChar($0);
-  _nil3  = AnsiChar(0)+AnsiChar(0)+AnsiChar(0);
-  _nil4  = AnsiChar(0)+AnsiChar(0)+AnsiChar(0)+AnsiChar(0);
+  _nil2: AnsiString = AnsiChar($00) + AnsiChar($00);
+  _nil3: AnsiString = AnsiChar($00) + AnsiChar($00) + AnsiChar($00);
+  _nil4: AnsiString = AnsiChar($00) + AnsiChar($00) + AnsiChar($00) + AnsiChar($00);
 
   MAXICOM = 51;
 
@@ -290,6 +290,8 @@ type
   end;
 
   TFT817 = class(TFT847)
+    destructor Destroy; override;
+    procedure Initialize(); override;
     procedure SetFreq(Hz : LongInt); override;
     procedure SetMode(Q : TQSO); override;
   end;
@@ -402,8 +404,6 @@ type
     property Rig2: TRig read FRigs[2];
   end;
 
-function GetBand(Hz : LongInt) : integer;  //Returns -1 if Hz is outside ham bands
-
 implementation
 
 uses
@@ -423,46 +423,6 @@ begin
    S := IntToStr(Hz div 1000) + '.' + S;
 
    Result := S;
-end;
-
-function GetBand(Hz: LongInt): Integer; // Returns -1 if Hz is outside ham bands
-var
-   i: LongInt;
-begin
-   i := -1;
-   case Hz of
-      1800000 .. 1999999:
-         i := 0;
-      3000000 .. 3999999:
-         i := 1;
-      6900000 .. 7999999:
-         i := 2;
-      9900000 .. 11000000:
-         i := 3;
-      13900000 .. 14999999:
-         i := 4;
-      17500000 .. 18999999:
-         i := 5;
-      20900000 .. 21999999:
-         i := 6;
-      23500000 .. 24999999:
-         i := 7;
-      27800000 .. 29999999:
-         i := 8;
-      49000000 .. 59000000:
-         i := 9;
-      140000000 .. 149999999:
-         i := 10;
-      400000000 .. 450000000:
-         i := 11;
-      1200000000 .. 1299999999:
-         i := 12; {
-        2400000000..2499999999 : i := 13;
-        5600000000..5699999999 : i := 14;
-        10000000000..90000000000 : i := 15; }
-   end;
-
-   Result := i;
 end;
 
 procedure TRigControl.SetSerialCWKeying(PortNr: Integer);
@@ -786,7 +746,7 @@ begin
 
    if _currentvfo <> i then begin
       _currentvfo := i;
-      ICOMWriteData(Chr($07) + Chr($B0));
+      ICOMWriteData(AnsiChar($07) + AnsiChar($B0));
    end;
 
    if Selected then begin
@@ -802,9 +762,9 @@ begin
 
    _currentvfo := i;
    if i = 0 then
-      WriteData(_nil3 + Chr(0) + Chr($05))
+      WriteData(_nil3 + AnsiChar(0) + AnsiChar($05))
    else
-      WriteData(_nil3 + Chr(2) + Chr($05));
+      WriteData(_nil3 + AnsiChar(2) + AnsiChar($05));
 
    if Selected then begin
       UpdateStatus;
@@ -901,7 +861,7 @@ begin
 
       // バンド(VFO-A)
       if _currentvfo = 0 then begin
-         j := GetBand(i);
+         j := GetBandIndex(i);
          if j >= 0 then begin
             _currentband := TBand(j);
          end;
@@ -1018,56 +978,60 @@ var
    i, j: LongInt;
    M: TMode;
 begin
-   if length(S) = 32 then begin
-      if _currentvfo = 0 then
-         i := Ord(S[8])
-      else
-         i := Ord(S[8 + 16]);
-
-      case i of
-         0, 1:
-            M := mSSB;
-         2:
-            M := mCW;
-         3:
-            M := mAM;
-         4:
-            M := mFM;
-         5:
-            M := mRTTY;
+   try
+      if length(S) = 32 then begin
+         if _currentvfo = 0 then
+            i := Ord(S[8])
          else
-            M := mOther;
+            i := Ord(S[8 + 16]);
+
+         case i of
+            0, 1:
+               M := mSSB;
+            2:
+               M := mCW;
+            3:
+               M := mAM;
+            4:
+               M := mFM;
+            5:
+               M := mRTTY;
+            else
+               M := mOther;
+         end;
+         _currentmode := M;
+
+         i := Ord(S[2]) * 256 * 256 + Ord(S[3]) * 256 + Ord(S[4]);
+         i := i * 10;
+         _currentfreq[0] := i;
+         i := i + _freqoffset;
+
+         if _currentvfo = 0 then begin
+            j := GetBandIndex(i);
+            if j >= 0 then
+               _currentband := TBand(j);
+            FreqMem[_currentband, _currentmode] := _currentfreq[0];
+         end;
+
+         i := Ord(S[18]) * 256 * 256 + Ord(S[19]) * 256 + Ord(S[20]);
+         i := i * 10;
+         _currentfreq[1] := i;
+         i := i + _freqoffset;
+
+         if _currentvfo = 1 then begin
+            j := GetBandIndex(i);
+            if j >= 0 then
+               _currentband := TBand(j);
+            FreqMem[_currentband, _currentmode] := _currentfreq[1];
+         end;
+
       end;
-      _currentmode := M;
 
-      i := Ord(S[2]) * 256 * 256 + Ord(S[3]) * 256 + Ord(S[4]);
-      i := i * 10;
-      _currentfreq[0] := i;
-      i := i + _freqoffset;
-
-      if _currentvfo = 0 then begin
-         j := GetBand(i);
-         if j >= 0 then
-            _currentband := TBand(j);
-         FreqMem[_currentband, _currentmode] := _currentfreq[0];
+      if Selected then begin
+         UpdateStatus;
       end;
-
-      i := Ord(S[18]) * 256 * 256 + Ord(S[19]) * 256 + Ord(S[20]);
-      i := i * 10;
-      _currentfreq[1] := i;
-      i := i + _freqoffset;
-
-      if _currentvfo = 1 then begin
-         j := GetBand(i);
-         if j >= 0 then
-            _currentband := TBand(j);
-         FreqMem[_currentband, _currentmode] := _currentfreq[1];
-      end;
-
-   end;
-
-   if Selected then begin
-      UpdateStatus;
+   finally
+      FPollingTimer.Enabled := True;
    end;
 end;
 
@@ -1084,9 +1048,9 @@ begin
 
    _currentvfo := i;
    if i = 0 then
-      WriteData(_nil3 + Chr(0) + Chr($05))
+      WriteData(_nil3 + AnsiChar(0) + AnsiChar($05))
    else
-      WriteData(_nil3 + Chr(1) + Chr($05));
+      WriteData(_nil3 + AnsiChar(1) + AnsiChar($05));
 
    if Selected then begin
       UpdateStatus;
@@ -1098,56 +1062,60 @@ var
    i, j: LongInt;
    M: TMode;
 begin
-   if length(S) = 32 then begin
-      if _currentvfo = 0 then
-         i := Ord(S[8])
-      else
-         i := Ord(S[8 + 16]);
-
-      case i of
-         0, 1:
-            M := mSSB;
-         2:
-            M := mCW;
-         3:
-            M := mAM;
-         4:
-            M := mFM;
-         5:
-            M := mRTTY;
+   try
+      if length(S) = 32 then begin
+         if _currentvfo = 0 then
+            i := Ord(S[8])
          else
-            M := mOther;
+            i := Ord(S[8 + 16]);
+
+         case i of
+            0, 1:
+               M := mSSB;
+            2:
+               M := mCW;
+            3:
+               M := mAM;
+            4:
+               M := mFM;
+            5:
+               M := mRTTY;
+            else
+               M := mOther;
+         end;
+         _currentmode := M;
+
+         i := (Ord(S[5]) mod 16) * 100000000 + (Ord(S[5]) div 16) * 10000000 + (Ord(S[4]) mod 16) * 1000000 + (Ord(S[4]) div 16) * 100000 +
+           (Ord(S[3]) mod 16) * 10000 + (Ord(S[3]) div 16) * 1000 + (Ord(S[2]) mod 16) * 100 + (Ord(S[2]) div 16) * 10;
+         _currentfreq[0] := i;
+         i := i + _freqoffset;
+
+         if _currentvfo = 0 then begin
+            j := GetBandIndex(i);
+            if j >= 0 then
+               _currentband := TBand(j);
+            FreqMem[_currentband, _currentmode] := _currentfreq[0];
+         end;
+
+         i := (Ord(S[21]) div 16) * 100000000 + (Ord(S[21]) mod 16) * 10000000 + (Ord(S[20]) div 16) * 1000000 + (Ord(S[20]) mod 16) * 100000 +
+           (Ord(S[19]) div 16) * 10000 + (Ord(S[19]) mod 16) * 1000 + (Ord(S[18]) div 16) * 100 + (Ord(S[18]) mod 16) * 10;
+         _currentfreq[1] := i;
+         i := i + _freqoffset;
+
+         if _currentvfo = 1 then begin
+            j := GetBandIndex(i);
+            if j >= 0 then
+               _currentband := TBand(j);
+            FreqMem[_currentband, _currentmode] := _currentfreq[1];
+         end;
+
       end;
-      _currentmode := M;
 
-      i := (Ord(S[5]) mod 16) * 100000000 + (Ord(S[5]) div 16) * 10000000 + (Ord(S[4]) mod 16) * 1000000 + (Ord(S[4]) div 16) * 100000 +
-        (Ord(S[3]) mod 16) * 10000 + (Ord(S[3]) div 16) * 1000 + (Ord(S[2]) mod 16) * 100 + (Ord(S[2]) div 16) * 10;
-      _currentfreq[0] := i;
-      i := i + _freqoffset;
-
-      if _currentvfo = 0 then begin
-         j := GetBand(i);
-         if j >= 0 then
-            _currentband := TBand(j);
-         FreqMem[_currentband, _currentmode] := _currentfreq[0];
+      if Selected then begin
+         UpdateStatus;
       end;
-
-      i := (Ord(S[21]) div 16) * 100000000 + (Ord(S[21]) mod 16) * 10000000 + (Ord(S[20]) div 16) * 1000000 + (Ord(S[20]) mod 16) * 100000 +
-        (Ord(S[19]) div 16) * 10000 + (Ord(S[19]) mod 16) * 1000 + (Ord(S[18]) div 16) * 100 + (Ord(S[18]) mod 16) * 10;
-      _currentfreq[1] := i;
-      i := i + _freqoffset;
-
-      if _currentvfo = 1 then begin
-         j := GetBand(i);
-         if j >= 0 then
-            _currentband := TBand(j);
-         FreqMem[_currentband, _currentmode] := _currentfreq[1];
-      end;
-
-   end;
-
-   if Selected then begin
-      UpdateStatus;
+   finally
+      FPollingTimer.Enabled := True;
    end;
 end;
 
@@ -1164,9 +1132,9 @@ begin
 
    _currentvfo := i;
    if i = 0 then
-      WriteData(_nil3 + Chr(0) + Chr($05))
+      WriteData(_nil3 + AnsiChar(0) + AnsiChar($05))
    else
-      WriteData(_nil3 + Chr(1) + Chr($05));
+      WriteData(_nil3 + AnsiChar(1) + AnsiChar($05));
    if Selected then
       UpdateStatus;
 end;
@@ -1176,58 +1144,62 @@ var
    i, j: LongInt;
    M: TMode;
 begin
-   if length(S) = 32 then begin
-      if _currentvfo = 0 then begin
-         i := Ord(S[8])
-      end
-      else begin
-         i := Ord(S[8 + 16]);
+   try
+      if length(S) = 32 then begin
+         if _currentvfo = 0 then begin
+            i := Ord(S[8])
+         end
+         else begin
+            i := Ord(S[8 + 16]);
+         end;
+
+         case i of
+            0, 1:
+               M := mSSB;
+            2:
+               M := mCW;
+            3:
+               M := mAM;
+            4:
+               M := mFM;
+            5:
+               M := mRTTY;
+            else
+               M := mOther;
+         end;
+         _currentmode := M;
+
+         i := Ord(S[2]) * 256 * 256 * 256 + Ord(S[3]) * 256 * 256 + Ord(S[4]) * 256 + Ord(S[5]);
+         i := i * 10;
+         _currentfreq[0] := i;
+         i := i + _freqoffset;
+
+         if _currentvfo = 0 then begin
+            j := GetBandIndex(i);
+            if j >= 0 then
+               _currentband := TBand(j);
+            FreqMem[_currentband, _currentmode] := _currentfreq[0];
+         end;
+
+         i := Ord(S[18]) * 256 * 256 * 256 + Ord(S[19]) * 256 * 256 + Ord(S[20]) * 256 + Ord(S[21]);
+         i := i * 10;
+         _currentfreq[1] := i;
+         i := i + _freqoffset;
+
+         if _currentvfo = 1 then begin
+            j := GetBandIndex(i);
+            if j >= 0 then
+               _currentband := TBand(j);
+            FreqMem[_currentband, _currentmode] := _currentfreq[1];
+         end;
+
       end;
 
-      case i of
-         0, 1:
-            M := mSSB;
-         2:
-            M := mCW;
-         3:
-            M := mAM;
-         4:
-            M := mFM;
-         5:
-            M := mRTTY;
-         else
-            M := mOther;
+      if Selected then begin
+         UpdateStatus;
       end;
-      _currentmode := M;
-
-      i := Ord(S[2]) * 256 * 256 * 256 + Ord(S[3]) * 256 * 256 + Ord(S[4]) * 256 + Ord(S[5]);
-      i := i * 10;
-      _currentfreq[0] := i;
-      i := i + _freqoffset;
-
-      if _currentvfo = 0 then begin
-         j := GetBand(i);
-         if j >= 0 then
-            _currentband := TBand(j);
-         FreqMem[_currentband, _currentmode] := _currentfreq[0];
-      end;
-
-      i := Ord(S[18]) * 256 * 256 * 256 + Ord(S[19]) * 256 * 256 + Ord(S[20]) * 256 + Ord(S[21]);
-      i := i * 10;
-      _currentfreq[1] := i;
-      i := i + _freqoffset;
-
-      if _currentvfo = 1 then begin
-         j := GetBand(i);
-         if j >= 0 then
-            _currentband := TBand(j);
-         FreqMem[_currentband, _currentmode] := _currentfreq[1];
-      end;
-
-   end;
-
-   if Selected then begin
-      UpdateStatus;
+   finally
+      FPollingTimer.Enabled := True;
    end;
 end;
 
@@ -1653,7 +1625,7 @@ end;
 procedure TFT847.Initialize();
 begin
    Inherited;
-   WriteData(Chr($00) + Chr($00) + Chr($00) + Chr($00) + Chr($00));
+   WriteData(AnsiChar($00) + AnsiChar($00) + AnsiChar($00) + AnsiChar($00) + AnsiChar($00)); // CAT ON
    FPollingTimer.Enabled := True;
 end;
 
@@ -1704,7 +1676,12 @@ end;
 
 destructor TFT847.Destroy;
 begin
-   WriteData(_nil4 + Chr($80));
+   WriteData(_nil4 + AnsiChar($80));   // CAT OFF
+   inherited;
+end;
+
+destructor TFT817.Destroy;
+begin
    inherited;
 end;
 
@@ -1740,6 +1717,7 @@ procedure TJST145.RitClear();
 begin
 end;
 
+{
 function HexStr(S: string): string;
 var
    i, j, k: Integer;
@@ -1760,6 +1738,7 @@ begin
    end;
    Result := ss;
 end;
+}
 
 procedure TICOM.ParseBufferString; // same as ts690
 var
@@ -1783,6 +1762,7 @@ begin
    ICOMWriteData(AnsiChar($03));
 end;
 
+{
 function HexText(binstr: string): string;
 var
    i, hex: Integer;
@@ -1798,14 +1778,17 @@ begin
    end;
    Result := x;
 end;
+}
 
 procedure TFT1000MP.PollingProcess;
 begin
+   FPollingTimer.Enabled := False;
    WriteData(_nil3 + AnsiChar($03) + AnsiChar($10));
 end;
 
 procedure TFT847.PollingProcess;
 begin
+   FPollingTimer.Enabled := False;
    WriteData(_nil4 + AnsiChar($03));
 end;
 
@@ -2159,14 +2142,14 @@ begin
    end;
 
    if R._currentvfo = 0 then begin
-      j := GetBand(R._currentfreq[0]);
+      j := GetBandIndex(R._currentfreq[0]);
       if j >= 0 then
          R._currentband := TBand(j);
       R.FreqMem[R._currentband, R._currentmode] := R._currentfreq[0];
    end;
 
    if R._currentvfo = 1 then begin
-      j := GetBand(R._currentfreq[1]);
+      j := GetBandIndex(R._currentfreq[1]);
       if j >= 0 then
          R._currentband := TBand(j);
       R.FreqMem[R._currentband, R._currentmode] := R._currentfreq[1];
@@ -2429,7 +2412,7 @@ begin
       i := i + _freqoffset; // transverter
 
       if _currentvfo = aa then begin
-         j := GetBand(i);
+         j := GetBandIndex(i);
          if j >= 0 then
             _currentband := TBand(j);
          FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
@@ -2447,7 +2430,7 @@ begin
       else
          Exit;
       _currentvfo := aa;
-      j := GetBand(_currentfreq[aa]);
+      j := GetBandIndex(_currentfreq[aa]);
       if j >= 0 then
          _currentband := TBand(j);
       FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
@@ -2472,7 +2455,7 @@ begin
       _currentfreq[_currentvfo] := i;
       i := i + _freqoffset; // transverter
 
-      j := GetBand(i);
+      j := GetBandIndex(i);
       if j >= 0 then begin
          _currentband := TBand(j);
       end;
@@ -2593,7 +2576,7 @@ begin
                M := mOther;
          end;
          _currentmode := M;
-         j := GetBand(i);
+         j := GetBandIndex(i);
          if j >= 0 then
             _currentband := TBand(j);
          FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
@@ -2716,7 +2699,7 @@ begin
             _currentfreq[_currentvfo] := i;
             i := i + _freqoffset;
 
-            j := GetBand(i);
+            j := GetBandIndex(i);
             if j >= 0 then begin
                _currentband := TBand(j);
             end;
@@ -2745,41 +2728,47 @@ var
    i, j: LongInt;
    M: TMode;
 begin
-   if length(S) = WaitSize then begin
-      case Ord(S[6]) and $7 of
-         0, 1:
-            M := mSSB;
-         2, 3:
-            M := mCW;
-         4:
-            M := mAM;
-         6, 7:
-            M := mFM;
-         5:
-            M := mRTTY;
-         else
-            M := mOther;
+   try
+      if length(S) = WaitSize then begin
+         case Ord(S[6]) and $7 of
+            0, 1:
+               M := mSSB;
+            2, 3:
+               M := mCW;
+            4:
+               M := mAM;
+            6, 7:
+               M := mFM;
+            5:
+               M := mRTTY;
+            else
+               M := mOther;
+         end;
+         _currentmode := M;
+
+         i := Ord(S[2]) * 256 * 256 * 256 + Ord(S[3]) * 256 * 256 + Ord(S[4]) * 256 + Ord(S[5]);
+         i := round(i * 1.25);
+         _currentfreq[0] := i;
+         i := Ord(S[18]) * 256 * 256 * 256 + Ord(S[19]) * 256 * 256 + Ord(S[20]) * 256 + Ord(S[21]);
+         i := round(i * 1.25);
+         _currentfreq[1] := i;
+
+         i := _currentfreq[_currentvfo] + _freqoffset;
+
+         j := GetBandIndex(i);
+         if j >= 0 then begin
+            _currentband := TBand(j);
+            FreqMem[_currentband, _currentmode] := _currentfreq[0];
+         end;
+
       end;
-      _currentmode := M;
 
-      i := Ord(S[2]) * 256 * 256 * 256 + Ord(S[3]) * 256 * 256 + Ord(S[4]) * 256 + Ord(S[5]);
-      i := round(i * 1.25);
-      _currentfreq[0] := i;
-      i := Ord(S[18]) * 256 * 256 * 256 + Ord(S[19]) * 256 * 256 + Ord(S[20]) * 256 + Ord(S[21]);
-      i := round(i * 1.25);
-      _currentfreq[1] := i;
-
-      i := _currentfreq[_currentvfo] + _freqoffset;
-
-      j := GetBand(i);
-      if j >= 0 then begin
-         _currentband := TBand(j);
-         FreqMem[_currentband, _currentmode] := _currentfreq[0];
+      if Selected then begin
+         UpdateStatus;
       end;
-
+   finally
+      FPollingTimer.Enabled := True;
    end;
-   if Selected then
-      UpdateStatus;
 end;
 
 procedure TFT100.SetVFO(i: Integer); // A:0, B:1
@@ -2806,56 +2795,60 @@ var
    i, j: LongInt;
    M: TMode;
 begin
-   if length(S) = 28 then begin
-      if _currentvfo = 0 then
-         i := Ord(S[8])
-      else
-         i := Ord(S[8 + 14]);
-
-      case i and $07 of
-         0:
-            M := mSSB;
-         1:
-            M := mCW;
-         2:
-            M := mAM;
-         3:
-            M := mFM;
-         4, 5:
-            M := mRTTY;
+   try
+      if length(S) = 28 then begin
+         if _currentvfo = 0 then
+            i := Ord(S[8])
          else
-            M := mOther;
+            i := Ord(S[8 + 14]);
+
+         case i and $07 of
+            0:
+               M := mSSB;
+            1:
+               M := mCW;
+            2:
+               M := mAM;
+            3:
+               M := mFM;
+            4, 5:
+               M := mRTTY;
+            else
+               M := mOther;
+         end;
+         _currentmode := M;
+
+         i := Ord(S[2]) * 256 * 256 * 256 + Ord(S[3]) * 256 * 256 + Ord(S[4]) * 256 + Ord(S[5]);
+         // i := round(i / 1.60);
+         _currentfreq[0] := i;
+         i := i + _freqoffset;
+
+         if _currentvfo = 0 then begin
+            j := GetBandIndex(i);
+            if j >= 0 then
+               _currentband := TBand(j);
+            FreqMem[_currentband, _currentmode] := _currentfreq[0]; // i;
+         end;
+
+         i := Ord(S[16]) * 256 * 256 * 256 + Ord(S[17]) * 256 * 256 + Ord(S[18]) * 256 + Ord(S[19]);
+         // i := round(i / 1.60);
+         _currentfreq[1] := i;
+         i := i + _freqoffset;
+
+         if _currentvfo = 1 then begin
+            j := GetBandIndex(i);
+            if j >= 0 then
+               _currentband := TBand(j);
+            FreqMem[_currentband, _currentmode] := _currentfreq[1]; // i;
+         end;
+
       end;
-      _currentmode := M;
 
-      i := Ord(S[2]) * 256 * 256 * 256 + Ord(S[3]) * 256 * 256 + Ord(S[4]) * 256 + Ord(S[5]);
-      // i := round(i / 1.60);
-      _currentfreq[0] := i;
-      i := i + _freqoffset;
-
-      if _currentvfo = 0 then begin
-         j := GetBand(i);
-         if j >= 0 then
-            _currentband := TBand(j);
-         FreqMem[_currentband, _currentmode] := _currentfreq[0]; // i;
+      if Selected then begin
+         UpdateStatus;
       end;
-
-      i := Ord(S[16]) * 256 * 256 * 256 + Ord(S[17]) * 256 * 256 + Ord(S[18]) * 256 + Ord(S[19]);
-      // i := round(i / 1.60);
-      _currentfreq[1] := i;
-      i := i + _freqoffset;
-
-      if _currentvfo = 1 then begin
-         j := GetBand(i);
-         if j >= 0 then
-            _currentband := TBand(j);
-         FreqMem[_currentband, _currentmode] := _currentfreq[1]; // i;
-      end;
-
-   end;
-
-   if Selected then begin
-      UpdateStatus;
+   finally
+      FPollingTimer.Enabled := True;
    end;
 end;
 
@@ -2864,56 +2857,60 @@ var
    i, j: LongInt;
    M: TMode;
 begin
-   if length(S) = 32 then begin
-      if _currentvfo = 0 then
-         i := Ord(S[8])
-      else
-         i := Ord(S[8 + 16]);
-
-      case i of
-         0, 1:
-            M := mSSB;
-         2:
-            M := mCW;
-         3:
-            M := mAM;
-         4:
-            M := mFM;
-         5:
-            M := mRTTY;
+   try
+      if length(S) = 32 then begin
+         if _currentvfo = 0 then
+            i := Ord(S[8])
          else
-            M := mOther;
+            i := Ord(S[8 + 16]);
+
+         case i of
+            0, 1:
+               M := mSSB;
+            2:
+               M := mCW;
+            3:
+               M := mAM;
+            4:
+               M := mFM;
+            5:
+               M := mRTTY;
+            else
+               M := mOther;
+         end;
+         _currentmode := M;
+
+         i := Ord(S[2]) * 256 * 256 * 256 + Ord(S[3]) * 256 * 256 + Ord(S[4]) * 256 + Ord(S[5]);
+         i := round(i / 1.60);
+         _currentfreq[0] := i;
+         i := i + _freqoffset;
+
+         if _currentvfo = 0 then begin
+            j := GetBandIndex(i);
+            if j >= 0 then
+               _currentband := TBand(j);
+            FreqMem[_currentband, _currentmode] := _currentfreq[0];
+         end;
+
+         i := Ord(S[18]) * 256 * 256 * 256 + Ord(S[19]) * 256 * 256 + Ord(S[20]) * 256 + Ord(S[21]);
+         i := round(i / 1.60);
+         _currentfreq[1] := i;
+         i := i + _freqoffset;
+
+         if _currentvfo = 1 then begin
+            j := GetBandIndex(i);
+            if j >= 0 then
+               _currentband := TBand(j);
+            FreqMem[_currentband, _currentmode] := _currentfreq[1];
+         end;
+
       end;
-      _currentmode := M;
 
-      i := Ord(S[2]) * 256 * 256 * 256 + Ord(S[3]) * 256 * 256 + Ord(S[4]) * 256 + Ord(S[5]);
-      i := round(i / 1.60);
-      _currentfreq[0] := i;
-      i := i + _freqoffset;
-
-      if _currentvfo = 0 then begin
-         j := GetBand(i);
-         if j >= 0 then
-            _currentband := TBand(j);
-         FreqMem[_currentband, _currentmode] := _currentfreq[0];
+      if Selected then begin
+         UpdateStatus;
       end;
-
-      i := Ord(S[18]) * 256 * 256 * 256 + Ord(S[19]) * 256 * 256 + Ord(S[20]) * 256 + Ord(S[21]);
-      i := round(i / 1.60);
-      _currentfreq[1] := i;
-      i := i + _freqoffset;
-
-      if _currentvfo = 1 then begin
-         j := GetBand(i);
-         if j >= 0 then
-            _currentband := TBand(j);
-         FreqMem[_currentband, _currentmode] := _currentfreq[1];
-      end;
-
-   end;
-
-   if Selected then begin
-      UpdateStatus;
+   finally
+      FPollingTimer.Enabled := True;
    end;
 end;
 
@@ -2922,36 +2919,59 @@ var
    i, j: LongInt;
    M: TMode;
 begin
-   if length(S) = WaitSize then begin
-      case Ord(S[5]) mod 16 of // ord(S[5]) and $7?
-         0, 1:
-            M := mSSB;
-         2, 3:
-            M := mCW;
-         4:
-            M := mAM;
-         8:
-            M := mFM;
-         else
-            M := mOther;
+   try
+      {$IFDEF DEBUG}
+      // 7.035.0 CWの場合
+      // 00 70 35 00 02 と受信するはず
+      OutputDebugString(PChar('FT847 受信電文長=' + IntToStr(Length(S))));
+      OutputDebugString(PChar(
+      IntToHex(Ord(S[1])) + ' ' +
+      IntToHex(Ord(S[2])) + ' ' +
+      IntToHex(Ord(S[3])) + ' ' +
+      IntToHex(Ord(S[4])) + ' ' +
+      IntToHex(Ord(S[5]))
+      ));
+      {$ENDIF}
+
+      if length(S) = WaitSize then begin
+         case Ord(S[5]) mod 16 of // ord(S[5]) and $7?
+            0, 1:
+               M := mSSB;
+            2, 3:
+               M := mCW;
+            4:
+               M := mAM;
+            8:
+               M := mFM;
+            else
+               M := mOther;
+         end;
+         _currentmode := M;
+
+         i := (Ord(S[1]) div 16) * 100000000 +
+              (Ord(S[1]) mod 16) * 10000000 +
+              (Ord(S[2]) div 16) * 1000000 +
+              (Ord(S[2]) mod 16) * 100000 +
+              (Ord(S[3]) div 16) * 10000 +
+              (Ord(S[3]) mod 16) * 1000 +
+              (Ord(S[4]) div 16) * 100 +
+              (Ord(S[4]) mod 16) * 10;
+         _currentfreq[_currentvfo] := i;
+         i := i + _freqoffset;
+
+         j := GetBandIndex(i);
+         if j >= 0 then begin
+            _currentband := TBand(j);
+            FreqMem[_currentband, _currentmode] := _currentfreq[0];
+         end;
+
       end;
-      _currentmode := M;
 
-      i := (Ord(S[1]) div 16) * 100000000 + (Ord(S[1]) mod 16) * 10000000 + (Ord(S[2]) div 16) * 1000000 + (Ord(S[2]) mod 16) * 100000 +
-        (Ord(S[3]) div 16) * 10000 + (Ord(S[3]) mod 16) * 1000 + (Ord(S[4]) div 16) * 100 + (Ord(S[4]) mod 16) * 10;
-      _currentfreq[_currentvfo] := i;
-      i := i + _freqoffset;
-
-      j := GetBand(i);
-      if j >= 0 then begin
-         _currentband := TBand(j);
-         FreqMem[_currentband, _currentmode] := _currentfreq[0];
+      if Selected then begin
+         UpdateStatus;
       end;
-
-   end;
-
-   if Selected then begin
-      UpdateStatus;
+   finally
+      FPollingTimer.Enabled := True;
    end;
 end;
 
@@ -3017,6 +3037,12 @@ begin
 
    Command := AnsiChar(para) + _nil3 + AnsiChar($07);
    WriteData(Command);
+end;
+
+procedure TFT817.Initialize();
+begin
+   Inherited;
+   FPollingTimer.Enabled := True;
 end;
 
 procedure TFT817.SetFreq(Hz: LongInt);
