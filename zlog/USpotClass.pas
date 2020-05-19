@@ -322,7 +322,7 @@ var
    i: Integer;
 begin
    for i := 0 to BSList2.Count - 1 do begin
-      TSpot(BSList2[i]).Free();
+      TBSData(BSList2[i]).Free();
    end;
    BSList2.Free();
 end;
