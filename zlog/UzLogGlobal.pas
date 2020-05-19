@@ -4,6 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
+  System.Math,
   UzLogKeyer, UzlogConst, UzLogQSO;
 
 type
@@ -281,6 +282,8 @@ function Power(base, Power: integer): integer;
 function StrToBandDef(strMHz: string; defband: TBand): TBand;
 function StrToModeDef(strMode: string; defmode: TMode): TMode;
 function GetBandIndex(Hz: Integer; default: Integer = -1): Integer; // Returns -1 if Hz is outside ham bands
+
+function CompareText1(strTarget, strCompare: string): Boolean;
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -2127,6 +2130,98 @@ begin
    end;
 
    Result := i;
+end;
+
+function Compare1(strTarget, strCompare: string; var nMatchCount: Integer; fFirstCall: Boolean = True): Boolean;
+var
+   i: Integer;
+   p: Integer;
+   strTarget2: string;
+   strCompare2: string;
+   n1, n2: Integer;
+   match_cnt: Integer;
+   skip_cnt: Integer;
+   match_cnt2: Integer;
+begin
+   // 頭出しをする
+   p := 0;
+   for i := 1 to Length(strCompare) do begin
+      p := Pos(Copy(strCompare, i, 1), strTarget);
+      if p > 0 then begin
+         Break;
+      end;
+   end;
+   if p = 0 then begin
+      nMatchCount := 0;
+      Result := False;
+      Exit;
+   end;
+   if fFirstCall = True then begin
+      skip_cnt := 0;
+   end
+   else begin
+      skip_cnt := p - 1;
+   end;
+
+   strTarget2 := Copy(strTarget, p);
+   n1 := Length(strTarget2);
+   strCompare2 := Copy(strCompare, i);
+   n2 := Length(strCompare2);
+
+   if n1 = n2 then begin   // 同じ長さなら単純にマッチ数を数える
+      match_cnt := 0;
+      for i := 1 to Min(n1, n2) do begin
+         if strTarget2[i] = strCompare2[i] then begin
+            Inc(match_cnt);
+         end
+      end;
+      nMatchCount := match_cnt;
+      if match_cnt >= (n1 - 1) then begin
+         Result := True;
+      end
+      else begin
+         Result := False;
+      end;
+
+      Exit;
+   end;
+
+   match_cnt := 0;
+   for i := 1 to Min(n1, n2) do begin
+      if strTarget2[i] = strCompare2[i] then begin
+         Inc(match_cnt);
+      end
+      else begin  // MATCHしなくなったら合うところまで頭出し
+         strTarget2 := Copy(strTarget2, i);
+         strCompare2 := Copy(strCompare2, i);
+
+         Compare1(strTarget2, strCompare2, match_cnt2, False);
+         match_cnt := match_cnt + match_cnt2;
+         Break;
+      end;
+   end;
+
+   if n1 < n2 then begin
+      match_cnt := match_cnt + (n1 - n2);
+   end;
+
+   if (skip_cnt <= 1) and (match_cnt >= (Length(strCompare) - 1)) then begin
+      // match
+      Result := True;
+      nMatchCount := match_cnt;
+   end
+   else begin
+      // no match
+      Result := False;
+      nMatchCount := match_cnt - skip_cnt;
+   end;
+end;
+
+function CompareText1(strTarget, strCompare: string): Boolean;
+var
+   match_count: Integer;
+begin
+   Result := Compare1(strTarget, strCompare, match_count, True);
 end;
 
 end.

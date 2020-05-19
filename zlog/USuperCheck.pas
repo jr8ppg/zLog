@@ -53,6 +53,8 @@ type
     StayOnTop: TCheckBox;
     SpinEdit: TSpinEdit;
     Label1: TLabel;
+    ListBox1: TListBox;
+    Splitter1: TSplitter;
     procedure Button3Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -172,10 +174,12 @@ var
    maxhit, hit: integer;
    sd, FirstData: TSuperData;
    L: TSuperList;
+   hit2: Integer;
 begin
    HitNumber := 0;
    HitCall := '';
    ListBox.Items.Clear;
+   ListBox1.Items.Clear;
    PartialStr := aQSO.callsign;
    FirstData := nil;
 
@@ -198,6 +202,7 @@ begin
    end;
 
    hit := 0;
+   hit2 := 0;
 
    if (length(PartialStr) >= 2) and (Pos('.', PartialStr) = 0) then begin
       L := FTwoLetterMatrix[Ord(PartialStr[1]), Ord(PartialStr[2])];
@@ -224,9 +229,16 @@ begin
          ListBox.Items.Add(sd.Text);
 
          inc(hit);
-         if hit >= maxhit then begin
-            break;
-         end;
+      end;
+
+      if CompareText1(sd.Callsign, PartialStr) then begin
+         ListBox1.Items.Add(sd.Text);
+
+         inc(hit2);
+      end;
+
+      if hit >= maxhit then begin
+         break;
       end;
    end;
 
@@ -325,6 +337,7 @@ end;
 procedure TSuperCheck.SetFontSize(v: Integer);
 begin
    ListBox.Font.Size := v;
+   ListBox1.Font.Size := v;
 end;
 
 procedure TSuperCheck.ListBoxDblClick(Sender: TObject);
@@ -357,10 +370,14 @@ end;
 
 procedure TSuperCheck.SpinEditChange(Sender: TObject);
 begin
-   if SpinEdit.Value <= 1 then
-      ListBox.Columns := 0
-   else
+   if SpinEdit.Value <= 1 then begin
+      ListBox.Columns := 0;
+      ListBox1.Columns := 0;
+   end
+   else begin
       ListBox.Columns := SpinEdit.Value;
+      ListBox1.Columns := SpinEdit.Value;
+   end;
 end;
 
 procedure TSuperCheck.LoadSpcFile(strStartFoler: string);

@@ -1,6 +1,7 @@
 object SuperCheck: TSuperCheck
   Left = 472
   Top = 79
+  ActiveControl = SpinEdit
   Caption = 'Super Check'
   ClientHeight = 332
   ClientWidth = 243
@@ -19,6 +20,18 @@ object SuperCheck: TSuperCheck
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object Splitter1: TSplitter
+    Left = 0
+    Top = 204
+    Width = 243
+    Height = 3
+    Cursor = crVSplit
+    Align = alBottom
+    AutoSnap = False
+    MinSize = 90
+    ExplicitTop = 0
+    ExplicitWidth = 208
+  end
   object Panel1: TPanel
     Left = 0
     Top = 297
@@ -68,7 +81,7 @@ object SuperCheck: TSuperCheck
     Left = 0
     Top = 0
     Width = 243
-    Height = 297
+    Height = 204
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -79,5 +92,23 @@ object SuperCheck: TSuperCheck
     ParentFont = False
     TabOrder = 1
     OnDblClick = ListBoxDblClick
+    ExplicitHeight = 297
+  end
+  object ListBox1: TListBox
+    Left = 0
+    Top = 207
+    Width = 243
+    Height = 90
+    Align = alBottom
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = #65325#65331' '#12468#12471#12483#12463
+    Font.Style = []
+    ItemHeight = 12
+    ParentFont = False
+    TabOrder = 2
+    OnDblClick = ListBoxDblClick
+    ExplicitTop = 208
   end
 end
