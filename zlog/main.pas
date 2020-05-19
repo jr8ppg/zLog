@@ -7467,6 +7467,10 @@ procedure TMainForm.actionPageDownExecute(Sender: TObject);
 var
    p: Integer;
 begin
+   if Log.QsoList.Count <= Grid.VisibleRowCount then begin
+      Exit;
+   end;
+
    p := Grid.TopRow;
    p := p + (Grid.VisibleRowCount div 2);
    if p > (Log.QsoList.Count - Grid.VisibleRowCount) then begin
@@ -7480,6 +7484,10 @@ procedure TMainForm.actionPageUpExecute(Sender: TObject);
 var
    p: Integer;
 begin
+   if Log.QsoList.Count <= Grid.VisibleRowCount then begin
+      Exit;
+   end;
+
    p := Grid.TopRow;
    p := p - (Grid.VisibleRowCount div 2);
    if p < 0 then begin
