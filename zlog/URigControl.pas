@@ -278,6 +278,7 @@ type
   end;
 
   TFT847 = class(TFT1000MP)
+    FUseCatOnCommand: Boolean;
     constructor Create(RigNum : integer); override;
     destructor Destroy; override;
     procedure Initialize(); override;
@@ -1620,12 +1621,15 @@ begin
    inherited;
    WaitSize := 5;
    FComm.StopBits := sb2BITS;
+   FUseCatOnCommand := True;
 end;
 
 procedure TFT847.Initialize();
 begin
    Inherited;
-   WriteData(AnsiChar($00) + AnsiChar($00) + AnsiChar($00) + AnsiChar($00) + AnsiChar($00)); // CAT ON
+   if FUseCatOnCommand = True then begin
+      WriteData(AnsiChar($00) + AnsiChar($00) + AnsiChar($00) + AnsiChar($00) + AnsiChar($00)); // CAT ON
+   end;
    FPollingTimer.Enabled := True;
 end;
 
@@ -1676,7 +1680,9 @@ end;
 
 destructor TFT847.Destroy;
 begin
-   WriteData(_nil4 + AnsiChar($80));   // CAT OFF
+   if FUseCatOnCommand = True then begin
+      WriteData(_nil4 + AnsiChar($80));   // CAT OFF
+   end;
    inherited;
 end;
 
@@ -3041,8 +3047,8 @@ end;
 
 procedure TFT817.Initialize();
 begin
+   FUseCatOnCommand := False;
    Inherited;
-   FPollingTimer.Enabled := True;
 end;
 
 procedure TFT817.SetFreq(Hz: LongInt);
