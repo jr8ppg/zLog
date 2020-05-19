@@ -283,7 +283,7 @@ function StrToBandDef(strMHz: string; defband: TBand): TBand;
 function StrToModeDef(strMode: string; defmode: TMode): TMode;
 function GetBandIndex(Hz: Integer; default: Integer = -1): Integer; // Returns -1 if Hz is outside ham bands
 
-function CompareText1(strTarget, strCompare: string): Boolean;
+function PartialMatch2(strCompare, strTarget: string): Boolean;
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -2217,11 +2217,41 @@ begin
    end;
 end;
 
-function CompareText1(strTarget, strCompare: string): Boolean;
+function Compare2(strTarget: string; strCompare: string): Boolean;
 var
-   match_count: Integer;
+   i: Integer;
+   n1: Integer;
+   n2: Integer;
+   match_cnt: Integer;
 begin
-   Result := Compare1(strTarget, strCompare, match_count, True);
+   n1 := Length(strTarget);
+   n2 := Length(strCompare);
+
+   if n1 > n2 then begin
+      strCompare := strCompare + DupeString(' ', n1 - n2);
+   end
+   else if n2 > n1 then begin
+      strTarget := strTarget + DupeString(' ', n2 - n1);
+   end;
+
+   match_cnt := 0;
+   for i := 1 to n1 do begin
+      if strTarget[i] = strCompare[i] then begin
+         Inc(match_cnt);
+      end;
+   end;
+
+   if match_cnt >= (n1 - 1) then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
+   end;
+end;
+
+function PartialMatch2(strCompare, strTarget: string): Boolean;
+begin
+   Result := Compare2(strTarget, strCompare);
 end;
 
 end.

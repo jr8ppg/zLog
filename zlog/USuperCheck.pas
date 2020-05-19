@@ -231,7 +231,7 @@ begin
          inc(hit);
       end;
 
-      if CompareText1(sd.Callsign, PartialStr) then begin
+      if PartialMatch2(PartialStr, sd.Callsign) then begin
          ListBox1.Items.Add(sd.Text);
 
          inc(hit2);

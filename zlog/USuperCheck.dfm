@@ -3,9 +3,11 @@ object SuperCheck: TSuperCheck
   Top = 79
   ActiveControl = SpinEdit
   Caption = 'Super Check'
-  ClientHeight = 332
-  ClientWidth = 243
+  ClientHeight = 312
+  ClientWidth = 234
   Color = clBtnFace
+  Constraints.MinHeight = 350
+  Constraints.MinWidth = 250
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -22,8 +24,8 @@ object SuperCheck: TSuperCheck
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 204
-    Width = 243
+    Top = 184
+    Width = 234
     Height = 3
     Cursor = crVSplit
     Align = alBottom
@@ -34,21 +36,27 @@ object SuperCheck: TSuperCheck
   end
   object Panel1: TPanel
     Left = 0
-    Top = 297
-    Width = 243
+    Top = 277
+    Width = 234
     Height = 35
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 297
+    ExplicitWidth = 243
+    DesignSize = (
+      234
+      35)
     object Label1: TLabel
-      Left = 163
+      Left = 153
       Top = 11
       Width = 40
       Height = 13
+      Anchors = [akTop, akRight]
       Caption = 'Columns'
     end
     object Button3: TButton
-      Left = 8
+      Left = 4
       Top = 7
       Width = 63
       Height = 21
@@ -57,19 +65,22 @@ object SuperCheck: TSuperCheck
       OnClick = Button3Click
     end
     object StayOnTop: TCheckBox
-      Left = 80
+      Left = 71
       Top = 9
       Width = 81
       Height = 17
+      Anchors = [akTop, akRight]
       Caption = 'Stay on top'
       TabOrder = 1
       OnClick = StayOnTopClick
+      ExplicitLeft = 80
     end
     object SpinEdit: TSpinEdit
-      Left = 208
+      Left = 197
       Top = 7
       Width = 33
       Height = 22
+      Anchors = [akTop, akRight]
       MaxValue = 5
       MinValue = 1
       TabOrder = 2
@@ -80,8 +91,8 @@ object SuperCheck: TSuperCheck
   object ListBox: TListBox
     Left = 0
     Top = 0
-    Width = 243
-    Height = 204
+    Width = 234
+    Height = 184
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -92,12 +103,13 @@ object SuperCheck: TSuperCheck
     ParentFont = False
     TabOrder = 1
     OnDblClick = ListBoxDblClick
-    ExplicitHeight = 297
+    ExplicitWidth = 243
+    ExplicitHeight = 204
   end
   object ListBox1: TListBox
     Left = 0
-    Top = 207
-    Width = 243
+    Top = 187
+    Width = 234
     Height = 90
     Align = alBottom
     Font.Charset = DEFAULT_CHARSET
@@ -109,6 +121,7 @@ object SuperCheck: TSuperCheck
     ParentFont = False
     TabOrder = 2
     OnDblClick = ListBoxDblClick
-    ExplicitTop = 208
+    ExplicitTop = 207
+    ExplicitWidth = 243
   end
 end
