@@ -24,7 +24,6 @@ object BandScope2: TBandScope2
     Align = alTop
     TabOrder = 0
     Visible = False
-    ExplicitWidth = 130
   end
   object Grid: TMgrid
     Left = 0
@@ -55,7 +54,6 @@ object BandScope2: TBandScope2
     OddRowColor = clWindow
     EvenRowColor = clWindow
     OnSetting = GridSetting
-    ExplicitWidth = 130
   end
   object BSMenu: TPopupMenu
     AutoHotkeys = maManual

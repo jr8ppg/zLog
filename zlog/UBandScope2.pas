@@ -189,11 +189,18 @@ begin
 end;
 
 procedure TBandScope2.SetBandMode(B: TBand; M: TMode);
-// var min, max : integer;
+var
+   R: Integer;
 begin
    FCurrBand := B;
    FCurrMode := M;
    Caption := 'Band scope ' + BandString[B];
+
+   for R := 0 to Grid.RowCount - 1 do begin
+      Grid.Cells[0, R] := '';
+      Grid.Objects[0, R] := nil;
+   end;
+
    RewriteBandScope;
 end;
 
@@ -220,7 +227,8 @@ end;
 procedure TBandScope2.RewriteBandScope;
 var
    D: TBSData;
-   i, j: Integer;
+   i: Integer;
+   R: Integer;
    toprow: Integer;
    currow: Integer;
    str: string;
@@ -230,20 +238,34 @@ begin
    toprow := Grid.TopRow;
    currow := Grid.Row;
 
-   Grid.RowCount := EstimateNumRows();
-   for j := 0 to Grid.RowCount - 1 do begin
-      Grid.Cells[0, j] := '';
-      Grid.Objects[0, j] := nil;
+   if GetBandIndex(CurrentRigFrequency) = Ord(FCurrBand) then begin
+      MarkCurrent := True;
+   end
+   else begin
+      MarkCurrent := False;
    end;
 
-   if GetBandIndex(CurrentRigFrequency) = Ord(FCurrBand) then
-      MarkCurrent := true
-   else
-      MarkCurrent := false;
+   R := EstimateNumRows();
+   if R = 0 then begin
+      R := 1;    // Gridは0行にできない
+   end
+   else begin
+      // 周波数マーカー分追加
+      if MarkCurrent = True then begin
+         Inc(R);
+      end;
+   end;
 
-   Marked := false;
+   // 行数再設定
+   Grid.RowCount := R;
 
-   j := 0;
+   // 先頭行は必ずクリアする
+   Grid.Cells[0, 0] := '';
+   Grid.Objects[0, 0] := nil;
+
+   Marked := False;
+
+   R := 0;
    for i := 0 to BSList2.Count - 1 do begin
       D := TBSData(BSList2[i]);
       if D.Band <> FCurrBand then begin
@@ -252,31 +274,32 @@ begin
 
       if MarkCurrent and Not(Marked) then begin
          if D.FreqHz >= CurrentRigFrequency then begin
-            Grid.RowCount := Grid.RowCount + 1;
-            Grid.Cells[0, j] := '>>' + kHzStr(CurrentRigFrequency);
+            Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
+            Grid.Objects[0, R] := nil;;
             Marked := true;
-            inc(j);
+            inc(R);
          end;
       end;
 
       str := D.LabelStr;
 
-      if D.ClusterData then
-         str := FillRight(str, 20) + '+';
+      Grid.Cells[0, R] := str;
+      Grid.Objects[0, R] := D;
 
-      Grid.Cells[0, j] := str;
-      Grid.Objects[0, j] := D;
+      if D.ClusterData then begin
+         str := FillRight(str, 20) + '+';
+      end;
 
       if (Main.CurrentQSO.CQ = false) and ((D.FreqHz - CurrentRigFrequency) <= 100) then begin
          MainForm.AutoInput(D);
       end;
 
-      inc(j);
+      Inc(R);
    end;
 
    if MarkCurrent and Not(Marked) then begin
-      Grid.RowCount := Grid.RowCount + 1;
-      Grid.Cells[0, j] := '>>' + kHzStr(CurrentRigFrequency);
+      Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
+      Grid.Objects[0, R] := nil;;
    end;
 
    if toprow <= Grid.RowCount - 1 then begin
