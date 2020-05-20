@@ -25,10 +25,6 @@ object formMain: TformMain
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #12525#12462#12531#12464
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleLogging: TValueListEditor
         Left = 0
         Top = 0
@@ -45,7 +41,9 @@ object formMain: TformMain
           '#05 Quick QSY 6=Ctrl+F6'
           '#06 Quick QSY 7=Ctrl+F7'
           '#07 Quick QSY 8=Ctrl+F8'
-          '#63 '#12458#12506#12524#12540#12479#22793#26356'=Alt+O')
+          '#63 '#12458#12506#12524#12540#12479#22793#26356'=Alt+O'
+          '#82 '#20132#20449#38283#22987'=TAB'
+          '#83 '#20132#20449#32066#20102'=Down')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021

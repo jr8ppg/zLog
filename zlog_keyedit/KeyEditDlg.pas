@@ -21,14 +21,25 @@ type
     comboOtherKey: TComboBox;
     buttonOK: TButton;
     buttonCancel: TButton;
+    GroupBox4: TGroupBox;
+    radioSecondary0: TRadioButton;
+    radioSecondary1: TRadioButton;
+    radioSecondary2: TRadioButton;
+    radioSecondary3: TRadioButton;
+    radioSecondary4: TRadioButton;
+    radioSecondary5: TRadioButton;
+    radioSecondary6: TRadioButton;
     procedure buttonOKClick(Sender: TObject);
   private
     { Private êÈåæ }
-    procedure SetKey(v: string);
-    function GetKey(): string;
+    procedure SetPrimaryKey(v: string);
+    function GetPrimaryKey(): string;
+    procedure SetSecondaryKey(v: string);
+    function GetSecondaryKey(): string;
   public
     { Public êÈåæ }
-    property Key: string read GetKey write SetKey;
+    property PrimaryKey: string read GetPrimaryKey write SetPrimaryKey;
+    property Secondarykey: string read GetSecondaryKey write SetSecondaryKey;
   end;
 
 implementation
@@ -37,11 +48,10 @@ implementation
 
 procedure TformKeyEditDlg.buttonOKClick(Sender: TObject);
 begin
-
    ModalResult := mrOK
 end;
 
-procedure TformKeyEditDlg.SetKey(v: string);
+procedure TformKeyEditDlg.SetPrimaryKey(v: string);
 var
    sl: TStringList;
    i: Integer;
@@ -119,7 +129,7 @@ begin
    end;
 end;
 
-function TformKeyEditDlg.GetKey(): string;
+function TformKeyEditDlg.GetPrimaryKey(): string;
 var
    sl: TStringList;
 begin
@@ -154,6 +164,56 @@ begin
       Result := sl.DelimitedText;
    finally
       sl.Free();
+   end;
+end;
+
+procedure TformKeyEditDlg.SetSecondaryKey(v: string);
+begin
+   if v = ';' then begin
+      radioSecondary1.Checked := True;
+   end
+   else if v = ':' then begin
+      radioSecondary2.Checked := True;
+   end
+   else if v = '@' then begin
+      radioSecondary3.Checked := True;
+   end
+   else if v = '[' then begin
+      radioSecondary4.Checked := True;
+   end
+   else if v = ']' then begin
+      radioSecondary5.Checked := True;
+   end
+   else if v = '\' then begin
+      radioSecondary6.Checked := True;
+   end
+   else begin
+      radioSecondary0.Checked := True;
+   end;
+end;
+
+function TformKeyEditDlg.GetSecondaryKey(): string;
+begin
+   if radioSecondary1.Checked = True then begin
+      Result := ';';
+   end
+   else if radioSecondary2.Checked = True then begin
+      Result := ':';
+   end
+   else if radioSecondary3.Checked = True then begin
+      Result := '@';
+   end
+   else if radioSecondary4.Checked = True then begin
+      Result := '[';
+   end
+   else if radioSecondary5.Checked = True then begin
+      Result := ']';
+   end
+   else if radioSecondary6.Checked = True then begin
+      Result := '\';
+   end
+   else begin
+      Result := '';
    end;
 end;
 

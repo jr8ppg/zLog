@@ -8247,6 +8247,11 @@ var
    var
       i: Integer;
    begin
+      if shortcut = 0 then begin
+         Result := False;
+         Exit;
+      end;
+
       for i := 0 to ActionList1.ActionCount - 1 do begin
          if ActionList1.Actions[i].ShortCut = shortcut then begin
             Result := True;

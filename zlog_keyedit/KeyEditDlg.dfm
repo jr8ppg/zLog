@@ -3,8 +3,8 @@ object formKeyEditDlg: TformKeyEditDlg
   Top = 0
   BorderStyle = bsDialog
   Caption = #12461#12540#32232#38598
-  ClientHeight = 209
-  ClientWidth = 454
+  ClientHeight = 293
+  ClientWidth = 495
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,12 +13,15 @@ object formKeyEditDlg: TformKeyEditDlg
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
+  DesignSize = (
+    495
+    293)
   PixelsPerInch = 96
   TextHeight = 12
   object GroupBox1: TGroupBox
     Left = 8
     Top = 3
-    Width = 353
+    Width = 385
     Height = 57
     Caption = #12501#12449#12531#12463#12471#12519#12531#12461#12540
     TabOrder = 0
@@ -74,7 +77,7 @@ object formKeyEditDlg: TformKeyEditDlg
   object GroupBox2: TGroupBox
     Left = 8
     Top = 67
-    Width = 353
+    Width = 385
     Height = 57
     Caption = 'A'#65374'Z'
     TabOrder = 1
@@ -137,7 +140,7 @@ object formKeyEditDlg: TformKeyEditDlg
   object GroupBox3: TGroupBox
     Left = 8
     Top = 136
-    Width = 353
+    Width = 385
     Height = 57
     Caption = #12381#12398#20182
     TabOrder = 2
@@ -155,27 +158,97 @@ object formKeyEditDlg: TformKeyEditDlg
         'PgUp'
         'PgDn'
         'TAB'
-        #8595)
+        'Down')
     end
   end
   object buttonOK: TButton
-    Left = 367
+    Left = 407
     Top = 8
     Width = 81
     Height = 25
+    Anchors = [akTop, akRight]
     Caption = 'OK'
     Default = True
     TabOrder = 3
     OnClick = buttonOKClick
+    ExplicitLeft = 367
   end
   object buttonCancel: TButton
-    Left = 367
+    Left = 407
     Top = 39
     Width = 81
     Height = 25
+    Anchors = [akTop, akRight]
     Cancel = True
     Caption = #12461#12515#12531#12475#12523
     ModalResult = 2
     TabOrder = 4
+    ExplicitLeft = 367
+  end
+  object GroupBox4: TGroupBox
+    Left = 8
+    Top = 199
+    Width = 385
+    Height = 82
+    Caption = #12381#12398#20182#12398#12461#12540#65288#19978#35352#12392#20341#29992#21487#65289
+    TabOrder = 5
+    object radioSecondary0: TRadioButton
+      Left = 16
+      Top = 24
+      Width = 49
+      Height = 17
+      Caption = #12394#12375
+      Checked = True
+      TabOrder = 0
+      TabStop = True
+    end
+    object radioSecondary1: TRadioButton
+      Left = 71
+      Top = 24
+      Width = 82
+      Height = 17
+      Caption = '; ('#12475#12511#12467#12525#12531')'
+      TabOrder = 1
+    end
+    object radioSecondary2: TRadioButton
+      Left = 167
+      Top = 24
+      Width = 66
+      Height = 17
+      Caption = ': ('#12467#12525#12531')'
+      TabOrder = 2
+    end
+    object radioSecondary3: TRadioButton
+      Left = 259
+      Top = 24
+      Width = 106
+      Height = 17
+      Caption = '@ ('#12450#12483#12488#12510#12540#12463')'
+      TabOrder = 3
+    end
+    object radioSecondary4: TRadioButton
+      Left = 71
+      Top = 47
+      Width = 82
+      Height = 17
+      Caption = '[ ('#24038#22823#25324#24359')'
+      TabOrder = 4
+    end
+    object radioSecondary5: TRadioButton
+      Left = 167
+      Top = 47
+      Width = 82
+      Height = 17
+      Caption = '] ('#21491#22823#25324#24359')'
+      TabOrder = 5
+    end
+    object radioSecondary6: TRadioButton
+      Left = 259
+      Top = 47
+      Width = 90
+      Height = 17
+      Caption = '\ (YEN)'
+      TabOrder = 6
+    end
   end
 end

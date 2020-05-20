@@ -84,21 +84,26 @@ var
    strKey: string;
    strKeyBackup: string;
    strFuncName: string;
+   slText: TStringList;
 begin
+   slText := TStringList.Create();
    dlg := TformKeyEditDlg.Create(Self);
    try
       R := TValueListEditor(Sender).Row;
 
       strKeyBackup := TValueListEditor(Sender).Cells[1, R];
+      slText.CommaText := strKeyBackup + ',';
+
       TValueListEditor(Sender).Cells[1, R] := '';
-      dlg.Key := strKeyBackup;
+      dlg.PrimaryKey := slText.Strings[0];
+      dlg.SecondaryKey := slText.Strings[1];
 
       if dlg.ShowModal() <> mrOK then begin
          TValueListEditor(Sender).Cells[1, R] := strKeyBackup;
          Exit;
       end;
 
-      strKey := dlg.Key;
+      strKey := dlg.PrimaryKey;
 
       if (strKey <> '') and (IsShortcutUsed(strKey, strFuncName) = True) then begin
          if MessageBox(Handle, PChar(strKey + ' キーは既に ' + strFuncName + ' で使用されています。横取りしますか？'), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
@@ -109,9 +114,10 @@ begin
          ClearKeymap(strFuncName);
       end;
 
-      TValueListEditor(Sender).Cells[1, R] := strKey;
+      TValueListEditor(Sender).Cells[1, R] := strKey + ',' + dlg.SecondaryKey;
    finally
       dlg.Release();
+      slText.Free();
    end;
 end;
 
@@ -269,7 +275,7 @@ begin
          Continue;
       end;
 
-      vle.Cells[1, i] := ini.ReadString('shortcut', IntToStr(N), '');
+      vle.Cells[1, i] := ini.ReadString('shortcut', IntToStr(N), '') + ',' + ini.ReadString('secondary', IntToStr(N), '');
    end;
 end;
 
@@ -278,15 +284,22 @@ var
    i: Integer;
    N: Integer;
    S: string;
+   slText: TStringList;
 begin
-   for i := 1 to vle.RowCount - 1 do begin
-      N := StrToIntDef(Copy(vle.Cells[0, i], 2, 2), -1);
-      if N = -1 then begin
-         Continue;
-      end;
+   slText := TStringList.Create();
+   try
+      for i := 1 to vle.RowCount - 1 do begin
+         N := StrToIntDef(Copy(vle.Cells[0, i], 2, 2), -1);
+         if N = -1 then begin
+            Continue;
+         end;
 
-      S := vle.Cells[1, i];
-      ini.WriteString('shortcut', IntToStr(N), S);
+         slText.CommaText := vle.Cells[1, i] + ',';
+         ini.WriteString('shortcut', IntToStr(N), slText[0]);
+         ini.WriteString('secondary', IntToStr(N), slText[1]);
+      end;
+   finally
+      slText.Free();
    end;
 end;
 
