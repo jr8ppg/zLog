@@ -42,8 +42,6 @@ object SuperCheck: TSuperCheck
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 297
-    ExplicitWidth = 243
     DesignSize = (
       234
       35)
@@ -73,7 +71,6 @@ object SuperCheck: TSuperCheck
       Caption = 'Stay on top'
       TabOrder = 1
       OnClick = StayOnTopClick
-      ExplicitLeft = 80
     end
     object SpinEdit: TSpinEdit
       Left = 197
@@ -103,8 +100,6 @@ object SuperCheck: TSuperCheck
     ParentFont = False
     TabOrder = 1
     OnDblClick = ListBoxDblClick
-    ExplicitWidth = 243
-    ExplicitHeight = 204
   end
   object ListBox1: TListBox
     Left = 0
@@ -121,7 +116,5 @@ object SuperCheck: TSuperCheck
     ParentFont = False
     TabOrder = 2
     OnDblClick = ListBoxDblClick
-    ExplicitTop = 207
-    ExplicitWidth = 243
   end
 end

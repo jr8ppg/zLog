@@ -2234,6 +2234,7 @@ begin
       strTarget := strTarget + DupeString(' ', n2 - n1);
    end;
 
+   n1 := Length(strTarget);
    match_cnt := 0;
    for i := 1 to n1 do begin
       if strTarget[i] = strCompare[i] then begin

@@ -46,6 +46,19 @@ type
     procedure SortByCallsign();
   end;
 
+  TSuperCheckNPlusOneThread = class(TThread)
+    procedure Execute(); override;
+  private
+    FSuperList: TSuperList;
+    FListBox: TListBox;
+    FPartialStr: string;
+  public
+    constructor Create(ASuperList: TSuperList; AListBox: TListBox; APartialStr: string);
+    property SuperList: TSuperList read FSuperList write FSuperList;
+    property ListBox: TListBox read FListBox write FListBox;
+    property PartialStr: string read FPartialStr write FPartialStr;
+  end;
+
   TSuperCheck = class(TForm)
     Panel1: TPanel;
     Button3: TButton;
@@ -70,6 +83,7 @@ type
     FSuperChecked: Boolean;
     FSuperCheckList: TSuperList;
     FTwoLetterMatrix: array[0..255, 0..255] of TSuperList; // 2.1f
+    FNPlusOneThread: TSuperCheckNPlusOneThread;
     procedure OnSpcChkRenew( var Message: TMessage ); message WM_SPCCHK_RENEW;
     function PartialMatch(A, B: string): boolean;
     procedure LoadSpcFile(strStartFoler: string);
@@ -117,6 +131,8 @@ begin
          FTwoLetterMatrix[i, j] := nil;
       end;
    end;
+
+   FNPlusOneThread := nil;
 end;
 
 procedure TSuperCheck.FormDestroy(Sender: TObject);
@@ -193,6 +209,13 @@ begin
       Exit;
    end;
 
+   // 先行スレッドいれば終了させる
+   if Assigned(FNPlusOneThread) then begin
+      FNPlusOneThread.Terminate();
+      FNPlusOneThread.Free();
+      FNPlusOneThread := nil;
+   end;
+
    // Max super check search デフォルトは1
    maxhit := dmZlogGlobal.Settings._maxsuperhit;
 
@@ -202,7 +225,6 @@ begin
    end;
 
    hit := 0;
-   hit2 := 0;
 
    if (length(PartialStr) >= 2) and (Pos('.', PartialStr) = 0) then begin
       L := FTwoLetterMatrix[Ord(PartialStr[1]), Ord(PartialStr[2])];
@@ -231,16 +253,13 @@ begin
          inc(hit);
       end;
 
-      if PartialMatch2(PartialStr, sd.Callsign) then begin
-         ListBox1.Items.Add(sd.Text);
-
-         inc(hit2);
-      end;
-
       if hit >= maxhit then begin
          break;
       end;
    end;
+
+   // N+1の実行
+   FNPlusOneThread := TSuperCheckNPlusOneThread.Create(FSuperCheckList, ListBox1, PartialStr);
 
    HitNumber := hit;
 
@@ -621,6 +640,39 @@ end;
 function TSuperListComparer1.Compare(const Left, Right: TSuperData): Integer;
 begin
    Result := CompareText(Left.Callsign, Right.Callsign);
+end;
+
+{ TSuperCheckNPlusOneThread }
+
+constructor TSuperCheckNPlusOneThread.Create(ASuperList: TSuperList; AListBox: TListBox; APartialStr: string);
+begin
+   FSuperList := ASuperList;
+   FListBox := AListBox;
+   FPartialStr := APartialStr;
+   Inherited Create();
+end;
+
+procedure TSuperCheckNPlusOneThread.Execute();
+var
+   i: Integer;
+   sd: TSuperData;
+   hit: Integer;
+   maxhit: Integer;
+begin
+   maxhit := dmZlogGlobal.Settings._maxsuperhit;
+   hit := 0;
+   for i := 0 to FSuperList.Count - 1 do begin
+      sd := TSuperData(FSuperList[i]);
+      if PartialMatch2(FPartialStr, sd.Callsign) then begin
+         ListBox.Items.Add(sd.Text);
+
+         inc(hit);
+      end;
+
+      if hit >= maxhit then begin
+         break;
+      end;
+   end;
 end;
 
 end.
