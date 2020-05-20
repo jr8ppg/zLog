@@ -293,8 +293,8 @@ type
   TFT817 = class(TFT847)
     destructor Destroy; override;
     procedure Initialize(); override;
-    procedure SetFreq(Hz : LongInt); override;
-    procedure SetMode(Q : TQSO); override;
+//    procedure SetFreq(Hz : LongInt); override;
+//    procedure SetMode(Q : TQSO); override;
   end;
 
   TFT920 = class(TFT1000MP)
@@ -3051,6 +3051,7 @@ begin
    Inherited;
 end;
 
+{
 procedure TFT817.SetFreq(Hz: LongInt);
 var
    StartTime: TDateTime;
@@ -3084,6 +3085,7 @@ begin
    BufferString := '';
    FPollingTimer.Enabled := True;
 end;
+}
 
 procedure TRig.UpdateStatus;
 var
