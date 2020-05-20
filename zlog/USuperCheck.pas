@@ -94,6 +94,7 @@ type
     procedure DataLoad();
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
+    procedure TerminateNPlusOne();
   public
     { Public declarations }
     HitCall: string;
@@ -137,6 +138,7 @@ end;
 
 procedure TSuperCheck.FormDestroy(Sender: TObject);
 begin
+   TerminateNPlusOne();
    FreeData();
 end;
 
@@ -210,11 +212,7 @@ begin
    end;
 
    // 先行スレッドいれば終了させる
-   if Assigned(FNPlusOneThread) then begin
-      FNPlusOneThread.Terminate();
-      FNPlusOneThread.Free();
-      FNPlusOneThread := nil;
-   end;
+   TerminateNPlusOne();
 
    // Max super check search デフォルトは1
    maxhit := dmZlogGlobal.Settings._maxsuperhit;
@@ -567,6 +565,16 @@ end;
 procedure TSuperCheck.OnSpcChkRenew( var Message: TMessage );
 begin
    DataLoad();
+end;
+
+procedure TSuperCheck.TerminateNPlusOne();
+begin
+   // 先行スレッドいれば終了させる
+   if Assigned(FNPlusOneThread) then begin
+      FNPlusOneThread.Terminate();
+      FNPlusOneThread.Free();
+      FNPlusOneThread := nil;
+   end;
 end;
 
 { TSuperData }
