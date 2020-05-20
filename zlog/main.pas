@@ -615,6 +615,8 @@ type
     actionQsoStart: TAction;
     actionQsoComplete: TAction;
     actionNop: TAction;
+    actionRegNewPrefix: TAction;
+    actionControlPTT: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -801,6 +803,8 @@ type
     procedure actionQsoCompleteExecute(Sender: TObject);
     procedure EditExit(Sender: TObject);
     procedure actionNopExecute(Sender: TObject);
+    procedure actionRegNewPrefixExecute(Sender: TObject);
+    procedure actionControlPTTExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -4432,16 +4436,6 @@ begin
    end;
 
    case Key of
-      '@': begin
-         MyContest.MultiForm.SelectAndAddNewPrefix(CurrentQSO.Callsign);
-         Key := #0;
-      end;
-
-      '\': begin
-         dmZLogKeyer.ControlPTT(not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
-         Key := #0;
-      end;
-
       'X', 'x': begin
          if GetAsyncKeyState(VK_SHIFT) < 0 then begin
             RigControl.ToggleCurrentRig;
@@ -4465,11 +4459,6 @@ begin
                RigControl.Rig.ToggleVFO;
             Key := #0;
          end;
-      end;
-
-      '+', ';': begin
-         actionQsoComplete.Execute();
-         Key := #0;
       end;
 
       'Z', 'z': begin
@@ -5028,7 +5017,7 @@ begin
    case Key of
       { MUHENKAN KEY }
       29: begin
-         dmZLogKeyer.ControlPTT(not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
+         actionControlPTT.Execute();
       end;
 
       VK_UP: begin
@@ -8047,6 +8036,16 @@ end;
 procedure TMainForm.actionNopExecute(Sender: TObject);
 begin
    //
+end;
+
+procedure TMainForm.actionRegNewPrefixExecute(Sender: TObject);
+begin
+   MyContest.MultiForm.SelectAndAddNewPrefix(CurrentQSO.Callsign);
+end;
+
+procedure TMainForm.actionControlPTTExecute(Sender: TObject);
+begin
+   dmZLogKeyer.ControlPTT(not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
 end;
 
 // CTRL+Enter, CTRL+N

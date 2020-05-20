@@ -5204,5 +5204,17 @@ object MainForm: TMainForm
       ShortCut = 16461
       OnExecute = actionNopExecute
     end
+    object actionRegNewPrefix: TAction
+      Caption = 'actionRegNewPrefix'
+      SecondaryShortCuts.Strings = (
+        '@')
+      OnExecute = actionRegNewPrefixExecute
+    end
+    object actionControlPTT: TAction
+      Caption = 'actionControlPTT'
+      SecondaryShortCuts.Strings = (
+        '\')
+      OnExecute = actionControlPTTExecute
+    end
   end
 end
