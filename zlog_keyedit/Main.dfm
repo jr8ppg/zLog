@@ -42,8 +42,8 @@ object formMain: TformMain
           '#06 Quick QSY 7=Ctrl+F7'
           '#07 Quick QSY 8=Ctrl+F8'
           '#63 '#12458#12506#12524#12540#12479#22793#26356'=Alt+O'
-          '#82 '#20132#20449#38283#22987'=TAB,;'
-          '#83 '#20132#20449#32066#20102'=Down')
+          '#82 '#20132#20449#38283#22987'=TAB,'
+          '#83 '#20132#20449#32066#20102'=Down,;')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
@@ -57,10 +57,6 @@ object formMain: TformMain
     object TabSheet2: TTabSheet
       Caption = #24773#22577#34920#31034
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleInformation: TValueListEditor
         Left = 0
         Top = 0
@@ -221,10 +217,6 @@ object formMain: TformMain
     object TabSheet6: TTabSheet
       Caption = #20107#24460#20837#21147
       ImageIndex = 5
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vlePostContest: TValueListEditor
         Left = 0
         Top = 0
@@ -248,10 +240,6 @@ object formMain: TformMain
     object TabSheet7: TTabSheet
       Caption = #12381#12398#20182
       ImageIndex = 6
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleOther: TValueListEditor
         Left = 0
         Top = 0
@@ -268,7 +256,6 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
-        ExplicitTop = -2
         ColWidths = (
           448
           113)
