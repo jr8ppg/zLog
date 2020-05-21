@@ -2250,9 +2250,56 @@ begin
    end;
 end;
 
-function PartialMatch2(strCompare, strTarget: string): Boolean;
+// レーベンシュタイン距離の計算
+function LD(S, T: string): Integer;
+var
+   l1, l2, l3: Integer;
 begin
-   Result := Compare2(strTarget, strCompare);
+   // 一方が空文字列なら、他方の長さが求める距離
+   if S = '' then begin
+      Result := Length(T);
+      Exit;
+   end;
+
+   if T = '' then begin
+      Result := Length(S);
+      Exit;
+   end;
+
+   // 一文字目が一致なら、二文字目以降の距離が求める距離
+   if S[1] = T[1] then begin
+      Result := LD(Copy(S, 2), Copy(T, 2));
+      Exit;
+   end;
+
+   // 一文字目が不一致なら、追加／削除／置換のそれぞれを実施し、
+   // 残りの文字列についてのコストを計算する
+
+   // Sの先頭に追加
+   l1 := LD(S, Copy(T, 2));
+
+   // Sの先頭を削除
+   l2 := LD(Copy(S, 2), T);
+
+   // Sの先頭を置換
+   l3 := LD(Copy(S, 2), Copy(T, 2));
+
+   // 追加／削除／置換を実施した分コスト（距離）1の消費は確定
+   // 残りの文字列についてのコストの最小値を足せば距離となる
+   Result := 1 + Min(l1, Min(l2, l3));
+end;
+
+function PartialMatch2(strCompare, strTarget: string): Boolean;
+var
+   n: Integer;
+begin
+   n := LD(strTarget, strCompare);
+   if n <= 1 then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
+   end;
 end;
 
 end.

@@ -257,7 +257,9 @@ begin
    end;
 
    // N+1‚ÌŽÀs
-   FNPlusOneThread := TSuperCheckNPlusOneThread.Create(FSuperCheckList, ListBox1, PartialStr);
+   if (Length(PartialStr) >= 3) then begin
+      FNPlusOneThread := TSuperCheckNPlusOneThread.Create(FSuperCheckList, ListBox1, PartialStr);
+   end;
 
    HitNumber := hit;
 
@@ -667,6 +669,7 @@ var
    hit: Integer;
    maxhit: Integer;
 begin
+   ListBox.Items.Clear();
    maxhit := dmZlogGlobal.Settings._maxsuperhit;
    hit := 0;
    for i := 0 to FSuperList.Count - 1 do begin
