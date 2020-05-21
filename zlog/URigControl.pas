@@ -291,10 +291,12 @@ type
   end;
 
   TFT817 = class(TFT847)
+    Fchange: Boolean;
     destructor Destroy; override;
     procedure Initialize(); override;
-//    procedure SetFreq(Hz : LongInt); override;
-//    procedure SetMode(Q : TQSO); override;
+    procedure SetFreq(Hz : LongInt); override;
+    procedure SetMode(Q : TQSO); override;
+    procedure PollingProcess; override;
   end;
 
   TFT920 = class(TFT1000MP)
@@ -1798,6 +1800,16 @@ begin
    WriteData(_nil4 + AnsiChar($03));
 end;
 
+procedure TFT817.PollingProcess;
+begin
+   FPollingTimer.Enabled := False;
+   if Fchange then begin
+      BufferString :='';
+      Fchange := False;
+   end;
+   WriteData(_nil4 + AnsiChar($03));
+end;
+
 procedure TTS2000P.PollingProcess;
 begin
    WriteData('IF;');
@@ -3048,24 +3060,26 @@ end;
 procedure TFT817.Initialize();
 begin
    FUseCatOnCommand := False;
+   Fchange := False;
    Inherited;
 end;
 
-{
+
 procedure TFT817.SetFreq(Hz: LongInt);
 var
    StartTime: TDateTime;
 begin
    FPollingTimer.Enabled := False;
-   BufferString := '';
+//   BufferString := '';
    inherited;
-   StartTime := Now;
+{   StartTime := Now;
 
    repeat
       SleepEx(10, False)
    until (BufferString <> '') or ((Now - StartTime) > (250 / (24 * 60 * 60 * 1000)));
-
-   BufferString := '';
+ }
+ //  BufferString := '';
+   Fchange := True;
    FPollingTimer.Enabled := True;
 end;
 
@@ -3074,18 +3088,19 @@ var
    StartTime: TDateTime;
 begin
    FPollingTimer.Enabled := False;
-   BufferString := '';
+//   BufferString := '';
    inherited;
-   StartTime := Now;
+{   StartTime := Now;
 
    repeat
       SleepEx(10, False)
    until (BufferString <> '') or ((Now - StartTime) > (250 / (24 * 60 * 60 * 1000)));
-
-   BufferString := '';
+ }
+ //  BufferString := '';
+   Fchange := True;
    FPollingTimer.Enabled := True;
 end;
-}
+
 
 procedure TRig.UpdateStatus;
 var
