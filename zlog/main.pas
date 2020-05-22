@@ -789,7 +789,6 @@ type
     procedure actionFieldClearExecute(Sender: TObject);
     procedure actionCQRepeatExecute(Sender: TObject);
     procedure actionCwTuneExecute(Sender: TObject);
-    procedure actionUpKeyExecute(Sender: TObject);
     procedure actionShowSuperCheckExecute(Sender: TObject);
     procedure actionShowZlinkMonitorExecute(Sender: TObject);
     procedure actionBackupExecute(Sender: TObject);
@@ -7852,20 +7851,6 @@ procedure TMainForm.actionCQRepeatExecute(Sender: TObject);
 begin
    if CurrentQSO.mode = mCW then begin
       CQRepeatClick2(Sender);
-   end;
-end;
-
-// Å™ÉLÅ[
-procedure TMainForm.actionUpKeyExecute(Sender: TObject);
-begin
-   if ActiveControl is TOvrEdit then begin
-      Grid.Row := Log.QsoList.Count - 1;
-      if EditScreen.DirectEdit then begin
-         Grid.col := TEdit(Sender).Tag;
-      end;
-
-      LastFocus := TEdit(ActiveControl);
-      Grid.SetFocus;
    end;
 end;
 
