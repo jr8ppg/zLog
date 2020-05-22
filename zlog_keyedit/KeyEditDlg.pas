@@ -52,6 +52,7 @@ implementation
 
 procedure TformKeyEditDlg.buttonOKClick(Sender: TObject);
 begin
+{
    if comboAlphabetKey.ItemIndex >= 0 then begin
       if (checkAlphabetAndCtrl.Checked = False) and
          (checkAlphabetAndShift.Checked = True) and
@@ -60,7 +61,7 @@ begin
          Exit;
       end;
    end;
-
+}
    ModalResult := mrOK
 end;
 

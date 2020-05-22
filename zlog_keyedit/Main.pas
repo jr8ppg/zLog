@@ -149,65 +149,78 @@ end;
 function TformMain.IsShortcutUsed(strKey: string; var strFuncName: string): Boolean;
 var
    i: Integer;
+   sl: TStringList;
 begin
-   for i := 1 to vleLogging.RowCount - 1 do begin
-      if vleLogging.Cells[1, i] = strKey then begin
-         strFuncName := vleLogging.Cells[0, i];
-         Result := True;
-         Exit;
+   sl := TStringList.Create();
+   try
+      for i := 1 to vleLogging.RowCount - 1 do begin
+         sl.CommaText := vleLogging.Cells[1, i] + ',';
+         if sl[0] = strKey then begin
+            strFuncName := vleLogging.Cells[0, i];
+            Result := True;
+            Exit;
+         end;
       end;
-   end;
 
-   for i := 1 to vleInformation.RowCount - 1 do begin
-      if vleInformation.Cells[1, i] = strKey then begin
-         strFuncName := vleInformation.Cells[0, i];
-         Result := True;
-         Exit;
+      for i := 1 to vleInformation.RowCount - 1 do begin
+         sl.CommaText := vleInformation.Cells[1, i] + ',';
+         if sl[0] = strKey then begin
+            strFuncName := vleInformation.Cells[0, i];
+            Result := True;
+            Exit;
+         end;
       end;
-   end;
 
-   for i := 1 to vleCwKeying.RowCount - 1 do begin
-      if vleCwKeying.Cells[1, i] = strKey then begin
-         strFuncName := vleCwKeying.Cells[0, i];
-         Result := True;
-         Exit;
+      for i := 1 to vleCwKeying.RowCount - 1 do begin
+         sl.CommaText := vleCwKeying.Cells[1, i] + ',';
+         if sl[0] = strKey then begin
+            strFuncName := vleCwKeying.Cells[0, i];
+            Result := True;
+            Exit;
+         end;
       end;
-   end;
 
-   for i := 1 to vleRigControl.RowCount - 1 do begin
-      if vleRigControl.Cells[1, i] = strKey then begin
-         strFuncName := vleRigControl.Cells[0, i];
-         Result := True;
-         Exit;
+      for i := 1 to vleRigControl.RowCount - 1 do begin
+         sl.CommaText := vleRigControl.Cells[1, i] + ',';
+         if sl[0] = strKey then begin
+            strFuncName := vleRigControl.Cells[0, i];
+            Result := True;
+            Exit;
+         end;
       end;
-   end;
 
-   for i := 1 to vleEdit.RowCount - 1 do begin
-      if vleEdit.Cells[1, i] = strKey then begin
-         strFuncName := vleEdit.Cells[0, i];
-         Result := True;
-         Exit;
+      for i := 1 to vleEdit.RowCount - 1 do begin
+         sl.CommaText := vleEdit.Cells[1, i] + ',';
+         if sl[0] = strKey then begin
+            strFuncName := vleEdit.Cells[0, i];
+            Result := True;
+            Exit;
+         end;
       end;
-   end;
 
-   for i := 1 to vlePostContest.RowCount - 1 do begin
-      if vlePostContest.Cells[1, i] = strKey then begin
-         strFuncName := vlePostContest.Cells[0, i];
-         Result := True;
-         Exit;
+      for i := 1 to vlePostContest.RowCount - 1 do begin
+         sl.CommaText := vlePostContest.Cells[1, i] + ',';
+         if sl[0] = strKey then begin
+            strFuncName := vlePostContest.Cells[0, i];
+            Result := True;
+            Exit;
+         end;
       end;
-   end;
 
-   for i := 1 to vleOther.RowCount - 1 do begin
-      if vleOther.Cells[1, i] = strKey then begin
-         strFuncName := vleOther.Cells[0, i];
-         Result := True;
-         Exit;
+      for i := 1 to vleOther.RowCount - 1 do begin
+         sl.CommaText := vleOther.Cells[1, i] + ',';
+         if sl[0] = strKey then begin
+            strFuncName := vleOther.Cells[0, i];
+            Result := True;
+            Exit;
+         end;
       end;
-   end;
 
-   strFuncName := '';
-   Result := False;
+      strFuncName := '';
+      Result := False;
+   finally
+      sl.Free();
+   end;
 end;
 
 procedure TformMain.ClearKeymap(strFuncName: string);

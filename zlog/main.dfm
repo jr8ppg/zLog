@@ -2528,7 +2528,7 @@ object MainForm: TMainForm
       TabOrder = 9
       OnChange = MemoEditChange
       OnKeyDown = EditKeyDown
-      OnKeyPress = MemoEditKeyPress
+      OnKeyPress = EditKeyPress
       TabOnEnter = False
     end
     object TimeEdit: TOvrEdit
@@ -5145,7 +5145,7 @@ object MainForm: TMainForm
     end
     object actionToggleRig: TAction
       Caption = 'actionToggleRig'
-      ShortCut = 32958
+      ShortCut = 8280
       OnExecute = actionToggleRigExecute
     end
     object actionShowBandScope: TAction
@@ -5225,6 +5225,61 @@ object MainForm: TMainForm
       Caption = 'actionGetSuperCheck2'
       ShortCut = 24649
       OnExecute = actionGetSuperCheck2Execute
+    end
+    object actionChangeBand: TAction
+      Caption = 'actionChangeBand'
+      ShortCut = 8258
+      OnExecute = actionChangeBandExecute
+    end
+    object actionChangeMode: TAction
+      Caption = 'actionChangeMode'
+      ShortCut = 8269
+      OnExecute = actionChangeModeExecute
+    end
+    object actionChangePower: TAction
+      Caption = 'actionChangePower'
+      ShortCut = 8272
+      OnExecute = actionChangePowerExecute
+    end
+    object actionChangeCwBank: TAction
+      Caption = 'actionChangeCwBank'
+      ShortCut = 8262
+      OnExecute = actionChangeCwBankExecute
+    end
+    object actionChangeR: TAction
+      Caption = 'actionChangeR'
+      ShortCut = 8274
+      OnExecute = actionChangeRExecute
+    end
+    object actionChangeS: TAction
+      Caption = 'actionChangeS'
+      ShortCut = 8275
+      OnExecute = actionChangeSExecute
+    end
+    object actionSetCurTime: TAction
+      Caption = 'actionSetCurTime'
+      ShortCut = 8276
+      OnExecute = actionSetCurTimeExecute
+    end
+    object actionDecreaseCwSpeed: TAction
+      Caption = 'actionDecreaseCwSpeed'
+      ShortCut = 8277
+      OnExecute = actionDecreaseCwSpeedExecute
+    end
+    object actionIncreaseCwSpeed: TAction
+      Caption = 'actionIncreaseCwSpeed'
+      ShortCut = 8281
+      OnExecute = actionIncreaseCwSpeedExecute
+    end
+    object actionCQRepeat2: TAction
+      Caption = 'actionCQRepeat2'
+      ShortCut = 8282
+      OnExecute = actionCQRepeat2Execute
+    end
+    object actionToggleVFO: TAction
+      Caption = 'actionToggleVFO'
+      ShortCut = 8278
+      OnExecute = actionToggleVFOExecute
     end
   end
   object SPCMenu: TPopupMenu
