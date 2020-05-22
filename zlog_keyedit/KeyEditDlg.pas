@@ -29,7 +29,11 @@ type
     radioSecondary4: TRadioButton;
     radioSecondary5: TRadioButton;
     radioSecondary6: TRadioButton;
+    checkAlphabetAndShift: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
+    procedure comboFunctionKeyClick(Sender: TObject);
+    procedure comboAlphabetKeyClick(Sender: TObject);
+    procedure comboOtherKeyClick(Sender: TObject);
   private
     { Private 宣言 }
     procedure SetPrimaryKey(v: string);
@@ -48,6 +52,15 @@ implementation
 
 procedure TformKeyEditDlg.buttonOKClick(Sender: TObject);
 begin
+   if comboAlphabetKey.ItemIndex >= 0 then begin
+      if (checkAlphabetAndCtrl.Checked = False) and
+         (checkAlphabetAndShift.Checked = True) and
+         (checkAlphabetAndAlt.Checked = False) then begin
+         MessageBox(Handle, PChar('A～ZキーはShiftキーのみとは組み合わせできません'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         Exit;
+      end;
+   end;
+
    ModalResult := mrOK
 end;
 
@@ -120,12 +133,39 @@ begin
          if fCtrl = True then begin
             checkAlphabetAndCtrl.Checked := True;
          end;
+         if fShift = True then begin
+            checkAlphabetAndShift.Checked := True;
+         end;
          if fAlt = True then begin
             checkAlphabetAndAlt.Checked := True;
          end;
       end;
    finally
       sl.Free();
+   end;
+end;
+
+procedure TformKeyEditDlg.comboFunctionKeyClick(Sender: TObject);
+begin
+   if TComboBox(Sender).ItemIndex > 0 then begin
+      comboAlphabetKey.ItemIndex := 0;
+      comboOtherKey.ItemIndex := 0;
+   end;
+end;
+
+procedure TformKeyEditDlg.comboAlphabetKeyClick(Sender: TObject);
+begin
+   if TComboBox(Sender).ItemIndex > 0 then begin
+      comboFunctionKey.ItemIndex := 0;
+      comboOtherKey.ItemIndex := 0;
+   end;
+end;
+
+procedure TformKeyEditDlg.comboOtherKeyClick(Sender: TObject);
+begin
+   if TComboBox(Sender).ItemIndex > 0 then begin
+      comboFunctionKey.ItemIndex := 0;
+      comboAlphabetKey.ItemIndex := 0;
    end;
 end;
 
@@ -151,6 +191,9 @@ begin
       else if comboAlphabetKey.ItemIndex > 0 then begin
          if checkAlphabetAndCtrl.Checked = True then begin
             sl.Add('Ctrl');
+         end;
+         if checkAlphabetAndShift.Checked = True then begin
+            sl.Add('Shift');
          end;
          if checkAlphabetAndAlt.Checked = True then begin
             sl.Add('Alt');

@@ -15,7 +15,7 @@ uses
   UOptions in 'UOptions.pas' {formOptions},
   UMenu in 'UMenu.pas' {MenuForm},
   UACAGMulti in 'UACAGMulti.pas' {ACAGMulti},
-  USuperCheck in 'USuperCheck.pas' {SuperCheck},
+  USuperCheck2 in 'USuperCheck2.pas' {SuperCheck2},
   UACAGScore in 'UACAGScore.pas' {ACAGScore},
   UzLogCW in 'UzLogCW.pas',
   UALLJAScore in 'UALLJAScore.pas' {ALLJAScore},
@@ -92,7 +92,10 @@ uses
   DialogHook in 'DialogHook.pas',
   UZAnalyze in 'UZAnalyze.pas' {ZAnalyze},
   UzlogConst in 'UzlogConst.pas',
-  UzLogQSO in 'UzLogQSO.pas';
+  UzLogQSO in 'UzLogQSO.pas',
+  USuperCheck in 'USuperCheck.pas' {SuperCheck},
+  UzLogSpc in 'UzLogSpc.pas',
+  Progress in 'Progress.pas' {formProgress};
 
 {$R *.RES}
 

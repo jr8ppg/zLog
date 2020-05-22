@@ -19,17 +19,19 @@ object formMain: TformMain
     Left = 0
     Top = 0
     Width = 575
-    Height = 419
+    Height = 421
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
+    ExplicitHeight = 419
     object TabSheet1: TTabSheet
       Caption = #12525#12462#12531#12464
+      ExplicitHeight = 391
       object vleLogging: TValueListEditor
         Left = 0
         Top = 0
         Width = 567
-        Height = 391
+        Height = 393
         Align = alClient
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking]
         Strings.Strings = (
@@ -42,13 +44,14 @@ object formMain: TformMain
           '#06 Quick QSY 7=Ctrl+F7'
           '#07 Quick QSY 8=Ctrl+F8'
           '#63 '#12458#12506#12524#12540#12479#22793#26356'=Alt+O'
-          '#82 '#20132#20449#38283#22987'=TAB,'
-          '#83 '#20132#20449#32066#20102'=Down,;')
+          '#82 '#20132#20449#38283#22987'(NR or B4'#36865#20986')=TAB,'
+          '#83 '#20132#20449#32066#20102'(TU or NR?'#36865#20986')=Down,;')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
+        ExplicitHeight = 391
         ColWidths = (
           448
           113)
@@ -57,11 +60,12 @@ object formMain: TformMain
     object TabSheet2: TTabSheet
       Caption = #24773#22577#34920#31034
       ImageIndex = 1
+      ExplicitHeight = 391
       object vleInformation: TValueListEditor
         Left = 0
         Top = 0
         Width = 567
-        Height = 391
+        Height = 393
         Align = alClient
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking]
         Strings.Strings = (
@@ -87,12 +91,15 @@ object formMain: TformMain
           '#78 QSO'#12524#12540#12488#12454#12452#12531#12489#12454#12398#34920#31034'='
           '#79 '#12467#12540#12523#12481#12455#12483#12463#12454#12452#12531#12489#12454#12398#34920#31034'='
           '#80 '#12510#12523#12481#12481#12455#12483#12463#12454#12452#12531#12489#12454#12398#34920#31034'='
-          '#81 '#12459#12531#12488#12522#12540#12481#12455#12483#12463#12454#12452#12531#12489#12454#12398#34920#31034'=')
+          '#81 '#12459#12531#12488#12522#12540#12481#12455#12483#12463#12454#12452#12531#12489#12454#12398#34920#31034'='
+          '#87 N+1'#12454#12452#12531#12489#12454#12398#34920#31034'='
+          '#88 N+1'#12454#12452#12531#12489#12454#12363#12425#12398#12467#12540#12523#12469#12452#12531#12398#21462#12426#36796#12415'=Shift+Ctrl+I')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
+        ExplicitHeight = 391
         ColWidths = (
           448
           96)
@@ -101,11 +108,12 @@ object formMain: TformMain
     object TabSheet3: TTabSheet
       Caption = 'CW'#12461#12540#12452#12531#12464
       ImageIndex = 2
+      ExplicitHeight = 391
       object vleCWKeying: TValueListEditor
         Left = 0
         Top = 0
         Width = 567
-        Height = 391
+        Height = 393
         Align = alClient
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking]
         Strings.Strings = (
@@ -132,14 +140,13 @@ object formMain: TformMain
           '#53 '#12497#12489#12523#20837#21147#12398#38263#28857#12392#30701#28857#12398#21453#36578'=Ctrl+R'
           '#54 '#36899#32154#12461#12515#12522#12450#36865#20449'=Ctrl+T'
           '#57 '#36899#32154'CQ'#65288'F1'#12398#20869#23481#12398#36899#32154#36865#20449#65289#12289#20309#12363#20837#21147#12377#12427#12392#36865#20449#35299#38500'=Ctrl+Z'
-          '#60 '#12461#12540#12508#12540#12489#12514#12540#12489'=Alt+K'
-          '#86 '#65328#65332#65332#20986#21147#12398#65327#65326#65295#65327#65318#65318'=,\'
-          '')
+          '#60 '#12461#12540#12508#12540#12489#12514#12540#12489'=Alt+K')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
+        ExplicitHeight = 391
         ColWidths = (
           448
           96)
@@ -148,15 +155,12 @@ object formMain: TformMain
     object TabSheet4: TTabSheet
       Caption = #12522#12464#12467#12531#12488#12525#12540#12523
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitHeight = 391
       object vleRigControl: TValueListEditor
         Left = 0
         Top = 0
         Width = 567
-        Height = 391
+        Height = 393
         Align = alClient
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking]
         Strings.Strings = (
@@ -170,6 +174,7 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
+        ExplicitHeight = 391
         ColWidths = (
           448
           113)
@@ -178,11 +183,12 @@ object formMain: TformMain
     object TabSheet5: TTabSheet
       Caption = #20837#21147#12392#32232#38598
       ImageIndex = 4
+      ExplicitHeight = 391
       object vleEdit: TValueListEditor
         Left = 0
         Top = 0
         Width = 567
-        Height = 391
+        Height = 393
         Align = alClient
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking]
         Strings.Strings = (
@@ -209,6 +215,7 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
+        ExplicitHeight = 391
         ColWidths = (
           448
           113)
@@ -217,11 +224,12 @@ object formMain: TformMain
     object TabSheet6: TTabSheet
       Caption = #20107#24460#20837#21147
       ImageIndex = 5
+      ExplicitHeight = 391
       object vlePostContest: TValueListEditor
         Left = 0
         Top = 0
         Width = 567
-        Height = 391
+        Height = 393
         Align = alClient
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking]
         Strings.Strings = (
@@ -232,6 +240,7 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
+        ExplicitHeight = 391
         ColWidths = (
           448
           113)
@@ -240,22 +249,25 @@ object formMain: TformMain
     object TabSheet7: TTabSheet
       Caption = #12381#12398#20182
       ImageIndex = 6
+      ExplicitHeight = 391
       object vleOther: TValueListEditor
         Left = 0
         Top = 0
         Width = 567
-        Height = 391
+        Height = 393
         Align = alClient
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking]
         Strings.Strings = (
           '#52 QTC'#36865#20449#65288'WAEDC'#12514#12540#12489#65289'=Ctrl+Q'
           '#58 '#35373#23450#12375#12383#12497#12473#12395#22806#37096#12496#12483#12463#12450#12483#12503'=Alt+B'
-          '#84 '#65326#65327#65328'=Ctrl+M')
+          '#84 '#65326#65327#65328'=Ctrl+M'
+          '#86 '#65328#65332#65332#20986#21147#12398#65327#65326#65295#65327#65318#65318'=,\')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
+        ExplicitHeight = 391
         ColWidths = (
           448
           113)
@@ -264,14 +276,15 @@ object formMain: TformMain
   end
   object Panel1: TPanel
     Left = 0
-    Top = 419
+    Top = 421
     Width = 575
-    Height = 46
+    Height = 44
     Align = alBottom
+    BevelOuter = bvNone
     TabOrder = 1
     DesignSize = (
       575
-      46)
+      44)
     object buttonOK: TButton
       Left = 348
       Top = 5

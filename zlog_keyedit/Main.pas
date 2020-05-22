@@ -283,7 +283,6 @@ procedure TformMain.WriteKeymap(ini: TIniFile; vle: TValueListEditor);
 var
    i: Integer;
    N: Integer;
-   S: string;
    slText: TStringList;
 begin
    slText := TStringList.Create();

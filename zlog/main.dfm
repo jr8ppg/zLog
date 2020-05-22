@@ -4255,6 +4255,9 @@ object MainForm: TMainForm
       object SuperCheck1: TMenuItem
         Action = actionShowSuperCheck
       end
+      object N11: TMenuItem
+        Action = actionShowSuperCheck2
+      end
       object PartialCheck1: TMenuItem
         Action = actionShowCheckPartial
       end
@@ -4807,8 +4810,6 @@ object MainForm: TMainForm
     end
     object actionShowSuperCheck: TAction
       Caption = 'Super Check'
-      SecondaryShortCuts.Strings = (
-        'Alt+E')
       ShortCut = 16505
       OnExecute = actionShowSuperCheckExecute
     end
@@ -5216,5 +5217,20 @@ object MainForm: TMainForm
         '\')
       OnExecute = actionControlPTTExecute
     end
+    object actionShowSuperCheck2: TAction
+      Caption = 'N+1'
+      OnExecute = actionShowSuperCheck2Execute
+    end
+    object actionGetSuperCheck2: TAction
+      Caption = 'actionGetSuperCheck2'
+      ShortCut = 24649
+      OnExecute = actionGetSuperCheck2Execute
+    end
+  end
+  object SPCMenu: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 184
+    Top = 144
   end
 end

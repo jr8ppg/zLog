@@ -3,10 +3,10 @@ object SuperCheck: TSuperCheck
   Top = 79
   ActiveControl = SpinEdit
   Caption = 'Super Check'
-  ClientHeight = 312
+  ClientHeight = 112
   ClientWidth = 234
   Color = clBtnFace
-  Constraints.MinHeight = 350
+  Constraints.MinHeight = 150
   Constraints.MinWidth = 250
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -22,21 +22,9 @@ object SuperCheck: TSuperCheck
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Splitter1: TSplitter
-    Left = 0
-    Top = 184
-    Width = 234
-    Height = 3
-    Cursor = crVSplit
-    Align = alBottom
-    AutoSnap = False
-    MinSize = 90
-    ExplicitTop = 0
-    ExplicitWidth = 208
-  end
   object Panel1: TPanel
     Left = 0
-    Top = 277
+    Top = 77
     Width = 234
     Height = 35
     Align = alBottom
@@ -89,7 +77,7 @@ object SuperCheck: TSuperCheck
     Left = 0
     Top = 0
     Width = 234
-    Height = 184
+    Height = 77
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -99,22 +87,6 @@ object SuperCheck: TSuperCheck
     ItemHeight = 12
     ParentFont = False
     TabOrder = 1
-    OnDblClick = ListBoxDblClick
-  end
-  object ListBox1: TListBox
-    Left = 0
-    Top = 187
-    Width = 234
-    Height = 90
-    Align = alBottom
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = #65325#65331' '#12468#12471#12483#12463
-    Font.Style = []
-    ItemHeight = 12
-    ParentFont = False
-    TabOrder = 2
     OnDblClick = ListBoxDblClick
   end
 end

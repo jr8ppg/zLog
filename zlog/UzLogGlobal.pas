@@ -132,6 +132,7 @@ type
     _displaydatepartialcheck : boolean;
 
     _super_check_columns: Integer;
+    _super_check2_columns: Integer;
 
     FQuickQSY: array[1..8] of TQuickQSY;
     FSuperCheck: TSuperCheckParam;
@@ -182,6 +183,8 @@ type
     function GetRigNameStr(Index: Integer) : string; // returns the selected rig name
     function GetSuperCheckColumns(): Integer;
     procedure SetSuperCheckColumns(v: Integer);
+    function GetSuperCheck2Columns(): Integer;
+    procedure SetSuperCheck2Columns(v: Integer);
     function GetCQMax(): Integer;
     procedure SetCQMax(i : integer);
     function GetCQRepeat(): Double;
@@ -216,6 +219,7 @@ public
     property SendFreq: Double read GetSendFreq write SetSendFreq;
     property RigNameStr[Index: Integer]: string read GetRigNameStr;
     property SuperCheckColumns: Integer read GetSuperCheckColumns write SetSuperCheckColumns;
+    property SuperCheck2Columns: Integer read GetSuperCheck2Columns write SetSuperCheck2Columns;
 
     function GetAge(aQSO : TQSO) : string;
     procedure SetOpPower(var aQSO : TQSO);
@@ -255,7 +259,6 @@ procedure IncEditCounter(aQSO : TQSO);
 function ExtractKenNr(S : string) : string; //extracts ken nr from aja#+power
 function ExtractPower(S : string) : string;
 function IsSHF(B : TBand) : boolean; // true if b >= 2400MHz
-function PartialMatch(A, B : string) : boolean; // true if b matches pattern a
 function IsMM(S : string) : boolean; // return true if Marine Mobile S is a callsign
 function IsWVE(S : string) : boolean; // returns true if W/VE/KH6/KL7 S is country px NOT callsign
 function GetHour(T : TDateTime) : integer;
@@ -283,6 +286,7 @@ function StrToBandDef(strMHz: string; defband: TBand): TBand;
 function StrToModeDef(strMode: string; defmode: TMode): TMode;
 function GetBandIndex(Hz: Integer; default: Integer = -1): Integer; // Returns -1 if Hz is outside ham bands
 
+function PartialMatch(A, B: string): Boolean;
 function PartialMatch2(strCompare, strTarget: string): Boolean;
 
 var
@@ -773,6 +777,7 @@ begin
       Settings.CW._eispacefactor := ini.ReadInteger('CW', 'EISpaceFactor', 100);
 
       Settings._super_check_columns := ini.ReadInteger('Windows', 'SuperCheckColumns', 0);
+      Settings._super_check2_columns := ini.ReadInteger('Windows', 'SuperCheck2Columns', 0);
 
       // QuickQSY
       for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
@@ -1080,6 +1085,7 @@ begin
       ini.WriteInteger('Preferences', 'RowHeight', Settings._mainrowheight);
 
       ini.WriteInteger('Windows', 'SuperCheckColumns', Settings._super_check_columns);
+      ini.WriteInteger('Windows', 'SuperCheck2Columns', Settings._super_check2_columns);
 
       // QuickQSY
       for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
@@ -1417,6 +1423,16 @@ begin
    Settings._super_check_columns := v;
 end;
 
+function TdmZLogGlobal.GetSuperCheck2Columns(): Integer;
+begin
+   Result := Settings._super_check2_columns;
+end;
+
+procedure TdmZLogGlobal.SetSuperCheck2Columns(v: Integer);
+begin
+   Settings._super_check2_columns := v;
+end;
+
 function TdmZLogGlobal.GetCQMax(): Integer;
 begin
    Result := Settings.CW._cqmax;
@@ -1717,24 +1733,6 @@ end;
 function IsSHF(B: TBand): Boolean; // true if b >= 2400MHz
 begin
    Result := (B >= b2400);
-end;
-
-function PartialMatch(A, B: string): Boolean; // true if b matches pattern a
-var
-   i: integer;
-begin
-   Result := false;
-   if (Pos('.', A) = 0) { and (Pos('?',A)=0) } then
-      Result := (Pos(A, B) > 0)
-   else begin
-      if length(A) > length(B) then
-         exit;
-      for i := 1 to length(A) do
-         if A[i] <> '.' then
-            if A[i] <> B[i] then
-               exit;
-      Result := True;
-   end;
 end;
 
 function IsMM(S: string): Boolean;
@@ -2132,91 +2130,6 @@ begin
    Result := i;
 end;
 
-function Compare1(strTarget, strCompare: string; var nMatchCount: Integer; fFirstCall: Boolean = True): Boolean;
-var
-   i: Integer;
-   p: Integer;
-   strTarget2: string;
-   strCompare2: string;
-   n1, n2: Integer;
-   match_cnt: Integer;
-   skip_cnt: Integer;
-   match_cnt2: Integer;
-begin
-   // 頭出しをする
-   p := 0;
-   for i := 1 to Length(strCompare) do begin
-      p := Pos(Copy(strCompare, i, 1), strTarget);
-      if p > 0 then begin
-         Break;
-      end;
-   end;
-   if p = 0 then begin
-      nMatchCount := 0;
-      Result := False;
-      Exit;
-   end;
-   if fFirstCall = True then begin
-      skip_cnt := 0;
-   end
-   else begin
-      skip_cnt := p - 1;
-   end;
-
-   strTarget2 := Copy(strTarget, p);
-   n1 := Length(strTarget2);
-   strCompare2 := Copy(strCompare, i);
-   n2 := Length(strCompare2);
-
-   if n1 = n2 then begin   // 同じ長さなら単純にマッチ数を数える
-      match_cnt := 0;
-      for i := 1 to Min(n1, n2) do begin
-         if strTarget2[i] = strCompare2[i] then begin
-            Inc(match_cnt);
-         end
-      end;
-      nMatchCount := match_cnt;
-      if match_cnt >= (n1 - 1) then begin
-         Result := True;
-      end
-      else begin
-         Result := False;
-      end;
-
-      Exit;
-   end;
-
-   match_cnt := 0;
-   for i := 1 to Min(n1, n2) do begin
-      if strTarget2[i] = strCompare2[i] then begin
-         Inc(match_cnt);
-      end
-      else begin  // MATCHしなくなったら合うところまで頭出し
-         strTarget2 := Copy(strTarget2, i);
-         strCompare2 := Copy(strCompare2, i);
-
-         Compare1(strTarget2, strCompare2, match_cnt2, False);
-         match_cnt := match_cnt + match_cnt2;
-         Break;
-      end;
-   end;
-
-   if n1 < n2 then begin
-      match_cnt := match_cnt + (n1 - n2);
-   end;
-
-   if (skip_cnt <= 1) and (match_cnt >= (Length(strCompare) - 1)) then begin
-      // match
-      Result := True;
-      nMatchCount := match_cnt;
-   end
-   else begin
-      // no match
-      Result := False;
-      nMatchCount := match_cnt - skip_cnt;
-   end;
-end;
-
 function Compare2(strTarget: string; strCompare: string): Boolean;
 var
    i: Integer;
@@ -2289,11 +2202,110 @@ begin
    Result := 1 + Min(l1, Min(l2, l3));
 end;
 
+// 動的計画法でのレーベンシュタイン距離の計算
+function LD_dp(str1, str2: string): Integer;
+var
+   n1, n2: Integer;
+   i: Integer;
+   j: Integer;
+   d: array[0..100, 0..100] of Integer;
+begin
+   n1 := Length(str1);
+   n2 := Length(str2);
+
+   for i := 0 to n1 do begin
+      d[i][0] := i;
+   end;
+
+   for i := 0 to n2 do begin
+      d[0][i] := i;
+   end;
+
+   for i := 1 to n1 do begin
+      for j := 1 to n2 do begin
+         d[i][j] := min(min(d[i - 1][j], d[i][j - 1]) + 1, d[i - 1][j - 1] + ifthen(str1[i] = str2[j], 0, 1));
+      end;
+   end;
+
+   Result := d[n1][n2];
+end;
+
+// O(ND)アルゴリズムでのレーベンシュタイン距離の計算
+// １文字の違い（置換）は２となるので使えない
+function LD_ond(str1, str2: string): Integer;
+var
+   n1, n2: Integer;
+   x, y: Integer;
+   offset: Integer;
+   V: array[0..100] of Integer;
+   D: Integer;
+   k: Integer;
+begin
+   n1 := Length(str1);
+   n2 := Length(str2);
+
+   offset := n1;
+   V[offset + 1] := 0;
+
+   for D := 0 to (n1 + n2) do begin
+      k := -D;
+      while(k <= D) do begin
+         if ((k = -D) or (k <> D) and (V[k - 1 + offset] < V[k + 1 + offset])) then begin
+            x := V[k + 1 + offset];
+         end
+         else begin
+            x := V[k - 1 + offset] + 1;
+         end;
+
+         y := x - k;
+         while ((x < n1) and (y < n2) and (str1[x + 1] = str2[y + 1])) do begin
+            Inc(x);
+            Inc(y);
+         end;
+
+         V[k + offset] := x;
+         if ((x >= n1) and (y >= n2)) then begin
+            Result:= D;
+            Exit;
+         end;
+
+         Inc(k, 2);
+      end;
+   end;
+
+   Result:= -1;
+end;
+
+function PartialMatch(A, B: string): Boolean;
+var
+   i: integer;
+begin
+   Result := False;
+   if (Pos('.', A) = 0) { and (Pos('?',A)=0) } then begin
+      Result := (Pos(A, B) > 0);
+   end
+   else begin
+      if Length(A) > Length(B) then begin
+         Exit;
+      end;
+
+      for i := 1 to Length(A) do begin
+         if A[i] <> '.' then begin
+            if A[i] <> B[i] then begin
+               Exit;
+            end;
+         end;
+      end;
+
+      Result := True;
+   end;
+end;
+
 function PartialMatch2(strCompare, strTarget: string): Boolean;
 var
    n: Integer;
 begin
-   n := LD(strTarget, strCompare);
+   n := LD_dp(strTarget, strCompare);
    if n <= 1 then begin
       Result := True;
    end

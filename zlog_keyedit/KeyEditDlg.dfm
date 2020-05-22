@@ -58,6 +58,7 @@ object formKeyEditDlg: TformKeyEditDlg
       ItemIndex = 0
       TabOrder = 3
       Text = #12394#12375
+      OnClick = comboFunctionKeyClick
       Items.Strings = (
         #12394#12375
         'F1'
@@ -90,6 +91,7 @@ object formKeyEditDlg: TformKeyEditDlg
       ItemIndex = 0
       TabOrder = 0
       Text = #12394#12375
+      OnClick = comboAlphabetKeyClick
       Items.Strings = (
         #12394#12375
         'A'
@@ -129,11 +131,19 @@ object formKeyEditDlg: TformKeyEditDlg
       TabOrder = 1
     end
     object checkAlphabetAndAlt: TCheckBox
-      Left = 184
+      Left = 272
       Top = 25
       Width = 73
       Height = 17
       Caption = 'Alt'#12461#12540
+      TabOrder = 3
+    end
+    object checkAlphabetAndShift: TCheckBox
+      Left = 184
+      Top = 25
+      Width = 73
+      Height = 17
+      Caption = 'Shift'#12461#12540
       TabOrder = 2
     end
   end
@@ -153,6 +163,7 @@ object formKeyEditDlg: TformKeyEditDlg
       ItemIndex = 0
       TabOrder = 0
       Text = #12394#12375
+      OnClick = comboOtherKeyClick
       Items.Strings = (
         #12394#12375
         'PgUp'
@@ -171,7 +182,6 @@ object formKeyEditDlg: TformKeyEditDlg
     Default = True
     TabOrder = 3
     OnClick = buttonOKClick
-    ExplicitLeft = 367
   end
   object buttonCancel: TButton
     Left = 407
@@ -183,7 +193,6 @@ object formKeyEditDlg: TformKeyEditDlg
     Caption = #12461#12515#12531#12475#12523
     ModalResult = 2
     TabOrder = 4
-    ExplicitLeft = 367
   end
   object GroupBox4: TGroupBox
     Left = 8
