@@ -147,7 +147,6 @@ object AboutBox: TAboutBox
     ModalResult = 1
     TabOrder = 1
     OnClick = OKButtonClick
-    ExplicitTop = 284
   end
   object Panel2: TPanel
     Left = 8
@@ -202,7 +201,7 @@ object AboutBox: TAboutBox
       AutoSize = False
       Caption = 
         #21332#21147':JH1KVQ, JE1BJP, JR8VSE, JG8LOL, JR8LRQ, JL1LNC, 7M4KSC, JA1AB' +
-        'C'
+        'C, JO3JYE'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
