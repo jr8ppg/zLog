@@ -114,6 +114,10 @@ object formMain: TformMain
     object TabSheet3: TTabSheet
       Caption = 'CW'#12461#12540#12452#12531#12464
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vleCWKeying: TValueListEditor
         Left = 0
         Top = 0
@@ -234,6 +238,10 @@ object formMain: TformMain
     object TabSheet6: TTabSheet
       Caption = #20107#24460#20837#21147
       ImageIndex = 5
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vlePostContest: TValueListEditor
         Left = 0
         Top = 0
