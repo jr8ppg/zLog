@@ -3,7 +3,7 @@ object EditDialog: TEditDialog
   Top = 386
   BorderStyle = bsDialog
   Caption = 'Dialog'
-  ClientHeight = 84
+  ClientHeight = 82
   ClientWidth = 553
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -11,9 +11,8 @@ object EditDialog: TEditDialog
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  Menu = MainMenu1
   OldCreateOrder = True
-  Position = poScreenCenter
+  Position = poOwnerFormCenter
   Scaled = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -36,6 +35,7 @@ object EditDialog: TEditDialog
     Top = 52
     Width = 75
     Height = 25
+    Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 2
@@ -307,20 +307,191 @@ object EditDialog: TEditDialog
   end
   object NewPowerMenu: TPopupMenu
     Left = 296
-    Top = 48
+    Top = 40
   end
-  object MainMenu1: TMainMenu
-    Left = 224
-    Top = 48
-    object edit1: TMenuItem
-      Caption = 'edit'
-      Visible = False
-      object op1: TMenuItem
-        Caption = 'op'
-        ShortCut = 32847
-        Visible = False
-        OnClick = op1Click
-      end
+  object ActionList1: TActionList
+    Left = 488
+    Top = 40
+    object actionPlayMessageA01: TAction
+      Tag = 1
+      Caption = 'actionPlayMessageA01'
+      ShortCut = 112
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA02: TAction
+      Tag = 2
+      Caption = 'actionPlayMessageA02'
+      ShortCut = 113
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA03: TAction
+      Tag = 3
+      Caption = 'actionPlayMessageA03'
+      ShortCut = 114
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA04: TAction
+      Tag = 4
+      Caption = 'actionPlayMessageA04'
+      ShortCut = 115
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA05: TAction
+      Tag = 5
+      Caption = 'actionPlayMessageA05'
+      ShortCut = 116
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA06: TAction
+      Tag = 6
+      Caption = 'actionPlayMessageA06'
+      ShortCut = 117
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA07: TAction
+      Tag = 7
+      Caption = 'actionPlayMessageA07'
+      ShortCut = 118
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA08: TAction
+      Tag = 8
+      Caption = 'actionPlayMessageA08'
+      ShortCut = 119
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionShowCheckPartial: TAction
+      Caption = 'actionShowCheckPartial'
+      ShortCut = 121
+      OnExecute = actionShowCheckPartialExecute
+    end
+    object actionPlayMessageA11: TAction
+      Tag = 11
+      Caption = 'actionPlayMessageA11'
+      ShortCut = 122
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA12: TAction
+      Tag = 12
+      Caption = 'actionPlayMessageA12'
+      ShortCut = 123
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionClearCallAndRpt: TAction
+      Caption = 'actionClearCallAndRpt'
+      ShortCut = 16459
+      OnExecute = actionClearCallAndRptExecute
+    end
+    object actionDecreaseTime: TAction
+      Caption = 'actionDecreaseTime'
+      ShortCut = 16463
+      OnExecute = actionDecreaseTimeExecute
+    end
+    object actionIncreaseTime: TAction
+      Caption = 'actionIncreaseTime'
+      ShortCut = 16464
+      OnExecute = actionIncreaseTimeExecute
+    end
+    object actionReversePaddle: TAction
+      Caption = 'actionReversePaddle'
+      ShortCut = 16466
+      OnExecute = actionReversePaddleExecute
+    end
+    object actionFieldClear: TAction
+      Caption = 'actionFieldClear'
+      ShortCut = 16471
+      OnExecute = actionFieldClearExecute
+    end
+    object actionCQRepeat: TAction
+      Caption = 'actionCQRepeat'
+      ShortCut = 16474
+      OnExecute = actionCQRepeatExecute
+    end
+    object actionFocusCallsign: TAction
+      Caption = 'actionFocusCallsign'
+      ShortCut = 32835
+      OnExecute = actionFocusCallsignExecute
+    end
+    object actionFocusMemo: TAction
+      Caption = 'actionFocusMemo'
+      ShortCut = 32845
+      OnExecute = actionFocusMemoExecute
+    end
+    object actionFocusNumber: TAction
+      Caption = 'actionFocusNumber'
+      ShortCut = 32846
+      OnExecute = actionFocusNumberExecute
+    end
+    object actionFocusOp: TAction
+      Caption = 'actionFocusOp'
+      ShortCut = 32847
+      OnExecute = actionFocusOpExecute
+    end
+    object actionFocusRst: TAction
+      Caption = 'actionFocusRst'
+      ShortCut = 32850
+      OnExecute = actionFocusRstExecute
+    end
+    object actionToggleRig: TAction
+      Caption = 'actionToggleRig'
+      ShortCut = 8280
+      OnExecute = actionToggleRigExecute
+    end
+    object actionControlPTT: TAction
+      Caption = 'actionControlPTT'
+      SecondaryShortCuts.Strings = (
+        '\')
+      OnExecute = actionControlPTTExecute
+    end
+    object actionChangeBand: TAction
+      Caption = 'actionChangeBand'
+      ShortCut = 8258
+      OnExecute = actionChangeBandExecute
+    end
+    object actionChangeMode: TAction
+      Caption = 'actionChangeMode'
+      ShortCut = 8269
+      OnExecute = actionChangeModeExecute
+    end
+    object actionChangePower: TAction
+      Caption = 'actionChangePower'
+      ShortCut = 8272
+      OnExecute = actionChangePowerExecute
+    end
+    object actionChangeR: TAction
+      Caption = 'actionChangeR'
+      ShortCut = 8274
+      OnExecute = actionChangeRExecute
+    end
+    object actionChangeS: TAction
+      Caption = 'actionChangeS'
+      ShortCut = 8275
+      OnExecute = actionChangeSExecute
+    end
+    object actionSetCurTime: TAction
+      Caption = 'actionSetCurTime'
+      ShortCut = 8276
+      OnExecute = actionSetCurTimeExecute
+    end
+    object actionDecreaseCwSpeed: TAction
+      Caption = 'actionDecreaseCwSpeed'
+      ShortCut = 8277
+      OnExecute = actionDecreaseCwSpeedExecute
+    end
+    object actionIncreaseCwSpeed: TAction
+      Caption = 'actionIncreaseCwSpeed'
+      ShortCut = 8281
+      OnExecute = actionIncreaseCwSpeedExecute
+    end
+    object actionCQRepeat2: TAction
+      Caption = 'actionCQRepeat2'
+      ShortCut = 8282
+      OnExecute = actionCQRepeat2Execute
+    end
+    object actionToggleVFO: TAction
+      Caption = 'actionToggleVFO'
+      ShortCut = 8278
+      OnExecute = actionToggleVFOExecute
     end
   end
 end
