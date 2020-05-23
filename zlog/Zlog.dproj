@@ -3,7 +3,7 @@
         <ProjectGuid>{83497C9C-5934-4E18-AC20-2AB9247B7276}</ProjectGuid>
         <MainSource>Zlog.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
