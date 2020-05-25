@@ -8361,15 +8361,18 @@ var
    j: Integer;
    strFolder: string;
    dlg: TformProgress;
+   x, y: Integer;
 begin
-   dlg := TformProgress.Create(Self);
+   dlg := nil; //TformProgress.Create(Self);
    FSpcDataLoading := True;
    FSuperChecked := False;
    try
       Enabled := False;
-      dlg.Title := 'スーパーチェック用データをロード中...';
-      dlg.Text := '';
-      dlg.Show();
+      if Assigned(dlg) then begin
+         dlg.Title := 'スーパーチェック用データをロード中...';
+         dlg.Text := '';
+         dlg.Show();
+      end;
 
       FSuperCheck.Clear();
 
@@ -8403,11 +8406,23 @@ begin
          end;
       end;
 
-      dlg.Text := IntToStr(FSuperCheckList.Count) + '  Merged';
+      // 一応並び替えておく（見た目の問題）
+      FSuperCheckList.SortByCallsign();
+      for x := 0 to 255 do begin
+         for y := 0 to 255 do begin
+            FTwoLetterMatrix[x, y].SortByCallsign();
+         end;
+      end;
+
+      if Assigned(dlg) then begin
+         dlg.Text := IntToStr(FSuperCheckList.Count) + '  Merged';
+      end;
    finally
       FSpcDataLoading := False;
-      dlg.Hide();
-      dlg.Release();
+      if Assigned(dlg) then begin
+         dlg.Hide();
+         dlg.Release();
+      end;
       Enabled := True;
    end;
 end;
@@ -8449,8 +8464,10 @@ begin
       end;
    end;
 
-   TformProgress(progress).Text := filename;
-   Application.ProcessMessages();
+   if Assigned(progress) then begin
+      TformProgress(progress).Text := filename;
+      Application.ProcessMessages();
+   end;
 
    dtNow := Now;
 
@@ -8510,8 +8527,10 @@ begin
             ((F.Attr and faVolumeID) = 0) and
             ((F.Attr and faSysFile) = 0) then begin
 
-            TformProgress(progress).Text := S + F.Name;
-            Application.ProcessMessages();
+            if Assigned(progress) then begin
+               TformProgress(progress).Text := S + F.Name;
+               Application.ProcessMessages();
+            end;
 
             L.Clear();
 
@@ -8562,7 +8581,6 @@ begin
    O := FSuperCheckList.ObjectOf(sd1);
    if O = nil then begin
       FSuperCheckList.Add(sd1);
-      FSuperCheckList.SortByCallsign();
    end
    else begin
       if O.Date < D then begin
@@ -8580,7 +8598,6 @@ begin
       O := FTwoLetterMatrix[x, y].ObjectOf(sd2);
       if O = nil then begin
          FTwoLetterMatrix[x, y].Add(sd2);
-         FTwoLetterMatrix[x, y].SortByCallsign();
       end
       else begin
          if O.Date < D then begin

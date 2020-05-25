@@ -94,25 +94,45 @@ end;
 function TSuperList.IndexOf(SD: TSuperData): Integer;
 var
    Index: Integer;
+   i: Integer;
 begin
+   for i := 0 to Count - 1 do begin
+      if SD.Callsign = Items[i].Callsign then begin
+         Result := i;
+         Exit;
+      end;
+   end;
+   Result := -1;
+{
    if BinarySearch(SD, Index, FCallsignComparer) = True then begin
       Result := Index;
    end
    else begin
       Result := -1;
    end;
+}
 end;
 
 function TSuperList.ObjectOf(SD: TSuperData): TSuperData;
 var
    Index: Integer;
+   i: Integer;
 begin
+   for i := 0 to Count - 1 do begin
+      if SD.Callsign = Items[i].Callsign then begin
+         Result := Items[i];
+         Exit;
+      end;
+   end;
+   Result := nil;
+{
    if BinarySearch(SD, Index, FCallsignComparer) = True then begin
       Result := Items[Index];
    end
    else begin
       Result := nil;
    end;
+}
 end;
 
 procedure TSuperList.SortByCallsign();
