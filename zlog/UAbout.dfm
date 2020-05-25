@@ -201,7 +201,7 @@ object AboutBox: TAboutBox
       AutoSize = False
       Caption = 
         #21332#21147':JH1KVQ, JE1BJP, JR8VSE, JG8LOL, JR8LRQ, JL1LNC, 7M4KSC, JA1AB' +
-        'C, JO3JYE'
+        'C, JO3JYE, JE1CKA'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
