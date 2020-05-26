@@ -938,7 +938,7 @@ type
 
     procedure SuperCheckDataLoad();
     procedure SuperCheckFreeData();
-    procedure LoadSpcFile(strStartFoler: string; progress: TForm);
+    procedure LoadSpcFile(strStartFoler: string; strFileName: string; progress: TForm);
     procedure LoadLogFiles(strStartFoler: string; progress: TForm);
     procedure ListToTwoMatrix(L: TQSOList);
     procedure SetTwoMatrix(D: TDateTime; C, N: string);
@@ -8368,7 +8368,7 @@ var
    dlg: TformProgress;
    x, y: Integer;
 begin
-   dlg := nil; //TformProgress.Create(Self);
+   dlg := TformProgress.Create(Self);
    FSpcDataLoading := True;
    FSuperChecked := False;
    try
@@ -8396,7 +8396,8 @@ begin
       case dmZlogGlobal.Settings.FSuperCheck.FSuperCheckMethod of
          // SPC
          0: begin
-            LoadSpcFile(strFolder, dlg);
+            LoadSpcFile(strFolder, 'ZLOG.SPC', dlg);
+            LoadSpcFile(strFolder, 'MASTER.SCP', dlg);
          end;
 
          // ZLO
@@ -8406,7 +8407,8 @@ begin
 
          // Both
          else begin
-            LoadSpcFile(strFolder, dlg);
+            LoadSpcFile(strFolder, 'ZLOG.SPC', dlg);
+            LoadSpcFile(strFolder, 'MASTER.SCP', dlg);
             LoadLogFiles(strFolder, dlg);
          end;
       end;
@@ -8450,7 +8452,7 @@ begin
    end;
 end;
 
-procedure TMainForm.LoadSpcFile(strStartFoler: string; progress: TForm);
+procedure TMainForm.LoadSpcFile(strStartFoler: string; strFileName: string; progress: TForm);
 var
    F: TextFile;
    filename: string;
@@ -8458,20 +8460,16 @@ var
    i: Integer;
    str: string;
    dtNow: TDateTime;
+   cnt: Integer;
 begin
    // 指定フォルダ優先
-   filename := IncludeTrailingPathDelimiter(strStartFoler) + 'ZLOG.SPC';
+   filename := IncludeTrailingPathDelimiter(strStartFoler) + strFileName;
    if (strStartFoler = '') or (FileExists(filename) = False) then begin
       // 無ければZLOG.EXEを同じ場所（従来通り）
-      filename := ExtractFilePath(Application.EXEName) + 'ZLOG.SPC';
+      filename := ExtractFilePath(Application.EXEName) + strFileName;
       if FileExists(filename) = False then begin
          Exit;
       end;
-   end;
-
-   if Assigned(progress) then begin
-      TformProgress(progress).Text := filename;
-      Application.ProcessMessages();
    end;
 
    dtNow := Now;
@@ -8479,7 +8477,13 @@ begin
    AssignFile(F, filename);
    Reset(F);
 
+   cnt := 0;
    while not(EOF(F)) do begin
+      if Assigned(progress) then begin
+         TformProgress(progress).Text := filename + ' (' + IntToStr(cnt + 1) + ')';
+         Application.ProcessMessages();
+      end;
+
       // 1行読み込み
       ReadLn(F, str);
 
@@ -8489,7 +8493,7 @@ begin
       end;
 
       // 先頭;はコメント行
-      if str[1] = ';' then begin
+      if (str[1] = ';') or (str[1] = '#') then begin
          Continue;
       end;
 
@@ -8505,6 +8509,7 @@ begin
       end;
 
       SetTwoMatrix(dtNow, C, N);
+      Inc(cnt);
    end;
 
    CloseFile(F);
