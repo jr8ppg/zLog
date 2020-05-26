@@ -67,7 +67,7 @@ end;
 
 function TARRL10Multi.ValidMulti(aQSO: TQSO): Boolean;
 var
-   i, j: Integer;
+   j: Integer;
    C: TCountry;
 begin
    Result := false;
@@ -99,7 +99,6 @@ end;
 procedure TARRL10Multi.AddNoUpdate(var aQSO: TQSO);
 var
    B: TBand;
-   i: Integer;
    C: TCountry;
    S: TState;
 begin

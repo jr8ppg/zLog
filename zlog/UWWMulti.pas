@@ -35,6 +35,7 @@ type
       var Bold, Italic, underline: Boolean);
     procedure GridTopLeftChanged(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -404,6 +405,13 @@ begin
    end;
 
    AnalyzeMyCountry;
+end;
+
+procedure TWWMulti.FormDestroy(Sender: TObject);
+begin
+   inherited;
+   CountryList.Free();
+   PrefixList.Free();
 end;
 
 procedure TWWMulti.Button1Click(Sender: TObject);

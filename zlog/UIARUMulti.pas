@@ -293,7 +293,6 @@ end;
 
 procedure TIARUMulti.FormCreate(Sender: TObject);
 var
-   i: Integer;
    aQSO: TQSO;
    P: TPrefix;
 begin
