@@ -4529,6 +4529,11 @@ begin
          else begin { if space is pressed when Callsign edit is in focus }
             Key := #0;
 
+            if CallsignEdit.Text = '' then begin
+               NumberEdit.SetFocus;
+               Exit;
+            end;
+
             Q := Log.QuickDupe(CurrentQSO);
             if Q <> nil then begin
                MessageBeep(0);

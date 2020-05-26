@@ -37,8 +37,8 @@ var
    s: string;
 begin
    cbCountry.Items.Clear;
-   for i := 0 to CL.List.Count - 1 do begin
-      C := TCountry(CL.List[i]);
+   for i := 0 to CL.Count - 1 do begin
+      C := CL[i];
       s := FillRight(C.Country, 10) + C.CountryName;
       cbCountry.Items.Add(s);
    end;

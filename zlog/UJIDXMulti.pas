@@ -26,8 +26,8 @@ uses
 
 procedure TJIDXMulti.FormCreate(Sender: TObject);
 var
-   i : integer;
    aQSO : TQSO;
+   P: TPrefix;
 begin
    {inherited; }
    CountryList := TCountryList.Create;
@@ -36,12 +36,9 @@ begin
    if FileExists('CTY.DAT') then begin
       LoadCTY_DAT(testDXCCWWZone, CountryList, PrefixList);
       MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-   end
-   else begin
-      LoadCountryDataFromFile('DXCC.DAT', CountryList, PrefixList);
    end;
 
-   if CountryList.List.Count = 0 then begin
+   if CountryList.Count = 0 then begin
       exit;
    end;
 
@@ -52,11 +49,11 @@ begin
    if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your callsign') then begin
       aQSO := TQSO.Create;
       aQSO.callsign := UpperCase(dmZlogGlobal.Settings._mycall);
-      i := GetCountryIndex(aQSO);
-      if i > 0 then begin
-         MyCountry := TCountry(CountryList.List[i]).Country;
-         MyContinent := TCountry(CountryList.List[i]).Continent;
-      end;
+
+      P := GetPrefix(aQSO);
+      MyCountry := P.Country.Country;
+      MyContinent := P.Country.Continent;
+
       aQSO.Free;
    end;
 end;
@@ -88,16 +85,13 @@ begin
       end;
    end;
 
-   i := GetCountryIndex(aQSO);
-
-   C := TCountry(CountryList.List[i]);
-   MostRecentCty := C;
-
-   aQSO.Multi2 := C.Country;
-
-   if i = 0 then begin // unknown cty. e.g. MM
+   C := GetPrefix(aQSO).Country;
+   if C.Country = '' then begin // unknown cty. e.g. MM
       exit;
    end;
+
+   MostRecentCty := C;
+   aQSO.Multi2 := C.Country;
 
    if C.Worked[B] = False then begin
       C.Worked[B] := True;

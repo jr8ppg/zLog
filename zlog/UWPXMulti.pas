@@ -165,8 +165,8 @@ end;
 
 procedure TWPXMulti.FormCreate(Sender: TObject);
 var
-   i: Integer;
    aQSO: TQSO;
+   C: TCountry;
 begin
    { inherited; }
    WPXList := TStringList.Create;
@@ -178,13 +178,11 @@ begin
    if FileExists('CTY.DAT') then begin
       LoadCTY_DAT(testCQWW, CountryList, PrefixList);
       MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-   end
-   else begin
-      LoadCountryDataFromFile('CQWW.DAT', CountryList, PrefixList);
    end;
 
-   if CountryList.List.Count = 0 then
-      exit;
+   if CountryList.Count = 0 then begin
+      Exit;
+   end;
 
    Reset;
    MyContinent := 'AS';
@@ -193,11 +191,9 @@ begin
    if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your call sign') then begin
       aQSO := TQSO.Create;
       aQSO.CallSign := UpperCase(dmZlogGlobal.Settings._mycall);
-      i := GetCountryIndex(aQSO);
-      if i > 0 then begin
-         MyCountry := TCountry(CountryList.List[i]).Country;
-         MyContinent := TCountry(CountryList.List[i]).Continent;
-      end;
+      C := GetPrefix(aQSO).Country;
+      MyCountry := C.Country;
+      MyContinent := C.Continent;
       aQSO.Free;
    end;
 
@@ -250,7 +246,7 @@ begin
       aQSO.Points := 0;
       exit;
    end;
-   C := TCountry(CountryList.List[P.Index]);
+   C := P.Country;
 
    if P.OvrContinent = '' then
       _cont := C.Continent

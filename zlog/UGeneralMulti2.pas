@@ -118,9 +118,9 @@ begin
    end;
 
    if _DXTEST then begin
-      if CountryList.List.Count > 0 then begin
+      if CountryList.Count > 0 then begin
          if NoCTYMulti <> '*' then begin
-            Grid.RowCount := CityList.List.Count + CountryList.List.Count;
+            Grid.RowCount := CityList.List.Count + CountryList.Count;
          end;
       end;
    end;
@@ -139,7 +139,7 @@ begin
    end;
 
    if _DXTEST and (NoCTYMulti <> '*') then begin
-      for j := 0 to CountryList.List.Count - 1 do begin
+      for j := 0 to CountryList.Count - 1 do begin
          Grid.Cells[0, i + j] := TCountry(CountryList.List[j]).SummaryGeneral;
       end;
    end;
@@ -254,49 +254,46 @@ begin
    aQSO.Power2 := 2; // not local CTY
 
    if _DXTEST then begin
-      i := GetCountryIndex(aQSO);
-      if i > 0 then begin
-         Cty := TCountry(CountryList.List[i]);
+      Cty := GetPrefix(aQSO).Country;
 
-         aQSO.Power2 := i;
+      aQSO.Power2 := Cty.Index;
 
-         if NoCtyMulti = '*' then
-            goto aaa;
+      if NoCtyMulti = '*' then
+         goto aaa;
 
-         if pos(',' + Cty.Country + ',', ',' + NoCTYMulti + ',') > 0 then
-            goto aaa;
+      if pos(',' + Cty.Country + ',', ',' + NoCTYMulti + ',') > 0 then
+         goto aaa;
 
 
-         aQSO.Multi1 := Cty.Country;
+      aQSO.Multi1 := Cty.Country;
 
-         if aQSO.Dupe then
-            exit;
+      if aQSO.Dupe then
+         exit;
 
-         LatestMultiAddition := CityList.List.Count + i;
+      LatestMultiAddition := CityList.List.Count + Cty.Index;
 
-         if CountOnce then begin // multi once regardless of band
-            boo := false;
-            for B := b19 to HiBand do begin
-                if Cty.Worked[B] then begin
-                    boo := true;
-                    break;
-                end;
-            end;
-
-            if boo = false then begin
-               aQSO.NewMulti1 := True;
-               Cty.Worked[aQSO.Band] := True;
-            end;
-         end
-         else begin // new multi each band
-            if Cty.Worked[aQSO.Band] = False then begin
-               aQSO.NewMulti1 := True;
-               Cty.Worked[aQSO.Band] := True;
-            end;
+      if CountOnce then begin // multi once regardless of band
+         boo := false;
+         for B := b19 to HiBand do begin
+             if Cty.Worked[B] then begin
+                 boo := true;
+                 break;
+             end;
          end;
 
-         exit;
+         if boo = false then begin
+            aQSO.NewMulti1 := True;
+            Cty.Worked[aQSO.Band] := True;
+         end;
+      end
+      else begin // new multi each band
+         if Cty.Worked[aQSO.Band] = False then begin
+            aQSO.NewMulti1 := True;
+            Cty.Worked[aQSO.Band] := True;
+         end;
       end;
+
+      exit;
    end;
 
 aaa:
@@ -346,7 +343,7 @@ begin
    if _DXTEST then begin
       if LocalCTY <> '' then begin
          i := aQSO.Power2;
-         if i < CountryList.List.Count then
+         if i < CountryList.Count then
             if pos(',' + TCountry(CountryList.List[i]).Country + ',', ',' + LocalCTY + ',') > 0 then begin
                Result := True;
                exit;
@@ -355,7 +352,7 @@ begin
 
       if LocalCONT <> '' then begin
          i := aQSO.Power2;
-         if i < CountryList.List.Count then
+         if i < CountryList.Count then
             if pos(',' + TCountry(CountryList.List[i]).Continent + ',', ',' + LocalCONT + ',') > 0 then begin
                Result := True;
                exit;
@@ -384,26 +381,7 @@ begin
 end;
 
 procedure TGeneralMulti2.LoadCTY(CTYTYPE : string);
-var
-   str : string;
 begin
-   if (CTYTYPE <> 'CQ') and (CTYTYPE <> 'IARU') and (CTYTYPE <> 'DXCC') then begin
-      if pos('.DAT', CTYTYPE) = 0 then begin
-         str := CTYTYPE+'.DAT';
-      end;
-
-      if FileExists(str) then begin
-         CountryList := TCountryList.Create;
-         PrefixList := TPrefixList.Create;
-         _DXTEST := True;
-         LoadCountryDataFromFile(str, CountryList, PrefixList);
-      end
-      else
-         MainForm.WriteStatusLine(str+ ' not found', true);
-
-      exit;
-   end;
-
    CountryList := TCountryList.Create;
    PrefixList := TPrefixList.Create;
    _DXTEST := True;
@@ -413,9 +391,7 @@ begin
          MainForm.WriteStatusLine('Loading CTY.DAT...', true);
          LoadCTY_DAT(testCQWW, CountryList, PrefixList);
          MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-      end
-      else
-         LoadCountryDataFromFile('CQWW.DAT', CountryList, PrefixList);
+      end;
    end;
 
    if CTYTYPE = 'DXCC' then begin
@@ -423,9 +399,7 @@ begin
          MainForm.WriteStatusLine('Loading CTY.DAT...', true);
          LoadCTY_DAT(testDXCCWWZone, CountryList, PrefixList);
          MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-      end
-      else
-         LoadCountryDataFromFile('DXCC.DAT', CountryList, PrefixList);
+      end;
     end;
 
    if CTYTYPE = 'IARU' then begin
@@ -433,9 +407,7 @@ begin
          MainForm.WriteStatusLine('Loading CTY.DAT...', true);
          LoadCTY_DAT(testIARU, CountryList, PrefixList);
          MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-      end
-      else
-         LoadCountryDataFromFile('IARU.DAT', CountryList, PrefixList);
+      end;
    end;
 
    AnalyzeMyCountry;

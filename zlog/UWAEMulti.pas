@@ -32,15 +32,12 @@ end;
 procedure TWAEMulti.AddNoUpdate(var aQSO: TQSO);
 var
    B: TBand;
-   i: integer;
    C: TCountry;
 begin
    aQSO.NewMulti1 := False;
    aQSO.NewMulti2 := False;
 
-   i := GetCountryIndex(aQSO);
-
-   C := TCountry(CountryList.List[i]);
+   C := GetPrefix(aqSO).Country;
    if C.Continent <> 'EU' then begin
       aQSO.Points := 0;
       aQSO.Multi1 := 'Non-EU';
@@ -66,7 +63,7 @@ var
    B: TBand;
    C: TCountry;
 begin
-   C := TCountry(CountryList.List[GetCountryIndex(aQSO)]);
+   C := GetPrefix(aQSO).Country;
    if C.CountryName = 'Unknown' then begin
       Result := 'Unknown CTY';
       exit;

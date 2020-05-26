@@ -327,18 +327,16 @@ begin
    if FileExists('CTY.DAT') then begin
       LoadCTY_DAT(testDXCCWWZone, CountryList, PrefixList);
       MainForm.WriteStatusLine('Loaded CTY.DAT', True);
-   end
-   else begin
-      LoadCountryDataFromFile('DXCC.DAT', CountryList, PrefixList);
    end;
 
-   if CountryList.List.Count = 0 then
-      exit;
+   if CountryList.Count = 0 then begin
+      Exit;
+   end;
 
    Q := TQSO.Create;
    Q.Callsign := UpperCase(dmZLogGlobal.MyCall);
    P := GetPrefixX(Q, PrefixList);
-   MyDXCC := TCountry(CountryList.List[P.Index]).Country;
+   MyDXCC := P.Country.Country;
    Q.Free;
 
    MyIOTA := '';
