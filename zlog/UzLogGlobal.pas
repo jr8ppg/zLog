@@ -289,6 +289,9 @@ function GetBandIndex(Hz: Integer; default: Integer = -1): Integer; // Returns -
 function PartialMatch(A, B: string): Boolean;
 function PartialMatch2(strCompare, strTarget: string): Boolean;
 
+function ZBoolToStr(fValue: Boolean): string;
+function ZStrToBool(strValue: string): Boolean;
+
 var
   dmZLogGlobal: TdmZLogGlobal;
 
@@ -2311,6 +2314,26 @@ begin
    end
    else begin
       Result := False;
+   end;
+end;
+
+function ZBoolToStr(fValue: Boolean): string;
+begin
+   if fValue = True then begin
+      Result := '1';
+   end
+   else begin
+      Result := '0';
+   end;
+end;
+
+function ZStrToBool(strValue: string): Boolean;
+begin
+   if strValue = '0' then begin
+      Result := False;
+   end
+   else begin
+      Result := True;
    end;
 end;
 
