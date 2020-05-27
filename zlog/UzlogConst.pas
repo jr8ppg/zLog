@@ -23,7 +23,7 @@ const
   SER_MS = 3;    // separate serial for run/multi stns
 
 const
-  RIGNAMES : array[0..14] of string =
+  RIGNAMES : array[0..15] of string =
 ('None',
  'TS-690/450',
  'TS-850',
@@ -33,6 +33,7 @@ const
  'FT-817',
  'FT-847',
  'FT-920',
+ 'FT-991',
  'FT-100',
  'FT-1000',
  'FT-1000MP',
