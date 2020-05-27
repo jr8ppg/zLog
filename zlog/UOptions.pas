@@ -422,12 +422,26 @@ begin
 
       // RIG1
       Settings._rigport[1] := comboRig1Port.ItemIndex;
-      Settings._rigname[1] := comboRig1Name.ItemIndex;
+
+      if comboRig1Name.ItemIndex <= 0 then begin
+         Settings._rigname[1] := '';
+      end
+      else begin
+         Settings._rigname[1] := comboRig1Name.Text;
+      end;
+
       Settings._rigspeed[1] := comboRig1Speed.ItemIndex;
 
       // RIG2
       Settings._rigport[2] := comboRig2Port.ItemIndex;
-      Settings._rigname[2] := comboRig2Name.ItemIndex;
+
+      if comboRig2Name.ItemIndex <= 0 then begin
+         Settings._rigname[2] := '';
+      end
+      else begin
+         Settings._rigname[2] := comboRig2Name.Text;
+      end;
+
       Settings._rigspeed[2] := comboRig2Speed.ItemIndex;
 
       Settings._use_transceive_mode := checkUseTransceiveMode.Checked;
@@ -640,12 +654,24 @@ begin
 
       // RIG1
       comboRig1Port.ItemIndex := Settings._rigport[1];
-      comboRig1Name.ItemIndex := Settings._rigname[1];
+
+      i := comboRig1Name.Items.IndexOf(Settings._rigname[1]);
+      if i = -1 then begin
+         i := 0;
+      end;
+      comboRig1Name.ItemIndex := i;
+
       comboRig1Speed.ItemIndex := Settings._rigspeed[1];
 
       // RIG2
       comboRig2Port.ItemIndex := Settings._rigport[2];
-      comboRig2Name.ItemIndex := Settings._rigname[2];
+
+      i := comboRig2Name.Items.IndexOf(Settings._rigname[2]);
+      if i = -1 then begin
+         i := 0;
+      end;
+      comboRig2Name.ItemIndex := i;
+
       comboRig2Speed.ItemIndex := Settings._rigspeed[2];
 
       checkUseTransceiveMode.Checked := Settings._use_transceive_mode;

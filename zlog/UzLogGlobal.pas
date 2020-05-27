@@ -71,7 +71,7 @@ type
 
     _rigport:  array[1..2] of Integer; {0 : none 1-4 : com#}
     _rigspeed: array[1..2] of Integer;
-    _rigname:  array[1..2] of Integer;
+    _rigname:  array[1..2] of string;
 
     _use_transceive_mode: Boolean;
     _polling_interval: Integer;
@@ -624,14 +624,14 @@ begin
 
       // RIG1
       Settings._rigport[1] := ini.ReadInteger('Hardware', 'Rig', 0);
-      Settings._rigname[1] := ini.ReadInteger('Hardware', 'RigName', 0);
+      Settings._rigname[1] := ini.ReadString('Hardware', 'RigName', '');
       Settings._rigspeed[1] := ini.ReadInteger('Hardware', 'RigSpeed', 0);
       Settings._transverter1 := ini.ReadBool('Hardware', 'Transverter1', False);
       Settings._transverteroffset1 := ini.ReadInteger('Hardware', 'Transverter1Offset', 0);
 
       // RIG2
       Settings._rigport[2] := ini.ReadInteger('Hardware', 'Rig2', 0);
-      Settings._rigname[2] := ini.ReadInteger('Hardware', 'RigName2', 0);
+      Settings._rigname[2] := ini.ReadString('Hardware', 'RigName2', '');
       Settings._rigspeed[2] := ini.ReadInteger('Hardware', 'RigSpeed2', 0);
       Settings._transverter2 := ini.ReadBool('Hardware', 'Transverter2', False);
       Settings._transverteroffset2 := ini.ReadInteger('Hardware', 'Transverter2Offset', 0);
@@ -983,14 +983,14 @@ begin
 
       // RIG1
       ini.WriteInteger('Hardware', 'Rig', Settings._rigport[1]);
-      ini.WriteInteger('Hardware', 'RigName', Settings._rigname[1]);
+      ini.WriteString('Hardware', 'RigName', Settings._rigname[1]);
       ini.WriteInteger('Hardware', 'RigSpeed', Settings._rigspeed[1]);
       ini.WriteBool('Hardware', 'Transverter1', Settings._transverter1);
       ini.WriteInteger('Hardware', 'Transverter1Offset', Settings._transverteroffset1);
 
       // RIG2
       ini.WriteInteger('Hardware', 'Rig2', Settings._rigport[2]);
-      ini.WriteInteger('Hardware', 'RigName2', Settings._rigname[2]);
+      ini.WriteString('Hardware', 'RigName2', Settings._rigname[2]);
       ini.WriteInteger('Hardware', 'RigSpeed2', Settings._rigspeed[2]);
       ini.WriteBool('Hardware', 'Transverter2', Settings._transverter2);
       ini.WriteInteger('Hardware', 'Transverter2Offset', Settings._transverteroffset2);
@@ -1406,11 +1406,19 @@ end;
 function TdmZLogGlobal.GetRigNameStr(Index: Integer): string; // returns the selected rig name
 var
    sl: TStringList;
+   i: Integer;
 begin
    sl := TStringList.Create();
    try
       dmZlogGlobal.MakeRigList(sl);
-      Result := sl[Settings._rigname[Index]];
+
+      i := sl.IndexOf(Settings._rigname[Index]);
+      if i = -1 then begin
+         Result := sl[0];
+      end
+      else begin
+         Result := sl[i];
+      end;
    finally
       sl.Free();
    end;
@@ -1476,7 +1484,7 @@ begin
 
    if Settings._rigport[1] <> 0 then begin
       if Settings._zlinkport <> 0 then begin
-         if Settings._rigname[1] <> 0 then begin
+         if Settings._rigname[1] <> '' then begin
             MainForm.RigControl.Timer1.Enabled := True;
          end;
       end;
