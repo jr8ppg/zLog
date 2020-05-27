@@ -2245,7 +2245,7 @@ end;
 
 constructor TJIDXContest.Create(N: string);
 begin
-   inherited;
+//   inherited;   <-TCQWWContest‚©‚ç‚ÌŒp³‚È‚Ì‚Åinherited•s‰Â
    MultiForm := TJIDXMulti.Create(MainForm);
    ScoreForm := TJIDXScore2.Create(MainForm);
    ZoneForm := TWWZone.Create(MainForm);
