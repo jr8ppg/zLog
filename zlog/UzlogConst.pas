@@ -87,180 +87,210 @@ const
   pwrH = TPower(3);
 
 const
-  default_primary_shortcut: array[0..84] of string = (
-    'Ctrl+F1',
+  default_primary_shortcut: array[0..99] of string = (
+    'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
     'Ctrl+F4',
     'Ctrl+F5',
-    'Ctrl+F6',
+    'Ctrl+F6',          // #05
     'Ctrl+F7',
     'Ctrl+F8',
     'Ctrl+F10',
     'Ctrl+F12',
-    'F1',
+    'F1',               // #10
     'F2',
     'F3',
     'F4',
     'F5',
-    'F6',
+    'F6',               // #15
     'F7',
     'F8',
     'F9',
     'F10',
-    'F11',
+    'F11',              // #20
     'F12',
     'Shift+F1',
     'Shift+F2',
     'Shift+F3',
-    'Shift+F4',
+    'Shift+F4',         // #25
     'Shift+F5',
     'Shift+F6',
     'Shift+F7',
     'Shift+F8',
-    'Shift+F11',
+    'Shift+F11',        // #30
     'Shift+F12',
     'Ctrl+Enter',
     'Ctrl+N',
     'Shift+Ctrl+N',
-    'Ctrl+S',
+    'Ctrl+S',           // #35
     'Shift+Ctrl+S',
     'PgUp',
     'PgDn',
     'Ctrl+A',
-    'Ctrl+B',
+    'Ctrl+B',           // #40
     'Ctrl+D',
     'Ctrl+E',
     'Ctrl+F',
     'Ctrl+G',
-    'Ctrl+H',
+    'Ctrl+H',           // #45
     'Ctrl+I',
     'Ctrl+J',
     'Ctrl+K',
     'Ctrl+L',
-    'Ctrl+O',
+    'Ctrl+O',           // #50
     'Ctrl+P',
     'Ctrl+Q',
     'Ctrl+R',
     'Ctrl+T',
-    'Ctrl+U',
+    'Ctrl+U',           // #55
     'Ctrl+W',
     'Ctrl+Z',
     'Alt+B',
     'Alt+C',
-    'Alt+K',
+    'Alt+K',            // #60
     'Alt+M',
     'Alt+N',
     'Alt+O',
     'Alt+P',
-    'Alt+Q',
+    'Alt+Q',            // #65
     'Alt+R',
     'Alt+S',
     'Alt+T',
     'Alt+W',
-    'Alt+Z',
+    'Alt+Z',            // #70
     'Alt+.',
     '',
     '',
     '',
+    '',                 // #75
     '',
     '',
     '',
     '',
-    '',
-    '',
+    '',                 // #80
     '',
     'Tab',
     'Down',
-    'Ctrl+M'
+    'Ctrl+M',
+    '',                 // #85
+    '',
+    '',
+    'Shift+Ctrl+I',
+    'Shift+M',
+    'Shift+B',          // #90
+    'Shift+P',
+    'Shift+F',
+    'Shift+R',
+    'Shift+S',
+    'Shift+T',          // #95
+    'Shift+U',
+    'Shift+Y',
+    'Shift+Z',
+    ''                  // #99
   );
 
-  default_secondary_shortcut: array[0..84] of string = (
+  default_secondary_shortcut: array[0..99] of string = (
+    '',                 // #00
     '',
     '',
     '',
     '',
+    '',                 // #05
     '',
     '',
     '',
     '',
-    'Alt+E',
+    '',                 // #10
     '',
     '',
     '',
     '',
+    '',                 // #15
     '',
     '',
     '',
     '',
+    '',                 // #20
     '',
     '',
     '',
     '',
+    '',                 // #25
     '',
     '',
     '',
     '',
+    '',                 // #30
     '',
     '',
     '',
     '',
+    '',                 // #35
     '',
     '',
     '',
     '',
+    '',                 // #40
     '',
     '',
     '',
     '',
+    '',                 // #45
     '',
     '',
     '',
     '',
+    '',                 // #50
     '',
     '',
     '',
     '',
+    '',                 // #55
     '',
     '',
     '',
     '',
+    '',                 // #60
     '',
     '',
     '',
     '',
+    '',                 // #65
     '',
     '',
     '',
     '',
+    '',                 // #70
     '',
     '',
     '',
     '',
+    '',                 // #75
     '',
     '',
     '',
     '',
+    '',                 // #80
     '',
     '',
+    ';',
     '',
+    '@',                // #85
+    '\',
     '',
     '',
     '',
+    '',                 // #90
     '',
     '',
     '',
     '',
+    '',                 // #95
     '',
     '',
     '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    ''
+    ''                  // #99
   );
 
 implementation
