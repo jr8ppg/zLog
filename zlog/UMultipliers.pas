@@ -7,13 +7,8 @@ uses
   Generics.Collections, Generics.Defaults,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
-const testCQWW = $03;
-      MAXCQZONE = 40;
-      testIARU = $09;
-      testDXCCWWZone = $05;
-      MaxIndex = 37*37+36;
-var
-      _DATFileName : string = '';
+const
+  MAXCQZONE = 40;
 
 type
   TCountry = class(TObject)
@@ -130,8 +125,7 @@ var
   PrefixList : TPrefixList;
   MyCountry, MyContinent, MyZone: string;
 
-procedure LoadCTY_DAT(TEST : byte; var L : TCountryList; var PL : TPrefixList);
-function GetPrefixX(aQSO : TQSO; PL : TPrefixList): TPrefix;
+function LoadCTY_DAT(): Boolean;
 function GetPrefix(aQSO : TQSO) : TPrefix;
 function GetArea(str : string) : integer;
 function GuessCQZone(aQSO : TQSO) : string;
@@ -471,6 +465,7 @@ var
    strOvrCQZone: string;
    strOvrITUZone: string;
    strOvrContinent: string;
+   strUnused: string;
    fFullMatch: Boolean;
 
    function ExtractNumber(var strPrefix: string; strBegin, strEnd: string): string;
@@ -483,7 +478,7 @@ var
          Exit;
       end;
 
-      p2 := Pos(strEnd, strPrefix);
+      p2 := Pos(strEnd, strPrefix, p1 + 1);
       if p2 <= 0 then begin
          p2 := Length(strPrefix);
       end;
@@ -518,6 +513,12 @@ begin
          // {}はOverride Continent
          strOvrContinent := ExtractNumber(strPrefix, '{', '}');
 
+         // <#/#>はOverride latitude/longitude
+         strUnused := ExtractNumber(strPrefix, '<', '>');
+
+         // ~#~はOverride UTCOffset
+         strUnused := ExtractNumber(strPrefix, '~', '~');
+
          P := TPrefix.Create();
          P.Prefix := strPrefix;
          P.Country := cty;
@@ -545,28 +546,39 @@ begin
    Result := CompareText(Right.Prefix, Left.Prefix);
 end;
 
-procedure LoadCTY_DAT(TEST: byte; var L: TCountryList; var PL: TPrefixList);
+function LoadCTY_DAT(): Boolean;
 var
    i: Integer;
    P: TPrefix;
+   strFileName: string;
 begin
-   _DATFileName := 'CTY.DAT';
-
-   L.LoadFromFile(_DATFileName);
-
-   for i := 0 to L.Count - 1 do begin
-      PL.Parse(L[i]);
+   strFileName := ExtractFilePath(Application.ExeName) + 'CTY.DAT';
+   if FileExists(strFileName) = False then begin
+      Result := False;
+      Exit;
    end;
 
-   PL.Sort();
+   // カントリーリストをロード
+   CountryList.LoadFromFile(strFileName);
 
+   // 各カントリーのprefixを展開
+   for i := 0 to CountryList.Count - 1 do begin
+      PrefixList.Parse(CountryList[i]);
+   end;
+
+   // 並び替え（降順）
+   PrefixList.Sort();
+
+   // 先頭にUnknown Countryのダミーレコード追加
    P := TPrefix.Create();
    P.Prefix := 'Unknown';
-   P.Country := L[0];
-   PL.Insert(0, P);
+   P.Country := CountryList[0];
+   PrefixList.Insert(0, P);
+
+   Result := True;
 end;
 
-function GetPrefixX(aQSO: TQSO; PL: TPrefixList): TPrefix;
+function GetPrefix(aQSO: TQSO): TPrefix;
 var
    str: string;
    i: integer;
@@ -576,13 +588,13 @@ var
 begin
    str := aQSO.CallSign;
    if str = '' then begin
-      Result := PL[0];
+      Result := PrefixList[0];
       Exit;
    end;
 
    // 最初はコール一致確認
-   for i := 0 to PL.Count - 1 do begin
-      P := PL[i];
+   for i := 0 to PrefixList.Count - 1 do begin
+      P := PrefixList[i];
 
       if (P.FullMatch = True) and (P.Prefix = str) then begin
          Result := P;
@@ -602,7 +614,7 @@ begin
 
    // Marine Mobile
    if strCallRight = 'MM' then begin
-      Result := PL[0];
+      Result := PrefixList[0];
       Exit;
    end
 
@@ -622,8 +634,8 @@ begin
    // 判別できない
    else if i = 5 then begin
       // まずは左側から前方一致で
-      for i := 1 to PL.Count - 1 do begin
-         P := PL[i];
+      for i := 1 to PrefixList.Count - 1 do begin
+         P := PrefixList[i];
 
          if P.FullMatch = False then begin
             if Copy(strCallFirst, 1, Length(P.Prefix)) = P.Prefix then begin
@@ -638,8 +650,8 @@ begin
    end;
 
    // 続いて前方一致で
-   for i := 1 to PL.Count - 1 do begin
-      P := PL[i];
+   for i := 1 to PrefixList.Count - 1 do begin
+      P := PrefixList[i];
 
       if P.FullMatch = False then begin
          if Copy(strCallFirst, 1, Length(P.Prefix)) = P.Prefix then begin
@@ -649,12 +661,7 @@ begin
       end;
    end;
 
-   Result := PL[0];
-end;
-
-function GetPrefix(aQSO: TQSO): TPrefix;
-begin
-   Result := GetPrefixX(aQSO, PrefixList);
+   Result := PrefixList[0];
 end;
 
 function GetArea(str: string): integer;
@@ -710,7 +717,7 @@ var
    p: TPrefix;
    str: string;
 begin
-   p := GetPrefixX(aQSO, PrefixList);
+   p := GetPrefix(aQSO);
    if p = nil then begin
       Result := '';
       exit;
@@ -826,7 +833,7 @@ begin
       aQSO := TQSO.Create;
       aQSO.CallSign := UpperCase(dmZlogGlobal.Settings._mycall);
 
-      P := GetPrefixX(aQSO, PrefixList);
+      P := GetPrefix(aQSO);
       if P <> nil then begin
          MyCountry := P.Country.Country;
 

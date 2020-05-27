@@ -386,29 +386,11 @@ begin
    PrefixList := TPrefixList.Create;
    _DXTEST := True;
 
-   if CTYTYPE = 'CQ' then begin
-      if FileExists('CTY.DAT') then begin
-         MainForm.WriteStatusLine('Loading CTY.DAT...', true);
-         LoadCTY_DAT(testCQWW, CountryList, PrefixList);
-         MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-      end;
+   if LoadCTY_DAT() = False then begin
+      Exit;
    end;
 
-   if CTYTYPE = 'DXCC' then begin
-      if FileExists('CTY.DAT') then begin
-         MainForm.WriteStatusLine('Loading CTY.DAT...', true);
-         LoadCTY_DAT(testDXCCWWZone, CountryList, PrefixList);
-         MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-      end;
-    end;
-
-   if CTYTYPE = 'IARU' then begin
-      if FileExists('CTY.DAT') then begin
-         MainForm.WriteStatusLine('Loading CTY.DAT...', true);
-         LoadCTY_DAT(testIARU, CountryList, PrefixList);
-         MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-      end;
-   end;
+   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
 
    AnalyzeMyCountry;
 end;

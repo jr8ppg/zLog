@@ -324,10 +324,11 @@ begin
    CountryList := TCountryList.Create;
    PrefixList := TPrefixList.Create;
 
-   if FileExists('CTY.DAT') then begin
-      LoadCTY_DAT(testDXCCWWZone, CountryList, PrefixList);
-      MainForm.WriteStatusLine('Loaded CTY.DAT', True);
+   if LoadCTY_DAT() = False then begin
+      Exit;
    end;
+
+   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
 
    if CountryList.Count = 0 then begin
       Exit;
@@ -335,7 +336,7 @@ begin
 
    Q := TQSO.Create;
    Q.Callsign := UpperCase(dmZLogGlobal.MyCall);
-   P := GetPrefixX(Q, PrefixList);
+   P := GetPrefix(Q);
    MyDXCC := P.Country.Country;
    Q.Free;
 

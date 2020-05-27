@@ -33,13 +33,14 @@ begin
    CountryList := TCountryList.Create;
    PrefixList := TPrefixList.Create;
 
-   if FileExists('CTY.DAT') then begin
-      LoadCTY_DAT(testDXCCWWZone, CountryList, PrefixList);
-      MainForm.WriteStatusLine('Loaded CTY.DAT', true);
+   if LoadCTY_DAT() = False then begin
+      Exit;
    end;
 
+   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
+
    if CountryList.Count = 0 then begin
-      exit;
+      Exit;
    end;
 
    Reset;

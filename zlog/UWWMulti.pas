@@ -51,7 +51,7 @@ type
     //MyCountry : string;
     //MyZone : string;
     //MyContinent : string;
-    procedure AddNewPrefixToFile(NewPX : string; CtyIndex : integer);
+//    procedure AddNewPrefixToFile(NewPX : string; CtyIndex : integer);
     procedure AddNewPrefix(PX : string; CtyIndex : integer); override;
     procedure SelectAndAddNewPrefix(Call : string); override;
     //function GetCountryIndex(aQSO : TQSO) : integer;
@@ -69,8 +69,6 @@ type
     procedure SortDefault; virtual;
     procedure ShowContinent(CT: string);
     procedure CheckMulti(aQSO : TQSO); override;
-    //function GetArea(str : string) : integer;
-    //procedure RenewCluster; override;
     procedure RefreshGrid; virtual;
     procedure RefreshZone;
     procedure ProcessSpotData(var S : TBaseSpot); override;
@@ -84,6 +82,7 @@ uses
 
 {$R *.DFM}
 
+{
 procedure TWWMulti.AddNewPrefixToFile(NewPX : string; CtyIndex : integer);
 var
    L : TStringList;
@@ -148,6 +147,7 @@ begin
       L.Free;
    end;
 end;
+}
 
 procedure TWWMulti.AddNewPrefix(PX : string; CtyIndex : integer);
 var
@@ -168,10 +168,6 @@ var
 begin
    F := TNewPrefix.Create(Self);
    try
-      if _DATFileName = '' then begin
-         exit;
-      end;
-
       F.Init(CountryList, Call);
       if F.ShowModal() <> mrOK then begin
          Exit;
@@ -393,12 +389,12 @@ begin
    MainForm.mnGridAddNewPX.Visible := True;
    CountryList := TCountryList.Create;
    PrefixList := TPrefixList.Create;
-   {CountryList.LoadFromFile('CQWW.DAT');}
 
-   if FileExists('CTY.DAT') then begin
-      LoadCTY_DAT(testCQWW, CountryList, PrefixList);
-      MainForm.WriteStatusLine('Loaded CTY.DAT', true);
+   if LoadCTY_DAT() = False then begin
+      Exit;
    end;
+
+   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
 
    if CountryList.Count = 0 then begin
       Exit;

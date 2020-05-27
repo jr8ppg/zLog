@@ -33,7 +33,7 @@ function TARRLWMulti.GetInfoAA(aQSO: TQSO): string;
 var
    P: TPrefix;
 begin
-   P := GetPrefixX(aQSO, PrefixList);
+   P := GetPrefix(aQSO);
    P.Country.JustInfo;
 end;
 
@@ -58,7 +58,7 @@ begin
    aQSO.NewMulti1 := False;
    aQSO.NewMulti2 := False;
 
-   P := GetPrefixX(aQSO, PrefixList);
+   P := GetPrefix(aQSO);
    C := P.Country;
    aQSO.Multi1 := C.Country;
 
@@ -116,10 +116,11 @@ begin
    CountryList := TCountryList.Create;
    PrefixList := TPrefixList.Create;
 
-   if FileExists('CTY.DAT') then begin
-      LoadCTY_DAT(testIARU, CountryList, PrefixList);
-      MainForm.WriteStatusLine('Loaded CTY.DAT', True);
+   if LoadCTY_DAT() = False then begin
+      Exit;
    end;
+
+   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
 
    if CountryList.Count = 0 then begin
       Exit;

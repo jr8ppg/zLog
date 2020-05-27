@@ -19,6 +19,7 @@ type
   TIARUZoneList = class
     List : TList;
     constructor Create;
+    destructor Destroy(); override;
     procedure Add(M : TIARUZone);
   end;
 
@@ -29,6 +30,7 @@ type
     procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
       var Bold, Italic, underline: Boolean);
     procedure GridTopLeftChanged(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     ZoneList : TIARUZoneList;
     { Private declarations }
@@ -44,10 +46,6 @@ type
     procedure CheckMulti(aQSO : TQSO); override;
     { Public declarations }
   end;
-
-
-var
-  IARUMulti: TIARUMulti;
 
 implementation
 
@@ -120,6 +118,16 @@ begin
    M := TIARUZone.Create;
    M.Multi := 'R3';
    List.Add(M);
+end;
+
+destructor TIARUZoneList.Destroy();
+var
+   i: Integer;
+begin
+   for i := 0 to List.Count - 1 do begin
+      TIARUZone(List[i]).Free();
+   end;
+   List.Free();
 end;
 
 procedure TIARUZoneList.Add(M: TIARUZone);
@@ -300,9 +308,14 @@ begin
    CountryList := TCountryList.Create;
    PrefixList := TPrefixList.Create;
 
-   if FileExists('CTY.DAT') then begin
-      LoadCTY_DAT(testIARU, CountryList, PrefixList);
-      MainForm.WriteStatusLine('Loaded CTY.DAT', true);
+   if LoadCTY_DAT() = False then begin
+      Exit;
+   end;
+
+   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
+
+   if CountryList.Count = 0 then begin
+      Exit;
    end;
 
    ZoneList := TIARUZoneList.Create;
@@ -336,6 +349,12 @@ begin
       end;
       aQSO.Free;
    end;
+end;
+
+procedure TIARUMulti.FormDestroy(Sender: TObject);
+begin
+   inherited;
+   ZoneList.Free();
 end;
 
 function TIARUMulti.GetInfo(aQSO: TQSO): string;
