@@ -8636,6 +8636,9 @@ begin
    // Max super check search デフォルトは1
    maxhit := dmZlogGlobal.Settings._maxsuperhit;
 
+   // ポータブル除く
+   PartialStr := CoreCall(PartialStr);
+
    // 検索対象無し
    if PartialStr = '' then begin
       Exit;
@@ -8703,10 +8706,17 @@ begin
    TerminateNPlusOne();
    FSuperCheck2.Clear();
 
+   // ポータブル除く
+   PartialStr := CoreCall(PartialStr);
+
    // 検索対象無し
    if PartialStr = '' then begin
       Exit;
    end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('N+1 Call=[' + PartialStr + ']'));
+   {$ENDIF}
 
    // N+1の実行
    if (Length(PartialStr) >= 3) then begin
