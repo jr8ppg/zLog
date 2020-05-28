@@ -1917,6 +1917,7 @@ object formOptions: TformOptions
           Checked = True
           TabOrder = 0
           TabStop = True
+          OnClick = OnNeedSuperCheckLoad
         end
         object radioSuperCheck1: TRadioButton
           Left = 64
@@ -1925,6 +1926,7 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'ZLO'
           TabOrder = 1
+          OnClick = OnNeedSuperCheckLoad
         end
         object editSuperCheckFolder: TEdit
           Left = 12
@@ -1932,6 +1934,7 @@ object formOptions: TformOptions
           Width = 273
           Height = 21
           TabOrder = 3
+          OnChange = OnNeedSuperCheckLoad
         end
         object radioSuperCheck2: TRadioButton
           Left = 116
@@ -1940,6 +1943,7 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'Both'
           TabOrder = 2
+          OnClick = OnNeedSuperCheckLoad
         end
       end
     end

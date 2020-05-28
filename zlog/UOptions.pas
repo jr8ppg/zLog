@@ -274,6 +274,7 @@ type
     procedure comboRig2NameChange(Sender: TObject);
     procedure checkUseQuickQSYClick(Sender: TObject);
     procedure buttonSuperCheckFolderRefClick(Sender: TObject);
+    procedure OnNeedSuperCheckLoad(Sender: TObject);
   private
     FCWEditMode: Integer;
     TempVoiceFiles : array[1..10] of string;
@@ -287,11 +288,14 @@ type
     FQuickQSYCheck: array[1..8] of TCheckBox;
     FQuickQSYBand: array[1..8] of TComboBox;
     FQuickQSYMode: array[1..8] of TComboBox;
+
+    FNeedSuperCheckLoad: Boolean;
     procedure RenewCWStrBankDisp();
     procedure InitRigNames();
   public
     procedure RenewSettings; {Reads controls and updates Settings}
     property CWEditMode: Integer read FCWEditMode write FCWEditMode;
+    property NeedSuperCheckLoad: Boolean read FNeedSuperCheckLoad;
   end;
 
 implementation
@@ -785,6 +789,8 @@ begin
          8: Edit8.SetFocus;
       end;
    end;
+
+   FNeedSuperCheckLoad := False;
 end;
 
 procedure TformOptions.AddClick(Sender: TObject);
@@ -860,6 +866,8 @@ begin
    InitRigNames();
 
    FCWEditMode := 0;
+
+   FNeedSuperCheckLoad := False;
 end;
 
 procedure TformOptions.buttonCancelClick(Sender: TObject);
@@ -1049,6 +1057,11 @@ begin
       BeforeEdit.Enabled := False;
       AfterEdit.Enabled := False;
    end;
+end;
+
+procedure TformOptions.OnNeedSuperCheckLoad(Sender: TObject);
+begin
+   FNeedSuperCheckLoad := True;
 end;
 
 procedure TformOptions.CQRepEditKeyPress(Sender: TObject; var Key: char);
