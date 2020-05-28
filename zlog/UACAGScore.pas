@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Controls, Forms,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, Menus, Buttons, Math,
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons, Math,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
@@ -27,9 +27,6 @@ type
   end;
 
 implementation
-
-uses
-  Main;
 
 {$R *.DFM}
 
@@ -67,7 +64,6 @@ var
    band: TBand;
    TotQSO, TotPoints, TotMulti: Integer;
    row: integer;
-   mb: TMenuItem;
    w: Integer;
    strScore: string;
    DispColCount: Integer;
@@ -95,34 +91,40 @@ begin
 
    // バンド別スコア行
    for band := b35 to HiBand do begin
-      if NotWARC(band) then begin
-         TotPoints := TotPoints + Points[band];
-         TotMulti := TotMulti + Multi[band];
-         TotQSO := TotQSO + QSO[band];
-
-         mb := MainForm.BandMenu.Items[ord(band)];
-         if mb.Visible and mb.Enabled then begin
-            Grid.Cells[0, row] := '*' + MHzString[band];
-            Grid.Cells[1, row] := IntToStr3(Points[band]);
-            Grid.Cells[2, row] := IntToStr3(Multi[band]);
-
-            if ShowCWRatio then begin
-               Grid.Cells[3, row] := IntToStr3(CWQSO[band]);
-               if QSO[band] > 0 then begin
-                  Grid.Cells[4, row] := FloatToStrF(100 * (CWQSO[band] / QSO[band]), ffFixed, 1000, 1);
-               end
-               else begin
-                  Grid.Cells[4, row] := '-';
-               end;
-            end
-            else begin
-               Grid.Cells[3, row] := '';
-               Grid.Cells[4, row] := '';
-            end;
-
-            Inc(row);
-         end;
+      // WARC除外
+      if IsWARC(band) = True then begin
+         Continue;
       end;
+
+      // QRVできないバンドは除外
+      if dmZlogGlobal.Settings._activebands[band] = False then begin
+         Continue;
+      end;
+
+      TotPoints := TotPoints + Points[band];
+      TotMulti := TotMulti + Multi[band];
+      TotQSO := TotQSO + QSO[band];
+
+      // バンド別スコア
+      Grid.Cells[0, row] := '*' + MHzString[band];
+      Grid.Cells[1, row] := IntToStr3(Points[band]);
+      Grid.Cells[2, row] := IntToStr3(Multi[band]);
+
+      if ShowCWRatio then begin
+         Grid.Cells[3, row] := IntToStr3(CWQSO[band]);
+         if QSO[band] > 0 then begin
+            Grid.Cells[4, row] := FloatToStrF(100 * (CWQSO[band] / QSO[band]), ffFixed, 1000, 1);
+         end
+         else begin
+            Grid.Cells[4, row] := '-';
+         end;
+      end
+      else begin
+         Grid.Cells[3, row] := '';
+         Grid.Cells[4, row] := '';
+      end;
+
+      Inc(row);
    end;
 
    // 合計行

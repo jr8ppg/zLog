@@ -266,6 +266,7 @@ function CurrentTime : TDateTime; {returns in UTC or local time }
 function LowCase(C : Char) : Char;
 function OldBandOrd(band : TBand) : integer;
 function NotWARC(band : TBand) : boolean;
+function IsWARC(Band: TBand): Boolean;
 function StrMore(a, b : string) : boolean; // true if a>b
 function PXMore(a, b : string) : boolean; // JA1 > XE
 function PXIndex(s : string) : integer; // AA = 0 AB = 1 etc
@@ -1818,6 +1819,14 @@ begin
       Result := false
    else
       Result := True;
+end;
+
+function IsWARC(Band: TBand): Boolean;
+begin
+   if Band in [b10, b18, b24] then
+      Result := True
+   else
+      Result := False;
 end;
 
 function GetUTC: TDateTime;

@@ -90,28 +90,37 @@ begin
 
    // バンド別スコア行
    for band := b35 to b50 do begin
-      if NotWARC(band) then begin
-         Grid.Cells[0, row] := '*' + MHzString[band];
-         Grid.Cells[1, row] := IntToStr(points[band]);
-         TotPoints := TotPoints + points[band];
-         Grid.Cells[2, row] := IntToStr(Multi[band]);
-         TotMulti := TotMulti + Multi[band];
-         if ShowCWRatio then begin
-            Grid.Cells[3, row] := IntToStr(CWQSO[band]);
-            if QSO[band] > 0 then begin
-               Grid.Cells[4, row] := FloatToStrF(100 * (CWQSO[band] / QSO[band]), ffFixed, 1000, 1);
-            end
-            else begin
-               Grid.Cells[4, row] := '-';
-            end;
+      // WARC除外
+      if IsWARC(band) = True then begin
+         Continue;
+      end;
+
+      // QRVできないバンドは除外
+      if dmZlogGlobal.Settings._activebands[band] = False then begin
+         Continue;
+      end;
+
+      // バンド別スコア
+      Grid.Cells[0, row] := '*' + MHzString[band];
+      Grid.Cells[1, row] := IntToStr(points[band]);
+      TotPoints := TotPoints + points[band];
+      Grid.Cells[2, row] := IntToStr(Multi[band]);
+      TotMulti := TotMulti + Multi[band];
+      if ShowCWRatio then begin
+         Grid.Cells[3, row] := IntToStr(CWQSO[band]);
+         if QSO[band] > 0 then begin
+            Grid.Cells[4, row] := FloatToStrF(100 * (CWQSO[band] / QSO[band]), ffFixed, 1000, 1);
          end
          else begin
-            Grid.Cells[3, row] := '';
-            Grid.Cells[4, row] := '';
+            Grid.Cells[4, row] := '-';
          end;
-
-         Inc(row);
+      end
+      else begin
+         Grid.Cells[3, row] := '';
+         Grid.Cells[4, row] := '';
       end;
+
+      Inc(row);
    end;
 
    // 合計行
