@@ -15,6 +15,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
       var Bold, Italic, underline: Boolean);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
   public
@@ -43,7 +44,7 @@ uses Main;
 
 function TARRL10Multi.GetInfoAA(aQSO: TQSO): string;
 begin
-   Result := TCountry(CountryList.List[GetCountryIndex(aQSO)]).JustInfo;
+   Result := GetPrefix(aQSO).Country.JustInfo;
 end;
 
 procedure TARRL10Multi.CheckMulti(aQSO: TQSO);
@@ -67,7 +68,8 @@ end;
 
 function TARRL10Multi.ValidMulti(aQSO: TQSO): Boolean;
 var
-   i, j: Integer;
+   j: Integer;
+   C: TCountry;
 begin
    Result := false;
 
@@ -82,35 +84,29 @@ begin
       exit;
    end;
 
-   i := GetCountryIndex(aQSO);
-
-   if (i > 0) then begin
-      if IsWVE(TCountry(CountryList.List[i]).Country) then begin
-         if GetState(aQSO, StateList) <> nil then
-            Result := True;
-      end
-      else // not W/VE serial number
-      begin
-         j := StrToIntDef(aQSO.NrRcvd, 0);
-         if j > 0 then
-            Result := True;
-      end;
+   C := GetPrefix(aQSO).Country;
+   if IsWVE(C.Country) then begin
+      if GetState(aQSO, StateList) <> nil then
+         Result := True;
+   end
+   else // not W/VE serial number
+   begin
+      j := StrToIntDef(aQSO.NrRcvd, 0);
+      if j > 0 then
+         Result := True;
    end;
 end;
 
 procedure TARRL10Multi.AddNoUpdate(var aQSO: TQSO);
 var
    B: TBand;
-   i: Integer;
    C: TCountry;
    S: TState;
 begin
    aQSO.NewMulti1 := false;
    aQSO.NewMulti2 := false;
 
-   i := GetCountryIndex(aQSO);
-
-   C := TCountry(CountryList.List[i]);
+   C := GetPrefix(aQSO).Country;
 
    if aQSO.Mode = mCW then
       B := b35
@@ -148,9 +144,9 @@ end;
 
 procedure TARRL10Multi.FormCreate(Sender: TObject);
 var
-   i: Integer;
    aQSO: TQSO;
    S: TState;
+   C: TCountry;
 begin
    { inherited; }
    LastMulti := 0;
@@ -179,21 +175,15 @@ begin
    CountryList := TCountryList.Create;
    PrefixList := TPrefixList.Create;
 
-   // LoadCountryDataFromFile('DXCC.DAT');
+   if LoadCTY_DAT() = False then begin
+      Exit;
+   end;
 
-   if FileExists('CTY.DAT') then begin
-      LoadCTY_DAT(testIARU, CountryList, PrefixList);
-      MainForm.WriteStatusLine('Loaded CTY.DAT', True);
-   end
-   else
-      LoadCountryDataFromFile('DXCC.DAT', CountryList, PrefixList);
+   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
 
-   if CountryList.List.Count = 0 then
-      exit;
-   { for i := 0 to CountryList.List.Count-1 do
-     begin
-     ListBox.Items.Add(TCountry(CountryList.List[i]).Summary);
-     end; }
+   if CountryList.Count = 0 then begin
+      Exit;
+   end;
 
    Reset;
    MyContinent := 'AS';
@@ -201,16 +191,24 @@ begin
    IsUSA := false;
    if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your callsign') then begin
       aQSO := TQSO.Create;
-      aQSO.Callsign := Uppercase(dmZlogGlobal.Settings._mycall);
-      i := GetCountryIndex(aQSO);
-      if i > 0 then begin
-         MyCountry := TCountry(CountryList.List[i]).Country;
-         MyContinent := TCountry(CountryList.List[i]).Continent;
-         if (MyCountry = 'K') or (MyCountry = 'N') or (MyCountry = 'W') then
-            IsUSA := True;
+      aQSO.Callsign := UpperCase(dmZlogGlobal.Settings._mycall);
+
+      C := GetPrefix(aQSO).Country;
+      MyCountry := C.Country;
+      MyContinent := C.Continent;
+
+      if (MyCountry = 'K') or (MyCountry = 'N') or (MyCountry = 'W') then begin
+         IsUSA := True;
       end;
+
       aQSO.Free;
    end;
+end;
+
+procedure TARRL10Multi.FormDestroy(Sender: TObject);
+begin
+   inherited;
+   StateList.Free();
 end;
 
 procedure TARRL10Multi.SortZone;
@@ -227,7 +225,7 @@ begin
 
    j := Grid.TopRow;
    Grid.RowCount := 0;
-   Grid.RowCount := StateList.List.Count + CountryList.List.Count;
+   Grid.RowCount := StateList.List.Count + CountryList.Count;
 
    for i := 0 to StateList.List.Count - 1 do begin
       S := TState(StateList.List[i]).SummaryARRL10;
@@ -238,10 +236,10 @@ begin
 
    offset := StateList.List.Count;
 
-   if CountryList.List.Count = 0 then
+   if CountryList.Count = 0 then
       exit;
 
-   for i := 0 to CountryList.List.Count - 1 do begin
+   for i := 0 to CountryList.Count - 1 do begin
       // Grid.Cells[0,i + offset] := TCountry(CountryList.List[i]).SummaryARRL10;
       TCountry(CountryList.List[i]).GridIndex := i + offset;
       GridReverse[i + offset] := i;
@@ -281,7 +279,7 @@ begin
       for B := b19 to HiBand do
          TState(StateList.List[i]).Worked[B] := false;
 
-   for i := 0 to CountryList.List.Count - 1 do
+   for i := 0 to CountryList.Count - 1 do
       for B := b19 to HiBand do
          TCountry(CountryList.List[i]).Worked[B] := false;
 
@@ -332,7 +330,7 @@ begin
          if (i >= 0) and (i < StateList.List.Count) then begin
             Grid.Cells[0, i] := TState(StateList.List[k]).SummaryARRL10;
          end
-         else if (i >= StateList.List.Count) and (i < CountryList.List.Count + StateList.List.Count) then begin
+         else if (i >= StateList.List.Count) and (i < CountryList.Count + StateList.List.Count) then begin
             Grid.Cells[0, i] := TCountry(CountryList.List[k]).Summary
          end
          else
@@ -343,13 +341,12 @@ end;
 
 function TARRL10Multi.ExtractMulti(aQSO: TQSO): string;
 var
-   i: Integer;
    C: TCountry;
    S: TState;
 begin
    Result := '';
-   i := GetCountryIndex(aQSO);
-   C := TCountry(CountryList.List[i]);
+
+   C := GetPrefix(aQSO).Country;
    if IsWVE(C.Country) or IsMM(aQSO.Callsign) then begin
       S := GetState(aQSO, StateList);
       if S <> nil then

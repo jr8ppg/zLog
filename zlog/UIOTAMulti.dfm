@@ -2,7 +2,6 @@ inherited IOTAMulti: TIOTAMulti
   Left = 181
   Top = 225
   Caption = 'IOTA Multipliers'
-  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   inherited Panel1: TPanel
@@ -125,7 +124,7 @@ inherited IOTAMulti: TIOTAMulti
   end
   inherited Grid: TMgrid
     Top = 49
-    Height = 186
+    Height = 192
     ExplicitTop = 49
     ExplicitHeight = 186
   end

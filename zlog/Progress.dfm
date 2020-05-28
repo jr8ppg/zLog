@@ -6,6 +6,7 @@ object formProgress: TformProgress
   ClientHeight = 47
   ClientWidth = 336
   Color = clBtnFace
+  DoubleBuffered = True
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
   Font.Height = -12

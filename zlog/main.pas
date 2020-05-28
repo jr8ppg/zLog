@@ -22,6 +22,7 @@ uses
 const
   WM_ZLOG_INIT = (WM_USER + 100);
   WM_ZLOG_SETGRIDCOL = (WM_USER + 101);
+  WM_ZLOG_SPCDATALOADED = (WM_USER + 102);
 
 type
   TBasicEdit = class
@@ -758,6 +759,7 @@ type
 
     procedure OnZLogInit( var Message: TMessage ); message WM_ZLOG_INIT;
     procedure OnZLogSetGridCol( var Message: TMessage ); message WM_ZLOG_SETGRIDCOL;
+    procedure OnZLogSpcDataLoaded( var Message: TMessage ); message WM_ZLOG_SPCDATALOADED;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -872,12 +874,13 @@ type
     FSpcDataLoading: Boolean;
     FSuperChecked: Boolean;
     FSuperCheckList: TSuperList;
-    FTwoLetterMatrix: array[0..255, 0..255] of TSuperList; // 2.1f
+    FTwoLetterMatrix: TSuperListTwoLetterMatrix;
     FSpcHitCall: string;
     FSpcHitNumber: integer;
     FSpcFirstDataCall: string;
     FSpcRcvd_Estimate: string;
     FNPlusOneThread: TSuperCheckNPlusOneThread;
+    FSuperCheckDataLoadThread: TSuperCheckDataLoadThread;
 
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
@@ -936,15 +939,14 @@ type
     procedure ReadKeymap();
     procedure ResetKeymap();
 
+    // Super Check関係
     procedure SuperCheckDataLoad();
+    procedure SuperCheckInitData();
     procedure SuperCheckFreeData();
-    procedure LoadSpcFile(strStartFoler: string; progress: TForm);
-    procedure LoadLogFiles(strStartFoler: string; progress: TForm);
-    procedure ListToTwoMatrix(L: TQSOList);
-    procedure SetTwoMatrix(D: TDateTime; C, N: string);
     procedure CheckSuper(aQSO: TQSO);
     procedure CheckSuper2(aQSO: TQSO);
     procedure TerminateNPlusOne();
+    procedure TerminateSuperCheckDataLoad();
     procedure OnSPCMenuItemCick(Sender: TObject);
   public
     EditScreen : TBasicEdit;
@@ -2245,7 +2247,7 @@ end;
 
 constructor TJIDXContest.Create(N: string);
 begin
-   inherited;
+//   inherited;   <-TCQWWContestからの継承なのでinherited不可
    MultiForm := TJIDXMulti.Create(MainForm);
    ScoreForm := TJIDXScore2.Create(MainForm);
    ZoneForm := TWWZone.Create(MainForm);
@@ -3518,16 +3520,16 @@ begin
    colMemo := 10;
 
    SerialWid := 4;
-   TimeWid := 4;
+   TimeWid := 6;
    CallSignWid := 8;
-   rcvdRSTWid := 3;
+   rcvdRSTWid := 4;
    NumberWid := 6;
-   BandWid := 3;
-   ModeWid := 3;
-   PointWid := 2;
+   BandWid := 4;
+   ModeWid := 4;
+   PointWid := 4;
    OpWid := 6;
    MemoWid := 7;
-   NewMulti1Wid := 5;
+   NewMulti1Wid := 6;
 
    // MainForm.Grid.Cells[colNewMulti1,0] := '';
 
@@ -3708,6 +3710,7 @@ begin
    FZAnalyze      := TZAnalyze.Create(Self);
 
    FNPlusOneThread := nil;
+   FSuperCheckDataLoadThread := nil;
    FSpcDataLoading := False;
    FSuperChecked := False;
    FSuperCheckList := nil;
@@ -4528,6 +4531,11 @@ begin
          end
          else begin { if space is pressed when Callsign edit is in focus }
             Key := #0;
+
+            if CallsignEdit.Text = '' then begin
+               NumberEdit.SetFocus;
+               Exit;
+            end;
 
             Q := Log.QuickDupe(CurrentQSO);
             if Q <> nil then begin
@@ -5446,6 +5454,7 @@ end;
 procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    TerminateNPlusOne();
+   TerminateSuperCheckDataLoad();
    dmZLogKeyer.CloseBGK;
    RecordWindowStates;
 
@@ -5812,7 +5821,9 @@ begin
       SetWindowCaption();
 
       // SuperCheck再ロード
-      SuperCheckDataLoad();
+      if f.NeedSuperCheckLoad = True then begin
+         SuperCheckDataLoad();
+      end;
 
       LastFocus.SetFocus;
    finally
@@ -6833,7 +6844,7 @@ begin
       dmZlogGlobal.ReadWindowState(MyContest.ScoreForm, 'ScoreForm', True);
 
       if Pos('WAEDC', MyContest.Name) > 0 then begin
-         MessageDlg('QTC can be sent by pressing Ctrl+Q', mtInformation, [mbOK], 0);
+         MessageBox(Handle, PChar('QTC can be sent by pressing Ctrl+Q'), PChar(Application.Title), MB_ICONINFORMATION or MB_OK);
       end;
 
       CurrentQSO.UpdateTime;
@@ -6913,6 +6924,13 @@ begin
       EditScreen.SetGridWidth();
       EditScreen.SetEditFields();
    end;
+end;
+
+procedure TMainForm.OnZLogSpcDataLoaded( var Message: TMessage );
+begin
+   FSuperCheck.ListBox.Clear();
+   FSuperCheck2.ListBox.Clear();
+   FSpcDataLoading := False;
 end;
 
 procedure TMainForm.InitALLJA();
@@ -8356,74 +8374,33 @@ begin
 end;
 
 procedure TMainForm.SuperCheckDataLoad();
+begin
+   TerminateSuperCheckDataLoad();
+
+   FSpcDataLoading := True;
+   FSuperCheck.ListBox.Clear();
+   FSuperCheck.ListBox.Items.Add(SPC_LOADING_TEXT);
+   FSuperCheck2.ListBox.Clear();
+   FSuperCheck2.ListBox.Items.Add(SPC_LOADING_TEXT);
+
+   SuperCheckInitData();
+
+   FSuperCheckDataLoadThread := TSuperCheckDataLoadThread.Create(FSuperCheckList, @FTwoLetterMatrix);
+end;
+
+procedure TMainForm.SuperCheckInitData();
 var
    i: Integer;
    j: Integer;
-   strFolder: string;
-   dlg: TformProgress;
-   x, y: Integer;
 begin
-   dlg := nil; //TformProgress.Create(Self);
-   FSpcDataLoading := True;
-   FSuperChecked := False;
-   try
-      Enabled := False;
-      if Assigned(dlg) then begin
-         dlg.Title := 'スーパーチェック用データをロード中...';
-         dlg.Text := '';
-         dlg.Show();
+   SuperCheckFreeData();
+
+   FSuperCheckList := TSuperList.Create(True);
+
+   for i := 0 to 255 do begin // 2.1f
+      for j := 0 to 255 do begin
+         FTwoLetterMatrix[i, j] := TSuperList.Create(True);
       end;
-
-      FSuperCheck.Clear();
-
-      SuperCheckFreeData();
-
-      FSuperCheckList := TSuperList.Create(True);
-
-      for i := 0 to 255 do begin // 2.1f
-         for j := 0 to 255 do begin
-            FTwoLetterMatrix[i, j] := TSuperList.Create(True);
-         end;
-      end;
-
-      strFolder := dmZlogGlobal.Settings.FSuperCheck.FSuperCheckFolder;
-
-      case dmZlogGlobal.Settings.FSuperCheck.FSuperCheckMethod of
-         // SPC
-         0: begin
-            LoadSpcFile(strFolder, dlg);
-         end;
-
-         // ZLO
-         1: begin
-            LoadLogFiles(strFolder, dlg);
-         end
-
-         // Both
-         else begin
-            LoadSpcFile(strFolder, dlg);
-            LoadLogFiles(strFolder, dlg);
-         end;
-      end;
-
-      // 一応並び替えておく（見た目の問題）
-      FSuperCheckList.SortByCallsign();
-      for x := 0 to 255 do begin
-         for y := 0 to 255 do begin
-            FTwoLetterMatrix[x, y].SortByCallsign();
-         end;
-      end;
-
-      if Assigned(dlg) then begin
-         dlg.Text := IntToStr(FSuperCheckList.Count) + '  Merged';
-      end;
-   finally
-      FSpcDataLoading := False;
-      if Assigned(dlg) then begin
-         dlg.Hide();
-         dlg.Release();
-      end;
-      Enabled := True;
    end;
 end;
 
@@ -8445,170 +8422,7 @@ begin
    end;
 end;
 
-procedure TMainForm.LoadSpcFile(strStartFoler: string; progress: TForm);
-var
-   F: TextFile;
-   filename: string;
-   C, N: string;
-   i: Integer;
-   str: string;
-   dtNow: TDateTime;
-begin
-   // 指定フォルダ優先
-   filename := IncludeTrailingPathDelimiter(strStartFoler) + 'ZLOG.SPC';
-   if (strStartFoler = '') or (FileExists(filename) = False) then begin
-      // 無ければZLOG.EXEを同じ場所（従来通り）
-      filename := ExtractFilePath(Application.EXEName) + 'ZLOG.SPC';
-      if FileExists(filename) = False then begin
-         Exit;
-      end;
-   end;
-
-   if Assigned(progress) then begin
-      TformProgress(progress).Text := filename;
-      Application.ProcessMessages();
-   end;
-
-   dtNow := Now;
-
-   AssignFile(F, filename);
-   Reset(F);
-
-   while not(EOF(F)) do begin
-      // 1行読み込み
-      ReadLn(F, str);
-
-      // 空行除く
-      if str = '' then begin
-         Continue;
-      end;
-
-      // 先頭;はコメント行
-      if str[1] = ';' then begin
-         Continue;
-      end;
-
-      // spaceでコールとナンバーの分割
-      i := Pos(' ', str);
-      if i = 0 then begin
-         C := str;
-         N := '';
-      end
-      else begin
-         C := copy(str, 1, i - 1);
-         N := TrimLeft(copy(str, i, 30));
-      end;
-
-      SetTwoMatrix(dtNow, C, N);
-   end;
-
-   CloseFile(F);
-end;
-
-procedure TMainForm.LoadLogFiles(strStartFoler: string; progress: TForm);
-var
-   ret: Integer;
-   F: TSearchRec;
-   S: string;
-   L: TQSOList;
-begin
-   if strStartFoler = '' then begin
-      Exit;
-   end;
-
-   L := TQSOList.Create();
-   try
-      S := IncludeTrailingPathDelimiter(strStartFoler);
-
-      ret := FindFirst(S + '*.ZLO', faAnyFile, F);
-      while ret = 0 do begin
-
-         if ((F.Attr and faDirectory) = 0) and
-            ((F.Attr and faVolumeID) = 0) and
-            ((F.Attr and faSysFile) = 0) then begin
-
-            if Assigned(progress) then begin
-               TformProgress(progress).Text := S + F.Name;
-               Application.ProcessMessages();
-            end;
-
-            L.Clear();
-
-            // listにロードする
-            L.MergeFile(S + F.Name);
-
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar(F.Name + ' L=' + IntToStr(L.Count)));
-            {$ENDIF}
-
-            // TwoMatrixに展開
-            ListToTwoMatrix(L);
-         end;
-
-         // 次のファイル
-         ret := FindNext(F);
-      end;
-
-      FindClose(F);
-   finally
-      L.Free();
-   end;
-end;
-
-procedure TMainForm.ListToTwoMatrix(L: TQSOList);
-var
-   i: Integer;
-   Q: TQSO;
-begin
-   for i := 1 to L.Count - 1 do begin
-      Q := L[i];
-      SetTwoMatrix(Q.Time, Q.Callsign, Q.NrRcvd);
-   end;
-end;
-
-procedure TMainForm.SetTwoMatrix(D: TDateTime; C, N: string);
-var
-   sd1: TSuperData;
-   sd2: TSuperData;
-   i: Integer;
-   x: Integer;
-   y: Integer;
-   O: TSuperData;
-begin
-   sd1 := TSuperData.Create(D, C, N);
-
-   // リストに追加
-   O := FSuperCheckList.ObjectOf(sd1);
-   if O = nil then begin
-      FSuperCheckList.Add(sd1);
-   end
-   else begin
-      if O.Date < D then begin
-         O.Date := D;
-         O.Number := N;
-      end;
-      sd1.Free();
-   end;
-
-   // TwoLetterリストに追加
-   for i := 1 to Length(C) - 1 do begin
-      sd2 := TSuperData.Create(D, C, N);
-      x := Ord(sd2.callsign[i]);
-      y := Ord(sd2.callsign[i + 1]);
-      O := FTwoLetterMatrix[x, y].ObjectOf(sd2);
-      if O = nil then begin
-         FTwoLetterMatrix[x, y].Add(sd2);
-      end
-      else begin
-         if O.Date < D then begin
-            O.Date := D;
-            O.Number := N;
-         end;
-         sd2.Free();
-      end;
-   end;
-end;
-
+// Super Check検索の実行
 procedure TMainForm.CheckSuper(aQSO: TQSO);
 var
    PartialStr: string;
@@ -8617,6 +8431,10 @@ var
    sd, FirstData: TSuperData;
    L: TSuperList;
 begin
+   if FSpcDataLoading = True then begin
+      Exit;
+   end;
+
    FSpcHitNumber := 0;
    FSpcHitCall := '';
    FSuperCheck.Clear();
@@ -8691,10 +8509,15 @@ begin
    FSuperChecked := True;
 end;
 
+// N+1検索の実行
 procedure TMainForm.CheckSuper2(aQSO: TQSO);
 var
    PartialStr: string;
 begin
+   if FSpcDataLoading = True then begin
+      Exit;
+   end;
+
    PartialStr := aQSO.callsign;
 
    // ,で始まるコマンド
@@ -8714,10 +8537,6 @@ begin
       Exit;
    end;
 
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('N+1 Call=[' + PartialStr + ']'));
-   {$ENDIF}
-
    // N+1の実行
    if (Length(PartialStr) >= 3) then begin
       FNPlusOneThread := TSuperCheckNPlusOneThread.Create(FSuperCheckList, FSuperCheck2.ListBox, PartialStr);
@@ -8729,8 +8548,20 @@ begin
    // 先行スレッドいれば終了させる
    if Assigned(FNPlusOneThread) then begin
       FNPlusOneThread.Terminate();
+      FNPlusOneThread.WaitFor();
       FNPlusOneThread.Free();
       FNPlusOneThread := nil;
+   end;
+end;
+
+procedure TMainForm.TerminateSuperCheckDataLoad();
+begin
+   // 先行スレッドいれば終了させる
+   if Assigned(FSuperCheckDataLoadThread) then begin
+      FSuperCheckDataLoadThread.Terminate();
+      FSuperCheckDataLoadThread.WaitFor();
+      FSuperCheckDataLoadThread.Free();
+      FSuperCheckDataLoadThread := nil;
    end;
 end;
 

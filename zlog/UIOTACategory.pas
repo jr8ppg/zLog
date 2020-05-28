@@ -22,9 +22,6 @@ type
     function GetIOTA : string;
   end;
 
-var
-  IOTACategory: TIOTACategory;
-
 implementation
 
 {$R *.DFM}

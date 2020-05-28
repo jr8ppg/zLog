@@ -19,6 +19,7 @@ type
   TIARUZoneList = class
     List : TList;
     constructor Create;
+    destructor Destroy(); override;
     procedure Add(M : TIARUZone);
   end;
 
@@ -29,6 +30,7 @@ type
     procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
       var Bold, Italic, underline: Boolean);
     procedure GridTopLeftChanged(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     ZoneList : TIARUZoneList;
     { Private declarations }
@@ -44,10 +46,6 @@ type
     procedure CheckMulti(aQSO : TQSO); override;
     { Public declarations }
   end;
-
-
-var
-  IARUMulti: TIARUMulti;
 
 implementation
 
@@ -120,6 +118,16 @@ begin
    M := TIARUZone.Create;
    M.Multi := 'R3';
    List.Add(M);
+end;
+
+destructor TIARUZoneList.Destroy();
+var
+   i: Integer;
+begin
+   for i := 0 to List.Count - 1 do begin
+      TIARUZone(List[i]).Free();
+   end;
+   List.Free();
 end;
 
 procedure TIARUZoneList.Add(M: TIARUZone);
@@ -202,9 +210,9 @@ begin
       exit;
    end;
 
-   C := TCountry(CountryList.List[P.Index]);
+   C := P.Country;
    str := aQSO.CallSign;
-   i := C.Zone;
+   i := StrToIntDef(C.ITUZone, 0);
 
    if (C.Country = 'W') or (C.Country = 'K') then begin
       k := GetArea(str);
@@ -259,8 +267,9 @@ begin
      end;
    }
 
-   if P.OvrZone > 0 then
-      i := P.OvrZone;
+   if P.OvrITUZone <> '' then begin
+      i := StrToIntDef(P.OvrITUZone, 0);
+   end;
 
    if i = 0 then
       Result := ''
@@ -292,28 +301,24 @@ end;
 
 procedure TIARUMulti.FormCreate(Sender: TObject);
 var
-   i: Integer;
    aQSO: TQSO;
    P: TPrefix;
 begin
    // inherited;
    CountryList := TCountryList.Create;
    PrefixList := TPrefixList.Create;
-   if FileExists('CTY.DAT') then begin
-      LoadCTY_DAT(testIARU, CountryList, PrefixList);
-      MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-   end
-   else
-      LoadCountryDataFromFile('IARU.DAT', CountryList, PrefixList);
 
-   { if CountryList.List.Count = 0 then exit;
-     for i := 0 to CountryList.List.Count-1 do
-     begin
-     ListBox.Items.Add(TCountry(CountryList.List[i]).Summary);
-     end; }
+   if LoadCTY_DAT() = False then begin
+      Exit;
+   end;
+
+   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
+
+   if CountryList.Count = 0 then begin
+      Exit;
+   end;
+
    ZoneList := TIARUZoneList.Create;
-   { for i := 0 to ZoneList.List.Count-1 do
-     ListBox.Items.Add(TIARUZone(ZoneList.List[i]).Summary); }
 
    Reset;
 
@@ -326,30 +331,30 @@ begin
       aQSO.CallSign := Uppercase(dmZlogGlobal.Settings._mycall);
 
       P := GetPrefix(aQSO);
-      // i := GetCountryIndex(aQSO);
-      if P = nil then
-         i := 0
-      else
-         i := P.Index;
+      if P <> nil then begin
+         MyCountry := P.Country.Country;
 
-      if i > 0 then begin
-         MyCountry := TCountry(CountryList.List[i]).Country;
-         // MyZone := IntToStr(TCountry(CountryList.List[i]).Zone);
+         if dmZlogGlobal.Settings._iaruzone = '' then begin
+            dmZlogGlobal.Settings._iaruzone := P.Country.ITUZone;
+         end;
 
-         if dmZlogGlobal.Settings._iaruzone = '' then
-            dmZlogGlobal.Settings._iaruzone := GuessZone(aQSO);
          MyZone := dmZlogGlobal.Settings._iaruzone;
 
-         // MyContinent := TCountry(CountryList.List[i]).Continent;
-         if P.OvrContinent = '' then
-            MyContinent := TCountry(CountryList.List[i]).Continent
-         else
+         if P.OvrContinent = '' then begin
+            MyContinent := P.Country.Continent;
+         end
+         else begin
             MyContinent := P.OvrContinent;
+         end;
       end;
       aQSO.Free;
    end;
+end;
 
-   // WWZone.Reset;
+procedure TIARUMulti.FormDestroy(Sender: TObject);
+begin
+   inherited;
+   ZoneList.Free();
 end;
 
 function TIARUMulti.GetInfo(aQSO: TQSO): string;
@@ -357,7 +362,8 @@ var
    i, k: Integer;
    C: TCountry;
    P: TPrefix;
-   str, z: string;
+   str: string;
+   zone: string;
    B: TBand;
 begin
    P := GetPrefix(aQSO);
@@ -366,7 +372,7 @@ begin
       exit;
    end;
 
-   C := TCountry(CountryList.List[P.Index]);
+   C := P.Country;
    str := 'Continent: ';
 
    if P.OvrContinent <> '' then
@@ -374,10 +380,14 @@ begin
    else
       str := str + C.Continent;
 
-   z := GuessZone(aQSO);
-   str := str + '   ITU Zone/Multi: ' + z + '  Worked on: ';
+   zone := C.ITUZone;
+   if P.OvrITUZone <> '' then begin
+      zone := P.OvrITUZone;
+   end;
+
+   str := str + '   ITU Zone/Multi: ' + zone + '  Worked on: ';
    for i := 0 to ZoneList.List.Count - 1 do begin
-      if TIARUZone(ZoneList.List[i]).Multi = z then begin
+      if TIARUZone(ZoneList.List[i]).Multi = zone then begin
          for B := b19 to b28 do
             if NotWARC(B) then
                if TIARUZone(ZoneList.List[i]).Worked[B] then
@@ -450,12 +460,7 @@ begin
    end;
 
    P := GetPrefix(aQSO);
-   if P = nil then // /MM results in p = nil !!
-      i := 0
-   else
-      i := P.Index;
-
-   C := TCountry(CountryList.List[i]);
+   C := P.Country;
 
    if P = nil then
       _cont := C.Continent

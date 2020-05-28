@@ -116,6 +116,10 @@ begin
    i := ListBox.ItemIndex;
    str := ListBox.Items[i];
 
+   if str = SPC_LOADING_TEXT then begin
+      Exit;
+   end;
+
    j := Pos(' ', str);
    if j > 0 then begin
       str := copy(str, 1, j - 1);

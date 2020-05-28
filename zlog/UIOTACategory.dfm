@@ -12,7 +12,7 @@ object IOTACategory: TIOTACategory
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = True
-  Position = poScreenCenter
+  Position = poOwnerFormCenter
   PixelsPerInch = 96
   TextHeight = 13
   object OKBtn: TButton

@@ -24,16 +24,24 @@ inherited ARRL10Multi: TARRL10Multi
     inherited RotateLabel3: TRotateLabel
       Left = 292
       Top = 13
+      Width = 14
+      Height = 6
       Visible = False
       ExplicitLeft = 292
       ExplicitTop = 13
+      ExplicitWidth = 14
+      ExplicitHeight = 6
     end
     inherited RotateLabel4: TRotateLabel
       Left = 303
       Top = 7
+      Width = 14
+      Height = 12
       Visible = False
       ExplicitLeft = 303
       ExplicitTop = 7
+      ExplicitWidth = 14
+      ExplicitHeight = 12
     end
     inherited RotateLabel5: TRotateLabel
       Left = 315

@@ -39,16 +39,15 @@ var
    BoxFlags: array [0 .. 20] of boolean;
 begin
    ResetListBox;
-   if length(aQSO.Callsign) = 0 then
+   if length(aQSO.Callsign) = 0 then begin
       exit;
+   end;
 
-   for i := 0 to 20 do
+   for i := 0 to 20 do begin
       BoxFlags[i] := False;
+   end;
 
-   i := { ParentMulti. } GetCountryIndex(aQSO);
-   // i := Main.MyContest.MultiForm.GetCountryIndex(aQSO);
-
-   C := TCountry( { ParentMulti. } CountryList.List[i]);
+   C := GetPrefix(aQSO).Country;
    TempCountry := C;
    Caption := C.Country + ': ' + C.CountryName + ' ' + C.Continent;
    cty := C.Country;
