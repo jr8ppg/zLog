@@ -15,6 +15,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
       var Bold, Italic, underline: Boolean);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
   public
@@ -202,6 +203,12 @@ begin
 
       aQSO.Free;
    end;
+end;
+
+procedure TARRL10Multi.FormDestroy(Sender: TObject);
+begin
+   inherited;
+   StateList.Free();
 end;
 
 procedure TARRL10Multi.SortZone;

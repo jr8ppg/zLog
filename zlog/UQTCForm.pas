@@ -23,6 +23,8 @@ type
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     QTCToBeSent : integer;
@@ -47,18 +49,18 @@ var
    i, j, k: integer;
    QQ: TQSO;
    SS, SSS: String;
-label
-   BYPASS;
 begin
+   QTCList.Clear();
+
    QTCReqStn := Q;
-   QTCList := TList.Create;
    QTCSeries := 0;
    PastQTC := 0;
    QTCToBeSent := 0;
    for i := 1 to Log.TotalQSO do begin
       QQ := Log.QsoList[i];
-      if QQ.Dupe or (QQ.Points = 0) then
-         goto BYPASS;
+      if QQ.Dupe or (QQ.Points = 0) then begin
+         Continue;
+      end;
 
       j := pos('[QTC', QQ.memo);
       if j = 0 then begin
@@ -93,8 +95,8 @@ begin
             end;
          end;
       end;
-   BYPASS:
    end;
+
    SpinEdit.Value := QTCList.Count;
 
    ListBox.Clear;
@@ -240,9 +242,18 @@ begin
       end;
    end;
 
-   QTCList.Free;
    Main.MyContest.Renew;
    SpinEdit.Enabled := True;
+end;
+
+procedure TQTCForm.FormCreate(Sender: TObject);
+begin
+   QTCList := TList.Create;
+end;
+
+procedure TQTCForm.FormDestroy(Sender: TObject);
+begin
+   QTCList.Free;
 end;
 
 procedure TQTCForm.FormKeyPress(Sender: TObject; var Key: Char);

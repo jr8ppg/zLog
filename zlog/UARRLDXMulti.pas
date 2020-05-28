@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UACAGMulti, StdCtrls, checklst, JLLabel, ExtCtrls, Grids,
-  Cologrid, UzLogConst, UzLogGlobal, UzLogQSO;
+  Cologrid, UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers;
 
 type
   TState = class
@@ -287,6 +287,10 @@ begin
    // inherited;
    StateList := TStateList.Create;
    StateList.LoadFromFile('ARDX.DAT');
+
+   CountryList := TCountryList.Create;
+   PrefixList := TPrefixList.Create;
+
    Reset;
 end;
 
@@ -294,6 +298,8 @@ procedure TARRLDXMulti.FormDestroy(Sender: TObject);
 begin
    inherited;
    StateList.Free();
+   CountryList.Free();
+   PrefixList.Free();
 end;
 
 procedure TARRLDXMulti.UpdateData;

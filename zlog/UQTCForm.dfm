@@ -12,8 +12,11 @@ object QTCForm: TQTCForm
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
+  Position = poOwnerFormCenter
   Scaled = False
   OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnKeyPress = FormKeyPress
   PixelsPerInch = 96

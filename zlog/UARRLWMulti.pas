@@ -10,8 +10,6 @@ uses
 type
   TARRLWMulti = class(TWWMulti)
     procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
   public
@@ -34,11 +32,12 @@ var
    P: TPrefix;
 begin
    P := GetPrefix(aQSO);
-   P.Country.JustInfo;
+   Result := P.Country.JustInfo;
 end;
 
 procedure TARRLWMulti.CheckMulti(aQSO: TQSO);
 begin
+   //
 end;
 
 function TARRLWMulti.ValidMulti(aQSO: TQSO): boolean;
@@ -138,18 +137,6 @@ begin
       MyContinent := C.Continent;
       aQSO.Free;
    end;
-end;
-
-procedure TARRLWMulti.FormDestroy(Sender: TObject);
-begin
-   inherited;
-   CountryList.Free();
-   PrefixList.Free();
-end;
-
-procedure TARRLWMulti.FormShow(Sender: TObject);
-begin
-   // inherited;
 end;
 
 end.

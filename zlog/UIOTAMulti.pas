@@ -33,9 +33,8 @@ type
   private
     { Private declarations }
     IslandList : TIslandList;
-    CountryList : TCountryList;
-    PrefixList : TPrefixList;
   public
+    { Public declarations }
     MyIOTA, MyDXCC : string;
     function ExtractMulti(aQSO : TQSO) : string; override;
     procedure Reset; override;
@@ -43,7 +42,6 @@ type
     procedure AddNoUpdate(var aQSO : TQSO); override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
     procedure CheckMulti(aQSO : TQSO); override;
-    { Public declarations }
   end;
 
 implementation
@@ -315,6 +313,7 @@ procedure TIOTAMulti.FormCreate(Sender: TObject);
 var
    Q: TQSO;
    P: TPrefix;
+   dlg: TIOTACategory;
 begin
    // inherited;
    IslandList := TIslandList.Create;
@@ -335,20 +334,27 @@ begin
    end;
 
    Q := TQSO.Create;
-   Q.Callsign := UpperCase(dmZLogGlobal.MyCall);
-   P := GetPrefix(Q);
-   MyDXCC := P.Country.Country;
-   Q.Free;
+   try
+      Q.Callsign := UpperCase(dmZLogGlobal.MyCall);
+      P := GetPrefix(Q);
+      MyDXCC := P.Country.Country;
+   finally
+      Q.Free;
+   end;
 
-   MyIOTA := '';
+   dlg := TIOTACategory.Create(MainForm);
+   try
+      dlg.Label1.Caption := MyDXCC;
 
-   Application.CreateForm(TIOTACategory, IOTACategory);
-   IOTACategory.Label1.Caption := MyDXCC;
-
-   if IOTACategory.ShowModal = mrOK then
-      MyIOTA := IOTACategory.GetIOTA;
-
-   IOTACategory.Free;
+      if dlg.ShowModal = mrOK then begin // OK‚µ‚©‚È‚¢‚¯‚Ç...
+         MyIOTA := dlg.GetIOTA;
+      end
+      else begin
+         MyIOTA := '';
+      end;
+   finally
+      dlg.Release();
+   end;
 
    UzLogCW.QTHString := MyIOTA;
 end;
@@ -384,9 +390,9 @@ end;
 procedure TIOTAMulti.FormDestroy(Sender: TObject);
 begin
    inherited;
-   PrefixList.Destroy;
-   CountryList.Destroy;
-   IslandList.Destroy;
+   PrefixList.Free();
+   CountryList.Free();
+   IslandList.Free();
 end;
 
 procedure TIOTAMulti.CheckMulti(aQSO: TQSO);
