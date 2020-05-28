@@ -117,11 +117,13 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 ### ICOM
 * IC-706mkII,IC-756PRO,IC-756PRO2,IC-7100,IC-7200,IC-7300
 ### KENWOOD
-* TS-570
+* TS-570,TS-2000
 ### YAESU
 * FT-2000/FT-950/FT-450/FTDX-5000
 * FT-920
 * FT-1000MP
+* FT-991
+* FT-847,FT-817
 
 ## 第三者著作権情報
 

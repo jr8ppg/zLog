@@ -304,6 +304,11 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
   end;
 
+  TFT991 = class(TFT2000)
+    procedure ExecuteCommand(S: AnsiString); override;
+    procedure SetFreq(Hz : LongInt); override;
+  end;
+
   TFT100 = class(TFT1000MP)
     constructor Create(RigNum : integer); override;
     procedure Initialize(); override;
@@ -1333,6 +1338,12 @@ begin
 
          if rname = 'FT-817' then begin
             rig := TFT817.Create(rignum);
+            rig._minband := b19;
+            rig._maxband := b430;
+         end;
+
+         if rname = 'FT-991' then begin
+            rig:= TFT991.Create(rignum);
             rig._minband := b19;
             rig._maxband := b430;
          end;
@@ -3066,8 +3077,8 @@ end;
 
 
 procedure TFT817.SetFreq(Hz: LongInt);
-var
-   StartTime: TDateTime;
+//var
+//   StartTime: TDateTime;
 begin
    FPollingTimer.Enabled := False;
 //   BufferString := '';
@@ -3084,8 +3095,8 @@ begin
 end;
 
 procedure TFT817.SetMode(Q: TQSO);
-var
-   StartTime: TDateTime;
+//var
+//   StartTime: TDateTime;
 begin
    FPollingTimer.Enabled := False;
 //   BufferString := '';
@@ -3101,6 +3112,66 @@ begin
    FPollingTimer.Enabled := True;
 end;
 
+//   FT-991対応
+//  基本はFT-2000と同じ。違いは下記。
+//  FT-991の周波数桁数は9桁。なのでmode情報は、1文字後ろへ。
+//  rigの状態取得と周波数変更の2点をoverride
+//
+procedure TFT991.ExecuteCommand(S: AnsiString);
+var
+   M: TMode;
+   i: Integer;
+   j: Integer;
+   strTemp: string;
+begin
+   try
+      if Length(S) <> 28 then begin   //全長28文字
+         Exit;
+      end;
+
+      // モード
+      strTemp := string(S[22]);      //22文字目
+      case StrToIntDef(strTemp, 99) of
+         1, 2: M := mSSB;
+         3, 7: M := mCW;
+         4:    M := mFM;
+         5:    M := mAM;
+         6, 9: M := mRTTY;
+         else  M := mOther;
+      end;
+      _currentmode := M;
+
+      // 周波数(Hz)
+      strTemp := string(Copy(S, 6, 9));        // 6桁目から9文字
+      i := StrToIntDef(strTemp, 0);
+      _currentfreq[0] := i;
+
+      // バンド(VFO-A)
+      if _currentvfo = 0 then begin
+         j := GetBandIndex(i);
+         if j >= 0 then begin
+            _currentband := TBand(j);
+         end;
+         FreqMem[_currentband, _currentmode] := _currentfreq[0];
+      end;
+
+      if Selected then begin
+         UpdateStatus;
+      end;
+   finally
+      FPollingTimer.Enabled := True;
+   end;
+end;
+
+procedure TFT991.SetFreq(Hz : LongInt);
+const
+   cmd: array[0..1] of AnsiString = ( 'FA', 'FB' );
+var
+   freq: AnsiString;
+begin
+   freq := RightStr(AnsiString(DupeString('0', 9)) + AnsiString(IntToStr(Hz)), 9);  // freq 9桁
+   WriteData(cmd[_currentvfo] + freq + ';');
+end;
 
 procedure TRig.UpdateStatus;
 var
