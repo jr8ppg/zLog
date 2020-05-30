@@ -65,7 +65,9 @@ type
     _sendfreq : double;
 
     _autobandmap: boolean;
-    _activebands : array[b19..HiBand] of boolean;
+    _activebands: array[b19..HiBand] of Boolean;
+    _power: array[b19..HiBand] of string;
+
     CW : TCWSettingsParam;
     _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
 
@@ -192,13 +194,12 @@ type
     function GetSendFreq(): Double;
     procedure SetSendFreq(r : double);
     procedure SetPaddle(boo : boolean);      // unuse
+    function GetPowerOfBand(band: TBand): TPower;
 public
     { Public éŒ¾ }
     FCurrentFileName : string;
     FLog : TLog;
 
-    CurrentPower : array[b19..HiBand] of TPower;
-    CurrentPower2 : array[b19..HiBand] of integer; {Power2 for ARRLDX}
     OpList : TStringList;
     Settings : TSettingsParam;
 
@@ -247,6 +248,8 @@ public
     procedure MakeRigList(sl: TStrings);
 
     function NewQSOID(): Integer;
+
+    property PowerOfBand[b: TBand]: TPower read GetPowerOfBand;
   end;
 
 function Log(): TLog;
@@ -307,17 +310,10 @@ uses
 {$R *.dfm}
 
 procedure TdmZLogGlobal.DataModuleCreate(Sender: TObject);
-var
-   b: TBand;
 begin
    FCurrentFileName := '';
    FLog := nil;
 //   CreateLog();
-
-   for b := b19 to b10g do begin
-      CurrentPower[b] := pwrP;
-      CurrentPower2[b] := 500;
-   end;
 
    LoadIniFile;
    Settings.CW.CurrentBank := 1;
@@ -413,7 +409,6 @@ end;
 procedure TdmZLogGlobal.LoadIniFile;
 var
    i: integer;
-   b: TBand;
    s: string;
    ini: TIniFile;
    slParam: TStringList;
@@ -445,6 +440,23 @@ begin
       Settings._activebands[b2400] := ini.ReadBool('Profiles', 'Active2400MHz', True);
       Settings._activebands[b5600] := ini.ReadBool('Profiles', 'Active5600MHz', True);
       Settings._activebands[b10g] := ini.ReadBool('Profiles', 'Active10GHz', True);
+
+      Settings._power[b19]    := ini.ReadString('Profiles', 'Power1.9MHz', 'H');
+      Settings._power[b35]    := ini.ReadString('Profiles', 'Power3.5MHz', 'H');
+      Settings._power[b7]     := ini.ReadString('Profiles', 'Power7MHz', 'H');
+      Settings._power[b10]    := ini.ReadString('Profiles', 'Power10MHz', 'H');
+      Settings._power[b14]    := ini.ReadString('Profiles', 'Power14MHz', 'H');
+      Settings._power[b18]    := ini.ReadString('Profiles', 'Power18MHz', 'H');
+      Settings._power[b21]    := ini.ReadString('Profiles', 'Power21MHz', 'H');
+      Settings._power[b24]    := ini.ReadString('Profiles', 'Power24MHz', 'H');
+      Settings._power[b28]    := ini.ReadString('Profiles', 'Power28MHz', 'H');
+      Settings._power[b50]    := ini.ReadString('Profiles', 'Power50MHz', 'H');
+      Settings._power[b144]   := ini.ReadString('Profiles', 'Power144MHz', 'H');
+      Settings._power[b430]   := ini.ReadString('Profiles', 'Power430MHz', 'H');
+      Settings._power[b1200]  := ini.ReadString('Profiles', 'Power1200MHz', 'H');
+      Settings._power[b2400]  := ini.ReadString('Profiles', 'Power2400MHz', 'H');
+      Settings._power[b5600]  := ini.ReadString('Profiles', 'Power5600MHz', 'H');
+      Settings._power[b10g]   := ini.ReadString('Profiles', 'Power10GHz', 'H');
 
       // Automatically enter exchange from SuperCheck
       Settings._entersuperexchange := ini.ReadBool('Preferences', 'AutoEnterSuper', False);
@@ -743,29 +755,6 @@ begin
 
       Settings._movetomemo := ini.ReadBool('Preferences', 'MoveToMemoWithSpace', False);
 
-      s := ini.ReadString('Profiles', 'Power', '');
-      b := b19;
-      if length(s) > 13 then begin
-         s := Copy(s, 1, 13);
-      end;
-
-      for i := 1 to length(s) do begin
-         case UpCase(s[i]) of
-            'P':
-               CurrentPower[b] := pwrP;
-            'L':
-               CurrentPower[b] := pwrL;
-            'M':
-               CurrentPower[b] := pwrM;
-            'H':
-               CurrentPower[b] := pwrH;
-         end;
-
-         repeat
-            inc(b);
-         until NotWARC(b);
-      end;
-
       Settings._txnr := ini.ReadInteger('Categories', 'TXNumber', 0);
       Settings._contestmenuno := ini.ReadInteger('Categories', 'Contest', 1);
       Settings._mycall := ini.ReadString('Categories', 'MyCall', 'Your call sign');
@@ -830,6 +819,23 @@ begin
       ini.WriteBool('Profiles', 'Active2400MHz', Settings._activebands[b2400]);
       ini.WriteBool('Profiles', 'Active5600MHz', Settings._activebands[b5600]);
       ini.WriteBool('Profiles', 'Active10GHz', Settings._activebands[b10g]);
+
+      ini.WriteString('Profiles', 'Power1.9MHz',   Settings._power[b19]);
+      ini.WriteString('Profiles', 'Power3.5MHz',   Settings._power[b35]);
+      ini.WriteString('Profiles', 'Power7MHz',     Settings._power[b7]);
+      ini.WriteString('Profiles', 'Power10MHz',    Settings._power[b10]);
+      ini.WriteString('Profiles', 'Power14MHz',    Settings._power[b14]);
+      ini.WriteString('Profiles', 'Power18MHz',    Settings._power[b18]);
+      ini.WriteString('Profiles', 'Power21MHz',    Settings._power[b21]);
+      ini.WriteString('Profiles', 'Power24MHz',    Settings._power[b24]);
+      ini.WriteString('Profiles', 'Power28MHz',    Settings._power[b28]);
+      ini.WriteString('Profiles', 'Power50MHz',    Settings._power[b50]);
+      ini.WriteString('Profiles', 'Power144MHz',   Settings._power[b144]);
+      ini.WriteString('Profiles', 'Power430MHz',   Settings._power[b430]);
+      ini.WriteString('Profiles', 'Power1200MHz',  Settings._power[b1200]);
+      ini.WriteString('Profiles', 'Power2400MHz',  Settings._power[b2400]);
+      ini.WriteString('Profiles', 'Power5600MHz',  Settings._power[b5600]);
+      ini.WriteString('Profiles', 'Power10GHz',    Settings._power[b10g]);
 
       // Automatically enter exchange from SuperCheck
       ini.WriteBool('Preferences', 'AutoEnterSuper', Settings._entersuperexchange);
@@ -1495,6 +1501,25 @@ end;
 procedure TdmZLogGlobal.SetPaddle(boo: boolean);
 begin
    Settings.CW._paddle := boo;
+end;
+
+function TdmZLogGlobal.GetPowerOfBand(band: TBand): TPower;
+begin
+   if Settings._power[band] = 'H' then begin
+      Result := pwrH;
+   end
+   else if Settings._power[band] = 'M' then begin
+      Result := pwrM;
+   end
+   else if Settings._power[band] = 'L' then begin
+      Result := pwrL;
+   end
+   else if Settings._power[band] = 'P' then begin
+      Result := pwrP;
+   end
+   else begin
+      Result := pwrM;
+   end;
 end;
 
 procedure TdmZLogGlobal.SetPaddleReverse(boo: boolean);

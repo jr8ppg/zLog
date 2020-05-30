@@ -1652,10 +1652,6 @@ end;
 
 procedure TMainForm.UpdateBand(B: TBand); // called from rigcontrol too
 begin
-
-   dmZlogGlobal.CurrentPower[CurrentQSO.Band] := CurrentQSO.Power;
-   dmZlogGlobal.CurrentPower2[CurrentQSO.Band] := CurrentQSO.Power2;
-
    BandEdit.Text := MHzString[B];
 
    if SerialEdit.Visible then
@@ -1680,7 +1676,7 @@ begin
    FZLinkForm.SendBand; // ver 0.41
 
    if NewPowerEdit.Visible then begin
-      CurrentQSO.Power := dmZlogGlobal.CurrentPower[B];
+      CurrentQSO.Power := dmZlogGlobal.PowerOfBand[B];
       dmZlogGlobal.SetOpPower(CurrentQSO);
       NewPowerEdit.Text := CurrentQSO.NewPowerStr;
    end;

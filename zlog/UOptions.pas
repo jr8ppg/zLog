@@ -132,9 +132,6 @@ type
     act24: TCheckBox;
     act18: TCheckBox;
     act10: TCheckBox;
-    GroupBox5: TGroupBox;
-    Button4: TButton;
-    BackUpPathEdit: TEdit;
     CQZoneEdit: TEdit;
     IARUZoneEdit: TEdit;
     Label34: TLabel;
@@ -243,6 +240,25 @@ type
     editSuperCheckFolder: TEdit;
     radioSuperCheck2: TRadioButton;
     buttonSuperCheckFolderRef: TSpeedButton;
+    Button4: TButton;
+    BackUpPathEdit: TEdit;
+    Label56: TLabel;
+    comboPower19: TComboBox;
+    comboPower35: TComboBox;
+    comboPower7: TComboBox;
+    comboPower10: TComboBox;
+    comboPower14: TComboBox;
+    comboPower18: TComboBox;
+    comboPower21: TComboBox;
+    comboPower24: TComboBox;
+    comboPower28: TComboBox;
+    comboPower50: TComboBox;
+    comboPower144: TComboBox;
+    comboPower430: TComboBox;
+    comboPower1200: TComboBox;
+    comboPower2400: TComboBox;
+    comboPower5600: TComboBox;
+    comboPower10g: TComboBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -349,6 +365,23 @@ begin
       Settings._activebands[b2400] := act2400.Checked;
       Settings._activebands[b5600] := act5600.Checked;
       Settings._activebands[b10g] := act10g.Checked;
+
+      Settings._power[b19] := comboPower19.Text;
+      Settings._power[b35] := comboPower35.Text;
+      Settings._power[b7] := comboPower7.Text;
+      Settings._power[b10] := comboPower10.Text;
+      Settings._power[b14] := comboPower14.Text;
+      Settings._power[b18] := comboPower18.Text;
+      Settings._power[b21] := comboPower21.Text;
+      Settings._power[b24] := comboPower24.Text;
+      Settings._power[b28] := comboPower28.Text;
+      Settings._power[b50] := comboPower50.Text;
+      Settings._power[b144] := comboPower144.Text;
+      Settings._power[b430] := comboPower430.Text;
+      Settings._power[b1200] := comboPower1200.Text;
+      Settings._power[b2400] := comboPower2400.Text;
+      Settings._power[b5600] := comboPower5600.Text;
+      Settings._power[b10g] := comboPower10g.Text;
 
       OpList.Free;
       OpList := TStringList.Create;
@@ -574,6 +607,7 @@ begin
 
       cbRecordRigFreq.Checked := Settings._recrigfreq;
       cbMultiStn.Checked := Settings._multistation;
+
       act19.Checked := Settings._activebands[b19];
       act35.Checked := Settings._activebands[b35];
       act7.Checked := Settings._activebands[b7];
@@ -591,6 +625,23 @@ begin
       act5600.Checked := Settings._activebands[b5600];
       act10g.Checked := Settings._activebands[b10g];
 
+      comboPower19.Text := Settings._power[b19];
+      comboPower35.Text := Settings._power[b35];
+      comboPower7.Text := Settings._power[b7];
+      comboPower10.Text := Settings._power[b10];
+      comboPower14.Text := Settings._power[b14];
+      comboPower18.Text := Settings._power[b18];
+      comboPower21.Text := Settings._power[b21];
+      comboPower24.Text := Settings._power[b24];
+      comboPower28.Text := Settings._power[b28];
+      comboPower50.Text := Settings._power[b50];
+      comboPower144.Text := Settings._power[b144];
+      comboPower430.Text := Settings._power[b430];
+      comboPower1200.Text := Settings._power[b1200];
+      comboPower2400.Text := Settings._power[b2400];
+      comboPower5600.Text := Settings._power[b5600];
+      comboPower10g.Text := Settings._power[b10g];
+
       if Settings._multiop <> 0 then
          MultiOpRadioBtn.Checked := True
       else
@@ -600,6 +651,7 @@ begin
          BandGroup.ItemIndex := 0
       else
          BandGroup.ItemIndex := OldBandOrd(TBand(Settings._band - 1)) + 1;
+
       ModeGroup.ItemIndex := Settings._mode;
       { OpListBox.Items := OpList; }
 

@@ -554,43 +554,9 @@ begin
          if com = 'POWER' then begin
             _bnd := b19;
             for i := 1 to length(opr) do begin
-               case opr[i] of
-                  'A':
-                     dmZlogGlobal.CurrentPower[_bnd] := p010;
-                  'B':
-                     dmZlogGlobal.CurrentPower[_bnd] := p025;
-                  'C':
-                     dmZlogGlobal.CurrentPower[_bnd] := p050;
-                  'D':
-                     dmZlogGlobal.CurrentPower[_bnd] := p100;
-                  'E':
-                     dmZlogGlobal.CurrentPower[_bnd] := p500;
-                  'O':
-                     dmZlogGlobal.CurrentPower[_bnd] := p001;
-                  'F':
-                     dmZlogGlobal.CurrentPower[_bnd] := p005;
-                  'N':
-                     dmZlogGlobal.CurrentPower[_bnd] := p002;
-                  'T':
-                     dmZlogGlobal.CurrentPower[_bnd] := p020;
-                  'W':
-                     dmZlogGlobal.CurrentPower[_bnd] := p200;
-                  'K':
-                     dmZlogGlobal.CurrentPower[_bnd] := p1000;
-                  'X':
-                     dmZlogGlobal.CurrentPower[_bnd] := p1000;
-                  'P':
-                     dmZlogGlobal.CurrentPower[_bnd] := pwrP;
-                  'L':
-                     dmZlogGlobal.CurrentPower[_bnd] := pwrL;
-                  'M':
-                     dmZlogGlobal.CurrentPower[_bnd] := pwrM;
-                  'H':
-                     dmZlogGlobal.CurrentPower[_bnd] := pwrH;
-                  '-': begin
-                     dmZlogGlobal.CurrentPower[_bnd] := pwrP;
-                     MainForm.HideBandMenu(_bnd);
-                  end;
+               // パワーコードは無視するが、-だけ互換性のため参照
+               if opr[i] = '-' then begin
+                  MainForm.HideBandMenu(_bnd);
                end;
 
                if _bnd < HiBand then begin
