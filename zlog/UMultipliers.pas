@@ -156,6 +156,10 @@ begin
       C.CountryName := 'Unknown';
       Add(C);
 
+      if FileExists(strFileName) = False then begin
+         Exit;
+      end;
+
       mem.LoadFromFile(strFileName);
       mem.Position := 0;
 
@@ -553,10 +557,6 @@ var
    strFileName: string;
 begin
    strFileName := ExtractFilePath(Application.ExeName) + 'CTY.DAT';
-   if FileExists(strFileName) = False then begin
-      Result := False;
-      Exit;
-   end;
 
    // カントリーリストをロード
    CountryList.LoadFromFile(strFileName);
