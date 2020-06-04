@@ -80,7 +80,7 @@ object formKeyEditDlg: TformKeyEditDlg
     Top = 67
     Width = 385
     Height = 57
-    Caption = 'A'#65374'Z'
+    Caption = 'A'#65374'Z'#12461#12540
     TabOrder = 1
     object comboAlphabetKey: TComboBox
       Left = 16
@@ -152,7 +152,7 @@ object formKeyEditDlg: TformKeyEditDlg
     Top = 136
     Width = 385
     Height = 57
-    Caption = #12381#12398#20182
+    Caption = #29305#27530#12461#12540
     TabOrder = 2
     object comboOtherKey: TComboBox
       Left = 16

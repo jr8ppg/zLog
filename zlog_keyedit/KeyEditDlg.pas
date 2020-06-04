@@ -52,16 +52,15 @@ implementation
 
 procedure TformKeyEditDlg.buttonOKClick(Sender: TObject);
 begin
-{
-   if comboAlphabetKey.ItemIndex >= 0 then begin
+   if comboAlphabetKey.ItemIndex > 0 then begin
       if (checkAlphabetAndCtrl.Checked = False) and
-         (checkAlphabetAndShift.Checked = True) and
+         (checkAlphabetAndShift.Checked = False) and
          (checkAlphabetAndAlt.Checked = False) then begin
-         MessageBox(Handle, PChar('A～ZキーはShiftキーのみとは組み合わせできません'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         MessageBox(Handle, PChar('A～Zキーは単独では設定できません'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          Exit;
       end;
    end;
-}
+
    ModalResult := mrOK
 end;
 
