@@ -144,31 +144,26 @@ var
    Diff: TDateTime;
 begin
    for i := 0 to BSList2.Count - 1 do begin
-      BS := TBSData(BSList2[i]);
+      BS := BSList2[i];
 
       if (BS.Call = D.Call) and (BS.Band = D.Band) then begin
-         BS.Free;
          BSList2[i] := nil;
          Continue;
       end;
 
       if round(BS.FreqHz / 100) = round(D.FreqHz / 100) then begin
-         BS.Free;
          BSList2[i] := nil;
          Continue;
       end;
 
       Diff := Now - BS.Time;
       if Diff * 24 * 60 > 1.00 * dmZlogGlobal.Settings._bsexpire then begin
-         BS.Free;
          BSList2[i] := nil;
       end;
    end;
 
    BSList2.Pack;
    AddBSList(D);
-   // FormPaint(Self);
-//   BSRefresh(Self);
 end;
 
 procedure TBandScope2.CreateBSData(aQSO: TQSO; Hz: LongInt);
@@ -281,14 +276,24 @@ begin
          end;
       end;
 
-      str := D.LabelStr;
+      str := FillRight(D.LabelStr, 20);
+
+      if D.ClusterData then begin
+         str := str + '+ ';
+      end
+      else begin
+         str := str + '  ';
+      end;
+
+      if D.CQ = True then begin
+         str := str + 'CQ';
+      end
+      else begin
+         str := str + '  ';
+      end;
 
       Grid.Cells[0, R] := str;
       Grid.Objects[0, R] := D;
-
-      if D.ClusterData then begin
-         str := FillRight(str, 20) + '+';
-      end;
 
       if (Main.CurrentQSO.CQ = false) and ((D.FreqHz - CurrentRigFrequency) <= 100) then begin
          MainForm.AutoInput(D);
@@ -367,7 +372,6 @@ end;
 procedure TBandScope2.DeleteFromBSList(i: Integer);
 begin
    if (i >= 0) and (i < BSList2.Count) then begin
-      TBSData(BSList2[i]).Free;
       BSList2[i] := nil;
       BSList2.Pack;
    end;
@@ -434,7 +438,6 @@ begin
       if D.Band = FCurrBand then begin
          if D.Worked then begin
             BSList2[i] := nil;
-            D.Free;
          end;
       end;
    end;
@@ -467,7 +470,6 @@ procedure TBandScope2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    if ArrayNumber > 0 then begin
       BandScopeArray[ArrayNumber] := nil;
-      Free;
    end;
 end;
 

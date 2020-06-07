@@ -69,7 +69,7 @@ type
     procedure SetFontSize(v: Integer);
   public
     { Public declarations }
-    SpotList : TList;
+    SpotList : TSpotList;
     procedure DeleteSpot(_from, _to : integer);
     procedure AddListBox(S : string);
     procedure RenewListBox;
@@ -113,7 +113,6 @@ begin
       exit;
 
    for i := _from to _to do begin
-      TSpot(SpotList[_from]).Free;
       SpotList.Delete(_from);
       ListBox.Items.Delete(_from);
    end;
@@ -271,7 +270,7 @@ end;
 procedure TCommForm.FormCreate(Sender: TObject);
 begin
    _RelayPacketData := False;
-   SpotList := TList.Create;
+   SpotList := TSpotList.Create;
    CommStarted := False;
    CommBuffer := TStringList.Create;
    CommTemp := '';
@@ -306,7 +305,7 @@ begin
 //   _TopRow := ListBox.TopIndex;
    ListBox.Clear;
    for i := 0 to SpotList.Count - 1 do begin
-      ListBox.Items.Add(TSpot(SpotList[i]).ClusterSummary);
+      ListBox.Items.Add(SpotList[i].ClusterSummary);
       SpotIndex[i] := i;
    end;
 
@@ -356,10 +355,9 @@ begin
    Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
 
    for i := 0 to SpotList.Count - 1 do begin
-      S := TSpot(SpotList[i]);
+      S := SpotList[i];
       if Now - S.Time > Expire then begin
          SpotList[i] := nil;
-         S.Free;
          _deleted := true;
       end;
 
@@ -406,6 +404,7 @@ begin
    D.NewZone := Sp.NewZone;
    D.Worked := Sp.Worked;
    D.ClusterData := True;
+   D.CQ := Sp.CQ;
    MainForm.BandScope2.AddAndDisplay(D);
 end;
 
@@ -482,15 +481,10 @@ begin
 end;
 
 procedure TCommForm.FormDestroy(Sender: TObject);
-var
-   i: Integer;
 begin
    inherited;
    ClusterComm.Disconnect;
    ClusterComm.Free;
-   for i := 0 to SpotList.Count - 1 do begin
-      TSpot(SpotList[i]).Free();
-   end;
    SpotList.Free();
    CommBuffer.Free();
 end;
@@ -588,7 +582,7 @@ begin
       exit;
    end;
 
-   Sp := TSpot(SpotList[i]);
+   Sp := SpotList[i];
 
    if Sp.FreqHz > 0 then begin
       if MainForm.RigControl.Rig <> nil then begin
@@ -639,7 +633,7 @@ begin
       YOffset := (H - Abs(TListBox(Control).Font.Height)) div 2;
 
       S := (Control as TListBox).Items[Index];
-      if TSpot(SpotList[Index]).NewMulti then begin
+      if SpotList[Index].NewMulti then begin
          if odSelected in State then begin
             Font.Color := clFuchsia;
          end
@@ -648,7 +642,7 @@ begin
          end;
       end
       else begin
-         if TSpot(SpotList[Index]).Worked then begin
+         if SpotList[Index].Worked then begin
             if odSelected in State then begin
                Font.Color := clWhite;
             end

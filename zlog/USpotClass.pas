@@ -2,7 +2,10 @@ unit USpotClass;
 
 interface
 
-uses SysUtils, Windows, Classes, UzLogConst, UzLogGlobal, UzLogQSO;
+uses
+  SysUtils, Windows, Classes,
+  Generics.Collections, Generics.Defaults,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TBaseSpot = class
@@ -18,6 +21,7 @@ type
     Band : TBand;
     Mode : TMode;
     ClusterData : boolean; // true if data from PacketCluster
+    CQ: Boolean;
     constructor Create; virtual;
     function FreqKHzStr : string;
     function NewMulti : boolean; // newcty or newzone
@@ -46,8 +50,18 @@ type
     procedure FromText(S : string); override;
   end;
 
+  TSpotList = class(TObjectList<TSpot>)
+  public
+    constructor Create(OwnsObjects: Boolean = True);
+  end;
+
+  TBSList = class(TObjectList<TBSData>)
+  public
+    constructor Create(OwnsObjects: Boolean = True);
+  end;
+
 var
-  BSList2 : TList;
+  BSList2: TBSList;
 
 implementation
 
@@ -65,6 +79,7 @@ begin
    Band := b19;
    Mode := mCW;
    ClusterData := False;
+   CQ := False;
 end;
 
 constructor TSpot.Create;
@@ -103,6 +118,10 @@ begin
    if length(S) < 5 then
       exit;
 
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('[' + S + ']'));
+   {$ENDIF}
+
    temp := TrimRight(TrimLeft(S));
 
    i := pos('DX de', temp);
@@ -111,6 +130,10 @@ begin
    end;
 
    if pos('DX de', temp) = 1 then begin
+      //0000000001111111111222222222233333333334444444444555555555566666666667
+      //1234567890123456789012345678901234567890123456789012345678901234567890
+      //DX de W1NT-6-#:  14045.0  V3MIWTJ      CW 16 dB 21 WPM CQ             1208Z
+      //DX de W3LPL-#:   14010.6  SM5DYC       CW 14 dB 22 WPM CQ             1208Z
       i := pos(':', temp);
       if i > 0 then begin
          temp2 := copy(temp, 7, i - 7);
@@ -151,6 +174,12 @@ begin
       end;
 
       Delete(temp, 1, i);
+
+      // CQ/DE
+      temp := TrimLeft(temp);
+      if Copy(temp, 17, 2) = 'CQ' then begin
+         CQ := True;
+      end;
 
       for i := length(temp) downto 1 do begin
          if temp[i] = ' ' then begin
@@ -276,61 +305,58 @@ function TBSData.InText : string;
     Time : TDateTime;
     LabelRect : TRect;  *)
 var
-   S : string;
-const
-   xx = '%';
+   SL: TStringList;
 begin
-   S := Call + xx + IntToStr(FreqHz) + xx + IntToStr(Ord(Band)) + xx + IntToStr(Ord(Mode)) + xx + FloatToStr(Time);
-   Result := S;
+   SL := TStringList.Create();
+   SL.Delimiter := '%';
+   SL.StrictDelimiter := True;
+   try
+      SL.Add(Call);
+      SL.Add(IntToStr(FreqHz));
+      SL.Add(IntToStr(Ord(Band)));
+      SL.Add(IntToStr(Ord(Mode)));
+      SL.Add(FloatToStr(Time));
+      SL.Add(ZBoolToStr(CQ));
+      Result := SL.DelimitedText;
+   finally
+      SL.Free();
+   end;
 end;
 
 procedure TBSData.FromText(S : string);
 var
-   str, wstr : string;
-   p : integer;
+   SL: TStringList;
 begin
-   str := S;
-
-   p := pos('%', str);
-   wstr := copy(str, 1, p-1);
-   Call := wstr;
-   Delete(str, 1, p);
-
-   p := pos('%', str);
-   wstr := copy(str, 1, p-1);
-   FreqHz := StrToIntDef(wstr, 0);
-   Delete(str, 1, p);
-
-   p := pos('%', str);
-   wstr := copy(str, 1, p-1);
-   Band := TBand(StrToIntDef(wstr, Integer(b19)));
-   Delete(str, 1, p);
-
-   p := pos('%', str);
-   wstr := copy(str, 1, p-1);
-   Mode := TMode(StrToIntDef(wstr, Integer(mCW)));
-
-   wstr := str;
+   SL := TStringList.Create();
+   SL.Delimiter := '%';
+   SL.StrictDelimiter := True;
    try
-      Time := StrToFloat(wstr);
-   except
+      SL.DelimitedText := S + '%%%%%%';
+      Call := SL[0];
+      FreqHz := StrToIntDef(SL[1], 0);
+      Band := TBand(StrToIntDef(SL[2], Integer(b19)));
+      Mode := TMode(StrToIntDef(SL[3], Integer(mCW)));
+      Time := StrToFloatDef(SL[4], 0);
+      CQ := ZStrToBool(SL[5]);
+   finally
+      SL.Free();
    end;
 end;
 
-procedure FreeBSList();
-var
-   i: Integer;
+constructor TSpotList.Create(OwnsObjects: Boolean);
 begin
-   for i := 0 to BSList2.Count - 1 do begin
-      TBSData(BSList2[i]).Free();
-   end;
-   BSList2.Free();
+   Inherited Create(OwnsObjects);
+end;
+
+constructor TBSList.Create(OwnsObjects: Boolean);
+begin
+   Inherited Create(OwnsObjects);
 end;
 
 initialization
-   BSList2 := TList.Create;
+   BSList2 := TBSList.Create;
 
 finalization
-   FreeBSList();
+   BSList2.Free();
 
 end.
