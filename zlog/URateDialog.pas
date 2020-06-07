@@ -152,13 +152,13 @@ begin
 
    k := 0;
    repeat
-      aQSO := Log.QsoList[k];
+      aQSO := Log.QsoList[i];
       if aQSO.TX = mytx then begin
          inc(k);
       end;
 
       dec(i)
-   until (i = 0) or (k = 10);
+   until (i = 1) or (k = 10);
 
    if (k = 10) then begin
       Last := aQSO.time;
@@ -182,7 +182,7 @@ begin
          inc(k);
       end;
       dec(i)
-   until (i = 0) or (k = 100);
+   until (i = 1) or (k = 100);
 
    if k = 100 then begin
       Last := aQSO.time;
