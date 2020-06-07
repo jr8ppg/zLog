@@ -7988,9 +7988,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #71 ToggleRIG ---'));
    {$ENDIF}
-   if RigControl.Rig <> nil then begin
-      RigControl.ToggleCurrentRig;
-   end;
+   RigControl.ToggleCurrentRig;
 end;
 
 // #72 BandScope

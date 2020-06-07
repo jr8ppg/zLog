@@ -542,6 +542,14 @@ begin
       Exit;
    end;
 
+   if (N = 1) or (N = 2) then begin
+      FCurrentRig := FRigs[N];
+   end
+   else begin
+      FCurrentRig := nil;
+   end;
+
+
    if FCurrentRig <> nil then begin
       str := Main.CurrentQSO.Callsign;
       if length(str) > 0 then begin
@@ -1508,7 +1516,7 @@ end;
 
 function TRig.CurrentFreqkHzStr: string;
 begin
-   Result := IntToStr(CurrentFreqKHz);
+   Result := UzLogGlobal.kHzStr(CurrentFreqHz);
 end;
 
 procedure TRig.PassOnRxData(S: AnsiString);
