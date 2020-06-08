@@ -516,6 +516,10 @@ object formOptions: TformOptions
     end
     object tabsheetCategories: TTabSheet
       Caption = 'Categories'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label14: TLabel
         Left = 248
         Top = 92
@@ -762,6 +766,10 @@ object formOptions: TformOptions
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -1190,6 +1198,10 @@ object formOptions: TformOptions
     object tabsheetVoice: TTabSheet
       Caption = 'Voice'
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 8
         Top = 8
@@ -1479,6 +1491,10 @@ object formOptions: TformOptions
     end
     object tabsheetHardware: TTabSheet
       Caption = 'Hardware'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox6: TGroupBox
         Left = 5
         Top = 0
@@ -1840,6 +1856,10 @@ object formOptions: TformOptions
     end
     object tabsheetRigControl: TTabSheet
       Caption = 'Rig control'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label45: TLabel
         Left = 8
         Top = 138
@@ -1923,8 +1943,10 @@ object formOptions: TformOptions
     end
     object tabsheetPath: TTabSheet
       Caption = 'Path'
-      ExplicitLeft = 8
-      ExplicitTop = 22
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label50: TLabel
         Left = 16
         Top = 18
@@ -2022,42 +2044,42 @@ object formOptions: TformOptions
     object tabsheetMisc: TTabSheet
       Caption = 'Misc'
       object Label47: TLabel
-        Left = 16
-        Top = 88
+        Left = 125
+        Top = 23
         Width = 117
         Height = 13
         Caption = 'Max super check search'
       end
       object Label48: TLabel
-        Left = 16
-        Top = 113
+        Left = 125
+        Top = 48
         Width = 138
         Height = 13
         Caption = 'Delete band scope data after'
       end
       object Label49: TLabel
-        Left = 216
-        Top = 113
+        Left = 325
+        Top = 48
         Width = 16
         Height = 13
         Caption = 'min'
       end
       object Label52: TLabel
-        Left = 16
-        Top = 140
+        Left = 125
+        Top = 75
         Width = 102
         Height = 13
         Caption = 'Delete spot data after'
       end
       object Label53: TLabel
-        Left = 216
-        Top = 137
+        Left = 325
+        Top = 72
         Width = 16
         Height = 13
         Caption = 'min'
       end
       object rgSearchAfter: TRadioGroup
-        Left = 16
+        Left = 9
         Top = 8
         Width = 105
         Height = 73
@@ -2071,8 +2093,8 @@ object formOptions: TformOptions
         TabStop = True
       end
       object spMaxSuperHit: TSpinEdit
-        Left = 160
-        Top = 86
+        Left = 269
+        Top = 21
         Width = 49
         Height = 22
         MaxValue = 99999
@@ -2081,8 +2103,8 @@ object formOptions: TformOptions
         Value = 1
       end
       object spBSExpire: TSpinEdit
-        Left = 160
-        Top = 110
+        Left = 269
+        Top = 45
         Width = 49
         Height = 22
         AutoSize = False
@@ -2097,11 +2119,11 @@ object formOptions: TformOptions
         Width = 161
         Height = 17
         Caption = 'Update using a thread'
-        TabOrder = 6
+        TabOrder = 7
       end
       object spSpotExpire: TSpinEdit
-        Left = 160
-        Top = 134
+        Left = 269
+        Top = 69
         Width = 49
         Height = 22
         AutoSize = False
@@ -2111,22 +2133,22 @@ object formOptions: TformOptions
         Value = 60
       end
       object cbDisplayDatePartialCheck: TCheckBox
-        Left = 16
-        Top = 163
+        Left = 125
+        Top = 98
         Width = 169
         Height = 17
         Caption = 'Display date in partial check'
         TabOrder = 4
       end
       object GroupBox8: TGroupBox
-        Left = 16
-        Top = 192
-        Width = 317
+        Left = 9
+        Top = 133
+        Width = 329
         Height = 74
         Caption = 'Super Check'
         TabOrder = 5
         object buttonSuperCheckFolderRef: TSpeedButton
-          Left = 291
+          Left = 301
           Top = 43
           Width = 21
           Height = 21
@@ -2156,7 +2178,7 @@ object formOptions: TformOptions
         object editSuperCheckFolder: TEdit
           Left = 12
           Top = 43
-          Width = 273
+          Width = 286
           Height = 21
           TabOrder = 3
           OnChange = OnNeedSuperCheckLoad
@@ -2171,10 +2193,70 @@ object formOptions: TformOptions
           OnClick = OnNeedSuperCheckLoad
         end
       end
+      object GroupBox5: TGroupBox
+        Left = 9
+        Top = 213
+        Width = 329
+        Height = 50
+        Caption = 'N+1'
+        TabOrder = 6
+        object checkHighlightFullmatch: TCheckBox
+          Left = 12
+          Top = 22
+          Width = 113
+          Height = 17
+          Caption = 'Highlight FullMatch'
+          TabOrder = 0
+        end
+        object editFullmatchColor: TEdit
+          Left = 131
+          Top = 20
+          Width = 89
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 1
+          Text = 'CALLSIGN'
+        end
+        object buttonFullmatchSelectColor: TButton
+          Left = 226
+          Top = 20
+          Width = 49
+          Height = 20
+          Caption = 'Color...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 2
+          OnClick = buttonFullmatchSelectColorClick
+        end
+        object buttonFullmatchInitColor: TButton
+          Left = 281
+          Top = 20
+          Width = 41
+          Height = 20
+          Caption = 'Reset'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 3
+          OnClick = buttonFullmatchInitColorClick
+        end
+      end
     end
     object tabsheetQuickQSY: TTabSheet
       Caption = 'Quick QSY'
       ImageIndex = 8
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label54: TLabel
         Left = 98
         Top = 3
@@ -2451,5 +2533,9 @@ object formOptions: TformOptions
   object OpenDialog1: TOpenDialog
     Left = 280
     Top = 312
+  end
+  object ColorDialog1: TColorDialog
+    Left = 16
+    Top = 325
   end
 end

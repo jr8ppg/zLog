@@ -259,6 +259,12 @@ type
     comboPower2400: TComboBox;
     comboPower5600: TComboBox;
     comboPower10g: TComboBox;
+    GroupBox5: TGroupBox;
+    checkHighlightFullmatch: TCheckBox;
+    editFullmatchColor: TEdit;
+    buttonFullmatchSelectColor: TButton;
+    buttonFullmatchInitColor: TButton;
+    ColorDialog1: TColorDialog;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -291,6 +297,8 @@ type
     procedure checkUseQuickQSYClick(Sender: TObject);
     procedure buttonSuperCheckFolderRefClick(Sender: TObject);
     procedure OnNeedSuperCheckLoad(Sender: TObject);
+    procedure buttonFullmatchSelectColorClick(Sender: TObject);
+    procedure buttonFullmatchInitColorClick(Sender: TObject);
   private
     FCWEditMode: Integer;
     TempVoiceFiles : array[1..10] of string;
@@ -558,6 +566,8 @@ begin
          Settings.FSuperCheck.FSuperCheckMethod := 2;
       end;
       Settings.FSuperCheck.FSuperCheckFolder := editSuperCheckFolder.Text;
+      Settings.FSuperCheck.FFullMatchHighlight := checkHighlightFullmatch.Checked;
+      Settings.FSuperCheck.FFullMatchColor := editFullmatchColor.Color;
    end;
 end;
 
@@ -804,6 +814,8 @@ begin
          else radioSuperCheck2.Checked := True;
       end;
       editSuperCheckFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
+      checkHighlightFullmatch.Checked := Settings.FSuperCheck.FFullMatchHighlight;
+      editFullmatchColor.Color := Settings.FSuperCheck.FFullMatchColor;
    end;
 
    if FCWEditMode = 0 then begin
@@ -1241,6 +1253,19 @@ begin
    dmZlogGlobal.MakeRigList(comboRig1Name.Items);
 
    comboRig2Name.Items.Assign(comboRig1Name.Items);
+end;
+
+procedure TformOptions.buttonFullmatchSelectColorClick(Sender: TObject);
+begin
+   ColorDialog1.Color := editFullmatchColor.Color;
+   if ColorDialog1.Execute = True then begin
+      editFullmatchColor.Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions.buttonFullmatchInitColorClick(Sender: TObject);
+begin
+   editFullmatchColor.Color := clYellow;
 end;
 
 end.
