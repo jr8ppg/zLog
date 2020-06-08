@@ -135,6 +135,7 @@ begin
          FCountData[t][b].FQso := 0;
          FCountData[t][b].FCw := 0;
          FCountData[t][b].FMulti := 0;
+         FCountData[t][b].FPts := 0;
       end;
    end;
 end;
@@ -150,6 +151,8 @@ var
    dt: TDateTime;
    offset_hour: Integer;
 begin
+   InitTimeChart();
+
    if Log.Count = 1 then begin
       Exit;
    end;
@@ -269,7 +272,7 @@ begin
       end;
    end;
    strText := strText + '|';
-   strText := strText + RightStr('    ' + IntToStr(FCountData[25][TBand(17)].FQso), 4);
+//   strText := strText + RightStr('    ' + IntToStr(FCountData[25][TBand(17)].FQso), 4);
    sl.Add(strText);
 end;
 
