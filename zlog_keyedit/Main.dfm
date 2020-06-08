@@ -49,6 +49,7 @@ object formMain: TformMain
           '#91 '#12497#12527#12540#12467#12540#12489#22793#26356'=Shift+P'
           '#93 '#20102#35299#24230'(R)'#22793#26356'=Shift+R'
           '#94 '#20449#21495#24375#24230'(S)'#22793#26356'=Shift+S'
+          '#100 '#26368#24460#12398#20132#20449#12398#32232#38598'=Alt+L'
           '')
         TabOrder = 0
         TitleCaptions.Strings = (
@@ -63,10 +64,6 @@ object formMain: TformMain
     object TabSheet2: TTabSheet
       Caption = #24773#22577#34920#31034
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 391
       object vleInformation: TValueListEditor
         Left = 0
         Top = 0
@@ -105,7 +102,6 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
-        ExplicitHeight = 391
         ColWidths = (
           448
           96)
@@ -114,10 +110,6 @@ object formMain: TformMain
     object TabSheet3: TTabSheet
       Caption = 'CW'#12461#12540#12452#12531#12464
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleCWKeying: TValueListEditor
         Left = 0
         Top = 0
@@ -194,10 +186,6 @@ object formMain: TformMain
     object TabSheet5: TTabSheet
       Caption = #20837#21147#12392#32232#38598
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 391
       object vleEdit: TValueListEditor
         Left = 0
         Top = 0
@@ -229,7 +217,6 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
-        ExplicitHeight = 391
         ColWidths = (
           448
           113)
@@ -238,10 +225,6 @@ object formMain: TformMain
     object TabSheet6: TTabSheet
       Caption = #20107#24460#20837#21147
       ImageIndex = 5
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vlePostContest: TValueListEditor
         Left = 0
         Top = 0
@@ -266,10 +249,6 @@ object formMain: TformMain
     object TabSheet7: TTabSheet
       Caption = #12381#12398#20182
       ImageIndex = 6
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 391
       object vleOther: TValueListEditor
         Left = 0
         Top = 0
@@ -287,7 +266,6 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
-        ExplicitHeight = 391
         ColWidths = (
           448
           113)

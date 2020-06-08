@@ -87,7 +87,7 @@ const
   pwrH = TPower(3);
 
 const
-  default_primary_shortcut: array[0..99] of string = (
+  default_primary_shortcut: array[0..100] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -187,10 +187,11 @@ const
     'Shift+U',
     'Shift+Y',
     'Shift+Z',
-    ''                  // #99
+    '',                 // #99
+    'Alt+L'             // #100
   );
 
-  default_secondary_shortcut: array[0..99] of string = (
+  default_secondary_shortcut: array[0..100] of string = (
     '',                 // #00
     '',
     '',
@@ -290,7 +291,8 @@ const
     '',
     '',
     '',
-    ''                  // #99
+    '',                 // #99
+    ''                  // #100
   );
 
 implementation

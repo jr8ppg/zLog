@@ -283,7 +283,7 @@ var
    N: Integer;
 begin
    for i := 1 to vle.RowCount - 1 do begin
-      N := StrToIntDef(Copy(vle.Cells[0, i], 2, 2), -1);
+      N := StrToIntDef(Copy(vle.Cells[0, i], 2, 3), -1);
       if N = -1 then begin
          Continue;
       end;
@@ -301,7 +301,7 @@ begin
    slText := TStringList.Create();
    try
       for i := 1 to vle.RowCount - 1 do begin
-         N := StrToIntDef(Copy(vle.Cells[0, i], 2, 2), -1);
+         N := StrToIntDef(Copy(vle.Cells[0, i], 2, 3), -1);
          if N = -1 then begin
             Continue;
          end;

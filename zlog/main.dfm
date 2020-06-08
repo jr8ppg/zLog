@@ -5281,6 +5281,11 @@ object MainForm: TMainForm
       ShortCut = 8278
       OnExecute = actionToggleVFOExecute
     end
+    object actionEditLastQSO: TAction
+      Caption = 'actionEditLastQSO'
+      ShortCut = 32844
+      OnExecute = actionEditLastQSOExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual
