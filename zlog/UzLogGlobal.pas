@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
-  System.Math,
+  System.Math, Vcl.Graphics,
   UzLogKeyer, UzlogConst, UzLogQSO;
 
 type
@@ -47,6 +47,8 @@ type
   TSuperCheckParam = record
     FSuperCheckMethod: Integer;
     FSuperCheckFolder: string;
+    FFullMatchHighlight: Boolean;
+    FFullMatchColor: TColor;
   end;
 
   TSettingsParam = record
@@ -295,6 +297,12 @@ function PartialMatch2(strCompare, strTarget: string): Boolean;
 
 function ZBoolToStr(fValue: Boolean): string;
 function ZStrToBool(strValue: string): Boolean;
+
+function ZStringToColorDef(str: string; defcolor: TColor): TColor;
+
+function LD(S, T: string): Integer;
+function LD_dp(str1, str2: string): Integer;
+function LD_ond(str1, str2: string): Integer;
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -783,6 +791,8 @@ begin
       // SuperCheck
       Settings.FSuperCheck.FSuperCheckMethod := ini.ReadInteger('SuperCheck', 'Method', 0);
       Settings.FSuperCheck.FSuperCheckFolder := ini.ReadString('SuperCheck', 'Folder', '');
+      Settings.FSuperCheck.FFullMatchHighlight := ini.ReadBool('SuperCheck', 'FullMatchHighlight', True);
+      Settings.FSuperCheck.FFullMatchColor := ZStringToColorDef(ini.ReadString('SuperCheck', 'FullMatchColor', '$7fffff'), clYellow);
    finally
       ini.Free();
       slParam.Free();
@@ -1109,6 +1119,8 @@ begin
       // SuperCheck
       ini.WriteInteger('SuperCheck', 'Method', Settings.FSuperCheck.FSuperCheckMethod);
       ini.WriteString('SuperCheck', 'Folder', Settings.FSuperCheck.FSuperCheckFolder);
+      ini.WriteBool('SuperCheck', 'FullMatchHighlight', Settings.FSuperCheck.FFullMatchHighlight);
+      ini.WriteString('SuperCheck', 'FullMatchColor', ColorToString(Settings.FSuperCheck.FFullMatchColor));
    finally
       ini.Free();
       slParam.Free();
@@ -2376,6 +2388,16 @@ begin
    end
    else begin
       Result := True;
+   end;
+end;
+
+function ZStringToColorDef(str: string; defcolor: TColor): TColor;
+begin
+   if StrToIntDef( str, -1 ) >= 0 then begin
+      Result := StringToColor( str );
+   end
+   else begin
+      Result := defcolor;
    end;
 end;
 

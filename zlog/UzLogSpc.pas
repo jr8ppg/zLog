@@ -7,7 +7,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  StdCtrls, Generics.Collections, Generics.Defaults,
+  StdCtrls, System.Math, Generics.Collections, Generics.Defaults,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
@@ -71,6 +71,32 @@ type
   public
     constructor Create(ASuperList: TSuperList; APSuperListTwoLetterMatrix: PTSuperListTwoLetterMatrix);
     property SuperList: TSuperList read FSuperList write FSuperList;
+  end;
+
+  TSuperResult = class(TObject)
+     FPartialStr: string;
+     FEditDistance: Integer;
+     FScore: Extended;
+  public
+    constructor Create(); overload;
+    constructor Create(str: string; editdistance: Integer; score: Extended); overload;
+    property PartialStr: string read FPartialStr write FPartialStr;
+    property EditDistance: Integer read FEditDistance write FEditDistance;
+    property Score: Extended read FScore write FScore;
+  end;
+
+  TSuperResultComparer1 = class(TComparer<TSuperResult>)
+  public
+    function Compare(const Left, Right: TSuperResult): Integer; override;
+  end;
+
+  TSuperResultList = class(TObjectList<TSuperResult>)
+  private
+    FScoreComparer: TSuperResultComparer1;
+  public
+    constructor Create(OwnsObjects: Boolean = True);
+    destructor Destroy(); override;
+    procedure SortByScore();
   end;
 
 const
@@ -188,27 +214,52 @@ procedure TSuperCheckNPlusOneThread.Execute();
 var
    i: Integer;
    sd: TSuperData;
-   hit: Integer;
    maxhit: Integer;
+   n: Integer;
+   score: Extended;
+   L: TSuperResultList;
+   R: TSuperResult;
 begin
-   ListBox.Items.Clear();
-   maxhit := dmZlogGlobal.Settings._maxsuperhit;
-   hit := 0;
-   for i := 0 to FSuperList.Count - 1 do begin
-      if Terminated = True then begin
-         Break;
+   L := TSuperResultList.Create();
+   try
+      ListBox.Items.Clear();
+      maxhit := dmZlogGlobal.Settings._maxsuperhit;
+      for i := 0 to FSuperList.Count - 1 do begin
+         if Terminated = True then begin
+            Break;
+         end;
+
+         sd := TSuperData(FSuperList[i]);
+
+         // レーベンシュタイン距離を求める
+         n := LD_dp(sd.Callsign, FPartialStr);
+
+         // レーベンシュタイン距離から類似度を算出
+         score := n / Max(Length(sd.Callsign), Length(FPartialStr));
+
+         // 0なら一致
+         // 0.1667 １文字不一致
+         // 0.3333 ２文字不一致
+         // 0.5000 ３文字不一致
+         if score < 0.3 then begin
+            R := TSuperResult.Create(sd.Callsign, n, score);
+            L.Add(R);
+         end;
       end;
 
-      sd := TSuperData(FSuperList[i]);
-      if PartialMatch2(FPartialStr, sd.Callsign) then begin
-         ListBox.Items.Add(sd.Callsign);
+      // スコア順に並び替え
+      L.SortByScore();
 
-         Inc(hit);
+      for i := 0 to Min(l.Count - 1, maxhit) do begin
+         if L[i].EditDistance = 0 then begin
+            ListBox.Items.Add('*' + L[i].PartialStr);
+         end
+         else begin
+            ListBox.Items.Add(L[i].PartialStr);
+         end;
       end;
-
-      if hit >= maxhit then begin
-         break;
-      end;
+   finally
+      L.Free();
    end;
 end;
 
@@ -440,6 +491,55 @@ begin
          sd2.Free();
       end;
    end;
+end;
+
+constructor TSuperResult.Create();
+begin
+   Inherited;
+   FPartialStr := '';
+   FEditDistance := 0;
+   FScore := 0;
+end;
+
+constructor TSuperResult.Create(str: string; editdistance: Integer; score: Extended);
+begin
+   Inherited Create();
+   FPartialStr := str;
+   FEditDistance := editdistance;
+   FScore := score;
+end;
+
+function TSuperResultComparer1.Compare(const Left, Right: TSuperResult): Integer;
+var
+   r: Extended;
+begin
+   r := Left.Score - Right.Score;
+   if r < 0 then begin
+      Result := -1;
+   end
+   else if r > 0 then begin
+      Result := 1;
+   end
+   else begin
+      Result := 0;
+   end;
+end;
+
+constructor TSuperResultList.Create(OwnsObjects: Boolean = True);
+begin
+   Inherited Create(OwnsObjects);
+   FScoreComparer := TSuperResultComparer1.Create();
+end;
+
+destructor TSuperResultList.Destroy();
+begin
+   Inherited;
+   FScoreComparer.Free();
+end;
+
+procedure TSuperResultList.SortByScore();
+begin
+   Sort(FScoreComparer);
 end;
 
 end.

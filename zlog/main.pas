@@ -975,6 +975,8 @@ type
     procedure HideBandMenuWARC();
     procedure HideBandMenuVU(fInclude50: Boolean = True);
 
+    procedure HighlightCallsign(fHighlight: Boolean);
+
     property RigControl: TRigControl read FRigControl;
     property PartialCheck: TPartialCheck read FPartialCheck;
     property RateDialog: TRateDialog read FRateDialog;
@@ -8512,6 +8514,8 @@ begin
       Exit;
    end;
 
+   HighlightCallsign(False);
+
    PartialStr := aQSO.callsign;
 
    // ,で始まるコマンド
@@ -8564,6 +8568,18 @@ begin
    CallsignEdit.Text := TMenuItem(Sender).Caption;
    CallSignEdit.SelStart := Length(CallsignEdit.Text);
 end;
+
+procedure TMainForm.HighlightCallsign(fHighlight: Boolean);
+begin
+   if (dmZlogGlobal.Settings.FSuperCheck.FFullMatchHighlight = True) and
+      (fHighlight = True) then begin
+      CallsignEdit.Color := dmZlogGlobal.Settings.FSuperCheck.FFullMatchColor;
+   end
+   else begin
+      CallsignEdit.Color := clWindow;
+   end;
+end;
+
 
 end.
 

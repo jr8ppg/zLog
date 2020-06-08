@@ -78,6 +78,7 @@ object SuperCheck2: TSuperCheck2
     Top = 0
     Width = 234
     Height = 77
+    Style = lbOwnerDrawVariable
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -88,5 +89,7 @@ object SuperCheck2: TSuperCheck2
     ParentFont = False
     TabOrder = 1
     OnDblClick = ListBoxDblClick
+    OnDrawItem = ListBoxDrawItem
+    OnMeasureItem = ListBoxMeasureItem
   end
 end

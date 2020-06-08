@@ -24,6 +24,10 @@ type
     procedure SpinEditChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer;
+      var Height: Integer);
+    procedure ListBoxDrawItem(Control: TWinControl; Index: Integer; Rect: TRect;
+      State: TOwnerDrawState);
   private
     { Private declarations }
     function GetItems(): TStringList;
@@ -126,6 +130,57 @@ begin
    end;
 
    MainForm.CallsignEdit.Text := str;
+end;
+
+procedure TSuperCheck2.ListBoxDrawItem(Control: TWinControl; Index: Integer;
+  Rect: TRect; State: TOwnerDrawState);
+var
+   XOffSet: Integer;
+   YOffSet: Integer;
+   S: string;
+   H: Integer;
+begin
+   with (Control as TListBox).Canvas do begin
+      FillRect(Rect); { clear the rectangle }
+      XOffSet := 2; { provide default offset }
+
+      H := Rect.Bottom - Rect.Top;
+      YOffset := (H - Abs(TListBox(Control).Font.Height)) div 2;
+      S := (Control as TListBox).Items[Index];
+
+      if S[1] = '*' then begin
+         Delete(S, 1, 1);
+         if odSelected in State then begin
+            Font.Color := clYellow;
+//            Brush.Color := clWhite;
+         end
+         else begin
+            Font.Color := clWindowText;
+            if (dmZlogGlobal.Settings.FSuperCheck.FFullMatchHighlight = True) then begin
+               Brush.Color := dmZlogGlobal.Settings.FSuperCheck.FFullMatchColor;
+            end;
+         end;
+
+//         Font.Style := Font.Style + [fsBold];
+         MainForm.HighlightCallsign(True);
+      end
+      else begin
+         if odSelected in State then begin
+            Font.Color := clWhite;
+         end
+         else begin
+            Font.Color := clWindowText;
+         end;
+      end;
+
+      TextOut(Rect.Left + XOffSet, Rect.Top + YOffSet, S) { display the text }
+   end;
+end;
+
+procedure TSuperCheck2.ListBoxMeasureItem(Control: TWinControl; Index: Integer;
+  var Height: Integer);
+begin
+   Height := Abs(TListBox(Control).Font.Height) + 2;
 end;
 
 procedure TSuperCheck2.StayOnTopClick(Sender: TObject);
