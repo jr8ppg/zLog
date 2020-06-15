@@ -18,6 +18,7 @@ type
     Label2: TLabel;
     spPortNumber: TSpinEdit;
     Label3: TLabel;
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     function GetHostName(): string;
@@ -39,6 +40,16 @@ type
 implementation
 
 {$R *.DFM}
+
+procedure TformClusterTelnetSet.FormCreate(Sender: TObject);
+var
+   strFileName: string;
+begin
+   strFileName := ExtractFilePath(Application.ExeName) + 'clusterlist.txt';
+   if FileExists(strFileName) = True then begin
+      comboHostName.Items.LoadFromFile(strFileName);
+   end;
+end;
 
 function TformClusterTelnetSet.GetHostName(): string;
 begin
