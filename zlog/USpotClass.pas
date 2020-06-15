@@ -146,6 +146,7 @@ begin
       Delete(temp, 1, i);
       temp := TrimLeft(temp);
 
+      // Freq.
       i := pos(' ', temp);
       if i > 0 then begin
          temp2 := copy(temp, 1, i - 1);
@@ -165,6 +166,7 @@ begin
       Delete(temp, 1, i);
       temp := TrimLeft(temp);
 
+      // Callsign
       i := pos(' ', temp);
       if i > 0 then begin
          Call := copy(temp, 1, i - 1);
@@ -176,11 +178,13 @@ begin
       Delete(temp, 1, i);
 
       // CQ/DE
-      temp := TrimLeft(temp);
-      if Copy(temp, 17, 2) = 'CQ' then begin
+      // Callsignの後ろに'CQ 'の文字があればCQとみなす
+      i := Pos('CQ ', temp);
+      if i > 0 then begin
          CQ := True;
       end;
 
+      // 後ろから見て、時間を取得
       for i := length(temp) downto 1 do begin
          if temp[i] = ' ' then begin
             break;
@@ -189,8 +193,10 @@ begin
 
       TimeStr := copy(temp, i + 1, 5);
 
+      // 時間を削除した残りはコメントとする
       Delete(temp, i, 255);
       Comment := temp;
+
       Result := True;
    end
    else begin    // check for SH/DX responses
