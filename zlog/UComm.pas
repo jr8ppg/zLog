@@ -245,6 +245,8 @@ begin
 end;
 
 procedure TCommForm.ImplementOptions;
+var
+   i: Integer;
 begin
    if dmZlogGlobal.Settings._clusterbaud <> 99 then begin
       ClusterComm.BaudRate := TBaudRate(dmZlogGlobal.Settings._clusterbaud+1);
@@ -263,8 +265,15 @@ begin
       7 :    Console.LineBreak := TConsole2LineBreak(dmZlogGlobal.Settings._cluster_telnet.FLineBreak);
    end;
 
-   Telnet.Host := dmZlogGlobal.Settings._cluster_telnet.FHostName;
-   Telnet.Port := IntToStr(dmZlogGlobal.Settings._cluster_telnet.FPortNumber);
+   i := Pos(':', dmZlogGlobal.Settings._cluster_telnet.FHostName);
+   if i = 0 then begin
+      Telnet.Host := dmZlogGlobal.Settings._cluster_telnet.FHostName;
+      Telnet.Port := IntToStr(dmZlogGlobal.Settings._cluster_telnet.FPortNumber);
+   end
+   else begin
+      Telnet.Host := Copy(dmZlogGlobal.Settings._cluster_telnet.FHostName, 1, i - 1);
+      Telnet.Port := Copy(dmZlogGlobal.Settings._cluster_telnet.FHostName, i + 1);
+   end;
 end;
 
 procedure TCommForm.FormCreate(Sender: TObject);
