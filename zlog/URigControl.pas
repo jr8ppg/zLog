@@ -437,6 +437,8 @@ procedure TRigControl.SetSerialCWKeying(PortNr: Integer);
 begin
    ZCom3.Port := TPortNumber(PortNr);
    ZCom3.Connect;
+   ZCom3.ToggleDTR(False);
+   ZCom3.ToggleRTS(False);
 end;
 
 function TRigControl.StatusSummaryFreq(kHz: Integer): string; // returns current rig's band freq mode
@@ -3251,11 +3253,8 @@ end;
 procedure TRigControl.FormDestroy(Sender: TObject);
 begin
    ZCom1.Disconnect;
-   ZCom1.Free;
    ZCom2.Disconnect;
-   ZCom2.Free;
    ZCom3.Disconnect;
-   ZCom3.Free;
 
    FCurrentRig := nil;
    FreeAndNil(FRigs[1]);
