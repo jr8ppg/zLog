@@ -41,7 +41,6 @@ contains
   CPDrv in 'cdd4\CPDrv.pas',
   CPDReg in 'cdd4\CPDReg.pas',
   CONSOLE in 'CONSOLE.PAS',
-  Wsagraph in 'wsagraph\Wsagraph.pas',
   Cologrid in 'cologrid\Cologrid.pas',
   OEDIT in 'OEDIT.PAS',
   CONSOLE2 in 'CONSOLE2.PAS';
