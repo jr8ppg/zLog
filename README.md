@@ -39,6 +39,8 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 # 令和 Second Edition
 ## Delphi 10.3.3 Community Editionでのビルド方法 de JR8PPG
 
+※zlog_requiresより、未使用となったTwsaGraphコンポーネントを削除したため、一度zlog_requiresをアンインストールしてから再度ビルド－インストールを行って下さい。
+
 1. TeeChart Standard（Delphi付属）のインストール
    - Delphiインストール時に指定するか、インストール後にウェルカムページ内の「機能拡張」－「プラットフォーム＆拡張マネージャ」よりインストール。（「RAD Studio 追加オプション」ウインドウの「追加オプション」タブ内にある「TeeChart Standard」をチェックON）
 
@@ -115,7 +117,7 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 ## 動作確認済み無線機
 
 ### ICOM
-* IC-706mkII,IC-756PRO,IC-756PRO2,IC-7100,IC-7200,IC-7300
+* IC-706mkII,IC-756PRO,IC-756PRO2,IC-7100,IC-7200,IC-7300他
 ### KENWOOD
 * TS-570,TS-2000
 ### YAESU
@@ -159,12 +161,6 @@ https://torry.net/files/vcl/labels/rotatedlabels/jllabel.zip
 ```
 This product includes software developed by Wolfgang Chien
 Copyright (c) Wolfgang Chien
-```
-
-* TwsaGraph
-```
-This product includes software developed by P. Gertzen
-Copyright (c) P. Gertzen
 ```
 
 * TMgrid
