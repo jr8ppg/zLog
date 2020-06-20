@@ -1770,8 +1770,10 @@ var
 begin
    maxmode := mOther;
    case aQSO.Band of
-      b19 .. b28:
+      b19 .. b24:
          maxmode := mSSB;
+      b28:
+         maxmode := mFM;
       b50:
          maxmode := mAM;
       b144 .. HiBand:
