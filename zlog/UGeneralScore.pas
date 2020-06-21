@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, StdCtrls, ExtCtrls, UzLogGlobal, Menus, Grids, UITypes,
-  UMultipliers, Buttons, UGeneralMulti2;
+  UBasicScore, StdCtrls, ExtCtrls, Menus, Grids, UITypes, Buttons, Math,
+  UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers, UGeneralMulti2;
 
 
 type
@@ -15,6 +15,9 @@ type
     Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     procedure ResetParams(); // called from LoadCFG
@@ -36,10 +39,11 @@ type
     procedure SetPointsTable(var PT : TPointsTable; str : string);
     procedure CalcPoints(var aQSO : TQSO);
     procedure AddNoUpdate(var aQSO : TQSO); override;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure Reset; override;
     procedure Add(var aQSO : TQSO); override; {calculates points}
     procedure LoadCFG(Filename : string);
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -48,6 +52,20 @@ uses
   Main;
 
 {$R *.DFM}
+
+procedure TGeneralScore.FormShow(Sender: TObject);
+begin
+   inherited;
+   Button1.SetFocus;
+   Grid.Col := 1;
+   Grid.row := 1;
+end;
+
+procedure TGeneralScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   inherited;
+   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
+end;
 
 procedure TGeneralScore.SetPointsTable(var PT: TPointsTable; str: string);
 var
@@ -469,7 +487,7 @@ begin
          if com = 'TIME' then
             if opr = 'UTC' then begin
                UseUTC := true;
-               TQSO(Log.List[0]).QSO.RSTSent := _USEUTC; // JST = 0; UTC = $FFFF
+               Log.QsoList[0].RSTSent := _USEUTC; // JST = 0; UTC = $FFFF
             end;
 
          if com = 'CTY' then begin
@@ -536,43 +554,9 @@ begin
          if com = 'POWER' then begin
             _bnd := b19;
             for i := 1 to length(opr) do begin
-               case opr[i] of
-                  'A':
-                     dmZlogGlobal.CurrentPower[_bnd] := p010;
-                  'B':
-                     dmZlogGlobal.CurrentPower[_bnd] := p025;
-                  'C':
-                     dmZlogGlobal.CurrentPower[_bnd] := p050;
-                  'D':
-                     dmZlogGlobal.CurrentPower[_bnd] := p100;
-                  'E':
-                     dmZlogGlobal.CurrentPower[_bnd] := p500;
-                  'O':
-                     dmZlogGlobal.CurrentPower[_bnd] := p001;
-                  'F':
-                     dmZlogGlobal.CurrentPower[_bnd] := p005;
-                  'N':
-                     dmZlogGlobal.CurrentPower[_bnd] := p002;
-                  'T':
-                     dmZlogGlobal.CurrentPower[_bnd] := p020;
-                  'W':
-                     dmZlogGlobal.CurrentPower[_bnd] := p200;
-                  'K':
-                     dmZlogGlobal.CurrentPower[_bnd] := p1000;
-                  'X':
-                     dmZlogGlobal.CurrentPower[_bnd] := p1000;
-                  'P':
-                     dmZlogGlobal.CurrentPower[_bnd] := pwrP;
-                  'L':
-                     dmZlogGlobal.CurrentPower[_bnd] := pwrL;
-                  'M':
-                     dmZlogGlobal.CurrentPower[_bnd] := pwrM;
-                  'H':
-                     dmZlogGlobal.CurrentPower[_bnd] := pwrH;
-                  '-': begin
-                     dmZlogGlobal.CurrentPower[_bnd] := pwrP;
-                     MainForm.HideBandMenu(_bnd);
-                  end;
+               // パワーコードは無視するが、-だけ互換性のため参照
+               if opr[i] = '-' then begin
+                  MainForm.HideBandMenu(_bnd);
                end;
 
                if _bnd < HiBand then begin
@@ -647,31 +631,38 @@ begin
    System.close(zfile);
 end;
 
-procedure TGeneralScore.Update;
+procedure TGeneralScore.UpdateData;
 var
    band: TBand;
    TotQSO, TotPoints, TotMulti: LongInt;
    row: Integer;
+   w: Integer;
+   strScore: string;
+   DispColCount: Integer;
 begin
    TotQSO := 0;
    TotPoints := 0;
    TotMulti := 0;
    row := 1;
 
+   // 見出し行
    Grid.Cells[0, 0] := 'MHz';
    Grid.Cells[1, 0] := 'QSOs';
    Grid.Cells[2, 0] := 'Points';
-   Grid.Cells[3, 0] := 'Mult';
+   Grid.Cells[3, 0] := 'Multi';
 
    if ShowCWRatio then begin
-      Grid.Cells[4, 0] := 'CW QSOs';
+      Grid.Cells[4, 0] := 'CW Q''s';
       Grid.Cells[5, 0] := 'CW %';
+      DispColCount := 6;
    end
    else begin
-      Grid.Cells[4, row] := '';
-      Grid.Cells[5, row] := '';
+      Grid.Cells[4, 0] := '';
+      Grid.Cells[5, 0] := '';
+      DispColCount := 4;
    end;
 
+   // バンド別スコア行
    for band := b19 to HiBand do begin
       TotQSO := TotQSO + QSO[band];
       TotPoints := TotPoints + Points[band];
@@ -709,6 +700,7 @@ begin
       end;
    end;
 
+   // 合計行
    Grid.Cells[0, row] := 'Total';
    Grid.Cells[1, row] := IntToStr3(TotQSO);
    Grid.Cells[2, row] := IntToStr3(TotPoints);
@@ -734,61 +726,74 @@ begin
    end;
    Inc(row);
 
+   // スコア行
+   if formMulti.NoMulti then begin
+      strScore := IntToStr3(TotPoints);
+   end
+   else begin
+      strScore := IntToStr3(TotPoints * TotMulti);
+   end;
    Grid.Cells[0, row] := 'Score';
    Grid.Cells[1, row] := '';
    Grid.Cells[2, row] := '';
-   if formMulti.NoMulti then begin
-      Grid.Cells[3, row] := IntToStr3(TotPoints);
-   end
-   else begin
-      Grid.Cells[3, row] := IntToStr3(TotPoints * TotMulti);
-   end;
+   Grid.Cells[3, row] := strScore;
    Grid.Cells[4, row] := '';
    Grid.Cells[5, row] := '';
    Inc(row);
 
+   // 行数をセット
    Grid.RowCount := row;
-   ClientWidth := (Grid.DefaultColWidth * Grid.ColCount) + (Grid.ColCount * Grid.GridLineWidth);
-   ClientHeight := (Grid.DefaultRowHeight * Grid.RowCount) + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
+
+   // カラム幅をセット
+   w := Grid.Canvas.TextWidth('9');
+   Grid.ColWidths[0] := w * 6;
+   Grid.ColWidths[1] := w * 7;
+   Grid.ColWidths[2] := w * 7;
+   Grid.ColWidths[3] := w * Max(8, Length(strScore)+1);
+   Grid.ColWidths[4] := w * 7;
+   Grid.ColWidths[5] := w * 7;
+
+   // グリッドサイズ調整
+   AdjustGridSize(Grid, DispColCount, Grid.RowCount);
 end;
 
 procedure TGeneralScore.CalcPoints(var aQSO: TQSO);
 var
    i: Integer;
-   ch: AnsiChar;
+   ch: Char;
    C: TCountry;
 begin
-   aQSO.QSO.Points := PointsTable[aQSO.QSO.band, aQSO.QSO.Mode];
+   aQSO.Points := PointsTable[aQSO.band, aQSO.Mode];
 
    if formMulti._DXTEST then begin
       if SameCTYPoints or SameCONTPoints then begin
-         i := aQSO.QSO.Power2;
-         if (i < CountryList.List.Count) and (i >= 0) then begin
+         i := aQSO.Power2;
+         if (i < CountryList.Count) and (i >= 0) then begin
             C := TCountry(CountryList.List[i]);
             if SameCTYPoints and (C.Country = MyCountry) then
-               aQSO.QSO.Points := SameCTYPointsTable[aQSO.QSO.band, aQSO.QSO.Mode]
+               aQSO.Points := SameCTYPointsTable[aQSO.band, aQSO.Mode]
             else if SameCONTPoints and (C.Continent = MyContinent) then
-               aQSO.QSO.Points := SameCONTPointsTable[aQSO.QSO.band, aQSO.QSO.Mode];
+               aQSO.Points := SameCONTPointsTable[aQSO.band, aQSO.Mode];
          end;
       end;
    end;
 
    if formMulti.IsLocal(aQSO) then
-      aQSO.QSO.Points := LocalPointsTable[aQSO.QSO.band, aQSO.QSO.Mode];
+      aQSO.Points := LocalPointsTable[aQSO.band, aQSO.Mode];
 
    if AlphabetPoints then begin
-      aQSO.QSO.Points := 0;
-      i := length(aQSO.QSO.NrRcvd);
+      aQSO.Points := 0;
+      i := length(aQSO.NrRcvd);
       if i > 0 then begin
-         ch := aQSO.QSO.NrRcvd[i];
-         if ch in ['0' .. 'Z'] then
-            aQSO.QSO.Points := AlphabetPointsTable[ord(ch)];
+         ch := aQSO.NrRcvd[i];
+         if CharInSet(ch, ['0' .. 'Z']) then
+            aQSO.Points := AlphabetPointsTable[ord(ch)];
       end;
    end;
 
    if SpecialCalls <> '' then begin
-      if pos(',' + aQSO.QSO.Callsign + ',', ',' + SpecialCalls + ',') > 0 then
-         aQSO.QSO.Points := SpecialCallPointsTable[aQSO.QSO.band, aQSO.QSO.Mode];
+      if pos(',' + aQSO.Callsign + ',', ',' + SpecialCalls + ',') > 0 then
+         aQSO.Points := SpecialCallPointsTable[aQSO.band, aQSO.Mode];
    end;
 end;
 
@@ -799,7 +804,7 @@ var
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then
+   if aQSO.Dupe then
       exit;
 
    CalcPoints(aQSO);
@@ -807,18 +812,18 @@ begin
    if Log.CountHigherPoints = true then begin
       i := Log.DifferentModePointer;
       If i > 0 then begin
-         if TQSO(Log.List[i]).QSO.Points < aQSO.QSO.Points then begin
-            tempQSO := TQSO(Log.List[i]);
-            Dec(Points[tempQSO.QSO.band], tempQSO.QSO.Points);
-            TQSO(Log.List[i]).QSO.Points := 0;
+         if Log.QsoList[i].Points < aQSO.Points then begin
+            tempQSO := Log.QsoList[i];
+            Dec(Points[tempQSO.band], tempQSO.Points);
+            Log.QsoList[i].Points := 0;
             // NeedRefresh := True;
          end
          else
-            aQSO.QSO.Points := 0;
+            aQSO.Points := 0;
       end;
    end;
 
-   inc(Points[aQSO.QSO.band], aQSO.QSO.Points);
+   inc(Points[aQSO.band], aQSO.Points);
 end;
 
 procedure TGeneralScore.Reset;
@@ -831,39 +836,16 @@ begin
    inherited;
 end;
 
-procedure TGeneralScore.FormShow(Sender: TObject);
+function TGeneralScore.GetFontSize(): Integer;
 begin
-   inherited;
-   Button1.SetFocus;
-   Grid.Col := 1;
-   Grid.row := 1;
+   Result := Grid.Font.Size;
 end;
 
-procedure TGeneralScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-var
-   strText: string;
+procedure TGeneralScore.SetFontSize(v: Integer);
 begin
-   inherited;
-   strText := TStringGrid(Sender).Cells[ACol, ARow];
-
-   with TStringGrid(Sender).Canvas do begin
-      Brush.Color := TStringGrid(Sender).Color;
-      Brush.Style := bsSolid;
-      FillRect(Rect);
-
-      Font.Name := 'ＭＳ ゴシック';
-      Font.Size := 11;
-
-      if Copy(strText, 1, 1) = '*' then begin
-         strText := Copy(strText, 2);
-         Font.Color := clBlue;
-      end
-      else begin
-         Font.Color := clBlack;
-      end;
-
-      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
-   end;
+   Inherited;
+   SetGridFontSize(Grid, v);
+   UpdateData();
 end;
 
 end.

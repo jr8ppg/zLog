@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, Buttons, ExtCtrls, UzLogGlobal;
+  UBasicScore, Grids, StdCtrls, Buttons, ExtCtrls, Math,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 const
   BandFactor : array[b19..b28] of integer =
@@ -15,6 +16,9 @@ type
     Grid: TStringGrid;
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure FormShow(Sender: TObject);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     QTCs : array[b19..b28] of integer;
@@ -22,13 +26,28 @@ type
     procedure Reset; override;
     procedure Renew; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure SummaryWriteScore(FileName : string); override;
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
 
 {$R *.DFM}
+
+procedure TWAEScore.FormShow(Sender: TObject);
+begin
+   inherited;
+   Button1.SetFocus;
+   Grid.Col := 1;
+   Grid.Row := 1;
+end;
+
+procedure TWAEScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   inherited;
+   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
+end;
 
 procedure TWAEScore.Reset;
 var
@@ -47,14 +66,14 @@ var
 begin
    Reset;
    for i := 1 to Log.TotalQSO do begin
-      band := TQSO(Log.List[i]).QSO.band;
+      band := Log.QsoList[i].band;
       Inc(QSO[band]);
-      Inc(Points[band], TQSO(Log.List[i]).QSO.Points);
+      Inc(Points[band], Log.QsoList[i].Points);
 
-      if TQSO(Log.List[i]).QSO.NewMulti1 then begin
+      if Log.QsoList[i].NewMulti1 then begin
          Inc(Multi[band]);
       end;
-      if pos('[QTC', TQSO(Log.List[i]).QSO.Memo) > 0 then begin
+      if pos('[QTC', Log.QsoList[i].Memo) > 0 then begin
          Inc(QTCs[band]);
       end;
    end;
@@ -66,28 +85,30 @@ var
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
-   if aQSO.QSO.Multi1 = 'Non-EU' then begin
+   if aQSO.Multi1 = 'Non-EU' then begin
       Exit;
    end;
 
-   band := aQSO.QSO.band;
-   aQSO.QSO.Points := 1;
+   band := aQSO.band;
+   aQSO.Points := 1;
    Inc(Points[band]);
 
-   if pos('[QTC', aQSO.QSO.Memo) > 0 then begin
+   if pos('[QTC', aQSO.Memo) > 0 then begin
       Inc(QTCs[band]);
    end;
 end;
 
-procedure TWAEScore.Update;
+procedure TWAEScore.UpdateData;
 var
    band: TBand;
    TotQSO, TotMulti, TotQTCs: LongInt;
    row: integer;
+   w: Integer;
+   strScore: string;
 begin
    TotQSO := 0;
    TotMulti := 0;
@@ -115,20 +136,31 @@ begin
       end;
    end;
 
+   // 合計行
    Grid.Cells[0, 6] := 'Total';
    Grid.Cells[1, 6] := IntToStr3(TotQSO);
    Grid.Cells[2, 6] := IntToStr3(TotQTCs);
    Grid.Cells[3, 6] := IntToStr3(TotMulti);
 
+   // スコア行
+   strScore := IntToStr3((TotQSO + TotQTCs) * TotMulti);
    Grid.Cells[0, 7] := 'Score';
    Grid.Cells[1, 7] := '';
    Grid.Cells[2, 7] := '';
-   Grid.Cells[3, 7] := IntToStr3((TotQSO + TotQTCs) * TotMulti);
+   Grid.Cells[3, 7] := strScore;
 
    Grid.ColCount := 4;
    Grid.RowCount := 8;
-   ClientWidth := (Grid.DefaultColWidth * Grid.ColCount) + (Grid.ColCount * Grid.GridLineWidth);
-   ClientHeight := (Grid.DefaultRowHeight * Grid.RowCount) + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
+
+   // カラム幅をセット
+   w := Grid.Canvas.TextWidth('9');
+   Grid.ColWidths[0] := w * 6;
+   Grid.ColWidths[1] := w * 7;
+   Grid.ColWidths[2] := w * 7;
+   Grid.ColWidths[3] := w * Max(8, Length(strScore)+1);
+
+   // グリッドサイズ調整
+   AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
 end;
 
 procedure TWAEScore.SummaryWriteScore(FileName: string);
@@ -161,39 +193,16 @@ begin
    CloseFile(f);
 end;
 
-procedure TWAEScore.FormShow(Sender: TObject);
+function TWAEScore.GetFontSize(): Integer;
 begin
-   inherited;
-   Button1.SetFocus;
-   Grid.Col := 1;
-   Grid.Row := 1;
+   Result := Grid.Font.Size;
 end;
 
-procedure TWAEScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-var
-   strText: string;
+procedure TWAEScore.SetFontSize(v: Integer);
 begin
-   inherited;
-   strText := TStringGrid(Sender).Cells[ACol, ARow];
-
-   with TStringGrid(Sender).Canvas do begin
-      Brush.Color := TStringGrid(Sender).Color;
-      Brush.Style := bsSolid;
-      FillRect(Rect);
-
-      Font.Name := 'ＭＳ ゴシック';
-      Font.Size := 11;
-
-      if Copy(strText, 1, 1) = '*' then begin
-         strText := Copy(strText, 2);
-         Font.Color := clBlue;
-      end
-      else begin
-         Font.Color := clBlack;
-      end;
-
-      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
-   end;
+   Inherited;
+   SetGridFontSize(Grid, v);
+   UpdateData();
 end;
 
 end.

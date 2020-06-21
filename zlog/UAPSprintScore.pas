@@ -4,14 +4,17 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Buttons,
-  UWPXMulti;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons, Math,
+  UWPXMulti, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TAPSprintScore = class(TBasicScore)
     Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     FMultiForm: TWPXMulti;
@@ -19,13 +22,28 @@ type
     { Public declarations }
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure Update; override;
+    procedure UpdateData; override;
     property MultiForm: TWPXMulti read FMultiForm write FMultiForm;
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
 
 {$R *.DFM}
+
+procedure TAPSprintScore.FormShow(Sender: TObject);
+begin
+   inherited;
+   Button1.SetFocus;
+   Grid.Col := 1;
+   Grid.Row := 1;
+end;
+
+procedure TAPSprintScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   inherited;
+   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
+end;
 
 procedure TAPSprintScore.Reset;
 var
@@ -41,23 +59,24 @@ procedure TAPSprintScore.AddNoUpdate(var aQSO : TQSO);
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
-   aQSO.QSO.Points := 1;
-   Inc(Points[aQSO.QSO.Band]);
+   aQSO.Points := 1;
+   Inc(Points[aQSO.Band]);
 end;
 
-procedure TAPSprintScore.Update;
+procedure TAPSprintScore.UpdateData;
 var
-   TotPts : LongInt;
+   TotPts: Integer;
+   w: Integer;
+   strScore: string;
 begin
    // 見出し行
    Grid.Cells[0, 0] := 'MHz';
    Grid.Cells[1, 0] := 'Points';
 
-   TotPts := 0;
    Grid.Cells[0, 1] := '7';
    Grid.Cells[1, 1] := IntToStr3(Points[b7]);
 
@@ -74,47 +93,32 @@ begin
    Grid.Cells[0, 5] := 'Multi';
    Grid.Cells[1, 5] := IntToStr3(FMultiForm.TotalPrefix);
 
+   strScore := IntToStr3(TotPts * FMultiForm.TotalPrefix);
    Grid.Cells[0, 6] := 'Score';
-   Grid.Cells[1, 6] := IntToStr3(TotPts * FMultiForm.TotalPrefix);
+   Grid.Cells[1, 6] := strScore;
 
    Grid.ColCount := 2;
    Grid.RowCount := 7;
-   ClientWidth := (Grid.DefaultColWidth * Grid.ColCount) + (Grid.ColCount * Grid.GridLineWidth);
-   ClientHeight := (Grid.DefaultRowHeight * Grid.RowCount) + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
+
+   // カラム幅をセット
+   w := Grid.Canvas.TextWidth('9');
+   Grid.ColWidths[0] := w * 10;
+   Grid.ColWidths[1] := w * Max(10, Length(strScore)+1);
+
+   // グリッドサイズ調整
+   AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
 end;
 
-procedure TAPSprintScore.FormShow(Sender: TObject);
+function TAPSprintScore.GetFontSize(): Integer;
 begin
-   inherited;
-   Button1.SetFocus;
-   Grid.Col := 1;
-   Grid.Row := 1;
+   Result := Grid.Font.Size;
 end;
 
-procedure TAPSprintScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-var
-   strText: string;
+procedure TAPSprintScore.SetFontSize(v: Integer);
 begin
-   inherited;
-   strText := TStringGrid(Sender).Cells[ACol, ARow];
-
-   with TStringGrid(Sender).Canvas do begin
-      Brush.Color := TStringGrid(Sender).Color;
-      Brush.Style := bsSolid;
-      FillRect(Rect);
-
-      Font.Name := 'ＭＳ ゴシック';
-      Font.Size := 11;
-
-      if Copy(strText, 1, 1) = '*' then begin
-         strText := Copy(strText, 2);
-         Font.Color := clBlue;
-      end
-      else begin
-         Font.Color := clBlack;
-      end;
-
-      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
-   end;end;
+   Inherited;
+   SetGridFontSize(Grid, v);
+   UpdateData();
+end;
 
 end.

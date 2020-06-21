@@ -47,7 +47,6 @@ object CommForm: TCommForm
       Font.Height = -12
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
       ParentFont = False
       TabOrder = 1
       OnKeyPress = EditKeyPress
@@ -111,20 +110,20 @@ object CommForm: TCommForm
       Top = 1
       Width = 365
       Height = 170
-      Style = lbOwnerDrawFixed
+      Style = lbOwnerDrawVariable
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -12
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
       ItemHeight = 12
       ParentFont = False
       TabOrder = 0
       OnDblClick = ListBoxDblClick
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
+      OnMeasureItem = ListBoxMeasureItem
     end
     object Console: TColorConsole2
       Left = 1

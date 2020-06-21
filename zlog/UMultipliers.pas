@@ -3,56 +3,95 @@ unit UMultipliers;
 interface
 
 uses
-  SysUtils, Windows, Classes, Dialogs, Forms, UITypes, UzLogGlobal;
+  SysUtils, Windows, Classes, Dialogs, Forms, UITypes,
+  Generics.Collections, Generics.Defaults,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
-const testCQWW = $03;
-      MAXCQZONE = 40;
-      testIARU = $09;
-      testDXCCWWZone = $05;
-      MaxIndex = 37*37+36;
-var
-      _DATFileName : string = '';
+const
+  MAXCQZONE = 40;
 
 type
-  TCountry = class
-    Country : string[40]; {JA, KH6 etc}
-    CountryName : string[40]; {Japan, Hawaii, etc}
-    Zone : integer;
-    Continent : string[3];
-    Worked : array[b19..HiBand] of boolean;
-    GridIndex : integer;  // where it is listed in the Grid (row)
-    constructor Create;
+  TCountry = class(TObject)
+    FName: string;            // Japan, Hawaii, etc
+    FCQZone: string;          // CQ Zone
+    FITUZone: string;         // ITU Zone
+    FContinent: string;       // 大陸
+    FLatitude: string;        // 緯度
+    FLongitude: string;       // 経度
+    FUTCOffset: Integer;      // UTCに対する時差
+    FCode: string;            // JA, KH6 etc
+    FPrefixes: string;        // 代表プリフィックス
+
+    FWorked: array[b19..HiBand] of Boolean;
+    FIndex: Integer;
+    FGridIndex: Integer;  // where it is listed in the Grid (row)
+
+    function GetWorked(Index: TBand): Boolean;
+    procedure SetWorked(Index: TBand; Value: Boolean);
+  public
+    constructor Create(); overload;
+    constructor Create(strText: string); overload;
+
     function Summary : string;
     function SummaryWAE : string;
     function Summary2 : string;
     function SummaryARRL10 : string;
     function SummaryGeneral : string;
     function JustInfo : string; // returns cty name, px and continent
+
+    procedure Parse(strText: string);
+    property CountryName: string read FName write FName;
+    property CQZone: string read FCQZone write FCQZone;
+    property ITUZone: string read FITUZone write FITUZone;
+    property Continent: string read FContinent write FContinent;
+    property Latitude: string read FLatitude write FLatitude;
+    property Longitude: string read FLongitude write FLongitude;
+    property UTCOffset: Integer read FUTCOffset write FUTCOffset;
+    property Country: string read FCode write FCode;
+    property Prefixes: string read FPrefixes write FPrefixes;
+    property Worked[Index: TBand]: Boolean read GetWorked write SetWorked;
+    property Index: Integer read FIndex write FIndex;
+    property GridIndex: Integer read FGridIndex write FGridIndex;
   end;
 
-  TCountryList = class
-    List : TList;
-    constructor Create;
-    destructor Destroy; override;
-    procedure Reset;
+  TCountryList = class(TObjectList<TCountry>)
+  private
+  public
+    constructor Create(OwnsObjects: Boolean = True);
+    procedure LoadFromFile(strFileName: string);
+    procedure Reset();
   end;
 
-  TPrefix = class
-    Prefix : string[12];
-    Index : integer;
-    Length : integer;
-    OvrZone : integer;         // override zone
-    OvrContinent : string[3];  // override continent
-    constructor Create;
+  TPrefix = class(TObject)
+    FPrefix: string;
+    FOvrCQZone: string;         // override zone
+    FOvrITUZone: string;
+    FOvrContinent: string;  // override continent
+    FCountry: TCountry;
+    FFullMatch: Boolean;
+  public
+    constructor Create();
+    property Prefix: string read FPrefix write FPrefix;
+    property OvrCQZone: string read FOvrCQZone write FOvrCQZone;
+    property OvrITUZone: string read FOvrITUZone write FOvrITUZone;
+    property OvrContinent: string read FOvrContinent write FOvrContinent;
+    property Country: TCountry read FCountry write FCountry;
+    property FullMatch: Boolean read FFullMatch write FFullMatch;
   end;
 
-  TPrefixList = class
-    ListIndexX : array[0..MaxIndex] of integer;
-    List : TList;
-    constructor Create;
-    destructor Destroy; override;
-    procedure AddListX(PX : TPrefix);
-    procedure InitIndexX;
+  TPrefixComparer = class(TComparer<TPrefix>)
+  public
+    function Compare(const Left, Right: TPrefix): Integer; override;
+  end;
+
+  TPrefixList = class(TObjectList<TPrefix>)
+  private
+    FPrefixComparer: TPrefixComparer;
+  public
+    constructor Create(OwnsObjects: Boolean = True);
+    destructor Destroy(); override;
+    procedure Parse(cty: TCountry);
+    procedure Sort(); overload;
   end;
 
   TCity = class
@@ -84,13 +123,10 @@ type
 var
   CountryList : TCountryList;
   PrefixList : TPrefixList;
-  MyCountry, MyContinent, MyZone : string[255];
+  MyCountry, MyContinent, MyZone: string;
 
-procedure LoadCTY_DAT(TEST : byte; var L : TCountryList; var PL : TPrefixList);
-procedure LoadCountryDataFromFile(filename : string; var L : TCountryList; var PL : TPrefixList);
-function GetPrefixX(aQSO : TQSO; PL : TPrefixList): TPrefix;
+function LoadCTY_DAT(): Boolean;
 function GetPrefix(aQSO : TQSO) : TPrefix;
-function GetCountryIndex(aQSO : TQSO): integer;
 function GetArea(str : string) : integer;
 function GuessCQZone(aQSO : TQSO) : string;
 procedure AnalyzeMyCountry;
@@ -100,57 +136,71 @@ implementation
 uses
   Main;
 
-procedure TPrefixList.AddListX(PX: TPrefix);
-var
-   j, k: integer;
-   p: string;
-   boo: boolean;
+constructor TCountryList.Create(OwnsObjects: Boolean);
 begin
-   p := PX.Prefix;
-   if List.Count = 0 then begin
-      List.Add(PX);
-      exit;
-   end
-   else begin
-      boo := false;
-      if boo = false then
-         k := 0;
-      for j := k to List.Count - 1 do begin
-         if PXMoreX(p, TPrefix(List[j]).Prefix) = false then begin
-            List.Insert(j, PX);
-            exit;
+   Inherited Create(OwnsObjects);
+end;
+
+procedure TCountryList.LoadFromFile(strFileName: string);
+var
+   mem: TMemoryStream;
+   i: Integer;
+   ch: AnsiChar;
+   buf: Byte;
+   strLine: string;
+   C: TCountry;
+begin
+   mem := TMemoryStream.Create();
+   try
+      C := TCountry.Create();
+      C.CountryName := 'Unknown';
+      Add(C);
+
+      if FileExists(strFileName) = False then begin
+         Exit;
+      end;
+
+      mem.LoadFromFile(strFileName);
+      mem.Position := 0;
+
+      strLine := '';
+      for i := 0 to mem.Size - 1 do begin
+         mem.Read(buf, 1);
+         ch := AnsiChar(buf);
+
+         if ch = AnsiChar($0d) then begin
+            Continue;
+         end;
+         if ch = AnsiChar($0a) then begin
+            Continue;
+         end;
+
+         if ch = ';' then begin
+            C := TCountry.Create(strLine);
+            C.Index := Count;
+            Add(C);
+            strLine := '';
+         end
+         else begin
+            strLine := strLine + Char(ch);
          end;
       end;
-      List.Add(PX);
+
+   finally
+      mem.Free();
    end;
 end;
 
-constructor TCountryList.Create;
-begin
-   List := TList.Create;
-end;
-
-destructor TCountryList.Destroy;
+procedure TCountryList.Reset();
 var
-   i: integer;
-begin
-   List.Pack;
-
-   for i := 0 to List.Count - 1 do begin
-      TCountry(List[i]).Free;
-   end;
-
-   List.Free;
-end;
-
-procedure TCountryList.Reset;
-var
-   i: integer;
+   i: Integer;
    B: TBand;
 begin
-   for i := 0 to List.Count - 1 do
-      for B := b19 to HiBand do
-         TCountry(List[i]).Worked[B] := false;
+   for i := 0 to Count - 1 do begin
+      for B := b19 to HiBand do begin
+         TCountry(List[i]).Worked[B] := False;
+      end;
+   end;
 end;
 
 function TCountry.Summary: string;
@@ -158,7 +208,7 @@ var
    temp: string;
    B: TBand;
 begin
-   if pos('WAEDC', CONTESTNAME) > 0 then begin
+   if pos('WAEDC', MyContest.Name) > 0 then begin
       Result := SummaryWAE;
       exit;
    end;
@@ -171,7 +221,7 @@ begin
    temp := '';
    temp := FillRight(Country, 7) +
            FillRight(CountryName, 28) +
-           FillRight(IntToStr(Zone), 2) + ' ' + // ver 0.23
+           FillRight(CQZone, 2) + ' ' + // ver 0.23
            Continent + '  ';
 
    for B := b19 to b28 do begin
@@ -216,7 +266,7 @@ function TCountry.SummaryGeneral: string;
 var
    temp: string;
    B: TBand;
-   temp2: string[15];
+   temp2: string;
 begin
    if CountryName = 'Unknown' then begin
       Result := 'Unknown Country';
@@ -227,7 +277,7 @@ begin
    temp2 := CountryName;
    temp := FillRight(Country, 6) +
            FillRight(temp2, 16) +
-           FillRight(IntToStr(Zone), 2) + ' ' + // ver 0.23
+           FillRight(CQZone, 2) + ' ' + // ver 0.23
            Continent + '  ';
 
    for B := b19 to HiBand do begin
@@ -317,459 +367,301 @@ begin
    Result := temp;
 end;
 
-constructor TCountry.Create;
+constructor TCountry.Create();
 var
    B: TBand;
 begin
-   for B := b19 to HiBand do
+   Inherited;
+
+   FName := '';
+   FCQZone := '';
+   FITUZone := '';
+   FContinent := '';
+   FLatitude := '';
+   FLongitude := '';
+   FUTCOffset := 0;
+   FCode := '';
+   FPrefixes := '';
+
+   for B := b19 to HiBand do begin
       Worked[B] := false;
-
-   Country := '';
-   CountryName := '';
-   Zone := 0;
-   Continent := '';
-end;
-
-constructor TPrefix.Create;
-begin
-   Prefix := '';
-   Index := 0;
-   Length := 0;
-   OvrZone := 0;
-   OvrContinent := '';
-end;
-
-constructor TPrefixList.Create;
-var
-   i: integer;
-begin
-   List := TList.Create;
-   { for i := 0 to 255 do
-     ListIndex[i] := -1; }
-   for i := 0 to MaxIndex do
-      ListIndexX[i] := -1;
-end;
-
-destructor TPrefixList.Destroy;
-var
-   i: integer;
-begin
-   List.Pack;
-   for i := 0 to List.Count - 1 do
-      TPrefix(List[i]).Free;
-   List.Free;
-end;
-
-procedure TPrefixList.InitIndexX;
-var
-   i, j: integer;
-   s: string;
-begin
-   for i := List.Count - 1 downto 0 do begin
-      s := TPrefix(List[i]).Prefix;
-      j := PXIndex(s);
-      if j >= 0 then
-         ListIndexX[j] := i;
    end;
+
+   FIndex := -1;
+   FGridIndex := -1;
 end;
 
-procedure LoadCTY_DAT(TEST: byte; var L: TCountryList; var PL: TPrefixList);
-var
-   f: textfile;
-   str, temp, temp2: string;
-   C: TCountry;
-   p: TPrefix;
-   i, mii, j, k, m: integer;
+constructor TCountry.Create(strText: string);
 begin
-   _DATFileName := 'CTY.DAT';
-   System.assign(f, 'CTY.DAT');
+   Inherited Create();
+   Parse(strText);
+end;
+
+procedure TCountry.Parse(strText: string);
+var
+   slLine: TStringList;
+   i: Integer;
+begin
+   slLine := TStringList.Create();
+   slLine.StrictDelimiter := True;
+   slLine.Delimiter := ':';
    try
-      System.Reset(f);
-   except
-      on EFOpenError do begin
-         exit;
+      slLine.DelimitedText := strText;
+
+      for i := 0 to slLine.Count - 1 do begin
+         slLine[i] := Trim(slLine[i]);
       end;
+
+      FName       := slLine[0];
+      FCQZone     := slLine[1];
+      FITUZone    := slLine[2];
+      FContinent  := slLine[3];
+      FLatitude   := slLine[4];
+      FLongitude  := slLine[5];
+      FUTCOffset  := StrToIntDef(slLine[6], 0);
+      FCode       := slLine[7];
+      FPrefixes   := slLine[8];
+
+   finally
+      slLine.Free();
    end;
-
-   // readln(f, str);
-   C := TCountry.Create;
-   C.CountryName := 'Unknown';
-   L.List.Add(C);
-   while not(eof(f)) do begin
-      readln(f, str);
-
-      if (pos('*', str) > 0) and (TEST <> testCQWW) then // Cty only for CQWW
-      begin
-         repeat
-            readln(f, str);
-         until (eof(f)) or (pos(':', str) > 0);
-         if eof(f) then
-            exit;
-      end;
-
-      C := TCountry.Create;
-
-      i := pos(':', str);
-      if i > 0 then begin
-         C.CountryName := copy(str, 1, i - 1);
-         Delete(str, 1, i);
-         str := TrimLeft(str);
-      end;
-
-      i := pos(':', str);
-      if i > 0 then begin
-         temp := copy(str, 1, i - 1);
-         j := StrToIntDef(temp, 0);
-
-         if (TEST in [testCQWW, testDXCCWWZone]) then
-            C.Zone := j;
-
-         Delete(str, 1, i);
-         str := TrimLeft(str);
-      end;
-
-      i := pos(':', str);
-      if i > 0 then begin
-         temp := copy(str, 1, i - 1);
-         j := StrToIntDef(temp, 0);
-
-         if (TEST = testIARU) then
-            C.Zone := j;
-
-         Delete(str, 1, i);
-         str := TrimLeft(str);
-      end;
-
-      i := pos(':', str);
-      if i > 0 then begin
-         temp := copy(str, 1, i - 1);
-         if pos(temp + ';', 'AS;AF;EU;NA;SA;OC;') > 0 then
-            C.Continent := temp;
-         Delete(str, 1, i);
-         str := TrimLeft(str);
-      end;
-
-      i := pos(':', str); // latitude
-      if i > 0 then begin
-         Delete(str, 1, i);
-         str := TrimLeft(str);
-      end;
-
-      i := pos(':', str); // longitude
-      if i > 0 then begin
-         Delete(str, 1, i);
-         str := TrimLeft(str);
-      end;
-
-      i := pos(':', str); // utc offset
-      if i > 0 then begin
-         Delete(str, 1, i);
-         str := TrimLeft(str);
-      end;
-
-      i := pos(':', str);
-      if i > 0 then begin
-         temp := copy(str, 1, i - 1);
-         if temp[1] = '*' then
-            Delete(temp, 1, 1);
-
-         C.Country := temp;
-      end;
-
-      L.List.Add(C);
-      i := L.List.Count - 1;
-      C.GridIndex := i;
-
-      repeat
-         mii := 1;
-         readln(f, str);
-         str := TrimLeft(str);
-         repeat
-            temp := '';
-            repeat
-               temp := temp + str[mii];
-               inc(mii)
-            until (str[mii] = ',') or (str[mii] = ';') or (mii > Length(str));
-
-            p := TPrefix.Create;
-
-            if (pos('(', temp) > 0) then begin
-               j := pos('(', temp);
-               k := pos(')', temp);
-               if k > j + 1 then begin
-                  temp2 := copy(temp, j + 1, k - j - 1);
-                  m := StrToIntDef(temp2, 0);
-
-                  if (m > 0) and (TEST in [testCQWW, testDXCCWWZone]) then
-                     p.OvrZone := m;
-               end;
-               Delete(temp, j, k - j + 1);
-            end;
-
-            if (pos('[', temp) > 0) then begin
-               j := pos('[', temp);
-               k := pos(']', temp);
-               if k > j + 1 then begin
-                  temp2 := copy(temp, j + 1, k - j - 1);
-                  m := StrToIntDef(temp2, 0);
-
-                  if (m > 0) and (TEST = testIARU) then
-                     p.OvrZone := m;
-               end;
-               Delete(temp, j, k - j + 1);
-            end;
-
-            if (pos('{', temp) > 0) then begin
-               j := pos('{', temp);
-               k := pos('}', temp);
-               if k > j + 1 then begin
-                  temp2 := copy(temp, j + 1, k - j - 1);
-                  if pos(temp2 + ';', 'AS;AF;EU;NA;SA;OC;') > 0 then
-                     p.OvrContinent := temp2;
-               end;
-               Delete(temp, j, k - j + 1);
-            end;
-
-            if (pos('<', temp) > 0) then // lat, long override. ignore
-            begin
-               j := pos('<', temp);
-               k := pos('>', temp);
-               Delete(temp, j, k - j + 1);
-            end;
-
-            p.Prefix := temp;
-            p.Index := i;
-            p.Length := Length(temp);
-
-            PL.AddListX(p); // 1.31
-            inc(mii);
-         until (mii >= Length(str) + 1);
-      until str[mii - 1] = ';';
-   end;
-
-   PL.InitIndexX;
-   close(f);
 end;
 
-procedure LoadCountryDataFromFile(filename: string; var L: TCountryList; var PL: TPrefixList);
-var
-   f: textfile;
-   str, temp: string;
-   C: TCountry;
-   p: TPrefix;
-   i, mii, j: integer;
+function TCountry.GetWorked(Index: TBand): Boolean;
 begin
-   _DATFileName := filename;
-   System.assign(f, filename);
+   Result := FWorked[Index];
+end;
+
+procedure TCountry.SetWorked(Index: TBand; Value: Boolean);
+begin
+   FWorked[Index] := Value;
+end;
+
+constructor TPrefix.Create();
+begin
+   Inherited;
+   FPrefix := '';
+   FOvrCQZone := '';
+   FOvrITUZone := '';
+   FOvrContinent := '';
+   FCountry := nil;
+   FFullMatch := False;
+end;
+
+constructor TPrefixList.Create(OwnsObjects: Boolean);
+begin
+   Inherited Create(OwnsObjects);
+   FPrefixComparer := TPrefixComparer.Create();
+end;
+
+destructor TPrefixList.Destroy();
+begin
+   Inherited;
+   FPrefixComparer.Free();
+end;
+
+procedure TPrefixList.Parse(cty: TCountry);
+var
+   i: Integer;
+   slText: TStringList;
+   P: TPrefix;
+   strPrefix: string;
+   strOvrCQZone: string;
+   strOvrITUZone: string;
+   strOvrContinent: string;
+   strUnused: string;
+   fFullMatch: Boolean;
+
+   function ExtractNumber(var strPrefix: string; strBegin, strEnd: string): string;
+   var
+      p1, p2: Integer;
+   begin
+      p1 := Pos(strBegin, strPrefix);
+      if p1 <= 0 then begin
+         Result := '';
+         Exit;
+      end;
+
+      p2 := Pos(strEnd, strPrefix, p1 + 1);
+      if p2 <= 0 then begin
+         p2 := Length(strPrefix);
+      end;
+
+      Result := Copy(strPrefix, p1 + 1, p2 - p1 - 1);
+      System.Delete(strPrefix, p1, p2 - p1 + 1);
+   end;
+begin
+   slText := TStringList.Create();
+   slText.StrictDelimiter := True;
    try
-      System.Reset(f);
-   except
-      on EFOpenError do begin
-         exit;
+      slText.CommaText := cty.Prefixes;
+
+      for i := 0 to slText.Count - 1 do begin
+         strPrefix := Trim(slText[i]);
+
+         // =で始まる物は完全一致コール
+         if strPrefix[1] = '=' then begin
+            strPrefix := Copy(strPrefix, 2);
+            fFullMatch := True;
+         end
+         else begin
+            fFullMatch := False;
+         end;
+
+         // ()はOverride CQ Zone
+         strOvrCQZone := ExtractNumber(strPrefix, '(', ')');
+
+         // []はOverride ITU Zone
+         strOvrITUZone := ExtractNumber(strPrefix, '[', ']');
+
+         // {}はOverride Continent
+         strOvrContinent := ExtractNumber(strPrefix, '{', '}');
+
+         // <#/#>はOverride latitude/longitude
+         strUnused := ExtractNumber(strPrefix, '<', '>');
+
+         // ~#~はOverride UTCOffset
+         strUnused := ExtractNumber(strPrefix, '~', '~');
+
+         P := TPrefix.Create();
+         P.Prefix := strPrefix;
+         P.Country := cty;
+         P.OvrCQZone := strOvrCQZone;
+         P.OvrITUZone := strOvrITUZone;
+         P.OvrContinent := strOvrContinent;
+         P.FFullMatch := fFullMatch;
+         Add(P);
       end;
+
+   finally
+      slText.Free();
    end;
-   readln(f, str);
-   C := TCountry.Create;
-   C.CountryName := 'Unknown';
-   L.List.Add(C);
-   while not(eof(f)) do begin
-      readln(f, str);
-      if pos('end of file', LowerCase(str)) > 0 then
-         break;
-
-      C := TCountry.Create;
-      C.CountryName := TrimRight(copy(str, 1, 26));
-      temp := TrimLeft(TrimRight(copy(str, 27, 2)));
-      i := StrToIntDef(temp, 0);
-      if (i < 0) or (i > 90 { maxzone } ) then
-         i := 0;
-
-      C.Zone := i;
-      C.Country := TrimRight(copy(str, 32, 7));
-
-      case C.Zone of
-         1 .. 8:
-            C.Continent := 'NA';
-         9 .. 13:
-            C.Continent := 'SA';
-         14 .. 16, 40:
-            C.Continent := 'EU';
-         17 .. 26:
-            C.Continent := 'AS';
-         27 .. 32:
-            C.Continent := 'OC';
-         33 .. 39:
-            C.Continent := 'AF';
-      end;
-
-      if CharInSet(str[39], ['A', 'O', 'E']) = True then begin
-         temp := str[39] + str[40];
-         if temp = 'AS' then
-            C.Continent := 'AS';
-         if temp = 'AN' then
-            C.Continent := 'AN';
-         if temp = 'AF' then
-            C.Continent := 'AF';
-         if temp = 'EU' then
-            C.Continent := 'EU';
-         if temp = 'OC' then
-            C.Continent := 'OC';
-         if temp = 'NA' then
-            C.Continent := 'NA';
-         if temp = 'SA' then
-            C.Continent := 'SA';
-      end;
-
-      L.List.Add(C);
-      i := L.List.Count - 1;
-      C.GridIndex := i;
-
-      repeat
-         mii := 3;
-         readln(f, str);
-         repeat
-            temp := '';
-            repeat
-               temp := temp + str[mii];
-               inc(mii)
-            until (str[mii] = ',') or (str[mii] = ';');
-            p := TPrefix.Create;
-            p.Prefix := temp;
-            p.Index := i;
-            p.Length := Length(temp);
-            { j := 0;
-              if PL.List.Count > 0 then
-              for j := 0 to PL.List.Count-1 do
-              begin
-              if TPrefix(PL.List[j]).Length <= P.Length then
-              break;
-              end;
-              PL.List.Insert(j, P); }
-            PL.AddListX(p); // 1.31
-            inc(mii);
-         until mii = Length(str) + 1;
-      until str[mii - 1] = ';';
-   end;
-   mii := 0;
-   close(f);
-   PL.InitIndexX;
 end;
 
-function GetPrefixX(aQSO: TQSO; PL: TPrefixList): TPrefix;
-var
-   str, temp, firststr: string;
-   i, x, j, k, len, pind: integer;
-   boo: boolean;
+procedure TPrefixList.Sort();
 begin
-   Result := nil;
-   str := aQSO.QSO.CallSign;
-   if str = '' then
-      exit;
-   pind := PXIndex(str);
-   i := pos('/', str);
-   if i > 0 then begin
-      // if there's a perfect match then go with it
-      len := Length(str);
-      x := PL.ListIndexX[pind];
-      if x >= 0 then begin
-         for j := x to PL.List.Count - 1 do begin
-            if TPrefix(PL.List[j]).Prefix = str then begin
-               Result := TPrefix(PL.List[j]);
-               exit;
-            end;
-            if len > TPrefix(PL.List[j]).Length then
-               break;
-         end;
-      end;
+   Sort(FPrefixComparer);
+end;
 
-      temp := copy(str, i + 1, 255);
-      if temp = 'MM' then { Marine Mobile }
-      begin
-         Result := nil;
-         exit;
-      end;
-      if (temp = 'AA') or (temp = 'AT') or (temp = 'AG') or (temp = 'AA') or (temp = 'AE') or (temp = 'M') or (temp = 'P') or (temp = 'AM') or
-        (temp = 'QRP') or (temp = 'A') or (temp = 'KT') or (temp = 'N') or (temp = 'T') then
-         str := copy(str, 1, i - 1) { cut /AA /M etc }
-      else if (Length(temp) = 1) and (CharInSet(temp[1], ['0' .. '9']) = True) then
-         str := copy(str, 1, i - 1) { cut /0 /1 etc }
-      else if i > 4 then { JA1ZLO/JD1, KH0AM/W6 etc NOT KH0/AD6AJ }
-      begin
-         if i = 5 then // kh7k/ad6aj etc or w6aa/kh0
-         begin // if the first part exactly matches with a prefix, it will return that prefix
-            boo := false;
-            firststr := copy(str, 1, 4);
-            if x >= 0 then
-               for k := x to PL.List.Count - 1 do begin
-                  if TPrefix(PL.List[k]).Prefix = firststr then begin
-                     boo := true;
-                     break;
-                  end;
-                  if PXIndex(TPrefix(PL.List[k]).Prefix) <> pind then
-                     break;
-               end;
-            if boo then begin
-               Result := TPrefix(PL.List[k]);
-               exit;
-            end;
-         end;
-         str := temp;
-      end;
+{ TPrefixComparer }
+
+function TPrefixComparer.Compare(const Left, Right: TPrefix): Integer;
+begin
+   Result := CompareText(Right.Prefix, Left.Prefix);
+end;
+
+function LoadCTY_DAT(): Boolean;
+var
+   i: Integer;
+   P: TPrefix;
+   strFileName: string;
+begin
+   strFileName := ExtractFilePath(Application.ExeName) + 'CTY.DAT';
+
+   // カントリーリストをロード
+   CountryList.LoadFromFile(strFileName);
+
+   // 各カントリーのprefixを展開
+   for i := 0 to CountryList.Count - 1 do begin
+      PrefixList.Parse(CountryList[i]);
    end;
 
-   boo := false;
-   if str = '' then
-      exit;
+   // 並び替え（降順）
+   PrefixList.Sort();
 
-   if pos('KG4', str) = 1 then begin
-      if Length(str) = 6 then
-         str := 'AD4AJ';
-   end;
+   // 先頭にUnknown Countryのダミーレコード追加
+   P := TPrefix.Create();
+   P.Prefix := 'Unknown';
+   P.Country := CountryList[0];
+   PrefixList.Insert(0, P);
 
-   pind := PXIndex(str);
-   x := PL.ListIndexX[pind];
-   if x < 0 then begin
-      pind := PXIndex(copy(str, 1, 1));
-      x := PL.ListIndexX[pind];
-   end;
-
-   if x < 0 then
-      exit;
-
-   for j := pind + 1 to MaxIndex do
-      if PL.ListIndexX[j] >= 0 then
-         break;
-
-   for i := x to PL.ListIndexX[j] - 1 do begin
-      if pos(TPrefix(PL.List[i]).Prefix, str) = 1 then begin
-         boo := true;
-         break;
-      end;
-   end;
-
-   if boo then
-      Result := TPrefix(PL.List[i])
-   else begin
-      x := PL.ListIndexX[PXIndex(copy(str, 1, 1))];
-      if x >= 0 then
-         Result := TPrefix(PL.List[x])
-      else
-         Result := nil;
-   end;
-
+   Result := True;
 end;
 
 function GetPrefix(aQSO: TQSO): TPrefix;
+var
+   str: string;
+   i: integer;
+   P: TPrefix;
+   strCallRight: string;
+   strCallFirst: string;
 begin
-   Result := GetPrefixX(aQSO, PrefixList);
-end;
+   str := aQSO.CallSign;
+   if str = '' then begin
+      Result := PrefixList[0];
+      Exit;
+   end;
 
-function GetCountryIndex(aQSO: TQSO): integer;
-begin
-   if GetPrefix(aQSO) <> nil then
-      Result := TPrefix(GetPrefix(aQSO)).Index
-   else
-      Result := 0;
+   // 最初はコール一致確認
+   for i := 0 to PrefixList.Count - 1 do begin
+      P := PrefixList[i];
+
+      if (P.FullMatch = True) and (P.Prefix = str) then begin
+         Result := P;
+         Exit;
+      end;
+   end;
+
+   i := Pos('/', str);
+   if i > 0 then begin
+      strCallFirst := Copy(str, 1, i - 1);
+      strCallRight := Copy(str, i + 1);
+   end
+   else begin
+      strCallFirst := str;
+      strCallRight := '';
+   end;
+
+   // Marine Mobile
+   if strCallRight = 'MM' then begin
+      Result := PrefixList[0];
+      Exit;
+   end
+
+   // 無視するもの
+   else if (strCallRight = 'AA') or (strCallRight = 'AT') or (strCallRight = 'AG') or
+      (strCallRight = 'AA') or (strCallRight = 'AE') or (strCallRight = 'M') or
+      (strCallRight = 'P') or (strCallRight = 'AM') or (strCallRight = 'QRP') or
+      (strCallRight = 'A') or (strCallRight = 'KT') or (strCallRight = 'N') or
+      (strCallRight = 'T') or
+      (strCallRight = '0') or (strCallRight = '1') or (strCallRight = '2') or
+      (strCallRight = '3') or (strCallRight = '4') or (strCallRight = '5') or
+      (strCallRight = '6') or (strCallRight = '7') or (strCallRight = '8') or
+      (strCallRight = '9') then begin
+      str := Copy(str, 1, i - 1);
+   end
+
+   // 判別できない
+   else if i = 5 then begin
+      // まずは左側から前方一致で
+      for i := 1 to PrefixList.Count - 1 do begin
+         P := PrefixList[i];
+
+         if P.FullMatch = False then begin
+            if Copy(strCallFirst, 1, Length(P.Prefix)) = P.Prefix then begin
+               Result := P;
+               Exit;
+            end;
+         end;
+      end;
+
+      // 無ければ右側
+      strCallFirst := strCallRight;
+   end;
+
+   // 続いて前方一致で
+   for i := 1 to PrefixList.Count - 1 do begin
+      P := PrefixList[i];
+
+      if P.FullMatch = False then begin
+         if Copy(strCallFirst, 1, Length(P.Prefix)) = P.Prefix then begin
+            Result := P;
+            Exit;
+         end;
+      end;
+   end;
+
+   Result := PrefixList[0];
 end;
 
 function GetArea(str: string): integer;
@@ -830,10 +722,12 @@ begin
       Result := '';
       exit;
    end
-   else
-      C := TCountry(CountryList.List[p.Index]);
-   str := aQSO.QSO.CallSign;
-   i := C.Zone;
+   else begin
+      C := P.Country;
+   end;
+
+   str := aQSO.CallSign;
+   i := StrToIntDef(C.CQZone, 0);
 
    if (C.Country = 'W') or (C.Country = 'K') then begin
       k := GetArea(str);
@@ -916,8 +810,9 @@ begin
       end;
    end;
 
-   if p.OvrZone > 0 then
-      i := p.OvrZone;
+   if P.OvrCQZone <> '' then begin
+      i := StrToIntDef(P.OvrCQZone, 0);
+   end;
 
    if i = 0 then
       Result := ''
@@ -928,8 +823,7 @@ end;
 procedure AnalyzeMyCountry;
 var
    aQSO: TQSO;
-   i: integer;
-   p: TPrefix;
+   P: TPrefix;
 begin
    MyContinent := 'AS';
    MyCountry := 'JA';
@@ -937,28 +831,24 @@ begin
 
    if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your call sign') then begin
       aQSO := TQSO.Create;
-      aQSO.QSO.CallSign := Uppercase(dmZlogGlobal.Settings._mycall);
+      aQSO.CallSign := UpperCase(dmZlogGlobal.Settings._mycall);
 
-      p := GetPrefix(aQSO);
-      // i := GetCountryIndex(aQSO);
-      if p = nil then
-         i := 0
-      else
-         i := p.Index;
+      P := GetPrefix(aQSO);
+      if P <> nil then begin
+         MyCountry := P.Country.Country;
 
-      if i > 0 then begin
-         MyCountry := TCountry(CountryList.List[i]).Country;
-         // MyZone := IntToStr(TCountry(CountryList.List[i]).Zone);
+         if dmZlogGlobal.Settings._cqzone = '' then begin
+            dmZlogGlobal.Settings._cqzone := P.Country.CQZone;
+         end;
 
-         if dmZlogGlobal.Settings._cqzone = '' then
-            dmZlogGlobal.Settings._cqzone := GuessCQZone(aQSO);
          MyZone := dmZlogGlobal.Settings._cqzone;
 
-         // MyContinent := TCountry(CountryList.List[i]).Continent;
-         if p.OvrContinent = '' then
-            MyContinent := TCountry(CountryList.List[i]).Continent
-         else
-            MyContinent := p.OvrContinent;
+         if P.OvrContinent = '' then begin
+            MyContinent := P.Country.Continent;
+         end
+         else begin
+            MyContinent := P.OvrContinent;
+         end;
       end;
       aQSO.Free;
    end;

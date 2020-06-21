@@ -1,10 +1,13 @@
 object SuperCheck: TSuperCheck
   Left = 472
   Top = 79
+  ActiveControl = SpinEdit
   Caption = 'Super Check'
-  ClientHeight = 275
-  ClientWidth = 243
+  ClientHeight = 112
+  ClientWidth = 234
   Color = clBtnFace
+  Constraints.MinHeight = 150
+  Constraints.MinWidth = 250
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -16,25 +19,30 @@ object SuperCheck: TSuperCheck
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 244
-    Width = 243
-    Height = 31
+    Top = 77
+    Width = 234
+    Height = 35
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    DesignSize = (
+      234
+      35)
     object Label1: TLabel
-      Left = 163
-      Top = 10
+      Left = 153
+      Top = 11
       Width = 40
       Height = 13
+      Anchors = [akTop, akRight]
       Caption = 'Columns'
     end
     object Button3: TButton
-      Left = 8
+      Left = 4
       Top = 7
       Width = 63
       Height = 21
@@ -43,19 +51,21 @@ object SuperCheck: TSuperCheck
       OnClick = Button3Click
     end
     object StayOnTop: TCheckBox
-      Left = 80
+      Left = 71
       Top = 9
       Width = 81
       Height = 17
+      Anchors = [akTop, akRight]
       Caption = 'Stay on top'
       TabOrder = 1
       OnClick = StayOnTopClick
     end
     object SpinEdit: TSpinEdit
-      Left = 208
-      Top = 6
+      Left = 197
+      Top = 7
       Width = 33
       Height = 22
+      Anchors = [akTop, akRight]
       MaxValue = 5
       MinValue = 1
       TabOrder = 2
@@ -66,15 +76,14 @@ object SuperCheck: TSuperCheck
   object ListBox: TListBox
     Left = 0
     Top = 0
-    Width = 243
-    Height = 244
+    Width = 234
+    Height = 77
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -12
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Style = []
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     ItemHeight = 12
     ParentFont = False
     TabOrder = 1

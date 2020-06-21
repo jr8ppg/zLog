@@ -5,12 +5,11 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UWWMulti, UMultipliers, StdCtrls, ExtCtrls, JLLabel, Grids, Cologrid,
-  UzLogGlobal;
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TARRLWMulti = class(TWWMulti)
     procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -28,132 +27,116 @@ uses UOptions, Main;
 
 {$R *.DFM}
 
-function TARRLWMulti.GetInfoAA(aQSO : TQSO) : string;
+function TARRLWMulti.GetInfoAA(aQSO: TQSO): string;
+var
+   P: TPrefix;
 begin
-  Result := TCountry(CountryList.List[GetCountryIndex(aQSO)]).JustInfo;
+   P := GetPrefix(aQSO);
+   Result := P.Country.JustInfo;
 end;
 
-procedure TARRLWMulti.CheckMulti(aQSO : TQSO);
-var str : string;
-    i : integer;
-    B : TBand;
+procedure TARRLWMulti.CheckMulti(aQSO: TQSO);
 begin
+   //
 end;
 
-function TARRLWMulti.ValidMulti(aQSO : TQSO) : boolean;
+function TARRLWMulti.ValidMulti(aQSO: TQSO): boolean;
 begin
-  if aQSO.QSO.NrRcvd <> '' then
-    Result := True
-  else
-    Result := False;
+   if aQSO.NrRcvd <> '' then
+      Result := True
+   else
+      Result := False;
 end;
 
-procedure TARRLWMulti.AddNoUpdate(var aQSO : TQSO);
-var str : string;
-    B : TBand;
-    i, j : integer;
-    C : TCountry;
+procedure TARRLWMulti.AddNoUpdate(var aQSO: TQSO);
+var
+   B: TBand;
+   C: TCountry;
+   P: TPrefix;
 begin
-  aQSO.QSO.NewMulti1 := False;
-  aQSO.QSO.NewMulti2 := False;
+   aQSO.NewMulti1 := False;
+   aQSO.NewMulti2 := False;
 
-  i := GetCountryIndex(aQSO);
+   P := GetPrefix(aQSO);
+   C := P.Country;
+   aQSO.Multi1 := C.Country;
 
-  C := TCountry(CountryList.List[i]);
-  aQSO.QSO.Multi1 := C.Country;
+   if aQSO.Dupe then begin
+      exit;
+   end;
 
-  if aQSO.QSO.Dupe then
-    exit;
-
-  if ALLASIANFLAG = True then
-    begin
-      aQSO.QSO.Points := 0;
-      //MainForm.Caption := C.Country+';'+MyCOuntry+';';
-      if C.Country = MyCountry then
-        begin
-          aQSO.QSO.Points := 0;
-          exit;
-        end
-      else
-        begin
-          if C.Continent = 'AS' then
-            begin
-              case aQSO.QSO.Band of
-                b19 : aQSO.QSO.Points := 3;
-                b35, b28 : aQSO.QSO.Points := 2;
-              else
-                aQSO.QSO.Points := 1;
-              end;
-            end
-          else
-            begin
-              case aQSO.QSO.Band of
-                b19 : aQSO.QSO.Points := 9;
-                b35, b28 : aQSO.QSO.Points := 6;
-              else
-                aQSO.QSO.Points := 3;
-              end;
+   if ALLASIANFLAG = True then begin
+      aQSO.Points := 0;
+      // MainForm.Caption := C.Country+';'+MyCOuntry+';';
+      if C.Country = MyCountry then begin
+         aQSO.Points := 0;
+         exit;
+      end
+      else begin
+         if C.Continent = 'AS' then begin
+            case aQSO.Band of
+               b19:
+                  aQSO.Points := 3;
+               b35, b28:
+                  aQSO.Points := 2;
+               else
+                  aQSO.Points := 1;
             end;
-        end;
-    end;
+         end
+         else begin
+            case aQSO.Band of
+               b19:
+                  aQSO.Points := 9;
+               b35, b28:
+                  aQSO.Points := 6;
+               else
+                  aQSO.Points := 3;
+            end;
+         end;
+      end;
+   end;
 
+   B := aQSO.Band;
 
-  B := aQSO.QSO.Band;
-
-  if C.Worked[B] = False then
-    begin
+   if C.Worked[B] = False then begin
       C.Worked[B] := True;
-      aQSO.QSO.NewMulti1 := True;
-      //Grid.Cells[0,C.GridIndex] := C.Summary;
-    end;
+      aQSO.NewMulti1 := True;
+      // Grid.Cells[0,C.GridIndex] := C.Summary;
+   end;
 end;
 
 procedure TARRLWMulti.FormCreate(Sender: TObject);
-var i : integer;
-    aQSO : TQSO;
+var
+   aQSO: TQSO;
+   C: TCountry;
 begin
-  {inherited; }
-  ALLASIANFLAG := False;
-  CountryList := TCountryList.Create;
-  PrefixList := TPrefixList.Create;
+   { inherited; }
+   ALLASIANFLAG := False;
+   CountryList := TCountryList.Create;
+   PrefixList := TPrefixList.Create;
 
-  //LoadCountryDataFromFile('DXCC.DAT');
+   if LoadCTY_DAT() = False then begin
+      Exit;
+   end;
 
-  if FileExists('CTY.DAT') then
-    begin
-      LoadCTY_DAT(testIARU, CountryList, PrefixList);
-      MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-    end
-  else
-    LoadCountryDataFromFile('DXCC.DAT', CountryList, PrefixList);
+   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
 
+   if CountryList.Count = 0 then begin
+      Exit;
+   end;
 
-  if CountryList.List.Count = 0 then exit;
-  {for i := 0 to CountryList.List.Count-1 do
-    begin
-      ListBox.Items.Add(TCountry(CountryList.List[i]).Summary);
-    end;}
-  Reset;
-  MyContinent := 'AS';
-  MyCountry := 'JA';
+   Reset;
+   MyContinent := 'AS';
+   MyCountry := 'JA';
 
-  if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your callsign') then
-    begin
+   if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your callsign') then begin
       aQSO := TQSO.Create;
-      aQSO.QSO.callsign := UpperCase(dmZlogGlobal.Settings._mycall);
-      i := GetCountryIndex(aQSO);
-      if i > 0 then
-        begin
-          MyCountry := TCountry(CountryList.List[i]).Country;
-          MyContinent := TCountry(CountryList.List[i]).Continent;
-        end;
+      aQSO.callsign := UpperCase(dmZlogGlobal.Settings._mycall);
+      C := GetPrefix(aQSO).Country;
+      MyCountry := C.Country;
+      MyContinent := C.Continent;
       aQSO.Free;
-    end;
-end;
-
-procedure TARRLWMulti.FormShow(Sender: TObject);
-begin
-  // inherited;
+   end;
 end;
 
 end.

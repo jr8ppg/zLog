@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, UzLogGlobal;
+  StdCtrls, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TSummaryInfo = class(TForm)
@@ -60,10 +60,9 @@ end;
 procedure TSummaryInfo.FormShow(Sender: TObject);
 var
    str : string;
-   i : integer;
    Y, M, D : word;
 begin
-   if TQSO(Log.List[0]).QSO.RSTSent = 0 then begin // JST = 0; UTC = $FFFF
+   if Log.QsoList[0].RSTSent = 0 then begin // JST = 0; UTC = $FFFF
       DecJapanese;
    end
    else begin
@@ -71,14 +70,14 @@ begin
    end;
 
    if Log.TotalQSO > 0 then begin
-      DecodeDate(TQSO(Log.List[1]).QSO.Time, Y, M, D);
+      DecodeDate(Log.QsoList[1].Time, Y, M, D);
    end
    else begin
       DecodeDate(Date, Y, M, D);
    end;
 
    if ContestNameEdit.Text = '' then begin
-      ContestNameEdit.Text := TQSO(Log.List[0]).QSO.memo + ' ' + IntToStr(Y);
+      ContestNameEdit.Text := Log.QsoList[0].memo + ' ' + IntToStr(Y);
    end;
 
    if CallEdit.Text = '' then begin

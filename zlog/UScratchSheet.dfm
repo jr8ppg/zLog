@@ -3,6 +3,7 @@ inherited ScratchSheet: TScratchSheet
   Top = 250
   Caption = 'Scratch sheet'
   PopupMenu = PopupMenu
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 12
   inherited ListBox: TListBox

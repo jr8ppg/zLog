@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, ShellApi, UzLogGlobal, UzLogKeyer, JclFileUtils;
+  Buttons, ExtCtrls, ShellApi,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, JclFileUtils;
 
 type
   TAboutBox = class(TForm)
@@ -52,7 +53,7 @@ begin
    Label6.Caption := 'zLog for Windows Version ' + ver.FileVersion + ' —ß˜a Edition based on 2.2h';
    ver.Free();
 
-   Label2.Caption := TQSO(Log.List[0]).QSO.memo;
+   Label2.Caption := Log.QsoList[0].memo;
 end;
 
 procedure TAboutBox.LinkLabel1LinkClick(Sender: TObject; const Link: string;

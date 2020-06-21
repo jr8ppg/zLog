@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  StdCtrls, ExtCtrls, Grids, UzLogGlobal, JLLabel, UBasicMulti, checklst,
-  Cologrid, UMultipliers;
+  StdCtrls, ExtCtrls, Grids, UzLogConst, UzLogGlobal, UzLogQSO,
+  JLLabel, UBasicMulti, checklst, Cologrid, UMultipliers;
 
 type
   TACAGMulti = class(TBasicMulti)
@@ -43,7 +43,7 @@ type
   public
     LatestMultiAddition : integer; // Grid.TopRow
     CityList : TCityList;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Add(var aQSO : TQSO); override; {NewMulti}
     function ValidMulti(aQSO : TQSO) : boolean; override;
@@ -66,7 +66,7 @@ begin
    inherited;
 end;
 
-procedure TACAGMulti.Update;
+procedure TACAGMulti.UpdateData;
 var
    i: Integer;
    C: TCity;
@@ -87,7 +87,7 @@ var
 begin
    inherited;
 
-   str := aQSO.QSO.NrRcvd;
+   str := aQSO.NrRcvd;
    if str = '' then begin
       Exit;
    end;
@@ -102,7 +102,7 @@ begin
          Grid.TopRow := i;
          str := C.Summary2;
 
-         if C.Worked[aQSO.QSO.Band] then begin
+         if C.Worked[aQSO.Band] then begin
             str := 'Worked on this band. ' + str;
          end
          else begin
@@ -122,7 +122,7 @@ var
    str: string;
 begin
    Result := '';
-   str := aQSO.QSO.NrRcvd;
+   str := aQSO.NrRcvd;
    if str = '' then begin
       Exit;
    end;
@@ -139,20 +139,20 @@ var
    str: string;
    C: TCity;
 begin
-   aQSO.QSO.NewMulti1 := False;
-   str := aQSO.QSO.NrRcvd;
+   aQSO.NewMulti1 := False;
+   str := aQSO.NrRcvd;
    Delete(str, length(str), 1);
-   aQSO.QSO.Multi1 := str;
+   aQSO.Multi1 := str;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
    C := CityList.GetCity(str);
    if C <> nil then begin
-      if C.Worked[aQSO.QSO.Band] = False then begin
-         C.Worked[aQSO.QSO.Band] := True;
-         aQSO.QSO.NewMulti1 := True;
+      if C.Worked[aQSO.Band] = False then begin
+         C.Worked[aQSO.Band] := True;
+         aQSO.NewMulti1 := True;
       end;
       LatestMultiAddition := C.Index;
    end;
@@ -193,7 +193,7 @@ var
    boo: Boolean;
 begin
    Result := False;
-   str := aQSO.QSO.NrRcvd;
+   str := aQSO.NrRcvd;
    if not(length(str) in [5 .. 7]) then begin
       Exit;
    end;
@@ -268,7 +268,7 @@ procedure TACAGMulti.FormShow(Sender: TObject);
 begin
    inherited;
    LatestMultiAddition := 0;
-   Update;
+   UpdateData;
 end;
 
 procedure TACAGMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer; var Bold, Italic, underline: Boolean);
@@ -281,7 +281,7 @@ begin
       Exit;
    end;
 
-   B := Main.CurrentQSO.QSO.Band;
+   B := Main.CurrentQSO.Band;
    if TCity(CityList.List[ARow]).Worked[B] then begin
       Fcolor := clRed;
    end

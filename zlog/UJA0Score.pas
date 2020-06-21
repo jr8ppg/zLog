@@ -4,13 +4,17 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Buttons;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons, Math,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TJA0Score = class(TBasicScore)
     Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
   public
@@ -18,9 +22,10 @@ type
     JA0Band : TBand;
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure Update; override;
+    procedure UpdateData; override;
     function IsJA0(aQSO : TQSO) : boolean;
     procedure SetBand(B : TBand);
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -28,6 +33,21 @@ implementation
 uses Main;
 
 {$R *.DFM}
+
+procedure TJA0Score.FormShow(Sender: TObject);
+begin
+   inherited;
+   CWButton.Visible := False;
+   Button1.SetFocus;
+   Grid.Col := 1;
+   Grid.Row := 1;
+end;
+
+procedure TJA0Score.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   inherited;
+   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
+end;
 
 procedure TJA0Score.Reset;
 var
@@ -42,7 +62,7 @@ end;
 
 function TJA0Score.IsJA0(aQSO : TQSO) : boolean;
 begin
-   if Pos('0',aQSO.QSO.CallSign) > 0 then begin
+   if Pos('0',aQSO.CallSign) > 0 then begin
       Result := True;
    end
    else begin
@@ -54,21 +74,21 @@ procedure TJA0Score.AddNoUpdate(var aQSO : TQSO);
 begin
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
    if IsJA0(aQSO) then begin
-      aQSO.QSO.Points := 3;
+      aQSO.Points := 3;
    end
    else begin
-      aQSO.QSO.Points := 1;
+      aQSO.Points := 1;
    end;
 
-   Inc(Points[aQSO.QSO.band], aQSO.QSO.Points);
+   Inc(Points[aQSO.band], aQSO.Points);
 end;
 
-procedure TJA0Score.Update;
+procedure TJA0Score.UpdateData;
 begin
    // 見出し行
    Grid.Cells[0,0] := 'MHz';
@@ -97,6 +117,8 @@ begin
 end;
 
 procedure TJA0Score.SetBand(B : TBand);
+var
+   w: Integer;
 begin
    JA0Band := B;
    if (B = b21) or (B = b28) then begin
@@ -112,44 +134,27 @@ begin
       Grid.Cells[0, 3] := '';
    end;
 
-   ClientWidth := (Grid.DefaultColWidth * Grid.ColCount) + (Grid.ColCount * Grid.GridLineWidth);
-   ClientHeight := (Grid.DefaultRowHeight * Grid.RowCount) + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
+   // カラム幅をセット
+   w := Grid.Canvas.TextWidth('9');
+   Grid.ColWidths[0] := w * 8;
+   Grid.ColWidths[1] := w * 8;
+   Grid.ColWidths[2] := w * 9;
+   Grid.ColWidths[3] := w * Max(8, Length(Grid.Cells[3, 2])+1);
+
+   // グリッドサイズ調整
+   AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
 end;
 
-procedure TJA0Score.FormShow(Sender: TObject);
+function TJA0Score.GetFontSize(): Integer;
 begin
-   inherited;
-   Button1.SetFocus;
-   Grid.Col := 1;
-   Grid.Row := 1;
-   CWButton.Visible := False;
+   Result := Grid.Font.Size;
 end;
 
-procedure TJA0Score.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-var
-   strText: string;
+procedure TJA0Score.SetFontSize(v: Integer);
 begin
-   inherited;
-   strText := TStringGrid(Sender).Cells[ACol, ARow];
-
-   with TStringGrid(Sender).Canvas do begin
-      Brush.Color := TStringGrid(Sender).Color;
-      Brush.Style := bsSolid;
-      FillRect(Rect);
-
-      Font.Name := 'ＭＳ ゴシック';
-      Font.Size := 11;
-
-      if Copy(strText, 1, 1) = '*' then begin
-         strText := Copy(strText, 2);
-         Font.Color := clBlue;
-      end
-      else begin
-         Font.Color := clBlack;
-      end;
-
-      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
-   end;
+   Inherited;
+   SetGridFontSize(Grid, v);
+   UpdateData();
 end;
 
 end.

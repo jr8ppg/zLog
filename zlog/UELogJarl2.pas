@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, UzLogGlobal, IniFiles;
+  Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TformELogJarl2 = class(TForm)
@@ -321,7 +322,7 @@ begin
 
    WriteLn(f, 'DATE(JST)' + TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVNo');
    for i := 1 to Log.TotalQSO do begin
-      s := FormatQSO(TQSO(Log.List[i]));
+      s := FormatQSO(Log.QsoList[i]);
       WriteLn(f, s);
    end;
 
@@ -336,15 +337,15 @@ begin
    slLine.StrictDelimiter := True;
    slLine.Delimiter := TAB;
    try
-      slLine.Add(FormatDateTime('yyyy-mm-dd', q.QSO.Time));
-      slLine.Add(FormatDateTime('hh:nn', q.QSO.Time));
+      slLine.Add(FormatDateTime('yyyy-mm-dd', q.Time));
+      slLine.Add(FormatDateTime('hh:nn', q.Time));
 
-      slLine.Add(MHzString[q.QSO.Band]);
-      slLine.Add(ModeString[q.QSO.Mode]);
-      slLine.Add(q.QSO.Callsign);
+      slLine.Add(MHzString[q.Band]);
+      slLine.Add(ModeString[q.Mode]);
+      slLine.Add(q.Callsign);
 
-      slLine.Add(IntToStr(q.QSO.RSTsent) + ' ' + q.QSO.NrSent);
-      slLine.Add(IntToStr(q.QSO.RSTrcvd) + ' ' + q.QSO.NrRcvd);
+      slLine.Add(IntToStr(q.RSTsent) + ' ' + q.NrSent);
+      slLine.Add(IntToStr(q.RSTrcvd) + ' ' + q.NrRcvd);
 
       Result := slLine.DelimitedText;
    finally

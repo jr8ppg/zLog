@@ -180,7 +180,9 @@ object RigControl: TRigControl
     Tag = 3
     Port = pnCustom
     PortName = '\\.\COM2'
+    HwFlow = hfNONE
     InBufSize = 4096
+    EnableDTROnOpen = False
     Left = 316
     Top = 8
   end

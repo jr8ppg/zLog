@@ -14,6 +14,7 @@ object formClusterTelnetSet: TformClusterTelnetSet
   OldCreateOrder = True
   Position = poOwnerFormCenter
   Scaled = False
+  OnCreate = FormCreate
   DesignSize = (
     265
     159)
@@ -57,7 +58,6 @@ object formClusterTelnetSet: TformClusterTelnetSet
     Default = True
     ModalResult = 1
     TabOrder = 0
-    ExplicitTop = 152
   end
   object buttonCancel: TButton
     Left = 135
@@ -69,7 +69,6 @@ object formClusterTelnetSet: TformClusterTelnetSet
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
-    ExplicitTop = 152
   end
   object comboHostName: TComboBox
     Left = 80

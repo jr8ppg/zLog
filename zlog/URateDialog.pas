@@ -6,7 +6,7 @@ uses
   Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, System.Math, System.DateUtils,
   VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart,
-  UOptions, UzLogGlobal, VCLTee.Series;
+  VCLTee.Series, UOptions, UzLogGlobal, UzLogQSO, UzLogConst;
 
 type
   TRateDialog = class(TForm)
@@ -47,9 +47,6 @@ type
     { Public declarations }
     procedure UpdateGraph;
   end;
-
-var
-  RateDialog: TRateDialog;
 
 implementation
 
@@ -155,16 +152,16 @@ begin
 
    k := 0;
    repeat
-      aQSO := TQSO(Log.List[i]);
-      if aQSO.QSO.TX = mytx then begin
+      aQSO := Log.QsoList[i];
+      if aQSO.TX = mytx then begin
          inc(k);
       end;
 
       dec(i)
-   until (i = 0) or (k = 10);
+   until (i = 1) or (k = 10);
 
    if (k = 10) then begin
-      Last := aQSO.QSO.time;
+      Last := aQSO.time;
       Diff := (CurrentTime - Last) * 24.0;
       Rate := 10 / Diff;
 
@@ -180,15 +177,15 @@ begin
    i := Log.TotalQSO;
    k := 0;
    repeat
-      aQSO := TQSO(Log.List[i]);
-      if aQSO.QSO.TX = mytx then begin
+      aQSO := Log.QsoList[i];
+      if aQSO.TX = mytx then begin
          inc(k);
       end;
       dec(i)
-   until (i = 0) or (k = 100);
+   until (i = 1) or (k = 100);
 
    if k = 100 then begin
-      Last := aQSO.QSO.time;
+      Last := aQSO.time;
       Diff := (CurrentTime - Last) * 24.0;
       Rate := 100 / Diff;
 
@@ -254,19 +251,19 @@ begin
 
    total_count := 0;
    for i := 1 to Log.TotalQSO do begin
-      aQSO := TQSO(Log.List[i]);
+      aQSO := Log.QsoList[i];
 
-      if (aQSO.QSO.Points = 0) then begin    // 得点無しはスキップ
+      if (aQSO.Points = 0) then begin    // 得点無しはスキップ
          Continue;
       end;
 
-      if (aQSO.QSO.Time < _start) then begin // グラフ化以前の交信
+      if (aQSO.Time < _start) then begin // グラフ化以前の交信
          Inc(total_count);
       end
       else begin
-         diff := aQSO.QSO.Time - _start;
+         diff := aQSO.Time - _start;
          DecodeTime(diff, H, M, S, ms);
-         D := Trunc(DaySpan(aQSO.QSO.Time, _start));
+         D := Trunc(DaySpan(aQSO.Time, _start));
          H := H + (D * 24);
          if (H > 47) then begin
             Continue;

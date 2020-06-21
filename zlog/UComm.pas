@@ -4,10 +4,9 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, Console, ExtCtrls, UzLogGlobal, ComCtrls,
-  Console2, USpotClass, CPDrv, Menus, AnsiStrings,
+  StdCtrls, Console, ExtCtrls, Menus, AnsiStrings, ComCtrls,
+  Console2, USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO,
   OverbyteIcsWndControl, OverbyteIcsTnCnx;
-
 
 const
   SPOTMAX = 2000;
@@ -57,15 +56,20 @@ type
       DataSize: Cardinal);
     procedure TelnetDataAvailable(Sender: TTnCnx; Buffer: Pointer;
       Len: Integer);
+    procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer;
+      var Height: Integer);
   private
+    { Private declarations }
     SpotIndex : array[0..SPOTMAX] of integer;
     CommBuffer : TStringList;
     CommTemp : string; {command work string}
     CommStarted : boolean;
     _RelayPacketData : boolean;
-    { Private declarations }
+    function GetFontSize(): Integer;
+    procedure SetFontSize(v: Integer);
   public
-    SpotList : TList;
+    { Public declarations }
+    SpotList : TSpotList;
     procedure DeleteSpot(_from, _to : integer);
     procedure AddListBox(S : string);
     procedure RenewListBox;
@@ -85,11 +89,8 @@ type
     procedure WriteStatusLine(S : string);
     procedure Renew; // red or black
     procedure RemoteConnectButtonPush;
-    { Public declarations }
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
-
-var
-  CommForm: TCommForm;
 
 implementation
 
@@ -112,7 +113,6 @@ begin
       exit;
 
    for i := _from to _to do begin
-      TSpot(SpotList[_from]).Free;
       SpotList.Delete(_from);
       ListBox.Items.Delete(_from);
    end;
@@ -216,7 +216,7 @@ begin
       end;
 
       if noport then begin
-         ZLinkForm.SendRemoteCluster(Edit.Text);
+         MainForm.ZLinkForm.SendRemoteCluster(Edit.Text);
       end
       else begin
          WriteData(Edit.Text+LineBreakCode[ord(Console.LineBreak)]);
@@ -235,7 +235,7 @@ begin
       ^M, ^N, ^O, ^P, ^Q, ^R, ^S, ^T, ^U, ^V, ^W, ^X, ^Y, ^Z: begin
          s := s + Key;
          if noport then begin
-            ZLinkForm.SendRemoteCluster(s);
+            MainForm.ZLinkForm.SendRemoteCluster(s);
          end
          else begin
             WriteData(s);
@@ -245,6 +245,8 @@ begin
 end;
 
 procedure TCommForm.ImplementOptions;
+var
+   i: Integer;
 begin
    if dmZlogGlobal.Settings._clusterbaud <> 99 then begin
       ClusterComm.BaudRate := TBaudRate(dmZlogGlobal.Settings._clusterbaud+1);
@@ -263,14 +265,21 @@ begin
       7 :    Console.LineBreak := TConsole2LineBreak(dmZlogGlobal.Settings._cluster_telnet.FLineBreak);
    end;
 
-   Telnet.Host := dmZlogGlobal.Settings._cluster_telnet.FHostName;
-   Telnet.Port := IntToStr(dmZlogGlobal.Settings._cluster_telnet.FPortNumber);
+   i := Pos(':', dmZlogGlobal.Settings._cluster_telnet.FHostName);
+   if i = 0 then begin
+      Telnet.Host := dmZlogGlobal.Settings._cluster_telnet.FHostName;
+      Telnet.Port := IntToStr(dmZlogGlobal.Settings._cluster_telnet.FPortNumber);
+   end
+   else begin
+      Telnet.Host := Copy(dmZlogGlobal.Settings._cluster_telnet.FHostName, 1, i - 1);
+      Telnet.Port := Copy(dmZlogGlobal.Settings._cluster_telnet.FHostName, i + 1);
+   end;
 end;
 
 procedure TCommForm.FormCreate(Sender: TObject);
 begin
    _RelayPacketData := False;
-   SpotList := TList.Create;
+   SpotList := TSpotList.Create;
    CommStarted := False;
    CommBuffer := TStringList.Create;
    CommTemp := '';
@@ -305,7 +314,7 @@ begin
 //   _TopRow := ListBox.TopIndex;
    ListBox.Clear;
    for i := 0 to SpotList.Count - 1 do begin
-      ListBox.Items.Add(TSpot(SpotList[i]).ClusterSummary);
+      ListBox.Items.Add(SpotList[i].ClusterSummary);
       SpotIndex[i] := i;
    end;
 
@@ -355,10 +364,9 @@ begin
    Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
 
    for i := 0 to SpotList.Count - 1 do begin
-      S := TSpot(SpotList[i]);
+      S := SpotList[i];
       if Now - S.Time > Expire then begin
          SpotList[i] := nil;
-         S.Free;
          _deleted := true;
       end;
 
@@ -382,13 +390,13 @@ begin
    end;
 
    // 現在のバンドと同じ場合、交信済みか確認する
-   if Sp.Band = CurrentQSO.QSO.Band then begin
-      Sp.Worked := IsWorkedSpot(Sp);
+   if Sp.Band = CurrentQSO.Band then begin
+      Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
    end;
 
    SpotList.Add(Sp);
 
-   if cbNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.QSO.Band) then begin
+   if cbNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
    end
    else begin
       MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
@@ -405,13 +413,14 @@ begin
    D.NewZone := Sp.NewZone;
    D.Worked := Sp.Worked;
    D.ClusterData := True;
-   BandScope2.AddAndDisplay(D);
+   D.CQ := Sp.CQ;
+   MainForm.BandScope2.AddAndDisplay(D);
 end;
 
 procedure TCommForm.TransmitSpot(S : string); // local or via network
 begin
    if dmZlogGlobal.Settings._clusterport = 0 then begin
-      ZLinkForm.SendSpotViaNetwork(S);
+      MainForm.ZLinkForm.SendSpotViaNetwork(S);
    end
    else begin
       WriteLine(S);
@@ -450,14 +459,14 @@ begin
       for j := 1 to length(str) do begin
          if (str[j] = Chr($0D)) or (str[j] = Chr($0A)) then begin
             if _RelayPacketData then begin
-               ZLinkForm.SendPacketData(TrimCRLF(CommTemp));
+               MainForm.ZLinkForm.SendPacketData(TrimCRLF(CommTemp));
             end;
 
             Sp := TSpot.Create;
             if Sp.Analyze(CommTemp) = True then begin
                ProcessSpot(Sp);
                if Relay.Checked then begin
-                  ZLinkForm.RelaySpot(CommTemp);
+                  MainForm.ZLinkForm.RelaySpot(CommTemp);
                end;
             end
             else begin
@@ -485,6 +494,8 @@ begin
    inherited;
    ClusterComm.Disconnect;
    ClusterComm.Free;
+   SpotList.Free();
+   CommBuffer.Free();
 end;
 
 procedure TCommForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -504,7 +515,7 @@ begin
    Edit.SetFocus;
 
    if dmZlogGlobal.Settings._clusterport = 0 then begin
-      ZLinkForm.PushRemoteConnect;
+      MainForm.ZLinkForm.PushRemoteConnect;
       exit;
    end;
 
@@ -580,16 +591,16 @@ begin
       exit;
    end;
 
-   Sp := TSpot(SpotList[i]);
+   Sp := SpotList[i];
 
    if Sp.FreqHz > 0 then begin
-      if RigControl.Rig <> nil then begin
-         RigControl.Rig.SetFreq(Sp.FreqHz);
+      if MainForm.RigControl.Rig <> nil then begin
+         MainForm.RigControl.Rig.SetFreq(Sp.FreqHz);
       end;
    end;
 
    MainForm.UpdateBand(Sp.Band);
-   Main.CurrentQSO.QSO.CallSign := Sp.Call;
+   Main.CurrentQSO.CallSign := Sp.Call;
    MainForm.CallsignEdit.Text := Sp.Call;
    MainForm.NumberEdit.Text := '';
 
@@ -609,44 +620,56 @@ begin
    end;
 end;
 
+procedure TCommForm.ListBoxMeasureItem(Control: TWinControl; Index: Integer;
+  var Height: Integer);
+begin
+   Height := Abs(TListBox(Control).Font.Height) + 2;
+end;
+
 procedure TCommForm.ListBoxDrawItem(Control: TWinControl; Index: Integer;
   Rect: TRect; State: TOwnerDrawState);
 var
-   Offset : integer;
+   XOffSet: Integer;
+   YOffSet: Integer;
    S : string;
+   H: Integer;
 begin
    with (Control as TListBox).Canvas do begin
       FillRect(Rect);								{ clear the rectangle }
-      Offset := 2;								{ provide default offset }
+      XOffset := 2;								{ provide default offset }
+
+      H := Rect.Bottom - Rect.Top;
+      YOffset := (H - Abs(TListBox(Control).Font.Height)) div 2;
+
       S := (Control as TListBox).Items[Index];
-      if TSpot(SpotList[Index]).NewMulti then begin
+      if SpotList[Index].NewMulti then begin
          if odSelected in State then begin
             Font.Color := clFuchsia;
          end
          else begin
-            Font.Color := clRed;
+         Font.Color := clRed;
          end;
       end
       else begin
-         if TSpot(SpotList[Index]).Worked then begin
+         if SpotList[Index].Worked then begin
             if odSelected in State then begin
                Font.Color := clWhite;
             end
             else begin
-               Font.Color := clBlack;
+            Font.Color := clBlack;
             end;
          end
          else begin
             if odSelected in State then begin
                Font.Color := clYellow;
-            end
-            else begin
-               Font.Color := clGreen;
+         end
+         else begin
+            Font.Color := clGreen;
             end;
          end;
       end;
 
-      TextOut(Rect.Left + Offset, Rect.Top, S)								{ display the text }
+      TextOut(Rect.Left + XOffset, Rect.Top + YOffSet, S)								{ display the text }
    end;
 end;
 
@@ -684,6 +707,17 @@ var
 begin
    str := string(AnsiStrings.StrPas(PAnsiChar(Buffer)));
    CommBuffer.Add(str);
+end;
+
+function TCommForm.GetFontSize(): Integer;
+begin
+   Result := ListBox.Font.Size;
+end;
+
+procedure TCommForm.SetFontSize(v: Integer);
+begin
+   ListBox.Font.Size := v;
+   Console.Font.Size := v;
 end;
 
 end.

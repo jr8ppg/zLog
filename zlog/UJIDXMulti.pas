@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UWWMulti, UMultipliers, StdCtrls, JLLabel, ExtCtrls, Grids, Cologrid,
-  UzLogGlobal;
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TJIDXMulti = class(TWWMulti)
@@ -26,23 +26,21 @@ uses
 
 procedure TJIDXMulti.FormCreate(Sender: TObject);
 var
-   i : integer;
    aQSO : TQSO;
+   P: TPrefix;
 begin
    {inherited; }
    CountryList := TCountryList.Create;
    PrefixList := TPrefixList.Create;
 
-   if FileExists('CTY.DAT') then begin
-      LoadCTY_DAT(testDXCCWWZone, CountryList, PrefixList);
-      MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-   end
-   else begin
-      LoadCountryDataFromFile('DXCC.DAT', CountryList, PrefixList);
+   if LoadCTY_DAT() = False then begin
+      Exit;
    end;
 
-   if CountryList.List.Count = 0 then begin
-      exit;
+   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
+
+   if CountryList.Count = 0 then begin
+      Exit;
    end;
 
    Reset;
@@ -51,12 +49,12 @@ begin
 
    if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your callsign') then begin
       aQSO := TQSO.Create;
-      aQSO.QSO.callsign := UpperCase(dmZlogGlobal.Settings._mycall);
-      i := GetCountryIndex(aQSO);
-      if i > 0 then begin
-         MyCountry := TCountry(CountryList.List[i]).Country;
-         MyContinent := TCountry(CountryList.List[i]).Continent;
-      end;
+      aQSO.callsign := UpperCase(dmZlogGlobal.Settings._mycall);
+
+      P := GetPrefix(aQSO);
+      MyCountry := P.Country.Country;
+      MyContinent := P.Country.Continent;
+
       aQSO.Free;
    end;
 end;
@@ -68,40 +66,37 @@ var
    i: integer;
    C: TCountry;
 begin
-   aQSO.QSO.NewMulti1 := False;
-   aQSO.QSO.NewMulti2 := False;
-   str := aQSO.QSO.NrRcvd;
-   aQSO.QSO.Multi1 := str;
+   aQSO.NewMulti1 := False;
+   aQSO.NewMulti2 := False;
+   str := aQSO.NrRcvd;
+   aQSO.Multi1 := str;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       exit;
    end;
 
-   B := aQSO.QSO.band;
+   B := aQSO.band;
    i := StrToIntDef(str, 0);
 
    if i in [1..MAXCQZONE] then begin
       if Zone[B,i] = False then begin
          Zone[B,i] := True;
-         aQSO.QSO.NewMulti1 := True;
+         aQSO.NewMulti1 := True;
          FZoneForm.Mark(B,i);
       end;
    end;
 
-   i := GetCountryIndex(aQSO);
-
-   C := TCountry(CountryList.List[i]);
-   MostRecentCty := C;
-
-   aQSO.QSO.Multi2 := C.Country;
-
-   if i = 0 then begin // unknown cty. e.g. MM
+   C := GetPrefix(aQSO).Country;
+   if C.Country = '' then begin // unknown cty. e.g. MM
       exit;
    end;
 
+   MostRecentCty := C;
+   aQSO.Multi2 := C.Country;
+
    if C.Worked[B] = False then begin
       C.Worked[B] := True;
-      aQSO.QSO.NewMulti2 := True;
+      aQSO.NewMulti2 := True;
       Grid.Cells[0,C.GridIndex] := C.Summary;
    end;
 end;

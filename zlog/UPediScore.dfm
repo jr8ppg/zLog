@@ -5,10 +5,6 @@ inherited PediScore: TPediScore
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
-  inherited Panel1: TPanel
-    ExplicitTop = 196
-    ExplicitWidth = 278
-  end
   object Grid: TStringGrid
     Left = 0
     Top = 0
@@ -29,9 +25,6 @@ inherited PediScore: TPediScore
     ScrollBars = ssNone
     TabOrder = 1
     OnDrawCell = GridDrawCell
-    ExplicitTop = -153
-    ExplicitWidth = 278
-    ExplicitHeight = 382
     ColWidths = (
       64
       64

@@ -3,8 +3,9 @@ object BandScope2: TBandScope2
   Top = 125
   Caption = 'Band Scope'
   ClientHeight = 416
-  ClientWidth = 130
+  ClientWidth = 116
   Color = clBtnFace
+  DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -18,7 +19,7 @@ object BandScope2: TBandScope2
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 130
+    Width = 116
     Height = 25
     Align = alTop
     TabOrder = 0
@@ -27,7 +28,7 @@ object BandScope2: TBandScope2
   object Grid: TMgrid
     Left = 0
     Top = 25
-    Width = 130
+    Width = 116
     Height = 391
     Align = alClient
     ColCount = 1
@@ -57,8 +58,8 @@ object BandScope2: TBandScope2
   object BSMenu: TPopupMenu
     AutoHotkeys = maManual
     AutoLineReduction = maManual
-    Left = 432
-    Top = 24
+    Left = 48
+    Top = 48
     object mnDelete: TMenuItem
       Caption = 'Delete'
       OnClick = mnDeleteClick
@@ -121,5 +122,10 @@ object BandScope2: TBandScope2
         end
       end
     end
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 56
+    Top = 112
   end
 end

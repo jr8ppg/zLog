@@ -36,30 +36,46 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 ここにMITライセンスによるオープンソースとして公開します．有志による改良を期待します．
 
 ------
-# 令和 Edition
-## ビルド方法 de JR8PPG
+# 令和 Second Edition
+## Delphi 10.3.3 Community Editionでのビルド方法 de JR8PPG
 
-(0)バージョン 2.3.6.0よりTeeChart Standardコンポーネントを使用しています。Delphiに付属していますが、Delphiインストール時に指定してインストールするか、インストール後は、ウェルカムページ内の「機能拡張」－「プラットフォーム＆拡張マネージャ」をクリックすると、「RAD Studio 追加オプション」ウインドウが表示されるので、「追加オプション」タブ内にある「TeeChart Standard」をチェックONとし、「適用」ボタンクリックでコンポーネントをインストールできます。
+※zlog_requiresより、未使用となったTwsaGraphコンポーネントを削除したため、一度zlog_requiresをアンインストールしてから再度ビルド－インストールを行って下さい。
 
-(1)Delphi 10.3.2でビルドするにあたり、ICSは下記のサイトのICSV8.58を使用
+1. TeeChart Standard（Delphi付属）のインストール
+   - Delphiインストール時に指定するか、インストール後にウェルカムページ内の「機能拡張」－「プラットフォーム＆拡張マネージャ」よりインストール。（「RAD Studio 追加オプション」ウインドウの「追加オプション」タブ内にある「TeeChart Standard」をチェックON）
 
-http://www.overbyte.eu/frame_index.html?redirTo=/products/ics.html
+2. ICS for VCL 8.62 のインストール
+   - ウェルカムページの「GetItからアドオンを取得する」をクリック。
+   - 「GetItパッケージマネージャ」ウインドウで「ICS for VCL 8.62」を選択し、「インストール」ボタンをクリック。
+   - 後は画面の指示に従ってインストールする。
 
-InstallフォルダのD103Install.groupprojを開き、ビルド→インストール 
+3. JEDI Code Library 3.3 のインストール
 
-(2)Project-JEDIよりJCL/JVCLを入手し、インストール
+   - ウェルカムページの「GetItからアドオンを取得する」をクリック。
+   - 「GetItパッケージマネージャ」ウインドウで「JEDI Code Library 3.3」を選択し、「インストール」ボタンをクリック。
+   - 後は画面の指示に従ってインストールする。
+   - RAD Studioを再起動するようにとのメッセージが出るので、Delphiを終了する。
+   - 終了させるとJEDIインストーラがいるので、指示に従ってインストールを完了させる。
+   - インストール後、Delphiを起動する。
 
-https://github.com/project-jedi
+4. JEDI Visual Component Library 3.8 のインストール
 
-JEDI-Install.txt参照
+   - ウェルカムページの「GetItからアドオンを取得する」をクリック。
+   - 「GetItパッケージマネージャ」ウインドウで「JEDI Visual Component Library 3.8」を選択し、「インストール」ボタンをクリック。
+   - 後は画面の指示に従ってインストールする。
+   - RAD Studioを再起動するようにとのメッセージが出るので、Delphiを終了する。
+   - 終了させるとJVCLインストーラがいるので、指示に従ってインストールを完了させる。
+   - インストール後、Delphiを起動する。
+   - 時間かかります。
 
-(3)VCLフォルダのzlog_requires.dpkを開き、ビルド→インストール
+5. zlog_requires のインストール
 
-(4)オプション－言語－DelphiでライブラリパスにVCLフォルダとその下を追加
+   - VCLフォルダのzlog_requires.dpkを開き、ビルド→インストール
+   - オプション－言語－DelphiでライブラリパスにVCLフォルダとその下を追加
 
-(5)zlogフォルダのzlog.dprojを開き、ビルド
+6. zlogフォルダのzlog.dprojを開き、ビルド
 
-(6)完成
+7. 完成
 
 ## オリジナルからの変更点
 
@@ -101,13 +117,15 @@ JEDI-Install.txt参照
 ## 動作確認済み無線機
 
 ### ICOM
-* IC-706mkII,IC-756PRO,IC-756PRO2,IC-7100,IC-7200,IC-7300
+* IC-706mkII,IC-756PRO,IC-756PRO2,IC-7100,IC-7200,IC-7300他
 ### KENWOOD
-* TS-570
+* TS-570,TS-2000
 ### YAESU
 * FT-2000/FT-950/FT-450/FTDX-5000
 * FT-920
 * FT-1000MP
+* FT-991
+* FT-847,FT-817
 
 ## 第三者著作権情報
 
@@ -143,12 +161,6 @@ https://torry.net/files/vcl/labels/rotatedlabels/jllabel.zip
 ```
 This product includes software developed by Wolfgang Chien
 Copyright (c) Wolfgang Chien
-```
-
-* TwsaGraph
-```
-This product includes software developed by P. Gertzen
-Copyright (c) P. Gertzen
 ```
 
 * TMgrid

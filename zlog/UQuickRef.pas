@@ -28,12 +28,11 @@ procedure TQuickRef.FormCreate(Sender: TObject);
 begin
    dmZlogGlobal.ReadWindowState(Self);
 
-  if FileExists('ZLOGHELP.TXT') then
-    begin
-     Memo.Lines.LoadFromFile('ZLOGHELP.TXT');
-    end
-  else
-     Memo.Lines.Clear;
+   if FileExists('ZLOGHELP.TXT') then begin
+      Memo.Lines.LoadFromFile('ZLOGHELP.TXT');
+   end
+   else
+      Memo.Lines.Clear;
 end;
 
 procedure TQuickRef.FormDestroy(Sender: TObject);
@@ -43,8 +42,8 @@ end;
 
 procedure TQuickRef.MemoKeyPress(Sender: TObject; var Key: Char);
 begin
-  if Key = Chr($1B) then
-    MainForm.LastFocus.SetFocus;
+   if Key = Chr($1B) then
+      MainForm.LastFocus.SetFocus;
 end;
 
 end.

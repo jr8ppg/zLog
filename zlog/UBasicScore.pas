@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UzLogGlobal, StdCtrls, ExtCtrls, Buttons;
+  UzLogConst, UzLogGlobal, UzLogQSO, StdCtrls, ExtCtrls, Buttons, Math, Grids;
 
 type
   TBasicScore = class(TForm)
@@ -19,6 +19,13 @@ type
     procedure FormCreate(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
     procedure CWButtonClick(Sender: TObject);
+  protected
+    FFontSize: Integer;
+    function GetFontSize(): Integer; virtual;
+    procedure SetFontSize(v: Integer); virtual;
+    procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
+    procedure AdjustGridSize(Grid: TStringGrid; ColCount, RowCount: Integer);
+    procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
   private
     { Private declarations }
   public
@@ -29,9 +36,9 @@ type
     Points : array[b19..HiBand] of LongInt;
     Multi : array[b19..HiBand] of LongInt;
     ShowCWRatio : boolean;
-    constructor Create(AOwner: TComponent); virtual;
+    constructor Create(AOwner: TComponent); override;
     procedure Renew; virtual;
-    procedure Update; virtual;
+    procedure UpdateData; virtual;
     procedure AddNoUpdate(var aQSO : TQSO); virtual;
     procedure Add(var aQSO : TQSO); virtual; {calculates points}
     procedure Reset; virtual;
@@ -44,6 +51,7 @@ type
     function _TotalMulti : integer;
     function _TotalPoints : integer;
     function IntToStr3(v: Integer): string;
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -156,15 +164,15 @@ var
 begin
    Reset;
    for i := 1 to Log.TotalQSO do begin
-      band := TQSO(Log.List[i]).QSO.band;
+      band := Log.QsoList[i].band;
       inc(QSO[band]);
-      inc(Points[band], TQSO(Log.List[i]).QSO.Points);
-      if TQSO(Log.List[i]).QSO.NewMulti1 then
+      inc(Points[band], Log.QsoList[i].Points);
+      if Log.QsoList[i].NewMulti1 then
          inc(Multi[band]);
    end;
 end;
 
-procedure TBasicScore.Update;
+procedure TBasicScore.UpdateData;
 begin
 end;
 
@@ -172,22 +180,26 @@ procedure TBasicScore.AddNoUpdate(var aQSO: TQSO);
 var
    B: TBand;
 begin
-   B := aQSO.QSO.band;
+   B := aQSO.band;
    inc(QSO[B]);
-   if aQSO.QSO.mode = mCW then
+
+   if aQSO.mode = mCW then
       inc(CWQSO[B]);
-   if aQSO.QSO.mode = mFM then
+
+   if aQSO.mode = mFM then
       inc(FMQSO[B]);
-   if aQSO.QSO.NewMulti1 then
+
+   if aQSO.NewMulti1 then
       inc(Multi[B]);
-   { if aQSO.QSO.NewMulti2 then
+
+   { if aQSO.NewMulti2 then
      inc(Multi2[B]); }
 end;
 
 procedure TBasicScore.Add(var aQSO: TQSO);
 begin
    AddNoUpdate(aQSO);
-   Update;
+   UpdateData;
 end;
 
 procedure TBasicScore.Reset;
@@ -219,6 +231,7 @@ end;
 
 procedure TBasicScore.FormCreate(Sender: TObject);
 begin
+   FFontSize := 9;
    StayOnTop.Checked := False;
 end;
 
@@ -258,7 +271,8 @@ begin
       ShowCWRatio := True
    else
       ShowCWRatio := False;
-   Update;
+
+   UpdateData;
 end;
 
 function TBasicScore.QPMStr(B: TBand): string; // returns QSO,Pts,Mult for JARL E-log
@@ -314,6 +328,83 @@ begin
    end;
 
    Result := strFormatedText;
+end;
+
+function TBasicScore.GetFontSize(): Integer;
+begin
+   Result := FFontSize;
+end;
+
+procedure TBasicScore.SetFontSize(v: Integer);
+begin
+   FFontSize := v;
+end;
+
+
+procedure TBasicScore.Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
+var
+   strText: string;
+begin
+   strText := Grid.Cells[ACol, ARow];
+
+   with Grid.Canvas do begin
+      Font.Name := 'ÇlÇr ÉSÉVÉbÉN';
+      Brush.Color := Grid.Color;
+      Brush.Style := bsSolid;
+      FillRect(Rect);
+
+      Font.Size := FFontSize;
+
+      if Copy(strText, 1, 1) = '*' then begin
+         strText := Copy(strText, 2);
+         Font.Color := clBlue;
+      end
+      else begin
+         Font.Color := clBlack;
+      end;
+
+      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
+   end;
+end;
+
+procedure TBasicScore.AdjustGridSize(Grid: TStringGrid; ColCount, RowCount: Integer);
+var
+   i: Integer;
+   h: Integer;
+   w: Integer;
+begin
+   // ïùí≤êÆ
+   w := 0;
+   for i := 0 to ColCount - 1 do begin
+      w := w + Grid.ColWidths[i];
+   end;
+   w := w + (Grid.ColCount * Grid.GridLineWidth) + 2;
+   ClientWidth := Max(w, 200);
+
+   // çÇÇ≥í≤êÆ
+   h := 0;
+   for i := 0 to RowCount - 1 do begin
+      h := h + Grid.RowHeights[i];
+   end;
+   h := h + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
+   ClientHeight := h;
+end;
+
+procedure TBasicScore.SetGridFontSize(Grid: TStringGrid; font_size: Integer);
+var
+   i: Integer;
+   h: Integer;
+begin
+   Grid.Font.Size := font_size;
+   Grid.Canvas.Font.size := font_size;
+
+   h := Abs(Grid.Font.Height) + 6;
+
+   Grid.DefaultRowHeight := h;
+
+   for i := 0 to Grid.RowCount - 1 do begin
+      Grid.RowHeights[i] := h;
+   end;
 end;
 
 end.

@@ -4,7 +4,7 @@ interface
 
 uses
    SysUtils, Windows, Messages, Classes, Graphics, Controls, StdCtrls, ExtCtrls,
-   Forms, UITypes, Dialogs, Buttons, UzLogGlobal;
+   Forms, UITypes, Dialogs, Buttons, UzLogConst, UzLogGlobal;
 
 type
    TMenuForm = class(TForm)

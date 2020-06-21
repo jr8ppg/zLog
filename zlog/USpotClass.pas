@@ -2,7 +2,10 @@ unit USpotClass;
 
 interface
 
-uses SysUtils, Windows, Classes, UzLogGlobal;
+uses
+  SysUtils, Windows, Classes,
+  Generics.Collections, Generics.Defaults,
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TBaseSpot = class
@@ -18,9 +21,9 @@ type
     Band : TBand;
     Mode : TMode;
     ClusterData : boolean; // true if data from PacketCluster
+    CQ: Boolean;
     constructor Create; virtual;
     function FreqKHzStr : string;
-    function _GetBand : TBand;
     function NewMulti : boolean; // newcty or newzone
     function InText : string; virtual; abstract;
     procedure FromText(S : string); virtual; abstract;
@@ -47,10 +50,18 @@ type
     procedure FromText(S : string); override;
   end;
 
-var
-  BSList2 : TList;
+  TSpotList = class(TObjectList<TSpot>)
+  public
+    constructor Create(OwnsObjects: Boolean = True);
+  end;
 
-function IsWorkedSpot(Sp: TSpot): Boolean;
+  TBSList = class(TObjectList<TBSData>)
+  public
+    constructor Create(OwnsObjects: Boolean = True);
+  end;
+
+var
+  BSList2: TBSList;
 
 implementation
 
@@ -68,6 +79,7 @@ begin
    Band := b19;
    Mode := mCW;
    ClusterData := False;
+   CQ := False;
 end;
 
 constructor TSpot.Create;
@@ -106,6 +118,10 @@ begin
    if length(S) < 5 then
       exit;
 
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('[' + S + ']'));
+   {$ENDIF}
+
    temp := TrimRight(TrimLeft(S));
 
    i := pos('DX de', temp);
@@ -114,6 +130,10 @@ begin
    end;
 
    if pos('DX de', temp) = 1 then begin
+      //0000000001111111111222222222233333333334444444444555555555566666666667
+      //1234567890123456789012345678901234567890123456789012345678901234567890
+      //DX de W1NT-6-#:  14045.0  V3MIWTJ      CW 16 dB 21 WPM CQ             1208Z
+      //DX de W3LPL-#:   14010.6  SM5DYC       CW 14 dB 22 WPM CQ             1208Z
       i := pos(':', temp);
       if i > 0 then begin
          temp2 := copy(temp, 7, i - 7);
@@ -126,6 +146,7 @@ begin
       Delete(temp, 1, i);
       temp := TrimLeft(temp);
 
+      // Freq.
       i := pos(' ', temp);
       if i > 0 then begin
          temp2 := copy(temp, 1, i - 1);
@@ -140,11 +161,12 @@ begin
          on EConvertError do
             exit;
       end;
-      Band := _getband;
+      Band := TBand(GetBandIndex(FreqHz, 0));
 
       Delete(temp, 1, i);
       temp := TrimLeft(temp);
 
+      // Callsign
       i := pos(' ', temp);
       if i > 0 then begin
          Call := copy(temp, 1, i - 1);
@@ -155,6 +177,14 @@ begin
 
       Delete(temp, 1, i);
 
+      // CQ/DE
+      // Callsignの後ろに'CQ 'の文字があればCQとみなす
+      i := Pos('CQ ', temp);
+      if i > 0 then begin
+         CQ := True;
+      end;
+
+      // 後ろから見て、時間を取得
       for i := length(temp) downto 1 do begin
          if temp[i] = ' ' then begin
             break;
@@ -163,8 +193,10 @@ begin
 
       TimeStr := copy(temp, i + 1, 5);
 
+      // 時間を削除した残りはコメントとする
       Delete(temp, i, 255);
       Comment := temp;
+
       Result := True;
    end
    else begin    // check for SH/DX responses
@@ -203,7 +235,7 @@ begin
          on EConvertError do
             exit;
       end;
-      Band := _getband;
+      Band := TBand(GetBandIndex(FreqHz, 0));
 
       Delete(temp, 1, i);
       temp := TrimLeft(temp);
@@ -261,31 +293,6 @@ begin
    //
 end;
 
-Function TBaseSpot._GetBand : TBand;
-begin
-   Result := b19;
-
-   case FreqHz div 1000 of
-      1800..1999 : Result := b19;
-      3000..3999 : Result := b35;
-      7000..7999 : Result := b7;
-      10000..10999 : Result := b10;
-      14000..14999 : Result := b14;
-      18000..18999 : Result := b18;
-      21000..21999 : Result := b21;
-      24000..24999 : Result := b24;
-      28000..28999 : Result := b28;
-      50000..59999 : Result := b50;
-      140000..149999 : Result := b144;
-      420000..499999 : Result := b430;
-      1200000..1299999 : Result := b1200;
-      2400000..2499999 : Result := b2400;
-      5600000..5799999 : Result := b5600;
-      else begin
-      end;
-   end;
-end;
-
 Function TBaseSpot.NewMulti : boolean;
 begin
    Result := NewCty or NewZone;
@@ -304,65 +311,56 @@ function TBSData.InText : string;
     Time : TDateTime;
     LabelRect : TRect;  *)
 var
-   S : string;
-const
-   xx = '%';
+   SL: TStringList;
 begin
-   S := Call + xx + IntToStr(FreqHz) + xx + IntToStr(Ord(Band)) + xx + IntToStr(Ord(Mode)) + xx + FloatToStr(Time);
-   Result := S;
+   SL := TStringList.Create();
+   SL.Delimiter := '%';
+   SL.StrictDelimiter := True;
+   try
+      SL.Add(Call);
+      SL.Add(IntToStr(FreqHz));
+      SL.Add(IntToStr(Ord(Band)));
+      SL.Add(IntToStr(Ord(Mode)));
+      SL.Add(FloatToStr(Time));
+      SL.Add(ZBoolToStr(CQ));
+      Result := SL.DelimitedText;
+   finally
+      SL.Free();
+   end;
 end;
 
 procedure TBSData.FromText(S : string);
 var
-   str, wstr : string;
-   p : integer;
+   SL: TStringList;
 begin
-   str := S;
-
-   p := pos('%', str);
-   wstr := copy(str, 1, p-1);
-   Call := wstr;
-   Delete(str, 1, p);
-
-   p := pos('%', str);
-   wstr := copy(str, 1, p-1);
-   FreqHz := StrToIntDef(wstr, 0);
-   Delete(str, 1, p);
-
-   p := pos('%', str);
-   wstr := copy(str, 1, p-1);
-   Band := TBand(StrToIntDef(wstr, Integer(b19)));
-   Delete(str, 1, p);
-
-   p := pos('%', str);
-   wstr := copy(str, 1, p-1);
-   Mode := TMode(StrToIntDef(wstr, Integer(mCW)));
-
-   wstr := str;
+   SL := TStringList.Create();
+   SL.Delimiter := '%';
+   SL.StrictDelimiter := True;
    try
-      Time := StrToFloat(wstr);
-   except
+      SL.DelimitedText := S + '%%%%%%';
+      Call := SL[0];
+      FreqHz := StrToIntDef(SL[1], 0);
+      Band := TBand(StrToIntDef(SL[2], Integer(b19)));
+      Mode := TMode(StrToIntDef(SL[3], Integer(mCW)));
+      Time := StrToFloatDef(SL[4], 0);
+      CQ := ZStrToBool(SL[5]);
+   finally
+      SL.Free();
    end;
 end;
 
-function IsWorkedSpot(Sp: TSpot): Boolean;
-var
-   i: Integer;
-   Q: TQSO;
+constructor TSpotList.Create(OwnsObjects: Boolean);
 begin
-   for i := 1 to Log.TotalQSO do begin
-      Q := TQSO(Log.List[i]);
+   Inherited Create(OwnsObjects);
+end;
 
-      if (Sp.Call = Q.QSO.Callsign) and (Sp.Band = Q.QSO.Band) then begin
-         Result := True;
-         Exit;
-      end;
-   end;
-   Result := False;
+constructor TBSList.Create(OwnsObjects: Boolean);
+begin
+   Inherited Create(OwnsObjects);
 end;
 
 initialization
-   BSList2 := TList.Create;
+   BSList2 := TBSList.Create;
 
 finalization
    BSList2.Free();

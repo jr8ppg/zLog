@@ -6,17 +6,17 @@ uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin,
   Dialogs, Menus, FileCtrl,
-  UIntegerDialog, UzLogGlobal;
+  UIntegerDialog, UzLogConst, UzLogGlobal, Vcl.Buttons;
 
 type
   TformOptions = class(TForm)
     PageControl: TPageControl;
-    PrefTabSheet: TTabSheet;
-    TabSheet2: TTabSheet;
-    CWTabSheet: TTabSheet;
-    VoiceTabSheet: TTabSheet;
-    TabSheet5: TTabSheet;
-    tbRigControl: TTabSheet;
+    tabsheetPreferences: TTabSheet;
+    tabsheetCategories: TTabSheet;
+    tabsheetCW: TTabSheet;
+    tabsheetVoice: TTabSheet;
+    tabsheetHardware: TTabSheet;
+    tabsheetRigControl: TTabSheet;
     Panel1: TPanel;
     buttonOK: TButton;
     buttonCancel: TButton;
@@ -132,9 +132,6 @@ type
     act24: TCheckBox;
     act18: TCheckBox;
     act10: TCheckBox;
-    GroupBox5: TGroupBox;
-    Button4: TButton;
-    BackUpPathEdit: TEdit;
     CQZoneEdit: TEdit;
     IARUZoneEdit: TEdit;
     Label34: TLabel;
@@ -166,7 +163,7 @@ type
     comboRig2Port: TComboBox;
     comboRig2Name: TComboBox;
     Label44: TLabel;
-    tbMisc: TTabSheet;
+    tabsheetMisc: TTabSheet;
     cbRITClear: TCheckBox;
     rgBandData: TRadioGroup;
     cbDontAllowSameBand: TCheckBox;
@@ -186,7 +183,7 @@ type
     cbRecordRigFreq: TCheckBox;
     cbTransverter1: TCheckBox;
     cbTransverter2: TCheckBox;
-    TabSheet1: TTabSheet;
+    tabsheetPath: TTabSheet;
     Label50: TLabel;
     edCFGDATPath: TEdit;
     btnBrowseCFGDATPath: TButton;
@@ -237,6 +234,37 @@ type
     comboQuickQsyMode08: TComboBox;
     Label54: TLabel;
     Label33: TLabel;
+    GroupBox8: TGroupBox;
+    radioSuperCheck0: TRadioButton;
+    radioSuperCheck1: TRadioButton;
+    editSuperCheckFolder: TEdit;
+    radioSuperCheck2: TRadioButton;
+    buttonSuperCheckFolderRef: TSpeedButton;
+    Button4: TButton;
+    BackUpPathEdit: TEdit;
+    Label56: TLabel;
+    comboPower19: TComboBox;
+    comboPower35: TComboBox;
+    comboPower7: TComboBox;
+    comboPower10: TComboBox;
+    comboPower14: TComboBox;
+    comboPower18: TComboBox;
+    comboPower21: TComboBox;
+    comboPower24: TComboBox;
+    comboPower28: TComboBox;
+    comboPower50: TComboBox;
+    comboPower144: TComboBox;
+    comboPower430: TComboBox;
+    comboPower1200: TComboBox;
+    comboPower2400: TComboBox;
+    comboPower5600: TComboBox;
+    comboPower10g: TComboBox;
+    GroupBox5: TGroupBox;
+    checkHighlightFullmatch: TCheckBox;
+    editFullmatchColor: TEdit;
+    buttonFullmatchSelectColor: TButton;
+    buttonFullmatchInitColor: TButton;
+    ColorDialog1: TColorDialog;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -267,10 +295,15 @@ type
     procedure comboRig1NameChange(Sender: TObject);
     procedure comboRig2NameChange(Sender: TObject);
     procedure checkUseQuickQSYClick(Sender: TObject);
+    procedure buttonSuperCheckFolderRefClick(Sender: TObject);
+    procedure OnNeedSuperCheckLoad(Sender: TObject);
+    procedure buttonFullmatchSelectColorClick(Sender: TObject);
+    procedure buttonFullmatchInitColorClick(Sender: TObject);
   private
+    FCWEditMode: Integer;
     TempVoiceFiles : array[1..10] of string;
     TempCurrentBank : integer;
-    TempCWStrBank : array[1..maxbank,1..maxmaxstr] of string[255]; // used temporarily while options window is open
+    TempCWStrBank : array[1..maxbank,1..maxmaxstr] of string; // used temporarily while options window is open
 
     FTempClusterTelnet: TCommParam;
     FTempClusterCom: TCommParam;
@@ -279,10 +312,14 @@ type
     FQuickQSYCheck: array[1..8] of TCheckBox;
     FQuickQSYBand: array[1..8] of TComboBox;
     FQuickQSYMode: array[1..8] of TComboBox;
+
+    FNeedSuperCheckLoad: Boolean;
     procedure RenewCWStrBankDisp();
     procedure InitRigNames();
   public
     procedure RenewSettings; {Reads controls and updates Settings}
+    property CWEditMode: Integer read FCWEditMode write FCWEditMode;
+    property NeedSuperCheckLoad: Boolean read FNeedSuperCheckLoad;
   end;
 
 implementation
@@ -336,6 +373,23 @@ begin
       Settings._activebands[b2400] := act2400.Checked;
       Settings._activebands[b5600] := act5600.Checked;
       Settings._activebands[b10g] := act10g.Checked;
+
+      Settings._power[b19] := comboPower19.Text;
+      Settings._power[b35] := comboPower35.Text;
+      Settings._power[b7] := comboPower7.Text;
+      Settings._power[b10] := comboPower10.Text;
+      Settings._power[b14] := comboPower14.Text;
+      Settings._power[b18] := comboPower18.Text;
+      Settings._power[b21] := comboPower21.Text;
+      Settings._power[b24] := comboPower24.Text;
+      Settings._power[b28] := comboPower28.Text;
+      Settings._power[b50] := comboPower50.Text;
+      Settings._power[b144] := comboPower144.Text;
+      Settings._power[b430] := comboPower430.Text;
+      Settings._power[b1200] := comboPower1200.Text;
+      Settings._power[b2400] := comboPower2400.Text;
+      Settings._power[b5600] := comboPower5600.Text;
+      Settings._power[b10g] := comboPower10g.Text;
 
       OpList.Free;
       OpList := TStringList.Create;
@@ -413,12 +467,26 @@ begin
 
       // RIG1
       Settings._rigport[1] := comboRig1Port.ItemIndex;
-      Settings._rigname[1] := comboRig1Name.ItemIndex;
+
+      if comboRig1Name.ItemIndex <= 0 then begin
+         Settings._rigname[1] := '';
+      end
+      else begin
+         Settings._rigname[1] := comboRig1Name.Text;
+      end;
+
       Settings._rigspeed[1] := comboRig1Speed.ItemIndex;
 
       // RIG2
       Settings._rigport[2] := comboRig2Port.ItemIndex;
-      Settings._rigname[2] := comboRig2Name.ItemIndex;
+
+      if comboRig2Name.ItemIndex <= 0 then begin
+         Settings._rigname[2] := '';
+      end
+      else begin
+         Settings._rigname[2] := comboRig2Name.Text;
+      end;
+
       Settings._rigspeed[2] := comboRig2Speed.ItemIndex;
 
       Settings._use_transceive_mode := checkUseTransceiveMode.Checked;
@@ -486,6 +554,20 @@ begin
             Settings.FQuickQSY[i].FMode := TMode(FQuickQSYMode[i].ItemIndex);
          end;
       end;
+
+      // SuperCheck
+      if radioSuperCheck0.Checked = True then begin
+         Settings.FSuperCheck.FSuperCheckMethod := 0;
+      end
+      else if radioSuperCheck1.Checked = True then begin
+         Settings.FSuperCheck.FSuperCheckMethod := 1;
+      end
+      else begin
+         Settings.FSuperCheck.FSuperCheckMethod := 2;
+      end;
+      Settings.FSuperCheck.FSuperCheckFolder := editSuperCheckFolder.Text;
+      Settings.FSuperCheck.FFullMatchHighlight := checkHighlightFullmatch.Checked;
+      Settings.FSuperCheck.FFullMatchColor := editFullmatchColor.Color;
    end;
 end;
 
@@ -535,6 +617,7 @@ begin
 
       cbRecordRigFreq.Checked := Settings._recrigfreq;
       cbMultiStn.Checked := Settings._multistation;
+
       act19.Checked := Settings._activebands[b19];
       act35.Checked := Settings._activebands[b35];
       act7.Checked := Settings._activebands[b7];
@@ -552,6 +635,23 @@ begin
       act5600.Checked := Settings._activebands[b5600];
       act10g.Checked := Settings._activebands[b10g];
 
+      comboPower19.Text := Settings._power[b19];
+      comboPower35.Text := Settings._power[b35];
+      comboPower7.Text := Settings._power[b7];
+      comboPower10.Text := Settings._power[b10];
+      comboPower14.Text := Settings._power[b14];
+      comboPower18.Text := Settings._power[b18];
+      comboPower21.Text := Settings._power[b21];
+      comboPower24.Text := Settings._power[b24];
+      comboPower28.Text := Settings._power[b28];
+      comboPower50.Text := Settings._power[b50];
+      comboPower144.Text := Settings._power[b144];
+      comboPower430.Text := Settings._power[b430];
+      comboPower1200.Text := Settings._power[b1200];
+      comboPower2400.Text := Settings._power[b2400];
+      comboPower5600.Text := Settings._power[b5600];
+      comboPower10g.Text := Settings._power[b10g];
+
       if Settings._multiop <> 0 then
          MultiOpRadioBtn.Checked := True
       else
@@ -561,6 +661,7 @@ begin
          BandGroup.ItemIndex := 0
       else
          BandGroup.ItemIndex := OldBandOrd(TBand(Settings._band - 1)) + 1;
+
       ModeGroup.ItemIndex := Settings._mode;
       { OpListBox.Items := OpList; }
 
@@ -619,12 +720,24 @@ begin
 
       // RIG1
       comboRig1Port.ItemIndex := Settings._rigport[1];
-      comboRig1Name.ItemIndex := Settings._rigname[1];
+
+      i := comboRig1Name.Items.IndexOf(Settings._rigname[1]);
+      if i = -1 then begin
+         i := 0;
+      end;
+      comboRig1Name.ItemIndex := i;
+
       comboRig1Speed.ItemIndex := Settings._rigspeed[1];
 
       // RIG2
       comboRig2Port.ItemIndex := Settings._rigport[2];
-      comboRig2Name.ItemIndex := Settings._rigname[2];
+
+      i := comboRig2Name.Items.IndexOf(Settings._rigname[2]);
+      if i = -1 then begin
+         i := 0;
+      end;
+      comboRig2Name.ItemIndex := i;
+
       comboRig2Speed.ItemIndex := Settings._rigspeed[2];
 
       checkUseTransceiveMode.Checked := Settings._use_transceive_mode;
@@ -693,7 +806,55 @@ begin
          FQuickQSYBand[i].Enabled := FQuickQSYCheck[i].Checked;
          FQuickQSYMode[i].Enabled := FQuickQSYCheck[i].Checked;
       end;
+
+      // SuperCheck
+      case Settings.FSuperCheck.FSuperCheckMethod of
+         0: radioSuperCheck0.Checked := True;
+         1: radioSuperCheck1.Checked := True;
+         else radioSuperCheck2.Checked := True;
+      end;
+      editSuperCheckFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
+      checkHighlightFullmatch.Checked := Settings.FSuperCheck.FFullMatchHighlight;
+      editFullmatchColor.Color := Settings.FSuperCheck.FFullMatchColor;
    end;
+
+   if FCWEditMode = 0 then begin
+      tabsheetPreferences.TabVisible := True;
+      tabsheetCategories.TabVisible := True;
+      tabsheetCW.TabVisible := True;
+      tabsheetVoice.TabVisible := False;
+      tabsheetHardware.TabVisible := True;
+      tabsheetRigControl.TabVisible := True;
+      tabsheetPath.TabVisible := True;
+      tabsheetMisc.TabVisible := True;
+      tabsheetQuickQSY.TabVisible := True;
+   end
+   else begin
+      PageControl.ActivePage := tabsheetCW;
+
+      tabsheetPreferences.TabVisible := False;
+      tabsheetCategories.TabVisible := False;
+      tabsheetCW.TabVisible := True;
+      tabsheetVoice.TabVisible := False;
+      tabsheetHardware.TabVisible := False;
+      tabsheetRigControl.TabVisible := False;
+      tabsheetPath.TabVisible := False;
+      tabsheetMisc.TabVisible := False;
+      tabsheetQuickQSY.TabVisible := False;
+
+      case FCWEditMode of
+         1: Edit1.SetFocus;
+         2: Edit2.SetFocus;
+         3: Edit3.SetFocus;
+         4: Edit4.SetFocus;
+         5: Edit5.SetFocus;
+         6: Edit6.SetFocus;
+         7: Edit7.SetFocus;
+         8: Edit8.SetFocus;
+      end;
+   end;
+
+   FNeedSuperCheckLoad := False;
 end;
 
 procedure TformOptions.AddClick(Sender: TObject);
@@ -764,9 +925,13 @@ begin
 
    OpListBox.Items.Assign(dmZlogGlobal.OpList);
 
-   PageControl.ActivePage := PrefTabSheet;
+   PageControl.ActivePage := tabsheetPreferences;
 
    InitRigNames();
+
+   FCWEditMode := 0;
+
+   FNeedSuperCheckLoad := False;
 end;
 
 procedure TformOptions.buttonCancelClick(Sender: TObject);
@@ -872,6 +1037,21 @@ begin
    end;
 end;
 
+procedure TformOptions.buttonSuperCheckFolderRefClick(Sender: TObject);
+var
+   fResult: Boolean;
+   strSelected: string;
+begin
+   strSelected := editSuperCheckFolder.Text;
+
+   fResult := SelectDirectory('SuperCheck用のファイルが保存されているフォルダを選択して下さい', '', strSelected, [sdNewUI, sdNewFolder, sdValidateDir], Self);
+   if fResult = False then begin
+      Exit;
+   end;
+
+   editSuperCheckFolder.Text := strSelected;
+end;
+
 procedure TformOptions.ZLinkComboChange(Sender: TObject);
 begin
    if ZLinkCombo.ItemIndex = 0 then begin
@@ -941,6 +1121,11 @@ begin
       BeforeEdit.Enabled := False;
       AfterEdit.Enabled := False;
    end;
+end;
+
+procedure TformOptions.OnNeedSuperCheckLoad(Sender: TObject);
+begin
+   FNeedSuperCheckLoad := True;
 end;
 
 procedure TformOptions.CQRepEditKeyPress(Sender: TObject; var Key: char);
@@ -1068,6 +1253,19 @@ begin
    dmZlogGlobal.MakeRigList(comboRig1Name.Items);
 
    comboRig2Name.Items.Assign(comboRig1Name.Items);
+end;
+
+procedure TformOptions.buttonFullmatchSelectColorClick(Sender: TObject);
+begin
+   ColorDialog1.Color := editFullmatchColor.Color;
+   if ColorDialog1.Execute = True then begin
+      editFullmatchColor.Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions.buttonFullmatchInitColorClick(Sender: TObject);
+begin
+   editFullmatchColor.Color := clYellow;
 end;
 
 end.

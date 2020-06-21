@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UARRLWMulti, Grids, Cologrid, StdCtrls, ExtCtrls, JLLabel, UMultipliers,
-  UzLogGlobal;
+  UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TWAEMulti = class(TARRLWMulti)
@@ -16,103 +16,92 @@ type
     { Public declarations }
     procedure AddNoUpdate(var aQSO : TQSO); override;
     function GetInfo(aQSO : TQSO) : string; override;
-    procedure Update; override;
+    procedure UpdateData; override;
   end;
 
 implementation
 
 {$R *.DFM}
 
-
-
 procedure TWAEMulti.FormCreate(Sender: TObject);
 begin
-  inherited;
-  //ShowContinent('EU');
+   inherited;
+   // ShowContinent('EU');
 end;
 
-procedure TWAEMulti.AddNoUpdate(var aQSO : TQSO);
-var str : string;
-    B : TBand;
-    i, j : integer;
-    C : TCountry;
+procedure TWAEMulti.AddNoUpdate(var aQSO: TQSO);
+var
+   B: TBand;
+   C: TCountry;
 begin
-  aQSO.QSO.NewMulti1 := False;
-  aQSO.QSO.NewMulti2 := False;
+   aQSO.NewMulti1 := False;
+   aQSO.NewMulti2 := False;
 
-  i := GetCountryIndex(aQSO);
-
-  C := TCountry(CountryList.List[i]);
-  if C.Continent <> 'EU' then
-    begin
-      aQSO.QSO.Points := 0;
-      aQSO.QSO.Multi1 := 'Non-EU';
+   C := GetPrefix(aqSO).Country;
+   if C.Continent <> 'EU' then begin
+      aQSO.Points := 0;
+      aQSO.Multi1 := 'Non-EU';
       exit;
-    end;
-  aQSO.QSO.Multi1 := C.Country;
+   end;
+   aQSO.Multi1 := C.Country;
 
-  if aQSO.QSO.Dupe then
-    exit;
+   if aQSO.Dupe then
+      exit;
 
+   B := aQSO.Band;
 
-  B := aQSO.QSO.Band;
-
-  if C.Worked[B] = False then
-    begin
+   if C.Worked[B] = False then begin
       C.Worked[B] := True;
-      aQSO.QSO.NewMulti1 := True;
-      //Grid.Cells[0,C.GridIndex] := C.Summary;
-    end;
+      aQSO.NewMulti1 := True;
+      // Grid.Cells[0,C.GridIndex] := C.Summary;
+   end;
 end;
 
-function TWAEMulti.GetInfo(aQSO : TQSO) : string;
-var temp, temp2 : string;
-    B : TBand;
-    i : integer;
-    C : TCountry;
+function TWAEMulti.GetInfo(aQSO: TQSO): string;
+var
+   temp, temp2: string;
+   B: TBand;
+   C: TCountry;
 begin
-  C := TCountry(CountryList.List[GetCountryIndex(aQSO)]);
-  if C.CountryName = 'Unknown' then
-    begin
+   C := GetPrefix(aQSO).Country;
+   if C.CountryName = 'Unknown' then begin
       Result := 'Unknown CTY';
       exit;
-    end;
-  temp := '';
-  temp := C.Country+' '+C.Continent+ ' ';
+   end;
+   temp := '';
+   temp := C.Country + ' ' + C.Continent + ' ';
 
-  if C.Continent <> 'EU' then
-    begin
-      temp := 'NOT EUROPE '+temp;
+   if C.Continent <> 'EU' then begin
+      temp := 'NOT EUROPE ' + temp;
       Result := temp;
       exit;
-    end;
+   end;
 
-  temp2 := '';
-  if C.Worked[aQSO.QSO.Band] = false then
-    temp2 := 'CTY';
+   temp2 := '';
+   if C.Worked[aQSO.Band] = False then
+      temp2 := 'CTY';
 
-  if temp2 <> '' then
-    temp2 := 'NEW '+temp2;
+   if temp2 <> '' then
+      temp2 := 'NEW ' + temp2;
 
-  temp := temp + temp2 + ' ';
+   temp := temp + temp2 + ' ';
 
-  temp := temp + 'needed on : ';
-  for B := b19 to b28 do
-    if NotWARC(B) then
-      if C.Worked[B]=False then
-        temp := temp + MHzString[B] + ' ';
-  Result := temp;
+   temp := temp + 'needed on : ';
+   for B := b19 to b28 do
+      if NotWARC(B) then
+         if C.Worked[B] = False then
+            temp := temp + MHzString[B] + ' ';
+
+   Result := temp;
 end;
 
-
-
-procedure TWAEMulti.Update;
+procedure TWAEMulti.UpdateData;
 begin
-  ShowContinent('EU');
-  RefreshGrid;
-  //RefreshZone;
-  RenewCluster;
-  RenewBandScope;
+   ShowContinent('EU');
+   RefreshGrid;
+   // RefreshZone;
+   RenewCluster;
+   RenewBandScope;
 end;
 
 end.

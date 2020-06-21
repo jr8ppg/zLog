@@ -4,9 +4,8 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, Menus,
-  UzLogGlobal, UzLogCW, UzLogKeyer;
-
+  Buttons, ExtCtrls, Menus, System.Actions, Vcl.ActnList,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer;
 
 const _ActInsert = 0;
       _ActChange = 1;
@@ -44,9 +43,41 @@ type
     DateEdit: TEdit;
     NewPowerMenu: TPopupMenu;
     NewPowerEdit: TEdit;
-    MainMenu1: TMainMenu;
-    edit1: TMenuItem;
-    op1: TMenuItem;
+    ActionList1: TActionList;
+    actionPlayMessageA01: TAction;
+    actionPlayMessageA02: TAction;
+    actionPlayMessageA03: TAction;
+    actionPlayMessageA04: TAction;
+    actionPlayMessageA05: TAction;
+    actionPlayMessageA06: TAction;
+    actionPlayMessageA07: TAction;
+    actionPlayMessageA08: TAction;
+    actionShowCheckPartial: TAction;
+    actionPlayMessageA11: TAction;
+    actionPlayMessageA12: TAction;
+    actionClearCallAndRpt: TAction;
+    actionDecreaseTime: TAction;
+    actionIncreaseTime: TAction;
+    actionReversePaddle: TAction;
+    actionFieldClear: TAction;
+    actionCQRepeat: TAction;
+    actionFocusCallsign: TAction;
+    actionFocusMemo: TAction;
+    actionFocusNumber: TAction;
+    actionFocusOp: TAction;
+    actionFocusRst: TAction;
+    actionToggleRig: TAction;
+    actionControlPTT: TAction;
+    actionChangeBand: TAction;
+    actionChangeMode: TAction;
+    actionChangePower: TAction;
+    actionChangeR: TAction;
+    actionChangeS: TAction;
+    actionSetCurTime: TAction;
+    actionDecreaseCwSpeed: TAction;
+    actionIncreaseCwSpeed: TAction;
+    actionCQRepeat2: TAction;
+    actionToggleVFO: TAction;
     procedure CancelBtnClick(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure CallsignEditChange(Sender: TObject);
@@ -70,606 +101,406 @@ type
     procedure NewPowerEditClick(Sender: TObject);
     procedure ModeEditClick(Sender: TObject);
     procedure PowerEditChange(Sender: TObject);
-    procedure op1Click(Sender: TObject);
     procedure OpEditClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure actionPlayMessageAExecute(Sender: TObject);
+    procedure actionShowCheckPartialExecute(Sender: TObject);
+    procedure actionClearCallAndRptExecute(Sender: TObject);
+    procedure actionDecreaseTimeExecute(Sender: TObject);
+    procedure actionIncreaseTimeExecute(Sender: TObject);
+    procedure actionReversePaddleExecute(Sender: TObject);
+    procedure actionFieldClearExecute(Sender: TObject);
+    procedure actionCQRepeatExecute(Sender: TObject);
+    procedure actionFocusCallsignExecute(Sender: TObject);
+    procedure actionFocusMemoExecute(Sender: TObject);
+    procedure actionFocusNumberExecute(Sender: TObject);
+    procedure actionFocusOpExecute(Sender: TObject);
+    procedure actionFocusRstExecute(Sender: TObject);
+    procedure actionToggleRigExecute(Sender: TObject);
+    procedure actionControlPTTExecute(Sender: TObject);
+    procedure actionChangeBandExecute(Sender: TObject);
+    procedure actionChangeModeExecute(Sender: TObject);
+    procedure actionChangePowerExecute(Sender: TObject);
+    procedure actionChangeRExecute(Sender: TObject);
+    procedure actionChangeSExecute(Sender: TObject);
+    procedure actionSetCurTimeExecute(Sender: TObject);
+    procedure actionDecreaseCwSpeedExecute(Sender: TObject);
+    procedure actionIncreaseCwSpeedExecute(Sender: TObject);
+    procedure actionCQRepeat2Execute(Sender: TObject);
+    procedure actionToggleVFOExecute(Sender: TObject);
   private
     { Private declarations }
-  public
-    index :  integer;
     workQSO : TQSO;
     origQSO : TQSO;
     Action : integer;
-    procedure Init(aQSO : TQSO; index_ : integer; Action_ : integer); virtual;
-    procedure ChangePower; virtual;
+  public
     { Public declarations }
+    procedure Init(aQSO : TQSO; Action_ : integer); virtual;
+    procedure ChangePower; virtual;
   end;
-
-//var
-//  EditDialog: TEditDialog;
 
 implementation
 
 uses Main, UOptions, UZLinkForm, UPartials, URigControl;
+
 {$R *.DFM}
 
 procedure TEditDialog.ChangePower;
 begin
-  if workQSO.QSO.Power = pwrH then
-    workQSO.QSO.Power := pwrP
-  else
-    inc(workQSO.QSO.Power);
-  NewPowerEdit.Text := workQSO.NewPowerStr;
+   if workQSO.Power = pwrH then begin
+      workQSO.Power := pwrP;
+   end
+   else begin
+      workQSO.Power := TPower(integer(workQSO.Power) + 1);
+   end;
+
+   NewPowerEdit.Text := workQSO.NewPowerStr;
 end;
 
-procedure TEditDialog.Init(aQSO : TQSO; index_ :integer; Action_ : integer);
+procedure TEditDialog.Init(aQSO: TQSO; Action_: integer);
 begin
-  Action := Action_;
-  ZLinkForm.LockQSO(aQSO); // lock it anyway
-  {if Action = _ActChange then
-    begin
-      ZLinkForm.LockQSO(aQSO);
-    end;}
-  case Action of
-    _ActChange : Caption := 'Edit QSO';
-    _ActInsert : Caption := 'Insert QSO';
-  end;
-  index := index_;
+   Action := Action_;
+   MainForm.ZLinkForm.LockQSO(aQSO); // lock it anyway
 
-  workQSO := TQSO.Create;
-  origQSO := TQSO.Create;
-  workQSO.QSO := aQSO.QSO;
-  origQSO.QSO := aQSO.QSO;
+   case Action of
+      _ActChange:
+         Caption := 'Edit QSO';
+      _ActInsert:
+         Caption := 'Insert QSO';
+   end;
 
-  if Action = _ActInsert then
-    begin
-      workQSO.QSO.Callsign := '';
-      workQSO.QSO.NRRcvd := '';
-      workQSO.QSO.memo := '';
-    end;
+   workQSO.Assign(aQSO);
+   origQSO.Assign(aQSO);
 
-  TimeEdit.Visible := True;
-  DateEdit.Visible := False;
-  TimeLabel.Caption := 'time';
+   if Action = _ActInsert then begin
+      workQSO.Callsign := '';
+      workQSO.NRRcvd := '';
+      workQSO.memo := '';
+   end;
 
-  SerialEdit.Text := workQSO.SerialStr;
-  TimeEdit.Text := workQSO.TimeStr;
-  DateEdit.Text := workQSO.DateStr;
-  CallsignEdit.Text := workQSO.QSO.callsign;
-  RcvdRSTEdit.Text := workQSO.RSTStr;
-  NumberEdit.Text := workQSO.QSO.NrRcvd;
-  ModeEdit.Text := workQSO.ModeStr;
-  BandEdit.Text := workQSO.BandStr;
-  PowerEdit.Text := workQSO.PowerStr;
-  NewPowerEdit.Text := workQSO.NewPowerStr;
-  PointEdit.Text := workQSO.PointStr;
-  MemoEdit.Text := workQSO.QSO.memo;
-  OpEdit.Text := workQSO.QSO.Operator;
+   TimeEdit.Visible := True;
+   DateEdit.Visible := False;
+   TimeLabel.Caption := 'time';
+
+   SerialEdit.Text := workQSO.SerialStr;
+   TimeEdit.Text := workQSO.TimeStr;
+   DateEdit.Text := workQSO.DateStr;
+   CallsignEdit.Text := workQSO.Callsign;
+   RcvdRSTEdit.Text := workQSO.RSTStr;
+   NumberEdit.Text := workQSO.NRRcvd;
+   ModeEdit.Text := workQSO.ModeStr;
+   BandEdit.Text := workQSO.BandStr;
+   PowerEdit.Text := workQSO.PowerStr;
+   NewPowerEdit.Text := workQSO.NewPowerStr;
+   PointEdit.Text := workQSO.PointStr;
+   MemoEdit.Text := workQSO.memo;
+   OpEdit.Text := workQSO.Operator;
 end;
 
 procedure TEditDialog.CancelBtnClick(Sender: TObject);
 begin
-  workQSO.Free;
-  MainForm.LastFocus.SetFocus;
-  ZLinkForm.UnlockQSO(origQSO);
-  origQSO.Free;
-  ModalResult := mrCancel;
-  Close;
+   MainForm.LastFocus.SetFocus;
+   MainForm.ZLinkForm.UnlockQSO(origQSO);
+   ModalResult := mrCancel;
+   Close;
 end;
 
 procedure TEditDialog.OKBtnClick(Sender: TObject);
 var
-   i, j : integer;
-//    aQSO : TQSO;
+   i, j: integer;
+   // aQSO : TQSO;
 begin
+   MyContest.SetNrSent(workQSO);
 
-//  Main.StartDebugTimer;
+   i := StrToIntDef(SerialEdit.Text, 0);
+   if i > 0 then begin
+      workQSO.Serial := i;
+   end;
 
-  MyContest.SetNrSent(workQSO);
-
-  try
-    i := StrToInt(SerialEdit.Text);
-  except
-    on EConvertError do
-      i := 0;
-  end;
-  if i > 0 then
-    workQSO.QSO.Serial := i;
-
-  if Action = _ActChange then
-    begin
+   if Action = _ActChange then begin
       IncEditCounter(workQSO);
-      //ZLinkForm.EditQSO(origQSO, workQSO); {ZLinkForm takes care of Z-Link availability}
-      ZLinkForm.EditQSObyID(workQSO);
-      //ZLinkForm.EditQSO(TQSO(Log.List[index]), workQSO); {ZLinkForm takes care of Z-Link availability}
-      //TQSO(Log.List[index]).QSO := workQSO.QSO;
-      origQSO.QSO.Reserve := actEdit;
-      workQSO.QSO.Reserve := actEdit;
-      //Log.AddQue(origQSO);
+      MainForm.ZLinkForm.EditQSObyID(workQSO);
+      origQSO.Reserve := actEdit;
+      workQSO.Reserve := actEdit;
       Log.AddQue(workQSO);
       Log.ProcessQue;
-      {
-      for i := 1 to Log.TotalQSO do
-        begin
-          if SameQSO(TQSO(Log.List[i]), origQSO) then
-            TQSO(Log.List[i]).QSO := workQSO.QSO;
-          break;
-        end; }
-      workQSO.Free;
-      ZLinkForm.UnlockQSO(origQSO);
-      //Main.EndDebugTimer;
-    end;
-  if Action = _ActInsert then
-    begin
-      //ZLinkForm.InsertQSO(origQSO, workQSO);
-      origQSO.QSO.Reserve := actInsert;
-      workQSO.QSO.Reserve := actInsert;
+   end;
+
+   if Action = _ActInsert then begin
+      origQSO.Reserve := actInsert;
+      workQSO.Reserve := actInsert;
+
       repeat
-        j := MainForm.NewQSOID;
+         j := dmZlogGlobal.NewQSOID();
       until Log.CheckQSOID(j) = False;
 
-      workQSO.QSO.Reserve2 := origQSO.QSO.Reserve3;
-      workQSO.QSO.Reserve3 := j;
+      workQSO.Reserve2 := origQSO.Reserve3;
+      workQSO.Reserve3 := j;
 
-      ZLinkForm.InsertQSO(workQSO);
-      //Log.AddQue(origQSO);
+      MainForm.ZLinkForm.InsertQSO(workQSO);
       Log.AddQue(workQSO);
       Log.ProcessQue;
-      workQSO.Free;
-      ZLinkForm.UnlockQSO(origQSO);
+   end;
 
+   MainForm.ZLinkForm.UnlockQSO(origQSO);
 
-      {aQSO := TQSO.Create;
-      aQSO.QSO := workQSO.QSO;
-      Log.Insert(index, aQSO);
-      ZLinkForm.InsertQSO(workQSO, index);
-      workQSO.Free;}
-    end;
-  origQSO.Free;
-//  Main.StartDebugTimer;
-  MyContest.Renew;
-//  Main.EndDebugTimer;
-  //MainForm.EditScreen.RefreshScreen;
-  MainForm.Grid.SetFocus;
-  ModalResult := mrOK;
-  close;
-  //close;
-  //MainForm.LastFocus.SetFocus;
+   MyContest.Renew;
+   MainForm.Grid.SetFocus;
+   ModalResult := mrOK;
 
-  {if Log.IsDupe2(workQSO, index, dupeindex) then
-    begin
-      x := More(index, dupeindex);
-      y := Less(index, dupeindex);
-      TQSO(Log.List[x]).QSO.Points := 0;
-      TQSO(Log.List[x]).QSO.memo := '-DUPE- '+TQSO(Log.List[x]).QSO.memo;
-    end }
+   Close;
 end;
 
 procedure TEditDialog.CallsignEditChange(Sender: TObject);
 begin
-  workQSO.QSO.Callsign := CallsignEdit.Text;
+   workQSO.Callsign := CallsignEdit.Text;
 end;
 
 procedure TEditDialog.EditKeyPress(Sender: TObject; var Key: Char);
 var
-   dupeindex : integer;
+   dupeindex: integer;
 begin
-  MainForm.CommonEditKeyProcess(Sender, Key);
-  case Key of
-    '\' :
-      begin
-        dmZLogKeyer.ControlPTT(not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
-        Key := #0;
-      end;
-    'X','x' :
-      begin
-        if HiWord(GetKeyState(VK_SHIFT))<>0 then
-          begin
-            RigControl.ToggleCurrentRig;
-            Key := #0;
-          end;
-      end;
-    'V','v' :
-      begin
-        if HiWord(GetKeyState(VK_SHIFT))<>0 then
-          begin
-            if RigControl.Rig <> nil then
-              RigControl.Rig.ToggleVFO;
-            Key := #0;
-          end;
-      end;
-    ^O :
-      begin
-        workQSO.DecTime;
-        //TimeEdit.Text := CurrentQSO.TimeStr;
-        //DateEdit.Text := CurrentQSO.DateStr;
-        TimeEdit.Text := workQSO.TimeStr;
-        DateEdit.Text := workQSO.DateStr;
-        Key := #0;
-      end;
-    ^P :
-      begin
-        workQSO.IncTime;
-        TimeEdit.Text := workQSO.TimeStr;
-        DateEdit.Text := workQSO.DateStr;
-        Key := #0;
-      end;
-    ^W :
-      begin
-        TEdit(Sender).Clear;
-        Key := #0;
-      end;
-    ^R :
-      begin
-        dmZlogGlobal.ReversePaddle;
-        Key := #0;
-      end;
-    ^K :
-      begin
-        CallsignEdit.Clear;
-        NumberEdit.Clear;
-        MemoEdit.Clear;
-        CallsignEdit.SetFocus;
-        Key := #0;
-      end;
-    'Z' :
-      begin
-        if HiWord(GetKeyState(VK_SHIFT))<>0 then
-          begin
-            if Main.CurrentQSO.QSO.mode = mCW then
-              begin
-                MainForm.CQRepeatClick1(Sender);
-              end
-            else
-              begin
-              end;
-            Key := #0;
-          end;
-      end;
-    ^Z :
-       begin
-         if Main.CurrentQSO.QSO.mode = mCW then
-           MainForm.CQRepeatClick2(Sender);
-         Key := #0;
-       end;
-   (*Chr($1B) :  {ESC}
-      begin
-        MainForm.CWStopButtonClick(Self);
-        MainForm.VoiceStopButtonClick(Self);
-        Key := #0;
-      end;*)
-    ' ' :
-      begin
-        if TEdit(Sender).Name = 'MemoEdit' then
-          begin
-            if dmZlogGlobal.Settings._movetomemo then
-              begin
-                Key := #0;
-                CallsignEdit.SetFocus;
-              end;
+   case Key of
+      ' ': begin
+         if TEdit(Sender).Name = 'MemoEdit' then begin
+            if dmZlogGlobal.Settings._movetomemo then begin
+               Key := #0;
+               CallsignEdit.SetFocus;
+            end;
             exit;
-          end;
-        if (TEdit(Sender).Name = 'NumberEdit') or (TEdit(Sender).Name = 'TimeEdit') then
-          begin
+         end;
+         if (TEdit(Sender).Name = 'NumberEdit') or (TEdit(Sender).Name = 'TimeEdit') then begin
             Key := #0;
             if dmZlogGlobal.Settings._movetomemo then
-              MemoEdit.SetFocus
+               MemoEdit.SetFocus
             else
-              CallsignEdit.SetFocus;
-          end
-        else {if space is pressed when Callsign edit is in focus}
-          begin
-            if NumberEdit.Text = '' then
-              begin
-              end;
+               CallsignEdit.SetFocus;
+         end
+         else { if space is pressed when Callsign edit is in focus }
+         begin
+            if NumberEdit.Text = '' then begin
+            end;
             Key := Chr(0);
-            if Log.IsDupe2(workQSO, index, dupeindex) then
-              begin
-                CallsignEdit.SelectAll;
-                exit;
-              end;
+            if Log.IsDupe2(workQSO, 1, dupeindex) then begin
+               CallsignEdit.SelectAll;
+               exit;
+            end;
             NumberEdit.SetFocus;
-          end;
-       end;
-    'Y','y' :
-      begin
-        if HiWord(GetKeyState(VK_SHIFT))<>0 then
-          begin
-            IncCWSpeed;
-            Key := #0;
-          end;
+         end;
       end;
-    'T','t' :
-      begin
-        if HiWord(GetKeyState(VK_SHIFT))<>0 then
-          begin
-            workQSO.UpdateTime;
-            TimeEdit.Text := workQSO.TimeStr;
-            DateEdit.Text := workQSO.DateStr;
-            Key := #0;
-          end;
+
+      Chr($0D): begin
+         if HiWord(GetKeyState(VK_SHIFT)) <> 0 then begin
+         end;
+         OKBtnClick(Self);
+         Key := #0;
       end;
-    'U','u' :
-      begin
-        if HiWord(GetKeyState(VK_SHIFT))<>0 then
-          begin
-            DecCWSpeed;
-            Key := #0;
-          end;
-      end;
-    'B','b' :
-      begin
-        if HiWord(GetKeyState(VK_SHIFT))<>0 then
-          begin
-            // ChangeBand(True);
-            //MainForm.SetQSOBand(workQSO, True);
-            workQSO.QSO.Band := MainForm.GetNextBand(workQSO.QSO.Band, True);
-            BandEdit.Text := MHzString[workQSO.QSO.Band];
-            Key := #0;
-          end;
-      end;
-    'R','r' :
-      begin
-        if HiWord(GetKeyState(VK_SHIFT))<>0 then
-          begin
-            MainForm.SetR(workQSO);
-            RcvdRSTEdit.Text := workQSO.RSTStr;
-            Key := #0;
-          end;
-      end;
-    'S','s' :
-      begin
-        if HiWord(GetKeyState(VK_SHIFT))<>0 then
-          begin
-            MainForm.SetS(workQSO);
-            RcvdRSTEdit.Text := workQSO.RSTStr;
-            Key := #0;
-          end;
-      end;
-    'M','m' :
-      begin
-        if HiWord(GetKeyState(VK_SHIFT))<>0 then
-          begin
-            // ChangeMode;
-            MainForm.SetQSOMode(workQSO);
-            ModeEdit.Text := ModeString[workQSO.QSO.Mode];
-            if workQSO.QSO.Mode in [mSSB, mFM, mAM] then
-              begin
-                workQSO.QSO.RSTrcvd := 59;
-                workQSO.QSO.RSTsent := 59;
-                RcvdRSTEdit.Text := '59';
-              end
-            else
-              begin
-                workQSO.QSO.RSTrcvd := 599;
-                workQSO.QSO.RSTsent := 599;
-                RcvdRSTEdit.Text := '599';
-              end;
-            Key := #0;
-          end;
-      end;
-   'P','p' :
-      begin
-        if HiWord(GetKeyState(VK_SHIFT))<>0 then
-          begin
-            ChangePower;
-            Key := #0;
-          end;
-      end;
-    Chr($0D) :
-      begin
-        if HiWord(GetKeyState(VK_SHIFT))<>0 then
-          begin
-          end;
-        OKBtnClick(Self);
-        Key := #0;
-      end;
-    end;
- { of case }
+   end;
+   { of case }
 end;
-
-
-
-
 
 procedure TEditDialog.NumberEditChange(Sender: TObject);
 begin
-  workQSO.QSO.NrRcvd := NumberEdit.Text;
+   workQSO.NRRcvd := NumberEdit.Text;
 end;
 
 procedure TEditDialog.NumberEditKeyPress(Sender: TObject; var Key: Char);
 begin
-  case Key of
-    ' ' : begin
-      Key := Chr(0);
-      CallsignEdit.SetFocus;
-    end;
-    Chr($0D) : begin
-      OKBtnClick(Self);
-      Key := #0;
-    end;
-  end; { of case }
+   case Key of
+      ' ': begin
+         Key := Chr(0);
+         CallsignEdit.SetFocus;
+      end;
+
+      Chr($0D): begin
+         OKBtnClick(Self);
+         Key := #0;
+      end;
+   end; { of case }
 end;
 
 procedure TEditDialog.BandEditClick(Sender: TObject);
 begin
-  BandMenu.Popup(Self.Left+Panel1.Left+BandEdit.Left + 10, Self.Top+Panel1.Top+BandEdit.Top + 40);
+   BandMenu.Popup(Self.Left + Panel1.Left + BandEdit.Left + 10, Self.Top + Panel1.Top + BandEdit.Top + 40);
 end;
 
 procedure TEditDialog.OpMenuClick(Sender: TObject);
-var O : string;
+var
+   O: string;
 begin
-  O := TMenuItem(Sender).Caption;
-  if O = 'Clear' then O := '';
-  OpEdit.Text := O;
-  workQSO.QSO.Operator := O;
+   O := TMenuItem(Sender).Caption;
+   if O = 'Clear' then
+      O := '';
+   OpEdit.Text := O;
+   workQSO.Operator := O;
 end;
 
 procedure TEditDialog.BandMenuClick(Sender: TObject);
-var T : byte;
-    B : TBand;
+var
+   T: byte;
+   B: TBand;
 begin
-  T := TMenuItem(Sender).Tag;
-  B := TBand(T);
-  BandEdit.Text := MHzString[B];
-  workQSO.QSO.band := B;
+   T := TMenuItem(Sender).Tag;
+   B := TBand(T);
+   BandEdit.Text := MHzString[B];
+   workQSO.Band := B;
 end;
 
 procedure TEditDialog.ModeMenuClick(Sender: TObject);
-var T : byte;
-    M : TMode;
 begin
-  ModeEdit.Text := ModeString[TMode(TMenuItem(Sender).Tag)];
-  workQSO.QSO.mode := TMode(TMenuItem(Sender).Tag);
-  If TMenuItem(Sender).Tag in [1..3] then
-    begin
-      workQSO.QSO.RSTrcvd := 59;
-      workQSO.QSO.RSTsent := 59;
+   ModeEdit.Text := ModeString[TMode(TMenuItem(Sender).Tag)];
+   workQSO.mode := TMode(TMenuItem(Sender).Tag);
+   If TMenuItem(Sender).Tag in [1 .. 3] then begin
+      workQSO.RSTrcvd := 59;
+      workQSO.RSTsent := 59;
       RcvdRSTEdit.Text := '59';
-    end
-  else
-    begin
-      workQSO.QSO.RSTrcvd := 599;
-      workQSO.QSO.RSTsent := 599;
+   end
+   else begin
+      workQSO.RSTrcvd := 599;
+      workQSO.RSTsent := 599;
       RcvdRSTEdit.Text := '599';
-    end;
+   end;
 end;
 
 procedure TEditDialog.FormShow(Sender: TObject);
-var i : integer;
-    M : TMenuItem;
-const offset = 3;
+var
+   i: integer;
+   M: TMenuItem;
+const
+   offset = 3;
 begin
-  CallsignEdit.SetFocus;
-  for i := 0 to MainForm.BandMenu.Items.Count-1 do
-    begin
+   CallsignEdit.SetFocus;
+   for i := 0 to MainForm.BandMenu.Items.Count - 1 do begin
       BandMenu.Items[i].Enabled := MainForm.BandMenu.Items[i].Enabled;
       BandMenu.Items[i].Visible := MainForm.BandMenu.Items[i].Visible;
-    end;
-  for i := 0 to MainForm.ModeMenu.Items.Count-1 do
-    begin
+   end;
+   for i := 0 to MainForm.ModeMenu.Items.Count - 1 do begin
       ModeMenu.Items[i].Enabled := MainForm.ModeMenu.Items[i].Enabled;
       ModeMenu.Items[i].Visible := MainForm.ModeMenu.Items[i].Visible;
-    end;
-  for i := 0 to MainForm.NewPowerMenu.Items.Count-1 do
-    begin
+   end;
+   for i := 0 to MainForm.NewPowerMenu.Items.Count - 1 do begin
       NewPowerMenu.Items[i].Enabled := MainForm.ModeMenu.Items[i].Enabled;
       NewPowerMenu.Items[i].Visible := MainForm.ModeMenu.Items[i].Visible;
-    end;
+   end;
 
-  OpEdit.Visible := (dmZlogGlobal.MultiOp > 0);
-  OpLabel.Visible := OpEdit.Visible;
+   OpEdit.Visible := (dmZlogGlobal.MultiOp > 0);
+   OpLabel.Visible := OpEdit.Visible;
 
-  if MainForm.OpMenu.Items.Count > 0 then    // update op menu 1.31
-    begin
-      if OpMenu.Items.Count > 0 then
-        for i := 0 to OpMenu.Items.Count-1 do
-          OpMenu.Items.Delete(0);
-      for i := 0 to MainForm.OpMenu.Items.Count-1 do
-        begin
-          M := TMenuItem.Create(Self);
-          M.Caption := MainForm.OpMenu.Items[i].Caption;
-          M.OnClick := OpMenuClick;
-          M.Enabled := MainForm.OpMenu.Items[i].Enabled;
-          M.Visible := MainForm.OpMenu.Items[i].Visible;
-          M.Tag := MainForm.OpMenu.Items[i].Tag;
-          OpMenu.Items.Add(M);
-        end;
-    end;
+   if MainForm.OpMenu.Items.Count > 0 then // update op menu 1.31
+   begin
+      if OpMenu.Items.Count > 0 then begin
+         for i := 0 to OpMenu.Items.Count - 1 do
+            OpMenu.Items.Delete(0);
+      end;
 
-  SerialEdit.Visible := MainForm.SerialEdit.Visible;
-  SerialEdit.Left := MainForm.SerialEdit.Left + offset;
-  SerialEdit.Width := MainForm.SerialEdit.Width;
-  SerialLabel.Visible := SerialEdit.Visible;
-  SerialLabel.Left := SerialEdit.Left+1;
+      for i := 0 to MainForm.OpMenu.Items.Count - 1 do begin
+         M := TMenuItem.Create(Self);
+         M.Caption := MainForm.OpMenu.Items[i].Caption;
+         M.OnClick := OpMenuClick;
+         M.Enabled := MainForm.OpMenu.Items[i].Enabled;
+         M.Visible := MainForm.OpMenu.Items[i].Visible;
+         M.Tag := MainForm.OpMenu.Items[i].Tag;
+         OpMenu.Items.Add(M);
+      end;
+   end;
 
-  TimeEdit.Left := MainForm.TimeEdit.Left + offset;
-  TimeEdit.Width := MainForm.TimeEdit.Width;
-  TimeLabel.Left := TimeEdit.Left+1;
+   SerialEdit.Visible := MainForm.SerialEdit.Visible;
+   SerialEdit.Left := MainForm.SerialEdit.Left + offset;
+   SerialEdit.Width := MainForm.SerialEdit.Width;
+   SerialLabel.Visible := SerialEdit.Visible;
+   SerialLabel.Left := SerialEdit.Left + 1;
 
-  DateEdit.Left := TimeEdit.Left;
-  DateEdit.Width := TimeEdit.Width;
+   TimeEdit.Left := MainForm.TimeEdit.Left + offset;
+   TimeEdit.Width := MainForm.TimeEdit.Width;
+   TimeLabel.Left := TimeEdit.Left + 1;
 
-  CallsignEdit.Left := MainForm.CallsignEdit.Left + offset;
-  CallsignEdit.Width := MainForm.CallsignEdit.Width;
-  CallsignLabel.Left := CallsignEdit.Left+1;
+   DateEdit.Left := TimeEdit.Left;
+   DateEdit.Width := TimeEdit.Width;
 
-  rcvdRSTEdit.Left := MainForm.rcvdRSTEdit.Left + offset;
-  rcvdRSTEdit.Width := MainForm.rcvdRSTEdit.Width;
-  rcvdRSTLabel.Left := rcvdRSTEdit.Left+1;
+   CallsignEdit.Left := MainForm.CallsignEdit.Left + offset;
+   CallsignEdit.Width := MainForm.CallsignEdit.Width;
+   CallsignLabel.Left := CallsignEdit.Left + 1;
 
-  NumberEdit.Left := MainForm.NumberEdit.Left + offset;
-  NumberEdit.Width := MainForm.NumberEdit.Width;
-  NumberLabel.Left := NumberEdit.Left+1;
+   RcvdRSTEdit.Left := MainForm.RcvdRSTEdit.Left + offset;
+   RcvdRSTEdit.Width := MainForm.RcvdRSTEdit.Width;
+   rcvdRSTLabel.Left := RcvdRSTEdit.Left + 1;
 
-  BandEdit.Left :=  MainForm.BandEdit.Left + offset;
-  BandEdit.Width := MainForm.BandEdit.Width;
-  BandLabel.Left := BandEdit.Left+1;
+   NumberEdit.Left := MainForm.NumberEdit.Left + offset;
+   NumberEdit.Width := MainForm.NumberEdit.Width;
+   NumberLabel.Left := NumberEdit.Left + 1;
 
-  ModeEdit.Left := MainForm.ModeEdit.Left + offset;
-  ModeEdit.Width := MainForm.ModeEdit.Width;
-  ModeEdit.Visible := MainForm.ModeEdit.Visible;
-  ModeLabel.Visible := ModeEdit.Visible;
-  ModeLabel.Left := ModeEdit.Left+1;
+   BandEdit.Left := MainForm.BandEdit.Left + offset;
+   BandEdit.Width := MainForm.BandEdit.Width;
+   BandLabel.Left := BandEdit.Left + 1;
 
-  PowerLabel.Visible := PowerEdit.Visible;
-  PowerLabel.Left := PowerEdit.Left+1;
+   ModeEdit.Left := MainForm.ModeEdit.Left + offset;
+   ModeEdit.Width := MainForm.ModeEdit.Width;
+   ModeEdit.Visible := MainForm.ModeEdit.Visible;
+   ModeLabel.Visible := ModeEdit.Visible;
+   ModeLabel.Left := ModeEdit.Left + 1;
 
-  NewPowerEdit.Left := MainForm.NewPowerEdit.Left + offset;
-  NewPowerEdit.Width := MainForm.NewPowerEdit.Width;
-  NewPowerEdit.Visible := MainForm.NewPowerEdit.Visible;
-  PowerLabel.Visible := NewPowerEdit.Visible;
-  PowerLabel.Left := NewPowerEdit.Left+1;
+   PowerLabel.Visible := PowerEdit.Visible;
+   PowerLabel.Left := PowerEdit.Left + 1;
 
-  PointEdit.Left := MainForm.PointEdit.Left + offset;
-  PointEdit.Width := MainForm.PointEdit.Width;
-  PointLabel.Left := PointEdit.Left+1;
+   NewPowerEdit.Left := MainForm.NewPowerEdit.Left + offset;
+   NewPowerEdit.Width := MainForm.NewPowerEdit.Width;
+   NewPowerEdit.Visible := MainForm.NewPowerEdit.Visible;
+   PowerLabel.Visible := NewPowerEdit.Visible;
+   PowerLabel.Left := NewPowerEdit.Left + 1;
 
-  OpEdit.Left := MainForm.OpEdit.Left + offset;
-  OpEdit.Width := MainForm.OpEdit.Width;
-  OpLabel.Left := OpEdit.Left+1;
+   PointEdit.Left := MainForm.PointEdit.Left + offset;
+   PointEdit.Width := MainForm.PointEdit.Width;
+   PointLabel.Left := PointEdit.Left + 1;
 
-  MemoEdit.Left := MainForm.MemoEdit.Left + offset;
-  MemoEdit.Width := MainForm.MemoEdit.Width;
-  MemoLabel.Left := MemoEdit.Left+1;
+   OpEdit.Left := MainForm.OpEdit.Left + offset;
+   OpEdit.Width := MainForm.OpEdit.Width;
+   OpLabel.Left := OpEdit.Left + 1;
 
-  Width := MainForm.Width;
+   MemoEdit.Left := MainForm.MemoEdit.Left + offset;
+   MemoEdit.Width := MainForm.MemoEdit.Width;
+   MemoLabel.Left := MemoEdit.Left + 1;
+
+   Width := MainForm.Width;
 end;
 
 procedure TEditDialog.RcvdRSTEditChange(Sender: TObject);
-var i : word;
+var
+   i: Word;
 begin
-  try
-    I := StrToInt(RcvdRSTEdit.Text);
-  except
-    on EConvertError do
-      begin
-        if workQSO.QSO.mode in [mCW, mRTTY] then
-          I := 599
-        else
-          I := 59;
+   try
+      i := StrToInt(RcvdRSTEdit.Text);
+   except
+      on EConvertError do begin
+         if workQSO.mode in [mCW, mRTTY] then
+            i := 599
+         else
+            i := 59;
       end;
    end;
-   workQSO.QSO.RSTRcvd := I;
+   workQSO.RSTrcvd := i;
 end;
 
 procedure TEditDialog.FormCreate(Sender: TObject);
-var i : integer;
-    M : TMenuItem;
+var
+   i: integer;
+   M: TMenuItem;
 begin
-  if MainForm.OpMenu.Items.Count > 0 then
-    for i := 0 to MainForm.OpMenu.Items.Count-1 do
-      begin
-        M := TMenuItem.Create(Self);
-        M.Caption := MainForm.OpMenu.Items[i].Caption;
-        M.OnClick := OpMenuClick;
-        M.Enabled := MainForm.OpMenu.Items[i].Enabled;
-        M.Visible := MainForm.OpMenu.Items[i].Visible;
-        M.Tag := MainForm.OpMenu.Items[i].Tag;
-        OpMenu.Items.Add(M);
-      end;
+   workQSO := TQSO.Create;
+   origQSO := TQSO.Create;
 
-  for i := 0 to MainForm.BandMenu.Items.Count-1 do
-    begin
+   if MainForm.OpMenu.Items.Count > 0 then begin
+      for i := 0 to MainForm.OpMenu.Items.Count - 1 do begin
+         M := TMenuItem.Create(Self);
+         M.Caption := MainForm.OpMenu.Items[i].Caption;
+         M.OnClick := OpMenuClick;
+         M.Enabled := MainForm.OpMenu.Items[i].Enabled;
+         M.Visible := MainForm.OpMenu.Items[i].Visible;
+         M.Tag := MainForm.OpMenu.Items[i].Tag;
+         OpMenu.Items.Add(M);
+      end;
+   end;
+
+   for i := 0 to MainForm.BandMenu.Items.Count - 1 do begin
       M := TMenuItem.Create(Self);
       M.Caption := MainForm.BandMenu.Items[i].Caption;
       M.OnClick := BandMenuClick;
@@ -677,9 +508,9 @@ begin
       M.Visible := MainForm.BandMenu.Items[i].Visible;
       M.Tag := MainForm.BandMenu.Items[i].Tag;
       BandMenu.Items.Add(M);
-    end;
-  for i := 0 to MainForm.ModeMenu.Items.Count-1 do
-    begin
+   end;
+
+   for i := 0 to MainForm.ModeMenu.Items.Count - 1 do begin
       M := TMenuItem.Create(Self);
       M.Caption := MainForm.ModeMenu.Items[i].Caption;
       M.OnClick := ModeMenuClick;
@@ -687,9 +518,9 @@ begin
       M.Visible := MainForm.ModeMenu.Items[i].Visible;
       M.Tag := MainForm.ModeMenu.Items[i].Tag;
       ModeMenu.Items.Add(M);
-    end;
-  for i := 0 to MainForm.NewPowerMenu.Items.Count-1 do
-    begin
+   end;
+
+   for i := 0 to MainForm.NewPowerMenu.Items.Count - 1 do begin
       M := TMenuItem.Create(Self);
       M.Caption := MainForm.NewPowerMenu.Items[i].Caption;
       M.OnClick := NewPowerMenuClick;
@@ -697,197 +528,373 @@ begin
       M.Visible := MainForm.NewPowerMenu.Items[i].Visible;
       M.Tag := MainForm.NewPowerMenu.Items[i].Tag;
       NewPowerMenu.Items.Add(M);
-    end;
+   end;
 
+   actionPlayMessageA01.ShortCut := MainForm.actionPlayMessageA01.ShortCut;
+   actionPlayMessageA02.ShortCut := MainForm.actionPlayMessageA02.ShortCut;
+   actionPlayMessageA03.ShortCut := MainForm.actionPlayMessageA03.ShortCut;
+   actionPlayMessageA04.ShortCut := MainForm.actionPlayMessageA04.ShortCut;
+   actionPlayMessageA05.ShortCut := MainForm.actionPlayMessageA05.ShortCut;
+   actionPlayMessageA06.ShortCut := MainForm.actionPlayMessageA06.ShortCut;
+   actionPlayMessageA07.ShortCut := MainForm.actionPlayMessageA07.ShortCut;
+   actionPlayMessageA08.ShortCut := MainForm.actionPlayMessageA08.ShortCut;
+   actionShowCheckPartial.ShortCut := MainForm.actionShowCheckPartial.ShortCut;
+   actionPlayMessageA11.ShortCut := MainForm.actionPlayMessageA11.ShortCut;
+   actionPlayMessageA12.ShortCut := MainForm.actionPlayMessageA12.ShortCut;
+   actionClearCallAndRpt.ShortCut := MainForm.actionClearCallAndRpt.ShortCut;
+   actionDecreaseTime.ShortCut := MainForm.actionDecreaseTime.ShortCut;
+   actionIncreaseTime.ShortCut := MainForm.actionIncreaseTime.ShortCut;
+   actionReversePaddle.ShortCut := MainForm.actionReversePaddle.ShortCut;
+   actionFieldClear.ShortCut := MainForm.actionFieldClear.ShortCut;
+   actionCQRepeat.ShortCut := MainForm.actionCQRepeat.ShortCut;
+   actionFocusCallsign.ShortCut := MainForm.actionFocusCallsign.ShortCut;
+   actionFocusMemo.ShortCut := MainForm.actionFocusMemo.ShortCut;
+   actionFocusNumber.ShortCut := MainForm.actionFocusNumber.ShortCut;
+   actionFocusOp.ShortCut := MainForm.actionFocusOp.ShortCut;
+   actionFocusRst.ShortCut := MainForm.actionFocusRst.ShortCut;
+   actionToggleRig.ShortCut := MainForm.actionToggleRig.ShortCut;
+   actionControlPTT.ShortCut := MainForm.actionControlPTT.ShortCut;
+   actionChangeBand.ShortCut := MainForm.actionChangeBand.ShortCut;
+   actionChangeMode.ShortCut := MainForm.actionChangeMode.ShortCut;
+   actionChangePower.ShortCut := MainForm.actionChangePower.ShortCut;
+   actionChangeR.ShortCut := MainForm.actionChangeR.ShortCut;
+   actionChangeS.ShortCut := MainForm.actionChangeS.ShortCut;
+   actionSetCurTime.ShortCut := MainForm.actionSetCurTime.ShortCut;
+   actionDecreaseCwSpeed.ShortCut := MainForm.actionDecreaseCwSpeed.ShortCut;
+   actionIncreaseCwSpeed.ShortCut := MainForm.actionIncreaseCwSpeed.ShortCut;
+   actionCQRepeat2.ShortCut := MainForm.actionCQRepeat2.ShortCut;
+   actionToggleVFO.ShortCut := MainForm.actionToggleVFO.ShortCut;
 
+   actionPlayMessageA01.SecondaryShortCuts.Assign(actionPlayMessageA01.SecondaryShortCuts);
+   actionPlayMessageA02.SecondaryShortCuts.Assign(actionPlayMessageA02.SecondaryShortCuts);
+   actionPlayMessageA03.SecondaryShortCuts.Assign(actionPlayMessageA03.SecondaryShortCuts);
+   actionPlayMessageA04.SecondaryShortCuts.Assign(actionPlayMessageA04.SecondaryShortCuts);
+   actionPlayMessageA05.SecondaryShortCuts.Assign(actionPlayMessageA05.SecondaryShortCuts);
+   actionPlayMessageA06.SecondaryShortCuts.Assign(actionPlayMessageA06.SecondaryShortCuts);
+   actionPlayMessageA07.SecondaryShortCuts.Assign(actionPlayMessageA07.SecondaryShortCuts);
+   actionPlayMessageA08.SecondaryShortCuts.Assign(actionPlayMessageA08.SecondaryShortCuts);
+   actionShowCheckPartial.SecondaryShortCuts.Assign(actionShowCheckPartial.SecondaryShortCuts);
+   actionPlayMessageA11.SecondaryShortCuts.Assign(actionPlayMessageA11.SecondaryShortCuts);
+   actionPlayMessageA12.SecondaryShortCuts.Assign(actionPlayMessageA12.SecondaryShortCuts);
+   actionClearCallAndRpt.SecondaryShortCuts.Assign(actionClearCallAndRpt.SecondaryShortCuts);
+   actionDecreaseTime.SecondaryShortCuts.Assign(actionDecreaseTime.SecondaryShortCuts);
+   actionIncreaseTime.SecondaryShortCuts.Assign(actionIncreaseTime.SecondaryShortCuts);
+   actionReversePaddle.SecondaryShortCuts.Assign(actionReversePaddle.SecondaryShortCuts);
+   actionFieldClear.SecondaryShortCuts.Assign(actionFieldClear.SecondaryShortCuts);
+   actionCQRepeat.SecondaryShortCuts.Assign(actionCQRepeat.SecondaryShortCuts);
+   actionFocusCallsign.SecondaryShortCuts.Assign(actionFocusCallsign.SecondaryShortCuts);
+   actionFocusMemo.SecondaryShortCuts.Assign(actionFocusMemo.SecondaryShortCuts);
+   actionFocusNumber.SecondaryShortCuts.Assign(actionFocusNumber.SecondaryShortCuts);
+   actionFocusOp.SecondaryShortCuts.Assign(actionFocusOp.SecondaryShortCuts);
+   actionFocusRst.SecondaryShortCuts.Assign(actionFocusRst.SecondaryShortCuts);
+   actionToggleRig.SecondaryShortCuts.Assign(actionToggleRig.SecondaryShortCuts);
+   actionControlPTT.SecondaryShortCuts.Assign(actionControlPTT.SecondaryShortCuts);
+   actionChangeBand.SecondaryShortCuts.Assign(actionChangeBand.SecondaryShortCuts);
+   actionChangeMode.SecondaryShortCuts.Assign(actionChangeMode.SecondaryShortCuts);
+   actionChangePower.SecondaryShortCuts.Assign(actionChangePower.SecondaryShortCuts);
+   actionChangeR.SecondaryShortCuts.Assign(actionChangeR.SecondaryShortCuts);
+   actionChangeS.SecondaryShortCuts.Assign(actionChangeS.SecondaryShortCuts);
+   actionSetCurTime.SecondaryShortCuts.Assign(actionSetCurTime.SecondaryShortCuts);
+   actionDecreaseCwSpeed.SecondaryShortCuts.Assign(actionDecreaseCwSpeed.SecondaryShortCuts);
+   actionIncreaseCwSpeed.SecondaryShortCuts.Assign(actionIncreaseCwSpeed.SecondaryShortCuts);
+   actionCQRepeat2.SecondaryShortCuts.Assign(actionCQRepeat2.SecondaryShortCuts);
+   actionToggleVFO.SecondaryShortCuts.Assign(actionToggleVFO.SecondaryShortCuts);
+end;
+
+procedure TEditDialog.FormDestroy(Sender: TObject);
+begin
+   workQSO.Free;
+   origQSO.Free;
 end;
 
 procedure TEditDialog.MemoEditChange(Sender: TObject);
 begin
-  workQSO.QSO.memo := MemoEdit.Text;
+   workQSO.memo := MemoEdit.Text;
 end;
 
 procedure TEditDialog.TimeEditChange(Sender: TObject);
-var T : TDateTime;
+var
+   T: TDateTime;
 begin
-   T := StrToTimeDef(TimeEdit.Text, workQSO.QSO.Time);
+   T := StrToTimeDef(TimeEdit.Text, workQSO.Time);
 
-   if workQSO.TimeStr = FormatDateTime('hh:nn',T) then begin
+   if workQSO.TimeStr = FormatDateTime('hh:nn', T) then begin
       exit;
    end;
 
-   workQSO.QSO.Time := Trunc(workQSO.QSO.Time)+Frac(T); //(T-Trunc(T));
+   workQSO.Time := Trunc(workQSO.Time) + Frac(T); // (T-Trunc(T));
 end;
 
 procedure TEditDialog.DateEditChange(Sender: TObject);
-var T : TDateTime;
+var
+   T: TDateTime;
 begin
    FormatSettings.ShortDateFormat := 'y/m/d';
 
-   T := StrToDateDef(DateEdit.Text, workQSO.QSO.Time);
+   T := StrToDateDef(DateEdit.Text, workQSO.Time);
 
    if workQSO.DateStr = FormatDateTime('yy/mm/dd', T) then begin
-      Exit;
+      exit;
    end;
 
-   workQSO.QSO.Time := Int(T) + Frac(workQSO.QSO.Time);
+   workQSO.Time := Int(T) + Frac(workQSO.Time);
 end;
-
 
 procedure TEditDialog.DateEditDblClick(Sender: TObject);
 begin
-  if TEdit(Sender).Name = 'TimeEdit' then
-    begin
+   if TEdit(Sender).Name = 'TimeEdit' then begin
       TimeEdit.Visible := False;
       DateEdit.Visible := True;
       TimeLabel.Caption := 'date';
-    end
-  else
-    begin
+   end
+   else begin
       TimeEdit.Visible := True;
       DateEdit.Visible := False;
       TimeLabel.Caption := 'time';
-    end;
+   end;
 end;
 
 procedure TEditDialog.EditKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-var
-   i, cb : integer;
-   S : string[255];
 begin
    case Key of
-      {MUHENKAN KEY}
+      { MUHENKAN KEY }
       29: begin
-         dmZLogKeyer.ControlPTT(not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
-      end;
-
-      VK_F1..VK_F8, VK_F11, VK_F12: begin
-         i := Key - VK_F1 + 1;
-         if workQSO.QSO.Mode = mCW then begin
-
-            cb := dmZlogGlobal.Settings.CW.CurrentBank;
-
-            if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-                if cb = 1 then
-                  cb := 2
-                else
-                  cb := 1;
-            end;
-
-
-            S := dmZlogGlobal.CWMessage(cb,i);
-            S := SetStr(S, CurrentQSO);
-            zLogSendStr(S);
-         end
-         else begin
-//            SendVoice(i);
-         end;
-      end;
-
-      VK_F10: begin
-         PartialCheck.Show;
-         if TEdit(Sender).Name = 'NumberEdit' then begin
-            PartialCheck.CheckPartialNumber(workQSO);
-         end
-         else begin
-            PartialCheck.CheckPartial(workQSO);
-         end;
-
-         TEdit(Sender).SetFocus;
-         Key := 0;
-      end;
-
-      Ord('O'): begin
-         if Shift = [ssAlt] then begin
-            OpEditClick(Self);
-         end;
-
-         //Key := 0;
-      end;
-
-      Ord('M'): begin
-         if Shift = [ssAlt] then begin
-            MemoEdit.SetFocus;
-            Key := 0;
-         end;
-      end;
-
-      Ord('N'): begin
-         if Shift = [ssAlt] then begin
-            NumberEdit.SetFocus;
-         end;
-      end;
-
-      Ord('R'): begin
-         if Shift = [ssAlt] then begin
-            RcvdRSTEdit.SetFocus;
-         end;
-      end;
-
-      Ord('C'): begin
-         if Shift = [ssAlt] then begin
-            CallsignEdit.SetFocus;
-         end;
-      end;
-
-      VK_ESCAPE: begin
-         Key := 0;
-         CancelBtnClick(Self);
+         actionControlPTT.Execute();
       end;
    end;
 end;
 
 procedure TEditDialog.NewPowerMenuClick(Sender: TObject);
-//var T : byte;
-//    M : TMode;
 begin
-  NewPowerEdit.Text := NewPowerString[TPower(TMenuItem(Sender).Tag)];
-  workQSO.QSO.power := TPower(TMenuItem(Sender).Tag);
+   NewPowerEdit.Text := NewPowerString[TPower(TMenuItem(Sender).Tag)];
+   workQSO.Power := TPower(TMenuItem(Sender).Tag);
 end;
 
 procedure TEditDialog.NewPowerEditClick(Sender: TObject);
 begin
-  NewPowerMenu.Popup(Self.Left+Panel1.Left+NewPowerEdit.Left + 10, Self.Top+Panel1.Top+NewPowerEdit.Top + 40);
+   NewPowerMenu.Popup(Self.Left + Panel1.Left + NewPowerEdit.Left + 10, Self.Top + Panel1.Top + NewPowerEdit.Top + 40);
 end;
 
 procedure TEditDialog.ModeEditClick(Sender: TObject);
 begin
-  ModeMenu.Popup(Self.Left+Panel1.Left+ModeEdit.Left + 10, Self.Top+Panel1.Top+ModeEdit.Top + 40);
+   ModeMenu.Popup(Self.Left + Panel1.Left + ModeEdit.Left + 10, Self.Top + Panel1.Top + ModeEdit.Top + 40);
 end;
 
 procedure TEditDialog.PowerEditChange(Sender: TObject);
-var i : integer;
+var
+   i: integer;
 begin
-  i := 0;
-  if (PowerEdit.Text = 'KW') then
-    i := 9999;
-  if (PowerEdit.Text = '1KW') then
-    i := 10000;
-  if (PowerEdit.Text = 'K') then
-    i := 10001;
+   i := 0;
+   if (PowerEdit.Text = 'KW') then
+      i := 9999;
 
-  if i > 0 then
-    begin
-      workQSO.QSO.Power2 := i;
+   if (PowerEdit.Text = '1KW') then
+      i := 10000;
+
+   if (PowerEdit.Text = 'K') then
+      i := 10001;
+
+   if i > 0 then begin
+      workQSO.Power2 := i;
       exit;
-    end;
+   end;
 
-  try
-    i := StrToInt(PowerEdit.Text);
-  except
-    i := 0;
-  end;
-  workQSO.QSO.Power2 := i;
-end;
-
-procedure TEditDialog.op1Click(Sender: TObject);
-begin
-  OpEditClick(Self);
+   i := StrToIntDef(PowerEdit.Text, 0);
+   workQSO.Power2 := i;
 end;
 
 procedure TEditDialog.OpEditClick(Sender: TObject);
 begin
-  OpMenu.Popup(Left + OpEdit.Left + 20, Top + OpEdit.Top);
+   OpMenu.Popup(Left + OpEdit.Left + 20, Top + OpEdit.Top);
+end;
+
+procedure TEditDialog.actionPlayMessageAExecute(Sender: TObject);
+var
+   no: Integer;
+   cb: Integer;
+   S: string;
+begin
+   no := TAction(Sender).Tag;
+
+   if workQSO.mode = mCW then begin
+      cb := dmZlogGlobal.Settings.CW.CurrentBank;
+
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
+      {$ENDIF}
+
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         if cb = 1 then
+            cb := 2
+         else
+            cb := 1;
+      end;
+
+      S := dmZlogGlobal.CWMessage(cb, no);
+      S := SetStr(S, CurrentQSO);
+      zLogSendStr(S);
+   end
+   else begin
+      // SendVoice(i);
+   end;
+end;
+
+procedure TEditDialog.actionShowCheckPartialExecute(Sender: TObject);
+begin
+   MainForm.PartialCheck.Show;
+   if TEdit(ActiveControl).Name = 'NumberEdit' then begin
+      MainForm.PartialCheck.CheckPartialNumber(workQSO);
+   end
+   else begin
+      MainForm.PartialCheck.CheckPartial(workQSO);
+   end;
+
+   TEdit(ActiveControl).SetFocus;
+end;
+
+procedure TEditDialog.actionClearCallAndRptExecute(Sender: TObject);
+begin
+   CallsignEdit.Clear;
+   NumberEdit.Clear;
+   MemoEdit.Clear;
+   CallsignEdit.SetFocus;
+end;
+
+procedure TEditDialog.actionDecreaseTimeExecute(Sender: TObject);
+begin
+   workQSO.DecTime;
+   TimeEdit.Text := workQSO.TimeStr;
+   DateEdit.Text := workQSO.DateStr;
+end;
+
+procedure TEditDialog.actionIncreaseTimeExecute(Sender: TObject);
+begin
+   workQSO.IncTime;
+   TimeEdit.Text := workQSO.TimeStr;
+   DateEdit.Text := workQSO.DateStr;
+end;
+
+procedure TEditDialog.actionReversePaddleExecute(Sender: TObject);
+begin
+   dmZlogGlobal.ReversePaddle;
+end;
+
+procedure TEditDialog.actionFieldClearExecute(Sender: TObject);
+begin
+   TEdit(ActiveControl).Clear;
+end;
+
+procedure TEditDialog.actionCQRepeatExecute(Sender: TObject);
+begin
+   if Main.CurrentQSO.mode = mCW then begin
+      MainForm.CQRepeatClick2(Sender);
+   end;
+end;
+
+procedure TEditDialog.actionFocusCallsignExecute(Sender: TObject);
+begin
+   CallsignEdit.SetFocus;
+end;
+
+procedure TEditDialog.actionFocusMemoExecute(Sender: TObject);
+begin
+   MemoEdit.SetFocus;
+end;
+
+procedure TEditDialog.actionFocusNumberExecute(Sender: TObject);
+begin
+   NumberEdit.SetFocus;
+end;
+
+procedure TEditDialog.actionFocusOpExecute(Sender: TObject);
+begin
+   OpEditClick(Self);
+end;
+
+procedure TEditDialog.actionFocusRstExecute(Sender: TObject);
+begin
+   RcvdRSTEdit.SetFocus;
+end;
+
+procedure TEditDialog.actionToggleRigExecute(Sender: TObject);
+begin
+   MainForm.RigControl.ToggleCurrentRig;
+end;
+
+procedure TEditDialog.actionControlPTTExecute(Sender: TObject);
+begin
+   dmZLogKeyer.ControlPTT(not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
+end;
+
+procedure TEditDialog.actionChangeBandExecute(Sender: TObject);
+begin
+   workQSO.Band := MainForm.GetNextBand(workQSO.Band, True);
+   BandEdit.Text := MHzString[workQSO.Band];
+end;
+
+procedure TEditDialog.actionChangeModeExecute(Sender: TObject);
+begin
+   // ChangeMode;
+   MainForm.SetQSOMode(workQSO);
+   ModeEdit.Text := ModeString[workQSO.mode];
+   if workQSO.mode in [mSSB, mFM, mAM] then begin
+      workQSO.RSTrcvd := 59;
+      workQSO.RSTsent := 59;
+      RcvdRSTEdit.Text := '59';
+   end
+   else begin
+      workQSO.RSTrcvd := 599;
+      workQSO.RSTsent := 599;
+      RcvdRSTEdit.Text := '599';
+   end;
+end;
+
+procedure TEditDialog.actionChangePowerExecute(Sender: TObject);
+begin
+   ChangePower;
+end;
+
+procedure TEditDialog.actionChangeRExecute(Sender: TObject);
+begin
+   MainForm.SetR(workQSO);
+   RcvdRSTEdit.Text := workQSO.RSTStr;
+end;
+
+procedure TEditDialog.actionChangeSExecute(Sender: TObject);
+begin
+   MainForm.SetS(workQSO);
+   RcvdRSTEdit.Text := workQSO.RSTStr;
+end;
+
+procedure TEditDialog.actionSetCurTimeExecute(Sender: TObject);
+begin
+   workQSO.UpdateTime;
+   TimeEdit.Text := workQSO.TimeStr;
+   DateEdit.Text := workQSO.DateStr;
+end;
+
+procedure TEditDialog.actionDecreaseCwSpeedExecute(Sender: TObject);
+begin
+   DecCWSpeed;
+end;
+
+procedure TEditDialog.actionIncreaseCwSpeedExecute(Sender: TObject);
+begin
+   IncCWSpeed;
+end;
+
+procedure TEditDialog.actionCQRepeat2Execute(Sender: TObject);
+begin
+   if Main.CurrentQSO.mode = mCW then begin
+      MainForm.CQRepeatClick1(Sender);
+   end;
+end;
+
+procedure TEditDialog.actionToggleVFOExecute(Sender: TObject);
+begin
+   if MainForm.RigControl.Rig <> nil then begin
+      MainForm.RigControl.Rig.ToggleVFO;
+   end;
 end;
 
 end.

@@ -4,30 +4,47 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, UzLogGlobal, Buttons;
+  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
+  UzLogCOnst, UzLogGlobal, UzLogQSO;
 
 type
   TPediScore = class(TBasicScore)
     Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     Stats: array[b19..HiBand, mCW..mOther] of integer;
   public
     { Public declarations }
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Reset; override;
     procedure SummaryWriteScore(FileName : string); override;
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
-
-//var
-//  PediScore: TPediScore;
 
 implementation
 
 {$R *.DFM}
+
+procedure TPediScore.FormShow(Sender: TObject);
+begin
+   inherited;
+   Button1.SetFocus;
+   Grid.Col := 1;
+   Grid.Row := 1;
+   CWButton.Visible := False;
+end;
+
+procedure TPediScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   inherited;
+   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
+end;
 
 procedure TPediScore.SummaryWriteScore(FileName: string);
 var
@@ -78,12 +95,13 @@ begin
    CloseFile(f);
 end;
 
-procedure TPediScore.Update;
+procedure TPediScore.UpdateData;
 var
    b: TBand;
    M: TMode;
    TotQSO, TotBandQSO: LongInt;
    ModeQSO: array [mCW .. mOther] of Integer;
+   w: Integer;
 begin
    TotQSO := 0;
 
@@ -125,14 +143,26 @@ begin
 
    Grid.ColCount := 8;
    Grid.RowCount := 17;
-   ClientWidth := (Grid.DefaultColWidth * Grid.ColCount) + (Grid.ColCount * Grid.GridLineWidth);
-   ClientHeight := (Grid.DefaultRowHeight * Grid.RowCount) + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
+
+   // カラム幅をセット
+   w := Grid.Canvas.TextWidth('9');
+   Grid.ColWidths[0] := w * 6;
+   Grid.ColWidths[1] := w * 7;
+   Grid.ColWidths[2] := w * 7;
+   Grid.ColWidths[3] := w * 7;
+   Grid.ColWidths[4] := w * 7;
+   Grid.ColWidths[5] := w * 7;
+   Grid.ColWidths[6] := w * 7;
+   Grid.ColWidths[7] := w * 7;
+
+   // グリッドサイズ調整
+   AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
 end;
 
 procedure TPediScore.AddNoUpdate(var aQSO: TQSO);
 begin
-   aQSO.QSO.points := 1;
-   Inc(Stats[aQSO.QSO.band, aQSO.QSO.Mode]);
+   aQSO.points := 1;
+   Inc(Stats[aQSO.band, aQSO.Mode]);
 end;
 
 procedure TPediScore.Reset;
@@ -147,40 +177,16 @@ begin
    end;
 end;
 
-procedure TPediScore.FormShow(Sender: TObject);
+function TPediScore.GetFontSize(): Integer;
 begin
-   inherited;
-   Button1.SetFocus;
-   Grid.Col := 1;
-   Grid.Row := 1;
-   CWButton.Visible := False;
+   Result := Grid.Font.Size;
 end;
 
-procedure TPediScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-var
-   strText: string;
+procedure TPediScore.SetFontSize(v: Integer);
 begin
-   inherited;
-   strText := TStringGrid(Sender).Cells[ACol, ARow];
-
-   with TStringGrid(Sender).Canvas do begin
-      Brush.Color := TStringGrid(Sender).Color;
-      Brush.Style := bsSolid;
-      FillRect(Rect);
-
-      Font.Name := 'ＭＳ ゴシック';
-      Font.Size := 11;
-
-      if Copy(strText, 1, 1) = '*' then begin
-         strText := Copy(strText, 2);
-         Font.Color := clBlue;
-      end
-      else begin
-         Font.Color := clBlack;
-      end;
-
-      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
-   end;
+   Inherited;
+   SetGridFontSize(Grid, v);
+   UpdateData();
 end;
 
 end.

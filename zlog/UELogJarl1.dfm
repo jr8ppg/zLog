@@ -190,7 +190,7 @@ object formELogJarl1: TformELogJarl1
       #12289#31169#12398#21517#35465#12395#12362#12356#12390#35475#12356#12414#12377#12290)
     ParentFont = False
     ScrollBars = ssVertical
-    TabOrder = 0
+    TabOrder = 19
   end
   object edContestName: TEdit
     Left = 116
@@ -203,7 +203,7 @@ object formELogJarl1: TformELogJarl1
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 1
+    TabOrder = 0
     Text = #12467#12531#12486#12473#12488
   end
   object edCategoryName: TEdit
@@ -259,7 +259,7 @@ object formELogJarl1: TformELogJarl1
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 5
+    TabOrder = 1
     Text = #12467#12531#12486#12473#12488
   end
   object edFDCoefficient: TEdit
@@ -273,7 +273,7 @@ object formELogJarl1: TformELogJarl1
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 6
+    TabOrder = 5
     Text = #12467#12531#12486#12473#12488
   end
   object edTEL: TEdit
@@ -383,7 +383,7 @@ object formELogJarl1: TformELogJarl1
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 14
+    TabOrder = 17
     Text = #12467#12531#12486#12473#12488
   end
   object edPowerSupply: TEdit
@@ -397,7 +397,7 @@ object formELogJarl1: TformELogJarl1
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 15
+    TabOrder = 14
     Text = #12467#12531#12486#12473#12488
   end
   object mComments: TMemo
@@ -425,7 +425,7 @@ object formELogJarl1: TformELogJarl1
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 17
+    TabOrder = 18
     Text = #12467#12531#12486#12473#12488
   end
   object edDate: TEdit
@@ -439,7 +439,7 @@ object formELogJarl1: TformELogJarl1
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 18
+    TabOrder = 20
     Text = #12467#12531#12486#12473#12488
   end
   object edSignature: TEdit
@@ -453,7 +453,7 @@ object formELogJarl1: TformELogJarl1
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 19
+    TabOrder = 21
   end
   object buttonCreateLog: TButton
     Left = 208
@@ -462,7 +462,7 @@ object formELogJarl1: TformELogJarl1
     Height = 23
     Anchors = [akLeft, akBottom]
     Caption = 'E-log'#20316#25104
-    TabOrder = 20
+    TabOrder = 23
     OnClick = buttonCreateLogClick
   end
   object buttonSave: TButton
@@ -472,7 +472,7 @@ object formELogJarl1: TformELogJarl1
     Height = 23
     Anchors = [akLeft, akBottom]
     Caption = #20445#23384
-    TabOrder = 21
+    TabOrder = 22
     OnClick = buttonSaveClick
   end
   object buttonCancel: TButton
@@ -482,7 +482,7 @@ object formELogJarl1: TformELogJarl1
     Height = 23
     Anchors = [akLeft, akBottom]
     Caption = #38281#12376#12427
-    TabOrder = 22
+    TabOrder = 24
     OnClick = buttonCancelClick
   end
   object mAddress: TMemo
@@ -498,7 +498,7 @@ object formELogJarl1: TformELogJarl1
     MaxLength = 400
     ParentFont = False
     ScrollBars = ssVertical
-    TabOrder = 23
+    TabOrder = 6
   end
   object mEquipment: TMemo
     Left = 24
@@ -513,7 +513,7 @@ object formELogJarl1: TformELogJarl1
     MaxLength = 800
     ParentFont = False
     ScrollBars = ssVertical
-    TabOrder = 24
+    TabOrder = 15
   end
   object SaveDialog1: TSaveDialog
     DefaultExt = 'em'

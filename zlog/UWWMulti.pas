@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicMulti, StdCtrls, JLLabel, ExtCtrls, UzLogGlobal, Grids, Cologrid,
-  USpotClass, UComm, UMultipliers, UWWZone;
+  UBasicMulti, StdCtrls, JLLabel, ExtCtrls, Grids, Cologrid,
+  UzLogConst, UzLogGlobal, UzLogQSO, USpotClass, UComm, UMultipliers, UWWZone;
 
 
 type
@@ -35,6 +35,7 @@ type
       var Bold, Italic, underline: Boolean);
     procedure GridTopLeftChanged(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -50,7 +51,7 @@ type
     //MyCountry : string;
     //MyZone : string;
     //MyContinent : string;
-    procedure AddNewPrefixToFile(NewPX : string; CtyIndex : integer);
+//    procedure AddNewPrefixToFile(NewPX : string; CtyIndex : integer);
     procedure AddNewPrefix(PX : string; CtyIndex : integer); override;
     procedure SelectAndAddNewPrefix(Call : string); override;
     //function GetCountryIndex(aQSO : TQSO) : integer;
@@ -58,7 +59,7 @@ type
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Add(var aQSO : TQSO); override; // only calls addnoupdate but no update
-    procedure Update; override;
+    procedure UpdateData; override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
     function GuessZone(aQSO : TQSO) : string; override;
     function GetInfo(aQSO : TQSO): string; override;
@@ -68,8 +69,6 @@ type
     procedure SortDefault; virtual;
     procedure ShowContinent(CT: string);
     procedure CheckMulti(aQSO : TQSO); override;
-    //function GetArea(str : string) : integer;
-    //procedure RenewCluster; override;
     procedure RefreshGrid; virtual;
     procedure RefreshZone;
     procedure ProcessSpotData(var S : TBaseSpot); override;
@@ -83,6 +82,7 @@ uses
 
 {$R *.DFM}
 
+{
 procedure TWWMulti.AddNewPrefixToFile(NewPX : string; CtyIndex : integer);
 var
    L : TStringList;
@@ -147,6 +147,7 @@ begin
       L.Free;
    end;
 end;
+}
 
 procedure TWWMulti.AddNewPrefix(PX : string; CtyIndex : integer);
 var
@@ -154,12 +155,10 @@ var
 begin
    P := TPrefix.Create;
    P.Prefix := PX;
-   P.Index := CtyIndex;
-   P.Length := Length(PX);
-   PrefixList.AddListX(P);
-   PrefixList.InitIndexX;
+   P.Country := CountryList[CtyIndex];
+   PrefixList.Add(P);
 
-   AddNewPrefixToFile(P.Prefix, P.Index);
+//   AddNewPrefixToFile(P.Prefix, P.Index);
    Main.MyContest.Renew;
 end;
 
@@ -169,10 +168,6 @@ var
 begin
    F := TNewPrefix.Create(Self);
    try
-      if _DATFileName = '' then begin
-         exit;
-      end;
-
       F.Init(CountryList, Call);
       if F.ShowModal() <> mrOK then begin
          Exit;
@@ -190,7 +185,7 @@ procedure TWWMulti.Add(var aQSO : TQSO);
 begin
    AddNoUpdate(aQSO);
 
-   if (aQSO.QSO.Reserve2 <> $AA) and (MostRecentCty <> nil) then begin
+   if (aQSO.Reserve2 <> $AA) and (MostRecentCty <> nil) then begin
       Grid.TopRow := MostRecentCty.GridIndex;
    end;
 
@@ -200,7 +195,7 @@ begin
    AddSpot(aQSO);
 end;
 
-procedure TWWMulti.Update;
+procedure TWWMulti.UpdateData;
 begin
    case SortBy.ItemIndex of
       0 : SortDefault;
@@ -217,11 +212,11 @@ procedure TWWMulti.SortDefault;
 var
    i: integer;
 begin
-   if CountryList.List.Count = 0 then begin
+   if CountryList.Count = 0 then begin
       exit;
    end;
 
-   for i := 0 to CountryList.List.Count-1 do begin
+   for i := 0 to CountryList.Count-1 do begin
       TCountry(CountryList.List[i]).GridIndex := i;
       GridReverse[i] := i;
    end;
@@ -231,15 +226,15 @@ procedure TWWMulti.SortZone;
 var
    i, j, x: integer;
 begin
-   if CountryList.List.Count = 0 then begin
+   if CountryList.Count = 0 then begin
       exit;
    end;
 
    GridReverse[0] := 0;
    x := 1;
    for i := 1 to 40 do begin
-      for j := 1 to CountryList.List.Count - 1 do begin
-         if TCountry(CountryList.List[j]).Zone = i then begin
+      for j := 1 to CountryList.Count - 1 do begin
+         if TCountry(CountryList.List[j]).CQZone = IntToStr(i) then begin
             TCountry(CountryList.List[j]).GridIndex := x;
             GridReverse[x] := j;
             inc(x);
@@ -251,7 +246,7 @@ end;
 procedure TWWMulti.SortContinent;
 var
    i, j, x: integer;
-   cont : array[0..5] of string[3];
+   cont : array[0..5] of string;
 begin
    cont[0] := 'AS';
    cont[1] := 'AF';
@@ -259,12 +254,12 @@ begin
    cont[3] := 'NA';
    cont[4] := 'SA';
    cont[5] := 'OC';
-   if CountryList.List.Count = 0 then exit;
+   if CountryList.Count = 0 then exit;
    GridReverse[0] := 0;
    x := 1;
 
    for i := 0 to 5 do begin
-      for j := 1 to CountryList.List.Count - 1 do begin
+      for j := 1 to CountryList.Count - 1 do begin
          if TCountry(CountryList.List[j]).Continent = cont[i] then begin
             TCountry(CountryList.List[j]).GridIndex := x;
             GridReverse[x] := j;
@@ -286,7 +281,7 @@ begin
    cont[4] := 'SA';
    cont[5] := 'OC';
 
-   if CountryList.List.Count = 0 then begin
+   if CountryList.Count = 0 then begin
       exit;
    end;
 
@@ -297,7 +292,7 @@ begin
 
    x := 1;
 
-   for j := 1 to CountryList.List.Count - 1 do begin
+   for j := 1 to CountryList.Count - 1 do begin
       if TCountry(CountryList.List[j]).Continent = CT then begin
          TCountry(CountryList.List[j]).GridIndex := x;
          GridReverse[x] := j;
@@ -328,9 +323,9 @@ begin
       end;
    end;
 
-   if CountryList.List.Count = 0 then exit;
+   if CountryList.Count = 0 then exit;
 
-   for i := 0 to CountryList.List.Count-1 do begin
+   for i := 0 to CountryList.Count-1 do begin
       for B := b19 to HiBand do begin
          TCountry(CountryList.List[i]).Worked[B] := false;
       end;
@@ -341,7 +336,7 @@ begin
       1 : SortZone;
    end;
 
-   Grid.RowCount := CountryList.List.Count;
+   Grid.RowCount := CountryList.Count;
 end;
 
 procedure TWWMulti.RefreshGrid;
@@ -354,7 +349,7 @@ begin
       end
       else begin
          k := GridReverse[i];
-         if (k >= 0) and (k < CountryList.List.Count) then begin
+         if (k >= 0) and (k < CountryList.Count) then begin
             Grid.Cells[0, i] := TCountry(CountryList.List[k]).Summary
          end
          else begin
@@ -394,21 +389,25 @@ begin
    MainForm.mnGridAddNewPX.Visible := True;
    CountryList := TCountryList.Create;
    PrefixList := TPrefixList.Create;
-   {CountryList.LoadFromFile('CQWW.DAT');}
 
-   if FileExists('CTY.DAT') then begin
-      LoadCTY_DAT(testCQWW, CountryList, PrefixList);
-      MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-   end
-   else begin
-      LoadCountryDataFromFile('CQWW.DAT', CountryList, PrefixList);
+   if LoadCTY_DAT() = False then begin
+      Exit;
    end;
 
-   if CountryList.List.Count = 0 then begin
+   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
+
+   if CountryList.Count = 0 then begin
       Exit;
    end;
 
    AnalyzeMyCountry;
+end;
+
+procedure TWWMulti.FormDestroy(Sender: TObject);
+begin
+   inherited;
+   CountryList.Free();
+   PrefixList.Free();
 end;
 
 procedure TWWMulti.Button1Click(Sender: TObject);
@@ -424,44 +423,44 @@ var
    i: integer;
    C: TCountry;
    P: TPrefix;
-   _cont: string[3];
+   _cont: string;
 begin
-   aQSO.QSO.NewMulti1 := False;
-   aQSO.QSO.NewMulti2 := False;
-   str := aQSO.QSO.NrRcvd;
-   aQSO.QSO.Multi1 := str;
-   aQSO.QSO.Multi2 := '';
+   aQSO.NewMulti1 := False;
+   aQSO.NewMulti2 := False;
+   str := aQSO.NrRcvd;
+   aQSO.Multi1 := str;
+   aQSO.Multi2 := '';
 
-   if aQSO.QSO.Dupe then
+   if aQSO.Dupe then
       exit;
 
-   B := aQSO.QSO.band;
+   B := aQSO.band;
    i := StrToIntDef(str, 0);
 
    if i in [1..MAXCQZONE] then begin
       if Zone[B,i] = False then begin
         Zone[B,i] := True;
-        aQSO.QSO.NewMulti1 := True;
+        aQSO.NewMulti1 := True;
       end;
    end;
 
    P := GetPrefix(aQSO);
 
    if P = nil then begin
-      aQSO.QSO.Points := 0;
-      aQSO.QSO.Multi1 := 'Unknown';
-      aQSO.QSO.Memo := '** UNKNOWN CTY ** '+aQSO.QSO.Memo;
+      aQSO.Points := 0;
+      aQSO.Multi1 := 'Unknown';
+      aQSO.Memo := '** UNKNOWN CTY ** '+aQSO.Memo;
       exit;
    end;
 
-   C := TCountry(CountryList.List[P.Index]);
+   C := P.Country;
    MostRecentCty := C;
 
-   aQSO.QSO.Multi2 := C.Country;
+   aQSO.Multi2 := C.Country;
 
    if C.Worked[B] = False then begin
       C.Worked[B] := True;
-      aQSO.QSO.NewMulti2 := True;
+      aQSO.NewMulti2 := True;
       //Grid.Cells[0,C.GridIndex] := C.Summary;
     end;
 
@@ -471,16 +470,16 @@ begin
       _cont := P.OvrContinent;
 
    if MyCountry = C.Country then
-      aQSO.QSO.points := 0
+      aQSO.points := 0
    else begin
       if MyContinent = _cont then begin
          if MyContinent = 'NA' then
-            aQSO.QSO.points := 2
+            aQSO.points := 2
          else
-            aQSO.QSO.points := 1;
+            aQSO.points := 1;
       end
       else begin
-         aQSO.QSO.points := 3;
+         aQSO.points := 3;
       end;
    end;
 end;
@@ -490,7 +489,7 @@ var
    str : string;
    i : integer;
 begin
-   str := aQSO.QSO.NrRcvd;
+   str := aQSO.NrRcvd;
    i := StrToIntDef(str, 0);
 
    if i in [1..MAXCQZONE] then begin
@@ -522,7 +521,7 @@ var
    i : integer;
    C : TCountry;
 begin
-   C := TCountry(CountryList.List[GetCountryIndex(aQSO)]);
+   C := GetPrefix(aQSO).Country;
    if C.CountryName = 'Unknown' then begin
       Result := 'Unknown CTY';
       exit;
@@ -532,12 +531,12 @@ begin
    temp := C.Country+' '+C.Continent+ ' ';
 
    temp2 := '';
-   if C.Worked[aQSO.QSO.Band] = false then
+   if C.Worked[aQSO.Band] = false then
       temp2 := 'CTY';
 
-   i := StrToIntDef(aQSO.QSO.NrRcvd, 0);
+   i := StrToIntDef(aQSO.NrRcvd, 0);
    if i in [1..40] then begin
-      if Zone[aQSO.QSO.Band, i] = False then begin
+      if Zone[aQSO.Band, i] = False then begin
          temp2 := temp2 + ' ZONE';
       end;
    end;
@@ -563,7 +562,7 @@ var
    i : integer;
 begin
    temp := Edit1.Text;
-   for i := 0 to CountryList.List.Count-1 do begin
+   for i := 0 to CountryList.Count-1 do begin
       if pos(temp,TCountry(CountryList.List[i]).Country) = 1 then begin
          Grid.TopRow := TCountry(CountryList.List[i]).GridIndex;
          break;
@@ -583,14 +582,15 @@ end;
 
 procedure TWWMulti.ProcessCluster(var Sp : TBaseSpot);
 var
-   Z, C : integer;
+   Z: integer;
+   C: TCountry;
    temp : string;
    aQSO : TQSO;
 begin
    aQSO := TQSO.Create;
    try
-      aQSO.QSO.Callsign := Sp.Call;
-      aQSO.QSO.Band := Sp.Band;
+      aQSO.Callsign := Sp.Call;
+      aQSO.Band := Sp.Band;
 
       Sp.NewCty := False;
       Sp.NewZone := False;
@@ -606,25 +606,24 @@ begin
       else
          Z := 0;
 
-      C := GetCountryIndex(aQSO);
+      C := GetPrefix(aQSO).Country;
       Sp.Zone := Z;
-      if C > 0 then
-         Sp.CtyIndex := C;
+      Sp.CtyIndex := C.Index;
 
-      temp := aQSO.QSO.CallSign;
-      if (Z > 0) and (Zone[aQSO.QSO.band, Z] = False) then begin {and not singlebander on other band}
+      temp := aQSO.CallSign;
+      if (Z > 0) and (Zone[aQSO.band, Z] = False) then begin {and not singlebander on other band}
          temp := temp + '  new zone : ' + GuessZone(aQSO);
          Sp.NewZone := True;
       end;
 
-      if (C > 0) and (TCountry(CountryList.List[C]).Worked[aQSO.QSO.Band] = false) then begin
-         temp := temp + '  new country : ' + (TCountry(CountryList.List[C]).Country);
+      if (C.Worked[aQSO.Band] = false) then begin
+         temp := temp + '  new country : ' + (C.Country);
          Sp.NewCty := True;
       end;
 
       if Sp.NewMulti{Pos('new', temp) > 0} then begin
-         temp := temp + ' at ' + MHzString[aQSO.QSO.band]+ 'MHz';
-         CommForm.WriteStatusLine(temp);
+         temp := temp + ' at ' + MHzString[aQSO.band]+ 'MHz';
+         MainForm.CommForm.WriteStatusLine(temp);
          MainForm.WriteStatusLineRed(temp, true);
       end;
    finally
@@ -651,12 +650,12 @@ var
    i : integer;
    B : TBand;
 begin
-   str := aQSO.QSO.NrRcvd;
+   str := aQSO.NrRcvd;
    i := StrToIntDef(str, 0);
 
    if i in [1..MAXCQZONE] then begin
       str := 'Zone '+IntToStr(i)+ ' : ';
-      if Zone[aQSO.QSO.Band, i] then
+      if Zone[aQSO.Band, i] then
          str := str + 'Worked on this band. '
       else
          str := str + 'Needed on this band. ';
@@ -690,7 +689,7 @@ var
 begin
    Inherited;
 
-   B := Main.CurrentQSO.QSO.Band;
+   B := Main.CurrentQSO.Band;
    if GridReverse[ARow] < 0 then begin
       exit;
    end;

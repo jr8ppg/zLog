@@ -4,11 +4,12 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicMulti, Grids, StdCtrls, ExtCtrls, UzLogGlobal, UKCJZone;
+  UBasicMulti, Grids, StdCtrls, ExtCtrls,
+  UzLogConst, UzLogGlobal, UzLogQSO, UKCJZone;
 
 const maxindex = 70;
 
-const KenNames : array[0..maxindex] of string[15] =
+const KenNames : array[0..maxindex] of string =
 ('SY @’J','RM —¯–G','KK ãì','AB –Ô‘–','SC ‹ó’m','IS ÎŽë','NM ªŽº',
  'SB ŒãŽu','TC \Ÿ','KR ‹ú˜H','HD “ú‚','IR ’_U','HY •OŽR','OM “n“‡',
  'AM ÂX','IT ŠâŽè','AT H“c','YM ŽRŒ`','MG ‹{é','FS •Ÿ“‡','NI VŠƒ',
@@ -48,7 +49,7 @@ type
   public
     { Public declarations }
     MultiArray : array[b19..b50, 0..maxindex] of boolean;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Reset; override;
     procedure CheckMulti(aQSO : TQSO); override;
@@ -88,16 +89,16 @@ begin
    end;
 end;
 
-procedure TKCJMulti.Update;
+procedure TKCJMulti.UpdateData;
 var
    B: TBand;
 begin
-   B := Main.CurrentQSO.QSO.Band;
+   B := Main.CurrentQSO.Band;
 
    combBand.ItemIndex := GetBandIndex(B);
 
    if MultiMap.Visible then begin
-      MultiMap.Update;
+      MultiMap.UpdateData;
    end;
 
    Grid.Refresh();
@@ -108,15 +109,15 @@ var
    str: string;
    K: Integer;
 begin
-   aQSO.QSO.NewMulti1 := False;
-   str := aQSO.QSO.NrRcvd;
-   aQSO.QSO.Multi1 := str;
+   aQSO.NewMulti1 := False;
+   str := aQSO.NrRcvd;
+   aQSO.Multi1 := str;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       Exit;
    end;
 
-   if not(NotWARC(aQSO.QSO.Band)) then begin
+   if not(NotWARC(aQSO.Band)) then begin
       Exit;
    end;
 
@@ -125,9 +126,9 @@ begin
       Exit;
    end;
 
-   if MultiArray[aQSO.QSO.Band, K] = False then begin
-      MultiArray[aQSO.QSO.Band, K] := True;
-      aQSO.QSO.NewMulti1 := True;
+   if MultiArray[aQSO.Band, K] = False then begin
+      MultiArray[aQSO.Band, K] := True;
+      aQSO.NewMulti1 := True;
    end;
 end;
 
@@ -135,7 +136,7 @@ function TKCJMulti.ValidMulti(aQSO: TQSO): boolean;
 var
    str: string;
 begin
-   str := aQSO.QSO.NrRcvd;
+   str := aQSO.NrRcvd;
    Result := (KCJCode(str) >= 0)
 end;
 
@@ -157,7 +158,7 @@ var
    M: Integer;
    B: TBand;
 begin
-   str := aQSO.QSO.NrRcvd;
+   str := aQSO.NrRcvd;
 
    if str = '' then begin
       Exit;
@@ -171,7 +172,7 @@ begin
    end;
 
    str := KenNames[M];
-   if MultiArray[aQSO.QSO.Band, M] = True then begin
+   if MultiArray[aQSO.Band, M] = True then begin
       str := str + '   Worked on this band. Worked on : ';
    end
    else begin
@@ -195,7 +196,7 @@ begin
    inherited;
    Reset;
    combBand.ItemIndex := 0;
-   MultiMap := TKCJZone.Create(Owner);
+   MultiMap := TKCJZone.Create(Self);
    MultiMap.MultiForm := Self;
 end;
 

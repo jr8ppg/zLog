@@ -1,13 +1,14 @@
 inherited WPXScore: TWPXScore
   Left = 65
   Caption = 'Score'
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
   object Grid: TStringGrid
     Left = 0
     Top = 0
-    Width = 278
-    Height = 196
+    Width = 281
+    Height = 202
     Align = alClient
     DefaultDrawing = False
     FixedCols = 0
@@ -23,8 +24,6 @@ inherited WPXScore: TWPXScore
     ScrollBars = ssNone
     TabOrder = 1
     OnDrawCell = GridDrawCell
-    ExplicitTop = -153
-    ExplicitHeight = 382
     ColWidths = (
       64
       64

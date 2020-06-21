@@ -25,8 +25,6 @@ object BasicScore: TBasicScore
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 196
-    ExplicitWidth = 278
     DesignSize = (
       281
       33)

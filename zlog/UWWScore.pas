@@ -4,13 +4,18 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, UzLogGlobal, Grids, StdCtrls, ExtCtrls, Buttons;
+  Grids, StdCtrls, ExtCtrls, Buttons, Math,
+  UBasicScore, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TWWScore = class(TBasicScore)
     Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+    procedure FormCreate(Sender: TObject);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
   public
@@ -20,8 +25,9 @@ type
     procedure Renew; override;
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure SummaryWriteScore(FileName : string); override;
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 var
@@ -42,10 +48,42 @@ begin
    end;
 end;
 
+procedure TWWScore.FormCreate(Sender: TObject);
+begin
+   inherited;
+   Grid.Canvas.Font.Name := 'ＭＳ ゴシック';
+end;
+
 procedure TWWScore.FormShow(Sender: TObject);
 begin
    inherited;
-   CWButton.visible := False;
+   CWButton.Visible := False;
+end;
+
+procedure TWWScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+var
+   strText: string;
+begin
+   inherited;
+   strText := TStringGrid(Sender).Cells[ACol, ARow];
+
+   with TStringGrid(Sender).Canvas do begin
+      Brush.Color := TStringGrid(Sender).Color;
+      Brush.Style := bsSolid;
+      FillRect(Rect);
+
+      Font.Size := FFontSize;
+
+      if Copy(strText, 1, 1) = '*' then begin
+         strText := Copy(strText, 2);
+         Font.Color := clBlue;
+      end
+      else begin
+         Font.Color := clBlack;
+      end;
+
+      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
+   end;
 end;
 
 procedure TWWScore.Renew;
@@ -55,15 +93,15 @@ var
 begin
    Reset;
    for i := 1 to Log.TotalQSO do begin
-      band := TQSO(Log.List[i]).QSO.band;
+      band := Log.QsoList[i].band;
       inc(QSO[band]);
-      inc(Points[band],TQSO(Log.List[i]).QSO.Points);
+      inc(Points[band],Log.QsoList[i].Points);
 
-      if TQSO(Log.List[i]).QSO.NewMulti1 then begin
+      if Log.QsoList[i].NewMulti1 then begin
         inc(Multi[band]);
       end;
 
-      if TQSO(Log.List[i]).QSO.NewMulti2 then begin
+      if Log.QsoList[i].NewMulti2 then begin
         inc(Multi2[band]);
       end;
    end;
@@ -84,29 +122,32 @@ end;
 
 procedure TWWScore.AddNoUpdate(var aQSO : TQSO);
 var
-   P: Integer;
    band: TBand;
 begin
    {BasicScore.AddNoUpdate(aQSO);}
    inherited;
 
-   if aQSO.QSO.Dupe then begin
+   if aQSO.Dupe then begin
       exit;
    end;
 
-   band := aQSO.QSO.band;
-   if aQSO.QSO.NewMulti2 then begin
+   band := aQSO.band;
+   if aQSO.NewMulti2 then begin
       Inc(Multi2[band]);
    end;
 
-   Inc(Points[band], aQSO.QSO.Points); {Points calculated in WWMulti.AddNoUpdate}
+   Inc(Points[band], aQSO.Points); {Points calculated in WWMulti.AddNoUpdate}
 end;
 
-procedure TWWScore.Update;
+procedure TWWScore.UpdateData;
 var
    band : TBand;
    TotQSO, TotPts, TotMulti, TotMulti2: Integer;
    row: Integer;
+   i: Integer;
+   h: Integer;
+   w: Integer;
+   strScore: string;
 begin
    TotQSO := 0;
    TotPts := 0;
@@ -138,22 +179,48 @@ begin
       end;
    end;
 
+   // 合計行
    Grid.Cells[0, 7] := 'Total';
    Grid.Cells[1, 7] := IntToStr3(TotQSO);
    Grid.Cells[2, 7] := IntToStr3(TotPts);
    Grid.Cells[3, 7] := IntToStr3(TotMulti);
    Grid.Cells[4, 7] := IntToStr3(TotMulti2);
 
+   // スコア行
+   strScore:= IntToStr3(TotPts * (TotMulti + TotMulti2));
    Grid.Cells[0, 8] := 'Score';
    Grid.Cells[1, 8] := '';
    Grid.Cells[2, 8] := '';
    Grid.Cells[3, 8] := '';
-   Grid.Cells[4, 8] := IntToStr3(TotPts * (TotMulti + TotMulti2));
+   Grid.Cells[4, 8] := strScore;
 
+   // 行数をセット
    Grid.ColCount := 5;
    Grid.RowCount := 9;
-   ClientWidth := (Grid.DefaultColWidth * Grid.ColCount) + (Grid.ColCount * Grid.GridLineWidth);
-   ClientHeight := (Grid.DefaultRowHeight * Grid.RowCount) + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
+
+   // カラム幅をセット
+   w := Grid.Canvas.TextWidth('9');
+   Grid.ColWidths[0] := w * 6;
+   Grid.ColWidths[1] := w * 7;
+   Grid.ColWidths[2] := w * 7;
+   Grid.ColWidths[3] := w * 7;
+   Grid.ColWidths[4] := w * Max(8, Length(strScore)+1);
+
+   // 幅調整
+   w := 0;
+   for i := 0 to Grid.ColCount - 1 do begin
+      w := w + Grid.ColWidths[i];
+   end;
+   w := w + (Grid.ColCount * Grid.GridLineWidth) + 2;
+   ClientWidth := Max(w, 200);
+
+   // 高さ調整
+   h := 0;
+   for i := 0 to Grid.RowCount - 1 do begin
+      h := h + Grid.RowHeights[i];
+   end;
+   h := h + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
+   ClientHeight := h;
 end;
 
 procedure TWWScore.SummaryWriteScore(FileName : string);
@@ -184,31 +251,29 @@ begin
    CloseFile(f);
 end;
 
-procedure TWWScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-var
-   strText: string;
+function TWWScore.GetFontSize(): Integer;
 begin
-   inherited;
-   strText := TStringGrid(Sender).Cells[ACol, ARow];
+   Result := Grid.Font.Size;
+end;
 
-   with TStringGrid(Sender).Canvas do begin
-      Brush.Color := TStringGrid(Sender).Color;
-      Brush.Style := bsSolid;
-      FillRect(Rect);
+procedure TWWScore.SetFontSize(v: Integer);
+var
+   i: Integer;
+   h: Integer;
+begin
+   Inherited;
+   Grid.Font.Size := v;
+   Grid.Canvas.Font.size := v;
 
-      Font.Name := 'ＭＳ ゴシック';
-      Font.Size := 11;
+   h := Abs(Grid.Font.Height) + 6;
 
-      if Copy(strText, 1, 1) = '*' then begin
-         strText := Copy(strText, 2);
-         Font.Color := clBlue;
-      end
-      else begin
-         Font.Color := clBlack;
-      end;
+   Grid.DefaultRowHeight := h;
 
-      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
+   for i := 0 to Grid.RowCount - 1 do begin
+      Grid.RowHeights[i] := h;
    end;
+
+   UpdateData();
 end;
 
 end.

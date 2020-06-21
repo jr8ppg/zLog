@@ -2,7 +2,7 @@ unit UIOTACategory;
 
 interface
 
-uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls, 
+uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls;
 
 type
@@ -22,29 +22,26 @@ type
     function GetIOTA : string;
   end;
 
-var
-  IOTACategory: TIOTACategory;
-
 implementation
 
 {$R *.DFM}
 
 procedure TIOTACategory.rbDXCCClick(Sender: TObject);
 begin
-  Edit1.Enabled := False;
+   Edit1.Enabled := False;
 end;
 
 procedure TIOTACategory.rbIOTAClick(Sender: TObject);
 begin
-  Edit1.Enabled := True;
+   Edit1.Enabled := True;
 end;
 
-function TIOTACategory.GetIOTA : string;
+function TIOTACategory.GetIOTA: string;
 begin
-  if rbIOTA.Checked then
-    Result := Edit1.Text
-  else
-    Result := '';
+   if rbIOTA.Checked then
+      Result := Edit1.Text
+   else
+      Result := '';
 end;
 
 end.
