@@ -39,7 +39,7 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 # 令和 Second Edition
 ## Delphi 10.3.3 Community Editionでのビルド方法 de JR8PPG
 
-※zlog_requiresより、未使用となったTwsaGraphコンポーネントを削除したため、一度zlog_requiresをアンインストールしてから再度ビルド－インストールを行って下さい。
+※zlog_requiresより、未使用となったTwsaGraphコンポーネントを削除したため、一度zlog_requiresをアンインストールしてから再度ビルド－インストールを行って下さい。  
 ※64ビットコンパイルに対応しました。
 
 1. TeeChart Standard（Delphi付属）のインストール
