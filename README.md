@@ -70,9 +70,11 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 
 5. zlog_requires のインストール
 
-   - VCLフォルダのzlog_requires.dpkを開き、ビルド→インストール
-   - オプション－言語－DelphiでライブラリパスにVCLフォルダとその下を追加
-
+   - VCLフォルダのzlog_requires.dpkを開き、32ビットを選択しビルド→インストール。
+   - 次に64ビットを選択しビルド。
+   - オプション－言語－Delphiでライブラリに VCLフォルダ\$(Platform)\Release を追加。32ビットと64ビットの両方に設定する。
+      - ライブラリパス 例「C:\github\zLog\VCL\$(Platform)\Release」
+      - デバッグ用DCUパス 例「C:\github\zLog\VCL\$(Platform)\Debug」
 6. zlogフォルダのzlog.dprojを開き、ビルド
 
 7. 完成
