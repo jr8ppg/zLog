@@ -40,6 +40,7 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 ## Delphi 10.3.3 Community Editionでのビルド方法 de JR8PPG
 
 ※zlog_requiresより、未使用となったTwsaGraphコンポーネントを削除したため、一度zlog_requiresをアンインストールしてから再度ビルド－インストールを行って下さい。
+※64ビットコンパイルに対応しました。
 
 1. TeeChart Standard（Delphi付属）のインストール
    - Delphiインストール時に指定するか、インストール後にウェルカムページ内の「機能拡張」－「プラットフォーム＆拡張マネージャ」よりインストール。（「RAD Studio 追加オプション」ウインドウの「追加オプション」タブ内にある「TeeChart Standard」をチェックON）
@@ -72,9 +73,9 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 
    - VCLフォルダのzlog_requires.dpkを開き、32ビットを選択しビルド→インストール。
    - 次に64ビットを選択しビルド。
-   - オプション－言語－Delphiでライブラリに VCLフォルダ\$(Platform)\Release を追加。32ビットと64ビットの両方に設定する。
-      - ライブラリパス 例「C:\github\zLog\VCL\$(Platform)\Release」
-      - デバッグ用DCUパス 例「C:\github\zLog\VCL\$(Platform)\Debug」
+   - オプション－言語－Delphiでライブラリに VCLフォルダ\\$(Platform)\\Release を追加。32ビットと64ビットの両方に設定する。
+      - ライブラリパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Release」
+      - デバッグ用DCUパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Debug」
 6. zlogフォルダのzlog.dprojを開き、ビルド
 
 7. 完成
