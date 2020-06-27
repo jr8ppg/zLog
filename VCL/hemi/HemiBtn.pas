@@ -59,7 +59,7 @@ uses
   {$ELSE}
   Windows,
   {$ENDIF}
-  SysUtils, Forms, Classes, Controls, Graphics;
+  SysUtils, Forms, Classes, Controls, Graphics, Math;
 
 const
   cDefaultColor = clGray;   { default face color                          }
@@ -196,12 +196,8 @@ begin
 end;
 
 function ArcTan2(Y, X: Double): Double;
-assembler;
-  asm
-    FLD Y
-    FLD X
-    FPATAN
-    FWAIT
+begin
+   Result := Math.ArcTan2(Y, X);
 end;
 
 constructor THemisphereButton.Create(aOwner: TComponent);

@@ -447,35 +447,12 @@ begin
 end;
 
 procedure FillInt(var Buf; Count: Cardinal; Value: Integer);
-{$IFDEF WIN32}
-{var
+var
   X: Cardinal;
 begin
   for X := 0 to Count-1 do
     TIntArray(Buf)[X] := Value;
 end;
-}register;
-asm
-  PUSH  EDI
-  MOV   EDI, EAX
-  MOV   EAX, ECX
-  MOV   ECX, EDX
-  CLD
-  REP   STOSD
-  POP   EDI
-end;
-{$ELSE}
-assembler;
-asm
-  PUSH DI
-  LES  DI, BUF
-  MOV  CX, COUNT
-  MOV  AX, VALUE
-  CLD
-  REP  STOSW
-  POP  DI
-end;
-{$ENDIF}
 
 constructor TFixedFont.Create;
 begin
