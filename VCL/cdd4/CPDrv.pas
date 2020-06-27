@@ -100,7 +100,7 @@ type
 //------------------------------------------------------------------------
 
 const
-  RELEASE_NOCLOSE_PORT = HFILE(INVALID_HANDLE_VALUE-1);
+  RELEASE_NOCLOSE_PORT = THandle(INVALID_HANDLE_VALUE-1);
 
 //------------------------------------------------------------------------
 // TCommPortDriver component
@@ -110,7 +110,7 @@ type
   TCommPortDriver = class( TComponent )
   protected
     // Device Handle ( File Handle )
-    FHandle                    : HFILE;
+    FHandle                    : THandle;
     // # of the COM port to use, or pnCustom to use custom port name
     FPort                      : TPortNumber;
     // Custom port name ( usually '\\.\COMn', with n = 1..x )
@@ -164,7 +164,7 @@ type
     FRXPollingPauses           : integer;
 
     // Sets the COM port handle
-    procedure SetHandle( Value: HFILE );
+    procedure SetHandle( Value: THandle );
     // Selects the COM port to use
     procedure SetPort( Value: TPortNumber );
     // Sets the port name
@@ -253,7 +253,7 @@ type
     procedure ToggleRTS( onOff: boolean );
 
     // Make the Handle of the COM port public (for TAPI...) [read/write]
-    property Handle: HFILE read FHandle write SetHandle;
+    property Handle: THandle read FHandle write SetHandle;
   published
     // # of the COM Port to use ( or pnCustom for port by name )
     property Port: TPortNumber read FPort write SetPort default pnCOM2;
@@ -454,7 +454,7 @@ end;
 // The COM port handle made public and writeable.
 // This lets you connect to external opened com port.
 // Setting ComPortHandle to INVALID_PORT_HANDLE acts as Disconnect.
-procedure TCommPortDriver.SetHandle( Value: HFILE );
+procedure TCommPortDriver.SetHandle( Value: THandle );
 begin
   // If same COM port then do nothing
   if FHandle = Value then
