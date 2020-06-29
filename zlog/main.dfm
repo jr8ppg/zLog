@@ -4301,10 +4301,8 @@ object MainForm: TMainForm
       object Bandscope1: TMenuItem
         Action = actionShowBandScope
       end
-      object mnNewBandScope: TMenuItem
-        Caption = 'New Band Scope'
-        Visible = False
-        OnClick = mnNewBandScopeClick
+      object BandScopeEx1: TMenuItem
+        Action = actionShowBandScopeEx
       end
       object RunningFrequencies1: TMenuItem
         Action = actionShowFreqList
@@ -5285,6 +5283,10 @@ object MainForm: TMainForm
       Caption = 'actionEditLastQSO'
       ShortCut = 32844
       OnExecute = actionEditLastQSOExecute
+    end
+    object actionShowBandScopeEx: TAction
+      Caption = 'Band Scope Ex'
+      OnExecute = actionShowBandScopeExExecute
     end
   end
   object SPCMenu: TPopupMenu

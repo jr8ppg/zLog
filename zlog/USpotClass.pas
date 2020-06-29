@@ -60,8 +60,8 @@ type
     constructor Create(OwnsObjects: Boolean = True);
   end;
 
-var
-  BSList2: TBSList;
+//var
+//  BSList2: TBSList;
 
 implementation
 
@@ -359,10 +359,10 @@ begin
    Inherited Create(OwnsObjects);
 end;
 
-initialization
-   BSList2 := TBSList.Create;
-
-finalization
-   BSList2.Free();
+//initialization
+//   BSList2 := TBSList.Create;
+//
+//finalization
+//   BSList2.Free();
 
 end.

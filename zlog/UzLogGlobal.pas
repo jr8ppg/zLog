@@ -69,6 +69,7 @@ type
     _autobandmap: boolean;
     _activebands: array[b19..HiBand] of Boolean;
     _power: array[b19..HiBand] of string;
+    _usebandscope: array[b19..HiBand] of Boolean;
 
     CW : TCWSettingsParam;
     _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
@@ -466,6 +467,23 @@ begin
       Settings._power[b5600]  := ini.ReadString('Profiles', 'Power5600MHz', 'H');
       Settings._power[b10g]   := ini.ReadString('Profiles', 'Power10GHz', 'H');
 
+      Settings._usebandscope[b19] := ini.ReadBool('Profiles', 'BandScope1.9MHz', False);
+      Settings._usebandscope[b35] := ini.ReadBool('Profiles', 'BandScope3.5MHz', True);
+      Settings._usebandscope[b7] := ini.ReadBool('Profiles', 'BandScope7MHz', True);
+      Settings._usebandscope[b10] := ini.ReadBool('Profiles', 'BandScope10MHz', False);
+      Settings._usebandscope[b14] := ini.ReadBool('Profiles', 'BandScope14MHz', True);
+      Settings._usebandscope[b18] := ini.ReadBool('Profiles', 'BandScope18MHz', False);
+      Settings._usebandscope[b21] := ini.ReadBool('Profiles', 'BandScope21MHz', True);
+      Settings._usebandscope[b24] := ini.ReadBool('Profiles', 'BandScope24MHz', False);
+      Settings._usebandscope[b28] := ini.ReadBool('Profiles', 'BandScope28MHz', True);
+      Settings._usebandscope[b50] := ini.ReadBool('Profiles', 'BandScope50MHz', True);
+      Settings._usebandscope[b144] := ini.ReadBool('Profiles', 'BandScope144MHz', False);
+      Settings._usebandscope[b430] := ini.ReadBool('Profiles', 'BandScope430MHz', False);
+      Settings._usebandscope[b1200] := ini.ReadBool('Profiles', 'BandScope1200MHz', False);
+      Settings._usebandscope[b2400] := ini.ReadBool('Profiles', 'BandScope2400MHz', False);
+      Settings._usebandscope[b5600] := ini.ReadBool('Profiles', 'BandScope5600MHz', False);
+      Settings._usebandscope[b10g] := ini.ReadBool('Profiles', 'BandScope10GHz', False);
+
       // Automatically enter exchange from SuperCheck
       Settings._entersuperexchange := ini.ReadBool('Preferences', 'AutoEnterSuper', False);
 
@@ -846,6 +864,23 @@ begin
       ini.WriteString('Profiles', 'Power2400MHz',  Settings._power[b2400]);
       ini.WriteString('Profiles', 'Power5600MHz',  Settings._power[b5600]);
       ini.WriteString('Profiles', 'Power10GHz',    Settings._power[b10g]);
+
+      ini.WriteBool('Profiles', 'BandScope1.9MHz', Settings._usebandscope[b19]);
+      ini.WriteBool('Profiles', 'BandScope3.5MHz', Settings._usebandscope[b35]);
+      ini.WriteBool('Profiles', 'BandScope7MHz', Settings._usebandscope[b7]);
+      ini.WriteBool('Profiles', 'BandScope10MHz', Settings._usebandscope[b10]);
+      ini.WriteBool('Profiles', 'BandScope14MHz', Settings._usebandscope[b14]);
+      ini.WriteBool('Profiles', 'BandScope18MHz', Settings._usebandscope[b18]);
+      ini.WriteBool('Profiles', 'BandScope21MHz', Settings._usebandscope[b21]);
+      ini.WriteBool('Profiles', 'BandScope24MHz', Settings._usebandscope[b24]);
+      ini.WriteBool('Profiles', 'BandScope28MHz', Settings._usebandscope[b28]);
+      ini.WriteBool('Profiles', 'BandScope50MHz', Settings._usebandscope[b50]);
+      ini.WriteBool('Profiles', 'BandScope144MHz', Settings._usebandscope[b144]);
+      ini.WriteBool('Profiles', 'BandScope430MHz', Settings._usebandscope[b430]);
+      ini.WriteBool('Profiles', 'BandScope1200MHz', Settings._usebandscope[b1200]);
+      ini.WriteBool('Profiles', 'BandScope2400MHz', Settings._usebandscope[b2400]);
+      ini.WriteBool('Profiles', 'BandScope5600MHz', Settings._usebandscope[b5600]);
+      ini.WriteBool('Profiles', 'BandScope10GHz', Settings._usebandscope[b10g]);
 
       // Automatically enter exchange from SuperCheck
       ini.WriteBool('Preferences', 'AutoEnterSuper', Settings._entersuperexchange);

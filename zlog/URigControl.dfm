@@ -1,11 +1,12 @@
 object RigControl: TRigControl
   Left = 666
   Top = 35
-  BorderStyle = bsDialog
-  Caption = 'Rig control'
-  ClientHeight = 126
-  ClientWidth = 371
+  Caption = 'Rig Control'
+  ClientHeight = 121
+  ClientWidth = 284
   Color = clBtnFace
+  Constraints.MinHeight = 160
+  Constraints.MinWidth = 300
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -19,8 +20,8 @@ object RigControl: TRigControl
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   DesignSize = (
-    371
-    126)
+    284
+    121)
   PixelsPerInch = 96
   TextHeight = 12
   object dispMode: TLabel
@@ -76,8 +77,8 @@ object RigControl: TRigControl
     ParentFont = False
   end
   object Button1: TButton
-    Left = 290
-    Top = 93
+    Left = 203
+    Top = 88
     Width = 73
     Height = 25
     Anchors = [akRight, akBottom]
@@ -90,6 +91,8 @@ object RigControl: TRigControl
     ParentFont = False
     TabOrder = 0
     OnClick = Button1Click
+    ExplicitLeft = 290
+    ExplicitTop = 93
   end
   object dispFreqA: TStaticText
     Left = 64
@@ -128,8 +131,8 @@ object RigControl: TRigControl
     TabOrder = 3
   end
   object btnOmniRig: TButton
-    Left = 211
-    Top = 93
+    Left = 124
+    Top = 88
     Width = 73
     Height = 25
     Anchors = [akRight, akBottom]
@@ -142,21 +145,23 @@ object RigControl: TRigControl
     ParentFont = False
     TabOrder = 4
     OnClick = btnOmniRigClick
+    ExplicitLeft = 211
+    ExplicitTop = 93
   end
   object Timer1: TTimer
     Enabled = False
     Interval = 60000
     OnTimer = Timer1Timer
-    Left = 228
-    Top = 8
+    Left = 108
+    Top = 65528
   end
   object PollingTimer1: TTimer
     Tag = 1
     Enabled = False
     Interval = 100
     OnTimer = PollingTimerTimer
-    Left = 260
-    Top = 56
+    Left = 236
+    Top = 65528
   end
   object ZCom1: TCommPortDriver
     Tag = 1
@@ -164,8 +169,8 @@ object RigControl: TRigControl
     PortName = '\\.\COM2'
     InBufSize = 4096
     OnReceiveData = ZCom1ReceiveData
-    Left = 260
-    Top = 8
+    Left = 140
+    Top = 65528
   end
   object ZCom2: TCommPortDriver
     Tag = 2
@@ -173,8 +178,8 @@ object RigControl: TRigControl
     PortName = '\\.\COM2'
     InBufSize = 4096
     OnReceiveData = ZCom1ReceiveData
-    Left = 288
-    Top = 8
+    Left = 168
+    Top = 65528
   end
   object ZCom3: TCommPortDriver
     Tag = 3
@@ -183,15 +188,15 @@ object RigControl: TRigControl
     HwFlow = hfNONE
     InBufSize = 4096
     EnableDTROnOpen = False
-    Left = 316
-    Top = 8
+    Left = 196
+    Top = 65528
   end
   object PollingTimer2: TTimer
     Tag = 2
     Enabled = False
     Interval = 100
     OnTimer = PollingTimerTimer
-    Left = 288
-    Top = 56
+    Left = 264
+    Top = 65528
   end
 end

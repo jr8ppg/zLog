@@ -3220,7 +3220,8 @@ begin
    MainForm.StatusLine.Panels[1].Text := S;
 
    BSRefresh(Self);
-   MainForm.BandScope2.MarkCurrentFreq(_freqoffset + _currentfreq[_currentvfo]);
+
+   MainForm.BandScopeEx[_currentband].MarkCurrentFreq(_freqoffset + _currentfreq[_currentvfo]);
 end;
 
 procedure TRigControl.FormCreate(Sender: TObject);

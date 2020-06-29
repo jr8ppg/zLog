@@ -414,7 +414,11 @@ begin
    D.Worked := Sp.Worked;
    D.ClusterData := True;
    D.CQ := Sp.CQ;
-   MainForm.BandScope2.AddAndDisplay(D);
+
+//   MainForm.BandScope2.AddAndDisplay(D);
+
+   MainForm.BandScopeEx[D.Band].AddAndDisplay(D);
+   MainForm.BandScopeEx[D.Band].RewriteBandScope();
 end;
 
 procedure TCommForm.TransmitSpot(S : string); // local or via network

@@ -527,7 +527,6 @@ type
     IncreaseFontSize1: TMenuItem;
     mnMMTTY: TMenuItem;
     mnTTYConsole: TMenuItem;
-    mnNewBandScope: TMenuItem;
     menuQuickReference: TMenuItem;
     CreateELogJARL1: TMenuItem;
     CreateELogJARL2: TMenuItem;
@@ -637,6 +636,8 @@ type
     actionCQRepeat2: TAction;
     actionToggleVFO: TAction;
     actionEditLastQSO: TAction;
+    actionShowBandScopeEx: TAction;
+    BandScopeEx1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -752,7 +753,6 @@ type
     procedure mnHideMenuToolbarClick(Sender: TObject);
     procedure mnMMTTYClick(Sender: TObject);
     procedure SwitchCWBank(Action : Integer);
-    procedure mnNewBandScopeClick(Sender: TObject);
     procedure menuQuickReferenceClick(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
     procedure CreateELogJARL1Click(Sender: TObject);
@@ -838,6 +838,7 @@ type
     procedure actionCQRepeat2Execute(Sender: TObject);
     procedure actionToggleVFOExecute(Sender: TObject);
     procedure actionEditLastQSOExecute(Sender: TObject);
+    procedure actionShowBandScopeExExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -856,7 +857,8 @@ type
     FCheckMulti: TCheckMulti;
     FCheckCountry: TCheckCountry;
     FScratchSheet: TScratchSheet;
-    FBandScope2: TBandScope2;
+//    FBandScope2: TBandScope2;
+    FBandScopeEx: TBandScopeArray;
     FQuickRef: TQuickRef;              // Quick Reference
     FZAnalyze: TZAnalyze;              // Analyze window
 
@@ -996,7 +998,8 @@ type
     property CheckMulti: TCheckMulti read FCheckMulti;
     property CheckCountry: TCheckCountry read FCheckCountry;
     property ScratchSheet: TScratchSheet read FScratchSheet;
-    property BandScope2: TBandScope2 read FBandScope2;
+//    property BandScope2: TBandScope2 read FBandScope2;
+    property BandScopeEx: TBandScopeArray read FBandScopeEx;
   end;
 
 var
@@ -1701,7 +1704,7 @@ begin
 
    // LastFocus.SetFocus;
    // BandScope.SetBandMode(CurrentQSO.Band, CurrentQSO.Mode);
-   FBandScope2.SetBandMode(CurrentQSO.Band, CurrentQSO.mode);
+//   FBandScope2.SetBandMode(CurrentQSO.Band, CurrentQSO.mode);
 
    if dmZlogGlobal.Settings._countdown and (CountDownStartTime > 0) then begin
       WriteStatusLineRed('Less than 10 min since last QSY!', False);
@@ -1748,7 +1751,8 @@ begin
    PointEdit.Text := CurrentQSO.PointStr;
 
    // BandScope.SetBandMode(CurrentQSO.Band, CurrentQSO.Mode);
-   FBandScope2.SetBandMode(CurrentQSO.Band, CurrentQSO.mode);
+//   FBandScope2.SetBandMode(CurrentQSO.Band, CurrentQSO.mode);
+   FBandScopeEx[CurrentQSO.Band].SetMode(CurrentQSO.mode);
 end;
 
 procedure TContest.ChangeBand(Up: Boolean);
@@ -3689,6 +3693,7 @@ var
    i, j, mSec: Integer;
    M: TMenuItem;
    S, ss: string;
+   b: TBand;
 begin
    FRigControl    := TRigControl.Create(Self);
    FPartialCheck  := TPartialCheck.Create(Self);
@@ -3707,9 +3712,14 @@ begin
    FCheckMulti    := TCheckMulti.Create(Self);
    FCheckCountry  := TCheckCountry.Create(Self);
    FScratchSheet  := TScratchSheet.Create(Self);
-   FBandScope2    := TBandScope2.Create(Self);
+//   FBandScope2    := TBandScope2.Create(Self);
    FQuickRef      := TQuickRef.Create(Self);
    FZAnalyze      := TZAnalyze.Create(Self);
+
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      FBandScopeEx[b] := TBandScope2.Create(Self, b);
+      FBandScopeEx[b].SetMode(mCW);
+   end;
 
    FNPlusOneThread := nil;
    FSuperCheckDataLoadThread := nil;
@@ -3920,6 +3930,8 @@ begin
 end;
 
 procedure TMainForm.RestoreWindowStates;
+var
+   b: TBand;
 begin
    dmZlogGlobal.ReadWindowState(FCheckCall2);
    dmZlogGlobal.ReadWindowState(FPartialCheck);
@@ -3928,18 +3940,24 @@ begin
    dmZlogGlobal.ReadWindowState(FCheckMulti);
    dmZlogGlobal.ReadWindowState(FCWKeyBoard);
    dmZlogGlobal.ReadWindowState(FRigControl, '', True);
-   dmZlogGlobal.ReadWindowState(FBandScope2);
+//   dmZlogGlobal.ReadWindowState(FBandScope2);
    dmZlogGlobal.ReadWindowState(FChatForm);
    dmZlogGlobal.ReadWindowState(FFreqList);
    dmZlogGlobal.ReadWindowState(FCommForm);
    dmZlogGlobal.ReadWindowState(FScratchSheet);
    dmZlogGlobal.ReadWindowState(FRateDialog);
 
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      dmZlogGlobal.ReadWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
+   end;
+
    FSuperCheck.Columns := dmZlogGlobal.SuperCheckColumns;
    FSuperCheck2.Columns := dmZlogGlobal.SuperCheck2Columns;
 end;
 
 procedure TMainForm.RecordWindowStates;
+var
+   b: TBand;
 begin
    dmZlogGlobal.WriteWindowState(FCheckCall2);
    dmZlogGlobal.WriteWindowState(FPartialCheck);
@@ -3948,12 +3966,16 @@ begin
    dmZlogGlobal.WriteWindowState(FCheckMulti);
    dmZlogGlobal.WriteWindowState(FCWKeyBoard);
    dmZlogGlobal.WriteWindowState(FRigControl);
-   dmZlogGlobal.WriteWindowState(FBandScope2);
+//   dmZlogGlobal.WriteWindowState(FBandScope2);
    dmZlogGlobal.WriteWindowState(FChatForm);
    dmZlogGlobal.WriteWindowState(FFreqList);
    dmZlogGlobal.WriteWindowState(FCommForm);
    dmZlogGlobal.WriteWindowState(FScratchSheet);
    dmZlogGlobal.WriteWindowState(FRateDialog);
+
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      dmZlogGlobal.WriteWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
+   end;
 
    dmZlogGlobal.WriteMainFormState(Left, top, Width, Height, mnHideCWPhToolBar.Checked, mnHideMenuToolbar.Checked);
    dmZlogGlobal.SuperCheckColumns := FSuperCheck.Columns;
@@ -4321,9 +4343,9 @@ begin
    // SetVoiceFlag(0);
    // end;
 
-   if (S = 'TEST2') then begin
-      FBandScope2.MarkCurrentFreq(7060000);
-   end;
+//   if (S = 'TEST2') then begin
+//      FBandScope2.MarkCurrentFreq(7060000);
+//   end;
 
    if (S = 'MOVETOMEMO') then begin
       dmZlogGlobal.Settings._movetomemo := True;
@@ -4425,6 +4447,8 @@ begin
 end;
 
 procedure TMainForm.SetFontSize(font_size: Integer);
+var
+   b: TBand;
 begin
    EditPanel.Font.Size := font_size;
    Grid.Font.Size := font_size;
@@ -4441,7 +4465,11 @@ begin
    if MyContest <> nil then begin
       MyContest.ScoreForm.FontSize := font_size;
    end;
-   FBandScope2.FontSize := font_size;
+//   FBandScope2.FontSize := font_size;
+
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      FBandScopeEx[b].FontSize := font_size;
+   end;
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
@@ -5103,8 +5131,10 @@ begin
 
          if dmZlogGlobal.Settings._autobandmap then begin
             j := RigControl.Rig.CurrentFreqHz;
-            if j > 0 then
-               FBandScope2.CreateBSData(CurrentQSO, j);
+            if j > 0 then begin
+//               FBandScope2.CreateBSData(CurrentQSO, j);
+               FBandScopeEx[CurrentQSO.Band].CreateBSData(CurrentQSO, j);
+            end;
          end;
       end;
       // if MyContest.Name = 'Pedition mode' then
@@ -5277,6 +5307,8 @@ begin
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
+var
+   b: TBand;
 begin
    FCheckCall2.Release();
    FPartialCheck.Release();
@@ -5285,7 +5317,7 @@ begin
    FCheckMulti.Release();
    FCWKeyBoard.Release();
    FRigControl.Release();
-   FBandScope2.Release();
+//   FBandScope2.Release();
    FChatForm.Release();
    FFreqList.Release();
    FCommForm.Release();
@@ -5296,6 +5328,10 @@ begin
    FSpotForm.Release();
    FConsolePad.Release();
    FCheckCountry.Release();
+
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      FBandScopeEx[b].Release();
+   end;
 
    if MyContest <> nil then begin
       dmZlogGlobal.WriteWindowState(MyContest.MultiForm, 'MultiForm');
@@ -6517,21 +6553,6 @@ begin
    end;
 end;
 
-procedure TMainForm.mnNewBandScopeClick(Sender: TObject);
-var
-   i: Integer;
-begin
-   for i := 1 to BSMax do begin // BS2test...
-      if uBandScope2.BandScopeArray[i] = nil then begin
-         uBandScope2.BandScopeArray[i] := TBandScope2.Create(Self);
-         uBandScope2.BandScopeArray[i].ArrayNumber := i;
-         uBandScope2.BandScopeArray[i].Show;
-         uBandScope2.BandScopeArray[i].SetBandMode(CurrentQSO.Band, CurrentQSO.mode);
-         exit;
-      end;
-   end;
-end;
-
 procedure TMainForm.AutoInput(D: TBSData);
 begin
    OldCallsign := CallsignEdit.Text;
@@ -6549,7 +6570,7 @@ end;
 
 procedure TMainForm.Timer2Timer(Sender: TObject);
 begin
-   AutoInput(TBSData(BSList2[0]));
+//   AutoInput(TBSData(BSList2[0]));
 end;
 
 procedure TMainForm.CreateELogJARL1Click(Sender: TObject);
@@ -6899,7 +6920,8 @@ begin
 
       UpdateBand(CurrentQSO.Band);
       UpdateMode(CurrentQSO.mode);
-      FBandScope2.SetBandMode(CurrentQSO.Band, CurrentQSO.mode);
+//      FBandScope2.SetBandMode(CurrentQSO.Band, CurrentQSO.mode);
+      FBandScopeEx[CurrentQSO.Band].SetMode(CurrentQSO.mode);
 
       MyContest.ScoreForm.UpdateData();
       MyContest.MultiForm.UpdateData();
@@ -7466,7 +7488,8 @@ var
       end;
 
       if E > 1000 then begin
-         FBandScope2.CreateBSData(CurrentQSO, round(E * 1000));
+//         FBandScope2.CreateBSData(CurrentQSO, round(E * 1000));
+         FBandScopeEx[CurrentQSO.Band].CreateBSData(CurrentQSO, round(E * 1000));
       end;
 
       Result := True;
@@ -7475,7 +7498,8 @@ begin
    if RigControl.Rig <> nil then begin
       nFreq := RigControl.Rig.CurrentFreqHz;
       if nFreq > 0 then begin
-         FBandScope2.CreateBSData(CurrentQSO, nFreq);
+//         FBandScope2.CreateBSData(CurrentQSO, nFreq);
+         FBandScopeEx[CurrentQSO.Band].CreateBSData(CurrentQSO, nFreq);
       end
       else begin
          if InputFreq() = False then begin
@@ -7999,8 +8023,13 @@ end;
 
 // #72 BandScope
 procedure TMainForm.actionShowBandScopeExecute(Sender: TObject);
+var
+   b: TBand;
 begin
-   FBandScope2.Show; // BS2 test
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      FBandScopeEx[b].Hide();
+   end;
+   FBandScopeEx[CurrentQSO.Band].Show();
 end;
 
 // #73 Running Frequencies
@@ -8241,6 +8270,18 @@ begin
 
    if EditScreen.DirectEdit = False then begin
       MyContest.EditCurrentRow;
+   end;
+end;
+
+// #101 BandScopeEx
+procedure TMainForm.actionShowBandScopeExExecute(Sender: TObject);
+var
+   b: TBand;
+begin
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      if dmZLogGlobal.Settings._usebandscope[b] = True then begin
+         FBandScopeEx[b].Show();
+      end;
    end;
 end;
 

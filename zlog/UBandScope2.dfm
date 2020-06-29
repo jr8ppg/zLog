@@ -1,10 +1,13 @@
 object BandScope2: TBandScope2
   Left = 48
   Top = 125
+  BorderStyle = bsSizeToolWin
   Caption = 'Band Scope'
   ClientHeight = 416
-  ClientWidth = 116
+  ClientWidth = 204
   Color = clBtnFace
+  Constraints.MinHeight = 140
+  Constraints.MinWidth = 210
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,22 +17,14 @@ object BandScope2: TBandScope2
   OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 12
-  object Panel1: TPanel
-    Left = 0
-    Top = 0
-    Width = 116
-    Height = 25
-    Align = alTop
-    TabOrder = 0
-    Visible = False
-  end
   object Grid: TMgrid
     Left = 0
-    Top = 25
-    Width = 116
-    Height = 391
+    Top = 0
+    Width = 204
+    Height = 416
     Align = alClient
     ColCount = 1
     DefaultColWidth = 500
@@ -47,13 +42,16 @@ object BandScope2: TBandScope2
     ParentFont = False
     Popupmenu = BSMenu
     ScrollBars = ssVertical
-    TabOrder = 1
+    TabOrder = 0
     OnDblClick = GridDblClick
     Alignment = taLeftJustify
     BorderColor = clSilver
     OddRowColor = clWindow
     EvenRowColor = clWindow
     OnSetting = GridSetting
+    ExplicitTop = 25
+    ExplicitWidth = 120
+    ExplicitHeight = 391
   end
   object BSMenu: TPopupMenu
     AutoHotkeys = maManual
@@ -83,43 +81,6 @@ object BandScope2: TBandScope2
         Tag = 2
         Caption = 'Rig 2'
         OnClick = ModeClick
-      end
-      object Fixedband1: TMenuItem
-        Caption = 'Fixed band'
-        object N19MHz1: TMenuItem
-          Caption = '1.9 MHz'
-          OnClick = FixedBandClick
-        end
-        object N35MHz1: TMenuItem
-          Tag = 1
-          Caption = '3.5 MHz'
-          OnClick = FixedBandClick
-        end
-        object N7MHz1: TMenuItem
-          Tag = 2
-          Caption = '7 MHz'
-          OnClick = FixedBandClick
-        end
-        object N14MHz1: TMenuItem
-          Tag = 4
-          Caption = '14 MHz'
-          OnClick = FixedBandClick
-        end
-        object N21MHz1: TMenuItem
-          Tag = 6
-          Caption = '21 MHz'
-          OnClick = FixedBandClick
-        end
-        object N28MHz1: TMenuItem
-          Tag = 8
-          Caption = '28 MHz'
-          OnClick = FixedBandClick
-        end
-        object N50MHz1: TMenuItem
-          Tag = 9
-          Caption = '50 MHz'
-          OnClick = FixedBandClick
-        end
       end
     end
   end

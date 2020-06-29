@@ -9,7 +9,6 @@ uses
 
 type
   TBandScope2 = class(TForm)
-    Panel1: TPanel;
     Grid: TMgrid;
     BSMenu: TPopupMenu;
     mnDelete: TMenuItem;
@@ -18,14 +17,6 @@ type
     mnCurrentRig: TMenuItem;
     Rig11: TMenuItem;
     Rig21: TMenuItem;
-    Fixedband1: TMenuItem;
-    N19MHz1: TMenuItem;
-    N35MHz1: TMenuItem;
-    N7MHz1: TMenuItem;
-    N14MHz1: TMenuItem;
-    N21MHz1: TMenuItem;
-    N28MHz1: TMenuItem;
-    N50MHz1: TMenuItem;
     Timer1: TTimer;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure GridSetting(ARow, ACol: Integer; var Fcolor: Integer;
@@ -33,11 +24,11 @@ type
     procedure mnDeleteClick(Sender: TObject);
     procedure Deleteallworkedstations1Click(Sender: TObject);
     procedure ModeClick(Sender: TObject);
-    procedure FixedBandClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure GridDblClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private êÈåæ }
     FProcessing: Boolean;
@@ -47,7 +38,7 @@ type
     FCurrBand : TBand;
     FCurrMode : TMode;
 
-    FFixedBand : TBand;
+    FBSList: TBSList;
 
     procedure AddBSList(D : TBSData);
     procedure DeleteFromBSList(i : integer);
@@ -56,55 +47,72 @@ type
     function EstimateNumRows(): Integer;
   public
     { Public êÈåæ }
-    ArrayNumber : integer;
     DisplayMode : integer; // 0 : current rig; 1 : rig 1; 2 : rig 2; 9 : fixed band
+    constructor Create(AOwner: TComponent; b: TBand); reintroduce;
     procedure CreateBSData(aQSO : TQSO; Hz : LongInt);
     procedure AddAndDisplay(D : TBSData);
     procedure SetBandMode(B : TBand; M : TMode);
+    procedure SetMode(M: TMode);
     procedure SetMinMaxFreq(min, max : LongInt);      // unused
     procedure RewriteBandScope;
     procedure MarkCurrentFreq(Hz : integer);
     procedure ProcessBSDataFromNetwork(BSText : string);
 
     property FontSize: Integer read GetFontSize write SetFontSize;
+
+    property BSList: TBSList read FBSList;
   end;
+
+  TBandScopeArray = array[b19..b10g] of TBandScope2;
 
 procedure BSRefresh(Sender : TObject);
 
-const BSMax = 15;
 var
   CurrentRigFrequency : Integer; // in Hertz
-  BandScopeArray : array[1..BSMax] of TBandscope2;
 
 implementation
 
-uses UOptions, Main, UZLinkForm, URigControl;
+uses
+  UOptions, Main, UZLinkForm, URigControl;
 
 {$R *.dfm}
 
 procedure BSRefresh(Sender: TObject);
 var
-   i: Integer;
+   b: TBand;
    DispMode: Integer;
    RR: TRig;
 begin
-   MainForm.BandScope2.RewriteBandScope;
-   for i := 1 to BSMax do begin
-      if BandScopeArray[i] <> nil then begin
-         DispMode := BandScopeArray[i].DisplayMode;
-         RR := nil;
-         case DispMode of
-            1:
-               RR := MainForm.RigControl.Rig1;
-            2:
-               RR := MainForm.RigControl.Rig2;
-         end;
-         if RR <> nil then
-            BandScopeArray[i].SetBandMode(RR.CurrentBand, RR.CurrentMode)
+   for b := Low(MainForm.BandScopeEx) to High(MainForm.BandScopeEx) do begin
+      if dmZLogGlobal.Settings._usebandscope[b] = False then begin
+         Continue;
+      end;
+
+      DispMode := MainForm.BandScopeEx[b].DisplayMode;
+
+      case DispMode of
+         1:
+            RR := MainForm.RigControl.Rig1;
+         2:
+            RR := MainForm.RigControl.Rig2;
          else
-            BandScopeArray[i].RewriteBandScope;
+            RR := nil;
+      end;
+
+      if RR <> nil then begin
+         MainForm.BandScopeEx[b].SetMode(RR.CurrentMode);
+      end
+      else begin
+         MainForm.BandScopeEx[b].RewriteBandScope;
       end;
    end;
+end;
+
+constructor TBandScope2.Create(AOwner: TComponent; b: TBand);
+begin
+   Inherited Create(AOwner);
+   FCurrBand := b;
+   Caption := BandString[b];
 end;
 
 procedure TBandScope2.CreateParams(var Params: TCreateParams);
@@ -118,23 +126,23 @@ var
    i: Integer;
    boo: Boolean;
 begin
-   if BSList2.Count = 0 then begin
-      BSList2.Add(D);
+   if FBSList.Count = 0 then begin
+      FBSList.Add(D);
       exit;
    end;
 
    boo := false;
-   for i := 0 to BSList2.Count - 1 do begin
-      if TBSData(BSList2[i]).FreqHz > D.FreqHz then begin
+   for i := 0 to FBSList.Count - 1 do begin
+      if FBSList[i].FreqHz > D.FreqHz then begin
          boo := true;
          break;
       end;
    end;
 
    if boo then
-      BSList2.Insert(i, D)
+      FBSList.Insert(i, D)
    else
-      BSList2.Add(D);
+      FBSList.Add(D);
 end;
 
 procedure TBandScope2.AddAndDisplay(D: TBSData);
@@ -143,26 +151,26 @@ var
    BS: TBSData;
    Diff: TDateTime;
 begin
-   for i := 0 to BSList2.Count - 1 do begin
-      BS := BSList2[i];
+   for i := 0 to FBSList.Count - 1 do begin
+      BS := FBSList[i];
 
       if (BS.Call = D.Call) and (BS.Band = D.Band) then begin
-         BSList2[i] := nil;
+         FBSList[i] := nil;
          Continue;
       end;
 
       if round(BS.FreqHz / 100) = round(D.FreqHz / 100) then begin
-         BSList2[i] := nil;
+         FBSList[i] := nil;
          Continue;
       end;
 
       Diff := Now - BS.Time;
       if Diff * 24 * 60 > 1.00 * dmZlogGlobal.Settings._bsexpire then begin
-         BSList2[i] := nil;
+         FBSList[i] := nil;
       end;
    end;
 
-   BSList2.Pack;
+   FBSList.Pack;
    AddBSList(D);
 end;
 
@@ -189,7 +197,22 @@ var
 begin
    FCurrBand := B;
    FCurrMode := M;
-   Caption := 'Band scope ' + BandString[B];
+//   Caption := 'Band scope ' + BandString[B];
+   Caption := BandString[B];
+
+   for R := 0 to Grid.RowCount - 1 do begin
+      Grid.Cells[0, R] := '';
+      Grid.Objects[0, R] := nil;
+   end;
+
+   RewriteBandScope;
+end;
+
+procedure TBandScope2.SetMode(M: TMode);
+var
+   R: Integer;
+begin
+   FCurrMode := M;
 
    for R := 0 to Grid.RowCount - 1 do begin
       Grid.Cells[0, R] := '';
@@ -261,8 +284,8 @@ begin
    Marked := False;
 
    R := 0;
-   for i := 0 to BSList2.Count - 1 do begin
-      D := TBSData(BSList2[i]);
+   for i := 0 to FBSList.Count - 1 do begin
+      D := FBSList[i];
       if D.Band <> FCurrBand then begin
          Continue;
       end;
@@ -328,8 +351,8 @@ var
    D: TBSData;
 begin
    j := 0;
-   for i := 0 to BSList2.Count - 1 do begin
-      D := TBSData(BSList2[i]);
+   for i := 0 to FBSList.Count - 1 do begin
+      D := FBSList[i];
       if D.Band <> FCurrBand then begin
          Continue;
       end;
@@ -371,9 +394,9 @@ end;
 
 procedure TBandScope2.DeleteFromBSList(i: Integer);
 begin
-   if (i >= 0) and (i < BSList2.Count) then begin
-      BSList2[i] := nil;
-      BSList2.Pack;
+   if (i >= 0) and (i < FBSList.Count) then begin
+      FBSList[i] := nil;
+      FBSList.Pack;
    end;
 end;
 
@@ -387,8 +410,8 @@ begin
 
    for i := Grid.Selection.Top to Grid.Selection.Bottom do begin
       s := Grid.Cells[0, i];
-      for j := 0 to BSList2.Count - 1 do begin
-         if pos(TBSData(BSList2[j]).LabelStr, s) = 1 then begin
+      for j := 0 to FBSList.Count - 1 do begin
+         if pos(FBSList[j].LabelStr, s) = 1 then begin
             DeleteFromBSList(j);
             break;
          end;
@@ -407,8 +430,8 @@ begin
       exit;
 
    CurrentRigFrequency := Hz;
-   for i := 0 to BSList2.Count - 1 do begin
-      B := TBSData(BSList2[i]);
+   for i := 0 to FBSList.Count - 1 do begin
+      B := FBSList[i];
       if abs((B.FreqHz div 100) - (Hz div 100)) <= 1 then
          B.Bold := true
       else
@@ -424,6 +447,11 @@ var
 begin
    D := TBSData.Create;
    D.FromText(BSText);
+
+   if D.Band <> FCurrBand then begin
+      Exit;
+   end;
+
    Main.MyContest.MultiForm.ProcessSpotData(TBaseSpot(D));
    AddAndDisplay(D);
 end;
@@ -433,15 +461,15 @@ var
    D: TBSData;
    i: Integer;
 begin
-   for i := 0 to BSList2.Count - 1 do begin
-      D := TBSData(BSList2[i]);
+   for i := 0 to FBSList.Count - 1 do begin
+      D := FBSList[i];
       if D.Band = FCurrBand then begin
          if D.Worked then begin
-            BSList2[i] := nil;
+            FBSList[i] := nil;
          end;
       end;
    end;
-   BSList2.Pack;
+   FBSList.Pack;
    BSRefresh(Self);
 end;
 
@@ -450,27 +478,24 @@ begin
    DisplayMode := TMenuItem(Sender).Tag;
 end;
 
-procedure TBandScope2.FixedBandClick(Sender: TObject);
-begin
-   DisplayMode := 3;
-   FFixedBand := TBand(TMenuItem(Sender).Tag);
-   SetBandMode(FFixedBand, Main.CurrentQSO.Mode);
-   BSRefresh(Self);
-end;
-
 procedure TBandScope2.FormCreate(Sender: TObject);
 begin
-   FFixedBand := b19;
-   ArrayNumber := 0;
+   FBSList := TBSList.Create();
+
    DisplayMode := 0; // current rig
    FProcessing := False;
 end;
 
+procedure TBandScope2.FormDestroy(Sender: TObject);
+begin
+   FBSList.Free();
+end;
+
 procedure TBandScope2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   if ArrayNumber > 0 then begin
-      BandScopeArray[ArrayNumber] := nil;
-   end;
+//   if ArrayNumber > 0 then begin
+//      BandScopeArray[ArrayNumber] := nil;
+//   end;
 end;
 
 procedure TBandScope2.GridDblClick(Sender: TObject);
