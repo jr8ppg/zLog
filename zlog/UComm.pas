@@ -416,12 +416,8 @@ begin
    D.CQ := Sp.CQ;
    D.Number := Sp.Number;
    D.NewJaMulti := Sp.NewJaMulti;
-   D.MultiWorked := Sp.MultiWorked;
-
-//   MainForm.BandScope2.AddAndDisplay(D);
 
    MainForm.BandScopeEx[D.Band].AddAndDisplay(D);
-//   MainForm.BandScopeEx[D.Band].RewriteBandScope();
 end;
 
 procedure TCommForm.TransmitSpot(S : string); // local or via network

@@ -4,9 +4,9 @@ interface
 
 uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
-  StdCtrls, ExtCtrls, Forms, ComCtrls, Spin,
+  StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl,
-  UIntegerDialog, UzLogConst, UzLogGlobal, Vcl.Buttons;
+  UIntegerDialog, UzLogConst, UzLogGlobal;
 
 type
   TformOptions = class(TForm)
@@ -264,6 +264,49 @@ type
     editFullmatchColor: TEdit;
     buttonFullmatchSelectColor: TButton;
     buttonFullmatchInitColor: TButton;
+    TabSheet1: TTabSheet;
+    GroupBox9: TGroupBox;
+    checkBs01: TCheckBox;
+    checkBs02: TCheckBox;
+    checkBs03: TCheckBox;
+    checkBs05: TCheckBox;
+    checkBs07: TCheckBox;
+    checkBs09: TCheckBox;
+    checkBs10: TCheckBox;
+    checkBs11: TCheckBox;
+    checkBs12: TCheckBox;
+    checkBs13: TCheckBox;
+    checkBs14: TCheckBox;
+    checkBs15: TCheckBox;
+    checkBs16: TCheckBox;
+    checkBs08: TCheckBox;
+    checkBs06: TCheckBox;
+    checkBs04: TCheckBox;
+    GroupBox10: TGroupBox;
+    editBSColor1: TEdit;
+    buttonBSFore1: TButton;
+    buttonBSReset1: TButton;
+    Label57: TLabel;
+    buttonBSBack1: TButton;
+    Label58: TLabel;
+    Label59: TLabel;
+    editBSColor2: TEdit;
+    buttonBSFore2: TButton;
+    buttonBSReset2: TButton;
+    buttonBSBack2: TButton;
+    editBSColor3: TEdit;
+    buttonBSFore3: TButton;
+    buttonBSReset3: TButton;
+    buttonBSBack3: TButton;
+    Label60: TLabel;
+    editBSColor4: TEdit;
+    buttonBSFore4: TButton;
+    buttonBSReset4: TButton;
+    buttonBSBack4: TButton;
+    checkBSBold1: TCheckBox;
+    checkBSBold2: TCheckBox;
+    checkBSBold3: TCheckBox;
+    checkBSBold4: TCheckBox;
     ColorDialog1: TColorDialog;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
@@ -299,6 +342,10 @@ type
     procedure OnNeedSuperCheckLoad(Sender: TObject);
     procedure buttonFullmatchSelectColorClick(Sender: TObject);
     procedure buttonFullmatchInitColorClick(Sender: TObject);
+    procedure buttonBSForeClick(Sender: TObject);
+    procedure buttonBSBackClick(Sender: TObject);
+    procedure checkBSBoldClick(Sender: TObject);
+    procedure buttonBSResetClick(Sender: TObject);
   private
     FCWEditMode: Integer;
     TempVoiceFiles : array[1..10] of string;
@@ -313,6 +360,9 @@ type
     FQuickQSYBand: array[1..8] of TComboBox;
     FQuickQSYMode: array[1..8] of TComboBox;
 
+    FBSColor: array[1..4] of TEdit;
+    FBSBold: array[1..4] of TCheckBox;
+
     FNeedSuperCheckLoad: Boolean;
     procedure RenewCWStrBankDisp();
     procedure InitRigNames();
@@ -321,6 +371,14 @@ type
     property CWEditMode: Integer read FCWEditMode write FCWEditMode;
     property NeedSuperCheckLoad: Boolean read FNeedSuperCheckLoad;
   end;
+
+const
+  BandScopeDefaultColor: array[1..4] of TColorSetting = (
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: False ),
+    ( FForeColor: clWhite; FBackColor: clRed;   FBold: True ),
+    ( FForeColor: clGreen; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clGreen; FBackColor: clWhite; FBold: True )
+  );
 
 implementation
 
@@ -568,6 +626,30 @@ begin
       Settings.FSuperCheck.FSuperCheckFolder := editSuperCheckFolder.Text;
       Settings.FSuperCheck.FFullMatchHighlight := checkHighlightFullmatch.Checked;
       Settings.FSuperCheck.FFullMatchColor := editFullmatchColor.Color;
+
+      // Band Scope
+      Settings._usebandscope[b19]   := checkBS01.Checked;
+      Settings._usebandscope[b35]   := checkBS02.Checked;
+      Settings._usebandscope[b7]    := checkBS03.Checked;
+      Settings._usebandscope[b10]   := checkBS04.Checked;
+      Settings._usebandscope[b14]   := checkBS05.Checked;
+      Settings._usebandscope[b18]   := checkBS06.Checked;
+      Settings._usebandscope[b21]   := checkBS07.Checked;
+      Settings._usebandscope[b24]   := checkBS08.Checked;
+      Settings._usebandscope[b28]   := checkBS09.Checked;
+      Settings._usebandscope[b50]   := checkBS10.Checked;
+      Settings._usebandscope[b144]  := checkBS11.Checked;
+      Settings._usebandscope[b430]  := checkBS12.Checked;
+      Settings._usebandscope[b1200] := checkBS13.Checked;
+      Settings._usebandscope[b2400] := checkBS14.Checked;
+      Settings._usebandscope[b5600] := checkBS15.Checked;
+      Settings._usebandscope[b10g]  := checkBS16.Checked;
+
+      for i := 1 to 4 do begin
+         Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
+         Settings._bandscopecolor[i].FBackColor := FBSColor[i].Color;
+         Settings._bandscopecolor[i].FBold      := FBSBold[i].Checked;
+      end;
    end;
 end;
 
@@ -816,6 +898,30 @@ begin
       editSuperCheckFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
       checkHighlightFullmatch.Checked := Settings.FSuperCheck.FFullMatchHighlight;
       editFullmatchColor.Color := Settings.FSuperCheck.FFullMatchColor;
+
+      // Band Scope
+      checkBS01.Checked := Settings._usebandscope[b19];
+      checkBS02.Checked := Settings._usebandscope[b35];
+      checkBS03.Checked := Settings._usebandscope[b7];
+      checkBS04.Checked := Settings._usebandscope[b10];
+      checkBS05.Checked := Settings._usebandscope[b14];
+      checkBS06.Checked := Settings._usebandscope[b18];
+      checkBS07.Checked := Settings._usebandscope[b21];
+      checkBS08.Checked := Settings._usebandscope[b24];
+      checkBS09.Checked := Settings._usebandscope[b28];
+      checkBS10.Checked := Settings._usebandscope[b50];
+      checkBS11.Checked := Settings._usebandscope[b144];
+      checkBS12.Checked := Settings._usebandscope[b430];
+      checkBS13.Checked := Settings._usebandscope[b1200];
+      checkBS14.Checked := Settings._usebandscope[b2400];
+      checkBS15.Checked := Settings._usebandscope[b5600];
+      checkBS16.Checked := Settings._usebandscope[b10g];
+
+      for i := 1 to 4 do begin
+         FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
+         FBSColor[i].Color      := Settings._bandscopecolor[i].FBackColor;
+         FBSBold[i].Checked     := Settings._bandscopecolor[i].FBold;
+      end;
    end;
 
    if FCWEditMode = 0 then begin
@@ -920,6 +1026,16 @@ begin
       FQuickQsyBand[i].Items.Assign(FQuickQsyBand[1].Items);
       FQuickQsyMode[i].Items.Assign(FQuickQsyMode[1].Items);
    end;
+
+   // BandScope
+   FBSColor[1] := editBSColor1;
+   FBSColor[2] := editBSColor2;
+   FBSColor[3] := editBSColor3;
+   FBSColor[4] := editBSColor4;
+   FBSBold[1] := checkBSBold1;
+   FBSBold[2] := checkBSBold2;
+   FBSBold[3] := checkBSBold3;
+   FBSBold[4] := checkBSBold4;
 
    TempCurrentBank := 1;
 
@@ -1266,6 +1382,55 @@ end;
 procedure TformOptions.buttonFullmatchInitColorClick(Sender: TObject);
 begin
    editFullmatchColor.Color := clYellow;
+end;
+
+procedure TformOptions.buttonBSForeClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   ColorDialog1.Color := FBSColor[n].Font.Color;
+   if ColorDialog1.Execute = True then begin
+      FBSColor[n].Font.Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions.buttonBSBackClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   ColorDialog1.Color := FBSColor[n].Color;
+   if ColorDialog1.Execute = True then begin
+      FBSColor[n].Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions.checkBSBoldClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TCheckBox(Sender).Tag;
+
+   if TCheckBox(Sender).Checked = True then begin
+      FBSColor[n].Font.Style := FBSColor[n].Font.Style + [fsBold];
+   end
+   else begin
+      FBSColor[n].Font.Style := FBSColor[n].Font.Style - [fsBold];
+   end;
+end;
+
+procedure TformOptions.buttonBSResetClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   FBSColor[n].Font.Color  := BandScopeDefaultColor[n].FForeColor;
+   FBSColor[n].Color       := BandScopeDefaultColor[n].FBackColor;
+   FBSBold[n].Checked      := BandScopeDefaultColor[n].FBold;
 end;
 
 end.

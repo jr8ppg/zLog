@@ -516,10 +516,6 @@ object formOptions: TformOptions
     end
     object tabsheetCategories: TTabSheet
       Caption = 'Categories'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label14: TLabel
         Left = 248
         Top = 92
@@ -766,10 +762,6 @@ object formOptions: TformOptions
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -1198,10 +1190,6 @@ object formOptions: TformOptions
     object tabsheetVoice: TTabSheet
       Caption = 'Voice'
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 8
         Top = 8
@@ -1491,10 +1479,6 @@ object formOptions: TformOptions
     end
     object tabsheetHardware: TTabSheet
       Caption = 'Hardware'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox6: TGroupBox
         Left = 5
         Top = 0
@@ -1856,10 +1840,6 @@ object formOptions: TformOptions
     end
     object tabsheetRigControl: TTabSheet
       Caption = 'Rig control'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label45: TLabel
         Left = 8
         Top = 138
@@ -1943,10 +1923,6 @@ object formOptions: TformOptions
     end
     object tabsheetPath: TTabSheet
       Caption = 'Path'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label50: TLabel
         Left = 16
         Top = 18
@@ -2253,10 +2229,6 @@ object formOptions: TformOptions
     object tabsheetQuickQSY: TTabSheet
       Caption = 'Quick QSY'
       ImageIndex = 8
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label54: TLabel
         Left = 98
         Top = 3
@@ -2488,6 +2460,486 @@ object formOptions: TformOptions
         TabOrder = 23
       end
     end
+    object TabSheet1: TTabSheet
+      Caption = 'BandScope'
+      ImageIndex = 9
+      object GroupBox9: TGroupBox
+        Left = 11
+        Top = 11
+        Width = 326
+        Height = 110
+        Caption = 'Bands'
+        TabOrder = 0
+        object checkBs01: TCheckBox
+          Left = 8
+          Top = 18
+          Width = 60
+          Height = 17
+          Caption = '1.9 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 0
+        end
+        object checkBs02: TCheckBox
+          Left = 8
+          Top = 39
+          Width = 60
+          Height = 17
+          Caption = '3.5 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 1
+        end
+        object checkBs03: TCheckBox
+          Left = 8
+          Top = 60
+          Width = 60
+          Height = 17
+          Caption = '7 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 2
+        end
+        object checkBs05: TCheckBox
+          Left = 87
+          Top = 18
+          Width = 60
+          Height = 17
+          Caption = '14 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 4
+        end
+        object checkBs07: TCheckBox
+          Left = 87
+          Top = 60
+          Width = 60
+          Height = 17
+          Caption = '21 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 6
+        end
+        object checkBs09: TCheckBox
+          Left = 168
+          Top = 18
+          Width = 67
+          Height = 17
+          Caption = '28 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 8
+        end
+        object checkBs10: TCheckBox
+          Left = 168
+          Top = 39
+          Width = 67
+          Height = 17
+          Caption = '50 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 9
+        end
+        object checkBs11: TCheckBox
+          Left = 168
+          Top = 60
+          Width = 67
+          Height = 17
+          Caption = '144 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 10
+        end
+        object checkBs12: TCheckBox
+          Left = 168
+          Top = 81
+          Width = 67
+          Height = 17
+          Caption = '430 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 11
+        end
+        object checkBs13: TCheckBox
+          Left = 247
+          Top = 18
+          Width = 67
+          Height = 17
+          Caption = '1200 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 12
+        end
+        object checkBs14: TCheckBox
+          Left = 247
+          Top = 39
+          Width = 67
+          Height = 17
+          Caption = '2400 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 13
+        end
+        object checkBs15: TCheckBox
+          Left = 247
+          Top = 60
+          Width = 67
+          Height = 17
+          Caption = '5600 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 14
+        end
+        object checkBs16: TCheckBox
+          Left = 247
+          Top = 81
+          Width = 67
+          Height = 17
+          Caption = '10 G && up'
+          Checked = True
+          State = cbChecked
+          TabOrder = 15
+        end
+        object checkBs08: TCheckBox
+          Left = 87
+          Top = 81
+          Width = 60
+          Height = 17
+          Caption = '24 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 7
+        end
+        object checkBs06: TCheckBox
+          Left = 87
+          Top = 39
+          Width = 60
+          Height = 17
+          Caption = '18 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 5
+        end
+        object checkBs04: TCheckBox
+          Left = 8
+          Top = 81
+          Width = 60
+          Height = 17
+          Caption = '10 MHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 3
+        end
+      end
+      object GroupBox10: TGroupBox
+        Left = 11
+        Top = 127
+        Width = 326
+        Height = 130
+        Caption = 'Colors'
+        TabOrder = 1
+        object Label57: TLabel
+          Left = 8
+          Top = 23
+          Width = 38
+          Height = 13
+          Caption = 'Worked'
+        end
+        object Label58: TLabel
+          Left = 8
+          Top = 48
+          Width = 63
+          Height = 13
+          Caption = 'Wanted Multi'
+        end
+        object Label59: TLabel
+          Left = 8
+          Top = 73
+          Width = 63
+          Height = 13
+          Caption = 'Worked Multi'
+        end
+        object Label60: TLabel
+          Left = 8
+          Top = 98
+          Width = 46
+          Height = 13
+          Caption = 'Unknown'
+        end
+        object editBSColor1: TEdit
+          Left = 78
+          Top = 20
+          Width = 50
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 0
+          Text = 'TEXT'
+        end
+        object buttonBSFore1: TButton
+          Tag = 1
+          Left = 133
+          Top = 21
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+          OnClick = buttonBSForeClick
+        end
+        object buttonBSReset1: TButton
+          Tag = 1
+          Left = 280
+          Top = 20
+          Width = 41
+          Height = 20
+          Caption = 'Reset'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 4
+          OnClick = buttonBSResetClick
+        end
+        object buttonBSBack1: TButton
+          Tag = 1
+          Left = 182
+          Top = 21
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 2
+          OnClick = buttonBSBackClick
+        end
+        object editBSColor2: TEdit
+          Left = 78
+          Top = 45
+          Width = 50
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 5
+          Text = 'TEXT'
+        end
+        object buttonBSFore2: TButton
+          Tag = 2
+          Left = 133
+          Top = 46
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 6
+          OnClick = buttonBSForeClick
+        end
+        object buttonBSReset2: TButton
+          Tag = 2
+          Left = 280
+          Top = 46
+          Width = 41
+          Height = 20
+          Caption = 'Reset'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 9
+          OnClick = buttonBSResetClick
+        end
+        object buttonBSBack2: TButton
+          Tag = 2
+          Left = 182
+          Top = 46
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 7
+          OnClick = buttonBSBackClick
+        end
+        object editBSColor3: TEdit
+          Left = 78
+          Top = 70
+          Width = 50
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 10
+          Text = 'TEXT'
+        end
+        object buttonBSFore3: TButton
+          Tag = 3
+          Left = 133
+          Top = 71
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 11
+          OnClick = buttonBSForeClick
+        end
+        object buttonBSReset3: TButton
+          Tag = 3
+          Left = 280
+          Top = 71
+          Width = 41
+          Height = 20
+          Caption = 'Reset'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 14
+          OnClick = buttonBSResetClick
+        end
+        object buttonBSBack3: TButton
+          Tag = 3
+          Left = 182
+          Top = 71
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 12
+          OnClick = buttonBSBackClick
+        end
+        object editBSColor4: TEdit
+          Left = 78
+          Top = 95
+          Width = 50
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 15
+          Text = 'TEXT'
+        end
+        object buttonBSFore4: TButton
+          Tag = 4
+          Left = 133
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 16
+          OnClick = buttonBSForeClick
+        end
+        object buttonBSReset4: TButton
+          Tag = 4
+          Left = 280
+          Top = 96
+          Width = 41
+          Height = 20
+          Caption = 'Reset'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 19
+          OnClick = buttonBSResetClick
+        end
+        object buttonBSBack4: TButton
+          Tag = 4
+          Left = 182
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 17
+          OnClick = buttonBSBackClick
+        end
+        object checkBSBold1: TCheckBox
+          Tag = 1
+          Left = 233
+          Top = 22
+          Width = 41
+          Height = 17
+          Caption = 'Bold'
+          TabOrder = 3
+          OnClick = checkBSBoldClick
+        end
+        object checkBSBold2: TCheckBox
+          Tag = 2
+          Left = 233
+          Top = 47
+          Width = 41
+          Height = 17
+          Caption = 'Bold'
+          TabOrder = 8
+          OnClick = checkBSBoldClick
+        end
+        object checkBSBold3: TCheckBox
+          Tag = 3
+          Left = 233
+          Top = 72
+          Width = 41
+          Height = 17
+          Caption = 'Bold'
+          TabOrder = 13
+          OnClick = checkBSBoldClick
+        end
+        object checkBSBold4: TCheckBox
+          Tag = 4
+          Left = 233
+          Top = 97
+          Width = 41
+          Height = 17
+          Caption = 'Bold'
+          TabOrder = 18
+          OnClick = checkBSBoldClick
+        end
+      end
+    end
   end
   object Panel1: TPanel
     Left = 0
@@ -2535,7 +2987,7 @@ object formOptions: TformOptions
     Top = 312
   end
   object ColorDialog1: TColorDialog
-    Left = 16
-    Top = 325
+    Left = 28
+    Top = 312
   end
 end

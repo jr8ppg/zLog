@@ -520,20 +520,25 @@ begin
       else begin
          // 交信済み(＝マルチゲット済み）
          if D.Worked then begin
-            Font.Color := clBlack;
-            D.Bold := False;
+            Font.Color  := dmZLogGlobal.Settings._bandscopecolor[1].FForeColor;
+            Brush.Color := dmZLogGlobal.Settings._bandscopecolor[1].FBackColor;
+            D.Bold      := dmZLogGlobal.Settings._bandscopecolor[1].FBold;
          end
          else begin  // 未交信
-            D.Bold := True;
-            if D.NewMulti then begin         // マルチ未ゲット
-               Font.Color := clWhite;
-               Brush.Color := clRed;
+            if D.NewMulti = True then begin         // マルチ未ゲット
+               Font.Color  := dmZLogGlobal.Settings._bandscopecolor[2].FForeColor;
+               Brush.Color := dmZLogGlobal.Settings._bandscopecolor[2].FBackColor;
+               D.Bold      := dmZLogGlobal.Settings._bandscopecolor[2].FBold;
             end
-            else if D.MultiWorked then begin // マルチゲット済み
-               Font.Color := clGreen;
+            else if (D.NewMulti = False) and (D.Number <> '') then begin // マルチゲット済み
+               Font.Color  := dmZLogGlobal.Settings._bandscopecolor[3].FForeColor;
+               Brush.Color := dmZLogGlobal.Settings._bandscopecolor[3].FBackColor;
+               D.Bold      := dmZLogGlobal.Settings._bandscopecolor[3].FBold;
             end
             else begin     // マルチ不明
-               Font.Color := clGreen;
+               Font.Color  := dmZLogGlobal.Settings._bandscopecolor[4].FForeColor;
+               Brush.Color := dmZLogGlobal.Settings._bandscopecolor[4].FBackColor;
+               D.Bold      := dmZLogGlobal.Settings._bandscopecolor[4].FBold;
             end;
          end;
 
