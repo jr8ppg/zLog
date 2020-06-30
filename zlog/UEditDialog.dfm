@@ -493,5 +493,13 @@ object EditDialog: TEditDialog
       ShortCut = 8278
       OnExecute = actionToggleVFOExecute
     end
+    object actionSetPseQSL: TAction
+      Caption = 'PSE QSL'
+      OnExecute = actionSetPseQSLExecute
+    end
+    object actionSetNoQSL: TAction
+      Caption = 'NO QSL'
+      OnExecute = actionSetNoQSLExecute
+    end
   end
 end

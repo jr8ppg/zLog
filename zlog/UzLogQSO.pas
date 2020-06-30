@@ -1220,7 +1220,7 @@ var
 begin
    for i := 1 to TotalQSO do begin
       aQSO := FQsoList[i];
-      if Pos('-DUPE-', aQSO.Memo) > 0 then begin
+      if Pos(MEMO_DUPE, aQSO.Memo) > 0 then begin
          Delete(i);
       end;
    end;
@@ -1506,15 +1506,15 @@ begin
          aQSO.Points := 0;
          aQSO.Dupe := True;
          temp := aQSO.Memo;
-         if Pos('-DUPE-', temp) = 0 then begin
-            aQSO.Memo := '-DUPE- ' + temp;
+         if Pos(MEMO_DUPE, temp) = 0 then begin
+            aQSO.Memo := MEMO_DUPE + ' ' + temp;
          end;
       end
       else begin
          aQSO.Dupe := False;
 
          temp := aQSO.Memo;
-         if Pos('-DUPE-', temp) = 1 then begin
+         if Pos(MEMO_DUPE, temp) = 1 then begin
             aQSO.Memo := copy(temp, 8, 255);
          end;
 
