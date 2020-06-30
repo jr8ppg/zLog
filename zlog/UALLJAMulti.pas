@@ -53,7 +53,7 @@ type
   public
     { Public declarations }
     procedure UpdateBand(B : TBand);
-    procedure Update; override;
+    procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Add(var aQSO : TQSO); override;
     procedure Reset; override;
@@ -139,7 +139,7 @@ begin
    end;
 end;
 
-procedure TALLJAMulti.Update;
+procedure TALLJAMulti.UpdateData;
 var
    band, B: TBand;
    str: string;
