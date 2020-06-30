@@ -637,6 +637,8 @@ type
     actionCQRepeat2: TAction;
     actionToggleVFO: TAction;
     actionEditLastQSO: TAction;
+    actionSetPseQSL: TAction;
+    actionSetNoQSL: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -838,6 +840,8 @@ type
     procedure actionCQRepeat2Execute(Sender: TObject);
     procedure actionToggleVFOExecute(Sender: TObject);
     procedure actionEditLastQSOExecute(Sender: TObject);
+    procedure actionSetPseQSLExecute(Sender: TObject);
+    procedure actionSetNoQSLExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -5208,7 +5212,7 @@ begin
          CurrentQSO.NewMulti2 := False;
          CurrentQSO.Multi1 := '';
          CurrentQSO.Multi2 := '';
-         CurrentQSO.Memo := '-DUPE- ' + CurrentQSO.Memo;
+         CurrentQSO.Memo := MEMO_DUPE + ' ' + CurrentQSO.Memo;
          goto med;
       end
       else begin
@@ -7978,6 +7982,7 @@ begin
    {$ENDIF}
    CallsignEdit.Clear();
    NumberEdit.Clear();
+   MemoEdit.Clear();
    WriteStatusLine('', False);
    CallsignEdit.SetFocus;
 end;
@@ -8242,6 +8247,34 @@ begin
    if EditScreen.DirectEdit = False then begin
       MyContest.EditCurrentRow;
    end;
+end;
+
+// #101 PSE QSL
+procedure TMainForm.actionSetPseQSLExecute(Sender: TObject);
+begin
+   if Pos(MEMO_NO_QSL, CurrentQSO.Memo) > 0 then begin
+      CurrentQSO.Memo := StringReplace(CurrentQSO.Memo, MEMO_NO_QSL, '', [rfReplaceAll]);
+   end;
+
+   if Pos(MEMO_PSE_QSL, CurrentQSO.Memo) = 0 then begin
+      CurrentQSO.Memo := MEMO_PSE_QSL + ' ' + CurrentQSO.Memo;
+   end;
+
+   MemoEdit.Text := CurrentQSO.Memo;
+end;
+
+// #102 NO QSL
+procedure TMainForm.actionSetNoQSLExecute(Sender: TObject);
+begin
+   if Pos(MEMO_PSE_QSL, CurrentQSO.Memo) > 0 then begin
+      CurrentQSO.Memo := StringReplace(CurrentQSO.Memo, MEMO_PSE_QSL, '', [rfReplaceAll]);
+   end;
+
+   if Pos(MEMO_NO_QSL, CurrentQSO.Memo) = 0 then begin
+      CurrentQSO.Memo := MEMO_NO_QSL + ' ' + CurrentQSO.Memo;
+   end;
+
+   MemoEdit.Text := CurrentQSO.Memo;
 end;
 
 procedure TMainForm.RestoreWindowsPos();

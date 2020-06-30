@@ -78,6 +78,8 @@ type
     actionIncreaseCwSpeed: TAction;
     actionCQRepeat2: TAction;
     actionToggleVFO: TAction;
+    actionSetPseQSL: TAction;
+    actionSetNoQSL: TAction;
     procedure CancelBtnClick(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure CallsignEditChange(Sender: TObject);
@@ -128,6 +130,8 @@ type
     procedure actionIncreaseCwSpeedExecute(Sender: TObject);
     procedure actionCQRepeat2Execute(Sender: TObject);
     procedure actionToggleVFOExecute(Sender: TObject);
+    procedure actionSetPseQSLExecute(Sender: TObject);
+    procedure actionSetNoQSLExecute(Sender: TObject);
   private
     { Private declarations }
     workQSO : TQSO;
@@ -564,41 +568,45 @@ begin
    actionIncreaseCwSpeed.ShortCut := MainForm.actionIncreaseCwSpeed.ShortCut;
    actionCQRepeat2.ShortCut := MainForm.actionCQRepeat2.ShortCut;
    actionToggleVFO.ShortCut := MainForm.actionToggleVFO.ShortCut;
+   actionSetPseQSL.ShortCut := MainForm.actionSetPseQSL.ShortCut;
+   actionSetNoQSL.ShortCut := MainForm.actionSetNoQSL.ShortCut;
 
-   actionPlayMessageA01.SecondaryShortCuts.Assign(actionPlayMessageA01.SecondaryShortCuts);
-   actionPlayMessageA02.SecondaryShortCuts.Assign(actionPlayMessageA02.SecondaryShortCuts);
-   actionPlayMessageA03.SecondaryShortCuts.Assign(actionPlayMessageA03.SecondaryShortCuts);
-   actionPlayMessageA04.SecondaryShortCuts.Assign(actionPlayMessageA04.SecondaryShortCuts);
-   actionPlayMessageA05.SecondaryShortCuts.Assign(actionPlayMessageA05.SecondaryShortCuts);
-   actionPlayMessageA06.SecondaryShortCuts.Assign(actionPlayMessageA06.SecondaryShortCuts);
-   actionPlayMessageA07.SecondaryShortCuts.Assign(actionPlayMessageA07.SecondaryShortCuts);
-   actionPlayMessageA08.SecondaryShortCuts.Assign(actionPlayMessageA08.SecondaryShortCuts);
-   actionShowCheckPartial.SecondaryShortCuts.Assign(actionShowCheckPartial.SecondaryShortCuts);
-   actionPlayMessageA11.SecondaryShortCuts.Assign(actionPlayMessageA11.SecondaryShortCuts);
-   actionPlayMessageA12.SecondaryShortCuts.Assign(actionPlayMessageA12.SecondaryShortCuts);
-   actionClearCallAndRpt.SecondaryShortCuts.Assign(actionClearCallAndRpt.SecondaryShortCuts);
-   actionDecreaseTime.SecondaryShortCuts.Assign(actionDecreaseTime.SecondaryShortCuts);
-   actionIncreaseTime.SecondaryShortCuts.Assign(actionIncreaseTime.SecondaryShortCuts);
-   actionReversePaddle.SecondaryShortCuts.Assign(actionReversePaddle.SecondaryShortCuts);
-   actionFieldClear.SecondaryShortCuts.Assign(actionFieldClear.SecondaryShortCuts);
-   actionCQRepeat.SecondaryShortCuts.Assign(actionCQRepeat.SecondaryShortCuts);
-   actionFocusCallsign.SecondaryShortCuts.Assign(actionFocusCallsign.SecondaryShortCuts);
-   actionFocusMemo.SecondaryShortCuts.Assign(actionFocusMemo.SecondaryShortCuts);
-   actionFocusNumber.SecondaryShortCuts.Assign(actionFocusNumber.SecondaryShortCuts);
-   actionFocusOp.SecondaryShortCuts.Assign(actionFocusOp.SecondaryShortCuts);
-   actionFocusRst.SecondaryShortCuts.Assign(actionFocusRst.SecondaryShortCuts);
-   actionToggleRig.SecondaryShortCuts.Assign(actionToggleRig.SecondaryShortCuts);
-   actionControlPTT.SecondaryShortCuts.Assign(actionControlPTT.SecondaryShortCuts);
-   actionChangeBand.SecondaryShortCuts.Assign(actionChangeBand.SecondaryShortCuts);
-   actionChangeMode.SecondaryShortCuts.Assign(actionChangeMode.SecondaryShortCuts);
-   actionChangePower.SecondaryShortCuts.Assign(actionChangePower.SecondaryShortCuts);
-   actionChangeR.SecondaryShortCuts.Assign(actionChangeR.SecondaryShortCuts);
-   actionChangeS.SecondaryShortCuts.Assign(actionChangeS.SecondaryShortCuts);
-   actionSetCurTime.SecondaryShortCuts.Assign(actionSetCurTime.SecondaryShortCuts);
-   actionDecreaseCwSpeed.SecondaryShortCuts.Assign(actionDecreaseCwSpeed.SecondaryShortCuts);
-   actionIncreaseCwSpeed.SecondaryShortCuts.Assign(actionIncreaseCwSpeed.SecondaryShortCuts);
-   actionCQRepeat2.SecondaryShortCuts.Assign(actionCQRepeat2.SecondaryShortCuts);
-   actionToggleVFO.SecondaryShortCuts.Assign(actionToggleVFO.SecondaryShortCuts);
+   actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
+   actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
+   actionPlayMessageA03.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA03.SecondaryShortCuts);
+   actionPlayMessageA04.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA04.SecondaryShortCuts);
+   actionPlayMessageA05.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA05.SecondaryShortCuts);
+   actionPlayMessageA06.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA06.SecondaryShortCuts);
+   actionPlayMessageA07.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA07.SecondaryShortCuts);
+   actionPlayMessageA08.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA08.SecondaryShortCuts);
+   actionShowCheckPartial.SecondaryShortCuts.Assign(MainForm.actionShowCheckPartial.SecondaryShortCuts);
+   actionPlayMessageA11.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA11.SecondaryShortCuts);
+   actionPlayMessageA12.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA12.SecondaryShortCuts);
+   actionClearCallAndRpt.SecondaryShortCuts.Assign(MainForm.actionClearCallAndRpt.SecondaryShortCuts);
+   actionDecreaseTime.SecondaryShortCuts.Assign(MainForm.actionDecreaseTime.SecondaryShortCuts);
+   actionIncreaseTime.SecondaryShortCuts.Assign(MainForm.actionIncreaseTime.SecondaryShortCuts);
+   actionReversePaddle.SecondaryShortCuts.Assign(MainForm.actionReversePaddle.SecondaryShortCuts);
+   actionFieldClear.SecondaryShortCuts.Assign(MainForm.actionFieldClear.SecondaryShortCuts);
+   actionCQRepeat.SecondaryShortCuts.Assign(MainForm.actionCQRepeat.SecondaryShortCuts);
+   actionFocusCallsign.SecondaryShortCuts.Assign(MainForm.actionFocusCallsign.SecondaryShortCuts);
+   actionFocusMemo.SecondaryShortCuts.Assign(MainForm.actionFocusMemo.SecondaryShortCuts);
+   actionFocusNumber.SecondaryShortCuts.Assign(MainForm.actionFocusNumber.SecondaryShortCuts);
+   actionFocusOp.SecondaryShortCuts.Assign(MainForm.actionFocusOp.SecondaryShortCuts);
+   actionFocusRst.SecondaryShortCuts.Assign(MainForm.actionFocusRst.SecondaryShortCuts);
+   actionToggleRig.SecondaryShortCuts.Assign(MainForm.actionToggleRig.SecondaryShortCuts);
+   actionControlPTT.SecondaryShortCuts.Assign(MainForm.actionControlPTT.SecondaryShortCuts);
+   actionChangeBand.SecondaryShortCuts.Assign(MainForm.actionChangeBand.SecondaryShortCuts);
+   actionChangeMode.SecondaryShortCuts.Assign(MainForm.actionChangeMode.SecondaryShortCuts);
+   actionChangePower.SecondaryShortCuts.Assign(MainForm.actionChangePower.SecondaryShortCuts);
+   actionChangeR.SecondaryShortCuts.Assign(MainForm.actionChangeR.SecondaryShortCuts);
+   actionChangeS.SecondaryShortCuts.Assign(MainForm.actionChangeS.SecondaryShortCuts);
+   actionSetCurTime.SecondaryShortCuts.Assign(MainForm.actionSetCurTime.SecondaryShortCuts);
+   actionDecreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionDecreaseCwSpeed.SecondaryShortCuts);
+   actionIncreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionIncreaseCwSpeed.SecondaryShortCuts);
+   actionCQRepeat2.SecondaryShortCuts.Assign(MainForm.actionCQRepeat2.SecondaryShortCuts);
+   actionToggleVFO.SecondaryShortCuts.Assign(MainForm.actionToggleVFO.SecondaryShortCuts);
+   actionSetPseQSL.SecondaryShortCuts.Assign(MainForm.actionSetPseQSL.SecondaryShortCuts);
+   actionSetNoQSL.SecondaryShortCuts.Assign(MainForm.actionSetNoQSL.SecondaryShortCuts);
 end;
 
 procedure TEditDialog.FormDestroy(Sender: TObject);
@@ -895,6 +903,32 @@ begin
    if MainForm.RigControl.Rig <> nil then begin
       MainForm.RigControl.Rig.ToggleVFO;
    end;
+end;
+
+procedure TEditDialog.actionSetPseQSLExecute(Sender: TObject);
+begin
+   if Pos(MEMO_NO_QSL, CurrentQSO.Memo) > 0 then begin
+      CurrentQSO.Memo := StringReplace(CurrentQSO.Memo, MEMO_NO_QSL, '', [rfReplaceAll]);
+   end;
+
+   if Pos(MEMO_PSE_QSL, CurrentQSO.Memo) = 0 then begin
+      CurrentQSO.Memo := MEMO_PSE_QSL + ' ' + CurrentQSO.Memo;
+   end;
+
+   MemoEdit.Text := CurrentQSO.Memo;
+end;
+
+procedure TEditDialog.actionSetNoQSLExecute(Sender: TObject);
+begin
+   if Pos(MEMO_PSE_QSL, CurrentQSO.Memo) > 0 then begin
+      CurrentQSO.Memo := StringReplace(CurrentQSO.Memo, MEMO_PSE_QSL, '', [rfReplaceAll]);
+   end;
+
+   if Pos(MEMO_NO_QSL, CurrentQSO.Memo) = 0 then begin
+      CurrentQSO.Memo := MEMO_NO_QSL + ' ' + CurrentQSO.Memo;
+   end;
+
+   MemoEdit.Text := CurrentQSO.Memo;
 end;
 
 end.
