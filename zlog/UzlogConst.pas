@@ -87,7 +87,7 @@ const
   pwrH = TPower(3);
 
 const
-  default_primary_shortcut: array[0..100] of string = (
+  default_primary_shortcut: array[0..102] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -188,10 +188,12 @@ const
     'Shift+Y',
     'Shift+Z',
     '',                 // #99
-    'Alt+L'             // #100
+    'Alt+L',            // #100
+    '',
+    ''
   );
 
-  default_secondary_shortcut: array[0..100] of string = (
+  default_secondary_shortcut: array[0..102] of string = (
     '',                 // #00
     '',
     '',
@@ -292,9 +294,17 @@ const
     '',
     '',
     '',                 // #99
-    ''                  // #100
+    '',                 // #100
+    '',
+    ''
   );
+
+const
+  MEMO_DUPE = '-DUPE-';
+  MEMO_PSE_QSL = 'PSE QSL';
+  MEMO_NO_QSL = 'NO QSL';
 
 implementation
 
 end.
+
