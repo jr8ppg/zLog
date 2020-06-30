@@ -5281,14 +5281,6 @@ object MainForm: TMainForm
       ShortCut = 32844
       OnExecute = actionEditLastQSOExecute
     end
-    object actionSetPseQSL: TAction
-      Caption = 'PSE QSL'
-      OnExecute = actionSetPseQSLExecute
-    end
-    object actionSetNoQSL: TAction
-      Caption = 'NO QSL'
-      OnExecute = actionSetNoQSLExecute
-    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

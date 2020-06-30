@@ -636,8 +636,6 @@ type
     actionCQRepeat2: TAction;
     actionToggleVFO: TAction;
     actionEditLastQSO: TAction;
-    actionSetPseQSL: TAction;
-    actionSetNoQSL: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -838,8 +836,6 @@ type
     procedure actionCQRepeat2Execute(Sender: TObject);
     procedure actionToggleVFOExecute(Sender: TObject);
     procedure actionEditLastQSOExecute(Sender: TObject);
-    procedure actionSetPseQSLExecute(Sender: TObject);
-    procedure actionSetNoQSLExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -8296,18 +8292,6 @@ begin
    if EditScreen.DirectEdit = False then begin
       MyContest.EditCurrentRow;
    end;
-end;
-
-// #101 PSE QSL
-procedure TMainForm.actionSetPseQSLExecute(Sender: TObject);
-begin
-//
-end;
-
-// #102 NO QSL
-procedure TMainForm.actionSetNoQSLExecute(Sender: TObject);
-begin
-//
 end;
 
 procedure TMainForm.RestoreWindowsPos();
