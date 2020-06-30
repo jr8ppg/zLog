@@ -982,6 +982,8 @@ type
 
     procedure HighlightCallsign(fHighlight: Boolean);
     procedure BandScopeNotifyWorked(aQSO: TQSO);
+    procedure SetYourCallsign(strCallsign, strNumber: string);
+    procedure SetFrequency(freq: Integer);
 
     property RigControl: TRigControl read FRigControl;
     property PartialCheck: TPartialCheck read FPartialCheck;
@@ -8671,6 +8673,42 @@ begin
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b].NotifyWorked(aQSO);
    end;
+end;
+
+procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
+begin
+   CurrentQSO.CallSign := strCallsign;
+   CallsignEdit.Text := strCallsign;
+   NumberEdit.Text := '';
+   CallSignEdit.SelStart := Length(CallsignEdit.Text);
+   if strCallsign = '' then begin
+      CallsignEdit.SetFocus();
+      Exit;
+   end;
+
+   MyContest.SpaceBarProc;
+
+   if NumberEdit.Text = '' then begin
+      if strNumber <> '' then begin
+         NumberEdit.Text := strNumber;
+         NumberEdit.SelStart := Length(NumberEdit.Text);
+      end;
+   end;
+
+   MyContest.MultiForm.SetNumberEditFocus;
+end;
+
+procedure TMainForm.SetFrequency(freq: Integer);
+begin
+   if freq = 0 then begin
+      Exit;
+   end;
+
+   if RigControl.Rig <> nil then begin
+      RigControl.Rig.SetFreq(freq);
+   end;
+
+   UpdateBand(TBand(GetBandIndex(freq)));
 end;
 
 end.

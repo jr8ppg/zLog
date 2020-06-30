@@ -589,18 +589,11 @@ begin
 
    Sp := TSpot(ListBox.Items.Objects[ListBox.ItemIndex]);
 
-   if Sp.FreqHz > 0 then begin
-      if MainForm.RigControl.Rig <> nil then begin
-         MainForm.RigControl.Rig.SetFreq(Sp.FreqHz);
-      end;
-   end;
+   // 相手局をセット
+   MainForm.SetYourCallsign(Sp.Call, Sp.Number);
 
-   MainForm.UpdateBand(Sp.Band);
-   Main.CurrentQSO.CallSign := Sp.Call;
-   MainForm.CallsignEdit.Text := Sp.Call;
-   MainForm.NumberEdit.Text := Sp.Number;
-
-   Main.MyContest.MultiForm.SetNumberEditFocus;
+   // 周波数をセット
+   MainForm.SetFrequency(Sp.FreqHz);
 end;
 
 procedure TCommForm.ListBoxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -667,7 +660,7 @@ begin
          end;
       end;
 
-      TextOut(Rect.Left + XOffset, Rect.Top + YOffSet, S)								{ display the text }
+      TextOut(Rect.Left + XOffset, Rect.Top + YOffSet, S);
    end;
 end;
 

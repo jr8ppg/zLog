@@ -341,7 +341,8 @@ begin
    i := ListBox.ItemIndex;
    str := copy(ListBox.Items[i], 7, 12);
    str := TrimRight(str);
-   MainForm.CallsignEdit.Text := str;
+
+   MainForm.SetYourCallsign(str, '');
 end;
 
 procedure TPartialCheck.StayOnTopClick(Sender: TObject);

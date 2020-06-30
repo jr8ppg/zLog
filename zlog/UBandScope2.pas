@@ -443,57 +443,26 @@ end;
 
 procedure TBandScope2.GridDblClick(Sender: TObject);
 var
-   i, j: Integer;
-   F: Extended;
-   str, fstr, cstr, nstr: string;
+   D: TBSData;
 begin
    FProcessing := True;
    try
-      str := Grid.Cells[0, Grid.Selection.Top];
-      if pos('+', str) > 0 then
-         str := TrimRight(copy(str, 1, length(str) - 1));
-
-      { ver 2.2d stop scanning BSList2. just read freq from the string }
-
-      fstr := '';
-      cstr := '';
-      nstr := '';
-
-      i := pos('[', str); // extract number if any
-      if i > 0 then begin
-         j := pos(']', str);
-         if j > i then
-            nstr := copy(str, i + 1, j - i - 1);
+      D := TBSData(Grid.Objects[0, Grid.Selection.Top]);
+      if D = nil then begin
+         Exit;
       end;
 
-      i := pos(' ', str); // extract frequency in kHz
-      if i > 0 then
-         fstr := copy(str, 1, i)
-      else
-         exit;
-
-      Delete(str, 1, i); // extract callsign
-      i := pos(' ', str);
-      if i > 0 then
-         cstr := copy(str, 1, i - 1)
-      else
-         cstr := str;
-
-      try
-         F := StrToFloat(fstr);
-      except
-         on EConvertError do begin
-            exit;
-         end;
+      // 交信済みは除外
+      if D.Worked = True then begin
+         MainForm.SetYourCallsign('', '');
+         Exit;
       end;
 
-      MainForm.CallsignEdit.Text := cstr;
-      MainForm.NumberEdit.Text := nstr;
-      if MainForm.RigControl.Rig <> nil then
-         MainForm.RigControl.Rig.SetFreq(round(F * 1000));
+      // 相手局をセット
+      MainForm.SetYourCallsign(D.Call, D.Number);
 
-      Main.MyContest.MultiForm.SetNumberEditFocus;
-      MainForm.UpdateBand(TBand(GetBandIndex(round(F * 1000))));
+      // 周波数をセット
+      MainForm.SetFrequency(D.FreqHz);
    finally
       FProcessing := False;
    end;
