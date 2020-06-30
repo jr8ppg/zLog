@@ -636,8 +636,8 @@ type
     actionCQRepeat2: TAction;
     actionToggleVFO: TAction;
     actionEditLastQSO: TAction;
-    actionShowBandScopeEx: TAction;
-    BandScopeEx1: TMenuItem;
+    actionSetPseQSL: TAction;
+    actionSetNoQSL: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -838,7 +838,8 @@ type
     procedure actionCQRepeat2Execute(Sender: TObject);
     procedure actionToggleVFOExecute(Sender: TObject);
     procedure actionEditLastQSOExecute(Sender: TObject);
-    procedure actionShowBandScopeExExecute(Sender: TObject);
+    procedure actionSetPseQSLExecute(Sender: TObject);
+    procedure actionSetNoQSLExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -980,6 +981,7 @@ type
     procedure HideBandMenuVU(fInclude50: Boolean = True);
 
     procedure HighlightCallsign(fHighlight: Boolean);
+    procedure BandScopeNotifyWorked(aQSO: TQSO);
 
     property RigControl: TRigControl read FRigControl;
     property PartialCheck: TPartialCheck read FPartialCheck;
@@ -1000,6 +1002,7 @@ type
     property ScratchSheet: TScratchSheet read FScratchSheet;
 //    property BandScope2: TBandScope2 read FBandScope2;
     property BandScopeEx: TBandScopeArray read FBandScopeEx;
+    property SuperCheckList: TSuperList read FSuperCheckList;
   end;
 
 var
@@ -1658,6 +1661,8 @@ begin
 end;
 
 procedure TMainForm.UpdateBand(B: TBand); // called from rigcontrol too
+var
+   bb: TBand;
 begin
    BandEdit.Text := MHzString[B];
 
@@ -1713,6 +1718,11 @@ begin
    if RigControl.Rig = nil then begin
       FZLinkForm.SendFreqInfo(round(RigControl.TempFreq[B] * 1000));
    end;
+
+   for bb := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      FBandScopeEx[bb].Select := False;
+   end;
+   FBandScopeEx[B].Select := True;
 end;
 
 procedure TMainForm.UpdateMode(M: TMode);
@@ -5121,37 +5131,40 @@ begin
 
       CurrentQSO.Reserve3 := i;
 
-      { if dmZlogGlobal.Settings._recrigfreq = True then
-        if RigControl.Rig <> nil then
-        CurrentQSO.Memo := CurrentQSO.Memo + '('+RigControl.Rig.CurrentFreqkHzStr+')';
-      }
       if RigControl.Rig <> nil then begin
-         if dmZlogGlobal.Settings._recrigfreq = True then
+         // memo欄に周波数を記録
+         if dmZlogGlobal.Settings._recrigfreq = True then begin
             CurrentQSO.Memo := CurrentQSO.Memo + '(' + RigControl.Rig.CurrentFreqkHzStr + ')';
+         end;
 
+         // 自動bandmap
          if dmZlogGlobal.Settings._autobandmap then begin
             j := RigControl.Rig.CurrentFreqHz;
             if j > 0 then begin
-//               FBandScope2.CreateBSData(CurrentQSO, j);
                FBandScopeEx[CurrentQSO.Band].CreateBSData(CurrentQSO, j);
             end;
          end;
       end;
-      // if MyContest.Name = 'Pedition mode' then
-      if not FPostContest then
-         CurrentQSO.UpdateTime;
 
+      // if MyContest.Name = 'Pedition mode' then
+      if not FPostContest then begin
+         CurrentQSO.UpdateTime;
+      end;
+
+      // ログに記録
       MyContest.LogQSO(CurrentQSO, True);
 
       workedZLO := False;
       if CurrentQSO.Callsign = 'JA1ZLO' then begin
-         if MyContest.Name = 'ALL JA コンテスト' then
+         if MyContest.Name = 'ALL JA コンテスト' then begin
             if CurrentQSO.Points > 0 then begin
                inc(ZLOCOUNT);
                workedZLO := True;
             end;
+         end;
       end;
 
+      // 自動保存
       if CurrentFileName <> '' then begin
          if Log.TotalQSO mod dmZlogGlobal.Settings._saveevery = 0 then begin
             if dmZlogGlobal.Settings._savewhennocw then
@@ -5160,8 +5173,11 @@ begin
                SaveFileAndBackUp;
          end;
       end;
+
+      // 他のzLogに送信
       FZLinkForm.SendQSO(CurrentQSO); { ZLinkForm checks if Z-Link is ON }
 
+      // WANTEDリスト交信
       st := MyContest.MultiForm.ExtractMulti(CurrentQSO);
       if st <> '' then begin
          for i := 0 to MyContest.WantedList.Count - 1 do begin
@@ -5175,9 +5191,15 @@ begin
          end;
       end;
 
-      if (dmZlogGlobal.Settings._ritclear = True) and (RigControl.Rig <> nil) then
+      // RITクリア
+      if (dmZlogGlobal.Settings._ritclear = True) and (RigControl.Rig <> nil) then begin
          RigControl.Rig.RitClear;
+      end;
 
+      // BandScopeの更新
+      BandScopeNotifyWorked(CurrentQSO);
+
+      // 次のＱＳＯの準備
       CurrentQSO.Serial := CurrentQSO.Serial + 1;
       SerialArrayTX[dmZlogGlobal.TXNr] := CurrentQSO.Serial;
 
@@ -8027,9 +8049,10 @@ var
    b: TBand;
 begin
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      FBandScopeEx[b].Hide();
+      if dmZLogGlobal.Settings._usebandscope[b] = True then begin
+         FBandScopeEx[b].Show();
+      end;
    end;
-   FBandScopeEx[CurrentQSO.Band].Show();
 end;
 
 // #73 Running Frequencies
@@ -8273,16 +8296,16 @@ begin
    end;
 end;
 
-// #101 BandScopeEx
-procedure TMainForm.actionShowBandScopeExExecute(Sender: TObject);
-var
-   b: TBand;
+// #101 PSE QSL
+procedure TMainForm.actionSetPseQSLExecute(Sender: TObject);
 begin
-   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      if dmZLogGlobal.Settings._usebandscope[b] = True then begin
-         FBandScopeEx[b].Show();
-      end;
-   end;
+//
+end;
+
+// #102 NO QSL
+procedure TMainForm.actionSetNoQSLExecute(Sender: TObject);
+begin
+//
 end;
 
 procedure TMainForm.RestoreWindowsPos();
@@ -8641,6 +8664,14 @@ begin
    end;
 end;
 
+procedure TMainForm.BandScopeNotifyWorked(aQSO: TQSO);
+var
+   b: TBand;
+begin
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      FBandScopeEx[b].NotifyWorked(aQSO);
+   end;
+end;
 
 end.
 

@@ -119,6 +119,7 @@ object CommForm: TCommForm
       Font.Style = []
       ItemHeight = 12
       ParentFont = False
+      PopupMenu = PopupMenu
       TabOrder = 0
       OnDblClick = ListBoxDblClick
       OnDrawItem = ListBoxDrawItem
@@ -153,8 +154,8 @@ object CommForm: TCommForm
     Enabled = False
     Interval = 100
     OnTimer = TimerProcess
-    Left = 16
-    Top = 128
+    Left = 24
+    Top = 32
   end
   object Telnet: TTnCnx
     Port = '23'
@@ -167,21 +168,36 @@ object CommForm: TCommForm
     OnSessionClosed = TelnetSessionClosed
     OnDataAvailable = TelnetDataAvailable
     OnDisplay = TelnetDisplay
-    Left = 88
-    Top = 213
+    Left = 56
+    Top = 32
   end
   object ClusterComm: TCommPortDriver
     Port = pnCustom
     PortName = '\\.\COM2'
     OnReceiveData = ClusterCommReceiveData
-    Left = 264
-    Top = 224
+    Left = 96
+    Top = 32
   end
   object PopupMenu: TPopupMenu
-    Left = 208
-    Top = 48
-    object Deleteselectedspots1: TMenuItem
-      Caption = 'Delete selected spots'
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 184
+    Top = 40
+    object menuSaveToFile: TMenuItem
+      Caption = #12501#12449#12452#12523#12395#20445#23384
+      OnClick = menuSaveToFileClick
     end
+  end
+  object SaveTextFileDialog1: TSaveTextFileDialog
+    DefaultExt = '.txt'
+    Filter = #12486#12461#12473#12488#12501#12449#12452#12523'(*.txt)|*.txt|'#20840#12390#12398#12501#12449#12452#12523'(*.*)|*.*'
+    Options = [ofOverwritePrompt, ofHideReadOnly, ofPathMustExist, ofEnableSizing]
+    Encodings.Strings = (
+      'ANSI'
+      'ASCII'
+      'Unicode'
+      'UTF-8')
+    Left = 216
+    Top = 40
   end
 end

@@ -20,38 +20,35 @@ object BandScope2: TBandScope2
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 12
-  object Grid: TMgrid
+  object Panel1: TPanel
     Left = 0
     Top = 0
     Width = 204
     Height = 416
     Align = alClient
-    ColCount = 1
-    DefaultColWidth = 500
-    DefaultRowHeight = 14
-    FixedCols = 0
-    FixedRows = 0
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = #65325#65331' '#12468#12471#12483#12463
-    Font.Pitch = fpFixed
-    Font.Style = []
-    GridLineWidth = 0
-    Options = [goRangeSelect, goRowSelect, goThumbTracking]
-    ParentFont = False
-    Popupmenu = BSMenu
-    ScrollBars = ssVertical
+    BevelOuter = bvNone
+    BorderWidth = 4
+    BorderStyle = bsSingle
+    Color = clRed
+    ParentBackground = False
     TabOrder = 0
-    OnDblClick = GridDblClick
-    Alignment = taLeftJustify
-    BorderColor = clSilver
-    OddRowColor = clWindow
-    EvenRowColor = clWindow
-    OnSetting = GridSetting
-    ExplicitTop = 25
-    ExplicitWidth = 120
-    ExplicitHeight = 391
+    object Grid: TStringGrid
+      Left = 4
+      Top = 4
+      Width = 192
+      Height = 404
+      Align = alClient
+      ColCount = 1
+      DefaultColWidth = 500
+      FixedCols = 0
+      FixedRows = 0
+      Options = []
+      PopupMenu = BSMenu
+      ScrollBars = ssVertical
+      TabOrder = 0
+      OnDblClick = GridDblClick
+      OnDrawCell = GridDrawCell
+    end
   end
   object BSMenu: TPopupMenu
     AutoHotkeys = maManual
@@ -65,23 +62,6 @@ object BandScope2: TBandScope2
     object Deleteallworkedstations1: TMenuItem
       Caption = 'Delete all worked stations'
       OnClick = Deleteallworkedstations1Click
-    end
-    object Mode1: TMenuItem
-      Caption = 'Mode...'
-      object mnCurrentRig: TMenuItem
-        Caption = 'Current Rig'
-        OnClick = ModeClick
-      end
-      object Rig11: TMenuItem
-        Tag = 1
-        Caption = 'Rig 1'
-        OnClick = ModeClick
-      end
-      object Rig21: TMenuItem
-        Tag = 2
-        Caption = 'Rig 2'
-        OnClick = ModeClick
-      end
     end
   end
   object Timer1: TTimer

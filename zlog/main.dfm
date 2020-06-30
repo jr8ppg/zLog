@@ -4301,9 +4301,6 @@ object MainForm: TMainForm
       object Bandscope1: TMenuItem
         Action = actionShowBandScope
       end
-      object BandScopeEx1: TMenuItem
-        Action = actionShowBandScopeEx
-      end
       object RunningFrequencies1: TMenuItem
         Action = actionShowFreqList
       end
@@ -5284,9 +5281,13 @@ object MainForm: TMainForm
       ShortCut = 32844
       OnExecute = actionEditLastQSOExecute
     end
-    object actionShowBandScopeEx: TAction
-      Caption = 'Band Scope Ex'
-      OnExecute = actionShowBandScopeExExecute
+    object actionSetPseQSL: TAction
+      Caption = 'PSE QSL'
+      OnExecute = actionSetPseQSLExecute
+    end
+    object actionSetNoQSL: TAction
+      Caption = 'NO QSL'
+      OnExecute = actionSetNoQSLExecute
     end
   end
   object SPCMenu: TPopupMenu

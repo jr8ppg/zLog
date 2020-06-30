@@ -4,31 +4,26 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, Grids, Menus, Cologrid,
+  Dialogs, ExtCtrls, StdCtrls, Grids, Menus,
   USpotClass, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
   TBandScope2 = class(TForm)
-    Grid: TMgrid;
     BSMenu: TPopupMenu;
     mnDelete: TMenuItem;
     Deleteallworkedstations1: TMenuItem;
-    Mode1: TMenuItem;
-    mnCurrentRig: TMenuItem;
-    Rig11: TMenuItem;
-    Rig21: TMenuItem;
     Timer1: TTimer;
+    Panel1: TPanel;
+    Grid: TStringGrid;
     procedure CreateParams(var Params: TCreateParams); override;
-    procedure GridSetting(ARow, ACol: Integer; var Fcolor: Integer;
-      var Bold, Italic, underline: Boolean);
     procedure mnDeleteClick(Sender: TObject);
     procedure Deleteallworkedstations1Click(Sender: TObject);
-    procedure ModeClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure GridDblClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
   private
     { Private 宣言 }
     FProcessing: Boolean;
@@ -45,9 +40,9 @@ type
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
     function EstimateNumRows(): Integer;
+    procedure SetSelect(fSelect: Boolean);
   public
     { Public 宣言 }
-    DisplayMode : integer; // 0 : current rig; 1 : rig 1; 2 : rig 2; 9 : fixed band
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
     procedure CreateBSData(aQSO : TQSO; Hz : LongInt);
     procedure AddAndDisplay(D : TBSData);
@@ -57,8 +52,10 @@ type
     procedure RewriteBandScope;
     procedure MarkCurrentFreq(Hz : integer);
     procedure ProcessBSDataFromNetwork(BSText : string);
+    procedure NotifyWorked(aQSO: TQSO);
 
     property FontSize: Integer read GetFontSize write SetFontSize;
+    property Select: Boolean write SetSelect;
 
     property BSList: TBSList read FBSList;
   end;
@@ -80,7 +77,6 @@ uses
 procedure BSRefresh(Sender: TObject);
 var
    b: TBand;
-   DispMode: Integer;
    RR: TRig;
 begin
    for b := Low(MainForm.BandScopeEx) to High(MainForm.BandScopeEx) do begin
@@ -88,23 +84,7 @@ begin
          Continue;
       end;
 
-      DispMode := MainForm.BandScopeEx[b].DisplayMode;
-
-      case DispMode of
-         1:
-            RR := MainForm.RigControl.Rig1;
-         2:
-            RR := MainForm.RigControl.Rig2;
-         else
-            RR := nil;
-      end;
-
-      if RR <> nil then begin
-         MainForm.BandScopeEx[b].SetMode(RR.CurrentMode);
-      end
-      else begin
-         MainForm.BandScopeEx[b].RewriteBandScope;
-      end;
+      MainForm.BandScopeEx[b].RewriteBandScope;
    end;
 end;
 
@@ -363,35 +343,6 @@ begin
    Result := j;
 end;
 
-procedure TBandScope2.GridSetting(ARow, ACol: Integer; var Fcolor: Integer; var Bold, Italic, underline: Boolean);
-var
-   D: TBSData;
-begin
-   D := TBSData(Grid.Objects[ACol, ARow]);
-   if D = nil then begin
-      Bold := True;
-      FColor := clBlack;
-   end
-   else begin
-      if D.NewMulti then begin
-         FColor := clRed;
-      end
-      else if D.Worked then begin
-         FColor := clBlack;
-      end
-      else begin
-         FColor := clGreen;
-      end;
-
-      if D.Bold then begin
-         Bold := True;
-      end
-      else begin
-         Bold := False;
-      end;
-   end;
-end;
-
 procedure TBandScope2.DeleteFromBSList(i: Integer);
 begin
    if (i >= 0) and (i < FBSList.Count) then begin
@@ -470,19 +421,13 @@ begin
       end;
    end;
    FBSList.Pack;
-   BSRefresh(Self);
-end;
 
-procedure TBandScope2.ModeClick(Sender: TObject);
-begin
-   DisplayMode := TMenuItem(Sender).Tag;
+   RewriteBandScope();
 end;
 
 procedure TBandScope2.FormCreate(Sender: TObject);
 begin
    FBSList := TBSList.Create();
-
-   DisplayMode := 0; // current rig
    FProcessing := False;
 end;
 
@@ -493,9 +438,7 @@ end;
 
 procedure TBandScope2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-//   if ArrayNumber > 0 then begin
-//      BandScopeArray[ArrayNumber] := nil;
-//   end;
+//
 end;
 
 procedure TBandScope2.GridDblClick(Sender: TObject);
@@ -556,6 +499,56 @@ begin
    end;
 end;
 
+procedure TBandScope2.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+var
+   D: TBSData;
+   strText: string;
+begin
+   with Grid.Canvas do begin
+      Font.Name := 'ＭＳ ゴシック';
+      Brush.Color := Grid.Color;
+      Brush.Style := bsSolid;
+      FillRect(Rect);
+
+      strText := Grid.Cells[ACol, ARow];
+
+      D := TBSData(Grid.Objects[ACol, ARow]);
+      if D = nil then begin
+         Font.Style := [fsBold];
+         Font.Color := clBlack;
+      end
+      else begin
+         // 交信済み(＝マルチゲット済み）
+         if D.Worked then begin
+            Font.Color := clBlack;
+            D.Bold := False;
+         end
+         else begin  // 未交信
+            D.Bold := True;
+            if D.NewMulti then begin         // マルチ未ゲット
+               Font.Color := clWhite;
+               Brush.Color := clRed;
+            end
+            else if D.MultiWorked then begin // マルチゲット済み
+               Font.Color := clGreen;
+            end
+            else begin     // マルチ不明
+               Font.Color := clGreen;
+            end;
+         end;
+
+         if D.Bold then begin
+            Font.Style := [fsBold];
+         end
+         else begin
+            Font.Style := [];
+         end;
+      end;
+
+      TextRect(Rect, strText, [tfLeft,tfVerticalCenter,tfSingleLine]);
+   end;
+end;
+
 function TBandScope2.GetFontSize(): Integer;
 begin
    Result := Grid.Font.Size;
@@ -575,6 +568,27 @@ begin
 
    for i := 0 to Grid.RowCount - 1 do begin
       Grid.RowHeights[i] := h;
+   end;
+end;
+
+procedure TBandScope2.SetSelect(fSelect: Boolean);
+begin
+   if fSelect = True then begin
+      Panel1.Color := clBlue;
+   end
+   else begin
+      Panel1.Color := clGray;
+   end;
+end;
+
+procedure TBandScope2.NotifyWorked(aQSO: TQSO);
+var
+   i: Integer;
+   D: TBSData;
+begin
+   for i := 0 to FBSList.Count - 1 do begin
+      D := FBSList[i];
+      SpotCheckWorked(D);
    end;
 end;
 

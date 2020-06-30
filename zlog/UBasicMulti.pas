@@ -166,18 +166,12 @@ var
    S: TBSData;
    i: integer;
 begin
-   { for i := 0 to USpotClass.BSList.Count - 1 do
-     begin
-     S := TBSData(USpotClass.BSList[i]);
-     ProcessSpotData(TBaseSpot(S));
-     end; }
-
 //   for i := 0 to USpotClass.BSList2.Count - 1 do begin
 //      S := TBSData(USpotClass.BSList2[i]);
 //      ProcessSpotData(TBaseSpot(S));
 //   end;
-//
-//   uBandScope2.BSRefresh(Self);
+
+   uBandScope2.BSRefresh(Self);
 end;
 
 procedure TBasicMulti.AddSpot(aQSO: TQSO); // renews cluster & bs when adding a qso w/o renewing

@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, Console, ExtCtrls, Menus, AnsiStrings, ComCtrls,
   Console2, USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO,
-  OverbyteIcsWndControl, OverbyteIcsTnCnx;
+  OverbyteIcsWndControl, OverbyteIcsTnCnx, Vcl.ExtDlgs;
 
 const
   SPOTMAX = 2000;
@@ -29,7 +29,8 @@ type
     cbNotifyCurrentBand: TCheckBox;
     ClusterComm: TCommPortDriver;
     PopupMenu: TPopupMenu;
-    Deleteselectedspots1: TMenuItem;
+    menuSaveToFile: TMenuItem;
+    SaveTextFileDialog1: TSaveTextFileDialog;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure Button1Click(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
@@ -58,9 +59,9 @@ type
       Len: Integer);
     procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer;
       var Height: Integer);
+    procedure menuSaveToFileClick(Sender: TObject);
   private
     { Private declarations }
-    SpotIndex : array[0..SPOTMAX] of integer;
     CommBuffer : TStringList;
     CommTemp : string; {command work string}
     CommStarted : boolean;
@@ -71,7 +72,7 @@ type
     { Public declarations }
     SpotList : TSpotList;
     procedure DeleteSpot(_from, _to : integer);
-    procedure AddListBox(S : string);
+    procedure AddListBox(SP: TSpot);
     procedure RenewListBox;
     procedure ProcessSpot(Sp : TSpot);
     procedure PreProcessSpotFromZLink(S : string);
@@ -95,7 +96,7 @@ type
 implementation
 
 uses
-  Main, UOptions, UZLinkForm, URigControl, uBandScope2;
+  Main, UOptions, UZLinkForm, URigControl, UBandScope2, UzLogSpc;
 
 {$R *.DFM}
 
@@ -287,13 +288,14 @@ begin
    ImplementOptions;
 end;
 
-procedure TCommForm.AddListBox(S: string);
+procedure TCommForm.AddListBox(SP: TSpot);
 var
    _VisRows : integer;
    _TopRow : integer;
+   S: string;
 begin
-   ListBox.Items.Add(S);
-   SpotIndex[ListBox.Items.Count-1] := ListBox.Items.Count - 1;
+   S := Sp.ClusterSummary;
+   ListBox.Items.AddObject(S, SP);
    _VisRows := ListBox.ClientHeight div ListBox.ItemHeight;
    _TopRow := ListBox.Items.Count - _VisRows + 1;
 
@@ -315,7 +317,6 @@ begin
    ListBox.Clear;
    for i := 0 to SpotList.Count - 1 do begin
       ListBox.Items.Add(SpotList[i].ClusterSummary);
-      SpotIndex[i] := i;
    end;
 
    _VisRows := ListBox.ClientHeight div ListBox.ItemHeight;
@@ -389,11 +390,10 @@ begin
       exit;
    end;
 
-   // 現在のバンドと同じ場合、交信済みか確認する
-   if Sp.Band = CurrentQSO.Band then begin
-      Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
-   end;
+   // 交信済みチェック
+   SpotCheckWorked(Sp);
 
+   // Spotリストへ追加
    SpotList.Add(Sp);
 
    if cbNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
@@ -401,7 +401,7 @@ begin
    else begin
       MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
    end;
-   AddListBox(Sp.ClusterSummary);
+   AddListBox(Sp);
 
    D := TBSData.Create;
    D.Call := Sp.Call;
@@ -414,11 +414,14 @@ begin
    D.Worked := Sp.Worked;
    D.ClusterData := True;
    D.CQ := Sp.CQ;
+   D.Number := Sp.Number;
+   D.NewJaMulti := Sp.NewJaMulti;
+   D.MultiWorked := Sp.MultiWorked;
 
 //   MainForm.BandScope2.AddAndDisplay(D);
 
    MainForm.BandScopeEx[D.Band].AddAndDisplay(D);
-   MainForm.BandScopeEx[D.Band].RewriteBandScope();
+//   MainForm.BandScopeEx[D.Band].RewriteBandScope();
 end;
 
 procedure TCommForm.TransmitSpot(S : string); // local or via network
@@ -578,24 +581,17 @@ begin
 end;
 
 procedure TCommForm.ListBoxDblClick(Sender: TObject);
-var Sp : TSpot;
-    i : integer;
+var
+   Sp : TSpot;
 begin
+   if ListBox.ItemIndex = -1 then begin
+      Exit;
+   end;
    if ListBox.Items[ListBox.ItemIndex] = '' then begin
-      exit;
+      Exit;
    end;
 
-   i := SpotIndex[ListBox.ItemIndex];
-
-   if SpotList.Count = 0 then begin
-      exit;
-   end;
-
-   if (i < 0) or (i > SpotList.Count - 1) then begin
-      exit;
-   end;
-
-   Sp := SpotList[i];
+   Sp := TSpot(ListBox.Items.Objects[ListBox.ItemIndex]);
 
    if Sp.FreqHz > 0 then begin
       if MainForm.RigControl.Rig <> nil then begin
@@ -606,9 +602,9 @@ begin
    MainForm.UpdateBand(Sp.Band);
    Main.CurrentQSO.CallSign := Sp.Call;
    MainForm.CallsignEdit.Text := Sp.Call;
-   MainForm.NumberEdit.Text := '';
+   MainForm.NumberEdit.Text := Sp.Number;
 
-   MainForm.LastFocus.SetFocus;
+   Main.MyContest.MultiForm.SetNumberEditFocus;
 end;
 
 procedure TCommForm.ListBoxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -637,6 +633,7 @@ var
    YOffSet: Integer;
    S : string;
    H: Integer;
+   SP: TSpot;
 begin
    with (Control as TListBox).Canvas do begin
       FillRect(Rect);								{ clear the rectangle }
@@ -645,30 +642,31 @@ begin
       H := Rect.Bottom - Rect.Top;
       YOffset := (H - Abs(TListBox(Control).Font.Height)) div 2;
 
-      S := (Control as TListBox).Items[Index];
-      if SpotList[Index].NewMulti then begin
+      S := TListBox(Control).Items[Index];
+      SP := TSpot(TListBox(Control).Items.Objects[Index]);
+      if SP.NewMulti then begin
          if odSelected in State then begin
             Font.Color := clFuchsia;
          end
          else begin
-         Font.Color := clRed;
+            Font.Color := clRed;
          end;
       end
       else begin
-         if SpotList[Index].Worked then begin
+         if SP.Worked then begin
             if odSelected in State then begin
                Font.Color := clWhite;
             end
             else begin
-            Font.Color := clBlack;
+               Font.Color := clBlack;
             end;
          end
          else begin
             if odSelected in State then begin
                Font.Color := clYellow;
-         end
-         else begin
-            Font.Color := clGreen;
+            end
+            else begin
+               Font.Color := clGreen;
             end;
          end;
       end;
@@ -722,6 +720,25 @@ procedure TCommForm.SetFontSize(v: Integer);
 begin
    ListBox.Font.Size := v;
    Console.Font.Size := v;
+end;
+
+procedure TCommForm.menuSaveToFileClick(Sender: TObject);
+var
+   i: Integer;
+   F: TextFile;
+begin
+   if SaveTextFileDialog1.Execute() = False then begin
+      Exit;
+   end;
+
+   AssignFile(F, SaveTextFileDialog1.FileName);
+   Rewrite(F);
+
+   for i := 0 to ListBox.Items.Count - 1 do begin
+      WriteLn(F, ListBox.Items[i]);
+   end;
+
+   CloseFile(F);
 end;
 
 end.

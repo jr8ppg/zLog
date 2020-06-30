@@ -167,6 +167,7 @@ type
     function MergeFile(filename: string): Integer;
     procedure Sort(SortMethod: TSortMethod; fWithMode: Boolean = False); overload;
     function DupeCheck(aQSO: TQSO; fWithMode: Boolean): TQSO;
+    procedure SaveToFile(filename: string);
   end;
 
   TQSOListArray = array[b19..HiBand] of TQSOList;
@@ -180,7 +181,7 @@ type
     FAcceptDifferentMode : Boolean;
     FCountHigherPoints : Boolean;
     FDifferentModePointer : Integer; //points to a qso on a different mode but not dupe
-    FDupeCheckList: array[b19..HiBand] of TQSOList;
+    FDupeCheckList: TQSOListArray;
     FBandList: TQSOListArray;
     procedure Delete(i : Integer);
   public
@@ -226,6 +227,8 @@ type
 //    function MergeFile(filename: string): Integer;
 
     function IsWorked(strCallsign: string; band: TBand): Boolean;
+    function IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
+    function IsNewMulti(band: TBand; multi: string): Boolean;
 
     property Saved: Boolean read FSaved write FSaved;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode write FAcceptDifferentMode;
@@ -922,6 +925,21 @@ begin
    finally
       Q.Free();
    end;
+end;
+
+procedure TQSOList.SaveToFile(filename: string);
+var
+   i: Integer;
+   F: TextFile;
+begin
+   AssignFile(F, filename);
+   Rewrite(F);
+
+   for i := 0 to Count - 1 do begin
+      WriteLn(F, Items[i].Callsign);
+   end;
+
+   CloseFile(F);
 end;
 
 { TLog }
@@ -1662,6 +1680,54 @@ begin
    finally
       Q.Free();
    end;
+end;
+
+function TLog.IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
+var
+   Q: TQSO;
+   R: TQSO;
+   b: TBand;
+begin
+   Q := TQSO.Create();
+   try
+      for b := Low(FDupeCheckList) to High(FDupeCheckList) do begin
+         if dmZLogGlobal.Settings._activebands[b] = False then begin
+            Continue;
+         end;
+
+         if b = exclude_band then begin
+            Continue;
+         end;
+
+         Q.Callsign := strCallsign;
+         Q.Band := b;
+
+         R := FDupeCheckList[b].DupeCheck(Q, False);
+         if R <> nil then begin
+            workdmulti := R.Multi1;
+            Result := True;
+            Exit;
+         end;
+      end;
+
+      Result := False;
+   finally
+      Q.Free();
+   end;
+end;
+
+function TLog.IsNewMulti(band: TBand; multi: string): Boolean;
+var
+   i: Integer;
+begin
+   for i := 1 to FBandList[band].Count - 1 do begin
+      if FBandList[band].Items[i].Multi1 = multi then begin
+         Result := False;
+         Exit;
+      end;
+   end;
+
+   Result := True;
 end;
 
 { TQSOCallsignComparer }

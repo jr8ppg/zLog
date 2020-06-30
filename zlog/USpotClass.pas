@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Windows, Classes,
   Generics.Collections, Generics.Defaults,
-  UzLogConst, UzLogGlobal, UzLogQSO;
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogSpc;
 
 type
   TBaseSpot = class
@@ -22,6 +22,8 @@ type
     Mode : TMode;
     ClusterData : boolean; // true if data from PacketCluster
     CQ: Boolean;
+    NewJaMulti: Boolean;
+    MultiWorked: Boolean;
     constructor Create; virtual;
     function FreqKHzStr : string;
     function NewMulti : boolean; // newcty or newzone
@@ -60,10 +62,12 @@ type
     constructor Create(OwnsObjects: Boolean = True);
   end;
 
-//var
-//  BSList2: TBSList;
+  procedure SpotCheckWorked(Sp: TBaseSpot);
 
 implementation
+
+uses
+  Main;
 
 constructor TBaseSpot.Create;
 begin
@@ -80,6 +84,8 @@ begin
    Mode := mCW;
    ClusterData := False;
    CQ := False;
+   NewJaMulti := False;
+   MultiWorked := False;
 end;
 
 constructor TSpot.Create;
@@ -295,7 +301,7 @@ end;
 
 Function TBaseSpot.NewMulti : boolean;
 begin
-   Result := NewCty or NewZone;
+   Result := NewCty or NewZone or NewJaMulti;
 end;
 
 function TBSData.InText : string;
@@ -359,10 +365,33 @@ begin
    Inherited Create(OwnsObjects);
 end;
 
-//initialization
-//   BSList2 := TBSList.Create;
-//
-//finalization
-//   BSList2.Free();
+procedure SpotCheckWorked(Sp: TBaseSpot);
+var
+   multi: string;
+   SD, SD2: TSuperData;
+begin
+     // 交信済みか確認する
+   Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
+
+   // 他のバンドで交信済みならマルチを取得
+   if Log.IsOtherBandWorked(Sp.Call, Sp.Band, multi) = True then begin
+      Sp.Number := multi;
+   end
+   else begin
+      // 他のバンドで未交信ならSPCデータよりマルチを取得
+      SD := TSuperData.Create();
+      Sd.Callsign := Sp.Call;
+      SD2 := MainForm.SuperCheckList.ObjectOf(SD);
+      if SD2 <> nil then begin
+         Sp.Number := SD2.Number;
+      end;
+      SD.Free();
+   end;
+
+   // そのマルチはSp.BandでNEW MULTIか
+   if Sp.Number <> '' then begin
+      Sp.NewJaMulti := Log.IsNewMulti(Sp.Band, Sp.Number);
+   end;
+end;
 
 end.
