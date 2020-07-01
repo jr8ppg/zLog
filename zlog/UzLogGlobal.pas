@@ -2270,6 +2270,11 @@ begin
    n1 := Length(str1);
    n2 := Length(str2);
 
+   if (n1 > 100) or (n2 > 100) then begin
+      Result := 100;
+      Exit;
+   end;
+
    for i := 0 to n1 do begin
       d[i][0] := i;
    end;
@@ -2300,6 +2305,11 @@ var
 begin
    n1 := Length(str1);
    n2 := Length(str2);
+
+   if (n1 > 100) or (n2 > 100) then begin
+      Result := 100;
+      Exit;
+   end;
 
    offset := n1;
    V[offset + 1] := 0;
