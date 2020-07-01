@@ -906,29 +906,41 @@ begin
 end;
 
 procedure TEditDialog.actionSetPseQSLExecute(Sender: TObject);
+var
+   strTemp: string;
 begin
-   if Pos(MEMO_NO_QSL, CurrentQSO.Memo) > 0 then begin
-      CurrentQSO.Memo := StringReplace(CurrentQSO.Memo, MEMO_NO_QSL, '', [rfReplaceAll]);
+   strTemp := MemoEdit.Text;
+   if Pos(MEMO_NO_QSL, strTemp) > 0 then begin
+      strTemp := Trim(StringReplace(strTemp, MEMO_NO_QSL, '', [rfReplaceAll]));
    end;
 
-   if Pos(MEMO_PSE_QSL, CurrentQSO.Memo) = 0 then begin
-      CurrentQSO.Memo := MEMO_PSE_QSL + ' ' + CurrentQSO.Memo;
+   if Pos(MEMO_PSE_QSL, strTemp) = 0 then begin
+      strTemp := MEMO_PSE_QSL + ' ' + strTemp;
+   end
+   else begin
+      strTemp := Trim(StringReplace(strTemp, MEMO_PSE_QSL, '', [rfReplaceAll]));
    end;
 
-   MemoEdit.Text := CurrentQSO.Memo;
+   MemoEdit.Text := strTemp;
 end;
 
 procedure TEditDialog.actionSetNoQSLExecute(Sender: TObject);
+var
+   strTemp: string;
 begin
-   if Pos(MEMO_PSE_QSL, CurrentQSO.Memo) > 0 then begin
-      CurrentQSO.Memo := StringReplace(CurrentQSO.Memo, MEMO_PSE_QSL, '', [rfReplaceAll]);
+   strTemp := MemoEdit.Text;
+   if Pos(MEMO_PSE_QSL, strTemp) > 0 then begin
+      strTemp := Trim(StringReplace(strTemp, MEMO_PSE_QSL, '', [rfReplaceAll]));
    end;
 
-   if Pos(MEMO_NO_QSL, CurrentQSO.Memo) = 0 then begin
-      CurrentQSO.Memo := MEMO_NO_QSL + ' ' + CurrentQSO.Memo;
+   if Pos(MEMO_NO_QSL, strTemp) = 0 then begin
+      strTemp := MEMO_NO_QSL + ' ' + strTemp;
+   end
+   else begin
+      strTemp := Trim(StringReplace(strTemp, MEMO_NO_QSL, '', [rfReplaceAll]));
    end;
 
-   MemoEdit.Text := CurrentQSO.Memo;
+   MemoEdit.Text := strTemp;
 end;
 
 end.
