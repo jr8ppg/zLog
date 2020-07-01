@@ -8253,11 +8253,14 @@ end;
 procedure TMainForm.actionSetPseQSLExecute(Sender: TObject);
 begin
    if Pos(MEMO_NO_QSL, CurrentQSO.Memo) > 0 then begin
-      CurrentQSO.Memo := StringReplace(CurrentQSO.Memo, MEMO_NO_QSL, '', [rfReplaceAll]);
+      CurrentQSO.Memo := Trim(StringReplace(CurrentQSO.Memo, MEMO_NO_QSL, '', [rfReplaceAll]));
    end;
 
    if Pos(MEMO_PSE_QSL, CurrentQSO.Memo) = 0 then begin
       CurrentQSO.Memo := MEMO_PSE_QSL + ' ' + CurrentQSO.Memo;
+   end
+   else begin
+      CurrentQSO.Memo := Trim(StringReplace(CurrentQSO.Memo, MEMO_PSE_QSL, '', [rfReplaceAll]));
    end;
 
    MemoEdit.Text := CurrentQSO.Memo;
@@ -8267,11 +8270,14 @@ end;
 procedure TMainForm.actionSetNoQSLExecute(Sender: TObject);
 begin
    if Pos(MEMO_PSE_QSL, CurrentQSO.Memo) > 0 then begin
-      CurrentQSO.Memo := StringReplace(CurrentQSO.Memo, MEMO_PSE_QSL, '', [rfReplaceAll]);
+      CurrentQSO.Memo := Trim(StringReplace(CurrentQSO.Memo, MEMO_PSE_QSL, '', [rfReplaceAll]));
    end;
 
    if Pos(MEMO_NO_QSL, CurrentQSO.Memo) = 0 then begin
       CurrentQSO.Memo := MEMO_NO_QSL + ' ' + CurrentQSO.Memo;
+   end
+   else begin
+      CurrentQSO.Memo := Trim(StringReplace(CurrentQSO.Memo, MEMO_NO_QSL, '', [rfReplaceAll]));
    end;
 
    MemoEdit.Text := CurrentQSO.Memo;
