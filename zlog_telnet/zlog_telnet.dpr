@@ -6,7 +6,8 @@ uses
   UzlogConst in 'UzlogConst.pas',
   USpotClass in 'USpotClass.pas',
   UzLogGlobal in 'UzLogGlobal.pas' {dmZLogGlobal: TDataModule},
-  UOptions in 'UOptions.pas' {Options};
+  UOptions in 'UOptions.pas' {Options},
+  HelperLib in 'HelperLib.pas';
 
 {$R *.res}
 

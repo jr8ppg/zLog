@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, Console, ExtCtrls, Menus, AnsiStrings, ComCtrls, IniFiles,
   Console2, OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket,
-  UOptions, USpotClass, UzLogConst;
+  UOptions, USpotClass, UzLogConst, HelperLib;
 
 const
   SPOTMAX = 2000;
@@ -43,6 +43,7 @@ type
     procedure ListBoxDrawItem(Control: TWinControl; Index: Integer; Rect: TRect; State: TOwnerDrawState);
     procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer; var Height: Integer);
     procedure menuSettingsClick(Sender: TObject);
+    procedure menuExitClick(Sender: TObject);
   private
     { Private declarations }
     FSpotExpireMin: Integer; // spot expiration time in minutes
@@ -163,8 +164,8 @@ begin
       ini.WriteString('cluster', 'port', FClusterPortNumber);
       ini.WriteInteger('cluster', 'linebreak', FClusterLineBreak);
       ini.WriteString('zserver', 'clientname', FZServerClientName);
-      ini.ReadString('zserver', 'hostname', FZServerHostName);
-      ini.ReadString('zserver', 'port', FZServerPortNumber);
+      ini.WriteString('zserver', 'hostname', FZServerHostName);
+      ini.WriteString('zserver', 'port', FZServerPortNumber);
    finally
       ini.Free();
    end;
@@ -230,7 +231,7 @@ begin
 
    // ƒŠƒXƒg‚Ö’Ç‰Á
    ListBox.Items.AddObject(Sp.ClusterSummary, Sp);
-   ListBox.ItemIndex := ListBox.Items.Count - 1;
+   ListBox.ShowLast();
 end;
 
 function TrimCRLF(SS : string) : string;
@@ -272,7 +273,7 @@ begin
                if ZServer.State = wsConnected then begin
                   RelaySpot(FCommTemp);
                end
-               else if ZServer.State = wsClosed then begin
+               else if (ZServer.State = wsClosed) and (ZServer.Addr <> '') then begin
                   ZServer.Connect();
                end;
             end
@@ -401,6 +402,12 @@ var
 begin
    str := ZLinkHeader + ' SPOT ' + S + LineBreakCode[Ord(Console.LineBreak)];
    ZServer.SendStr(str);
+end;
+
+procedure TClusterClient.menuExitClick(Sender: TObject);
+begin
+   SaveSettings();
+   Close();
 end;
 
 procedure TClusterClient.menuSettingsClick(Sender: TObject);

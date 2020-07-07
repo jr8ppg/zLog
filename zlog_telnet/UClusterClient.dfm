@@ -65,8 +65,6 @@ object ClusterClient: TClusterClient
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
-    ExplicitWidth = 367
-    ExplicitHeight = 287
     object Splitter1: TSplitter
       Left = 1
       Top = 115
@@ -95,8 +93,6 @@ object ClusterClient: TClusterClient
       TabOrder = 0
       OnDrawItem = ListBoxDrawItem
       OnMeasureItem = ListBoxMeasureItem
-      ExplicitWidth = 365
-      ExplicitHeight = 193
     end
     object Console: TColorConsole2
       Left = 1
@@ -112,8 +108,6 @@ object ClusterClient: TClusterClient
       Font.Style = []
       Rows = 500
       LineBreak = CR
-      ExplicitTop = 198
-      ExplicitWidth = 365
     end
   end
   object Timer1: TTimer
@@ -158,6 +152,7 @@ object ClusterClient: TClusterClient
       end
       object menuExit: TMenuItem
         Caption = #32066#20102'(&X)'
+        OnClick = menuExitClick
       end
     end
   end
