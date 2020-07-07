@@ -91,11 +91,12 @@ uses
   UzLogKeyer in 'UzLogKeyer.pas' {dmZLogKeyer: TDataModule},
   DialogHook in 'DialogHook.pas',
   UZAnalyze in 'UZAnalyze.pas' {ZAnalyze},
-  UzLogConst in 'UzlogConst.pas',
+  UzLogConst in 'UzLogConst.pas',
   UzLogQSO in 'UzLogQSO.pas',
   USuperCheck in 'USuperCheck.pas' {SuperCheck},
   UzLogSpc in 'UzLogSpc.pas',
-  Progress in 'Progress.pas' {formProgress};
+  Progress in 'Progress.pas' {formProgress},
+  HelperLib in 'HelperLib.pas';
 
 {$R *.RES}
 

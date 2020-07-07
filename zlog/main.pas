@@ -16,7 +16,7 @@ uses
   UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UQuickRef, UZAnalyze,
   UPartials, URateDialog, USuperCheck, USuperCheck2, UComm, UCWKeyBoard, UChat,
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
-  UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2,
+  UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc;
 
 const
@@ -68,7 +68,6 @@ type
     constructor Create(AOwner: TComponent); virtual;
     procedure SetDirectEdit(Direct : Boolean);
     procedure Add(aQSO : TQSO); virtual;
-    procedure ResetTopRow;
     procedure SetGridWidth;
     procedure SetEditFields;
     function GetNewMulti1(aQSO : TQSO) : string; virtual;
@@ -2825,7 +2824,6 @@ end;
 
 procedure TBasicEdit.Add(aQSO: TQSO);
 var
-   i: Integer;
    L: TQSOList;
 begin
    if MainForm.ShowCurrentBandOnly.Checked and (aQSO.Band <> CurrentQSO.Band) then begin
@@ -2839,30 +2837,9 @@ begin
       L := Log.QsoList;
    end;
 
-   with MainForm.Grid do begin
+   WriteQSO(L.Count, aQSO);
 
-      WriteQSO(L.Count, aQSO);
-
-      i := L.Count - VisibleRowCount;
-
-      if (MainForm.Grid.Focused = False) and (aQSO.Reserve2 <> $AA) { local } then begin
-         if i > 0 then
-            TopRow := i + 1
-         else
-            TopRow := 1;
-      end
-      else begin // ver 2.0x
-         if (aQSO.Reserve2 = $AA) { not local } and (MainForm.Grid.Focused = False) then begin
-            if i > 0 then begin
-               TopRow := i + 1; // ver 2.0x
-            end;
-         end;
-      end;
-
-      DefaultDrawing := True;
-
-      RefreshScreen;
-   end;
+   RefreshScreen;
 end;
 
 procedure TBasicEdit.WriteQSO(R: Integer; aQSO: TQSO);
@@ -2962,41 +2939,7 @@ begin
          ClearQSO(i);
       end;
 
-      if fSelectRow = True then begin
-         if L.Count < Grid.VisibleRowCount then begin
-            Grid.TopRow := 1;
-            Grid.Row := L.Count - 1;
-         end
-         else begin
-            Grid.TopRow := L.Count - Grid.VisibleRowCount;
-            Grid.Row := L.Count - 1;
-         end;
-      end;
-
-      Grid.Refresh;
-   end;
-end;
-
-procedure TBasicEdit.ResetTopRow;
-var
-   L: TQSOList;
-begin
-   with MainForm do begin
-      if ShowCurrentBandOnly.Checked then begin
-         L := Log.BandList[CurrentQSO.Band];
-      end
-      else begin
-         L := Log.QsoList;
-      end;
-
-      if L.Count < Grid.VisibleRowCount then begin
-         Grid.TopRow := 1;
-         Grid.Row := 0;
-      end
-      else begin
-         Grid.TopRow := L.Count - Grid.VisibleRowCount;
-         Grid.Row := L.Count - 1;
-      end;
+      Grid.ShowLast(L.Count - 1);
 
       Grid.Refresh;
    end;
@@ -4805,7 +4748,16 @@ begin
 end;
 
 procedure TMainForm.GridKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
+var
+   L: TQSOList;
 begin
+   if ShowCurrentBandOnly.Checked then begin
+      L := Log.BandList[CurrentQSO.Band];
+   end
+   else begin
+      L := Log.QsoList;
+   end;
+
    case Key of
       VK_DELETE: begin
             DeleteQSO1Click(Self);
@@ -4826,13 +4778,13 @@ begin
                end
                else begin
                   Grid.LeftCol := 0;
-                  EditScreen.ResetTopRow;
+                  Grid.ShowLast(L.Count - 1);
                   LastFocus.SetFocus;
                end;
             end
             else begin
                Grid.LeftCol := 0;
-               EditScreen.ResetTopRow;
+               Grid.ShowLast(L.Count - 1);
                LastFocus.SetFocus;
             end;
          end;
@@ -6905,7 +6857,8 @@ begin
 //      SetFontSize(dmZlogGlobal.Settings._mainfontsize);
 //      Application.ProcessMessages();
 
-      EditScreen.ResetTopRow; // added 2.2e
+      Grid.Row := 1;
+      Grid.ShowLast(Log.TotalQSO);
       EditScreen.RefreshScreen; // added 2,2e
 
       UpdateBand(CurrentQSO.Band);
