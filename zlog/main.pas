@@ -5606,23 +5606,30 @@ begin
       if CallsignEdit.Focused then begin
          Q := Log.QuickDupe(CurrentQSO);
          if TabPressed2 and (Q <> nil) then begin
-            dmZLogKeyer.ClrBuffer;
+            // ステータスバーにDUPE表示
             WriteStatusLineRed(Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck), True);
 
-            if dmZlogGlobal.Settings._switchcqsp then begin
-               if dmZlogGlobal.Settings.CW.CurrentBank = 2 then begin
-                  CallsignEdit.SelectAll;
-                  exit;
+            // ALLOW DUPEしない場合は4番を送出
+            if dmZLogGlobal.Settings._allowdupe = False then begin
+               // 先行して送出されている2番をクリア
+               dmZLogKeyer.ClrBuffer;
+
+               if dmZlogGlobal.Settings._switchcqsp then begin
+                  if dmZlogGlobal.Settings.CW.CurrentBank = 2 then begin
+                     CallsignEdit.SelectAll;
+                     exit;
+                  end;
                end;
+
+               // 4番(QSO B4 TU)送出
+               S := ' ' + SetStr(dmZlogGlobal.CWMessage(1, 4), CurrentQSO);
+               dmZLogKeyer.SendStr(S);
+               dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
+
+               CallsignEdit.SelectAll;
+
+               exit; { BECAREFUL!!!!!!!!!!!!!!!!!!!!!!!! }
             end;
-
-            S := ' ' + SetStr(dmZlogGlobal.CWMessage(1, 4), CurrentQSO);
-            dmZLogKeyer.SendStr(S);
-            dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
-
-            CallsignEdit.SelectAll;
-
-            exit; { BECAREFUL!!!!!!!!!!!!!!!!!!!!!!!! }
          end;
 
          if TabPressed2 then begin
@@ -5632,8 +5639,8 @@ begin
          end;
       end;
 
-      dmZLogKeyer.ResumeCW;
    finally
+      dmZLogKeyer.ResumeCW;
       TabPressed := False;
       TabPressed2 := False;
    end;
