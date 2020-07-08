@@ -599,6 +599,7 @@ var
    YOffSet: Integer;
    S : string;
    H: Integer;
+   SP: TSpot;
 begin
    with (Control as TListBox).Canvas do begin
       FillRect(Rect);								{ clear the rectangle }
@@ -607,8 +608,9 @@ begin
       H := Rect.Bottom - Rect.Top;
       YOffset := (H - Abs(TListBox(Control).Font.Height)) div 2;
 
-      S := (Control as TListBox).Items[Index];
-      if SpotList[Index].NewMulti then begin
+      S := TListBox(Control).Items[Index];
+      SP := TSpot(TListBox(Control).Items.Objects[Index]);
+      if SP.NewMulti then begin
          if odSelected in State then begin
             Font.Color := clFuchsia;
          end
@@ -617,7 +619,7 @@ begin
          end;
       end
       else begin
-         if SpotList[Index].Worked then begin
+         if SP.Worked then begin
             if odSelected in State then begin
                Font.Color := clWhite;
             end
@@ -635,7 +637,7 @@ begin
          end;
       end;
 
-      TextOut(Rect.Left + XOffset, Rect.Top + YOffSet, S)								{ display the text }
+      TextOut(Rect.Left + XOffset, Rect.Top + YOffSet, S);
    end;
 end;
 
