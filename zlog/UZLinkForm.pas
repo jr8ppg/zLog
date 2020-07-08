@@ -277,6 +277,7 @@ var
    i, j: integer;
    qid: TQSOID;
    boo, needtorenew: boolean;
+   b: TBand;
 begin
    while CommandQue.count > 0 do begin
       temp := CommandQue.Strings[0];
@@ -421,7 +422,9 @@ begin
 
       if pos('BSDATA ', temp) = 1 then begin
          temp := copy(temp, 8, 255);
-         MainForm.BandScope2.ProcessBSDataFromNetwork(temp);
+         for b := b19 to b50 do begin
+            MainForm.BandScopeEx[b].ProcessBSDataFromNetwork(temp);
+         end;
       end;
 
       if pos('SENDSPOT ', temp) = 1 then begin

@@ -4299,11 +4299,6 @@ object MainForm: TMainForm
       object Bandscope1: TMenuItem
         Action = actionShowBandScope
       end
-      object mnNewBandScope: TMenuItem
-        Caption = 'New Band Scope'
-        Visible = False
-        OnClick = mnNewBandScopeClick
-      end
       object RunningFrequencies1: TMenuItem
         Action = actionShowFreqList
       end

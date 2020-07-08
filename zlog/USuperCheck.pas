@@ -125,7 +125,7 @@ begin
       str := copy(str, 1, j - 1);
    end;
 
-   MainForm.CallsignEdit.Text := str;
+   MainForm.SetYourCallsign(str, '');
 end;
 
 procedure TSuperCheck.StayOnTopClick(Sender: TObject);

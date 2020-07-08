@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, Console, ExtCtrls, Menus, AnsiStrings, ComCtrls,
   Console2, USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, HelperLib,
-  OverbyteIcsWndControl, OverbyteIcsTnCnx;
+  OverbyteIcsWndControl, OverbyteIcsTnCnx, Vcl.ExtDlgs;
 
 const
   SPOTMAX = 2000;
@@ -29,7 +29,8 @@ type
     cbNotifyCurrentBand: TCheckBox;
     ClusterComm: TCommPortDriver;
     PopupMenu: TPopupMenu;
-    Deleteselectedspots1: TMenuItem;
+    menuSaveToFile: TMenuItem;
+    SaveTextFileDialog1: TSaveTextFileDialog;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure Button1Click(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
@@ -58,6 +59,7 @@ type
       Len: Integer);
     procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer;
       var Height: Integer);
+    procedure menuSaveToFileClick(Sender: TObject);
   private
     { Private declarations }
     CommBuffer : TStringList;
@@ -93,7 +95,7 @@ type
 implementation
 
 uses
-  Main, UOptions, UZLinkForm, URigControl, uBandScope2;
+  Main, UOptions, UZLinkForm, URigControl, UBandScope2, UzLogSpc;
 
 {$R *.DFM}
 
@@ -356,11 +358,10 @@ begin
       exit;
    end;
 
-   // 現在のバンドと同じ場合、交信済みか確認する
-   if Sp.Band = CurrentQSO.Band then begin
-      Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
-   end;
+   // 交信済みチェック
+   SpotCheckWorked(Sp);
 
+   // Spotリストへ追加
    SpotList.Add(Sp);
 
    if cbNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
@@ -383,7 +384,10 @@ begin
    D.Worked := Sp.Worked;
    D.ClusterData := True;
    D.CQ := Sp.CQ;
-   MainForm.BandScope2.AddAndDisplay(D);
+   D.Number := Sp.Number;
+   D.NewJaMulti := Sp.NewJaMulti;
+
+   MainForm.BandScopeEx[D.Band].AddAndDisplay(D);
 end;
 
 procedure TCommForm.TransmitSpot(S : string); // local or via network
@@ -559,18 +563,11 @@ begin
       Exit;
    end;
 
-   if Sp.FreqHz > 0 then begin
-      if MainForm.RigControl.Rig <> nil then begin
-         MainForm.RigControl.Rig.SetFreq(Sp.FreqHz);
-      end;
-   end;
+   // 相手局をセット
+   MainForm.SetYourCallsign(Sp.Call, Sp.Number);
 
-   MainForm.UpdateBand(Sp.Band);
-   Main.CurrentQSO.CallSign := Sp.Call;
-   MainForm.CallsignEdit.Text := Sp.Call;
-   MainForm.NumberEdit.Text := '';
-
-   MainForm.LastFocus.SetFocus;
+   // 周波数をセット
+   MainForm.SetFrequency(Sp.FreqHz);
 end;
 
 procedure TCommForm.ListBoxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -686,6 +683,25 @@ procedure TCommForm.SetFontSize(v: Integer);
 begin
    ListBox.Font.Size := v;
    Console.Font.Size := v;
+end;
+
+procedure TCommForm.menuSaveToFileClick(Sender: TObject);
+var
+   i: Integer;
+   F: TextFile;
+begin
+   if SaveTextFileDialog1.Execute() = False then begin
+      Exit;
+   end;
+
+   AssignFile(F, SaveTextFileDialog1.FileName);
+   Rewrite(F);
+
+   for i := 0 to ListBox.Items.Count - 1 do begin
+      WriteLn(F, ListBox.Items[i]);
+   end;
+
+   CloseFile(F);
 end;
 
 end.

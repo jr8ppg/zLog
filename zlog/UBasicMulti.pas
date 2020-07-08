@@ -166,16 +166,10 @@ var
    S: TBSData;
    i: integer;
 begin
-   { for i := 0 to USpotClass.BSList.Count - 1 do
-     begin
-     S := TBSData(USpotClass.BSList[i]);
-     ProcessSpotData(TBaseSpot(S));
-     end; }
-
-   for i := 0 to USpotClass.BSList2.Count - 1 do begin
-      S := TBSData(USpotClass.BSList2[i]);
-      ProcessSpotData(TBaseSpot(S));
-   end;
+//   for i := 0 to USpotClass.BSList2.Count - 1 do begin
+//      S := TBSData(USpotClass.BSList2[i]);
+//      ProcessSpotData(TBaseSpot(S));
+//   end;
 
    uBandScope2.BSRefresh(Self);
 end;
@@ -193,8 +187,8 @@ begin
       // exit;
    end;
 
-   for i := 0 to USpotClass.BSList2.Count - 1 do begin
-      S := TBaseSpot(USpotClass.BSList2[i]);
+   for i := 0 to MainForm.BandScopeEx[aQSO.Band].BSList.Count - 1 do begin
+      S := TBaseSpot(MainForm.BandScopeEx[aQSO.Band].BSList[i]);
       if (S.Call = aQSO.Callsign) and (S.Band = aQSO.Band) then begin
          S.NewCty := False;
          S.NewZone := False;
@@ -202,18 +196,6 @@ begin
          boo := true;
       end;
    end;
-
-   { for i := 0 to USpotClass.BSList.Count - 1 do
-     begin
-     S := TBaseSpot(USpotClass.BSList[i]);
-     if (S.Call = aQSO.QSO.callsign) and (S.band = aQSO.QSO.band) then
-     begin
-     S.NewCty := False;
-     S.NewZone := False;
-     S.Worked := True;
-     boo := true;
-     end;
-     end; }
 
    if boo then begin
       uBandScope2.BSRefresh(Self);

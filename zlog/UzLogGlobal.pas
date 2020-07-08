@@ -51,6 +51,12 @@ type
     FFullMatchColor: TColor;
   end;
 
+  TColorSetting = record
+    FForeColor: TColor;
+    FBackColor: TColor;
+    FBold: Boolean;
+  end;
+
   TSettingsParam = record
     _AFSK : boolean; // Use AFSK instead of RTTY for rig control
     _dontallowsameband : boolean; // same band on two rigs?
@@ -69,6 +75,8 @@ type
     _autobandmap: boolean;
     _activebands: array[b19..HiBand] of Boolean;
     _power: array[b19..HiBand] of string;
+    _usebandscope: array[b19..HiBand] of Boolean;
+    _bandscopecolor: array[1..4] of TColorSetting;
 
     CW : TCWSettingsParam;
     _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
@@ -793,6 +801,36 @@ begin
       Settings.FSuperCheck.FSuperCheckFolder := ini.ReadString('SuperCheck', 'Folder', '');
       Settings.FSuperCheck.FFullMatchHighlight := ini.ReadBool('SuperCheck', 'FullMatchHighlight', True);
       Settings.FSuperCheck.FFullMatchColor := ZStringToColorDef(ini.ReadString('SuperCheck', 'FullMatchColor', '$7fffff'), clYellow);
+
+      // BandScope
+      Settings._usebandscope[b19]   := ini.ReadBool('BandScopeEx', 'BandScope1.9MHz', False);
+      Settings._usebandscope[b35]   := ini.ReadBool('BandScopeEx', 'BandScope3.5MHz', True);
+      Settings._usebandscope[b7]    := ini.ReadBool('BandScopeEx', 'BandScope7MHz', True);
+      Settings._usebandscope[b10]   := ini.ReadBool('BandScopeEx', 'BandScope10MHz', False);
+      Settings._usebandscope[b14]   := ini.ReadBool('BandScopeEx', 'BandScope14MHz', True);
+      Settings._usebandscope[b18]   := ini.ReadBool('BandScopeEx', 'BandScope18MHz', False);
+      Settings._usebandscope[b21]   := ini.ReadBool('BandScopeEx', 'BandScope21MHz', True);
+      Settings._usebandscope[b24]   := ini.ReadBool('BandScopeEx', 'BandScope24MHz', False);
+      Settings._usebandscope[b28]   := ini.ReadBool('BandScopeEx', 'BandScope28MHz', True);
+      Settings._usebandscope[b50]   := ini.ReadBool('BandScopeEx', 'BandScope50MHz', True);
+      Settings._usebandscope[b144]  := ini.ReadBool('BandScopeEx', 'BandScope144MHz', False);
+      Settings._usebandscope[b430]  := ini.ReadBool('BandScopeEx', 'BandScope430MHz', False);
+      Settings._usebandscope[b1200] := ini.ReadBool('BandScopeEx', 'BandScope1200MHz', False);
+      Settings._usebandscope[b2400] := ini.ReadBool('BandScopeEx', 'BandScope2400MHz', False);
+      Settings._usebandscope[b5600] := ini.ReadBool('BandScopeEx', 'BandScope5600MHz', False);
+      Settings._usebandscope[b10g]  := ini.ReadBool('BandScopeEx', 'BandScope10GHz', False);
+      Settings._bandscopecolor[1].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor1', '$000000'), clBlack);
+      Settings._bandscopecolor[1].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor1', '$ffffff'), clWhite);
+      Settings._bandscopecolor[1].FBold      := ini.ReadBool('BandScopeEx', 'Bold1', False);
+      Settings._bandscopecolor[2].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor2', '$ffffff'), clWhite);
+      Settings._bandscopecolor[2].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor2', '$0000ff'), clRed);
+      Settings._bandscopecolor[2].FBold      := ini.ReadBool('BandScopeEx', 'Bold2', True);
+      Settings._bandscopecolor[3].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor3', '$008000'), clGreen);
+      Settings._bandscopecolor[3].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor3', '$ffffff'), clWhite);
+      Settings._bandscopecolor[3].FBold      := ini.ReadBool('BandScopeEx', 'Bold3', True);
+      Settings._bandscopecolor[4].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor4', '$008000'), clGreen);
+      Settings._bandscopecolor[4].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor4', '$ffffff'), clWhite);
+      Settings._bandscopecolor[4].FBold      := ini.ReadBool('BandScopeEx', 'Bold4', True);
    finally
       ini.Free();
       slParam.Free();
@@ -1121,6 +1159,36 @@ begin
       ini.WriteString('SuperCheck', 'Folder', Settings.FSuperCheck.FSuperCheckFolder);
       ini.WriteBool('SuperCheck', 'FullMatchHighlight', Settings.FSuperCheck.FFullMatchHighlight);
       ini.WriteString('SuperCheck', 'FullMatchColor', ColorToString(Settings.FSuperCheck.FFullMatchColor));
+
+      // BandScope
+      ini.WriteBool('BandScopeEx', 'BandScope1.9MHz', Settings._usebandscope[b19]);
+      ini.WriteBool('BandScopeEx', 'BandScope3.5MHz', Settings._usebandscope[b35]);
+      ini.WriteBool('BandScopeEx', 'BandScope7MHz', Settings._usebandscope[b7]);
+      ini.WriteBool('BandScopeEx', 'BandScope10MHz', Settings._usebandscope[b10]);
+      ini.WriteBool('BandScopeEx', 'BandScope14MHz', Settings._usebandscope[b14]);
+      ini.WriteBool('BandScopeEx', 'BandScope18MHz', Settings._usebandscope[b18]);
+      ini.WriteBool('BandScopeEx', 'BandScope21MHz', Settings._usebandscope[b21]);
+      ini.WriteBool('BandScopeEx', 'BandScope24MHz', Settings._usebandscope[b24]);
+      ini.WriteBool('BandScopeEx', 'BandScope28MHz', Settings._usebandscope[b28]);
+      ini.WriteBool('BandScopeEx', 'BandScope50MHz', Settings._usebandscope[b50]);
+      ini.WriteBool('BandScopeEx', 'BandScope144MHz', Settings._usebandscope[b144]);
+      ini.WriteBool('BandScopeEx', 'BandScope430MHz', Settings._usebandscope[b430]);
+      ini.WriteBool('BandScopeEx', 'BandScope1200MHz', Settings._usebandscope[b1200]);
+      ini.WriteBool('BandScopeEx', 'BandScope2400MHz', Settings._usebandscope[b2400]);
+      ini.WriteBool('BandScopeEx', 'BandScope5600MHz', Settings._usebandscope[b5600]);
+      ini.WriteBool('BandScopeEx', 'BandScope10GHz', Settings._usebandscope[b10g]);
+      ini.WriteString('BandScopeEx', 'ForeColor1', ColorToString(Settings._bandscopecolor[1].FForeColor));
+      ini.WriteString('BandScopeEx', 'BackColor1', ColorToString(Settings._bandscopecolor[1].FBackColor));
+      ini.WriteBool('BandScopeEx', 'Bold1', Settings._bandscopecolor[1].FBold);
+      ini.WriteString('BandScopeEx', 'ForeColor2', ColorToString(Settings._bandscopecolor[2].FForeColor));
+      ini.WriteString('BandScopeEx', 'BackColor2', ColorToString(Settings._bandscopecolor[2].FBackColor));
+      ini.WriteBool('BandScopeEx', 'Bold2', Settings._bandscopecolor[2].FBold);
+      ini.WriteString('BandScopeEx', 'ForeColor3', ColorToString(Settings._bandscopecolor[3].FForeColor));
+      ini.WriteString('BandScopeEx', 'BackColor3', ColorToString(Settings._bandscopecolor[3].FBackColor));
+      ini.WriteBool('BandScopeEx', 'Bold3', Settings._bandscopecolor[3].FBold);
+      ini.WriteString('BandScopeEx', 'ForeColor4', ColorToString(Settings._bandscopecolor[4].FForeColor));
+      ini.WriteString('BandScopeEx', 'BackColor4', ColorToString(Settings._bandscopecolor[4].FBackColor));
+      ini.WriteBool('BandScopeEx', 'Bold4', Settings._bandscopecolor[4].FBold);
    finally
       ini.Free();
       slParam.Free();
