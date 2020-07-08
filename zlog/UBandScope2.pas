@@ -24,6 +24,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private êÈåæ }
     FProcessing: Boolean;
@@ -439,6 +440,14 @@ end;
 procedure TBandScope2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 //
+end;
+
+procedure TBandScope2.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+   case Key of
+      VK_ESCAPE:
+         MainForm.LastFocus.SetFocus;
+   end;
 end;
 
 procedure TBandScope2.GridDblClick(Sender: TObject);

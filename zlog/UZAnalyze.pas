@@ -50,6 +50,7 @@ type
     procedure buttonUpdateClick(Sender: TObject);
     procedure buttonCopyClick(Sender: TObject);
     procedure TabControl1Change(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private êÈåæ }
     FCountData: array[1..25] of array[b19..TBand(17)] of TQsoCount;
@@ -78,6 +79,14 @@ end;
 procedure TZAnalyze.FormDestroy(Sender: TObject);
 begin
    //
+end;
+
+procedure TZAnalyze.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+   case Key of
+      VK_ESCAPE:
+         MainForm.LastFocus.SetFocus;
+   end;
 end;
 
 procedure TZAnalyze.FormShow(Sender: TObject);

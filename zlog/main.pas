@@ -687,8 +687,6 @@ type
     procedure CWPauseButtonClick(Sender: TObject);
     procedure CWPlayButtonClick(Sender: TObject);
     procedure RcvdRSTEditChange(Sender: TObject);
-    procedure FormKeyUp(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Timer1Timer(Sender: TObject);
     procedure InsertQSO1Click(Sender: TObject);
@@ -5458,11 +5456,6 @@ begin
    end;
 
    CurrentQSO.RSTRcvd := StrToIntDef(RcvdRSTEdit.Text, i);
-end;
-
-procedure TMainForm.FormKeyUp(Sender: TObject; var Key: word; Shift: TShiftState);
-begin
-//   dmZlogGlobal.SetTonePitch(dmZlogGlobal.Settings.CW._tonepitch);
 end;
 
 procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
