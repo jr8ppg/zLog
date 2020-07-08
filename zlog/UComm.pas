@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, Console, ExtCtrls, Menus, AnsiStrings, ComCtrls,
-  Console2, USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO,
+  Console2, USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, HelperLib,
   OverbyteIcsWndControl, OverbyteIcsTnCnx;
 
 const
@@ -60,7 +60,6 @@ type
       var Height: Integer);
   private
     { Private declarations }
-    SpotIndex : array[0..SPOTMAX] of integer;
     CommBuffer : TStringList;
     CommTemp : string; {command work string}
     CommStarted : boolean;
@@ -71,7 +70,6 @@ type
     { Public declarations }
     SpotList : TSpotList;
     procedure DeleteSpot(_from, _to : integer);
-    procedure AddListBox(S : string);
     procedure RenewListBox;
     procedure ProcessSpot(Sp : TSpot);
     procedure PreProcessSpotFromZLink(S : string);
@@ -287,46 +285,15 @@ begin
    ImplementOptions;
 end;
 
-procedure TCommForm.AddListBox(S: string);
-var
-   _VisRows : integer;
-   _TopRow : integer;
-begin
-   ListBox.Items.Add(S);
-   SpotIndex[ListBox.Items.Count-1] := ListBox.Items.Count - 1;
-   _VisRows := ListBox.ClientHeight div ListBox.ItemHeight;
-   _TopRow := ListBox.Items.Count - _VisRows + 1;
-
-   if _TopRow > 0 then begin
-      ListBox.TopIndex := _TopRow;
-   end
-   else begin
-      ListBox.TopIndex := 0;
-   end;
-end;
-
 procedure TCommForm.RenewListBox;
 var
-   _VisRows : integer;
-   _TopRow : integer;
-   i : integer;
+   i: Integer;
 begin
-//   _TopRow := ListBox.TopIndex;
    ListBox.Clear;
    for i := 0 to SpotList.Count - 1 do begin
-      ListBox.Items.Add(SpotList[i].ClusterSummary);
-      SpotIndex[i] := i;
+      ListBox.AddItem(SpotList[i].ClusterSummary, SpotList[i]);
    end;
-
-   _VisRows := ListBox.ClientHeight div ListBox.ItemHeight;
-   _TopRow := ListBox.Items.Count - _VisRows + 1;
-
-   if _TopRow > 0 then begin
-      ListBox.TopIndex := _TopRow;
-   end
-   else begin
-      ListBox.TopIndex := 0;
-   end;
+   ListBox.ShowLast();
 end;
 
 procedure TCommForm.PreProcessSpotFromZLink(S : string);
@@ -401,7 +368,9 @@ begin
    else begin
       MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
    end;
-   AddListBox(Sp.ClusterSummary);
+
+   ListBox.AddItem(Sp.ClusterSummary, Sp);
+   ListBox.ShowLast();
 
    D := TBSData.Create;
    D.Call := Sp.Call;
@@ -574,24 +543,21 @@ begin
 end;
 
 procedure TCommForm.ListBoxDblClick(Sender: TObject);
-var Sp : TSpot;
-    i : integer;
+var
+   Sp : TSpot;
 begin
+   if ListBox.ItemIndex = -1 then begin
+      Exit;
+   end;
+
    if ListBox.Items[ListBox.ItemIndex] = '' then begin
-      exit;
+      Exit;
    end;
 
-   i := SpotIndex[ListBox.ItemIndex];
-
-   if SpotList.Count = 0 then begin
-      exit;
+   Sp := TSpot(ListBox.Items.Objects[ListBox.ItemIndex]);
+   if Sp = nil then begin
+      Exit;
    end;
-
-   if (i < 0) or (i > SpotList.Count - 1) then begin
-      exit;
-   end;
-
-   Sp := SpotList[i];
 
    if Sp.FreqHz > 0 then begin
       if MainForm.RigControl.Rig <> nil then begin
@@ -647,7 +613,7 @@ begin
             Font.Color := clFuchsia;
          end
          else begin
-         Font.Color := clRed;
+            Font.Color := clRed;
          end;
       end
       else begin
@@ -656,15 +622,15 @@ begin
                Font.Color := clWhite;
             end
             else begin
-            Font.Color := clBlack;
+               Font.Color := clBlack;
             end;
          end
          else begin
             if odSelected in State then begin
                Font.Color := clYellow;
-         end
-         else begin
-            Font.Color := clGreen;
+            end
+            else begin
+               Font.Color := clGreen;
             end;
          end;
       end;
