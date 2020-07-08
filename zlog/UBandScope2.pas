@@ -38,6 +38,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure GridDblClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private éŒ¾ }
     FProcessing: Boolean;
@@ -470,6 +471,14 @@ procedure TBandScope2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    if ArrayNumber > 0 then begin
       BandScopeArray[ArrayNumber] := nil;
+   end;
+end;
+
+procedure TBandScope2.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+   case Key of
+      VK_ESCAPE:
+         MainForm.LastFocus.SetFocus;
    end;
 end;
 

@@ -11,7 +11,6 @@ object MainForm: TMainForm
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  KeyPreview = True
   Menu = MainMenu
   OldCreateOrder = True
   Position = poScreenCenter
@@ -22,7 +21,6 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnDeactivate = FormDeactivate
-  OnKeyUp = FormKeyUp
   OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
