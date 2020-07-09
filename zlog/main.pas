@@ -17,7 +17,8 @@ uses
   UPartials, URateDialog, USuperCheck, USuperCheck2, UComm, UCWKeyBoard, UChat,
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
-  UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc;
+  UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
+  UCwMessagePad;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -637,6 +638,8 @@ type
     actionEditLastQSO: TAction;
     actionSetPseQSL: TAction;
     actionSetNoQSL: TAction;
+    actionCwMessagePad: TAction;
+    CWMessagePad1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -837,6 +840,7 @@ type
     procedure actionEditLastQSOExecute(Sender: TObject);
     procedure actionSetPseQSLExecute(Sender: TObject);
     procedure actionSetNoQSLExecute(Sender: TObject);
+    procedure actionCwMessagePadExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -855,10 +859,10 @@ type
     FCheckMulti: TCheckMulti;
     FCheckCountry: TCheckCountry;
     FScratchSheet: TScratchSheet;
-//    FBandScope2: TBandScope2;
     FBandScopeEx: TBandScopeArray;
     FQuickRef: TQuickRef;              // Quick Reference
     FZAnalyze: TZAnalyze;              // Analyze window
+    FCWMessagePad: TCwMessagePad;
 
     FTempQSOList: TQSOList;
     clStatusLine : TColor;
@@ -1706,10 +1710,6 @@ begin
       EditScreen.RefreshScreen;
    end;
 
-   // LastFocus.SetFocus;
-   // BandScope.SetBandMode(CurrentQSO.Band, CurrentQSO.Mode);
-//   FBandScope2.SetBandMode(CurrentQSO.Band, CurrentQSO.mode);
-
    if dmZlogGlobal.Settings._countdown and (CountDownStartTime > 0) then begin
       WriteStatusLineRed('Less than 10 min since last QSY!', False);
    end;
@@ -1759,8 +1759,6 @@ begin
 
    PointEdit.Text := CurrentQSO.PointStr;
 
-   // BandScope.SetBandMode(CurrentQSO.Band, CurrentQSO.Mode);
-//   FBandScope2.SetBandMode(CurrentQSO.Band, CurrentQSO.mode);
    FBandScopeEx[CurrentQSO.Band].SetMode(CurrentQSO.mode);
 end;
 
@@ -3665,9 +3663,9 @@ begin
    FCheckMulti    := TCheckMulti.Create(Self);
    FCheckCountry  := TCheckCountry.Create(Self);
    FScratchSheet  := TScratchSheet.Create(Self);
-//   FBandScope2    := TBandScope2.Create(Self);
    FQuickRef      := TQuickRef.Create(Self);
    FZAnalyze      := TZAnalyze.Create(Self);
+   FCWMessagePad  := TCwMessagePad.Create(Self);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
@@ -3893,12 +3891,14 @@ begin
    dmZlogGlobal.ReadWindowState(FCheckMulti);
    dmZlogGlobal.ReadWindowState(FCWKeyBoard);
    dmZlogGlobal.ReadWindowState(FRigControl, '', True);
-//   dmZlogGlobal.ReadWindowState(FBandScope2);
    dmZlogGlobal.ReadWindowState(FChatForm);
    dmZlogGlobal.ReadWindowState(FFreqList);
    dmZlogGlobal.ReadWindowState(FCommForm);
    dmZlogGlobal.ReadWindowState(FScratchSheet);
    dmZlogGlobal.ReadWindowState(FRateDialog);
+   dmZlogGlobal.ReadWindowState(FRateDialog);
+   dmZlogGlobal.ReadWindowState(FZAnalyze);
+   dmZlogGlobal.ReadWindowState(FCwMessagePad);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZlogGlobal.ReadWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
@@ -3919,12 +3919,13 @@ begin
    dmZlogGlobal.WriteWindowState(FCheckMulti);
    dmZlogGlobal.WriteWindowState(FCWKeyBoard);
    dmZlogGlobal.WriteWindowState(FRigControl);
-//   dmZlogGlobal.WriteWindowState(FBandScope2);
    dmZlogGlobal.WriteWindowState(FChatForm);
    dmZlogGlobal.WriteWindowState(FFreqList);
    dmZlogGlobal.WriteWindowState(FCommForm);
    dmZlogGlobal.WriteWindowState(FScratchSheet);
    dmZlogGlobal.WriteWindowState(FRateDialog);
+   dmZlogGlobal.WriteWindowState(FZAnalyze);
+   dmZlogGlobal.WriteWindowState(FCwMessagePad);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZlogGlobal.WriteWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
@@ -4418,7 +4419,6 @@ begin
    if MyContest <> nil then begin
       MyContest.ScoreForm.FontSize := font_size;
    end;
-//   FBandScope2.FontSize := font_size;
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b].FontSize := font_size;
@@ -5291,7 +5291,6 @@ begin
    FCheckMulti.Release();
    FCWKeyBoard.Release();
    FRigControl.Release();
-//   FBandScope2.Release();
    FChatForm.Release();
    FFreqList.Release();
    FCommForm.Release();
@@ -5317,6 +5316,7 @@ begin
    FTempQSOList.Free();
    FQuickRef.Release();
    FZAnalyze.Release();
+   FCWMessagePad.Release();
    CurrentQSO.Free();
 
    SuperCheckFreeData();
@@ -6897,7 +6897,6 @@ begin
 
       UpdateBand(CurrentQSO.Band);
       UpdateMode(CurrentQSO.mode);
-//      FBandScope2.SetBandMode(CurrentQSO.Band, CurrentQSO.mode);
       FBandScopeEx[CurrentQSO.Band].SetMode(CurrentQSO.mode);
 
       MyContest.ScoreForm.UpdateData();
@@ -7465,7 +7464,6 @@ var
       end;
 
       if E > 1000 then begin
-//         FBandScope2.CreateBSData(CurrentQSO, round(E * 1000));
          FBandScopeEx[CurrentQSO.Band].CreateBSData(CurrentQSO, round(E * 1000));
       end;
 
@@ -7475,7 +7473,6 @@ begin
    if RigControl.Rig <> nil then begin
       nFreq := RigControl.Rig.CurrentFreqHz;
       if nFreq > 0 then begin
-//         FBandScope2.CreateBSData(CurrentQSO, nFreq);
          FBandScopeEx[CurrentQSO.Band].CreateBSData(CurrentQSO, nFreq);
       end
       else begin
@@ -8290,6 +8287,12 @@ begin
    end;
 
    MemoEdit.Text := strTemp;
+end;
+
+// #103 CW Message Pad
+procedure TMainForm.actionCwMessagePadExecute(Sender: TObject);
+begin
+   FCWMessagePad.Show();
 end;
 
 procedure TMainForm.RestoreWindowsPos();

@@ -4271,6 +4271,9 @@ object MainForm: TMainForm
       object CWKeyboard1: TMenuItem
         Action = actionShowCWKeyboard
       end
+      object CWMessagePad1: TMenuItem
+        Action = actionCwMessagePad
+      end
       object menuOptions: TMenuItem
         Caption = '&Options'
         OnClick = menuOptionsClick
@@ -5286,6 +5289,10 @@ object MainForm: TMainForm
     object actionSetNoQSL: TAction
       Caption = 'NO QSL'
       OnExecute = actionSetNoQSLExecute
+    end
+    object actionCwMessagePad: TAction
+      Caption = 'CW Message Pad'
+      OnExecute = actionCwMessagePadExecute
     end
   end
   object SPCMenu: TPopupMenu

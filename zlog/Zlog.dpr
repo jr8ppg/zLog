@@ -96,7 +96,10 @@ uses
   USuperCheck in 'USuperCheck.pas' {SuperCheck},
   UzLogSpc in 'UzLogSpc.pas',
   Progress in 'Progress.pas' {formProgress},
-  HelperLib in 'HelperLib.pas';
+  HelperLib in 'HelperLib.pas',
+  UCwMessageEditor in 'UCwMessageEditor.pas',
+  UCwMessagePad in 'UCwMessagePad.pas' {CwMessagePad},
+  UTextEditor in 'UTextEditor.pas' {TextEditor};
 
 {$R *.RES}
 
