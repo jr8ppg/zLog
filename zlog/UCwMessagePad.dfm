@@ -19,6 +19,7 @@ object CwMessagePad: TCwMessagePad
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
   object CategoryButtons1: TCategoryButtons

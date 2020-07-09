@@ -25,6 +25,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private êÈåæ }
   public
@@ -44,16 +45,20 @@ var
    encodings: TStrings;
 begin
    encodings := TStringList.Create();
-   encodings.AddObject('ASCII', TEncoding.ANSI);
-   OpenTextFileDialog1.Encodings.Assign(encodings);
-   SaveTextFileDialog1.Encodings.Assign(encodings);
+   try
+      encodings.AddObject('ASCII', TEncoding.ANSI);
+      OpenTextFileDialog1.Encodings.Assign(encodings);
+      SaveTextFileDialog1.Encodings.Assign(encodings);
 
-   filename := ExtractFilePath(Application.ExeName) + 'cwmessage.txt';
-   if FileExists(filename) = False then begin
-      Exit;
+      filename := ExtractFilePath(Application.ExeName) + 'cwmessage.txt';
+      if FileExists(filename) = False then begin
+         Exit;
+      end;
+
+      CategoryButtons1.LoadFromFile(filename, TEncoding.ANSI);
+   finally
+      encodings.Free();
    end;
-
-   CategoryButtons1.LoadFromFile(filename, TEncoding.ANSI);
 end;
 
 procedure TCwMessagePad.FormDestroy(Sender: TObject);
@@ -71,6 +76,11 @@ begin
          MainForm.LastFocus.SetFocus;
       end;
    end;
+end;
+
+procedure TCwMessagePad.FormShow(Sender: TObject);
+begin
+   CategoryButtons1.UpdateAllButtons();
 end;
 
 procedure TCwMessagePad.FormClose(Sender: TObject; var Action: TCloseAction);
