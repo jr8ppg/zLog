@@ -361,6 +361,11 @@ begin
    // 交信済みチェック
    SpotCheckWorked(Sp);
 
+   // SelfSpotか
+   if Sp.Call = dmZlogGlobal.MyCall then begin
+      Sp.SelfSpot := True;
+   end;
+
    // Spotリストへ追加
    SpotList.Add(Sp);
 
@@ -386,6 +391,7 @@ begin
    D.CQ := Sp.CQ;
    D.Number := Sp.Number;
    D.NewJaMulti := Sp.NewJaMulti;
+   D.SelfSpot := Sp.SelfSpot;
 
    MainForm.BandScopeEx[D.Band].AddAndDisplay(D);
 end;

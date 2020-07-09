@@ -23,6 +23,7 @@ type
     ClusterData : boolean; // true if data from PacketCluster
     CQ: Boolean;
     NewJaMulti: Boolean;
+    SelfSpot: Boolean;
     constructor Create; virtual;
     function FreqKHzStr : string;
     function NewMulti : boolean; // newcty or newzone
@@ -84,6 +85,7 @@ begin
    ClusterData := False;
    CQ := False;
    NewJaMulti := False;
+   SelfSpot := False;
 end;
 
 constructor TSpot.Create;

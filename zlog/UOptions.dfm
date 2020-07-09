@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 325
-    ActivePage = tabsheetPreferences
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -2635,7 +2635,7 @@ object formOptions: TformOptions
         Left = 11
         Top = 127
         Width = 326
-        Height = 130
+        Height = 167
         Caption = 'Colors'
         TabOrder = 1
         object Label57: TLabel
@@ -2665,6 +2665,13 @@ object formOptions: TformOptions
           Width = 46
           Height = 13
           Caption = 'Unknown'
+        end
+        object Label61: TLabel
+          Left = 8
+          Top = 123
+          Width = 43
+          Height = 13
+          Caption = 'Self Spot'
         end
         object editBSColor1: TEdit
           Left = 78
@@ -2937,6 +2944,74 @@ object formOptions: TformOptions
           Caption = 'Bold'
           TabOrder = 18
           OnClick = checkBSBoldClick
+        end
+        object editBSColor5: TEdit
+          Left = 78
+          Top = 120
+          Width = 50
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 20
+          Text = 'TEXT'
+        end
+        object buttonBSFore5: TButton
+          Tag = 5
+          Left = 133
+          Top = 121
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 21
+          OnClick = buttonBSForeClick
+        end
+        object buttonBSBack5: TButton
+          Tag = 5
+          Left = 182
+          Top = 121
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 22
+          OnClick = buttonBSBackClick
+        end
+        object checkBSBold5: TCheckBox
+          Tag = 5
+          Left = 233
+          Top = 122
+          Width = 41
+          Height = 17
+          Caption = 'Bold'
+          TabOrder = 23
+          OnClick = checkBSBoldClick
+        end
+        object buttonBSReset5: TButton
+          Tag = 5
+          Left = 280
+          Top = 121
+          Width = 41
+          Height = 20
+          Caption = 'Reset'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 24
+          OnClick = buttonBSResetClick
         end
       end
     end

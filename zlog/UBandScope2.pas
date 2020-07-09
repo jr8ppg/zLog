@@ -496,8 +496,12 @@ begin
          Font.Color := clBlack;
       end
       else begin
-         // 交信済み(＝マルチゲット済み）
-         if D.Worked then begin
+         if (D.SelfSpot = True) then begin
+            Font.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FForeColor;
+            Brush.Color := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+            D.Bold      := dmZLogGlobal.Settings._bandscopecolor[5].FBold;
+         end
+         else if D.Worked then begin   // 交信済み(＝マルチゲット済み）
             Font.Color  := dmZLogGlobal.Settings._bandscopecolor[1].FForeColor;
             Brush.Color := dmZLogGlobal.Settings._bandscopecolor[1].FBackColor;
             D.Bold      := dmZLogGlobal.Settings._bandscopecolor[1].FBold;

@@ -308,6 +308,12 @@ type
     checkBSBold3: TCheckBox;
     checkBSBold4: TCheckBox;
     ColorDialog1: TColorDialog;
+    Label61: TLabel;
+    editBSColor5: TEdit;
+    buttonBSFore5: TButton;
+    buttonBSBack5: TButton;
+    checkBSBold5: TCheckBox;
+    buttonBSReset5: TButton;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -360,8 +366,8 @@ type
     FQuickQSYBand: array[1..8] of TComboBox;
     FQuickQSYMode: array[1..8] of TComboBox;
 
-    FBSColor: array[1..4] of TEdit;
-    FBSBold: array[1..4] of TCheckBox;
+    FBSColor: array[1..5] of TEdit;
+    FBSBold: array[1..5] of TCheckBox;
 
     FNeedSuperCheckLoad: Boolean;
     procedure RenewCWStrBankDisp();
@@ -373,11 +379,12 @@ type
   end;
 
 const
-  BandScopeDefaultColor: array[1..4] of TColorSetting = (
+  BandScopeDefaultColor: array[1..5] of TColorSetting = (
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: False ),
     ( FForeColor: clWhite; FBackColor: clRed;   FBold: True ),
     ( FForeColor: clGreen; FBackColor: clWhite; FBold: True ),
-    ( FForeColor: clGreen; FBackColor: clWhite; FBold: True )
+    ( FForeColor: clGreen; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clRed;   FBackColor: clYellow; FBold: True )
   );
 
 implementation
@@ -645,7 +652,7 @@ begin
       Settings._usebandscope[b5600] := checkBS15.Checked;
       Settings._usebandscope[b10g]  := checkBS16.Checked;
 
-      for i := 1 to 4 do begin
+      for i := 1 to 5 do begin
          Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
          Settings._bandscopecolor[i].FBackColor := FBSColor[i].Color;
          Settings._bandscopecolor[i].FBold      := FBSBold[i].Checked;
@@ -917,7 +924,7 @@ begin
       checkBS15.Checked := Settings._usebandscope[b5600];
       checkBS16.Checked := Settings._usebandscope[b10g];
 
-      for i := 1 to 4 do begin
+      for i := 1 to 5 do begin
          FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
          FBSColor[i].Color      := Settings._bandscopecolor[i].FBackColor;
          FBSBold[i].Checked     := Settings._bandscopecolor[i].FBold;
@@ -1032,10 +1039,12 @@ begin
    FBSColor[2] := editBSColor2;
    FBSColor[3] := editBSColor3;
    FBSColor[4] := editBSColor4;
+   FBSColor[5] := editBSColor5;
    FBSBold[1] := checkBSBold1;
    FBSBold[2] := checkBSBold2;
    FBSBold[3] := checkBSBold3;
    FBSBold[4] := checkBSBold4;
+   FBSBold[5] := checkBSBold5;
 
    TempCurrentBank := 1;
 

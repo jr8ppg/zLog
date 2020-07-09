@@ -76,7 +76,7 @@ type
     _activebands: array[b19..HiBand] of Boolean;
     _power: array[b19..HiBand] of string;
     _usebandscope: array[b19..HiBand] of Boolean;
-    _bandscopecolor: array[1..4] of TColorSetting;
+    _bandscopecolor: array[1..5] of TColorSetting;
 
     CW : TCWSettingsParam;
     _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
@@ -831,6 +831,9 @@ begin
       Settings._bandscopecolor[4].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor4', '$008000'), clGreen);
       Settings._bandscopecolor[4].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor4', '$ffffff'), clWhite);
       Settings._bandscopecolor[4].FBold      := ini.ReadBool('BandScopeEx', 'Bold4', True);
+      Settings._bandscopecolor[5].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor5', '$0000ff'), clRed);
+      Settings._bandscopecolor[5].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor5', '$00ffff'), clYellow);
+      Settings._bandscopecolor[5].FBold      := ini.ReadBool('BandScopeEx', 'Bold5', True);
    finally
       ini.Free();
       slParam.Free();
@@ -1189,6 +1192,9 @@ begin
       ini.WriteString('BandScopeEx', 'ForeColor4', ColorToString(Settings._bandscopecolor[4].FForeColor));
       ini.WriteString('BandScopeEx', 'BackColor4', ColorToString(Settings._bandscopecolor[4].FBackColor));
       ini.WriteBool('BandScopeEx', 'Bold4', Settings._bandscopecolor[4].FBold);
+      ini.WriteString('BandScopeEx', 'ForeColor5', ColorToString(Settings._bandscopecolor[5].FForeColor));
+      ini.WriteString('BandScopeEx', 'BackColor5', ColorToString(Settings._bandscopecolor[5].FBackColor));
+      ini.WriteBool('BandScopeEx', 'Bold5', Settings._bandscopecolor[5].FBold);
    finally
       ini.Free();
       slParam.Free();
