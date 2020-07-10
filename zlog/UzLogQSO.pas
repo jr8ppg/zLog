@@ -204,6 +204,7 @@ type
     procedure SaveToFilezLogDOSTXT(Filename : string);
     procedure SaveToFilezLogALL(Filename : string);
     procedure SaveToFileByTX(Filename : string);
+    procedure SaveToFileByCabrillo(Filename: string);
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
     procedure AddQue(aQSO : TQSO);
@@ -1363,6 +1364,113 @@ begin
          CloseFile(f);
       end;
    end;
+end;
+
+// https://wwrof.org/cabrillo/
+// https://wwrof.org/cabrillo/cabrillo-qso-data/
+//                              --------info sent------- -------info rcvd--------
+//QSO:  freq mo date       time call          rst exch   call          rst exch   t
+//QSO: ***** ** yyyy-mm-dd nnnn ************* nnn ****** ************* nnn ****** n
+//QSO:  3799 PH 1999-03-06 0711 HC8N           59 700    W1AW           59 CT     0
+//QSO:  3799 PH 1999-03-06 0712 HC8N           59 700    N5KO           59 CA     0
+
+procedure TLog.SaveToFileByCabrillo(Filename: string);
+var
+   F: TextFile;
+   i: Integer;
+   strText: string;
+   Q: TQSO;
+   utc: TDateTime;
+   offhour: Integer;
+const
+   FREQ: array[b19..b10g] of string = (
+   ' 1800', ' 3500', ' 7000', '10000', '14000', '18000', '21000', '24500',
+   '28000', '   50', '  144', '  432', ' 1.2G', ' 2.3G', ' 5.7G', '  10G'
+   );
+
+begin
+   AssignFile(F, Filename);
+   ReWrite(F);
+
+   WriteLn(F, 'START-OF-LOG:3.0');
+   WriteLn(F, 'CALLSIGN:' + dmZLogGlobal.MyCall);
+   WriteLn(F, 'CONTEST:');
+   WriteLn(F, 'CATEGORY-ASSISTED:');
+   WriteLn(F, 'CATEGORY-BAND:');
+   WriteLn(F, 'CATEGORY-MODE:');
+   WriteLn(F, 'CATEGORY-OPERATOR:');
+   WriteLn(F, 'CATEGORY-POWER:');
+   WriteLn(F, 'CATEGORY-STATION:');
+   WriteLn(F, 'CATEGORY-TIME:');
+   WriteLn(F, 'CATEGORY-TRANSMITTER:');
+   WriteLn(F, 'CATEGORY-OVERLAY:');
+   WriteLn(F, 'CERTIFICATE:');
+   WriteLn(F, 'CLAIMED-SCORE:');
+   WriteLn(F, 'CLUB:');
+   WriteLn(F, 'CREATED-BY:');
+   WriteLn(F, 'EMAIL:');
+   WriteLn(F, 'GRID-LOCATOR:');
+   WriteLn(F, 'LOCATION:');
+   WriteLn(F, 'NAME:');
+   WriteLn(F, 'ADDRESS:');
+   WriteLn(F, 'ADDRESS-CITY:');
+   WriteLn(F, 'ADDRESS-STATE-PROVINCE:');
+   WriteLn(F, 'ADDRESS-POSTALCODE:');
+   WriteLn(F, 'ADDRESS-COUNTRY:');
+   WriteLn(F, 'OPERATORS: ');
+   WriteLn(F, 'OFFTIME: ');
+   WriteLn(F, 'SOAPBOX:');
+
+   offhour := UTCOffset() div 60;
+
+   for i := 1 to FQSOList.Count - 1 do begin
+      Q := FQSOList[i];
+
+      if Q.Points = 0 then begin
+         strText := 'X-QSO: ';
+      end
+      else begin
+         strText := 'QSO: ';
+      end;
+
+      strText := strText + FREQ[Q.Band] + ' ';
+
+      if Q.Mode = mCW then begin
+         strText := strText + 'CW ';
+      end
+      else if Q.Mode = mSSB then begin
+         strText := strText + 'PH ';
+      end
+      else if Q.Mode = mFM then begin
+         strText := strText + 'FM ';
+      end
+      else if Q.Mode = mRTTY then begin
+         strText := strText + 'RY ';
+      end
+      else begin
+         strText := strText + '   ';
+      end;
+
+      utc := IncHour(Q.Time, offhour);
+      strText := strText + FormatDateTime('yyyy-mm-dd', utc) + ' ';
+      strText := strText + FormatDateTime('hhmm', utc) + ' ';
+
+      strText := strText + FillRight(dmZLogGlobal.MyCall, 13) + ' ';
+      strText := strText + FillLeft(IntToStr(Q.RSTSent), 3) + ' ';
+      strText := strText + FillRight(Q.NrSent, 6) + ' ';
+
+      strText := strText + FillRight(Q.Callsign, 13) + ' ';
+      strText := strText + FillLeft(IntToStr(Q.RSTRcvd), 3) + ' ';
+      strText := strText + FillRight(Q.NrRcvd, 6) + ' ';
+
+      strText := strText + IntToStr(Q.TX);
+
+      WriteLn(F, strText);
+   end;
+
+   WriteLn(F, 'END-OF-LOG:');
+
+   CloseFile(F);
 end;
 
 procedure TLog.RebuildDupeCheckList;

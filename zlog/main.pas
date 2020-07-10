@@ -5679,6 +5679,9 @@ begin
       if ext = '.ADI' then begin
          MyContest.ADIF_Export(f);
       end;
+      if ext = '.CBR' then begin
+         Log.SaveToFileByCabrillo(f);
+      end;
 
       { Add code to save current file under SaveDialog.FileName }
    end;
