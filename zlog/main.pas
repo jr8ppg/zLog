@@ -18,7 +18,7 @@ uses
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
-  UCwMessagePad;
+  UCwMessagePad, UNRDialog;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -640,6 +640,8 @@ type
     actionSetNoQSL: TAction;
     actionCwMessagePad: TAction;
     CWMessagePad1: TMenuItem;
+    actionCorrectNr: TAction;
+    actionSetLastFreq: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -841,6 +843,8 @@ type
     procedure actionSetPseQSLExecute(Sender: TObject);
     procedure actionSetNoQSLExecute(Sender: TObject);
     procedure actionCwMessagePadExecute(Sender: TObject);
+    procedure actionCorrectNrExecute(Sender: TObject);
+    procedure actionSetLastFreqExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -4135,9 +4139,9 @@ begin
       actionCwTune.Execute();
    end;
 
-   if (S = 'LF') or (S = 'LASTF') then
-      if RigControl.Rig <> nil then
-         RigControl.Rig.MoveToLastFreq;
+   if (S = 'LF') or (S = 'LASTF') then begin
+      actionSetLastFreq.Execute();
+   end;
 
    if S = 'TV' then
       if RigControl.Rig <> nil then
@@ -8293,6 +8297,58 @@ end;
 procedure TMainForm.actionCwMessagePadExecute(Sender: TObject);
 begin
    FCWMessagePad.Show();
+end;
+
+// #104 Correct NR
+procedure TMainForm.actionCorrectNrExecute(Sender: TObject);
+var
+   F: TNRDialog;
+   i: Integer;
+   strNewNR: string;
+   B: TBand;
+   Q: TQSO;
+begin
+   F := TNRDialog.Create(Self);
+   try
+      if Log.TotalQSO = 0 then begin
+         Exit;
+      end;
+
+      F.NewSentNR := Log.QSOList[1].NrSent;
+
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      strNewNR := F.NewSentNR;
+
+      for i := 1 to Log.QSOList.Count - 1 do begin
+         Q := Log.QSOList[i];
+
+         if F.AutoAddPowerCode = True then begin
+            B := Q.Band;
+            Q.NrSent := strNewNR + dmZlogGlobal.Settings._power[B];
+         end
+         else begin
+            Q.NrSent := strNewNR;
+         end;
+      end;
+
+      Log.Saved := False;
+   finally
+      F.Release();
+   end;
+end;
+
+// #105 Jump to the last frequency
+procedure TMainForm.actionSetLastFreqExecute(Sender: TObject);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('---actionSetLastFreqExecute---'));
+   {$ENDIF}
+   if RigControl.Rig <> nil then begin
+      RigControl.Rig.MoveToLastFreq;
+   end;
 end;
 
 procedure TMainForm.RestoreWindowsPos();

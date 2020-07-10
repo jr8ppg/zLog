@@ -1245,7 +1245,7 @@ begin
          end;
 
          1 .. 20: begin
-            MainForm.RigControl.SetSerialCWKeying(Settings._lptnr);
+            dmZlogKeyer.SetSerialCWKeying(Settings._lptnr);
             dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
          end;
 

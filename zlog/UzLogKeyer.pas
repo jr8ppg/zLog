@@ -12,7 +12,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, Windows, MMSystem,
-  JvComponentBase, JvHidControllerClass
+  JvComponentBase, JvHidControllerClass, CPDrv
   {$IFDEF USESIDETONE},ToneGen{$ENDIF};
 
 const
@@ -62,6 +62,7 @@ type
 
   TdmZLogKeyer = class(TDataModule)
     HidController: TJvHidDeviceController;
+    ZComKeying: TCommPortDriver;
     procedure DoDeviceChanges(Sender: TObject);
     function DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
     procedure DataModuleCreate(Sender: TObject);
@@ -225,6 +226,8 @@ type
     property KeyingPort: TKeyingPort read FKeyingPort write FKeyingPort;
 
     property OnCallsignSentProc: TNotifyEvent read FOnCallsignSentProc write FOnCallsignSentProc;
+
+    procedure SetSerialCWKeying(PortNr : integer);
   end;
 
 var
@@ -238,9 +241,6 @@ const
   BGKCALLMAX = 16;
 
 implementation
-
-uses
-  Main, URigControl;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -291,6 +291,7 @@ begin
    {$IFDEF USESIDETONE}
    FTone.Free();
    {$ENDIF}
+   ZComKeying.Disconnect;
    FMonitorThread.Free();
    FPaddleThread.Free();
 end;
@@ -369,12 +370,7 @@ begin
    end;
 
    if FKeyingPort in [tkpSerial1..tkpSerial20] then begin
-      if MainForm.RigControl.ZCom3 = nil then begin
-         Exit;
-      end;
-
-      MainForm.RigControl.ZCom3.ToggleRTS(PTTON);
-
+      ZComKeying.ToggleRTS(PTTON);
       Exit;
    end;
 end;
@@ -599,7 +595,7 @@ procedure TdmZLogKeyer.CW_ON;
 begin
    case FKeyingPort of
       tkpSerial1..tkpSerial20: begin
-         MainForm.RigControl.ZCom3.ToggleDTR(True);
+         ZComKeying.ToggleDTR(True);
       end;
 
       tkpUSB: begin
@@ -612,7 +608,7 @@ procedure TdmZLogKeyer.CW_OFF;
 begin
    case FKeyingPort of
       tkpSerial1..tkpSerial20: begin
-         MainForm.RigControl.ZCom3.ToggleDTR(False);
+         ZComKeying.ToggleDTR(False);
       end;
 
       tkpUSB: begin
@@ -1785,6 +1781,14 @@ procedure TdmZLogKeyer.SetBandMask(bandmask: Byte);
 begin
    _bandmask := bandmask;
    FUsbPortData := (not(_bandmask) and $F0) or (FUsbPortData and $0F);
+end;
+
+procedure TdmZLogKeyer.SetSerialCWKeying(PortNr: Integer);
+begin
+   ZComKeying.Port := TPortNumber(PortNr);
+   ZComKeying.Connect;
+   ZComKeying.ToggleDTR(False);
+   ZComKeying.ToggleRTS(False);
 end;
 
 { TKeyerMonitorThread }

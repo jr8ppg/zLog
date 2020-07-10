@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB;
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB, Vcl.Buttons;
 
 type
   TIcomInfo = record
@@ -359,12 +359,18 @@ type
     PollingTimer1: TTimer;
     ZCom1: TCommPortDriver;
     ZCom2: TCommPortDriver;
-    ZCom3: TCommPortDriver;
     dispFreqA: TStaticText;
     dispFreqB: TStaticText;
     dispVFO: TStaticText;
     btnOmniRig: TButton;
     PollingTimer2: TTimer;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    dispLastFreq: TStaticText;
+    Label1: TLabel;
+    Label4: TLabel;
+    buttonJumpLastFreq: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -374,6 +380,7 @@ type
     procedure ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
     procedure btnOmniRigClick(Sender: TObject);
     procedure CreateParams(var Params: TCreateParams); override;
+    procedure buttonJumpLastFreqClick(Sender: TObject);
   private
     { Private declarations }
     FRigs: array[1..2] of TRig;
@@ -396,7 +403,6 @@ type
 
     _currentrig : integer; // 1 or 2
     _maxrig : integer; // default = 2.  may be larger with virtual rigs
-    procedure SetSerialCWKeying(PortNr : integer);
     function StatusSummaryFreq(kHz : integer): string; // returns current rig's band freq mode
     function StatusSummaryFreqHz(Hz : integer): string; // returns current rig's band freq mode
     function StatusSummary: string; // returns current rig's band freq mode
@@ -431,14 +437,6 @@ begin
    S := IntToStr(Hz div 1000) + '.' + S;
 
    Result := S;
-end;
-
-procedure TRigControl.SetSerialCWKeying(PortNr: Integer);
-begin
-   ZCom3.Port := TPortNumber(PortNr);
-   ZCom3.Connect;
-   ZCom3.ToggleDTR(False);
-   ZCom3.ToggleRTS(False);
 end;
 
 function TRigControl.StatusSummaryFreq(kHz: Integer): string; // returns current rig's band freq mode
@@ -933,6 +931,7 @@ const
 var
    freq: AnsiString;
 begin
+   LastFreq := _currentfreq[_currentvfo];
    freq := RightStr(AnsiString(DupeString('0', 8)) + AnsiString(IntToStr(Hz)), 8);
    WriteData(cmd[_currentvfo] + freq + ';');
 end;
@@ -3179,6 +3178,7 @@ const
 var
    freq: AnsiString;
 begin
+   LastFreq := _currentfreq[_currentvfo];
    freq := RightStr(AnsiString(DupeString('0', 9)) + AnsiString(IntToStr(Hz)), 9);  // freq 9Œ…
    WriteData(cmd[_currentvfo] + freq + ';');
 end;
@@ -3199,6 +3199,7 @@ begin
 
    MainForm.RigControl.dispFreqA.Caption := kHzStr(_freqoffset + _currentfreq[0]) + ' kHz';
    MainForm.RigControl.dispFreqB.Caption := kHzStr(_freqoffset + _currentfreq[1]) + ' kHz';
+   MainForm.RigControl.dispLastFreq.Caption := kHzStr(_freqoffset + LastFreq) + ' kHz';
 
    if _currentvfo = 0 then begin
       MainForm.RigControl.dispFreqA.Font.Style := [fsBold];
@@ -3255,7 +3256,6 @@ procedure TRigControl.FormDestroy(Sender: TObject);
 begin
    ZCom1.Disconnect;
    ZCom2.Disconnect;
-   ZCom3.Disconnect;
 
    FCurrentRig := nil;
    FreeAndNil(FRigs[1]);
@@ -3266,6 +3266,13 @@ procedure TRigControl.Button1Click(Sender: TObject);
 begin
    if FCurrentRig <> nil then begin
       FCurrentRig.Reset;
+   end;
+end;
+
+procedure TRigControl.buttonJumpLastFreqClick(Sender: TObject);
+begin
+   if FCurrentRig <> nil then begin
+      FCurrentRig.MoveToLastFreq();
    end;
 end;
 

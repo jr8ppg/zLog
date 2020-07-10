@@ -332,21 +332,20 @@ begin
 
    Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
 
-   for i := 0 to SpotList.Count - 1 do begin
+   for i := SpotList.Count - 1 downto 0 do begin
       S := SpotList[i];
       if Now - S.Time > Expire then begin
-         SpotList[i] := nil;
-         _deleted := true;
+         SpotList.Delete(i);
+         _deleted := True;
       end;
 
       if (S.Call = Sp.Call) and (S.FreqHz = Sp.FreqHz) then begin
-         dupe := true;
+         dupe := True;
          break;
       end;
    end;
 
    if _deleted then begin
-      SpotList.Pack;
       RenewListBox;
    end;
 

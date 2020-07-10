@@ -47,9 +47,7 @@ type
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
     procedure CreateBSData(aQSO : TQSO; Hz : LongInt);
     procedure AddAndDisplay(D : TBSData);
-    procedure SetBandMode(B : TBand; M : TMode);
     procedure SetMode(M: TMode);
-    procedure SetMinMaxFreq(min, max : LongInt);      // unused
     procedure RewriteBandScope;
     procedure MarkCurrentFreq(Hz : integer);
     procedure ProcessBSDataFromNetwork(BSText : string);
@@ -172,23 +170,6 @@ begin
    // Send spot data to other radios!
 end;
 
-procedure TBandScope2.SetBandMode(B: TBand; M: TMode);
-var
-   R: Integer;
-begin
-   FCurrBand := B;
-   FCurrMode := M;
-//   Caption := 'Band scope ' + BandString[B];
-   Caption := BandString[B];
-
-   for R := 0 to Grid.RowCount - 1 do begin
-      Grid.Cells[0, R] := '';
-      Grid.Objects[0, R] := nil;
-   end;
-
-   RewriteBandScope;
-end;
-
 procedure TBandScope2.SetMode(M: TMode);
 var
    R: Integer;
@@ -201,14 +182,6 @@ begin
    end;
 
    RewriteBandScope;
-end;
-
-procedure TBandScope2.SetMinMaxFreq(min, max: LongInt);
-begin
-   FMinFreq := min;
-   FMaxFreq := max;
-   dmZlogGlobal.Settings._bsMinFreqArray[FCurrBand, FCurrMode] := min div 1000;
-   dmZlogGlobal.Settings._bsMaxFreqArray[FCurrBand, FCurrMode] := max div 1000;
 end;
 
 procedure TBandScope2.Timer1Timer(Sender: TObject);
@@ -308,7 +281,7 @@ begin
 
    if MarkCurrent and Not(Marked) then begin
       Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
-      Grid.Objects[0, R] := nil;;
+      Grid.Objects[0, R] := nil;
    end;
 
    if toprow <= Grid.RowCount - 1 then begin
@@ -533,6 +506,10 @@ begin
       end;
 
       TextRect(Rect, strText, [tfLeft,tfVerticalCenter,tfSingleLine]);
+
+      if gdSelected in State then begin
+         DrawFocusRect(Rect);
+      end;
    end;
 end;
 

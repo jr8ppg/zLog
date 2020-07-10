@@ -5294,6 +5294,14 @@ object MainForm: TMainForm
       Caption = 'CW Message Pad'
       OnExecute = actionCwMessagePadExecute
     end
+    object actionCorrectNr: TAction
+      Caption = 'Correct NR'
+      OnExecute = actionCorrectNrExecute
+    end
+    object actionSetLastFreq: TAction
+      Caption = 'actionSetLastFreq'
+      OnExecute = actionSetLastFreqExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

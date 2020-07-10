@@ -42,6 +42,7 @@ object BandScope2: TBandScope2
       Align = alClient
       ColCount = 1
       DefaultColWidth = 500
+      DefaultDrawing = False
       FixedCols = 0
       FixedRows = 0
       Options = []
