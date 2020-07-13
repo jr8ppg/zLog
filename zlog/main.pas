@@ -7893,9 +7893,13 @@ begin
       P := ExtractFilePath(Application.ExeName);
    end;
 
-   ForceDirectories(P);
+   if DirectoryExists(P) = False then begin
+      ForceDirectories(P);
+   end;
 
-   Log.SaveToFile(P + ExtractFileName(CurrentFileName));
+   P := P + ExtractFileName(CurrentFileName) + '.BAK';
+   Log.Backup(P);
+   Log.SaveToFile(P);
 end;
 
 // #59 Callsignにフォーカス移動 / Alt+C
