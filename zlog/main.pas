@@ -4879,15 +4879,8 @@ begin
    TabPressed := True;
    TabPressed2 := True;
 
-   if dmZlogGlobal.Settings._switchcqsp then begin
-      S := SetStr(dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 2), CurrentQSO);
-      {
-        if dmZlogGlobal.Settings.CW.CurrentBank = 2 then
-        NumberEdit.SetFocus; }
-   end
-   else begin
-      S := SetStr(dmZlogGlobal.CWMessage(1, 2), CurrentQSO);
-   end;
+   S := dmZlogGlobal.CWMessage(2);
+   S := SetStr(S, CurrentQSO);
 
    dmZLogKeyer.ClrBuffer;
    dmZLogKeyer.PauseCW;
@@ -4915,19 +4908,11 @@ begin
    case CurrentQSO.mode of
       mCW: begin
             if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
-               if dmZlogGlobal.Settings._switchcqsp then begin
-                  S := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 5);
-               end
-               else begin
-                  S := dmZlogGlobal.CWMessage(1, 5);
-               end;
-
-               S := SetStr(S, CurrentQSO);
-               if dmZlogGlobal.FIFO then begin
-                  dmZLogKeyer.SendStrFIFO(S);
-               end
-               else begin
-                  dmZLogKeyer.SendStr(S);
+               // NR?é©ìÆëóèoégÇ§èÍçá
+               if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
+                  S := dmZlogGlobal.CWMessage(5);
+                  S := SetStr(S, CurrentQSO);
+                  zLogSendStr(S);
                end;
 
                WriteStatusLine('Invalid Number', False);
@@ -4936,22 +4921,11 @@ begin
                exit;
             end;
 
-            if dmZlogGlobal.Settings._switchcqsp then begin
-               S := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 3);
-            end
-            else begin
-               S := dmZlogGlobal.CWMessage(1, 3);
-            end;
-
+            // TU $M TEST
+            S := dmZlogGlobal.CWMessage(3);
             S := SetStr(S, CurrentQSO);
-            if dmZlogGlobal.FIFO then begin
-               dmZLogKeyer.SendStrFIFO(S);
-            end
-            else begin
-               dmZLogKeyer.SendStr(S);
-            end;
+            zLogSendStr(S);
 
-            dmZLogKeyer.SetCallSign(CallsignEdit.Text);
             LogButtonClick(Self);
          end;
 

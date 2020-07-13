@@ -27,7 +27,7 @@ type
     CurrentBank : integer; {for future use?}
     _spacefactor : word; {factor in % for default space between characters}
     _eispacefactor : word;
-
+    _send_nr_auto: Boolean;         // Send NR automatically
   end;
 
   TCommParam = record
@@ -242,7 +242,8 @@ public
     procedure SetPaddleReverse(boo : boolean);
     procedure ReversePaddle();
 
-    function CWMessage(bank, i : integer): string;
+    function CWMessage(bank, i : integer): string; overload;
+    function CWMessage(no: Integer): string; overload;
 
     procedure ReadWindowState(form: TForm; strWindowName: string = ''; fPositionOnly: Boolean = False);
     procedure WriteWindowState(form: TForm; strWindowName: string = '');
@@ -612,6 +613,9 @@ begin
 
       // CQ repeat interval (sec)
       Settings.CW._cqrepeat := ini.ReadFloat('CW', 'CQRepeat', 2.0);
+
+      // Send NR? automatically
+      Settings.CW._send_nr_auto  := ini.ReadBool('CW', 'send_nr_auto', True);
 
       //
       // Hardware
@@ -1000,6 +1004,9 @@ begin
 
       // CQ repeat interval (sec)
       ini.WriteFloat('CW', 'CQRepeat', Settings.CW._cqrepeat);
+
+      // Send NR? automatically
+      ini.WriteBool('CW', 'send_nr_auto', Settings.CW._send_nr_auto);
 
       //
       // Hardware
@@ -1622,6 +1629,20 @@ end;
 function TdmZLogGlobal.CWMessage(bank, i: integer): string;
 begin
    Result := Settings.CW.CWStrBank[bank, i];
+end;
+
+function TdmZLogGlobal.CWMessage(no: Integer): string;
+var
+   S: string;
+begin
+   if Settings._switchcqsp then begin
+      S := Settings.CW.CWStrBank[Settings.CW.CurrentBank, no];
+   end
+   else begin
+      S := Settings.CW.CWStrBank[1, no];
+   end;
+
+   Result := S;
 end;
 
 procedure TdmZLogGlobal.ReadWindowState(form: TForm; strWindowName: string; fPositionOnly: Boolean );

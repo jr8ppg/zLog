@@ -314,6 +314,7 @@ type
     buttonBSBack5: TButton;
     checkBSBold5: TCheckBox;
     buttonBSReset5: TButton;
+    checkSendNrAuto: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -526,6 +527,9 @@ begin
          Settings.CW._one := AbbrevEdit.Text[2];
          Settings.CW._nine := AbbrevEdit.Text[3];
       end;
+
+      // Send NR? automatically
+      Settings.CW._send_nr_auto := checkSendNrAuto.Checked;
 
       Settings._clusterport := ClusterCombo.ItemIndex;
    //   Settings._clusterbaud := ClusterCOMSet.BaudCombo.ItemIndex;
@@ -872,6 +876,10 @@ begin
          AfterEdit.Enabled := False;
       end;
       cbCQSP.Checked := Settings._switchcqsp;
+
+      // Send NR? automatically
+      checkSendNrAuto.Checked := Settings.CW._send_nr_auto;
+
       cbCountDown.Checked := Settings._countdown;
       cbQSYCount.Checked := Settings._qsycount;
 

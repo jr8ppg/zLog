@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 325
-    ActivePage = TabSheet1
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -824,7 +824,7 @@ object formOptions: TformOptions
         Width = 193
         Height = 225
         Caption = 'Messages'
-        TabOrder = 2
+        TabOrder = 0
         object Label1: TLabel
           Left = 8
           Top = 34
@@ -1060,7 +1060,7 @@ object formOptions: TformOptions
         Height = 17
         Max = 60
         Frequency = 10
-        TabOrder = 3
+        TabOrder = 1
         OnChange = SpeedBarChange
       end
       object WeightBar: TTrackBar
@@ -1070,7 +1070,7 @@ object formOptions: TformOptions
         Height = 17
         Max = 100
         Frequency = 10
-        TabOrder = 4
+        TabOrder = 2
         OnChange = WeightBarChange
       end
       object CQmaxSpinEdit: TSpinEdit
@@ -1080,7 +1080,7 @@ object formOptions: TformOptions
         Height = 22
         MaxValue = 999
         MinValue = 0
-        TabOrder = 9
+        TabOrder = 7
         Value = 15
       end
       object ToneSpinEdit: TSpinEdit
@@ -1091,7 +1091,7 @@ object formOptions: TformOptions
         Increment = 10
         MaxValue = 2500
         MinValue = 100
-        TabOrder = 8
+        TabOrder = 6
         Value = 100
       end
       object PaddleCheck: TCheckBox
@@ -1100,14 +1100,14 @@ object formOptions: TformOptions
         Width = 97
         Height = 17
         Caption = 'Paddle reverse'
-        TabOrder = 6
+        TabOrder = 4
       end
       object CQRepEdit: TEdit
         Left = 304
         Top = 230
         Width = 41
         Height = 21
-        TabOrder = 11
+        TabOrder = 10
         Text = '2.0'
         OnKeyPress = CQRepEditKeyPress
       end
@@ -1119,7 +1119,7 @@ object formOptions: TformOptions
         Caption = 'Que messages'
         Checked = True
         State = cbChecked
-        TabOrder = 7
+        TabOrder = 5
       end
       object PaddleEnabledCheck: TCheckBox
         Left = 208
@@ -1129,7 +1129,7 @@ object formOptions: TformOptions
         Caption = 'Paddle enabled'
         Checked = True
         State = cbChecked
-        TabOrder = 5
+        TabOrder = 3
       end
       object AbbrevEdit: TEdit
         Left = 304
@@ -1138,7 +1138,7 @@ object formOptions: TformOptions
         Height = 21
         CharCase = ecUpperCase
         MaxLength = 3
-        TabOrder = 10
+        TabOrder = 8
         Text = 'OAN'
       end
       object rbBankA: TRadioButton
@@ -1149,7 +1149,7 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'CW A'
         Checked = True
-        TabOrder = 0
+        TabOrder = 12
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1160,7 +1160,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'CW B'
-        TabOrder = 1
+        TabOrder = 13
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1171,7 +1171,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'RTTY'
-        TabOrder = 12
+        TabOrder = 14
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1184,7 +1184,15 @@ object formOptions: TformOptions
           'This option will switch the CW message sent when TAB or ; key is' +
           ' pressed to that in the current message bank. '
         Caption = 'Switch TAB/; with CW bank'
-        TabOrder = 13
+        TabOrder = 9
+      end
+      object checkSendNrAuto: TCheckBox
+        Left = 8
+        Top = 253
+        Width = 161
+        Height = 17
+        Caption = 'Send NR? automatically'
+        TabOrder = 11
       end
     end
     object tabsheetVoice: TTabSheet
