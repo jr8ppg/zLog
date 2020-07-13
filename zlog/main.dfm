@@ -4197,6 +4197,12 @@ object MainForm: TMainForm
       object N1: TMenuItem
         Caption = '-'
       end
+      object menuCorrectNR: TMenuItem
+        Action = actionCorrectSentNr
+      end
+      object N2: TMenuItem
+        Caption = '-'
+      end
       object FilePrintItem: TMenuItem
         Caption = '&Print Log (ZPRINT)'
         Hint = 'Print current file'
@@ -5294,9 +5300,9 @@ object MainForm: TMainForm
       Caption = 'CW Message Pad'
       OnExecute = actionCwMessagePadExecute
     end
-    object actionCorrectNr: TAction
-      Caption = 'Correct NR'
-      OnExecute = actionCorrectNrExecute
+    object actionCorrectSentNr: TAction
+      Caption = 'Correct Sent NR'
+      OnExecute = actionCorrectSentNrExecute
     end
     object actionSetLastFreq: TAction
       Caption = 'actionSetLastFreq'

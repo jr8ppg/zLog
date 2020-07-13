@@ -640,8 +640,10 @@ type
     actionSetNoQSL: TAction;
     actionCwMessagePad: TAction;
     CWMessagePad1: TMenuItem;
-    actionCorrectNr: TAction;
+    actionCorrectSentNr: TAction;
     actionSetLastFreq: TAction;
+    menuCorrectNR: TMenuItem;
+    N2: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -843,7 +845,7 @@ type
     procedure actionSetPseQSLExecute(Sender: TObject);
     procedure actionSetNoQSLExecute(Sender: TObject);
     procedure actionCwMessagePadExecute(Sender: TObject);
-    procedure actionCorrectNrExecute(Sender: TObject);
+    procedure actionCorrectSentNrExecute(Sender: TObject);
     procedure actionSetLastFreqExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
@@ -8310,7 +8312,7 @@ begin
 end;
 
 // #104 Correct NR
-procedure TMainForm.actionCorrectNrExecute(Sender: TObject);
+procedure TMainForm.actionCorrectSentNrExecute(Sender: TObject);
 var
    F: TNRDialog;
    i: Integer;
