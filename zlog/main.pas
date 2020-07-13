@@ -1965,6 +1965,9 @@ var
    S: string;
 begin
    S := SetStrNoAbbrev(dmZlogGlobal.Settings._sentstr, aQSO);
+
+   S := StringReplace(S, '_', '', [rfReplaceAll]);
+
    aQSO.NrSent := S;
 end;
 
