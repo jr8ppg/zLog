@@ -73,7 +73,7 @@ const
        (name: 'IC-371(IC-471)'; addr: $22; minband: b430; maxband: b430),
        (name: 'IC-375(IC-475)'; addr: $14; minband: b430; maxband: b430),
        (name: 'IC-9100';      addr: $7C; minband: b19; maxband: b1200),
-       (name: 'IC-9700';      addr: $A2; minband: b430; maxband: b1200),
+       (name: 'IC-9700';      addr: $A2; minband: b144; maxband: b1200),
        (name: 'IC-1271';      addr: $24; minband: b1200; maxband: b1200),
        (name: 'IC-1275';      addr: $18; minband: b1200; maxband: b1200)
      );
