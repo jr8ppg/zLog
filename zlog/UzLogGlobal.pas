@@ -42,6 +42,7 @@ type
     FUse: Boolean;
     FBand: TBand;
     FMode: TMode;
+    FRig: Integer;
   end;
 
   TSuperCheckParam = record
@@ -794,10 +795,11 @@ begin
 
       // QuickQSY
       for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
-         slParam.CommaText := ini.ReadString('QuickQSY', '#' + IntToStr(i), '0,,') + ',,,';
+         slParam.CommaText := ini.ReadString('QuickQSY', '#' + IntToStr(i), '0,,') + ',,,,';
          Settings.FQuickQSY[i].FUse := StrToBoolDef(slParam[0], False);
          Settings.FQuickQSY[i].FBand := StrToBandDef(slParam[1], b35);
          Settings.FQuickQSY[i].FMode := StrToModeDef(slParam[2], mSSB);
+         Settings.FQuickQSY[i].FRig  := StrToIntDef(slParam[3], 0);
       end;
 
       // SuperCheck
@@ -1161,6 +1163,7 @@ begin
          slParam.Add( BoolToStr(Settings.FQuickQSY[i].FUse, False) );
          slParam.Add( MHzString[ Settings.FQuickQSY[i].FBand ]);
          slParam.Add( MODEString[ Settings.FQuickQSY[i].FMode ]);
+         slParam.Add( IntToStr(Settings.FQuickQSY[i].FRig) );
          ini.WriteString('QuickQSY', '#' + IntToStr(i), slParam.CommaText);
       end;
 

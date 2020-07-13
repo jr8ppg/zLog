@@ -944,7 +944,7 @@ type
     procedure IncFontSize();
     procedure DecFontSize();
     procedure SetFontSize(font_size: Integer);
-    procedure QSY(b: TBand; m: TMode);
+    procedure QSY(b: TBand; m: TMode; r: Integer);
     procedure PlayMessage(bank: Integer; no: Integer);
     procedure InsertBandScope(fShiftKey: Boolean);
     procedure WriteKeymap();
@@ -1665,7 +1665,7 @@ end;
 
 procedure TMainForm.BandMenuClick(Sender: TObject);
 begin
-   QSY(TBand(TMenuItem(Sender).Tag), CurrentQSO.Mode);
+   QSY(TBand(TMenuItem(Sender).Tag), CurrentQSO.Mode, 0);
    LastFocus.SetFocus;
 end;
 
@@ -4607,7 +4607,7 @@ end;
 
 procedure TMainForm.ModeMenuClick(Sender: TObject);
 begin
-   QSY(CurrentQSO.Band, TMode(TMenuItem(Sender).Tag));
+   QSY(CurrentQSO.Band, TMode(TMenuItem(Sender).Tag), 0);
    LastFocus.SetFocus;
 end;
 
@@ -7377,8 +7377,12 @@ begin
    Caption := strCap;
 end;
 
-procedure TMainForm.QSY(b: TBand; m: TMode);
+procedure TMainForm.QSY(b: TBand; m: TMode; r: Integer);
 begin
+   if r <> 0 then begin
+      RigControl.SetCurrentRig(r);
+   end;
+
    if CurrentQSO.band <> b then begin
       UpdateBand(b);
 
@@ -7486,6 +7490,7 @@ var
    no: Integer;
    b: TBand;
    m: TMode;
+   r: Integer;
 begin
    no := TAction(Sender).Tag;
 
@@ -7495,8 +7500,9 @@ begin
 
    b := dmZLogGlobal.Settings.FQuickQSY[no].FBand;
    m := dmZLogGlobal.Settings.FQuickQSY[no].FMode;
+   r := dmZLogGlobal.Settings.FQuickQSY[no].FRig;
 
-   QSY(b, m);
+   QSY(b, m, r);
 
    LastFocus.SetFocus;
 end;

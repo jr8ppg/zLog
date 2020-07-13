@@ -315,6 +315,15 @@ type
     checkBSBold5: TCheckBox;
     buttonBSReset5: TButton;
     checkSendNrAuto: TCheckBox;
+    comboQuickQsyRig01: TComboBox;
+    Label62: TLabel;
+    comboQuickQsyRig02: TComboBox;
+    comboQuickQsyRig03: TComboBox;
+    comboQuickQsyRig04: TComboBox;
+    comboQuickQsyRig05: TComboBox;
+    comboQuickQsyRig06: TComboBox;
+    comboQuickQsyRig07: TComboBox;
+    comboQuickQsyRig08: TComboBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -366,6 +375,7 @@ type
     FQuickQSYCheck: array[1..8] of TCheckBox;
     FQuickQSYBand: array[1..8] of TComboBox;
     FQuickQSYMode: array[1..8] of TComboBox;
+    FQuickQSYRig: array[1..8] of TComboBox;
 
     FBSColor: array[1..5] of TEdit;
     FBSBold: array[1..5] of TCheckBox;
@@ -622,6 +632,8 @@ begin
          else begin
             Settings.FQuickQSY[i].FMode := TMode(FQuickQSYMode[i].ItemIndex);
          end;
+
+         Settings.FQuickQSY[i].FRig := FQuickQSYRig[i].ItemIndex;
       end;
 
       // SuperCheck
@@ -900,8 +912,11 @@ begin
             FQuickQSYBand[i].ItemIndex := -1;
             FQuickQSYMode[i].ItemIndex := -1;
          end;
+         FQuickQSYRig[i].ItemIndex := Settings.FQuickQSY[i].FRig;
+
          FQuickQSYBand[i].Enabled := FQuickQSYCheck[i].Checked;
          FQuickQSYMode[i].Enabled := FQuickQSYCheck[i].Checked;
+         FQuickQSYRig[i].Enabled  := FQuickQSYCheck[i].Checked;
       end;
 
       // SuperCheck
@@ -1010,27 +1025,35 @@ begin
    FQuickQSYCheck[1]    := checkUseQuickQSY01;
    FQuickQSYBand[1]     := comboQuickQsyBand01;
    FQuickQSYMode[1]     := comboQuickQsyMode01;
+   FQuickQSYRig[1]      := comboQuickQsyRig01;
    FQuickQSYCheck[2]    := checkUseQuickQSY02;
    FQuickQSYBand[2]     := comboQuickQsyBand02;
    FQuickQSYMode[2]     := comboQuickQsyMode02;
+   FQuickQSYRig[2]      := comboQuickQsyRig02;
    FQuickQSYCheck[3]    := checkUseQuickQSY03;
    FQuickQSYBand[3]     := comboQuickQsyBand03;
    FQuickQSYMode[3]     := comboQuickQsyMode03;
+   FQuickQSYRig[3]      := comboQuickQsyRig03;
    FQuickQSYCheck[4]    := checkUseQuickQSY04;
    FQuickQSYBand[4]     := comboQuickQsyBand04;
    FQuickQSYMode[4]     := comboQuickQsyMode04;
+   FQuickQSYRig[4]      := comboQuickQsyRig04;
    FQuickQSYCheck[5]    := checkUseQuickQSY05;
    FQuickQSYBand[5]     := comboQuickQsyBand05;
    FQuickQSYMode[5]     := comboQuickQsyMode05;
+   FQuickQSYRig[5]      := comboQuickQsyRig05;
    FQuickQSYCheck[6]    := checkUseQuickQSY06;
    FQuickQSYBand[6]     := comboQuickQsyBand06;
    FQuickQSYMode[6]     := comboQuickQsyMode06;
+   FQuickQSYRig[6]      := comboQuickQsyRig06;
    FQuickQSYCheck[7]    := checkUseQuickQSY07;
    FQuickQSYBand[7]     := comboQuickQsyBand07;
    FQuickQSYMode[7]     := comboQuickQsyMode07;
+   FQuickQSYRig[7]      := comboQuickQsyRig07;
    FQuickQSYCheck[8]    := checkUseQuickQSY08;
    FQuickQSYBand[8]     := comboQuickQsyBand08;
    FQuickQSYMode[8]     := comboQuickQsyMode08;
+   FQuickQSYRig[8]      := comboQuickQsyRig08;
    for b := Low(MHzString) to High(MHzString) do begin
       FQuickQsyBand[1].Items.Add(MHZString[b]);
    end;
@@ -1376,6 +1399,7 @@ begin
    no := TCheckBox(Sender).Tag;
    FQuickQSYBand[no].Enabled := FQuickQSYCheck[no].Checked;
    FQuickQSYMode[no].Enabled := FQuickQSYCheck[no].Checked;
+   FQuickQSYRig[no].Enabled  := FQuickQSYCheck[no].Checked;
 end;
 
 procedure TformOptions.InitRigNames();
