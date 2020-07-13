@@ -274,7 +274,7 @@ var
   i : integer;
 begin
   temp := UpperCase(S);
-  if pos('$X', dmZLogGlobal.Settings._sentstr) = 0 then
+  if pos('$X', temp) = 0 then
     while Pos('$X',temp) > 0 do
       begin
         i := Pos('$X',temp);
