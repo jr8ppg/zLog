@@ -64,6 +64,7 @@ type
   private
     FSuperList: TSuperList;
     FPSuperListTwoLetterMatrix: PTSuperListTwoLetterMatrix;
+    procedure LoadSpcFiles(strStartFoler: string);
     procedure LoadSpcFile(strStartFoler: string; strFileName: string);
     procedure LoadLogFiles(strStartFoler: string);
     procedure ListToTwoMatrix(L: TQSOList);
@@ -291,7 +292,7 @@ begin
       case dmZlogGlobal.Settings.FSuperCheck.FSuperCheckMethod of
          // SPC
          0: begin
-            LoadSpcFile(strFolder, 'ZLOG.SPC');
+            LoadSpcFiles(strFolder);
             LoadSpcFile(strFolder, 'MASTER.SCP');
          end;
 
@@ -302,7 +303,7 @@ begin
 
          // Both
          else begin
-            LoadSpcFile(strFolder, 'ZLOG.SPC');
+            LoadSpcFiles(strFolder);
             LoadSpcFile(strFolder, 'MASTER.SCP');
             LoadLogFiles(strFolder);
          end;
@@ -322,6 +323,38 @@ begin
       {$ENDIF}
       PostMessage(MainForm.Handle, WM_ZLOG_SPCDATALOADED, 0, 0);
    end;
+end;
+
+procedure TSuperCheckDataLoadThread.LoadSpcFiles(strStartFoler: string);
+var
+   ret: Integer;
+   F: TSearchRec;
+   S: string;
+begin
+   if strStartFoler = '' then begin
+      Exit;
+   end;
+
+   S := IncludeTrailingPathDelimiter(strStartFoler);
+
+   ret := FindFirst(S + '*.SPC', faAnyFile, F);
+   while ret = 0 do begin
+      if Terminated = True then begin
+         Break;
+      end;
+
+      if ((F.Attr and faDirectory) = 0) and
+         ((F.Attr and faVolumeID) = 0) and
+         ((F.Attr and faSysFile) = 0) then begin
+
+         LoadSpcFile(strStartFoler, F.Name);
+      end;
+
+      // ŽŸ‚Ìƒtƒ@ƒCƒ‹
+      ret := FindNext(F);
+   end;
+
+   FindClose(F);
 end;
 
 procedure TSuperCheckDataLoadThread.LoadSpcFile(strStartFoler: string; strFileName: string);
