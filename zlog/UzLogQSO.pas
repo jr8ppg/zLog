@@ -200,6 +200,8 @@ type
 
     procedure DeleteQSO(aQSO: TQSO);
 
+    procedure Backup(Filename: string);
+
     procedure SaveToFile(Filename : string);
     procedure SaveToFilezLogDOSTXT(Filename : string);
     procedure SaveToFilezLogALL(Filename : string);
@@ -1251,19 +1253,39 @@ begin
    FSaved := False;
 end;
 
+procedure TLog.Backup(Filename: string);
+var
+   n: Integer;
+   backname: string;
+   backname2: string;
+const
+   backext: array[0..2] of string = ('.BAK', '.BK2', '.BK3' );
+begin
+
+   for n := High(backext) downto 0 do begin
+      backname := ChangeFileExt(Filename, backext[n]);
+      if FileExists(backname) = True then begin
+         System.SysUtils.DeleteFile(backname);
+      end;
+
+      if n >= 1 then begin
+         backname2 := ChangeFileExt(Filename, backext[n - 1]);
+         if FileExists(backname2) = True then begin
+            RenameFile(backname2, backname);
+         end;
+      end;
+   end;
+
+   // .ZLO ==> .BAK
+   RenameFile(Filename, backname);
+end;
+
 procedure TLog.SaveToFile(Filename: string);
 var
    D: TQSOData;
    f: file of TQSOData;
    i: Integer;
-   back: string;
 begin
-   back := ChangeFileExt(Filename, '.BAK');
-   if FileExists(back) then begin
-      System.SysUtils.DeleteFile(back);
-   end;
-   RenameFile(Filename, back);
-
    AssignFile(f, Filename);
    Rewrite(f);
 
