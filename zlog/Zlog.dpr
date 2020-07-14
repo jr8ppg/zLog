@@ -99,7 +99,9 @@ uses
   HelperLib in 'HelperLib.pas',
   UCwMessageEditor in 'UCwMessageEditor.pas',
   UCwMessagePad in 'UCwMessagePad.pas' {CwMessagePad},
-  UTextEditor in 'UTextEditor.pas' {TextEditor};
+  UTextEditor in 'UTextEditor.pas' {TextEditor},
+  USelectUserDefinedContest in 'USelectUserDefinedContest.pas' {SelectUserDefinedContest},
+  UserDefinedContest in 'UserDefinedContest.pas';
 
 {$R *.RES}
 
