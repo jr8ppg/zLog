@@ -870,6 +870,8 @@ type
     FZAnalyze: TZAnalyze;              // Analyze window
     FCWMessagePad: TCwMessagePad;
 
+    FInitialized: Boolean;
+
     FTempQSOList: TQSOList;
     clStatusLine : TColor;
     OldCallsign, OldNumber : string;
@@ -3655,6 +3657,7 @@ var
    S, ss: string;
    b: TBand;
 begin
+   FInitialized   := False;
    FRigControl    := TRigControl.Create(Self);
    FPartialCheck  := TPartialCheck.Create(Self);
    FRateDialog    := TRateDialog.Create(Self);
@@ -5446,7 +5449,10 @@ begin
    TerminateNPlusOne();
    TerminateSuperCheckDataLoad();
    dmZLogKeyer.CloseBGK;
-   RecordWindowStates;
+
+   if FInitialized = True then begin
+      RecordWindowStates;
+   end;
 
    if MMTTYRunning then begin
       ExitMMTTY;
@@ -6620,6 +6626,8 @@ var
    E: Extended;
    c, r: Integer;
 begin
+   FInitialized := False;
+
    SuperCheckDataLoad();
 
    menu := TMenuForm.Create(Self);
@@ -6899,6 +6907,9 @@ begin
 
       // リグコントロール開始
       RigControl.ImplementOptions;
+
+      // 初期化完了
+      FInitialized := True;
    finally
       menu.Release();
    end;
