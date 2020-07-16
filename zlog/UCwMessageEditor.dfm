@@ -4,6 +4,8 @@ inherited CwMessageEditor: TCwMessageEditor
   TextHeight = 12
   inherited Memo1: TMemo
     HideSelection = False
+    WordWrap = False
     OnKeyPress = Memo1KeyPress
+    ExplicitHeight = 320
   end
 end

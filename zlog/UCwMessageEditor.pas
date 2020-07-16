@@ -25,8 +25,19 @@ implementation
 procedure TCwMessageEditor.buttonOKClick(Sender: TObject);
 var
    i: Integer;
-   p: Integer;
    strLine: string;
+
+   procedure SelText(strSel: string);
+   var
+      p: Integer;
+   begin
+      p := Pos(strSel, Memo1.Text);
+      if (p > 0) then begin
+         Memo1.SelStart := p - 1;
+         Memo1.SelLength := Length(strSel);
+      end;
+      Memo1.SetFocus();
+   end;
 begin
    inherited;
 
@@ -36,12 +47,14 @@ begin
          strLine := Copy(strLine, 2);
          if IsValidChar(strLine) = False then begin
             Application.MessageBox(PChar('使えない文字があります. 使用できる文字は A-Z,0-9,$,/,? です.'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-            p := Pos(strLine, Memo1.Text);
-            if (p > 0) then begin
-               Memo1.SelStart := p - 1;
-               Memo1.SelLength := Length(strLine);
-            end;
-            Memo1.SetFocus();
+            SelText(strLine);
+            ModalResult := mrNone;
+            Exit;
+         end;
+
+         if Length(strLine) > 100 then begin
+            Application.MessageBox(PChar('メッセージが長すぎます。100文字以内にして下さい.'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+            SelText(strLine);
             ModalResult := mrNone;
             Exit;
          end;
