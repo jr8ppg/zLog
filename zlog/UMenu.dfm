@@ -3,7 +3,7 @@ object MenuForm: TMenuForm
   Top = 64
   BorderStyle = bsDialog
   Caption = 'zLog Menu'
-  ClientHeight = 304
+  ClientHeight = 286
   ClientWidth = 484
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,16 +21,17 @@ object MenuForm: TMenuForm
   OnShow = FormShow
   DesignSize = (
     484
-    304)
+    286)
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 367
-    Top = 278
+    Top = 260
     Width = 36
     Height = 13
     Anchors = [akRight, akBottom]
     Caption = 'Callsign'
+    ExplicitTop = 278
   end
   object Label2: TLabel
     Left = 272
@@ -48,7 +49,7 @@ object MenuForm: TMenuForm
   end
   object OKButton: TButton
     Left = 12
-    Top = 273
+    Top = 255
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -57,11 +58,11 @@ object MenuForm: TMenuForm
     ModalResult = 1
     TabOrder = 0
     OnClick = OKButtonClick
-    ExplicitTop = 257
+    ExplicitTop = 273
   end
   object CancelButton: TButton
     Left = 92
-    Top = 273
+    Top = 255
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -69,24 +70,24 @@ object MenuForm: TMenuForm
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
-    ExplicitTop = 257
+    ExplicitTop = 273
   end
   object Button3: TButton
     Left = 172
-    Top = 273
+    Top = 255
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
     Caption = '&Help'
     TabOrder = 2
     Visible = False
-    ExplicitTop = 257
+    ExplicitTop = 273
   end
   object ContestGroup: TGroupBox
     Left = 8
     Top = 8
     Width = 257
-    Height = 261
+    Height = 241
     Caption = 'Contest'
     TabOrder = 3
     object SelectButton: TSpeedButton
@@ -107,6 +108,7 @@ object MenuForm: TMenuForm
       Height = 23
       Caption = #26087'Select...'
       Enabled = False
+      Visible = False
       OnClick = OldSelectButtonClick
     end
     object rbALLJA: TRadioButton
@@ -392,21 +394,23 @@ object MenuForm: TMenuForm
   end
   object editCallsign: TEdit
     Left = 408
-    Top = 275
+    Top = 257
     Width = 65
     Height = 18
     Anchors = [akRight, akBottom]
     AutoSize = False
     TabOrder = 7
+    ExplicitTop = 275
   end
   object CheckBox1: TCheckBox
     Left = 274
-    Top = 276
+    Top = 258
     Width = 87
     Height = 17
     Anchors = [akRight, akBottom]
     Caption = 'Post-contest'
     TabOrder = 8
+    ExplicitTop = 276
   end
   object TXNrEdit: TEdit
     Left = 344
