@@ -203,7 +203,8 @@ type
     FMyAddr: Byte;
     FRigAddr: Byte;
     FUseTransceiveMode: Boolean;
-    FFreqOrMode: Integer;
+    FGetBandAndMode: Boolean;
+    FPollingCount: Integer;
   public
     constructor Create(RigNum : integer); override;
     destructor Destroy; override;
@@ -219,6 +220,7 @@ type
     procedure ICOMWriteData(S : AnsiString);
     procedure PollingProcess; override;
     property UseTransceiveMode: Boolean read FUseTransceiveMode write FUseTransceiveMode;
+    property GetBandAndModeFlag: Boolean read FGetBandAndMode write FGetBandAndMode;
     property MyAddr: Byte read FMyAddr write FMyAddr;
     property RigAddr: Byte read FRigAddr write FRigAddr;
   end;
@@ -1378,6 +1380,7 @@ begin
                rig := TICOM.Create(rignum);
             end;
             TICOM(rig).UseTransceiveMode := dmZLogGlobal.Settings._use_transceive_mode;
+            TICOM(rig).GetBandAndModeFlag := dmZLogGlobal.Settings._icom_polling_freq_and_mode;
 
             for i := 1 to MAXICOM do begin
                if rname = ICOMLIST[i].name then begin
@@ -1606,7 +1609,7 @@ end;
 constructor TICOM.Create(RigNum: Integer);
 begin
    Inherited;
-   FFreqOrMode := 0;
+   FPollingCount := 0;
    FUseTransceiveMode := True;
    FComm.StopBits := sb1BITS;
    TerminatorCode := AnsiChar($FD);
@@ -1790,18 +1793,20 @@ procedure TICOM.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
 
-   if dmZLogGlobal.Settings._icom_polling_freq_and_mode = False then begin
+   if FGetBandAndMode = False then begin
       ICOMWriteData(AnsiChar($03));
    end
    else begin
-      if FFreqOrMode = 0 then begin
+      if (FPollingCount and 1) = 0 then begin
          ICOMWriteData(AnsiChar($03));
       end
       else begin
          ICOMWriteData(AnsiChar($04));
       end;
-      Inc(FFreqOrMode);
-      FFreqOrMode := FFreqOrMode and 1;
+      Inc(FPollingCount);
+      if FPollingCount < 0 then begin
+         FPollingCount := 1;
+      end;
    end;
 end;
 
@@ -2765,7 +2770,8 @@ begin
       end;
    finally
       // トランシーブモード使わない時はポーリング再開
-      if FUseTransceiveMode = False then begin
+      if (FUseTransceiveMode = False) or
+         ((FUseTransceiveMode = True) and (FGetBandAndMode = True) and  (FPollingCount < 2)) then begin
          FPollingTimer.Enabled := True;
       end;
    end;
