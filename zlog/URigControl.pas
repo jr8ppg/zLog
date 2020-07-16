@@ -203,6 +203,7 @@ type
     FMyAddr: Byte;
     FRigAddr: Byte;
     FUseTransceiveMode: Boolean;
+    FFreqOrMode: Integer;
   public
     constructor Create(RigNum : integer); override;
     destructor Destroy; override;
@@ -1605,6 +1606,7 @@ end;
 constructor TICOM.Create(RigNum: Integer);
 begin
    Inherited;
+   FFreqOrMode := 0;
    FUseTransceiveMode := True;
    FComm.StopBits := sb1BITS;
    TerminatorCode := AnsiChar($FD);
@@ -1787,7 +1789,20 @@ end;
 procedure TICOM.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
-   ICOMWriteData(AnsiChar($03));
+
+   if dmZLogGlobal.Settings._icom_polling_freq_and_mode = False then begin
+      ICOMWriteData(AnsiChar($03));
+   end
+   else begin
+      if FFreqOrMode = 0 then begin
+         ICOMWriteData(AnsiChar($03));
+      end
+      else begin
+         ICOMWriteData(AnsiChar($04));
+      end;
+      Inc(FFreqOrMode);
+      FFreqOrMode := FFreqOrMode and 1;
+   end;
 end;
 
 {

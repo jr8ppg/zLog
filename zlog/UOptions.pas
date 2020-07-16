@@ -324,6 +324,7 @@ type
     comboQuickQsyRig06: TComboBox;
     comboQuickQsyRig07: TComboBox;
     comboQuickQsyRig08: TComboBox;
+    checkGetBandAndMode: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -569,6 +570,7 @@ begin
       Settings._rigspeed[2] := comboRig2Speed.ItemIndex;
 
       Settings._use_transceive_mode := checkUseTransceiveMode.Checked;
+      Settings._icom_polling_freq_and_mode := checkGetBandAndMode.Checked;
 
       Settings._ritclear := cbRITClear.Checked;
 
@@ -846,6 +848,7 @@ begin
       comboRig2Speed.ItemIndex := Settings._rigspeed[2];
 
       checkUseTransceiveMode.Checked := Settings._use_transceive_mode;
+      checkGetBandAndMode.Checked := Settings._icom_polling_freq_and_mode;
 
       cbRITClear.Checked := Settings._ritclear;
 

@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 325
-    ActivePage = tabsheetQuickQSY
+    ActivePage = tabsheetHardware
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1603,12 +1603,12 @@ object formOptions: TformOptions
         object gbCWPort: TGroupBox
           Left = 8
           Top = 159
-          Width = 117
+          Width = 92
           Height = 51
           Caption = 'CW/PTT port'
-          TabOrder = 15
+          TabOrder = 16
           object comboCwPttPort: TComboBox
-            Left = 31
+            Left = 14
             Top = 18
             Width = 64
             Height = 21
@@ -1790,12 +1790,20 @@ object formOptions: TformOptions
             '38400')
         end
         object checkUseTransceiveMode: TCheckBox
-          Left = 152
-          Top = 160
-          Width = 187
+          Left = 109
+          Top = 159
+          Width = 208
           Height = 17
           Caption = 'Use Transceive Mode (ICOM only)'
           TabOrder = 14
+        end
+        object checkGetBandAndMode: TCheckBox
+          Left = 109
+          Top = 178
+          Width = 230
+          Height = 17
+          Caption = 'Get band and mode alternately(ICOM only)'
+          TabOrder = 15
         end
       end
       object GroupBox7: TGroupBox

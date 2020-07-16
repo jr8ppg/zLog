@@ -86,7 +86,8 @@ type
     _rigspeed: array[1..2] of Integer;
     _rigname:  array[1..2] of string;
 
-    _use_transceive_mode: Boolean;
+    _use_transceive_mode: Boolean;              // ICOM only
+    _icom_polling_freq_and_mode: Boolean;       // ICOM only
     _polling_interval: Integer;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
@@ -673,6 +674,9 @@ begin
       // USE TRANSCEIVE MODE(ICOM only)
       Settings._use_transceive_mode := ini.ReadBool('Hardware', 'UseTransceiveMode', True);
 
+      // Get band and mode when polling(ICOM only)
+      Settings._icom_polling_freq_and_mode := ini.ReadBool('Hardware', 'PollingFreqAndMode', False);
+
       // Polling Interval
       Settings._polling_interval := ini.ReadInteger('Hardware', 'PollingInterval', 200);
 
@@ -1064,6 +1068,9 @@ begin
 
       // USE TRANSCEIVE MODE(ICOM only)
       ini.WriteBool('Hardware', 'UseTransceiveMode', Settings._use_transceive_mode);
+
+      // Get band and mode when polling(ICOM only)
+      ini.WriteBool('Hardware', 'PollingFreqAndMode', Settings._icom_polling_freq_and_mode);
 
       // Polling Interval
       ini.WriteInteger('Hardware', 'PollingInterval', Settings._polling_interval);
