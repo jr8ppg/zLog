@@ -1658,6 +1658,7 @@ end;
 procedure TdmZLogGlobal.ReadWindowState(form: TForm; strWindowName: string; fPositionOnly: Boolean );
 var
    ini: TIniFile;
+   l, t, w, h: Integer;
 begin
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
@@ -1665,12 +1666,27 @@ begin
          strWindowName := form.Name;
       end;
 
+      l := ini.ReadInteger('Windows', strWindowName + '_X', -1);
+      t := ini.ReadInteger('Windows', strWindowName + '_Y', -1);
+      h := ini.ReadInteger('Windows', strWindowName + '_H', -1);
+      w := ini.ReadInteger('Windows', strWindowName + '_W', -1);
+
       form.Visible := ini.ReadBool('Windows', strWindowName + '_Open', False);
-      form.Left    := ini.ReadInteger('Windows', strWindowName + '_X', 10);
-      form.Top     := ini.ReadInteger('Windows', strWindowName + '_Y', 10);
+
+      if l >= 0 then begin
+         form.Left := l;
+      end;
+      if t >= 0 then begin
+         form.Top := t;
+      end;
+
       if fPositionOnly = False then begin
-         form.Height  := ini.ReadInteger('Windows', strWindowName + '_H', 10);
-         form.Width   := ini.ReadInteger('Windows', strWindowName + '_W', 10);
+         if h >= 0 then begin
+            form.Height  := ini.ReadInteger('Windows', strWindowName + '_H', -1);
+         end;
+         if w >= 0 then begin
+            form.Width   := ini.ReadInteger('Windows', strWindowName + '_W', -1);
+         end;
       end;
    finally
       ini.Free();
