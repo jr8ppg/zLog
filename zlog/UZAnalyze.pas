@@ -152,6 +152,11 @@ begin
       2: begin
          ShowZAA2(sl, Main.CurrentQSO.Band);
       end;
+
+      // ZAA(ALL)
+      3: begin
+         ShowZAA(sl);
+      end;
    end;
 end;
 
@@ -691,6 +696,9 @@ begin
    sl.Add('');
 
    for b := b19 to HiBand do begin
+      if FCountData2[25][b].FQso[11] = 0 then begin
+         Continue;
+      end;
       ShowZAA_band(sl, b, nLastHour);
    end;
 end;

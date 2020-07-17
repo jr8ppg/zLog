@@ -28,8 +28,6 @@ object ZAnalyze: TZAnalyze
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 236
-    ExplicitWidth = 700
     DesignSize = (
       684
       28)
@@ -51,7 +49,6 @@ object ZAnalyze: TZAnalyze
       Caption = #12467#12500#12540
       TabOrder = 1
       OnClick = buttonCopyClick
-      ExplicitLeft = 632
     end
     object checkExcludeZeroPoint: TCheckBox
       Left = 104
@@ -60,6 +57,7 @@ object ZAnalyze: TZAnalyze
       Height = 17
       Caption = #24471#28857#65296#12434#38500#12367
       TabOrder = 2
+      OnClick = buttonUpdateClick
     end
     object checkExcludeZeroHour: TCheckBox
       Left = 204
@@ -68,6 +66,7 @@ object ZAnalyze: TZAnalyze
       Height = 17
       Caption = #65296#23616#12398#26178#38291#24111#12434#38500#12367
       TabOrder = 3
+      OnClick = buttonUpdateClick
     end
   end
   object TabControl1: TTabControl
@@ -80,11 +79,10 @@ object ZAnalyze: TZAnalyze
     Tabs.Strings = (
       'ZAF'
       'ZAQ'
-      'ZAA')
+      'ZAA'
+      'ZAA(ALL)')
     TabIndex = 0
     OnChange = TabControl1Change
-    ExplicitWidth = 700
-    ExplicitHeight = 236
     object Memo1: TMemo
       Left = 4
       Top = 24
@@ -101,8 +99,6 @@ object ZAnalyze: TZAnalyze
       ScrollBars = ssVertical
       TabOrder = 0
       WordWrap = False
-      ExplicitWidth = 692
-      ExplicitHeight = 208
     end
   end
 end
