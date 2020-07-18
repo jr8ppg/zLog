@@ -1,7 +1,7 @@
 object ZAnalyze: TZAnalyze
   Left = 0
   Top = 0
-  Caption = #12479#12452#12512#12481#12515#12540#12488
+  Caption = 'Analyze'
   ClientHeight = 261
   ClientWidth = 684
   Color = clBtnFace
