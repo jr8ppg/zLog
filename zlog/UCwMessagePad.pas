@@ -26,6 +26,7 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure CreateParams(var Params: TCreateParams); override;
   private
     { Private êÈåæ }
   public
@@ -38,6 +39,12 @@ uses
   UCwMessageEditor, Main, UzLogCW;
 
 {$R *.dfm}
+
+procedure TCwMessagePad.CreateParams(var Params: TCreateParams);
+begin
+   inherited CreateParams(Params);
+   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+end;
 
 procedure TCwMessagePad.FormCreate(Sender: TObject);
 var

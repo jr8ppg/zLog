@@ -58,6 +58,7 @@ type
     procedure buttonCopyClick(Sender: TObject);
     procedure TabControl1Change(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure CreateParams(var Params: TCreateParams); override;
   private
     { Private êÈåæ }
     FCountData: array[1..25] of array[b19..TBand(17)] of TQsoCount;
@@ -82,6 +83,12 @@ uses
   Main;
 
 {$R *.dfm}
+
+procedure TZAnalyze.CreateParams(var Params: TCreateParams);
+begin
+   inherited CreateParams(Params);
+   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+end;
 
 procedure TZAnalyze.FormCreate(Sender: TObject);
 begin
