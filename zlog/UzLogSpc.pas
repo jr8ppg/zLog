@@ -444,7 +444,7 @@ begin
             L.Clear();
 
             // listÇ…ÉçÅ[ÉhÇ∑ÇÈ
-            L.MergeFile(S + F.Name);
+            L.MergeFile(S + F.Name, False);
 
             {$IFDEF DEBUG}
             OutputDebugString(PChar(F.Name + ' L=' + IntToStr(L.Count)));

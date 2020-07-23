@@ -6277,7 +6277,7 @@ begin
          exit;
       end;
 
-      i := Log.QsoList.MergeFile(ff);
+      i := Log.QsoList.MergeFile(ff, True);
       if i > 0 then begin
          Log.SortByTime;
          MyContest.Renew;

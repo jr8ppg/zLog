@@ -164,7 +164,8 @@ type
     constructor Create(OwnsObjects: Boolean = True);
     destructor Destroy(); override;
     function IndexOf(C: string): Integer; overload;
-    function MergeFile(filename: string): Integer;
+    function IndexOf(Q: TQSO): Integer; overload;
+    function MergeFile(filename: string; fFullMatch: Boolean): Integer;
     procedure Sort(SortMethod: TSortMethod; fWithMode: Boolean = False); overload;
     function DupeCheck(aQSO: TQSO; fWithMode: Boolean): TQSO;
     procedure SaveToFile(filename: string);
@@ -833,7 +834,7 @@ function TQSOList.IndexOf(C: string): Integer;
 var
    i: Integer;
 begin
-   for i := 0 to Count - 1 do begin
+   for i := 1 to Count - 1 do begin
       if Items[i].CallSign = C then begin
          Result := i;
          Exit;
@@ -843,12 +844,27 @@ begin
    Result := -1;
 end;
 
-function TQSOList.MergeFile(filename: string): Integer;
+function TQSOList.IndexOf(Q: TQSO): Integer;
+var
+   i: Integer;
+begin
+   for i := 1 to Count - 1 do begin
+      if Items[i].SameQSO(Q) then begin
+         Result := i;
+         Exit;
+      end;
+   end;
+
+   Result := -1;
+end;
+
+function TQSOList.MergeFile(filename: string; fFullMatch: Boolean): Integer;
 var
    qso: TQSO;
    dat: TQSOData;
    f: file of TQSOData;
    i, merged: integer;
+   Index: Integer;
 begin
    merged := 0;
 
@@ -862,7 +878,14 @@ begin
       qso := TQSO.Create;
       qso.FileRecord := dat;
 
-      if IndexOf(qso.Callsign) = -1 then begin
+      if fFullMatch = True then begin
+         Index := IndexOf(qso);
+      end
+      else begin
+         Index := IndexOf(qso.Callsign);
+      end;
+
+      if Index = -1 then begin
          Add(qso);
          Inc(merged);
       end
@@ -871,7 +894,7 @@ begin
       end;
    end;
 
-   System.close(f);
+   CloseFile(f);
    Result := merged;
 end;
 
