@@ -4435,6 +4435,8 @@ begin
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b].FontSize := font_size;
    end;
+
+   FCWMessagePad.FontSize := font_size;
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)

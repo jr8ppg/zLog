@@ -29,8 +29,11 @@ type
     procedure CreateParams(var Params: TCreateParams); override;
   private
     { Private éŒ¾ }
+    function GetFontSize(): Integer;
+    procedure SetFontSize(v: Integer);
   public
     { Public éŒ¾ }
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -174,6 +177,16 @@ begin
    end;
 
    MainForm.LastFocus.SetFocus;
+end;
+
+function TCwMessagePad.GetFontSize(): Integer;
+begin
+   Result := CategoryButtons1.Font.Size;
+end;
+
+procedure TCwMessagePad.SetFontSize(v: Integer);
+begin
+   CategoryButtons1.Font.Size := v;
 end;
 
 end.
