@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids,
+  StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids, System.Math,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB, Vcl.Buttons;
 
 type
@@ -168,7 +168,7 @@ type
     property MaxBand: TBand read _maxband write _maxband;
     property CurrentBand: TBand read _currentband;
     property CurrentMode: TMode read _currentmode;
-    property PollingInterval: Integer read FPollingInterval write FPollingInterval;
+//    property PollingInterval: Integer read FPollingInterval write FPollingInterval;
   end;
 
   TTS690 = class(TRig) // TS-450 as well
@@ -1394,7 +1394,6 @@ begin
          end;
 
          rig.name := rname;
-         rig.PollingInterval := dmZLogGlobal.Settings._polling_interval;
 
          // Initialize & Start
          rig.Initialize();
@@ -1462,7 +1461,13 @@ begin
       FPollingTimer := MainForm.RigControl.PollingTimer2;
    end;
 
-   FPollingInterval := 200;   // milisec
+   // 9600bpsà»â∫ÇÕ200msec, 19200bpsà»è„ÇÕ100msec
+   if dmZlogGlobal.Settings._rigspeed[RigNum] <= 4 then begin
+      FPollingInterval := Min(dmZLogGlobal.Settings._polling_interval, 150);   // milisec
+   end
+   else begin
+      FPollingInterval := Min(dmZLogGlobal.Settings._polling_interval, 75);    // milisec
+   end;
 
    FComm.Disconnect;
    FComm.Port := TPortNumber(prtnr);
