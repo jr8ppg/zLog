@@ -1808,10 +1808,11 @@ begin
       else begin
          ICOMWriteData(AnsiChar($04));
       end;
-      Inc(FPollingCount);
-      if FPollingCount < 0 then begin
-         FPollingCount := 1;
-      end;
+   end;
+
+   Inc(FPollingCount);
+   if FPollingCount < 0 then begin
+      FPollingCount := 1;
    end;
 end;
 
@@ -1946,32 +1947,39 @@ var
    Command: AnsiString;
    para: byte;
 begin
-   para := 3;
-   case Q.Mode of
-      mSSB:
-         if Q.Band <= b7 then
-            para := 0
-         else
-            para := 1;
-      mCW:
-         para := 3;
-      mFM:
-         para := 5;
-      mAM:
-         para := 2;
-      mRTTY:
-         para := 4;
+   if FPollingCount = 0 then begin
+      Exit;
    end;
+   FPollingTimer.Enabled := False;
+   try
+      para := 3;
+      case Q.Mode of
+         mSSB:
+            if Q.Band <= b7 then
+               para := 0
+            else
+               para := 1;
+         mCW:
+            para := 3;
+         mFM:
+            para := 5;
+         mAM:
+            para := 2;
+         mRTTY:
+            para := 4;
+      end;
 
-   Command := AnsiChar($06) + AnsiChar(para);
+      Command := AnsiChar($06) + AnsiChar(para);
 
-   if ModeWidth[Q.Mode] in [1 .. 3] then begin
-      Command := Command + AnsiChar(ModeWidth[Q.Mode]);
+      if ModeWidth[Q.Mode] in [1 .. 3] then begin
+         Command := Command + AnsiChar(ModeWidth[Q.Mode]);
+      end;
+
+      ICOMWriteData(Command);
+   finally
+      FPollingCount := 0;
+      FPollingTimer.Enabled := True;
    end;
-
-   ICOMWriteData(Command);
-
-   ICOMWriteData(AnsiChar($04)); // request mode data
 end;
 
 procedure TFT1000MP.SetMode(Q: TQSO);
@@ -2011,7 +2019,7 @@ begin
       Exit;
    end;
 
-   _currentband := Q.Band; // ver 2.0e
+//   _currentband := Q.Band; // ver 2.0e
 
    if FreqMem[Q.Band, Q.Mode] > 0 then begin
       f := FreqMem[Q.Band, Q.Mode];
@@ -2118,40 +2126,46 @@ var
    fstr: AnsiString;
    freq, i: LongInt;
 begin
-   LastFreq := _currentfreq[_currentvfo];
-   freq := Hz;
-
-   if freq < 0 then // > 2.1GHz is divided by 100 and given a negative value. Not implemented yet
-   begin
-      fstr := AnsiChar(0);
-      freq := -1 * freq;
-   end
-   else begin
-      i := freq mod 100;
-      fstr := AnsiChar((i div 10) * 16 + (i mod 10));
-      freq := freq div 100;
+   if FPollingCount = 0 then begin
+      Exit;
    end;
+   FPollingTimer.Enabled := False;
+   try
+      LastFreq := _currentfreq[_currentvfo];
+      freq := Hz;
 
-   i := freq mod 100;
-   fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
-   freq := freq div 100;
+      if freq < 0 then // > 2.1GHz is divided by 100 and given a negative value. Not implemented yet
+      begin
+         fstr := AnsiChar(0);
+         freq := -1 * freq;
+      end
+      else begin
+         i := freq mod 100;
+         fstr := AnsiChar((i div 10) * 16 + (i mod 10));
+         freq := freq div 100;
+      end;
 
-   i := freq mod 100;
-   fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
-   freq := freq div 100;
+      i := freq mod 100;
+      fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+      freq := freq div 100;
 
-   i := freq mod 100;
-   fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
-   freq := freq div 100;
+      i := freq mod 100;
+      fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+      freq := freq div 100;
 
-   i := freq mod 100;
-   fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+      i := freq mod 100;
+      fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+      freq := freq div 100;
 
-   fstr := AnsiChar($05) + fstr;
-   ICOMWriteData(fstr);
+      i := freq mod 100;
+      fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
 
-   fstr := AnsiChar($03);
-   ICOMWriteData(fstr); // request freq data
+      fstr := AnsiChar($05) + fstr;
+      ICOMWriteData(fstr);
+   finally
+      FPollingCount := 0;
+      FPollingTimer.Enabled := True;
+   end;
 end;
 
 procedure TRigControl.VisibleChangeEvent(Sender: TObject);
@@ -2723,7 +2737,12 @@ begin
                end;
             end;
 
-            FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
+            // 処理タイミングによって、_currentfreqと_currentbandの食い違いが起きるので
+            // 一致している場合にFreqMemを更新する
+            if GetBandIndex(_currentfreq[_currentvfo]) = Integer(_currentband) then begin
+               FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
+            end;
+
             if Selected then begin
                UpdateStatus;
             end;
@@ -2765,9 +2784,9 @@ begin
             j := GetBandIndex(i);
             if j >= 0 then begin
                _currentband := TBand(j);
+               FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
             end;
 
-            FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
             if Selected then begin
                UpdateStatus;
             end;
