@@ -11,7 +11,9 @@ object CWKeyBoard: TCWKeyBoard
   Font.Name = #65325#65331' '#12468#12471#12483#12463
   Font.Style = []
   OldCreateOrder = True
+  OnActivate = FormActivate
   OnCreate = FormCreate
+  OnDeactivate = FormDeactivate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12

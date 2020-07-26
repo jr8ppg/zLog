@@ -52,9 +52,12 @@ type
     procedure actionPlayMessageSKExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actionESCExecute(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormDeactivate(Sender: TObject);
   private
     { Private declarations }
     procedure PlayMessage(cb: Integer; no: Integer);
+    procedure SetActionEnabled(fEnabled: Boolean);
   public
     { Public declarations }
   end;
@@ -122,6 +125,17 @@ end;
 procedure TCWKeyBoard.FormShow(Sender: TObject);
 begin
    Console.SetFocus;
+end;
+
+procedure TCWKeyBoard.FormActivate(Sender: TObject);
+begin
+   SetActionEnabled(True);
+   Console.SetFocus();
+end;
+
+procedure TCWKeyBoard.FormDeactivate(Sender: TObject);
+begin
+   SetActionEnabled(False);
 end;
 
 procedure TCWKeyBoard.ConsoleKeyPress(Sender: TObject; var Key: Char);
@@ -248,6 +262,15 @@ begin
 
    ClipBoard.AsText := S;
    Console.PasteFromClipBoard;
+end;
+
+procedure TCWKeyBoard.SetActionEnabled(fEnabled: Boolean);
+var
+   i: Integer;
+begin
+   for i := 0 to ActionList1.ActionCount - 1 do begin
+      ActionList1.Actions[i].Enabled := fEnabled;
+   end;
 end;
 
 end.
