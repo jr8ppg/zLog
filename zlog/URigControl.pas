@@ -198,6 +198,11 @@ type
     procedure Initialize(); override;
   end;
 
+  TTS570 = class(TTS690)
+    constructor Create(RigNum : integer); override;
+    procedure Initialize(); override;
+  end;
+
   TICOM = class(TRig) // Icom CI-V
   private
     FMyAddr: Byte;
@@ -1288,6 +1293,12 @@ begin
             rig._maxband := b1200;
          end;
 
+         if rname = 'TS-570/590' then begin
+            rig := TTS570.Create(rignum);
+            rig._minband := b19;
+            rig._maxband := b50;
+         end;
+
          if rname = 'TS-2000' then begin
             rig := TTS2000.Create(rignum);
             rig._minband := b19;
@@ -1594,6 +1605,21 @@ procedure TTS2000P.Initialize();
 begin
    Inherited;
    FPollingTimer.Enabled := True;
+end;
+
+constructor TTS570.Create(RigNum: Integer);
+begin
+   Inherited;
+   TerminatorCode := ';';
+   FComm.StopBits := sb1BITS;
+end;
+
+procedure TTS570.Initialize();
+begin
+   Inherited;
+   WriteData('TC 1;');
+   WriteData('AI2;');
+   WriteData('IF;');
 end;
 
 constructor TJST145.Create(RigNum: Integer);
