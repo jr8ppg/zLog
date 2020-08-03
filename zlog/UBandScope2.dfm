@@ -72,4 +72,8 @@ object BandScope2: TBandScope2
     Left = 56
     Top = 112
   end
+  object ImageList1: TImageList
+    Left = 56
+    Top = 176
+  end
 end

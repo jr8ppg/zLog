@@ -1,5 +1,7 @@
 program zLog;
 
+{$R *.dres}
+
 uses
   Forms,
   ActiveX,

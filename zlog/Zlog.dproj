@@ -416,6 +416,46 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UserDefinedContest.pas"/>
+        <RcItem Include="resource\r0.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>IDB_ANT_0</ResourceId>
+        </RcItem>
+        <RcItem Include="resource\r1.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>IDB_ANT_1</ResourceId>
+        </RcItem>
+        <RcItem Include="resource\r2.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>IDB_ANT_2</ResourceId>
+        </RcItem>
+        <RcItem Include="resource\r3.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>IDB_ANT_3</ResourceId>
+        </RcItem>
+        <RcItem Include="resource\r4.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>IDB_ANT_4</ResourceId>
+        </RcItem>
+        <RcItem Include="resource\t0.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>IDB_TIM_0</ResourceId>
+        </RcItem>
+        <RcItem Include="resource\t1.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>IDB_TIM_1</ResourceId>
+        </RcItem>
+        <RcItem Include="resource\t2.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>IDB_TIM_2</ResourceId>
+        </RcItem>
+        <RcItem Include="resource\t3.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>IDB_TIM_3</ResourceId>
+        </RcItem>
+        <RcItem Include="resource\t4.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>IDB_TIM_4</ResourceId>
+        </RcItem>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -475,15 +515,75 @@
                 <Platform value="Win64">True</Platform>
             </Platforms>
             <Deployment Version="3">
-                <DeployFile LocalName="zlog.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="resource\r0.bmp" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
-                        <RemoteName>zlog.exe</RemoteName>
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="Win32\Release\zlog.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>Zlog.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="resource\t1.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="resource\t0.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="resource\r2.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="resource\r3.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="zlog.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>zlog.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="resource\t2.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="resource\t3.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="resource\r4.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="resource\r1.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="resource\t4.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

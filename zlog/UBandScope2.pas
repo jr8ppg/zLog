@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, Grids, Menus,
-  USpotClass, UzLogConst, UzLogGlobal, UzLogQSO;
+  Dialogs, ExtCtrls, StdCtrls, Grids, Menus, DateUtils,
+  USpotClass, UzLogConst, UzLogGlobal, UzLogQSO, System.ImageList, Vcl.ImgList;
 
 type
   TBandScope2 = class(TForm)
@@ -15,6 +15,7 @@ type
     Timer1: TTimer;
     Panel1: TPanel;
     Grid: TStringGrid;
+    ImageList1: TImageList;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure mnDeleteClick(Sender: TObject);
     procedure Deleteallworkedstations1Click(Sender: TObject);
@@ -28,8 +29,8 @@ type
   private
     { Private 宣言 }
     FProcessing: Boolean;
-    FMinFreq: Integer;
-    FMaxFreq: Integer; // in Hz
+//    FMinFreq: Integer;
+//    FMaxFreq: Integer; // in Hz
 
     FCurrBand : TBand;
     FCurrMode : TMode;
@@ -76,7 +77,7 @@ uses
 procedure BSRefresh(Sender: TObject);
 var
    b: TBand;
-   RR: TRig;
+//   RR: TRig;
 begin
    for b := Low(MainForm.BandScopeEx) to High(MainForm.BandScopeEx) do begin
       if dmZLogGlobal.Settings._usebandscope[b] = False then begin
@@ -88,10 +89,20 @@ begin
 end;
 
 constructor TBandScope2.Create(AOwner: TComponent; b: TBand);
+var
+   bmp: TBitmap;
+   i: Integer;
 begin
    Inherited Create(AOwner);
    FCurrBand := b;
    Caption := BandString[b];
+
+   bmp := TBitmap.Create();
+   for i := 0 to 4 do begin
+      bmp.LoadFromResourceName(SysInit.HInstance, 'IDB_TIM_' + IntToStr(i));
+      ImageList1.Add(bmp, nil);
+   end;
+   bmp.Free();
 end;
 
 procedure TBandScope2.CreateParams(var Params: TCreateParams);
@@ -163,8 +174,13 @@ begin
    D.Mode := aQSO.Mode;
    D.Call := aQSO.Callsign;
    D.Number := aQSO.NrRcvd;
-   // D.Time := Now;
-   Main.MyContest.MultiForm.ProcessSpotData(TBaseSpot(D));
+   D.Time := Now;
+
+   // 交信済みチェック
+   SpotCheckWorked(D);
+
+//   Main.MyContest.MultiForm.ProcessSpotData(TBaseSpot(D));
+
    AddAndDisplay(D);
    MainForm.ZLinkForm.SendBandScopeData(D.InText);
    // Send spot data to other radios!
@@ -377,7 +393,11 @@ begin
       Exit;
    end;
 
-   Main.MyContest.MultiForm.ProcessSpotData(TBaseSpot(D));
+   // 交信済みチェック
+   SpotCheckWorked(D);
+
+//   Main.MyContest.MultiForm.ProcessSpotData(TBaseSpot(D));
+
    AddAndDisplay(D);
 end;
 
@@ -454,6 +474,11 @@ procedure TBandScope2.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: T
 var
    D: TBSData;
    strText: string;
+   Diff: Double;
+   n: Integer;
+   x, y: Integer;
+   rc: TRect;
+   ExpireTime: TDateTime;
 begin
    with Grid.Canvas do begin
       Font.Name := 'ＭＳ ゴシック';
@@ -467,17 +492,42 @@ begin
       if D = nil then begin
          Font.Style := [fsBold];
          Font.Color := clBlack;
+         n := -1;
       end
       else begin
-         if (D.SelfSpot = True) then begin
-            Font.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FForeColor;
-            Brush.Color := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
-            D.Bold      := dmZLogGlobal.Settings._bandscopecolor[5].FBold;
+         // 経過時間
+         ExpireTime := IncMinute(D.Time, dmZlogGlobal.Settings._bsexpire);
+         if ExpireTime > Now then begin
+            Diff := SecondSpan(ExpireTime, Now);
          end
-         else if D.Worked then begin   // 交信済み(＝マルチゲット済み）
+         else begin
+            Diff := 0;
+         end;
+
+         if Diff < 20 then begin
+            n := 0;
+         end
+         else if Diff < 60 then begin
+            n := 1;
+         end
+         else if Diff < 150 then begin
+            n := 2;
+         end
+         else if Diff < 300 then begin
+            n := 3;
+         end
+         else begin
+            n := 4;
+         end;
+
+         if D.Worked then begin   // 交信済み(＝マルチゲット済み）
             Font.Color  := dmZLogGlobal.Settings._bandscopecolor[1].FForeColor;
             Brush.Color := dmZLogGlobal.Settings._bandscopecolor[1].FBackColor;
             D.Bold      := dmZLogGlobal.Settings._bandscopecolor[1].FBold;
+
+            if (D.ClusterData = False) then begin
+               Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+            end;
          end
          else begin  // 未交信
             if D.NewMulti = True then begin         // マルチ未ゲット
@@ -495,6 +545,10 @@ begin
                Brush.Color := dmZLogGlobal.Settings._bandscopecolor[4].FBackColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[4].FBold;
             end;
+
+            if (D.ClusterData = False) then begin
+               Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+            end;
          end;
 
          if D.Bold then begin
@@ -505,7 +559,15 @@ begin
          end;
       end;
 
-      TextRect(Rect, strText, [tfLeft,tfVerticalCenter,tfSingleLine]);
+      if n > -1 then begin
+         x := Rect.Left + 2;
+         y := Rect.Top + (((Rect.Bottom - Rect.Top) - 16) div 2);
+         ImageList1.Draw(Grid.Canvas, x, y, n, True);
+      end;
+
+      rc := Rect;
+      rc.Left := rc.Left + 16 + 4;
+      TextRect(rc, strText, [tfLeft,tfVerticalCenter,tfSingleLine]);
 
       if gdSelected in State then begin
          DrawFocusRect(Rect);
