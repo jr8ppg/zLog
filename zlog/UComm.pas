@@ -360,11 +360,6 @@ begin
    // 交信済みチェック
    SpotCheckWorked(Sp);
 
-   // SelfSpotか
-   if Sp.Call = dmZlogGlobal.MyCall then begin
-      Sp.SelfSpot := True;
-   end;
-
    // Spotリストへ追加
    SpotList.Add(Sp);
 
