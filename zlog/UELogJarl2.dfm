@@ -382,7 +382,6 @@ object formELogJarl2: TformELogJarl2
     Caption = 'E-log'#20316#25104
     TabOrder = 18
     OnClick = buttonCreateLogClick
-    ExplicitTop = 571
   end
   object buttonSave: TButton
     Left = 104
@@ -393,7 +392,6 @@ object formELogJarl2: TformELogJarl2
     Caption = #20445#23384
     TabOrder = 17
     OnClick = buttonSaveClick
-    ExplicitTop = 571
   end
   object buttonCancel: TButton
     Left = 312
@@ -405,7 +403,6 @@ object formELogJarl2: TformELogJarl2
     ModalResult = 2
     TabOrder = 19
     OnClick = buttonCancelClick
-    ExplicitTop = 571
   end
   object mAddress: TMemo
     Left = 23

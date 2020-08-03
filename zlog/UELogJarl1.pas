@@ -271,7 +271,14 @@ procedure TformELogJarl1.WriteSummarySheet(var f: TextFile);
 var
    nFdCoeff: Integer;
    b: TBand;
+   fFieldDay: Boolean;
 begin
+   if Pos('フィールドデー', MyContest.Name) > 0 then begin
+      fFieldDay := True;
+   end
+   else begin
+      fFieldDay := False;
+   end;
    nFdCoeff := StrToIntDef(edFDCoefficient.Text, 1);
 
    WriteLn(f, '<SUMMARYSHEET VERSION=R1.0>');
@@ -294,7 +301,7 @@ begin
 
    WriteLn(f, '<SCORE BAND=TOTAL>' + MyContest.ScoreForm.TotalQPMStr + '</SCORE>');
 
-   if nFdCoeff > 1 then begin
+   if (fFieldDay = True) then begin
       WriteLn(f, '<FDCOEFF>' + IntToStr(nFdCoeff) + '</FDCOEFF>');
    end;
 
