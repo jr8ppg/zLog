@@ -1841,7 +1841,7 @@ object formOptions: TformOptions
           Top = 35
           Width = 40
           Height = 21
-          TabOrder = 1
+          TabOrder = 2
           Text = 'CWPortEdit'
         end
         object AfterEdit: TEdit
@@ -1849,8 +1849,20 @@ object formOptions: TformOptions
           Top = 35
           Width = 40
           Height = 21
-          TabOrder = 2
+          TabOrder = 3
           Text = 'CWPortEdit'
+        end
+        object checkCwReverseSignal: TCheckBox
+          Left = 173
+          Top = 14
+          Width = 144
+          Height = 17
+          Hint = 'if checked, PTT is DTR, Keying is RTS'
+          Caption = 'Reverse the Signal Lines'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 1
+          OnClick = PTTEnabledCheckBoxClick
         end
       end
     end

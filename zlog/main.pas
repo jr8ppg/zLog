@@ -6506,6 +6506,9 @@ begin
       Application.CreateForm(TTTYConsole, TTYConsole);
       repeat
       until TTYConsole <> nil;
+
+      dmZLogKeyer.CloseBGK();
+
       TTYConsole.SetTTYMode(ttyMMTTY);
       InitializeMMTTY(Handle);
       TTYConsole.Show;
@@ -6519,6 +6522,10 @@ begin
       TTYConsole.close;
       TTYConsole.Destroy;
       ExitMMTTY;
+
+      dmZLogKeyer.InitializeBGK(dmZlogGlobal.Settings.CW._interval);
+      dmZLogGlobal.InitializeCW();
+
       exit;
    end;
 end;
@@ -8026,7 +8033,9 @@ end;
 // #74 Teletype Console
 procedure TMainForm.actionShowTeletypeConsoleExecute(Sender: TObject);
 begin
-   TTYConsole.Show;
+   if Assigned(TTYConsole) then begin
+      TTYConsole.Show;
+   end;
 end;
 
 // #75 analyzeウインドウ

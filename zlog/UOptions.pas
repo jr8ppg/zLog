@@ -325,6 +325,7 @@ type
     comboQuickQsyRig07: TComboBox;
     comboQuickQsyRig08: TComboBox;
     checkGetBandAndMode: TCheckBox;
+    checkCwReverseSignal: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -579,6 +580,8 @@ begin
       Settings._syncserial := checkZLinkSyncSerial.Checked;
 
       Settings._pttenabled := PTTEnabledCheckBox.Checked;
+      Settings.CW._keying_signal_reverse := checkCwReverseSignal.Checked;
+
       Settings._saveevery := SaveEvery.Value;
       Settings._countdown := cbCountDown.Checked;
       Settings._qsycount := cbQSYCount.Checked;
@@ -880,6 +883,8 @@ begin
       edLogsPath.Text := Settings._logspath;
 
       PTTEnabledCheckBox.Checked := Settings._pttenabled;
+      checkCwReverseSignal.Checked := Settings.CW._keying_signal_reverse;
+
       BeforeEdit.Text := IntToStr(Settings._pttbefore);
       AfterEdit.Text := IntToStr(Settings._pttafter);
       if PTTEnabledCheckBox.Checked then begin

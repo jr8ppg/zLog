@@ -28,6 +28,7 @@ type
     _spacefactor : word; {factor in % for default space between characters}
     _eispacefactor : word;
     _send_nr_auto: Boolean;         // Send NR automatically
+    _keying_signal_reverse: Boolean;
   end;
 
   TCommParam = record
@@ -217,6 +218,7 @@ public
 
     procedure SaveCurrentSettings; {saves Settings to zlog.ini}
     procedure ImplementSettings(_OnCreate: boolean);
+    procedure InitializeCW();
 
     property MyCall: string read GetMyCall write SetMyCall;
     property Band: Integer read GetBand write SetBand;
@@ -619,6 +621,9 @@ begin
       // Send NR? automatically
       Settings.CW._send_nr_auto  := ini.ReadBool('CW', 'send_nr_auto', True);
 
+      // Keying Signal(DTR) reverse
+      Settings.CW._keying_signal_reverse := ini.ReadBool('CW', 'keying_signal_reverse', False);
+
       //
       // Hardware
       //
@@ -1014,6 +1019,9 @@ begin
       // Send NR? automatically
       ini.WriteBool('CW', 'send_nr_auto', Settings.CW._send_nr_auto);
 
+      // Keying Signal(DTR) reverse
+      ini.WriteBool('CW', 'keying_signal_reverse', Settings.CW._keying_signal_reverse);
+
       //
       // Hardware
       //
@@ -1228,107 +1236,114 @@ var
    i, j: integer;
    b: TBand;
 begin
-   with dmZlogGlobal do begin
-      if _OnCreate = False then begin
-         for b := b19 to HiBand do begin
-            MainForm.BandMenu.Items[ord(b)].Enabled := Settings._activebands[b];
-         end;
+   if _OnCreate = False then begin
+      for b := b19 to HiBand do begin
+         MainForm.BandMenu.Items[ord(b)].Enabled := Settings._activebands[b];
+      end;
 
-         if Settings._band > 0 then begin // single band
-            Band := Settings._band; // resets the bandmenu.items.enabled for the single band entry
+      if Settings._band > 0 then begin // single band
+         Band := Settings._band; // resets the bandmenu.items.enabled for the single band entry
+      end;
+   end;
+
+   if MyContest <> nil then begin
+      Main.MyContest.SameExchange := Settings._sameexchange;
+   end;
+
+   MainForm.RigControl.SetBandMask;
+
+   if Settings._zlinkport in [1 .. 6] then begin // zlinkport rs232c
+      // ZLinkForm.Transparent := True;
+      // no rs232c anymore
+   end;
+
+   MainForm.CommForm.EnableConnectButton(Settings._clusterport = 7);
+
+   MainForm.CommForm.ImplementOptions;
+   MainForm.ZLinkForm.ImplementOptions;
+
+   InitializeCW();
+
+   // SetBand(Settings._band);
+   Mode := Settings._mode;
+
+   if Settings._backuppath = '' then begin
+      MainForm.BackUp1.Enabled := False;
+   end
+   else begin
+      MainForm.BackUp1.Enabled := True;
+   end;
+
+   if Settings._multistation = True then begin
+      Settings._txnr := 2;
+   end;
+
+   if not(_OnCreate) then begin
+      j := MainForm.OpMenu.Items.Count;
+      if j > 0 then begin
+         for i := 1 to j do begin
+            MainForm.OpMenu.Items.Delete(0);
          end;
       end;
 
-      if MyContest <> nil then begin
-         Main.MyContest.SameExchange := Settings._sameexchange;
-      end;
-
-      MainForm.RigControl.SetBandMask;
-
-      if Settings._zlinkport in [1 .. 6] then begin // zlinkport rs232c
-         // ZLinkForm.Transparent := True;
-         // no rs232c anymore
-      end;
-
-      MainForm.CommForm.EnableConnectButton(Settings._clusterport = 7);
-
-      MainForm.CommForm.ImplementOptions;
-      MainForm.ZLinkForm.ImplementOptions;
-      dmZlogKeyer.UseSideTone := False;
-
-      Case Settings._lptnr of
-         0: begin
-            dmZlogKeyer.KeyingPort := tkpNone;
-         end;
-
-         1 .. 20: begin
-            dmZlogKeyer.SetSerialCWKeying(Settings._lptnr);
-            dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
-         end;
-
-         21: begin // usb
-            dmZlogKeyer.KeyingPort := tkpUSB;
-
-            if Settings.CW._paddle then begin
-               dmZlogKeyer.PaddlePort := $99;   // use
-            end
-            else begin
-               dmZlogKeyer.PaddlePort := $00;   // not use
-            end;
-         end;
-      end;
-
-      dmZlogKeyer.SetPTTDelay(Settings._pttbefore, Settings._pttafter);
-      dmZlogKeyer.SetPTT(Settings._pttenabled);
-
-      // SetBand(Settings._band);
-      Mode := Settings._mode;
-      SetPaddleReverse(Settings.CW._paddlereverse);
-      Speed := Settings.CW._speed;
-      SetWeight(Settings.CW._weight);
-      CQMax := Settings.CW._cqmax;
-      CQRepeat := Settings.CW._cqrepeat;
-      SendFreq := Settings._sendfreq;
-      SetTonePitch(Settings.CW._tonepitch);
-      dmZlogKeyer.RandCQStr[1] := SetStr(Settings.CW.CQStrBank[1], CurrentQSO);
-      dmZlogKeyer.RandCQStr[2] := SetStr(Settings.CW.CQStrBank[2], CurrentQSO);
-
-      dmZlogKeyer.SpaceFactor := Settings.CW._spacefactor;
-      dmZlogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
-
-      if Settings._backuppath = '' then begin
-         MainForm.BackUp1.Enabled := False;
-      end
-      else begin
-         MainForm.BackUp1.Enabled := True;
-      end;
-
-      if Settings._multistation = True then begin
-         Settings._txnr := 2;
-      end;
-
-      if not(_OnCreate) then begin
-         j := MainForm.OpMenu.Items.Count;
-         if j > 0 then begin
-            for i := 1 to j do begin
-               MainForm.OpMenu.Items.Delete(0);
-            end;
-         end;
-
-         if OpList.Count > 0 then begin
+      if OpList.Count > 0 then begin
+         m := TMenuItem.Create(Self);
+         m.Caption := 'Clear';
+         m.OnClick := MainForm.OpMenuClick;
+         MainForm.OpMenu.Items.Add(m);
+         for i := 0 to OpList.Count - 1 do begin
             m := TMenuItem.Create(Self);
-            m.Caption := 'Clear';
+            m.Caption := TrimRight(Copy(OpList.Strings[i], 1, 20));
             m.OnClick := MainForm.OpMenuClick;
             MainForm.OpMenu.Items.Add(m);
-            for i := 0 to OpList.Count - 1 do begin
-               m := TMenuItem.Create(Self);
-               m.Caption := TrimRight(Copy(OpList.Strings[i], 1, 20));
-               m.OnClick := MainForm.OpMenuClick;
-               MainForm.OpMenu.Items.Add(m);
-            end;
          end;
       end;
    end;
+end;
+
+procedure TdmZLogGlobal.InitializeCW();
+begin
+   dmZlogKeyer.UseSideTone := False;
+
+   Case Settings._lptnr of
+      0: begin
+         dmZlogKeyer.KeyingPort := tkpNone;
+      end;
+
+      1 .. 20: begin
+         dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
+         dmZlogKeyer.SetSerialCWKeying(Settings._lptnr);
+      end;
+
+      21: begin // usb
+         dmZlogKeyer.KeyingPort := tkpUSB;
+
+         if Settings.CW._paddle then begin
+            dmZlogKeyer.PaddlePort := $99;   // use
+         end
+         else begin
+            dmZlogKeyer.PaddlePort := $00;   // not use
+         end;
+      end;
+   end;
+
+   dmZlogKeyer.SetPTTDelay(Settings._pttbefore, Settings._pttafter);
+   dmZlogKeyer.SetPTT(Settings._pttenabled);
+
+   SetPaddleReverse(Settings.CW._paddlereverse);
+
+   Speed := Settings.CW._speed;
+   SetWeight(Settings.CW._weight);
+   CQMax := Settings.CW._cqmax;
+   CQRepeat := Settings.CW._cqrepeat;
+   SendFreq := Settings._sendfreq;
+   SetTonePitch(Settings.CW._tonepitch);
+
+   dmZlogKeyer.RandCQStr[1] := SetStr(Settings.CW.CQStrBank[1], CurrentQSO);
+   dmZlogKeyer.RandCQStr[2] := SetStr(Settings.CW.CQStrBank[2], CurrentQSO);
+
+   dmZlogKeyer.SpaceFactor := Settings.CW._spacefactor;
+   dmZlogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
 end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;

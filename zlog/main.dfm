@@ -4313,6 +4313,7 @@ object MainForm: TMainForm
       end
       object mnTTYConsole: TMenuItem
         Action = actionShowTeletypeConsole
+        Visible = False
       end
       object menuAnalyze: TMenuItem
         Action = actionShowAnalyze

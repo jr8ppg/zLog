@@ -147,6 +147,10 @@ type
 
     FOnCallsignSentProc: TNotifyEvent;
 
+    // False: PTT=RTS,KEY=DTR
+    // True:  PTT=DTR,KEY=RTS
+    FKeyingSignalReverse: Boolean;
+
     procedure Sound();
     procedure NoSound();
 
@@ -228,6 +232,8 @@ type
     property OnCallsignSentProc: TNotifyEvent read FOnCallsignSentProc write FOnCallsignSentProc;
 
     procedure SetSerialCWKeying(PortNr : integer);
+
+    property KeyingSignalReverse: Boolean read FKeyingSignalReverse write FKeyingSignalReverse;
   end;
 
 var
@@ -284,6 +290,8 @@ begin
 
    FPaddleThread := TKeyerPaddleThread.Create(Self);
    FEndOfWordCounter := 0;
+
+   FKeyingSignalReverse := False;
 end;
 
 procedure TdmZLogKeyer.DataModuleDestroy(Sender: TObject);
@@ -370,7 +378,12 @@ begin
    end;
 
    if FKeyingPort in [tkpSerial1..tkpSerial20] then begin
-      ZComKeying.ToggleRTS(PTTON);
+      if FKeyingSignalReverse = False then begin
+         ZComKeying.ToggleRTS(PTTON);
+      end
+      else begin
+         ZComKeying.ToggleDTR(PTTON);
+      end;
       Exit;
    end;
 end;
@@ -595,7 +608,12 @@ procedure TdmZLogKeyer.CW_ON;
 begin
    case FKeyingPort of
       tkpSerial1..tkpSerial20: begin
-         ZComKeying.ToggleDTR(True);
+         if FKeyingSignalReverse = False then begin
+            ZComKeying.ToggleDTR(True);
+         end
+         else begin
+            ZComKeying.ToggleRTS(True);
+         end;
       end;
 
       tkpUSB: begin
@@ -608,7 +626,12 @@ procedure TdmZLogKeyer.CW_OFF;
 begin
    case FKeyingPort of
       tkpSerial1..tkpSerial20: begin
-         ZComKeying.ToggleDTR(False);
+         if FKeyingSignalReverse = False then begin
+            ZComKeying.ToggleDTR(False);
+         end
+         else begin
+            ZComKeying.ToggleRTS(False);
+         end;
       end;
 
       tkpUSB: begin
@@ -1465,6 +1488,8 @@ begin
    NoSound;
 
    CW_OFF;
+
+   ZComKeying.Disconnect;
 end;
 
 procedure TdmZLogKeyer.PauseCW;
