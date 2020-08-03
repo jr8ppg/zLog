@@ -263,7 +263,14 @@ end;
 procedure TformELogJarl2.WriteSummarySheet(var f: TextFile);
 var
    nFdCoeff: Integer;
+   fFieldDay: Boolean;
 begin
+   if Pos('フィールドデー', MyContest.Name) > 0 then begin
+      fFieldDay := True;
+   end
+   else begin
+      fFieldDay := False;
+   end;
    nFdCoeff := StrToIntDef(edFDCoefficient.Text, 1);
 
    WriteLn(f, '<SUMMARYSHEET VERSION=R2.0>');
@@ -282,7 +289,7 @@ begin
    WriteLn(f, '<TEL>' + edTEL.Text + '</TEL>');
    WriteLn(f, '<EMAIL>' + edEMail.Text + '</EMAIL>');
    WriteLn(f, '<POWER>' + edPower.Text + '</POWER>');
-   if nFdCoeff > 1 then begin
+   if (fFieldDay = True) then begin
       WriteLn(f, '<FDCOEFF>' + IntToStr(nFdCoeff) + '</FDCOEFF>');
    end;
    WriteLn(f, '<OPPLACE>' + edQTH.Text + '</OPPLACE>');
