@@ -1674,6 +1674,8 @@ procedure TdmZLogGlobal.ReadWindowState(form: TForm; strWindowName: string; fPos
 var
    ini: TIniFile;
    l, t, w, h: Integer;
+   pt: TPoint;
+   mon: TMonitor;
 begin
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
@@ -1688,12 +1690,24 @@ begin
 
       form.Visible := ini.ReadBool('Windows', strWindowName + '_Open', False);
 
-      if l >= 0 then begin
-         form.Left := l;
+      pt.X := l;
+      pt.Y := t;
+      mon := Screen.MonitorFromPoint(pt, mdNearest);
+      if l < mon.Left then begin
+         l := mon.Left;
       end;
-      if t >= 0 then begin
-         form.Top := t;
+      if l > (mon.Left + mon.Width) then begin
+         l := (mon.Left + mon.Width) - W;
       end;
+      if t < mon.Top then begin
+         t := mon.Top;
+      end;
+      if t > (mon.Top + mon.Height) then begin
+         t := (mon.Top + mon.Height) - H;
+      end;
+
+      form.Left := l;
+      form.Top := t;
 
       if fPositionOnly = False then begin
          if h >= 0 then begin
