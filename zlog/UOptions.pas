@@ -326,6 +326,18 @@ type
     comboQuickQsyRig08: TComboBox;
     checkGetBandAndMode: TCheckBox;
     checkCwReverseSignal: TCheckBox;
+    tabsheetQuickMemo: TTabSheet;
+    GroupBox11: TGroupBox;
+    Label63: TLabel;
+    editQuickMemo1: TEdit;
+    Label64: TLabel;
+    editQuickMemo2: TEdit;
+    Label65: TLabel;
+    editQuickMemo3: TEdit;
+    Label66: TLabel;
+    editQuickMemo4: TEdit;
+    Label67: TLabel;
+    editQuickMemo5: TEdit;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -383,6 +395,9 @@ type
     FBSBold: array[1..5] of TCheckBox;
 
     FNeedSuperCheckLoad: Boolean;
+
+    FQuickMemoText: array[1..5] of TEdit;
+
     procedure RenewCWStrBankDisp();
     procedure InitRigNames();
   public
@@ -678,6 +693,11 @@ begin
          Settings._bandscopecolor[i].FBackColor := FBSColor[i].Color;
          Settings._bandscopecolor[i].FBold      := FBSBold[i].Checked;
       end;
+
+      // Quick Memo
+      for i := 1 to 5 do begin
+         Settings.FQuickMemoText[i] := Trim(FQuickMemoText[i].Text);
+      end;
    end;
 end;
 
@@ -960,6 +980,11 @@ begin
          FBSColor[i].Color      := Settings._bandscopecolor[i].FBackColor;
          FBSBold[i].Checked     := Settings._bandscopecolor[i].FBold;
       end;
+
+      // Quick Memo
+      for i := 1 to 5 do begin
+         FQuickMemoText[i].Text := Settings.FQuickMemoText[i];
+      end;
    end;
 
    if FCWEditMode = 0 then begin
@@ -1084,6 +1109,13 @@ begin
    FBSBold[3] := checkBSBold3;
    FBSBold[4] := checkBSBold4;
    FBSBold[5] := checkBSBold5;
+
+   // Quick Memo
+   FQuickMemoText[1] := editQuickMemo1;
+   FQuickMemoText[2] := editQuickMemo2;
+   FQuickMemoText[3] := editQuickMemo3;
+   FQuickMemoText[4] := editQuickMemo4;
+   FQuickMemoText[5] := editQuickMemo5;
 
    TempCurrentBank := 1;
 

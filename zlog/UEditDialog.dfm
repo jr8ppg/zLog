@@ -493,13 +493,30 @@ object EditDialog: TEditDialog
       ShortCut = 8278
       OnExecute = actionToggleVFOExecute
     end
-    object actionSetPseQSL: TAction
+    object actionQuickMemo1: TAction
+      Tag = 1
       Caption = 'PSE QSL'
-      OnExecute = actionSetPseQSLExecute
+      OnExecute = actionQuickMemo1Execute
     end
-    object actionSetNoQSL: TAction
+    object actionQuickMemo2: TAction
+      Tag = 2
       Caption = 'NO QSL'
-      OnExecute = actionSetNoQSLExecute
+      OnExecute = actionQuickMemo2Execute
+    end
+    object actionQuickMemo3: TAction
+      Tag = 3
+      Caption = 'actionQuickMemo3'
+      OnExecute = actionQuickMemo3Execute
+    end
+    object actionQuickMemo4: TAction
+      Tag = 4
+      Caption = 'actionQuickMemo4'
+      OnExecute = actionQuickMemo3Execute
+    end
+    object actionQuickMemo5: TAction
+      Tag = 5
+      Caption = 'actionQuickMemo5'
+      OnExecute = actionQuickMemo3Execute
     end
   end
 end

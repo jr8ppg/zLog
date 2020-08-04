@@ -151,6 +151,8 @@ type
 
     FQuickQSY: array[1..8] of TQuickQSY;
     FSuperCheck: TSuperCheckParam;
+
+    FQuickMemoText: array[1..5] of string;
   end;
 
 var
@@ -850,6 +852,13 @@ begin
       Settings._bandscopecolor[5].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor5', '$0000ff'), clRed);
       Settings._bandscopecolor[5].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor5', '$00ffff'), clYellow);
       Settings._bandscopecolor[5].FBold      := ini.ReadBool('BandScopeEx', 'Bold5', True);
+
+      // Quick Memo
+      Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', MEMO_PSE_QSL);
+      Settings.FQuickMemoText[2] := ini.ReadString('QuickMemo', '#2', MEMO_NO_QSL);
+      Settings.FQuickMemoText[3] := ini.ReadString('QuickMemo', '#3', 'NR?');
+      Settings.FQuickMemoText[4] := ini.ReadString('QuickMemo', '#4', '');
+      Settings.FQuickMemoText[5] := ini.ReadString('QuickMemo', '#5', '');
    finally
       ini.Free();
       slParam.Free();
@@ -1222,6 +1231,11 @@ begin
       ini.WriteString('BandScopeEx', 'ForeColor5', ColorToString(Settings._bandscopecolor[5].FForeColor));
       ini.WriteString('BandScopeEx', 'BackColor5', ColorToString(Settings._bandscopecolor[5].FBackColor));
       ini.WriteBool('BandScopeEx', 'Bold5', Settings._bandscopecolor[5].FBold);
+
+      // Quick Memo
+      for i := 1 to 5 do begin
+         ini.WriteString('QuickMemo', '#' + IntToStr(i), Settings.FQuickMemoText[i]);
+      end;
    finally
       ini.Free();
       slParam.Free();

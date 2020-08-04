@@ -638,14 +638,17 @@ type
     actionCQRepeat2: TAction;
     actionToggleVFO: TAction;
     actionEditLastQSO: TAction;
-    actionSetPseQSL: TAction;
-    actionSetNoQSL: TAction;
+    actionQuickMemo1: TAction;
+    actionQuickMemo2: TAction;
     actionCwMessagePad: TAction;
     CWMessagePad1: TMenuItem;
     actionCorrectSentNr: TAction;
     actionSetLastFreq: TAction;
     menuCorrectNR: TMenuItem;
     N2: TMenuItem;
+    actionQuickMemo3: TAction;
+    actionQuickMemo4: TAction;
+    actionQuickMemo5: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -844,11 +847,12 @@ type
     procedure actionCQRepeat2Execute(Sender: TObject);
     procedure actionToggleVFOExecute(Sender: TObject);
     procedure actionEditLastQSOExecute(Sender: TObject);
-    procedure actionSetPseQSLExecute(Sender: TObject);
-    procedure actionSetNoQSLExecute(Sender: TObject);
+    procedure actionQuickMemo1Execute(Sender: TObject);
+    procedure actionQuickMemo2Execute(Sender: TObject);
     procedure actionCwMessagePadExecute(Sender: TObject);
     procedure actionCorrectSentNrExecute(Sender: TObject);
     procedure actionSetLastFreqExecute(Sender: TObject);
+    procedure actionQuickMemo3Execute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -8276,7 +8280,7 @@ begin
 end;
 
 // #101 PSE QSL
-procedure TMainForm.actionSetPseQSLExecute(Sender: TObject);
+procedure TMainForm.actionQuickMemo1Execute(Sender: TObject);
 var
    strTemp: string;
 begin
@@ -8296,7 +8300,7 @@ begin
 end;
 
 // #102 NO QSL
-procedure TMainForm.actionSetNoQSLExecute(Sender: TObject);
+procedure TMainForm.actionQuickMemo2Execute(Sender: TObject);
 var
    strTemp: string;
 begin
@@ -8371,6 +8375,34 @@ begin
    if RigControl.Rig <> nil then begin
       RigControl.Rig.MoveToLastFreq;
    end;
+end;
+
+// #106,#107,#108 QuickMemo3-5
+procedure TMainForm.actionQuickMemo3Execute(Sender: TObject);
+var
+   strQuickMemoText: string;
+   strTemp: string;
+   n: Integer;
+begin
+   // ê›íËÇ≥ÇÍÇΩï∂éöóÒÇéÊìæ
+   n := TAction(Sender).Tag;
+   strQuickMemoText := dmZlogGlobal.Settings.FQuickMemoText[n];
+   if strQuickMemoText = '' then begin
+      Exit;
+   end;
+
+   // åªç›ÇÃì‡óeÇéÊìæ
+   strTemp := MemoEdit.Text;
+
+   // ñ¢ê›íËÇ»ÇÁmemoóìÇ…ë}ì¸ÅAê›íËçœÇ›Ç»ÇÁçÌèú
+   if Pos(strQuickMemoText, strTemp) = 0 then begin
+      strTemp := strQuickMemoText + ' ' + strTemp;
+   end
+   else begin
+      strTemp := Trim(StringReplace(strTemp, strQuickMemoText + ' ', '', [rfReplaceAll]));
+   end;
+
+   MemoEdit.Text := strTemp;
 end;
 
 procedure TMainForm.RestoreWindowsPos();

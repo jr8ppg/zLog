@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 325
-    ActivePage = tabsheetHardware
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -3183,6 +3183,90 @@ object formOptions: TformOptions
           ParentFont = False
           TabOrder = 24
           OnClick = buttonBSResetClick
+        end
+      end
+    end
+    object tabsheetQuickMemo: TTabSheet
+      Caption = 'Quick Memo'
+      ImageIndex = 10
+      object GroupBox11: TGroupBox
+        Left = 11
+        Top = 11
+        Width = 326
+        Height = 166
+        Caption = 'Settings'
+        TabOrder = 0
+        object Label63: TLabel
+          Left = 16
+          Top = 24
+          Width = 25
+          Height = 13
+          Caption = '#101'
+        end
+        object Label64: TLabel
+          Left = 16
+          Top = 51
+          Width = 25
+          Height = 13
+          Caption = '#102'
+        end
+        object Label65: TLabel
+          Left = 16
+          Top = 78
+          Width = 25
+          Height = 13
+          Caption = '#106'
+        end
+        object Label66: TLabel
+          Left = 16
+          Top = 105
+          Width = 25
+          Height = 13
+          Caption = '#107'
+        end
+        object Label67: TLabel
+          Left = 16
+          Top = 132
+          Width = 25
+          Height = 13
+          Caption = '#108'
+        end
+        object editQuickMemo1: TEdit
+          Left = 56
+          Top = 21
+          Width = 113
+          Height = 21
+          ReadOnly = True
+          TabOrder = 0
+        end
+        object editQuickMemo2: TEdit
+          Left = 56
+          Top = 48
+          Width = 113
+          Height = 21
+          ReadOnly = True
+          TabOrder = 1
+        end
+        object editQuickMemo3: TEdit
+          Left = 56
+          Top = 75
+          Width = 113
+          Height = 21
+          TabOrder = 2
+        end
+        object editQuickMemo4: TEdit
+          Left = 56
+          Top = 102
+          Width = 113
+          Height = 21
+          TabOrder = 3
+        end
+        object editQuickMemo5: TEdit
+          Left = 56
+          Top = 129
+          Width = 113
+          Height = 21
+          TabOrder = 4
         end
       end
     end

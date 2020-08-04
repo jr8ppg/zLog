@@ -78,8 +78,11 @@ type
     actionIncreaseCwSpeed: TAction;
     actionCQRepeat2: TAction;
     actionToggleVFO: TAction;
-    actionSetPseQSL: TAction;
-    actionSetNoQSL: TAction;
+    actionQuickMemo1: TAction;
+    actionQuickMemo2: TAction;
+    actionQuickMemo3: TAction;
+    actionQuickMemo4: TAction;
+    actionQuickMemo5: TAction;
     procedure CancelBtnClick(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure CallsignEditChange(Sender: TObject);
@@ -130,8 +133,9 @@ type
     procedure actionIncreaseCwSpeedExecute(Sender: TObject);
     procedure actionCQRepeat2Execute(Sender: TObject);
     procedure actionToggleVFOExecute(Sender: TObject);
-    procedure actionSetPseQSLExecute(Sender: TObject);
-    procedure actionSetNoQSLExecute(Sender: TObject);
+    procedure actionQuickMemo1Execute(Sender: TObject);
+    procedure actionQuickMemo2Execute(Sender: TObject);
+    procedure actionQuickMemo3Execute(Sender: TObject);
   private
     { Private declarations }
     workQSO : TQSO;
@@ -568,8 +572,11 @@ begin
    actionIncreaseCwSpeed.ShortCut := MainForm.actionIncreaseCwSpeed.ShortCut;
    actionCQRepeat2.ShortCut := MainForm.actionCQRepeat2.ShortCut;
    actionToggleVFO.ShortCut := MainForm.actionToggleVFO.ShortCut;
-   actionSetPseQSL.ShortCut := MainForm.actionSetPseQSL.ShortCut;
-   actionSetNoQSL.ShortCut := MainForm.actionSetNoQSL.ShortCut;
+   actionQuickMemo1.ShortCut := MainForm.actionQuickMemo1.ShortCut;
+   actionQuickMemo2.ShortCut := MainForm.actionQuickMemo2.ShortCut;
+   actionQuickMemo3.ShortCut := MainForm.actionQuickMemo3.ShortCut;
+   actionQuickMemo4.ShortCut := MainForm.actionQuickMemo4.ShortCut;
+   actionQuickMemo5.ShortCut := MainForm.actionQuickMemo5.ShortCut;
 
    actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
    actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
@@ -605,8 +612,11 @@ begin
    actionIncreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionIncreaseCwSpeed.SecondaryShortCuts);
    actionCQRepeat2.SecondaryShortCuts.Assign(MainForm.actionCQRepeat2.SecondaryShortCuts);
    actionToggleVFO.SecondaryShortCuts.Assign(MainForm.actionToggleVFO.SecondaryShortCuts);
-   actionSetPseQSL.SecondaryShortCuts.Assign(MainForm.actionSetPseQSL.SecondaryShortCuts);
-   actionSetNoQSL.SecondaryShortCuts.Assign(MainForm.actionSetNoQSL.SecondaryShortCuts);
+   actionQuickMemo1.SecondaryShortCuts.Assign(MainForm.actionQuickMemo1.SecondaryShortCuts);
+   actionQuickMemo2.SecondaryShortCuts.Assign(MainForm.actionQuickMemo2.SecondaryShortCuts);
+   actionQuickMemo3.SecondaryShortCuts.Assign(MainForm.actionQuickMemo3.SecondaryShortCuts);
+   actionQuickMemo4.SecondaryShortCuts.Assign(MainForm.actionQuickMemo4.SecondaryShortCuts);
+   actionQuickMemo5.SecondaryShortCuts.Assign(MainForm.actionQuickMemo5.SecondaryShortCuts);
 end;
 
 procedure TEditDialog.FormDestroy(Sender: TObject);
@@ -905,7 +915,7 @@ begin
    end;
 end;
 
-procedure TEditDialog.actionSetPseQSLExecute(Sender: TObject);
+procedure TEditDialog.actionQuickMemo1Execute(Sender: TObject);
 var
    strTemp: string;
 begin
@@ -924,7 +934,7 @@ begin
    MemoEdit.Text := strTemp;
 end;
 
-procedure TEditDialog.actionSetNoQSLExecute(Sender: TObject);
+procedure TEditDialog.actionQuickMemo2Execute(Sender: TObject);
 var
    strTemp: string;
 begin
@@ -938,6 +948,33 @@ begin
    end
    else begin
       strTemp := Trim(StringReplace(strTemp, MEMO_NO_QSL, '', [rfReplaceAll]));
+   end;
+
+   MemoEdit.Text := strTemp;
+end;
+
+procedure TEditDialog.actionQuickMemo3Execute(Sender: TObject);
+var
+   strQuickMemoText: string;
+   strTemp: string;
+   n: Integer;
+begin
+   // ê›íËÇ≥ÇÍÇΩï∂éöóÒÇéÊìæ
+   n := TAction(Sender).Tag;
+   strQuickMemoText := dmZlogGlobal.Settings.FQuickMemoText[n];
+   if strQuickMemoText = '' then begin
+      Exit;
+   end;
+
+   // åªç›ÇÃì‡óeÇéÊìæ
+   strTemp := MemoEdit.Text;
+
+   // ñ¢ê›íËÇ»ÇÁmemoóìÇ…ë}ì¸ÅAê›íËçœÇ›Ç»ÇÁçÌèú
+   if Pos(strQuickMemoText, strTemp) = 0 then begin
+      strTemp := strQuickMemoText + ' ' + strTemp;
+   end
+   else begin
+      strTemp := Trim(StringReplace(strTemp, strQuickMemoText + ' ', '', [rfReplaceAll]));
    end;
 
    MemoEdit.Text := strTemp;
