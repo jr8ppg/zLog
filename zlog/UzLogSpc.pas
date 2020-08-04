@@ -330,31 +330,47 @@ var
    ret: Integer;
    F: TSearchRec;
    S: string;
+   slFiles: TStringList;
+   i: Integer;
 begin
-   if strStartFoler = '' then begin
-      Exit;
-   end;
-
-   S := IncludeTrailingPathDelimiter(strStartFoler);
-
-   ret := FindFirst(S + '*.SPC', faAnyFile, F);
-   while ret = 0 do begin
-      if Terminated = True then begin
-         Break;
+   slFiles := TStringList.Create();
+   try
+      if strStartFoler = '' then begin
+         Exit;
       end;
 
-      if ((F.Attr and faDirectory) = 0) and
-         ((F.Attr and faVolumeID) = 0) and
-         ((F.Attr and faSysFile) = 0) then begin
+      S := IncludeTrailingPathDelimiter(strStartFoler);
 
-         LoadSpcFile(strStartFoler, F.Name);
+      // *.SPCのファイルリスト作成
+      ret := FindFirst(S + '*.SPC', faAnyFile, F);
+      while ret = 0 do begin
+         if Terminated = True then begin
+            Break;
+         end;
+
+         if ((F.Attr and faDirectory) = 0) and
+            ((F.Attr and faVolumeID) = 0) and
+            ((F.Attr and faSysFile) = 0) then begin
+            slFiles.Add(F.Name);
+         end;
+
+         // 次のファイル
+         ret := FindNext(F);
       end;
 
-      // 次のファイル
-      ret := FindNext(F);
-   end;
+      FindClose(F);
 
-   FindClose(F);
+      // ソートして
+      slFiles.Sort();
+
+      // 各ファイルの内容をロードする
+      for i := 0 to slFiles.Count - 1 do begin
+         LoadSpcFile(strStartFoler, slFiles[i]);
+      end;
+
+   finally
+      slFiles.Free();
+   end;
 end;
 
 procedure TSuperCheckDataLoadThread.LoadSpcFile(strStartFoler: string; strFileName: string);
