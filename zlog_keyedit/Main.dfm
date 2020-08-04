@@ -64,6 +64,10 @@ object formMain: TformMain
     object TabSheet2: TTabSheet
       Caption = #24773#22577#34920#31034
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vleInformation: TValueListEditor
         Left = 0
         Top = 0
@@ -110,6 +114,10 @@ object formMain: TformMain
     object TabSheet3: TTabSheet
       Caption = 'CW'#12461#12540#12452#12531#12464
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vleCWKeying: TValueListEditor
         Left = 0
         Top = 0
@@ -160,6 +168,10 @@ object formMain: TformMain
     object TabSheet4: TTabSheet
       Caption = #12522#12464#12467#12531#12488#12525#12540#12523
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vleRigControl: TValueListEditor
         Left = 0
         Top = 0
@@ -214,10 +226,12 @@ object formMain: TformMain
           '#066 RST'#12501#12451#12540#12523#12489#12395#31227#21205'=Alt+R'
           '#069 '#12467#12540#12523#12469#12452#12531#12392#12490#12531#12496#12540#12434#12463#12522#12450#12375#12390#12467#12540#12523#12469#12452#12531#12501#12451#12540#12523#12489#12408#31227#21205'=Alt+W'
           '#085 '#26032#12375#12356#12503#12522#12501#12451#12483#12463#12473#12398#30331#37682'=,@'
-          '#101 PSE QSL'#12398#35352#37682'='
-          '#102 NO QSL'#12398#35352#37682'='
+          '#101 PSE QSL'#12398#35352#37682'(Quick Memo1)='
+          '#102 NO QSL'#12398#35352#37682'(Quick Memo2)='
           '#104 '#36865#20449'NR'#12398#20462#27491'='
-          '')
+          '#106 Quick Memo3='
+          '#107 Quick Memo4='
+          '#108 Quick Memo5=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
@@ -231,6 +245,10 @@ object formMain: TformMain
     object TabSheet6: TTabSheet
       Caption = #20107#24460#20837#21147
       ImageIndex = 5
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vlePostContest: TValueListEditor
         Left = 0
         Top = 0
@@ -255,6 +273,10 @@ object formMain: TformMain
     object TabSheet7: TTabSheet
       Caption = #12381#12398#20182
       ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vleOther: TValueListEditor
         Left = 0
         Top = 0
