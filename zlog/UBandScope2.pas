@@ -26,6 +26,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
   private
     { Private 宣言 }
     FProcessing: Boolean;
@@ -37,12 +38,15 @@ type
 
     FBSList: TBSList;
 
+    FFreshnessThreshold: array[0..4] of Integer;
+
     procedure AddBSList(D : TBSData);
     procedure DeleteFromBSList(i : integer);
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
     function EstimateNumRows(): Integer;
     procedure SetSelect(fSelect: Boolean);
+    procedure Cleanup(D: TBSData);
   public
     { Public 宣言 }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -62,8 +66,6 @@ type
 
   TBandScopeArray = array[b19..b10g] of TBandScope2;
 
-procedure BSRefresh(Sender : TObject);
-
 var
   CurrentRigFrequency : Integer; // in Hertz
 
@@ -73,20 +75,6 @@ uses
   UOptions, Main, UZLinkForm, URigControl;
 
 {$R *.dfm}
-
-procedure BSRefresh(Sender: TObject);
-var
-   b: TBand;
-//   RR: TRig;
-begin
-   for b := Low(MainForm.BandScopeEx) to High(MainForm.BandScopeEx) do begin
-      if dmZLogGlobal.Settings._usebandscope[b] = False then begin
-         Continue;
-      end;
-
-      MainForm.BandScopeEx[b].RewriteBandScope;
-   end;
-end;
 
 constructor TBandScope2.Create(AOwner: TComponent; b: TBand);
 var
@@ -103,6 +91,12 @@ begin
       ImageList1.Add(bmp, nil);
    end;
    bmp.Free();
+
+   FFreshnessThreshold[0] := dmZlogGlobal.Settings._bsexpire div 16;
+   FFreshnessThreshold[1] := dmZlogGlobal.Settings._bsexpire div 8;
+   FFreshnessThreshold[2] := dmZlogGlobal.Settings._bsexpire div 4;
+   FFreshnessThreshold[3] := dmZlogGlobal.Settings._bsexpire div 2;
+   FFreshnessThreshold[4] := 0;  // unused
 end;
 
 procedure TBandScope2.CreateParams(var Params: TCreateParams);
@@ -136,31 +130,8 @@ begin
 end;
 
 procedure TBandScope2.AddAndDisplay(D: TBSData);
-var
-   i: Integer;
-   BS: TBSData;
-   Diff: TDateTime;
 begin
-   for i := 0 to FBSList.Count - 1 do begin
-      BS := FBSList[i];
-
-      if (BS.Call = D.Call) and (BS.Band = D.Band) then begin
-         FBSList[i] := nil;
-         Continue;
-      end;
-
-      if round(BS.FreqHz / 100) = round(D.FreqHz / 100) then begin
-         FBSList[i] := nil;
-         Continue;
-      end;
-
-      Diff := Now - BS.Time;
-      if Diff * 24 * 60 > 1.00 * dmZlogGlobal.Settings._bsexpire then begin
-         FBSList[i] := nil;
-      end;
-   end;
-
-   FBSList.Pack;
+   Cleanup(D);
    AddBSList(D);
 end;
 
@@ -205,11 +176,41 @@ begin
    Timer1.Enabled := False;
    try
       if FProcessing = False then begin
-         BSRefresh(Self);
+         RewriteBandScope();
       end;
    finally
       Timer1.Enabled := True;
    end;
+end;
+
+procedure TBandScope2.Cleanup(D: TBSData);
+var
+   i: Integer;
+   BS: TBSData;
+   Diff: TDateTime;
+begin
+   for i := 0 to FBSList.Count - 1 do begin
+      BS := FBSList[i];
+
+      if Assigned(D) then begin
+         if (BS.Call = D.Call) and (BS.Band = D.Band) then begin
+            FBSList[i] := nil;
+            Continue;
+         end;
+
+         if round(BS.FreqHz / 100) = round(D.FreqHz / 100) then begin
+            FBSList[i] := nil;
+            Continue;
+         end;
+      end;
+
+      Diff := Now - BS.Time;
+      if Diff * 24 * 60 > 1.00 * dmZlogGlobal.Settings._bsexpire then begin
+         FBSList[i] := nil;
+      end;
+   end;
+
+   FBSList.Pack;
 end;
 
 procedure TBandScope2.RewriteBandScope;
@@ -225,6 +226,9 @@ var
 begin
    toprow := Grid.TopRow;
    currow := Grid.Row;
+
+   // クリーンアップ
+   Cleanup(nil);
 
    if GetBandIndex(CurrentRigFrequency) = Ord(FCurrBand) then begin
       MarkCurrent := True;
@@ -443,6 +447,11 @@ begin
    end;
 end;
 
+procedure TBandScope2.FormShow(Sender: TObject);
+begin
+   Timer1.Enabled := True;
+end;
+
 procedure TBandScope2.GridDblClick(Sender: TObject);
 var
    D: TBSData;
@@ -504,16 +513,16 @@ begin
             Diff := 0;
          end;
 
-         if Diff < 20 then begin
+         if Diff < FFreshnessThreshold[0] then begin
             n := 0;
          end
-         else if Diff < 60 then begin
+         else if Diff < FFreshnessThreshold[1] then begin
             n := 1;
          end
-         else if Diff < 150 then begin
+         else if Diff < FFreshnessThreshold[2] then begin
             n := 2;
          end
-         else if Diff < 300 then begin
+         else if Diff < FFreshnessThreshold[3] then begin
             n := 3;
          end
          else begin

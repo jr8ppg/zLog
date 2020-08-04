@@ -171,7 +171,7 @@ begin
 //      ProcessSpotData(TBaseSpot(S));
 //   end;
 
-   uBandScope2.BSRefresh(Self);
+   MainForm.BSRefresh();
 end;
 
 procedure TBasicMulti.AddSpot(aQSO: TQSO); // renews cluster & bs when adding a qso w/o renewing
@@ -198,7 +198,7 @@ begin
    end;
 
    if boo then begin
-      uBandScope2.BSRefresh(Self);
+      MainForm.BSRefresh();
    end;
 
    boo := False;

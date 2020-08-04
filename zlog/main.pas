@@ -993,6 +993,7 @@ type
     procedure BandScopeNotifyWorked(aQSO: TQSO);
     procedure SetYourCallsign(strCallsign, strNumber: string);
     procedure SetFrequency(freq: Integer);
+    procedure BSRefresh();
 
     property RigControl: TRigControl read FRigControl;
     property PartialCheck: TPartialCheck read FPartialCheck;
@@ -8764,6 +8765,19 @@ begin
    end;
 
    UpdateBand(TBand(GetBandIndex(freq)));
+end;
+
+procedure TMainForm.BSRefresh();
+var
+   b: TBand;
+begin
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      if dmZLogGlobal.Settings._usebandscope[b] = False then begin
+         Continue;
+      end;
+
+      FBandScopeEx[b].RewriteBandScope();
+   end;
 end;
 
 end.

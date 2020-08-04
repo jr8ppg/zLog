@@ -20,6 +20,7 @@ object BandScope2: TBandScope2
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
   object Panel1: TPanel
@@ -68,6 +69,7 @@ object BandScope2: TBandScope2
     end
   end
   object Timer1: TTimer
+    Enabled = False
     OnTimer = Timer1Timer
     Left = 56
     Top = 112
