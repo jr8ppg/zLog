@@ -180,6 +180,8 @@ type
     SameExchange : Boolean; // true by default. false when serial number etc
     MultiFound : Boolean; // used in spacebarproc
 
+    SentStr: string;
+
     constructor Create(N : string); virtual;
     destructor Destroy; override;
     procedure PostWanted(S : string);
@@ -1873,6 +1875,8 @@ begin
 
    for i := 0 to 64 do
       SerialArrayTX[i] := 1;
+
+   SentStr := '';
 end;
 
 procedure TContest.PostWanted(S: string);
@@ -2280,6 +2284,7 @@ begin
    MainForm.FCheckCountry.ParentMulti := TWWMulti(MultiForm);
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   SentStr := '$V';
 end;
 
 procedure TJIDXContest.SetPoints(var aQSO: TQSO);
@@ -2296,6 +2301,7 @@ begin
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   SentStr := '$N';
 end;
 
 constructor TARRLDXContestW.Create(N: string);
@@ -2309,6 +2315,7 @@ begin
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   SentStr := '$V';
 end;
 
 constructor TAllAsianContest.Create(N: string);
@@ -2323,6 +2330,7 @@ begin
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   SentStr := '$A';
 end;
 
 procedure TAllAsianContest.SetPoints(var aQSO: TQSO);
@@ -2344,6 +2352,7 @@ begin
    PastEditForm := TALLJAEditDialog.Create(MainForm);
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   SentStr := '$V';
 end;
 
 procedure TJIDXContestDX.SetPoints(var aQSO: TQSO);
@@ -2369,6 +2378,7 @@ begin
    SerialContestType := SER_ALL;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
+   SentStr := '$S';
 end;
 
 constructor TWAEContest.Create(N: string);
@@ -2387,6 +2397,7 @@ begin
    SerialContestType := SER_ALL;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
+   SentStr := '$S';
 end;
 
 destructor TWAEContest.Destroy();
@@ -2413,6 +2424,7 @@ begin
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    Log.QsoList[0].Serial := $01; // uses serial number
    SerialContestType := SER_ALL;
+   SentStr := '$S$Q';
 end;
 
 constructor TARRL10Contest.Create(N: string);
@@ -2446,6 +2458,7 @@ begin
    SerialContestType := SER_ALL;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
+   SentStr := '$S';
 end;
 
 constructor TJA0ContestZero.Create(N: string);
@@ -2458,7 +2471,7 @@ begin
    SerialContestType := SER_ALL;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
-
+   SentStr := '$S';
 end;
 
 procedure TJA0Contest.SetBand(B: TBand);
@@ -2509,6 +2522,7 @@ begin
 
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
+   SentStr := '$S';
 end;
 
 constructor TCQWWContest.Create(N: string);
@@ -2526,6 +2540,7 @@ begin
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   SentStr := '$Z';
 end;
 
 procedure TCQWWContest.SpaceBarProc;
@@ -2610,6 +2625,7 @@ begin
    UseUTC := True;
    Log.AcceptDifferentMode := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   SentStr := '$I';
 end;
 
 procedure TIARUContest.SpaceBarProc;
@@ -2648,6 +2664,8 @@ begin
      UseUTC := True;
      Log.QsoList[0].RSTSent := $FFFF; //JST = 0; UTC = $FFFF
    }
+
+   SentStr := '';
 end;
 
 constructor TALLJAContest.Create(N: string);
@@ -2656,6 +2674,7 @@ begin
    MultiForm := TALLJAMulti.Create(MainForm);
    ScoreForm := TALLJAScore.Create(MainForm);
    PastEditForm := TALLJAEditDialog.Create(MainForm);
+   SentStr := '$V$P';
 end;
 
 constructor TKCJContest.Create(N: string);
@@ -2664,6 +2683,7 @@ begin
    MultiForm := TKCJMulti.Create(MainForm);
    ScoreForm := TKCJScore.Create(MainForm);
    PastEditForm := TALLJAEditDialog.Create(MainForm);
+   SentStr := 'TK';
 end;
 
 function TALLJAContest.QTHString: string;
@@ -2725,6 +2745,7 @@ begin
    MultiForm := TACAGMulti.Create(MainForm);
    ScoreForm := TACAGScore.Create(MainForm);
    PastEditForm := TALLJAEditDialog.Create(MainForm);
+   SentStr := '$Q$P';
 end;
 
 constructor TFDContest.Create(N: string);
@@ -2733,6 +2754,7 @@ begin
    MultiForm := TFDMulti.Create(MainForm);
    ScoreForm := TACAGScore.Create(MainForm);
    PastEditForm := TALLJAEditDialog.Create(MainForm);
+   SentStr := '$Q$P';
 end;
 
 constructor TSixDownContest.Create(N: string);
@@ -2741,6 +2763,7 @@ begin
    MultiForm := TSixDownMulti.Create(MainForm);
    ScoreForm := TSixDownScore.Create(MainForm);
    PastEditForm := TALLJAEditDialog.Create(MainForm);
+   SentStr := '$Q$P';
 end;
 
 constructor TGeneralContest.Create(N, CFGFileName: string);
@@ -2762,6 +2785,8 @@ begin
       SameExchange := False;
       dmZlogGlobal.Settings._sameexchange := SameExchange;
    end;
+
+   SentStr := '$Q';
 end;
 
 procedure TGeneralContest.SetPoints(var aQSO: TQSO);
@@ -6816,6 +6841,10 @@ begin
 
             if FileExists(OpenDialog.FileName) then begin
                LoadNewContestFromFile(OpenDialog.FileName);
+            end
+            else begin
+               // 初回のみSentをセットする
+               dmZlogGlobal.Settings._sentstr := MyContest.SentStr;
             end;
 
             SetWindowCaption();
@@ -6949,7 +6978,6 @@ begin
 
    MyContest := TALLJAContest.Create('ALL JA コンテスト');
    QTHString := dmZlogGlobal.Settings._prov;
-   dmZlogGlobal.Settings._sentstr := '$V$P';
 end;
 
 procedure TMainForm.Init6D();
@@ -6961,7 +6989,6 @@ begin
 
    MyContest := TSixDownContest.Create('6m and DOWNコンテスト');
    QTHString := dmZlogGlobal.Settings._city;
-   dmZlogGlobal.Settings._sentstr := '$Q$P';
 end;
 
 procedure TMainForm.InitFD();
@@ -6973,7 +7000,6 @@ begin
 
    MyContest := TFDContest.Create('フィールドデーコンテスト');
    QTHString := dmZlogGlobal.Settings._city;
-   dmZlogGlobal.Settings._sentstr := '$Q$P';
 end;
 
 procedure TMainForm.InitACAG();
@@ -6985,7 +7011,6 @@ begin
 
    MyContest := TACAGContest.Create('全市全郡コンテスト');
    QTHString := dmZlogGlobal.Settings._city;
-   dmZlogGlobal.Settings._sentstr := '$Q$P';
 end;
 
 procedure TMainForm.InitALLJA0_JA0(BandGroupIndex: Integer);
@@ -7021,7 +7046,6 @@ begin
    end;
 
    QTHString := dmZlogGlobal.Settings._city;
-   dmZlogGlobal.Settings._sentstr := '$S';
 end;
 
 procedure TMainForm.InitALLJA0_Other(BandGroupIndex: Integer);
@@ -7057,7 +7081,6 @@ begin
    end;
 
    QTHString := dmZlogGlobal.Settings._city;
-   dmZlogGlobal.Settings._sentstr := '$S';
 end;
 
 procedure TMainForm.InitKCJ();
@@ -7070,7 +7093,6 @@ begin
 
    MyContest := TKCJContest.Create('KCJ コンテスト');
    QTHString := dmZlogGlobal.Settings._prov;
-   dmZlogGlobal.Settings._sentstr := 'TK';
 end;
 
 procedure TMainForm.InitDxPedi();
@@ -7090,7 +7112,6 @@ begin
 
       MyContest := TPedi.Create('Pedition mode');
       QTHString := dmZlogGlobal.Settings._prov;
-      dmZlogGlobal.Settings._sentstr := '';
    finally
       F.Release();
    end;
@@ -7099,7 +7120,6 @@ end;
 procedure TMainForm.InitUserDefined(ContestName, ConfigFile: string);
 begin
    QTHString := dmZlogGlobal.Settings._city;
-   dmZlogGlobal.Settings._sentstr := '$Q';
    MyContest := TGeneralContest.Create(ContestName, ConfigFile);
 end;
 
@@ -7113,8 +7133,6 @@ begin
    EditScreen := TWWEdit.Create(Self);
 
    MyContest := TCQWWContest.Create('CQWW DX Contest');
-   // QTHString := dmZlogGlobal.Settings._city;
-   dmZlogGlobal.Settings._sentstr := '$Z';
    QTHString := UMultipliers.MyZone;
 end;
 
@@ -7135,7 +7153,6 @@ begin
    end;
 
    QTHString := dmZlogGlobal.Settings._city;
-   dmZlogGlobal.Settings._sentstr := '$S';
    mPXListWPX.Visible := True;
 end;
 
@@ -7154,7 +7171,6 @@ begin
    end;
 
    QTHString := dmZlogGlobal.Settings._prov;
-   dmZlogGlobal.Settings._sentstr := '$V';
 end;
 
 procedure TMainForm.InitAPSprint();
@@ -7170,7 +7186,6 @@ begin
    MyContest := TAPSprint.Create('Asia Pacific Sprint');
    QTHString := dmZlogGlobal.Settings._city;
    // Log.QsoList[0].memo := 'WPX Contest';
-   dmZlogGlobal.Settings._sentstr := '$S';
 end;
 
 procedure TMainForm.InitARRL_W();
@@ -7182,7 +7197,6 @@ begin
 
    MyContest := TARRLDXContestW.Create('ARRL International DX Contest (W/VE)');
    QTHString := dmZlogGlobal.Settings._prov;
-   dmZlogGlobal.Settings._sentstr := '$V';
 end;
 
 procedure TMainForm.InitARRL_DX();
@@ -7194,7 +7208,6 @@ begin
 
    MyContest := TARRLDXContestDX.Create('ARRL International DX Contest (DX)');
    QTHString := dmZlogGlobal.Settings._prov;
-   dmZlogGlobal.Settings._sentstr := '$N';
 end;
 
 procedure TMainForm.InitARRL10m();
@@ -7211,15 +7224,14 @@ begin
 
    if TARRL10Multi(MyContest.MultiForm).IsUSA then begin
       EditScreen := TDXCCEdit.Create(Self);
-      dmZlogGlobal.Settings._sentstr := '$V';
+      MyContest.SentStr := '$V';
    end
    else begin
       EditScreen := TIOTAEdit.Create(Self);
-      dmZlogGlobal.Settings._sentstr := '$S';
+      MyContest.SentStr := '$S';
    end;
 
    // QTHString := dmZlogGlobal.Settings._city;
-//   dmZlogGlobal.Settings._sentstr := '$S';
 end;
 
 procedure TMainForm.InitIARU();
@@ -7229,8 +7241,6 @@ begin
    EditScreen := TIARUEdit.Create(Self);
 
    MyContest := TIARUContest.Create('IARU HF World Championship');
-   // QTHString := dmZlogGlobal.Settings._city;
-   dmZlogGlobal.Settings._sentstr := '$I';
    QTHString := MyZone;
 end;
 
@@ -7247,7 +7257,6 @@ begin
 
       MyContest := TAllAsianContest.Create('All Asian DX Contest (Asia)');
       QTHString := dmZlogGlobal.Settings._prov;
-      dmZlogGlobal.Settings._sentstr := '$A';
 
       if F.ShowModal() <> mrOK then begin
          Exit;
@@ -7269,7 +7278,6 @@ begin
 
    MyContest := TIOTAContest.Create('IOTA Contest');
    // QTHString := dmZlogGlobal.Settings._city;
-   dmZlogGlobal.Settings._sentstr := '$S$Q';
 end;
 
 procedure TMainForm.InitWAE();
@@ -7282,7 +7290,6 @@ begin
 
    MyContest := TWAEContest.Create('WAEDC Contest');
    // QTHString := dmZlogGlobal.Settings._prov;
-   dmZlogGlobal.Settings._sentstr := '$S';
 end;
 
 procedure TMainForm.ShowBandMenu(b: TBand);
