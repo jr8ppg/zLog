@@ -918,17 +918,22 @@ end;
 procedure TEditDialog.actionQuickMemo1Execute(Sender: TObject);
 var
    strTemp: string;
+   strPseQsl: string;
+   strNoQsl: string;
 begin
+   strPseQsl := dmZlogGlobal.Settings.FQuickMemoText[1];
+   strNoQsl  := dmZlogGlobal.Settings.FQuickMemoText[2];
+
    strTemp := MemoEdit.Text;
-   if Pos(MEMO_NO_QSL, strTemp) > 0 then begin
-      strTemp := Trim(StringReplace(strTemp, MEMO_NO_QSL, '', [rfReplaceAll]));
+   if Pos(strNoQsl, strTemp) > 0 then begin
+      strTemp := Trim(StringReplace(strTemp, strNoQsl, '', [rfReplaceAll]));
    end;
 
-   if Pos(MEMO_PSE_QSL, strTemp) = 0 then begin
-      strTemp := MEMO_PSE_QSL + ' ' + strTemp;
+   if Pos(strPseQsl, strTemp) = 0 then begin
+      strTemp := strPseQsl + ' ' + strTemp;
    end
    else begin
-      strTemp := Trim(StringReplace(strTemp, MEMO_PSE_QSL, '', [rfReplaceAll]));
+      strTemp := Trim(StringReplace(strTemp, strPseQsl, '', [rfReplaceAll]));
    end;
 
    MemoEdit.Text := strTemp;
@@ -937,17 +942,22 @@ end;
 procedure TEditDialog.actionQuickMemo2Execute(Sender: TObject);
 var
    strTemp: string;
+   strPseQsl: string;
+   strNoQsl: string;
 begin
+   strPseQsl := dmZlogGlobal.Settings.FQuickMemoText[1];
+   strNoQsl  := dmZlogGlobal.Settings.FQuickMemoText[2];
+
    strTemp := MemoEdit.Text;
-   if Pos(MEMO_PSE_QSL, strTemp) > 0 then begin
-      strTemp := Trim(StringReplace(strTemp, MEMO_PSE_QSL, '', [rfReplaceAll]));
+   if Pos(strPseQsl, strTemp) > 0 then begin
+      strTemp := Trim(StringReplace(strTemp, strPseQsl, '', [rfReplaceAll]));
    end;
 
-   if Pos(MEMO_NO_QSL, strTemp) = 0 then begin
-      strTemp := MEMO_NO_QSL + ' ' + strTemp;
+   if Pos(strNoQsl, strTemp) = 0 then begin
+      strTemp := strNoQsl + ' ' + strTemp;
    end
    else begin
-      strTemp := Trim(StringReplace(strTemp, MEMO_NO_QSL, '', [rfReplaceAll]));
+      strTemp := Trim(StringReplace(strTemp, strNoQsl, '', [rfReplaceAll]));
    end;
 
    MemoEdit.Text := strTemp;
@@ -975,6 +985,7 @@ begin
    end
    else begin
       strTemp := Trim(StringReplace(strTemp, strQuickMemoText + ' ', '', [rfReplaceAll]));
+      strTemp := Trim(StringReplace(strTemp, strQuickMemoText, '', [rfReplaceAll]));
    end;
 
    MemoEdit.Text := strTemp;
