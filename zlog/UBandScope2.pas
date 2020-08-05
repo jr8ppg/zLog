@@ -92,10 +92,10 @@ begin
    end;
    bmp.Free();
 
-   FFreshnessThreshold[0] := dmZlogGlobal.Settings._bsexpire div 16;
-   FFreshnessThreshold[1] := dmZlogGlobal.Settings._bsexpire div 8;
-   FFreshnessThreshold[2] := dmZlogGlobal.Settings._bsexpire div 4;
-   FFreshnessThreshold[3] := dmZlogGlobal.Settings._bsexpire div 2;
+   FFreshnessThreshold[0] := (dmZlogGlobal.Settings._bsexpire * 60) div 16;
+   FFreshnessThreshold[1] := (dmZlogGlobal.Settings._bsexpire * 60) div 8;
+   FFreshnessThreshold[2] := (dmZlogGlobal.Settings._bsexpire * 60) div 4;
+   FFreshnessThreshold[3] := (dmZlogGlobal.Settings._bsexpire * 60) div 2;
    FFreshnessThreshold[4] := 0;  // unused
 end;
 
@@ -502,6 +502,7 @@ begin
          Font.Style := [fsBold];
          Font.Color := clBlack;
          n := -1;
+         Diff := 0;
       end
       else begin
          // Œo‰ßŠÔ
@@ -566,6 +567,10 @@ begin
          else begin
             Font.Style := [];
          end;
+
+         {$IFDEF DEBUG}
+         strText := strText + ' (' + IntToStr(Trunc(Diff)) + ')';
+         {$ENDIF}
       end;
 
       if n > -1 then begin
