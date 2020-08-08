@@ -314,6 +314,7 @@ function ZBoolToStr(fValue: Boolean): string;
 function ZStrToBool(strValue: string): Boolean;
 
 function ZStringToColorDef(str: string; defcolor: TColor): TColor;
+function ZColorToString(color: TColor): string;
 
 function LD(S, T: string): Integer;
 function LD_dp(str1, str2: string): Integer;
@@ -1216,20 +1217,20 @@ begin
       ini.WriteBool('BandScopeEx', 'BandScope2400MHz', Settings._usebandscope[b2400]);
       ini.WriteBool('BandScopeEx', 'BandScope5600MHz', Settings._usebandscope[b5600]);
       ini.WriteBool('BandScopeEx', 'BandScope10GHz', Settings._usebandscope[b10g]);
-      ini.WriteString('BandScopeEx', 'ForeColor1', ColorToString(Settings._bandscopecolor[1].FForeColor));
-      ini.WriteString('BandScopeEx', 'BackColor1', ColorToString(Settings._bandscopecolor[1].FBackColor));
+      ini.WriteString('BandScopeEx', 'ForeColor1', ZColorToString(Settings._bandscopecolor[1].FForeColor));
+      ini.WriteString('BandScopeEx', 'BackColor1', ZColorToString(Settings._bandscopecolor[1].FBackColor));
       ini.WriteBool('BandScopeEx', 'Bold1', Settings._bandscopecolor[1].FBold);
-      ini.WriteString('BandScopeEx', 'ForeColor2', ColorToString(Settings._bandscopecolor[2].FForeColor));
-      ini.WriteString('BandScopeEx', 'BackColor2', ColorToString(Settings._bandscopecolor[2].FBackColor));
+      ini.WriteString('BandScopeEx', 'ForeColor2', ZColorToString(Settings._bandscopecolor[2].FForeColor));
+      ini.WriteString('BandScopeEx', 'BackColor2', ZColorToString(Settings._bandscopecolor[2].FBackColor));
       ini.WriteBool('BandScopeEx', 'Bold2', Settings._bandscopecolor[2].FBold);
-      ini.WriteString('BandScopeEx', 'ForeColor3', ColorToString(Settings._bandscopecolor[3].FForeColor));
-      ini.WriteString('BandScopeEx', 'BackColor3', ColorToString(Settings._bandscopecolor[3].FBackColor));
+      ini.WriteString('BandScopeEx', 'ForeColor3', ZColorToString(Settings._bandscopecolor[3].FForeColor));
+      ini.WriteString('BandScopeEx', 'BackColor3', ZColorToString(Settings._bandscopecolor[3].FBackColor));
       ini.WriteBool('BandScopeEx', 'Bold3', Settings._bandscopecolor[3].FBold);
-      ini.WriteString('BandScopeEx', 'ForeColor4', ColorToString(Settings._bandscopecolor[4].FForeColor));
-      ini.WriteString('BandScopeEx', 'BackColor4', ColorToString(Settings._bandscopecolor[4].FBackColor));
+      ini.WriteString('BandScopeEx', 'ForeColor4', ZColorToString(Settings._bandscopecolor[4].FForeColor));
+      ini.WriteString('BandScopeEx', 'BackColor4', ZColorToString(Settings._bandscopecolor[4].FBackColor));
       ini.WriteBool('BandScopeEx', 'Bold4', Settings._bandscopecolor[4].FBold);
-      ini.WriteString('BandScopeEx', 'ForeColor5', ColorToString(Settings._bandscopecolor[5].FForeColor));
-      ini.WriteString('BandScopeEx', 'BackColor5', ColorToString(Settings._bandscopecolor[5].FBackColor));
+      ini.WriteString('BandScopeEx', 'ForeColor5', ZColorToString(Settings._bandscopecolor[5].FForeColor));
+      ini.WriteString('BandScopeEx', 'BackColor5', ZColorToString(Settings._bandscopecolor[5].FBackColor));
       ini.WriteBool('BandScopeEx', 'Bold5', Settings._bandscopecolor[5].FBold);
 
       // Quick Memo
@@ -2575,6 +2576,11 @@ begin
    else begin
       Result := defcolor;
    end;
+end;
+
+function ZColorToString(color: TColor): string;
+begin
+   Result := '$' + IntToHex(color, 8);
 end;
 
 end.
