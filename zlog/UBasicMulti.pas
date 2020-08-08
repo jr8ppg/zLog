@@ -162,9 +162,9 @@ begin
 end;
 
 procedure TBasicMulti.RenewBandScope;
-var
-   S: TBSData;
-   i: integer;
+//var
+//   S: TBSData;
+//   i: integer;
 begin
 //   for i := 0 to USpotClass.BSList2.Count - 1 do begin
 //      S := TBSData(USpotClass.BSList2[i]);

@@ -39,6 +39,8 @@ type
     FBSList: TBSList;
 
     FFreshnessThreshold: array[0..4] of Integer;
+    FFreshnessType: Integer;
+    FIconType: Integer;
 
     procedure AddBSList(D : TBSData);
     procedure DeleteFromBSList(i : integer);
@@ -47,6 +49,8 @@ type
     function EstimateNumRows(): Integer;
     procedure SetSelect(fSelect: Boolean);
     procedure Cleanup(D: TBSData);
+    procedure SetFreshnessType(v: Integer);
+    procedure SetIconType(v: Integer);
   public
     { Public êÈåæ }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -60,7 +64,8 @@ type
 
     property FontSize: Integer read GetFontSize write SetFontSize;
     property Select: Boolean write SetSelect;
-
+    property FreshnessType: Integer read FFreshnessType write SetFreshnessType;
+    property IconType: Integer read FIconType write SetIconType;
     property BSList: TBSList read FBSList;
   end;
 
@@ -77,26 +82,12 @@ uses
 {$R *.dfm}
 
 constructor TBandScope2.Create(AOwner: TComponent; b: TBand);
-var
-   bmp: TBitmap;
-   i: Integer;
 begin
    Inherited Create(AOwner);
    FCurrBand := b;
    Caption := BandString[b];
-
-   bmp := TBitmap.Create();
-   for i := 0 to 4 do begin
-      bmp.LoadFromResourceName(SysInit.HInstance, 'IDB_TIM_' + IntToStr(i));
-      ImageList1.Add(bmp, nil);
-   end;
-   bmp.Free();
-
-   FFreshnessThreshold[0] := (dmZlogGlobal.Settings._bsexpire * 60) div 16;
-   FFreshnessThreshold[1] := (dmZlogGlobal.Settings._bsexpire * 60) div 8;
-   FFreshnessThreshold[2] := (dmZlogGlobal.Settings._bsexpire * 60) div 4;
-   FFreshnessThreshold[3] := (dmZlogGlobal.Settings._bsexpire * 60) div 2;
-   FFreshnessThreshold[4] := 0;  // unused
+   FreshnessType := 0;
+   IconType := 0;
 end;
 
 procedure TBandScope2.CreateParams(var Params: TCreateParams);
@@ -630,6 +621,60 @@ begin
       D := FBSList[i];
       SpotCheckWorked(D);
    end;
+end;
+
+procedure TBandScope2.SetFreshnessType(v: Integer);
+begin
+   FFreshnessType := v;
+   case FFreshnessType of
+      1: begin
+         FFreshnessThreshold[0] := 30;
+         FFreshnessThreshold[1] := 5 * 60;
+         FFreshnessThreshold[2] := 10 * 60;
+         FFreshnessThreshold[3] := 30 * 60;
+         FFreshnessThreshold[4] := 0;  // unused
+      end;
+
+      2: begin
+         FFreshnessThreshold[0] := (dmZlogGlobal.Settings._bsexpire * 60) div 5;
+         FFreshnessThreshold[1] := FFreshnessThreshold[0] + FFreshnessThreshold[0];
+         FFreshnessThreshold[2] := FFreshnessThreshold[1] + FFreshnessThreshold[0];
+         FFreshnessThreshold[3] := FFreshnessThreshold[2] + FFreshnessThreshold[0];
+         FFreshnessThreshold[4] := 0;  // unused
+      end;
+
+      else begin
+         FFreshnessThreshold[0] := (dmZlogGlobal.Settings._bsexpire * 60) div 16;
+         FFreshnessThreshold[1] := (dmZlogGlobal.Settings._bsexpire * 60) div 8;
+         FFreshnessThreshold[2] := (dmZlogGlobal.Settings._bsexpire * 60) div 4;
+         FFreshnessThreshold[3] := (dmZlogGlobal.Settings._bsexpire * 60) div 2;
+         FFreshnessThreshold[4] := 0;  // unused
+      end;
+   end;
+end;
+
+procedure TBandScope2.SetIconType(v: Integer);
+var
+   bmp: TBitmap;
+   i: Integer;
+   strPrefix: string;
+begin
+   FIconType := v;
+
+   case FIconType of
+      1: strPrefix := 'IDB_ANT_';
+      2: strPrefix := 'IDB_TIM_';
+      3: strPrefix := 'IDB_NUM_';
+      4: strPrefix := 'IDB_BAR_';
+      else strPrefix := 'IDB_BAR2_';
+   end;
+
+   bmp := TBitmap.Create();
+   for i := 0 to 4 do begin
+      bmp.LoadFromResourceName(SysInit.HInstance, strPrefix + IntToStr(i));
+      ImageList1.Add(bmp, nil);
+   end;
+   bmp.Free();
 end;
 
 initialization
