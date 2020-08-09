@@ -266,7 +266,7 @@ begin
 
       str := FillRight(D.LabelStr, 20);
 
-      if D.ClusterData then begin
+      if D.SpotSource <> ssSelf then begin
          str := str + '+ ';
       end
       else begin
@@ -523,32 +523,35 @@ begin
 
          if D.Worked then begin   // 交信済み(＝マルチゲット済み）
             Font.Color  := dmZLogGlobal.Settings._bandscopecolor[1].FForeColor;
-            Brush.Color := dmZLogGlobal.Settings._bandscopecolor[1].FBackColor;
             D.Bold      := dmZLogGlobal.Settings._bandscopecolor[1].FBold;
-
-            if (D.ClusterData = False) then begin
-               Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
-            end;
          end
          else begin  // 未交信
             if D.NewMulti = True then begin         // マルチ未ゲット
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[2].FForeColor;
-               Brush.Color := dmZLogGlobal.Settings._bandscopecolor[2].FBackColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[2].FBold;
             end
             else if (D.NewMulti = False) and (D.Number <> '') then begin // マルチゲット済み
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[3].FForeColor;
-               Brush.Color := dmZLogGlobal.Settings._bandscopecolor[3].FBackColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[3].FBold;
             end
             else begin     // マルチ不明
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[4].FForeColor;
-               Brush.Color := dmZLogGlobal.Settings._bandscopecolor[4].FBackColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[4].FBold;
             end;
 
-            if (D.ClusterData = False) then begin
-               Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+            // 背景色はSpotSource別にする
+            case D.SpotSource of
+               ssSelf: begin
+                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+               end;
+
+               ssCluster: begin
+                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
+               end;
+
+               ssZServer: begin
+                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
+               end;
             end;
          end;
 

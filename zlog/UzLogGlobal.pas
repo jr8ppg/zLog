@@ -78,7 +78,7 @@ type
     _activebands: array[b19..HiBand] of Boolean;
     _power: array[b19..HiBand] of string;
     _usebandscope: array[b19..HiBand] of Boolean;
-    _bandscopecolor: array[1..5] of TColorSetting;
+    _bandscopecolor: array[1..7] of TColorSetting;
 
     CW : TCWSettingsParam;
     _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
@@ -850,9 +850,15 @@ begin
       Settings._bandscopecolor[4].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor4', '$008000'), clGreen);
       Settings._bandscopecolor[4].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor4', '$ffffff'), clWhite);
       Settings._bandscopecolor[4].FBold      := ini.ReadBool('BandScopeEx', 'Bold4', True);
-      Settings._bandscopecolor[5].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor5', '$0000ff'), clRed);
-      Settings._bandscopecolor[5].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor5', '$00ffff'), clYellow);
+      Settings._bandscopecolor[5].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor5', '$000000'), clBlack);
+      Settings._bandscopecolor[5].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor5', '$ffffff'), clWhite);
       Settings._bandscopecolor[5].FBold      := ini.ReadBool('BandScopeEx', 'Bold5', True);
+      Settings._bandscopecolor[6].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor6', '$000000'), clBlack);
+      Settings._bandscopecolor[6].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor6', '$ffffff'), clWhite);
+      Settings._bandscopecolor[6].FBold      := ini.ReadBool('BandScopeEx', 'Bold6', True);
+      Settings._bandscopecolor[7].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor7', '$000000'), clBlack);
+      Settings._bandscopecolor[7].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor7', '$ffffff'), clWhite);
+      Settings._bandscopecolor[7].FBold      := ini.ReadBool('BandScopeEx', 'Bold7', True);
 
       // Quick Memo
       Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', MEMO_PSE_QSL);
@@ -1232,6 +1238,12 @@ begin
       ini.WriteString('BandScopeEx', 'ForeColor5', ZColorToString(Settings._bandscopecolor[5].FForeColor));
       ini.WriteString('BandScopeEx', 'BackColor5', ZColorToString(Settings._bandscopecolor[5].FBackColor));
       ini.WriteBool('BandScopeEx', 'Bold5', Settings._bandscopecolor[5].FBold);
+      ini.WriteString('BandScopeEx', 'ForeColor6', ZColorToString(Settings._bandscopecolor[6].FForeColor));
+      ini.WriteString('BandScopeEx', 'BackColor6', ZColorToString(Settings._bandscopecolor[6].FBackColor));
+      ini.WriteBool('BandScopeEx', 'Bold6', Settings._bandscopecolor[6].FBold);
+      ini.WriteString('BandScopeEx', 'ForeColor7', ZColorToString(Settings._bandscopecolor[7].FForeColor));
+      ini.WriteString('BandScopeEx', 'BackColor7', ZColorToString(Settings._bandscopecolor[7].FBackColor));
+      ini.WriteBool('BandScopeEx', 'Bold7', Settings._bandscopecolor[7].FBold);
 
       // Quick Memo
       for i := 1 to 5 do begin

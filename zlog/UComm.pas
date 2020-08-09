@@ -308,6 +308,10 @@ begin
       B := Sp.Band; // 1.9c modified to filter out unrelevant bands
       if MainForm.BandMenu.Items[ord(B)].Visible and
          MainForm.BandMenu.Items[ord(B)].Enabled then begin
+
+         // データ発生源はZ-Server
+         Sp.SpotSource := ssZServer;
+
          ProcessSpot(Sp);
       end
       else begin
@@ -381,7 +385,7 @@ begin
    D.NewCty := Sp.NewCty;
    D.NewZone := Sp.NewZone;
    D.Worked := Sp.Worked;
-   D.ClusterData := True;
+   D.SpotSource := Sp.SpotSource;
    D.CQ := Sp.CQ;
    D.Number := Sp.Number;
    D.NewJaMulti := Sp.NewJaMulti;
@@ -437,7 +441,11 @@ begin
 
             Sp := TSpot.Create;
             if Sp.Analyze(CommTemp) = True then begin
+               // データ発生源はCluster
+               Sp.SpotSource := ssCluster;
+
                ProcessSpot(Sp);
+
                if Relay.Checked then begin
                   MainForm.ZLinkForm.RelaySpot(CommTemp);
                end;

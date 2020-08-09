@@ -8,6 +8,8 @@ uses
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogSpc;
 
 type
+  TSpotSource = ( ssSelf = 0, ssCluster, ssZServer );
+
   TBaseSpot = class
     Time : TDateTime; // moved from TBSdata 2.6e
     Call : string;
@@ -20,7 +22,7 @@ type
     Worked : boolean;
     Band : TBand;
     Mode : TMode;
-    ClusterData : boolean; // true if data from PacketCluster
+    SpotSource: TSpotSource;
     CQ: Boolean;
     NewJaMulti: Boolean;
     SelfSpot: Boolean;
@@ -82,7 +84,7 @@ begin
    Worked := False;
    Band := b19;
    Mode := mCW;
-   ClusterData := False;
+   SpotSource := ssSelf;
    CQ := False;
    NewJaMulti := False;
    SelfSpot := False;

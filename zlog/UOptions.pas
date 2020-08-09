@@ -264,7 +264,7 @@ type
     editFullmatchColor: TEdit;
     buttonFullmatchSelectColor: TButton;
     buttonFullmatchInitColor: TButton;
-    TabSheet1: TTabSheet;
+    tabsheetBandScope1: TTabSheet;
     GroupBox9: TGroupBox;
     checkBs01: TCheckBox;
     checkBs02: TCheckBox;
@@ -308,12 +308,6 @@ type
     checkBSBold3: TCheckBox;
     checkBSBold4: TCheckBox;
     ColorDialog1: TColorDialog;
-    Label61: TLabel;
-    editBSColor5: TEdit;
-    buttonBSFore5: TButton;
-    buttonBSBack5: TButton;
-    checkBSBold5: TCheckBox;
-    buttonBSReset5: TButton;
     checkSendNrAuto: TCheckBox;
     comboQuickQsyRig01: TComboBox;
     Label62: TLabel;
@@ -338,6 +332,26 @@ type
     editQuickMemo4: TEdit;
     Label67: TLabel;
     editQuickMemo5: TEdit;
+    tabsheetBandScope2: TTabSheet;
+    GroupBox12: TGroupBox;
+    Label61: TLabel;
+    editBSColor5: TEdit;
+    buttonBSFore5: TButton;
+    buttonBSBack5: TButton;
+    checkBSBold5: TCheckBox;
+    buttonBSReset5: TButton;
+    Label68: TLabel;
+    editBSColor6: TEdit;
+    buttonBSFore6: TButton;
+    buttonBSBack6: TButton;
+    checkBSBold6: TCheckBox;
+    buttonBSReset6: TButton;
+    Label69: TLabel;
+    editBSColor7: TEdit;
+    buttonBSFore7: TButton;
+    buttonBSBack7: TButton;
+    checkBSBold7: TCheckBox;
+    buttonBSReset7: TButton;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -391,8 +405,8 @@ type
     FQuickQSYMode: array[1..8] of TComboBox;
     FQuickQSYRig: array[1..8] of TComboBox;
 
-    FBSColor: array[1..5] of TEdit;
-    FBSBold: array[1..5] of TCheckBox;
+    FBSColor: array[1..7] of TEdit;
+    FBSBold: array[1..7] of TCheckBox;
 
     FNeedSuperCheckLoad: Boolean;
 
@@ -688,7 +702,7 @@ begin
       Settings._usebandscope[b5600] := checkBS15.Checked;
       Settings._usebandscope[b10g]  := checkBS16.Checked;
 
-      for i := 1 to 5 do begin
+      for i := 1 to 7 do begin
          Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
          Settings._bandscopecolor[i].FBackColor := FBSColor[i].Color;
          Settings._bandscopecolor[i].FBold      := FBSBold[i].Checked;
@@ -975,7 +989,7 @@ begin
       checkBS15.Checked := Settings._usebandscope[b5600];
       checkBS16.Checked := Settings._usebandscope[b10g];
 
-      for i := 1 to 5 do begin
+      for i := 1 to 7 do begin
          FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
          FBSColor[i].Color      := Settings._bandscopecolor[i].FBackColor;
          FBSBold[i].Checked     := Settings._bandscopecolor[i].FBold;
@@ -1104,11 +1118,15 @@ begin
    FBSColor[3] := editBSColor3;
    FBSColor[4] := editBSColor4;
    FBSColor[5] := editBSColor5;
+   FBSColor[6] := editBSColor6;
+   FBSColor[7] := editBSColor7;
    FBSBold[1] := checkBSBold1;
    FBSBold[2] := checkBSBold2;
    FBSBold[3] := checkBSBold3;
    FBSBold[4] := checkBSBold4;
    FBSBold[5] := checkBSBold5;
+   FBSBold[6] := checkBSBold6;
+   FBSBold[7] := checkBSBold7;
 
    // Quick Memo
    FQuickMemoText[1] := editQuickMemo1;
