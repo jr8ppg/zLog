@@ -16,6 +16,7 @@ type
     Panel1: TPanel;
     Grid: TStringGrid;
     ImageList1: TImageList;
+    BalloonHint1: TBalloonHint;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure mnDeleteClick(Sender: TObject);
     procedure Deleteallworkedstations1Click(Sender: TObject);
@@ -27,6 +28,9 @@ type
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
+    procedure GridMouseEnter(Sender: TObject);
+    procedure GridMouseLeave(Sender: TObject);
+    procedure GridMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
   private
     { Private éŒ¾ }
     FProcessing: Boolean;
@@ -42,6 +46,11 @@ type
     FFreshnessType: Integer;
     FIconType: Integer;
 
+    FPrevMouseX: Integer;
+    FPrevMouseY: Integer;
+    FPrevMouseTick: DWORD;
+    FHintShow: Boolean;
+
     procedure AddBSList(D : TBSData);
     procedure DeleteFromBSList(i : integer);
     function GetFontSize(): Integer;
@@ -51,6 +60,7 @@ type
     procedure Cleanup(D: TBSData);
     procedure SetFreshnessType(v: Integer);
     procedure SetIconType(v: Integer);
+    function CalcRemainTime(T: TDateTime): Integer;
   public
     { Public éŒ¾ }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -88,6 +98,7 @@ begin
    Caption := BandString[b];
    FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
    IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
+   FHintShow := False;
 end;
 
 procedure TBandScope2.CreateParams(var Params: TCreateParams);
@@ -474,11 +485,10 @@ procedure TBandScope2.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: T
 var
    D: TBSData;
    strText: string;
-   Diff: Double;
    n: Integer;
    x, y: Integer;
    rc: TRect;
-   ExpireTime: TDateTime;
+   RemainTime: Integer;
 begin
    with Grid.Canvas do begin
       Font.Name := '‚l‚r ƒSƒVƒbƒN';
@@ -493,28 +503,22 @@ begin
          Font.Style := [fsBold];
          Font.Color := clBlack;
          n := -1;
-         Diff := 0;
+         RemainTime := 0;
       end
       else begin
-         // Œo‰ßŽžŠÔ
-         ExpireTime := IncMinute(D.Time, dmZlogGlobal.Settings._bsexpire);
-         if ExpireTime > Now then begin
-            Diff := SecondSpan(ExpireTime, Now);
-         end
-         else begin
-            Diff := 0;
-         end;
+         // Žc‚èŽžŠÔ
+         RemainTime := CalcRemainTime(D.Time);
 
-         if Diff < FFreshnessThreshold[0] then begin
+         if RemainTime < FFreshnessThreshold[0] then begin
             n := 0;
          end
-         else if Diff < FFreshnessThreshold[1] then begin
+         else if RemainTime < FFreshnessThreshold[1] then begin
             n := 1;
          end
-         else if Diff < FFreshnessThreshold[2] then begin
+         else if RemainTime < FFreshnessThreshold[2] then begin
             n := 2;
          end
-         else if Diff < FFreshnessThreshold[3] then begin
+         else if RemainTime < FFreshnessThreshold[3] then begin
             n := 3;
          end
          else begin
@@ -563,7 +567,7 @@ begin
          end;
 
          {$IFDEF DEBUG}
-         strText := strText + ' (' + IntToStr(Trunc(Diff)) + ')';
+         strText := strText + ' (' + IntToStr(RemainTime) + ')';
          {$ENDIF}
       end;
 
@@ -580,6 +584,76 @@ begin
       if gdSelected in State then begin
          DrawFocusRect(Rect);
       end;
+   end;
+end;
+
+procedure TBandScope2.GridMouseEnter(Sender: TObject);
+begin
+   FPrevMouseX := -1;
+   FPrevMouseY := -1;
+   FPrevMouseTick := GetTickCount();
+end;
+
+procedure TBandScope2.GridMouseLeave(Sender: TObject);
+begin
+   BalloonHint1.HideHint();
+   FHintShow := False;
+end;
+
+procedure TBandScope2.GridMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+var
+   pt: TPoint;
+   C, R: Integer;
+   D: TBSData;
+   strText: string;
+   remain: Integer;
+begin
+//   OutputDebugString(PChar('----Mouse Move----(' + IntToStr(FPrevMouseTick) + ')'));
+//   Sleep(0);
+   if (FPrevMouseX = X) and (FPrevMouseY = Y) then begin
+      if (GetTickCount() - FPrevMouseTick) > 200 then begin
+//         Application.ProcessMessages();
+         if FHintShow = True then begin
+//            OutputDebugString(PChar('---- already showed ----'));
+            Exit;
+         end;
+
+         // Fire
+//         OutputDebugString(PChar('**** Fire ToolTip!!! *****'));
+
+         GetCursorPos(pt);
+         pt.X := X;
+         pt.Y := Y;
+         pt := ClientToScreen(pt);
+
+         Grid.MouseToCell(X, Y, C, R);
+         if (C = -1) or (R = -1) then begin
+            Exit;
+         end;
+         D := TBSData(Grid.Objects[C, R]);
+         if D = nil then begin
+//            OutputDebugString(PChar('---- D is nil ----'));
+            Exit;
+         end;
+
+         remain := CalcRemainTime(D.Time);
+
+         strText := 'Spoted at ' + FormatDateTime('hh:mm:ss', D.Time) + #13#10 +
+                    IntToStr(remain) + ' seconds to left' ;
+
+         BalloonHint1.Title := D.Call;
+         BalloonHint1.Description := strText;
+         BalloonHint1.ShowHint(pt);
+         FHintShow := True;
+//         Application.ProcessMessages();
+      end;
+   end
+   else begin
+      FPrevMouseX := X;
+      FPrevMouseY := Y;
+      BalloonHint1.HideHint();
+      FHintShow := False;
+      FPrevMouseTick := GetTickCount();
    end;
 end;
 
@@ -679,6 +753,19 @@ begin
       ImageList1.Add(bmp, nil);
    end;
    bmp.Free();
+end;
+
+function TBandScope2.CalcRemainTime(T: TDateTime): Integer;
+var
+   ExpireTime: TDateTime;
+begin
+   ExpireTime := IncMinute(T, dmZlogGlobal.Settings._bsexpire);
+   if ExpireTime > Now then begin
+      Result := Trunc(SecondSpan(ExpireTime, Now));
+   end
+   else begin
+      Result := 0;
+   end;
 end;
 
 initialization
