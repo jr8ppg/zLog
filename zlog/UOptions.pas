@@ -352,6 +352,17 @@ type
     buttonBSBack7: TButton;
     checkBSBold7: TCheckBox;
     buttonBSReset7: TButton;
+    groupBSEvaluate: TGroupBox;
+    GroupBox14: TGroupBox;
+    radioIcon1: TRadioButton;
+    GroupBox15: TGroupBox;
+    radioFreshness1: TRadioButton;
+    radioFreshness2: TRadioButton;
+    radioFreshness3: TRadioButton;
+    radioIcon2: TRadioButton;
+    radioIcon3: TRadioButton;
+    radioIcon4: TRadioButton;
+    radioIcon5: TRadioButton;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -708,6 +719,38 @@ begin
          Settings._bandscopecolor[i].FBold      := FBSBold[i].Checked;
       end;
 
+      if radioFreshness1.Checked = True then begin
+         Settings._bandscope_freshness_mode := 0;
+      end
+      else if radioFreshness2.Checked = True then begin
+         Settings._bandscope_freshness_mode := 1;
+      end
+      else if radioFreshness3.Checked = True then begin
+         Settings._bandscope_freshness_mode := 2;
+      end
+      else begin
+         Settings._bandscope_freshness_mode := 0;
+      end;
+
+      if radioIcon1.Checked = True then begin
+         Settings._bandscope_freshness_icon := 0;
+      end
+      else if radioIcon2.Checked = True then begin
+         Settings._bandscope_freshness_icon := 1;
+      end
+      else if radioIcon3.Checked = True then begin
+         Settings._bandscope_freshness_icon := 2;
+      end
+      else if radioIcon4.Checked = True then begin
+         Settings._bandscope_freshness_icon := 3;
+      end
+      else if radioIcon5.Checked = True then begin
+         Settings._bandscope_freshness_icon := 4;
+      end
+      else begin
+         Settings._bandscope_freshness_icon := 0;
+      end;
+
       // Quick Memo
       for i := 1 to 5 do begin
          Settings.FQuickMemoText[i] := Trim(FQuickMemoText[i].Text);
@@ -993,6 +1036,22 @@ begin
          FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
          FBSColor[i].Color      := Settings._bandscopecolor[i].FBackColor;
          FBSBold[i].Checked     := Settings._bandscopecolor[i].FBold;
+      end;
+
+      case Settings._bandscope_freshness_mode of
+         0: radioFreshness1.Checked := True;
+         1: radioFreshness2.Checked := True;
+         2: radioFreshness3.Checked := True;
+         else radioFreshness1.Checked := True;
+      end;
+
+      case Settings._bandscope_freshness_icon of
+         0: radioIcon1.Checked := True;
+         1: radioIcon2.Checked := True;
+         2: radioIcon3.Checked := True;
+         3: radioIcon4.Checked := True;
+         4: radioIcon5.Checked := True;
+         else radioIcon1.Checked := True;
       end;
 
       // Quick Memo

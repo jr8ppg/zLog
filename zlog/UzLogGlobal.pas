@@ -79,6 +79,8 @@ type
     _power: array[b19..HiBand] of string;
     _usebandscope: array[b19..HiBand] of Boolean;
     _bandscopecolor: array[1..7] of TColorSetting;
+    _bandscope_freshness_mode: Integer;
+    _bandscope_freshness_icon: Integer;
 
     CW : TCWSettingsParam;
     _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
@@ -860,6 +862,9 @@ begin
       Settings._bandscopecolor[7].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor7', '$ffffff'), clWhite);
       Settings._bandscopecolor[7].FBold      := ini.ReadBool('BandScopeEx', 'Bold7', True);
 
+      Settings._bandscope_freshness_mode := ini.ReadInteger('BandScopeEx', 'freshness_mode', 0);
+      Settings._bandscope_freshness_icon := ini.ReadInteger('BandScopeEx', 'freshness_icon', 0);
+
       // Quick Memo
       Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', MEMO_PSE_QSL);
       Settings.FQuickMemoText[2] := ini.ReadString('QuickMemo', '#2', MEMO_NO_QSL);
@@ -1244,6 +1249,9 @@ begin
       ini.WriteString('BandScopeEx', 'ForeColor7', ZColorToString(Settings._bandscopecolor[7].FForeColor));
       ini.WriteString('BandScopeEx', 'BackColor7', ZColorToString(Settings._bandscopecolor[7].FBackColor));
       ini.WriteBool('BandScopeEx', 'Bold7', Settings._bandscopecolor[7].FBold);
+
+      ini.WriteInteger('BandScopeEx', 'freshness_mode', Settings._bandscope_freshness_mode);
+      ini.WriteInteger('BandScopeEx', 'freshness_icon', Settings._bandscope_freshness_icon);
 
       // Quick Memo
       for i := 1 to 5 do begin

@@ -24,11 +24,15 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 325
-    ActivePage = tabsheetBandScope1
+    ActivePage = tabsheetBandScope2
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label40: TLabel
         Left = 202
         Top = 212
@@ -516,6 +520,10 @@ object formOptions: TformOptions
     end
     object tabsheetCategories: TTabSheet
       Caption = 'Categories'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label14: TLabel
         Left = 248
         Top = 92
@@ -762,6 +770,10 @@ object formOptions: TformOptions
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -1198,6 +1210,10 @@ object formOptions: TformOptions
     object tabsheetVoice: TTabSheet
       Caption = 'Voice'
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 8
         Top = 8
@@ -1487,6 +1503,10 @@ object formOptions: TformOptions
     end
     object tabsheetHardware: TTabSheet
       Caption = 'Hardware'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox6: TGroupBox
         Left = 5
         Top = 0
@@ -1868,6 +1888,10 @@ object formOptions: TformOptions
     end
     object tabsheetRigControl: TTabSheet
       Caption = 'Rig control'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label45: TLabel
         Left = 8
         Top = 138
@@ -1951,6 +1975,10 @@ object formOptions: TformOptions
     end
     object tabsheetPath: TTabSheet
       Caption = 'Path'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label50: TLabel
         Left = 16
         Top = 18
@@ -2047,6 +2075,10 @@ object formOptions: TformOptions
     end
     object tabsheetMisc: TTabSheet
       Caption = 'Misc'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label47: TLabel
         Left = 125
         Top = 23
@@ -2257,6 +2289,10 @@ object formOptions: TformOptions
     object tabsheetQuickQSY: TTabSheet
       Caption = 'Quick QSY'
       ImageIndex = 8
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label54: TLabel
         Left = 98
         Top = 3
@@ -2634,6 +2670,10 @@ object formOptions: TformOptions
     object tabsheetBandScope1: TTabSheet
       Caption = 'BandScope'
       ImageIndex = 9
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox9: TGroupBox
         Left = 11
         Top = 11
@@ -3118,8 +3158,10 @@ object formOptions: TformOptions
     object tabsheetBandScope2: TTabSheet
       Caption = 'BandScope2'
       ImageIndex = 11
-      ExplicitLeft = 8
-      ExplicitTop = 22
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox12: TGroupBox
         Left = 11
         Top = 11
@@ -3359,10 +3401,108 @@ object formOptions: TformOptions
           OnClick = buttonBSResetClick
         end
       end
+      object groupBSEvaluate: TGroupBox
+        Left = 11
+        Top = 127
+        Width = 326
+        Height = 154
+        Caption = #35413#20385#29992
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
+        object GroupBox14: TGroupBox
+          Left = 133
+          Top = 16
+          Width = 132
+          Height = 121
+          Caption = #12450#12452#12467#12531
+          TabOrder = 0
+          object radioIcon1: TRadioButton
+            Left = 16
+            Top = 24
+            Width = 41
+            Height = 17
+            Caption = #65297
+            TabOrder = 0
+          end
+          object radioIcon2: TRadioButton
+            Left = 16
+            Top = 47
+            Width = 41
+            Height = 17
+            Caption = #65298
+            TabOrder = 1
+          end
+          object radioIcon3: TRadioButton
+            Left = 16
+            Top = 70
+            Width = 41
+            Height = 17
+            Caption = #65299
+            TabOrder = 2
+          end
+          object radioIcon4: TRadioButton
+            Left = 16
+            Top = 93
+            Width = 41
+            Height = 17
+            Caption = #65300
+            TabOrder = 3
+          end
+          object radioIcon5: TRadioButton
+            Left = 74
+            Top = 24
+            Width = 41
+            Height = 17
+            Caption = #65301
+            TabOrder = 4
+          end
+        end
+        object GroupBox15: TGroupBox
+          Left = 16
+          Top = 16
+          Width = 97
+          Height = 121
+          Caption = #39854#24230#34920#31034
+          TabOrder = 1
+          object radioFreshness1: TRadioButton
+            Left = 16
+            Top = 24
+            Width = 65
+            Height = 17
+            Caption = #21322#20998
+            TabOrder = 0
+          end
+          object radioFreshness2: TRadioButton
+            Left = 16
+            Top = 47
+            Width = 65
+            Height = 17
+            Caption = #22266#23450
+            TabOrder = 1
+          end
+          object radioFreshness3: TRadioButton
+            Left = 16
+            Top = 70
+            Width = 65
+            Height = 17
+            Caption = #22343#31561
+            TabOrder = 2
+          end
+        end
+      end
     end
     object tabsheetQuickMemo: TTabSheet
       Caption = 'Quick Memo'
       ImageIndex = 10
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox11: TGroupBox
         Left = 11
         Top = 11

@@ -86,8 +86,8 @@ begin
    Inherited Create(AOwner);
    FCurrBand := b;
    Caption := BandString[b];
-   FreshnessType := 0;
-   IconType := 0;
+   FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
+   IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
 end;
 
 procedure TBandScope2.CreateParams(var Params: TCreateParams);
@@ -673,6 +673,7 @@ begin
    end;
 
    bmp := TBitmap.Create();
+   ImageList1.Clear();
    for i := 0 to 4 do begin
       bmp.LoadFromResourceName(SysInit.HInstance, strPrefix + IntToStr(i));
       ImageList1.Add(bmp, nil);

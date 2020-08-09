@@ -5838,6 +5838,7 @@ end;
 procedure TMainForm.menuOptionsClick(Sender: TObject);
 var
    f: TformOptions;
+   b: TBand;
 begin
    f := TformOptions.Create(Self);
    try
@@ -5861,6 +5862,12 @@ begin
       // SuperCheckçƒÉçÅ[Éh
       if f.NeedSuperCheckLoad = True then begin
          SuperCheckDataLoad();
+      end;
+
+      // BandScopeçƒê›íË
+      for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+         FBandScopeEx[b].FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
+         FBandScopeEx[b].IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
       end;
 
       LastFocus.SetFocus;
