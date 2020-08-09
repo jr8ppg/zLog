@@ -24,15 +24,11 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 325
-    ActivePage = tabsheetBandScope2
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label40: TLabel
         Left = 202
         Top = 212
@@ -520,10 +516,6 @@ object formOptions: TformOptions
     end
     object tabsheetCategories: TTabSheet
       Caption = 'Categories'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label14: TLabel
         Left = 248
         Top = 92
@@ -770,10 +762,6 @@ object formOptions: TformOptions
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -1210,10 +1198,6 @@ object formOptions: TformOptions
     object tabsheetVoice: TTabSheet
       Caption = 'Voice'
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 8
         Top = 8
@@ -1503,10 +1487,6 @@ object formOptions: TformOptions
     end
     object tabsheetHardware: TTabSheet
       Caption = 'Hardware'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox6: TGroupBox
         Left = 5
         Top = 0
@@ -1888,10 +1868,6 @@ object formOptions: TformOptions
     end
     object tabsheetRigControl: TTabSheet
       Caption = 'Rig control'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label45: TLabel
         Left = 8
         Top = 138
@@ -1975,10 +1951,6 @@ object formOptions: TformOptions
     end
     object tabsheetPath: TTabSheet
       Caption = 'Path'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label50: TLabel
         Left = 16
         Top = 18
@@ -2075,10 +2047,6 @@ object formOptions: TformOptions
     end
     object tabsheetMisc: TTabSheet
       Caption = 'Misc'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label47: TLabel
         Left = 125
         Top = 23
@@ -2289,10 +2257,6 @@ object formOptions: TformOptions
     object tabsheetQuickQSY: TTabSheet
       Caption = 'Quick QSY'
       ImageIndex = 8
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label54: TLabel
         Left = 98
         Top = 3
@@ -2670,10 +2634,6 @@ object formOptions: TformOptions
     object tabsheetBandScope1: TTabSheet
       Caption = 'BandScope'
       ImageIndex = 9
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox9: TGroupBox
         Left = 11
         Top = 11
@@ -3158,10 +3118,6 @@ object formOptions: TformOptions
     object tabsheetBandScope2: TTabSheet
       Caption = 'BandScope2'
       ImageIndex = 11
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox12: TGroupBox
         Left = 11
         Top = 11
@@ -3417,24 +3373,24 @@ object formOptions: TformOptions
         object GroupBox14: TGroupBox
           Left = 133
           Top = 16
-          Width = 132
+          Width = 141
           Height = 121
           Caption = #12450#12452#12467#12531
           TabOrder = 0
           object radioIcon1: TRadioButton
             Left = 16
             Top = 24
-            Width = 41
+            Width = 52
             Height = 17
-            Caption = #65297
+            Caption = #12496#12540#65297
             TabOrder = 0
           end
           object radioIcon2: TRadioButton
             Left = 16
             Top = 47
-            Width = 41
+            Width = 52
             Height = 17
-            Caption = #65298
+            Caption = 'ANT'
             TabOrder = 1
           end
           object radioIcon3: TRadioButton
@@ -3442,7 +3398,7 @@ object formOptions: TformOptions
             Top = 70
             Width = 41
             Height = 17
-            Caption = #65299
+            Caption = #26178#35336
             TabOrder = 2
           end
           object radioIcon4: TRadioButton
@@ -3450,15 +3406,15 @@ object formOptions: TformOptions
             Top = 93
             Width = 41
             Height = 17
-            Caption = #65300
+            Caption = #25968#20516
             TabOrder = 3
           end
           object radioIcon5: TRadioButton
             Left = 74
             Top = 24
-            Width = 41
+            Width = 55
             Height = 17
-            Caption = #65301
+            Caption = #12496#12540#65298
             TabOrder = 4
           end
         end
@@ -3499,10 +3455,6 @@ object formOptions: TformOptions
     object tabsheetQuickMemo: TTabSheet
       Caption = 'Quick Memo'
       ImageIndex = 10
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox11: TGroupBox
         Left = 11
         Top = 11
