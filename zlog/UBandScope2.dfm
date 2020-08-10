@@ -49,8 +49,10 @@ object BandScope2: TBandScope2
       FixedRows = 0
       Options = []
       ParentDoubleBuffered = False
+      ParentShowHint = False
       PopupMenu = BSMenu
       ScrollBars = ssVertical
+      ShowHint = True
       TabOrder = 0
       OnDblClick = GridDblClick
       OnDrawCell = GridDrawCell
@@ -84,7 +86,7 @@ object BandScope2: TBandScope2
     Top = 176
   end
   object BalloonHint1: TBalloonHint
-    Delay = 100
+    Delay = 10
     Left = 88
     Top = 320
   end

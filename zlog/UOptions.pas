@@ -363,6 +363,8 @@ type
     radioIcon3: TRadioButton;
     radioIcon4: TRadioButton;
     radioIcon5: TRadioButton;
+    radioFreshness4: TRadioButton;
+    radioIcon6: TRadioButton;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -728,6 +730,9 @@ begin
       else if radioFreshness3.Checked = True then begin
          Settings._bandscope_freshness_mode := 2;
       end
+      else if radioFreshness4.Checked = True then begin
+         Settings._bandscope_freshness_mode := 3;
+      end
       else begin
          Settings._bandscope_freshness_mode := 0;
       end;
@@ -746,6 +751,9 @@ begin
       end
       else if radioIcon5.Checked = True then begin
          Settings._bandscope_freshness_icon := 4;
+      end
+      else if radioIcon6.Checked = True then begin
+         Settings._bandscope_freshness_icon := 5;
       end
       else begin
          Settings._bandscope_freshness_icon := 0;
@@ -1042,6 +1050,7 @@ begin
          0: radioFreshness1.Checked := True;
          1: radioFreshness2.Checked := True;
          2: radioFreshness3.Checked := True;
+         3: radioFreshness4.Checked := True;
          else radioFreshness1.Checked := True;
       end;
 
@@ -1051,6 +1060,7 @@ begin
          2: radioIcon3.Checked := True;
          3: radioIcon4.Checked := True;
          4: radioIcon5.Checked := True;
+         5: radioIcon6.Checked := True;
          else radioIcon1.Checked := True;
       end;
 

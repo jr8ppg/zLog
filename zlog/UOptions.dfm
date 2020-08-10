@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 325
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetBandScope2
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -3417,6 +3417,14 @@ object formOptions: TformOptions
             Caption = #12496#12540#65298
             TabOrder = 4
           end
+          object radioIcon6: TRadioButton
+            Left = 74
+            Top = 47
+            Width = 55
+            Height = 17
+            Caption = #25968#20516#65298
+            TabOrder = 5
+          end
         end
         object GroupBox15: TGroupBox
           Left = 16
@@ -3448,6 +3456,14 @@ object formOptions: TformOptions
             Height = 17
             Caption = #22343#31561
             TabOrder = 2
+          end
+          object radioFreshness4: TRadioButton
+            Left = 16
+            Top = 93
+            Width = 65
+            Height = 17
+            Caption = #32076#36942#26178#38291
+            TabOrder = 3
           end
         end
       end

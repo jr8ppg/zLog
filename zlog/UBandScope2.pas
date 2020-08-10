@@ -61,6 +61,7 @@ type
     procedure SetFreshnessType(v: Integer);
     procedure SetIconType(v: Integer);
     function CalcRemainTime(T: TDateTime): Integer;
+    function CalcElapsedTime(T: TDateTime): Integer;
   public
     { Public 宣言 }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -488,7 +489,7 @@ var
    n: Integer;
    x, y: Integer;
    rc: TRect;
-   RemainTime: Integer;
+   sec: Integer;
 begin
    with Grid.Canvas do begin
       Font.Name := 'ＭＳ ゴシック';
@@ -503,22 +504,27 @@ begin
          Font.Style := [fsBold];
          Font.Color := clBlack;
          n := -1;
-         RemainTime := 0;
+         sec := 0;
       end
       else begin
-         // 残り時間
-         RemainTime := CalcRemainTime(D.Time);
+         // 0,1,2は残り時間、3は経過時間
+         if FFreshnessType = 3 then begin
+            sec := CalcElapsedTime(D.Time);
+         end
+         else begin
+            sec := CalcRemainTime(D.Time);
+         end;
 
-         if RemainTime < FFreshnessThreshold[0] then begin
+         if sec < FFreshnessThreshold[0] then begin
             n := 0;
          end
-         else if RemainTime < FFreshnessThreshold[1] then begin
+         else if sec < FFreshnessThreshold[1] then begin
             n := 1;
          end
-         else if RemainTime < FFreshnessThreshold[2] then begin
+         else if sec < FFreshnessThreshold[2] then begin
             n := 2;
          end
-         else if RemainTime < FFreshnessThreshold[3] then begin
+         else if sec < FFreshnessThreshold[3] then begin
             n := 3;
          end
          else begin
@@ -607,6 +613,7 @@ var
    D: TBSData;
    strText: string;
    remain: Integer;
+   elapsed: Integer;
 begin
 //   OutputDebugString(PChar('----Mouse Move----(' + IntToStr(FPrevMouseTick) + ')'));
 //   Sleep(0);
@@ -619,7 +626,7 @@ begin
          end;
 
          // Fire
-//         OutputDebugString(PChar('**** Fire ToolTip!!! *****'));
+         OutputDebugString(PChar('**** Fire ToolTip!!! *****'));
 
          GetCursorPos(pt);
          pt.X := X;
@@ -628,18 +635,34 @@ begin
 
          Grid.MouseToCell(X, Y, C, R);
          if (C = -1) or (R = -1) then begin
+            Application.CancelHint();
+            BalloonHint1.HideHint();
+            Grid.Hint := '';
             Exit;
          end;
          D := TBSData(Grid.Objects[C, R]);
          if D = nil then begin
 //            OutputDebugString(PChar('---- D is nil ----'));
+            Application.CancelHint();
+            BalloonHint1.HideHint();
+            Grid.Hint := '';
             Exit;
          end;
 
          remain := CalcRemainTime(D.Time);
+         elapsed := CalcElapsedTime(D.Time);
 
-         strText := 'Spoted at ' + FormatDateTime('hh:mm:ss', D.Time) + #13#10 +
-                    IntToStr(remain) + ' seconds to left' ;
+         strText := //D.Call + '|' +
+                    'Spoted at ' + FormatDateTime('hh:mm:ss', D.Time) + #13#10 +
+                    IntToStr(remain) + ' seconds to left' + #13#10 +
+                    IntToStr(elapsed) + ' seconds elapsed' + #13#10;
+
+//         if Grid.Hint <> strText then begin
+//            BalloonHint1.HideHint();
+            Application.CancelHint();
+            Grid.Hint := strText;
+//            Application.ActivateHint(Mouse.CursorPos)
+//         end;
 
          BalloonHint1.Title := D.Call;
          BalloonHint1.Description := strText;
@@ -651,6 +674,8 @@ begin
    else begin
       FPrevMouseX := X;
       FPrevMouseY := Y;
+      Application.CancelHint();
+      Grid.Hint := '';
       BalloonHint1.HideHint();
       FHintShow := False;
       FPrevMouseTick := GetTickCount();
@@ -720,6 +745,14 @@ begin
          FFreshnessThreshold[4] := 0;  // unused
       end;
 
+      3: begin
+         FFreshnessThreshold[0] := 299;
+         FFreshnessThreshold[1] := 5 * 60;
+         FFreshnessThreshold[2] := 10 * 60;
+         FFreshnessThreshold[3] := 30 * 60;
+         FFreshnessThreshold[4] := 0;  // unused
+      end;
+
       else begin
          FFreshnessThreshold[0] := (dmZlogGlobal.Settings._bsexpire * 60) div 16;
          FFreshnessThreshold[1] := (dmZlogGlobal.Settings._bsexpire * 60) div 8;
@@ -743,6 +776,7 @@ begin
       2: strPrefix := 'IDB_TIM_';
       3: strPrefix := 'IDB_NUM_';
       4: strPrefix := 'IDB_BAR_';
+      5: strPrefix := 'IDB_NUM2_';
       else strPrefix := 'IDB_BAR2_';
    end;
 
@@ -766,6 +800,11 @@ begin
    else begin
       Result := 0;
    end;
+end;
+
+function TBandScope2.CalcElapsedTime(T: TDateTime): Integer;
+begin
+   Result := Trunc(SecondSpan(Now, T));
 end;
 
 initialization
