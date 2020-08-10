@@ -372,22 +372,25 @@ var
    multi: string;
    SD, SD2: TSuperData;
 begin
-     // 交信済みか確認する
+   // 交信済みか確認する
    Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
 
-   // 他のバンドで交信済みならマルチを取得
-   if Log.IsOtherBandWorked(Sp.Call, Sp.Band, multi) = True then begin
-      Sp.Number := multi;
-   end
-   else begin
-      // 他のバンドで未交信ならSPCデータよりマルチを取得
-      SD := TSuperData.Create();
-      Sd.Callsign := Sp.Call;
-      SD2 := MainForm.SuperCheckList.ObjectOf(SD);
-      if SD2 <> nil then begin
-         Sp.Number := SD2.Number;
+   // NR未入力の場合
+   if Sp.Number = '' then begin
+      // 他のバンドで交信済みならマルチを取得
+      if Log.IsOtherBandWorked(Sp.Call, Sp.Band, multi) = True then begin
+         Sp.Number := multi;
+      end
+      else begin
+         // 他のバンドで未交信ならSPCデータよりマルチを取得
+         SD := TSuperData.Create();
+         Sd.Callsign := Sp.Call;
+         SD2 := MainForm.SuperCheckList.ObjectOf(SD);
+         if SD2 <> nil then begin
+            Sp.Number := SD2.Number;
+         end;
+         SD.Free();
       end;
-      SD.Free();
    end;
 
    // そのマルチはSp.BandでNEW MULTIか
