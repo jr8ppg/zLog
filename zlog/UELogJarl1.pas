@@ -402,7 +402,7 @@ begin
       S := S + FillRight('TX#' + IntToStr(q.TX), 6);
    end;
 
-   S := S + q.Memo;
+//   S := S + q.Memo;
 
    Result := S;
 end;
