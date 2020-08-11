@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 325
-    ActivePage = tabsheetBandScope2
+    ActivePage = tabsheetCategories
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -805,11 +805,11 @@ object formOptions: TformOptions
         Caption = 'Tone Pitch (Hz)'
       end
       object Label17: TLabel
-        Left = 188
+        Left = 203
         Top = 234
-        Width = 111
+        Width = 96
         Height = 13
-        Caption = 'CQ repeat interval (sec)'
+        Caption = 'CQ rpt. interval (sec)'
       end
       object Label12: TLabel
         Left = 213
@@ -819,83 +819,97 @@ object formOptions: TformOptions
         Caption = 'Abbreviation (019)'
       end
       object GroupBox2: TGroupBox
-        Left = 8
+        Left = 6
         Top = 4
         Width = 193
-        Height = 225
+        Height = 261
         Caption = 'Messages'
         TabOrder = 0
         object Label1: TLabel
           Left = 8
-          Top = 34
+          Top = 35
           Width = 12
           Height = 13
           Caption = 'F1'
         end
         object Label2: TLabel
           Left = 8
-          Top = 52
+          Top = 53
           Width = 12
           Height = 13
           Caption = 'F2'
         end
         object Label3: TLabel
           Left = 8
-          Top = 70
+          Top = 71
           Width = 12
           Height = 13
           Caption = 'F3'
         end
         object Label4: TLabel
           Left = 8
-          Top = 88
+          Top = 89
           Width = 12
           Height = 13
           Caption = 'F4'
         end
         object Label5: TLabel
           Left = 8
-          Top = 105
+          Top = 107
           Width = 12
           Height = 13
           Caption = 'F5'
         end
         object Label6: TLabel
           Left = 8
-          Top = 123
+          Top = 125
           Width = 12
           Height = 13
           Caption = 'F6'
         end
         object Label7: TLabel
           Left = 8
-          Top = 141
+          Top = 143
           Width = 12
           Height = 13
           Caption = 'F7'
         end
         object Label8: TLabel
           Left = 8
-          Top = 159
+          Top = 161
           Width = 12
           Height = 13
           Caption = 'F8'
         end
         object Label9: TLabel
           Left = 8
-          Top = 184
+          Top = 221
           Width = 21
           Height = 13
           Caption = 'CQ2'
         end
         object Label10: TLabel
           Left = 8
-          Top = 202
+          Top = 239
           Width = 21
           Height = 13
           Caption = 'CQ3'
         end
-        object Edit2: TEdit
+        object Label70: TLabel
+          Left = 8
+          Top = 179
+          Width = 12
+          Height = 13
+          Caption = 'F9'
+        end
+        object Label71: TLabel
+          Left = 8
+          Top = 197
+          Width = 18
+          Height = 13
+          Caption = 'F10'
+        end
+        object editMessage2: TEdit
           Tag = 2
           Left = 32
           Top = 50
@@ -909,12 +923,12 @@ object formOptions: TformOptions
           Font.Style = []
           ParentFont = False
           TabOrder = 1
-          OnChange = Edit1Change
+          OnChange = editMessage1Change
         end
-        object Edit3: TEdit
+        object editMessage3: TEdit
           Tag = 3
           Left = 32
-          Top = 67
+          Top = 68
           Width = 153
           Height = 17
           AutoSize = False
@@ -925,12 +939,12 @@ object formOptions: TformOptions
           Font.Style = []
           ParentFont = False
           TabOrder = 2
-          OnChange = Edit1Change
+          OnChange = editMessage1Change
         end
-        object Edit4: TEdit
+        object editMessage4: TEdit
           Tag = 4
           Left = 32
-          Top = 85
+          Top = 86
           Width = 153
           Height = 17
           AutoSize = False
@@ -941,12 +955,12 @@ object formOptions: TformOptions
           Font.Style = []
           ParentFont = False
           TabOrder = 3
-          OnChange = Edit1Change
+          OnChange = editMessage1Change
         end
-        object Edit5: TEdit
+        object editMessage5: TEdit
           Tag = 5
           Left = 32
-          Top = 103
+          Top = 104
           Width = 153
           Height = 17
           AutoSize = False
@@ -957,12 +971,12 @@ object formOptions: TformOptions
           Font.Style = []
           ParentFont = False
           TabOrder = 4
-          OnChange = Edit1Change
+          OnChange = editMessage1Change
         end
-        object Edit6: TEdit
+        object editMessage6: TEdit
           Tag = 6
           Left = 32
-          Top = 121
+          Top = 122
           Width = 153
           Height = 17
           AutoSize = False
@@ -973,12 +987,12 @@ object formOptions: TformOptions
           Font.Style = []
           ParentFont = False
           TabOrder = 5
-          OnChange = Edit1Change
+          OnChange = editMessage1Change
         end
-        object Edit7: TEdit
+        object editMessage7: TEdit
           Tag = 7
           Left = 32
-          Top = 139
+          Top = 140
           Width = 153
           Height = 17
           AutoSize = False
@@ -989,11 +1003,11 @@ object formOptions: TformOptions
           Font.Style = []
           ParentFont = False
           TabOrder = 6
-          OnChange = Edit1Change
+          OnChange = editMessage1Change
         end
-        object Edit9: TEdit
+        object editMessage11: TEdit
           Left = 32
-          Top = 182
+          Top = 219
           Width = 153
           Height = 17
           AutoSize = False
@@ -1003,12 +1017,12 @@ object formOptions: TformOptions
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          TabOrder = 8
+          TabOrder = 10
         end
-        object Edit8: TEdit
+        object editMessage8: TEdit
           Tag = 8
           Left = 32
-          Top = 157
+          Top = 158
           Width = 153
           Height = 17
           AutoSize = False
@@ -1019,11 +1033,11 @@ object formOptions: TformOptions
           Font.Style = []
           ParentFont = False
           TabOrder = 7
-          OnChange = Edit1Change
+          OnChange = editMessage1Change
         end
-        object Edit10: TEdit
+        object editMessage12: TEdit
           Left = 32
-          Top = 200
+          Top = 237
           Width = 153
           Height = 17
           AutoSize = False
@@ -1033,9 +1047,9 @@ object formOptions: TformOptions
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          TabOrder = 9
+          TabOrder = 11
         end
-        object Edit1: TEdit
+        object editMessage1: TEdit
           Tag = 1
           Left = 32
           Top = 32
@@ -1050,7 +1064,39 @@ object formOptions: TformOptions
           MaxLength = 255
           ParentFont = False
           TabOrder = 0
-          OnChange = Edit1Change
+          OnChange = editMessage1Change
+        end
+        object editMessage9: TEdit
+          Tag = 9
+          Left = 32
+          Top = 176
+          Width = 153
+          Height = 17
+          AutoSize = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 8
+          OnChange = editMessage1Change
+        end
+        object editMessage10: TEdit
+          Tag = 10
+          Left = 32
+          Top = 194
+          Width = 153
+          Height = 17
+          AutoSize = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 9
+          OnChange = editMessage1Change
         end
       end
       object SpeedBar: TTrackBar
@@ -1107,7 +1153,7 @@ object formOptions: TformOptions
         Top = 230
         Width = 41
         Height = 21
-        TabOrder = 10
+        TabOrder = 9
         Text = '2.0'
         OnKeyPress = CQRepEditKeyPress
       end
@@ -1176,19 +1222,19 @@ object formOptions: TformOptions
         OnClick = CWBankClick
       end
       object cbCQSP: TCheckBox
-        Left = 8
-        Top = 234
+        Left = 14
+        Top = 272
         Width = 161
         Height = 17
         Hint = 
           'This option will switch the CW message sent when TAB or ; key is' +
           ' pressed to that in the current message bank. '
         Caption = 'Switch TAB/; with CW bank'
-        TabOrder = 9
+        TabOrder = 10
       end
       object checkSendNrAuto: TCheckBox
-        Left = 8
-        Top = 253
+        Left = 199
+        Top = 272
         Width = 161
         Height = 17
         Caption = 'Send NR? automatically'

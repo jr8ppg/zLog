@@ -45,7 +45,7 @@ const
 
 const
   maxbank = 3; // bank 3 reserved for rtty
-  maxstr = 8;
+  maxstr = 10;
   maxmaxstr = 12; // f11 and f12 only accessible via zlog.ini
 
 const
@@ -88,7 +88,7 @@ const
   pwrH = TPower(3);
 
 const
-  default_primary_shortcut: array[0..102] of string = (
+  default_primary_shortcut: array[0..112] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -107,8 +107,8 @@ const
     'F6',               // #15
     'F7',
     'F8',
-    'F9',
-    'F10',
+    '',                 // #18 actionCheckMulti
+    '',                 // #19 actionShowCheckPartial
     'F11',              // #20
     'F12',
     'Shift+F1',
@@ -190,11 +190,21 @@ const
     'Shift+Z',
     '',                 // #99
     'Alt+L',            // #100
-    '',
-    ''
+    '',                 // #101 actionQuickMemo1
+    '',                 // #102 actionQuickMemo2
+    '',                 // #103 actionCwMessagePad
+    '',                 // #104 actionCorrectSentNr
+    '',                 // #105 actionSetLastFreq
+    '',                 // #106 actionQuickMemo3
+    '',                 // #107 actionQuickMemo4
+    '',                 // #108 actionQuickMemo5
+    'F9',               // #109 actionPlayMessageA09
+    'F10',              // #110 actionPlayMessageA10
+    'Shift+F9',         // #111 actionPlayMessageB09
+    'Shift+F10'         // #112 actionPlayMessageB10
   );
 
-  default_secondary_shortcut: array[0..102] of string = (
+  default_secondary_shortcut: array[0..112] of string = (
     '',                 // #00
     '',
     '',
@@ -296,8 +306,18 @@ const
     '',
     '',                 // #99
     '',                 // #100
+    '',                 // #101
     '',
-    ''
+    '',
+    '',
+    '',                 // #105
+    '',
+    '',
+    '',
+    '',
+    '',                 // #110
+    '',
+    ''                  // #112
   );
 
 const

@@ -30,14 +30,14 @@ type
     Add: TButton;
     Delete: TButton;
     GroupBox2: TGroupBox;
-    Edit2: TEdit;
-    Edit3: TEdit;
-    Edit4: TEdit;
-    Edit5: TEdit;
-    Edit6: TEdit;
-    Edit7: TEdit;
-    Edit9: TEdit;
-    Edit8: TEdit;
+    editMessage2: TEdit;
+    editMessage3: TEdit;
+    editMessage4: TEdit;
+    editMessage5: TEdit;
+    editMessage6: TEdit;
+    editMessage7: TEdit;
+    editMessage11: TEdit;
+    editMessage8: TEdit;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
@@ -48,8 +48,8 @@ type
     Label8: TLabel;
     Label9: TLabel;
     Label10: TLabel;
-    Edit10: TEdit;
-    Edit1: TEdit;
+    editMessage12: TEdit;
+    editMessage1: TEdit;
     SpeedBar: TTrackBar;
     Label11: TLabel;
     SpeedLabel: TLabel;
@@ -365,6 +365,10 @@ type
     radioIcon5: TRadioButton;
     radioFreshness4: TRadioButton;
     radioIcon6: TRadioButton;
+    editMessage9: TEdit;
+    editMessage10: TEdit;
+    Label70: TLabel;
+    Label71: TLabel;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -387,7 +391,7 @@ type
     procedure BrowsePathClick(Sender: TObject);
     procedure PTTEnabledCheckBoxClick(Sender: TObject);
     procedure CQRepEditKeyPress(Sender: TObject; var Key: Char);
-    procedure Edit1Change(Sender: TObject);
+    procedure editMessage1Change(Sender: TObject);
     procedure CWBankClick(Sender: TObject);
     procedure cbCountDownClick(Sender: TObject);
     procedure cbQSYCountClick(Sender: TObject);
@@ -554,8 +558,8 @@ begin
 
       Settings.CW.CQStrBank[0] := TempCWStrBank[1, 1];
 
-      Settings.CW.CQStrBank[1] := Edit9.Text;
-      Settings.CW.CQStrBank[2] := Edit10.Text;
+      Settings.CW.CQStrBank[1] := editMessage11.Text;
+      Settings.CW.CQStrBank[2] := editMessage12.Text;
 
       Settings._bsexpire := spBSExpire.Value;
       Settings._spotexpire := spSpotExpire.Value;
@@ -776,14 +780,16 @@ end;
 
 procedure TformOptions.RenewCWStrBankDisp;
 begin
-   Edit1.Text := TempCWStrBank[TempCurrentBank, 1];
-   Edit2.Text := TempCWStrBank[TempCurrentBank, 2];
-   Edit3.Text := TempCWStrBank[TempCurrentBank, 3];
-   Edit4.Text := TempCWStrBank[TempCurrentBank, 4];
-   Edit5.Text := TempCWStrBank[TempCurrentBank, 5];
-   Edit6.Text := TempCWStrBank[TempCurrentBank, 6];
-   Edit7.Text := TempCWStrBank[TempCurrentBank, 7];
-   Edit8.Text := TempCWStrBank[TempCurrentBank, 8];
+   editMessage1.Text  := TempCWStrBank[TempCurrentBank, 1];
+   editMessage2.Text  := TempCWStrBank[TempCurrentBank, 2];
+   editMessage3.Text  := TempCWStrBank[TempCurrentBank, 3];
+   editMessage4.Text  := TempCWStrBank[TempCurrentBank, 4];
+   editMessage5.Text  := TempCWStrBank[TempCurrentBank, 5];
+   editMessage6.Text  := TempCWStrBank[TempCurrentBank, 6];
+   editMessage7.Text  := TempCWStrBank[TempCurrentBank, 7];
+   editMessage8.Text  := TempCWStrBank[TempCurrentBank, 8];
+   editMessage9.Text  := TempCWStrBank[TempCurrentBank, 9];
+   editMessage10.Text := TempCWStrBank[TempCurrentBank, 10];
 end;
 
 procedure TformOptions.FormShow(Sender: TObject);
@@ -885,8 +891,8 @@ begin
         Edit7.Text := Settings.CW.CWStrBank[1,7];
         Edit8.Text := Settings.CW.CWStrBank[1,8];
       }
-      Edit9.Text := Settings.CW.CQStrBank[1];
-      Edit10.Text := Settings.CW.CQStrBank[2];
+      editMessage11.Text := Settings.CW.CQStrBank[1];
+      editMessage12.Text := Settings.CW.CQStrBank[2];
 
       CQRepEdit.Text := FloatToStrF(Settings.CW._cqrepeat, ffFixed, 3, 1);
       SendFreqEdit.Text := FloatToStrF(Settings._sendfreq, ffFixed, 3, 1);
@@ -1095,14 +1101,16 @@ begin
       tabsheetQuickQSY.TabVisible := False;
 
       case FCWEditMode of
-         1: Edit1.SetFocus;
-         2: Edit2.SetFocus;
-         3: Edit3.SetFocus;
-         4: Edit4.SetFocus;
-         5: Edit5.SetFocus;
-         6: Edit6.SetFocus;
-         7: Edit7.SetFocus;
-         8: Edit8.SetFocus;
+         1: editMessage1.SetFocus;
+         2: editMessage2.SetFocus;
+         3: editMessage3.SetFocus;
+         4: editMessage4.SetFocus;
+         5: editMessage5.SetFocus;
+         6: editMessage6.SetFocus;
+         7: editMessage7.SetFocus;
+         8: editMessage8.SetFocus;
+         9: editMessage9.SetFocus;
+         10: editMessage10.SetFocus;
       end;
    end;
 
@@ -1418,7 +1426,7 @@ begin
    end;
 end;
 
-procedure TformOptions.Edit1Change(Sender: TObject);
+procedure TformOptions.editMessage1Change(Sender: TObject);
 var
    i: integer;
 begin

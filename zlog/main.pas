@@ -649,6 +649,14 @@ type
     actionQuickMemo3: TAction;
     actionQuickMemo4: TAction;
     actionQuickMemo5: TAction;
+    actionPlayMessageA09: TAction;
+    actionPlayMessageA10: TAction;
+    actionPlayMessageB09: TAction;
+    actionPlayMessageB10: TAction;
+    CWF9: THemisphereButton;
+    CWF10: THemisphereButton;
+    VoiceF9: THemisphereButton;
+    VoiceF10: THemisphereButton;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -5281,8 +5289,8 @@ var
    S: string;
 begin
    i := THemisphereButton(Sender).Tag;
-   if i in [1 .. 9] then begin
-      if i = 9 then begin
+   if i in [1 .. 11] then begin
+      if i = 11 then begin
          i := 1; { CQ button }
          SetCQ(True);
       end;
