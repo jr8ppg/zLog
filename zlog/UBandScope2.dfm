@@ -56,8 +56,6 @@ object BandScope2: TBandScope2
       TabOrder = 0
       OnDblClick = GridDblClick
       OnDrawCell = GridDrawCell
-      OnMouseEnter = GridMouseEnter
-      OnMouseLeave = GridMouseLeave
       OnMouseMove = GridMouseMove
     end
   end
@@ -84,10 +82,5 @@ object BandScope2: TBandScope2
   object ImageList1: TImageList
     Left = 56
     Top = 176
-  end
-  object BalloonHint1: TBalloonHint
-    Delay = 10
-    Left = 88
-    Top = 320
   end
 end

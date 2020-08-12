@@ -3752,7 +3752,7 @@ begin
 
    Application.OnIdle := MyIdleEvent;
    Application.OnMessage := MyMessageEvent;
-   Application.OnHint := ShowHint;
+//   Application.OnHint := ShowHint;
 
    for i := 0 to ParamCount do begin
       S := S + ' ' + ParamStr(i);

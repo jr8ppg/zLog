@@ -16,7 +16,6 @@ type
     Panel1: TPanel;
     Grid: TStringGrid;
     ImageList1: TImageList;
-    BalloonHint1: TBalloonHint;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure mnDeleteClick(Sender: TObject);
     procedure Deleteallworkedstations1Click(Sender: TObject);
@@ -28,8 +27,6 @@ type
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
-    procedure GridMouseEnter(Sender: TObject);
-    procedure GridMouseLeave(Sender: TObject);
     procedure GridMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
   private
     { Private êÈåæ }
@@ -46,11 +43,6 @@ type
     FFreshnessType: Integer;
     FIconType: Integer;
 
-    FPrevMouseX: Integer;
-    FPrevMouseY: Integer;
-    FPrevMouseTick: DWORD;
-    FHintShow: Boolean;
-
     procedure AddBSList(D : TBSData);
     procedure DeleteFromBSList(i : integer);
     function GetFontSize(): Integer;
@@ -60,8 +52,8 @@ type
     procedure Cleanup(D: TBSData);
     procedure SetFreshnessType(v: Integer);
     procedure SetIconType(v: Integer);
-    function CalcRemainTime(T: TDateTime): Integer;
-    function CalcElapsedTime(T: TDateTime): Integer;
+    function CalcRemainTime(T1, T2: TDateTime): Integer;
+    function CalcElapsedTime(T1, T2: TDateTime): Integer;
   public
     { Public êÈåæ }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -99,7 +91,6 @@ begin
    Caption := BandString[b];
    FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
    IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
-   FHintShow := False;
 end;
 
 procedure TBandScope2.CreateParams(var Params: TCreateParams);
@@ -504,15 +495,14 @@ begin
          Font.Style := [fsBold];
          Font.Color := clBlack;
          n := -1;
-         sec := 0;
       end
       else begin
          // 0,1,2ÇÕécÇËéûä‘ÅA3ÇÕåoâﬂéûä‘
          if FFreshnessType = 3 then begin
-            sec := CalcElapsedTime(D.Time);
+            sec := CalcElapsedTime(D.Time, Now);
          end
          else begin
-            sec := CalcRemainTime(D.Time);
+            sec := CalcRemainTime(D.Time, Now);
          end;
 
          if sec < FFreshnessThreshold[0] then begin
@@ -593,19 +583,6 @@ begin
    end;
 end;
 
-procedure TBandScope2.GridMouseEnter(Sender: TObject);
-begin
-   FPrevMouseX := -1;
-   FPrevMouseY := -1;
-   FPrevMouseTick := GetTickCount();
-end;
-
-procedure TBandScope2.GridMouseLeave(Sender: TObject);
-begin
-   BalloonHint1.HideHint();
-   FHintShow := False;
-end;
-
 procedure TBandScope2.GridMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 var
    pt: TPoint;
@@ -614,72 +591,48 @@ var
    strText: string;
    remain: Integer;
    elapsed: Integer;
+   T2: TDateTime;
 begin
-//   OutputDebugString(PChar('----Mouse Move----(' + IntToStr(FPrevMouseTick) + ')'));
-//   Sleep(0);
-   if (FPrevMouseX = X) and (FPrevMouseY = Y) then begin
-      if (GetTickCount() - FPrevMouseTick) > 200 then begin
-//         Application.ProcessMessages();
-         if FHintShow = True then begin
-//            OutputDebugString(PChar('---- already showed ----'));
-            Exit;
-         end;
+   pt.X := X;
+   pt.Y := Y;
+   pt := Grid.ClientToScreen(pt);
 
-         // Fire
-         OutputDebugString(PChar('**** Fire ToolTip!!! *****'));
-
-         GetCursorPos(pt);
-         pt.X := X;
-         pt.Y := Y;
-         pt := ClientToScreen(pt);
-
-         Grid.MouseToCell(X, Y, C, R);
-         if (C = -1) or (R = -1) then begin
-            Application.CancelHint();
-            BalloonHint1.HideHint();
-            Grid.Hint := '';
-            Exit;
-         end;
-         D := TBSData(Grid.Objects[C, R]);
-         if D = nil then begin
-//            OutputDebugString(PChar('---- D is nil ----'));
-            Application.CancelHint();
-            BalloonHint1.HideHint();
-            Grid.Hint := '';
-            Exit;
-         end;
-
-         remain := CalcRemainTime(D.Time);
-         elapsed := CalcElapsedTime(D.Time);
-
-         strText := //D.Call + '|' +
-                    'Spoted at ' + FormatDateTime('hh:mm:ss', D.Time) + #13#10 +
-                    IntToStr(remain) + ' seconds to left' + #13#10 +
-                    IntToStr(elapsed) + ' seconds elapsed' + #13#10;
-
-//         if Grid.Hint <> strText then begin
-//            BalloonHint1.HideHint();
-            Application.CancelHint();
-            Grid.Hint := strText;
-//            Application.ActivateHint(Mouse.CursorPos)
-//         end;
-
-         BalloonHint1.Title := D.Call;
-         BalloonHint1.Description := strText;
-         BalloonHint1.ShowHint(pt);
-         FHintShow := True;
-//         Application.ProcessMessages();
-      end;
-   end
-   else begin
-      FPrevMouseX := X;
-      FPrevMouseY := Y;
+   Grid.MouseToCell(X, Y, C, R);
+   if (C = -1) or (R = -1) then begin
       Application.CancelHint();
       Grid.Hint := '';
-      BalloonHint1.HideHint();
-      FHintShow := False;
-      FPrevMouseTick := GetTickCount();
+      Exit;
    end;
+
+   D := TBSData(Grid.Objects[C, R]);
+   if D = nil then begin
+      Application.CancelHint();
+      Grid.Hint := '';
+      Exit;
+   end;
+
+   T2 := Now;
+   remain := CalcRemainTime(D.Time, T2);
+   elapsed := CalcElapsedTime(D.Time, T2);
+
+   strText := D.Call + #13#10 +
+              'Spoted at ' + FormatDateTime('hh:mm:ss', D.Time) + #13#10;
+   if remain > 60 then begin
+      strText := strText + IntToStr(Trunc(remain / 60)) + ' minutes to left' + #13#10;
+   end
+   else begin
+      strText := strText + IntToStr(remain) + ' seconds to left' + #13#10;
+   end;
+
+   if elapsed > 60 then begin
+      strText := strText + IntToStr(Trunc(elapsed / 60)) + ' minutes elapsed';
+   end
+   else begin
+      strText := strText + IntToStr(elapsed) + ' seconds elapsed';
+   end;
+
+   Grid.Hint := strText;
+   Application.ActivateHint(pt);
 end;
 
 function TBandScope2.GetFontSize(): Integer;
@@ -746,11 +699,11 @@ begin
       end;
 
       3: begin
-         FFreshnessThreshold[0] := 299;
-         FFreshnessThreshold[1] := 5 * 60;
-         FFreshnessThreshold[2] := 10 * 60;
-         FFreshnessThreshold[3] := 30 * 60;
-         FFreshnessThreshold[4] := 0;  // unused
+         FFreshnessThreshold[0] := 299;            // [0]
+         FFreshnessThreshold[1] := 10 * 60;        // [5]
+         FFreshnessThreshold[2] := 20 * 60;        // [10]
+         FFreshnessThreshold[3] := 30 * 60;        // [20]
+         FFreshnessThreshold[4] := 0;              // unused
       end;
 
       else begin
@@ -789,22 +742,22 @@ begin
    bmp.Free();
 end;
 
-function TBandScope2.CalcRemainTime(T: TDateTime): Integer;
+function TBandScope2.CalcRemainTime(T1, T2: TDateTime): Integer;
 var
    ExpireTime: TDateTime;
 begin
-   ExpireTime := IncMinute(T, dmZlogGlobal.Settings._bsexpire);
+   ExpireTime := IncMinute(T1, dmZlogGlobal.Settings._bsexpire);
    if ExpireTime > Now then begin
-      Result := Trunc(SecondSpan(ExpireTime, Now));
+      Result := Trunc(SecondSpan(ExpireTime, T2));
    end
    else begin
       Result := 0;
    end;
 end;
 
-function TBandScope2.CalcElapsedTime(T: TDateTime): Integer;
+function TBandScope2.CalcElapsedTime(T1, T2: TDateTime): Integer;
 begin
-   Result := Trunc(SecondSpan(Now, T));
+   Result := Trunc(SecondSpan(T2, T1));
 end;
 
 initialization
