@@ -352,19 +352,11 @@ type
     buttonBSBack7: TButton;
     checkBSBold7: TCheckBox;
     buttonBSReset7: TButton;
-    groupBSEvaluate: TGroupBox;
-    GroupBox14: TGroupBox;
-    radioIcon1: TRadioButton;
-    GroupBox15: TGroupBox;
+    groupSpotFreshness: TGroupBox;
     radioFreshness1: TRadioButton;
     radioFreshness2: TRadioButton;
     radioFreshness3: TRadioButton;
-    radioIcon2: TRadioButton;
-    radioIcon3: TRadioButton;
-    radioIcon4: TRadioButton;
-    radioIcon5: TRadioButton;
     radioFreshness4: TRadioButton;
-    radioIcon6: TRadioButton;
     editMessage9: TEdit;
     editMessage10: TEdit;
     Label70: TLabel;
@@ -725,42 +717,26 @@ begin
          Settings._bandscopecolor[i].FBold      := FBSBold[i].Checked;
       end;
 
+      // Spot‘N“x•\Ž¦
       if radioFreshness1.Checked = True then begin
-         Settings._bandscope_freshness_mode := 0;
-      end
-      else if radioFreshness2.Checked = True then begin
-         Settings._bandscope_freshness_mode := 1;
-      end
-      else if radioFreshness3.Checked = True then begin
-         Settings._bandscope_freshness_mode := 2;
-      end
-      else if radioFreshness4.Checked = True then begin
-         Settings._bandscope_freshness_mode := 3;
-      end
-      else begin
-         Settings._bandscope_freshness_mode := 0;
-      end;
-
-      if radioIcon1.Checked = True then begin
-         Settings._bandscope_freshness_icon := 0;
-      end
-      else if radioIcon2.Checked = True then begin
-         Settings._bandscope_freshness_icon := 1;
-      end
-      else if radioIcon3.Checked = True then begin
+         Settings._bandscope_freshness_mode := 0;           // Remain time1
          Settings._bandscope_freshness_icon := 2;
       end
-      else if radioIcon4.Checked = True then begin
+      else if radioFreshness2.Checked = True then begin
+         Settings._bandscope_freshness_mode := 1;           // Remain time2
          Settings._bandscope_freshness_icon := 3;
       end
-      else if radioIcon5.Checked = True then begin
-         Settings._bandscope_freshness_icon := 4;
+      else if radioFreshness3.Checked = True then begin
+         Settings._bandscope_freshness_mode := 2;           // Remain time3
+         Settings._bandscope_freshness_icon := 2;
       end
-      else if radioIcon6.Checked = True then begin
+      else if radioFreshness4.Checked = True then begin
+         Settings._bandscope_freshness_mode := 3;           // Elapsed time
          Settings._bandscope_freshness_icon := 5;
       end
       else begin
-         Settings._bandscope_freshness_icon := 0;
+         Settings._bandscope_freshness_mode := 0;
+         Settings._bandscope_freshness_icon := 2;
       end;
 
       // Quick Memo
@@ -1052,22 +1028,13 @@ begin
          FBSBold[i].Checked     := Settings._bandscopecolor[i].FBold;
       end;
 
+      // Spot‘N“x•\Ž¦
       case Settings._bandscope_freshness_mode of
          0: radioFreshness1.Checked := True;
          1: radioFreshness2.Checked := True;
          2: radioFreshness3.Checked := True;
          3: radioFreshness4.Checked := True;
          else radioFreshness1.Checked := True;
-      end;
-
-      case Settings._bandscope_freshness_icon of
-         0: radioIcon1.Checked := True;
-         1: radioIcon2.Checked := True;
-         2: radioIcon3.Checked := True;
-         3: radioIcon4.Checked := True;
-         4: radioIcon5.Checked := True;
-         5: radioIcon6.Checked := True;
-         else radioIcon1.Checked := True;
       end;
 
       // Quick Memo

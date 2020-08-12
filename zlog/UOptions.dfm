@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 325
-    ActivePage = tabsheetCategories
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -828,58 +828,58 @@ object formOptions: TformOptions
         object Label1: TLabel
           Left = 8
           Top = 35
-          Width = 12
+          Width = 13
           Height = 13
-          Caption = 'F1'
+          Caption = '#1'
         end
         object Label2: TLabel
           Left = 8
           Top = 53
-          Width = 12
+          Width = 13
           Height = 13
-          Caption = 'F2'
+          Caption = '#2'
         end
         object Label3: TLabel
           Left = 8
           Top = 71
-          Width = 12
+          Width = 13
           Height = 13
-          Caption = 'F3'
+          Caption = '#3'
         end
         object Label4: TLabel
           Left = 8
           Top = 89
-          Width = 12
+          Width = 13
           Height = 13
-          Caption = 'F4'
+          Caption = '#4'
         end
         object Label5: TLabel
           Left = 8
           Top = 107
-          Width = 12
+          Width = 13
           Height = 13
-          Caption = 'F5'
+          Caption = '#5'
         end
         object Label6: TLabel
           Left = 8
           Top = 125
-          Width = 12
+          Width = 13
           Height = 13
-          Caption = 'F6'
+          Caption = '#6'
         end
         object Label7: TLabel
           Left = 8
           Top = 143
-          Width = 12
+          Width = 13
           Height = 13
-          Caption = 'F7'
+          Caption = '#7'
         end
         object Label8: TLabel
           Left = 8
           Top = 161
-          Width = 12
+          Width = 13
           Height = 13
-          Caption = 'F8'
+          Caption = '#8'
         end
         object Label9: TLabel
           Left = 8
@@ -898,16 +898,16 @@ object formOptions: TformOptions
         object Label70: TLabel
           Left = 8
           Top = 179
-          Width = 12
+          Width = 13
           Height = 13
-          Caption = 'F9'
+          Caption = '#9'
         end
         object Label71: TLabel
           Left = 8
           Top = 197
-          Width = 18
+          Width = 19
           Height = 13
-          Caption = 'F10'
+          Caption = '#10'
         end
         object editMessage2: TEdit
           Tag = 2
@@ -3403,114 +3403,44 @@ object formOptions: TformOptions
           OnClick = buttonBSResetClick
         end
       end
-      object groupBSEvaluate: TGroupBox
+      object groupSpotFreshness: TGroupBox
         Left = 11
         Top = 127
         Width = 326
-        Height = 154
-        Caption = #35413#20385#29992
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
+        Height = 121
+        Caption = 'Spot Freshness'
         TabOrder = 1
-        object GroupBox14: TGroupBox
-          Left = 133
-          Top = 16
-          Width = 141
-          Height = 121
-          Caption = #12450#12452#12467#12531
-          TabOrder = 0
-          object radioIcon1: TRadioButton
-            Left = 16
-            Top = 24
-            Width = 52
-            Height = 17
-            Caption = #12496#12540#65297
-            TabOrder = 0
-          end
-          object radioIcon2: TRadioButton
-            Left = 16
-            Top = 47
-            Width = 52
-            Height = 17
-            Caption = 'ANT'
-            TabOrder = 1
-          end
-          object radioIcon3: TRadioButton
-            Left = 16
-            Top = 70
-            Width = 41
-            Height = 17
-            Caption = #26178#35336
-            TabOrder = 2
-          end
-          object radioIcon4: TRadioButton
-            Left = 16
-            Top = 93
-            Width = 41
-            Height = 17
-            Caption = #25968#20516
-            TabOrder = 3
-          end
-          object radioIcon5: TRadioButton
-            Left = 74
-            Top = 24
-            Width = 55
-            Height = 17
-            Caption = #12496#12540#65298
-            TabOrder = 4
-          end
-          object radioIcon6: TRadioButton
-            Left = 74
-            Top = 47
-            Width = 55
-            Height = 17
-            Caption = #25968#20516#65298
-            TabOrder = 5
-          end
-        end
-        object GroupBox15: TGroupBox
+        object radioFreshness1: TRadioButton
           Left = 16
-          Top = 16
-          Width = 97
-          Height = 121
-          Caption = #39854#24230#34920#31034
+          Top = 24
+          Width = 197
+          Height = 17
+          Caption = 'Remain time1 (1/2,1/4,1/8,1/16 min.)'
+          TabOrder = 0
+        end
+        object radioFreshness2: TRadioButton
+          Left = 16
+          Top = 47
+          Width = 169
+          Height = 17
+          Caption = 'Remain time2 (5,10,20,30 min.)'
           TabOrder = 1
-          object radioFreshness1: TRadioButton
-            Left = 16
-            Top = 24
-            Width = 65
-            Height = 17
-            Caption = #21322#20998
-            TabOrder = 0
-          end
-          object radioFreshness2: TRadioButton
-            Left = 16
-            Top = 47
-            Width = 65
-            Height = 17
-            Caption = #22266#23450
-            TabOrder = 1
-          end
-          object radioFreshness3: TRadioButton
-            Left = 16
-            Top = 70
-            Width = 65
-            Height = 17
-            Caption = #22343#31561
-            TabOrder = 2
-          end
-          object radioFreshness4: TRadioButton
-            Left = 16
-            Top = 93
-            Width = 65
-            Height = 17
-            Caption = #32076#36942#26178#38291
-            TabOrder = 3
-          end
+        end
+        object radioFreshness3: TRadioButton
+          Left = 16
+          Top = 70
+          Width = 121
+          Height = 17
+          Caption = 'Remain time3 (5 divs.)'
+          TabOrder = 2
+        end
+        object radioFreshness4: TRadioButton
+          Left = 16
+          Top = 93
+          Width = 169
+          Height = 17
+          Caption = 'Elapsed time (5,10,20,30 min.)'
+          TabOrder = 3
         end
       end
     end
