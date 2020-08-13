@@ -177,7 +177,7 @@ type
     procedure SetBandMask(bandmask: Byte);
   public
     { Public êÈåæ }
-    procedure InitializeBGK(msec : Integer); {Initializes BGK. msec is interval}
+    procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
     procedure CloseBGK; {Closes BGK}
 
     function PTTIsOn : Boolean;
@@ -285,10 +285,10 @@ begin
    FSpaceFactor := 100; {space length factor in %}
    FEISpaceFactor := 100; {space length factor after E and I}
 
-   FMonitorThread := TKeyerMonitorThread.Create(Self);
+   FMonitorThread := nil;
    FOnCallsignSentProc := nil;
 
-   FPaddleThread := TKeyerPaddleThread.Create(Self);
+   FPaddleThread := nil;
    FEndOfWordCounter := 0;
 
    FKeyingSignalReverse := False;
@@ -1460,7 +1460,14 @@ begin
       FCodeTable[Ord('{')][n] := $14;
    end;
 
+   if FMonitorThread = nil then begin
+      FMonitorThread := TKeyerMonitorThread.Create(Self);
+   end;
    FMonitorThread.Start();
+
+   if FPaddleThread = nil then begin
+      FPaddleThread := TKeyerPaddleThread.Create(Self);
+   end;
    FPaddleThread.Start();
 
    FInitialized := True;
@@ -1472,10 +1479,14 @@ begin
 
    if Assigned(FMonitorThread) then begin
       FMonitorThread.Terminate();
+      FMonitorThread.Free();
+      FMonitorThread := nil;
    end;
 
    if Assigned(FPaddleThread) then begin
       FPaddleThread.Terminate();
+      FPaddleThread.Free();
+      FPaddleThread := nil;
    end;
 
    if FInitialized = False then begin
@@ -1833,12 +1844,18 @@ end;
 
 procedure TKeyerMonitorThread.Execute;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** begin - TKeyerMonitorThread.Execute - ****'));
+   {$ENDIF}
    repeat
       SleepEx(2, False);
       if FKeyer.CallsignSent then begin
          Synchronize(DotheJob);
       end;
    until Terminated;
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** end - TKeyerMonitorThread.Execute - ****'));
+   {$ENDIF}
 end;
 
 { TKeyerPaddleThread }
@@ -1851,6 +1868,9 @@ end;
 
 procedure TKeyerPaddleThread.Execute;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** begin - TKeyerPaddleThread.Execute - ****'));
+   {$ENDIF}
    if FKeyer.USBIF4CW_Detected = True then begin
       FWaitMS := 1;
    end
@@ -1864,6 +1884,9 @@ begin
       FKeyer.PaddleProcessUSB;
 
    until Terminated;
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** end - TKeyerPaddleThread.Execute - ****'));
+   {$ENDIF}
 end;
 
 end.
