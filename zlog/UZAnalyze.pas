@@ -61,6 +61,7 @@ type
     procedure CreateParams(var Params: TCreateParams); override;
   private
     { Private 宣言 }
+    FStartHour: Integer;
     FCountData: array[1..25] of array[b19..TBand(17)] of TQsoCount;
     FCountData2: array[1..25] of array[b19..TBand(17)] of TQsoCount2;
     procedure ShowAll(sl: TStrings);
@@ -73,6 +74,7 @@ type
     procedure ShowZAA(sl: TStrings);
     procedure ShowZAA2(sl: TStrings; b: TBand);
     procedure ShowZAA_band(sl: TStrings; b: TBand; nLastHour: Integer);
+    function HourText(hh: Integer): string;
   public
     { Public 宣言 }
   end;
@@ -213,6 +215,7 @@ begin
    base_dt := Log.List[1].Time;
 
    offset_hour := HourOf(base_dt) - 1;
+   FStartHour := HourOf(base_dt);
 
    for i := 1 to Log.Count - 1 do begin
       qso := Log.List[i];
@@ -342,12 +345,20 @@ var
    b: TBand;
    t: Integer;
    strText: string;
+   i: Integer;
 begin
    sl.Clear();
 
    sl.Add('＜タイムチャート＞');
    sl.Add('');
-   sl.Add('    | 21 22 23 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20|合計');
+
+   strText := '    |';
+   for i := 1 to 24 do begin
+      strText := strText + ' ' + HourText(i);
+   end;
+   strText := strText + '|合計';
+
+   sl.Add(strText);
    sl.Add('----+------------------------------------------------------------------------+----');
 
    // 明細行
@@ -401,7 +412,6 @@ end;
 procedure TZAnalyze.ShowZAF(sl: TStrings);
 var
    b: TBand;
-   t: Integer;
    strText: string;
    i: Integer;
    cumulative_count: array[b19..TBand(17)] of Integer;
@@ -483,11 +493,7 @@ begin
       strText := strText + '      ' + RightStr('    ' + IntToStr(FCountData[i][TBand(16)].FQso), 4);
 
       // 見出し
-      t := 20 + i;
-      if t >= 24 then begin
-         t := t - 24;
-      end;
-      strText := ' [' + RightStr('00' + IntToStr(t), 2) + ']' + Copy(strText, 5);
+      strText := ' [' + HourText(i) + ']' + Copy(strText, 5);
 
       sl.Add(strText);
    end;
@@ -560,11 +566,7 @@ begin
       strText := strText + '      ' + RightStr('    ' + IntToStr(cumulative_count[TBand(16)]), 4);
 
       // 見出し
-      t := 20 + i;
-      if t >= 24 then begin
-         t := t - 24;
-      end;
-      strText := ' [' + RightStr('00' + IntToStr(t), 2) + ']' + Copy(strText, 5);
+      strText := ' [' + HourText(i) + ']' + Copy(strText, 5);
 
       sl.Add(strText);
    end;
@@ -623,11 +625,7 @@ begin
       end;
 
       // 見出し
-      t := 20 + i;
-      if t >= 24 then begin
-         t := t - 24;
-      end;
-      strText := ' [' + RightStr('00' + IntToStr(t), 2) + ']' + Copy(strText, 5);
+      strText := ' [' + HourText(i) + ']' + Copy(strText, 5);
 
       sl.Add(strText);
    end;
@@ -729,7 +727,6 @@ end;
 procedure TZAnalyze.ShowZAA_band(sl: TStrings; b: TBand; nLastHour: Integer);
 var
    i: Integer;
-   t: Integer;
    strText: string;
    r: Integer;
 
@@ -759,11 +756,7 @@ begin
       end;
 
       // 見出し
-      t := 20 + i;
-      if t >= 24 then begin
-         t := t - 24;
-      end;
-      strText := ' [' + RightStr('00' + IntToStr(t), 2) + ']';
+      strText := ' [' + HourText(i) + ']';
 
       r := r + FCountData2[i][b].FQso[11];
 
@@ -799,6 +792,18 @@ begin
    sl.Add('');
    sl.Add('');
    sl.Add('');
+end;
+
+function TZAnalyze.HourText(hh: Integer): string;
+var
+   t: Integer;
+begin
+   t := FStartHour + hh - 1;
+   if t >= 24 then begin
+      t := t - 24;
+   end;
+
+   Result := RightStr('00' + IntToStr(t), 2);
 end;
 
 end.
