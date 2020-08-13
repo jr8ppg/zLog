@@ -1053,6 +1053,9 @@ begin
       tabsheetPath.TabVisible := True;
       tabsheetMisc.TabVisible := True;
       tabsheetQuickQSY.TabVisible := True;
+      tabsheetBandScope1.TabVisible := True;
+      tabsheetBandScope2.TabVisible := True;
+      tabsheetQuickMemo.TabVisible := True;
    end
    else begin
       PageControl.ActivePage := tabsheetCW;
@@ -1066,6 +1069,9 @@ begin
       tabsheetPath.TabVisible := False;
       tabsheetMisc.TabVisible := False;
       tabsheetQuickQSY.TabVisible := False;
+      tabsheetBandScope1.TabVisible := False;
+      tabsheetBandScope2.TabVisible := False;
+      tabsheetQuickMemo.TabVisible := False;
 
       case FCWEditMode of
          1: editMessage1.SetFocus;
