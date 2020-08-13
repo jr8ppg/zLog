@@ -8,7 +8,7 @@ uses
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogSpc;
 
 type
-  TSpotSource = ( ssSelf = 0, ssCluster, ssZServer );
+  TSpotSource = ( ssSelf = 0, ssCluster, ssSelfFromZServer, ssClusterFromZServer );
 
   TBaseSpot = class
     Time : TDateTime; // moved from TBSdata 2.6e
@@ -25,7 +25,6 @@ type
     SpotSource: TSpotSource;
     CQ: Boolean;
     NewJaMulti: Boolean;
-    SelfSpot: Boolean;
     constructor Create; virtual;
     function FreqKHzStr : string;
     function NewMulti : boolean; // newcty or newzone
@@ -87,7 +86,6 @@ begin
    SpotSource := ssSelf;
    CQ := False;
    NewJaMulti := False;
-   SelfSpot := False;
 end;
 
 constructor TSpot.Create;

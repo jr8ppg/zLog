@@ -1781,8 +1781,6 @@ begin
    end;
 
    PointEdit.Text := CurrentQSO.PointStr;
-
-   FBandScopeEx[CurrentQSO.Band].SetMode(CurrentQSO.mode);
 end;
 
 procedure TContest.ChangeBand(Up: Boolean);
@@ -3719,7 +3717,6 @@ begin
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
-      FBandScopeEx[b].SetMode(mCW);
    end;
 
    FNPlusOneThread := nil;
@@ -5119,7 +5116,7 @@ begin
          if dmZlogGlobal.Settings._autobandmap then begin
             j := RigControl.Rig.CurrentFreqHz;
             if j > 0 then begin
-               FBandScopeEx[CurrentQSO.Band].CreateBSData(CurrentQSO, j);
+               FBandScopeEx[CurrentQSO.Band].AddSelfSpot(CurrentQSO, j);
             end;
          end;
       end;
@@ -6949,7 +6946,6 @@ begin
 
       UpdateBand(CurrentQSO.Band);
       UpdateMode(CurrentQSO.mode);
-      FBandScopeEx[CurrentQSO.Band].SetMode(CurrentQSO.mode);
 
       MyContest.ScoreForm.UpdateData();
       MyContest.MultiForm.UpdateData();
@@ -7501,7 +7497,7 @@ var
       end;
 
       if E > 1000 then begin
-         FBandScopeEx[CurrentQSO.Band].CreateBSData(CurrentQSO, round(E * 1000));
+         FBandScopeEx[CurrentQSO.Band].AddSelfSpot(CurrentQSO, round(E * 1000));
       end;
 
       Result := True;
@@ -7510,7 +7506,7 @@ begin
    if RigControl.Rig <> nil then begin
       nFreq := RigControl.Rig.CurrentFreqHz;
       if nFreq > 0 then begin
-         FBandScopeEx[CurrentQSO.Band].CreateBSData(CurrentQSO, nFreq);
+         FBandScopeEx[CurrentQSO.Band].AddSelfSpot(CurrentQSO, nFreq);
       end
       else begin
          if InputFreq() = False then begin

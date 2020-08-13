@@ -423,7 +423,7 @@ begin
       if pos('BSDATA ', temp) = 1 then begin
          temp := copy(temp, 8, 255);
          for b := b19 to b50 do begin
-            MainForm.BandScopeEx[b].ProcessBSDataFromNetwork(temp);
+            MainForm.BandScopeEx[b].AddSelfSpotFromNetwork(temp);
          end;
       end;
 

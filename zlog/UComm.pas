@@ -310,7 +310,7 @@ begin
          MainForm.BandMenu.Items[ord(B)].Enabled then begin
 
          // ÉfÅ[É^î≠ê∂åπÇÕZ-Server
-         Sp.SpotSource := ssZServer;
+         Sp.SpotSource := ssClusterFromZServer;
 
          ProcessSpot(Sp);
       end
@@ -326,7 +326,6 @@ end;
 procedure TCommForm.ProcessSpot(Sp : TSpot);
 var
    i : integer;
-   D : TBSData;
    S : TSpot;
    dupe, _deleted : boolean;
    Expire : double;
@@ -376,22 +375,8 @@ begin
    ListBox.AddItem(Sp.ClusterSummary, Sp);
    ListBox.ShowLast();
 
-   D := TBSData.Create;
-   D.Call := Sp.Call;
-   D.FreqHz := Sp.FreqHz;
-   D.CtyIndex := Sp.CtyIndex;
-   D.Zone := Sp.Zone;
-   D.Band := Sp.Band;
-   D.NewCty := Sp.NewCty;
-   D.NewZone := Sp.NewZone;
-   D.Worked := Sp.Worked;
-   D.SpotSource := Sp.SpotSource;
-   D.CQ := Sp.CQ;
-   D.Number := Sp.Number;
-   D.NewJaMulti := Sp.NewJaMulti;
-   D.SelfSpot := Sp.SelfSpot;
-
-   MainForm.BandScopeEx[D.Band].AddAndDisplay(D);
+   // BandScopeÇ…ìoò^
+   MainForm.BandScopeEx[Sp.Band].AddClusterSpot(Sp);
 end;
 
 procedure TCommForm.TransmitSpot(S : string); // local or via network

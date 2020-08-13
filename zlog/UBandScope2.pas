@@ -35,7 +35,7 @@ type
 //    FMaxFreq: Integer; // in Hz
 
     FCurrBand : TBand;
-    FCurrMode : TMode;
+//    FCurrMode : TMode;
 
     FBSList: TBSList;
 
@@ -44,6 +44,7 @@ type
     FIconType: Integer;
 
     procedure AddBSList(D : TBSData);
+    procedure AddAndDisplay(D : TBSData);
     procedure DeleteFromBSList(i : integer);
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
@@ -57,12 +58,11 @@ type
   public
     { Public 宣言 }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
-    procedure CreateBSData(aQSO : TQSO; Hz : LongInt);
-    procedure AddAndDisplay(D : TBSData);
-    procedure SetMode(M: TMode);
+    procedure AddSelfSpot(aQSO : TQSO; Hz : LongInt);
+    procedure AddSelfSpotFromNetwork(BSText : string);
+    procedure AddClusterSpot(sp: TSpot);
     procedure RewriteBandScope;
     procedure MarkCurrentFreq(Hz : integer);
-    procedure ProcessBSDataFromNetwork(BSText : string);
     procedure NotifyWorked(aQSO: TQSO);
 
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -129,7 +129,8 @@ begin
    AddBSList(D);
 end;
 
-procedure TBandScope2.CreateBSData(aQSO: TQSO; Hz: LongInt);
+// Self Spot
+procedure TBandScope2.AddSelfSpot(aQSO: TQSO; Hz: LongInt);
 var
    D: TBSData;
 begin
@@ -140,29 +141,55 @@ begin
    D.Call := aQSO.Callsign;
    D.Number := aQSO.NrRcvd;
    D.Time := Now;
+   D.SpotSource := ssSelf;
 
    // 交信済みチェック
    SpotCheckWorked(D);
 
-//   Main.MyContest.MultiForm.ProcessSpotData(TBaseSpot(D));
-
    AddAndDisplay(D);
-   MainForm.ZLinkForm.SendBandScopeData(D.InText);
+
    // Send spot data to other radios!
+   MainForm.ZLinkForm.SendBandScopeData(D.InText);
 end;
 
-procedure TBandScope2.SetMode(M: TMode);
+// 他のPCで登録したのSpot via Z-Server
+procedure TBandScope2.AddSelfSpotFromNetwork(BSText: string);
 var
-   R: Integer;
+   D: TBSData;
 begin
-   FCurrMode := M;
+   D := TBSData.Create;
+   D.FromText(BSText);
+   D.SpotSource := ssSelfFromZServer;
 
-   for R := 0 to Grid.RowCount - 1 do begin
-      Grid.Cells[0, R] := '';
-      Grid.Objects[0, R] := nil;
+   if D.Band <> FCurrBand then begin
+      Exit;
    end;
 
-   RewriteBandScope;
+   // 交信済みチェック
+   SpotCheckWorked(D);
+
+   AddAndDisplay(D);
+end;
+
+// SpotSourceはssCluster 又は ssClusterFromZServer
+procedure TBandScope2.AddClusterSpot(sp: TSpot);
+var
+   D: TBSData;
+begin
+   D := TBSData.Create;
+   D.Call := Sp.Call;
+   D.FreqHz := Sp.FreqHz;
+   D.CtyIndex := Sp.CtyIndex;
+   D.Zone := Sp.Zone;
+   D.Band := Sp.Band;
+   D.NewCty := Sp.NewCty;
+   D.NewZone := Sp.NewZone;
+   D.Worked := Sp.Worked;
+   D.SpotSource := Sp.SpotSource;
+   D.CQ := Sp.CQ;
+   D.Number := Sp.Number;
+   D.NewJaMulti := Sp.NewJaMulti;
+   AddAndDisplay(D);
 end;
 
 procedure TBandScope2.Timer1Timer(Sender: TObject);
@@ -380,25 +407,6 @@ begin
    RewriteBandScope;
 end;
 
-procedure TBandScope2.ProcessBSDataFromNetwork(BSText: string);
-var
-   D: TBSData;
-begin
-   D := TBSData.Create;
-   D.FromText(BSText);
-
-   if D.Band <> FCurrBand then begin
-      Exit;
-   end;
-
-   // 交信済みチェック
-   SpotCheckWorked(D);
-
-//   Main.MyContest.MultiForm.ProcessSpotData(TBaseSpot(D));
-
-   AddAndDisplay(D);
-end;
-
 procedure TBandScope2.Deleteallworkedstations1Click(Sender: TObject);
 var
    D: TBSData;
@@ -541,7 +549,7 @@ begin
 
             // 背景色はSpotSource別にする
             case D.SpotSource of
-               ssSelf: begin
+               ssSelf, ssSelfFromZserver: begin
                   Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
                end;
 
@@ -549,8 +557,12 @@ begin
                   Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
                end;
 
-               ssZServer: begin
+               ssClusterFromZServer: begin
                   Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
+               end;
+
+               else begin
+                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
                end;
             end;
          end;
@@ -563,7 +575,7 @@ begin
          end;
 
          {$IFDEF DEBUG}
-         strText := strText + ' (' + IntToStr(RemainTime) + ')';
+         strText := strText + ' (' + IntToStr(sec) + ')';
          {$ENDIF}
       end;
 
