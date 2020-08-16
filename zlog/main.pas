@@ -4504,6 +4504,8 @@ begin
    CWF6.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 6);
    CWF7.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 7);
    CWF8.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 8);
+   CWF9.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 9);
+   CWF10.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 10);
    CWF1.FaceColor := j;
    CWF2.FaceColor := j;
    CWF3.FaceColor := j;
@@ -4512,6 +4514,8 @@ begin
    CWF6.FaceColor := j;
    CWF7.FaceColor := j;
    CWF8.FaceColor := j;
+   CWF9.FaceColor := j;
+   CWF10.FaceColor := j;
 end;
 
 procedure TMainForm.EditKeyPress(Sender: TObject; var Key: Char);
