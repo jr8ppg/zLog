@@ -1427,6 +1427,7 @@ var
    Q: TQSO;
    utc: TDateTime;
    offhour: Integer;
+   offsetmin: Integer;
 const
    FREQ: array[b19..b10g] of string = (
    ' 1800', ' 3500', ' 7000', '10000', '14000', '18000', '21000', '24500',
@@ -1462,11 +1463,17 @@ begin
    WriteLn(F, 'ADDRESS-STATE-PROVINCE:');
    WriteLn(F, 'ADDRESS-POSTALCODE:');
    WriteLn(F, 'ADDRESS-COUNTRY:');
-   WriteLn(F, 'OPERATORS: ');
-   WriteLn(F, 'OFFTIME: ');
+   WriteLn(F, 'OPERATORS:');
+   WriteLn(F, 'OFFTIME:');
    WriteLn(F, 'SOAPBOX:');
 
-   offhour := UTCOffset() div 60;
+   offsetmin := FQsoList[0].RSTsent;
+   if offsetmin = _USEUTC then begin
+      offhour := 0;
+   end
+   else begin
+      offhour := offsetmin div 60;
+   end;
 
    for i := 1 to FQSOList.Count - 1 do begin
       Q := FQSOList[i];
