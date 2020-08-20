@@ -878,8 +878,21 @@ begin
 
       // Voice Memory
       for i := 1 to 12 do begin
-         Settings.FSoundFiles[i] := ini.ReadString('Voice', 'F#' + IntToStr(i), '');
-         Settings.FSoundComments[i] := ini.ReadString('Voice', 'C#' + IntToStr(i), '');
+         s := ini.ReadString('Voice', 'F#' + IntToStr(i), '');
+         if s = '' then begin
+            Settings.FSoundFiles[i] := '';
+            Settings.FSoundComments[i] := '';
+         end
+         else begin
+            if FileExists(s) = True then begin
+               Settings.FSoundFiles[i] := s;
+               Settings.FSoundComments[i] := ini.ReadString('Voice', 'C#' + IntToStr(i), '');
+            end
+            else begin
+               Settings.FSoundFiles[i] := '';
+               Settings.FSoundComments[i] := 'file not found';
+            end;
+         end;
       end;
    finally
       ini.Free();
