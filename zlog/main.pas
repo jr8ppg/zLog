@@ -3856,6 +3856,7 @@ begin
       MyContest.Renew;
       WriteStatusLine('', False);
       SetWindowCaption();
+      EditScreen.RefreshScreen(False);
    end;
 end;
 
