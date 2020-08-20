@@ -1696,10 +1696,6 @@ begin
       Exit;
    end;
 
-   if FPaddlePort = 0 then begin
-      Exit;
-   end;
-
    InReport[0] := 0;
    InReport[1] := 4;
    InReport[2] := $0F;
@@ -1711,54 +1707,56 @@ begin
    InReport[8] := 0;
    FUSBIF4CW.ReadFile(InReport, FUSBIF4CW.Caps.InputReportByteLength, BR);
 
-   if (InReport[1] = 4) and (InReport[3] = 4) and (InReport[2] <> $F) then begin
-      PaddleStatus := $05 and InReport[2];
-      case mousetail - cwstrptr of
-         0: begin
-            case PaddleStatus of
-               $00: { both }
-                  case FCWSendBuf[0, mousetail - 2] of
-                     1:
-                        m_set(3);
-                     3:
-                        m_set(1);
-                  end;
-               $01: { dot }
-                  if FPaddleWaiting then
-                     m_set(mouX);
-               $04: { dash }
-                  if FPaddleWaiting then
-                     m_set(mouY);
+   if FPaddlePort = 0 then begin // paddle not use
+      if (InReport[1] = 4) and (InReport[3] = 4) and (InReport[2] <> $F) then begin
+         PaddleStatus := $05 and InReport[2];
+         case mousetail - cwstrptr of
+            0: begin
+               case PaddleStatus of
+                  $00: { both }
+                     case FCWSendBuf[0, mousetail - 2] of
+                        1:
+                           m_set(3);
+                        3:
+                           m_set(1);
+                     end;
+                  $01: { dot }
+                     if FPaddleWaiting then
+                        m_set(mouX);
+                  $04: { dash }
+                     if FPaddleWaiting then
+                        m_set(mouY);
+               end;
             end;
-         end;
 
-         1: begin
-            case PaddleStatus of
-               $00:
-                  case FCWSendBuf[0, cwstrptr - 1] of
-                     1:
-                        m_set(3);
-                     3:
-                        m_set(1);
-                  end;
-               $01:
-                  if FCWSendBuf[0, cwstrptr - 1] = mouY then
-                     m_set(mouX);
-               $04:
-                  if FCWSendBuf[0, cwstrptr - 1] = mouX then
-                     m_set(mouY);
+            1: begin
+               case PaddleStatus of
+                  $00:
+                     case FCWSendBuf[0, cwstrptr - 1] of
+                        1:
+                           m_set(3);
+                        3:
+                           m_set(1);
+                     end;
+                  $01:
+                     if FCWSendBuf[0, cwstrptr - 1] = mouY then
+                        m_set(mouX);
+                  $04:
+                     if FCWSendBuf[0, cwstrptr - 1] = mouX then
+                        m_set(mouY);
+               end;
             end;
-         end;
 
-         else begin
-            if (PaddleStatus = $01) or (PaddleStatus = $04) then begin
-               if abs(mousetail - cwstrptr) > 5 then begin
-                  FSelectedBuf := 0;
-                  cwstrptr := 1;
-                  mousetail := 1;
-                  FKeyingCounter := 1;
-                  FPaddleWaiting := True;
-                  m_set(0);
+            else begin
+               if (PaddleStatus = $01) or (PaddleStatus = $04) then begin
+                  if abs(mousetail - cwstrptr) > 5 then begin
+                     FSelectedBuf := 0;
+                     cwstrptr := 1;
+                     mousetail := 1;
+                     FKeyingCounter := 1;
+                     FPaddleWaiting := True;
+                     m_set(0);
+                  end;
                end;
             end;
          end;
