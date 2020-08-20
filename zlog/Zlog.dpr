@@ -103,7 +103,8 @@ uses
   UCwMessagePad in 'UCwMessagePad.pas' {CwMessagePad},
   UTextEditor in 'UTextEditor.pas' {TextEditor},
   USelectUserDefinedContest in 'USelectUserDefinedContest.pas' {SelectUserDefinedContest},
-  UserDefinedContest in 'UserDefinedContest.pas';
+  UserDefinedContest in 'UserDefinedContest.pas',
+  UVoiceForm in 'UVoiceForm.pas' {VoiceForm};
 
 {$R *.RES}
 

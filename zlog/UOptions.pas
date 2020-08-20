@@ -104,9 +104,9 @@ type
     vEdit5: TEdit;
     vEdit6: TEdit;
     vEdit7: TEdit;
-    vEdit9: TEdit;
+    vEdit11: TEdit;
     vEdit8: TEdit;
-    vEdit10: TEdit;
+    vEdit12: TEdit;
     vEdit1: TEdit;
     memo: TLabel;
     OpenDialog: TOpenDialog;
@@ -115,7 +115,6 @@ type
     ClusterCombo: TComboBox;
     Port: TLabel;
     buttonClusterSettings: TButton;
-    OpenDialog1: TOpenDialog;
     Label32: TLabel;
     ZLinkCombo: TComboBox;
     buttonZLinkSettings: TButton;
@@ -127,8 +126,8 @@ type
     vButton6: TButton;
     vButton7: TButton;
     vButton8: TButton;
-    vButton9: TButton;
-    vButton10: TButton;
+    vButton11: TButton;
+    vButton12: TButton;
     act24: TCheckBox;
     act18: TCheckBox;
     act10: TCheckBox;
@@ -361,6 +360,12 @@ type
     editMessage10: TEdit;
     Label70: TLabel;
     Label71: TLabel;
+    Label72: TLabel;
+    Label73: TLabel;
+    vEdit9: TEdit;
+    vEdit10: TEdit;
+    vButton9: TButton;
+    vButton10: TButton;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -400,8 +405,9 @@ type
     procedure checkBSBoldClick(Sender: TObject);
     procedure buttonBSResetClick(Sender: TObject);
   private
-    FCWEditMode: Integer;
-    TempVoiceFiles : array[1..10] of string;
+    FEditMode: Integer;
+    FEditNumber: Integer;
+    FTempVoiceFiles : array[1..12] of string;
     TempCurrentBank : integer;
     TempCWStrBank : array[1..maxbank,1..maxmaxstr] of string; // used temporarily while options window is open
 
@@ -421,11 +427,15 @@ type
 
     FQuickMemoText: array[1..5] of TEdit;
 
+    FVoiceEdit: array[1..12] of TEdit;
+    FVoiceButton: array[1..12] of TButton;
+
     procedure RenewCWStrBankDisp();
     procedure InitRigNames();
   public
     procedure RenewSettings; {Reads controls and updates Settings}
-    property CWEditMode: Integer read FCWEditMode write FCWEditMode;
+    property EditMode: Integer read FEditMode write FEditMode;
+    property EditNumber: Integer read FEditNumber write FEditNumber;
     property NeedSuperCheckLoad: Boolean read FNeedSuperCheckLoad;
   end;
 
@@ -743,6 +753,12 @@ begin
       for i := 1 to 5 do begin
          Settings.FQuickMemoText[i] := Trim(FQuickMemoText[i].Text);
       end;
+
+      // Voice Memory
+      for i := 1 to 12 do begin
+         Settings.FSoundFiles[i] := FTempVoiceFiles[i];
+         Settings.FSoundComments[i] := FVoiceEdit[i].Text;
+      end;
    end;
 end;
 
@@ -1041,13 +1057,20 @@ begin
       for i := 1 to 5 do begin
          FQuickMemoText[i].Text := Settings.FQuickMemoText[i];
       end;
+
+      // Voice Memory
+      for i := 1 to 12 do begin
+         FTempVoiceFiles[i] := Settings.FSoundFiles[i];
+         FVoiceButton[i].Caption := ExtractFileName(FTempVoiceFiles[i]);
+         FVoiceEdit[i].Text := Settings.FSoundComments[i];
+      end;
    end;
 
-   if FCWEditMode = 0 then begin
+   if FEditMode = 0 then begin   // ’Êíƒ‚[ƒh
       tabsheetPreferences.TabVisible := True;
       tabsheetCategories.TabVisible := True;
       tabsheetCW.TabVisible := True;
-      tabsheetVoice.TabVisible := False;
+      tabsheetVoice.TabVisible := True;
       tabsheetHardware.TabVisible := True;
       tabsheetRigControl.TabVisible := True;
       tabsheetPath.TabVisible := True;
@@ -1057,7 +1080,7 @@ begin
       tabsheetBandScope2.TabVisible := True;
       tabsheetQuickMemo.TabVisible := True;
    end
-   else begin
+   else if FEditMode = 1 then begin // CW
       PageControl.ActivePage := tabsheetCW;
 
       tabsheetPreferences.TabVisible := False;
@@ -1073,7 +1096,7 @@ begin
       tabsheetBandScope2.TabVisible := False;
       tabsheetQuickMemo.TabVisible := False;
 
-      case FCWEditMode of
+      case FEditNumber of
          1: editMessage1.SetFocus;
          2: editMessage2.SetFocus;
          3: editMessage3.SetFocus;
@@ -1084,6 +1107,26 @@ begin
          8: editMessage8.SetFocus;
          9: editMessage9.SetFocus;
          10: editMessage10.SetFocus;
+      end;
+   end
+   else if FEditMode = 2 then begin // Voice
+      PageControl.ActivePage := tabsheetVoice;
+
+      tabsheetPreferences.TabVisible := False;
+      tabsheetCategories.TabVisible := False;
+      tabsheetCW.TabVisible := False;
+      tabsheetVoice.TabVisible := True;
+      tabsheetHardware.TabVisible := False;
+      tabsheetRigControl.TabVisible := False;
+      tabsheetPath.TabVisible := False;
+      tabsheetMisc.TabVisible := False;
+      tabsheetQuickQSY.TabVisible := False;
+      tabsheetBandScope1.TabVisible := False;
+      tabsheetBandScope2.TabVisible := False;
+      tabsheetQuickMemo.TabVisible := False;
+
+      if FEditNumber > 0 then begin
+         FVoiceEdit[FEditNumber].SetFocus();
       end;
    end;
 
@@ -1185,6 +1228,32 @@ begin
    FQuickMemoText[4] := editQuickMemo4;
    FQuickMemoText[5] := editQuickMemo5;
 
+   // Voice Memory
+   FVoiceEdit[1] := vEdit1;
+   FVoiceEdit[2] := vEdit2;
+   FVoiceEdit[3] := vEdit3;
+   FVoiceEdit[4] := vEdit4;
+   FVoiceEdit[5] := vEdit5;
+   FVoiceEdit[6] := vEdit6;
+   FVoiceEdit[7] := vEdit7;
+   FVoiceEdit[8] := vEdit8;
+   FVoiceEdit[9] := vEdit9;
+   FVoiceEdit[10] := vEdit10;
+   FVoiceEdit[11] := vEdit11;
+   FVoiceEdit[12] := vEdit12;
+   FVoiceButton[1] := vButton1;
+   FVoiceButton[2] := vButton2;
+   FVoiceButton[3] := vButton3;
+   FVoiceButton[4] := vButton4;
+   FVoiceButton[5] := vButton5;
+   FVoiceButton[6] := vButton6;
+   FVoiceButton[7] := vButton7;
+   FVoiceButton[8] := vButton8;
+   FVoiceButton[9] := vButton9;
+   FVoiceButton[10] := vButton10;
+   FVoiceButton[11] := vButton11;
+   FVoiceButton[12] := vButton12;
+
    TempCurrentBank := 1;
 
    OpListBox.Items.Assign(dmZlogGlobal.OpList);
@@ -1193,7 +1262,8 @@ begin
 
    InitRigNames();
 
-   FCWEditMode := 0;
+   FEditMode := 0;
+   FEditNumber := 0;
 
    FNeedSuperCheckLoad := False;
 end;
@@ -1239,7 +1309,7 @@ end;
 procedure TformOptions.vButtonClick(Sender: TObject);
 begin
    if OpenDialog.Execute then begin
-      TempVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
+      FTempVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
    end;
 end;

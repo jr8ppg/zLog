@@ -205,6 +205,8 @@ type
     procedure PaddleProcessUSB;
 
     procedure SetRigFlag(i : Integer); // 0 : no rigs, 1 : rig 1, etc
+    procedure SetVoiceFlag(i : Integer); // 0 : no rigs, 1 : rig 1, etc
+
     procedure SetPTT(_on : Boolean);
     procedure SetPTTDelay(before, after : word);
     procedure SetWeight(W : word); {Sets the weight 0-100 %}
@@ -342,6 +344,20 @@ begin
             FUsbPortData := FUsbPortData and $FB;
          else
             FUsbPortData := FUsbPortData;
+      end;
+
+      Exit;
+   end;
+end;
+
+procedure TdmZLogKeyer.SetVoiceFlag(i : Integer); // 0 : no rigs, 1 : rig 1, etc
+begin
+   if FKeyingPort = tkpUSB then begin
+      if i = 1 then begin
+         FUsbPortData := FUsbPortData and $F7;
+      end
+      else begin
+         FUsbPortData := FUsbPortData or $08;
       end;
 
       Exit;

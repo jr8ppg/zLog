@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 325
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetVoice
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -762,6 +762,10 @@ object formOptions: TformOptions
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -1243,80 +1247,79 @@ object formOptions: TformOptions
     end
     object tabsheetVoice: TTabSheet
       Caption = 'Voice'
-      TabVisible = False
       object GroupBox4: TGroupBox
         Left = 8
         Top = 8
-        Width = 193
-        Height = 230
+        Width = 329
+        Height = 269
         Caption = 'Messages'
         TabOrder = 0
         object Label20: TLabel
           Left = 8
           Top = 34
-          Width = 12
+          Width = 13
           Height = 13
-          Caption = 'F1'
+          Caption = '#1'
         end
         object Label21: TLabel
           Left = 8
           Top = 52
-          Width = 12
+          Width = 13
           Height = 13
-          Caption = 'F2'
+          Caption = '#2'
         end
         object Label22: TLabel
           Left = 8
-          Top = 70
-          Width = 12
+          Top = 71
+          Width = 13
           Height = 13
-          Caption = 'F3'
+          Caption = '#3'
         end
         object Label23: TLabel
           Left = 8
-          Top = 88
-          Width = 12
+          Top = 89
+          Width = 13
           Height = 13
-          Caption = 'F4'
+          Caption = '#4'
         end
         object Label24: TLabel
           Left = 8
-          Top = 105
-          Width = 12
+          Top = 106
+          Width = 13
           Height = 13
-          Caption = 'F5'
+          Caption = '#5'
         end
         object Label25: TLabel
           Left = 8
-          Top = 123
-          Width = 12
+          Top = 124
+          Width = 13
           Height = 13
-          Caption = 'F6'
+          Caption = '#6'
         end
         object Label26: TLabel
           Left = 8
-          Top = 141
-          Width = 12
+          Top = 142
+          Width = 13
           Height = 13
-          Caption = 'F7'
+          Caption = '#7'
         end
         object Label27: TLabel
           Left = 8
-          Top = 159
-          Width = 12
+          Top = 160
+          Width = 13
           Height = 13
-          Caption = 'F8'
+          Caption = '#8'
         end
         object Label28: TLabel
           Left = 8
-          Top = 184
+          Top = 224
           Width = 21
           Height = 13
           Caption = 'CQ2'
         end
         object Label29: TLabel
           Left = 8
-          Top = 202
+          Top = 242
           Width = 21
           Height = 13
           Caption = 'CQ3'
@@ -1328,112 +1331,116 @@ object formOptions: TformOptions
           Height = 13
           Caption = 'memo'
         end
+        object Label72: TLabel
+          Left = 8
+          Top = 178
+          Width = 13
+          Height = 13
+          Caption = '#9'
+        end
+        object Label73: TLabel
+          Left = 8
+          Top = 196
+          Width = 19
+          Height = 13
+          Caption = '#10'
+        end
         object vEdit2: TEdit
           Tag = 2
           Left = 32
           Top = 50
-          Width = 70
+          Width = 150
           Height = 17
           AutoSize = False
           TabOrder = 2
-          Text = 'vEdit2'
         end
         object vEdit3: TEdit
           Tag = 3
           Left = 32
-          Top = 67
-          Width = 70
+          Top = 68
+          Width = 150
           Height = 17
           AutoSize = False
           TabOrder = 4
-          Text = 'vEdit3'
         end
         object vEdit4: TEdit
           Tag = 4
           Left = 32
-          Top = 85
-          Width = 70
+          Top = 86
+          Width = 150
           Height = 17
           AutoSize = False
           TabOrder = 6
-          Text = 'vEdit4'
         end
         object vEdit5: TEdit
           Tag = 5
           Left = 32
-          Top = 103
-          Width = 70
+          Top = 104
+          Width = 150
           Height = 17
           AutoSize = False
           TabOrder = 8
-          Text = 'vEdit5'
         end
         object vEdit6: TEdit
           Tag = 6
           Left = 32
-          Top = 121
-          Width = 70
+          Top = 122
+          Width = 150
           Height = 17
           AutoSize = False
           TabOrder = 10
-          Text = 'vEdit6'
         end
         object vEdit7: TEdit
           Tag = 7
           Left = 32
-          Top = 139
-          Width = 70
+          Top = 140
+          Width = 150
           Height = 17
           AutoSize = False
           TabOrder = 12
-          Text = 'vEdit7'
         end
-        object vEdit9: TEdit
+        object vEdit11: TEdit
           Tag = 9
           Left = 32
-          Top = 182
-          Width = 70
+          Top = 222
+          Width = 150
           Height = 17
           AutoSize = False
-          TabOrder = 16
-          Text = 'vEdit9'
+          TabOrder = 20
         end
         object vEdit8: TEdit
           Tag = 8
           Left = 32
-          Top = 157
-          Width = 70
+          Top = 158
+          Width = 150
           Height = 17
           AutoSize = False
           TabOrder = 14
-          Text = 'vEdit8'
         end
-        object vEdit10: TEdit
+        object vEdit12: TEdit
           Tag = 10
           Left = 32
-          Top = 200
-          Width = 70
+          Top = 240
+          Width = 150
           Height = 17
           AutoSize = False
-          TabOrder = 18
-          Text = 'vEdit10'
+          TabOrder = 22
         end
         object vEdit1: TEdit
           Tag = 1
           Left = 32
           Top = 32
-          Width = 70
+          Width = 150
           Height = 17
           AutoSize = False
           MaxLength = 255
           TabOrder = 0
-          Text = 'vEdit1'
         end
         object vButton1: TButton
           Tag = 1
-          Left = 104
+          Left = 200
           Top = 32
-          Width = 81
+          Width = 120
           Height = 17
           Caption = 'vButton1'
           TabOrder = 1
@@ -1441,9 +1448,9 @@ object formOptions: TformOptions
         end
         object vButton2: TButton
           Tag = 2
-          Left = 104
+          Left = 200
           Top = 50
-          Width = 81
+          Width = 120
           Height = 17
           Caption = 'Button4'
           TabOrder = 3
@@ -1451,9 +1458,9 @@ object formOptions: TformOptions
         end
         object vButton3: TButton
           Tag = 3
-          Left = 104
+          Left = 200
           Top = 68
-          Width = 81
+          Width = 120
           Height = 17
           Caption = 'Button4'
           TabOrder = 5
@@ -1461,9 +1468,9 @@ object formOptions: TformOptions
         end
         object vButton4: TButton
           Tag = 4
-          Left = 104
+          Left = 200
           Top = 86
-          Width = 81
+          Width = 120
           Height = 17
           Caption = 'Button4'
           TabOrder = 7
@@ -1471,9 +1478,9 @@ object formOptions: TformOptions
         end
         object vButton5: TButton
           Tag = 5
-          Left = 104
-          Top = 103
-          Width = 81
+          Left = 200
+          Top = 104
+          Width = 120
           Height = 17
           Caption = 'Button4'
           TabOrder = 9
@@ -1481,9 +1488,9 @@ object formOptions: TformOptions
         end
         object vButton6: TButton
           Tag = 6
-          Left = 104
-          Top = 121
-          Width = 81
+          Left = 200
+          Top = 122
+          Width = 120
           Height = 17
           Caption = 'Button4'
           TabOrder = 11
@@ -1491,9 +1498,9 @@ object formOptions: TformOptions
         end
         object vButton7: TButton
           Tag = 7
-          Left = 104
-          Top = 139
-          Width = 81
+          Left = 200
+          Top = 140
+          Width = 120
           Height = 17
           Caption = 'Button4'
           TabOrder = 13
@@ -1501,19 +1508,57 @@ object formOptions: TformOptions
         end
         object vButton8: TButton
           Tag = 8
-          Left = 104
-          Top = 157
-          Width = 81
+          Left = 200
+          Top = 158
+          Width = 120
           Height = 17
           Caption = 'Button4'
           TabOrder = 15
           OnClick = vButtonClick
         end
+        object vButton11: TButton
+          Tag = 11
+          Left = 200
+          Top = 222
+          Width = 120
+          Height = 17
+          Caption = 'Button4'
+          TabOrder = 21
+          OnClick = vButtonClick
+        end
+        object vButton12: TButton
+          Tag = 12
+          Left = 200
+          Top = 240
+          Width = 120
+          Height = 17
+          Caption = 'Button4'
+          TabOrder = 23
+          OnClick = vButtonClick
+        end
+        object vEdit9: TEdit
+          Tag = 7
+          Left = 32
+          Top = 176
+          Width = 150
+          Height = 17
+          AutoSize = False
+          TabOrder = 16
+        end
+        object vEdit10: TEdit
+          Tag = 8
+          Left = 32
+          Top = 194
+          Width = 150
+          Height = 17
+          AutoSize = False
+          TabOrder = 18
+        end
         object vButton9: TButton
           Tag = 9
-          Left = 104
-          Top = 182
-          Width = 81
+          Left = 200
+          Top = 176
+          Width = 120
           Height = 17
           Caption = 'Button4'
           TabOrder = 17
@@ -1521,9 +1566,9 @@ object formOptions: TformOptions
         end
         object vButton10: TButton
           Tag = 10
-          Left = 104
-          Top = 200
-          Width = 81
+          Left = 200
+          Top = 194
+          Width = 120
           Height = 17
           Caption = 'Button4'
           TabOrder = 19
@@ -1914,6 +1959,10 @@ object formOptions: TformOptions
     end
     object tabsheetRigControl: TTabSheet
       Caption = 'Rig control'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label45: TLabel
         Left = 8
         Top = 138
@@ -1997,6 +2046,10 @@ object formOptions: TformOptions
     end
     object tabsheetPath: TTabSheet
       Caption = 'Path'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label50: TLabel
         Left = 16
         Top = 18
@@ -2093,6 +2146,10 @@ object formOptions: TformOptions
     end
     object tabsheetMisc: TTabSheet
       Caption = 'Misc'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label47: TLabel
         Left = 125
         Top = 23
@@ -2680,6 +2737,10 @@ object formOptions: TformOptions
     object tabsheetBandScope1: TTabSheet
       Caption = 'BandScope'
       ImageIndex = 9
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox9: TGroupBox
         Left = 11
         Top = 11
@@ -3164,6 +3225,10 @@ object formOptions: TformOptions
     object tabsheetBandScope2: TTabSheet
       Caption = 'BandScope2'
       ImageIndex = 11
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox12: TGroupBox
         Left = 11
         Top = 11
@@ -3447,6 +3512,10 @@ object formOptions: TformOptions
     object tabsheetQuickMemo: TTabSheet
       Caption = 'Quick Memo'
       ImageIndex = 10
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox11: TGroupBox
         Left = 11
         Top = 11
@@ -3566,12 +3635,12 @@ object formOptions: TformOptions
     end
   end
   object OpenDialog: TOpenDialog
-    Filter = 'wav files|*.wav'
+    FileName = 'C:\Users\muto\Documents\'#12469#12454#12531#12489' '#12524#12467#12540#12487#12451#12531#12464'\'#12524#12467#12540#12487#12451#12531#12464'.m4a'
+    Filter = 
+      'sound files|*.wav;*.mp3;*.m4a|wav files|*.wav|mp3 files|*.mp3|mp' +
+      '4 files|*.m4a|all files|*.*'
+    Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     Left = 312
-    Top = 312
-  end
-  object OpenDialog1: TOpenDialog
-    Left = 280
     Top = 312
   end
   object ColorDialog1: TColorDialog

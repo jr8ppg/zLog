@@ -18,7 +18,7 @@ uses
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
-  UCwMessagePad, UNRDialog;
+  UCwMessagePad, UNRDialog, UVoiceForm;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -392,7 +392,7 @@ type
     SuperCheckButtpn: TSpeedButton;
     CWStopButton: TSpeedButton;
     CWPauseButton: TSpeedButton;
-    SpeedButton12: TSpeedButton;
+    buttonCwKeyboard: TSpeedButton;
     SpeedBar: TTrackBar;
     SpeedLabel: TLabel;
     Button1: TButton;
@@ -412,9 +412,9 @@ type
     CWF6: THemisphereButton;
     CWF7: THemisphereButton;
     CWF8: THemisphereButton;
-    HemisphereButton8: THemisphereButton;
-    HemisphereButton9: THemisphereButton;
-    HemisphereButton10: THemisphereButton;
+    CWCQ1: THemisphereButton;
+    CWCQ2: THemisphereButton;
+    CWCQ3: THemisphereButton;
     Windows1: TMenuItem;
     Help1: TMenuItem;
     menuAbout: TMenuItem;
@@ -506,7 +506,7 @@ type
     SSBToolBar: TPanel;
     VoiceStopButton: TSpeedButton;
     VoicePauseButton: TSpeedButton;
-    SpeedButton15: TSpeedButton;
+    buttonVoiceOption: TSpeedButton;
     VoicePlayButton: TSpeedButton;
     VoiceF1: THemisphereButton;
     VoiceF3: THemisphereButton;
@@ -516,9 +516,9 @@ type
     VoiceF6: THemisphereButton;
     VoiceF7: THemisphereButton;
     VoiceF8: THemisphereButton;
-    HemisphereButton1: THemisphereButton;
-    CQRepeatVoice1: THemisphereButton;
-    CQRepeatVoice2: THemisphereButton;
+    VoiceCQ1: THemisphereButton;
+    VoiceCQ2: THemisphereButton;
+    VoiceCQ3: THemisphereButton;
     Bandscope1: TMenuItem;
     mnChangeTXNr: TMenuItem;
     mnGridAddNewPX: TMenuItem;
@@ -657,6 +657,8 @@ type
     CWF10: THemisphereButton;
     VoiceF9: THemisphereButton;
     VoiceF10: THemisphereButton;
+    VoiceFMenu: TPopupMenu;
+    menuVoiceEdit: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -701,8 +703,8 @@ type
     procedure SetCQ(CQ : Boolean);
     procedure CQRepeatClick1(Sender: TObject);
     procedure CQRepeatClick2(Sender: TObject);
-    procedure SpeedButton12Click(Sender: TObject);
-    procedure SpeedButton15Click(Sender: TObject);
+    procedure buttonCwKeyboardClick(Sender: TObject);
+    procedure buttonVoiceOptionClick(Sender: TObject);
     procedure OpMenuClick(Sender: TObject);
     procedure CWPauseButtonClick(Sender: TObject);
     procedure CWPlayButtonClick(Sender: TObject);
@@ -724,9 +726,9 @@ type
     procedure FormResize(Sender: TObject);
     procedure menuOptionsClick(Sender: TObject);
     procedure Edit1Click(Sender: TObject);
-    procedure CWF1MouseDown(Sender: TObject; Button: TMouseButton;
+    procedure CWFMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure HemisphereButton8MouseDown(Sender: TObject;
+    procedure CWCQMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure EditEnter(Sender: TObject);
     procedure mnMergeClick(Sender: TObject);
@@ -749,8 +751,8 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure StatusLineResize(Sender: TObject);
     procedure PrintLogSummaryzLog1Click(Sender: TObject);
-    procedure CQRepeatVoice2Click(Sender: TObject);
-    procedure CQRepeatVoice1Click(Sender: TObject);
+    procedure VoiceCQ3Click(Sender: TObject);
+    procedure VoiceCQ2Click(Sender: TObject);
     procedure mPXListWPXClick(Sender: TObject);
     procedure mSummaryFileClick(Sender: TObject);
     procedure GridPowerChangeClick(Sender: TObject);
@@ -861,6 +863,11 @@ type
     procedure actionCorrectSentNrExecute(Sender: TObject);
     procedure actionSetLastFreqExecute(Sender: TObject);
     procedure actionQuickMemo3Execute(Sender: TObject);
+    procedure menuVoiceEditClick(Sender: TObject);
+    procedure VoiceFMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure VoiceCQMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -883,6 +890,7 @@ type
     FQuickRef: TQuickRef;              // Quick Reference
     FZAnalyze: TZAnalyze;              // Analyze window
     FCWMessagePad: TCwMessagePad;
+    FVoiceForm: TVoiceForm;
 
     FInitialized: Boolean;
 
@@ -1011,22 +1019,12 @@ type
 
     property RigControl: TRigControl read FRigControl;
     property PartialCheck: TPartialCheck read FPartialCheck;
-    property RateDialog: TRateDialog read FRateDialog;
-    property SuperCheck: TSuperCheck read FSuperCheck;
-    property SuperCheck2: TSuperCheck2 read FSuperCheck2;
     property CommForm: TCommForm read FCommForm;
-    property CWKeyBoard: TCWKeyBoard read FCWKeyBoard;
     property ChatForm: TChatForm read FChatForm;
     property ZServerInquiry: TZServerInquiry read FZServerInquiry;
     property ZLinkForm: TZLinkForm read FZLinkForm;
-    property SpotForm: TSpotForm read FSpotForm;
-    property ConsolePad: TConsolePad read FConsolePad;
     property FreqList: TFreqList read FFreqList;
-    property CheckCall2: TCheckCall2 read FCheckCall2;
-    property CheckMulti: TCheckMulti read FCheckMulti;
-    property CheckCountry: TCheckCountry read FCheckCountry;
     property ScratchSheet: TScratchSheet read FScratchSheet;
-//    property BandScope2: TBandScope2 read FBandScope2;
     property BandScopeEx: TBandScopeArray read FBandScopeEx;
     property SuperCheckList: TSuperList read FSuperCheckList;
   end;
@@ -1252,24 +1250,22 @@ begin
    CWF6.Hint := dmZlogGlobal.CWMessage(i, 6);
    CWF7.Hint := dmZlogGlobal.CWMessage(i, 7);
    CWF8.Hint := dmZlogGlobal.CWMessage(i, 8);
+   CWF9.Hint := dmZlogGlobal.CWMessage(i, 9);
+   CWF10.Hint := dmZlogGlobal.CWMessage(i, 10);
 end;
 
 procedure TMainForm.RenewVoiceToolBar;
 begin
-   { if dmZlogGlobal.SideTone then
-     SideToneButton.Down := True
-     else
-     SideToneButton.Down := False;
-     SpeedBar.Position := dmZlogGlobal.Speed;
-     SpeedLabel.Caption := IntToStr(dmZlogGlobal.Speed)+' wpm';
-     CWF1.Hint := dmZlogGlobal.CWMessage(1, 1);
-     CWF2.Hint := dmZlogGlobal.CWMessage(1, 2);
-     CWF3.Hint := dmZlogGlobal.CWMessage(1, 3);
-     CWF4.Hint := dmZlogGlobal.CWMessage(1, 4);
-     CWF5.Hint := dmZlogGlobal.CWMessage(1, 5);
-     CWF6.Hint := dmZlogGlobal.CWMessage(1, 6);
-     CWF7.Hint := dmZlogGlobal.CWMessage(1, 7);
-     CWF8.Hint := dmZlogGlobal.CWMessage(1, 8); }
+   VoiceF1.Hint := dmZLogGlobal.Settings.FSoundComments[1];
+   VoiceF2.Hint := dmZLogGlobal.Settings.FSoundComments[2];
+   VoiceF3.Hint := dmZLogGlobal.Settings.FSoundComments[3];
+   VoiceF4.Hint := dmZLogGlobal.Settings.FSoundComments[4];
+   VoiceF5.Hint := dmZLogGlobal.Settings.FSoundComments[5];
+   VoiceF6.Hint := dmZLogGlobal.Settings.FSoundComments[6];
+   VoiceF7.Hint := dmZLogGlobal.Settings.FSoundComments[7];
+   VoiceF8.Hint := dmZLogGlobal.Settings.FSoundComments[8];
+   VoiceF9.Hint := dmZLogGlobal.Settings.FSoundComments[9];
+   VoiceF10.Hint := dmZLogGlobal.Settings.FSoundComments[10];
 end;
 
 procedure TMainForm.RenewBandMenu();
@@ -3714,6 +3710,7 @@ begin
    FQuickRef      := TQuickRef.Create(Self);
    FZAnalyze      := TZAnalyze.Create(Self);
    FCWMessagePad  := TCwMessagePad.Create(Self);
+   FVoiceForm     := TVoiceForm.Create(Self);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
@@ -4334,19 +4331,13 @@ begin
    if (S = '10G') then
       ConsoleRigBandSet(b10G);
 
-   // if (S = 'VOICEON') then
-   // begin
-   // SetVoiceFlag(1);
-   // end;
-   //
-   // if (S = 'VOICEOFF') then
-   // begin
-   // SetVoiceFlag(0);
-   // end;
+   if (S = 'VOICEON') then begin
+      dmZLogKeyer.SetVoiceFlag(1);
+   end;
 
-//   if (S = 'TEST2') then begin
-//      FBandScope2.MarkCurrentFreq(7060000);
-//   end;
+   if (S = 'VOICEOFF') then begin
+      dmZLogKeyer.SetVoiceFlag(0);
+   end;
 
    if (S = 'MOVETOMEMO') then begin
       dmZlogGlobal.Settings._movetomemo := True;
@@ -4895,13 +4886,13 @@ begin
          WriteStatusLineRed(Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck), True);
          CallsignEdit.SelectAll;
          CallsignEdit.SetFocus;
-         // SendVoice(4);
+         FVoiceForm.SendVoice(4);
          exit;
       end;
 
       MyContest.SpaceBarProc;
       NumberEdit.SetFocus;
-      // SendVoice(2);
+      FVoiceForm.SendVoice(2);
       exit;
    end;
 
@@ -4998,14 +4989,14 @@ begin
 
       mSSB, mFM, mAM: begin
             if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
-               // SendVoice(5);
+               FVoiceForm.SendVoice(5);
                WriteStatusLine('Invalid Number', False);
                NumberEdit.SetFocus;
                NumberEdit.SelectAll;
                exit;
             end;
 
-            // SendVoice(3);
+            FVoiceForm.SendVoice(3);
             LogButtonClick(Self);
          end;
    end;
@@ -5040,9 +5031,9 @@ begin
             CtrlZBreak;
          end;
 
-         // if (CtrlZCQLoopVoice = True) and (TEdit(Sender).Name = 'CallsignEdit') then begin
-         // CtrlZBreakVoice;
-         // end;
+         if (FVoiceForm.CtrlZCQLoopVoice = True) and (TEdit(Sender).Name = 'CallsignEdit') then begin
+            FVoiceForm.CtrlZBreakVoice();
+         end;
 
          if (dmZlogGlobal.Settings._jmode) and (TEdit(Sender).Name = 'CallsignEdit') then begin
             if CallsignEdit.Text = '' then begin
@@ -5290,8 +5281,8 @@ var
    S: string;
 begin
    i := THemisphereButton(Sender).Tag;
-   if i in [1 .. 11] then begin
-      if i = 11 then begin
+   if i in [1 .. 10, 101] then begin
+      if i = 101 then begin
          i := 1; { CQ button }
          SetCQ(True);
       end;
@@ -5344,6 +5335,7 @@ begin
    FQuickRef.Release();
    FZAnalyze.Release();
    FCWMessagePad.Release();
+   FVoiceForm.Release();
    CurrentQSO.Free();
 
    SuperCheckFreeData();
@@ -5372,9 +5364,8 @@ begin
 end;
 
 procedure TMainForm.VoiceStopButtonClick(Sender: TObject);
-// var i : Integer;
 begin
-   // UzLogVoice.StopVoice;
+   FVoiceForm.StopVoice;
 end;
 
 procedure TMainForm.SetCQ(CQ: Boolean);
@@ -5422,17 +5413,30 @@ begin
    SetCQ(True);
 end;
 
-procedure TMainForm.SpeedButton12Click(Sender: TObject);
+procedure TMainForm.buttonCwKeyboardClick(Sender: TObject);
 begin
-   { dmZlogGlobal.Show;
-     dmZlogGlobal.PageControl.ActivePage := dmZlogGlobal.CWTabSheet; }
    FCWKeyBoard.Show;
 end;
 
-procedure TMainForm.SpeedButton15Click(Sender: TObject);
+procedure TMainForm.buttonVoiceOptionClick(Sender: TObject);
+var
+   f: TformOptions;
 begin
-//   Options.Show;
-//   Options.PageControl.ActivePage := Options.VoiceTabSheet;
+   f := TformOptions.Create(Self);
+   try
+      f.EditMode := 2;
+      f.EditNumber := 1;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      RenewVoiceToolBar;
+
+      LastFocus.SetFocus;
+   finally
+      f.Release();
+   end;
 end;
 
 procedure TMainForm.OpMenuClick(Sender: TObject);
@@ -5657,9 +5661,25 @@ begin
    EditScreen.RefreshScreen;
 end;
 
+procedure TMainForm.VoiceFMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+   n: Integer;
+begin
+   n := THemisphereButton(Sender).Tag;
+   if n > 100 then begin
+      n := n - 100;
+   end;
+   VoiceFMenu.Items[0].Tag := n;
+end;
+
+procedure TMainForm.VoiceCQMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+   VoiceFMenu.Items[0].Tag := 1;
+end;
+
 procedure TMainForm.VoiceFButtonClick(Sender: TObject);
 begin
-   // SendVoice(THemisphereButton(Sender).Tag);
+   FVoiceForm.SendVoice(THemisphereButton(Sender).Tag);
 end;
 
 procedure TMainForm.TimeEditChange(Sender: TObject);
@@ -5851,7 +5871,7 @@ var
 begin
    f := TformOptions.Create(Self);
    try
-      f.CWEditMode := 0;
+      f.EditMode := 0;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
@@ -5891,13 +5911,34 @@ var
 begin
    f := TformOptions.Create(Self);
    try
-      f.CWEditMode := TMenuItem(Sender).Tag;
+      f.EditMode := 1;
+      f.EditNumber := TMenuItem(Sender).Tag;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
       end;
 
       RenewCWToolBar;
+
+      LastFocus.SetFocus;
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TMainForm.menuVoiceEditClick(Sender: TObject);
+var
+   f: TformOptions;
+begin
+   f := TformOptions.Create(Self);
+   try
+      f.EditMode := 2;
+      f.EditNumber := TMenuItem(Sender).Tag;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
       RenewVoiceToolBar;
 
       LastFocus.SetFocus;
@@ -5906,12 +5947,18 @@ begin
    end;
 end;
 
-procedure TMainForm.CWF1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TMainForm.CWFMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+   n: Integer;
 begin
-   CWFMenu.Items[0].Tag := THemisphereButton(Sender).Tag;
+   n := THemisphereButton(Sender).Tag;
+   if n > 100 then begin
+      n := n - 100;
+   end;
+   CWFMenu.Items[0].Tag := n;
 end;
 
-procedure TMainForm.HemisphereButton8MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TMainForm.CWCQMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
    CWFMenu.Items[0].Tag := 1;
 end;
@@ -6219,17 +6266,18 @@ begin
    // PrinterDialog.Execute;
 end;
 
-procedure TMainForm.CQRepeatVoice2Click(Sender: TObject);
+procedure TMainForm.VoiceCQ3Click(Sender: TObject);
 begin
-   // CtrlZCQLoopVoice := True;
-   // CQLoopVoice;
-   // SetCQ(True);
+   FVoiceForm.CtrlZCQLoopVoice := True;
+   FVoiceForm.CQLoopVoice();
+   SetCQ(True);
 end;
 
-procedure TMainForm.CQRepeatVoice1Click(Sender: TObject);
+procedure TMainForm.VoiceCQ2Click(Sender: TObject);
 begin
-   // CQLoopVoice;
-   // SetCQ(True);
+   FVoiceForm.CtrlZCQLoopVoice := False;
+   FVoiceForm.CQLoopVoice();
+   SetCQ(True);
 end;
 
 procedure TMainForm.mPXListWPXClick(Sender: TObject);
@@ -7459,7 +7507,7 @@ begin
       end;
 
       mSSB, mFM, mAM: begin
-//         SendVoice(i);
+         FVoiceForm.SendVoice(no);
       end;
 
       mRTTY: begin
@@ -8266,7 +8314,7 @@ begin
       CQRepeatClick1(Sender);
    end
    else begin
-      // CQRepeatVoice1Click(Sender);
+      VoiceCQ2Click(Sender);
    end;
 end;
 

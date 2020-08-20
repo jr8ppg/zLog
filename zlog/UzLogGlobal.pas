@@ -155,6 +155,10 @@ type
     FSuperCheck: TSuperCheckParam;
 
     FQuickMemoText: array[1..5] of string;
+
+    // Voice Memory
+    FSoundFiles: array[1..12] of string;
+    FSoundComments: array[1..12] of string;
   end;
 
 var
@@ -871,6 +875,12 @@ begin
       Settings.FQuickMemoText[3] := ini.ReadString('QuickMemo', '#3', 'NR?');
       Settings.FQuickMemoText[4] := ini.ReadString('QuickMemo', '#4', '');
       Settings.FQuickMemoText[5] := ini.ReadString('QuickMemo', '#5', '');
+
+      // Voice Memory
+      for i := 1 to 12 do begin
+         Settings.FSoundFiles[i] := ini.ReadString('Voice', 'F#' + IntToStr(i), '');
+         Settings.FSoundComments[i] := ini.ReadString('Voice', 'C#' + IntToStr(i), '');
+      end;
    finally
       ini.Free();
       slParam.Free();
@@ -1256,6 +1266,12 @@ begin
       // Quick Memo
       for i := 1 to 5 do begin
          ini.WriteString('QuickMemo', '#' + IntToStr(i), Settings.FQuickMemoText[i]);
+      end;
+
+      // Voice Memory
+      for i := 1 to 12 do begin
+         ini.WriteString('Voice', 'F#' + IntToStr(i), Settings.FSoundFiles[i]);
+         ini.WriteString('Voice', 'C#' + IntToStr(i), Settings.FSoundComments[i]);
       end;
    finally
       ini.Free();

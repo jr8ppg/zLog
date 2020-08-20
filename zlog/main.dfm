@@ -780,7 +780,7 @@ object MainForm: TMainForm
       NumGlyphs = 2
       OnClick = CWPauseButtonClick
     end
-    object SpeedButton12: TSpeedButton
+    object buttonCwKeyboard: TSpeedButton
       Left = 354
       Top = 4
       Width = 25
@@ -798,7 +798,7 @@ object MainForm: TMainForm
         DDDDFFD000DFF0000000DDDDDDDDDDDD0DDDD0000000DDDDDDDDDDDDDDDDD000
         0000DDDDDDDDDDDDDDDDD0000000DDDDDDDDDDDDDDDDD0000000DDDDDDDDDDDD
         DDDDD0000000}
-      OnClick = SpeedButton12Click
+      OnClick = buttonCwKeyboardClick
     end
     object SpeedLabel: TLabel
       Left = 443
@@ -866,7 +866,7 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = CWFButtonClick
-      OnMouseDown = CWF1MouseDown
+      OnMouseDown = CWFMouseDown
       ParentFont = False
       PopupMenu = CWFMenu
       GlyphValid = False
@@ -982,7 +982,7 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = CWFButtonClick
-      OnMouseDown = CWF1MouseDown
+      OnMouseDown = CWFMouseDown
       ParentFont = False
       PopupMenu = CWFMenu
       GlyphValid = False
@@ -1098,7 +1098,7 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = CWFButtonClick
-      OnMouseDown = CWF1MouseDown
+      OnMouseDown = CWFMouseDown
       ParentFont = False
       PopupMenu = CWFMenu
       GlyphValid = False
@@ -1214,7 +1214,7 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = CWFButtonClick
-      OnMouseDown = CWF1MouseDown
+      OnMouseDown = CWFMouseDown
       ParentFont = False
       PopupMenu = CWFMenu
       GlyphValid = False
@@ -1330,7 +1330,7 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = CWFButtonClick
-      OnMouseDown = CWF1MouseDown
+      OnMouseDown = CWFMouseDown
       ParentFont = False
       PopupMenu = CWFMenu
       GlyphValid = False
@@ -1446,7 +1446,7 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = CWFButtonClick
-      OnMouseDown = CWF1MouseDown
+      OnMouseDown = CWFMouseDown
       ParentFont = False
       PopupMenu = CWFMenu
       GlyphValid = False
@@ -1562,7 +1562,7 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = CWFButtonClick
-      OnMouseDown = CWF1MouseDown
+      OnMouseDown = CWFMouseDown
       ParentFont = False
       PopupMenu = CWFMenu
       GlyphValid = False
@@ -1678,7 +1678,7 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = CWFButtonClick
-      OnMouseDown = CWF1MouseDown
+      OnMouseDown = CWFMouseDown
       ParentFont = False
       PopupMenu = CWFMenu
       GlyphValid = False
@@ -1764,8 +1764,8 @@ object MainForm: TMainForm
         000000000000FF7FFF7FFF7FFF7FFF7F0000FF7FFF7FFF7FFF7FFF7FFF7FFF7F
         00000000000000000000FF7FFF7FFF7FFF7FFF7FFF7FFF7F0000}
     end
-    object HemisphereButton8: THemisphereButton
-      Tag = 11
+    object CWCQ1: THemisphereButton
+      Tag = 101
       Left = 187
       Top = 3
       Width = 28
@@ -1795,7 +1795,7 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = CWFButtonClick
-      OnMouseDown = HemisphereButton8MouseDown
+      OnMouseDown = CWFMouseDown
       ParentFont = False
       PopupMenu = CWFMenu
       GlyphValid = False
@@ -1959,8 +1959,8 @@ object MainForm: TMainForm
         0000000000000000000000000000FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
         FF7F}
     end
-    object HemisphereButton9: THemisphereButton
-      Tag = 1
+    object CWCQ2: THemisphereButton
+      Tag = 11
       Left = 215
       Top = 3
       Width = 28
@@ -1990,7 +1990,7 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = CQRepeatClick1
-      OnMouseDown = HemisphereButton8MouseDown
+      OnMouseDown = CWCQMouseDown
       ParentFont = False
       PopupMenu = CWFMenu
       GlyphValid = False
@@ -2154,8 +2154,8 @@ object MainForm: TMainForm
         0000000000000000000000000000FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
         FF7F}
     end
-    object HemisphereButton10: THemisphereButton
-      Tag = 1
+    object CWCQ3: THemisphereButton
+      Tag = 12
       Left = 243
       Top = 3
       Width = 28
@@ -2185,7 +2185,7 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = CQRepeatClick2
-      OnMouseDown = HemisphereButton8MouseDown
+      OnMouseDown = CWCQMouseDown
       ParentFont = False
       PopupMenu = CWFMenu
       GlyphValid = False
@@ -2379,7 +2379,7 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = CWFButtonClick
-      OnMouseDown = CWF1MouseDown
+      OnMouseDown = CWFMouseDown
       ParentFont = False
       PopupMenu = CWFMenu
       GlyphValid = False
@@ -2495,7 +2495,7 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = CWFButtonClick
-      OnMouseDown = CWF1MouseDown
+      OnMouseDown = CWFMouseDown
       ParentFont = False
       PopupMenu = CWFMenu
       GlyphValid = False
@@ -2844,8 +2844,9 @@ object MainForm: TMainForm
         3333333333333333333333333333333333333333333333333333333333333333
         3333333333333333333333333333333333333333333333333333}
       NumGlyphs = 2
+      Visible = False
     end
-    object SpeedButton15: TSpeedButton
+    object buttonVoiceOption: TSpeedButton
       Left = 354
       Top = 4
       Width = 25
@@ -2866,7 +2867,7 @@ object MainForm: TMainForm
         0755557F7777FFF5755555335000005555555577577777555555}
       NumGlyphs = 2
       Visible = False
-      OnClick = SpeedButton15Click
+      OnClick = buttonVoiceOptionClick
     end
     object VoicePlayButton: TSpeedButton
       Left = 298
@@ -2919,7 +2920,11 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = VoiceFButtonClick
+      OnMouseDown = VoiceFMouseDown
       ParentFont = False
+      ParentShowHint = False
+      PopupMenu = VoiceFMenu
+      ShowHint = True
       GlyphValid = False
       ImageOut = {
         424D3A0300000000000042000000280000001300000013000000010010000300
@@ -3033,7 +3038,11 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = VoiceFButtonClick
+      OnMouseDown = VoiceFMouseDown
       ParentFont = False
+      ParentShowHint = False
+      PopupMenu = VoiceFMenu
+      ShowHint = True
       GlyphValid = False
       ImageOut = {
         424D3A0300000000000042000000280000001300000013000000010010000300
@@ -3147,7 +3156,11 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = VoiceFButtonClick
+      OnMouseDown = VoiceFMouseDown
       ParentFont = False
+      ParentShowHint = False
+      PopupMenu = VoiceFMenu
+      ShowHint = True
       GlyphValid = False
       ImageOut = {
         424D3A0300000000000042000000280000001300000013000000010010000300
@@ -3261,7 +3274,11 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = VoiceFButtonClick
+      OnMouseDown = VoiceFMouseDown
       ParentFont = False
+      ParentShowHint = False
+      PopupMenu = VoiceFMenu
+      ShowHint = True
       GlyphValid = False
       ImageOut = {
         424D3A0300000000000042000000280000001300000013000000010010000300
@@ -3375,7 +3392,11 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = VoiceFButtonClick
+      OnMouseDown = VoiceFMouseDown
       ParentFont = False
+      ParentShowHint = False
+      PopupMenu = VoiceFMenu
+      ShowHint = True
       GlyphValid = False
       ImageOut = {
         424D3A0300000000000042000000280000001300000013000000010010000300
@@ -3489,7 +3510,11 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = VoiceFButtonClick
+      OnMouseDown = VoiceFMouseDown
       ParentFont = False
+      ParentShowHint = False
+      PopupMenu = VoiceFMenu
+      ShowHint = True
       GlyphValid = False
       ImageOut = {
         424D3A0300000000000042000000280000001300000013000000010010000300
@@ -3603,7 +3628,11 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = VoiceFButtonClick
+      OnMouseDown = VoiceFMouseDown
       ParentFont = False
+      ParentShowHint = False
+      PopupMenu = VoiceFMenu
+      ShowHint = True
       GlyphValid = False
       ImageOut = {
         424D3A0300000000000042000000280000001300000013000000010010000300
@@ -3717,7 +3746,11 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = VoiceFButtonClick
+      OnMouseDown = VoiceFMouseDown
       ParentFont = False
+      ParentShowHint = False
+      PopupMenu = VoiceFMenu
+      ShowHint = True
       GlyphValid = False
       ImageOut = {
         424D3A0300000000000042000000280000001300000013000000010010000300
@@ -3801,8 +3834,8 @@ object MainForm: TMainForm
         000000000000FF7FFF7FFF7FFF7FFF7F0000FF7FFF7FFF7FFF7FFF7FFF7FFF7F
         00000000000000000000FF7FFF7FFF7FFF7FFF7FFF7FFF7F0000}
     end
-    object HemisphereButton1: THemisphereButton
-      Tag = 11
+    object VoiceCQ1: THemisphereButton
+      Tag = 101
       Left = 187
       Top = 3
       Width = 28
@@ -3831,8 +3864,12 @@ object MainForm: TMainForm
       GlyphTransparent = True
       GroupIndex = 0
       NumGlyphs = 1
-      OnClick = CQRepeatVoice2Click
+      OnClick = VoiceFButtonClick
+      OnMouseDown = VoiceFMouseDown
       ParentFont = False
+      ParentShowHint = False
+      PopupMenu = VoiceFMenu
+      ShowHint = True
       GlyphValid = False
       ImageOut = {
         424D620600000000000042000000280000001C0000001C000000010010000300
@@ -3994,8 +4031,8 @@ object MainForm: TMainForm
         0000000000000000000000000000FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
         FF7F}
     end
-    object CQRepeatVoice1: THemisphereButton
-      Tag = 1
+    object VoiceCQ2: THemisphereButton
+      Tag = 11
       Left = 215
       Top = 3
       Width = 28
@@ -4024,8 +4061,12 @@ object MainForm: TMainForm
       GlyphTransparent = True
       GroupIndex = 0
       NumGlyphs = 1
-      OnClick = CQRepeatVoice1Click
+      OnClick = VoiceCQ2Click
+      OnMouseDown = VoiceCQMouseDown
       ParentFont = False
+      ParentShowHint = False
+      PopupMenu = VoiceFMenu
+      ShowHint = True
       GlyphValid = False
       ImageOut = {
         424D620600000000000042000000280000001C0000001C000000010010000300
@@ -4187,8 +4228,8 @@ object MainForm: TMainForm
         0000000000000000000000000000FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
         FF7F}
     end
-    object CQRepeatVoice2: THemisphereButton
-      Tag = 1
+    object VoiceCQ3: THemisphereButton
+      Tag = 12
       Left = 243
       Top = 3
       Width = 28
@@ -4217,8 +4258,12 @@ object MainForm: TMainForm
       GlyphTransparent = True
       GroupIndex = 0
       NumGlyphs = 1
-      OnClick = CQRepeatVoice2Click
+      OnClick = VoiceCQ3Click
+      OnMouseDown = VoiceCQMouseDown
       ParentFont = False
+      ParentShowHint = False
+      PopupMenu = VoiceFMenu
+      ShowHint = True
       GlyphValid = False
       ImageOut = {
         424D620600000000000042000000280000001C0000001C000000010010000300
@@ -4410,7 +4455,11 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = VoiceFButtonClick
+      OnMouseDown = VoiceFMouseDown
       ParentFont = False
+      ParentShowHint = False
+      PopupMenu = VoiceFMenu
+      ShowHint = True
       GlyphValid = False
       ImageOut = {
         424D3A0300000000000042000000280000001300000013000000010010000300
@@ -4524,7 +4573,11 @@ object MainForm: TMainForm
       GroupIndex = 0
       NumGlyphs = 1
       OnClick = VoiceFButtonClick
+      OnMouseDown = VoiceFMouseDown
       ParentFont = False
+      ParentShowHint = False
+      PopupMenu = VoiceFMenu
+      ShowHint = True
       GlyphValid = False
       ImageOut = {
         424D3A0300000000000042000000280000001300000013000000010010000300
@@ -5814,5 +5867,13 @@ object MainForm: TMainForm
     AutoLineReduction = maManual
     Left = 184
     Top = 144
+  end
+  object VoiceFMenu: TPopupMenu
+    Left = 412
+    Top = 189
+    object menuVoiceEdit: TMenuItem
+      Caption = 'Edit'
+      OnClick = menuVoiceEditClick
+    end
   end
 end
