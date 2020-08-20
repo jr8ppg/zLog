@@ -185,10 +185,10 @@ type
     tabsheetPath: TTabSheet;
     Label50: TLabel;
     edCFGDATPath: TEdit;
-    btnBrowseCFGDATPath: TButton;
+    buttonBrowseCFGDATPath: TButton;
     Label51: TLabel;
     edLogsPath: TEdit;
-    btnBrowseLogsPath: TButton;
+    buttonBrowseLogsPath: TButton;
     rbRTTY: TRadioButton;
     cbCQSP: TCheckBox;
     cbAFSK: TCheckBox;
@@ -239,7 +239,7 @@ type
     editSuperCheckFolder: TEdit;
     radioSuperCheck2: TRadioButton;
     buttonSuperCheckFolderRef: TSpeedButton;
-    Button4: TButton;
+    buttonBrowseBackupPath: TButton;
     BackUpPathEdit: TEdit;
     Label56: TLabel;
     comboPower19: TComboBox;
@@ -366,6 +366,9 @@ type
     vEdit10: TEdit;
     vButton9: TButton;
     vButton10: TButton;
+    Label74: TLabel;
+    buttonBrowseSoundPath: TButton;
+    SoundPathEdit: TEdit;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -653,6 +656,7 @@ begin
 
       Settings._sentstr := SentEdit.Text;
 
+      Settings._soundpath := IncludeTrailingPathDelimiter(SoundPathEdit.Text);
       Settings._backuppath := IncludeTrailingPathDelimiter(BackUpPathEdit.Text);
       Settings._cfgdatpath := IncludeTrailingPathDelimiter(edCFGDATPath.Text);
       Settings._logspath := IncludeTrailingPathDelimiter(edLogsPath.Text);
@@ -961,6 +965,7 @@ begin
 
       SentEdit.Text := Settings._sentstr;
 
+      SoundPathEdit.Text := Settings._soundpath;
       BackUpPathEdit.Text := Settings._backuppath;
       edCFGDATPath.Text := Settings._cfgdatpath;
       edLogsPath.Text := Settings._logspath;
@@ -1308,6 +1313,7 @@ end;
 
 procedure TformOptions.vButtonClick(Sender: TObject);
 begin
+   OpenDialog.InitialDir := dmZLogGlobal.Settings._soundpath;
    if OpenDialog.Execute then begin
       FTempVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
@@ -1423,12 +1429,14 @@ var
    strDir: string;
 begin
    case TButton(Sender).Tag of
-      0:
-         strDir := BackUpPathEdit.Text;
       10:
          strDir := edCFGDATPath.Text;
       20:
          strDir := edLogsPath.Text;
+      30:
+         strDir := BackUpPathEdit.Text;
+      40:
+         strDir := SoundPathEdit.Text;
    end;
 
    if SelectDirectory('フォルダの参照', '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
@@ -1436,12 +1444,14 @@ begin
    end;
 
    case TButton(Sender).Tag of
-      0:
-         BackUpPathEdit.Text := strDir;
       10:
          edCFGDATPath.Text := strDir;
       20:
          edLogsPath.Text := strDir;
+      30:
+         BackUpPathEdit.Text := strDir;
+      40:
+         SoundPathEdit.Text := strDir;
    end;
 end;
 

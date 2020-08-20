@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 325
-    ActivePage = tabsheetCategories
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -2047,17 +2047,24 @@ object formOptions: TformOptions
       end
       object Label51: TLabel
         Left = 16
-        Top = 42
+        Top = 43
         Width = 23
         Height = 13
         Caption = 'Logs'
       end
       object Label56: TLabel
         Left = 16
-        Top = 67
+        Top = 68
         Width = 40
         Height = 13
         Caption = 'Back up'
+      end
+      object Label74: TLabel
+        Left = 16
+        Top = 94
+        Width = 31
+        Height = 13
+        Caption = 'Sound'
       end
       object edCFGDATPath: TEdit
         Left = 88
@@ -2073,12 +2080,12 @@ object formOptions: TformOptions
         TabOrder = 0
         Text = 'BackUpPathEdit'
       end
-      object btnBrowseCFGDATPath: TButton
+      object buttonBrowseCFGDATPath: TButton
         Tag = 10
         Left = 282
         Top = 16
         Width = 65
-        Height = 19
+        Height = 20
         Caption = 'Browse...'
         TabOrder = 1
         OnClick = BrowsePathClick
@@ -2086,7 +2093,7 @@ object formOptions: TformOptions
       object edLogsPath: TEdit
         Tag = 20
         Left = 88
-        Top = 40
+        Top = 41
         Width = 185
         Height = 20
         Font.Charset = DEFAULT_CHARSET
@@ -2098,28 +2105,29 @@ object formOptions: TformOptions
         TabOrder = 2
         Text = 'BackUpPathEdit'
       end
-      object btnBrowseLogsPath: TButton
+      object buttonBrowseLogsPath: TButton
         Tag = 20
         Left = 282
-        Top = 40
+        Top = 41
         Width = 65
-        Height = 19
+        Height = 20
         Caption = 'Browse...'
         TabOrder = 3
         OnClick = BrowsePathClick
       end
-      object Button4: TButton
+      object buttonBrowseBackupPath: TButton
+        Tag = 30
         Left = 282
-        Top = 65
+        Top = 66
         Width = 65
-        Height = 19
+        Height = 20
         Caption = 'Browse...'
         TabOrder = 5
         OnClick = BrowsePathClick
       end
       object BackUpPathEdit: TEdit
         Left = 88
-        Top = 65
+        Top = 66
         Width = 186
         Height = 20
         Font.Charset = DEFAULT_CHARSET
@@ -2130,6 +2138,29 @@ object formOptions: TformOptions
         ParentFont = False
         TabOrder = 4
         Text = 'BackUpPathEdit'
+      end
+      object buttonBrowseSoundPath: TButton
+        Tag = 40
+        Left = 282
+        Top = 92
+        Width = 65
+        Height = 20
+        Caption = 'Browse...'
+        TabOrder = 7
+        OnClick = BrowsePathClick
+      end
+      object SoundPathEdit: TEdit
+        Left = 88
+        Top = 92
+        Width = 186
+        Height = 20
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 6
       end
     end
     object tabsheetMisc: TTabSheet

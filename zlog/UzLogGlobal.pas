@@ -104,6 +104,7 @@ type
     _lptnr : integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
     _sentstr : string; {exchanges sent $Q$P$O etc. Set at menu select}
 
+    _soundpath : string;
     _backuppath : string;
     _cfgdatpath : string;
     _logspath : string;
@@ -515,12 +516,6 @@ begin
       // Save every N QSOs
       Settings._saveevery := ini.ReadInteger('Preferences', 'SaveEvery', 3);
 
-      // Back up path
-      Settings._backuppath := ini.ReadString('Preferences', 'BackUpPath', '');
-      if Settings._backuppath <> '' then begin
-         Settings._backuppath := IncludeTrailingPathDelimiter(Settings._backuppath);
-      end;
-
       //
       // Categories
       //
@@ -767,6 +762,18 @@ begin
          Settings._logspath := IncludeTrailingPathDelimiter(Settings._logspath);
       end;
 
+      // Back up path
+      Settings._backuppath := ini.ReadString('Preferences', 'BackUpPath', '');
+      if Settings._backuppath <> '' then begin
+         Settings._backuppath := IncludeTrailingPathDelimiter(Settings._backuppath);
+      end;
+
+      // Sound path
+      Settings._soundpath := ini.ReadString('Preferences', 'SoundPath', '');
+      if Settings._soundpath <> '' then begin
+         Settings._soundpath := IncludeTrailingPathDelimiter(Settings._soundpath);
+      end;
+
       //
       // Misc
       //
@@ -975,9 +982,6 @@ begin
       // Save every N QSOs
       ini.WriteInteger('Preferences', 'SaveEvery', Settings._saveevery);
 
-      // Back up path
-      ini.WriteString('Preferences', 'BackUpPath', Settings._backuppath);
-
       //
       // Categories
       //
@@ -1177,6 +1181,12 @@ begin
 
       // Logs
       ini.WriteString('Preferences', 'LogsPath', Settings._logspath);
+
+      // Back up path
+      ini.WriteString('Preferences', 'BackUpPath', Settings._backuppath);
+
+      // Sound path
+      ini.WriteString('Preferences', 'SoundPath', Settings._soundpath);
 
       //
       // Misc
