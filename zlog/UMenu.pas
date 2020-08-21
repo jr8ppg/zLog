@@ -237,6 +237,8 @@ begin
 end;
 
 procedure TMenuForm.OKButtonClick(Sender: TObject);
+var
+   i: Integer;
 begin
    if (rbGeneral.Checked = True) and (FModernStyle = True) then begin
       // prov,cityéÊçû
@@ -246,11 +248,10 @@ begin
       end;
 
       // f1Å`f4éÊçû
-      if FSelectDlg.ImportCwMessage = True then begin
-         dmZLogGlobal.Settings.CW.CWStrBank[1, 1] := FSelectDlg.SelectedContest.CwMessageA[1];
-         dmZLogGlobal.Settings.CW.CWStrBank[1, 2] := FSelectDlg.SelectedContest.CwMessageA[2];
-         dmZLogGlobal.Settings.CW.CWStrBank[1, 3] := FSelectDlg.SelectedContest.CwMessageA[3];
-         dmZLogGlobal.Settings.CW.CWStrBank[1, 4] := FSelectDlg.SelectedContest.CwMessageA[4];
+      for i := 1 to 4 do begin
+         if FSelectDlg.ImportCwMessage[i] = True then begin
+            dmZLogGlobal.Settings.CW.CWStrBank[1, i] := FSelectDlg.SelectedContest.CwMessageA[i];
+         end;
       end;
    end;
 

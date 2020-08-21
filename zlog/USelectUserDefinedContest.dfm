@@ -62,15 +62,41 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       State = cbChecked
       TabOrder = 2
     end
-    object checkImportCwMessage: TCheckBox
+    object checkImportCwMessage1: TCheckBox
       Left = 107
       Top = 10
-      Width = 93
+      Width = 58
       Height = 13
-      Caption = 'f1'#65374'f4'#21462#36796
+      Caption = 'f1'#21462#36796
       Checked = True
       State = cbChecked
       TabOrder = 3
+    end
+    object checkImportCwMessage2: TCheckBox
+      Left = 167
+      Top = 10
+      Width = 58
+      Height = 13
+      Caption = 'f2'#21462#36796
+      Checked = True
+      State = cbChecked
+      TabOrder = 4
+    end
+    object checkImportCwMessage3: TCheckBox
+      Left = 227
+      Top = 10
+      Width = 58
+      Height = 13
+      Caption = 'f3'#21462#36796
+      TabOrder = 5
+    end
+    object checkImportCwMessage4: TCheckBox
+      Left = 287
+      Top = 10
+      Width = 58
+      Height = 13
+      Caption = 'f4'#21462#36796
+      TabOrder = 6
     end
   end
   object Panel2: TPanel

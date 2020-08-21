@@ -21,7 +21,10 @@ type
     buttonCfgFolderRef: TButton;
     ListView1: TListView;
     checkImportProvCity: TCheckBox;
-    checkImportCwMessage: TCheckBox;
+    checkImportCwMessage1: TCheckBox;
+    checkImportCwMessage2: TCheckBox;
+    checkImportCwMessage3: TCheckBox;
+    checkImportCwMessage4: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonCfgFolderRefClick(Sender: TObject);
@@ -39,13 +42,13 @@ type
     function GetCfgFolder(): string;
     procedure SetCfgFolder(v: string);
     function GetImportProvCity(): Boolean;
-    function GetImportCwMessage(): Boolean;
+    function GetImportCwMessage(Index: Integer): Boolean;
   public
     { Public êÈåæ }
     property CfgFolder: string read GetCfgFolder write SetCfgFolder;
     property SelectedContest: TUserDefinedContest read FSelectedContest;
     property ImportProvCity: Boolean read GetImportProvCity;
-    property ImportCwMessage: Boolean read GetImportCwMessage;
+    property ImportCwMessage[Index: Integer]: Boolean read GetImportCwMessage;
   end;
 
 implementation
@@ -193,9 +196,15 @@ begin
    Result := checkImportProvCity.Checked;
 end;
 
-function TSelectUserDefinedContest.GetImportCwMessage(): Boolean;
+function TSelectUserDefinedContest.GetImportCwMessage(Index: Integer): Boolean;
 begin
-   Result := checkImportCwMessage.Checked;
+   case Index of
+      1: Result := checkImportCwMessage1.Checked;
+      2: Result := checkImportCwMessage2.Checked;
+      3: Result := checkImportCwMessage3.Checked;
+      4: Result := checkImportCwMessage4.Checked;
+      else Result := False;
+   end;
 end;
 
 end.
