@@ -1016,6 +1016,8 @@ type
     procedure SetYourCallsign(strCallsign, strNumber: string);
     procedure SetFrequency(freq: Integer);
     procedure BSRefresh();
+    procedure BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
+    procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
 
     property RigControl: TRigControl read FRigControl;
     property PartialCheck: TPartialCheck read FPartialCheck;
@@ -3685,7 +3687,6 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 var
    i, j, mSec: Integer;
-   M: TMenuItem;
    S, ss: string;
    b: TBand;
 begin
@@ -3797,15 +3798,7 @@ begin
       Backup1.Enabled := False;
    end;
 
-   if dmZlogGlobal.OpList.Count > 0 then begin
-      for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
-         M := TMenuItem.Create(Self);
-         M.Caption := TrimRight(copy(dmZlogGlobal.OpList.Strings[i], 1, 20));
-         M.OnClick := OpMenuClick;
-         OpMenu.Items.Add(M);
-         { M.Free; }
-      end;
-   end;
+   BuildOpListMenu(OpMenu, OpMenuClick);
 
    FTempQSOList := TQSOList.Create();
    
@@ -4660,7 +4653,6 @@ end;
 procedure TMainForm.GridMenuPopup(Sender: TObject);
 var
    i: Integer;
-   M: TMenuItem;
 begin
    SendSpot1.Enabled := FCommForm.MaybeConnected;
 
@@ -4671,21 +4663,7 @@ begin
       GBand.Items[i].Enabled := BandMenu.Items[i].Enabled;
    end;
 
-   for i := 1 to GOperator.Count do
-      GOperator.Delete(0);
-
-   if dmZlogGlobal.OpList.Count > 0 then begin
-      M := TMenuItem.Create(Self);
-      M.Caption := 'Clear';
-      M.OnClick := GridOperatorClick;
-      GOperator.Add(M);
-      for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
-         M := TMenuItem.Create(Self);
-         M.Caption := dmZlogGlobal.OpList.Strings[i];
-         M.OnClick := GridOperatorClick;
-         GOperator.Add(M);
-      end;
-   end;
+   BuildOpListMenu2(GOperator, GridOperatorClick);
 
    if Grid.Row > Log.TotalQSO then begin
       for i := 0 to GridMenu.Items.Count - 1 do
@@ -5899,6 +5877,9 @@ begin
          FBandScopeEx[b].FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
          FBandScopeEx[b].IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
       end;
+
+      // OpListçƒÉçÅ[Éh
+      BuildOpListMenu(OpMenu, OpMenuClick);
 
       LastFocus.SetFocus;
    finally
@@ -8891,6 +8872,58 @@ begin
       end;
 
       FBandScopeEx[b].RewriteBandScope();
+   end;
+end;
+
+procedure TMainForm.BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
+var
+   i: Integer;
+   M: TMenuItem;
+begin
+   for i := P.Items.Count - 1 downto 0 do begin
+      P.Items.Delete(i);
+   end;
+
+   if dmZlogGlobal.OpList.Count = 0 then begin
+      Exit;
+   end;
+
+   M := TMenuItem.Create(Self);
+   M.Caption := 'Clear';
+   M.OnClick := OnClickHandler;
+   P.Items.Add(m);
+
+   for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
+      M := TMenuItem.Create(Self);
+      M.Caption := TrimRight(string(Copy(AnsiString(dmZlogGlobal.OpList.Strings[i]), 1, 20)));
+      M.OnClick := OnClickHandler;
+      P.Items.Add(m);
+   end;
+end;
+
+procedure TMainForm.BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
+var
+   i: Integer;
+   M: TMenuItem;
+begin
+   for i := P.Count - 1 downto 0 do begin
+      P.Delete(i);
+   end;
+
+   if dmZlogGlobal.OpList.Count = 0 then begin
+      Exit;
+   end;
+
+   M := TMenuItem.Create(Self);
+   M.Caption := 'Clear';
+   M.OnClick := OnClickHandler;
+   P.Add(m);
+
+   for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
+      M := TMenuItem.Create(Self);
+      M.Caption := TrimRight(string(Copy(AnsiString(dmZlogGlobal.OpList.Strings[i]), 1, 20)));
+      M.OnClick := OnClickHandler;
+      P.Add(m);
    end;
 end;
 

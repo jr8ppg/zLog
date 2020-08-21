@@ -520,8 +520,6 @@ begin
       Settings._power[b5600] := comboPower5600.Text;
       Settings._power[b10g] := comboPower10g.Text;
 
-      OpList.Free;
-      OpList := TStringList.Create;
       OpList.Assign(OpListBox.Items);
 
       // Settings._band := BandGroup.ItemIndex;

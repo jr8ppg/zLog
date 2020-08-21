@@ -184,6 +184,8 @@ type
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private 宣言 }
+    FOpList: TStringList;
+
     procedure LoadIniFile; {loads Settings from zlog.ini}
     procedure LoadIniFileBS(ini: TIniFile); // called from loadinifile
 
@@ -222,13 +224,13 @@ public
     FCurrentFileName : string;
     FLog : TLog;
 
-    OpList : TStringList;
     Settings : TSettingsParam;
 
     procedure SaveCurrentSettings; {saves Settings to zlog.ini}
     procedure ImplementSettings(_OnCreate: boolean);
     procedure InitializeCW();
 
+    property OpList: TStringList read FOpList;
     property MyCall: string read GetMyCall write SetMyCall;
     property Band: Integer read GetBand write SetBand;
     property Mode: Integer read GetMode write SetMode;
@@ -350,14 +352,14 @@ begin
    Settings.CW.CurrentBank := 1;
 
    // オペレーターリスト
-   OpList := TStringList.Create();
+   FOpList := TStringList.Create();
    LoadOpList();
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
 begin
    SaveCurrentSettings();
-   OpList.Free();
+   FOpList.Free();
    FLog.Free();
 end;
 
@@ -1308,8 +1310,6 @@ end;
 // 設定反映
 procedure TdmZLogGlobal.ImplementSettings(_OnCreate: boolean);
 var
-   m: TMenuItem;
-   i, j: integer;
    b: TBand;
 begin
    if _OnCreate = False then begin
@@ -1352,28 +1352,6 @@ begin
 
    if Settings._multistation = True then begin
       Settings._txnr := 2;
-   end;
-
-   if not(_OnCreate) then begin
-      j := MainForm.OpMenu.Items.Count;
-      if j > 0 then begin
-         for i := 1 to j do begin
-            MainForm.OpMenu.Items.Delete(0);
-         end;
-      end;
-
-      if OpList.Count > 0 then begin
-         m := TMenuItem.Create(Self);
-         m.Caption := 'Clear';
-         m.OnClick := MainForm.OpMenuClick;
-         MainForm.OpMenu.Items.Add(m);
-         for i := 0 to OpList.Count - 1 do begin
-            m := TMenuItem.Create(Self);
-            m.Caption := TrimRight(Copy(OpList.Strings[i], 1, 20));
-            m.OnClick := MainForm.OpMenuClick;
-            MainForm.OpMenu.Items.Add(m);
-         end;
-      end;
    end;
 end;
 
@@ -1424,43 +1402,52 @@ end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;
 var
-   str: string;
+   str: AnsiString;
    i: integer;
+   op: string;
 begin
    Result := '??';
 
    if aQSO.Operator = '' then begin
       Result := Settings._age;
-   end
-   else begin
-      for i := 0 to OpList.Count - 1 do begin
-         if TrimRight(Copy(OpList.Strings[i], 1, 20)) = aQSO.Operator then begin
-            str := OpList.Strings[i];
-            if length(str) <= 20 then begin
-               exit;
-            end;
+      Exit;
+   end;
 
-            System.Delete(str, 1, 20);
+   for i := 0 to FOpList.Count - 1 do begin
+      str := AnsiString(FOpList.Strings[i]);
+      if length(str) <= 20 then begin
+         Break;
+      end;
 
-            str := Trim(str);
-            Result := str;
-         end;
+      op := Trim(string(Copy(str, 1, 20)));
+
+      if op = aQSO.Operator then begin
+
+         System.Delete(str, 1, 20);
+
+         Result := Trim(string(str));
+
+         Exit;
       end;
    end;
 end;
 
 procedure TdmZLogGlobal.SetOpPower(var aQSO: TQSO);
 var
-   str: string;
+   str: AnsiString;
    i: integer;
-   P: char;
+   P: AnsiChar;
+   op: string;
 begin
-   for i := 0 to OpList.Count - 1 do begin
-      if TrimRight(Copy(OpList.Strings[i], 1, 20)) = aQSO.Operator then begin
-         str := OpList.Strings[i];
-         if length(str) <= 20 then begin
-            exit;
-         end;
+   for i := 0 to FOpList.Count - 1 do begin
+      str := AnsiString(FOpList.Strings[i]);
+      if length(str) <= 20 then begin
+         Break;
+      end;
+
+      op := Trim(string(Copy(str, 1, 20)));
+
+      if op = aQSO.Operator then begin
 
          System.Delete(str, 1, 20);
 
@@ -1479,6 +1466,8 @@ begin
             'H':
                aQSO.Power := pwrH;
          end;
+
+         Exit;
       end;
    end;
 end;
@@ -1862,7 +1851,7 @@ begin
          Exit;
       end;
 
-      OpList.LoadFromFile(filename);
+      FOpList.LoadFromFile(filename);
    except
       on EFOpenError do begin
       end;
@@ -1872,7 +1861,7 @@ end;
 
 procedure TdmZLogGlobal.SaveOpList();
 begin
-   OpList.SaveToFile(ExtractFilePath(Application.EXEName) + 'ZLOG.OP');
+   FOpList.SaveToFile(ExtractFilePath(Application.EXEName) + 'ZLOG.OP');
 end;
 
 procedure TdmZLogGlobal.CreateLog();
