@@ -1064,7 +1064,12 @@ begin
       // Voice Memory
       for i := 1 to 12 do begin
          FTempVoiceFiles[i] := Settings.FSoundFiles[i];
-         FVoiceButton[i].Caption := ExtractFileName(FTempVoiceFiles[i]);
+         if FTempVoiceFiles[i] = '' then begin
+            FVoiceButton[i].Caption := 'select';
+         end
+         else begin
+            FVoiceButton[i].Caption := ExtractFileName(FTempVoiceFiles[i]);
+         end;
          FVoiceEdit[i].Text := Settings.FSoundComments[i];
       end;
    end;
