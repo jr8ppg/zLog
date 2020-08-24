@@ -329,6 +329,7 @@ begin
       SL.Add(IntToStr(Ord(Mode)));
       SL.Add(FloatToStr(Time));
       SL.Add(ZBoolToStr(CQ));
+      SL.Add(Number);
       Result := SL.DelimitedText;
    finally
       SL.Free();
@@ -343,13 +344,14 @@ begin
    SL.Delimiter := '%';
    SL.StrictDelimiter := True;
    try
-      SL.DelimitedText := S + '%%%%%%';
+      SL.DelimitedText := S + '%%%%%%%';
       Call := SL[0];
       FreqHz := StrToIntDef(SL[1], 0);
       Band := TBand(StrToIntDef(SL[2], Integer(b19)));
       Mode := TMode(StrToIntDef(SL[3], Integer(mCW)));
       Time := StrToFloatDef(SL[4], 0);
       CQ := ZStrToBool(SL[5]);
+      Number := SL[6];
    finally
       SL.Free();
    end;
