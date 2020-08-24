@@ -544,7 +544,7 @@ begin
       Settings._iaruzone := ini.ReadString('Profiles', 'IARUZone', '');
 
       // Sent
-      Settings._sentstr := ini.ReadString('Profiles', 'SentStr', '');
+//      Settings._sentstr := ini.ReadString('Profiles', 'SentStr', '');
 
       // Multi Station
       Settings._multistation := ini.ReadBool('Categories', 'MultiStn', False);
@@ -1010,7 +1010,7 @@ begin
       ini.WriteString('Profiles', 'IARUZone', Settings._iaruzone);
 
       // Sent
-      ini.WriteString('Profiles', 'SentStr', Settings._sentstr);
+//      ini.WriteString('Profiles', 'SentStr', Settings._sentstr);
 
       // Multi Station
       ini.WriteBool('Categories', 'MultiStn', Settings._multistation);

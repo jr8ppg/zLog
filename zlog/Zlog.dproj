@@ -426,6 +426,10 @@
             <Form>VoiceForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UCFGEdit.pas">
+            <Form>CFGEdit</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -605,13 +609,13 @@
                 <Platform value="Win64">True</Platform>
             </Platforms>
             <Deployment Version="3">
-                <DeployFile LocalName="resource\e1.bmp" Configuration="Release" Class="ProjectFile">
+                <DeployFile LocalName="resource\t1.bmp" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="resource\t1.bmp" Configuration="Release" Class="ProjectFile">
+                <DeployFile LocalName="resource\e1.bmp" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>

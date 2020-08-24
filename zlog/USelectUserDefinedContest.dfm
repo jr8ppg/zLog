@@ -4,7 +4,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
   BorderStyle = bsDialog
   Caption = 'Select User Defined Contest'
   ClientHeight = 346
-  ClientWidth = 744
+  ClientWidth = 740
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,16 +21,16 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
   object Panel1: TPanel
     Left = 0
     Top = 313
-    Width = 744
+    Width = 740
     Height = 33
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
     DesignSize = (
-      744
+      740
       33)
     object buttonOK: TButton
-      Left = 572
+      Left = 568
       Top = 2
       Width = 81
       Height = 29
@@ -42,7 +42,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       OnClick = buttonOKClick
     end
     object buttonCancel: TButton
-      Left = 659
+      Left = 655
       Top = 2
       Width = 81
       Height = 29
@@ -98,17 +98,28 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       Caption = 'f4'#21462#36796
       TabOrder = 6
     end
+    object buttonCFGEdit: TButton
+      Left = 403
+      Top = 2
+      Width = 70
+      Height = 29
+      Anchors = [akLeft, akBottom]
+      Caption = 'CFG'#32232#38598
+      Enabled = False
+      TabOrder = 7
+      OnClick = buttonCFGEditClick
+    end
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 744
+    Width = 740
     Height = 26
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
     DesignSize = (
-      744
+      740
       26)
     object Label1: TLabel
       Left = 12
@@ -120,7 +131,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
     object editCfgFolder: TEdit
       Left = 88
       Top = 3
-      Width = 597
+      Width = 593
       Height = 20
       Anchors = [akLeft, akTop, akRight]
       Color = clBtnFace
@@ -128,7 +139,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       TabOrder = 0
     end
     object buttonCfgFolderRef: TButton
-      Left = 691
+      Left = 687
       Top = 2
       Width = 49
       Height = 22
@@ -141,7 +152,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
   object ListView1: TListView
     Left = 0
     Top = 26
-    Width = 744
+    Width = 740
     Height = 287
     Align = alClient
     Columns = <
@@ -175,12 +186,15 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
         Caption = 'f4_a'
         Width = 80
       end>
+    DoubleBuffered = True
     GridLines = True
     ReadOnly = True
     RowSelect = True
+    ParentDoubleBuffered = False
     TabOrder = 2
     ViewStyle = vsReport
     OnDblClick = ListView1DblClick
+    OnMouseEnter = ListView1MouseEnter
     OnSelectItem = ListView1SelectItem
   end
 end

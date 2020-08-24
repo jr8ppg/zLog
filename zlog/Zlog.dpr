@@ -104,7 +104,8 @@ uses
   UTextEditor in 'UTextEditor.pas' {TextEditor},
   USelectUserDefinedContest in 'USelectUserDefinedContest.pas' {SelectUserDefinedContest},
   UserDefinedContest in 'UserDefinedContest.pas',
-  UVoiceForm in 'UVoiceForm.pas' {VoiceForm};
+  UVoiceForm in 'UVoiceForm.pas' {VoiceForm},
+  UCFGEdit in 'UCFGEdit.pas' {CFGEdit};
 
 {$R *.RES}
 

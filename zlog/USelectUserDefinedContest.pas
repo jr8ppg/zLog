@@ -25,6 +25,7 @@ type
     checkImportCwMessage2: TCheckBox;
     checkImportCwMessage3: TCheckBox;
     checkImportCwMessage4: TCheckBox;
+    buttonCFGEdit: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonCfgFolderRefClick(Sender: TObject);
@@ -33,10 +34,13 @@ type
       Selected: Boolean);
     procedure ListView1DblClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
+    procedure buttonCFGEditClick(Sender: TObject);
+    procedure ListView1MouseEnter(Sender: TObject);
   private
     { Private êÈåæ }
     FCfgList: TUserDefinedContestList;
     FSelectedContest: TUserDefinedContest;
+    FInitialContestName: string;
     function ScanCfgFiles(strFolder: string): TUserDefinedContestList;
     procedure ShowCfgFiles(L: TUserDefinedContestList);
     function GetCfgFolder(): string;
@@ -49,9 +53,13 @@ type
     property SelectedContest: TUserDefinedContest read FSelectedContest;
     property ImportProvCity: Boolean read GetImportProvCity;
     property ImportCwMessage[Index: Integer]: Boolean read GetImportCwMessage;
+    property InitialContestName: string read FInitialContestName write FInitialContestName;
   end;
 
 implementation
+
+uses
+  UCFGEdit;
 
 {$R *.dfm}
 
@@ -86,6 +94,49 @@ begin
    ModalResult := mrOK;
 end;
 
+procedure TSelectUserDefinedContest.buttonCFGEditClick(Sender: TObject);
+var
+   f: TCFGEdit;
+   D: TUserDefinedContest;
+begin
+   f := TCFGEdit.Create(Self);
+   try
+      D := TUserDefinedContest(ListView1.Selected.Data);
+
+      f.Sent := D.Sent;
+      f.Prov := D.Prov;
+      f.City := D.City;
+      f.Power := D.Power;
+      f.CwMessageA[1] := D.CwMessageA[1];
+      f.CwMessageA[2] := D.CwMessageA[2];
+      f.CwMessageA[3] := D.CwMessageA[3];
+      f.CwMessageA[4] := D.CwMessageA[4];
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      D.Sent := F.Sent;
+      D.Prov := F.Prov;
+      D.City := F.City;
+      D.Power := F.Power;
+      D.CwMessageA[1] := f.CwMessageA[1];
+      D.CwMessageA[2] := f.CwMessageA[2];
+      D.CwMessageA[3] := f.CwMessageA[3];
+      D.CwMessageA[4] := f.CwMessageA[4];
+      D.Save();
+
+      ListView1.Selected.SubItems[1] := D.Prov;
+      ListView1.Selected.SubItems[2] := D.City;
+      ListView1.Selected.SubItems[3] := D.CwMessageA[1];
+      ListView1.Selected.SubItems[4] := D.CwMessageA[2];
+      ListView1.Selected.SubItems[5] := D.CwMessageA[3];
+      ListView1.Selected.SubItems[6] := D.CwMessageA[4];
+   finally
+      f.Release();
+   end;
+end;
+
 procedure TSelectUserDefinedContest.buttonCfgFolderRefClick(Sender: TObject);
 var
    RootFolder: string;
@@ -110,10 +161,16 @@ begin
    buttonOK.Click();
 end;
 
+procedure TSelectUserDefinedContest.ListView1MouseEnter(Sender: TObject);
+begin
+   ActiveControl := ListView1;
+end;
+
 procedure TSelectUserDefinedContest.ListView1SelectItem(Sender: TObject;
   Item: TListItem; Selected: Boolean);
 begin
    buttonOK.Enabled := Selected;
+   buttonCFGEdit.Enabled := Selected;
 end;
 
 function TSelectUserDefinedContest.ScanCfgFiles(strFolder: string): TUserDefinedContestList;
@@ -139,8 +196,8 @@ begin
             ((F.Attr and faSysFile) = 0) then begin
 
             D := TUserDefinedContest.Parse(S + F.Name);
-            D.FileName := F.Name;
-            D.Fullpath := S + F.Name;
+//            D.FileName := F.Name;
+//            D.Fullpath := S + F.Name;
 
             L.Add(D);
          end;
@@ -176,6 +233,10 @@ begin
       listitem.SubItems.Add(D.FCwMessageA[3]);
       listitem.SubItems.Add(D.FCwMessageA[4]);
       listitem.Data := D;
+
+      if D.ContestName = FInitialContestName then begin
+         listItem.Selected := True;
+      end;
    end;
 
    ListView1.Items.EndUpdate();

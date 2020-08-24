@@ -2794,7 +2794,7 @@ begin
       dmZlogGlobal.Settings._sameexchange := SameExchange;
    end;
 
-   SentStr := '$Q';
+   SentStr := dmZlogGlobal.Settings._sentstr;
 end;
 
 procedure TGeneralContest.SetPoints(var aQSO: TQSO);
@@ -6891,10 +6891,6 @@ begin
 
             if FileExists(OpenDialog.FileName) then begin
                LoadNewContestFromFile(OpenDialog.FileName);
-            end
-            else begin
-               // 初回のみSentをセットする
-               dmZlogGlobal.Settings._sentstr := MyContest.SentStr;
             end;
 
             SetWindowCaption();
@@ -6903,6 +6899,9 @@ begin
             MessageDlg('Data will NOT be saved until you enter the file name', mtWarning, [mbOK], 0); { HELP context 0 }
          end;
       end;
+
+      // Sentは各コンテストで設定された値
+      dmZlogGlobal.Settings._sentstr := MyContest.SentStr;
 
       MyContest.Renew;
       EditScreen.RefreshScreen;

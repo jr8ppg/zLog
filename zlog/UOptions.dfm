@@ -727,6 +727,8 @@ object formOptions: TformOptions
         Height = 20
         AutoSize = False
         CharCase = ecUpperCase
+        Color = clBtnFace
+        ReadOnly = True
         TabOrder = 8
       end
       object CQZoneEdit: TEdit

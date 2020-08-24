@@ -3,7 +3,8 @@ unit UserDefinedContest;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Forms,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
+  System.StrUtils, Vcl.Forms,
   Generics.Collections, Generics.Defaults;
 
 type
@@ -16,26 +17,41 @@ type
     FPower: string;
     FDatFile: string;
     FCoeff: Boolean;
+    FSent: string;
     FCwMessageA: array[1..8] of string;
     FCwMessageB: array[1..8] of string;
+    FCfgSource: TStringList;
   private
+    procedure SetFullPath(v: string);
     function GetCwMessageA(Index: Integer): string;
     procedure SetCwMessageA(Index: Integer; v: string);
     function GetCwMessageB(Index: Integer): string;
     procedure SetCwMessageB(Index: Integer; v: string);
+    procedure SetSent(v: string);
+    procedure SetProv(v: string);
+    procedure SetCity(v: string);
+    procedure SetPower(v: string);
+    function ParseCommand(strLine: string; var strCmd, strParam: string): Boolean;
+    procedure EditParam(strCommand, strNewValue: string);
   public
-    constructor Create();
+    constructor Create(); overload;
+    constructor Create(strFullPath: string); overload;
+    destructor Destroy(); override;
+    procedure Load();
+    procedure Save();
     class function Parse(strPath: string): TUserDefinedContest; static;
-    property Fullpath: string read FFullpath write FFullpath;
+    property Fullpath: string read FFullpath write SetFullpath;
     property Filename: string read FFileName write FFileName;
     property ContestName: string read FContestName write FContestName;
-    property Prov: string read FProv write FProv;
-    property City: string read FCity write FCity;
-    property Power: string read FPower write FPower;
+    property Prov: string read FProv write SetProv;
+    property City: string read FCity write SetCity;
+    property Power: string read FPower write SetPower;
     property DatFile: string read FDatFile write FDatFile;
     property Coeff: Boolean read FCoeff write FCoeff;
+    property Sent: string read FSent write SetSent;
     property CwMessageA[Index: Integer]: string read GetCwMessageA write SetCwMessageA;
     property CwMessageB[Index: Integer]: string read GetCwMessageB write SetCwMessageB;
+    property CfgSource: TStringList read FCfgSource;
   end;
 
   TUserDefinedContestList = class(TObjectList<TUserDefinedContest>)
@@ -52,6 +68,7 @@ var
    i: Integer;
 begin
    Inherited;
+   FCfgSource := TStringList.Create();
    FFullpath := '';
    FFileName := '';
    FContestName := '';
@@ -66,56 +83,48 @@ begin
    end;
 end;
 
+constructor TUserDefinedContest.Create(strFullPath: string);
+begin
+   Create();
+   FullPath := strFullPath;
+end;
+
+destructor TUserDefinedContest.Destroy();
+begin
+   Inherited;
+   FCfgSource.Free();
+end;
+
+procedure TUserDefinedContest.Load();
+begin
+   FCfgSource.LoadFromFile(FFullPath);
+end;
+
+procedure TUserDefinedContest.Save();
+begin
+   FCfgSource.SaveToFile(FFullPath);
+end;
+
 class function TUserDefinedContest.Parse(strPath: string): TUserDefinedContest;
 var
-   F: TextFile;
    strLine: string;
    strCmd: string;
    strParam: string;
-   p: Integer;
    D: TUserDefinedContest;
+   i: Integer;
 begin
-   D := TUserDefinedContest.Create();
+   D := TUserDefinedContest.Create(strPath);
    try
-      AssignFile(F, strPath);
-      Reset(F);
+      D.Load();
 
-      while(Eof(F) = False) do begin
-         ReadLn(F, strLine);
+      for i := 0 to D.CfgSource.Count - 1 do begin
+         strLine := D.CfgSource[i];
 
          strLine := Trim(strLine);
 
-         if strLine = '' then begin
+         if D.ParseCommand(strLine, strCmd, strParam) = False then begin
             Continue;
          end;
-
-         if strLine[1] = ';' then begin
-            Continue;
-         end;
-
-         if strLine[1] = '#' then begin
-            D.ContestName := Copy(strLine, 2);
-            Continue;
-         end;
-
-         p := Pos(';', strLine);
-         if p > 0 then begin
-            strLine := Copy(strLine, 1, p - 1);
-         end;
-
-         strLine := UpperCase(strLine);
-
-         p := Pos(#$09, strLine);
-         if p = 0 then begin
-            p := Pos(' ', strLine);
-         end;
-
-         if p = 0 then begin
-            Continue;
-         end;
-
-         strCmd := Trim(Copy(strLine, 1, p - 1));
-         strParam := Trim(Copy(strLine, p + 1));
 
          if strCmd = 'PROV' then begin
             D.Prov := strParam;
@@ -136,6 +145,9 @@ begin
             else begin
                D.Coeff := False;
             end;
+         end
+         else if strCmd = 'SENDNR' then begin
+            D.Sent := strParam;
          end
          else if strCmd = 'F1_A' then begin
             D.FCwMessageA[1] := strParam;
@@ -186,11 +198,15 @@ begin
             D.FCwMessageB[8] := strParam;
          end;
       end;
-
-      CloseFile(F);
    finally
       Result := D;
    end;
+end;
+
+procedure TUserDefinedContest.SetFullPath(v: string);
+begin
+   FFullPath := v;
+   FFilename := ExtractFileName(v);
 end;
 
 function TUserDefinedContest.GetCwMessageA(Index: Integer): string;
@@ -201,6 +217,7 @@ end;
 procedure TUserDefinedContest.SetCwMessageA(Index: Integer; v: string);
 begin
    FCwMessageA[Index] := v;
+   EditParam('F' + IntToStr(Index) + '_A', v);
 end;
 
 function TUserDefinedContest.GetCwMessageB(Index: Integer): string;
@@ -211,6 +228,95 @@ end;
 procedure TUserDefinedContest.SetCwMessageB(Index: Integer; v: string);
 begin
    FCwMessageB[Index] := v;
+end;
+
+procedure TUserDefinedContest.SetSent(v: string);
+begin
+   FSent := v;
+   EditParam('SENDNR', v);
+end;
+
+procedure TUserDefinedContest.SetProv(v: string);
+begin
+   FProv := v;
+   EditParam('PROV', v);
+end;
+
+procedure TUserDefinedContest.SetCity(v: string);
+begin
+   FCity := v;
+   EditParam('CITY', v);
+end;
+
+procedure TUserDefinedContest.SetPower(v: string);
+begin
+   v := LeftStr(v + '----------------', 16);
+   FPower := v;
+   EditParam('POWER', v);
+end;
+
+function TUserDefinedContest.ParseCommand(strLine: string; var strCmd, strParam: string): Boolean;
+var
+   p: Integer;
+begin
+   if strLine = '' then begin
+      Result := False;
+      Exit;
+   end;
+
+   if strLine[1] = ';' then begin
+      Result := False;
+      Exit;
+   end;
+
+   if strLine[1] = '#' then begin
+      ContestName := Copy(strLine, 2);
+      Result := False;
+      Exit;
+   end;
+
+   p := Pos(';', strLine);
+   if p > 0 then begin
+      strLine := Copy(strLine, 1, p - 1);
+   end;
+
+   strLine := UpperCase(strLine);
+
+   p := Pos(#$09, strLine);
+   if p = 0 then begin
+      p := Pos(' ', strLine);
+   end;
+
+   if p = 0 then begin
+      Result := False;
+      Exit;
+   end;
+
+   strCmd := Trim(Copy(strLine, 1, p - 1));
+   strParam := Trim(Copy(strLine, p + 1));
+
+   Result := True;
+end;
+
+procedure TUserDefinedContest.EditParam(strCommand, strNewValue: string);
+var
+   i: Integer;
+   strLine: string;
+   strCmd: string;
+   strParam: string;
+begin
+   for i := 0 to CfgSource.Count - 1 do begin
+      strLine := CfgSource[i];
+      strLine := Trim(strLine);
+      if ParseCommand(strLine, strCmd, strParam) = False then begin
+         Continue;
+      end;
+
+      if strCmd = strCommand then begin
+         CfgSource[i] := StringReplace(CfgSource[i], strParam, strNewValue, [rfReplaceAll]);
+         Break;
+      end;
+   end;
 end;
 
 { TUserDefinedContestList }

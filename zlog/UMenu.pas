@@ -202,6 +202,8 @@ procedure TMenuForm.SelectButtonClick(Sender: TObject);
 begin
    FSelectDlg.CfgFolder := dmZlogGlobal.Settings._cfgdatpath;
 
+   FSelectDlg.InitialContestName := rbGeneral.Caption;
+
    if FSelectDlg.ShowModal() = mrCancel then begin
       Exit;
    end;

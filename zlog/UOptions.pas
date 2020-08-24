@@ -652,7 +652,7 @@ begin
          Settings._lptnr := 0;
       end;
 
-      Settings._sentstr := SentEdit.Text;
+//      Settings._sentstr := SentEdit.Text;
 
       Settings._soundpath := IncludeTrailingPathDelimiter(SoundPathEdit.Text);
       Settings._backuppath := IncludeTrailingPathDelimiter(BackUpPathEdit.Text);
@@ -961,6 +961,7 @@ begin
          comboCwPttPort.ItemIndex := 0;
       end;
 
+      // Sent—“‚Í•\¦ê—p
       SentEdit.Text := Settings._sentstr;
 
       SoundPathEdit.Text := Settings._soundpath;
