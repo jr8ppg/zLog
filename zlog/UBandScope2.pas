@@ -28,6 +28,7 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure GridMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure FormResize(Sender: TObject);
   private
     { Private êÈåæ }
     FProcessing: Boolean;
@@ -458,6 +459,11 @@ begin
       VK_ESCAPE:
          MainForm.LastFocus.SetFocus;
    end;
+end;
+
+procedure TBandScope2.FormResize(Sender: TObject);
+begin
+   Grid.ColWidths[0] := Grid.Width - 4;
 end;
 
 procedure TBandScope2.FormShow(Sender: TObject);

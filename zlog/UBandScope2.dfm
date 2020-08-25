@@ -20,6 +20,7 @@ object BandScope2: TBandScope2
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
+  OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
@@ -42,7 +43,7 @@ object BandScope2: TBandScope2
       Height = 404
       Align = alClient
       ColCount = 1
-      DefaultColWidth = 500
+      DefaultColWidth = 188
       DefaultDrawing = False
       DoubleBuffered = True
       FixedCols = 0
