@@ -5711,6 +5711,8 @@ object MainForm: TMainForm
     object actionQsoComplete: TAction
       Tag = 1
       Caption = 'actionQsoComplete'
+      SecondaryShortCuts.Strings = (
+        ';')
       ShortCut = 40
       OnExecute = actionQsoCompleteExecute
     end
