@@ -887,6 +887,7 @@ type
     FCheckCountry: TCheckCountry;
     FScratchSheet: TScratchSheet;
     FBandScopeEx: TBandScopeArray;
+    FBandScope: TBandScope2;
     FQuickRef: TQuickRef;              // Quick Reference
     FZAnalyze: TZAnalyze;              // Analyze window
     FCWMessagePad: TCwMessagePad;
@@ -1019,6 +1020,12 @@ type
     procedure BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
 
+    procedure BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Integer);
+    procedure BandScopeAddSelfSpotFromNetwork(BSText: string);
+    procedure BandScopeAddClusterSpot(Sp: TSpot);
+    procedure BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
+    procedure BandScopeUpdateSpot(aQSO: TQSO);
+
     property RigControl: TRigControl read FRigControl;
     property PartialCheck: TPartialCheck read FPartialCheck;
     property CommForm: TCommForm read FCommForm;
@@ -1027,7 +1034,6 @@ type
     property ZLinkForm: TZLinkForm read FZLinkForm;
     property FreqList: TFreqList read FFreqList;
     property ScratchSheet: TScratchSheet read FScratchSheet;
-    property BandScopeEx: TBandScopeArray read FBandScopeEx;
     property SuperCheckList: TSuperList read FSuperCheckList;
   end;
 
@@ -1743,6 +1749,9 @@ begin
       FBandScopeEx[bb].Select := False;
    end;
    FBandScopeEx[B].Select := True;
+
+   FBandScope.CurrentBand := B;
+   FBandScope.Select := True;
 end;
 
 procedure TMainForm.UpdateMode(M: TMode);
@@ -3716,6 +3725,7 @@ begin
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
    end;
+   FBandScope := TBandScope2.Create(Self, b19);
 
    FNPlusOneThread := nil;
    FSuperCheckDataLoadThread := nil;
@@ -3941,6 +3951,7 @@ begin
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZlogGlobal.ReadWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
    end;
+   dmZlogGlobal.ReadWindowState(FBandScope, 'BandScope');
 
    FSuperCheck.Columns := dmZlogGlobal.SuperCheckColumns;
    FSuperCheck2.Columns := dmZlogGlobal.SuperCheck2Columns;
@@ -3968,6 +3979,7 @@ begin
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZlogGlobal.WriteWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
    end;
+   dmZlogGlobal.WriteWindowState(FBandScope, 'BandScope');
 
    dmZlogGlobal.WriteMainFormState(Left, top, Width, Height, mnHideCWPhToolBar.Checked, mnHideMenuToolbar.Checked);
    dmZlogGlobal.SuperCheckColumns := FSuperCheck.Columns;
@@ -4455,6 +4467,7 @@ begin
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b].FontSize := font_size;
    end;
+   FBandScope.FontSize := font_size;
 
    FCWMessagePad.FontSize := font_size;
 end;
@@ -5090,7 +5103,7 @@ begin
          if dmZlogGlobal.Settings._autobandmap then begin
             j := RigControl.Rig.CurrentFreqHz;
             if j > 0 then begin
-               FBandScopeEx[CurrentQSO.Band].AddSelfSpot(CurrentQSO, j);
+               BandScopeAddSelfSpot(CurrentQSO, j);
             end;
          end;
       end;
@@ -5302,6 +5315,7 @@ begin
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b].Release();
    end;
+   FBandScope.Release();
 
    if MyContest <> nil then begin
       dmZlogGlobal.WriteWindowState(MyContest.MultiForm, 'MultiForm');
@@ -5877,6 +5891,8 @@ begin
          FBandScopeEx[b].FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
          FBandScopeEx[b].IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
       end;
+      FBandScope.FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
+      FBandScope.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
 
       // OpListÄƒ[ƒh
       BuildOpListMenu(OpMenu, OpMenuClick);
@@ -7530,7 +7546,7 @@ var
       end;
 
       if E > 1000 then begin
-         FBandScopeEx[CurrentQSO.Band].AddSelfSpot(CurrentQSO, round(E * 1000));
+         BandScopeAddSelfSpot(CurrentQSO, Round(E * 1000));
       end;
 
       Result := True;
@@ -7539,7 +7555,7 @@ begin
    if RigControl.Rig <> nil then begin
       nFreq := RigControl.Rig.CurrentFreqHz;
       if nFreq > 0 then begin
-         FBandScopeEx[CurrentQSO.Band].AddSelfSpot(CurrentQSO, nFreq);
+         BandScopeAddSelfSpot(CurrentQSO, nFreq);
       end
       else begin
          if InputFreq() = False then begin
@@ -8077,6 +8093,9 @@ begin
       if dmZLogGlobal.Settings._usebandscope[b] = True then begin
          FBandScopeEx[b].Show();
       end;
+   end;
+   if dmZLogGlobal.Settings._usebandscope_current = True then begin
+      FBandScope.Show();
    end;
 end;
 
@@ -8823,6 +8842,7 @@ begin
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b].NotifyWorked(aQSO);
    end;
+   FBandScope.NotifyWorked(aQSO);
 end;
 
 procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
@@ -8872,6 +8892,7 @@ begin
 
       FBandScopeEx[b].RewriteBandScope();
    end;
+   FBandScope.RewriteBandScope();
 end;
 
 procedure TMainForm.BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
@@ -8923,6 +8944,59 @@ begin
       M.Caption := TrimRight(string(Copy(AnsiString(dmZlogGlobal.OpList.Strings[i]), 1, 20)));
       M.OnClick := OnClickHandler;
       P.Add(m);
+   end;
+end;
+
+procedure TMainForm.BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Integer);
+begin
+   FBandScopeEx[aQSO.Band].AddSelfSpot(aQSO, nFreq);
+   FBandScope.AddSelfSpot(aQSO, nFreq);
+end;
+
+procedure TMainForm.BandScopeAddSelfSpotFromNetwork(BSText: string);
+var
+   b: TBand;
+begin
+   for b := b19 to b50 do begin
+      FBandScopeEx[b].AddSelfSpotFromNetwork(BSText);
+   end;
+   FBandScope.AddSelfSpotFromNetwork(BSText);
+end;
+
+procedure TMainForm.BandScopeAddClusterSpot(Sp: TSpot);
+begin
+   FBandScopeEx[Sp.Band].AddClusterSpot(Sp);
+   FBandScope.AddClusterSpot(Sp);
+end;
+
+procedure TMainForm.BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
+begin
+   FBandScopeEx[B].MarkCurrentFreq(Hz);
+   FBandScope.MarkCurrentFreq(Hz);
+end;
+
+procedure TMainForm.BandScopeUpdateSpot(aQSO: TQSO);
+
+   procedure SetSpotWorked(BS: TBandScope2);
+   var
+      i: Integer;
+      S: TBaseSpot;
+   begin
+      for i := 0 to BS.BSList.Count - 1 do begin
+         S := TBaseSpot(BS.BSList[i]);
+         if (S.Call = aQSO.Callsign) and (S.Band = aQSO.Band) then begin
+            S.NewCty := False;
+            S.NewZone := False;
+            S.Worked := True;
+            BS.RewriteBandScope();
+         end;
+      end;
+   end;
+begin
+   SetSpotWorked(FBandScopeEx[aQSO.Band]);
+
+   if FBandScope.CurrentBand = aQSO.Band then begin
+      SetSpotWorked(FBandScope);
    end;
 end;
 

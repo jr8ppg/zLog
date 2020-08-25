@@ -376,7 +376,7 @@ begin
    ListBox.ShowLast();
 
    // BandScope‚É“o˜^
-   MainForm.BandScopeEx[Sp.Band].AddClusterSpot(Sp);
+   MainForm.BandScopeAddClusterSpot(Sp);
 end;
 
 procedure TCommForm.TransmitSpot(S : string); // local or via network

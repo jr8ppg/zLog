@@ -3293,7 +3293,7 @@ begin
 
    MainForm.BSRefresh();
 
-   MainForm.BandScopeEx[_currentband].MarkCurrentFreq(_freqoffset + _currentfreq[_currentvfo]);
+   MainForm.BandScopeMarkCurrentFreq(_currentband, _freqoffset + _currentfreq[_currentvfo]);
 end;
 
 procedure TRigControl.FormCreate(Sender: TObject);

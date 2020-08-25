@@ -180,27 +180,16 @@ var
    S: TBaseSpot;
    boo: boolean;
 begin
-   boo := False;
    if aQSO.NewMulti1 or aQSO.NewMulti2 then begin
       RenewBandScope;
       RenewCluster;
       // exit;
    end;
 
-   for i := 0 to MainForm.BandScopeEx[aQSO.Band].BSList.Count - 1 do begin
-      S := TBaseSpot(MainForm.BandScopeEx[aQSO.Band].BSList[i]);
-      if (S.Call = aQSO.Callsign) and (S.Band = aQSO.Band) then begin
-         S.NewCty := False;
-         S.NewZone := False;
-         S.Worked := true;
-         boo := true;
-      end;
-   end;
+   // BandScopeデータを交信済みに変更する
+   MainForm.BandScopeUpdateSpot(aQSO);
 
-   if boo then begin
-      MainForm.BSRefresh();
-   end;
-
+   // Clusterデータを交信済みに変更する
    boo := False;
    for i := 0 to MainForm.CommForm.SpotList.Count - 1 do begin
       S := TBaseSpot(MainForm.CommForm.SpotList[i]);

@@ -2758,7 +2758,7 @@ object formOptions: TformOptions
         Left = 11
         Top = 11
         Width = 326
-        Height = 110
+        Height = 128
         Caption = 'Bands'
         TabOrder = 0
         object checkBs01: TCheckBox
@@ -2921,10 +2921,20 @@ object formOptions: TformOptions
           State = cbChecked
           TabOrder = 3
         end
+        object checkBsCurrent: TCheckBox
+          Left = 247
+          Top = 102
+          Width = 67
+          Height = 17
+          Caption = 'Current'
+          Checked = True
+          State = cbChecked
+          TabOrder = 16
+        end
       end
       object GroupBox10: TGroupBox
         Left = 11
-        Top = 127
+        Top = 145
         Width = 326
         Height = 130
         Caption = 'Info. Colors'

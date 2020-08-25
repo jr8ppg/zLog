@@ -55,13 +55,14 @@ type
     procedure SetIconType(v: Integer);
     function CalcRemainTime(T1, T2: TDateTime): Integer;
     function CalcElapsedTime(T1, T2: TDateTime): Integer;
+    procedure SetCurrentBand(b: TBand);
   public
     { Public êÈåæ }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
     procedure AddSelfSpot(aQSO : TQSO; Hz : LongInt);
     procedure AddSelfSpotFromNetwork(BSText : string);
-    procedure AddClusterSpot(sp: TSpot);
-    procedure RewriteBandScope;
+    procedure AddClusterSpot(Sp: TSpot);
+    procedure RewriteBandScope();
     procedure MarkCurrentFreq(Hz : integer);
     procedure NotifyWorked(aQSO: TQSO);
 
@@ -70,6 +71,7 @@ type
     property FreshnessType: Integer read FFreshnessType write SetFreshnessType;
     property IconType: Integer read FIconType write SetIconType;
     property BSList: TBSList read FBSList;
+    property CurrentBand: TBand read FCurrBand write SetCurrentBand;
   end;
 
   TBandScopeArray = array[b19..b10g] of TBandScope2;
@@ -134,6 +136,10 @@ procedure TBandScope2.AddSelfSpot(aQSO: TQSO; Hz: LongInt);
 var
    D: TBSData;
 begin
+   if FCurrBand <> aQSO.Band then begin
+      Exit;
+   end;
+
    D := TBSData.Create;
    D.FreqHz := Hz;
    D.Band := aQSO.Band;
@@ -162,6 +168,7 @@ begin
    D.SpotSource := ssSelfFromZServer;
 
    if D.Band <> FCurrBand then begin
+      D.Free();
       Exit;
    end;
 
@@ -172,10 +179,14 @@ begin
 end;
 
 // SpotSourceÇÕssCluster ñîÇÕ ssClusterFromZServer
-procedure TBandScope2.AddClusterSpot(sp: TSpot);
+procedure TBandScope2.AddClusterSpot(Sp: TSpot);
 var
    D: TBSData;
 begin
+   if FCurrBand <> Sp.Band then begin
+      Exit;
+   end;
+
    D := TBSData.Create;
    D.Call := Sp.Call;
    D.FreqHz := Sp.FreqHz;
@@ -234,7 +245,7 @@ begin
    FBSList.Pack;
 end;
 
-procedure TBandScope2.RewriteBandScope;
+procedure TBandScope2.RewriteBandScope();
 var
    D: TBSData;
    i: Integer;
@@ -770,6 +781,14 @@ end;
 function TBandScope2.CalcElapsedTime(T1, T2: TDateTime): Integer;
 begin
    Result := Trunc(SecondSpan(T2, T1));
+end;
+
+procedure TBandScope2.SetCurrentBand(b: TBand);
+begin
+   FBSList.Clear();
+   FCurrBand := b;
+   Caption := BandString[b];
+   RewriteBandScope();
 end;
 
 initialization

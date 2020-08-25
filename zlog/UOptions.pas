@@ -369,6 +369,7 @@ type
     Label74: TLabel;
     buttonBrowseSoundPath: TButton;
     SoundPathEdit: TEdit;
+    checkBsCurrent: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -722,6 +723,7 @@ begin
       Settings._usebandscope[b2400] := checkBS14.Checked;
       Settings._usebandscope[b5600] := checkBS15.Checked;
       Settings._usebandscope[b10g]  := checkBS16.Checked;
+      Settings._usebandscope_current := checkBsCurrent.Checked;
 
       for i := 1 to 7 do begin
          Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
@@ -1041,6 +1043,7 @@ begin
       checkBS14.Checked := Settings._usebandscope[b2400];
       checkBS15.Checked := Settings._usebandscope[b5600];
       checkBS16.Checked := Settings._usebandscope[b10g];
+      checkBsCurrent.Checked := Settings._usebandscope_current;
 
       for i := 1 to 7 do begin
          FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
