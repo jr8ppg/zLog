@@ -168,6 +168,9 @@ end;
 
 procedure TSelectUserDefinedContest.ListView1DblClick(Sender: TObject);
 begin
+   if buttonOK.Enabled = False then begin
+      Exit;
+   end;
    buttonOK.Click();
 end;
 
