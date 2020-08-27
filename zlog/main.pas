@@ -7954,6 +7954,9 @@ begin
    if CurrentQSO.mode = mCW then begin
       CQRepeatClick2(Sender);
    end;
+   if CurrentQSO.mode = mSSB then begin
+      VoiceCQ3Click(Sender);
+   end;
 end;
 
 // #58 Backup / Alt+B
@@ -8312,8 +8315,8 @@ procedure TMainForm.actionCQRepeat2Execute(Sender: TObject);
 begin
    if CurrentQSO.mode = mCW then begin
       CQRepeatClick1(Sender);
-   end
-   else begin
+   end;
+   if CurrentQSO.mode = mSSB then begin
       VoiceCQ2Click(Sender);
    end;
 end;
