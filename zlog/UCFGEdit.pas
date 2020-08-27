@@ -49,7 +49,7 @@ type
   private
     { Private êÈåæ }
     FCwMessageA: array[1..4] of TEdit;
-    FBandToUse: array[1..16] of TCheckBox;
+    FBandToUse: array[1..13] of TCheckBox;
     function GetSent(): string;
     procedure SetSent(v: string);
     function GetProv(): string;
@@ -82,22 +82,21 @@ begin
    FCwMessageA[2] := editCWF2A;
    FCwMessageA[3] := editCWF3A;
    FCwMessageA[4] := editCWF4A;
-   FBandToUse[1] := checkBand01;
-   FBandToUse[2] := checkBand02;
-   FBandToUse[3] := checkBand03;
-   FBandToUse[4] := checkBand04;
-   FBandToUse[5] := checkBand05;
-   FBandToUse[6] := checkBand06;
-   FBandToUse[7] := checkBand07;
-   FBandToUse[8] := checkBand08;
-   FBandToUse[9] := checkBand09;
-   FBandToUse[10] := checkBand10;
-   FBandToUse[11] := checkBand11;
-   FBandToUse[12] := checkBand12;
-   FBandToUse[13] := checkBand13;
-   FBandToUse[14] := checkBand14;
-   FBandToUse[15] := checkBand15;
-   FBandToUse[16] := checkBand16;
+
+   // WARCÉoÉìÉhÇÕä‹ÇﬂÇ»Ç¢
+   FBandToUse[1] := checkBand01;       // 1.9M
+   FBandToUse[2] := checkBand02;       // 3.5M
+   FBandToUse[3] := checkBand03;       // 7M
+   FBandToUse[4] := checkBand05;       // 14M
+   FBandToUse[5] := checkBand07;       // 21M
+   FBandToUse[6] := checkBand09;       // 28M
+   FBandToUse[7] := checkBand10;       // 50M
+   FBandToUse[8] := checkBand11;       // 144M
+   FBandToUse[9] := checkBand12;       // 430M
+   FBandToUse[10] := checkBand13;      // 1.2G
+   FBandToUse[11] := checkBand14;      // 2.4G
+   FBandToUse[12] := checkBand15;      // 5.6G
+   FBandToUse[13] := checkBand16;      // 10Gup
 end;
 
 procedure TCFGEdit.buttonOKClick(Sender: TObject);
@@ -142,7 +141,7 @@ var
 begin
    s := '';
 
-   for i := 1 to 16 do begin
+   for i := Low(FBandToUse) to High(FBandToUse) do begin
       if FBandToUse[i].Checked = False then begin
          s := s + '-';
       end
@@ -158,8 +157,8 @@ procedure TCFGEdit.SetPower(v: string);
 var
    i: Integer;
 begin
-   v := LeftStr(v + '----------------', 16);
-   for i := 1 to 16 do begin
+   v := LeftStr(v + '----------------', 13);
+   for i := Low(FBandToUse) to High(FBandToUse) do begin
       if v[i] = '-' then begin
          FBandToUse[i].Checked := False;
       end

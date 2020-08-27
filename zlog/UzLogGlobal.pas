@@ -161,6 +161,10 @@ type
     // Voice Memory
     FSoundFiles: array[1..12] of string;
     FSoundComments: array[1..12] of string;
+
+    // Select User Defined Contest
+    FImpProvCity: Boolean;
+    FImpCwMessage: array[1..4] of Boolean;
   end;
 
 var
@@ -905,6 +909,14 @@ begin
             end;
          end;
       end;
+
+      // Select User Defined Contest
+      Settings.FImpProvCity := ini.ReadBool('UserDefinedContest', 'imp_prov_city', True);
+      Settings.FImpCwMessage[1] := ini.ReadBool('UserDefinedContest', 'imp_f1a', True);
+      Settings.FImpCwMessage[2] := ini.ReadBool('UserDefinedContest', 'imp_f2a', True);
+      Settings.FImpCwMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_f3a', False);
+      Settings.FImpCwMessage[4] := ini.ReadBool('UserDefinedContest', 'imp_f4a', False);
+
    finally
       ini.Free();
       slParam.Free();
@@ -1301,6 +1313,13 @@ begin
          ini.WriteString('Voice', 'F#' + IntToStr(i), Settings.FSoundFiles[i]);
          ini.WriteString('Voice', 'C#' + IntToStr(i), Settings.FSoundComments[i]);
       end;
+
+      // Select User Defined Contest
+      ini.WriteBool('UserDefinedContest', 'imp_prov_city', Settings.FImpProvCity);
+      ini.WriteBool('UserDefinedContest', 'imp_f1a', Settings.FImpCwMessage[1]);
+      ini.WriteBool('UserDefinedContest', 'imp_f2a', Settings.FImpCwMessage[2]);
+      ini.WriteBool('UserDefinedContest', 'imp_f3a', Settings.FImpCwMessage[3]);
+      ini.WriteBool('UserDefinedContest', 'imp_f4a', Settings.FImpCwMessage[4]);
    finally
       ini.Free();
       slParam.Free();

@@ -29,7 +29,6 @@ object CFGEdit: TCFGEdit
     Default = True
     TabOrder = 3
     OnClick = buttonOKClick
-    ExplicitLeft = 533
   end
   object buttonCancel: TButton
     Left = 520
@@ -41,7 +40,6 @@ object CFGEdit: TCFGEdit
     Caption = #12461#12515#12531#12475#12523
     ModalResult = 2
     TabOrder = 4
-    ExplicitLeft = 533
   end
   object GroupBox1: TGroupBox
     Left = 8
@@ -194,6 +192,7 @@ object CFGEdit: TCFGEdit
       Width = 50
       Height = 17
       Caption = '10M'
+      Enabled = False
       TabOrder = 3
     end
     object checkBand05: TCheckBox
@@ -210,6 +209,7 @@ object CFGEdit: TCFGEdit
       Width = 50
       Height = 17
       Caption = '18M'
+      Enabled = False
       TabOrder = 5
     end
     object checkBand07: TCheckBox
@@ -226,6 +226,7 @@ object CFGEdit: TCFGEdit
       Width = 50
       Height = 17
       Caption = '24M'
+      Enabled = False
       TabOrder = 7
     end
     object checkBand09: TCheckBox

@@ -59,18 +59,28 @@ type
 implementation
 
 uses
-  UCFGEdit;
+  UCFGEdit, UzLogGlobal;
 
 {$R *.dfm}
 
 procedure TSelectUserDefinedContest.FormCreate(Sender: TObject);
 begin
    FCfgList := nil;
+   checkImportProvCity.Checked := dmZLogGlobal.Settings.FImpProvCity;
+   checkImportCwMessage1.Checked := dmZLogGlobal.Settings.FImpCwMessage[1];
+   checkImportCwMessage2.Checked := dmZLogGlobal.Settings.FImpCwMessage[2];
+   checkImportCwMessage3.Checked := dmZLogGlobal.Settings.FImpCwMessage[3];
+   checkImportCwMessage4.Checked := dmZLogGlobal.Settings.FImpCwMessage[4];
 end;
 
 procedure TSelectUserDefinedContest.FormDestroy(Sender: TObject);
 begin
    FCfgList.Free();
+   dmZLogGlobal.Settings.FImpProvCity := checkImportProvCity.Checked;
+   dmZLogGlobal.Settings.FImpCwMessage[1] := checkImportCwMessage1.Checked;
+   dmZLogGlobal.Settings.FImpCwMessage[2] := checkImportCwMessage2.Checked;
+   dmZLogGlobal.Settings.FImpCwMessage[3] := checkImportCwMessage3.Checked;
+   dmZLogGlobal.Settings.FImpCwMessage[4] := checkImportCwMessage4.Checked;
 end;
 
 procedure TSelectUserDefinedContest.FormShow(Sender: TObject);
@@ -143,7 +153,7 @@ var
    SelectFolder: string;
 begin
    RootFolder := '';
-   SelectFolder := '';
+   SelectFolder := dmZLogGlobal.Settings._cfgdatpath;
 
    if SelectDirectory('フォルダの指定', RootFolder, SelectFolder, [sdNewUI, sdNewFolder, sdShowEdit], Self)= False then begin
       Exit;

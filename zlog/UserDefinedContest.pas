@@ -250,7 +250,7 @@ end;
 
 procedure TUserDefinedContest.SetPower(v: string);
 begin
-   v := LeftStr(v + '----------------', 16);
+   v := LeftStr(v + '----------------', 13);
    FPower := v;
    EditParam('POWER', v);
 end;
