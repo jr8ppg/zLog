@@ -3218,6 +3218,7 @@ begin
    if dmZlogGlobal.MultiOp > 0 then begin
       OpWid := 6;
       MemoWid := 7;
+      MainForm.OpEdit.Visible := True;
    end
    else begin
       OpWid := 0;
@@ -3248,6 +3249,7 @@ begin
    if dmZlogGlobal.MultiOp > 0 then begin
       OpWid := 6;
       MemoWid := 7;
+      MainForm.OpEdit.Visible := True;
    end
    else begin
       OpWid := 0;
@@ -3284,6 +3286,7 @@ begin
    if dmZlogGlobal.MultiOp > 0 then begin
       OpWid := 6;
       MemoWid := 10;
+      MainForm.OpEdit.Visible := True;
    end
    else begin
       OpWid := 0;
@@ -3342,6 +3345,7 @@ begin
    if dmZlogGlobal.MultiOp > 0 then begin
       OpWid := 6;
       MemoWid := 10;
+      MainForm.OpEdit.Visible := True;
    end
    else begin
       OpWid := 0;
@@ -3396,6 +3400,7 @@ begin
    if dmZlogGlobal.MultiOp > 0 then begin
       OpWid := 6;
       MemoWid := 10;
+      MainForm.OpEdit.Visible := True;
    end
    else begin
       OpWid := 0;
@@ -3429,6 +3434,7 @@ begin
    if dmZlogGlobal.MultiOp > 0 then begin
       OpWid := 6;
       MemoWid := 10;
+      MainForm.OpEdit.Visible := True;
    end
    else begin
       OpWid := 0;
@@ -3486,6 +3492,7 @@ begin
    if dmZlogGlobal.MultiOp > 0 then begin
       OpWid := 6;
       MemoWid := 7;
+      MainForm.OpEdit.Visible := True;
    end
    else begin
       OpWid := 0;
@@ -3550,6 +3557,7 @@ begin
    if dmZlogGlobal.MultiOp > 0 then begin
       OpWid := 6;
       MemoWid := 5;
+      MainForm.OpEdit.Visible := True;
    end
    else begin
       OpWid := 0;
@@ -3602,6 +3610,7 @@ begin
    if dmZlogGlobal.MultiOp > 0 then begin
       OpWid := 6;
       MemoWid := 7;
+      MainForm.OpEdit.Visible := True;
    end
    else begin
       OpWid := 0;
@@ -3649,6 +3658,7 @@ begin
    if dmZlogGlobal.MultiOp > 0 then begin
       OpWid := 6;
       MemoWid := 11;
+      MainForm.OpEdit.Visible := True;
    end
    else begin
       OpWid := 0;
