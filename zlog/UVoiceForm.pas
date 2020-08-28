@@ -77,29 +77,28 @@ end;
 procedure TVoiceForm.StopVoice();
 begin
    try
+   try
+      if MP.FileName = '' then begin
+         Exit;
+      end;
+
       if Playing then begin
          MP.Stop;
       end;
+
+      MP.Rewind;
    except
       on EMCIDeviceError do begin
-         Timer.Enabled := False;
-
-         dmZLogKeyer.SetVoiceFlag(0);
-         if dmZLogGlobal.Settings._pttenabled then begin
-            dmZLogKeyer.ControlPTT(False);
-         end;
-
          Exit;
       end;
    end;
 
-   MP.Rewind;
-   Timer.Enabled := False;
-
-   dmZLogKeyer.SetVoiceFlag(0);
-
-   if dmZLogGlobal.Settings._pttenabled then begin
-      dmZLogKeyer.ControlPTT(False);
+   finally
+      Timer.Enabled := False;
+      dmZLogKeyer.SetVoiceFlag(0);
+      if dmZLogGlobal.Settings._pttenabled then begin
+         dmZLogKeyer.ControlPTT(False);
+      end;
    end;
 end;
 
