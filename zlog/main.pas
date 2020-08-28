@@ -3859,8 +3859,8 @@ end;
 procedure TMainForm.FileOpen(Sender: TObject);
 begin
    OpenDialog.Title := 'Open file';
-
    OpenDialog.InitialDir := dmZlogGlobal.Settings._logspath;
+   OpenDialog.FileName := '';
 
    if OpenDialog.Execute then begin
       WriteStatusLine('Loading...', False);
@@ -6373,6 +6373,9 @@ var
    i: Integer;
 begin
    OpenDialog.Title := 'Merge file';
+   OpenDialog.InitialDir := dmZlogGlobal.Settings._logspath;
+   OpenDialog.FileName := '';
+
    if OpenDialog.Execute then begin
       WriteStatusLine('Merging...', False);
       ff := OpenDialog.filename;
@@ -6911,6 +6914,7 @@ begin
       // ファイル名の指定が無い場合は選択ダイアログを出す
       if CurrentFileName = '' then begin
          OpenDialog.InitialDir := dmZlogGlobal.Settings._logspath;
+         OpenDialog.FileName := '';
 
          if OpenDialog.Execute then begin
             dmZLogGlobal.SetLogFileName(OpenDialog.FileName);
