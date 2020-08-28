@@ -74,12 +74,12 @@ object MainForm: TMainForm
     TabOrder = 1
     OnClick = GridClick
     OnDblClick = GridDblClick
-    OnGetEditText = GridGetEditText
+    OnEnter = GridEnter
+    OnExit = GridExit
     OnKeyDown = GridKeyDown
     OnKeyPress = GridKeyPress
     OnMouseUp = GridMouseUp
     OnSelectCell = GridSelectCell
-    OnSetEditText = GridSetEditText
     OnTopLeftChanged = GridTopLeftChanged
     ColWidths = (
       38
@@ -5862,6 +5862,11 @@ object MainForm: TMainForm
       Caption = 'actionPlayMessageB10'
       ShortCut = 8313
       OnExecute = actionPlayMessageBExecute
+    end
+    object actionCQAbort: TAction
+      Caption = 'actionCQAbort'
+      ShortCut = 27
+      OnExecute = actionCQAbortExecute
     end
   end
   object SPCMenu: TPopupMenu

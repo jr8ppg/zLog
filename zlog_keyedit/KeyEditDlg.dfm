@@ -179,7 +179,8 @@ object formKeyEditDlg: TformKeyEditDlg
         'PgUp'
         'PgDn'
         'TAB'
-        'Down')
+        'Down'
+        'Esc')
     end
   end
   object buttonOK: TButton

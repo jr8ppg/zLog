@@ -659,6 +659,7 @@ type
     VoiceF10: THemisphereButton;
     VoiceFMenu: TPopupMenu;
     menuVoiceEdit: TMenuItem;
+    actionCQAbort: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -868,6 +869,9 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure VoiceCQMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure actionCQAbortExecute(Sender: TObject);
+    procedure GridEnter(Sender: TObject);
+    procedure GridExit(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -975,6 +979,7 @@ type
     procedure WriteKeymap();
     procedure ReadKeymap();
     procedure ResetKeymap();
+    procedure SetShortcutEnabled(shortcut: string; fEnabled: Boolean);
 
     // Super Checkä÷åW
     procedure SuperCheckDataLoad();
@@ -4555,12 +4560,6 @@ begin
          Key := #0;
       end;
 
-      Char($1B): { ESC } begin
-         CWStopButtonClick(Self);
-         VoiceStopButtonClick(Self);
-         Key := #0;
-      end;
-
       ' ': begin
          if (TEdit(Sender).Name = 'NumberEdit') or (TEdit(Sender).Name = 'TimeEdit') or (TEdit(Sender).Name = 'DateEdit') then begin
             Key := #0;
@@ -5052,6 +5051,16 @@ end;
 procedure TMainForm.GridDblClick(Sender: TObject);
 begin
    MyContest.EditCurrentRow;
+end;
+
+procedure TMainForm.GridEnter(Sender: TObject);
+begin
+   SetShortcutEnabled('Esc', False);
+end;
+
+procedure TMainForm.GridExit(Sender: TObject);
+begin
+   SetShortcutEnabled('Esc', True);
 end;
 
 procedure TMainForm.CallsignEditKeyUp(Sender: TObject; var Key: word; Shift: TShiftState);
@@ -5681,8 +5690,14 @@ begin
 end;
 
 procedure TMainForm.VoiceFButtonClick(Sender: TObject);
+var
+   n: Integer;
 begin
-   FVoiceForm.SendVoice(THemisphereButton(Sender).Tag);
+   n := THemisphereButton(Sender).Tag;
+   if n > 100 then begin
+      n := n - 100;
+   end;
+   FVoiceForm.SendVoice(n);
 end;
 
 procedure TMainForm.TimeEditChange(Sender: TObject);
@@ -8496,6 +8511,17 @@ begin
    MemoEdit.Text := strTemp;
 end;
 
+// #113 CW/VoiceëóèoíÜé~ ESC
+procedure TMainForm.actionCQAbortExecute(Sender: TObject);
+begin
+   if CurrentQSO.Mode = mCW then begin
+      CWStopButtonClick(Self);
+   end;
+   if CurrentQSO.Mode = mSSB then begin
+      VoiceStopButtonClick(Self);
+   end;
+end;
+
 procedure TMainForm.RestoreWindowsPos();
 var
    X, Y, W, H: Integer;
@@ -8638,6 +8664,19 @@ begin
    for i := 0 to ActionList1.ActionCount - 1 do begin
       ActionList1.Actions[i].ShortCut := TextToShortcut(default_primary_shortcut[i]);
       ActionList1.Actions[i].SecondaryShortCuts.CommaText := default_secondary_shortcut[i];
+   end;
+end;
+
+procedure TMainForm.SetShortcutEnabled(shortcut: string; fEnabled: Boolean);
+var
+   i: Integer;
+   sc: Word;
+begin
+   sc := TextToShortcut(shortcut);
+   for i := 0 to ActionList1.ActionCount - 1 do begin
+      if ActionList1.Actions[i].ShortCut = sc then begin
+         ActionList1.Actions[i].Enabled := fEnabled;
+      end;
    end;
 end;
 
