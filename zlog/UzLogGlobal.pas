@@ -861,8 +861,8 @@ begin
       Settings._usebandscope_current := ini.ReadBool('BandScope', 'Current', False);
       Settings._bandscopecolor[1].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor1', '$000000'), clBlack);
       Settings._bandscopecolor[1].FBackColor := clWhite; //ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor1', '$ffffff'), clWhite);
-      Settings._bandscopecolor[1].FBold      := ini.ReadBool('BandScopeEx', 'Bold1', False);
-      Settings._bandscopecolor[2].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor2', '$ffffff'), clWhite);
+      Settings._bandscopecolor[1].FBold      := ini.ReadBool('BandScopeEx', 'Bold1', True);
+      Settings._bandscopecolor[2].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor2', '$0000ff'), clRed);
       Settings._bandscopecolor[2].FBackColor := clWhite; //ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor2', '$0000ff'), clRed);
       Settings._bandscopecolor[2].FBold      := ini.ReadBool('BandScopeEx', 'Bold2', True);
       Settings._bandscopecolor[3].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor3', '$008000'), clGreen);

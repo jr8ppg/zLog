@@ -444,12 +444,14 @@ type
   end;
 
 const
-  BandScopeDefaultColor: array[1..5] of TColorSetting = (
-    ( FForeColor: clBlack; FBackColor: clWhite; FBold: False ),
-    ( FForeColor: clWhite; FBackColor: clRed;   FBold: True ),
+  BandScopeDefaultColor: array[1..7] of TColorSetting = (
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clRed;   FBackColor: clWhite; FBold: True ),
     ( FForeColor: clGreen; FBackColor: clWhite; FBold: True ),
     ( FForeColor: clGreen; FBackColor: clWhite; FBold: True ),
-    ( FForeColor: clRed;   FBackColor: clYellow; FBold: True )
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True )
   );
 
 implementation
