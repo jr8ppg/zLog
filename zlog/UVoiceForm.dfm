@@ -17,7 +17,7 @@ object VoiceForm: TVoiceForm
   object MP: TMediaPlayer
     Left = 0
     Top = 0
-    Width = -4
+    Width = 141
     Height = 30
     VisibleButtons = [btPlay, btPause, btStop, btBack, btRecord]
     DoubleBuffered = True
@@ -29,5 +29,11 @@ object VoiceForm: TVoiceForm
     Interval = 100
     OnTimer = TimerTimer
     Left = 240
+  end
+  object Timer2: TTimer
+    Enabled = False
+    Interval = 50
+    OnTimer = Timer2Timer
+    Left = 196
   end
 end

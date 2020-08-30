@@ -975,6 +975,8 @@ type
     procedure SetFontSize(font_size: Integer);
     procedure QSY(b: TBand; m: TMode; r: Integer);
     procedure PlayMessage(bank: Integer; no: Integer);
+    procedure OnVoicePlayStarted(Sender: TObject);
+    procedure OnVoicePlayFinished(Sender: TObject);
     procedure InsertBandScope(fShiftKey: Boolean);
     procedure WriteKeymap();
     procedure ReadKeymap();
@@ -3736,6 +3738,8 @@ begin
    FZAnalyze      := TZAnalyze.Create(Self);
    FCWMessagePad  := TCwMessagePad.Create(Self);
    FVoiceForm     := TVoiceForm.Create(Self);
+   FVoiceForm.OnNotifyStarted  := OnVoicePlayStarted;
+   FVoiceForm.OnNotifyFinished := OnVoicePlayFinished;
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
@@ -4887,13 +4891,13 @@ begin
          WriteStatusLineRed(Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck), True);
          CallsignEdit.SelectAll;
          CallsignEdit.SetFocus;
-         FVoiceForm.SendVoice(4);
+         PlayMessage(1, 4);
          exit;
       end;
 
       MyContest.SpaceBarProc;
       NumberEdit.SetFocus;
-      FVoiceForm.SendVoice(2);
+      PlayMessage(1, 2);
       exit;
    end;
 
@@ -4990,14 +4994,14 @@ begin
 
       mSSB, mFM, mAM: begin
             if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
-               FVoiceForm.SendVoice(5);
+               PlayMessage(1, 5);
                WriteStatusLine('Invalid Number', False);
                NumberEdit.SetFocus;
                NumberEdit.SelectAll;
                exit;
             end;
 
-            FVoiceForm.SendVoice(3);
+            PlayMessage(1, 3);
             LogButtonClick(Self);
          end;
    end;
@@ -5697,7 +5701,7 @@ begin
    if n > 100 then begin
       n := n - 100;
    end;
-   FVoiceForm.SendVoice(n);
+   PlayMessage(1, n);
 end;
 
 procedure TMainForm.TimeEditChange(Sender: TObject);
@@ -7548,6 +7552,16 @@ begin
          // NO OPERATION
       end;
    end;
+end;
+
+procedure TMainForm.OnVoicePlayStarted(Sender: TObject);
+begin
+   VoiceStopButton.Enabled := True;
+end;
+
+procedure TMainForm.OnVoicePlayFinished(Sender: TObject);
+begin
+   VoiceStopButton.Enabled := False;
 end;
 
 // バンドスコープへ追加

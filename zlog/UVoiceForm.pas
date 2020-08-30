@@ -10,11 +10,17 @@ type
   TVoiceForm = class(TForm)
     MP: TMediaPlayer;
     Timer: TTimer;
+    Timer2: TTimer;
     procedure TimerTimer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
   private
     { Private éŒ¾ }
     FCtrlZCQLoopVoice: Boolean;
+    FOnNotifyStarted: TNotifyEvent;
+    FOnNotifyFinished: TNotifyEvent;
+
+    procedure VoiceControl(fOn: Boolean);
   public
     { Public éŒ¾ }
     LoopInterval : integer; // in milliseconds;
@@ -27,6 +33,9 @@ type
     procedure CtrlZBreakVoice();
 
     property CtrlZCQLoopVoice: Boolean read FCtrlZCQLoopVoice write FCtrlZCQLoopVoice;
+
+    property OnNotifyStarted: TNotifyEvent read FOnNotifyStarted write FOnNotifyStarted;
+    property OnNotifyFinished: TNotifyEvent read FOnNotifyFinished write FOnNotifyFinished;
   end;
 
 implementation
@@ -39,6 +48,8 @@ uses
 procedure TVoiceForm.FormCreate(Sender: TObject);
 begin
    FCtrlZCQLoopVoice := False;
+   FOnNotifyStarted := nil;
+   FOnNotifyFinished := nil;
 end;
 
 procedure TVoiceForm.SendVoice(i: integer);
@@ -64,14 +75,17 @@ begin
    MP.filename := filename;
    MP.Open;
 
-   dmZLogKeyer.SetVoiceFlag(1);
-   if dmZLogGlobal.Settings._pttenabled then begin
-      dmZLogKeyer.ControlPTT(True);
-   end;
+   VoiceControl(True);
 
    LoopInterval := 0;
    MP.Play;
+
+   if Assigned(FOnNotifyStarted) then begin
+      FOnNotifyStarted(MP);
+   end;
+
    Timer.Enabled := True;
+   Timer2.Enabled := True;
 end;
 
 procedure TVoiceForm.StopVoice();
@@ -95,10 +109,7 @@ begin
 
    finally
       Timer.Enabled := False;
-      dmZLogKeyer.SetVoiceFlag(0);
-      if dmZLogGlobal.Settings._pttenabled then begin
-         dmZLogKeyer.ControlPTT(False);
-      end;
+      VoiceControl(False);
    end;
 end;
 
@@ -127,14 +138,16 @@ begin
    MP.filename := filename;
    MP.Open;
 
-   dmZLogKeyer.SetVoiceFlag(1);
-
-   if dmZLogGlobal.Settings._pttenabled then begin
-      dmZLogKeyer.ControlPTT(True);
-   end;
+   VoiceControl(True);
 
    MP.Play;
+
+   if Assigned(FOnNotifyStarted) then begin
+      FOnNotifyStarted(MP);
+   end;
+
    Timer.Enabled := True;
+   Timer2.Enabled := True;
 end;
 
 procedure TVoiceForm.CtrlZBreakVoice();
@@ -160,11 +173,7 @@ begin
       Exit;
    end;
 
-   dmZlogKeyer.SetVoiceFlag(0);
-
-   if dmZLogGlobal.Settings._pttenabled then begin
-      dmZlogKeyer.ControlPTT(False);
-   end;
+   VoiceControl(False);
 
    if LoopInterval > 0 then begin
       if LoopCount > 0 then begin
@@ -172,20 +181,58 @@ begin
       end
       else begin // end of wait time
          LoopCount := LoopInterval div 100;
-         dmZlogKeyer.SetVoiceFlag(1);
 
-         if dmZLogGlobal.Settings._pttenabled then begin
-            dmZlogKeyer.ControlPTT(True);
-         end;
+         VoiceControl(True);
 
          MP.Rewind;
          MP.Play;
+
+         if Assigned(FOnNotifyStarted) then begin
+            FOnNotifyStarted(MP);
+         end;
+
+         Timer2.Enabled := True;
       end;
 
       Exit;
    end;
 
    Timer.Enabled := False;
+end;
+
+procedure TVoiceForm.Timer2Timer(Sender: TObject);
+begin
+   if MP.Mode = mpPlaying then begin
+      Exit;
+   end;
+
+   Timer2.Enabled := False;
+
+   if Assigned(FOnNotifyFinished) then begin
+      FOnNotifyFinished(MP);
+   end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('---Voice Play finished!! ---'));
+   {$ENDIF}
+end;
+
+procedure TVoiceForm.VoiceControl(fOn: Boolean);
+begin
+   if fOn = True then begin
+      dmZlogKeyer.SetVoiceFlag(1);
+
+      if dmZLogGlobal.Settings._pttenabled then begin
+         dmZlogKeyer.ControlPTT(True);
+      end;
+   end
+   else begin
+      dmZlogKeyer.SetVoiceFlag(0);
+
+      if dmZLogGlobal.Settings._pttenabled then begin
+         dmZlogKeyer.ControlPTT(False);
+      end;
+   end;
 end;
 
 end.
