@@ -7994,11 +7994,9 @@ end;
 // #57 ＣＱ送出
 procedure TMainForm.actionCQRepeatExecute(Sender: TObject);
 begin
-   if CurrentQSO.mode = mCW then begin
-      CQRepeatClick2(Sender);
-   end;
-   if CurrentQSO.mode = mSSB then begin
-      VoiceCQ3Click(Sender);
+   case CurrentQSO.Mode of
+      mCW: CQRepeatClick2(Sender);
+      mSSB, mFM, mAM: VoiceCQ3Click(Sender);
    end;
 end;
 
@@ -8356,11 +8354,9 @@ end;
 // #98 連続CQ、ESCを押さないと送信解除しない Shift+Z
 procedure TMainForm.actionCQRepeat2Execute(Sender: TObject);
 begin
-   if CurrentQSO.mode = mCW then begin
-      CQRepeatClick1(Sender);
-   end;
-   if CurrentQSO.mode = mSSB then begin
-      VoiceCQ2Click(Sender);
+   case CurrentQSO.Mode of
+      mCW: CQRepeatClick1(Sender);
+      mSSB, mFM, mAM: VoiceCQ2Click(Sender);
    end;
 end;
 
@@ -8528,11 +8524,9 @@ end;
 // #113 CW/Voice送出中止 ESC
 procedure TMainForm.actionCQAbortExecute(Sender: TObject);
 begin
-   if CurrentQSO.Mode = mCW then begin
-      CWStopButtonClick(Self);
-   end;
-   if CurrentQSO.Mode = mSSB then begin
-      VoiceStopButtonClick(Self);
+   case CurrentQSO.Mode of
+      mCW: CWStopButtonClick(Self);
+      mSSB, mFM, mAM: VoiceStopButtonClick(Self);
    end;
 end;
 
