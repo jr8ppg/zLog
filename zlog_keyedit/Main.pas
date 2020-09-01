@@ -27,16 +27,20 @@ type
     vleEdit: TValueListEditor;
     vlePostContest: TValueListEditor;
     vleOther: TValueListEditor;
+    buttonAllReset: TButton;
     procedure vleDblClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
     procedure buttonCancelClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure buttonAllResetClick(Sender: TObject);
   private
     { Private 宣言 }
     function IsShortcutUsed(strKey: string; var strFuncName: string): Boolean;
     procedure ClearKeymap(strFuncName: string);
     procedure ReadKeymap(ini: TIniFile; vle: TValueListEditor);
     procedure WriteKeymap(ini: TIniFile; vle: TValueListEditor);
+    procedure ResetKeymap(vle: TValueListEditor);
+    procedure ResetKeymapAll();
   public
     { Public 宣言 }
   end;
@@ -49,7 +53,7 @@ implementation
 {$R *.dfm}
 
 uses
-  KeyEditDlg;
+  KeyEditDlg, UzLogConst;
 
 procedure TformMain.FormCreate(Sender: TObject);
 var
@@ -60,6 +64,7 @@ begin
 
    filename := ExtractFilePath(Application.ExeName) + 'zlog_key.ini';
    if FileExists(filename) = False then begin
+      ResetKeymapAll();
       Exit;
    end;
 
@@ -144,6 +149,15 @@ end;
 procedure TformMain.buttonCancelClick(Sender: TObject);
 begin
    Close();
+end;
+
+procedure TformMain.buttonAllResetClick(Sender: TObject);
+begin
+   if MessageBox(Handle, PChar('全ての設定を初期値に戻します。よろしいですか？'), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   ResetKeymapAll();
 end;
 
 function TformMain.IsShortcutUsed(strKey: string; var strFuncName: string): Boolean;
@@ -288,7 +302,9 @@ begin
          Continue;
       end;
 
-      vle.Cells[1, i] := ini.ReadString('shortcut', IntToStr(N), '') + ',' + ini.ReadString('secondary', IntToStr(N), '');
+      vle.Cells[1, i] := ini.ReadString('shortcut', IntToStr(N), default_primary_shortcut[N]) +
+                         ',' +
+                         ini.ReadString('secondary', IntToStr(N), default_secondary_shortcut[N]);
    end;
 end;
 
@@ -313,6 +329,34 @@ begin
    finally
       slText.Free();
    end;
+end;
+
+procedure TformMain.ResetKeymap(vle: TValueListEditor);
+var
+   i: Integer;
+   N: Integer;
+begin
+   for i := 1 to vle.RowCount - 1 do begin
+      N := StrToIntDef(Copy(vle.Cells[0, i], 2, 3), -1);
+      if N = -1 then begin
+         Continue;
+      end;
+
+      vle.Cells[1, i] := default_primary_shortcut[N] +
+                         ',' +
+                         default_secondary_shortcut[N];
+   end;
+end;
+
+procedure TformMain.ResetKeymapAll();
+begin
+   ResetKeymap(vleLogging);
+   ResetKeymap(vleInformation);
+   ResetKeymap(vleCwKeying);
+   ResetKeymap(vleRigControl);
+   ResetKeymap(vleEdit);
+   ResetKeymap(vlePostContest);
+   ResetKeymap(vleOther);
 end;
 
 end.

@@ -64,10 +64,6 @@ object formMain: TformMain
     object TabSheet2: TTabSheet
       Caption = #24773#22577#34920#31034
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleInformation: TValueListEditor
         Left = 0
         Top = 0
@@ -169,10 +165,6 @@ object formMain: TformMain
     object TabSheet4: TTabSheet
       Caption = #12522#12464#12467#12531#12488#12525#12540#12523
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleRigControl: TValueListEditor
         Left = 0
         Top = 0
@@ -201,10 +193,6 @@ object formMain: TformMain
     object TabSheet5: TTabSheet
       Caption = #20837#21147#12392#32232#38598
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleEdit: TValueListEditor
         Left = 0
         Top = 0
@@ -250,10 +238,6 @@ object formMain: TformMain
     object TabSheet6: TTabSheet
       Caption = #20107#24460#20837#21147
       ImageIndex = 5
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vlePostContest: TValueListEditor
         Left = 0
         Top = 0
@@ -278,10 +262,6 @@ object formMain: TformMain
     object TabSheet7: TTabSheet
       Caption = #12381#12398#20182
       ImageIndex = 6
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleOther: TValueListEditor
         Left = 0
         Top = 0
@@ -337,6 +317,15 @@ object formMain: TformMain
       ModalResult = 2
       TabOrder = 1
       OnClick = buttonCancelClick
+    end
+    object buttonAllReset: TButton
+      Left = 8
+      Top = 5
+      Width = 117
+      Height = 33
+      Caption = #20840#12390#21021#26399#20516#12408#25147#12377
+      TabOrder = 2
+      OnClick = buttonAllResetClick
     end
   end
 end

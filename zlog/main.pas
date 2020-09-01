@@ -8629,6 +8629,7 @@ var
 begin
    filename := ExtractFilePath(Application.ExeName) + 'zlog_key.ini';
    if FileExists(filename) = False then begin
+      ResetKeymap();
       Exit;
    end;
 
