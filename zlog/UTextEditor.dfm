@@ -12,7 +12,9 @@ object TextEditor: TTextEditor
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
+  OnActivate = FormActivate
   OnCreate = FormCreate
+  OnDeactivate = FormDeactivate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
@@ -77,9 +79,9 @@ object TextEditor: TTextEditor
     TabOrder = 0
     WantTabs = True
     OnKeyDown = Memo1KeyDown
-    ExplicitHeight = 314
   end
   object ActionList1: TActionList
+    State = asSuspended
     Left = 20
     Top = 260
     object actionSelectAll: TAction

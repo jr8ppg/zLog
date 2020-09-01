@@ -136,6 +136,8 @@ type
     procedure actionQuickMemo1Execute(Sender: TObject);
     procedure actionQuickMemo2Execute(Sender: TObject);
     procedure actionQuickMemo3Execute(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormDeactivate(Sender: TObject);
   private
     { Private declarations }
     workQSO : TQSO;
@@ -488,6 +490,11 @@ begin
    workQSO.RSTrcvd := i;
 end;
 
+procedure TEditDialog.FormActivate(Sender: TObject);
+begin
+   ActionList1.State := asNormal;
+end;
+
 procedure TEditDialog.FormCreate(Sender: TObject);
 var
    i: integer;
@@ -617,6 +624,11 @@ begin
    actionQuickMemo3.SecondaryShortCuts.Assign(MainForm.actionQuickMemo3.SecondaryShortCuts);
    actionQuickMemo4.SecondaryShortCuts.Assign(MainForm.actionQuickMemo4.SecondaryShortCuts);
    actionQuickMemo5.SecondaryShortCuts.Assign(MainForm.actionQuickMemo5.SecondaryShortCuts);
+end;
+
+procedure TEditDialog.FormDeactivate(Sender: TObject);
+begin
+   ActionList1.State := asSuspended;
 end;
 
 procedure TEditDialog.FormDestroy(Sender: TObject);

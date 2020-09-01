@@ -57,7 +57,6 @@ type
   private
     { Private declarations }
     procedure PlayMessage(cb: Integer; no: Integer);
-    procedure SetActionEnabled(fEnabled: Boolean);
   public
     { Public declarations }
   end;
@@ -129,13 +128,13 @@ end;
 
 procedure TCWKeyBoard.FormActivate(Sender: TObject);
 begin
-   SetActionEnabled(True);
+   ActionList1.State := asNormal;
    Console.SetFocus();
 end;
 
 procedure TCWKeyBoard.FormDeactivate(Sender: TObject);
 begin
-   SetActionEnabled(False);
+   ActionList1.State := asSuspended;
 end;
 
 procedure TCWKeyBoard.ConsoleKeyPress(Sender: TObject; var Key: Char);
@@ -262,15 +261,6 @@ begin
 
    ClipBoard.AsText := S;
    Console.PasteFromClipBoard;
-end;
-
-procedure TCWKeyBoard.SetActionEnabled(fEnabled: Boolean);
-var
-   i: Integer;
-begin
-   for i := 0 to ActionList1.ActionCount - 1 do begin
-      ActionList1.Actions[i].Enabled := fEnabled;
-   end;
 end;
 
 end.

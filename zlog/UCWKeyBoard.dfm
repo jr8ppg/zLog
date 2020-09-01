@@ -55,6 +55,7 @@ object CWKeyBoard: TCWKeyBoard
     end
   end
   object ActionList1: TActionList
+    State = asSuspended
     Left = 240
     Top = 40
     object actionPlayMessageA01: TAction

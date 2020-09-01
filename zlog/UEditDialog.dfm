@@ -14,8 +14,10 @@ object EditDialog: TEditDialog
   OldCreateOrder = True
   Position = poOwnerFormCenter
   Scaled = False
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnDeactivate = FormDeactivate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -310,6 +312,7 @@ object EditDialog: TEditDialog
     Top = 40
   end
   object ActionList1: TActionList
+    State = asSuspended
     Left = 488
     Top = 40
     object actionPlayMessageA01: TAction

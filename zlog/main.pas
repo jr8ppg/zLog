@@ -954,7 +954,6 @@ type
     function GetFirstAvailableBand(): TBand;
     procedure SetWindowCaption();
     procedure RestoreWindowsPos();
-    procedure SetActionEnabled(fEnabled: Boolean);
 
     procedure LoadNewContestFromFile(FileName : string);
     procedure RenewCWToolBar;
@@ -5310,7 +5309,7 @@ end;
 
 procedure TMainForm.FormDeactivate(Sender: TObject);
 begin
-   SetActionEnabled(False);
+   ActionList1.State := asSuspended;
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
@@ -6216,7 +6215,7 @@ end;
 
 procedure TMainForm.FormActivate(Sender: TObject);
 begin
-   SetActionEnabled(True);
+   ActionList1.State := asNormal;
    LastFocus.SetFocus;
 end;
 
@@ -8574,15 +8573,6 @@ begin
    end
    else begin
       Position := poScreenCenter;
-   end;
-end;
-
-procedure TMainForm.SetActionEnabled(fEnabled: Boolean);
-var
-   i: Integer;
-begin
-   for i := 0 to ActionList1.ActionCount - 1 do begin
-      ActionList1.Actions[i].Enabled := fEnabled;
    end;
 end;
 

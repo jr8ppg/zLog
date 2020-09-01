@@ -19,6 +19,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure actionSelectAllExecute(Sender: TObject);
     procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormActivate(Sender: TObject);
+    procedure FormDeactivate(Sender: TObject);
   private
     { Private êÈåæ }
     function GetText(): string;
@@ -32,9 +34,19 @@ implementation
 
 {$R *.dfm}
 
+procedure TTextEditor.FormActivate(Sender: TObject);
+begin
+   ActionList1.State := asNormal;
+end;
+
 procedure TTextEditor.FormCreate(Sender: TObject);
 begin
    Memo1.Text := '';
+end;
+
+procedure TTextEditor.FormDeactivate(Sender: TObject);
+begin
+   ActionList1.State := asSuspended;
 end;
 
 procedure TTextEditor.FormShow(Sender: TObject);
