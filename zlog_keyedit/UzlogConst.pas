@@ -178,8 +178,8 @@ const
     '',
     '',
     'Shift+Ctrl+I',
-    'Shift+M',
-    'Shift+B',          // #90
+    'Shift+B',
+    'Shift+M',          // #90
     'Shift+P',
     'Shift+F',
     'Shift+R',
