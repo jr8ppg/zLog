@@ -8640,7 +8640,7 @@ begin
 
       for i := 0 to ActionList1.ActionCount - 1 do begin
          // shortcut設定読み込み
-         shortcut := TextToShortcut(ini.ReadString('shortcut', IntToStr(i), ''));
+         shortcut := TextToShortcut(ini.ReadString('shortcut', IntToStr(i), default_primary_shortcut[i]));
 
          // そのshortcutは使用済みなら次
          if IsShortcutUsed(shortcut) = True then begin
@@ -8649,7 +8649,7 @@ begin
 
          // 未使用なら設定
          ActionList1.Actions[i].ShortCut := shortcut;
-         ActionList1.Actions[i].SecondaryShortCuts.CommaText := ini.ReadString('secondary', IntToStr(i), '');
+         ActionList1.Actions[i].SecondaryShortCuts.CommaText := ini.ReadString('secondary', IntToStr(i), default_secondary_shortcut[i]);
       end;
    finally
       ini.Free();
