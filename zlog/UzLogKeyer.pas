@@ -79,6 +79,7 @@ type
     FTone: TToneGen;
     {$ENDIF}
 
+    FUsbPortDataLock: TRTLCriticalSection;
     FPrevUsbPortData: Byte;
     FUsbPortData: Byte;
 
@@ -274,6 +275,7 @@ begin
    FUSBIF4CW_Detected := False;
    FUSBIF4CW := nil;
 
+   InitializeCriticalSection(FUsbPortDataLock);
    FPrevUsbPortData := $FF;
    FUsbPortData := $FF;
 
@@ -335,6 +337,7 @@ end;
 procedure TdmZLogKeyer.SetRigFlag(i: Integer); // 0 : no rigs, 1 : rig 1, etc
 begin
    if FKeyingPort = tkpUSB then begin
+      EnterCriticalSection(FUsbPortDataLock);
       FUsbPortData := (not(_bandmask) and $F0) or (FUsbPortData and $0F);
 
       case i of
@@ -345,7 +348,7 @@ begin
          else
             FUsbPortData := FUsbPortData;
       end;
-
+      LeaveCriticalSection(FUsbPortDataLock);
       Exit;
    end;
 end;
@@ -353,13 +356,14 @@ end;
 procedure TdmZLogKeyer.SetVoiceFlag(i : Integer); // 0 : no rigs, 1 : rig 1, etc
 begin
    if FKeyingPort = tkpUSB then begin
+      EnterCriticalSection(FUsbPortDataLock);
       if i = 1 then begin
          FUsbPortData := FUsbPortData and $F7;
       end
       else begin
          FUsbPortData := FUsbPortData or $08;
       end;
-
+      LeaveCriticalSection(FUsbPortDataLock);
       Exit;
    end;
 end;
@@ -383,13 +387,14 @@ begin
    FPTTFLAG := PTTON;
 
    if FKeyingPort = tkpUSB then begin
+      EnterCriticalSection(FUsbPortDataLock);
       if PTTON then begin
          FUsbPortData := FUsbPortData and $FD;
       end
       else begin
          FUsbPortData := FUsbPortData or $02;
       end;
-
+      LeaveCriticalSection(FUsbPortDataLock);
       Exit;
    end;
 
@@ -633,7 +638,9 @@ begin
       end;
 
       tkpUSB: begin
+         EnterCriticalSection(FUsbPortDataLock);
          FUsbPortData := FPrevUsbPortData and $FE;
+         LeaveCriticalSection(FUsbPortDataLock);
       end;
    end;
 end;
@@ -651,7 +658,9 @@ begin
       end;
 
       tkpUSB: begin
+         EnterCriticalSection(FUsbPortDataLock);
          FUsbPortData := FPrevUsbPortData or $01;
+         LeaveCriticalSection(FUsbPortDataLock);
       end;
    end;
 end;
@@ -1763,6 +1772,7 @@ begin
       end;
    end;
 
+   EnterCriticalSection(FUsbPortDataLock);
    if FUsbPortData = FPrevUsbPortData then begin
       OutReport[0] := 0;
       OutReport[1] := 4;
@@ -1787,6 +1797,7 @@ begin
       FPrevUsbPortData := FUsbPortData;
    end;
    FUSBIF4CW.WriteFile(OutReport, FUSBIF4CW.Caps.OutputReportByteLength, BR);
+   LeaveCriticalSection(FUsbPortDataLock);
 end;
 
 procedure TdmZLogKeyer.SetReversePaddle(boo: Boolean);
@@ -1829,8 +1840,10 @@ end;
 
 procedure TdmZLogKeyer.SetBandMask(bandmask: Byte);
 begin
+   EnterCriticalSection(FUsbPortDataLock);
    _bandmask := bandmask;
    FUsbPortData := (not(_bandmask) and $F0) or (FUsbPortData and $0F);
+   LeaveCriticalSection(FUsbPortDataLock);
 end;
 
 procedure TdmZLogKeyer.SetSerialCWKeying(PortNr: Integer);
