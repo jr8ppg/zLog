@@ -306,6 +306,9 @@ begin
    ZComKeying.Disconnect;
    FMonitorThread.Free();
    FPaddleThread.Free();
+   if Assigned(FUSBIF4CW) then begin
+      FUSBIF4CW.CloseFile();
+   end;
 end;
 
 procedure TdmZLogKeyer.DoDeviceChanges(Sender: TObject);
@@ -1705,6 +1708,17 @@ begin
       Exit;
    end;
 
+   OutReport[0] := 0;
+   OutReport[1] := 4;
+   OutReport[2] := $0F;
+   OutReport[3] := 4;
+   OutReport[4] := 0;
+   OutReport[5] := 0;
+   OutReport[6] := 0;
+   OutReport[7] := 0;
+   OutReport[8] := 0;
+   FUSBIF4CW.WriteFile(OutReport, FUSBIF4CW.Caps.OutputReportByteLength, BR);
+
    InReport[0] := 0;
    InReport[1] := 4;
    InReport[2] := $0F;
@@ -1773,18 +1787,18 @@ begin
    end;
 
    EnterCriticalSection(FUsbPortDataLock);
-   if FUsbPortData = FPrevUsbPortData then begin
-      OutReport[0] := 0;
-      OutReport[1] := 4;
-      OutReport[2] := $0F;
-      OutReport[3] := 4;
-      OutReport[4] := 0;
-      OutReport[5] := 0;
-      OutReport[6] := 0;
-      OutReport[7] := 0;
-      OutReport[8] := 0;
-   end
-   else begin
+//   if FUsbPortData = FPrevUsbPortData then begin
+//      OutReport[0] := 0;
+//      OutReport[1] := 4;
+//      OutReport[2] := $0F;
+//      OutReport[3] := 4;
+//      OutReport[4] := 0;
+//      OutReport[5] := 0;
+//      OutReport[6] := 0;
+//      OutReport[7] := 0;
+//      OutReport[8] := 0;
+//   end
+//   else begin
       OutReport[0] := 0;
       OutReport[1] := 1;
       OutReport[2] := FUsbPortData;
@@ -1795,7 +1809,7 @@ begin
       OutReport[7] := 0;
       OutReport[8] := 0;
       FPrevUsbPortData := FUsbPortData;
-   end;
+//   end;
    FUSBIF4CW.WriteFile(OutReport, FUSBIF4CW.Caps.OutputReportByteLength, BR);
    LeaveCriticalSection(FUsbPortDataLock);
 end;
