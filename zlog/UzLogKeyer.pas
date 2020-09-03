@@ -642,7 +642,7 @@ begin
 
       tkpUSB: begin
          EnterCriticalSection(FUsbPortDataLock);
-         FUsbPortData := FPrevUsbPortData and $FE;
+         FUsbPortData := FUsbPortData and $FE;
          LeaveCriticalSection(FUsbPortDataLock);
       end;
    end;
@@ -662,7 +662,7 @@ begin
 
       tkpUSB: begin
          EnterCriticalSection(FUsbPortDataLock);
-         FUsbPortData := FPrevUsbPortData or $01;
+         FUsbPortData := FUsbPortData or $01;
          LeaveCriticalSection(FUsbPortDataLock);
       end;
    end;
@@ -780,7 +780,9 @@ begin
       $A2: begin
          if FPttHoldCounter <= 0 then begin
             Finish();
-            ControlPTT(False);
+            if FPTTEnabled then begin
+               ControlPTT(False);
+            end;
          end
          else begin
             Dec(FPttHoldCounter);
@@ -1844,7 +1846,9 @@ procedure TdmZLogKeyer.TuneOn;
 begin
    ClrBuffer;
    FSendOK := False;
-   ControlPTT(True);
+   if FPTTEnabled then begin
+      ControlPTT(True);
+   end;
    CW_ON;
 
    if FUseSideTone then begin
