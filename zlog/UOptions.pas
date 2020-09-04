@@ -485,7 +485,6 @@ begin
       Settings._renewbythread := cbUpdateThread.Checked;
       Settings._displaydatepartialcheck := cbDisplayDatePartialCheck.Checked;
 
-      Settings._banddatamode := rgBandData.ItemIndex;
       Settings._AFSK := cbAFSK.Checked;
       Settings._maxsuperhit := spMaxSuperHit.Value;
 
@@ -809,7 +808,6 @@ begin
       cbUpdateThread.Checked := Settings._renewbythread;
       cbDisplayDatePartialCheck.Checked := Settings._displaydatepartialcheck;
 
-      rgBandData.ItemIndex := Settings._banddatamode;
       cbDontAllowSameBand.Checked := Settings._dontallowsameband;
       cbAutoBandMap.Checked := Settings._autobandmap;
       cbAFSK.Checked := Settings._AFSK;

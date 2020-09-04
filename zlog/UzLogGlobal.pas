@@ -62,7 +62,6 @@ type
   TSettingsParam = record
     _AFSK : boolean; // Use AFSK instead of RTTY for rig control
     _dontallowsameband : boolean; // same band on two rigs?
-    _BandData : array[b19..b10g] of byte; {band data output}
     _multiop : integer;  {multi op/ single op}
     _band : integer; {0 = all band; 1 = 1.9MHz 2 = 3.5MHz ...}
     _mode : integer; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
@@ -130,7 +129,6 @@ type
     //_updatetimeonenter : boolean;
     _ritclear : boolean; // clear rit after each qso
     _searchafter : integer; // 0 default. for super / partial check
-    _banddatamode : integer; // 0 : none, 1 : radio1, 2 : radio2, 3 : active
     _savewhennocw : boolean; // def=false. save when cw is not being sent
     _multistation : boolean; // warn when logging non-newmulti qso
     _maxsuperhit : integer; // max # qso hit
@@ -715,26 +713,6 @@ begin
       // Rig control
       //
 
-      // Band data (LPT)
-      Settings._banddatamode := ini.ReadInteger('Rig', 'BandDataMode', 1);
-
-      Settings._BandData[b19] := ini.ReadInteger('Hardware', 'BandData1.9MHz', 0);
-      Settings._BandData[b35] := ini.ReadInteger('Hardware', 'BandData3.5MHz', 1);
-      Settings._BandData[b7] := ini.ReadInteger('Hardware', 'BandData7MHz', 2);
-      Settings._BandData[b10] := ini.ReadInteger('Hardware', 'BandData10MHz', 3);
-      Settings._BandData[b14] := ini.ReadInteger('Hardware', 'BandData14MHz', 4);
-      Settings._BandData[b18] := ini.ReadInteger('Hardware', 'BandData18MHz', 5);
-      Settings._BandData[b21] := ini.ReadInteger('Hardware', 'BandData21MHz', 6);
-      Settings._BandData[b24] := ini.ReadInteger('Hardware', 'BandData24MHz', 7);
-      Settings._BandData[b28] := ini.ReadInteger('Hardware', 'BandData28MHz', 8);
-      Settings._BandData[b50] := ini.ReadInteger('Hardware', 'BandData50MHz', 9);
-      Settings._BandData[b144] := ini.ReadInteger('Hardware', 'BandData144MHz', 10);
-      Settings._BandData[b430] := ini.ReadInteger('Hardware', 'BandData430MHz', 11);
-      Settings._BandData[b1200] := ini.ReadInteger('Hardware', 'BandData1200MHz', 12);
-      Settings._BandData[b2400] := ini.ReadInteger('Hardware', 'BandData2400MHz', 13);
-      Settings._BandData[b5600] := ini.ReadInteger('Hardware', 'BandData5600MHz', 14);
-      Settings._BandData[b10g] := ini.ReadInteger('Hardware', 'BandData10GHz', 15);
-
       // Clear RIT after each QSO
       Settings._ritclear := ini.ReadBool('Hardware', 'RitClear', False);
 
@@ -1167,9 +1145,6 @@ begin
       // Rig control
       //
 
-      // Band data (LPT)
-      ini.WriteInteger('Rig', 'BandDataMode', Settings._banddatamode);
-
       // Clear RIT after each QSO
       ini.WriteBool('Hardware', 'RitClear', Settings._ritclear);
 
@@ -1347,8 +1322,6 @@ begin
    if MyContest <> nil then begin
       Main.MyContest.SameExchange := Settings._sameexchange;
    end;
-
-   MainForm.RigControl.SetBandMask;
 
    if Settings._zlinkport in [1 .. 6] then begin // zlinkport rs232c
       // ZLinkForm.Transparent := True;

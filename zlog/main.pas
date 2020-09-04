@@ -1711,10 +1711,6 @@ begin
 
    CurrentQSO.Band := B;
 
-   { BGK32LIB._bandmask := (dmZlogGlobal.Settings._BandData[B] * 16);
-     BGK32LIB.UpdateDataPort; }
-   RigControl.SetBandMask;
-
    if MyContest <> nil then begin
       MyContest.SetPoints(CurrentQSO);
    end;
@@ -1802,10 +1798,9 @@ begin
    if MainForm.RigControl.Rig <> nil then begin
       MainForm.RigControl.Rig.SetBand(CurrentQSO);
 
-      if CurrentQSO.mode = mSSB then
+      if CurrentQSO.mode = mSSB then begin
          MainForm.RigControl.Rig.SetMode(CurrentQSO);
-
-      MainForm.RigControl.SetBandMask;
+      end;
    end;
 end;
 
@@ -4044,8 +4039,6 @@ begin
       if CurrentQSO.mode = mSSB then begin
          RigControl.Rig.SetMode(CurrentQSO);
       end;
-
-      RigControl.SetBandMask; // ver 1.9z
    end;
 
    UpdateBand(Q.Band);

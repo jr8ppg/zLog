@@ -418,7 +418,6 @@ type
     procedure SetCurrentRig(N : integer);
     function GetCurrentRig : integer;
     function ToggleCurrentRig : integer;
-    procedure SetBandMask;
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
 
     property Rig: TRig read FCurrentRig;
@@ -620,32 +619,6 @@ begin
       // if Rig._lastcallsign <> '' then
       MainForm.CallsignEdit.Text := FCurrentRig._lastcallsign;
    end;
-end;
-
-procedure TRigControl.SetBandMask;
-var
-   B: TBand;
-begin
-   B := b19;
-   case dmZlogGlobal.Settings._banddatamode of
-      1: begin
-         if FRigs[1] <> nil then begin
-            B := FRigs[1]._currentband;
-         end;
-      end;
-
-      2: begin
-         if FRigs[2] <> nil then begin
-            B := FRigs[2]._currentband;
-         end;
-      end;
-
-      3: begin
-         B := Main.CurrentQSO.Band;
-      end;
-   end;
-
-   dmZlogKeyer.BandMask := (dmZlogGlobal.Settings._BandData[B] * 16);
 end;
 
 function TRigControl.GetCurrentRig: Integer;

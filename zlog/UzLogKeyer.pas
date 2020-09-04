@@ -83,9 +83,6 @@ type
     FPrevUsbPortData: Byte;
     FUsbPortData: Byte;
 
-    // mask data for data port
-    _bandmask: byte; //bit mask for band data
-
     FUserFlag: Boolean; // can be set to True by user. set to False only when ClrBuffer is called or "  is reached in the sending buffer. // 1.9z2 used in QTCForm
     FVoiceFlag: Integer;  //temporary
 
@@ -174,8 +171,6 @@ type
     procedure SetSideTonePitch(Hertz: Integer); {Sets the pitch of the side tone}
     procedure SetSpaceFactor(R: Integer);
     procedure SetEISpaceFactor(R: Integer);
-
-    procedure SetBandMask(bandmask: Byte);
   public
     { Public êÈåæ }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -228,7 +223,6 @@ type
     property EISpaceFactor: Integer read FEISpaceFactor write SetEISpaceFactor;
 
     property USBIF4CW_Detected: Boolean read FUSBIF4CW_Detected;
-    property BandMask: Byte read _bandmask write SetBandMask;
     property UserFlag: Boolean read FUserFlag write FUserFlag;
     property KeyingPort: TKeyingPort read FKeyingPort write FKeyingPort;
 
@@ -278,8 +272,6 @@ begin
    InitializeCriticalSection(FUsbPortDataLock);
    FPrevUsbPortData := $FF;
    FUsbPortData := $FF;
-
-   Bandmask := $00; //bit mask for band data
 
    FUserFlag := False;
    FVoiceFlag := 0;
@@ -341,7 +333,6 @@ procedure TdmZLogKeyer.SetRigFlag(i: Integer); // 0 : no rigs, 1 : rig 1, etc
 begin
    if FKeyingPort = tkpUSB then begin
       EnterCriticalSection(FUsbPortDataLock);
-      FUsbPortData := (not(_bandmask) and $F0) or (FUsbPortData and $0F);
 
       case i of
          0, 1:
@@ -1854,14 +1845,6 @@ begin
    if FUseSideTone then begin
       Sound();
    end;
-end;
-
-procedure TdmZLogKeyer.SetBandMask(bandmask: Byte);
-begin
-   EnterCriticalSection(FUsbPortDataLock);
-   _bandmask := bandmask;
-   FUsbPortData := (not(_bandmask) and $F0) or (FUsbPortData and $0F);
-   LeaveCriticalSection(FUsbPortDataLock);
 end;
 
 procedure TdmZLogKeyer.SetSerialCWKeying(PortNr: Integer);
