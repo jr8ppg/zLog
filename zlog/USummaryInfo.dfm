@@ -1,9 +1,10 @@
 object SummaryInfo: TSummaryInfo
   Left = 202
   Top = 30
+  BorderStyle = bsDialog
   Caption = 'Summary Info'
-  ClientHeight = 494
-  ClientWidth = 484
+  ClientHeight = 504
+  ClientWidth = 494
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
