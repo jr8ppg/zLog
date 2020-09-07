@@ -5704,7 +5704,8 @@ procedure TMainForm.Export1Click(Sender: TObject);
 var
    f, ext: string;
 begin
-   TXTSaveDialog.filename := copy(CurrentFileName, 1, length(CurrentFileName) - length(ExtractFileExt(CurrentFileName)));
+   TXTSaveDialog.InitialDir := ExtractFilePath(CurrentFileName);
+   TXTSaveDialog.FileName := ChangeFileExt(ExtractFileName(CurrentFileName), '');
 
    if TXTSaveDialog.Execute then begin
       f := TXTSaveDialog.filename;
@@ -6294,18 +6295,16 @@ begin
 end;
 
 procedure TMainForm.mSummaryFileClick(Sender: TObject);
-var
-   str: string;
 begin
    GeneralSaveDialog.DefaultExt := 'zsm';
    GeneralSaveDialog.Filter := 'Summary files (*.zsm)|*.zsm';
    GeneralSaveDialog.Title := 'Save summary file';
+
    if CurrentFileName <> '' then begin
-      str := CurrentFileName;
-      str := copy(str, 0, length(str) - length(ExtractFileExt(str)));
-      str := str + '.zsm';
-      GeneralSaveDialog.filename := str;
+      GeneralSaveDialog.InitialDir := ExtractFilePath(CurrentFileName);
+      GeneralSaveDialog.FileName := ChangeFileExt(ExtractFileName(CurrentFileName), '.zsm');
    end;
+
    if GeneralSaveDialog.Execute then
       MyContest.ScoreForm.SaveSummary(GeneralSaveDialog.filename);
 end;

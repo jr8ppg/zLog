@@ -176,7 +176,8 @@ var
    fname: string;
 begin
    if CurrentFileName <> '' then begin
-      SaveDialog1.FileName := ChangeFileExt(CurrentFileName, '.em');
+      SaveDialog1.InitialDir := ExtractFilePath(CurrentFileName);
+      SaveDialog1.FileName := ChangeFileExt(ExtractFileName(CurrentFileName), '.em');
    end;
 
    if SaveDialog1.Execute() = False then begin
