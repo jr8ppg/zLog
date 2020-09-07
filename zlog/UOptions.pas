@@ -431,6 +431,8 @@ type
 
     FQuickMemoText: array[1..5] of TEdit;
 
+    FEditMessage: array[1..maxmaxstr] of TEdit;
+
     FVoiceEdit: array[1..12] of TEdit;
     FVoiceButton: array[1..12] of TButton;
 
@@ -539,8 +541,10 @@ begin
       Settings._mode := ModeGroup.ItemIndex;
       // Settings._multiop := MultiOpRadioBtn.Checked;
 
-      Settings._prov := ProvEdit.Text;
-      Settings._city := CItyEdit.Text;
+      if Settings.ProvCityImported = False then begin
+         Settings._prov := ProvEdit.Text;
+         Settings._city := CityEdit.Text;
+      end;
       Settings._cqzone := CQZoneEdit.Text;
       Settings._iaruzone := IARUZoneEdit.Text;
 
@@ -776,17 +780,20 @@ begin
 end;
 
 procedure TformOptions.RenewCWStrBankDisp;
+var
+   i: Integer;
 begin
-   editMessage1.Text  := TempCWStrBank[TempCurrentBank, 1];
-   editMessage2.Text  := TempCWStrBank[TempCurrentBank, 2];
-   editMessage3.Text  := TempCWStrBank[TempCurrentBank, 3];
-   editMessage4.Text  := TempCWStrBank[TempCurrentBank, 4];
-   editMessage5.Text  := TempCWStrBank[TempCurrentBank, 5];
-   editMessage6.Text  := TempCWStrBank[TempCurrentBank, 6];
-   editMessage7.Text  := TempCWStrBank[TempCurrentBank, 7];
-   editMessage8.Text  := TempCWStrBank[TempCurrentBank, 8];
-   editMessage9.Text  := TempCWStrBank[TempCurrentBank, 9];
-   editMessage10.Text := TempCWStrBank[TempCurrentBank, 10];
+   for i := 1 to maxmaxstr do begin
+      FEditMessage[i].Text := TempCWStrBank[TempCurrentBank, i];
+      if dmZLogGlobal.Settings.CW.CWStrImported[TempCurrentBank, i] = True then begin
+         FEditMessage[i].Color := clBtnFace;
+         FEditMessage[i].ReadOnly := True;
+      end
+      else begin
+         FEditMessage[i].Color := clWindow;
+         FEditMessage[i].ReadOnly := False;
+      end;
+   end;
 end;
 
 procedure TformOptions.FormShow(Sender: TObject);
@@ -904,7 +911,20 @@ begin
       AbbrevEdit.Text := Settings.CW._zero + Settings.CW._one + Settings.CW._nine;
 
       ProvEdit.Text := Settings._prov;
-      CItyEdit.Text := Settings._city;
+      CityEdit.Text := Settings._city;
+      if Settings.ProvCityImported = True then begin
+         ProvEdit.Color := clBtnFace;
+         CityEdit.Color := clBtnFace;
+         ProvEdit.ReadOnly := True;
+         CityEdit.ReadOnly := True;
+      end
+      else begin
+         ProvEdit.Color := clWindow;
+         CityEdit.Color := clWindow;
+         ProvEdit.ReadOnly := False;
+         CityEdit.ReadOnly := False;
+      end;
+
       CQZoneEdit.Text := Settings._cqzone;
       IARUZoneEdit.Text := Settings._iaruzone;
 
@@ -1239,6 +1259,20 @@ begin
    FQuickMemoText[3] := editQuickMemo3;
    FQuickMemoText[4] := editQuickMemo4;
    FQuickMemoText[5] := editQuickMemo5;
+
+   // CW/RTTY
+   FEditMessage[1] := editMessage1;
+   FEditMessage[2] := editMessage2;
+   FEditMessage[3] := editMessage3;
+   FEditMessage[4] := editMessage4;
+   FEditMessage[5] := editMessage5;
+   FEditMessage[6] := editMessage6;
+   FEditMessage[7] := editMessage7;
+   FEditMessage[8] := editMessage8;
+   FEditMessage[9] := editMessage9;
+   FEditMessage[10] := editMessage10;
+   FEditMessage[11] := editMessage11;
+   FEditMessage[12] := editMessage12;
 
    // Voice Memory
    FVoiceEdit[1] := vEdit1;

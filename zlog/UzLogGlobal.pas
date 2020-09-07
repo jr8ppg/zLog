@@ -29,6 +29,8 @@ type
     _eispacefactor : word;
     _send_nr_auto: Boolean;         // Send NR automatically
     _keying_signal_reverse: Boolean;
+
+    CWStrImported: array[1..maxbank, 1..maxmaxstr] of Boolean;
   end;
 
   TCommParam = record
@@ -72,6 +74,8 @@ type
     _cqzone : string;
     _iaruzone : string;
     _sendfreq : double;
+
+    ProvCityImported: Boolean;
 
     _autobandmap: boolean;
     _activebands: array[b19..HiBand] of Boolean;
@@ -346,10 +350,21 @@ uses
 {$R *.dfm}
 
 procedure TdmZLogGlobal.DataModuleCreate(Sender: TObject);
+var
+   i: Integer;
+   j: Integer;
 begin
    FCurrentFileName := '';
    FLog := nil;
 //   CreateLog();
+
+   Settings.ProvCityImported := False;
+
+   for i := 1 to maxbank do begin
+      for j := 1 to maxmaxstr do begin
+         Settings.CW.CWStrImported[i, j] := False;
+      end;
+   end;
 
    LoadIniFile;
    Settings.CW.CurrentBank := 1;
@@ -989,11 +1004,13 @@ begin
       // Mode
       ini.WriteInteger('Categories', 'Mode', Settings._mode);
 
-      // Prov/State($V)
-      ini.WriteString('Profiles', 'Province/State', Settings._prov);
+      if Settings.ProvCityImported = False then begin
+         // Prov/State($V)
+         ini.WriteString('Profiles', 'Province/State', Settings._prov);
 
-      // CITY
-      ini.WriteString('Profiles', 'City', Settings._city);
+         // CITY
+         ini.WriteString('Profiles', 'City', Settings._city);
+      end;
 
       // CQ Zone
       ini.WriteString('Profiles', 'CQZone', Settings._cqzone);
@@ -1013,7 +1030,9 @@ begin
 
       // Messages
       for i := 1 to maxstr do begin
-         ini.WriteString('CW', 'F' + IntToStr(i), Settings.CW.CWStrBank[1, i]);
+         if Settings.CW.CWStrImported[1, i] = False then begin
+            ini.WriteString('CW', 'F' + IntToStr(i), Settings.CW.CWStrBank[1, i]);
+         end;
          ini.WriteString('CW', 'F' + IntToStr(i) + 'B', Settings.CW.CWStrBank[2, i]);
          ini.WriteString('RTTY', 'F' + IntToStr(i), Settings.CW.CWStrBank[3, i]);
       end;

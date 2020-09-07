@@ -247,12 +247,14 @@ begin
       if FSelectDlg.ImportProvCity = True then begin
          dmZLogGlobal.Settings._prov := FSelectDlg.SelectedContest.Prov;
          dmZLogGlobal.Settings._city := FSelectDlg.SelectedContest.City;
+         dmZLogGlobal.Settings.ProvCityImported := True;
       end;
 
       // f1Å`f4éÊçû
       for i := 1 to 4 do begin
          if FSelectDlg.ImportCwMessage[i] = True then begin
             dmZLogGlobal.Settings.CW.CWStrBank[1, i] := FSelectDlg.SelectedContest.CwMessageA[i];
+            dmZLogGlobal.Settings.CW.CWStrImported[1, i] := True;
          end;
       end;
    end;
