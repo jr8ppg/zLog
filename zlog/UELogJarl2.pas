@@ -48,6 +48,8 @@ type
     buttonCancel: TButton;
     mAddress: TMemo;
     SaveDialog1: TSaveDialog;
+    Label3: TLabel;
+    memoMultiOpList: TMemo;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -95,6 +97,9 @@ end;
 procedure TformELogJarl2.InitializeFields;
 var
    ini: TIniFile;
+   i: Integer;
+   p: Integer;
+   str: string;
 begin
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
@@ -131,6 +136,15 @@ begin
       mComments.Lines.Add(ini.ReadString('SummaryInfo', 'Comment9', ''));
       mComments.Lines.Add(ini.ReadString('SummaryInfo', 'Comment10', ''));
       RemoveBlankLines(mComments);
+
+      for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
+         str := dmZlogGlobal.OpList[i];
+         p := Pos(' ', str);
+         if p > 0 then begin
+            str := Copy(str, 1, p - 1);
+         end;
+         memoMultiOpList.Lines.Add(str);
+      end;
 
       edClubID.Text        := ini.ReadString('SummaryInfo', 'ClubID', '');
 
@@ -299,6 +313,12 @@ begin
    Write(f, '<COMMENTS>');
    Write(f, mComments.Text);
    WriteLn(f, '</COMMENTS>');
+
+   if memoMultiOpList.Text <> '' then begin
+      Write(f, '<MULTIOPLIST>');
+      Write(f, memoMultiOpList.Lines.CommaText);
+      WriteLn(f, '</MULTIOPLIST>');
+   end;
 
    WriteLn(f, '<REGCLUBNUMBER>' + edClubID.Text + '</REGCLUBNUMBER>');
 
