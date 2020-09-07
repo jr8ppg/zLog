@@ -22,15 +22,14 @@ type
     _zero : char;
     _one : char;
     _nine : char;
-    CWStrBank : array[1..maxbank,1..maxmaxstr] of string; //bank 3 is for rtty
-    CQStrBank : array[0..2] of string;
+    CWStrBank : array[1..maxbank,1..maxmessage] of string; //bank 3 is for rtty
     CurrentBank : integer; {for future use?}
     _spacefactor : word; {factor in % for default space between characters}
     _eispacefactor : word;
     _send_nr_auto: Boolean;         // Send NR automatically
     _keying_signal_reverse: Boolean;
 
-    CWStrImported: array[1..maxbank, 1..maxmaxstr] of Boolean;
+    CWStrImported: array[1..maxbank, 1..maxmessage] of Boolean;
   end;
 
   TCommParam = record
@@ -161,8 +160,8 @@ type
     FQuickMemoText: array[1..5] of string;
 
     // Voice Memory
-    FSoundFiles: array[1..12] of string;
-    FSoundComments: array[1..12] of string;
+    FSoundFiles: array[1..maxmessage] of string;
+    FSoundComments: array[1..maxmessage] of string;
 
     // Select User Defined Contest
     FImpProvCity: Boolean;
@@ -361,7 +360,7 @@ begin
    Settings.ProvCityImported := False;
 
    for i := 1 to maxbank do begin
-      for j := 1 to maxmaxstr do begin
+      for j := 1 to maxmessage do begin
          Settings.CW.CWStrImported[i, j] := False;
       end;
    end;
@@ -578,7 +577,7 @@ begin
       Settings.CW.CWStrBank[1, 4] := ini.ReadString('CW', 'F4', 'QSO B4 TU');
       Settings.CW.CWStrBank[1, 5] := ini.ReadString('CW', 'F5', 'NR?');
 
-      for i := 6 to maxstr do begin
+      for i := 6 to maxmessage do begin
          Settings.CW.CWStrBank[1, i] := ini.ReadString('CW', 'F' + IntToStr(i), '');
       end;
 
@@ -588,22 +587,13 @@ begin
       Settings.CW.CWStrBank[3, 4] := ini.ReadString('RTTY', 'F4', 'QSO B4 TU');
       Settings.CW.CWStrBank[3, 5] := ini.ReadString('RTTY', 'F5', 'NR? NR? AGN BK');
 
-      for i := 6 to maxstr do begin
+      for i := 6 to maxmessage do begin
          Settings.CW.CWStrBank[3, i] := ini.ReadString('RTTY', 'F' + IntToStr(i), '');
       end;
 
-      for i := 1 to maxstr do begin
+      for i := 1 to maxmessage do begin
          Settings.CW.CWStrBank[2, i] := ini.ReadString('CW', 'F' + IntToStr(i) + 'B', '');
       end;
-
-      for i := 11 to 12 do begin
-         Settings.CW.CWStrBank[1, i] := ini.ReadString('CW', 'F' + IntToStr(i), '');
-         Settings.CW.CWStrBank[2, i] := ini.ReadString('CW', 'F' + IntToStr(i) + 'B', '');
-         Settings.CW.CWStrBank[3, i] := ini.ReadString('RTTY', 'F' + IntToStr(i), '');
-      end;
-
-      Settings.CW.CQStrBank[1] := ini.ReadString('CW', 'CQ2', '');
-      Settings.CW.CQStrBank[2] := ini.ReadString('CW', 'CQ3', '');
 
       // Switch TAB/; with CW bank
       Settings._switchcqsp := ini.ReadBool('CW', 'CQSP', False);
@@ -885,7 +875,7 @@ begin
       Settings.FQuickMemoText[5] := ini.ReadString('QuickMemo', '#5', '');
 
       // Voice Memory
-      for i := 1 to 12 do begin
+      for i := 1 to maxmessage do begin
          s := ini.ReadString('Voice', 'F#' + IntToStr(i), '');
          if s = '' then begin
             Settings.FSoundFiles[i] := '';
@@ -1029,22 +1019,13 @@ begin
       //
 
       // Messages
-      for i := 1 to maxstr do begin
+      for i := 1 to maxmessage do begin
          if Settings.CW.CWStrImported[1, i] = False then begin
             ini.WriteString('CW', 'F' + IntToStr(i), Settings.CW.CWStrBank[1, i]);
          end;
          ini.WriteString('CW', 'F' + IntToStr(i) + 'B', Settings.CW.CWStrBank[2, i]);
          ini.WriteString('RTTY', 'F' + IntToStr(i), Settings.CW.CWStrBank[3, i]);
       end;
-
-      for i := 11 to 12 do begin
-         ini.WriteString('CW', 'F' + IntToStr(i), Settings.CW.CWStrBank[1, i]);
-         ini.WriteString('CW', 'F' + IntToStr(i) + 'B', Settings.CW.CWStrBank[2, i]);
-         ini.WriteString('RTTY', 'F' + IntToStr(i), Settings.CW.CWStrBank[3, i]);
-      end;
-
-      ini.WriteString('CW', 'CQ2', Settings.CW.CQStrBank[1]);
-      ini.WriteString('CW', 'CQ3', Settings.CW.CQStrBank[2]);
 
       // Switch TAB/; with CW bank
       ini.WriteBool('CW', 'CQSP', Settings._switchcqsp);
@@ -1303,7 +1284,7 @@ begin
       end;
 
       // Voice Memory
-      for i := 1 to 12 do begin
+      for i := 1 to maxmessage do begin
          ini.WriteString('Voice', 'F#' + IntToStr(i), Settings.FSoundFiles[i]);
          ini.WriteString('Voice', 'C#' + IntToStr(i), Settings.FSoundComments[i]);
       end;
@@ -1407,8 +1388,8 @@ begin
    SendFreq := Settings._sendfreq;
    SetTonePitch(Settings.CW._tonepitch);
 
-   dmZlogKeyer.RandCQStr[1] := SetStr(Settings.CW.CQStrBank[1], CurrentQSO);
-   dmZlogKeyer.RandCQStr[2] := SetStr(Settings.CW.CQStrBank[2], CurrentQSO);
+   dmZlogKeyer.RandCQStr[1] := SetStr(Settings.CW.CWStrBank[1, 13], CurrentQSO);
+   dmZlogKeyer.RandCQStr[2] := SetStr(Settings.CW.CWStrBank[1, 14], CurrentQSO);
 
    dmZlogKeyer.SpaceFactor := Settings.CW._spacefactor;
    dmZlogKeyer.EISpaceFactor := Settings.CW._eispacefactor;

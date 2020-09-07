@@ -3,7 +3,7 @@ object formOptions: TformOptions
   Top = 236
   BorderStyle = bsDialog
   Caption = 'Options'
-  ClientHeight = 362
+  ClientHeight = 398
   ClientWidth = 358
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -23,7 +23,7 @@ object formOptions: TformOptions
     Left = 0
     Top = 0
     Width = 358
-    Height = 325
+    Height = 361
     ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
@@ -764,6 +764,10 @@ object formOptions: TformOptions
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -824,7 +828,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 4
         Width = 193
-        Height = 261
+        Height = 301
         Caption = 'Messages'
         TabOrder = 0
         object Label1: TLabel
@@ -885,14 +889,14 @@ object formOptions: TformOptions
         end
         object Label9: TLabel
           Left = 8
-          Top = 221
+          Top = 260
           Width = 21
           Height = 13
           Caption = 'CQ2'
         end
         object Label10: TLabel
           Left = 8
-          Top = 239
+          Top = 278
           Width = 21
           Height = 13
           Caption = 'CQ3'
@@ -910,6 +914,20 @@ object formOptions: TformOptions
           Width = 19
           Height = 13
           Caption = '#10'
+        end
+        object Label75: TLabel
+          Left = 8
+          Top = 215
+          Width = 19
+          Height = 13
+          Caption = '#11'
+        end
+        object Label76: TLabel
+          Left = 8
+          Top = 233
+          Width = 19
+          Height = 13
+          Caption = '#12'
         end
         object editMessage2: TEdit
           Tag = 2
@@ -1007,9 +1025,10 @@ object formOptions: TformOptions
           TabOrder = 6
           OnChange = editMessage1Change
         end
-        object editMessage11: TEdit
+        object editMessage13: TEdit
+          Tag = 13
           Left = 32
-          Top = 219
+          Top = 258
           Width = 153
           Height = 17
           AutoSize = False
@@ -1019,7 +1038,8 @@ object formOptions: TformOptions
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          TabOrder = 10
+          TabOrder = 12
+          OnChange = editMessage1Change
         end
         object editMessage8: TEdit
           Tag = 8
@@ -1037,9 +1057,10 @@ object formOptions: TformOptions
           TabOrder = 7
           OnChange = editMessage1Change
         end
-        object editMessage12: TEdit
+        object editMessage14: TEdit
+          Tag = 14
           Left = 32
-          Top = 237
+          Top = 276
           Width = 153
           Height = 17
           AutoSize = False
@@ -1049,7 +1070,8 @@ object formOptions: TformOptions
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          TabOrder = 11
+          TabOrder = 13
+          OnChange = editMessage1Change
         end
         object editMessage1: TEdit
           Tag = 1
@@ -1098,6 +1120,38 @@ object formOptions: TformOptions
           Font.Style = []
           ParentFont = False
           TabOrder = 9
+          OnChange = editMessage1Change
+        end
+        object editMessage11: TEdit
+          Tag = 11
+          Left = 32
+          Top = 212
+          Width = 153
+          Height = 17
+          AutoSize = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 10
+          OnChange = editMessage1Change
+        end
+        object editMessage12: TEdit
+          Tag = 12
+          Left = 32
+          Top = 230
+          Width = 153
+          Height = 17
+          AutoSize = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 11
           OnChange = editMessage1Change
         end
       end
@@ -1225,7 +1279,7 @@ object formOptions: TformOptions
       end
       object cbCQSP: TCheckBox
         Left = 14
-        Top = 272
+        Top = 311
         Width = 161
         Height = 17
         Hint = 
@@ -1236,7 +1290,7 @@ object formOptions: TformOptions
       end
       object checkSendNrAuto: TCheckBox
         Left = 199
-        Top = 272
+        Top = 311
         Width = 161
         Height = 17
         Caption = 'Send NR? automatically'
@@ -1245,11 +1299,15 @@ object formOptions: TformOptions
     end
     object tabsheetVoice: TTabSheet
       Caption = 'Voice'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox4: TGroupBox
-        Left = 8
-        Top = 8
-        Width = 329
-        Height = 269
+        Left = 6
+        Top = 4
+        Width = 336
+        Height = 301
         Caption = 'Messages'
         TabOrder = 0
         object Label20: TLabel
@@ -1310,14 +1368,14 @@ object formOptions: TformOptions
         end
         object Label28: TLabel
           Left = 8
-          Top = 224
+          Top = 260
           Width = 21
           Height = 13
           Caption = 'CQ2'
         end
         object Label29: TLabel
           Left = 8
-          Top = 243
+          Top = 279
           Width = 21
           Height = 13
           Caption = 'CQ3'
@@ -1342,6 +1400,20 @@ object formOptions: TformOptions
           Width = 19
           Height = 13
           Caption = '#10'
+        end
+        object Label77: TLabel
+          Left = 8
+          Top = 215
+          Width = 19
+          Height = 13
+          Caption = '#11'
+        end
+        object Label78: TLabel
+          Left = 8
+          Top = 233
+          Width = 19
+          Height = 13
+          Caption = '#12'
         end
         object vEdit2: TEdit
           Tag = 2
@@ -1397,14 +1469,14 @@ object formOptions: TformOptions
           AutoSize = False
           TabOrder = 12
         end
-        object vEdit11: TEdit
+        object vEdit13: TEdit
           Tag = 9
           Left = 32
-          Top = 222
+          Top = 258
           Width = 150
           Height = 17
           AutoSize = False
-          TabOrder = 20
+          TabOrder = 24
         end
         object vEdit8: TEdit
           Tag = 8
@@ -1415,14 +1487,14 @@ object formOptions: TformOptions
           AutoSize = False
           TabOrder = 14
         end
-        object vEdit12: TEdit
+        object vEdit14: TEdit
           Tag = 10
           Left = 32
-          Top = 240
+          Top = 276
           Width = 150
           Height = 17
           AutoSize = False
-          TabOrder = 22
+          TabOrder = 26
         end
         object vEdit1: TEdit
           Tag = 1
@@ -1447,7 +1519,7 @@ object formOptions: TformOptions
         object vButton2: TButton
           Tag = 2
           Left = 194
-          Top = 51
+          Top = 50
           Width = 125
           Height = 19
           Caption = 'Button4'
@@ -1457,7 +1529,7 @@ object formOptions: TformOptions
         object vButton3: TButton
           Tag = 3
           Left = 194
-          Top = 69
+          Top = 68
           Width = 125
           Height = 19
           Caption = 'Button4'
@@ -1467,7 +1539,7 @@ object formOptions: TformOptions
         object vButton4: TButton
           Tag = 4
           Left = 194
-          Top = 87
+          Top = 86
           Width = 125
           Height = 19
           Caption = 'Button4'
@@ -1477,7 +1549,7 @@ object formOptions: TformOptions
         object vButton5: TButton
           Tag = 5
           Left = 194
-          Top = 105
+          Top = 104
           Width = 125
           Height = 19
           Caption = 'Button4'
@@ -1487,7 +1559,7 @@ object formOptions: TformOptions
         object vButton6: TButton
           Tag = 6
           Left = 194
-          Top = 123
+          Top = 122
           Width = 125
           Height = 19
           Caption = 'Button4'
@@ -1497,7 +1569,7 @@ object formOptions: TformOptions
         object vButton7: TButton
           Tag = 7
           Left = 194
-          Top = 141
+          Top = 140
           Width = 125
           Height = 19
           Caption = 'Button4'
@@ -1507,31 +1579,31 @@ object formOptions: TformOptions
         object vButton8: TButton
           Tag = 8
           Left = 194
-          Top = 159
+          Top = 158
           Width = 125
           Height = 19
           Caption = 'Button4'
           TabOrder = 15
           OnClick = vButtonClick
         end
-        object vButton11: TButton
-          Tag = 11
+        object vButton13: TButton
+          Tag = 13
           Left = 194
-          Top = 222
+          Top = 257
           Width = 125
           Height = 19
           Caption = 'Button4'
-          TabOrder = 21
+          TabOrder = 25
           OnClick = vButtonClick
         end
-        object vButton12: TButton
-          Tag = 12
+        object vButton14: TButton
+          Tag = 14
           Left = 194
-          Top = 241
+          Top = 275
           Width = 125
           Height = 19
           Caption = 'Button4'
-          TabOrder = 23
+          TabOrder = 27
           OnClick = vButtonClick
         end
         object vEdit9: TEdit
@@ -1555,7 +1627,7 @@ object formOptions: TformOptions
         object vButton9: TButton
           Tag = 9
           Left = 194
-          Top = 177
+          Top = 176
           Width = 125
           Height = 19
           Caption = 'Button4'
@@ -1565,17 +1637,59 @@ object formOptions: TformOptions
         object vButton10: TButton
           Tag = 10
           Left = 194
-          Top = 195
+          Top = 194
           Width = 125
           Height = 19
           Caption = 'Button4'
           TabOrder = 19
           OnClick = vButtonClick
         end
+        object vEdit11: TEdit
+          Tag = 8
+          Left = 32
+          Top = 212
+          Width = 150
+          Height = 17
+          AutoSize = False
+          TabOrder = 20
+        end
+        object vButton11: TButton
+          Tag = 11
+          Left = 194
+          Top = 212
+          Width = 125
+          Height = 19
+          Caption = 'Button4'
+          TabOrder = 21
+          OnClick = vButtonClick
+        end
+        object vEdit12: TEdit
+          Tag = 8
+          Left = 32
+          Top = 230
+          Width = 150
+          Height = 17
+          AutoSize = False
+          TabOrder = 22
+        end
+        object vButton12: TButton
+          Tag = 12
+          Left = 194
+          Top = 230
+          Width = 125
+          Height = 19
+          Caption = 'Button4'
+          TabOrder = 23
+          OnClick = vButtonClick
+        end
       end
     end
     object tabsheetHardware: TTabSheet
       Caption = 'Hardware'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox6: TGroupBox
         Left = 5
         Top = 0
@@ -1957,6 +2071,10 @@ object formOptions: TformOptions
     end
     object tabsheetRigControl: TTabSheet
       Caption = 'Rig control'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label45: TLabel
         Left = 8
         Top = 138
@@ -2040,6 +2158,10 @@ object formOptions: TformOptions
     end
     object tabsheetPath: TTabSheet
       Caption = 'Path'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label50: TLabel
         Left = 16
         Top = 18
@@ -2167,6 +2289,10 @@ object formOptions: TformOptions
     end
     object tabsheetMisc: TTabSheet
       Caption = 'Misc'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label47: TLabel
         Left = 125
         Top = 23
@@ -2377,6 +2503,10 @@ object formOptions: TformOptions
     object tabsheetQuickQSY: TTabSheet
       Caption = 'Quick QSY'
       ImageIndex = 8
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label54: TLabel
         Left = 98
         Top = 3
@@ -2754,6 +2884,10 @@ object formOptions: TformOptions
     object tabsheetBandScope1: TTabSheet
       Caption = 'BandScope'
       ImageIndex = 9
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox9: TGroupBox
         Left = 11
         Top = 11
@@ -3248,6 +3382,10 @@ object formOptions: TformOptions
     object tabsheetBandScope2: TTabSheet
       Caption = 'BandScope2'
       ImageIndex = 11
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox12: TGroupBox
         Left = 11
         Top = 11
@@ -3531,6 +3669,10 @@ object formOptions: TformOptions
     object tabsheetQuickMemo: TTabSheet
       Caption = 'Quick Memo'
       ImageIndex = 10
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox11: TGroupBox
         Left = 11
         Top = 11
@@ -3615,7 +3757,7 @@ object formOptions: TformOptions
   end
   object Panel1: TPanel
     Left = 0
-    Top = 325
+    Top = 361
     Width = 358
     Height = 37
     Align = alBottom
@@ -3654,11 +3796,11 @@ object formOptions: TformOptions
       'sound files|*.wav;*.mp3|wav files|*.wav|mp3 files|*.mp3|all file' +
       's|*.*'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
-    Left = 312
-    Top = 312
+    Left = 308
+    Top = 348
   end
   object ColorDialog1: TColorDialog
     Left = 28
-    Top = 312
+    Top = 344
   end
 end

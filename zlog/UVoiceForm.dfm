@@ -17,7 +17,7 @@ object VoiceForm: TVoiceForm
   object MP: TMediaPlayer
     Left = 0
     Top = 0
-    Width = 141
+    Width = -4
     Height = 30
     VisibleButtons = [btPlay, btPause, btStop, btBack, btRecord]
     DoubleBuffered = True

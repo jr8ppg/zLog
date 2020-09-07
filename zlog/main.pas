@@ -660,6 +660,16 @@ type
     VoiceFMenu: TPopupMenu;
     menuVoiceEdit: TMenuItem;
     actionCQAbort: TAction;
+    CWF11: THemisphereButton;
+    CWF12: THemisphereButton;
+    VoiceF11: THemisphereButton;
+    VoiceF12: THemisphereButton;
+    actionPlayCQA2: TAction;
+    actionPlayCQA3: TAction;
+    actionPlayCQB1: TAction;
+    actionPlayCQB3: TAction;
+    actionPlayCQA1: TAction;
+    actionPlayCQB2: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -729,8 +739,6 @@ type
     procedure Edit1Click(Sender: TObject);
     procedure CWFMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure CWCQMouseDown(Sender: TObject;
-      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure EditEnter(Sender: TObject);
     procedure mnMergeClick(Sender: TObject);
     procedure ConnecttoZServer1Click(Sender: TObject);
@@ -867,8 +875,6 @@ type
     procedure menuVoiceEditClick(Sender: TObject);
     procedure VoiceFMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure VoiceCQMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
     procedure actionCQAbortExecute(Sender: TObject);
     procedure GridEnter(Sender: TObject);
     procedure GridExit(Sender: TObject);
@@ -974,6 +980,9 @@ type
     procedure SetFontSize(font_size: Integer);
     procedure QSY(b: TBand; m: TMode; r: Integer);
     procedure PlayMessage(bank: Integer; no: Integer);
+    procedure PlayMessageCW(bank: Integer; no: Integer);
+    procedure PlayMessagePH(no: Integer);
+    procedure PlayMessageRTTY(no: Integer);
     procedure OnVoicePlayStarted(Sender: TObject);
     procedure OnVoicePlayFinished(Sender: TObject);
     procedure InsertBandScope(fShiftKey: Boolean);
@@ -5285,19 +5294,9 @@ end;
 procedure TMainForm.CWFButtonClick(Sender: TObject);
 var
    i: Integer;
-   S: string;
 begin
    i := THemisphereButton(Sender).Tag;
-   if i in [1 .. 10, 101] then begin
-      if i = 101 then begin
-         i := 1; { CQ button }
-         SetCQ(True);
-      end;
-
-      S := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, i);
-      S := SetStr(S, CurrentQSO);
-      zLogSendStr(S);
-   end;
+   PlayMessage(dmZlogGlobal.Settings.CW.CurrentBank, i);
 end;
 
 procedure TMainForm.FormDeactivate(Sender: TObject);
@@ -5416,8 +5415,8 @@ begin
    S := dmZlogGlobal.CWMessage(1, 1);
    S := SetStr(UpperCase(S), CurrentQSO);
    dmZLogKeyer.SendStrLoop(S);
-   dmZLogKeyer.RandCQStr[1] := SetStr(dmZlogGlobal.Settings.CW.CQStrBank[1], CurrentQSO);
-   dmZLogKeyer.RandCQStr[2] := SetStr(dmZlogGlobal.Settings.CW.CQStrBank[2], CurrentQSO);
+   dmZLogKeyer.RandCQStr[1] := SetStr(dmZlogGlobal.Settings.CW.CWStrBank[1, 13], CurrentQSO);
+   dmZLogKeyer.RandCQStr[2] := SetStr(dmZlogGlobal.Settings.CW.CWStrBank[1, 14], CurrentQSO);
    SetCQ(True);
 end;
 
@@ -5670,19 +5669,8 @@ begin
 end;
 
 procedure TMainForm.VoiceFMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-var
-   n: Integer;
 begin
-   n := THemisphereButton(Sender).Tag;
-   if n > 100 then begin
-      n := n - 100;
-   end;
-   VoiceFMenu.Items[0].Tag := n;
-end;
-
-procedure TMainForm.VoiceCQMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-begin
-   VoiceFMenu.Items[0].Tag := 1;
+   VoiceFMenu.Items[0].Tag := THemisphereButton(Sender).Tag;
 end;
 
 procedure TMainForm.VoiceFButtonClick(Sender: TObject);
@@ -5690,9 +5678,6 @@ var
    n: Integer;
 begin
    n := THemisphereButton(Sender).Tag;
-   if n > 100 then begin
-      n := n - 100;
-   end;
    PlayMessage(1, n);
 end;
 
@@ -5967,19 +5952,8 @@ begin
 end;
 
 procedure TMainForm.CWFMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-var
-   n: Integer;
 begin
-   n := THemisphereButton(Sender).Tag;
-   if n > 100 then begin
-      n := n - 100;
-   end;
-   CWFMenu.Items[0].Tag := n;
-end;
-
-procedure TMainForm.CWCQMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-begin
-   CWFMenu.Items[0].Tag := 1;
+   CWFMenu.Items[0].Tag := THemisphereButton(Sender).Tag;
 end;
 
 procedure TMainForm.EditEnter(Sender: TObject);
@@ -7518,32 +7492,123 @@ begin
 end;
 
 procedure TMainForm.PlayMessage(bank: Integer; no: Integer);
-var
-   S: string;
 begin
    case CurrentQSO.mode of
       mCW: begin
-         S := dmZlogGlobal.CWMessage(bank, no);
-         S := SetStr(S, CurrentQSO);
-         zLogSendStr(S);
+         PlayMessageCW(bank, no);
       end;
 
       mSSB, mFM, mAM: begin
-         FVoiceForm.SendVoice(no);
+         PlayMessagePH(no);
       end;
 
       mRTTY: begin
-         S := dmZlogGlobal.CWMessage(3, no);
-         S := SetStrNoAbbrev(S, CurrentQSO);
-         if TTYConsole <> nil then begin
-            TTYConsole.SendStrNow(S);
-         end;
+         PlayMessageRTTY(no);
       end;
 
       else begin
          // NO OPERATION
       end;
    end;
+end;
+
+procedure TMainForm.PlayMessageCW(bank: Integer; no: Integer);
+var
+   S: string;
+begin
+   case no of
+      1, 2, 3, 4, 5, 6,
+      7, 8, 9, 10, 11, 12: begin
+         S := dmZlogGlobal.CWMessage(bank, no);
+      end;
+
+      101: begin
+         SetCQ(True);
+         S := dmZlogGlobal.CWMessage(bank, 1);
+      end;
+
+      102: begin
+         SetCQ(True);
+         S := dmZlogGlobal.CWMessage(bank, 13);
+      end;
+
+      103: begin
+         SetCQ(True);
+         S := dmZlogGlobal.CWMessage(bank, 14);
+      end;
+
+      else begin
+         S := '';
+      end;
+   end;
+
+   if S = '' then begin
+      Exit;
+   end;
+
+   S := SetStr(S, CurrentQSO);
+   zLogSendStr(S);
+end;
+
+procedure TMainForm.PlayMessagePH(no: Integer);
+begin
+   case no of
+      1, 2, 3, 4, 5, 6,
+      7, 8, 9, 10, 11, 12: begin
+         FVoiceForm.SendVoice(no);
+      end;
+
+      101: begin
+         FVoiceForm.SendVoice(1);
+      end;
+
+      102: begin
+         FVoiceForm.SendVoice(13);
+      end;
+
+      103: begin
+         FVoiceForm.SendVoice(14);
+      end;
+   end;
+end;
+
+procedure TMainForm.PlayMessageRTTY(no: Integer);
+var
+   S: string;
+begin
+   if TTYConsole = nil then begin
+      Exit;
+   end;
+
+   case no of
+      1, 2, 3, 4, 5, 6,
+      7, 8, 9, 10, 11, 12: begin
+         S := dmZlogGlobal.CWMessage(3, no);
+      end;
+
+      101: begin
+         S := dmZlogGlobal.CWMessage(3, 1);
+      end;
+
+      102: begin
+         S := dmZlogGlobal.CWMessage(3, 13);
+      end;
+
+      103: begin
+         S := dmZlogGlobal.CWMessage(3, 14);
+      end;
+
+      else begin
+         S := '';
+      end;
+   end;
+
+   if S = '' then begin
+      Exit;
+   end;
+
+   S := SetStrNoAbbrev(S, CurrentQSO);
+   TTYConsole.SendStrNow(S);
 end;
 
 procedure TMainForm.OnVoicePlayStarted(Sender: TObject);

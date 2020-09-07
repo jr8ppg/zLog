@@ -45,8 +45,7 @@ const
 
 const
   maxbank = 3; // bank 3 reserved for rtty
-  maxstr = 10;
-  maxmaxstr = 12; // f11 and f12 only accessible via zlog.ini
+  maxmessage = 14; // f11 and f12 only accessible via zlog.ini
 
 const
   ZLinkHeader = '#ZLOG#';
@@ -88,7 +87,7 @@ const
   pwrH = TPower(3);
 
 const
-  default_primary_shortcut: array[0..113] of string = (
+  default_primary_shortcut: array[0..119] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -109,18 +108,18 @@ const
     'F8',
     '',                 // #18 actionCheckMulti
     '',                 // #19 actionShowCheckPartial
-    'F11',              // #20
-    'F12',
-    'Shift+F1',
-    'Shift+F2',
-    'Shift+F3',
-    'Shift+F4',         // #25
-    'Shift+F5',
-    'Shift+F6',
-    'Shift+F7',
-    'Shift+F8',
-    'Shift+F11',        // #30
-    'Shift+F12',
+    'F11',              // #20 actionPlayCQA2
+    'F12',              // #21 actionPlayCQA3
+    'Shift+F1',         // #22 actionPlayMessageB01
+    'Shift+F2',         // #23 actionPlayMessageB02
+    'Shift+F3',         // #24 actionPlayMessageB03
+    'Shift+F4',         // #25 actionPlayMessageB04
+    'Shift+F5',         // #26 actionPlayMessageB05
+    'Shift+F6',         // #27 actionPlayMessageB06
+    'Shift+F7',         // #28 actionPlayMessageB07
+    'Shift+F8',         // #29 actionPlayMessageB08
+    'Shift+F11',        // #30 actionPlayCQB2
+    'Shift+F12',        // #31 actionPlayCQB3
     'Ctrl+Enter',
     'Ctrl+N',
     'Shift+Ctrl+N',
@@ -202,10 +201,16 @@ const
     'F10',              // #110 actionPlayMessageA10
     'Shift+F9',         // #111 actionPlayMessageB09
     'Shift+F10',        // #112 actionPlayMessageB10
-    'Esc'               // #113 actionCQAbort
+    'Esc',              // #113 actionCQAbort
+    '',                 // #114 actionPlayMessageA11
+    '',                 // #115 actionPlayMessageA12
+    '',                 // #116 actionPlayCQA1
+    '',                 // #117 actionPlayMessageB11
+    '',                 // #118 actionPlayMessageB12
+    ''                  // #119 actionPlayCQB1
   );
 
-  default_secondary_shortcut: array[0..113] of string = (
+  default_secondary_shortcut: array[0..119] of string = (
     '',                 // #00
     '',
     '',
@@ -319,7 +324,13 @@ const
     '',                 // #110
     '',
     '',                 // #112
-    ''                  // #113
+    '',                 // #113
+    '',                 // #114 actionPlayMessageA11
+    '',                 // #115 actionPlayMessageA12
+    '',                 // #116 actionPlayCQA1
+    '',                 // #117 actionPlayMessageB11
+    '',                 // #118 actionPlayMessageB12
+    ''                  // #119 actionPlayCQB1
   );
 
 const

@@ -36,7 +36,7 @@ type
     editMessage5: TEdit;
     editMessage6: TEdit;
     editMessage7: TEdit;
-    editMessage11: TEdit;
+    editMessage13: TEdit;
     editMessage8: TEdit;
     Label1: TLabel;
     Label2: TLabel;
@@ -48,7 +48,7 @@ type
     Label8: TLabel;
     Label9: TLabel;
     Label10: TLabel;
-    editMessage12: TEdit;
+    editMessage14: TEdit;
     editMessage1: TEdit;
     SpeedBar: TTrackBar;
     Label11: TLabel;
@@ -104,9 +104,9 @@ type
     vEdit5: TEdit;
     vEdit6: TEdit;
     vEdit7: TEdit;
-    vEdit11: TEdit;
+    vEdit13: TEdit;
     vEdit8: TEdit;
-    vEdit12: TEdit;
+    vEdit14: TEdit;
     vEdit1: TEdit;
     memo: TLabel;
     OpenDialog: TOpenDialog;
@@ -126,8 +126,8 @@ type
     vButton6: TButton;
     vButton7: TButton;
     vButton8: TButton;
-    vButton11: TButton;
-    vButton12: TButton;
+    vButton13: TButton;
+    vButton14: TButton;
     act24: TCheckBox;
     act18: TCheckBox;
     act10: TCheckBox;
@@ -370,6 +370,16 @@ type
     buttonBrowseSoundPath: TButton;
     SoundPathEdit: TEdit;
     checkBsCurrent: TCheckBox;
+    Label75: TLabel;
+    editMessage11: TEdit;
+    Label76: TLabel;
+    editMessage12: TEdit;
+    Label77: TLabel;
+    vEdit11: TEdit;
+    vButton11: TButton;
+    Label78: TLabel;
+    vEdit12: TEdit;
+    vButton12: TButton;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -411,9 +421,9 @@ type
   private
     FEditMode: Integer;
     FEditNumber: Integer;
-    FTempVoiceFiles : array[1..12] of string;
+    FTempVoiceFiles : array[1..maxmessage] of string;
     TempCurrentBank : integer;
-    TempCWStrBank : array[1..maxbank,1..maxmaxstr] of string; // used temporarily while options window is open
+    TempCWStrBank : array[1..maxbank,1..maxmessage] of string; // used temporarily while options window is open
 
     FTempClusterTelnet: TCommParam;
     FTempClusterCom: TCommParam;
@@ -431,17 +441,18 @@ type
 
     FQuickMemoText: array[1..5] of TEdit;
 
-    FEditMessage: array[1..maxmaxstr] of TEdit;
+    FEditMessage: array[1..maxmessage] of TEdit;
 
-    FVoiceEdit: array[1..12] of TEdit;
-    FVoiceButton: array[1..12] of TButton;
+    FVoiceEdit: array[1..maxmessage] of TEdit;
+    FVoiceButton: array[1..maxmessage] of TButton;
 
     procedure RenewCWStrBankDisp();
     procedure InitRigNames();
+    procedure SetEditNumber(no: Integer);
   public
     procedure RenewSettings; {Reads controls and updates Settings}
     property EditMode: Integer read FEditMode write FEditMode;
-    property EditNumber: Integer read FEditNumber write FEditNumber;
+    property EditNumber: Integer read FEditNumber write SetEditNumber;
     property NeedSuperCheckLoad: Boolean read FNeedSuperCheckLoad;
   end;
 
@@ -561,14 +572,11 @@ begin
         Settings.CW.CQStrBank[0] := Edit1.Text;
       }
 
-      for i := 1 to maxbank do
-         for j := 1 to maxstr do
+      for i := 1 to maxbank do begin
+         for j := 1 to maxmessage do begin
             Settings.CW.CWStrBank[i, j] := TempCWStrBank[i, j];
-
-      Settings.CW.CQStrBank[0] := TempCWStrBank[1, 1];
-
-      Settings.CW.CQStrBank[1] := editMessage11.Text;
-      Settings.CW.CQStrBank[2] := editMessage12.Text;
+         end;
+      end;
 
       Settings._bsexpire := spBSExpire.Value;
       Settings._spotexpire := spSpotExpire.Value;
@@ -764,7 +772,7 @@ begin
       end;
 
       // Voice Memory
-      for i := 1 to 12 do begin
+      for i := 1 to maxmessage do begin
          Settings.FSoundFiles[i] := FTempVoiceFiles[i];
          Settings.FSoundComments[i] := FVoiceEdit[i].Text;
       end;
@@ -783,7 +791,7 @@ procedure TformOptions.RenewCWStrBankDisp;
 var
    i: Integer;
 begin
-   for i := 1 to maxmaxstr do begin
+   for i := 1 to maxmessage do begin
       FEditMessage[i].Text := TempCWStrBank[TempCurrentBank, i];
       if dmZLogGlobal.Settings.CW.CWStrImported[TempCurrentBank, i] = True then begin
          FEditMessage[i].Color := clBtnFace;
@@ -869,9 +877,11 @@ begin
       ModeGroup.ItemIndex := Settings._mode;
       { OpListBox.Items := OpList; }
 
-      for i := 1 to maxbank do
-         for j := 1 to maxstr do
+      for i := 1 to maxbank do begin
+         for j := 1 to maxmessage do begin
             TempCWStrBank[i, j] := Settings.CW.CWStrBank[i, j];
+         end;
+      end;
 
       TempCurrentBank := Settings.CW.CurrentBank;
       case TempCurrentBank of
@@ -884,18 +894,6 @@ begin
       end;
 
       RenewCWStrBankDisp;
-      {
-        Edit1.Text := Settings.CW.CWStrBank[1,1];
-        Edit2.Text := Settings.CW.CWStrBank[1,2];
-        Edit3.Text := Settings.CW.CWStrBank[1,3];
-        Edit4.Text := Settings.CW.CWStrBank[1,4];
-        Edit5.Text := Settings.CW.CWStrBank[1,5];
-        Edit6.Text := Settings.CW.CWStrBank[1,6];
-        Edit7.Text := Settings.CW.CWStrBank[1,7];
-        Edit8.Text := Settings.CW.CWStrBank[1,8];
-      }
-      editMessage11.Text := Settings.CW.CQStrBank[1];
-      editMessage12.Text := Settings.CW.CQStrBank[2];
 
       CQRepEdit.Text := FloatToStrF(Settings.CW._cqrepeat, ffFixed, 3, 1);
       SendFreqEdit.Text := FloatToStrF(Settings._sendfreq, ffFixed, 3, 1);
@@ -1086,7 +1084,7 @@ begin
       end;
 
       // Voice Memory
-      for i := 1 to 12 do begin
+      for i := 1 to maxmessage do begin
          FTempVoiceFiles[i] := Settings.FSoundFiles[i];
          if FTempVoiceFiles[i] = '' then begin
             FVoiceButton[i].Caption := 'select';
@@ -1128,17 +1126,8 @@ begin
       tabsheetBandScope2.TabVisible := False;
       tabsheetQuickMemo.TabVisible := False;
 
-      case FEditNumber of
-         1: editMessage1.SetFocus;
-         2: editMessage2.SetFocus;
-         3: editMessage3.SetFocus;
-         4: editMessage4.SetFocus;
-         5: editMessage5.SetFocus;
-         6: editMessage6.SetFocus;
-         7: editMessage7.SetFocus;
-         8: editMessage8.SetFocus;
-         9: editMessage9.SetFocus;
-         10: editMessage10.SetFocus;
+      if FEditNumber > 0 then begin
+         FEditMessage[FEditNumber].SetFocus;
       end;
    end
    else if FEditMode = 2 then begin // Voice
@@ -1273,6 +1262,8 @@ begin
    FEditMessage[10] := editMessage10;
    FEditMessage[11] := editMessage11;
    FEditMessage[12] := editMessage12;
+   FEditMessage[13] := editMessage13;
+   FEditMessage[14] := editMessage14;
 
    // Voice Memory
    FVoiceEdit[1] := vEdit1;
@@ -1287,6 +1278,8 @@ begin
    FVoiceEdit[10] := vEdit10;
    FVoiceEdit[11] := vEdit11;
    FVoiceEdit[12] := vEdit12;
+   FVoiceEdit[13] := vEdit13;
+   FVoiceEdit[14] := vEdit14;
    FVoiceButton[1] := vButton1;
    FVoiceButton[2] := vButton2;
    FVoiceButton[3] := vButton3;
@@ -1299,6 +1292,8 @@ begin
    FVoiceButton[10] := vButton10;
    FVoiceButton[11] := vButton11;
    FVoiceButton[12] := vButton12;
+   FVoiceButton[13] := vButton13;
+   FVoiceButton[14] := vButton14;
 
    TempCurrentBank := 1;
 
@@ -1639,6 +1634,22 @@ begin
    dmZlogGlobal.MakeRigList(comboRig1Name.Items);
 
    comboRig2Name.Items.Assign(comboRig1Name.Items);
+end;
+
+procedure TformOptions.SetEditNumber(no: Integer);
+begin
+   if (no >= 1) and (no <= 12) then begin
+      FEditNumber := no;
+   end;
+   if (no = 101) then begin
+      FEditNumber := 1;
+   end;
+   if (no = 102) then begin
+      FEditNumber := 13;
+   end;
+   if (no = 103) then begin
+      FEditNumber := 14;
+   end;
 end;
 
 procedure TformOptions.buttonFullmatchSelectColorClick(Sender: TObject);

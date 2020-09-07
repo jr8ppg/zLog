@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, MPlayer, ExtCtrls;
+  Dialogs, MPlayer, ExtCtrls, UzLogConst;
 
 type
   TVoiceForm = class(TForm)
@@ -56,7 +56,7 @@ procedure TVoiceForm.SendVoice(i: integer);
 var
    filename: string;
 begin
-   if i > 10 then begin
+   if i > maxmessage then begin
       exit;
    end;
 
