@@ -194,6 +194,7 @@ type
 
     procedure LoadIniFile; {loads Settings from zlog.ini}
     procedure LoadIniFileBS(ini: TIniFile); // called from loadinifile
+    procedure LoadCfgParams(ini: TIniFile);
 
     function GetMyCall(): string;
     procedure SetMyCall(s: string);
@@ -231,6 +232,8 @@ public
     FLog : TLog;
 
     Settings : TSettingsParam;
+
+    procedure ClearParamImportedFlag();
 
     procedure SaveCurrentSettings; {saves Settings to zlog.ini}
     procedure ImplementSettings(_OnCreate: boolean);
@@ -349,21 +352,12 @@ uses
 {$R *.dfm}
 
 procedure TdmZLogGlobal.DataModuleCreate(Sender: TObject);
-var
-   i: Integer;
-   j: Integer;
 begin
    FCurrentFileName := '';
    FLog := nil;
 //   CreateLog();
 
-   Settings.ProvCityImported := False;
-
-   for i := 1 to maxbank do begin
-      for j := 1 to maxmessage do begin
-         Settings.CW.CWStrImported[i, j] := False;
-      end;
-   end;
+   ClearParamImportedFlag();
 
    LoadIniFile;
    Settings.CW.CurrentBank := 1;
@@ -378,6 +372,29 @@ begin
    SaveCurrentSettings();
    FOpList.Free();
    FLog.Free();
+end;
+
+procedure TdmZLogGlobal.ClearParamImportedFlag();
+var
+   i: Integer;
+   j: Integer;
+   ini: TIniFile;
+begin
+   Settings.ProvCityImported := False;
+
+   for i := 1 to maxbank do begin
+      for j := 1 to maxmessage do begin
+         Settings.CW.CWStrImported[i, j] := False;
+      end;
+   end;
+
+   // 対象項目を再ロード
+   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   try
+      LoadCfgParams(ini);
+   finally
+      ini.Free();
+   end;
 end;
 
 procedure TdmZLogGlobal.LoadIniFileBS(ini: TIniFile);
@@ -454,6 +471,20 @@ begin
          Settings._bsmaxfreqarray[b, m] := Settings._bsmaxfreqarray[b, mSSB];
       end;
    end;
+end;
+
+procedure TdmZLogGlobal.LoadCfgParams(ini: TIniFile);
+begin
+   // Prov/State($V)
+   Settings._prov := ini.ReadString('Profiles', 'Province/State', '');
+
+   // CITY
+   Settings._city := ini.ReadString('Profiles', 'City', '');
+
+   Settings.CW.CWStrBank[1, 1] := ini.ReadString('CW', 'F1', 'CQ TEST $M $M TEST');
+   Settings.CW.CWStrBank[1, 2] := ini.ReadString('CW', 'F2', '$C 5NN$X');
+   Settings.CW.CWStrBank[1, 3] := ini.ReadString('CW', 'F3', 'TU $M TEST');
+   Settings.CW.CWStrBank[1, 4] := ini.ReadString('CW', 'F4', 'QSO B4 TU');
 end;
 
 procedure TdmZLogGlobal.LoadIniFile;
@@ -548,11 +579,11 @@ begin
       // Mode
       Settings._mode := ini.ReadInteger('Categories', 'Mode', 0);
 
-      // Prov/State($V)
-      Settings._prov := ini.ReadString('Profiles', 'Province/State', '');
-
-      // CITY
-      Settings._city := ini.ReadString('Profiles', 'City', '');
+//      // Prov/State($V)
+//      Settings._prov := ini.ReadString('Profiles', 'Province/State', '');
+//
+//      // CITY
+//      Settings._city := ini.ReadString('Profiles', 'City', '');
 
       // CQ Zone
       Settings._cqzone := ini.ReadString('Profiles', 'CQZone', '');
@@ -566,15 +597,18 @@ begin
       // Multi Station
       Settings._multistation := ini.ReadBool('Categories', 'MultiStn', False);
 
+      // CFGファイルにもある項目をロード
+      LoadCfgParams(ini);
+
       //
       // CW/RTTY
       //
 
       // Messages
-      Settings.CW.CWStrBank[1, 1] := ini.ReadString('CW', 'F1', 'CQ TEST $M $M TEST');
-      Settings.CW.CWStrBank[1, 2] := ini.ReadString('CW', 'F2', '$C 5NN$X');
-      Settings.CW.CWStrBank[1, 3] := ini.ReadString('CW', 'F3', 'TU $M TEST');
-      Settings.CW.CWStrBank[1, 4] := ini.ReadString('CW', 'F4', 'QSO B4 TU');
+//      Settings.CW.CWStrBank[1, 1] := ini.ReadString('CW', 'F1', 'CQ TEST $M $M TEST');
+//      Settings.CW.CWStrBank[1, 2] := ini.ReadString('CW', 'F2', '$C 5NN$X');
+//      Settings.CW.CWStrBank[1, 3] := ini.ReadString('CW', 'F3', 'TU $M TEST');
+//      Settings.CW.CWStrBank[1, 4] := ini.ReadString('CW', 'F4', 'QSO B4 TU');
       Settings.CW.CWStrBank[1, 5] := ini.ReadString('CW', 'F5', 'NR?');
 
       for i := 6 to maxmessage do begin

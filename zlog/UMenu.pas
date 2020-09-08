@@ -242,6 +242,8 @@ procedure TMenuForm.OKButtonClick(Sender: TObject);
 var
    i: Integer;
 begin
+   dmZLogGlobal.ClearParamImportedFlag();
+
    if (rbGeneral.Checked = True) and (FModernStyle = True) then begin
       // prov,cityéÊçû
       if FSelectDlg.ImportProvCity = True then begin
