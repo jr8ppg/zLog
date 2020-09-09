@@ -29,6 +29,7 @@ type
     Button1: TButton;
     Grid: TMgrid;
     StayOnTop: TCheckBox;
+    checkJumpLatestMulti: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure GoButtonClick2(Sender: TObject);
@@ -76,7 +77,9 @@ begin
       Grid.Cells[0, i] := C.Summary;
    end;
 
-   Grid.TopRow := LatestMultiAddition;
+   if checkJumpLatestMulti.Checked = True then begin
+      Grid.TopRow := LatestMultiAddition;
+   end;
 end;
 
 procedure TACAGMulti.CheckMulti(aQSO: TQSO);

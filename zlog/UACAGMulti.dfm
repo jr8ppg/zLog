@@ -276,6 +276,16 @@ object ACAGMulti: TACAGMulti
       Font.Style = []
       ParentFont = False
     end
+    object checkJumpLatestMulti: TCheckBox
+      Left = 8
+      Top = 13
+      Width = 121
+      Height = 17
+      Caption = 'Jump to Latest Multi'
+      Checked = True
+      State = cbChecked
+      TabOrder = 0
+    end
   end
   object Grid: TMgrid
     Left = 0
