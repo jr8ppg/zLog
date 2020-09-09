@@ -75,6 +75,7 @@ type
     _sendfreq : double;
 
     ProvCityImported: Boolean;
+    ReadOnlyParamImported: Boolean;
 
     _autobandmap: boolean;
     _activebands: array[b19..HiBand] of Boolean;
@@ -842,6 +843,8 @@ begin
 
       Settings._super_check_columns := ini.ReadInteger('Windows', 'SuperCheckColumns', 0);
       Settings._super_check2_columns := ini.ReadInteger('Windows', 'SuperCheck2Columns', 0);
+
+      Settings.ReadOnlyParamImported := ini.ReadBool('Categories', 'ReadOnlyParamImported', True);
 
       // QuickQSY
       for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin

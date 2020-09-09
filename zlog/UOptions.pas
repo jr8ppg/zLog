@@ -552,10 +552,8 @@ begin
       Settings._mode := ModeGroup.ItemIndex;
       // Settings._multiop := MultiOpRadioBtn.Checked;
 
-      if Settings.ProvCityImported = False then begin
-         Settings._prov := ProvEdit.Text;
-         Settings._city := CityEdit.Text;
-      end;
+      Settings._prov := ProvEdit.Text;
+      Settings._city := CityEdit.Text;
       Settings._cqzone := CQZoneEdit.Text;
       Settings._iaruzone := IARUZoneEdit.Text;
 
@@ -795,7 +793,7 @@ begin
       FEditMessage[i].Text := TempCWStrBank[TempCurrentBank, i];
       if dmZLogGlobal.Settings.CW.CWStrImported[TempCurrentBank, i] = True then begin
          FEditMessage[i].Color := clBtnFace;
-         FEditMessage[i].ReadOnly := True;
+         FEditMessage[i].ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
       end
       else begin
          FEditMessage[i].Color := clWindow;
@@ -913,8 +911,8 @@ begin
       if Settings.ProvCityImported = True then begin
          ProvEdit.Color := clBtnFace;
          CityEdit.Color := clBtnFace;
-         ProvEdit.ReadOnly := True;
-         CityEdit.ReadOnly := True;
+         ProvEdit.ReadOnly := Settings.ReadOnlyParamImported;
+         CityEdit.ReadOnly := Settings.ReadOnlyParamImported;
       end
       else begin
          ProvEdit.Color := clWindow;
