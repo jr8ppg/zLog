@@ -764,10 +764,6 @@ object formOptions: TformOptions
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -1182,7 +1178,7 @@ object formOptions: TformOptions
         Height = 22
         MaxValue = 999
         MinValue = 0
-        TabOrder = 7
+        TabOrder = 5
         Value = 15
       end
       object ToneSpinEdit: TSpinEdit
@@ -1193,23 +1189,15 @@ object formOptions: TformOptions
         Increment = 10
         MaxValue = 2500
         MinValue = 100
-        TabOrder = 6
-        Value = 100
-      end
-      object PaddleCheck: TCheckBox
-        Left = 208
-        Top = 99
-        Width = 97
-        Height = 17
-        Caption = 'Paddle reverse'
         TabOrder = 4
+        Value = 100
       end
       object CQRepEdit: TEdit
         Left = 304
         Top = 230
         Width = 41
         Height = 21
-        TabOrder = 9
+        TabOrder = 7
         Text = '2.0'
         OnKeyPress = CQRepEditKeyPress
       end
@@ -1221,16 +1209,6 @@ object formOptions: TformOptions
         Caption = 'Que messages'
         Checked = True
         State = cbChecked
-        TabOrder = 5
-      end
-      object PaddleEnabledCheck: TCheckBox
-        Left = 208
-        Top = 80
-        Width = 97
-        Height = 17
-        Caption = 'Paddle enabled'
-        Checked = True
-        State = cbChecked
         TabOrder = 3
       end
       object AbbrevEdit: TEdit
@@ -1240,7 +1218,7 @@ object formOptions: TformOptions
         Height = 21
         CharCase = ecUpperCase
         MaxLength = 3
-        TabOrder = 8
+        TabOrder = 6
         Text = 'OAN'
       end
       object rbBankA: TRadioButton
@@ -1251,7 +1229,7 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'CW A'
         Checked = True
-        TabOrder = 12
+        TabOrder = 10
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1262,7 +1240,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'CW B'
-        TabOrder = 13
+        TabOrder = 11
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1273,7 +1251,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'RTTY'
-        TabOrder = 14
+        TabOrder = 12
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1286,7 +1264,7 @@ object formOptions: TformOptions
           'This option will switch the CW message sent when TAB or ; key is' +
           ' pressed to that in the current message bank. '
         Caption = 'Switch TAB/; with CW bank'
-        TabOrder = 10
+        TabOrder = 8
       end
       object checkSendNrAuto: TCheckBox
         Left = 199
@@ -1294,15 +1272,11 @@ object formOptions: TformOptions
         Width = 161
         Height = 17
         Caption = 'Send NR? automatically'
-        TabOrder = 11
+        TabOrder = 9
       end
     end
     object tabsheetVoice: TTabSheet
       Caption = 'Voice'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 6
         Top = 4
@@ -1686,10 +1660,6 @@ object formOptions: TformOptions
     end
     object tabsheetHardware: TTabSheet
       Caption = 'Hardware'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox6: TGroupBox
         Left = 5
         Top = 0
@@ -2071,10 +2041,6 @@ object formOptions: TformOptions
     end
     object tabsheetRigControl: TTabSheet
       Caption = 'Rig control'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label45: TLabel
         Left = 8
         Top = 138
@@ -2158,10 +2124,6 @@ object formOptions: TformOptions
     end
     object tabsheetPath: TTabSheet
       Caption = 'Path'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label50: TLabel
         Left = 16
         Top = 18
@@ -2289,10 +2251,6 @@ object formOptions: TformOptions
     end
     object tabsheetMisc: TTabSheet
       Caption = 'Misc'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label47: TLabel
         Left = 125
         Top = 23
@@ -2503,10 +2461,6 @@ object formOptions: TformOptions
     object tabsheetQuickQSY: TTabSheet
       Caption = 'Quick QSY'
       ImageIndex = 8
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label54: TLabel
         Left = 98
         Top = 3
@@ -2884,10 +2838,6 @@ object formOptions: TformOptions
     object tabsheetBandScope1: TTabSheet
       Caption = 'BandScope'
       ImageIndex = 9
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox9: TGroupBox
         Left = 11
         Top = 11
@@ -3382,10 +3332,6 @@ object formOptions: TformOptions
     object tabsheetBandScope2: TTabSheet
       Caption = 'BandScope2'
       ImageIndex = 11
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox12: TGroupBox
         Left = 11
         Top = 11
@@ -3669,10 +3615,6 @@ object formOptions: TformOptions
     object tabsheetQuickMemo: TTabSheet
       Caption = 'Quick Memo'
       ImageIndex = 10
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox11: TGroupBox
         Left = 11
         Top = 11

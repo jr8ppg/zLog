@@ -12,13 +12,11 @@ type
     _speed : integer;
     _weight : integer;
     _fixwpm : integer;
-    _paddlereverse : boolean;
     _tonepitch : integer;
     _cqmax : integer;
     _cqrepeat : double;
     _FIFO : boolean;
     _interval : integer;
-    _paddle : boolean;
     _zero : char;
     _one : char;
     _nine : char;
@@ -225,7 +223,6 @@ type
     procedure SetCQRepeat(r : double);
     function GetSendFreq(): Double;
     procedure SetSendFreq(r : double);
-    procedure SetPaddle(boo : boolean);      // unuse
     function GetPowerOfBand(band: TBand): TPower;
 public
     { Public êÈåæ }
@@ -263,9 +260,6 @@ public
     procedure SetWeight(i : integer);
     procedure SetTonePitch(i : integer);
     procedure SetScoreCoeff(E : Extended);
-
-    procedure SetPaddleReverse(boo : boolean);
-    procedure ReversePaddle();
 
     function CWMessage(bank, i : integer): string; overload;
     function CWMessage(no: Integer): string; overload;
@@ -639,12 +633,6 @@ begin
 
       // Weight
       Settings.CW._weight := ini.ReadInteger('CW', 'Weight', 50);
-
-      // Paddle enabled
-      Settings.CW._paddle := ini.ReadBool('CW', 'PaddleEnabled', True);
-
-      // Paddle reverse
-      Settings.CW._paddlereverse := ini.ReadBool('CW', 'PaddleReverse', False);
 
       // Que messages
       Settings.CW._FIFO := ini.ReadBool('CW', 'FIFO', True);
@@ -1074,12 +1062,6 @@ begin
       // Weight
       ini.WriteInteger('CW', 'Weight', Settings.CW._weight);
 
-      // Paddle enabled
-      ini.WriteBool('CW', 'PaddleEnabled', Settings.CW._paddle);
-
-      // Paddle reverse
-      ini.WriteBool('CW', 'PaddleReverse', Settings.CW._paddlereverse);
-
       // Que messages
       ini.WriteBool('CW', 'FIFO', Settings.CW._FIFO);
 
@@ -1403,20 +1385,11 @@ begin
 
       21: begin // usb
          dmZlogKeyer.KeyingPort := tkpUSB;
-
-         if Settings.CW._paddle then begin
-            dmZlogKeyer.PaddlePort := $99;   // use
-         end
-         else begin
-            dmZlogKeyer.PaddlePort := $00;   // not use
-         end;
       end;
    end;
 
    dmZlogKeyer.SetPTTDelay(Settings._pttbefore, Settings._pttafter);
    dmZlogKeyer.SetPTT(Settings._pttenabled);
-
-   SetPaddleReverse(Settings.CW._paddlereverse);
 
    Speed := Settings.CW._speed;
    SetWeight(Settings.CW._weight);
@@ -1713,11 +1686,6 @@ begin
    end;
 end;
 
-procedure TdmZLogGlobal.SetPaddle(boo: boolean);
-begin
-   Settings.CW._paddle := boo;
-end;
-
 function TdmZLogGlobal.GetPowerOfBand(band: TBand): TPower;
 begin
    if Settings._power[band] = 'H' then begin
@@ -1735,17 +1703,6 @@ begin
    else begin
       Result := pwrM;
    end;
-end;
-
-procedure TdmZLogGlobal.SetPaddleReverse(boo: boolean);
-begin
-   Settings.CW._paddlereverse := boo;
-   dmZlogKeyer.SetReversePaddle(boo);
-end;
-
-procedure TdmZLogGlobal.ReversePaddle;
-begin
-   SetPaddleReverse(not(Settings.CW._paddlereverse));
 end;
 
 function TdmZLogGlobal.CWMessage(bank, i: integer): string;

@@ -806,7 +806,7 @@ end;
 
 procedure TEditDialog.actionReversePaddleExecute(Sender: TObject);
 begin
-   dmZlogGlobal.ReversePaddle;
+//   dmZlogGlobal.ReversePaddle;
 end;
 
 procedure TEditDialog.actionFieldClearExecute(Sender: TObject);

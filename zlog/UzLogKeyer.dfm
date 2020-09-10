@@ -7,6 +7,7 @@ object dmZLogKeyer: TdmZLogKeyer
   object HidController: TJvHidDeviceController
     OnEnumerate = DoEnumeration
     OnDeviceChange = DoDeviceChanges
+    OnDeviceData = HidControllerDeviceData
     Left = 24
     Top = 16
   end

@@ -985,6 +985,7 @@ type
     procedure PlayMessageRTTY(no: Integer);
     procedure OnVoicePlayStarted(Sender: TObject);
     procedure OnVoicePlayFinished(Sender: TObject);
+    procedure OnPaddle(Sender: TObject);
     procedure InsertBandScope(fShiftKey: Boolean);
     procedure WriteKeymap();
     procedure ReadKeymap();
@@ -3796,6 +3797,7 @@ begin
    if (Pos('/NOBGK', UpperCase(S)) = 0) then begin
       if GetAsyncKeyState(VK_SHIFT) = 0 then begin
          dmZLogKeyer.OnCallsignSentProc := CallsignSentProc;
+         dmZLogKeyer.OnPaddle := OnPaddle;
          dmZLogKeyer.InitializeBGK(mSec);
       end;
    end;
@@ -7620,6 +7622,11 @@ begin
    VoiceStopButton.Enabled := False;
 end;
 
+procedure TMainForm.OnPaddle(Sender: TObject);
+begin
+   actionCQAbort.Execute();
+end;
+
 // バンドスコープへ追加
 procedure TMainForm.InsertBandScope(fShiftKey: Boolean);
 var
@@ -8016,7 +8023,7 @@ end;
 // #53 パドルリバース
 procedure TMainForm.actionReversePaddleExecute(Sender: TObject);
 begin
-   dmZlogGlobal.ReversePaddle;
+//   dmZlogGlobal.ReversePaddle;
 end;
 
 // #54 CW Tune

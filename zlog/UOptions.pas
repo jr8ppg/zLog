@@ -60,11 +60,9 @@ type
     ToneSpinEdit: TSpinEdit;
     Label15: TLabel;
     Label16: TLabel;
-    PaddleCheck: TCheckBox;
     CQRepEdit: TEdit;
     Label17: TLabel;
     FIFOCheck: TCheckBox;
-    PaddleEnabledCheck: TCheckBox;
     AbbrevEdit: TEdit;
     Label12: TLabel;
     ProvEdit: TEdit;
@@ -587,11 +585,9 @@ begin
 
       Settings.CW._speed := SpeedBar.Position;
       Settings.CW._weight := WeightBar.Position;
-      Settings.CW._paddlereverse := PaddleCheck.Checked;
       Settings.CW._FIFO := FIFOCheck.Checked;
       Settings.CW._tonepitch := ToneSpinEdit.Value;
       Settings.CW._cqmax := CQmaxSpinEdit.Value;
-      Settings.CW._paddle := PaddleEnabledCheck.Checked;
 
       Settings._switchcqsp := cbCQSP.Checked;
 
@@ -899,8 +895,6 @@ begin
       SpeedLabel.Caption := IntToStr(Settings.CW._speed) + ' wpm';
       WeightBar.Position := Settings.CW._weight;
       WeightLabel.Caption := IntToStr(Settings.CW._weight) + ' %';
-      PaddleCheck.Checked := Settings.CW._paddlereverse;
-      PaddleEnabledCheck.Checked := Settings.CW._paddle;
       FIFOCheck.Checked := Settings.CW._FIFO;
       ToneSpinEdit.Value := Settings.CW._tonepitch;
       CQmaxSpinEdit.Value := Settings.CW._cqmax;
