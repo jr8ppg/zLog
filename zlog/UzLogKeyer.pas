@@ -1816,6 +1816,7 @@ begin
       Sleep(1);
    until FUsbDetecting = False;
    ZeroMemory(@FPrevPortIn, SizeOf(FPrevPortIn));
+   FPrevUsbPortData := $00;
    FUsbPortData := $FF;
    SendUsbPortData();
 end;
