@@ -267,7 +267,7 @@ begin
    FUSBIF4CW := nil;
 
    InitializeCriticalSection(FUsbPortDataLock);
-   FPrevUsbPortData := $FF;
+   FPrevUsbPortData := $00;
    FUsbPortData := $FF;
 
    FUserFlag := False;
