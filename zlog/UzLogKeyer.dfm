@@ -8,6 +8,8 @@ object dmZLogKeyer: TdmZLogKeyer
     OnEnumerate = DoEnumeration
     OnDeviceChange = DoDeviceChanges
     OnDeviceData = HidControllerDeviceData
+    OnDeviceUnplug = HidControllerDeviceUnplug
+    OnRemoval = HidControllerRemoval
     Left = 24
     Top = 16
   end

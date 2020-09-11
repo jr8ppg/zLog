@@ -59,6 +59,8 @@ type
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure HidControllerDeviceData(HidDev: TJvHidDevice; ReportID: Byte; const Data: Pointer; Size: Word);
+    procedure HidControllerDeviceUnplug(HidDev: TJvHidDevice);
+    procedure HidControllerRemoval(HidDev: TJvHidDevice);
   private
     { Private 宣言 }
     FMonitorThread: TKeyerMonitorThread;
@@ -139,6 +141,8 @@ type
     // True:  PTT=DTR,KEY=RTS
     FKeyingSignalReverse: Boolean;
 
+    FUsbDetecting: Boolean;
+
     procedure Sound();
     procedure NoSound();
 
@@ -161,6 +165,12 @@ type
     procedure SetSideTonePitch(Hertz: Integer); {Sets the pitch of the side tone}
     procedure SetSpaceFactor(R: Integer);
     procedure SetEISpaceFactor(R: Integer);
+    procedure SetKeyingPort(port: TKeyingPort);
+    procedure SendUsbPortData();
+    procedure COM_ON(port: TKeyingPort);
+    procedure COM_OFF();
+    procedure USB_ON();
+    procedure USB_OFF();
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -209,18 +219,15 @@ type
 
     property USBIF4CW_Detected: Boolean read FUSBIF4CW_Detected;
     property UserFlag: Boolean read FUserFlag write FUserFlag;
-    property KeyingPort: TKeyingPort read FKeyingPort write FKeyingPort;
+    property KeyingPort: TKeyingPort read FKeyingPort write SetKeyingPort;
 
     property OnCallsignSentProc: TNotifyEvent read FOnCallsignSentProc write FOnCallsignSentProc;
     property OnPaddle: TNotifyEvent read FOnPaddleEvent write FOnPaddleEvent;
-
-    procedure SetSerialCWKeying(PortNr : integer);
 
     property KeyingSignalReverse: Boolean read FKeyingSignalReverse write FKeyingSignalReverse;
 
     property UsbPortIn: TUsbPortDataArray read FUsbPortIn;
     property UsbPortOut: TUsbPortDataArray read FUsbPortOut;
-    procedure SendUsbPortData();
   end;
 
 var
@@ -266,8 +273,6 @@ begin
    FUserFlag := False;
    FVoiceFlag := 0;
 
-   FKeyingPort := tkpNone;
-
    FSpaceFactor := 100; {space length factor in %}
    FEISpaceFactor := 100; {space length factor after E and I}
 
@@ -276,7 +281,9 @@ begin
    FOnPaddleEvent := nil;
    FKeyingSignalReverse := False;
 
-   ZeroMemory(@FPrevPortIn, 8);
+   ZeroMemory(@FPrevPortIn, SizeOf(FPrevPortIn));
+
+   KeyingPort := tkpNone;
 end;
 
 procedure TdmZLogKeyer.DataModuleDestroy(Sender: TObject);
@@ -284,38 +291,49 @@ begin
    {$IFDEF USESIDETONE}
    FTone.Free();
    {$ENDIF}
-   ZComKeying.Disconnect;
    FMonitorThread.Free();
-   if Assigned(FUSBIF4CW) then begin
-      FUSBIF4CW.CheckOut();
-//      FUSBIF4CW.CloseFile();
-   end;
+   COM_OFF();
+   USB_OFF();
 end;
 
 procedure TdmZLogKeyer.DoDeviceChanges(Sender: TObject);
 begin
-   if FUSBIF4CW <> nil then begin
-      HidController.CheckIn(FUSBIF4CW);
-      FUSBIF4CW_Detected := False;
+   if FKeyingPort <> tkpUSB then begin
+      Exit;
    end;
 
+   USB_OFF();
+
    HidController.Enumerate;
+   repeat
+      Sleep(1);
+   until FUsbDetecting = False;
 end;
 
 function TdmZLogKeyer.DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
 begin
-   with HidDev do begin
-      if (Attributes.ProductID = USBIF4CW_PRODID) and (Attributes.VendorID = USBIF4CW_VENDORID) then begin
-         if HidController.CheckOutByIndex(FUSBIF4CW, Index) = True then begin
+   FUsbDetecting := True;
+   try
+      if FKeyingPort <> tkpUSB then begin
+         Result := True;
+         Exit;
+      end;
+
+      if (HidDev.Attributes.ProductID = USBIF4CW_PRODID) and
+         (HidDev.Attributes.VendorID = USBIF4CW_VENDORID) then begin
+         if HidDev.CheckOut() = True then begin
+            FUSBIF4CW := HidDev;
             FUSBIF4CW.OpenFile;
             FUSBIF4CW_Detected := True;
             Result := False;
             Exit;
          end;
       end;
-   end;
 
-   Result := True;
+      Result := True;
+   finally
+      FUsbDetecting := False;
+   end;
 end;
 
 procedure TdmZLogKeyer.HidControllerDeviceData(HidDev: TJvHidDevice;
@@ -326,6 +344,10 @@ var
    {$ENDIF}
    p: PBYTE;
 begin
+   if FKeyingPort <> tkpUSB then begin
+      Exit;
+   end;
+
    p := Data;
 
    {$IFDEF DEBUG}
@@ -339,22 +361,7 @@ begin
         IntToHex(p[7], 2);
    {$ENDIF}
 
-   // Port Data In
-   FUsbPortIn[0] := p[6];
-   FUsbPortIn[1] := p[7];
-
-   // if paddle in
-   if ((FUsbPortIn[1] and $01) = 0) or
-      ((FUsbPortIn[1] and $04) = 0) then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('**PADDLE IN**'));
-      {$ENDIF}
-      if Assigned(FOnPaddleEvent) then begin
-         FOnPaddleEvent(Self);
-      end;
-   end;
-
-   {$IFDEF DEBUG}
+   // 前回とステータスに変化があったら
    if (p[0] <> FPrevPortIn[0]) or
       (p[1] <> FPrevPortIn[1]) or
       (p[2] <> FPrevPortIn[2]) or
@@ -363,9 +370,43 @@ begin
       (p[5] <> FPrevPortIn[5]) or
       (p[6] <> FPrevPortIn[6]) or
       (p[7] <> FPrevPortIn[7]) then begin
+      {$IFDEF DEBUG}
       OutputDebugString(PChar('***HidControllerDeviceData*** ReportID=' + IntToHex(ReportID,2) + ' DATA=' + s));
+      {$ENDIF}
+
+      // Port Data In
+      FUsbPortIn[0] := p[6];
+      FUsbPortIn[1] := p[7];
+
+      // パドル入力があったか？
+      if ((FUsbPortIn[1] and $01) = 0) or
+         ((FUsbPortIn[1] and $04) = 0) then begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('**PADDLE IN**'));
+         {$ENDIF}
+
+         // fire event
+         if Assigned(FOnPaddleEvent) then begin
+            FOnPaddleEvent(Self);
+         end;
+      end;
+
       CopyMemory(@FPrevPortIn, p, 8);
    end;
+end;
+
+procedure TdmZLogKeyer.HidControllerDeviceUnplug(HidDev: TJvHidDevice);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('***HidControllerDeviceUnplug()***'));
+   {$ENDIF}
+   USB_OFF();
+end;
+
+procedure TdmZLogKeyer.HidControllerRemoval(HidDev: TJvHidDevice);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('***HidControllerRemoval()***'));
    {$ENDIF}
 end;
 
@@ -970,9 +1011,6 @@ begin
    CQLoopCount := 0;
    CQLoopMax := 15;
 
-   FUsbPortData := $FF;
-   SendUsbPortData();
-
    timeBeginPeriod(1);
 
    FTimerID := timeSetEvent(FTimerMilliSec, 0, @TimerCallback, 0, time_Periodic);
@@ -1537,7 +1575,7 @@ begin
 
    CW_OFF;
 
-   ZComKeying.Disconnect;
+   KeyingPort := tkpNone;
 end;
 
 procedure TdmZLogKeyer.PauseCW;
@@ -1693,6 +1731,31 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.SetKeyingPort(port: TKeyingPort);
+begin
+   if FKeyingPort = port then begin
+      Exit;
+   end;
+
+   FKeyingPort := port;
+   case port of
+      tkpNone: begin
+         COM_OFF();
+         USB_OFF();
+      end;
+
+      tkpSerial1 .. tkpSerial20: begin
+         USB_OFF();
+         COM_ON(port);
+      end;
+
+      tkpUSB: begin
+         COM_OFF();
+         USB_ON();
+      end;
+   end;
+end;
+
 procedure TdmZLogKeyer.TuneOn;
 begin
    ClrBuffer;
@@ -1707,14 +1770,6 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetSerialCWKeying(PortNr: Integer);
-begin
-   ZComKeying.Port := TPortNumber(PortNr);
-   ZComKeying.Connect;
-   ZComKeying.ToggleDTR(False);
-   ZComKeying.ToggleRTS(False);
-end;
-
 procedure TdmZLogKeyer.SendUsbPortData();
 var
 //   BR: DWORD;
@@ -1723,6 +1778,10 @@ begin
    if FUSBIF4CW = nil then begin
       Exit;
    end;
+   if FUsbPortData = FPrevUsbPortData then begin
+      Exit;
+   end;
+
    OutReport[0] := 0;
    OutReport[1] := 1;
    OutReport[2] := FUsbPortData;
@@ -1733,7 +1792,41 @@ begin
    OutReport[7] := 0;
    OutReport[8] := 0;
    FUSBIF4CW.SetOutputReport(OutReport, 9);
+   FPrevUsbPortData := FUsbPortData;
 //   FUSBIF4CW.WriteFile(OutReport, FUSBIF4CW.Caps.OutputReportByteLength, BR);
+end;
+
+procedure TdmZLogKeyer.COM_ON(port: TKeyingPort);
+begin
+   ZComKeying.Port := TPortNumber(port);
+   ZComKeying.Connect;
+   ZComKeying.ToggleDTR(False);
+   ZComKeying.ToggleRTS(False);
+end;
+
+procedure TdmZLogKeyer.COM_OFF();
+begin
+   ZComKeying.Disconnect();
+end;
+
+procedure TdmZLogKeyer.USB_ON();
+begin
+   HidController.Enumerate();
+   repeat
+      Sleep(1);
+   until FUsbDetecting = False;
+   ZeroMemory(@FPrevPortIn, SizeOf(FPrevPortIn));
+   FUsbPortData := $FF;
+   SendUsbPortData();
+end;
+
+procedure TdmZLogKeyer.USB_OFF();
+begin
+   if FUSBIF4CW <> nil then begin
+      HidController.CheckIn(FUSBIF4CW);
+      FUSBIF4CW_Detected := False;
+      FUSBIF4CW := nil;
+   end;
 end;
 
 { TKeyerMonitorThread }

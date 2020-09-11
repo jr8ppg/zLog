@@ -1373,20 +1373,7 @@ procedure TdmZLogGlobal.InitializeCW();
 begin
    dmZlogKeyer.UseSideTone := False;
 
-   Case Settings._lptnr of
-      0: begin
-         dmZlogKeyer.KeyingPort := tkpNone;
-      end;
-
-      1 .. 20: begin
-         dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
-         dmZlogKeyer.SetSerialCWKeying(Settings._lptnr);
-      end;
-
-      21: begin // usb
-         dmZlogKeyer.KeyingPort := tkpUSB;
-      end;
-   end;
+   dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
 
    dmZlogKeyer.SetPTTDelay(Settings._pttbefore, Settings._pttafter);
    dmZlogKeyer.SetPTT(Settings._pttenabled);

@@ -7494,8 +7494,14 @@ end;
 
 procedure TMainForm.PlayMessage(bank: Integer; no: Integer);
 begin
+   WriteStatusLine('', False);
+
    case CurrentQSO.mode of
       mCW: begin
+         if dmZLogKeyer.KeyingPort = tkpNone then begin
+            WriteStatusLineRed('CW port is not set', False);
+            Exit;
+         end;
          PlayMessageCW(bank, no);
       end;
 
@@ -8587,6 +8593,7 @@ end;
 // #113 CW/VoiceëóèoíÜé~ ESC
 procedure TMainForm.actionCQAbortExecute(Sender: TObject);
 begin
+   WriteStatusLine('', False);
    case CurrentQSO.Mode of
       mCW: CWStopButtonClick(Self);
       mSSB, mFM, mAM: VoiceStopButtonClick(Self);
