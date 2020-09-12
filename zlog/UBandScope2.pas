@@ -198,6 +198,7 @@ begin
    D.NewZone := Sp.NewZone;
    D.Worked := Sp.Worked;
    D.SpotSource := Sp.SpotSource;
+   D.SpotGroup := Sp.SpotGroup;
    D.CQ := Sp.CQ;
    D.Number := Sp.Number;
    D.NewJaMulti := Sp.NewJaMulti;
@@ -567,15 +568,30 @@ begin
             // îwåiêFÇÕSpotSourceï Ç…Ç∑ÇÈ
             case D.SpotSource of
                ssSelf, ssSelfFromZserver: begin
-                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+                  case D.SpotGroup of
+                     1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+                     2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor2;
+                     3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor3;
+                     else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+                  end;
                end;
 
                ssCluster: begin
-                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
+                  case D.SpotGroup of
+                     1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
+                     2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor2;
+                     3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor3;
+                     else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
+                  end;
                end;
 
                ssClusterFromZServer: begin
-                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
+                  case D.SpotGroup of
+                     1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
+                     2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor2;
+                     3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor3;
+                     else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
+                  end;
                end;
 
                else begin

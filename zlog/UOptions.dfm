@@ -24,11 +24,13 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 361
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetBandScope2
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
+      ExplicitLeft = 60
+      ExplicitTop = 16
       object Label40: TLabel
         Left = 202
         Top = 212
@@ -3336,7 +3338,7 @@ object formOptions: TformOptions
         Left = 11
         Top = 11
         Width = 326
-        Height = 110
+        Height = 158
         Caption = 'SpotSource Colors'
         TabOrder = 0
         object Label61: TLabel
@@ -3359,6 +3361,27 @@ object formOptions: TformOptions
           Width = 41
           Height = 13
           Caption = 'Z-Server'
+        end
+        object Label79: TLabel
+          Left = 58
+          Top = 77
+          Width = 14
+          Height = 13
+          Caption = 'G1'
+        end
+        object Label80: TLabel
+          Left = 58
+          Top = 103
+          Width = 14
+          Height = 13
+          Caption = 'G2'
+        end
+        object Label81: TLabel
+          Left = 58
+          Top = 129
+          Width = 14
+          Height = 13
+          Caption = 'G3'
         end
         object editBSColor5: TEdit
           Left = 78
@@ -3570,10 +3593,62 @@ object formOptions: TformOptions
           TabOrder = 14
           OnClick = buttonBSResetClick
         end
+        object editBSColor7_2: TEdit
+          Left = 78
+          Top = 100
+          Width = 50
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 15
+          Text = 'TEXT'
+        end
+        object buttonBSBack7_2: TButton
+          Tag = 72
+          Left = 182
+          Top = 101
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 16
+          OnClick = buttonBSBackClick
+        end
+        object buttonBSBack7_3: TButton
+          Tag = 73
+          Left = 182
+          Top = 127
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 17
+          OnClick = buttonBSBackClick
+        end
+        object editBSColor7_3: TEdit
+          Left = 78
+          Top = 126
+          Width = 50
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 18
+          Text = 'TEXT'
+        end
       end
       object groupSpotFreshness: TGroupBox
         Left = 11
-        Top = 127
+        Top = 175
         Width = 326
         Height = 121
         Caption = 'Spot Freshness'

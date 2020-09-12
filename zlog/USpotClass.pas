@@ -23,6 +23,7 @@ type
     Band : TBand;
     Mode : TMode;
     SpotSource: TSpotSource;
+    SpotGroup: Integer;
     CQ: Boolean;
     NewJaMulti: Boolean;
     constructor Create; virtual;
@@ -84,6 +85,7 @@ begin
    Band := b19;
    Mode := mCW;
    SpotSource := ssSelf;
+   SpotGroup := 1;
    CQ := False;
    NewJaMulti := False;
 end;

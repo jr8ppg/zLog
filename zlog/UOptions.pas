@@ -343,7 +343,6 @@ type
     buttonBSBack6: TButton;
     checkBSBold6: TCheckBox;
     buttonBSReset6: TButton;
-    Label69: TLabel;
     editBSColor7: TEdit;
     buttonBSFore7: TButton;
     buttonBSBack7: TButton;
@@ -378,6 +377,14 @@ type
     Label78: TLabel;
     vEdit12: TEdit;
     vButton12: TButton;
+    editBSColor7_2: TEdit;
+    buttonBSBack7_2: TButton;
+    buttonBSBack7_3: TButton;
+    editBSColor7_3: TEdit;
+    Label69: TLabel;
+    Label79: TLabel;
+    Label80: TLabel;
+    Label81: TLabel;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -432,7 +439,7 @@ type
     FQuickQSYMode: array[1..8] of TComboBox;
     FQuickQSYRig: array[1..8] of TComboBox;
 
-    FBSColor: array[1..7] of TEdit;
+    FBSColor: array[1..73] of TEdit;
     FBSBold: array[1..7] of TCheckBox;
 
     FNeedSuperCheckLoad: Boolean;
@@ -737,6 +744,8 @@ begin
          Settings._bandscopecolor[i].FBackColor := FBSColor[i].Color;
          Settings._bandscopecolor[i].FBold      := FBSBold[i].Checked;
       end;
+      Settings._bandscopecolor[7].FBackColor2 := FBSColor[72].Color;
+      Settings._bandscopecolor[7].FBackColor3 := FBSColor[73].Color;
 
       // Spot‘N“x•\Ž¦
       if radioFreshness1.Checked = True then begin
@@ -1060,6 +1069,8 @@ begin
          FBSColor[i].Color      := Settings._bandscopecolor[i].FBackColor;
          FBSBold[i].Checked     := Settings._bandscopecolor[i].FBold;
       end;
+      FBSColor[72].Color      := Settings._bandscopecolor[7].FBackColor2;
+      FBSColor[73].Color      := Settings._bandscopecolor[7].FBackColor3;
 
       // Spot‘N“x•\Ž¦
       case Settings._bandscope_freshness_mode of
@@ -1226,6 +1237,8 @@ begin
    FBSColor[5] := editBSColor5;
    FBSColor[6] := editBSColor6;
    FBSColor[7] := editBSColor7;
+   FBSColor[72] := editBSColor7_2;
+   FBSColor[73] := editBSColor7_3;
    FBSBold[1] := checkBSBold1;
    FBSBold[2] := checkBSBold2;
    FBSBold[3] := checkBSBold3;
@@ -1693,6 +1706,17 @@ begin
    else begin
       FBSColor[n].Font.Style := FBSColor[n].Font.Style - [fsBold];
    end;
+
+   if n = 7 then begin
+      if TCheckBox(Sender).Checked = True then begin
+         FBSColor[72].Font.Style := FBSColor[72].Font.Style + [fsBold];
+         FBSColor[73].Font.Style := FBSColor[73].Font.Style + [fsBold];
+      end
+      else begin
+         FBSColor[72].Font.Style := FBSColor[72].Font.Style - [fsBold];
+         FBSColor[73].Font.Style := FBSColor[73].Font.Style - [fsBold];
+      end;
+   end;
 end;
 
 procedure TformOptions.buttonBSResetClick(Sender: TObject);
@@ -1704,6 +1728,11 @@ begin
    FBSColor[n].Font.Color  := BandScopeDefaultColor[n].FForeColor;
    FBSColor[n].Color       := BandScopeDefaultColor[n].FBackColor;
    FBSBold[n].Checked      := BandScopeDefaultColor[n].FBold;
+
+   if (n = 7) then begin
+      FBSColor[72].Color   := BandScopeDefaultColor[7].FBackColor2;
+      FBSColor[73].Color   := BandScopeDefaultColor[7].FBackColor3;
+   end;
 end;
 
 end.

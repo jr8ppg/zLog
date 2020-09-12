@@ -74,7 +74,7 @@ type
     procedure DeleteSpot(_from, _to : integer);
     procedure RenewListBox;
     procedure ProcessSpot(Sp : TSpot);
-    procedure PreProcessSpotFromZLink(S : string);
+    procedure PreProcessSpotFromZLink(S : string; N: Integer);
     procedure TransmitSpot(S : string); // local or via network
     procedure ImplementOptions;
     procedure CommProcess;
@@ -298,7 +298,7 @@ begin
    ListBox.ShowLast();
 end;
 
-procedure TCommForm.PreProcessSpotFromZLink(S : string);
+procedure TCommForm.PreProcessSpotFromZLink(S : string; N: Integer);
 var
    Sp : TSpot;
    B : TBand;
@@ -311,6 +311,7 @@ begin
 
          // ÉfÅ[É^î≠ê∂åπÇÕZ-Server
          Sp.SpotSource := ssClusterFromZServer;
+         Sp.SpotGroup := N;
 
          ProcessSpot(Sp);
       end
