@@ -557,6 +557,7 @@ var
    strFileName: string;
 begin
    strFileName := ExtractFilePath(Application.ExeName) + 'CTY.DAT';
+   Result :=  FileExists(strFileName);
 
    // カントリーリストをロード
    CountryList.LoadFromFile(strFileName);
@@ -574,8 +575,6 @@ begin
    P.Prefix := 'Unknown';
    P.Country := CountryList[0];
    PrefixList.Insert(0, P);
-
-   Result := True;
 end;
 
 function GetPrefix(aQSO: TQSO): TPrefix;
