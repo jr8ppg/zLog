@@ -8598,6 +8598,11 @@ begin
       mCW: CWStopButtonClick(Self);
       mSSB, mFM, mAM: VoiceStopButtonClick(Self);
    end;
+
+   // ÇQâÒÇ‚ÇÁÇ»Ç¢ÇÊÇ§Ç…PTT ControlÇ™OFFÇÃèÍçáÇ…PTT OFFÇ∑ÇÈ
+   if dmZLogGlobal.Settings._pttenabled = False then begin
+      dmZLogKeyer.ControlPTT(False);
+   end;
 end;
 
 procedure TMainForm.RestoreWindowsPos();
