@@ -95,6 +95,7 @@ type
 
     _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
+    _use_usbif4cw_ver1: Boolean;
     _polling_interval: Integer;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
@@ -722,6 +723,9 @@ begin
       // Get band and mode when polling(ICOM only)
       Settings._icom_polling_freq_and_mode := ini.ReadBool('Hardware', 'PollingFreqAndMode', False);
 
+      // Use USBIF4CW(AMD_USB_KEY)
+      Settings._use_usbif4cw_ver1 := ini.ReadBool('Hardware', 'UseUsbif4cwVer1', False);
+
       // Polling Interval
       Settings._polling_interval := ini.ReadInteger('Hardware', 'PollingInterval', 200);
 
@@ -1159,6 +1163,9 @@ begin
       // Get band and mode when polling(ICOM only)
       ini.WriteBool('Hardware', 'PollingFreqAndMode', Settings._icom_polling_freq_and_mode);
 
+      // Use USBIF4CW(AMD_USB_KEY)
+      ini.WriteBool('Hardware', 'UseUsbif4cwVer1', Settings._use_usbif4cw_ver1);
+
       // Polling Interval
       ini.WriteInteger('Hardware', 'PollingInterval', Settings._polling_interval);
 
@@ -1396,6 +1403,7 @@ begin
    dmZlogKeyer.UseSideTone := False;
 
    dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
+   dmZlogKeyer.UseUsbif4cwVer1 := Settings._use_usbif4cw_ver1;
 
    dmZlogKeyer.SetPTTDelay(Settings._pttbefore, Settings._pttafter);
    dmZlogKeyer.SetPTT(Settings._pttenabled);

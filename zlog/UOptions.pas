@@ -385,6 +385,7 @@ type
     Label79: TLabel;
     Label80: TLabel;
     Label81: TLabel;
+    checkUsbif4cwVer1: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -636,6 +637,7 @@ begin
 
       Settings._use_transceive_mode := checkUseTransceiveMode.Checked;
       Settings._icom_polling_freq_and_mode := checkGetBandAndMode.Checked;
+      Settings._use_usbif4cw_ver1 := checkUsbif4cwVer1.Checked;
 
       Settings._ritclear := cbRITClear.Checked;
 
@@ -958,6 +960,7 @@ begin
 
       checkUseTransceiveMode.Checked := Settings._use_transceive_mode;
       checkGetBandAndMode.Checked := Settings._icom_polling_freq_and_mode;
+      checkUsbif4cwVer1.Checked := Settings._use_usbif4cw_ver1;
 
       cbRITClear.Checked := Settings._ritclear;
 

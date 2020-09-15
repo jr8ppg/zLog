@@ -142,6 +142,7 @@ type
     FKeyingSignalReverse: Boolean;
 
     FUsbDetecting: Boolean;
+    FUseUsbif4cwVer1: Boolean;
 
     procedure Sound();
     procedure NoSound();
@@ -228,6 +229,8 @@ type
 
     property UsbPortIn: TUsbPortDataArray read FUsbPortIn;
     property UsbPortOut: TUsbPortDataArray read FUsbPortOut;
+
+    property UseUsbif4cwVer1: Boolean read FUseUsbif4cwVer1 write FUseUsbif4cwVer1;
   end;
 
 var
@@ -280,6 +283,7 @@ begin
    FOnCallsignSentProc := nil;
    FOnPaddleEvent := nil;
    FKeyingSignalReverse := False;
+   FUseUsbif4cwVer1 := False;
 
    ZeroMemory(@FPrevPortIn, SizeOf(FPrevPortIn));
 
@@ -386,8 +390,10 @@ begin
          {$ENDIF}
 
          // fire event
-         if Assigned(FOnPaddleEvent) then begin
-            FOnPaddleEvent(Self);
+         if FUseUsbif4cwVer1 = False then begin
+            if Assigned(FOnPaddleEvent) then begin
+               FOnPaddleEvent(Self);
+            end;
          end;
       end;
 
