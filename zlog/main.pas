@@ -4496,7 +4496,7 @@ end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
 var
-   j: Integer;
+   back_color: TColor;
 begin
    if Action = 0 then begin
       if dmZlogGlobal.Settings.CW.CurrentBank = 1 then
@@ -4508,11 +4508,11 @@ begin
       dmZlogGlobal.Settings.CW.CurrentBank := Action;
 
    if dmZlogGlobal.Settings.CW.CurrentBank = 1 then begin
-      j := clGreen;
+      back_color := clGreen;
       WriteStatusLine('CW Bank A', False)
    end
    else begin
-      j := clMaroon;
+      back_color := clMaroon;
       WriteStatusLine('CW Bank B', False);
    end;
 
@@ -4526,16 +4526,20 @@ begin
    CWF8.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 8);
    CWF9.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 9);
    CWF10.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 10);
-   CWF1.FaceColor := j;
-   CWF2.FaceColor := j;
-   CWF3.FaceColor := j;
-   CWF4.FaceColor := j;
-   CWF5.FaceColor := j;
-   CWF6.FaceColor := j;
-   CWF7.FaceColor := j;
-   CWF8.FaceColor := j;
-   CWF9.FaceColor := j;
-   CWF10.FaceColor := j;
+   CWF11.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 11);
+   CWF12.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 12);
+   CWF1.FaceColor := back_color;
+   CWF2.FaceColor := back_color;
+   CWF3.FaceColor := back_color;
+   CWF4.FaceColor := back_color;
+   CWF5.FaceColor := back_color;
+   CWF6.FaceColor := back_color;
+   CWF7.FaceColor := back_color;
+   CWF8.FaceColor := back_color;
+   CWF9.FaceColor := back_color;
+   CWF10.FaceColor := back_color;
+   CWF11.FaceColor := back_color;
+   CWF12.FaceColor := back_color;
 end;
 
 procedure TMainForm.EditKeyPress(Sender: TObject; var Key: Char);
