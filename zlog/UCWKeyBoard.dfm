@@ -106,6 +106,18 @@ object CWKeyBoard: TCWKeyBoard
       ShortCut = 119
       OnExecute = actionPlayMessageAExecute
     end
+    object actionPlayMessageA09: TAction
+      Tag = 9
+      Caption = 'actionPlayMessageA09'
+      ShortCut = 120
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA10: TAction
+      Tag = 10
+      Caption = 'actionPlayMessageA10'
+      ShortCut = 121
+      OnExecute = actionPlayMessageAExecute
+    end
     object actionPlayMessageA11: TAction
       Tag = 11
       Caption = 'actionPlayMessageA11'
@@ -164,6 +176,18 @@ object CWKeyBoard: TCWKeyBoard
       Tag = 8
       Caption = 'actionPlayMessageB08'
       ShortCut = 8311
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayMessageB09: TAction
+      Tag = 9
+      Caption = 'actionPlayMessageB09'
+      ShortCut = 8312
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayMessageB10: TAction
+      Tag = 10
+      Caption = 'actionPlayMessageB10'
+      ShortCut = 8313
       OnExecute = actionPlayMessageBExecute
     end
     object actionPlayMessageB11: TAction

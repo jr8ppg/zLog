@@ -83,6 +83,8 @@ type
     actionQuickMemo3: TAction;
     actionQuickMemo4: TAction;
     actionQuickMemo5: TAction;
+    actionPlayMessageA09: TAction;
+    actionPlayMessageA10: TAction;
     procedure CancelBtnClick(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure CallsignEditChange(Sender: TObject);
@@ -553,6 +555,8 @@ begin
    actionPlayMessageA06.ShortCut := MainForm.actionPlayMessageA06.ShortCut;
    actionPlayMessageA07.ShortCut := MainForm.actionPlayMessageA07.ShortCut;
    actionPlayMessageA08.ShortCut := MainForm.actionPlayMessageA08.ShortCut;
+   actionPlayMessageA09.ShortCut := MainForm.actionPlayMessageA09.ShortCut;
+   actionPlayMessageA10.ShortCut := MainForm.actionPlayMessageA10.ShortCut;
    actionShowCheckPartial.ShortCut := MainForm.actionShowCheckPartial.ShortCut;
    actionPlayMessageA11.ShortCut := MainForm.actionPlayMessageA11.ShortCut;
    actionPlayMessageA12.ShortCut := MainForm.actionPlayMessageA12.ShortCut;
@@ -593,6 +597,8 @@ begin
    actionPlayMessageA06.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA06.SecondaryShortCuts);
    actionPlayMessageA07.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA07.SecondaryShortCuts);
    actionPlayMessageA08.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA08.SecondaryShortCuts);
+   actionPlayMessageA09.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA09.SecondaryShortCuts);
+   actionPlayMessageA10.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA10.SecondaryShortCuts);
    actionShowCheckPartial.SecondaryShortCuts.Assign(MainForm.actionShowCheckPartial.SecondaryShortCuts);
    actionPlayMessageA11.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA11.SecondaryShortCuts);
    actionPlayMessageA12.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA12.SecondaryShortCuts);

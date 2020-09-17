@@ -6338,11 +6338,6 @@ object MainForm: TMainForm
       ShortCut = 27
       OnExecute = actionCQAbortExecute
     end
-    object actionPlayCQA1: TAction
-      Tag = 101
-      Caption = 'actionPlayCQA1'
-      OnExecute = actionPlayMessageAExecute
-    end
     object actionPlayMessageA11: TAction
       Tag = 11
       Caption = 'actionPlayMessageA11'
@@ -6353,10 +6348,10 @@ object MainForm: TMainForm
       Caption = 'actionPlayMessageA12'
       OnExecute = actionPlayMessageAExecute
     end
-    object actionPlayCQB1: TAction
+    object actionPlayCQA1: TAction
       Tag = 101
-      Caption = 'actionPlayCQB1'
-      OnExecute = actionPlayMessageBExecute
+      Caption = 'actionPlayCQA1'
+      OnExecute = actionPlayMessageAExecute
     end
     object actionPlayMessageB11: TAction
       Tag = 11
@@ -6366,6 +6361,11 @@ object MainForm: TMainForm
     object actionPlayMessageB12: TAction
       Tag = 12
       Caption = 'actionPlayMessageB12'
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayCQB1: TAction
+      Tag = 101
+      Caption = 'actionPlayCQB1'
       OnExecute = actionPlayMessageBExecute
     end
   end

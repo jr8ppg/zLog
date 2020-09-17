@@ -521,5 +521,15 @@ object EditDialog: TEditDialog
       Caption = 'actionQuickMemo5'
       OnExecute = actionQuickMemo3Execute
     end
+    object actionPlayMessageA09: TAction
+      Tag = 9
+      Caption = 'actionPlayMessageA09'
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA10: TAction
+      Tag = 10
+      Caption = 'actionPlayMessageA10'
+      OnExecute = actionPlayMessageAExecute
+    end
   end
 end

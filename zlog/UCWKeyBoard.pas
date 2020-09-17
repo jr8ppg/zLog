@@ -39,6 +39,10 @@ type
     actionPlayMessageKN: TAction;
     actionPlayMessageSK: TAction;
     actionESC: TAction;
+    actionPlayMessageA09: TAction;
+    actionPlayMessageA10: TAction;
+    actionPlayMessageB09: TAction;
+    actionPlayMessageB10: TAction;
     procedure ConsoleKeyPress(Sender: TObject; var Key: Char);
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -57,6 +61,7 @@ type
   private
     { Private declarations }
     procedure PlayMessage(cb: Integer; no: Integer);
+    procedure ApplyShortcut();
   public
     { Public declarations }
   end;
@@ -76,53 +81,12 @@ end;
 
 procedure TCWKeyBoard.FormCreate(Sender: TObject);
 begin
-   actionPlayMessageA01.ShortCut := MainForm.actionPlayMessageA01.ShortCut;
-   actionPlayMessageA02.ShortCut := MainForm.actionPlayMessageA02.ShortCut;
-   actionPlayMessageA03.ShortCut := MainForm.actionPlayMessageA03.ShortCut;
-   actionPlayMessageA04.ShortCut := MainForm.actionPlayMessageA04.ShortCut;
-   actionPlayMessageA05.ShortCut := MainForm.actionPlayMessageA05.ShortCut;
-   actionPlayMessageA06.ShortCut := MainForm.actionPlayMessageA06.ShortCut;
-   actionPlayMessageA07.ShortCut := MainForm.actionPlayMessageA07.ShortCut;
-   actionPlayMessageA08.ShortCut := MainForm.actionPlayMessageA08.ShortCut;
-   actionPlayMessageA11.ShortCut := MainForm.actionPlayMessageA11.ShortCut;
-   actionPlayMessageA12.ShortCut := MainForm.actionPlayMessageA12.ShortCut;
-
-   actionPlayMessageB01.ShortCut := MainForm.actionPlayMessageB01.ShortCut;
-   actionPlayMessageB02.ShortCut := MainForm.actionPlayMessageB02.ShortCut;
-   actionPlayMessageB03.ShortCut := MainForm.actionPlayMessageB03.ShortCut;
-   actionPlayMessageB04.ShortCut := MainForm.actionPlayMessageB04.ShortCut;
-   actionPlayMessageB05.ShortCut := MainForm.actionPlayMessageB05.ShortCut;
-   actionPlayMessageB06.ShortCut := MainForm.actionPlayMessageB06.ShortCut;
-   actionPlayMessageB07.ShortCut := MainForm.actionPlayMessageB07.ShortCut;
-   actionPlayMessageB08.ShortCut := MainForm.actionPlayMessageB08.ShortCut;
-   actionPlayMessageB11.ShortCut := MainForm.actionPlayMessageB11.ShortCut;
-   actionPlayMessageB12.ShortCut := MainForm.actionPlayMessageB12.ShortCut;
-
-   actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
-   actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
-   actionPlayMessageA03.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA03.SecondaryShortCuts);
-   actionPlayMessageA04.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA04.SecondaryShortCuts);
-   actionPlayMessageA05.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA05.SecondaryShortCuts);
-   actionPlayMessageA06.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA06.SecondaryShortCuts);
-   actionPlayMessageA07.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA07.SecondaryShortCuts);
-   actionPlayMessageA08.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA08.SecondaryShortCuts);
-   actionPlayMessageA11.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA11.SecondaryShortCuts);
-   actionPlayMessageA12.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA12.SecondaryShortCuts);
-
-   actionPlayMessageB01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB01.SecondaryShortCuts);
-   actionPlayMessageB02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB02.SecondaryShortCuts);
-   actionPlayMessageB03.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB03.SecondaryShortCuts);
-   actionPlayMessageB04.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB04.SecondaryShortCuts);
-   actionPlayMessageB05.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB05.SecondaryShortCuts);
-   actionPlayMessageB06.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB06.SecondaryShortCuts);
-   actionPlayMessageB07.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB07.SecondaryShortCuts);
-   actionPlayMessageB08.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB08.SecondaryShortCuts);
-   actionPlayMessageB11.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB11.SecondaryShortCuts);
-   actionPlayMessageB12.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB12.SecondaryShortCuts);
+//
 end;
 
 procedure TCWKeyBoard.FormShow(Sender: TObject);
 begin
+   ApplyShortcut();
    Console.SetFocus;
 end;
 
@@ -261,6 +225,61 @@ begin
 
    ClipBoard.AsText := S;
    Console.PasteFromClipBoard;
+end;
+
+procedure TCWKeyBoard.ApplyShortcut();
+begin
+   actionPlayMessageA01.ShortCut := MainForm.actionPlayMessageA01.ShortCut;
+   actionPlayMessageA02.ShortCut := MainForm.actionPlayMessageA02.ShortCut;
+   actionPlayMessageA03.ShortCut := MainForm.actionPlayMessageA03.ShortCut;
+   actionPlayMessageA04.ShortCut := MainForm.actionPlayMessageA04.ShortCut;
+   actionPlayMessageA05.ShortCut := MainForm.actionPlayMessageA05.ShortCut;
+   actionPlayMessageA06.ShortCut := MainForm.actionPlayMessageA06.ShortCut;
+   actionPlayMessageA07.ShortCut := MainForm.actionPlayMessageA07.ShortCut;
+   actionPlayMessageA08.ShortCut := MainForm.actionPlayMessageA08.ShortCut;
+   actionPlayMessageA09.ShortCut := MainForm.actionPlayMessageA09.ShortCut;
+   actionPlayMessageA10.ShortCut := MainForm.actionPlayMessageA10.ShortCut;
+   actionPlayMessageA11.ShortCut := MainForm.actionPlayMessageA11.ShortCut;
+   actionPlayMessageA12.ShortCut := MainForm.actionPlayMessageA12.ShortCut;
+
+   actionPlayMessageB01.ShortCut := MainForm.actionPlayMessageB01.ShortCut;
+   actionPlayMessageB02.ShortCut := MainForm.actionPlayMessageB02.ShortCut;
+   actionPlayMessageB03.ShortCut := MainForm.actionPlayMessageB03.ShortCut;
+   actionPlayMessageB04.ShortCut := MainForm.actionPlayMessageB04.ShortCut;
+   actionPlayMessageB05.ShortCut := MainForm.actionPlayMessageB05.ShortCut;
+   actionPlayMessageB06.ShortCut := MainForm.actionPlayMessageB06.ShortCut;
+   actionPlayMessageB07.ShortCut := MainForm.actionPlayMessageB07.ShortCut;
+   actionPlayMessageB08.ShortCut := MainForm.actionPlayMessageB08.ShortCut;
+   actionPlayMessageB09.ShortCut := MainForm.actionPlayMessageB09.ShortCut;
+   actionPlayMessageB10.ShortCut := MainForm.actionPlayMessageB10.ShortCut;
+   actionPlayMessageB11.ShortCut := MainForm.actionPlayMessageB11.ShortCut;
+   actionPlayMessageB12.ShortCut := MainForm.actionPlayMessageB12.ShortCut;
+
+   actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
+   actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
+   actionPlayMessageA03.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA03.SecondaryShortCuts);
+   actionPlayMessageA04.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA04.SecondaryShortCuts);
+   actionPlayMessageA05.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA05.SecondaryShortCuts);
+   actionPlayMessageA06.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA06.SecondaryShortCuts);
+   actionPlayMessageA07.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA07.SecondaryShortCuts);
+   actionPlayMessageA08.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA08.SecondaryShortCuts);
+   actionPlayMessageA09.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA09.SecondaryShortCuts);
+   actionPlayMessageA10.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA10.SecondaryShortCuts);
+   actionPlayMessageA11.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA11.SecondaryShortCuts);
+   actionPlayMessageA12.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA12.SecondaryShortCuts);
+
+   actionPlayMessageB01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB01.SecondaryShortCuts);
+   actionPlayMessageB02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB02.SecondaryShortCuts);
+   actionPlayMessageB03.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB03.SecondaryShortCuts);
+   actionPlayMessageB04.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB04.SecondaryShortCuts);
+   actionPlayMessageB05.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB05.SecondaryShortCuts);
+   actionPlayMessageB06.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB06.SecondaryShortCuts);
+   actionPlayMessageB07.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB07.SecondaryShortCuts);
+   actionPlayMessageB08.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB08.SecondaryShortCuts);
+   actionPlayMessageB09.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB09.SecondaryShortCuts);
+   actionPlayMessageB10.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB10.SecondaryShortCuts);
+   actionPlayMessageB11.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB11.SecondaryShortCuts);
+   actionPlayMessageB12.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB12.SecondaryShortCuts);
 end;
 
 end.
