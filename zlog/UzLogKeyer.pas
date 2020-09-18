@@ -18,8 +18,8 @@ uses
 const
   charmax = 256;
   codemax = 16;
-  MAXWPM = 60;
-  MINWPM = 1;
+  MAXWPM = 50;
+  MINWPM = 5;
   _inccw = $80;
   _deccw = $81;
 
@@ -67,6 +67,7 @@ type
 
     FUSBIF4CW_Detected: Boolean;
     FUSBIF4CW: TJvHIDDevice;
+    FUSBIF4CW_Version: Long;
 
     {$IFDEF USESIDETONE}
     FTone: TToneGen;
@@ -142,7 +143,7 @@ type
     FKeyingSignalReverse: Boolean;
 
     FUsbDetecting: Boolean;
-    FUseUsbif4cwVer1: Boolean;
+    FUsbif4cwSyncWpm: Boolean;
 
     procedure Sound();
     procedure NoSound();
@@ -230,7 +231,13 @@ type
     property UsbPortIn: TUsbPortDataArray read FUsbPortIn;
     property UsbPortOut: TUsbPortDataArray read FUsbPortOut;
 
-    property UseUsbif4cwVer1: Boolean read FUseUsbif4cwVer1 write FUseUsbif4cwVer1;
+    property Usbif4cwSyncWpm: Boolean read FUsbif4cwSyncWpm write FUsbif4cwSyncWpm;
+
+    // USBIF4CW support
+    function usbif4cwSetWPM(nID: Integer; nWPM: Integer): Long;
+    function usbif4cwSetPTTParam(nId: Integer; nLen1: Byte; nLen2: Byte): Long;
+    function usbif4cwSetPTT(nId: Integer; tx: Byte): Long;
+    function usbif4cwGetVersion(nId: Integer): Long;
   end;
 
 var
@@ -268,6 +275,7 @@ begin
 
    FUSBIF4CW_Detected := False;
    FUSBIF4CW := nil;
+   FUSBIF4CW_Version := 0;
 
    InitializeCriticalSection(FUsbPortDataLock);
    FPrevUsbPortData := $00;
@@ -283,7 +291,7 @@ begin
    FOnCallsignSentProc := nil;
    FOnPaddleEvent := nil;
    FKeyingSignalReverse := False;
-   FUseUsbif4cwVer1 := False;
+   FUsbif4cwSyncWpm := False;
 
    ZeroMemory(@FPrevPortIn, SizeOf(FPrevPortIn));
 
@@ -315,6 +323,9 @@ begin
 end;
 
 function TdmZLogKeyer.DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
+var
+   n: Integer;
+   s: string;
 begin
    FUsbDetecting := True;
    try
@@ -329,6 +340,13 @@ begin
             FUSBIF4CW := HidDev;
             FUSBIF4CW.OpenFile;
             FUSBIF4CW_Detected := True;
+
+            n := Pos('Ver.', HidDev.ProductName);
+            if n > 0 then begin
+               s := Copy(HidDev.ProductName, n + 4); // 2.3
+               FUSBIF4CW_Version := Trunc(StrToFloatDef(s, 0) * 10);
+            end;
+
             Result := False;
             Exit;
          end;
@@ -390,7 +408,7 @@ begin
          {$ENDIF}
 
          // fire event
-         if FUseUsbif4cwVer1 = False then begin
+         if usbif4cwGetVersion(0) >= 20 then begin
             if Assigned(FOnPaddleEvent) then begin
                FOnPaddleEvent(Self);
             end;
@@ -523,6 +541,10 @@ begin
       i := after;
 
    FPttDelayAfterCount := Trunc(i * 1000 / FTimerMicroSec);
+
+   if FKeyingPort = tkpUSB then begin
+      usbif4cwSetPTTParam(0, before, after);
+   end;
 end;
 
 function TdmZLogKeyer.Paused: Boolean;
@@ -965,6 +987,10 @@ begin
       FBlank3Count := FBlank1Count * 3;
 
       FKeyerWPM := wpm;
+
+      if (FKeyingPort = tkpUSB) and (FUsbif4cwSyncWpm = True) then begin
+         usbif4cwSetWPM(0, FKeyerWPM);
+      end;
    end;
 end;
 
@@ -1865,6 +1891,107 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('*** end - TKeyerMonitorThread.Execute - ****'));
    {$ENDIF}
+end;
+
+function TdmZLogKeyer.usbif4cwSetWPM(nID: Integer; nWPM: Integer): Long;
+const
+   wpm_table: array[1..50] of Byte = (
+      $78, $78, $78, $78, $78, $64, $56, $4B, $43, $3C,  // 1-10
+      $37, $32, $2E, $2B, $28, $26, $23, $21, $20, $1E,  // 11-20
+      $1D, $1B, $1A, $19, $18, $17, $16, $15, $15, $14,  // 21-30
+      $13, $13, $12, $12, $11, $11, $10, $10, $0F, $0F,  // 31-40
+      $0F, $0E, $0E, $0E, $0D, $0D, $0D, $0D, $0C, $0C   // 41-50
+   );
+var
+   OutReport: array[0..8] of Byte;
+begin
+   if FUSBIF4CW = nil then begin
+      Result := -1;
+      Exit;
+   end;
+
+   if usbif4cwGetVersion(0) < 20 then begin
+      Result := -2;
+      Exit;
+   end;
+
+   if nWPM < 5 then begin
+      nWPM := 5;
+   end;
+   if nWPM > 50 then begin
+      nWPM := 50;
+   end;
+
+   OutReport[0] := nID;
+   OutReport[1] := $24;
+   OutReport[2] := wpm_table[nWPM];
+   OutReport[3] := 0;
+   OutReport[4] := 0;
+   OutReport[5] := 0;
+   OutReport[6] := 0;
+   OutReport[7] := 0;
+   OutReport[8] := $FC;
+   FUSBIF4CW.SetOutputReport(OutReport, 9);
+   Result := 0;
+end;
+
+function TdmZLogKeyer.usbif4cwSetPTTParam(nId: Integer; nLen1: Byte; nLen2: Byte): Long;
+var
+   OutReport: array[0..8] of Byte;
+begin
+   if FUSBIF4CW = nil then begin
+      Result := -1;
+      Exit;
+   end;
+
+   if usbif4cwGetVersion(0) < 20 then begin
+      Result := -2;
+      Exit;
+   end;
+
+   OutReport[0] := nID;
+   OutReport[1] := $22;
+   OutReport[2] := nLen1;
+   OutReport[3] := nLen2;
+   OutReport[4] := 0;
+   OutReport[5] := 0;
+   OutReport[6] := 0;
+   OutReport[7] := 0;
+   OutReport[8] := $FC;
+   FUSBIF4CW.SetOutputReport(OutReport, 9);
+   Result := 0;
+end;
+
+function TdmZLogKeyer.usbif4cwSetPTT(nId: Integer; tx: Byte): Long;
+var
+   OutReport: array[0..8] of Byte;
+begin
+   if FUSBIF4CW = nil then begin
+      Result := -1;
+      Exit;
+   end;
+
+   if usbif4cwGetVersion(0) < 20 then begin
+      Result := -2;
+      Exit;
+   end;
+
+   OutReport[0] := nID;
+   OutReport[1] := $35;
+   OutReport[2] := 0;
+   OutReport[3] := tx;
+   OutReport[4] := 0;
+   OutReport[5] := 0;
+   OutReport[6] := 0;
+   OutReport[7] := 0;
+   OutReport[8] := $FC;
+   FUSBIF4CW.SetOutputReport(OutReport, 9);
+   Result := 0;
+end;
+
+function TdmZLogKeyer.usbif4cwGetVersion(nId: Integer): Long;
+begin
+   Result := FUSBIF4CW_Version;
 end;
 
 end.

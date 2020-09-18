@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 361
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetHardware
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -764,10 +764,6 @@ object formOptions: TformOptions
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -1160,8 +1156,11 @@ object formOptions: TformOptions
         Top = 16
         Width = 105
         Height = 17
-        Max = 60
+        Max = 50
+        Min = 5
+        PageSize = 1
         Frequency = 10
+        Position = 5
         TabOrder = 1
         OnChange = SpeedBarChange
       end
@@ -1986,12 +1985,12 @@ object formOptions: TformOptions
           Caption = 'Get band and mode alternately(ICOM only)'
           TabOrder = 15
         end
-        object checkUsbif4cwVer1: TCheckBox
+        object checkUsbif4cwSyncWpm: TCheckBox
           Left = 109
           Top = 197
           Width = 230
           Height = 17
-          Caption = 'Use USBIF4CW Ver.1(AMD-USB-KEY)'
+          Caption = 'USBIF4CW Sync WPM'
           TabOrder = 16
         end
       end
