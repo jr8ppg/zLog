@@ -264,7 +264,7 @@ public
     procedure SetTonePitch(i : integer);
     procedure SetScoreCoeff(E : Extended);
 
-    function CWMessage(bank, i : integer): string; overload;
+    function CWMessage(bank, no: Integer): string; overload;
     function CWMessage(no: Integer): string; overload;
 
     procedure ReadWindowState(form: TForm; strWindowName: string = ''; fPositionOnly: Boolean = False);
@@ -1722,9 +1722,34 @@ begin
    end;
 end;
 
-function TdmZLogGlobal.CWMessage(bank, i: integer): string;
+function TdmZLogGlobal.CWMessage(bank, no: integer): string;
+var
+   S: string;
 begin
-   Result := Settings.CW.CWStrBank[bank, i];
+   case no of
+      1, 2, 3, 4, 5, 6,
+      7, 8, 9, 10, 11, 12: begin
+         S := Settings.CW.CWStrBank[bank, no];
+      end;
+
+      101: begin
+         S := Settings.CW.CWStrBank[bank, 1];
+      end;
+
+      102: begin
+         S := Settings.CW.CWStrBank[bank, 13];
+      end;
+
+      103: begin
+         S := Settings.CW.CWStrBank[bank, 14];
+      end;
+
+      else begin
+         S := '';
+      end;
+   end;
+
+   Result := S;
 end;
 
 function TdmZLogGlobal.CWMessage(no: Integer): string;

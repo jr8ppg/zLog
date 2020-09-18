@@ -85,6 +85,8 @@ type
     actionQuickMemo5: TAction;
     actionPlayMessageA09: TAction;
     actionPlayMessageA10: TAction;
+    actionPlayCQA2: TAction;
+    actionPlayCQA3: TAction;
     procedure CancelBtnClick(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure CallsignEditChange(Sender: TObject);
@@ -588,6 +590,8 @@ begin
    actionQuickMemo3.ShortCut := MainForm.actionQuickMemo3.ShortCut;
    actionQuickMemo4.ShortCut := MainForm.actionQuickMemo4.ShortCut;
    actionQuickMemo5.ShortCut := MainForm.actionQuickMemo5.ShortCut;
+   actionPlayCQA2.ShortCut := MainForm.actionPlayCQA2.ShortCut;
+   actionPlayCQA3.ShortCut := MainForm.actionPlayCQA3.ShortCut;
 
    actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
    actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
@@ -630,6 +634,8 @@ begin
    actionQuickMemo3.SecondaryShortCuts.Assign(MainForm.actionQuickMemo3.SecondaryShortCuts);
    actionQuickMemo4.SecondaryShortCuts.Assign(MainForm.actionQuickMemo4.SecondaryShortCuts);
    actionQuickMemo5.SecondaryShortCuts.Assign(MainForm.actionQuickMemo5.SecondaryShortCuts);
+   actionPlayCQA2.SecondaryShortCuts.Assign(MainForm.actionPlayCQA2.SecondaryShortCuts);
+   actionPlayCQA3.SecondaryShortCuts.Assign(MainForm.actionPlayCQA3.SecondaryShortCuts);
 end;
 
 procedure TEditDialog.FormDeactivate(Sender: TObject);

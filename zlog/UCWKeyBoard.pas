@@ -43,6 +43,10 @@ type
     actionPlayMessageA10: TAction;
     actionPlayMessageB09: TAction;
     actionPlayMessageB10: TAction;
+    actionPlayCQA2: TAction;
+    actionPlayCQA3: TAction;
+    actionPlayCQB2: TAction;
+    actionPlayCQB3: TAction;
     procedure ConsoleKeyPress(Sender: TObject; var Key: Char);
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -214,6 +218,11 @@ var
    i: Integer;
 begin
    S := dmZlogGlobal.CWMessage(cb, no);
+
+   if S = '' then begin
+      Exit;
+   end;
+
    S := SetStr(S, CurrentQSO);
    zLogSendStr(S);
 
@@ -255,6 +264,11 @@ begin
    actionPlayMessageB11.ShortCut := MainForm.actionPlayMessageB11.ShortCut;
    actionPlayMessageB12.ShortCut := MainForm.actionPlayMessageB12.ShortCut;
 
+   actionPlayCQA2.ShortCut := MainForm.actionPlayCQA2.ShortCut;
+   actionPlayCQA3.ShortCut := MainForm.actionPlayCQA3.ShortCut;
+   actionPlayCQB2.ShortCut := MainForm.actionPlayCQB2.ShortCut;
+   actionPlayCQB3.ShortCut := MainForm.actionPlayCQB3.ShortCut;
+
    actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
    actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
    actionPlayMessageA03.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA03.SecondaryShortCuts);
@@ -280,6 +294,11 @@ begin
    actionPlayMessageB10.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB10.SecondaryShortCuts);
    actionPlayMessageB11.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB11.SecondaryShortCuts);
    actionPlayMessageB12.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB12.SecondaryShortCuts);
+
+   actionPlayCQA2.SecondaryShortCuts.Assign(MainForm.actionPlayCQA2.SecondaryShortCuts);
+   actionPlayCQA3.SecondaryShortCuts.Assign(MainForm.actionPlayCQA3.SecondaryShortCuts);
+   actionPlayCQB2.SecondaryShortCuts.Assign(MainForm.actionPlayCQB2.SecondaryShortCuts);
+   actionPlayCQB3.SecondaryShortCuts.Assign(MainForm.actionPlayCQB3.SecondaryShortCuts);
 end;
 
 end.

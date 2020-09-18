@@ -531,5 +531,15 @@ object EditDialog: TEditDialog
       Caption = 'actionPlayMessageA10'
       OnExecute = actionPlayMessageAExecute
     end
+    object actionPlayCQA2: TAction
+      Tag = 102
+      Caption = 'actionPlayCQA2'
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayCQA3: TAction
+      Tag = 103
+      Caption = 'actionPlayCQA3'
+      OnExecute = actionPlayMessageAExecute
+    end
   end
 end

@@ -7527,30 +7527,9 @@ procedure TMainForm.PlayMessageCW(bank: Integer; no: Integer);
 var
    S: string;
 begin
-   case no of
-      1, 2, 3, 4, 5, 6,
-      7, 8, 9, 10, 11, 12: begin
-         S := dmZlogGlobal.CWMessage(bank, no);
-      end;
-
-      101: begin
-         SetCQ(True);
-         S := dmZlogGlobal.CWMessage(bank, 1);
-      end;
-
-      102: begin
-         SetCQ(True);
-         S := dmZlogGlobal.CWMessage(bank, 13);
-      end;
-
-      103: begin
-         SetCQ(True);
-         S := dmZlogGlobal.CWMessage(bank, 14);
-      end;
-
-      else begin
-         S := '';
-      end;
+   S := dmZlogGlobal.CWMessage(bank, no);
+   if no >= 101 then begin
+      SetCQ(True);
    end;
 
    if S = '' then begin
@@ -7591,28 +7570,7 @@ begin
       Exit;
    end;
 
-   case no of
-      1, 2, 3, 4, 5, 6,
-      7, 8, 9, 10, 11, 12: begin
-         S := dmZlogGlobal.CWMessage(3, no);
-      end;
-
-      101: begin
-         S := dmZlogGlobal.CWMessage(3, 1);
-      end;
-
-      102: begin
-         S := dmZlogGlobal.CWMessage(3, 13);
-      end;
-
-      103: begin
-         S := dmZlogGlobal.CWMessage(3, 14);
-      end;
-
-      else begin
-         S := '';
-      end;
-   end;
+   S := dmZlogGlobal.CWMessage(3, no);
 
    if S = '' then begin
       Exit;
