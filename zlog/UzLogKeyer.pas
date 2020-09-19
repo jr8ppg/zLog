@@ -529,7 +529,7 @@ begin
       end
       else begin
          ControlPTT(False);
-//         usbif4cwSetPTTParam(0, 0, 0);
+         usbif4cwSetPTTParam(0, 0, 0);
       end;
    end;
 end;
@@ -1954,6 +1954,7 @@ end;
 function TdmZLogKeyer.usbif4cwSetPTTParam(nId: Integer; nLen1: Byte; nLen2: Byte): Long;
 var
    OutReport: array[0..8] of Byte;
+   P: Byte;
 begin
    if FUSBIF4CW = nil then begin
       Result := -1;
@@ -1965,20 +1966,35 @@ begin
       Exit;
    end;
 
-   if (nLen1 > 0) and (nLen2 > 0) then begin    // óºï˚0ÇÕOFF
+   if (nLen1 = 0) and (nLen2 = 0) then begin    // óºï˚0ÇÕOFF
+      P := 0;
+   end
+   else begin
+      P := 1;
       nLen2 := Max(nLen2, 50);                  // afterÇ™50msñ¢ñûÇÕìÆçÏÇ™Ç®Ç©ÇµÇ≠Ç»ÇÈñÕól
+      OutReport[0] := nID;
+      OutReport[1] := $22;
+      OutReport[2] := nLen1;
+      OutReport[3] := nLen2;
+      OutReport[4] := 0;
+      OutReport[5] := 0;
+      OutReport[6] := 0;
+      OutReport[7] := 0;
+      OutReport[8] := 0;
+      FUSBIF4CW.SetOutputReport(OutReport, 9);
    end;
 
    OutReport[0] := nID;
-   OutReport[1] := $22;
-   OutReport[2] := nLen1;
-   OutReport[3] := nLen2;
+   OutReport[1] := $25;
+   OutReport[2] := P;
+   OutReport[3] := 0;
    OutReport[4] := 0;
    OutReport[5] := 0;
    OutReport[6] := 0;
    OutReport[7] := 0;
-   OutReport[8] := $FC;
+   OutReport[8] := 0;
    FUSBIF4CW.SetOutputReport(OutReport, 9);
+
    Result := 0;
 end;
 
