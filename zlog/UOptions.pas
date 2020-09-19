@@ -385,7 +385,9 @@ type
     Label79: TLabel;
     Label80: TLabel;
     Label81: TLabel;
+    GroupBox13: TGroupBox;
     checkUsbif4cwSyncWpm: TCheckBox;
+    checkUsbif4cwPaddleReverse: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -593,6 +595,7 @@ begin
 
       Settings.CW._speed := SpeedBar.Position;
       Settings.CW._weight := WeightBar.Position;
+      Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
       Settings.CW._FIFO := FIFOCheck.Checked;
       Settings.CW._tonepitch := ToneSpinEdit.Value;
       Settings.CW._cqmax := CQmaxSpinEdit.Value;
@@ -905,6 +908,7 @@ begin
       SpeedBar.Position := Settings.CW._speed;
       SpeedLabel.Caption := IntToStr(Settings.CW._speed) + ' wpm';
       WeightBar.Position := Settings.CW._weight;
+      checkUsbif4cwPaddleReverse.Checked := Settings.CW._paddlereverse;
       WeightLabel.Caption := IntToStr(Settings.CW._weight) + ' %';
       FIFOCheck.Checked := Settings.CW._FIFO;
       ToneSpinEdit.Value := Settings.CW._tonepitch;

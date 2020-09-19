@@ -11,7 +11,7 @@ unit UzLogKeyer;
 interface
 
 uses
-  System.SysUtils, System.Classes, Windows, MMSystem,
+  System.SysUtils, System.Classes, Windows, MMSystem, Math,
   JvComponentBase, JvHidControllerClass, CPDrv
   {$IFDEF USESIDETONE},ToneGen{$ENDIF};
 
@@ -113,6 +113,9 @@ type
     FPttDelayAfterCount: Integer;
     FPttHoldCounter: Integer; {counter used to hold PTT in paddle wait}
 
+    FPttDelayBeforeTime: Byte;
+    FPttDelayAfterTime: Byte;
+
     cwstrptr : word;
     tailcwstrptr : word;
     mousetail : word; {pointer in CWSendBuf}
@@ -134,6 +137,8 @@ type
 
     FUseSideTone: Boolean;
     FSideTonePitch: Integer;       {side tone pitch}
+
+    FPaddleReverse: Boolean;
 
     FOnCallsignSentProc: TNotifyEvent;
     FOnPaddleEvent: TNotifyEvent;
@@ -173,6 +178,7 @@ type
     procedure COM_OFF();
     procedure USB_ON();
     procedure USB_OFF();
+    procedure SetPaddleReverse(fReverse: Boolean);
   public
     { Public êÈåæ }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -232,12 +238,14 @@ type
     property UsbPortOut: TUsbPortDataArray read FUsbPortOut;
 
     property Usbif4cwSyncWpm: Boolean read FUsbif4cwSyncWpm write FUsbif4cwSyncWpm;
+    property PaddleReverse: Boolean read FPaddleReverse write SetPaddleReverse;
 
     // USBIF4CW support
     function usbif4cwSetWPM(nID: Integer; nWPM: Integer): Long;
     function usbif4cwSetPTTParam(nId: Integer; nLen1: Byte; nLen2: Byte): Long;
     function usbif4cwSetPTT(nId: Integer; tx: Byte): Long;
     function usbif4cwGetVersion(nId: Integer): Long;
+    function usbif4cwSetPaddle(nId: Integer; param: Byte): Long;
   end;
 
 var
@@ -514,6 +522,16 @@ end;
 procedure TdmZLogKeyer.SetPTT(_on: Boolean);
 begin
    FPTTEnabled := _on;
+
+   if FKeyingPort = tkpUSB then begin
+      if _on = True then begin
+         usbif4cwSetPTTParam(0, FPttDelayBeforeTime, FPttDelayAfterTime);
+      end
+      else begin
+         ControlPTT(False);
+//         usbif4cwSetPTTParam(0, 0, 0);
+      end;
+   end;
 end;
 
 function TdmZLogKeyer.PTTIsOn: Boolean;
@@ -522,29 +540,22 @@ begin
 end;
 
 procedure TdmZLogKeyer.SetPTTDelay(before, after: word);
-var
-   i: Integer;
 begin
-   if FTimerMicroSec = 0 then
+   if FTimerMicroSec = 0 then begin
       Exit;
-
-   if before = 0 then
-      i := 1
-   else
-      i := before;
-
-   FPttDelayBeforeCount := Trunc(i * 1000 / FTimerMicroSec);
-
-   if after = 0 then
-      i := 1
-   else
-      i := after;
-
-   FPttDelayAfterCount := Trunc(i * 1000 / FTimerMicroSec);
-
-   if FKeyingPort = tkpUSB then begin
-      usbif4cwSetPTTParam(0, before, after);
    end;
+
+   before := Min(before, 255);
+   before := Max(before, 1);
+
+   FPttDelayBeforeCount := Trunc(before * 1000 / FTimerMicroSec);
+   FPttDelayBeforeTime := before;
+
+   after := Min(after, 255);
+   after := Max(after, 1);
+
+   FPttDelayAfterCount := Trunc(after * 1000 / FTimerMicroSec);
+   FPttDelayAfterTime := after;
 end;
 
 function TdmZLogKeyer.Paused: Boolean;
@@ -1037,6 +1048,7 @@ begin
 
    FKeyerWeight := 50;
    FUseSideTone := True;
+   FPaddleReverse := False;
    WPM := 25;
 
    CQRepeatIntervalSec := 2.0;
@@ -1862,6 +1874,19 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.SetPaddleReverse(fReverse: Boolean);
+begin
+   FPaddleReverse := fReverse;
+   if FKeyingPort = tkpUSB then begin
+      if fReverse = True then begin
+         usbif4cwSetPaddle(0, 1);
+      end
+      else begin
+         usbif4cwSetPaddle(0, 0);
+      end;
+   end;
+end;
+
 { TKeyerMonitorThread }
 
 constructor TKeyerMonitorThread.Create(AKeyer: TdmZLogKeyer);
@@ -1894,16 +1919,9 @@ begin
 end;
 
 function TdmZLogKeyer.usbif4cwSetWPM(nID: Integer; nWPM: Integer): Long;
-const
-   wpm_table: array[1..50] of Byte = (
-      $78, $78, $78, $78, $78, $64, $56, $4B, $43, $3C,  // 1-10
-      $37, $32, $2E, $2B, $28, $26, $23, $21, $20, $1E,  // 11-20
-      $1D, $1B, $1A, $19, $18, $17, $16, $15, $15, $14,  // 21-30
-      $13, $13, $12, $12, $11, $11, $10, $10, $0F, $0F,  // 31-40
-      $0F, $0E, $0E, $0E, $0D, $0D, $0D, $0D, $0C, $0C   // 41-50
-   );
 var
    OutReport: array[0..8] of Byte;
+   P: Byte;
 begin
    if FUSBIF4CW = nil then begin
       Result := -1;
@@ -1915,16 +1933,14 @@ begin
       Exit;
    end;
 
-   if nWPM < 5 then begin
-      nWPM := 5;
-   end;
-   if nWPM > 50 then begin
-      nWPM := 50;
-   end;
+   nWPM := Max(nWPM, 5);
+   nWPM := Min(nWPM, 50);
+
+   P := Round(600 / nWPM);
 
    OutReport[0] := nID;
    OutReport[1] := $24;
-   OutReport[2] := wpm_table[nWPM];
+   OutReport[2] := P;
    OutReport[3] := 0;
    OutReport[4] := 0;
    OutReport[5] := 0;
@@ -1947,6 +1963,10 @@ begin
    if usbif4cwGetVersion(0) < 20 then begin
       Result := -2;
       Exit;
+   end;
+
+   if (nLen1 > 0) and (nLen2 > 0) then begin    // óºï˚0ÇÕOFF
+      nLen2 := Max(nLen2, 50);                  // afterÇ™50msñ¢ñûÇÕìÆçÏÇ™Ç®Ç©ÇµÇ≠Ç»ÇÈñÕól
    end;
 
    OutReport[0] := nID;
@@ -1992,6 +2012,33 @@ end;
 function TdmZLogKeyer.usbif4cwGetVersion(nId: Integer): Long;
 begin
    Result := FUSBIF4CW_Version;
+end;
+
+function TdmZLogKeyer.usbif4cwSetPaddle(nId: Integer; param: Byte): Long;
+var
+   OutReport: array[0..8] of Byte;
+begin
+   if FUSBIF4CW = nil then begin
+      Result := -1;
+      Exit;
+   end;
+
+   if usbif4cwGetVersion(0) < 20 then begin
+      Result := -2;
+      Exit;
+   end;
+
+   OutReport[0] := nID;
+   OutReport[1] := $26;
+   OutReport[2] := 0;
+   OutReport[3] := 0;
+   OutReport[4] := param;
+   OutReport[5] := 0;
+   OutReport[6] := 0;
+   OutReport[7] := 0;
+   OutReport[8] := $FC;
+   FUSBIF4CW.SetOutputReport(OutReport, 9);
+   Result := 0;
 end;
 
 end.

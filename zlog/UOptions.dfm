@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 361
-    ActivePage = tabsheetHardware
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1280,10 +1280,6 @@ object formOptions: TformOptions
     end
     object tabsheetVoice: TTabSheet
       Caption = 'Voice'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 6
         Top = 4
@@ -1671,7 +1667,7 @@ object formOptions: TformOptions
         Left = 5
         Top = 0
         Width = 342
-        Height = 221
+        Height = 217
         Caption = 'Ports'
         TabOrder = 0
         object Label30: TLabel
@@ -1786,7 +1782,7 @@ object formOptions: TformOptions
           Width = 92
           Height = 51
           Caption = 'CW/PTT port'
-          TabOrder = 17
+          TabOrder = 16
           object comboCwPttPort: TComboBox
             Left = 14
             Top = 18
@@ -1985,18 +1981,10 @@ object formOptions: TformOptions
           Caption = 'Get band and mode alternately(ICOM only)'
           TabOrder = 15
         end
-        object checkUsbif4cwSyncWpm: TCheckBox
-          Left = 109
-          Top = 197
-          Width = 230
-          Height = 17
-          Caption = 'USBIF4CW Sync WPM'
-          TabOrder = 16
-        end
       end
       object GroupBox7: TGroupBox
         Left = 5
-        Top = 227
+        Top = 220
         Width = 342
         Height = 62
         Caption = 'CW PTT control'
@@ -2053,13 +2041,33 @@ object formOptions: TformOptions
           OnClick = PTTEnabledCheckBoxClick
         end
       end
+      object GroupBox13: TGroupBox
+        Left = 5
+        Top = 288
+        Width = 342
+        Height = 43
+        Caption = 'USBIF4CW'
+        TabOrder = 2
+        object checkUsbif4cwSyncWpm: TCheckBox
+          Left = 8
+          Top = 17
+          Width = 82
+          Height = 17
+          Caption = 'Sync WPM'
+          TabOrder = 0
+        end
+        object checkUsbif4cwPaddleReverse: TCheckBox
+          Left = 96
+          Top = 17
+          Width = 101
+          Height = 17
+          Caption = 'Paddle Reverse'
+          TabOrder = 1
+        end
+      end
     end
     object tabsheetRigControl: TTabSheet
       Caption = 'Rig control'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label45: TLabel
         Left = 8
         Top = 138
@@ -2143,10 +2151,6 @@ object formOptions: TformOptions
     end
     object tabsheetPath: TTabSheet
       Caption = 'Path'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label50: TLabel
         Left = 16
         Top = 18
@@ -2274,10 +2278,6 @@ object formOptions: TformOptions
     end
     object tabsheetMisc: TTabSheet
       Caption = 'Misc'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label47: TLabel
         Left = 125
         Top = 23
@@ -2865,10 +2865,6 @@ object formOptions: TformOptions
     object tabsheetBandScope1: TTabSheet
       Caption = 'BandScope'
       ImageIndex = 9
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox9: TGroupBox
         Left = 11
         Top = 11
@@ -3363,10 +3359,6 @@ object formOptions: TformOptions
     object tabsheetBandScope2: TTabSheet
       Caption = 'BandScope2'
       ImageIndex = 11
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox12: TGroupBox
         Left = 11
         Top = 11
@@ -3723,10 +3715,6 @@ object formOptions: TformOptions
     object tabsheetQuickMemo: TTabSheet
       Caption = 'Quick Memo'
       ImageIndex = 10
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox11: TGroupBox
         Left = 11
         Top = 11
@@ -3855,6 +3843,6 @@ object formOptions: TformOptions
   end
   object ColorDialog1: TColorDialog
     Left = 28
-    Top = 344
+    Top = 360
   end
 end

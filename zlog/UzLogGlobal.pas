@@ -12,6 +12,7 @@ type
     _speed : integer;
     _weight : integer;
     _fixwpm : integer;
+    _paddlereverse : boolean;
     _tonepitch : integer;
     _cqmax : integer;
     _cqrepeat : double;
@@ -263,6 +264,9 @@ public
     procedure SetWeight(i : integer);
     procedure SetTonePitch(i : integer);
     procedure SetScoreCoeff(E : Extended);
+
+    procedure SetPaddleReverse(boo : boolean);
+    procedure ReversePaddle();
 
     function CWMessage(bank, no: Integer): string; overload;
     function CWMessage(no: Integer): string; overload;
@@ -636,6 +640,9 @@ begin
 
       // Weight
       Settings.CW._weight := ini.ReadInteger('CW', 'Weight', 50);
+
+      // Paddle reverse
+      Settings.CW._paddlereverse := ini.ReadBool('CW', 'PaddleReverse', False);
 
       // Que messages
       Settings.CW._FIFO := ini.ReadBool('CW', 'FIFO', True);
@@ -1082,6 +1089,9 @@ begin
       // Weight
       ini.WriteInteger('CW', 'Weight', Settings.CW._weight);
 
+      // Paddle reverse
+      ini.WriteBool('CW', 'PaddleReverse', Settings.CW._paddlereverse);
+
       // Que messages
       ini.WriteBool('CW', 'FIFO', Settings.CW._FIFO);
 
@@ -1404,6 +1414,7 @@ begin
 
    dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
    dmZlogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
+   dmZlogKeyer.PaddleReverse := Settings.CW._paddlereverse;
 
    dmZlogKeyer.SetPTTDelay(Settings._pttbefore, Settings._pttafter);
    dmZlogKeyer.SetPTT(Settings._pttenabled);
@@ -1720,6 +1731,17 @@ begin
    else begin
       Result := pwrM;
    end;
+end;
+
+procedure TdmZLogGlobal.SetPaddleReverse(boo: boolean);
+begin
+   Settings.CW._paddlereverse := boo;
+   dmZlogKeyer.PaddleReverse := boo;
+end;
+
+procedure TdmZLogGlobal.ReversePaddle;
+begin
+   SetPaddleReverse(not(Settings.CW._paddlereverse));
 end;
 
 function TdmZLogGlobal.CWMessage(bank, no: integer): string;

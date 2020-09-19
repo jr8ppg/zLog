@@ -7991,7 +7991,7 @@ end;
 // #53 パドルリバース
 procedure TMainForm.actionReversePaddleExecute(Sender: TObject);
 begin
-//   dmZlogGlobal.ReversePaddle;
+   dmZlogGlobal.ReversePaddle;
 end;
 
 // #54 CW Tune
