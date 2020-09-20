@@ -716,12 +716,22 @@ procedure TdmZLogKeyer.SendStrLoop(S: string);
 var
    SS: string;
 begin
+   SS := S;
    SS := DecodeCommands(S);
-   if FPTTEnabled then
+
+   if FPTTEnabled then begin
       SS := '(' + SS + ')';
+   end;
+
+   SS := SS + '@';
 
    FCQLoopCount := 1;
-   SendStr(SS + '@');
+//   SendStr(SS + '@');
+
+   SetCWSendBuf(0, SS);
+   cwstrptr := 1;
+   FSendOK := True;
+   FKeyingCounter := 1;
 end;
 
 procedure TdmZLogKeyer.SendStrFIFO(sStr: string);
@@ -904,6 +914,13 @@ begin
             end;
          end
          else begin
+            Dec(FPttHoldCounter);
+            Exit;
+         end;
+      end;
+
+      $A3: begin
+         if FPttHoldCounter > 0 then begin
             Dec(FPttHoldCounter);
             Exit;
          end;
@@ -1569,7 +1586,7 @@ begin
    FCodeTable[Ord('(')][3] := 9;
 
    FCodeTable[Ord(')')][1] := $A1; { set Hold Counter }
-   FCodeTable[Ord(')')][2] := $A2; { set PTT delay }
+   FCodeTable[Ord(')')][2] := $A3; { set PTT delay }
    FCodeTable[Ord(')')][3] := $1F; { PTT off }
    FCodeTable[Ord(')')][4] := 9;
 
