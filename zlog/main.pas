@@ -5371,6 +5371,7 @@ end;
 
 procedure TMainForm.CWStopButtonClick(Sender: TObject);
 begin
+   CtrlZCQLoop := False;
    dmZLogKeyer.ClrBuffer;
    CWPlayButton.Visible := False;
    CWPauseButton.Visible := True;
@@ -5407,6 +5408,7 @@ procedure TMainForm.CQRepeatClick1(Sender: TObject);
 var
    S: String;
 begin
+   CtrlZCQLoop := False;
    S := dmZlogGlobal.CWMessage(1, 1);
    S := SetStr(UpperCase(S), CurrentQSO);
    dmZLogKeyer.SendStrLoop(S);
@@ -7489,10 +7491,10 @@ begin
 
    if CurrentQSO.mode <> m then begin
       UpdateMode(m);
+   end;
 
-      if RigControl.Rig <> nil then begin
-         RigControl.Rig.SetMode(CurrentQSO);
-      end;
+   if RigControl.Rig <> nil then begin
+      RigControl.Rig.SetMode(CurrentQSO);
    end;
 end;
 
@@ -7991,7 +7993,7 @@ end;
 // #53 パドルリバース
 procedure TMainForm.actionReversePaddleExecute(Sender: TObject);
 begin
-//   dmZlogGlobal.ReversePaddle;
+   dmZlogGlobal.ReversePaddle;
 end;
 
 // #54 CW Tune

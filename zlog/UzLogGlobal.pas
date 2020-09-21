@@ -12,6 +12,7 @@ type
     _speed : integer;
     _weight : integer;
     _fixwpm : integer;
+    _paddlereverse : boolean;
     _tonepitch : integer;
     _cqmax : integer;
     _cqrepeat : double;
@@ -95,7 +96,7 @@ type
 
     _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
-    _use_usbif4cw_ver1: Boolean;
+    _usbif4cw_sync_wpm: Boolean;
     _polling_interval: Integer;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
@@ -263,6 +264,9 @@ public
     procedure SetWeight(i : integer);
     procedure SetTonePitch(i : integer);
     procedure SetScoreCoeff(E : Extended);
+
+    procedure SetPaddleReverse(boo : boolean);
+    procedure ReversePaddle();
 
     function CWMessage(bank, no: Integer): string; overload;
     function CWMessage(no: Integer): string; overload;
@@ -637,6 +641,9 @@ begin
       // Weight
       Settings.CW._weight := ini.ReadInteger('CW', 'Weight', 50);
 
+      // Paddle reverse
+      Settings.CW._paddlereverse := ini.ReadBool('CW', 'PaddleReverse', False);
+
       // Que messages
       Settings.CW._FIFO := ini.ReadBool('CW', 'FIFO', True);
 
@@ -723,8 +730,8 @@ begin
       // Get band and mode when polling(ICOM only)
       Settings._icom_polling_freq_and_mode := ini.ReadBool('Hardware', 'PollingFreqAndMode', False);
 
-      // Use USBIF4CW(AMD_USB_KEY)
-      Settings._use_usbif4cw_ver1 := ini.ReadBool('Hardware', 'UseUsbif4cwVer1', False);
+      // USBIF4CW Sync WPM
+      Settings._usbif4cw_sync_wpm := ini.ReadBool('Hardware', 'Usbif4cwSyncWpm', True);
 
       // Polling Interval
       Settings._polling_interval := ini.ReadInteger('Hardware', 'PollingInterval', 200);
@@ -1082,6 +1089,9 @@ begin
       // Weight
       ini.WriteInteger('CW', 'Weight', Settings.CW._weight);
 
+      // Paddle reverse
+      ini.WriteBool('CW', 'PaddleReverse', Settings.CW._paddlereverse);
+
       // Que messages
       ini.WriteBool('CW', 'FIFO', Settings.CW._FIFO);
 
@@ -1163,8 +1173,8 @@ begin
       // Get band and mode when polling(ICOM only)
       ini.WriteBool('Hardware', 'PollingFreqAndMode', Settings._icom_polling_freq_and_mode);
 
-      // Use USBIF4CW(AMD_USB_KEY)
-      ini.WriteBool('Hardware', 'UseUsbif4cwVer1', Settings._use_usbif4cw_ver1);
+      // USBIF4CW Sync WPM
+      ini.WriteBool('Hardware', 'Usbif4cwSyncWpm', Settings._usbif4cw_sync_wpm);
 
       // Polling Interval
       ini.WriteInteger('Hardware', 'PollingInterval', Settings._polling_interval);
@@ -1403,7 +1413,8 @@ begin
    dmZlogKeyer.UseSideTone := False;
 
    dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
-   dmZlogKeyer.UseUsbif4cwVer1 := Settings._use_usbif4cw_ver1;
+   dmZlogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
+   dmZlogKeyer.PaddleReverse := Settings.CW._paddlereverse;
 
    dmZlogKeyer.SetPTTDelay(Settings._pttbefore, Settings._pttafter);
    dmZlogKeyer.SetPTT(Settings._pttenabled);
@@ -1720,6 +1731,17 @@ begin
    else begin
       Result := pwrM;
    end;
+end;
+
+procedure TdmZLogGlobal.SetPaddleReverse(boo: boolean);
+begin
+   Settings.CW._paddlereverse := boo;
+   dmZlogKeyer.PaddleReverse := boo;
+end;
+
+procedure TdmZLogGlobal.ReversePaddle;
+begin
+   SetPaddleReverse(not(Settings.CW._paddlereverse));
 end;
 
 function TdmZLogGlobal.CWMessage(bank, no: integer): string;

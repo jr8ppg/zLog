@@ -2820,7 +2820,9 @@ object MainForm: TMainForm
       Width = 63
       Height = 24
       Hint = 'CW speed'
-      Max = 60
+      Max = 50
+      Min = 5
+      PageSize = 1
       Frequency = 10
       Position = 5
       TabOrder = 0
