@@ -5371,6 +5371,7 @@ end;
 
 procedure TMainForm.CWStopButtonClick(Sender: TObject);
 begin
+   CtrlZCQLoop := False;
    dmZLogKeyer.ClrBuffer;
    CWPlayButton.Visible := False;
    CWPauseButton.Visible := True;
@@ -5407,6 +5408,7 @@ procedure TMainForm.CQRepeatClick1(Sender: TObject);
 var
    S: String;
 begin
+   CtrlZCQLoop := False;
    S := dmZlogGlobal.CWMessage(1, 1);
    S := SetStr(UpperCase(S), CurrentQSO);
    dmZLogKeyer.SendStrLoop(S);
