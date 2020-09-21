@@ -7491,10 +7491,10 @@ begin
 
    if CurrentQSO.mode <> m then begin
       UpdateMode(m);
+   end;
 
-      if RigControl.Rig <> nil then begin
-         RigControl.Rig.SetMode(CurrentQSO);
-      end;
+   if RigControl.Rig <> nil then begin
+      RigControl.Rig.SetMode(CurrentQSO);
    end;
 end;
 
