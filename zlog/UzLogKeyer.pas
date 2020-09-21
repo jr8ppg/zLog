@@ -1775,7 +1775,12 @@ end;
 procedure TdmZLogKeyer.SetRandCQStr(Index: Integer; cqstr: string);
 begin
    FRandCQStr[Index] := cqstr;
-   SetCWSendBuf(Index, '(' + cqstr + ')@');
+
+   if FPTTEnabled then begin
+      cqstr := '(' + cqstr + ')';
+   end;
+   cqstr := cqstr + '@';
+   SetCWSendBuf(Index, cqstr);
 end;
 
 procedure TdmZLogKeyer.SetSpaceFactor(R: Integer);
