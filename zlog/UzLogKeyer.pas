@@ -1988,7 +1988,9 @@ begin
    end
    else begin
       P := 1;
+      nLen1 := Min(nLen1, 254);                 // Å‘å’l‚Í254ms
       nLen2 := Max(nLen2, 50);                  // after‚ª50ms–¢–‚Í“®ì‚ª‚¨‚©‚µ‚­‚È‚é–Í—l
+      nLen2 := Min(nLen2, 254);                 // Å‘å’l‚Í254ms
       OutReport[0] := nID;
       OutReport[1] := $22;
       OutReport[2] := nLen1;
