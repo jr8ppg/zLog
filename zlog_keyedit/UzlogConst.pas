@@ -108,8 +108,8 @@ const
     'F8',
     '',                 // #18 actionCheckMulti
     '',                 // #19 actionShowCheckPartial
-    'F11',              // #20 actionPlayCQA2
-    'F12',              // #21 actionPlayCQA3
+    '',                 // #20 actionPlayCQA2
+    '',                 // #21 actionPlayCQA3
     'Shift+F1',         // #22 actionPlayMessageB01
     'Shift+F2',         // #23 actionPlayMessageB02
     'Shift+F3',         // #24 actionPlayMessageB03
@@ -118,8 +118,8 @@ const
     'Shift+F6',         // #27 actionPlayMessageB06
     'Shift+F7',         // #28 actionPlayMessageB07
     'Shift+F8',         // #29 actionPlayMessageB08
-    'Shift+F11',        // #30 actionPlayCQB2
-    'Shift+F12',        // #31 actionPlayCQB3
+    '',                 // #30 actionPlayCQB2
+    '',                 // #31 actionPlayCQB3
     'Ctrl+Enter',
     'Ctrl+N',
     'Shift+Ctrl+N',
@@ -202,11 +202,11 @@ const
     'Shift+F9',         // #111 actionPlayMessageB09
     'Shift+F10',        // #112 actionPlayMessageB10
     'Esc',              // #113 actionCQAbort
-    '',                 // #114 actionPlayMessageA11
-    '',                 // #115 actionPlayMessageA12
+    'F11',              // #114 actionPlayMessageA11
+    'F12',              // #115 actionPlayMessageA12
     '',                 // #116 actionPlayCQA1
-    '',                 // #117 actionPlayMessageB11
-    '',                 // #118 actionPlayMessageB12
+    'Shift+F11',        // #117 actionPlayMessageB11
+    'Shift+F12',        // #118 actionPlayMessageB12
     ''                  // #119 actionPlayCQB1
   );
 
