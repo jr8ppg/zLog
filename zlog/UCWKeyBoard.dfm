@@ -247,5 +247,15 @@ object CWKeyBoard: TCWKeyBoard
       Caption = 'actionPlayCQB3'
       OnExecute = actionPlayMessageBExecute
     end
+    object actionDecreaseCwSpeed: TAction
+      Caption = 'actionDecreaseCwSpeed'
+      ShortCut = 8277
+      OnExecute = actionDecreaseCwSpeedExecute
+    end
+    object actionIncreaseCwSpeed: TAction
+      Caption = 'actionIncreaseCwSpeed'
+      ShortCut = 8281
+      OnExecute = actionIncreaseCwSpeedExecute
+    end
   end
 end

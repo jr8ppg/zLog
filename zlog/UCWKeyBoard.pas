@@ -47,6 +47,8 @@ type
     actionPlayCQA3: TAction;
     actionPlayCQB2: TAction;
     actionPlayCQB3: TAction;
+    actionDecreaseCwSpeed: TAction;
+    actionIncreaseCwSpeed: TAction;
     procedure ConsoleKeyPress(Sender: TObject; var Key: Char);
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -62,6 +64,8 @@ type
     procedure actionESCExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
+    procedure actionDecreaseCwSpeedExecute(Sender: TObject);
+    procedure actionIncreaseCwSpeedExecute(Sender: TObject);
   private
     { Private declarations }
     procedure PlayMessage(cb: Integer; no: Integer);
@@ -212,6 +216,18 @@ begin
    end;
 end;
 
+procedure TCWKeyBoard.actionIncreaseCwSpeedExecute(Sender: TObject);
+begin
+   IncCWSpeed();
+   SetFocus();
+end;
+
+procedure TCWKeyBoard.actionDecreaseCwSpeedExecute(Sender: TObject);
+begin
+   DecCWSpeed();
+   SetFocus();
+end;
+
 procedure TCWKeyBoard.PlayMessage(cb: Integer; no: Integer);
 var
    S: string;
@@ -269,6 +285,9 @@ begin
    actionPlayCQB2.ShortCut := MainForm.actionPlayCQB2.ShortCut;
    actionPlayCQB3.ShortCut := MainForm.actionPlayCQB3.ShortCut;
 
+   actionDecreaseCwSpeed.ShortCut := MainForm.actionDecreaseCwSpeed.ShortCut;
+   actionIncreaseCwSpeed.ShortCut := MainForm.actionIncreaseCwSpeed.ShortCut;
+
    actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
    actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
    actionPlayMessageA03.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA03.SecondaryShortCuts);
@@ -299,6 +318,9 @@ begin
    actionPlayCQA3.SecondaryShortCuts.Assign(MainForm.actionPlayCQA3.SecondaryShortCuts);
    actionPlayCQB2.SecondaryShortCuts.Assign(MainForm.actionPlayCQB2.SecondaryShortCuts);
    actionPlayCQB3.SecondaryShortCuts.Assign(MainForm.actionPlayCQB3.SecondaryShortCuts);
+
+   actionDecreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionDecreaseCwSpeed.SecondaryShortCuts);
+   actionIncreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionIncreaseCwSpeed.SecondaryShortCuts);
 end;
 
 end.
