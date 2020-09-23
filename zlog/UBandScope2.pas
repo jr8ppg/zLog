@@ -35,6 +35,7 @@ type
 //    FMinFreq: Integer;
 //    FMaxFreq: Integer; // in Hz
 
+    FCurrentBandOnly: Boolean;
     FCurrBand : TBand;
 //    FCurrMode : TMode;
 
@@ -57,6 +58,8 @@ type
     function CalcRemainTime(T1, T2: TDateTime): Integer;
     function CalcElapsedTime(T1, T2: TDateTime): Integer;
     procedure SetCurrentBand(b: TBand);
+    procedure SetCurrentBandOnly(v: Boolean);
+    procedure SetCaption();
   public
     { Public êÈåæ }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -73,6 +76,7 @@ type
     property IconType: Integer read FIconType write SetIconType;
     property BSList: TBSList read FBSList;
     property CurrentBand: TBand read FCurrBand write SetCurrentBand;
+    property CurrentBandOnly: Boolean read FCurrentBandOnly write SetCurrentBandOnly;
   end;
 
   TBandScopeArray = array[b19..b10g] of TBandScope2;
@@ -90,8 +94,9 @@ uses
 constructor TBandScope2.Create(AOwner: TComponent; b: TBand);
 begin
    Inherited Create(AOwner);
+   FCurrentBandOnly := False;
    FCurrBand := b;
-   Caption := BandString[b];
+   SetCaption();
    FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
    IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
 end;
@@ -809,8 +814,24 @@ procedure TBandScope2.SetCurrentBand(b: TBand);
 begin
    FBSList.Clear();
    FCurrBand := b;
-   Caption := BandString[b];
+   SetCaption();
    RewriteBandScope();
+end;
+
+procedure TBandScope2.SetCurrentBandOnly(v: Boolean);
+begin
+   FCurrentBandOnly := v;
+   SetCaption();
+end;
+
+procedure TBandScope2.SetCaption();
+begin
+   if FCurrentBandOnly = True then begin
+      Caption := '[Current] ' + BandString[FCurrBand];
+   end
+   else begin
+      Caption := BandString[FCurrBand];
+   end;
 end;
 
 initialization

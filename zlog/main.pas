@@ -3749,6 +3749,7 @@ begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
    end;
    FBandScope := TBandScope2.Create(Self, b19);
+   FBandScope.CurrentBandOnly := True;
 
    FNPlusOneThread := nil;
    FSuperCheckDataLoadThread := nil;
