@@ -824,7 +824,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 4
         Width = 193
-        Height = 301
+        Height = 256
         Caption = 'Messages'
         TabOrder = 0
         object Label1: TLabel
@@ -882,20 +882,6 @@ object formOptions: TformOptions
           Width = 13
           Height = 13
           Caption = '#8'
-        end
-        object Label9: TLabel
-          Left = 8
-          Top = 260
-          Width = 21
-          Height = 13
-          Caption = 'CQ2'
-        end
-        object Label10: TLabel
-          Left = 8
-          Top = 278
-          Width = 21
-          Height = 13
-          Caption = 'CQ3'
         end
         object Label70: TLabel
           Left = 8
@@ -1021,22 +1007,6 @@ object formOptions: TformOptions
           TabOrder = 6
           OnChange = editMessage1Change
         end
-        object editMessage13: TEdit
-          Tag = 13
-          Left = 32
-          Top = 258
-          Width = 153
-          Height = 17
-          AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 12
-          OnChange = editMessage1Change
-        end
         object editMessage8: TEdit
           Tag = 8
           Left = 32
@@ -1051,22 +1021,6 @@ object formOptions: TformOptions
           Font.Style = []
           ParentFont = False
           TabOrder = 7
-          OnChange = editMessage1Change
-        end
-        object editMessage14: TEdit
-          Tag = 14
-          Left = 32
-          Top = 276
-          Width = 153
-          Height = 17
-          AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 13
           OnChange = editMessage1Change
         end
         object editMessage1: TEdit
@@ -1161,7 +1115,7 @@ object formOptions: TformOptions
         PageSize = 1
         Frequency = 10
         Position = 5
-        TabOrder = 1
+        TabOrder = 2
         OnChange = SpeedBarChange
       end
       object WeightBar: TTrackBar
@@ -1171,7 +1125,7 @@ object formOptions: TformOptions
         Height = 17
         Max = 100
         Frequency = 10
-        TabOrder = 2
+        TabOrder = 3
         OnChange = WeightBarChange
       end
       object CQmaxSpinEdit: TSpinEdit
@@ -1181,7 +1135,7 @@ object formOptions: TformOptions
         Height = 22
         MaxValue = 999
         MinValue = 0
-        TabOrder = 5
+        TabOrder = 6
         Value = 15
       end
       object ToneSpinEdit: TSpinEdit
@@ -1192,7 +1146,7 @@ object formOptions: TformOptions
         Increment = 10
         MaxValue = 2500
         MinValue = 100
-        TabOrder = 4
+        TabOrder = 5
         Value = 100
       end
       object CQRepEdit: TEdit
@@ -1200,7 +1154,7 @@ object formOptions: TformOptions
         Top = 230
         Width = 41
         Height = 21
-        TabOrder = 7
+        TabOrder = 8
         Text = '2.0'
         OnKeyPress = CQRepEditKeyPress
       end
@@ -1212,7 +1166,7 @@ object formOptions: TformOptions
         Caption = 'Que messages'
         Checked = True
         State = cbChecked
-        TabOrder = 3
+        TabOrder = 4
       end
       object AbbrevEdit: TEdit
         Left = 304
@@ -1221,7 +1175,7 @@ object formOptions: TformOptions
         Height = 21
         CharCase = ecUpperCase
         MaxLength = 3
-        TabOrder = 6
+        TabOrder = 7
         Text = 'OAN'
       end
       object rbBankA: TRadioButton
@@ -1232,7 +1186,7 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'CW A'
         Checked = True
-        TabOrder = 10
+        TabOrder = 11
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1243,7 +1197,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'CW B'
-        TabOrder = 11
+        TabOrder = 12
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1254,28 +1208,83 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'RTTY'
-        TabOrder = 12
+        TabOrder = 13
         TabStop = True
         OnClick = CWBankClick
       end
       object cbCQSP: TCheckBox
-        Left = 14
-        Top = 311
-        Width = 161
-        Height = 17
+        Left = 208
+        Top = 279
+        Width = 123
+        Height = 24
         Hint = 
           'This option will switch the CW message sent when TAB or ; key is' +
           ' pressed to that in the current message bank. '
         Caption = 'Switch TAB/; with CW bank'
-        TabOrder = 8
+        TabOrder = 9
+        WordWrap = True
       end
       object checkSendNrAuto: TCheckBox
-        Left = 199
-        Top = 311
+        Left = 208
+        Top = 308
         Width = 161
         Height = 17
         Caption = 'Send NR? automatically'
-        TabOrder = 9
+        TabOrder = 10
+      end
+      object GroupBox14: TGroupBox
+        Left = 6
+        Top = 264
+        Width = 193
+        Height = 61
+        Caption = 'Additional CQ Messages'
+        TabOrder = 1
+        object Label9: TLabel
+          Left = 8
+          Top = 19
+          Width = 21
+          Height = 13
+          Caption = 'CQ2'
+        end
+        object Label10: TLabel
+          Left = 8
+          Top = 38
+          Width = 21
+          Height = 13
+          Caption = 'CQ3'
+        end
+        object editCQMessage2: TEdit
+          Tag = 13
+          Left = 32
+          Top = 17
+          Width = 153
+          Height = 17
+          AutoSize = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+          OnChange = editMessage1Change
+        end
+        object editCQMessage3: TEdit
+          Tag = 14
+          Left = 32
+          Top = 35
+          Width = 153
+          Height = 17
+          AutoSize = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+          OnChange = editMessage1Change
+        end
       end
     end
     object tabsheetVoice: TTabSheet
@@ -1284,7 +1293,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 4
         Width = 336
-        Height = 301
+        Height = 261
         Caption = 'Messages'
         TabOrder = 0
         object Label20: TLabel
@@ -1342,20 +1351,6 @@ object formOptions: TformOptions
           Width = 13
           Height = 13
           Caption = '#8'
-        end
-        object Label28: TLabel
-          Left = 8
-          Top = 260
-          Width = 21
-          Height = 13
-          Caption = 'CQ2'
-        end
-        object Label29: TLabel
-          Left = 8
-          Top = 279
-          Width = 21
-          Height = 13
-          Caption = 'CQ3'
         end
         object memo: TLabel
           Left = 48
@@ -1446,15 +1441,6 @@ object formOptions: TformOptions
           AutoSize = False
           TabOrder = 12
         end
-        object vEdit13: TEdit
-          Tag = 9
-          Left = 32
-          Top = 258
-          Width = 150
-          Height = 17
-          AutoSize = False
-          TabOrder = 24
-        end
         object vEdit8: TEdit
           Tag = 8
           Left = 32
@@ -1463,15 +1449,6 @@ object formOptions: TformOptions
           Height = 17
           AutoSize = False
           TabOrder = 14
-        end
-        object vEdit14: TEdit
-          Tag = 10
-          Left = 32
-          Top = 276
-          Width = 150
-          Height = 17
-          AutoSize = False
-          TabOrder = 26
         end
         object vEdit1: TEdit
           Tag = 1
@@ -1561,26 +1538,6 @@ object formOptions: TformOptions
           Height = 19
           Caption = 'Button4'
           TabOrder = 15
-          OnClick = vButtonClick
-        end
-        object vButton13: TButton
-          Tag = 13
-          Left = 194
-          Top = 257
-          Width = 125
-          Height = 19
-          Caption = 'Button4'
-          TabOrder = 25
-          OnClick = vButtonClick
-        end
-        object vButton14: TButton
-          Tag = 14
-          Left = 194
-          Top = 275
-          Width = 125
-          Height = 19
-          Caption = 'Button4'
-          TabOrder = 27
           OnClick = vButtonClick
         end
         object vEdit9: TEdit

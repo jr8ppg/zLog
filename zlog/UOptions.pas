@@ -36,7 +36,6 @@ type
     editMessage5: TEdit;
     editMessage6: TEdit;
     editMessage7: TEdit;
-    editMessage13: TEdit;
     editMessage8: TEdit;
     Label1: TLabel;
     Label2: TLabel;
@@ -46,9 +45,6 @@ type
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
-    Label9: TLabel;
-    Label10: TLabel;
-    editMessage14: TEdit;
     editMessage1: TEdit;
     SpeedBar: TTrackBar;
     Label11: TLabel;
@@ -94,17 +90,13 @@ type
     Label25: TLabel;
     Label26: TLabel;
     Label27: TLabel;
-    Label28: TLabel;
-    Label29: TLabel;
     vEdit2: TEdit;
     vEdit3: TEdit;
     vEdit4: TEdit;
     vEdit5: TEdit;
     vEdit6: TEdit;
     vEdit7: TEdit;
-    vEdit13: TEdit;
     vEdit8: TEdit;
-    vEdit14: TEdit;
     vEdit1: TEdit;
     memo: TLabel;
     OpenDialog: TOpenDialog;
@@ -124,8 +116,6 @@ type
     vButton6: TButton;
     vButton7: TButton;
     vButton8: TButton;
-    vButton13: TButton;
-    vButton14: TButton;
     act24: TCheckBox;
     act18: TCheckBox;
     act10: TCheckBox;
@@ -388,6 +378,11 @@ type
     GroupBox13: TGroupBox;
     checkUsbif4cwSyncWpm: TCheckBox;
     checkUsbif4cwPaddleReverse: TCheckBox;
+    GroupBox14: TGroupBox;
+    Label9: TLabel;
+    Label10: TLabel;
+    editCQMessage2: TEdit;
+    editCQMessage3: TEdit;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -583,6 +578,9 @@ begin
             Settings.CW.CWStrBank[i, j] := TempCWStrBank[i, j];
          end;
       end;
+
+      Settings.CW.AdditionalCQMessages[2] := editCQMessage2.Text;
+      Settings.CW.AdditionalCQMessages[3] := editCQMessage3.Text;
 
       Settings._bsexpire := spBSExpire.Value;
       Settings._spotexpire := spSpotExpire.Value;
@@ -902,6 +900,9 @@ begin
       end;
 
       RenewCWStrBankDisp;
+
+      editCQMessage2.Text := Settings.CW.AdditionalCQMessages[2];
+      editCQMessage3.Text := Settings.CW.AdditionalCQMessages[3];
 
       CQRepEdit.Text := FloatToStrF(Settings.CW._cqrepeat, ffFixed, 3, 1);
       SendFreqEdit.Text := FloatToStrF(Settings._sendfreq, ffFixed, 3, 1);
@@ -1274,8 +1275,6 @@ begin
    FEditMessage[10] := editMessage10;
    FEditMessage[11] := editMessage11;
    FEditMessage[12] := editMessage12;
-   FEditMessage[13] := editMessage13;
-   FEditMessage[14] := editMessage14;
 
    // Voice Memory
    FVoiceEdit[1] := vEdit1;
@@ -1290,8 +1289,6 @@ begin
    FVoiceEdit[10] := vEdit10;
    FVoiceEdit[11] := vEdit11;
    FVoiceEdit[12] := vEdit12;
-   FVoiceEdit[13] := vEdit13;
-   FVoiceEdit[14] := vEdit14;
    FVoiceButton[1] := vButton1;
    FVoiceButton[2] := vButton2;
    FVoiceButton[3] := vButton3;
@@ -1304,8 +1301,6 @@ begin
    FVoiceButton[10] := vButton10;
    FVoiceButton[11] := vButton11;
    FVoiceButton[12] := vButton12;
-   FVoiceButton[13] := vButton13;
-   FVoiceButton[14] := vButton14;
 
    TempCurrentBank := 1;
 

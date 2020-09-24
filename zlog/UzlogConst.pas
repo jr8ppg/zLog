@@ -45,7 +45,7 @@ const
 
 const
   maxbank = 3; // bank 3 reserved for rtty
-  maxmessage = 14; // f11 and f12 only accessible via zlog.ini
+  maxmessage = 12; // f11 and f12 only accessible via zlog.ini
 
 const
   ZLinkHeader = '#ZLOG#';

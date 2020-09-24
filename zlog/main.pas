@@ -5424,8 +5424,8 @@ begin
    S := dmZlogGlobal.CWMessage(1, 1);
    S := SetStr(UpperCase(S), CurrentQSO);
    dmZLogKeyer.SendStrLoop(S);
-   dmZLogKeyer.RandCQStr[1] := SetStr(dmZlogGlobal.Settings.CW.CWStrBank[1, 13], CurrentQSO);
-   dmZLogKeyer.RandCQStr[2] := SetStr(dmZlogGlobal.Settings.CW.CWStrBank[1, 14], CurrentQSO);
+   dmZLogKeyer.RandCQStr[1] := SetStr(dmZlogGlobal.Settings.CW.AdditionalCQMessages[2], CurrentQSO);
+   dmZLogKeyer.RandCQStr[2] := SetStr(dmZlogGlobal.Settings.CW.AdditionalCQMessages[3], CurrentQSO);
    SetCQ(True);
 end;
 

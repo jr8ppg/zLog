@@ -29,6 +29,8 @@ type
     _keying_signal_reverse: Boolean;
 
     CWStrImported: array[1..maxbank, 1..maxmessage] of Boolean;
+
+    AdditionalCQMessages: array[2..3] of string;
   end;
 
   TCommParam = record
@@ -617,6 +619,10 @@ begin
          Settings.CW.CWStrBank[1, i] := ini.ReadString('CW', 'F' + IntToStr(i), '');
       end;
 
+      // Additional CQ Messages
+      Settings.CW.AdditionalCQMessages[2] := ini.ReadString('CW', 'CQ2', '');
+      Settings.CW.AdditionalCQMessages[3] := ini.ReadString('CW', 'CQ3', '');
+
       Settings.CW.CWStrBank[3, 1] := ini.ReadString('RTTY', 'F1', 'CQ CQ CQ TEST $M $M $M TEST K');
       Settings.CW.CWStrBank[3, 2] := ini.ReadString('RTTY', 'F2', '$C DE $M 599$X 599$X BK');
       Settings.CW.CWStrBank[3, 3] := ini.ReadString('RTTY', 'F3', 'TU DE $M TEST');
@@ -1079,6 +1085,10 @@ begin
          ini.WriteString('RTTY', 'F' + IntToStr(i), Settings.CW.CWStrBank[3, i]);
       end;
 
+      // Additional CQ Messages
+      ini.WriteString('CW', 'CQ2', Settings.CW.AdditionalCQMessages[2]);
+      ini.WriteString('CW', 'CQ3', Settings.CW.AdditionalCQMessages[3]);
+
       // Switch TAB/; with CW bank
       ini.WriteBool('CW', 'CQSP', Settings._switchcqsp);
 
@@ -1426,8 +1436,8 @@ begin
    SendFreq := Settings._sendfreq;
    SetTonePitch(Settings.CW._tonepitch);
 
-   dmZlogKeyer.RandCQStr[1] := SetStr(Settings.CW.CWStrBank[1, 13], CurrentQSO);
-   dmZlogKeyer.RandCQStr[2] := SetStr(Settings.CW.CWStrBank[1, 14], CurrentQSO);
+   dmZlogKeyer.RandCQStr[1] := SetStr(Settings.CW.AdditionalCQMessages[2], CurrentQSO);
+   dmZlogKeyer.RandCQStr[2] := SetStr(Settings.CW.AdditionalCQMessages[3], CurrentQSO);
 
    dmZlogKeyer.SpaceFactor := Settings.CW._spacefactor;
    dmZlogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
@@ -1759,11 +1769,11 @@ begin
       end;
 
       102: begin
-         S := Settings.CW.CWStrBank[bank, 13];
+         S := Settings.CW.AdditionalCQMessages[2];
       end;
 
       103: begin
-         S := Settings.CW.CWStrBank[bank, 14];
+         S := Settings.CW.AdditionalCQMessages[3];
       end;
 
       else begin
