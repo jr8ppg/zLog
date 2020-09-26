@@ -5927,6 +5927,10 @@ begin
    try
       f.EditMode := 1;
       f.EditNumber := TMenuItem(Sender).Tag;
+      case CurrentQSO.Mode of
+         mCW, mOther:   f.EditBank := dmZLogGlobal.Settings.CW.CurrentBank;
+         mRTTY: f.EditBank := 3;
+      end;
 
       if f.ShowModal() <> mrOK then begin
          Exit;

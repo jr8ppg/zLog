@@ -457,6 +457,7 @@ type
     property EditMode: Integer read FEditMode write FEditMode;
     property EditNumber: Integer read FEditNumber write SetEditNumber;
     property NeedSuperCheckLoad: Boolean read FNeedSuperCheckLoad;
+    property EditBank: Integer read TempCurrentBank write TempCurrentBank;
   end;
 
 const
@@ -889,7 +890,6 @@ begin
          end;
       end;
 
-      TempCurrentBank := Settings.CW.CurrentBank;
       case TempCurrentBank of
          1:
             rbBankA.Checked := True;
@@ -1158,7 +1158,7 @@ begin
       tabsheetQuickMemo.TabVisible := False;
 
       if FEditNumber > 0 then begin
-         FVoiceEdit[FEditNumber].SetFocus();
+         FVoiceButton[FEditNumber].SetFocus();
       end;
    end;
 
@@ -1652,10 +1652,10 @@ begin
       FEditNumber := 1;
    end;
    if (no = 102) then begin
-      FEditNumber := 13;
+      FEditNumber := 1;
    end;
    if (no = 103) then begin
-      FEditNumber := 14;
+      FEditNumber := 1;
    end;
 end;
 
