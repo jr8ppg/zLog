@@ -5928,7 +5928,14 @@ begin
       f.EditMode := 1;
       f.EditNumber := TMenuItem(Sender).Tag;
       case CurrentQSO.Mode of
-         mCW, mOther:   f.EditBank := dmZLogGlobal.Settings.CW.CurrentBank;
+         mCW, mOther: begin
+            if TMenuItem(Sender).Tag >= 101 then begin
+               f.EditBank := 1;
+            end
+            else begin
+               f.EditBank := dmZLogGlobal.Settings.CW.CurrentBank;
+            end;
+         end;
          mRTTY: f.EditBank := 3;
       end;
 
@@ -7534,11 +7541,12 @@ procedure TMainForm.PlayMessageCW(bank: Integer; no: Integer);
 var
    S: string;
 begin
-   S := dmZlogGlobal.CWMessage(bank, no);
    if no >= 101 then begin
       SetCQ(True);
+      bank := 1;
    end;
 
+   S := dmZlogGlobal.CWMessage(bank, no);
    if S = '' then begin
       Exit;
    end;
