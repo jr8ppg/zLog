@@ -14,8 +14,10 @@ object EditDialog: TEditDialog
   OldCreateOrder = True
   Position = poOwnerFormCenter
   Scaled = False
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnDeactivate = FormDeactivate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -310,6 +312,7 @@ object EditDialog: TEditDialog
     Top = 40
   end
   object ActionList1: TActionList
+    State = asSuspended
     Left = 488
     Top = 40
     object actionPlayMessageA01: TAction
@@ -493,13 +496,50 @@ object EditDialog: TEditDialog
       ShortCut = 8278
       OnExecute = actionToggleVFOExecute
     end
-    object actionSetPseQSL: TAction
+    object actionQuickMemo1: TAction
+      Tag = 1
       Caption = 'PSE QSL'
-      OnExecute = actionSetPseQSLExecute
+      OnExecute = actionQuickMemo1Execute
     end
-    object actionSetNoQSL: TAction
+    object actionQuickMemo2: TAction
+      Tag = 2
       Caption = 'NO QSL'
-      OnExecute = actionSetNoQSLExecute
+      OnExecute = actionQuickMemo2Execute
+    end
+    object actionQuickMemo3: TAction
+      Tag = 3
+      Caption = 'actionQuickMemo3'
+      OnExecute = actionQuickMemo3Execute
+    end
+    object actionQuickMemo4: TAction
+      Tag = 4
+      Caption = 'actionQuickMemo4'
+      OnExecute = actionQuickMemo3Execute
+    end
+    object actionQuickMemo5: TAction
+      Tag = 5
+      Caption = 'actionQuickMemo5'
+      OnExecute = actionQuickMemo3Execute
+    end
+    object actionPlayMessageA09: TAction
+      Tag = 9
+      Caption = 'actionPlayMessageA09'
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA10: TAction
+      Tag = 10
+      Caption = 'actionPlayMessageA10'
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayCQA2: TAction
+      Tag = 102
+      Caption = 'actionPlayCQA2'
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayCQA3: TAction
+      Tag = 103
+      Caption = 'actionPlayCQA3'
+      OnExecute = actionPlayMessageAExecute
     end
   end
 end

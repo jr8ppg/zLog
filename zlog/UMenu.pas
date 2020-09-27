@@ -4,7 +4,8 @@ interface
 
 uses
    SysUtils, Windows, Messages, Classes, Graphics, Controls, StdCtrls, ExtCtrls,
-   Forms, UITypes, Dialogs, Buttons, UzLogConst, UzLogGlobal;
+   Forms, UITypes, Dialogs, Buttons, UzLogConst, UzLogGlobal,
+   USelectUserDefinedContest, UserDefinedContest;
 
 type
    TMenuForm = class(TForm)
@@ -21,7 +22,6 @@ type
       ModeGroup: TRadioGroup;
       editCallsign: TEdit;
       Label1: TLabel;
-      OpenDialog: TOpenDialog;
       rbCQWW: TRadioButton;
       rbJIDXJA: TRadioButton;
       rbCQWPX: TRadioButton;
@@ -46,6 +46,7 @@ type
       rbARRL10: TRadioButton;
       rbKCJ: TRadioButton;
       rbWAE: TRadioButton;
+    OldSelectButton: TSpeedButton;
       procedure FormCreate(Sender: TObject);
       procedure FormShow(Sender: TObject);
       procedure rbCQWWClick(Sender: TObject);
@@ -71,10 +72,16 @@ type
       procedure FormKeyPress(Sender: TObject; var Key: Char);
       procedure rbKCJClick(Sender: TObject);
       procedure rbWAEClick(Sender: TObject);
+      procedure OKButtonClick(Sender: TObject);
+      procedure FormDestroy(Sender: TObject);
+    procedure OldSelectButtonClick(Sender: TObject);
    private
       FSelectContest: array[0..20] of TRadioButton;
       FBandTemp: Integer; // temporary storage for bandgroup.itemindex
       FCFGFileName: string;
+      FSelectDlg: TSelectUserDefinedContest;
+      FModernStyle: Boolean;
+
       procedure EnableEveryThing;
 
       function GetOpGroupIndex(): Integer;
@@ -129,6 +136,14 @@ begin
    FSelectContest[18] := rbAllAsian;
    FSelectContest[19] := rbIOTA;
    FSelectContest[20] := rbWAE;
+
+   FSelectDlg := TSelectUserDefinedContest.Create(Self);
+   FModernStyle := True;
+end;
+
+procedure TMenuForm.FormDestroy(Sender: TObject);
+begin
+   FSelectDlg.Release();
 end;
 
 procedure TMenuForm.FormShow(Sender: TObject);
@@ -160,6 +175,7 @@ begin
 
    if rbGeneral.Checked then begin
       SelectButton.Enabled := True;
+      OldSelectButton.Enabled := True;
    end;
 
    OpGroup.OnClick(Self); // enables or disables TXNrEdit
@@ -184,20 +200,68 @@ end;
 
 procedure TMenuForm.SelectButtonClick(Sender: TObject);
 begin
-   CFGOpenDialog.InitialDir := dmZlogGlobal.Settings._cfgdatpath;
-   if CFGOpenDialog.Execute then begin
-      FCFGFileName := CFGOpenDialog.FileName;
+   FSelectDlg.CfgFolder := dmZlogGlobal.Settings._cfgdatpath;
 
-      rbGeneral.Caption := GetContestName(CFGFileName);
-      if UsesCoeff(CFGFileName) then begin
-         ScoreCoeffEdit.Enabled := True;
-      end
-      else begin
-         ScoreCoeffEdit.Enabled := False;
+   FSelectDlg.InitialContestName := rbGeneral.Caption;
+
+   if FSelectDlg.ShowModal() = mrCancel then begin
+      Exit;
+   end;
+
+   dmZlogGlobal.Settings._cfgdatpath := FSelectDlg.CfgFolder;
+
+   FCFGFileName := FSelectDlg.SelectedContest.Fullpath;
+   rbGeneral.Caption := FSelectDlg.SelectedContest.ContestName;
+   ScoreCoeffEdit.Enabled := FSelectDlg.SelectedContest.Coeff;
+
+   FModernStyle := True;
+   OKButton.Enabled := True;
+end;
+
+procedure TMenuForm.OldSelectButtonClick(Sender: TObject);
+var
+   D: TUserDefinedContest;
+begin
+   CFGOpenDialog.InitialDir := dmZlogGlobal.Settings._cfgdatpath;
+   if CFGOpenDialog.Execute = False then begin
+      Exit;
+   end;
+
+   FCFGFileName := CFGOpenDialog.FileName;
+
+   D := TUserDefinedContest.Parse(FCFGFileName);
+   rbGeneral.Caption := D.ContestName;
+   ScoreCoeffEdit.Enabled := D.Coeff;
+   D.Free();
+
+   FModernStyle := False;
+   OKButton.Enabled := True;
+end;
+
+procedure TMenuForm.OKButtonClick(Sender: TObject);
+var
+   i: Integer;
+begin
+   dmZLogGlobal.ClearParamImportedFlag();
+
+   if (rbGeneral.Checked = True) and (FModernStyle = True) then begin
+      // prov,cityéÊçû
+      if FSelectDlg.ImportProvCity = True then begin
+         dmZLogGlobal.Settings._prov := FSelectDlg.SelectedContest.Prov;
+         dmZLogGlobal.Settings._city := FSelectDlg.SelectedContest.City;
+         dmZLogGlobal.Settings.ProvCityImported := True;
       end;
 
-      OKButton.Enabled := True;
+      // f1Å`f4éÊçû
+      for i := 1 to 4 do begin
+         if FSelectDlg.ImportCwMessage[i] = True then begin
+            dmZLogGlobal.Settings.CW.CWStrBank[1, i] := FSelectDlg.SelectedContest.CwMessageA[i];
+            dmZLogGlobal.Settings.CW.CWStrImported[1, i] := True;
+         end;
+      end;
    end;
+
+   ModalResult := mrOK;
 end;
 
 procedure TMenuForm.EnableEveryThing;
@@ -219,6 +283,7 @@ begin
    TXNrEdit.Enabled := True;
    OpGroup.OnClick(Self);
    SelectButton.Enabled := False;
+   OldSelectButton.Enabled := False;
    ScoreCoeffEdit.Enabled := False;
    OKButton.Enabled := True;
 end;
@@ -372,6 +437,7 @@ begin
    end;
 
    SelectButton.Enabled := True;
+   OldSelectButton.Enabled := True;
 end;
 
 procedure TMenuForm.rbIARUClick(Sender: TObject);

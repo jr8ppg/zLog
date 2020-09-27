@@ -64,6 +64,7 @@ type
   private
     FSuperList: TSuperList;
     FPSuperListTwoLetterMatrix: PTSuperListTwoLetterMatrix;
+    procedure LoadSpcFiles(strStartFoler: string);
     procedure LoadSpcFile(strStartFoler: string; strFileName: string);
     procedure LoadLogFiles(strStartFoler: string);
     procedure ListToTwoMatrix(L: TQSOList);
@@ -291,7 +292,7 @@ begin
       case dmZlogGlobal.Settings.FSuperCheck.FSuperCheckMethod of
          // SPC
          0: begin
-            LoadSpcFile(strFolder, 'ZLOG.SPC');
+            LoadSpcFiles(strFolder);
             LoadSpcFile(strFolder, 'MASTER.SCP');
          end;
 
@@ -302,7 +303,7 @@ begin
 
          // Both
          else begin
-            LoadSpcFile(strFolder, 'ZLOG.SPC');
+            LoadSpcFiles(strFolder);
             LoadSpcFile(strFolder, 'MASTER.SCP');
             LoadLogFiles(strFolder);
          end;
@@ -321,6 +322,54 @@ begin
       OutputDebugString(PChar('--- END TSuperCheckDataLoadThread --- time=' + IntToStr(GetTickCount() - dwTick) + 'ms'));
       {$ENDIF}
       PostMessage(MainForm.Handle, WM_ZLOG_SPCDATALOADED, 0, 0);
+   end;
+end;
+
+procedure TSuperCheckDataLoadThread.LoadSpcFiles(strStartFoler: string);
+var
+   ret: Integer;
+   F: TSearchRec;
+   S: string;
+   slFiles: TStringList;
+   i: Integer;
+begin
+   slFiles := TStringList.Create();
+   try
+      if strStartFoler = '' then begin
+         Exit;
+      end;
+
+      S := IncludeTrailingPathDelimiter(strStartFoler);
+
+      // *.SPCのファイルリスト作成
+      ret := FindFirst(S + '*.SPC', faAnyFile, F);
+      while ret = 0 do begin
+         if Terminated = True then begin
+            Break;
+         end;
+
+         if ((F.Attr and faDirectory) = 0) and
+            ((F.Attr and faVolumeID) = 0) and
+            ((F.Attr and faSysFile) = 0) then begin
+            slFiles.Add(F.Name);
+         end;
+
+         // 次のファイル
+         ret := FindNext(F);
+      end;
+
+      FindClose(F);
+
+      // ソートして
+      slFiles.Sort();
+
+      // 各ファイルの内容をロードする
+      for i := 0 to slFiles.Count - 1 do begin
+         LoadSpcFile(strStartFoler, slFiles[i]);
+      end;
+
+   finally
+      slFiles.Free();
    end;
 end;
 
@@ -411,7 +460,7 @@ begin
             L.Clear();
 
             // listにロードする
-            L.MergeFile(S + F.Name);
+            L.MergeFile(S + F.Name, False);
 
             {$IFDEF DEBUG}
             OutputDebugString(PChar(F.Name + ' L=' + IntToStr(L.Count)));

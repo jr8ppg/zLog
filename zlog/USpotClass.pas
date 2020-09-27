@@ -5,9 +5,11 @@ interface
 uses
   SysUtils, Windows, Classes,
   Generics.Collections, Generics.Defaults,
-  UzLogConst, UzLogGlobal, UzLogQSO;
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogSpc;
 
 type
+  TSpotSource = ( ssSelf = 0, ssCluster, ssSelfFromZServer, ssClusterFromZServer );
+
   TBaseSpot = class
     Time : TDateTime; // moved from TBSdata 2.6e
     Call : string;
@@ -20,8 +22,10 @@ type
     Worked : boolean;
     Band : TBand;
     Mode : TMode;
-    ClusterData : boolean; // true if data from PacketCluster
+    SpotSource: TSpotSource;
+    SpotGroup: Integer;
     CQ: Boolean;
+    NewJaMulti: Boolean;
     constructor Create; virtual;
     function FreqKHzStr : string;
     function NewMulti : boolean; // newcty or newzone
@@ -60,10 +64,12 @@ type
     constructor Create(OwnsObjects: Boolean = True);
   end;
 
-var
-  BSList2: TBSList;
+  procedure SpotCheckWorked(Sp: TBaseSpot);
 
 implementation
+
+uses
+  Main;
 
 constructor TBaseSpot.Create;
 begin
@@ -78,8 +84,10 @@ begin
    Worked := False;
    Band := b19;
    Mode := mCW;
-   ClusterData := False;
+   SpotSource := ssSelf;
+   SpotGroup := 1;
    CQ := False;
+   NewJaMulti := False;
 end;
 
 constructor TSpot.Create;
@@ -295,7 +303,7 @@ end;
 
 Function TBaseSpot.NewMulti : boolean;
 begin
-   Result := NewCty or NewZone;
+   Result := NewCty or NewZone or NewJaMulti;
 end;
 
 function TBSData.InText : string;
@@ -323,6 +331,7 @@ begin
       SL.Add(IntToStr(Ord(Mode)));
       SL.Add(FloatToStr(Time));
       SL.Add(ZBoolToStr(CQ));
+      SL.Add(Number);
       Result := SL.DelimitedText;
    finally
       SL.Free();
@@ -337,13 +346,14 @@ begin
    SL.Delimiter := '%';
    SL.StrictDelimiter := True;
    try
-      SL.DelimitedText := S + '%%%%%%';
+      SL.DelimitedText := S + '%%%%%%%';
       Call := SL[0];
       FreqHz := StrToIntDef(SL[1], 0);
       Band := TBand(StrToIntDef(SL[2], Integer(b19)));
       Mode := TMode(StrToIntDef(SL[3], Integer(mCW)));
       Time := StrToFloatDef(SL[4], 0);
       CQ := ZStrToBool(SL[5]);
+      Number := SL[6];
    finally
       SL.Free();
    end;
@@ -359,10 +369,36 @@ begin
    Inherited Create(OwnsObjects);
 end;
 
-initialization
-   BSList2 := TBSList.Create;
+procedure SpotCheckWorked(Sp: TBaseSpot);
+var
+   multi: string;
+   SD, SD2: TSuperData;
+begin
+   // 交信済みか確認する
+   Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
 
-finalization
-   BSList2.Free();
+   // NR未入力の場合
+   if Sp.Number = '' then begin
+      // 他のバンドで交信済みならマルチを取得
+      if Log.IsOtherBandWorked(Sp.Call, Sp.Band, multi) = True then begin
+         Sp.Number := multi;
+      end
+      else begin
+         // 他のバンドで未交信ならSPCデータよりマルチを取得
+         SD := TSuperData.Create();
+         Sd.Callsign := Sp.Call;
+         SD2 := MainForm.SuperCheckList.ObjectOf(SD);
+         if SD2 <> nil then begin
+            Sp.Number := SD2.Number;
+         end;
+         SD.Free();
+      end;
+   end;
+
+   // そのマルチはSp.BandでNEW MULTIか
+   if Sp.Number <> '' then begin
+      Sp.NewJaMulti := Log.IsNewMulti(Sp.Band, Sp.Number);
+   end;
+end;
 
 end.

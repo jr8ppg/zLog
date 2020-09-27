@@ -164,9 +164,11 @@ type
     constructor Create(OwnsObjects: Boolean = True);
     destructor Destroy(); override;
     function IndexOf(C: string): Integer; overload;
-    function MergeFile(filename: string): Integer;
+    function IndexOf(Q: TQSO): Integer; overload;
+    function MergeFile(filename: string; fFullMatch: Boolean): Integer;
     procedure Sort(SortMethod: TSortMethod; fWithMode: Boolean = False); overload;
     function DupeCheck(aQSO: TQSO; fWithMode: Boolean): TQSO;
+    procedure SaveToFile(filename: string);
   end;
 
   TQSOListArray = array[b19..HiBand] of TQSOList;
@@ -180,7 +182,7 @@ type
     FAcceptDifferentMode : Boolean;
     FCountHigherPoints : Boolean;
     FDifferentModePointer : Integer; //points to a qso on a different mode but not dupe
-    FDupeCheckList: array[b19..HiBand] of TQSOList;
+    FDupeCheckList: TQSOListArray;
     FBandList: TQSOListArray;
     procedure Delete(i : Integer);
   public
@@ -199,10 +201,13 @@ type
 
     procedure DeleteQSO(aQSO: TQSO);
 
+    procedure Backup(Filename: string);
+
     procedure SaveToFile(Filename : string);
     procedure SaveToFilezLogDOSTXT(Filename : string);
     procedure SaveToFilezLogALL(Filename : string);
     procedure SaveToFileByTX(Filename : string);
+    procedure SaveToFileByCabrillo(Filename: string);
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
     procedure AddQue(aQSO : TQSO);
@@ -226,6 +231,8 @@ type
 //    function MergeFile(filename: string): Integer;
 
     function IsWorked(strCallsign: string; band: TBand): Boolean;
+    function IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
+    function IsNewMulti(band: TBand; multi: string): Boolean;
 
     property Saved: Boolean read FSaved write FSaved;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode write FAcceptDifferentMode;
@@ -827,7 +834,7 @@ function TQSOList.IndexOf(C: string): Integer;
 var
    i: Integer;
 begin
-   for i := 0 to Count - 1 do begin
+   for i := 1 to Count - 1 do begin
       if Items[i].CallSign = C then begin
          Result := i;
          Exit;
@@ -837,12 +844,27 @@ begin
    Result := -1;
 end;
 
-function TQSOList.MergeFile(filename: string): Integer;
+function TQSOList.IndexOf(Q: TQSO): Integer;
+var
+   i: Integer;
+begin
+   for i := 1 to Count - 1 do begin
+      if Items[i].SameQSO(Q) then begin
+         Result := i;
+         Exit;
+      end;
+   end;
+
+   Result := -1;
+end;
+
+function TQSOList.MergeFile(filename: string; fFullMatch: Boolean): Integer;
 var
    qso: TQSO;
    dat: TQSOData;
    f: file of TQSOData;
    i, merged: integer;
+   Index: Integer;
 begin
    merged := 0;
 
@@ -856,7 +878,14 @@ begin
       qso := TQSO.Create;
       qso.FileRecord := dat;
 
-      if IndexOf(qso.Callsign) = -1 then begin
+      if fFullMatch = True then begin
+         Index := IndexOf(qso);
+      end
+      else begin
+         Index := IndexOf(qso.Callsign);
+      end;
+
+      if Index = -1 then begin
          Add(qso);
          Inc(merged);
       end
@@ -865,7 +894,7 @@ begin
       end;
    end;
 
-   System.close(f);
+   CloseFile(f);
    Result := merged;
 end;
 
@@ -922,6 +951,21 @@ begin
    finally
       Q.Free();
    end;
+end;
+
+procedure TQSOList.SaveToFile(filename: string);
+var
+   i: Integer;
+   F: TextFile;
+begin
+   AssignFile(F, filename);
+   Rewrite(F);
+
+   for i := 0 to Count - 1 do begin
+      WriteLn(F, Items[i].Callsign);
+   end;
+
+   CloseFile(F);
 end;
 
 { TLog }
@@ -1232,19 +1276,39 @@ begin
    FSaved := False;
 end;
 
+procedure TLog.Backup(Filename: string);
+var
+   n: Integer;
+   backname: string;
+   backname2: string;
+const
+   backext: array[0..2] of string = ('.BAK', '.BK2', '.BK3' );
+begin
+
+   for n := High(backext) downto 0 do begin
+      backname := ChangeFileExt(Filename, backext[n]);
+      if FileExists(backname) = True then begin
+         System.SysUtils.DeleteFile(backname);
+      end;
+
+      if n >= 1 then begin
+         backname2 := ChangeFileExt(Filename, backext[n - 1]);
+         if FileExists(backname2) = True then begin
+            RenameFile(backname2, backname);
+         end;
+      end;
+   end;
+
+   // .ZLO ==> .BAK
+   RenameFile(Filename, backname);
+end;
+
 procedure TLog.SaveToFile(Filename: string);
 var
    D: TQSOData;
    f: file of TQSOData;
    i: Integer;
-   back: string;
 begin
-   back := ChangeFileExt(Filename, '.BAK');
-   if FileExists(back) then begin
-      System.SysUtils.DeleteFile(back);
-   end;
-   RenameFile(Filename, back);
-
    AssignFile(f, Filename);
    Rewrite(f);
 
@@ -1345,6 +1409,120 @@ begin
          CloseFile(f);
       end;
    end;
+end;
+
+// https://wwrof.org/cabrillo/
+// https://wwrof.org/cabrillo/cabrillo-qso-data/
+//                              --------info sent------- -------info rcvd--------
+//QSO:  freq mo date       time call          rst exch   call          rst exch   t
+//QSO: ***** ** yyyy-mm-dd nnnn ************* nnn ****** ************* nnn ****** n
+//QSO:  3799 PH 1999-03-06 0711 HC8N           59 700    W1AW           59 CT     0
+//QSO:  3799 PH 1999-03-06 0712 HC8N           59 700    N5KO           59 CA     0
+
+procedure TLog.SaveToFileByCabrillo(Filename: string);
+var
+   F: TextFile;
+   i: Integer;
+   strText: string;
+   Q: TQSO;
+   utc: TDateTime;
+   offhour: Integer;
+   offsetmin: Integer;
+const
+   FREQ: array[b19..b10g] of string = (
+   ' 1800', ' 3500', ' 7000', '10000', '14000', '18000', '21000', '24500',
+   '28000', '   50', '  144', '  432', ' 1.2G', ' 2.3G', ' 5.7G', '  10G'
+   );
+
+begin
+   AssignFile(F, Filename);
+   ReWrite(F);
+
+   WriteLn(F, 'START-OF-LOG:3.0');
+   WriteLn(F, 'CALLSIGN:' + dmZLogGlobal.MyCall);
+   WriteLn(F, 'CONTEST:');
+   WriteLn(F, 'CATEGORY-ASSISTED:');
+   WriteLn(F, 'CATEGORY-BAND:');
+   WriteLn(F, 'CATEGORY-MODE:');
+   WriteLn(F, 'CATEGORY-OPERATOR:');
+   WriteLn(F, 'CATEGORY-POWER:');
+   WriteLn(F, 'CATEGORY-STATION:');
+   WriteLn(F, 'CATEGORY-TIME:');
+   WriteLn(F, 'CATEGORY-TRANSMITTER:');
+   WriteLn(F, 'CATEGORY-OVERLAY:');
+   WriteLn(F, 'CERTIFICATE:');
+   WriteLn(F, 'CLAIMED-SCORE:');
+   WriteLn(F, 'CLUB:');
+   WriteLn(F, 'CREATED-BY:');
+   WriteLn(F, 'EMAIL:');
+   WriteLn(F, 'GRID-LOCATOR:');
+   WriteLn(F, 'LOCATION:');
+   WriteLn(F, 'NAME:');
+   WriteLn(F, 'ADDRESS:');
+   WriteLn(F, 'ADDRESS-CITY:');
+   WriteLn(F, 'ADDRESS-STATE-PROVINCE:');
+   WriteLn(F, 'ADDRESS-POSTALCODE:');
+   WriteLn(F, 'ADDRESS-COUNTRY:');
+   WriteLn(F, 'OPERATORS:');
+   WriteLn(F, 'OFFTIME:');
+   WriteLn(F, 'SOAPBOX:');
+
+   offsetmin := FQsoList[0].RSTsent;
+   if offsetmin = _USEUTC then begin
+      offhour := 0;
+   end
+   else begin
+      offhour := offsetmin div 60;
+   end;
+
+   for i := 1 to FQSOList.Count - 1 do begin
+      Q := FQSOList[i];
+
+      if Q.Points = 0 then begin
+         strText := 'X-QSO: ';
+      end
+      else begin
+         strText := 'QSO: ';
+      end;
+
+      strText := strText + FREQ[Q.Band] + ' ';
+
+      if Q.Mode = mCW then begin
+         strText := strText + 'CW ';
+      end
+      else if Q.Mode = mSSB then begin
+         strText := strText + 'PH ';
+      end
+      else if Q.Mode = mFM then begin
+         strText := strText + 'FM ';
+      end
+      else if Q.Mode = mRTTY then begin
+         strText := strText + 'RY ';
+      end
+      else begin
+         strText := strText + '   ';
+      end;
+
+      utc := IncHour(Q.Time, offhour);
+      strText := strText + FormatDateTime('yyyy-mm-dd', utc) + ' ';
+      strText := strText + FormatDateTime('hhmm', utc) + ' ';
+
+      strText := strText + FillRight(dmZLogGlobal.MyCall, 13) + ' ';
+      strText := strText + FillLeft(IntToStr(Q.RSTSent), 3) + ' ';
+      strText := strText + FillRight(Q.NrSent, 6) + ' ';
+
+      strText := strText + FillRight(Q.Callsign, 13) + ' ';
+      strText := strText + FillLeft(IntToStr(Q.RSTRcvd), 3) + ' ';
+      strText := strText + FillRight(Q.NrRcvd, 6) + ' ';
+
+      strText := strText + IntToStr(Q.TX);
+
+      WriteLn(F, strText);
+   end;
+
+   WriteLn(F, 'END-OF-LOG:');
+
+   CloseFile(F);
 end;
 
 procedure TLog.RebuildDupeCheckList;
@@ -1662,6 +1840,54 @@ begin
    finally
       Q.Free();
    end;
+end;
+
+function TLog.IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
+var
+   Q: TQSO;
+   R: TQSO;
+   b: TBand;
+begin
+   Q := TQSO.Create();
+   try
+      for b := Low(FDupeCheckList) to High(FDupeCheckList) do begin
+         if dmZLogGlobal.Settings._activebands[b] = False then begin
+            Continue;
+         end;
+
+         if b = exclude_band then begin
+            Continue;
+         end;
+
+         Q.Callsign := strCallsign;
+         Q.Band := b;
+
+         R := FDupeCheckList[b].DupeCheck(Q, False);
+         if R <> nil then begin
+            workdmulti := R.Multi1;
+            Result := True;
+            Exit;
+         end;
+      end;
+
+      Result := False;
+   finally
+      Q.Free();
+   end;
+end;
+
+function TLog.IsNewMulti(band: TBand; multi: string): Boolean;
+var
+   i: Integer;
+begin
+   for i := 1 to FBandList[band].Count - 1 do begin
+      if FBandList[band].Items[i].Multi1 = multi then begin
+         Result := False;
+         Exit;
+      end;
+   end;
+
+   Result := True;
 end;
 
 { TQSOCallsignComparer }

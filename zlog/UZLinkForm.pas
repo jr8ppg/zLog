@@ -416,12 +416,22 @@ begin
 
       if pos('SPOT ', temp) = 1 then begin
          temp := copy(temp, 6, 255);
-         MainForm.CommForm.PreProcessSpotFromZLink(temp);
+         MainForm.CommForm.PreProcessSpotFromZLink(temp, 1);
+      end;
+
+      if pos('SPOT2 ', temp) = 1 then begin
+         temp := copy(temp, 7, 255);
+         MainForm.CommForm.PreProcessSpotFromZLink(temp, 2);
+      end;
+
+      if pos('SPOT3 ', temp) = 1 then begin
+         temp := copy(temp, 7, 255);
+         MainForm.CommForm.PreProcessSpotFromZLink(temp, 3);
       end;
 
       if pos('BSDATA ', temp) = 1 then begin
          temp := copy(temp, 8, 255);
-         MainForm.BandScope2.ProcessBSDataFromNetwork(temp);
+         MainForm.BandScopeAddSelfSpotFromNetwork(temp);
       end;
 
       if pos('SENDSPOT ', temp) = 1 then begin

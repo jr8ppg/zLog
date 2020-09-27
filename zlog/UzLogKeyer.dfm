@@ -7,7 +7,20 @@ object dmZLogKeyer: TdmZLogKeyer
   object HidController: TJvHidDeviceController
     OnEnumerate = DoEnumeration
     OnDeviceChange = DoDeviceChanges
-    Left = 104
-    Top = 64
+    OnDeviceData = HidControllerDeviceData
+    OnDeviceUnplug = HidControllerDeviceUnplug
+    OnRemoval = HidControllerRemoval
+    Left = 24
+    Top = 16
+  end
+  object ZComKeying: TCommPortDriver
+    Tag = 3
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    Left = 91
+    Top = 16
   end
 end

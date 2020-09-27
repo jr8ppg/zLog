@@ -1,31 +1,35 @@
 object ZAnalyze: TZAnalyze
   Left = 0
   Top = 0
-  Caption = #12479#12452#12512#12481#12515#12540#12488
-  ClientHeight = 264
-  ClientWidth = 700
+  Caption = 'Analyze'
+  ClientHeight = 261
+  ClientWidth = 684
   Color = clBtnFace
+  Constraints.MinHeight = 100
+  Constraints.MinWidth = 100
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
-    Top = 236
-    Width = 700
+    Top = 233
+    Width = 684
     Height = 28
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
     DesignSize = (
-      700
+      684
       28)
     object buttonUpdate: TButton
       Left = 3
@@ -37,7 +41,7 @@ object ZAnalyze: TZAnalyze
       OnClick = buttonUpdateClick
     end
     object buttonCopy: TButton
-      Left = 632
+      Left = 616
       Top = 1
       Width = 65
       Height = 25
@@ -46,24 +50,44 @@ object ZAnalyze: TZAnalyze
       TabOrder = 1
       OnClick = buttonCopyClick
     end
+    object checkExcludeZeroPoint: TCheckBox
+      Left = 104
+      Top = 5
+      Width = 81
+      Height = 17
+      Caption = #24471#28857#65296#12434#38500#12367
+      TabOrder = 2
+      OnClick = buttonUpdateClick
+    end
+    object checkExcludeZeroHour: TCheckBox
+      Left = 204
+      Top = 5
+      Width = 117
+      Height = 17
+      Caption = #65296#23616#12398#26178#38291#24111#12434#38500#12367
+      TabOrder = 3
+      OnClick = buttonUpdateClick
+    end
   end
   object TabControl1: TTabControl
     Left = 0
     Top = 0
-    Width = 700
-    Height = 236
+    Width = 684
+    Height = 233
     Align = alClient
     TabOrder = 1
     Tabs.Strings = (
       'ZAF'
-      'ZAQ')
+      'ZAQ'
+      'ZAA'
+      'ZAA(ALL)')
     TabIndex = 0
     OnChange = TabControl1Change
     object Memo1: TMemo
       Left = 4
       Top = 24
-      Width = 692
-      Height = 208
+      Width = 676
+      Height = 205
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText

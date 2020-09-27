@@ -3,7 +3,7 @@ object MenuForm: TMenuForm
   Top = 64
   BorderStyle = bsDialog
   Caption = 'zLog Menu'
-  ClientHeight = 288
+  ClientHeight = 286
   ClientWidth = 484
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,16 +16,22 @@ object MenuForm: TMenuForm
   Position = poOwnerFormCenter
   Scaled = False
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnKeyPress = FormKeyPress
   OnShow = FormShow
+  DesignSize = (
+    484
+    286)
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 367
-    Top = 266
+    Top = 260
     Width = 36
     Height = 13
+    Anchors = [akRight, akBottom]
     Caption = 'Callsign'
+    ExplicitTop = 278
   end
   object Label2: TLabel
     Left = 272
@@ -43,49 +49,67 @@ object MenuForm: TMenuForm
   end
   object OKButton: TButton
     Left = 12
-    Top = 257
+    Top = 255
     Width = 75
     Height = 25
+    Anchors = [akLeft, akBottom]
     Caption = 'OK'
     Default = True
     ModalResult = 1
     TabOrder = 0
+    OnClick = OKButtonClick
+    ExplicitTop = 273
   end
   object CancelButton: TButton
     Left = 92
-    Top = 257
+    Top = 255
     Width = 75
     Height = 25
+    Anchors = [akLeft, akBottom]
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
+    ExplicitTop = 273
   end
   object Button3: TButton
     Left = 172
-    Top = 257
+    Top = 255
     Width = 75
     Height = 25
+    Anchors = [akLeft, akBottom]
     Caption = '&Help'
     TabOrder = 2
     Visible = False
+    ExplicitTop = 273
   end
   object ContestGroup: TGroupBox
     Left = 8
     Top = 8
     Width = 257
-    Height = 233
+    Height = 241
     Caption = 'Contest'
     TabOrder = 3
     object SelectButton: TSpeedButton
       Tag = 9999
-      Left = 184
+      Left = 183
       Top = 208
-      Width = 65
-      Height = 18
+      Width = 66
+      Height = 23
       Caption = 'Select...'
       Enabled = False
       OnClick = SelectButtonClick
+    end
+    object OldSelectButton: TSpeedButton
+      Tag = 9999
+      Left = 184
+      Top = 233
+      Width = 65
+      Height = 23
+      Caption = #26087'Select...'
+      Enabled = False
+      Visible = False
+      OnClick = OldSelectButtonClick
     end
     object rbALLJA: TRadioButton
       Left = 8
@@ -370,19 +394,23 @@ object MenuForm: TMenuForm
   end
   object editCallsign: TEdit
     Left = 408
-    Top = 263
+    Top = 257
     Width = 65
     Height = 18
+    Anchors = [akRight, akBottom]
     AutoSize = False
     TabOrder = 7
+    ExplicitTop = 275
   end
   object CheckBox1: TCheckBox
     Left = 274
-    Top = 264
+    Top = 258
     Width = 87
     Height = 17
+    Anchors = [akRight, akBottom]
     Caption = 'Post-contest'
     TabOrder = 8
+    ExplicitTop = 276
   end
   object TXNrEdit: TEdit
     Left = 344
@@ -405,17 +433,10 @@ object MenuForm: TMenuForm
     Text = '1'
     OnKeyPress = TXNrEditKeyPress
   end
-  object OpenDialog: TOpenDialog
-    DefaultExt = 'zlo'
-    Filter = 'zLog binary file|*.ZLO'
-    Left = 440
-    Top = 112
-  end
   object CFGOpenDialog: TOpenDialog
     DefaultExt = 'CFG'
     Filter = 'zLog CFG file|*.cfg'
     Title = 'Open a CFG file'
-    Left = 96
-    Top = 176
+    Left = 104
   end
 end

@@ -5,8 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, Console, ExtCtrls, Menus, AnsiStrings, ComCtrls,
-  Console2, USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO,
-  OverbyteIcsWndControl, OverbyteIcsTnCnx;
+  Console2, USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, HelperLib,
+  OverbyteIcsWndControl, OverbyteIcsTnCnx, Vcl.ExtDlgs;
 
 const
   SPOTMAX = 2000;
@@ -29,7 +29,8 @@ type
     cbNotifyCurrentBand: TCheckBox;
     ClusterComm: TCommPortDriver;
     PopupMenu: TPopupMenu;
-    Deleteselectedspots1: TMenuItem;
+    menuSaveToFile: TMenuItem;
+    SaveTextFileDialog1: TSaveTextFileDialog;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure Button1Click(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
@@ -58,9 +59,9 @@ type
       Len: Integer);
     procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer;
       var Height: Integer);
+    procedure menuSaveToFileClick(Sender: TObject);
   private
     { Private declarations }
-    SpotIndex : array[0..SPOTMAX] of integer;
     CommBuffer : TStringList;
     CommTemp : string; {command work string}
     CommStarted : boolean;
@@ -71,10 +72,9 @@ type
     { Public declarations }
     SpotList : TSpotList;
     procedure DeleteSpot(_from, _to : integer);
-    procedure AddListBox(S : string);
     procedure RenewListBox;
     procedure ProcessSpot(Sp : TSpot);
-    procedure PreProcessSpotFromZLink(S : string);
+    procedure PreProcessSpotFromZLink(S : string; N: Integer);
     procedure TransmitSpot(S : string); // local or via network
     procedure ImplementOptions;
     procedure CommProcess;
@@ -95,7 +95,7 @@ type
 implementation
 
 uses
-  Main, UOptions, UZLinkForm, URigControl, uBandScope2;
+  Main, UOptions, UZLinkForm, URigControl, UBandScope2, UzLogSpc;
 
 {$R *.DFM}
 
@@ -287,49 +287,18 @@ begin
    ImplementOptions;
 end;
 
-procedure TCommForm.AddListBox(S: string);
-var
-   _VisRows : integer;
-   _TopRow : integer;
-begin
-   ListBox.Items.Add(S);
-   SpotIndex[ListBox.Items.Count-1] := ListBox.Items.Count - 1;
-   _VisRows := ListBox.ClientHeight div ListBox.ItemHeight;
-   _TopRow := ListBox.Items.Count - _VisRows + 1;
-
-   if _TopRow > 0 then begin
-      ListBox.TopIndex := _TopRow;
-   end
-   else begin
-      ListBox.TopIndex := 0;
-   end;
-end;
-
 procedure TCommForm.RenewListBox;
 var
-   _VisRows : integer;
-   _TopRow : integer;
-   i : integer;
+   i: Integer;
 begin
-//   _TopRow := ListBox.TopIndex;
    ListBox.Clear;
    for i := 0 to SpotList.Count - 1 do begin
-      ListBox.Items.Add(SpotList[i].ClusterSummary);
-      SpotIndex[i] := i;
+      ListBox.AddItem(SpotList[i].ClusterSummary, SpotList[i]);
    end;
-
-   _VisRows := ListBox.ClientHeight div ListBox.ItemHeight;
-   _TopRow := ListBox.Items.Count - _VisRows + 1;
-
-   if _TopRow > 0 then begin
-      ListBox.TopIndex := _TopRow;
-   end
-   else begin
-      ListBox.TopIndex := 0;
-   end;
+   ListBox.ShowLast();
 end;
 
-procedure TCommForm.PreProcessSpotFromZLink(S : string);
+procedure TCommForm.PreProcessSpotFromZLink(S : string; N: Integer);
 var
    Sp : TSpot;
    B : TBand;
@@ -339,6 +308,11 @@ begin
       B := Sp.Band; // 1.9c modified to filter out unrelevant bands
       if MainForm.BandMenu.Items[ord(B)].Visible and
          MainForm.BandMenu.Items[ord(B)].Enabled then begin
+
+         // データ発生源はZ-Server
+         Sp.SpotSource := ssClusterFromZServer;
+         Sp.SpotGroup := N;
+
          ProcessSpot(Sp);
       end
       else begin
@@ -353,7 +327,6 @@ end;
 procedure TCommForm.ProcessSpot(Sp : TSpot);
 var
    i : integer;
-   D : TBSData;
    S : TSpot;
    dupe, _deleted : boolean;
    Expire : double;
@@ -363,21 +336,20 @@ begin
 
    Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
 
-   for i := 0 to SpotList.Count - 1 do begin
+   for i := SpotList.Count - 1 downto 0 do begin
       S := SpotList[i];
       if Now - S.Time > Expire then begin
-         SpotList[i] := nil;
-         _deleted := true;
+         SpotList.Delete(i);
+         _deleted := True;
       end;
 
       if (S.Call = Sp.Call) and (S.FreqHz = Sp.FreqHz) then begin
-         dupe := true;
+         dupe := True;
          break;
       end;
    end;
 
    if _deleted then begin
-      SpotList.Pack;
       RenewListBox;
    end;
 
@@ -389,11 +361,10 @@ begin
       exit;
    end;
 
-   // 現在のバンドと同じ場合、交信済みか確認する
-   if Sp.Band = CurrentQSO.Band then begin
-      Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
-   end;
+   // 交信済みチェック
+   SpotCheckWorked(Sp);
 
+   // Spotリストへ追加
    SpotList.Add(Sp);
 
    if cbNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
@@ -401,20 +372,12 @@ begin
    else begin
       MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
    end;
-   AddListBox(Sp.ClusterSummary);
 
-   D := TBSData.Create;
-   D.Call := Sp.Call;
-   D.FreqHz := Sp.FreqHz;
-   D.CtyIndex := Sp.CtyIndex;
-   D.Zone := Sp.Zone;
-   D.Band := Sp.Band;
-   D.NewCty := Sp.NewCty;
-   D.NewZone := Sp.NewZone;
-   D.Worked := Sp.Worked;
-   D.ClusterData := True;
-   D.CQ := Sp.CQ;
-   MainForm.BandScope2.AddAndDisplay(D);
+   ListBox.AddItem(Sp.ClusterSummary, Sp);
+   ListBox.ShowLast();
+
+   // BandScopeに登録
+   MainForm.BandScopeAddClusterSpot(Sp);
 end;
 
 procedure TCommForm.TransmitSpot(S : string); // local or via network
@@ -464,7 +427,11 @@ begin
 
             Sp := TSpot.Create;
             if Sp.Analyze(CommTemp) = True then begin
+               // データ発生源はCluster
+               Sp.SpotSource := ssCluster;
+
                ProcessSpot(Sp);
+
                if Relay.Checked then begin
                   MainForm.ZLinkForm.RelaySpot(CommTemp);
                end;
@@ -574,37 +541,27 @@ begin
 end;
 
 procedure TCommForm.ListBoxDblClick(Sender: TObject);
-var Sp : TSpot;
-    i : integer;
+var
+   Sp : TSpot;
 begin
+   if ListBox.ItemIndex = -1 then begin
+      Exit;
+   end;
+
    if ListBox.Items[ListBox.ItemIndex] = '' then begin
-      exit;
+      Exit;
    end;
 
-   i := SpotIndex[ListBox.ItemIndex];
-
-   if SpotList.Count = 0 then begin
-      exit;
+   Sp := TSpot(ListBox.Items.Objects[ListBox.ItemIndex]);
+   if Sp = nil then begin
+      Exit;
    end;
 
-   if (i < 0) or (i > SpotList.Count - 1) then begin
-      exit;
-   end;
+   // 相手局をセット
+   MainForm.SetYourCallsign(Sp.Call, Sp.Number);
 
-   Sp := SpotList[i];
-
-   if Sp.FreqHz > 0 then begin
-      if MainForm.RigControl.Rig <> nil then begin
-         MainForm.RigControl.Rig.SetFreq(Sp.FreqHz);
-      end;
-   end;
-
-   MainForm.UpdateBand(Sp.Band);
-   Main.CurrentQSO.CallSign := Sp.Call;
-   MainForm.CallsignEdit.Text := Sp.Call;
-   MainForm.NumberEdit.Text := '';
-
-   MainForm.LastFocus.SetFocus;
+   // 周波数をセット
+   MainForm.SetFrequency(Sp.FreqHz);
 end;
 
 procedure TCommForm.ListBoxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -633,6 +590,7 @@ var
    YOffSet: Integer;
    S : string;
    H: Integer;
+   SP: TSpot;
 begin
    with (Control as TListBox).Canvas do begin
       FillRect(Rect);								{ clear the rectangle }
@@ -641,35 +599,36 @@ begin
       H := Rect.Bottom - Rect.Top;
       YOffset := (H - Abs(TListBox(Control).Font.Height)) div 2;
 
-      S := (Control as TListBox).Items[Index];
-      if SpotList[Index].NewMulti then begin
+      S := TListBox(Control).Items[Index];
+      SP := TSpot(TListBox(Control).Items.Objects[Index]);
+      if SP.NewMulti then begin
          if odSelected in State then begin
             Font.Color := clFuchsia;
          end
          else begin
-         Font.Color := clRed;
+            Font.Color := clRed;
          end;
       end
       else begin
-         if SpotList[Index].Worked then begin
+         if SP.Worked then begin
             if odSelected in State then begin
                Font.Color := clWhite;
             end
             else begin
-            Font.Color := clBlack;
+               Font.Color := clBlack;
             end;
          end
          else begin
             if odSelected in State then begin
                Font.Color := clYellow;
-         end
-         else begin
-            Font.Color := clGreen;
+            end
+            else begin
+               Font.Color := clGreen;
             end;
          end;
       end;
 
-      TextOut(Rect.Left + XOffset, Rect.Top + YOffSet, S)								{ display the text }
+      TextOut(Rect.Left + XOffset, Rect.Top + YOffSet, S);
    end;
 end;
 
@@ -718,6 +677,25 @@ procedure TCommForm.SetFontSize(v: Integer);
 begin
    ListBox.Font.Size := v;
    Console.Font.Size := v;
+end;
+
+procedure TCommForm.menuSaveToFileClick(Sender: TObject);
+var
+   i: Integer;
+   F: TextFile;
+begin
+   if SaveTextFileDialog1.Execute() = False then begin
+      Exit;
+   end;
+
+   AssignFile(F, SaveTextFileDialog1.FileName);
+   Rewrite(F);
+
+   for i := 0 to ListBox.Items.Count - 1 do begin
+      WriteLn(F, ListBox.Items[i]);
+   end;
+
+   CloseFile(F);
 end;
 
 end.

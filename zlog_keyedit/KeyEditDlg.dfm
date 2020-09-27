@@ -80,7 +80,7 @@ object formKeyEditDlg: TformKeyEditDlg
     Top = 67
     Width = 385
     Height = 57
-    Caption = 'A'#65374'Z'#12461#12540
+    Caption = 'A'#65374'Z,0'#65374'9'#12461#12540
     TabOrder = 1
     object comboAlphabetKey: TComboBox
       Left = 16
@@ -120,7 +120,17 @@ object formKeyEditDlg: TformKeyEditDlg
         'X'
         'Y'
         'Z'
-        '.')
+        '.'
+        '0'
+        '1'
+        '2'
+        '3'
+        '4'
+        '5'
+        '6'
+        '7'
+        '8'
+        '9')
     end
     object checkAlphabetAndCtrl: TCheckBox
       Left = 96
@@ -169,7 +179,8 @@ object formKeyEditDlg: TformKeyEditDlg
         'PgUp'
         'PgDn'
         'TAB'
-        'Down')
+        'Down'
+        'Esc')
     end
   end
   object buttonOK: TButton

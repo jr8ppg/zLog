@@ -1,5 +1,7 @@
 program zLog;
 
+{$R *.dres}
+
 uses
   Forms,
   ActiveX,
@@ -91,11 +93,19 @@ uses
   UzLogKeyer in 'UzLogKeyer.pas' {dmZLogKeyer: TDataModule},
   DialogHook in 'DialogHook.pas',
   UZAnalyze in 'UZAnalyze.pas' {ZAnalyze},
-  UzLogConst in 'UzlogConst.pas',
+  UzLogConst in 'UzLogConst.pas',
   UzLogQSO in 'UzLogQSO.pas',
   USuperCheck in 'USuperCheck.pas' {SuperCheck},
   UzLogSpc in 'UzLogSpc.pas',
-  Progress in 'Progress.pas' {formProgress};
+  Progress in 'Progress.pas' {formProgress},
+  HelperLib in 'HelperLib.pas',
+  UCwMessageEditor in 'UCwMessageEditor.pas',
+  UCwMessagePad in 'UCwMessagePad.pas' {CwMessagePad},
+  UTextEditor in 'UTextEditor.pas' {TextEditor},
+  USelectUserDefinedContest in 'USelectUserDefinedContest.pas' {SelectUserDefinedContest},
+  UserDefinedContest in 'UserDefinedContest.pas',
+  UVoiceForm in 'UVoiceForm.pas' {VoiceForm},
+  UCFGEdit in 'UCFGEdit.pas' {CFGEdit};
 
 {$R *.RES}
 

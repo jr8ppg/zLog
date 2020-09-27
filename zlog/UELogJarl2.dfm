@@ -3,7 +3,7 @@ object formELogJarl2: TformELogJarl2
   Top = 10
   BorderStyle = bsDialog
   Caption = 'E-Log (JARL 2.0)'
-  ClientHeight = 612
+  ClientHeight = 671
   ClientWidth = 516
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,7 +16,7 @@ object formELogJarl2: TformELogJarl2
   OnCreate = FormCreate
   DesignSize = (
     516
-    612)
+    671)
   PixelsPerInch = 96
   TextHeight = 12
   object Label1: TLabel
@@ -25,6 +25,14 @@ object formELogJarl2: TformELogJarl2
     Width = 86
     Height = 12
     Caption = #12467#12531#12486#12473#12488#12398#21517#31216
+    Color = clBtnFace
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
   end
   object Label2: TLabel
     Left = 23
@@ -32,6 +40,12 @@ object formELogJarl2: TformELogJarl2
     Width = 78
     Height = 12
     Caption = #21442#21152#31278#30446#12467#12540#12489
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
   end
   object Label4: TLabel
     Left = 23
@@ -39,6 +53,12 @@ object formELogJarl2: TformELogJarl2
     Width = 66
     Height = 12
     Caption = #12467#12540#12523#12469#12452#12531
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
   end
   object Label5: TLabel
     Left = 23
@@ -50,9 +70,15 @@ object formELogJarl2: TformELogJarl2
   object Label6: TLabel
     Left = 23
     Top = 111
-    Width = 132
+    Width = 95
     Height = 12
-    Caption = #23616#31278#20418#25968'('#12501#12451#12540#12523#12489#12487#12540#65289
+    Caption = #23616#31278#20418#25968'(FD'#24517#38920')'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
   end
   object Label7: TLabel
     Left = 23
@@ -60,6 +86,12 @@ object formELogJarl2: TformELogJarl2
     Width = 120
     Height = 12
     Caption = #36899#32097#20808#20303#25152#12288#65288'5'#34892#12414#12391#65289
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
   end
   object Label8: TLabel
     Left = 23
@@ -74,6 +106,12 @@ object formELogJarl2: TformELogJarl2
     Width = 152
     Height = 12
     Caption = #23616#20813#35377#32773#12398#27663#21517'('#31038#22243#12398#21517#31216')'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
   end
   object Label10: TLabel
     Left = 23
@@ -85,9 +123,15 @@ object formELogJarl2: TformELogJarl2
   object Label13: TLabel
     Left = 23
     Top = 318
-    Width = 36
+    Width = 83
     Height = 12
-    Caption = #36939#29992#22320
+    Caption = #36939#29992#22320'(FD'#24517#38920')'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
   end
   object Label14: TLabel
     Left = 23
@@ -95,13 +139,25 @@ object formELogJarl2: TformELogJarl2
     Width = 207
     Height = 12
     Caption = #12467#12531#12486#12473#12488#20013#20351#29992#12375#12383#26368#22823#31354#20013#32218#38651#21147'(W)'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
   end
   object Label15: TLabel
-    Left = 280
+    Left = 250
     Top = 318
-    Width = 68
+    Width = 115
     Height = 12
-    Caption = #20351#29992#12375#12383#38651#28304
+    Caption = #20351#29992#12375#12383#38651#28304'(FD'#24517#38920')'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
   end
   object Label16: TLabel
     Left = 23
@@ -118,36 +174,61 @@ object formELogJarl2: TformELogJarl2
     Caption = #12510#12523#12481#12458#12506#12289#12466#12473#12488#12458#12506#12398#22580#21512#12398#36939#29992#32773#12398#12467#12540#12523#12469#12452#12531#65288#27663#21517#65289#12362#12424#12403#28961#32218#24467#20107#32773#12398#36039#26684' '
   end
   object Label18: TLabel
-    Left = 23
-    Top = 421
+    Left = 287
+    Top = 436
     Width = 79
     Height = 12
     Caption = #30331#37682#12463#12521#12502#30058#21495
   end
   object Label20: TLabel
     Left = 23
-    Top = 454
+    Top = 524
     Width = 36
     Height = 12
     Caption = #23459#35475#25991
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
   end
   object Label21: TLabel
     Left = 23
-    Top = 534
+    Top = 603
     Width = 24
     Height = 12
     Caption = #26085#20184
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
   end
   object Label23: TLabel
-    Left = 284
-    Top = 531
+    Left = 280
+    Top = 603
     Width = 24
     Height = 12
     Caption = #32626#21517
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label3: TLabel
+    Left = 23
+    Top = 416
+    Width = 187
+    Height = 12
+    Caption = #12510#12523#12481#12458#12506#31278#30446#36939#29992#32773#65288#19968#20154#19968#34892#12391#65289
   end
   object mOath: TMemo
     Left = 23
-    Top = 470
+    Top = 541
     Width = 465
     Height = 47
     Font.Charset = DEFAULT_CHARSET
@@ -162,7 +243,7 @@ object formELogJarl2: TformELogJarl2
       #12289#31169#12398#21517#35465#12395#12362#12356#12390#35475#12356#12414#12377#12290)
     ParentFont = False
     ScrollBars = ssVertical
-    TabOrder = 14
+    TabOrder = 15
   end
   object edContestName: TEdit
     Left = 115
@@ -305,8 +386,8 @@ object formELogJarl2: TformELogJarl2
     Text = #12467#12531#12486#12473#12488
   end
   object edClubID: TEdit
-    Left = 115
-    Top = 417
+    Left = 372
+    Top = 432
     Width = 121
     Height = 21
     Font.Charset = DEFAULT_CHARSET
@@ -315,7 +396,7 @@ object formELogJarl2: TformELogJarl2
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 13
+    TabOrder = 14
     Text = #12467#12531#12486#12473#12488
   end
   object edPowerSupply: TEdit
@@ -348,21 +429,7 @@ object formELogJarl2: TformELogJarl2
   end
   object edDate: TEdit
     Left = 107
-    Top = 528
-    Width = 121
-    Height = 21
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 15
-    Text = #12467#12531#12486#12473#12488
-  end
-  object edSignature: TEdit
-    Left = 368
-    Top = 528
+    Top = 599
     Width = 121
     Height = 21
     Font.Charset = DEFAULT_CHARSET
@@ -372,40 +439,51 @@ object formELogJarl2: TformELogJarl2
     Font.Style = []
     ParentFont = False
     TabOrder = 16
+    Text = #12467#12531#12486#12473#12488
+  end
+  object edSignature: TEdit
+    Left = 368
+    Top = 599
+    Width = 121
+    Height = 21
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 17
   end
   object buttonCreateLog: TButton
     Left = 208
-    Top = 581
+    Top = 640
     Width = 89
     Height = 23
     Anchors = [akLeft, akBottom]
     Caption = 'E-log'#20316#25104
-    TabOrder = 18
+    TabOrder = 19
     OnClick = buttonCreateLogClick
-    ExplicitTop = 571
   end
   object buttonSave: TButton
     Left = 104
-    Top = 581
+    Top = 640
     Width = 89
     Height = 23
     Anchors = [akLeft, akBottom]
     Caption = #20445#23384
-    TabOrder = 17
+    TabOrder = 18
     OnClick = buttonSaveClick
-    ExplicitTop = 571
   end
   object buttonCancel: TButton
     Left = 312
-    Top = 581
+    Top = 640
     Width = 89
     Height = 23
     Anchors = [akLeft, akBottom]
     Caption = #38281#12376#12427
     ModalResult = 2
-    TabOrder = 19
+    TabOrder = 20
     OnClick = buttonCancelClick
-    ExplicitTop = 571
   end
   object mAddress: TMemo
     Left = 23
@@ -422,12 +500,26 @@ object formELogJarl2: TformELogJarl2
     ScrollBars = ssVertical
     TabOrder = 5
   end
+  object memoMultiOpList: TMemo
+    Left = 23
+    Top = 432
+    Width = 213
+    Height = 86
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
+    ScrollBars = ssVertical
+    TabOrder = 13
+  end
   object SaveDialog1: TSaveDialog
     DefaultExt = 'em'
     Filter = 'JARL E-log files (*.em)|*.em|'#20840#12390#12398#12501#12449#12452#12523'|*.*'
     Options = [ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Title = 'Save E-Log file'
-    Left = 16
-    Top = 560
+    Left = 320
+    Top = 50
   end
 end

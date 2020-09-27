@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB;
+  StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids, System.Math,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB, Vcl.Buttons;
 
 type
   TIcomInfo = record
@@ -73,7 +73,7 @@ const
        (name: 'IC-371(IC-471)'; addr: $22; minband: b430; maxband: b430),
        (name: 'IC-375(IC-475)'; addr: $14; minband: b430; maxband: b430),
        (name: 'IC-9100';      addr: $7C; minband: b19; maxband: b1200),
-       (name: 'IC-9700';      addr: $A2; minband: b430; maxband: b1200),
+       (name: 'IC-9700';      addr: $A2; minband: b144; maxband: b1200),
        (name: 'IC-1271';      addr: $24; minband: b1200; maxband: b1200),
        (name: 'IC-1275';      addr: $18; minband: b1200; maxband: b1200)
      );
@@ -168,7 +168,7 @@ type
     property MaxBand: TBand read _maxband write _maxband;
     property CurrentBand: TBand read _currentband;
     property CurrentMode: TMode read _currentmode;
-    property PollingInterval: Integer read FPollingInterval write FPollingInterval;
+//    property PollingInterval: Integer read FPollingInterval write FPollingInterval;
   end;
 
   TTS690 = class(TRig) // TS-450 as well
@@ -198,11 +198,18 @@ type
     procedure Initialize(); override;
   end;
 
+  TTS570 = class(TTS690)
+    constructor Create(RigNum : integer); override;
+    procedure Initialize(); override;
+  end;
+
   TICOM = class(TRig) // Icom CI-V
   private
     FMyAddr: Byte;
     FRigAddr: Byte;
     FUseTransceiveMode: Boolean;
+    FGetBandAndMode: Boolean;
+    FPollingCount: Integer;
   public
     constructor Create(RigNum : integer); override;
     destructor Destroy; override;
@@ -218,6 +225,7 @@ type
     procedure ICOMWriteData(S : AnsiString);
     procedure PollingProcess; override;
     property UseTransceiveMode: Boolean read FUseTransceiveMode write FUseTransceiveMode;
+    property GetBandAndModeFlag: Boolean read FGetBandAndMode write FGetBandAndMode;
     property MyAddr: Byte read FMyAddr write FMyAddr;
     property RigAddr: Byte read FRigAddr write FRigAddr;
   end;
@@ -359,12 +367,18 @@ type
     PollingTimer1: TTimer;
     ZCom1: TCommPortDriver;
     ZCom2: TCommPortDriver;
-    ZCom3: TCommPortDriver;
     dispFreqA: TStaticText;
     dispFreqB: TStaticText;
     dispVFO: TStaticText;
     btnOmniRig: TButton;
     PollingTimer2: TTimer;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    dispLastFreq: TStaticText;
+    Label1: TLabel;
+    Label4: TLabel;
+    buttonJumpLastFreq: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -374,6 +388,7 @@ type
     procedure ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
     procedure btnOmniRigClick(Sender: TObject);
     procedure CreateParams(var Params: TCreateParams); override;
+    procedure buttonJumpLastFreqClick(Sender: TObject);
   private
     { Private declarations }
     FRigs: array[1..2] of TRig;
@@ -396,7 +411,6 @@ type
 
     _currentrig : integer; // 1 or 2
     _maxrig : integer; // default = 2.  may be larger with virtual rigs
-    procedure SetSerialCWKeying(PortNr : integer);
     function StatusSummaryFreq(kHz : integer): string; // returns current rig's band freq mode
     function StatusSummaryFreqHz(Hz : integer): string; // returns current rig's band freq mode
     function StatusSummary: string; // returns current rig's band freq mode
@@ -404,7 +418,6 @@ type
     procedure SetCurrentRig(N : integer);
     function GetCurrentRig : integer;
     function ToggleCurrentRig : integer;
-    procedure SetBandMask;
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
 
     property Rig: TRig read FCurrentRig;
@@ -431,14 +444,6 @@ begin
    S := IntToStr(Hz div 1000) + '.' + S;
 
    Result := S;
-end;
-
-procedure TRigControl.SetSerialCWKeying(PortNr: Integer);
-begin
-   ZCom3.Port := TPortNumber(PortNr);
-   ZCom3.Connect;
-   ZCom3.ToggleDTR(False);
-   ZCom3.ToggleRTS(False);
 end;
 
 function TRigControl.StatusSummaryFreq(kHz: Integer): string; // returns current rig's band freq mode
@@ -614,32 +619,6 @@ begin
       // if Rig._lastcallsign <> '' then
       MainForm.CallsignEdit.Text := FCurrentRig._lastcallsign;
    end;
-end;
-
-procedure TRigControl.SetBandMask;
-var
-   B: TBand;
-begin
-   B := b19;
-   case dmZlogGlobal.Settings._banddatamode of
-      1: begin
-         if FRigs[1] <> nil then begin
-            B := FRigs[1]._currentband;
-         end;
-      end;
-
-      2: begin
-         if FRigs[2] <> nil then begin
-            B := FRigs[2]._currentband;
-         end;
-      end;
-
-      3: begin
-         B := Main.CurrentQSO.Band;
-      end;
-   end;
-
-   dmZlogKeyer.BandMask := (dmZlogGlobal.Settings._BandData[B] * 16);
 end;
 
 function TRigControl.GetCurrentRig: Integer;
@@ -933,6 +912,7 @@ const
 var
    freq: AnsiString;
 begin
+   LastFreq := _currentfreq[_currentvfo];
    freq := RightStr(AnsiString(DupeString('0', 8)) + AnsiString(IntToStr(Hz)), 8);
    WriteData(cmd[_currentvfo] + freq + ';');
 end;
@@ -1286,6 +1266,12 @@ begin
             rig._maxband := b1200;
          end;
 
+         if rname = 'TS-570/590' then begin
+            rig := TTS570.Create(rignum);
+            rig._minband := b19;
+            rig._maxband := b50;
+         end;
+
          if rname = 'TS-2000' then begin
             rig := TTS2000.Create(rignum);
             rig._minband := b19;
@@ -1378,6 +1364,7 @@ begin
                rig := TICOM.Create(rignum);
             end;
             TICOM(rig).UseTransceiveMode := dmZLogGlobal.Settings._use_transceive_mode;
+            TICOM(rig).GetBandAndModeFlag := dmZLogGlobal.Settings._icom_polling_freq_and_mode;
 
             for i := 1 to MAXICOM do begin
                if rname = ICOMLIST[i].name then begin
@@ -1391,7 +1378,6 @@ begin
          end;
 
          rig.name := rname;
-         rig.PollingInterval := dmZLogGlobal.Settings._polling_interval;
 
          // Initialize & Start
          rig.Initialize();
@@ -1459,7 +1445,13 @@ begin
       FPollingTimer := MainForm.RigControl.PollingTimer2;
    end;
 
-   FPollingInterval := 200;   // milisec
+   // 9600bps以下は200msec, 19200bps以上は100msec
+   if dmZlogGlobal.Settings._rigspeed[RigNum] <= 4 then begin
+      FPollingInterval := Min(dmZLogGlobal.Settings._polling_interval, 150);   // milisec
+   end
+   else begin
+      FPollingInterval := Min(dmZLogGlobal.Settings._polling_interval, 75);    // milisec
+   end;
 
    FComm.Disconnect;
    FComm.Port := TPortNumber(prtnr);
@@ -1588,6 +1580,21 @@ begin
    FPollingTimer.Enabled := True;
 end;
 
+constructor TTS570.Create(RigNum: Integer);
+begin
+   Inherited;
+   TerminatorCode := ';';
+   FComm.StopBits := sb1BITS;
+end;
+
+procedure TTS570.Initialize();
+begin
+   Inherited;
+   WriteData('TC 1;');
+   WriteData('AI2;');
+   WriteData('IF;');
+end;
+
 constructor TJST145.Create(RigNum: Integer);
 begin
    inherited;
@@ -1606,6 +1613,7 @@ end;
 constructor TICOM.Create(RigNum: Integer);
 begin
    Inherited;
+   FPollingCount := 0;
    FUseTransceiveMode := True;
    FComm.StopBits := sb1BITS;
    TerminatorCode := AnsiChar($FD);
@@ -1788,7 +1796,23 @@ end;
 procedure TICOM.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
-   ICOMWriteData(AnsiChar($03));
+
+   if FGetBandAndMode = False then begin
+      ICOMWriteData(AnsiChar($03));
+   end
+   else begin
+      if (FPollingCount and 1) = 0 then begin
+         ICOMWriteData(AnsiChar($03));
+      end
+      else begin
+         ICOMWriteData(AnsiChar($04));
+      end;
+   end;
+
+   Inc(FPollingCount);
+   if FPollingCount < 0 then begin
+      FPollingCount := 1;
+   end;
 end;
 
 {
@@ -1922,32 +1946,39 @@ var
    Command: AnsiString;
    para: byte;
 begin
-   para := 3;
-   case Q.Mode of
-      mSSB:
-         if Q.Band <= b7 then
-            para := 0
-         else
-            para := 1;
-      mCW:
-         para := 3;
-      mFM:
-         para := 5;
-      mAM:
-         para := 2;
-      mRTTY:
-         para := 4;
+   if FPollingCount = 0 then begin
+      Exit;
    end;
+   FPollingTimer.Enabled := False;
+   try
+      para := 3;
+      case Q.Mode of
+         mSSB:
+            if Q.Band <= b7 then
+               para := 0
+            else
+               para := 1;
+         mCW:
+            para := 3;
+         mFM:
+            para := 5;
+         mAM:
+            para := 2;
+         mRTTY:
+            para := 4;
+      end;
 
-   Command := AnsiChar($06) + AnsiChar(para);
+      Command := AnsiChar($06) + AnsiChar(para);
 
-   if ModeWidth[Q.Mode] in [1 .. 3] then begin
-      Command := Command + AnsiChar(ModeWidth[Q.Mode]);
+      if ModeWidth[Q.Mode] in [1 .. 3] then begin
+         Command := Command + AnsiChar(ModeWidth[Q.Mode]);
+      end;
+
+      ICOMWriteData(Command);
+   finally
+      FPollingCount := 0;
+      FPollingTimer.Enabled := True;
    end;
-
-   ICOMWriteData(Command);
-
-   ICOMWriteData(AnsiChar($04)); // request mode data
 end;
 
 procedure TFT1000MP.SetMode(Q: TQSO);
@@ -1987,7 +2018,7 @@ begin
       Exit;
    end;
 
-   _currentband := Q.Band; // ver 2.0e
+//   _currentband := Q.Band; // ver 2.0e
 
    if FreqMem[Q.Band, Q.Mode] > 0 then begin
       f := FreqMem[Q.Band, Q.Mode];
@@ -2094,40 +2125,46 @@ var
    fstr: AnsiString;
    freq, i: LongInt;
 begin
-   LastFreq := _currentfreq[_currentvfo];
-   freq := Hz;
-
-   if freq < 0 then // > 2.1GHz is divided by 100 and given a negative value. Not implemented yet
-   begin
-      fstr := AnsiChar(0);
-      freq := -1 * freq;
-   end
-   else begin
-      i := freq mod 100;
-      fstr := AnsiChar((i div 10) * 16 + (i mod 10));
-      freq := freq div 100;
+   if FPollingCount = 0 then begin
+      Exit;
    end;
+   FPollingTimer.Enabled := False;
+   try
+      LastFreq := _currentfreq[_currentvfo];
+      freq := Hz;
 
-   i := freq mod 100;
-   fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
-   freq := freq div 100;
+      if freq < 0 then // > 2.1GHz is divided by 100 and given a negative value. Not implemented yet
+      begin
+         fstr := AnsiChar(0);
+         freq := -1 * freq;
+      end
+      else begin
+         i := freq mod 100;
+         fstr := AnsiChar((i div 10) * 16 + (i mod 10));
+         freq := freq div 100;
+      end;
 
-   i := freq mod 100;
-   fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
-   freq := freq div 100;
+      i := freq mod 100;
+      fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+      freq := freq div 100;
 
-   i := freq mod 100;
-   fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
-   freq := freq div 100;
+      i := freq mod 100;
+      fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+      freq := freq div 100;
 
-   i := freq mod 100;
-   fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+      i := freq mod 100;
+      fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+      freq := freq div 100;
 
-   fstr := AnsiChar($05) + fstr;
-   ICOMWriteData(fstr);
+      i := freq mod 100;
+      fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
 
-   fstr := AnsiChar($03);
-   ICOMWriteData(fstr); // request freq data
+      fstr := AnsiChar($05) + fstr;
+      ICOMWriteData(fstr);
+   finally
+      FPollingCount := 0;
+      FPollingTimer.Enabled := True;
+   end;
 end;
 
 procedure TRigControl.VisibleChangeEvent(Sender: TObject);
@@ -2699,7 +2736,12 @@ begin
                end;
             end;
 
-            FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
+            // 処理タイミングによって、_currentfreqと_currentbandの食い違いが起きるので
+            // 一致している場合にFreqMemを更新する
+            if GetBandIndex(_currentfreq[_currentvfo]) = Integer(_currentband) then begin
+               FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
+            end;
+
             if Selected then begin
                UpdateStatus;
             end;
@@ -2741,9 +2783,9 @@ begin
             j := GetBandIndex(i);
             if j >= 0 then begin
                _currentband := TBand(j);
+               FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
             end;
 
-            FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
             if Selected then begin
                UpdateStatus;
             end;
@@ -2751,7 +2793,8 @@ begin
       end;
    finally
       // トランシーブモード使わない時はポーリング再開
-      if FUseTransceiveMode = False then begin
+      if (FUseTransceiveMode = False) or
+         ((FUseTransceiveMode = True) and (FGetBandAndMode = True) and  (FPollingCount < 2)) then begin
          FPollingTimer.Enabled := True;
       end;
    end;
@@ -3179,6 +3222,7 @@ const
 var
    freq: AnsiString;
 begin
+   LastFreq := _currentfreq[_currentvfo];
    freq := RightStr(AnsiString(DupeString('0', 9)) + AnsiString(IntToStr(Hz)), 9);  // freq 9桁
    WriteData(cmd[_currentvfo] + freq + ';');
 end;
@@ -3199,6 +3243,7 @@ begin
 
    MainForm.RigControl.dispFreqA.Caption := kHzStr(_freqoffset + _currentfreq[0]) + ' kHz';
    MainForm.RigControl.dispFreqB.Caption := kHzStr(_freqoffset + _currentfreq[1]) + ' kHz';
+   MainForm.RigControl.dispLastFreq.Caption := kHzStr(_freqoffset + LastFreq) + ' kHz';
 
    if _currentvfo = 0 then begin
       MainForm.RigControl.dispFreqA.Font.Style := [fsBold];
@@ -3219,8 +3264,9 @@ begin
 
    MainForm.StatusLine.Panels[1].Text := S;
 
-   BSRefresh(Self);
-   MainForm.BandScope2.MarkCurrentFreq(_freqoffset + _currentfreq[_currentvfo]);
+   MainForm.BSRefresh();
+
+   MainForm.BandScopeMarkCurrentFreq(_currentband, _freqoffset + _currentfreq[_currentvfo]);
 end;
 
 procedure TRigControl.FormCreate(Sender: TObject);
@@ -3254,7 +3300,6 @@ procedure TRigControl.FormDestroy(Sender: TObject);
 begin
    ZCom1.Disconnect;
    ZCom2.Disconnect;
-   ZCom3.Disconnect;
 
    FCurrentRig := nil;
    FreeAndNil(FRigs[1]);
@@ -3265,6 +3310,13 @@ procedure TRigControl.Button1Click(Sender: TObject);
 begin
    if FCurrentRig <> nil then begin
       FCurrentRig.Reset;
+   end;
+end;
+
+procedure TRigControl.buttonJumpLastFreqClick(Sender: TObject);
+begin
+   if FCurrentRig <> nil then begin
+      FCurrentRig.MoveToLastFreq();
    end;
 end;
 

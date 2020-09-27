@@ -4,9 +4,9 @@ interface
 
 uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
-  StdCtrls, ExtCtrls, Forms, ComCtrls, Spin,
+  StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl,
-  UIntegerDialog, UzLogConst, UzLogGlobal, Vcl.Buttons;
+  UIntegerDialog, UzLogConst, UzLogGlobal;
 
 type
   TformOptions = class(TForm)
@@ -30,14 +30,13 @@ type
     Add: TButton;
     Delete: TButton;
     GroupBox2: TGroupBox;
-    Edit2: TEdit;
-    Edit3: TEdit;
-    Edit4: TEdit;
-    Edit5: TEdit;
-    Edit6: TEdit;
-    Edit7: TEdit;
-    Edit9: TEdit;
-    Edit8: TEdit;
+    editMessage2: TEdit;
+    editMessage3: TEdit;
+    editMessage4: TEdit;
+    editMessage5: TEdit;
+    editMessage6: TEdit;
+    editMessage7: TEdit;
+    editMessage8: TEdit;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
@@ -46,10 +45,7 @@ type
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
-    Label9: TLabel;
-    Label10: TLabel;
-    Edit10: TEdit;
-    Edit1: TEdit;
+    editMessage1: TEdit;
     SpeedBar: TTrackBar;
     Label11: TLabel;
     SpeedLabel: TLabel;
@@ -60,11 +56,9 @@ type
     ToneSpinEdit: TSpinEdit;
     Label15: TLabel;
     Label16: TLabel;
-    PaddleCheck: TCheckBox;
     CQRepEdit: TEdit;
     Label17: TLabel;
     FIFOCheck: TCheckBox;
-    PaddleEnabledCheck: TCheckBox;
     AbbrevEdit: TEdit;
     Label12: TLabel;
     ProvEdit: TEdit;
@@ -96,17 +90,13 @@ type
     Label25: TLabel;
     Label26: TLabel;
     Label27: TLabel;
-    Label28: TLabel;
-    Label29: TLabel;
     vEdit2: TEdit;
     vEdit3: TEdit;
     vEdit4: TEdit;
     vEdit5: TEdit;
     vEdit6: TEdit;
     vEdit7: TEdit;
-    vEdit9: TEdit;
     vEdit8: TEdit;
-    vEdit10: TEdit;
     vEdit1: TEdit;
     memo: TLabel;
     OpenDialog: TOpenDialog;
@@ -115,7 +105,6 @@ type
     ClusterCombo: TComboBox;
     Port: TLabel;
     buttonClusterSettings: TButton;
-    OpenDialog1: TOpenDialog;
     Label32: TLabel;
     ZLinkCombo: TComboBox;
     buttonZLinkSettings: TButton;
@@ -127,8 +116,6 @@ type
     vButton6: TButton;
     vButton7: TButton;
     vButton8: TButton;
-    vButton9: TButton;
-    vButton10: TButton;
     act24: TCheckBox;
     act18: TCheckBox;
     act10: TCheckBox;
@@ -186,10 +173,10 @@ type
     tabsheetPath: TTabSheet;
     Label50: TLabel;
     edCFGDATPath: TEdit;
-    btnBrowseCFGDATPath: TButton;
+    buttonBrowseCFGDATPath: TButton;
     Label51: TLabel;
     edLogsPath: TEdit;
-    btnBrowseLogsPath: TButton;
+    buttonBrowseLogsPath: TButton;
     rbRTTY: TRadioButton;
     cbCQSP: TCheckBox;
     cbAFSK: TCheckBox;
@@ -240,7 +227,7 @@ type
     editSuperCheckFolder: TEdit;
     radioSuperCheck2: TRadioButton;
     buttonSuperCheckFolderRef: TSpeedButton;
-    Button4: TButton;
+    buttonBrowseBackupPath: TButton;
     BackUpPathEdit: TEdit;
     Label56: TLabel;
     comboPower19: TComboBox;
@@ -264,7 +251,138 @@ type
     editFullmatchColor: TEdit;
     buttonFullmatchSelectColor: TButton;
     buttonFullmatchInitColor: TButton;
+    tabsheetBandScope1: TTabSheet;
+    GroupBox9: TGroupBox;
+    checkBs01: TCheckBox;
+    checkBs02: TCheckBox;
+    checkBs03: TCheckBox;
+    checkBs05: TCheckBox;
+    checkBs07: TCheckBox;
+    checkBs09: TCheckBox;
+    checkBs10: TCheckBox;
+    checkBs11: TCheckBox;
+    checkBs12: TCheckBox;
+    checkBs13: TCheckBox;
+    checkBs14: TCheckBox;
+    checkBs15: TCheckBox;
+    checkBs16: TCheckBox;
+    checkBs08: TCheckBox;
+    checkBs06: TCheckBox;
+    checkBs04: TCheckBox;
+    GroupBox10: TGroupBox;
+    editBSColor1: TEdit;
+    buttonBSFore1: TButton;
+    buttonBSReset1: TButton;
+    Label57: TLabel;
+    buttonBSBack1: TButton;
+    Label58: TLabel;
+    Label59: TLabel;
+    editBSColor2: TEdit;
+    buttonBSFore2: TButton;
+    buttonBSReset2: TButton;
+    buttonBSBack2: TButton;
+    editBSColor3: TEdit;
+    buttonBSFore3: TButton;
+    buttonBSReset3: TButton;
+    buttonBSBack3: TButton;
+    Label60: TLabel;
+    editBSColor4: TEdit;
+    buttonBSFore4: TButton;
+    buttonBSReset4: TButton;
+    buttonBSBack4: TButton;
+    checkBSBold1: TCheckBox;
+    checkBSBold2: TCheckBox;
+    checkBSBold3: TCheckBox;
+    checkBSBold4: TCheckBox;
     ColorDialog1: TColorDialog;
+    checkSendNrAuto: TCheckBox;
+    comboQuickQsyRig01: TComboBox;
+    Label62: TLabel;
+    comboQuickQsyRig02: TComboBox;
+    comboQuickQsyRig03: TComboBox;
+    comboQuickQsyRig04: TComboBox;
+    comboQuickQsyRig05: TComboBox;
+    comboQuickQsyRig06: TComboBox;
+    comboQuickQsyRig07: TComboBox;
+    comboQuickQsyRig08: TComboBox;
+    checkGetBandAndMode: TCheckBox;
+    checkCwReverseSignal: TCheckBox;
+    tabsheetQuickMemo: TTabSheet;
+    GroupBox11: TGroupBox;
+    Label63: TLabel;
+    editQuickMemo1: TEdit;
+    Label64: TLabel;
+    editQuickMemo2: TEdit;
+    Label65: TLabel;
+    editQuickMemo3: TEdit;
+    Label66: TLabel;
+    editQuickMemo4: TEdit;
+    Label67: TLabel;
+    editQuickMemo5: TEdit;
+    tabsheetBandScope2: TTabSheet;
+    GroupBox12: TGroupBox;
+    Label61: TLabel;
+    editBSColor5: TEdit;
+    buttonBSFore5: TButton;
+    buttonBSBack5: TButton;
+    checkBSBold5: TCheckBox;
+    buttonBSReset5: TButton;
+    Label68: TLabel;
+    editBSColor6: TEdit;
+    buttonBSFore6: TButton;
+    buttonBSBack6: TButton;
+    checkBSBold6: TCheckBox;
+    buttonBSReset6: TButton;
+    editBSColor7: TEdit;
+    buttonBSFore7: TButton;
+    buttonBSBack7: TButton;
+    checkBSBold7: TCheckBox;
+    buttonBSReset7: TButton;
+    groupSpotFreshness: TGroupBox;
+    radioFreshness1: TRadioButton;
+    radioFreshness2: TRadioButton;
+    radioFreshness3: TRadioButton;
+    radioFreshness4: TRadioButton;
+    editMessage9: TEdit;
+    editMessage10: TEdit;
+    Label70: TLabel;
+    Label71: TLabel;
+    Label72: TLabel;
+    Label73: TLabel;
+    vEdit9: TEdit;
+    vEdit10: TEdit;
+    vButton9: TButton;
+    vButton10: TButton;
+    Label74: TLabel;
+    buttonBrowseSoundPath: TButton;
+    SoundPathEdit: TEdit;
+    checkBsCurrent: TCheckBox;
+    Label75: TLabel;
+    editMessage11: TEdit;
+    Label76: TLabel;
+    editMessage12: TEdit;
+    Label77: TLabel;
+    vEdit11: TEdit;
+    vButton11: TButton;
+    Label78: TLabel;
+    vEdit12: TEdit;
+    vButton12: TButton;
+    editBSColor7_2: TEdit;
+    buttonBSBack7_2: TButton;
+    buttonBSBack7_3: TButton;
+    editBSColor7_3: TEdit;
+    Label69: TLabel;
+    Label79: TLabel;
+    Label80: TLabel;
+    Label81: TLabel;
+    GroupBox13: TGroupBox;
+    checkUsbif4cwSyncWpm: TCheckBox;
+    checkUsbif4cwPaddleReverse: TCheckBox;
+    GroupBox14: TGroupBox;
+    Label9: TLabel;
+    Label10: TLabel;
+    editCQMessage2: TEdit;
+    editCQMessage3: TEdit;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -287,7 +405,7 @@ type
     procedure BrowsePathClick(Sender: TObject);
     procedure PTTEnabledCheckBoxClick(Sender: TObject);
     procedure CQRepEditKeyPress(Sender: TObject; var Key: Char);
-    procedure Edit1Change(Sender: TObject);
+    procedure editMessage1Change(Sender: TObject);
     procedure CWBankClick(Sender: TObject);
     procedure cbCountDownClick(Sender: TObject);
     procedure cbQSYCountClick(Sender: TObject);
@@ -299,11 +417,16 @@ type
     procedure OnNeedSuperCheckLoad(Sender: TObject);
     procedure buttonFullmatchSelectColorClick(Sender: TObject);
     procedure buttonFullmatchInitColorClick(Sender: TObject);
+    procedure buttonBSForeClick(Sender: TObject);
+    procedure buttonBSBackClick(Sender: TObject);
+    procedure checkBSBoldClick(Sender: TObject);
+    procedure buttonBSResetClick(Sender: TObject);
   private
-    FCWEditMode: Integer;
-    TempVoiceFiles : array[1..10] of string;
+    FEditMode: Integer;
+    FEditNumber: Integer;
+    FTempVoiceFiles : array[1..maxmessage] of string;
     TempCurrentBank : integer;
-    TempCWStrBank : array[1..maxbank,1..maxmaxstr] of string; // used temporarily while options window is open
+    TempCWStrBank : array[1..maxbank,1..maxmessage] of string; // used temporarily while options window is open
 
     FTempClusterTelnet: TCommParam;
     FTempClusterCom: TCommParam;
@@ -312,15 +435,41 @@ type
     FQuickQSYCheck: array[1..8] of TCheckBox;
     FQuickQSYBand: array[1..8] of TComboBox;
     FQuickQSYMode: array[1..8] of TComboBox;
+    FQuickQSYRig: array[1..8] of TComboBox;
+
+    FBSColor: array[1..73] of TEdit;
+    FBSBold: array[1..7] of TCheckBox;
 
     FNeedSuperCheckLoad: Boolean;
+
+    FQuickMemoText: array[1..5] of TEdit;
+
+    FEditMessage: array[1..maxmessage] of TEdit;
+
+    FVoiceEdit: array[1..maxmessage] of TEdit;
+    FVoiceButton: array[1..maxmessage] of TButton;
+
     procedure RenewCWStrBankDisp();
     procedure InitRigNames();
+    procedure SetEditNumber(no: Integer);
   public
     procedure RenewSettings; {Reads controls and updates Settings}
-    property CWEditMode: Integer read FCWEditMode write FCWEditMode;
+    property EditMode: Integer read FEditMode write FEditMode;
+    property EditNumber: Integer read FEditNumber write SetEditNumber;
     property NeedSuperCheckLoad: Boolean read FNeedSuperCheckLoad;
+    property EditBank: Integer read TempCurrentBank write TempCurrentBank;
   end;
+
+const
+  BandScopeDefaultColor: array[1..7] of TColorSetting = (
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clRed;   FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clGreen; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clGreen; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True )
+  );
 
 implementation
 
@@ -353,7 +502,6 @@ begin
       Settings._renewbythread := cbUpdateThread.Checked;
       Settings._displaydatepartialcheck := cbDisplayDatePartialCheck.Checked;
 
-      Settings._banddatamode := rgBandData.ItemIndex;
       Settings._AFSK := cbAFSK.Checked;
       Settings._maxsuperhit := spMaxSuperHit.Value;
 
@@ -391,8 +539,6 @@ begin
       Settings._power[b5600] := comboPower5600.Text;
       Settings._power[b10g] := comboPower10g.Text;
 
-      OpList.Free;
-      OpList := TStringList.Create;
       OpList.Assign(OpListBox.Items);
 
       // Settings._band := BandGroup.ItemIndex;
@@ -411,7 +557,7 @@ begin
       // Settings._multiop := MultiOpRadioBtn.Checked;
 
       Settings._prov := ProvEdit.Text;
-      Settings._city := CItyEdit.Text;
+      Settings._city := CityEdit.Text;
       Settings._cqzone := CQZoneEdit.Text;
       Settings._iaruzone := IARUZoneEdit.Text;
 
@@ -428,14 +574,14 @@ begin
         Settings.CW.CQStrBank[0] := Edit1.Text;
       }
 
-      for i := 1 to maxbank do
-         for j := 1 to maxstr do
+      for i := 1 to maxbank do begin
+         for j := 1 to maxmessage do begin
             Settings.CW.CWStrBank[i, j] := TempCWStrBank[i, j];
+         end;
+      end;
 
-      Settings.CW.CQStrBank[0] := TempCWStrBank[1, 1];
-
-      Settings.CW.CQStrBank[1] := Edit9.Text;
-      Settings.CW.CQStrBank[2] := Edit10.Text;
+      Settings.CW.AdditionalCQMessages[2] := editCQMessage2.Text;
+      Settings.CW.AdditionalCQMessages[3] := editCQMessage3.Text;
 
       Settings._bsexpire := spBSExpire.Value;
       Settings._spotexpire := spSpotExpire.Value;
@@ -448,11 +594,10 @@ begin
 
       Settings.CW._speed := SpeedBar.Position;
       Settings.CW._weight := WeightBar.Position;
-      Settings.CW._paddlereverse := PaddleCheck.Checked;
+      Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
       Settings.CW._FIFO := FIFOCheck.Checked;
       Settings.CW._tonepitch := ToneSpinEdit.Value;
       Settings.CW._cqmax := CQmaxSpinEdit.Value;
-      Settings.CW._paddle := PaddleEnabledCheck.Checked;
 
       Settings._switchcqsp := cbCQSP.Checked;
 
@@ -461,6 +606,9 @@ begin
          Settings.CW._one := AbbrevEdit.Text[2];
          Settings.CW._nine := AbbrevEdit.Text[3];
       end;
+
+      // Send NR? automatically
+      Settings.CW._send_nr_auto := checkSendNrAuto.Checked;
 
       Settings._clusterport := ClusterCombo.ItemIndex;
    //   Settings._clusterbaud := ClusterCOMSet.BaudCombo.ItemIndex;
@@ -490,6 +638,8 @@ begin
       Settings._rigspeed[2] := comboRig2Speed.ItemIndex;
 
       Settings._use_transceive_mode := checkUseTransceiveMode.Checked;
+      Settings._icom_polling_freq_and_mode := checkGetBandAndMode.Checked;
+      Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
 
       Settings._ritclear := cbRITClear.Checked;
 
@@ -498,6 +648,8 @@ begin
       Settings._syncserial := checkZLinkSyncSerial.Checked;
 
       Settings._pttenabled := PTTEnabledCheckBox.Checked;
+      Settings.CW._keying_signal_reverse := checkCwReverseSignal.Checked;
+
       Settings._saveevery := SaveEvery.Value;
       Settings._countdown := cbCountDown.Checked;
       Settings._qsycount := cbQSYCount.Checked;
@@ -519,8 +671,9 @@ begin
          Settings._lptnr := 0;
       end;
 
-      Settings._sentstr := SentEdit.Text;
+//      Settings._sentstr := SentEdit.Text;
 
+      Settings._soundpath := IncludeTrailingPathDelimiter(SoundPathEdit.Text);
       Settings._backuppath := IncludeTrailingPathDelimiter(BackUpPathEdit.Text);
       Settings._cfgdatpath := IncludeTrailingPathDelimiter(edCFGDATPath.Text);
       Settings._logspath := IncludeTrailingPathDelimiter(edLogsPath.Text);
@@ -553,6 +706,8 @@ begin
          else begin
             Settings.FQuickQSY[i].FMode := TMode(FQuickQSYMode[i].ItemIndex);
          end;
+
+         Settings.FQuickQSY[i].FRig := FQuickQSYRig[i].ItemIndex;
       end;
 
       // SuperCheck
@@ -568,6 +723,66 @@ begin
       Settings.FSuperCheck.FSuperCheckFolder := editSuperCheckFolder.Text;
       Settings.FSuperCheck.FFullMatchHighlight := checkHighlightFullmatch.Checked;
       Settings.FSuperCheck.FFullMatchColor := editFullmatchColor.Color;
+
+      // Band Scope
+      Settings._usebandscope[b19]   := checkBS01.Checked;
+      Settings._usebandscope[b35]   := checkBS02.Checked;
+      Settings._usebandscope[b7]    := checkBS03.Checked;
+      Settings._usebandscope[b10]   := checkBS04.Checked;
+      Settings._usebandscope[b14]   := checkBS05.Checked;
+      Settings._usebandscope[b18]   := checkBS06.Checked;
+      Settings._usebandscope[b21]   := checkBS07.Checked;
+      Settings._usebandscope[b24]   := checkBS08.Checked;
+      Settings._usebandscope[b28]   := checkBS09.Checked;
+      Settings._usebandscope[b50]   := checkBS10.Checked;
+      Settings._usebandscope[b144]  := checkBS11.Checked;
+      Settings._usebandscope[b430]  := checkBS12.Checked;
+      Settings._usebandscope[b1200] := checkBS13.Checked;
+      Settings._usebandscope[b2400] := checkBS14.Checked;
+      Settings._usebandscope[b5600] := checkBS15.Checked;
+      Settings._usebandscope[b10g]  := checkBS16.Checked;
+      Settings._usebandscope_current := checkBsCurrent.Checked;
+
+      for i := 1 to 7 do begin
+         Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
+         Settings._bandscopecolor[i].FBackColor := FBSColor[i].Color;
+         Settings._bandscopecolor[i].FBold      := FBSBold[i].Checked;
+      end;
+      Settings._bandscopecolor[7].FBackColor2 := FBSColor[72].Color;
+      Settings._bandscopecolor[7].FBackColor3 := FBSColor[73].Color;
+
+      // Spot鮮度表示
+      if radioFreshness1.Checked = True then begin
+         Settings._bandscope_freshness_mode := 0;           // Remain time1
+         Settings._bandscope_freshness_icon := 2;
+      end
+      else if radioFreshness2.Checked = True then begin
+         Settings._bandscope_freshness_mode := 1;           // Remain time2
+         Settings._bandscope_freshness_icon := 3;
+      end
+      else if radioFreshness3.Checked = True then begin
+         Settings._bandscope_freshness_mode := 2;           // Remain time3
+         Settings._bandscope_freshness_icon := 2;
+      end
+      else if radioFreshness4.Checked = True then begin
+         Settings._bandscope_freshness_mode := 3;           // Elapsed time
+         Settings._bandscope_freshness_icon := 5;
+      end
+      else begin
+         Settings._bandscope_freshness_mode := 0;
+         Settings._bandscope_freshness_icon := 2;
+      end;
+
+      // Quick Memo
+      for i := 1 to 5 do begin
+         Settings.FQuickMemoText[i] := Trim(FQuickMemoText[i].Text);
+      end;
+
+      // Voice Memory
+      for i := 1 to maxmessage do begin
+         Settings.FSoundFiles[i] := FTempVoiceFiles[i];
+         Settings.FSoundComments[i] := FVoiceEdit[i].Text;
+      end;
    end;
 end;
 
@@ -580,15 +795,20 @@ begin
 end;
 
 procedure TformOptions.RenewCWStrBankDisp;
+var
+   i: Integer;
 begin
-   Edit1.Text := TempCWStrBank[TempCurrentBank, 1];
-   Edit2.Text := TempCWStrBank[TempCurrentBank, 2];
-   Edit3.Text := TempCWStrBank[TempCurrentBank, 3];
-   Edit4.Text := TempCWStrBank[TempCurrentBank, 4];
-   Edit5.Text := TempCWStrBank[TempCurrentBank, 5];
-   Edit6.Text := TempCWStrBank[TempCurrentBank, 6];
-   Edit7.Text := TempCWStrBank[TempCurrentBank, 7];
-   Edit8.Text := TempCWStrBank[TempCurrentBank, 8];
+   for i := 1 to maxmessage do begin
+      FEditMessage[i].Text := TempCWStrBank[TempCurrentBank, i];
+      if dmZLogGlobal.Settings.CW.CWStrImported[TempCurrentBank, i] = True then begin
+         FEditMessage[i].Color := clBtnFace;
+         FEditMessage[i].ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
+      end
+      else begin
+         FEditMessage[i].Color := clWindow;
+         FEditMessage[i].ReadOnly := False;
+      end;
+   end;
 end;
 
 procedure TformOptions.FormShow(Sender: TObject);
@@ -610,7 +830,6 @@ begin
       cbUpdateThread.Checked := Settings._renewbythread;
       cbDisplayDatePartialCheck.Checked := Settings._displaydatepartialcheck;
 
-      rgBandData.ItemIndex := Settings._banddatamode;
       cbDontAllowSameBand.Checked := Settings._dontallowsameband;
       cbAutoBandMap.Checked := Settings._autobandmap;
       cbAFSK.Checked := Settings._AFSK;
@@ -665,11 +884,12 @@ begin
       ModeGroup.ItemIndex := Settings._mode;
       { OpListBox.Items := OpList; }
 
-      for i := 1 to maxbank do
-         for j := 1 to maxstr do
+      for i := 1 to maxbank do begin
+         for j := 1 to maxmessage do begin
             TempCWStrBank[i, j] := Settings.CW.CWStrBank[i, j];
+         end;
+      end;
 
-      TempCurrentBank := Settings.CW.CurrentBank;
       case TempCurrentBank of
          1:
             rbBankA.Checked := True;
@@ -680,34 +900,37 @@ begin
       end;
 
       RenewCWStrBankDisp;
-      {
-        Edit1.Text := Settings.CW.CWStrBank[1,1];
-        Edit2.Text := Settings.CW.CWStrBank[1,2];
-        Edit3.Text := Settings.CW.CWStrBank[1,3];
-        Edit4.Text := Settings.CW.CWStrBank[1,4];
-        Edit5.Text := Settings.CW.CWStrBank[1,5];
-        Edit6.Text := Settings.CW.CWStrBank[1,6];
-        Edit7.Text := Settings.CW.CWStrBank[1,7];
-        Edit8.Text := Settings.CW.CWStrBank[1,8];
-      }
-      Edit9.Text := Settings.CW.CQStrBank[1];
-      Edit10.Text := Settings.CW.CQStrBank[2];
+
+      editCQMessage2.Text := Settings.CW.AdditionalCQMessages[2];
+      editCQMessage3.Text := Settings.CW.AdditionalCQMessages[3];
 
       CQRepEdit.Text := FloatToStrF(Settings.CW._cqrepeat, ffFixed, 3, 1);
       SendFreqEdit.Text := FloatToStrF(Settings._sendfreq, ffFixed, 3, 1);
       SpeedBar.Position := Settings.CW._speed;
       SpeedLabel.Caption := IntToStr(Settings.CW._speed) + ' wpm';
       WeightBar.Position := Settings.CW._weight;
+      checkUsbif4cwPaddleReverse.Checked := Settings.CW._paddlereverse;
       WeightLabel.Caption := IntToStr(Settings.CW._weight) + ' %';
-      PaddleCheck.Checked := Settings.CW._paddlereverse;
-      PaddleEnabledCheck.Checked := Settings.CW._paddle;
       FIFOCheck.Checked := Settings.CW._FIFO;
       ToneSpinEdit.Value := Settings.CW._tonepitch;
       CQmaxSpinEdit.Value := Settings.CW._cqmax;
       AbbrevEdit.Text := Settings.CW._zero + Settings.CW._one + Settings.CW._nine;
 
       ProvEdit.Text := Settings._prov;
-      CItyEdit.Text := Settings._city;
+      CityEdit.Text := Settings._city;
+      if Settings.ProvCityImported = True then begin
+         ProvEdit.Color := clBtnFace;
+         CityEdit.Color := clBtnFace;
+         ProvEdit.ReadOnly := Settings.ReadOnlyParamImported;
+         CityEdit.ReadOnly := Settings.ReadOnlyParamImported;
+      end
+      else begin
+         ProvEdit.Color := clWindow;
+         CityEdit.Color := clWindow;
+         ProvEdit.ReadOnly := False;
+         CityEdit.ReadOnly := False;
+      end;
+
       CQZoneEdit.Text := Settings._cqzone;
       IARUZoneEdit.Text := Settings._iaruzone;
 
@@ -741,6 +964,8 @@ begin
       comboRig2Speed.ItemIndex := Settings._rigspeed[2];
 
       checkUseTransceiveMode.Checked := Settings._use_transceive_mode;
+      checkGetBandAndMode.Checked := Settings._icom_polling_freq_and_mode;
+      checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
 
       cbRITClear.Checked := Settings._ritclear;
 
@@ -765,13 +990,17 @@ begin
          comboCwPttPort.ItemIndex := 0;
       end;
 
+      // Sent欄は表示専用
       SentEdit.Text := Settings._sentstr;
 
+      SoundPathEdit.Text := Settings._soundpath;
       BackUpPathEdit.Text := Settings._backuppath;
       edCFGDATPath.Text := Settings._cfgdatpath;
       edLogsPath.Text := Settings._logspath;
 
       PTTEnabledCheckBox.Checked := Settings._pttenabled;
+      checkCwReverseSignal.Checked := Settings.CW._keying_signal_reverse;
+
       BeforeEdit.Text := IntToStr(Settings._pttbefore);
       AfterEdit.Text := IntToStr(Settings._pttafter);
       if PTTEnabledCheckBox.Checked then begin
@@ -783,6 +1012,10 @@ begin
          AfterEdit.Enabled := False;
       end;
       cbCQSP.Checked := Settings._switchcqsp;
+
+      // Send NR? automatically
+      checkSendNrAuto.Checked := Settings.CW._send_nr_auto;
+
       cbCountDown.Checked := Settings._countdown;
       cbQSYCount.Checked := Settings._qsycount;
 
@@ -803,8 +1036,11 @@ begin
             FQuickQSYBand[i].ItemIndex := -1;
             FQuickQSYMode[i].ItemIndex := -1;
          end;
+         FQuickQSYRig[i].ItemIndex := Settings.FQuickQSY[i].FRig;
+
          FQuickQSYBand[i].Enabled := FQuickQSYCheck[i].Checked;
          FQuickQSYMode[i].Enabled := FQuickQSYCheck[i].Checked;
+         FQuickQSYRig[i].Enabled  := FQuickQSYCheck[i].Checked;
       end;
 
       // SuperCheck
@@ -816,20 +1052,76 @@ begin
       editSuperCheckFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
       checkHighlightFullmatch.Checked := Settings.FSuperCheck.FFullMatchHighlight;
       editFullmatchColor.Color := Settings.FSuperCheck.FFullMatchColor;
+
+      // Band Scope
+      checkBS01.Checked := Settings._usebandscope[b19];
+      checkBS02.Checked := Settings._usebandscope[b35];
+      checkBS03.Checked := Settings._usebandscope[b7];
+      checkBS04.Checked := Settings._usebandscope[b10];
+      checkBS05.Checked := Settings._usebandscope[b14];
+      checkBS06.Checked := Settings._usebandscope[b18];
+      checkBS07.Checked := Settings._usebandscope[b21];
+      checkBS08.Checked := Settings._usebandscope[b24];
+      checkBS09.Checked := Settings._usebandscope[b28];
+      checkBS10.Checked := Settings._usebandscope[b50];
+      checkBS11.Checked := Settings._usebandscope[b144];
+      checkBS12.Checked := Settings._usebandscope[b430];
+      checkBS13.Checked := Settings._usebandscope[b1200];
+      checkBS14.Checked := Settings._usebandscope[b2400];
+      checkBS15.Checked := Settings._usebandscope[b5600];
+      checkBS16.Checked := Settings._usebandscope[b10g];
+      checkBsCurrent.Checked := Settings._usebandscope_current;
+
+      for i := 1 to 7 do begin
+         FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
+         FBSColor[i].Color      := Settings._bandscopecolor[i].FBackColor;
+         FBSBold[i].Checked     := Settings._bandscopecolor[i].FBold;
+      end;
+      FBSColor[72].Color      := Settings._bandscopecolor[7].FBackColor2;
+      FBSColor[73].Color      := Settings._bandscopecolor[7].FBackColor3;
+
+      // Spot鮮度表示
+      case Settings._bandscope_freshness_mode of
+         0: radioFreshness1.Checked := True;
+         1: radioFreshness2.Checked := True;
+         2: radioFreshness3.Checked := True;
+         3: radioFreshness4.Checked := True;
+         else radioFreshness1.Checked := True;
+      end;
+
+      // Quick Memo
+      for i := 1 to 5 do begin
+         FQuickMemoText[i].Text := Settings.FQuickMemoText[i];
+      end;
+
+      // Voice Memory
+      for i := 1 to maxmessage do begin
+         FTempVoiceFiles[i] := Settings.FSoundFiles[i];
+         if FTempVoiceFiles[i] = '' then begin
+            FVoiceButton[i].Caption := 'select';
+         end
+         else begin
+            FVoiceButton[i].Caption := ExtractFileName(FTempVoiceFiles[i]);
+         end;
+         FVoiceEdit[i].Text := Settings.FSoundComments[i];
+      end;
    end;
 
-   if FCWEditMode = 0 then begin
+   if FEditMode = 0 then begin   // 通常モード
       tabsheetPreferences.TabVisible := True;
       tabsheetCategories.TabVisible := True;
       tabsheetCW.TabVisible := True;
-      tabsheetVoice.TabVisible := False;
+      tabsheetVoice.TabVisible := True;
       tabsheetHardware.TabVisible := True;
       tabsheetRigControl.TabVisible := True;
       tabsheetPath.TabVisible := True;
       tabsheetMisc.TabVisible := True;
       tabsheetQuickQSY.TabVisible := True;
+      tabsheetBandScope1.TabVisible := True;
+      tabsheetBandScope2.TabVisible := True;
+      tabsheetQuickMemo.TabVisible := True;
    end
-   else begin
+   else if FEditMode = 1 then begin // CW
       PageControl.ActivePage := tabsheetCW;
 
       tabsheetPreferences.TabVisible := False;
@@ -841,16 +1133,32 @@ begin
       tabsheetPath.TabVisible := False;
       tabsheetMisc.TabVisible := False;
       tabsheetQuickQSY.TabVisible := False;
+      tabsheetBandScope1.TabVisible := False;
+      tabsheetBandScope2.TabVisible := False;
+      tabsheetQuickMemo.TabVisible := False;
 
-      case FCWEditMode of
-         1: Edit1.SetFocus;
-         2: Edit2.SetFocus;
-         3: Edit3.SetFocus;
-         4: Edit4.SetFocus;
-         5: Edit5.SetFocus;
-         6: Edit6.SetFocus;
-         7: Edit7.SetFocus;
-         8: Edit8.SetFocus;
+      if FEditNumber > 0 then begin
+         FEditMessage[FEditNumber].SetFocus;
+      end;
+   end
+   else if FEditMode = 2 then begin // Voice
+      PageControl.ActivePage := tabsheetVoice;
+
+      tabsheetPreferences.TabVisible := False;
+      tabsheetCategories.TabVisible := False;
+      tabsheetCW.TabVisible := False;
+      tabsheetVoice.TabVisible := True;
+      tabsheetHardware.TabVisible := False;
+      tabsheetRigControl.TabVisible := False;
+      tabsheetPath.TabVisible := False;
+      tabsheetMisc.TabVisible := False;
+      tabsheetQuickQSY.TabVisible := False;
+      tabsheetBandScope1.TabVisible := False;
+      tabsheetBandScope2.TabVisible := False;
+      tabsheetQuickMemo.TabVisible := False;
+
+      if FEditNumber > 0 then begin
+         FVoiceButton[FEditNumber].SetFocus();
       end;
    end;
 
@@ -889,27 +1197,35 @@ begin
    FQuickQSYCheck[1]    := checkUseQuickQSY01;
    FQuickQSYBand[1]     := comboQuickQsyBand01;
    FQuickQSYMode[1]     := comboQuickQsyMode01;
+   FQuickQSYRig[1]      := comboQuickQsyRig01;
    FQuickQSYCheck[2]    := checkUseQuickQSY02;
    FQuickQSYBand[2]     := comboQuickQsyBand02;
    FQuickQSYMode[2]     := comboQuickQsyMode02;
+   FQuickQSYRig[2]      := comboQuickQsyRig02;
    FQuickQSYCheck[3]    := checkUseQuickQSY03;
    FQuickQSYBand[3]     := comboQuickQsyBand03;
    FQuickQSYMode[3]     := comboQuickQsyMode03;
+   FQuickQSYRig[3]      := comboQuickQsyRig03;
    FQuickQSYCheck[4]    := checkUseQuickQSY04;
    FQuickQSYBand[4]     := comboQuickQsyBand04;
    FQuickQSYMode[4]     := comboQuickQsyMode04;
+   FQuickQSYRig[4]      := comboQuickQsyRig04;
    FQuickQSYCheck[5]    := checkUseQuickQSY05;
    FQuickQSYBand[5]     := comboQuickQsyBand05;
    FQuickQSYMode[5]     := comboQuickQsyMode05;
+   FQuickQSYRig[5]      := comboQuickQsyRig05;
    FQuickQSYCheck[6]    := checkUseQuickQSY06;
    FQuickQSYBand[6]     := comboQuickQsyBand06;
    FQuickQSYMode[6]     := comboQuickQsyMode06;
+   FQuickQSYRig[6]      := comboQuickQsyRig06;
    FQuickQSYCheck[7]    := checkUseQuickQSY07;
    FQuickQSYBand[7]     := comboQuickQsyBand07;
    FQuickQSYMode[7]     := comboQuickQsyMode07;
+   FQuickQSYRig[7]      := comboQuickQsyRig07;
    FQuickQSYCheck[8]    := checkUseQuickQSY08;
    FQuickQSYBand[8]     := comboQuickQsyBand08;
    FQuickQSYMode[8]     := comboQuickQsyMode08;
+   FQuickQSYRig[8]      := comboQuickQsyRig08;
    for b := Low(MHzString) to High(MHzString) do begin
       FQuickQsyBand[1].Items.Add(MHZString[b]);
    end;
@@ -921,6 +1237,71 @@ begin
       FQuickQsyMode[i].Items.Assign(FQuickQsyMode[1].Items);
    end;
 
+   // BandScope
+   FBSColor[1] := editBSColor1;
+   FBSColor[2] := editBSColor2;
+   FBSColor[3] := editBSColor3;
+   FBSColor[4] := editBSColor4;
+   FBSColor[5] := editBSColor5;
+   FBSColor[6] := editBSColor6;
+   FBSColor[7] := editBSColor7;
+   FBSColor[72] := editBSColor7_2;
+   FBSColor[73] := editBSColor7_3;
+   FBSBold[1] := checkBSBold1;
+   FBSBold[2] := checkBSBold2;
+   FBSBold[3] := checkBSBold3;
+   FBSBold[4] := checkBSBold4;
+   FBSBold[5] := checkBSBold5;
+   FBSBold[6] := checkBSBold6;
+   FBSBold[7] := checkBSBold7;
+
+   // Quick Memo
+   FQuickMemoText[1] := editQuickMemo1;
+   FQuickMemoText[2] := editQuickMemo2;
+   FQuickMemoText[3] := editQuickMemo3;
+   FQuickMemoText[4] := editQuickMemo4;
+   FQuickMemoText[5] := editQuickMemo5;
+
+   // CW/RTTY
+   FEditMessage[1] := editMessage1;
+   FEditMessage[2] := editMessage2;
+   FEditMessage[3] := editMessage3;
+   FEditMessage[4] := editMessage4;
+   FEditMessage[5] := editMessage5;
+   FEditMessage[6] := editMessage6;
+   FEditMessage[7] := editMessage7;
+   FEditMessage[8] := editMessage8;
+   FEditMessage[9] := editMessage9;
+   FEditMessage[10] := editMessage10;
+   FEditMessage[11] := editMessage11;
+   FEditMessage[12] := editMessage12;
+
+   // Voice Memory
+   FVoiceEdit[1] := vEdit1;
+   FVoiceEdit[2] := vEdit2;
+   FVoiceEdit[3] := vEdit3;
+   FVoiceEdit[4] := vEdit4;
+   FVoiceEdit[5] := vEdit5;
+   FVoiceEdit[6] := vEdit6;
+   FVoiceEdit[7] := vEdit7;
+   FVoiceEdit[8] := vEdit8;
+   FVoiceEdit[9] := vEdit9;
+   FVoiceEdit[10] := vEdit10;
+   FVoiceEdit[11] := vEdit11;
+   FVoiceEdit[12] := vEdit12;
+   FVoiceButton[1] := vButton1;
+   FVoiceButton[2] := vButton2;
+   FVoiceButton[3] := vButton3;
+   FVoiceButton[4] := vButton4;
+   FVoiceButton[5] := vButton5;
+   FVoiceButton[6] := vButton6;
+   FVoiceButton[7] := vButton7;
+   FVoiceButton[8] := vButton8;
+   FVoiceButton[9] := vButton9;
+   FVoiceButton[10] := vButton10;
+   FVoiceButton[11] := vButton11;
+   FVoiceButton[12] := vButton12;
+
    TempCurrentBank := 1;
 
    OpListBox.Items.Assign(dmZlogGlobal.OpList);
@@ -929,7 +1310,8 @@ begin
 
    InitRigNames();
 
-   FCWEditMode := 0;
+   FEditMode := 0;
+   FEditNumber := 0;
 
    FNeedSuperCheckLoad := False;
 end;
@@ -974,8 +1356,9 @@ end;
 
 procedure TformOptions.vButtonClick(Sender: TObject);
 begin
+   OpenDialog.InitialDir := dmZLogGlobal.Settings._soundpath;
    if OpenDialog.Execute then begin
-      TempVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
+      FTempVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
    end;
 end;
@@ -1089,12 +1472,14 @@ var
    strDir: string;
 begin
    case TButton(Sender).Tag of
-      0:
-         strDir := BackUpPathEdit.Text;
       10:
          strDir := edCFGDATPath.Text;
       20:
          strDir := edLogsPath.Text;
+      30:
+         strDir := BackUpPathEdit.Text;
+      40:
+         strDir := SoundPathEdit.Text;
    end;
 
    if SelectDirectory('フォルダの参照', '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
@@ -1102,12 +1487,14 @@ begin
    end;
 
    case TButton(Sender).Tag of
-      0:
-         BackUpPathEdit.Text := strDir;
       10:
          edCFGDATPath.Text := strDir;
       20:
          edLogsPath.Text := strDir;
+      30:
+         BackUpPathEdit.Text := strDir;
+      40:
+         SoundPathEdit.Text := strDir;
    end;
 end;
 
@@ -1135,7 +1522,7 @@ begin
    end;
 end;
 
-procedure TformOptions.Edit1Change(Sender: TObject);
+procedure TformOptions.editMessage1Change(Sender: TObject);
 var
    i: integer;
 begin
@@ -1243,6 +1630,7 @@ begin
    no := TCheckBox(Sender).Tag;
    FQuickQSYBand[no].Enabled := FQuickQSYCheck[no].Checked;
    FQuickQSYMode[no].Enabled := FQuickQSYCheck[no].Checked;
+   FQuickQSYRig[no].Enabled  := FQuickQSYCheck[no].Checked;
 end;
 
 procedure TformOptions.InitRigNames();
@@ -1253,6 +1641,22 @@ begin
    dmZlogGlobal.MakeRigList(comboRig1Name.Items);
 
    comboRig2Name.Items.Assign(comboRig1Name.Items);
+end;
+
+procedure TformOptions.SetEditNumber(no: Integer);
+begin
+   if (no >= 1) and (no <= 12) then begin
+      FEditNumber := no;
+   end;
+   if (no = 101) then begin
+      FEditNumber := 1;
+   end;
+   if (no = 102) then begin
+      FEditNumber := 1;
+   end;
+   if (no = 103) then begin
+      FEditNumber := 1;
+   end;
 end;
 
 procedure TformOptions.buttonFullmatchSelectColorClick(Sender: TObject);
@@ -1266,6 +1670,71 @@ end;
 procedure TformOptions.buttonFullmatchInitColorClick(Sender: TObject);
 begin
    editFullmatchColor.Color := clYellow;
+end;
+
+procedure TformOptions.buttonBSForeClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   ColorDialog1.Color := FBSColor[n].Font.Color;
+   if ColorDialog1.Execute = True then begin
+      FBSColor[n].Font.Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions.buttonBSBackClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   ColorDialog1.Color := FBSColor[n].Color;
+   if ColorDialog1.Execute = True then begin
+      FBSColor[n].Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions.checkBSBoldClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TCheckBox(Sender).Tag;
+
+   if TCheckBox(Sender).Checked = True then begin
+      FBSColor[n].Font.Style := FBSColor[n].Font.Style + [fsBold];
+   end
+   else begin
+      FBSColor[n].Font.Style := FBSColor[n].Font.Style - [fsBold];
+   end;
+
+   if n = 7 then begin
+      if TCheckBox(Sender).Checked = True then begin
+         FBSColor[72].Font.Style := FBSColor[72].Font.Style + [fsBold];
+         FBSColor[73].Font.Style := FBSColor[73].Font.Style + [fsBold];
+      end
+      else begin
+         FBSColor[72].Font.Style := FBSColor[72].Font.Style - [fsBold];
+         FBSColor[73].Font.Style := FBSColor[73].Font.Style - [fsBold];
+      end;
+   end;
+end;
+
+procedure TformOptions.buttonBSResetClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   FBSColor[n].Font.Color  := BandScopeDefaultColor[n].FForeColor;
+   FBSColor[n].Color       := BandScopeDefaultColor[n].FBackColor;
+   FBSBold[n].Checked      := BandScopeDefaultColor[n].FBold;
+
+   if (n = 7) then begin
+      FBSColor[72].Color   := BandScopeDefaultColor[7].FBackColor2;
+      FBSColor[73].Color   := BandScopeDefaultColor[7].FBackColor3;
+   end;
 end;
 
 end.

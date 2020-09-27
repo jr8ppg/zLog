@@ -4,107 +4,101 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, Grids, Menus, Cologrid,
-  USpotClass, UzLogConst, UzLogGlobal, UzLogQSO;
+  Dialogs, ExtCtrls, StdCtrls, Grids, Menus, DateUtils,
+  USpotClass, UzLogConst, UzLogGlobal, UzLogQSO, System.ImageList, Vcl.ImgList;
 
 type
   TBandScope2 = class(TForm)
-    Panel1: TPanel;
-    Grid: TMgrid;
     BSMenu: TPopupMenu;
     mnDelete: TMenuItem;
     Deleteallworkedstations1: TMenuItem;
-    Mode1: TMenuItem;
-    mnCurrentRig: TMenuItem;
-    Rig11: TMenuItem;
-    Rig21: TMenuItem;
-    Fixedband1: TMenuItem;
-    N19MHz1: TMenuItem;
-    N35MHz1: TMenuItem;
-    N7MHz1: TMenuItem;
-    N14MHz1: TMenuItem;
-    N21MHz1: TMenuItem;
-    N28MHz1: TMenuItem;
-    N50MHz1: TMenuItem;
     Timer1: TTimer;
+    Panel1: TPanel;
+    Grid: TStringGrid;
+    ImageList1: TImageList;
     procedure CreateParams(var Params: TCreateParams); override;
-    procedure GridSetting(ARow, ACol: Integer; var Fcolor: Integer;
-      var Bold, Italic, underline: Boolean);
     procedure mnDeleteClick(Sender: TObject);
     procedure Deleteallworkedstations1Click(Sender: TObject);
-    procedure ModeClick(Sender: TObject);
-    procedure FixedBandClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure GridDblClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
+    procedure GridMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure FormResize(Sender: TObject);
   private
     { Private 宣言 }
     FProcessing: Boolean;
-    FMinFreq: Integer;
-    FMaxFreq: Integer; // in Hz
+//    FMinFreq: Integer;
+//    FMaxFreq: Integer; // in Hz
 
+    FCurrentBandOnly: Boolean;
     FCurrBand : TBand;
-    FCurrMode : TMode;
+//    FCurrMode : TMode;
 
-    FFixedBand : TBand;
+    FBSList: TBSList;
+
+    FFreshnessThreshold: array[0..4] of Integer;
+    FFreshnessType: Integer;
+    FIconType: Integer;
 
     procedure AddBSList(D : TBSData);
+    procedure AddAndDisplay(D : TBSData);
     procedure DeleteFromBSList(i : integer);
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
     function EstimateNumRows(): Integer;
+    procedure SetSelect(fSelect: Boolean);
+    procedure Cleanup(D: TBSData);
+    procedure SetFreshnessType(v: Integer);
+    procedure SetIconType(v: Integer);
+    function CalcRemainTime(T1, T2: TDateTime): Integer;
+    function CalcElapsedTime(T1, T2: TDateTime): Integer;
+    procedure SetCurrentBand(b: TBand);
+    procedure SetCurrentBandOnly(v: Boolean);
+    procedure SetCaption();
   public
     { Public 宣言 }
-    ArrayNumber : integer;
-    DisplayMode : integer; // 0 : current rig; 1 : rig 1; 2 : rig 2; 9 : fixed band
-    procedure CreateBSData(aQSO : TQSO; Hz : LongInt);
-    procedure AddAndDisplay(D : TBSData);
-    procedure SetBandMode(B : TBand; M : TMode);
-    procedure SetMinMaxFreq(min, max : LongInt);      // unused
-    procedure RewriteBandScope;
+    constructor Create(AOwner: TComponent; b: TBand); reintroduce;
+    procedure AddSelfSpot(aQSO : TQSO; Hz : LongInt);
+    procedure AddSelfSpotFromNetwork(BSText : string);
+    procedure AddClusterSpot(Sp: TSpot);
+    procedure RewriteBandScope();
     procedure MarkCurrentFreq(Hz : integer);
-    procedure ProcessBSDataFromNetwork(BSText : string);
+    procedure NotifyWorked(aQSO: TQSO);
 
     property FontSize: Integer read GetFontSize write SetFontSize;
+    property Select: Boolean write SetSelect;
+    property FreshnessType: Integer read FFreshnessType write SetFreshnessType;
+    property IconType: Integer read FIconType write SetIconType;
+    property BSList: TBSList read FBSList;
+    property CurrentBand: TBand read FCurrBand write SetCurrentBand;
+    property CurrentBandOnly: Boolean read FCurrentBandOnly write SetCurrentBandOnly;
   end;
 
-procedure BSRefresh(Sender : TObject);
+  TBandScopeArray = array[b19..b10g] of TBandScope2;
 
-const BSMax = 15;
 var
   CurrentRigFrequency : Integer; // in Hertz
-  BandScopeArray : array[1..BSMax] of TBandscope2;
 
 implementation
 
-uses UOptions, Main, UZLinkForm, URigControl;
+uses
+  UOptions, Main, UZLinkForm, URigControl;
 
 {$R *.dfm}
 
-procedure BSRefresh(Sender: TObject);
-var
-   i: Integer;
-   DispMode: Integer;
-   RR: TRig;
+constructor TBandScope2.Create(AOwner: TComponent; b: TBand);
 begin
-   MainForm.BandScope2.RewriteBandScope;
-   for i := 1 to BSMax do begin
-      if BandScopeArray[i] <> nil then begin
-         DispMode := BandScopeArray[i].DisplayMode;
-         RR := nil;
-         case DispMode of
-            1:
-               RR := MainForm.RigControl.Rig1;
-            2:
-               RR := MainForm.RigControl.Rig2;
-         end;
-         if RR <> nil then
-            BandScopeArray[i].SetBandMode(RR.CurrentBand, RR.CurrentMode)
-         else
-            BandScopeArray[i].RewriteBandScope;
-      end;
-   end;
+   Inherited Create(AOwner);
+   FCurrentBandOnly := False;
+   FCurrBand := b;
+   SetCaption();
+   FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
+   IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
 end;
 
 procedure TBandScope2.CreateParams(var Params: TCreateParams);
@@ -118,93 +112,102 @@ var
    i: Integer;
    boo: Boolean;
 begin
-   if BSList2.Count = 0 then begin
-      BSList2.Add(D);
+   if FBSList.Count = 0 then begin
+      FBSList.Add(D);
       exit;
    end;
 
    boo := false;
-   for i := 0 to BSList2.Count - 1 do begin
-      if TBSData(BSList2[i]).FreqHz > D.FreqHz then begin
+   for i := 0 to FBSList.Count - 1 do begin
+      if FBSList[i].FreqHz > D.FreqHz then begin
          boo := true;
          break;
       end;
    end;
 
    if boo then
-      BSList2.Insert(i, D)
+      FBSList.Insert(i, D)
    else
-      BSList2.Add(D);
+      FBSList.Add(D);
 end;
 
 procedure TBandScope2.AddAndDisplay(D: TBSData);
-var
-   i: Integer;
-   BS: TBSData;
-   Diff: TDateTime;
 begin
-   for i := 0 to BSList2.Count - 1 do begin
-      BS := BSList2[i];
-
-      if (BS.Call = D.Call) and (BS.Band = D.Band) then begin
-         BSList2[i] := nil;
-         Continue;
-      end;
-
-      if round(BS.FreqHz / 100) = round(D.FreqHz / 100) then begin
-         BSList2[i] := nil;
-         Continue;
-      end;
-
-      Diff := Now - BS.Time;
-      if Diff * 24 * 60 > 1.00 * dmZlogGlobal.Settings._bsexpire then begin
-         BSList2[i] := nil;
-      end;
-   end;
-
-   BSList2.Pack;
+   Cleanup(D);
    AddBSList(D);
 end;
 
-procedure TBandScope2.CreateBSData(aQSO: TQSO; Hz: LongInt);
+// Self Spot
+procedure TBandScope2.AddSelfSpot(aQSO: TQSO; Hz: LongInt);
 var
    D: TBSData;
 begin
+   if FCurrBand <> aQSO.Band then begin
+      Exit;
+   end;
+
    D := TBSData.Create;
    D.FreqHz := Hz;
    D.Band := aQSO.Band;
    D.Mode := aQSO.Mode;
    D.Call := aQSO.Callsign;
    D.Number := aQSO.NrRcvd;
-   // D.Time := Now;
-   Main.MyContest.MultiForm.ProcessSpotData(TBaseSpot(D));
+   D.Time := Now;
+   D.SpotSource := ssSelf;
+
+   // 交信済みチェック
+   SpotCheckWorked(D);
+
    AddAndDisplay(D);
-   MainForm.ZLinkForm.SendBandScopeData(D.InText);
+
    // Send spot data to other radios!
+   MainForm.ZLinkForm.SendBandScopeData(D.InText);
 end;
 
-procedure TBandScope2.SetBandMode(B: TBand; M: TMode);
+// 他のPCで登録したのSpot via Z-Server
+procedure TBandScope2.AddSelfSpotFromNetwork(BSText: string);
 var
-   R: Integer;
+   D: TBSData;
 begin
-   FCurrBand := B;
-   FCurrMode := M;
-   Caption := 'Band scope ' + BandString[B];
+   D := TBSData.Create;
+   D.FromText(BSText);
+   D.SpotSource := ssSelfFromZServer;
 
-   for R := 0 to Grid.RowCount - 1 do begin
-      Grid.Cells[0, R] := '';
-      Grid.Objects[0, R] := nil;
+   if D.Band <> FCurrBand then begin
+      D.Free();
+      Exit;
    end;
 
-   RewriteBandScope;
+   // 交信済みチェック
+   SpotCheckWorked(D);
+
+   AddAndDisplay(D);
 end;
 
-procedure TBandScope2.SetMinMaxFreq(min, max: LongInt);
+// SpotSourceはssCluster 又は ssClusterFromZServer
+procedure TBandScope2.AddClusterSpot(Sp: TSpot);
+var
+   D: TBSData;
 begin
-   FMinFreq := min;
-   FMaxFreq := max;
-   dmZlogGlobal.Settings._bsMinFreqArray[FCurrBand, FCurrMode] := min div 1000;
-   dmZlogGlobal.Settings._bsMaxFreqArray[FCurrBand, FCurrMode] := max div 1000;
+   if FCurrBand <> Sp.Band then begin
+      Exit;
+   end;
+
+   D := TBSData.Create;
+   D.Call := Sp.Call;
+   D.FreqHz := Sp.FreqHz;
+   D.CtyIndex := Sp.CtyIndex;
+   D.Zone := Sp.Zone;
+   D.Band := Sp.Band;
+   D.NewCty := Sp.NewCty;
+   D.NewZone := Sp.NewZone;
+   D.Worked := Sp.Worked;
+   D.SpotSource := Sp.SpotSource;
+   D.SpotGroup := Sp.SpotGroup;
+   D.CQ := Sp.CQ;
+   D.Number := Sp.Number;
+   D.NewJaMulti := Sp.NewJaMulti;
+   AddAndDisplay(D);
 end;
 
 procedure TBandScope2.Timer1Timer(Sender: TObject);
@@ -212,14 +215,44 @@ begin
    Timer1.Enabled := False;
    try
       if FProcessing = False then begin
-         BSRefresh(Self);
+         RewriteBandScope();
       end;
    finally
       Timer1.Enabled := True;
    end;
 end;
 
-procedure TBandScope2.RewriteBandScope;
+procedure TBandScope2.Cleanup(D: TBSData);
+var
+   i: Integer;
+   BS: TBSData;
+   Diff: TDateTime;
+begin
+   for i := 0 to FBSList.Count - 1 do begin
+      BS := FBSList[i];
+
+      if Assigned(D) then begin
+         if (BS.Call = D.Call) and (BS.Band = D.Band) then begin
+            FBSList[i] := nil;
+            Continue;
+         end;
+
+         if round(BS.FreqHz / 100) = round(D.FreqHz / 100) then begin
+            FBSList[i] := nil;
+            Continue;
+         end;
+      end;
+
+      Diff := Now - BS.Time;
+      if Diff * 24 * 60 > 1.00 * dmZlogGlobal.Settings._bsexpire then begin
+         FBSList[i] := nil;
+      end;
+   end;
+
+   FBSList.Pack;
+end;
+
+procedure TBandScope2.RewriteBandScope();
 var
    D: TBSData;
    i: Integer;
@@ -232,6 +265,9 @@ var
 begin
    toprow := Grid.TopRow;
    currow := Grid.Row;
+
+   // クリーンアップ
+   Cleanup(nil);
 
    if GetBandIndex(CurrentRigFrequency) = Ord(FCurrBand) then begin
       MarkCurrent := True;
@@ -261,8 +297,8 @@ begin
    Marked := False;
 
    R := 0;
-   for i := 0 to BSList2.Count - 1 do begin
-      D := TBSData(BSList2[i]);
+   for i := 0 to FBSList.Count - 1 do begin
+      D := FBSList[i];
       if D.Band <> FCurrBand then begin
          Continue;
       end;
@@ -278,7 +314,7 @@ begin
 
       str := FillRight(D.LabelStr, 20);
 
-      if D.ClusterData then begin
+      if D.SpotSource <> ssSelf then begin
          str := str + '+ ';
       end
       else begin
@@ -304,7 +340,7 @@ begin
 
    if MarkCurrent and Not(Marked) then begin
       Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
-      Grid.Objects[0, R] := nil;;
+      Grid.Objects[0, R] := nil;
    end;
 
    if toprow <= Grid.RowCount - 1 then begin
@@ -328,8 +364,8 @@ var
    D: TBSData;
 begin
    j := 0;
-   for i := 0 to BSList2.Count - 1 do begin
-      D := TBSData(BSList2[i]);
+   for i := 0 to FBSList.Count - 1 do begin
+      D := FBSList[i];
       if D.Band <> FCurrBand then begin
          Continue;
       end;
@@ -340,40 +376,11 @@ begin
    Result := j;
 end;
 
-procedure TBandScope2.GridSetting(ARow, ACol: Integer; var Fcolor: Integer; var Bold, Italic, underline: Boolean);
-var
-   D: TBSData;
-begin
-   D := TBSData(Grid.Objects[ACol, ARow]);
-   if D = nil then begin
-      Bold := True;
-      FColor := clBlack;
-   end
-   else begin
-      if D.NewMulti then begin
-         FColor := clRed;
-      end
-      else if D.Worked then begin
-         FColor := clBlack;
-      end
-      else begin
-         FColor := clGreen;
-      end;
-
-      if D.Bold then begin
-         Bold := True;
-      end
-      else begin
-         Bold := False;
-      end;
-   end;
-end;
-
 procedure TBandScope2.DeleteFromBSList(i: Integer);
 begin
-   if (i >= 0) and (i < BSList2.Count) then begin
-      BSList2[i] := nil;
-      BSList2.Pack;
+   if (i >= 0) and (i < FBSList.Count) then begin
+      FBSList[i] := nil;
+      FBSList.Pack;
    end;
 end;
 
@@ -387,8 +394,8 @@ begin
 
    for i := Grid.Selection.Top to Grid.Selection.Bottom do begin
       s := Grid.Cells[0, i];
-      for j := 0 to BSList2.Count - 1 do begin
-         if pos(TBSData(BSList2[j]).LabelStr, s) = 1 then begin
+      for j := 0 to FBSList.Count - 1 do begin
+         if pos(FBSList[j].LabelStr, s) = 1 then begin
             DeleteFromBSList(j);
             break;
          end;
@@ -407,8 +414,8 @@ begin
       exit;
 
    CurrentRigFrequency := Hz;
-   for i := 0 to BSList2.Count - 1 do begin
-      B := TBSData(BSList2[i]);
+   for i := 0 to FBSList.Count - 1 do begin
+      B := FBSList[i];
       if abs((B.FreqHz div 100) - (Hz div 100)) <= 1 then
          B.Bold := true
       else
@@ -418,117 +425,264 @@ begin
    RewriteBandScope;
 end;
 
-procedure TBandScope2.ProcessBSDataFromNetwork(BSText: string);
-var
-   D: TBSData;
-begin
-   D := TBSData.Create;
-   D.FromText(BSText);
-   Main.MyContest.MultiForm.ProcessSpotData(TBaseSpot(D));
-   AddAndDisplay(D);
-end;
-
 procedure TBandScope2.Deleteallworkedstations1Click(Sender: TObject);
 var
    D: TBSData;
    i: Integer;
 begin
-   for i := 0 to BSList2.Count - 1 do begin
-      D := TBSData(BSList2[i]);
+   for i := 0 to FBSList.Count - 1 do begin
+      D := FBSList[i];
       if D.Band = FCurrBand then begin
          if D.Worked then begin
-            BSList2[i] := nil;
+            FBSList[i] := nil;
          end;
       end;
    end;
-   BSList2.Pack;
-   BSRefresh(Self);
-end;
+   FBSList.Pack;
 
-procedure TBandScope2.ModeClick(Sender: TObject);
-begin
-   DisplayMode := TMenuItem(Sender).Tag;
-end;
-
-procedure TBandScope2.FixedBandClick(Sender: TObject);
-begin
-   DisplayMode := 3;
-   FFixedBand := TBand(TMenuItem(Sender).Tag);
-   SetBandMode(FFixedBand, Main.CurrentQSO.Mode);
-   BSRefresh(Self);
+   RewriteBandScope();
 end;
 
 procedure TBandScope2.FormCreate(Sender: TObject);
 begin
-   FFixedBand := b19;
-   ArrayNumber := 0;
-   DisplayMode := 0; // current rig
+   FBSList := TBSList.Create();
    FProcessing := False;
+end;
+
+procedure TBandScope2.FormDestroy(Sender: TObject);
+begin
+   FBSList.Free();
 end;
 
 procedure TBandScope2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   if ArrayNumber > 0 then begin
-      BandScopeArray[ArrayNumber] := nil;
+//
+end;
+
+procedure TBandScope2.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+   case Key of
+      VK_ESCAPE:
+         MainForm.LastFocus.SetFocus;
    end;
+end;
+
+procedure TBandScope2.FormResize(Sender: TObject);
+begin
+   Grid.ColWidths[0] := Grid.Width - 4;
+end;
+
+procedure TBandScope2.FormShow(Sender: TObject);
+begin
+   Timer1.Enabled := True;
 end;
 
 procedure TBandScope2.GridDblClick(Sender: TObject);
 var
-   i, j: Integer;
-   F: Extended;
-   str, fstr, cstr, nstr: string;
+   D: TBSData;
 begin
    FProcessing := True;
    try
-      str := Grid.Cells[0, Grid.Selection.Top];
-      if pos('+', str) > 0 then
-         str := TrimRight(copy(str, 1, length(str) - 1));
-
-      { ver 2.2d stop scanning BSList2. just read freq from the string }
-
-      fstr := '';
-      cstr := '';
-      nstr := '';
-
-      i := pos('[', str); // extract number if any
-      if i > 0 then begin
-         j := pos(']', str);
-         if j > i then
-            nstr := copy(str, i + 1, j - i - 1);
+      D := TBSData(Grid.Objects[0, Grid.Selection.Top]);
+      if D = nil then begin
+         Exit;
       end;
 
-      i := pos(' ', str); // extract frequency in kHz
-      if i > 0 then
-         fstr := copy(str, 1, i)
-      else
-         exit;
-
-      Delete(str, 1, i); // extract callsign
-      i := pos(' ', str);
-      if i > 0 then
-         cstr := copy(str, 1, i - 1)
-      else
-         cstr := str;
-
-      try
-         F := StrToFloat(fstr);
-      except
-         on EConvertError do begin
-            exit;
-         end;
+      // 交信済みは除外
+      if D.Worked = True then begin
+         MainForm.SetYourCallsign('', '');
+         Exit;
       end;
 
-      MainForm.CallsignEdit.Text := cstr;
-      MainForm.NumberEdit.Text := nstr;
-      if MainForm.RigControl.Rig <> nil then
-         MainForm.RigControl.Rig.SetFreq(round(F * 1000));
+      // 相手局をセット
+      MainForm.SetYourCallsign(D.Call, D.Number);
 
-      Main.MyContest.MultiForm.SetNumberEditFocus;
-      MainForm.UpdateBand(TBand(GetBandIndex(round(F * 1000))));
+      // 周波数をセット
+      MainForm.SetFrequency(D.FreqHz);
    finally
       FProcessing := False;
    end;
+end;
+
+procedure TBandScope2.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+var
+   D: TBSData;
+   strText: string;
+   n: Integer;
+   x, y: Integer;
+   rc: TRect;
+   sec: Integer;
+begin
+   with Grid.Canvas do begin
+      Font.Name := 'ＭＳ ゴシック';
+      Brush.Color := Grid.Color;
+      Brush.Style := bsSolid;
+      FillRect(Rect);
+
+      strText := Grid.Cells[ACol, ARow];
+
+      D := TBSData(Grid.Objects[ACol, ARow]);
+      if D = nil then begin
+         Font.Style := [fsBold];
+         Font.Color := clBlack;
+         n := -1;
+      end
+      else begin
+         // 0,1,2は残り時間、3は経過時間
+         if FFreshnessType = 3 then begin
+            sec := CalcElapsedTime(D.Time, Now);
+         end
+         else begin
+            sec := CalcRemainTime(D.Time, Now);
+         end;
+
+         if sec < FFreshnessThreshold[0] then begin
+            n := 0;
+         end
+         else if sec < FFreshnessThreshold[1] then begin
+            n := 1;
+         end
+         else if sec < FFreshnessThreshold[2] then begin
+            n := 2;
+         end
+         else if sec < FFreshnessThreshold[3] then begin
+            n := 3;
+         end
+         else begin
+            n := 4;
+         end;
+
+         if D.Worked then begin   // 交信済み(＝マルチゲット済み）
+            Font.Color  := dmZLogGlobal.Settings._bandscopecolor[1].FForeColor;
+            D.Bold      := dmZLogGlobal.Settings._bandscopecolor[1].FBold;
+         end
+         else begin  // 未交信
+            if D.NewMulti = True then begin         // マルチ未ゲット
+               Font.Color  := dmZLogGlobal.Settings._bandscopecolor[2].FForeColor;
+               D.Bold      := dmZLogGlobal.Settings._bandscopecolor[2].FBold;
+            end
+            else if (D.NewMulti = False) and (D.Number <> '') then begin // マルチゲット済み
+               Font.Color  := dmZLogGlobal.Settings._bandscopecolor[3].FForeColor;
+               D.Bold      := dmZLogGlobal.Settings._bandscopecolor[3].FBold;
+            end
+            else begin     // マルチ不明
+               Font.Color  := dmZLogGlobal.Settings._bandscopecolor[4].FForeColor;
+               D.Bold      := dmZLogGlobal.Settings._bandscopecolor[4].FBold;
+            end;
+
+            // 背景色はSpotSource別にする
+            case D.SpotSource of
+               ssSelf, ssSelfFromZserver: begin
+                  case D.SpotGroup of
+                     1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+                     2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor2;
+                     3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor3;
+                     else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+                  end;
+               end;
+
+               ssCluster: begin
+                  case D.SpotGroup of
+                     1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
+                     2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor2;
+                     3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor3;
+                     else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
+                  end;
+               end;
+
+               ssClusterFromZServer: begin
+                  case D.SpotGroup of
+                     1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
+                     2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor2;
+                     3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor3;
+                     else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
+                  end;
+               end;
+
+               else begin
+                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+               end;
+            end;
+         end;
+
+         if D.Bold then begin
+            Font.Style := [fsBold];
+         end
+         else begin
+            Font.Style := [];
+         end;
+
+         {$IFDEF DEBUG}
+         strText := strText + ' (' + IntToStr(sec) + ')';
+         {$ENDIF}
+      end;
+
+      if n > -1 then begin
+         x := Rect.Left + 2;
+         y := Rect.Top + (((Rect.Bottom - Rect.Top) - 16) div 2);
+         ImageList1.Draw(Grid.Canvas, x, y, n, True);
+      end;
+
+      rc := Rect;
+      rc.Left := rc.Left + 16 + 4;
+      TextRect(rc, strText, [tfLeft,tfVerticalCenter,tfSingleLine]);
+
+      if gdSelected in State then begin
+         DrawFocusRect(Rect);
+      end;
+   end;
+end;
+
+procedure TBandScope2.GridMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+var
+   pt: TPoint;
+   C, R: Integer;
+   D: TBSData;
+   strText: string;
+   remain: Integer;
+   elapsed: Integer;
+   T2: TDateTime;
+begin
+   pt.X := X;
+   pt.Y := Y;
+   pt := Grid.ClientToScreen(pt);
+
+   Grid.MouseToCell(X, Y, C, R);
+   if (C = -1) or (R = -1) then begin
+      Application.CancelHint();
+      Grid.Hint := '';
+      Exit;
+   end;
+
+   D := TBSData(Grid.Objects[C, R]);
+   if D = nil then begin
+      Application.CancelHint();
+      Grid.Hint := '';
+      Exit;
+   end;
+
+   T2 := Now;
+   remain := CalcRemainTime(D.Time, T2);
+   elapsed := CalcElapsedTime(D.Time, T2);
+
+   strText := D.Call + #13#10 +
+              'Spoted at ' + FormatDateTime('hh:mm:ss', D.Time) + #13#10;
+   if remain > 60 then begin
+      strText := strText + IntToStr(Trunc(remain / 60)) + ' minutes to left' + #13#10;
+   end
+   else begin
+      strText := strText + IntToStr(remain) + ' seconds to left' + #13#10;
+   end;
+
+   if elapsed > 60 then begin
+      strText := strText + IntToStr(Trunc(elapsed / 60)) + ' minutes elapsed';
+   end
+   else begin
+      strText := strText + IntToStr(elapsed) + ' seconds elapsed';
+   end;
+
+   Grid.Hint := strText;
+   Application.ActivateHint(pt);
 end;
 
 function TBandScope2.GetFontSize(): Integer;
@@ -550,6 +704,133 @@ begin
 
    for i := 0 to Grid.RowCount - 1 do begin
       Grid.RowHeights[i] := h;
+   end;
+end;
+
+procedure TBandScope2.SetSelect(fSelect: Boolean);
+begin
+   if fSelect = True then begin
+      Panel1.Color := clBlue;
+   end
+   else begin
+      Panel1.Color := clGray;
+   end;
+end;
+
+procedure TBandScope2.NotifyWorked(aQSO: TQSO);
+var
+   i: Integer;
+   D: TBSData;
+begin
+   for i := 0 to FBSList.Count - 1 do begin
+      D := FBSList[i];
+      SpotCheckWorked(D);
+   end;
+end;
+
+procedure TBandScope2.SetFreshnessType(v: Integer);
+begin
+   FFreshnessType := v;
+   case FFreshnessType of
+      1: begin
+         FFreshnessThreshold[0] := 30;
+         FFreshnessThreshold[1] := 5 * 60;
+         FFreshnessThreshold[2] := 10 * 60;
+         FFreshnessThreshold[3] := 30 * 60;
+         FFreshnessThreshold[4] := 0;  // unused
+      end;
+
+      2: begin
+         FFreshnessThreshold[0] := (dmZlogGlobal.Settings._bsexpire * 60) div 5;
+         FFreshnessThreshold[1] := FFreshnessThreshold[0] + FFreshnessThreshold[0];
+         FFreshnessThreshold[2] := FFreshnessThreshold[1] + FFreshnessThreshold[0];
+         FFreshnessThreshold[3] := FFreshnessThreshold[2] + FFreshnessThreshold[0];
+         FFreshnessThreshold[4] := 0;  // unused
+      end;
+
+      3: begin
+         FFreshnessThreshold[0] := 299;            // [0]
+         FFreshnessThreshold[1] := 10 * 60;        // [5]
+         FFreshnessThreshold[2] := 20 * 60;        // [10]
+         FFreshnessThreshold[3] := 30 * 60;        // [20]
+         FFreshnessThreshold[4] := 0;              // unused
+      end;
+
+      else begin
+         FFreshnessThreshold[0] := (dmZlogGlobal.Settings._bsexpire * 60) div 16;
+         FFreshnessThreshold[1] := (dmZlogGlobal.Settings._bsexpire * 60) div 8;
+         FFreshnessThreshold[2] := (dmZlogGlobal.Settings._bsexpire * 60) div 4;
+         FFreshnessThreshold[3] := (dmZlogGlobal.Settings._bsexpire * 60) div 2;
+         FFreshnessThreshold[4] := 0;  // unused
+      end;
+   end;
+end;
+
+procedure TBandScope2.SetIconType(v: Integer);
+var
+   bmp: TBitmap;
+   i: Integer;
+   strPrefix: string;
+begin
+   FIconType := v;
+
+   case FIconType of
+      1: strPrefix := 'IDB_ANT_';
+      2: strPrefix := 'IDB_TIM_';
+      3: strPrefix := 'IDB_NUM_';
+      4: strPrefix := 'IDB_BAR_';
+      5: strPrefix := 'IDB_NUM2_';
+      else strPrefix := 'IDB_BAR2_';
+   end;
+
+   bmp := TBitmap.Create();
+   ImageList1.Clear();
+   for i := 0 to 4 do begin
+      bmp.LoadFromResourceName(SysInit.HInstance, strPrefix + IntToStr(i));
+      ImageList1.Add(bmp, nil);
+   end;
+   bmp.Free();
+end;
+
+function TBandScope2.CalcRemainTime(T1, T2: TDateTime): Integer;
+var
+   ExpireTime: TDateTime;
+begin
+   ExpireTime := IncMinute(T1, dmZlogGlobal.Settings._bsexpire);
+   if ExpireTime > Now then begin
+      Result := Trunc(SecondSpan(ExpireTime, T2));
+   end
+   else begin
+      Result := 0;
+   end;
+end;
+
+function TBandScope2.CalcElapsedTime(T1, T2: TDateTime): Integer;
+begin
+   Result := Trunc(SecondSpan(T2, T1));
+end;
+
+procedure TBandScope2.SetCurrentBand(b: TBand);
+begin
+   FBSList.Clear();
+   FCurrBand := b;
+   SetCaption();
+   RewriteBandScope();
+end;
+
+procedure TBandScope2.SetCurrentBandOnly(v: Boolean);
+begin
+   FCurrentBandOnly := v;
+   SetCaption();
+end;
+
+procedure TBandScope2.SetCaption();
+begin
+   if FCurrentBandOnly = True then begin
+      Caption := '[Current] ' + BandString[FCurrBand];
+   end
+   else begin
+      Caption := BandString[FCurrBand];
    end;
 end;
 

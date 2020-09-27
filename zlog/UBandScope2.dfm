@@ -1,59 +1,64 @@
 object BandScope2: TBandScope2
   Left = 48
   Top = 125
+  BorderStyle = bsSizeToolWin
   Caption = 'Band Scope'
   ClientHeight = 416
-  ClientWidth = 116
+  ClientWidth = 204
   Color = clBtnFace
+  Constraints.MinHeight = 140
+  Constraints.MinWidth = 210
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  OnResize = FormResize
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 116
-    Height = 25
-    Align = alTop
-    TabOrder = 0
-    Visible = False
-  end
-  object Grid: TMgrid
-    Left = 0
-    Top = 25
-    Width = 116
-    Height = 391
+    Width = 204
+    Height = 416
     Align = alClient
-    ColCount = 1
-    DefaultColWidth = 500
-    DefaultRowHeight = 14
-    FixedCols = 0
-    FixedRows = 0
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = #65325#65331' '#12468#12471#12483#12463
-    Font.Pitch = fpFixed
-    Font.Style = []
-    GridLineWidth = 0
-    Options = [goRangeSelect, goRowSelect, goThumbTracking]
-    ParentFont = False
-    Popupmenu = BSMenu
-    ScrollBars = ssVertical
-    TabOrder = 1
-    OnDblClick = GridDblClick
-    Alignment = taLeftJustify
-    BorderColor = clSilver
-    OddRowColor = clWindow
-    EvenRowColor = clWindow
-    OnSetting = GridSetting
+    BevelOuter = bvNone
+    BorderWidth = 4
+    BorderStyle = bsSingle
+    Color = clRed
+    ParentBackground = False
+    TabOrder = 0
+    object Grid: TStringGrid
+      Left = 4
+      Top = 4
+      Width = 192
+      Height = 404
+      Align = alClient
+      ColCount = 1
+      DefaultColWidth = 188
+      DefaultDrawing = False
+      DoubleBuffered = True
+      FixedCols = 0
+      FixedRows = 0
+      Options = []
+      ParentDoubleBuffered = False
+      ParentShowHint = False
+      PopupMenu = BSMenu
+      ScrollBars = ssVertical
+      ShowHint = True
+      TabOrder = 0
+      OnDblClick = GridDblClick
+      OnDrawCell = GridDrawCell
+      OnMouseMove = GridMouseMove
+    end
   end
   object BSMenu: TPopupMenu
     AutoHotkeys = maManual
@@ -68,64 +73,15 @@ object BandScope2: TBandScope2
       Caption = 'Delete all worked stations'
       OnClick = Deleteallworkedstations1Click
     end
-    object Mode1: TMenuItem
-      Caption = 'Mode...'
-      object mnCurrentRig: TMenuItem
-        Caption = 'Current Rig'
-        OnClick = ModeClick
-      end
-      object Rig11: TMenuItem
-        Tag = 1
-        Caption = 'Rig 1'
-        OnClick = ModeClick
-      end
-      object Rig21: TMenuItem
-        Tag = 2
-        Caption = 'Rig 2'
-        OnClick = ModeClick
-      end
-      object Fixedband1: TMenuItem
-        Caption = 'Fixed band'
-        object N19MHz1: TMenuItem
-          Caption = '1.9 MHz'
-          OnClick = FixedBandClick
-        end
-        object N35MHz1: TMenuItem
-          Tag = 1
-          Caption = '3.5 MHz'
-          OnClick = FixedBandClick
-        end
-        object N7MHz1: TMenuItem
-          Tag = 2
-          Caption = '7 MHz'
-          OnClick = FixedBandClick
-        end
-        object N14MHz1: TMenuItem
-          Tag = 4
-          Caption = '14 MHz'
-          OnClick = FixedBandClick
-        end
-        object N21MHz1: TMenuItem
-          Tag = 6
-          Caption = '21 MHz'
-          OnClick = FixedBandClick
-        end
-        object N28MHz1: TMenuItem
-          Tag = 8
-          Caption = '28 MHz'
-          OnClick = FixedBandClick
-        end
-        object N50MHz1: TMenuItem
-          Tag = 9
-          Caption = '50 MHz'
-          OnClick = FixedBandClick
-        end
-      end
-    end
   end
   object Timer1: TTimer
+    Enabled = False
     OnTimer = Timer1Timer
     Left = 56
     Top = 112
+  end
+  object ImageList1: TImageList
+    Left = 56
+    Top = 176
   end
 end

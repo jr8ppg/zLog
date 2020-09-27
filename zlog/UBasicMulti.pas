@@ -162,22 +162,16 @@ begin
 end;
 
 procedure TBasicMulti.RenewBandScope;
-var
-   S: TBSData;
-   i: integer;
+//var
+//   S: TBSData;
+//   i: integer;
 begin
-   { for i := 0 to USpotClass.BSList.Count - 1 do
-     begin
-     S := TBSData(USpotClass.BSList[i]);
-     ProcessSpotData(TBaseSpot(S));
-     end; }
+//   for i := 0 to USpotClass.BSList2.Count - 1 do begin
+//      S := TBSData(USpotClass.BSList2[i]);
+//      ProcessSpotData(TBaseSpot(S));
+//   end;
 
-   for i := 0 to USpotClass.BSList2.Count - 1 do begin
-      S := TBSData(USpotClass.BSList2[i]);
-      ProcessSpotData(TBaseSpot(S));
-   end;
-
-   uBandScope2.BSRefresh(Self);
+   MainForm.BSRefresh();
 end;
 
 procedure TBasicMulti.AddSpot(aQSO: TQSO); // renews cluster & bs when adding a qso w/o renewing
@@ -186,39 +180,16 @@ var
    S: TBaseSpot;
    boo: boolean;
 begin
-   boo := False;
    if aQSO.NewMulti1 or aQSO.NewMulti2 then begin
       RenewBandScope;
       RenewCluster;
       // exit;
    end;
 
-   for i := 0 to USpotClass.BSList2.Count - 1 do begin
-      S := TBaseSpot(USpotClass.BSList2[i]);
-      if (S.Call = aQSO.Callsign) and (S.Band = aQSO.Band) then begin
-         S.NewCty := False;
-         S.NewZone := False;
-         S.Worked := true;
-         boo := true;
-      end;
-   end;
+   // BandScopeデータを交信済みに変更する
+   MainForm.BandScopeUpdateSpot(aQSO);
 
-   { for i := 0 to USpotClass.BSList.Count - 1 do
-     begin
-     S := TBaseSpot(USpotClass.BSList[i]);
-     if (S.Call = aQSO.QSO.callsign) and (S.band = aQSO.QSO.band) then
-     begin
-     S.NewCty := False;
-     S.NewZone := False;
-     S.Worked := True;
-     boo := true;
-     end;
-     end; }
-
-   if boo then begin
-      uBandScope2.BSRefresh(Self);
-   end;
-
+   // Clusterデータを交信済みに変更する
    boo := False;
    for i := 0 to MainForm.CommForm.SpotList.Count - 1 do begin
       S := TBaseSpot(MainForm.CommForm.SpotList[i]);

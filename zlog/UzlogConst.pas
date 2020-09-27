@@ -23,13 +23,14 @@ const
   SER_MS = 3;    // separate serial for run/multi stns
 
 const
-  RIGNAMES : array[0..15] of string =
+  RIGNAMES : array[0..16] of string =
 ('None',
  'TS-690/450',
  'TS-850',
  'TS-790',
  'TS-2000',
  'TS-2000/P',
+ 'TS-570/590',
  'FT-817',
  'FT-847',
  'FT-920',
@@ -44,8 +45,7 @@ const
 
 const
   maxbank = 3; // bank 3 reserved for rtty
-  maxstr = 8;
-  maxmaxstr = 12; // f11 and f12 only accessible via zlog.ini
+  maxmessage = 12; // f11 and f12 only accessible via zlog.ini
 
 const
   ZLinkHeader = '#ZLOG#';
@@ -87,7 +87,7 @@ const
   pwrH = TPower(3);
 
 const
-  default_primary_shortcut: array[0..102] of string = (
+  default_primary_shortcut: array[0..119] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -106,20 +106,20 @@ const
     'F6',               // #15
     'F7',
     'F8',
-    'F9',
-    'F10',
-    'F11',              // #20
-    'F12',
-    'Shift+F1',
-    'Shift+F2',
-    'Shift+F3',
-    'Shift+F4',         // #25
-    'Shift+F5',
-    'Shift+F6',
-    'Shift+F7',
-    'Shift+F8',
-    'Shift+F11',        // #30
-    'Shift+F12',
+    '',                 // #18 actionCheckMulti
+    '',                 // #19 actionShowCheckPartial
+    '',                 // #20 actionPlayCQA2
+    '',                 // #21 actionPlayCQA3
+    'Shift+F1',         // #22 actionPlayMessageB01
+    'Shift+F2',         // #23 actionPlayMessageB02
+    'Shift+F3',         // #24 actionPlayMessageB03
+    'Shift+F4',         // #25 actionPlayMessageB04
+    'Shift+F5',         // #26 actionPlayMessageB05
+    'Shift+F6',         // #27 actionPlayMessageB06
+    'Shift+F7',         // #28 actionPlayMessageB07
+    'Shift+F8',         // #29 actionPlayMessageB08
+    '',                 // #30 actionPlayCQB2
+    '',                 // #31 actionPlayCQB3
     'Ctrl+Enter',
     'Ctrl+N',
     'Shift+Ctrl+N',
@@ -177,8 +177,8 @@ const
     '',
     '',
     'Shift+Ctrl+I',
-    'Shift+M',
-    'Shift+B',          // #90
+    'Shift+B',
+    'Shift+M',          // #90
     'Shift+P',
     'Shift+F',
     'Shift+R',
@@ -189,11 +189,28 @@ const
     'Shift+Z',
     '',                 // #99
     'Alt+L',            // #100
-    '',
-    ''
+    '',                 // #101 actionQuickMemo1
+    '',                 // #102 actionQuickMemo2
+    '',                 // #103 actionCwMessagePad
+    '',                 // #104 actionCorrectSentNr
+    '',                 // #105 actionSetLastFreq
+    '',                 // #106 actionQuickMemo3
+    '',                 // #107 actionQuickMemo4
+    '',                 // #108 actionQuickMemo5
+    'F9',               // #109 actionPlayMessageA09
+    'F10',              // #110 actionPlayMessageA10
+    'Shift+F9',         // #111 actionPlayMessageB09
+    'Shift+F10',        // #112 actionPlayMessageB10
+    'Esc',              // #113 actionCQAbort
+    'F11',              // #114 actionPlayMessageA11
+    'F12',              // #115 actionPlayMessageA12
+    '',                 // #116 actionPlayCQA1
+    'Shift+F11',        // #117 actionPlayMessageB11
+    'Shift+F12',        // #118 actionPlayMessageB12
+    ''                  // #119 actionPlayCQB1
   );
 
-  default_secondary_shortcut: array[0..102] of string = (
+  default_secondary_shortcut: array[0..119] of string = (
     '',                 // #00
     '',
     '',
@@ -295,8 +312,25 @@ const
     '',
     '',                 // #99
     '',                 // #100
+    '',                 // #101
     '',
-    ''
+    '',
+    '',
+    '',                 // #105
+    '',
+    '',
+    '',
+    '',
+    '',                 // #110
+    '',
+    '',                 // #112
+    '',                 // #113
+    '',                 // #114 actionPlayMessageA11
+    '',                 // #115 actionPlayMessageA12
+    '',                 // #116 actionPlayCQA1
+    '',                 // #117 actionPlayMessageB11
+    '',                 // #118 actionPlayMessageB12
+    ''                  // #119 actionPlayCQB1
   );
 
 const

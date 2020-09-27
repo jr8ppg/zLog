@@ -41,6 +41,7 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 
 ※zlog_requiresより、未使用となったTwsaGraphコンポーネントを削除したため、一度zlog_requiresをアンインストールしてから再度ビルド－インストールを行って下さい。  
 ※64ビットコンパイルに対応しました。
+※V2.5 beta3でVoice機能復活しました。
 
 1. TeeChart Standard（Delphi付属）のインストール
    - Delphiインストール時に指定するか、インストール後にウェルカムページ内の「機能拡張」－「プラットフォーム＆拡張マネージャ」よりインストール。（「RAD Studio 追加オプション」ウインドウの「追加オプション」タブ内にある「TeeChart Standard」をチェックON）
@@ -84,12 +85,12 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 
 1. JARL ELOG 2.0に対応
 2. LPTポート対応廃止
-3. Voice対応廃止
-4. Windows7/10で目立つ不具合修正
-5. FT-2000,ICOMのカタログ機種を追加
-6. RIGコントロールのCOMポートをCOM1～COM20まで拡張
-7. RIGコントロールの通信速度を設定可能に
-8. CWキーイングのサイドトーン機能廃止
+3. Windows7/10で目立つ不具合修正
+4. FT-2000,ICOMのカタログ機種を追加
+5. RIGコントロールのCOMポートをCOM1～COM20まで拡張
+6. RIGコントロールの通信速度を設定可能に
+7. CWキーイングのサイドトーン機能廃止
+8. パドル処理廃止
 9. など
 
 ## 動作確認済みWindows
@@ -122,7 +123,7 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 ### ICOM
 * IC-706mkII,IC-756PRO,IC-756PRO2,IC-7100,IC-7200,IC-7300他
 ### KENWOOD
-* TS-570,TS-2000
+* TS-570,TS-590,TS-2000
 ### YAESU
 * FT-2000/FT-950/FT-450/FTDX-5000
 * FT-920

@@ -49,26 +49,28 @@ procedure IncCWSpeed;
 var
    i : integer;
 begin
-   i := dmZLogGlobal.Settings.CW._speed;
-   if i < 60 then begin
-      dmZLogGlobal.Speed := i + 1;
+   i := dmZLogGlobal.Settings.CW._speed + 1;
+   if i > MAXWPM then begin
+      i := MAXWPM;
    end;
+   dmZLogGlobal.Speed := i;
 
-   MainForm.SpeedBar.Position := i + 1;
-   MainForm.SpeedLabel.Caption := IntToStr(i+1)+' wpm';
+   MainForm.SpeedBar.Position := i;
+   MainForm.SpeedLabel.Caption := IntToStr(i) + ' wpm';
 end;
 
 procedure DecCWSpeed;
 var
    i : integer;
 begin
-   i := dmZLogGlobal.Settings.CW._speed;
-   if i > 2 then begin
-      dmZLogGlobal.Speed := i - 1;
+   i := dmZLogGlobal.Settings.CW._speed - 1;
+   if i < MINWPM then begin
+      i := MINWPM;
    end;
+   dmZLogGlobal.Speed := i;
 
-   MainForm.SpeedBar.Position := i - 1;
-   MainForm.SpeedLabel.Caption := IntToStr(i-1)+' wpm';
+   MainForm.SpeedBar.Position := i;
+   MainForm.SpeedLabel.Caption := IntToStr(i) + ' wpm';
 end;
 
 procedure ToggleFixedSpeed;
@@ -274,7 +276,7 @@ var
   i : integer;
 begin
   temp := UpperCase(S);
-  if pos('$X', dmZLogGlobal.Settings._sentstr) = 0 then
+  if pos('$X', temp) = 0 then
     while Pos('$X',temp) > 0 do
       begin
         i := Pos('$X',temp);
