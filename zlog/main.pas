@@ -5909,6 +5909,7 @@ begin
       end;
       FBandScope.FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
       FBandScope.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
+      actionShowBandScope.Execute();
 
       // OpListçƒÉçÅ[Éh
       BuildOpListMenu(OpMenu, OpMenuClick);
@@ -8182,10 +8183,16 @@ begin
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       if dmZLogGlobal.Settings._usebandscope[b] = True then begin
          FBandScopeEx[b].Show();
+      end
+      else begin
+         FBandScopeEx[b].Hide();
       end;
    end;
    if dmZLogGlobal.Settings._usebandscope_current = True then begin
       FBandScope.Show();
+   end
+   else begin
+      FBandScope.Hide();
    end;
 end;
 
