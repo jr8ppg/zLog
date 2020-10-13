@@ -1276,6 +1276,8 @@ begin
    CWF8.Hint := dmZlogGlobal.CWMessage(i, 8);
    CWF9.Hint := dmZlogGlobal.CWMessage(i, 9);
    CWF10.Hint := dmZlogGlobal.CWMessage(i, 10);
+   CWF11.Hint := dmZlogGlobal.CWMessage(i, 11);
+   CWF12.Hint := dmZlogGlobal.CWMessage(i, 12);
 end;
 
 procedure TMainForm.RenewVoiceToolBar;
@@ -1290,6 +1292,8 @@ begin
    VoiceF8.Hint := dmZLogGlobal.Settings.FSoundComments[8];
    VoiceF9.Hint := dmZLogGlobal.Settings.FSoundComments[9];
    VoiceF10.Hint := dmZLogGlobal.Settings.FSoundComments[10];
+   VoiceF11.Hint := dmZLogGlobal.Settings.FSoundComments[11];
+   VoiceF12.Hint := dmZLogGlobal.Settings.FSoundComments[12];
 end;
 
 procedure TMainForm.RenewBandMenu();
