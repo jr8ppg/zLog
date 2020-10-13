@@ -116,7 +116,6 @@ begin
       end
       else begin
          ListBox.Clear;
-         TempList.Free;
          exit;
       end;
 
