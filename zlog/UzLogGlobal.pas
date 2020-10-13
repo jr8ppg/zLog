@@ -870,15 +870,15 @@ begin
 
       // BandScope
       Settings._usebandscope[b19]   := ini.ReadBool('BandScopeEx', 'BandScope1.9MHz', False);
-      Settings._usebandscope[b35]   := ini.ReadBool('BandScopeEx', 'BandScope3.5MHz', True);
-      Settings._usebandscope[b7]    := ini.ReadBool('BandScopeEx', 'BandScope7MHz', True);
+      Settings._usebandscope[b35]   := ini.ReadBool('BandScopeEx', 'BandScope3.5MHz', False);
+      Settings._usebandscope[b7]    := ini.ReadBool('BandScopeEx', 'BandScope7MHz', False);
       Settings._usebandscope[b10]   := ini.ReadBool('BandScopeEx', 'BandScope10MHz', False);
-      Settings._usebandscope[b14]   := ini.ReadBool('BandScopeEx', 'BandScope14MHz', True);
+      Settings._usebandscope[b14]   := ini.ReadBool('BandScopeEx', 'BandScope14MHz', False);
       Settings._usebandscope[b18]   := ini.ReadBool('BandScopeEx', 'BandScope18MHz', False);
-      Settings._usebandscope[b21]   := ini.ReadBool('BandScopeEx', 'BandScope21MHz', True);
+      Settings._usebandscope[b21]   := ini.ReadBool('BandScopeEx', 'BandScope21MHz', False);
       Settings._usebandscope[b24]   := ini.ReadBool('BandScopeEx', 'BandScope24MHz', False);
-      Settings._usebandscope[b28]   := ini.ReadBool('BandScopeEx', 'BandScope28MHz', True);
-      Settings._usebandscope[b50]   := ini.ReadBool('BandScopeEx', 'BandScope50MHz', True);
+      Settings._usebandscope[b28]   := ini.ReadBool('BandScopeEx', 'BandScope28MHz', False);
+      Settings._usebandscope[b50]   := ini.ReadBool('BandScopeEx', 'BandScope50MHz', False);
       Settings._usebandscope[b144]  := ini.ReadBool('BandScopeEx', 'BandScope144MHz', False);
       Settings._usebandscope[b430]  := ini.ReadBool('BandScopeEx', 'BandScope430MHz', False);
       Settings._usebandscope[b1200] := ini.ReadBool('BandScopeEx', 'BandScope1200MHz', False);
