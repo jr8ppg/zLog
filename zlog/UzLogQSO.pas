@@ -1156,6 +1156,7 @@ begin
                   break;
                end;
             end;
+            xQSO.Free();
          end;
 
          actInsert: begin
@@ -1615,11 +1616,17 @@ begin
    str := CoreCall(aQSO.CallSign);
 
    for i := 1 to TotalQSO do begin
-      if (aQSO.FBand = FQsoList[i].Band) and (str = CoreCall(FQsoList[i].CallSign)) and ((index <= 0) or (index <> i)) then begin
+      // “¯ˆêQSO‚Íœ‚­
+      if FQsoList[i].SameQSOID(aQSO) = True then begin
+         Continue;
+      end;
+
+      if (aQSO.FBand = FQsoList[i].Band) and (str = CoreCall(FQsoList[i].CallSign)) then begin
          if Not(AcceptDifferentMode) or (AcceptDifferentMode and aQSO.SameMode(FQsoList[i])) then begin
             boo := True;
-            if index > 0 then
+            if index > 0 then begin
                dupeindex := i;
+            end;
             break;
          end;
       end;
