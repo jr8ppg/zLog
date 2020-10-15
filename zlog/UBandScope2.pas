@@ -69,6 +69,7 @@ type
     procedure RewriteBandScope();
     procedure MarkCurrentFreq(Hz : integer);
     procedure NotifyWorked(aQSO: TQSO);
+    procedure CopyList(F: TBandScope2);
 
     property FontSize: Integer read GetFontSize write SetFontSize;
     property Select: Boolean write SetSelect;
@@ -812,6 +813,10 @@ end;
 
 procedure TBandScope2.SetCurrentBand(b: TBand);
 begin
+   if FCurrBand = b then begin
+      Exit;
+   end;
+
    FBSList.Clear();
    FCurrBand := b;
    SetCaption();
@@ -831,6 +836,18 @@ begin
    end
    else begin
       Caption := BandString[FCurrBand];
+   end;
+end;
+
+procedure TBandScope2.CopyList(F: TBandScope2);
+var
+   i: Integer;
+   D: TBSData;
+begin
+   for i := 0 to F.BSList.Count - 1 do begin
+      D := TBSData.Create();
+      D.Assign(F.BSList[i]);
+      BSList.Add(D);
    end;
 end;
 

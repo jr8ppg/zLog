@@ -11,47 +11,76 @@ type
   TSpotSource = ( ssSelf = 0, ssCluster, ssSelfFromZServer, ssClusterFromZServer );
 
   TBaseSpot = class
-    Time : TDateTime; // moved from TBSdata 2.6e
-    Call : string;
-    Number : string;
-    FreqHz : LongInt;
-    CtyIndex : integer;
-    Zone : integer;
-    NewCty : boolean;
-    NewZone : boolean;
-    Worked : boolean;
-    Band : TBand;
-    Mode : TMode;
-    SpotSource: TSpotSource;
-    SpotGroup: Integer;
-    CQ: Boolean;
-    NewJaMulti: Boolean;
+  protected
+    FTime : TDateTime; // moved from TBSdata 2.6e
+    FCall : string;
+    FNumber : string;
+    FFreqHz : LongInt;
+    FCtyIndex : integer;
+    FZone : integer;
+    FNewCty : boolean;
+    FNewZone : boolean;
+    FWorked : boolean;
+    FBand : TBand;
+    FMode : TMode;
+    FSpotSource: TSpotSource;
+    FSpotGroup: Integer;
+    FCQ: Boolean;
+    FNewJaMulti: Boolean;
+  public
     constructor Create; virtual;
     function FreqKHzStr : string;
     function NewMulti : boolean; // newcty or newzone
     function InText : string; virtual; abstract;
     procedure FromText(S : string); virtual; abstract;
+    procedure Assign(O: TBaseSpot); virtual;
+
+    property Time: TDateTime read FTime write FTime;
+    property Call: string read FCall write FCall;
+    property Number: string read FNumber write FNumber;
+    property FreqHz: LongInt read FFreqHz write FFreqHz;
+    property CtyIndex: Integer read FCtyIndex write FCtyIndex;
+    property Zone: Integer read FZone write FZone;
+    property NewCty: Boolean read FNewCty write FNewCty;
+    property NewZone: Boolean read FNewZone write FNewZone;
+    property Worked: Boolean read FWorked write FWorked;
+    property Band: TBand read FBand write FBand;
+    property Mode: TMode read FMode write FMode;
+    property SpotSource: TSpotSource read FSpotSource write FSpotSource;
+    property SpotGroup: Integer read FSpotGroup write FSpotGroup;
+    property CQ: Boolean read FCQ write FCQ;
+    property NewJaMulti: Boolean read FNewJaMulti write FNewJaMulti;
   end;
 
   TSpot = class(TBaseSpot)
-    ReportedBy : string;
-    TimeStr : string;
-    Comment : string;
+  protected
+    FReportedBy : string;
+    FTimeStr : string;
+    FComment : string;
+  public
     constructor Create; override;
     function Analyze(S : string) : boolean; // true if successful
     function ClusterSummary : string;
     function InText : string; override;
     procedure FromText(S : string); override;
+    procedure Assign(O: TBaseSpot); override;
+
+    property ReportedBy: string read FReportedBy write FReportedBy;
+    property TimeStr: string read FTimeStr write FTimeStr;
+    property Comment: string read FComment write FComment;
   end;
 
   TBSData = class(TBaseSpot)
-    //Time : TDateTime; 2.6e
-    LabelRect : TRect;
-    Bold : boolean;
+  protected
+    FBold : boolean;
+  public
     constructor Create; override;
     function LabelStr : string;
     function InText : string; override;
     procedure FromText(S : string); override;
+    procedure Assign(O: TBaseSpot); override;
+
+    property Bold: Boolean read FBold write FBold;
   end;
 
   TSpotList = class(TObjectList<TSpot>)
@@ -101,10 +130,7 @@ end;
 constructor TBSData.Create;
 begin
    inherited;
-   LabelRect.Top := 0;
-   LabelRect.Right := 0;
-   LabelRect.Left := 0;
-   LabelRect.Bottom := 0;
+   FBold := False;
 end;
 
 function TBSData.LabelStr : string;
@@ -287,8 +313,8 @@ end;
 Function TSpot.ClusterSummary : string;
 begin
    Result := FillLeft(FreqKHzStr, 8) +  ' ' +
-             FillRight(Self.Call, 11) + ' ' + Self.TimeStr + ' ' +
-             FillLeft(Self.Comment, 30) + '<'+ Self.ReportedBy + '>';
+             FillRight(FCall, 11) + ' ' + FTimeStr + ' ' +
+             FillLeft(FComment, 30) + '<'+ FReportedBy + '>';
 end;
 
 function TSpot.InText : string;
@@ -301,9 +327,36 @@ begin
    //
 end;
 
+procedure TSpot.Assign(O: TBaseSpot);
+begin
+   Inherited Assign(O);
+   FReportedBy := TSpot(O).FReportedBy;
+   FTimeStr := TSpot(O).FTimeStr;
+   FComment := TSpot(O).FComment;
+end;
+
 Function TBaseSpot.NewMulti : boolean;
 begin
    Result := NewCty or NewZone or NewJaMulti;
+end;
+
+procedure TBaseSpot.Assign(O: TBaseSpot);
+begin
+   FTime := O.FTime;
+   FCall := O.FCall;
+   FNumber := O.FNumber;
+   FFreqHz := O.FFreqHz;
+   FCtyIndex := O.FCtyIndex;
+   FZone := O.FZone;
+   FNewCty := O.FNewCty;
+   FNewZone := O.FNewZone;;
+   FWorked := O.FWorked;
+   FBand := O.FBand;;
+   FMode := O.FMode;;
+   FSpotSource := O.FSpotSource;
+   FSpotGroup := O.FSpotGroup;
+   FCQ := O.FCQ;
+   FNewJaMulti := O.FNewJaMulti;
 end;
 
 function TBSData.InText : string;
@@ -357,6 +410,12 @@ begin
    finally
       SL.Free();
    end;
+end;
+
+procedure TBSData.Assign(O: TBaseSpot);
+begin
+   Inherited Assign(O);
+   FBold := TBSData(O).FBold;
 end;
 
 constructor TSpotList.Create(OwnsObjects: Boolean);

@@ -1766,7 +1766,10 @@ begin
    end;
    FBandScopeEx[B].Select := True;
 
-   FBandScope.CurrentBand := B;
+   if FBandScope.CurrentBand <> B then begin
+      FBandScope.CurrentBand := B;
+      FBandScope.CopyList(FBandScopeEx[B]);
+   end;
    FBandScope.Select := True;
 end;
 
