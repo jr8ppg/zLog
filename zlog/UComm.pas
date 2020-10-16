@@ -354,10 +354,12 @@ begin
    end;
 
    if SpotList.Count > SPOTMAX then begin
+      Sp.Free();
       exit;
    end;
 
    if dupe then begin
+      Sp.Free();
       exit;
    end;
 
