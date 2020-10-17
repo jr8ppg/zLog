@@ -616,39 +616,39 @@ begin
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[4].FForeColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[4].FBold;
             end;
+         end;
 
-            // îwåiêFÇÕSpotSourceï Ç…Ç∑ÇÈ
-            case D.SpotSource of
-               ssSelf, ssSelfFromZserver: begin
-                  case D.SpotGroup of
-                     1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
-                     2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor2;
-                     3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor3;
-                     else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
-                  end;
+         // îwåiêFÇÕSpotSourceï Ç…Ç∑ÇÈ
+         case D.SpotSource of
+            ssSelf, ssSelfFromZserver: begin
+               case D.SpotGroup of
+                  1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+                  2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor2;
+                  3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor3;
+                  else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
                end;
+            end;
 
-               ssCluster: begin
-                  case D.SpotGroup of
-                     1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
-                     2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor2;
-                     3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor3;
-                     else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
-                  end;
+            ssCluster: begin
+               case D.SpotGroup of
+                  1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
+                  2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor2;
+                  3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor3;
+                  else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
                end;
+            end;
 
-               ssClusterFromZServer: begin
-                  case D.SpotGroup of
-                     1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
-                     2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor2;
-                     3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor3;
-                     else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
-                  end;
+            ssClusterFromZServer: begin
+               case D.SpotGroup of
+                  1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
+                  2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor2;
+                  3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor3;
+                  else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
                end;
+            end;
 
-               else begin
-                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
-               end;
+            else begin
+               Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
             end;
          end;
 
