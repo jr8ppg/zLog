@@ -40,6 +40,7 @@ type
 //    FCurrMode : TMode;
 
     FBSList: TBSList;
+    FBSLock: TRTLCriticalSection;
 
     FFreshnessThreshold: array[0..4] of Integer;
     FFreshnessType: Integer;
@@ -60,6 +61,8 @@ type
     procedure SetCurrentBand(b: TBand);
     procedure SetCurrentBandOnly(v: Boolean);
     procedure SetCaption();
+    procedure Lock();
+    procedure Unlock();
   public
     { Public éŒ¾ }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -70,12 +73,12 @@ type
     procedure MarkCurrentFreq(Hz : integer);
     procedure NotifyWorked(aQSO: TQSO);
     procedure CopyList(F: TBandScope2);
+    procedure SetSpotWorked(aQSO: TQSO);
 
     property FontSize: Integer read GetFontSize write SetFontSize;
     property Select: Boolean write SetSelect;
     property FreshnessType: Integer read FFreshnessType write SetFreshnessType;
     property IconType: Integer read FIconType write SetIconType;
-    property BSList: TBSList read FBSList;
     property CurrentBand: TBand read FCurrBand write SetCurrentBand;
     property CurrentBandOnly: Boolean read FCurrentBandOnly write SetCurrentBandOnly;
   end;
@@ -113,23 +116,30 @@ var
    i: Integer;
    boo: Boolean;
 begin
-   if FBSList.Count = 0 then begin
-      FBSList.Add(D);
-      exit;
-   end;
-
-   boo := false;
-   for i := 0 to FBSList.Count - 1 do begin
-      if FBSList[i].FreqHz > D.FreqHz then begin
-         boo := true;
-         break;
+   Lock();
+   try
+      if FBSList.Count = 0 then begin
+         FBSList.Add(D);
+         Exit;
       end;
-   end;
 
-   if boo then
-      FBSList.Insert(i, D)
-   else
-      FBSList.Add(D);
+      boo := false;
+      for i := 0 to FBSList.Count - 1 do begin
+         if FBSList[i].FreqHz > D.FreqHz then begin
+            boo := true;
+            Break;
+         end;
+      end;
+
+      if boo then begin
+         FBSList.Insert(i, D);
+      end
+      else begin
+         FBSList.Add(D);
+      end;
+   finally
+      Unlock();
+   end;
 end;
 
 procedure TBandScope2.AddAndDisplay(D: TBSData);
@@ -229,28 +239,33 @@ var
    BS: TBSData;
    Diff: TDateTime;
 begin
-   for i := 0 to FBSList.Count - 1 do begin
-      BS := FBSList[i];
+   Lock();
+   try
+      for i := 0 to FBSList.Count - 1 do begin
+         BS := FBSList[i];
 
-      if Assigned(D) then begin
-         if (BS.Call = D.Call) and (BS.Band = D.Band) then begin
-            FBSList[i] := nil;
-            Continue;
+         if Assigned(D) then begin
+            if (BS.Call = D.Call) and (BS.Band = D.Band) then begin
+               FBSList[i] := nil;
+               Continue;
+            end;
+
+            if round(BS.FreqHz / 100) = round(D.FreqHz / 100) then begin
+               FBSList[i] := nil;
+               Continue;
+            end;
          end;
 
-         if round(BS.FreqHz / 100) = round(D.FreqHz / 100) then begin
+         Diff := Now - BS.Time;
+         if Diff * 24 * 60 > 1.00 * dmZlogGlobal.Settings._bsexpire then begin
             FBSList[i] := nil;
-            Continue;
          end;
       end;
 
-      Diff := Now - BS.Time;
-      if Diff * 24 * 60 > 1.00 * dmZlogGlobal.Settings._bsexpire then begin
-         FBSList[i] := nil;
-      end;
+      FBSList.Pack;
+   finally
+      Unlock();
    end;
-
-   FBSList.Pack;
 end;
 
 procedure TBandScope2.RewriteBandScope();
@@ -297,46 +312,51 @@ begin
 
    Marked := False;
 
-   R := 0;
-   for i := 0 to FBSList.Count - 1 do begin
-      D := FBSList[i];
-      if D.Band <> FCurrBand then begin
-         Continue;
-      end;
-
-      if MarkCurrent and Not(Marked) then begin
-         if D.FreqHz >= CurrentRigFrequency then begin
-            Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
-            Grid.Objects[0, R] := nil;;
-            Marked := true;
-            inc(R);
+   Lock();
+   try
+      R := 0;
+      for i := 0 to FBSList.Count - 1 do begin
+         D := FBSList[i];
+         if D.Band <> FCurrBand then begin
+            Continue;
          end;
+
+         if MarkCurrent and Not(Marked) then begin
+            if D.FreqHz >= CurrentRigFrequency then begin
+               Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
+               Grid.Objects[0, R] := nil;;
+               Marked := true;
+               inc(R);
+            end;
+         end;
+
+         str := FillRight(D.LabelStr, 20);
+
+         if D.SpotSource <> ssSelf then begin
+            str := str + '+ ';
+         end
+         else begin
+            str := str + '  ';
+         end;
+
+         if D.CQ = True then begin
+            str := str + 'CQ';
+         end
+         else begin
+            str := str + '  ';
+         end;
+
+         Grid.Cells[0, R] := str;
+         Grid.Objects[0, R] := D;
+
+         if (Main.CurrentQSO.CQ = false) and ((D.FreqHz - CurrentRigFrequency) <= 100) then begin
+            MainForm.AutoInput(D);
+         end;
+
+         Inc(R);
       end;
-
-      str := FillRight(D.LabelStr, 20);
-
-      if D.SpotSource <> ssSelf then begin
-         str := str + '+ ';
-      end
-      else begin
-         str := str + '  ';
-      end;
-
-      if D.CQ = True then begin
-         str := str + 'CQ';
-      end
-      else begin
-         str := str + '  ';
-      end;
-
-      Grid.Cells[0, R] := str;
-      Grid.Objects[0, R] := D;
-
-      if (Main.CurrentQSO.CQ = false) and ((D.FreqHz - CurrentRigFrequency) <= 100) then begin
-         MainForm.AutoInput(D);
-      end;
-
-      Inc(R);
+   finally
+      Unlock();
    end;
 
    if MarkCurrent and Not(Marked) then begin
@@ -364,17 +384,22 @@ var
    j: Integer;
    D: TBSData;
 begin
-   j := 0;
-   for i := 0 to FBSList.Count - 1 do begin
-      D := FBSList[i];
-      if D.Band <> FCurrBand then begin
-         Continue;
+   Lock();
+   try
+      j := 0;
+      for i := 0 to FBSList.Count - 1 do begin
+         D := FBSList[i];
+         if D.Band <> FCurrBand then begin
+            Continue;
+         end;
+
+         inc(j);
       end;
 
-      inc(j);
+      Result := j;
+   finally
+      Unlock();
    end;
-
-   Result := j;
 end;
 
 procedure TBandScope2.DeleteFromBSList(i: Integer);
@@ -390,17 +415,23 @@ var
    i, j: Integer;
    s: string;
 begin
-   if Grid.Selection.Top < 0 then
-      exit;
+   if Grid.Selection.Top < 0 then begin
+      Exit;
+   end;
 
-   for i := Grid.Selection.Top to Grid.Selection.Bottom do begin
-      s := Grid.Cells[0, i];
-      for j := 0 to FBSList.Count - 1 do begin
-         if pos(FBSList[j].LabelStr, s) = 1 then begin
-            DeleteFromBSList(j);
-            break;
+   Lock();
+   try
+      for i := Grid.Selection.Top to Grid.Selection.Bottom do begin
+         s := Grid.Cells[0, i];
+         for j := 0 to FBSList.Count - 1 do begin
+            if pos(FBSList[j].LabelStr, s) = 1 then begin
+               DeleteFromBSList(j);
+               Break;
+            end;
          end;
       end;
+   finally
+      Unlock();
    end;
 
    RewriteBandScope;
@@ -411,16 +442,25 @@ var
    i: Integer;
    B: TBSData;
 begin
-   if (CurrentRigFrequency div 100) = (Hz div 100) then
-      exit;
+   if (CurrentRigFrequency div 100) = (Hz div 100) then begin
+      Exit;
+   end;
 
    CurrentRigFrequency := Hz;
-   for i := 0 to FBSList.Count - 1 do begin
-      B := FBSList[i];
-      if abs((B.FreqHz div 100) - (Hz div 100)) <= 1 then
-         B.Bold := true
-      else
-         B.Bold := false;
+
+   Lock();
+   try
+      for i := 0 to FBSList.Count - 1 do begin
+         B := FBSList[i];
+         if abs((B.FreqHz div 100) - (Hz div 100)) <= 1 then begin
+            B.Bold := true;
+         end
+         else begin
+            B.Bold := false;
+         end;
+      end;
+   finally
+      Unlock();
    end;
 
    RewriteBandScope;
@@ -431,21 +471,27 @@ var
    D: TBSData;
    i: Integer;
 begin
-   for i := 0 to FBSList.Count - 1 do begin
-      D := FBSList[i];
-      if D.Band = FCurrBand then begin
-         if D.Worked then begin
-            FBSList[i] := nil;
+   Lock();
+   try
+      for i := 0 to FBSList.Count - 1 do begin
+         D := FBSList[i];
+         if D.Band = FCurrBand then begin
+            if D.Worked then begin
+               FBSList[i] := nil;
+            end;
          end;
       end;
+      FBSList.Pack;
+   finally
+      Unlock();
    end;
-   FBSList.Pack;
 
    RewriteBandScope();
 end;
 
 procedure TBandScope2.FormCreate(Sender: TObject);
 begin
+   InitializeCriticalSection(FBSLock);
    FBSList := TBSList.Create();
    FProcessing := False;
 end;
@@ -723,9 +769,14 @@ var
    i: Integer;
    D: TBSData;
 begin
-   for i := 0 to FBSList.Count - 1 do begin
-      D := FBSList[i];
-      SpotCheckWorked(D);
+   Lock();
+   try
+      for i := 0 to FBSList.Count - 1 do begin
+         D := FBSList[i];
+         SpotCheckWorked(D);
+      end;
+   finally
+      Unlock();
    end;
 end;
 
@@ -817,7 +868,13 @@ begin
       Exit;
    end;
 
-   FBSList.Clear();
+   Lock();
+   try
+      FBSList.Clear();
+   finally
+      Unlock();
+   end;
+
    FCurrBand := b;
    SetCaption();
    RewriteBandScope();
@@ -844,11 +901,50 @@ var
    i: Integer;
    D: TBSData;
 begin
-   for i := 0 to F.BSList.Count - 1 do begin
-      D := TBSData.Create();
-      D.Assign(F.BSList[i]);
-      BSList.Add(D);
+   Lock();
+   F.Lock();
+   try
+      for i := 0 to F.FBSList.Count - 1 do begin
+         D := TBSData.Create();
+         D.Assign(F.FBSList[i]);
+         FBSList.Add(D);
+      end;
+   finally
+      Unlock();
+      F.Unlock();
    end;
+end;
+
+procedure TBandScope2.SetSpotWorked(aQSO: TQSO);
+var
+   i: Integer;
+   S: TBaseSpot;
+begin
+   Lock();
+   try
+      for i := 0 to FBSList.Count - 1 do begin
+         S := TBaseSpot(FBSList[i]);
+         if (S.Call = aQSO.Callsign) and (S.Band = aQSO.Band) then begin
+            S.NewCty := False;
+            S.NewZone := False;
+            S.Worked := True;
+         end;
+      end;
+   finally
+      Unlock();
+   end;
+
+   RewriteBandScope();
+end;
+
+procedure TBandScope2.Lock();
+begin
+   EnterCriticalSection(FBSLock);
+end;
+
+procedure TBandScope2.Unlock();
+begin
+   LeaveCriticalSection(FBSLock);
 end;
 
 initialization

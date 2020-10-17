@@ -9098,27 +9098,11 @@ begin
 end;
 
 procedure TMainForm.BandScopeUpdateSpot(aQSO: TQSO);
-
-   procedure SetSpotWorked(BS: TBandScope2);
-   var
-      i: Integer;
-      S: TBaseSpot;
-   begin
-      for i := 0 to BS.BSList.Count - 1 do begin
-         S := TBaseSpot(BS.BSList[i]);
-         if (S.Call = aQSO.Callsign) and (S.Band = aQSO.Band) then begin
-            S.NewCty := False;
-            S.NewZone := False;
-            S.Worked := True;
-            BS.RewriteBandScope();
-         end;
-      end;
-   end;
 begin
-   SetSpotWorked(FBandScopeEx[aQSO.Band]);
+   FBandScopeEx[aQSO.Band].SetSpotWorked(aQSO);
 
    if FBandScope.CurrentBand = aQSO.Band then begin
-      SetSpotWorked(FBandScope);
+      FBandScope.SetSpotWorked(aQSO);
    end;
 end;
 
