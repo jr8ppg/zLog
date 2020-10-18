@@ -105,7 +105,8 @@ uses
   USelectUserDefinedContest in 'USelectUserDefinedContest.pas' {SelectUserDefinedContest},
   UserDefinedContest in 'UserDefinedContest.pas',
   UVoiceForm in 'UVoiceForm.pas' {VoiceForm},
-  UCFGEdit in 'UCFGEdit.pas' {CFGEdit};
+  UCFGEdit in 'UCFGEdit.pas' {CFGEdit},
+  UExceptionDialog in 'UExceptionDialog.pas' {ExceptionDialog};
 
 {$R *.RES}
 
