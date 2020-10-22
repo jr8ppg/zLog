@@ -152,7 +152,6 @@ type
     Label44: TLabel;
     tabsheetMisc: TTabSheet;
     cbRITClear: TCheckBox;
-    rgBandData: TRadioGroup;
     cbDontAllowSameBand: TCheckBox;
     SendFreqEdit: TEdit;
     Label45: TLabel;
@@ -179,7 +178,6 @@ type
     buttonBrowseLogsPath: TButton;
     rbRTTY: TRadioButton;
     cbCQSP: TCheckBox;
-    cbAFSK: TCheckBox;
     cbAutoEnterSuper: TCheckBox;
     Label52: TLabel;
     Label53: TLabel;
@@ -383,6 +381,13 @@ type
     Label10: TLabel;
     editCQMessage2: TEdit;
     editCQMessage3: TEdit;
+    GroupBox15: TGroupBox;
+    checkUseAntiZeroin: TCheckBox;
+    editMaxShift: TEdit;
+    Label28: TLabel;
+    Label29: TLabel;
+    updownAntiZeroinShiftMax: TUpDown;
+    checkAntiZeroinAutoCancel: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -494,7 +499,6 @@ var
    i, j: integer;
 begin
    with dmZlogGlobal do begin
-      Settings._recrigfreq := cbRecordRigFreq.Checked;
       Settings._multistation := cbMultiStn.Checked;
       Settings._savewhennocw := cbSaveWhenNoCW.Checked;
       Settings._jmode := cbJMode.Checked;
@@ -502,7 +506,6 @@ begin
       Settings._renewbythread := cbUpdateThread.Checked;
       Settings._displaydatepartialcheck := cbDisplayDatePartialCheck.Checked;
 
-      Settings._AFSK := cbAFSK.Checked;
       Settings._maxsuperhit := spMaxSuperHit.Value;
 
       Settings._activebands[b19] := act19.Checked;
@@ -589,9 +592,6 @@ begin
       r := Settings.CW._cqrepeat;
       Settings.CW._cqrepeat := StrToFloatDef(CQRepEdit.Text, r);
 
-      r := Settings._sendfreq;
-      Settings._sendfreq := StrToFloatDef(SendFreqEdit.Text, r);
-
       Settings.CW._speed := SpeedBar.Position;
       Settings.CW._weight := WeightBar.Position;
       Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
@@ -641,8 +641,6 @@ begin
       Settings._icom_polling_freq_and_mode := checkGetBandAndMode.Checked;
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
 
-      Settings._ritclear := cbRITClear.Checked;
-
       Settings._zlinkport := ZLinkCombo.ItemIndex;
       Settings._pcname := editZLinkPcName.Text;
       Settings._syncserial := checkZLinkSyncSerial.Checked;
@@ -684,11 +682,20 @@ begin
 
       Settings._transverter1 := cbTransverter1.Checked;
       Settings._transverter2 := cbTransverter2.Checked;
-      Settings._autobandmap := cbAutoBandMap.Checked;
 
       Settings._cluster_telnet := FTempClusterTelnet;
       Settings._cluster_com := FTempClusterCom;
       Settings._zlink_telnet := FTempZLinkTelnet;
+
+      // Rig Control
+      Settings._ritclear := cbRITClear.Checked;
+      Settings._dontallowsameband := cbDontAllowSameBand.Checked;
+      Settings._recrigfreq := cbRecordRigFreq.Checked;
+      Settings._autobandmap := cbAutoBandMap.Checked;
+      Settings._sendfreq := StrToFloatDef(SendFreqEdit.Text, Settings._sendfreq);
+      Settings.FUseAntiZeroin := checkUseAntiZeroin.Checked;
+      Settings.FAntiZeroinShiftMax := updownAntiZeroinShiftMax.Position;
+      Settings.FAntiZeroinAutoCancel := checkAntiZeroinAutoCancel.Checked;
 
       // Quick QSY
       for i := Low(FQuickQSYCheck) to High(FQuickQSYCheck) do begin
@@ -830,11 +837,6 @@ begin
       cbUpdateThread.Checked := Settings._renewbythread;
       cbDisplayDatePartialCheck.Checked := Settings._displaydatepartialcheck;
 
-      cbDontAllowSameBand.Checked := Settings._dontallowsameband;
-      cbAutoBandMap.Checked := Settings._autobandmap;
-      cbAFSK.Checked := Settings._AFSK;
-
-      cbRecordRigFreq.Checked := Settings._recrigfreq;
       cbMultiStn.Checked := Settings._multistation;
 
       act19.Checked := Settings._activebands[b19];
@@ -905,7 +907,6 @@ begin
       editCQMessage3.Text := Settings.CW.AdditionalCQMessages[3];
 
       CQRepEdit.Text := FloatToStrF(Settings.CW._cqrepeat, ffFixed, 3, 1);
-      SendFreqEdit.Text := FloatToStrF(Settings._sendfreq, ffFixed, 3, 1);
       SpeedBar.Position := Settings.CW._speed;
       SpeedLabel.Caption := IntToStr(Settings.CW._speed) + ' wpm';
       WeightBar.Position := Settings.CW._weight;
@@ -967,8 +968,6 @@ begin
       checkGetBandAndMode.Checked := Settings._icom_polling_freq_and_mode;
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
 
-      cbRITClear.Checked := Settings._ritclear;
-
       // Packet Clusterí êMê›íËÉ{É^Éì
       buttonClusterSettings.Enabled := True;
       ClusterComboChange(nil);
@@ -1024,6 +1023,16 @@ begin
 
       cbTransverter1.Checked := Settings._transverter1;
       cbTransverter2.Checked := Settings._transverter2;
+
+      // Rig Control
+      cbRITClear.Checked := Settings._ritclear;
+      cbDontAllowSameBand.Checked := Settings._dontallowsameband;
+      cbRecordRigFreq.Checked := Settings._recrigfreq;
+      cbAutoBandMap.Checked := Settings._autobandmap;
+      SendFreqEdit.Text := FloatToStrF(Settings._sendfreq, ffFixed, 3, 1);
+      checkUseAntiZeroin.Checked := Settings.FUseAntiZeroin;
+      updownAntiZeroinShiftMax.Position := Settings.FAntiZeroinShiftMax;
+      checkAntiZeroinAutoCancel.Checked := Settings.FAntiZeroinAutoCancel;
 
       // Quick QSY
       for i := Low(FQuickQSYCheck) to High(FQuickQSYCheck) do begin

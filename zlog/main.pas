@@ -670,6 +670,8 @@ type
     actionPlayCQB3: TAction;
     actionPlayCQA1: TAction;
     actionPlayCQB2: TAction;
+    panelCQMode: TPanel;
+    actionToggleCqSp: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -712,6 +714,7 @@ type
     procedure CWStopButtonClick(Sender: TObject);
     procedure VoiceStopButtonClick(Sender: TObject);
     procedure SetCQ(CQ : Boolean);
+    function  IsCQ(): Boolean;
     procedure CQRepeatClick1(Sender: TObject);
     procedure CQRepeatClick2(Sender: TObject);
     procedure buttonCwKeyboardClick(Sender: TObject);
@@ -878,6 +881,7 @@ type
     procedure actionCQAbortExecute(Sender: TObject);
     procedure GridEnter(Sender: TObject);
     procedure GridExit(Sender: TObject);
+    procedure actionToggleCqSpExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1032,6 +1036,7 @@ type
     procedure BandScopeNotifyWorked(aQSO: TQSO);
     procedure SetYourCallsign(strCallsign, strNumber: string);
     procedure SetFrequency(freq: Integer);
+    procedure SetAntiZeroin();
     procedure BSRefresh();
     procedure BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
@@ -4394,7 +4399,7 @@ begin
 
    if (i > 1799) and (i < 1000000) then begin
       if RigControl.Rig <> nil then begin
-         RigControl.Rig.SetFreq(round(i * 1000));
+         RigControl.Rig.SetFreq(round(i * 1000), IsCQ());
          if CurrentQSO.mode = mSSB then
             RigControl.Rig.SetMode(CurrentQSO);
          // ZLinkForm.SendRigStatus;
@@ -5191,9 +5196,19 @@ begin
          end;
       end;
 
-      // RITクリア
-      if (dmZlogGlobal.Settings._ritclear = True) and (RigControl.Rig <> nil) then begin
-         RigControl.Rig.RitClear;
+      if CurrentQSO.Mode = mCW then begin
+         if RigControl.Rig <> nil then begin
+            // RITクリア
+            if (dmZlogGlobal.Settings._ritclear = True) or
+               (dmZlogGlobal.Settings.FAntiZeroinAutoCancel = True) then begin
+               RigControl.Rig.RitClear;
+            end;
+
+            // Anti Zeroin
+            if dmZlogGlobal.Settings.FAntiZeroinAutoCancel = True then begin
+               RigControl.Rig.Xit := False;
+            end;
+         end;
       end;
 
       // BandScopeの更新
@@ -5394,15 +5409,20 @@ procedure TMainForm.SetCQ(CQ: Boolean);
 begin
    CurrentQSO.CQ := CQ;
 
-   { if CQ then
-     StatusLine.Panels[1].Text := 'CQ'
-     else
-     StatusLine.Panels[1].Text := 'SP'; }
+   if CQ = True then begin
+      panelCQMode.Caption := 'CQ';
+      panelCQMode.Font.Color := clBlue;
+   end
+   else begin
+      panelCQMode.Caption := 'SP';
+      panelCQMode.Font.Color := clFuchsia;
+   end;
 
    FZLinkForm.SendRigStatus;
 
-   if RigControl.Rig = nil then
+   if RigControl.Rig = nil then begin
       FZLinkForm.SendFreqInfo(round(RigControl.TempFreq[CurrentQSO.Band] * 1000));
+   end;
 
    if dmZlogGlobal.Settings._switchcqsp then begin
       if CQ then
@@ -5410,30 +5430,43 @@ begin
       else
          SwitchCWBank(2);
    end;
+
+   if (CQ = True) and (CurrentQSO.Mode = mCW) then begin
+      if RigControl.Rig <> nil then begin
+         RigControl.Rig.Rit := False;
+         RigControl.Rig.Xit := False;
+         RigControl.Rig.RitClear();
+      end;
+   end;
+end;
+
+function TMainForm.IsCQ(): Boolean;
+begin
+   Result := CurrentQSO.CQ;
 end;
 
 procedure TMainForm.CQRepeatClick1(Sender: TObject);
 var
    S: String;
 begin
+   SetCQ(True);
    CtrlZCQLoop := False;
    S := dmZlogGlobal.CWMessage(1, 1);
    S := SetStr(UpperCase(S), CurrentQSO);
    dmZLogKeyer.SendStrLoop(S);
-   SetCQ(True);
 end;
 
 procedure TMainForm.CQRepeatClick2(Sender: TObject);
 var
    S: String;
 begin
+   SetCQ(True);
    CtrlZCQLoop := True;
    S := dmZlogGlobal.CWMessage(1, 1);
    S := SetStr(UpperCase(S), CurrentQSO);
    dmZLogKeyer.SendStrLoop(S);
    dmZLogKeyer.RandCQStr[1] := SetStr(dmZlogGlobal.Settings.CW.AdditionalCQMessages[2], CurrentQSO);
    dmZLogKeyer.RandCQStr[2] := SetStr(dmZlogGlobal.Settings.CW.AdditionalCQMessages[3], CurrentQSO);
-   SetCQ(True);
 end;
 
 procedure TMainForm.buttonCwKeyboardClick(Sender: TObject);
@@ -6290,16 +6323,16 @@ end;
 
 procedure TMainForm.VoiceCQ3Click(Sender: TObject);
 begin
+   SetCQ(True);
    FVoiceForm.CtrlZCQLoopVoice := True;
    FVoiceForm.CQLoopVoice();
-   SetCQ(True);
 end;
 
 procedure TMainForm.VoiceCQ2Click(Sender: TObject);
 begin
+   SetCQ(True);
    FVoiceForm.CtrlZCQLoopVoice := False;
    FVoiceForm.CQLoopVoice();
-   SetCQ(True);
 end;
 
 procedure TMainForm.mPXListWPXClick(Sender: TObject);
@@ -7725,6 +7758,12 @@ begin
    OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
    {$ENDIF}
 
+   if RigControl.Rig <> nil then begin
+      if RigControl.Rig.Xit = False then begin
+         SetAntiZeroin();
+      end;
+   end;
+
    PlayMessage(cb, no);
 end;
 
@@ -8550,6 +8589,8 @@ begin
    if RigControl.Rig <> nil then begin
       RigControl.Rig.MoveToLastFreq;
    end;
+
+   SetCQ(True);
 end;
 
 // #106,#107,#108 QuickMemo3-5
@@ -8595,6 +8636,13 @@ begin
       dmZLogKeyer.ControlPTT(False);
    end;
 end;
+
+// #120 CQモード、SPモードのトグル
+procedure TMainForm.actionToggleCqSpExecute(Sender: TObject);
+begin
+   SetCQ(Not IsCQ());
+end;
+
 
 procedure TMainForm.RestoreWindowsPos();
 var
@@ -8990,6 +9038,7 @@ begin
    MyContest.MultiForm.SetNumberEditFocus;
 end;
 
+// Cluster or BandScopeから呼ばれる
 procedure TMainForm.SetFrequency(freq: Integer);
 begin
    if freq = 0 then begin
@@ -8997,10 +9046,47 @@ begin
    end;
 
    if RigControl.Rig <> nil then begin
-      RigControl.Rig.SetFreq(freq);
+      // RIGにfreq設定
+      RigControl.Rig.SetFreq(freq, IsCQ());
+
+      // Zeroin避け
+      SetAntiZeroin();
+   end
+   else begin
+      // バンド変更
+      UpdateBand(TBand(GetBandIndex(freq)));
    end;
 
-   UpdateBand(TBand(GetBandIndex(freq)));
+   // SPモードへ変更
+   SetCQ(False);
+end;
+
+procedure TMainForm.SetAntiZeroin();
+var
+   offset: Integer;
+   randmax: Integer;
+begin
+   if CurrentQSO.Mode <> mCW then begin
+      Exit;
+   end;
+   if dmZLogGlobal.Settings.FUseAntiZeroin = False then begin
+      Exit;
+   end;
+
+   Randomize();
+
+   // 振れ幅
+   randmax := (dmZLogGlobal.Settings.FAntiZeroinShiftMax div 10) + 1;
+   offset := Random(randmax) * 10;    // 200KC未満で
+
+   // ＋か－か
+   if Random(2) = 1 then begin
+      offset := offset * -1;
+   end;
+
+   RigControl.Rig.Rit := False;
+   RigControl.Rig.Xit := True;
+   RigControl.Rig.RitOffset := offset;
 end;
 
 procedure TMainForm.BSRefresh();

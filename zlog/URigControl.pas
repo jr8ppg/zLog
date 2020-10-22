@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids, System.Math,
+  StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids, System.Math, System.StrUtils,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB, Vcl.Buttons;
 
 type
@@ -12,6 +12,8 @@ type
     name : string;
     addr : byte;
     minband, maxband : TBand;
+    RitCtrl: Boolean;
+    XitCtrl: Boolean;
   end;
 
 const
@@ -25,57 +27,57 @@ const
 
   ICOMLIST : array[1..MAXICOM] of TIcomInfo =
      (
-       (name: 'IC-703';       addr: $68; minband: b19; maxband: b50),
-       (name: 'IC-705';       addr: $A4; minband: b19; maxband: b430),
-       (name: 'IC-706';       addr: $48; minband: b19; maxband: b144),
-       (name: 'IC-706MkII';   addr: $4E; minband: b19; maxband: b144),
-       (name: 'IC-706MkII-G'; addr: $58; minband: b19; maxband: b430),
-       (name: 'IC-707';       addr: $3E; minband: b19; maxband: b28),
-       (name: 'IC-718';       addr: $5E; minband: b19; maxband: b28),
-       (name: 'IC-721(IC-725)'; addr: $28; minband: b19; maxband: b28),
-       (name: 'IC-726';       addr: $30; minband: b19; maxband: b50),
-       (name: 'IC-728';       addr: $38; minband: b19; maxband: b28),
-       (name: 'IC-729';       addr: $3A; minband: b19; maxband: b50),
-       (name: 'IC-731(IC-735)'; addr: $04; minband: b19; maxband: b28),
-       (name: 'IC-732(IC-737)'; addr: $04; minband: b19; maxband: b28),
-       (name: 'IC-736';       addr: $40; minband: b19; maxband: b50),
-       (name: 'IC-738';       addr: $44; minband: b19; maxband: b28),
-       (name: 'IC-746';       addr: $56; minband: b19; maxband: b144),
-       (name: 'IC-746PRO(IC-7400)'; addr: $66; minband: b19; maxband: b144),
-       (name: 'IC-7000';      addr: $70; minband: b19; maxband: b430),
-       (name: 'IC-7100';      addr: $88; minband: b19; maxband: b430),
-       (name: 'IC-7200';      addr: $76; minband: b19; maxband: b50),
-       (name: 'IC-7300';      addr: $94; minband: b19; maxband: b50),
-       (name: 'IC-7400';      addr: $66; minband: b19; maxband: b144),
-       (name: 'IC-7410';      addr: $80; minband: b19; maxband: b50),
-       (name: 'IC-750/750A(IC-751)'; addr: $1C; minband: b19; maxband: b28),
-       (name: 'IC-756';       addr: $50; minband: b19; maxband: b50),
-       (name: 'IC-756PRO';    addr: $5C; minband: b19; maxband: b50),
-       (name: 'IC-756PROII';  addr: $64; minband: b19; maxband: b50),
-       (name: 'IC-756PRO3';   addr: $6E; minband: b19; maxband: b50),
-       (name: 'IC-7600';      addr: $7A; minband: b19; maxband: b50),
-       (name: 'IC-7610';      addr: $98; minband: b19; maxband: b50),
-       (name: 'IC-7700';      addr: $74; minband: b19; maxband: b50),
-       (name: 'IC-78';        addr: $62; minband: b19; maxband: b28),
-       (name: 'IC-7800';      addr: $6A; minband: b19; maxband: b50),
-       (name: 'IC-7851';      addr: $8E; minband: b19; maxband: b50),
-       (name: 'IC-760(IC-761)'; addr: $1E; minband: b19; maxband: b28),
-       (name: 'IC-760PRO(IC-765)'; addr: $2C; minband: b19; maxband: b28),
-       (name: 'IC-775';       addr: $46; minband: b19; maxband: b28),
-       (name: 'IC-780(IC-781)'; addr: $26; minband: b19; maxband: b28),
-       (name: 'IC-575';       addr: $16; minband: b28; maxband: b50),
-       (name: 'IC-820';       addr: $42; minband: b144; maxband: b430),
-       (name: 'IC-821';       addr: $4C; minband: b144; maxband: b430),
-       (name: 'IC-910/911';   addr: $60; minband: b144; maxband: b1200),
-       (name: 'IC-970';       addr: $2E; minband: b144; maxband: b1200),
-       (name: 'IC-271';       addr: $20; minband: b144; maxband: b144),
-       (name: 'IC-275';       addr: $10; minband: b144; maxband: b144),
-       (name: 'IC-371(IC-471)'; addr: $22; minband: b430; maxband: b430),
-       (name: 'IC-375(IC-475)'; addr: $14; minband: b430; maxband: b430),
-       (name: 'IC-9100';      addr: $7C; minband: b19; maxband: b1200),
-       (name: 'IC-9700';      addr: $A2; minband: b144; maxband: b1200),
-       (name: 'IC-1271';      addr: $24; minband: b1200; maxband: b1200),
-       (name: 'IC-1275';      addr: $18; minband: b1200; maxband: b1200)
+       (name: 'IC-703';       addr: $68; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-705';       addr: $A4; minband: b19; maxband: b430;   RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-706';       addr: $48; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-706MkII';   addr: $4E; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-706MkII-G'; addr: $58; minband: b19; maxband: b430;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-707';       addr: $3E; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-718';       addr: $5E; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-721(IC-725)'; addr: $28; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-726';       addr: $30; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-728';       addr: $38; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-729';       addr: $3A; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-731(IC-735)'; addr: $04; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-732(IC-737)'; addr: $04; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-736';       addr: $40; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-738';       addr: $44; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-746';       addr: $56; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-746PRO(IC-7400)'; addr: $66; minband: b19; maxband: b144; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7000';      addr: $70; minband: b19; maxband: b430;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7100';      addr: $88; minband: b19; maxband: b430;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7200';      addr: $76; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7300';      addr: $94; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-7400';      addr: $66; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7410';      addr: $80; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-750/750A(IC-751)'; addr: $1C; minband: b19; maxband: b28; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-756';       addr: $50; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-756PRO';    addr: $5C; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-756PROII';  addr: $64; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-756PRO3';   addr: $6E; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7600';      addr: $7A; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7610';      addr: $98; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-7700';      addr: $74; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-78';        addr: $62; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7800';      addr: $6A; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-7851';      addr: $8E; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-760(IC-761)'; addr: $1E; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-760PRO(IC-765)'; addr: $2C; minband: b19; maxband: b28; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-775';       addr: $46; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-780(IC-781)'; addr: $26; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-575';       addr: $16; minband: b28; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-820';       addr: $42; minband: b144; maxband: b430;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-821';       addr: $4C; minband: b144; maxband: b430;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-910/911';   addr: $60; minband: b144; maxband: b1200; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-970';       addr: $2E; minband: b144; maxband: b1200; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-271';       addr: $20; minband: b144; maxband: b144;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-275';       addr: $10; minband: b144; maxband: b144;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-371(IC-471)'; addr: $22; minband: b430; maxband: b430; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-375(IC-475)'; addr: $14; minband: b430; maxband: b430; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-9100';      addr: $7C; minband: b19; maxband: b1200;  RitCtrl: True;  XitCtrl: False),
+       (name: 'IC-9700';      addr: $A2; minband: b144; maxband: b1200; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-1271';      addr: $24; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-1275';      addr: $18; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False)
      );
 
   BaseMHz : array[b19..b10g] of LongInt =
@@ -133,7 +135,18 @@ type
     FPollingInterval: Integer;
     LastFreq : LongInt;
 
+    FRitCtrlSupported: Boolean;
+    FXitCtrlSupported: Boolean;
+
+    FRit: Boolean;
+    FXit: Boolean;
+    FRitOffset: Integer;
+
     ModeWidth : array[mCW..mOther] of Integer; // used in icom
+
+    procedure SetRit(flag: Boolean); virtual;
+    procedure SetXit(flag: Boolean); virtual;
+    procedure SetRitOffset(offset: Integer); virtual;
   public
     constructor Create(RigNum : Integer); virtual;
     destructor Destroy; override;
@@ -148,8 +161,8 @@ type
     procedure ExecuteCommand(S : AnsiString); virtual; abstract;
     procedure PassOnRxData(S : AnsiString); virtual;
     procedure ParseBufferString; virtual; abstract;
-    procedure RitClear; virtual; abstract;
-    procedure SetFreq(Hz : LongInt); virtual; abstract;
+    procedure RitClear(); virtual;
+    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); virtual; abstract;
     procedure Reset; virtual; abstract; // called when user wants to reset the rig
                                         // after power outage etc
     procedure SetVFO(i : integer); virtual; abstract; // A:0, B:1
@@ -169,9 +182,22 @@ type
     property CurrentBand: TBand read _currentband;
     property CurrentMode: TMode read _currentmode;
 //    property PollingInterval: Integer read FPollingInterval write FPollingInterval;
+
+    property RitCtrlSupported: Boolean read FRitCtrlSupported write FRitCtrlSupported;
+    property XitCtrlSupported: Boolean read FXitCtrlSupported write FXitCtrlSupported;
+
+    property Rit: Boolean read FRit write SetRit;
+    property Xit: Boolean read FXit write SetXit;
+    property RitOffset: Integer read FRitOffset write SetRitOffset;
   end;
 
   TTS690 = class(TRig) // TS-450 as well
+  private
+    FFineStep: Boolean;
+    procedure SetRit(flag: Boolean); override;
+    procedure SetXit(flag: Boolean); override;
+    procedure SetRitOffset(offset: Integer); override;
+  public
     _CWR : boolean; // CW-R flag
     constructor Create(RigNum : integer); override;
     destructor Destroy; override;
@@ -180,13 +206,16 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt); override;
+    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
   end;
 
   TTS2000 = class(TTS690)
+  private
+    procedure SetRitOffset(offset: Integer); override;
+  public
     constructor Create(RigNum : integer); override;
     procedure Initialize(); override;
   end;
@@ -218,12 +247,15 @@ type
     procedure ExecuteCommand(S : AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt); override;
+    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
     procedure ICOMWriteData(S : AnsiString);
     procedure PollingProcess; override;
+    procedure SetRit(flag: Boolean); override;
+    procedure SetXit(flag: Boolean); override;
+    procedure SetRitOffset(offset: Integer); override;
     property UseTransceiveMode: Boolean read FUseTransceiveMode write FUseTransceiveMode;
     property GetBandAndModeFlag: Boolean read FGetBandAndMode write FGetBandAndMode;
     property MyAddr: Byte read FMyAddr write FMyAddr;
@@ -244,7 +276,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt); override;
+    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
@@ -260,12 +292,15 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt); override;
+    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
     procedure PollingProcess; override;
     procedure PassOnRxData(S : AnsiString); override;
+    procedure SetRit(flag: Boolean); override;
+    procedure SetXit(flag: Boolean); override;
+    procedure SetRitOffset(offset: Integer); override;
   end;
 
   TMARKVF = class(TFT1000MP)
@@ -293,7 +328,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure RitClear; override;
     procedure SetVFO(i : integer); override;
-    procedure SetFreq(Hz : LongInt); override;
+    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure PollingProcess; override;
   end;
@@ -302,7 +337,7 @@ type
     Fchange: Boolean;
     destructor Destroy; override;
     procedure Initialize(); override;
-    procedure SetFreq(Hz : LongInt); override;
+    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure PollingProcess; override;
   end;
@@ -314,7 +349,7 @@ type
 
   TFT991 = class(TFT2000)
     procedure ExecuteCommand(S: AnsiString); override;
-    procedure SetFreq(Hz : LongInt); override;
+    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
   end;
 
   TFT100 = class(TFT1000MP)
@@ -334,7 +369,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt); override;
+    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
@@ -349,7 +384,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt); override;
+    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure InquireStatus; override;
     procedure SetVFO(i : integer); override;
@@ -656,6 +691,21 @@ begin
    end;
 end;
 
+procedure TRig.SetRit(flag: Boolean);
+begin
+   FRit := flag;
+end;
+
+procedure TRig.SetXit(flag: Boolean);
+begin
+   FXit := flag;
+end;
+
+procedure TRig.SetRitOffset(offset: Integer);
+begin
+   FRitOffset := offset;
+end;
+
 procedure TRig.SetBaudRate(i: Integer);
 begin
    case i of
@@ -824,9 +874,9 @@ begin
 end;
 
 // Ç±ÇøÇÁÇ≈RIGèÓïÒÇèàóùÇ∑ÇÈ
-// 00000 00001111 11111122222222223
-// 12345 67890123 45678901234567890
-// IF001 07131790 +000010140000;
+// 00000 00001111 11111 12 2222222223
+// 12345 67890123 45678 90 1234567890
+// IF001 07131790 +0000 10 140000;
 procedure TFT2000.ExecuteCommand(S: AnsiString);
 var
    M: TMode;
@@ -838,6 +888,9 @@ begin
       if Length(S) <> 27 then begin
          Exit;
       end;
+
+      // Memory Channel
+      // 3-5
 
       // ÉÇÅ[Éh
       strTemp := string(S[21]);
@@ -865,6 +918,18 @@ begin
          FreqMem[_currentband, _currentmode] := _currentfreq[0];
       end;
 
+      // RIT/XIT offset
+      strTemp := string(Copy(S, 14, 5));
+      FRitOffset := StrToIntDef(strTemp, 0);
+
+      // RIT Status
+      strTemp := string(Copy(S, 19, 1));
+      FRit := StrToBool(strTemp);
+
+      // XIT Status
+      strTemp := string(Copy(S, 20, 1));
+      FXit := StrToBool(strTemp);
+
       if Selected then begin
          UpdateStatus;
       end;
@@ -881,7 +946,7 @@ begin
    OutputDebugString(PChar('***FT-2000 [' + string(BufferString) + ']'));
    {$ENDIF}
 
-   if RightStr(BufferString, 1) <> TerminatorCode then begin
+   if AnsiStrings.RightStr(BufferString, 1) <> TerminatorCode then begin
       Exit;
    end;
 
@@ -896,6 +961,7 @@ end;
 
 procedure TFT2000.RitClear;
 begin
+   Inherited;
    WriteData('RC;');
 end;
 
@@ -906,14 +972,17 @@ end;
 // READ   F A ;
 // ANSWER F A P1 P1 P1 P1 P1 P1 P1 P1 P1 ;
 //
-procedure TFT2000.SetFreq(Hz : LongInt);
+procedure TFT2000.SetFreq(Hz : LongInt; fSetLastFreq: Boolean);
 const
    cmd: array[0..1] of AnsiString = ( 'FA', 'FB' );
 var
    freq: AnsiString;
 begin
-   LastFreq := _currentfreq[_currentvfo];
-   freq := RightStr(AnsiString(DupeString('0', 8)) + AnsiString(IntToStr(Hz)), 8);
+   if fSetLastFreq = True then begin
+      LastFreq := _currentfreq[_currentvfo];
+   end;
+
+   freq := AnsiStrings.RightStr(AnsiString(DupeString('0', 8)) + AnsiString(IntToStr(Hz)), 8);
    WriteData(cmd[_currentvfo] + freq + ';');
 end;
 
@@ -969,6 +1038,53 @@ end;
 procedure TFT2000.PassOnRxData(S: AnsiString);
 begin
    Inherited PassOnRxData(S);//Ç≈ÇÊÇ≥ÇªÇ§
+end;
+
+procedure TFT2000.SetRit(flag: Boolean);
+begin
+   Inherited;
+   if flag = True then begin
+      WriteData('RT1;');
+   end
+   else begin
+      WriteData('RT0;');
+   end;
+end;
+
+procedure TFT2000.SetXit(flag: Boolean);
+begin
+   Inherited;
+   if flag = True then begin
+      WriteData('XT1;');
+   end
+   else begin
+      WriteData('XT0;');
+   end;
+end;
+
+procedure TFT2000.SetRitOffset(offset: Integer);
+var
+   CMD: AnsiString;
+begin
+   if FRitOffset = offset then begin
+      Exit;
+   end;
+
+   if offset = 0 then begin
+      WriteData('RC;');
+   end
+   else if offset < 0 then begin
+      WriteData('RC;');
+      CMD := AnsiString('RD' + RightStr('0000' + IntToStr(Abs(offset)), 4) + ';');
+      WriteData(CMD);
+   end
+   else if offset > 0 then begin
+      WriteData('RC;');
+      CMD := AnsiString('RU' + RightStr('0000' + IntToStr(Abs(offset)), 4) + ';');
+      WriteData(CMD);
+   end;
+
+   Inherited;
 end;
 
 procedure TFT1000.ExecuteCommand(S: AnsiString);
@@ -1035,6 +1151,7 @@ end;
 
 procedure TFT1000.RitClear;
 begin
+   Inherited;
    WriteData(_nil3 + AnsiChar($FF) + AnsiChar($09));
 end;
 
@@ -1119,6 +1236,7 @@ end;
 
 procedure TMARKV.RitClear;
 begin
+   Inherited;
    WriteData(_nil3 + AnsiChar($FF) + AnsiChar($09));
 end;
 
@@ -1203,6 +1321,7 @@ end;
 
 procedure TMARKVF.RitClear;
 begin
+   Inherited;
    WriteData(_nil3 + AnsiChar($FF) + AnsiChar($09));
 end;
 
@@ -1266,8 +1385,14 @@ begin
             rig._maxband := b1200;
          end;
 
-         if rname = 'TS-570/590' then begin
+         if rname = 'TS-570' then begin
             rig := TTS570.Create(rignum);
+            rig._minband := b19;
+            rig._maxband := b50;
+         end;
+
+         if rname = 'TS-590/890/990' then begin
+            rig := TTS2000.Create(rignum);
             rig._minband := b19;
             rig._maxband := b50;
          end;
@@ -1375,6 +1500,8 @@ begin
             rig._minband := ICOMLIST[i].minband;
             rig._maxband := ICOMLIST[i].maxband;
             TICOM(rig).RigAddr := ICOMLIST[i].addr;
+            TICOM(rig).RitCtrlSupported := ICOMLIST[i].RitCtrl;
+            TICOM(rig).XitCtrlSupported := ICOMLIST[i].XitCtrl;
          end;
 
          rig.name := rname;
@@ -1480,6 +1607,13 @@ begin
          FreqMem[B, M] := 0;
       end;
    end;
+
+   FRitCtrlSupported := True;
+   FXitCtrlSupported := True;
+
+   FRit := False;
+   FXit := False;
+   FRitOffset := 0;
 end;
 
 destructor TRig.Destroy;
@@ -1537,7 +1671,7 @@ end;
 
 procedure TRig.MoveToLastFreq;
 begin
-   SetFreq(LastFreq);
+   SetFreq(LastFreq, False);
 end;
 
 constructor TTS690.Create(RigNum: Integer);
@@ -1546,6 +1680,7 @@ begin
    TerminatorCode := ';';
    FComm.StopBits := sb2BITS;
    _CWR := False;
+   FFineStep := False;
 end;
 
 procedure TTS690.Initialize();
@@ -1567,6 +1702,31 @@ begin
    WriteData('TC 1;');
    WriteData('AI2;');
    WriteData('IF;');
+end;
+
+procedure TTS2000.SetRitOffset(offset: Integer);
+var
+   CMD: AnsiString;
+begin
+   if FRitOffset = offset then begin
+      Exit;
+   end;
+
+   if offset = 0 then begin
+      WriteData('RC;');
+   end
+   else if offset < 0 then begin
+      WriteData('RC;');
+      CMD := AnsiString('RD' + RightStr('00000' + IntToStr(Abs(offset)), 5) + ';');
+      WriteData(CMD);
+   end
+   else if offset > 0 then begin
+      WriteData('RC;');
+      CMD := AnsiString('RU' + RightStr('00000' + IntToStr(Abs(offset)), 5) + ';');
+      WriteData(CMD);
+   end;
+
+   Inherited;
 end;
 
 constructor TTS2000P.Create(RigNum: Integer);
@@ -1752,6 +1912,7 @@ end;
 
 procedure TJST145.RitClear();
 begin
+   Inherited;
 end;
 
 {
@@ -1813,6 +1974,82 @@ begin
    if FPollingCount < 0 then begin
       FPollingCount := 1;
    end;
+end;
+
+procedure TICOM.SetRit(flag: Boolean);
+begin
+   Inherited;
+
+   if FRitCtrlSupported = False then begin
+      Exit;
+   end;
+
+   if flag = True then begin
+      ICOMWriteData(AnsiChar($21) + AnsiChar($01) + AnsiChar($01));
+   end
+   else begin
+      ICOMWriteData(AnsiChar($21) + AnsiChar($01) + AnsiChar($00));
+   end;
+end;
+
+procedure TICOM.SetXit(flag: Boolean);
+begin
+   Inherited;
+
+   if FXitCtrlSupported = False then begin
+      Exit;
+   end;
+
+   if flag = True then begin
+      ICOMWriteData(AnsiChar($21) + AnsiChar($02) + AnsiChar($01));
+   end
+   else begin
+      ICOMWriteData(AnsiChar($21) + AnsiChar($02) + AnsiChar($00));
+   end;
+end;
+
+procedure TICOM.SetRitOffset(offset: Integer);
+var
+   CMD: AnsiString;
+   sign: AnsiString;
+   freq: Integer;
+   i: Integer;
+begin
+   if FRitOffset = offset then begin
+      Exit;
+   end;
+
+   if (FRitCtrlSupported = False) and (FXitCtrlSupported = False) then begin
+      Exit;
+   end;
+
+   if offset < 0 then begin
+      freq := offset * -1;
+      sign := AnsiChar($01);
+   end
+   else begin
+      freq := offset;
+      sign := AnsiChar($00);
+   end;
+
+   CMD := AnsiChar($21) + AnsiChar($00);
+
+   // 10Hz  1Hz
+   i := freq mod 100;
+   CMD := CMD + AnsiChar((i div 10) * 16 + (i mod 10));
+   freq := freq div 100;
+
+   // 1KHz  100Hz
+   i := freq mod 100;
+   CMD := CMD + AnsiChar((i div 10) * 16 + (i mod 10));
+//   freq := freq div 100;
+
+   // plus/minus
+   CMD := CMD + sign;
+
+   ICOMWriteData(CMD);
+
+   Inherited;
 end;
 
 {
@@ -2030,30 +2267,127 @@ begin
       f := BaseMHz[Q.Band] + ff;
    end;
 
-   SetFreq(f);
+   SetFreq(f, Q.CQ);
 
 //   if Q.QSO.Mode = mSSB then begin
 //      Self.SetMode(Q);
 //   end;
 end;
 
+procedure TRig.RitClear();
+begin
+   FRitOffset := 0;
+end;
+
 procedure TTS690.RitClear;
 begin
+   Inherited;
    WriteData('RC;');
 end;
 
 procedure TICOM.RitClear;
+var
+   Command: AnsiString;
 begin
+   Inherited;
+
+   if FRitCtrlSupported = False then begin
+      Exit;
+   end;
+
+   Command := AnsiChar($21) + AnsiChar($00) +
+              // 10Hz  1Hz    1KHz  100Hz
+              AnsiChar($00) + AnsiChar($00) +
+              // 00:+   01:-
+              AnsiChar($00);
+
+   ICOMWriteData(Command);
 end;
 
 procedure TFT1000MP.RitClear;
 begin
+   Inherited;
    WriteData(_nil2 + AnsiChar($0F) + AnsiChar($0) + AnsiChar($09));
 end;
 
 procedure TTS690.InquireStatus;
 begin
    WriteData('IF;');
+end;
+
+procedure TTS690.SetRit(flag: Boolean);
+begin
+   Inherited;
+   if flag = True then begin
+      WriteData('RT1;');
+   end
+   else begin
+      WriteData('RT0;');
+   end;
+end;
+
+procedure TTS690.SetXit(flag: Boolean);
+begin
+   Inherited;
+   if flag = True then begin
+      WriteData('XT1;');
+   end
+   else begin
+      WriteData('XT0;');
+   end;
+end;
+
+procedure TTS690.SetRitOffset(offset: Integer);
+var
+//   CMD: AnsiString;
+   i: Integer;
+   n: Integer;
+begin
+   if FRitOffset = offset then begin
+      Exit;
+   end;
+
+   if offset = 0 then begin
+      WriteData('RC;');
+   end
+   else if offset < 0 then begin
+      WriteData('RC;');
+
+      offset := offset * -1;
+
+      if FFineStep = True then begin
+         n := offset;
+      end
+      else begin
+         n := offset div 10;
+      end;
+
+      for i := 1 to n do begin
+         WriteData('RD;');
+      end;
+
+//      CMD := AnsiString('RD' + RightStr('00000' + IntToStr(Abs(offset)), 5) + ';');
+//      WriteData(CMD);
+   end
+   else if offset > 0 then begin
+      WriteData('RC;');
+
+      if FFineStep = True then begin
+         n := offset;
+      end
+      else begin
+         n := offset div 10;
+      end;
+
+      for i := 1 to n do begin
+         WriteData('RU;');
+      end;
+
+//      CMD := AnsiString('RU' + RightStr('00000' + IntToStr(Abs(offset)), 5) + ';');
+//      WriteData(CMD);
+   end;
+
+   Inherited;
 end;
 
 procedure TJST145.InquireStatus;
@@ -2087,11 +2421,14 @@ begin
    BufferString := '';
 end;
 
-procedure TTS690.SetFreq(Hz: LongInt);
+procedure TTS690.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
 begin
-   LastFreq := _currentfreq[_currentvfo];
+   if fSetLastFreq = True then begin
+      LastFreq := _currentfreq[_currentvfo];
+   end;
+
    fstr := AnsiString(IntToStr(Hz));
    while length(fstr) < 11 do begin
       fstr := '0' + fstr;
@@ -2103,11 +2440,14 @@ begin
       WriteData('FB' + fstr + ';');
 end;
 
-procedure TJST145.SetFreq(Hz: LongInt);
+procedure TJST145.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
 begin
-   LastFreq := _currentfreq[_currentvfo];
+   if fSetLastFreq = True then begin
+      LastFreq := _currentfreq[_currentvfo];
+   end;
+
    fstr := AnsiString(IntToStr(Hz));
    while length(fstr) < 8 do begin
       fstr := '0' + fstr;
@@ -2120,7 +2460,7 @@ begin
    WriteData('I1' + _CR);
 end;
 
-procedure TICOM.SetFreq(Hz: LongInt);
+procedure TICOM.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
    freq, i: LongInt;
@@ -2130,9 +2470,11 @@ begin
    end;
    FPollingTimer.Enabled := False;
    try
-      LastFreq := _currentfreq[_currentvfo];
-      freq := Hz;
+      if fSetLastFreq = True then begin
+         LastFreq := _currentfreq[_currentvfo];
+      end;
 
+      freq := Hz;
       if freq < 0 then // > 2.1GHz is divided by 100 and given a negative value. Not implemented yet
       begin
          fstr := AnsiChar(0);
@@ -2309,6 +2651,7 @@ end;
 
 procedure TOmni.RitClear;
 begin
+   Inherited;
    if _rignumber = 1 then begin
       MainForm.RigControl.OmniRig.Rig1.ClearRit;
    end
@@ -2317,7 +2660,7 @@ begin
    end;
 end;
 
-procedure TOmni.SetFreq(Hz: LongInt);
+procedure TOmni.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
 var
    o_RIG: IRigX;
 begin
@@ -2328,7 +2671,9 @@ begin
       o_RIG := MainForm.RigControl.OmniRig.Rig2;
    end;
 
-   LastFreq := _currentfreq[_currentvfo];
+   if fSetLastFreq = True then begin
+      LastFreq := _currentfreq[_currentvfo];
+   end;
 
    if _currentvfo = 0 then
       o_RIG.FreqA := Hz
@@ -2430,12 +2775,14 @@ begin
    end;
 end;
 
-procedure TFT1000MP.SetFreq(Hz: LongInt);
+procedure TFT1000MP.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
    i, j: LongInt;
 begin
-   LastFreq := _currentfreq[_currentvfo];
+   if fSetLastFreq = True then begin
+      LastFreq := _currentfreq[_currentvfo];
+   end;
 
    i := Hz;
    i := i div 10;
@@ -2571,6 +2918,18 @@ begin
 
       FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
 
+      // RIT/XIT offset
+      strTemp := string(Copy(S, 19, 5));
+      FRitOffset := StrToIntDef(strTemp, 0);
+
+      // RIT Status
+      strTemp := string(Copy(S, 24, 1));
+      FRit := StrToBool(strTemp);
+
+      // XIT Status
+      strTemp := string(Copy(S, 25, 1));
+      FXit := StrToBool(strTemp);
+
       if Selected then begin
          UpdateStatus;
       end;
@@ -2603,6 +2962,14 @@ begin
          UpdateStatus;
    end;
 
+   if Command = 'FS' then begin
+      if S[3] = '1' then begin
+         FFineStep := True;
+      end
+      else begin
+         FFineStep := False;
+      end;
+   end;
 end;
 
 procedure TJST145.ExecuteCommand(S: AnsiString);
@@ -2870,6 +3237,7 @@ end;
 
 procedure TFT100.RitClear;
 begin
+   Inherited;
 end;
 
 procedure TFT920.ExecuteCommand(S: AnsiString);
@@ -3059,18 +3427,21 @@ end;
 
 procedure TFT847.RitClear;
 begin
+   Inherited;
 end;
 
 procedure TFT847.SetVFO(i: Integer);
 begin
 end;
 
-procedure TFT847.SetFreq(Hz: LongInt);
+procedure TFT847.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
    i, j: LongInt;
 begin
-   LastFreq := _currentfreq[_currentvfo];
+   if fSetLastFreq = True then begin
+      LastFreq := _currentfreq[_currentvfo];
+   end;
 
    i := Hz;
    i := i div 10;
@@ -3129,7 +3500,7 @@ begin
 end;
 
 
-procedure TFT817.SetFreq(Hz: LongInt);
+procedure TFT817.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
 //var
 //   StartTime: TDateTime;
 begin
@@ -3216,14 +3587,17 @@ begin
    end;
 end;
 
-procedure TFT991.SetFreq(Hz : LongInt);
+procedure TFT991.SetFreq(Hz : LongInt; fSetLastFreq: Boolean);
 const
    cmd: array[0..1] of AnsiString = ( 'FA', 'FB' );
 var
    freq: AnsiString;
 begin
-   LastFreq := _currentfreq[_currentvfo];
-   freq := RightStr(AnsiString(DupeString('0', 9)) + AnsiString(IntToStr(Hz)), 9);  // freq 9åÖ
+   if fSetLastFreq = True then begin
+      LastFreq := _currentfreq[_currentvfo];
+   end;
+
+   freq := AnsiStrings.RightStr(AnsiString(DupeString('0', 9)) + AnsiString(IntToStr(Hz)), 9);  // freq 9åÖ
    WriteData(cmd[_currentvfo] + freq + ';');
 end;
 

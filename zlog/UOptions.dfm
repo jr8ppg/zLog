@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 361
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetRigControl
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -2023,58 +2023,39 @@ object formOptions: TformOptions
     end
     object tabsheetRigControl: TTabSheet
       Caption = 'Rig control'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label45: TLabel
         Left = 8
-        Top = 138
+        Top = 107
         Width = 111
         Height = 13
         Caption = 'Send current freq every'
       end
       object Label46: TLabel
         Left = 184
-        Top = 138
+        Top = 107
         Width = 19
         Height = 13
         Caption = 'min.'
       end
       object cbRITClear: TCheckBox
-        Left = 112
-        Top = 12
+        Left = 8
+        Top = 11
         Width = 161
         Height = 17
         Caption = 'Clear RIT after each QSO'
-        TabOrder = 1
-      end
-      object rgBandData: TRadioGroup
-        Left = 8
-        Top = 8
-        Width = 97
-        Height = 81
-        Caption = 'Band data (LPT)'
-        ItemIndex = 1
-        Items.Strings = (
-          'None'
-          'Radio 1'
-          'Radio 2'
-          'Active band')
         TabOrder = 0
-        TabStop = True
       end
       object cbDontAllowSameBand: TCheckBox
-        Left = 112
-        Top = 36
+        Left = 8
+        Top = 34
         Width = 233
         Height = 17
         Caption = 'Do not allow two rigs to be on same band'
-        TabOrder = 2
+        TabOrder = 1
       end
       object SendFreqEdit: TEdit
         Left = 136
-        Top = 134
+        Top = 103
         Width = 41
         Height = 21
         Hint = 'Only when using Z-Server network'
@@ -2083,37 +2064,80 @@ object formOptions: TformOptions
         OnKeyPress = CQRepEditKeyPress
       end
       object cbRecordRigFreq: TCheckBox
-        Left = 112
-        Top = 61
+        Left = 8
+        Top = 57
         Width = 185
         Height = 17
         Caption = 'Record rig frequency in memo'
-        TabOrder = 3
-      end
-      object cbAFSK: TCheckBox
-        Left = 112
-        Top = 86
-        Width = 153
-        Height = 17
-        Caption = 'Use AFSK mode for RTTY'
-        TabOrder = 5
-        Visible = False
+        TabOrder = 2
       end
       object cbAutoBandMap: TCheckBox
-        Left = 112
-        Top = 112
+        Left = 8
+        Top = 80
         Width = 209
         Height = 17
         Caption = 'Automatically create band scope'
-        TabOrder = 6
+        TabOrder = 3
+      end
+      object GroupBox15: TGroupBox
+        Left = 8
+        Top = 130
+        Width = 209
+        Height = 88
+        Caption = 'Anti Zero In'
+        TabOrder = 5
+        object Label28: TLabel
+          Left = 16
+          Top = 39
+          Width = 92
+          Height = 13
+          Caption = 'Max Shift Width +/-'
+        end
+        object Label29: TLabel
+          Left = 159
+          Top = 39
+          Width = 13
+          Height = 13
+          Caption = 'Hz'
+        end
+        object checkUseAntiZeroin: TCheckBox
+          Left = 16
+          Top = 16
+          Width = 105
+          Height = 17
+          Caption = 'Use Anti Zero In'
+          TabOrder = 0
+        end
+        object editMaxShift: TEdit
+          Left = 112
+          Top = 36
+          Width = 29
+          Height = 21
+          TabOrder = 1
+          Text = '0'
+        end
+        object updownAntiZeroinShiftMax: TUpDown
+          Left = 141
+          Top = 36
+          Width = 16
+          Height = 21
+          Associate = editMaxShift
+          Max = 200
+          Increment = 10
+          TabOrder = 2
+        end
+        object checkAntiZeroinAutoCancel: TCheckBox
+          Left = 16
+          Top = 58
+          Width = 90
+          Height = 17
+          Caption = 'Auto Cancel'
+          TabOrder = 3
+        end
       end
     end
     object tabsheetPath: TTabSheet
       Caption = 'Path'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label50: TLabel
         Left = 16
         Top = 18
@@ -2241,10 +2265,6 @@ object formOptions: TformOptions
     end
     object tabsheetMisc: TTabSheet
       Caption = 'Misc'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label47: TLabel
         Left = 125
         Top = 23
@@ -2832,10 +2852,6 @@ object formOptions: TformOptions
     object tabsheetBandScope1: TTabSheet
       Caption = 'BandScope'
       ImageIndex = 9
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox9: TGroupBox
         Left = 11
         Top = 11
@@ -3330,10 +3346,6 @@ object formOptions: TformOptions
     object tabsheetBandScope2: TTabSheet
       Caption = 'BandScope2'
       ImageIndex = 11
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox12: TGroupBox
         Left = 11
         Top = 11
@@ -3690,10 +3702,6 @@ object formOptions: TformOptions
     object tabsheetQuickMemo: TTabSheet
       Caption = 'Quick Memo'
       ImageIndex = 10
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox11: TGroupBox
         Left = 11
         Top = 11

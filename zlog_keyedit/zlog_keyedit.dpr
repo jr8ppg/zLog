@@ -1,3 +1,4 @@
+// JCL_DEBUG_EXPERT_GENERATEJDBG ON
 program zlog_keyedit;
 
 uses

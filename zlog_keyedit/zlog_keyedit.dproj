@@ -144,6 +144,7 @@
         <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.5.0.6;InternalName=;LegalCopyright=COPYRIGHT 2020 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.5.0.0;Comments=</VerInfo_Keys>
         <Icon_MainIcon>zlog_keyedit_Icon.ico</Icon_MainIcon>
         <VerInfo_Build>6</VerInfo_Build>
+        <DCC_MapFile>3</DCC_MapFile>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>

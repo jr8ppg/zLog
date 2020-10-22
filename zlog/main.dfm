@@ -726,6 +726,22 @@ object MainForm: TMainForm
       Visible = False
       OnClick = Button1Click
     end
+    object panelCQMode: TPanel
+      Left = 490
+      Top = 1
+      Width = 33
+      Height = 31
+      Align = alRight
+      BevelOuter = bvLowered
+      Caption = 'CQ'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 1
+    end
   end
   object CWToolBar: TPanel
     Left = 0
@@ -6369,6 +6385,10 @@ object MainForm: TMainForm
       Tag = 101
       Caption = 'actionPlayCQB1'
       OnExecute = actionPlayMessageBExecute
+    end
+    object actionToggleCqSp: TAction
+      Caption = 'actionToggleCqSp'
+      OnExecute = actionToggleCqSpExecute
     end
   end
   object SPCMenu: TPopupMenu

@@ -23,14 +23,15 @@ const
   SER_MS = 3;    // separate serial for run/multi stns
 
 const
-  RIGNAMES : array[0..16] of string =
+  RIGNAMES : array[0..17] of string =
 ('None',
  'TS-690/450',
  'TS-850',
  'TS-790',
  'TS-2000',
  'TS-2000/P',
- 'TS-570/590',
+ 'TS-570',
+ 'TS-590/890/990',
  'FT-817',
  'FT-847',
  'FT-920',
@@ -45,7 +46,7 @@ const
 
 const
   maxbank = 3; // bank 3 reserved for rtty
-  maxmessage = 14; // f11 and f12 only accessible via zlog.ini
+  maxmessage = 12; // f11 and f12 only accessible via zlog.ini
 
 const
   ZLinkHeader = '#ZLOG#';
@@ -87,7 +88,7 @@ const
   pwrH = TPower(3);
 
 const
-  default_primary_shortcut: array[0..119] of string = (
+  default_primary_shortcut: array[0..120] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -207,10 +208,11 @@ const
     '',                 // #116 actionPlayCQA1
     'Shift+F11',        // #117 actionPlayMessageB11
     'Shift+F12',        // #118 actionPlayMessageB12
-    ''                  // #119 actionPlayCQB1
+    '',                 // #119 actionPlayCQB1
+    'Shift+O'           // #120 actionToggleCqSp
   );
 
-  default_secondary_shortcut: array[0..119] of string = (
+  default_secondary_shortcut: array[0..120] of string = (
     '',                 // #00
     '',
     '',
@@ -330,7 +332,8 @@ const
     '',                 // #116 actionPlayCQA1
     '',                 // #117 actionPlayMessageB11
     '',                 // #118 actionPlayMessageB12
-    ''                  // #119 actionPlayCQB1
+    '',                 // #119 actionPlayCQB1
+    ''                  // #120 actionToggleCqSp
   );
 
 const

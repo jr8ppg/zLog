@@ -64,7 +64,6 @@ type
   end;
 
   TSettingsParam = record
-    _AFSK : boolean; // Use AFSK instead of RTTY for rig control
     _dontallowsameband : boolean; // same band on two rigs?
     _multiop : integer;  {multi op/ single op}
     _band : integer; {0 = all band; 1 = 1.9MHz 2 = 3.5MHz ...}
@@ -158,6 +157,11 @@ type
 
     _super_check_columns: Integer;
     _super_check2_columns: Integer;
+
+    // Anti Zeroin
+    FUseAntiZeroin: Boolean;
+    FAntiZeroinShiftMax: Integer;   // 0-200
+    FAntiZeroinAutoCancel: Boolean;
 
     FQuickQSY: array[1..8] of TQuickQSY;
     FSuperCheck: TSuperCheckParam;
@@ -769,14 +773,16 @@ begin
       // Record rig frequency in memo
       Settings._recrigfreq := ini.ReadBool('Rig', 'RecordFreqInMemo', False);
 
-      // Use AFSK mode for RTTY
-      Settings._AFSK := ini.ReadBool('Rig', 'UseAFSK', False);
-
       // Automatically create band scope
       Settings._autobandmap := ini.ReadBool('Rig', 'AutoBandMap', False);
 
       // Send current freq every
       Settings._sendfreq := ini.ReadFloat('Rig', 'SendFreq', 1.0);
+
+      // Anti Zeroin
+      Settings.FUseAntiZeroin := ini.ReadBool('Rig', 'use_anti_zeroin', True);
+      Settings.FAntiZeroinShiftMax := Min(ini.ReadInteger('Rig', 'anti_zeroin_shift_max', 200), 200);
+      Settings.FAntiZeroinAutoCancel := ini.ReadBool('Rig', 'anti_zeroin_auto_cancel', False);
 
       //
       // Path
@@ -1216,14 +1222,16 @@ begin
       // Record rig frequency in memo
       ini.WriteBool('Rig', 'RecordFreqInMemo', Settings._recrigfreq);
 
-      // Use AFSK mode for RTTY
-      ini.WriteBool('Rig', 'UseAFSK', Settings._AFSK);
-
       // Automatically create band scope
       ini.WriteBool('Rig', 'AutoBandMap', Settings._autobandmap);
 
       // Send current freq every
       ini.WriteFloat('Rig', 'SendFreq', Settings._sendfreq);
+
+      // Anti Zeroin
+      ini.WriteBool('Rig', 'use_anti_zeroin', Settings.FUseAntiZeroin);
+      ini.WriteInteger('Rig', 'anti_zeroin_shift_max', Settings.FAntiZeroinShiftMax);
+      ini.WriteBool('Rig', 'anti_zeroin_auto_cancel', Settings.FAntiZeroinAutoCancel);
 
       //
       // Path
