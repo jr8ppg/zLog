@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 361
-    ActivePage = tabsheetRigControl
+    ActivePage = tabsheetCategories
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1654,7 +1654,7 @@ object formOptions: TformOptions
           Caption = 'Rig 1'
         end
         object Label43: TLabel
-          Left = 164
+          Left = 168
           Top = 112
           Width = 16
           Height = 13
@@ -1668,7 +1668,7 @@ object formOptions: TformOptions
           Caption = 'Rig 2'
         end
         object Label44: TLabel
-          Left = 164
+          Left = 168
           Top = 136
           Width = 16
           Height = 13
@@ -1771,7 +1771,7 @@ object formOptions: TformOptions
           end
         end
         object comboRig1Port: TComboBox
-          Left = 39
+          Left = 36
           Top = 109
           Width = 64
           Height = 21
@@ -1801,7 +1801,7 @@ object formOptions: TformOptions
             'COM20')
         end
         object comboRig1Name: TComboBox
-          Left = 184
+          Left = 188
           Top = 108
           Width = 105
           Height = 21
@@ -1811,7 +1811,7 @@ object formOptions: TformOptions
           OnChange = comboRig1NameChange
         end
         object comboRig2Port: TComboBox
-          Left = 39
+          Left = 36
           Top = 133
           Width = 64
           Height = 21
@@ -1841,7 +1841,7 @@ object formOptions: TformOptions
             'COM20')
         end
         object comboRig2Name: TComboBox
-          Left = 184
+          Left = 188
           Top = 132
           Width = 105
           Height = 21
@@ -1852,7 +1852,7 @@ object formOptions: TformOptions
         end
         object cbTransverter1: TCheckBox
           Tag = 101
-          Left = 296
+          Left = 298
           Top = 110
           Width = 41
           Height = 17
@@ -1863,7 +1863,7 @@ object formOptions: TformOptions
         end
         object cbTransverter2: TCheckBox
           Tag = 102
-          Left = 296
+          Left = 298
           Top = 132
           Width = 41
           Height = 17
@@ -1889,9 +1889,9 @@ object formOptions: TformOptions
           OnClick = PTTEnabledCheckBoxClick
         end
         object comboRig1Speed: TComboBox
-          Left = 106
+          Left = 103
           Top = 109
-          Width = 54
+          Width = 60
           Height = 21
           Style = csDropDownList
           TabOrder = 7
@@ -1902,12 +1902,17 @@ object formOptions: TformOptions
             '4800'
             '9600'
             '19200'
-            '38400')
+            '38400'
+            '56000'
+            '57600'
+            '115200'
+            '128000'
+            '256000')
         end
         object comboRig2Speed: TComboBox
-          Left = 106
+          Left = 103
           Top = 133
-          Width = 54
+          Width = 60
           Height = 21
           Style = csDropDownList
           TabOrder = 11
@@ -1918,7 +1923,12 @@ object formOptions: TformOptions
             '4800'
             '9600'
             '19200'
-            '38400')
+            '38400'
+            '56000'
+            '57600'
+            '115200'
+            '128000'
+            '256000')
         end
         object checkUseTransceiveMode: TCheckBox
           Left = 109

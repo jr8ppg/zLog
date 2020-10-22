@@ -101,9 +101,9 @@ const
   VFOString : array[0..1] of string =
     ('VFO A', 'VFO B');
 
-  BaudRateToSpeed: array[0..6] of TBaudRate =
-    //  0       1       2       3       4       5        6
-    ( br300, br1200, br2400, br4800, br9600, br19200, br38400 );
+  BaudRateToSpeed: array[0..11] of TBaudRate =
+    //  0       1       2       3       4       5        6        7        8        9         10        11
+    ( br300, br1200, br2400, br4800, br9600, br19200, br38400, br56000, br57600, br115200, br128000, br256000 );
 
 type
   TVirtualRig = record
