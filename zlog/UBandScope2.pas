@@ -349,9 +349,9 @@ begin
          Grid.Cells[0, R] := str;
          Grid.Objects[0, R] := D;
 
-         if (Main.CurrentQSO.CQ = false) and ((D.FreqHz - CurrentRigFrequency) <= 100) then begin
-            MainForm.AutoInput(D);
-         end;
+//         if (Main.CurrentQSO.CQ = false) and ((D.FreqHz - CurrentRigFrequency) <= 100) then begin
+//            MainForm.AutoInput(D);
+//         end;
 
          Inc(R);
       end;
