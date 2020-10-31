@@ -639,7 +639,10 @@ var
    w: Integer;
    strScore: string;
    DispColCount: Integer;
+   strExtraInfo: string;
 begin
+   Inherited;
+
    TotQSO := 0;
    TotPoints := 0;
    TotMulti := 0;
@@ -650,16 +653,17 @@ begin
    Grid.Cells[1, 0] := 'QSOs';
    Grid.Cells[2, 0] := 'Points';
    Grid.Cells[3, 0] := 'Multi';
+   Grid.Cells[4, 0] := EXTRAINFO_CAPTION[FExtraInfo];
 
    if ShowCWRatio then begin
-      Grid.Cells[4, 0] := 'CW Q''s';
-      Grid.Cells[5, 0] := 'CW %';
-      DispColCount := 6;
+      Grid.Cells[5, 0] := 'CW Q''s';
+      Grid.Cells[6, 0] := 'CW %';
+      DispColCount := 7;
    end
    else begin
-      Grid.Cells[4, 0] := '';
       Grid.Cells[5, 0] := '';
-      DispColCount := 4;
+      Grid.Cells[6, 0] := '';
+      DispColCount := 5;
    end;
 
    // バンド別スコア行
@@ -682,18 +686,42 @@ begin
             Grid.Cells[3, row] := IntToStr3(Multi[band]);
          end;
 
+         // Multi率
+         strExtraInfo := '';
+         case FExtraInfo of
+            0: begin
+               if QSO[band] > 0 then begin
+                  strExtraInfo := FloatToStrF((Multi[band] / QSO[band] * 100), ffFixed, 1000, 1);
+               end;
+            end;
+
+            1: begin
+               if Multi[band] > 0 then begin
+                  strExtraInfo := FloatToStrF((Points[band] / Multi[band]), ffFixed, 1000, 1);
+               end;
+            end;
+
+            2: begin
+               if QSO[band] > 0 then begin
+                  strExtraInfo := FloatToStrF((Points[band] * Multi[band] / QSO[band]), ffFixed, 1000, 1);
+               end;
+            end;
+         end;
+         Grid.Cells[4, row] := strExtraInfo;
+
+         // CW率
          if ShowCWRatio then begin
-            Grid.Cells[4, row] := IntToStr3(CWQSO[band]);
+            Grid.Cells[5, row] := IntToStr3(CWQSO[band]);
             if QSO[band] > 0 then begin
-               Grid.Cells[5, row] := FloatToStrF(100 * (CWQSO[band] / QSO[band]), ffFixed, 1000, 1);
+               Grid.Cells[6, row] := FloatToStrF(100 * (CWQSO[band] / QSO[band]), ffFixed, 1000, 1);
             end
             else begin
-               Grid.Cells[5, row] := '-';
+               Grid.Cells[6, row] := '-';
             end;
          end
          else begin
-            Grid.Cells[4, row] := '';
             Grid.Cells[5, row] := '';
+            Grid.Cells[6, row] := '';
          end;
 
          Inc(row);
@@ -711,18 +739,42 @@ begin
       Grid.Cells[3, row] := IntToStr(TotMulti);
    end;
 
+   // Multi率
+   strExtraInfo := '';
+   case FExtraInfo of
+      0: begin
+         if TotQSO > 0 then begin
+            strExtraInfo := FloatToStrF((TotMulti / TotQSO * 100), ffFixed, 1000, 1);
+         end;
+      end;
+
+      1: begin
+         if TotMulti > 0 then begin
+            strExtraInfo := FloatToStrF((TotPoints / TotMulti), ffFixed, 1000, 1);
+         end;
+      end;
+
+      2: begin
+         if TotQSO > 0 then begin
+            strExtraInfo := FloatToStrF((TotPoints * TotMulti / TotQSO), ffFixed, 1000, 1);
+         end;
+      end;
+   end;
+   Grid.Cells[4, row] := strExtraInfo;
+
+   // CW率
    if ShowCWRatio then begin
-      Grid.Cells[4, row] := IntToStr3(TotalCWQSOs);
+      Grid.Cells[5, row] := IntToStr3(TotalCWQSOs);
       if TotQSO > 0 then begin
-         Grid.Cells[5, row] := FloatToStrF(100 * (TotalCWQSOs / TotQSO), ffFixed, 1000, 1);
+         Grid.Cells[6, row] := FloatToStrF(100 * (TotalCWQSOs / TotQSO), ffFixed, 1000, 1);
       end
       else begin
-         Grid.Cells[5, row] := '-';
+         Grid.Cells[6, row] := '-';
       end;
    end
    else begin
-      Grid.Cells[4, row] := '';
       Grid.Cells[5, row] := '';
+      Grid.Cells[6, row] := '';
    end;
    Inc(row);
 

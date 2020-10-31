@@ -175,6 +175,9 @@ type
     // Select User Defined Contest
     FImpProvCity: Boolean;
     FImpCwMessage: array[1..4] of Boolean;
+
+    // スコア表示の追加情報(評価用指数)
+    FLastScoreExtraInfo: Integer;
   end;
 
 var
@@ -964,6 +967,8 @@ begin
       Settings.FImpCwMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_f3a', False);
       Settings.FImpCwMessage[4] := ini.ReadBool('UserDefinedContest', 'imp_f4a', False);
 
+      // スコア表示の追加情報(評価用指数)
+      Settings.FLastScoreExtraInfo := ini.ReadInteger('Score', 'ExtraInfo', 0);
    finally
       ini.Free();
       slParam.Free();
@@ -1371,6 +1376,9 @@ begin
       ini.WriteBool('UserDefinedContest', 'imp_f2a', Settings.FImpCwMessage[2]);
       ini.WriteBool('UserDefinedContest', 'imp_f3a', Settings.FImpCwMessage[3]);
       ini.WriteBool('UserDefinedContest', 'imp_f4a', Settings.FImpCwMessage[4]);
+
+      // スコア表示の追加情報(評価用指数)
+      ini.WriteInteger('Score', 'ExtraInfo', Settings.FLastScoreExtraInfo);
    finally
       ini.Free();
       slParam.Free();

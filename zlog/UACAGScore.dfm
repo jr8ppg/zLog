@@ -11,12 +11,13 @@ inherited ACAGScore: TACAGScore
     Top = 382
     ExplicitTop = 382
   end
-  object Grid: TStringGrid
+  object Grid: TStringGrid [1]
     Left = 0
     Top = 0
     Width = 281
     Height = 382
     Align = alClient
+    ColCount = 6
     DefaultDrawing = False
     FixedCols = 0
     RowCount = 15
@@ -28,6 +29,7 @@ inherited ACAGScore: TACAGScore
     Font.Style = []
     Options = [goHorzLine]
     ParentFont = False
+    PopupMenu = popupExtraInfo
     ScrollBars = ssNone
     TabOrder = 1
     OnDrawCell = GridDrawCell

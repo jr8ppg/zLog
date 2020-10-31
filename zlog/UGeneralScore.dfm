@@ -18,7 +18,7 @@ inherited GeneralScore: TGeneralScore
       Caption = 'Stay on Top'
     end
   end
-  object Grid: TStringGrid
+  object Grid: TStringGrid [1]
     Left = 0
     Top = 0
     Width = 200
@@ -36,6 +36,7 @@ inherited GeneralScore: TGeneralScore
     Font.Style = []
     Options = [goHorzLine]
     ParentFont = False
+    PopupMenu = popupExtraInfo
     ScrollBars = ssNone
     TabOrder = 1
     OnDrawCell = GridDrawCell
