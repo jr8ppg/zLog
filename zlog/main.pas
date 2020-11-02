@@ -4725,6 +4725,8 @@ procedure TMainForm.LoadNewContestFromFile(filename: string);
 var
    Q: TQSO;
    boo, Boo2: Boolean;
+   i: Integer;
+   b: TBand;
 begin
    // 一度はCreateLogされてる前提
    Q := TQSO.Create();
@@ -4741,6 +4743,19 @@ begin
 
    Log.LoadFromFile(filename);
 
+   // 各バンドのSerialを復帰
+   // SerialArrayには次の番号を入れる
+   for b := b19 to HiBand do begin
+      SerialArray[b] := 0;
+   end;
+   for i := 1 to Log.TotalQSO do begin
+      Q := Log.QsoList[i];
+      SerialArray[Q.Band] := Q.Serial;
+   end;
+   for b := b19 to HiBand do begin
+      Inc(SerialArray[b]);
+   end;
+
    // 最後のレコード取りだし
    Q := Log.QsoList[Log.TotalQSO];
 
@@ -4752,15 +4767,11 @@ begin
    CurrentQSO.NrRcvd := '';
    CurrentQSO.Time := Date + Time;
    CurrentQSO.TX := dmZlogGlobal.TXNr;
-   CurrentQSO.Serial := Q.Serial;
+//   CurrentQSO.Serial := SerialArray[Q.Band];
    CurrentQSO.Memo := '';
 
-   CurrentQSO.Serial := CurrentQSO.Serial + 1;
-
-   SerialArray[CurrentQSO.Band] := CurrentQSO.Serial;
-
    // 画面に表示
-   SerialEdit.Text := CurrentQSO.SerialStr;
+//   SerialEdit.Text := CurrentQSO.SerialStr;
    TimeEdit.Text := CurrentQSO.TimeStr;
    DateEdit.Text := CurrentQSO.DateStr;
    CallsignEdit.Text := CurrentQSO.Callsign;
@@ -7018,6 +7029,9 @@ begin
 
       // 低いバンドから使用可能なバンドを探して最初のバンドとする
       CurrentQSO.Band := GetFirstAvailableBand();
+
+      CurrentQSO.Serial := SerialArray[CurrentQSO.Band];
+      SerialEdit.Text := CurrentQSO.SerialStr;
 
       BandEdit.Text := MHzString[CurrentQSO.Band];
       CurrentQSO.TX := dmZlogGlobal.TXNr;
