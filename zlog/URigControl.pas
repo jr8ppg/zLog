@@ -45,7 +45,7 @@ const
        (name: 'IC-746';       addr: $56; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False),
        (name: 'IC-746PRO(IC-7400)'; addr: $66; minband: b19; maxband: b144; RitCtrl: False; XitCtrl: False),
        (name: 'IC-7000';      addr: $70; minband: b19; maxband: b430;   RitCtrl: False; XitCtrl: False),
-       (name: 'IC-7100';      addr: $88; minband: b19; maxband: b430;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7100';      addr: $88; minband: b19; maxband: b430;   RitCtrl: True;  XitCtrl: False),
        (name: 'IC-7200';      addr: $76; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
        (name: 'IC-7300';      addr: $94; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True),
        (name: 'IC-7400';      addr: $66; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False),
@@ -74,8 +74,8 @@ const
        (name: 'IC-275';       addr: $10; minband: b144; maxband: b144;  RitCtrl: False; XitCtrl: False),
        (name: 'IC-371(IC-471)'; addr: $22; minband: b430; maxband: b430; RitCtrl: False; XitCtrl: False),
        (name: 'IC-375(IC-475)'; addr: $14; minband: b430; maxband: b430; RitCtrl: False; XitCtrl: False),
-       (name: 'IC-9100';      addr: $7C; minband: b19; maxband: b1200;  RitCtrl: True;  XitCtrl: False),
-       (name: 'IC-9700';      addr: $A2; minband: b144; maxband: b1200; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-9100';      addr: $7C; minband: b19; maxband: b1200;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-9700';      addr: $A2; minband: b144; maxband: b1200;  RitCtrl: True;  XitCtrl: False),
        (name: 'IC-1271';      addr: $24; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False),
        (name: 'IC-1275';      addr: $18; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False)
      );
