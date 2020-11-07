@@ -4505,6 +4505,11 @@ begin
    FBandScope.FontSize := font_size;
 
    FCWMessagePad.FontSize := font_size;
+
+   FFreqList.FontSize := font_size;
+   FCheckCall2.FontSize := font_size;
+   FCheckMulti.FontSize := font_size;
+   FCheckCountry.FontSize := font_size;
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
