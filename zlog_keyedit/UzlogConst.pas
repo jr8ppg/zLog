@@ -160,7 +160,7 @@ const
     'Alt+T',
     'Alt+W',
     'Alt+Z',            // #70
-    'Alt+.',
+    'Shift+X',
     '',
     '',
     '',
