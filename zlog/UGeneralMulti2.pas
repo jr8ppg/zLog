@@ -144,7 +144,9 @@ begin
       end;
    end;
 
-   Grid.TopRow := LatestMultiAddition;
+   if checkJumpLatestMulti.Checked = True then begin
+      Grid.TopRow := LatestMultiAddition;
+   end;
 end;
 
 procedure TGeneralMulti2.Reset;
