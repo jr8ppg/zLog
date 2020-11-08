@@ -388,6 +388,7 @@ type
     Label29: TLabel;
     updownAntiZeroinShiftMax: TUpDown;
     checkAntiZeroinAutoCancel: TCheckBox;
+    updownSendFreqInterval: TUpDown;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -692,7 +693,7 @@ begin
       Settings._dontallowsameband := cbDontAllowSameBand.Checked;
       Settings._recrigfreq := cbRecordRigFreq.Checked;
       Settings._autobandmap := cbAutoBandMap.Checked;
-      Settings._sendfreq := StrToFloatDef(SendFreqEdit.Text, Settings._sendfreq);
+      Settings._send_freq_interval := updownSendFreqInterval.Position;
       Settings.FUseAntiZeroin := checkUseAntiZeroin.Checked;
       Settings.FAntiZeroinShiftMax := updownAntiZeroinShiftMax.Position;
       Settings.FAntiZeroinAutoCancel := checkAntiZeroinAutoCancel.Checked;
@@ -1029,7 +1030,7 @@ begin
       cbDontAllowSameBand.Checked := Settings._dontallowsameband;
       cbRecordRigFreq.Checked := Settings._recrigfreq;
       cbAutoBandMap.Checked := Settings._autobandmap;
-      SendFreqEdit.Text := FloatToStrF(Settings._sendfreq, ffFixed, 3, 1);
+      updownSendFreqInterval.Position := Settings._send_freq_interval;
       checkUseAntiZeroin.Checked := Settings.FUseAntiZeroin;
       updownAntiZeroinShiftMax.Position := Settings.FAntiZeroinShiftMax;
       checkAntiZeroinAutoCancel.Checked := Settings.FAntiZeroinAutoCancel;

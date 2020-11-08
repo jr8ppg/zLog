@@ -74,7 +74,8 @@ type
     _city : string;
     _cqzone : string;
     _iaruzone : string;
-    _sendfreq : double;
+
+    _send_freq_interval: Integer;
 
     ProvCityImported: Boolean;
     ReadOnlyParamImported: Boolean;
@@ -234,8 +235,6 @@ type
     procedure SetCQMax(i : integer);
     function GetCQRepeat(): Double;
     procedure SetCQRepeat(r : double);
-    function GetSendFreq(): Double;
-    procedure SetSendFreq(r : double);
     function GetPowerOfBand(band: TBand): TPower;
 public
     { Public êÈåæ }
@@ -262,7 +261,6 @@ public
     property PTTEnabled: Boolean read GetPTTEnabled;
     property CQMax: Integer read GetCQMax write SetCQMax;
     property CQRepeat: Double read GetCQRepeat write SetCQRepeat;
-    property SendFreq: Double read GetSendFreq write SetSendFreq;
     property RigNameStr[Index: Integer]: string read GetRigNameStr;
     property SuperCheckColumns: Integer read GetSuperCheckColumns write SetSuperCheckColumns;
     property SuperCheck2Columns: Integer read GetSuperCheck2Columns write SetSuperCheck2Columns;
@@ -780,7 +778,7 @@ begin
       Settings._autobandmap := ini.ReadBool('Rig', 'AutoBandMap', False);
 
       // Send current freq every
-      Settings._sendfreq := ini.ReadFloat('Rig', 'SendFreq', 1.0);
+      Settings._send_freq_interval := ini.ReadInteger('Rig', 'SendFreqSec', 30);
 
       // Anti Zeroin
       Settings.FUseAntiZeroin := ini.ReadBool('Rig', 'use_anti_zeroin', True);
@@ -1231,7 +1229,7 @@ begin
       ini.WriteBool('Rig', 'AutoBandMap', Settings._autobandmap);
 
       // Send current freq every
-      ini.WriteFloat('Rig', 'SendFreq', Settings._sendfreq);
+      ini.WriteInteger('Rig', 'SendFreqSec', Settings._send_freq_interval);
 
       // Anti Zeroin
       ini.WriteBool('Rig', 'use_anti_zeroin', Settings.FUseAntiZeroin);
@@ -1449,7 +1447,6 @@ begin
    SetWeight(Settings.CW._weight);
    CQMax := Settings.CW._cqmax;
    CQRepeat := Settings.CW._cqrepeat;
-   SendFreq := Settings._sendfreq;
    SetTonePitch(Settings.CW._tonepitch);
 
    dmZlogKeyer.RandCQStr[1] := SetStr(Settings.CW.AdditionalCQMessages[2], CurrentQSO);
@@ -1713,31 +1710,6 @@ procedure TdmZLogGlobal.SetCQRepeat(r: Double);
 begin
    Settings.CW._cqrepeat := r;
    dmZlogKeyer.CQRepeatIntervalSec := r;
-end;
-
-function TdmZLogGlobal.GetSendFreq(): Double;
-begin
-   Result := Settings._sendfreq;
-end;
-
-procedure TdmZLogGlobal.SetSendFreq(r: double);
-begin
-   Settings._sendfreq := r;
-
-   MainForm.RigControl.Timer1.Interval := Trunc(r * 60000);
-   MainForm.RigControl.Timer1.Enabled := False;
-
-   if r = 0 then begin
-      exit;
-   end;
-
-   if Settings._rigport[1] <> 0 then begin
-      if Settings._zlinkport <> 0 then begin
-         if Settings._rigname[1] <> '' then begin
-            MainForm.RigControl.Timer1.Enabled := True;
-         end;
-      end;
-   end;
 end;
 
 function TdmZLogGlobal.GetPowerOfBand(band: TBand): TPower;

@@ -454,6 +454,7 @@ type
     function GetCurrentRig : integer;
     function ToggleCurrentRig : integer;
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
+    procedure SetSendFreq();
 
     property Rig: TRig read FCurrentRig;
     property Rig1: TRig read FRigs[1];
@@ -1541,6 +1542,8 @@ begin
    end;
 
    SetCurrentRig(1);
+
+   SetSendFreq();
 end;
 
 constructor TRig.Create(RigNum: Integer);
@@ -3740,6 +3743,26 @@ procedure TRigControl.CreateParams(var Params: TCreateParams);
 begin
   inherited CreateParams(Params);
   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+end;
+
+procedure TRigControl.SetSendFreq();
+var
+   sec: Integer;
+begin
+   sec := dmZLogGlobal.Settings._send_freq_interval;
+
+   Timer1.Interval := sec * 1000;
+   Timer1.Enabled := False;
+
+   if sec = 0 then begin
+      exit;
+   end;
+
+   if FRigs[1] <> nil then begin
+      if dmZLogGlobal.Settings._zlinkport <> 0 then begin
+         Timer1.Enabled := True;
+      end;
+   end;
 end;
 
 end.

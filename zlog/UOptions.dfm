@@ -2036,16 +2036,16 @@ object formOptions: TformOptions
       object Label45: TLabel
         Left = 8
         Top = 107
-        Width = 111
+        Width = 114
         Height = 13
-        Caption = 'Send current freq every'
+        Caption = 'Send current freq. every'
       end
       object Label46: TLabel
-        Left = 184
+        Left = 185
         Top = 107
-        Width = 19
+        Width = 20
         Height = 13
-        Caption = 'min.'
+        Caption = 'sec.'
       end
       object cbRITClear: TCheckBox
         Left = 8
@@ -2064,13 +2064,13 @@ object formOptions: TformOptions
         TabOrder = 1
       end
       object SendFreqEdit: TEdit
-        Left = 136
+        Left = 128
         Top = 103
-        Width = 41
+        Width = 35
         Height = 21
         Hint = 'Only when using Z-Server network'
         TabOrder = 4
-        Text = '1.0'
+        Text = '60'
         OnKeyPress = CQRepEditKeyPress
       end
       object cbRecordRigFreq: TCheckBox
@@ -2144,6 +2144,16 @@ object formOptions: TformOptions
           Caption = 'Auto Cancel'
           TabOrder = 3
         end
+      end
+      object updownSendFreqInterval: TUpDown
+        Left = 163
+        Top = 103
+        Width = 16
+        Height = 21
+        Associate = SendFreqEdit
+        Max = 300
+        Position = 60
+        TabOrder = 6
       end
     end
     object tabsheetPath: TTabSheet
