@@ -13,6 +13,7 @@ type
     _weight : integer;
     _fixwpm : integer;
     _paddlereverse : boolean;
+    _sidetone: Boolean;
     _tonepitch : integer;
     _cqmax : integer;
     _cqrepeat : double;
@@ -658,6 +659,9 @@ begin
       // Que messages
       Settings.CW._FIFO := ini.ReadBool('CW', 'FIFO', True);
 
+      // Side Tone
+      Settings.CW._sidetone := ini.ReadBool('CW', 'use_sidetone', False);
+
       // Tone Pitch (Hz)
       Settings.CW._tonepitch := ini.ReadInteger('CW', 'Pitch', 800);
 
@@ -1114,6 +1118,9 @@ begin
       // Que messages
       ini.WriteBool('CW', 'FIFO', Settings.CW._FIFO);
 
+      // Side Tone
+      ini.WriteBool('CW', 'use_sidetone', Settings.CW._sidetone);
+
       // Tone Pitch (Hz)
       ini.WriteInteger('CW', 'Pitch', Settings.CW._tonepitch);
 
@@ -1434,7 +1441,7 @@ end;
 
 procedure TdmZLogGlobal.InitializeCW();
 begin
-   dmZlogKeyer.UseSideTone := False;
+   dmZlogKeyer.UseSideTone := Settings.CW._sidetone;
 
    dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
    dmZlogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;

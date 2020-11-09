@@ -389,6 +389,7 @@ type
     updownAntiZeroinShiftMax: TUpDown;
     checkAntiZeroinAutoCancel: TCheckBox;
     updownSendFreqInterval: TUpDown;
+    SideToneCheck: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -597,6 +598,7 @@ begin
       Settings.CW._weight := WeightBar.Position;
       Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
       Settings.CW._FIFO := FIFOCheck.Checked;
+      Settings.CW._sidetone := SideToneCheck.Checked;
       Settings.CW._tonepitch := ToneSpinEdit.Value;
       Settings.CW._cqmax := CQmaxSpinEdit.Value;
 
@@ -914,6 +916,7 @@ begin
       checkUsbif4cwPaddleReverse.Checked := Settings.CW._paddlereverse;
       WeightLabel.Caption := IntToStr(Settings.CW._weight) + ' %';
       FIFOCheck.Checked := Settings.CW._FIFO;
+      SideToneCheck.Checked := Settings.CW._sidetone;
       ToneSpinEdit.Value := Settings.CW._tonepitch;
       CQmaxSpinEdit.Value := Settings.CW._cqmax;
       AbbrevEdit.Text := Settings.CW._zero + Settings.CW._one + Settings.CW._nine;

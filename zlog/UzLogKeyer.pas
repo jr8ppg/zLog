@@ -6,14 +6,14 @@ unit UzLogKeyer;
 //
 
 // サイドトーンを使用する場合、下記の定義を有効にする 要ToneGen.pas
-//{$DEFINE USESIDETONE}
+{$DEFINE USESIDETONE}
 
 interface
 
 uses
   System.SysUtils, System.Classes, Windows, MMSystem, Math,
   JvComponentBase, JvHidControllerClass, CPDrv
-  {$IFDEF USESIDETONE},ToneGen{$ENDIF};
+  {$IFDEF USESIDETONE},ToneGen, UzLogSound{$ENDIF};
 
 const
   charmax = 256;
@@ -70,7 +70,7 @@ type
     FUSBIF4CW_Version: Long;
 
     {$IFDEF USESIDETONE}
-    FTone: TToneGen;
+    FTone: TSideTone;
     {$ENDIF}
 
     FUsbPortDataLock: TRTLCriticalSection;
@@ -274,11 +274,8 @@ begin
    FInitialized := False;
 
    {$IFDEF USESIDETONE}
-   FTone := TToneGen.Create(nil);
-   FTone.Waveform := tgSine;
-   FTone.Duration := 100;
-   FTone.Loop := True;
-   FTone.Frequency := 700;
+   FTone := TSideTone.Create(700);
+
    {$ENDIF}
 
    FUSBIF4CW_Detected := False;
@@ -480,14 +477,14 @@ end;
 procedure TdmZLogKeyer.Sound();
 begin
    {$IFDEF USESIDETONE}
-   FTone.Play;
+   FTone.Play();
    {$ENDIF}
 end;
 
 procedure TdmZLogKeyer.NoSound();
 begin
    {$IFDEF USESIDETONE}
-   FTone.Stop;
+   FTone.Stop();
    {$ENDIF}
 end;
 
@@ -808,7 +805,9 @@ procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: 
          CW_OFF;
       end;
 
-      NoSound;
+      if FUseSideTone then begin
+         NoSound();
+      end;
       { if PTTEnabled then  // 1.3c
         ControlPTT(False); } // PTT doesn't work with \
    end;
@@ -837,19 +836,25 @@ begin
 
       0: begin
          CW_OFF;
-         NoSound;
+         if FUseSideTone then begin
+            NoSound();
+         end;
          FKeyingCounter := FBlank1Count;
       end;
 
       2: begin { normal space x space factor (%) }
          CW_OFF;
-         NoSound;
+         if FUseSideTone then begin
+            NoSound();
+         end;
          FKeyingCounter := Trunc(FBlank3Count * FSpaceFactor / 100);
       end;
 
       $E: begin { normal space x space factor x eispacefactor(%) }
          CW_OFF;
-         NoSound;
+         if FUseSideTone then begin
+            NoSound();
+         end;
          FKeyingCounter := Trunc(FBlank3Count * (FSpaceFactor / 100) * (FEISpaceFactor / 100));
       end;
 
@@ -1632,7 +1637,9 @@ begin
    timeKillEvent(FTimerID);
    timeEndPeriod(1);
 
-   NoSound;
+   if FUseSideTone then begin
+      NoSound();
+   end;
 
    CW_OFF;
 
@@ -1643,8 +1650,10 @@ procedure TdmZLogKeyer.PauseCW;
 begin
    FSendOK := False;
 
-   NoSound;
    CW_OFF;
+   if FUseSideTone then begin
+      NoSound();
+   end;
 
    if FPTTEnabled then begin
       ControlPTT(False);
@@ -1697,7 +1706,9 @@ begin
    callsignptr := 0;
    mousetail := 1;
    tailcwstrptr := 1;
-   NoSound;
+   if FUseSideTone then begin
+      NoSound();
+   end;
    FSendOK := True;
    FCQLoopCount := 0;
    CW_OFF;

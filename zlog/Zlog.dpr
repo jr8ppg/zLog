@@ -106,7 +106,8 @@ uses
   UserDefinedContest in 'UserDefinedContest.pas',
   UVoiceForm in 'UVoiceForm.pas' {VoiceForm},
   UCFGEdit in 'UCFGEdit.pas' {CFGEdit},
-  UExceptionDialog in 'UExceptionDialog.pas' {ExceptionDialog};
+  UExceptionDialog in 'UExceptionDialog.pas' {ExceptionDialog},
+  UzLogSound in 'UzLogSound.pas';
 
 {$R *.RES}
 

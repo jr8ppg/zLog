@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 361
-    ActivePage = tabsheetCategories
+    ActivePage = tabsheetCW
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1135,7 +1135,7 @@ object formOptions: TformOptions
         Height = 22
         MaxValue = 999
         MinValue = 0
-        TabOrder = 6
+        TabOrder = 7
         Value = 15
       end
       object ToneSpinEdit: TSpinEdit
@@ -1146,7 +1146,7 @@ object formOptions: TformOptions
         Increment = 10
         MaxValue = 2500
         MinValue = 100
-        TabOrder = 5
+        TabOrder = 6
         Value = 100
       end
       object CQRepEdit: TEdit
@@ -1154,13 +1154,13 @@ object formOptions: TformOptions
         Top = 230
         Width = 41
         Height = 21
-        TabOrder = 8
+        TabOrder = 9
         Text = '2.0'
         OnKeyPress = CQRepEditKeyPress
       end
       object FIFOCheck: TCheckBox
-        Left = 208
-        Top = 136
+        Left = 213
+        Top = 112
         Width = 97
         Height = 17
         Caption = 'Que messages'
@@ -1175,7 +1175,7 @@ object formOptions: TformOptions
         Height = 21
         CharCase = ecUpperCase
         MaxLength = 3
-        TabOrder = 7
+        TabOrder = 8
         Text = 'OAN'
       end
       object rbBankA: TRadioButton
@@ -1186,7 +1186,7 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'CW A'
         Checked = True
-        TabOrder = 11
+        TabOrder = 12
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1197,7 +1197,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'CW B'
-        TabOrder = 12
+        TabOrder = 13
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1208,7 +1208,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'RTTY'
-        TabOrder = 13
+        TabOrder = 14
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1221,7 +1221,7 @@ object formOptions: TformOptions
           'This option will switch the CW message sent when TAB or ; key is' +
           ' pressed to that in the current message bank. '
         Caption = 'Switch TAB/; with CW bank'
-        TabOrder = 9
+        TabOrder = 10
         WordWrap = True
       end
       object checkSendNrAuto: TCheckBox
@@ -1230,7 +1230,7 @@ object formOptions: TformOptions
         Width = 161
         Height = 17
         Caption = 'Send NR? automatically'
-        TabOrder = 10
+        TabOrder = 11
       end
       object GroupBox14: TGroupBox
         Left = 6
@@ -1283,6 +1283,14 @@ object formOptions: TformOptions
           ParentFont = False
           TabOrder = 1
         end
+      end
+      object SideToneCheck: TCheckBox
+        Left = 213
+        Top = 135
+        Width = 97
+        Height = 17
+        Caption = 'Use Side Tone'
+        TabOrder = 5
       end
     end
     object tabsheetVoice: TTabSheet
