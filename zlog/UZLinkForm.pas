@@ -914,6 +914,10 @@ end;
 
 procedure TZLinkForm.ZSocketSessionConnected(Sender: TObject; Error: Word);
 begin
+   if Error <> 0 then begin
+      Exit;
+   end;
+
    Button.Caption := 'Disconnect';
    MainForm.ConnectToZServer1.Caption := 'Disconnect Z-Server'; // 0.23
    Console.WriteString('connected to ' + ZSocket.Addr + LineBreakCode[Ord(Console.LineBreak)]);
