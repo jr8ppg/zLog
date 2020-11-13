@@ -569,7 +569,7 @@ begin
       Settings._jmode := ini.ReadBool('Preferences', 'JMode', False);
 
       // Allow to log dupes
-      Settings._allowdupe := ini.ReadBool('Preferences', 'AllowDupe', False);
+      Settings._allowdupe := ini.ReadBool('Preferences', 'AllowDupe', True);
 
       // Save when not sending CW
       Settings._savewhennocw := ini.ReadBool('Preferences', 'SaveWhenNoCW', False);
