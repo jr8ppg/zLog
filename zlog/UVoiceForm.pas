@@ -55,6 +55,7 @@ begin
    FCtrlZCQLoopVoice := False;
    FOnNotifyStarted := nil;
    FOnNotifyFinished := nil;
+   FCurrentVoice := 0;
 
    for i := 1 to High(FWaveSound) do begin
       FWaveSound[i] := TWaveSound.Create();
@@ -77,6 +78,7 @@ begin
    for i := 1 to High(FWaveSound) do begin
       FWaveSound[i].Close();
    end;
+   FCurrentVoice := 0;
 end;
 
 procedure TVoiceForm.SendVoice(i: integer);
@@ -118,7 +120,9 @@ end;
 procedure TVoiceForm.StopVoice();
 begin
    Timer.Enabled := False;
-   FWaveSound[FCurrentVoice].Stop();
+   if FCurrentVoice <> 0 then begin
+      FWaveSound[FCurrentVoice].Stop();
+   end;
    VoiceControl(False);
 end;
 
