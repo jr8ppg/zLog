@@ -107,7 +107,8 @@ uses
   UVoiceForm in 'UVoiceForm.pas' {VoiceForm},
   UCFGEdit in 'UCFGEdit.pas' {CFGEdit},
   UExceptionDialog in 'UExceptionDialog.pas' {ExceptionDialog},
-  UzLogSound in 'UzLogSound.pas';
+  UzLogSound in 'UzLogSound.pas',
+  MMReg in 'MMReg.pas';
 
 {$R *.RES}
 

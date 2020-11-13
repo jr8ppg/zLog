@@ -173,6 +173,7 @@ type
     // Voice Memory
     FSoundFiles: array[1..maxmessage] of string;
     FSoundComments: array[1..maxmessage] of string;
+    FSoundDevice: Integer;
 
     // Select User Defined Contest
     FImpProvCity: Boolean;
@@ -962,6 +963,9 @@ begin
          end;
       end;
 
+      // output device
+      Settings.FSoundDevice := ini.ReadInteger('Voice', 'device', 0);
+
       // Select User Defined Contest
       Settings.FImpProvCity := ini.ReadBool('UserDefinedContest', 'imp_prov_city', True);
       Settings.FImpCwMessage[1] := ini.ReadBool('UserDefinedContest', 'imp_f1a', True);
@@ -1374,6 +1378,9 @@ begin
          ini.WriteString('Voice', 'F#' + IntToStr(i), Settings.FSoundFiles[i]);
          ini.WriteString('Voice', 'C#' + IntToStr(i), Settings.FSoundComments[i]);
       end;
+
+      // output device
+      ini.WriteInteger('Voice', 'device', Settings.FSoundDevice);
 
       // Select User Defined Contest
       ini.WriteBool('UserDefinedContest', 'imp_prov_city', Settings.FImpProvCity);

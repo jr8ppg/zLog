@@ -5970,6 +5970,9 @@ begin
       // OpListÄƒ[ƒh
       BuildOpListMenu(OpMenu, OpMenuClick);
 
+      // Voice‰Šú‰»
+      FVoiceForm.Init();
+
       LastFocus.SetFocus;
    finally
       f.Release();

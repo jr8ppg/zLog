@@ -148,11 +148,8 @@ type
     function SetNote(NoteString:String): Integer;
     function SetAMNote(Level: TTGAMLevel;NoteString:String): Single;
 
+    procedure SaveToStream(Stream: TStream);
   end;
-
-procedure Register;
-
-implementation
 
 type
 { format of WAV file header }
@@ -181,6 +178,10 @@ type
    { for 16 bit stereo = sleft[0],sright[0],sleft[1],sright[1]... :word}
  end;
  PTWavHeader = ^TWavHeader;
+
+procedure Register;
+
+implementation
 
 var
    TTGCount: Integer=0;
@@ -1659,4 +1660,13 @@ if Freq>0 then
    end;
 
 end;
+
+procedure TToneGen.SaveToStream(Stream: TStream);
+begin
+   if Buffer = nil then Exit;
+
+   Stream.Position := 0;
+   Stream.Write(Buffer^, BufferSize);
+end;
+
 end.

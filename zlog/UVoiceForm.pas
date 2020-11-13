@@ -4,29 +4,32 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, MPlayer, ExtCtrls, UzLogConst;
+  Dialogs, MPlayer, ExtCtrls, UzLogConst, UzLogSound;
 
 type
   TVoiceForm = class(TForm)
-    MP: TMediaPlayer;
     Timer: TTimer;
     Timer2: TTimer;
     procedure TimerTimer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private êÈåæ }
+    FWaveSound: array[1..maxmessage] of TWaveSound;
+    FCurrentVoice: Integer;
     FCtrlZCQLoopVoice: Boolean;
     FOnNotifyStarted: TNotifyEvent;
     FOnNotifyFinished: TNotifyEvent;
 
+    LoopInterval : integer; // in milliseconds;
+    LoopCount : integer;
+    function Playing : boolean;
+    procedure SetLoopInterval(Intvl : integer);
     procedure VoiceControl(fOn: Boolean);
   public
     { Public êÈåæ }
-    LoopInterval : integer; // in milliseconds;
-    LoopCount : integer;
-    procedure SetLoopInterval(Intvl : integer);
-    function Playing : boolean;
+    procedure Init();
     procedure SendVoice(i: integer);
     procedure StopVoice();
     procedure CQLoopVoice();
@@ -46,10 +49,34 @@ uses
   UzLogKeyer, UzLogGlobal;
 
 procedure TVoiceForm.FormCreate(Sender: TObject);
+var
+   i: Integer;
 begin
    FCtrlZCQLoopVoice := False;
    FOnNotifyStarted := nil;
    FOnNotifyFinished := nil;
+
+   for i := 1 to High(FWaveSound) do begin
+      FWaveSound[i] := TWaveSound.Create();
+   end;
+end;
+
+procedure TVoiceForm.FormDestroy(Sender: TObject);
+var
+   i: Integer;
+begin
+   for i := 1 to High(FWaveSound) do begin
+      FWaveSound[i].Free();
+   end;
+end;
+
+procedure TVoiceForm.Init();
+var
+   i: Integer;
+begin
+   for i := 1 to High(FWaveSound) do begin
+      FWaveSound[i].Close();
+   end;
 end;
 
 procedure TVoiceForm.SendVoice(i: integer);
@@ -68,20 +95,20 @@ begin
       Exit;
    end;
 
-   if Playing then begin
-      MP.Stop;
+   if FWaveSound[i].IsLoaded = False then begin
+      FWaveSound[i].Open(filename, dmZLogGlobal.Settings.FSoundDevice);
+//      FWaveSound[i].OnDone := FOnNotifyFinished;
    end;
-
-   MP.filename := filename;
-   MP.Open;
+   FWaveSound[i].Stop();
 
    VoiceControl(True);
 
    LoopInterval := 0;
-   MP.Play;
+   FCurrentVoice := i;
+   FWaveSound[i].Play();
 
    if Assigned(FOnNotifyStarted) then begin
-      FOnNotifyStarted(MP);
+      FOnNotifyStarted(FWaveSound[i]);
    end;
 
    Timer.Enabled := True;
@@ -90,27 +117,9 @@ end;
 
 procedure TVoiceForm.StopVoice();
 begin
-   try
-   try
-      if MP.FileName = '' then begin
-         Exit;
-      end;
-
-      if Playing then begin
-         MP.Stop;
-      end;
-
-      MP.Rewind;
-   except
-      on EMCIDeviceError do begin
-         Exit;
-      end;
-   end;
-
-   finally
-      Timer.Enabled := False;
-      VoiceControl(False);
-   end;
+   Timer.Enabled := False;
+   FWaveSound[FCurrentVoice].Stop();
+   VoiceControl(False);
 end;
 
 procedure TVoiceForm.CQLoopVoice;
@@ -131,19 +140,18 @@ begin
       Exit;
    end;
 
-   if Playing then begin
-      MP.Stop;
+   if FWaveSound[1].IsLoaded = False then begin
+      FWaveSound[1].Open(filename, dmZLogGlobal.Settings.FSoundDevice);
    end;
-
-   MP.filename := filename;
-   MP.Open;
+   FWaveSound[1].Stop();
 
    VoiceControl(True);
 
-   MP.Play;
+   FCurrentVoice := 1;
+   FWaveSound[1].Play();
 
    if Assigned(FOnNotifyStarted) then begin
-      FOnNotifyStarted(MP);
+      FOnNotifyStarted(FWaveSound[1]);
    end;
 
    Timer.Enabled := True;
@@ -164,12 +172,12 @@ end;
 
 function TVoiceForm.Playing: boolean;
 begin
-   Result := MP.Mode = mpPlaying;
+   Result := FWaveSound[FCurrentVoice].Playing;
 end;
 
 procedure TVoiceForm.TimerTimer(Sender: TObject);
 begin
-   if MP.Mode = mpPlaying then begin
+   if Playing = True then begin
       Exit;
    end;
 
@@ -184,11 +192,10 @@ begin
 
          VoiceControl(True);
 
-         MP.Rewind;
-         MP.Play;
+         FWaveSound[FCurrentVoice].Play();
 
          if Assigned(FOnNotifyStarted) then begin
-            FOnNotifyStarted(MP);
+            FOnNotifyStarted(FWaveSound[FCurrentVoice]);
          end;
 
          Timer2.Enabled := True;
@@ -202,14 +209,14 @@ end;
 
 procedure TVoiceForm.Timer2Timer(Sender: TObject);
 begin
-   if MP.Mode = mpPlaying then begin
+   if Playing = True then begin
       Exit;
    end;
 
    Timer2.Enabled := False;
 
    if Assigned(FOnNotifyFinished) then begin
-      FOnNotifyFinished(MP);
+      FOnNotifyFinished(FWaveSound[FCurrentVoice]);
    end;
 
    {$IFDEF DEBUG}

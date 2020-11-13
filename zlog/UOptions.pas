@@ -6,7 +6,7 @@ uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl,
-  UIntegerDialog, UzLogConst, UzLogGlobal;
+  UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound;
 
 type
   TformOptions = class(TForm)
@@ -390,6 +390,10 @@ type
     checkAntiZeroinAutoCancel: TCheckBox;
     updownSendFreqInterval: TUpDown;
     SideToneCheck: TCheckBox;
+    GroupBox16: TGroupBox;
+    comboVoiceDevice: TComboBox;
+    buttonPlayVoice: TSpeedButton;
+    buttonStopVoice: TSpeedButton;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -428,6 +432,8 @@ type
     procedure buttonBSBackClick(Sender: TObject);
     procedure checkBSBoldClick(Sender: TObject);
     procedure buttonBSResetClick(Sender: TObject);
+    procedure buttonPlayVoiceClick(Sender: TObject);
+    procedure buttonStopVoiceClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -455,10 +461,12 @@ type
 
     FVoiceEdit: array[1..maxmessage] of TEdit;
     FVoiceButton: array[1..maxmessage] of TButton;
+    FVoiceSound: TWaveSound;
 
     procedure RenewCWStrBankDisp();
     procedure InitRigNames();
     procedure SetEditNumber(no: Integer);
+    procedure InitVoice();
   public
     procedure RenewSettings; {Reads controls and updates Settings}
     property EditMode: Integer read FEditMode write FEditMode;
@@ -793,6 +801,7 @@ begin
          Settings.FSoundFiles[i] := FTempVoiceFiles[i];
          Settings.FSoundComments[i] := FVoiceEdit[i].Text;
       end;
+      Settings.FSoundDevice := comboVoiceDevice.ItemIndex;
    end;
 end;
 
@@ -1118,6 +1127,7 @@ begin
          end;
          FVoiceEdit[i].Text := Settings.FSoundComments[i];
       end;
+      comboVoiceDevice.ItemIndex := Settings.FSoundDevice;
    end;
 
    if FEditMode = 0 then begin   // ’Êíƒ‚[ƒh
@@ -1290,30 +1300,7 @@ begin
    FEditMessage[12] := editMessage12;
 
    // Voice Memory
-   FVoiceEdit[1] := vEdit1;
-   FVoiceEdit[2] := vEdit2;
-   FVoiceEdit[3] := vEdit3;
-   FVoiceEdit[4] := vEdit4;
-   FVoiceEdit[5] := vEdit5;
-   FVoiceEdit[6] := vEdit6;
-   FVoiceEdit[7] := vEdit7;
-   FVoiceEdit[8] := vEdit8;
-   FVoiceEdit[9] := vEdit9;
-   FVoiceEdit[10] := vEdit10;
-   FVoiceEdit[11] := vEdit11;
-   FVoiceEdit[12] := vEdit12;
-   FVoiceButton[1] := vButton1;
-   FVoiceButton[2] := vButton2;
-   FVoiceButton[3] := vButton3;
-   FVoiceButton[4] := vButton4;
-   FVoiceButton[5] := vButton5;
-   FVoiceButton[6] := vButton6;
-   FVoiceButton[7] := vButton7;
-   FVoiceButton[8] := vButton8;
-   FVoiceButton[9] := vButton9;
-   FVoiceButton[10] := vButton10;
-   FVoiceButton[11] := vButton11;
-   FVoiceButton[12] := vButton12;
+   InitVoice();
 
    TempCurrentBank := 1;
 
@@ -1364,7 +1351,7 @@ end;
 
 procedure TformOptions.FormDestroy(Sender: TObject);
 begin
-//
+   FVoiceSound.Free();
 end;
 
 procedure TformOptions.vButtonClick(Sender: TObject);
@@ -1748,6 +1735,78 @@ begin
       FBSColor[72].Color   := BandScopeDefaultColor[7].FBackColor2;
       FBSColor[73].Color   := BandScopeDefaultColor[7].FBackColor3;
    end;
+end;
+
+procedure TformOptions.InitVoice();
+var
+   L: TStringList;
+begin
+   FVoiceEdit[1] := vEdit1;
+   FVoiceEdit[2] := vEdit2;
+   FVoiceEdit[3] := vEdit3;
+   FVoiceEdit[4] := vEdit4;
+   FVoiceEdit[5] := vEdit5;
+   FVoiceEdit[6] := vEdit6;
+   FVoiceEdit[7] := vEdit7;
+   FVoiceEdit[8] := vEdit8;
+   FVoiceEdit[9] := vEdit9;
+   FVoiceEdit[10] := vEdit10;
+   FVoiceEdit[11] := vEdit11;
+   FVoiceEdit[12] := vEdit12;
+   FVoiceButton[1] := vButton1;
+   FVoiceButton[2] := vButton2;
+   FVoiceButton[3] := vButton3;
+   FVoiceButton[4] := vButton4;
+   FVoiceButton[5] := vButton5;
+   FVoiceButton[6] := vButton6;
+   FVoiceButton[7] := vButton7;
+   FVoiceButton[8] := vButton8;
+   FVoiceButton[9] := vButton9;
+   FVoiceButton[10] := vButton10;
+   FVoiceButton[11] := vButton11;
+   FVoiceButton[12] := vButton12;
+   FVoiceSound := TWaveSound.Create();
+
+   L := TWaveSound.DeviceList();
+   try
+      comboVoiceDevice.Items.Assign(L);
+   finally
+      L.Free();
+   end;
+end;
+
+procedure TformOptions.buttonPlayVoiceClick(Sender: TObject);
+var
+   i: Integer;
+   n: Integer;
+begin
+   n := 0;
+   try
+      for i := 1 to High(FVoiceEdit) do begin
+         if (FVoiceEdit[i].Focused = True) or (FVoiceButton[i].Focused = True) then begin
+            if FileExists(FTempVoiceFiles[i]) = True then begin
+               n := i;
+               FVoiceSound.Open(FTempVoiceFiles[n], comboVoiceDevice.ItemIndex);
+               FVoiceSound.Play();
+               Exit;
+            end;
+         end;
+      end;
+   except
+      on E: Exception do begin
+         Application.MessageBox(PChar(E.Message), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         if n > 0 then begin
+            FVoiceButton[n].Caption := 'select';
+            FTempVoiceFiles[n] := '';
+         end;
+      end;
+   end;
+end;
+
+procedure TformOptions.buttonStopVoiceClick(Sender: TObject);
+begin
+   FVoiceSound.Stop();
+   FVoiceSound.Close();
 end;
 
 end.

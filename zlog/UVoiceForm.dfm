@@ -12,18 +12,9 @@ object VoiceForm: TVoiceForm
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 12
-  object MP: TMediaPlayer
-    Left = 0
-    Top = 0
-    Width = -4
-    Height = 30
-    VisibleButtons = [btPlay, btPause, btStop, btBack, btRecord]
-    DoubleBuffered = True
-    ParentDoubleBuffered = False
-    TabOrder = 0
-  end
   object Timer: TTimer
     Enabled = False
     Interval = 100
