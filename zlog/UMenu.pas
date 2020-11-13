@@ -242,6 +242,12 @@ procedure TMenuForm.OKButtonClick(Sender: TObject);
 var
    i: Integer;
 begin
+   if editCallsign.Text = '' then begin
+      Application.MessageBox(PChar('Please enter your callsign'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      editCallsign.SetFocus();
+      Exit;
+   end;
+
    dmZLogGlobal.ClearParamImportedFlag();
 
    if (rbGeneral.Checked = True) and (FModernStyle = True) then begin

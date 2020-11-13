@@ -848,7 +848,7 @@ begin
 
       Settings._txnr := ini.ReadInteger('Categories', 'TXNumber', 0);
       Settings._contestmenuno := ini.ReadInteger('Categories', 'Contest', 1);
-      Settings._mycall := ini.ReadString('Categories', 'MyCall', 'Your call sign');
+      Settings._mycall := ini.ReadString('Categories', 'MyCall', '');
 
       Settings.CW._interval := ini.ReadInteger('CW', 'Interval', 1);
 
