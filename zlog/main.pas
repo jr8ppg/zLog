@@ -5125,7 +5125,7 @@ begin
    EditedSinceTABPressed := tabstate_normal;
 
    _dupe := Log.IsDupe(CurrentQSO);
-   if (_dupe = 0) or (CurrentQSO.Reserve2 = $FF) then // $FF when forcing to log
+   if (_dupe = 0) then
    begin
       if (MyContest.MultiForm.ValidMulti(CurrentQSO) = False) and (CurrentQSO.Reserve2 <> $FF) then begin
          WriteStatusLine('Invalid Number', False);
@@ -5138,12 +5138,13 @@ begin
          CallsignEdit.SetFocus;
          exit;
       end;
-      if CurrentQSO.Reserve2 = $FF then begin
+
+   med:
+      if CurrentQSO.Reserve2 = $FF then begin // $FF when forcing to log
          CurrentQSO.Reserve2 := $00; { set it back }
          CurrentQSO.Memo := '* ' + CurrentQSO.Memo;
       end;
 
-   med:
       MyContest.SetNrSent(CurrentQSO);
 
       repeat
@@ -5284,7 +5285,7 @@ begin
       end;
    end
    else begin
-      if dmZLogGlobal.Settings._allowdupe = True then begin
+      if (dmZLogGlobal.Settings._allowdupe = True) or (CurrentQSO.Reserve2 = $FF) then begin // $FF when forcing to log
          CurrentQSO.Dupe := True;
          CurrentQSO.Points := 0;
          CurrentQSO.NewMulti1 := False;
