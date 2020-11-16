@@ -4614,6 +4614,7 @@ begin
                MessageBeep(0);
                if dmZLogGlobal.Settings._allowdupe = True then begin
                   WriteStatusLineRed(Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck), True);
+                  MyContest.SpaceBarProc;
                   NumberEdit.SetFocus;
                   exit;
                end;
@@ -4920,23 +4921,35 @@ var
    S: String;
    Q: TQSO;
 begin
-   { not dupe }
+   // PHONE
    if Main.CurrentQSO.mode in [mSSB, mFM, mAM] then begin
       Q := Log.QuickDupe(CurrentQSO);
-      if Q <> nil then begin
-         WriteStatusLineRed(Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck), True);
-         CallsignEdit.SelectAll;
-         CallsignEdit.SetFocus;
-         PlayMessage(1, 4);
-         exit;
-      end;
+      if Q <> nil then begin  // dupe
+         // ALLOW DUPEしない場合は4番を送出
+         if dmZLogGlobal.Settings._allowdupe = False then begin
+            CallsignEdit.SelectAll;
+            CallsignEdit.SetFocus;
+            PlayMessage(1, 4);
+         end
+         else begin
+            MyContest.SpaceBarProc;
+            NumberEdit.SetFocus;
+            PlayMessage(1, 2);
+         end;
 
-      MyContest.SpaceBarProc;
-      NumberEdit.SetFocus;
-      PlayMessage(1, 2);
-      exit;
+         S := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
+         WriteStatusLineRed(S, True);
+         Exit;
+      end
+      else begin  // not dupe
+         MyContest.SpaceBarProc;
+         NumberEdit.SetFocus;
+         PlayMessage(1, 2);
+         Exit;
+      end;
    end;
 
+   // RTTY
    if Main.CurrentQSO.mode = mRTTY then begin
       TabPressed := True;
       if TTYConsole <> nil then
@@ -4946,6 +4959,7 @@ begin
       exit;
    end;
 
+   // CW
    if NumberEdit.Text = '' then begin
       CurrentQSO.UpdateTime;
       TimeEdit.Text := CurrentQSO.TimeStr;
@@ -5119,186 +5133,201 @@ var
    workedZLO: Boolean;
    st, st2: string;
    B: TBand;
-label
-   med;
 begin
    EditedSinceTABPressed := tabstate_normal;
 
+   // Callsign入力チェック
+   if CurrentQSO.Callsign = '' then begin
+      WriteStatusLine('Callsign not entered', False);
+      CallsignEdit.SetFocus;
+      Exit;
+   end;
+
+   // DUPEチェック
    _dupe := Log.IsDupe(CurrentQSO);
-   if (_dupe = 0) or (CurrentQSO.Reserve2 = $FF) then // $FF when forcing to log
-   begin
-      if (MyContest.MultiForm.ValidMulti(CurrentQSO) = False) and (CurrentQSO.Reserve2 <> $FF) then begin
-         WriteStatusLine('Invalid Number', False);
-         NumberEdit.SetFocus;
-         NumberEdit.SelectAll;
-         exit;
-      end;
-      if CurrentQSO.Callsign = '' then begin
-         WriteStatusLine('Callsign not entered', False);
-         CallsignEdit.SetFocus;
-         exit;
-      end;
-      if CurrentQSO.Reserve2 = $FF then begin
-         CurrentQSO.Reserve2 := $00; { set it back }
-         CurrentQSO.Memo := '* ' + CurrentQSO.Memo;
-      end;
 
-   med:
-      MyContest.SetNrSent(CurrentQSO);
-
-      repeat
-         i := dmZlogGlobal.NewQSOID();
-      until Log.CheckQSOID(i) = False;
-
-      CurrentQSO.Reserve3 := i;
-
-      if RigControl.Rig <> nil then begin
-         // memo欄に周波数を記録
-         if dmZlogGlobal.Settings._recrigfreq = True then begin
-            CurrentQSO.Memo := CurrentQSO.Memo + '(' + RigControl.Rig.CurrentFreqkHzStr + ')';
+   if CurrentQSO.Reserve2 = $00 then begin   // 通常入力
+      // DUPE
+      if _dupe <> 0 then begin
+         // DUPEは入力しない
+         if dmZLogGlobal.Settings._allowdupe = False then begin
+            CallsignEdit.SetFocus;
+            CallsignEdit.SelectAll;
+            WriteStatusLine('Dupe', False);
+            Exit;
+         end
+         else begin // DUPEをallow
+            CurrentQSO.Dupe := True;
+            CurrentQSO.Points := 0;
+            CurrentQSO.NewMulti1 := False;
+            CurrentQSO.NewMulti2 := False;
+            CurrentQSO.Multi1 := '';
+            CurrentQSO.Multi2 := '';
+            CurrentQSO.Memo := MEMO_DUPE + ' ' + CurrentQSO.Memo;
          end;
-
-         // 自動bandmap
-         if dmZlogGlobal.Settings._autobandmap then begin
-            j := RigControl.Rig.CurrentFreqHz;
-            if j > 0 then begin
-               BandScopeAddSelfSpot(CurrentQSO, j);
-            end;
-         end;
-      end;
-
-      // if MyContest.Name = 'Pedition mode' then
-      if not FPostContest then begin
-         CurrentQSO.UpdateTime;
-      end;
-
-      // ログに記録
-      MyContest.LogQSO(CurrentQSO, True);
-
-      workedZLO := False;
-      if CurrentQSO.Callsign = 'JA1ZLO' then begin
-         if MyContest.Name = 'ALL JA コンテスト' then begin
-            if CurrentQSO.Points > 0 then begin
-               inc(ZLOCOUNT);
-               workedZLO := True;
-            end;
-         end;
-      end;
-
-      // 自動保存
-      if CurrentFileName <> '' then begin
-         if Log.TotalQSO mod dmZlogGlobal.Settings._saveevery = 0 then begin
-            if dmZlogGlobal.Settings._savewhennocw then
-               SaveInBackGround := True
-            else
-               SaveFileAndBackUp;
-         end;
-      end;
-
-      // 他のzLogに送信
-      FZLinkForm.SendQSO(CurrentQSO); { ZLinkForm checks if Z-Link is ON }
-
-      // WANTEDリスト交信
-      st := MyContest.MultiForm.ExtractMulti(CurrentQSO);
-      if st <> '' then begin
-         for i := 0 to MyContest.WantedList.Count - 1 do begin
-            if st = TWanted(MyContest.WantedList[i]).Multi then begin
-               st2 := '';
-               for B := b19 to HiBand do
-                  if B in TWanted(MyContest.WantedList[i]).Bands then
-                     st2 := st2 + ' ' + BandString[B];
-               MessageDlg(st + ' is wanted by' + st2, mtInformation, [mbOK], 0);
-            end;
-         end;
-      end;
-
-      if CurrentQSO.Mode = mCW then begin
-         if RigControl.Rig <> nil then begin
-            // RITクリア
-            if (dmZlogGlobal.Settings._ritclear = True) or
-               (dmZlogGlobal.Settings.FAntiZeroinAutoCancel = True) then begin
-               RigControl.Rig.RitClear;
-            end;
-
-            // Anti Zeroin
-            if dmZlogGlobal.Settings.FAntiZeroinAutoCancel = True then begin
-               RigControl.Rig.Xit := False;
-            end;
-         end;
-      end;
-
-      // BandScopeの更新
-      BandScopeNotifyWorked(CurrentQSO);
-
-      // 次のＱＳＯの準備
-      CurrentQSO.Serial := CurrentQSO.Serial + 1;
-      SerialArrayTX[dmZlogGlobal.TXNr] := CurrentQSO.Serial;
-
-      if Not(FPostContest) then
-         CurrentQSO.UpdateTime;
-      CurrentQSO.Callsign := '';
-      CurrentQSO.NrRcvd := '';
-      CurrentQSO.Memo := '';
-
-      CurrentQSO.NewMulti1 := False;
-      CurrentQSO.NewMulti2 := False;
-
-      CurrentQSO.Dupe := False;
-      // CurrentQSO.CQ := False;
-
-      CurrentQSO.Reserve2 := 0;
-      CurrentQSO.Reserve3 := 0;
-      CurrentQSO.TX := dmZlogGlobal.TXNr;
-
-      if CurrentQSO.mode in [mCW, mRTTY] then begin
-         CurrentQSO.RSTRcvd := 599;
       end
-      else begin
-         CurrentQSO.RSTRcvd := 59;
-      end;
-
-      SerialEdit.Text := CurrentQSO.SerialStr;
-      TimeEdit.Text := CurrentQSO.TimeStr;
-      DateEdit.Text := CurrentQSO.DateStr;
-      CallsignEdit.Text := CurrentQSO.Callsign;
-      RcvdRSTEdit.Text := CurrentQSO.RSTStr;
-      NumberEdit.Text := CurrentQSO.NrRcvd;
-      ModeEdit.Text := CurrentQSO.ModeStr;
-      BandEdit.Text := CurrentQSO.BandStr;
-      NewPowerEdit.Text := CurrentQSO.NewPowerStr;
-      PointEdit.Text := CurrentQSO.PointStr;
-      OpEdit.Text := CurrentQSO.Operator;
-      MemoEdit.Text := '';
-
-      if FPostContest then begin
-         TimeEdit.SetFocus;
-      end
-      else begin
-         CallsignEdit.SetFocus;
-      end;
-
-      WriteStatusLine('', False);
-
-      if workedZLO then begin
-         WriteStatusLine('QSOありがとうございます', False);
+      else begin  // UNIQUE!
+         // 無効マルチは入力できない
+         if MyContest.MultiForm.ValidMulti(CurrentQSO) = False then begin
+            WriteStatusLine('Invalid Number', False);
+            NumberEdit.SetFocus;
+            NumberEdit.SelectAll;
+            Exit;
+         end;
       end;
    end
-   else begin
-      if dmZLogGlobal.Settings._allowdupe = True then begin
+   else begin     // 強制入力
+      if _dupe <> 0 then begin
          CurrentQSO.Dupe := True;
-         CurrentQSO.Points := 0;
-         CurrentQSO.NewMulti1 := False;
-         CurrentQSO.NewMulti2 := False;
-         CurrentQSO.Multi1 := '';
-         CurrentQSO.Multi2 := '';
-         CurrentQSO.Memo := MEMO_DUPE + ' ' + CurrentQSO.Memo;
-         goto med;
-      end
-      else begin
-         CallsignEdit.SetFocus;
-         CallsignEdit.SelectAll;
-         WriteStatusLine('Dupe', False);
       end;
+      CurrentQSO.Points := 0;
+      CurrentQSO.NewMulti1 := False;
+      CurrentQSO.NewMulti2 := False;
+      CurrentQSO.Multi1 := '';
+      CurrentQSO.Multi2 := '';
+      CurrentQSO.Memo := '* ' + CurrentQSO.Memo;
+      CurrentQSO.Reserve2 := $00;
+   end;
+
+   // ここからがLoggingメイン処理
+   MyContest.SetNrSent(CurrentQSO);
+
+   repeat
+      i := dmZlogGlobal.NewQSOID();
+   until Log.CheckQSOID(i) = False;
+
+   CurrentQSO.Reserve3 := i;
+
+   if RigControl.Rig <> nil then begin
+      // memo欄に周波数を記録
+      if dmZlogGlobal.Settings._recrigfreq = True then begin
+         CurrentQSO.Memo := CurrentQSO.Memo + '(' + RigControl.Rig.CurrentFreqkHzStr + ')';
+      end;
+
+      // 自動bandmap
+      if dmZlogGlobal.Settings._autobandmap then begin
+         j := RigControl.Rig.CurrentFreqHz;
+         if j > 0 then begin
+            BandScopeAddSelfSpot(CurrentQSO, j);
+         end;
+      end;
+   end;
+
+   // if MyContest.Name = 'Pedition mode' then
+   if not FPostContest then begin
+      CurrentQSO.UpdateTime;
+   end;
+
+   // ログに記録
+   MyContest.LogQSO(CurrentQSO, True);
+
+   workedZLO := False;
+   if CurrentQSO.Callsign = 'JA1ZLO' then begin
+      if MyContest.Name = 'ALL JA コンテスト' then begin
+         if CurrentQSO.Points > 0 then begin
+            inc(ZLOCOUNT);
+            workedZLO := True;
+         end;
+      end;
+   end;
+
+   // 自動保存
+   if CurrentFileName <> '' then begin
+      if Log.TotalQSO mod dmZlogGlobal.Settings._saveevery = 0 then begin
+         if dmZlogGlobal.Settings._savewhennocw then
+            SaveInBackGround := True
+         else
+            SaveFileAndBackUp;
+      end;
+   end;
+
+   // 他のzLogに送信
+   FZLinkForm.SendQSO(CurrentQSO); { ZLinkForm checks if Z-Link is ON }
+
+   // WANTEDリスト交信
+   st := MyContest.MultiForm.ExtractMulti(CurrentQSO);
+   if st <> '' then begin
+      for i := 0 to MyContest.WantedList.Count - 1 do begin
+         if st = TWanted(MyContest.WantedList[i]).Multi then begin
+            st2 := '';
+            for B := b19 to HiBand do
+               if B in TWanted(MyContest.WantedList[i]).Bands then
+                  st2 := st2 + ' ' + BandString[B];
+            MessageDlg(st + ' is wanted by' + st2, mtInformation, [mbOK], 0);
+         end;
+      end;
+   end;
+
+   if CurrentQSO.Mode = mCW then begin
+      if RigControl.Rig <> nil then begin
+         // RITクリア
+         if (dmZlogGlobal.Settings._ritclear = True) or
+            (dmZlogGlobal.Settings.FAntiZeroinAutoCancel = True) then begin
+            RigControl.Rig.RitClear;
+         end;
+
+         // Anti Zeroin
+         if dmZlogGlobal.Settings.FAntiZeroinAutoCancel = True then begin
+            RigControl.Rig.Xit := False;
+         end;
+      end;
+   end;
+
+   // BandScopeの更新
+   BandScopeNotifyWorked(CurrentQSO);
+
+   // 次のＱＳＯの準備
+   CurrentQSO.Serial := CurrentQSO.Serial + 1;
+   SerialArrayTX[dmZlogGlobal.TXNr] := CurrentQSO.Serial;
+
+   if Not(FPostContest) then
+      CurrentQSO.UpdateTime;
+
+   CurrentQSO.Callsign := '';
+   CurrentQSO.NrRcvd := '';
+   CurrentQSO.Memo := '';
+
+   CurrentQSO.NewMulti1 := False;
+   CurrentQSO.NewMulti2 := False;
+
+   CurrentQSO.Dupe := False;
+   // CurrentQSO.CQ := False;
+
+   CurrentQSO.Reserve2 := 0;
+   CurrentQSO.Reserve3 := 0;
+   CurrentQSO.TX := dmZlogGlobal.TXNr;
+
+   if CurrentQSO.mode in [mCW, mRTTY] then begin
+      CurrentQSO.RSTRcvd := 599;
+   end
+   else begin
+      CurrentQSO.RSTRcvd := 59;
+   end;
+
+   SerialEdit.Text := CurrentQSO.SerialStr;
+   TimeEdit.Text := CurrentQSO.TimeStr;
+   DateEdit.Text := CurrentQSO.DateStr;
+   CallsignEdit.Text := CurrentQSO.Callsign;
+   RcvdRSTEdit.Text := CurrentQSO.RSTStr;
+   NumberEdit.Text := CurrentQSO.NrRcvd;
+   ModeEdit.Text := CurrentQSO.ModeStr;
+   BandEdit.Text := CurrentQSO.BandStr;
+   NewPowerEdit.Text := CurrentQSO.NewPowerStr;
+   PointEdit.Text := CurrentQSO.PointStr;
+   OpEdit.Text := CurrentQSO.Operator;
+   MemoEdit.Text := '';
+
+   if FPostContest then begin
+      TimeEdit.SetFocus;
+   end
+   else begin
+      CallsignEdit.SetFocus;
+   end;
+
+   WriteStatusLine('', False);
+
+   if workedZLO then begin
+      WriteStatusLine('QSOありがとうございます', False);
    end;
 end;
 
