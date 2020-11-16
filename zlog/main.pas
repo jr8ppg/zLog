@@ -4921,27 +4921,35 @@ var
    S: String;
    Q: TQSO;
 begin
-   { not dupe }
+   // PHONE
    if Main.CurrentQSO.mode in [mSSB, mFM, mAM] then begin
       Q := Log.QuickDupe(CurrentQSO);
-      if Q <> nil then begin
-         WriteStatusLineRed(Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck), True);
-         CallsignEdit.SelectAll;
-         CallsignEdit.SetFocus;
-
+      if Q <> nil then begin  // dupe
          // ALLOW DUPEÇµÇ»Ç¢èÍçáÇÕ4î‘Çëóèo
          if dmZLogGlobal.Settings._allowdupe = False then begin
+            CallsignEdit.SelectAll;
+            CallsignEdit.SetFocus;
             PlayMessage(1, 4);
-            Exit;
+         end
+         else begin
+            MyContest.SpaceBarProc;
+            NumberEdit.SetFocus;
+            PlayMessage(1, 2);
          end;
-      end;
 
-      MyContest.SpaceBarProc;
-      NumberEdit.SetFocus;
-      PlayMessage(1, 2);
-      exit;
+         S := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
+         WriteStatusLineRed(S, True);
+         Exit;
+      end
+      else begin  // not dupe
+         MyContest.SpaceBarProc;
+         NumberEdit.SetFocus;
+         PlayMessage(1, 2);
+         Exit;
+      end;
    end;
 
+   // RTTY
    if Main.CurrentQSO.mode = mRTTY then begin
       TabPressed := True;
       if TTYConsole <> nil then
@@ -4951,6 +4959,7 @@ begin
       exit;
    end;
 
+   // CW
    if NumberEdit.Text = '' then begin
       CurrentQSO.UpdateTime;
       TimeEdit.Text := CurrentQSO.TimeStr;
