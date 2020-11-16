@@ -4928,8 +4928,12 @@ begin
          WriteStatusLineRed(Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck), True);
          CallsignEdit.SelectAll;
          CallsignEdit.SetFocus;
-         PlayMessage(1, 4);
-         exit;
+
+         // ALLOW DUPEÇµÇ»Ç¢èÍçáÇÕ4î‘Çëóèo
+         if dmZLogGlobal.Settings._allowdupe = False then begin
+            PlayMessage(1, 4);
+            Exit;
+         end;
       end;
 
       MyContest.SpaceBarProc;
