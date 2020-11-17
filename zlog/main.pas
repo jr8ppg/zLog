@@ -292,7 +292,7 @@ type
   end;
 
   TCQWWContest = class(TContest)
-    constructor Create(N : string); override;
+    constructor Create(N : string; fJIDX: Boolean = False); reintroduce;
     procedure SpaceBarProc; override;
     procedure ShowMulti; override;
     function CheckWinSummary(aQSO : TQSO) : string; override;
@@ -307,7 +307,7 @@ type
   end;
 
   TJIDXContest = class(TCQWWContest)
-    constructor Create(N : string); override;
+    constructor Create(N : string); overload;
     procedure SetPoints(var aQSO : TQSO); override;
   end;
 
@@ -2316,7 +2316,7 @@ end;
 
 constructor TJIDXContest.Create(N: string);
 begin
-//   inherited;   <-TCQWWContest‚©‚ç‚ÌŒp³‚È‚Ì‚Åinherited•s‰Â
+   inherited Create(N, True);    //   <-TCQWWContest‚©‚ç‚ÌŒp³‚È‚Ì‚Åinherited•s‰Â
    MultiForm := TJIDXMulti.Create(MainForm);
    ScoreForm := TJIDXScore2.Create(MainForm);
    ZoneForm := TWWZone.Create(MainForm);
@@ -2565,14 +2565,17 @@ begin
    SentStr := '$S';
 end;
 
-constructor TCQWWContest.Create(N: string);
+constructor TCQWWContest.Create(N: string; fJIDX: Boolean);
 begin
-   inherited;
-   MultiForm := TWWMulti.Create(MainForm);
-   ScoreForm := TWWScore.Create(MainForm);
-   ZoneForm := TWWZone.Create(MainForm);
-   TWWMulti(MultiForm).ZoneForm := ZoneForm;
-   MultiForm.Reset();
+   inherited Create(N);
+
+   if fJIDX = False then begin
+      MultiForm := TWWMulti.Create(MainForm);
+      ScoreForm := TWWScore.Create(MainForm);
+      ZoneForm := TWWZone.Create(MainForm);
+      TWWMulti(MultiForm).ZoneForm := ZoneForm;
+      MultiForm.Reset();
+   end;
 
    MainForm.FCheckCountry.ParentMulti := TWWMulti(MultiForm);
 
