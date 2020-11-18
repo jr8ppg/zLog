@@ -49,7 +49,7 @@ type
 implementation
 
 uses
-  Main;
+  Main, UzLogExtension;
 
 {$R *.DFM}
 
@@ -174,457 +174,467 @@ begin
    System.Reset(zfile);
 {$I+}
 
-   while not(eof(zfile)) do begin
-      readln(zfile, rstr);
-      if (rstr <> '') and (rstr[1] <> ';') then begin
+   while not(Eof(zfile)) do begin
+      ReadLn(zfile, rstr);
 
-         q := pos(';', rstr);
-         if q > 0 then
-            rstr := copy(rstr, 1, q - 1); { Cut out comment }
+      if rstr = '' then begin
+         Continue;
+      end;
+      if rstr[1] = ';' then begin
+         Continue;
+      end;
 
-         p := 0;
-         repeat
-            inc(p);
-         until (CharInSet(rstr[p], [' ', TAB])) or (p > length(rstr));
-         q := p;
-         repeat
-            inc(q);
-         until not(CharInSet(rstr[q], [' ', TAB])) or (q > length(rstr));
+      q := pos(';', rstr);
+      if q > 0 then begin
+         rstr := copy(rstr, 1, q - 1); { Cut out comment }
+      end;
 
-         com := Uppercase(copy(rstr, 1, p - 1));
-         opr := copy(rstr, q, 255);
+      p := 0;
+      repeat
+         inc(p);
+      until (CharInSet(rstr[p], [' ', TAB])) or (p > length(rstr));
+      q := p;
+      repeat
+         inc(q);
+      until not(CharInSet(rstr[q], [' ', TAB])) or (q > length(rstr));
 
-         opr := Uppercase(opr);
+      com := Uppercase(copy(rstr, 1, p - 1));
+      opr := copy(rstr, q, 255);
 
-         if pos('PT', com) = 1 then begin
+      opr := Uppercase(opr);
+
+      if pos('PT', com) = 1 then begin
+         _bnd := b19;
+         if copy(com, 3, 3) = '1.9' then
             _bnd := b19;
-            if copy(com, 3, 3) = '1.9' then
-               _bnd := b19;
-            if copy(com, 3, 3) = '3.5' then
-               _bnd := b35;
-            if copy(com, 3, 3) = '7' then
-               _bnd := b7;
-            if copy(com, 3, 3) = '10' then
-               _bnd := b10;
-            if copy(com, 3, 3) = '14' then
-               _bnd := b14;
-            if copy(com, 3, 3) = '18' then
-               _bnd := b18;
-            if copy(com, 3, 3) = '21' then
-               _bnd := b21;
-            if copy(com, 3, 3) = '24' then
-               _bnd := b24;
-            if copy(com, 3, 3) = '28' then
-               _bnd := b28;
-            if copy(com, 3, 3) = '50' then
-               _bnd := b50;
-            if copy(com, 3, 3) = '144' then
-               _bnd := b144;
-            if copy(com, 3, 3) = '430' then
-               _bnd := b430;
-            if copy(com, 3, 3) = '120' then
-               _bnd := b1200;
-            if copy(com, 3, 3) = '240' then
-               _bnd := b2400;
-            if copy(com, 3, 3) = '560' then
-               _bnd := b5600;
-            if copy(com, 3, 3) = '10G' then
-               _bnd := b10g;
-            if length(opr) >= 2 then begin
-               work := StrToIntDef(opr[1], 1);
-               PointsTable[_bnd, mSSB] := work;
+         if copy(com, 3, 3) = '3.5' then
+            _bnd := b35;
+         if copy(com, 3, 3) = '7' then
+            _bnd := b7;
+         if copy(com, 3, 3) = '10' then
+            _bnd := b10;
+         if copy(com, 3, 3) = '14' then
+            _bnd := b14;
+         if copy(com, 3, 3) = '18' then
+            _bnd := b18;
+         if copy(com, 3, 3) = '21' then
+            _bnd := b21;
+         if copy(com, 3, 3) = '24' then
+            _bnd := b24;
+         if copy(com, 3, 3) = '28' then
+            _bnd := b28;
+         if copy(com, 3, 3) = '50' then
+            _bnd := b50;
+         if copy(com, 3, 3) = '144' then
+            _bnd := b144;
+         if copy(com, 3, 3) = '430' then
+            _bnd := b430;
+         if copy(com, 3, 3) = '120' then
+            _bnd := b1200;
+         if copy(com, 3, 3) = '240' then
+            _bnd := b2400;
+         if copy(com, 3, 3) = '560' then
+            _bnd := b5600;
+         if copy(com, 3, 3) = '10G' then
+            _bnd := b10g;
+         if length(opr) >= 2 then begin
+            work := StrToIntDef(opr[1], 1);
+            PointsTable[_bnd, mSSB] := work;
 
-               work := StrToIntDef(opr[2], 1);
-               PointsTable[_bnd, mCW] := work;
+            work := StrToIntDef(opr[2], 1);
+            PointsTable[_bnd, mCW] := work;
 
-               work := StrToIntDef(opr[3], 1);
-               PointsTable[_bnd, mFM] := work;
+            work := StrToIntDef(opr[3], 1);
+            PointsTable[_bnd, mFM] := work;
 
-               work := StrToIntDef(opr[4], 1);
-               PointsTable[_bnd, mAM] := work;
-            end;
+            work := StrToIntDef(opr[4], 1);
+            PointsTable[_bnd, mAM] := work;
          end;
+      end;
 
-         if pos('LPT', com) = 1 then begin
+      if pos('LPT', com) = 1 then begin
+         _bnd := b19;
+         if copy(com, 4, 3) = '1.9' then
             _bnd := b19;
-            if copy(com, 4, 3) = '1.9' then
-               _bnd := b19;
-            if copy(com, 4, 3) = '3.5' then
-               _bnd := b35;
-            if copy(com, 4, 3) = '7' then
-               _bnd := b7;
-            if copy(com, 4, 3) = '10' then
-               _bnd := b10;
-            if copy(com, 4, 3) = '14' then
-               _bnd := b14;
-            if copy(com, 4, 3) = '18' then
-               _bnd := b18;
-            if copy(com, 4, 3) = '21' then
-               _bnd := b21;
-            if copy(com, 4, 3) = '24' then
-               _bnd := b24;
-            if copy(com, 4, 3) = '28' then
-               _bnd := b28;
-            if copy(com, 4, 3) = '50' then
-               _bnd := b50;
-            if copy(com, 4, 3) = '144' then
-               _bnd := b144;
-            if copy(com, 4, 3) = '430' then
-               _bnd := b430;
-            if copy(com, 4, 3) = '120' then
-               _bnd := b1200;
-            if copy(com, 4, 3) = '240' then
-               _bnd := b2400;
-            if copy(com, 4, 3) = '560' then
-               _bnd := b5600;
-            if copy(com, 4, 3) = '10G' then
-               _bnd := b10g;
-            if length(opr) >= 2 then begin
-               work := StrToIntDef(opr[1], 1);
-               LocalPointsTable[_bnd, mSSB] := work;
+         if copy(com, 4, 3) = '3.5' then
+            _bnd := b35;
+         if copy(com, 4, 3) = '7' then
+            _bnd := b7;
+         if copy(com, 4, 3) = '10' then
+            _bnd := b10;
+         if copy(com, 4, 3) = '14' then
+            _bnd := b14;
+         if copy(com, 4, 3) = '18' then
+            _bnd := b18;
+         if copy(com, 4, 3) = '21' then
+            _bnd := b21;
+         if copy(com, 4, 3) = '24' then
+            _bnd := b24;
+         if copy(com, 4, 3) = '28' then
+            _bnd := b28;
+         if copy(com, 4, 3) = '50' then
+            _bnd := b50;
+         if copy(com, 4, 3) = '144' then
+            _bnd := b144;
+         if copy(com, 4, 3) = '430' then
+            _bnd := b430;
+         if copy(com, 4, 3) = '120' then
+            _bnd := b1200;
+         if copy(com, 4, 3) = '240' then
+            _bnd := b2400;
+         if copy(com, 4, 3) = '560' then
+            _bnd := b5600;
+         if copy(com, 4, 3) = '10G' then
+            _bnd := b10g;
+         if length(opr) >= 2 then begin
+            work := StrToIntDef(opr[1], 1);
+            LocalPointsTable[_bnd, mSSB] := work;
 
-               work := StrToIntDef(opr[2], 1);
-               LocalPointsTable[_bnd, mCW] := work;
+            work := StrToIntDef(opr[2], 1);
+            LocalPointsTable[_bnd, mCW] := work;
 
-               work := StrToIntDef(opr[3], 1);
-               LocalPointsTable[_bnd, mFM] := work;
+            work := StrToIntDef(opr[3], 1);
+            LocalPointsTable[_bnd, mFM] := work;
 
-               work := StrToIntDef(opr[4], 1);
-               LocalPointsTable[_bnd, mAM] := work;
-            end;
+            work := StrToIntDef(opr[4], 1);
+            LocalPointsTable[_bnd, mAM] := work;
          end;
+      end;
 
-         if pos('XPT', com) = 1 then begin
+      if pos('XPT', com) = 1 then begin
+         _bnd := b19;
+         if copy(com, 4, 3) = '1.9' then
             _bnd := b19;
-            if copy(com, 4, 3) = '1.9' then
-               _bnd := b19;
-            if copy(com, 4, 3) = '3.5' then
-               _bnd := b35;
-            if copy(com, 4, 3) = '7' then
-               _bnd := b7;
-            if copy(com, 4, 3) = '10' then
-               _bnd := b10;
-            if copy(com, 4, 3) = '14' then
-               _bnd := b14;
-            if copy(com, 4, 3) = '18' then
-               _bnd := b18;
-            if copy(com, 4, 3) = '21' then
-               _bnd := b21;
-            if copy(com, 4, 3) = '24' then
-               _bnd := b24;
-            if copy(com, 4, 3) = '28' then
-               _bnd := b28;
-            if copy(com, 4, 3) = '50' then
-               _bnd := b50;
-            if copy(com, 4, 3) = '144' then
-               _bnd := b144;
-            if copy(com, 4, 3) = '430' then
-               _bnd := b430;
-            if copy(com, 4, 3) = '120' then
-               _bnd := b1200;
-            if copy(com, 4, 3) = '240' then
-               _bnd := b2400;
-            if copy(com, 4, 3) = '560' then
-               _bnd := b5600;
-            if copy(com, 4, 3) = '10G' then
-               _bnd := b10g;
-            if length(opr) >= 4 then begin
-               work := StrToIntDef(opr[1] + opr[2], 1);
-               PointsTable[_bnd, mSSB] := work;
+         if copy(com, 4, 3) = '3.5' then
+            _bnd := b35;
+         if copy(com, 4, 3) = '7' then
+            _bnd := b7;
+         if copy(com, 4, 3) = '10' then
+            _bnd := b10;
+         if copy(com, 4, 3) = '14' then
+            _bnd := b14;
+         if copy(com, 4, 3) = '18' then
+            _bnd := b18;
+         if copy(com, 4, 3) = '21' then
+            _bnd := b21;
+         if copy(com, 4, 3) = '24' then
+            _bnd := b24;
+         if copy(com, 4, 3) = '28' then
+            _bnd := b28;
+         if copy(com, 4, 3) = '50' then
+            _bnd := b50;
+         if copy(com, 4, 3) = '144' then
+            _bnd := b144;
+         if copy(com, 4, 3) = '430' then
+            _bnd := b430;
+         if copy(com, 4, 3) = '120' then
+            _bnd := b1200;
+         if copy(com, 4, 3) = '240' then
+            _bnd := b2400;
+         if copy(com, 4, 3) = '560' then
+            _bnd := b5600;
+         if copy(com, 4, 3) = '10G' then
+            _bnd := b10g;
+         if length(opr) >= 4 then begin
+            work := StrToIntDef(opr[1] + opr[2], 1);
+            PointsTable[_bnd, mSSB] := work;
 
-               work := StrToIntDef(opr[3] + opr[4], 1);
-               PointsTable[_bnd, mCW] := work;
+            work := StrToIntDef(opr[3] + opr[4], 1);
+            PointsTable[_bnd, mCW] := work;
 
-               work := StrToIntDef(opr[5] + opr[6], 1);
-               PointsTable[_bnd, mFM] := work;
+            work := StrToIntDef(opr[5] + opr[6], 1);
+            PointsTable[_bnd, mFM] := work;
 
-               work := StrToIntDef(opr[7] + opr[8], 1);
-               PointsTable[_bnd, mAM] := work;
-            end;
+            work := StrToIntDef(opr[7] + opr[8], 1);
+            PointsTable[_bnd, mAM] := work;
          end;
+      end;
 
-         if pos('XLPT', com) = 1 then begin
+      if pos('XLPT', com) = 1 then begin
+         _bnd := b19;
+         if copy(com, 5, 3) = '1.9' then
             _bnd := b19;
-            if copy(com, 5, 3) = '1.9' then
-               _bnd := b19;
-            if copy(com, 5, 3) = '3.5' then
-               _bnd := b35;
-            if copy(com, 5, 3) = '7' then
-               _bnd := b7;
-            if copy(com, 5, 3) = '10' then
-               _bnd := b10;
-            if copy(com, 5, 3) = '14' then
-               _bnd := b14;
-            if copy(com, 5, 3) = '18' then
-               _bnd := b18;
-            if copy(com, 5, 3) = '21' then
-               _bnd := b21;
-            if copy(com, 5, 3) = '24' then
-               _bnd := b24;
-            if copy(com, 5, 3) = '28' then
-               _bnd := b28;
-            if copy(com, 5, 3) = '50' then
-               _bnd := b50;
-            if copy(com, 5, 3) = '144' then
-               _bnd := b144;
-            if copy(com, 5, 3) = '430' then
-               _bnd := b430;
-            if copy(com, 5, 3) = '120' then
-               _bnd := b1200;
-            if copy(com, 5, 3) = '240' then
-               _bnd := b2400;
-            if copy(com, 5, 3) = '560' then
-               _bnd := b5600;
-            if copy(com, 5, 3) = '10G' then
-               _bnd := b10g;
-            if length(opr) >= 4 then begin
-               work := StrToIntDef(opr[1] + opr[2], 1);
-               LocalPointsTable[_bnd, mSSB] := work;
+         if copy(com, 5, 3) = '3.5' then
+            _bnd := b35;
+         if copy(com, 5, 3) = '7' then
+            _bnd := b7;
+         if copy(com, 5, 3) = '10' then
+            _bnd := b10;
+         if copy(com, 5, 3) = '14' then
+            _bnd := b14;
+         if copy(com, 5, 3) = '18' then
+            _bnd := b18;
+         if copy(com, 5, 3) = '21' then
+            _bnd := b21;
+         if copy(com, 5, 3) = '24' then
+            _bnd := b24;
+         if copy(com, 5, 3) = '28' then
+            _bnd := b28;
+         if copy(com, 5, 3) = '50' then
+            _bnd := b50;
+         if copy(com, 5, 3) = '144' then
+            _bnd := b144;
+         if copy(com, 5, 3) = '430' then
+            _bnd := b430;
+         if copy(com, 5, 3) = '120' then
+            _bnd := b1200;
+         if copy(com, 5, 3) = '240' then
+            _bnd := b2400;
+         if copy(com, 5, 3) = '560' then
+            _bnd := b5600;
+         if copy(com, 5, 3) = '10G' then
+            _bnd := b10g;
+         if length(opr) >= 4 then begin
+            work := StrToIntDef(opr[1] + opr[2], 1);
+            LocalPointsTable[_bnd, mSSB] := work;
 
-               work := StrToIntDef(opr[3] + opr[4], 1);
-               LocalPointsTable[_bnd, mCW] := work;
+            work := StrToIntDef(opr[3] + opr[4], 1);
+            LocalPointsTable[_bnd, mCW] := work;
 
-               work := StrToIntDef(opr[5] + opr[6], 1);
-               LocalPointsTable[_bnd, mFM] := work;
+            work := StrToIntDef(opr[5] + opr[6], 1);
+            LocalPointsTable[_bnd, mFM] := work;
 
-               work := StrToIntDef(opr[7] + opr[8], 1);
-               LocalPointsTable[_bnd, mAM] := work;
-            end;
+            work := StrToIntDef(opr[7] + opr[8], 1);
+            LocalPointsTable[_bnd, mAM] := work;
          end;
+      end;
 
-         if com = 'SAMECTYPT' then begin
-            SetPointsTable(SameCTYPointsTable, opr);
-            SameCTYPoints := true;
-         end;
+      if com = 'SAMECTYPT' then begin
+         SetPointsTable(SameCTYPointsTable, opr);
+         SameCTYPoints := true;
+      end;
 
-         if com = 'SAMECONTPT' then begin
-            SetPointsTable(SameCONTPointsTable, opr);
-            SameCONTPoints := true;
-         end;
+      if com = 'SAMECONTPT' then begin
+         SetPointsTable(SameCONTPointsTable, opr);
+         SameCONTPoints := true;
+      end;
 
-         if com = 'LOCALPT' then begin
-            SetPointsTable(LocalPointsTable, opr);
-         end;
+      if com = 'LOCALPT' then begin
+         SetPointsTable(LocalPointsTable, opr);
+      end;
 
-         if com = 'DEFAULTPT' then begin
-            SetPointsTable(PointsTable, opr);
-         end;
+      if com = 'DEFAULTPT' then begin
+         SetPointsTable(PointsTable, opr);
+      end;
 
-         if com = 'SPECIALCALLPT' then begin
-            SetPointsTable(SpecialCallPointsTable, opr);
-         end;
+      if com = 'SPECIALCALLPT' then begin
+         SetPointsTable(SpecialCallPointsTable, opr);
+      end;
 
-         if com = 'SPECIALCALLS' then begin
-            if SpecialCalls <> '' then
-               SpecialCalls := SpecialCalls + ',' + opr
-            else
-               SpecialCalls := opr;
-         end;
+      if com = 'SPECIALCALLS' then begin
+         if SpecialCalls <> '' then
+            SpecialCalls := SpecialCalls + ',' + opr
+         else
+            SpecialCalls := opr;
+      end;
 
-         if com = 'LOCALCTY' then begin
-            formMulti.LocalCTY := Uppercase(opr);
-         end;
+      if com = 'LOCALCTY' then begin
+         formMulti.LocalCTY := Uppercase(opr);
+      end;
 
-         if com = 'LOCALCONT' then begin
-            formMulti.LocalCONT := Uppercase(opr);
-         end;
+      if com = 'LOCALCONT' then begin
+         formMulti.LocalCONT := Uppercase(opr);
+      end;
 
-         if com = 'LOCAL' then begin
-            tstr := '';
-            k := 0;
-            for i := 1 to length(opr) do begin
-               if opr[i] = ',' then begin
-                  formMulti.LocalString[k] := tstr;
-                  if k < MAXLOCAL then
-                     inc(k);
-                  tstr := '';
-               end
-               else
-                  tstr := tstr + opr[i];
-            end;
-            if k <= MAXLOCAL then
+      if com = 'LOCAL' then begin
+         tstr := '';
+         k := 0;
+         for i := 1 to length(opr) do begin
+            if opr[i] = ',' then begin
                formMulti.LocalString[k] := tstr;
-         end;
-
-         if pos('ALPHAPT', com) = 1 then begin
-            AlphabetPoints := true;
-            for i := 1 to (length(opr) div 2) do begin
-               if opr[2 * i - 1] = '?' then begin
-                  if CharInSet(opr[2 * i], ['0' .. '9']) = True then
-                     for k := ord('0') to ord('Z') do
-                        AlphabetPointsTable[k] := StrToInt(opr[2 * i]);
-               end
-            end;
-            for i := 1 to (length(opr) div 2) do begin
-               if CharInSet(opr[2 * i - 1], ['0' .. 'Z']) = True then begin
-                  if CharInSet(opr[2 * i], ['0' .. '9']) = True then
-                     AlphabetPointsTable[ord(opr[2 * i - 1])] := StrToInt(opr[2 * i]);
-               end
-            end;
-         end;
-
-         if com = 'LOCMIN' then begin
-            work := StrToIntDef(opr, -99);
-            if work >= 0 then
-               formMulti.MinLocalLen := work;
-         end;
-
-         if com = 'SENDNR' then begin
-            dmZlogGlobal.Settings._sentstr := opr;
-         end;
-
-         if com = 'DAT' then begin
-            tstr := opr;
-            if pos('.', tstr) = 0 then begin
-               tstr := tstr + '.DAT';
-            end;
-
-            tstr := ExtractFilePath(Filename) + tstr;
-
-            formMulti.LoadDAT(tstr);
-         end;
-
-         if com = 'TIME' then
-            if opr = 'UTC' then begin
-               UseUTC := true;
-               Log.QsoList[0].RSTSent := _USEUTC; // JST = 0; UTC = $FFFF
-            end;
-
-         if com = 'CTY' then begin
-            formMulti.LoadCTY(Uppercase(opr));
-         end;
-
-         if com = 'COUNTMULTIONCE' then begin
-            if opr = 'ON' then
-               formMulti.CountOnce := true
+               if k < MAXLOCAL then
+                  inc(k);
+               tstr := '';
+            end
             else
-               formMulti.CountOnce := False;
+               tstr := tstr + opr[i];
+         end;
+         if k <= MAXLOCAL then
+            formMulti.LocalString[k] := tstr;
+      end;
+
+      if pos('ALPHAPT', com) = 1 then begin
+         AlphabetPoints := true;
+         for i := 1 to (length(opr) div 2) do begin
+            if opr[2 * i - 1] = '?' then begin
+               if CharInSet(opr[2 * i], ['0' .. '9']) = True then
+                  for k := ord('0') to ord('Z') do
+                     AlphabetPointsTable[k] := StrToInt(opr[2 * i]);
+            end
+         end;
+         for i := 1 to (length(opr) div 2) do begin
+            if CharInSet(opr[2 * i - 1], ['0' .. 'Z']) = True then begin
+               if CharInSet(opr[2 * i], ['0' .. '9']) = True then
+                  AlphabetPointsTable[ord(opr[2 * i - 1])] := StrToInt(opr[2 * i]);
+            end
+         end;
+      end;
+
+      if com = 'LOCMIN' then begin
+         work := StrToIntDef(opr, -99);
+         if work >= 0 then
+            formMulti.MinLocalLen := work;
+      end;
+
+      if com = 'SENDNR' then begin
+         dmZlogGlobal.Settings._sentstr := opr;
+      end;
+
+      if com = 'DAT' then begin
+         tstr := opr;
+         if pos('.', tstr) = 0 then begin
+            tstr := tstr + '.DAT';
          end;
 
-         if com = 'NOCTYMULTI' then begin
-            formMulti.NoCTYMulti := Uppercase(opr);
+         tstr := ExtractFilePath(Filename) + tstr;
+
+         formMulti.LoadDAT(tstr);
+      end;
+
+      if com = 'TIME' then
+         if opr = 'UTC' then begin
+            UseUTC := true;
+            Log.QsoList[0].RSTSent := _USEUTC; // JST = 0; UTC = $FFFF
          end;
 
-         if com = 'MODE' then begin
-            if opr = 'ON' then begin
-               Log.AcceptDifferentMode := true;
+      if com = 'CTY' then begin
+         formMulti.LoadCTY(Uppercase(opr));
+      end;
+
+      if com = 'COUNTMULTIONCE' then begin
+         if opr = 'ON' then
+            formMulti.CountOnce := true
+         else
+            formMulti.CountOnce := False;
+      end;
+
+      if com = 'NOCTYMULTI' then begin
+         formMulti.NoCTYMulti := Uppercase(opr);
+      end;
+
+      if com = 'MODE' then begin
+         if opr = 'ON' then begin
+            Log.AcceptDifferentMode := true;
+         end;
+      end;
+
+      if com = 'CUT' then begin
+         work := StrToIntDef(opr, -99);
+         if work <> -99 then
+            formMulti._cut := work;
+      end;
+
+      if com = 'LCUT' then begin
+         work := StrToIntDef(opr, -99);
+         if work <> -99 then
+            formMulti._lcut := work;
+      end;
+
+      if com = 'TAIL' then begin
+         work := StrToIntDef(opr, -99);
+         if work <> -99 then
+            formMulti._tail := work;
+      end;
+
+      if com = 'LTAIL' then begin
+         work := StrToIntDef(opr, -99);
+         if work <> -99 then
+            formMulti._ltail := work;
+      end;
+
+      if com = 'UNDEFMULTI' then begin
+         if opr = 'ON' then
+            formMulti.UndefMulti := true;
+      end;
+
+      if com = 'JARL' then begin
+         if opr = 'ON' then
+            formMulti.CutTailingAlphabets := true;
+      end;
+
+      if com = 'CUTTAILABT' then // equivalent to JARL
+      begin
+         if opr = 'ON' then
+            formMulti.CutTailingAlphabets := true;
+      end;
+
+      if com = 'POWER' then begin
+         _bnd := b19;
+         for i := 1 to length(opr) do begin
+            // パワーコードは無視するが、-だけ互換性のため参照
+            if opr[i] = '-' then begin
+               MainForm.HideBandMenu(_bnd);
+            end;
+
+            if _bnd < HiBand then begin
+               repeat
+                  inc(_bnd);
+               until NotWARC(_bnd);
             end;
          end;
 
-         if com = 'CUT' then begin
-            work := StrToIntDef(opr, -99);
-            if work <> -99 then
-               formMulti._cut := work;
+         MainForm.HideBandMenuWarc();
+      end;
+
+      if com = 'UNLISTEDMULTI' then begin
+         if opr = 'ON' then
+            formMulti.AllowUnlistedMulti := true;
+      end;
+
+      if com = 'NOMULTI' then begin
+         if opr = 'ON' then
+            formMulti.NoMulti := true;
+      end;
+
+      if com = 'PXMULTI' then begin
+         // CAPTION := OPR;
+         if opr = 'NORMAL' then begin
+            // undefMulti := True;
+            formMulti.PXMulti := PX_Normal;
          end;
-
-         if com = 'LCUT' then begin
-            work := StrToIntDef(opr, -99);
-            if work <> -99 then
-               formMulti._lcut := work;
+         if opr = 'WPX' then begin
+            // undefMulti := True;
+            formMulti.PXMulti := PX_WPX;
          end;
-
-         if com = 'TAIL' then begin
-            work := StrToIntDef(opr, -99);
-            if work <> -99 then
-               formMulti._tail := work;
+         if opr = 'OFF' then begin
+            formMulti.PXMulti := 0;
          end;
+      end;
 
-         if com = 'LTAIL' then begin
-            work := StrToIntDef(opr, -99);
-            if work <> -99 then
-               formMulti._ltail := work;
-         end;
+      if com = 'SERIAL' then begin
+         if opr = 'ALL' then
+            SerialContestType := SER_ALL;
+         if opr = 'BAND' then
+            SerialContestType := SER_BAND;
+      end;
 
-         if com = 'UNDEFMULTI' then begin
-            if opr = 'ON' then
-               formMulti.UndefMulti := true;
-         end;
+      if com = 'SERIALSTART' then begin
+         for _bnd := b19 to HiBand do
+            SerialArray[_bnd] := StrToInt(opr);
+      end;
 
-         if com = 'JARL' then begin
-            if opr = 'ON' then
-               formMulti.CutTailingAlphabets := true;
-         end;
+      if com = 'COUNTHIGH' then begin
+         if opr = 'ON' then
+            Log.CountHigherPoints := true;
+         { for _bnd := b19 to HiBand do
+           SubLog[_bnd].AcceptDifferentMode := True; }
+      end;
 
-         if com = 'CUTTAILABT' then // equivalent to JARL
-         begin
-            if opr = 'ON' then
-               formMulti.CutTailingAlphabets := true;
-         end;
-
-         if com = 'POWER' then begin
-            _bnd := b19;
-            for i := 1 to length(opr) do begin
-               // パワーコードは無視するが、-だけ互換性のため参照
-               if opr[i] = '-' then begin
-                  MainForm.HideBandMenu(_bnd);
-               end;
-
-               if _bnd < HiBand then begin
-                  repeat
-                     inc(_bnd);
-                  until NotWARC(_bnd);
-               end;
-            end;
-
+      if com = 'WARC' then begin
+         if opr = 'ON' then begin
+            formMulti.WARC := True;
+            MainForm.BandMenu.Items[ord(b10)].Visible := True;
+            MainForm.BandMenu.Items[ord(b18)].Visible := True;
+            MainForm.BandMenu.Items[ord(b24)].Visible := True;
+         end
+         else begin
+            formMulti.WARC := False;
             MainForm.HideBandMenuWarc();
          end;
+      end;
 
-         if com = 'UNLISTEDMULTI' then begin
-            if opr = 'ON' then
-               formMulti.AllowUnlistedMulti := true;
-         end;
-
-         if com = 'NOMULTI' then begin
-            if opr = 'ON' then
-               formMulti.NoMulti := true;
-         end;
-
-         if com = 'PXMULTI' then begin
-            // CAPTION := OPR;
-            if opr = 'NORMAL' then begin
-               // undefMulti := True;
-               formMulti.PXMulti := PX_Normal;
-            end;
-            if opr = 'WPX' then begin
-               // undefMulti := True;
-               formMulti.PXMulti := PX_WPX;
-            end;
-            if opr = 'OFF' then begin
-               formMulti.PXMulti := 0;
-            end;
-         end;
-
-         if com = 'SERIAL' then begin
-            if opr = 'ALL' then
-               SerialContestType := SER_ALL;
-            if opr = 'BAND' then
-               SerialContestType := SER_BAND;
-         end;
-
-         if com = 'SERIALSTART' then begin
-            for _bnd := b19 to HiBand do
-               SerialArray[_bnd] := StrToInt(opr);
-         end;
-
-         if com = 'COUNTHIGH' then begin
-            if opr = 'ON' then
-               Log.CountHigherPoints := true;
-            { for _bnd := b19 to HiBand do
-              SubLog[_bnd].AcceptDifferentMode := True; }
-         end;
-
-         if com = 'WARC' then begin
-            if opr = 'ON' then begin
-               formMulti.WARC := True;
-               MainForm.BandMenu.Items[ord(b10)].Visible := True;
-               MainForm.BandMenu.Items[ord(b18)].Visible := True;
-               MainForm.BandMenu.Items[ord(b24)].Visible := True;
-            end
-            else begin
-               formMulti.WARC := False;
-               MainForm.HideBandMenuWarc();
-            end;
-         end;
+      if com = 'EXIT' then begin
+         Break;
       end;
    end;
 
@@ -640,6 +650,7 @@ var
    strScore: string;
    DispColCount: Integer;
    strExtraInfo: string;
+   nScore: Integer;
 begin
    Inherited;
 
@@ -783,8 +794,13 @@ begin
       strScore := IntToStr3(TotPoints);
    end
    else begin
-      strScore := IntToStr3(TotPoints * TotMulti);
+      nScore := zLogGetTotalScore();
+      if nScore = -1 then begin
+         nScore := TotPoints * TotMulti;
+      end;
+      strScore := IntToStr3(nScore);
    end;
+
    Grid.Cells[0, row] := 'Score';
    Grid.Cells[1, row] := '';
    Grid.Cells[2, row] := '';
@@ -815,6 +831,10 @@ var
    ch: Char;
    C: TCountry;
 begin
+   if zLogCalcPointsHookHandler(aQSO) = True then begin
+      Exit;
+   end;
+
    aQSO.Points := PointsTable[aQSO.band, aQSO.Mode];
 
    if formMulti._DXTEST then begin

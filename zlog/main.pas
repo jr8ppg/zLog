@@ -1079,7 +1079,7 @@ uses
   UARRL10Score,
   UIntegerDialog, UNewPrefix, UKCJScore,
   UWAEScore, UWAEMulti, USummaryInfo,
-  UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress;
+  UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension;
 
 {$R *.DFM}
 
@@ -3858,6 +3858,8 @@ begin
 
    // フォントサイズの設定
    SetFontSize(dmZlogGlobal.Settings._mainfontsize);
+
+   zLogInitialize();
 end;
 
 procedure TMainForm.ShowHint(Sender: TObject);
@@ -3882,6 +3884,8 @@ begin
    Grid.Row := 1;
    Grid.Col := 1;
 
+   zLogContestTerm();
+
    { Add code to create a new file }
    PostMessage(Handle, WM_ZLOG_INIT, 0, 0);
 end;
@@ -3893,6 +3897,7 @@ begin
    OpenDialog.FileName := '';
 
    if OpenDialog.Execute then begin
+      zLogContestTerm();
       WriteStatusLine('Loading...', False);
       dmZLogGlobal.SetLogFileName(OpenDialog.filename);
       LoadNewContestFromFile(OpenDialog.filename);
@@ -5423,6 +5428,9 @@ begin
    CurrentQSO.Free();
 
    SuperCheckFreeData();
+
+   zLogContestTerm();
+   zLogTerminate();
 end;
 
 procedure TMainForm.SpeedBarChange(Sender: TObject);
@@ -7126,6 +7134,8 @@ begin
 
       // 初期化完了
       FInitialized := True;
+
+      zLogContestInit(MyContest.Name, menu.CFGFileName);
    finally
       menu.Release();
    end;

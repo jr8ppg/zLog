@@ -52,7 +52,7 @@ type
 
 implementation
 
-uses Main, UGeneralScore;
+uses Main, UGeneralScore, UzLogExtension;
 
 {$R *.DFM}
 
@@ -172,6 +172,12 @@ begin
    end;
 
    str := ExtractMulti(aQSO);
+
+   if zLogValidMultiHookHandler(str, boo) = True then begin
+      Result := boo;
+      Exit;
+   end;
+
    boo := false;
    for i := 0 to CityList.List.Count-1 do begin
       C := TCity(CityList.List[i]);
@@ -189,6 +195,12 @@ var
    str : string;
    i : integer;
 begin
+   str := '';
+   if zLogExtractMultiHookHandler(aQSO, str) = True then begin
+      Result := str;
+      Exit;
+   end;
+
    str := aQSO.NrRcvd;
 
    if PXMulti <> 0 then begin

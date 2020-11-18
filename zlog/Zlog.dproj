@@ -438,6 +438,7 @@
         </DCCReference>
         <DCCReference Include="UzLogSound.pas"/>
         <DCCReference Include="MMReg.pas"/>
+        <DCCReference Include="UzLogExtension.pas"/>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>

@@ -185,6 +185,11 @@ type
     FDupeCheckList: TQSOListArray;
     FBandList: TQSOListArray;
     procedure Delete(i : Integer);
+    procedure ProcessDelete(beforeQSO: TQSO);
+    procedure ProcessEdit(afterQSO: TQSO);
+    procedure ProcessInsert(afterQSO: TQSO);
+    procedure ProcessLock(xQSO: TQSO);
+    procedure ProcessUnlock(xQSO: TQSO);
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -246,7 +251,7 @@ type
 implementation
 
 uses
-  UzLogGlobal;
+  UzLogGlobal, UzLogExtension;
 
 { TQSO }
 
@@ -1101,6 +1106,8 @@ begin
    FBandList[xQSO.Band].Add(aQSO);
 
    FSaved := False;
+
+   zLogContestEvent(evAddQSO, nil, aQSO);
 end;
 
 procedure TLog.AddQue(aQSO: TQSO);
@@ -1116,8 +1123,7 @@ end;
 
 procedure TLog.ProcessQue;
 var
-   xQSO, yQSO, zQSO, wQSO: TQSO;
-   i, id: Integer;
+   xQSO: TQSO;
 begin
    if FQueList.Count = 0 then begin
       exit;
@@ -1137,59 +1143,25 @@ begin
          end;
 
          actDelete: begin
-               for i := 1 to TotalQSO do begin
-                  yQSO := FQsoList[i];
-                  if xQSO.SameQSOID(yQSO) then begin
-                     Delete(i);
-                     break;
-                  end;
-               end;
+            ProcessDelete(xQSO);
          end;
 
          actEdit: begin
-            for i := 1 to TotalQSO do begin
-               yQSO := FQsoList[i];
-               if xQSO.SameQSOID(yQSO) then begin
-                  // FQsoList[i].QSO := xQSO.QSO;
-                  yQSO.Assign(xQSO);
-                  RebuildDupeCheckList;
-                  break;
-               end;
-            end;
+            ProcessEdit(xQSO);
             xQSO.Free();
          end;
 
          actInsert: begin
-            for i := 1 to TotalQSO do begin
-               yQSO := FQsoList[i];
-               id := xQSO.FReserve2 div 100;
-               if id = (yQSO.FReserve3 div 100) then begin
-                  wQSO := TQSO.Create;
-                  wQSO.Assign(xQSO);
-                  Insert(i, wQSO);
-                  break;
-               end;
-            end;
+            ProcessInsert(xQSO);
+            xQSO.Free();
          end;
 
          actLock: begin
-            for i := 1 to TotalQSO do begin
-               zQSO := FQsoList[i];
-               if xQSO.SameQSOID(zQSO) then begin
-                  FQsoList[i].FReserve := actLock;
-                  break;
-               end;
-            end;
+            ProcessLock(xQSO);
          end;
 
          actUnlock: begin
-            for i := 1 to TotalQSO do begin
-               zQSO := FQsoList[i];
-               if xQSO.SameQSOID(zQSO) then begin
-                  FQsoList[i].FReserve := 0;
-                  break;
-               end;
-            end;
+            ProcessUnlock(xQSO);
          end;
       end;
 
@@ -1198,6 +1170,90 @@ begin
    end;
 
    FSaved := False;
+end;
+
+procedure TLog.ProcessDelete(beforeQSO: TQSO);
+var
+   i: Integer;
+   wQSO: TQSO;
+begin
+   for i := 1 to TotalQSO do begin
+      wQSO := FQsoList[i];
+      if beforeQSO.SameQSOID(wQSO) then begin
+         Delete(i);
+         Break;
+      end;
+   end;
+end;
+
+procedure TLog.ProcessEdit(afterQSO: TQSO);
+var
+   i: Integer;
+   beforeQSO: TQSO;
+   wQSO: TQSO;
+begin
+   beforeQSO := TQSO.Create();
+   try
+      for i := 1 to TotalQSO do begin
+         wQSO := FQsoList[i];
+         if afterQSO.SameQSOID(wQSO) then begin
+            beforeQSO.Assign(wQSO);
+            wQSO.Assign(afterQSO);  // wQSO = FQsoList[i]
+            RebuildDupeCheckList;
+            zLogContestEvent(evModifyQSO, beforeQSO, afterQSO);
+            Break;
+         end;
+      end;
+   finally
+      beforeQSO.Free();
+   end;
+end;
+
+procedure TLog.ProcessInsert(afterQSO: TQSO);
+var
+   i: Integer;
+   id: Integer;
+   wQSO: TQSO;
+   newQSO: TQSO;
+begin
+   for i := 1 to TotalQSO do begin
+      wQSO := FQsoList[i];
+      id := afterQSO.FReserve2 div 100;
+      if id = (wQSO.FReserve3 div 100) then begin
+         newQSO := TQSO.Create;
+         newQSO.Assign(afterQSO);
+         Insert(i, newQSO);
+         Break;
+      end;
+   end;
+end;
+
+procedure TLog.ProcessLock(xQSO: TQSO);
+var
+   i: Integer;
+   wQSO: TQSO;
+begin
+   for i := 1 to TotalQSO do begin
+      wQSO := FQsoList[i];
+      if xQSO.SameQSOID(wQSO) then begin
+         wQSO.FReserve := actLock;
+         Break;
+      end;
+   end;
+end;
+
+procedure TLog.ProcessUnlock(xQSO: TQSO);
+var
+   i: Integer;
+   wQSO: TQSO;
+begin
+   for i := 1 to TotalQSO do begin
+      wQSO := FQsoList[i];
+      if xQSO.SameQSOID(wQSO) then begin
+         wQSO.FReserve := 0;
+         Break;
+      end;
+   end;
 end;
 
 procedure TLog.Delete(i: Integer);
@@ -1220,12 +1276,16 @@ begin
 
    FSaved := False;
    RebuildDupeCheckList;
+
+   zLogContestEvent(evDeleteQSO, aQSO, nil);
 end;
 
 procedure TLog.DeleteQSO(aQSO: TQSO);
 var
    Index: Integer;
 begin
+   zLogContestEvent(evDeleteQSO, aQSO, nil);
+
    Index := FBandList[aQSO.Band].IndexOf(aQSO);
    if Index > -1 then begin
       FBandList[aQSO.Band].Delete(Index);
@@ -1275,6 +1335,8 @@ begin
    FQsoList.Insert(i, aQSO);
    RebuildDupeCheckList;
    FSaved := False;
+
+   zLogContestEvent(evAddQSO, nil, aQSO);
 end;
 
 procedure TLog.Backup(Filename: string);

@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes,
-  UzLogConst, UzLogGlobal, UzLogQSO;
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension;
 
 type
   TformELogJarl2 = class(TForm)
@@ -279,6 +279,7 @@ procedure TformELogJarl2.WriteSummarySheet(var f: TextFile);
 var
    nFdCoeff: Integer;
    fFieldDay: Boolean;
+   nScore: Integer;
 begin
    if Pos('フィールドデー', MyContest.Name) > 0 then begin
       fFieldDay := True;
@@ -294,7 +295,12 @@ begin
    WriteLn(f, '<CATEGORYCODE>' + edCategoryCode.Text + '</CATEGORYCODE>');
    WriteLn(f, '<CALLSIGN>' + edCallsign.Text + '</CALLSIGN>');
    WriteLn(f, '<OPCALLSIGN>' + edOpCallsign.Text + '</OPCALLSIGN>');
-   WriteLn(f, '<TOTALSCORE>' + IntToStr(MyContest.ScoreForm._TotalMulti * MyContest.ScoreForm._TotalPoints * nFdCoeff) + '</TOTALSCORE>');
+
+   nScore := zLogGetTotalScore();
+   if nScore = -1 then begin
+      nScore := MyContest.ScoreForm._TotalMulti * MyContest.ScoreForm._TotalPoints * nFdCoeff;
+   end;
+   WriteLn(f, '<TOTALSCORE>' + IntToStr(nScore) + '</TOTALSCORE>');
 
    Write(f, '<ADDRESS>');
    Write(f, mAddress.Text);
