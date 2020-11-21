@@ -18,7 +18,7 @@ uses
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
-  UCwMessagePad, UNRDialog, UVoiceForm;
+  UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -5554,11 +5554,16 @@ end;
 procedure TMainForm.OpMenuClick(Sender: TObject);
 var
    O: string;
+   op: TOperatorInfo;
 begin
    O := TMenuItem(Sender).Caption;
 
    if O = 'Clear' then begin
       O := '';
+      op := nil;
+   end
+   else begin
+      op := dmZlogGlobal.OpList.ObjectOf(O);
    end;
 
    OpEdit.Text := O;
@@ -5568,6 +5573,9 @@ begin
    dmZlogGlobal.SetOpPower(CurrentQSO);
    NewPowerEdit.Text := CurrentQSO.NewPowerStr;
    FZLinkForm.SendOperator;
+
+   // Change Voice Files
+   FVoiceForm.SetOperator(op);
 end;
 
 procedure TMainForm.CWPauseButtonClick(Sender: TObject);
@@ -9187,7 +9195,7 @@ begin
 
    for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
       M := TMenuItem.Create(Self);
-      M.Caption := TrimRight(string(Copy(AnsiString(dmZlogGlobal.OpList.Strings[i]), 1, 20)));
+      M.Caption := Trim(dmZlogGlobal.OpList[i].Callsign);
       M.OnClick := OnClickHandler;
       P.Items.Add(m);
    end;
@@ -9213,7 +9221,7 @@ begin
 
    for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
       M := TMenuItem.Create(Self);
-      M.Caption := TrimRight(string(Copy(AnsiString(dmZlogGlobal.OpList.Strings[i]), 1, 20)));
+      M.Caption := Trim(dmZlogGlobal.OpList[i].Callsign);
       M.OnClick := OnClickHandler;
       P.Add(m);
    end;

@@ -111,7 +111,9 @@ uses
   UExceptionDialog in 'UExceptionDialog.pas' {ExceptionDialog},
   UzLogSound in 'UzLogSound.pas',
   MMReg in 'MMReg.pas',
-  UzLogExtension in 'UzLogExtension.pas';
+  UzLogExtension in 'UzLogExtension.pas',
+  UOperatorEdit in 'UOperatorEdit.pas' {formOperatorEdit},
+  UzLogOperatorInfo in 'UzLogOperatorInfo.pas';
 
 {$R *.RES}
 

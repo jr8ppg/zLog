@@ -24,15 +24,11 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 361
-    ActivePage = tabsheetVoice
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label40: TLabel
         Left = 202
         Top = 212
@@ -520,10 +516,6 @@ object formOptions: TformOptions
     end
     object tabsheetCategories: TTabSheet
       Caption = 'Categories'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label14: TLabel
         Left = 248
         Top = 92
@@ -566,20 +558,6 @@ object formOptions: TformOptions
         Height = 233
         Caption = 'Operator'
         TabOrder = 0
-        object Label36: TLabel
-          Left = 8
-          Top = 155
-          Width = 41
-          Height = 13
-          Caption = 'Operator'
-        end
-        object Label37: TLabel
-          Left = 75
-          Top = 155
-          Width = 54
-          Height = 13
-          Caption = 'Power/Age'
-        end
         object SingleOpRadioBtn: TRadioButton
           Left = 16
           Top = 16
@@ -601,30 +579,13 @@ object formOptions: TformOptions
           TabStop = True
           OnClick = MultiOpRadioBtnClick
         end
-        object OpEdit: TEdit
-          Left = 8
-          Top = 168
-          Width = 65
-          Height = 20
-          AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 2
-          OnEnter = OpEditEnter
-          OnExit = OpEditExit
-          OnKeyDown = OpEditKeyDown
-        end
         object Add: TButton
           Left = 8
           Top = 200
           Width = 57
           Height = 25
           Caption = 'Add'
-          TabOrder = 4
+          TabOrder = 2
           OnClick = AddClick
         end
         object Delete: TButton
@@ -633,25 +594,8 @@ object formOptions: TformOptions
           Width = 57
           Height = 25
           Caption = 'Delete'
-          TabOrder = 5
-          OnClick = DeleteClick
-        end
-        object OpPowerEdit: TEdit
-          Left = 76
-          Top = 168
-          Width = 52
-          Height = 20
-          AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 3
-          OnEnter = OpEditEnter
-          OnExit = OpEditExit
-          OnKeyDown = OpEditKeyDown
+          OnClick = DeleteClick
         end
       end
       object BandGroup: TRadioGroup
@@ -682,7 +626,7 @@ object formOptions: TformOptions
         Left = 8
         Top = 56
         Width = 121
-        Height = 97
+        Height = 138
         TabStop = False
         Enabled = False
         Font.Charset = DEFAULT_CHARSET
@@ -693,6 +637,7 @@ object formOptions: TformOptions
         ItemHeight = 12
         ParentFont = False
         TabOrder = 1
+        OnDblClick = OpListBoxDblClick
       end
       object ModeGroup: TRadioGroup
         Left = 248

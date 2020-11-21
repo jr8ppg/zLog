@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, MPlayer, ExtCtrls, UzLogConst, UzLogSound;
+  Dialogs, MPlayer, ExtCtrls, UzLogConst, UzLogSound, UzLogOperatorInfo;
 
 type
   TVoiceForm = class(TForm)
@@ -17,6 +17,7 @@ type
   private
     { Private 宣言 }
     FWaveSound: array[1..maxmessage] of TWaveSound;
+    FCurrentOperator: TOperatorInfo;
     FCurrentVoice: Integer;
     FCtrlZCQLoopVoice: Boolean;
     FOnNotifyStarted: TNotifyEvent;
@@ -34,6 +35,7 @@ type
     procedure StopVoice();
     procedure CQLoopVoice();
     procedure CtrlZBreakVoice();
+    procedure SetOperator(op: TOperatorInfo);
 
     property CtrlZCQLoopVoice: Boolean read FCtrlZCQLoopVoice write FCtrlZCQLoopVoice;
 
@@ -56,6 +58,7 @@ begin
    FOnNotifyStarted := nil;
    FOnNotifyFinished := nil;
    FCurrentVoice := 0;
+   FCurrentOperator := nil;
 
    for i := 1 to High(FWaveSound) do begin
       FWaveSound[i] := TWaveSound.Create();
@@ -89,10 +92,19 @@ begin
       exit;
    end;
 
-   filename := dmZLogGlobal.Settings.FSoundFiles[i];
+   if FCurrentOperator = nil then begin
+      filename := dmZLogGlobal.Settings.FSoundFiles[i];
+   end
+   else begin
+      filename := FCurrentOperator.VoiceFile[i];
+   end;
+
+   // ファイル名が空は何もしない
    if filename = '' then begin
       Exit;
    end;
+
+   // ファイルが無ければ何もしない
    if FileExists(filename) = False then begin
       Exit;
    end;
@@ -166,6 +178,12 @@ procedure TVoiceForm.CtrlZBreakVoice();
 begin
    CtrlZCQLoopVoice := False;
    StopVoice;
+end;
+
+procedure TVoiceForm.SetOperator(op: TOperatorInfo);
+begin
+   FCurrentOperator := op;
+   Init();
 end;
 
 procedure TVoiceForm.SetLoopInterval(Intvl: integer);

@@ -98,7 +98,6 @@ procedure TformELogJarl2.InitializeFields;
 var
    ini: TIniFile;
    i: Integer;
-   p: Integer;
    str: string;
 begin
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
@@ -138,11 +137,7 @@ begin
       RemoveBlankLines(mComments);
 
       for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
-         str := dmZlogGlobal.OpList[i];
-         p := Pos(' ', str);
-         if p > 0 then begin
-            str := Copy(str, 1, p - 1);
-         end;
+         str := dmZlogGlobal.OpList[i].Callsign;
          memoMultiOpList.Lines.Add(str);
       end;
 

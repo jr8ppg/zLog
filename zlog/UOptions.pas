@@ -6,7 +6,7 @@ uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl,
-  UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound;
+  UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit, UzLogOperatorInfo;
 
 type
   TformOptions = class(TForm)
@@ -26,7 +26,6 @@ type
     BandGroup: TRadioGroup;
     OpListBox: TListBox;
     ModeGroup: TRadioGroup;
-    OpEdit: TEdit;
     Add: TButton;
     Delete: TButton;
     GroupBox2: TGroupBox;
@@ -123,9 +122,6 @@ type
     IARUZoneEdit: TEdit;
     Label34: TLabel;
     Label35: TLabel;
-    OpPowerEdit: TEdit;
-    Label36: TLabel;
-    Label37: TLabel;
     GroupBox7: TGroupBox;
     Label38: TLabel;
     PTTEnabledCheckBox: TCheckBox;
@@ -434,6 +430,7 @@ type
     procedure buttonBSResetClick(Sender: TObject);
     procedure buttonPlayVoiceClick(Sender: TObject);
     procedure buttonStopVoiceClick(Sender: TObject);
+    procedure OpListBoxDblClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -551,8 +548,6 @@ begin
       Settings._power[b2400] := comboPower2400.Text;
       Settings._power[b5600] := comboPower5600.Text;
       Settings._power[b10g] := comboPower10g.Text;
-
-      OpList.Assign(OpListBox.Items);
 
       // Settings._band := BandGroup.ItemIndex;
       case BandGroup.ItemIndex of
@@ -1190,25 +1185,36 @@ end;
 
 procedure TformOptions.AddClick(Sender: TObject);
 var
-   str: string;
+   F: TformOperatorEdit;
+   obj: TOperatorInfo;
 begin
-   if OpEdit.Text <> '' then begin
-      str := OpEdit.Text;
-      if OpPowerEdit.Text <> '' then begin
-         str := FillRight(str, 20) + OpPowerEdit.Text;
+   F := TformOperatorEdit.Create(Self);
+   try
+      if F.ShowModal() <> mrOK then begin
+         Exit;
       end;
 
-      OpListBox.Items.Add(str);
-   end;
+      obj := TOperatorInfo.Create();
+      F.GetObject(obj);
 
-   OpEdit.Text := '';
-   OpPowerEdit.Text := '';
-   OpEdit.SetFocus;
+      OpListBox.Items.AddObject(obj.Callsign, obj);
+      dmZLogGlobal.OpList.Add(obj);
+   finally
+      F.Release();
+   end;
 end;
 
 procedure TformOptions.DeleteClick(Sender: TObject);
+var
+   obj: TOperatorInfo;
+   i: Integer;
 begin
+   obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
    OpListBox.Items.Delete(OpListBox.ItemIndex);
+   i := dmZLogGlobal.OpList.IndexOf(obj);
+   if i >= 0 then begin
+      dmZLogGlobal.OpList.Delete(i);
+   end;
 end;
 
 procedure TformOptions.FormCreate(Sender: TObject);
@@ -1304,7 +1310,10 @@ begin
 
    TempCurrentBank := 1;
 
-   OpListBox.Items.Assign(dmZlogGlobal.OpList);
+   // OpList
+   for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
+      OpListBox.Items.AddObject(dmZlogGlobal.OpList[i].Callsign, dmZlogGlobal.OpList[i]);
+   end;
 
    PageControl.ActivePage := tabsheetPreferences;
 
@@ -1326,6 +1335,32 @@ begin
    case Key of
       VK_RETURN:
          AddClick(Self);
+   end;
+end;
+
+procedure TformOptions.OpListBoxDblClick(Sender: TObject);
+var
+   F: TformOperatorEdit;
+   obj: TOperatorInfo;
+begin
+   if OpListBox.ItemIndex = -1 then begin
+      Exit;
+   end;
+
+   F := TformOperatorEdit.Create(Self);
+   try
+      obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
+
+      F.SetObject(obj);
+
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      F.GetObject(obj);
+
+   finally
+      F.Free();
    end;
 end;
 

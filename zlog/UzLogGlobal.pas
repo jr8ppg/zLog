@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.Math, Vcl.Graphics,
-  UzLogKeyer, UzlogConst, UzLogQSO;
+  UzLogKeyer, UzlogConst, UzLogQSO, UzLogOperatorInfo;
 
 type
   TCWSettingsParam = record
@@ -205,7 +205,7 @@ type
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private 宣言 }
-    FOpList: TStringList;
+    FOpList: TOperatorInfoList;
 
     procedure LoadIniFile; {loads Settings from zlog.ini}
     procedure LoadIniFileBS(ini: TIniFile); // called from loadinifile
@@ -251,7 +251,7 @@ public
     procedure ImplementSettings(_OnCreate: boolean);
     procedure InitializeCW();
 
-    property OpList: TStringList read FOpList;
+    property OpList: TOperatorInfoList read FOpList;
     property MyCall: string read GetMyCall write SetMyCall;
     property Band: Integer read GetBand write SetBand;
     property Mode: Integer read GetMode write SetMode;
@@ -268,7 +268,7 @@ public
     property SuperCheck2Columns: Integer read GetSuperCheck2Columns write SetSuperCheck2Columns;
 
     function GetAge(aQSO : TQSO) : string;
-    procedure SetOpPower(var aQSO : TQSO);
+    procedure SetOpPower(aQSO : TQSO);
 
     procedure SetWeight(i : integer);
     procedure SetTonePitch(i : integer);
@@ -284,9 +284,6 @@ public
     procedure WriteWindowState(form: TForm; strWindowName: string = '');
     procedure ReadMainFormState(var X, Y, W, H: integer; var TB1, TB2: boolean);
     procedure WriteMainFormState(X, Y, W, H: integer; TB1, TB2: boolean);
-
-    procedure LoadOpList();
-    procedure SaveOpList();
 
     procedure CreateLog();
     procedure SetLogFileName(filename: string);
@@ -374,8 +371,8 @@ begin
    Settings.CW.CurrentBank := 1;
 
    // オペレーターリスト
-   FOpList := TStringList.Create();
-   LoadOpList();
+   FOpList := TOperatorInfoList.Create();
+   FOpList.LoadFromIniFile();
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
@@ -1397,7 +1394,7 @@ begin
    end;
 
    // オペレーターリスト保存
-   SaveOpList();
+   FOpList.SaveToIniFile();
 end;
 
 // 設定反映
@@ -1472,73 +1469,44 @@ end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;
 var
-   str: AnsiString;
-   i: integer;
-   op: string;
+   op: TOperatorInfo;
 begin
-   Result := '??';
-
-   if aQSO.Operator = '' then begin
+   op := FOpList.ObjectOf(aQSO.Callsign);
+   if op = nil then begin
       Result := Settings._age;
       Exit;
    end;
 
-   for i := 0 to FOpList.Count - 1 do begin
-      str := AnsiString(FOpList.Strings[i]);
-      if length(str) <= 20 then begin
-         Break;
-      end;
-
-      op := Trim(string(Copy(str, 1, 20)));
-
-      if op = aQSO.Operator then begin
-
-         System.Delete(str, 1, 20);
-
-         Result := Trim(string(str));
-
-         Exit;
-      end;
-   end;
+   Result := op.Age;
 end;
 
-procedure TdmZLogGlobal.SetOpPower(var aQSO: TQSO);
+procedure TdmZLogGlobal.SetOpPower(aQSO: TQSO);
 var
-   str: AnsiString;
-   i: integer;
-   P: AnsiChar;
-   op: string;
+   P: Char;
+   str: string;
+   op: TOperatorInfo;
 begin
-   for i := 0 to FOpList.Count - 1 do begin
-      str := AnsiString(FOpList.Strings[i]);
-      if length(str) <= 20 then begin
-         Break;
-      end;
+   op := FOpList.ObjectOf(aQSO.Callsign);
+   if op = nil then begin
+      Exit;
+   end;
 
-      op := Trim(string(Copy(str, 1, 20)));
+   str := op.Power;
 
-      if op = aQSO.Operator then begin
+   if OldBandOrd(aQSO.Band) + 1 <= length(str) then
+      P := str[OldBandOrd(aQSO.Band) + 1]
+   else
+      P := UpCase(str[1]);
 
-         System.Delete(str, 1, 20);
-
-         if OldBandOrd(aQSO.Band) + 1 <= length(str) then
-            P := str[OldBandOrd(aQSO.Band) + 1]
-         else
-            P := UpCase(str[1]);
-
-         case P of
-            'P':
-               aQSO.Power := pwrP;
-            'L':
-               aQSO.Power := pwrL;
-            'M':
-               aQSO.Power := pwrM;
-            'H':
-               aQSO.Power := pwrH;
-         end;
-
-         Exit;
-      end;
+   case P of
+      'P':
+         aQSO.Power := pwrP;
+      'L':
+         aQSO.Power := pwrL;
+      'M':
+         aQSO.Power := pwrM;
+      'H':
+         aQSO.Power := pwrH;
    end;
 end;
 
@@ -1904,29 +1872,6 @@ begin
    finally
       ini.Free();
    end;
-end;
-
-procedure TdmZLogGlobal.LoadOpList();
-var
-   filename: string;
-begin
-   try
-      filename := ExtractFilePath(Application.EXEName) + 'ZLOG.OP';
-      if FileExists(filename) = False then begin
-         Exit;
-      end;
-
-      FOpList.LoadFromFile(filename);
-   except
-      on EFOpenError do begin
-      end;
-   end;
-
-end;
-
-procedure TdmZLogGlobal.SaveOpList();
-begin
-   FOpList.SaveToFile(ExtractFilePath(Application.EXEName) + 'ZLOG.OP');
 end;
 
 procedure TdmZLogGlobal.CreateLog();
