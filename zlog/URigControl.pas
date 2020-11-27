@@ -174,7 +174,7 @@ type
     procedure MoveToLastFreq; virtual;
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
-    property CommPortDriver: TCommPortDriver read FComm write FComm;
+    property CommPortDriver: TCommPortDriver read FComm;
     property PollingTimer: TTimer read FPollingTimer write FPollingTimer;
     property FILO: Boolean read FFILO write FFILO;
     property MinBand: TBand read _minband write _minband;
@@ -1544,6 +1544,22 @@ begin
    SetCurrentRig(1);
 
    SetSendFreq();
+
+   // RIGコントロールのCOMポートと、CWキーイングのポートが同じなら
+   // CWキーイングのCPDrvをRIGコントロールの物にすり替える
+   if (FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._lptnr) then begin
+      PollingTimer1.Enabled := False;
+      dmZLogKeyer.SetCommPortDriver(FRigs[1].CommPortDriver);
+      PollingTimer1.Enabled := True;
+   end
+   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._lptnr) then begin
+      PollingTimer2.Enabled := False;
+      dmZLogKeyer.SetCommPortDriver(FRigs[2].CommPortDriver);
+      PollingTimer2.Enabled := True;
+   end
+   else begin
+      dmZLogKeyer.ResetCommPortDriver(TKeyingPort(dmZlogGlobal.Settings._lptnr));
+   end;
 end;
 
 constructor TRig.Create(RigNum: Integer);
@@ -1629,6 +1645,10 @@ procedure TRig.Initialize();
 begin
    FPollingTimer.Interval := FPollingInterval;
    FComm.Connect();
+   if FComm.HwFlow = hfNONE then begin
+      FComm.ToggleDTR(False);
+      FComm.ToggleRTS(False);
+   end;
 end;
 
 procedure TRig.VFOAEqualsB;
@@ -1779,6 +1799,8 @@ begin
    FPollingCount := 0;
    FUseTransceiveMode := True;
    FComm.StopBits := sb1BITS;
+   FComm.HwFlow := hfNONE;
+   FComm.SwFlow := sfNONE;
    TerminatorCode := AnsiChar($FD);
 
    FMyAddr := $E0;

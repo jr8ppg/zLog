@@ -63,6 +63,8 @@ type
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
   private
     { Private êÈåæ }
+    FComKeying: TCommPortDriver;
+
     FMonitorThread: TKeyerMonitorThread;
 
     FUSBIF4CW_Detected: Boolean;
@@ -246,6 +248,10 @@ type
     function usbif4cwSetPTT(nId: Integer; tx: Byte): Long;
     function usbif4cwGetVersion(nId: Integer): Long;
     function usbif4cwSetPaddle(nId: Integer; param: Byte): Long;
+
+    // 1Port Control support
+    procedure SetCommPortDriver(CP: TCommPortDriver);
+    procedure ResetCommPortDriver(port: TKeyingPort);
   end;
 
 var
@@ -272,6 +278,7 @@ end;
 procedure TdmZLogKeyer.DataModuleCreate(Sender: TObject);
 begin
    FInitialized := False;
+   FComKeying := ZComKeying;
 
    {$IFDEF USESIDETONE}
    FTone := TSideTone.Create(700);
@@ -507,10 +514,10 @@ begin
 
    if FKeyingPort in [tkpSerial1..tkpSerial20] then begin
       if FKeyingSignalReverse = False then begin
-         ZComKeying.ToggleRTS(PTTON);
+         FComKeying.ToggleRTS(PTTON);
       end
       else begin
-         ZComKeying.ToggleDTR(PTTON);
+         FComKeying.ToggleDTR(PTTON);
       end;
       Exit;
    end;
@@ -754,10 +761,10 @@ begin
    case FKeyingPort of
       tkpSerial1..tkpSerial20: begin
          if FKeyingSignalReverse = False then begin
-            ZComKeying.ToggleDTR(True);
+            FComKeying.ToggleDTR(True);
          end
          else begin
-            ZComKeying.ToggleRTS(True);
+            FComKeying.ToggleRTS(True);
          end;
       end;
 
@@ -775,10 +782,10 @@ begin
    case FKeyingPort of
       tkpSerial1..tkpSerial20: begin
          if FKeyingSignalReverse = False then begin
-            ZComKeying.ToggleDTR(False);
+            FComKeying.ToggleDTR(False);
          end
          else begin
-            ZComKeying.ToggleRTS(False);
+            FComKeying.ToggleRTS(False);
          end;
       end;
 
@@ -1875,15 +1882,17 @@ end;
 
 procedure TdmZLogKeyer.COM_ON(port: TKeyingPort);
 begin
-   ZComKeying.Port := TPortNumber(port);
-   ZComKeying.Connect;
-   ZComKeying.ToggleDTR(False);
-   ZComKeying.ToggleRTS(False);
+   if FComKeying.Connected = False then begin
+      FComKeying.Port := TPortNumber(port);
+      FComKeying.Connect;
+   end;
+   FComKeying.ToggleDTR(False);
+   FComKeying.ToggleRTS(False);
 end;
 
 procedure TdmZLogKeyer.COM_OFF();
 begin
-   ZComKeying.Disconnect();
+   FComKeying.Disconnect();
 end;
 
 procedure TdmZLogKeyer.USB_ON();
@@ -2090,6 +2099,32 @@ begin
    OutReport[8] := $FC;
    FUSBIF4CW.SetOutputReport(OutReport, 9);
    Result := 0;
+end;
+
+procedure TdmZLogKeyer.SetCommPortDriver(CP: TCommPortDriver);
+begin
+   if FComKeying = CP then begin
+      Exit;
+   end;
+
+   COM_OFF();
+   FComKeying := CP;
+//   COM_ON(FKeyingPort);
+
+   FKeyingPort := TKeyingPort(CP.Port);
+end;
+
+procedure TdmZLogKeyer.ResetCommPortDriver(port: TKeyingPort);
+begin
+   if FComKeying = ZComKeying then begin
+      Exit;
+   end;
+
+//   COM_OFF();
+   FComKeying := ZComKeying;
+//   COM_ON(FKeyingPort);
+
+   KeyingPort := port;
 end;
 
 end.

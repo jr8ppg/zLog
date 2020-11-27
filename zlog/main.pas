@@ -5984,6 +5984,8 @@ var
 begin
    f := TformOptions.Create(Self);
    try
+      dmZLogKeyer.ResetCommPortDriver(TKeyingPort(dmZlogGlobal.Settings._lptnr));
+
       f.EditMode := 0;
 
       if f.ShowModal() <> mrOK then begin
