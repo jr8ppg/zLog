@@ -7170,7 +7170,7 @@ end;
 
 procedure TMainForm.InitALLJA();
 begin
-   BandMenu.Items[Ord(b19)].Visible := False;
+//   BandMenu.Items[Ord(b19)].Visible := False;
    HideBandMenuWARC();
 
    EditScreen := TALLJAEdit.Create(Self);
@@ -7192,7 +7192,7 @@ end;
 
 procedure TMainForm.InitFD();
 begin
-   BandMenu.Items[Ord(b19)].Visible := False;
+//   BandMenu.Items[Ord(b19)].Visible := False;
    HideBandMenuWARC();
 
    EditScreen := TACAGEdit.Create(Self);
@@ -7203,7 +7203,7 @@ end;
 
 procedure TMainForm.InitACAG();
 begin
-   BandMenu.Items[Ord(b19)].Visible := False;
+//   BandMenu.Items[Ord(b19)].Visible := False;
    HideBandMenuWARC();
 
    EditScreen := TACAGEdit.Create(Self);

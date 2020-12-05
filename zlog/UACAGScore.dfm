@@ -4,7 +4,7 @@ inherited ACAGScore: TACAGScore
   Caption = 'Score'
   ClientHeight = 415
   OnShow = FormShow
-  ExplicitHeight = 453
+  ExplicitHeight = 454
   PixelsPerInch = 96
   TextHeight = 12
   inherited Panel1: TPanel
@@ -20,7 +20,7 @@ inherited ACAGScore: TACAGScore
     ColCount = 6
     DefaultDrawing = False
     FixedCols = 0
-    RowCount = 15
+    RowCount = 16
     FixedRows = 0
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText

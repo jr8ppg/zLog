@@ -94,7 +94,7 @@ begin
    end;
 
    // バンド別スコア行
-   for band := b35 to b50 do begin
+   for band := b19 to b50 do begin
       // WARC除外
       if IsWARC(band) = True then begin
          Continue;

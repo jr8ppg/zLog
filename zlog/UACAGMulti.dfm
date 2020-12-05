@@ -94,7 +94,6 @@ object ACAGMulti: TACAGMulti
       Font.Name = 'Arial'
       Font.Style = []
       ParentFont = False
-      Visible = False
     end
     object Label3R5: TRotateLabel
       Left = 186

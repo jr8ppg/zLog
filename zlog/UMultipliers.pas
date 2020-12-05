@@ -950,7 +950,7 @@ var
 begin
    temp := '';
    temp := FillRight(CityNumber, 7) +
-           FillRight(CityName, 20) + ' ' + '  ';
+           FillRight(CityName, 20) + ' ';
 
    for B := LowBand to HiBand do begin
       if NotWARC(B) then begin

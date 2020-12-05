@@ -299,7 +299,7 @@ var
    i: Integer;
 begin
    EnableEveryThing;
-   BandGroup.Controls[1].Enabled := False;
+//   BandGroup.Controls[1].Enabled := False;
    for i := 8 to 13 do begin
       BandGroup.Controls[i].Enabled := False;
    end;
@@ -318,7 +318,7 @@ end;
 procedure TMenuForm.rbACAGClick(Sender: TObject);
 begin
    EnableEveryThing;
-   BandGroup.Controls[1].Enabled := False;
+//   BandGroup.Controls[1].Enabled := False;
 // ModeGroup.Controls[2].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
 
@@ -344,7 +344,7 @@ procedure TMenuForm.rbFDClick(Sender: TObject);
 begin
    EnableEveryThing;
    ScoreCoeffEdit.Enabled := True;
-   BandGroup.Controls[1].Enabled := False;
+//   BandGroup.Controls[1].Enabled := False;
 // ModeGroup.Controls[2].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
 
@@ -588,6 +588,7 @@ end;
 procedure TMenuForm.SetContestNumber(v: Integer);
 begin
    TRadioButton(FSelectContest[v]).Checked := True;
+   TRadioButton(FSelectContest[v]).OnClick(FSelectContest[v]);
 end;
 
 function TMenuForm.GetTxNumber(): Integer;
