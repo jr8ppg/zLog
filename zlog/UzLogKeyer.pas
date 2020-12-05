@@ -1817,9 +1817,9 @@ end;
 
 procedure TdmZLogKeyer.SetKeyingPort(port: TKeyingPort);
 begin
-   if FKeyingPort = port then begin
-      Exit;
-   end;
+//   if FKeyingPort = port then begin
+//      Exit;
+//   end;
 
    FKeyingPort := port;
    case port of

@@ -450,6 +450,7 @@ type
     function StatusSummaryFreqHz(Hz : integer): string; // returns current rig's band freq mode
     function StatusSummary: string; // returns current rig's band freq mode
     procedure ImplementOptions;
+    procedure Stop();
     procedure SetCurrentRig(N : integer);
     function GetCurrentRig : integer;
     function ToggleCurrentRig : integer;
@@ -1517,8 +1518,7 @@ end;
 
 procedure TRigControl.ImplementOptions;
 begin
-   FreeAndNil(FRigs[1]);
-   FreeAndNil(FRigs[2]);
+   Stop();
 
    FRigs[1] := BuildRigObject(1);
    FRigs[2] := BuildRigObject(2);
@@ -1562,6 +1562,14 @@ begin
    end;
 end;
 
+procedure TRigControl.Stop();
+begin
+   PollingTimer1.Enabled := False;
+   PollingTimer2.Enabled := False;
+   FreeAndNil(FRigs[1]);
+   FreeAndNil(FRigs[2]);
+end;
+
 constructor TRig.Create(RigNum: Integer);
 var
    B: TBand;
@@ -1602,6 +1610,9 @@ begin
    FComm.Disconnect;
    FComm.Port := TPortNumber(prtnr);
    FComm.BaudRate := BaudRateToSpeed[ dmZlogGlobal.Settings._rigspeed[RigNum] ];
+   FComm.HwFlow := hfRTSCTS;
+   FComm.SwFlow := sfNONE;
+   FComm.EnableDTROnOpen := True;
 
    TerminatorCode := ';';
    BufferString := '';
@@ -1639,6 +1650,7 @@ destructor TRig.Destroy;
 begin
    inherited;
    FPollingTimer.Enabled := False;
+   FComm.Disconnect();
 end;
 
 procedure TRig.Initialize();
@@ -1801,6 +1813,7 @@ begin
    FComm.StopBits := sb1BITS;
    FComm.HwFlow := hfNONE;
    FComm.SwFlow := sfNONE;
+   FComm.EnableDTROnOpen := False;
    TerminatorCode := AnsiChar($FD);
 
    FMyAddr := $E0;
@@ -3697,12 +3710,8 @@ end;
 
 procedure TRigControl.FormDestroy(Sender: TObject);
 begin
-   ZCom1.Disconnect;
-   ZCom2.Disconnect;
-
    FCurrentRig := nil;
-   FreeAndNil(FRigs[1]);
-   FreeAndNil(FRigs[2]);
+   Stop();
 end;
 
 procedure TRigControl.Button1Click(Sender: TObject);
