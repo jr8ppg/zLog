@@ -174,7 +174,7 @@ type
     procedure MoveToLastFreq; virtual;
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
-    property CommPortDriver: TCommPortDriver read FComm write FComm;
+    property CommPortDriver: TCommPortDriver read FComm;
     property PollingTimer: TTimer read FPollingTimer write FPollingTimer;
     property FILO: Boolean read FFILO write FFILO;
     property MinBand: TBand read _minband write _minband;
@@ -450,6 +450,7 @@ type
     function StatusSummaryFreqHz(Hz : integer): string; // returns current rig's band freq mode
     function StatusSummary: string; // returns current rig's band freq mode
     procedure ImplementOptions;
+    procedure Stop();
     procedure SetCurrentRig(N : integer);
     function GetCurrentRig : integer;
     function ToggleCurrentRig : integer;
@@ -1517,8 +1518,7 @@ end;
 
 procedure TRigControl.ImplementOptions;
 begin
-   FreeAndNil(FRigs[1]);
-   FreeAndNil(FRigs[2]);
+   Stop();
 
    FRigs[1] := BuildRigObject(1);
    FRigs[2] := BuildRigObject(2);
@@ -1544,6 +1544,30 @@ begin
    SetCurrentRig(1);
 
    SetSendFreq();
+
+   // RIGコントロールのCOMポートと、CWキーイングのポートが同じなら
+   // CWキーイングのCPDrvをRIGコントロールの物にすり替える
+   if (FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._lptnr) then begin
+      PollingTimer1.Enabled := False;
+      dmZLogKeyer.SetCommPortDriver(FRigs[1].CommPortDriver);
+      PollingTimer1.Enabled := True;
+   end
+   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._lptnr) then begin
+      PollingTimer2.Enabled := False;
+      dmZLogKeyer.SetCommPortDriver(FRigs[2].CommPortDriver);
+      PollingTimer2.Enabled := True;
+   end
+   else begin
+      dmZLogKeyer.ResetCommPortDriver(TKeyingPort(dmZlogGlobal.Settings._lptnr));
+   end;
+end;
+
+procedure TRigControl.Stop();
+begin
+   PollingTimer1.Enabled := False;
+   PollingTimer2.Enabled := False;
+   FreeAndNil(FRigs[1]);
+   FreeAndNil(FRigs[2]);
 end;
 
 constructor TRig.Create(RigNum: Integer);
@@ -1586,6 +1610,9 @@ begin
    FComm.Disconnect;
    FComm.Port := TPortNumber(prtnr);
    FComm.BaudRate := BaudRateToSpeed[ dmZlogGlobal.Settings._rigspeed[RigNum] ];
+   FComm.HwFlow := hfRTSCTS;
+   FComm.SwFlow := sfNONE;
+   FComm.EnableDTROnOpen := True;
 
    TerminatorCode := ';';
    BufferString := '';
@@ -1623,12 +1650,17 @@ destructor TRig.Destroy;
 begin
    inherited;
    FPollingTimer.Enabled := False;
+   FComm.Disconnect();
 end;
 
 procedure TRig.Initialize();
 begin
    FPollingTimer.Interval := FPollingInterval;
    FComm.Connect();
+   if FComm.HwFlow = hfNONE then begin
+      FComm.ToggleDTR(False);
+      FComm.ToggleRTS(False);
+   end;
 end;
 
 procedure TRig.VFOAEqualsB;
@@ -1779,6 +1811,9 @@ begin
    FPollingCount := 0;
    FUseTransceiveMode := True;
    FComm.StopBits := sb1BITS;
+   FComm.HwFlow := hfNONE;
+   FComm.SwFlow := sfNONE;
+   FComm.EnableDTROnOpen := False;
    TerminatorCode := AnsiChar($FD);
 
    FMyAddr := $E0;
@@ -3675,12 +3710,8 @@ end;
 
 procedure TRigControl.FormDestroy(Sender: TObject);
 begin
-   ZCom1.Disconnect;
-   ZCom2.Disconnect;
-
    FCurrentRig := nil;
-   FreeAndNil(FRigs[1]);
-   FreeAndNil(FRigs[2]);
+   Stop();
 end;
 
 procedure TRigControl.Button1Click(Sender: TObject);

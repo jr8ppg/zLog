@@ -1447,7 +1447,15 @@ procedure TdmZLogGlobal.InitializeCW();
 begin
    dmZlogKeyer.UseSideTone := Settings.CW._sidetone;
 
-   dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
+   // RIGコントロールと同じポートの場合は無しとする
+   if (Settings._rigport[1] <> Settings._lptnr) and
+      (Settings._rigport[2] <> Settings._lptnr) then begin
+      dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
+   end
+   else begin
+      dmZlogKeyer.KeyingPort := tkpNone;
+   end;
+
    dmZlogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZlogKeyer.PaddleReverse := Settings.CW._paddlereverse;
 

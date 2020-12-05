@@ -194,6 +194,7 @@ object RigControl: TRigControl
     Tag = 1
     Port = pnCustom
     PortName = '\\.\COM2'
+    HwFlow = hfRTSCTS
     InBufSize = 4096
     OnReceiveData = ZCom1ReceiveData
     Left = 212
@@ -203,6 +204,7 @@ object RigControl: TRigControl
     Tag = 2
     Port = pnCustom
     PortName = '\\.\COM2'
+    HwFlow = hfRTSCTS
     InBufSize = 4096
     OnReceiveData = ZCom1ReceiveData
     Left = 240

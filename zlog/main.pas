@@ -5984,6 +5984,10 @@ var
 begin
    f := TformOptions.Create(Self);
    try
+      // KeyingとRigControlを一旦終了
+      dmZLogKeyer.ResetCommPortDriver(TKeyingPort(dmZlogGlobal.Settings._lptnr));
+      RigControl.Stop();
+
       f.EditMode := 0;
 
       if f.ShowModal() <> mrOK then begin
@@ -5995,9 +5999,6 @@ begin
 
       MyContest.ScoreForm.UpdateData();
       MyContest.MultiForm.UpdateData();
-
-      // リグコントロール開始
-      RigControl.ImplementOptions;
 
       SetWindowCaption();
 
@@ -6024,6 +6025,9 @@ begin
       LastFocus.SetFocus;
    finally
       f.Release();
+
+      // リグコントロール/Keying再開
+      RigControl.ImplementOptions;
    end;
 end;
 
