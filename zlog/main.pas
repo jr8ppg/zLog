@@ -7172,6 +7172,7 @@ procedure TMainForm.InitALLJA();
 begin
 //   BandMenu.Items[Ord(b19)].Visible := False;
    HideBandMenuWARC();
+   HideBandMenuVU(False);
 
    EditScreen := TALLJAEdit.Create(Self);
 
