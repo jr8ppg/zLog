@@ -133,7 +133,7 @@ type
     procedure InitializeFields;
     procedure WriteSummarySheet(var f: TextFile);
     procedure WriteLogSheet(var f: TextFile);
-    function FormatQSO(q: TQSO): string;
+    function FormatQSO(q: TQSO; fValid: Boolean): string;
     procedure CalcAll();
   public
     { Public êÈåæ }
@@ -448,7 +448,8 @@ begin
    WriteLn(f, '<OPCALLSIGN>' + edOpCallsign.Text + '</OPCALLSIGN>');
 
    for b := b19 to HiBand do begin
-      if FScoreBand[b].Checked = True then begin
+      if Assigned(FScoreBand[b]) and
+         (FScoreBand[b].Checked = True) then begin
          S := FScoreQso[b].Text + ',' + FScorePoints[b].Text + ',' + FScoreMulti[b].Text;
          if b = b10G then begin
             WriteLn(f, '<SCORE BAND=10.1GHz>' + S + '</SCORE>')
@@ -511,19 +512,26 @@ procedure TformELogJarl1.WriteLogSheet(var f: TextFile);
 var
    i: Integer;
    s: string;
+   Q: TQSO;
 begin
    WriteLn(f, '<LOGSHEET TYPE=ZLOG.ALL>');
 
    WriteLn(f, 'Date       Time  Callsign    RSTs ExSent RSTr ExRcvd  Mult  Mult2 MHz  Mode Pt Memo');
    for i := 1 to Log.TotalQSO do begin
-      s := FormatQSO(Log.QsoList[i]);
+      Q := Log.QsoList[i];
+      if Assigned(FScoreBand[Q.Band]) = False then begin
+         Continue;
+      end;
+
+      s := FormatQSO(Q, FScoreBand[Q.Band].Checked);
+
       WriteLn(f, s);
    end;
 
    WriteLn(f, '</LOGSHEET>');
 end;
 
-function TformELogJarl1.FormatQSO(q: TQSO): string;
+function TformELogJarl1.FormatQSO(q: TQSO; fValid: Boolean): string;
 var
    S: string;
 begin
@@ -551,7 +559,12 @@ begin
 
    S := S + FillRight(MHzString[q.Band], 5);
    S := S + FillRight(ModeString[q.Mode], 5);
-   S := S + FillRight(IntToStr(q.Points), 3);
+   if fValid = True then begin
+      S := S + FillRight(IntToStr(q.Points), 3);
+   end
+   else begin
+      S := S + FillRight(IntToStr(0), 3);
+   end;
 
    if q.Operator <> '' then begin
       S := S + FillRight('%%' + q.Operator + '%%', 19);
