@@ -14,7 +14,6 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
-    Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
     Label9: TLabel;
@@ -36,7 +35,6 @@ type
     edCallsign: TEdit;
     edOpCallsign: TEdit;
     edCategoryCode: TEdit;
-    edFDCoefficient: TEdit;
     edTEL: TEdit;
     edOPName: TEdit;
     edEMail: TEdit;
@@ -57,17 +55,86 @@ type
     mEquipment: TMemo;
     Label12: TLabel;
     SaveDialog1: TSaveDialog;
+    GroupBox1: TGroupBox;
+    checkBand00: TCheckBox;
+    editQso00: TEdit;
+    editMulti00: TEdit;
+    editPoints00: TEdit;
+    checkBand01: TCheckBox;
+    editQso01: TEdit;
+    editMulti01: TEdit;
+    editPoints01: TEdit;
+    checkBand02: TCheckBox;
+    editQso02: TEdit;
+    editMulti02: TEdit;
+    editPoints02: TEdit;
+    checkBand04: TCheckBox;
+    editQso04: TEdit;
+    editMulti04: TEdit;
+    editPoints04: TEdit;
+    checkBand06: TCheckBox;
+    editQso06: TEdit;
+    editMulti06: TEdit;
+    editPoints06: TEdit;
+    checkBand08: TCheckBox;
+    editQso08: TEdit;
+    editMulti08: TEdit;
+    editPoints08: TEdit;
+    checkBand09: TCheckBox;
+    editQso09: TEdit;
+    editMulti09: TEdit;
+    editPoints09: TEdit;
+    checkBand10: TCheckBox;
+    editQso10: TEdit;
+    editMulti10: TEdit;
+    editPoints10: TEdit;
+    checkBand11: TCheckBox;
+    editQso11: TEdit;
+    editMulti11: TEdit;
+    editPoints11: TEdit;
+    checkBand12: TCheckBox;
+    editQso12: TEdit;
+    editMulti12: TEdit;
+    editPoints12: TEdit;
+    checkBand13: TCheckBox;
+    editQso13: TEdit;
+    editMulti13: TEdit;
+    editPoints13: TEdit;
+    checkBand14: TCheckBox;
+    editQso14: TEdit;
+    editMulti14: TEdit;
+    editPoints14: TEdit;
+    checkBand15: TCheckBox;
+    editQso15: TEdit;
+    editMulti15: TEdit;
+    editPoints15: TEdit;
+    editFDCOEFF: TEdit;
+    editTotalScore: TEdit;
+    Label22: TLabel;
+    Label24: TLabel;
+    editQsoTotal: TEdit;
+    editMultiTotal: TEdit;
+    editPointsTotal: TEdit;
+    Label6: TLabel;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
     procedure buttonCancelClick(Sender: TObject);
+    procedure checkBandClick(Sender: TObject);
+    procedure editFDCOEFFChange(Sender: TObject);
   private
     { Private 宣言 }
+    FScoreBand: array[b19..HiBand] of TCheckBox;
+    FScoreQso: array[b19..HiBand] of TEdit;
+    FScoreMulti: array[b19..HiBand] of TEdit;
+    FScorePoints: array[b19..HiBand] of TEdit;
+
     procedure RemoveBlankLines(M : TMemo);
     procedure InitializeFields;
     procedure WriteSummarySheet(var f: TextFile);
     procedure WriteLogSheet(var f: TextFile);
     function FormatQSO(q: TQSO): string;
+    procedure CalcAll();
   public
     { Public 宣言 }
   end;
@@ -81,6 +148,71 @@ uses
 
 procedure TformELogJarl1.FormCreate(Sender: TObject);
 begin
+   FScoreBand[b19]   := checkBand00;
+   FScoreBand[b35]   := checkBand01;
+   FScoreBand[b7]    := checkBand02;
+   FScoreBand[b10]   := nil;
+   FScoreBand[b14]   := checkBand04;
+   FScoreBand[b18]   := nil;
+   FScoreBand[b21]   := checkBand06;
+   FScoreBand[b24]   := nil;
+   FScoreBand[b28]   := checkBand08;
+   FScoreBand[b50]   := checkBand09;
+   FScoreBand[b144]  := checkBand10;
+   FScoreBand[b430]  := checkBand11;
+   FScoreBand[b1200] := checkBand12;
+   FScoreBand[b2400] := checkBand13;
+   FScoreBand[b5600] := checkBand14;
+   FScoreBand[b10g]  := checkBand15;
+   FScoreQso[b19]    := editQso00;
+   FScoreQso[b35]    := editQso01;
+   FScoreQso[b7]     := editQso02;
+   FScoreQso[b10]    := nil;
+   FScoreQso[b14]    := editQso04;
+   FScoreQso[b18]    := nil;
+   FScoreQso[b21]    := editQso06;
+   FScoreQso[b24]    := nil;
+   FScoreQso[b28]    := editQso08;
+   FScoreQso[b50]    := editQso09;
+   FScoreQso[b144]   := editQso10;
+   FScoreQso[b430]   := editQso11;
+   FScoreQso[b1200]  := editQso12;
+   FScoreQso[b2400]  := editQso13;
+   FScoreQso[b5600]  := editQso14;
+   FScoreQso[b10g]   := editQso15;
+   FScoreMulti[b19]  := editMulti00;
+   FScoreMulti[b35]  := editMulti01;
+   FScoreMulti[b7]   := editMulti02;
+   FScoreMulti[b10]  := nil;
+   FScoreMulti[b14]  := editMulti04;
+   FScoreMulti[b18]  := nil;
+   FScoreMulti[b21]  := editMulti06;
+   FScoreMulti[b24]  := nil;
+   FScoreMulti[b28]  := editMulti08;
+   FScoreMulti[b50]  := editMulti09;
+   FScoreMulti[b144] := editMulti10;
+   FScoreMulti[b430] := editMulti11;
+   FScoreMulti[b1200] := editMulti12;
+   FScoreMulti[b2400] := editMulti13;
+   FScoreMulti[b5600] := editMulti14;
+   FScoreMulti[b10g] := editMulti15;
+   FScorePoints[b19] := editPoints00;
+   FScorePoints[b35] := editPoints01;
+   FScorePoints[b7]  := editPoints02;
+   FScorePoints[b10] := nil;
+   FScorePoints[b14] := editPoints04;
+   FScorePoints[b18] := nil;
+   FScorePoints[b21] := editPoints06;
+   FScorePoints[b24] := nil;
+   FScorePoints[b28] := editPoints08;
+   FScorePoints[b50] := editPoints09;
+   FScorePoints[b144] := editPoints10;
+   FScorePoints[b430] := editPoints11;
+   FScorePoints[b1200] := editPoints12;
+   FScorePoints[b2400] := editPoints13;
+   FScorePoints[b5600] := editPoints14;
+   FScorePoints[b10g] := editPoints15;
+
    InitializeFields;
 end;
 
@@ -102,6 +234,10 @@ end;
 procedure TformELogJarl1.InitializeFields;
 var
    ini: TIniFile;
+   b: TBand;
+   nFdCoeff: Integer;
+   total_multi: Integer;
+   total_points: Integer;
 begin
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
@@ -110,7 +246,7 @@ begin
       edCategoryName.Text  := ini.ReadString('SummaryInfo', 'CategoryName', '');
       edCallsign.Text      := ini.ReadString('Categories', 'MyCall', 'Your call sign');
       edOpCallsign.Text    := ini.ReadString('SummaryInfo', 'OperatorCallsign', '');
-      edFDCoefficient.Text := ini.ReadString('SummaryInfo', 'FDCoefficient', '1');
+      editFdcoeff.Text     := ini.ReadString('SummaryInfo', 'FDCoefficient', '1');
 
       mAddress.Clear;
       mAddress.Lines.Add(ini.ReadString('SummaryInfo', 'Address1', '〒'));
@@ -165,6 +301,34 @@ begin
       RemoveBlankLines(mOath);
 
       edDate.Text := FormatDateTime('yyyy"年"m"月"d"日"',Now);
+
+      if Pos('フィールドデー', MyContest.Name) > 0 then begin
+         nFdCoeff := 2;
+      end
+      else begin
+         nFdCoeff := 1
+      end;
+      editFdcoeff.Text := IntToStr(nFdCoeff);
+
+      for b := Low(FScoreQso) to High(FScoreQso) do begin
+         FScoreQso[b].Text := IntToStr(MyContest.ScoreForm.QSO[b]);
+         FScoreMulti[b].Text := IntToStr(MyContest.ScoreForm.Multi[b]);
+         FScorePoints[b].Text := IntToStr(MyContest.ScoreForm.Points[b]);
+
+         if (MyContest.ScoreForm.Points[b] = 0) or
+            (MainForm.BandMenu.Items[Ord(b)].Visible = False) then begin
+            if Assigned(FScoreBand[b]) then begin
+               FScoreBand[b].Checked := False;
+            end;
+         end
+         else begin
+            if Assigned(FScoreBand[b]) then begin
+               FScoreBand[b].Checked := True;
+            end;
+         end;
+      end;
+
+      CalcAll();
    finally
       ini.Free();
    end;
@@ -214,7 +378,7 @@ begin
       ini.WriteString('SummaryInfo', 'CategoryCode', edCategoryCode.Text);
       ini.WriteString('SummaryInfo', 'CategoryName', edCategoryName.Text);
       ini.WriteString('SummaryInfo', 'OperatorCallsign', edOpCallsign.Text);
-      ini.WriteString('SummaryInfo', 'FDCoefficient', edFDCoefficient.Text);
+      ini.WriteString('SummaryInfo', 'FDCoefficient', editFdcoeff.Text);
 
       ini.WriteString('SummaryInfo', 'Address1', mAddress.Lines[0]);
       ini.WriteString('SummaryInfo', 'Address2', mAddress.Lines[1]);
@@ -273,14 +437,8 @@ var
    nFdCoeff: Integer;
    b: TBand;
    fFieldDay: Boolean;
+   S: string;
 begin
-   if Pos('フィールドデー', MyContest.Name) > 0 then begin
-      fFieldDay := True;
-   end
-   else begin
-      fFieldDay := False;
-   end;
-   nFdCoeff := StrToIntDef(edFDCoefficient.Text, 1);
 
    WriteLn(f, '<SUMMARYSHEET VERSION=R1.0>');
    WriteLn(f, '<CONTESTNAME>' + edContestName.Text + '</CONTESTNAME>');
@@ -290,23 +448,23 @@ begin
    WriteLn(f, '<OPCALLSIGN>' + edOpCallsign.Text + '</OPCALLSIGN>');
 
    for b := b19 to HiBand do begin
-      if MyContest.ScoreForm.QSO[b] > 0 then begin
+      if FScoreBand[b].Checked = True then begin
+         S := FScoreQso[b].Text + ',' + FScorePoints[b].Text + ',' + FScoreMulti[b].Text;
          if b = b10G then begin
-            WriteLn(f, '<SCORE BAND=10.1GHz>' + MyContest.ScoreForm.QPMStr(b) + '</SCORE>')
+            WriteLn(f, '<SCORE BAND=10.1GHz>' + S + '</SCORE>')
          end
          else begin
-            WriteLn(f, '<SCORE BAND=' + MHzString[B] + 'MHz>' + MyContest.ScoreForm.QPMStr(b) + '</SCORE>');
+            WriteLn(f, '<SCORE BAND=' + MHzString[B] + 'MHz>' + S + '</SCORE>');
          end;
       end;
    end;
 
-   WriteLn(f, '<SCORE BAND=TOTAL>' + MyContest.ScoreForm.TotalQPMStr + '</SCORE>');
+   S := editQsoTotal.Text + ',' + editPointsTotal.Text + ',' + editMultiTotal.Text;
+   WriteLn(f, '<SCORE BAND=TOTAL>' + S + '</SCORE>');
 
-   if (fFieldDay = True) then begin
-      WriteLn(f, '<FDCOEFF>' + IntToStr(nFdCoeff) + '</FDCOEFF>');
-   end;
+   WriteLn(f, '<FDCOEFF>' + editFdcoeff.Text + '</FDCOEFF>');
 
-   WriteLn(f, '<TOTALSCORE>' + IntToStr(MyContest.ScoreForm._TotalMulti * MyContest.ScoreForm._TotalPoints * nFdCoeff) + '</TOTALSCORE>');
+   WriteLn(f, '<TOTALSCORE>' + editTotalScore.Text + '</TOTALSCORE>');
 
    Write(f, '<ADDRESS>');
    Write(f, mAddress.Text);
@@ -406,6 +564,66 @@ begin
 //   S := S + q.Memo;
 
    Result := S;
+end;
+
+procedure TformELogJarl1.checkBandClick(Sender: TObject);
+var
+   n: Integer;
+   fChecked: Boolean;
+begin
+   n := TCheckBox(Sender).Tag;
+   fChecked := TCheckBox(Sender).Checked;
+
+   if fChecked = True then begin
+      FScoreQso[TBand(n)].Color := clWindow;
+      FScoreMulti[TBand(n)].Color := clWindow;
+      FScorePoints[TBand(n)].Color := clWindow;
+   end
+   else begin
+      FScoreQso[TBand(n)].Color := clBtnFace;
+      FScoreMulti[TBand(n)].Color := clBtnFace;
+      FScorePoints[TBand(n)].Color := clBtnFace;
+   end;
+
+   CalcAll();
+end;
+
+procedure TformELogJarl1.editFDCOEFFChange(Sender: TObject);
+begin
+   CalcAll();
+end;
+
+procedure TformELogJarl1.CalcAll();
+var
+   b: TBand;
+   qso, multi, points: Integer;
+   fdcoeff: Integer;
+begin
+   qso := 0;
+   multi := 0;
+   points := 0;
+
+   for b := b19 to HiBand do begin
+      if FScoreBand[b] = nil then begin
+         Continue;
+      end;
+
+      if FScoreBand[b].Checked = False then begin
+         Continue;
+      end;
+
+      qso := qso + StrToIntDef(FScoreQso[b].Text, 0);
+      multi := multi + StrToIntDef(FScoreMulti[b].Text, 0);
+      points := points + StrToIntDef(FScorePoints[b].Text, 0);
+   end;
+
+   editQsoTotal.Text := IntToStr(qso);
+   editMultiTotal.Text := IntToStr(multi);
+   editPointsTotal.Text := IntToStr(points);
+
+   fdcoeff := StrToIntDef(editFdcoeff.Text, 1);
+
+   editTotalScore.Text := IntToStr(multi * points * fdcoeff);
 end;
 
 end.
