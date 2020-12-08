@@ -7539,7 +7539,7 @@ var
 begin
    c := 0;
    for b := b19 to HiBand do begin
-      if (BandMenu.Items[Ord(b)].Visible = True) and
+      if (BandMenu.Items[Ord(b)].Enabled = True) and
          (dmZlogGlobal.Settings._activebands[b] = True) then begin
          Inc(c);
       end;
@@ -7553,7 +7553,7 @@ var
    b: TBand;
 begin
    for b := b19 to HiBand do begin
-      if (BandMenu.Items[Ord(b)].Visible = True) then begin
+      if (BandMenu.Items[Ord(b)].Enabled = True) then begin
          dmZlogGlobal.Settings._activebands[b] := True;
       end;
    end;
@@ -7564,7 +7564,7 @@ var
    b: TBand;
 begin
    for b := b19 to HiBand do begin
-      if (BandMenu.Items[Ord(b)].Visible = True) and
+      if (BandMenu.Items[Ord(b)].Enabled = True) and
          (dmZlogGlobal.Settings._activebands[b] = True) then begin
          Result := b;
          Exit;
@@ -7572,7 +7572,7 @@ begin
    end;
 
    for b := b19 to HiBand do begin
-      if (BandMenu.Items[Ord(b)].Visible = True) then begin
+      if (BandMenu.Items[Ord(b)].Enabled = True) then begin
          Result := b;
          Exit;
       end;
