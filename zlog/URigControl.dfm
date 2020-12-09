@@ -14,7 +14,7 @@ object RigControl: TRigControl
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
-  Position = poScreenCenter
+  Position = poDesigned
   Scaled = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
