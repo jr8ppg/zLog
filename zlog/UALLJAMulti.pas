@@ -39,6 +39,7 @@ type
     Button2: TButton;
     cbStayOnTop: TCheckBox;
     Tab19: TTabSheet;
+    RotateLabel1: TRotateLabel;
     procedure PageControlChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -115,7 +116,7 @@ begin
    end;
 
    for ken := m101 to m48 do begin
-      ListBox.Items.Add(FillRight(KenNames[ken], 14) + '. . . . . . ');
+      ListBox.Items.Add(FillRight(KenNames[ken], 14) + '. . . . . . . ');
    end;
 end;
 

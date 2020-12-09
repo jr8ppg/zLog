@@ -33,9 +33,13 @@ object ALLJAMulti: TALLJAMulti
     OnChange = PageControlChange
     object Tab19: TTabSheet
       Caption = '1.9MHz'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
+      Font.Style = []
       ImageIndex = 7
-      ExplicitLeft = 8
-      ExplicitTop = 22
+      ParentFont = False
     end
     object Tab35: TTabSheet
       Tag = 1
@@ -115,7 +119,7 @@ object ALLJAMulti: TALLJAMulti
         BevelOuter = bvNone
         TabOrder = 0
         object RotateLabel2: TRotateLabel
-          Left = 84
+          Left = 95
           Top = 4
           Width = 14
           Height = 15
@@ -130,7 +134,7 @@ object ALLJAMulti: TALLJAMulti
           ParentFont = False
         end
         object RotateLabel3: TRotateLabel
-          Left = 96
+          Left = 107
           Top = 13
           Width = 14
           Height = 6
@@ -145,7 +149,7 @@ object ALLJAMulti: TALLJAMulti
           ParentFont = False
         end
         object RotateLabel4: TRotateLabel
-          Left = 108
+          Left = 119
           Top = 7
           Width = 14
           Height = 12
@@ -160,7 +164,7 @@ object ALLJAMulti: TALLJAMulti
           ParentFont = False
         end
         object RotateLabel5: TRotateLabel
-          Left = 120
+          Left = 131
           Top = 7
           Width = 14
           Height = 12
@@ -175,7 +179,7 @@ object ALLJAMulti: TALLJAMulti
           ParentFont = False
         end
         object RotateLabel6: TRotateLabel
-          Left = 132
+          Left = 143
           Top = 7
           Width = 14
           Height = 12
@@ -190,13 +194,28 @@ object ALLJAMulti: TALLJAMulti
           ParentFont = False
         end
         object RotateLabel7: TRotateLabel
-          Left = 144
+          Left = 155
           Top = 7
           Width = 14
           Height = 12
           Escapement = 90
           TextStyle = tsNone
           Caption = '50'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+        end
+        object RotateLabel1: TRotateLabel
+          Left = 82
+          Top = 4
+          Width = 14
+          Height = 15
+          Escapement = 90
+          TextStyle = tsNone
+          Caption = '1.9'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
