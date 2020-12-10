@@ -1047,6 +1047,8 @@ type
     procedure BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
     procedure BandScopeUpdateSpot(aQSO: TQSO);
 
+    procedure InitBandMenu();
+
     property RigControl: TRigControl read FRigControl;
     property PartialCheck: TPartialCheck read FPartialCheck;
     property CommForm: TCommForm read FCommForm;
@@ -5994,6 +5996,10 @@ begin
          Exit;
       end;
 
+      dmZlogGlobal.ImplementSettings(False);
+      dmZlogGlobal.SaveCurrentSettings();
+      InitBandMenu();
+
       RenewCWToolBar;
       RenewVoiceToolBar;
 
@@ -7065,6 +7071,7 @@ begin
 
       // ê›íËîΩâf
       dmZlogGlobal.ImplementSettings(False);
+      InitBandMenu();
 
       RestoreWindowStates;
       dmZlogGlobal.ReadWindowState(MyContest.MultiForm, 'MultiForm', False);
@@ -7495,11 +7502,13 @@ end;
 procedure TMainForm.ShowBandMenu(b: TBand);
 begin
    BandMenu.Items[Ord(b)].Visible := True;
+   BandMenu.Items[Ord(b)].Enabled := True;
 end;
 
 procedure TMainForm.HideBandMenu(b: TBand);
 begin
    BandMenu.Items[Ord(b)].Visible := False;
+   BandMenu.Items[Ord(b)].Enabled := False;
 end;
 
 procedure TMainForm.HideBandMenuHF();
@@ -7510,6 +7519,12 @@ begin
    BandMenu.Items[Ord(b14)].Visible := False;
    BandMenu.Items[Ord(b21)].Visible := False;
    BandMenu.Items[Ord(b28)].Visible := False;
+   BandMenu.Items[Ord(b19)].Enabled := False;
+   BandMenu.Items[Ord(b35)].Enabled := False;
+   BandMenu.Items[Ord(b7)].Enabled := False;
+   BandMenu.Items[Ord(b14)].Enabled := False;
+   BandMenu.Items[Ord(b21)].Enabled := False;
+   BandMenu.Items[Ord(b28)].Enabled := False;
 end;
 
 procedure TMainForm.HideBandMenuWARC();
@@ -7517,12 +7532,16 @@ begin
    BandMenu.Items[Ord(b10)].Visible := False;
    BandMenu.Items[Ord(b18)].Visible := False;
    BandMenu.Items[Ord(b24)].Visible := False;
+   BandMenu.Items[Ord(b10)].Enabled := False;
+   BandMenu.Items[Ord(b18)].Enabled := False;
+   BandMenu.Items[Ord(b24)].Enabled := False;
 end;
 
 procedure TMainForm.HideBandMenuVU(fInclude50: Boolean);
 begin
    if fInclude50 = True then begin
       BandMenu.Items[Ord(b50)].Visible := False;
+      BandMenu.Items[Ord(b50)].Enabled := False;
    end;
    BandMenu.Items[Ord(b144)].Visible := False;
    BandMenu.Items[Ord(b430)].Visible := False;
@@ -7530,6 +7549,12 @@ begin
    BandMenu.Items[Ord(b2400)].Visible := False;
    BandMenu.Items[Ord(b5600)].Visible := False;
    BandMenu.Items[Ord(b10G)].Visible := False;
+   BandMenu.Items[Ord(b144)].Enabled := False;
+   BandMenu.Items[Ord(b430)].Enabled := False;
+   BandMenu.Items[Ord(b1200)].Enabled := False;
+   BandMenu.Items[Ord(b2400)].Enabled := False;
+   BandMenu.Items[Ord(b5600)].Enabled := False;
+   BandMenu.Items[Ord(b10G)].Enabled := False;
 end;
 
 function TMainForm.GetNumOfAvailableBands(): Integer;
@@ -9266,6 +9291,15 @@ begin
 
    if FBandScope.CurrentBand = aQSO.Band then begin
       FBandScope.SetSpotWorked(aQSO);
+   end;
+end;
+
+procedure TMainForm.InitBandMenu();
+var
+   b: TBand;
+begin
+   for b := b19 to HiBand do begin
+      BandMenu.Items[ord(b)].Enabled := (BandMenu.Items[ord(b)].Enabled and dmZLogGlobal.Settings._activebands[b]);
    end;
 end;
 

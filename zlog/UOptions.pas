@@ -803,9 +803,6 @@ end;
 procedure TformOptions.buttonOKClick(Sender: TObject);
 begin
    RenewSettings;
-   dmZlogGlobal.ImplementSettings(False);
-
-   dmZlogGlobal.SaveCurrentSettings();
 end;
 
 procedure TformOptions.RenewCWStrBankDisp;

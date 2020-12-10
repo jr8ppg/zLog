@@ -1399,14 +1399,8 @@ end;
 
 // İ’è”½‰f
 procedure TdmZLogGlobal.ImplementSettings(_OnCreate: boolean);
-var
-   b: TBand;
 begin
    if _OnCreate = False then begin
-      for b := b19 to HiBand do begin
-         MainForm.BandMenu.Items[ord(b)].Enabled := Settings._activebands[b];
-      end;
-
       if Settings._band > 0 then begin // single band
          Band := Settings._band; // resets the bandmenu.items.enabled for the single band entry
       end;

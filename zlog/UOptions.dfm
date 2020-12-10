@@ -29,6 +29,10 @@ object formOptions: TformOptions
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label40: TLabel
         Left = 202
         Top = 212
@@ -516,6 +520,10 @@ object formOptions: TformOptions
     end
     object tabsheetCategories: TTabSheet
       Caption = 'Categories'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label14: TLabel
         Left = 248
         Top = 92
@@ -1252,6 +1260,10 @@ object formOptions: TformOptions
     end
     object tabsheetVoice: TTabSheet
       Caption = 'Voice'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 6
         Top = 4
