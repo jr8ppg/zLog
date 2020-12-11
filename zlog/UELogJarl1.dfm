@@ -3,7 +3,7 @@ object formELogJarl1: TformELogJarl1
   Top = 10
   BorderStyle = bsDialog
   Caption = 'E-Log (JARL 1.0)'
-  ClientHeight = 685
+  ClientHeight = 692
   ClientWidth = 793
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,9 +14,6 @@ object formELogJarl1: TformELogJarl1
   OldCreateOrder = False
   Position = poScreenCenter
   OnCreate = FormCreate
-  DesignSize = (
-    793
-    685)
   PixelsPerInch = 96
   TextHeight = 12
   object Label1: TLabel
@@ -434,36 +431,6 @@ object formELogJarl1: TformELogJarl1
     ParentFont = False
     TabOrder = 20
   end
-  object buttonCreateLog: TButton
-    Left = 208
-    Top = 655
-    Width = 89
-    Height = 23
-    Anchors = [akLeft, akBottom]
-    Caption = 'E-log'#20316#25104
-    TabOrder = 22
-    OnClick = buttonCreateLogClick
-  end
-  object buttonSave: TButton
-    Left = 104
-    Top = 655
-    Width = 89
-    Height = 23
-    Anchors = [akLeft, akBottom]
-    Caption = #20445#23384
-    TabOrder = 21
-    OnClick = buttonSaveClick
-  end
-  object buttonCancel: TButton
-    Left = 312
-    Top = 655
-    Width = 89
-    Height = 23
-    Anchors = [akLeft, akBottom]
-    Caption = #38281#12376#12427
-    TabOrder = 23
-    OnClick = buttonCancelClick
-  end
   object mAddress: TMemo
     Left = 24
     Top = 147
@@ -500,7 +467,7 @@ object formELogJarl1: TformELogJarl1
     Width = 281
     Height = 449
     Caption = #12473#12467#12450#35519#25972
-    TabOrder = 24
+    TabOrder = 21
     object Label22: TLabel
       Left = 16
       Top = 390
@@ -1113,12 +1080,49 @@ object formELogJarl1: TformELogJarl1
       TabOrder = 54
     end
   end
+  object Panel1: TPanel
+    Left = 0
+    Top = 661
+    Width = 793
+    Height = 31
+    Align = alBottom
+    BevelOuter = bvNone
+    TabOrder = 22
+    ExplicitTop = 656
+    object buttonCreateLog: TButton
+      Left = 356
+      Top = 1
+      Width = 89
+      Height = 23
+      Caption = 'E-log'#20316#25104
+      TabOrder = 0
+      OnClick = buttonCreateLogClick
+    end
+    object buttonSave: TButton
+      Left = 253
+      Top = 1
+      Width = 89
+      Height = 23
+      Caption = #20445#23384
+      TabOrder = 1
+      OnClick = buttonSaveClick
+    end
+    object buttonCancel: TButton
+      Left = 461
+      Top = 1
+      Width = 89
+      Height = 23
+      Caption = #38281#12376#12427
+      TabOrder = 2
+      OnClick = buttonCancelClick
+    end
+  end
   object SaveDialog1: TSaveDialog
     DefaultExt = 'em'
     Filter = 'JARL E-log files (*.em)|*.em|'#20840#12390#12398#12501#12449#12452#12523'|*.*'
     Options = [ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Title = 'Save E-Log file'
-    Left = 464
-    Top = 644
+    Left = 512
+    Top = 532
   end
 end

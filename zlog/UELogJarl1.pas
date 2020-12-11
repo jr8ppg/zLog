@@ -48,9 +48,6 @@ type
     edClubName: TEdit;
     edDate: TEdit;
     edSignature: TEdit;
-    buttonCreateLog: TButton;
-    buttonSave: TButton;
-    buttonCancel: TButton;
     mAddress: TMemo;
     mEquipment: TMemo;
     Label12: TLabel;
@@ -116,6 +113,10 @@ type
     editMultiTotal: TEdit;
     editPointsTotal: TEdit;
     Label6: TLabel;
+    Panel1: TPanel;
+    buttonCreateLog: TButton;
+    buttonSave: TButton;
+    buttonCancel: TButton;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -235,10 +236,11 @@ procedure TformELogJarl1.InitializeFields;
 var
    ini: TIniFile;
    b: TBand;
-   nFdCoeff: Integer;
    total_multi: Integer;
    total_points: Integer;
+   fSavedBack: Boolean;
 begin
+   fSavedBack := Log.Saved;
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       edContestName.Text   := MyContest.Name;
@@ -246,7 +248,6 @@ begin
       edCategoryName.Text  := ini.ReadString('SummaryInfo', 'CategoryName', '');
       edCallsign.Text      := ini.ReadString('Categories', 'MyCall', 'Your call sign');
       edOpCallsign.Text    := ini.ReadString('SummaryInfo', 'OperatorCallsign', '');
-      editFdcoeff.Text     := ini.ReadString('SummaryInfo', 'FDCoefficient', '1');
 
       mAddress.Clear;
       mAddress.Lines.Add(ini.ReadString('SummaryInfo', 'Address1', '〒'));
@@ -302,13 +303,12 @@ begin
 
       edDate.Text := FormatDateTime('yyyy"年"m"月"d"日"',Now);
 
-      if Pos('フィールドデー', MyContest.Name) > 0 then begin
-         nFdCoeff := 2;
+      if Log.ScoreCoeff > 0 then begin
+         editFdcoeff.Text := IntToStr(Log.ScoreCoeff);
       end
       else begin
-         nFdCoeff := 1
+         editFdcoeff.Text := '';
       end;
-      editFdcoeff.Text := IntToStr(nFdCoeff);
 
       for b := Low(FScoreQso) to High(FScoreQso) do begin
          FScoreQso[b].Text := IntToStr(MyContest.ScoreForm.QSO[b]);
@@ -331,6 +331,7 @@ begin
       CalcAll();
    finally
       ini.Free();
+      Log.Saved := fSavedBack;
    end;
 end;
 
@@ -602,8 +603,12 @@ begin
 end;
 
 procedure TformELogJarl1.editFDCOEFFChange(Sender: TObject);
+var
+   N: Integer;
 begin
    CalcAll();
+   N := StrToIntDef(editFDCOEFF.Text, 0);
+   Log.ScoreCoeff := N;
 end;
 
 procedure TformELogJarl1.CalcAll();

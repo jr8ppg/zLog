@@ -43,17 +43,19 @@ type
     mComments: TMemo;
     edDate: TEdit;
     edSignature: TEdit;
-    buttonCreateLog: TButton;
-    buttonSave: TButton;
-    buttonCancel: TButton;
     mAddress: TMemo;
     SaveDialog1: TSaveDialog;
     Label3: TLabel;
     memoMultiOpList: TMemo;
+    Panel1: TPanel;
+    buttonCreateLog: TButton;
+    buttonSave: TButton;
+    buttonCancel: TButton;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
     procedure buttonCancelClick(Sender: TObject);
+    procedure edFDCoefficientChange(Sender: TObject);
   private
     { Private 宣言 }
     procedure RemoveBlankLines(M : TMemo);
@@ -99,14 +101,22 @@ var
    ini: TIniFile;
    i: Integer;
    str: string;
+   fSavedBack: Boolean;
 begin
+   fSavedBack := Log.Saved;
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       edContestName.Text   := MyContest.Name;
       edCategoryCode.Text  := ini.ReadString('SummaryInfo', 'CategoryCode', '');
       edCallsign.Text      := ini.ReadString('Categories', 'MyCall', 'Your call sign');
       edOpCallsign.Text    := ini.ReadString('SummaryInfo', 'OperatorCallsign', '');
-      edFDCoefficient.Text := ini.ReadString('SummaryInfo', 'FDCoefficient', '1');
+
+      if Log.ScoreCoeff > 0 then begin
+         edFDCoefficient.Text := IntToStr(Log.ScoreCoeff);
+      end
+      else begin
+         edFDCoefficient.Text := '';
+      end;
 
       mAddress.Clear;
       mAddress.Lines.Add(ini.ReadString('SummaryInfo', 'Address1', '〒'));
@@ -157,6 +167,7 @@ begin
       edDate.Text := FormatDateTime('yyyy"年"m"月"d"日"', Now);
    finally
       ini.Free();
+      Log.Saved := fSavedBack;
    end;
 end;
 
@@ -242,6 +253,14 @@ begin
    end;
 end;
 
+procedure TformELogJarl2.edFDCoefficientChange(Sender: TObject);
+var
+   N: Integer;
+begin
+   N := StrToIntDef(edFDCoefficient.Text, 0);
+   Log.ScoreCoeff := N;
+end;
+
 procedure TformELogJarl2.buttonCancelClick(Sender: TObject);
 begin
    Close;
@@ -273,16 +292,9 @@ end;
 procedure TformELogJarl2.WriteSummarySheet(var f: TextFile);
 var
    nFdCoeff: Integer;
-   fFieldDay: Boolean;
    nScore: Integer;
 begin
-   if Pos('フィールドデー', MyContest.Name) > 0 then begin
-      fFieldDay := True;
-   end
-   else begin
-      fFieldDay := False;
-   end;
-   nFdCoeff := StrToIntDef(edFDCoefficient.Text, 1);
+   nFdCoeff := StrToIntDef(edFDCoefficient.Text, 0);
 
    WriteLn(f, '<SUMMARYSHEET VERSION=R2.0>');
 
@@ -305,7 +317,7 @@ begin
    WriteLn(f, '<TEL>' + edTEL.Text + '</TEL>');
    WriteLn(f, '<EMAIL>' + edEMail.Text + '</EMAIL>');
    WriteLn(f, '<POWER>' + edPower.Text + '</POWER>');
-   if (fFieldDay = True) then begin
+   if nFdCoeff > 0 then begin
       WriteLn(f, '<FDCOEFF>' + IntToStr(nFdCoeff) + '</FDCOEFF>');
    end;
    WriteLn(f, '<OPPLACE>' + edQTH.Text + '</OPPLACE>');

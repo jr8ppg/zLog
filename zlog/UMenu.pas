@@ -91,7 +91,7 @@ type
       function GetContestNumber(): Integer;
       procedure SetContestNumber(v: Integer);
       function GetTxNumber(): Integer;
-      function GetScoreCoeff(): Extended;
+      function GetScoreCoeff(): Integer;
       function GetGeneralName(): string;
       function GetPostContest(): Boolean;
       procedure SelectFirstBand();
@@ -103,7 +103,7 @@ type
       property Callsign: string read GetCallsign;
       property ContestNumber: Integer read GetContestNumber write SetContestNumber;
       property TxNumber: Integer read GetTxNumber;
-      property ScoreCoeff: Extended read GetScoreCoeff;
+      property ScoreCoeff: Integer read GetScoreCoeff;
       property GeneralName: string read GetGeneralName;
       property PostContest: Boolean read GetPostContest;
    end;
@@ -596,12 +596,12 @@ begin
    Result := StrToIntDef(TXNrEdit.Text, 0);
 end;
 
-function TMenuForm.GetScoreCoeff(): Extended;
+function TMenuForm.GetScoreCoeff(): Integer;
 var
-   E: Extended;
+   E: Integer;
 begin
    if ScoreCoeffEdit.Enabled then begin
-      E := StrToFloatDef(ScoreCoeffEdit.Text, 1);
+      E := StrToIntDef(ScoreCoeffEdit.Text, 1);
    end
    else begin
       E := 0;

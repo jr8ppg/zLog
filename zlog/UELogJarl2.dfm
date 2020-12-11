@@ -14,9 +14,6 @@ object formELogJarl2: TformELogJarl2
   OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
-  DesignSize = (
-    516
-    671)
   PixelsPerInch = 96
   TextHeight = 12
   object Label1: TLabel
@@ -314,6 +311,7 @@ object formELogJarl2: TformELogJarl2
     ParentFont = False
     TabOrder = 4
     Text = #12467#12531#12486#12473#12488
+    OnChange = edFDCoefficientChange
   end
   object edTEL: TEdit
     Left = 115
@@ -454,37 +452,6 @@ object formELogJarl2: TformELogJarl2
     ParentFont = False
     TabOrder = 17
   end
-  object buttonCreateLog: TButton
-    Left = 208
-    Top = 640
-    Width = 89
-    Height = 23
-    Anchors = [akLeft, akBottom]
-    Caption = 'E-log'#20316#25104
-    TabOrder = 19
-    OnClick = buttonCreateLogClick
-  end
-  object buttonSave: TButton
-    Left = 104
-    Top = 640
-    Width = 89
-    Height = 23
-    Anchors = [akLeft, akBottom]
-    Caption = #20445#23384
-    TabOrder = 18
-    OnClick = buttonSaveClick
-  end
-  object buttonCancel: TButton
-    Left = 312
-    Top = 640
-    Width = 89
-    Height = 23
-    Anchors = [akLeft, akBottom]
-    Caption = #38281#12376#12427
-    ModalResult = 2
-    TabOrder = 20
-    OnClick = buttonCancelClick
-  end
   object mAddress: TMemo
     Left = 23
     Top = 147
@@ -513,6 +480,43 @@ object formELogJarl2: TformELogJarl2
     ParentFont = False
     ScrollBars = ssVertical
     TabOrder = 13
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 640
+    Width = 516
+    Height = 31
+    Align = alBottom
+    BevelOuter = bvNone
+    TabOrder = 18
+    object buttonCreateLog: TButton
+      Left = 215
+      Top = 2
+      Width = 89
+      Height = 23
+      Caption = 'E-log'#20316#25104
+      TabOrder = 0
+      OnClick = buttonCreateLogClick
+    end
+    object buttonSave: TButton
+      Left = 111
+      Top = 2
+      Width = 89
+      Height = 23
+      Caption = #20445#23384
+      TabOrder = 1
+      OnClick = buttonSaveClick
+    end
+    object buttonCancel: TButton
+      Left = 319
+      Top = 2
+      Width = 89
+      Height = 23
+      Caption = #38281#12376#12427
+      ModalResult = 2
+      TabOrder = 2
+      OnClick = buttonCancelClick
+    end
   end
   object SaveDialog1: TSaveDialog
     DefaultExt = 'em'

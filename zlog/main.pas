@@ -6904,9 +6904,6 @@ begin
 
       dmZLogGlobal.CreateLog();
 
-      E := menu.ScoreCoeff;
-      dmZlogGlobal.SetScoreCoeff(E);
-
       for r := 0 to Grid.RowCount - 1 do begin
          for c := 0 to Grid.ColCount - 1 do begin
             Grid.Cells[c, r] := '';
@@ -7051,6 +7048,9 @@ begin
             MessageDlg('Data will NOT be saved until you enter the file name', mtWarning, [mbOK], 0); { HELP context 0 }
          end;
       end;
+
+      // 局種係数
+      Log.ScoreCoeff := menu.ScoreCoeff;
 
       // Sentは各コンテストで設定された値
       dmZlogGlobal.Settings._sentstr := MyContest.SentStr;

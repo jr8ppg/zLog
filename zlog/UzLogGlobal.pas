@@ -272,7 +272,6 @@ public
 
     procedure SetWeight(i : integer);
     procedure SetTonePitch(i : integer);
-    procedure SetScoreCoeff(E : Extended);
 
     procedure SetPaddleReverse(boo : boolean);
     procedure ReversePaddle();
@@ -1611,12 +1610,6 @@ end;
 function TdmZLogGlobal.GetPTTEnabled: Boolean;
 begin
    Result := Settings._pttenabled;
-end;
-
-procedure TdmZLogGlobal.SetScoreCoeff(E: extended);
-begin
-   Settings._scorecoeff := E;
-   Log.QsoList[0].RSTRcvd := Trunc(E * 100);
 end;
 
 procedure TdmZLogGlobal.SetWeight(i: integer);

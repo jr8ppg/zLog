@@ -190,6 +190,8 @@ type
     procedure ProcessInsert(afterQSO: TQSO);
     procedure ProcessLock(xQSO: TQSO);
     procedure ProcessUnlock(xQSO: TQSO);
+    procedure SetScoreCoeff(N: Integer);
+    function GetScoreCoeff(): Integer;
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -246,6 +248,8 @@ type
 
     property QsoList: TQSOList read FQsoList;
     property BandList: TQSOListArray read FBandList;
+
+    property ScoreCoeff: Integer read GetScoreCoeff write SetScoreCoeff;
   end;
 
 implementation
@@ -997,6 +1001,7 @@ begin
    Q.Memo := Memo;
    Q.Time := 0;
    Q.RSTSent := 0;
+   Q.RSTRcvd := 0;
    Add(Q);
 
    for B := b19 to HiBand do begin
@@ -1957,6 +1962,20 @@ begin
    end;
 
    Result := True;
+end;
+
+function TLog.GetScoreCoeff(): Integer;
+begin
+   Result := FQsoList[0].RSTRcvd div 100;
+end;
+
+procedure TLog.SetScoreCoeff(N: Integer);
+begin
+   N := N * 100;
+   if FQsoList[0].RSTRcvd <> N then begin
+      FQsoList[0].RSTRcvd := N;
+      Saved := False;
+   end;
 end;
 
 { TQSOCallsignComparer }
