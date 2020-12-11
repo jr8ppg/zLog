@@ -294,8 +294,6 @@ var
    nFdCoeff: Integer;
    nScore: Integer;
 begin
-   nFdCoeff := StrToIntDef(edFDCoefficient.Text, 0);
-
    WriteLn(f, '<SUMMARYSHEET VERSION=R2.0>');
 
    WriteLn(f, '<CONTESTNAME>' + edContestName.Text + '</CONTESTNAME>');
@@ -317,9 +315,12 @@ begin
    WriteLn(f, '<TEL>' + edTEL.Text + '</TEL>');
    WriteLn(f, '<EMAIL>' + edEMail.Text + '</EMAIL>');
    WriteLn(f, '<POWER>' + edPower.Text + '</POWER>');
+
+   nFdCoeff := StrToIntDef(edFDCoefficient.Text, 0);
    if nFdCoeff > 0 then begin
       WriteLn(f, '<FDCOEFF>' + IntToStr(nFdCoeff) + '</FDCOEFF>');
    end;
+
    WriteLn(f, '<OPPLACE>' + edQTH.Text + '</OPPLACE>');
    WriteLn(f, '<POWERSUPPLY>' + edPowerSupply.Text + '</POWERSUPPLY>');
 

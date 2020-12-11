@@ -440,7 +440,6 @@ var
    fFieldDay: Boolean;
    S: string;
 begin
-
    WriteLn(f, '<SUMMARYSHEET VERSION=R1.0>');
    WriteLn(f, '<CONTESTNAME>' + edContestName.Text + '</CONTESTNAME>');
    WriteLn(f, '<CATEGORYCODE>' + edCategoryCode.Text + '</CATEGORYCODE>');
@@ -464,7 +463,10 @@ begin
    S := editQsoTotal.Text + ',' + editPointsTotal.Text + ',' + editMultiTotal.Text;
    WriteLn(f, '<SCORE BAND=TOTAL>' + S + '</SCORE>');
 
-   WriteLn(f, '<FDCOEFF>' + editFdcoeff.Text + '</FDCOEFF>');
+   nFdCoeff := StrToIntDef(editFdcoeff.Text, 0);
+   if nFdCoeff > 0 then begin
+      WriteLn(f, '<FDCOEFF>' + IntToStr(nFdCoeff) + '</FDCOEFF>');
+   end;
 
    WriteLn(f, '<TOTALSCORE>' + editTotalScore.Text + '</TOTALSCORE>');
 

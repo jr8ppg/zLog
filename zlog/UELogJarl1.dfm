@@ -1088,7 +1088,6 @@ object formELogJarl1: TformELogJarl1
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 22
-    ExplicitTop = 656
     object buttonCreateLog: TButton
       Left = 356
       Top = 1
