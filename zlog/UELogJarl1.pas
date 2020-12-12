@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes,
+  Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes, Math,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
@@ -236,8 +236,6 @@ procedure TformELogJarl1.InitializeFields;
 var
    ini: TIniFile;
    b: TBand;
-   total_multi: Integer;
-   total_points: Integer;
    fSavedBack: Boolean;
 begin
    fSavedBack := Log.Saved;
@@ -304,7 +302,7 @@ begin
       edDate.Text := FormatDateTime('yyyy"”N"m"ŒŽ"d"“ú"',Now);
 
       if Log.ScoreCoeff > 0 then begin
-         editFdcoeff.Text := IntToStr(Log.ScoreCoeff);
+         editFdcoeff.Text := FloatToStr(Log.ScoreCoeff);
       end
       else begin
          editFdcoeff.Text := '';
@@ -435,9 +433,8 @@ end;
 
 procedure TformELogJarl1.WriteSummarySheet(var f: TextFile);
 var
-   nFdCoeff: Integer;
+   fFdCoeff: Extended;
    b: TBand;
-   fFieldDay: Boolean;
    S: string;
 begin
    WriteLn(f, '<SUMMARYSHEET VERSION=R1.0>');
@@ -463,9 +460,9 @@ begin
    S := editQsoTotal.Text + ',' + editPointsTotal.Text + ',' + editMultiTotal.Text;
    WriteLn(f, '<SCORE BAND=TOTAL>' + S + '</SCORE>');
 
-   nFdCoeff := StrToIntDef(editFdcoeff.Text, 0);
-   if nFdCoeff > 0 then begin
-      WriteLn(f, '<FDCOEFF>' + IntToStr(nFdCoeff) + '</FDCOEFF>');
+   fFdCoeff := StrToFloatDef(editFdcoeff.Text, 1);
+   if fFdCoeff > 1 then begin
+      WriteLn(f, '<FDCOEFF>' + FloatToStr(fFdCoeff) + '</FDCOEFF>');
    end;
 
    WriteLn(f, '<TOTALSCORE>' + editTotalScore.Text + '</TOTALSCORE>');
@@ -606,18 +603,19 @@ end;
 
 procedure TformELogJarl1.editFDCOEFFChange(Sender: TObject);
 var
-   N: Integer;
+   E: Extended;
 begin
    CalcAll();
-   N := StrToIntDef(editFDCOEFF.Text, 0);
-   Log.ScoreCoeff := N;
+   E := StrToFloatDef(editFDCOEFF.Text, 1);
+   Log.ScoreCoeff := E;
 end;
 
 procedure TformELogJarl1.CalcAll();
 var
    b: TBand;
    qso, multi, points: Integer;
-   fdcoeff: Integer;
+   fdcoeff: Extended;
+   fScore: Extended;
 begin
    qso := 0;
    multi := 0;
@@ -641,9 +639,10 @@ begin
    editMultiTotal.Text := IntToStr(multi);
    editPointsTotal.Text := IntToStr(points);
 
-   fdcoeff := StrToIntDef(editFdcoeff.Text, 1);
+   fdcoeff := StrToFloatDef(editFdcoeff.Text, 1);
+   fScore := multi * points * fdcoeff;
 
-   editTotalScore.Text := IntToStr(multi * points * fdcoeff);
+   editTotalScore.Text := FloatToStr(fScore);
 end;
 
 end.

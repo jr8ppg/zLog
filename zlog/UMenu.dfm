@@ -414,7 +414,6 @@ object MenuForm: TMenuForm
     AutoSize = False
     MaxLength = 3
     TabOrder = 9
-    OnKeyPress = TXNrEditKeyPress
   end
   object ScoreCoeffEdit: TEdit
     Left = 448
@@ -425,7 +424,6 @@ object MenuForm: TMenuForm
     MaxLength = 3
     TabOrder = 10
     Text = '1'
-    OnKeyPress = TXNrEditKeyPress
   end
   object CFGOpenDialog: TOpenDialog
     DefaultExt = 'CFG'

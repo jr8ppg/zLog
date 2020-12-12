@@ -190,8 +190,8 @@ type
     procedure ProcessInsert(afterQSO: TQSO);
     procedure ProcessLock(xQSO: TQSO);
     procedure ProcessUnlock(xQSO: TQSO);
-    procedure SetScoreCoeff(N: Integer);
-    function GetScoreCoeff(): Integer;
+    procedure SetScoreCoeff(E: Extended);
+    function GetScoreCoeff(): Extended;
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -249,7 +249,7 @@ type
     property QsoList: TQSOList read FQsoList;
     property BandList: TQSOListArray read FBandList;
 
-    property ScoreCoeff: Integer read GetScoreCoeff write SetScoreCoeff;
+    property ScoreCoeff: Extended read GetScoreCoeff write SetScoreCoeff;
   end;
 
 implementation
@@ -1964,14 +1964,16 @@ begin
    Result := True;
 end;
 
-function TLog.GetScoreCoeff(): Integer;
+function TLog.GetScoreCoeff(): Extended;
 begin
-   Result := FQsoList[0].RSTRcvd div 100;
+   Result := FQsoList[0].RSTRcvd / 100;
 end;
 
-procedure TLog.SetScoreCoeff(N: Integer);
+procedure TLog.SetScoreCoeff(E: Extended);
+var
+   N: Integer;
 begin
-   N := N * 100;
+   N := Trunc(E * 100);
    if FQsoList[0].RSTRcvd <> N then begin
       FQsoList[0].RSTRcvd := N;
       Saved := False;

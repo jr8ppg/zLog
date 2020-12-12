@@ -1036,7 +1036,6 @@ object formELogJarl1: TformELogJarl1
       Top = 387
       Width = 59
       Height = 20
-      NumbersOnly = True
       TabOrder = 55
       OnChange = editFDCOEFFChange
     end

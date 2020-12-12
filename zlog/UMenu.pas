@@ -62,7 +62,6 @@ type
       procedure rbARRLWClick(Sender: TObject);
       procedure rbAPSprintClick(Sender: TObject);
       procedure OpGroupClick(Sender: TObject);
-      procedure TXNrEditKeyPress(Sender: TObject; var Key: Char);
       procedure UserDefClick(Sender: TObject);
       procedure rbIARUClick(Sender: TObject);
       procedure rbIOTAClick(Sender: TObject);
@@ -91,7 +90,7 @@ type
       function GetContestNumber(): Integer;
       procedure SetContestNumber(v: Integer);
       function GetTxNumber(): Integer;
-      function GetScoreCoeff(): Integer;
+      function GetScoreCoeff(): Extended;
       function GetGeneralName(): string;
       function GetPostContest(): Boolean;
       procedure SelectFirstBand();
@@ -103,7 +102,7 @@ type
       property Callsign: string read GetCallsign;
       property ContestNumber: Integer read GetContestNumber write SetContestNumber;
       property TxNumber: Integer read GetTxNumber;
-      property ScoreCoeff: Integer read GetScoreCoeff;
+      property ScoreCoeff: Extended read GetScoreCoeff;
       property GeneralName: string read GetGeneralName;
       property PostContest: Boolean read GetPostContest;
    end;
@@ -422,13 +421,6 @@ begin
    end;
 end;
 
-procedure TMenuForm.TXNrEditKeyPress(Sender: TObject; var Key: Char);
-begin
-   if CharInSet(Key, ['0' .. '9']) = False then begin
-      Key := #0;
-   end;
-end;
-
 procedure TMenuForm.UserDefClick(Sender: TObject);
 begin
    EnableEveryThing;
@@ -596,12 +588,12 @@ begin
    Result := StrToIntDef(TXNrEdit.Text, 0);
 end;
 
-function TMenuForm.GetScoreCoeff(): Integer;
+function TMenuForm.GetScoreCoeff(): Extended;
 var
-   E: Integer;
+   E: Extended;
 begin
    if ScoreCoeffEdit.Enabled then begin
-      E := StrToIntDef(ScoreCoeffEdit.Text, 1);
+      E := StrToFloatDef(ScoreCoeffEdit.Text, 1);
    end
    else begin
       E := 0;

@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes,
+  Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes, Math,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension;
 
 type
@@ -112,7 +112,7 @@ begin
       edOpCallsign.Text    := ini.ReadString('SummaryInfo', 'OperatorCallsign', '');
 
       if Log.ScoreCoeff > 0 then begin
-         edFDCoefficient.Text := IntToStr(Log.ScoreCoeff);
+         edFDCoefficient.Text := FloatToStr(Log.ScoreCoeff);
       end
       else begin
          edFDCoefficient.Text := '';
@@ -255,10 +255,10 @@ end;
 
 procedure TformELogJarl2.edFDCoefficientChange(Sender: TObject);
 var
-   N: Integer;
+   E: Extended;
 begin
-   N := StrToIntDef(edFDCoefficient.Text, 0);
-   Log.ScoreCoeff := N;
+   E := StrToFloatDef(edFDCoefficient.Text, 1);
+   Log.ScoreCoeff := E;
 end;
 
 procedure TformELogJarl2.buttonCancelClick(Sender: TObject);
@@ -291,9 +291,11 @@ end;
 }
 procedure TformELogJarl2.WriteSummarySheet(var f: TextFile);
 var
-   nFdCoeff: Integer;
-   nScore: Integer;
+   fFdCoeff: Extended;
+   fScore: Extended;
 begin
+   fFdCoeff := StrToFloatDef(edFDCoefficient.Text, 1);
+
    WriteLn(f, '<SUMMARYSHEET VERSION=R2.0>');
 
    WriteLn(f, '<CONTESTNAME>' + edContestName.Text + '</CONTESTNAME>');
@@ -301,11 +303,11 @@ begin
    WriteLn(f, '<CALLSIGN>' + edCallsign.Text + '</CALLSIGN>');
    WriteLn(f, '<OPCALLSIGN>' + edOpCallsign.Text + '</OPCALLSIGN>');
 
-   nScore := zLogGetTotalScore();
-   if nScore = -1 then begin
-      nScore := MyContest.ScoreForm._TotalMulti * MyContest.ScoreForm._TotalPoints * nFdCoeff;
+   fScore := zLogGetTotalScore();
+   if fScore = -1 then begin
+      fScore := MyContest.ScoreForm._TotalMulti * MyContest.ScoreForm._TotalPoints * fFdCoeff;
    end;
-   WriteLn(f, '<TOTALSCORE>' + IntToStr(nScore) + '</TOTALSCORE>');
+   WriteLn(f, '<TOTALSCORE>' + FloatToStr(fScore) + '</TOTALSCORE>');
 
    Write(f, '<ADDRESS>');
    Write(f, mAddress.Text);
@@ -316,9 +318,8 @@ begin
    WriteLn(f, '<EMAIL>' + edEMail.Text + '</EMAIL>');
    WriteLn(f, '<POWER>' + edPower.Text + '</POWER>');
 
-   nFdCoeff := StrToIntDef(edFDCoefficient.Text, 0);
-   if nFdCoeff > 0 then begin
-      WriteLn(f, '<FDCOEFF>' + IntToStr(nFdCoeff) + '</FDCOEFF>');
+   if fFdCoeff > 1 then begin
+      WriteLn(f, '<FDCOEFF>' + FloatToStr(fFdCoeff) + '</FDCOEFF>');
    end;
 
    WriteLn(f, '<OPPLACE>' + edQTH.Text + '</OPPLACE>');
