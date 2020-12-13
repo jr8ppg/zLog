@@ -763,6 +763,7 @@ end;
 
 function TQSO.GetFileRecord(): TQSOData;
 begin
+   FillChar(Result, SizeOf(Result), #00);
    Result.Time       := FTime;
    Result.CallSign   := ShortString(FCallSign);
    Result.NrSent     := ShortString(FNrSent);
