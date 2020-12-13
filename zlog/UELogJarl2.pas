@@ -214,7 +214,6 @@ begin
    try
       ini.WriteString('SummaryInfo', 'CategoryCode', edCategoryCode.Text);
       ini.WriteString('SummaryInfo', 'OperatorCallsign', edOpCallsign.Text);
-      ini.WriteString('SummaryInfo', 'FDCoefficient', edFDCoefficient.Text);
 
       ini.WriteString('SummaryInfo', 'Address1', mAddress.Lines[0]);
       ini.WriteString('SummaryInfo', 'Address2', mAddress.Lines[1]);
