@@ -181,6 +181,7 @@ type
     procedure USB_ON();
     procedure USB_OFF();
     procedure SetPaddleReverse(fReverse: Boolean);
+    procedure SetUseSideTone(fUse: Boolean);
   public
     { Public êÈåæ }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -222,7 +223,7 @@ type
     property CQRepeatIntervalSec: Double read FCQRepeatIntervalSec write SetCQRepeatInterval;
 
     property WPM: Integer read FKeyerWPM write SetWPM;
-    property UseSideTone: Boolean read FUseSideTone write FUseSideTone;
+    property UseSideTone: Boolean read FUseSideTone write SetUseSideTone;
     property SideTonePitch: Integer read FSideTonePitch write SetSideTonePitch;
     property SpaceFactor: Integer read FSpaceFactor write SetSpaceFactor;
     property EISpaceFactor: Integer read FEISpaceFactor write SetEISpaceFactor;
@@ -1926,6 +1927,14 @@ begin
       else begin
          usbif4cwSetPaddle(0, 0);
       end;
+   end;
+end;
+
+procedure TdmZLogKeyer.SetUseSideTone(fUse: Boolean);
+begin
+   FUseSideTone := fUse;
+   if fUse = False then begin
+      NoSound();
    end;
 end;
 

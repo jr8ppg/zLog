@@ -672,6 +672,7 @@ type
     actionPlayCQB2: TAction;
     panelCQMode: TPanel;
     actionToggleCqSp: TAction;
+    SideToneButton: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -882,6 +883,7 @@ type
     procedure GridEnter(Sender: TObject);
     procedure GridExit(Sender: TObject);
     procedure actionToggleCqSpExecute(Sender: TObject);
+    procedure SideToneButtonClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1285,6 +1287,7 @@ begin
    CWF10.Hint := dmZlogGlobal.CWMessage(i, 10);
    CWF11.Hint := dmZlogGlobal.CWMessage(i, 11);
    CWF12.Hint := dmZlogGlobal.CWMessage(i, 12);
+   SideToneButton.Down := dmZlogGlobal.Settings.CW._sidetone;
 end;
 
 procedure TMainForm.RenewVoiceToolBar;
@@ -5532,6 +5535,12 @@ begin
    FCWKeyBoard.Show;
 end;
 
+procedure TMainForm.SideToneButtonClick(Sender: TObject);
+begin
+   dmZlogGlobal.Settings.CW._sidetone := TSpeedButton(Sender).Down;
+   dmZlogKeyer.UseSideTone := dmZlogGlobal.Settings.CW._sidetone;
+end;
+
 procedure TMainForm.buttonVoiceOptionClick(Sender: TObject);
 var
    f: TformOptions;
@@ -6859,7 +6868,6 @@ end;
 procedure TMainForm.OnZLogInit( var Message: TMessage );
 var
    menu: TMenuForm;
-   E: Extended;
    c, r: Integer;
 begin
    FInitialized := False;
@@ -7072,6 +7080,7 @@ begin
       // ê›íËîΩâf
       dmZlogGlobal.ImplementSettings(False);
       InitBandMenu();
+      SideToneButton.Down := dmZlogGlobal.Settings.CW._sidetone;
 
       RestoreWindowStates;
       dmZlogGlobal.ReadWindowState(MyContest.MultiForm, 'MultiForm', False);
