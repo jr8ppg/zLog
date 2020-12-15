@@ -29,10 +29,6 @@ object formOptions: TformOptions
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label40: TLabel
         Left = 202
         Top = 212
@@ -2046,10 +2042,6 @@ object formOptions: TformOptions
     end
     object tabsheetRigControl: TTabSheet
       Caption = 'Rig control'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label45: TLabel
         Left = 8
         Top = 107
@@ -2111,33 +2103,33 @@ object formOptions: TformOptions
         Top = 130
         Width = 209
         Height = 88
-        Caption = 'Anti Zero In'
+        Caption = 'Magical Calling'
         TabOrder = 5
         object Label28: TLabel
           Left = 16
-          Top = 39
+          Top = 43
           Width = 92
           Height = 13
           Caption = 'Max Shift Width +/-'
         end
         object Label29: TLabel
           Left = 159
-          Top = 39
+          Top = 43
           Width = 13
           Height = 13
           Caption = 'Hz'
         end
         object checkUseAntiZeroin: TCheckBox
           Left = 16
-          Top = 16
+          Top = 20
           Width = 105
           Height = 17
-          Caption = 'Use Anti Zero In'
+          Caption = 'Use'
           TabOrder = 0
         end
         object editMaxShift: TEdit
           Left = 112
-          Top = 36
+          Top = 40
           Width = 29
           Height = 21
           TabOrder = 1
@@ -2145,7 +2137,7 @@ object formOptions: TformOptions
         end
         object updownAntiZeroinShiftMax: TUpDown
           Left = 141
-          Top = 36
+          Top = 40
           Width = 16
           Height = 21
           Associate = editMaxShift
@@ -2155,7 +2147,7 @@ object formOptions: TformOptions
         end
         object checkAntiZeroinAutoCancel: TCheckBox
           Left = 16
-          Top = 58
+          Top = 62
           Width = 90
           Height = 17
           Caption = 'Auto Cancel'

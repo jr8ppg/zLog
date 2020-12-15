@@ -783,7 +783,7 @@ begin
 
       // Anti Zeroin
       Settings.FUseAntiZeroin := ini.ReadBool('Rig', 'use_anti_zeroin', True);
-      Settings.FAntiZeroinShiftMax := Min(ini.ReadInteger('Rig', 'anti_zeroin_shift_max', 200), 200);
+      Settings.FAntiZeroinShiftMax := Min(ini.ReadInteger('Rig', 'anti_zeroin_shift_max', 100), 200);
       Settings.FAntiZeroinAutoCancel := ini.ReadBool('Rig', 'anti_zeroin_auto_cancel', False);
 
       //
