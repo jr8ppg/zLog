@@ -116,6 +116,7 @@
         <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.6.0.1;InternalName=;LegalCopyright=COPYRIGHT 2020 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.6.0.1;Comments=</VerInfo_Keys>
         <Icon_MainIcon>zlog_keyedit_Icon.ico</Icon_MainIcon>
         <VerInfo_Build>1</VerInfo_Build>
+        <DCC_MapFile>3</DCC_MapFile>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
@@ -127,6 +128,7 @@
         <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.6.0.1;InternalName=;LegalCopyright=COPYRIGHT 2020 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.6.0.1;Comments=</VerInfo_Keys>
         <VerInfo_Build>1</VerInfo_Build>
         <Icon_MainIcon>zlog_keyedit_Icon.ico</Icon_MainIcon>
+        <DCC_MapFile>3</DCC_MapFile>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
