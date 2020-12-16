@@ -314,9 +314,12 @@ begin
 
       if strCmd = strCommand then begin
          CfgSource[i] := StringReplace(CfgSource[i], strParam, strNewValue, [rfReplaceAll]);
-         Break;
+         Exit;
       end;
    end;
+
+   // ñ≥Ç©Ç¡ÇΩÅI
+   CfgSource.Add(strCommand + #09 + strNewValue + ';');
 end;
 
 { TUserDefinedContestList }

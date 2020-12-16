@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UzLogConst, UzLogGlobal, UzLogQSO, StdCtrls, ExtCtrls, Buttons, Math, Grids;
+  UzLogConst, UzLogGlobal, UzLogQSO, StdCtrls, ExtCtrls, Buttons, Math, Grids,
+  Vcl.Menus;
 
 type
   TBasicScore = class(TForm)
@@ -12,6 +13,10 @@ type
     Button1: TButton;
     StayOnTop: TCheckBox;
     CWButton: TSpeedButton;
+    popupExtraInfo: TPopupMenu;
+    menuMultiRate: TMenuItem;
+    menuPtsPerMulti: TMenuItem;
+    menuPtsPerQSO: TMenuItem;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure CreateParams(var Params: TCreateParams); override;
@@ -19,8 +24,10 @@ type
     procedure FormCreate(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
     procedure CWButtonClick(Sender: TObject);
+    procedure menuExtraInfoClick(Sender: TObject);
   protected
     FFontSize: Integer;
+    FExtraInfo: Integer;
     function GetFontSize(): Integer; virtual;
     procedure SetFontSize(v: Integer); virtual;
     procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
@@ -53,6 +60,9 @@ type
     function IntToStr3(v: Integer): string;
     property FontSize: Integer read GetFontSize write SetFontSize;
   end;
+
+const
+  EXTRAINFO_CAPTION: array[0..2] of string = ( 'Multi%', 'Pts/M', 'Pts/Q' );
 
 implementation
 
@@ -155,6 +165,13 @@ begin
    Inherited Create(AOwner);
    ShowCWRatio := False;
    Reset;
+
+   case dmZLogGlobal.Settings.FLastScoreExtraInfo of
+      0: menuMultiRate.Checked := True;
+      1: menuPtsPerMulti.Checked := True;
+      2: menuPtsPerQSO.Checked := True;
+      else menuMultiRate.Checked := True;
+   end;
 end;
 
 procedure TBasicScore.Renew;
@@ -174,6 +191,19 @@ end;
 
 procedure TBasicScore.UpdateData;
 begin
+   if menuMultiRate.Checked = True then begin
+      FExtraInfo := 0;
+   end
+   else if menuPtsPerMulti.Checked = True then begin
+      FExtraInfo := 1;
+   end
+   else if menuPtsPerQSO.Checked = True then begin
+      FExtraInfo := 2;
+   end
+   else begin
+      FExtraInfo := 0;
+   end;
+   dmZLogGlobal.Settings.FLastScoreExtraInfo := FExtraInfo;
 end;
 
 procedure TBasicScore.AddNoUpdate(var aQSO: TQSO);
@@ -328,6 +358,11 @@ begin
    end;
 
    Result := strFormatedText;
+end;
+
+procedure TBasicScore.menuExtraInfoClick(Sender: TObject);
+begin
+   UpdateData();
 end;
 
 function TBasicScore.GetFontSize(): Integer;

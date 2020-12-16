@@ -15,15 +15,16 @@ inherited ALLJAScore: TALLJAScore
       ExplicitLeft = 160
     end
   end
-  object Grid: TStringGrid
+  object Grid: TStringGrid [1]
     Left = 0
     Top = 0
     Width = 200
     Height = 202
     Align = alClient
+    ColCount = 6
     DefaultDrawing = False
     FixedCols = 0
-    RowCount = 15
+    RowCount = 16
     FixedRows = 0
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -32,6 +33,7 @@ inherited ALLJAScore: TALLJAScore
     Font.Style = []
     Options = [goHorzLine]
     ParentFont = False
+    PopupMenu = popupExtraInfo
     ScrollBars = ssNone
     TabOrder = 1
     OnDrawCell = GridDrawCell

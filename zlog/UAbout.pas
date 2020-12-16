@@ -18,13 +18,14 @@ type
     OKButton: TButton;
     Label1: TLabel;
     Label2: TLabel;
-    Label3: TLabel;
     Label4: TLabel;
     Panel2: TPanel;
     Label6: TLabel;
     Label7: TLabel;
     LinkLabel1: TLinkLabel;
     Label5: TLabel;
+    LinkLabel2: TLinkLabel;
+    LinkLabel3: TLinkLabel;
     procedure OKButtonClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);

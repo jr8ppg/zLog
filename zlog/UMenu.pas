@@ -62,7 +62,6 @@ type
       procedure rbARRLWClick(Sender: TObject);
       procedure rbAPSprintClick(Sender: TObject);
       procedure OpGroupClick(Sender: TObject);
-      procedure TXNrEditKeyPress(Sender: TObject; var Key: Char);
       procedure UserDefClick(Sender: TObject);
       procedure rbIARUClick(Sender: TObject);
       procedure rbIOTAClick(Sender: TObject);
@@ -242,6 +241,12 @@ procedure TMenuForm.OKButtonClick(Sender: TObject);
 var
    i: Integer;
 begin
+   if editCallsign.Text = '' then begin
+      Application.MessageBox(PChar('Please enter your callsign'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      editCallsign.SetFocus();
+      Exit;
+   end;
+
    dmZLogGlobal.ClearParamImportedFlag();
 
    if (rbGeneral.Checked = True) and (FModernStyle = True) then begin
@@ -293,7 +298,7 @@ var
    i: Integer;
 begin
    EnableEveryThing;
-   BandGroup.Controls[1].Enabled := False;
+//   BandGroup.Controls[1].Enabled := False;
    for i := 8 to 13 do begin
       BandGroup.Controls[i].Enabled := False;
    end;
@@ -312,7 +317,7 @@ end;
 procedure TMenuForm.rbACAGClick(Sender: TObject);
 begin
    EnableEveryThing;
-   BandGroup.Controls[1].Enabled := False;
+//   BandGroup.Controls[1].Enabled := False;
 // ModeGroup.Controls[2].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
 
@@ -338,7 +343,7 @@ procedure TMenuForm.rbFDClick(Sender: TObject);
 begin
    EnableEveryThing;
    ScoreCoeffEdit.Enabled := True;
-   BandGroup.Controls[1].Enabled := False;
+//   BandGroup.Controls[1].Enabled := False;
 // ModeGroup.Controls[2].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
 
@@ -413,13 +418,6 @@ begin
    end
    else begin
       TXNrEdit.Enabled := True;
-   end;
-end;
-
-procedure TMenuForm.TXNrEditKeyPress(Sender: TObject; var Key: Char);
-begin
-   if CharInSet(Key, ['0' .. '9']) = False then begin
-      Key := #0;
    end;
 end;
 
@@ -582,6 +580,7 @@ end;
 procedure TMenuForm.SetContestNumber(v: Integer);
 begin
    TRadioButton(FSelectContest[v]).Checked := True;
+   TRadioButton(FSelectContest[v]).OnClick(FSelectContest[v]);
 end;
 
 function TMenuForm.GetTxNumber(): Integer;

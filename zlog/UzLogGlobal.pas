@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.Math, Vcl.Graphics,
-  UzLogKeyer, UzlogConst, UzLogQSO;
+  UzLogKeyer, UzlogConst, UzLogQSO, UzLogOperatorInfo;
 
 type
   TCWSettingsParam = record
@@ -13,6 +13,7 @@ type
     _weight : integer;
     _fixwpm : integer;
     _paddlereverse : boolean;
+    _sidetone: Boolean;
     _tonepitch : integer;
     _cqmax : integer;
     _cqrepeat : double;
@@ -64,7 +65,6 @@ type
   end;
 
   TSettingsParam = record
-    _AFSK : boolean; // Use AFSK instead of RTTY for rig control
     _dontallowsameband : boolean; // same band on two rigs?
     _multiop : integer;  {multi op/ single op}
     _band : integer; {0 = all band; 1 = 1.9MHz 2 = 3.5MHz ...}
@@ -75,7 +75,8 @@ type
     _city : string;
     _cqzone : string;
     _iaruzone : string;
-    _sendfreq : double;
+
+    _send_freq_interval: Integer;
 
     ProvCityImported: Boolean;
     ReadOnlyParamImported: Boolean;
@@ -159,6 +160,11 @@ type
     _super_check_columns: Integer;
     _super_check2_columns: Integer;
 
+    // Anti Zeroin
+    FUseAntiZeroin: Boolean;
+    FAntiZeroinShiftMax: Integer;   // 0-200
+    FAntiZeroinAutoCancel: Boolean;
+
     FQuickQSY: array[1..8] of TQuickQSY;
     FSuperCheck: TSuperCheckParam;
 
@@ -167,10 +173,14 @@ type
     // Voice Memory
     FSoundFiles: array[1..maxmessage] of string;
     FSoundComments: array[1..maxmessage] of string;
+    FSoundDevice: Integer;
 
     // Select User Defined Contest
     FImpProvCity: Boolean;
     FImpCwMessage: array[1..4] of Boolean;
+
+    // スコア表示の追加情報(評価用指数)
+    FLastScoreExtraInfo: Integer;
   end;
 
 var
@@ -195,7 +205,7 @@ type
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private 宣言 }
-    FOpList: TStringList;
+    FOpList: TOperatorInfoList;
 
     procedure LoadIniFile; {loads Settings from zlog.ini}
     procedure LoadIniFileBS(ini: TIniFile); // called from loadinifile
@@ -227,8 +237,6 @@ type
     procedure SetCQMax(i : integer);
     function GetCQRepeat(): Double;
     procedure SetCQRepeat(r : double);
-    function GetSendFreq(): Double;
-    procedure SetSendFreq(r : double);
     function GetPowerOfBand(band: TBand): TPower;
 public
     { Public 宣言 }
@@ -243,7 +251,7 @@ public
     procedure ImplementSettings(_OnCreate: boolean);
     procedure InitializeCW();
 
-    property OpList: TStringList read FOpList;
+    property OpList: TOperatorInfoList read FOpList;
     property MyCall: string read GetMyCall write SetMyCall;
     property Band: Integer read GetBand write SetBand;
     property Mode: Integer read GetMode write SetMode;
@@ -255,17 +263,15 @@ public
     property PTTEnabled: Boolean read GetPTTEnabled;
     property CQMax: Integer read GetCQMax write SetCQMax;
     property CQRepeat: Double read GetCQRepeat write SetCQRepeat;
-    property SendFreq: Double read GetSendFreq write SetSendFreq;
     property RigNameStr[Index: Integer]: string read GetRigNameStr;
     property SuperCheckColumns: Integer read GetSuperCheckColumns write SetSuperCheckColumns;
     property SuperCheck2Columns: Integer read GetSuperCheck2Columns write SetSuperCheck2Columns;
 
     function GetAge(aQSO : TQSO) : string;
-    procedure SetOpPower(var aQSO : TQSO);
+    procedure SetOpPower(aQSO : TQSO);
 
     procedure SetWeight(i : integer);
     procedure SetTonePitch(i : integer);
-    procedure SetScoreCoeff(E : Extended);
 
     procedure SetPaddleReverse(boo : boolean);
     procedure ReversePaddle();
@@ -277,9 +283,6 @@ public
     procedure WriteWindowState(form: TForm; strWindowName: string = '');
     procedure ReadMainFormState(var X, Y, W, H: integer; var TB1, TB2: boolean);
     procedure WriteMainFormState(X, Y, W, H: integer; TB1, TB2: boolean);
-
-    procedure LoadOpList();
-    procedure SaveOpList();
 
     procedure CreateLog();
     procedure SetLogFileName(filename: string);
@@ -367,8 +370,8 @@ begin
    Settings.CW.CurrentBank := 1;
 
    // オペレーターリスト
-   FOpList := TStringList.Create();
-   LoadOpList();
+   FOpList := TOperatorInfoList.Create();
+   FOpList.LoadFromIniFile();
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
@@ -562,7 +565,7 @@ begin
       Settings._jmode := ini.ReadBool('Preferences', 'JMode', False);
 
       // Allow to log dupes
-      Settings._allowdupe := ini.ReadBool('Preferences', 'AllowDupe', False);
+      Settings._allowdupe := ini.ReadBool('Preferences', 'AllowDupe', True);
 
       // Save when not sending CW
       Settings._savewhennocw := ini.ReadBool('Preferences', 'SaveWhenNoCW', False);
@@ -652,6 +655,9 @@ begin
 
       // Que messages
       Settings.CW._FIFO := ini.ReadBool('CW', 'FIFO', True);
+
+      // Side Tone
+      Settings.CW._sidetone := ini.ReadBool('CW', 'use_sidetone', False);
 
       // Tone Pitch (Hz)
       Settings.CW._tonepitch := ini.ReadInteger('CW', 'Pitch', 800);
@@ -769,14 +775,16 @@ begin
       // Record rig frequency in memo
       Settings._recrigfreq := ini.ReadBool('Rig', 'RecordFreqInMemo', False);
 
-      // Use AFSK mode for RTTY
-      Settings._AFSK := ini.ReadBool('Rig', 'UseAFSK', False);
-
       // Automatically create band scope
       Settings._autobandmap := ini.ReadBool('Rig', 'AutoBandMap', False);
 
       // Send current freq every
-      Settings._sendfreq := ini.ReadFloat('Rig', 'SendFreq', 1.0);
+      Settings._send_freq_interval := ini.ReadInteger('Rig', 'SendFreqSec', 30);
+
+      // Anti Zeroin
+      Settings.FUseAntiZeroin := ini.ReadBool('Rig', 'use_anti_zeroin', True);
+      Settings.FAntiZeroinShiftMax := Min(ini.ReadInteger('Rig', 'anti_zeroin_shift_max', 100), 200);
+      Settings.FAntiZeroinAutoCancel := ini.ReadBool('Rig', 'anti_zeroin_auto_cancel', False);
 
       //
       // Path
@@ -836,7 +844,7 @@ begin
 
       Settings._txnr := ini.ReadInteger('Categories', 'TXNumber', 0);
       Settings._contestmenuno := ini.ReadInteger('Categories', 'Contest', 1);
-      Settings._mycall := ini.ReadString('Categories', 'MyCall', 'Your call sign');
+      Settings._mycall := ini.ReadString('Categories', 'MyCall', '');
 
       Settings.CW._interval := ini.ReadInteger('CW', 'Interval', 1);
 
@@ -870,15 +878,15 @@ begin
 
       // BandScope
       Settings._usebandscope[b19]   := ini.ReadBool('BandScopeEx', 'BandScope1.9MHz', False);
-      Settings._usebandscope[b35]   := ini.ReadBool('BandScopeEx', 'BandScope3.5MHz', True);
-      Settings._usebandscope[b7]    := ini.ReadBool('BandScopeEx', 'BandScope7MHz', True);
+      Settings._usebandscope[b35]   := ini.ReadBool('BandScopeEx', 'BandScope3.5MHz', False);
+      Settings._usebandscope[b7]    := ini.ReadBool('BandScopeEx', 'BandScope7MHz', False);
       Settings._usebandscope[b10]   := ini.ReadBool('BandScopeEx', 'BandScope10MHz', False);
-      Settings._usebandscope[b14]   := ini.ReadBool('BandScopeEx', 'BandScope14MHz', True);
+      Settings._usebandscope[b14]   := ini.ReadBool('BandScopeEx', 'BandScope14MHz', False);
       Settings._usebandscope[b18]   := ini.ReadBool('BandScopeEx', 'BandScope18MHz', False);
-      Settings._usebandscope[b21]   := ini.ReadBool('BandScopeEx', 'BandScope21MHz', True);
+      Settings._usebandscope[b21]   := ini.ReadBool('BandScopeEx', 'BandScope21MHz', False);
       Settings._usebandscope[b24]   := ini.ReadBool('BandScopeEx', 'BandScope24MHz', False);
-      Settings._usebandscope[b28]   := ini.ReadBool('BandScopeEx', 'BandScope28MHz', True);
-      Settings._usebandscope[b50]   := ini.ReadBool('BandScopeEx', 'BandScope50MHz', True);
+      Settings._usebandscope[b28]   := ini.ReadBool('BandScopeEx', 'BandScope28MHz', False);
+      Settings._usebandscope[b50]   := ini.ReadBool('BandScopeEx', 'BandScope50MHz', False);
       Settings._usebandscope[b144]  := ini.ReadBool('BandScopeEx', 'BandScope144MHz', False);
       Settings._usebandscope[b430]  := ini.ReadBool('BandScopeEx', 'BandScope430MHz', False);
       Settings._usebandscope[b1200] := ini.ReadBool('BandScopeEx', 'BandScope1200MHz', False);
@@ -951,6 +959,9 @@ begin
          end;
       end;
 
+      // output device
+      Settings.FSoundDevice := ini.ReadInteger('Voice', 'device', 0);
+
       // Select User Defined Contest
       Settings.FImpProvCity := ini.ReadBool('UserDefinedContest', 'imp_prov_city', True);
       Settings.FImpCwMessage[1] := ini.ReadBool('UserDefinedContest', 'imp_f1a', True);
@@ -958,6 +969,8 @@ begin
       Settings.FImpCwMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_f3a', False);
       Settings.FImpCwMessage[4] := ini.ReadBool('UserDefinedContest', 'imp_f4a', False);
 
+      // スコア表示の追加情報(評価用指数)
+      Settings.FLastScoreExtraInfo := ini.ReadInteger('Score', 'ExtraInfo', 0);
    finally
       ini.Free();
       slParam.Free();
@@ -1105,6 +1118,9 @@ begin
       // Que messages
       ini.WriteBool('CW', 'FIFO', Settings.CW._FIFO);
 
+      // Side Tone
+      ini.WriteBool('CW', 'use_sidetone', Settings.CW._sidetone);
+
       // Tone Pitch (Hz)
       ini.WriteInteger('CW', 'Pitch', Settings.CW._tonepitch);
 
@@ -1216,14 +1232,16 @@ begin
       // Record rig frequency in memo
       ini.WriteBool('Rig', 'RecordFreqInMemo', Settings._recrigfreq);
 
-      // Use AFSK mode for RTTY
-      ini.WriteBool('Rig', 'UseAFSK', Settings._AFSK);
-
       // Automatically create band scope
       ini.WriteBool('Rig', 'AutoBandMap', Settings._autobandmap);
 
       // Send current freq every
-      ini.WriteFloat('Rig', 'SendFreq', Settings._sendfreq);
+      ini.WriteInteger('Rig', 'SendFreqSec', Settings._send_freq_interval);
+
+      // Anti Zeroin
+      ini.WriteBool('Rig', 'use_anti_zeroin', Settings.FUseAntiZeroin);
+      ini.WriteInteger('Rig', 'anti_zeroin_shift_max', Settings.FAntiZeroinShiftMax);
+      ini.WriteBool('Rig', 'anti_zeroin_auto_cancel', Settings.FAntiZeroinAutoCancel);
 
       //
       // Path
@@ -1357,31 +1375,31 @@ begin
          ini.WriteString('Voice', 'C#' + IntToStr(i), Settings.FSoundComments[i]);
       end;
 
+      // output device
+      ini.WriteInteger('Voice', 'device', Settings.FSoundDevice);
+
       // Select User Defined Contest
       ini.WriteBool('UserDefinedContest', 'imp_prov_city', Settings.FImpProvCity);
       ini.WriteBool('UserDefinedContest', 'imp_f1a', Settings.FImpCwMessage[1]);
       ini.WriteBool('UserDefinedContest', 'imp_f2a', Settings.FImpCwMessage[2]);
       ini.WriteBool('UserDefinedContest', 'imp_f3a', Settings.FImpCwMessage[3]);
       ini.WriteBool('UserDefinedContest', 'imp_f4a', Settings.FImpCwMessage[4]);
+
+      // スコア表示の追加情報(評価用指数)
+      ini.WriteInteger('Score', 'ExtraInfo', Settings.FLastScoreExtraInfo);
    finally
       ini.Free();
       slParam.Free();
    end;
 
    // オペレーターリスト保存
-   SaveOpList();
+   FOpList.SaveToIniFile();
 end;
 
 // 設定反映
 procedure TdmZLogGlobal.ImplementSettings(_OnCreate: boolean);
-var
-   b: TBand;
 begin
    if _OnCreate = False then begin
-      for b := b19 to HiBand do begin
-         MainForm.BandMenu.Items[ord(b)].Enabled := Settings._activebands[b];
-      end;
-
       if Settings._band > 0 then begin // single band
          Band := Settings._band; // resets the bandmenu.items.enabled for the single band entry
       end;
@@ -1420,9 +1438,17 @@ end;
 
 procedure TdmZLogGlobal.InitializeCW();
 begin
-   dmZlogKeyer.UseSideTone := False;
+   dmZlogKeyer.UseSideTone := Settings.CW._sidetone;
 
-   dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
+   // RIGコントロールと同じポートの場合は無しとする
+   if (Settings._rigport[1] <> Settings._lptnr) and
+      (Settings._rigport[2] <> Settings._lptnr) then begin
+      dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
+   end
+   else begin
+      dmZlogKeyer.KeyingPort := tkpNone;
+   end;
+
    dmZlogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZlogKeyer.PaddleReverse := Settings.CW._paddlereverse;
 
@@ -1433,7 +1459,6 @@ begin
    SetWeight(Settings.CW._weight);
    CQMax := Settings.CW._cqmax;
    CQRepeat := Settings.CW._cqrepeat;
-   SendFreq := Settings._sendfreq;
    SetTonePitch(Settings.CW._tonepitch);
 
    dmZlogKeyer.RandCQStr[1] := SetStr(Settings.CW.AdditionalCQMessages[2], CurrentQSO);
@@ -1445,73 +1470,44 @@ end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;
 var
-   str: AnsiString;
-   i: integer;
-   op: string;
+   op: TOperatorInfo;
 begin
-   Result := '??';
-
-   if aQSO.Operator = '' then begin
+   op := FOpList.ObjectOf(aQSO.Callsign);
+   if op = nil then begin
       Result := Settings._age;
       Exit;
    end;
 
-   for i := 0 to FOpList.Count - 1 do begin
-      str := AnsiString(FOpList.Strings[i]);
-      if length(str) <= 20 then begin
-         Break;
-      end;
-
-      op := Trim(string(Copy(str, 1, 20)));
-
-      if op = aQSO.Operator then begin
-
-         System.Delete(str, 1, 20);
-
-         Result := Trim(string(str));
-
-         Exit;
-      end;
-   end;
+   Result := op.Age;
 end;
 
-procedure TdmZLogGlobal.SetOpPower(var aQSO: TQSO);
+procedure TdmZLogGlobal.SetOpPower(aQSO: TQSO);
 var
-   str: AnsiString;
-   i: integer;
-   P: AnsiChar;
-   op: string;
+   P: Char;
+   str: string;
+   op: TOperatorInfo;
 begin
-   for i := 0 to FOpList.Count - 1 do begin
-      str := AnsiString(FOpList.Strings[i]);
-      if length(str) <= 20 then begin
-         Break;
-      end;
+   op := FOpList.ObjectOf(aQSO.Callsign);
+   if op = nil then begin
+      Exit;
+   end;
 
-      op := Trim(string(Copy(str, 1, 20)));
+   str := op.Power;
 
-      if op = aQSO.Operator then begin
+   if OldBandOrd(aQSO.Band) + 1 <= length(str) then
+      P := str[OldBandOrd(aQSO.Band) + 1]
+   else
+      P := UpCase(str[1]);
 
-         System.Delete(str, 1, 20);
-
-         if OldBandOrd(aQSO.Band) + 1 <= length(str) then
-            P := str[OldBandOrd(aQSO.Band) + 1]
-         else
-            P := UpCase(str[1]);
-
-         case P of
-            'P':
-               aQSO.Power := pwrP;
-            'L':
-               aQSO.Power := pwrL;
-            'M':
-               aQSO.Power := pwrM;
-            'H':
-               aQSO.Power := pwrH;
-         end;
-
-         Exit;
-      end;
+   case P of
+      'P':
+         aQSO.Power := pwrP;
+      'L':
+         aQSO.Power := pwrL;
+      'M':
+         aQSO.Power := pwrM;
+      'H':
+         aQSO.Power := pwrH;
    end;
 end;
 
@@ -1616,12 +1612,6 @@ begin
    Result := Settings._pttenabled;
 end;
 
-procedure TdmZLogGlobal.SetScoreCoeff(E: extended);
-begin
-   Settings._scorecoeff := E;
-   Log.QsoList[0].RSTRcvd := Trunc(E * 100);
-end;
-
 procedure TdmZLogGlobal.SetWeight(i: integer);
 begin
    if i in [0 .. 100] then
@@ -1697,31 +1687,6 @@ procedure TdmZLogGlobal.SetCQRepeat(r: Double);
 begin
    Settings.CW._cqrepeat := r;
    dmZlogKeyer.CQRepeatIntervalSec := r;
-end;
-
-function TdmZLogGlobal.GetSendFreq(): Double;
-begin
-   Result := Settings._sendfreq;
-end;
-
-procedure TdmZLogGlobal.SetSendFreq(r: double);
-begin
-   Settings._sendfreq := r;
-
-   MainForm.RigControl.Timer1.Interval := Trunc(r * 60000);
-   MainForm.RigControl.Timer1.Enabled := False;
-
-   if r = 0 then begin
-      exit;
-   end;
-
-   if Settings._rigport[1] <> 0 then begin
-      if Settings._zlinkport <> 0 then begin
-         if Settings._rigname[1] <> '' then begin
-            MainForm.RigControl.Timer1.Enabled := True;
-         end;
-      end;
-   end;
 end;
 
 function TdmZLogGlobal.GetPowerOfBand(band: TBand): TPower;
@@ -1902,29 +1867,6 @@ begin
    finally
       ini.Free();
    end;
-end;
-
-procedure TdmZLogGlobal.LoadOpList();
-var
-   filename: string;
-begin
-   try
-      filename := ExtractFilePath(Application.EXEName) + 'ZLOG.OP';
-      if FileExists(filename) = False then begin
-         Exit;
-      end;
-
-      FOpList.LoadFromFile(filename);
-   except
-      on EFOpenError do begin
-      end;
-   end;
-
-end;
-
-procedure TdmZLogGlobal.SaveOpList();
-begin
-   FOpList.SaveToFile(ExtractFilePath(Application.EXEName) + 'ZLOG.OP');
 end;
 
 procedure TdmZLogGlobal.CreateLog();

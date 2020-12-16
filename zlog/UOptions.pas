@@ -6,7 +6,7 @@ uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl,
-  UIntegerDialog, UzLogConst, UzLogGlobal;
+  UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit, UzLogOperatorInfo;
 
 type
   TformOptions = class(TForm)
@@ -26,7 +26,6 @@ type
     BandGroup: TRadioGroup;
     OpListBox: TListBox;
     ModeGroup: TRadioGroup;
-    OpEdit: TEdit;
     Add: TButton;
     Delete: TButton;
     GroupBox2: TGroupBox;
@@ -123,9 +122,6 @@ type
     IARUZoneEdit: TEdit;
     Label34: TLabel;
     Label35: TLabel;
-    OpPowerEdit: TEdit;
-    Label36: TLabel;
-    Label37: TLabel;
     GroupBox7: TGroupBox;
     Label38: TLabel;
     PTTEnabledCheckBox: TCheckBox;
@@ -152,7 +148,6 @@ type
     Label44: TLabel;
     tabsheetMisc: TTabSheet;
     cbRITClear: TCheckBox;
-    rgBandData: TRadioGroup;
     cbDontAllowSameBand: TCheckBox;
     SendFreqEdit: TEdit;
     Label45: TLabel;
@@ -179,7 +174,6 @@ type
     buttonBrowseLogsPath: TButton;
     rbRTTY: TRadioButton;
     cbCQSP: TCheckBox;
-    cbAFSK: TCheckBox;
     cbAutoEnterSuper: TCheckBox;
     Label52: TLabel;
     Label53: TLabel;
@@ -383,6 +377,19 @@ type
     Label10: TLabel;
     editCQMessage2: TEdit;
     editCQMessage3: TEdit;
+    GroupBox15: TGroupBox;
+    checkUseAntiZeroin: TCheckBox;
+    editMaxShift: TEdit;
+    Label28: TLabel;
+    Label29: TLabel;
+    updownAntiZeroinShiftMax: TUpDown;
+    checkAntiZeroinAutoCancel: TCheckBox;
+    updownSendFreqInterval: TUpDown;
+    SideToneCheck: TCheckBox;
+    GroupBox16: TGroupBox;
+    comboVoiceDevice: TComboBox;
+    buttonPlayVoice: TSpeedButton;
+    buttonStopVoice: TSpeedButton;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -421,6 +428,9 @@ type
     procedure buttonBSBackClick(Sender: TObject);
     procedure checkBSBoldClick(Sender: TObject);
     procedure buttonBSResetClick(Sender: TObject);
+    procedure buttonPlayVoiceClick(Sender: TObject);
+    procedure buttonStopVoiceClick(Sender: TObject);
+    procedure OpListBoxDblClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -448,10 +458,12 @@ type
 
     FVoiceEdit: array[1..maxmessage] of TEdit;
     FVoiceButton: array[1..maxmessage] of TButton;
+    FVoiceSound: TWaveSound;
 
     procedure RenewCWStrBankDisp();
     procedure InitRigNames();
     procedure SetEditNumber(no: Integer);
+    procedure InitVoice();
   public
     procedure RenewSettings; {Reads controls and updates Settings}
     property EditMode: Integer read FEditMode write FEditMode;
@@ -494,7 +506,6 @@ var
    i, j: integer;
 begin
    with dmZlogGlobal do begin
-      Settings._recrigfreq := cbRecordRigFreq.Checked;
       Settings._multistation := cbMultiStn.Checked;
       Settings._savewhennocw := cbSaveWhenNoCW.Checked;
       Settings._jmode := cbJMode.Checked;
@@ -502,7 +513,6 @@ begin
       Settings._renewbythread := cbUpdateThread.Checked;
       Settings._displaydatepartialcheck := cbDisplayDatePartialCheck.Checked;
 
-      Settings._AFSK := cbAFSK.Checked;
       Settings._maxsuperhit := spMaxSuperHit.Value;
 
       Settings._activebands[b19] := act19.Checked;
@@ -538,8 +548,6 @@ begin
       Settings._power[b2400] := comboPower2400.Text;
       Settings._power[b5600] := comboPower5600.Text;
       Settings._power[b10g] := comboPower10g.Text;
-
-      OpList.Assign(OpListBox.Items);
 
       // Settings._band := BandGroup.ItemIndex;
       case BandGroup.ItemIndex of
@@ -589,13 +597,11 @@ begin
       r := Settings.CW._cqrepeat;
       Settings.CW._cqrepeat := StrToFloatDef(CQRepEdit.Text, r);
 
-      r := Settings._sendfreq;
-      Settings._sendfreq := StrToFloatDef(SendFreqEdit.Text, r);
-
       Settings.CW._speed := SpeedBar.Position;
       Settings.CW._weight := WeightBar.Position;
       Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
       Settings.CW._FIFO := FIFOCheck.Checked;
+      Settings.CW._sidetone := SideToneCheck.Checked;
       Settings.CW._tonepitch := ToneSpinEdit.Value;
       Settings.CW._cqmax := CQmaxSpinEdit.Value;
 
@@ -641,8 +647,6 @@ begin
       Settings._icom_polling_freq_and_mode := checkGetBandAndMode.Checked;
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
 
-      Settings._ritclear := cbRITClear.Checked;
-
       Settings._zlinkport := ZLinkCombo.ItemIndex;
       Settings._pcname := editZLinkPcName.Text;
       Settings._syncserial := checkZLinkSyncSerial.Checked;
@@ -684,11 +688,20 @@ begin
 
       Settings._transverter1 := cbTransverter1.Checked;
       Settings._transverter2 := cbTransverter2.Checked;
-      Settings._autobandmap := cbAutoBandMap.Checked;
 
       Settings._cluster_telnet := FTempClusterTelnet;
       Settings._cluster_com := FTempClusterCom;
       Settings._zlink_telnet := FTempZLinkTelnet;
+
+      // Rig Control
+      Settings._ritclear := cbRITClear.Checked;
+      Settings._dontallowsameband := cbDontAllowSameBand.Checked;
+      Settings._recrigfreq := cbRecordRigFreq.Checked;
+      Settings._autobandmap := cbAutoBandMap.Checked;
+      Settings._send_freq_interval := updownSendFreqInterval.Position;
+      Settings.FUseAntiZeroin := checkUseAntiZeroin.Checked;
+      Settings.FAntiZeroinShiftMax := updownAntiZeroinShiftMax.Position;
+      Settings.FAntiZeroinAutoCancel := checkAntiZeroinAutoCancel.Checked;
 
       // Quick QSY
       for i := Low(FQuickQSYCheck) to High(FQuickQSYCheck) do begin
@@ -783,15 +796,13 @@ begin
          Settings.FSoundFiles[i] := FTempVoiceFiles[i];
          Settings.FSoundComments[i] := FVoiceEdit[i].Text;
       end;
+      Settings.FSoundDevice := comboVoiceDevice.ItemIndex;
    end;
 end;
 
 procedure TformOptions.buttonOKClick(Sender: TObject);
 begin
    RenewSettings;
-   dmZlogGlobal.ImplementSettings(False);
-
-   dmZlogGlobal.SaveCurrentSettings();
 end;
 
 procedure TformOptions.RenewCWStrBankDisp;
@@ -830,11 +841,6 @@ begin
       cbUpdateThread.Checked := Settings._renewbythread;
       cbDisplayDatePartialCheck.Checked := Settings._displaydatepartialcheck;
 
-      cbDontAllowSameBand.Checked := Settings._dontallowsameband;
-      cbAutoBandMap.Checked := Settings._autobandmap;
-      cbAFSK.Checked := Settings._AFSK;
-
-      cbRecordRigFreq.Checked := Settings._recrigfreq;
       cbMultiStn.Checked := Settings._multistation;
 
       act19.Checked := Settings._activebands[b19];
@@ -905,13 +911,13 @@ begin
       editCQMessage3.Text := Settings.CW.AdditionalCQMessages[3];
 
       CQRepEdit.Text := FloatToStrF(Settings.CW._cqrepeat, ffFixed, 3, 1);
-      SendFreqEdit.Text := FloatToStrF(Settings._sendfreq, ffFixed, 3, 1);
       SpeedBar.Position := Settings.CW._speed;
       SpeedLabel.Caption := IntToStr(Settings.CW._speed) + ' wpm';
       WeightBar.Position := Settings.CW._weight;
       checkUsbif4cwPaddleReverse.Checked := Settings.CW._paddlereverse;
       WeightLabel.Caption := IntToStr(Settings.CW._weight) + ' %';
       FIFOCheck.Checked := Settings.CW._FIFO;
+      SideToneCheck.Checked := Settings.CW._sidetone;
       ToneSpinEdit.Value := Settings.CW._tonepitch;
       CQmaxSpinEdit.Value := Settings.CW._cqmax;
       AbbrevEdit.Text := Settings.CW._zero + Settings.CW._one + Settings.CW._nine;
@@ -966,8 +972,6 @@ begin
       checkUseTransceiveMode.Checked := Settings._use_transceive_mode;
       checkGetBandAndMode.Checked := Settings._icom_polling_freq_and_mode;
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
-
-      cbRITClear.Checked := Settings._ritclear;
 
       // Packet Cluster通信設定ボタン
       buttonClusterSettings.Enabled := True;
@@ -1024,6 +1028,16 @@ begin
 
       cbTransverter1.Checked := Settings._transverter1;
       cbTransverter2.Checked := Settings._transverter2;
+
+      // Rig Control
+      cbRITClear.Checked := Settings._ritclear;
+      cbDontAllowSameBand.Checked := Settings._dontallowsameband;
+      cbRecordRigFreq.Checked := Settings._recrigfreq;
+      cbAutoBandMap.Checked := Settings._autobandmap;
+      updownSendFreqInterval.Position := Settings._send_freq_interval;
+      checkUseAntiZeroin.Checked := Settings.FUseAntiZeroin;
+      updownAntiZeroinShiftMax.Position := Settings.FAntiZeroinShiftMax;
+      checkAntiZeroinAutoCancel.Checked := Settings.FAntiZeroinAutoCancel;
 
       // Quick QSY
       for i := Low(FQuickQSYCheck) to High(FQuickQSYCheck) do begin
@@ -1105,6 +1119,7 @@ begin
          end;
          FVoiceEdit[i].Text := Settings.FSoundComments[i];
       end;
+      comboVoiceDevice.ItemIndex := Settings.FSoundDevice;
    end;
 
    if FEditMode = 0 then begin   // 通常モード
@@ -1167,25 +1182,36 @@ end;
 
 procedure TformOptions.AddClick(Sender: TObject);
 var
-   str: string;
+   F: TformOperatorEdit;
+   obj: TOperatorInfo;
 begin
-   if OpEdit.Text <> '' then begin
-      str := OpEdit.Text;
-      if OpPowerEdit.Text <> '' then begin
-         str := FillRight(str, 20) + OpPowerEdit.Text;
+   F := TformOperatorEdit.Create(Self);
+   try
+      if F.ShowModal() <> mrOK then begin
+         Exit;
       end;
 
-      OpListBox.Items.Add(str);
-   end;
+      obj := TOperatorInfo.Create();
+      F.GetObject(obj);
 
-   OpEdit.Text := '';
-   OpPowerEdit.Text := '';
-   OpEdit.SetFocus;
+      OpListBox.Items.AddObject(obj.Callsign, obj);
+      dmZLogGlobal.OpList.Add(obj);
+   finally
+      F.Release();
+   end;
 end;
 
 procedure TformOptions.DeleteClick(Sender: TObject);
+var
+   obj: TOperatorInfo;
+   i: Integer;
 begin
+   obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
    OpListBox.Items.Delete(OpListBox.ItemIndex);
+   i := dmZLogGlobal.OpList.IndexOf(obj);
+   if i >= 0 then begin
+      dmZLogGlobal.OpList.Delete(i);
+   end;
 end;
 
 procedure TformOptions.FormCreate(Sender: TObject);
@@ -1277,34 +1303,14 @@ begin
    FEditMessage[12] := editMessage12;
 
    // Voice Memory
-   FVoiceEdit[1] := vEdit1;
-   FVoiceEdit[2] := vEdit2;
-   FVoiceEdit[3] := vEdit3;
-   FVoiceEdit[4] := vEdit4;
-   FVoiceEdit[5] := vEdit5;
-   FVoiceEdit[6] := vEdit6;
-   FVoiceEdit[7] := vEdit7;
-   FVoiceEdit[8] := vEdit8;
-   FVoiceEdit[9] := vEdit9;
-   FVoiceEdit[10] := vEdit10;
-   FVoiceEdit[11] := vEdit11;
-   FVoiceEdit[12] := vEdit12;
-   FVoiceButton[1] := vButton1;
-   FVoiceButton[2] := vButton2;
-   FVoiceButton[3] := vButton3;
-   FVoiceButton[4] := vButton4;
-   FVoiceButton[5] := vButton5;
-   FVoiceButton[6] := vButton6;
-   FVoiceButton[7] := vButton7;
-   FVoiceButton[8] := vButton8;
-   FVoiceButton[9] := vButton9;
-   FVoiceButton[10] := vButton10;
-   FVoiceButton[11] := vButton11;
-   FVoiceButton[12] := vButton12;
+   InitVoice();
 
    TempCurrentBank := 1;
 
-   OpListBox.Items.Assign(dmZlogGlobal.OpList);
+   // OpList
+   for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
+      OpListBox.Items.AddObject(dmZlogGlobal.OpList[i].Callsign, dmZlogGlobal.OpList[i]);
+   end;
 
    PageControl.ActivePage := tabsheetPreferences;
 
@@ -1326,6 +1332,32 @@ begin
    case Key of
       VK_RETURN:
          AddClick(Self);
+   end;
+end;
+
+procedure TformOptions.OpListBoxDblClick(Sender: TObject);
+var
+   F: TformOperatorEdit;
+   obj: TOperatorInfo;
+begin
+   if OpListBox.ItemIndex = -1 then begin
+      Exit;
+   end;
+
+   F := TformOperatorEdit.Create(Self);
+   try
+      obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
+
+      F.SetObject(obj);
+
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      F.GetObject(obj);
+
+   finally
+      F.Free();
    end;
 end;
 
@@ -1351,7 +1383,7 @@ end;
 
 procedure TformOptions.FormDestroy(Sender: TObject);
 begin
-//
+   FVoiceSound.Free();
 end;
 
 procedure TformOptions.vButtonClick(Sender: TObject);
@@ -1735,6 +1767,78 @@ begin
       FBSColor[72].Color   := BandScopeDefaultColor[7].FBackColor2;
       FBSColor[73].Color   := BandScopeDefaultColor[7].FBackColor3;
    end;
+end;
+
+procedure TformOptions.InitVoice();
+var
+   L: TStringList;
+begin
+   FVoiceEdit[1] := vEdit1;
+   FVoiceEdit[2] := vEdit2;
+   FVoiceEdit[3] := vEdit3;
+   FVoiceEdit[4] := vEdit4;
+   FVoiceEdit[5] := vEdit5;
+   FVoiceEdit[6] := vEdit6;
+   FVoiceEdit[7] := vEdit7;
+   FVoiceEdit[8] := vEdit8;
+   FVoiceEdit[9] := vEdit9;
+   FVoiceEdit[10] := vEdit10;
+   FVoiceEdit[11] := vEdit11;
+   FVoiceEdit[12] := vEdit12;
+   FVoiceButton[1] := vButton1;
+   FVoiceButton[2] := vButton2;
+   FVoiceButton[3] := vButton3;
+   FVoiceButton[4] := vButton4;
+   FVoiceButton[5] := vButton5;
+   FVoiceButton[6] := vButton6;
+   FVoiceButton[7] := vButton7;
+   FVoiceButton[8] := vButton8;
+   FVoiceButton[9] := vButton9;
+   FVoiceButton[10] := vButton10;
+   FVoiceButton[11] := vButton11;
+   FVoiceButton[12] := vButton12;
+   FVoiceSound := TWaveSound.Create();
+
+   L := TWaveSound.DeviceList();
+   try
+      comboVoiceDevice.Items.Assign(L);
+   finally
+      L.Free();
+   end;
+end;
+
+procedure TformOptions.buttonPlayVoiceClick(Sender: TObject);
+var
+   i: Integer;
+   n: Integer;
+begin
+   n := 0;
+   try
+      for i := 1 to High(FVoiceEdit) do begin
+         if (FVoiceEdit[i].Focused = True) or (FVoiceButton[i].Focused = True) then begin
+            if FileExists(FTempVoiceFiles[i]) = True then begin
+               n := i;
+               FVoiceSound.Open(FTempVoiceFiles[n], comboVoiceDevice.ItemIndex);
+               FVoiceSound.Play();
+               Exit;
+            end;
+         end;
+      end;
+   except
+      on E: Exception do begin
+         Application.MessageBox(PChar(E.Message), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         if n > 0 then begin
+            FVoiceButton[n].Caption := 'select';
+            FTempVoiceFiles[n] := '';
+         end;
+      end;
+   end;
+end;
+
+procedure TformOptions.buttonStopVoiceClick(Sender: TObject);
+begin
+   FVoiceSound.Stop();
+   FVoiceSound.Close();
 end;
 
 end.

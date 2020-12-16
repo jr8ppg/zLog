@@ -1,3 +1,5 @@
+// JCL_DEBUG_EXPERT_GENERATEJDBG ON
+// JCL_DEBUG_EXPERT_INSERTJDBG ON
 program zLog;
 
 {$R *.dres}
@@ -105,7 +107,13 @@ uses
   USelectUserDefinedContest in 'USelectUserDefinedContest.pas' {SelectUserDefinedContest},
   UserDefinedContest in 'UserDefinedContest.pas',
   UVoiceForm in 'UVoiceForm.pas' {VoiceForm},
-  UCFGEdit in 'UCFGEdit.pas' {CFGEdit};
+  UCFGEdit in 'UCFGEdit.pas' {CFGEdit},
+  UExceptionDialog in 'UExceptionDialog.pas' {ExceptionDialog},
+  UzLogSound in 'UzLogSound.pas',
+  MMReg in 'MMReg.pas',
+  UzLogExtension in 'UzLogExtension.pas',
+  UOperatorEdit in 'UOperatorEdit.pas' {formOperatorEdit},
+  UzLogOperatorInfo in 'UzLogOperatorInfo.pas';
 
 {$R *.RES}
 

@@ -19,6 +19,10 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
+  protected
+    FFontSize: Integer;
+    function GetFontSize(): Integer; virtual;
+    procedure SetFontSize(v: Integer); virtual;
   private
     { Private declarations }
   public
@@ -27,6 +31,7 @@ type
     BandRow : array[b19..HiBand] of Integer;
     procedure ResetListBox;
     procedure Renew(aQSO : TQSO); virtual;
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -114,6 +119,17 @@ end;
 procedure TCheckWin.FormCreate(Sender: TObject);
 begin
    ListCWandPh := False;
+end;
+
+function TCheckWin.GetFontSize(): Integer;
+begin
+   Result := FFontSize;
+end;
+
+procedure TCheckWin.SetFontSize(v: Integer);
+begin
+   FFontSize := v;
+   ListBox.Font.Size := v;
 end;
 
 end.

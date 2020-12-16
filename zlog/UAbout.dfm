@@ -86,17 +86,17 @@ object AboutBox: TAboutBox
     object Copyright: TLabel
       Left = 8
       Top = 80
-      Width = 287
+      Width = 209
       Height = 13
-      Caption = 'Copyright 1997-2005 by Yohei Yokobayashi JJ1MED/AD6AJ'
+      Caption = 'Copyright 1997-2005 by Yohei Yokobayashi '
       IsControl = True
     end
     object Comments: TLabel
       Left = 8
       Top = 104
-      Width = 158
+      Width = 91
       Height = 13
-      Caption = 'Mail comments to : zlog@zlog.org'
+      Caption = 'Mail comments to : '
       WordWrap = True
       IsControl = True
     end
@@ -120,20 +120,41 @@ object AboutBox: TAboutBox
       Font.Style = []
       ParentFont = False
     end
-    object Label3: TLabel
-      Left = 8
-      Top = 120
-      Width = 100
-      Height = 13
-      Caption = 'http://www.zlog.org/'
-      WordWrap = True
-      IsControl = True
-    end
     object Label4: TLabel
       Left = 195
       Top = 48
       Width = 3
       Height = 13
+    end
+    object LinkLabel2: TLinkLabel
+      Left = 8
+      Top = 119
+      Width = 104
+      Height = 17
+      Caption = '<A HREF="http://www.zlog.org/">http://www.zlog.org/</A>'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+      OnLinkClick = LinkLabel1LinkClick
+    end
+    object LinkLabel3: TLinkLabel
+      Left = 101
+      Top = 104
+      Width = 71
+      Height = 17
+      Caption = '<A HREF="mailto:zlog@zlog.org">zlog@zlog.org</A>'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      OnLinkClick = LinkLabel1LinkClick
     end
   end
   object OKButton: TButton
@@ -201,7 +222,7 @@ object AboutBox: TAboutBox
       AutoSize = False
       Caption = 
         #21332#21147':JH1KVQ, JE1BJP, JR8VSE, JG8LOL, JR8LRQ, JL1LNC, 7M4KSC, JA1AB' +
-        'C, JO3JYE, JE1CKA, JH5GHM, JS6RTJ, JJ1CVH'
+        'C, JO3JYE, JE1CKA, JH5GHM, JS6RTJ, JJ1CVH, JS2GGD'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12

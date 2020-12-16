@@ -185,6 +185,13 @@ type
     FDupeCheckList: TQSOListArray;
     FBandList: TQSOListArray;
     procedure Delete(i : Integer);
+    procedure ProcessDelete(beforeQSO: TQSO);
+    procedure ProcessEdit(afterQSO: TQSO);
+    procedure ProcessInsert(afterQSO: TQSO);
+    procedure ProcessLock(xQSO: TQSO);
+    procedure ProcessUnlock(xQSO: TQSO);
+    procedure SetScoreCoeff(E: Extended);
+    function GetScoreCoeff(): Extended;
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -241,12 +248,14 @@ type
 
     property QsoList: TQSOList read FQsoList;
     property BandList: TQSOListArray read FBandList;
+
+    property ScoreCoeff: Extended read GetScoreCoeff write SetScoreCoeff;
   end;
 
 implementation
 
 uses
-  UzLogGlobal;
+  UzLogGlobal, UzLogExtension;
 
 { TQSO }
 
@@ -754,6 +763,7 @@ end;
 
 function TQSO.GetFileRecord(): TQSOData;
 begin
+   FillChar(Result, SizeOf(Result), #00);
    Result.Time       := FTime;
    Result.CallSign   := ShortString(FCallSign);
    Result.NrSent     := ShortString(FNrSent);
@@ -992,6 +1002,7 @@ begin
    Q.Memo := Memo;
    Q.Time := 0;
    Q.RSTSent := 0;
+   Q.RSTRcvd := 0;
    Add(Q);
 
    for B := b19 to HiBand do begin
@@ -1101,6 +1112,8 @@ begin
    FBandList[xQSO.Band].Add(aQSO);
 
    FSaved := False;
+
+   zLogContestEvent(evAddQSO, nil, aQSO);
 end;
 
 procedure TLog.AddQue(aQSO: TQSO);
@@ -1116,8 +1129,7 @@ end;
 
 procedure TLog.ProcessQue;
 var
-   xQSO, yQSO, zQSO, wQSO: TQSO;
-   i, id: Integer;
+   xQSO: TQSO;
 begin
    if FQueList.Count = 0 then begin
       exit;
@@ -1137,58 +1149,25 @@ begin
          end;
 
          actDelete: begin
-               for i := 1 to TotalQSO do begin
-                  yQSO := FQsoList[i];
-                  if xQSO.SameQSOID(yQSO) then begin
-                     Delete(i);
-                     break;
-                  end;
-               end;
+            ProcessDelete(xQSO);
          end;
 
          actEdit: begin
-            for i := 1 to TotalQSO do begin
-               yQSO := FQsoList[i];
-               if xQSO.SameQSOID(yQSO) then begin
-                  // FQsoList[i].QSO := xQSO.QSO;
-                  yQSO.Assign(xQSO);
-                  RebuildDupeCheckList;
-                  break;
-               end;
-            end;
+            ProcessEdit(xQSO);
+            xQSO.Free();
          end;
 
          actInsert: begin
-            for i := 1 to TotalQSO do begin
-               yQSO := FQsoList[i];
-               id := xQSO.FReserve2 div 100;
-               if id = (yQSO.FReserve3 div 100) then begin
-                  wQSO := TQSO.Create;
-                  wQSO.Assign(xQSO);
-                  Insert(i, wQSO);
-                  break;
-               end;
-            end;
+            ProcessInsert(xQSO);
+            xQSO.Free();
          end;
 
          actLock: begin
-            for i := 1 to TotalQSO do begin
-               zQSO := FQsoList[i];
-               if xQSO.SameQSOID(zQSO) then begin
-                  FQsoList[i].FReserve := actLock;
-                  break;
-               end;
-            end;
+            ProcessLock(xQSO);
          end;
 
          actUnlock: begin
-            for i := 1 to TotalQSO do begin
-               zQSO := FQsoList[i];
-               if xQSO.SameQSOID(zQSO) then begin
-                  FQsoList[i].FReserve := 0;
-                  break;
-               end;
-            end;
+            ProcessUnlock(xQSO);
          end;
       end;
 
@@ -1197,6 +1176,90 @@ begin
    end;
 
    FSaved := False;
+end;
+
+procedure TLog.ProcessDelete(beforeQSO: TQSO);
+var
+   i: Integer;
+   wQSO: TQSO;
+begin
+   for i := 1 to TotalQSO do begin
+      wQSO := FQsoList[i];
+      if beforeQSO.SameQSOID(wQSO) then begin
+         Delete(i);
+         Break;
+      end;
+   end;
+end;
+
+procedure TLog.ProcessEdit(afterQSO: TQSO);
+var
+   i: Integer;
+   beforeQSO: TQSO;
+   wQSO: TQSO;
+begin
+   beforeQSO := TQSO.Create();
+   try
+      for i := 1 to TotalQSO do begin
+         wQSO := FQsoList[i];
+         if afterQSO.SameQSOID(wQSO) then begin
+            beforeQSO.Assign(wQSO);
+            wQSO.Assign(afterQSO);  // wQSO = FQsoList[i]
+            RebuildDupeCheckList;
+            zLogContestEvent(evModifyQSO, beforeQSO, afterQSO);
+            Break;
+         end;
+      end;
+   finally
+      beforeQSO.Free();
+   end;
+end;
+
+procedure TLog.ProcessInsert(afterQSO: TQSO);
+var
+   i: Integer;
+   id: Integer;
+   wQSO: TQSO;
+   newQSO: TQSO;
+begin
+   for i := 1 to TotalQSO do begin
+      wQSO := FQsoList[i];
+      id := afterQSO.FReserve2 div 100;
+      if id = (wQSO.FReserve3 div 100) then begin
+         newQSO := TQSO.Create;
+         newQSO.Assign(afterQSO);
+         Insert(i, newQSO);
+         Break;
+      end;
+   end;
+end;
+
+procedure TLog.ProcessLock(xQSO: TQSO);
+var
+   i: Integer;
+   wQSO: TQSO;
+begin
+   for i := 1 to TotalQSO do begin
+      wQSO := FQsoList[i];
+      if xQSO.SameQSOID(wQSO) then begin
+         wQSO.FReserve := actLock;
+         Break;
+      end;
+   end;
+end;
+
+procedure TLog.ProcessUnlock(xQSO: TQSO);
+var
+   i: Integer;
+   wQSO: TQSO;
+begin
+   for i := 1 to TotalQSO do begin
+      wQSO := FQsoList[i];
+      if xQSO.SameQSOID(wQSO) then begin
+         wQSO.FReserve := 0;
+         Break;
+      end;
+   end;
 end;
 
 procedure TLog.Delete(i: Integer);
@@ -1219,12 +1282,16 @@ begin
 
    FSaved := False;
    RebuildDupeCheckList;
+
+   zLogContestEvent(evDeleteQSO, aQSO, nil);
 end;
 
 procedure TLog.DeleteQSO(aQSO: TQSO);
 var
    Index: Integer;
 begin
+   zLogContestEvent(evDeleteQSO, aQSO, nil);
+
    Index := FBandList[aQSO.Band].IndexOf(aQSO);
    if Index > -1 then begin
       FBandList[aQSO.Band].Delete(Index);
@@ -1274,6 +1341,8 @@ begin
    FQsoList.Insert(i, aQSO);
    RebuildDupeCheckList;
    FSaved := False;
+
+   zLogContestEvent(evAddQSO, nil, aQSO);
 end;
 
 procedure TLog.Backup(Filename: string);
@@ -1615,11 +1684,17 @@ begin
    str := CoreCall(aQSO.CallSign);
 
    for i := 1 to TotalQSO do begin
-      if (aQSO.FBand = FQsoList[i].Band) and (str = CoreCall(FQsoList[i].CallSign)) and ((index <= 0) or (index <> i)) then begin
+      // “¯ˆêQSO‚Íœ‚­
+      if FQsoList[i].SameQSOID(aQSO) = True then begin
+         Continue;
+      end;
+
+      if (aQSO.FBand = FQsoList[i].Band) and (str = CoreCall(FQsoList[i].CallSign)) then begin
          if Not(AcceptDifferentMode) or (AcceptDifferentMode and aQSO.SameMode(FQsoList[i])) then begin
             boo := True;
-            if index > 0 then
+            if index > 0 then begin
                dupeindex := i;
+            end;
             break;
          end;
       end;
@@ -1888,6 +1963,22 @@ begin
    end;
 
    Result := True;
+end;
+
+function TLog.GetScoreCoeff(): Extended;
+begin
+   Result := FQsoList[0].RSTRcvd / 100;
+end;
+
+procedure TLog.SetScoreCoeff(E: Extended);
+var
+   N: Integer;
+begin
+   N := Trunc(E * 100);
+   if FQsoList[0].RSTRcvd <> N then begin
+      FQsoList[0].RSTRcvd := N;
+      Saved := False;
+   end;
 end;
 
 { TQSOCallsignComparer }

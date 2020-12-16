@@ -7,11 +7,11 @@ uses
   UBasicMulti, Grids, StdCtrls, ExtCtrls,
   UzLogConst, UzLogGlobal, UzLogQSO, UKCJZone;
 
-const maxindex = 70;
+const maxindex = 71;
 
 const KenNames : array[0..maxindex] of string =
-('SY 宗谷','RM 留萌','KK 上川','AB 網走','SC 空知','IS 石狩','NM 根室',
- 'SB 後志','TC 十勝','KR 釧路','HD 日高','IR 胆振','HY 桧山','OM 渡島',
+('SY 宗谷','RM 留萌','KK 上川','SC 空知','IS 石狩','NM 根室',
+ 'SB 後志','TC 十勝','KR 釧路','HD 日高','IR 胆振','HY 桧山','OM 渡島', 'OH オホーツク',
  'AM 青森','IT 岩手','AT 秋田','YM 山形','MG 宮城','FS 福島','NI 新潟',
  'NN 長野','TK 東京','KN 神奈川','CB 千葉','ST 埼玉','IB 茨城','TG 栃木',
  'GM 群馬','YN 山梨','OH 大島','MY 三宅','HJ 八丈',
@@ -19,7 +19,7 @@ const KenNames : array[0..maxindex] of string =
  'SI 滋賀','NR 奈良','OS 大阪','WK 和歌山','HG 兵庫','TY 富山','FI 福井',
  'IK 石川','OY 岡山','SN 島根','YG 山口','TT 鳥取','HS 広島','KA 香川',
  'TS 徳島','EH 愛媛','KC 高知','FO 福岡','SG 佐賀','NS 長崎','KM 熊本',
- 'OT 大分','MZ 宮崎','KG 鹿児島','TM 対馬','ON 沖縄','OG 小笠原',
+ 'OT 大分','MZ 宮崎','KG 鹿児島','TM 対馬','ON 沖縄','OG 小笠原', 'MT 南鳥島',
  'AS アジア','NA 北アメリカ','SA 南アメリカ','EU ヨーロッパ','AF アフリカ',
  'OC オセアニア');
 

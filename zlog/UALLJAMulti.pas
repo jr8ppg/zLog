@@ -38,6 +38,8 @@ type
     Panel1: TPanel;
     Button2: TButton;
     cbStayOnTop: TCheckBox;
+    Tab19: TTabSheet;
+    RotateLabel1: TRotateLabel;
     procedure PageControlChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -45,8 +47,8 @@ type
     procedure cbStayOnTopClick(Sender: TObject);
   private
     { Private declarations }
-    KenLabels: array[b35..b50, m101..m48] of TLabel;
-    MultiTable: array[b35..b50, m101..m48] of Boolean;
+    KenLabels: array[b19..b50, m101..m48] of TLabel;
+    MultiTable: array[b19..b50, m101..m48] of Boolean;
     function KenToInt(strKenCode: string): TKen;
     procedure DeletePowerCode(var strMulti: string);
     function HasPowerCode(strMulti: string): Boolean;
@@ -90,7 +92,7 @@ var
    ken: TKen;
    x, y: integer;
 begin
-   for band := b35 to b50 do begin
+   for band := b19 to b50 do begin
       for ken := m101 to m48 do begin
          MultiTable[band, ken] := False;
       end;
@@ -102,7 +104,7 @@ begin
                   KenLabels[band, ken] := TLabel.Create(Self);
                   KenLabels[band, ken].Font.Size := 9;
                   KenLabels[band, ken].ParentFont := True;
-                  KenLabels[band, ken].Parent := PageControl.Pages[OldBandOrd(band) - 1];
+                  KenLabels[band, ken].Parent := PageControl.Pages[OldBandOrd(band)];
                   KenLabels[band, ken].Font.Color := clBlack;
                   KenLabels[band, ken].Left := 77 * (x - 1) + 8;
                   KenLabels[band, ken].Top := 8 + 16 * (y - 1);
@@ -114,7 +116,7 @@ begin
    end;
 
    for ken := m101 to m48 do begin
-      ListBox.Items.Add(FillRight(KenNames[ken], 14) + '. . . . . . ');
+      ListBox.Items.Add(FillRight(KenNames[ken], 14) + '. . . . . . . ');
    end;
 end;
 
@@ -122,8 +124,8 @@ procedure TALLJAMulti.FormShow(Sender: TObject);
 begin
    inherited;
 
-   if Main.CurrentQSO.band in [b35, b7, b14, b21, b28, b50] then begin
-      PageControl.ActivePage := PageControl.Pages[OldBandOrd(Main.CurrentQSO.band) - 1];
+   if Main.CurrentQSO.band in [b19, b35, b7, b14, b21, b28, b50] then begin
+      PageControl.ActivePage := PageControl.Pages[OldBandOrd(Main.CurrentQSO.band)];
    end;
 end;
 
@@ -147,17 +149,17 @@ var
 begin
    // inherited;
    band := Main.CurrentQSO.band;
-   if not(band in [b35, b7, b14, b21, b28, b50]) then
+   if not(band in [b19, b35, b7, b14, b21, b28, b50]) then
       band := b35;
 
    if PageControl.ActivePage <> TabALL then begin
-      PageControl.ActivePage := PageControl.Pages[OldBandOrd(band) - 1];
+      PageControl.ActivePage := PageControl.Pages[OldBandOrd(band)];
       UpdateBand(band);
    end
    else begin
       for K := m101 to m48 do begin
          str := FillRight(KenNames[K], 14);
-         for B := b35 to b50 do begin
+         for B := b19 to b50 do begin
             if NotWARC(B) then begin
                if MultiTable[B, K] then
                   str := str + '* '
@@ -224,7 +226,7 @@ end;
 procedure TALLJAMulti.PageControlChange(Sender: TObject);
 begin
    case PageControl.ActivePage.Tag of
-      ord(b35) .. ord(b50):
+      ord(b19) .. ord(b50):
          UpdateBand(TBand(PageControl.ActivePage.Tag));
       else
          Update;
@@ -236,7 +238,7 @@ var
    band: TBand;
    ken: TKen;
 begin
-   for band := b35 to b50 do begin
+   for band := b19 to b50 do begin
       if NotWARC(band) then begin
          for ken := m101 to m48 do begin
             MultiTable[band, ken] := False;
@@ -327,7 +329,7 @@ begin
    else
       str := str + '   Needed on this band. Worked on : ';
 
-   for B := b35 to b50 do begin
+   for B := b19 to b50 do begin
       if MultiTable[B, K] then
          str := str + MHzString[B] + ' '
       else

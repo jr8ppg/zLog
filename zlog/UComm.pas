@@ -62,16 +62,19 @@ type
     procedure menuSaveToFileClick(Sender: TObject);
   private
     { Private declarations }
-    CommBuffer : TStringList;
-    CommTemp : string; {command work string}
-    CommStarted : boolean;
-    _RelayPacketData : boolean;
+    FCommBuffer : TStringList;
+    FCommTemp : string; {command work string}
+    FCommStarted : boolean;
+    FRelayPacketData : boolean;
+    FSpotList : TSpotList;
+    FSpotListLock: TRTLCriticalSection;
+
+    procedure DeleteSpot(_from, _to : integer);
+
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
   public
     { Public declarations }
-    SpotList : TSpotList;
-    procedure DeleteSpot(_from, _to : integer);
     procedure RenewListBox;
     procedure ProcessSpot(Sp : TSpot);
     procedure PreProcessSpotFromZLink(S : string; N: Integer);
@@ -89,7 +92,12 @@ type
     procedure WriteStatusLine(S : string);
     procedure Renew; // red or black
     procedure RemoteConnectButtonPush;
+
+    procedure Lock();
+    procedure Unlock();
+
     property FontSize: Integer read GetFontSize write SetFontSize;
+    property SpotList: TSpotList read FSpotList;
   end;
 
 implementation
@@ -103,18 +111,26 @@ procedure TCommForm.DeleteSpot(_from, _to : integer);
 var
    i : integer;
 begin
-   if _from < 0 then
-      exit;
+   Lock();
+   try
+      if _from < 0 then begin
+         Exit;
+      end;
 
-   if _to < _from then
-      exit;
+      if _to < _from then begin
+         Exit;
+      end;
 
-   if _to > SpotList.Count - 1 then
-      exit;
+      if _to > FSpotList.Count - 1 then begin
+         Exit;
+      end;
 
-   for i := _from to _to do begin
-      SpotList.Delete(_from);
-      ListBox.Items.Delete(_from);
+      for i := _from to _to do begin
+         FSpotList.Delete(_from);
+         ListBox.Items.Delete(_from);
+      end;
+   finally
+      Unlock();
    end;
 end;
 
@@ -179,7 +195,7 @@ var
    str : string;
 begin
    str := string(AnsiStrings.StrPas(PAnsiChar(Buffer)));
-   CommBuffer.Add(str);
+   FCommBuffer.Add(str);
 end;
 
 procedure TCommForm.Button1Click(Sender: TObject);
@@ -205,10 +221,10 @@ begin
    if Key = Chr($0D) then begin
       if pos('RELAY', UpperCase(Edit.Text)) = 1 then begin
          if pos('ON', UpperCase(Edit.Text)) > 0 then begin
-            _RelayPacketData := True;
+            FRelayPacketData := True;
          end
          else begin
-            _RelayPacketData := False;
+            FRelayPacketData := False;
          end;
 
          WriteLineConsole(Edit.Text);
@@ -278,11 +294,12 @@ end;
 
 procedure TCommForm.FormCreate(Sender: TObject);
 begin
-   _RelayPacketData := False;
-   SpotList := TSpotList.Create;
-   CommStarted := False;
-   CommBuffer := TStringList.Create;
-   CommTemp := '';
+   InitializeCriticalSection(FSpotListLock);
+   FRelayPacketData := False;
+   FSpotList := TSpotList.Create;
+   FCommStarted := False;
+   FCommBuffer := TStringList.Create;
+   FCommTemp := '';
    Timer1.Enabled := True;
    ImplementOptions;
 end;
@@ -292,9 +309,16 @@ var
    i: Integer;
 begin
    ListBox.Clear;
-   for i := 0 to SpotList.Count - 1 do begin
-      ListBox.AddItem(SpotList[i].ClusterSummary, SpotList[i]);
+   Lock();
+
+   try
+      for i := 0 to FSpotList.Count - 1 do begin
+         ListBox.AddItem(FSpotList[i].ClusterSummary, FSpotList[i]);
+      end;
+   finally
+      Unlock();
    end;
+
    ListBox.ShowLast();
 end;
 
@@ -331,41 +355,48 @@ var
    dupe, _deleted : boolean;
    Expire : double;
 begin
-   dupe := false;
-   _deleted := false;
+   Lock();
+   try
+      dupe := false;
+      _deleted := false;
 
-   Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
+      Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
 
-   for i := SpotList.Count - 1 downto 0 do begin
-      S := SpotList[i];
-      if Now - S.Time > Expire then begin
-         SpotList.Delete(i);
-         _deleted := True;
+      for i := FSpotList.Count - 1 downto 0 do begin
+         S := FSpotList[i];
+         if Now - S.Time > Expire then begin
+            FSpotList.Delete(i);
+            _deleted := True;
+         end;
+
+         if (S.Call = Sp.Call) and (S.FreqHz = Sp.FreqHz) then begin
+            dupe := True;
+            break;
+         end;
       end;
 
-      if (S.Call = Sp.Call) and (S.FreqHz = Sp.FreqHz) then begin
-         dupe := True;
-         break;
+      if _deleted then begin
+         RenewListBox;
       end;
+
+      if FSpotList.Count > SPOTMAX then begin
+         Sp.Free();
+         exit;
+      end;
+
+      if dupe then begin
+         Sp.Free();
+         exit;
+      end;
+
+      // 交信済みチェック
+      SpotCheckWorked(Sp);
+
+      // Spotリストへ追加
+      FSpotList.Add(Sp);
+   finally
+      Unlock();
    end;
-
-   if _deleted then begin
-      RenewListBox;
-   end;
-
-   if SpotList.Count > SPOTMAX then begin
-      exit;
-   end;
-
-   if dupe then begin
-      exit;
-   end;
-
-   // 交信済みチェック
-   SpotCheckWorked(Sp);
-
-   // Spotリストへ追加
-   SpotList.Add(Sp);
 
    if cbNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
    end
@@ -412,42 +443,42 @@ var
    str: string;
    Sp : TSpot;
 begin
-   max := CommBuffer.Count - 1;
+   max := FCommBuffer.Count - 1;
    for i := 0 to max do begin
-      Console.WriteString(CommBuffer.Strings[i]);
+      Console.WriteString(FCommBuffer.Strings[i]);
    end;
 
    for i := 0 to max do begin
-      str := CommBuffer.Strings[0];
+      str := FCommBuffer.Strings[0];
       for j := 1 to length(str) do begin
          if (str[j] = Chr($0D)) or (str[j] = Chr($0A)) then begin
-            if _RelayPacketData then begin
-               MainForm.ZLinkForm.SendPacketData(TrimCRLF(CommTemp));
+            if FRelayPacketData then begin
+               MainForm.ZLinkForm.SendPacketData(TrimCRLF(FCommTemp));
             end;
 
             Sp := TSpot.Create;
-            if Sp.Analyze(CommTemp) = True then begin
+            if Sp.Analyze(FCommTemp) = True then begin
                // データ発生源はCluster
                Sp.SpotSource := ssCluster;
 
                ProcessSpot(Sp);
 
                if Relay.Checked then begin
-                  MainForm.ZLinkForm.RelaySpot(CommTemp);
+                  MainForm.ZLinkForm.RelaySpot(FCommTemp);
                end;
             end
             else begin
               Sp.Free;
             end;
 
-            CommTemp := '';
+            FCommTemp := '';
          end
          else begin
-            CommTemp := CommTemp + str[j];
+            FCommTemp := FCommTemp + str[j];
          end;
       end;
 
-      CommBuffer.Delete(0);
+      FCommBuffer.Delete(0);
    end;
 end;
 
@@ -461,8 +492,8 @@ begin
    inherited;
    ClusterComm.Disconnect;
    ClusterComm.Free;
-   SpotList.Free();
-   CommBuffer.Free();
+   FSpotList.Free();
+   FCommBuffer.Free();
 end;
 
 procedure TCommForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -474,7 +505,7 @@ end;
 
 procedure TCommForm.TelnetDisplay(Sender: TTnCnx; Str: String);
 begin
-   CommBuffer.Add(str);
+   FCommBuffer.Add(str);
 end;
 
 procedure TCommForm.ConnectButtonClick(Sender: TObject);
@@ -657,7 +688,7 @@ begin
       str := str + AnsiChar(ptr[i]);
    end;
 
-   CommBuffer.Add(string(str));
+   FCommBuffer.Add(string(str));
 end;
 
 procedure TCommForm.TelnetDataAvailable(Sender: TTnCnx; Buffer: Pointer; Len: Integer);
@@ -665,7 +696,7 @@ var
    str : string;
 begin
    str := string(AnsiStrings.StrPas(PAnsiChar(Buffer)));
-   CommBuffer.Add(str);
+   FCommBuffer.Add(str);
 end;
 
 function TCommForm.GetFontSize(): Integer;
@@ -696,6 +727,16 @@ begin
    end;
 
    CloseFile(F);
+end;
+
+procedure TCommForm.Lock();
+begin
+   EnterCriticalSection(FSpotListLock);
+end;
+
+procedure TCommForm.Unlock();
+begin
+   LeaveCriticalSection(FSpotListLock);
 end;
 
 end.

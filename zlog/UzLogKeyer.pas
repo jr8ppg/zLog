@@ -6,14 +6,14 @@ unit UzLogKeyer;
 //
 
 // サイドトーンを使用する場合、下記の定義を有効にする 要ToneGen.pas
-//{$DEFINE USESIDETONE}
+{$DEFINE USESIDETONE}
 
 interface
 
 uses
   System.SysUtils, System.Classes, Windows, MMSystem, Math,
   JvComponentBase, JvHidControllerClass, CPDrv
-  {$IFDEF USESIDETONE},ToneGen{$ENDIF};
+  {$IFDEF USESIDETONE},ToneGen, UzLogSound{$ENDIF};
 
 const
   charmax = 256;
@@ -63,6 +63,8 @@ type
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
   private
     { Private 宣言 }
+    FComKeying: TCommPortDriver;
+
     FMonitorThread: TKeyerMonitorThread;
 
     FUSBIF4CW_Detected: Boolean;
@@ -70,7 +72,7 @@ type
     FUSBIF4CW_Version: Long;
 
     {$IFDEF USESIDETONE}
-    FTone: TToneGen;
+    FTone: TSideTone;
     {$ENDIF}
 
     FUsbPortDataLock: TRTLCriticalSection;
@@ -179,6 +181,7 @@ type
     procedure USB_ON();
     procedure USB_OFF();
     procedure SetPaddleReverse(fReverse: Boolean);
+    procedure SetUseSideTone(fUse: Boolean);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -220,7 +223,7 @@ type
     property CQRepeatIntervalSec: Double read FCQRepeatIntervalSec write SetCQRepeatInterval;
 
     property WPM: Integer read FKeyerWPM write SetWPM;
-    property UseSideTone: Boolean read FUseSideTone write FUseSideTone;
+    property UseSideTone: Boolean read FUseSideTone write SetUseSideTone;
     property SideTonePitch: Integer read FSideTonePitch write SetSideTonePitch;
     property SpaceFactor: Integer read FSpaceFactor write SetSpaceFactor;
     property EISpaceFactor: Integer read FEISpaceFactor write SetEISpaceFactor;
@@ -246,6 +249,10 @@ type
     function usbif4cwSetPTT(nId: Integer; tx: Byte): Long;
     function usbif4cwGetVersion(nId: Integer): Long;
     function usbif4cwSetPaddle(nId: Integer; param: Byte): Long;
+
+    // 1Port Control support
+    procedure SetCommPortDriver(CP: TCommPortDriver);
+    procedure ResetCommPortDriver(port: TKeyingPort);
   end;
 
 var
@@ -272,13 +279,11 @@ end;
 procedure TdmZLogKeyer.DataModuleCreate(Sender: TObject);
 begin
    FInitialized := False;
+   FComKeying := ZComKeying;
 
    {$IFDEF USESIDETONE}
-   FTone := TToneGen.Create(nil);
-   FTone.Waveform := tgSine;
-   FTone.Duration := 100;
-   FTone.Loop := True;
-   FTone.Frequency := 700;
+   FTone := TSideTone.Create(700);
+
    {$ENDIF}
 
    FUSBIF4CW_Detected := False;
@@ -480,14 +485,14 @@ end;
 procedure TdmZLogKeyer.Sound();
 begin
    {$IFDEF USESIDETONE}
-   FTone.Play;
+   FTone.Play();
    {$ENDIF}
 end;
 
 procedure TdmZLogKeyer.NoSound();
 begin
    {$IFDEF USESIDETONE}
-   FTone.Stop;
+   FTone.Stop();
    {$ENDIF}
 end;
 
@@ -510,10 +515,10 @@ begin
 
    if FKeyingPort in [tkpSerial1..tkpSerial20] then begin
       if FKeyingSignalReverse = False then begin
-         ZComKeying.ToggleRTS(PTTON);
+         FComKeying.ToggleRTS(PTTON);
       end
       else begin
-         ZComKeying.ToggleDTR(PTTON);
+         FComKeying.ToggleDTR(PTTON);
       end;
       Exit;
    end;
@@ -757,10 +762,10 @@ begin
    case FKeyingPort of
       tkpSerial1..tkpSerial20: begin
          if FKeyingSignalReverse = False then begin
-            ZComKeying.ToggleDTR(True);
+            FComKeying.ToggleDTR(True);
          end
          else begin
-            ZComKeying.ToggleRTS(True);
+            FComKeying.ToggleRTS(True);
          end;
       end;
 
@@ -778,10 +783,10 @@ begin
    case FKeyingPort of
       tkpSerial1..tkpSerial20: begin
          if FKeyingSignalReverse = False then begin
-            ZComKeying.ToggleDTR(False);
+            FComKeying.ToggleDTR(False);
          end
          else begin
-            ZComKeying.ToggleRTS(False);
+            FComKeying.ToggleRTS(False);
          end;
       end;
 
@@ -808,7 +813,9 @@ procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: 
          CW_OFF;
       end;
 
-      NoSound;
+      if FUseSideTone then begin
+         NoSound();
+      end;
       { if PTTEnabled then  // 1.3c
         ControlPTT(False); } // PTT doesn't work with \
    end;
@@ -837,19 +844,25 @@ begin
 
       0: begin
          CW_OFF;
-         NoSound;
+         if FUseSideTone then begin
+            NoSound();
+         end;
          FKeyingCounter := FBlank1Count;
       end;
 
       2: begin { normal space x space factor (%) }
          CW_OFF;
-         NoSound;
+         if FUseSideTone then begin
+            NoSound();
+         end;
          FKeyingCounter := Trunc(FBlank3Count * FSpaceFactor / 100);
       end;
 
       $E: begin { normal space x space factor x eispacefactor(%) }
          CW_OFF;
-         NoSound;
+         if FUseSideTone then begin
+            NoSound();
+         end;
          FKeyingCounter := Trunc(FBlank3Count * (FSpaceFactor / 100) * (FEISpaceFactor / 100));
       end;
 
@@ -1632,7 +1645,9 @@ begin
    timeKillEvent(FTimerID);
    timeEndPeriod(1);
 
-   NoSound;
+   if FUseSideTone then begin
+      NoSound();
+   end;
 
    CW_OFF;
 
@@ -1643,8 +1658,10 @@ procedure TdmZLogKeyer.PauseCW;
 begin
    FSendOK := False;
 
-   NoSound;
    CW_OFF;
+   if FUseSideTone then begin
+      NoSound();
+   end;
 
    if FPTTEnabled then begin
       ControlPTT(False);
@@ -1697,7 +1714,9 @@ begin
    callsignptr := 0;
    mousetail := 1;
    tailcwstrptr := 1;
-   NoSound;
+   if FUseSideTone then begin
+      NoSound();
+   end;
    FSendOK := True;
    FCQLoopCount := 0;
    CW_OFF;
@@ -1799,9 +1818,9 @@ end;
 
 procedure TdmZLogKeyer.SetKeyingPort(port: TKeyingPort);
 begin
-   if FKeyingPort = port then begin
-      Exit;
-   end;
+//   if FKeyingPort = port then begin
+//      Exit;
+//   end;
 
    FKeyingPort := port;
    case port of
@@ -1864,15 +1883,17 @@ end;
 
 procedure TdmZLogKeyer.COM_ON(port: TKeyingPort);
 begin
-   ZComKeying.Port := TPortNumber(port);
-   ZComKeying.Connect;
-   ZComKeying.ToggleDTR(False);
-   ZComKeying.ToggleRTS(False);
+   if FComKeying.Connected = False then begin
+      FComKeying.Port := TPortNumber(port);
+      FComKeying.Connect;
+   end;
+   FComKeying.ToggleDTR(False);
+   FComKeying.ToggleRTS(False);
 end;
 
 procedure TdmZLogKeyer.COM_OFF();
 begin
-   ZComKeying.Disconnect();
+   FComKeying.Disconnect();
 end;
 
 procedure TdmZLogKeyer.USB_ON();
@@ -1906,6 +1927,14 @@ begin
       else begin
          usbif4cwSetPaddle(0, 0);
       end;
+   end;
+end;
+
+procedure TdmZLogKeyer.SetUseSideTone(fUse: Boolean);
+begin
+   FUseSideTone := fUse;
+   if fUse = False then begin
+      NoSound();
    end;
 end;
 
@@ -2079,6 +2108,32 @@ begin
    OutReport[8] := $FC;
    FUSBIF4CW.SetOutputReport(OutReport, 9);
    Result := 0;
+end;
+
+procedure TdmZLogKeyer.SetCommPortDriver(CP: TCommPortDriver);
+begin
+   if FComKeying = CP then begin
+      Exit;
+   end;
+
+   COM_OFF();
+   FComKeying := CP;
+//   COM_ON(FKeyingPort);
+
+   FKeyingPort := TKeyingPort(CP.Port);
+end;
+
+procedure TdmZLogKeyer.ResetCommPortDriver(port: TKeyingPort);
+begin
+   if FComKeying = ZComKeying then begin
+      Exit;
+   end;
+
+//   COM_OFF();
+   FComKeying := ZComKeying;
+//   COM_ON(FKeyingPort);
+
+   KeyingPort := port;
 end;
 
 end.

@@ -55,10 +55,8 @@ object MenuForm: TMenuForm
     Anchors = [akLeft, akBottom]
     Caption = 'OK'
     Default = True
-    ModalResult = 1
     TabOrder = 0
     OnClick = OKButtonClick
-    ExplicitTop = 273
   end
   object CancelButton: TButton
     Left = 92
@@ -70,7 +68,6 @@ object MenuForm: TMenuForm
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
-    ExplicitTop = 273
   end
   object Button3: TButton
     Left = 172
@@ -81,7 +78,6 @@ object MenuForm: TMenuForm
     Caption = '&Help'
     TabOrder = 2
     Visible = False
-    ExplicitTop = 273
   end
   object ContestGroup: TGroupBox
     Left = 8
@@ -400,7 +396,6 @@ object MenuForm: TMenuForm
     Anchors = [akRight, akBottom]
     AutoSize = False
     TabOrder = 7
-    ExplicitTop = 275
   end
   object CheckBox1: TCheckBox
     Left = 274
@@ -410,7 +405,6 @@ object MenuForm: TMenuForm
     Anchors = [akRight, akBottom]
     Caption = 'Post-contest'
     TabOrder = 8
-    ExplicitTop = 276
   end
   object TXNrEdit: TEdit
     Left = 344
@@ -420,7 +414,6 @@ object MenuForm: TMenuForm
     AutoSize = False
     MaxLength = 3
     TabOrder = 9
-    OnKeyPress = TXNrEditKeyPress
   end
   object ScoreCoeffEdit: TEdit
     Left = 448
@@ -431,7 +424,6 @@ object MenuForm: TMenuForm
     MaxLength = 3
     TabOrder = 10
     Text = '1'
-    OnKeyPress = TXNrEditKeyPress
   end
   object CFGOpenDialog: TOpenDialog
     DefaultExt = 'CFG'

@@ -166,7 +166,7 @@ end;
 procedure TFDMulti.FormCreate(Sender: TObject);
 begin
    // inherited;
-   sband := b35;
+   sband := b19;
    CityList := TCityList.Create;
    CityList.LoadFromFile('XPO.DAT');
    CityList.LoadFromFile('ACAG.DAT');

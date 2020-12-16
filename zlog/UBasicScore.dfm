@@ -60,4 +60,32 @@ object BasicScore: TBasicScore
       OnClick = StayOnTopClick
     end
   end
+  object popupExtraInfo: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 176
+    Top = 128
+    object menuMultiRate: TMenuItem
+      AutoCheck = True
+      Caption = 'Multi/QSO %(Rate)'
+      Checked = True
+      GroupIndex = 1
+      RadioItem = True
+      OnClick = menuExtraInfoClick
+    end
+    object menuPtsPerMulti: TMenuItem
+      AutoCheck = True
+      Caption = 'Points/Multi'
+      GroupIndex = 1
+      RadioItem = True
+      OnClick = menuExtraInfoClick
+    end
+    object menuPtsPerQSO: TMenuItem
+      AutoCheck = True
+      Caption = 'Points/QSO(AVG)'
+      GroupIndex = 1
+      RadioItem = True
+      OnClick = menuExtraInfoClick
+    end
+  end
 end

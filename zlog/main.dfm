@@ -726,6 +726,22 @@ object MainForm: TMainForm
       Visible = False
       OnClick = Button1Click
     end
+    object panelCQMode: TPanel
+      Left = 490
+      Top = 1
+      Width = 33
+      Height = 31
+      Align = alRight
+      BevelOuter = bvLowered
+      Caption = 'CQ'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 1
+    end
   end
   object CWToolBar: TPanel
     Left = 0
@@ -782,7 +798,7 @@ object MainForm: TMainForm
       OnClick = CWPauseButtonClick
     end
     object buttonCwKeyboard: TSpeedButton
-      Left = 385
+      Left = 390
       Top = 4
       Width = 25
       Height = 25
@@ -802,8 +818,8 @@ object MainForm: TMainForm
       OnClick = buttonCwKeyboardClick
     end
     object SpeedLabel: TLabel
-      Left = 474
-      Top = 11
+      Left = 476
+      Top = 9
       Width = 44
       Height = 15
       Caption = '25 wpm'
@@ -2814,8 +2830,33 @@ object MainForm: TMainForm
         000000000000FF7FFF7FFF7FFF7FFF7F0000FF7FFF7FFF7FFF7FFF7FFF7FFF7F
         00000000000000000000FF7FFF7FFF7FFF7FFF7FFF7FFF7F0000}
     end
+    object SideToneButton: TSpeedButton
+      Left = 366
+      Top = 4
+      Width = 25
+      Height = 25
+      Hint = 'Side tone'
+      AllowAllUp = True
+      GroupIndex = 99
+      Down = True
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        0400000000000001000000000000000000001000000010000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        33333333333FFF3333F333333300033339333333337773F33733333330008033
+        933333333737F7F37333333307078733333933337337373F3337333077088803
+        33933337F37F337F3373333077088803393333F7337FF37F3733300777008803
+        9333377F33773F7F733307088808087333337F7F337F7F7F3FFF070777080873
+        99997F7F337F7F7F77770808880808733333737F337F737F3F33300888008803
+        93333773F377337F73F333308807880339333337F37F337F373F333088077803
+        339333373F73F37333733333087777333339333373F7F7F33F37333330807033
+        933333333737F73373F333333300033339333333337773333733}
+      NumGlyphs = 2
+      OnClick = SideToneButtonClick
+    end
     object SpeedBar: TTrackBar
-      Left = 411
+      Left = 414
       Top = 6
       Width = 63
       Height = 24
@@ -3083,7 +3124,7 @@ object MainForm: TMainForm
       Visible = False
     end
     object buttonVoiceOption: TSpeedButton
-      Left = 385
+      Left = 390
       Top = 4
       Width = 25
       Height = 25
@@ -6369,6 +6410,10 @@ object MainForm: TMainForm
       Tag = 101
       Caption = 'actionPlayCQB1'
       OnExecute = actionPlayMessageBExecute
+    end
+    object actionToggleCqSp: TAction
+      Caption = 'actionToggleCqSp'
+      OnExecute = actionToggleCqSpExecute
     end
   end
   object SPCMenu: TPopupMenu

@@ -89,9 +89,8 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 4. FT-2000,ICOMのカタログ機種を追加
 5. RIGコントロールのCOMポートをCOM1～COM20まで拡張
 6. RIGコントロールの通信速度を設定可能に
-7. CWキーイングのサイドトーン機能廃止
-8. パドル処理廃止
-9. など
+7. パドル処理廃止
+8. など
 
 ## 動作確認済みWindows
 
@@ -117,6 +116,7 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 * Z-Link
 * COMポートによるCWキーイング
 * USBIF4CWによるCWキーイング
+* U5-Link(ICOM)によるRIGコントロールとCWキーイング
 
 ## 動作確認済み無線機
 
@@ -130,6 +130,9 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 * FT-1000MP
 * FT-991
 * FT-847,FT-817
+
+最新情報はこちら
+https://github.com/jr8ppg/zLog/wiki/%E3%83%AA%E3%82%B0%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB
 
 ## 第三者著作権情報
 

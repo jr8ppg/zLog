@@ -3,7 +3,7 @@ object ACAGMulti: TACAGMulti
   Top = 79
   Caption = 'Multipliers Info'
   ClientHeight = 282
-  ClientWidth = 344
+  ClientWidth = 360
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,15 +20,16 @@ object ACAGMulti: TACAGMulti
   object Panel1: TPanel
     Left = 0
     Top = 241
-    Width = 344
+    Width = 360
     Height = 41
     Align = alBottom
     TabOrder = 0
+    ExplicitWidth = 344
     DesignSize = (
-      344
+      360
       41)
     object Button3: TButton
-      Left = 276
+      Left = 292
       Top = 11
       Width = 57
       Height = 21
@@ -36,15 +37,17 @@ object ACAGMulti: TACAGMulti
       Caption = 'Go'
       TabOrder = 0
       OnClick = GoButtonClick2
+      ExplicitLeft = 276
     end
     object Edit1: TEdit
-      Left = 228
+      Left = 244
       Top = 11
       Width = 33
       Height = 21
       Anchors = [akRight, akBottom]
       TabOrder = 1
       OnKeyPress = Edit1KeyPress
+      ExplicitLeft = 228
     end
     object Button1: TButton
       Left = 8
@@ -70,7 +73,7 @@ object ACAGMulti: TACAGMulti
   object Panel: TPanel
     Left = 0
     Top = 0
-    Width = 344
+    Width = 360
     Height = 41
     Align = alTop
     Font.Charset = DEFAULT_CHARSET
@@ -80,6 +83,8 @@ object ACAGMulti: TACAGMulti
     Font.Style = []
     ParentFont = False
     TabOrder = 1
+    ExplicitTop = -6
+    ExplicitWidth = 344
     object Label1R9: TRotateLabel
       Left = 174
       Top = 20
@@ -94,7 +99,6 @@ object ACAGMulti: TACAGMulti
       Font.Name = 'Arial'
       Font.Style = []
       ParentFont = False
-      Visible = False
     end
     object Label3R5: TRotateLabel
       Left = 186
@@ -290,7 +294,7 @@ object ACAGMulti: TACAGMulti
   object Grid: TMgrid
     Left = 0
     Top = 41
-    Width = 344
+    Width = 360
     Height = 200
     Align = alClient
     ColCount = 1
@@ -313,6 +317,7 @@ object ACAGMulti: TACAGMulti
     OddRowColor = clWindow
     EvenRowColor = clWindow
     OnSetting = GridSetting
+    ExplicitWidth = 344
     ColWidths = (
       500)
     RowHeights = (

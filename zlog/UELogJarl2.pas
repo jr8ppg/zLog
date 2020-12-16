@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes,
-  UzLogConst, UzLogGlobal, UzLogQSO;
+  Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes, Math,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension;
 
 type
   TformELogJarl2 = class(TForm)
@@ -43,17 +43,19 @@ type
     mComments: TMemo;
     edDate: TEdit;
     edSignature: TEdit;
-    buttonCreateLog: TButton;
-    buttonSave: TButton;
-    buttonCancel: TButton;
     mAddress: TMemo;
     SaveDialog1: TSaveDialog;
     Label3: TLabel;
     memoMultiOpList: TMemo;
+    Panel1: TPanel;
+    buttonCreateLog: TButton;
+    buttonSave: TButton;
+    buttonCancel: TButton;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
     procedure buttonCancelClick(Sender: TObject);
+    procedure edFDCoefficientChange(Sender: TObject);
   private
     { Private 宣言 }
     procedure RemoveBlankLines(M : TMemo);
@@ -98,16 +100,23 @@ procedure TformELogJarl2.InitializeFields;
 var
    ini: TIniFile;
    i: Integer;
-   p: Integer;
    str: string;
+   fSavedBack: Boolean;
 begin
+   fSavedBack := Log.Saved;
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       edContestName.Text   := MyContest.Name;
       edCategoryCode.Text  := ini.ReadString('SummaryInfo', 'CategoryCode', '');
       edCallsign.Text      := ini.ReadString('Categories', 'MyCall', 'Your call sign');
       edOpCallsign.Text    := ini.ReadString('SummaryInfo', 'OperatorCallsign', '');
-      edFDCoefficient.Text := ini.ReadString('SummaryInfo', 'FDCoefficient', '1');
+
+      if Log.ScoreCoeff > 0 then begin
+         edFDCoefficient.Text := FloatToStr(Log.ScoreCoeff);
+      end
+      else begin
+         edFDCoefficient.Text := '';
+      end;
 
       mAddress.Clear;
       mAddress.Lines.Add(ini.ReadString('SummaryInfo', 'Address1', '〒'));
@@ -138,11 +147,7 @@ begin
       RemoveBlankLines(mComments);
 
       for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
-         str := dmZlogGlobal.OpList[i];
-         p := Pos(' ', str);
-         if p > 0 then begin
-            str := Copy(str, 1, p - 1);
-         end;
+         str := dmZlogGlobal.OpList[i].Callsign;
          memoMultiOpList.Lines.Add(str);
       end;
 
@@ -162,6 +167,7 @@ begin
       edDate.Text := FormatDateTime('yyyy"年"m"月"d"日"', Now);
    finally
       ini.Free();
+      Log.Saved := fSavedBack;
    end;
 end;
 
@@ -208,7 +214,6 @@ begin
    try
       ini.WriteString('SummaryInfo', 'CategoryCode', edCategoryCode.Text);
       ini.WriteString('SummaryInfo', 'OperatorCallsign', edOpCallsign.Text);
-      ini.WriteString('SummaryInfo', 'FDCoefficient', edFDCoefficient.Text);
 
       ini.WriteString('SummaryInfo', 'Address1', mAddress.Lines[0]);
       ini.WriteString('SummaryInfo', 'Address2', mAddress.Lines[1]);
@@ -247,6 +252,14 @@ begin
    end;
 end;
 
+procedure TformELogJarl2.edFDCoefficientChange(Sender: TObject);
+var
+   E: Extended;
+begin
+   E := StrToFloatDef(edFDCoefficient.Text, 1);
+   Log.ScoreCoeff := E;
+end;
+
 procedure TformELogJarl2.buttonCancelClick(Sender: TObject);
 begin
    Close;
@@ -277,16 +290,10 @@ end;
 }
 procedure TformELogJarl2.WriteSummarySheet(var f: TextFile);
 var
-   nFdCoeff: Integer;
-   fFieldDay: Boolean;
+   fFdCoeff: Extended;
+   fScore: Extended;
 begin
-   if Pos('フィールドデー', MyContest.Name) > 0 then begin
-      fFieldDay := True;
-   end
-   else begin
-      fFieldDay := False;
-   end;
-   nFdCoeff := StrToIntDef(edFDCoefficient.Text, 1);
+   fFdCoeff := StrToFloatDef(edFDCoefficient.Text, 1);
 
    WriteLn(f, '<SUMMARYSHEET VERSION=R2.0>');
 
@@ -294,7 +301,12 @@ begin
    WriteLn(f, '<CATEGORYCODE>' + edCategoryCode.Text + '</CATEGORYCODE>');
    WriteLn(f, '<CALLSIGN>' + edCallsign.Text + '</CALLSIGN>');
    WriteLn(f, '<OPCALLSIGN>' + edOpCallsign.Text + '</OPCALLSIGN>');
-   WriteLn(f, '<TOTALSCORE>' + IntToStr(MyContest.ScoreForm._TotalMulti * MyContest.ScoreForm._TotalPoints * nFdCoeff) + '</TOTALSCORE>');
+
+   fScore := zLogGetTotalScore();
+   if fScore = -1 then begin
+      fScore := MyContest.ScoreForm._TotalMulti * MyContest.ScoreForm._TotalPoints * fFdCoeff;
+   end;
+   WriteLn(f, '<TOTALSCORE>' + FloatToStr(fScore) + '</TOTALSCORE>');
 
    Write(f, '<ADDRESS>');
    Write(f, mAddress.Text);
@@ -304,9 +316,11 @@ begin
    WriteLn(f, '<TEL>' + edTEL.Text + '</TEL>');
    WriteLn(f, '<EMAIL>' + edEMail.Text + '</EMAIL>');
    WriteLn(f, '<POWER>' + edPower.Text + '</POWER>');
-   if (fFieldDay = True) then begin
-      WriteLn(f, '<FDCOEFF>' + IntToStr(nFdCoeff) + '</FDCOEFF>');
+
+   if fFdCoeff > 1 then begin
+      WriteLn(f, '<FDCOEFF>' + FloatToStr(fFdCoeff) + '</FDCOEFF>');
    end;
+
    WriteLn(f, '<OPPLACE>' + edQTH.Text + '</OPPLACE>');
    WriteLn(f, '<POWERSUPPLY>' + edPowerSupply.Text + '</POWERSUPPLY>');
 
