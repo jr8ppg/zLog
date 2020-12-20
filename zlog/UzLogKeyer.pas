@@ -11,9 +11,9 @@ unit UzLogKeyer;
 interface
 
 uses
-  System.SysUtils, System.Classes, Windows, MMSystem, Math,
+  System.SysUtils, System.Classes, Windows, MMSystem, Math, Forms,
   JvComponentBase, JvHidControllerClass, CPDrv
-  {$IFDEF USESIDETONE},ToneGen, UzLogSound{$ENDIF};
+  {$IFDEF USESIDETONE},ToneGen, UzLogSound, Vcl.ExtCtrls{$ENDIF};
 
 const
   charmax = 256;
@@ -54,6 +54,7 @@ type
   TdmZLogKeyer = class(TDataModule)
     HidController: TJvHidDeviceController;
     ZComKeying: TCommPortDriver;
+    WinkeyerTimer: TTimer;
     procedure DoDeviceChanges(Sender: TObject);
     function DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
     procedure DataModuleCreate(Sender: TObject);
@@ -61,6 +62,9 @@ type
     procedure HidControllerDeviceData(HidDev: TJvHidDevice; ReportID: Byte; const Data: Pointer; Size: Word);
     procedure HidControllerDeviceUnplug(HidDev: TJvHidDevice);
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
+    procedure ZComKeyingReceiveData(Sender: TObject; DataPtr: Pointer;
+      DataSize: Cardinal);
+    procedure WinkeyerTimerTimer(Sender: TObject);
   private
     { Private éŒ¾ }
     FComKeying: TCommPortDriver;
@@ -152,6 +156,15 @@ type
     FUsbDetecting: Boolean;
     FUsbif4cwSyncWpm: Boolean;
 
+    FUseWinKeyer: Boolean;
+    FWkInitializeMode: Boolean;
+    FWkRevision: Integer;
+    FWkStatus: Integer;
+    FWkSpeed: Integer;
+    FWkEcho: Integer;
+
+    FOnSpeedChanged: TNotifyEvent;
+
     procedure Sound();
     procedure NoSound();
 
@@ -182,6 +195,13 @@ type
     procedure USB_OFF();
     procedure SetPaddleReverse(fReverse: Boolean);
     procedure SetUseSideTone(fUse: Boolean);
+
+    procedure WinKeyerOpen(nPort: TKeyingPort);
+    procedure WinKeyerClose();
+    procedure WinKeyerSetSpeed(nWPM: Integer);
+    procedure WinKeyerSetSideTone(fOn: Boolean);
+    procedure WinkeyerControlPTT(fOn: Boolean);
+    procedure WinkeyerSetPTTDelay(before, after: Byte);
   public
     { Public éŒ¾ }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -253,6 +273,11 @@ type
     // 1Port Control support
     procedure SetCommPortDriver(CP: TCommPortDriver);
     procedure ResetCommPortDriver(port: TKeyingPort);
+
+    // WinKeyer support
+    property UseWinKeyer: Boolean read FUseWinKeyer write FUseWinKeyer;
+    procedure WinkeyerSendStr(S: string);
+    procedure WinKeyerClear();
   end;
 
 var
@@ -267,6 +292,9 @@ const
 
 implementation
 
+uses
+  WinKeyer;
+
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
@@ -280,6 +308,8 @@ procedure TdmZLogKeyer.DataModuleCreate(Sender: TObject);
 begin
    FInitialized := False;
    FComKeying := ZComKeying;
+   FUseWinKeyer := False;
+   FOnSpeedChanged := nil;
 
    {$IFDEF USESIDETONE}
    FTone := TSideTone.Create(700);
@@ -513,7 +543,7 @@ begin
       Exit;
    end;
 
-   if FKeyingPort in [tkpSerial1..tkpSerial20] then begin
+   if (FKeyingPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
       if FKeyingSignalReverse = False then begin
          FComKeying.ToggleRTS(PTTON);
       end
@@ -521,6 +551,10 @@ begin
          FComKeying.ToggleDTR(PTTON);
       end;
       Exit;
+   end;
+
+   if (FKeyingPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
+      WinkeyerControlPTT(PTTON);
    end;
 end;
 
@@ -546,21 +580,26 @@ end;
 
 procedure TdmZLogKeyer.SetPTTDelay(before, after: word);
 begin
-   if FTimerMicroSec = 0 then begin
-      Exit;
+   if FUseWinkeyer = True then begin
+      WinkeyerSetPTTDelay(before, after);
+   end
+   else begin
+      if FTimerMicroSec = 0 then begin
+         Exit;
+      end;
+
+      before := Min(before, 255);
+      before := Max(before, 1);
+
+      FPttDelayBeforeCount := Trunc(before * 1000 / FTimerMicroSec);
+      FPttDelayBeforeTime := before;
+
+      after := Min(after, 255);
+      after := Max(after, 1);
+
+      FPttDelayAfterCount := Trunc(after * 1000 / FTimerMicroSec);
+      FPttDelayAfterTime := after;
    end;
-
-   before := Min(before, 255);
-   before := Max(before, 1);
-
-   FPttDelayBeforeCount := Trunc(before * 1000 / FTimerMicroSec);
-   FPttDelayBeforeTime := before;
-
-   after := Min(after, 255);
-   after := Max(after, 1);
-
-   FPttDelayAfterCount := Trunc(after * 1000 / FTimerMicroSec);
-   FPttDelayAfterTime := after;
 end;
 
 function TdmZLogKeyer.Paused: Boolean;
@@ -1031,6 +1070,10 @@ begin
 
       if (FKeyingPort = tkpUSB) and (FUsbif4cwSyncWpm = True) then begin
          usbif4cwSetWPM(0, FKeyerWPM);
+      end;
+
+      if (FKeyingPort in [tkpSerial1 .. tkpSerial20]) and (FUseWinKeyer = True) then begin
+         WinKeyerSetSpeed(FKeyerWPM);
       end;
    end;
 end;
@@ -1704,24 +1747,30 @@ procedure TdmZLogKeyer.ClrBuffer;
 var
    m: Integer;
 begin
-   { SendOK:=False; }
-   { StringBuffer := ''; }
-   for m := 0 to 2 do begin
-      FCWSendBuf[m, 1] := $FF;
+   if FUseWinKeyer = True then begin
+      WinKeyerClear();
+   end
+   else begin
+      { SendOK:=False; }
+      { StringBuffer := ''; }
+      for m := 0 to 2 do begin
+         FCWSendBuf[m, 1] := $FF;
+      end;
+      cwstrptr := 0;
+      FSelectedBuf := 0; // ver 2.1b
+      callsignptr := 0;
+      mousetail := 1;
+      tailcwstrptr := 1;
+      if FUseSideTone then begin
+         NoSound();
+      end;
+      CW_OFF;
+
+      FUserFlag := False;
    end;
-   cwstrptr := 0;
-   FSelectedBuf := 0; // ver 2.1b
-   callsignptr := 0;
-   mousetail := 1;
-   tailcwstrptr := 1;
-   if FUseSideTone then begin
-      NoSound();
-   end;
+
    FSendOK := True;
    FCQLoopCount := 0;
-   CW_OFF;
-
-   FUserFlag := False;
 
    if FPTTEnabled then begin
       ControlPTT(False);
@@ -1883,17 +1932,27 @@ end;
 
 procedure TdmZLogKeyer.COM_ON(port: TKeyingPort);
 begin
-   if FComKeying.Connected = False then begin
-      FComKeying.Port := TPortNumber(port);
-      FComKeying.Connect;
+   if FUseWinKeyer = True then begin
+      WinKeyerOpen(port);
+   end
+   else begin
+      if FComKeying.Connected = False then begin
+         FComKeying.Port := TPortNumber(port);
+         FComKeying.Connect;
+      end;
+      FComKeying.ToggleDTR(False);
+      FComKeying.ToggleRTS(False);
    end;
-   FComKeying.ToggleDTR(False);
-   FComKeying.ToggleRTS(False);
 end;
 
 procedure TdmZLogKeyer.COM_OFF();
 begin
-   FComKeying.Disconnect();
+   if FUseWinKeyer = True then begin
+      WinKeyerClose();
+   end
+   else begin
+      FComKeying.Disconnect();
+   end;
 end;
 
 procedure TdmZLogKeyer.USB_ON();
@@ -2134,6 +2193,210 @@ begin
 //   COM_ON(FKeyingPort);
 
    KeyingPort := port;
+end;
+
+procedure TdmZLogKeyer.WinKeyerOpen(nPort: TKeyingPort);
+var
+   Buff: array[0..10] of Byte;
+   dwTick: DWORD;
+begin
+   FWkInitializeMode := False;
+   FWkRevision := 0;
+   FWkStatus := 0;
+   FWkSpeed := 0;
+   FWkEcho := 0;
+   WinkeyerTimer.Enabled := False;
+
+   //1) Open serial communications port. Use 1200 baud, 8 data bits, no parity
+   FComKeying.Port := TPortNumber(nPort);
+   FComKeying.BaudRate := br1200;
+   FComKeying.Connect();
+
+   //2) To power up WK enable DTR and disable RTS
+   FComKeying.ToggleDTR(True);
+   FComKeying.ToggleRTS(False);
+
+   //3) Delay for ? second to allow WK to finish init
+   Sleep(500);
+
+   //4) Purge the receive port to make sure there are no stray Rx characters sitting in the
+   // buffer. This is done by simply reading the port until empty.
+
+   //5) Issue a calibration command:
+   //Byte 0: ADMIN_CMD
+   //Byte 1: ADMIN_CAL
+   //Byte 2: 0xFF
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_ADMIN_CMD;
+   Buff[1] := WK_ADMIN_CAL;
+   FComKeying.SendData(@Buff, 2);
+   Sleep(100);
+   Buff[0] := $FF;
+   FComKeying.SendData(@Buff, 1);
+
+   //6) Check to make sure WK is attached and operational
+   //Byte 0: ADMIN_CMD
+   //Byte 1: ADMIN_ECHO
+   //Byte 2: 0x55
+//   FMemo[n].Lines.Add('---6) Check to make sure WK is attached and operational---');
+//   Buff[0] := WK_ADMIN_CMD;
+//   Buff[1] := WK_ADMIN_ECHO;
+//   Buff[2] := $55;
+//   FCP[n].SendData(@Buff, 3);
+
+   //Now read Rx until 0x55 is returned or you reach a 1 second timeout, if you timed
+   //out that means WK is not connected, the serial port selection is incorrect, there is
+   //something wrong with the cable or WK itself is no working.
+
+   //7) Now itfs time to officially open the WK interface, this is done by the following
+   //command sequence:
+   // Byte 0: ADMIN_CMD
+   // Byte 1: ADMIN_OPEN
+   FWkInitializeMode := True;
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_ADMIN_CMD;
+   Buff[1] := WK_ADMIN_OPEN;
+   FComKeying.SendData(@Buff, 2);
+
+   dwTick := GetTickCount();
+   while FWkRevision = 0 do begin
+      Application.ProcessMessages();
+      if (GetTickCount() - dwTick) >= 1000 then begin
+         Exit;
+      end;
+   end;
+   FWkInitializeMode := False;
+
+   // WK will respond with its firmware revision byte to let you know it opened
+   // correctly. If it does not respond with in ? second (very unlikely if the echo
+   // command completed properly) something went wrong and needs to be addressed
+   // before continuing.
+
+//   Buff[0] := WK_SET_SPEEDPOT_CMD;
+//   Buff[1] := updown1.Min;
+//   Buff[2] := updown1.Max - updown1.Min;
+//   Buff[3] := 0;
+//   FComKeying.SendData(@Buff, 4);
+//
+//   Sleep(200);
+
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_GET_SPEEDPOT_CMD;
+   FComKeying.SendData(@Buff, 1);
+end;
+
+procedure TdmZLogKeyer.WinKeyerClose();
+begin
+   FComKeying.Disconnect();
+end;
+
+procedure TdmZLogKeyer.WinKeyerSetSpeed(nWPM: Integer);
+var
+   Buff: array[0..10] of Byte;
+begin
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_SETWPM_CMD;
+   Buff[1] := nWPM;
+   FComKeying.SendData(@Buff, 2);
+end;
+
+procedure TdmZLogKeyer.WinKeyerClear();
+var
+   Buff: array[0..10] of Byte;
+begin
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_CLEAR_CMD;
+   FComKeying.SendData(@Buff, 1);
+end;
+
+procedure TdmZLogKeyer.WinKeyerSetSideTone(fOn: Boolean);
+var
+   Buff: array[0..10] of Byte;
+begin
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_SIDETONE_CMD;
+   if fOn = True then begin
+      Buff[1] := $06;
+   end
+   else begin
+      Buff[1] := $86;
+   end;
+   FComKeying.SendData(@Buff, 2);
+end;
+
+procedure TdmZLogKeyer.WinkeyerControlPTT(fOn: Boolean);
+var
+   Buff: array[0..10] of Byte;
+begin
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_PTT_CMD;
+   if fOn = True then begin
+      Buff[1] := WK_PTT_ON;
+   end
+   else begin
+      Buff[1] := WK_PTT_OFF;
+   end;
+   FComKeying.SendData(@Buff, 2);
+end;
+
+procedure TdmZLogKeyer.WinkeyerSetPTTDelay(before, after: Byte);
+var
+   Buff: array[0..10] of Byte;
+begin
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_SET_PTTDELAY_CMD;
+   Buff[1] := before;
+   Buff[2] := after;
+   FComKeying.SendData(@Buff, 3);
+end;
+
+procedure TdmZLogKeyer.WinkeyerSendStr(S: string);
+begin
+   FComKeying.SendString(AnsiString(S));
+end;
+
+procedure TdmZLogKeyer.ZComKeyingReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
+var
+   i: Integer;
+   b: Byte;
+   PP: PByte;
+   newwpm: Integer;
+begin
+   PP := DataPtr;
+
+   if FUseWinKeyer = True then begin
+      if FWkInitializeMode = True then begin
+         FWkRevision := (PP)^;
+         Exit;
+      end;
+
+      for i := 0 to DataSize - 1 do begin
+         b := (PP + i)^;
+
+         if ((b and $c0) = $c0) then begin    // STATUS
+            FWkStatus := b;
+         end
+         else if ((b and $c0) = $80) then begin   // POT POSITION
+            newwpm := (b and $3F);
+            FWkSpeed := newwpm;
+            WinkeyerTimer.Enabled := True;
+         end
+         else begin  // ECHO TEST
+            FWkEcho := b;
+         end;
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.WinkeyerTimerTimer(Sender: TObject);
+begin
+   WinkeyerTimer.Enabled := False;
+
+   SetWPM(FWkSpeed);
+
+   if Assigned(FOnSpeedChanged) then begin
+      FOnSpeedChanged(Self);
+   end;
 end;
 
 end.

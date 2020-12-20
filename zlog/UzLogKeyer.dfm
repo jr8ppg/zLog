@@ -20,7 +20,15 @@ object dmZLogKeyer: TdmZLogKeyer
     HwFlow = hfNONE
     InBufSize = 4096
     EnableDTROnOpen = False
+    OnReceiveData = ZComKeyingReceiveData
     Left = 91
     Top = 16
+  end
+  object WinkeyerTimer: TTimer
+    Enabled = False
+    Interval = 10
+    OnTimer = WinkeyerTimerTimer
+    Left = 24
+    Top = 88
   end
 end

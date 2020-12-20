@@ -102,6 +102,8 @@ type
     _usbif4cw_sync_wpm: Boolean;
     _polling_interval: Integer;
 
+    _use_winkeyer: Boolean;
+
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
     _clusterbaud : integer; {}
 
@@ -748,6 +750,9 @@ begin
       // Polling Interval
       Settings._polling_interval := ini.ReadInteger('Hardware', 'PollingInterval', 200);
 
+      // Use WinKeyer USB
+      Settings._use_winkeyer := ini.ReadBool('Hardware', 'UseWinKeyer', False);
+
       // CW/PTT port
       Settings._lptnr := ini.ReadInteger('Hardware', 'CWLPTPort', 0);
 
@@ -1205,6 +1210,9 @@ begin
       // Polling Interval
       ini.WriteInteger('Hardware', 'PollingInterval', Settings._polling_interval);
 
+      // Use WinKeyer USB
+      ini.WriteBool('Hardware', 'UseWinKeyer', Settings._use_winkeyer);
+
       // CW/PTT port
       ini.WriteInteger('Hardware', 'CWLPTPort', Settings._lptnr);
 
@@ -1438,6 +1446,7 @@ end;
 
 procedure TdmZLogGlobal.InitializeCW();
 begin
+   dmZlogKeyer.UseWinKeyer := Settings._use_winkeyer;
    dmZlogKeyer.UseSideTone := Settings.CW._sidetone;
 
    // RIGコントロールと同じポートの場合は無しとする

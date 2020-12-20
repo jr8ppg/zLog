@@ -370,15 +370,22 @@ end;
 
 procedure zLogSendStr(S: string);
 begin
-  dmZLogKeyer.PauseCW;
+   if dmZLogKeyer.UseWinKeyer = True then begin
+      dmZLogKeyer.WinKeyerSendStr(S);
+   end
+   else begin
+      dmZLogKeyer.PauseCW;
 
-  if dmZLogGlobal.FIFO then
-    dmZLogKeyer.SendStrFIFO(S)
-  else
-    dmZLogKeyer.SendStr(S);
+      if dmZLogGlobal.FIFO then begin
+         dmZLogKeyer.SendStrFIFO(S);
+      end
+      else begin
+         dmZLogKeyer.SendStr(S);
+      end;
 
-  dmZLogKeyer.SetCallSign(Main.CurrentQSO.Callsign);
-  dmZLogKeyer.ResumeCW;
+      dmZLogKeyer.SetCallSign(Main.CurrentQSO.Callsign);
+      dmZLogKeyer.ResumeCW;
+   end;
 end;
 
 procedure CtrlZBreak;

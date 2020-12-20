@@ -4985,15 +4985,21 @@ begin
    S := dmZlogGlobal.CWMessage(2);
    S := SetStr(S, CurrentQSO);
 
-   dmZLogKeyer.ClrBuffer;
-   dmZLogKeyer.PauseCW;
-   if dmZlogGlobal.PTTEnabled then begin
-      S := S + ')'; // PTT is turned on in ResumeCW
-   end;
+   if dmZLogKeyer.UseWinKeyer = True then begin
+      dmZLogKeyer.WinKeyerClear();
+      dmZLogKeyer.WinkeyerSendStr(S);
+   end
+   else begin
+      dmZLogKeyer.ClrBuffer;
+      dmZLogKeyer.PauseCW;
+      if dmZlogGlobal.PTTEnabled then begin
+         S := S + ')'; // PTT is turned on in ResumeCW
+      end;
 
-   dmZLogKeyer.SetCWSendBuf(0, S);
-   dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
-   dmZLogKeyer.ResumeCW;
+      dmZLogKeyer.SetCWSendBuf(0, S);
+      dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
+      dmZLogKeyer.ResumeCW;
+   end;
 
    if dmZlogGlobal.Settings._switchcqsp then begin
       CallsignSentProc(nil);
