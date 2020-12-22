@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 358
     Height = 361
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetHardware
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1623,10 +1623,6 @@ object formOptions: TformOptions
     end
     object tabsheetHardware: TTabSheet
       Caption = 'Hardware'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox6: TGroupBox
         Left = 5
         Top = 0
@@ -2042,6 +2038,10 @@ object formOptions: TformOptions
     end
     object tabsheetRigControl: TTabSheet
       Caption = 'Rig control'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label45: TLabel
         Left = 8
         Top = 107

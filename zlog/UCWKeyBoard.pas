@@ -218,13 +218,13 @@ end;
 
 procedure TCWKeyBoard.actionIncreaseCwSpeedExecute(Sender: TObject);
 begin
-   IncCWSpeed();
+   dmZLogKeyer.IncCWSpeed();
    SetFocus();
 end;
 
 procedure TCWKeyBoard.actionDecreaseCwSpeedExecute(Sender: TObject);
 begin
-   DecCWSpeed();
+   dmZLogKeyer.DecCWSpeed();
    SetFocus();
 end;
 

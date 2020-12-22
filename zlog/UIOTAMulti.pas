@@ -355,8 +355,6 @@ begin
    finally
       dlg.Release();
    end;
-
-   UzLogCW.QTHString := MyIOTA;
 end;
 
 procedure TIOTAMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer; var Bold, Italic, underline: boolean);

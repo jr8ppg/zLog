@@ -140,6 +140,9 @@ type
 
     FKeyerWPM: Integer; //word;
     FKeyerWeight: Integer; //word;
+    FUseFixedSpeed: Boolean;
+    FFixedSpeed: Integer;
+    FBeforeSpeed: Integer;
 
     FUseSideTone: Boolean;
     FSideTonePitch: Integer;       {side tone pitch}
@@ -254,7 +257,7 @@ type
 
     property OnCallsignSentProc: TNotifyEvent read FOnCallsignSentProc write FOnCallsignSentProc;
     property OnPaddle: TNotifyEvent read FOnPaddleEvent write FOnPaddleEvent;
-
+    property OnSpeedChanged: TNotifyEvent read FOnSpeedChanged write FOnSpeedChanged;
     property KeyingSignalReverse: Boolean read FKeyingSignalReverse write FKeyingSignalReverse;
 
     property UsbPortIn: TUsbPortDataArray read FUsbPortIn;
@@ -278,6 +281,11 @@ type
     property UseWinKeyer: Boolean read FUseWinKeyer write FUseWinKeyer;
     procedure WinkeyerSendStr(S: string);
     procedure WinKeyerClear();
+
+    procedure IncCWSpeed();
+    procedure DecCWSpeed();
+    procedure ToggleFixedSpeed();
+    property FixedSpeed: Integer read FFixedSpeed write FFixedSpeed;
   end;
 
 var
@@ -310,6 +318,9 @@ begin
    FComKeying := ZComKeying;
    FUseWinKeyer := False;
    FOnSpeedChanged := nil;
+   FUseFixedSpeed := False;
+   FBeforeSpeed := 0;
+   FFixedSpeed := 0;
 
    {$IFDEF USESIDETONE}
    FTone := TSideTone.Create(700);
@@ -1056,6 +1067,10 @@ end; { TimerProcess }
 
 procedure TdmZLogKeyer.SetWPM(wpm: Integer);
 begin
+   if FKeyerWPM = wpm then begin
+      Exit;
+   end;
+
    if (wpm <= MAXWPM) and (wpm >= MINWPM) then begin
       if wpm * FTimerMicroSec = 0 then begin
          Exit;
@@ -2393,6 +2408,69 @@ begin
    WinkeyerTimer.Enabled := False;
 
    SetWPM(FWkSpeed);
+
+   if Assigned(FOnSpeedChanged) then begin
+      FOnSpeedChanged(Self);
+   end;
+end;
+
+procedure TdmZLogKeyer.IncCWSpeed();
+var
+   i : integer;
+begin
+   WPM := WPM + 1;
+
+//   i := dmZLogGlobal.Settings.CW._speed + 1;
+//   if i > MAXWPM then begin
+//      i := MAXWPM;
+//   end;
+//   dmZLogGlobal.Speed := i;
+//
+//   MainForm.SpeedBar.Position := i;
+//   MainForm.SpeedLabel.Caption := IntToStr(i) + ' wpm';
+
+   if Assigned(FOnSpeedChanged) then begin
+      FOnSpeedChanged(Self);
+   end;
+end;
+
+procedure TdmZLogKeyer.DecCWSpeed();
+var
+   i : integer;
+begin
+   WPM := WPM - 1;
+
+//   i := dmZLogGlobal.Settings.CW._speed - 1;
+//   if i < MINWPM then begin
+//      i := MINWPM;
+//   end;
+//   dmZLogGlobal.Speed := i;
+//
+//   MainForm.SpeedBar.Position := i;
+//   MainForm.SpeedLabel.Caption := IntToStr(i) + ' wpm';
+
+   if Assigned(FOnSpeedChanged) then begin
+      FOnSpeedChanged(Self);
+   end;
+end;
+
+procedure TdmZLogKeyer.ToggleFixedSpeed();
+var
+   i : integer;
+begin
+   FUseFixedSpeed := not(FUseFixedSpeed);
+
+   if FUseFixedSpeed then begin
+      i := FFixedSpeed;
+      FBeforeSpeed := WPM;
+   end
+   else begin
+      i := FBeforeSpeed;
+   end;
+
+   if (i >= MINWPM) and (i <= MAXWPM) then begin
+      WPM := i;
+   end;
 
    if Assigned(FOnSpeedChanged) then begin
       FOnSpeedChanged(Self);

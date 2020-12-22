@@ -5,6 +5,7 @@ inherited IOTAMulti: TIOTAMulti
   PixelsPerInch = 96
   TextHeight = 13
   inherited Panel1: TPanel
+    ExplicitWidth = 344
     inherited Button3: TButton
       Width = 33
       ExplicitWidth = 33
@@ -22,7 +23,6 @@ inherited IOTAMulti: TIOTAMulti
       Top = 12
       Width = 32
       Caption = '3.5CW'
-      Visible = True
       ExplicitLeft = 223
       ExplicitTop = 12
       ExplicitWidth = 32

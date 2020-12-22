@@ -1461,6 +1461,8 @@ begin
    dmZlogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZlogKeyer.PaddleReverse := Settings.CW._paddlereverse;
 
+   dmZLogKeyer.FixedSpeed := Settings.CW._fixwpm;
+
    dmZlogKeyer.SetPTTDelay(Settings._pttbefore, Settings._pttafter);
    dmZlogKeyer.SetPTT(Settings._pttenabled);
 

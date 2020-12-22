@@ -1007,6 +1007,8 @@ type
     procedure TerminateNPlusOne();
     procedure TerminateSuperCheckDataLoad();
     procedure OnSPCMenuItemCick(Sender: TObject);
+
+    procedure DoCwSpeedChange(Sender: TObject);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -3819,6 +3821,7 @@ begin
       if GetAsyncKeyState(VK_SHIFT) = 0 then begin
          dmZLogKeyer.OnCallsignSentProc := CallsignSentProc;
          dmZLogKeyer.OnPaddle := OnPaddle;
+         dmZLogKeyer.OnSpeedChanged := DoCwSpeedChange;
          dmZLogKeyer.InitializeBGK(mSec);
       end;
    end;
@@ -4593,12 +4596,12 @@ begin
 
    case Key of
       '!': begin
-         ToggleFixedSpeed;
+         dmZLogKeyer.ToggleFixedSpeed();
          Key := #0;
       end;
 
       '-': begin // up key
-         ToggleFixedSpeed;
+         dmZLogKeyer.ToggleFixedSpeed();
          Key := #0;
       end;
 
@@ -7199,7 +7202,7 @@ begin
    EditScreen := TALLJAEdit.Create(Self);
 
    MyContest := TALLJAContest.Create('ALL JA コンテスト');
-   QTHString := dmZlogGlobal.Settings._prov;
+//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.Init6D();
@@ -7210,7 +7213,7 @@ begin
    EditScreen := TACAGEdit.Create(Self);
 
    MyContest := TSixDownContest.Create('6m and DOWNコンテスト');
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitFD();
@@ -7221,7 +7224,7 @@ begin
    EditScreen := TACAGEdit.Create(Self);
 
    MyContest := TFDContest.Create('フィールドデーコンテスト');
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitACAG();
@@ -7232,7 +7235,7 @@ begin
    EditScreen := TACAGEdit.Create(Self);
 
    MyContest := TACAGContest.Create('全市全郡コンテスト');
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitALLJA0_JA0(BandGroupIndex: Integer);
@@ -7267,7 +7270,7 @@ begin
       end;
    end;
 
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitALLJA0_Other(BandGroupIndex: Integer);
@@ -7302,7 +7305,7 @@ begin
       end;
    end;
 
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitKCJ();
@@ -7314,7 +7317,7 @@ begin
    EditScreen := TKCJEdit.Create(Self);
 
    MyContest := TKCJContest.Create('KCJ コンテスト');
-   QTHString := dmZlogGlobal.Settings._prov;
+//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.InitDxPedi();
@@ -7333,7 +7336,7 @@ begin
       EditScreen := TGeneralEdit.Create(Self);
 
       MyContest := TPedi.Create('Pedition mode');
-      QTHString := dmZlogGlobal.Settings._prov;
+//      QTHString := dmZlogGlobal.Settings._prov;
    finally
       F.Release();
    end;
@@ -7341,7 +7344,7 @@ end;
 
 procedure TMainForm.InitUserDefined(ContestName, ConfigFile: string);
 begin
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
    MyContest := TGeneralContest.Create(ContestName, ConfigFile);
 end;
 
@@ -7355,7 +7358,7 @@ begin
    EditScreen := TWWEdit.Create(Self);
 
    MyContest := TCQWWContest.Create('CQWW DX Contest');
-   QTHString := UMultipliers.MyZone;
+//   QTHString := UMultipliers.MyZone;
 end;
 
 procedure TMainForm.InitWPX(OpGroupIndex: Integer);
@@ -7374,7 +7377,7 @@ begin
       SerialContestType := SER_MS;
    end;
 
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
    mPXListWPX.Visible := True;
 end;
 
@@ -7392,7 +7395,7 @@ begin
       MyContest := TJIDXContestDX.Create('JIDX Contest (DX)');
    end;
 
-   QTHString := dmZlogGlobal.Settings._prov;
+//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.InitAPSprint();
@@ -7406,7 +7409,7 @@ begin
    EditScreen := TWPXEdit.Create(Self);
 
    MyContest := TAPSprint.Create('Asia Pacific Sprint');
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
    // Log.QsoList[0].memo := 'WPX Contest';
 end;
 
@@ -7418,7 +7421,7 @@ begin
    EditScreen := TDXCCEdit.Create(Self);
 
    MyContest := TARRLDXContestW.Create('ARRL International DX Contest (W/VE)');
-   QTHString := dmZlogGlobal.Settings._prov;
+//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.InitARRL_DX();
@@ -7429,7 +7432,7 @@ begin
    EditScreen := TARRLDXEdit.Create(Self);
 
    MyContest := TARRLDXContestDX.Create('ARRL International DX Contest (DX)');
-   QTHString := dmZlogGlobal.Settings._prov;
+//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.InitARRL10m();
@@ -7463,7 +7466,7 @@ begin
    EditScreen := TIARUEdit.Create(Self);
 
    MyContest := TIARUContest.Create('IARU HF World Championship');
-   QTHString := MyZone;
+//   QTHString := MyZone;
 end;
 
 procedure TMainForm.InitAllAsianDX();
@@ -7478,7 +7481,7 @@ begin
       EditScreen := TDXCCEdit.Create(Self);
 
       MyContest := TAllAsianContest.Create('All Asian DX Contest (Asia)');
-      QTHString := dmZlogGlobal.Settings._prov;
+//      QTHString := dmZlogGlobal.Settings._prov;
 
       if F.ShowModal() <> mrOK then begin
          Exit;
@@ -8558,13 +8561,13 @@ end;
 // #96 QRU Shift+U
 procedure TMainForm.actionDecreaseCwSpeedExecute(Sender: TObject);
 begin
-   DecCWSpeed;
+   dmZLogKeyer.DecCWSpeed();
 end;
 
 // #97 QRQ Shift+Y
 procedure TMainForm.actionIncreaseCwSpeedExecute(Sender: TObject);
 begin
-   IncCWSpeed;
+   dmZLogKeyer.IncCWSpeed();
 end;
 
 // #98 連続CQ、ESCを押さないと送信解除しない Shift+Z
@@ -9316,6 +9319,15 @@ begin
    for b := b19 to HiBand do begin
       BandMenu.Items[ord(b)].Enabled := (BandMenu.Items[ord(b)].Enabled and dmZLogGlobal.Settings._activebands[b]);
    end;
+end;
+
+procedure TMainForm.DoCwSpeedChange(Sender: TObject);
+var
+   i: Integer;
+begin
+   i := dmZLogKeyer.WPM;
+   SpeedBar.Position := i;
+   SpeedLabel.Caption := IntToStr(i) + ' wpm';
 end;
 
 end.
