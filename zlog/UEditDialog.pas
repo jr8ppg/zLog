@@ -773,8 +773,7 @@ begin
       end;
 
       S := dmZlogGlobal.CWMessage(cb, no);
-      S := SetStr(S, CurrentQSO);
-      zLogSendStr(S);
+      zLogSendStr2(S, CurrentQSO);
    end
    else begin
       // SendVoice(i);

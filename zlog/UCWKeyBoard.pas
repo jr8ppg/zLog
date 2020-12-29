@@ -234,13 +234,11 @@ var
    i: Integer;
 begin
    S := dmZlogGlobal.CWMessage(cb, no);
-
    if S = '' then begin
       Exit;
    end;
 
-   S := SetStr(S, CurrentQSO);
-   zLogSendStr(S);
+   zLogSendStr2(S, CurrentQSO);
 
    while Pos(':***********', S) > 0 do begin
       i := Pos(':***********', S);

@@ -18,6 +18,7 @@ function LastCallsign : string;
 function SetStr(S : string; aQSO : TQSO) : String;
 function SetStrNoAbbrev(S : string; aQSO : TQSO) : String; {for QSO.NrSent}
 procedure zLogSendStr(S: string);
+procedure zLogSendStr2(S: string; aQSO: TQSO);
 procedure CtrlZBreak;
 
 implementation
@@ -176,6 +177,18 @@ begin
       dmZLogKeyer.SetCallSign(Main.CurrentQSO.Callsign);
       dmZLogKeyer.ResumeCW;
    end;
+end;
+
+procedure zLogSendStr2(S: string; aQSO: TQSO);
+begin
+   if aQSO.Mode = mCW then begin
+      S := SetStr(S, aQSO);
+   end;
+   if aQSO.Mode = mRTTY then begin
+      S := SetStrNoAbbrev(S, aQSO);
+   end;
+
+   zLogSendStr(S);
 end;
 
 procedure CtrlZBreak;

@@ -5023,8 +5023,7 @@ begin
                // NR?é©ìÆëóèoégÇ§èÍçá
                if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
                   S := dmZlogGlobal.CWMessage(5);
-                  S := SetStr(S, CurrentQSO);
-                  zLogSendStr(S);
+                  zLogSendStr2(S, CurrentQSO);
                end;
 
                WriteStatusLine('Invalid Number', False);
@@ -5035,8 +5034,7 @@ begin
 
             // TU $M TEST
             S := dmZlogGlobal.CWMessage(3);
-            S := SetStr(S, CurrentQSO);
-            zLogSendStr(S);
+            zLogSendStr2(S, CurrentQSO);
 
             LogButtonClick(Self);
          end;
@@ -7712,8 +7710,7 @@ begin
       Exit;
    end;
 
-   S := SetStr(S, CurrentQSO);
-   zLogSendStr(S);
+   zLogSendStr2(S, CurrentQSO);
 end;
 
 procedure TMainForm.PlayMessagePH(no: Integer);
