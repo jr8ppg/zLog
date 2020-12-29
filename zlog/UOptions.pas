@@ -390,6 +390,7 @@ type
     comboVoiceDevice: TComboBox;
     buttonPlayVoice: TSpeedButton;
     buttonStopVoice: TSpeedButton;
+    checkUseWinKeyer: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -674,6 +675,9 @@ begin
       else begin
          Settings._lptnr := 0;
       end;
+
+      // Use Winkeyer
+      Settings._use_winkeyer := checkUseWinkeyer.Checked;
 
 //      Settings._sentstr := SentEdit.Text;
 
@@ -993,6 +997,9 @@ begin
       else begin
          comboCwPttPort.ItemIndex := 0;
       end;
+
+      // Use Winkeyer
+      checkUseWinkeyer.Checked := Settings._use_winkeyer;
 
       // SentóìÇÕï\é¶êÍóp
       SentEdit.Text := Settings._sentstr;
