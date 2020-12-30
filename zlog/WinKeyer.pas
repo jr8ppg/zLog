@@ -34,6 +34,9 @@ const
   // Clear Buffer <0A> no parameters
   WK_CLEAR_CMD = $0a;
 
+  // Request Winkeyer2 Status <15> no parameter, Return Winkeyer2Åfs status byte
+  WK_STATUS_CMD = $15;
+
   // Buffered Commands
   // PTT On/Off <18><nn> nn = 01 PTT on, n = 00 PTT off
   WK_PTT_CMD = $18;

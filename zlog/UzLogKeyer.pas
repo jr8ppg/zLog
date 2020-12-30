@@ -279,6 +279,7 @@ type
 
     // WinKeyer support
     property UseWinKeyer: Boolean read FUseWinKeyer write FUseWinKeyer;
+    procedure WinkeyerSendCallsign(S: string);
     procedure WinkeyerSendStr(S: string);
     procedure WinKeyerClear();
 
@@ -657,6 +658,11 @@ procedure TdmZLogKeyer.SetCWSendBufCharPTT(C: char);
 var
    m: Integer;
 begin
+   if UseWinKeyer = True then begin
+      WinKeyerSendStr(C);
+      Exit;
+   end;
+
    if FPTTEnabled and Not(PTTIsOn) then begin
       ControlPTT(True);
       FKeyingCounter := FPttDelayBeforeCount;
@@ -2365,8 +2371,74 @@ begin
    FComKeying.SendData(@Buff, 3);
 end;
 
+procedure TdmZLogKeyer.WinkeyerSendCallsign(S: string);
+var
+   Buff: array[0..10] of Byte;
+   dwTick: DWORD;
+begin
+   FComKeying.SendString(AnsiString(S));
+
+   dwTick := GetTickCount();
+   while true do begin
+      Application.ProcessMessages();
+      if (FWkStatus and $04) = $04 then begin
+//         OutputDebugString(PChar('BREAK'));
+         Break;
+      end;
+
+      // 1sec
+      if (GetTickCount() - dwTick) >= 1000 then begin
+         Break;
+      end;
+   end;
+
+   dwTick := GetTickCount();
+   while true do begin
+      Application.ProcessMessages();
+      if (FWkStatus and $04) = 0 then begin
+//         OutputDebugString(PChar('BREAK'));
+         Break;
+      end;
+
+      // 10sec
+      if (GetTickCount() - dwTick) >= 10000 then begin
+         Break;
+      end;
+   end;
+
+   if Assigned(FOnCallsignSentProc) then begin
+      FOnCallsignSentProc(nil);
+   end;
+end;
+
 procedure TdmZLogKeyer.WinkeyerSendStr(S: string);
 begin
+   if FPTTEnabled { and Not(PTTIsOn) } then begin
+      S := '(' + S + ')';
+   end;
+
+   // PTT ON/OFF
+   S := StringReplace(S, '(', #18#01, [rfReplaceAll]);
+   S := StringReplace(S, ')', #18#00, [rfReplaceAll]);
+
+   // AR
+   S := StringReplace(S, 'a', #$1b + 'AR', [rfReplaceAll]);
+
+   // BK
+   S := StringReplace(S, 'b', #$1b + 'BK', [rfReplaceAll]);
+   S := StringReplace(S, '~', #$1b + 'BK', [rfReplaceAll]);
+
+   // KN
+   S := StringReplace(S, 'k', #$1b + 'KN', [rfReplaceAll]);
+
+   // SK
+   S := StringReplace(S, 's', #$1b + 'SK', [rfReplaceAll]);
+
+   // unsupport
+   S := StringReplace(S, '_', '', [rfReplaceAll]);
+   S := StringReplace(S, ':', '', [rfReplaceAll]);
+   S := StringReplace(S, '*', '', [rfReplaceAll]);
+
    FComKeying.SendString(AnsiString(S));
 end;
 
@@ -2390,6 +2462,9 @@ begin
 
          if ((b and $c0) = $c0) then begin    // STATUS
             FWkStatus := b;
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('WinKey STATUS=[' + IntToHex(b, 2) + ']'));
+            {$ENDIF}
          end
          else if ((b and $c0) = $80) then begin   // POT POSITION
             newwpm := (b and $3F);

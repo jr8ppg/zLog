@@ -4990,7 +4990,7 @@ begin
 
    if dmZLogKeyer.UseWinKeyer = True then begin
       dmZLogKeyer.WinKeyerClear();
-      dmZLogKeyer.WinkeyerSendStr(S);
+      dmZLogKeyer.WinkeyerSendCallsign(CurrentQSO.Callsign);
    end
    else begin
       dmZLogKeyer.ClrBuffer;
@@ -5719,6 +5719,9 @@ var
    Q: TQSO;
    S: String;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('--- Begin CallsignSentProc() ---'));
+   {$ENDIF}
    try
       if CallsignEdit.Focused then begin
          Q := Log.QuickDupe(CurrentQSO);
@@ -5729,7 +5732,9 @@ begin
             // ALLOW DUPEしない場合は4番を送出
             if dmZLogGlobal.Settings._allowdupe = False then begin
                // 先行して送出されている2番をクリア
-               dmZLogKeyer.ClrBuffer;
+               if dmZLogKeyer.UseWinKeyer = False then begin
+                  dmZLogKeyer.ClrBuffer;
+               end;
 
                if dmZlogGlobal.Settings._switchcqsp then begin
                   if dmZlogGlobal.Settings.CW.CurrentBank = 2 then begin
@@ -5740,12 +5745,24 @@ begin
 
                // 4番(QSO B4 TU)送出
                S := ' ' + SetStr(dmZlogGlobal.CWMessage(1, 4), CurrentQSO);
-               dmZLogKeyer.SendStr(S);
-               dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
+               if dmZLogKeyer.UseWinKeyer = True then begin
+                  zLogSendStr(S);
+               end
+               else begin
+                  dmZLogKeyer.SendStr(S);
+                  dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
+               end;
 
                CallsignEdit.SelectAll;
 
                exit; { BECAREFUL!!!!!!!!!!!!!!!!!!!!!!!! }
+            end;
+         end
+         else begin  // NOT DUPE
+            if dmZLogKeyer.UseWinKeyer = True then begin
+               S := dmZlogGlobal.CWMessage(2);
+               S := SetStr(S, CurrentQSO);
+               dmZLogKeyer.WinkeyerSendStr(S);
             end;
          end;
 
