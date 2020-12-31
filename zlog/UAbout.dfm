@@ -121,10 +121,12 @@ object AboutBox: TAboutBox
       ParentFont = False
     end
     object Label4: TLabel
-      Left = 195
-      Top = 48
-      Width = 3
+      Left = 104
+      Top = 61
+      Width = 191
       Height = 13
+      AutoSize = False
+      Caption = 'CW I/F Information'
     end
     object LinkLabel2: TLinkLabel
       Left = 8

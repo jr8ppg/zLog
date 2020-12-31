@@ -282,6 +282,7 @@ type
 
     // WinKeyer support
     property UseWinKeyer: Boolean read FUseWinKeyer write FUseWinKeyer;
+    property WinKeyerRevision: Integer read FWkRevision;
     procedure WinkeyerSendCallsign(S: string);
     procedure WinkeyerSendStr(S: string);
     procedure WinKeyerClear();
