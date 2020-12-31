@@ -2317,9 +2317,13 @@ begin
 //
 //   Sleep(200);
 
+   // Œ»İ‚ÌSPEED POTˆÊ’u‚ğæ“¾
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_GET_SPEEDPOT_CMD;
    FComKeying.SendData(@Buff, 1);
+
+   // SideTone
+   WinKeyerSetSideTone(FUseSideTone);
 end;
 
 procedure TdmZLogKeyer.WinKeyerClose();
