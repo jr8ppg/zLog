@@ -2463,8 +2463,13 @@ begin
    // SK
    S := StringReplace(S, 's', #$1b + 'SK', [rfReplaceAll]);
 
+   // GAP
+   // Winkeyer2 interprets the | character (hex 0x7C) as a 1/2 dit delay time. The | character can be included in a
+   // text string to add extra emphasis to similar sounding sequences. An example is W1OMO, sending it as
+   // W1|O|M|O makes it easier to copy.
+   S := StringReplace(S, '_', '|', [rfReplaceAll]);
+
    // unsupport
-   S := StringReplace(S, '_', '', [rfReplaceAll]);
    S := StringReplace(S, ':', '', [rfReplaceAll]);
    S := StringReplace(S, '*', '', [rfReplaceAll]);
    S := StringReplace(S, '@', '', [rfReplaceAll]);
