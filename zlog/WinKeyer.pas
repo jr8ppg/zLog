@@ -35,7 +35,12 @@ const
   WK_CLEAR_CMD = $0a;
 
   // Request Winkeyer2 Status <15> no parameter, Return Winkeyer2Åfs status byte
-  WK_STATUS_CMD = $15;
+  WK_STATUS_CMD     = $15;
+  WK_STATUS_XOFF    = $01;    // Buffer is more than 2/3 full when = 1
+  WK_STATUS_BREAKIN = $02;    // Paddle break-in active when = 1
+  WK_STATUS_BUSY    = $04;    // Keyer is busy sending Morse when = 1
+  WK_STATUS_KEYDOWN = $08;    // Keydown status (Tune) 1 = keydown
+  WK_STATUS_WAIT    = $10;    // WK is waiting for an internally timed event to finish
 
   // Buffered Commands
   // PTT On/Off <18><nn> nn = 01 PTT on, n = 00 PTT off

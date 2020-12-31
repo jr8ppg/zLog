@@ -55,6 +55,7 @@ type
     HidController: TJvHidDeviceController;
     ZComKeying: TCommPortDriver;
     WinkeyerTimer: TTimer;
+    RepeatTimer: TTimer;
     procedure DoDeviceChanges(Sender: TObject);
     function DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
     procedure DataModuleCreate(Sender: TObject);
@@ -65,6 +66,7 @@ type
     procedure ZComKeyingReceiveData(Sender: TObject; DataPtr: Pointer;
       DataSize: Cardinal);
     procedure WinkeyerTimerTimer(Sender: TObject);
+    procedure RepeatTimerTimer(Sender: TObject);
   private
     { Private 宣言 }
     FComKeying: TCommPortDriver;
@@ -165,6 +167,7 @@ type
     FWkStatus: Integer;
     FWkSpeed: Integer;
     FWkEcho: Integer;
+    FWkLastMessage: string;
 
     FOnSpeedChanged: TNotifyEvent;
 
@@ -315,6 +318,8 @@ end;
 
 procedure TdmZLogKeyer.DataModuleCreate(Sender: TObject);
 begin
+   WinKeyerTimer.Enabled := False;
+   RepeatTimer.Enabled := False;
    FInitialized := False;
    FComKeying := ZComKeying;
    FUseWinKeyer := False;
@@ -784,15 +789,21 @@ begin
       SS := '(' + SS + ')';
    end;
 
-   SS := SS + '@';
+   if FUseWinKeyer = True then begin
+      FWkLastMessage := SS;
+      WinkeyerSendStr(SS);
+   end
+   else begin
+      SS := SS + '@';
 
-   FCQLoopCount := 1;
-//   SendStr(SS + '@');
+      FCQLoopCount := 1;
+   //   SendStr(SS + '@');
 
-   SetCWSendBuf(0, SS);
-   cwstrptr := 1;
-   FSendOK := True;
-   FKeyingCounter := 1;
+      SetCWSendBuf(0, SS);
+      cwstrptr := 1;
+      FSendOK := True;
+      FKeyingCounter := 1;
+   end;
 end;
 
 procedure TdmZLogKeyer.SendStrFIFO(sStr: string);
@@ -2226,7 +2237,10 @@ begin
    FWkStatus := 0;
    FWkSpeed := 0;
    FWkEcho := 0;
+   FWkLastMessage := '';
    WinkeyerTimer.Enabled := False;
+   RepeatTimer.Enabled := False;
+   RepeatTimer.Interval := Trunc(FCQRepeatIntervalSec * 1000);
 
    //1) Open serial communications port. Use 1200 baud, 8 data bits, no parity
    FComKeying.Port := TPortNumber(nPort);
@@ -2328,6 +2342,7 @@ begin
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_CLEAR_CMD;
    FComKeying.SendData(@Buff, 1);
+   FWkLastMessage := '';
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetSideTone(fOn: Boolean);
@@ -2373,15 +2388,15 @@ end;
 
 procedure TdmZLogKeyer.WinkeyerSendCallsign(S: string);
 var
-   Buff: array[0..10] of Byte;
    dwTick: DWORD;
 begin
    FComKeying.SendString(AnsiString(S));
 
+   // 送信中になるまで待機
    dwTick := GetTickCount();
    while true do begin
       Application.ProcessMessages();
-      if (FWkStatus and $04) = $04 then begin
+      if (FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY then begin
 //         OutputDebugString(PChar('BREAK'));
          Break;
       end;
@@ -2392,10 +2407,11 @@ begin
       end;
    end;
 
+   // 送信終了まで待機
    dwTick := GetTickCount();
    while true do begin
       Application.ProcessMessages();
-      if (FWkStatus and $04) = 0 then begin
+      if (FWkStatus and WK_STATUS_BUSY) = 0 then begin
 //         OutputDebugString(PChar('BREAK'));
          Break;
       end;
@@ -2461,7 +2477,14 @@ begin
          b := (PP + i)^;
 
          if ((b and $c0) = $c0) then begin    // STATUS
+            // 送信中→送信終了に変わったら、リピートタイマー起動
+            if (FWkLastMessage <> '') and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
+               RepeatTimer.Enabled := True;
+            end;
+
+            // STATUSを保存
             FWkStatus := b;
+
             {$IFDEF DEBUG}
             OutputDebugString(PChar('WinKey STATUS=[' + IntToHex(b, 2) + ']'));
             {$ENDIF}
@@ -2489,9 +2512,15 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.RepeatTimerTimer(Sender: TObject);
+begin
+   WinKeyerSendStr(FWkLastMessage);
+   RepeatTimer.Enabled := False;
+end;
+
 procedure TdmZLogKeyer.IncCWSpeed();
-var
-   i : integer;
+//var
+//   i : integer;
 begin
    WPM := WPM + 1;
 
@@ -2510,8 +2539,8 @@ begin
 end;
 
 procedure TdmZLogKeyer.DecCWSpeed();
-var
-   i : integer;
+//var
+//   i : integer;
 begin
    WPM := WPM - 1;
 

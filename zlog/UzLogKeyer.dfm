@@ -31,4 +31,11 @@ object dmZLogKeyer: TdmZLogKeyer
     Left = 24
     Top = 88
   end
+  object RepeatTimer: TTimer
+    Enabled = False
+    Interval = 10
+    OnTimer = RepeatTimerTimer
+    Left = 88
+    Top = 88
+  end
 end
