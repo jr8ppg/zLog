@@ -783,21 +783,21 @@ var
    SS: string;
 begin
    SS := S;
-   SS := DecodeCommands(S);
 
-   if FPTTEnabled then begin
-      SS := '(' + SS + ')';
-   end;
+   FCQLoopCount := 1;
 
    if FUseWinKeyer = True then begin
       FWkLastMessage := SS;
       WinkeyerSendStr(SS);
    end
    else begin
-      SS := SS + '@';
+      SS := DecodeCommands(S);
 
-      FCQLoopCount := 1;
-   //   SendStr(SS + '@');
+      if FPTTEnabled then begin
+         SS := '(' + SS + ')';
+      end;
+
+      SS := SS + '@';
 
       SetCWSendBuf(0, SS);
       cwstrptr := 1;
@@ -1876,11 +1876,13 @@ procedure TdmZLogKeyer.SetRandCQStr(Index: Integer; cqstr: string);
 begin
    FRandCQStr[Index] := cqstr;
 
-   if FPTTEnabled then begin
-      cqstr := '(' + cqstr + ')';
+   if FUseWinKeyer = False then begin
+      if FPTTEnabled then begin
+         cqstr := '(' + cqstr + ')';
+      end;
+      cqstr := cqstr + '@';
+      SetCWSendBuf(Index, cqstr);
    end;
-   cqstr := cqstr + '@';
-   SetCWSendBuf(Index, cqstr);
 end;
 
 procedure TdmZLogKeyer.SetSpaceFactor(R: Integer);
@@ -2428,6 +2430,12 @@ begin
 end;
 
 procedure TdmZLogKeyer.WinkeyerSendStr(S: string);
+var
+   p: Integer;
+   n: Integer;
+   S2: string;
+   S3: string;
+   wpm: Integer;
 begin
    if FPTTEnabled { and Not(PTTIsOn) } then begin
       S := '(' + S + ')';
@@ -2454,6 +2462,28 @@ begin
    S := StringReplace(S, '_', '', [rfReplaceAll]);
    S := StringReplace(S, ':', '', [rfReplaceAll]);
    S := StringReplace(S, '*', '', [rfReplaceAll]);
+   S := StringReplace(S, '@', '', [rfReplaceAll]);
+
+   // \+1..9, \-1..9
+   wpm := FKeyerWPM;
+   while Pos('\', S) > 0 do begin
+      p := Pos('\', S);
+      S2 := Copy(S, p, 3);
+      n := StrToIntDef(S2[3], 0);
+      if n > 0 then begin
+         if S2[2] = '+' then begin
+            wpm := wpm + n;
+         end
+         else if S2[2] = '-' then begin
+            wpm := wpm - n;
+         end
+         else begin
+            //
+         end;
+         S3 := #$1c + Chr(wpm);
+         S := StringReplace(S, S2, S3, [rfReplaceAll]);
+      end;
+   end;
 
    FComKeying.SendString(AnsiString(S));
 end;
@@ -2479,7 +2509,10 @@ begin
          if ((b and $c0) = $c0) then begin    // STATUS
             // 送信中→送信終了に変わったら、リピートタイマー起動
             if (FWkLastMessage <> '') and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
-               RepeatTimer.Enabled := True;
+               if FCQLoopCount < FCQLoopMax then begin
+                  RepeatTimer.Enabled := True;
+                  Inc(FCQLoopCount);
+               end;
             end;
 
             // STATUSを保存
@@ -2513,8 +2546,34 @@ begin
 end;
 
 procedure TdmZLogKeyer.RepeatTimerTimer(Sender: TObject);
+var
+   n: Integer;
+   S: string;
 begin
-   WinKeyerSendStr(FWkLastMessage);
+   if FCQLoopCount > 4 then begin
+      n := FCQLoopCount mod 3; // random(3);
+      if n > 2 then begin
+         n := 0;
+      end;
+
+      if n in [1 .. 2] then begin
+         if FRandCQStr[n] = '' then begin
+            n := 0;
+         end;
+      end;
+
+      if n = 0 then begin
+         S := FWkLastMessage;
+      end
+      else begin
+         S := FRandCQStr[n];
+      end;
+   end
+   else begin
+      S := FWkLastMessage;
+   end;
+
+   WinKeyerSendStr(S);
    RepeatTimer.Enabled := False;
 end;
 
