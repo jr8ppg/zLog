@@ -1632,14 +1632,18 @@ begin
       comboRig2Name.ItemIndex := comboRig2Name.Items.Count - 1;
       comboRig1Port.ItemIndex := 0;
       comboRig1Port.Enabled := False;
+      comboRig1Speed.Enabled := False;
       comboRig2Port.Enabled := False;
+      comboRig2Speed.Enabled := False;
    end
    else begin
       comboRig1Port.Enabled := True;
+      comboRig1Speed.Enabled := True;
       if comboRig2Name.ItemIndex = comboRig2Name.Items.Count - 1 then begin
          comboRig2Name.ItemIndex := 0;
          comboRig2Port.ItemIndex := 0;
          comboRig2Port.Enabled := True;
+         comboRig2Speed.Enabled := True;
       end;
    end;
 end;
@@ -1650,14 +1654,18 @@ begin
       comboRig1Name.ItemIndex := comboRig1Name.Items.Count - 1;
       comboRig2Port.ItemIndex := 0;
       comboRig2Port.Enabled := False;
+      comboRig2Speed.Enabled := False;
       comboRig1Port.Enabled := False;
+      comboRig1Speed.Enabled := False;
    end
    else begin
       comboRig2Port.Enabled := True;
+      comboRig2Speed.Enabled := True;
       if comboRig1Name.ItemIndex = comboRig1Name.Items.Count - 1 then begin
          comboRig1Name.ItemIndex := 0;
          comboRig1Port.ItemIndex := 0;
          comboRig1Port.Enabled := True;
+         comboRig1Speed.Enabled := True;
       end;
    end;
 end;
