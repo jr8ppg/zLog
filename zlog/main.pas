@@ -1274,8 +1274,8 @@ procedure TMainForm.RenewCWToolBar;
 var
    i: Integer;
 begin
-   SpeedBar.Position := dmZlogGlobal.Speed;
-   SpeedLabel.Caption := IntToStr(dmZlogGlobal.Speed) + ' wpm';
+   SpeedBar.Position := dmZLogKeyer.WPM;
+   SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
    i := dmZlogGlobal.Settings.CW.CurrentBank;
    CWF1.Hint := dmZlogGlobal.CWMessage(i, 1);
    CWF2.Hint := dmZlogGlobal.CWMessage(i, 2);
@@ -5004,9 +5004,9 @@ begin
       dmZLogKeyer.ResumeCW;
    end;
 
-   if dmZlogGlobal.Settings._switchcqsp then begin
-      CallsignSentProc(nil);
-   end;
+//   if dmZlogGlobal.Settings._switchcqsp then begin
+//      CallsignSentProc(nil);
+//   end;
 end;
 
 procedure TMainForm.DownKeyPress;
@@ -5447,7 +5447,8 @@ end;
 
 procedure TMainForm.SpeedBarChange(Sender: TObject);
 begin
-   dmZlogGlobal.Speed := SpeedBar.Position;
+   dmZLogKeyer.WPM := SpeedBar.Position;
+   dmZLogGlobal.Settings.CW._speed := SpeedBar.Position;
    SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
 
    if LastFocus <> nil then begin
@@ -5533,8 +5534,6 @@ begin
    S := dmZlogGlobal.CWMessage(1, 1);
    S := SetStr(UpperCase(S), CurrentQSO);
    dmZLogKeyer.SendStrLoop(S);
-   dmZLogKeyer.RandCQStr[1] := SetStr(dmZlogGlobal.Settings.CW.AdditionalCQMessages[2], CurrentQSO);
-   dmZLogKeyer.RandCQStr[2] := SetStr(dmZlogGlobal.Settings.CW.AdditionalCQMessages[3], CurrentQSO);
 end;
 
 procedure TMainForm.buttonCwKeyboardClick(Sender: TObject);
@@ -5723,7 +5722,7 @@ begin
    OutputDebugString(PChar('--- Begin CallsignSentProc() ---'));
    {$ENDIF}
    try
-      if CallsignEdit.Focused then begin
+//      if CallsignEdit.Focused then begin
          Q := Log.QuickDupe(CurrentQSO);
          if TabPressed2 and (Q <> nil) then begin
             // ステータスバーにDUPE表示
@@ -5771,7 +5770,7 @@ begin
             NumberEdit.SetFocus;
             EditedSinceTABPressed := tabstate_tabpressedbutnotedited; // UzLogCW
          end;
-      end;
+//      end;
 
    finally
       dmZLogKeyer.ResumeCW;
@@ -9340,6 +9339,7 @@ var
    i: Integer;
 begin
    i := dmZLogKeyer.WPM;
+   dmZLogGlobal.Settings.CW._speed := i;
    SpeedBar.Position := i;
    SpeedLabel.Caption := IntToStr(i) + ' wpm';
 end;
