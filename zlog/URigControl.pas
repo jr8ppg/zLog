@@ -1564,6 +1564,7 @@ end;
 
 procedure TRigControl.Stop();
 begin
+   Timer1.Enabled := False;
    PollingTimer1.Enabled := False;
    PollingTimer2.Enabled := False;
    FreeAndNil(FRigs[1]);
@@ -1649,8 +1650,12 @@ end;
 destructor TRig.Destroy;
 begin
    inherited;
-   FPollingTimer.Enabled := False;
-   FComm.Disconnect();
+   if Assigned(FPollingTimer) then begin
+      FPollingTimer.Enabled := False;
+   end;
+   if Assigned(FComm) then begin
+      FComm.Disconnect();
+   end;
 end;
 
 procedure TRig.Initialize();
@@ -2564,14 +2569,25 @@ var
    j: Integer;
    o_RIG: IRigX;
    R: TRig;
+   O: TOmniRigX;
 begin
+   O := TOmniRigX(Sender);
+   if O = nil then begin
+      Exit;
+   end;
+
    if RigNumber = 1 then begin
-      o_RIG := OmniRig.Rig1;
+      if O.Rig1.Status <> ST_ONLINE then Exit;
+      o_RIG := O.Rig1;
       R := FRigs[1];
    end
-   else begin
-      o_RIG := OmniRig.Rig2;
+   else if RigNumber = 2 then begin
+      if O.Rig2.Status <> ST_ONLINE then Exit;
+      o_RIG := O.Rig2;
       R := FRigs[2];
+   end
+   else begin
+      Exit;
    end;
 
    case o_RIG.Vfo of
@@ -2663,14 +2679,14 @@ begin
       OmniRig.OnStatusChange := StatusChangeEvent;
       OmniRig.OnParamsChange := ParamsChangeEvent;
       OmniRig.OnCustomReply := CustomReplyEvent;
-      OmniRig.Connect;
+//      OmniRig.Connect;
    end;
 
    if _rignumber = 1 then begin
       Self.name := 'Omni-Rig: ' + MainForm.RigControl.OmniRig.Rig1.Get_RigType;
    end
    else begin
-      Self.name := 'OMni-Rig: ' + MainForm.RigControl.OmniRig.Rig2.Get_RigType;
+      Self.name := 'Omni-Rig: ' + MainForm.RigControl.OmniRig.Rig2.Get_RigType;
    end;
 end;
 
@@ -2783,10 +2799,14 @@ var
    _rname: string;
 begin
    inherited;
-   if _rignumber = 1 then
-      _rname := MainForm.RigControl.OmniRig.Rig1.RigType
-   else
+   if _rignumber = 1 then begin
+      if MainForm.RigControl.OmniRig.Rig1.Status <> ST_ONLINE then Exit;
+      _rname := MainForm.RigControl.OmniRig.Rig1.RigType;
+   end
+   else begin
+      if MainForm.RigControl.OmniRig.Rig2.Status <> ST_ONLINE then Exit;
       _rname := MainForm.RigControl.OmniRig.Rig2.RigType;
+   end;
 
    MainForm.RigControl.RigLabel.Caption := 'Current rig : ' + IntToStr(MainForm.RigControl._currentrig) + ' Omni-Rig: ' + _rname;
 end;
@@ -2797,6 +2817,14 @@ end;
 
 destructor TOmni.Destroy;
 begin
+   With MainForm.RigControl do begin
+      OmniRig.OnVisibleChange := nil;
+      OmniRig.OnRigTypeChange := nil;
+      OmniRig.OnStatusChange := nil;
+      OmniRig.OnParamsChange := nil;
+      OmniRig.OnCustomReply := nil;
+//      OmniRig.Disconnect();
+   end;
    inherited;
 end;
 
