@@ -206,8 +206,8 @@ type
     procedure WinKeyerClose();
     procedure WinKeyerSetSpeed(nWPM: Integer);
     procedure WinKeyerSetSideTone(fOn: Boolean);
-    procedure WinkeyerControlPTT(fOn: Boolean);
-    procedure WinkeyerSetPTTDelay(before, after: Byte);
+    procedure WinKeyerControlPTT(fOn: Boolean);
+    procedure WinKeyerSetPTTDelay(before, after: Byte);
   public
     { Public êÈåæ }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -2325,6 +2325,9 @@ begin
 
    // SideTone
    WinKeyerSetSideTone(FUseSideTone);
+
+   // PTT Delay
+   WinKeyerSetPTTDelay(FPttDelayBeforeTime, FPttDelayAfterTime);
 end;
 
 procedure TdmZLogKeyer.WinKeyerClose();
@@ -2367,7 +2370,7 @@ begin
    FComKeying.SendData(@Buff, 2);
 end;
 
-procedure TdmZLogKeyer.WinkeyerControlPTT(fOn: Boolean);
+procedure TdmZLogKeyer.WinKeyerControlPTT(fOn: Boolean);
 var
    Buff: array[0..10] of Byte;
 begin
@@ -2382,7 +2385,7 @@ begin
    FComKeying.SendData(@Buff, 2);
 end;
 
-procedure TdmZLogKeyer.WinkeyerSetPTTDelay(before, after: Byte);
+procedure TdmZLogKeyer.WinKeyerSetPTTDelay(before, after: Byte);
 var
    Buff: array[0..10] of Byte;
 begin
