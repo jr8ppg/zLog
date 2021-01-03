@@ -11,9 +11,11 @@ const
   WK_ADMIN_CLOSE = $03;
   WK_ADMIN_ECHO = $04;
   WK_ADMIN_PADDLE_A2D = $05;
+  WK_ADMIN_SIDETONE_VOLUME = $24;   // 25: Set Sidetone Volume <00><24><n> where n =0x1 for low and n=0x4 for high
 
   // Sidetone Frequency <01><nn> nn is a value from 1 to 10
   WK_SIDETONE_CMD = $01;
+  WK_SIDETONE_PADDLEONLY = $80;
 
   // Set WPM Speed <02><nn> nn is in the range of 5-99 WPM
   // Example: <02><12> set 18 WPM
@@ -33,6 +35,21 @@ const
 
   // Clear Buffer <0A> no parameters
   WK_CLEAR_CMD = $0a;
+
+  // Set WinKeyer Mode <0E><nn> nn = Mode bit field in binary
+  WK_SETMODE_CMD = $0e;
+
+  WK_SETMODE_CTSPACING               = $01;  // 0 (LSB) CT Spacing when=1, Normal Wordspace when=0
+  WK_SETMODE_AUTOSPACE               = $02;  // 1 Autospace (1=Enabled, 0=Disabled)
+  WK_SETMODE_SERIALECHOBACK          = $04;  // 2 Serial Echoback (1=Enabled, 0=Disabled)
+  WK_SETMODE_PADDLESWAP              = $08;  // 3 Paddle Swap (1=Swap, 0=Normal)
+  WK_SETMODE_Iambic_A                = $10;  // 4 10 = Ultimatic 11 = Bug Mode
+  WK_SETMODE_Ultimatic               = $20;  // 5 Key Mode: 00 = Iambic B 01 = Iambic A
+  WK_SETMODE_Iambic_B                = $00;
+  WK_SETMODE_BUGMODE                 = $30;
+
+  WK_SETMODE_PADDLE_ECHOBACK         = $40;  // 6 Paddle Echoback (1=Enabled, 0=Disabled)
+  WK_SETMODE_DISABLE_PADDLE_WATCHDOG = $80;  // 7 (MSB) Disable Paddle watchdog
 
   // Request Winkeyer2 Status <15> no parameter, Return Winkeyer2Åfs status byte
   WK_STATUS_CMD     = $15;

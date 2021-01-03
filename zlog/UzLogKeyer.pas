@@ -208,6 +208,7 @@ type
     procedure WinKeyerSetSideTone(fOn: Boolean);
     procedure WinKeyerControlPTT(fOn: Boolean);
     procedure WinKeyerSetPTTDelay(before, after: Byte);
+    procedure WinKeyerSetMode(mode: Byte);
   public
     { Public êÈåæ }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -2030,6 +2031,10 @@ begin
    if fUse = False then begin
       NoSound();
    end;
+
+   if FUseWinKeyer = True then begin
+      WinKeyerSetSideTone(fUse);
+   end;
 end;
 
 { TKeyerMonitorThread }
@@ -2394,6 +2399,16 @@ begin
    Buff[1] := before;
    Buff[2] := after;
    FComKeying.SendData(@Buff, 3);
+end;
+
+procedure TdmZLogKeyer.WinKeyerSetMode(mode: Byte);
+var
+   Buff: array[0..10] of Byte;
+begin
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_SETMODE_CMD;
+   Buff[1] := mode;
+   FComKeying.SendData(@Buff, 2);
 end;
 
 procedure TdmZLogKeyer.WinkeyerSendCallsign(S: string);
