@@ -5717,6 +5717,15 @@ procedure TMainForm.CallsignSentProc(Sender: TObject);
 var
    Q: TQSO;
    S: String;
+
+   procedure WinKeyerQSO();
+   begin
+      if dmZLogKeyer.UseWinKeyer = True then begin
+         S := dmZlogGlobal.CWMessage(2);
+         S := SetStr(S, CurrentQSO);
+         dmZLogKeyer.WinkeyerSendStr(S);
+      end;
+   end;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- Begin CallsignSentProc() ---'));
@@ -5755,14 +5764,13 @@ begin
                CallsignEdit.SelectAll;
 
                exit; { BECAREFUL!!!!!!!!!!!!!!!!!!!!!!!! }
+            end
+            else begin  // ALLOW DUPE!
+               WinKeyerQSO();
             end;
          end
          else begin  // NOT DUPE
-            if dmZLogKeyer.UseWinKeyer = True then begin
-               S := dmZlogGlobal.CWMessage(2);
-               S := SetStr(S, CurrentQSO);
-               dmZLogKeyer.WinkeyerSendStr(S);
-            end;
+            WinKeyerQSO();
          end;
 
          if TabPressed2 then begin
