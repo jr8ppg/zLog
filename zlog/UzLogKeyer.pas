@@ -332,7 +332,12 @@ begin
    FFixedSpeed := 0;
 
    {$IFDEF USESIDETONE}
-   FTone := TSideTone.Create(700);
+   if TSideTone.NumDevices() = 0 then begin
+      FTone := nil;
+   end
+   else begin
+      FTone := TSideTone.Create(700);
+   end;
 
    {$ENDIF}
 
@@ -535,14 +540,18 @@ end;
 procedure TdmZLogKeyer.Sound();
 begin
    {$IFDEF USESIDETONE}
-   FTone.Play();
+   if Assigned(FTone) then begin
+      FTone.Play();
+   end;
    {$ENDIF}
 end;
 
 procedure TdmZLogKeyer.NoSound();
 begin
    {$IFDEF USESIDETONE}
-   FTone.Stop();
+   if Assigned(FTone) then begin
+      FTone.Stop();
+   end;
    {$ENDIF}
 end;
 
@@ -642,7 +651,9 @@ begin
    if Hertz < 2500 then begin
       FSideTonePitch := Hertz;
       {$IFDEF USESIDETONE}
-      FTone.Frequency := FSideTonePitch;
+      if Assigned(FTone) then begin
+         FTone.Frequency := FSideTonePitch;
+      end;
       {$ENDIF}
    end;
 end;

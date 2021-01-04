@@ -70,6 +70,7 @@ type
     procedure Stop(); virtual;
     procedure Close(); virtual;
     class function DeviceList(): TStringList;
+    class function NumDevices(): Integer;
     property IsLoaded: Boolean read FLoaded;
     property Playing: Boolean read FPlaying write FPlaying;
     property HWO: HWAVEOUT read m_hwo;
@@ -202,13 +203,18 @@ begin
    L := TStringList.Create();
    try
       n := waveOutGetNumDevs();
-      for i := 0 to n - 1 do begin
-         waveOutGetDevCaps(i, @info, SizeOf(info));
+      for i := 1 to n do begin
+         waveOutGetDevCaps(i - 1, @info, SizeOf(info));
          L.Add(string(info.szPname));
       end;
    finally
       Result := L;
    end;
+end;
+
+class function TWaveSound.NumDevices(): Integer;
+begin
+   Result := waveOutGetNumDevs();
 end;
 
 function TWaveSound.GetDecodeSize(lpMP3Data: LPBYTE; dwMP3Size: DWORD; lpwf: PWAVEFORMATEX): DWORD;
