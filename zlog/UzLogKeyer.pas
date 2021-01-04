@@ -287,6 +287,7 @@ type
     procedure WinkeyerSendCallsign(S: string);
     procedure WinkeyerSendStr(S: string);
     procedure WinKeyerClear();
+    procedure WinKeyerCancelLastChar();
 
     procedure IncCWSpeed();
     procedure DecCWSpeed();
@@ -1815,10 +1816,15 @@ procedure TdmZLogKeyer.CancelLastChar;
 var
    m: Integer;
 begin
-   if ((tailcwstrptr - 1) * codemax + 1) > (cwstrptr) then begin
-      dec(tailcwstrptr, 1);
-      for m := 1 to codemax do begin
-         FCWSendBuf[FSelectedBuf, codemax * (tailcwstrptr - 1) + m] := $FF;
+   if FUseWinKeyer = True then begin
+      WinKeyerCancelLastChar();
+   end
+   else begin
+      if ((tailcwstrptr - 1) * codemax + 1) > (cwstrptr) then begin
+         dec(tailcwstrptr, 1);
+         for m := 1 to codemax do begin
+            FCWSendBuf[FSelectedBuf, codemax * (tailcwstrptr - 1) + m] := $FF;
+         end;
       end;
    end;
 end;
@@ -2487,6 +2493,8 @@ begin
    // W1|O|M|O makes it easier to copy.
    S := StringReplace(S, '_', '|', [rfReplaceAll]);
 
+   S := StringReplace(S, '.', '?', [rfReplaceAll]);
+
    // unsupport
    S := StringReplace(S, ':', '', [rfReplaceAll]);
    S := StringReplace(S, '*', '', [rfReplaceAll]);
@@ -2514,6 +2522,11 @@ begin
    end;
 
    FComKeying.SendString(AnsiString(S));
+end;
+
+procedure TdmZLogKeyer.WinKeyerCancelLastChar();
+begin
+   //
 end;
 
 procedure TdmZLogKeyer.ZComKeyingReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
@@ -2557,6 +2570,10 @@ begin
          end
          else begin  // ECHO TEST
             FWkEcho := b;
+
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('WinKey STATUS=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
+            {$ENDIF}
          end;
       end;
    end;

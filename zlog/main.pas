@@ -935,6 +935,9 @@ type
     FNPlusOneThread: TSuperCheckNPlusOneThread;
     FSuperCheckDataLoadThread: TSuperCheckDataLoadThread;
 
+    // WinKeyer
+    FWkAbort: Boolean;
+
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -3769,6 +3772,8 @@ begin
    FVoiceForm.OnNotifyStarted  := OnVoicePlayStarted;
    FVoiceForm.OnNotifyFinished := OnVoicePlayFinished;
 
+   FWkAbort := False;
+
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
    end;
@@ -5469,6 +5474,7 @@ begin
    dmZLogKeyer.ClrBuffer;
    CWPlayButton.Visible := False;
    CWPauseButton.Visible := True;
+   FWkAbort := True;
 end;
 
 procedure TMainForm.VoiceStopButtonClick(Sender: TObject);
@@ -5724,6 +5730,10 @@ var
    procedure WinKeyerQSO();
    begin
       if dmZLogKeyer.UseWinKeyer = True then begin
+         if FWkAbort = True then begin
+            FWkAbort := False;
+            Exit;
+         end;
          S := dmZlogGlobal.CWMessage(2);
          S := SetStr(S, CurrentQSO);
          dmZLogKeyer.WinkeyerSendStr(S);
