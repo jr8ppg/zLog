@@ -1009,6 +1009,7 @@ type
     procedure OnSPCMenuItemCick(Sender: TObject);
 
     procedure DoCwSpeedChange(Sender: TObject);
+    procedure DoVFOChange(Sender: TObject);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -3744,6 +3745,7 @@ var
 begin
    FInitialized   := False;
    FRigControl    := TRigControl.Create(Self);
+   FRigControl.OnVFOChanged := DoVFOChange;
    FPartialCheck  := TPartialCheck.Create(Self);
    FRateDialog    := TRateDialog.Create(Self);
    FSuperCheck    := TSuperCheck.Create(Self);
@@ -5485,6 +5487,7 @@ begin
    else begin
       panelCQMode.Caption := 'SP';
       panelCQMode.Font.Color := clFuchsia;
+      actionCQAbort.Execute();
    end;
 
    FZLinkForm.SendRigStatus;
@@ -9189,6 +9192,7 @@ begin
    if RigControl.Rig <> nil then begin
       // RIGÇ…freqê›íË
       RigControl.Rig.SetFreq(freq, IsCQ());
+      RigControl.Rig.UpdateStatus();
 
       // ZeroinîÇØ
       SetAntiZeroin();
@@ -9350,6 +9354,15 @@ begin
    dmZLogGlobal.Settings.CW._speed := i;
    SpeedBar.Position := i;
    SpeedLabel.Caption := IntToStr(i) + ' wpm';
+end;
+
+procedure TMainForm.DoVFOChange(Sender: TObject);
+begin
+   if FInitialized = False then begin
+      Exit;
+   end;
+
+   SetCQ(False);
 end;
 
 end.

@@ -428,6 +428,8 @@ type
     { Private declarations }
     FRigs: array[1..2] of TRig;
     FCurrentRig : TRig;
+    FPrevVfoA: Integer;
+    FOnVFOChanged: TNotifyEvent;
 
     procedure VisibleChangeEvent(Sender: TObject);
     procedure RigTypeChangeEvent(Sender: TObject; RigNumber: Integer);
@@ -456,10 +458,13 @@ type
     function ToggleCurrentRig : integer;
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
     procedure SetSendFreq();
+    procedure UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer);
 
     property Rig: TRig read FCurrentRig;
     property Rig1: TRig read FRigs[1];
     property Rig2: TRig read FRigs[2];
+
+    property OnVFOChanged: TNotifyEvent read FOnVFOChanged write FOnVFOChanged;
   end;
 
 implementation
@@ -3681,18 +3686,10 @@ begin
       MainForm.UpdateBand(_currentband);
    end;
 
-   MainForm.RigControl.dispFreqA.Caption := kHzStr(_freqoffset + _currentfreq[0]) + ' kHz';
-   MainForm.RigControl.dispFreqB.Caption := kHzStr(_freqoffset + _currentfreq[1]) + ' kHz';
-   MainForm.RigControl.dispLastFreq.Caption := kHzStr(_freqoffset + LastFreq) + ' kHz';
-
-   if _currentvfo = 0 then begin
-      MainForm.RigControl.dispFreqA.Font.Style := [fsBold];
-      MainForm.RigControl.dispFreqB.Font.Style := [];
-   end
-   else begin
-      MainForm.RigControl.dispFreqB.Font.Style := [fsBold];
-      MainForm.RigControl.dispFreqA.Font.Style := [];
-   end;
+   MainForm.RigControl.UpdateFreq(_currentvfo,
+                                  _freqoffset + _currentfreq[0],
+                                  _freqoffset + _currentfreq[1],
+                                  _freqoffset + LastFreq);
 
    S := 'R' + IntToStr(_rignumber) + ' ' + 'V';
    if _currentvfo = 0 then begin
@@ -3718,6 +3715,8 @@ begin
    FCurrentRig := nil;
    FRigs[1] := nil;
    FRigs[2] := nil;
+   FPrevVfoA := 0;
+   FOnVFOChanged := nil;
 
    _currentrig := 1;
    _maxrig := 2;
@@ -3821,6 +3820,29 @@ begin
       if dmZLogGlobal.Settings._zlinkport <> 0 then begin
          Timer1.Enabled := True;
       end;
+   end;
+end;
+
+procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer);
+begin
+   if Abs(FPrevVfoA - VfoA) > 20 then begin
+      if Assigned(FOnVFOChanged) then begin
+         FOnVFOChanged(TObject(currentvfo));
+      end;
+   end;
+
+   dispFreqA.Caption := kHzStr(VfoA) + ' kHz';
+   dispFreqB.Caption := kHzStr(VfoB) + ' kHz';
+   dispLastFreq.Caption := kHzStr(Last) + ' kHz';
+   FPrevVfoA := VfoA;
+
+   if currentvfo = 0 then begin
+      dispFreqA.Font.Style := [fsBold];
+      dispFreqB.Font.Style := [];
+   end
+   else begin
+      dispFreqB.Font.Style := [fsBold];
+      dispFreqA.Font.Style := [];
    end;
 end;
 
