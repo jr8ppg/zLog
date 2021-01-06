@@ -600,6 +600,15 @@ begin
          usbif4cwSetPTTParam(0, 0, 0);
       end;
    end;
+
+   if (FKeyingPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
+      if _on = True then begin
+         WinKeyerSetPTTDelay(FPttDelayBeforeTime, FPttDelayAfterTime);
+      end
+      else begin
+         WinKeyerSetPTTDelay(0, 0);
+      end;
+   end;
 end;
 
 function TdmZLogKeyer.PTTIsOn: Boolean;
@@ -609,26 +618,21 @@ end;
 
 procedure TdmZLogKeyer.SetPTTDelay(before, after: word);
 begin
-   if FUseWinkeyer = True then begin
-      WinkeyerSetPTTDelay(before, after);
-   end
-   else begin
-      if FTimerMicroSec = 0 then begin
-         Exit;
-      end;
-
-      before := Min(before, 255);
-      before := Max(before, 1);
-
-      FPttDelayBeforeCount := Trunc(before * 1000 / FTimerMicroSec);
-      FPttDelayBeforeTime := before;
-
-      after := Min(after, 255);
-      after := Max(after, 1);
-
-      FPttDelayAfterCount := Trunc(after * 1000 / FTimerMicroSec);
-      FPttDelayAfterTime := after;
+   if FTimerMicroSec = 0 then begin
+      Exit;
    end;
+
+   before := Min(before, 255);
+   before := Max(before, 1);
+
+   FPttDelayBeforeCount := Trunc(before * 1000 / FTimerMicroSec);
+   FPttDelayBeforeTime := before;
+
+   after := Min(after, 255);
+   after := Max(after, 1);
+
+   FPttDelayAfterCount := Trunc(after * 1000 / FTimerMicroSec);
+   FPttDelayAfterTime := after;
 end;
 
 function TdmZLogKeyer.Paused: Boolean;
@@ -2347,9 +2351,6 @@ begin
 
    // SideTone
    WinKeyerSetSideTone(FUseSideTone);
-
-   // PTT Delay
-   WinKeyerSetPTTDelay(FPttDelayBeforeTime, FPttDelayAfterTime);
 end;
 
 procedure TdmZLogKeyer.WinKeyerClose();
