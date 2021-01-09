@@ -2479,10 +2479,16 @@ begin
 end;
 
 procedure TdmZLogKeyer.WinKeyerSendChar(C: Char);
+var
+   S: string;
 begin
    case C of
-      'A' .. 'Z', '0' .. '9': begin
-         FComKeying.SendString(AnsiString(C));
+      ' ', 'A'..'Z', '0'..'9': begin
+         if FPTTEnabled { and Not(PTTIsOn) } then begin
+            S := '(' + C + ')';
+         end;
+
+         WinKeyerSendStr(S);
       end;
    end;
 end;
