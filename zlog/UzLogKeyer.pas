@@ -168,6 +168,7 @@ type
     FWkSpeed: Integer;
     FWkEcho: Integer;
     FWkLastMessage: string;
+    FWkCallsignSending: Boolean;
 
     FOnSpeedChanged: TNotifyEvent;
 
@@ -284,8 +285,10 @@ type
     // WinKeyer support
     property UseWinKeyer: Boolean read FUseWinKeyer write FUseWinKeyer;
     property WinKeyerRevision: Integer read FWkRevision;
-    procedure WinkeyerSendCallsign(S: string);
-    procedure WinkeyerSendStr(S: string);
+    property WkCallsignSending: Boolean read FWkCallsignSending write FWkCallsignSending;
+    procedure WinKeyerSendCallsign(S: string);
+    procedure WinKeyerSendChar(C: Char);
+    procedure WinKeyerSendStr(S: string);
     procedure WinKeyerClear();
     procedure WinKeyerCancelLastChar();
 
@@ -682,7 +685,7 @@ var
    m: Integer;
 begin
    if UseWinKeyer = True then begin
-      WinKeyerSendStr(C);
+      WinKeyerSendChar(C);
       Exit;
    end;
 
@@ -2267,6 +2270,7 @@ begin
    FWkSpeed := 0;
    FWkEcho := 0;
    FWkLastMessage := '';
+   FWkCallsignSending := False;
    WinkeyerTimer.Enabled := False;
    RepeatTimer.Enabled := False;
    RepeatTimer.Interval := Trunc(FCQRepeatIntervalSec * 1000);
@@ -2429,11 +2433,13 @@ begin
    FComKeying.SendData(@Buff, 2);
 end;
 
-procedure TdmZLogKeyer.WinkeyerSendCallsign(S: string);
+procedure TdmZLogKeyer.WinKeyerSendCallsign(S: string);
 var
    dwTick: DWORD;
 begin
    FComKeying.SendString(AnsiString(S));
+
+   FWkCallsignSending := True;
 
    // ëóêMíÜÇ…Ç»ÇÈÇ‹Ç≈ë“ã@
    dwTick := GetTickCount();
@@ -2465,12 +2471,23 @@ begin
       end;
    end;
 
+   FWkCallsignSending := False;
+
    if Assigned(FOnCallsignSentProc) then begin
       FOnCallsignSentProc(nil);
    end;
 end;
 
-procedure TdmZLogKeyer.WinkeyerSendStr(S: string);
+procedure TdmZLogKeyer.WinKeyerSendChar(C: Char);
+begin
+   case C of
+      'A' .. 'Z', '0' .. '9': begin
+         FComKeying.SendString(AnsiString(C));
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.WinKeyerSendStr(S: string);
 var
    p: Integer;
    n: Integer;
@@ -2537,8 +2554,12 @@ begin
 end;
 
 procedure TdmZLogKeyer.WinKeyerCancelLastChar();
+var
+   Buff: array[0..10] of Byte;
 begin
-   //
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_BACKSPACE_CMD;
+   FComKeying.SendData(@Buff, 1);
 end;
 
 procedure TdmZLogKeyer.ZComKeyingReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);

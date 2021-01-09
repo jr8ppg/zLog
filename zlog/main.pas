@@ -5104,9 +5104,19 @@ begin
          Key := 0;
       end;
 
+      VK_BACK: begin
+         if (dmZLogKeyer.UseWinKeyer = True) and (dmZLogKeyer.WkCallsignSending = True) then begin
+            dmZLogKeyer.WinKeyerCancelLastChar();
+         end;
+      end;
+
       Ord('A') .. Ord('Z'), Ord('0') .. Ord('9'): begin
          if Shift <> [] then begin
             exit;
+         end;
+
+         if (dmZLogKeyer.UseWinKeyer = True) and (dmZLogKeyer.WkCallsignSending = True) then begin
+            dmZLogKeyer.WinkeyerSendChar(Char(Key));
          end;
 
          if (CtrlZCQLoop = True) and (TEdit(Sender).Name = 'CallsignEdit') then begin

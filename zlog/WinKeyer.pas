@@ -33,6 +33,9 @@ const
   // Request to WinKey to return current speed pot setting.
   WK_GET_SPEEDPOT_CMD = $07;
 
+  // Backspace <08> Backup the input buffer pointer by one character.
+  WK_BACKSPACE_CMD = $08;
+
   // Clear Buffer <0A> no parameters
   WK_CLEAR_CMD = $0a;
 
