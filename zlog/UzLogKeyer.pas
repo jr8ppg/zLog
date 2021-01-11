@@ -2447,7 +2447,6 @@ end;
 
 procedure TdmZLogKeyer.WinKeyerSendCallsign(S: string);
 var
-   dwTick: DWORD;
    C: Char;
 begin
    if S = '' then begin
@@ -2458,69 +2457,10 @@ begin
    FWkCallsignStr := S;
    C := FWkCallsignStr[FWkCallsignIndex];
    if FPTTEnabled = True then begin
-      WinKeyerSendChar('(', False);
+      WinKeyerControlPTT(True);
    end;
    WinKeyerSendChar(C, False);
    FWkCallsignSending := True;
-
-   // 送信中になるまで待機
-   dwTick := GetTickCount();
-   while true do begin
-      Application.ProcessMessages();
-      if (FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY then begin
-//         OutputDebugString(PChar('BREAK'));
-         Break;
-      end;
-
-      // 1sec
-      if (GetTickCount() - dwTick) >= 1000 then begin
-         Break;
-      end;
-   end;
-
-   PostMessage(FWnd, WM_USER_SENDNEXTCHAR, 0, 0);
-
-(*
-   FComKeying.SendString(AnsiString(S));
-
-   FWkCallsignSending := True;
-
-   // 送信中になるまで待機
-   dwTick := GetTickCount();
-   while true do begin
-      Application.ProcessMessages();
-      if (FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY then begin
-//         OutputDebugString(PChar('BREAK'));
-         Break;
-      end;
-
-      // 1sec
-      if (GetTickCount() - dwTick) >= 1000 then begin
-         Break;
-      end;
-   end;
-
-   // 送信終了まで待機
-   dwTick := GetTickCount();
-   while true do begin
-      Application.ProcessMessages();
-      if (FWkStatus and WK_STATUS_BUSY) = 0 then begin
-//         OutputDebugString(PChar('BREAK'));
-         Break;
-      end;
-
-      // 10sec
-      if (GetTickCount() - dwTick) >= 10000 then begin
-         Break;
-      end;
-   end;
-
-   FWkCallsignSending := False;
-
-   if Assigned(FOnCallsignSentProc) then begin
-      FOnCallsignSentProc(nil);
-   end;
-*)
 end;
 
 procedure TdmZLogKeyer.WinKeyerSendChar(C: Char; fUsePTT: Boolean);
@@ -2635,15 +2575,21 @@ begin
          b := (PP + i)^;
 
          if ((b and $c0) = $c0) then begin    // STATUS
+            //コールサイン送信時：１文字送信終了
             if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
-//               // STATUSを保存
-//               FWkStatus := b;
-//               Continue;
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('WinKey BUSY->IDLE [' + IntToHex(b, 2) + ']'));
+               {$ENDIF}
+
+               // 次の文字を送信
+               PostMessage(FWnd, WM_USER_SENDNEXTCHAR, 0, 0);
             end;
 
-            // コールサイン送信時に送信終了→送信中に変わったら次の文字を送る
+            // コールサイン送信時：１文字送信開始
             if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = 0) and ((b and WK_STATUS_BUSY) = WK_STATUS_BUSY) then begin
-//               PostMessage(FWnd, WM_USER_SENDNEXTCHAR, 0, 0);
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('WinKey IDLE->BUSY [' + IntToHex(b, 2) + ']'));
+               {$ENDIF}
             end;
 
             // 送信中→送信終了に変わったら、リピートタイマー起動
@@ -2657,9 +2603,9 @@ begin
             // STATUSを保存
             FWkStatus := b;
 
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('WinKey STATUS=[' + IntToHex(b, 2) + ']'));
-            {$ENDIF}
+//            {$IFDEF DEBUG}
+//            OutputDebugString(PChar('WinKey STATUS=[' + IntToHex(b, 2) + ']'));
+//            {$ENDIF}
          end
          else if ((b and $c0) = $80) then begin   // POT POSITION
             newwpm := (b and $3F);
@@ -2786,7 +2732,6 @@ end;
 procedure TdmZLogKeyer.WndMethod(var msg: TMessage);
 var
    C: Char;
-   dwTick: DWORD;
 begin
    case msg.Msg of
       WM_USER_SENDNEXTCHAR: begin
@@ -2794,28 +2739,11 @@ begin
          if FWkCallsignIndex <= Length(FWkCallsignStr) then begin
             C := FWkCallsignStr[FWkCallsignIndex];
             WinKeyerSendChar(C, False);
-
-            // 送信中になるまで待機
-            dwTick := GetTickCount();
-            while true do begin
-               Application.ProcessMessages();
-               if (FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY then begin
-         //         OutputDebugString(PChar('BREAK'));
-                  Break;
-               end;
-
-               // 1sec
-               if (GetTickCount() - dwTick) >= 1000 then begin
-                  Break;
-               end;
-            end;
-
-            PostMessage(FWnd, WM_USER_SENDNEXTCHAR, 0, 0);
          end
          else begin
             FWkCallsignSending := False;
             if FPTTEnabled = True then begin
-               WinKeyerSendChar(')', False);
+               WinKeyerControlPTT(False);
             end;
             if Assigned(FOnCallsignSentProc) then begin
                FOnCallsignSentProc(nil);
