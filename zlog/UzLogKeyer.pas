@@ -2314,6 +2314,18 @@ begin
    Buff[0] := $FF;
    FComKeying.SendData(@Buff, 1);
 
+   // Baud rate change must be handled in a specific way. Since most applications expect WK3 to run at
+   // 1200 baud, this is always the default and will be reinstated whenever WK3 is closed. If an
+   // application wants to run at 9600 baud, it must start out at 1200 baud mode and then issue the Set
+   // High Baud command. When the application closes it should issue a WK close command which will
+   // reset the baud rate to 1200.
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_ADMIN_CMD;
+   Buff[1] := WK_ADMIN_SET_HIGH_BAUD;
+   FComKeying.SendData(@Buff, 2);
+   Sleep(20);
+   FComKeying.BaudRate := br9600;
+
    //6) Check to make sure WK is attached and operational
    //Byte 0: ADMIN_CMD
    //Byte 1: ADMIN_ECHO
@@ -2370,7 +2382,13 @@ begin
 end;
 
 procedure TdmZLogKeyer.WinKeyerClose();
+var
+   Buff: array[0..4] of Byte;
 begin
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_ADMIN_CMD;
+   Buff[1] := WK_ADMIN_CLOSE;
+   FComKeying.SendData(@Buff, 2);
    FComKeying.Disconnect();
 end;
 

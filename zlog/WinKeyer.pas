@@ -11,7 +11,9 @@ const
   WK_ADMIN_CLOSE = $03;
   WK_ADMIN_ECHO = $04;
   WK_ADMIN_PADDLE_A2D = $05;
-  WK_ADMIN_SIDETONE_VOLUME = $24;   // 25: Set Sidetone Volume <00><24><n> where n =0x1 for low and n=0x4 for high
+  WK_ADMIN_SET_LOW_BAUD = 17;       // Set Low Baud Change serial comm. Baud Rate to 1200 (default)
+  WK_ADMIN_SET_HIGH_BAUD = 18;      // Set High Baud Change serial comm. Baud Rate to 9600
+  WK_ADMIN_SIDETONE_VOLUME = 24;    // 25: Set Sidetone Volume <00><24><n> where n =0x1 for low and n=0x4 for high
 
   // Sidetone Frequency <01><nn> nn is a value from 1 to 10
   WK_SIDETONE_CMD = $01;
