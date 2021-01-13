@@ -2323,7 +2323,7 @@ begin
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_SET_HIGH_BAUD;
    FComKeying.SendData(@Buff, 2);
-   Sleep(20);
+   Sleep(50);
    FComKeying.BaudRate := br9600;
 
    //6) Check to make sure WK is attached and operational
@@ -2486,7 +2486,7 @@ var
    S: string;
 begin
    case C of
-      ' ', 'A'..'Z', '0'..'9': begin
+      ' ', 'A'..'Z', '0'..'9', '/', '?', '.': begin
          if (fUsePTT = True) and (FPTTEnabled = True) { and Not(PTTIsOn) } then begin
             S := '(' + C + ')';
          end
