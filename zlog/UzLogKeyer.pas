@@ -12,7 +12,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, Windows, MMSystem, Math, Forms,
-  JvComponentBase, JvHidControllerClass, CPDrv
+  Messages, JvComponentBase, JvHidControllerClass, CPDrv
   {$IFDEF USESIDETONE},ToneGen, UzLogSound, Vcl.ExtCtrls{$ENDIF};
 
 const
@@ -22,6 +22,9 @@ const
   MINWPM = 5;
   _inccw = $80;
   _deccw = $81;
+
+const
+  WM_USER_SENDNEXTCHAR = (WM_USER + 1);
 
 type
   TKeyingPort = (tkpNone,
@@ -56,6 +59,7 @@ type
     ZComKeying: TCommPortDriver;
     WinkeyerTimer: TTimer;
     RepeatTimer: TTimer;
+    procedure WndMethod(var msg: TMessage);
     procedure DoDeviceChanges(Sender: TObject);
     function DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
     procedure DataModuleCreate(Sender: TObject);
@@ -169,8 +173,11 @@ type
     FWkEcho: Integer;
     FWkLastMessage: string;
     FWkCallsignSending: Boolean;
-
+    FWkCallsignIndex: Integer;
+    FWkCallsignStr: string;
     FOnSpeedChanged: TNotifyEvent;
+
+    FWnd: HWND;
 
     procedure Sound();
     procedure NoSound();
@@ -287,8 +294,8 @@ type
     property WinKeyerRevision: Integer read FWkRevision;
     property WkCallsignSending: Boolean read FWkCallsignSending write FWkCallsignSending;
     procedure WinKeyerSendCallsign(S: string);
-    procedure WinKeyerSendChar(C: Char);
-    procedure WinKeyerSendStr(S: string);
+    procedure WinKeyerSendChar(C: Char; fUsePTT: Boolean);
+    procedure WinKeyerSendStr(S: string; fUsePTT: Boolean = True);
     procedure WinKeyerClear();
     procedure WinKeyerCancelLastChar();
 
@@ -334,6 +341,8 @@ begin
    FBeforeSpeed := 0;
    FFixedSpeed := 0;
 
+   FWnd := AllocateHWnd(WndMethod);
+
    {$IFDEF USESIDETONE}
    if TSideTone.NumDevices() = 0 then begin
       FTone := nil;
@@ -377,6 +386,7 @@ begin
    FMonitorThread.Free();
    COM_OFF();
    USB_OFF();
+   DeallocateHWnd(FWnd);
 end;
 
 procedure TdmZLogKeyer.DoDeviceChanges(Sender: TObject);
@@ -685,7 +695,7 @@ var
    m: Integer;
 begin
    if UseWinKeyer = True then begin
-      WinKeyerSendChar(C);
+      WinKeyerSendChar(C, True);
       Exit;
    end;
 
@@ -1861,6 +1871,8 @@ var
    SS: string;
    i: word;
 begin
+   FWkCallsignStr := S;
+
    if callsignptr = 0 then begin
       Exit;
    end;
@@ -2302,6 +2314,18 @@ begin
    Buff[0] := $FF;
    FComKeying.SendData(@Buff, 1);
 
+   // Baud rate change must be handled in a specific way. Since most applications expect WK3 to run at
+   // 1200 baud, this is always the default and will be reinstated whenever WK3 is closed. If an
+   // application wants to run at 9600 baud, it must start out at 1200 baud mode and then issue the Set
+   // High Baud command. When the application closes it should issue a WK close command which will
+   // reset the baud rate to 1200.
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_ADMIN_CMD;
+   Buff[1] := WK_ADMIN_SET_HIGH_BAUD;
+   FComKeying.SendData(@Buff, 2);
+   Sleep(50);
+   FComKeying.BaudRate := br9600;
+
    //6) Check to make sure WK is attached and operational
    //Byte 0: ADMIN_CMD
    //Byte 1: ADMIN_ECHO
@@ -2358,7 +2382,13 @@ begin
 end;
 
 procedure TdmZLogKeyer.WinKeyerClose();
+var
+   Buff: array[0..4] of Byte;
 begin
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_ADMIN_CMD;
+   Buff[1] := WK_ADMIN_CLOSE;
+   FComKeying.SendData(@Buff, 2);
    FComKeying.Disconnect();
 end;
 
@@ -2435,65 +2465,41 @@ end;
 
 procedure TdmZLogKeyer.WinKeyerSendCallsign(S: string);
 var
-   dwTick: DWORD;
+   C: Char;
 begin
-   FComKeying.SendString(AnsiString(S));
+   if S = '' then begin
+      Exit;
+   end;
 
+   FWkCallsignIndex := 1;
+   FWkCallsignStr := S;
+   C := FWkCallsignStr[FWkCallsignIndex];
+   if FPTTEnabled = True then begin
+      WinKeyerControlPTT(True);
+   end;
+   WinKeyerSendChar(C, False);
    FWkCallsignSending := True;
-
-   // 送信中になるまで待機
-   dwTick := GetTickCount();
-   while true do begin
-      Application.ProcessMessages();
-      if (FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY then begin
-//         OutputDebugString(PChar('BREAK'));
-         Break;
-      end;
-
-      // 1sec
-      if (GetTickCount() - dwTick) >= 1000 then begin
-         Break;
-      end;
-   end;
-
-   // 送信終了まで待機
-   dwTick := GetTickCount();
-   while true do begin
-      Application.ProcessMessages();
-      if (FWkStatus and WK_STATUS_BUSY) = 0 then begin
-//         OutputDebugString(PChar('BREAK'));
-         Break;
-      end;
-
-      // 10sec
-      if (GetTickCount() - dwTick) >= 10000 then begin
-         Break;
-      end;
-   end;
-
-   FWkCallsignSending := False;
-
-   if Assigned(FOnCallsignSentProc) then begin
-      FOnCallsignSentProc(nil);
-   end;
 end;
 
-procedure TdmZLogKeyer.WinKeyerSendChar(C: Char);
+procedure TdmZLogKeyer.WinKeyerSendChar(C: Char; fUsePTT: Boolean);
 var
    S: string;
 begin
    case C of
-      ' ', 'A'..'Z', '0'..'9': begin
-         if FPTTEnabled { and Not(PTTIsOn) } then begin
+      ' ', 'A'..'Z', '0'..'9', '/', '?', '.': begin
+         if (fUsePTT = True) and (FPTTEnabled = True) { and Not(PTTIsOn) } then begin
             S := '(' + C + ')';
+         end
+         else begin
+            S := C;
          end;
 
-         WinKeyerSendStr(S);
+         WinKeyerSendStr(S, False);
       end;
    end;
 end;
 
-procedure TdmZLogKeyer.WinKeyerSendStr(S: string);
+procedure TdmZLogKeyer.WinKeyerSendStr(S: string; fUsePTT: Boolean);
 var
    p: Integer;
    n: Integer;
@@ -2501,7 +2507,7 @@ var
    S3: string;
    wpm: Integer;
 begin
-   if FPTTEnabled { and Not(PTTIsOn) } then begin
+   if (fUsePTT = True) and (FPTTEnabled = True) { and Not(PTTIsOn) } then begin
       S := '(' + S + ')';
    end;
 
@@ -2587,8 +2593,25 @@ begin
          b := (PP + i)^;
 
          if ((b and $c0) = $c0) then begin    // STATUS
+            //コールサイン送信時：１文字送信終了
+            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('WinKey BUSY->IDLE [' + IntToHex(b, 2) + ']'));
+               {$ENDIF}
+
+               // 次の文字を送信
+               PostMessage(FWnd, WM_USER_SENDNEXTCHAR, 0, 0);
+            end;
+
+            // コールサイン送信時：１文字送信開始
+            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = 0) and ((b and WK_STATUS_BUSY) = WK_STATUS_BUSY) then begin
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('WinKey IDLE->BUSY [' + IntToHex(b, 2) + ']'));
+               {$ENDIF}
+            end;
+
             // 送信中→送信終了に変わったら、リピートタイマー起動
-            if (FWkLastMessage <> '') and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
+            if (FWkCallsignSending = False) and (FWkLastMessage <> '') and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
                if FCQLoopCount < FCQLoopMax then begin
                   RepeatTimer.Enabled := True;
                   Inc(FCQLoopCount);
@@ -2598,9 +2621,9 @@ begin
             // STATUSを保存
             FWkStatus := b;
 
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('WinKey STATUS=[' + IntToHex(b, 2) + ']'));
-            {$ENDIF}
+//            {$IFDEF DEBUG}
+//            OutputDebugString(PChar('WinKey STATUS=[' + IntToHex(b, 2) + ']'));
+//            {$ENDIF}
          end
          else if ((b and $c0) = $80) then begin   // POT POSITION
             newwpm := (b and $3F);
@@ -2721,6 +2744,36 @@ begin
 
    if Assigned(FOnSpeedChanged) then begin
       FOnSpeedChanged(Self);
+   end;
+end;
+
+procedure TdmZLogKeyer.WndMethod(var msg: TMessage);
+var
+   C: Char;
+begin
+   case msg.Msg of
+      WM_USER_SENDNEXTCHAR: begin
+         Inc(FWkCallsignIndex);
+         if FWkCallsignIndex <= Length(FWkCallsignStr) then begin
+            C := FWkCallsignStr[FWkCallsignIndex];
+            WinKeyerSendChar(C, False);
+         end
+         else begin
+            FWkCallsignSending := False;
+            if FPTTEnabled = True then begin
+               WinKeyerControlPTT(False);
+            end;
+            if Assigned(FOnCallsignSentProc) then begin
+               FOnCallsignSentProc(nil);
+            end;
+         end;
+
+         msg.Result := 0;
+      end;
+
+      else begin
+         msg.Result := DefWindowProc(FWnd, msg.Msg, msg.WParam, msg.LParam);
+      end;
    end;
 end;
 
