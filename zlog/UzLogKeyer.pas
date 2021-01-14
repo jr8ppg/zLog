@@ -24,7 +24,8 @@ const
   _deccw = $81;
 
 const
-  WM_USER_SENDNEXTCHAR = (WM_USER + 1);
+  WM_USER_WKSENDNEXTCHAR = (WM_USER + 1);
+  WM_USER_WKCHANGEWPM = (WM_USER + 2);
 
 type
   TKeyingPort = (tkpNone,
@@ -57,7 +58,6 @@ type
   TdmZLogKeyer = class(TDataModule)
     HidController: TJvHidDeviceController;
     ZComKeying: TCommPortDriver;
-    WinkeyerTimer: TTimer;
     RepeatTimer: TTimer;
     procedure WndMethod(var msg: TMessage);
     procedure DoDeviceChanges(Sender: TObject);
@@ -67,9 +67,7 @@ type
     procedure HidControllerDeviceData(HidDev: TJvHidDevice; ReportID: Byte; const Data: Pointer; Size: Word);
     procedure HidControllerDeviceUnplug(HidDev: TJvHidDevice);
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
-    procedure ZComKeyingReceiveData(Sender: TObject; DataPtr: Pointer;
-      DataSize: Cardinal);
-    procedure WinkeyerTimerTimer(Sender: TObject);
+    procedure ZComKeyingReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
     procedure RepeatTimerTimer(Sender: TObject);
   private
     { Private 宣言 }
@@ -169,7 +167,6 @@ type
     FWkInitializeMode: Boolean;
     FWkRevision: Integer;
     FWkStatus: Integer;
-    FWkSpeed: Integer;
     FWkEcho: Integer;
     FWkLastMessage: string;
     FWkCallsignSending: Boolean;
@@ -331,7 +328,6 @@ end;
 
 procedure TdmZLogKeyer.DataModuleCreate(Sender: TObject);
 begin
-   WinKeyerTimer.Enabled := False;
    RepeatTimer.Enabled := False;
    FInitialized := False;
    FComKeying := ZComKeying;
@@ -2279,11 +2275,9 @@ begin
    FWkInitializeMode := False;
    FWkRevision := 0;
    FWkStatus := 0;
-   FWkSpeed := 0;
    FWkEcho := 0;
    FWkLastMessage := '';
    FWkCallsignSending := False;
-   WinkeyerTimer.Enabled := False;
    RepeatTimer.Enabled := False;
    RepeatTimer.Interval := Trunc(FCQRepeatIntervalSec * 1000);
 
@@ -2600,7 +2594,7 @@ begin
                {$ENDIF}
 
                // 次の文字を送信
-               PostMessage(FWnd, WM_USER_SENDNEXTCHAR, 0, 0);
+               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
             end;
 
             // コールサイン送信時：１文字送信開始
@@ -2627,8 +2621,7 @@ begin
          end
          else if ((b and $c0) = $80) then begin   // POT POSITION
             newwpm := (b and $3F);
-            FWkSpeed := newwpm;
-            WinkeyerTimer.Enabled := True;
+            PostMessage(FWnd, WM_USER_WKCHANGEWPM, 0, newwpm);
          end
          else begin  // ECHO TEST
             FWkEcho := b;
@@ -2638,17 +2631,6 @@ begin
             {$ENDIF}
          end;
       end;
-   end;
-end;
-
-procedure TdmZLogKeyer.WinkeyerTimerTimer(Sender: TObject);
-begin
-   WinkeyerTimer.Enabled := False;
-
-   SetWPM(FWkSpeed);
-
-   if Assigned(FOnSpeedChanged) then begin
-      FOnSpeedChanged(Self);
    end;
 end;
 
@@ -2752,7 +2734,7 @@ var
    C: Char;
 begin
    case msg.Msg of
-      WM_USER_SENDNEXTCHAR: begin
+      WM_USER_WKSENDNEXTCHAR: begin
          Inc(FWkCallsignIndex);
          if FWkCallsignIndex <= Length(FWkCallsignStr) then begin
             C := FWkCallsignStr[FWkCallsignIndex];
@@ -2769,6 +2751,14 @@ begin
          end;
 
          msg.Result := 0;
+      end;
+
+      WM_USER_WKCHANGEWPM: begin
+         SetWPM(msg.LParam);
+
+         if Assigned(FOnSpeedChanged) then begin
+            FOnSpeedChanged(Self);
+         end;
       end;
 
       else begin
