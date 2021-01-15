@@ -1057,6 +1057,8 @@ type
 
     procedure InitBandMenu();
 
+    procedure SetStatusLine(strText: string);
+
     property RigControl: TRigControl read FRigControl;
     property PartialCheck: TPartialCheck read FPartialCheck;
     property CommForm: TCommForm read FCommForm;
@@ -4295,7 +4297,7 @@ begin
 
    if Pos('MAXRIG', S) = 1 then begin
       if length(temp) = 6 then
-         WriteStatusLine('MAXRIG = ' + IntToStr(RigControl._maxrig), True)
+         WriteStatusLine('MAXRIG = ' + IntToStr(RigControl.MaxRig), True)
       else begin
          Delete(temp, 1, 6);
          temp := TrimRight(temp);
@@ -4306,7 +4308,8 @@ begin
                exit;
          end;
          if (j >= 2) and (j <= 9) then
-            RigControl._maxrig := j;
+            RigControl.MaxRig := j;
+
          WriteStatusLine('MAXRIG set to ' + IntToStr(j), True)
       end;
    end;
@@ -9190,12 +9193,15 @@ begin
       Exit;
    end;
 
-   MyContest.SpaceBarProc;
+//   MyContest.SpaceBarProc;
 
    if NumberEdit.Text = '' then begin
       if strNumber <> '' then begin
          NumberEdit.Text := strNumber;
          NumberEdit.SelStart := Length(NumberEdit.Text);
+      end
+      else begin
+         MyContest.SpaceBarProc;
       end;
    end;
 
@@ -9383,6 +9389,11 @@ begin
    end;
 
    SetCQ(False);
+end;
+
+procedure TMainForm.SetStatusLine(strText: string);
+begin
+   StatusLine.Panels[1].Text := strText;
 end;
 
 end.
