@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.ValEdit, Vcl.ComCtrls,
-  Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Menus, System.IniFiles;
+  Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Menus, System.IniFiles, System.StrUtils;
 
 type
   TformMain = class(TForm)
@@ -41,6 +41,8 @@ type
     procedure WriteKeymap(ini: TIniFile; vle: TValueListEditor);
     procedure ResetKeymap(vle: TValueListEditor);
     procedure ResetKeymapAll();
+    procedure CreateHelpFile();
+    procedure CreateHelp2(SL: TStringList; strTitle: string; vle: TValueListEditor);
   public
     { Public 宣言 }
   end;
@@ -139,6 +141,8 @@ begin
       WriteKeymap(ini, vleEdit);
       WriteKeymap(ini, vlePostContest);
       WriteKeymap(ini, vleOther);
+
+      CreateHelpFile();
 
       Close();
    finally
@@ -357,6 +361,72 @@ begin
    ResetKeymap(vleEdit);
    ResetKeymap(vlePostContest);
    ResetKeymap(vleOther);
+end;
+
+procedure TformMain.CreateHelpFile();
+var
+   SL: TStringList;
+begin
+   SL := TStringList.Create();
+   try
+      CreateHelp2(SL, TabSheet1.Caption, vleLogging);
+      CreateHelp2(SL, TabSheet2.Caption, vleInformation);
+      CreateHelp2(SL, TabSheet3.Caption, vleCwKeying);
+      CreateHelp2(SL, TabSheet4.Caption, vleRigControl);
+      CreateHelp2(SL, TabSheet5.Caption, vleEdit);
+      CreateHelp2(SL, TabSheet6.Caption, vlePostContest);
+      CreateHelp2(SL, TabSheet7.Caption, vleOther);
+
+      SL.SaveToFile(ExtractFilePath(Application.ExeName) + '\ZLOGHELP.TXT');
+   finally
+      SL.Free();
+   end;
+end;
+
+// 01234567890
+// 入力と編集に関するキー操作
+// --------------------------
+// Alt+C    コールサインフィールドに移動
+procedure TformMain.CreateHelp2(SL: TStringList; strTitle: string; vle: TValueListEditor);
+var
+   i: Integer;
+   N: Integer;
+   slText: TStringList;
+   strText: string;
+   strSjis: AnsiString;
+begin
+   slText := TStringList.Create();
+   try
+      strText := strTitle + 'に関するキー操作';
+      SL.Add(strText);
+
+      strSjis := AnsiString(strText);
+      strText := DupeString('-', Length(strSjis));
+      SL.Add(strText);
+
+      for i := 1 to vle.RowCount - 1 do begin
+         N := StrToIntDef(Copy(vle.Cells[0, i], 2, 3), -1);
+         if N = -1 then begin
+            Continue;
+         end;
+
+         slText.CommaText := vle.Cells[1, i] + ',';
+
+         if Trim(slText[0]) = '' then begin
+            Continue;
+         end;
+
+         strText := slText[0];
+         strText := strText + DupeString(' ', 10);
+         strText := LeftStr(strText, 10);
+         strText := strText + Copy(vle.Cells[0, i], 5);
+         SL.Add(strText);
+      end;
+
+      SL.Add('');
+   finally
+      slText.Free();
+   end;
 end;
 
 end.
