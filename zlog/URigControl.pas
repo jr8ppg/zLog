@@ -639,7 +639,7 @@ begin
 
    // RIGØ‚è‘Ö‚¦
    FCurrentRigNumber := N;
-   if (N = 1) or (N = 2) then begin
+   if ((N = 1) or (N = 2)) and (FRigs[N] <> nil) then begin
       FCurrentRig := FRigs[FCurrentRigNumber];
 
       FCurrentRig.InquireStatus;
