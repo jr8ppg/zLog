@@ -108,6 +108,7 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 * 東京UHFコンテスト(tokyo_uhf.cfg)
 * ALL JA0コンテスト
 * CQWW,CQWPX,AP Sprint,IARU HF
+* など
 
 ## 動作確認済み機能
 
@@ -117,6 +118,7 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 * COMポートによるCWキーイング
 * USBIF4CWによるCWキーイング
 * U5-Link(ICOM)によるRIGコントロールとCWキーイング
+* WinKeyer USB V2.3/V3.1によるCWキーイング
 
 ## 動作確認済み無線機
 
