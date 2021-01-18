@@ -102,6 +102,8 @@ type
     _usbif4cw_sync_wpm: Boolean;
     _polling_interval: Integer;
 
+    _use_winkeyer: Boolean;
+
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
     _clusterbaud : integer; {}
 
@@ -221,8 +223,6 @@ type
     procedure SetMultiOp(i: Integer);
     function GetContestMenuNo() : Integer;
     procedure SetContestMenuNo(i: Integer);
-    function GetSpeed(): Integer;
-    procedure SetSpeed(i: Integer);
     function GetFIFO(): Boolean;
     procedure SetFIFO(b: Boolean);
     function GetTXNr(): Byte;
@@ -233,10 +233,6 @@ type
     procedure SetSuperCheckColumns(v: Integer);
     function GetSuperCheck2Columns(): Integer;
     procedure SetSuperCheck2Columns(v: Integer);
-    function GetCQMax(): Integer;
-    procedure SetCQMax(i : integer);
-    function GetCQRepeat(): Double;
-    procedure SetCQRepeat(r : double);
     function GetPowerOfBand(band: TBand): TPower;
 public
     { Public 宣言 }
@@ -257,21 +253,15 @@ public
     property Mode: Integer read GetMode write SetMode;
     property MultiOp: Integer read GetMultiOp write SetMultiOp;
     property ContestMenuNo: Integer read GetContestMenuNo write SetContestMenuNo;
-    property Speed: Integer read GetSpeed write SetSpeed;
     property FIFO: Boolean read GetFIFO write SetFIFO;
     property TXNr: Byte read GetTXNr write SetTXNr;
     property PTTEnabled: Boolean read GetPTTEnabled;
-    property CQMax: Integer read GetCQMax write SetCQMax;
-    property CQRepeat: Double read GetCQRepeat write SetCQRepeat;
     property RigNameStr[Index: Integer]: string read GetRigNameStr;
     property SuperCheckColumns: Integer read GetSuperCheckColumns write SetSuperCheckColumns;
     property SuperCheck2Columns: Integer read GetSuperCheck2Columns write SetSuperCheck2Columns;
 
     function GetAge(aQSO : TQSO) : string;
     procedure SetOpPower(aQSO : TQSO);
-
-    procedure SetWeight(i : integer);
-    procedure SetTonePitch(i : integer);
 
     procedure SetPaddleReverse(boo : boolean);
     procedure ReversePaddle();
@@ -748,6 +738,9 @@ begin
       // Polling Interval
       Settings._polling_interval := ini.ReadInteger('Hardware', 'PollingInterval', 200);
 
+      // Use WinKeyer USB
+      Settings._use_winkeyer := ini.ReadBool('Hardware', 'UseWinKeyer', False);
+
       // CW/PTT port
       Settings._lptnr := ini.ReadInteger('Hardware', 'CWLPTPort', 0);
 
@@ -1205,6 +1198,9 @@ begin
       // Polling Interval
       ini.WriteInteger('Hardware', 'PollingInterval', Settings._polling_interval);
 
+      // Use WinKeyer USB
+      ini.WriteBool('Hardware', 'UseWinKeyer', Settings._use_winkeyer);
+
       // CW/PTT port
       ini.WriteInteger('Hardware', 'CWLPTPort', Settings._lptnr);
 
@@ -1438,34 +1434,37 @@ end;
 
 procedure TdmZLogGlobal.InitializeCW();
 begin
-   dmZlogKeyer.UseSideTone := Settings.CW._sidetone;
+   dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
+   dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
 
    // RIGコントロールと同じポートの場合は無しとする
    if (Settings._rigport[1] <> Settings._lptnr) and
       (Settings._rigport[2] <> Settings._lptnr) then begin
-      dmZlogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
+      dmZLogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
    end
    else begin
-      dmZlogKeyer.KeyingPort := tkpNone;
+      dmZLogKeyer.KeyingPort := tkpNone;
    end;
 
-   dmZlogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
-   dmZlogKeyer.PaddleReverse := Settings.CW._paddlereverse;
+   dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
+   dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;
 
-   dmZlogKeyer.SetPTTDelay(Settings._pttbefore, Settings._pttafter);
-   dmZlogKeyer.SetPTT(Settings._pttenabled);
+   dmZLogKeyer.FixedSpeed := Settings.CW._fixwpm;
 
-   Speed := Settings.CW._speed;
-   SetWeight(Settings.CW._weight);
-   CQMax := Settings.CW._cqmax;
-   CQRepeat := Settings.CW._cqrepeat;
-   SetTonePitch(Settings.CW._tonepitch);
+   dmZLogKeyer.SetPTTDelay(Settings._pttbefore, Settings._pttafter);
+   dmZLogKeyer.SetPTT(Settings._pttenabled);
 
-   dmZlogKeyer.RandCQStr[1] := SetStr(Settings.CW.AdditionalCQMessages[2], CurrentQSO);
-   dmZlogKeyer.RandCQStr[2] := SetStr(Settings.CW.AdditionalCQMessages[3], CurrentQSO);
+   dmZLogKeyer.WPM := Settings.CW._speed;
+   dmZLogKeyer.SetWeight(Settings.CW._weight);
+   dmZLogKeyer.CQLoopMax := Settings.CW._cqmax;
+   dmZLogKeyer.CQRepeatIntervalSec := Settings.CW._cqrepeat;
+   dmZLogKeyer.SideTonePitch := Settings.CW._tonepitch;
 
-   dmZlogKeyer.SpaceFactor := Settings.CW._spacefactor;
-   dmZlogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
+   dmZLogKeyer.RandCQStr[1] := SetStr(Settings.CW.AdditionalCQMessages[2], CurrentQSO);
+   dmZLogKeyer.RandCQStr[2] := SetStr(Settings.CW.AdditionalCQMessages[3], CurrentQSO);
+
+   dmZLogKeyer.SpaceFactor := Settings.CW._spacefactor;
+   dmZLogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
 end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;
@@ -1574,19 +1573,6 @@ begin
    Settings._contestmenuno := i;
 end;
 
-function TdmZLogGlobal.GetSpeed(): Integer;
-begin
-   Result := Settings.CW._speed;
-end;
-
-procedure TdmZLogGlobal.SetSpeed(i: integer);
-begin
-   if i in [0 .. 60] then begin
-      Settings.CW._speed := i;
-      dmZlogKeyer.WPM := Settings.CW._speed;
-   end;
-end;
-
 function TdmZLogGlobal.GetFIFO(): Boolean;
 begin
    Result := Settings.CW._FIFO;
@@ -1610,20 +1596,6 @@ end;
 function TdmZLogGlobal.GetPTTEnabled: Boolean;
 begin
    Result := Settings._pttenabled;
-end;
-
-procedure TdmZLogGlobal.SetWeight(i: integer);
-begin
-   if i in [0 .. 100] then
-      Settings.CW._weight := i;
-
-   dmZlogKeyer.SetWeight(Settings.CW._weight);
-end;
-
-procedure TdmZLogGlobal.SetTonePitch(i: integer);
-begin
-   Settings.CW._tonepitch := i;
-   dmZlogKeyer.SideTonePitch := i;
 end;
 
 function TdmZLogGlobal.GetRigNameStr(Index: Integer): string; // returns the selected rig name
@@ -1665,28 +1637,6 @@ end;
 procedure TdmZLogGlobal.SetSuperCheck2Columns(v: Integer);
 begin
    Settings._super_check2_columns := v;
-end;
-
-function TdmZLogGlobal.GetCQMax(): Integer;
-begin
-   Result := Settings.CW._cqmax;
-end;
-
-procedure TdmZLogGlobal.SetCQMax(i: integer);
-begin
-   Settings.CW._cqmax := i;
-   dmZlogKeyer.CQLoopMax := i;
-end;
-
-function TdmZLogGlobal.GetCQRepeat(): Double;
-begin
-   Result := Settings.CW._cqrepeat;
-end;
-
-procedure TdmZLogGlobal.SetCQRepeat(r: Double);
-begin
-   Settings.CW._cqrepeat := r;
-   dmZlogKeyer.CQRepeatIntervalSec := r;
 end;
 
 function TdmZLogGlobal.GetPowerOfBand(band: TBand): TPower;

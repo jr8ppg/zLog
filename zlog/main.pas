@@ -935,6 +935,9 @@ type
     FNPlusOneThread: TSuperCheckNPlusOneThread;
     FSuperCheckDataLoadThread: TSuperCheckDataLoadThread;
 
+    // WinKeyer
+    FWkAbort: Boolean;
+
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -1007,6 +1010,9 @@ type
     procedure TerminateNPlusOne();
     procedure TerminateSuperCheckDataLoad();
     procedure OnSPCMenuItemCick(Sender: TObject);
+
+    procedure DoCwSpeedChange(Sender: TObject);
+    procedure DoVFOChange(Sender: TObject);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1050,6 +1056,8 @@ type
     procedure BandScopeUpdateSpot(aQSO: TQSO);
 
     procedure InitBandMenu();
+
+    procedure SetStatusLine(strText: string);
 
     property RigControl: TRigControl read FRigControl;
     property PartialCheck: TPartialCheck read FPartialCheck;
@@ -1272,8 +1280,8 @@ procedure TMainForm.RenewCWToolBar;
 var
    i: Integer;
 begin
-   SpeedBar.Position := dmZlogGlobal.Speed;
-   SpeedLabel.Caption := IntToStr(dmZlogGlobal.Speed) + ' wpm';
+   SpeedBar.Position := dmZLogKeyer.WPM;
+   SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
    i := dmZlogGlobal.Settings.CW.CurrentBank;
    CWF1.Hint := dmZlogGlobal.CWMessage(i, 1);
    CWF2.Hint := dmZlogGlobal.CWMessage(i, 2);
@@ -3742,6 +3750,7 @@ var
 begin
    FInitialized   := False;
    FRigControl    := TRigControl.Create(Self);
+   FRigControl.OnVFOChanged := DoVFOChange;
    FPartialCheck  := TPartialCheck.Create(Self);
    FRateDialog    := TRateDialog.Create(Self);
    FSuperCheck    := TSuperCheck.Create(Self);
@@ -3764,6 +3773,8 @@ begin
    FVoiceForm     := TVoiceForm.Create(Self);
    FVoiceForm.OnNotifyStarted  := OnVoicePlayStarted;
    FVoiceForm.OnNotifyFinished := OnVoicePlayFinished;
+
+   FWkAbort := False;
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
@@ -3819,6 +3830,7 @@ begin
       if GetAsyncKeyState(VK_SHIFT) = 0 then begin
          dmZLogKeyer.OnCallsignSentProc := CallsignSentProc;
          dmZLogKeyer.OnPaddle := OnPaddle;
+         dmZLogKeyer.OnSpeedChanged := DoCwSpeedChange;
          dmZLogKeyer.InitializeBGK(mSec);
       end;
    end;
@@ -4285,7 +4297,7 @@ begin
 
    if Pos('MAXRIG', S) = 1 then begin
       if length(temp) = 6 then
-         WriteStatusLine('MAXRIG = ' + IntToStr(RigControl._maxrig), True)
+         WriteStatusLine('MAXRIG = ' + IntToStr(RigControl.MaxRig), True)
       else begin
          Delete(temp, 1, 6);
          temp := TrimRight(temp);
@@ -4296,7 +4308,8 @@ begin
                exit;
          end;
          if (j >= 2) and (j <= 9) then
-            RigControl._maxrig := j;
+            RigControl.MaxRig := j;
+
          WriteStatusLine('MAXRIG set to ' + IntToStr(j), True)
       end;
    end;
@@ -4593,12 +4606,12 @@ begin
 
    case Key of
       '!': begin
-         ToggleFixedSpeed;
+         dmZLogKeyer.ToggleFixedSpeed();
          Key := #0;
       end;
 
       '-': begin // up key
-         ToggleFixedSpeed;
+         dmZLogKeyer.ToggleFixedSpeed();
          Key := #0;
       end;
 
@@ -4985,19 +4998,25 @@ begin
    S := dmZlogGlobal.CWMessage(2);
    S := SetStr(S, CurrentQSO);
 
-   dmZLogKeyer.ClrBuffer;
-   dmZLogKeyer.PauseCW;
-   if dmZlogGlobal.PTTEnabled then begin
-      S := S + ')'; // PTT is turned on in ResumeCW
+   if dmZLogKeyer.UseWinKeyer = True then begin
+      dmZLogKeyer.WinKeyerClear();
+      dmZLogKeyer.WinkeyerSendCallsign(CurrentQSO.Callsign);
+   end
+   else begin
+      dmZLogKeyer.ClrBuffer;
+      dmZLogKeyer.PauseCW;
+      if dmZlogGlobal.PTTEnabled then begin
+         S := S + ')'; // PTT is turned on in ResumeCW
+      end;
+
+      dmZLogKeyer.SetCWSendBuf(0, S);
+      dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
+      dmZLogKeyer.ResumeCW;
    end;
 
-   dmZLogKeyer.SetCWSendBuf(0, S);
-   dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
-   dmZLogKeyer.ResumeCW;
-
-   if dmZlogGlobal.Settings._switchcqsp then begin
-      CallsignSentProc(nil);
-   end;
+//   if dmZlogGlobal.Settings._switchcqsp then begin
+//      CallsignSentProc(nil);
+//   end;
 end;
 
 procedure TMainForm.DownKeyPress;
@@ -5014,8 +5033,7 @@ begin
                // NR?自動送出使う場合
                if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
                   S := dmZlogGlobal.CWMessage(5);
-                  S := SetStr(S, CurrentQSO);
-                  zLogSendStr(S);
+                  zLogSendStr2(S, CurrentQSO);
                end;
 
                WriteStatusLine('Invalid Number', False);
@@ -5026,8 +5044,7 @@ begin
 
             // TU $M TEST
             S := dmZlogGlobal.CWMessage(3);
-            S := SetStr(S, CurrentQSO);
-            zLogSendStr(S);
+            zLogSendStr2(S, CurrentQSO);
 
             LogButtonClick(Self);
          end;
@@ -5090,10 +5107,20 @@ begin
          Key := 0;
       end;
 
+//      VK_BACK: begin
+//         if (dmZLogKeyer.UseWinKeyer = True) and (dmZLogKeyer.WkCallsignSending = True) then begin
+//            dmZLogKeyer.WinKeyerCancelLastChar();
+//         end;
+//      end;
+
       Ord('A') .. Ord('Z'), Ord('0') .. Ord('9'): begin
          if Shift <> [] then begin
             exit;
          end;
+
+//         if (dmZLogKeyer.UseWinKeyer = True) and (dmZLogKeyer.WkCallsignSending = True) then begin
+//            dmZLogKeyer.WinkeyerSendChar(Char(Key));
+//         end;
 
          if (CtrlZCQLoop = True) and (TEdit(Sender).Name = 'CallsignEdit') then begin
             CtrlZBreak;
@@ -5440,7 +5467,8 @@ end;
 
 procedure TMainForm.SpeedBarChange(Sender: TObject);
 begin
-   dmZlogGlobal.Speed := SpeedBar.Position;
+   dmZLogKeyer.WPM := SpeedBar.Position;
+   dmZLogGlobal.Settings.CW._speed := SpeedBar.Position;
    SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
 
    if LastFocus <> nil then begin
@@ -5459,6 +5487,7 @@ begin
    dmZLogKeyer.ClrBuffer;
    CWPlayButton.Visible := False;
    CWPauseButton.Visible := True;
+   FWkAbort := True;
 end;
 
 procedure TMainForm.VoiceStopButtonClick(Sender: TObject);
@@ -5477,6 +5506,7 @@ begin
    else begin
       panelCQMode.Caption := 'SP';
       panelCQMode.Font.Color := clFuchsia;
+      actionCQAbort.Execute();
    end;
 
    FZLinkForm.SendRigStatus;
@@ -5526,8 +5556,6 @@ begin
    S := dmZlogGlobal.CWMessage(1, 1);
    S := SetStr(UpperCase(S), CurrentQSO);
    dmZLogKeyer.SendStrLoop(S);
-   dmZLogKeyer.RandCQStr[1] := SetStr(dmZlogGlobal.Settings.CW.AdditionalCQMessages[2], CurrentQSO);
-   dmZLogKeyer.RandCQStr[2] := SetStr(dmZlogGlobal.Settings.CW.AdditionalCQMessages[3], CurrentQSO);
 end;
 
 procedure TMainForm.buttonCwKeyboardClick(Sender: TObject);
@@ -5711,9 +5739,25 @@ procedure TMainForm.CallsignSentProc(Sender: TObject);
 var
    Q: TQSO;
    S: String;
+
+   procedure WinKeyerQSO();
+   begin
+      if dmZLogKeyer.UseWinKeyer = True then begin
+         if FWkAbort = True then begin
+            FWkAbort := False;
+            Exit;
+         end;
+         S := dmZlogGlobal.CWMessage(2);
+         S := SetStr(S, CurrentQSO);
+         dmZLogKeyer.WinkeyerSendStr(S);
+      end;
+   end;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('--- Begin CallsignSentProc() ---'));
+   {$ENDIF}
    try
-      if CallsignEdit.Focused then begin
+//      if CallsignEdit.Focused then begin
          Q := Log.QuickDupe(CurrentQSO);
          if TabPressed2 and (Q <> nil) then begin
             // ステータスバーにDUPE表示
@@ -5722,7 +5766,9 @@ begin
             // ALLOW DUPEしない場合は4番を送出
             if dmZLogGlobal.Settings._allowdupe = False then begin
                // 先行して送出されている2番をクリア
-               dmZLogKeyer.ClrBuffer;
+               if dmZLogKeyer.UseWinKeyer = False then begin
+                  dmZLogKeyer.ClrBuffer;
+               end;
 
                if dmZlogGlobal.Settings._switchcqsp then begin
                   if dmZlogGlobal.Settings.CW.CurrentBank = 2 then begin
@@ -5733,13 +5779,24 @@ begin
 
                // 4番(QSO B4 TU)送出
                S := ' ' + SetStr(dmZlogGlobal.CWMessage(1, 4), CurrentQSO);
-               dmZLogKeyer.SendStr(S);
-               dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
+               if dmZLogKeyer.UseWinKeyer = True then begin
+                  zLogSendStr(S);
+               end
+               else begin
+                  dmZLogKeyer.SendStr(S);
+                  dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
+               end;
 
                CallsignEdit.SelectAll;
 
                exit; { BECAREFUL!!!!!!!!!!!!!!!!!!!!!!!! }
+            end
+            else begin  // ALLOW DUPE!
+               WinKeyerQSO();
             end;
+         end
+         else begin  // NOT DUPE
+            WinKeyerQSO();
          end;
 
          if TabPressed2 then begin
@@ -5747,7 +5804,7 @@ begin
             NumberEdit.SetFocus;
             EditedSinceTABPressed := tabstate_tabpressedbutnotedited; // UzLogCW
          end;
-      end;
+//      end;
 
    finally
       dmZLogKeyer.ResumeCW;
@@ -7193,7 +7250,7 @@ begin
    EditScreen := TALLJAEdit.Create(Self);
 
    MyContest := TALLJAContest.Create('ALL JA コンテスト');
-   QTHString := dmZlogGlobal.Settings._prov;
+//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.Init6D();
@@ -7204,7 +7261,7 @@ begin
    EditScreen := TACAGEdit.Create(Self);
 
    MyContest := TSixDownContest.Create('6m and DOWNコンテスト');
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitFD();
@@ -7215,7 +7272,7 @@ begin
    EditScreen := TACAGEdit.Create(Self);
 
    MyContest := TFDContest.Create('フィールドデーコンテスト');
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitACAG();
@@ -7226,7 +7283,7 @@ begin
    EditScreen := TACAGEdit.Create(Self);
 
    MyContest := TACAGContest.Create('全市全郡コンテスト');
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitALLJA0_JA0(BandGroupIndex: Integer);
@@ -7261,7 +7318,7 @@ begin
       end;
    end;
 
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitALLJA0_Other(BandGroupIndex: Integer);
@@ -7296,7 +7353,7 @@ begin
       end;
    end;
 
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitKCJ();
@@ -7308,7 +7365,7 @@ begin
    EditScreen := TKCJEdit.Create(Self);
 
    MyContest := TKCJContest.Create('KCJ コンテスト');
-   QTHString := dmZlogGlobal.Settings._prov;
+//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.InitDxPedi();
@@ -7327,7 +7384,7 @@ begin
       EditScreen := TGeneralEdit.Create(Self);
 
       MyContest := TPedi.Create('Pedition mode');
-      QTHString := dmZlogGlobal.Settings._prov;
+//      QTHString := dmZlogGlobal.Settings._prov;
    finally
       F.Release();
    end;
@@ -7335,7 +7392,7 @@ end;
 
 procedure TMainForm.InitUserDefined(ContestName, ConfigFile: string);
 begin
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
    MyContest := TGeneralContest.Create(ContestName, ConfigFile);
 end;
 
@@ -7349,7 +7406,7 @@ begin
    EditScreen := TWWEdit.Create(Self);
 
    MyContest := TCQWWContest.Create('CQWW DX Contest');
-   QTHString := UMultipliers.MyZone;
+//   QTHString := UMultipliers.MyZone;
 end;
 
 procedure TMainForm.InitWPX(OpGroupIndex: Integer);
@@ -7368,7 +7425,7 @@ begin
       SerialContestType := SER_MS;
    end;
 
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
    mPXListWPX.Visible := True;
 end;
 
@@ -7386,7 +7443,7 @@ begin
       MyContest := TJIDXContestDX.Create('JIDX Contest (DX)');
    end;
 
-   QTHString := dmZlogGlobal.Settings._prov;
+//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.InitAPSprint();
@@ -7400,7 +7457,7 @@ begin
    EditScreen := TWPXEdit.Create(Self);
 
    MyContest := TAPSprint.Create('Asia Pacific Sprint');
-   QTHString := dmZlogGlobal.Settings._city;
+//   QTHString := dmZlogGlobal.Settings._city;
    // Log.QsoList[0].memo := 'WPX Contest';
 end;
 
@@ -7412,7 +7469,7 @@ begin
    EditScreen := TDXCCEdit.Create(Self);
 
    MyContest := TARRLDXContestW.Create('ARRL International DX Contest (W/VE)');
-   QTHString := dmZlogGlobal.Settings._prov;
+//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.InitARRL_DX();
@@ -7423,7 +7480,7 @@ begin
    EditScreen := TARRLDXEdit.Create(Self);
 
    MyContest := TARRLDXContestDX.Create('ARRL International DX Contest (DX)');
-   QTHString := dmZlogGlobal.Settings._prov;
+//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.InitARRL10m();
@@ -7457,7 +7514,7 @@ begin
    EditScreen := TIARUEdit.Create(Self);
 
    MyContest := TIARUContest.Create('IARU HF World Championship');
-   QTHString := MyZone;
+//   QTHString := MyZone;
 end;
 
 procedure TMainForm.InitAllAsianDX();
@@ -7472,7 +7529,7 @@ begin
       EditScreen := TDXCCEdit.Create(Self);
 
       MyContest := TAllAsianContest.Create('All Asian DX Contest (Asia)');
-      QTHString := dmZlogGlobal.Settings._prov;
+//      QTHString := dmZlogGlobal.Settings._prov;
 
       if F.ShowModal() <> mrOK then begin
          Exit;
@@ -7703,8 +7760,7 @@ begin
       Exit;
    end;
 
-   S := SetStr(S, CurrentQSO);
-   zLogSendStr(S);
+   zLogSendStr2(S, CurrentQSO);
 end;
 
 procedure TMainForm.PlayMessagePH(no: Integer);
@@ -8552,13 +8608,13 @@ end;
 // #96 QRU Shift+U
 procedure TMainForm.actionDecreaseCwSpeedExecute(Sender: TObject);
 begin
-   DecCWSpeed;
+   dmZLogKeyer.DecCWSpeed();
 end;
 
 // #97 QRQ Shift+Y
 procedure TMainForm.actionIncreaseCwSpeedExecute(Sender: TObject);
 begin
-   IncCWSpeed;
+   dmZLogKeyer.IncCWSpeed();
 end;
 
 // #98 連続CQ、ESCを押さないと送信解除しない Shift+Z
@@ -9137,12 +9193,15 @@ begin
       Exit;
    end;
 
-   MyContest.SpaceBarProc;
+//   MyContest.SpaceBarProc;
 
    if NumberEdit.Text = '' then begin
       if strNumber <> '' then begin
          NumberEdit.Text := strNumber;
          NumberEdit.SelStart := Length(NumberEdit.Text);
+      end
+      else begin
+         MyContest.SpaceBarProc;
       end;
    end;
 
@@ -9159,6 +9218,7 @@ begin
    if RigControl.Rig <> nil then begin
       // RIGにfreq設定
       RigControl.Rig.SetFreq(freq, IsCQ());
+      RigControl.Rig.UpdateStatus();
 
       // Zeroin避け
       SetAntiZeroin();
@@ -9310,6 +9370,30 @@ begin
    for b := b19 to HiBand do begin
       BandMenu.Items[ord(b)].Enabled := (BandMenu.Items[ord(b)].Enabled and dmZLogGlobal.Settings._activebands[b]);
    end;
+end;
+
+procedure TMainForm.DoCwSpeedChange(Sender: TObject);
+var
+   i: Integer;
+begin
+   i := dmZLogKeyer.WPM;
+   dmZLogGlobal.Settings.CW._speed := i;
+   SpeedBar.Position := i;
+   SpeedLabel.Caption := IntToStr(i) + ' wpm';
+end;
+
+procedure TMainForm.DoVFOChange(Sender: TObject);
+begin
+   if FInitialized = False then begin
+      Exit;
+   end;
+
+   SetCQ(False);
+end;
+
+procedure TMainForm.SetStatusLine(strText: string);
+begin
+   StatusLine.Panels[1].Text := strText;
 end;
 
 end.

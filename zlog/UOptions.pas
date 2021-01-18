@@ -390,6 +390,7 @@ type
     comboVoiceDevice: TComboBox;
     buttonPlayVoice: TSpeedButton;
     buttonStopVoice: TSpeedButton;
+    checkUseWinKeyer: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -674,6 +675,9 @@ begin
       else begin
          Settings._lptnr := 0;
       end;
+
+      // Use Winkeyer
+      Settings._use_winkeyer := checkUseWinkeyer.Checked;
 
 //      Settings._sentstr := SentEdit.Text;
 
@@ -993,6 +997,9 @@ begin
       else begin
          comboCwPttPort.ItemIndex := 0;
       end;
+
+      // Use Winkeyer
+      checkUseWinkeyer.Checked := Settings._use_winkeyer;
 
       // SentóìÇÕï\é¶êÍóp
       SentEdit.Text := Settings._sentstr;
@@ -1625,14 +1632,18 @@ begin
       comboRig2Name.ItemIndex := comboRig2Name.Items.Count - 1;
       comboRig1Port.ItemIndex := 0;
       comboRig1Port.Enabled := False;
+      comboRig1Speed.Enabled := False;
       comboRig2Port.Enabled := False;
+      comboRig2Speed.Enabled := False;
    end
    else begin
       comboRig1Port.Enabled := True;
+      comboRig1Speed.Enabled := True;
       if comboRig2Name.ItemIndex = comboRig2Name.Items.Count - 1 then begin
          comboRig2Name.ItemIndex := 0;
          comboRig2Port.ItemIndex := 0;
          comboRig2Port.Enabled := True;
+         comboRig2Speed.Enabled := True;
       end;
    end;
 end;
@@ -1643,14 +1654,18 @@ begin
       comboRig1Name.ItemIndex := comboRig1Name.Items.Count - 1;
       comboRig2Port.ItemIndex := 0;
       comboRig2Port.Enabled := False;
+      comboRig2Speed.Enabled := False;
       comboRig1Port.Enabled := False;
+      comboRig1Speed.Enabled := False;
    end
    else begin
       comboRig2Port.Enabled := True;
+      comboRig2Speed.Enabled := True;
       if comboRig1Name.ItemIndex = comboRig1Name.Items.Count - 1 then begin
          comboRig1Name.ItemIndex := 0;
          comboRig1Port.ItemIndex := 0;
          comboRig1Port.Enabled := True;
+         comboRig1Speed.Enabled := True;
       end;
    end;
 end;

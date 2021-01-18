@@ -113,7 +113,8 @@ uses
   MMReg in 'MMReg.pas',
   UzLogExtension in 'UzLogExtension.pas',
   UOperatorEdit in 'UOperatorEdit.pas' {formOperatorEdit},
-  UzLogOperatorInfo in 'UzLogOperatorInfo.pas';
+  UzLogOperatorInfo in 'UzLogOperatorInfo.pas',
+  WinKeyer in 'WinKeyer.pas';
 
 {$R *.RES}
 

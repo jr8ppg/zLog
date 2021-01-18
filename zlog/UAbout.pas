@@ -65,11 +65,21 @@ end;
 
 procedure TAboutBox.FormCreate(Sender: TObject);
 begin
+   Label4.Caption := '';
+
    if dmZLogKeyer.USBIF4CW_Detected then begin
       Label4.Caption := 'USBIF4CW detected';
-   end
-   else begin
-      Label4.Caption := '';
+      Exit;
+   end;
+
+   if dmZLogGlobal.Settings._use_winkeyer = True then begin
+      if dmZLogKeyer.WinKeyerRevision = 0 then begin
+         Label4.Caption := 'WinKeyer not detected';
+      end
+      else begin
+         Label4.Caption := 'WinKeyer detected Rev. ' + IntToHex(dmZLogKeyer.WinKeyerRevision, 2);
+      end;
+      Exit;
    end;
 end;
 

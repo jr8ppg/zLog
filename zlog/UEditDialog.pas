@@ -773,8 +773,7 @@ begin
       end;
 
       S := dmZlogGlobal.CWMessage(cb, no);
-      S := SetStr(S, CurrentQSO);
-      zLogSendStr(S);
+      zLogSendStr2(S, CurrentQSO);
    end
    else begin
       // SendVoice(i);
@@ -917,12 +916,12 @@ end;
 
 procedure TEditDialog.actionDecreaseCwSpeedExecute(Sender: TObject);
 begin
-   DecCWSpeed;
+   dmZLogKeyer.DecCWSpeed();
 end;
 
 procedure TEditDialog.actionIncreaseCwSpeedExecute(Sender: TObject);
 begin
-   IncCWSpeed;
+   dmZLogKeyer.IncCWSpeed();
 end;
 
 procedure TEditDialog.actionCQRepeat2Execute(Sender: TObject);

@@ -192,6 +192,7 @@ type
     procedure ProcessUnlock(xQSO: TQSO);
     procedure SetScoreCoeff(E: Extended);
     function GetScoreCoeff(): Extended;
+    function GetActualFreq(b: TBand; memo: string): string;
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -1480,6 +1481,47 @@ begin
    end;
 end;
 
+function TLog.GetActualFreq(b: TBand; memo: string): string;
+var
+   p: Integer;
+   s: string;
+const
+   FREQ: array[b19..b10g] of string = (
+   ' 1800', ' 3500', ' 7000', '10000', '14000', '18000', '21000', '24500',
+   '28000', '   50', '  144', '  432', ' 1.2G', ' 2.3G', ' 5.7G', '  10G'
+   );
+begin
+   if b > b28 then begin
+      Result := FREQ[b];
+      Exit;
+   end;
+
+   p := Pos('(', memo);
+   if p = 0 then begin
+      Result := FREQ[b];
+      Exit;
+   end;
+
+   s := Copy(memo, p + 1);
+
+   p := Pos(')', s);
+   if p = 0 then begin
+      Result := FREQ[b];
+      Exit;
+   end;
+
+   s := Copy(s, 1, p - 1);
+
+   p := Pos('.', s);
+   if p = 0 then begin
+      Result := RightStr('     ' + s, 5);
+      Exit;
+   end;
+
+   s := Copy(s, 1, p - 1);
+   Result := RightStr('     ' + s, 5);
+end;
+
 // https://wwrof.org/cabrillo/
 // https://wwrof.org/cabrillo/cabrillo-qso-data/
 //                              --------info sent------- -------info rcvd--------
@@ -1497,12 +1539,6 @@ var
    utc: TDateTime;
    offhour: Integer;
    offsetmin: Integer;
-const
-   FREQ: array[b19..b10g] of string = (
-   ' 1800', ' 3500', ' 7000', '10000', '14000', '18000', '21000', '24500',
-   '28000', '   50', '  144', '  432', ' 1.2G', ' 2.3G', ' 5.7G', '  10G'
-   );
-
 begin
    AssignFile(F, Filename);
    ReWrite(F);
@@ -1554,7 +1590,7 @@ begin
          strText := 'QSO: ';
       end;
 
-      strText := strText + FREQ[Q.Band] + ' ';
+      strText := strText  + GetActualFreq(Q.Band, Q.Memo) + ' ';
 
       if Q.Mode = mCW then begin
          strText := strText + 'CW ';

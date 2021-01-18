@@ -218,13 +218,13 @@ end;
 
 procedure TCWKeyBoard.actionIncreaseCwSpeedExecute(Sender: TObject);
 begin
-   IncCWSpeed();
+   dmZLogKeyer.IncCWSpeed();
    SetFocus();
 end;
 
 procedure TCWKeyBoard.actionDecreaseCwSpeedExecute(Sender: TObject);
 begin
-   DecCWSpeed();
+   dmZLogKeyer.DecCWSpeed();
    SetFocus();
 end;
 
@@ -234,13 +234,11 @@ var
    i: Integer;
 begin
    S := dmZlogGlobal.CWMessage(cb, no);
-
    if S = '' then begin
       Exit;
    end;
 
-   S := SetStr(S, CurrentQSO);
-   zLogSendStr(S);
+   zLogSendStr2(S, CurrentQSO);
 
    while Pos(':***********', S) > 0 do begin
       i := Pos(':***********', S);

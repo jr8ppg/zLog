@@ -99,7 +99,7 @@ const
     'Ctrl+F8',
     'Ctrl+F10',
     'Ctrl+F12',
-    'F1',               // #10
+    '',                 // #10
     'F2',
     'F3',
     'F4',
@@ -205,7 +205,7 @@ const
     'Esc',              // #113 actionCQAbort
     'F11',              // #114 actionPlayMessageA11
     'F12',              // #115 actionPlayMessageA12
-    '',                 // #116 actionPlayCQA1
+    'F1',               // #116 actionPlayCQA1
     'Shift+F11',        // #117 actionPlayMessageB11
     'Shift+F12',        // #118 actionPlayMessageB12
     '',                 // #119 actionPlayCQB1

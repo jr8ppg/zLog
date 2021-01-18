@@ -1,56 +1,48 @@
 unit OmniRig_TLB;
 
 // ************************************************************************ //
-//  警告                                                                      
-// ------                                                                     
-// このファイルで定義されている型宣言はタイプライブラリから読み出した       //
-// 値を元に作成されています。タイプライブラリエディタで作業中に [ソー       //
-// スコードの更新] ボタンを押したときや，ほかのタイプライブラリが直接       //
-// または間接にこのタイプライブラリを参照している場合に，このファイル       //
-// はタイプライブラリの値を元に再生成されます。                             //
-// この場合，このファイル自身に対する変更は失われてしまいます。             //
+// 警告
+// -------
+// このファイルで宣言されている型はタイプ ライブラリから読み取られたデータから
+// 生成されています。このタイプ ライブラリが明示的あるいは（このタイプ ライブラ
+// リを参照しているほかのタイプ ライブラリ経由で）間接的に再インポートされた
+// り、タイプ ライブライブラリの編集中にタイプ ライブラリ エディタの［更新］コマ
+// ンドを実行した場合、このファイルの内容はすべて再生成され、手動で加えた変更
+// はすべて失われます。
 // ************************************************************************ //
 
-// PASTLWTR : $Revision:   1.130  $
-// このファイルは以下のタイプライブラリから 2004/11/25 17:59:28 に生成されました。
+// $Rev: 52393 $
+// 下に説明されたタイプ ライブラリから 2020/12/31 10:01:22 に生成されたファイル。
 
-// ************************************************************************ //
-// Type Lib: F:\PROGRA~1\Afreet\Omni-Rig\OmniRig.exe (1)
+// ************************************************************************  //
+// タイプ ライブラリ: C:\Program Files (x86)\Afreet\OmniRig\OmniRig.exe (1)
 // LIBID: {4FE359C5-A58F-459D-BE95-CA559FB4F270}
 // LCID: 0
-// Helpfile: 
-// DepndLst: 
-//   (1) v2.0 stdole, (F:\WINDOWS\System32\stdole2.tlb)
-//   (2) v4.0 StdVCL, (F:\WINDOWS\System32\stdvcl40.dll)
+// ヘルプファイル:
+// ヘルプ文字列: OmniRig Library
+// 依存関係リスト:
+//   (1) v2.0 stdole, (C:\Windows\SysWOW64\stdole2.tlb)
+// SYS_KIND: SYS_WIN32
 // ************************************************************************ //
-// *************************************************************************//
-// 注意：                                                                     
-// コンパイラ指令 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME} で分離されている部分で  
-// はオブジェクトを返すプロパティを定義しています。オブジェクトインスペクター 
-// 内での操作間違いを回避するために、デフォルトではこれらの機能は無効にされて 
-// います。必要な場合には LIVE_SERVER_AT_DESIGN_TIME を定義することでこれらの 
-// 機能を有効にすることができます。また $IFDEF ブロックを書き換えることで部分 
-// 的に有効にすることもできます。なお、適切な CoClass メソッドによりオブジェ  
-// クトが作成できるようになっている必要があります。                           
-{$TYPEDADDRESS OFF} // 型付き @ 演算子の指定を外す必要があります。
+{$TYPEDADDRESS OFF} // ポインタの型チェックをオフにしてコンパイルすること
 {$WARN SYMBOL_PLATFORM OFF}
 {$WRITEABLECONST ON}
+{$VARPROPSETTER ON}
+{$ALIGN 4}
 
 interface
 
-uses ActiveX, Classes, Graphics, OleServer, StdVCL, Variants, Windows;
-  
-
+uses Winapi.Windows, System.Classes, System.Variants, System.Win.StdVCL, Vcl.Graphics, Vcl.OleServer, Winapi.ActiveX;
 
 // *********************************************************************//
-// タイプライブラリ中の GUID の定義。以下の規則が使われます。             
-//   Type Libraries     : LIBID_xxxx                                      
-//   CoClasses          : CLASS_xxxx                                      
-//   DISPInterfaces     : DIID_xxxx                                       
-//   Non-DISP interfaces: IID_xxxx                                        
+// タイプ ライブラリで宣言される GUID. 以下のプレフィックスを使う:
+//   Type Libraries     : LIBID_xxxx
+//   CoClasses          : CLASS_xxxx
+//   DISPInterfaces     : DIID_xxxx
+//   Non-DISP interfaces: IID_xxxx
 // *********************************************************************//
 const
-  // タイプライブラリのメジャー/マイナーバージョン番号
+  // タイプ ライブラリのメジャー バージョンとマイナー バージョン
   OmniRigMajorVersion = 1;
   OmniRigMinorVersion = 0;
 
@@ -65,9 +57,9 @@ const
   CLASS_PortBits: TGUID = '{B786DE29-3B3D-4C66-B7C4-547F9A77A21D}';
 
 // *********************************************************************//
-// Declaration of Enumerations defined in Type Library                    
+// タイプ ライブラリで定義された列挙型の宣言
 // *********************************************************************//
-// enum RigParamX のための定数
+// 列挙型 RigParamX の定数
 type
   RigParamX = TOleEnum;
 const
@@ -103,7 +95,7 @@ const
   PM_AM = $20000000;
   PM_FM = $40000000;
 
-// enum RigStatusX のための定数
+// 列挙型 RigStatusX の定数
 type
   RigStatusX = TOleEnum;
 const
@@ -114,9 +106,8 @@ const
   ST_ONLINE = $00000004;
 
 type
-
 // *********************************************************************//
-// タイプライブラリの型宣言のための forward 宣言                          
+// タイプ ライブラリで宣言される前方参照
 // *********************************************************************//
   IOmniRigX = interface;
   IOmniRigXDisp = dispinterface;
@@ -125,10 +116,9 @@ type
   IRigXDisp = dispinterface;
   IPortBits = interface;
   IPortBitsDisp = dispinterface;
-
 // *********************************************************************//
-// Declaration of CoClasses defined in Type Library                       
-// (NOTE: Here we map each CoClass to its Default Interface)              
+// タイプ ライブラリで宣言される CoClass
+// (注意: ここで各 CoClass とデフォルトのインターフェイスをマッピングする)
 // *********************************************************************//
   OmniRigX = IOmniRigX;
   RigX = IRigX;
@@ -136,17 +126,17 @@ type
 
 
 // *********************************************************************//
-// Interface: IOmniRigX
-// Flags:     (4416) Dual OleAutomation Dispatchable
-// GUID:      {501A2858-3331-467A-837A-989FDEDACC7D}
+// インターフェイス: IOmniRigX
+// フラグ: (4416) Dual OleAutomation Dispatchable
+// GUID: {501A2858-3331-467A-837A-989FDEDACC7D}
 // *********************************************************************//
   IOmniRigX = interface(IDispatch)
     ['{501A2858-3331-467A-837A-989FDEDACC7D}']
-    function  Get_InterfaceVersion: Integer; safecall;
-    function  Get_SoftwareVersion: Integer; safecall;
-    function  Get_Rig1: IRigX; safecall;
-    function  Get_Rig2: IRigX; safecall;
-    function  Get_DialogVisible: WordBool; safecall;
+    function Get_InterfaceVersion: Integer; safecall;
+    function Get_SoftwareVersion: Integer; safecall;
+    function Get_Rig1: IRigX; safecall;
+    function Get_Rig2: IRigX; safecall;
+    function Get_DialogVisible: WordBool; safecall;
     procedure Set_DialogVisible(Value: WordBool); safecall;
     property InterfaceVersion: Integer read Get_InterfaceVersion;
     property SoftwareVersion: Integer read Get_SoftwareVersion;
@@ -157,7 +147,7 @@ type
 
 // *********************************************************************//
 // DispIntf:  IOmniRigXDisp
-// Flags:     (4416) Dual OleAutomation Dispatchable
+// フラグ:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {501A2858-3331-467A-837A-989FDEDACC7D}
 // *********************************************************************//
   IOmniRigXDisp = dispinterface
@@ -171,62 +161,62 @@ type
 
 // *********************************************************************//
 // DispIntf:  IOmniRigXEvents
-// Flags:     (4096) Dispatchable
+// フラグ:     (4096) Dispatchable
 // GUID:      {2219175F-E561-47E7-AD17-73C4D8891AA1}
 // *********************************************************************//
   IOmniRigXEvents = dispinterface
     ['{2219175F-E561-47E7-AD17-73C4D8891AA1}']
-    procedure VisibleChange; dispid 1;
-    procedure RigTypeChange(RigNumber: Integer); dispid 2;
-    procedure StatusChange(RigNumber: Integer); dispid 3;
-    procedure ParamsChange(RigNumber: Integer; Params: Integer); dispid 4;
-    procedure CustomReply(RigNumber: Integer; Command: OleVariant; Reply: OleVariant); dispid 5;
+    function VisibleChange: HResult; dispid 1;
+    function RigTypeChange(RigNumber: Integer): HResult; dispid 2;
+    function StatusChange(RigNumber: Integer): HResult; dispid 3;
+    function ParamsChange(RigNumber: Integer; Params: Integer): HResult; dispid 4;
+    function CustomReply(RigNumber: Integer; Command: OleVariant; Reply: OleVariant): HResult; dispid 5;
   end;
 
 // *********************************************************************//
-// Interface: IRigX
-// Flags:     (4416) Dual OleAutomation Dispatchable
-// GUID:      {D30A7E51-5862-45B7-BFFA-6415917DA0CF}
+// インターフェイス: IRigX
+// フラグ: (4416) Dual OleAutomation Dispatchable
+// GUID: {D30A7E51-5862-45B7-BFFA-6415917DA0CF}
 // *********************************************************************//
   IRigX = interface(IDispatch)
     ['{D30A7E51-5862-45B7-BFFA-6415917DA0CF}']
-    function  Get_RigType: WideString; safecall;
-    function  Get_ReadableParams: Integer; safecall;
-    function  Get_WriteableParams: Integer; safecall;
-    function  IsParamReadable(Param: RigParamX): WordBool; safecall;
-    function  IsParamWriteable(Param: RigParamX): WordBool; safecall;
-    function  Get_Status: RigStatusX; safecall;
-    function  Get_StatusStr: WideString; safecall;
-    function  Get_Freq: Integer; safecall;
+    function Get_RigType: WideString; safecall;
+    function Get_ReadableParams: Integer; safecall;
+    function Get_WriteableParams: Integer; safecall;
+    function IsParamReadable(Param: RigParamX): WordBool; safecall;
+    function IsParamWriteable(Param: RigParamX): WordBool; safecall;
+    function Get_Status: RigStatusX; safecall;
+    function Get_StatusStr: WideString; safecall;
+    function Get_Freq: Integer; safecall;
     procedure Set_Freq(Value: Integer); safecall;
-    function  Get_FreqA: Integer; safecall;
+    function Get_FreqA: Integer; safecall;
     procedure Set_FreqA(Value: Integer); safecall;
-    function  Get_FreqB: Integer; safecall;
+    function Get_FreqB: Integer; safecall;
     procedure Set_FreqB(Value: Integer); safecall;
-    function  Get_RitOffset: Integer; safecall;
+    function Get_RitOffset: Integer; safecall;
     procedure Set_RitOffset(Value: Integer); safecall;
-    function  Get_Pitch: Integer; safecall;
+    function Get_Pitch: Integer; safecall;
     procedure Set_Pitch(Value: Integer); safecall;
-    function  Get_Vfo: RigParamX; safecall;
+    function Get_Vfo: RigParamX; safecall;
     procedure Set_Vfo(Value: RigParamX); safecall;
-    function  Get_Split: RigParamX; safecall;
+    function Get_Split: RigParamX; safecall;
     procedure Set_Split(Value: RigParamX); safecall;
-    function  Get_Rit: RigParamX; safecall;
+    function Get_Rit: RigParamX; safecall;
     procedure Set_Rit(Value: RigParamX); safecall;
-    function  Get_Xit: RigParamX; safecall;
+    function Get_Xit: RigParamX; safecall;
     procedure Set_Xit(Value: RigParamX); safecall;
-    function  Get_Tx: RigParamX; safecall;
+    function Get_Tx: RigParamX; safecall;
     procedure Set_Tx(Value: RigParamX); safecall;
-    function  Get_Mode: RigParamX; safecall;
+    function Get_Mode: RigParamX; safecall;
     procedure Set_Mode(Value: RigParamX); safecall;
     procedure ClearRit; safecall;
     procedure SetSimplexMode(Freq: Integer); safecall;
     procedure SetSplitMode(RxFreq: Integer; TxFreq: Integer); safecall;
-    function  FrequencyOfTone(Tone: Integer): Integer; safecall;
+    function FrequencyOfTone(Tone: Integer): Integer; safecall;
     procedure SendCustomCommand(Command: OleVariant; ReplyLength: Integer; ReplyEnd: OleVariant); safecall;
-    function  GetRxFrequency: Integer; safecall;
-    function  GetTxFrequency: Integer; safecall;
-    function  Get_PortBits: IPortBits; safecall;
+    function GetRxFrequency: Integer; safecall;
+    function GetTxFrequency: Integer; safecall;
+    function Get_PortBits: IPortBits; safecall;
     property RigType: WideString read Get_RigType;
     property ReadableParams: Integer read Get_ReadableParams;
     property WriteableParams: Integer read Get_WriteableParams;
@@ -248,7 +238,7 @@ type
 
 // *********************************************************************//
 // DispIntf:  IRigXDisp
-// Flags:     (4416) Dual OleAutomation Dispatchable
+// フラグ:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {D30A7E51-5862-45B7-BFFA-6415917DA0CF}
 // *********************************************************************//
   IRigXDisp = dispinterface
@@ -256,8 +246,8 @@ type
     property RigType: WideString readonly dispid 1;
     property ReadableParams: Integer readonly dispid 2;
     property WriteableParams: Integer readonly dispid 3;
-    function  IsParamReadable(Param: RigParamX): WordBool; dispid 4;
-    function  IsParamWriteable(Param: RigParamX): WordBool; dispid 5;
+    function IsParamReadable(Param: RigParamX): WordBool; dispid 4;
+    function IsParamWriteable(Param: RigParamX): WordBool; dispid 5;
     property Status: RigStatusX readonly dispid 6;
     property StatusStr: WideString readonly dispid 7;
     property Freq: Integer dispid 8;
@@ -274,27 +264,27 @@ type
     procedure ClearRit; dispid 19;
     procedure SetSimplexMode(Freq: Integer); dispid 20;
     procedure SetSplitMode(RxFreq: Integer; TxFreq: Integer); dispid 21;
-    function  FrequencyOfTone(Tone: Integer): Integer; dispid 22;
+    function FrequencyOfTone(Tone: Integer): Integer; dispid 22;
     procedure SendCustomCommand(Command: OleVariant; ReplyLength: Integer; ReplyEnd: OleVariant); dispid 23;
-    function  GetRxFrequency: Integer; dispid 24;
-    function  GetTxFrequency: Integer; dispid 25;
+    function GetRxFrequency: Integer; dispid 24;
+    function GetTxFrequency: Integer; dispid 25;
     property PortBits: IPortBits readonly dispid 26;
   end;
 
 // *********************************************************************//
-// Interface: IPortBits
-// Flags:     (4416) Dual OleAutomation Dispatchable
-// GUID:      {3DEE2CC8-1EA3-46E7-B8B4-3E7321F2446A}
+// インターフェイス: IPortBits
+// フラグ: (4416) Dual OleAutomation Dispatchable
+// GUID: {3DEE2CC8-1EA3-46E7-B8B4-3E7321F2446A}
 // *********************************************************************//
   IPortBits = interface(IDispatch)
     ['{3DEE2CC8-1EA3-46E7-B8B4-3E7321F2446A}']
-    function  Lock: WordBool; safecall;
-    function  Get_Rts: WordBool; safecall;
+    function Lock: WordBool; safecall;
+    function Get_Rts: WordBool; safecall;
     procedure Set_Rts(Value: WordBool); safecall;
-    function  Get_Dtr: WordBool; safecall;
+    function Get_Dtr: WordBool; safecall;
     procedure Set_Dtr(Value: WordBool); safecall;
-    function  Get_Cts: WordBool; safecall;
-    function  Get_Dsr: WordBool; safecall;
+    function Get_Cts: WordBool; safecall;
+    function Get_Dsr: WordBool; safecall;
     procedure Unlock; safecall;
     property Rts: WordBool read Get_Rts write Set_Rts;
     property Dtr: WordBool read Get_Dtr write Set_Dtr;
@@ -304,12 +294,12 @@ type
 
 // *********************************************************************//
 // DispIntf:  IPortBitsDisp
-// Flags:     (4416) Dual OleAutomation Dispatchable
+// フラグ:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {3DEE2CC8-1EA3-46E7-B8B4-3E7321F2446A}
 // *********************************************************************//
   IPortBitsDisp = dispinterface
     ['{3DEE2CC8-1EA3-46E7-B8B4-3E7321F2446A}']
-    function  Lock: WordBool; dispid 1;
+    function Lock: WordBool; dispid 1;
     property Rts: WordBool dispid 2;
     property Dtr: WordBool dispid 3;
     property Cts: WordBool readonly dispid 4;
@@ -318,36 +308,33 @@ type
   end;
 
 // *********************************************************************//
-// The Class CoOmniRigX provides a Create and CreateRemote method to          
-// create instances of the default interface IOmniRigX exposed by              
-// the CoClass OmniRigX. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// クラス OmniRigX は、Create および CreateRemote メソッドを使用して
+// CoClass OmniRigX が公開するデフォルトのインターフェイス IOmniRigX の
+// インスタンスを作成する。このタイプ ライブラリのサーバーによって
+// 公開された CoClass オブジェクトに対し、オートメーションを行いたい
+// クライアントが用いるために、これらの関数が存在する。
 // *********************************************************************//
   CoOmniRigX = class
     class function Create: IOmniRigX;
     class function CreateRemote(const MachineName: string): IOmniRigX;
   end;
 
-  TOmniRigXRigTypeChange = procedure(Sender: TObject; RigNumber: Integer) of object;
-  TOmniRigXStatusChange = procedure(Sender: TObject; RigNumber: Integer) of object;
-  TOmniRigXParamsChange = procedure(Sender: TObject; RigNumber: Integer; Params: Integer) of object;
-  TOmniRigXCustomReply = procedure(Sender: TObject; RigNumber: Integer; Command: OleVariant; 
-                                                    Reply: OleVariant) of object;
+  TOmniRigXRigTypeChange = procedure(ASender: TObject; RigNumber: Integer) of object;
+  TOmniRigXStatusChange = procedure(ASender: TObject; RigNumber: Integer) of object;
+  TOmniRigXParamsChange = procedure(ASender: TObject; RigNumber: Integer; Params: Integer) of object;
+  TOmniRigXCustomReply = procedure(ASender: TObject; RigNumber: Integer; Command: OleVariant;
+                                                     Reply: OleVariant) of object;
 
 
 // *********************************************************************//
-// OLE Server Proxy class declaration
-// Server Object    : TOmniRigX
-// Help String      : OmniRigX Object
-// Default Interface: IOmniRigX
-// Def. Intf. DISP? : No
-// Event   Interface: IOmniRigXEvents
-// TypeFlags        : (2) CanCreate
+// OLE サーバー プロキシ クラス宣言
+// サーバー オブジェクト: TOmniRigX
+// ヘルプ文字列: OmniRigX Object
+// デフォルト インターフェイス: IOmniRigX
+// デフォルト インターフェイス ディスパッチ?: No
+// イベント インターフェイス: IOmniRigXEvents
+// タイプ フラグ        : (2) CanCreate
 // *********************************************************************//
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-  TOmniRigXProperties= class;
-{$ENDIF}
   TOmniRigX = class(TOleServer)
   private
     FOnVisibleChange: TNotifyEvent;
@@ -355,20 +342,16 @@ type
     FOnStatusChange: TOmniRigXStatusChange;
     FOnParamsChange: TOmniRigXParamsChange;
     FOnCustomReply: TOmniRigXCustomReply;
-    FIntf:        IOmniRigX;
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-    FProps:       TOmniRigXProperties;
-    function      GetServerProperties: TOmniRigXProperties;
-{$ENDIF}
-    function      GetDefaultInterface: IOmniRigX;
+    FIntf: IOmniRigX;
+    function GetDefaultInterface: IOmniRigX;
   protected
     procedure InitServerData; override;
     procedure InvokeEvent(DispID: TDispID; var Params: TVariantArray); override;
-    function  Get_InterfaceVersion: Integer;
-    function  Get_SoftwareVersion: Integer;
-    function  Get_Rig1: IRigX;
-    function  Get_Rig2: IRigX;
-    function  Get_DialogVisible: WordBool;
+    function Get_InterfaceVersion: Integer;
+    function Get_SoftwareVersion: Integer;
+    function Get_Rig1: IRigX;
+    function Get_Rig2: IRigX;
+    function Get_DialogVisible: WordBool;
     procedure Set_DialogVisible(Value: WordBool);
   public
     constructor Create(AOwner: TComponent); override;
@@ -376,16 +359,13 @@ type
     procedure Connect; override;
     procedure ConnectTo(svrIntf: IOmniRigX);
     procedure Disconnect; override;
-    property  DefaultInterface: IOmniRigX read GetDefaultInterface;
+    property DefaultInterface: IOmniRigX read GetDefaultInterface;
     property InterfaceVersion: Integer read Get_InterfaceVersion;
     property SoftwareVersion: Integer read Get_SoftwareVersion;
     property Rig1: IRigX read Get_Rig1;
     property Rig2: IRigX read Get_Rig2;
     property DialogVisible: WordBool read Get_DialogVisible write Set_DialogVisible;
   published
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-    property Server: TOmniRigXProperties read GetServerProperties;
-{$ENDIF}
     property OnVisibleChange: TNotifyEvent read FOnVisibleChange write FOnVisibleChange;
     property OnRigTypeChange: TOmniRigXRigTypeChange read FOnRigTypeChange write FOnRigTypeChange;
     property OnStatusChange: TOmniRigXStatusChange read FOnStatusChange write FOnStatusChange;
@@ -393,39 +373,12 @@ type
     property OnCustomReply: TOmniRigXCustomReply read FOnCustomReply write FOnCustomReply;
   end;
 
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
 // *********************************************************************//
-// OLE Server Properties Proxy Class
-// Server Object    : TOmniRigX
-// (このオブジェクトは IDE のプロパティ インスペクターからサーバーの     
-// プロパティを変更する場合に使われます)
-// *********************************************************************//
- TOmniRigXProperties = class(TPersistent)
-  private
-    FServer:    TOmniRigX;
-    function    GetDefaultInterface: IOmniRigX;
-    constructor Create(AServer: TOmniRigX);
-  protected
-    function  Get_InterfaceVersion: Integer;
-    function  Get_SoftwareVersion: Integer;
-    function  Get_Rig1: IRigX;
-    function  Get_Rig2: IRigX;
-    function  Get_DialogVisible: WordBool;
-    procedure Set_DialogVisible(Value: WordBool);
-  public
-    property DefaultInterface: IOmniRigX read GetDefaultInterface;
-  published
-    property DialogVisible: WordBool read Get_DialogVisible write Set_DialogVisible;
-  end;
-{$ENDIF}
-
-
-// *********************************************************************//
-// The Class CoRigX provides a Create and CreateRemote method to          
-// create instances of the default interface IRigX exposed by              
-// the CoClass RigX. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// クラス RigX は、Create および CreateRemote メソッドを使用して
+// CoClass RigX が公開するデフォルトのインターフェイス IRigX の
+// インスタンスを作成する。このタイプ ライブラリのサーバーによって
+// 公開された CoClass オブジェクトに対し、オートメーションを行いたい
+// クライアントが用いるために、これらの関数が存在する。
 // *********************************************************************//
   CoRigX = class
     class function Create: IRigX;
@@ -434,71 +387,64 @@ type
 
 
 // *********************************************************************//
-// OLE Server Proxy class declaration
-// Server Object    : TRigX
-// Help String      : Rig Object
-// Default Interface: IRigX
-// Def. Intf. DISP? : No
-// Event   Interface: 
-// TypeFlags        : (2) CanCreate
+// OLE サーバー プロキシ クラス宣言
+// サーバー オブジェクト: TRigX
+// ヘルプ文字列: Rig Object
+// デフォルト インターフェイス: IRigX
+// デフォルト インターフェイス ディスパッチ?: No
+// イベント インターフェイス:
+// タイプ フラグ        : (2) CanCreate
 // *********************************************************************//
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-  TRigXProperties= class;
-{$ENDIF}
   TRigX = class(TOleServer)
   private
-    FIntf:        IRigX;
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-    FProps:       TRigXProperties;
-    function      GetServerProperties: TRigXProperties;
-{$ENDIF}
-    function      GetDefaultInterface: IRigX;
+    FIntf: IRigX;
+    function GetDefaultInterface: IRigX;
   protected
     procedure InitServerData; override;
-    function  Get_RigType: WideString;
-    function  Get_ReadableParams: Integer;
-    function  Get_WriteableParams: Integer;
-    function  Get_Status: RigStatusX;
-    function  Get_StatusStr: WideString;
-    function  Get_Freq: Integer;
+    function Get_RigType: WideString;
+    function Get_ReadableParams: Integer;
+    function Get_WriteableParams: Integer;
+    function Get_Status: RigStatusX;
+    function Get_StatusStr: WideString;
+    function Get_Freq: Integer;
     procedure Set_Freq(Value: Integer);
-    function  Get_FreqA: Integer;
+    function Get_FreqA: Integer;
     procedure Set_FreqA(Value: Integer);
-    function  Get_FreqB: Integer;
+    function Get_FreqB: Integer;
     procedure Set_FreqB(Value: Integer);
-    function  Get_RitOffset: Integer;
+    function Get_RitOffset: Integer;
     procedure Set_RitOffset(Value: Integer);
-    function  Get_Pitch: Integer;
+    function Get_Pitch: Integer;
     procedure Set_Pitch(Value: Integer);
-    function  Get_Vfo: RigParamX;
+    function Get_Vfo: RigParamX;
     procedure Set_Vfo(Value: RigParamX);
-    function  Get_Split: RigParamX;
+    function Get_Split: RigParamX;
     procedure Set_Split(Value: RigParamX);
-    function  Get_Rit: RigParamX;
+    function Get_Rit: RigParamX;
     procedure Set_Rit(Value: RigParamX);
-    function  Get_Xit: RigParamX;
+    function Get_Xit: RigParamX;
     procedure Set_Xit(Value: RigParamX);
-    function  Get_Tx: RigParamX;
+    function Get_Tx: RigParamX;
     procedure Set_Tx(Value: RigParamX);
-    function  Get_Mode: RigParamX;
+    function Get_Mode: RigParamX;
     procedure Set_Mode(Value: RigParamX);
-    function  Get_PortBits: IPortBits;
+    function Get_PortBits: IPortBits;
   public
     constructor Create(AOwner: TComponent); override;
     destructor  Destroy; override;
     procedure Connect; override;
     procedure ConnectTo(svrIntf: IRigX);
     procedure Disconnect; override;
-    function  IsParamReadable(Param: RigParamX): WordBool;
-    function  IsParamWriteable(Param: RigParamX): WordBool;
+    function IsParamReadable(Param: RigParamX): WordBool;
+    function IsParamWriteable(Param: RigParamX): WordBool;
     procedure ClearRit;
     procedure SetSimplexMode(Freq: Integer);
     procedure SetSplitMode(RxFreq: Integer; TxFreq: Integer);
-    function  FrequencyOfTone(Tone: Integer): Integer;
+    function FrequencyOfTone(Tone: Integer): Integer;
     procedure SendCustomCommand(Command: OleVariant; ReplyLength: Integer; ReplyEnd: OleVariant);
-    function  GetRxFrequency: Integer;
-    function  GetTxFrequency: Integer;
-    property  DefaultInterface: IRigX read GetDefaultInterface;
+    function GetRxFrequency: Integer;
+    function GetTxFrequency: Integer;
+    property DefaultInterface: IRigX read GetDefaultInterface;
     property RigType: WideString read Get_RigType;
     property ReadableParams: Integer read Get_ReadableParams;
     property WriteableParams: Integer read Get_WriteableParams;
@@ -517,76 +463,14 @@ type
     property Tx: RigParamX read Get_Tx write Set_Tx;
     property Mode: RigParamX read Get_Mode write Set_Mode;
   published
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-    property Server: TRigXProperties read GetServerProperties;
-{$ENDIF}
   end;
 
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
 // *********************************************************************//
-// OLE Server Properties Proxy Class
-// Server Object    : TRigX
-// (このオブジェクトは IDE のプロパティ インスペクターからサーバーの     
-// プロパティを変更する場合に使われます)
-// *********************************************************************//
- TRigXProperties = class(TPersistent)
-  private
-    FServer:    TRigX;
-    function    GetDefaultInterface: IRigX;
-    constructor Create(AServer: TRigX);
-  protected
-    function  Get_RigType: WideString;
-    function  Get_ReadableParams: Integer;
-    function  Get_WriteableParams: Integer;
-    function  Get_Status: RigStatusX;
-    function  Get_StatusStr: WideString;
-    function  Get_Freq: Integer;
-    procedure Set_Freq(Value: Integer);
-    function  Get_FreqA: Integer;
-    procedure Set_FreqA(Value: Integer);
-    function  Get_FreqB: Integer;
-    procedure Set_FreqB(Value: Integer);
-    function  Get_RitOffset: Integer;
-    procedure Set_RitOffset(Value: Integer);
-    function  Get_Pitch: Integer;
-    procedure Set_Pitch(Value: Integer);
-    function  Get_Vfo: RigParamX;
-    procedure Set_Vfo(Value: RigParamX);
-    function  Get_Split: RigParamX;
-    procedure Set_Split(Value: RigParamX);
-    function  Get_Rit: RigParamX;
-    procedure Set_Rit(Value: RigParamX);
-    function  Get_Xit: RigParamX;
-    procedure Set_Xit(Value: RigParamX);
-    function  Get_Tx: RigParamX;
-    procedure Set_Tx(Value: RigParamX);
-    function  Get_Mode: RigParamX;
-    procedure Set_Mode(Value: RigParamX);
-    function  Get_PortBits: IPortBits;
-  public
-    property DefaultInterface: IRigX read GetDefaultInterface;
-  published
-    property Freq: Integer read Get_Freq write Set_Freq;
-    property FreqA: Integer read Get_FreqA write Set_FreqA;
-    property FreqB: Integer read Get_FreqB write Set_FreqB;
-    property RitOffset: Integer read Get_RitOffset write Set_RitOffset;
-    property Pitch: Integer read Get_Pitch write Set_Pitch;
-    property Vfo: RigParamX read Get_Vfo write Set_Vfo;
-    property Split: RigParamX read Get_Split write Set_Split;
-    property Rit: RigParamX read Get_Rit write Set_Rit;
-    property Xit: RigParamX read Get_Xit write Set_Xit;
-    property Tx: RigParamX read Get_Tx write Set_Tx;
-    property Mode: RigParamX read Get_Mode write Set_Mode;
-  end;
-{$ENDIF}
-
-
-// *********************************************************************//
-// The Class CoPortBits provides a Create and CreateRemote method to          
-// create instances of the default interface IPortBits exposed by              
-// the CoClass PortBits. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// クラス PortBits は、Create および CreateRemote メソッドを使用して
+// CoClass PortBits が公開するデフォルトのインターフェイス IPortBits の
+// インスタンスを作成する。このタイプ ライブラリのサーバーによって
+// 公開された CoClass オブジェクトに対し、オートメーションを行いたい
+// クライアントが用いるために、これらの関数が存在する。
 // *********************************************************************//
   CoPortBits = class
     class function Create: IPortBits;
@@ -595,88 +479,52 @@ type
 
 
 // *********************************************************************//
-// OLE Server Proxy class declaration
-// Server Object    : TPortBits
-// Help String      : PortBits Object
-// Default Interface: IPortBits
-// Def. Intf. DISP? : No
-// Event   Interface: 
-// TypeFlags        : (2) CanCreate
+// OLE サーバー プロキシ クラス宣言
+// サーバー オブジェクト: TPortBits
+// ヘルプ文字列: PortBits Object
+// デフォルト インターフェイス: IPortBits
+// デフォルト インターフェイス ディスパッチ?: No
+// イベント インターフェイス:
+// タイプ フラグ        : (2) CanCreate
 // *********************************************************************//
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-  TPortBitsProperties= class;
-{$ENDIF}
   TPortBits = class(TOleServer)
   private
-    FIntf:        IPortBits;
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-    FProps:       TPortBitsProperties;
-    function      GetServerProperties: TPortBitsProperties;
-{$ENDIF}
-    function      GetDefaultInterface: IPortBits;
+    FIntf: IPortBits;
+    function GetDefaultInterface: IPortBits;
   protected
     procedure InitServerData; override;
-    function  Get_Rts: WordBool;
+    function Get_Rts: WordBool;
     procedure Set_Rts(Value: WordBool);
-    function  Get_Dtr: WordBool;
+    function Get_Dtr: WordBool;
     procedure Set_Dtr(Value: WordBool);
-    function  Get_Cts: WordBool;
-    function  Get_Dsr: WordBool;
+    function Get_Cts: WordBool;
+    function Get_Dsr: WordBool;
   public
     constructor Create(AOwner: TComponent); override;
     destructor  Destroy; override;
     procedure Connect; override;
     procedure ConnectTo(svrIntf: IPortBits);
     procedure Disconnect; override;
-    function  Lock: WordBool;
+    function Lock: WordBool;
     procedure Unlock;
-    property  DefaultInterface: IPortBits read GetDefaultInterface;
+    property DefaultInterface: IPortBits read GetDefaultInterface;
     property Cts: WordBool read Get_Cts;
     property Dsr: WordBool read Get_Dsr;
     property Rts: WordBool read Get_Rts write Set_Rts;
     property Dtr: WordBool read Get_Dtr write Set_Dtr;
   published
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-    property Server: TPortBitsProperties read GetServerProperties;
-{$ENDIF}
   end;
-
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-// *********************************************************************//
-// OLE Server Properties Proxy Class
-// Server Object    : TPortBits
-// (このオブジェクトは IDE のプロパティ インスペクターからサーバーの     
-// プロパティを変更する場合に使われます)
-// *********************************************************************//
- TPortBitsProperties = class(TPersistent)
-  private
-    FServer:    TPortBits;
-    function    GetDefaultInterface: IPortBits;
-    constructor Create(AServer: TPortBits);
-  protected
-    function  Get_Rts: WordBool;
-    procedure Set_Rts(Value: WordBool);
-    function  Get_Dtr: WordBool;
-    procedure Set_Dtr(Value: WordBool);
-    function  Get_Cts: WordBool;
-    function  Get_Dsr: WordBool;
-  public
-    property DefaultInterface: IPortBits read GetDefaultInterface;
-  published
-    property Rts: WordBool read Get_Rts write Set_Rts;
-    property Dtr: WordBool read Get_Dtr write Set_Dtr;
-  end;
-{$ENDIF}
-
 
 procedure Register;
 
 resourcestring
   dtlServerPage = 'ActiveX';
 
+  dtlOcxPage = 'ActiveX';
+
 implementation
 
-uses ComObj;
+uses System.Win.ComObj;
 
 class function CoOmniRigX.Create: IOmniRigX;
 begin
@@ -732,71 +580,63 @@ function TOmniRigX.GetDefaultInterface: IOmniRigX;
 begin
   if FIntf = nil then
     Connect;
-  Assert(FIntf <> nil, 'DefaultInterface が NULL です。コンポーネントはサーバーに接続できませんでした。操作を始める前に ''Connect'' または ''ConnectTo'' を呼ぶ必要があります。');
+  Assert(FIntf <> nil, 'DefaultInterface が NULL です。コンポーネントはサーバーに接続していません。このオペレーションの前に "Connect" または "ConnectTo" を呼び出す必要があります。');
   Result := FIntf;
 end;
 
 constructor TOmniRigX.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-  FProps := TOmniRigXProperties.Create(Self);
-{$ENDIF}
 end;
 
 destructor TOmniRigX.Destroy;
 begin
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-  FProps.Free;
-{$ENDIF}
   inherited Destroy;
 end;
-
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-function TOmniRigX.GetServerProperties: TOmniRigXProperties;
-begin
-  Result := FProps;
-end;
-{$ENDIF}
 
 procedure TOmniRigX.InvokeEvent(DispID: TDispID; var Params: TVariantArray);
 begin
   case DispID of
     -1: Exit;  // DISPID_UNKNOWN
-   1: if Assigned(FOnVisibleChange) then
-            FOnVisibleChange(Self);
-   2: if Assigned(FOnRigTypeChange) then
-            FOnRigTypeChange(Self, Params[0] {Integer});
-   3: if Assigned(FOnStatusChange) then
-            FOnStatusChange(Self, Params[0] {Integer});
-   4: if Assigned(FOnParamsChange) then
-            FOnParamsChange(Self, Params[1] {Integer}, Params[0] {Integer});
-   5: if Assigned(FOnCustomReply) then
-            FOnCustomReply(Self, Params[2] {OleVariant}, Params[1] {OleVariant}, Params[0] {Integer});
+    1: if Assigned(FOnVisibleChange) then
+         FOnVisibleChange(Self);
+    2: if Assigned(FOnRigTypeChange) then
+         FOnRigTypeChange(Self, Params[0] {Integer});
+    3: if Assigned(FOnStatusChange) then
+         FOnStatusChange(Self, Params[0] {Integer});
+    4: if Assigned(FOnParamsChange) then
+         FOnParamsChange(Self,
+                         Params[0] {Integer},
+                         Params[1] {Integer});
+    5: if Assigned(FOnCustomReply) then
+         FOnCustomReply(Self,
+                        Params[0] {Integer},
+                        Params[1] {OleVariant},
+                        Params[2] {OleVariant});
   end; {case DispID}
 end;
 
-function  TOmniRigX.Get_InterfaceVersion: Integer;
+function TOmniRigX.Get_InterfaceVersion: Integer;
 begin
   Result := DefaultInterface.InterfaceVersion;
 end;
 
-function  TOmniRigX.Get_SoftwareVersion: Integer;
+function TOmniRigX.Get_SoftwareVersion: Integer;
 begin
   Result := DefaultInterface.SoftwareVersion;
 end;
 
-function  TOmniRigX.Get_Rig1: IRigX;
+function TOmniRigX.Get_Rig1: IRigX;
 begin
   Result := DefaultInterface.Rig1;
 end;
 
-function  TOmniRigX.Get_Rig2: IRigX;
+function TOmniRigX.Get_Rig2: IRigX;
 begin
   Result := DefaultInterface.Rig2;
 end;
 
-function  TOmniRigX.Get_DialogVisible: WordBool;
+function TOmniRigX.Get_DialogVisible: WordBool;
 begin
   Result := DefaultInterface.DialogVisible;
 end;
@@ -805,50 +645,6 @@ procedure TOmniRigX.Set_DialogVisible(Value: WordBool);
 begin
   DefaultInterface.DialogVisible := Value;
 end;
-
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-constructor TOmniRigXProperties.Create(AServer: TOmniRigX);
-begin
-  inherited Create;
-  FServer := AServer;
-end;
-
-function TOmniRigXProperties.GetDefaultInterface: IOmniRigX;
-begin
-  Result := FServer.DefaultInterface;
-end;
-
-function  TOmniRigXProperties.Get_InterfaceVersion: Integer;
-begin
-  Result := DefaultInterface.InterfaceVersion;
-end;
-
-function  TOmniRigXProperties.Get_SoftwareVersion: Integer;
-begin
-  Result := DefaultInterface.SoftwareVersion;
-end;
-
-function  TOmniRigXProperties.Get_Rig1: IRigX;
-begin
-  Result := DefaultInterface.Rig1;
-end;
-
-function  TOmniRigXProperties.Get_Rig2: IRigX;
-begin
-  Result := DefaultInterface.Rig2;
-end;
-
-function  TOmniRigXProperties.Get_DialogVisible: WordBool;
-begin
-  Result := DefaultInterface.DialogVisible;
-end;
-
-procedure TOmniRigXProperties.Set_DialogVisible(Value: WordBool);
-begin
-  DefaultInterface.DialogVisible := Value;
-end;
-
-{$ENDIF}
 
 class function CoRigX.Create: IRigX;
 begin
@@ -901,59 +697,46 @@ function TRigX.GetDefaultInterface: IRigX;
 begin
   if FIntf = nil then
     Connect;
-  Assert(FIntf <> nil, 'DefaultInterface が NULL です。コンポーネントはサーバーに接続できませんでした。操作を始める前に ''Connect'' または ''ConnectTo'' を呼ぶ必要があります。');
+  Assert(FIntf <> nil, 'DefaultInterface が NULL です。コンポーネントはサーバーに接続していません。このオペレーションの前に "Connect" または "ConnectTo" を呼び出す必要があります。');
   Result := FIntf;
 end;
 
 constructor TRigX.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-  FProps := TRigXProperties.Create(Self);
-{$ENDIF}
 end;
 
 destructor TRigX.Destroy;
 begin
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-  FProps.Free;
-{$ENDIF}
   inherited Destroy;
 end;
 
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-function TRigX.GetServerProperties: TRigXProperties;
-begin
-  Result := FProps;
-end;
-{$ENDIF}
-
-function  TRigX.Get_RigType: WideString;
+function TRigX.Get_RigType: WideString;
 begin
   Result := DefaultInterface.RigType;
 end;
 
-function  TRigX.Get_ReadableParams: Integer;
+function TRigX.Get_ReadableParams: Integer;
 begin
   Result := DefaultInterface.ReadableParams;
 end;
 
-function  TRigX.Get_WriteableParams: Integer;
+function TRigX.Get_WriteableParams: Integer;
 begin
   Result := DefaultInterface.WriteableParams;
 end;
 
-function  TRigX.Get_Status: RigStatusX;
+function TRigX.Get_Status: RigStatusX;
 begin
   Result := DefaultInterface.Status;
 end;
 
-function  TRigX.Get_StatusStr: WideString;
+function TRigX.Get_StatusStr: WideString;
 begin
   Result := DefaultInterface.StatusStr;
 end;
 
-function  TRigX.Get_Freq: Integer;
+function TRigX.Get_Freq: Integer;
 begin
   Result := DefaultInterface.Freq;
 end;
@@ -963,7 +746,7 @@ begin
   DefaultInterface.Freq := Value;
 end;
 
-function  TRigX.Get_FreqA: Integer;
+function TRigX.Get_FreqA: Integer;
 begin
   Result := DefaultInterface.FreqA;
 end;
@@ -973,7 +756,7 @@ begin
   DefaultInterface.FreqA := Value;
 end;
 
-function  TRigX.Get_FreqB: Integer;
+function TRigX.Get_FreqB: Integer;
 begin
   Result := DefaultInterface.FreqB;
 end;
@@ -983,7 +766,7 @@ begin
   DefaultInterface.FreqB := Value;
 end;
 
-function  TRigX.Get_RitOffset: Integer;
+function TRigX.Get_RitOffset: Integer;
 begin
   Result := DefaultInterface.RitOffset;
 end;
@@ -993,7 +776,7 @@ begin
   DefaultInterface.RitOffset := Value;
 end;
 
-function  TRigX.Get_Pitch: Integer;
+function TRigX.Get_Pitch: Integer;
 begin
   Result := DefaultInterface.Pitch;
 end;
@@ -1003,7 +786,7 @@ begin
   DefaultInterface.Pitch := Value;
 end;
 
-function  TRigX.Get_Vfo: RigParamX;
+function TRigX.Get_Vfo: RigParamX;
 begin
   Result := DefaultInterface.Vfo;
 end;
@@ -1013,7 +796,7 @@ begin
   DefaultInterface.Vfo := Value;
 end;
 
-function  TRigX.Get_Split: RigParamX;
+function TRigX.Get_Split: RigParamX;
 begin
   Result := DefaultInterface.Split;
 end;
@@ -1023,7 +806,7 @@ begin
   DefaultInterface.Split := Value;
 end;
 
-function  TRigX.Get_Rit: RigParamX;
+function TRigX.Get_Rit: RigParamX;
 begin
   Result := DefaultInterface.Rit;
 end;
@@ -1033,7 +816,7 @@ begin
   DefaultInterface.Rit := Value;
 end;
 
-function  TRigX.Get_Xit: RigParamX;
+function TRigX.Get_Xit: RigParamX;
 begin
   Result := DefaultInterface.Xit;
 end;
@@ -1043,7 +826,7 @@ begin
   DefaultInterface.Xit := Value;
 end;
 
-function  TRigX.Get_Tx: RigParamX;
+function TRigX.Get_Tx: RigParamX;
 begin
   Result := DefaultInterface.Tx;
 end;
@@ -1053,7 +836,7 @@ begin
   DefaultInterface.Tx := Value;
 end;
 
-function  TRigX.Get_Mode: RigParamX;
+function TRigX.Get_Mode: RigParamX;
 begin
   Result := DefaultInterface.Mode;
 end;
@@ -1063,17 +846,17 @@ begin
   DefaultInterface.Mode := Value;
 end;
 
-function  TRigX.Get_PortBits: IPortBits;
+function TRigX.Get_PortBits: IPortBits;
 begin
   Result := DefaultInterface.PortBits;
 end;
 
-function  TRigX.IsParamReadable(Param: RigParamX): WordBool;
+function TRigX.IsParamReadable(Param: RigParamX): WordBool;
 begin
   Result := DefaultInterface.IsParamReadable(Param);
 end;
 
-function  TRigX.IsParamWriteable(Param: RigParamX): WordBool;
+function TRigX.IsParamWriteable(Param: RigParamX): WordBool;
 begin
   Result := DefaultInterface.IsParamWriteable(Param);
 end;
@@ -1093,7 +876,7 @@ begin
   DefaultInterface.SetSplitMode(RxFreq, TxFreq);
 end;
 
-function  TRigX.FrequencyOfTone(Tone: Integer): Integer;
+function TRigX.FrequencyOfTone(Tone: Integer): Integer;
 begin
   Result := DefaultInterface.FrequencyOfTone(Tone);
 end;
@@ -1103,169 +886,15 @@ begin
   DefaultInterface.SendCustomCommand(Command, ReplyLength, ReplyEnd);
 end;
 
-function  TRigX.GetRxFrequency: Integer;
+function TRigX.GetRxFrequency: Integer;
 begin
   Result := DefaultInterface.GetRxFrequency;
 end;
 
-function  TRigX.GetTxFrequency: Integer;
+function TRigX.GetTxFrequency: Integer;
 begin
   Result := DefaultInterface.GetTxFrequency;
 end;
-
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-constructor TRigXProperties.Create(AServer: TRigX);
-begin
-  inherited Create;
-  FServer := AServer;
-end;
-
-function TRigXProperties.GetDefaultInterface: IRigX;
-begin
-  Result := FServer.DefaultInterface;
-end;
-
-function  TRigXProperties.Get_RigType: WideString;
-begin
-  Result := DefaultInterface.RigType;
-end;
-
-function  TRigXProperties.Get_ReadableParams: Integer;
-begin
-  Result := DefaultInterface.ReadableParams;
-end;
-
-function  TRigXProperties.Get_WriteableParams: Integer;
-begin
-  Result := DefaultInterface.WriteableParams;
-end;
-
-function  TRigXProperties.Get_Status: RigStatusX;
-begin
-  Result := DefaultInterface.Status;
-end;
-
-function  TRigXProperties.Get_StatusStr: WideString;
-begin
-  Result := DefaultInterface.StatusStr;
-end;
-
-function  TRigXProperties.Get_Freq: Integer;
-begin
-  Result := DefaultInterface.Freq;
-end;
-
-procedure TRigXProperties.Set_Freq(Value: Integer);
-begin
-  DefaultInterface.Freq := Value;
-end;
-
-function  TRigXProperties.Get_FreqA: Integer;
-begin
-  Result := DefaultInterface.FreqA;
-end;
-
-procedure TRigXProperties.Set_FreqA(Value: Integer);
-begin
-  DefaultInterface.FreqA := Value;
-end;
-
-function  TRigXProperties.Get_FreqB: Integer;
-begin
-  Result := DefaultInterface.FreqB;
-end;
-
-procedure TRigXProperties.Set_FreqB(Value: Integer);
-begin
-  DefaultInterface.FreqB := Value;
-end;
-
-function  TRigXProperties.Get_RitOffset: Integer;
-begin
-  Result := DefaultInterface.RitOffset;
-end;
-
-procedure TRigXProperties.Set_RitOffset(Value: Integer);
-begin
-  DefaultInterface.RitOffset := Value;
-end;
-
-function  TRigXProperties.Get_Pitch: Integer;
-begin
-  Result := DefaultInterface.Pitch;
-end;
-
-procedure TRigXProperties.Set_Pitch(Value: Integer);
-begin
-  DefaultInterface.Pitch := Value;
-end;
-
-function  TRigXProperties.Get_Vfo: RigParamX;
-begin
-  Result := DefaultInterface.Vfo;
-end;
-
-procedure TRigXProperties.Set_Vfo(Value: RigParamX);
-begin
-  DefaultInterface.Vfo := Value;
-end;
-
-function  TRigXProperties.Get_Split: RigParamX;
-begin
-  Result := DefaultInterface.Split;
-end;
-
-procedure TRigXProperties.Set_Split(Value: RigParamX);
-begin
-  DefaultInterface.Split := Value;
-end;
-
-function  TRigXProperties.Get_Rit: RigParamX;
-begin
-  Result := DefaultInterface.Rit;
-end;
-
-procedure TRigXProperties.Set_Rit(Value: RigParamX);
-begin
-  DefaultInterface.Rit := Value;
-end;
-
-function  TRigXProperties.Get_Xit: RigParamX;
-begin
-  Result := DefaultInterface.Xit;
-end;
-
-procedure TRigXProperties.Set_Xit(Value: RigParamX);
-begin
-  DefaultInterface.Xit := Value;
-end;
-
-function  TRigXProperties.Get_Tx: RigParamX;
-begin
-  Result := DefaultInterface.Tx;
-end;
-
-procedure TRigXProperties.Set_Tx(Value: RigParamX);
-begin
-  DefaultInterface.Tx := Value;
-end;
-
-function  TRigXProperties.Get_Mode: RigParamX;
-begin
-  Result := DefaultInterface.Mode;
-end;
-
-procedure TRigXProperties.Set_Mode(Value: RigParamX);
-begin
-  DefaultInterface.Mode := Value;
-end;
-
-function  TRigXProperties.Get_PortBits: IPortBits;
-begin
-  Result := DefaultInterface.PortBits;
-end;
-
-{$ENDIF}
 
 class function CoPortBits.Create: IPortBits;
 begin
@@ -1318,34 +947,21 @@ function TPortBits.GetDefaultInterface: IPortBits;
 begin
   if FIntf = nil then
     Connect;
-  Assert(FIntf <> nil, 'DefaultInterface が NULL です。コンポーネントはサーバーに接続できませんでした。操作を始める前に ''Connect'' または ''ConnectTo'' を呼ぶ必要があります。');
+  Assert(FIntf <> nil, 'DefaultInterface が NULL です。コンポーネントはサーバーに接続していません。このオペレーションの前に "Connect" または "ConnectTo" を呼び出す必要があります。');
   Result := FIntf;
 end;
 
 constructor TPortBits.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-  FProps := TPortBitsProperties.Create(Self);
-{$ENDIF}
 end;
 
 destructor TPortBits.Destroy;
 begin
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-  FProps.Free;
-{$ENDIF}
   inherited Destroy;
 end;
 
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-function TPortBits.GetServerProperties: TPortBitsProperties;
-begin
-  Result := FProps;
-end;
-{$ENDIF}
-
-function  TPortBits.Get_Rts: WordBool;
+function TPortBits.Get_Rts: WordBool;
 begin
   Result := DefaultInterface.Rts;
 end;
@@ -1355,7 +971,7 @@ begin
   DefaultInterface.Rts := Value;
 end;
 
-function  TPortBits.Get_Dtr: WordBool;
+function TPortBits.Get_Dtr: WordBool;
 begin
   Result := DefaultInterface.Dtr;
 end;
@@ -1365,17 +981,17 @@ begin
   DefaultInterface.Dtr := Value;
 end;
 
-function  TPortBits.Get_Cts: WordBool;
+function TPortBits.Get_Cts: WordBool;
 begin
   Result := DefaultInterface.Cts;
 end;
 
-function  TPortBits.Get_Dsr: WordBool;
+function TPortBits.Get_Dsr: WordBool;
 begin
   Result := DefaultInterface.Dsr;
 end;
 
-function  TPortBits.Lock: WordBool;
+function TPortBits.Lock: WordBool;
 begin
   Result := DefaultInterface.Lock;
 end;
@@ -1385,53 +1001,10 @@ begin
   DefaultInterface.Unlock;
 end;
 
-{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
-constructor TPortBitsProperties.Create(AServer: TPortBits);
-begin
-  inherited Create;
-  FServer := AServer;
-end;
-
-function TPortBitsProperties.GetDefaultInterface: IPortBits;
-begin
-  Result := FServer.DefaultInterface;
-end;
-
-function  TPortBitsProperties.Get_Rts: WordBool;
-begin
-  Result := DefaultInterface.Rts;
-end;
-
-procedure TPortBitsProperties.Set_Rts(Value: WordBool);
-begin
-  DefaultInterface.Rts := Value;
-end;
-
-function  TPortBitsProperties.Get_Dtr: WordBool;
-begin
-  Result := DefaultInterface.Dtr;
-end;
-
-procedure TPortBitsProperties.Set_Dtr(Value: WordBool);
-begin
-  DefaultInterface.Dtr := Value;
-end;
-
-function  TPortBitsProperties.Get_Cts: WordBool;
-begin
-  Result := DefaultInterface.Cts;
-end;
-
-function  TPortBitsProperties.Get_Dsr: WordBool;
-begin
-  Result := DefaultInterface.Dsr;
-end;
-
-{$ENDIF}
-
 procedure Register;
 begin
   RegisterComponents(dtlServerPage, [TOmniRigX, TRigX, TPortBits]);
 end;
 
 end.
+

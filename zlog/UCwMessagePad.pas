@@ -167,8 +167,7 @@ begin
    {$ENDIF}
 
    S := Button.Caption;
-   S := SetStr(S, CurrentQSO);
-   zLogSendStr(S);
+   zLogSendStr2(S, CurrentQSO);
 
    while Pos(':***********', S) > 0 do begin
       i := Pos(':***********', S);
