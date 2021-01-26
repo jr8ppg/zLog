@@ -1446,6 +1446,7 @@ begin
       dmZLogKeyer.KeyingPort := tkpNone;
    end;
 
+   dmZlogKeyer.KeyingSignalReverse := Settings.CW._keying_signal_reverse;
    dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;
 
