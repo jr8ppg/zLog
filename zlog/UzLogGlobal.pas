@@ -1,5 +1,5 @@
 unit UzLogGlobal;
-a
+
 interface
 
 uses
