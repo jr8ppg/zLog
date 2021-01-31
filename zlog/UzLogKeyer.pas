@@ -709,9 +709,11 @@ begin
       FCWSendBuf[0, codemax * (tailcwstrptr - 1) + codemax + 1] := $A2; { holds PTT until pttafter expires }
 
       inc(tailcwstrptr);
-      if tailcwstrptr > charmax then
+      if tailcwstrptr > charmax then begin
          tailcwstrptr := 1;
+      end;
 
+      FSendOK := True;
       Exit;
    end;
 
@@ -719,9 +721,11 @@ begin
    if tailcwstrptr > charmax then
       tailcwstrptr := 1;
 
-   for m := 1 to codemax do
+   for m := 1 to codemax do begin
       FCWSendBuf[0, codemax * (tailcwstrptr - 1) + m] := $FF;
-   // SendOK := True;
+   end;
+
+   FSendOK := True;
 end;
 
 function TdmZLogKeyer.DecodeCommands(S: string): string;
