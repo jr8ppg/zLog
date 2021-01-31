@@ -1087,6 +1087,7 @@ begin
 
       $FF: begin { SendOK:=False; }
          Finish();
+         FSendOK := False;
       end;
 
       $99: begin { pause }
