@@ -8,6 +8,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   StdCtrls, System.Math, Generics.Collections, Generics.Defaults,
+  System.Character,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
@@ -69,6 +70,7 @@ type
     procedure LoadLogFiles(strStartFoler: string);
     procedure ListToTwoMatrix(L: TQSOList);
     procedure SetTwoMatrix(D: TDateTime; C, N: string);
+    function IsAsciiStr(str: string): Boolean;
   public
     constructor Create(ASuperList: TSuperList; APSuperListTwoLetterMatrix: PTSuperListTwoLetterMatrix);
     property SuperList: TSuperList read FSuperList write FSuperList;
@@ -415,6 +417,11 @@ begin
          Continue;
       end;
 
+      // １行内が全てAsciiか検査
+      if IsAsciiStr(str) = False then begin
+         Continue;
+      end;
+
       // spaceでコールとナンバーの分割
       i := Pos(' ', str);
       if i = 0 then begin
@@ -540,6 +547,22 @@ begin
          sd2.Free();
       end;
    end;
+end;
+
+function TSuperCheckDataLoadThread.IsAsciiStr(str: string): Boolean;
+var
+   i: Integer;
+   ch: Char;
+begin
+   for i := 1 to Length(str) do begin
+      ch := str[i];
+      if (Ord(ch) > $7F) then begin
+         Result := False;
+         Exit;
+      end;
+   end;
+
+   Result := True;
 end;
 
 constructor TSuperResult.Create();
