@@ -417,11 +417,6 @@ begin
          Continue;
       end;
 
-      // １行内が全てAsciiか検査
-      if IsAsciiStr(str) = False then begin
-         Continue;
-      end;
-
       // spaceでコールとナンバーの分割
       i := Pos(' ', str);
       if i = 0 then begin
@@ -431,6 +426,11 @@ begin
       else begin
          C := copy(str, 1, i - 1);
          N := TrimLeft(copy(str, i, 30));
+      end;
+
+      // CALLSIGNが全てAsciiか検査
+      if IsAsciiStr(C) = False then begin
+         Continue;
       end;
 
       SetTwoMatrix(dtNow, C, N);
