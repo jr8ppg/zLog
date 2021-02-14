@@ -33,6 +33,7 @@ type
     function ObjectOf(callsign: string): TOperatorInfo;
     procedure SaveToIniFile();
     procedure LoadFromIniFile();
+    procedure LoadFromOpList();
   end;
 
 implementation
@@ -169,6 +170,40 @@ begin
       end;
    finally
       ini.Free();
+      SL.Free();
+   end;
+end;
+
+procedure TOperatorInfoList.LoadFromOpList();
+var
+   SL: TStringList;
+   filename: string;
+   i: Integer;
+   obj: TOperatorInfo;
+   S: string;
+   P: string;
+begin
+   SL := TStringList.Create();
+   try
+      filename := ExtractFilePath(Application.ExeName) + 'ZLOG.OP';
+      if FileExists(filename) = False then begin
+         Exit;
+      end;
+
+      SL.LoadFromFile(filename);
+
+      for i := 0 to SL.Count - 1 do begin
+         S := Trim(Copy(SL[i], 1, 20));
+         P := Trim(Copy(SL[i], 21));
+
+         obj := TOperatorInfo.Create();
+         obj.Callsign := S;
+         obj.Power := P;
+         obj.Age := '';
+
+         Add(obj);
+      end;
+   finally
       SL.Free();
    end;
 end;

@@ -362,6 +362,9 @@ begin
    // オペレーターリスト
    FOpList := TOperatorInfoList.Create();
    FOpList.LoadFromIniFile();
+   if FOpList.Count = 0 then begin
+      FOpList.LoadFromOpList();
+   end;
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
@@ -1487,7 +1490,7 @@ var
    str: string;
    op: TOperatorInfo;
 begin
-   op := FOpList.ObjectOf(aQSO.Callsign);
+   op := FOpList.ObjectOf(aQSO.Operator);
    if op = nil then begin
       Exit;
    end;
