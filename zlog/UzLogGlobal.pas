@@ -1497,10 +1497,15 @@ begin
 
    str := op.Power;
 
-   if OldBandOrd(aQSO.Band) + 1 <= length(str) then
-      P := str[OldBandOrd(aQSO.Band) + 1]
-   else
+//   if OldBandOrd(aQSO.Band) + 1 <= length(str) then
+//      P := str[OldBandOrd(aQSO.Band) + 1]
+//   else
+//      P := UpCase(str[1]);
+
+   P := str[OldBandOrd(aQSO.Band) + 1];
+   if P = '-' then begin
       P := UpCase(str[1]);
+   end;
 
    case P of
       'P':
