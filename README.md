@@ -97,6 +97,7 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 * Windows XP SP3 (32bit)
 * Windows 7 Home (64bit)
 * Windows 10 Home (64bit)
+* Windows 10 Pro (64bit)
 
 ## 動作確認済みコンテスト
 
@@ -125,7 +126,7 @@ JARLコンテスト委員会は横林さんからzLog for Windowsのソースコ
 ### ICOM
 * IC-706mkII,IC-756PRO,IC-756PRO2,IC-7100,IC-7200,IC-7300他
 ### KENWOOD
-* TS-570,TS-590,TS-2000
+* TS-570,TS-590,TS-2000,TS-590G
 ### YAESU
 * FT-2000/FT-950/FT-450/FTDX-5000
 * FT-920
