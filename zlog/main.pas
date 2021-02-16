@@ -5091,7 +5091,10 @@ procedure TMainForm.EditKeyDown(Sender: TObject; var Key: word; Shift: TShiftSta
 begin
    case Key of
       { MUHENKAN KEY }
-      29: begin
+      VK_NONCONVERT: begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('[–³•ÏŠ·]'));
+         {$ENDIF}
          actionControlPTT.Execute();
       end;
 
@@ -5107,20 +5110,10 @@ begin
          Key := 0;
       end;
 
-//      VK_BACK: begin
-//         if (dmZLogKeyer.UseWinKeyer = True) and (dmZLogKeyer.WkCallsignSending = True) then begin
-//            dmZLogKeyer.WinKeyerCancelLastChar();
-//         end;
-//      end;
-
       Ord('A') .. Ord('Z'), Ord('0') .. Ord('9'): begin
          if Shift <> [] then begin
             exit;
          end;
-
-//         if (dmZLogKeyer.UseWinKeyer = True) and (dmZLogKeyer.WkCallsignSending = True) then begin
-//            dmZLogKeyer.WinkeyerSendChar(Char(Key));
-//         end;
 
          if (CtrlZCQLoop = True) and (TEdit(Sender).Name = 'CallsignEdit') then begin
             CtrlZBreak;

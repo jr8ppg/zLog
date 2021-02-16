@@ -141,7 +141,7 @@ object EditDialog: TEditDialog
       Width = 49
       Height = 18
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       TabOrder = 10
       OnChange = TimeEditChange
       OnDblClick = DateEditDblClick
@@ -154,7 +154,7 @@ object EditDialog: TEditDialog
       AutoSelect = False
       AutoSize = False
       CharCase = ecUpperCase
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       MaxLength = 12
       TabOrder = 0
       OnChange = CallsignEditChange
@@ -167,7 +167,7 @@ object EditDialog: TEditDialog
       Width = 52
       Height = 18
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       TabOrder = 1
       OnChange = RcvdRSTEditChange
       OnKeyDown = EditKeyDown
@@ -181,7 +181,7 @@ object EditDialog: TEditDialog
       AutoSelect = False
       AutoSize = False
       CharCase = ecUpperCase
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       TabOrder = 2
       OnChange = NumberEditChange
       OnKeyDown = EditKeyDown
@@ -194,7 +194,7 @@ object EditDialog: TEditDialog
       Height = 18
       TabStop = False
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       PopupMenu = BandMenu
       ReadOnly = True
       TabOrder = 3
@@ -207,7 +207,7 @@ object EditDialog: TEditDialog
       Height = 18
       TabStop = False
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       PopupMenu = ModeMenu
       ReadOnly = True
       TabOrder = 4
@@ -219,7 +219,6 @@ object EditDialog: TEditDialog
       Width = 121
       Height = 18
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
       TabOrder = 8
       OnChange = MemoEditChange
       OnKeyDown = EditKeyDown
@@ -231,7 +230,7 @@ object EditDialog: TEditDialog
       Width = 81
       Height = 18
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       TabOrder = 5
     end
     object PowerEdit: TEdit
@@ -241,7 +240,7 @@ object EditDialog: TEditDialog
       Height = 18
       AutoSize = False
       CharCase = ecUpperCase
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       MaxLength = 4
       TabOrder = 6
       OnChange = PowerEditChange
@@ -252,7 +251,7 @@ object EditDialog: TEditDialog
       Width = 65
       Height = 18
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       PopupMenu = OpMenu
       ReadOnly = True
       TabOrder = 7
@@ -264,7 +263,7 @@ object EditDialog: TEditDialog
       Width = 49
       Height = 18
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       TabOrder = 9
       Visible = False
     end
@@ -275,7 +274,7 @@ object EditDialog: TEditDialog
       Height = 18
       AutoSize = False
       CharCase = ecUpperCase
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       TabOrder = 11
       Visible = False
       OnChange = DateEditChange
@@ -287,7 +286,7 @@ object EditDialog: TEditDialog
       Width = 44
       Height = 18
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       PopupMenu = NewPowerMenu
       ReadOnly = True
       TabOrder = 12

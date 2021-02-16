@@ -700,7 +700,10 @@ procedure TEditDialog.EditKeyDown(Sender: TObject; var Key: Word; Shift: TShiftS
 begin
    case Key of
       { MUHENKAN KEY }
-      29: begin
+      VK_NONCONVERT: begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('(–³•ÏŠ·)'));
+         {$ENDIF}
          actionControlPTT.Execute();
       end;
    end;

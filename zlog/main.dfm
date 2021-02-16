@@ -2891,7 +2891,7 @@ object MainForm: TMainForm
       Height = 18
       TabStop = False
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       TabOrder = 0
       OnChange = RcvdRSTEditChange
       OnKeyDown = EditKeyDown
@@ -2904,7 +2904,7 @@ object MainForm: TMainForm
       Height = 18
       TabStop = False
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       PopupMenu = BandMenu
       ReadOnly = True
       TabOrder = 1
@@ -2919,7 +2919,7 @@ object MainForm: TMainForm
       Height = 18
       TabStop = False
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       PopupMenu = ModeMenu
       ReadOnly = True
       TabOrder = 2
@@ -2933,7 +2933,7 @@ object MainForm: TMainForm
       Height = 18
       TabStop = False
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       TabOrder = 3
       Text = 'PointEdit'
       OnKeyDown = EditKeyDown
@@ -2946,7 +2946,7 @@ object MainForm: TMainForm
       Height = 18
       TabStop = False
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       ParentShowHint = False
       PopupMenu = OpMenu
       ReadOnly = True
@@ -2962,7 +2962,7 @@ object MainForm: TMainForm
       Height = 18
       TabStop = False
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       TabOrder = 5
       Visible = False
       OnChange = SerialEditChange
@@ -2975,7 +2975,7 @@ object MainForm: TMainForm
       Height = 18
       TabStop = False
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       PopupMenu = NewPowerMenu
       TabOrder = 6
       Visible = False
@@ -2992,7 +2992,6 @@ object MainForm: TMainForm
       AutoSize = False
       CharCase = ecUpperCase
       ImeMode = imDisable
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
       TabOrder = 7
       OnChange = CallsignEditChange
       OnEnter = EditEnter
@@ -3011,8 +3010,7 @@ object MainForm: TMainForm
       AutoSelect = False
       AutoSize = False
       CharCase = ecUpperCase
-      ImeMode = imClose
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       TabOrder = 8
       Text = 'NUMBER'
       OnChange = NumberEditChange
@@ -3030,7 +3028,6 @@ object MainForm: TMainForm
       Height = 18
       TabStop = False
       AutoSize = False
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
       TabOrder = 9
       OnChange = MemoEditChange
       OnKeyDown = EditKeyDown
@@ -3044,8 +3041,7 @@ object MainForm: TMainForm
       Height = 18
       TabStop = False
       AutoSize = False
-      ImeMode = imClose
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       TabOrder = 10
       Text = 'TIME'
       OnChange = TimeEditChange
@@ -3061,8 +3057,7 @@ object MainForm: TMainForm
       Height = 18
       TabStop = False
       AutoSize = False
-      ImeMode = imClose
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+      ImeMode = imDisable
       TabOrder = 11
       Text = 'date'
       Visible = False
