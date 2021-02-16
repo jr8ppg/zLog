@@ -391,6 +391,7 @@ type
     buttonPlayVoice: TSpeedButton;
     buttonStopVoice: TSpeedButton;
     checkUseWinKeyer: TCheckBox;
+    checkAntiZeroinStopCq: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -706,6 +707,7 @@ begin
       Settings.FUseAntiZeroin := checkUseAntiZeroin.Checked;
       Settings.FAntiZeroinShiftMax := updownAntiZeroinShiftMax.Position;
       Settings.FAntiZeroinAutoCancel := checkAntiZeroinAutoCancel.Checked;
+      Settings.FAntiZeroinStopCq := checkAntiZeroinStopCq.Checked;
 
       // Quick QSY
       for i := Low(FQuickQSYCheck) to High(FQuickQSYCheck) do begin
@@ -1045,6 +1047,7 @@ begin
       checkUseAntiZeroin.Checked := Settings.FUseAntiZeroin;
       updownAntiZeroinShiftMax.Position := Settings.FAntiZeroinShiftMax;
       checkAntiZeroinAutoCancel.Checked := Settings.FAntiZeroinAutoCancel;
+      checkAntiZeroinStopCq.Checked := Settings.FAntiZeroinStopCq;
 
       // Quick QSY
       for i := Low(FQuickQSYCheck) to High(FQuickQSYCheck) do begin

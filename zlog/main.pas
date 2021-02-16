@@ -5506,7 +5506,11 @@ begin
    else begin
       panelCQMode.Caption := 'SP';
       panelCQMode.Font.Color := clFuchsia;
-      actionCQAbort.Execute();
+
+      // Stop CQ in SP mode‚ªON
+      if dmZLogGlobal.Settings.FAntiZeroinStopCq = True then begin
+         actionCQAbort.Execute();
+      end;
    end;
 
    FZLinkForm.SendRigStatus;
@@ -7773,14 +7777,17 @@ begin
 
       101: begin
          FVoiceForm.SendVoice(1);
+         SetCQ(True);
       end;
 
       102: begin
          FVoiceForm.SendVoice(13);
+         SetCQ(True);
       end;
 
       103: begin
          FVoiceForm.SendVoice(14);
+         SetCQ(True);
       end;
    end;
 end;

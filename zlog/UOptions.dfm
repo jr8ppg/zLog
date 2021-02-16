@@ -24,10 +24,9 @@ object formOptions: TformOptions
     Top = 0
     Width = 394
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetRigControl
     Align = alClient
     TabOrder = 0
-    ExplicitTop = -1
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
       object Label40: TLabel
@@ -517,8 +516,6 @@ object formOptions: TformOptions
     end
     object tabsheetCategories: TTabSheet
       Caption = 'Categories'
-      ExplicitLeft = 8
-      ExplicitTop = 22
       object Label14: TLabel
         Left = 257
         Top = 105
@@ -1614,8 +1611,6 @@ object formOptions: TformOptions
     end
     object tabsheetHardware: TTabSheet
       Caption = 'Hardware'
-      ExplicitWidth = 350
-      ExplicitHeight = 333
       object GroupBox6: TGroupBox
         Left = 6
         Top = 4
@@ -2099,7 +2094,7 @@ object formOptions: TformOptions
         Left = 8
         Top = 130
         Width = 209
-        Height = 88
+        Height = 119
         Caption = 'Magical Calling'
         TabOrder = 5
         object Label28: TLabel
@@ -2149,6 +2144,14 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'Auto Cancel'
           TabOrder = 3
+        end
+        object checkAntiZeroinStopCq: TCheckBox
+          Left = 16
+          Top = 85
+          Width = 125
+          Height = 17
+          Caption = 'Stop CQ in SP mode'
+          TabOrder = 4
         end
       end
       object updownSendFreqInterval: TUpDown
@@ -3818,8 +3821,6 @@ object formOptions: TformOptions
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 361
-    ExplicitWidth = 358
     DesignSize = (
       394
       37)
