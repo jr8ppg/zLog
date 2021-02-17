@@ -5000,7 +5000,12 @@ begin
 
    if dmZLogKeyer.UseWinKeyer = True then begin
       dmZLogKeyer.WinKeyerClear();
-      dmZLogKeyer.WinkeyerSendCallsign(CurrentQSO.Callsign);
+      if (CurrentQSO.CQ = True) or (dmZlogGlobal.Settings._switchcqsp = False) then begin
+         dmZLogKeyer.WinkeyerSendCallsign(CurrentQSO.Callsign);
+      end
+      else begin
+         CallsignSentProc(nil);
+      end;
    end
    else begin
       dmZLogKeyer.ClrBuffer;
@@ -5010,7 +5015,9 @@ begin
       end;
 
       dmZLogKeyer.SetCWSendBuf(0, S);
-      dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
+      if (CurrentQSO.CQ = True) or (dmZlogGlobal.Settings._switchcqsp = False) then begin
+         dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
+      end;
       dmZLogKeyer.ResumeCW;
    end;
 
