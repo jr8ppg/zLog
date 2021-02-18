@@ -82,6 +82,7 @@ begin
    temp := StringReplace(temp, '$A', Abbreviate(UpperCase(dmZLogGlobal.GetAge(aQSO))), [rfReplaceAll]);
    temp := StringReplace(temp, '$N', Abbreviate(aQSO.PowerStr), [rfReplaceAll]);
    temp := StringReplace(temp, '$L', LastCallSign, [rfReplaceAll]);
+   temp := StringReplace(temp, '$G', dmZLogGlobal.GetGreetingsCode(), [rfReplaceAll]);
 
    if aQSO.mode = mRTTY then begin
       temp := StringReplace(temp, '$C', aQSO.Callsign, [rfReplaceAll]);
@@ -153,6 +154,7 @@ begin
    temp := StringReplace(temp, '$A', UpperCase(dmZLogGlobal.GetAge(aQSO)), [rfReplaceAll]);
    temp := StringReplace(temp, '$N', aQSO.PowerStr, [rfReplaceAll]);
    temp := StringReplace(temp, '$L', LastCallSign, [rfReplaceAll]);
+   temp := StringReplace(temp, '$G', dmZLogGlobal.GetGreetingsCode(), [rfReplaceAll]);
 
    temp := StringReplace(temp, '$C', aQSO.Callsign, [rfReplaceAll]);
 

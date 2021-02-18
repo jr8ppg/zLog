@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
-  System.Math, Vcl.Graphics,
+  System.Math, Vcl.Graphics, System.DateUtils,
   UzLogKeyer, UzlogConst, UzLogQSO, UzLogOperatorInfo;
 
 type
@@ -184,6 +184,9 @@ type
 
     // スコア表示の追加情報(評価用指数)
     FLastScoreExtraInfo: Integer;
+
+    // Time to change greetings
+    FTimeToChangeGreetings: array[0..2] of Integer;
   end;
 
 var
@@ -281,6 +284,8 @@ public
     procedure MakeRigList(sl: TStrings);
 
     function NewQSOID(): Integer;
+
+    function GetGreetingsCode(): string;
 
     property PowerOfBand[b: TBand]: TPower read GetPowerOfBand;
   end;
@@ -969,6 +974,11 @@ begin
 
       // スコア表示の追加情報(評価用指数)
       Settings.FLastScoreExtraInfo := ini.ReadInteger('Score', 'ExtraInfo', 0);
+
+      // Time to change greetings
+      Settings.FTimeToChangeGreetings[0] := ini.ReadInteger('greetings', 'morning', 0);
+      Settings.FTimeToChangeGreetings[1] := ini.ReadInteger('greetings', 'afternoon', 12);
+      Settings.FTimeToChangeGreetings[2] := ini.ReadInteger('greetings', 'evening', 18);
    finally
       ini.Free();
       slParam.Free();
@@ -1879,6 +1889,25 @@ begin
    rr := random(100);
 
    Result := tt * 100000000 + ss * 10000 + rr * 100;
+end;
+
+function TdmZLogGlobal.GetGreetingsCode(): string;
+var
+   h: Integer;
+begin
+   h := HourOf(Now);
+   if (h < Settings.FTimeToChangeGreetings[0]) then begin
+      Result := 'GE';
+   end
+   else if (h < Settings.FTimeToChangeGreetings[1]) then begin
+      Result := 'GM';
+   end
+   else if (h < Settings.FTimeToChangeGreetings[2]) then begin
+      Result := 'GA';
+   end
+   else begin
+      Result := 'GE';
+   end;
 end;
 
 function Log(): TLog;
