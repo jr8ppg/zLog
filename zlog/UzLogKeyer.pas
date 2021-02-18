@@ -2485,7 +2485,7 @@ var
    S: string;
 begin
    case C of
-      ' ', 'A'..'Z', '0'..'9', '/', '?', '.': begin
+      ' ', 'A'..'Z', '0'..'9', '/', '?', '.', 'a', 'b', 'k', 's': begin
          if (fUsePTT = True) and (FPTTEnabled = True) { and Not(PTTIsOn) } then begin
             S := '(' + C + ')';
          end

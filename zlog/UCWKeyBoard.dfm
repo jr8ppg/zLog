@@ -227,6 +227,11 @@ object CWKeyBoard: TCWKeyBoard
       ShortCut = 27
       OnExecute = actionESCExecute
     end
+    object actionPlayCQA1: TAction
+      Tag = 101
+      Caption = 'actionPlayCQA1'
+      OnExecute = actionPlayMessageAExecute
+    end
     object actionPlayCQA2: TAction
       Tag = 102
       Caption = 'actionPlayCQA2'
@@ -236,6 +241,11 @@ object CWKeyBoard: TCWKeyBoard
       Tag = 103
       Caption = 'actionPlayCQA3'
       OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayCQB1: TAction
+      Tag = 101
+      Caption = 'actionPlayCQB1'
+      OnExecute = actionPlayMessageBExecute
     end
     object actionPlayCQB2: TAction
       Tag = 102

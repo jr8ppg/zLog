@@ -49,6 +49,8 @@ type
     actionPlayCQB3: TAction;
     actionDecreaseCwSpeed: TAction;
     actionIncreaseCwSpeed: TAction;
+    actionPlayCQA1: TAction;
+    actionPlayCQB1: TAction;
     procedure ConsoleKeyPress(Sender: TObject; var Key: Char);
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -278,8 +280,10 @@ begin
    actionPlayMessageB11.ShortCut := MainForm.actionPlayMessageB11.ShortCut;
    actionPlayMessageB12.ShortCut := MainForm.actionPlayMessageB12.ShortCut;
 
+   actionPlayCQA1.ShortCut := MainForm.actionPlayCQA1.ShortCut;
    actionPlayCQA2.ShortCut := MainForm.actionPlayCQA2.ShortCut;
    actionPlayCQA3.ShortCut := MainForm.actionPlayCQA3.ShortCut;
+   actionPlayCQB1.ShortCut := MainForm.actionPlayCQB1.ShortCut;
    actionPlayCQB2.ShortCut := MainForm.actionPlayCQB2.ShortCut;
    actionPlayCQB3.ShortCut := MainForm.actionPlayCQB3.ShortCut;
 
