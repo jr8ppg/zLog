@@ -2496,7 +2496,7 @@ var
    S: string;
 begin
    case C of
-      ' ', 'A'..'Z', '0'..'9', '/', '?', '.', 'a', 'b', 'k', 's': begin
+      ' ', 'A'..'Z', '0'..'9', '/', '?', '.', 'a', 'b', 'k', 's', '-', '=': begin
          if (fUsePTT = True) and (FPTTEnabled = True) { and Not(PTTIsOn) } then begin
             S := '(' + C + ')';
          end
@@ -2535,8 +2535,9 @@ begin
    // KN
    S := StringReplace(S, 'k', #$1b + 'KN', [rfReplaceAll]);
 
-   // SK
+   // SK/VA
    S := StringReplace(S, 's', #$1b + 'SK', [rfReplaceAll]);
+   S := StringReplace(S, 'v', #$1b + 'VA', [rfReplaceAll]);
 
    // GAP
    // Winkeyer2 interprets the | character (hex 0x7C) as a 1/2 dit delay time. The | character can be included in a
@@ -2655,7 +2656,7 @@ var
    n: Integer;
    S: string;
 begin
-   if FCQLoopCount > 4 then begin
+   if (FUseRandomRepeat = True) and (FCQLoopCount > 4) then begin
       n := FCQLoopCount mod 3; // random(3);
       if n > 2 then begin
          n := 0;
