@@ -5547,7 +5547,8 @@ begin
       panelCQMode.Font.Color := clFuchsia;
 
       // Stop CQ in SP mode‚ªON
-      if dmZLogGlobal.Settings.FAntiZeroinStopCq = True then begin
+      if (dmZLogGlobal.Settings.FUseAntiZeroin = True) and
+         (dmZLogGlobal.Settings.FAntiZeroinStopCq = True) then begin
          actionCQAbort.Execute();
       end;
    end;
@@ -5565,7 +5566,7 @@ begin
          SwitchCWBank(2);
    end;
 
-   if (CQ = True) and (CurrentQSO.Mode = mCW) then begin
+   if (dmZLogGlobal.Settings.FUseAntiZeroin = True) and (CQ = True) and (CurrentQSO.Mode = mCW) then begin
       if RigControl.Rig <> nil then begin
          RigControl.Rig.Rit := False;
          RigControl.Rig.Xit := False;
@@ -9316,6 +9317,9 @@ begin
       Exit;
    end;
    if dmZLogGlobal.Settings.FUseAntiZeroin = False then begin
+      Exit;
+   end;
+   if CurrentQSO.CQ = True then begin
       Exit;
    end;
 
