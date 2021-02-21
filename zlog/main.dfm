@@ -741,6 +741,7 @@ object MainForm: TMainForm
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 1
+      OnClick = panelCQModeClick
     end
   end
   object CWToolBar: TPanel

@@ -892,6 +892,7 @@ type
     procedure actionCQRepeatIntervalUpExecute(Sender: TObject);
     procedure actionCQRepeatIntervalDownExecute(Sender: TObject);
     procedure actionSetCQMessageExecute(Sender: TObject);
+    procedure panelCQModeClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -5413,6 +5414,11 @@ end;
 procedure TMainForm.OptionsButtonClick(Sender: TObject);
 begin
    menuOptions.Click();
+end;
+
+procedure TMainForm.panelCQModeClick(Sender: TObject);
+begin
+   actionToggleCqSp.Execute();
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
