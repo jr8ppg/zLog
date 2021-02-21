@@ -392,6 +392,7 @@ type
     buttonStopVoice: TSpeedButton;
     checkUseWinKeyer: TCheckBox;
     checkAntiZeroinStopCq: TCheckBox;
+    checkUseCQRamdomRepeat: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -607,6 +608,7 @@ begin
       Settings.CW._tonepitch := ToneSpinEdit.Value;
       Settings.CW._cqmax := CQmaxSpinEdit.Value;
 
+      Settings.CW._cq_random_repeat := checkUseCQRamdomRepeat.Checked;
       Settings._switchcqsp := cbCQSP.Checked;
 
       if length(AbbrevEdit.Text) >= 3 then begin
@@ -1024,6 +1026,7 @@ begin
          BeforeEdit.Enabled := False;
          AfterEdit.Enabled := False;
       end;
+      checkUseCQRamdomRepeat.Checked := Settings.CW._cq_random_repeat;
       cbCQSP.Checked := Settings._switchcqsp;
 
       // Send NR? automatically

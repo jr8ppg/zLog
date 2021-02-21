@@ -8,7 +8,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls,
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
-  ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles,
+  ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
@@ -673,6 +673,11 @@ type
     panelCQMode: TPanel;
     actionToggleCqSp: TAction;
     SideToneButton: TSpeedButton;
+    actionCQRepeatIntervalUp: TAction;
+    actionCQRepeatIntervalDown: TAction;
+    actionSetCQMessage1: TAction;
+    actionSetCQMessage2: TAction;
+    actionSetCQMessage3: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -884,6 +889,9 @@ type
     procedure GridExit(Sender: TObject);
     procedure actionToggleCqSpExecute(Sender: TObject);
     procedure SideToneButtonClick(Sender: TObject);
+    procedure actionCQRepeatIntervalUpExecute(Sender: TObject);
+    procedure actionCQRepeatIntervalDownExecute(Sender: TObject);
+    procedure actionSetCQMessageExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -937,6 +945,9 @@ type
 
     // WinKeyer
     FWkAbort: Boolean;
+
+    // Current CQ Message
+    FCurrentCQMessageNo: Integer;
 
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
@@ -1013,6 +1024,7 @@ type
 
     procedure DoCwSpeedChange(Sender: TObject);
     procedure DoVFOChange(Sender: TObject);
+    procedure ApplyCQRepeatInterval();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -3776,6 +3788,8 @@ begin
 
    FWkAbort := False;
 
+   FCurrentCQMessageNo := 101;
+
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
    end;
@@ -4472,6 +4486,31 @@ begin
 
    if S = 'RESETKEYMAP' then begin
       ResetKeymap();
+   end;
+
+   if S = 'CQRPTUP' then begin
+      actionCqRepeatIntervalUp.Execute();
+      Exit;
+   end;
+   if S = 'CQRPTDN' then begin
+      actionCqRepeatIntervalDown.Execute();
+      Exit;
+   end;
+   if Pos('CQRPT', S) = 1 then begin
+      S := StringReplace(S, 'CQRPT', '', [rfReplaceAll]);
+      dmZLogGlobal.Settings.CW._cqrepeat := StrToFloatDef(S, 2.0);
+      ApplyCQRepeatInterval();
+      Exit;
+   end;
+
+   if S = 'CQ1' then begin
+      actionSetCqMessage1.Execute();
+   end;
+   if S = 'CQ2' then begin
+      actionSetCqMessage2.Execute();
+   end;
+   if S = 'CQ3' then begin
+      actionSetCqMessage3.Execute();
    end;
 end;
 
@@ -5546,7 +5585,7 @@ var
 begin
    SetCQ(True);
    CtrlZCQLoop := False;
-   S := dmZlogGlobal.CWMessage(1, 1);
+   S := dmZlogGlobal.CWMessage(1, FCurrentCQMessageNo);
    S := SetStr(UpperCase(S), CurrentQSO);
    dmZLogKeyer.SendStrLoop(S);
 end;
@@ -5557,7 +5596,7 @@ var
 begin
    SetCQ(True);
    CtrlZCQLoop := True;
-   S := dmZlogGlobal.CWMessage(1, 1);
+   S := dmZlogGlobal.CWMessage(1, FCurrentCQMessageNo);
    S := SetStr(UpperCase(S), CurrentQSO);
    dmZLogKeyer.SendStrLoop(S);
 end;
@@ -7757,9 +7796,16 @@ begin
    if no >= 101 then begin
       SetCQ(True);
       bank := 1;
+
+      S := dmZlogGlobal.CWMessage(bank, FCurrentCQMessageNo);
+      if S = '' then begin
+         S := dmZlogGlobal.CWMessage(bank, 101);
+      end;
+   end
+   else begin
+      S := dmZlogGlobal.CWMessage(bank, no);
    end;
 
-   S := dmZlogGlobal.CWMessage(bank, no);
    if S = '' then begin
       Exit;
    end;
@@ -8817,6 +8863,29 @@ begin
    SetCQ(Not IsCQ());
 end;
 
+// #121 CQä‘äuUP
+procedure TMainForm.actionCQRepeatIntervalUpExecute(Sender: TObject);
+begin
+   dmZLogGlobal.Settings.CW._cqrepeat := dmZLogGlobal.Settings.CW._cqrepeat + 1.0;
+   ApplyCQRepeatInterval();
+end;
+
+// #122 CQä‘äuDOWN
+procedure TMainForm.actionCQRepeatIntervalDownExecute(Sender: TObject);
+begin
+   dmZLogGlobal.Settings.CW._cqrepeat := dmZLogGlobal.Settings.CW._cqrepeat - 1.0;
+   ApplyCQRepeatInterval();
+end;
+
+// #123,#124,#125 CQÉÅÉbÉZÅ[ÉW1Å`3ÇÃëIë
+procedure TMainForm.actionSetCQMessageExecute(Sender: TObject);
+var
+   msg: string;
+begin
+   FCurrentCQMessageNo := TAction(Sender).Tag;
+   msg := 'Set CQ Message to ' + IntToStr(FCurrentCQMessageNo - 100);
+   WriteStatusLine(msg, False);
+end;
 
 procedure TMainForm.RestoreWindowsPos();
 var
@@ -9401,6 +9470,17 @@ end;
 procedure TMainForm.SetStatusLine(strText: string);
 begin
    StatusLine.Panels[1].Text := strText;
+end;
+
+procedure TMainForm.ApplyCQRepeatInterval();
+var
+   msg: string;
+begin
+   dmZLogGlobal.Settings.CW._cqrepeat := Max(Min(dmZLogGlobal.Settings.CW._cqrepeat, 60), 0);
+   dmZLogKeyer.CQRepeatIntervalSec := dmZLogGlobal.Settings.CW._cqrepeat;
+
+   msg := 'CQ Repeat Int. ' + Format('%.1f', [dmZLogGlobal.Settings.CW._cqrepeat]) + ' sec.';
+   WriteStatusLine(msg, False);
 end;
 
 end.

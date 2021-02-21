@@ -141,6 +141,7 @@ type
     FCQLoopMax: Integer; //word;
     FCQRepeatIntervalSec: Double;
     FCQRepeatIntervalCount: Integer;
+    FUseRandomRepeat: Boolean;
 
     FKeyerWPM: Integer; //word;
     FKeyerWeight: Integer; //word;
@@ -253,6 +254,7 @@ type
     property CQLoopCount: Integer read FCQLoopCount write SetCQLoopCount;
     property CQLoopMax: Integer read FCQLoopMax write SetCQLoopMax;
     property CQRepeatIntervalSec: Double read FCQRepeatIntervalSec write SetCQRepeatInterval;
+    property UseRandomRepeat: Boolean read FUseRandomRepeat write FUseRandomRepeat;
 
     property WPM: Integer read FKeyerWPM write SetWPM;
     property UseSideTone: Boolean read FUseSideTone write SetUseSideTone;
@@ -336,6 +338,7 @@ begin
    FUseFixedSpeed := False;
    FBeforeSpeed := 0;
    FFixedSpeed := 0;
+   FUseRandomRepeat := True;
 
    FWnd := AllocateHWnd(WndMethod);
 
@@ -346,7 +349,6 @@ begin
    else begin
       FTone := TSideTone.Create(700);
    end;
-
    {$ENDIF}
 
    FUSBIF4CW_Detected := False;
@@ -1050,15 +1052,20 @@ begin
             Finish();
          end
          else if FCQLoopCount > 4 then begin
-            FSelectedBuf := FCQLoopCount mod 3; // random(3);
-            if FSelectedBuf > 2 then begin
-               FSelectedBuf := 0;
-            end;
-
-            if FSelectedBuf in [1 .. 2] then begin
-               if FRandCQStr[FSelectedBuf] = '' then begin
+            if FUseRandomRepeat = True then begin
+               FSelectedBuf := FCQLoopCount mod 3; // random(3);
+               if FSelectedBuf > 2 then begin
                   FSelectedBuf := 0;
                end;
+
+               if FSelectedBuf in [1 .. 2] then begin
+                  if FRandCQStr[FSelectedBuf] = '' then begin
+                     FSelectedBuf := 0;
+                  end;
+               end;
+            end
+            else begin
+               FSelectedBuf := 0;
             end;
          end;
          cwstrptr := 0;

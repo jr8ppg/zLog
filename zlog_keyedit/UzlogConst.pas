@@ -88,7 +88,7 @@ const
   pwrH = TPower(3);
 
 const
-  default_primary_shortcut: array[0..120] of string = (
+  default_primary_shortcut: array[0..125] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -209,10 +209,15 @@ const
     'Shift+F11',        // #117 actionPlayMessageB11
     'Shift+F12',        // #118 actionPlayMessageB12
     '',                 // #119 actionPlayCQB1
-    'Shift+O'           // #120 actionToggleCqSp
+    'Shift+O',          // #120 actionToggleCqSp
+    '',                 // #121 actionCQRptUp
+    '',                 // #122 actionCQRptDown
+    '',                 // #123 actionSetCQMessage1
+    '',                 // #124 actionSetCQMessage2
+    ''                  // #125 actionSetCQMessage3
   );
 
-  default_secondary_shortcut: array[0..120] of string = (
+  default_secondary_shortcut: array[0..125] of string = (
     '',                 // #00
     '',
     '',
@@ -333,7 +338,12 @@ const
     '',                 // #117 actionPlayMessageB11
     '',                 // #118 actionPlayMessageB12
     '',                 // #119 actionPlayCQB1
-    ''                  // #120 actionToggleCqSp
+    '',                 // #120 actionToggleCqSp
+    '',                 // #121 actionCQRptUp
+    '',                 // #122 actionCQRptDown
+    '',                 // #123 actionSetCQMessage1
+    '',                 // #124 actionSetCQMessage2
+    ''                  // #125 actionSetCQMessage3
   );
 
 const

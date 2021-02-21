@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 394
     Height = 434
-    ActivePage = tabsheetRigControl
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1139,7 +1139,7 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'CW A'
         Checked = True
-        TabOrder = 12
+        TabOrder = 13
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1150,7 +1150,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'CW B'
-        TabOrder = 13
+        TabOrder = 14
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1161,7 +1161,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'RTTY'
-        TabOrder = 14
+        TabOrder = 15
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1174,7 +1174,7 @@ object formOptions: TformOptions
           'This option will switch the CW message sent when TAB or ; key is' +
           ' pressed to that in the current message bank. '
         Caption = 'Switch TAB/; with CW bank'
-        TabOrder = 10
+        TabOrder = 11
         WordWrap = True
       end
       object checkSendNrAuto: TCheckBox
@@ -1183,7 +1183,7 @@ object formOptions: TformOptions
         Width = 161
         Height = 17
         Caption = 'Send NR? automatically'
-        TabOrder = 11
+        TabOrder = 12
       end
       object GroupBox14: TGroupBox
         Left = 6
@@ -1244,6 +1244,15 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'Use Side Tone'
         TabOrder = 5
+      end
+      object checkUseCQRamdomRepeat: TCheckBox
+        Left = 213
+        Top = 252
+        Width = 149
+        Height = 24
+        Caption = 'Use CQ Random Repeat'
+        TabOrder = 10
+        WordWrap = True
       end
     end
     object tabsheetVoice: TTabSheet

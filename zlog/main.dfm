@@ -6410,6 +6410,29 @@ object MainForm: TMainForm
       Caption = 'actionToggleCqSp'
       OnExecute = actionToggleCqSpExecute
     end
+    object actionCQRepeatIntervalUp: TAction
+      Caption = 'actionCQRepeatIntervalUp'
+      OnExecute = actionCQRepeatIntervalUpExecute
+    end
+    object actionCQRepeatIntervalDown: TAction
+      Caption = 'actionCQRepeatIntervalDown'
+      OnExecute = actionCQRepeatIntervalDownExecute
+    end
+    object actionSetCQMessage1: TAction
+      Tag = 101
+      Caption = 'actionSetCQMessage1'
+      OnExecute = actionSetCQMessageExecute
+    end
+    object actionSetCQMessage2: TAction
+      Tag = 102
+      Caption = 'actionSetCQMessage2'
+      OnExecute = actionSetCQMessageExecute
+    end
+    object actionSetCQMessage3: TAction
+      Tag = 103
+      Caption = 'actionSetCQMessage3'
+      OnExecute = actionSetCQMessageExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

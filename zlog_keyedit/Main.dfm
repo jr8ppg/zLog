@@ -51,7 +51,11 @@ object formMain: TformMain
           '#094 '#20449#21495#24375#24230'(S)'#22793#26356'=Shift+S'
           '#100 '#26368#24460#12398#20132#20449#12398#32232#38598'=Alt+L'
           '#120 CQ/SP'#12514#12540#12489#20999#12426#26367#12360'=Shift+O'
-          '')
+          '#121 CQ'#12522#12500#12540#12488#38291#38548#12434'UP='
+          '#122 CQ'#12522#12500#12540#12488#38291#38548#12434'DOWN='
+          '#123 CQ'#12513#12483#12475#12540#12472#12434'1'#12395#35373#23450'='
+          '#124 CQ'#12513#12483#12475#12540#12472#12434'2'#12395#35373#23450'='
+          '#125 CQ'#12513#12483#12475#12540#12472#12434'3'#12395#35373#23450'=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
@@ -59,7 +63,7 @@ object formMain: TformMain
         OnDblClick = vleDblClick
         ColWidths = (
           448
-          113)
+          96)
       end
     end
     object TabSheet2: TTabSheet
@@ -269,6 +273,10 @@ object formMain: TformMain
     object TabSheet7: TTabSheet
       Caption = #12381#12398#20182
       ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vleOther: TValueListEditor
         Left = 0
         Top = 0

@@ -17,6 +17,7 @@ type
     _tonepitch : integer;
     _cqmax : integer;
     _cqrepeat : double;
+    _cq_random_repeat: Boolean;
     _FIFO : boolean;
     _interval : integer;
     _zero : char;
@@ -677,6 +678,9 @@ begin
       // CQ repeat interval (sec)
       Settings.CW._cqrepeat := ini.ReadFloat('CW', 'CQRepeat', 2.0);
 
+      // Use CQ Random Repeat
+      Settings.CW._cq_random_repeat := ini.ReadBool('CW', 'CQRandomRepeat', True);
+
       // Send NR? automatically
       Settings.CW._send_nr_auto  := ini.ReadBool('CW', 'send_nr_auto', True);
 
@@ -1143,6 +1147,9 @@ begin
       // CQ repeat interval (sec)
       ini.WriteFloat('CW', 'CQRepeat', Settings.CW._cqrepeat);
 
+      // Use CQ Random Repeat
+      ini.WriteBool('CW', 'CQRandomRepeat', Settings.CW._cq_random_repeat);
+
       // Send NR? automatically
       ini.WriteBool('CW', 'send_nr_auto', Settings.CW._send_nr_auto);
 
@@ -1475,6 +1482,7 @@ begin
    dmZLogKeyer.SetWeight(Settings.CW._weight);
    dmZLogKeyer.CQLoopMax := Settings.CW._cqmax;
    dmZLogKeyer.CQRepeatIntervalSec := Settings.CW._cqrepeat;
+   dmZLogKeyer.UseRandomRepeat := Settings.CW._cq_random_repeat;
    dmZLogKeyer.SideTonePitch := Settings.CW._tonepitch;
 
    dmZLogKeyer.RandCQStr[1] := SetStr(Settings.CW.AdditionalCQMessages[2], CurrentQSO);
