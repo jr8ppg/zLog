@@ -1146,6 +1146,10 @@ begin
       if (FKeyingPort in [tkpSerial1 .. tkpSerial20]) and (FUseWinKeyer = True) then begin
          WinKeyerSetSpeed(FKeyerWPM);
       end;
+
+      if Assigned(FOnSpeedChanged) then begin
+         FOnSpeedChanged(Self);
+      end;
    end;
 end;
 
@@ -1193,7 +1197,7 @@ begin
    FKeyerWeight := 50;
    FUseSideTone := True;
    FPaddleReverse := False;
-   WPM := 25;
+   FKeyerWPM := 1;
 
    CQRepeatIntervalSec := 2.0;
    CQLoopCount := 0;
@@ -2767,10 +2771,6 @@ begin
 
       WM_USER_WKCHANGEWPM: begin
          SetWPM(msg.LParam);
-
-         if Assigned(FOnSpeedChanged) then begin
-            FOnSpeedChanged(Self);
-         end;
       end;
 
       else begin
