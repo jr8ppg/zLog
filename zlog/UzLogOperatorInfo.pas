@@ -16,11 +16,12 @@ type
     FVoiceFiles: array[1..maxmessage] of string;
     procedure SetVoiceFile(Index: Integer; S: string);
     function GetVoiceFile(Index: Integer): string;
+    procedure SetPower(S: string);
   public
     constructor Create();
     destructor Destroy(); override;
     property Callsign: string read FCallsign write FCallsign;
-    property Power: string read FPower write FPower;
+    property Power: string read FPower write SetPower;
     property Age: string read FAge write FAge;
     property VoiceFile[Index: Integer]: string read GetVoiceFile write SetVoiceFile;
   end;
@@ -59,6 +60,12 @@ end;
 procedure TOperatorInfo.SetVoiceFile(Index: Integer; S: string);
 begin
    FVoiceFiles[Index] := S;
+end;
+
+procedure TOperatorInfo.SetPower(S: string);
+begin
+   S := S + DupeString('-', 13);
+   FPower := Copy(S, 1, 13);
 end;
 
 { TOperatorInfoList }
@@ -182,6 +189,7 @@ var
    obj: TOperatorInfo;
    S: string;
    P: string;
+   L: string;
 begin
    SL := TStringList.Create();
    try
@@ -193,8 +201,13 @@ begin
       SL.LoadFromFile(filename);
 
       for i := 0 to SL.Count - 1 do begin
-         S := Trim(Copy(SL[i], 1, 20));
-         P := Trim(Copy(SL[i], 21));
+         L := Trim(SL[i]);
+         if L = ''then begin
+            Continue;
+         end;
+
+         S := Trim(Copy(L, 1, 20));
+         P := Trim(Copy(L, 21));
 
          obj := TOperatorInfo.Create();
          obj.Callsign := S;
