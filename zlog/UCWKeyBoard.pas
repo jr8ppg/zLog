@@ -51,6 +51,8 @@ type
     actionIncreaseCwSpeed: TAction;
     actionPlayCQA1: TAction;
     actionPlayCQB1: TAction;
+    actionPlayMessageBT: TAction;
+    actionPlayMessageVA: TAction;
     procedure ConsoleKeyPress(Sender: TObject; var Key: Char);
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -68,6 +70,8 @@ type
     procedure FormDeactivate(Sender: TObject);
     procedure actionDecreaseCwSpeedExecute(Sender: TObject);
     procedure actionIncreaseCwSpeedExecute(Sender: TObject);
+    procedure actionPlayMessageBTExecute(Sender: TObject);
+    procedure actionPlayMessageVAExecute(Sender: TObject);
   private
     { Private declarations }
     procedure PlayMessage(cb: Integer; no: Integer);
@@ -192,6 +196,13 @@ begin
    Console.SelStart := Length(Console.Text);
 end;
 
+procedure TCWKeyBoard.actionPlayMessageBTExecute(Sender: TObject);
+begin
+   dmZLogKeyer.SetCWSendBufCharPTT('t');
+   Console.Text := Console.Text + '[BT]';
+   Console.SelStart := Length(Console.Text);
+end;
+
 procedure TCWKeyBoard.actionPlayMessageKNExecute(Sender: TObject);
 begin
    dmZLogKeyer.SetCWSendBufCharPTT('k');
@@ -203,6 +214,13 @@ procedure TCWKeyBoard.actionPlayMessageSKExecute(Sender: TObject);
 begin
    dmZLogKeyer.SetCWSendBufCharPTT('s');
    Console.Text := Console.Text + '[SK]';
+   Console.SelStart := Length(Console.Text);
+end;
+
+procedure TCWKeyBoard.actionPlayMessageVAExecute(Sender: TObject);
+begin
+   dmZLogKeyer.SetCWSendBufCharPTT('s');
+   Console.Text := Console.Text + '[VA]';
    Console.SelStart := Length(Console.Text);
 end;
 

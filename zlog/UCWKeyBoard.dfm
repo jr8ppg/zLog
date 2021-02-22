@@ -267,5 +267,15 @@ object CWKeyBoard: TCWKeyBoard
       ShortCut = 8281
       OnExecute = actionIncreaseCwSpeedExecute
     end
+    object actionPlayMessageBT: TAction
+      Caption = 'actionPlayMessageBT'
+      ShortCut = 8276
+      OnExecute = actionPlayMessageBTExecute
+    end
+    object actionPlayMessageVA: TAction
+      Caption = 'actionPlayMessageVA'
+      ShortCut = 8278
+      OnExecute = actionPlayMessageVAExecute
+    end
   end
 end

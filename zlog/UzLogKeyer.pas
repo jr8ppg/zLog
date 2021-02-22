@@ -1565,9 +1565,11 @@ begin
    FCodeTable[Ord('-')][6] := 0;
    FCodeTable[Ord('-')][7] := 1;
    FCodeTable[Ord('-')][8] := 0;
-   FCodeTable[Ord('-')][9] := 3;
-   FCodeTable[Ord('-')][10] := 2;
-   FCodeTable[Ord('-')][11] := 9;
+   FCodeTable[Ord('-')][9] := 1;
+   FCodeTable[Ord('-')][10] := 0;
+   FCodeTable[Ord('-')][11] := 3;
+   FCodeTable[Ord('-')][12] := 2;
+   FCodeTable[Ord('-')][13] := 9;
 
    FCodeTable[Ord('"')][1] := $0B; // set UserFlag to False
    FCodeTable[Ord('"')][2] := 9;
@@ -1649,6 +1651,18 @@ begin
    FCodeTable[Ord('k')][9] := 1;
    FCodeTable[Ord('k')][10] := 2;
    FCodeTable[Ord('k')][11] := 9;
+
+   FCodeTable[Ord('t')][1] := 3;
+   FCodeTable[Ord('t')][2] := 0;
+   FCodeTable[Ord('t')][3] := 1;
+   FCodeTable[Ord('t')][4] := 0;
+   FCodeTable[Ord('t')][5] := 1;
+   FCodeTable[Ord('t')][6] := 0;
+   FCodeTable[Ord('t')][7] := 1;
+   FCodeTable[Ord('t')][8] := 0;
+   FCodeTable[Ord('t')][9] := 3;
+   FCodeTable[Ord('t')][10] := 2;
+   FCodeTable[Ord('t')][11] := 9;
 
    FCodeTable[Ord('p')][1] := 1;
    FCodeTable[Ord('p')][2] := 0;
@@ -2496,7 +2510,7 @@ var
    S: string;
 begin
    case C of
-      ' ', 'A'..'Z', '0'..'9', '/', '?', '.', 'a', 'b', 'k', 's', '-', '=': begin
+      ' ', 'A'..'Z', '0'..'9', '/', '?', '.', 'a', 'b', 'k', 's', 't', 'v', '-', '=': begin
          if (fUsePTT = True) and (FPTTEnabled = True) { and Not(PTTIsOn) } then begin
             S := '(' + C + ')';
          end
@@ -2531,6 +2545,9 @@ begin
    // BK
    S := StringReplace(S, 'b', #$1b + 'BK', [rfReplaceAll]);
    S := StringReplace(S, '~', #$1b + 'BK', [rfReplaceAll]);
+
+   // BT
+   S := StringReplace(S, 't', #$1b + 'BT', [rfReplaceAll]);
 
    // KN
    S := StringReplace(S, 'k', #$1b + 'KN', [rfReplaceAll]);
