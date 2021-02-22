@@ -166,6 +166,11 @@ type
     // Anti Zeroin
     FUseAntiZeroin: Boolean;
     FAntiZeroinShiftMax: Integer;   // 0-200
+    FAntiZeroinRitOff: Boolean;
+    FAntiZeroinXitOff: Boolean;
+    FAntiZeroinRitClear: Boolean;
+    FAntiZeroinXitOn1: Boolean;
+    FAntiZeroinXitOn2: Boolean;
     FAntiZeroinAutoCancel: Boolean;
     FAntiZeroinStopCq: Boolean;     // Stop CQ in SP mode
 
@@ -790,6 +795,11 @@ begin
       // Anti Zeroin
       Settings.FUseAntiZeroin := ini.ReadBool('Rig', 'use_anti_zeroin', True);
       Settings.FAntiZeroinShiftMax := Min(ini.ReadInteger('Rig', 'anti_zeroin_shift_max', 100), 200);
+      Settings.FAntiZeroinRitOff := ini.ReadBool('Rig', 'anti_zeroin_rit_off', False);
+      Settings.FAntiZeroinXitOff := ini.ReadBool('Rig', 'anti_zeroin_xit_off', True);
+      Settings.FAntiZeroinRitClear := ini.ReadBool('Rig', 'anti_zeroin_rit_clear', False);
+      Settings.FAntiZeroinXitOn1 := ini.ReadBool('Rig', 'anti_zeroin_xit_on1', True);
+      Settings.FAntiZeroinXitOn2 := ini.ReadBool('Rig', 'anti_zeroin_xit_on2', False);
       Settings.FAntiZeroinAutoCancel := ini.ReadBool('Rig', 'anti_zeroin_auto_cancel', False);
       Settings.FAntiZeroinStopCq := ini.ReadBool('Rig', 'anti_zeroin_stop_cq_in_spmode', False);
 
@@ -1259,6 +1269,11 @@ begin
       // Anti Zeroin
       ini.WriteBool('Rig', 'use_anti_zeroin', Settings.FUseAntiZeroin);
       ini.WriteInteger('Rig', 'anti_zeroin_shift_max', Settings.FAntiZeroinShiftMax);
+      ini.WriteBool('Rig', 'anti_zeroin_rit_off', Settings.FAntiZeroinRitOff);
+      ini.WriteBool('Rig', 'anti_zeroin_xit_off', Settings.FAntiZeroinXitOff);
+      ini.WriteBool('Rig', 'anti_zeroin_rit_clear', Settings.FAntiZeroinRitClear);
+      ini.WriteBool('Rig', 'anti_zeroin_xit_on1', Settings.FAntiZeroinXitOn1);
+      ini.WriteBool('Rig', 'anti_zeroin_xit_on2', Settings.FAntiZeroinXitOn2);
       ini.WriteBool('Rig', 'anti_zeroin_auto_cancel', Settings.FAntiZeroinAutoCancel);
       ini.WriteBool('Rig', 'anti_zeroin_stop_cq_in_spmode', Settings.FAntiZeroinStopCq);
 

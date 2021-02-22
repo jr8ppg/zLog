@@ -393,6 +393,13 @@ type
     checkUseWinKeyer: TCheckBox;
     checkAntiZeroinStopCq: TCheckBox;
     checkUseCQRamdomRepeat: TCheckBox;
+    GroupBox17: TGroupBox;
+    GroupBox18: TGroupBox;
+    checkAntiZeroinRitOff: TCheckBox;
+    checkAntiZeroinXitOff: TCheckBox;
+    checkAntiZeroinRitClear: TCheckBox;
+    checkAntiZeroinXitOn1: TCheckBox;
+    checkAntiZeroinXitOn2: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -708,6 +715,11 @@ begin
       Settings._send_freq_interval := updownSendFreqInterval.Position;
       Settings.FUseAntiZeroin := checkUseAntiZeroin.Checked;
       Settings.FAntiZeroinShiftMax := updownAntiZeroinShiftMax.Position;
+      Settings.FAntiZeroinRitOff := checkAntiZeroinRitOff.Checked;
+      Settings.FAntiZeroinXitOff := checkAntiZeroinXitOff.Checked;
+      Settings.FAntiZeroinRitClear := checkAntiZeroinRitClear.Checked;
+      Settings.FAntiZeroinXitOn1 := checkAntiZeroinXitOn1.Checked;
+      Settings.FAntiZeroinXitOn2 := checkAntiZeroinXitOn2.Checked;
       Settings.FAntiZeroinAutoCancel := checkAntiZeroinAutoCancel.Checked;
       Settings.FAntiZeroinStopCq := checkAntiZeroinStopCq.Checked;
 
@@ -1049,6 +1061,11 @@ begin
       updownSendFreqInterval.Position := Settings._send_freq_interval;
       checkUseAntiZeroin.Checked := Settings.FUseAntiZeroin;
       updownAntiZeroinShiftMax.Position := Settings.FAntiZeroinShiftMax;
+      checkAntiZeroinRitOff.Checked := Settings.FAntiZeroinRitOff;
+      checkAntiZeroinXitOff.Checked := Settings.FAntiZeroinXitOff;
+      checkAntiZeroinRitClear.Checked := Settings.FAntiZeroinRitClear;
+      checkAntiZeroinXitOn1.Checked := Settings.FAntiZeroinXitOn1;
+      checkAntiZeroinXitOn2.Checked := Settings.FAntiZeroinXitOn2;
       checkAntiZeroinAutoCancel.Checked := Settings.FAntiZeroinAutoCancel;
       checkAntiZeroinStopCq.Checked := Settings.FAntiZeroinStopCq;
 

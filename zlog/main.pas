@@ -5574,9 +5574,15 @@ begin
 
    if (dmZLogGlobal.Settings.FUseAntiZeroin = True) and (CQ = True) and (CurrentQSO.Mode = mCW) then begin
       if RigControl.Rig <> nil then begin
-         RigControl.Rig.Rit := False;
-         RigControl.Rig.Xit := False;
-         RigControl.Rig.RitClear();
+         if dmZLogGlobal.Settings.FAntiZeroinRitOff = True then begin
+            RigControl.Rig.Rit := False;
+         end;
+         if dmZLogGlobal.Settings.FAntiZeroinXitOff = True then begin
+            RigControl.Rig.Xit := False;
+         end;
+         if dmZLogGlobal.Settings.FAntiZeroinRitClear = True then begin
+            RigControl.Rig.RitClear();
+         end;
       end;
    end;
 end;
@@ -7985,8 +7991,10 @@ begin
    {$ENDIF}
 
    if RigControl.Rig <> nil then begin
-      if RigControl.Rig.Xit = False then begin
-         SetAntiZeroin();
+      if dmZLogGlobal.Settings.FAntiZeroinXitOn2 = True then begin
+         if RigControl.Rig.Xit = False then begin
+            SetAntiZeroin();
+         end;
       end;
    end;
 
@@ -9303,7 +9311,9 @@ begin
       RigControl.Rig.UpdateStatus();
 
       // ZeroinîÇØ
-      SetAntiZeroin();
+      if dmZLogGlobal.Settings.FAntiZeroinXitOn1 = True then begin
+         SetAntiZeroin();
+      end;
    end
    else begin
       // ÉoÉìÉhïœçX

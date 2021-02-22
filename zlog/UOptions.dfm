@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 394
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetRigControl
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -2101,21 +2101,21 @@ object formOptions: TformOptions
       end
       object GroupBox15: TGroupBox
         Left = 8
-        Top = 130
-        Width = 209
-        Height = 119
+        Top = 230
+        Width = 369
+        Height = 167
         Caption = 'Magical Calling'
         TabOrder = 5
         object Label28: TLabel
-          Left = 16
-          Top = 43
+          Left = 185
+          Top = 21
           Width = 92
           Height = 13
           Caption = 'Max Shift Width +/-'
         end
         object Label29: TLabel
-          Left = 159
-          Top = 43
+          Left = 328
+          Top = 21
           Width = 13
           Height = 13
           Caption = 'Hz'
@@ -2129,16 +2129,16 @@ object formOptions: TformOptions
           TabOrder = 0
         end
         object editMaxShift: TEdit
-          Left = 112
-          Top = 40
+          Left = 281
+          Top = 18
           Width = 29
           Height = 21
           TabOrder = 1
           Text = '0'
         end
         object updownAntiZeroinShiftMax: TUpDown
-          Left = 141
-          Top = 40
+          Left = 310
+          Top = 18
           Width = 16
           Height = 21
           Associate = editMaxShift
@@ -2146,21 +2146,77 @@ object formOptions: TformOptions
           Increment = 10
           TabOrder = 2
         end
-        object checkAntiZeroinAutoCancel: TCheckBox
+        object GroupBox17: TGroupBox
           Left = 16
-          Top = 62
-          Width = 90
-          Height = 17
-          Caption = 'Auto Cancel'
+          Top = 43
+          Width = 163
+          Height = 110
+          Caption = 'CQ Mode'
           TabOrder = 3
+          object checkAntiZeroinRitOff: TCheckBox
+            Left = 10
+            Top = 18
+            Width = 76
+            Height = 17
+            Caption = 'RIT OFF'
+            TabOrder = 0
+          end
+          object checkAntiZeroinXitOff: TCheckBox
+            Left = 10
+            Top = 41
+            Width = 76
+            Height = 17
+            Caption = 'XIT OFF'
+            TabOrder = 1
+          end
+          object checkAntiZeroinRitClear: TCheckBox
+            Left = 10
+            Top = 64
+            Width = 126
+            Height = 17
+            Caption = 'RIT/XIT Clear'
+            TabOrder = 2
+          end
         end
-        object checkAntiZeroinStopCq: TCheckBox
-          Left = 16
-          Top = 85
-          Width = 125
-          Height = 17
-          Caption = 'Stop CQ in SP mode'
+        object GroupBox18: TGroupBox
+          Left = 185
+          Top = 43
+          Width = 168
+          Height = 110
+          Caption = 'S&&P Mode'
           TabOrder = 4
+          object checkAntiZeroinXitOn1: TCheckBox
+            Left = 10
+            Top = 18
+            Width = 143
+            Height = 17
+            Caption = 'XIT ON (bandscope)'
+            TabOrder = 0
+          end
+          object checkAntiZeroinXitOn2: TCheckBox
+            Left = 10
+            Top = 41
+            Width = 119
+            Height = 17
+            Caption = 'XIT ON (VFO)'
+            TabOrder = 1
+          end
+          object checkAntiZeroinStopCq: TCheckBox
+            Left = 10
+            Top = 64
+            Width = 73
+            Height = 17
+            Caption = 'Stop CQ'
+            TabOrder = 2
+          end
+          object checkAntiZeroinAutoCancel: TCheckBox
+            Left = 10
+            Top = 85
+            Width = 90
+            Height = 17
+            Caption = 'Auto Cancel'
+            TabOrder = 3
+          end
         end
       end
       object updownSendFreqInterval: TUpDown
