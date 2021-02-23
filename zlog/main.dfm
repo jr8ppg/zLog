@@ -6434,6 +6434,26 @@ object MainForm: TMainForm
       Caption = 'actionSetCQMessage3'
       OnExecute = actionSetCQMessageExecute
     end
+    object actionToggleRit: TAction
+      Caption = 'actionToggleRit'
+      OnExecute = actionToggleRitExecute
+    end
+    object actionToggleXit: TAction
+      Caption = 'actionToggleXit'
+      OnExecute = actionToggleXitExecute
+    end
+    object actionRitClear: TAction
+      Caption = 'actionRitClear'
+      OnExecute = actionRitClearExecute
+    end
+    object actionToggleAntiZeroin: TAction
+      Caption = 'actionToggleAntiZeroin'
+      OnExecute = actionToggleAntiZeroinExecute
+    end
+    object actionAntiZeroin: TAction
+      Caption = 'actionAntiZeroin'
+      OnExecute = actionAntiZeroinExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

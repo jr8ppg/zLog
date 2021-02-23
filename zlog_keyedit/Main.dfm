@@ -20,7 +20,7 @@ object formMain: TformMain
     Top = 0
     Width = 575
     Height = 421
-    ActivePage = TabSheet1
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -69,6 +69,10 @@ object formMain: TformMain
     object TabSheet2: TTabSheet
       Caption = #24773#22577#34920#31034
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vleInformation: TValueListEditor
         Left = 0
         Top = 0
@@ -115,6 +119,10 @@ object formMain: TformMain
     object TabSheet3: TTabSheet
       Caption = 'CW'#12461#12540#12452#12531#12464
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vleCWKeying: TValueListEditor
         Left = 0
         Top = 0
@@ -190,7 +198,12 @@ object formMain: TformMain
           '#068 '#12522#12464#12467#12531#12488#12525#12540#12523#12454#12452#12531#12489#12454#12398#34920#31034'=Alt+T'
           '#071 '#12522#12464#12398#20999#12426#26367#12360'=Shift+X'
           '#099 VFO'#12398#12488#12464#12523'=Shitf+V'
-          '#105 '#26368#24460#12398#21608#27874#25968#12408#12472#12515#12531#12503'=')
+          '#105 '#26368#24460#12398#21608#27874#25968#12408#12472#12515#12531#12503'='
+          '#126 RIT'#12398#12488#12464#12523'='
+          '#127 XIT'#12398#12488#12464#12523'='
+          '#128 RIT'#21608#27874#25968#12398#12463#12522#12450'='
+          '#129 Magical Calling'#27231#33021#12398'ON/OFF='
+          '#130 Anti Zeroin=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
@@ -204,6 +217,10 @@ object formMain: TformMain
     object TabSheet5: TTabSheet
       Caption = #20837#21147#12392#32232#38598
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vleEdit: TValueListEditor
         Left = 0
         Top = 0
@@ -249,6 +266,10 @@ object formMain: TformMain
     object TabSheet6: TTabSheet
       Caption = #20107#24460#20837#21147
       ImageIndex = 5
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vlePostContest: TValueListEditor
         Left = 0
         Top = 0

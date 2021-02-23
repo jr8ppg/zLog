@@ -466,6 +466,10 @@ type
     procedure SetSendFreq();
     procedure UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer);
 
+    procedure SetRit(fOnOff: Boolean);
+    procedure SetXit(fOnOff: Boolean);
+    procedure SetRitOffset(offset: Integer);
+
     property Rig: TRig read FCurrentRig;
     property Rig1: TRig read FRigs[1];
     property Rig2: TRig read FRigs[2];
@@ -3856,6 +3860,33 @@ begin
       dispFreqB.Font.Style := [fsBold];
       dispFreqA.Font.Style := [];
    end;
+end;
+
+procedure TRigControl.SetRit(fOnOff: Boolean);
+begin
+   if Rig = nil then begin
+      Exit;
+   end;
+
+   Rig.Rit := fOnOff;
+end;
+
+procedure TRigControl.SetXit(fOnOff: Boolean);
+begin
+   if Rig = nil then begin
+      Exit;
+   end;
+
+   Rig.Xit := fOnOff;
+end;
+
+procedure TRigControl.SetRitOffset(offset: Integer);
+begin
+   if Rig = nil then begin
+      Exit;
+   end;
+
+   Rig.RitOffset := offset;
 end;
 
 end.

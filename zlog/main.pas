@@ -678,6 +678,11 @@ type
     actionSetCQMessage1: TAction;
     actionSetCQMessage2: TAction;
     actionSetCQMessage3: TAction;
+    actionToggleRit: TAction;
+    actionToggleXit: TAction;
+    actionRitClear: TAction;
+    actionToggleAntiZeroin: TAction;
+    actionAntiZeroin: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -893,6 +898,11 @@ type
     procedure actionCQRepeatIntervalDownExecute(Sender: TObject);
     procedure actionSetCQMessageExecute(Sender: TObject);
     procedure panelCQModeClick(Sender: TObject);
+    procedure actionToggleRitExecute(Sender: TObject);
+    procedure actionToggleXitExecute(Sender: TObject);
+    procedure actionRitClearExecute(Sender: TObject);
+    procedure actionToggleAntiZeroinExecute(Sender: TObject);
+    procedure actionAntiZeroinExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -949,6 +959,8 @@ type
 
     // Current CQ Message
     FCurrentCQMessageNo: Integer;
+
+    FQsyFromBS: Boolean;
 
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
@@ -1026,6 +1038,7 @@ type
     procedure DoCwSpeedChange(Sender: TObject);
     procedure DoVFOChange(Sender: TObject);
     procedure ApplyCQRepeatInterval();
+    procedure ShowToggleStatus(text: string; fON: Boolean);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1057,7 +1070,6 @@ type
     procedure BandScopeNotifyWorked(aQSO: TQSO);
     procedure SetYourCallsign(strCallsign, strNumber: string);
     procedure SetFrequency(freq: Integer);
-    procedure SetAntiZeroin();
     procedure BSRefresh();
     procedure BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
@@ -3790,6 +3802,7 @@ begin
    FWkAbort := False;
 
    FCurrentCQMessageNo := 101;
+   FQsyFromBS := False;
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
@@ -4512,6 +4525,22 @@ begin
    end;
    if S = 'CQ3' then begin
       actionSetCqMessage3.Execute();
+   end;
+
+   if S = 'RIT' then begin
+      actionToggleRit.Execute();
+   end;
+   if S = 'XIT' then begin
+      actionToggleXit.Execute();
+   end;
+   if S = 'RCLR' then begin
+      actionRitClear.Execute();
+   end;
+   if S = 'MC' then begin
+      actionToggleAntiZeroin.Execute();
+   end;
+   if S = 'AZ' then begin
+      actionAntiZeroin.Execute();
    end;
 end;
 
@@ -5553,9 +5582,11 @@ begin
       panelCQMode.Font.Color := clFuchsia;
 
       // Stop CQ in SP modeÇ™ON
-      if (dmZLogGlobal.Settings.FUseAntiZeroin = True) and
-         (dmZLogGlobal.Settings.FAntiZeroinStopCq = True) then begin
-         actionCQAbort.Execute();
+      if (dmZLogGlobal.Settings.FUseAntiZeroin = True) then begin
+         // CQí‚é~
+         if (dmZLogGlobal.Settings.FAntiZeroinStopCq = True) then begin
+            actionCQAbort.Execute();
+         end;
       end;
    end;
 
@@ -7990,7 +8021,7 @@ begin
    if RigControl.Rig <> nil then begin
       if dmZLogGlobal.Settings.FAntiZeroinXitOn2 = True then begin
          if RigControl.Rig.Xit = False then begin
-            SetAntiZeroin();
+            actionAntiZeroin.Execute();
          end;
       end;
    end;
@@ -8898,6 +8929,76 @@ begin
    WriteStatusLine(msg, False);
 end;
 
+// #126 Toggle RIT
+procedure TMainForm.actionToggleRitExecute(Sender: TObject);
+begin
+   if RigControl.Rig = nil then begin
+      Exit;
+   end;
+
+   RigControl.Rig.Rit := not RigControl.Rig.Rit;
+   ShowToggleStatus('RIT', RigControl.Rig.Rit);
+end;
+
+// #127 Toggle XIT
+procedure TMainForm.actionToggleXitExecute(Sender: TObject);
+begin
+   if RigControl.Rig = nil then begin
+      Exit;
+   end;
+
+   RigControl.Rig.Xit := not RigControl.Rig.Xit;
+   ShowToggleStatus('XIT', RigControl.Rig.Xit);
+end;
+
+// #128 RIT Clear
+procedure TMainForm.actionRitClearExecute(Sender: TObject);
+begin
+   RigControl.SetRitOffset(0);
+   WriteStatusLine('RIT/XIT Offset Cleared', False);
+end;
+
+// #129 Magical Callingã@î\ÇÃON/OFF
+procedure TMainForm.actionToggleAntiZeroinExecute(Sender: TObject);
+begin
+   dmZLogGlobal.Settings.FUseAntiZeroin := not dmZLogGlobal.Settings.FUseAntiZeroin;
+   ShowToggleStatus('Magical Calling', dmZLogGlobal.Settings.FUseAntiZeroin);
+end;
+
+// #130 AntiZeroin
+procedure TMainForm.actionAntiZeroinExecute(Sender: TObject);
+var
+   offset: Integer;
+   randmax: Integer;
+begin
+   if CurrentQSO.Mode <> mCW then begin
+      Exit;
+   end;
+   if dmZLogGlobal.Settings.FUseAntiZeroin = False then begin
+      Exit;
+   end;
+   if CurrentQSO.CQ = True then begin
+      Exit;
+   end;
+
+   Randomize();
+
+   // êUÇÍïù
+   randmax := (dmZLogGlobal.Settings.FAntiZeroinShiftMax div 10) + 1;
+   offset := Random(randmax) * 10;    // 200Hzñ¢ñûÇ≈
+
+   // Å{Ç©Å|Ç©
+   if Random(2) = 1 then begin
+      offset := offset * -1;
+   end;
+
+   RigControl.Rig.Rit := False;
+   RigControl.Rig.Xit := True;
+   RigControl.Rig.RitOffset := offset;
+
+   WriteStatusLine('** Anti Zeroin **', False);
+end;
+
 procedure TMainForm.RestoreWindowsPos();
 var
    X, Y, W, H: Integer;
@@ -9302,6 +9403,8 @@ begin
       Exit;
    end;
 
+   FQsyFromBS := True;
+
    if RigControl.Rig <> nil then begin
       // RIGÇ…freqê›íË
       RigControl.Rig.SetFreq(freq, IsCQ());
@@ -9309,7 +9412,7 @@ begin
 
       // ZeroinîÇØ
       if dmZLogGlobal.Settings.FAntiZeroinXitOn1 = True then begin
-         SetAntiZeroin();
+         actionAntiZeroin.Execute();
       end;
    end
    else begin
@@ -9319,37 +9422,6 @@ begin
 
    // SPÉÇÅ[ÉhÇ÷ïœçX
    SetCQ(False);
-end;
-
-procedure TMainForm.SetAntiZeroin();
-var
-   offset: Integer;
-   randmax: Integer;
-begin
-   if CurrentQSO.Mode <> mCW then begin
-      Exit;
-   end;
-   if dmZLogGlobal.Settings.FUseAntiZeroin = False then begin
-      Exit;
-   end;
-   if CurrentQSO.CQ = True then begin
-      Exit;
-   end;
-
-   Randomize();
-
-   // êUÇÍïù
-   randmax := (dmZLogGlobal.Settings.FAntiZeroinShiftMax div 10) + 1;
-   offset := Random(randmax) * 10;    // 200Hzñ¢ñûÇ≈
-
-   // Å{Ç©Å|Ç©
-   if Random(2) = 1 then begin
-      offset := offset * -1;
-   end;
-
-   RigControl.Rig.Rit := False;
-   RigControl.Rig.Xit := True;
-   RigControl.Rig.RitOffset := offset;
 end;
 
 procedure TMainForm.BSRefresh();
@@ -9480,7 +9552,15 @@ begin
       Exit;
    end;
 
+   // AntiZeroinóòópéû
+   if (dmZLogGlobal.Settings.FUseAntiZeroin = True) and (FQsyFromBS = False) then begin
+      // XIT OFF
+      RigControl.SetXit(False);
+   end;
+
    SetCQ(False);
+
+   FQsyFromBS := False;
 end;
 
 procedure TMainForm.SetStatusLine(strText: string);
@@ -9496,6 +9576,16 @@ begin
    dmZLogKeyer.CQRepeatIntervalSec := dmZLogGlobal.Settings.CW._cqrepeat;
 
    msg := 'CQ Repeat Int. ' + Format('%.1f', [dmZLogGlobal.Settings.CW._cqrepeat]) + ' sec.';
+   WriteStatusLine(msg, False);
+end;
+
+procedure TMainForm.ShowToggleStatus(text: string; fON: Boolean);
+const
+   strOffOn: array[False..True] of string = ('OFF', 'ON');
+var
+   msg: string;
+begin
+   msg := 'Set ' + text + ' to ' + strOffOn[fOn];
    WriteStatusLine(msg, False);
 end;
 
