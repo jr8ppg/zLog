@@ -7808,11 +7808,8 @@ var
 begin
    if no >= 101 then begin
       SetCQ(True);
-
+      bank := dmZlogGlobal.Settings.CW.CurrentBank;
       S := dmZlogGlobal.CWMessage(bank, FCurrentCQMessageNo);
-      if S = '' then begin
-         S := dmZlogGlobal.CWMessage(bank, 101);
-      end;
    end
    else begin
       S := dmZlogGlobal.CWMessage(bank, no);
