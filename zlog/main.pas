@@ -4289,10 +4289,6 @@ begin
       if RigControl.Rig <> nil then
          RigControl.Rig.SetVFO(1);
 
-   if S = 'RC' then
-      if RigControl.Rig <> nil then
-         RigControl.Rig.RitClear;
-
    if S = 'YAESUTEST' then
       if RigControl.Rig <> nil then
          RigControl.Rig.FILO := not(RigControl.Rig.FILO);
@@ -4533,7 +4529,7 @@ begin
    if S = 'XIT' then begin
       actionToggleXit.Execute();
    end;
-   if S = 'RCLR' then begin
+   if (S = 'RC') or (S = 'RCLR') then begin
       actionRitClear.Execute();
    end;
    if S = 'MC' then begin

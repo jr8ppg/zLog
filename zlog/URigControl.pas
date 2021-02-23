@@ -3886,7 +3886,12 @@ begin
       Exit;
    end;
 
-   Rig.RitOffset := offset;
+   if offset = 0 then begin
+      Rig.RitClear();
+   end
+   else begin
+      Rig.RitOffset := offset;
+   end;
 end;
 
 end.
