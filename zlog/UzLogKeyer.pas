@@ -2374,6 +2374,14 @@ begin
    Buff[1] := WK_ADMIN_OPEN;
    FComKeying.SendData(@Buff, 2);
 
+   //set speed pot range  5 to 50wpm
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_SET_SPEEDPOT_CMD;
+   Buff[1] := $05;    // min 5wpm
+   Buff[2] := $32;    //range 50wpm
+   Buff[3] := $00;
+   FComKeying.SendData(@Buff, 4);
+
    dwTick := GetTickCount();
    while FWkRevision = 0 do begin
       Application.ProcessMessages();
