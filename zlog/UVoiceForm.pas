@@ -16,7 +16,7 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     { Private 宣言 }
-    FWaveSound: array[1..maxmessage] of TWaveSound;
+    FWaveSound: array[1..maxmessage + 2] of TWaveSound;
     FCurrentOperator: TOperatorInfo;
     FCurrentVoice: Integer;
     FCtrlZCQLoopVoice: Boolean;
@@ -33,7 +33,7 @@ type
     procedure Init();
     procedure SendVoice(i: integer);
     procedure StopVoice();
-    procedure CQLoopVoice();
+    procedure CQLoopVoice(no: Integer);
     procedure CtrlZBreakVoice();
     procedure SetOperator(op: TOperatorInfo);
 
@@ -88,15 +88,49 @@ procedure TVoiceForm.SendVoice(i: integer);
 var
    filename: string;
 begin
-   if i > maxmessage then begin
-      exit;
-   end;
-
    if FCurrentOperator = nil then begin
-      filename := dmZLogGlobal.Settings.FSoundFiles[i];
+      case i of
+         1..12: begin
+            filename := dmZLogGlobal.Settings.FSoundFiles[i];
+         end;
+
+         101: begin
+            filename := dmZLogGlobal.Settings.FSoundFiles[1];
+            i := 1;
+         end;
+
+         102: begin
+            filename := dmZLogGlobal.Settings.FAdditionalSoundFiles[2];
+            i := 13;
+         end;
+
+         103: begin
+            filename := dmZLogGlobal.Settings.FAdditionalSoundFiles[3];
+            i := 14;
+         end;
+      end;
    end
    else begin
-      filename := FCurrentOperator.VoiceFile[i];
+      case i of
+         1..12: begin
+            filename := FCurrentOperator.VoiceFile[i];
+         end;
+
+         101: begin
+            filename := FCurrentOperator.VoiceFile[1];
+            i := 1;
+         end;
+
+         102: begin
+            filename := FCurrentOperator.AdditionalVoiceFile[2];
+            i := 13;
+         end;
+
+         103: begin
+            filename := FCurrentOperator.AdditionalVoiceFile[3];
+            i := 14;
+         end;
+      end;
    end;
 
    // ファイル名が空は何もしない
@@ -109,9 +143,13 @@ begin
       Exit;
    end;
 
+   // 前回Soundと変わったか
+   if FWaveSound[i].FileName <> filename then begin
+      FWaveSound[i].Close();
+   end;
+
    if FWaveSound[i].IsLoaded = False then begin
       FWaveSound[i].Open(filename, dmZLogGlobal.Settings.FSoundDevice);
-//      FWaveSound[i].OnDone := FOnNotifyFinished;
    end;
    FWaveSound[i].Stop();
 
@@ -138,14 +176,30 @@ begin
    VoiceControl(False);
 end;
 
-procedure TVoiceForm.CQLoopVoice;
+// no は 1,2,..12,101,102,103
+procedure TVoiceForm.CQLoopVoice(no: Integer);
 var
    filename: string;
    Interval: integer;
 begin
+   filename := '';
    StopVoice;
 
-   filename := dmZLogGlobal.Settings.FSoundFiles[1];
+   if FCurrentOperator = nil then begin
+      case no of
+         101: filename := dmZLogGlobal.Settings.FSoundFiles[1];
+         102: filename := dmZLogGlobal.Settings.FAdditionalSoundFiles[2];
+         103: filename := dmZLogGlobal.Settings.FAdditionalSoundFiles[3];
+      end;
+   end
+   else begin
+      case no of
+         101: filename := FCurrentOperator.VoiceFile[1];
+         102: filename := FCurrentOperator.AdditionalVoiceFile[2];
+         103: filename := FCurrentOperator.AdditionalVoiceFile[3];
+      end;
+   end;
+
    Interval := Trunc(1000 * dmZLogGlobal.Settings.CW._cqrepeat);
    SetLoopInterval(Interval);
 
@@ -154,6 +208,11 @@ begin
    end;
    if FileExists(filename) = False then begin
       Exit;
+   end;
+
+   // 前回Soundと変わったか
+   if FWaveSound[1].FileName <> filename then begin
+      FWaveSound[1].Close();
    end;
 
    if FWaveSound[1].IsLoaded = False then begin

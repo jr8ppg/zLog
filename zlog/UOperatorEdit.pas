@@ -58,16 +58,26 @@ type
     editAge: TEdit;
     Label4: TLabel;
     OpenDialog1: TOpenDialog;
+    GroupBox3: TGroupBox;
+    Label5: TLabel;
+    Label6: TLabel;
+    editCQMessage2: TEdit;
+    editCQMessage3: TEdit;
+    buttonCQMessage2Ref: TButton;
+    buttonCQMessage3Ref: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonVoiceRefClick(Sender: TObject);
     procedure editPowerExit(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure buttonCQMessageRefClick(Sender: TObject);
   private
     { Private êÈåæ }
     FVoiceFileEdit: array[1..maxmessage] of TEdit;
     FVoiceRefButton: array[1..maxmessage] of TButton;
+    FAdditionalVoiceFileEdit: array[2..3] of TEdit;
+    FAdditionalVoiceRefButton: array[2..3] of TButton;
   public
     { Public êÈåæ }
     procedure GetObject(obj: TOperatorInfo);
@@ -105,6 +115,19 @@ begin
    FVoiceFileEdit[n].Text := OpenDialog1.FileName;
 end;
 
+procedure TformOperatorEdit.buttonCQMessageRefClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+   OpenDialog1.InitialDir := dmZLogGlobal.Settings._soundpath;
+   if OpenDialog1.Execute(Self.Handle) = False then begin
+      Exit;
+   end;
+
+   FAdditionalVoiceFileEdit[n].Text := OpenDialog1.FileName;
+end;
+
 procedure TformOperatorEdit.editPowerExit(Sender: TObject);
 begin
    if editPower.Text <> '' then begin
@@ -132,6 +155,8 @@ begin
    FVoiceFileEdit[10] := editVoiceFile10;
    FVoiceFileEdit[11] := editVoiceFile11;
    FVoiceFileEdit[12] := editVoiceFile12;
+   FAdditionalVoiceFileEdit[2] := editCQMessage2;
+   FAdditionalVoiceFileEdit[3] := editCQMessage3;
 
    FVoiceRefButton[1] := buttonVoiceRef01;
    FVoiceRefButton[2] := buttonVoiceRef02;
@@ -145,10 +170,14 @@ begin
    FVoiceRefButton[10] := buttonVoiceRef10;
    FVoiceRefButton[11] := buttonVoiceRef11;
    FVoiceRefButton[12] := buttonVoiceRef12;
+   FAdditionalVoiceRefButton[2] := buttonCQMessage2Ref;
+   FAdditionalVoiceRefButton[3] := buttonCQMessage3Ref;
 
    for i := 1 to High(FVoiceFileEdit) do begin
-      FVoiceFIleEdit[i].Text := '';
+      FVoiceFileEdit[i].Text := '';
    end;
+   FAdditionalVoiceFileEdit[2].Text := '';
+   FAdditionalVoiceFileEdit[3].Text := '';
 end;
 
 procedure TformOperatorEdit.FormDestroy(Sender: TObject);
@@ -176,6 +205,8 @@ begin
    for i := 1 to maxmessage do begin
       obj.VoiceFile[i] := FVoiceFileEdit[i].Text;
    end;
+   obj.AdditionalVoiceFile[2] := FAdditionalVoiceFileEdit[2].Text;
+   obj.AdditionalVoiceFile[3] := FAdditionalVoiceFileEdit[3].Text;
 end;
 
 procedure TformOperatorEdit.SetObject(obj: TOperatorInfo);
@@ -188,6 +219,8 @@ begin
    for i := 1 to maxmessage do begin
       FVoiceFileEdit[i].Text := obj.VoiceFile[i];
    end;
+   FAdditionalVoiceFileEdit[2].Text := obj.AdditionalVoiceFile[2];
+   FAdditionalVoiceFileEdit[3].Text := obj.AdditionalVoiceFile[3];
 
    editCallsign.ReadOnly := True;
    editCallsign.Color := clBtnFace;

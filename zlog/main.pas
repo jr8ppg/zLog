@@ -6551,14 +6551,14 @@ procedure TMainForm.VoiceCQ3Click(Sender: TObject);
 begin
    SetCQ(True);
    FVoiceForm.CtrlZCQLoopVoice := True;
-   FVoiceForm.CQLoopVoice();
+   FVoiceForm.CQLoopVoice(FCurrentCQMessageNo);
 end;
 
 procedure TMainForm.VoiceCQ2Click(Sender: TObject);
 begin
    SetCQ(True);
    FVoiceForm.CtrlZCQLoopVoice := False;
-   FVoiceForm.CQLoopVoice();
+   FVoiceForm.CQLoopVoice(FCurrentCQMessageNo);
 end;
 
 procedure TMainForm.mPXListWPXClick(Sender: TObject);
@@ -7858,17 +7858,17 @@ begin
       end;
 
       101: begin
-         FVoiceForm.SendVoice(1);
+         FVoiceForm.SendVoice(FCurrentCQMessageNo);
          SetCQ(True);
       end;
 
       102: begin
-         FVoiceForm.SendVoice(13);
+         FVoiceForm.SendVoice(102);
          SetCQ(True);
       end;
 
       103: begin
-         FVoiceForm.SendVoice(14);
+         FVoiceForm.SendVoice(103);
          SetCQ(True);
       end;
    end;

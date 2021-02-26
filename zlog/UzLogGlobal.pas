@@ -182,6 +182,8 @@ type
     // Voice Memory
     FSoundFiles: array[1..maxmessage] of string;
     FSoundComments: array[1..maxmessage] of string;
+    FAdditionalSoundFiles: array[2..3] of string;
+    FAdditionalSoundComments: array[2..3] of string;
     FSoundDevice: Integer;
 
     // Select User Defined Contest
@@ -975,6 +977,23 @@ begin
             end;
          end;
       end;
+      for i := 2 to 3 do begin
+         s := ini.ReadString('Voice', 'CQ_F#' + IntToStr(i), '');
+         if s = '' then begin
+            Settings.FAdditionalSoundFiles[i] := '';
+            Settings.FAdditionalSoundComments[i] := '';
+         end
+         else begin
+            if FileExists(s) = True then begin
+               Settings.FAdditionalSoundFiles[i] := s;
+               Settings.FAdditionalSoundComments[i] := ini.ReadString('Voice', 'CQ_C#' + IntToStr(i), '');
+            end
+            else begin
+               Settings.FAdditionalSoundFiles[i] := '';
+               Settings.FAdditionalSoundComments[i] := 'file not found';
+            end;
+         end;
+      end;
 
       // output device
       Settings.FSoundDevice := ini.ReadInteger('Voice', 'device', 0);
@@ -1407,6 +1426,10 @@ begin
       for i := 1 to maxmessage do begin
          ini.WriteString('Voice', 'F#' + IntToStr(i), Settings.FSoundFiles[i]);
          ini.WriteString('Voice', 'C#' + IntToStr(i), Settings.FSoundComments[i]);
+      end;
+      for i := 2 to 3 do begin
+         ini.WriteString('Voice', 'CQ_F#' + IntToStr(i), Settings.FAdditionalSoundFiles[i]);
+         ini.WriteString('Voice', 'CQ_C#' + IntToStr(i), Settings.FAdditionalSoundComments[i]);
       end;
 
       // output device

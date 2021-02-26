@@ -3,7 +3,7 @@ object formOperatorEdit: TformOperatorEdit
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Operator'
-  ClientHeight = 414
+  ClientHeight = 495
   ClientWidth = 369
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,12 +20,12 @@ object formOperatorEdit: TformOperatorEdit
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 377
+    Top = 458
     Width = 369
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 2
+    TabOrder = 3
     DesignSize = (
       369
       37)
@@ -155,77 +155,77 @@ object formOperatorEdit: TformOperatorEdit
       Top = 41
       Width = 280
       Height = 21
-      TabOrder = 1
+      TabOrder = 2
     end
     object editVoiceFile03: TEdit
       Left = 40
       Top = 63
       Width = 280
       Height = 21
-      TabOrder = 2
+      TabOrder = 4
     end
     object editVoiceFile04: TEdit
       Left = 40
       Top = 85
       Width = 280
       Height = 21
-      TabOrder = 3
+      TabOrder = 6
     end
     object editVoiceFile05: TEdit
       Left = 40
       Top = 107
       Width = 280
       Height = 21
-      TabOrder = 4
+      TabOrder = 8
     end
     object editVoiceFile06: TEdit
       Left = 40
       Top = 129
       Width = 280
       Height = 21
-      TabOrder = 5
+      TabOrder = 10
     end
     object editVoiceFile07: TEdit
       Left = 40
       Top = 150
       Width = 280
       Height = 21
-      TabOrder = 6
+      TabOrder = 12
     end
     object editVoiceFile08: TEdit
       Left = 40
       Top = 172
       Width = 280
       Height = 21
-      TabOrder = 7
+      TabOrder = 14
     end
     object editVoiceFile09: TEdit
       Left = 40
       Top = 194
       Width = 280
       Height = 21
-      TabOrder = 8
+      TabOrder = 16
     end
     object editVoiceFile10: TEdit
       Left = 40
       Top = 216
       Width = 280
       Height = 21
-      TabOrder = 9
+      TabOrder = 18
     end
     object editVoiceFile11: TEdit
       Left = 40
       Top = 238
       Width = 280
       Height = 21
-      TabOrder = 10
+      TabOrder = 20
     end
     object editVoiceFile12: TEdit
       Left = 40
       Top = 260
       Width = 280
       Height = 21
-      TabOrder = 11
+      TabOrder = 22
     end
     object buttonVoiceRef01: TButton
       Tag = 1
@@ -234,7 +234,7 @@ object formOperatorEdit: TformOperatorEdit
       Width = 21
       Height = 21
       Caption = '...'
-      TabOrder = 12
+      TabOrder = 1
       OnClick = buttonVoiceRefClick
     end
     object buttonVoiceRef02: TButton
@@ -244,7 +244,7 @@ object formOperatorEdit: TformOperatorEdit
       Width = 21
       Height = 21
       Caption = '...'
-      TabOrder = 13
+      TabOrder = 3
       OnClick = buttonVoiceRefClick
     end
     object buttonVoiceRef03: TButton
@@ -254,7 +254,7 @@ object formOperatorEdit: TformOperatorEdit
       Width = 21
       Height = 21
       Caption = '...'
-      TabOrder = 14
+      TabOrder = 5
       OnClick = buttonVoiceRefClick
     end
     object buttonVoiceRef04: TButton
@@ -264,7 +264,7 @@ object formOperatorEdit: TformOperatorEdit
       Width = 21
       Height = 21
       Caption = '...'
-      TabOrder = 15
+      TabOrder = 7
       OnClick = buttonVoiceRefClick
     end
     object buttonVoiceRef05: TButton
@@ -274,7 +274,7 @@ object formOperatorEdit: TformOperatorEdit
       Width = 21
       Height = 21
       Caption = '...'
-      TabOrder = 16
+      TabOrder = 9
       OnClick = buttonVoiceRefClick
     end
     object buttonVoiceRef06: TButton
@@ -284,7 +284,7 @@ object formOperatorEdit: TformOperatorEdit
       Width = 21
       Height = 21
       Caption = '...'
-      TabOrder = 17
+      TabOrder = 11
       OnClick = buttonVoiceRefClick
     end
     object buttonVoiceRef07: TButton
@@ -294,7 +294,7 @@ object formOperatorEdit: TformOperatorEdit
       Width = 21
       Height = 21
       Caption = '...'
-      TabOrder = 18
+      TabOrder = 13
       OnClick = buttonVoiceRefClick
     end
     object buttonVoiceRef08: TButton
@@ -304,7 +304,7 @@ object formOperatorEdit: TformOperatorEdit
       Width = 21
       Height = 21
       Caption = '...'
-      TabOrder = 19
+      TabOrder = 15
       OnClick = buttonVoiceRefClick
     end
     object buttonVoiceRef09: TButton
@@ -314,7 +314,7 @@ object formOperatorEdit: TformOperatorEdit
       Width = 21
       Height = 21
       Caption = '...'
-      TabOrder = 20
+      TabOrder = 17
       OnClick = buttonVoiceRefClick
     end
     object buttonVoiceRef10: TButton
@@ -324,7 +324,7 @@ object formOperatorEdit: TformOperatorEdit
       Width = 21
       Height = 21
       Caption = '...'
-      TabOrder = 21
+      TabOrder = 19
       OnClick = buttonVoiceRefClick
     end
     object buttonVoiceRef11: TButton
@@ -334,7 +334,7 @@ object formOperatorEdit: TformOperatorEdit
       Width = 21
       Height = 21
       Caption = '...'
-      TabOrder = 22
+      TabOrder = 21
       OnClick = buttonVoiceRefClick
     end
     object buttonVoiceRef12: TButton
@@ -412,13 +412,69 @@ object formOperatorEdit: TformOperatorEdit
       TabOrder = 2
     end
   end
+  object GroupBox3: TGroupBox
+    Left = 4
+    Top = 378
+    Width = 357
+    Height = 71
+    Caption = 'Additional CQ Messages'
+    TabOrder = 2
+    object Label5: TLabel
+      Left = 8
+      Top = 22
+      Width = 21
+      Height = 13
+      Caption = 'CQ2'
+    end
+    object Label6: TLabel
+      Left = 8
+      Top = 44
+      Width = 21
+      Height = 13
+      Caption = 'CQ3'
+    end
+    object editCQMessage2: TEdit
+      Left = 40
+      Top = 19
+      Width = 280
+      Height = 21
+      TabOrder = 0
+    end
+    object editCQMessage3: TEdit
+      Left = 40
+      Top = 41
+      Width = 280
+      Height = 21
+      TabOrder = 2
+    end
+    object buttonCQMessage2Ref: TButton
+      Tag = 2
+      Left = 323
+      Top = 19
+      Width = 21
+      Height = 21
+      Caption = '...'
+      TabOrder = 1
+      OnClick = buttonCQMessageRefClick
+    end
+    object buttonCQMessage3Ref: TButton
+      Tag = 3
+      Left = 323
+      Top = 41
+      Width = 21
+      Height = 21
+      Caption = '...'
+      TabOrder = 3
+      OnClick = buttonCQMessageRefClick
+    end
+  end
   object OpenDialog1: TOpenDialog
     DefaultExt = 'WAV'
     Filter = 'Wave Files|*.wav|MP3 Files|*.mp|All Files|*.*'
     FilterIndex = 0
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofNoTestFileCreate, ofEnableSizing]
     Title = 'Select a voice file'
-    Left = 296
-    Top = 377
+    Left = 304
+    Top = 457
   end
 end

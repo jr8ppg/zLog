@@ -14,8 +14,11 @@ type
     FPower: string;
     FAge: string;
     FVoiceFiles: array[1..maxmessage] of string;
+    FAdditionalVoiceFiles: array[2..3] of string;
     procedure SetVoiceFile(Index: Integer; S: string);
     function GetVoiceFile(Index: Integer): string;
+    procedure SetAdditionalVoiceFile(Index: Integer; S: string);
+    function GetAdditionalVoiceFile(Index: Integer): string;
     procedure SetPower(S: string);
   public
     constructor Create();
@@ -24,6 +27,7 @@ type
     property Power: string read FPower write SetPower;
     property Age: string read FAge write FAge;
     property VoiceFile[Index: Integer]: string read GetVoiceFile write SetVoiceFile;
+    property AdditionalVoiceFile[Index: Integer]: string read GetAdditionalVoiceFile write SetAdditionalVoiceFile;
   end;
 
   TOperatorInfoList = class(TObjectList<TOperatorInfo>)
@@ -40,11 +44,19 @@ type
 implementation
 
 constructor TOperatorInfo.Create();
+var
+   i: Integer;
 begin
    Inherited;
    FCallsign := '';
    FPower := '';
    FAge := '';
+   for i := Low(FVoiceFiles) to High(FVoiceFiles) do begin
+      FVoiceFiles[i] := '';
+   end;
+   for i := Low(FAdditionalVoiceFiles) to High(FAdditionalVoiceFiles) do begin
+      FAdditionalVoiceFiles[i] := '';
+   end;
 end;
 
 destructor TOperatorInfo.Destroy();
@@ -60,6 +72,16 @@ end;
 procedure TOperatorInfo.SetVoiceFile(Index: Integer; S: string);
 begin
    FVoiceFiles[Index] := S;
+end;
+
+function TOperatorInfo.GetAdditionalVoiceFile(Index: Integer): string;
+begin
+   Result := FAdditionalVoiceFiles[Index];
+end;
+
+procedure TOperatorInfo.SetAdditionalVoiceFile(Index: Integer; S: string);
+begin
+   FAdditionalVoiceFiles[Index] := S;
 end;
 
 procedure TOperatorInfo.SetPower(S: string);
@@ -124,6 +146,9 @@ begin
          for j := 1 to maxmessage do begin
             ini.WriteString(section, 'VoiceFile#' + IntToStr(j), obj.VoiceFile[j]);
          end;
+         for j := 2 to 3 do begin
+            ini.WriteString(section, 'AdditionalVoiceFile#' + IntToStr(j), obj.AdditionalVoiceFile[j]);
+         end;
       end;
    finally
       ini.Free();
@@ -171,6 +196,16 @@ begin
                end;
             end;
             obj.VoiceFile[j] := strVoiceFile;
+         end;
+
+         for j := 2 to 3 do begin
+            strVoiceFile := ini.ReadString(section, 'AdditionalVoiceFile#' + IntToStr(j), '');
+            if strVoiceFile <> '' then begin
+               if FileExists(strVoiceFile) = False then begin
+                  strVoiceFile := '';
+               end;
+            end;
+            obj.AdditionalVoiceFile[j] := strVoiceFile;
          end;
 
          Add(obj);

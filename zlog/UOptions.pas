@@ -400,6 +400,14 @@ type
     checkAntiZeroinRitClear: TCheckBox;
     checkAntiZeroinXitOn1: TCheckBox;
     checkAntiZeroinXitOn2: TCheckBox;
+    GroupBox19: TGroupBox;
+    Label36: TLabel;
+    Label37: TLabel;
+    Label82: TLabel;
+    vEdit14: TEdit;
+    vEdit13: TEdit;
+    vButton13: TButton;
+    vButton14: TButton;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -441,10 +449,12 @@ type
     procedure buttonPlayVoiceClick(Sender: TObject);
     procedure buttonStopVoiceClick(Sender: TObject);
     procedure OpListBoxDblClick(Sender: TObject);
+    procedure vAdditionalButtonClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
     FTempVoiceFiles : array[1..maxmessage] of string;
+    FTempAdditionalVoiceFiles : array[2..3] of string;
     TempCurrentBank : integer;
     TempCWStrBank : array[1..maxbank,1..maxmessage] of string; // used temporarily while options window is open
 
@@ -469,6 +479,8 @@ type
     FVoiceEdit: array[1..maxmessage] of TEdit;
     FVoiceButton: array[1..maxmessage] of TButton;
     FVoiceSound: TWaveSound;
+    FAdditionalVoiceEdit: array[2..3] of TEdit;
+    FAdditionalVoiceButton: array[2..3] of TButton;
 
     procedure RenewCWStrBankDisp();
     procedure InitRigNames();
@@ -816,6 +828,10 @@ begin
          Settings.FSoundFiles[i] := FTempVoiceFiles[i];
          Settings.FSoundComments[i] := FVoiceEdit[i].Text;
       end;
+      for i := 2 to 3 do begin
+         Settings.FAdditionalSoundFiles[i] := FTempAdditionalVoiceFiles[i];
+         Settings.FAdditionalSoundComments[i] := FAdditionalVoiceEdit[i].Text;
+      end;
       Settings.FSoundDevice := comboVoiceDevice.ItemIndex;
    end;
 end;
@@ -1149,6 +1165,16 @@ begin
          end;
          FVoiceEdit[i].Text := Settings.FSoundComments[i];
       end;
+      for i := 2 to 3 do begin
+         FTempAdditionalVoiceFiles[i] := Settings.FAdditionalSoundFiles[i];
+         if FTempAdditionalVoiceFiles[i] = '' then begin
+            FAdditionalVoiceButton[i].Caption := 'select';
+         end
+         else begin
+            FAdditionalVoiceButton[i].Caption := ExtractFileName(FTempAdditionalVoiceFiles[i]);
+         end;
+         FAdditionalVoiceEdit[i].Text := Settings.FAdditionalSoundComments[i];
+      end;
       comboVoiceDevice.ItemIndex := Settings.FSoundDevice;
    end;
 
@@ -1421,6 +1447,15 @@ begin
    OpenDialog.InitialDir := dmZLogGlobal.Settings._soundpath;
    if OpenDialog.Execute then begin
       FTempVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
+      TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
+   end;
+end;
+
+procedure TformOptions.vAdditionalButtonClick(Sender: TObject);
+begin
+   OpenDialog.InitialDir := dmZLogGlobal.Settings._soundpath;
+   if OpenDialog.Execute then begin
+      FTempAdditionalVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
    end;
 end;
@@ -1835,6 +1870,11 @@ begin
    FVoiceButton[10] := vButton10;
    FVoiceButton[11] := vButton11;
    FVoiceButton[12] := vButton12;
+   FAdditionalVoiceEdit[2] := vEdit13;
+   FAdditionalVoiceEdit[3] := vEdit14;
+   FAdditionalVoiceButton[2] := vButton13;
+   FAdditionalVoiceButton[3] := vButton14;
+
    FVoiceSound := TWaveSound.Create();
 
    L := TWaveSound.DeviceList();
@@ -1855,8 +1895,16 @@ begin
       for i := 1 to High(FVoiceEdit) do begin
          if (FVoiceEdit[i].Focused = True) or (FVoiceButton[i].Focused = True) then begin
             if FileExists(FTempVoiceFiles[i]) = True then begin
-               n := i;
-               FVoiceSound.Open(FTempVoiceFiles[n], comboVoiceDevice.ItemIndex);
+               FVoiceSound.Open(FTempVoiceFiles[i], comboVoiceDevice.ItemIndex);
+               FVoiceSound.Play();
+               Exit;
+            end;
+         end;
+      end;
+      for i := 2 to 3 do begin
+         if (FAdditionalVoiceEdit[i].Focused = True) or (FAdditionalVoiceButton[i].Focused = True) then begin
+            if FileExists(FTempAdditionalVoiceFiles[i]) = True then begin
+               FVoiceSound.Open(FTempAdditionalVoiceFiles[i], comboVoiceDevice.ItemIndex);
                FVoiceSound.Play();
                Exit;
             end;

@@ -54,6 +54,7 @@ type
     FOnClose: TNotifyEvent;
     FLoaded: Boolean;
     FPlaying: Boolean;
+    FFileName: string;
     procedure ReadWaveFile(strFileName: string; lpwf: PWAVEFORMATEX; var lpData: LPBYTE; var dwDataSize: DWORD);
     function GetDecodeSize(lpMP3Data: LPBYTE; dwMP3Size: DWORD; lpwf: PWAVEFORMATEX): DWORD;
     procedure DecodeToWave(lpwfSrc: PWAVEFORMATEX; lpSrcData: LPBYTE; dwSrcSize:DWORD; lpwfDest: PWAVEFORMATEX; var lpDestData: LPBYTE; var dwDestSize: DWORD);
@@ -74,6 +75,7 @@ type
     property IsLoaded: Boolean read FLoaded;
     property Playing: Boolean read FPlaying write FPlaying;
     property HWO: HWAVEOUT read m_hwo;
+    property FileName: string read FFileName;
     property OnOpen: TNotifyEvent read FOnOpen write FOnOpen;
     property OnDone: TNotifyEvent read FOnDone write FOnDone;
     property OnClose: TNotifyEvent read FOnClose write FOnClose;
@@ -128,6 +130,7 @@ begin
    Inherited;
    FPlaying := False;
    FLoaded := False;
+   FFileName := '';
    FOnOpen := nil;
    FOnDone := nil;
    FOnClose := nil;
@@ -544,6 +547,7 @@ end;
 procedure TWaveSound.Close();
 begin
    FLoaded := False;
+   FFileName := '';
    if m_hwo = 0 then begin
       Exit;
    end;
