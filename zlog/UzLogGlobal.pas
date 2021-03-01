@@ -686,7 +686,7 @@ begin
       Settings.CW._cqrepeat := ini.ReadFloat('CW', 'CQRepeat', 2.0);
 
       // Use CQ Random Repeat
-      Settings.CW._cq_random_repeat := ini.ReadBool('CW', 'CQRandomRepeat', True);
+      Settings.CW._cq_random_repeat := ini.ReadBool('CW', 'CQRandomRepeat', False);
 
       // Send NR? automatically
       Settings.CW._send_nr_auto  := ini.ReadBool('CW', 'send_nr_auto', True);
