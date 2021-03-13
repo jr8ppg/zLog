@@ -1116,4 +1116,8 @@ initialization
    MyCountry := 'JA';
    MyZone := '25';
 
+finalization
+   CountryList.Free();
+   PrefixList.Free();
+
 end.
