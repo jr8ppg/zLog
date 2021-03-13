@@ -135,7 +135,7 @@ begin
       i := 0;
    end
    else begin
-      i := CityList.List.Count - 1;
+      i := CityList.List.Count;
    end;
 
    if _DXTEST and (NoCTYMulti <> '*') then begin
@@ -357,7 +357,7 @@ begin
    if _DXTEST then begin
       if LocalCTY <> '' then begin
          i := aQSO.Power2;
-         if i < CountryList.Count then
+         if (i > -1) and (i < CountryList.Count) then
             if pos(',' + TCountry(CountryList.List[i]).Country + ',', ',' + LocalCTY + ',') > 0 then begin
                Result := True;
                exit;
@@ -366,7 +366,7 @@ begin
 
       if LocalCONT <> '' then begin
          i := aQSO.Power2;
-         if i < CountryList.Count then
+         if (i > -1) and (i < CountryList.Count) then
             if pos(',' + TCountry(CountryList.List[i]).Continent + ',', ',' + LocalCONT + ',') > 0 then begin
                Result := True;
                exit;
@@ -502,12 +502,14 @@ procedure TGeneralMulti2.GridSetting(ARow, Acol: Integer;
 var
    B, B2 : TBand;
    C : TCountry;
+   I: Integer;
 begin
    //inherited;
    B := Main.CurrentQSO.Band;
    if _DXTEST then begin
       if ARow > CityList.List.Count - 1 then begin
-         C := TCountry(CountryList.List[ARow - CityList.List.Count]);
+         I := ARow - CityList.List.Count;
+         C := TCountry(CountryList.List[I]);
          if C.Worked[B] then begin
             FColor := clRed;
          end
