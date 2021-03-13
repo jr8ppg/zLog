@@ -17,6 +17,7 @@ type
     procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
       var Bold, Italic, underline: Boolean);
     procedure FormShow(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     function GetPX(aQSO : TQSO) : string;
@@ -456,6 +457,13 @@ begin
       BandLabelArray[i].AutoSize := True;
       BandLabelArray[i].Caption := '';
    end;
+end;
+
+procedure TGeneralMulti2.FormDestroy(Sender: TObject);
+begin
+   inherited;
+   FreeAndNil(CountryList);
+   FreeAndNil(PrefixList);
 end;
 
 procedure TGeneralMulti2.CheckMulti(aQSO : TQSO);

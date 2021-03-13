@@ -276,9 +276,10 @@ begin
    temp := '';
    temp2 := CountryName;
    temp := FillRight(Country, 6) +
-           FillRight(temp2, 16) +
+           FillRight(temp2, 16) + ' ' +
            FillRight(CQZone, 2) + ' ' + // ver 0.23
-           Continent + '  ';
+           Continent + ' ' +
+           FillRight(ITUZone, 2) + '  ';
 
    for B := b19 to HiBand do begin
       if (MainForm.BandMenu.Items[Ord(B)].Visible = True) and
@@ -926,7 +927,7 @@ begin
    end;
 
    temp := FillRight( { CityNumber } Abbrev, 7) +
-           FillRight(_cityname, 20) + ' ';
+           FillRight(_cityname, 24) + ' ';
 
    for B := b19 to HiBand do begin
       if (MainForm.BandMenu.Items[Ord(B)].Visible = True) and
@@ -1115,9 +1116,5 @@ initialization
    MyContinent := 'AS';
    MyCountry := 'JA';
    MyZone := '25';
-
-finalization
-   CountryList.Free();
-   PrefixList.Free();
 
 end.
