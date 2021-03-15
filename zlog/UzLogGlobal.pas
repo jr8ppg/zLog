@@ -195,6 +195,10 @@ type
 
     // Time to change greetings
     FTimeToChangeGreetings: array[0..2] of Integer;
+
+    // Last Band/Mode
+    FLastBand: Integer;
+    FLastMode: Integer;
   end;
 
 var
@@ -246,6 +250,10 @@ type
     function GetSuperCheck2Columns(): Integer;
     procedure SetSuperCheck2Columns(v: Integer);
     function GetPowerOfBand(band: TBand): TPower;
+    function GetLastBand(): TBand;
+    procedure SetLastBand(b: TBand);
+    function GetLastMode(): TMode;
+    procedure SetLastMode(m: TMode);
 public
     { Public 宣言 }
     FCurrentFileName : string;
@@ -296,6 +304,9 @@ public
     function GetGreetingsCode(): string;
 
     property PowerOfBand[b: TBand]: TPower read GetPowerOfBand;
+
+    property LastBand: TBand read GetLastBand write SetLastBand;
+    property LastMode: TMode read GetLastMode write SetLastMode;
   end;
 
 function Log(): TLog;
@@ -1012,6 +1023,10 @@ begin
       Settings.FTimeToChangeGreetings[0] := ini.ReadInteger('greetings', 'morning', 0);
       Settings.FTimeToChangeGreetings[1] := ini.ReadInteger('greetings', 'afternoon', 12);
       Settings.FTimeToChangeGreetings[2] := ini.ReadInteger('greetings', 'evening', 18);
+
+      // Last Band/Mode
+      Settings.FLastBand := ini.ReadInteger('main', 'last_band', 0);
+      Settings.FLastMode := ini.ReadInteger('main', 'last_mode', 0);
    finally
       ini.Free();
       slParam.Free();
@@ -1444,6 +1459,10 @@ begin
 
       // スコア表示の追加情報(評価用指数)
       ini.WriteInteger('Score', 'ExtraInfo', Settings.FLastScoreExtraInfo);
+
+      // Last Band/Mode
+      ini.WriteInteger('main', 'last_band', Settings.FLastBand);
+      ini.WriteInteger('main', 'last_mode', Settings.FLastMode);
    finally
       ini.Free();
       slParam.Free();
@@ -1724,6 +1743,26 @@ begin
    else begin
       Result := pwrM;
    end;
+end;
+
+function TdmZLogGlobal.GetLastBand(): TBand;
+begin
+   Result := TBand(Settings.FLastBand);
+end;
+
+procedure TdmZLogGlobal.SetLastBand(b: TBand);
+begin
+   Settings.FLastBand := Integer(b);
+end;
+
+function TdmZLogGlobal.GetLastMode(): TMode;
+begin
+   Result := TMode(Settings.FLastMode);
+end;
+
+procedure TdmZLogGlobal.SetLastMode(m: TMode);
+begin
+   Settings.FLastMode := Integer(m);
 end;
 
 procedure TdmZLogGlobal.SetPaddleReverse(boo: boolean);

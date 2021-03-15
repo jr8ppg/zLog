@@ -990,7 +990,7 @@ type
     procedure InitWAE();
     function GetNumOfAvailableBands(): Integer;
     procedure AdjustActiveBands();
-    function GetFirstAvailableBand(): TBand;
+    function GetFirstAvailableBand(defband: TBand): TBand;
     procedure SetWindowCaption();
     procedure RestoreWindowsPos();
 
@@ -5744,6 +5744,10 @@ begin
    if MMTTYRunning then begin
       ExitMMTTY;
    end;
+
+   // Last Band/Mode
+   dmZLogGlobal.LastBand := CurrentQSO.Band;
+   dmZLogGlobal.LastMode := CurrentQSO.Mode;
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -7244,7 +7248,8 @@ begin
       end;
 
       // 低いバンドから使用可能なバンドを探して最初のバンドとする
-      CurrentQSO.Band := GetFirstAvailableBand();
+      CurrentQSO.Band := GetFirstAvailableBand(dmZLogGlobal.LastBand);
+      CurrentQSO.Mode := dmZLogGlobal.LastMode;
 
       CurrentQSO.Serial := SerialArray[CurrentQSO.Band];
       SerialEdit.Text := CurrentQSO.SerialStr;
@@ -7733,10 +7738,16 @@ begin
    end;
 end;
 
-function TMainForm.GetFirstAvailableBand(): TBand;
+function TMainForm.GetFirstAvailableBand(defband: TBand): TBand;
 var
    b: TBand;
 begin
+   if (BandMenu.Items[Ord(defband)].Enabled = True) and
+      (dmZlogGlobal.Settings._activebands[defband] = True) then begin
+      Result := defband;
+      Exit;
+   end;
+
    for b := b19 to HiBand do begin
       if (BandMenu.Items[Ord(b)].Enabled = True) and
          (dmZlogGlobal.Settings._activebands[b] = True) then begin
