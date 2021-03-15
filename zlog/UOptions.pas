@@ -1262,6 +1262,9 @@ var
    obj: TOperatorInfo;
    i: Integer;
 begin
+   if OpListBox.ItemIndex = -1 then begin
+      Exit;
+   end;
    obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
    OpListBox.Items.Delete(OpListBox.ItemIndex);
    i := dmZLogGlobal.OpList.IndexOf(obj);
