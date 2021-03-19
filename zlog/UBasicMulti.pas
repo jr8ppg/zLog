@@ -12,7 +12,11 @@ type
       Shift: TShiftState);
     procedure CreateParams(var Params: TCreateParams); override;
     procedure FormCreate(Sender: TObject);
- private
+  protected
+    FFontSize: Integer;
+    function GetFontSize(): Integer; virtual;
+    procedure SetFontSize(v: Integer); virtual;
+  private
     { Private declarations }
   public
     { Public declarations }
@@ -39,6 +43,7 @@ type
     // function CheckMultiInfo(aQSO : TQSO) : string; virtual; abstract;
     // called from CheckMultiWindow for each band without QSO to the current stn
     // returns nothing when the multi is worked in that band.
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -208,6 +213,7 @@ end;
 procedure TBasicMulti.FormCreate(Sender: TObject);
 begin
    MainForm.mnGridAddNewPX.Visible := False;
+   FFontSize := 9;
 end;
 
 procedure TBasicMulti.SetNumberEditFocusJARL;
@@ -233,6 +239,16 @@ procedure TBasicMulti.SetNumberEditFocus;
 begin
    MainForm.NumberEdit.SetFocus;
    MainForm.NumberEdit.SelectAll;
+end;
+
+function TBasicMulti.GetFontSize(): Integer;
+begin
+   Result := FFontSize;
+end;
+
+procedure TBasicMulti.SetFontSize(v: Integer);
+begin
+   FFontSize := v;
 end;
 
 end.

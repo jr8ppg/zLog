@@ -45,6 +45,8 @@ type
     procedure Button2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cbStayOnTopClick(Sender: TObject);
+  protected
+    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     KenLabels: array[b19..b50, m101..m48] of TLabel;
@@ -52,6 +54,11 @@ type
     function KenToInt(strKenCode: string): TKen;
     procedure DeletePowerCode(var strMulti: string);
     function HasPowerCode(strMulti: string): Boolean;
+    procedure InitKenLabels();
+    procedure InitAllList();
+    procedure UpdateKenLabels();
+    procedure UpdateAllList();
+    procedure SelectBandTab(band: TBand; fInit: Boolean);
   public
     { Public declarations }
     procedure UpdateBand(B : TBand);
@@ -87,45 +94,109 @@ uses
 {$R *.DFM}
 
 procedure TALLJAMulti.FormCreate(Sender: TObject);
+begin
+   InitKenLabels();
+   UpdateKenLabels();
+   InitAllList();
+   UpdateAllList();
+end;
+
+procedure TALLJAMulti.FormShow(Sender: TObject);
+begin
+   inherited;
+   SelectBandTab(Main.CurrentQSO.band, True);
+end;
+
+procedure TALLJAMulti.InitKenLabels();
 var
    band: TBand;
    ken: TKen;
-   x, y: integer;
 begin
    for band := b19 to b50 do begin
       for ken := m101 to m48 do begin
          MultiTable[band, ken] := False;
+         KenLabels[band, ken] := TLabel.Create(Self);
       end;
+   end;
+end;
+
+procedure TALLJAMulti.UpdateKenLabels();
+var
+   band: TBand;
+   ken: TKen;
+   x, y: integer;
+   w, h: Integer;
+begin
+   for band := b19 to b50 do begin
       if NotWARC(band) then begin
          for x := 1 to 5 do begin
             for y := 1 to 16 do begin
                ken := TKen(16 * (x - 1) + y - 1);
                if ken <= m48 then begin
-                  KenLabels[band, ken] := TLabel.Create(Self);
-                  KenLabels[band, ken].Font.Size := 9;
-                  KenLabels[band, ken].ParentFont := True;
-                  KenLabels[band, ken].Parent := PageControl.Pages[OldBandOrd(band)];
+                  KenLabels[band, ken].Font.Name := PageControl.Font.Name;
+                  KenLabels[band, ken].Font.Size := FFontSize;
+                  KenLabels[band, ken].ParentFont := False;
+                  KenLabels[band, ken].Parent := PageControl.Pages[OldBandOrd(band) + 1];
                   KenLabels[band, ken].Font.Color := clBlack;
-                  KenLabels[band, ken].Left := 77 * (x - 1) + 8;
-                  KenLabels[band, ken].Top := 8 + 16 * (y - 1);
                   KenLabels[band, ken].Caption := KenNames[ken];
+
+                  w := KenLabels[band, ken].Canvas.TextWidth('X') * 12;
+                  h := KenLabels[band, ken].Canvas.TextHeight('X') + 4;
+
+                  KenLabels[band, ken].Left := 8 + w * (x - 1);
+                  KenLabels[band, ken].Top := 8 + h * (y - 1);
                end;
             end;
          end;
       end;
    end;
+end;
+
+procedure TALLJAMulti.InitAllList();
+var
+   ken: TKen;
+begin
+   ListBox.Font.Size := FFontSize;
+   ListBox.Canvas.Font.Name := ListBox.Font.Name;
+   ListBox.Canvas.Font.Size := ListBox.Font.Size;
 
    for ken := m101 to m48 do begin
       ListBox.Items.Add(FillRight(KenNames[ken], 14) + '. . . . . . . ');
    end;
 end;
 
-procedure TALLJAMulti.FormShow(Sender: TObject);
+procedure TALLJAMulti.UpdateAllList();
+var
+   w, l: Integer;
 begin
-   inherited;
+   ListBox.Font.Size := FFontSize;
+   ListBox.Canvas.Font.Size := FFontSize;
 
-   if Main.CurrentQSO.band in [b19, b35, b7, b14, b21, b28, b50] then begin
-      PageControl.ActivePage := PageControl.Pages[OldBandOrd(Main.CurrentQSO.band)];
+   w := ListBox.Canvas.TextWidth('X');
+   l := w * 14;
+   RotateLabel1.Left := l;
+   RotateLabel2.Left := RotateLabel1.Left + (w * 2);
+   RotateLabel3.Left := RotateLabel2.Left + (w * 2);
+   RotateLabel4.Left := RotateLabel3.Left + (w * 2);
+   RotateLabel5.Left := RotateLabel4.Left + (w * 2);
+   RotateLabel6.Left := RotateLabel5.Left + (w * 2);
+   RotateLabel7.Left := RotateLabel6.Left + (w * 2);
+end;
+
+procedure TALLJAMulti.SelectBandTab(band: TBand; fInit: Boolean);
+begin
+   if band in [b19, b35, b7, b14, b21, b28, b50] then begin
+      if fInit = True then begin
+         PageControl.ActivePage := PageControl.Pages[OldBandOrd(band) + 1];
+      end
+      else begin
+         if PageControl.ActivePage <> TabALL then begin
+            PageControl.ActivePage := PageControl.Pages[OldBandOrd(band) + 1];
+         end;
+      end;
+   end
+   else begin
+      PageControl.ActivePage := TabALL;
    end;
 end;
 
@@ -149,26 +220,25 @@ var
 begin
    // inherited;
    band := Main.CurrentQSO.band;
-   if not(band in [b19, b35, b7, b14, b21, b28, b50]) then
-      band := b35;
+   SelectBandTab(band, False);
 
+   // BANDƒ^ƒu
    if PageControl.ActivePage <> TabALL then begin
-      PageControl.ActivePage := PageControl.Pages[OldBandOrd(band)];
       UpdateBand(band);
-   end
-   else begin
-      for K := m101 to m48 do begin
-         str := FillRight(KenNames[K], 14);
-         for B := b19 to b50 do begin
-            if NotWARC(B) then begin
-               if MultiTable[B, K] then
-                  str := str + '* '
-               else
-                  str := str + '. ';
-            end;
+   end;
+
+   // ALL
+   for K := m101 to m48 do begin
+      str := FillRight(KenNames[K], 14);
+      for B := b19 to b50 do begin
+         if NotWARC(B) then begin
+            if MultiTable[B, K] then
+               str := str + '* '
+            else
+               str := str + '. ';
          end;
-         ListBox.Items[ord(K)] := str;
       end;
+      ListBox.Items[ord(K)] := str;
    end;
 end;
 
@@ -231,6 +301,8 @@ begin
       else
          Update;
    end;
+
+   MainForm.LastFocus.SetFocus;
 end;
 
 procedure TALLJAMulti.Reset;
@@ -390,6 +462,14 @@ begin
    else begin
       Result := False;
    end;
+end;
+
+procedure TALLJAMulti.SetFontSize(v: Integer);
+begin
+   Inherited;
+   UpdateKenLabels();
+   UpdateAllList();
+   UpdateData();
 end;
 
 end.

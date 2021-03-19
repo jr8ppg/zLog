@@ -21,7 +21,7 @@ object ALLJAMulti: TALLJAMulti
     Top = 0
     Width = 332
     Height = 301
-    ActivePage = Tab19
+    ActivePage = TabALL
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -31,76 +31,6 @@ object ALLJAMulti: TALLJAMulti
     ParentFont = False
     TabOrder = 0
     OnChange = PageControlChange
-    object Tab19: TTabSheet
-      Caption = '1.9MHz'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -13
-      Font.Name = #65325#65331' '#12468#12471#12483#12463
-      Font.Style = []
-      ImageIndex = 7
-      ParentFont = False
-    end
-    object Tab35: TTabSheet
-      Tag = 1
-      Caption = '3.5MHz'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -13
-      Font.Name = #65325#65331' '#12468#12471#12483#12463
-      Font.Style = []
-      ParentFont = False
-    end
-    object Tab7: TTabSheet
-      Tag = 2
-      Caption = '7MHz'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -13
-      Font.Name = #65325#65331' '#12468#12471#12483#12463
-      Font.Style = []
-      ParentFont = False
-    end
-    object Tab14: TTabSheet
-      Tag = 4
-      Caption = '14MHz'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -13
-      Font.Name = #65325#65331' '#12468#12471#12483#12463
-      Font.Style = []
-      ParentFont = False
-    end
-    object Tab21: TTabSheet
-      Tag = 6
-      Caption = '21MHz'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -13
-      Font.Name = #65325#65331' '#12468#12471#12483#12463
-      Font.Style = []
-      ParentFont = False
-    end
-    object Tab28: TTabSheet
-      Tag = 8
-      Caption = '28MHz'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -13
-      Font.Name = #65325#65331' '#12468#12471#12483#12463
-      Font.Style = []
-      ParentFont = False
-    end
-    object Tab50: TTabSheet
-      Tag = 9
-      Caption = '50MHz'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -13
-      Font.Name = #65325#65331' '#12468#12471#12483#12463
-      Font.Style = []
-      ParentFont = False
-    end
     object TabALL: TTabSheet
       Tag = 99
       Caption = 'ALL'
@@ -239,6 +169,76 @@ object ALLJAMulti: TALLJAMulti
         ParentFont = False
         TabOrder = 1
       end
+    end
+    object Tab19: TTabSheet
+      Caption = '1.9MHz'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
+      Font.Style = []
+      ImageIndex = 7
+      ParentFont = False
+    end
+    object Tab35: TTabSheet
+      Tag = 1
+      Caption = '3.5MHz'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
+      Font.Style = []
+      ParentFont = False
+    end
+    object Tab7: TTabSheet
+      Tag = 2
+      Caption = '7MHz'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
+      Font.Style = []
+      ParentFont = False
+    end
+    object Tab14: TTabSheet
+      Tag = 4
+      Caption = '14MHz'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
+      Font.Style = []
+      ParentFont = False
+    end
+    object Tab21: TTabSheet
+      Tag = 6
+      Caption = '21MHz'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
+      Font.Style = []
+      ParentFont = False
+    end
+    object Tab28: TTabSheet
+      Tag = 8
+      Caption = '28MHz'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
+      Font.Style = []
+      ParentFont = False
+    end
+    object Tab50: TTabSheet
+      Tag = 9
+      Caption = '50MHz'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
+      Font.Style = []
+      ParentFont = False
     end
   end
   object Panel1: TPanel

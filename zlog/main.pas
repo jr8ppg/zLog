@@ -4588,6 +4588,7 @@ begin
    FCommForm.FontSize := font_size;
    if MyContest <> nil then begin
       MyContest.ScoreForm.FontSize := font_size;
+      MyContest.MultiForm.FontSize := font_size;
    end;
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
