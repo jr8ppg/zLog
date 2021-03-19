@@ -5,14 +5,14 @@ inherited SixDownMulti: TSixDownMulti
   TextHeight = 13
   inherited Panel1: TPanel
     inherited Edit1: TEdit
-      Left = 200
-      ExplicitLeft = 184
+      ExplicitLeft = 244
     end
   end
   inherited Panel: TPanel
     inherited Label1R9: TRotateLabel
       Left = 7
       Top = 12
+      Visible = False
       ExplicitLeft = 7
       ExplicitTop = 12
     end
