@@ -7288,6 +7288,8 @@ begin
       Grid.ShowLast(Log.TotalQSO);
       EditScreen.RefreshScreen; // added 2,2e
 
+      MyContest.MultiForm.FontSize := dmZlogGlobal.Settings._mainfontsize;
+
       UpdateBand(CurrentQSO.Band);
       UpdateMode(CurrentQSO.mode);
 

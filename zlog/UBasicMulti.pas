@@ -4,6 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Grids, Math,
   UzLogGlobal, UzLogQSO, Menus, UComm, USpotClass;
 
 type
@@ -16,6 +17,9 @@ type
     FFontSize: Integer;
     function GetFontSize(): Integer; virtual;
     procedure SetFontSize(v: Integer); virtual;
+    procedure AdjustGridSize(Grid: TStringGrid);
+    procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
+    procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
   private
     { Private declarations }
   public
@@ -249,6 +253,54 @@ end;
 procedure TBasicMulti.SetFontSize(v: Integer);
 begin
    FFontSize := v;
+end;
+
+procedure TBasicMulti.AdjustGridSize(Grid: TStringGrid);
+begin
+   Grid.ColWidths[0] := Grid.Width;
+end;
+
+procedure TBasicMulti.SetGridFontSize(Grid: TStringGrid; font_size: Integer);
+var
+   i: Integer;
+   h: Integer;
+begin
+   Grid.Font.Size := font_size;
+   Grid.Canvas.Font.size := font_size;
+
+   h := Abs(Grid.Font.Height) + 4;
+
+   Grid.DefaultRowHeight := h;
+
+   for i := 0 to Grid.RowCount - 1 do begin
+      Grid.RowHeights[i] := h;
+   end;
+end;
+
+procedure TBasicMulti.Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
+var
+   strText: string;
+begin
+   strText := Grid.Cells[ACol, ARow];
+
+   with Grid.Canvas do begin
+      Font.Name := 'ÇlÇr ÉSÉVÉbÉN';
+      Brush.Color := Grid.Color;
+      Brush.Style := bsSolid;
+      FillRect(Rect);
+
+      Font.Size := FFontSize;
+
+      if Copy(strText, 1, 1) = '*' then begin
+         strText := Copy(strText, 2);
+         Font.Color := clRed;
+      end
+      else begin
+         Font.Color := clBlack;
+      end;
+
+      TextRect(Rect, strText, [tfLeft,tfVerticalCenter,tfSingleLine]);
+   end;
 end;
 
 end.

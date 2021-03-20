@@ -13,6 +13,7 @@ object ALLJAMulti: TALLJAMulti
   OldCreateOrder = True
   Scaled = False
   OnCreate = FormCreate
+  OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -154,20 +155,28 @@ object ALLJAMulti: TALLJAMulti
           ParentFont = False
         end
       end
-      object ListBox: TListBox
+      object Grid: TStringGrid
         Left = 0
         Top = 25
         Width = 324
         Height = 248
         Align = alClient
+        ColCount = 1
+        DefaultColWidth = 500
+        DefaultDrawing = False
+        FixedCols = 0
+        RowCount = 61
+        FixedRows = 0
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
+        Font.Color = clWindowText
+        Font.Height = -15
         Font.Name = #65325#65331' '#12468#12471#12483#12463
         Font.Style = []
-        ItemHeight = 12
+        Options = []
         ParentFont = False
+        ScrollBars = ssVertical
         TabOrder = 1
+        OnDrawCell = GridDrawCell
       end
     end
     object Tab19: TTabSheet

@@ -5,7 +5,10 @@ interface
 uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls,
-  UzLogConst, UzLogGlobal, UzLogQSO, UBasicMulti, JLLabel;
+  UzLogConst, UzLogGlobal, UzLogQSO, UBasicMulti, JLLabel, Vcl.Grids;
+
+const
+  WM_ZLOG_UPDATEALLLIST = (WM_USER + 100);
 
 type
   TKen = (
@@ -34,19 +37,22 @@ type
     RotateLabel5: TRotateLabel;
     RotateLabel6: TRotateLabel;
     RotateLabel7: TRotateLabel;
-    ListBox: TListBox;
     Panel1: TPanel;
     Button2: TButton;
     cbStayOnTop: TCheckBox;
     Tab19: TTabSheet;
     RotateLabel1: TRotateLabel;
+    Grid: TStringGrid;
     procedure PageControlChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cbStayOnTopClick(Sender: TObject);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+    procedure FormResize(Sender: TObject);
   protected
     procedure SetFontSize(v: Integer); override;
+    procedure OnZLogUpdateAllList( var Message: TMessage ); message WM_ZLOG_UPDATEALLLIST;
   private
     { Private declarations }
     KenLabels: array[b19..b50, m101..m48] of TLabel;
@@ -101,10 +107,17 @@ begin
    UpdateAllList();
 end;
 
+procedure TALLJAMulti.FormResize(Sender: TObject);
+begin
+   inherited;
+   AdjustGridSize(Grid);
+end;
+
 procedure TALLJAMulti.FormShow(Sender: TObject);
 begin
    inherited;
    SelectBandTab(Main.CurrentQSO.band, True);
+   AdjustGridSize(Grid);
 end;
 
 procedure TALLJAMulti.InitKenLabels();
@@ -156,12 +169,9 @@ procedure TALLJAMulti.InitAllList();
 var
    ken: TKen;
 begin
-   ListBox.Font.Size := FFontSize;
-   ListBox.Canvas.Font.Name := ListBox.Font.Name;
-   ListBox.Canvas.Font.Size := ListBox.Font.Size;
-
+   Grid.RowCount := Length(KenNames);
    for ken := m101 to m48 do begin
-      ListBox.Items.Add(FillRight(KenNames[ken], 14) + '. . . . . . . ');
+      Grid.Cells[0, Ord(ken)] := FillRight(KenNames[ken], 14) + '. . . . . . . ';
    end;
 end;
 
@@ -169,11 +179,8 @@ procedure TALLJAMulti.UpdateAllList();
 var
    w, l: Integer;
 begin
-   ListBox.Font.Size := FFontSize;
-   ListBox.Canvas.Font.Size := FFontSize;
-
-   w := ListBox.Canvas.TextWidth('X');
-   l := w * 14;
+   w := Grid.Canvas.TextWidth('X');
+   l := (w * 14) - 2;
    RotateLabel1.Left := l;
    RotateLabel2.Left := RotateLabel1.Left + (w * 2);
    RotateLabel3.Left := RotateLabel2.Left + (w * 2);
@@ -217,6 +224,7 @@ var
    band, B: TBand;
    str: string;
    K: TKen;
+   fWorked: Boolean;
 begin
    // inherited;
    band := Main.CurrentQSO.band;
@@ -229,16 +237,28 @@ begin
 
    // ALL
    for K := m101 to m48 do begin
+      fWorked := False;
       str := FillRight(KenNames[K], 14);
       for B := b19 to b50 do begin
          if NotWARC(B) then begin
-            if MultiTable[B, K] then
-               str := str + '* '
-            else
+            if MultiTable[B, K] then begin
+               str := str + '* ';
+
+               if B = band then begin
+                  fWorked := True;
+               end;
+            end
+            else begin
                str := str + '. ';
+            end;
          end;
       end;
-      ListBox.Items[ord(K)] := str;
+
+      if fWorked = True then begin
+         str := '*' + str;
+      end;
+
+      Grid.Cells[0, Ord(K)] := str;
    end;
 end;
 
@@ -299,7 +319,7 @@ begin
       ord(b19) .. ord(b50):
          UpdateBand(TBand(PageControl.ActivePage.Tag));
       else
-         Update;
+         PostMessage(Handle, WM_ZLOG_UPDATEALLLIST, 0, 0);
    end;
 
    MainForm.LastFocus.SetFocus;
@@ -467,9 +487,22 @@ end;
 procedure TALLJAMulti.SetFontSize(v: Integer);
 begin
    Inherited;
+   SetGridFontSize(Grid, v);
    UpdateKenLabels();
    UpdateAllList();
    UpdateData();
+end;
+
+procedure TALLJAMulti.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   Inherited;
+   Draw_GridCell(Grid, ACol, ARow, Rect);
+end;
+
+procedure TALLJAMulti.OnZLogUpdateAllList( var Message: TMessage );
+begin
+   Application.ProcessMessages();
+   UpdateAllList();
 end;
 
 end.
