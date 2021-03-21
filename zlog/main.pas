@@ -8898,10 +8898,9 @@ end;
 procedure TMainForm.actionCQAbortExecute(Sender: TObject);
 begin
    WriteStatusLine('', False);
-   case CurrentQSO.Mode of
-      mCW: CWStopButtonClick(Self);
-      mSSB, mFM, mAM: VoiceStopButtonClick(Self);
-   end;
+
+   CWStopButtonClick(Self);
+   VoiceStopButtonClick(Self);
 
    // ÇQâÒÇ‚ÇÁÇ»Ç¢ÇÊÇ§Ç…PTT ControlÇ™OFFÇÃèÍçáÇ…PTT OFFÇ∑ÇÈ
    if dmZLogGlobal.Settings._pttenabled = False then begin
