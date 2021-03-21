@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UACAGMulti, StdCtrls, JLLabel, ExtCtrls, checklst, Grids, Menus,
-  UzLogConst, UzLogGlobal, UzLogQSO, Cologrid, UWPXMulti, UMultipliers;
+  UACAGMulti, StdCtrls, JLLabel, ExtCtrls, Grids, Menus,
+  UzLogConst, UzLogGlobal, UzLogQSO, UWPXMulti, UMultipliers;
 
 const  MAXLOCAL = 31;
        PX_WPX    = 1;
@@ -14,41 +14,39 @@ const  MAXLOCAL = 31;
 type
   TGeneralMulti2 = class(TACAGMulti)
     procedure FormCreate(Sender: TObject);
-    procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
-      var Bold, Italic, underline: Boolean);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+  protected
+    BandLabelArray : array[0..BANDLABELMAX] of TRotateLabel;
+    procedure UpdateLabelPos(); override;
   private
     { Private declarations }
     function GetPX(aQSO : TQSO) : string;
   public
-    BandLabelArray : array[0..BANDLABELMAX] of TRotateLabel;
-
-    PXMulti : integer;
-
-    _DXTEST : boolean;
+    { Public declarations }
+    PXMulti : Integer;
+    _DXTEST : Boolean;
+    NoMulti : Boolean;
+    WARC: Boolean;
+    CutTailingAlphabets : Boolean; // JARL/CUTTAILABT
+    LocalString : array[0..MAXLOCAL] of string;
+    MinLocalLen : Integer;
+    _cut, _lcut, _tail, _ltail : Integer;
     NoCTYMulti : string; // use citylist for these countries
     LocalCTY, LocalCONT : string;
-
-    LocalString : array[0..MAXLOCAL] of string;
-    MinLocalLen : integer;
-    _cut, _lcut, _tail, _ltail : integer;
-    UndefMulti : boolean; //
-    CountOnce : boolean; // count multi once regardless of band
-    CutTailingAlphabets : boolean; // JARL/CUTTAILABT
-    AllowUnlistedMulti : boolean; // allows unlisted multi to be logged but not counted as a multi.
-    NoMulti : boolean;
-    WARC: Boolean;
-    function IsLocal(aQSO : TQSO) : boolean;
+    UndefMulti : Boolean; //
+    CountOnce : Boolean; // count multi once regardless of band
+    AllowUnlistedMulti : Boolean; // allows unlisted multi to be logged but not counted as a multi.
+    function IsLocal(aQSO : TQSO) : Boolean;
     procedure LoadDAT(Filename : string);
     procedure LoadCTY(CTYTYPE : string);
     function ExtractMulti(aQSO : TQSO) : string; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
-    function ValidMulti(aQSO : TQSO) : boolean; override;
+    function ValidMulti(aQSO : TQSO) : Boolean; override;
     procedure CheckMulti(aQSO : TQSO); override;
     procedure Reset; override;
     procedure UpdateData; override;
-    { Public declarations }
   end;
 
 implementation
@@ -60,7 +58,7 @@ uses Main, UGeneralScore, UzLogExtension;
 function TGeneralMulti2.GetPX(aQSO : TQSO) : string;
 var
    s: string;
-   i, slash : integer;
+   i, slash : Integer;
 begin
    Result := '';
    s := aQSO.Callsign;
@@ -93,10 +91,12 @@ end;
 
 procedure TGeneralMulti2.UpdateData;
 var
-   i, j : integer;
-   C : TCity;
-   str : string;
-   B : TBand;
+   i, j : Integer;
+   CTY: TCity;
+   CNT: TCountry;
+   B: TBand;
+   B2: TBand;
+   R: Integer;
 begin
    i := 0;
    for B := b19 to Hiband do begin
@@ -126,22 +126,50 @@ begin
       end;
    end;
 
+   // B=現在バンド
+   B := Main.CurrentQSO.Band;
+
+   // CityListをGridにセット
    for i := 0 to CityList.List.Count - 1 do begin
-      C := TCity(CityList.List[i]);
-      str := C.SummaryGeneral;
-      Grid.Cells[0, i] := str;
+      CTY := TCity(CityList.List[i]);
+      if CTY.Worked[B] then begin
+         Grid.Cells[0, i] := '*' + CTY.SummaryGeneral;
+      end
+      else begin
+         Grid.Cells[0, i] := CTY.SummaryGeneral;
+
+         if CountOnce then begin
+            for B2 := b19 to HiBand do begin
+               if CTY.Worked[B2] then begin
+                  Grid.Cells[0, i] := '*' + CTY.SummaryGeneral;
+                  Break;
+               end;
+            end;
+         end;
+      end;
    end;
 
-   if CityList.List.Count = 0 then begin
-      i := 0;
-   end
-   else begin
-      i := CityList.List.Count;
-   end;
-
+   // CountryListをGridにセット
    if _DXTEST and (NoCTYMulti <> '*') then begin
-      for j := 0 to CountryList.Count - 1 do begin
-         Grid.Cells[0, i + j] := TCountry(CountryList.List[j]).SummaryGeneral;
+      for i := 0 to CountryList.Count - 1 do begin
+         CNT := TCountry(CountryList.List[i]);
+         R := CityList.List.Count + i;
+
+         if CNT.Worked[B] then begin
+            Grid.Cells[0, R] := '*' + CNT.SummaryGeneral;
+         end
+         else begin
+            Grid.Cells[0, R] := CNT.SummaryGeneral;
+
+            if CountOnce then begin
+               for B2 := b19 to HiBand do begin
+                  if CNT.Worked[B2] then begin
+                     Grid.Cells[0, R] := '*' + CNT.SummaryGeneral;
+                     Break;
+                  end;
+               end;
+            end;
+         end;
       end;
    end;
 
@@ -160,12 +188,12 @@ begin
 end;
 
 
-function TGeneralMulti2.ValidMulti(aQSO : TQSO) : boolean;
+function TGeneralMulti2.ValidMulti(aQSO : TQSO) : Boolean;
 var
    str : string;
-   i : integer;
+   i : Integer;
    C : TCity;
-   boo : boolean;
+   boo : Boolean;
 begin
    if UndefMulti or AllowUnlistedMulti or (PXMulti <> 0) or _DXTEST or NoMulti then begin
       Result := True;
@@ -194,7 +222,7 @@ end;
 function TGeneralMulti2.ExtractMulti(aQSO : TQSO) : string;
 var
    str : string;
-   i : integer;
+   i : Integer;
 begin
    str := '';
    if zLogExtractMultiHookHandler(aQSO, str) = True then begin
@@ -258,7 +286,7 @@ procedure TGeneralMulti2.AddNoUpdate(var aQSO : TQSO);
 var
    str, str2 : string;
    B : TBand;
-   i: integer;
+   i: Integer;
    C : TCity;
    Cty : TCountry;
    boo : Boolean;
@@ -349,9 +377,9 @@ aaa:
    end;
 end;
 
-function TGeneralMulti2.IsLocal(aQSO : TQSO) : boolean;
+function TGeneralMulti2.IsLocal(aQSO : TQSO) : Boolean;
 var
-   i : integer;
+   i : Integer;
 begin
    Result := False;
 
@@ -412,7 +440,7 @@ end;
 
 procedure TGeneralMulti2.FormCreate(Sender: TObject);
 var
-   i : integer;
+   i : Integer;
 begin
    //inherited;
    LatestMultiAddition := 0;
@@ -470,7 +498,7 @@ procedure TGeneralMulti2.CheckMulti(aQSO : TQSO);
 var
    str : string;
    strSjis: AnsiString;
-   i : integer;
+   i : Integer;
    C : TCity;
 begin
    if ValidMulti(aQSO) then
@@ -505,62 +533,46 @@ begin
       MainForm.WriteStatusLine('Invalid number', false);
 end;
 
-procedure TGeneralMulti2.GridSetting(ARow, Acol: Integer;
-  var Fcolor: Integer; var Bold, Italic, underline: Boolean);
-var
-   B, B2 : TBand;
-   C : TCountry;
-   I: Integer;
-begin
-   //inherited;
-   B := Main.CurrentQSO.Band;
-   if _DXTEST then begin
-      if ARow > CityList.List.Count - 1 then begin
-         I := ARow - CityList.List.Count;
-         C := TCountry(CountryList.List[I]);
-         if C.Worked[B] then begin
-            FColor := clRed;
-         end
-         else begin
-            if CountOnce then begin
-               for B2 := b19 to HiBand do begin
-                  if C.Worked[B2] then begin
-                     FColor := clRed;
-                     exit;
-                  end;
-               end;
-            end;
-            FColor := clBlack;
-         end;
-         exit;
-      end;
-   end;
-
-   if ARow > CityList.List.Count - 1 then
-      exit;
-
-   if TCity(CityList.List[ARow]).Worked[B] then begin
-      FColor := clRed
-   end
-   else begin
-      FColor := clBlack;
-
-      if CountOnce then begin
-         for B2 := b19 to HiBand do begin
-            if TCity(CityList.List[ARow]).Worked[B2] then begin
-                FColor := clRed;
-                exit;
-            end;
-         end;
-      end;
-   end;
-end;
-
 procedure TGeneralMulti2.FormShow(Sender: TObject);
 begin
    inherited;
-   LatestMultiAddition := 0;
-   UpdateData;
+//   LatestMultiAddition := 0;
+//   UpdateData;
+end;
+
+procedure TGeneralMulti2.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   inherited;
+   Draw_GridCell(Grid, ACol, ARow, Rect);
+end;
+
+procedure TGeneralMulti2.UpdateLabelPos();
+var
+   w, l: Integer;
+   B: TBand;
+   i: Integer;
+   j: Integer;
+begin
+   w := Grid.Canvas.TextWidth('X');
+   l := (w * 33) - 2;
+   i := 0;
+   j := 0;
+
+   for B := b19 to Hiband do begin
+      if (MainForm.BandMenu.Items[Ord(B)].Visible = True) and
+         (dmZlogGlobal.Settings._activebands[B] = True) then begin
+
+         if i = 0 then begin
+            BandLabelArray[i].Left := l;
+         end
+         else begin
+            BandLabelArray[i].Left := BandLabelArray[j].Left + (w * 2);
+         end;
+
+         j := i;
+         Inc(i);
+      end;
+   end;
 end;
 
 end.

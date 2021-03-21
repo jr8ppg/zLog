@@ -3,11 +3,6 @@ inherited SixDownMulti: TSixDownMulti
   Top = 195
   PixelsPerInch = 96
   TextHeight = 13
-  inherited Panel1: TPanel
-    inherited Edit1: TEdit
-      ExplicitLeft = 244
-    end
-  end
   inherited Panel: TPanel
     inherited Label1R9: TRotateLabel
       Left = 7

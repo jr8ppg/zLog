@@ -5,7 +5,10 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   StdCtrls, ExtCtrls, Grids, UzLogConst, UzLogGlobal, UzLogQSO,
-  JLLabel, UBasicMulti, checklst, Cologrid, UMultipliers;
+  JLLabel, UBasicMulti, UMultipliers;
+
+const
+  WM_ZLOG_UPDATELABEL = (WM_USER + 100);
 
 type
   TACAGMulti = class(TBasicMulti)
@@ -27,23 +30,28 @@ type
     Edit1: TEdit;
     Label10g: TRotateLabel;
     Button1: TButton;
-    Grid: TMgrid;
     StayOnTop: TCheckBox;
     checkJumpLatestMulti: TCheckBox;
+    Grid: TStringGrid;
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure GoButtonClick2(Sender: TObject);
     procedure Edit1KeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
-    procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
-      var Bold, Italic, underline: Boolean);
     procedure StayOnTopClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+    procedure FormResize(Sender: TObject);
+  protected
+    CityList : TCityList;
+    LatestMultiAddition : integer; // Grid.TopRow
+    procedure SetFontSize(v: Integer); override;
+    procedure OnZLogUpdateLabel( var Message: TMessage ); message WM_ZLOG_UPDATELABEL;
+    procedure UpdateLabelPos(); virtual;
   private
     { Private declarations }
   public
-    LatestMultiAddition : integer; // Grid.TopRow
-    CityList : TCityList;
+    { Public declarations }
     procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Add(var aQSO : TQSO); override; {NewMulti}
@@ -52,7 +60,6 @@ type
     procedure CheckMulti(aQSO : TQSO); override;
     function ExtractMulti(aQSO : TQSO) : string; override;
     procedure SetNumberEditFocus; override;
-    { Public declarations }
   end;
 
 implementation
@@ -71,10 +78,17 @@ procedure TACAGMulti.UpdateData;
 var
    i: Integer;
    C: TCity;
+   B: TBand;
 begin
+   B := Main.CurrentQSO.Band;
    for i := 0 to CityList.List.Count - 1 do begin
       C := TCity(CityList.List[i]);
-      Grid.Cells[0, i] := C.Summary;
+      if C.Worked[B] then begin
+         Grid.Cells[0, i] := '*' + C.Summary;
+      end
+      else begin
+         Grid.Cells[0, i] := C.Summary;
+      end;
    end;
 
    if checkJumpLatestMulti.Checked = True then begin
@@ -238,6 +252,12 @@ begin
    CityList.Free();
 end;
 
+procedure TACAGMulti.FormResize(Sender: TObject);
+begin
+   inherited;
+   AdjustGridSize(Grid);
+end;
+
 procedure TACAGMulti.Button1Click(Sender: TObject);
 begin
    Close;
@@ -270,27 +290,10 @@ end;
 procedure TACAGMulti.FormShow(Sender: TObject);
 begin
    inherited;
+   AdjustGridSize(Grid);
    LatestMultiAddition := 0;
-   UpdateData;
-end;
-
-procedure TACAGMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer; var Bold, Italic, underline: Boolean);
-var
-   B: TBand;
-begin
-   inherited;
-
-   if ARow > CityList.List.Count - 1 then begin
-      Exit;
-   end;
-
-   B := Main.CurrentQSO.Band;
-   if TCity(CityList.List[ARow]).Worked[B] then begin
-      Fcolor := clRed;
-   end
-   else begin
-      Fcolor := clBlack;
-   end;
+   UpdateData();
+   PostMessage(Handle, WM_ZLOG_UPDATELABEL, 0, 0);
 end;
 
 procedure TACAGMulti.StayOnTopClick(Sender: TObject);
@@ -306,6 +309,47 @@ end;
 procedure TACAGMulti.SetNumberEditFocus;
 begin
    SetNumberEditFocusJARL;
+end;
+
+procedure TACAGMulti.SetFontSize(v: Integer);
+begin
+   Inherited;
+   SetGridFontSize(Grid, v);
+   UpdateLabelPos();
+   UpdateData();
+end;
+
+procedure TACAGMulti.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   inherited;
+   Draw_GridCell(Grid, ACol, ARow, Rect);
+end;
+
+procedure TACAGMulti.UpdateLabelPos();
+var
+   w, l: Integer;
+begin
+   w := Grid.Canvas.TextWidth('X');
+   l := (w * 29) - 2;
+   Label1R9.Left  := l;
+   Label3R5.Left  := Label1R9.Left + (w * 2);
+   Label7.Left    := Label3R5.Left + (w * 2);
+   Label14.Left   := Label7.Left + (w * 2);
+   Label21.Left   := Label14.Left + (w * 2);
+   Label28.Left   := Label21.Left + (w * 2);
+   Label50.Left   := Label28.Left + (w * 2);
+   Label144.Left  := Label50.Left + (w * 2);
+   Label430.Left  := Label144.Left + (w * 2);
+   Label1200.Left := Label430.Left + (w * 2);
+   Label2400.Left := Label1200.Left + (w * 2);
+   Label5600.Left := Label2400.Left + (w * 2);
+   Label10g.Left  := Label5600.Left + (w * 2);
+end;
+
+procedure TACAGMulti.OnZLogUpdateLabel( var Message: TMessage );
+begin
+   Application.ProcessMessages();
+   UpdateLabelPos();
 end;
 
 end.

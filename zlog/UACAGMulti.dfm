@@ -14,6 +14,7 @@ object ACAGMulti: TACAGMulti
   Scaled = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -23,8 +24,8 @@ object ACAGMulti: TACAGMulti
     Width = 360
     Height = 41
     Align = alBottom
+    BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 344
     DesignSize = (
       360
       41)
@@ -37,7 +38,6 @@ object ACAGMulti: TACAGMulti
       Caption = 'Go'
       TabOrder = 0
       OnClick = GoButtonClick2
-      ExplicitLeft = 276
     end
     object Edit1: TEdit
       Left = 244
@@ -47,7 +47,6 @@ object ACAGMulti: TACAGMulti
       Anchors = [akRight, akBottom]
       TabOrder = 1
       OnKeyPress = Edit1KeyPress
-      ExplicitLeft = 228
     end
     object Button1: TButton
       Left = 8
@@ -76,6 +75,7 @@ object ACAGMulti: TACAGMulti
     Width = 360
     Height = 41
     Align = alTop
+    BevelOuter = bvNone
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -84,7 +84,6 @@ object ACAGMulti: TACAGMulti
     ParentFont = False
     TabOrder = 1
     ExplicitTop = -6
-    ExplicitWidth = 344
     object Label1R9: TRotateLabel
       Left = 174
       Top = 20
@@ -291,7 +290,7 @@ object ACAGMulti: TACAGMulti
       TabOrder = 0
     end
   end
-  object Grid: TMgrid
+  object Grid: TStringGrid
     Left = 0
     Top = 41
     Width = 360
@@ -299,32 +298,22 @@ object ACAGMulti: TACAGMulti
     Align = alClient
     ColCount = 1
     DefaultColWidth = 500
-    DefaultRowHeight = 14
+    DefaultDrawing = False
     FixedCols = 0
+    RowCount = 61
     FixedRows = 0
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -15
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Style = []
-    GridLineWidth = 0
-    Options = [goRowSelect, goThumbTracking]
+    Options = []
     ParentFont = False
     ScrollBars = ssVertical
     TabOrder = 2
-    Alignment = taLeftJustify
-    BorderColor = clSilver
-    OddRowColor = clWindow
-    EvenRowColor = clWindow
-    OnSetting = GridSetting
-    ExplicitWidth = 344
-    ColWidths = (
-      500)
-    RowHeights = (
-      14
-      14
-      14
-      14
-      14)
+    OnDrawCell = GridDrawCell
+    ExplicitTop = 25
+    ExplicitWidth = 324
+    ExplicitHeight = 248
   end
 end

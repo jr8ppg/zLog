@@ -4,19 +4,18 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UACAGMulti, StdCtrls, checklst, JLLabel, ExtCtrls, Grids,
-  Cologrid, UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers;
+  UACAGMulti, StdCtrls, JLLabel, ExtCtrls, Grids,
+  UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers;
 
 type
   TFDMulti = class(TACAGMulti)
     procedure FormCreate(Sender: TObject);
-    procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
-      var Bold, Italic, underline: Boolean);
+  protected
+    sband : TBand; // b35 by default. b50 @ 6m&D
   private
     { Private declarations }
   public
     { Public declarations }
-    sband : TBand; // b35 by default. b50 @ 6m&D
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
@@ -165,7 +164,7 @@ end;
 
 procedure TFDMulti.FormCreate(Sender: TObject);
 begin
-   // inherited;
+   LatestMultiAddition := 0;
    sband := b19;
    CityList := TCityList.Create;
    CityList.LoadFromFile('XPO.DAT');
@@ -181,7 +180,6 @@ var
    B: TBand;
    i: Integer;
    C: TCity;
-   str: string;
    _top: Integer;
 const
    kenmax = 62;
@@ -190,8 +188,13 @@ begin
 
    for i := 0 to CityList.List.Count - 1 do begin
       C := TCity(CityList.List[i]);
-      str := C.FDSummary(sband);
-      Grid.Cells[0, i] := str;
+      B := Main.CurrentQSO.Band;
+      if C.Worked[B] then begin
+         Grid.Cells[0, i] := '*' + C.FDSummary(sband);
+      end
+      else begin
+         Grid.Cells[0, i] := C.FDSummary(sband);
+      end;
    end;
 
    _top := LatestMultiAddition;
@@ -202,17 +205,6 @@ begin
       _top := kenmax + 1;
 
    Grid.TopRow := _top;
-end;
-
-procedure TFDMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer; var Bold, Italic, underline: Boolean);
-// var B : TBand;
-begin
-   inherited;
-   { B := Main.CurrentQSO.QSO.Band;
-     if TCity(CityList.List[ARow]).Worked[B] then
-     FColor := clRed
-     else
-     FColor := clBlack; }
 end;
 
 end.
