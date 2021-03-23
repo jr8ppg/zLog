@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UACAGMulti, Grids, Cologrid, StdCtrls, JLLabel, ExtCtrls, UITypes,
+  UACAGMulti, Grids, StdCtrls, JLLabel, ExtCtrls, UITypes,
   UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers, UzLogCW;
 
 type
@@ -26,10 +26,10 @@ type
 
   TIOTAMulti = class(TACAGMulti)
     procedure FormCreate(Sender: TObject);
-    procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
-      var Bold, Italic, underline: Boolean);
     procedure GoButtonClick2(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+  protected
+    procedure UpdateLabelPos(); override;
   private
     { Private declarations }
     IslandList : TIslandList;
@@ -75,7 +75,9 @@ var
    M: TMode;
 begin
    strname := Name;
-   str := FillRight(RefNumber, 6) + FillRight(strname, 31);
+   str := FillRight(RefNumber, 6) +
+          StringReplace(FillRight(strname, 31), '&', '&&', [rfReplaceAll]);
+
    for B := b35 to b28 do begin
       if NotWARC(B) then begin
          for M := mCW to mSSB do begin
@@ -285,13 +287,18 @@ begin
    j := Grid.TopRow;
    Grid.RowCount := 0;
    Grid.RowCount := IslandList.List.Count;
+
    for i := 0 to IslandList.List.Count - 1 do begin
-      for B := b19 to HiBand do
-         for M := mCW to mSSB do
+      for B := b19 to HiBand do begin
+         for M := mCW to mSSB do begin
             TIsland(IslandList.List[i]).Worked[B, M] := False;
+         end;
+      end;
+
       str := TIsland(IslandList.List[i]).Summary;
       Grid.Cells[0, i] := str;
    end;
+
    Grid.TopRow := j;
 end;
 
@@ -299,13 +306,23 @@ procedure TIOTAMulti.UpdateData;
 var
    i: Integer;
    C: TIsland;
-   str: string;
+   B: TBand;
+   M: TMode;
 begin
+   B := Main.CurrentQSO.Band;
+   M := Main.CurrentQSO.Mode;
+
    for i := 0 to IslandList.List.Count - 1 do begin
       C := TIsland(IslandList.List[i]);
-      str := C.Summary;
-      Grid.Cells[0, i] := str;
+
+      if C.Worked[B, M] then begin
+         Grid.Cells[0, i] := '~' + C.Summary;
+      end
+      else begin
+         Grid.Cells[0, i] := C.Summary;
+      end;
    end;
+
    Grid.TopRow := LatestMultiAddition;
 end;
 
@@ -357,20 +374,6 @@ begin
    end;
 end;
 
-procedure TIOTAMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer; var Bold, Italic, underline: boolean);
-var
-   B: TBand;
-   M: TMode;
-begin
-   // inherited;
-   B := Main.CurrentQSO.band;
-   M := Main.CurrentQSO.Mode;
-   if TIsland(IslandList.List[ARow]).Worked[B, M] then
-      Fcolor := clRed
-   else
-      Fcolor := clBlack;
-end;
-
 procedure TIOTAMulti.GoButtonClick2(Sender: TObject);
 var
    temp: string;
@@ -418,6 +421,24 @@ begin
    end;
 
    MainForm.WriteStatusLine('Invalid number', False);
+end;
+
+procedure TIOTAMulti.UpdateLabelPos();
+var
+   w, l: Integer;
+begin
+   w := Grid.Canvas.TextWidth('X');
+   l := (w * 37) - 2;
+   Label1R9.Left  := l;
+   Label3R5.Left  := Label1R9.Left + (w * 2);
+   Label7.Left    := Label3R5.Left + (w * 2);
+   Label14.Left   := Label7.Left + (w * 2);
+   Label21.Left   := Label14.Left + (w * 2);
+   Label28.Left   := Label21.Left + (w * 2);
+   Label50.Left   := Label28.Left + (w * 2);
+   Label144.Left  := Label50.Left + (w * 2);
+   Label430.Left  := Label144.Left + (w * 2);
+   Label1200.Left := Label430.Left + (w * 2);
 end;
 
 end.

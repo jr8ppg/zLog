@@ -4,11 +4,10 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UWWMulti, UMultipliers, StdCtrls, ExtCtrls, JLLabel, Grids, Cologrid,
+  UWWMulti, UMultipliers, StdCtrls, ExtCtrls, JLLabel, Grids,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
-
   TIARUZone = class
     Multi : string;
     Worked : array[b19..b28] of boolean;
@@ -27,14 +26,15 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure GoButtonClick(Sender: TObject);
-    procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
-      var Bold, Italic, underline: Boolean);
     procedure GridTopLeftChanged(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+  protected
+    procedure UpdateLabelPos(); override;
   private
-    ZoneList : TIARUZoneList;
     { Private declarations }
+    ZoneList : TIARUZoneList;
   public
+    { Public declarations }
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Add(var aQSO : TQSO); override;
@@ -44,7 +44,6 @@ type
     procedure RefreshGrid; override;
     function GetInfo(aQSO : TQSO) : string; override;
     procedure CheckMulti(aQSO : TQSO); override;
-    { Public declarations }
   end;
 
 implementation
@@ -404,10 +403,18 @@ end;
 procedure TIARUMulti.UpdateData;
 var
    j: Integer;
+   B: TBand;
 begin
+   B := Main.CurrentQSO.Band;
    Grid.RowCount := ZoneList.List.Count;
-   for j := 0 to ZoneList.List.Count - 1 do
-      Grid.Cells[0, j] { ListBox.Items[j] } := TIARUZone(ZoneList.List[j]).Summary;
+   for j := 0 to ZoneList.List.Count - 1 do begin
+      if TIARUZone(ZoneList.List[j]).Worked[B] = True then begin
+         Grid.Cells[0, j] := '~' + TIARUZone(ZoneList.List[j]).Summary;
+      end
+      else begin
+         Grid.Cells[0, j] := TIARUZone(ZoneList.List[j]).Summary;
+      end;
+   end;
    RenewCluster;
    RenewBandScope;
 end;
@@ -479,7 +486,9 @@ end;
 
 procedure TIARUMulti.FormShow(Sender: TObject);
 begin
-   // inherited;
+   AdjustGridSize(Grid);
+   UpdateData();
+   PostMessage(Handle, WM_ZLOG_UPDATELABEL, 0, 0);
 end;
 
 procedure TIARUMulti.GoButtonClick(Sender: TObject);
@@ -495,18 +504,6 @@ begin
          break;
       end;
    end;
-end;
-
-procedure TIARUMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer; var Bold, Italic, underline: boolean);
-var
-   B: TBand;
-begin
-   // inherited;
-   B := Main.CurrentQSO.Band;
-   if TIARUZone(ZoneList.List[ARow]).Worked[B] then
-      Fcolor := clRed
-   else
-      Fcolor := clBlack;
 end;
 
 procedure TIARUMulti.RefreshGrid;
@@ -531,6 +528,20 @@ begin
    RefreshGrid;
    // RefreshZone;
    AddSpot(aQSO);
+end;
+
+procedure TIARUMulti.UpdateLabelPos();
+var
+   w, l: Integer;
+begin
+   w := Grid.Canvas.TextWidth('X');
+   l := (w * 24) - 2;
+   RotateLabel1.Left := l;
+   RotateLabel2.Left := RotateLabel1.Left + (w * 2);
+   RotateLabel3.Left := RotateLabel2.Left + (w * 2);
+   RotateLabel4.Left := RotateLabel3.Left + (w * 2);
+   RotateLabel5.Left := RotateLabel4.Left + (w * 2);
+   RotateLabel6.Left := RotateLabel5.Left + (w * 2);
 end;
 
 end.

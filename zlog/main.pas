@@ -2413,7 +2413,7 @@ end;
 
 procedure TAllAsianContest.SetPoints(var aQSO: TQSO);
 begin
-   AllAsianScore.CalcPoints(aQSO);
+   TAllAsianScore(ScoreForm).CalcPoints(aQSO);
 end;
 
 procedure TAllAsianContest.SpaceBarProc;

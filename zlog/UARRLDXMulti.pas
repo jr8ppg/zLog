@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UACAGMulti, StdCtrls, checklst, JLLabel, ExtCtrls, Grids,
-  Cologrid, UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers;
+  UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers;
 
 type
   TState = class
@@ -30,8 +30,6 @@ type
 type
   TARRLDXMulti = class(TACAGMulti)
     procedure FormCreate(Sender: TObject);
-    procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
-      var Bold, Italic, underline: Boolean);
     procedure GoButtonClick2(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
@@ -306,23 +304,18 @@ procedure TARRLDXMulti.UpdateData;
 var
    i: integer;
    str: string;
-begin
-   for i := 0 to StateList.List.Count - 1 do begin
-      str := TState(StateList.List[i]).Summary;
-      Grid.Cells[0, i] := str;
-   end;
-end;
-
-procedure TARRLDXMulti.GridSetting(ARow, Acol: integer; var Fcolor: integer; var Bold, Italic, underline: boolean);
-var
    B: TBand;
 begin
-   // inherited;
    B := Main.CurrentQSO.Band;
-   if TState(StateList.List[ARow]).Worked[B] then
-      Fcolor := clRed
-   else
-      Fcolor := clBlack;
+   for i := 0 to StateList.List.Count - 1 do begin
+      str := TState(StateList.List[i]).Summary;
+      if TState(StateList.List[i]).Worked[B] = True then begin
+         Grid.Cells[0, i] := '~' + str;
+      end
+      else begin
+         Grid.Cells[0, i] := str;
+      end;
+   end;
 end;
 
 procedure TARRLDXMulti.GoButtonClick2(Sender: TObject);

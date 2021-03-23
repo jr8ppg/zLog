@@ -280,6 +280,7 @@ end;
 procedure TBasicMulti.Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
 var
    strText: string;
+   S: string;
 begin
    strText := Grid.Cells[ACol, ARow];
 
@@ -291,9 +292,14 @@ begin
 
       Font.Size := FFontSize;
 
-      if Copy(strText, 1, 1) = '*' then begin
+      S := Copy(strText, 1, 1);
+      if S = '~' then begin
          strText := Copy(strText, 2);
          Font.Color := clRed;
+      end
+      else if S = '!' then begin
+         strText := Copy(strText, 2);
+         Font.Color := clGray;
       end
       else begin
          Font.Color := clBlack;

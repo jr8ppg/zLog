@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UIARUScore, Grids, Cologrid, StdCtrls, ExtCtrls, Buttons,
-  UzLogConst, UzLogGlobal, UzLogQSO;
+  UIARUScore, Grids, StdCtrls, ExtCtrls, Buttons,
+  UzLogConst, UzLogGlobal, UzLogQSO, Vcl.Menus;
 
 type
   TAllAsianScore = class(TIARUScore)
@@ -16,9 +16,6 @@ type
     procedure AddNoUpdate(var aQSO : TQSO);  override;
     procedure CalcPoints(var aQSO : TQSO);
   end;
-
-var
-  AllAsianScore: TAllAsianScore;
 
 implementation
 
@@ -54,6 +51,5 @@ begin
 
    inc(Points[B], aQSO.Points);
 end;
-
 
 end.

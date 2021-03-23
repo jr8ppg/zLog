@@ -4,9 +4,11 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicMulti, StdCtrls, JLLabel, ExtCtrls, Grids, Cologrid,
+  UBasicMulti, StdCtrls, JLLabel, ExtCtrls, Grids,
   UzLogConst, UzLogGlobal, UzLogQSO, USpotClass, UComm, UMultipliers, UWWZone;
 
+const
+  WM_ZLOG_UPDATELABEL = (WM_USER + 100);
 
 type
   TWWMulti = class(TBasicMulti)
@@ -23,7 +25,7 @@ type
     RotateLabel6: TRotateLabel;
     SortBy: TRadioGroup;
     StayOnTop: TCheckBox;
-    Grid: TMgrid;
+    Grid: TStringGrid;
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -31,15 +33,17 @@ type
     procedure Edit1KeyPress(Sender: TObject; var Key: Char);
     procedure SortByClick(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
-    procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
-      var Bold, Italic, underline: Boolean);
     procedure GridTopLeftChanged(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
   private
     { Private declarations }
   protected
     FZoneForm: TWWZone;
+    procedure SetFontSize(v: Integer); override;
+    procedure OnZLogUpdateLabel( var Message: TMessage ); message WM_ZLOG_UPDATELABEL;
+    procedure UpdateLabelPos(); virtual;
   public
     { Public declarations }
     MostRecentCty : TCountry;
@@ -342,15 +346,24 @@ end;
 procedure TWWMulti.RefreshGrid;
 var
    i , k : integer;
+   C: TCountry;
+   B: TBand;
 begin
+   B := Main.CurrentQSO.Band;
    for i := Grid.TopRow to Grid.TopRow + Grid.VisibleRowCount - 1 do begin
       if (i > Grid.RowCount - 1) then begin
          exit;
       end
       else begin
          k := GridReverse[i];
+         C := TCountry(CountryList.List[k]);
          if (k >= 0) and (k < CountryList.Count) then begin
-            Grid.Cells[0, i] := TCountry(CountryList.List[k]).Summary
+            if C.Worked[B] = True then begin
+               Grid.Cells[0, i] := '~' + C.Summary;
+            end
+            else begin
+               Grid.Cells[0, i] := C.Summary;
+            end;
          end
          else begin
             Grid.Cells[0, i] := '';
@@ -401,6 +414,13 @@ begin
    end;
 
    AnalyzeMyCountry;
+end;
+
+procedure TWWMulti.FormResize(Sender: TObject);
+begin
+   Inherited;
+   AdjustGridSize(Grid);
+   RefreshGrid;
 end;
 
 procedure TWWMulti.FormDestroy(Sender: TObject);
@@ -503,6 +523,9 @@ end;
 procedure TWWMulti.FormShow(Sender: TObject);
 begin
    Inherited;
+   AdjustGridSize(Grid);
+   UpdateData();
+   PostMessage(Handle, WM_ZLOG_UPDATELABEL, 0, 0);
 
    if Assigned(FZoneForm) then begin
       FZoneForm.Show;
@@ -682,29 +705,23 @@ begin
       FormStyle := fsNormal;
 end;
 
-procedure TWWMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
-  var Bold, Italic, underline: Boolean);
-var
-   B : TBand;
-begin
-   Inherited;
-
-   B := Main.CurrentQSO.Band;
-   if GridReverse[ARow] < 0 then begin
-      exit;
-   end;
-
-   if TCountry(CountryList.List[GridReverse[ARow]]).Worked[B] then begin
-      FColor := clRed;
-   end
-   else begin
-      FColor := clBlack;
-   end;
-end;
-
 procedure TWWMulti.ProcessSpotData(var S : TBaseSpot);
 begin
    ProcessCluster(S);
+end;
+
+procedure TWWMulti.SetFontSize(v: Integer);
+begin
+   Inherited;
+   SetGridFontSize(Grid, v);
+   UpdateLabelPos();
+   UpdateData();
+end;
+
+procedure TWWMulti.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   inherited;
+   Draw_GridCell(Grid, ACol, ARow, Rect);
 end;
 
 procedure TWWMulti.GridTopLeftChanged(Sender: TObject);
@@ -713,10 +730,24 @@ begin
    RefreshGrid;
 end;
 
-procedure TWWMulti.FormResize(Sender: TObject);
+procedure TWWMulti.UpdateLabelPos();
+var
+   w, l: Integer;
 begin
-   Inherited;
-   RefreshGrid;
+   w := Grid.Canvas.TextWidth('X');
+   l := (w * 42) - 2;
+   RotateLabel1.Left := l;
+   RotateLabel2.Left := RotateLabel1.Left + (w * 2);
+   RotateLabel3.Left := RotateLabel2.Left + (w * 2);
+   RotateLabel4.Left := RotateLabel3.Left + (w * 2);
+   RotateLabel5.Left := RotateLabel4.Left + (w * 2);
+   RotateLabel6.Left := RotateLabel5.Left + (w * 2);
+end;
+
+procedure TWWMulti.OnZLogUpdateLabel( var Message: TMessage );
+begin
+   Application.ProcessMessages();
+   UpdateLabelPos();
 end;
 
 end.

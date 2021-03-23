@@ -83,7 +83,6 @@ object ACAGMulti: TACAGMulti
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-    ExplicitTop = -6
     object Label1R9: TRotateLabel
       Left = 174
       Top = 20
@@ -312,8 +311,5 @@ object ACAGMulti: TACAGMulti
     ScrollBars = ssVertical
     TabOrder = 2
     OnDrawCell = GridDrawCell
-    ExplicitTop = 25
-    ExplicitWidth = 324
-    ExplicitHeight = 248
   end
 end

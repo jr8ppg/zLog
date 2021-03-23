@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UARRLWMulti, Grids, Cologrid, StdCtrls, ExtCtrls, JLLabel, UMultipliers,
+  UARRLWMulti, Grids, StdCtrls, ExtCtrls, JLLabel, UMultipliers,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
 type

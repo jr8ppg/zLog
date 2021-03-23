@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Grids, Cologrid, JLLabel,
+  StdCtrls, ExtCtrls, Grids, JLLabel,
   UzLogConst, UzLogGlobal, UzLogQSO, UARRLDXMulti, UWWMulti, UMultipliers;
 
 type
@@ -13,9 +13,9 @@ type
     Label2: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
-      var Bold, Italic, underline: Boolean);
     procedure FormDestroy(Sender: TObject);
+  protected
+    procedure UpdateLabelPos(); override;
   private
     { Private declarations }
   public
@@ -289,38 +289,25 @@ end;
 procedure TARRL10Multi.FormShow(Sender: TObject);
 begin
    // inherited;
+   AdjustGridSize(Grid);
+   UpdateData();
+   PostMessage(Handle, WM_ZLOG_UPDATELABEL, 0, 0);
    RefreshGrid;
-end;
-
-procedure TARRL10Multi.GridSetting(ARow, Acol: Integer; var Fcolor: Integer; var Bold, Italic, underline: Boolean);
-var
-   B: TBand;
-begin
-   if Main.CurrentQSO.Mode = mCW then
-      B := b35
-   else
-      B := b19;
-
-   if ARow < StateList.List.Count then begin
-      if TState(StateList.List[ARow]).Worked[B] then
-         Fcolor := clRed
-      else
-         Fcolor := clBlack;
-   end
-   else begin
-      if pos('N/A', Grid.Cells[Acol, ARow]) > 2 then
-         Fcolor := clGray
-      else if TCountry(CountryList.List[GridReverse[ARow]]).Worked[B] then
-         Fcolor := clRed
-      else
-         Fcolor := clBlack;
-   end;
 end;
 
 procedure TARRL10Multi.RefreshGrid;
 var
    i, k: Integer;
+   B: TBand;
+   S: string;
 begin
+   if Main.CurrentQSO.Mode = mCW then begin
+      B := b35;
+   end
+   else begin
+      B := b19;
+   end;
+
    for i := Grid.TopRow to Grid.TopRow + Grid.VisibleRowCount - 1 do begin
       if (i > Grid.RowCount - 1) then begin
          exit;
@@ -328,13 +315,29 @@ begin
       else begin
          k := GridReverse[i];
          if (i >= 0) and (i < StateList.List.Count) then begin
-            Grid.Cells[0, i] := TState(StateList.List[k]).SummaryARRL10;
+            S := TState(StateList.List[k]).SummaryARRL10;
+            if TState(StateList.List[k]).Worked[B] = True then begin
+               Grid.Cells[0, i] := '~' + S;
+            end
+            else begin
+               Grid.Cells[0, i] := S;
+            end;
          end
          else if (i >= StateList.List.Count) and (i < CountryList.Count + StateList.List.Count) then begin
-            Grid.Cells[0, i] := TCountry(CountryList.List[k]).Summary
+            S := TCountry(CountryList.List[k]).Summary;
+            if pos('N/A', S) > 2 then begin
+               Grid.Cells[0, i] := '!' + S;
+            end
+            else if TCountry(CountryList.List[k]).Worked[B] = True then begin
+               Grid.Cells[0, i] := '~' + S;
+            end
+            else begin
+               Grid.Cells[0, i] := S;
+            end;
          end
-         else
+         else begin
             Grid.Cells[0, i] := '';
+         end;
       end;
    end;
 end;
@@ -355,6 +358,16 @@ begin
    else begin
       Result := C.Country;
    end;
+end;
+
+procedure TARRL10Multi.UpdateLabelPos();
+var
+   w, l: Integer;
+begin
+   w := Grid.Canvas.TextWidth('X');
+   l := (w * 40) - 2;
+   Label1.Left := l;
+   Label2.Left := Label1.Left + (w * 3);
 end;
 
 end.

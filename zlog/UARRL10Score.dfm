@@ -3,32 +3,29 @@ inherited ARRL10Score: TARRL10Score
   Top = 284
   Caption = 'Score'
   PixelsPerInch = 96
-  TextHeight = 13
-  object Grid: TMgrid
-    Left = 5
-    Top = 8
-    Width = 150
-    Height = 100
-    BorderStyle = bsNone
-    ColCount = 2
-    DefaultColWidth = 60
-    DefaultRowHeight = 16
+  TextHeight = 12
+  object Grid: TStringGrid [1]
+    Left = 0
+    Top = 0
+    Width = 281
+    Height = 202
+    Align = alClient
+    ColCount = 6
+    DefaultDrawing = False
     FixedCols = 0
-    RowCount = 6
+    RowCount = 16
     FixedRows = 0
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'MS Sans Serif'
+    Font.Height = -15
+    Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Style = []
-    GridLineWidth = 0
+    Options = [goHorzLine]
     ParentFont = False
+    PopupMenu = popupExtraInfo
     ScrollBars = ssNone
     TabOrder = 1
-    Alignment = taRightJustify
-    BorderColor = clSilver
-    OddRowColor = clBtnFace
-    EvenRowColor = clBtnFace
-    OnSetting = GridSetting
+    OnDrawCell = GridDrawCell
+    ExplicitWidth = 200
   end
 end

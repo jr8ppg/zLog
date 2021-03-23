@@ -190,7 +190,7 @@ begin
       C := TCity(CityList.List[i]);
       B := Main.CurrentQSO.Band;
       if C.Worked[B] then begin
-         Grid.Cells[0, i] := '*' + C.FDSummary(sband);
+         Grid.Cells[0, i] := '~' + C.FDSummary(sband);
       end
       else begin
          Grid.Cells[0, i] := C.FDSummary(sband);

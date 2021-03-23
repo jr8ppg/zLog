@@ -84,7 +84,7 @@ begin
    for i := 0 to CityList.List.Count - 1 do begin
       C := TCity(CityList.List[i]);
       if C.Worked[B] then begin
-         Grid.Cells[0, i] := '*' + C.Summary;
+         Grid.Cells[0, i] := '~' + C.Summary;
       end
       else begin
          Grid.Cells[0, i] := C.Summary;

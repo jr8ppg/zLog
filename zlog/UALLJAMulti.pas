@@ -255,7 +255,7 @@ begin
       end;
 
       if fWorked = True then begin
-         str := '*' + str;
+         str := '~' + str;
       end;
 
       Grid.Cells[0, Ord(K)] := str;

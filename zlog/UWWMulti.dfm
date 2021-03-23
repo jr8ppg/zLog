@@ -2,15 +2,17 @@ inherited WWMulti: TWWMulti
   Left = 153
   Top = 98
   Caption = 'CQ WW Country Multipliers'
+  ClientWidth = 335
   OnDestroy = FormDestroy
   OnResize = FormResize
   OnShow = FormShow
+  ExplicitWidth = 351
   PixelsPerInch = 96
   TextHeight = 13
   object Panel: TPanel
     Left = 0
     Top = 0
-    Width = 314
+    Width = 335
     Height = 41
     Align = alTop
     TabOrder = 0
@@ -123,10 +125,13 @@ inherited WWMulti: TWWMulti
   object Panel1: TPanel
     Left = 0
     Top = 221
-    Width = 314
+    Width = 335
     Height = 41
     Align = alBottom
     TabOrder = 1
+    DesignSize = (
+      335
+      41)
     object Button1: TButton
       Left = 8
       Top = 10
@@ -137,19 +142,21 @@ inherited WWMulti: TWWMulti
       OnClick = Button1Click
     end
     object Button3: TButton
-      Left = 264
+      Left = 268
       Top = 11
       Width = 57
       Height = 21
+      Anchors = [akTop, akRight]
       Caption = 'Go'
       TabOrder = 1
       OnClick = GoButtonClick
     end
     object Edit1: TEdit
-      Left = 224
+      Left = 228
       Top = 11
       Width = 33
       Height = 21
+      Anchors = [akTop, akRight]
       AutoSize = False
       CharCase = ecUpperCase
       ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
@@ -166,40 +173,28 @@ inherited WWMulti: TWWMulti
       OnClick = StayOnTopClick
     end
   end
-  object Grid: TMgrid
+  object Grid: TStringGrid
     Left = 0
     Top = 41
-    Width = 314
+    Width = 335
     Height = 180
     Align = alClient
     ColCount = 1
     DefaultColWidth = 500
-    DefaultRowHeight = 14
+    DefaultDrawing = False
     FixedCols = 0
+    RowCount = 61
     FixedRows = 0
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -15
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Style = []
-    GridLineWidth = 0
-    Options = [goRowSelect, goThumbTracking]
+    Options = []
     ParentFont = False
     ScrollBars = ssVertical
     TabOrder = 2
+    OnDrawCell = GridDrawCell
     OnTopLeftChanged = GridTopLeftChanged
-    Alignment = taLeftJustify
-    BorderColor = clSilver
-    OddRowColor = clWindow
-    EvenRowColor = clWindow
-    OnSetting = GridSetting
-    ColWidths = (
-      500)
-    RowHeights = (
-      14
-      14
-      14
-      14
-      14)
   end
 end

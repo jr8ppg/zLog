@@ -41,6 +41,10 @@ object ALLJAMulti: TALLJAMulti
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel: TPanel
         Left = 0
         Top = 0
@@ -52,8 +56,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel2: TRotateLabel
           Left = 95
           Top = 4
-          Width = 14
-          Height = 15
+          Width = 15
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '3.5'
@@ -67,8 +71,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel3: TRotateLabel
           Left = 107
           Top = 13
-          Width = 14
-          Height = 6
+          Width = 6
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '7'
@@ -82,8 +86,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel4: TRotateLabel
           Left = 119
           Top = 7
-          Width = 14
-          Height = 12
+          Width = 12
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '14'
@@ -97,8 +101,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel5: TRotateLabel
           Left = 131
           Top = 7
-          Width = 14
-          Height = 12
+          Width = 12
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '21'
@@ -112,8 +116,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel6: TRotateLabel
           Left = 143
           Top = 7
-          Width = 14
-          Height = 12
+          Width = 12
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '28'
@@ -127,8 +131,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel7: TRotateLabel
           Left = 155
           Top = 7
-          Width = 14
-          Height = 12
+          Width = 12
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '50'
@@ -142,8 +146,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel1: TRotateLabel
           Left = 82
           Top = 4
-          Width = 14
-          Height = 15
+          Width = 15
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '1.9'
@@ -188,6 +192,10 @@ object ALLJAMulti: TALLJAMulti
       Font.Style = []
       ImageIndex = 7
       ParentFont = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object Tab35: TTabSheet
       Tag = 1
@@ -198,6 +206,10 @@ object ALLJAMulti: TALLJAMulti
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object Tab7: TTabSheet
       Tag = 2
@@ -208,6 +220,10 @@ object ALLJAMulti: TALLJAMulti
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object Tab14: TTabSheet
       Tag = 4
@@ -218,6 +234,10 @@ object ALLJAMulti: TALLJAMulti
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object Tab21: TTabSheet
       Tag = 6
@@ -228,6 +248,10 @@ object ALLJAMulti: TALLJAMulti
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object Tab28: TTabSheet
       Tag = 8
@@ -238,6 +262,10 @@ object ALLJAMulti: TALLJAMulti
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object Tab50: TTabSheet
       Tag = 9
@@ -248,6 +276,10 @@ object ALLJAMulti: TALLJAMulti
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
   object Panel1: TPanel

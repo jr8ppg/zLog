@@ -220,7 +220,7 @@ begin
 
    temp := '';
    temp := FillRight(Country, 7) +
-           FillRight(CountryName, 28) +
+           StringReplace(FillRight(CountryName, 28), '&', '&&', [rfReplaceAll]) +
            FillRight(CQZone, 2) + ' ' + // ver 0.23
            Continent + '  ';
 

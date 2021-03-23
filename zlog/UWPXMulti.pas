@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UWWMulti, UMultipliers, StdCtrls, JLLabel, ExtCtrls, Grids, Cologrid,
+  UWWMulti, UMultipliers, StdCtrls, JLLabel, ExtCtrls, Grids,
   UComm, USpotClass, UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
@@ -12,8 +12,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure GoButtonClick(Sender: TObject);
-    procedure GridSetting(ARow, Acol: Integer; var Fcolor: Integer;
-      var Bold, Italic, underline: Boolean);
   private
     { Private declarations }
     WPXList : TStringList;
@@ -348,12 +346,6 @@ begin
          break;
       end;
    end;
-end;
-
-procedure TWPXMulti.GridSetting(ARow, Acol: Integer; var Fcolor: Integer; var Bold, Italic, underline: Boolean);
-begin
-   // inherited;
-   Fcolor := clBlack;
 end;
 
 end.
