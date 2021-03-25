@@ -37,7 +37,7 @@ begin
    aQSO.NewMulti1 := False;
    aQSO.NewMulti2 := False;
 
-   C := GetPrefix(aqSO).Country;
+   C := dmZLogGlobal.GetPrefix(aqSO).Country;
    if C.Continent <> 'EU' then begin
       aQSO.Points := 0;
       aQSO.Multi1 := 'Non-EU';
@@ -63,7 +63,7 @@ var
    B: TBand;
    C: TCountry;
 begin
-   C := GetPrefix(aQSO).Country;
+   C := dmZLogGlobal.GetPrefix(aQSO).Country;
    if C.CountryName = 'Unknown' then begin
       Result := 'Unknown CTY';
       exit;

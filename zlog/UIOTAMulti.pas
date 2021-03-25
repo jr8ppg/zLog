@@ -337,23 +337,10 @@ begin
    IslandList.LoadFromFile('IOTA.DAT');
    Reset;
 
-   CountryList := TCountryList.Create;
-   PrefixList := TPrefixList.Create;
-
-   if LoadCTY_DAT() = False then begin
-      Exit;
-   end;
-
-   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-
-   if CountryList.Count = 0 then begin
-      Exit;
-   end;
-
    Q := TQSO.Create;
    try
       Q.Callsign := UpperCase(dmZLogGlobal.MyCall);
-      P := GetPrefix(Q);
+      P := dmZLogGlobal.GetPrefix(Q);
       MyDXCC := P.Country.Country;
    finally
       Q.Free;
@@ -391,8 +378,6 @@ end;
 procedure TIOTAMulti.FormDestroy(Sender: TObject);
 begin
    inherited;
-   PrefixList.Free();
-   CountryList.Free();
    IslandList.Free();
 end;
 

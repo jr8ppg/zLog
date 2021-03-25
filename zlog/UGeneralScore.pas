@@ -840,11 +840,11 @@ begin
    if formMulti._DXTEST then begin
       if SameCTYPoints or SameCONTPoints then begin
          i := aQSO.Power2;
-         if (i < CountryList.Count) and (i >= 0) then begin
-            C := TCountry(CountryList.List[i]);
-            if SameCTYPoints and (C.Country = MyCountry) then
+         if (i < dmZLogGlobal.CountryList.Count) and (i >= 0) then begin
+            C := TCountry(dmZLogGlobal.CountryList.List[i]);
+            if SameCTYPoints and (C.Country = dmZLogGlobal.MyCountry) then
                aQSO.Points := SameCTYPointsTable[aQSO.band, aQSO.Mode]
-            else if SameCONTPoints and (C.Continent = MyContinent) then
+            else if SameCONTPoints and (C.Continent = dmZLogGlobal.MyContinent) then
                aQSO.Points := SameCONTPointsTable[aQSO.band, aQSO.Mode];
          end;
       end;

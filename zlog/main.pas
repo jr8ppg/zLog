@@ -7522,7 +7522,7 @@ end;
 
 procedure TMainForm.InitJIDX();
 begin
-   if MyCountry = 'JA' then begin
+   if dmZLogGlobal.MyCountry = 'JA' then begin
       mnCheckCountry.Visible := True;
       mnCheckMulti.Caption := 'Check Zone';
       EditScreen := TWWEdit.Create(Self);
@@ -7586,7 +7586,7 @@ begin
 
    MyContest := TARRL10Contest.Create('ARRL 10m Contest');
 
-   if TARRL10Multi(MyContest.MultiForm).IsUSA then begin
+   if dmZLogGlobal.IsUSA() then begin
       EditScreen := TDXCCEdit.Create(Self);
       MyContest.SentStr := '$V';
    end

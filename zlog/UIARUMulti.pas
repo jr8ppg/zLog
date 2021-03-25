@@ -203,7 +203,7 @@ var
    P: TPrefix;
    str: string;
 begin
-   P := GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(aQSO);
    if P = nil then begin
       Result := '';
       exit;
@@ -214,7 +214,7 @@ begin
    i := StrToIntDef(C.ITUZone, 0);
 
    if (C.Country = 'W') or (C.Country = 'K') then begin
-      k := GetArea(str);
+      k := dmZLogGlobal.GetArea(str);
       case k of
          1 .. 4:
             i := 8;
@@ -226,7 +226,7 @@ begin
    end;
 
    if C.Country = 'VE' then begin
-      k := GetArea(str);
+      k := dmZLogGlobal.GetArea(str);
       case k of
          1, 2:
             i := 8;
@@ -244,7 +244,7 @@ begin
    end;
 
    if C.Country = 'VK' then begin
-      k := GetArea(str);
+      k := dmZLogGlobal.GetArea(str);
       case k of
          1 .. 5, 7:
             i := 55;
@@ -299,55 +299,11 @@ begin
 end;
 
 procedure TIARUMulti.FormCreate(Sender: TObject);
-var
-   aQSO: TQSO;
-   P: TPrefix;
 begin
    // inherited;
-   CountryList := TCountryList.Create;
-   PrefixList := TPrefixList.Create;
-
-   if LoadCTY_DAT() = False then begin
-      Exit;
-   end;
-
-   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-
-   if CountryList.Count = 0 then begin
-      Exit;
-   end;
-
    ZoneList := TIARUZoneList.Create;
 
    Reset;
-
-   MyContinent := 'AS';
-   MyCountry := 'JA';
-   MyZone := '25';
-
-   if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your call sign') then begin
-      aQSO := TQSO.Create;
-      aQSO.CallSign := Uppercase(dmZlogGlobal.Settings._mycall);
-
-      P := GetPrefix(aQSO);
-      if P <> nil then begin
-         MyCountry := P.Country.Country;
-
-         if dmZlogGlobal.Settings._iaruzone = '' then begin
-            dmZlogGlobal.Settings._iaruzone := P.Country.ITUZone;
-         end;
-
-         MyZone := dmZlogGlobal.Settings._iaruzone;
-
-         if P.OvrContinent = '' then begin
-            MyContinent := P.Country.Continent;
-         end
-         else begin
-            MyContinent := P.OvrContinent;
-         end;
-      end;
-      aQSO.Free;
-   end;
 end;
 
 procedure TIARUMulti.FormDestroy(Sender: TObject);
@@ -365,7 +321,7 @@ var
    zone: string;
    B: TBand;
 begin
-   P := GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(aQSO);
    if P = nil then begin
       Result := 'Unknown prefix';
       exit;
@@ -466,7 +422,7 @@ begin
       // Grid.Cells[0,ZoneList.List.Count-1] := M.Summary;
    end;
 
-   P := GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(aQSO);
    C := P.Country;
 
    if P = nil then
@@ -476,9 +432,9 @@ begin
    else
       _cont := P.OvrContinent;
 
-   if (MyZone = str) or (HQ = true) then
+   if (dmZLogGlobal.MyITUZone = str) or (HQ = true) then
       aQSO.Points := 1
-   else if MyContinent = _cont then
+   else if dmZLogGlobal.MyContinent = _cont then
       aQSO.Points := 3
    else
       aQSO.Points := 5;

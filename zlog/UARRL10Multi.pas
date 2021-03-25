@@ -18,10 +18,9 @@ type
     procedure UpdateLabelPos(); override;
   private
     { Private declarations }
+    StateList : TStateList;
   public
     { Public declarations }
-    StateList : TStateList;
-    IsUSA : boolean;
     LastMulti : integer; // grid top
     procedure UpdateData; override;
     procedure Add(var aQSO : TQSO); override;
@@ -44,7 +43,7 @@ uses Main;
 
 function TARRL10Multi.GetInfoAA(aQSO: TQSO): string;
 begin
-   Result := GetPrefix(aQSO).Country.JustInfo;
+   Result := dmZLogGlobal.GetPrefix(aQSO).Country.JustInfo;
 end;
 
 procedure TARRL10Multi.CheckMulti(aQSO: TQSO);
@@ -84,7 +83,7 @@ begin
       exit;
    end;
 
-   C := GetPrefix(aQSO).Country;
+   C := dmZLogGlobal.GetPrefix(aQSO).Country;
    if IsWVE(C.Country) then begin
       if GetState(aQSO, StateList) <> nil then
          Result := True;
@@ -106,7 +105,7 @@ begin
    aQSO.NewMulti1 := false;
    aQSO.NewMulti2 := false;
 
-   C := GetPrefix(aQSO).Country;
+   C := dmZLogGlobal.GetPrefix(aQSO).Country;
 
    if aQSO.Mode = mCW then
       B := b35
@@ -144,9 +143,7 @@ end;
 
 procedure TARRL10Multi.FormCreate(Sender: TObject);
 var
-   aQSO: TQSO;
    S: TState;
-   C: TCountry;
 begin
    { inherited; }
    LastMulti := 0;
@@ -172,37 +169,7 @@ begin
    S.Index := StateList.List.Count;
    StateList.List.Add(S);
 
-   CountryList := TCountryList.Create;
-   PrefixList := TPrefixList.Create;
-
-   if LoadCTY_DAT() = False then begin
-      Exit;
-   end;
-
-   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-
-   if CountryList.Count = 0 then begin
-      Exit;
-   end;
-
    Reset;
-   MyContinent := 'AS';
-   MyCountry := 'JA';
-   IsUSA := false;
-   if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your callsign') then begin
-      aQSO := TQSO.Create;
-      aQSO.Callsign := UpperCase(dmZlogGlobal.Settings._mycall);
-
-      C := GetPrefix(aQSO).Country;
-      MyCountry := C.Country;
-      MyContinent := C.Continent;
-
-      if (MyCountry = 'K') or (MyCountry = 'N') or (MyCountry = 'W') then begin
-         IsUSA := True;
-      end;
-
-      aQSO.Free;
-   end;
 end;
 
 procedure TARRL10Multi.FormDestroy(Sender: TObject);
@@ -225,7 +192,7 @@ begin
 
    j := Grid.TopRow;
    Grid.RowCount := 0;
-   Grid.RowCount := StateList.List.Count + CountryList.Count;
+   Grid.RowCount := StateList.List.Count + dmZLogGlobal.CountryList.Count;
 
    for i := 0 to StateList.List.Count - 1 do begin
       S := TState(StateList.List[i]).SummaryARRL10;
@@ -236,12 +203,12 @@ begin
 
    offset := StateList.List.Count;
 
-   if CountryList.Count = 0 then
+   if dmZLogGlobal.CountryList.Count = 0 then
       exit;
 
-   for i := 0 to CountryList.Count - 1 do begin
+   for i := 0 to dmZLogGlobal.CountryList.Count - 1 do begin
       // Grid.Cells[0,i + offset] := TCountry(CountryList.List[i]).SummaryARRL10;
-      TCountry(CountryList.List[i]).GridIndex := i + offset;
+      TCountry(dmZLogGlobal.CountryList.List[i]).GridIndex := i + offset;
       GridReverse[i + offset] := i;
    end;
 
@@ -279,9 +246,9 @@ begin
       for B := b19 to HiBand do
          TState(StateList.List[i]).Worked[B] := false;
 
-   for i := 0 to CountryList.Count - 1 do
+   for i := 0 to dmZLogGlobal.CountryList.Count - 1 do
       for B := b19 to HiBand do
-         TCountry(CountryList.List[i]).Worked[B] := false;
+         TCountry(dmZLogGlobal.CountryList.List[i]).Worked[B] := false;
 
    SortDefault;
 end;
@@ -323,12 +290,12 @@ begin
                Grid.Cells[0, i] := S;
             end;
          end
-         else if (i >= StateList.List.Count) and (i < CountryList.Count + StateList.List.Count) then begin
-            S := TCountry(CountryList.List[k]).Summary;
+         else if (i >= StateList.List.Count) and (i < dmZLogGlobal.CountryList.Count + StateList.List.Count) then begin
+            S := TCountry(dmZLogGlobal.CountryList.List[k]).Summary;
             if pos('N/A', S) > 2 then begin
                Grid.Cells[0, i] := '!' + S;
             end
-            else if TCountry(CountryList.List[k]).Worked[B] = True then begin
+            else if TCountry(dmZLogGlobal.CountryList.List[k]).Worked[B] = True then begin
                Grid.Cells[0, i] := '~' + S;
             end
             else begin
@@ -349,7 +316,7 @@ var
 begin
    Result := '';
 
-   C := GetPrefix(aQSO).Country;
+   C := dmZLogGlobal.GetPrefix(aQSO).Country;
    if IsWVE(C.Country) or IsMM(aQSO.Callsign) then begin
       S := GetState(aQSO, StateList);
       if S <> nil then
