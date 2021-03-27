@@ -338,7 +338,7 @@ begin
    slFiles := TStringList.Create();
    try
       if strStartFoler = '' then begin
-         Exit;
+         strStartFoler := ExtractFilePath(Application.ExeName);
       end;
 
       S := IncludeTrailingPathDelimiter(strStartFoler);
