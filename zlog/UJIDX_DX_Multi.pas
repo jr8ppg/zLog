@@ -7,20 +7,28 @@ uses
   UBasicMulti, StdCtrls, checklst, ComCtrls, ExtCtrls,
   UzLogConst, UzLogGlobal, UzLogQSO, JLLabel;
 
+const
+  WM_ZLOG_UPDATELABEL = (WM_USER + 100);
+
 type
   TJIDX_DX_Multi = class(TBasicMulti)
     TabControl: TTabControl;
     CheckListBox: TCheckListBox;
     Panel1: TPanel;
     ListBox: TListBox;
-    RotateLabel1: TRotateLabel;
     RotateLabel2: TRotateLabel;
+    RotateLabel1: TRotateLabel;
     RotateLabel3: TRotateLabel;
     RotateLabel4: TRotateLabel;
     RotateLabel5: TRotateLabel;
     RotateLabel6: TRotateLabel;
     procedure TabControlChange(Sender: TObject);
     procedure CheckListBoxClickCheck(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  protected
+    procedure SetFontSize(v: Integer); override;
+    procedure OnZLogUpdateLabel( var Message: TMessage ); message WM_ZLOG_UPDATELABEL;
+    procedure UpdateLabelPos();
   private
     MultiTable : array[b19..b28, 1..50] of boolean;
     procedure HideLabels; {Hides band labels on the panel}
@@ -51,8 +59,8 @@ const KenNames : array[1..50] of string =
  '47 Okinawa','48 Ogasawara','49 Okinotorishima','50 Minamitorishima');
 
 
-var
-  JIDX_DX_Multi: TJIDX_DX_Multi;
+//var
+//  JIDX_DX_Multi: TJIDX_DX_Multi;
 
 implementation
 
@@ -122,11 +130,12 @@ begin
                temp := temp + '* '
             else
                temp := temp + '. ';
-         str := copy(ListBox.Items[i - 1], 1, 19);
-         FillRight(str, 19);
-         ListBox.Items.Delete(i - 1);
-         ListBox.Items.Insert(i - 1, str + ' ' + temp);
       end;
+
+      str := FillRight(KenNames[i], 20) + temp;
+
+      ListBox.Items.Delete(i - 1);
+      ListBox.Items.Insert(i - 1, str);
    end;
 end;
 
@@ -170,11 +179,12 @@ begin
                temp := temp + '* '
             else
                temp := temp + '. ';
-         str := copy(ListBox.Items[M - 1], 1, 19);
-         FillRight(str, 19);
-         ListBox.Items.Delete(M - 1);
-         ListBox.Items.Insert(M - 1, str + ' ' + temp);
       end;
+
+      str := FillRight(KenNames[M], 20) + temp;
+
+      ListBox.Items.Delete(M - 1);
+      ListBox.Items.Insert(M - 1, str);
 
       if OldBandOrd(aQSO.Band) = TabControl.TabIndex then
          CheckListBox.Checked[M - 1] := True;
@@ -278,6 +288,41 @@ begin
    end;
 
    MainForm.WriteStatusLine(str, False);
+end;
+
+procedure TJIDX_DX_Multi.FormShow(Sender: TObject);
+begin
+   inherited;
+   PostMessage(Handle, WM_ZLOG_UPDATELABEL, 0, 0);
+end;
+
+procedure TJIDX_DX_Multi.SetFontSize(v: Integer);
+begin
+   Inherited;
+   ListBox.Font.Size := v;
+   ListBox.Canvas.Font.Size := v;
+   CheckListBox.Font.Size := v;
+   UpdateLabelPos();
+end;
+
+procedure TJIDX_DX_Multi.UpdateLabelPos();
+var
+   w, l: Integer;
+begin
+   w := ListBox.Canvas.TextWidth('X');
+   l := (w * 18) - 2;
+   RotateLabel1.Left := l;
+   RotateLabel2.Left := RotateLabel1.Left + (w * 2);
+   RotateLabel3.Left := RotateLabel2.Left + (w * 2);
+   RotateLabel4.Left := RotateLabel3.Left + (w * 2);
+   RotateLabel5.Left := RotateLabel4.Left + (w * 2);
+   RotateLabel6.Left := RotateLabel5.Left + (w * 2);
+end;
+
+procedure TJIDX_DX_Multi.OnZLogUpdateLabel( var Message: TMessage );
+begin
+   Application.ProcessMessages();
+   UpdateLabelPos();
 end;
 
 end.

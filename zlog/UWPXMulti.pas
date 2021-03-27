@@ -162,48 +162,18 @@ begin
 end;
 
 procedure TWPXMulti.FormCreate(Sender: TObject);
-var
-   aQSO: TQSO;
-   C: TCountry;
 begin
    { inherited; }
    WPXList := TStringList.Create;
    WPXList.Sorted := true;
-   CountryList := TCountryList.Create;
-   PrefixList := TPrefixList.Create;
-
-   if LoadCTY_DAT() = False then begin
-      Exit;
-   end;
-
-   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-
-   if CountryList.Count = 0 then begin
-      Exit;
-   end;
 
    Reset;
-   MyContinent := 'AS';
-   MyCountry := 'JA';
-
-   if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your call sign') then begin
-      aQSO := TQSO.Create;
-      aQSO.CallSign := UpperCase(dmZlogGlobal.Settings._mycall);
-      C := GetPrefix(aQSO).Country;
-      MyCountry := C.Country;
-      MyContinent := C.Continent;
-      aQSO.Free;
-   end;
-
-   // WWZone.Reset;
 end;
 
 procedure TWPXMulti.FormDestroy(Sender: TObject);
 begin
    inherited;
    WPXList.Free();
-   CountryList.Free();
-   PrefixList.Free();
 end;
 
 procedure TWPXMulti.Reset;
@@ -238,7 +208,7 @@ begin
       aQSO.NewMulti1 := true;
    end;
 
-   P := GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(aQSO);
    if P = nil then // /MM
    begin
       aQSO.Points := 0;
@@ -256,13 +226,13 @@ begin
 
    // MAINFORM.WRITESTATUSLINE(C.COUNTRY);
 
-   if C.Country = MyCountry then begin
+   if C.Country = dmZLogGlobal.MyCountry then begin
       aQSO.Points := 1;
       exit;
    end;
 
-   if MyContinent = _cont then
-      if MyContinent = 'NA' then
+   if dmZLogGlobal.MyContinent = _cont then
+      if dmZLogGlobal.MyContinent = 'NA' then
          if aQSO.Band in [b19 .. b7] then
             aQSO.Points := 4
          else

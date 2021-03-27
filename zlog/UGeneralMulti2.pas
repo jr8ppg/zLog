@@ -15,7 +15,6 @@ type
   TGeneralMulti2 = class(TACAGMulti)
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
   protected
     BandLabelArray : array[0..BANDLABELMAX] of TRotateLabel;
@@ -119,9 +118,9 @@ begin
    end;
 
    if _DXTEST then begin
-      if CountryList.Count > 0 then begin
+      if dmZLogGlobal.CountryList.Count > 0 then begin
          if NoCTYMulti <> '*' then begin
-            Grid.RowCount := CityList.List.Count + CountryList.Count;
+            Grid.RowCount := CityList.List.Count + dmZLogGlobal.CountryList.Count;
          end;
       end;
    end;
@@ -151,8 +150,8 @@ begin
 
    // CountryList‚ðGrid‚ÉƒZƒbƒg
    if _DXTEST and (NoCTYMulti <> '*') then begin
-      for i := 0 to CountryList.Count - 1 do begin
-         CNT := TCountry(CountryList.List[i]);
+      for i := 0 to dmZLogGlobal.CountryList.Count - 1 do begin
+         CNT := TCountry(dmZLogGlobal.CountryList.List[i]);
          R := CityList.List.Count + i;
 
          if CNT.Worked[B] then begin
@@ -180,8 +179,8 @@ end;
 
 procedure TGeneralMulti2.Reset;
 begin
-   if CountryList <> nil then
-      CountryList.Reset;
+   if dmZLogGlobal.CountryList <> nil then
+      dmZLogGlobal.CountryList.Reset;
 
    if CityList <> nil then
       CityList.Reset;
@@ -297,7 +296,7 @@ begin
    aQSO.Power2 := 2; // not local CTY
 
    if _DXTEST then begin
-      Cty := GetPrefix(aQSO).Country;
+      Cty := dmZLogGlobal.GetPrefix(aQSO).Country;
 
       aQSO.Power2 := Cty.Index;
 
@@ -386,8 +385,8 @@ begin
    if _DXTEST then begin
       if LocalCTY <> '' then begin
          i := aQSO.Power2;
-         if (i > -1) and (i < CountryList.Count) then
-            if pos(',' + TCountry(CountryList.List[i]).Country + ',', ',' + LocalCTY + ',') > 0 then begin
+         if (i > -1) and (i < dmZLogGlobal.CountryList.Count) then
+            if pos(',' + TCountry(dmZLogGlobal.CountryList.List[i]).Country + ',', ',' + LocalCTY + ',') > 0 then begin
                Result := True;
                exit;
             end;
@@ -395,8 +394,8 @@ begin
 
       if LocalCONT <> '' then begin
          i := aQSO.Power2;
-         if (i > -1) and (i < CountryList.Count) then
-            if pos(',' + TCountry(CountryList.List[i]).Continent + ',', ',' + LocalCONT + ',') > 0 then begin
+         if (i > -1) and (i < dmZLogGlobal.CountryList.Count) then
+            if pos(',' + TCountry(dmZLogGlobal.CountryList.List[i]).Continent + ',', ',' + LocalCONT + ',') > 0 then begin
                Result := True;
                exit;
             end;
@@ -425,17 +424,7 @@ end;
 
 procedure TGeneralMulti2.LoadCTY(CTYTYPE : string);
 begin
-   CountryList := TCountryList.Create;
-   PrefixList := TPrefixList.Create;
    _DXTEST := True;
-
-   if LoadCTY_DAT() = False then begin
-      Exit;
-   end;
-
-   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-
-   AnalyzeMyCountry;
 end;
 
 procedure TGeneralMulti2.FormCreate(Sender: TObject);
@@ -485,13 +474,6 @@ begin
       BandLabelArray[i].AutoSize := True;
       BandLabelArray[i].Caption := '';
    end;
-end;
-
-procedure TGeneralMulti2.FormDestroy(Sender: TObject);
-begin
-   inherited;
-   FreeAndNil(CountryList);
-   FreeAndNil(PrefixList);
 end;
 
 procedure TGeneralMulti2.CheckMulti(aQSO : TQSO);

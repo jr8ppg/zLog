@@ -166,6 +166,8 @@ type
   end;
 
   TContest = class
+  protected
+    FNeedCtyDat: Boolean;
   private
     procedure SelectPowerCode();
   public
@@ -211,6 +213,8 @@ type
     function ADIF_ExtraFieldName : string; virtual;
     function ADIF_ExtraField(aQSO : TQSO) : string; virtual;
     procedure ADIF_Export(FileName : string);
+
+    property NeedCtyDat: Boolean read FNeedCtyDat;
   end;
 
   TPedi = class(TContest)
@@ -1955,6 +1959,8 @@ begin
       SerialArrayTX[i] := 1;
 
    SentStr := '';
+
+   FNeedCtyDat := False;
 end;
 
 procedure TContest.PostWanted(S: string);
@@ -2363,6 +2369,7 @@ begin
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    SentStr := '$V';
+   FNeedCtyDat := True;
 end;
 
 procedure TJIDXContest.SetPoints(var aQSO: TQSO);
@@ -2380,6 +2387,7 @@ begin
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    SentStr := '$N';
+   FNeedCtyDat := True;
 end;
 
 constructor TARRLDXContestW.Create(N: string);
@@ -2394,6 +2402,7 @@ begin
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    SentStr := '$V';
+   FNeedCtyDat := True;
 end;
 
 constructor TAllAsianContest.Create(N: string);
@@ -2431,6 +2440,7 @@ begin
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    SentStr := '$V';
+   FNeedCtyDat := True;
 end;
 
 procedure TJIDXContestDX.SetPoints(var aQSO: TQSO);
@@ -2457,6 +2467,7 @@ begin
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
    SentStr := '$S';
+   FNeedCtyDat := True;
 end;
 
 constructor TWAEContest.Create(N: string);
@@ -2476,6 +2487,7 @@ begin
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
    SentStr := '$S';
+   FNeedCtyDat := True;
 end;
 
 destructor TWAEContest.Destroy();
@@ -2503,6 +2515,7 @@ begin
    Log.QsoList[0].Serial := $01; // uses serial number
    SerialContestType := SER_ALL;
    SentStr := '$S$Q';
+   FNeedCtyDat := True;
 end;
 
 constructor TARRL10Contest.Create(N: string);
@@ -2523,6 +2536,7 @@ begin
    SerialContestType := SER_ALL;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
+   FNeedCtyDat := True;
 end;
 
 constructor TJA0Contest.Create(N: string);
@@ -2622,6 +2636,7 @@ begin
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    SentStr := '$Z';
+   FNeedCtyDat := True;
 end;
 
 procedure TCQWWContest.SpaceBarProc;
@@ -2707,6 +2722,7 @@ begin
    Log.AcceptDifferentMode := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    SentStr := '$I';
+   FNeedCtyDat := True;
 end;
 
 procedure TIARUContest.SpaceBarProc;
@@ -2868,6 +2884,8 @@ begin
    end;
 
    SentStr := dmZlogGlobal.Settings._sentstr;
+
+   FNeedCtyDat := TGeneralMulti2(MultiForm)._DXTEST;
 end;
 
 procedure TGeneralContest.SetPoints(var aQSO: TQSO);
@@ -7308,6 +7326,11 @@ begin
       // リグコントロール開始
       RigControl.ImplementOptions;
 
+      // CTY.DATが必要なコンテストでロードされていない場合はお知らせする
+      if (MyContest.NeedCtyDat = True) and (dmZLogGlobal.CtyDatLoaded = False) then begin
+         WriteStatusLineRed('CTY.DAT not loaded', True);
+      end;
+
       // 初期化完了
       FInitialized := True;
 
@@ -7522,7 +7545,7 @@ end;
 
 procedure TMainForm.InitJIDX();
 begin
-   if MyCountry = 'JA' then begin
+   if dmZLogGlobal.MyCountry = 'JA' then begin
       mnCheckCountry.Visible := True;
       mnCheckMulti.Caption := 'Check Zone';
       EditScreen := TWWEdit.Create(Self);
@@ -7586,7 +7609,7 @@ begin
 
    MyContest := TARRL10Contest.Create('ARRL 10m Contest');
 
-   if TARRL10Multi(MyContest.MultiForm).IsUSA then begin
+   if dmZLogGlobal.IsUSA() then begin
       EditScreen := TDXCCEdit.Create(Self);
       MyContest.SentStr := '$V';
    end

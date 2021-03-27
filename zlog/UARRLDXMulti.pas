@@ -286,9 +286,6 @@ begin
    StateList := TStateList.Create;
    StateList.LoadFromFile('ARDX.DAT');
 
-   CountryList := TCountryList.Create;
-   PrefixList := TPrefixList.Create;
-
    Reset;
 end;
 
@@ -296,8 +293,6 @@ procedure TARRLDXMulti.FormDestroy(Sender: TObject);
 begin
    inherited;
    StateList.Free();
-   CountryList.Free();
-   PrefixList.Free();
 end;
 
 procedure TARRLDXMulti.UpdateData;

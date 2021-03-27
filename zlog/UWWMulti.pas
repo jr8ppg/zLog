@@ -35,7 +35,6 @@ type
     procedure StayOnTopClick(Sender: TObject);
     procedure GridTopLeftChanged(Sender: TObject);
     procedure FormResize(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
   private
     { Private declarations }
@@ -159,8 +158,8 @@ var
 begin
    P := TPrefix.Create;
    P.Prefix := PX;
-   P.Country := CountryList[CtyIndex];
-   PrefixList.Add(P);
+   P.Country := dmZLogGlobal.CountryList[CtyIndex];
+   dmZLogGlobal.PrefixList.Add(P);
 
 //   AddNewPrefixToFile(P.Prefix, P.Index);
    Main.MyContest.Renew;
@@ -172,7 +171,7 @@ var
 begin
    F := TNewPrefix.Create(Self);
    try
-      F.Init(CountryList, Call);
+      F.Init(dmZLogGlobal.CountryList, Call);
       if F.ShowModal() <> mrOK then begin
          Exit;
       end;
@@ -216,12 +215,12 @@ procedure TWWMulti.SortDefault;
 var
    i: integer;
 begin
-   if CountryList.Count = 0 then begin
+   if dmZLogGlobal.CountryList.Count = 0 then begin
       exit;
    end;
 
-   for i := 0 to CountryList.Count-1 do begin
-      TCountry(CountryList.List[i]).GridIndex := i;
+   for i := 0 to dmZLogGlobal.CountryList.Count-1 do begin
+      TCountry(dmZLogGlobal.CountryList.List[i]).GridIndex := i;
       GridReverse[i] := i;
    end;
 end;
@@ -230,16 +229,16 @@ procedure TWWMulti.SortZone;
 var
    i, j, x: integer;
 begin
-   if CountryList.Count = 0 then begin
+   if dmZLogGlobal.CountryList.Count = 0 then begin
       exit;
    end;
 
    GridReverse[0] := 0;
    x := 1;
    for i := 1 to 40 do begin
-      for j := 1 to CountryList.Count - 1 do begin
-         if TCountry(CountryList.List[j]).CQZone = IntToStr(i) then begin
-            TCountry(CountryList.List[j]).GridIndex := x;
+      for j := 1 to dmZLogGlobal.CountryList.Count - 1 do begin
+         if TCountry(dmZLogGlobal.CountryList.List[j]).CQZone = IntToStr(i) then begin
+            TCountry(dmZLogGlobal.CountryList.List[j]).GridIndex := x;
             GridReverse[x] := j;
             inc(x);
          end;
@@ -258,14 +257,14 @@ begin
    cont[3] := 'NA';
    cont[4] := 'SA';
    cont[5] := 'OC';
-   if CountryList.Count = 0 then exit;
+   if dmZLogGlobal.CountryList.Count = 0 then exit;
    GridReverse[0] := 0;
    x := 1;
 
    for i := 0 to 5 do begin
-      for j := 1 to CountryList.Count - 1 do begin
-         if TCountry(CountryList.List[j]).Continent = cont[i] then begin
-            TCountry(CountryList.List[j]).GridIndex := x;
+      for j := 1 to dmZLogGlobal.CountryList.Count - 1 do begin
+         if TCountry(dmZLogGlobal.CountryList.List[j]).Continent = cont[i] then begin
+            TCountry(dmZLogGlobal.CountryList.List[j]).GridIndex := x;
             GridReverse[x] := j;
             inc(x);
          end;
@@ -285,7 +284,7 @@ begin
    cont[4] := 'SA';
    cont[5] := 'OC';
 
-   if CountryList.Count = 0 then begin
+   if dmZLogGlobal.CountryList.Count = 0 then begin
       exit;
    end;
 
@@ -296,14 +295,14 @@ begin
 
    x := 1;
 
-   for j := 1 to CountryList.Count - 1 do begin
-      if TCountry(CountryList.List[j]).Continent = CT then begin
-         TCountry(CountryList.List[j]).GridIndex := x;
+   for j := 1 to dmZLogGlobal.CountryList.Count - 1 do begin
+      if TCountry(dmZLogGlobal.CountryList.List[j]).Continent = CT then begin
+         TCountry(dmZLogGlobal.CountryList.List[j]).GridIndex := x;
          GridReverse[x] := j;
          inc(x);
       end
       else begin
-         TCountry(CountryList.List[j]).GridIndex := 0;
+         TCountry(dmZLogGlobal.CountryList.List[j]).GridIndex := 0;
          //GridReverse[x] := -1;
          //inc(x);
       end;
@@ -327,11 +326,11 @@ begin
       end;
    end;
 
-   if CountryList.Count = 0 then exit;
+   if dmZLogGlobal.CountryList.Count = 0 then exit;
 
-   for i := 0 to CountryList.Count-1 do begin
+   for i := 0 to dmZLogGlobal.CountryList.Count-1 do begin
       for B := b19 to HiBand do begin
-         TCountry(CountryList.List[i]).Worked[B] := false;
+         TCountry(dmZLogGlobal.CountryList.List[i]).Worked[B] := false;
       end;
    end;
 
@@ -340,7 +339,7 @@ begin
       1 : SortZone;
    end;
 
-   Grid.RowCount := CountryList.Count;
+   Grid.RowCount := dmZLogGlobal.CountryList.Count;
 end;
 
 procedure TWWMulti.RefreshGrid;
@@ -356,8 +355,8 @@ begin
       end
       else begin
          k := GridReverse[i];
-         C := TCountry(CountryList.List[k]);
-         if (k >= 0) and (k < CountryList.Count) then begin
+         C := TCountry(dmZLogGlobal.CountryList.List[k]);
+         if (k >= 0) and (k < dmZLogGlobal.CountryList.Count) then begin
             if C.Worked[B] = True then begin
                Grid.Cells[0, i] := '~' + C.Summary;
             end
@@ -400,20 +399,6 @@ begin
    FZoneForm := nil;
    MostRecentCty := nil;
    MainForm.mnGridAddNewPX.Visible := True;
-   CountryList := TCountryList.Create;
-   PrefixList := TPrefixList.Create;
-
-   if LoadCTY_DAT() = False then begin
-      Exit;
-   end;
-
-   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-
-   if CountryList.Count = 0 then begin
-      Exit;
-   end;
-
-   AnalyzeMyCountry;
 end;
 
 procedure TWWMulti.FormResize(Sender: TObject);
@@ -421,13 +406,6 @@ begin
    Inherited;
    AdjustGridSize(Grid);
    RefreshGrid;
-end;
-
-procedure TWWMulti.FormDestroy(Sender: TObject);
-begin
-   inherited;
-   CountryList.Free();
-   PrefixList.Free();
 end;
 
 procedure TWWMulti.Button1Click(Sender: TObject);
@@ -464,7 +442,7 @@ begin
       end;
    end;
 
-   P := GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(aQSO);
 
    if P = nil then begin
       aQSO.Points := 0;
@@ -489,11 +467,11 @@ begin
    else
       _cont := P.OvrContinent;
 
-   if MyCountry = C.Country then
+   if dmZLogGlobal.MyCountry = C.Country then
       aQSO.points := 0
    else begin
-      if MyContinent = _cont then begin
-         if MyContinent = 'NA' then
+      if dmZLogGlobal.MyContinent = _cont then begin
+         if dmZLogGlobal.MyContinent = 'NA' then
             aQSO.points := 2
          else
             aQSO.points := 1;
@@ -534,7 +512,7 @@ end;
 
 function TWWMulti.GuessZone(aQSO : TQSO) : string;
 begin
-   Result := GuessCQZone(aQSO);
+   Result := dmZLogGlobal.GuessCQZone(aQSO);
 end;
 
 function TWWMulti.GetInfo(aQSO : TQSO) : string;
@@ -544,7 +522,7 @@ var
    i : integer;
    C : TCountry;
 begin
-   C := GetPrefix(aQSO).Country;
+   C := dmZLogGlobal.GetPrefix(aQSO).Country;
    if C.CountryName = 'Unknown' then begin
       Result := 'Unknown CTY';
       exit;
@@ -585,9 +563,9 @@ var
    i : integer;
 begin
    temp := Edit1.Text;
-   for i := 0 to CountryList.Count-1 do begin
-      if pos(temp,TCountry(CountryList.List[i]).Country) = 1 then begin
-         Grid.TopRow := TCountry(CountryList.List[i]).GridIndex;
+   for i := 0 to dmZLogGlobal.CountryList.Count-1 do begin
+      if pos(temp,TCountry(dmZLogGlobal.CountryList.List[i]).Country) = 1 then begin
+         Grid.TopRow := TCountry(dmZLogGlobal.CountryList.List[i]).GridIndex;
          break;
       end;
    end;
@@ -629,7 +607,7 @@ begin
       else
          Z := 0;
 
-      C := GetPrefix(aQSO).Country;
+      C := dmZLogGlobal.GetPrefix(aQSO).Country;
       Sp.Zone := Z;
       Sp.CtyIndex := C.Index;
 

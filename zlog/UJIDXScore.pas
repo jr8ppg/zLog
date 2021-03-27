@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, Grids, Buttons,
-  UzLogConst, UzLogGlobal, UzLogQSO, UWWScore;
+  UzLogConst, UzLogGlobal, UzLogQSO, UWWScore, Vcl.Menus;
 
 type
   TJIDXScore = class(TWWScore)

@@ -25,38 +25,9 @@ uses
 {$R *.DFM}
 
 procedure TJIDXMulti.FormCreate(Sender: TObject);
-var
-   aQSO : TQSO;
-   P: TPrefix;
 begin
    {inherited; }
-   CountryList := TCountryList.Create;
-   PrefixList := TPrefixList.Create;
-
-   if LoadCTY_DAT() = False then begin
-      Exit;
-   end;
-
-   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-
-   if CountryList.Count = 0 then begin
-      Exit;
-   end;
-
    Reset;
-   MyContinent := 'AS';
-   MyCountry := 'JA';
-
-   if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your callsign') then begin
-      aQSO := TQSO.Create;
-      aQSO.callsign := UpperCase(dmZlogGlobal.Settings._mycall);
-
-      P := GetPrefix(aQSO);
-      MyCountry := P.Country.Country;
-      MyContinent := P.Country.Continent;
-
-      aQSO.Free;
-   end;
 end;
 
 procedure TJIDXMulti.AddNoUpdate(var aQSO : TQSO);
@@ -86,9 +57,9 @@ begin
       end;
    end;
 
-   C := GetPrefix(aQSO).Country;
+   C := dmZLogGlobal.GetPrefix(aQSO).Country;
    if C.Country = '' then begin // unknown cty. e.g. MM
-      exit;
+      Exit;
    end;
 
    MostRecentCty := C;

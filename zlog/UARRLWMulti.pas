@@ -31,7 +31,7 @@ function TARRLWMulti.GetInfoAA(aQSO: TQSO): string;
 var
    P: TPrefix;
 begin
-   P := GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(aQSO);
    Result := P.Country.JustInfo;
 end;
 
@@ -57,7 +57,7 @@ begin
    aQSO.NewMulti1 := False;
    aQSO.NewMulti2 := False;
 
-   P := GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(aQSO);
    C := P.Country;
    aQSO.Multi1 := C.Country;
 
@@ -68,7 +68,7 @@ begin
    if ALLASIANFLAG = True then begin
       aQSO.Points := 0;
       // MainForm.Caption := C.Country+';'+MyCOuntry+';';
-      if C.Country = MyCountry then begin
+      if C.Country = dmZLogGlobal.MyCountry then begin
          aQSO.Points := 0;
          exit;
       end
@@ -106,37 +106,11 @@ begin
 end;
 
 procedure TARRLWMulti.FormCreate(Sender: TObject);
-var
-   aQSO: TQSO;
-   C: TCountry;
 begin
    { inherited; }
    ALLASIANFLAG := False;
-   CountryList := TCountryList.Create;
-   PrefixList := TPrefixList.Create;
-
-   if LoadCTY_DAT() = False then begin
-      Exit;
-   end;
-
-   MainForm.WriteStatusLine('Loaded CTY.DAT', true);
-
-   if CountryList.Count = 0 then begin
-      Exit;
-   end;
 
    Reset;
-   MyContinent := 'AS';
-   MyCountry := 'JA';
-
-   if (dmZlogGlobal.Settings._mycall <> '') and (dmZlogGlobal.Settings._mycall <> 'Your callsign') then begin
-      aQSO := TQSO.Create;
-      aQSO.callsign := UpperCase(dmZlogGlobal.Settings._mycall);
-      C := GetPrefix(aQSO).Country;
-      MyCountry := C.Country;
-      MyContinent := C.Continent;
-      aQSO.Free;
-   end;
 end;
 
 end.
