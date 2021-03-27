@@ -230,6 +230,7 @@ type
     FMyCQZone: string;
     FMyITUZone: string;
 
+    FCtyDatLoaded: Boolean;
     FCountryList : TCountryList;
     FPrefixList : TPrefixList;
     function Load_CTYDAT(): Boolean;
@@ -323,6 +324,7 @@ public
     property LastBand: TBand read GetLastBand write SetLastBand;
     property LastMode: TMode read GetLastMode write SetLastMode;
 
+    property CtyDatLoaded: Boolean read FCtyDatLoaded;
     property CountryList: TCountryList read FCountryList;
     property PrefixList: TPrefixList read FPrefixList;
     property MyCountry: string read FMyCountry;
@@ -422,8 +424,7 @@ begin
 
    FCountryList := TCountryList.Create();
    FPrefixList := TPrefixList.Create();
-   Load_CTYDAT();
-   AnalyzeMyCountry();
+   FCtyDatLoaded := Load_CTYDAT();
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
@@ -1641,6 +1642,7 @@ end;
 procedure TdmZLogGlobal.SetMyCall(s: string);
 begin
    Settings._mycall := s;
+   AnalyzeMyCountry();
 end;
 
 function TdmZLogGlobal.GetBand: integer;

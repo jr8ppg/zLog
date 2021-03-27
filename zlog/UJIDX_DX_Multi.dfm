@@ -2,6 +2,7 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
   Left = -31
   Top = 248
   Caption = 'Multipliers'
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object TabControl: TTabControl
@@ -38,8 +39,8 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       Color = clBtnFace
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Roman'
+      Font.Height = -12
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Pitch = fpFixed
       Font.Style = []
       ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
@@ -106,11 +107,11 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
-      object RotateLabel1: TRotateLabel
+      object RotateLabel2: TRotateLabel
         Left = 152
         Top = 9
-        Width = 15
-        Height = 14
+        Width = 14
+        Height = 15
         Escapement = 90
         TextStyle = tsNone
         Caption = '3.5'
@@ -122,11 +123,11 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
         ParentFont = False
         Visible = False
       end
-      object RotateLabel2: TRotateLabel
+      object RotateLabel1: TRotateLabel
         Left = 138
         Top = 9
-        Width = 15
-        Height = 14
+        Width = 14
+        Height = 15
         Escapement = 90
         TextStyle = tsNone
         Caption = '1.9'
@@ -141,8 +142,8 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       object RotateLabel3: TRotateLabel
         Left = 166
         Top = 9
-        Width = 15
-        Height = 14
+        Width = 14
+        Height = 15
         Escapement = 90
         TextStyle = tsNone
         Caption = '7   '
@@ -157,8 +158,8 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       object RotateLabel4: TRotateLabel
         Left = 181
         Top = 12
-        Width = 12
-        Height = 14
+        Width = 14
+        Height = 12
         Escapement = 90
         TextStyle = tsNone
         Caption = '14'
@@ -173,8 +174,8 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       object RotateLabel5: TRotateLabel
         Left = 195
         Top = 12
-        Width = 12
-        Height = 14
+        Width = 14
+        Height = 12
         Escapement = 90
         TextStyle = tsNone
         Caption = '21'
@@ -189,8 +190,8 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       object RotateLabel6: TRotateLabel
         Left = 209
         Top = 12
-        Width = 12
-        Height = 14
+        Width = 14
+        Height = 12
         Escapement = 90
         TextStyle = tsNone
         Caption = '28'
@@ -213,12 +214,12 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       Color = clBtnFace
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Roman'
+      Font.Height = -12
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Pitch = fpFixed
       Font.Style = []
       ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
-      ItemHeight = 13
+      ItemHeight = 12
       Items.Strings = (
         '01 Hokkaido         . . . . . .                      '
         '02 Aomori                '
