@@ -5340,6 +5340,9 @@ object MainForm: TMainForm
       object menuAnalyze: TMenuItem
         Action = actionShowAnalyze
       end
+      object FunctionKeyPanel1: TMenuItem
+        Action = actionFunctionKeyPanel
+      end
     end
     object Network1: TMenuItem
       Caption = 'Network'
@@ -6453,6 +6456,10 @@ object MainForm: TMainForm
     object actionAntiZeroin: TAction
       Caption = 'actionAntiZeroin'
       OnExecute = actionAntiZeroinExecute
+    end
+    object actionFunctionKeyPanel: TAction
+      Caption = 'Function Key Panel'
+      OnExecute = actionFunctionKeyPanelExecute
     end
   end
   object SPCMenu: TPopupMenu

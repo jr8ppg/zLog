@@ -114,7 +114,8 @@ uses
   UzLogExtension in 'UzLogExtension.pas',
   UOperatorEdit in 'UOperatorEdit.pas' {formOperatorEdit},
   UzLogOperatorInfo in 'UzLogOperatorInfo.pas',
-  WinKeyer in 'WinKeyer.pas';
+  WinKeyer in 'WinKeyer.pas',
+  UFunctionKeyPanel in 'UFunctionKeyPanel.pas' {formFunctionKeyPanel};
 
 {$R *.RES}
 
