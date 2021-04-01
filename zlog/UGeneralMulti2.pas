@@ -140,7 +140,7 @@ begin
          if CountOnce then begin
             for B2 := b19 to HiBand do begin
                if CTY.Worked[B2] then begin
-                  Grid.Cells[0, i] := '*' + CTY.SummaryGeneral;
+                  Grid.Cells[0, i] := '~' + CTY.SummaryGeneral;
                   Break;
                end;
             end;
@@ -155,7 +155,7 @@ begin
          R := CityList.List.Count + i;
 
          if CNT.Worked[B] then begin
-            Grid.Cells[0, R] := '*' + CNT.SummaryGeneral;
+            Grid.Cells[0, R] := '~' + CNT.SummaryGeneral;
          end
          else begin
             Grid.Cells[0, R] := CNT.SummaryGeneral;
