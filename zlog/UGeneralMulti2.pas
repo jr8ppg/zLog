@@ -101,11 +101,11 @@ begin
    for B := b19 to Hiband do begin
       if (MainForm.BandMenu.Items[Ord(B)].Visible = True) and
          (dmZlogGlobal.Settings._activebands[B] = True) then begin
-          BandLabelArray[i].Caption := MHzString[B];
-          j := BandLabelArray[i].Height;
-          Application.ProcessMessages();
-          BandLabelArray[i].Top := 35 - j;
-          inc(i);
+         BandLabelArray[i].Caption := MHzString[B];
+         j := BandLabelArray[i].Height;
+         Application.ProcessMessages();
+         BandLabelArray[i].Top := 35 - j;
+         Inc(i);
       end;
    end;
 
@@ -473,6 +473,7 @@ begin
       //BandLabelArray[i].Height := 1;
       BandLabelArray[i].AutoSize := True;
       BandLabelArray[i].Caption := '';
+      BandLabelArray[i].Visible := False;
    end;
 end;
 
@@ -550,6 +551,7 @@ begin
          else begin
             BandLabelArray[i].Left := BandLabelArray[j].Left + (w * 2);
          end;
+         BandLabelArray[i].Visible := True;
 
          j := i;
          Inc(i);
