@@ -7545,6 +7545,9 @@ end;
 
 procedure TMainForm.InitJIDX();
 begin
+   HideBandMenuWARC();
+   HideBandMenuVU();
+
    if dmZLogGlobal.MyCountry = 'JA' then begin
       mnCheckCountry.Visible := True;
       mnCheckMulti.Caption := 'Check Zone';
@@ -7553,7 +7556,6 @@ begin
    end
    else begin
       EditScreen := TGeneralEdit.Create(Self);
-      HideBandMenuVU();
       MyContest := TJIDXContestDX.Create('JIDX Contest (DX)');
    end;
 
