@@ -7321,6 +7321,8 @@ begin
          CallsignEdit.SetFocus;
       end;
 
+      FormResize(Self);
+
       LastFocus := CallsignEdit; { the place to set focus when ESC is pressed from Grid }
 
       // リグコントロール開始
