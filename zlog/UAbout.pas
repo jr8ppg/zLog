@@ -23,9 +23,9 @@ type
     Label6: TLabel;
     Label7: TLabel;
     LinkLabel1: TLinkLabel;
-    Label5: TLabel;
     LinkLabel2: TLinkLabel;
     LinkLabel3: TLinkLabel;
+    Memo1: TMemo;
     procedure OKButtonClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
