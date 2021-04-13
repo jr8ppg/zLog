@@ -6986,14 +6986,22 @@ end;
 
 procedure TMainForm.MyIdleEvent(Sender: TObject; var Done: Boolean);
 var
-   boo: Boolean;
+   fPlaying: Boolean;
 begin
-   boo := dmZlogKeyer.IsPlaying;
+   if (CurrentQSO.mode = mCW) then begin
+      if (dmZLogGlobal.Settings._use_winkeyer = True) then begin
+         CWPauseButton.Visible := False;
+      end
+      else begin
+         CWPauseButton.Visible := True;
+      end;
+   end;
 
-   if boo then begin
+   fPlaying := dmZlogKeyer.IsPlaying;
+
+   if fPlaying then begin
       if CurrentQSO.mode = mCW then begin
          CWPauseButton.Enabled := True;
-         CWPauseButton.Visible := True;
          CWPlayButton.Visible := False;
          CWStopButton.Enabled := True;
       end
@@ -7012,13 +7020,7 @@ begin
       end;
 
       CWPauseButton.Enabled := False;
-
-      if not(dmZlogKeyer.Paused) then begin
-         CWStopButton.Enabled := False;
-      end
-      else begin
-         CWStopButton.Enabled := True;
-      end;
+      CWStopButton.Enabled := False;
    end;
 
    if CurrentQSO.mode = mRTTY then begin
@@ -7332,6 +7334,8 @@ begin
          CallsignEdit.SetFocus;
       end;
 
+      FormResize(Self);
+
       LastFocus := CallsignEdit; { the place to set focus when ESC is pressed from Grid }
 
       // リグコントロール開始
@@ -7556,6 +7560,9 @@ end;
 
 procedure TMainForm.InitJIDX();
 begin
+   HideBandMenuWARC();
+   HideBandMenuVU();
+
    if dmZLogGlobal.MyCountry = 'JA' then begin
       mnCheckCountry.Visible := True;
       mnCheckMulti.Caption := 'Check Zone';
@@ -7564,7 +7571,6 @@ begin
    end
    else begin
       EditScreen := TGeneralEdit.Create(Self);
-      HideBandMenuVU();
       MyContest := TJIDXContestDX.Create('JIDX Contest (DX)');
    end;
 

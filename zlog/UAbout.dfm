@@ -3,7 +3,7 @@ object AboutBox: TAboutBox
   Top = 271
   BorderStyle = bsDialog
   Caption = 'About zLog for Windows'
-  ClientHeight = 345
+  ClientHeight = 402
   ClientWidth = 321
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object AboutBox: TAboutBox
   OnShow = FormShow
   DesignSize = (
     321
-    345)
+    402)
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -161,7 +161,7 @@ object AboutBox: TAboutBox
   end
   object OKButton: TButton
     Left = 128
-    Top = 320
+    Top = 377
     Width = 65
     Height = 22
     Anchors = [akLeft, akBottom]
@@ -170,13 +170,14 @@ object AboutBox: TAboutBox
     ModalResult = 1
     TabOrder = 1
     OnClick = OKButtonClick
-    ExplicitTop = 303
+    ExplicitTop = 320
   end
   object Panel2: TPanel
     Left = 8
     Top = 175
     Width = 305
-    Height = 138
+    Height = 193
+    Anchors = [akLeft, akTop, akBottom]
     BevelInner = bvRaised
     BevelOuter = bvLowered
     Font.Charset = DEFAULT_CHARSET
@@ -187,6 +188,10 @@ object AboutBox: TAboutBox
     ParentColor = True
     ParentFont = False
     TabOrder = 2
+    ExplicitHeight = 138
+    DesignSize = (
+      305
+      193)
     object Label6: TLabel
       Left = 8
       Top = 9
@@ -208,7 +213,7 @@ object AboutBox: TAboutBox
       Top = 41
       Width = 287
       Height = 13
-      Caption = 'Portions created by JR8PPG are Copyright (C) 2020 JR8PPG'
+      Caption = 'Portions created by JR8PPG are Copyright (C) 2021 JR8PPG'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -216,24 +221,6 @@ object AboutBox: TAboutBox
       Font.Style = []
       ParentFont = False
       IsControl = True
-    end
-    object Label5: TLabel
-      Left = 8
-      Top = 80
-      Width = 287
-      Height = 49
-      AutoSize = False
-      Caption = 
-        #21332#21147':JH1KVQ, JE1BJP, JR8VSE, JG8LOL, JR8LRQ, JL1LNC, 7M4KSC, JA1AB' +
-        'C, JO3JYE, JE1CKA, JH5GHM, JS6RTJ, JJ1CVH, JS2GGD,'#12288#12288#12288' ZLOG-REIWA' +
-        ' ML'#21442#21152#32773#12398#12415#12394#12373#12435
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-      Font.Style = []
-      ParentFont = False
-      WordWrap = True
     end
     object LinkLabel1: TLinkLabel
       Left = 8
@@ -251,6 +238,31 @@ object AboutBox: TAboutBox
       ParentFont = False
       TabOrder = 0
       OnLinkClick = LinkLabel1LinkClick
+    end
+    object Memo1: TMemo
+      Left = 8
+      Top = 81
+      Width = 287
+      Height = 99
+      Anchors = [akLeft, akTop, akBottom]
+      BorderStyle = bsNone
+      Color = clBtnFace
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+      Font.Style = []
+      Lines.Strings = (
+        #21332#21147#65288#38918#19981#21516#65289':'
+        'JH1KVQ, JE1BJP, JR8VSE, JG8LOL, JR8LRQ, '
+        'JL1LNC, 7M4KSC, JA1ABC, JO3JYE, JE1CKA, '
+        'JH5GHM, JS6RTJ, JJ1CVH, JS2GGD, JE3VRJ, '
+        'JJ8DAN, 7N4LNK, JI0VWL, JK1JHU, JS1OYN, '
+        'JI1XSE, '
+        'ZLOG-REIWA ML'#21442#21152#32773#12398#12415#12394#12373#12435)
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 1
     end
   end
 end

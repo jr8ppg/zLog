@@ -237,7 +237,8 @@ begin
 
    temp := '';
    temp := FillRight(Country, 7) +
-           FillRight(CountryName, 28) + '   ' + Continent + '    ';
+           StringReplace(FillRight(CountryName, 28), '&', '&&', [rfReplaceAll]) +
+           '   ' + Continent + '    ';
 
    for B := b35 to b28 do begin
       if NotWARC(B) then begin
@@ -255,7 +256,6 @@ function TCountry.SummaryGeneral: string;
 var
    temp: string;
    B: TBand;
-   temp2: string;
 begin
    if CountryName = 'Unknown' then begin
       Result := 'Unknown Country';
@@ -263,9 +263,8 @@ begin
    end;
 
    temp := '';
-   temp2 := CountryName;
    temp := FillRight(Country, 6) +
-           FillRight(temp2, 16) + ' ' +
+           StringReplace(FillRight(CountryName, 16), '&', '&&', [rfReplaceAll]) + ' ' +
            FillRight(CQZone, 2) + ' ' + // ver 0.23
            Continent + ' ' +
            FillRight(ITUZone, 2) + '  ';
@@ -297,7 +296,9 @@ begin
    end;
 
    temp := '';
-   temp := FillRight(Country, 7) + FillRight(CountryName, 28) + Continent + '  ';
+   temp := FillRight(Country, 7) +
+           StringReplace(FillRight(CountryName, 28), '&', '&&', [rfReplaceAll]) +
+           Continent + '  ';
    temp := temp + 'worked on : ';
 
    for B := b19 to b28 do begin
@@ -325,7 +326,8 @@ begin
    end;
 
    temp := ' ' + FillRight(Country, 7) +
-                 FillRight(CountryName, 28) + Continent + '  ';
+                 StringReplace(FillRight(CountryName, 28), '&', '&&', [rfReplaceAll]) +
+                 Continent + '  ';
 
    if IsWVE(Country) then begin
       Result := temp + 'N/A';
@@ -352,7 +354,8 @@ begin
 
    temp := '';
    temp := FillRight(Country, 7) +
-           FillRight(CountryName, 28) + Continent + '  ';
+           StringReplace(FillRight(CountryName, 28), '&', '&&', [rfReplaceAll]) +
+           Continent + '  ';
 
    Result := temp;
 end;

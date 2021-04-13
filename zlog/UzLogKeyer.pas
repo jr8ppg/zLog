@@ -1930,10 +1930,20 @@ end;
 
 function TdmZLogKeyer.IsPlaying: Boolean;
 begin
-   if (cwstrptr > 1) and FSendOK then
-      Result := True
-   else
-      Result := False;
+   if FUseWinKeyer = False then begin
+      if (cwstrptr > 1) and FSendOK then
+         Result := True
+      else
+         Result := False;
+   end
+   else begin
+      if ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) then begin
+         Result := True;
+      end
+      else begin
+         Result := False;
+      end;
+   end;
 end;
 
 procedure TdmZLogKeyer.SetRandCQStr(Index: Integer; cqstr: string);
