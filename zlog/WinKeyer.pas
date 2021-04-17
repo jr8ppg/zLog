@@ -38,6 +38,9 @@ const
   // Backspace <08> Backup the input buffer pointer by one character.
   WK_BACKSPACE_CMD = $08;
 
+  // Set PinConfig <09><nn> Set the PINCFG Register
+  WK_SET_PINCFG_CMD = $09;
+
   // Clear Buffer <0A> no parameters
   WK_CLEAR_CMD = $0a;
 

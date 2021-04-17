@@ -2419,6 +2419,14 @@ begin
    Buff[0] := WK_GET_SPEEDPOT_CMD;
    FComKeying.SendData(@Buff, 1);
 
+   // Set PINCFG
+   //     1010 1100
+   //     A    C
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_SET_PINCFG_CMD;
+   BUff[1] := $ac;
+   FComKeying.SendData(@Buff, 2);
+
    // SideTone
    WinKeyerSetSideTone(FUseSideTone);
 end;
@@ -2554,8 +2562,8 @@ begin
    end;
 
    // PTT ON/OFF
-   S := StringReplace(S, '(', #18#01, [rfReplaceAll]);
-   S := StringReplace(S, ')', #18#00, [rfReplaceAll]);
+   S := StringReplace(S, '(', #$18#01, [rfReplaceAll]);
+   S := StringReplace(S, ')', #$18#00, [rfReplaceAll]);
 
    // AR
    S := StringReplace(S, 'a', #$1b + 'AR', [rfReplaceAll]);
@@ -2794,11 +2802,13 @@ begin
          end
          else begin
             FWkCallsignSending := False;
-            if FPTTEnabled = True then begin
-               WinKeyerControlPTT(False);
-            end;
+
             if Assigned(FOnCallsignSentProc) then begin
                FOnCallsignSentProc(nil);
+            end;
+
+            if FPTTEnabled = True then begin
+               WinKeyerControlPTT(False);
             end;
          end;
 
