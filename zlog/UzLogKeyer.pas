@@ -26,6 +26,7 @@ const
 const
   WM_USER_WKSENDNEXTCHAR = (WM_USER + 1);
   WM_USER_WKCHANGEWPM = (WM_USER + 2);
+  WM_USER_WKPADDLE = (WM_USER + 3);
 
 type
   TKeyingPort = (tkpNone,
@@ -212,6 +213,7 @@ type
     procedure WinKeyerClose();
     procedure WinKeyerSetSpeed(nWPM: Integer);
     procedure WinKeyerSetSideTone(fOn: Boolean);
+    procedure WinKeyerSetPTTMode(fUse: Boolean);
     procedure WinKeyerControlPTT(fOn: Boolean);
     procedure WinKeyerSetPTTDelay(before, after: Byte);
     procedure WinKeyerSetMode(mode: Byte);
@@ -594,7 +596,14 @@ begin
    end;
 
    if (FKeyingPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
-      WinkeyerControlPTT(PTTON);
+      if PTTON = True then begin
+         WinKeyerSetPTTMode(True);
+         WinkeyerControlPTT(PTTON);
+      end
+      else begin
+         WinkeyerControlPTT(PTTON);
+         WinKeyerSetPTTMode(False);
+      end;
    end;
 end;
 
@@ -2419,13 +2428,8 @@ begin
    Buff[0] := WK_GET_SPEEDPOT_CMD;
    FComKeying.SendData(@Buff, 1);
 
-   // Set PINCFG
-   //     1010 1100
-   //     A    C
-   FillChar(Buff, SizeOf(Buff), 0);
-   Buff[0] := WK_SET_PINCFG_CMD;
-   BUff[1] := $ac;
-   FComKeying.SendData(@Buff, 2);
+   // Set PTT Mode(PINCFG)
+   WinKeyerSetPTTMode(False);
 
    // SideTone
    WinKeyerSetSideTone(FUseSideTone);
@@ -2460,6 +2464,8 @@ begin
    Buff[0] := WK_CLEAR_CMD;
    FComKeying.SendData(@Buff, 1);
    FWkLastMessage := '';
+
+   WinKeyerSetPTTMode(False);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetSideTone(fOn: Boolean);
@@ -2473,6 +2479,25 @@ begin
    end
    else begin
       Buff[1] := $86;
+   end;
+   FComKeying.SendData(@Buff, 2);
+end;
+
+procedure TdmZLogKeyer.WinKeyerSetPTTMode(fUse: Boolean);
+var
+   Buff: array[0..10] of Byte;
+begin
+   // Set PINCFG
+   //     1010 1100
+   //     A    C
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_SET_PINCFG_CMD;
+   Buff[1] := $ac;
+   if fUse = False then begin
+      Buff[1] := Buff[1] or $1;
+   end;
+   if FUseSideTone = True then begin
+      Buff[1] := Buff[1] or $2;
    end;
    FComKeying.SendData(@Buff, 2);
 end;
@@ -2648,11 +2673,22 @@ begin
 
          if ((b and $c0) = $c0) then begin    // STATUS
             // Paddle break
-            if (FWkStatus and WK_STATUS_BREAKIN) = WK_STATUS_BREAKIN then begin
-               if (FPTTEnabled = True) then begin
-                  WinKeyerControlPTT(False);
-               end;
-               WinKeyerClear();
+            // IDLE->ACTIVE
+            if ((FWkStatus and WK_STATUS_BREAKIN) = 0) and
+               ((b and WK_STATUS_BREAKIN) = WK_STATUS_BREAKIN) then begin
+               PostMessage(FWnd, WM_USER_WKPADDLE, 0, 1);
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('WinKey Paddle Active [' + IntToHex(b, 2) + ']'));
+               {$ENDIF}
+            end;
+
+            // ACTIVE->IDLE
+            if ((FWkStatus and WK_STATUS_BREAKIN) = WK_STATUS_BREAKIN) and
+               ((b and WK_STATUS_BREAKIN) = 0) then begin
+               PostMessage(FWnd, WM_USER_WKPADDLE, 0, 0);
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('WinKey Paddle Deactive [' + IntToHex(b, 2) + ']'));
+               {$ENDIF}
             end;
 
             //コールサイン送信時：１文字送信終了
@@ -2825,6 +2861,35 @@ begin
 
       WM_USER_WKCHANGEWPM: begin
          SetWPM(msg.LParam);
+         msg.Result := 0;
+      end;
+
+      WM_USER_WKPADDLE: begin
+//         WinKeyerClear();
+
+         if msg.LParam = 0 then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('WinKey WM_USER_WKPADDLE --- OFF ---'));
+            {$ENDIF}
+            if (FPTTEnabled = True) then begin
+//               WinKeyerControlPTT(False);
+            end;
+         end
+         else begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('WinKey WM_USER_WKPADDLE --- ON ---'));
+            {$ENDIF}
+
+            if Assigned(FOnPaddleEvent) then begin
+               FOnPaddleEvent(Self);
+            end;
+
+            if (FPTTEnabled = True) then begin
+//               WinKeyerControlPTT(True);
+            end;
+         end;
+
+         msg.Result := 0;
       end;
 
       else begin
