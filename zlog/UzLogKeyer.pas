@@ -2647,6 +2647,14 @@ begin
          b := (PP + i)^;
 
          if ((b and $c0) = $c0) then begin    // STATUS
+            // Paddle break
+            if (FWkStatus and WK_STATUS_BREAKIN) = WK_STATUS_BREAKIN then begin
+               if (FPTTEnabled = True) then begin
+                  WinKeyerControlPTT(False);
+               end;
+               WinKeyerClear();
+            end;
+
             //コールサイン送信時：１文字送信終了
             if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
                {$IFDEF DEBUG}
