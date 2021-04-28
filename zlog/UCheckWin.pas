@@ -62,7 +62,27 @@ end;
 procedure TCheckWin.ResetListBox;
 var
    B: TBand;
+   i: Integer;
+   hh: Integer;
 begin
+   i := 0;
+   for B := b19 to HiBand do begin
+      if (MainForm.BandMenu.Items[ord(B)].Enabled) and (MainForm.BandMenu.Items[ord(B)].Visible) then begin
+         BandRow[B] := i;
+         inc(i);
+      end
+      else
+         BandRow[B] := -1;
+   end;
+
+   hh := Abs(ListBox.Font.Height) + 2;
+   if ListCWandPh then begin
+      ClientHeight := (hh * 2) * (i) + Panel1.Height + 8;
+   end
+   else begin
+      ClientHeight := hh * (i) + Panel1.Height + 8;
+   end;
+
    ListBox.Items.Clear;
    if ListCWandPh then begin
       for B := b19 to HiBand do begin
@@ -85,25 +105,7 @@ begin
 end;
 
 procedure TCheckWin.FormShow(Sender: TObject);
-var
-   i: Integer;
-   B: TBand;
 begin
-   i := 0;
-   for B := b19 to HiBand do begin
-      if (MainForm.BandMenu.Items[ord(B)].Enabled) and (MainForm.BandMenu.Items[ord(B)].Visible) then begin
-         BandRow[B] := i;
-         inc(i);
-      end
-      else
-         BandRow[B] := -1;
-   end;
-
-   if ListCWandPh then
-      Height := 28 * i + 59
-   else
-      Height := 14 * i + 59;
-
    ResetListBox;
    Renew(Main.CurrentQSO);
 end;
@@ -130,6 +132,7 @@ procedure TCheckWin.SetFontSize(v: Integer);
 begin
    FFontSize := v;
    ListBox.Font.Size := v;
+   ResetListBox();
 end;
 
 end.
