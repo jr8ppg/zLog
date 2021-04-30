@@ -146,6 +146,7 @@ function TSpot.Analyze(S : string) : boolean;
 var
    temp, temp2 : string;
    i : integer;
+   Index: Integer;
 begin
    Result := False;
 
@@ -195,7 +196,13 @@ begin
          on EConvertError do
             exit;
       end;
-      Band := TBand(GetBandIndex(FreqHz, 0));
+
+      Index := GetBandIndex(FreqHz);
+      if Index = -1 then begin
+         Exit;
+      end;
+
+      Band := TBand(Index);
 
       Delete(temp, 1, i);
       temp := TrimLeft(temp);
@@ -269,7 +276,13 @@ begin
          on EConvertError do
             exit;
       end;
-      Band := TBand(GetBandIndex(FreqHz, 0));
+
+      Index := GetBandIndex(FreqHz);
+      if Index = -1 then begin
+         Exit;
+      end;
+
+      Band := TBand(Index);
 
       Delete(temp, 1, i);
       temp := TrimLeft(temp);
