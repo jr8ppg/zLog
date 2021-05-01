@@ -57,7 +57,6 @@ type
   TUsbPortDataArray = array[0..1] of Byte;
 
   TdmZLogKeyer = class(TDataModule)
-    HidController: TJvHidDeviceController;
     ZComKeying: TCommPortDriver;
     RepeatTimer: TTimer;
     procedure WndMethod(var msg: TMessage);
@@ -70,12 +69,15 @@ type
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
     procedure ZComKeyingReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
     procedure RepeatTimerTimer(Sender: TObject);
+    procedure HidControllerDeviceCreateError(Controller: TJvHidDeviceController;
+      PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
   private
     { Private êÈåæ }
     FComKeying: TCommPortDriver;
 
     FMonitorThread: TKeyerMonitorThread;
 
+    HidController: TJvHidDeviceController;
     FUSBIF4CW_Detected: Boolean;
     FUSBIF4CW: TJvHIDDevice;
     FUSBIF4CW_Version: Long;
@@ -353,6 +355,12 @@ begin
    end;
    {$ENDIF}
 
+   HidController := TJvHidDeviceController.Create(Self, HidControllerDeviceCreateError, nil);
+   HidController.OnDeviceChange := DoDeviceChanges;
+   HidController.OnDeviceData := HidControllerDeviceData;
+   HidController.OnDeviceUnplug := HidControllerDeviceUnplug;
+   HidController.OnRemoval := HidControllerRemoval;
+   HidController.OnEnumerate := DoEnumeration;
    FUSBIF4CW_Detected := False;
    FUSBIF4CW := nil;
    FUSBIF4CW_Version := 0;
@@ -387,6 +395,7 @@ begin
    COM_OFF();
    USB_OFF();
    DeallocateHWnd(FWnd);
+   HidController.Free();
 end;
 
 procedure TdmZLogKeyer.DoDeviceChanges(Sender: TObject);
@@ -437,6 +446,23 @@ begin
    finally
       FUsbDetecting := False;
    end;
+end;
+
+procedure TdmZLogKeyer.HidControllerDeviceCreateError(
+  Controller: TJvHidDeviceController; PnPInfo: TJvHidPnPInfo; var Handled,
+  RetryCreate: Boolean);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('***HidControllerDeviceCreateError()***'));
+   OutputDebugString(PChar('***[' + PnPInfo.DevicePath + ']***'));
+   OutputDebugString(PChar('***[' + IntToHex(PnPInfo.DeviceID, 8) + ']***'));
+   OutputDebugString(PChar('***[' + PnPInfo.DeviceDescr + ']***'));
+   OutputDebugString(PChar('***[' + PnPInfo.Driver + ']***'));
+   OutputDebugString(PChar('***[' + PnPInfo.HardwareID.Text + ']***'));
+   OutputDebugString(PChar('***[' + PnPInfo.Service + ']***'));
+   {$ENDIF}
+
+   Handled := True;
 end;
 
 procedure TdmZLogKeyer.HidControllerDeviceData(HidDev: TJvHidDevice;

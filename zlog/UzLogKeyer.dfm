@@ -4,15 +4,6 @@ object dmZLogKeyer: TdmZLogKeyer
   OnDestroy = DataModuleDestroy
   Height = 150
   Width = 215
-  object HidController: TJvHidDeviceController
-    OnEnumerate = DoEnumeration
-    OnDeviceChange = DoDeviceChanges
-    OnDeviceData = HidControllerDeviceData
-    OnDeviceUnplug = HidControllerDeviceUnplug
-    OnRemoval = HidControllerRemoval
-    Left = 24
-    Top = 16
-  end
   object ZComKeying: TCommPortDriver
     Tag = 3
     Port = pnCustom
