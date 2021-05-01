@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
-  UzLogCOnst, UzLogGlobal, UzLogQSO;
+  UzLogCOnst, UzLogGlobal, UzLogQSO, Vcl.Menus;
 
 type
   TPediScore = class(TBasicScore)
@@ -142,7 +142,7 @@ begin
    end;
 
    Grid.ColCount := 8;
-   Grid.RowCount := 17;
+   Grid.RowCount := 18;
 
    // カラム幅をセット
    w := Grid.Canvas.TextWidth('9');
