@@ -1884,13 +1884,13 @@ begin
       if l < mon.Left then begin
          l := mon.Left;
       end;
-      if l > (mon.Left + mon.Width) then begin
-         l := (mon.Left + mon.Width) - W;
+      if (l + w) > (mon.Left + mon.Width) then begin
+         l := (mon.Left + mon.Width) - w;
       end;
       if t < mon.Top then begin
          t := mon.Top;
       end;
-      if t > (mon.Top + mon.Height) then begin
+      if (t + h) > (mon.Top + mon.Height) then begin
          t := (mon.Top + mon.Height) - H;
       end;
 
