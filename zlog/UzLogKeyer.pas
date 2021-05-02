@@ -26,6 +26,7 @@ const
 const
   WM_USER_WKSENDNEXTCHAR = (WM_USER + 1);
   WM_USER_WKCHANGEWPM = (WM_USER + 2);
+  WM_USER_WKPADDLE = (WM_USER + 3);
 
 type
   TKeyingPort = (tkpNone,
@@ -56,7 +57,6 @@ type
   TUsbPortDataArray = array[0..1] of Byte;
 
   TdmZLogKeyer = class(TDataModule)
-    HidController: TJvHidDeviceController;
     ZComKeying: TCommPortDriver;
     RepeatTimer: TTimer;
     procedure WndMethod(var msg: TMessage);
@@ -69,12 +69,15 @@ type
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
     procedure ZComKeyingReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
     procedure RepeatTimerTimer(Sender: TObject);
+    procedure HidControllerDeviceCreateError(Controller: TJvHidDeviceController;
+      PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
   private
     { Private 宣言 }
     FComKeying: TCommPortDriver;
 
     FMonitorThread: TKeyerMonitorThread;
 
+    HidController: TJvHidDeviceController;
     FUSBIF4CW_Detected: Boolean;
     FUSBIF4CW: TJvHIDDevice;
     FUSBIF4CW_Version: Long;
@@ -212,6 +215,7 @@ type
     procedure WinKeyerClose();
     procedure WinKeyerSetSpeed(nWPM: Integer);
     procedure WinKeyerSetSideTone(fOn: Boolean);
+    procedure WinKeyerSetPTTMode(fUse: Boolean);
     procedure WinKeyerControlPTT(fOn: Boolean);
     procedure WinKeyerSetPTTDelay(before, after: Byte);
     procedure WinKeyerSetMode(mode: Byte);
@@ -351,6 +355,12 @@ begin
    end;
    {$ENDIF}
 
+   HidController := TJvHidDeviceController.Create(Self, HidControllerDeviceCreateError, nil);
+   HidController.OnDeviceChange := DoDeviceChanges;
+   HidController.OnDeviceData := HidControllerDeviceData;
+   HidController.OnDeviceUnplug := HidControllerDeviceUnplug;
+   HidController.OnRemoval := HidControllerRemoval;
+   HidController.OnEnumerate := DoEnumeration;
    FUSBIF4CW_Detected := False;
    FUSBIF4CW := nil;
    FUSBIF4CW_Version := 0;
@@ -385,6 +395,7 @@ begin
    COM_OFF();
    USB_OFF();
    DeallocateHWnd(FWnd);
+   HidController.Free();
 end;
 
 procedure TdmZLogKeyer.DoDeviceChanges(Sender: TObject);
@@ -435,6 +446,23 @@ begin
    finally
       FUsbDetecting := False;
    end;
+end;
+
+procedure TdmZLogKeyer.HidControllerDeviceCreateError(
+  Controller: TJvHidDeviceController; PnPInfo: TJvHidPnPInfo; var Handled,
+  RetryCreate: Boolean);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('***HidControllerDeviceCreateError()***'));
+   OutputDebugString(PChar('***[' + PnPInfo.DevicePath + ']***'));
+   OutputDebugString(PChar('***[' + IntToHex(PnPInfo.DeviceID, 8) + ']***'));
+   OutputDebugString(PChar('***[' + PnPInfo.DeviceDescr + ']***'));
+   OutputDebugString(PChar('***[' + PnPInfo.Driver + ']***'));
+   OutputDebugString(PChar('***[' + PnPInfo.HardwareID.Text + ']***'));
+   OutputDebugString(PChar('***[' + PnPInfo.Service + ']***'));
+   {$ENDIF}
+
+   Handled := True;
 end;
 
 procedure TdmZLogKeyer.HidControllerDeviceData(HidDev: TJvHidDevice;
@@ -594,7 +622,14 @@ begin
    end;
 
    if (FKeyingPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
-      WinkeyerControlPTT(PTTON);
+      if PTTON = True then begin
+         WinKeyerSetPTTMode(True);
+         WinkeyerControlPTT(PTTON);
+      end
+      else begin
+         WinkeyerControlPTT(PTTON);
+         WinKeyerSetPTTMode(False);
+      end;
    end;
 end;
 
@@ -2419,6 +2454,9 @@ begin
    Buff[0] := WK_GET_SPEEDPOT_CMD;
    FComKeying.SendData(@Buff, 1);
 
+   // Set PTT Mode(PINCFG)
+   WinKeyerSetPTTMode(False);
+
    // SideTone
    WinKeyerSetSideTone(FUseSideTone);
 end;
@@ -2452,6 +2490,8 @@ begin
    Buff[0] := WK_CLEAR_CMD;
    FComKeying.SendData(@Buff, 1);
    FWkLastMessage := '';
+
+   WinKeyerSetPTTMode(False);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetSideTone(fOn: Boolean);
@@ -2465,6 +2505,25 @@ begin
    end
    else begin
       Buff[1] := $86;
+   end;
+   FComKeying.SendData(@Buff, 2);
+end;
+
+procedure TdmZLogKeyer.WinKeyerSetPTTMode(fUse: Boolean);
+var
+   Buff: array[0..10] of Byte;
+begin
+   // Set PINCFG
+   //     1010 1100
+   //     A    C
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_SET_PINCFG_CMD;
+   Buff[1] := $ac;
+   if fUse = False then begin
+      Buff[1] := Buff[1] or $1;
+   end;
+   if FUseSideTone = True then begin
+      Buff[1] := Buff[1] or $2;
    end;
    FComKeying.SendData(@Buff, 2);
 end;
@@ -2554,8 +2613,8 @@ begin
    end;
 
    // PTT ON/OFF
-   S := StringReplace(S, '(', #18#01, [rfReplaceAll]);
-   S := StringReplace(S, ')', #18#00, [rfReplaceAll]);
+   S := StringReplace(S, '(', #$18#01, [rfReplaceAll]);
+   S := StringReplace(S, ')', #$18#00, [rfReplaceAll]);
 
    // AR
    S := StringReplace(S, 'a', #$1b + 'AR', [rfReplaceAll]);
@@ -2639,6 +2698,25 @@ begin
          b := (PP + i)^;
 
          if ((b and $c0) = $c0) then begin    // STATUS
+            // Paddle break
+            // IDLE->ACTIVE
+            if ((FWkStatus and WK_STATUS_BREAKIN) = 0) and
+               ((b and WK_STATUS_BREAKIN) = WK_STATUS_BREAKIN) then begin
+               PostMessage(FWnd, WM_USER_WKPADDLE, 0, 1);
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('WinKey Paddle Active [' + IntToHex(b, 2) + ']'));
+               {$ENDIF}
+            end;
+
+            // ACTIVE->IDLE
+            if ((FWkStatus and WK_STATUS_BREAKIN) = WK_STATUS_BREAKIN) and
+               ((b and WK_STATUS_BREAKIN) = 0) then begin
+               PostMessage(FWnd, WM_USER_WKPADDLE, 0, 0);
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('WinKey Paddle Deactive [' + IntToHex(b, 2) + ']'));
+               {$ENDIF}
+            end;
+
             //コールサイン送信時：１文字送信終了
             if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
                {$IFDEF DEBUG}
@@ -2794,11 +2872,13 @@ begin
          end
          else begin
             FWkCallsignSending := False;
-            if FPTTEnabled = True then begin
-               WinKeyerControlPTT(False);
-            end;
+
             if Assigned(FOnCallsignSentProc) then begin
                FOnCallsignSentProc(nil);
+            end;
+
+            if FPTTEnabled = True then begin
+               WinKeyerControlPTT(False);
             end;
          end;
 
@@ -2807,6 +2887,35 @@ begin
 
       WM_USER_WKCHANGEWPM: begin
          SetWPM(msg.LParam);
+         msg.Result := 0;
+      end;
+
+      WM_USER_WKPADDLE: begin
+//         WinKeyerClear();
+
+         if msg.LParam = 0 then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('WinKey WM_USER_WKPADDLE --- OFF ---'));
+            {$ENDIF}
+            if (FPTTEnabled = True) then begin
+//               WinKeyerControlPTT(False);
+            end;
+         end
+         else begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('WinKey WM_USER_WKPADDLE --- ON ---'));
+            {$ENDIF}
+
+            if Assigned(FOnPaddleEvent) then begin
+               FOnPaddleEvent(Self);
+            end;
+
+            if (FPTTEnabled = True) then begin
+//               WinKeyerControlPTT(True);
+            end;
+         end;
+
+         msg.Result := 0;
       end;
 
       else begin

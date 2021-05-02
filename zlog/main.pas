@@ -6189,6 +6189,10 @@ begin
       MyContest.ScoreForm.UpdateData();
       MyContest.MultiForm.UpdateData();
 
+      FCheckCall2.ResetListBox();
+      FCheckMulti.ResetListBox();
+      FCheckCountry.ResetListBox();
+
       SetWindowCaption();
 
       // SuperCheckçƒÉçÅ[Éh
@@ -9588,7 +9592,7 @@ var
    b: TBand;
 begin
    for b := b19 to HiBand do begin
-      BandMenu.Items[ord(b)].Enabled := (BandMenu.Items[ord(b)].Enabled and dmZLogGlobal.Settings._activebands[b]);
+      BandMenu.Items[ord(b)].Enabled := ({BandMenu.Items[ord(b)].Enabled and} dmZLogGlobal.Settings._activebands[b]);
    end;
 end;
 

@@ -23,7 +23,7 @@ object CWKeyBoard: TCWKeyBoard
     Width = 379
     Height = 71
     Align = alClient
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
+    ImeMode = imDisable
     TabOrder = 0
     OnKeyPress = ConsoleKeyPress
   end

@@ -27,6 +27,7 @@ type
     FSpotGroup: Integer;
     FCQ: Boolean;
     FNewJaMulti: Boolean;
+    FReportedBy: string;
   public
     constructor Create; virtual;
     function FreqKHzStr : string;
@@ -50,11 +51,11 @@ type
     property SpotGroup: Integer read FSpotGroup write FSpotGroup;
     property CQ: Boolean read FCQ write FCQ;
     property NewJaMulti: Boolean read FNewJaMulti write FNewJaMulti;
+    property ReportedBy: string read FReportedBy write FReportedBy;
   end;
 
   TSpot = class(TBaseSpot)
   protected
-    FReportedBy : string;
     FTimeStr : string;
     FComment : string;
   public
@@ -65,7 +66,6 @@ type
     procedure FromText(S : string); override;
     procedure Assign(O: TBaseSpot); override;
 
-    property ReportedBy: string read FReportedBy write FReportedBy;
     property TimeStr: string read FTimeStr write FTimeStr;
     property Comment: string read FComment write FComment;
   end;
@@ -102,21 +102,22 @@ uses
 
 constructor TBaseSpot.Create;
 begin
-   Time := Now;
-   Call := '';
-   Number := '';
-   FreqHz := 0;
-   NewCty := false;
-   NewZone := false;
-   CtyIndex := 0;
-   Zone := 0;
-   Worked := False;
-   Band := b19;
-   Mode := mCW;
-   SpotSource := ssSelf;
-   SpotGroup := 1;
-   CQ := False;
-   NewJaMulti := False;
+   FTime := Now;
+   FCall := '';
+   FNumber := '';
+   FFreqHz := 0;
+   FNewCty := false;
+   FNewZone := false;
+   FCtyIndex := 0;
+   FZone := 0;
+   FWorked := False;
+   FBand := b19;
+   FMode := mCW;
+   FSpotSource := ssSelf;
+   FSpotGroup := 1;
+   FCQ := False;
+   FNewJaMulti := False;
+   FReportedBy := '';
 end;
 
 constructor TSpot.Create;
@@ -146,6 +147,7 @@ function TSpot.Analyze(S : string) : boolean;
 var
    temp, temp2 : string;
    i : integer;
+   Index: Integer;
 begin
    Result := False;
 
@@ -195,7 +197,13 @@ begin
          on EConvertError do
             exit;
       end;
-      Band := TBand(GetBandIndex(FreqHz, 0));
+
+      Index := GetBandIndex(FreqHz);
+      if Index = -1 then begin
+         Exit;
+      end;
+
+      Band := TBand(Index);
 
       Delete(temp, 1, i);
       temp := TrimLeft(temp);
@@ -269,7 +277,13 @@ begin
          on EConvertError do
             exit;
       end;
-      Band := TBand(GetBandIndex(FreqHz, 0));
+
+      Index := GetBandIndex(FreqHz);
+      if Index = -1 then begin
+         Exit;
+      end;
+
+      Band := TBand(Index);
 
       Delete(temp, 1, i);
       temp := TrimLeft(temp);

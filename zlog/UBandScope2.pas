@@ -218,6 +218,7 @@ begin
    D.CQ := Sp.CQ;
    D.Number := Sp.Number;
    D.NewJaMulti := Sp.NewJaMulti;
+   D.ReportedBy := Sp.ReportedBy;
    AddAndDisplay(D);
 end;
 
@@ -726,6 +727,11 @@ begin
    end
    else begin
       strText := strText + IntToStr(elapsed) + ' seconds elapsed';
+   end;
+
+   // Spotter
+   if D.ReportedBy <> '' then begin
+      strText := strText + #13#10 + 'Reported by ' + D.ReportedBy;
    end;
 
    Grid.Hint := strText;
