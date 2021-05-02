@@ -1,7 +1,7 @@
 object formFunctionKeyPanel: TformFunctionKeyPanel
   Left = 0
   Top = 0
-  Caption = 'Function Key Panel'
+  Caption = 'Function Key'
   ClientHeight = 55
   ClientWidth = 730
   Color = clBtnFace

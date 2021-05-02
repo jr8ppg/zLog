@@ -3,7 +3,7 @@ object formKeyEditDlg: TformKeyEditDlg
   Top = 0
   BorderStyle = bsDialog
   Caption = #12461#12540#32232#38598
-  ClientHeight = 293
+  ClientHeight = 374
   ClientWidth = 495
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,12 +15,12 @@ object formKeyEditDlg: TformKeyEditDlg
   Position = poOwnerFormCenter
   DesignSize = (
     495
-    293)
+    374)
   PixelsPerInch = 96
   TextHeight = 12
   object GroupBox1: TGroupBox
     Left = 8
-    Top = 3
+    Top = 8
     Width = 385
     Height = 57
     Caption = #12501#12449#12531#12463#12471#12519#12531#12461#12540
@@ -77,7 +77,7 @@ object formKeyEditDlg: TformKeyEditDlg
   end
   object GroupBox2: TGroupBox
     Left = 8
-    Top = 67
+    Top = 72
     Width = 385
     Height = 57
     Caption = 'A'#65374'Z,0'#65374'9'#12461#12540
@@ -159,7 +159,7 @@ object formKeyEditDlg: TformKeyEditDlg
   end
   object GroupBox3: TGroupBox
     Left = 8
-    Top = 136
+    Top = 141
     Width = 385
     Height = 57
     Caption = #29305#27530#12461#12540
@@ -207,7 +207,7 @@ object formKeyEditDlg: TformKeyEditDlg
   end
   object GroupBox4: TGroupBox
     Left = 8
-    Top = 199
+    Top = 204
     Width = 385
     Height = 82
     Caption = #12381#12398#20182#12398#12461#12540#65288#19978#35352#12392#20341#29992#21487#65289
@@ -269,6 +269,28 @@ object formKeyEditDlg: TformKeyEditDlg
       Height = 17
       Caption = '\ (YEN)'
       TabOrder = 6
+    end
+  end
+  object GroupBox5: TGroupBox
+    Left = 8
+    Top = 292
+    Width = 385
+    Height = 74
+    Caption = #12497#12493#12523#34920#31034#21517
+    TabOrder = 6
+    object Label1: TLabel
+      Left = 16
+      Top = 50
+      Width = 227
+      Height = 12
+      Caption = #8251'Function Key Panel'#12395#34920#31034#12377#12427#34920#31034#21517#12391#12377
+    end
+    object editDispText: TEdit
+      Left = 16
+      Top = 24
+      Width = 349
+      Height = 20
+      TabOrder = 0
     end
   end
 end

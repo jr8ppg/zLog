@@ -8576,6 +8576,7 @@ end;
 procedure TMainForm.actionShowAnalyzeExecute(Sender: TObject);
 begin
    FZAnalyze.Show();
+   LastFocus.SetFocus();
 end;
 
 // #76 Scoreウインドウ
@@ -8600,18 +8601,21 @@ end;
 procedure TMainForm.actionShowCheckCallExecute(Sender: TObject);
 begin
    FCheckCall2.Show;
+   LastFocus.SetFocus();
 end;
 
 // #80 Check Multiウインドウ
 procedure TMainForm.actionShowCheckMultiExecute(Sender: TObject);
 begin
    FCheckMulti.Show;
+   LastFocus.SetFocus();
 end;
 
 // #81 Check Countryウインドウ
 procedure TMainForm.actionShowCheckCountryExecute(Sender: TObject);
 begin
    FCheckCountry.Show;
+   LastFocus.SetFocus();
 end;
 
 // #82 交信開始 / TAB
@@ -9056,6 +9060,7 @@ end;
 procedure TMainForm.actionFunctionKeyPanelExecute(Sender: TObject);
 begin
    FFunctionKeyPanel.Show();
+   LastFocus.SetFocus();
 end;
 
 procedure TMainForm.RestoreWindowsPos();
