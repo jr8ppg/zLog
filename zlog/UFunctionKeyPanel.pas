@@ -40,7 +40,7 @@ implementation
 {$R *.dfm}
 
 uses
-  Main;
+  Main, UzLogGlobal;
 
 procedure TformFunctionKeyPanel.FormCreate(Sender: TObject);
 begin
@@ -60,7 +60,12 @@ begin
          ButtonGroup1.Items[i].Caption := '';
       end
       else begin
-         ButtonGroup1.Items[i].Caption := s + ':' + act.Hint;
+         if act.Hint = '' then begin
+            ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.Settings.CW.CWStrBank[1, i + 1];
+         end
+         else begin
+            ButtonGroup1.Items[i].Caption := s + ':' + act.Hint;
+         end;
       end;
    end;
 end;
