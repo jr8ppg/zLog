@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ClipBrd, System.Actions, Vcl.ActnList,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer;
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, UzLogExtension;
 
 type
   TCWKeyBoard = class(TForm)
@@ -119,6 +119,9 @@ procedure TCWKeyBoard.ConsoleKeyPress(Sender: TObject; var Key: Char);
 var
    K: Char;
 begin
+   if zLogKeyBoardPressed(Sender, key) then
+      Exit;
+
    if Key = Chr($1B) then
       exit;
 

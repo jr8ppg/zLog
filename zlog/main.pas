@@ -4674,6 +4674,9 @@ procedure TMainForm.EditKeyPress(Sender: TObject; var Key: Char);
 var
    Q: TQSO;
 begin
+   if zLogKeyBoardPressed(Sender, key) then
+      Exit;
+
    if CallsignEdit.Font.Color = clGrayText then begin
       if Key <> ' ' then begin
          CallsignEdit.Text := OldCallsign;
@@ -5498,6 +5501,8 @@ procedure TMainForm.CWFButtonClick(Sender: TObject);
 var
    i: Integer;
 begin
+   if zLogFunctionClicked(Sender) then
+      Exit;
    i := THemisphereButton(Sender).Tag;
    PlayMessage(dmZlogGlobal.Settings.CW.CurrentBank, i);
 end;
@@ -5964,6 +5969,8 @@ procedure TMainForm.VoiceFButtonClick(Sender: TObject);
 var
    n: Integer;
 begin
+   if zLogFunctionClicked(Sender) then
+      Exit;
    n := THemisphereButton(Sender).Tag;
    PlayMessage(1, n);
 end;

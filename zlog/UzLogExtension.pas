@@ -1,335 +1,282 @@
+ï»¿{*******************************************************************************
+ * Amateur Radio Operational Logging Software 'ZyLO' since 2020 June 22
+ * License : GNU General Public License v3 (see LICENSE)
+ * Author: Journal of Hamradio Informatics (http://pafelog.net)
+*******************************************************************************}
 unit UzLogExtension;
-
-{ zLog‚©‚çŠO•”‚ÌƒvƒƒOƒ‰ƒ€‚ğŒÄ‚Ño‚·‚½‚ß‚ÌØ‚èŒûƒˆÄ„ }
-{ ‚±‚Ìƒtƒ@ƒCƒ‹ŠÛ‚²‚ÆƒJƒXƒ^ƒ}ƒCƒY‚·‚ê‚Î—Ç‚¢ }
-{ example‚Íˆê”Ê“I‚ÈDLLŒÄ‚Ño‚µ‚ÌƒTƒ“ƒvƒ‹ }
-
-{
-  •ÊŒ‚ÅUExceptionDialog.pas‚Å‚Ìİ’è
-  uƒvƒƒWƒFƒNƒgv|uJCL Debug expertv|uGenerate .jdbg filesv|uEnabled for this projectv‚ğ‘I‘ğ
-  uƒvƒƒWƒFƒNƒgv|uJCL Debug expertv|uInsert JDBG data into the binaryv|uEnabled for this projectv‚ğ‘I‘ğ
-}
-
-//{$DEFINE USE_ZLOGEXT_EXAMPLE}
 
 interface
 
 uses
-  Windows, SysUtils, Classes, Forms, UzLogQSO;
+	Classes,
+	Windows,
+	Dialogs,
+	IOUtils,
+	StdCtrls,
+	StrUtils,
+	SysUtils,
+	UITypes,
+	UzLogQSO,
+	UzLogGlobal,
+	RegularExpressions;
 
 type
-  TzLogEvent = ( evAddQSO = 0, evModifyQSO, evDeleteQSO );
+	TzLogEvent = (evAddQSO = 0, evModifyQSO, evDeleteQSO);
+	TImportDialog = class(TOpenDialog)
+		procedure ImportMenuClicked(Sender: TObject);
+	end;
+	TExportDialog = class(TSaveDialog)
+		procedure ExportMenuClicked(Sender: TObject);
+		procedure FilterTypeChanged(Sender: TObject);
+	end;
+var
+	Fmt: string;
+	zHandle: THandle;
+	ImportDialog: TImportDialog;
+	ExportDialog: TExportDialog;
+	zlaunch: procedure(str: PAnsiChar); stdcall;
+	zfilter: function (): PAnsiChar; stdcall;
+	zformat: procedure(src: PAnsiChar; dst: PAnsiChar; fmt: PAnsiChar); stdcall;
+	zrevise: procedure(ptr: pointer; len: integer); stdcall;
+	zverify: function (ptr: pointer; len: integer): integer; stdcall;
+	zupdate: function (ptr: pointer; len: integer): integer; stdcall;
+	zinsert: procedure(ptr: pointer; len: integer); stdcall;
+	zdelete: procedure(ptr: pointer; len: integer); stdcall;
+	zkpress: function (key: integer; source: PAnsiChar): boolean; stdcall;
+	zfclick: function (btn: integer; source: PAnsiChar): boolean; stdcall;
+	zfinish: procedure(); stdcall;
 
-// zLog–{‘Ì‚©‚çŒÄ‚Ño‚³‚ê‚éˆ—
+const
+	BIN = 'zbin';
+	LEN = sizeof(TQSOData);
+
+(*zLog event handlers*)
 procedure zLogInitialize();
-procedure zLogContestInit(strContestName, strCfgFileName: string);
+procedure zLogContestInit(contest, cfg: string);
 procedure zLogContestEvent(event: TzLogEvent; bQSO, aQSO: TQSO);
 procedure zLogContestTerm();
 procedure zLogTerminate();
-function zLogCalcPointsHookHandler(aQSO: TQSO): Boolean;
-function zLogExtractMultiHookHandler(aQSO: TQSO; var strMulti: string): Boolean;
-function zLogValidMultiHookHandler(strMulti: string; var fValidMulti: Boolean): Boolean;
-function zLogGetTotalScore(): Integer;
+function zLogCalcPointsHookHandler(aQSO: TQSO): boolean;
+function zLogExtractMultiHookHandler(aQSO: TQSO; var mul: string): boolean;
+function zLogValidMultiHookHandler(mul: string; var val: boolean): boolean;
+function zLogGetTotalScore(): integer;
+function zLogKeyBoardPressed(Sender: TObject; key: Char): boolean;
+function zLogFunctionClicked(Sender: TObject): boolean;
+function ToC(str: string): PAnsiChar;
 
 implementation
 
-var
-  zLogContestInitialized: Boolean;  // ƒRƒ“ƒeƒXƒg‰Šú‰»Š®—¹ƒtƒ‰ƒO
+uses
+	main;
 
-// example
-// extension.dll“à‚Ì«‚ÌŠÖ”‚ğŒÄ‚Ño‚·—á •¶š—ñ‚ÍSHIFT-JIS
-// void _stdcall zLogExtensionProcName(int event, LPCSTR pszCallsign, QSODATA *pqsorec);
+function ToC(str: string): PAnsiChar;
+begin
+	Result := PAnsiChar(AnsiString(str));
+end;
 
-(*
-typedf struct _QSODATA {
-  double Time;
-  char CallSign[13];
-  char NrSent[31];
-  char NrRcvd[31];
-  WORD RSTSent;
-  WORD RSTRcvd;
-  int  Serial;
-  BYTE Mode;
-  BYTE Band;
-  BYTE Power;
-  char Multi1[31];
-  char Multi2[31];
-  BOOL NewMulti1;
-  BOOL NewMulti2;
-  BYTE Points:
-  char Operator[15];
-  char Memo[65];
-  BOOL CQ;
-  BOOL Dupe
-  BYTE Reserve;
-  BYTE TX;
-  int  Power2;
-  int  Reserve2;
-  int  Reserve3;
-} QSODATA;
-*)
-
-type
-  PTQSOData = ^TQSOData;
-  TExtensionQsoEventProc = procedure(event: Integer; pszCallsign: PAnsiChar; pqsorec: PTQSOData); stdcall;
-  TExtensionPointsCalcProc = function(pqsorec: PTQSOData): Integer; stdcall;
-  TExtensionExtractMultiProc = function(pqsorec: PTQSOData; pszMultiStr: PAnsiChar; nBufferSize: Integer): Integer; stdcall;
-  TExtensionValidMultiProc = function(pszMultiStr: PAnsiChar): Boolean; stdcall;
-  TExtensionGetTotalScoreProc = function(): Integer; stdcall;
-
-{$IFDEF USE_ZLOGEXT_EXAMPLE}
-var
-  hExtensionDLL: THandle;
-  pfnExtensionQsoEventProc: TExtensionQsoEventProc;
-  pfnExtensionCalsPountsProc: TExtensionPointsCalcProc;
-  pfnExtensionExtractMultiProc: TExtensionExtractMultiProc;
-  pfnExtensionValidMultiProc: TExtensionValidMultiProc;
-  pfnExtensionGetTotalScoreProc: TExtensionGetTotalScoreProc;
-{$ENDIF}
-
-// zLog‚Ì‹N“®
 procedure zLogInitialize();
+begin
+	ImportDialog := TImportDialog.Create(MainForm);
+	ExportDialog := TExportDialog.Create(MainForm);
+	ExportDialog.OnTypeChange := ExportDialog.FilterTypeChanged;
+	ExportDialog.Options := [ofOverwritePrompt];
+	MainForm.MergeFile1.Caption := '&Import...';
+end;
+
+procedure zLogContestInit(contest: string; cfg: string);
 var
-   strExtensionDLL: string;
+	dll: string;
+	txt: string;
+	fil: string;
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('zLogInitialize()'));
-   {$ENDIF}
-
-   {$IFDEF USE_ZLOGEXT_EXAMPLE}
-   // example
-   strExtensionDLL := ExtractFilePath(Application.ExeName) + 'zlog_extension.dll';
-   if FileExists(strExtensionDLL) = False then begin
-      Exit;
-   end;
-
-   hExtensionDLL := LoadLibrary(PChar(strExtensionDLL));
-   if hExtensionDLL = 0 then begin
-      Exit;
-   end;
-
-   @pfnExtensionQsoEventProc := GetProcAddress(hExtensionDLL, LPCSTR('zLogExtensionProcName'));
-   @pfnExtensionCalsPountsProc := GetProcAddress(hExtensionDLL, LPCSTR('zLogExtensionPointsCalcProcName'));
-   @pfnExtensionExtractMultiProc := GetProcAddress(hExtensionDLL, LPCSTR('zLogExtensionExtractMultiProcName'));
-   @pfnExtensionValidMultiProc := GetProcAddress(hExtensionDLL, LPCSTR('zLogExtensionValidMultiProcName'));
-   @pfnExtensionGetTotalScoreProc := GetProcAddress(hExtensionDLL, LPCSTR('zLogExtensionGetTotalScoreProcName'));
-   {$ENDIF}
+	txt := TFile.ReadAllText(cfg);
+	txt := TRegEx.Replace(txt, '(?m);.*?$', '');
+	txt := TRegEx.Replace(txt, '(?m)#.*?$', '');
+	dll := TRegEx.Replace(cfg, '(?i)\.CFG', '.DLL');
+	if TRegEx.Match(txt, '(?im)^ *DLL +ON *$').Success then
+	try
+		zHandle := LoadLibrary(PChar(dll));
+		zlaunch := GetProcAddress(zHandle, '_zlaunch');
+		zfilter := GetProcAddress(zHandle, '_zfilter');
+		zformat := GetProcAddress(zHandle, '_zformat');
+		zrevise := GetProcAddress(zHandle, '_zrevise');
+		zverify := GetProcAddress(zHandle, '_zverify');
+		zupdate := GetProcAddress(zHandle, '_zupdate');
+		zinsert := GetProcAddress(zHandle, '_zinsert');
+		zdelete := GetProcAddress(zHandle, '_zdelete');
+		zkpress := GetProcAddress(zHandle, '_zkpress');
+		zfclick := GetProcAddress(zHandle, '_zfclick');
+		zfinish := GetProcAddress(zHandle, '_zfinish');
+		zlaunch(ToC(cfg));
+		fil := string(AnsiString(zfilter()));
+		ImportDialog.Filter := fil;
+		ExportDialog.Filter := fil;
+		MainForm.MergeFile1.OnClick := ImportDialog.ImportMenuClicked;
+		MainForm.Export1.OnClick    := ExportDialog.ExportMenuClicked;
+	except
+		zHandle := 0;
+		MessageDlg('failed to load ' + dll, mtWarning, [mbOK], 0);
+		MainForm.MergeFile1.OnClick := MainForm.MergeFile1Click;
+		MainForm.Export1.OnClick    := MainForm.Export1Click;
+	end;
 end;
 
-// ƒRƒ“ƒeƒXƒg‚Ì‰Šú‰»Š®—¹
-// strContestName EEE ƒRƒ“ƒeƒXƒg–¼AUserDefined‚Ìê‡‚ÍCFGƒtƒ@ƒCƒ‹“à‚ÌƒRƒ“ƒeƒXƒg–¼
-// strCfgFileName EEE CFGƒtƒ@ƒCƒ‹–¼ =''‚Ì‚Í•K‚¸builtinƒRƒ“ƒeƒXƒg !=''‚Ì‚Í•K‚¸UserDefined
-procedure zLogContestInit(strContestName, strCfgFileName: string);
-begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('zLogContestInit(''' + strContestName + ''',''' + strCfgFileName + ''')'));
-   {$ENDIF}
-
-   {$IFDEF USE_ZLOGEXT_EXAMPLE}
-   zLogContestInitialized := True;
-   {$ENDIF}
-end;
-
-// ŒğMƒf[ƒ^‚Ì’Ç‰ÁA•ÏXAíœ
-//                         ’Ç‰Á  •ÏX  íœ
-// bQSO EEE before QSO  nil   ›    ›
-// aQSO EEE after QSO   ›    ›    nil
 procedure zLogContestEvent(event: TzLogEvent; bQSO, aQSO: TQSO);
 var
-   qsorec: TQSOData;
-   {$IFDEF DEBUG}
-   astr, bstr: string;
-   {$ENDIF}
+	qso: TQSOData;
 begin
-   if zLogContestInitialized = False then begin
-      Exit;
-   end;
-
-   {$IFDEF DEBUG}
-   if Assigned(bQSO) then bstr := bQSO.Callsign else bstr := 'nil';
-   if Assigned(aQSO) then astr := aQSO.Callsign else astr := 'nil';
-   OutputDebugString(PChar('zLogEventProc(' + IntToStr(Integer(event)) + ',' + '''' + bstr + ''',' + '''' + astr + ''')'));
-   {$ENDIF}
-
-   {$IFDEF USE_ZLOGEXT_EXAMPLE}
-   // example
-   if Assigned(pfnExtensionQsoEventProc) then begin
-      qsorec := aQSO.FileRecord;
-      pfnExtensionQsoEventProc(Integer(event), PAnsiChar(AnsiString(aQSO.Callsign)), @qsorec);
-   end;
-   {$ENDIF}
+	if @zinsert <> nil then begin
+		if event <> evDeleteQSO then begin
+			qso := aQSO.FileRecord;
+			zinsert(@qso, LEN);
+		end;
+	end;
+	if @zdelete <> nil then begin
+		if event <> evAddQSO then begin
+			qso := bQSO.FileRecord;
+			zdelete(@qso, LEN);
+		end;
+	end;
 end;
 
-// ƒRƒ“ƒeƒXƒg‚ÌI—¹
 procedure zLogContestTerm();
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('zLogContestTerm()'));
-   {$ENDIF}
-   zLogContestInitialized := False;
+	if @zfinish <> nil then begin
+		zfinish();
+		zlaunch := nil;
+		zfilter := nil;
+		zformat := nil;
+		zrevise := nil;
+		zverify := nil;
+		zupdate := nil;
+		zinsert := nil;
+		zdelete := nil;
+		zkpress := nil;
+		zfclick := nil;
+		zfinish := nil;
+		FreeLibrary(zHandle);
+		zHandle := 0;
+	end;
 end;
 
-// zLog‚ÌI—¹
 procedure zLogTerminate();
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('zLogTerminate()'));
-   {$ENDIF}
-
-   {$IFDEF USE_ZLOGEXT_EXAMPLE}
-   // example
-   if hExtensionDLL <> 0 then begin
-      FreeLibrary(hExtensionDLL);
-   end;
-   {$ENDIF}
 end;
 
-// “¾“_‚ÌŒvZ handle‚µ‚½ê‡FTrueA‚µ‚È‚©‚Á‚½ê‡FFalse‚ğ•Ô‚·
-// handle‚µ‚½‚çaQSO.Points‚É“_”‚ğ“ü‚ê‚é
-// DLL‚ÌŠÖ”‚Å’¼Ú“ü‚ê‚Ä‚à—Ç‚¢
-function zLogCalcPointsHookHandler(aQSO: TQSO): Boolean;
+(*returns whether the QSO score is calculated by this handler*)
+function zLogCalcPointsHookHandler(aQSO: TQSO): boolean;
 var
-   pts: Integer;
-   qsorec: TQSOData;
+	qso: TQSOData;
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('zLogCalcPointsHandler()'));
-   {$ENDIF}
-
-   {$IFDEF USE_ZLOGEXT_EXAMPLE}
-   if hExtensionDLL = 0 then begin
-      Result := False;  // not handled
-      Exit;
-   end;
-
-   if Not Assigned(pfnExtensionCalsPountsProc) then begin
-      Result := False;  // not handled
-      Exit;
-   end;
-
-   // “¾“_‚ğŒvZ‚·‚é
-   qsorec := aQSO.FileRecord;
-   pts := pfnExtensionCalsPountsProc(@qsorec);
-
-   aQSO.Points := pts;
-
-   // handled
-   Result := True;
-   {$ELSE}
-   Result := False;
-   {$ENDIF}
+	Result := @zverify <> nil;
+	if Result then begin
+		qso := aQSO.FileRecord;
+		aQSO.Points := zverify(@qso, LEN);
+	end;
 end;
 
-// ƒ}ƒ‹ƒ`•¶š—ñ‚Ì’Šo‚ğs‚¤ handle‚µ‚½ê‡FTrueA‚µ‚È‚©‚Á‚½ê‡FFalse‚ğ•Ô‚·
-// aQSO.NrRcvd‚¾‚¯‚ğ“n‚µ‚Ä‚à—Ç‚¢‚Æv‚¤‚ªA‚Æ‚è‚ ‚¦‚¸‚Í‘S•”“n‚¹‚Î•s‘«‚Í‚È‚³‚»‚¤
-function zLogExtractMultiHookHandler(aQSO: TQSO; var strMulti: string): Boolean;
+(*returns whether the multiplier is extracted by this handler*)
+function zLogExtractMultiHookHandler(aQSO: TQSO; var mul: string): boolean;
 var
-   qsorec: TQSOData;
-   szBuffer: array[0..255] of AnsiChar;
+	qso: TQSOData;
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('zLogExtractMultiHandler()'));
-   {$ENDIF}
-
-   {$IFDEF USE_ZLOGEXT_EXAMPLE}
-   if hExtensionDLL = 0 then begin
-      Result := False;  // not handled
-      Exit;
-   end;
-
-   if Not Assigned(pfnExtensionExtractMultiProc) then begin
-      Result := False;  // not handled
-      Exit;
-   end;
-
-   // ƒ}ƒ‹ƒ`‚ğ’Šo
-   qsorec := aQSO.FileRecord;
-
-   // —áFqsorec.NrRcvd‚©‚çƒ}ƒ‹ƒ`‚ğ’Šo‚µszBuffer‚ÖC•¶š—ñ‚ğŠi”[‚·‚éŠÖ”‚Æ‚·‚é
-   ZeroMemory(@szBuffer, SizeOf(szBuffer));
-   pfnExtensionExtractMultiProc(@qsorec, @szBuffer, SizeOf(szBuffer));
-
-   // C•¶š—ñ‚ğDelphi•¶š—ñ‚É•ÏŠ·
-   strMulti := string(PAnsiChar(@szBuffer));
-
-   // handled
-   Result := True;
-   {$ELSE}
-   Result := False;
-   {$ENDIF}
+	Result := @zrevise <> nil;
+	if Result then begin
+		qso := aQSO.FileRecord;
+		zrevise(@qso, LEN);
+		mul := string(qso.Multi1);
+	end;
 end;
 
-// —LŒøƒ}ƒ‹ƒ`‚©‚Ç‚¤‚©‚Ì”»’è‚ğs‚¤ handle‚µ‚½ê‡FTrueA‚µ‚È‚©‚Á‚½ê‡FFalse‚ğ•Ô‚·
-// ”»’èŒ‹‰Ê‚ÍfValidMulti‚ÉŠi”[‚·‚é —LŒøFTrueA–³ŒøFFalse
-function zLogValidMultiHookHandler(strMulti: string; var fValidMulti: Boolean): Boolean;
-var
-   strAnsiMulti: AnsiString;
+(*returns whether the multiplier is validated by this handler*)
+function zLogValidMultiHookHandler(mul: string; var val: boolean): boolean;
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('zLogValidMultiHandler()'));
-   {$ENDIF}
-
-   {$IFDEF USE_ZLOGEXT_EXAMPLE}
-   if hExtensionDLL = 0 then begin
-      Result := False;  // not handled
-      Exit;
-   end;
-
-   if Not Assigned(pfnExtensionValidMultiProc) then begin
-      Result := False;  // not handled
-      Exit;
-   end;
-
-   // SHIFT-JIS‚ÌC•¶š—ñ‚ğ“n‚µ‚Ä—LŒø‚©”»’è‚·‚é
-   // Unicode•¶š—ñ‚ªˆ—‚Å‚«‚é‚È‚çPChar‚Å“n‚¹‚Î—Ç‚¢
-   strAnsiMulti := AnsiString(strMulti);
-   fValidMulti := pfnExtensionValidMultiProc(PAnsiChar(strAnsiMulti));
-
-   // handled
-   Result := True;
-   {$ELSE}
-   Result := False;
-   {$ENDIF}
+	Result := @zHandle <> nil;
+	if Result then
+		val := mul <> '';
 end;
 
-// ‘“¾“_‚ğ•Ô‚·
-// -1‚Í–¢À‘•‚âŒvZ‚µ‚È‚¢‚Æ‚«iŒ³‚Ìˆ—‚ğs‚¤j
-// >=0 ‚Í‘“¾“_
 function zLogGetTotalScore(): Integer;
+var
+	buf: TBytesStream;
+	qso: TQSOData;
+	idx: integer;
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('zLogGetTotalScore()'));
-   {$ENDIF}
+	Result := -1;
+	if @zupdate <> nil then begin
+		buf := TBytesStream.Create;
+		try
+			for idx := 1 to Log.TotalQSO do begin
+				qso := Log.QsoList[idx].FileRecord;
+				buf.Write(qso, LEN);
+			end;
+			Result := zupdate(buf.bytes, Log.TotalQSO);
+		finally
+			buf.Free;
+		end;
+	end;
+end;
 
-   {$IFDEF USE_ZLOGEXT_EXAMPLE}
-   if hExtensionDLL = 0 then begin
-      Result := -1;  // not handled
-      Exit;
-   end;
+procedure TImportDialog.ImportMenuClicked(Sender: TObject);
+var
+	tmp: string;
+begin
+	if Execute then
+	try
+		tmp := TPath.GetTempFileName;
+		zformat(ToC(FileName), ToC(tmp), ToC(BIN));
+		Log.QsoList.MergeFile(tmp, True);
+		Log.SortByTime;
+		MyContest.Renew;
+		MainForm.EditScreen.RefreshScreen;
+	finally
+		TFile.Delete(tmp);
+	end;
+end;
 
-   if Not Assigned(pfnExtensionGetTotalScoreProc) then begin
-      Result := -1;  // not handled
-      Exit;
-   end;
+procedure TExportDialog.ExportMenuClicked(Sender: TObject);
+var
+	tmp: string;
+begin
+	FilterTypeChanged(Sender);
+	FileName := ChangeFileExt(CurrentFileName, DefaultExt);
+	if Execute then begin
+		tmp := TPath.GetTempFileName;
+		Log.SaveToFile(tmp);
+		zformat(ToC(tmp), ToC(FileName), ToC(Fmt));
+	end;
+end;
 
-   Result := pfnExtensionGetTotalScoreProc();
-   {$ELSE}
-   Result := -1;
-   {$ENDIF}
+procedure TExportDialog.FilterTypeChanged(Sender: TObject);
+var
+	ext: string;
+begin
+	ext := SplitString(Filter, '|')[2 * FilterIndex - 1];
+	Fmt := SplitString(Filter, '|')[2 * FilterIndex - 2];
+	ext := TRegEx.Split(ext, ';')[0];
+	ext := copy(ext, 2, Length(ext));
+	DefaultExt := ext;
+end;
+
+(*returns whether the event is blocked by this handler*)
+function zLogKeyBoardPressed(Sender: TObject; key: Char): boolean;
+begin
+	if @zkpress <> nil then
+		Result := zkpress(integer(key), ToC(TEdit(Sender).Name))
+	else
+		Result := True;
+end;
+
+(*returns whether the event is blocked by this handler*)
+function zLogFunctionClicked(Sender: TObject): boolean;
+begin
+	if @zfclick <> nil then
+		Result := zfclick(TButton(Sender).Tag, ToC(TButton(Sender).Name))
+	else
+		Result := True;
 end;
 
 initialization
-  zLogContestInitialized := False;
-
-  {$IFDEF USE_ZLOGEXT_EXAMPLE}
-  // example
-  hExtensionDLL := 0;
-  pfnExtensionQsoEventProc := nil;
-  pfnExtensionCalsPountsProc := nil;
-  pfnExtensionExtractMultiProc := nil;
-  pfnExtensionValidMultiProc := nil;
-  pfnExtensionGetTotalScoreProc := nil;
-  {$ENDIF}
 
 finalization
 
