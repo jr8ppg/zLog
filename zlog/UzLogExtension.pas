@@ -12,6 +12,7 @@ uses
 	Windows,
 	Dialogs,
 	IOUtils,
+	Menus,
 	StdCtrls,
 	StrUtils,
 	SysUtils,
@@ -32,22 +33,26 @@ type
 var
 	Fmt: string;
 	zHandle: THandle;
+	ImportMenu: TMenuItem;
+	ExportMenu: TMenuItem;
 	ImportDialog: TImportDialog;
 	ExportDialog: TExportDialog;
-	zlaunch: procedure(str: PAnsiChar); stdcall;
-	zfilter: function (): PAnsiChar; stdcall;
-	zformat: procedure(src: PAnsiChar; dst: PAnsiChar; fmt: PAnsiChar); stdcall;
-	zrevise: procedure(ptr: pointer; len: integer); stdcall;
+	zlaunch: procedure(); stdcall;
+	zfinish: procedure(); stdcall;
+	zdialog: procedure(fun: pointer); stdcall;
+	zfilter: procedure(fun: pointer); stdcall;
+	zimport: procedure(src: PAnsiChar; dst: PAnsiChar); stdcall;
+	zexport: procedure(src: PAnsiChar; fmt: PAnsiChar); stdcall;
+	zattach: procedure(str: PAnsiChar; cfg: PAnsiChar); stdcall;
+	zdetach: procedure(); stdcall;
 	zverify: function (ptr: pointer; len: integer): integer; stdcall;
 	zupdate: function (ptr: pointer; len: integer): integer; stdcall;
 	zinsert: procedure(ptr: pointer; len: integer); stdcall;
 	zdelete: procedure(ptr: pointer; len: integer); stdcall;
 	zkpress: function (key: integer; source: PAnsiChar): boolean; stdcall;
 	zfclick: function (btn: integer; source: PAnsiChar): boolean; stdcall;
-	zfinish: procedure(); stdcall;
 
 const
-	BIN = 'zbin';
 	LEN = sizeof(TQSOData);
 
 (*zLog event handlers*)
@@ -62,63 +67,87 @@ function zLogValidMultiHookHandler(mul: string; var val: boolean): boolean;
 function zLogGetTotalScore(): integer;
 function zLogKeyBoardPressed(Sender: TObject; key: Char): boolean;
 function zLogFunctionClicked(Sender: TObject): boolean;
-function ToC(str: string): PAnsiChar;
+function DtoC(str: string): PAnsiChar;
+function CtoD(str: PAnsiChar): string;
+function ShowInputDialog(lab, val: PAnsiChar): PAnsiChar; stdcall;
+procedure SetFilterString(im, ex: PAnsiChar); stdcall;
 
 implementation
 
 uses
 	main;
 
-function ToC(str: string): PAnsiChar;
+function DtoC(str: string): PAnsiChar;
 begin
 	Result := PAnsiChar(AnsiString(str));
 end;
 
-procedure zLogInitialize();
+function CtoD(str: PAnsiChar): string;
 begin
+	Result := string(AnsiString(str));
+end;
+
+(*callback function that will be invoked from DLL*)
+function ShowInputDialog(lab, val: PAnsiChar): PAnsiChar; stdcall;
+var
+	value: string;
+begin
+	value := CtoD(val);
+	if InputQuery('ZyLO', CtoD(lab), value) then
+		Result := DtoC(value)
+	else
+		Result := nil;
+end;
+
+(*callback function that will be invoked from DLL*)
+procedure SetFilterString(im, ex: PAnsiChar); stdcall;
+begin
+	ImportDialog.Filter := CtoD(im);
+	ExportDialog.Filter := CtoD(ex);
+	ExportDialog.OnTypeChange := ExportDialog.FilterTypeChanged;
+end;
+
+procedure zLogInitialize();
+var
+	fil: AnsiString;
+begin
+	ImportMenu := MainForm.MergeFile1;
+	ExportMenu := MainForm.Export1;
 	ImportDialog := TImportDialog.Create(MainForm);
 	ExportDialog := TExportDialog.Create(MainForm);
-	ExportDialog.OnTypeChange := ExportDialog.FilterTypeChanged;
 	ExportDialog.Options := [ofOverwritePrompt];
-	MainForm.MergeFile1.Caption := '&Import...';
+	try
+		zHandle := LoadLibrary(PChar('zylo.dll'));
+		zlaunch := GetProcAddress(zHandle, '_zylo_export_launch');
+		zfinish := GetProcAddress(zHandle, '_zylo_export_finish');
+		zdialog := GetProcAddress(zHandle, '_zylo_export_dialog');
+		zfilter := GetProcAddress(zHandle, '_zylo_export_filter');
+		zimport := GetProcAddress(zHandle, '_zylo_export_import');
+		zexport := GetProcAddress(zHandle, '_zylo_export_export');
+		zattach := GetProcAddress(zHandle, '_zylo_export_attach');
+		zdetach := GetProcAddress(zHandle, '_zylo_export_detach');
+		zverify := GetProcAddress(zHandle, '_zylo_export_verify');
+		zupdate := GetProcAddress(zHandle, '_zylo_export_update');
+		zinsert := GetProcAddress(zHandle, '_zylo_export_insert');
+		zdelete := GetProcAddress(zHandle, '_zylo_export_delete');
+		zkpress := GetProcAddress(zHandle, '_zylo_export_kpress');
+		zfclick := GetProcAddress(zHandle, '_zylo_export_fclick');
+	except
+		zHandle := 0;
+	end;
+	if @zlaunch <> nil then zlaunch();
+	if @zdialog <> nil then zdialog(@ShowInputDialog);
+	if @zfilter <> nil then zfilter(@SetFilterString);
+	if (@zimport <> nil) and (@zexport <> nil) then begin
+		ImportMenu.OnClick := ImportDialog.ImportMenuClicked;
+		ExportMenu.OnClick := ExportDialog.ExportMenuClicked;
+	end;
 end;
 
 procedure zLogContestInit(contest: string; cfg: string);
-var
-	dll: string;
-	txt: string;
-	fil: string;
 begin
-	txt := TFile.ReadAllText(cfg);
-	txt := TRegEx.Replace(txt, '(?m);.*?$', '');
-	txt := TRegEx.Replace(txt, '(?m)#.*?$', '');
-	dll := TRegEx.Replace(cfg, '(?i)\.CFG', '.DLL');
-	if TRegEx.Match(txt, '(?im)^ *DLL +ON *$').Success then
-	try
-		zHandle := LoadLibrary(PChar(dll));
-		zlaunch := GetProcAddress(zHandle, '_zlaunch');
-		zfilter := GetProcAddress(zHandle, '_zfilter');
-		zformat := GetProcAddress(zHandle, '_zformat');
-		zrevise := GetProcAddress(zHandle, '_zrevise');
-		zverify := GetProcAddress(zHandle, '_zverify');
-		zupdate := GetProcAddress(zHandle, '_zupdate');
-		zinsert := GetProcAddress(zHandle, '_zinsert');
-		zdelete := GetProcAddress(zHandle, '_zdelete');
-		zkpress := GetProcAddress(zHandle, '_zkpress');
-		zfclick := GetProcAddress(zHandle, '_zfclick');
-		zfinish := GetProcAddress(zHandle, '_zfinish');
-		zlaunch(ToC(cfg));
-		fil := string(AnsiString(zfilter()));
-		ImportDialog.Filter := fil;
-		ExportDialog.Filter := fil;
-		MainForm.MergeFile1.OnClick := ImportDialog.ImportMenuClicked;
-		MainForm.Export1.OnClick    := ExportDialog.ExportMenuClicked;
-	except
-		zHandle := 0;
-		MessageDlg('failed to load ' + dll, mtWarning, [mbOK], 0);
-		MainForm.MergeFile1.OnClick := MainForm.MergeFile1Click;
-		MainForm.Export1.OnClick    := MainForm.Export1Click;
-	end;
+	if @zattach <> nil then
+		zattach(DtoC(contest), DtoC(cfg));
 end;
 
 procedure zLogContestEvent(event: TzLogEvent; bQSO, aQSO: TQSO);
@@ -128,39 +157,28 @@ begin
 	if @zinsert <> nil then begin
 		if event <> evDeleteQSO then begin
 			qso := aQSO.FileRecord;
-			zinsert(@qso, LEN);
+			zinsert(@qso, 1);
 		end;
 	end;
 	if @zdelete <> nil then begin
 		if event <> evAddQSO then begin
 			qso := bQSO.FileRecord;
-			zdelete(@qso, LEN);
+			zdelete(@qso, 1);
 		end;
 	end;
 end;
 
 procedure zLogContestTerm();
 begin
-	if @zfinish <> nil then begin
-		zfinish();
-		zlaunch := nil;
-		zfilter := nil;
-		zformat := nil;
-		zrevise := nil;
-		zverify := nil;
-		zupdate := nil;
-		zinsert := nil;
-		zdelete := nil;
-		zkpress := nil;
-		zfclick := nil;
-		zfinish := nil;
-		FreeLibrary(zHandle);
-		zHandle := 0;
-	end;
+	if @zdetach <> nil then
+		zdetach();
 end;
 
 procedure zLogTerminate();
 begin
+	(*do not close Go DLL*)
+	if @zfinish <> nil then
+		zfinish();
 end;
 
 (*returns whether the QSO score is calculated by this handler*)
@@ -171,7 +189,7 @@ begin
 	Result := @zverify <> nil;
 	if Result then begin
 		qso := aQSO.FileRecord;
-		aQSO.Points := zverify(@qso, LEN);
+		aQSO.Points := zverify(@qso, 1);
 	end;
 end;
 
@@ -180,10 +198,10 @@ function zLogExtractMultiHookHandler(aQSO: TQSO; var mul: string): boolean;
 var
 	qso: TQSOData;
 begin
-	Result := @zrevise <> nil;
+	Result := @zverify <> nil;
 	if Result then begin
 		qso := aQSO.FileRecord;
-		zrevise(@qso, LEN);
+		zverify(@qso, 1);
 		mul := string(qso.Multi1);
 	end;
 end;
@@ -191,7 +209,7 @@ end;
 (*returns whether the multiplier is validated by this handler*)
 function zLogValidMultiHookHandler(mul: string; var val: boolean): boolean;
 begin
-	Result := @zHandle <> nil;
+	Result := @zverify <> nil;
 	if Result then
 		val := mul <> '';
 end;
@@ -224,7 +242,7 @@ begin
 	if Execute then
 	try
 		tmp := TPath.GetTempFileName;
-		zformat(ToC(FileName), ToC(tmp), ToC(BIN));
+		zimport(DtoC(FileName), DtoC(tmp));
 		Log.QsoList.MergeFile(tmp, True);
 		Log.SortByTime;
 		MyContest.Renew;
@@ -241,9 +259,8 @@ begin
 	FilterTypeChanged(Sender);
 	FileName := ChangeFileExt(CurrentFileName, DefaultExt);
 	if Execute then begin
-		tmp := TPath.GetTempFileName;
-		Log.SaveToFile(tmp);
-		zformat(ToC(tmp), ToC(FileName), ToC(Fmt));
+		Log.SaveToFile(FileName);
+		zexport(DtoC(FileName), DtoC(Fmt));
 	end;
 end;
 
@@ -262,7 +279,7 @@ end;
 function zLogKeyBoardPressed(Sender: TObject; key: Char): boolean;
 begin
 	if @zkpress <> nil then
-		Result := zkpress(integer(key), ToC(TEdit(Sender).Name))
+		Result := zkpress(integer(key), DtoC(TEdit(Sender).Name))
 	else
 		Result := True;
 end;
@@ -271,7 +288,7 @@ end;
 function zLogFunctionClicked(Sender: TObject): boolean;
 begin
 	if @zfclick <> nil then
-		Result := zfclick(TButton(Sender).Tag, ToC(TButton(Sender).Name))
+		Result := zfclick(TButton(Sender).Tag, DtoC(TButton(Sender).Name))
 	else
 		Result := True;
 end;
