@@ -4678,6 +4678,8 @@ begin
    CWF10.FaceColor := back_color;
    CWF11.FaceColor := back_color;
    CWF12.FaceColor := back_color;
+
+   FFunctionKeyPanel.UpdateInfo();
 end;
 
 procedure TMainForm.EditKeyPress(Sender: TObject; var Key: Char);

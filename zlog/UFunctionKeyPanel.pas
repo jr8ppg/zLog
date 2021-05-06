@@ -32,6 +32,7 @@ type
     function GetMyAction(shortcutstr: string): TAction;
   public
     { Public éŒ¾ }
+    procedure UpdateInfo();
     property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
@@ -48,23 +49,40 @@ begin
 end;
 
 procedure TformFunctionKeyPanel.FormShow(Sender: TObject);
+begin
+   UpdateInfo();
+end;
+
+procedure TformFunctionKeyPanel.UpdateInfo();
 var
    act: TAction;
    i: Integer;
    s: string;
+   s2: string;
 begin
    for i := 0 to 11 do begin
-      s := 'F' + IntToStr(i + 1);
+      s2 := 'F' + IntToStr(i + 1);
+      if dmZlogGlobal.Settings.CW.CurrentBank = 1 then begin
+         s := s2;
+      end
+      else begin
+         s := 'Shift+' + s2;
+      end;
       act := GetMyAction(s);
       if act = nil then begin
          ButtonGroup1.Items[i].Caption := '';
       end
       else begin
-         if act.Hint = '' then begin
-            ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.Settings.CW.CWStrBank[1, i + 1];
+         if Pos('Play', act.Name) > 0 then begin
+            if act.Hint = '' then begin
+               ButtonGroup1.Items[i].Caption := s2 + ':' + dmZLogGlobal.Settings.CW.CWStrBank[dmZlogGlobal.Settings.CW.CurrentBank, i + 1];
+            end
+            else begin
+               ButtonGroup1.Items[i].Caption := s2 + ':' + act.Hint;
+            end;
          end
          else begin
-            ButtonGroup1.Items[i].Caption := s + ':' + act.Hint;
+            ButtonGroup1.Items[i].Caption := s2 + ':' + act.Hint;
          end;
       end;
    end;
