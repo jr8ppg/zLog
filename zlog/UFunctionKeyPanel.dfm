@@ -12,6 +12,7 @@ object formFunctionKeyPanel: TformFunctionKeyPanel
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnHide = FormHide
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
@@ -73,5 +74,11 @@ object formFunctionKeyPanel: TformFunctionKeyPanel
         OnClick = ButtonGroup1Items11Click
       end>
     TabOrder = 0
+  end
+  object Timer1: TTimer
+    Interval = 100
+    OnTimer = Timer1Timer
+    Left = 464
+    Top = 16
   end
 end

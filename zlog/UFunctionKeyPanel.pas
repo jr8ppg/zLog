@@ -4,11 +4,13 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ButtonGroup, Vcl.ActnList, Vcl.Menus;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ButtonGroup, Vcl.ActnList, Vcl.Menus,
+  Vcl.ExtCtrls;
 
 type
   TformFunctionKeyPanel = class(TForm)
     ButtonGroup1: TButtonGroup;
+    Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure ButtonGroup1Items0Click(Sender: TObject);
     procedure ButtonGroup1Items1Click(Sender: TObject);
@@ -23,11 +25,16 @@ type
     procedure ButtonGroup1Items10Click(Sender: TObject);
     procedure ButtonGroup1Items11Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure FormHide(Sender: TObject);
   protected
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
   private
     { Private éŒ¾ }
+    FPrevShift: Boolean;
+    FFKeyAction1: array[1..12] of TAction;
+    FFKeyAction2: array[1..12] of TAction;
     procedure ButtonClick(n: Integer);
     function GetMyAction(shortcutstr: string): TAction;
   public
@@ -44,12 +51,29 @@ uses
   Main, UzLogGlobal;
 
 procedure TformFunctionKeyPanel.FormCreate(Sender: TObject);
+var
+   i: Integer;
+   s: string;
 begin
-//
+   FPrevShift := False;
+
+   for i := 1 to 12 do begin
+      s := 'F' + IntToStr(i);
+      FFKeyAction1[i] := GetMyAction(s);
+
+      s := 'Shift+F' + IntToStr(i);
+      FFKeyAction2[i] := GetMyAction(s);
+   end;
+end;
+
+procedure TformFunctionKeyPanel.FormHide(Sender: TObject);
+begin
+   Timer1.Enabled := False;
 end;
 
 procedure TformFunctionKeyPanel.FormShow(Sender: TObject);
 begin
+   Timer1.Enabled := True;
    UpdateInfo();
 end;
 
@@ -58,31 +82,40 @@ var
    act: TAction;
    i: Integer;
    s: string;
-   s2: string;
+   cb: Integer;
 begin
-   for i := 0 to 11 do begin
-      s2 := 'F' + IntToStr(i + 1);
-      if dmZlogGlobal.Settings.CW.CurrentBank = 1 then begin
-         s := s2;
+   cb := dmZlogGlobal.Settings.CW.CurrentBank;
+   if FPrevShift = True then begin
+      if cb = 1 then begin
+         cb := 2;
       end
       else begin
-         s := 'Shift+' + s2;
+         cb := 1;
       end;
-      act := GetMyAction(s);
+   end;
+
+   for i := 0 to 11 do begin
+      s := 'F' + IntToStr(i + 1);
+      if cb = 1 then begin
+         act := FFKeyAction1[i + 1];
+      end
+      else begin
+         act := FFKeyAction2[i + 1];
+      end;
       if act = nil then begin
          ButtonGroup1.Items[i].Caption := '';
       end
       else begin
          if Pos('Play', act.Name) > 0 then begin
             if act.Hint = '' then begin
-               ButtonGroup1.Items[i].Caption := s2 + ':' + dmZLogGlobal.Settings.CW.CWStrBank[dmZlogGlobal.Settings.CW.CurrentBank, i + 1];
+               ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.Settings.CW.CWStrBank[cb, i + 1];
             end
             else begin
-               ButtonGroup1.Items[i].Caption := s2 + ':' + act.Hint;
+               ButtonGroup1.Items[i].Caption := s + ':' + act.Hint;
             end;
          end
          else begin
-            ButtonGroup1.Items[i].Caption := s2 + ':' + act.Hint;
+            ButtonGroup1.Items[i].Caption := s + ':' + act.Hint;
          end;
       end;
    end;
@@ -183,6 +216,23 @@ begin
    ButtonGroup1.Canvas.Font.Size := v;
    ButtonGroup1.ButtonHeight := ButtonGroup1.Canvas.TextHeight('X') + 8;
    ButtonGroup1.ButtonWidth := ButtonGroup1.Canvas.TextWidth('X') * 16 + 8;
+end;
+
+procedure TformFunctionKeyPanel.Timer1Timer(Sender: TObject);
+var
+   fShift: Boolean;
+begin
+   if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+      fShift := True;
+   end
+   else begin
+      fShift := False;
+   end;
+
+   if FPrevShift <> fShift then begin
+      FPrevShift := fShift;
+      UpdateInfo();
+   end;
 end;
 
 end.
