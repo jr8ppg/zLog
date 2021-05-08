@@ -32,6 +32,7 @@ type
 	end;
 var
 	Fmt: string;
+	Enabled: boolean;
 	zHandle: THandle;
 	ImportMenu: TMenuItem;
 	ExportMenu: TMenuItem;
@@ -146,6 +147,7 @@ end;
 
 procedure zLogContestInit(contest: string; cfg: string);
 begin
+	Enabled := True;
 	if @zattach <> nil then
 		zattach(DtoC(contest), DtoC(cfg));
 end;
@@ -154,14 +156,12 @@ procedure zLogContestEvent(event: TzLogEvent; bQSO, aQSO: TQSO);
 var
 	qso: TQSOData;
 begin
-	if @zinsert <> nil then begin
-		if event <> evDeleteQSO then begin
+	if Enabled then begin
+		if (@zinsert <> nil) and (event <> evDeleteQSO) then begin
 			qso := aQSO.FileRecord;
 			zinsert(@qso, 1);
 		end;
-	end;
-	if @zdelete <> nil then begin
-		if event <> evAddQSO then begin
+		if (@zdelete <> nil) and (event <> evAddQSO) then begin
 			qso := bQSO.FileRecord;
 			zdelete(@qso, 1);
 		end;
@@ -172,6 +172,7 @@ procedure zLogContestTerm();
 begin
 	if @zdetach <> nil then
 		zdetach();
+	Enabled := False;
 end;
 
 procedure zLogTerminate();
@@ -281,7 +282,7 @@ begin
 	if @zkpress <> nil then
 		Result := zkpress(integer(key), DtoC(TEdit(Sender).Name))
 	else
-		Result := True;
+		Result := False;
 end;
 
 (*returns whether the event is blocked by this handler*)
@@ -290,7 +291,7 @@ begin
 	if @zfclick <> nil then
 		Result := zfclick(TButton(Sender).Tag, DtoC(TButton(Sender).Name))
 	else
-		Result := True;
+		Result := False;
 end;
 
 initialization

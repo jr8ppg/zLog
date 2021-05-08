@@ -2237,10 +2237,10 @@ begin
    MultiForm.Add(aQSO);
    aQSO.Reserve2 := $00;
 
-   ScoreForm.Add(aQSO);
    aQSO.Reserve := actAdd;
    Log.AddQue(aQSO);
    Log.ProcessQue;
+   ScoreForm.Add(aQSO);
 
    if Local = False then
       aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
