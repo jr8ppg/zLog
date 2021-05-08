@@ -88,7 +88,7 @@ const
   pwrH = TPower(3);
 
 const
-  default_primary_shortcut: array[0..130] of string = (
+  default_primary_shortcut: array[0..131] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -219,10 +219,11 @@ const
     '',                 // #127 actionToggleXit
     '',                 // #128 actionRitClear
     '',                 // #129 actionToggleAntiZeroin
-    ''                  // #130 actionAntiZeroin
+    '',                 // #130 actionAntiZeroin
+    ''                  // #131 actionFunctionKeyPanel
   );
 
-  default_secondary_shortcut: array[0..130] of string = (
+  default_secondary_shortcut: array[0..131] of string = (
     '',                 // #00
     '',
     '',
@@ -353,7 +354,8 @@ const
     '',                 // #127 actionToggleXit
     '',                 // #128 actionRitClear
     '',                 // #129 actionToggleAntiZeroin
-    ''                  // #130 actionAntiZeroin
+    '',                 // #130 actionAntiZeroin
+    ''                  // #131 actionFunctionKeyPanel
   );
 
 const

@@ -18,7 +18,7 @@ uses
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
-  UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo;
+  UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -687,6 +687,8 @@ type
     actionRitClear: TAction;
     actionToggleAntiZeroin: TAction;
     actionAntiZeroin: TAction;
+    actionFunctionKeyPanel: TAction;
+    FunctionKeyPanel1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -907,6 +909,7 @@ type
     procedure actionRitClearExecute(Sender: TObject);
     procedure actionToggleAntiZeroinExecute(Sender: TObject);
     procedure actionAntiZeroinExecute(Sender: TObject);
+    procedure actionFunctionKeyPanelExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -931,6 +934,7 @@ type
     FZAnalyze: TZAnalyze;              // Analyze window
     FCWMessagePad: TCwMessagePad;
     FVoiceForm: TVoiceForm;
+    FFunctionKeyPanel: TformFunctionKeyPanel;
 
     FInitialized: Boolean;
 
@@ -1087,6 +1091,8 @@ type
     procedure InitBandMenu();
 
     procedure SetStatusLine(strText: string);
+
+    procedure DoFunctionKey(no: Integer);
 
     property RigControl: TRigControl read FRigControl;
     property PartialCheck: TPartialCheck read FPartialCheck;
@@ -1854,6 +1860,8 @@ begin
    end;
 
    PointEdit.Text := CurrentQSO.PointStr;
+
+   FFunctionKeyPanel.UpdateInfo();
 end;
 
 procedure TContest.ChangeBand(Up: Boolean);
@@ -3816,6 +3824,7 @@ begin
    FVoiceForm     := TVoiceForm.Create(Self);
    FVoiceForm.OnNotifyStarted  := OnVoicePlayStarted;
    FVoiceForm.OnNotifyFinished := OnVoicePlayFinished;
+   FFunctionKeyPanel := TformFunctionKeyPanel.Create(Self);
 
    FWkAbort := False;
 
@@ -3914,13 +3923,14 @@ begin
    BuildOpListMenu(OpMenu, OpMenuClick);
 
    FTempQSOList := TQSOList.Create();
-   
+
    RestoreWindowsPos();
 
    dmZLogKeyer.ControlPTT(False);
 
    // フォントサイズの設定
    SetFontSize(dmZlogGlobal.Settings._mainfontsize);
+   FFunctionKeyPanel.Init();
 
    zLogInitialize();
 end;
@@ -4055,6 +4065,7 @@ begin
    dmZlogGlobal.ReadWindowState(FRateDialog);
    dmZlogGlobal.ReadWindowState(FZAnalyze);
    dmZlogGlobal.ReadWindowState(FCwMessagePad);
+   dmZlogGlobal.ReadWindowState(FFunctionKeyPanel);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZlogGlobal.ReadWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
@@ -4083,6 +4094,7 @@ begin
    dmZlogGlobal.WriteWindowState(FRateDialog);
    dmZlogGlobal.WriteWindowState(FZAnalyze);
    dmZlogGlobal.WriteWindowState(FCwMessagePad);
+   dmZlogGlobal.WriteWindowState(FFunctionKeyPanel);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZlogGlobal.WriteWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
@@ -4620,6 +4632,7 @@ begin
    FCheckCall2.FontSize := font_size;
    FCheckMulti.FontSize := font_size;
    FCheckCountry.FontSize := font_size;
+   FFunctionKeyPanel.FontSize := font_size;
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
@@ -4668,6 +4681,8 @@ begin
    CWF10.FaceColor := back_color;
    CWF11.FaceColor := back_color;
    CWF12.FaceColor := back_color;
+
+   FFunctionKeyPanel.UpdateInfo();
 end;
 
 procedure TMainForm.EditKeyPress(Sender: TObject; var Key: Char);
@@ -5546,6 +5561,7 @@ begin
    FZAnalyze.Release();
    FCWMessagePad.Release();
    FVoiceForm.Release();
+   FFunctionKeyPanel.Release();
    CurrentQSO.Free();
 
    SuperCheckFreeData();
@@ -8565,6 +8581,7 @@ end;
 procedure TMainForm.actionShowAnalyzeExecute(Sender: TObject);
 begin
    FZAnalyze.Show();
+   LastFocus.SetFocus();
 end;
 
 // #76 Scoreウインドウ
@@ -8589,18 +8606,21 @@ end;
 procedure TMainForm.actionShowCheckCallExecute(Sender: TObject);
 begin
    FCheckCall2.Show;
+   LastFocus.SetFocus();
 end;
 
 // #80 Check Multiウインドウ
 procedure TMainForm.actionShowCheckMultiExecute(Sender: TObject);
 begin
    FCheckMulti.Show;
+   LastFocus.SetFocus();
 end;
 
 // #81 Check Countryウインドウ
 procedure TMainForm.actionShowCheckCountryExecute(Sender: TObject);
 begin
    FCheckCountry.Show;
+   LastFocus.SetFocus();
 end;
 
 // #82 交信開始 / TAB
@@ -9041,6 +9061,13 @@ begin
    WriteStatusLine('** Anti Zeroin **', False);
 end;
 
+// #131 Function Key Panel
+procedure TMainForm.actionFunctionKeyPanelExecute(Sender: TObject);
+begin
+   FFunctionKeyPanel.Show();
+   LastFocus.SetFocus();
+end;
+
 procedure TMainForm.RestoreWindowsPos();
 var
    X, Y, W, H: Integer;
@@ -9161,6 +9188,7 @@ begin
 
          // 未使用なら設定
          ActionList1.Actions[i].ShortCut := shortcut;
+         ActionList1.Actions[i].Hint := ini.ReadString('text', IntToStr(i), '');
          ActionList1.Actions[i].SecondaryShortCuts.CommaText := ini.ReadString('secondary', IntToStr(i), default_secondary_shortcut[i]);
       end;
    finally
@@ -9629,6 +9657,24 @@ var
 begin
    msg := 'Set ' + text + ' to ' + strOffOn[fOn];
    WriteStatusLine(msg, False);
+end;
+
+procedure TMainForm.DoFunctionKey(no: Integer);
+var
+   i: Integer;
+   act: TAction;
+   shortcut: Word;
+begin
+   shortcut := TextToShortCut('F1') + (no - 1);
+   for i := 0 to MainForm.ActionList1.ActionCount - 1 do begin
+      act := TAction(MainForm.ActionList1.Actions[i]);
+      if act.ShortCut = shortcut then begin
+   OutputDebugString(PChar('Action=[' + act.Name + ']'));
+//       act.Execute();
+         act.OnExecute(act);
+         Exit;
+      end;
+   end;
 end;
 
 end.
