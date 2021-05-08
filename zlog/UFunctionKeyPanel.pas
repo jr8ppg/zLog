@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ButtonGroup, Vcl.ActnList, Vcl.Menus,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, UzLogConst;
 
 type
   TformFunctionKeyPanel = class(TForm)
@@ -39,6 +39,7 @@ type
     function GetMyAction(shortcutstr: string): TAction;
   public
     { Public éŒ¾ }
+    procedure Init();
     procedure UpdateInfo();
     property FontSize: Integer read GetFontSize write SetFontSize;
   end;
@@ -53,16 +54,12 @@ uses
 procedure TformFunctionKeyPanel.FormCreate(Sender: TObject);
 var
    i: Integer;
-   s: string;
 begin
    FPrevShift := False;
 
    for i := 1 to 12 do begin
-      s := 'F' + IntToStr(i);
-      FFKeyAction1[i] := GetMyAction(s);
-
-      s := 'Shift+F' + IntToStr(i);
-      FFKeyAction2[i] := GetMyAction(s);
+      FFKeyAction1[i] := nil;
+      FFKeyAction2[i] := nil;
    end;
 end;
 
@@ -75,6 +72,20 @@ procedure TformFunctionKeyPanel.FormShow(Sender: TObject);
 begin
    Timer1.Enabled := True;
    UpdateInfo();
+end;
+
+procedure TformFunctionKeyPanel.Init();
+var
+   i: Integer;
+   s: string;
+begin
+   for i := 1 to 12 do begin
+      s := 'F' + IntToStr(i);
+      FFKeyAction1[i] := GetMyAction(s);
+
+      s := 'Shift+F' + IntToStr(i);
+      FFKeyAction2[i] := GetMyAction(s);
+   end;
 end;
 
 procedure TformFunctionKeyPanel.UpdateInfo();
@@ -106,7 +117,7 @@ begin
          ButtonGroup1.Items[i].Caption := '';
       end
       else begin
-         if Pos('Play', act.Name) > 0 then begin
+         if (CurrentQSO.Mode = mCW) and (Pos('Play', act.Name) > 0) then begin
             if act.Hint = '' then begin
                ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.Settings.CW.CWStrBank[cb, i + 1];
             end

@@ -1860,6 +1860,8 @@ begin
    end;
 
    PointEdit.Text := CurrentQSO.PointStr;
+
+   FFunctionKeyPanel.UpdateInfo();
 end;
 
 procedure TContest.ChangeBand(Up: Boolean);
@@ -3921,13 +3923,14 @@ begin
    BuildOpListMenu(OpMenu, OpMenuClick);
 
    FTempQSOList := TQSOList.Create();
-   
+
    RestoreWindowsPos();
 
    dmZLogKeyer.ControlPTT(False);
 
    // フォントサイズの設定
    SetFontSize(dmZlogGlobal.Settings._mainfontsize);
+   FFunctionKeyPanel.Init();
 
    zLogInitialize();
 end;
