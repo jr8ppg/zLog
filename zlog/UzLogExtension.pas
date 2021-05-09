@@ -42,6 +42,7 @@ var
 	zfinish: procedure(); stdcall;
 	yinsert: procedure(fun: pointer); stdcall;
 	ydelete: procedure(fun: pointer); stdcall;
+	yupdate: procedure(fun: pointer); stdcall;
 	yfilter: procedure(fun: pointer); stdcall;
 	zimport: procedure(src: PAnsiChar; dst: PAnsiChar); stdcall;
 	zexport: procedure(src: PAnsiChar; fmt: PAnsiChar); stdcall;
@@ -73,6 +74,7 @@ function DtoC(str: string): PAnsiChar;
 function CtoD(str: PAnsiChar): string;
 procedure InsertCallBack(ptr: pointer); stdcall;
 procedure DeleteCallBack(ptr: pointer); stdcall;
+procedure UpdateCallBack(ptr: pointer); stdcall;
 procedure FilterCallBack(f: PAnsiChar); stdcall;
 
 implementation
@@ -107,6 +109,22 @@ var
 begin
 	qso := TQSO.Create;
 	qso.FileRecord := TQSOData(ptr^);
+	qso.Reserve := actDelete;
+	Log.AddQue(qso);
+	Log.ProcessQue;
+	MyContest.Renew;
+end;
+
+(*callback function that will be invoked from DLL*)
+procedure UpdateCallBack(ptr: pointer); stdcall;
+var
+	qso: TQSO;
+begin
+	qso := TQSO.Create;
+	qso.FileRecord := TQSOData(ptr^);
+	qso.Reserve := actEdit;
+	Log.AddQue(qso);
+	Log.ProcessQue;
 	MyContest.Renew;
 end;
 
@@ -133,6 +151,7 @@ begin
 		zfinish := GetProcAddress(zHandle, 'zylo_to_zlog_finish');
 		yinsert := GetProcAddress(zHandle, 'zlog_to_zylo_insert');
 		ydelete := GetProcAddress(zHandle, 'zlog_to_zylo_delete');
+		yupdate := GetProcAddress(zHandle, 'zlog_to_zylo_update');
 		yfilter := GetProcAddress(zHandle, 'zlog_to_zylo_filter');
 		zimport := GetProcAddress(zHandle, 'zylo_to_zlog_import');
 		zexport := GetProcAddress(zHandle, 'zylo_to_zlog_export');
@@ -150,6 +169,7 @@ begin
 	if @zlaunch <> nil then zlaunch();
 	if @yinsert <> nil then yinsert(@InsertCallBack);
 	if @ydelete <> nil then ydelete(@DeleteCallBack);
+	if @yupdate <> nil then yupdate(@UpdateCallBack);
 	if @yfilter <> nil then yfilter(@FilterCallBack);
 	if (@zimport <> nil) and (@zexport <> nil) then begin
 		ImportMenu.OnClick := ImportDialog.ImportMenuClicked;
