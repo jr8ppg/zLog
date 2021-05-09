@@ -40,8 +40,9 @@ var
 	ExportDialog: TExportDialog;
 	zlaunch: procedure(); stdcall;
 	zfinish: procedure(); stdcall;
-	zdialog: procedure(fun: pointer); stdcall;
-	zfilter: procedure(fun: pointer); stdcall;
+	yinsert: procedure(fun: pointer); stdcall;
+	ydelete: procedure(fun: pointer); stdcall;
+	yfilter: procedure(fun: pointer); stdcall;
 	zimport: procedure(src: PAnsiChar; dst: PAnsiChar); stdcall;
 	zexport: procedure(src: PAnsiChar; fmt: PAnsiChar); stdcall;
 	zattach: procedure(str: PAnsiChar; cfg: PAnsiChar); stdcall;
@@ -70,8 +71,9 @@ function zLogKeyBoardPressed(Sender: TObject; key: Char): boolean;
 function zLogFunctionClicked(Sender: TObject): boolean;
 function DtoC(str: string): PAnsiChar;
 function CtoD(str: PAnsiChar): string;
-function ShowInputDialog(lab, val: PAnsiChar): PAnsiChar; stdcall;
-procedure SetFilterString(im, ex: PAnsiChar); stdcall;
+procedure InsertCallBack(ptr: pointer); stdcall;
+procedure DeleteCallBack(ptr: pointer); stdcall;
+procedure FilterCallBack(f: PAnsiChar); stdcall;
 
 implementation
 
@@ -89,22 +91,30 @@ begin
 end;
 
 (*callback function that will be invoked from DLL*)
-function ShowInputDialog(lab, val: PAnsiChar): PAnsiChar; stdcall;
+procedure InsertCallBack(ptr: pointer); stdcall;
 var
-	value: string;
+	qso: TQSO;
 begin
-	value := CtoD(val);
-	if InputQuery('ZyLO', CtoD(lab), value) then
-		Result := DtoC(value)
-	else
-		Result := nil;
+	qso := TQSO.Create;
+	qso.FileRecord := TQSOData(ptr^);
+	MyContest.LogQSO(qso, True);
 end;
 
 (*callback function that will be invoked from DLL*)
-procedure SetFilterString(im, ex: PAnsiChar); stdcall;
+procedure DeleteCallBack(ptr: pointer); stdcall;
+var
+	qso: TQSO;
 begin
-	ImportDialog.Filter := CtoD(im);
-	ExportDialog.Filter := CtoD(ex);
+	qso := TQSO.Create;
+	qso.FileRecord := TQSOData(ptr^);
+	MyContest.Renew;
+end;
+
+(*callback function that will be invoked from DLL*)
+procedure FilterCallBack(f: PAnsiChar); stdcall;
+begin
+	ImportDialog.Filter := CtoD(f);
+	ExportDialog.Filter := CtoD(f);
 	ExportDialog.OnTypeChange := ExportDialog.FilterTypeChanged;
 end;
 
@@ -119,26 +129,28 @@ begin
 	ExportDialog.Options := [ofOverwritePrompt];
 	try
 		zHandle := LoadLibrary(PChar('zylo.dll'));
-		zlaunch := GetProcAddress(zHandle, '_zylo_export_launch');
-		zfinish := GetProcAddress(zHandle, '_zylo_export_finish');
-		zdialog := GetProcAddress(zHandle, '_zylo_export_dialog');
-		zfilter := GetProcAddress(zHandle, '_zylo_export_filter');
-		zimport := GetProcAddress(zHandle, '_zylo_export_import');
-		zexport := GetProcAddress(zHandle, '_zylo_export_export');
-		zattach := GetProcAddress(zHandle, '_zylo_export_attach');
-		zdetach := GetProcAddress(zHandle, '_zylo_export_detach');
-		zverify := GetProcAddress(zHandle, '_zylo_export_verify');
-		zupdate := GetProcAddress(zHandle, '_zylo_export_update');
-		zinsert := GetProcAddress(zHandle, '_zylo_export_insert');
-		zdelete := GetProcAddress(zHandle, '_zylo_export_delete');
-		zkpress := GetProcAddress(zHandle, '_zylo_export_kpress');
-		zfclick := GetProcAddress(zHandle, '_zylo_export_fclick');
+		zlaunch := GetProcAddress(zHandle, 'zylo_to_zlog_launch');
+		zfinish := GetProcAddress(zHandle, 'zylo_to_zlog_finish');
+		yinsert := GetProcAddress(zHandle, 'zlog_to_zylo_insert');
+		ydelete := GetProcAddress(zHandle, 'zlog_to_zylo_delete');
+		yfilter := GetProcAddress(zHandle, 'zlog_to_zylo_filter');
+		zimport := GetProcAddress(zHandle, 'zylo_to_zlog_import');
+		zexport := GetProcAddress(zHandle, 'zylo_to_zlog_export');
+		zattach := GetProcAddress(zHandle, 'zylo_to_zlog_attach');
+		zdetach := GetProcAddress(zHandle, 'zylo_to_zlog_detach');
+		zverify := GetProcAddress(zHandle, 'zylo_to_zlog_verify');
+		zupdate := GetProcAddress(zHandle, 'zylo_to_zlog_update');
+		zinsert := GetProcAddress(zHandle, 'zylo_to_zlog_insert');
+		zdelete := GetProcAddress(zHandle, 'zylo_to_zlog_delete');
+		zkpress := GetProcAddress(zHandle, 'zylo_to_zlog_kpress');
+		zfclick := GetProcAddress(zHandle, 'zylo_to_zlog_fclick');
 	except
 		zHandle := 0;
 	end;
 	if @zlaunch <> nil then zlaunch();
-	if @zdialog <> nil then zdialog(@ShowInputDialog);
-	if @zfilter <> nil then zfilter(@SetFilterString);
+	if @yinsert <> nil then yinsert(@InsertCallBack);
+	if @ydelete <> nil then ydelete(@DeleteCallBack);
+	if @yfilter <> nil then yfilter(@FilterCallBack);
 	if (@zimport <> nil) and (@zexport <> nil) then begin
 		ImportMenu.OnClick := ImportDialog.ImportMenuClicked;
 		ExportMenu.OnClick := ExportDialog.ExportMenuClicked;
