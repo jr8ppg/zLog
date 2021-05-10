@@ -3222,6 +3222,7 @@ begin
          TimeEdit.Left := GetLeft(colTime);
          DateEdit.Width := TimeEdit.Width;
          DateEdit.Left := TimeEdit.Left;
+         DateEdit.Height := TimeEdit.Height;
       end;
       if colCall >= 0 then begin
          CallsignEdit.Width := MainForm.Grid.ColWidths[colCall];
