@@ -7254,12 +7254,13 @@ begin
       ReEvaluateCountDownTimer;
       ReEvaluateQSYCount;
 
-      if menu.ModeGroupIndex = 0 then begin
-         MyContest.ScoreForm.CWButton.Visible := True
-      end
-      else begin
-         MyContest.ScoreForm.CWButton.Visible := False;
-      end;
+      // Issues #148 [CW]É{É^ÉìÇÕèÌÇ…ï\é¶Ç…Ç∑ÇÈ
+//      if menu.ModeGroupIndex = 0 then begin
+         MyContest.ScoreForm.CWButton.Visible := True;
+//      end
+//      else begin
+//         MyContest.ScoreForm.CWButton.Visible := False;
+//      end;
 
       MyContest.ScoreForm.FontSize := Grid.Font.Size;
 
