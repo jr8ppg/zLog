@@ -18,6 +18,7 @@ uses
 	SysUtils,
 	UITypes,
 	UzLogQSO,
+	UzLogConst,
 	UzLogGlobal,
 	RegularExpressions;
 
@@ -48,10 +49,9 @@ var
 	zexport: procedure(src: PAnsiChar; fmt: PAnsiChar); stdcall;
 	zattach: procedure(str: PAnsiChar; cfg: PAnsiChar); stdcall;
 	zdetach: procedure(); stdcall;
-	zverify: function (ptr: pointer; len: integer): integer; stdcall;
-	zupdate: function (ptr: pointer; len: integer): integer; stdcall;
 	zinsert: procedure(ptr: pointer; len: integer); stdcall;
 	zdelete: procedure(ptr: pointer; len: integer); stdcall;
+	zverify: function (ptr: pointer; len: integer): integer; stdcall;
 	zkpress: function (key: integer; source: PAnsiChar): boolean; stdcall;
 	zfclick: function (btn: integer; source: PAnsiChar): boolean; stdcall;
 
@@ -66,7 +66,7 @@ procedure zLogContestTerm();
 procedure zLogTerminate();
 function zLogCalcPointsHookHandler(aQSO: TQSO): boolean;
 function zLogExtractMultiHookHandler(aQSO: TQSO; var mul: string): boolean;
-function zLogValidMultiHookHandler(mul: string; var val: boolean): boolean;
+function zLogValidMultiHookHandler(aQSO: TQSO; var val: boolean): boolean;
 function zLogGetTotalScore(): integer;
 function zLogKeyBoardPressed(Sender: TObject; key: Char): boolean;
 function zLogFunctionClicked(Sender: TObject): boolean;
@@ -147,22 +147,21 @@ begin
 	ExportDialog.Options := [ofOverwritePrompt];
 	try
 		zHandle := LoadLibrary(PChar('zylo.dll'));
-		zlaunch := GetProcAddress(zHandle, 'zylo_to_zlog_launch');
-		zfinish := GetProcAddress(zHandle, 'zylo_to_zlog_finish');
-		yinsert := GetProcAddress(zHandle, 'zlog_to_zylo_insert');
-		ydelete := GetProcAddress(zHandle, 'zlog_to_zylo_delete');
-		yupdate := GetProcAddress(zHandle, 'zlog_to_zylo_update');
-		yfilter := GetProcAddress(zHandle, 'zlog_to_zylo_filter');
-		zimport := GetProcAddress(zHandle, 'zylo_to_zlog_import');
-		zexport := GetProcAddress(zHandle, 'zylo_to_zlog_export');
-		zattach := GetProcAddress(zHandle, 'zylo_to_zlog_attach');
-		zdetach := GetProcAddress(zHandle, 'zylo_to_zlog_detach');
-		zverify := GetProcAddress(zHandle, 'zylo_to_zlog_verify');
-		zupdate := GetProcAddress(zHandle, 'zylo_to_zlog_update');
-		zinsert := GetProcAddress(zHandle, 'zylo_to_zlog_insert');
-		zdelete := GetProcAddress(zHandle, 'zylo_to_zlog_delete');
-		zkpress := GetProcAddress(zHandle, 'zylo_to_zlog_kpress');
-		zfclick := GetProcAddress(zHandle, 'zylo_to_zlog_fclick');
+		zlaunch := GetProcAddress(zHandle, 'zylo_handle_launch');
+		zfinish := GetProcAddress(zHandle, 'zylo_handle_finish');
+		yinsert := GetProcAddress(zHandle, 'zylo_permit_insert');
+		ydelete := GetProcAddress(zHandle, 'zylo_permit_delete');
+		yupdate := GetProcAddress(zHandle, 'zylo_permit_update');
+		yfilter := GetProcAddress(zHandle, 'zylo_permit_filter');
+		zimport := GetProcAddress(zHandle, 'zylo_handle_import');
+		zexport := GetProcAddress(zHandle, 'zylo_handle_export');
+		zattach := GetProcAddress(zHandle, 'zylo_handle_attach');
+		zdetach := GetProcAddress(zHandle, 'zylo_handle_detach');
+		zverify := GetProcAddress(zHandle, 'zylo_handle_verify');
+		zinsert := GetProcAddress(zHandle, 'zylo_handle_insert');
+		zdelete := GetProcAddress(zHandle, 'zylo_handle_delete');
+		zkpress := GetProcAddress(zHandle, 'zylo_handle_kpress');
+		zfclick := GetProcAddress(zHandle, 'zylo_handle_fclick');
 	except
 		zHandle := 0;
 	end;
@@ -217,15 +216,13 @@ end;
 (*returns whether the QSO score is calculated by this handler*)
 function zLogCalcPointsHookHandler(aQSO: TQSO): boolean;
 var
-	pts: integer;
 	qso: TQSOData;
 begin
 	Result := @zverify <> nil;
 	if Result then begin
 		qso := aQSO.FileRecord;
-		pts := zverify(@qso, 1);
+		zverify(@qso, 1);
 		aQSO.FileRecord := qso;
-		aQSO.Points := pts;
 	end;
 end;
 
@@ -243,11 +240,14 @@ begin
 end;
 
 (*returns whether the multiplier is validated by this handler*)
-function zLogValidMultiHookHandler(mul: string; var val: boolean): boolean;
+function zLogValidMultiHookHandler(aQSO: QSO; var val: boolean): boolean;
 begin
 	Result := @zverify <> nil;
-	if Result then
-		val := mul <> '';
+	if Result then begin
+		qso := aQSO.FileRecord;
+		zverify(@qso, 1);
+		val := string(qso.Multi1) <> '';
+	end;
 end;
 
 function zLogGetTotalScore(): Integer;
@@ -257,14 +257,14 @@ var
 	idx: integer;
 begin
 	Result := -1;
-	if @zupdate <> nil then begin
+	if @zverify <> nil then begin
 		buf := TBytesStream.Create;
 		try
 			for idx := 1 to Log.TotalQSO do begin
 				qso := Log.QsoList[idx].FileRecord;
 				buf.Write(qso, LEN);
 			end;
-			Result := zupdate(buf.bytes, Log.TotalQSO);
+			Result := zverify(buf.bytes, Log.TotalQSO);
 		finally
 			buf.Free;
 		end;

@@ -2236,11 +2236,12 @@ begin
       aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
    MultiForm.Add(aQSO);
    aQSO.Reserve2 := $00;
+   ScoreForm.AddNoUpdate(aQSO);
 
    aQSO.Reserve := actAdd;
    Log.AddQue(aQSO);
    Log.ProcessQue;
-   ScoreForm.Add(aQSO);
+   ScoreForm.UpdateData;
 
    if Local = False then
       aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag

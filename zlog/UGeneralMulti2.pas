@@ -199,12 +199,12 @@ begin
       exit;
    end;
 
-   str := ExtractMulti(aQSO);
-
-   if zLogValidMultiHookHandler(str, boo) = True then begin
+   if zLogValidMultiHookHandler(aQSO, boo) = True then begin
       Result := boo;
       Exit;
    end;
+
+   str := ExtractMulti(aQSO);
 
    boo := false;
    for i := 0 to CityList.List.Count-1 do begin
