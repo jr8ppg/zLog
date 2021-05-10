@@ -217,12 +217,15 @@ end;
 (*returns whether the QSO score is calculated by this handler*)
 function zLogCalcPointsHookHandler(aQSO: TQSO): boolean;
 var
+	pts: integer;
 	qso: TQSOData;
 begin
 	Result := @zverify <> nil;
 	if Result then begin
 		qso := aQSO.FileRecord;
-		aQSO.Points := zverify(@qso, 1);
+		pts := zverify(@qso, 1);
+		aQSO.FileRecord := qso;
+		aQSO.Points := pts;
 	end;
 end;
 
