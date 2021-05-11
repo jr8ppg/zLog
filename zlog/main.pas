@@ -1047,6 +1047,7 @@ type
     procedure DoVFOChange(Sender: TObject);
     procedure ApplyCQRepeatInterval();
     procedure ShowToggleStatus(text: string; fON: Boolean);
+    procedure SetListWidth();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -6155,20 +6156,8 @@ begin
 end;
 
 procedure TMainForm.FormResize(Sender: TObject);
-var
-   i: Integer;
 begin
-   i := ClientWidth - Grid.GridWidth;
-   if i <> 0 then begin
-      Grid.ColWidths[Grid.ColCount - 1] := Grid.ColWidths[Grid.ColCount - 1] + i;
-      if EditScreen <> nil then begin
-         EditScreen.SetEditFields;
-      end;
-   end;
-
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('FormResize():VisibleRowCount=' + IntToStr(MainForm.Grid.VisibleRowCount)));
-   {$ENDIF}
+   SetListWidth();
 end;
 
 procedure TMainForm.menuOptionsClick(Sender: TObject);
@@ -7371,10 +7360,7 @@ end;
 
 procedure TMainForm.OnZLogSetGridCol( var Message: TMessage );
 begin
-   if EditScreen <> nil then begin
-      EditScreen.SetGridWidth();
-      EditScreen.SetEditFields();
-   end;
+   SetListWidth();
 end;
 
 procedure TMainForm.OnZLogSpcDataLoaded( var Message: TMessage );
@@ -9680,6 +9666,24 @@ begin
          Exit;
       end;
    end;
+end;
+
+procedure TMainForm.SetListWidth();
+var
+   i: Integer;
+begin
+   i := ClientWidth - Grid.GridWidth;
+   if i <> 0 then begin
+      Grid.ColWidths[Grid.ColCount - 1] := Grid.ColWidths[Grid.ColCount - 1] + i;
+   end;
+
+   if EditScreen <> nil then begin
+      EditScreen.SetEditFields;
+   end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('FormResize():VisibleRowCount=' + IntToStr(MainForm.Grid.VisibleRowCount)));
+   {$ENDIF}
 end;
 
 end.
