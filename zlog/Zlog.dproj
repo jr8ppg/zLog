@@ -3,7 +3,7 @@
         <ProjectGuid>{83497C9C-5934-4E18-AC20-2AB9247B7276}</ProjectGuid>
         <MainSource>zlog.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
@@ -183,9 +183,6 @@
         <DCCReference Include="USuperCheck2.pas">
             <Form>SuperCheck2</Form>
         </DCCReference>
-        <DCCReference Include="UACAGScore.pas">
-            <Form>ACAGScore</Form>
-        </DCCReference>
         <DCCReference Include="UzLogCW.pas"/>
         <DCCReference Include="UALLJAScore.pas">
             <Form>ALLJAScore</Form>
@@ -282,9 +279,6 @@
         </DCCReference>
         <DCCReference Include="USixDownMulti.pas">
             <Form>SixDownMulti</Form>
-        </DCCReference>
-        <DCCReference Include="USixDownScore.pas">
-            <Form>SixDownScore</Form>
         </DCCReference>
         <DCCReference Include="UIARUMulti.pas">
             <Form>IARUMulti</Form>

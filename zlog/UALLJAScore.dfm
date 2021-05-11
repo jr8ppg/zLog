@@ -21,7 +21,7 @@ inherited ALLJAScore: TALLJAScore
     Width = 200
     Height = 202
     Align = alClient
-    ColCount = 6
+    ColCount = 7
     DefaultDrawing = False
     FixedCols = 0
     RowCount = 16

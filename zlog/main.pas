@@ -1116,12 +1116,12 @@ implementation
 
 uses
   UALLJAEditDialog, UAbout, UMenu, UACAGMulti,
-  UACAGScore, UALLJAScore,
+  UALLJAScore,
   UJIDXMulti, UJIDXScore, UJIDXScore2, UWPXMulti, UWPXScore,
   UPediScore, UJIDX_DX_Multi, UJIDX_DX_Score,
   UGeneralScore, UFDMulti, UARRLDXMulti,
   UARRLDXScore, UAPSprintScore, UJA0Multi, UJA0Score,
-  UKCJMulti, USixDownMulti, USixDownScore, UIARUMulti,
+  UKCJMulti, USixDownMulti, UIARUMulti,
   UIARUScore, UAllAsianScore, UIOTAMulti, {UIOTACategory,} UARRL10Multi,
   UARRL10Score,
   UIntegerDialog, UNewPrefix, UKCJScore,
@@ -2777,7 +2777,7 @@ constructor TALLJAContest.Create(N: string);
 begin
    inherited;
    MultiForm := TALLJAMulti.Create(MainForm);
-   ScoreForm := TALLJAScore.Create(MainForm);
+   ScoreForm := TALLJAScore.Create(MainForm, b19, b50);
    PastEditForm := TALLJAEditDialog.Create(MainForm);
    SentStr := '$V$P';
 end;
@@ -2848,7 +2848,7 @@ constructor TACAGContest.Create(N: string);
 begin
    inherited;
    MultiForm := TACAGMulti.Create(MainForm);
-   ScoreForm := TACAGScore.Create(MainForm);
+   ScoreForm := TALLJAScore.Create(MainForm, b19, HiBand);
    PastEditForm := TALLJAEditDialog.Create(MainForm);
    SentStr := '$Q$P';
 end;
@@ -2857,7 +2857,7 @@ constructor TFDContest.Create(N: string);
 begin
    inherited;
    MultiForm := TFDMulti.Create(MainForm);
-   ScoreForm := TACAGScore.Create(MainForm);
+   ScoreForm := TALLJAScore.Create(MainForm, b19, HiBand);
    PastEditForm := TALLJAEditDialog.Create(MainForm);
    SentStr := '$Q$P';
 end;
@@ -2866,7 +2866,10 @@ constructor TSixDownContest.Create(N: string);
 begin
    inherited;
    MultiForm := TSixDownMulti.Create(MainForm);
-   ScoreForm := TSixDownScore.Create(MainForm);
+   ScoreForm := TALLJAScore.Create(MainForm, b50, HiBand);
+   TALLJAScore(ScoreForm).PointTable[b2400] := 2;
+   TALLJAScore(ScoreForm).PointTable[b5600] := 2;
+   TALLJAScore(ScoreForm).PointTable[b10g] := 2;
    PastEditForm := TALLJAEditDialog.Create(MainForm);
    SentStr := '$Q$P';
 end;
