@@ -2,7 +2,7 @@ object RateDialog: TRateDialog
   Left = 69
   Top = 213
   Caption = 'QSO rate'
-  ClientHeight = 261
+  ClientHeight = 262
   ClientWidth = 334
   Color = clBtnFace
   Constraints.MinHeight = 300
@@ -74,7 +74,7 @@ object RateDialog: TRateDialog
   end
   object Panel2: TPanel
     Left = 0
-    Top = 231
+    Top = 232
     Width = 334
     Height = 30
     Align = alBottom
@@ -99,26 +99,6 @@ object RateDialog: TRateDialog
       Anchors = [akRight]
       Caption = 'Show last'
     end
-    object OKBtn: TButton
-      Left = 7
-      Top = 5
-      Width = 57
-      Height = 20
-      Caption = 'OK'
-      Default = True
-      ModalResult = 1
-      TabOrder = 0
-      OnClick = OKBtnClick
-    end
-    object StayOnTop: TCheckBox
-      Left = 72
-      Top = 6
-      Width = 81
-      Height = 17
-      Caption = 'Stay on top'
-      TabOrder = 1
-      OnClick = StayOnTopClick
-    end
     object ShowLastCombo: TComboBox
       Left = 209
       Top = 5
@@ -129,7 +109,7 @@ object RateDialog: TRateDialog
       Ctl3D = True
       ItemIndex = 2
       ParentCtl3D = False
-      TabOrder = 2
+      TabOrder = 0
       Text = '12'
       OnChange = ShowLastComboChange
       Items.Strings = (
@@ -148,15 +128,43 @@ object RateDialog: TRateDialog
       Height = 17
       Anchors = [akTop, akRight]
       Caption = '3D'
-      TabOrder = 3
+      TabOrder = 1
       OnClick = check3DClick
+    end
+    object Panel3: TPanel
+      Left = 0
+      Top = 0
+      Width = 157
+      Height = 33
+      BevelOuter = bvNone
+      TabOrder = 2
+      object radioOriginCurrentTime: TRadioButton
+        Left = 3
+        Top = 6
+        Width = 82
+        Height = 17
+        Caption = 'Current Time'
+        Checked = True
+        TabOrder = 0
+        TabStop = True
+        OnClick = radioOriginClick
+      end
+      object radioOriginLastQSO: TRadioButton
+        Left = 87
+        Top = 6
+        Width = 66
+        Height = 17
+        Caption = 'Last QSO'
+        TabOrder = 1
+        OnClick = radioOriginClick
+      end
     end
   end
   object Chart1: TChart
     Left = 0
     Top = 37
     Width = 334
-    Height = 194
+    Height = 195
     LeftWall.Color = clWhite
     Legend.Visible = False
     Title.Text.Strings = (
@@ -180,13 +188,208 @@ object RateDialog: TRateDialog
       ValueFormat = '#,###'
       MarksLocation = mlCenter
       MarksOnBar = True
+      MultiBar = mbStacked
       TickLines.Color = clDefault
       XValues.Name = 'X'
       XValues.Order = loAscending
       YValues.Name = 'Bar'
       YValues.Order = loNone
     end
-    object Series2: TLineSeries
+    object Series2: TBarSeries
+      Marks.Font.Color = clWhite
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.BackColor = clWhite
+      Marks.Callout.Arrow.Visible = False
+      Marks.Color = clWhite
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series3: TBarSeries
+      Marks.Transparent = True
+      Marks.Style = smsValue
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      Marks.SoftClip = True
+      Marks.UseSeriesTransparency = False
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series4: TBarSeries
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series5: TBarSeries
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series6: TBarSeries
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series7: TBarSeries
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series8: TBarSeries
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series9: TBarSeries
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series10: TBarSeries
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series11: TBarSeries
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series12: TBarSeries
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series13: TBarSeries
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series14: TBarSeries
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series15: TBarSeries
+      Marks.Font.Color = clWhite
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.Callout.Arrow.Visible = False
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series16: TBarSeries
+      BarBrush.Color = -1
+      Marks.Font.Color = clRed
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.BackColor = clRed
+      Marks.Callout.Arrow.Visible = False
+      Marks.Color = clRed
+      SeriesColor = 8454143
+      BarWidthPercent = 75
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      Sides = 3
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object SeriesTotalQSOs: TLineSeries
       Brush.BackColor = clDefault
       Pointer.HorizSize = 3
       Pointer.InflateMargins = True
