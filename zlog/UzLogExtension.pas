@@ -49,14 +49,12 @@ var
 	zexport: procedure(src: PAnsiChar; fmt: PAnsiChar); stdcall;
 	zattach: procedure(str: PAnsiChar; cfg: PAnsiChar); stdcall;
 	zdetach: procedure(); stdcall;
-	zinsert: procedure(ptr: pointer; len: integer); stdcall;
-	zdelete: procedure(ptr: pointer; len: integer); stdcall;
-	zverify: function (ptr: pointer; len: integer): integer; stdcall;
-	zkpress: function (key: integer; source: PAnsiChar): boolean; stdcall;
-	zfclick: function (btn: integer; source: PAnsiChar): boolean; stdcall;
-
-const
-	LEN = sizeof(TQSOData);
+	zinsert: procedure(ptr: pointer); stdcall;
+	zdelete: procedure(ptr: pointer); stdcall;
+	zverify: procedure(ptr: pointer); stdcall;
+	zpoints: function (): integer; stdcall;
+	ztyping: function (key: integer; name: PAnsiChar): boolean; stdcall;
+	zbutton: function (btn: integer; name: PAnsiChar): boolean; stdcall;
 
 (*zLog event handlers*)
 procedure zLogInitialize();
@@ -157,11 +155,12 @@ begin
 		zexport := GetProcAddress(zHandle, 'zylo_handle_export');
 		zattach := GetProcAddress(zHandle, 'zylo_handle_attach');
 		zdetach := GetProcAddress(zHandle, 'zylo_handle_detach');
-		zverify := GetProcAddress(zHandle, 'zylo_handle_verify');
 		zinsert := GetProcAddress(zHandle, 'zylo_handle_insert');
 		zdelete := GetProcAddress(zHandle, 'zylo_handle_delete');
-		zkpress := GetProcAddress(zHandle, 'zylo_handle_kpress');
-		zfclick := GetProcAddress(zHandle, 'zylo_handle_fclick');
+		zverify := GetProcAddress(zHandle, 'zylo_handle_verify');
+		zpoints := GetProcAddress(zHandle, 'zylo_handle_points');
+		ztyping := GetProcAddress(zHandle, 'zylo_handle_kpress');
+		zbutton := GetProcAddress(zHandle, 'zylo_handle_fclick');
 	except
 		zHandle := 0;
 	end;
@@ -177,25 +176,30 @@ begin
 end;
 
 procedure zLogContestInit(contest: string; cfg: string);
+var
+	idx: integer
 begin
 	Enabled := True;
 	if @zattach <> nil then
 		zattach(DtoC(contest), DtoC(cfg));
+	for idx := 1  to Log.TotalQSO do begin
+		zLogContestEvent(evAddQSO, Log.QsoList[idx]);
+		zLogCalcPointsHookHandler(Log.QsoList[idx]);
+	end;
 end;
 
 procedure zLogContestEvent(event: TzLogEvent; bQSO, aQSO: TQSO);
 var
 	qso: TQSOData;
 begin
-	if Enabled then begin
-		if (@zinsert <> nil) and (event <> evDeleteQSO) then begin
-			qso := aQSO.FileRecord;
-			zinsert(@qso, 1);
-		end;
-		if (@zdelete <> nil) and (event <> evAddQSO) then begin
-			qso := bQSO.FileRecord;
-			zdelete(@qso, 1);
-		end;
+	if not Enabled then Exit;
+	if (@zinsert <> nil) and (event <> evDeleteQSO) then begin
+		qso := aQSO.FileRecord;
+		zinsert(@qso);
+	end;
+	if (@zdelete <> nil) and (event <> evAddQSO) then begin
+		qso := bQSO.FileRecord;
+		zdelete(@qso);
 	end;
 end;
 
@@ -221,7 +225,7 @@ begin
 	Result := @zverify <> nil;
 	if Result then begin
 		qso := aQSO.FileRecord;
-		zverify(@qso, 1);
+		zverify(@qso);
 		aQSO.FileRecord := qso;
 	end;
 end;
@@ -234,41 +238,32 @@ begin
 	Result := @zverify <> nil;
 	if Result then begin
 		qso := aQSO.FileRecord;
-		zverify(@qso, 1);
-		mul := string(qso.Multi1);
+		zverify(@qso);
+		aQSO.FileRecord := qso;
+		mul := qso.Multi1;
 	end;
 end;
 
 (*returns whether the multiplier is validated by this handler*)
-function zLogValidMultiHookHandler(aQSO: QSO; var val: boolean): boolean;
+function zLogValidMultiHookHandler(aQSO: TQSO; var val: boolean): boolean;
+var
+	qso: TQSOData;
 begin
 	Result := @zverify <> nil;
 	if Result then begin
 		qso := aQSO.FileRecord;
-		zverify(@qso, 1);
-		val := string(qso.Multi1) <> '';
+		zverify(@qso);
+		aQSO.FileRecord := qso;
+		val := qso.Multi1 <> '';
 	end;
 end;
 
 function zLogGetTotalScore(): Integer;
-var
-	buf: TBytesStream;
-	qso: TQSOData;
-	idx: integer;
 begin
-	Result := -1;
-	if @zverify <> nil then begin
-		buf := TBytesStream.Create;
-		try
-			for idx := 1 to Log.TotalQSO do begin
-				qso := Log.QsoList[idx].FileRecord;
-				buf.Write(qso, LEN);
-			end;
-			Result := zverify(buf.bytes, Log.TotalQSO);
-		finally
-			buf.Free;
-		end;
-	end;
+	if @zpoints <> nil then
+		Result := zpoints()
+	else
+		Result := -1;
 end;
 
 procedure TImportDialog.ImportMenuClicked(Sender: TObject);
@@ -314,8 +309,8 @@ end;
 (*returns whether the event is blocked by this handler*)
 function zLogKeyBoardPressed(Sender: TObject; key: Char): boolean;
 begin
-	if @zkpress <> nil then
-		Result := zkpress(integer(key), DtoC(TEdit(Sender).Name))
+	if @ztyping <> nil then
+		Result := ztyping(integer(key), DtoC(TEdit(Sender).Name))
 	else
 		Result := False;
 end;
@@ -323,8 +318,8 @@ end;
 (*returns whether the event is blocked by this handler*)
 function zLogFunctionClicked(Sender: TObject): boolean;
 begin
-	if @zfclick <> nil then
-		Result := zfclick(TButton(Sender).Tag, DtoC(TButton(Sender).Name))
+	if @zbutton <> nil then
+		Result := zbutton(TButton(Sender).Tag, DtoC(TButton(Sender).Name))
 	else
 		Result := False;
 end;
