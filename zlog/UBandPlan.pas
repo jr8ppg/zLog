@@ -72,7 +72,6 @@ end;
 
 function TBandPlan.GetEstimatedMode(Hz: Integer): TMode;
 var
-   m: TMode;
    b: TBand;
 begin
    for b := b19 to HiBand do begin
@@ -110,6 +109,21 @@ begin
    l := FLower[m][b];
    u := FUpper[m][b];
 
+   if (l = 0) and (u = 0) then begin
+      Result := True;
+      Exit;
+   end;
+
+   if (l = 0) and (u >= Hz) then begin
+      Result := True;
+      Exit;
+   end;
+
+   if (l <= Hz) and (u = 0) then begin
+      Result := True;
+      Exit;
+   end;
+
    if (l <= Hz) and (u >= Hz) then begin
       Result := True;
    end
@@ -124,6 +138,11 @@ var
 begin
    l := FLower[m][b];
    u := FUpper[m][b];
+
+   if (l = 0) and (u = 0) then begin
+      Result := False;
+      Exit;
+   end;
 
    if (l > Hz) or (u < Hz) then begin
       Result := True;

@@ -149,6 +149,7 @@ type
     procedure SetRit(flag: Boolean); virtual;
     procedure SetXit(flag: Boolean); virtual;
     procedure SetRitOffset(offset: Integer); virtual;
+    procedure UpdateFreqMem(vfo: Integer; Hz: Integer);
   public
     constructor Create(RigNum : Integer); virtual;
     destructor Destroy; override;
@@ -728,6 +729,17 @@ begin
    FRitOffset := offset;
 end;
 
+procedure TRig.UpdateFreqMem(vfo: Integer; Hz: Integer);
+var
+   b: TBand;
+begin
+   b := dmZLogGlobal.BandPlan.FreqToBand(Hz);
+   if b <> bUnknown then begin
+      _currentband := b;
+   end;
+   FreqMem[_currentband, _currentmode] := _currentfreq[vfo];
+end;
+
 procedure TRig.SetBaudRate(i: Integer);
 begin
    case i of
@@ -901,7 +913,6 @@ end;
 // IF001 07131790 +0000 10 140000;
 procedure TFT2000.ExecuteCommand(S: AnsiString);
 var
-   b: TBand;
    M: TMode;
    i: Integer;
    strTemp: string;
@@ -933,11 +944,7 @@ begin
 
       // バンド(VFO-A)
       if _currentvfo = 0 then begin
-         b := dmZLogGlobal.BandPlan.FreqToBand(i);
-         if b <> bUnknown then begin
-            _currentband := b;
-         end;
-         FreqMem[_currentband, _currentmode] := _currentfreq[0];
+         UpdateFreqMem(0, i);
       end;
 
       // RIT/XIT offset
@@ -1113,7 +1120,6 @@ procedure TFT1000.ExecuteCommand(S: AnsiString);
 var
    i: LongInt;
    M: TMode;
-   b: TBand;
 begin
    try
       if length(S) = 32 then begin
@@ -1144,11 +1150,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 0 then begin
-            b := dmZLogGlobal.BandPlan.FreqToBand(i);
-            if b <> bUnknown then begin
-               _currentband := b;
-            end;
-            FreqMem[_currentband, _currentmode] := _currentfreq[0];
+            UpdateFreqMem(0, i);
          end;
 
          i := Ord(S[18]) * 256 * 256 + Ord(S[19]) * 256 + Ord(S[20]);
@@ -1157,13 +1159,8 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 1 then begin
-            b := dmZLogGlobal.BandPlan.FreqToBand(i);
-            if b <> bUnknown then begin
-               _currentband := b;
-            end;
-            FreqMem[_currentband, _currentmode] := _currentfreq[1];
+            UpdateFreqMem(1, i);
          end;
-
       end;
 
       if Selected then begin
@@ -1201,7 +1198,6 @@ procedure TMARKV.ExecuteCommand(S: AnsiString);
 var
    i: LongInt;
    M: TMode;
-   b: TBand;
 begin
    try
       if length(S) = 32 then begin
@@ -1232,11 +1228,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 0 then begin
-            b := dmZLogGlobal.BandPlan.FreqToBand(i);
-            if b <> bUnknown then begin
-               _currentband := b;
-            end;
-            FreqMem[_currentband, _currentmode] := _currentfreq[0];
+            UpdateFreqMem(0, i);
          end;
 
          i := (Ord(S[21]) div 16) * 100000000 + (Ord(S[21]) mod 16) * 10000000 + (Ord(S[20]) div 16) * 1000000 + (Ord(S[20]) mod 16) * 100000 +
@@ -1245,13 +1237,8 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 1 then begin
-            b := dmZLogGlobal.BandPlan.FreqToBand(i);
-            if b <> bUnknown then begin
-               _currentband := b;
-            end;
-            FreqMem[_currentband, _currentmode] := _currentfreq[1];
+            UpdateFreqMem(1, i);
          end;
-
       end;
 
       if Selected then begin
@@ -1287,7 +1274,6 @@ procedure TMARKVF.ExecuteCommand(S: AnsiString);
 var
    i: LongInt;
    M: TMode;
-   b: TBand;
 begin
    try
       if length(S) = 32 then begin
@@ -1320,11 +1306,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 0 then begin
-            b := dmZLogGlobal.BandPlan.FreqToBand(i);
-            if b <> bUnknown then begin
-               _currentband := b;
-            end;
-            FreqMem[_currentband, _currentmode] := _currentfreq[0];
+            UpdateFreqMem(0, i);
          end;
 
          i := Ord(S[18]) * 256 * 256 * 256 + Ord(S[19]) * 256 * 256 + Ord(S[20]) * 256 + Ord(S[21]);
@@ -1333,13 +1315,8 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 1 then begin
-            b := dmZLogGlobal.BandPlan.FreqToBand(i);
-            if b <> bUnknown then begin
-               _currentband := b;
-            end;
-            FreqMem[_currentband, _currentmode] := _currentfreq[1];
+            UpdateFreqMem(1, i);
          end;
-
       end;
 
       if Selected then begin
@@ -2934,11 +2911,7 @@ begin
       i := i + _freqoffset; // transverter
 
       if _currentvfo = aa then begin
-         b := dmZLogGlobal.BandPlan.FreqToBand(_currentfreq[aa]);
-         if b <> bUnknown then begin
-            _currentband := b;
-         end;
-         FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
+         UpdateFreqMem(aa, _currentfreq[aa]);
       end;
 
       if Selected then
@@ -2952,13 +2925,10 @@ begin
          aa := 1
       else
          Exit;
+
       _currentvfo := aa;
 
-      b := dmZLogGlobal.BandPlan.FreqToBand(_currentfreq[aa]);
-      if b <> bUnknown then begin
-         _currentband := b;
-      end;
-      FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
+      UpdateFreqMem(aa, _currentfreq[aa]);
 
       if Selected then
          UpdateStatus;
@@ -3084,7 +3054,6 @@ var
    // B : TBand;
    M: TMode;
    ss: AnsiString;
-   b: TBand;
 begin
    // RigControl.label1.caption := S;
    if length(S) < 10 then
@@ -3124,11 +3093,7 @@ begin
          end;
          _currentmode := M;
 
-         b := dmZLogGlobal.BandPlan.FreqToBand(i);
-         if b <> bUnknown then begin
-            _currentband := b;
-         end;
-         FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
+         UpdateFreqMem(aa, i);
       end;
 
       if Selected then
@@ -3142,7 +3107,6 @@ var
    temp: byte;
    i, i1, i2, i3, i4, i5: LongInt;
    M: TMode;
-   b: TBand;
    ss: AnsiString;
 begin
    try
@@ -3254,11 +3218,7 @@ begin
             _currentfreq[_currentvfo] := i;
             i := i + _freqoffset;
 
-            b := dmZLogGlobal.BandPlan.FreqToBand(i);
-            if b <> bUnknown then begin
-               _currentband := b;
-            end;
-            FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
+            UpdateFreqMem(_currentvfo, i);
 
             if Selected then begin
                UpdateStatus;
@@ -3283,7 +3243,6 @@ procedure TFT100.ExecuteCommand(S: AnsiString);
 var
    i: LongInt;
    M: TMode;
-   b: TBand;
 begin
    try
       if length(S) = WaitSize then begin
@@ -3312,11 +3271,7 @@ begin
 
          i := _currentfreq[_currentvfo] + _freqoffset;
 
-         b := dmZLogGlobal.BandPlan.FreqToBand(i);
-         if b <> bUnknown then begin
-            _currentband := b;
-         end;
-         FreqMem[_currentband, _currentmode] := _currentfreq[0];
+         UpdateFreqMem(0, i);
       end;
 
       if Selected then begin
@@ -3351,7 +3306,6 @@ procedure TFT920.ExecuteCommand(S: AnsiString);
 var
    i: LongInt;
    M: TMode;
-   b: TBand;
 begin
    try
       if length(S) = 28 then begin
@@ -3382,11 +3336,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 0 then begin
-            b := dmZLogGlobal.BandPlan.FreqToBand(i);
-            if b <> bUnknown then begin
-               _currentband := b;
-            end;
-            FreqMem[_currentband, _currentmode] := _currentfreq[0]; // i;
+            UpdateFreqMem(0, i);
          end;
 
          i := Ord(S[16]) * 256 * 256 * 256 + Ord(S[17]) * 256 * 256 + Ord(S[18]) * 256 + Ord(S[19]);
@@ -3395,13 +3345,8 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 1 then begin
-            b := dmZLogGlobal.BandPlan.FreqToBand(i);
-            if b <> bUnknown then begin
-               _currentband := b;
-            end;
-            FreqMem[_currentband, _currentmode] := _currentfreq[1]; // i;
+            UpdateFreqMem(1, i);
          end;
-
       end;
 
       if Selected then begin
@@ -3416,7 +3361,6 @@ procedure TFT1000MP.ExecuteCommand(S: AnsiString);
 var
    i: LongInt;
    M: TMode;
-   b: TBand;
 begin
    try
       if length(S) = 32 then begin
@@ -3447,11 +3391,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 0 then begin
-            b := dmZLogGlobal.BandPlan.FreqToBand(i);
-            if b <> bUnknown then begin
-               _currentband := b;
-            end;
-            FreqMem[_currentband, _currentmode] := _currentfreq[0];
+            UpdateFreqMem(0, i);
          end;
 
          i := Ord(S[18]) * 256 * 256 * 256 + Ord(S[19]) * 256 * 256 + Ord(S[20]) * 256 + Ord(S[21]);
@@ -3460,13 +3400,8 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 1 then begin
-            b := dmZLogGlobal.BandPlan.FreqToBand(i);
-            if b <> bUnknown then begin
-               _currentband := b;
-            end;
-            FreqMem[_currentband, _currentmode] := _currentfreq[1];
+            UpdateFreqMem(1, i);
          end;
-
       end;
 
       if Selected then begin
@@ -3481,7 +3416,6 @@ procedure TFT847.ExecuteCommand(S: AnsiString);
 var
    i: LongInt;
    M: TMode;
-   b: TBand;
 begin
    try
       {$IFDEF DEBUG}
@@ -3523,11 +3457,7 @@ begin
          _currentfreq[_currentvfo] := i;
          i := i + _freqoffset;
 
-         b := dmZLogGlobal.BandPlan.FreqToBand(i);
-         if b <> bUnknown then begin
-            _currentband := b;
-         end;
-         FreqMem[_currentband, _currentmode] := _currentfreq[0];
+         UpdateFreqMem(0, i);
       end;
 
       if Selected then begin
@@ -3658,7 +3588,6 @@ end;
 //
 procedure TFT991.ExecuteCommand(S: AnsiString);
 var
-   b: TBand;
    M: TMode;
    i: Integer;
    strTemp: string;
@@ -3687,11 +3616,7 @@ begin
 
       // バンド(VFO-A)
       if _currentvfo = 0 then begin
-         b := dmZLogGlobal.BandPlan.FreqToBand(i);
-         if b <> bUnknown then begin
-            _currentband := b;
-         end;
-         FreqMem[_currentband, _currentmode] := _currentfreq[0];
+         UpdateFreqMem(0, i);
       end;
 
       if Selected then begin
@@ -3881,10 +3806,22 @@ begin
    FPrevVfoA := VfoA;
 
    if currentvfo = 0 then begin
+      if dmZLogGlobal.BandPlan.IsInBand(Main.CurrentQSO.Band, Main.CurrentQSO.Mode, VfoA) = True then begin
+         dispFreqA.Font.Color := clBlack;
+      end
+      else begin
+         dispFreqA.Font.Color := clRed;
+      end;
       dispFreqA.Font.Style := [fsBold];
       dispFreqB.Font.Style := [];
    end
    else begin
+      if dmZLogGlobal.BandPlan.IsInBand(Main.CurrentQSO.Band, Main.CurrentQSO.Mode, VfoB) = True then begin
+         dispFreqB.Font.Color := clBlack;
+      end
+      else begin
+         dispFreqB.Font.Color := clRed;
+      end;
       dispFreqB.Font.Style := [fsBold];
       dispFreqA.Font.Style := [];
    end;
