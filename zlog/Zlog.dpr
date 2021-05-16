@@ -113,7 +113,8 @@ uses
   UOperatorEdit in 'UOperatorEdit.pas' {formOperatorEdit},
   UzLogOperatorInfo in 'UzLogOperatorInfo.pas',
   WinKeyer in 'WinKeyer.pas',
-  UFunctionKeyPanel in 'UFunctionKeyPanel.pas' {formFunctionKeyPanel};
+  UFunctionKeyPanel in 'UFunctionKeyPanel.pas' {formFunctionKeyPanel},
+  UBandPlan in 'UBandPlan.pas';
 
 {$R *.RES}
 

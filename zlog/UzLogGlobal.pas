@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.Math, Vcl.Graphics, System.DateUtils,
-  UzLogKeyer, UzlogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers;
+  UzLogKeyer, UzlogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan;
 
 type
   TCWSettingsParam = record
@@ -223,6 +223,7 @@ type
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private êÈåæ }
+    FBandPlan: TBandPlan;
     FOpList: TOperatorInfoList;
 
     FMyCountry: string;
@@ -331,6 +332,7 @@ public
     property MyContinent: string read FMyContinent;
     property MyCQZone: string read FMyCQZone;
     property MyITUZone: string read FMyITUZone;
+    property BandPlan: TBandPlan read FBandPlan;
   end;
 
 function Log(): TLog;
@@ -369,7 +371,6 @@ function Power(base, Power: integer): integer;
 
 function StrToBandDef(strMHz: string; defband: TBand): TBand;
 function StrToModeDef(strMode: string; defmode: TMode): TMode;
-function GetBandIndex(Hz: Integer; default: Integer = -1): Integer; // Returns -1 if Hz is outside ham bands
 
 function PartialMatch(A, B: string): Boolean;
 function PartialMatch2(strCompare, strTarget: string): Boolean;
@@ -425,10 +426,14 @@ begin
    FCountryList := TCountryList.Create();
    FPrefixList := TPrefixList.Create();
    FCtyDatLoaded := Load_CTYDAT();
+
+   FBandPlan := TBandPlan.Create();
+   FBandPlan.LoadFromFile();
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
 begin
+   FBandPlan.Free();
    FCountryList.Free();
    FPrefixList.Free();
    SaveCurrentSettings();
@@ -2792,49 +2797,6 @@ begin
       end;
    end;
    Result := defmode;
-end;
-
-function GetBandIndex(Hz: Integer; default: Integer): Integer; // Returns -1 if Hz is outside ham bands
-var
-   i: Integer;
-begin
-   i := default;
-   case Hz div 1000 of
-      1800 .. 1999:
-         i := 0;
-      3000 .. 3999:
-         i := 1;
-      6900 .. 7999:
-         i := 2;
-      9900 .. 11000:
-         i := 3;
-      13900 .. 14999:
-         i := 4;
-      17500 .. 18999:
-         i := 5;
-      20900 .. 21999:
-         i := 6;
-      23500 .. 24999:
-         i := 7;
-      27800 .. 29999:
-         i := 8;
-      49000 .. 59000:
-         i := 9;
-      140000 .. 149999:
-         i := 10;
-      400000 .. 450000:
-         i := 11;
-      1200000 .. 1299999:
-         i := 12;
-      2400000..2499999:
-         i := 13;
-      5600000..5699999:
-         i := 14;
-      10000000..90000000:
-         i := 15;
-   end;
-
-   Result := i;
 end;
 
 function Compare2(strTarget: string; strCompare: string): Boolean;

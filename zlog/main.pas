@@ -9459,16 +9459,30 @@ end;
 
 // Cluster or BandScopeから呼ばれる
 procedure TMainForm.SetFrequency(freq: Integer);
+var
+   b: TBand;
+   m: TMode;
+   Q: TQSO;
 begin
    if freq = 0 then begin
       Exit;
    end;
+
+   b := dmZLogGlobal.BandPlan.FreqToBand(freq);
+   m := dmZLogGlobal.BandPlan.GetEstimatedMode(freq);
 
    FQsyFromBS := True;
 
    if RigControl.Rig <> nil then begin
       // RIGにfreq設定
       RigControl.Rig.SetFreq(freq, IsCQ());
+
+      Q := TQSO.Create();
+      Q.Band := b;
+      Q.Mode := m;
+      RigControl.Rig.SetMode(Q);
+      Q.Free();
+
       RigControl.Rig.UpdateStatus();
 
       // Zeroin避け
@@ -9478,7 +9492,7 @@ begin
    end
    else begin
       // バンド変更
-      UpdateBand(TBand(GetBandIndex(freq)));
+      UpdateBand(b);
    end;
 
    // SPモードへ変更
