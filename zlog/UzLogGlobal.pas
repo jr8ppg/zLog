@@ -91,6 +91,10 @@ type
     _bandscope_freshness_mode: Integer;
     _bandscope_freshness_icon: Integer;
 
+    _bandscope_use_estimated_mode: Boolean;
+    _bandscope_show_only_in_bandplan: Boolean;
+    _bandscope_show_only_domestic: Boolean;
+
     CW : TCWSettingsParam;
     _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
 
@@ -1005,6 +1009,10 @@ begin
       Settings._bandscope_freshness_mode := ini.ReadInteger('BandScopeEx', 'freshness_mode', 0);
       Settings._bandscope_freshness_icon := ini.ReadInteger('BandScopeEx', 'freshness_icon', 0);
 
+      Settings._bandscope_use_estimated_mode := ini.ReadBool('BandScopeOptions', 'use_estimated_mode', True);
+      Settings._bandscope_show_only_in_bandplan := ini.ReadBool('BandScopeOptions', 'show_only_in_bandplan', True);
+      Settings._bandscope_show_only_domestic := ini.ReadBool('BandScopeOptions', 'show_only_domestic', True);
+
       // Quick Memo
       Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', MEMO_PSE_QSL);
       Settings.FQuickMemoText[2] := ini.ReadString('QuickMemo', '#2', MEMO_NO_QSL);
@@ -1473,6 +1481,10 @@ begin
 
       ini.WriteInteger('BandScopeEx', 'freshness_mode', Settings._bandscope_freshness_mode);
       ini.WriteInteger('BandScopeEx', 'freshness_icon', Settings._bandscope_freshness_icon);
+
+      ini.WriteBool('BandScopeOptions', 'use_estimated_mode', Settings._bandscope_use_estimated_mode);
+      ini.ReadBool('BandScopeOptions', 'show_only_in_bandplan', Settings._bandscope_show_only_in_bandplan);
+      ini.ReadBool('BandScopeOptions', 'show_only_domestic', Settings._bandscope_show_only_domestic);
 
       // Quick Memo
       for i := 1 to 5 do begin

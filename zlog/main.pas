@@ -9461,27 +9461,27 @@ end;
 procedure TMainForm.SetFrequency(freq: Integer);
 var
    b: TBand;
-   m: TMode;
    Q: TQSO;
 begin
    if freq = 0 then begin
       Exit;
    end;
 
-   b := dmZLogGlobal.BandPlan.FreqToBand(freq);
-   m := dmZLogGlobal.BandPlan.GetEstimatedMode(freq);
-
    FQsyFromBS := True;
+
+   b := dmZLogGlobal.BandPlan.FreqToBand(freq);
 
    if RigControl.Rig <> nil then begin
       // RIGÇ…freqê›íË
       RigControl.Rig.SetFreq(freq, IsCQ());
 
-      Q := TQSO.Create();
-      Q.Band := b;
-      Q.Mode := m;
-      RigControl.Rig.SetMode(Q);
-      Q.Free();
+      if dmZLogGlobal.Settings._bandscope_use_estimated_mode = True then begin
+         Q := TQSO.Create();
+         Q.Band := b;
+         Q.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(freq);
+         RigControl.Rig.SetMode(Q);
+         Q.Free();
+      end;
 
       RigControl.Rig.UpdateStatus();
 
