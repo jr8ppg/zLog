@@ -3084,6 +3084,7 @@ begin
       else begin
          L := Log.QsoList;
       end;
+      Grid.Tag := Integer(L);
 
       Grid.RowCount := (((L.Count div 50) + 1) * 50) + 1;
 
@@ -5210,7 +5211,7 @@ begin
       end;
 
       VK_UP: begin
-         Grid.Row := Log.QsoList.Count - 1;
+         Grid.Row := TQSOList(Grid.Tag).Count - 1;
          if EditScreen.DirectEdit then begin
             Grid.col := TEdit(Sender).Tag;
          end;
