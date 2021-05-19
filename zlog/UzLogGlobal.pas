@@ -1,4 +1,4 @@
-unit UzLogGlobal;
+ï»¿unit UzLogGlobal;
 
 interface
 
@@ -194,7 +194,7 @@ type
     FImpProvCity: Boolean;
     FImpCwMessage: array[1..4] of Boolean;
 
-    // ƒXƒRƒA•\¦‚Ì’Ç‰Áî•ñ(•]‰¿—pw”)
+    // ã‚¹ã‚³ã‚¢è¡¨ç¤ºã®è¿½åŠ æƒ…å ±(è©•ä¾¡ç”¨æŒ‡æ•°)
     FLastScoreExtraInfo: Integer;
 
     // Time to change greetings
@@ -226,7 +226,7 @@ type
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
-    { Private éŒ¾ }
+    { Private å®£è¨€ }
     FBandPlan: TBandPlan;
     FOpList: TOperatorInfoList;
 
@@ -271,7 +271,7 @@ type
     function GetLastMode(): TMode;
     procedure SetLastMode(m: TMode);
 public
-    { Public éŒ¾ }
+    { Public å®£è¨€ }
     FCurrentFileName : string;
     FLog : TLog;
 
@@ -391,6 +391,8 @@ function LD(S, T: string): Integer;
 function LD_dp(str1, str2: string): Integer;
 function LD_ond(str1, str2: string): Integer;
 
+function IsDomestic(strCallsign: string): Boolean;
+
 var
   dmZLogGlobal: TdmZLogGlobal;
 
@@ -415,7 +417,7 @@ begin
    LoadIniFile;
    Settings.CW.CurrentBank := 1;
 
-   // ƒIƒyƒŒ[ƒ^[ƒŠƒXƒg
+   // ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ãƒ¼ãƒªã‚¹ãƒˆ
    FOpList := TOperatorInfoList.Create();
    FOpList.LoadFromIniFile();
    if FOpList.Count = 0 then begin
@@ -459,7 +461,7 @@ begin
       end;
    end;
 
-   // ‘ÎÛ€–Ú‚ğÄƒ[ƒh
+   // å¯¾è±¡é …ç›®ã‚’å†ãƒ­ãƒ¼ãƒ‰
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       LoadCfgParams(ini);
@@ -668,7 +670,7 @@ begin
       // Multi Station
       Settings._multistation := ini.ReadBool('Categories', 'MultiStn', False);
 
-      // CFGƒtƒ@ƒCƒ‹‚É‚à‚ ‚é€–Ú‚ğƒ[ƒh
+      // CFGãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚‚ã‚ã‚‹é …ç›®ã‚’ãƒ­ãƒ¼ãƒ‰
       LoadCfgParams(ini);
 
       //
@@ -913,7 +915,7 @@ begin
       Settings._renewbythread := ini.ReadBool('Misc', 'UpdateUsingThread', False);
 
       //
-      // ‚±‚±‚©‚ç‰B‚µİ’è
+      // ã“ã“ã‹ã‚‰éš ã—è¨­å®š
       //
 
       Settings._movetomemo := ini.ReadBool('Preferences', 'MoveToMemoWithSpace', False);
@@ -1066,7 +1068,7 @@ begin
       Settings.FImpCwMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_f3a', False);
       Settings.FImpCwMessage[4] := ini.ReadBool('UserDefinedContest', 'imp_f4a', False);
 
-      // ƒXƒRƒA•\¦‚Ì’Ç‰Áî•ñ(•]‰¿—pw”)
+      // ã‚¹ã‚³ã‚¢è¡¨ç¤ºã®è¿½åŠ æƒ…å ±(è©•ä¾¡ç”¨æŒ‡æ•°)
       Settings.FLastScoreExtraInfo := ini.ReadInteger('Score', 'ExtraInfo', 0);
 
       // Time to change greetings
@@ -1400,7 +1402,7 @@ begin
       ini.WriteBool('Misc', 'UpdateUsingThread', Settings._renewbythread);
 
       //
-      // ‚±‚±‚©‚ç‰B‚µİ’è
+      // ã“ã“ã‹ã‚‰éš ã—è¨­å®š
       //
 
       ini.WriteBool('Preferences', 'MoveToMemoWithSpace', Settings._movetomemo);
@@ -1511,7 +1513,7 @@ begin
       ini.WriteBool('UserDefinedContest', 'imp_f3a', Settings.FImpCwMessage[3]);
       ini.WriteBool('UserDefinedContest', 'imp_f4a', Settings.FImpCwMessage[4]);
 
-      // ƒXƒRƒA•\¦‚Ì’Ç‰Áî•ñ(•]‰¿—pw”)
+      // ã‚¹ã‚³ã‚¢è¡¨ç¤ºã®è¿½åŠ æƒ…å ±(è©•ä¾¡ç”¨æŒ‡æ•°)
       ini.WriteInteger('Score', 'ExtraInfo', Settings.FLastScoreExtraInfo);
 
       // Last Band/Mode
@@ -1522,11 +1524,11 @@ begin
       slParam.Free();
    end;
 
-   // ƒIƒyƒŒ[ƒ^[ƒŠƒXƒg•Û‘¶
+   // ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ãƒ¼ãƒªã‚¹ãƒˆä¿å­˜
    FOpList.SaveToIniFile();
 end;
 
-// İ’è”½‰f
+// è¨­å®šåæ˜ 
 procedure TdmZLogGlobal.ImplementSettings(_OnCreate: boolean);
 begin
    if _OnCreate = False then begin
@@ -1571,7 +1573,7 @@ begin
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
 
-   // RIGƒRƒ“ƒgƒ[ƒ‹‚Æ“¯‚¶ƒ|[ƒg‚Ìê‡‚Í–³‚µ‚Æ‚·‚é
+   // RIGã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã¨åŒã˜ãƒãƒ¼ãƒˆã®å ´åˆã¯ç„¡ã—ã¨ã™ã‚‹
    if (Settings._rigport[1] <> Settings._lptnr) and
       (Settings._rigport[2] <> Settings._lptnr) then begin
       dmZLogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
@@ -2058,17 +2060,17 @@ var
 begin
    strFileName := ExtractFilePath(Application.ExeName) + 'CTY.DAT';
 
-   // ƒJƒ“ƒgƒŠ[ƒŠƒXƒg‚ğƒ[ƒh
+   // ã‚«ãƒ³ãƒˆãƒªãƒ¼ãƒªã‚¹ãƒˆã‚’ãƒ­ãƒ¼ãƒ‰
    FCountryList.LoadFromFile(strFileName);
 
    if FileExists(strFileName) = True then begin
 
-      // ŠeƒJƒ“ƒgƒŠ[‚Ìprefix‚ğ“WŠJ
+      // å„ã‚«ãƒ³ãƒˆãƒªãƒ¼ã®prefixã‚’å±•é–‹
       for i := 0 to FCountryList.Count - 1 do begin
          FPrefixList.Parse(FCountryList[i]);
       end;
 
-      // •À‚Ñ‘Ö‚¦i~‡j
+      // ä¸¦ã³æ›¿ãˆï¼ˆé™é †ï¼‰
       FPrefixList.Sort();
 
       Result := True;
@@ -2077,7 +2079,7 @@ begin
       Result := False;
    end;
 
-   // æ“ª‚ÉUnknown Country‚Ìƒ_ƒ~[ƒŒƒR[ƒh’Ç‰Á
+   // å…ˆé ­ã«Unknown Countryã®ãƒ€ãƒŸãƒ¼ãƒ¬ã‚³ãƒ¼ãƒ‰è¿½åŠ 
    P := TPrefix.Create();
    P.Prefix := 'Unknown';
    P.Country := FCountryList[0];
@@ -2103,7 +2105,7 @@ begin
       Exit;
    end;
 
-   // Å‰‚ÍƒR[ƒ‹ˆê’vŠm”F
+   // æœ€åˆã¯ã‚³ãƒ¼ãƒ«ä¸€è‡´ç¢ºèª
    for i := 0 to FPrefixList.Count - 1 do begin
       P := FPrefixList[i];
 
@@ -2129,7 +2131,7 @@ begin
       Exit;
    end
 
-   // –³‹‚·‚é‚à‚Ì
+   // ç„¡è¦–ã™ã‚‹ã‚‚ã®
    else if (strCallRight = 'AA') or (strCallRight = 'AT') or (strCallRight = 'AG') or
       (strCallRight = 'AA') or (strCallRight = 'AE') or (strCallRight = 'M') or
       (strCallRight = 'P') or (strCallRight = 'AM') or (strCallRight = 'QRP') or
@@ -2142,9 +2144,9 @@ begin
       str := Copy(str, 1, i - 1);
    end
 
-   // ”»•Ê‚Å‚«‚È‚¢
+   // åˆ¤åˆ¥ã§ããªã„
    else if i = 5 then begin
-      // ‚Ü‚¸‚Í¶‘¤‚©‚ç‘O•ûˆê’v‚Å
+      // ã¾ãšã¯å·¦å´ã‹ã‚‰å‰æ–¹ä¸€è‡´ã§
       for i := 1 to FPrefixList.Count - 1 do begin
          P := FPrefixList[i];
 
@@ -2156,11 +2158,11 @@ begin
          end;
       end;
 
-      // –³‚¯‚ê‚Î‰E‘¤
+      // ç„¡ã‘ã‚Œã°å³å´
       strCallFirst := strCallRight;
    end;
 
-   // ‘±‚¢‚Ä‘O•ûˆê’v‚Å
+   // ç¶šã„ã¦å‰æ–¹ä¸€è‡´ã§
    for i := 1 to FPrefixList.Count - 1 do begin
       P := FPrefixList[i];
 
@@ -2844,12 +2846,12 @@ begin
    end;
 end;
 
-// ƒŒ[ƒxƒ“ƒVƒ…ƒ^ƒCƒ“‹——£‚ÌŒvZ
+// ãƒ¬ãƒ¼ãƒ™ãƒ³ã‚·ãƒ¥ã‚¿ã‚¤ãƒ³è·é›¢ã®è¨ˆç®—
 function LD(S, T: string): Integer;
 var
    l1, l2, l3: Integer;
 begin
-   // ˆê•û‚ª‹ó•¶š—ñ‚È‚çA‘¼•û‚Ì’·‚³‚ª‹‚ß‚é‹——£
+   // ä¸€æ–¹ãŒç©ºæ–‡å­—åˆ—ãªã‚‰ã€ä»–æ–¹ã®é•·ã•ãŒæ±‚ã‚ã‚‹è·é›¢
    if S = '' then begin
       Result := Length(T);
       Exit;
@@ -2860,30 +2862,30 @@ begin
       Exit;
    end;
 
-   // ˆê•¶š–Ú‚ªˆê’v‚È‚çA“ñ•¶š–ÚˆÈ~‚Ì‹——£‚ª‹‚ß‚é‹——£
+   // ä¸€æ–‡å­—ç›®ãŒä¸€è‡´ãªã‚‰ã€äºŒæ–‡å­—ç›®ä»¥é™ã®è·é›¢ãŒæ±‚ã‚ã‚‹è·é›¢
    if S[1] = T[1] then begin
       Result := LD(Copy(S, 2), Copy(T, 2));
       Exit;
    end;
 
-   // ˆê•¶š–Ú‚ª•sˆê’v‚È‚çA’Ç‰Á^íœ^’uŠ·‚Ì‚»‚ê‚¼‚ê‚ğÀ{‚µA
-   // c‚è‚Ì•¶š—ñ‚É‚Â‚¢‚Ä‚ÌƒRƒXƒg‚ğŒvZ‚·‚é
+   // ä¸€æ–‡å­—ç›®ãŒä¸ä¸€è‡´ãªã‚‰ã€è¿½åŠ ï¼å‰Šé™¤ï¼ç½®æ›ã®ãã‚Œãã‚Œã‚’å®Ÿæ–½ã—ã€
+   // æ®‹ã‚Šã®æ–‡å­—åˆ—ã«ã¤ã„ã¦ã®ã‚³ã‚¹ãƒˆã‚’è¨ˆç®—ã™ã‚‹
 
-   // S‚Ìæ“ª‚É’Ç‰Á
+   // Sã®å…ˆé ­ã«è¿½åŠ 
    l1 := LD(S, Copy(T, 2));
 
-   // S‚Ìæ“ª‚ğíœ
+   // Sã®å…ˆé ­ã‚’å‰Šé™¤
    l2 := LD(Copy(S, 2), T);
 
-   // S‚Ìæ“ª‚ğ’uŠ·
+   // Sã®å…ˆé ­ã‚’ç½®æ›
    l3 := LD(Copy(S, 2), Copy(T, 2));
 
-   // ’Ç‰Á^íœ^’uŠ·‚ğÀ{‚µ‚½•ªƒRƒXƒgi‹——£j1‚ÌÁ”ï‚ÍŠm’è
-   // c‚è‚Ì•¶š—ñ‚É‚Â‚¢‚Ä‚ÌƒRƒXƒg‚ÌÅ¬’l‚ğ‘«‚¹‚Î‹——£‚Æ‚È‚é
+   // è¿½åŠ ï¼å‰Šé™¤ï¼ç½®æ›ã‚’å®Ÿæ–½ã—ãŸåˆ†ã‚³ã‚¹ãƒˆï¼ˆè·é›¢ï¼‰1ã®æ¶ˆè²»ã¯ç¢ºå®š
+   // æ®‹ã‚Šã®æ–‡å­—åˆ—ã«ã¤ã„ã¦ã®ã‚³ã‚¹ãƒˆã®æœ€å°å€¤ã‚’è¶³ã›ã°è·é›¢ã¨ãªã‚‹
    Result := 1 + Min(l1, Min(l2, l3));
 end;
 
-// “®“IŒv‰æ–@‚Å‚ÌƒŒ[ƒxƒ“ƒVƒ…ƒ^ƒCƒ“‹——£‚ÌŒvZ
+// å‹•çš„è¨ˆç”»æ³•ã§ã®ãƒ¬ãƒ¼ãƒ™ãƒ³ã‚·ãƒ¥ã‚¿ã‚¤ãƒ³è·é›¢ã®è¨ˆç®—
 function LD_dp(str1, str2: string): Integer;
 var
    n1, n2: Integer;
@@ -2916,8 +2918,8 @@ begin
    Result := d[n1][n2];
 end;
 
-// O(ND)ƒAƒ‹ƒSƒŠƒYƒ€‚Å‚ÌƒŒ[ƒxƒ“ƒVƒ…ƒ^ƒCƒ“‹——£‚ÌŒvZ
-// ‚P•¶š‚Ìˆá‚¢i’uŠ·j‚Í‚Q‚Æ‚È‚é‚Ì‚Åg‚¦‚È‚¢
+// O(ND)ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã§ã®ãƒ¬ãƒ¼ãƒ™ãƒ³ã‚·ãƒ¥ã‚¿ã‚¤ãƒ³è·é›¢ã®è¨ˆç®—
+// ï¼‘æ–‡å­—ã®é•ã„ï¼ˆç½®æ›ï¼‰ã¯ï¼’ã¨ãªã‚‹ã®ã§ä½¿ãˆãªã„
 function LD_ond(str1, str2: string): Integer;
 var
    n1, n2: Integer;
@@ -3060,6 +3062,57 @@ begin
          exit;
       end;
    end;
+end;
+
+// JA1â€“JS1, 7J1, 8J1â€“8N1, 7K1â€“7N4
+// JA2â€“JS2, 7J2, 8J2â€“8N2
+// JA3â€“JS3, 7J3, 8J3â€“8N3
+// JA4â€“JS4, 7J4, 8J4â€“8N4
+// JA5â€“JS5, 7J5, 8J5â€“8N5
+// JA6â€“JS6, 7J6, 8J6â€“8N6
+// JA7â€“JS7, 7J7, 8J7â€“8N7
+// JA8â€“JS8, 7J8, 8J8â€“8N8
+// JA9â€“JS9, 7J9, 8J9â€“8N9
+// JA0â€“JS0, 7J0, 8J0â€“8N0
+function IsDomestic(strCallsign: string): Boolean;
+var
+   S1: Char;
+   S2: Char;
+   S3: Char;
+begin
+   S1 := strCallsign[1];
+   S2 := strCallsign[2];
+   S3 := strCallsign[3];
+
+   if S1 = 'J' then begin
+      if (S2 >= 'A') and (S2 <= 'S') then begin
+         Result := True;
+         Exit;
+      end;
+   end;
+
+   if (S1 = '7') and (S2 = 'J') then begin
+      Result := True;
+      Exit;
+   end;
+
+   if S1 = '7' then begin
+      if (S2 >= 'K') and (S2 <= 'N') then begin
+         if (S3 >= '1') and (S3 <= '4') then begin
+            Result := True;
+            Exit;
+         end;
+      end;
+   end;
+
+   if S1 = '8' then begin
+      if (S2 >= 'J') and (S2 <= 'N') then begin
+         Result := True;
+         Exit;
+      end;
+   end;
+
+   Result := False;
 end;
 
 end.
