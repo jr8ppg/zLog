@@ -794,7 +794,7 @@ begin
       strScore := IntToStr3(TotPoints);
    end
    else begin
-      nScore := zLogGetTotalScore();
+      nScore := zyloRequestTotal(TotPoints, TotMulti);
       if nScore = -1 then begin
          nScore := TotPoints * TotMulti;
       end;
@@ -831,7 +831,7 @@ var
    ch: Char;
    C: TCountry;
 begin
-   if zLogCalcPointsHookHandler(aQSO) = True then begin
+   if zyloRequestScore(aQSO) = True then begin
       Exit;
    end;
 

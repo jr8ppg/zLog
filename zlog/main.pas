@@ -3925,7 +3925,7 @@ begin
    // フォントサイズの設定
    SetFontSize(dmZlogGlobal.Settings._mainfontsize);
 
-   zLogInitialize();
+   zyloRuntimeLaunch;
 end;
 
 procedure TMainForm.ShowHint(Sender: TObject);
@@ -3950,7 +3950,7 @@ begin
    Grid.Row := 1;
    Grid.Col := 1;
 
-   zLogContestTerm();
+   zyloContestClosed;
 
    { Add code to create a new file }
    PostMessage(Handle, WM_ZLOG_INIT, 0, 0);
@@ -3963,7 +3963,7 @@ begin
    OpenDialog.FileName := '';
 
    if OpenDialog.Execute then begin
-      zLogContestTerm();
+      zyloContestClosed;
       WriteStatusLine('Loading...', False);
       dmZLogGlobal.SetLogFileName(OpenDialog.filename);
       LoadNewContestFromFile(OpenDialog.filename);
@@ -4677,9 +4677,6 @@ procedure TMainForm.EditKeyPress(Sender: TObject; var Key: Char);
 var
    Q: TQSO;
 begin
-   if zLogKeyBoardPressed(Sender, key) then
-      Exit;
-
    if CallsignEdit.Font.Color = clGrayText then begin
       if Key <> ' ' then begin
          CallsignEdit.Text := OldCallsign;
@@ -5498,14 +5495,14 @@ begin
    end;
 
    PostMessage(Handle, WM_ZLOG_INIT, 0, 0);
+
+   zyloRuntimeLaunch;
 end;
 
 procedure TMainForm.CWFButtonClick(Sender: TObject);
 var
    i: Integer;
 begin
-   if zLogFunctionClicked(Sender) then
-      Exit;
    i := THemisphereButton(Sender).Tag;
    PlayMessage(dmZlogGlobal.Settings.CW.CurrentBank, i);
 end;
@@ -5558,8 +5555,8 @@ begin
 
    SuperCheckFreeData();
 
-   zLogContestTerm();
-   zLogTerminate();
+   zyloContestClosed;
+   zyloRuntimeFinish;
 end;
 
 procedure TMainForm.SpeedBarChange(Sender: TObject);
@@ -5972,8 +5969,6 @@ procedure TMainForm.VoiceFButtonClick(Sender: TObject);
 var
    n: Integer;
 begin
-   if zLogFunctionClicked(Sender) then
-      Exit;
    n := THemisphereButton(Sender).Tag;
    PlayMessage(1, n);
 end;
@@ -7217,6 +7212,8 @@ begin
          CurrentQSO.RSTSent := 59;
       end;
 
+      zyloContestOpened(MyContest.Name, menu.CFGFileName);
+
       // ファイル名の指定が無い場合は選択ダイアログを出す
       if CurrentFileName = '' then begin
          OpenDialog.InitialDir := dmZlogGlobal.Settings._logspath;
@@ -7352,7 +7349,6 @@ begin
       // 初期化完了
       FInitialized := True;
 
-      zLogContestInit(MyContest.Name, menu.CFGFileName);
    finally
       menu.Release();
    end;

@@ -199,7 +199,7 @@ begin
       exit;
    end;
 
-   if zLogValidMultiHookHandler(aQSO, boo) = True then begin
+   if zyloRequestValid(aQSO, boo) = True then begin
       Result := boo;
       Exit;
    end;
@@ -224,7 +224,7 @@ var
    i : Integer;
 begin
    str := '';
-   if zLogExtractMultiHookHandler(aQSO, str) = True then begin
+   if zyloRequestMulti(aQSO, str) = True then begin
       Result := str;
       Exit;
    end;
@@ -418,7 +418,7 @@ end;
 
 procedure TGeneralMulti2.LoadDAT(Filename : string);
 begin
-   if not zLogRequestDAT(Filename, CityList) then
+   if not zyloRequestTable(Filename, CityList) then
       CityList.LoadFromFile(FileName);
    Reset;
 end;
