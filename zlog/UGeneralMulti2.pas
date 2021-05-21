@@ -418,7 +418,8 @@ end;
 
 procedure TGeneralMulti2.LoadDAT(Filename : string);
 begin
-   CityList.LoadFromFile(FileName);
+   if not zLogRequestDAT(Filename, CityList) then
+      CityList.LoadFromFile(FileName);
    Reset;
 end;
 

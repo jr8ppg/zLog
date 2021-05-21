@@ -20,6 +20,7 @@ uses
 	UzLogQSO,
 	UzLogConst,
 	UzLogGlobal,
+	UMultipliers,
 	RegularExpressions;
 
 type
@@ -35,6 +36,7 @@ var
 	Fmt: string;
 	Enabled: boolean;
 	zHandle: THandle;
+	CityList: TCityList;
 	ImportMenu: TMenuItem;
 	ExportMenu: TMenuItem;
 	ImportDialog: TImportDialog;
@@ -45,6 +47,7 @@ var
 	ydelete: procedure(fun: pointer); stdcall;
 	yupdate: procedure(fun: pointer); stdcall;
 	yfilter: procedure(fun: pointer); stdcall;
+	ycities: procedure(fun: pointer); stdcall;
 	zimport: procedure(src: PAnsiChar; dst: PAnsiChar); stdcall;
 	zexport: procedure(src: PAnsiChar; fmt: PAnsiChar); stdcall;
 	zattach: procedure(str: PAnsiChar; cfg: PAnsiChar); stdcall;
@@ -62,6 +65,7 @@ procedure zLogContestInit(contest, cfg: string);
 procedure zLogContestEvent(event: TzLogEvent; bQSO, aQSO: TQSO);
 procedure zLogContestTerm();
 procedure zLogTerminate();
+function zLogRequestDAT(Path: String; List: TCityList): boolean;
 function zLogCalcPointsHookHandler(aQSO: TQSO): boolean;
 function zLogExtractMultiHookHandler(aQSO: TQSO; var mul: string): boolean;
 function zLogValidMultiHookHandler(aQSO: TQSO; var val: boolean): boolean;
@@ -90,7 +94,7 @@ begin
 	Result := string(AnsiString(str));
 end;
 
-(*callback function that will be invoked from DLL*)
+(*callback function that will be invoked by DLL*)
 procedure InsertCallBack(ptr: pointer); stdcall;
 var
 	qso: TQSO;
@@ -100,20 +104,19 @@ begin
 	MyContest.LogQSO(qso, True);
 end;
 
-(*callback function that will be invoked from DLL*)
+(*callback function that will be invoked by DLL*)
 procedure DeleteCallBack(ptr: pointer); stdcall;
 var
 	qso: TQSO;
 begin
 	qso := TQSO.Create;
 	qso.FileRecord := TQSOData(ptr^);
-	qso.Reserve := actDelete;
-	Log.AddQue(qso);
-	Log.ProcessQue;
+	Log.DeleteQSO(qso);
 	MyContest.Renew;
+	qso.Free;
 end;
 
-(*callback function that will be invoked from DLL*)
+(*callback function that will be invoked by DLL*)
 procedure UpdateCallBack(ptr: pointer); stdcall;
 var
 	qso: TQSO;
@@ -124,14 +127,37 @@ begin
 	Log.AddQue(qso);
 	Log.ProcessQue;
 	MyContest.Renew;
+	qso.Free;
 end;
 
-(*callback function that will be invoked from DLL*)
+(*callback function that will be invoked by DLL*)
 procedure FilterCallBack(f: PAnsiChar); stdcall;
 begin
 	ImportDialog.Filter := CtoD(f);
 	ExportDialog.Filter := CtoD(f);
 	ExportDialog.OnTypeChange := ExportDialog.FilterTypeChanged;
+end;
+
+(*callback function that will be invoked by DLL*)
+procedure CitiesCallBack(f: PAnsiChar); stdcall;
+var
+	city: TCity;
+	line: string;
+	list: TStringList;
+	vals: TArray<string>;
+begin
+	list := TStringList.Create;
+	list.Text := AdjustLineBreaks(CtoD(f), tlbsLF); 
+	for line in list do begin
+		city := TCity.Create;
+		vals := TRegEx.Split(line, '\s+');
+		city.CityNumber := vals[0];
+		city.CityName := vals[1];
+		city.Index := CityList.List.Count;
+		CityList.List.Add(city);
+		CityList.SortedMultiList.AddObject(city.CityNumber, city);
+	end;
+	list.Free;
 end;
 
 procedure zLogInitialize();
@@ -151,6 +177,7 @@ begin
 		ydelete := GetProcAddress(zHandle, 'zylo_permit_delete');
 		yupdate := GetProcAddress(zHandle, 'zylo_permit_update');
 		yfilter := GetProcAddress(zHandle, 'zylo_permit_filter');
+		ycities := GetProcAddress(zHandle, 'zylo_permit_cities');
 		zimport := GetProcAddress(zHandle, 'zylo_handle_import');
 		zexport := GetProcAddress(zHandle, 'zylo_handle_export');
 		zattach := GetProcAddress(zHandle, 'zylo_handle_attach');
@@ -159,8 +186,8 @@ begin
 		zdelete := GetProcAddress(zHandle, 'zylo_handle_delete');
 		zverify := GetProcAddress(zHandle, 'zylo_handle_verify');
 		zpoints := GetProcAddress(zHandle, 'zylo_handle_points');
-		ztyping := GetProcAddress(zHandle, 'zylo_handle_kpress');
-		zbutton := GetProcAddress(zHandle, 'zylo_handle_fclick');
+		ztyping := GetProcAddress(zHandle, 'zylo_handle_typing');
+		zbutton := GetProcAddress(zHandle, 'zylo_handle_button');
 	except
 		zHandle := 0;
 	end;
@@ -177,14 +204,13 @@ end;
 
 procedure zLogContestInit(contest: string; cfg: string);
 var
-	idx: integer
+	idx: integer;
 begin
 	Enabled := True;
 	if @zattach <> nil then
 		zattach(DtoC(contest), DtoC(cfg));
-	for idx := 1  to Log.TotalQSO do begin
-		zLogContestEvent(evAddQSO, Log.QsoList[idx]);
-		zLogCalcPointsHookHandler(Log.QsoList[idx]);
+	for idx := 1 to Log.TotalQSO do begin
+		zLogContestEvent(evAddQSO, nil, Log.QsoList[idx]);
 	end;
 end;
 
@@ -215,6 +241,18 @@ begin
 	(*do not close Go DLL*)
 	if @zfinish <> nil then
 		zfinish();
+end;
+
+(*returns whether the cities list is provided by this handler*)
+function zLogRequestDAT(Path: string; List: TCityList): boolean;
+begin
+	UzLogExtension.CityList := List;
+	if @ycities <> nil then begin
+		ycities(@CitiesCallBack);
+		Result := True;
+	end else
+		Result := False;
+	UzLogExtension.CityList := nil;
 end;
 
 (*returns whether the QSO score is calculated by this handler*)
