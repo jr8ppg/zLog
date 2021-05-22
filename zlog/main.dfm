@@ -5302,9 +5302,16 @@ object MainForm: TMainForm
       object CWMessagePad1: TMenuItem
         Action = actionCwMessagePad
       end
+      object N7: TMenuItem
+        Caption = '-'
+      end
       object menuOptions: TMenuItem
         Caption = '&Options'
         OnClick = menuOptionsClick
+      end
+      object menuBandPlan: TMenuItem
+        Caption = 'Band Plan'
+        OnClick = menuBandPlanClick
       end
       object N5: TMenuItem
         Caption = '-'

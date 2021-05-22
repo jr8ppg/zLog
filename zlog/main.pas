@@ -689,6 +689,8 @@ type
     actionAntiZeroin: TAction;
     actionFunctionKeyPanel: TAction;
     FunctionKeyPanel1: TMenuItem;
+    N7: TMenuItem;
+    menuBandPlan: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -910,6 +912,7 @@ type
     procedure actionToggleAntiZeroinExecute(Sender: TObject);
     procedure actionAntiZeroinExecute(Sender: TObject);
     procedure actionFunctionKeyPanelExecute(Sender: TObject);
+    procedure menuBandPlanClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1126,7 +1129,7 @@ uses
   UIARUScore, UAllAsianScore, UIOTAMulti, {UIOTACategory,} UARRL10Multi,
   UARRL10Score,
   UIntegerDialog, UNewPrefix, UKCJScore,
-  UWAEScore, UWAEMulti, USummaryInfo,
+  UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension;
 
 {$R *.DFM}
@@ -6274,6 +6277,31 @@ begin
    finally
       f.Release();
    end;
+end;
+
+procedure TMainForm.menuBandPlanClick(Sender: TObject);
+var
+   f: TBandPlanEditDialog;
+   m: TMode;
+begin
+   f := TBandPlanEditDialog.Create(Self);
+   try
+      for m := mCW to mOther do begin
+         f.Limit[m] := dmZLogGlobal.BandPlan.Limit[m];
+      end;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      for m := mCW to mOther do begin
+         dmZLogGlobal.BandPlan.Limit[m] := f.Limit[m];
+      end;
+      dmZLogGlobal.BandPlan.SaveToFile();
+   finally
+      f.Release();
+   end;
+
 end;
 
 procedure TMainForm.CWFMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);

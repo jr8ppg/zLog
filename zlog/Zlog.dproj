@@ -446,6 +446,10 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UBandPlan.pas"/>
+        <DCCReference Include="UBandPlanEditDialog.pas">
+            <Form>BandPlanEditDialog</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>

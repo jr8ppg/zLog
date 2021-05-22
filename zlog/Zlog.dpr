@@ -114,7 +114,8 @@ uses
   UzLogOperatorInfo in 'UzLogOperatorInfo.pas',
   WinKeyer in 'WinKeyer.pas',
   UFunctionKeyPanel in 'UFunctionKeyPanel.pas' {formFunctionKeyPanel},
-  UBandPlan in 'UBandPlan.pas';
+  UBandPlan in 'UBandPlan.pas',
+  UBandPlanEditDialog in 'UBandPlanEditDialog.pas' {BandPlanEditDialog};
 
 {$R *.RES}
 
