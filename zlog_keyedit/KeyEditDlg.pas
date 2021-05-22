@@ -30,6 +30,9 @@ type
     radioSecondary5: TRadioButton;
     radioSecondary6: TRadioButton;
     checkAlphabetAndShift: TCheckBox;
+    GroupBox5: TGroupBox;
+    editDispText: TEdit;
+    Label1: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure comboFunctionKeyClick(Sender: TObject);
     procedure comboAlphabetKeyClick(Sender: TObject);
@@ -40,10 +43,13 @@ type
     function GetPrimaryKey(): string;
     procedure SetSecondaryKey(v: string);
     function GetSecondaryKey(): string;
+    procedure SetDispText(v: string);
+    function GetDispText(): string;
   public
     { Public êÈåæ }
     property PrimaryKey: string read GetPrimaryKey write SetPrimaryKey;
     property Secondarykey: string read GetSecondaryKey write SetSecondaryKey;
+    property DispText: string read GetDispText write SetDispText;
   end;
 
 implementation
@@ -258,6 +264,16 @@ begin
    else begin
       Result := '';
    end;
+end;
+
+procedure TformKeyEditDlg.SetDispText(v: string);
+begin
+   editDispText.Text := v;
+end;
+
+function TformKeyEditDlg.GetDispText(): string;
+begin
+   Result := editDispText.Text;
 end;
 
 end.

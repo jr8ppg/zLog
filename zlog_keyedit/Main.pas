@@ -94,16 +94,18 @@ var
    slText: TStringList;
 begin
    slText := TStringList.Create();
+   slText.StrictDelimiter := True;
    dlg := TformKeyEditDlg.Create(Self);
    try
       R := TValueListEditor(Sender).Row;
 
       strKeyBackup := TValueListEditor(Sender).Cells[1, R];
-      slText.CommaText := strKeyBackup + ',';
+      slText.CommaText := strKeyBackup + ',,';
 
       TValueListEditor(Sender).Cells[1, R] := '';
       dlg.PrimaryKey := slText.Strings[0];
       dlg.SecondaryKey := slText.Strings[1];
+      dlg.DispText := slText.Strings[2];
 
       if dlg.ShowModal() <> mrOK then begin
          TValueListEditor(Sender).Cells[1, R] := strKeyBackup;
@@ -121,7 +123,7 @@ begin
          ClearKeymap(strFuncName);
       end;
 
-      TValueListEditor(Sender).Cells[1, R] := strKey + ',' + dlg.SecondaryKey;
+      TValueListEditor(Sender).Cells[1, R] := strKey + ',' + dlg.SecondaryKey + ',' + dlg.DispText;
    finally
       dlg.Release();
       slText.Free();
@@ -308,7 +310,9 @@ begin
 
       vle.Cells[1, i] := ini.ReadString('shortcut', IntToStr(N), default_primary_shortcut[N]) +
                          ',' +
-                         ini.ReadString('secondary', IntToStr(N), default_secondary_shortcut[N]);
+                         ini.ReadString('secondary', IntToStr(N), default_secondary_shortcut[N]) +
+                         ',' +
+                         ini.ReadString('text', IntToStr(N), '');
    end;
 end;
 
@@ -319,6 +323,7 @@ var
    slText: TStringList;
 begin
    slText := TStringList.Create();
+   slText.StrictDelimiter := True;
    try
       for i := 1 to vle.RowCount - 1 do begin
          N := StrToIntDef(Copy(vle.Cells[0, i], 2, 3), -1);
@@ -326,9 +331,12 @@ begin
             Continue;
          end;
 
-         slText.CommaText := vle.Cells[1, i] + ',';
+         slText.CommaText := vle.Cells[1, i] + ',,';
          ini.WriteString('shortcut', IntToStr(N), slText[0]);
          ini.WriteString('secondary', IntToStr(N), slText[1]);
+         if slText[2] <> '' then begin
+            ini.WriteString('text', IntToStr(N), slText[2]);
+         end;
       end;
    finally
       slText.Free();

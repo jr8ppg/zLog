@@ -183,9 +183,6 @@
         <DCCReference Include="USuperCheck2.pas">
             <Form>SuperCheck2</Form>
         </DCCReference>
-        <DCCReference Include="UACAGScore.pas">
-            <Form>ACAGScore</Form>
-        </DCCReference>
         <DCCReference Include="UzLogCW.pas"/>
         <DCCReference Include="UALLJAScore.pas">
             <Form>ALLJAScore</Form>
@@ -282,9 +279,6 @@
         </DCCReference>
         <DCCReference Include="USixDownMulti.pas">
             <Form>SixDownMulti</Form>
-        </DCCReference>
-        <DCCReference Include="USixDownScore.pas">
-            <Form>SixDownScore</Form>
         </DCCReference>
         <DCCReference Include="UIARUMulti.pas">
             <Form>IARUMulti</Form>
@@ -447,6 +441,10 @@
         </DCCReference>
         <DCCReference Include="UzLogOperatorInfo.pas"/>
         <DCCReference Include="WinKeyer.pas"/>
+        <DCCReference Include="UFunctionKeyPanel.pas">
+            <Form>formFunctionKeyPanel</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>

@@ -3602,6 +3602,7 @@ begin
  }
  //  BufferString := '';
    Fchange := True;
+   sleep(100);    //コマンド投げた後100mS待ってからポーリング再開
    FPollingTimer.Enabled := True;
 end;
 
@@ -3620,6 +3621,7 @@ begin
  }
  //  BufferString := '';
    Fchange := True;
+   sleep(100);  //コマンド投げた後100mS待ってからポーリング再開
    FPollingTimer.Enabled := True;
 end;
 

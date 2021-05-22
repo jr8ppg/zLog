@@ -101,7 +101,8 @@ object formMain: TformMain
           '#080 '#12510#12523#12481#12481#12455#12483#12463#12454#12452#12531#12489#12454#12398#34920#31034'='
           '#081 '#12459#12531#12488#12522#12540#12481#12455#12483#12463#12454#12452#12531#12489#12454#12398#34920#31034'='
           '#087 N+1'#12454#12452#12531#12489#12454#12398#34920#31034'='
-          '#088 N+1'#12454#12452#12531#12489#12454#12363#12425#12398#12467#12540#12523#12469#12452#12531#12398#21462#12426#36796#12415'=Shift+Ctrl+I')
+          '#088 N+1'#12454#12452#12531#12489#12454#12363#12425#12398#12467#12540#12523#12469#12452#12531#12398#21462#12426#36796#12415'=Shift+Ctrl+I'
+          '#131 '#12501#12449#12531#12463#12471#12519#12531#12461#12540#12497#12493#12523#12398#34920#31034'=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
@@ -209,10 +210,6 @@ object formMain: TformMain
     object TabSheet5: TTabSheet
       Caption = #20837#21147#12392#32232#38598
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleEdit: TValueListEditor
         Left = 0
         Top = 0
@@ -258,10 +255,6 @@ object formMain: TformMain
     object TabSheet6: TTabSheet
       Caption = #20107#24460#20837#21147
       ImageIndex = 5
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vlePostContest: TValueListEditor
         Left = 0
         Top = 0
@@ -286,10 +279,6 @@ object formMain: TformMain
     object TabSheet7: TTabSheet
       Caption = #12381#12398#20182
       ImageIndex = 6
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleOther: TValueListEditor
         Left = 0
         Top = 0
