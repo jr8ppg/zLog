@@ -1485,8 +1485,8 @@ begin
       ini.WriteInteger('BandScopeEx', 'freshness_icon', Settings._bandscope_freshness_icon);
 
       ini.WriteBool('BandScopeOptions', 'use_estimated_mode', Settings._bandscope_use_estimated_mode);
-      ini.ReadBool('BandScopeOptions', 'show_only_in_bandplan', Settings._bandscope_show_only_in_bandplan);
-      ini.ReadBool('BandScopeOptions', 'show_only_domestic', Settings._bandscope_show_only_domestic);
+      ini.WriteBool('BandScopeOptions', 'show_only_in_bandplan', Settings._bandscope_show_only_in_bandplan);
+      ini.WriteBool('BandScopeOptions', 'show_only_domestic', Settings._bandscope_show_only_domestic);
 
       // Quick Memo
       for i := 1 to 5 do begin
