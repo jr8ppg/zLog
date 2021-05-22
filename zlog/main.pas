@@ -5103,6 +5103,7 @@ begin
    S := SetStr(S, CurrentQSO);
 
    if dmZLogKeyer.UseWinKeyer = True then begin
+      FWkAbort := False;  //’¼‘O‚ÉESC‚ğ‰Ÿ‚µ‚Ä‚¢‚½‚ç“r’†‚Å~‚Ü‚é‚½‚ßã‘‚«
       dmZLogKeyer.WinKeyerClear();
       if (CurrentQSO.CQ = True) or (dmZlogGlobal.Settings._switchcqsp = False) then begin
          dmZLogKeyer.WinkeyerSendCallsign(CurrentQSO.Callsign);
