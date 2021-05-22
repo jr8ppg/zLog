@@ -111,7 +111,7 @@ end;
 
 function CtoD(str: PAnsiChar): string;
 begin
-	Result := UTF8String(str);
+	Result := string(UTF8String(str));
 end;
 
 function FindUI(Name: string): TComponent;
@@ -217,7 +217,6 @@ end;
 
 procedure zyloRuntimeLaunch;
 var
-	fil: AnsiString;
 	zHandle: THandle;
 begin
 	ImportMenu := MainForm.MergeFile1;
@@ -328,7 +327,7 @@ begin
 		qso := aQSO.FileRecord;
 		zverify(@qso);
 		aQSO.FileRecord := qso;
-		mul := qso.Multi1;
+		mul := string(qso.Multi1);
 	end;
 end;
 
@@ -376,8 +375,6 @@ begin
 end;
 
 procedure TExportDialog.ExportMenuClicked(Sender: TObject);
-var
-	tmp: string;
 begin
 	FilterTypeChanged(Sender);
 	FileName := ChangeFileExt(CurrentFileName, DefaultExt);
