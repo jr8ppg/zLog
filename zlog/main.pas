@@ -7212,8 +7212,6 @@ begin
          CurrentQSO.RSTSent := 59;
       end;
 
-      zyloContestOpened(MyContest.Name, menu.CFGFileName);
-
       // ファイル名の指定が無い場合は選択ダイアログを出す
       if CurrentFileName = '' then begin
          OpenDialog.InitialDir := dmZlogGlobal.Settings._logspath;
@@ -7348,6 +7346,7 @@ begin
 
       // 初期化完了
       FInitialized := True;
+      zyloContestOpened(MyContest.Name, menu.CFGFileName);
 
    finally
       menu.Release();
