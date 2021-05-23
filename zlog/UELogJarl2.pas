@@ -302,7 +302,7 @@ begin
    WriteLn(f, '<CALLSIGN>' + edCallsign.Text + '</CALLSIGN>');
    WriteLn(f, '<OPCALLSIGN>' + edOpCallsign.Text + '</OPCALLSIGN>');
 
-   fScore := zLogGetTotalScore();
+   fScore := zyloRequestTotal(MyContest.ScoreForm._TotalPoints, MyContest.ScoreForm._TotalMulti);
    if fScore = -1 then begin
       fScore := MyContest.ScoreForm._TotalMulti * MyContest.ScoreForm._TotalPoints * fFdCoeff;
    end;

@@ -1114,7 +1114,7 @@ begin
 
    FSaved := False;
 
-   zLogContestEvent(evAddQSO, nil, aQSO);
+   zyloLogUpdated(evInsertQSO, nil, aQSO);
 end;
 
 procedure TLog.AddQue(aQSO: TQSO);
@@ -1207,7 +1207,7 @@ begin
             beforeQSO.Assign(wQSO);
             wQSO.Assign(afterQSO);  // wQSO = FQsoList[i]
             RebuildDupeCheckList;
-            zLogContestEvent(evModifyQSO, beforeQSO, afterQSO);
+            zyloLogUpdated(evUpdateQSO, beforeQSO, afterQSO);
             Break;
          end;
       end;
@@ -1284,14 +1284,14 @@ begin
    FSaved := False;
    RebuildDupeCheckList;
 
-   zLogContestEvent(evDeleteQSO, aQSO, nil);
+   zyloLogUpdated(evDeleteQSO, aQSO, nil);
 end;
 
 procedure TLog.DeleteQSO(aQSO: TQSO);
 var
    Index: Integer;
 begin
-   zLogContestEvent(evDeleteQSO, aQSO, nil);
+   zyloLogUpdated(evDeleteQSO, aQSO, nil);
 
    Index := FBandList[aQSO.Band].IndexOf(aQSO);
    if Index > -1 then begin
@@ -1343,7 +1343,7 @@ begin
    RebuildDupeCheckList;
    FSaved := False;
 
-   zLogContestEvent(evAddQSO, nil, aQSO);
+   zyloLogUpdated(evInsertQSO, nil, aQSO);
 end;
 
 procedure TLog.Backup(Filename: string);

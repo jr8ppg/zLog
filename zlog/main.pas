@@ -2243,13 +2243,16 @@ begin
 
    if Local = False then
       aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
-   MultiForm.Add(aQSO);
+   MultiForm.AddNoUpdate(aQSO);
    aQSO.Reserve2 := $00;
+   ScoreForm.AddNoUpdate(aQSO);
 
-   ScoreForm.Add(aQSO);
    aQSO.Reserve := actAdd;
    Log.AddQue(aQSO);
    Log.ProcessQue;
+
+   MultiForm.UpdateData;
+   ScoreForm.UpdateData;
 
    if Local = False then
       aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
@@ -3937,7 +3940,7 @@ begin
    SetFontSize(dmZlogGlobal.Settings._mainfontsize);
    FFunctionKeyPanel.Init();
 
-   zLogInitialize();
+   zyloRuntimeLaunch;
 end;
 
 procedure TMainForm.ShowHint(Sender: TObject);
@@ -3962,7 +3965,7 @@ begin
    Grid.Row := 1;
    Grid.Col := 1;
 
-   zLogContestTerm();
+   zyloContestClosed;
 
    { Add code to create a new file }
    PostMessage(Handle, WM_ZLOG_INIT, 0, 0);
@@ -3975,7 +3978,7 @@ begin
    OpenDialog.FileName := '';
 
    if OpenDialog.Execute then begin
-      zLogContestTerm();
+      zyloContestClosed;
       WriteStatusLine('Loading...', False);
       dmZLogGlobal.SetLogFileName(OpenDialog.filename);
       LoadNewContestFromFile(OpenDialog.filename);
@@ -5513,6 +5516,8 @@ begin
    end;
 
    PostMessage(Handle, WM_ZLOG_INIT, 0, 0);
+
+   zyloRuntimeLaunch;
 end;
 
 procedure TMainForm.CWFButtonClick(Sender: TObject);
@@ -5572,8 +5577,8 @@ begin
 
    SuperCheckFreeData();
 
-   zLogContestTerm();
-   zLogTerminate();
+   zyloContestClosed;
+   zyloRuntimeFinish;
 end;
 
 procedure TMainForm.SpeedBarChange(Sender: TObject);
@@ -7352,8 +7357,8 @@ begin
 
       // èâä˙âªäÆóπ
       FInitialized := True;
+      zyloContestOpened(MyContest.Name, menu.CFGFileName);
 
-      zLogContestInit(MyContest.Name, menu.CFGFileName);
    finally
       menu.Release();
    end;

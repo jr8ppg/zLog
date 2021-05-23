@@ -5197,7 +5197,7 @@ object MainForm: TMainForm
         OnClick = FileSaveAs
       end
       object MergeFile1: TMenuItem
-        Caption = '&Merge File'
+        Caption = '&Import...'
         OnClick = MergeFile1Click
       end
       object Backup1: TMenuItem
