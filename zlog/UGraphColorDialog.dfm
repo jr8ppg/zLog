@@ -24,7 +24,7 @@ object GraphColorDialog: TGraphColorDialog
     Height = 38
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 0
+    TabOrder = 1
     DesignSize = (
       412
       38)
@@ -57,7 +57,7 @@ object GraphColorDialog: TGraphColorDialog
     Height = 546
     Align = alClient
     BevelOuter = bvNone
-    TabOrder = 1
+    TabOrder = 0
     object GroupBox1: TGroupBox
       Left = 8
       Top = 8
@@ -113,7 +113,7 @@ object GraphColorDialog: TGraphColorDialog
       end
       object buttonFG01: TButton
         Left = 164
-        Top = 19
+        Top = 18
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -126,8 +126,7 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 1
         OnClick = buttonFGClick
       end
-      object buttonBSReset1: TButton
-        Tag = 1
+      object buttonReset01: TButton
         Left = 311
         Top = 18
         Width = 41
@@ -139,11 +138,12 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 3
+        OnClick = buttonResetClick
       end
       object buttonBG01: TButton
         Left = 213
-        Top = 19
+        Top = 18
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -153,7 +153,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 3
+        TabOrder = 2
         OnClick = buttonBGClick
       end
       object editColor02: TEdit
@@ -169,7 +169,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG02: TButton
         Tag = 1
         Left = 164
-        Top = 45
+        Top = 44
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -182,7 +182,7 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 5
         OnClick = buttonFGClick
       end
-      object Button2: TButton
+      object buttonReset02: TButton
         Tag = 1
         Left = 311
         Top = 44
@@ -195,12 +195,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 6
+        TabOrder = 7
+        OnClick = buttonResetClick
       end
       object buttonBG02: TButton
         Tag = 1
         Left = 213
-        Top = 45
+        Top = 44
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -210,7 +211,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 7
+        TabOrder = 6
         OnClick = buttonBGClick
       end
       object editColor03: TEdit
@@ -226,7 +227,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG03: TButton
         Tag = 2
         Left = 164
-        Top = 71
+        Top = 70
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -239,8 +240,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 9
         OnClick = buttonFGClick
       end
-      object Button5: TButton
-        Tag = 1
+      object buttonReset03: TButton
+        Tag = 2
         Left = 311
         Top = 70
         Width = 41
@@ -252,12 +253,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 10
+        TabOrder = 11
+        OnClick = buttonResetClick
       end
       object buttonBG03: TButton
         Tag = 2
         Left = 213
-        Top = 71
+        Top = 70
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -267,7 +269,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 11
+        TabOrder = 10
         OnClick = buttonBGClick
       end
       object editColor04: TEdit
@@ -283,7 +285,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG04: TButton
         Tag = 3
         Left = 164
-        Top = 97
+        Top = 96
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -296,8 +298,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 13
         OnClick = buttonFGClick
       end
-      object Button8: TButton
-        Tag = 1
+      object buttonReset04: TButton
+        Tag = 3
         Left = 311
         Top = 96
         Width = 41
@@ -309,12 +311,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 14
+        TabOrder = 15
+        OnClick = buttonResetClick
       end
       object buttonBG04: TButton
         Tag = 3
         Left = 213
-        Top = 97
+        Top = 96
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -324,7 +327,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 15
+        TabOrder = 14
         OnClick = buttonBGClick
       end
     end
@@ -354,8 +357,8 @@ object GraphColorDialog: TGraphColorDialog
         Caption = '18M'
       end
       object Label6: TLabel
-        Left = 4
-        Top = 74
+        Left = 3
+        Top = 73
         Width = 64
         Height = 12
         Alignment = taRightJustify
@@ -372,7 +375,7 @@ object GraphColorDialog: TGraphColorDialog
         Caption = '24M'
       end
       object Label8: TLabel
-        Left = 4
+        Left = 3
         Top = 125
         Width = 64
         Height = 12
@@ -393,7 +396,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG05: TButton
         Tag = 4
         Left = 164
-        Top = 19
+        Top = 18
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -406,8 +409,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 1
         OnClick = buttonFGClick
       end
-      object Button11: TButton
-        Tag = 1
+      object buttonReset05: TButton
+        Tag = 4
         Left = 311
         Top = 18
         Width = 41
@@ -419,12 +422,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 3
+        OnClick = buttonResetClick
       end
       object buttonBG05: TButton
         Tag = 4
         Left = 213
-        Top = 19
+        Top = 18
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -434,7 +438,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 3
+        TabOrder = 2
         OnClick = buttonBGClick
       end
       object editColor06: TEdit
@@ -450,7 +454,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG06: TButton
         Tag = 5
         Left = 164
-        Top = 45
+        Top = 44
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -463,8 +467,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 5
         OnClick = buttonFGClick
       end
-      object Button14: TButton
-        Tag = 1
+      object buttonReset06: TButton
+        Tag = 5
         Left = 311
         Top = 44
         Width = 41
@@ -476,12 +480,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 6
+        TabOrder = 7
+        OnClick = buttonResetClick
       end
       object buttonBG06: TButton
         Tag = 5
         Left = 213
-        Top = 45
+        Top = 44
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -491,7 +496,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 7
+        TabOrder = 6
         OnClick = buttonBGClick
       end
       object editColor07: TEdit
@@ -507,7 +512,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG07: TButton
         Tag = 6
         Left = 164
-        Top = 71
+        Top = 70
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -520,8 +525,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 9
         OnClick = buttonFGClick
       end
-      object Button17: TButton
-        Tag = 1
+      object buttonReset07: TButton
+        Tag = 6
         Left = 311
         Top = 70
         Width = 41
@@ -533,12 +538,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 10
+        TabOrder = 11
+        OnClick = buttonResetClick
       end
       object buttonBG07: TButton
         Tag = 6
         Left = 213
-        Top = 71
+        Top = 70
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -548,7 +554,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 11
+        TabOrder = 10
         OnClick = buttonBGClick
       end
       object editColor08: TEdit
@@ -564,7 +570,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG08: TButton
         Tag = 7
         Left = 164
-        Top = 97
+        Top = 96
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -577,8 +583,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 13
         OnClick = buttonFGClick
       end
-      object Button20: TButton
-        Tag = 1
+      object buttonReset08: TButton
+        Tag = 7
         Left = 311
         Top = 96
         Width = 41
@@ -590,12 +596,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 14
+        TabOrder = 15
+        OnClick = buttonResetClick
       end
       object buttonBG08: TButton
         Tag = 7
         Left = 213
-        Top = 97
+        Top = 96
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -605,7 +612,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 15
+        TabOrder = 14
         OnClick = buttonBGClick
       end
       object editColor09: TEdit
@@ -621,7 +628,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG09: TButton
         Tag = 8
         Left = 164
-        Top = 123
+        Top = 122
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -634,8 +641,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 17
         OnClick = buttonFGClick
       end
-      object Button23: TButton
-        Tag = 1
+      object buttonReset09: TButton
+        Tag = 8
         Left = 311
         Top = 122
         Width = 41
@@ -647,12 +654,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 18
+        TabOrder = 19
+        OnClick = buttonResetClick
       end
       object buttonBG09: TButton
         Tag = 8
         Left = 213
-        Top = 123
+        Top = 122
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -662,7 +670,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 19
+        TabOrder = 18
         OnClick = buttonBGClick
       end
     end
@@ -683,7 +691,7 @@ object GraphColorDialog: TGraphColorDialog
         Caption = '50M'
       end
       object Label10: TLabel
-        Left = 4
+        Left = 3
         Top = 47
         Width = 64
         Height = 12
@@ -704,7 +712,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG10: TButton
         Tag = 9
         Left = 164
-        Top = 19
+        Top = 18
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -717,8 +725,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 1
         OnClick = buttonFGClick
       end
-      object Button26: TButton
-        Tag = 1
+      object buttonReset10: TButton
+        Tag = 9
         Left = 311
         Top = 18
         Width = 41
@@ -730,12 +738,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 3
+        OnClick = buttonResetClick
       end
       object buttonBG10: TButton
         Tag = 9
         Left = 213
-        Top = 19
+        Top = 18
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -745,7 +754,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 3
+        TabOrder = 2
         OnClick = buttonBGClick
       end
       object editColor11: TEdit
@@ -761,7 +770,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG11: TButton
         Tag = 10
         Left = 164
-        Top = 45
+        Top = 44
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -774,8 +783,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 5
         OnClick = buttonFGClick
       end
-      object Button29: TButton
-        Tag = 1
+      object buttonReset11: TButton
+        Tag = 10
         Left = 311
         Top = 44
         Width = 41
@@ -787,12 +796,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 6
+        TabOrder = 7
+        OnClick = buttonResetClick
       end
       object buttonBG11: TButton
         Tag = 10
         Left = 213
-        Top = 45
+        Top = 44
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -802,7 +812,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 7
+        TabOrder = 6
         OnClick = buttonBGClick
       end
     end
@@ -815,7 +825,7 @@ object GraphColorDialog: TGraphColorDialog
       TabOrder = 3
       object Label11: TLabel
         Left = 3
-        Top = 22
+        Top = 21
         Width = 64
         Height = 12
         Alignment = taRightJustify
@@ -824,7 +834,7 @@ object GraphColorDialog: TGraphColorDialog
       end
       object Label12: TLabel
         Left = 3
-        Top = 48
+        Top = 47
         Width = 64
         Height = 12
         Alignment = taRightJustify
@@ -833,7 +843,7 @@ object GraphColorDialog: TGraphColorDialog
       end
       object Label13: TLabel
         Left = 3
-        Top = 74
+        Top = 73
         Width = 64
         Height = 12
         Alignment = taRightJustify
@@ -842,7 +852,7 @@ object GraphColorDialog: TGraphColorDialog
       end
       object Label14: TLabel
         Left = 3
-        Top = 100
+        Top = 99
         Width = 64
         Height = 12
         Alignment = taRightJustify
@@ -851,7 +861,7 @@ object GraphColorDialog: TGraphColorDialog
       end
       object Label15: TLabel
         Left = 4
-        Top = 126
+        Top = 125
         Width = 64
         Height = 12
         Alignment = taRightJustify
@@ -871,7 +881,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG12: TButton
         Tag = 11
         Left = 164
-        Top = 19
+        Top = 18
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -884,8 +894,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 1
         OnClick = buttonFGClick
       end
-      object Button32: TButton
-        Tag = 1
+      object buttonReset12: TButton
+        Tag = 11
         Left = 311
         Top = 18
         Width = 41
@@ -897,12 +907,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 3
+        OnClick = buttonResetClick
       end
       object buttonBG12: TButton
         Tag = 11
         Left = 213
-        Top = 19
+        Top = 18
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -912,7 +923,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 3
+        TabOrder = 2
         OnClick = buttonBGClick
       end
       object editColor13: TEdit
@@ -928,7 +939,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG13: TButton
         Tag = 12
         Left = 164
-        Top = 45
+        Top = 44
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -941,8 +952,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 5
         OnClick = buttonFGClick
       end
-      object Button35: TButton
-        Tag = 1
+      object buttonReset13: TButton
+        Tag = 12
         Left = 311
         Top = 44
         Width = 41
@@ -954,12 +965,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 6
+        TabOrder = 7
+        OnClick = buttonResetClick
       end
       object buttonBG13: TButton
         Tag = 12
         Left = 213
-        Top = 45
+        Top = 44
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -969,7 +981,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 7
+        TabOrder = 6
         OnClick = buttonBGClick
       end
       object editColor14: TEdit
@@ -985,7 +997,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG14: TButton
         Tag = 13
         Left = 164
-        Top = 71
+        Top = 70
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -998,8 +1010,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 9
         OnClick = buttonFGClick
       end
-      object Button38: TButton
-        Tag = 1
+      object buttonReset14: TButton
+        Tag = 13
         Left = 311
         Top = 70
         Width = 41
@@ -1011,12 +1023,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 10
+        TabOrder = 11
+        OnClick = buttonResetClick
       end
       object buttonBG14: TButton
         Tag = 13
         Left = 213
-        Top = 71
+        Top = 70
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -1026,7 +1039,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 11
+        TabOrder = 10
         OnClick = buttonBGClick
       end
       object editColor15: TEdit
@@ -1042,7 +1055,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG15: TButton
         Tag = 14
         Left = 164
-        Top = 97
+        Top = 96
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -1055,8 +1068,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 13
         OnClick = buttonFGClick
       end
-      object Button41: TButton
-        Tag = 1
+      object buttonReset15: TButton
+        Tag = 14
         Left = 311
         Top = 96
         Width = 41
@@ -1068,12 +1081,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 14
+        TabOrder = 15
+        OnClick = buttonResetClick
       end
       object buttonBG15: TButton
         Tag = 14
         Left = 213
-        Top = 97
+        Top = 96
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -1083,7 +1097,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 15
+        TabOrder = 14
         OnClick = buttonBGClick
       end
       object editColor16: TEdit
@@ -1099,7 +1113,7 @@ object GraphColorDialog: TGraphColorDialog
       object buttonFG16: TButton
         Tag = 15
         Left = 164
-        Top = 123
+        Top = 122
         Width = 45
         Height = 20
         Caption = 'Fore...'
@@ -1112,8 +1126,8 @@ object GraphColorDialog: TGraphColorDialog
         TabOrder = 17
         OnClick = buttonFGClick
       end
-      object Button44: TButton
-        Tag = 1
+      object buttonReset16: TButton
+        Tag = 15
         Left = 311
         Top = 122
         Width = 41
@@ -1125,12 +1139,13 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 18
+        TabOrder = 19
+        OnClick = buttonResetClick
       end
       object buttonBG16: TButton
         Tag = 15
         Left = 213
-        Top = 123
+        Top = 122
         Width = 45
         Height = 20
         Caption = 'Back...'
@@ -1140,7 +1155,7 @@ object GraphColorDialog: TGraphColorDialog
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
         ParentFont = False
-        TabOrder = 19
+        TabOrder = 18
         OnClick = buttonBGClick
       end
     end

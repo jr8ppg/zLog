@@ -391,6 +391,7 @@ object RateDialog: TRateDialog
       YValues.Order = loNone
     end
     object SeriesTotalQSOs: TLineSeries
+      SeriesColor = 33023
       Brush.BackColor = clDefault
       Pointer.HorizSize = 3
       Pointer.InflateMargins = True
