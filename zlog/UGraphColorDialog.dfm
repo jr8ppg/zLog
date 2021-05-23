@@ -25,8 +25,6 @@ object GraphColorDialog: TGraphColorDialog
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 307
-    ExplicitWidth = 497
     DesignSize = (
       412
       38)
@@ -39,7 +37,6 @@ object GraphColorDialog: TGraphColorDialog
       Caption = 'OK'
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 323
     end
     object buttonCancel: TButton
       Left = 325
@@ -51,7 +48,6 @@ object GraphColorDialog: TGraphColorDialog
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 410
     end
   end
   object Panel2: TPanel
@@ -62,10 +58,6 @@ object GraphColorDialog: TGraphColorDialog
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitLeft = 72
-    ExplicitTop = 72
-    ExplicitWidth = 353
-    ExplicitHeight = 177
     object GroupBox1: TGroupBox
       Left = 8
       Top = 8
@@ -823,7 +815,7 @@ object GraphColorDialog: TGraphColorDialog
       TabOrder = 3
       object Label11: TLabel
         Left = 3
-        Top = 21
+        Top = 22
         Width = 64
         Height = 12
         Alignment = taRightJustify
@@ -832,7 +824,7 @@ object GraphColorDialog: TGraphColorDialog
       end
       object Label12: TLabel
         Left = 3
-        Top = 47
+        Top = 48
         Width = 64
         Height = 12
         Alignment = taRightJustify
@@ -841,7 +833,7 @@ object GraphColorDialog: TGraphColorDialog
       end
       object Label13: TLabel
         Left = 3
-        Top = 73
+        Top = 74
         Width = 64
         Height = 12
         Alignment = taRightJustify
@@ -849,8 +841,8 @@ object GraphColorDialog: TGraphColorDialog
         Caption = '2400M'
       end
       object Label14: TLabel
-        Left = 4
-        Top = 99
+        Left = 3
+        Top = 100
         Width = 64
         Height = 12
         Alignment = taRightJustify
@@ -859,7 +851,7 @@ object GraphColorDialog: TGraphColorDialog
       end
       object Label15: TLabel
         Left = 4
-        Top = 125
+        Top = 126
         Width = 64
         Height = 12
         Alignment = taRightJustify

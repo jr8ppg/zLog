@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.Math, Vcl.Graphics, System.DateUtils,
-  UzLogKeyer, UzlogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan;
+  UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan;
 
 type
   TCWSettingsParam = record
@@ -201,6 +201,10 @@ type
     // Last Band/Mode
     FLastBand: Integer;
     FLastMode: Integer;
+
+    // QSO Rate Graph
+    FGraphBarColor: array[b19..HiBand] of TColor;
+    FGraphTextColor: array[b19..HiBand] of TColor;
   end;
 
 var
@@ -487,6 +491,8 @@ var
    s: string;
    ini: TIniFile;
    slParam: TStringList;
+   b: TBand;
+   strKey: string;
 begin
    slParam := TStringList.Create();
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
@@ -997,6 +1003,13 @@ begin
       // Last Band/Mode
       Settings.FLastBand := ini.ReadInteger('main', 'last_band', 0);
       Settings.FLastMode := ini.ReadInteger('main', 'last_mode', 0);
+
+      // QSO Rate Graph
+      for b := b19 to HiBand do begin
+         strKey := MHzString[b];
+         Settings.FGraphBarColor[b]  := ZStringToColorDef(ini.ReadString('Graph', strKey + '_BarColor',  ''), default_graph_bar_color[b]);
+         Settings.FGraphTextColor[b] := ZStringToColorDef(ini.ReadString('Graph', strKey + '_TextColor', ''), default_graph_text_color[b]);
+      end;
    finally
       ini.Free();
       slParam.Free();
@@ -1008,6 +1021,8 @@ var
    i: integer;
    ini: TIniFile;
    slParam: TStringList;
+   b: TBand;
+   strKey: string;
 begin
    slParam := TStringList.Create();
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
@@ -1437,6 +1452,13 @@ begin
       // Last Band/Mode
       ini.WriteInteger('main', 'last_band', Settings.FLastBand);
       ini.WriteInteger('main', 'last_mode', Settings.FLastMode);
+
+      // QSO Rate Graph
+      for b := b19 to HiBand do begin
+         strKey := MHzString[b];
+         ini.WriteString('Graph', strKey + '_BarColor', ZColorToString(Settings.FGraphBarColor[b]));
+         ini.WriteString('Graph', strKey + '_TextColor', ZColorToString(Settings.FGraphTextColor[b]));
+      end;
    finally
       ini.Free();
       slParam.Free();

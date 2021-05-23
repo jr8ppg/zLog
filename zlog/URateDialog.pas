@@ -55,6 +55,7 @@ type
     procedure ShowLastComboChange(Sender: TObject);
     procedure check3DClick(Sender: TObject);
     procedure radioOriginClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     FLast10QsoRateMax: Double;
@@ -66,6 +67,8 @@ type
     { Public declarations }
     procedure UpdateGraph;
     property GraphSeries[b: TBand]: TBarSeries read GetGraphSeries;
+    procedure LoadSettings();
+    procedure SaveSettings();
   end;
 
 implementation
@@ -151,6 +154,13 @@ begin
       Clear();
       VertAxis := aRightAxis;
    end;
+
+   LoadSettings();
+end;
+
+procedure TRateDialog.FormDestroy(Sender: TObject);
+begin
+   SaveSettings();
 end;
 
 procedure TRateDialog.FormShow(Sender: TObject);
@@ -395,6 +405,26 @@ end;
 function TRateDialog.GetGraphSeries(b: TBand): TBarSeries;
 begin
    Result := FGraphSeries[b];
+end;
+
+procedure TRateDialog.LoadSettings();
+var
+   b: TBand;
+begin
+   for b := b19 to HiBand do begin
+      GraphSeries[b].SeriesColor := dmZLogGlobal.Settings.FGraphBarColor[b];
+      GraphSeries[b].Marks.Font.Color := dmZLogGlobal.Settings.FGraphTextColor[b];
+   end;
+end;
+
+procedure TRateDialog.SaveSettings();
+var
+   b: TBand;
+begin
+   for b := b19 to HiBand do begin
+      dmZLogGlobal.Settings.FGraphBarColor[b] := GraphSeries[b].SeriesColor;
+      dmZLogGlobal.Settings.FGraphTextColor[b] := GraphSeries[b].Marks.Font.Color;
+   end;
 end;
 
 end.

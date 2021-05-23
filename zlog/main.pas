@@ -6324,6 +6324,7 @@ begin
       for b := b19 to HiBand do begin
          FRateDialog.GraphSeries[b].SeriesColor := f.BarColor[b];
          FRateDialog.GraphSeries[b].Marks.Font.Color := f.TextColor[b];
+         FRateDialog.SaveSettings();
       end;
    finally
       f.Release();

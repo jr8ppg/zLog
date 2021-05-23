@@ -17,6 +17,7 @@ object RateDialog: TRateDialog
   Scaled = False
   OnClose = FormClose
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
