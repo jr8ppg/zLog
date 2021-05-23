@@ -174,6 +174,12 @@ var
 begin
    filename := ExtractFilePath(Application.ExeName) + 'zlog_bandplan.ini';
    if FileExists(filename) = False then begin
+      FLimit[mCW]    := default_cw_limit;
+      FLimit[mSSB]   := default_ssb_limit;
+      FLimit[mFM]    := default_fm_limit;
+      FLimit[mAM]    := default_am_limit;
+      FLimit[mRTTY]  := default_rtty_limit;
+      FLimit[mOther] := default_other_limit;
       Exit;
    end;
 
@@ -206,9 +212,6 @@ var
    filename: string;
 begin
    filename := ExtractFilePath(Application.ExeName) + 'zlog_bandplan.ini';
-   if FileExists(filename) = False then begin
-      Exit;
-   end;
 
    SL := TStringList.Create();
    ini := TIniFile.Create(filename);
