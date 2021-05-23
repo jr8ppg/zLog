@@ -5313,6 +5313,10 @@ object MainForm: TMainForm
         Caption = 'Band Plan'
         OnClick = menuBandPlanClick
       end
+      object menuGraphColors: TMenuItem
+        Caption = 'Graph Colors'
+        OnClick = menuGraphColorsClick
+      end
       object N5: TMenuItem
         Caption = '-'
       end

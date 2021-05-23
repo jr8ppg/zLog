@@ -691,6 +691,7 @@ type
     FunctionKeyPanel1: TMenuItem;
     N7: TMenuItem;
     menuBandPlan: TMenuItem;
+    menuGraphColors: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -913,6 +914,7 @@ type
     procedure actionAntiZeroinExecute(Sender: TObject);
     procedure actionFunctionKeyPanelExecute(Sender: TObject);
     procedure menuBandPlanClick(Sender: TObject);
+    procedure menuGraphColorsClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1129,7 +1131,7 @@ uses
   UIARUScore, UAllAsianScore, UIOTAMulti, {UIOTACategory,} UARRL10Multi,
   UARRL10Score,
   UIntegerDialog, UNewPrefix, UKCJScore,
-  UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog,
+  UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension;
 
 {$R *.DFM}
@@ -6301,7 +6303,31 @@ begin
    finally
       f.Release();
    end;
+end;
 
+procedure TMainForm.menuGraphColorsClick(Sender: TObject);
+var
+   f: TGraphColorDialog;
+   b: TBand;
+begin
+   f := TGraphColorDialog.Create(Self);
+   try
+      for b := b19 to HiBand do begin
+         f.BarColor[b] := FRateDialog.GraphSeries[b].SeriesColor;
+         f.TextColor[b] := FRateDialog.GraphSeries[b].Marks.Font.Color;
+      end;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      for b := b19 to HiBand do begin
+         FRateDialog.GraphSeries[b].SeriesColor := f.BarColor[b];
+         FRateDialog.GraphSeries[b].Marks.Font.Color := f.TextColor[b];
+      end;
+   finally
+      f.Release();
+   end;
 end;
 
 procedure TMainForm.CWFMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);

@@ -115,7 +115,8 @@ uses
   WinKeyer in 'WinKeyer.pas',
   UFunctionKeyPanel in 'UFunctionKeyPanel.pas' {formFunctionKeyPanel},
   UBandPlan in 'UBandPlan.pas',
-  UBandPlanEditDialog in 'UBandPlanEditDialog.pas' {BandPlanEditDialog};
+  UBandPlanEditDialog in 'UBandPlanEditDialog.pas' {BandPlanEditDialog},
+  UGraphColorDialog in 'UGraphColorDialog.pas' {GraphColorDialog};
 
 {$R *.RES}
 

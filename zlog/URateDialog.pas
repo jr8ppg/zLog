@@ -61,9 +61,11 @@ type
     FLast100QsoRateMax: Double;
     FShowLast: Integer;      { Show last x hours. default = 12}
     FGraphSeries: array[b19..b10g] of TBarSeries;
+    function GetGraphSeries(b: TBand): TBarSeries;
   public
     { Public declarations }
     procedure UpdateGraph;
+    property GraphSeries[b: TBand]: TBarSeries read GetGraphSeries;
   end;
 
 implementation
@@ -388,6 +390,11 @@ procedure TRateDialog.ShowLastComboChange(Sender: TObject);
 begin
    FShowLast := StrToIntDef(ShowLastCombo.Items[ShowLastCombo.ItemIndex], 12);
    UpdateGraph;
+end;
+
+function TRateDialog.GetGraphSeries(b: TBand): TBarSeries;
+begin
+   Result := FGraphSeries[b];
 end;
 
 end.
