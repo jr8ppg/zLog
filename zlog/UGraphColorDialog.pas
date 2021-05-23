@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  UzLogConst;
+  Vcl.ComCtrls, UzLogConst;
 
 type
   TGraphColorDialog = class(TForm)
@@ -98,6 +98,18 @@ type
     buttonReset16: TButton;
     buttonBG16: TButton;
     ColorDialog1: TColorDialog;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    TabSheet3: TTabSheet;
+    groupDrawStyle: TGroupBox;
+    radioDrawStyle1: TRadioButton;
+    radioDrawStyle2: TRadioButton;
+    radioDrawStyle3: TRadioButton;
+    groupDrawStartPos: TGroupBox;
+    radioDrawStartPos1: TRadioButton;
+    radioDrawStartPos2: TRadioButton;
+    radioDrawStartPos3: TRadioButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonFGClick(Sender: TObject);
@@ -110,10 +122,16 @@ type
     procedure SetBarColor(b: TBand; c: TColor);
     function GetTextColor(b: TBand): TColor;
     procedure SetTextColor(b: TBand; c: TColor);
+    function GetStyle(): TQSORateStyle;
+    procedure SetStyle(v: TQSORateStyle);
+    function GetStartPosition(): TQSORateStartPosition;
+    procedure SetStartPosition(v: TQSORateStartPosition);
   public
     { Public êÈåæ }
     property BarColor[b: TBand]: TColor read GetBarColor write SetBarColor;
     property TextColor[b: TBand]: TColor read GetTextColor write SetTextColor;
+    property Style: TQSORateStyle read GetStyle write SetStyle;
+    property StartPosition: TQSORateStartPosition read GetStartPosition write SetStartPosition;
   end;
 
 implementation
@@ -196,6 +214,58 @@ end;
 procedure TGraphColorDialog.SetTextColor(b: TBand; c: TColor);
 begin
    FGraphColor[b].Font.Color := c;
+end;
+
+function TGraphColorDialog.GetStyle(): TQSORateStyle;
+begin
+   if radioDrawStyle1.Checked = True then begin
+      Result := rsOriginal;
+   end
+   else if radioDrawStyle2.Checked = True then begin
+      Result := rsByBand;
+   end
+   else if radioDrawStyle3.Checked = True then begin
+      Result := rsByFreqRange;
+   end
+   else begin
+      Result := rsOriginal;
+   end;
+end;
+
+procedure TGraphColorDialog.SetStyle(v: TQSORateStyle);
+begin
+   case v of
+      rsOriginal:    radioDrawStyle1.Checked := True;
+      rsByBand:      radioDrawStyle2.Checked := True;
+      rsByFreqRange: radioDrawStyle3.Checked := True;
+      else           radioDrawStyle1.Checked := True;
+   end;
+end;
+
+function TGraphColorDialog.GetStartPosition(): TQSORateStartPosition;
+begin
+   if radioDrawStartPos1.Checked = True then begin
+      Result := spFirstQSO;
+   end
+   else if radioDrawStartPos2.Checked = True then begin
+      Result := spCurrentTime;
+   end
+   else if radioDrawStartPos3.Checked = True then begin
+      Result := spLastQSO;
+   end
+   else begin
+      Result := spFirstQSO;
+   end;
+end;
+
+procedure TGraphColorDialog.SetStartPosition(v: TQSORateStartPosition);
+begin
+   case v of
+      spFirstQSO:    radioDrawStartPos1.Checked := True;
+      spCurrentTime: radioDrawStartPos2.Checked := True;
+      spLastQSO:     radioDrawStartPos3.Checked := True;
+      else           radioDrawStartPos1.Checked := True;
+   end;
 end;
 
 end.

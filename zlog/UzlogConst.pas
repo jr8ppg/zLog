@@ -90,6 +90,10 @@ const
   pwrM = TPower(2);
   pwrH = TPower(3);
 
+type
+  TQSORateStyle = ( rsOriginal = 0, rsByBand, rsByFreqRange );
+  TQSORateStartPosition = ( spFirstQSO = 0, spCurrentTime, spLastQSO );
+
 const
   default_graph_bar_color: array[b19..HiBand] of TColor = (
     $0080FF00, $000000FF, $00FF0000, $00808080,

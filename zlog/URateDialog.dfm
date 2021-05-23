@@ -140,23 +140,32 @@ object RateDialog: TRateDialog
       BevelOuter = bvNone
       TabOrder = 2
       object radioOriginCurrentTime: TRadioButton
-        Left = 3
+        Left = 52
         Top = 6
-        Width = 82
+        Width = 54
         Height = 17
-        Caption = 'Current Time'
+        Caption = 'Current'
         Checked = True
-        TabOrder = 0
+        TabOrder = 1
         TabStop = True
         OnClick = radioOriginClick
       end
       object radioOriginLastQSO: TRadioButton
-        Left = 87
+        Left = 112
         Top = 6
-        Width = 66
+        Width = 40
         Height = 17
-        Caption = 'Last QSO'
-        TabOrder = 1
+        Caption = 'Last'
+        TabOrder = 2
+        OnClick = radioOriginClick
+      end
+      object radioOriginFirstQSO: TRadioButton
+        Left = 8
+        Top = 6
+        Width = 39
+        Height = 17
+        Caption = 'First'
+        TabOrder = 0
         OnClick = radioOriginClick
       end
     end

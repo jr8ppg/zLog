@@ -5314,7 +5314,7 @@ object MainForm: TMainForm
         OnClick = menuBandPlanClick
       end
       object menuGraphColors: TMenuItem
-        Caption = 'Graph Colors'
+        Caption = 'Graph Settings'
         OnClick = menuGraphColorsClick
       end
       object N5: TMenuItem

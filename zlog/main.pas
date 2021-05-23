@@ -6312,6 +6312,8 @@ var
 begin
    f := TGraphColorDialog.Create(Self);
    try
+      f.Style := FRateDialog.GraphStyle;
+      f.StartPosition := FRateDialog.GraphStartPosition;
       for b := b19 to HiBand do begin
          f.BarColor[b] := FRateDialog.GraphSeries[b].SeriesColor;
          f.TextColor[b] := FRateDialog.GraphSeries[b].Marks.Font.Color;
@@ -6321,11 +6323,13 @@ begin
          Exit;
       end;
 
+      FRateDialog.GraphStyle := f.Style;
+      FRateDialog.GraphStartPosition := f.StartPosition;
       for b := b19 to HiBand do begin
          FRateDialog.GraphSeries[b].SeriesColor := f.BarColor[b];
          FRateDialog.GraphSeries[b].Marks.Font.Color := f.TextColor[b];
-         FRateDialog.SaveSettings();
       end;
+      FRateDialog.SaveSettings();
    finally
       f.Release();
    end;
