@@ -170,7 +170,6 @@ object AboutBox: TAboutBox
     ModalResult = 1
     TabOrder = 1
     OnClick = OKButtonClick
-    ExplicitTop = 320
   end
   object Panel2: TPanel
     Left = 8
@@ -188,7 +187,6 @@ object AboutBox: TAboutBox
     ParentColor = True
     ParentFont = False
     TabOrder = 2
-    ExplicitHeight = 138
     DesignSize = (
       305
       193)
@@ -258,8 +256,9 @@ object AboutBox: TAboutBox
         'JL1LNC, 7M4KSC, JA1ABC, JO3JYE, JE1CKA, '
         'JH5GHM, JS6RTJ, JJ1CVH, JS2GGD, JE3VRJ, '
         'JJ8DAN, 7N4LNK, JI0VWL, JK1JHU, JS1OYN, '
-        'JI1XSE, '
-        'ZLOG-REIWA ML'#21442#21152#32773#12398#12415#12394#12373#12435)
+        'JI1XSE, JG1VPP, JS2FVO'
+        'ZLOG-REIWA ML'#21442#21152#32773#12398#12415#12394#12373#12435
+        'JA1ZLO'#12398#12415#12394#12373#12435)
       ParentFont = False
       ReadOnly = True
       TabOrder = 1
