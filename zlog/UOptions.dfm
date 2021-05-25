@@ -24,11 +24,15 @@ object formOptions: TformOptions
     Top = 0
     Width = 394
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetBandScope1
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label40: TLabel
         Left = 208
         Top = 212
@@ -516,6 +520,10 @@ object formOptions: TformOptions
     end
     object tabsheetCategories: TTabSheet
       Caption = 'Categories'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label14: TLabel
         Left = 257
         Top = 105
@@ -1261,6 +1269,10 @@ object formOptions: TformOptions
     end
     object tabsheetVoice: TTabSheet
       Caption = 'Voice'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 6
         Top = 4
@@ -3038,10 +3050,6 @@ object formOptions: TformOptions
     object tabsheetBandScope1: TTabSheet
       Caption = 'BandScope'
       ImageIndex = 9
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox9: TGroupBox
         Left = 6
         Top = 4
@@ -3530,6 +3538,38 @@ object formOptions: TformOptions
           Caption = 'Bold'
           TabOrder = 18
           OnClick = checkBSBoldClick
+        end
+      end
+      object GroupBox20: TGroupBox
+        Left = 6
+        Top = 281
+        Width = 371
+        Height = 112
+        Caption = 'BandScope Options'
+        TabOrder = 2
+        object checkUseEstimatedMode: TCheckBox
+          Left = 12
+          Top = 24
+          Width = 165
+          Height = 17
+          Caption = 'Use Estimated Mode by Freq.'
+          TabOrder = 0
+        end
+        object checkShowOnlyInBandplan: TCheckBox
+          Left = 12
+          Top = 47
+          Width = 189
+          Height = 17
+          Caption = 'Show only spots in the band plan.'
+          TabOrder = 1
+        end
+        object checkShowOnlyDomestic: TCheckBox
+          Left = 12
+          Top = 70
+          Width = 189
+          Height = 17
+          Caption = 'Show only domestic spots.'
+          TabOrder = 2
         end
       end
     end

@@ -408,6 +408,10 @@ type
     vEdit13: TEdit;
     vButton13: TButton;
     vButton14: TButton;
+    GroupBox20: TGroupBox;
+    checkUseEstimatedMode: TCheckBox;
+    checkShowOnlyInBandplan: TCheckBox;
+    checkShowOnlyDomestic: TCheckBox;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -818,6 +822,11 @@ begin
          Settings._bandscope_freshness_icon := 2;
       end;
 
+      // BandScope Options
+      Settings._bandscope_use_estimated_mode := checkUseEstimatedMode.Checked;      // 周波数からのモードの推定
+      Settings._bandscope_show_only_in_bandplan := checkShowOnlyInBandplan.Checked; // バンド内のみ
+      Settings._bandscope_show_only_domestic := checkShowOnlyDomestic.Checked;      // 国内のみ
+
       // Quick Memo
       for i := 1 to 5 do begin
          Settings.FQuickMemoText[i] := Trim(FQuickMemoText[i].Text);
@@ -1148,6 +1157,11 @@ begin
          3: radioFreshness4.Checked := True;
          else radioFreshness1.Checked := True;
       end;
+
+      // BandScope Options
+      checkUseEstimatedMode.Checked := Settings._bandscope_use_estimated_mode;      // 周波数からのモードの推定
+      checkShowOnlyInBandplan.Checked := Settings._bandscope_show_only_in_bandplan; // バンド内のみ
+      checkShowOnlyDomestic.Checked := Settings._bandscope_show_only_domestic;      // 国内のみ
 
       // Quick Memo
       for i := 1 to 5 do begin

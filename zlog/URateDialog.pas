@@ -19,15 +19,32 @@ type
     Max10: TLabel;
     Max100: TLabel;
     Panel2: TPanel;
-    OKBtn: TButton;
-    StayOnTop: TCheckBox;
     Chart1: TChart;
     Series1: TBarSeries;
-    Series2: TLineSeries;
+    SeriesTotalQSOs: TLineSeries;
     Label4: TLabel;
     ShowLastCombo: TComboBox;
     Label3: TLabel;
     check3D: TCheckBox;
+    Series3: TBarSeries;
+    Series2: TBarSeries;
+    Series4: TBarSeries;
+    Series5: TBarSeries;
+    Series6: TBarSeries;
+    Series7: TBarSeries;
+    Series8: TBarSeries;
+    Series9: TBarSeries;
+    Series10: TBarSeries;
+    Series11: TBarSeries;
+    Series12: TBarSeries;
+    Series13: TBarSeries;
+    Series14: TBarSeries;
+    Series15: TBarSeries;
+    Series16: TBarSeries;
+    Panel3: TPanel;
+    radioOriginCurrentTime: TRadioButton;
+    radioOriginLastQSO: TRadioButton;
+    radioOriginFirstQSO: TRadioButton;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -38,14 +55,28 @@ type
     procedure StayOnTopClick(Sender: TObject);
     procedure ShowLastComboChange(Sender: TObject);
     procedure check3DClick(Sender: TObject);
+    procedure radioOriginClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     FLast10QsoRateMax: Double;
     FLast100QsoRateMax: Double;
     FShowLast: Integer;      { Show last x hours. default = 12}
+    FGraphSeries: array[b19..b10g] of TBarSeries;
+    FGraphStyle: TQSORateStyle;
+    FGraphStartPosition: TQSORateStartPosition;
+    function GetGraphSeries(b: TBand): TBarSeries;
+    procedure SetGraphStyle(v: TQSORateStyle);
+    procedure SetGraphStartPosition(v: TQSORateStartPosition);
+    procedure SetGraphStartPositionUI(v: TQSORateStartPosition);
   public
     { Public declarations }
     procedure UpdateGraph;
+    property GraphSeries[b: TBand]: TBarSeries read GetGraphSeries;
+    property GraphStyle: TQSORateStyle read FGraphStyle write SetGraphStyle;
+    property GraphStartPosition: TQSORateStartPosition read FGraphStartPosition write SetGraphStartPosition;
+    procedure LoadSettings();
+    procedure SaveSettings();
   end;
 
 implementation
@@ -62,11 +93,33 @@ begin
 end;
 
 procedure TRateDialog.FormCreate(Sender: TObject);
+var
+   b: TBand;
 begin
    FLast10QsoRateMax := 0;
    FLast100QsoRateMax := 0;
    FShowLast := 12;
    ShowLastCombo.ItemIndex := 2;
+
+   FGraphSeries[b19] := Series1;
+   FGraphSeries[b35] := Series2;
+   FGraphSeries[b7] := Series3;
+   FGraphSeries[b10] := Series4;
+   FGraphSeries[b14] := Series5;
+   FGraphSeries[b18] := Series6;
+   FGraphSeries[b21] := Series7;
+   FGraphSeries[b24] := Series8;
+   FGraphSeries[b28] := Series9;
+   FGraphSeries[b50] := Series10;
+   FGraphSeries[b144] := Series11;
+   FGraphSeries[b430] := Series12;
+   FGraphSeries[b1200] := Series13;
+   FGraphSeries[b2400] := Series14;
+   FGraphSeries[b5600] := Series15;
+   FGraphSeries[b10g] := Series16;
+
+   FGraphStyle := rsOriginal;
+   FGraphStartPosition := spCurrentTime;
 
    with Chart1 do begin
       // グラフ全体
@@ -100,16 +153,25 @@ begin
       Axes.Bottom.MinorTickCount := 0;
    end;
 
-   with Series1 do begin
-      Clear();
-      VertAxis := aLeftAxis;
-      ValueFormat := '#,###';    // 0を出さない
+   for b := Low(FGraphSeries) to High(FGraphSeries) do begin
+      with FGraphSeries[b] do begin
+         Clear();
+         VertAxis := aLeftAxis;
+         ValueFormat := '#,###';    // 0を出さない
+      end;
    end;
 
-   with Series2 do begin
+   with SeriesTotalQSOs do begin
       Clear();
       VertAxis := aRightAxis;
    end;
+
+   LoadSettings();
+end;
+
+procedure TRateDialog.FormDestroy(Sender: TObject);
+begin
+   SaveSettings();
 end;
 
 procedure TRateDialog.FormShow(Sender: TObject);
@@ -202,12 +264,26 @@ begin
    MainForm.LastFocus.SetFocus;
 end;
 
+procedure TRateDialog.radioOriginClick(Sender: TObject);
+begin
+   if radioOriginFirstQSO.Checked = True then begin
+      FGraphStartPosition := spFirstQSO;
+   end;
+   if radioOriginCurrentTime.Checked = True then begin
+      FGraphStartPosition := spCurrentTime;
+   end;
+   if radioOriginLastQSO.Checked = True then begin
+      FGraphStartPosition := spLastQSO;
+   end;
+   UpdateGraph();
+end;
+
 procedure TRateDialog.StayOnTopClick(Sender: TObject);
 begin
-   If StayOnTop.Checked then
-      FormStyle := fsStayOnTop
-   else
-      FormStyle := fsNormal;
+//   If StayOnTop.Checked then
+//      FormStyle := fsStayOnTop
+//   else
+//      FormStyle := fsNormal;
 end;
 
 procedure TRateDialog.check3DClick(Sender: TObject);
@@ -225,15 +301,34 @@ var
    H, M, S, ms: Word;
    D: Integer;
    i: Integer;
+   b: TBand;
    aQSO: TQSO;
    diff: TDateTime;
-   count_array: array[0..48] of Integer;
+   count_array: array[0..48] of array[b19..b10g] of Integer;
+
+   function CalcStartTime(dt: TDateTime): TDateTime;
+   begin
+      Result := dt - (FShowLast - 1) / 24;
+   end;
 begin
-   Series1.Clear();
-   Series2.Clear();
+   for b := b19 to b10g do begin
+      FGraphSeries[b].Clear();
+   end;
+   SeriesTotalQSOs.Clear();
    Chart1.Axes.Bottom.Items.Clear();
 
-   _start := CurrentTime() - (FShowLast - 1) / 24;
+   if Log.TotalQSO = 0 then begin
+      _start := CalcStartTime( CurrentTime() );
+   end
+   else begin
+      case GraphStartPosition of
+         spFirstQSO:    _start := Log.QsoList[1].Time;
+         spCurrentTime: _start := CalcStartTime( CurrentTime() );
+         spLastQSO:     _start := CalcStartTime( Log.QsoList[Log.TotalQSO].Time );
+         else           _start := CalcStartTime( CurrentTime() );
+      end;
+   end;
+
    DecodeTime(_start, H, M, S, ms);
    _start := Int(_start) + EncodeTime(H, 0, 0, 0);
 
@@ -246,7 +341,9 @@ begin
 //   end;
 
    for i := 0 to 48 do begin
-      count_array[i] := 0;
+      for b := b19 to b10g do begin
+         count_array[i][b] := 0;
+      end;
    end;
 
    total_count := 0;
@@ -269,14 +366,12 @@ begin
             Continue;
          end;
 
-         Inc(count_array[H]);
+         Inc(count_array[H][aQSO.Band]);
       end;
    end;
 
    hour_peak := 0;
    for i := 0 to FShowLast - 1 do begin
-      hour_count := count_array[i];
-
       Str := IntToStr(GetHour(_start + (1 / 24) * i));
 
       if FShowLast > 12 then begin
@@ -291,16 +386,84 @@ begin
          end;
       end;
 
-      // 縦軸目盛り調整のための値
-      total_count := total_count + hour_count;
-      hour_peak := Max(hour_peak, hour_count);
-
       // 横軸目盛ラベル
       Chart1.Axes.Bottom.Items.Add(i, Str);
 
-      // グラフデータの追加
-      Series1.Add(hour_count);
-      Series2.Add(total_count);
+      if GraphStyle = rsOriginal then begin
+         hour_count := 0;
+         for b := b19 to b10g do begin
+            hour_count := hour_count + count_array[i][b];
+         end;
+
+         // 縦軸目盛り調整のための値
+         total_count := total_count + hour_count;
+         hour_peak := Max(hour_peak, hour_count);
+
+         // グラフデータの追加
+         FGraphSeries[b19].Add(hour_count);
+      end
+      else if GraphStyle = rsByBand then begin
+         for b := b19 to b10g do begin
+            hour_count := count_array[i][b];
+
+            // 縦軸目盛り調整のための値
+            total_count := total_count + hour_count;
+            hour_peak := Max(hour_peak, hour_count);
+
+            // グラフデータの追加
+            FGraphSeries[b].Add(hour_count);
+         end;
+      end
+      else if GraphStyle = rsByFreqRange then begin
+         // HF(L)
+         hour_count := count_array[i][b19] +
+                       count_array[i][b35] +
+                       count_array[i][b7] +
+                       count_array[i][b10];
+         // 縦軸目盛り調整のための値
+         total_count := total_count + hour_count;
+         hour_peak := Max(hour_peak, hour_count);
+         FGraphSeries[b19].Add(hour_count);
+
+         // HF(H)
+         hour_count := count_array[i][b14] +
+                       count_array[i][b18] +
+                       count_array[i][b21] +
+                       count_array[i][b24] +
+                       count_array[i][b28];
+         // 縦軸目盛り調整のための値
+         total_count := total_count + hour_count;
+         hour_peak := Max(hour_peak, hour_count);
+         FGraphSeries[b14].Add(hour_count);
+
+         // VHF
+         hour_count := count_array[i][b50] +
+                       count_array[i][b144];
+         // 縦軸目盛り調整のための値
+         total_count := total_count + hour_count;
+         hour_peak := Max(hour_peak, hour_count);
+         FGraphSeries[b50].Add(hour_count);
+
+         // UHF
+         hour_count := count_array[i][b430] +
+                       count_array[i][b1200] +
+                       count_array[i][b2400];
+         // 縦軸目盛り調整のための値
+         total_count := total_count + hour_count;
+         hour_peak := Max(hour_peak, hour_count);
+         FGraphSeries[b430].Add(hour_count);
+
+         // SHF
+         hour_count := count_array[i][b5600] +
+                       count_array[i][b10g];
+         // 縦軸目盛り調整のための値
+         total_count := total_count + hour_count;
+         hour_peak := Max(hour_peak, hour_count);
+         FGraphSeries[b5600].Add(hour_count);
+      end;
+
+      // 累計
+      SeriesTotalQSOs.Add(total_count);
    end;
 
    with Chart1 do begin
@@ -327,7 +490,68 @@ end;
 procedure TRateDialog.ShowLastComboChange(Sender: TObject);
 begin
    FShowLast := StrToIntDef(ShowLastCombo.Items[ShowLastCombo.ItemIndex], 12);
-   UpdateGraph;
+   UpdateGraph();
+end;
+
+function TRateDialog.GetGraphSeries(b: TBand): TBarSeries;
+begin
+   Result := FGraphSeries[b];
+end;
+
+procedure TRateDialog.LoadSettings();
+var
+   b: TBand;
+begin
+   FGraphStyle := dmZLogGlobal.Settings.FGraphStyle;
+   FGraphStartPosition := dmZLogGlobal.Settings.FGraphStartPosition;
+   for b := b19 to HiBand do begin
+      GraphSeries[b].SeriesColor := dmZLogGlobal.Settings.FGraphBarColor[b];
+      GraphSeries[b].Marks.Font.Color := dmZLogGlobal.Settings.FGraphTextColor[b];
+   end;
+   SetGraphStartPositionUI(FGraphStartPosition);
+end;
+
+procedure TRateDialog.SaveSettings();
+var
+   b: TBand;
+begin
+   dmZLogGlobal.Settings.FGraphStyle := GraphStyle;
+   dmZLogGlobal.Settings.FGraphStartPosition := GraphStartPosition;
+   for b := b19 to HiBand do begin
+      dmZLogGlobal.Settings.FGraphBarColor[b] := GraphSeries[b].SeriesColor;
+      dmZLogGlobal.Settings.FGraphTextColor[b] := GraphSeries[b].Marks.Font.Color;
+   end;
+end;
+
+procedure TRateDialog.SetGraphStyle(v: TQSORateStyle);
+begin
+   FGraphStyle := v;
+   UpdateGraph();
+end;
+
+procedure TRateDialog.SetGraphStartPosition(v: TQSORateStartPosition);
+begin
+   SetGraphStartPositionUI(v);
+   FGraphStartPosition := v;
+   UpdateGraph();
+end;
+
+procedure TRateDialog.SetGraphStartPositionUI(v: TQSORateStartPosition);
+var
+   proc: TNotifyEvent;
+begin
+   proc := radioOriginFirstQSO.OnClick;
+   radioOriginFirstQSO.OnClick := nil;
+   radioOriginCurrentTime.OnClick := nil;
+   radioOriginLastQSO.OnClick := nil;
+   case v of
+      spFirstQSO:    radioOriginFirstQSO.Checked := True;
+      spCurrentTime: radioOriginCurrentTime.Checked := True;
+      spLastQSO:     radioOriginLastQSO.Checked := True;
+   end;
+   radioOriginFirstQSO.OnClick := proc;
+   radioOriginCurrentTime.OnClick := proc;
+   radioOriginLastQSO.OnClick := proc;
 end;
 
 end.

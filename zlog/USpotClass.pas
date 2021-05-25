@@ -147,7 +147,7 @@ function TSpot.Analyze(S : string) : boolean;
 var
    temp, temp2 : string;
    i : integer;
-   Index: Integer;
+   b: TBand;
 begin
    Result := False;
 
@@ -198,12 +198,12 @@ begin
             exit;
       end;
 
-      Index := GetBandIndex(FreqHz);
-      if Index = -1 then begin
+      b := dmZLogGlobal.BandPlan.FreqToBand(FreqHz);
+      if b = bUnknown then begin
          Exit;
       end;
 
-      Band := TBand(Index);
+      Band := b;
 
       Delete(temp, 1, i);
       temp := TrimLeft(temp);
@@ -278,12 +278,12 @@ begin
             exit;
       end;
 
-      Index := GetBandIndex(FreqHz);
-      if Index = -1 then begin
+      b := dmZLogGlobal.BandPlan.FreqToBand(FreqHz);
+      if b = bUnknown then begin
          Exit;
       end;
 
-      Band := TBand(Index);
+      Band := b;
 
       Delete(temp, 1, i);
       temp := TrimLeft(temp);

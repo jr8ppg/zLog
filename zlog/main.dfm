@@ -5302,13 +5302,6 @@ object MainForm: TMainForm
       object CWMessagePad1: TMenuItem
         Action = actionCwMessagePad
       end
-      object menuOptions: TMenuItem
-        Caption = '&Options'
-        OnClick = menuOptionsClick
-      end
-      object N5: TMenuItem
-        Caption = '-'
-      end
       object RigControl1: TMenuItem
         Action = actionShowRigControl
       end
@@ -5344,8 +5337,23 @@ object MainForm: TMainForm
         Action = actionFunctionKeyPanel
       end
     end
+    object menuSettings: TMenuItem
+      Caption = '&Settings'
+      object menuOptions: TMenuItem
+        Caption = '&Options'
+        OnClick = menuOptionsClick
+      end
+      object menuBandPlanSettings: TMenuItem
+        Caption = '&Band Plan'
+        OnClick = menuBandPlanSettingsClick
+      end
+      object menuQSORateSettings: TMenuItem
+        Caption = 'QSO &Rate'
+        OnClick = menuQSORateSettingsClick
+      end
+    end
     object Network1: TMenuItem
-      Caption = 'Network'
+      Caption = '&Network'
       object ConnecttoZServer1: TMenuItem
         Caption = 'Connect to Z-Server'
         OnClick = ConnecttoZServer1Click

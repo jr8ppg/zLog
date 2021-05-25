@@ -448,7 +448,6 @@ type
     G2400MHz: TMenuItem;
     G5600MHz: TMenuItem;
     G10GHz: TMenuItem;
-    N5: TMenuItem;
     ZLinkmonitor1: TMenuItem;
     menuOptions: TMenuItem;
     CWFMenu: TPopupMenu;
@@ -689,6 +688,9 @@ type
     actionAntiZeroin: TAction;
     actionFunctionKeyPanel: TAction;
     FunctionKeyPanel1: TMenuItem;
+    menuBandPlanSettings: TMenuItem;
+    menuQSORateSettings: TMenuItem;
+    menuSettings: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -910,6 +912,8 @@ type
     procedure actionToggleAntiZeroinExecute(Sender: TObject);
     procedure actionAntiZeroinExecute(Sender: TObject);
     procedure actionFunctionKeyPanelExecute(Sender: TObject);
+    procedure menuBandPlanSettingsClick(Sender: TObject);
+    procedure menuQSORateSettingsClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1126,7 +1130,7 @@ uses
   UIARUScore, UAllAsianScore, UIOTAMulti, {UIOTACategory,} UARRL10Multi,
   UARRL10Score,
   UIntegerDialog, UNewPrefix, UKCJScore,
-  UWAEScore, UWAEMulti, USummaryInfo,
+  UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension;
 
 {$R *.DFM}
@@ -3087,6 +3091,7 @@ begin
       else begin
          L := Log.QsoList;
       end;
+      Grid.Tag := Integer(L);
 
       Grid.RowCount := (((L.Count div 50) + 1) * 50) + 1;
 
@@ -3986,6 +3991,7 @@ begin
       WriteStatusLine('', False);
       SetWindowCaption();
       EditScreen.RefreshScreen(False);
+      FRateDialog.UpdateGraph();
    end;
 end;
 
@@ -5214,7 +5220,7 @@ begin
       end;
 
       VK_UP: begin
-         Grid.Row := Log.QsoList.Count - 1;
+         Grid.Row := TQSOList(Grid.Tag).Count - 1;
          if EditScreen.DirectEdit then begin
             Grid.col := TEdit(Sender).Tag;
          end;
@@ -6276,6 +6282,60 @@ begin
       RenewVoiceToolBar;
 
       LastFocus.SetFocus;
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TMainForm.menuBandPlanSettingsClick(Sender: TObject);
+var
+   f: TBandPlanEditDialog;
+   m: TMode;
+begin
+   f := TBandPlanEditDialog.Create(Self);
+   try
+      for m := mCW to mOther do begin
+         f.Limit[m] := dmZLogGlobal.BandPlan.Limit[m];
+      end;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      for m := mCW to mOther do begin
+         dmZLogGlobal.BandPlan.Limit[m] := f.Limit[m];
+      end;
+      dmZLogGlobal.BandPlan.SaveToFile();
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TMainForm.menuQSORateSettingsClick(Sender: TObject);
+var
+   f: TGraphColorDialog;
+   b: TBand;
+begin
+   f := TGraphColorDialog.Create(Self);
+   try
+      f.Style := FRateDialog.GraphStyle;
+      f.StartPosition := FRateDialog.GraphStartPosition;
+      for b := b19 to HiBand do begin
+         f.BarColor[b] := FRateDialog.GraphSeries[b].SeriesColor;
+         f.TextColor[b] := FRateDialog.GraphSeries[b].Marks.Font.Color;
+      end;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      FRateDialog.GraphStyle := f.Style;
+      FRateDialog.GraphStartPosition := f.StartPosition;
+      for b := b19 to HiBand do begin
+         FRateDialog.GraphSeries[b].SeriesColor := f.BarColor[b];
+         FRateDialog.GraphSeries[b].Marks.Font.Color := f.TextColor[b];
+      end;
+      FRateDialog.SaveSettings();
    finally
       f.Release();
    end;
@@ -9465,6 +9525,9 @@ end;
 
 // Cluster or BandScopeから呼ばれる
 procedure TMainForm.SetFrequency(freq: Integer);
+var
+   b: TBand;
+   Q: TQSO;
 begin
    if freq = 0 then begin
       Exit;
@@ -9472,9 +9535,20 @@ begin
 
    FQsyFromBS := True;
 
+   b := dmZLogGlobal.BandPlan.FreqToBand(freq);
+
    if RigControl.Rig <> nil then begin
       // RIGにfreq設定
       RigControl.Rig.SetFreq(freq, IsCQ());
+
+      if dmZLogGlobal.Settings._bandscope_use_estimated_mode = True then begin
+         Q := TQSO.Create();
+         Q.Band := b;
+         Q.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(freq);
+         RigControl.Rig.SetMode(Q);
+         Q.Free();
+      end;
+
       RigControl.Rig.UpdateStatus();
 
       // Zeroin避け
@@ -9484,7 +9558,7 @@ begin
    end
    else begin
       // バンド変更
-      UpdateBand(TBand(GetBandIndex(freq)));
+      UpdateBand(b);
    end;
 
    // SPモードへ変更

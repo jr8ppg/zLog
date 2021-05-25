@@ -286,7 +286,7 @@ begin
    // クリーンアップ
    Cleanup(nil);
 
-   if GetBandIndex(CurrentRigFrequency) = Ord(FCurrBand) then begin
+   if dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand then begin
       MarkCurrent := True;
    end
    else begin

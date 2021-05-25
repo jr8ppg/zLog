@@ -389,6 +389,23 @@ begin
          exit;
       end;
 
+      // JAのみ？
+      if dmZLogGlobal.Settings._bandscope_show_only_domestic = True then begin
+         if IsDomestic(Sp.Call) = False then begin
+            Sp.Free();
+            Exit;
+         end;
+      end;
+
+      // BAND PLAN内？
+      if dmZLogGlobal.Settings._bandscope_show_only_in_bandplan = True then begin
+         Sp.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(Sp.FreqHz);
+         if dmZLogGlobal.BandPlan.IsInBand(Sp.Band, Sp.Mode, Sp.FreqHz) = False then begin
+            Sp.Free();
+            Exit;
+         end;
+      end;
+
       // 交信済みチェック
       SpotCheckWorked(Sp);
 

@@ -1,11 +1,11 @@
-unit UzLogGlobal;
+Ôªøunit UzLogGlobal;
 
 interface
 
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.Math, Vcl.Graphics, System.DateUtils,
-  UzLogKeyer, UzlogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers;
+  UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan;
 
 type
   TCWSettingsParam = record
@@ -91,6 +91,10 @@ type
     _bandscope_freshness_mode: Integer;
     _bandscope_freshness_icon: Integer;
 
+    _bandscope_use_estimated_mode: Boolean;
+    _bandscope_show_only_in_bandplan: Boolean;
+    _bandscope_show_only_domestic: Boolean;
+
     CW : TCWSettingsParam;
     _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
 
@@ -148,8 +152,6 @@ type
     _spotexpire : integer; // spot expiration time in minutes
     _renewbythread : boolean;
     _movetomemo : boolean; // move to memo w/ spacebar when editing past qsos
-    _bsminfreqarray : array[b19..HiBand, mCW..mOther] of Integer; // kHz
-    _bsmaxfreqarray : array[b19..HiBand, mCW..mOther] of Integer; // kHz
     _recrigfreq : boolean; // record rig freq in memo
 
     _transverter1 : boolean;
@@ -190,7 +192,7 @@ type
     FImpProvCity: Boolean;
     FImpCwMessage: array[1..4] of Boolean;
 
-    // ÉXÉRÉAï\é¶ÇÃí«â¡èÓïÒ(ï]âøópéwêî)
+    // „Çπ„Ç≥„Ç¢Ë°®Á§∫„ÅÆËøΩÂä†ÊÉÖÂ†±(Ë©ï‰æ°Áî®ÊåáÊï∞)
     FLastScoreExtraInfo: Integer;
 
     // Time to change greetings
@@ -199,6 +201,12 @@ type
     // Last Band/Mode
     FLastBand: Integer;
     FLastMode: Integer;
+
+    // QSO Rate Graph
+    FGraphStyle: TQSORateStyle;
+    FGraphStartPosition: TQSORateStartPosition;
+    FGraphBarColor: array[b19..HiBand] of TColor;
+    FGraphTextColor: array[b19..HiBand] of TColor;
   end;
 
 var
@@ -222,7 +230,8 @@ type
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
-    { Private êÈåæ }
+    { Private ÂÆ£Ë®Ä }
+    FBandPlan: TBandPlan;
     FOpList: TOperatorInfoList;
 
     FMyCountry: string;
@@ -237,7 +246,6 @@ type
     procedure AnalyzeMyCountry();
 
     procedure LoadIniFile; {loads Settings from zlog.ini}
-    procedure LoadIniFileBS(ini: TIniFile); // called from loadinifile
     procedure LoadCfgParams(ini: TIniFile);
 
     function GetMyCall(): string;
@@ -266,7 +274,7 @@ type
     function GetLastMode(): TMode;
     procedure SetLastMode(m: TMode);
 public
-    { Public êÈåæ }
+    { Public ÂÆ£Ë®Ä }
     FCurrentFileName : string;
     FLog : TLog;
 
@@ -331,6 +339,7 @@ public
     property MyContinent: string read FMyContinent;
     property MyCQZone: string read FMyCQZone;
     property MyITUZone: string read FMyITUZone;
+    property BandPlan: TBandPlan read FBandPlan;
   end;
 
 function Log(): TLog;
@@ -369,7 +378,6 @@ function Power(base, Power: integer): integer;
 
 function StrToBandDef(strMHz: string; defband: TBand): TBand;
 function StrToModeDef(strMode: string; defmode: TMode): TMode;
-function GetBandIndex(Hz: Integer; default: Integer = -1): Integer; // Returns -1 if Hz is outside ham bands
 
 function PartialMatch(A, B: string): Boolean;
 function PartialMatch2(strCompare, strTarget: string): Boolean;
@@ -385,6 +393,8 @@ function ExPos(substr, str: string): Integer;
 function LD(S, T: string): Integer;
 function LD_dp(str1, str2: string): Integer;
 function LD_ond(str1, str2: string): Integer;
+
+function IsDomestic(strCallsign: string): Boolean;
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -410,7 +420,7 @@ begin
    LoadIniFile;
    Settings.CW.CurrentBank := 1;
 
-   // ÉIÉyÉåÅ[É^Å[ÉäÉXÉg
+   // „Ç™„Éö„É¨„Éº„Çø„Éº„É™„Çπ„Éà
    FOpList := TOperatorInfoList.Create();
    FOpList.LoadFromIniFile();
    if FOpList.Count = 0 then begin
@@ -425,10 +435,14 @@ begin
    FCountryList := TCountryList.Create();
    FPrefixList := TPrefixList.Create();
    FCtyDatLoaded := Load_CTYDAT();
+
+   FBandPlan := TBandPlan.Create();
+   FBandPlan.LoadFromFile();
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
 begin
+   FBandPlan.Free();
    FCountryList.Free();
    FPrefixList.Free();
    SaveCurrentSettings();
@@ -450,88 +464,12 @@ begin
       end;
    end;
 
-   // ëŒè€çÄñ⁄ÇçƒÉçÅ[Éh
+   // ÂØæË±°È†ÖÁõÆ„ÇíÂÜç„É≠„Éº„Éâ
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       LoadCfgParams(ini);
    finally
       ini.Free();
-   end;
-end;
-
-procedure TdmZLogGlobal.LoadIniFileBS(ini: TIniFile);
-var
-   b: TBand;
-   m: TMode;
-begin
-   Settings._bsminfreqarray[b19, mCW] := ini.ReadInteger('BandScope', '1.9MHzCWmin', 1800);
-   Settings._bsminfreqarray[b19, mSSB] := ini.ReadInteger('BandScope', '1.9MHzPHmin', 1800);
-   Settings._bsmaxfreqarray[b19, mCW] := ini.ReadInteger('BandScope', '1.9MHzCWmax', 1950);
-   Settings._bsmaxfreqarray[b19, mSSB] := ini.ReadInteger('BandScope', '1.9MHzPHmax', 1950);
-   Settings._bsminfreqarray[b35, mCW] := ini.ReadInteger('BandScope', '3.5MHzCWmin', 3500);
-   Settings._bsminfreqarray[b35, mSSB] := ini.ReadInteger('BandScope', '3.5MHzPHmin', 3500);
-   Settings._bsmaxfreqarray[b35, mCW] := ini.ReadInteger('BandScope', '3.5MHzCWmax', 3800);
-   Settings._bsmaxfreqarray[b35, mSSB] := ini.ReadInteger('BandScope', '3.5MHzPHmax', 3800);
-   Settings._bsminfreqarray[b7, mCW] := ini.ReadInteger('BandScope', '7MHzCWmin', 7000);
-   Settings._bsminfreqarray[b7, mSSB] := ini.ReadInteger('BandScope', '7MHzPHmin', 7000);
-   Settings._bsmaxfreqarray[b7, mCW] := ini.ReadInteger('BandScope', '7MHzCWmax', 7200);
-   Settings._bsmaxfreqarray[b7, mSSB] := ini.ReadInteger('BandScope', '7MHzPHmax', 7200);
-   Settings._bsminfreqarray[b10, mCW] := ini.ReadInteger('BandScope', '10MHzCWmin', 10100);
-   Settings._bsminfreqarray[b10, mSSB] := ini.ReadInteger('BandScope', '10MHzPHmin', 10100);
-   Settings._bsmaxfreqarray[b10, mCW] := ini.ReadInteger('BandScope', '10MHzCWmax', 10150);
-   Settings._bsmaxfreqarray[b10, mSSB] := ini.ReadInteger('BandScope', '10MHzPHmax', 10150);
-   Settings._bsminfreqarray[b14, mCW] := ini.ReadInteger('BandScope', '14MHzCWmin', 14000);
-   Settings._bsminfreqarray[b14, mSSB] := ini.ReadInteger('BandScope', '14MHzPHmin', 14000);
-   Settings._bsmaxfreqarray[b14, mCW] := ini.ReadInteger('BandScope', '14MHzCWmax', 14350);
-   Settings._bsmaxfreqarray[b14, mSSB] := ini.ReadInteger('BandScope', '14MHzPHmax', 14350);
-   Settings._bsminfreqarray[b18, mCW] := ini.ReadInteger('BandScope', '18MHzCWmin', 18060);
-   Settings._bsminfreqarray[b18, mSSB] := ini.ReadInteger('BandScope', '18MHzPHmin', 18060);
-   Settings._bsmaxfreqarray[b18, mCW] := ini.ReadInteger('BandScope', '18MHzCWmax', 18170);
-   Settings._bsmaxfreqarray[b18, mSSB] := ini.ReadInteger('BandScope', '18MHzPHmax', 18170);
-   Settings._bsminfreqarray[b21, mCW] := ini.ReadInteger('BandScope', '21MHzCWmin', 21000);
-   Settings._bsminfreqarray[b21, mSSB] := ini.ReadInteger('BandScope', '21MHzPHmin', 21000);
-   Settings._bsmaxfreqarray[b21, mCW] := ini.ReadInteger('BandScope', '21MHzCWmax', 21450);
-   Settings._bsmaxfreqarray[b21, mSSB] := ini.ReadInteger('BandScope', '21MHzPHmax', 21450);
-   Settings._bsminfreqarray[b24, mCW] := ini.ReadInteger('BandScope', '24MHzCWmin', 24890);
-   Settings._bsminfreqarray[b24, mSSB] := ini.ReadInteger('BandScope', '24MHzPHmin', 24890);
-   Settings._bsmaxfreqarray[b24, mCW] := ini.ReadInteger('BandScope', '24MHzCWmax', 24990);
-   Settings._bsmaxfreqarray[b24, mSSB] := ini.ReadInteger('BandScope', '24MHzPHmax', 24990);
-   Settings._bsminfreqarray[b28, mCW] := ini.ReadInteger('BandScope', '28MHzCWmin', 28000);
-   Settings._bsminfreqarray[b28, mSSB] := ini.ReadInteger('BandScope', '28MHzPHmin', 28000);
-   Settings._bsmaxfreqarray[b28, mCW] := ini.ReadInteger('BandScope', '28MHzCWmax', 28500);
-   Settings._bsmaxfreqarray[b28, mSSB] := ini.ReadInteger('BandScope', '28MHzPHmax', 28500);
-
-   Settings._bsminfreqarray[b50, mCW] := ini.ReadInteger('BandScope', '50MHzCWmin', 50000);
-   Settings._bsminfreqarray[b50, mSSB] := ini.ReadInteger('BandScope', '50MHzPHmin', 50000);
-   Settings._bsmaxfreqarray[b50, mCW] := ini.ReadInteger('BandScope', '50MHzCWmax', 51000);
-   Settings._bsmaxfreqarray[b50, mSSB] := ini.ReadInteger('BandScope', '50MHzPHmax', 51000);
-   Settings._bsminfreqarray[b144, mCW] := ini.ReadInteger('BandScope', '144MHzCWmin', 144000);
-   Settings._bsminfreqarray[b144, mSSB] := ini.ReadInteger('BandScope', '144MHzPHmin', 144600);
-   Settings._bsmaxfreqarray[b144, mCW] := ini.ReadInteger('BandScope', '144MHzCWmax', 145600);
-   Settings._bsmaxfreqarray[b144, mSSB] := ini.ReadInteger('BandScope', '144MHzPHmax', 145600);
-   Settings._bsminfreqarray[b430, mCW] := ini.ReadInteger('BandScope', '430MHzCWmin', 430000);
-   Settings._bsminfreqarray[b430, mSSB] := ini.ReadInteger('BandScope', '430MHzPHmin', 430000);
-   Settings._bsmaxfreqarray[b430, mCW] := ini.ReadInteger('BandScope', '430MHzCWmax', 434000);
-   Settings._bsmaxfreqarray[b430, mSSB] := ini.ReadInteger('BandScope', '430MHzPHmax', 434000);
-
-   Settings._bsminfreqarray[b1200, mCW] := ini.ReadInteger('BandScope', '1200MHzCWmin', 1294000);
-   Settings._bsminfreqarray[b1200, mSSB] := ini.ReadInteger('BandScope', '1200MHzPHmin', 1294600);
-   Settings._bsmaxfreqarray[b1200, mCW] := ini.ReadInteger('BandScope', '1200MHzCWmax', 1294500);
-   Settings._bsmaxfreqarray[b1200, mSSB] := ini.ReadInteger('BandScope', '1200MHzPHmax', 1295000);
-   Settings._bsminfreqarray[b2400, mCW] := ini.ReadInteger('BandScope', '2400MHzCWmin', 2400000);
-   Settings._bsminfreqarray[b2400, mSSB] := ini.ReadInteger('BandScope', '2400MHzPHmin', 2400000);
-   Settings._bsmaxfreqarray[b2400, mCW] := ini.ReadInteger('BandScope', '2400MHzCWmax', 2410000);
-   Settings._bsmaxfreqarray[b2400, mSSB] := ini.ReadInteger('BandScope', '2400MHzPHmax', 2410000);
-   Settings._bsminfreqarray[b5600, mCW] := ini.ReadInteger('BandScope', '5600MHzCWmin', 5600000);
-   Settings._bsminfreqarray[b5600, mSSB] := ini.ReadInteger('BandScope', '5600MHzPHmin', 5600000);
-   Settings._bsmaxfreqarray[b5600, mCW] := ini.ReadInteger('BandScope', '5600MHzCWmax', 5610000);
-   Settings._bsmaxfreqarray[b5600, mSSB] := ini.ReadInteger('BandScope', '5600MHzPHmax', 5610000);
-
-   for b := b19 to HiBand do begin
-      for m := mFM to mOther do begin
-         Settings._bsminfreqarray[b, m] := Settings._bsminfreqarray[b, mSSB];
-         Settings._bsmaxfreqarray[b, m] := Settings._bsmaxfreqarray[b, mSSB];
-      end;
    end;
 end;
 
@@ -555,13 +493,12 @@ var
    s: string;
    ini: TIniFile;
    slParam: TStringList;
+   b: TBand;
+   strKey: string;
 begin
    slParam := TStringList.Create();
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
-      // Band Scope
-      LoadIniFileBS(ini);
-
       //
       // Preferences
       //
@@ -659,7 +596,7 @@ begin
       // Multi Station
       Settings._multistation := ini.ReadBool('Categories', 'MultiStn', False);
 
-      // CFGÉtÉ@ÉCÉãÇ…Ç‡Ç†ÇÈçÄñ⁄ÇÉçÅ[Éh
+      // CFG„Éï„Ç°„Ç§„É´„Å´„ÇÇ„ÅÇ„ÇãÈ†ÖÁõÆ„Çí„É≠„Éº„Éâ
       LoadCfgParams(ini);
 
       //
@@ -904,7 +841,7 @@ begin
       Settings._renewbythread := ini.ReadBool('Misc', 'UpdateUsingThread', False);
 
       //
-      // Ç±Ç±Ç©ÇÁâBÇµê›íË
+      // „Åì„Åì„Åã„ÇâÈö†„ÅóË®≠ÂÆö
       //
 
       Settings._movetomemo := ini.ReadBool('Preferences', 'MoveToMemoWithSpace', False);
@@ -1000,6 +937,10 @@ begin
       Settings._bandscope_freshness_mode := ini.ReadInteger('BandScopeEx', 'freshness_mode', 0);
       Settings._bandscope_freshness_icon := ini.ReadInteger('BandScopeEx', 'freshness_icon', 0);
 
+      Settings._bandscope_use_estimated_mode := ini.ReadBool('BandScopeOptions', 'use_estimated_mode', True);
+      Settings._bandscope_show_only_in_bandplan := ini.ReadBool('BandScopeOptions', 'show_only_in_bandplan', True);
+      Settings._bandscope_show_only_domestic := ini.ReadBool('BandScopeOptions', 'show_only_domestic', True);
+
       // Quick Memo
       Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', MEMO_PSE_QSL);
       Settings.FQuickMemoText[2] := ini.ReadString('QuickMemo', '#2', MEMO_NO_QSL);
@@ -1053,7 +994,7 @@ begin
       Settings.FImpCwMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_f3a', False);
       Settings.FImpCwMessage[4] := ini.ReadBool('UserDefinedContest', 'imp_f4a', False);
 
-      // ÉXÉRÉAï\é¶ÇÃí«â¡èÓïÒ(ï]âøópéwêî)
+      // „Çπ„Ç≥„Ç¢Ë°®Á§∫„ÅÆËøΩÂä†ÊÉÖÂ†±(Ë©ï‰æ°Áî®ÊåáÊï∞)
       Settings.FLastScoreExtraInfo := ini.ReadInteger('Score', 'ExtraInfo', 0);
 
       // Time to change greetings
@@ -1064,6 +1005,15 @@ begin
       // Last Band/Mode
       Settings.FLastBand := ini.ReadInteger('main', 'last_band', 0);
       Settings.FLastMode := ini.ReadInteger('main', 'last_mode', 0);
+
+      // QSO Rate Graph
+      Settings.FGraphStyle := TQSORateStyle(ini.ReadInteger('Graph', 'Style', 0));
+      Settings.FGraphStartPosition := TQSORateStartPosition(ini.ReadInteger('Graph', 'StartPosition', 1));
+      for b := b19 to HiBand do begin
+         strKey := MHzString[b];
+         Settings.FGraphBarColor[b]  := ZStringToColorDef(ini.ReadString('Graph', strKey + '_BarColor',  ''), default_graph_bar_color[b]);
+         Settings.FGraphTextColor[b] := ZStringToColorDef(ini.ReadString('Graph', strKey + '_TextColor', ''), default_graph_text_color[b]);
+      end;
    finally
       ini.Free();
       slParam.Free();
@@ -1075,6 +1025,8 @@ var
    i: integer;
    ini: TIniFile;
    slParam: TStringList;
+   b: TBand;
+   strKey: string;
 begin
    slParam := TStringList.Create();
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
@@ -1387,7 +1339,7 @@ begin
       ini.WriteBool('Misc', 'UpdateUsingThread', Settings._renewbythread);
 
       //
-      // Ç±Ç±Ç©ÇÁâBÇµê›íË
+      // „Åì„Åì„Åã„ÇâÈö†„ÅóË®≠ÂÆö
       //
 
       ini.WriteBool('Preferences', 'MoveToMemoWithSpace', Settings._movetomemo);
@@ -1469,6 +1421,10 @@ begin
       ini.WriteInteger('BandScopeEx', 'freshness_mode', Settings._bandscope_freshness_mode);
       ini.WriteInteger('BandScopeEx', 'freshness_icon', Settings._bandscope_freshness_icon);
 
+      ini.WriteBool('BandScopeOptions', 'use_estimated_mode', Settings._bandscope_use_estimated_mode);
+      ini.WriteBool('BandScopeOptions', 'show_only_in_bandplan', Settings._bandscope_show_only_in_bandplan);
+      ini.WriteBool('BandScopeOptions', 'show_only_domestic', Settings._bandscope_show_only_domestic);
+
       // Quick Memo
       for i := 1 to 5 do begin
          ini.WriteString('QuickMemo', '#' + IntToStr(i), Settings.FQuickMemoText[i]);
@@ -1494,22 +1450,31 @@ begin
       ini.WriteBool('UserDefinedContest', 'imp_f3a', Settings.FImpCwMessage[3]);
       ini.WriteBool('UserDefinedContest', 'imp_f4a', Settings.FImpCwMessage[4]);
 
-      // ÉXÉRÉAï\é¶ÇÃí«â¡èÓïÒ(ï]âøópéwêî)
+      // „Çπ„Ç≥„Ç¢Ë°®Á§∫„ÅÆËøΩÂä†ÊÉÖÂ†±(Ë©ï‰æ°Áî®ÊåáÊï∞)
       ini.WriteInteger('Score', 'ExtraInfo', Settings.FLastScoreExtraInfo);
 
       // Last Band/Mode
       ini.WriteInteger('main', 'last_band', Settings.FLastBand);
       ini.WriteInteger('main', 'last_mode', Settings.FLastMode);
+
+      // QSO Rate Graph
+      ini.WriteInteger('Graph', 'Style', Integer(Settings.FGraphStyle));
+      ini.WriteInteger('Graph', 'StartPosition', Integer(Settings.FGraphStartPosition));
+      for b := b19 to HiBand do begin
+         strKey := MHzString[b];
+         ini.WriteString('Graph', strKey + '_BarColor', ZColorToString(Settings.FGraphBarColor[b]));
+         ini.WriteString('Graph', strKey + '_TextColor', ZColorToString(Settings.FGraphTextColor[b]));
+      end;
    finally
       ini.Free();
       slParam.Free();
    end;
 
-   // ÉIÉyÉåÅ[É^Å[ÉäÉXÉgï€ë∂
+   // „Ç™„Éö„É¨„Éº„Çø„Éº„É™„Çπ„Éà‰øùÂ≠ò
    FOpList.SaveToIniFile();
 end;
 
-// ê›íËîΩâf
+// Ë®≠ÂÆöÂèçÊò†
 procedure TdmZLogGlobal.ImplementSettings(_OnCreate: boolean);
 begin
    if _OnCreate = False then begin
@@ -1554,7 +1519,7 @@ begin
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
 
-   // RIGÉRÉìÉgÉçÅ[ÉãÇ∆ìØÇ∂É|Å[ÉgÇÃèÍçáÇÕñ≥ÇµÇ∆Ç∑ÇÈ
+   // RIG„Ç≥„É≥„Éà„É≠„Éº„É´„Å®Âêå„Åò„Éù„Éº„Éà„ÅÆÂ†¥Âêà„ÅØÁÑ°„Åó„Å®„Åô„Çã
    if (Settings._rigport[1] <> Settings._lptnr) and
       (Settings._rigport[2] <> Settings._lptnr) then begin
       dmZLogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
@@ -2041,17 +2006,17 @@ var
 begin
    strFileName := ExtractFilePath(Application.ExeName) + 'CTY.DAT';
 
-   // ÉJÉìÉgÉäÅ[ÉäÉXÉgÇÉçÅ[Éh
+   // „Ç´„É≥„Éà„É™„Éº„É™„Çπ„Éà„Çí„É≠„Éº„Éâ
    FCountryList.LoadFromFile(strFileName);
 
    if FileExists(strFileName) = True then begin
 
-      // äeÉJÉìÉgÉäÅ[ÇÃprefixÇìWäJ
+      // ÂêÑ„Ç´„É≥„Éà„É™„Éº„ÅÆprefix„ÇíÂ±ïÈñã
       for i := 0 to FCountryList.Count - 1 do begin
          FPrefixList.Parse(FCountryList[i]);
       end;
 
-      // ï¿Ç—ë÷Ç¶Åiç~èáÅj
+      // ‰∏¶„Å≥Êõø„ÅàÔºàÈôçÈ†ÜÔºâ
       FPrefixList.Sort();
 
       Result := True;
@@ -2060,7 +2025,7 @@ begin
       Result := False;
    end;
 
-   // êÊì™Ç…Unknown CountryÇÃÉ_É~Å[ÉåÉRÅ[Éhí«â¡
+   // ÂÖàÈ†≠„Å´Unknown Country„ÅÆ„ÉÄ„Éü„Éº„É¨„Ç≥„Éº„ÉâËøΩÂä†
    P := TPrefix.Create();
    P.Prefix := 'Unknown';
    P.Country := FCountryList[0];
@@ -2086,7 +2051,7 @@ begin
       Exit;
    end;
 
-   // ç≈èâÇÕÉRÅ[ÉãàÍívämîF
+   // ÊúÄÂàù„ÅØ„Ç≥„Éº„É´‰∏ÄËá¥Á¢∫Ë™ç
    for i := 0 to FPrefixList.Count - 1 do begin
       P := FPrefixList[i];
 
@@ -2112,7 +2077,7 @@ begin
       Exit;
    end
 
-   // ñ≥éãÇ∑ÇÈÇ‡ÇÃ
+   // ÁÑ°Ë¶ñ„Åô„Çã„ÇÇ„ÅÆ
    else if (strCallRight = 'AA') or (strCallRight = 'AT') or (strCallRight = 'AG') or
       (strCallRight = 'AA') or (strCallRight = 'AE') or (strCallRight = 'M') or
       (strCallRight = 'P') or (strCallRight = 'AM') or (strCallRight = 'QRP') or
@@ -2125,9 +2090,9 @@ begin
       str := Copy(str, 1, i - 1);
    end
 
-   // îªï Ç≈Ç´Ç»Ç¢
+   // Âà§Âà•„Åß„Åç„Å™„ÅÑ
    else if i = 5 then begin
-      // Ç‹Ç∏ÇÕç∂ë§Ç©ÇÁëOï˚àÍívÇ≈
+      // „Åæ„Åö„ÅØÂ∑¶ÂÅ¥„Åã„ÇâÂâçÊñπ‰∏ÄËá¥„Åß
       for i := 1 to FPrefixList.Count - 1 do begin
          P := FPrefixList[i];
 
@@ -2139,11 +2104,11 @@ begin
          end;
       end;
 
-      // ñ≥ÇØÇÍÇŒâEë§
+      // ÁÑ°„Åë„Çå„Å∞Âè≥ÂÅ¥
       strCallFirst := strCallRight;
    end;
 
-   // ë±Ç¢ÇƒëOï˚àÍívÇ≈
+   // Á∂ö„ÅÑ„Å¶ÂâçÊñπ‰∏ÄËá¥„Åß
    for i := 1 to FPrefixList.Count - 1 do begin
       P := FPrefixList[i];
 
@@ -2794,49 +2759,6 @@ begin
    Result := defmode;
 end;
 
-function GetBandIndex(Hz: Integer; default: Integer): Integer; // Returns -1 if Hz is outside ham bands
-var
-   i: Integer;
-begin
-   i := default;
-   case Hz div 1000 of
-      1800 .. 1999:
-         i := 0;
-      3000 .. 3999:
-         i := 1;
-      6900 .. 7999:
-         i := 2;
-      9900 .. 11000:
-         i := 3;
-      13900 .. 14999:
-         i := 4;
-      17500 .. 18999:
-         i := 5;
-      20900 .. 21999:
-         i := 6;
-      23500 .. 24999:
-         i := 7;
-      27800 .. 29999:
-         i := 8;
-      49000 .. 59000:
-         i := 9;
-      140000 .. 149999:
-         i := 10;
-      400000 .. 450000:
-         i := 11;
-      1200000 .. 1299999:
-         i := 12;
-      2400000..2499999:
-         i := 13;
-      5600000..5699999:
-         i := 14;
-      10000000..90000000:
-         i := 15;
-   end;
-
-   Result := i;
-end;
-
 function Compare2(strTarget: string; strCompare: string): Boolean;
 var
    i: Integer;
@@ -2870,12 +2792,12 @@ begin
    end;
 end;
 
-// ÉåÅ[ÉxÉìÉVÉÖÉ^ÉCÉìãóó£ÇÃåvéZ
+// „É¨„Éº„Éô„É≥„Ç∑„É•„Çø„Ç§„É≥Ë∑ùÈõ¢„ÅÆË®àÁÆó
 function LD(S, T: string): Integer;
 var
    l1, l2, l3: Integer;
 begin
-   // àÍï˚Ç™ãÛï∂éöóÒÇ»ÇÁÅAëºï˚ÇÃí∑Ç≥Ç™ãÅÇﬂÇÈãóó£
+   // ‰∏ÄÊñπ„ÅåÁ©∫ÊñáÂ≠óÂàó„Å™„Çâ„ÄÅ‰ªñÊñπ„ÅÆÈï∑„Åï„ÅåÊ±Ç„ÇÅ„ÇãË∑ùÈõ¢
    if S = '' then begin
       Result := Length(T);
       Exit;
@@ -2886,30 +2808,30 @@ begin
       Exit;
    end;
 
-   // àÍï∂éöñ⁄Ç™àÍívÇ»ÇÁÅAìÒï∂éöñ⁄à»ç~ÇÃãóó£Ç™ãÅÇﬂÇÈãóó£
+   // ‰∏ÄÊñáÂ≠óÁõÆ„Åå‰∏ÄËá¥„Å™„Çâ„ÄÅ‰∫åÊñáÂ≠óÁõÆ‰ª•Èôç„ÅÆË∑ùÈõ¢„ÅåÊ±Ç„ÇÅ„ÇãË∑ùÈõ¢
    if S[1] = T[1] then begin
       Result := LD(Copy(S, 2), Copy(T, 2));
       Exit;
    end;
 
-   // àÍï∂éöñ⁄Ç™ïsàÍívÇ»ÇÁÅAí«â¡Å^çÌèúÅ^íuä∑ÇÃÇªÇÍÇºÇÍÇé¿é{ÇµÅA
-   // écÇËÇÃï∂éöóÒÇ…Ç¬Ç¢ÇƒÇÃÉRÉXÉgÇåvéZÇ∑ÇÈ
+   // ‰∏ÄÊñáÂ≠óÁõÆ„Åå‰∏ç‰∏ÄËá¥„Å™„Çâ„ÄÅËøΩÂä†ÔºèÂâäÈô§ÔºèÁΩÆÊèõ„ÅÆ„Åù„Çå„Åû„Çå„ÇíÂÆüÊñΩ„Åó„ÄÅ
+   // ÊÆã„Çä„ÅÆÊñáÂ≠óÂàó„Å´„Å§„ÅÑ„Å¶„ÅÆ„Ç≥„Çπ„Éà„ÇíË®àÁÆó„Åô„Çã
 
-   // SÇÃêÊì™Ç…í«â¡
+   // S„ÅÆÂÖàÈ†≠„Å´ËøΩÂä†
    l1 := LD(S, Copy(T, 2));
 
-   // SÇÃêÊì™ÇçÌèú
+   // S„ÅÆÂÖàÈ†≠„ÇíÂâäÈô§
    l2 := LD(Copy(S, 2), T);
 
-   // SÇÃêÊì™Çíuä∑
+   // S„ÅÆÂÖàÈ†≠„ÇíÁΩÆÊèõ
    l3 := LD(Copy(S, 2), Copy(T, 2));
 
-   // í«â¡Å^çÌèúÅ^íuä∑Çé¿é{ÇµÇΩï™ÉRÉXÉgÅiãóó£Åj1ÇÃè¡îÔÇÕämíË
-   // écÇËÇÃï∂éöóÒÇ…Ç¬Ç¢ÇƒÇÃÉRÉXÉgÇÃç≈è¨ílÇë´ÇπÇŒãóó£Ç∆Ç»ÇÈ
+   // ËøΩÂä†ÔºèÂâäÈô§ÔºèÁΩÆÊèõ„ÇíÂÆüÊñΩ„Åó„ÅüÂàÜ„Ç≥„Çπ„ÉàÔºàË∑ùÈõ¢Ôºâ1„ÅÆÊ∂àË≤ª„ÅØÁ¢∫ÂÆö
+   // ÊÆã„Çä„ÅÆÊñáÂ≠óÂàó„Å´„Å§„ÅÑ„Å¶„ÅÆ„Ç≥„Çπ„Éà„ÅÆÊúÄÂ∞èÂÄ§„ÇíË∂≥„Åõ„Å∞Ë∑ùÈõ¢„Å®„Å™„Çã
    Result := 1 + Min(l1, Min(l2, l3));
 end;
 
-// ìÆìIåvâÊñ@Ç≈ÇÃÉåÅ[ÉxÉìÉVÉÖÉ^ÉCÉìãóó£ÇÃåvéZ
+// ÂãïÁöÑË®àÁîªÊ≥ï„Åß„ÅÆ„É¨„Éº„Éô„É≥„Ç∑„É•„Çø„Ç§„É≥Ë∑ùÈõ¢„ÅÆË®àÁÆó
 function LD_dp(str1, str2: string): Integer;
 var
    n1, n2: Integer;
@@ -2942,8 +2864,8 @@ begin
    Result := d[n1][n2];
 end;
 
-// O(ND)ÉAÉãÉSÉäÉYÉÄÇ≈ÇÃÉåÅ[ÉxÉìÉVÉÖÉ^ÉCÉìãóó£ÇÃåvéZ
-// ÇPï∂éöÇÃà·Ç¢Åiíuä∑ÅjÇÕÇQÇ∆Ç»ÇÈÇÃÇ≈égÇ¶Ç»Ç¢
+// O(ND)„Ç¢„É´„Ç¥„É™„Ç∫„É†„Åß„ÅÆ„É¨„Éº„Éô„É≥„Ç∑„É•„Çø„Ç§„É≥Ë∑ùÈõ¢„ÅÆË®àÁÆó
+// ÔºëÊñáÂ≠ó„ÅÆÈÅï„ÅÑÔºàÁΩÆÊèõÔºâ„ÅØÔºí„Å®„Å™„Çã„ÅÆ„Åß‰Ωø„Åà„Å™„ÅÑ
 function LD_ond(str1, str2: string): Integer;
 var
    n1, n2: Integer;
@@ -3086,6 +3008,57 @@ begin
          exit;
       end;
    end;
+end;
+
+// JA1‚ÄìJS1, 7J1, 8J1‚Äì8N1, 7K1‚Äì7N4
+// JA2‚ÄìJS2, 7J2, 8J2‚Äì8N2
+// JA3‚ÄìJS3, 7J3, 8J3‚Äì8N3
+// JA4‚ÄìJS4, 7J4, 8J4‚Äì8N4
+// JA5‚ÄìJS5, 7J5, 8J5‚Äì8N5
+// JA6‚ÄìJS6, 7J6, 8J6‚Äì8N6
+// JA7‚ÄìJS7, 7J7, 8J7‚Äì8N7
+// JA8‚ÄìJS8, 7J8, 8J8‚Äì8N8
+// JA9‚ÄìJS9, 7J9, 8J9‚Äì8N9
+// JA0‚ÄìJS0, 7J0, 8J0‚Äì8N0
+function IsDomestic(strCallsign: string): Boolean;
+var
+   S1: Char;
+   S2: Char;
+   S3: Char;
+begin
+   S1 := strCallsign[1];
+   S2 := strCallsign[2];
+   S3 := strCallsign[3];
+
+   if S1 = 'J' then begin
+      if (S2 >= 'A') and (S2 <= 'S') then begin
+         Result := True;
+         Exit;
+      end;
+   end;
+
+   if (S1 = '7') and (S2 = 'J') then begin
+      Result := True;
+      Exit;
+   end;
+
+   if S1 = '7' then begin
+      if (S2 >= 'K') and (S2 <= 'N') then begin
+         if (S3 >= '1') and (S3 <= '4') then begin
+            Result := True;
+            Exit;
+         end;
+      end;
+   end;
+
+   if S1 = '8' then begin
+      if (S2 >= 'J') and (S2 <= 'N') then begin
+         Result := True;
+         Exit;
+      end;
+   end;
+
+   Result := False;
 end;
 
 end.
