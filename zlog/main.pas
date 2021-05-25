@@ -5887,6 +5887,7 @@ var
             Exit;
          end;
          S := dmZlogGlobal.CWMessage(2);
+         S := StringReplace(S, '$C', '', [rfReplaceAll]);
          S := SetStr(S, CurrentQSO);
          dmZLogKeyer.WinkeyerSendStr(S);
       end;

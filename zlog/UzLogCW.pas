@@ -88,7 +88,12 @@ begin
       temp := StringReplace(temp, '$C', aQSO.Callsign, [rfReplaceAll]);
    end
    else begin
-      temp := StringReplace(temp, '$C', ':***************', [rfReplaceAll]);
+      if dmZLogKeyer.UseWinKeyer = True then begin
+         temp := StringReplace(temp, '$C', aQSO.Callsign, [rfReplaceAll]);
+      end
+      else begin
+         temp := StringReplace(temp, '$C', ':***************', [rfReplaceAll]);
+      end;
    end;
 
 //  while Pos('$C',temp) > 0 do
