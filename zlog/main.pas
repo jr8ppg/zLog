@@ -5523,7 +5523,7 @@ begin
 
    PostMessage(Handle, WM_ZLOG_INIT, 0, 0);
 
-   zyloRuntimeLaunch;
+//   zyloRuntimeLaunch;
 end;
 
 procedure TMainForm.CWFButtonClick(Sender: TObject);

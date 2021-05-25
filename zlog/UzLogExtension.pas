@@ -225,6 +225,7 @@ begin
 	ExportDialog := TExportDialog.Create(MainForm);
 	ExportDialog.Options := [ofOverwritePrompt];
 	zHandle := LoadLibrary(PChar('zylo.dll'));
+   if zHandle = 0 then Exit;
 	zlaunch := GetProcAddress(zHandle, 'zylo_handle_launch');
 	zfinish := GetProcAddress(zHandle, 'zylo_handle_finish');
 	yinsert := GetProcAddress(zHandle, 'zylo_permit_insert');
@@ -262,6 +263,9 @@ begin
 	(*do not close Go DLL*)
 	if @zfinish <> nil then
 		zfinish;
+
+	FreeAndNil(ImportDialog);
+	FreeAndNil(ExportDialog);
 end;
 
 procedure zyloContestOpened(contest: string; cfg: string);
