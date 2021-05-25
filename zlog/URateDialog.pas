@@ -304,8 +304,12 @@ var
    b: TBand;
    aQSO: TQSO;
    diff: TDateTime;
-   base: TDateTime;
    count_array: array[0..48] of array[b19..b10g] of Integer;
+
+   function CalcStartTime(dt: TDateTime): TDateTime;
+   begin
+      Result := dt - (FShowLast - 1) / 24;
+   end;
 begin
    for b := b19 to b10g do begin
       FGraphSeries[b].Clear();
@@ -314,13 +318,14 @@ begin
    Chart1.Axes.Bottom.Items.Clear();
 
    if Log.TotalQSO = 0 then begin
-      _start := CurrentTime() - (FShowLast - 1) / 24;
+      _start := CalcStartTime( CurrentTime() );
    end
    else begin
       case GraphStartPosition of
          spFirstQSO:    _start := Log.QsoList[1].Time;
-         spCurrentTime: _start := CurrentTime() - (FShowLast - 1) / 24;
-         spLastQSO:     _start := Log.QsoList[Log.TotalQSO].Time - (FShowLast - 1) / 24;
+         spCurrentTime: _start := CalcStartTime( CurrentTime() );
+         spLastQSO:     _start := CalcStartTime( Log.QsoList[Log.TotalQSO].Time );
+         else           _start := CalcStartTime( CurrentTime() );
       end;
    end;
 
@@ -442,13 +447,19 @@ begin
          // UHF
          hour_count := count_array[i][b430] +
                        count_array[i][b1200] +
-                       count_array[i][b2400] +
-                       count_array[i][b5600] +
-                       count_array[i][b10g];
+                       count_array[i][b2400];
          // ècé≤ñ⁄ê∑ÇËí≤êÆÇÃÇΩÇﬂÇÃíl
          total_count := total_count + hour_count;
          hour_peak := Max(hour_peak, hour_count);
          FGraphSeries[b430].Add(hour_count);
+
+         // SHF
+         hour_count := count_array[i][b5600] +
+                       count_array[i][b10g];
+         // ècé≤ñ⁄ê∑ÇËí≤êÆÇÃÇΩÇﬂÇÃíl
+         total_count := total_count + hour_count;
+         hour_peak := Max(hour_peak, hour_count);
+         FGraphSeries[b5600].Add(hour_count);
       end;
 
       // ó›åv

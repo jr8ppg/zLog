@@ -2,7 +2,7 @@ object GraphColorDialog: TGraphColorDialog
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Graph Settings'
+  Caption = 'QSO Rate Settings'
   ClientHeight = 377
   ClientWidth = 412
   Color = clBtnFace
@@ -25,7 +25,6 @@ object GraphColorDialog: TGraphColorDialog
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 546
     DesignSize = (
       412
       38)
@@ -59,7 +58,6 @@ object GraphColorDialog: TGraphColorDialog
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitHeight = 546
   end
   object PageControl1: TPageControl
     Left = 0
@@ -69,10 +67,8 @@ object GraphColorDialog: TGraphColorDialog
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 2
-    ExplicitHeight = 546
     object TabSheet1: TTabSheet
       Caption = 'Graph'
-      ExplicitHeight = 518
       object groupDrawStyle: TGroupBox
         Left = 4
         Top = 4
@@ -141,7 +137,6 @@ object GraphColorDialog: TGraphColorDialog
     object TabSheet2: TTabSheet
       Caption = 'Color1'
       ImageIndex = 1
-      ExplicitHeight = 518
       object GroupBox1: TGroupBox
         Left = 4
         Top = 4
@@ -150,7 +145,7 @@ object GraphColorDialog: TGraphColorDialog
         Caption = 'HF(Low)'
         TabOrder = 0
         object Label57: TLabel
-          Left = 3
+          Left = 6
           Top = 21
           Width = 64
           Height = 12
@@ -159,7 +154,7 @@ object GraphColorDialog: TGraphColorDialog
           Caption = '1.9M'
         end
         object Label1: TLabel
-          Left = 3
+          Left = 6
           Top = 47
           Width = 64
           Height = 12
@@ -168,7 +163,7 @@ object GraphColorDialog: TGraphColorDialog
           Caption = '3.5M'
         end
         object Label2: TLabel
-          Left = 3
+          Left = 6
           Top = 73
           Width = 64
           Height = 12
@@ -177,7 +172,7 @@ object GraphColorDialog: TGraphColorDialog
           Caption = '7M'
         end
         object Label3: TLabel
-          Left = 3
+          Left = 6
           Top = 99
           Width = 64
           Height = 12
@@ -186,7 +181,7 @@ object GraphColorDialog: TGraphColorDialog
           Caption = '10M'
         end
         object editColor01: TEdit
-          Left = 86
+          Left = 89
           Top = 18
           Width = 70
           Height = 20
@@ -196,7 +191,7 @@ object GraphColorDialog: TGraphColorDialog
           Text = 'TEXT'
         end
         object buttonFG01: TButton
-          Left = 164
+          Left = 167
           Top = 18
           Width = 45
           Height = 20
@@ -211,7 +206,7 @@ object GraphColorDialog: TGraphColorDialog
           OnClick = buttonFGClick
         end
         object buttonReset01: TButton
-          Left = 311
+          Left = 314
           Top = 18
           Width = 41
           Height = 20
@@ -226,7 +221,7 @@ object GraphColorDialog: TGraphColorDialog
           OnClick = buttonResetClick
         end
         object buttonBG01: TButton
-          Left = 213
+          Left = 216
           Top = 18
           Width = 45
           Height = 20
@@ -241,7 +236,7 @@ object GraphColorDialog: TGraphColorDialog
           OnClick = buttonBGClick
         end
         object editColor02: TEdit
-          Left = 86
+          Left = 89
           Top = 44
           Width = 70
           Height = 20
@@ -252,7 +247,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonFG02: TButton
           Tag = 1
-          Left = 164
+          Left = 167
           Top = 44
           Width = 45
           Height = 20
@@ -268,7 +263,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonReset02: TButton
           Tag = 1
-          Left = 311
+          Left = 314
           Top = 44
           Width = 41
           Height = 20
@@ -284,7 +279,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonBG02: TButton
           Tag = 1
-          Left = 213
+          Left = 216
           Top = 44
           Width = 45
           Height = 20
@@ -299,7 +294,7 @@ object GraphColorDialog: TGraphColorDialog
           OnClick = buttonBGClick
         end
         object editColor03: TEdit
-          Left = 86
+          Left = 89
           Top = 70
           Width = 70
           Height = 20
@@ -310,7 +305,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonFG03: TButton
           Tag = 2
-          Left = 164
+          Left = 167
           Top = 70
           Width = 45
           Height = 20
@@ -326,7 +321,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonReset03: TButton
           Tag = 2
-          Left = 311
+          Left = 314
           Top = 70
           Width = 41
           Height = 20
@@ -342,7 +337,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonBG03: TButton
           Tag = 2
-          Left = 213
+          Left = 216
           Top = 70
           Width = 45
           Height = 20
@@ -357,7 +352,7 @@ object GraphColorDialog: TGraphColorDialog
           OnClick = buttonBGClick
         end
         object editColor04: TEdit
-          Left = 86
+          Left = 89
           Top = 96
           Width = 70
           Height = 20
@@ -368,7 +363,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonFG04: TButton
           Tag = 3
-          Left = 164
+          Left = 167
           Top = 96
           Width = 45
           Height = 20
@@ -384,7 +379,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonReset04: TButton
           Tag = 3
-          Left = 311
+          Left = 314
           Top = 96
           Width = 41
           Height = 20
@@ -400,7 +395,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonBG04: TButton
           Tag = 3
-          Left = 213
+          Left = 216
           Top = 96
           Width = 45
           Height = 20
@@ -423,7 +418,7 @@ object GraphColorDialog: TGraphColorDialog
         Caption = 'HF(High)'
         TabOrder = 1
         object Label4: TLabel
-          Left = 3
+          Left = 6
           Top = 21
           Width = 64
           Height = 12
@@ -432,7 +427,7 @@ object GraphColorDialog: TGraphColorDialog
           Caption = '14M'
         end
         object Label5: TLabel
-          Left = 3
+          Left = 6
           Top = 47
           Width = 64
           Height = 12
@@ -441,7 +436,7 @@ object GraphColorDialog: TGraphColorDialog
           Caption = '18M'
         end
         object Label6: TLabel
-          Left = 3
+          Left = 6
           Top = 73
           Width = 64
           Height = 12
@@ -450,7 +445,7 @@ object GraphColorDialog: TGraphColorDialog
           Caption = '21M'
         end
         object Label7: TLabel
-          Left = 3
+          Left = 6
           Top = 99
           Width = 64
           Height = 12
@@ -459,7 +454,7 @@ object GraphColorDialog: TGraphColorDialog
           Caption = '24M'
         end
         object Label8: TLabel
-          Left = 3
+          Left = 6
           Top = 125
           Width = 64
           Height = 12
@@ -468,7 +463,7 @@ object GraphColorDialog: TGraphColorDialog
           Caption = '28M'
         end
         object editColor05: TEdit
-          Left = 86
+          Left = 89
           Top = 18
           Width = 70
           Height = 20
@@ -479,7 +474,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonFG05: TButton
           Tag = 4
-          Left = 164
+          Left = 167
           Top = 18
           Width = 45
           Height = 20
@@ -495,7 +490,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonReset05: TButton
           Tag = 4
-          Left = 311
+          Left = 314
           Top = 18
           Width = 41
           Height = 20
@@ -511,7 +506,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonBG05: TButton
           Tag = 4
-          Left = 213
+          Left = 216
           Top = 18
           Width = 45
           Height = 20
@@ -526,7 +521,7 @@ object GraphColorDialog: TGraphColorDialog
           OnClick = buttonBGClick
         end
         object editColor06: TEdit
-          Left = 86
+          Left = 89
           Top = 44
           Width = 70
           Height = 20
@@ -537,7 +532,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonFG06: TButton
           Tag = 5
-          Left = 164
+          Left = 167
           Top = 44
           Width = 45
           Height = 20
@@ -553,7 +548,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonReset06: TButton
           Tag = 5
-          Left = 311
+          Left = 314
           Top = 44
           Width = 41
           Height = 20
@@ -569,7 +564,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonBG06: TButton
           Tag = 5
-          Left = 213
+          Left = 216
           Top = 44
           Width = 45
           Height = 20
@@ -584,7 +579,7 @@ object GraphColorDialog: TGraphColorDialog
           OnClick = buttonBGClick
         end
         object editColor07: TEdit
-          Left = 86
+          Left = 89
           Top = 70
           Width = 70
           Height = 20
@@ -595,7 +590,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonFG07: TButton
           Tag = 6
-          Left = 164
+          Left = 167
           Top = 70
           Width = 45
           Height = 20
@@ -611,7 +606,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonReset07: TButton
           Tag = 6
-          Left = 311
+          Left = 314
           Top = 70
           Width = 41
           Height = 20
@@ -627,7 +622,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonBG07: TButton
           Tag = 6
-          Left = 213
+          Left = 216
           Top = 70
           Width = 45
           Height = 20
@@ -642,7 +637,7 @@ object GraphColorDialog: TGraphColorDialog
           OnClick = buttonBGClick
         end
         object editColor08: TEdit
-          Left = 86
+          Left = 89
           Top = 96
           Width = 70
           Height = 20
@@ -653,7 +648,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonFG08: TButton
           Tag = 7
-          Left = 164
+          Left = 167
           Top = 96
           Width = 45
           Height = 20
@@ -669,7 +664,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonReset08: TButton
           Tag = 7
-          Left = 311
+          Left = 314
           Top = 96
           Width = 41
           Height = 20
@@ -685,7 +680,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonBG08: TButton
           Tag = 7
-          Left = 213
+          Left = 216
           Top = 96
           Width = 45
           Height = 20
@@ -700,7 +695,7 @@ object GraphColorDialog: TGraphColorDialog
           OnClick = buttonBGClick
         end
         object editColor09: TEdit
-          Left = 86
+          Left = 89
           Top = 122
           Width = 70
           Height = 20
@@ -711,7 +706,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonFG09: TButton
           Tag = 8
-          Left = 164
+          Left = 167
           Top = 122
           Width = 45
           Height = 20
@@ -727,7 +722,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonReset09: TButton
           Tag = 8
-          Left = 311
+          Left = 314
           Top = 122
           Width = 41
           Height = 20
@@ -743,7 +738,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonBG09: TButton
           Tag = 8
-          Left = 213
+          Left = 216
           Top = 122
           Width = 45
           Height = 20
@@ -762,7 +757,6 @@ object GraphColorDialog: TGraphColorDialog
     object TabSheet3: TTabSheet
       Caption = 'Color2'
       ImageIndex = 2
-      ExplicitHeight = 518
       object GroupBox3: TGroupBox
         Left = 4
         Top = 4
@@ -771,7 +765,7 @@ object GraphColorDialog: TGraphColorDialog
         Caption = 'VHF'
         TabOrder = 0
         object Label9: TLabel
-          Left = 4
+          Left = 6
           Top = 21
           Width = 64
           Height = 12
@@ -780,7 +774,7 @@ object GraphColorDialog: TGraphColorDialog
           Caption = '50M'
         end
         object Label10: TLabel
-          Left = 3
+          Left = 6
           Top = 47
           Width = 64
           Height = 12
@@ -789,7 +783,7 @@ object GraphColorDialog: TGraphColorDialog
           Caption = '144M'
         end
         object editColor10: TEdit
-          Left = 86
+          Left = 89
           Top = 18
           Width = 70
           Height = 20
@@ -800,7 +794,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonFG10: TButton
           Tag = 9
-          Left = 164
+          Left = 167
           Top = 18
           Width = 45
           Height = 20
@@ -816,7 +810,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonReset10: TButton
           Tag = 9
-          Left = 311
+          Left = 314
           Top = 18
           Width = 41
           Height = 20
@@ -832,7 +826,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonBG10: TButton
           Tag = 9
-          Left = 213
+          Left = 216
           Top = 18
           Width = 45
           Height = 20
@@ -847,7 +841,7 @@ object GraphColorDialog: TGraphColorDialog
           OnClick = buttonBGClick
         end
         object editColor11: TEdit
-          Left = 86
+          Left = 89
           Top = 44
           Width = 70
           Height = 20
@@ -858,7 +852,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonFG11: TButton
           Tag = 10
-          Left = 164
+          Left = 167
           Top = 44
           Width = 45
           Height = 20
@@ -874,7 +868,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonReset11: TButton
           Tag = 10
-          Left = 311
+          Left = 314
           Top = 44
           Width = 41
           Height = 20
@@ -890,7 +884,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonBG11: TButton
           Tag = 10
-          Left = 213
+          Left = 216
           Top = 44
           Width = 45
           Height = 20
@@ -909,11 +903,11 @@ object GraphColorDialog: TGraphColorDialog
         Left = 4
         Top = 88
         Width = 393
-        Height = 155
+        Height = 105
         Caption = 'UHF'
         TabOrder = 1
         object Label11: TLabel
-          Left = 3
+          Left = 6
           Top = 21
           Width = 64
           Height = 12
@@ -922,7 +916,7 @@ object GraphColorDialog: TGraphColorDialog
           Caption = '430M'
         end
         object Label12: TLabel
-          Left = 3
+          Left = 6
           Top = 47
           Width = 64
           Height = 12
@@ -931,7 +925,7 @@ object GraphColorDialog: TGraphColorDialog
           Caption = '1200M'
         end
         object Label13: TLabel
-          Left = 3
+          Left = 6
           Top = 73
           Width = 64
           Height = 12
@@ -939,26 +933,8 @@ object GraphColorDialog: TGraphColorDialog
           AutoSize = False
           Caption = '2400M'
         end
-        object Label14: TLabel
-          Left = 3
-          Top = 99
-          Width = 64
-          Height = 12
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = '5600M'
-        end
-        object Label15: TLabel
-          Left = 4
-          Top = 125
-          Width = 64
-          Height = 12
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = '10 GHz && up'
-        end
         object editColor12: TEdit
-          Left = 86
+          Left = 89
           Top = 18
           Width = 70
           Height = 20
@@ -969,7 +945,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonFG12: TButton
           Tag = 11
-          Left = 164
+          Left = 167
           Top = 18
           Width = 45
           Height = 20
@@ -985,7 +961,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonReset12: TButton
           Tag = 11
-          Left = 311
+          Left = 314
           Top = 18
           Width = 41
           Height = 20
@@ -1001,7 +977,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonBG12: TButton
           Tag = 11
-          Left = 213
+          Left = 216
           Top = 18
           Width = 45
           Height = 20
@@ -1016,7 +992,7 @@ object GraphColorDialog: TGraphColorDialog
           OnClick = buttonBGClick
         end
         object editColor13: TEdit
-          Left = 86
+          Left = 89
           Top = 44
           Width = 70
           Height = 20
@@ -1027,7 +1003,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonFG13: TButton
           Tag = 12
-          Left = 164
+          Left = 167
           Top = 44
           Width = 45
           Height = 20
@@ -1043,7 +1019,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonReset13: TButton
           Tag = 12
-          Left = 311
+          Left = 314
           Top = 44
           Width = 41
           Height = 20
@@ -1059,7 +1035,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonBG13: TButton
           Tag = 12
-          Left = 213
+          Left = 216
           Top = 44
           Width = 45
           Height = 20
@@ -1074,7 +1050,7 @@ object GraphColorDialog: TGraphColorDialog
           OnClick = buttonBGClick
         end
         object editColor14: TEdit
-          Left = 86
+          Left = 89
           Top = 70
           Width = 70
           Height = 20
@@ -1085,7 +1061,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonFG14: TButton
           Tag = 13
-          Left = 164
+          Left = 167
           Top = 70
           Width = 45
           Height = 20
@@ -1101,7 +1077,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonReset14: TButton
           Tag = 13
-          Left = 311
+          Left = 314
           Top = 70
           Width = 41
           Height = 20
@@ -1117,7 +1093,7 @@ object GraphColorDialog: TGraphColorDialog
         end
         object buttonBG14: TButton
           Tag = 13
-          Left = 213
+          Left = 216
           Top = 70
           Width = 45
           Height = 20
@@ -1131,20 +1107,46 @@ object GraphColorDialog: TGraphColorDialog
           TabOrder = 10
           OnClick = buttonBGClick
         end
+      end
+      object GroupBox5: TGroupBox
+        Left = 4
+        Top = 199
+        Width = 393
+        Height = 82
+        Caption = 'SHF'
+        TabOrder = 2
+        object Label14: TLabel
+          Left = 6
+          Top = 21
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = '5600M'
+        end
+        object Label15: TLabel
+          Left = 6
+          Top = 47
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = '10 GHz && up'
+        end
         object editColor15: TEdit
-          Left = 86
-          Top = 96
+          Left = 89
+          Top = 18
           Width = 70
           Height = 20
           TabStop = False
           ReadOnly = True
-          TabOrder = 12
+          TabOrder = 0
           Text = 'TEXT'
         end
         object buttonFG15: TButton
           Tag = 14
-          Left = 164
-          Top = 96
+          Left = 167
+          Top = 18
           Width = 45
           Height = 20
           Caption = 'Fore...'
@@ -1154,13 +1156,13 @@ object GraphColorDialog: TGraphColorDialog
           Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
           Font.Style = []
           ParentFont = False
-          TabOrder = 13
+          TabOrder = 1
           OnClick = buttonFGClick
         end
         object buttonReset15: TButton
           Tag = 14
-          Left = 311
-          Top = 96
+          Left = 314
+          Top = 18
           Width = 41
           Height = 20
           Caption = 'Reset'
@@ -1170,13 +1172,13 @@ object GraphColorDialog: TGraphColorDialog
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          TabOrder = 15
+          TabOrder = 3
           OnClick = buttonResetClick
         end
         object buttonBG15: TButton
           Tag = 14
-          Left = 213
-          Top = 96
+          Left = 216
+          Top = 18
           Width = 45
           Height = 20
           Caption = 'Back...'
@@ -1186,23 +1188,23 @@ object GraphColorDialog: TGraphColorDialog
           Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
           Font.Style = []
           ParentFont = False
-          TabOrder = 14
+          TabOrder = 2
           OnClick = buttonBGClick
         end
         object editColor16: TEdit
-          Left = 86
-          Top = 122
+          Left = 89
+          Top = 44
           Width = 70
           Height = 20
           TabStop = False
           ReadOnly = True
-          TabOrder = 16
+          TabOrder = 4
           Text = 'TEXT'
         end
         object buttonFG16: TButton
           Tag = 15
-          Left = 164
-          Top = 122
+          Left = 167
+          Top = 44
           Width = 45
           Height = 20
           Caption = 'Fore...'
@@ -1212,13 +1214,13 @@ object GraphColorDialog: TGraphColorDialog
           Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
           Font.Style = []
           ParentFont = False
-          TabOrder = 17
+          TabOrder = 5
           OnClick = buttonFGClick
         end
         object buttonReset16: TButton
           Tag = 15
-          Left = 311
-          Top = 122
+          Left = 314
+          Top = 44
           Width = 41
           Height = 20
           Caption = 'Reset'
@@ -1228,13 +1230,13 @@ object GraphColorDialog: TGraphColorDialog
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          TabOrder = 19
+          TabOrder = 7
           OnClick = buttonResetClick
         end
         object buttonBG16: TButton
           Tag = 15
-          Left = 213
-          Top = 122
+          Left = 216
+          Top = 44
           Width = 45
           Height = 20
           Caption = 'Back...'
@@ -1244,7 +1246,7 @@ object GraphColorDialog: TGraphColorDialog
           Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
           Font.Style = []
           ParentFont = False
-          TabOrder = 18
+          TabOrder = 6
           OnClick = buttonBGClick
         end
       end

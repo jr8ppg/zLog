@@ -187,6 +187,7 @@ object RateDialog: TRateDialog
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 2
+    ExplicitHeight = 197
     DefaultCanvas = 'TGDIPlusCanvas'
     ColorPaletteIndex = 13
     object Series1: TBarSeries

@@ -448,7 +448,6 @@ type
     G2400MHz: TMenuItem;
     G5600MHz: TMenuItem;
     G10GHz: TMenuItem;
-    N5: TMenuItem;
     ZLinkmonitor1: TMenuItem;
     menuOptions: TMenuItem;
     CWFMenu: TPopupMenu;
@@ -689,9 +688,9 @@ type
     actionAntiZeroin: TAction;
     actionFunctionKeyPanel: TAction;
     FunctionKeyPanel1: TMenuItem;
-    N7: TMenuItem;
-    menuBandPlan: TMenuItem;
-    menuGraphColors: TMenuItem;
+    menuBandPlanSettings: TMenuItem;
+    menuQSORateSettings: TMenuItem;
+    menuSettings: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -913,8 +912,8 @@ type
     procedure actionToggleAntiZeroinExecute(Sender: TObject);
     procedure actionAntiZeroinExecute(Sender: TObject);
     procedure actionFunctionKeyPanelExecute(Sender: TObject);
-    procedure menuBandPlanClick(Sender: TObject);
-    procedure menuGraphColorsClick(Sender: TObject);
+    procedure menuBandPlanSettingsClick(Sender: TObject);
+    procedure menuQSORateSettingsClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -3989,6 +3988,7 @@ begin
       WriteStatusLine('', False);
       SetWindowCaption();
       EditScreen.RefreshScreen(False);
+      FRateDialog.UpdateGraph();
    end;
 end;
 
@@ -6281,7 +6281,7 @@ begin
    end;
 end;
 
-procedure TMainForm.menuBandPlanClick(Sender: TObject);
+procedure TMainForm.menuBandPlanSettingsClick(Sender: TObject);
 var
    f: TBandPlanEditDialog;
    m: TMode;
@@ -6305,7 +6305,7 @@ begin
    end;
 end;
 
-procedure TMainForm.menuGraphColorsClick(Sender: TObject);
+procedure TMainForm.menuQSORateSettingsClick(Sender: TObject);
 var
    f: TGraphColorDialog;
    b: TBand;
