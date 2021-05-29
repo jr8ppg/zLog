@@ -2576,7 +2576,7 @@ begin
    FWkCallsignStr := S;
    C := FWkCallsignStr[FWkCallsignIndex];
    if FPTTEnabled = True then begin
-      WinKeyerControlPTT(True);
+      ControlPTT(True);
    end;
    WinKeyerSendChar(C, False);
    FWkCallsignSending := True;
@@ -2878,7 +2878,7 @@ begin
             end;
 
             if FPTTEnabled = True then begin
-               WinKeyerControlPTT(False);
+               ControlPTT(False);
             end;
          end;
 
