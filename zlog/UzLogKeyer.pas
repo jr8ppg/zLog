@@ -177,6 +177,7 @@ type
     FWkCallsignIndex: Integer;
     FWkCallsignStr: string;
     FOnSpeedChanged: TNotifyEvent;
+    FWkAbort: Boolean;
 
     FWnd: HWND;
 
@@ -299,6 +300,7 @@ type
     procedure WinKeyerSendCallsign(S: string);
     procedure WinKeyerSendChar(C: Char; fUsePTT: Boolean);
     procedure WinKeyerSendStr(S: string; fUsePTT: Boolean = True);
+    procedure WinKeyerAbort();
     procedure WinKeyerClear();
     procedure WinKeyerCancelLastChar();
 
@@ -2357,6 +2359,7 @@ begin
    FWkEcho := 0;
    FWkLastMessage := '';
    FWkCallsignSending := False;
+   FWkAbort := False;
    RepeatTimer.Enabled := False;
    RepeatTimer.Interval := Trunc(FCQRepeatIntervalSec * 1000);
 
@@ -2486,6 +2489,11 @@ begin
    FComKeying.SendData(@Buff, 2);
 end;
 
+procedure TdmZLogKeyer.WinKeyerAbort();
+begin
+   FWkAbort := True;
+end;
+
 procedure TdmZLogKeyer.WinKeyerClear();
 var
    Buff: array[0..10] of Byte;
@@ -2494,7 +2502,7 @@ begin
    Buff[0] := WK_CLEAR_CMD;
    FComKeying.SendData(@Buff, 1);
    FWkLastMessage := '';
-
+   FWkAbort := False;
    WinKeyerSetPTTMode(False);
 end;
 
@@ -2576,6 +2584,7 @@ begin
       Exit;
    end;
 
+   FWkAbort := False;
    FWkCallsignIndex := 1;
    FWkCallsignStr := S;
    C := FWkCallsignStr[FWkCallsignIndex];
@@ -2609,6 +2618,9 @@ var
    S3: string;
    wpm: Integer;
 begin
+   if FWkAbort = True then begin
+      Exit;
+   end;
    if (fUsePTT = True) and (FPTTEnabled = True) { and Not(PTTIsOn) } then begin
       S := '(' + S + ')';
    end;
@@ -2699,6 +2711,13 @@ begin
 
       for i := 0 to DataSize - 1 do begin
          b := (PP + i)^;
+
+         if FWkAbort = True then begin
+            FWkAbort := False;
+            FWkCallsignSending := False;
+            FWkLastMessage := '';
+            Break;
+         end;
 
          if ((b and $c0) = $c0) then begin    // STATUS
             // Paddle break

@@ -966,9 +966,6 @@ type
     FNPlusOneThread: TSuperCheckNPlusOneThread;
     FSuperCheckDataLoadThread: TSuperCheckDataLoadThread;
 
-    // WinKeyer
-    FWkAbort: Boolean;
-
     // Current CQ Message
     FCurrentCQMessageNo: Integer;
 
@@ -3839,8 +3836,6 @@ begin
    FVoiceForm.OnNotifyFinished := OnVoicePlayFinished;
    FFunctionKeyPanel := TformFunctionKeyPanel.Create(Self);
 
-   FWkAbort := False;
-
    FCurrentCQMessageNo := 101;
    FQsyFromBS := False;
 
@@ -5112,7 +5107,6 @@ begin
    S := SetStr(S, CurrentQSO);
 
    if dmZLogKeyer.UseWinKeyer = True then begin
-      FWkAbort := False;  //íºëOÇ…ESCÇâüÇµÇƒÇ¢ÇΩÇÁìríÜÇ≈é~Ç‹ÇÈÇΩÇﬂè„èëÇ´
       dmZLogKeyer.WinKeyerClear();
       if (CurrentQSO.CQ = True) or (dmZlogGlobal.Settings._switchcqsp = False) then begin
          dmZLogKeyer.WinkeyerSendCallsign(CurrentQSO.Callsign);
@@ -5609,7 +5603,7 @@ begin
    dmZLogKeyer.ClrBuffer;
    CWPlayButton.Visible := False;
    CWPauseButton.Visible := True;
-   FWkAbort := True;
+   dmZLogKeyer.WinKeyerAbort();
 end;
 
 procedure TMainForm.VoiceStopButtonClick(Sender: TObject);
@@ -5882,10 +5876,6 @@ var
    procedure WinKeyerQSO();
    begin
       if dmZLogKeyer.UseWinKeyer = True then begin
-         if FWkAbort = True then begin
-            FWkAbort := False;
-            Exit;
-         end;
          S := dmZlogGlobal.CWMessage(2);
          S := StringReplace(S, '$C', '', [rfReplaceAll]);
          S := SetStr(S, CurrentQSO);
