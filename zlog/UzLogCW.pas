@@ -169,6 +169,7 @@ end;
 procedure zLogSendStr(S: string);
 begin
    if dmZLogKeyer.UseWinKeyer = True then begin
+      dmZLogKeyer.WinKeyerClear();
       dmZLogKeyer.WinKeyerSendStr(S);
    end
    else begin

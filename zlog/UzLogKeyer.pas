@@ -177,6 +177,7 @@ type
     FWkCallsignIndex: Integer;
     FWkCallsignStr: string;
     FOnSpeedChanged: TNotifyEvent;
+    FWkAbort: Boolean;
 
     FWnd: HWND;
 
@@ -299,6 +300,7 @@ type
     procedure WinKeyerSendCallsign(S: string);
     procedure WinKeyerSendChar(C: Char; fUsePTT: Boolean);
     procedure WinKeyerSendStr(S: string; fUsePTT: Boolean = True);
+    procedure WinKeyerAbort();
     procedure WinKeyerClear();
     procedure WinKeyerCancelLastChar();
 
@@ -648,12 +650,7 @@ begin
    end;
 
    if (FKeyingPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
-      if _on = True then begin
-         WinKeyerSetPTTDelay(FPttDelayBeforeTime, FPttDelayAfterTime);
-      end
-      else begin
-         WinKeyerSetPTTDelay(0, 0);
-      end;
+      WinKeyerSetPTTDelay(FPttDelayBeforeTime, FPttDelayAfterTime);
    end;
 end;
 
@@ -855,6 +852,7 @@ begin
    FCQLoopCount := 1;
 
    if FUseWinKeyer = True then begin
+      WinKeyerClear();
       FWkLastMessage := SS;
       WinkeyerSendStr(SS);
    end
@@ -1823,6 +1821,10 @@ end;
 
 procedure TdmZLogKeyer.PauseCW;
 begin
+   if FUseWinKeyer = True then begin
+      Exit;
+   end;
+
    FSendOK := False;
 
    CW_OFF;
@@ -1837,6 +1839,10 @@ end;
 
 procedure TdmZLogKeyer.ResumeCW;
 begin
+   if FUseWinKeyer = True then begin
+      Exit;
+   end;
+
    if FPTTEnabled then begin
       ControlPTT(True);
       FKeyingCounter := FPttDelayBeforeCount;
@@ -1891,14 +1897,15 @@ begin
       CW_OFF;
 
       FUserFlag := False;
+
+      FSendOK := True;
+
+      if FPTTEnabled then begin
+         ControlPTT(False);
+      end;
    end;
 
-   FSendOK := True;
    FCQLoopCount := 0;
-
-   if FPTTEnabled then begin
-      ControlPTT(False);
-   end;
 end;
 
 procedure TdmZLogKeyer.CancelLastChar;
@@ -2353,6 +2360,7 @@ begin
    FWkEcho := 0;
    FWkLastMessage := '';
    FWkCallsignSending := False;
+   FWkAbort := False;
    RepeatTimer.Enabled := False;
    RepeatTimer.Interval := Trunc(FCQRepeatIntervalSec * 1000);
 
@@ -2482,6 +2490,11 @@ begin
    FComKeying.SendData(@Buff, 2);
 end;
 
+procedure TdmZLogKeyer.WinKeyerAbort();
+begin
+   FWkAbort := True;
+end;
+
 procedure TdmZLogKeyer.WinKeyerClear();
 var
    Buff: array[0..10] of Byte;
@@ -2490,7 +2503,7 @@ begin
    Buff[0] := WK_CLEAR_CMD;
    FComKeying.SendData(@Buff, 1);
    FWkLastMessage := '';
-
+   FWkAbort := False;
    WinKeyerSetPTTMode(False);
 end;
 
@@ -2572,12 +2585,10 @@ begin
       Exit;
    end;
 
+   FWkAbort := False;
    FWkCallsignIndex := 1;
    FWkCallsignStr := S;
    C := FWkCallsignStr[FWkCallsignIndex];
-   if FPTTEnabled = True then begin
-      WinKeyerControlPTT(True);
-   end;
    WinKeyerSendChar(C, False);
    FWkCallsignSending := True;
 end;
@@ -2608,13 +2619,18 @@ var
    S3: string;
    wpm: Integer;
 begin
+   if FWkAbort = True then begin
+      Exit;
+   end;
    if (fUsePTT = True) and (FPTTEnabled = True) { and Not(PTTIsOn) } then begin
       S := '(' + S + ')';
    end;
 
    // PTT ON/OFF
-   S := StringReplace(S, '(', #$18#01, [rfReplaceAll]);
-   S := StringReplace(S, ')', #$18#00, [rfReplaceAll]);
+//   S := StringReplace(S, '(', #$18#01, [rfReplaceAll]);
+//   S := StringReplace(S, ')', #$18#00, [rfReplaceAll]);
+   S := StringReplace(S, '(', '', [rfReplaceAll]);
+   S := StringReplace(S, ')', '', [rfReplaceAll]);
 
    // AR
    S := StringReplace(S, 'a', #$1b + 'AR', [rfReplaceAll]);
@@ -2696,6 +2712,13 @@ begin
 
       for i := 0 to DataSize - 1 do begin
          b := (PP + i)^;
+
+         if FWkAbort = True then begin
+            FWkAbort := False;
+            FWkCallsignSending := False;
+            FWkLastMessage := '';
+            Break;
+         end;
 
          if ((b and $c0) = $c0) then begin    // STATUS
             // Paddle break
@@ -2876,10 +2899,6 @@ begin
             if Assigned(FOnCallsignSentProc) then begin
                FOnCallsignSentProc(nil);
             end;
-
-            if FPTTEnabled = True then begin
-               WinKeyerControlPTT(False);
-            end;
          end;
 
          msg.Result := 0;
@@ -2897,9 +2916,6 @@ begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar('WinKey WM_USER_WKPADDLE --- OFF ---'));
             {$ENDIF}
-            if (FPTTEnabled = True) then begin
-//               WinKeyerControlPTT(False);
-            end;
          end
          else begin
             {$IFDEF DEBUG}
@@ -2908,10 +2924,6 @@ begin
 
             if Assigned(FOnPaddleEvent) then begin
                FOnPaddleEvent(Self);
-            end;
-
-            if (FPTTEnabled = True) then begin
-//               WinKeyerControlPTT(True);
             end;
          end;
 
