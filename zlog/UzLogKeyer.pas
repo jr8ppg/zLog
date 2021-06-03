@@ -852,6 +852,7 @@ begin
    FCQLoopCount := 1;
 
    if FUseWinKeyer = True then begin
+      WinKeyerClear();
       FWkLastMessage := SS;
       WinkeyerSendStr(SS);
    end
