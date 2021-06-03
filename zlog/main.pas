@@ -9003,6 +9003,9 @@ begin
    CWStopButtonClick(Self);
    VoiceStopButtonClick(Self);
 
+   TabPressed := False;
+   TabPressed2 := False;
+
    // ‚Q‰ñ‚â‚ç‚È‚¢‚æ‚¤‚ÉPTT Control‚ªOFF‚Ìê‡‚ÉPTT OFF‚·‚é
    if dmZLogGlobal.Settings._pttenabled = False then begin
       dmZLogKeyer.ControlPTT(False);
