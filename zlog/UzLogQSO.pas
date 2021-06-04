@@ -1004,7 +1004,7 @@ begin
    Q.Time := 0;
    Q.RSTSent := 0;
    Q.RSTRcvd := 0;
-   Add(Q);
+   FQsoList.Add(Q);
 
    for B := b19 to HiBand do begin
       FBandList[B].Add(Q);
