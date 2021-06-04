@@ -547,6 +547,9 @@ begin
 
       // 周波数をセット
       MainForm.SetFrequency(D.FreqHz);
+
+      // メインウインドウにフォーカス
+      MainForm.LastFocus.SetFocus();
    finally
       FProcessing := False;
    end;
