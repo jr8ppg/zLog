@@ -296,6 +296,7 @@ var
    hour_count: Integer;
    total_count: Integer;
    hour_peak: Integer;
+   part_count: Integer;
    Str: string;
    _start: TDateTime;
    H, M, S, ms: Word;
@@ -389,78 +390,90 @@ begin
       // 横軸目盛ラベル
       Chart1.Axes.Bottom.Items.Add(i, Str);
 
+      hour_count := 0;
       if GraphStyle = rsOriginal then begin
-         hour_count := 0;
          for b := b19 to b10g do begin
-            hour_count := hour_count + count_array[i][b];
-         end;
+            part_count := count_array[i][b];
 
-         // 縦軸目盛り調整のための値
-         total_count := total_count + hour_count;
-         hour_peak := Max(hour_peak, hour_count);
+            // この時間帯の合計
+            hour_count := hour_count + part_count;
+         end;
 
          // グラフデータの追加
          FGraphSeries[b19].Add(hour_count);
       end
       else if GraphStyle = rsByBand then begin
          for b := b19 to b10g do begin
-            hour_count := count_array[i][b];
-
-            // 縦軸目盛り調整のための値
-            total_count := total_count + hour_count;
-            hour_peak := Max(hour_peak, hour_count);
+            part_count := count_array[i][b];
 
             // グラフデータの追加
-            FGraphSeries[b].Add(hour_count);
+            FGraphSeries[b].Add(part_count);
+
+            // この時間帯の合計
+            hour_count := hour_count + part_count;
          end;
       end
       else if GraphStyle = rsByFreqRange then begin
          // HF(L)
-         hour_count := count_array[i][b19] +
+         part_count := count_array[i][b19] +
                        count_array[i][b35] +
                        count_array[i][b7] +
                        count_array[i][b10];
-         // 縦軸目盛り調整のための値
-         total_count := total_count + hour_count;
-         hour_peak := Max(hour_peak, hour_count);
-         FGraphSeries[b19].Add(hour_count);
+
+         // グラフデータの追加
+         FGraphSeries[b19].Add(part_count);
+
+         // この時間帯の合計
+         hour_count := hour_count + part_count;
 
          // HF(H)
-         hour_count := count_array[i][b14] +
+         part_count := count_array[i][b14] +
                        count_array[i][b18] +
                        count_array[i][b21] +
                        count_array[i][b24] +
                        count_array[i][b28];
-         // 縦軸目盛り調整のための値
-         total_count := total_count + hour_count;
-         hour_peak := Max(hour_peak, hour_count);
-         FGraphSeries[b14].Add(hour_count);
+
+         // グラフデータの追加
+         FGraphSeries[b14].Add(part_count);
+
+         // この時間帯の合計
+         hour_count := hour_count + part_count;
 
          // VHF
-         hour_count := count_array[i][b50] +
+         part_count := count_array[i][b50] +
                        count_array[i][b144];
-         // 縦軸目盛り調整のための値
-         total_count := total_count + hour_count;
-         hour_peak := Max(hour_peak, hour_count);
-         FGraphSeries[b50].Add(hour_count);
+
+         // グラフデータの追加
+         FGraphSeries[b50].Add(part_count);
+
+         // この時間帯の合計
+         hour_count := hour_count + part_count;
 
          // UHF
-         hour_count := count_array[i][b430] +
+         part_count := count_array[i][b430] +
                        count_array[i][b1200] +
                        count_array[i][b2400];
-         // 縦軸目盛り調整のための値
-         total_count := total_count + hour_count;
-         hour_peak := Max(hour_peak, hour_count);
-         FGraphSeries[b430].Add(hour_count);
+
+         // グラフデータの追加
+         FGraphSeries[b430].Add(part_count);
+
+         // この時間帯の合計
+         hour_count := hour_count + part_count;
 
          // SHF
-         hour_count := count_array[i][b5600] +
+         part_count := count_array[i][b5600] +
                        count_array[i][b10g];
-         // 縦軸目盛り調整のための値
-         total_count := total_count + hour_count;
-         hour_peak := Max(hour_peak, hour_count);
-         FGraphSeries[b5600].Add(hour_count);
+
+         // グラフデータの追加
+         FGraphSeries[b5600].Add(part_count);
+
+         // この時間帯の合計
+         hour_count := hour_count + part_count;
       end;
+
+      // 縦軸目盛り調整のための値
+      total_count := total_count + hour_count;
+      hour_peak := Max(hour_peak, hour_count);
 
       // 累計
       SeriesTotalQSOs.Add(total_count);
