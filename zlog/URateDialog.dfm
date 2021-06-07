@@ -182,12 +182,13 @@ object RateDialog: TRateDialog
     BottomAxis.MinorTickCount = 0
     LeftAxis.AxisValuesFormat = '#,###'
     LeftAxis.MinorTickCount = 0
+    Panning.MouseWheel = pmwNone
     RightAxis.MinorTickCount = 0
     View3D = False
+    Zoom.Allow = False
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitHeight = 197
     DefaultCanvas = 'TGDIPlusCanvas'
     ColorPaletteIndex = 13
     object Series1: TBarSeries
