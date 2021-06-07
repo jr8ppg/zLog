@@ -229,7 +229,9 @@ begin
    i := StrToIntDef(SerialEdit.Text, 0);
    if i > 0 then begin
       workQSO.Serial := i;
-      workQSO.NrSent := Format('%3.3d', [i]);
+      if SerialContestType <> 0 then begin
+         workQSO.NrSent := Format('%3.3d', [i]);
+      end;
    end;
 
    if Action = _ActChange then begin
