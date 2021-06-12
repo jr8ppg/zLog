@@ -24,15 +24,11 @@ object formOptions: TformOptions
     Top = 0
     Width = 394
     Height = 434
-    ActivePage = tabsheetBandScope1
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label40: TLabel
         Left = 208
         Top = 212
@@ -217,7 +213,7 @@ object formOptions: TformOptions
         object comboPower19: TComboBox
           Left = 73
           Top = 18
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 1
@@ -231,7 +227,7 @@ object formOptions: TformOptions
         object comboPower35: TComboBox
           Left = 73
           Top = 39
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 3
@@ -245,7 +241,7 @@ object formOptions: TformOptions
         object comboPower7: TComboBox
           Left = 73
           Top = 60
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 5
@@ -259,7 +255,7 @@ object formOptions: TformOptions
         object comboPower10: TComboBox
           Left = 73
           Top = 81
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 7
@@ -273,7 +269,7 @@ object formOptions: TformOptions
         object comboPower14: TComboBox
           Left = 73
           Top = 102
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 9
@@ -287,7 +283,7 @@ object formOptions: TformOptions
         object comboPower18: TComboBox
           Left = 73
           Top = 123
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 11
@@ -301,7 +297,7 @@ object formOptions: TformOptions
         object comboPower21: TComboBox
           Left = 73
           Top = 144
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 13
@@ -315,7 +311,7 @@ object formOptions: TformOptions
         object comboPower24: TComboBox
           Left = 73
           Top = 165
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 15
@@ -329,7 +325,7 @@ object formOptions: TformOptions
         object comboPower28: TComboBox
           Left = 192
           Top = 18
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 17
@@ -343,7 +339,7 @@ object formOptions: TformOptions
         object comboPower50: TComboBox
           Left = 192
           Top = 39
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 19
@@ -357,7 +353,7 @@ object formOptions: TformOptions
         object comboPower144: TComboBox
           Left = 192
           Top = 60
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 21
@@ -371,7 +367,7 @@ object formOptions: TformOptions
         object comboPower430: TComboBox
           Left = 192
           Top = 81
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 23
@@ -385,7 +381,7 @@ object formOptions: TformOptions
         object comboPower1200: TComboBox
           Left = 192
           Top = 102
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 25
@@ -399,7 +395,7 @@ object formOptions: TformOptions
         object comboPower2400: TComboBox
           Left = 192
           Top = 123
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 27
@@ -413,7 +409,7 @@ object formOptions: TformOptions
         object comboPower5600: TComboBox
           Left = 192
           Top = 144
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 29
@@ -427,7 +423,7 @@ object formOptions: TformOptions
         object comboPower10g: TComboBox
           Left = 192
           Top = 165
-          Width = 33
+          Width = 36
           Height = 21
           ItemIndex = 0
           TabOrder = 31
@@ -520,10 +516,6 @@ object formOptions: TformOptions
     end
     object tabsheetCategories: TTabSheet
       Caption = 'Categories'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label14: TLabel
         Left = 257
         Top = 105
@@ -725,10 +717,6 @@ object formOptions: TformOptions
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -1269,10 +1257,6 @@ object formOptions: TformOptions
     end
     object tabsheetVoice: TTabSheet
       Caption = 'Voice'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 6
         Top = 4
@@ -1704,10 +1688,6 @@ object formOptions: TformOptions
     end
     object tabsheetHardware: TTabSheet
       Caption = 'Hardware'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox6: TGroupBox
         Left = 6
         Top = 4
@@ -2131,10 +2111,6 @@ object formOptions: TformOptions
     end
     object tabsheetRigControl: TTabSheet
       Caption = 'Rig control'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label45: TLabel
         Left = 8
         Top = 107
@@ -2324,10 +2300,6 @@ object formOptions: TformOptions
     end
     object tabsheetPath: TTabSheet
       Caption = 'Path'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label50: TLabel
         Left = 16
         Top = 18
@@ -2455,10 +2427,6 @@ object formOptions: TformOptions
     end
     object tabsheetMisc: TTabSheet
       Caption = 'Misc'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label47: TLabel
         Left = 125
         Top = 14
@@ -2669,10 +2637,6 @@ object formOptions: TformOptions
     object tabsheetQuickQSY: TTabSheet
       Caption = 'Quick QSY'
       ImageIndex = 8
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label54: TLabel
         Left = 98
         Top = 3
@@ -3576,10 +3540,6 @@ object formOptions: TformOptions
     object tabsheetBandScope2: TTabSheet
       Caption = 'BandScope2'
       ImageIndex = 11
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox12: TGroupBox
         Left = 6
         Top = 3
@@ -3936,10 +3896,6 @@ object formOptions: TformOptions
     object tabsheetQuickMemo: TTabSheet
       Caption = 'Quick Memo'
       ImageIndex = 10
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox11: TGroupBox
         Left = 6
         Top = 4
