@@ -25,6 +25,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure CreateParams(var Params: TCreateParams); override;
   private
     { Private declarations }
     PrevIMEMode : integer;
@@ -41,6 +42,12 @@ implementation
 uses Main, UZLinkForm, UOptions;
 
 {$R *.DFM}
+
+procedure TChatForm.CreateParams(var Params: TCreateParams);
+begin
+   inherited CreateParams(Params);
+   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+end;
 
 function TChatForm.IDString: string;
 begin

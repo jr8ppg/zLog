@@ -2,8 +2,8 @@ object ChatForm: TChatForm
   Left = 199
   Top = 287
   Caption = 'Z-Server Messages'
-  ClientHeight = 154
-  ClientWidth = 364
+  ClientHeight = 152
+  ClientWidth = 354
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,16 +20,22 @@ object ChatForm: TChatForm
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
-    Top = 120
-    Width = 364
+    Top = 118
+    Width = 354
     Height = 34
     Align = alBottom
     TabOrder = 0
+    ExplicitTop = 120
+    ExplicitWidth = 364
+    DesignSize = (
+      354
+      34)
     object Edit: TEdit
-      Left = 80
-      Top = 7
-      Width = 281
+      Left = 76
+      Top = 6
+      Width = 271
       Height = 20
+      Anchors = [akLeft, akTop, akRight]
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
@@ -39,10 +45,11 @@ object ChatForm: TChatForm
       ParentFont = False
       TabOrder = 0
       OnKeyPress = EditKeyPress
+      ExplicitWidth = 281
     end
     object Button1: TButton
-      Left = 8
-      Top = 7
+      Left = 6
+      Top = 6
       Width = 65
       Height = 21
       Caption = 'OK'
@@ -53,8 +60,8 @@ object ChatForm: TChatForm
   object ListBox: TListBox
     Left = 0
     Top = 25
-    Width = 364
-    Height = 95
+    Width = 354
+    Height = 93
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -65,14 +72,20 @@ object ChatForm: TChatForm
     ItemHeight = 12
     ParentFont = False
     TabOrder = 1
+    ExplicitWidth = 364
+    ExplicitHeight = 95
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 364
+    Width = 354
     Height = 25
     Align = alTop
     TabOrder = 2
+    ExplicitWidth = 364
+    DesignSize = (
+      354
+      25)
     object CheckBox: TCheckBox
       Left = 8
       Top = 4
@@ -82,13 +95,15 @@ object ChatForm: TChatForm
       TabOrder = 0
     end
     object Button2: TButton
-      Left = 294
+      Left = 284
       Top = 4
       Width = 67
       Height = 18
+      Anchors = [akTop, akRight]
       Caption = 'Clear'
       TabOrder = 1
       OnClick = Button2Click
+      ExplicitLeft = 294
     end
     object cbStayOnTop: TCheckBox
       Left = 168

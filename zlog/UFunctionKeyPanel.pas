@@ -28,6 +28,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure FormHide(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure CreateParams(var Params: TCreateParams); override;
   protected
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
@@ -51,6 +52,12 @@ implementation
 
 uses
   Main, UzLogGlobal;
+
+procedure TformFunctionKeyPanel.CreateParams(var Params: TCreateParams);
+begin
+   inherited CreateParams(Params);
+   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+end;
 
 procedure TformFunctionKeyPanel.FormCreate(Sender: TObject);
 var
