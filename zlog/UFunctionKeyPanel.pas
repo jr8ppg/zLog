@@ -27,6 +27,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormHide(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   protected
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
@@ -66,6 +67,14 @@ end;
 procedure TformFunctionKeyPanel.FormHide(Sender: TObject);
 begin
    Timer1.Enabled := False;
+end;
+
+procedure TformFunctionKeyPanel.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+   case Key of
+      VK_ESCAPE:
+         MainForm.LastFocus.SetFocus;
+   end;
 end;
 
 procedure TformFunctionKeyPanel.FormShow(Sender: TObject);

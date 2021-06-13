@@ -2,8 +2,10 @@ inherited ScratchSheet: TScratchSheet
   Left = 234
   Top = 250
   Caption = 'Scratch sheet'
+  KeyPreview = True
   PopupMenu = PopupMenu
   OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 12
   inherited ListBox: TListBox
@@ -11,7 +13,12 @@ inherited ScratchSheet: TScratchSheet
   end
   inherited Panel1: TPanel
     inherited Edit: TEdit
+      Left = 6
+      Width = 250
+      Anchors = [akLeft, akTop, akRight]
       CharCase = ecNormal
+      ExplicitLeft = 6
+      ExplicitWidth = 250
     end
   end
   object PopupMenu: TPopupMenu
