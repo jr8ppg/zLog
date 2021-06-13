@@ -80,24 +80,6 @@ const
        (name: 'IC-1275';      addr: $18; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False)
      );
 
-  BaseMHz : array[b19..b10g] of LongInt =
-    (   1900000,
-        3500000,
-        7000000,
-       10000000,
-       14000000,
-       18000000,
-       21000000,
-       24000000,
-       28000000,
-       50000000,
-      144000000,
-      430000000,
-     1200000000,
-              0,
-              0,
-              0);
-
   VFOString : array[0..1] of string =
     ('VFO A', 'VFO B');
 
@@ -2299,29 +2281,29 @@ end;
 
 procedure TRig.SetBand(Q: TQSO);
 var
-   f, ff: LongInt;
+   f: LongInt;
 begin
    if (Q.Band < _minband) or (Q.Band > _maxband) then begin
       Exit;
    end;
 
-//   _currentband := Q.Band; // ver 2.0e
-
+   // 周波数を記憶している場合
    if FreqMem[Q.Band, Q.Mode] > 0 then begin
       f := FreqMem[Q.Band, Q.Mode];
    end
    else begin
-      ff := (_currentfreq[_currentvfo] + _freqoffset) mod 1000000;
-      if ff > 500000 then
-         ff := 0;
-      f := BaseMHz[Q.Band] + ff;
+      // 周波数を記憶していない場合はバンドプランの下限値を使う
+      f := dmZLogGlobal.BandPlan.Limit[Q.Mode][Q.Band].Lower;
+      if f = 0 then begin
+         f := dmZLogGlobal.BandPlan.Limit[mCW][Q.Band].Lower;
+      end;
+   end;
+
+   if f = 0 then begin
+      Exit;
    end;
 
    SetFreq(f, Q.CQ);
-
-//   if Q.QSO.Mode = mSSB then begin
-//      Self.SetMode(Q);
-//   end;
 end;
 
 procedure TRig.RitClear();
