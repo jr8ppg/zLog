@@ -2304,6 +2304,12 @@ begin
    end;
 
    SetFreq(f, Q.CQ);
+
+  //ssb‚Ì‚ÍLSB/USB‚ğband‚É‡‚í‚¹‚é
+  if Q.Mode = mSSB then begin
+    Self.SetMode(Q);
+  end;
+
 end;
 
 procedure TRig.RitClear();
