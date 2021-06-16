@@ -1557,6 +1557,7 @@ begin
    PollingTimer2.Enabled := False;
    FreeAndNil(FRigs[1]);
    FreeAndNil(FRigs[2]);
+   FCurrentRig := nil;
 end;
 
 constructor TRig.Create(RigNum: Integer);
