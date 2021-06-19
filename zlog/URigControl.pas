@@ -3541,7 +3541,7 @@ begin
  }
  //  BufferString := '';
    Fchange := True;
-   sleep(100);    //コマンド投げた後100mS待ってからポーリング再開
+   sleep(130);    //waitがないとコマンド連投時に後のコマンドが欠落する
    FPollingTimer.Enabled := True;
 end;
 
@@ -3560,7 +3560,7 @@ begin
  }
  //  BufferString := '';
    Fchange := True;
-   sleep(100);  //コマンド投げた後100mS待ってからポーリング再開
+   sleep(130);  //waitがないとコマンド連投時に後のコマンドが欠落する
    FPollingTimer.Enabled := True;
 end;
 
