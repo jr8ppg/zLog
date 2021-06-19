@@ -2216,9 +2216,6 @@ var
    Command: AnsiString;
    para: byte;
 begin
-   if FPollingCount = 0 then begin
-      Exit;
-   end;
    FPollingTimer.Enabled := False;
    try
       para := 3;
@@ -2246,7 +2243,6 @@ begin
 
       ICOMWriteData(Command);
    finally
-      FPollingCount := 0;
       FPollingTimer.Enabled := True;
    end;
 end;
@@ -2498,9 +2494,6 @@ var
    fstr: AnsiString;
    freq, i: LongInt;
 begin
-   if FPollingCount = 0 then begin
-      Exit;
-   end;
    FPollingTimer.Enabled := False;
    try
       if fSetLastFreq = True then begin
@@ -2537,7 +2530,6 @@ begin
       fstr := AnsiChar($05) + fstr;
       ICOMWriteData(fstr);
    finally
-      FPollingCount := 0;
       FPollingTimer.Enabled := True;
    end;
 end;
