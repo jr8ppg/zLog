@@ -51,6 +51,7 @@ type
     buttonCreateLog: TButton;
     buttonSave: TButton;
     buttonCancel: TButton;
+    checkFieldExtend: TCheckBox;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -61,8 +62,8 @@ type
     procedure RemoveBlankLines(M : TMemo);
     procedure InitializeFields;
     procedure WriteSummarySheet(var f: TextFile);
-    procedure WriteLogSheet(var f: TextFile);
-    function FormatQSO(q: TQSO): string;
+    procedure WriteLogSheet(var f: TextFile; fExtend: Boolean);
+    function FormatQSO(q: TQSO; fExtend: Boolean): string;
   public
     { Public 宣言 }
   end;
@@ -165,6 +166,8 @@ begin
       RemoveBlankLines(mOath);
 
       edDate.Text := FormatDateTime('yyyy"年"m"月"d"日"', Now);
+
+      checkFieldExtend.Checked := ini.ReadBool('LogSheet', 'FieldExtend', False);
    finally
       ini.Free();
       Log.Saved := fSavedBack;
@@ -201,7 +204,7 @@ begin
    WriteSummarySheet(f);
 
    // ログシート
-   WriteLogSheet(f);
+   WriteLogSheet(f, checkFieldExtend.Checked);
 
    CloseFile(f);
 end;
@@ -247,6 +250,8 @@ begin
       ini.WriteString('SummaryInfo', 'Oath3', mOath.Lines[2]);
       ini.WriteString('SummaryInfo', 'Oath4', mOath.Lines[3]);
       ini.WriteString('SummaryInfo', 'Oath5', mOath.Lines[4]);
+
+      ini.WriteBool('LogSheet', 'FieldExtend', checkFieldExtend.Checked);
    finally
       ini.Free();
    end;
@@ -355,23 +360,28 @@ DATE(JST)	TIME	BAND	MODE	CALLSIGN	SENTNo	RCVNo	Multi	PTS
 2016-04-23	22:02	144	SSB	JA2***	59	20L	59	20L	-	1
 2016-04-23	22:15	7	CW	JE3***	599	20M	599	25M	25	1
 }
-procedure TformELogJarl2.WriteLogSheet(var f: TextFile);
+procedure TformELogJarl2.WriteLogSheet(var f: TextFile; fExtend: Boolean);
 var
    i: Integer;
    s: string;
 begin
    WriteLn(f, '<LOGSHEET TYPE=ZLOG>');
 
-   WriteLn(f, 'DATE(JST)' + TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVNo');
+   Write(f, 'DATE(JST)' + TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVNo');
+   if fExtend = True then begin
+      Write(f, TAB + 'Multi1' + TAB + 'Multi2' + TAB + 'Points' + TAB + 'TX#');
+   end;
+   WriteLn(f, '');
+
    for i := 1 to Log.TotalQSO do begin
-      s := FormatQSO(Log.QsoList[i]);
+      s := FormatQSO(Log.QsoList[i], fExtend);
       WriteLn(f, s);
    end;
 
    WriteLn(f, '</LOGSHEET>');
 end;
 
-function TformELogJarl2.FormatQSO(q: TQSO): string;
+function TformELogJarl2.FormatQSO(q: TQSO; fExtend: Boolean): string;
 var
    slLine: TStringList;
 begin
@@ -388,6 +398,25 @@ begin
 
       slLine.Add(IntToStr(q.RSTsent) + ' ' + q.NrSent);
       slLine.Add(IntToStr(q.RSTrcvd) + ' ' + q.NrRcvd);
+
+      if fExtend = True then begin
+         if q.NewMulti1 = True then begin
+            slLine.Add(q.Multi1);
+         end
+         else begin
+            slLine.Add('');
+         end;
+
+         if q.NewMulti2 = True then begin
+            slLine.Add(q.Multi2);
+         end
+         else begin
+            slLine.Add('');
+         end;
+
+         slLine.Add(IntToStr(q.Points));
+         slLine.Add('TX#' + IntToStr(q.TX));
+      end;
 
       Result := slLine.DelimitedText;
    finally
