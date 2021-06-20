@@ -1,5 +1,7 @@
 unit UComm;
 
+{$I+}
+
 interface
 
 uses
@@ -15,7 +17,6 @@ type
   TCommForm = class(TForm)
     Timer1: TTimer;
     Panel1: TPanel;
-    Button1: TButton;
     Edit: TEdit;
     Panel2: TPanel;
     ListBox: TListBox;
@@ -24,15 +25,15 @@ type
     Splitter1: TSplitter;
     Telnet: TTnCnx;
     ConnectButton: TButton;
-    StayOnTop: TCheckBox;
+    checkAutoLogin: TCheckBox;
     Relay: TCheckBox;
     cbNotifyCurrentBand: TCheckBox;
     ClusterComm: TCommPortDriver;
     PopupMenu: TPopupMenu;
     menuSaveToFile: TMenuItem;
     SaveTextFileDialog1: TSaveTextFileDialog;
+    checkAutoReconnect: TCheckBox;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
-    procedure Button1Click(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
     procedure TimerProcess(Sender: TObject);
@@ -46,7 +47,6 @@ type
     procedure CreateParams(var Params: TCreateParams); override;
     //procedure AsyncCommRxChar(Sender: TObject; Count: Integer);
     procedure FormShow(Sender: TObject);
-    procedure StayOnTopClick(Sender: TObject);
     procedure ListBoxDblClick(Sender: TObject);
     procedure ListBoxKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -60,6 +60,7 @@ type
     procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer;
       var Height: Integer);
     procedure menuSaveToFileClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
     FCommBuffer : TStringList;
@@ -69,29 +70,38 @@ type
     FSpotList : TSpotList;
     FSpotListLock: TRTLCriticalSection;
 
+    FUseClusterLog: Boolean;
+    FClusterLog: TextFile;
+    FClusterLogFileName: string;
+    FDisconnectClicked: Boolean;
+
     procedure DeleteSpot(_from, _to : integer);
 
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
+
+    procedure CommProcess;
+    procedure ProcessSpot(Sp : TSpot);
+
+    procedure WriteData(str : string);
+    procedure WriteConsole(strText: string);
+
   public
     { Public declarations }
     procedure RenewListBox;
-    procedure ProcessSpot(Sp : TSpot);
     procedure PreProcessSpotFromZLink(S : string; N: Integer);
     procedure TransmitSpot(S : string); // local or via network
     procedure ImplementOptions;
-    procedure CommProcess;
-    procedure WriteData(str : string);
-    procedure WriteLine(str : string); // adds linebreak
-    procedure WriteLineConsole(str : string);
-    procedure WriteConsole(str : string);
     procedure EnableConnectButton(boo : boolean);
+    procedure Renew; // red or black
+    procedure RemoteConnectButtonPush;
     function MaybeConnected : boolean; {returns false if port = telnet and
                                          not connected but doesn't know abt
                                          packet }
+
+    procedure WriteLine(str : string); // adds linebreak
+    procedure WriteLineConsole(str : string);
     procedure WriteStatusLine(S : string);
-    procedure Renew; // red or black
-    procedure RemoteConnectButtonPush;
 
     procedure Lock();
     procedure Unlock();
@@ -159,12 +169,25 @@ end;
 
 procedure TCommForm.WriteLineConsole(str : string);
 begin
-   Console.WriteString(str+LineBreakCode[ord(Console.LineBreak)]);
+   WriteConsole(str + LineBreakCode[ord(Console.LineBreak)]);
 end;
 
-procedure TCommForm.WriteConsole(str : string);
+procedure TCommForm.WriteConsole(strText: string);
 begin
-   Console.WriteString(str);
+   Console.WriteString(strText);
+
+   try
+      if FUseClusterLog = True then begin
+         Write(FClusterLog, strText);
+         Flush(FClusterLog);
+      end;
+   except
+      on E: Exception do begin
+         Console.WriteString(E.Message);
+         FUseClusterLog := False;
+         CloseFile(FClusterLog);
+      end;
+   end;
 end;
 
 procedure TCommForm.CreateParams(var Params: TCreateParams);
@@ -196,11 +219,6 @@ var
 begin
    str := string(AnsiStrings.StrPas(PAnsiChar(Buffer)));
    FCommBuffer.Add(str);
-end;
-
-procedure TCommForm.Button1Click(Sender: TObject);
-begin
-   Close;
 end;
 
 procedure TCommForm.EditKeyPress(Sender: TObject; var Key: Char);
@@ -239,7 +257,7 @@ begin
       end;
 
       if boo then begin
-         Console.WriteString(Edit.Text+LineBreakCode[ord(Console.LineBreak)]);
+         WriteLineConsole(Edit.Text);
       end;
 
       Key := Chr($0);
@@ -300,8 +318,11 @@ begin
    FCommStarted := False;
    FCommBuffer := TStringList.Create;
    FCommTemp := '';
-   Timer1.Enabled := True;
    ImplementOptions;
+
+   FDisconnectClicked := False;
+   FUseClusterLog := False;
+   FClusterLogFileName := StringReplace(Application.ExeName, '.exe', '_telnet_log_' + FormatDateTime('yyyymmdd', Now) + '.txt', [rfReplaceAll]);
 end;
 
 procedure TCommForm.RenewListBox;
@@ -462,11 +483,18 @@ var
 begin
    max := FCommBuffer.Count - 1;
    for i := 0 to max do begin
-      Console.WriteString(FCommBuffer.Strings[i]);
+      WriteConsole(FCommBuffer.Strings[i]);
    end;
 
    for i := 0 to max do begin
       str := FCommBuffer.Strings[0];
+
+      // Auto Login
+      if (checkAutoLogin.Checked = True) and (Pos('login:', str) > 0) then begin
+         Sleep(100);
+         WriteLine(dmZlogGlobal.MyCall);
+      end;
+
       for j := 1 to length(str) do begin
          if (str[j] = Chr($0D)) or (str[j] = Chr($0A)) then begin
             if FRelayPacketData then begin
@@ -501,6 +529,10 @@ end;
 
 procedure TCommForm.TimerProcess;
 begin
+   if (checkAutoReconnect.Checked = True) and (Telnet.IsConnected() = False) and (FDisconnectClicked = False) then begin
+      ConnectButton.Click();
+   end;
+
    CommProcess;
 end;
 
@@ -535,12 +567,15 @@ begin
    end;
 
    if Telnet.IsConnected then begin
-      Telnet.Close;
       ConnectButton.Caption := 'Disconnecting...';
+      FDisconnectClicked := True;
+      Telnet.Close;
    end
    else begin
       Telnet.Connect;
       ConnectButton.Caption := 'Connecting...';
+      FDisconnectClicked := False;
+      Timer1.Enabled := True;
    end;
 end;
 
@@ -563,29 +598,38 @@ end;
 
 procedure TCommForm.TelnetSessionConnected(Sender: TTnCnx; Error: Word);
 begin
-   ConnectButton.Caption := 'Disconnect';
-   Console.WriteString('connected to '+Telnet.Host);
+   try
+      AssignFile(FClusterLog, FClusterLogFileName);
+      if FileExists(FClusterLogFileName) = True then begin
+         Append(FClusterLog);
+      end
+      else begin
+         Rewrite(FClusterLog);
+      end;
+
+      ConnectButton.Caption := 'Disconnect';
+      WriteLineConsole('connected to ' + Telnet.Host);
+
+      FUseClusterLog := True;
+   except
+      on E: Exception do begin
+         Console.WriteString(E.Message);
+         FUseClusterLog := False;
+      end;
+   end;
 end;
 
 procedure TCommForm.TelnetSessionClosed(Sender: TTnCnx; Error: Word);
 begin
-   Console.WriteString('disconnected...');
+   WriteLineConsole('disconnected...');
    ConnectButton.Caption := 'Connect';
+   CloseFile(FClusterLog);
+   FUseClusterLog := False;
 end;
 
 procedure TCommForm.FormShow(Sender: TObject);
 begin
    ConnectButton.Enabled := (dmZlogGlobal.Settings._clusterport = 7);
-end;
-
-procedure TCommForm.StayOnTopClick(Sender: TObject);
-begin
-   if StayOnTop.Checked then begin
-      FormStyle := fsStayOnTop;
-   end
-   else begin
-      FormStyle := fsNormal;
-   end;
 end;
 
 procedure TCommForm.ListBoxDblClick(Sender: TObject);
@@ -691,6 +735,11 @@ begin
     FormStyle := fsNormal;}
 end;
 
+
+procedure TCommForm.Button1Click(Sender: TObject);
+begin
+   Telnet.Close();
+end;
 
 procedure TCommForm.ClusterCommReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
 var

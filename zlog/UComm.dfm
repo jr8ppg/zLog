@@ -2,7 +2,7 @@ object CommForm: TCommForm
   Left = 117
   Top = 174
   Caption = 'Cluster'
-  ClientHeight = 346
+  ClientHeight = 351
   ClientWidth = 367
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -24,18 +24,9 @@ object CommForm: TCommForm
     Left = 0
     Top = 264
     Width = 367
-    Height = 59
+    Height = 64
     Align = alBottom
     TabOrder = 0
-    object Button1: TButton
-      Left = 8
-      Top = 34
-      Width = 57
-      Height = 20
-      Caption = 'Close'
-      TabOrder = 0
-      OnClick = Button1Click
-    end
     object Edit: TEdit
       Left = 8
       Top = 6
@@ -48,26 +39,27 @@ object CommForm: TCommForm
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
-      TabOrder = 1
+      TabOrder = 0
       OnKeyPress = EditKeyPress
     end
     object ConnectButton: TButton
-      Left = 72
-      Top = 34
-      Width = 57
+      Left = 8
+      Top = 32
+      Width = 89
       Height = 20
       Caption = 'Connect'
-      TabOrder = 2
+      TabOrder = 1
       OnClick = ConnectButtonClick
     end
-    object StayOnTop: TCheckBox
+    object checkAutoLogin: TCheckBox
       Left = 176
       Top = 5
-      Width = 97
+      Width = 73
       Height = 17
-      Caption = 'Stay on top'
-      TabOrder = 3
-      OnClick = StayOnTopClick
+      Caption = 'Auto Login'
+      Checked = True
+      State = cbChecked
+      TabOrder = 2
     end
     object Relay: TCheckBox
       Left = 176
@@ -84,6 +76,16 @@ object CommForm: TCommForm
       Height = 17
       Caption = 'Notify current band only'
       TabOrder = 5
+    end
+    object checkAutoReconnect: TCheckBox
+      Left = 255
+      Top = 5
+      Width = 98
+      Height = 17
+      Caption = 'Auto Reconnect'
+      Checked = True
+      State = cbChecked
+      TabOrder = 3
     end
   end
   object Panel2: TPanel
@@ -144,11 +146,12 @@ object CommForm: TCommForm
   end
   object StatusLine: TStatusBar
     Left = 0
-    Top = 323
+    Top = 328
     Width = 367
     Height = 23
     Panels = <>
     SimplePanel = True
+    ExplicitTop = 323
   end
   object Timer1: TTimer
     Enabled = False
