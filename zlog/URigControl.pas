@@ -2243,6 +2243,7 @@ begin
 
       ICOMWriteData(Command);
    finally
+      FPollingCount := 0;
       FPollingTimer.Enabled := True;
    end;
 end;
@@ -2530,6 +2531,7 @@ begin
       fstr := AnsiChar($05) + fstr;
       ICOMWriteData(fstr);
    finally
+      FPollingCount := 0;
       FPollingTimer.Enabled := True;
    end;
 end;
