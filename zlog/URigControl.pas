@@ -390,8 +390,8 @@ type
     PollingTimer1: TTimer;
     ZCom1: TCommPortDriver;
     ZCom2: TCommPortDriver;
-    dispFreqA: TStaticText;
-    dispFreqB: TStaticText;
+    dispFreqA: TLabel;
+    dispFreqB: TLabel;
     dispVFO: TStaticText;
     btnOmniRig: TButton;
     PollingTimer2: TTimer;
@@ -416,8 +416,9 @@ type
     { Private declarations }
     FRigs: array[1..2] of TRig;
     FCurrentRig : TRig;
-    FPrevVfoA: Integer;
+    FPrevVfo: array[0..1] of Integer;
     FOnVFOChanged: TNotifyEvent;
+    FFreqLabel: array[0..1] of TLabel;
 
     FCurrentRigNumber: Integer;  // 1 or 2
     FMaxRig: Integer;            // default = 2.  may be larger with virtual rigs
@@ -447,7 +448,7 @@ type
     function ToggleCurrentRig : integer;
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
     procedure SetSendFreq();
-    procedure UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer);
+    procedure UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer; b: TBand; m: TMode);
 
     procedure SetRit(fOnOff: Boolean);
     procedure SetXit(fOnOff: Boolean);
@@ -3623,19 +3624,21 @@ var
    S: string;
 begin
    MainForm.RigControl.dispVFO.Caption := VFOString[_currentvfo];
-   if _currentmode <> Main.CurrentQSO.Mode then begin
+   if _currentmode <> CurrentQSO.Mode then begin
       MainForm.UpdateMode(_currentmode);
    end;
 
    MainForm.RigControl.dispMode.Caption := ModeString[_currentmode];
-   if Main.CurrentQSO.Band <> _currentband then begin
+   if _currentband <> CurrentQSO.Band then begin
       MainForm.UpdateBand(_currentband);
    end;
 
    MainForm.RigControl.UpdateFreq(_currentvfo,
                                   _freqoffset + _currentfreq[0],
                                   _freqoffset + _currentfreq[1],
-                                  _freqoffset + LastFreq);
+                                  _freqoffset + LastFreq,
+                                  CurrentQSO.Band,
+                                  CurrentQSO.Mode);
 
    S := 'R' + IntToStr(_rignumber) + ' ' + 'V';
    if _currentvfo = 0 then begin
@@ -3661,8 +3664,11 @@ begin
    FCurrentRig := nil;
    FRigs[1] := nil;
    FRigs[2] := nil;
-   FPrevVfoA := 0;
+   FPrevVfo[0] := 0;
+   FPrevVfo[1] := 0;
    FOnVFOChanged := nil;
+   FFreqLabel[0] := dispFreqA;
+   FFreqLabel[1] := dispFreqB;
 
    FCurrentRigNumber := 1;
    FMaxRig := 2;
@@ -3769,9 +3775,14 @@ begin
    end;
 end;
 
-procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer);
+procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer; b: TBand; m: TMode);
+var
+   vfo: array[0..1] of Integer;
 begin
-   if Abs(FPrevVfoA - VfoA) > 20 then begin
+   vfo[0] := VfoA;
+   vfo[1] := VfoB;
+
+   if Abs(FPrevVfo[currentvfo] - vfo[currentvfo]) > 20 then begin
       if Assigned(FOnVFOChanged) then begin
          FOnVFOChanged(TObject(currentvfo));
       end;
@@ -3780,28 +3791,19 @@ begin
    dispFreqA.Caption := kHzStr(VfoA) + ' kHz';
    dispFreqB.Caption := kHzStr(VfoB) + ' kHz';
    dispLastFreq.Caption := kHzStr(Last) + ' kHz';
-   FPrevVfoA := VfoA;
+   FPrevVfo[0] := VfoA;
+   FPrevVfo[1] := VfoB;
 
-   if currentvfo = 0 then begin
-      if dmZLogGlobal.BandPlan.IsInBand(Main.CurrentQSO.Band, Main.CurrentQSO.Mode, VfoA) = True then begin
-         dispFreqA.Font.Color := clBlack;
-      end
-      else begin
-         dispFreqA.Font.Color := clRed;
-      end;
-      dispFreqA.Font.Style := [fsBold];
-      dispFreqB.Font.Style := [];
+   if dmZLogGlobal.BandPlan.IsInBand(b, m, vfo[currentvfo]) = True then begin
+      FFreqLabel[currentvfo].Font.Color := clBlack;
    end
    else begin
-      if dmZLogGlobal.BandPlan.IsInBand(Main.CurrentQSO.Band, Main.CurrentQSO.Mode, VfoB) = True then begin
-         dispFreqB.Font.Color := clBlack;
-      end
-      else begin
-         dispFreqB.Font.Color := clRed;
-      end;
-      dispFreqB.Font.Style := [fsBold];
-      dispFreqA.Font.Style := [];
+      FFreqLabel[currentvfo].Font.Color := clRed;
    end;
+
+   FFreqLabel[0].Font.Style := [];
+   FFreqLabel[1].Font.Style := [];
+   FFreqLabel[currentvfo].Font.Style := [fsBold];
 end;
 
 procedure TRigControl.SetRit(fOnOff: Boolean);
