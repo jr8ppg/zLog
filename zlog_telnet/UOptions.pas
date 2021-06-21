@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls;
 
 type
   TOptions = class(TForm)
@@ -33,6 +33,12 @@ type
     radioCmdSpot: TRadioButton;
     radioCmdSpot2: TRadioButton;
     radioCmdSpot3: TRadioButton;
+    checkAutoLogin: TCheckBox;
+    checkAutoReconnect: TCheckBox;
+    checkRecordLogs: TCheckBox;
+    Panel1: TPanel;
+    Label9: TLabel;
+    editLoginID: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -48,6 +54,14 @@ type
     procedure SetClusterPort(v: string);
     function GetClusterLineBreak(): Integer;
     procedure SetClusterLineBreak(v: Integer);
+    function GetClusterLoginID(): string;
+    procedure SetClusterLoginID(v: string);
+    function GetClusterAutoLogin(): Boolean;
+    procedure SetClusterAutoLogin(v: Boolean);
+    function GetClusterAutoReconnect(): Boolean;
+    procedure SetClusterAutoReconnect(v: Boolean);
+    function GetClusterRecordLogs(): Boolean;
+    procedure SetClusterRecordLogs(v: Boolean);
     function GetZServerHost(): string;
     procedure SetZServerHost(v: string);
     function GetZServerPort(): string;
@@ -61,6 +75,10 @@ type
     property ClusterHost: string read GetClusterHost write SetClusterHost;
     property ClusterPort: string read GetClusterPort write SetClusterPort;
     property ClusterLineBreak: Integer read GetClusterLineBreak write SetClusterLineBreak;
+    property ClusterLoginID: string read GetClusterLoginID write SetClusterLoginID;
+    property ClusterAutoLogin: Boolean read GetClusterAutoLogin write SetClusterAutoLogin;
+    property ClusterAutoReconnect: Boolean read GetClusterAutoReconnect write SetClusterAutoReconnect;
+    property ClusterRecordLogs: Boolean read GetClusterRecordLogs write SetClusterRecordLogs;
     property ZServerHost: string read GetZServerHost write SetZServerHost;
     property ZServerPort: string read GetZServerPort write SetZServerPort;
     property ZServerClientName: string read GetZServerClientName write SetZServerClientName;
@@ -173,6 +191,46 @@ end;
 procedure TOptions.SetClusterLineBreak(v: Integer);
 begin
    comboClusterLineBreak.ItemIndex := v;
+end;
+
+function TOptions.GetClusterLoginID(): string;
+begin
+   Result := editLoginID.Text;
+end;
+
+procedure TOptions.SetClusterLoginID(v: string);
+begin
+   editLoginID.Text := v;
+end;
+
+function TOptions.GetClusterAutoLogin(): Boolean;
+begin
+   Result := checkAutoLogin.Checked;
+end;
+
+procedure TOptions.SetClusterAutoLogin(v: Boolean);
+begin
+   checkAutoLogin.Checked := v;
+end;
+
+function TOptions.GetClusterAutoReconnect(): Boolean;
+begin
+   Result := checkAutoReconnect.Checked;
+end;
+
+procedure TOptions.SetClusterAutoReconnect(v: Boolean);
+begin
+   checkAutoReconnect.Checked := v;
+end;
+
+function TOptions.GetClusterRecordLogs(): Boolean;
+begin
+   Result := checkRecordLogs.Checked;
+end;
+
+procedure TOptions.SetClusterRecordLogs(v: Boolean);
+begin
+   checkRecordLogs.Checked := v;
 end;
 
 function TOptions.GetZServerHost(): string;

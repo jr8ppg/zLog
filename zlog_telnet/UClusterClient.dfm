@@ -47,9 +47,9 @@ object ClusterClient: TClusterClient
       OnKeyPress = EditKeyPress
     end
     object buttonConnect: TButton
-      Left = 223
+      Left = 200
       Top = 5
-      Width = 57
+      Width = 80
       Height = 20
       Anchors = [akRight, akBottom]
       Caption = 'Connect'
