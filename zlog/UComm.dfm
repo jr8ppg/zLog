@@ -22,9 +22,9 @@ object CommForm: TCommForm
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 264
+    Top = 248
     Width = 367
-    Height = 64
+    Height = 80
     Align = alBottom
     TabOrder = 0
     object Edit: TEdit
@@ -61,7 +61,7 @@ object CommForm: TCommForm
       State = cbChecked
       TabOrder = 2
     end
-    object Relay: TCheckBox
+    object checkRelaySpot: TCheckBox
       Left = 176
       Top = 23
       Width = 145
@@ -69,7 +69,7 @@ object CommForm: TCommForm
       Caption = 'Relay spot to other bands'
       TabOrder = 4
     end
-    object cbNotifyCurrentBand: TCheckBox
+    object checkNotifyCurrentBand: TCheckBox
       Left = 176
       Top = 40
       Width = 153
@@ -87,18 +87,27 @@ object CommForm: TCommForm
       State = cbChecked
       TabOrder = 3
     end
+    object checkRecordLogs: TCheckBox
+      Left = 176
+      Top = 57
+      Width = 153
+      Height = 17
+      Caption = 'Record logs'
+      TabOrder = 6
+    end
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
     Width = 367
-    Height = 264
+    Height = 248
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
+    ExplicitHeight = 264
     object Splitter1: TSplitter
       Left = 1
-      Top = 171
+      Top = 155
       Width = 365
       Height = 4
       Cursor = crVSplit
@@ -111,7 +120,7 @@ object CommForm: TCommForm
       Left = 1
       Top = 1
       Width = 365
-      Height = 170
+      Height = 154
       Style = lbOwnerDrawVariable
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -127,10 +136,11 @@ object CommForm: TCommForm
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
+      ExplicitHeight = 170
     end
     object Console: TColorConsole2
       Left = 1
-      Top = 175
+      Top = 159
       Width = 365
       Height = 88
       Align = alBottom
@@ -142,6 +152,7 @@ object CommForm: TCommForm
       Font.Style = []
       Rows = 500
       LineBreak = CR
+      ExplicitTop = 175
     end
   end
   object StatusLine: TStatusBar
@@ -151,7 +162,6 @@ object CommForm: TCommForm
     Height = 23
     Panels = <>
     SimplePanel = True
-    ExplicitTop = 323
   end
   object Timer1: TTimer
     Enabled = False

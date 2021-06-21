@@ -26,13 +26,14 @@ type
     Telnet: TTnCnx;
     ConnectButton: TButton;
     checkAutoLogin: TCheckBox;
-    Relay: TCheckBox;
-    cbNotifyCurrentBand: TCheckBox;
+    checkRelaySpot: TCheckBox;
+    checkNotifyCurrentBand: TCheckBox;
     ClusterComm: TCommPortDriver;
     PopupMenu: TPopupMenu;
     menuSaveToFile: TMenuItem;
     SaveTextFileDialog1: TSaveTextFileDialog;
     checkAutoReconnect: TCheckBox;
+    checkRecordLogs: TCheckBox;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -177,7 +178,7 @@ begin
    Console.WriteString(strText);
 
    try
-      if FUseClusterLog = True then begin
+      if (checkRecordLogs.Checked = True) and (FUseClusterLog = True) then begin
          Write(FClusterLog, strText);
          Flush(FClusterLog);
       end;
@@ -436,7 +437,7 @@ begin
       Unlock();
    end;
 
-   if cbNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
+   if checkNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
    end
    else begin
       MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
@@ -490,9 +491,12 @@ begin
       str := FCommBuffer.Strings[0];
 
       // Auto Login
-      if (checkAutoLogin.Checked = True) and (Pos('login:', str) > 0) then begin
-         Sleep(100);
-         WriteLine(dmZlogGlobal.MyCall);
+      if (checkAutoLogin.Checked = True) then begin
+         if (Pos('login:', str) > 0) or
+            (Pos('Please enter your call:', str) > 0) then begin
+            Sleep(500);
+            WriteLine(dmZlogGlobal.MyCall);
+         end;
       end;
 
       for j := 1 to length(str) do begin
@@ -508,7 +512,7 @@ begin
 
                ProcessSpot(Sp);
 
-               if Relay.Checked then begin
+               if checkRelaySpot.Checked then begin
                   MainForm.ZLinkForm.RelaySpot(FCommTemp);
                end;
             end
@@ -529,7 +533,9 @@ end;
 
 procedure TCommForm.TimerProcess;
 begin
-   if (checkAutoReconnect.Checked = True) and (Telnet.IsConnected() = False) and (FDisconnectClicked = False) then begin
+   // Auto Reconnect
+   if (checkAutoReconnect.Checked = True) and (Telnet.IsConnected() = False) and
+      (FDisconnectClicked = False) and (ConnectButton.Caption = 'Connect') then begin
       ConnectButton.Click();
    end;
 
@@ -599,18 +605,27 @@ end;
 procedure TCommForm.TelnetSessionConnected(Sender: TTnCnx; Error: Word);
 begin
    try
-      AssignFile(FClusterLog, FClusterLogFileName);
-      if FileExists(FClusterLogFileName) = True then begin
-         Append(FClusterLog);
-      end
-      else begin
-         Rewrite(FClusterLog);
+      if checkRecordLogs.Checked = True then begin
+         AssignFile(FClusterLog, FClusterLogFileName);
+
+         if FileExists(FClusterLogFileName) = True then begin
+            Append(FClusterLog);
+         end
+         else begin
+            Rewrite(FClusterLog);
+         end;
+
+         FUseClusterLog := True;
       end;
+
+      checkAutoLogin.Enabled := False;
+      checkAutoReconnect.Enabled := False;
+      checkRelaySpot.Enabled := False;
+      checkNotifyCurrentBand.Enabled := False;
+      checkRecordLogs.Enabled := False;
 
       ConnectButton.Caption := 'Disconnect';
       WriteLineConsole('connected to ' + Telnet.Host);
-
-      FUseClusterLog := True;
    except
       on E: Exception do begin
          Console.WriteString(E.Message);
@@ -622,9 +637,18 @@ end;
 procedure TCommForm.TelnetSessionClosed(Sender: TTnCnx; Error: Word);
 begin
    WriteLineConsole('disconnected...');
-   ConnectButton.Caption := 'Connect';
-   CloseFile(FClusterLog);
+
+   if checkRecordLogs.Checked = True then begin
+      CloseFile(FClusterLog);
+   end;
    FUseClusterLog := False;
+
+   checkAutoLogin.Enabled := True;
+   checkAutoReconnect.Enabled := True;
+   checkRelaySpot.Enabled := True;
+   checkNotifyCurrentBand.Enabled := True;
+   checkRecordLogs.Enabled := True;
+   ConnectButton.Caption := 'Connect';
 end;
 
 procedure TCommForm.FormShow(Sender: TObject);
