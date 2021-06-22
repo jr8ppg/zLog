@@ -187,7 +187,6 @@ type
     comboRig1Speed: TComboBox;
     comboRig2Speed: TComboBox;
     comboCwPttPort: TComboBox;
-    checkUseTransceiveMode: TCheckBox;
     tabsheetQuickQSY: TTabSheet;
     checkUseQuickQSY01: TCheckBox;
     comboQuickQsyBand01: TComboBox;
@@ -299,7 +298,6 @@ type
     comboQuickQsyRig06: TComboBox;
     comboQuickQsyRig07: TComboBox;
     comboQuickQsyRig08: TComboBox;
-    checkGetBandAndMode: TCheckBox;
     checkCwReverseSignal: TCheckBox;
     tabsheetQuickMemo: TTabSheet;
     GroupBox11: TGroupBox;
@@ -412,6 +410,11 @@ type
     checkUseEstimatedMode: TCheckBox;
     checkShowOnlyInBandplan: TCheckBox;
     checkShowOnlyDomestic: TCheckBox;
+    GroupBox21: TGroupBox;
+    comboIcomMode: TComboBox;
+    comboIcomMethod: TComboBox;
+    Label83: TLabel;
+    Label84: TLabel;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -454,6 +457,7 @@ type
     procedure buttonStopVoiceClick(Sender: TObject);
     procedure OpListBoxDblClick(Sender: TObject);
     procedure vAdditionalButtonClick(Sender: TObject);
+    procedure comboIcomModeChange(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -670,8 +674,20 @@ begin
 
       Settings._rigspeed[2] := comboRig2Speed.ItemIndex;
 
-      Settings._use_transceive_mode := checkUseTransceiveMode.Checked;
-      Settings._icom_polling_freq_and_mode := checkGetBandAndMode.Checked;
+      if comboIcomMode.ItemIndex = 0 then begin
+         Settings._use_transceive_mode := True;
+      end
+      else begin
+         Settings._use_transceive_mode := False;
+      end;
+
+      if comboIcomMethod.ItemIndex = 0 then begin
+         Settings._icom_polling_freq_and_mode := True;
+      end
+      else begin
+         Settings._icom_polling_freq_and_mode := False;
+      end;
+
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
 
       Settings._zlinkport := ZLinkCombo.ItemIndex;
@@ -1014,8 +1030,22 @@ begin
 
       comboRig2Speed.ItemIndex := Settings._rigspeed[2];
 
-      checkUseTransceiveMode.Checked := Settings._use_transceive_mode;
-      checkGetBandAndMode.Checked := Settings._icom_polling_freq_and_mode;
+      if Settings._use_transceive_mode = True then begin
+         comboIcomMode.ItemIndex := 0;
+      end
+      else begin
+         comboIcomMode.ItemIndex := 1;
+      end;
+
+      if Settings._icom_polling_freq_and_mode = True then begin
+         comboIcomMethod.ItemIndex := 0;
+      end
+      else begin
+         comboIcomMethod.ItemIndex := 1;
+      end;
+
+      comboIcomModeChange(nil);
+
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
 
       // Packet Clusterí êMê›íËÉ{É^Éì
@@ -1698,6 +1728,17 @@ begin
       end;
    finally
       F.Release();
+   end;
+end;
+
+procedure TformOptions.comboIcomModeChange(Sender: TObject);
+begin
+   if comboIcomMode.ItemIndex = 0 then begin
+      comboIcomMethod.Enabled := False;
+      comboIcomMethod.ItemIndex := 0;
+   end
+   else begin
+      comboIcomMethod.Enabled := True;
    end;
 end;
 

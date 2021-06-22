@@ -516,6 +516,10 @@ object formOptions: TformOptions
     end
     object tabsheetCategories: TTabSheet
       Caption = 'Categories'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label14: TLabel
         Left = 257
         Top = 105
@@ -717,6 +721,10 @@ object formOptions: TformOptions
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -1803,14 +1811,14 @@ object formOptions: TformOptions
         end
         object gbCWPort: TGroupBox
           Left = 8
-          Top = 213
-          Width = 353
-          Height = 51
+          Top = 176
+          Width = 123
+          Height = 81
           Caption = 'CW/PTT port'
-          TabOrder = 16
+          TabOrder = 14
           object comboCwPttPort: TComboBox
-            Left = 14
-            Top = 18
+            Left = 28
+            Top = 20
             Width = 64
             Height = 21
             Style = csDropDownList
@@ -1840,8 +1848,8 @@ object formOptions: TformOptions
               'USB')
           end
           object checkUseWinKeyer: TCheckBox
-            Left = 256
-            Top = 16
+            Left = 14
+            Top = 47
             Width = 89
             Height = 25
             Caption = 'Use WinKeyer'
@@ -2008,21 +2016,54 @@ object formOptions: TformOptions
             '128000'
             '256000')
         end
-        object checkUseTransceiveMode: TCheckBox
-          Left = 36
-          Top = 159
-          Width = 208
-          Height = 17
-          Caption = 'Use Transceive Mode (ICOM only)'
-          TabOrder = 14
-        end
-        object checkGetBandAndMode: TCheckBox
-          Left = 36
-          Top = 178
-          Width = 230
-          Height = 17
-          Caption = 'Get band and mode alternately(ICOM only)'
+        object GroupBox21: TGroupBox
+          Left = 137
+          Top = 176
+          Width = 224
+          Height = 81
+          Caption = 'ICOM only'
           TabOrder = 15
+          object Label83: TLabel
+            Left = 9
+            Top = 23
+            Width = 27
+            Height = 13
+            Caption = 'Mode'
+          end
+          object Label84: TLabel
+            Left = 9
+            Top = 52
+            Width = 36
+            Height = 13
+            Caption = 'Method'
+          end
+          object comboIcomMode: TComboBox
+            Left = 57
+            Top = 20
+            Width = 151
+            Height = 21
+            Style = csDropDownList
+            ItemIndex = 0
+            TabOrder = 0
+            Text = 'Transceive'
+            OnChange = comboIcomModeChange
+            Items.Strings = (
+              'Transceive'
+              'Polling')
+          end
+          object comboIcomMethod: TComboBox
+            Left = 57
+            Top = 49
+            Width = 151
+            Height = 21
+            Style = csDropDownList
+            ItemIndex = 0
+            TabOrder = 1
+            Text = 'Get freq. and mode (slow)'
+            Items.Strings = (
+              'Get freq. and mode (slow)'
+              'Get freq. only (fast)')
+          end
         end
       end
       object GroupBox7: TGroupBox
@@ -2300,6 +2341,10 @@ object formOptions: TformOptions
     end
     object tabsheetPath: TTabSheet
       Caption = 'Path'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label50: TLabel
         Left = 16
         Top = 18
@@ -2427,6 +2472,10 @@ object formOptions: TformOptions
     end
     object tabsheetMisc: TTabSheet
       Caption = 'Misc'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label47: TLabel
         Left = 125
         Top = 14
@@ -2637,6 +2686,10 @@ object formOptions: TformOptions
     object tabsheetQuickQSY: TTabSheet
       Caption = 'Quick QSY'
       ImageIndex = 8
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label54: TLabel
         Left = 98
         Top = 3
@@ -3014,6 +3067,10 @@ object formOptions: TformOptions
     object tabsheetBandScope1: TTabSheet
       Caption = 'BandScope'
       ImageIndex = 9
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox9: TGroupBox
         Left = 6
         Top = 4
@@ -3540,6 +3597,10 @@ object formOptions: TformOptions
     object tabsheetBandScope2: TTabSheet
       Caption = 'BandScope2'
       ImageIndex = 11
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox12: TGroupBox
         Left = 6
         Top = 3
@@ -3896,6 +3957,10 @@ object formOptions: TformOptions
     object tabsheetQuickMemo: TTabSheet
       Caption = 'Quick Memo'
       ImageIndex = 10
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox11: TGroupBox
         Left = 6
         Top = 4
