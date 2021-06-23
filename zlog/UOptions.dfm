@@ -516,10 +516,6 @@ object formOptions: TformOptions
     end
     object tabsheetCategories: TTabSheet
       Caption = 'Categories'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label14: TLabel
         Left = 257
         Top = 105
@@ -721,10 +717,6 @@ object formOptions: TformOptions
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -1726,28 +1718,28 @@ object formOptions: TformOptions
         end
         object Label42: TLabel
           Left = 8
-          Top = 112
+          Top = 118
           Width = 25
           Height = 13
           Caption = 'Rig 1'
         end
         object Label43: TLabel
           Left = 174
-          Top = 112
+          Top = 118
           Width = 16
           Height = 13
           Caption = 'Rig'
         end
         object Label31: TLabel
           Left = 8
-          Top = 136
+          Top = 142
           Width = 25
           Height = 13
           Caption = 'Rig 2'
         end
         object Label44: TLabel
           Left = 174
-          Top = 136
+          Top = 142
           Width = 16
           Height = 13
           Caption = 'Rig'
@@ -1858,7 +1850,7 @@ object formOptions: TformOptions
         end
         object comboRig1Port: TComboBox
           Left = 36
-          Top = 109
+          Top = 115
           Width = 64
           Height = 21
           Style = csDropDownList
@@ -1888,7 +1880,7 @@ object formOptions: TformOptions
         end
         object comboRig1Name: TComboBox
           Left = 194
-          Top = 108
+          Top = 114
           Width = 120
           Height = 21
           Style = csDropDownList
@@ -1898,7 +1890,7 @@ object formOptions: TformOptions
         end
         object comboRig2Port: TComboBox
           Left = 36
-          Top = 133
+          Top = 139
           Width = 64
           Height = 21
           Style = csDropDownList
@@ -1928,7 +1920,7 @@ object formOptions: TformOptions
         end
         object comboRig2Name: TComboBox
           Left = 194
-          Top = 132
+          Top = 138
           Width = 120
           Height = 21
           Style = csDropDownList
@@ -1939,7 +1931,7 @@ object formOptions: TformOptions
         object cbTransverter1: TCheckBox
           Tag = 101
           Left = 320
-          Top = 110
+          Top = 116
           Width = 41
           Height = 17
           Hint = 'Check here if you are using a transverter'
@@ -1950,7 +1942,7 @@ object formOptions: TformOptions
         object cbTransverter2: TCheckBox
           Tag = 102
           Left = 320
-          Top = 132
+          Top = 138
           Width = 41
           Height = 17
           Hint = 'Check here if you are using a transverter'
@@ -1976,7 +1968,7 @@ object formOptions: TformOptions
         end
         object comboRig1Speed: TComboBox
           Left = 103
-          Top = 109
+          Top = 115
           Width = 65
           Height = 21
           Style = csDropDownList
@@ -1997,7 +1989,7 @@ object formOptions: TformOptions
         end
         object comboRig2Speed: TComboBox
           Left = 103
-          Top = 133
+          Top = 139
           Width = 65
           Height = 21
           Style = csDropDownList
@@ -2021,7 +2013,7 @@ object formOptions: TformOptions
           Top = 176
           Width = 224
           Height = 81
-          Caption = 'ICOM only'
+          Caption = 'ICOM CI-V Options'
           TabOrder = 15
           object Label83: TLabel
             Left = 9
@@ -2038,23 +2030,24 @@ object formOptions: TformOptions
             Caption = 'Method'
           end
           object comboIcomMode: TComboBox
-            Left = 57
+            Left = 53
             Top = 20
-            Width = 151
+            Width = 160
             Height = 21
             Style = csDropDownList
+            ImeMode = imDisable
             ItemIndex = 0
             TabOrder = 0
-            Text = 'Transceive'
+            Text = 'CI-V Transceive On'
             OnChange = comboIcomModeChange
             Items.Strings = (
-              'Transceive'
-              'Polling')
+              'CI-V Transceive On'
+              'CI-V Transceive Off (Polling)')
           end
           object comboIcomMethod: TComboBox
-            Left = 57
+            Left = 53
             Top = 49
-            Width = 151
+            Width = 160
             Height = 21
             Style = csDropDownList
             ItemIndex = 0
@@ -2341,10 +2334,6 @@ object formOptions: TformOptions
     end
     object tabsheetPath: TTabSheet
       Caption = 'Path'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label50: TLabel
         Left = 16
         Top = 18
@@ -2472,10 +2461,6 @@ object formOptions: TformOptions
     end
     object tabsheetMisc: TTabSheet
       Caption = 'Misc'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label47: TLabel
         Left = 125
         Top = 14
@@ -2686,10 +2671,6 @@ object formOptions: TformOptions
     object tabsheetQuickQSY: TTabSheet
       Caption = 'Quick QSY'
       ImageIndex = 8
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label54: TLabel
         Left = 98
         Top = 3
@@ -3067,10 +3048,6 @@ object formOptions: TformOptions
     object tabsheetBandScope1: TTabSheet
       Caption = 'BandScope'
       ImageIndex = 9
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox9: TGroupBox
         Left = 6
         Top = 4
@@ -3597,10 +3574,6 @@ object formOptions: TformOptions
     object tabsheetBandScope2: TTabSheet
       Caption = 'BandScope2'
       ImageIndex = 11
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox12: TGroupBox
         Left = 6
         Top = 3
@@ -3957,10 +3930,6 @@ object formOptions: TformOptions
     object tabsheetQuickMemo: TTabSheet
       Caption = 'Quick Memo'
       ImageIndex = 10
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox11: TGroupBox
         Left = 6
         Top = 4
