@@ -1583,12 +1583,7 @@ begin
    for i := 1 to FQSOList.Count - 1 do begin
       Q := FQSOList[i];
 
-      if Q.Points = 0 then begin
-         strText := 'X-QSO: ';
-      end
-      else begin
-         strText := 'QSO: ';
-      end;
+      strText := 'QSO: ';
 
       strText := strText  + GetActualFreq(Q.Band, Q.Memo) + ' ';
 
