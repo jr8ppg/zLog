@@ -14,7 +14,7 @@ uses
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
   OEdit, URigControl, UConsolePad, URenewThread, USpotClass,
   UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UQuickRef, UZAnalyze,
-  UPartials, URateDialog, USuperCheck, USuperCheck2, UComm, UCWKeyBoard, UChat,
+  UPartials, URateDialog, URateDialogEx, USuperCheck, USuperCheck2, UComm, UCWKeyBoard, UChat,
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
@@ -691,6 +691,8 @@ type
     menuBandPlanSettings: TMenuItem;
     menuQSORateSettings: TMenuItem;
     menuSettings: TMenuItem;
+    actionShowQsoRateEx: TAction;
+    QSORateEx1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -914,10 +916,12 @@ type
     procedure actionFunctionKeyPanelExecute(Sender: TObject);
     procedure menuBandPlanSettingsClick(Sender: TObject);
     procedure menuQSORateSettingsClick(Sender: TObject);
+    procedure actionShowQsoRateExExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
     FRateDialog: TRateDialog;
+    FRateDialogEx: TRateDialogEx;
     FSuperCheck: TSuperCheck;
     FSuperCheck2: TSuperCheck2;        // N+1
     FCommForm: TCommForm;
@@ -2283,8 +2287,10 @@ begin
 
    MainForm.ReEvaluateQSYCount;
 
-   if MainForm.FRateDialog.Visible then
+   if MainForm.FRateDialog.Visible then begin
       MainForm.FRateDialog.UpdateGraph;
+      MainForm.FRateDialogEx.UpdateGraph;
+   end;
 
    if dmZlogGlobal.Settings._multistation then begin
       if Local { (mytx = aQSO.TX) } and (aQSO.NewMulti1 = False) and (aQSO.NewMulti2 = False) and (dmZlogGlobal.Settings._multistationwarning)
@@ -3814,6 +3820,7 @@ begin
    FRigControl.OnVFOChanged := DoVFOChange;
    FPartialCheck  := TPartialCheck.Create(Self);
    FRateDialog    := TRateDialog.Create(Self);
+   FRateDialogEx  := TRateDialogEx.Create(Self);
    FSuperCheck    := TSuperCheck.Create(Self);
    FSuperCheck2   := TSuperCheck2.Create(Self);
    FCommForm      := TCommForm.Create(Self);
@@ -3987,6 +3994,7 @@ begin
       SetWindowCaption();
       EditScreen.RefreshScreen(False);
       FRateDialog.UpdateGraph();
+      FRateDialogEx.UpdateGraph();
    end;
 end;
 
@@ -4071,7 +4079,7 @@ begin
    dmZlogGlobal.ReadWindowState(FCommForm);
    dmZlogGlobal.ReadWindowState(FScratchSheet);
    dmZlogGlobal.ReadWindowState(FRateDialog);
-   dmZlogGlobal.ReadWindowState(FRateDialog);
+   dmZlogGlobal.ReadWindowState(FRateDialogEx);
    dmZlogGlobal.ReadWindowState(FZAnalyze);
    dmZlogGlobal.ReadWindowState(FCwMessagePad);
    dmZlogGlobal.ReadWindowState(FFunctionKeyPanel);
@@ -4101,6 +4109,7 @@ begin
    dmZlogGlobal.WriteWindowState(FCommForm);
    dmZlogGlobal.WriteWindowState(FScratchSheet);
    dmZlogGlobal.WriteWindowState(FRateDialog);
+   dmZlogGlobal.WriteWindowState(FRateDialogEx);
    dmZlogGlobal.WriteWindowState(FZAnalyze);
    dmZlogGlobal.WriteWindowState(FCwMessagePad);
    dmZlogGlobal.WriteWindowState(FFunctionKeyPanel);
@@ -5549,6 +5558,7 @@ begin
    FCommForm.Release();
    FScratchSheet.Release();
    FRateDialog.Release();
+   FRateDialogEx.Release();
    FZServerInquiry.Release();
    FZLinkForm.Release();
    FSpotForm.Release();
@@ -6327,6 +6337,13 @@ begin
          FRateDialog.GraphSeries[b].Marks.Font.Color := f.TextColor[b];
       end;
       FRateDialog.SaveSettings();
+
+      FRateDialogEx.GraphStyle := f.Style;
+      FRateDialogEx.GraphStartPosition := f.StartPosition;
+      for b := b19 to HiBand do begin
+         FRateDialogEx.GraphSeries[b].SeriesColor := f.BarColor[b];
+         FRateDialogEx.GraphSeries[b].Marks.Font.Color := f.TextColor[b];
+      end;
    finally
       f.Release();
    end;
@@ -8648,6 +8665,11 @@ end;
 procedure TMainForm.actionShowQsoRateExecute(Sender: TObject);
 begin
    FRateDialog.Show;
+end;
+
+procedure TMainForm.actionShowQsoRateExExecute(Sender: TObject);
+begin
+   FRateDialogEx.Show;
 end;
 
 // #79 Check Callウインドウ

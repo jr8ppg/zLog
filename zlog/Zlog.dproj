@@ -172,9 +172,6 @@
         <DCCReference Include="UAbout.pas">
             <Form>AboutBox</Form>
         </DCCReference>
-        <DCCReference Include="URateDialog.pas">
-            <Form>RateDialog</Form>
-        </DCCReference>
         <DCCReference Include="UOptions.pas">
             <Form>formOptions</Form>
         </DCCReference>
@@ -456,6 +453,14 @@
         </DCCReference>
         <DCCReference Include="UGraphColorDialog.pas">
             <Form>GraphColorDialog</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="URateDialogEx.pas">
+            <Form>RateDialogEx</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="URateDialog.pas">
+            <Form>RateDialog</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <RcItem Include="resource\r0.bmp">
