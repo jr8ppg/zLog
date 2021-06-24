@@ -29,6 +29,8 @@ function ZStrToBool(strValue: string): Boolean;
 
 function ZStringToColorDef(str: string; defcolor: TColor): TColor;
 
+function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
+
 var
   dmZLogGlobal: TdmZLogGlobal;
 
@@ -176,6 +178,30 @@ begin
    else begin
       Result := defcolor;
    end;
+end;
+
+function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
+var
+   nAvailable: TLargeInteger;
+   nTotalBytes: TLargeInteger;
+   nTotalFreeBytes: TLargeInteger;
+   nNeedBytes: TLargeInteger;
+begin
+   nNeedBytes := TLargeInteger(nNeed_MegaByte) * TLargeInteger(1024) * TLargeInteger(1024);
+
+   // 空き容量取得
+   if GetDiskFreeSpaceEx(PWideChar(strPath), nAvailable, nTotalBytes, @nTotalFreeBytes) = False then begin
+      Result := False;
+      Exit;
+   end;
+
+   // 空き領域は必要としている容量未満か
+   if (nTotalFreeBytes < nNeedBytes) then begin
+      Result := False;
+      Exit;
+   end;
+
+   Result := True;
 end;
 
 end.
