@@ -607,7 +607,7 @@ begin
    try
       if checkRecordLogs.Checked = True then begin
          // 300M‚Ì‹ó‚«—e—Ê‚ª‚ ‚Á‚½ê‡‚Érecord‚·‚é
-         if CheckDiskFreeSpace(FClusterLogFileName, 300) = True then begin
+         if CheckDiskFreeSpace(ExtractFilePath(FClusterLogFileName), 300) = True then begin
             AssignFile(FClusterLog, FClusterLogFileName);
 
             if FileExists(FClusterLogFileName) = True then begin
