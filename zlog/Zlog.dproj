@@ -172,6 +172,10 @@
         <DCCReference Include="UAbout.pas">
             <Form>AboutBox</Form>
         </DCCReference>
+        <DCCReference Include="URateDialog.pas">
+            <Form>RateDialog</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <DCCReference Include="UOptions.pas">
             <Form>formOptions</Form>
         </DCCReference>
@@ -455,14 +459,15 @@
             <Form>GraphColorDialog</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UTargetEditor.pas">
+            <Form>TargetEditor</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <DCCReference Include="URateDialogEx.pas">
             <Form>RateDialogEx</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="URateDialog.pas">
-            <Form>RateDialog</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
+        <DCCReference Include="UQsoTarget.pas"/>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>

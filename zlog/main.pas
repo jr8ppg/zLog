@@ -693,6 +693,7 @@ type
     menuSettings: TMenuItem;
     actionShowQsoRateEx: TAction;
     QSORateEx1: TMenuItem;
+    menuTargetEditor: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -917,6 +918,7 @@ type
     procedure menuBandPlanSettingsClick(Sender: TObject);
     procedure menuQSORateSettingsClick(Sender: TObject);
     procedure actionShowQsoRateExExecute(Sender: TObject);
+    procedure menuTargetEditorClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1132,7 +1134,8 @@ uses
   UARRL10Score,
   UIntegerDialog, UNewPrefix, UKCJScore,
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
-  UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension;
+  UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension,
+  UTargetEditor;
 
 {$R *.DFM}
 
@@ -6346,6 +6349,18 @@ begin
       end;
    finally
       f.Release();
+   end;
+end;
+
+procedure TMainForm.menuTargetEditorClick(Sender: TObject);
+var
+   dlg: TTargetEditor;
+begin
+   dlg := TTargetEditor.Create(Self);
+   try
+      dlg.ShowModal();
+   finally
+      dlg.Release();
    end;
 end;
 

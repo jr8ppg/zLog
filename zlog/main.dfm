@@ -5354,6 +5354,10 @@ object MainForm: TMainForm
         Caption = 'QSO &Rate'
         OnClick = menuQSORateSettingsClick
       end
+      object menuTargetEditor: TMenuItem
+        Caption = '&Target Editor'
+        OnClick = menuTargetEditorClick
+      end
     end
     object Network1: TMenuItem
       Caption = '&Network'
