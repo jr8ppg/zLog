@@ -138,7 +138,11 @@ begin
          d := Trunc(DaySpan(aQSO.Time, origin));
          h := h + (d * 24);
 
-         FTarget.Bands[aQSO.Band].Hours[h].IncTarget();
+         if h > 24 then begin
+            Continue;
+         end;
+
+         FTarget.Bands[aQSO.Band].Hours[h + 1].IncTarget();
       end;
 
       FTarget.Refresh();
@@ -178,11 +182,15 @@ var
    b: TBand;
    i: Integer;
 begin
-   for b := b19 to bTarget do begin
+   for b := b19 to b10g do begin
       for i := 1 to 24 do begin
          ScoreGrid.Cells[i, Ord(b)+1] := IntToStr(FTarget.Bands[b].Hours[i].Target);
+         ScoreGrid.Cells[i, 17]       := IntToStr(FTarget.Total.Hours[i].Target);
       end;
+      ScoreGrid.Cells[25, Ord(b)+1]   := IntToStr(FTarget.TotalTotal.Target);
    end;
+
+   ScoreGrid.Refresh();
 end;
 
 procedure TTargetEditor.GridToTarget();
@@ -190,8 +198,8 @@ var
    b: TBand;
    i: Integer;
 begin
-   for b := b19 to bTarget do begin
-      for i := 1 to 25 do begin
+   for b := b19 to b10g do begin
+      for i := 1 to 24 do begin
          FTarget.Bands[b].Hours[i].Target := StrToIntDef(ScoreGrid.Cells[i, Ord(b)+1], 0);
       end;
    end;
@@ -244,15 +252,26 @@ var
    b: TBand;
    h: Integer;
 begin
+   if ARow > 16 then begin
+      Exit;
+   end;
+   if ACol > 24 then begin
+      Exit;
+   end;
+
    b := TBand(Ord(ARow) - 1);
    h := ACol;
+
+   // 入力された値を格納
    FTarget.Bands[b].Hours[h].Target := StrToIntDef(Value, 0);
 
-//   FTarget.Bands[b].Hours[h].Refresh();
-   FTarget.Bands[b].Refresh();
+   // 合計再計算
+   FTarget.Refresh();
 
-   ScoreGrid.Cells[ACol, 17] := IntToStr(FTarget.Bands[b].Total.Target);
+   // 合計行に表示（縦計）
+   ScoreGrid.Cells[ACol, 17] := IntToStr(FTarget.Total.Hours[h].Target);
 
+   // 再描画
    ScoreGrid.Refresh();
 end;
 

@@ -40,9 +40,10 @@ type
   TContestTarget = class(TObject)
   private
     FBandTarget: array[b19..b10g] of THourTarget;
-    FBandTotal: array[b19..b10g] of THourTarget;   // ècåv
+    FBandTotal: THourTarget;   // ècåv
     FTotal: TQsoTarget;    // ècâ°åv
-    function GetValues(B: TBand): THourTarget;
+    function GetBandTarget(B: TBand): THourTarget;
+    function GetBandTotal(B: TBand): THourTarget;
   public
     constructor Create();
     destructor Destroy(); override;
@@ -51,8 +52,9 @@ type
     procedure Clear();
     procedure Refresh();
     procedure Adjust(n: Integer);
-    property Bands[B: TBand]: THourTarget read GetValues;
-    property Total: TQsoTarget read FTotal;
+    property Bands[B: TBand]: THourTarget read GetBandTarget;
+    property Total: THourTarget read FBandTotal;
+    property TotalTotal: TQsoTarget read FTotal;
   end;
 
 implementation
@@ -146,8 +148,8 @@ var
 begin
    for b := b19 to b10g do begin
       FBandTarget[b] := THourTarget.Create();
-      FBandTotal[b] := THourTarget.Create();
    end;
+   FBandTotal := THourTarget.Create();
    FTotal := TQsoTarget.Create();
 end;
 
@@ -157,14 +159,19 @@ var
 begin
    for b := b19 to b10g do begin
       FBandTarget[b].Free();
-      FBandTotal[b].Free();
    end;
+   FBandTotal.Free();
    FTotal.Free();
 end;
 
-function TContestTarget.GetValues(B: TBand): THourTarget;
+function TContestTarget.GetBandTarget(B: TBand): THourTarget;
 begin
    Result := FBandTarget[B];
+end;
+
+function TContestTarget.GetBandTotal(B: TBand): THourTarget;
+begin
+   Result := FBandTotal;
 end;
 
 procedure TContestTarget.Refresh();
@@ -173,12 +180,32 @@ var
    h: Integer;
 begin
    for b := b19 to b10g do begin
-      FBandTotal[b].Clear();
+      FBandTarget[b].Refresh();
+   end;
+
+   FBandTotal.Clear();
+   for b := b19 to b10g do begin
       for h := 1 to 24 do begin
-         FBandTotal[b].Hours[h].Actual := FBandTotal[b].Hours[h].Actual + FBandTarget[b].Hours[h].Actual;
-         FBandTotal[b].Hours[h].Target := FBandTotal[b].Hours[h].Target + FBandTarget[b].Hours[h].Target;
+         FBandTotal.Hours[h].Actual := FBandTotal.Hours[h].Actual + FBandTarget[b].Hours[h].Actual;
+         FBandTotal.Hours[h].Target := FBandTotal.Hours[h].Target + FBandTarget[b].Hours[h].Target;
       end;
    end;
+
+   FBandTotal.Refresh();
+
+
+   FTotal.Clear();
+//   for b := b19 to b10g do begin
+//      FBandTarget[b].Refresh();
+//
+//      for h := 1 to 24 do begin
+//         FBandTotal[b].Hours[h].Target := FBandTotal[b].Hours[h].Target + FBandTarget[b].Hours[h].Target;
+//      end;
+//      FBandTotal[b].Refresh();
+
+      FTotal.Actual := FBandTotal.Total.Actual;
+      FTotal.Target := FBandTotal.Total.Target;
+//   end;
 end;
 
 procedure TContestTarget.Adjust(n: Integer);
@@ -210,9 +237,9 @@ var
    b: TBand;
 begin
    for b := b19 to b10g do begin
-      FBandTotal[b].Clear();
       FBandTarget[b].Clear();
    end;
+   FBandTotal.Clear();
    FTotal.Clear();
 end;
 
