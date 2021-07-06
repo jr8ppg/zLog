@@ -19,12 +19,14 @@ type
     property Target: Integer read FTarget write FTarget;
     property Rate: Double read GetRate;
     procedure Clear();
+    procedure IncActual();
+    procedure IncTarget();
   end;
 
   THourTarget = class(TObject)
   private
     FHourTarget: array[1..24] of TQsoTarget;
-    FHourTotal: TQsoTarget;
+    FHourTotal: TQsoTarget;   // â°åv
     function GetValues(Index: Integer): TQsoTarget;
   public
     constructor Create();
@@ -38,7 +40,8 @@ type
   TContestTarget = class(TObject)
   private
     FBandTarget: array[b19..b10g] of THourTarget;
-    FBandTotal: TQsoTarget;
+    FBandTotal: array[b19..b10g] of THourTarget;   // ècåv
+    FTotal: TQsoTarget;    // ècâ°åv
     function GetValues(B: TBand): THourTarget;
   public
     constructor Create();
@@ -47,8 +50,9 @@ type
     procedure SaveToFile(filename: string);
     procedure Clear();
     procedure Refresh();
+    procedure Adjust(n: Integer);
     property Bands[B: TBand]: THourTarget read GetValues;
-    property Total: TQsoTarget read FBandTotal;
+    property Total: TQsoTarget read FTotal;
   end;
 
 implementation
@@ -74,6 +78,16 @@ procedure TQsoTarget.Clear();
 begin
    FActual := 0;
    FTarget := 0;
+end;
+
+procedure TQsoTarget.IncActual();
+begin
+   Inc(FActual);
+end;
+
+procedure TQsoTarget.IncTarget();
+begin
+   Inc(FTarget);
 end;
 
 { THourTarget }
@@ -102,8 +116,7 @@ procedure THourTarget.Refresh();
 var
    i: Integer;
 begin
-   FHourTotal.Actual := 0;
-   FHourTotal.Target := 0;
+   FHourTotal.Clear();
    for i := 1 to 24 do begin
       FHourTotal.Actual := FHourTotal.Actual + FHourTarget[i].Actual;
       FHourTotal.Target := FHourTotal.Target + FHourTarget[i].Target;
@@ -133,8 +146,9 @@ var
 begin
    for b := b19 to b10g do begin
       FBandTarget[b] := THourTarget.Create();
+      FBandTotal[b] := THourTarget.Create();
    end;
-   FBandTotal := TQsoTarget.Create();
+   FTotal := TQsoTarget.Create();
 end;
 
 destructor TContestTarget.Destroy();
@@ -143,8 +157,9 @@ var
 begin
    for b := b19 to b10g do begin
       FBandTarget[b].Free();
+      FBandTotal[b].Free();
    end;
-   FBandTotal.Free();
+   FTotal.Free();
 end;
 
 function TContestTarget.GetValues(B: TBand): THourTarget;
@@ -155,22 +170,50 @@ end;
 procedure TContestTarget.Refresh();
 var
    b: TBand;
+   h: Integer;
 begin
-   FBandTotal.Clear();
    for b := b19 to b10g do begin
-      FBandTotal.Actual := FBandTotal.Actual + FBandTarget[b].Total.Actual;
-      FBandTotal.Target := FBandTotal.Target + FBandTarget[b].Total.Target;
+      FBandTotal[b].Clear();
+      for h := 1 to 24 do begin
+         FBandTotal[b].Hours[h].Actual := FBandTotal[b].Hours[h].Actual + FBandTarget[b].Hours[h].Actual;
+         FBandTotal[b].Hours[h].Target := FBandTotal[b].Hours[h].Target + FBandTarget[b].Hours[h].Target;
+      end;
    end;
+end;
+
+procedure TContestTarget.Adjust(n: Integer);
+var
+   b: TBand;
+   i: Integer;
+   t: Integer;
+begin
+   for b := b19 to b10g do begin
+      for i := 1 to 24 do begin
+         t := FBandTarget[b].Hours[i].Target;
+
+         if t = 0 then begin
+            Continue;
+         end;
+         if t <= n then begin
+            Continue;
+         end;
+
+         FBandTarget[b].Hours[i].Target := ((t div n) + 1) * n;
+      end;
+   end;
+
+   Refresh();
 end;
 
 procedure TContestTarget.Clear();
 var
    b: TBand;
 begin
-   FBandTotal.Clear();
    for b := b19 to b10g do begin
+      FBandTotal[b].Clear();
       FBandTarget[b].Clear();
    end;
+   FTotal.Clear();
 end;
 
 procedure TContestTarget.LoadFromFile(filename: string);
