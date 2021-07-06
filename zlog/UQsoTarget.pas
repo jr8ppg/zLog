@@ -3,6 +3,7 @@ unit UQsoTarget;
 interface
 
 uses
+  System.SysUtils, System.Classes, System.AnsiStrings, System.Math,
   UzLogConst;
 
 type
@@ -17,6 +18,7 @@ type
     property Actual: Integer read FActual write FActual;
     property Target: Integer read FTarget write FTarget;
     property Rate: Double read GetRate;
+    procedure Clear();
   end;
 
   THourTarget = class(TObject)
@@ -28,6 +30,7 @@ type
     constructor Create();
     destructor Destroy(); override;
     procedure Refresh();
+    procedure Clear();
     property Hours[Index: Integer]: TQsoTarget read GetValues;
     property Total: TQsoTarget read FHourTotal;
   end;
@@ -42,6 +45,7 @@ type
     destructor Destroy(); override;
     procedure LoadFromFile(filename: string);
     procedure SaveToFile(filename: string);
+    procedure Clear();
     procedure Refresh();
     property Bands[B: TBand]: THourTarget read GetValues;
     property Total: TQsoTarget read FBandTotal;
@@ -53,8 +57,7 @@ implementation
 
 constructor TQsoTarget.Create();
 begin
-   FActual := 0;
-   FTarget := 0;
+   Clear();
 end;
 
 function TQsoTarget.GetRate(): Double;
@@ -65,6 +68,12 @@ begin
    else begin
       Result := FActual / FTarget * 100;
    end;
+end;
+
+procedure TQsoTarget.Clear();
+begin
+   FActual := 0;
+   FTarget := 0;
 end;
 
 { THourTarget }
@@ -98,6 +107,16 @@ begin
    for i := 1 to 24 do begin
       FHourTotal.Actual := FHourTotal.Actual + FHourTarget[i].Actual;
       FHourTotal.Target := FHourTotal.Target + FHourTarget[i].Target;
+   end;
+end;
+
+procedure THourTarget.Clear();
+var
+   i: Integer;
+begin
+   FHourTotal.Clear();
+   for i := 1 to 24 do begin
+      FHourTarget[i].Clear();
    end;
 end;
 
@@ -137,22 +156,99 @@ procedure TContestTarget.Refresh();
 var
    b: TBand;
 begin
-   FBandTotal.Actual := 0;
-   FBandTotal.Target := 0;
+   FBandTotal.Clear();
    for b := b19 to b10g do begin
       FBandTotal.Actual := FBandTotal.Actual + FBandTarget[b].Total.Actual;
       FBandTotal.Target := FBandTotal.Target + FBandTarget[b].Total.Target;
    end;
 end;
 
-procedure TContestTarget.LoadFromFile(filename: string);
+procedure TContestTarget.Clear();
+var
+   b: TBand;
 begin
-//
+   FBandTotal.Clear();
+   for b := b19 to b10g do begin
+      FBandTarget[b].Clear();
+   end;
+end;
+
+procedure TContestTarget.LoadFromFile(filename: string);
+var
+   slText: TStringList;
+   slLine: TStringList;
+   b: TBand;
+   h: Integer;
+   n: Integer;
+   i: Integer;
+begin
+   if FileExists(filename) = False then begin
+      Exit;
+   end;
+
+   slText := TStringList.Create();
+   slLine := TStringList.Create();
+   try
+      slText.LoadFromFile(filename);
+
+      Clear();
+
+      for i := 0 to slText.Count - 1 do begin
+         slLine.CommaText := slText[i];
+
+         if slLine.Count < 25 then begin
+            Continue;
+         end;
+
+         n := StrToIntDef(slLine[0], 0);
+         b := TBand(n);
+
+         for h := 1 to slLine.Count - 1 do begin
+            n := StrToIntDef(slLine[h], 0);
+
+            FBandTarget[b].Hours[h].Target := n;
+         end;
+      end;
+   finally
+      slText.Free();
+      slLine.Free();
+   end;
 end;
 
 procedure TContestTarget.SaveToFile(filename: string);
+var
+   slText: TStringList;
+   slLine: TStringList;
+   b: TBand;
+   h: Integer;
+   n: Integer;
+   strPath: string;
 begin
-//
+   strPath := ExtractFilePath(filename);
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+
+   slText := TStringList.Create();
+   slLine := TStringList.Create();
+   try
+      for b := b19 to b10g do begin
+         slLine.Clear();
+         slLine.Add(IntToStr(Ord(b)));
+
+         for h := 1 to 24 do begin
+            n := FBandTarget[b].Hours[h].Target;
+            slLine.Add(IntToStr(n));
+         end;
+
+         slText.Add(slLine.CommaText);
+      end;
+
+      slText.SaveToFile(filename);
+   finally
+      slText.Free();
+      slLine.Free();
+   end;
 end;
 
 end.
