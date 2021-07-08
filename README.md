@@ -13,18 +13,18 @@ Windows専用ですが，Delphiで書かれているのでMacOSやLinuxへの移
 This software is released under the GNU General Public License.
 
 # Authors
-Yokobayashi Yohei (ex. JJ1MED), JARL Contest Committee, JR8PPG
+Yokobayashi Yohei, JARL Contest Committee, JR8PPG
 
 # Document
 There is no documentation for the developer.
 開発のためのドキュメントはありません
 
-zLog for Windowsは元東京大学アマチュア無線部JA1ZLOの横林洋平さん（ex. JJ1MED）
-が開発した，アマチュア無線コンテストロギングソフトです．
+zLog for Windowsは元東京大学アマチュア無線部JA1ZLOの横林洋平さんが開発した，
+アマチュア無線コンテストロギングソフトです．
 すでに横林さんはzLog for Windowsのメンテナンスに係わっておらず，現在公開され
 ている最新版は2004年11月20日に公開されたzLog for Windows 2.2です．
 
-http://www.zlog.org/zlog/zlogwin.html
+https://zlog.org/
 
 Windows 10での動作は不安定で，動作することもあれば動作しないこともあるという状
 態です．

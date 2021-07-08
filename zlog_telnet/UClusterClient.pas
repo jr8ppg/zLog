@@ -88,6 +88,9 @@ var
 
 implementation
 
+uses
+  UzLogGlobal;
+
 {$R *.DFM}
 
 procedure TClusterClient.FormCreate(Sender: TObject);
@@ -376,16 +379,23 @@ procedure TClusterClient.TelnetSessionConnected(Sender: TTnCnx; Error: Word);
 begin
    try
       if FClusterRecordLogs = True then begin
-         AssignFile(FClusterLog, FClusterLogFileName);
+         // 300MÇÃãÛÇ´óeó Ç™Ç†Ç¡ÇΩèÍçáÇ…recordÇ∑ÇÈ
+         if CheckDiskFreeSpace(ExtractFilePath(FClusterLogFileName), 300) = True then begin
+            AssignFile(FClusterLog, FClusterLogFileName);
 
-         if FileExists(FClusterLogFileName) = True then begin
-            Append(FClusterLog);
+            if FileExists(FClusterLogFileName) = True then begin
+               Append(FClusterLog);
+            end
+            else begin
+               Rewrite(FClusterLog);
+            end;
+
+            FUseClusterLog := True;
          end
          else begin
-            Rewrite(FClusterLog);
+            Console.WriteString('**** Not enough free disk space (Not Record!) ****');
+            FUseClusterLog := False;
          end;
-
-         FUseClusterLog := True;
       end;
 
       buttonConnect.Caption := 'Disconnect';

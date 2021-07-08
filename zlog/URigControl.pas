@@ -3801,9 +3801,14 @@ begin
       FFreqLabel[currentvfo].Font.Color := clRed;
    end;
 
-   FFreqLabel[0].Font.Style := [];
-   FFreqLabel[1].Font.Style := [];
-   FFreqLabel[currentvfo].Font.Style := [fsBold];
+   if currentvfo = 0 then begin
+      FFreqLabel[0].Font.Style := [fsBold];
+      FFreqLabel[1].Font.Style := [];
+   end
+   else begin
+      FFreqLabel[0].Font.Style := [];
+      FFreqLabel[1].Font.Style := [fsBold];
+   end;
 end;
 
 procedure TRigControl.SetRit(fOnOff: Boolean);

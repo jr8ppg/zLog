@@ -606,16 +606,23 @@ procedure TCommForm.TelnetSessionConnected(Sender: TTnCnx; Error: Word);
 begin
    try
       if checkRecordLogs.Checked = True then begin
-         AssignFile(FClusterLog, FClusterLogFileName);
+         // 300MÇÃãÛÇ´óeó Ç™Ç†Ç¡ÇΩèÍçáÇ…recordÇ∑ÇÈ
+         if CheckDiskFreeSpace(ExtractFilePath(FClusterLogFileName), 300) = True then begin
+            AssignFile(FClusterLog, FClusterLogFileName);
 
-         if FileExists(FClusterLogFileName) = True then begin
-            Append(FClusterLog);
+            if FileExists(FClusterLogFileName) = True then begin
+               Append(FClusterLog);
+            end
+            else begin
+               Rewrite(FClusterLog);
+            end;
+
+            FUseClusterLog := True;
          end
          else begin
-            Rewrite(FClusterLog);
+            Console.WriteString('**** Not enough free disk space (Not Record!) ****');
+            FUseClusterLog := False;
          end;
-
-         FUseClusterLog := True;
       end;
 
       checkAutoLogin.Enabled := False;
@@ -638,7 +645,7 @@ procedure TCommForm.TelnetSessionClosed(Sender: TTnCnx; Error: Word);
 begin
    WriteLineConsole('disconnected...');
 
-   if checkRecordLogs.Checked = True then begin
+   if (checkRecordLogs.Checked = True) and (FUseClusterLog = True) then begin
       CloseFile(FClusterLog);
    end;
    FUseClusterLog := False;

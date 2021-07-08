@@ -1718,28 +1718,28 @@ object formOptions: TformOptions
         end
         object Label42: TLabel
           Left = 8
-          Top = 112
+          Top = 118
           Width = 25
           Height = 13
           Caption = 'Rig 1'
         end
         object Label43: TLabel
           Left = 174
-          Top = 112
+          Top = 118
           Width = 16
           Height = 13
           Caption = 'Rig'
         end
         object Label31: TLabel
           Left = 8
-          Top = 136
+          Top = 142
           Width = 25
           Height = 13
           Caption = 'Rig 2'
         end
         object Label44: TLabel
           Left = 174
-          Top = 136
+          Top = 142
           Width = 16
           Height = 13
           Caption = 'Rig'
@@ -1803,14 +1803,14 @@ object formOptions: TformOptions
         end
         object gbCWPort: TGroupBox
           Left = 8
-          Top = 213
-          Width = 353
-          Height = 51
+          Top = 176
+          Width = 123
+          Height = 81
           Caption = 'CW/PTT port'
-          TabOrder = 16
+          TabOrder = 14
           object comboCwPttPort: TComboBox
-            Left = 14
-            Top = 18
+            Left = 28
+            Top = 20
             Width = 64
             Height = 21
             Style = csDropDownList
@@ -1840,8 +1840,8 @@ object formOptions: TformOptions
               'USB')
           end
           object checkUseWinKeyer: TCheckBox
-            Left = 256
-            Top = 16
+            Left = 14
+            Top = 47
             Width = 89
             Height = 25
             Caption = 'Use WinKeyer'
@@ -1850,7 +1850,7 @@ object formOptions: TformOptions
         end
         object comboRig1Port: TComboBox
           Left = 36
-          Top = 109
+          Top = 115
           Width = 64
           Height = 21
           Style = csDropDownList
@@ -1880,7 +1880,7 @@ object formOptions: TformOptions
         end
         object comboRig1Name: TComboBox
           Left = 194
-          Top = 108
+          Top = 114
           Width = 120
           Height = 21
           Style = csDropDownList
@@ -1890,7 +1890,7 @@ object formOptions: TformOptions
         end
         object comboRig2Port: TComboBox
           Left = 36
-          Top = 133
+          Top = 139
           Width = 64
           Height = 21
           Style = csDropDownList
@@ -1920,7 +1920,7 @@ object formOptions: TformOptions
         end
         object comboRig2Name: TComboBox
           Left = 194
-          Top = 132
+          Top = 138
           Width = 120
           Height = 21
           Style = csDropDownList
@@ -1931,7 +1931,7 @@ object formOptions: TformOptions
         object cbTransverter1: TCheckBox
           Tag = 101
           Left = 320
-          Top = 110
+          Top = 116
           Width = 41
           Height = 17
           Hint = 'Check here if you are using a transverter'
@@ -1942,7 +1942,7 @@ object formOptions: TformOptions
         object cbTransverter2: TCheckBox
           Tag = 102
           Left = 320
-          Top = 132
+          Top = 138
           Width = 41
           Height = 17
           Hint = 'Check here if you are using a transverter'
@@ -1968,7 +1968,7 @@ object formOptions: TformOptions
         end
         object comboRig1Speed: TComboBox
           Left = 103
-          Top = 109
+          Top = 115
           Width = 65
           Height = 21
           Style = csDropDownList
@@ -1989,7 +1989,7 @@ object formOptions: TformOptions
         end
         object comboRig2Speed: TComboBox
           Left = 103
-          Top = 133
+          Top = 139
           Width = 65
           Height = 21
           Style = csDropDownList
@@ -2008,21 +2008,55 @@ object formOptions: TformOptions
             '128000'
             '256000')
         end
-        object checkUseTransceiveMode: TCheckBox
-          Left = 36
-          Top = 159
-          Width = 208
-          Height = 17
-          Caption = 'Use Transceive Mode (ICOM only)'
-          TabOrder = 14
-        end
-        object checkGetBandAndMode: TCheckBox
-          Left = 36
-          Top = 178
-          Width = 230
-          Height = 17
-          Caption = 'Get band and mode alternately(ICOM only)'
+        object GroupBox21: TGroupBox
+          Left = 137
+          Top = 176
+          Width = 224
+          Height = 81
+          Caption = 'ICOM CI-V Options'
           TabOrder = 15
+          object Label83: TLabel
+            Left = 9
+            Top = 23
+            Width = 27
+            Height = 13
+            Caption = 'Mode'
+          end
+          object Label84: TLabel
+            Left = 9
+            Top = 52
+            Width = 36
+            Height = 13
+            Caption = 'Method'
+          end
+          object comboIcomMode: TComboBox
+            Left = 53
+            Top = 20
+            Width = 160
+            Height = 21
+            Style = csDropDownList
+            ImeMode = imDisable
+            ItemIndex = 0
+            TabOrder = 0
+            Text = 'CI-V Transceive On'
+            OnChange = comboIcomModeChange
+            Items.Strings = (
+              'CI-V Transceive On'
+              'CI-V Transceive Off (Polling)')
+          end
+          object comboIcomMethod: TComboBox
+            Left = 53
+            Top = 49
+            Width = 160
+            Height = 21
+            Style = csDropDownList
+            ItemIndex = 0
+            TabOrder = 1
+            Text = 'Get freq. and mode (slow)'
+            Items.Strings = (
+              'Get freq. and mode (slow)'
+              'Get freq. only (fast)')
+          end
         end
       end
       object GroupBox7: TGroupBox
