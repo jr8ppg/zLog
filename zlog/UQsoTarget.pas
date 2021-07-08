@@ -3,8 +3,11 @@ unit UQsoTarget;
 interface
 
 uses
-  System.SysUtils, System.Classes, System.AnsiStrings, System.Math,
-  UzLogConst;
+  Vcl.Forms, System.SysUtils, System.Classes, System.AnsiStrings, System.Math,
+  System.DateUtils, UzLogConst, UzLogQSO;
+
+const
+  MAX_HOURS = 48;
 
 type
 
@@ -19,13 +22,14 @@ type
     property Target: Integer read FTarget write FTarget;
     property Rate: Double read GetRate;
     procedure Clear();
+    procedure ActualClear();
     procedure IncActual();
     procedure IncTarget();
   end;
 
   THourTarget = class(TObject)
   private
-    FHourTarget: array[1..24] of TQsoTarget;
+    FHourTarget: array[1..MAX_HOURS] of TQsoTarget;
     FHourTotal: TQsoTarget;   // 横計
     function GetValues(Index: Integer): TQsoTarget;
   public
@@ -33,6 +37,7 @@ type
     destructor Destroy(); override;
     procedure Refresh();
     procedure Clear();
+    procedure ActualClear();
     property Hours[Index: Integer]: TQsoTarget read GetValues;
     property Total: TQsoTarget read FHourTotal;
   end;
@@ -43,21 +48,27 @@ type
     FBandTotal: THourTarget;   // 縦計
     FTotal: TQsoTarget;    // 縦横計
     function GetBandTarget(B: TBand): THourTarget;
-    function GetBandTotal(B: TBand): THourTarget;
   public
     constructor Create();
     destructor Destroy(); override;
-    procedure LoadFromFile(filename: string);
-    procedure SaveToFile(filename: string);
+    procedure LoadFromFile(filename: string); overload;
+    procedure SaveToFile(filename: string); overload;
+    procedure LoadFromFile(); overload;
+    procedure SaveToFile(); overload;
     procedure Clear();
+    procedure ActualClear();
     procedure Refresh();
     procedure Adjust(n: Integer);
+    function UpdateActualQSOs(origin: TDateTime): Integer;
     property Bands[B: TBand]: THourTarget read GetBandTarget;
     property Total: THourTarget read FBandTotal;
     property TotalTotal: TQsoTarget read FTotal;
   end;
 
 implementation
+
+uses
+  UzLogGlobal;
 
 { TQsoTarget }
 
@@ -82,6 +93,11 @@ begin
    FTarget := 0;
 end;
 
+procedure TQsoTarget.ActualClear();
+begin
+   FActual := 0;
+end;
+
 procedure TQsoTarget.IncActual();
 begin
    Inc(FActual);
@@ -98,7 +114,7 @@ constructor THourTarget.Create();
 var
    i: Integer;
 begin
-   for i := 1 to 24 do begin
+   for i := Low(FHourTarget) to High(FHourTarget) do begin
       FHourTarget[i] := TQsoTarget.Create();
    end;
    FHourTotal := TQsoTarget.Create();
@@ -108,7 +124,7 @@ destructor THourTarget.Destroy();
 var
    i: Integer;
 begin
-   for i := 1 to 24 do begin
+   for i := Low(FHourTarget) to High(FHourTarget) do begin
       FHourTarget[i].Free();
    end;
    FHourTotal.Free();
@@ -119,7 +135,7 @@ var
    i: Integer;
 begin
    FHourTotal.Clear();
-   for i := 1 to 24 do begin
+   for i := Low(FHourTarget) to High(FHourTarget) do begin
       FHourTotal.Actual := FHourTotal.Actual + FHourTarget[i].Actual;
       FHourTotal.Target := FHourTotal.Target + FHourTarget[i].Target;
    end;
@@ -130,8 +146,18 @@ var
    i: Integer;
 begin
    FHourTotal.Clear();
-   for i := 1 to 24 do begin
+   for i := Low(FHourTarget) to High(FHourTarget) do begin
       FHourTarget[i].Clear();
+   end;
+end;
+
+procedure THourTarget.ActualClear();
+var
+   i: Integer;
+begin
+   FHourTotal.ActualClear();
+   for i := Low(FHourTarget) to High(FHourTarget) do begin
+      FHourTarget[i].ActualClear();
    end;
 end;
 
@@ -169,11 +195,6 @@ begin
    Result := FBandTarget[B];
 end;
 
-function TContestTarget.GetBandTotal(B: TBand): THourTarget;
-begin
-   Result := FBandTotal;
-end;
-
 procedure TContestTarget.Refresh();
 var
    b: TBand;
@@ -185,7 +206,7 @@ begin
 
    FBandTotal.Clear();
    for b := b19 to b10g do begin
-      for h := 1 to 24 do begin
+      for h := 1 to MAX_HOURS do begin
          FBandTotal.Hours[h].Actual := FBandTotal.Hours[h].Actual + FBandTarget[b].Hours[h].Actual;
          FBandTotal.Hours[h].Target := FBandTotal.Hours[h].Target + FBandTarget[b].Hours[h].Target;
       end;
@@ -195,17 +216,9 @@ begin
 
 
    FTotal.Clear();
-//   for b := b19 to b10g do begin
-//      FBandTarget[b].Refresh();
-//
-//      for h := 1 to 24 do begin
-//         FBandTotal[b].Hours[h].Target := FBandTotal[b].Hours[h].Target + FBandTarget[b].Hours[h].Target;
-//      end;
-//      FBandTotal[b].Refresh();
 
-      FTotal.Actual := FBandTotal.Total.Actual;
-      FTotal.Target := FBandTotal.Total.Target;
-//   end;
+   FTotal.Actual := FBandTotal.Total.Actual;
+   FTotal.Target := FBandTotal.Total.Target;
 end;
 
 procedure TContestTarget.Adjust(n: Integer);
@@ -215,7 +228,7 @@ var
    t: Integer;
 begin
    for b := b19 to b10g do begin
-      for i := 1 to 24 do begin
+      for i := 1 to MAX_HOURS do begin
          t := FBandTarget[b].Hours[i].Target;
 
          if t = 0 then begin
@@ -232,6 +245,46 @@ begin
    Refresh();
 end;
 
+function TContestTarget.UpdateActualQSOs(origin: TDateTime): Integer;
+var
+   total_count: Integer;
+   i: Integer;
+   aQSO: TQSO;
+   diff: TDateTime;
+   H, M, S, ms: Word;
+   D: Integer;
+begin
+   ActualClear();
+
+   total_count := 0;
+   for i := 1 to Log.TotalQSO do begin
+      aQSO := Log.QsoList[i];
+
+      if (aQSO.Points = 0) then begin    // 得点無しはスキップ
+         Continue;
+      end;
+
+      if (aQSO.Time < origin) then begin // グラフ化以前の交信
+         Inc(total_count);
+      end
+      else begin
+         diff := aQSO.Time - origin;
+         DecodeTime(diff, H, M, S, ms);
+         D := Trunc(DaySpan(aQSO.Time, origin));
+         H := H + (D * 24);
+         if (H > 47) then begin
+            Continue;
+         end;
+
+         FBandTarget[aQSO.Band].Hours[H + 1].IncActual();
+      end;
+   end;
+
+   Refresh();
+
+   Result := total_count;
+end;
+
 procedure TContestTarget.Clear();
 var
    b: TBand;
@@ -241,6 +294,22 @@ begin
    end;
    FBandTotal.Clear();
    FTotal.Clear();
+end;
+
+procedure TContestTarget.ActualClear();
+var
+   b: TBand;
+begin
+   for b := b19 to b10g do begin
+      FBandTarget[b].ActualClear();
+   end;
+   FBandTotal.ActualClear();
+   FTotal.ActualClear();
+end;
+
+procedure TContestTarget.LoadFromFile();
+begin
+   LoadFromFile(ExtractFilePath(Application.ExeName) + 'zlog_target.txt');
 end;
 
 procedure TContestTarget.LoadFromFile(filename: string);
@@ -279,10 +348,17 @@ begin
             FBandTarget[b].Hours[h].Target := n;
          end;
       end;
+
+      Refresh();
    finally
       slText.Free();
       slLine.Free();
    end;
+end;
+
+procedure TContestTarget.SaveToFile();
+begin
+   SaveToFile(ExtractFilePath(Application.ExeName) + 'zlog_target.txt');
 end;
 
 procedure TContestTarget.SaveToFile(filename: string);
@@ -306,7 +382,7 @@ begin
          slLine.Clear();
          slLine.Add(IntToStr(Ord(b)));
 
-         for h := 1 to 24 do begin
+         for h := 1 to MAX_HOURS do begin
             n := FBandTarget[b].Hours[h].Target;
             slLine.Add(IntToStr(n));
          end;

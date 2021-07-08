@@ -95,6 +95,7 @@ object TargetEditor: TTargetEditor
       Anchors = [akTop, akRight]
       Caption = 'OK'
       TabOrder = 0
+      OnClick = buttonOKClick
     end
     object buttonCancel: TButton
       Left = 916

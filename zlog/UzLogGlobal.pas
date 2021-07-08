@@ -5,7 +5,8 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.Math, Vcl.Graphics, System.DateUtils,
-  UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan;
+  UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
+  UQsoTarget;
 
 type
   TCWSettingsParam = record
@@ -234,6 +235,8 @@ type
     FBandPlan: TBandPlan;
     FOpList: TOperatorInfoList;
 
+    FTarget: TContestTarget;
+
     FMyCountry: string;
     FMyContinent: string;
     FMyCQZone: string;
@@ -340,6 +343,7 @@ public
     property MyCQZone: string read FMyCQZone;
     property MyITUZone: string read FMyITUZone;
     property BandPlan: TBandPlan read FBandPlan;
+    property Target: TContestTarget read FTarget;
   end;
 
 function Log(): TLog;
@@ -439,10 +443,14 @@ begin
 
    FBandPlan := TBandPlan.Create();
    FBandPlan.LoadFromFile();
+
+   FTarget := TContestTarget.Create();
+   FTarget.LoadFromFile();
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
 begin
+   FTarget.Free();
    FBandPlan.Free();
    FCountryList.Free();
    FPrefixList.Free();

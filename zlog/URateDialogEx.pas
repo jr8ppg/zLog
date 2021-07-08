@@ -66,6 +66,9 @@ type
     FGraphSeries: array[b19..bTarget] of TBarSeries;
     FGraphStyle: TQSORateStyle;
     FGraphStartPosition: TQSORateStartPosition;
+    function UpdateGraphOriginal(hh: Integer): Integer;
+    function UpdateGraphByBand(hh: Integer): Integer;
+    function UpdateGraphByRange(hh: Integer): Integer;
     function GetGraphSeries(b: TBand): TBarSeries;
     procedure SetGraphStyle(v: TQSORateStyle);
     procedure SetGraphStartPosition(v: TQSORateStartPosition);
@@ -298,17 +301,12 @@ var
    hour_count: Integer;
    total_count: Integer;
    hour_peak: Integer;
-   part_count: Integer;
    Str: string;
    _start: TDateTime;
    H, M, S, ms: Word;
-   D: Integer;
    i: Integer;
-   b: TBand;
-   aQSO: TQSO;
-   diff: TDateTime;
-   count_array: array[0..48] of array[b19..b10g] of Integer;
    hindex: Integer;
+   b: TBand;
 
    function CalcStartTime(dt: TDateTime): TDateTime;
    begin
@@ -321,6 +319,7 @@ begin
    SeriesTotalQSOs.Clear();
    Chart1.Axes.Bottom.Items.Clear();
 
+   // 基準時刻を求める
    if Log.TotalQSO = 0 then begin
       _start := CalcStartTime( CurrentTime() );
    end
@@ -336,44 +335,10 @@ begin
    DecodeTime(_start, H, M, S, ms);
    _start := Int(_start) + EncodeTime(H, 0, 0, 0);
 
-//   if Log.TotalQSO = 0 then begin
-//      Exit;
-//   end;
+   // バンド別時間別の集計データを作成
+   total_count := dmZLogGlobal.Target.UpdateActualQSOs(_start);
 
-//   if TQSO(Log.List[Log.TotalQSO]).QSO.time < _start then begin
-//      Exit;
-//   end;
-
-   for i := 0 to 48 do begin
-      for b := b19 to b10g do begin
-         count_array[i][b] := 0;
-      end;
-   end;
-
-   total_count := 0;
-   for i := 1 to Log.TotalQSO do begin
-      aQSO := Log.QsoList[i];
-
-      if (aQSO.Points = 0) then begin    // 得点無しはスキップ
-         Continue;
-      end;
-
-      if (aQSO.Time < _start) then begin // グラフ化以前の交信
-         Inc(total_count);
-      end
-      else begin
-         diff := aQSO.Time - _start;
-         DecodeTime(diff, H, M, S, ms);
-         D := Trunc(DaySpan(aQSO.Time, _start));
-         H := H + (D * 24);
-         if (H > 47) then begin
-            Continue;
-         end;
-
-         Inc(count_array[H][aQSO.Band]);
-      end;
-   end;
-
+   // グラフに展開
    hour_peak := 0;
    for i := 0 to FShowLast - 1 do begin
       Str := IntToStr(GetHour(_start + (1 / 24) * i));
@@ -396,101 +361,44 @@ begin
 
       hour_count := 0;
       if GraphStyle = rsOriginal then begin
-         for b := b19 to b10g do begin
-            part_count := count_array[i][b];
-
-            // この時間帯の合計
-            hour_count := hour_count + part_count;
-         end;
-
-         // グラフデータの追加
-         FGraphSeries[b19].Add(hour_count);
-         FGraphSeries[bTarget].Add(0);
+         hour_count := UpdateGraphOriginal(i + 1);
       end
       else if GraphStyle = rsByBand then begin
-         for b := b19 to b10g do begin
-            part_count := count_array[i][b];
-
-            // グラフデータの追加
-            FGraphSeries[b].Add(part_count);
-
-            // この時間帯の合計
-            hour_count := hour_count + part_count;
-         end;
-         FGraphSeries[bTarget].Add(0);
+         hour_count := UpdateGraphByBand(i + 1);
       end
       else if GraphStyle = rsByFreqRange then begin
-         // HF(L)
-         part_count := count_array[i][b19] +
-                       count_array[i][b35] +
-                       count_array[i][b7] +
-                       count_array[i][b10];
-
-         // グラフデータの追加
-         FGraphSeries[b19].Add(part_count);
-
-         // この時間帯の合計
-         hour_count := hour_count + part_count;
-
-         // HF(H)
-         part_count := count_array[i][b14] +
-                       count_array[i][b18] +
-                       count_array[i][b21] +
-                       count_array[i][b24] +
-                       count_array[i][b28];
-
-         // グラフデータの追加
-         FGraphSeries[b14].Add(part_count);
-
-         // この時間帯の合計
-         hour_count := hour_count + part_count;
-
-         // VHF
-         part_count := count_array[i][b50] +
-                       count_array[i][b144];
-
-         // グラフデータの追加
-         FGraphSeries[b50].Add(part_count);
-
-         // この時間帯の合計
-         hour_count := hour_count + part_count;
-
-         // UHF
-         part_count := count_array[i][b430] +
-                       count_array[i][b1200] +
-                       count_array[i][b2400];
-
-         // グラフデータの追加
-         FGraphSeries[b430].Add(part_count);
-
-         // この時間帯の合計
-         hour_count := hour_count + part_count;
-
-         // SHF
-         part_count := count_array[i][b5600] +
-                       count_array[i][b10g];
-
-         // グラフデータの追加
-         FGraphSeries[b5600].Add(part_count);
-
-         FGraphSeries[bTarget].Add(0);
-
-         // この時間帯の合計
-         hour_count := hour_count + part_count;
+         hour_count := UpdateGraphByRange(i + 1);
       end;
 
       // 縦軸目盛り調整のための値
       total_count := total_count + hour_count;
       hour_peak := Max(hour_peak, hour_count);
+      hour_peak := Max(hour_peak, dmZLogGlobal.Target.Total.Hours[i + 1].Target);
 
       // 累計
       SeriesTotalQSOs.Add(total_count);
 
-
       // 横軸目盛ラベル
       Chart1.Axes.Bottom.Items.Add(hindex + 1, Str + 't');
+
+      // Target QSOs
       FGraphSeries[b19].Add(0);
-      FGraphSeries[bTarget].Add(hour_count);
+      FGraphSeries[b35].Add(0);
+      FGraphSeries[b7].Add(0);
+      FGraphSeries[b10].Add(0);
+      FGraphSeries[b14].Add(0);
+      FGraphSeries[b18].Add(0);
+      FGraphSeries[b21].Add(0);
+      FGraphSeries[b24].Add(0);
+      FGraphSeries[b28].Add(0);
+      FGraphSeries[b50].Add(0);
+      FGraphSeries[b144].Add(0);
+      FGraphSeries[b430].Add(0);
+      FGraphSeries[b1200].Add(0);
+      FGraphSeries[b2400].Add(0);
+      FGraphSeries[b5600].Add(0);
+      FGraphSeries[b10g].Add(0);
+      FGraphSeries[bTarget].Add(dmZLogGlobal.Target.Total.Hours[i + 1].Target);
 
       // 累計
       SeriesTotalQSOs.Add(total_count);
@@ -515,6 +423,133 @@ begin
          Axes.Right.Increment := 50;
       end;
    end;
+end;
+
+function TRateDialogEx.UpdateGraphOriginal(hh: Integer): Integer;
+var
+   b: TBand;
+   part_count: Integer;
+   hour_count: Integer;
+begin
+   hour_count := 0;
+
+   for b := b19 to b10g do begin
+      part_count := dmZLogGlobal.Target.Bands[b].Hours[hh].Actual;
+
+      // この時間帯の合計
+      hour_count := hour_count + part_count;
+   end;
+
+   // Actual QSOs
+   FGraphSeries[b19].Add(hour_count);
+
+   for b := b35 to b10g do begin
+      FGraphSeries[b].Add(0);
+   end;
+
+   FGraphSeries[bTarget].Add(0);
+
+   Result := hour_count;
+end;
+
+function TRateDialogEx.UpdateGraphByBand(hh: Integer): Integer;
+var
+   b: TBand;
+   part_count: Integer;
+   hour_count: Integer;
+begin
+   hour_count := 0;
+
+   for b := b19 to b10g do begin
+      part_count := dmZLogGlobal.Target.Bands[b].Hours[hh].Actual;
+
+      // グラフデータの追加
+      FGraphSeries[b].Add(part_count);
+
+      // この時間帯の合計
+      hour_count := hour_count + part_count;
+   end;
+
+   FGraphSeries[bTarget].Add(0);
+
+   Result := hour_count;
+end;
+
+function TRateDialogEx.UpdateGraphByRange(hh: Integer): Integer;
+var
+   part_count: Integer;
+   hour_count: Integer;
+begin
+   hour_count := 0;
+
+   // HF(L)
+   part_count := dmZLogGlobal.Target.Bands[b19].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b35].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b7].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b10].Hours[hh].Actual;
+
+   // グラフデータの追加
+   FGraphSeries[b19].Add(part_count);
+   FGraphSeries[b35].Add(0);
+   FGraphSeries[b7].Add(0);
+   FGraphSeries[b10].Add(0);
+
+   // この時間帯の合計
+   hour_count := hour_count + part_count;
+
+   // HF(H)
+   part_count := dmZLogGlobal.Target.Bands[b14].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b18].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b21].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b24].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b28].Hours[hh].Actual;
+
+   // グラフデータの追加
+   FGraphSeries[b14].Add(part_count);
+   FGraphSeries[b18].Add(0);
+   FGraphSeries[b21].Add(0);
+   FGraphSeries[b24].Add(0);
+   FGraphSeries[b28].Add(0);
+
+   // この時間帯の合計
+   hour_count := hour_count + part_count;
+
+   // VHF
+   part_count := dmZLogGlobal.Target.Bands[b50].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b144].Hours[hh].Actual;
+
+   // グラフデータの追加
+   FGraphSeries[b50].Add(part_count);
+   FGraphSeries[b144].Add(0);
+
+   // この時間帯の合計
+   hour_count := hour_count + part_count;
+
+   // UHF
+   part_count := dmZLogGlobal.Target.Bands[b430].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b1200].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b2400].Hours[hh].Actual;
+
+   // グラフデータの追加
+   FGraphSeries[b430].Add(part_count);
+   FGraphSeries[b1200].Add(0);
+
+   // この時間帯の合計
+   hour_count := hour_count + part_count;
+
+   // SHF
+   part_count := dmZLogGlobal.Target.Bands[b5600].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b10g].Hours[hh].Actual;
+
+   // グラフデータの追加
+   FGraphSeries[b5600].Add(part_count);
+   FGraphSeries[b10g].Add(0);
+   FGraphSeries[bTarget].Add(0);
+
+   // この時間帯の合計
+   hour_count := hour_count + part_count;
+
+   Result := hour_count;
 end;
 
 procedure TRateDialogEx.ShowLastComboChange(Sender: TObject);

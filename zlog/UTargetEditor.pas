@@ -31,14 +31,15 @@ type
       Rect: TRect; State: TGridDrawState);
     procedure checkShowZeroClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure buttonOKClick(Sender: TObject);
   private
     { Private êÈåæ }
     FTarget: TContestTarget;
     procedure ShowWarcBand(fShow: Boolean);
+    procedure TargetToGrid(ATarget: TContestTarget);
+    procedure GridToTarget(ATarget: TContestTarget);
   public
     { Public êÈåæ }
-    procedure TargetToGrid();
-    procedure GridToTarget();
   end;
 
 implementation
@@ -79,7 +80,8 @@ begin
    ScoreGrid.Cells[25, 0] := 'Total';
    ScoreGrid.ColWidths[25] := 64;
 
-   TargetToGrid();
+   TargetToGrid(dmZLogGlobal.Target);
+   GridToTarget(FTarget);
 end;
 
 procedure TTargetEditor.FormDestroy(Sender: TObject);
@@ -100,7 +102,7 @@ begin
 
    FTarget.Adjust(n);
 
-   TargetToGrid();
+   TargetToGrid(FTarget);
 end;
 
 procedure TTargetEditor.buttonLoadZLOClick(Sender: TObject);
@@ -147,10 +149,17 @@ begin
 
       FTarget.Refresh();
 
-      TargetToGrid();
+      TargetToGrid(FTarget);
    finally
       log.Free();
    end;
+end;
+
+procedure TTargetEditor.buttonOKClick(Sender: TObject);
+begin
+   GridToTarget(dmZLogGlobal.Target);
+   dmZLogGlobal.Target.SaveToFile();
+   ModalResult := mrOK;
 end;
 
 procedure TTargetEditor.checkShowWarcClick(Sender: TObject);
@@ -177,30 +186,30 @@ begin
    end;
 end;
 
-procedure TTargetEditor.TargetToGrid();
+procedure TTargetEditor.TargetToGrid(ATarget: TContestTarget);
 var
    b: TBand;
    i: Integer;
 begin
    for b := b19 to b10g do begin
       for i := 1 to 24 do begin
-         ScoreGrid.Cells[i, Ord(b)+1] := IntToStr(FTarget.Bands[b].Hours[i].Target);
-         ScoreGrid.Cells[i, 17]       := IntToStr(FTarget.Total.Hours[i].Target);
+         ScoreGrid.Cells[i, Ord(b)+1] := IntToStr(ATarget.Bands[b].Hours[i].Target);
+         ScoreGrid.Cells[i, 17]       := IntToStr(ATarget.Total.Hours[i].Target);
       end;
-      ScoreGrid.Cells[25, Ord(b)+1]   := IntToStr(FTarget.TotalTotal.Target);
+      ScoreGrid.Cells[25, Ord(b)+1]   := IntToStr(ATarget.TotalTotal.Target);
    end;
 
    ScoreGrid.Refresh();
 end;
 
-procedure TTargetEditor.GridToTarget();
+procedure TTargetEditor.GridToTarget(ATarget: TContestTarget);
 var
    b: TBand;
    i: Integer;
 begin
    for b := b19 to b10g do begin
       for i := 1 to 24 do begin
-         FTarget.Bands[b].Hours[i].Target := StrToIntDef(ScoreGrid.Cells[i, Ord(b)+1], 0);
+         ATarget.Bands[b].Hours[i].Target := StrToIntDef(ScoreGrid.Cells[i, Ord(b)+1], 0);
       end;
    end;
 end;
