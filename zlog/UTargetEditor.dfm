@@ -27,12 +27,12 @@ object TargetEditor: TTargetEditor
     ColCount = 26
     DefaultDrawing = False
     RowCount = 18
-    Font.Charset = ANSI_CHARSET
+    Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -15
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Style = []
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goEditing]
     ParentFont = False
     TabOrder = 0
     OnDrawCell = ScoreGridDrawCell
