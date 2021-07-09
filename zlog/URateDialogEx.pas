@@ -638,9 +638,9 @@ begin
             else begin
                strText := IntToStr(t);
             end;
-         end;
+//         end;
          TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
-//      end;
+      end;
    end;
 end;
 
@@ -726,16 +726,18 @@ procedure TRateDialogEx.TargetToGrid(ATarget: TContestTarget);
 var
    b: TBand;
    i: Integer;
+   R: Integer;
 begin
    for b := b19 to b10g do begin
+      R := (Ord(b) * 2) + 1;
       for i := 1 to 24 do begin
-         ScoreGrid.Cells[i, Ord(b)+1] := IntToStr(ATarget.Bands[b].Hours[i].Target);
-         ScoreGrid.Cells[i, Ord(b)+2] := IntToStr(ATarget.Bands[b].Hours[i].Actual);
+         ScoreGrid.Cells[i, R + 0] := IntToStr(ATarget.Bands[b].Hours[i].Target);
+         ScoreGrid.Cells[i, R + 1] := IntToStr(ATarget.Bands[b].Hours[i].Actual);
          ScoreGrid.Cells[i, 33]       := IntToStr(ATarget.Total.Hours[i].Target);
          ScoreGrid.Cells[i, 34]       := IntToStr(ATarget.Total.Hours[i].Actual);
       end;
-      ScoreGrid.Cells[25, Ord(b)+1]   := IntToStr(ATarget.Bands[b].Total.Target);
-      ScoreGrid.Cells[25, Ord(b)+2]   := IntToStr(ATarget.Bands[b].Total.Actual);
+      ScoreGrid.Cells[25, R + 0]   := IntToStr(ATarget.Bands[b].Total.Target);
+      ScoreGrid.Cells[25, R + 1]   := IntToStr(ATarget.Bands[b].Total.Actual);
    end;
 
    ScoreGrid.Cells[25, 33]   := IntToStr(ATarget.TotalTotal.Target);

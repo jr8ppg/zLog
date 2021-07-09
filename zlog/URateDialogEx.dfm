@@ -30,7 +30,6 @@ object RateDialogEx: TRateDialogEx
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 334
     object Label1: TLabel
       Left = 8
       Top = 8
@@ -84,6 +83,8 @@ object RateDialogEx: TRateDialogEx
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = 'Graph'
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 281
       ExplicitHeight = 165
       object Panel2: TPanel
@@ -138,7 +139,6 @@ object RateDialogEx: TRateDialogEx
             '24'
             '36'
             '48')
-          ExplicitLeft = 209
         end
         object check3D: TCheckBox
           Left = 343
