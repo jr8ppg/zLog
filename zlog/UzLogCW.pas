@@ -74,7 +74,7 @@ begin
    temp := StringReplace(temp, '$F', Abbreviate(aQSO.NrRcvd), [rfReplaceAll]);
    temp := StringReplace(temp, '$Z', Abbreviate(dmZLogGlobal.Settings._cqzone), [rfReplaceAll]);
    temp := StringReplace(temp, '$I', Abbreviate(dmZLogGlobal.Settings._iaruzone), [rfReplaceAll]);
-   temp := StringReplace(temp, '$Q', Abbreviate(MyContest.QTHString), [rfReplaceAll]);
+   temp := StringReplace(temp, '$Q', Abbreviate(MyContest.QTHString(aQSO)), [rfReplaceAll]);
    temp := StringReplace(temp, '$V', Abbreviate(dmZLogGlobal.Settings._prov), [rfReplaceAll]);
    temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
    temp := StringReplace(temp, '$S', Abbreviate(aQSO.SerialStr), [rfReplaceAll]);
@@ -151,7 +151,7 @@ begin
    temp := StringReplace(temp, '$F', aQSO.NrRcvd, [rfReplaceAll]);
    temp := StringReplace(temp, '$Z', dmZLogGlobal.Settings._cqzone, [rfReplaceAll]);
    temp := StringReplace(temp, '$I', dmZLogGlobal.Settings._iaruzone, [rfReplaceAll]);
-   temp := StringReplace(temp, '$Q', MyContest.QTHString, [rfReplaceAll]);
+   temp := StringReplace(temp, '$Q', MyContest.QTHString(aQSO), [rfReplaceAll]);
    temp := StringReplace(temp, '$V', dmZLogGlobal.Settings._prov, [rfReplaceAll]);
    temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
    temp := StringReplace(temp, '$S', aQSO.SerialStr, [rfReplaceAll]);
