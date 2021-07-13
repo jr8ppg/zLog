@@ -189,7 +189,7 @@ type
     procedure PostWanted(S : string);
     procedure DelWanted(S : string);
     procedure ClearWanted;
-    function QTHString : string; virtual;
+    function QTHString(aQSO: TQSO) : string; virtual;
     procedure LogQSO(var aQSO : TQSO; Local : Boolean); virtual;
     procedure ShowScore; virtual;
     procedure ShowMulti; virtual;
@@ -223,14 +223,14 @@ type
 
   TALLJAContest = class(TContest)
     constructor Create(N : string); override;
-    function QTHString : string; override;
+    function QTHString(aQSO: TQSO): string; override;
     procedure DispExchangeOnOtherBands; override;
     function CheckWinSummary(aQSO : TQSO) : string; override;
   end;
 
   TKCJContest = class(TContest)
     constructor Create(N : string); override;
-    function QTHString : string; override;
+    function QTHString(aQSO: TQSO): string; override;
     //procedure DispExchangeOnOtherBands; override;
     function CheckWinSummary(aQSO : TQSO) : string; override;
   end;
@@ -242,13 +242,13 @@ type
 
   TFDContest = class(TContest)
     constructor Create(N : string); override;
-    function QTHString : string; override;
+    function QTHString(aQSO: TQSO): string; override;
     procedure DispExchangeOnOtherBands; override;
   end;
 
   TSixDownContest = class(TContest)
     constructor Create(N : string); override;
-    function QTHString : string; override;
+    function QTHString(aQSO: TQSO): string; override;
     procedure DispExchangeOnOtherBands; override;
   end;
 
@@ -272,7 +272,7 @@ type
 
   TIOTAContest = class(TContest)
     constructor Create(N : string); override;
-    function QTHString : string; override;
+    function QTHString(aQSO: TQSO): string; override;
     procedure SpaceBarProc; override;
   end;
 
@@ -1433,7 +1433,7 @@ begin
    Result := aQSO.CheckCallSummary;
 end;
 
-function TContest.QTHString: string;
+function TContest.QTHString(aQSO: TQSO): string;
 begin
    Result := dmZlogGlobal.Settings._city;
 end;
@@ -2508,7 +2508,7 @@ begin
    QTCForm.Release();
 end;
 
-function TIOTAContest.QTHString: string;
+function TIOTAContest.QTHString(aQSO: TQSO): string;
 begin
    Result := TIOTAMulti(MultiForm).MyIOTA;
 end;
@@ -2796,12 +2796,12 @@ begin
    SentStr := 'TK';
 end;
 
-function TALLJAContest.QTHString: string;
+function TALLJAContest.QTHString(aQSO: TQSO): string;
 begin
    Result := dmZlogGlobal.Settings._prov;
 end;
 
-function TKCJContest.QTHString: string;
+function TKCJContest.QTHString(aQSO: TQSO): string;
 begin
    Result := dmZlogGlobal.Settings._prov;
    // get the kcj code;
@@ -2833,17 +2833,17 @@ begin
    Result := S;
 end;
 
-function TFDContest.QTHString: string;
+function TFDContest.QTHString(aQSO: TQSO): string;
 begin
-   if CurrentQSO.Band <= b1200 then
+   if aQSO.Band <= b1200 then
       Result := dmZlogGlobal.Settings._prov
    else
       Result := dmZlogGlobal.Settings._city;
 end;
 
-function TSixDownContest.QTHString: string;
+function TSixDownContest.QTHString(aQSO: TQSO): string;
 begin
-   if CurrentQSO.Band <= b1200 then
+   if aQSO.Band <= b1200 then
       Result := dmZlogGlobal.Settings._prov
    else
       Result := dmZlogGlobal.Settings._city;
@@ -7436,7 +7436,6 @@ begin
    EditScreen := TALLJAEdit.Create(Self);
 
    MyContest := TALLJAContest.Create('ALL JA コンテスト');
-//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.Init6D();
@@ -7447,7 +7446,6 @@ begin
    EditScreen := TACAGEdit.Create(Self);
 
    MyContest := TSixDownContest.Create('6m and DOWNコンテスト');
-//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitFD();
@@ -7458,7 +7456,6 @@ begin
    EditScreen := TACAGEdit.Create(Self);
 
    MyContest := TFDContest.Create('フィールドデーコンテスト');
-//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitACAG();
@@ -7469,7 +7466,6 @@ begin
    EditScreen := TACAGEdit.Create(Self);
 
    MyContest := TACAGContest.Create('全市全郡コンテスト');
-//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitALLJA0_JA0(BandGroupIndex: Integer);
@@ -7503,8 +7499,6 @@ begin
          ShowBandMenu(b28);
       end;
    end;
-
-//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitALLJA0_Other(BandGroupIndex: Integer);
@@ -7538,8 +7532,6 @@ begin
          ShowBandMenu(b28);
       end;
    end;
-
-//   QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitKCJ();
@@ -7551,7 +7543,6 @@ begin
    EditScreen := TKCJEdit.Create(Self);
 
    MyContest := TKCJContest.Create('KCJ コンテスト');
-//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.InitDxPedi();
@@ -7570,7 +7561,6 @@ begin
       EditScreen := TGeneralEdit.Create(Self);
 
       MyContest := TPedi.Create('Pedition mode');
-//      QTHString := dmZlogGlobal.Settings._prov;
    finally
       F.Release();
    end;
@@ -7578,7 +7568,6 @@ end;
 
 procedure TMainForm.InitUserDefined(ContestName, ConfigFile: string);
 begin
-//   QTHString := dmZlogGlobal.Settings._city;
    MyContest := TGeneralContest.Create(ContestName, ConfigFile);
 end;
 
@@ -7592,7 +7581,6 @@ begin
    EditScreen := TWWEdit.Create(Self);
 
    MyContest := TCQWWContest.Create('CQWW DX Contest');
-//   QTHString := UMultipliers.MyZone;
 end;
 
 procedure TMainForm.InitWPX(OpGroupIndex: Integer);
@@ -7611,7 +7599,6 @@ begin
       SerialContestType := SER_MS;
    end;
 
-//   QTHString := dmZlogGlobal.Settings._city;
    mPXListWPX.Visible := True;
 end;
 
@@ -7630,8 +7617,6 @@ begin
       EditScreen := TGeneralEdit.Create(Self);
       MyContest := TJIDXContestDX.Create('JIDX Contest (DX)');
    end;
-
-//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.InitAPSprint();
@@ -7645,7 +7630,6 @@ begin
    EditScreen := TWPXEdit.Create(Self);
 
    MyContest := TAPSprint.Create('Asia Pacific Sprint');
-//   QTHString := dmZlogGlobal.Settings._city;
    // Log.QsoList[0].memo := 'WPX Contest';
 end;
 
@@ -7657,7 +7641,6 @@ begin
    EditScreen := TDXCCEdit.Create(Self);
 
    MyContest := TARRLDXContestW.Create('ARRL International DX Contest (W/VE)');
-//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.InitARRL_DX();
@@ -7668,7 +7651,6 @@ begin
    EditScreen := TARRLDXEdit.Create(Self);
 
    MyContest := TARRLDXContestDX.Create('ARRL International DX Contest (DX)');
-//   QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.InitARRL10m();
@@ -7691,8 +7673,6 @@ begin
       EditScreen := TIOTAEdit.Create(Self);
       MyContest.SentStr := '$S';
    end;
-
-   // QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitIARU();
@@ -7702,7 +7682,6 @@ begin
    EditScreen := TIARUEdit.Create(Self);
 
    MyContest := TIARUContest.Create('IARU HF World Championship');
-//   QTHString := MyZone;
 end;
 
 procedure TMainForm.InitAllAsianDX();
@@ -7717,7 +7696,6 @@ begin
       EditScreen := TDXCCEdit.Create(Self);
 
       MyContest := TAllAsianContest.Create('All Asian DX Contest (Asia)');
-//      QTHString := dmZlogGlobal.Settings._prov;
 
       if F.ShowModal() <> mrOK then begin
          Exit;
@@ -7738,7 +7716,6 @@ begin
    EditScreen := TIOTAEdit.Create(Self);
 
    MyContest := TIOTAContest.Create('IOTA Contest');
-   // QTHString := dmZlogGlobal.Settings._city;
 end;
 
 procedure TMainForm.InitWAE();
@@ -7750,7 +7727,6 @@ begin
    EditScreen := TWPXEdit.Create(Self);
 
    MyContest := TWAEContest.Create('WAEDC Contest');
-   // QTHString := dmZlogGlobal.Settings._prov;
 end;
 
 procedure TMainForm.ShowBandMenu(b: TBand);
@@ -8918,6 +8894,7 @@ var
    F: TNRDialog;
    i: Integer;
    strNewNR: string;
+   strNewNR2: string;
    B: TBand;
    Q: TQSO;
 begin
@@ -8928,22 +8905,34 @@ begin
       end;
 
       F.NewSentNR := Log.QSOList[1].NrSent;
+      F.NewSentNR2 := Log.QSOList[1].NrSent;
 
       if F.ShowModal() <> mrOK then begin
          Exit;
       end;
 
       strNewNR := F.NewSentNR;
+      strNewNR2 := F.NewSentNR2;
 
       for i := 1 to Log.QSOList.Count - 1 do begin
          Q := Log.QSOList[i];
 
-         if F.AutoAddPowerCode = True then begin
-            B := Q.Band;
-            Q.NrSent := strNewNR + dmZlogGlobal.Settings._power[B];
+         B := Q.Band;
+         if B < b2400 then begin
+            if F.AutoAddPowerCode = True then begin
+               Q.NrSent := strNewNR + dmZlogGlobal.Settings._power[B];
+            end
+            else begin
+               Q.NrSent := strNewNR;
+            end;
          end
          else begin
-            Q.NrSent := strNewNR;
+            if F.AutoAddPowerCode = True then begin
+               Q.NrSent := strNewNR2 + dmZlogGlobal.Settings._power[B];
+            end
+            else begin
+               Q.NrSent := strNewNR2;
+            end;
          end;
       end;
 

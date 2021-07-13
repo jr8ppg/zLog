@@ -3,8 +3,8 @@ object NRDialog: TNRDialog
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Correct NR'
-  ClientHeight = 99
-  ClientWidth = 278
+  ClientHeight = 152
+  ClientWidth = 260
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,20 +15,13 @@ object NRDialog: TNRDialog
   Position = poOwnerFormCenter
   OnCreate = FormCreate
   DesignSize = (
-    278
-    99)
+    260
+    152)
   PixelsPerInch = 96
   TextHeight = 12
-  object Label1: TLabel
-    Left = 16
-    Top = 16
-    Width = 69
-    Height = 12
-    Caption = 'New Sent NR'
-  end
   object OKBtn: TButton
-    Left = 124
-    Top = 71
+    Left = 106
+    Top = 124
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
@@ -36,12 +29,12 @@ object NRDialog: TNRDialog
     Default = True
     ModalResult = 1
     TabOrder = 2
-    ExplicitLeft = 135
-    ExplicitTop = 64
+    ExplicitLeft = 124
+    ExplicitTop = 71
   end
   object CancelBtn: TButton
-    Left = 200
-    Top = 71
+    Left = 182
+    Top = 124
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
@@ -49,22 +42,51 @@ object NRDialog: TNRDialog
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 3
-    ExplicitLeft = 211
-    ExplicitTop = 64
-  end
-  object editSentNR: TEdit
-    Left = 102
-    Top = 13
-    Width = 87
-    Height = 20
-    TabOrder = 0
+    ExplicitLeft = 200
+    ExplicitTop = 71
   end
   object checkAutoAddPowerCode: TCheckBox
-    Left = 16
-    Top = 44
+    Left = 8
+    Top = 99
     Width = 173
     Height = 13
     Caption = 'Add power code automatically'
     TabOrder = 1
+  end
+  object GroupBox1: TGroupBox
+    Left = 8
+    Top = 8
+    Width = 241
+    Height = 81
+    Caption = 'New Sent NR'
+    TabOrder = 0
+    object Label2: TLabel
+      Left = 17
+      Top = 50
+      Width = 95
+      Height = 12
+      Caption = '2400MHz or higher'
+    end
+    object Label1: TLabel
+      Left = 17
+      Top = 24
+      Width = 85
+      Height = 12
+      Caption = '1200MHz or less'
+    end
+    object editSentNR: TEdit
+      Left = 126
+      Top = 21
+      Width = 87
+      Height = 20
+      TabOrder = 0
+    end
+    object editSentNR2: TEdit
+      Left = 126
+      Top = 47
+      Width = 87
+      Height = 20
+      TabOrder = 1
+    end
   end
 end
