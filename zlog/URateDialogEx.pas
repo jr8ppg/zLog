@@ -316,14 +316,18 @@ var
    hour_peak: Integer;
    Str: string;
    _start: TDateTime;
+   origin: TDateTime;
+   diff: TDateTime;
    H, M, S, ms: Word;
    i: Integer;
    hindex: Integer;
    b: TBand;
+   start_hour: Integer;
 
    function CalcStartTime(dt: TDateTime): TDateTime;
    begin
-      Result := dt - (FShowLast - 1) / 24;
+//      Result := dt - (FShowLast - 1) / 24;
+      Result := IncHour(dt, FShowLast * -1);
    end;
 begin
    for b := b19 to bTarget do begin
@@ -344,29 +348,44 @@ begin
          else           _start := CalcStartTime( CurrentTime() );
       end;
    end;
+   origin := Log.QsoList[1].Time;
+   DecodeTime(origin, H, M, S, ms);
+   origin := Int(origin) + EncodeTime(H, 0, 0, 0);
 
    DecodeTime(_start, H, M, S, ms);
    _start := Int(_start) + EncodeTime(H, 0, 0, 0);
 
    // バンド別時間別の集計データを作成
-   total_count := dmZLogGlobal.Target.UpdateActualQSOs(_start);
+   total_count := dmZLogGlobal.Target.UpdateActualQSOs(origin);
+
+   if (_start >= origin) then begin
+      diff := _start - origin;
+      DecodeTime(diff, H, M, S, ms);
+   end
+   else begin
+      _start := Log.QsoList[1].Time;
+      DecodeTime(_start, H, M, S, ms);
+      _start := Int(_start) + EncodeTime(H, 0, 0, 0);
+      H := 0;
+   end;
 
    // グラフに展開
    hour_peak := 0;
    for i := 0 to FShowLast - 1 do begin
-      Str := IntToStr(GetHour(_start + (1 / 24) * i));
+      start_hour := GetHour(_start + (1 / 24) * i);
+      Str := IntToStr(start_hour);
 
-      if FShowLast > 12 then begin
-         if (GetHour(_start + (1 / 24) * i) mod 2) = 1 then begin
-            Str := '';
-         end;
-      end;
-
-      if FShowLast > 24 then begin
-         if (GetHour(_start + (1 / 24) * i) mod 4) <> 0 then begin
-            Str := '';
-         end;
-      end;
+//      if FShowLast > 12 then begin
+//         if (start_hour mod 2) = 1 then begin
+//            Str := '';
+//         end;
+//      end;
+//
+//      if FShowLast > 24 then begin
+//         if (start_hour mod 4) <> 0 then begin
+//            Str := '';
+//         end;
+//      end;
 
       // 横軸目盛ラベル
       hindex := i * 2;
@@ -374,25 +393,25 @@ begin
 
       hour_count := 0;
       if GraphStyle = rsOriginal then begin
-         hour_count := UpdateGraphOriginal(i + 1);
+         hour_count := UpdateGraphOriginal(H + i + 1);
       end
       else if GraphStyle = rsByBand then begin
-         hour_count := UpdateGraphByBand(i + 1);
+         hour_count := UpdateGraphByBand(H + i + 1);
       end
       else if GraphStyle = rsByFreqRange then begin
-         hour_count := UpdateGraphByRange(i + 1);
+         hour_count := UpdateGraphByRange(H + i + 1);
       end;
 
       // 縦軸目盛り調整のための値
       total_count := total_count + hour_count;
       hour_peak := Max(hour_peak, hour_count);
-      hour_peak := Max(hour_peak, dmZLogGlobal.Target.Total.Hours[i + 1].Target);
+      hour_peak := Max(hour_peak, dmZLogGlobal.Target.Total.Hours[H + i + 1].Target);
 
       // 累計
       SeriesTotalQSOs.Add(total_count);
 
       // 横軸目盛ラベル
-      Chart1.Axes.Bottom.Items.Add(hindex + 1, Str + 't');
+      Chart1.Axes.Bottom.Items.Add(hindex + 1, ''{Str + 't'});
 
       // Target QSOs
       FGraphSeries[b19].Add(0);
@@ -411,7 +430,7 @@ begin
       FGraphSeries[b2400].Add(0);
       FGraphSeries[b5600].Add(0);
       FGraphSeries[b10g].Add(0);
-      FGraphSeries[bTarget].Add(dmZLogGlobal.Target.Total.Hours[i + 1].Target);
+      FGraphSeries[bTarget].Add(dmZLogGlobal.Target.Total.Hours[H + i + 1].Target);
 
       // 累計
       SeriesTotalQSOs.Add(total_count);
