@@ -78,15 +78,11 @@ object RateDialogEx: TRateDialogEx
     Top = 37
     Width = 390
     Height = 225
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = 'Graph'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 281
-      ExplicitHeight = 165
       object Panel2: TPanel
         Left = 0
         Top = 167
@@ -95,8 +91,6 @@ object RateDialogEx: TRateDialogEx
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitTop = 232
-        ExplicitWidth = 334
         DesignSize = (
           382
           30)
@@ -149,7 +143,6 @@ object RateDialogEx: TRateDialogEx
           Caption = '3D'
           TabOrder = 1
           OnClick = check3DClick
-          ExplicitLeft = 295
         end
         object Panel3: TPanel
           Left = 0
@@ -208,9 +201,6 @@ object RateDialogEx: TRateDialogEx
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitTop = 37
-        ExplicitWidth = 334
-        ExplicitHeight = 225
         DefaultCanvas = 'TGDIPlusCanvas'
         ColorPaletteIndex = 13
         object Series1: TBarSeries
@@ -462,9 +452,9 @@ object RateDialogEx: TRateDialogEx
         Width = 382
         Height = 197
         Align = alClient
-        ColCount = 26
+        ColCount = 27
         DefaultDrawing = False
-        RowCount = 35
+        RowCount = 36
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -15
@@ -479,7 +469,7 @@ object RateDialogEx: TRateDialogEx
   end
   object Timer: TTimer
     Enabled = False
-    Interval = 2000
+    Interval = 5000
     OnTimer = TimerTimer
     Left = 288
     Top = 12

@@ -2292,7 +2292,6 @@ begin
 
    if MainForm.FRateDialog.Visible then begin
       MainForm.FRateDialog.UpdateGraph;
-      MainForm.FRateDialogEx.UpdateGraph;
    end;
 
    if dmZlogGlobal.Settings._multistation then begin
@@ -3997,7 +3996,6 @@ begin
       SetWindowCaption();
       EditScreen.RefreshScreen(False);
       FRateDialog.UpdateGraph();
-      FRateDialogEx.UpdateGraph();
    end;
 end;
 

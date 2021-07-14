@@ -47,6 +47,10 @@ type
     FBandTarget: array[b19..b10g] of THourTarget;
     FBandTotal: THourTarget;   // 縦計
     FTotal: TQsoTarget;    // 縦横計
+    FLast10QsoRate: Extended;
+    FLast100QsoRate: Extended;
+    FLast10QsoRateMax: Extended;
+    FLast100QsoRateMax: Extended;
     function GetBandTarget(B: TBand): THourTarget;
   public
     constructor Create();
@@ -63,6 +67,10 @@ type
     property Bands[B: TBand]: THourTarget read GetBandTarget;
     property Total: THourTarget read FBandTotal;
     property TotalTotal: TQsoTarget read FTotal;
+    property Last10QsoRate: Extended read FLast10QsoRate;
+    property Last100QsoRate: Extended read FLast100QsoRate;
+    property Last10QsoRateMax: Extended read FLast10QsoRateMax;
+    property Last100QsoRateMax: Extended read FLast100QsoRateMax;
   end;
 
 implementation
@@ -177,6 +185,9 @@ begin
    end;
    FBandTotal := THourTarget.Create();
    FTotal := TQsoTarget.Create();
+
+   FLast10QsoRateMax := 0;
+   FLast100QsoRateMax := 0;
 end;
 
 destructor TContestTarget.Destroy();
@@ -253,11 +264,20 @@ var
    diff: TDateTime;
    H, M, S, ms: Word;
    D: Integer;
+   c10: Integer;
+   c100: Integer;
+   mytx: Integer;
 begin
    ActualClear();
 
    total_count := 0;
-   for i := 1 to Log.TotalQSO do begin
+   c10 := 0;
+   c100 := 0;
+
+   mytx := dmZlogGlobal.TXNr;
+
+   for i := Log.TotalQSO downto 1 do begin
+//   for i := 1 to Log.TotalQSO do begin
       aQSO := Log.QsoList[i];
 
       if (aQSO.Points = 0) then begin    // 得点無しはスキップ
@@ -277,6 +297,25 @@ begin
          end;
 
          FBandTarget[aQSO.Band].Hours[H + 1].IncActual();
+      end;
+
+      if aQSO.TX = mytx then begin
+         Inc(c10);
+         Inc(c100);
+      end;
+
+      if (c10 = 10) then begin
+         diff := (CurrentTime - aQSO.Time) * 24.0;
+         FLast10QsoRate := 10 / Diff;
+
+         FLast10QsoRateMax := Max(FLast10QsoRateMax, FLast10QsoRate);
+      end;
+
+      if c100 = 100 then begin
+         Diff := (CurrentTime - aQSO.time) * 24.0;
+         FLast100QsoRate := 100 / Diff;
+
+         FLast100QsoRateMax := Max(FLast100QsoRateMax, FLast100QsoRate);
       end;
    end;
 

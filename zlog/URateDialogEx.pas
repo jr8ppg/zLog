@@ -82,9 +82,9 @@ type
     procedure SetGraphStartPositionUI(v: TQSORateStartPosition);
     procedure InitScoreGrid();
     procedure TargetToGrid(ATarget: TContestTarget);
+    procedure UpdateGraph;
   public
     { Public declarations }
-    procedure UpdateGraph;
     property GraphSeries[b: TBand]: TBarSeries read GetGraphSeries;
     property GraphStyle: TQSORateStyle read FGraphStyle write SetGraphStyle;
     property GraphStartPosition: TQSORateStartPosition read FGraphStartPosition write SetGraphStartPosition;
@@ -192,7 +192,8 @@ end;
 
 procedure TRateDialogEx.FormShow(Sender: TObject);
 begin
-   UpdateGraph;
+//   UpdateGraph;
+   TimerTimer(nil);
    Timer.Enabled := True;
 end;
 
@@ -210,68 +211,70 @@ begin
 end;
 
 procedure TRateDialogEx.TimerTimer(Sender: TObject);
-var
-   Last: TDateTime;
-   Diff, Rate: double;
-   i: LongInt;
-   mytx, k: integer;
-   aQSO: TQSO;
+//var
+//   Last: TDateTime;
+//   Diff, Rate: double;
+//   i: LongInt;
+//   mytx, k: integer;
+//   aQSO: TQSO;
 begin
    if Visible = False then begin
       Exit;
    end;
 
-   i := Log.TotalQSO;
-   if i < 10 then begin
-      Exit;
-   end;
+//   i := Log.TotalQSO;
+//   if i < 10 then begin
+//      Exit;
+//   end;
+//
+//   mytx := dmZlogGlobal.TXNr;
+//
+//   k := 0;
+//   repeat
+//      aQSO := Log.QsoList[i];
+//      if aQSO.TX = mytx then begin
+//         inc(k);
+//      end;
+//
+//      dec(i)
+//   until (i = 1) or (k = 10);
+//
+//   if (k = 10) then begin
+//      Last := aQSO.time;
+//      Diff := (CurrentTime - Last) * 24.0;
+//      Rate := 10 / Diff;
+//
+//      FLast10QsoRateMax := Max(FLast10QsoRateMax, Rate);
+//
+//      Last10.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
+//      Max10.Caption := 'max ' + Format('%3.2f', [FLast10QsoRateMax]) + ' QSOs/hr';
+//   end
+//   else begin
+//      Exit;
+//   end;
+//
+//   i := Log.TotalQSO;
+//   k := 0;
+//   repeat
+//      aQSO := Log.QsoList[i];
+//      if aQSO.TX = mytx then begin
+//         inc(k);
+//      end;
+//      dec(i)
+//   until (i = 1) or (k = 100);
+//
+//   if k = 100 then begin
+//      Last := aQSO.time;
+//      Diff := (CurrentTime - Last) * 24.0;
+//      Rate := 100 / Diff;
+//
+//      FLast100QsoRateMax := Max(FLast100QsoRateMax, Rate);
+//
+//      Last100.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
+//      Max100.Caption := 'max ' + Format('%3.2f', [FLast100QsoRateMax]) + ' QSOs/hr';
+//   end;
 
-   mytx := dmZlogGlobal.TXNr;
-
-   k := 0;
-   repeat
-      aQSO := Log.QsoList[i];
-      if aQSO.TX = mytx then begin
-         inc(k);
-      end;
-
-      dec(i)
-   until (i = 1) or (k = 10);
-
-   if (k = 10) then begin
-      Last := aQSO.time;
-      Diff := (CurrentTime - Last) * 24.0;
-      Rate := 10 / Diff;
-
-      FLast10QsoRateMax := Max(FLast10QsoRateMax, Rate);
-
-      Last10.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
-      Max10.Caption := 'max ' + Format('%3.2f', [FLast10QsoRateMax]) + ' QSOs/hr';
-   end
-   else begin
-      Exit;
-   end;
-
-   i := Log.TotalQSO;
-   k := 0;
-   repeat
-      aQSO := Log.QsoList[i];
-      if aQSO.TX = mytx then begin
-         inc(k);
-      end;
-      dec(i)
-   until (i = 1) or (k = 100);
-
-   if k = 100 then begin
-      Last := aQSO.time;
-      Diff := (CurrentTime - Last) * 24.0;
-      Rate := 100 / Diff;
-
-      FLast100QsoRateMax := Max(FLast100QsoRateMax, Rate);
-
-      Last100.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
-      Max100.Caption := 'max ' + Format('%3.2f', [FLast100QsoRateMax]) + ' QSOs/hr';
-   end;
+   UpdateGraph();
 
    TargetToGrid(dmZLogGlobal.Target);
 end;
@@ -637,11 +640,25 @@ begin
 
       if ACol = 0 then begin
          strText := ScoreGrid.Cells[ACol, ARow];
+         Font.Color := clBlack;
          TextRect(Rect, strText, [tfLeft, tfVerticalCenter, tfSingleLine]);
       end
       else if ARow = 0 then begin
          strText := ScoreGrid.Cells[ACol, ARow];
+         Font.Color := clBlack;
          TextRect(Rect, strText, [tfCenter, tfVerticalCenter, tfSingleLine]);
+      end
+      else if (ARow = 35) or (ACol = 26) then begin
+         strText := ScoreGrid.Cells[ACol, ARow];
+         if StrToFloatDef(strText, 0) >= 80 then begin
+            Font.Color := clBlue;
+         end
+         else begin
+            Font.Color := clRed;
+         end;
+         Font.Size := 10;
+
+         TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
       end
       else begin
 //         t := dmZLogGlobal.Target.Bands[TBand(ARow - 1)].Hours[ACol].Target;
@@ -658,6 +675,7 @@ begin
                strText := IntToStr(t);
             end;
 //         end;
+         Font.Color := clBlack;
          TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
       end;
    end;
@@ -732,13 +750,16 @@ begin
    ScoreGrid.Cells[0, 32] := '';
    ScoreGrid.Cells[0, 33] := 'Total';
    ScoreGrid.Cells[0, 34] := '';
+   ScoreGrid.Cells[0, 35] := '%';
 
    for i := 1 to 24 do begin
       ScoreGrid.Cells[i, 0] := IntToStr(i);
-      ScoreGrid.ColWidths[i] := 35;
+      ScoreGrid.ColWidths[i] := 42;
    end;
    ScoreGrid.Cells[25, 0] := 'Total';
-   ScoreGrid.ColWidths[25] := 64;
+   ScoreGrid.ColWidths[25] := 60;
+   ScoreGrid.Cells[26, 0] := '%';
+   ScoreGrid.ColWidths[26] := 50;
 end;
 
 procedure TRateDialogEx.TargetToGrid(ATarget: TContestTarget);
@@ -754,15 +775,22 @@ begin
          ScoreGrid.Cells[i, R + 1] := IntToStr(ATarget.Bands[b].Hours[i].Actual);
          ScoreGrid.Cells[i, 33]       := IntToStr(ATarget.Total.Hours[i].Target);
          ScoreGrid.Cells[i, 34]       := IntToStr(ATarget.Total.Hours[i].Actual);
+         ScoreGrid.Cells[i, 35]       := FloatToStrF(ATarget.Total.Hours[i].Rate, ffFixed, 1000, 1);
       end;
       ScoreGrid.Cells[25, R + 0]   := IntToStr(ATarget.Bands[b].Total.Target);
       ScoreGrid.Cells[25, R + 1]   := IntToStr(ATarget.Bands[b].Total.Actual);
+      ScoreGrid.Cells[26, R + 1]   := FloatToStrF(ATarget.Bands[b].Total.Rate, ffFixed, 1000, 1);
    end;
 
    ScoreGrid.Cells[25, 33]   := IntToStr(ATarget.TotalTotal.Target);
    ScoreGrid.Cells[25, 34]   := IntToStr(ATarget.TotalTotal.Actual);
 
    ScoreGrid.Refresh();
+
+   Last10.Caption := Format('%3.2f', [ATarget.Last10QsoRate]) + ' QSOs/hr';
+   Max10.Caption := 'max ' + Format('%3.2f', [ATarget.Last10QsoRateMax]) + ' QSOs/hr';
+   Last100.Caption := Format('%3.2f', [ATarget.Last100QsoRate]) + ' QSOs/hr';
+   Max100.Caption := 'max ' + Format('%3.2f', [ATarget.Last100QsoRateMax]) + ' QSOs/hr';
 end;
 
 end.
