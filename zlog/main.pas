@@ -2293,6 +2293,9 @@ begin
    if MainForm.FRateDialog.Visible then begin
       MainForm.FRateDialog.UpdateGraph;
    end;
+   if MainForm.FRateDialogEx.Visible then begin
+      MainForm.FRateDialogEx.UpdateGraph;
+   end;
 
    if dmZlogGlobal.Settings._multistation then begin
       if Local { (mytx = aQSO.TX) } and (aQSO.NewMulti1 = False) and (aQSO.NewMulti2 = False) and (dmZlogGlobal.Settings._multistationwarning)
@@ -3996,6 +3999,7 @@ begin
       SetWindowCaption();
       EditScreen.RefreshScreen(False);
       FRateDialog.UpdateGraph();
+      FRateDialogEx.UpdateGraph();
    end;
 end;
 

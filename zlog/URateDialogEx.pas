@@ -82,9 +82,9 @@ type
     procedure SetGraphStartPositionUI(v: TQSORateStartPosition);
     procedure InitScoreGrid();
     procedure TargetToGrid(ATarget: TContestTarget);
-    procedure UpdateGraph;
   public
     { Public declarations }
+    procedure UpdateGraph;
     property GraphSeries[b: TBand]: TBarSeries read GetGraphSeries;
     property GraphStyle: TQSORateStyle read FGraphStyle write SetGraphStyle;
     property GraphStartPosition: TQSORateStartPosition read FGraphStartPosition write SetGraphStartPosition;
@@ -192,7 +192,7 @@ end;
 
 procedure TRateDialogEx.FormShow(Sender: TObject);
 begin
-//   UpdateGraph;
+   UpdateGraph;
    TimerTimer(nil);
    Timer.Enabled := True;
 end;
@@ -274,7 +274,12 @@ begin
 //      Max100.Caption := 'max ' + Format('%3.2f', [FLast100QsoRateMax]) + ' QSOs/hr';
 //   end;
 
-   UpdateGraph();
+//   UpdateGraph();
+
+   Last10.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRate]) + ' QSOs/hr';
+   Max10.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRateMax]) + ' QSOs/hr';
+   Last100.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRate]) + ' QSOs/hr';
+   Max100.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRateMax]) + ' QSOs/hr';
 
    TargetToGrid(dmZLogGlobal.Target);
 end;
@@ -342,6 +347,7 @@ begin
    // 基準時刻を求める
    if Log.TotalQSO = 0 then begin
       _start := CalcStartTime( CurrentTime() );
+      origin := _start;
    end
    else begin
       case GraphStartPosition of
@@ -350,8 +356,10 @@ begin
          spLastQSO:     _start := CalcStartTime( Log.QsoList[Log.TotalQSO].Time );
          else           _start := CalcStartTime( CurrentTime() );
       end;
+
+      origin := Log.QsoList[1].Time;
    end;
-   origin := Log.QsoList[1].Time;
+
    DecodeTime(origin, H, M, S, ms);
    origin := Int(origin) + EncodeTime(H, 0, 0, 0);
 
@@ -359,7 +367,7 @@ begin
    _start := Int(_start) + EncodeTime(H, 0, 0, 0);
 
    // バンド別時間別の集計データを作成
-   total_count := dmZLogGlobal.Target.UpdateActualQSOs(origin);
+   dmZLogGlobal.Target.UpdateActualQSOs(origin);
 
    if (_start >= origin) then begin
       diff := _start - origin;
@@ -406,6 +414,7 @@ begin
       end;
 
       // 縦軸目盛り調整のための値
+      total_count := dmZLogGlobal.Target.BeforeGraphCount;
       total_count := total_count + hour_count;
       hour_peak := Max(hour_peak, hour_count);
       hour_peak := Max(hour_peak, dmZLogGlobal.Target.Total.Hours[H + i + 1].Target);
@@ -786,11 +795,6 @@ begin
    ScoreGrid.Cells[25, 34]   := IntToStr(ATarget.TotalTotal.Actual);
 
    ScoreGrid.Refresh();
-
-   Last10.Caption := Format('%3.2f', [ATarget.Last10QsoRate]) + ' QSOs/hr';
-   Max10.Caption := 'max ' + Format('%3.2f', [ATarget.Last10QsoRateMax]) + ' QSOs/hr';
-   Last100.Caption := Format('%3.2f', [ATarget.Last100QsoRate]) + ' QSOs/hr';
-   Max100.Caption := 'max ' + Format('%3.2f', [ATarget.Last100QsoRateMax]) + ' QSOs/hr';
 end;
 
 end.

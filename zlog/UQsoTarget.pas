@@ -51,6 +51,7 @@ type
     FLast100QsoRate: Extended;
     FLast10QsoRateMax: Extended;
     FLast100QsoRateMax: Extended;
+    FBeforeGraphCount: Integer;
     function GetBandTarget(B: TBand): THourTarget;
   public
     constructor Create();
@@ -71,6 +72,7 @@ type
     property Last100QsoRate: Extended read FLast100QsoRate;
     property Last10QsoRateMax: Extended read FLast10QsoRateMax;
     property Last100QsoRateMax: Extended read FLast100QsoRateMax;
+    property BeforeGraphCount: Integer read FBeforeGraphCount;
   end;
 
 implementation
@@ -188,6 +190,7 @@ begin
 
    FLast10QsoRateMax := 0;
    FLast100QsoRateMax := 0;
+   FBeforeGraphCount := 0;
 end;
 
 destructor TContestTarget.Destroy();
@@ -258,7 +261,6 @@ end;
 
 function TContestTarget.UpdateActualQSOs(origin: TDateTime): Integer;
 var
-   total_count: Integer;
    i: Integer;
    aQSO: TQSO;
    diff: TDateTime;
@@ -270,7 +272,7 @@ var
 begin
    ActualClear();
 
-   total_count := 0;
+   FBeforeGraphCount := 0;
    c10 := 0;
    c100 := 0;
 
@@ -285,7 +287,7 @@ begin
       end;
 
       if (aQSO.Time < origin) then begin // グラフ化以前の交信
-         Inc(total_count);
+         Inc(FBeforeGraphCount);
       end
       else begin
          diff := aQSO.Time - origin;
@@ -321,7 +323,7 @@ begin
 
    Refresh();
 
-   Result := total_count;
+   Result := FBeforeGraphCount;
 end;
 
 procedure TContestTarget.Clear();
