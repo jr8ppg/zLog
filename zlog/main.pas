@@ -6361,7 +6361,11 @@ var
 begin
    dlg := TTargetEditor.Create(Self);
    try
-      dlg.ShowModal();
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      FRateDialogEx.UpdateGraph();
    finally
       dlg.Release();
    end;

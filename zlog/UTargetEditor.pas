@@ -32,6 +32,9 @@ type
     procedure checkShowZeroClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
+    procedure ScoreGridSelectCell(Sender: TObject; ACol, ARow: Integer;
+      var CanSelect: Boolean);
+    procedure ScoreGridTopLeftChanged(Sender: TObject);
   private
     { Private êÈåæ }
     FTarget: TContestTarget;
@@ -180,9 +183,9 @@ begin
       ScoreGrid.RowHeights[8] := ScoreGrid.DefaultRowHeight;
    end
    else begin
-      ScoreGrid.RowHeights[4] := 0;
-      ScoreGrid.RowHeights[6] := 0;
-      ScoreGrid.RowHeights[8] := 0;
+      ScoreGrid.RowHeights[4] := -1;
+      ScoreGrid.RowHeights[6] := -1;
+      ScoreGrid.RowHeights[8] := -1;
    end;
 end;
 
@@ -196,7 +199,7 @@ begin
          ScoreGrid.Cells[i, Ord(b)+1] := IntToStr(ATarget.Bands[b].Hours[i].Target);
          ScoreGrid.Cells[i, 17]       := IntToStr(ATarget.Total.Hours[i].Target);
       end;
-      ScoreGrid.Cells[25, Ord(b)+1]   := IntToStr(ATarget.TotalTotal.Target);
+      ScoreGrid.Cells[25, Ord(b)+1]   := IntToStr(ATarget.Bands[b].Total.Target);
    end;
 
    ScoreGrid.Refresh();
@@ -232,10 +235,26 @@ begin
       if ACol = 0 then begin
          strText := ScoreGrid.Cells[ACol, ARow];
          TextRect(Rect, strText, [tfLeft, tfVerticalCenter, tfSingleLine]);
+
+         Pen.Color := RGB(220, 220, 220);
+         Brush.Style := bsClear;
+         Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
       else if ARow = 0 then begin
          strText := ScoreGrid.Cells[ACol, ARow];
          TextRect(Rect, strText, [tfCenter, tfVerticalCenter, tfSingleLine]);
+
+         Pen.Color := RGB(220, 220, 220);
+         Brush.Style := bsClear;
+         Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
+      end
+      else if ACol = 25 then begin
+         strText := ScoreGrid.Cells[ACol, ARow];
+         TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
+
+         Pen.Color := RGB(220, 220, 220);
+         Brush.Style := bsClear;
+         Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
       else begin
          t := FTarget.Bands[TBand(ARow - 1)].Hours[ACol].Target;
@@ -252,8 +271,20 @@ begin
             end;
          end;
          TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
+
+         Pen.Color := RGB(220, 220, 220);
+         Brush.Style := bsClear;
+
+         if ScoreGrid.RowHeights[ARow] >= 2 then begin
+            Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
+         end;
       end;
    end;
+end;
+
+procedure TTargetEditor.ScoreGridSelectCell(Sender: TObject; ACol, ARow: Integer; var CanSelect: Boolean);
+begin
+//
 end;
 
 procedure TTargetEditor.ScoreGridSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: string);
@@ -281,6 +312,11 @@ begin
    ScoreGrid.Cells[ACol, 17] := IntToStr(FTarget.Total.Hours[h].Target);
 
    // çƒï`âÊ
+   ScoreGrid.Refresh();
+end;
+
+procedure TTargetEditor.ScoreGridTopLeftChanged(Sender: TObject);
+begin
    ScoreGrid.Refresh();
 end;
 

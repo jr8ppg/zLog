@@ -32,11 +32,13 @@ object TargetEditor: TTargetEditor
     Font.Height = -15
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Style = []
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goEditing]
+    Options = [goFixedVertLine, goFixedHorzLine, goEditing]
     ParentFont = False
     TabOrder = 0
     OnDrawCell = ScoreGridDrawCell
+    OnSelectCell = ScoreGridSelectCell
     OnSetEditText = ScoreGridSetEditText
+    OnTopLeftChanged = ScoreGridTopLeftChanged
   end
   object Panel1: TPanel
     Left = 0
