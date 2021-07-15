@@ -1,6 +1,7 @@
 object RateDialogEx: TRateDialogEx
   Left = 69
   Top = 213
+  ActiveControl = ScoreGrid
   Caption = 'QSO rate'
   ClientHeight = 262
   ClientWidth = 390
@@ -78,7 +79,7 @@ object RateDialogEx: TRateDialogEx
     Top = 37
     Width = 390
     Height = 225
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -460,16 +461,18 @@ object RateDialogEx: TRateDialogEx
         Font.Height = -15
         Font.Name = #65325#65331' '#12468#12471#12483#12463
         Font.Style = []
-        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
+        Options = [goFixedVertLine, goFixedHorzLine]
         ParentFont = False
         TabOrder = 0
         OnDrawCell = ScoreGridDrawCell
+        OnSelectCell = ScoreGridSelectCell
+        OnTopLeftChanged = ScoreGridTopLeftChanged
       end
     end
   end
   object Timer: TTimer
     Enabled = False
-    Interval = 5000
+    Interval = 3000
     OnTimer = TimerTimer
     Left = 288
     Top = 12

@@ -63,8 +63,9 @@ type
     procedure check3DClick(Sender: TObject);
     procedure radioOriginClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure ScoreGridDrawCell(Sender: TObject; ACol, ARow: Integer;
-      Rect: TRect; State: TGridDrawState);
+    procedure ScoreGridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+    procedure ScoreGridTopLeftChanged(Sender: TObject);
+    procedure ScoreGridSelectCell(Sender: TObject; ACol, ARow: Integer; var CanSelect: Boolean);
   private
     { Private declarations }
     FLast10QsoRateMax: Double;
@@ -80,11 +81,11 @@ type
     procedure SetGraphStyle(v: TQSORateStyle);
     procedure SetGraphStartPosition(v: TQSORateStartPosition);
     procedure SetGraphStartPositionUI(v: TQSORateStartPosition);
-    procedure InitScoreGrid();
     procedure TargetToGrid(ATarget: TContestTarget);
   public
     { Public declarations }
     procedure UpdateGraph;
+    procedure InitScoreGrid();
     property GraphSeries[b: TBand]: TBarSeries read GetGraphSeries;
     property GraphStyle: TQSORateStyle read FGraphStyle write SetGraphStyle;
     property GraphStartPosition: TQSORateStartPosition read FGraphStartPosition write SetGraphStartPosition;
@@ -109,6 +110,8 @@ procedure TRateDialogEx.FormCreate(Sender: TObject);
 var
    b: TBand;
 begin
+   PageControl1.ActivePageIndex := 0;
+
    FLast10QsoRateMax := 0;
    FLast100QsoRateMax := 0;
    FShowLast := 12;
@@ -211,77 +214,16 @@ begin
 end;
 
 procedure TRateDialogEx.TimerTimer(Sender: TObject);
-//var
-//   Last: TDateTime;
-//   Diff, Rate: double;
-//   i: LongInt;
-//   mytx, k: integer;
-//   aQSO: TQSO;
 begin
    if Visible = False then begin
       Exit;
    end;
 
-//   i := Log.TotalQSO;
-//   if i < 10 then begin
-//      Exit;
-//   end;
-//
-//   mytx := dmZlogGlobal.TXNr;
-//
-//   k := 0;
-//   repeat
-//      aQSO := Log.QsoList[i];
-//      if aQSO.TX = mytx then begin
-//         inc(k);
-//      end;
-//
-//      dec(i)
-//   until (i = 1) or (k = 10);
-//
-//   if (k = 10) then begin
-//      Last := aQSO.time;
-//      Diff := (CurrentTime - Last) * 24.0;
-//      Rate := 10 / Diff;
-//
-//      FLast10QsoRateMax := Max(FLast10QsoRateMax, Rate);
-//
-//      Last10.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
-//      Max10.Caption := 'max ' + Format('%3.2f', [FLast10QsoRateMax]) + ' QSOs/hr';
-//   end
-//   else begin
-//      Exit;
-//   end;
-//
-//   i := Log.TotalQSO;
-//   k := 0;
-//   repeat
-//      aQSO := Log.QsoList[i];
-//      if aQSO.TX = mytx then begin
-//         inc(k);
-//      end;
-//      dec(i)
-//   until (i = 1) or (k = 100);
-//
-//   if k = 100 then begin
-//      Last := aQSO.time;
-//      Diff := (CurrentTime - Last) * 24.0;
-//      Rate := 100 / Diff;
-//
-//      FLast100QsoRateMax := Max(FLast100QsoRateMax, Rate);
-//
-//      Last100.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
-//      Max100.Caption := 'max ' + Format('%3.2f', [FLast100QsoRateMax]) + ' QSOs/hr';
-//   end;
-
-//   UpdateGraph();
-
+   dmZLogGlobal.Target.UpdateLastRate();
    Last10.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRate]) + ' QSOs/hr';
    Max10.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRateMax]) + ' QSOs/hr';
    Last100.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRate]) + ' QSOs/hr';
    Max100.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRateMax]) + ' QSOs/hr';
-
-   TargetToGrid(dmZLogGlobal.Target);
 end;
 
 procedure TRateDialogEx.OKBtnClick(Sender: TObject);
@@ -381,6 +323,7 @@ begin
    end;
 
    // ƒOƒ‰ƒt‚É“WŠJ
+   total_count := dmZLogGlobal.Target.BeforeGraphCount;
    hour_peak := 0;
    for i := 0 to FShowLast - 1 do begin
       start_hour := GetHour(_start + (1 / 24) * i);
@@ -414,7 +357,6 @@ begin
       end;
 
       // cŽ²–Ú·‚è’²®‚Ì‚½‚ß‚Ì’l
-      total_count := dmZLogGlobal.Target.BeforeGraphCount;
       total_count := total_count + hour_count;
       hour_peak := Max(hour_peak, hour_count);
       hour_peak := Max(hour_peak, dmZLogGlobal.Target.Total.Hours[H + i + 1].Target);
@@ -467,6 +409,8 @@ begin
          Axes.Right.Increment := 50;
       end;
    end;
+
+   TargetToGrid(dmZLogGlobal.Target);
 end;
 
 function TRateDialogEx.UpdateGraphOriginal(hh: Integer): Integer;
@@ -651,11 +595,18 @@ begin
          strText := ScoreGrid.Cells[ACol, ARow];
          Font.Color := clBlack;
          TextRect(Rect, strText, [tfLeft, tfVerticalCenter, tfSingleLine]);
+
+         Pen.Color := RGB(220, 220, 220);
+         Brush.Style := bsClear;
+         Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
       else if ARow = 0 then begin
          strText := ScoreGrid.Cells[ACol, ARow];
          Font.Color := clBlack;
          TextRect(Rect, strText, [tfCenter, tfVerticalCenter, tfSingleLine]);
+         Pen.Color := RGB(220, 220, 220);
+         Brush.Style := bsClear;
+         Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
       else if (ARow = 35) or (ACol = 26) then begin
          strText := ScoreGrid.Cells[ACol, ARow];
@@ -668,6 +619,10 @@ begin
          Font.Size := 10;
 
          TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
+
+         Pen.Color := RGB(220, 220, 220);
+         Brush.Style := bsClear;
+         Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
       else begin
 //         t := dmZLogGlobal.Target.Bands[TBand(ARow - 1)].Hours[ACol].Target;
@@ -686,8 +641,25 @@ begin
 //         end;
          Font.Color := clBlack;
          TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
+
+         Pen.Color := RGB(220, 220, 220);
+         Brush.Style := bsClear;
+
+         if ScoreGrid.RowHeights[ARow] >= 2 then begin
+            Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
+         end;
       end;
    end;
+end;
+
+procedure TRateDialogEx.ScoreGridSelectCell(Sender: TObject; ACol, ARow: Integer; var CanSelect: Boolean);
+begin
+   CanSelect := False;
+end;
+
+procedure TRateDialogEx.ScoreGridTopLeftChanged(Sender: TObject);
+begin
+   ScoreGrid.Refresh();
 end;
 
 procedure TRateDialogEx.SetGraphStyle(v: TQSORateStyle);
@@ -724,6 +696,8 @@ end;
 procedure TRateDialogEx.InitScoreGrid();
 var
    i: Integer;
+   b: TBand;
+   R: Integer;
 begin
    ScoreGrid.Cells[0, 1] := MHzString[b19];
    ScoreGrid.Cells[0, 2] := '';
@@ -769,6 +743,18 @@ begin
    ScoreGrid.ColWidths[25] := 60;
    ScoreGrid.Cells[26, 0] := '%';
    ScoreGrid.ColWidths[26] := 50;
+
+   for b := b19 to b10g do begin
+      R := Ord(b) * 2;
+      if dmZLogGlobal.Settings._activebands[b] = True then begin
+         ScoreGrid.RowHeights[R + 1] := 24;
+         ScoreGrid.RowHeights[R + 2] := 24;
+      end
+      else begin
+         ScoreGrid.RowHeights[R + 1] := -1;
+         ScoreGrid.RowHeights[R + 2] := -1;
+      end;
+   end;
 end;
 
 procedure TRateDialogEx.TargetToGrid(ATarget: TContestTarget);
@@ -793,6 +779,8 @@ begin
 
    ScoreGrid.Cells[25, 33]   := IntToStr(ATarget.TotalTotal.Target);
    ScoreGrid.Cells[25, 34]   := IntToStr(ATarget.TotalTotal.Actual);
+   ScoreGrid.Cells[25, 35]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
+   ScoreGrid.Cells[26, 34]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
 
    ScoreGrid.Refresh();
 end;

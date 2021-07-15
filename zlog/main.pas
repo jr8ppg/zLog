@@ -6208,6 +6208,7 @@ begin
       FCheckCall2.ResetListBox();
       FCheckMulti.ResetListBox();
       FCheckCountry.ResetListBox();
+      FRateDialogEx.InitScoreGrid();
 
       SetWindowCaption();
 
