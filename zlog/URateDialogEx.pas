@@ -68,6 +68,7 @@ type
     procedure ScoreGridSelectCell(Sender: TObject; ACol, ARow: Integer; var CanSelect: Boolean);
   private
     { Private declarations }
+    FBand: TBand;
     FLast10QsoRateMax: Double;
     FLast100QsoRateMax: Double;
     FShowLast: Integer;      { Show last x hours. default = 12}
@@ -82,6 +83,7 @@ type
     procedure SetGraphStartPosition(v: TQSORateStartPosition);
     procedure SetGraphStartPositionUI(v: TQSORateStartPosition);
     procedure TargetToGrid(ATarget: TContestTarget);
+    procedure SetBand(b: TBand);
   public
     { Public declarations }
     procedure UpdateGraph;
@@ -91,6 +93,7 @@ type
     property GraphStartPosition: TQSORateStartPosition read FGraphStartPosition write SetGraphStartPosition;
     procedure LoadSettings();
     procedure SaveSettings();
+    property Band: TBand read FBand write SetBand;
   end;
 
 implementation
@@ -111,7 +114,7 @@ var
    b: TBand;
 begin
    PageControl1.ActivePageIndex := 0;
-
+   FBand := b19;
    FLast10QsoRateMax := 0;
    FLast100QsoRateMax := 0;
    FShowLast := 12;
@@ -328,6 +331,8 @@ begin
    for i := 0 to FShowLast - 1 do begin
       start_hour := GetHour(_start + (1 / 24) * i);
       Str := IntToStr(start_hour);
+
+      ScoreGrid.Cells[i + 1, 0] := str;
 
 //      if FShowLast > 12 then begin
 //         if (start_hour mod 2) = 1 then begin
@@ -580,15 +585,26 @@ procedure TRateDialogEx.ScoreGridDrawCell(Sender: TObject; ACol, ARow: Integer; 
 var
    strText: string;
    t: Integer;
+   r: Integer;
 begin
    with ScoreGrid.Canvas do begin
       Font.Size := ScoreGrid.Font.Size;
       Font.Name := ScoreGrid.Font.Name;
 
-      Pen.Style := psSolid;
-      Pen.Color := ScoreGrid.Color;
-      Brush.Style := bsSolid;
-      Brush.Color := ScoreGrid.Color;
+      r := (Ord(FBand) * 2) + 1;
+      if (ARow = (r + 0)) or
+         (ARow = (r + 1)) then begin
+         Pen.Style := psSolid;
+         Pen.Color := RGB($9F, $FF, $FF);
+         Brush.Style := bsSolid;
+         Brush.Color := RGB($9F, $FF, $FF);
+      end
+      else begin
+         Pen.Style := psSolid;
+         Pen.Color := ScoreGrid.Color;
+         Brush.Style := bsSolid;
+         Brush.Color := ScoreGrid.Color;
+      end;
       FillRect(Rect);
 
       if ACol = 0 then begin
@@ -642,6 +658,7 @@ begin
          Font.Color := clBlack;
          TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
 
+         // grid line
          Pen.Color := RGB(220, 220, 220);
          Brush.Style := bsClear;
 
@@ -698,6 +715,7 @@ var
    i: Integer;
    b: TBand;
    R: Integer;
+   h: Integer;
 begin
    ScoreGrid.Cells[0, 1] := MHzString[b19];
    ScoreGrid.Cells[0, 2] := '';
@@ -782,6 +800,12 @@ begin
    ScoreGrid.Cells[25, 35]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
    ScoreGrid.Cells[26, 34]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
 
+   ScoreGrid.Refresh();
+end;
+
+procedure TRateDialogEx.SetBand(b: TBand);
+begin
+   FBand := b;
    ScoreGrid.Refresh();
 end;
 

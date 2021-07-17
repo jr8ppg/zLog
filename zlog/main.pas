@@ -196,8 +196,6 @@ type
     procedure Renew; virtual;
     {procedure LoadFromFile(FileName : string); virtual; }
     procedure EditCurrentRow; virtual;
-    procedure ChangeBand(Up : Boolean); virtual;
-    procedure ChangeMode; virtual;
     procedure ChangePower; virtual;
     procedure DispExchangeOnOtherBands; virtual;
     procedure SpaceBarProc; virtual; {called when space is pressed when Callsign Edit
@@ -1873,18 +1871,6 @@ begin
    FFunctionKeyPanel.UpdateInfo();
 end;
 
-procedure TContest.ChangeBand(Up: Boolean);
-begin
-   MainForm.UpdateBand(MainForm.GetNextBand(CurrentQSO.Band, Up));
-   if MainForm.RigControl.Rig <> nil then begin
-      MainForm.RigControl.Rig.SetBand(CurrentQSO);
-
-      if CurrentQSO.mode = mSSB then begin
-         MainForm.RigControl.Rig.SetMode(CurrentQSO);
-      end;
-   end;
-end;
-
 procedure TMainForm.SetQSOMode(aQSO: TQSO);
 var
    maxmode: TMode;
@@ -1909,16 +1895,6 @@ begin
    end
    else begin
       aQSO.Mode := mCW;
-   end;
-end;
-
-procedure TContest.ChangeMode;
-begin
-   MainForm.SetQSOMode(CurrentQSO);
-   MainForm.UpdateMode(CurrentQSO.mode);
-
-   if MainForm.RigControl.Rig <> nil then begin
-      MainForm.RigControl.Rig.SetMode(CurrentQSO);
    end;
 end;
 
@@ -7380,6 +7356,7 @@ begin
 
       // 低いバンドから使用可能なバンドを探して最初のバンドとする
       CurrentQSO.Band := GetFirstAvailableBand(dmZLogGlobal.LastBand);
+      FRateDialogEx.Band := CurrentQSO.Band;
       CurrentQSO.Mode := dmZLogGlobal.LastMode;
 
       CurrentQSO.Serial := SerialArray[CurrentQSO.Band];
@@ -8788,13 +8765,28 @@ end;
 // #89 バンド変更 Shift+B
 procedure TMainForm.actionChangeBandExecute(Sender: TObject);
 begin
-   MyContest.ChangeBand(True);
+   UpdateBand(GetNextBand(CurrentQSO.Band, True));
+
+   if RigControl.Rig <> nil then begin
+      RigControl.Rig.SetBand(CurrentQSO);
+
+      if CurrentQSO.Mode = mSSB then begin
+         RigControl.Rig.SetMode(CurrentQSO);
+      end;
+   end;
+
+   FRateDialogEx.Band := CurrentQSO.Band;
 end;
 
 // #90 モード変更 Shift+M
 procedure TMainForm.actionChangeModeExecute(Sender: TObject);
 begin
-   MyContest.ChangeMode;
+   SetQSOMode(CurrentQSO);
+   UpdateMode(CurrentQSO.Mode);
+
+   if RigControl.Rig <> nil then begin
+      RigControl.Rig.SetMode(CurrentQSO);
+   end;
 end;
 
 // #91 パワー変更 Shift+P
