@@ -336,6 +336,8 @@ var
    mytx: Integer;
 begin
    mytx := dmZlogGlobal.TXNr;
+   c10 := 0;
+   c100 := 0;
    for i := Log.TotalQSO downto 1 do begin
       aQSO := Log.QsoList[i];
 
