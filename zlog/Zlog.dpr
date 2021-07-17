@@ -119,7 +119,8 @@ uses
   UGraphColorDialog in 'UGraphColorDialog.pas' {GraphColorDialog},
   UTargetEditor in 'UTargetEditor.pas' {TargetEditor},
   URateDialogEx in 'URateDialogEx.pas' {RateDialogEx},
-  UQsoTarget in 'UQsoTarget.pas';
+  UQsoTarget in 'UQsoTarget.pas',
+  ToneGen in 'ToneGen.pas';
 
 {$R *.RES}
 

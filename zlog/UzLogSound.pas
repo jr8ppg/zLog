@@ -17,7 +17,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, MMReg, MMSystem, ToneGen, MSACM,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, System.Math,
+  MMReg, MMSystem, ToneGen, MSACM,
   Generics.Collections, Generics.Defaults;
 
 type
@@ -49,12 +50,14 @@ type
     m_dwWaveSize: DWORD;
     m_hwo: HWAVEOUT;
     m_wh: TWaveHdr;
+    m_uDeviceId: UINT;
     FOnOpen: TNotifyEvent;
     FOnDone: TNotifyEvent;
     FOnClose: TNotifyEvent;
     FLoaded: Boolean;
     FPlaying: Boolean;
     FFileName: string;
+    FVolume: Integer;
     procedure ReadWaveFile(strFileName: string; lpwf: PWAVEFORMATEX; var lpData: LPBYTE; var dwDataSize: DWORD);
     function GetDecodeSize(lpMP3Data: LPBYTE; dwMP3Size: DWORD; lpwf: PWAVEFORMATEX): DWORD;
     procedure DecodeToWave(lpwfSrc: PWAVEFORMATEX; lpSrcData: LPBYTE; dwSrcSize:DWORD; lpwfDest: PWAVEFORMATEX; var lpDestData: LPBYTE; var dwDestSize: DWORD);
@@ -63,6 +66,7 @@ type
     function IsId3v2(lpData: LPBYTE; dwDataSize: DWORD; var dwTagSize: DWORD): Boolean;
     procedure ReadMP3File(lpszFileName: LPTSTR; lpmf: PMPEGLayer3WaveFormat; var lpData: LPBYTE; var dwSize: DWORD);
     procedure FreeWaveData();
+    procedure SetVolume(v: Integer);
   public
     constructor Create();
     destructor Destroy(); override;
@@ -79,6 +83,7 @@ type
     property OnOpen: TNotifyEvent read FOnOpen write FOnOpen;
     property OnDone: TNotifyEvent read FOnDone write FOnDone;
     property OnClose: TNotifyEvent read FOnClose write FOnClose;
+    property Volume: Integer read FVolume write SetVolume;
   end;
 
   TSideTone = class(TWaveSound)
@@ -131,6 +136,7 @@ begin
    FPlaying := False;
    FLoaded := False;
    FFileName := '';
+   FVolume := 100;
    FOnOpen := nil;
    FOnDone := nil;
    FOnClose := nil;
@@ -477,6 +483,11 @@ begin
    end;
 end;
 
+procedure TWaveSound.SetVolume(v: Integer);
+begin
+   FVolume := Min(Max(v, 1), 100);
+end;
+
 procedure TWaveSound.Open(strFileName: string; uDevceID: UINT);
 var
 	wf: TWAVEFORMATEX;
@@ -513,6 +524,8 @@ begin
       m_wh.dwBufferLength := m_dwWaveSize;
       m_wh.dwFlags        := 0;
 
+      m_uDeviceID := uDevceID;
+
       waveOutPrepareHeader(m_hwo, @m_wh, sizeof(m_wh));
 
       FLoaded := True;
@@ -523,10 +536,16 @@ begin
 end;
 
 procedure TWaveSound.Play();
+var
+   newvol: DWORD;
 begin
    if FLoaded = False then begin
       Exit;
    end;
+
+   newvol := (($ffff * FVolume) div 100) + ((($ffff * FVolume) div 100) shl $10);
+
+   waveOutSetVolume(m_uDeviceID, newvol);
 
    waveOutWrite(m_hwo, @m_wh, sizeof(m_wh));
    FPlaying := True;

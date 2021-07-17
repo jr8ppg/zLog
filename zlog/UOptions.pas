@@ -415,6 +415,8 @@ type
     comboIcomMethod: TComboBox;
     Label83: TLabel;
     Label84: TLabel;
+    Label85: TLabel;
+    VolumeSpinEdit: TSpinEdit;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -632,6 +634,7 @@ begin
       Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
       Settings.CW._FIFO := FIFOCheck.Checked;
       Settings.CW._sidetone := SideToneCheck.Checked;
+      Settings.CW._sidetone_volume := VolumeSpinEdit.Value;
       Settings.CW._tonepitch := ToneSpinEdit.Value;
       Settings.CW._cqmax := CQmaxSpinEdit.Value;
 
@@ -979,6 +982,7 @@ begin
       WeightLabel.Caption := IntToStr(Settings.CW._weight) + ' %';
       FIFOCheck.Checked := Settings.CW._FIFO;
       SideToneCheck.Checked := Settings.CW._sidetone;
+      VolumeSpinEdit.Value := Settings.CW._sidetone_volume;
       ToneSpinEdit.Value := Settings.CW._tonepitch;
       CQmaxSpinEdit.Value := Settings.CW._cqmax;
       AbbrevEdit.Text := Settings.CW._zero + Settings.CW._one + Settings.CW._nine;

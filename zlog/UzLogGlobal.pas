@@ -15,6 +15,7 @@ type
     _fixwpm : integer;
     _paddlereverse : boolean;
     _sidetone: Boolean;
+    _sidetone_volume: Integer;
     _tonepitch : integer;
     _cqmax : integer;
     _cqrepeat : double;
@@ -660,6 +661,9 @@ begin
       // Side Tone
       Settings.CW._sidetone := ini.ReadBool('CW', 'use_sidetone', False);
 
+      // Side Tone Volume
+      Settings.CW._sidetone_volume := ini.ReadInteger('CW', 'sidetone_volume', 100);
+
       // Tone Pitch (Hz)
       Settings.CW._tonepitch := ini.ReadInteger('CW', 'Pitch', 800);
 
@@ -1175,6 +1179,9 @@ begin
       // Side Tone
       ini.WriteBool('CW', 'use_sidetone', Settings.CW._sidetone);
 
+      // Side Tone Volume
+      ini.WriteInteger('CW', 'sidetone_volume', Settings.CW._sidetone_volume);
+
       // Tone Pitch (Hz)
       ini.WriteInteger('CW', 'Pitch', Settings.CW._tonepitch);
 
@@ -1527,6 +1534,7 @@ procedure TdmZLogGlobal.InitializeCW();
 begin
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
+   dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;
 
    // RIGコントロールと同じポートの場合は無しとする
    if (Settings._rigport[1] <> Settings._lptnr) and

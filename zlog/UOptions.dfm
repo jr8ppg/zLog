@@ -1,6 +1,7 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
+  ActiveControl = VolumeSpinEdit
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -24,7 +25,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 394
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetCW
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -717,6 +718,8 @@ object formOptions: TformOptions
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
+      ExplicitLeft = 8
+      ExplicitTop = 22
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -747,14 +750,14 @@ object formOptions: TformOptions
       end
       object Label15: TLabel
         Left = 262
-        Top = 185
+        Top = 153
         Width = 37
         Height = 13
         Caption = 'CQ max'
       end
       object Label16: TLabel
         Left = 225
-        Top = 158
+        Top = 126
         Width = 74
         Height = 13
         Caption = 'Tone Pitch (Hz)'
@@ -772,6 +775,13 @@ object formOptions: TformOptions
         Width = 86
         Height = 13
         Caption = 'Abbreviation (019)'
+      end
+      object Label85: TLabel
+        Left = 262
+        Top = 180
+        Width = 35
+        Height = 13
+        Caption = 'Volume'
       end
       object GroupBox2: TGroupBox
         Left = 6
@@ -1083,7 +1093,7 @@ object formOptions: TformOptions
       end
       object CQmaxSpinEdit: TSpinEdit
         Left = 321
-        Top = 180
+        Top = 148
         Width = 46
         Height = 22
         MaxValue = 999
@@ -1093,7 +1103,7 @@ object formOptions: TformOptions
       end
       object ToneSpinEdit: TSpinEdit
         Left = 321
-        Top = 153
+        Top = 121
         Width = 46
         Height = 22
         Increment = 10
@@ -1107,13 +1117,13 @@ object formOptions: TformOptions
         Top = 230
         Width = 41
         Height = 21
-        TabOrder = 9
+        TabOrder = 10
         Text = '2.0'
         OnKeyPress = CQRepEditKeyPress
       end
       object FIFOCheck: TCheckBox
         Left = 213
-        Top = 112
+        Top = 80
         Width = 97
         Height = 17
         Caption = 'Que messages'
@@ -1128,7 +1138,7 @@ object formOptions: TformOptions
         Height = 21
         CharCase = ecUpperCase
         MaxLength = 3
-        TabOrder = 8
+        TabOrder = 9
         Text = 'OAN'
       end
       object rbBankA: TRadioButton
@@ -1139,7 +1149,7 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'CW A'
         Checked = True
-        TabOrder = 13
+        TabOrder = 14
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1150,7 +1160,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'CW B'
-        TabOrder = 14
+        TabOrder = 15
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1161,7 +1171,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'RTTY'
-        TabOrder = 15
+        TabOrder = 16
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1174,7 +1184,7 @@ object formOptions: TformOptions
           'This option will switch the CW message sent when TAB or ; key is' +
           ' pressed to that in the current message bank. '
         Caption = 'Switch TAB/; with CW bank'
-        TabOrder = 11
+        TabOrder = 12
         WordWrap = True
       end
       object checkSendNrAuto: TCheckBox
@@ -1183,7 +1193,7 @@ object formOptions: TformOptions
         Width = 161
         Height = 17
         Caption = 'Send NR? automatically'
-        TabOrder = 12
+        TabOrder = 13
       end
       object GroupBox14: TGroupBox
         Left = 6
@@ -1239,7 +1249,7 @@ object formOptions: TformOptions
       end
       object SideToneCheck: TCheckBox
         Left = 213
-        Top = 135
+        Top = 103
         Width = 97
         Height = 17
         Caption = 'Use Side Tone'
@@ -1251,8 +1261,18 @@ object formOptions: TformOptions
         Width = 149
         Height = 24
         Caption = 'Use CQ Random Repeat'
-        TabOrder = 10
+        TabOrder = 11
         WordWrap = True
+      end
+      object VolumeSpinEdit: TSpinEdit
+        Left = 321
+        Top = 175
+        Width = 46
+        Height = 22
+        MaxValue = 100
+        MinValue = 1
+        TabOrder = 8
+        Value = 100
       end
     end
     object tabsheetVoice: TTabSheet
