@@ -1,7 +1,7 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = VolumeSpinEdit
+  ActiveControl = act19
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -25,7 +25,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 394
     Height = 434
-    ActivePage = tabsheetCW
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -718,8 +718,6 @@ object formOptions: TformOptions
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
-      ExplicitLeft = 8
-      ExplicitTop = 22
       object Label11: TLabel
         Left = 240
         Top = 0
@@ -750,7 +748,7 @@ object formOptions: TformOptions
       end
       object Label15: TLabel
         Left = 262
-        Top = 153
+        Top = 234
         Width = 37
         Height = 13
         Caption = 'CQ max'
@@ -764,24 +762,24 @@ object formOptions: TformOptions
       end
       object Label17: TLabel
         Left = 213
-        Top = 233
+        Top = 207
         Width = 96
         Height = 13
         Caption = 'CQ rpt. interval (sec)'
       end
       object Label12: TLabel
         Left = 213
-        Top = 210
+        Top = 180
         Width = 86
         Height = 13
         Caption = 'Abbreviation (019)'
       end
       object Label85: TLabel
-        Left = 262
-        Top = 180
-        Width = 35
+        Left = 225
+        Top = 152
+        Width = 71
         Height = 13
-        Caption = 'Volume'
+        Caption = 'Volume (1-100)'
       end
       object GroupBox2: TGroupBox
         Left = 6
@@ -1093,12 +1091,12 @@ object formOptions: TformOptions
       end
       object CQmaxSpinEdit: TSpinEdit
         Left = 321
-        Top = 148
+        Top = 229
         Width = 46
         Height = 22
         MaxValue = 999
         MinValue = 0
-        TabOrder = 7
+        TabOrder = 10
         Value = 15
       end
       object ToneSpinEdit: TSpinEdit
@@ -1114,10 +1112,10 @@ object formOptions: TformOptions
       end
       object CQRepEdit: TEdit
         Left = 321
-        Top = 230
+        Top = 204
         Width = 41
         Height = 21
-        TabOrder = 10
+        TabOrder = 9
         Text = '2.0'
         OnKeyPress = CQRepEditKeyPress
       end
@@ -1133,12 +1131,12 @@ object formOptions: TformOptions
       end
       object AbbrevEdit: TEdit
         Left = 321
-        Top = 206
+        Top = 176
         Width = 41
         Height = 21
         CharCase = ecUpperCase
         MaxLength = 3
-        TabOrder = 9
+        TabOrder = 8
         Text = 'OAN'
       end
       object rbBankA: TRadioButton
@@ -1266,12 +1264,12 @@ object formOptions: TformOptions
       end
       object VolumeSpinEdit: TSpinEdit
         Left = 321
-        Top = 175
+        Top = 147
         Width = 46
         Height = 22
         MaxValue = 100
         MinValue = 1
-        TabOrder = 8
+        TabOrder = 7
         Value = 100
       end
     end
@@ -2084,7 +2082,7 @@ object formOptions: TformOptions
         Top = 283
         Width = 371
         Height = 62
-        Caption = 'CW PTT control'
+        Caption = 'CW/PTT control'
         TabOrder = 1
         object Label38: TLabel
           Left = 8
