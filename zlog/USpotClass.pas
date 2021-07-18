@@ -446,6 +446,7 @@ procedure SpotCheckWorked(Sp: TBaseSpot);
 var
    multi: string;
    SD, SD2: TSuperData;
+   Q: TQSO;
 begin
    // 交信済みか確認する
    Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
@@ -470,7 +471,17 @@ begin
 
    // そのマルチはSp.BandでNEW MULTIか
    if Sp.Number <> '' then begin
-      Sp.NewJaMulti := Log.IsNewMulti(Sp.Band, Sp.Number);
+      Q := TQSO.Create();
+      try
+         Q.Callsign := Sp.Call;
+         Q.Band := Sp.Band;
+         Q.Mode := Sp.Mode;
+         Q.NrRcvd := Sp.Number;
+         multi := MyContest.MultiForm.ExtractMulti(Q);
+         Sp.NewJaMulti := Log.IsNewMulti(Sp.Band, multi);
+      finally
+         Q.Free();
+      end;
    end;
 end;
 

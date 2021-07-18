@@ -1985,16 +1985,7 @@ end;
 function TLog.IsNewMulti(band: TBand; multi: string): Boolean;
 var
    i: Integer;
-   ch: Char;
-   l: Integer;
 begin
-   // #184 ––”ö‚ªA-Z‚È‚çŽæ‚é
-   l := Length(multi);
-   ch := multi[l];
-   if CharInSet(ch, ['A'..'Z']) then begin
-      multi := Copy(multi, 1, l - 1);
-   end;
-
    for i := 1 to FBandList[band].Count - 1 do begin
       if FBandList[band].Items[i].Multi1 = multi then begin
          Result := False;
