@@ -1831,6 +1831,8 @@ begin
       FBandScope.CopyList(FBandScopeEx[B]);
    end;
    FBandScope.Select := True;
+
+   FRateDialogEx.Band := CurrentQSO.Band;
 end;
 
 procedure TMainForm.UpdateMode(M: TMode);
@@ -8774,8 +8776,6 @@ begin
          RigControl.Rig.SetMode(CurrentQSO);
       end;
    end;
-
-   FRateDialogEx.Band := CurrentQSO.Band;
 end;
 
 // #90 ÉÇÅ[ÉhïœçX Shift+M

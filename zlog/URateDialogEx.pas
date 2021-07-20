@@ -806,6 +806,7 @@ end;
 procedure TRateDialogEx.SetBand(b: TBand);
 begin
    FBand := b;
+   ScoreGrid.TopRow := Ord(b) * 2 + 1;
    ScoreGrid.Refresh();
 end;
 
