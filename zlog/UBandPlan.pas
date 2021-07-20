@@ -28,7 +28,7 @@ type
     function GetEstimatedMode(b: TBand; Hz: Integer): TMode; overload;
     function IsInBand(b: TBand; m: TMode; Hz: Integer): Boolean;
     function IsOffBand(b: TBand; m: TMode; Hz: Integer): Boolean;
-    function FreqToBand(Hz: Integer): TBand; // Returns -1 if Hz is outside ham bands
+    function FreqToBand(Hz: Int64): TBand; // Returns -1 if Hz is outside ham bands
     property Limit[m: TMode]: TFreqLimitArray read GetLimit write SetLimit;
     property Defaults[m: TMode]: TFreqLimitArray read GetDefaults;
   end;
@@ -314,7 +314,7 @@ begin
    end;
 end;
 
-function TBandPlan.FreqToBand(Hz: Integer): TBand; // Returns -1 if Hz is outside ham bands
+function TBandPlan.FreqToBand(Hz: Int64): TBand; // Returns -1 if Hz is outside ham bands
 var
    b: TBand;
 begin

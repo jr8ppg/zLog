@@ -352,7 +352,7 @@ function CurrentFileName(): string;
 function Random10 : integer;
 function UTCOffset : integer;   //in minutes; utc = localtime + utcoffset
 function ContainsDoubleByteChar(S : string) : boolean;
-function kHzStr(Hz : integer) : string;
+function kHzStr(Hz : Int64) : string;
 procedure IncEditCounter(aQSO : TQSO);
 function ExtractKenNr(S : string) : string; //extracts ken nr from aja#+power
 function ExtractPower(S : string) : string;
@@ -2369,9 +2369,9 @@ begin
       end;
 end;
 
-function kHzStr(Hz: integer): string;
+function kHzStr(Hz: Int64): string;
 var
-   k, kk: integer;
+   k, kk: Int64;
 begin
    k := Hz div 1000;
    kk := Hz mod 1000;

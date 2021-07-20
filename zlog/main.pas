@@ -1088,7 +1088,7 @@ type
     procedure BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
 
-    procedure BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Integer);
+    procedure BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Int64);
     procedure BandScopeAddSelfSpotFromNetwork(BSText: string);
     procedure BandScopeAddClusterSpot(Sp: TSpot);
     procedure BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
@@ -9650,7 +9650,7 @@ begin
    end;
 end;
 
-procedure TMainForm.BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Integer);
+procedure TMainForm.BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Int64);
 begin
    FBandScopeEx[aQSO.Band].AddSelfSpot(aQSO, nFreq);
    FBandScope.AddSelfSpot(aQSO, nFreq);
