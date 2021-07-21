@@ -120,7 +120,9 @@ uses
   UTargetEditor in 'UTargetEditor.pas' {TargetEditor},
   URateDialogEx in 'URateDialogEx.pas' {RateDialogEx},
   UQsoTarget in 'UQsoTarget.pas',
-  ToneGen in 'ToneGen.pas';
+  ToneGen in 'ToneGen.pas',
+  MSACM in 'MSACM.pas',
+  UNRDialog in 'UNRDialog.pas' {NRDialog};
 
 {$R *.RES}
 
