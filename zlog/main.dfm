@@ -5278,6 +5278,9 @@ object MainForm: TMainForm
       object QSOrate1: TMenuItem
         Action = actionShowQsoRate
       end
+      object QSORateEx1: TMenuItem
+        Action = actionShowQsoRateEx
+      end
       object SuperCheck1: TMenuItem
         Action = actionShowSuperCheck
       end
@@ -5350,6 +5353,10 @@ object MainForm: TMainForm
       object menuQSORateSettings: TMenuItem
         Caption = 'QSO &Rate'
         OnClick = menuQSORateSettingsClick
+      end
+      object menuTargetEditor: TMenuItem
+        Caption = '&Target Editor'
+        OnClick = menuTargetEditorClick
       end
     end
     object Network1: TMenuItem
@@ -6468,6 +6475,10 @@ object MainForm: TMainForm
     object actionFunctionKeyPanel: TAction
       Caption = 'Function Key Panel'
       OnExecute = actionFunctionKeyPanelExecute
+    end
+    object actionShowQsoRateEx: TAction
+      Caption = 'QSO Rate Ex'
+      OnExecute = actionShowQsoRateExExecute
     end
   end
   object SPCMenu: TPopupMenu

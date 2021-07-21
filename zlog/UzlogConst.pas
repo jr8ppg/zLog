@@ -7,7 +7,7 @@ uses
 
 type
   TMode = (mCW, mSSB, mFM, mAM, mRTTY, mOther);
-  TBand = (b19, b35, b7, b10, b14, b18, b21, b24, b28, b50, b144, b430, b1200, b2400, b5600, b10g, bUnknown);
+  TBand = (b19, b35, b7, b10, b14, b18, b21, b24, b28, b50, b144, b430, b1200, b2400, b5600, b10g, bTarget, bUnknown);
   TPower = (p001, p002, p005, p010, p020, p025, p050, p100, p200, p500, p1000);
 
 const

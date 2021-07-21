@@ -116,7 +116,11 @@ uses
   UFunctionKeyPanel in 'UFunctionKeyPanel.pas' {formFunctionKeyPanel},
   UBandPlan in 'UBandPlan.pas',
   UBandPlanEditDialog in 'UBandPlanEditDialog.pas' {BandPlanEditDialog},
-  UGraphColorDialog in 'UGraphColorDialog.pas' {GraphColorDialog};
+  UGraphColorDialog in 'UGraphColorDialog.pas' {GraphColorDialog},
+  UTargetEditor in 'UTargetEditor.pas' {TargetEditor},
+  URateDialogEx in 'URateDialogEx.pas' {RateDialogEx},
+  UQsoTarget in 'UQsoTarget.pas',
+  ToneGen in 'ToneGen.pas';
 
 {$R *.RES}
 

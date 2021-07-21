@@ -14,7 +14,7 @@ uses
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
   OEdit, URigControl, UConsolePad, URenewThread, USpotClass,
   UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UQuickRef, UZAnalyze,
-  UPartials, URateDialog, USuperCheck, USuperCheck2, UComm, UCWKeyBoard, UChat,
+  UPartials, URateDialog, URateDialogEx, USuperCheck, USuperCheck2, UComm, UCWKeyBoard, UChat,
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
@@ -196,8 +196,6 @@ type
     procedure Renew; virtual;
     {procedure LoadFromFile(FileName : string); virtual; }
     procedure EditCurrentRow; virtual;
-    procedure ChangeBand(Up : Boolean); virtual;
-    procedure ChangeMode; virtual;
     procedure ChangePower; virtual;
     procedure DispExchangeOnOtherBands; virtual;
     procedure SpaceBarProc; virtual; {called when space is pressed when Callsign Edit
@@ -691,6 +689,9 @@ type
     menuBandPlanSettings: TMenuItem;
     menuQSORateSettings: TMenuItem;
     menuSettings: TMenuItem;
+    actionShowQsoRateEx: TAction;
+    QSORateEx1: TMenuItem;
+    menuTargetEditor: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -914,10 +915,13 @@ type
     procedure actionFunctionKeyPanelExecute(Sender: TObject);
     procedure menuBandPlanSettingsClick(Sender: TObject);
     procedure menuQSORateSettingsClick(Sender: TObject);
+    procedure actionShowQsoRateExExecute(Sender: TObject);
+    procedure menuTargetEditorClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
     FRateDialog: TRateDialog;
+    FRateDialogEx: TRateDialogEx;
     FSuperCheck: TSuperCheck;
     FSuperCheck2: TSuperCheck2;        // N+1
     FCommForm: TCommForm;
@@ -1084,7 +1088,7 @@ type
     procedure BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
 
-    procedure BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Integer);
+    procedure BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Int64);
     procedure BandScopeAddSelfSpotFromNetwork(BSText: string);
     procedure BandScopeAddClusterSpot(Sp: TSpot);
     procedure BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
@@ -1128,7 +1132,8 @@ uses
   UARRL10Score,
   UIntegerDialog, UNewPrefix, UKCJScore,
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
-  UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension;
+  UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension,
+  UTargetEditor;
 
 {$R *.DFM}
 
@@ -1826,6 +1831,8 @@ begin
       FBandScope.CopyList(FBandScopeEx[B]);
    end;
    FBandScope.Select := True;
+
+   FRateDialogEx.Band := CurrentQSO.Band;
 end;
 
 procedure TMainForm.UpdateMode(M: TMode);
@@ -1866,18 +1873,6 @@ begin
    FFunctionKeyPanel.UpdateInfo();
 end;
 
-procedure TContest.ChangeBand(Up: Boolean);
-begin
-   MainForm.UpdateBand(MainForm.GetNextBand(CurrentQSO.Band, Up));
-   if MainForm.RigControl.Rig <> nil then begin
-      MainForm.RigControl.Rig.SetBand(CurrentQSO);
-
-      if CurrentQSO.mode = mSSB then begin
-         MainForm.RigControl.Rig.SetMode(CurrentQSO);
-      end;
-   end;
-end;
-
 procedure TMainForm.SetQSOMode(aQSO: TQSO);
 var
    maxmode: TMode;
@@ -1902,16 +1897,6 @@ begin
    end
    else begin
       aQSO.Mode := mCW;
-   end;
-end;
-
-procedure TContest.ChangeMode;
-begin
-   MainForm.SetQSOMode(CurrentQSO);
-   MainForm.UpdateMode(CurrentQSO.mode);
-
-   if MainForm.RigControl.Rig <> nil then begin
-      MainForm.RigControl.Rig.SetMode(CurrentQSO);
    end;
 end;
 
@@ -2283,8 +2268,12 @@ begin
 
    MainForm.ReEvaluateQSYCount;
 
-   if MainForm.FRateDialog.Visible then
+   if MainForm.FRateDialog.Visible then begin
       MainForm.FRateDialog.UpdateGraph;
+   end;
+   if MainForm.FRateDialogEx.Visible then begin
+      MainForm.FRateDialogEx.UpdateGraph;
+   end;
 
    if dmZlogGlobal.Settings._multistation then begin
       if Local { (mytx = aQSO.TX) } and (aQSO.NewMulti1 = False) and (aQSO.NewMulti2 = False) and (dmZlogGlobal.Settings._multistationwarning)
@@ -3814,6 +3803,7 @@ begin
    FRigControl.OnVFOChanged := DoVFOChange;
    FPartialCheck  := TPartialCheck.Create(Self);
    FRateDialog    := TRateDialog.Create(Self);
+   FRateDialogEx  := TRateDialogEx.Create(Self);
    FSuperCheck    := TSuperCheck.Create(Self);
    FSuperCheck2   := TSuperCheck2.Create(Self);
    FCommForm      := TCommForm.Create(Self);
@@ -3987,6 +3977,7 @@ begin
       SetWindowCaption();
       EditScreen.RefreshScreen(False);
       FRateDialog.UpdateGraph();
+      FRateDialogEx.UpdateGraph();
    end;
 end;
 
@@ -4071,7 +4062,7 @@ begin
    dmZlogGlobal.ReadWindowState(FCommForm);
    dmZlogGlobal.ReadWindowState(FScratchSheet);
    dmZlogGlobal.ReadWindowState(FRateDialog);
-   dmZlogGlobal.ReadWindowState(FRateDialog);
+   dmZlogGlobal.ReadWindowState(FRateDialogEx);
    dmZlogGlobal.ReadWindowState(FZAnalyze);
    dmZlogGlobal.ReadWindowState(FCwMessagePad);
    dmZlogGlobal.ReadWindowState(FFunctionKeyPanel);
@@ -4101,6 +4092,7 @@ begin
    dmZlogGlobal.WriteWindowState(FCommForm);
    dmZlogGlobal.WriteWindowState(FScratchSheet);
    dmZlogGlobal.WriteWindowState(FRateDialog);
+   dmZlogGlobal.WriteWindowState(FRateDialogEx);
    dmZlogGlobal.WriteWindowState(FZAnalyze);
    dmZlogGlobal.WriteWindowState(FCwMessagePad);
    dmZlogGlobal.WriteWindowState(FFunctionKeyPanel);
@@ -5549,6 +5541,7 @@ begin
    FCommForm.Release();
    FScratchSheet.Release();
    FRateDialog.Release();
+   FRateDialogEx.Release();
    FZServerInquiry.Release();
    FZLinkForm.Release();
    FSpotForm.Release();
@@ -6193,6 +6186,7 @@ begin
       FCheckCall2.ResetListBox();
       FCheckMulti.ResetListBox();
       FCheckCountry.ResetListBox();
+      FRateDialogEx.InitScoreGrid();
 
       SetWindowCaption();
 
@@ -6327,8 +6321,31 @@ begin
          FRateDialog.GraphSeries[b].Marks.Font.Color := f.TextColor[b];
       end;
       FRateDialog.SaveSettings();
+
+      FRateDialogEx.GraphStyle := f.Style;
+      FRateDialogEx.GraphStartPosition := f.StartPosition;
+      for b := b19 to HiBand do begin
+         FRateDialogEx.GraphSeries[b].SeriesColor := f.BarColor[b];
+         FRateDialogEx.GraphSeries[b].Marks.Font.Color := f.TextColor[b];
+      end;
    finally
       f.Release();
+   end;
+end;
+
+procedure TMainForm.menuTargetEditorClick(Sender: TObject);
+var
+   dlg: TTargetEditor;
+begin
+   dlg := TTargetEditor.Create(Self);
+   try
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      FRateDialogEx.UpdateGraph();
+   finally
+      dlg.Release();
    end;
 end;
 
@@ -7341,6 +7358,7 @@ begin
 
       // 低いバンドから使用可能なバンドを探して最初のバンドとする
       CurrentQSO.Band := GetFirstAvailableBand(dmZLogGlobal.LastBand);
+      FRateDialogEx.Band := CurrentQSO.Band;
       CurrentQSO.Mode := dmZLogGlobal.LastMode;
 
       CurrentQSO.Serial := SerialArray[CurrentQSO.Band];
@@ -8626,6 +8644,11 @@ begin
    FRateDialog.Show;
 end;
 
+procedure TMainForm.actionShowQsoRateExExecute(Sender: TObject);
+begin
+   FRateDialogEx.Show;
+end;
+
 // #79 Check Callウインドウ
 procedure TMainForm.actionShowCheckCallExecute(Sender: TObject);
 begin
@@ -8744,13 +8767,26 @@ end;
 // #89 バンド変更 Shift+B
 procedure TMainForm.actionChangeBandExecute(Sender: TObject);
 begin
-   MyContest.ChangeBand(True);
+   UpdateBand(GetNextBand(CurrentQSO.Band, True));
+
+   if RigControl.Rig <> nil then begin
+      RigControl.Rig.SetBand(CurrentQSO);
+
+      if CurrentQSO.Mode = mSSB then begin
+         RigControl.Rig.SetMode(CurrentQSO);
+      end;
+   end;
 end;
 
 // #90 モード変更 Shift+M
 procedure TMainForm.actionChangeModeExecute(Sender: TObject);
 begin
-   MyContest.ChangeMode;
+   SetQSOMode(CurrentQSO);
+   UpdateMode(CurrentQSO.Mode);
+
+   if RigControl.Rig <> nil then begin
+      RigControl.Rig.SetMode(CurrentQSO);
+   end;
 end;
 
 // #91 パワー変更 Shift+P
@@ -9614,7 +9650,7 @@ begin
    end;
 end;
 
-procedure TMainForm.BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Integer);
+procedure TMainForm.BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Int64);
 begin
    FBandScopeEx[aQSO.Band].AddSelfSpot(aQSO, nFreq);
    FBandScope.AddSelfSpot(aQSO, nFreq);

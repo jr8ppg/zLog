@@ -66,7 +66,7 @@ type
   public
     { Public êÈåæ }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
-    procedure AddSelfSpot(aQSO : TQSO; Hz : LongInt);
+    procedure AddSelfSpot(aQSO : TQSO; Hz : Int64);
     procedure AddSelfSpotFromNetwork(BSText : string);
     procedure AddClusterSpot(Sp: TSpot);
     procedure RewriteBandScope();
@@ -86,7 +86,7 @@ type
   TBandScopeArray = array[b19..b10g] of TBandScope2;
 
 var
-  CurrentRigFrequency : Integer; // in Hertz
+  CurrentRigFrequency : Int64; // in Hertz
 
 implementation
 
@@ -149,7 +149,7 @@ begin
 end;
 
 // Self Spot
-procedure TBandScope2.AddSelfSpot(aQSO: TQSO; Hz: LongInt);
+procedure TBandScope2.AddSelfSpot(aQSO: TQSO; Hz: Int64);
 var
    D: TBSData;
 begin

@@ -5,7 +5,8 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.Math, Vcl.Graphics, System.DateUtils,
-  UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan;
+  UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
+  UQsoTarget;
 
 type
   TCWSettingsParam = record
@@ -14,6 +15,7 @@ type
     _fixwpm : integer;
     _paddlereverse : boolean;
     _sidetone: Boolean;
+    _sidetone_volume: Integer;
     _tonepitch : integer;
     _cqmax : integer;
     _cqrepeat : double;
@@ -234,6 +236,8 @@ type
     FBandPlan: TBandPlan;
     FOpList: TOperatorInfoList;
 
+    FTarget: TContestTarget;
+
     FMyCountry: string;
     FMyContinent: string;
     FMyCQZone: string;
@@ -340,6 +344,7 @@ public
     property MyCQZone: string read FMyCQZone;
     property MyITUZone: string read FMyITUZone;
     property BandPlan: TBandPlan read FBandPlan;
+    property Target: TContestTarget read FTarget;
   end;
 
 function Log(): TLog;
@@ -347,7 +352,7 @@ function CurrentFileName(): string;
 function Random10 : integer;
 function UTCOffset : integer;   //in minutes; utc = localtime + utcoffset
 function ContainsDoubleByteChar(S : string) : boolean;
-function kHzStr(Hz : integer) : string;
+function kHzStr(Hz : Int64) : string;
 procedure IncEditCounter(aQSO : TQSO);
 function ExtractKenNr(S : string) : string; //extracts ken nr from aja#+power
 function ExtractPower(S : string) : string;
@@ -439,10 +444,14 @@ begin
 
    FBandPlan := TBandPlan.Create();
    FBandPlan.LoadFromFile();
+
+   FTarget := TContestTarget.Create();
+   FTarget.LoadFromFile();
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
 begin
+   FTarget.Free();
    FBandPlan.Free();
    FCountryList.Free();
    FPrefixList.Free();
@@ -651,6 +660,9 @@ begin
 
       // Side Tone
       Settings.CW._sidetone := ini.ReadBool('CW', 'use_sidetone', False);
+
+      // Side Tone Volume
+      Settings.CW._sidetone_volume := ini.ReadInteger('CW', 'sidetone_volume', 100);
 
       // Tone Pitch (Hz)
       Settings.CW._tonepitch := ini.ReadInteger('CW', 'Pitch', 800);
@@ -1167,6 +1179,9 @@ begin
       // Side Tone
       ini.WriteBool('CW', 'use_sidetone', Settings.CW._sidetone);
 
+      // Side Tone Volume
+      ini.WriteInteger('CW', 'sidetone_volume', Settings.CW._sidetone_volume);
+
       // Tone Pitch (Hz)
       ini.WriteInteger('CW', 'Pitch', Settings.CW._tonepitch);
 
@@ -1519,6 +1534,7 @@ procedure TdmZLogGlobal.InitializeCW();
 begin
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
+   dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;
 
    // RIGコントロールと同じポートの場合は無しとする
    if (Settings._rigport[1] <> Settings._lptnr) and
@@ -2353,9 +2369,9 @@ begin
       end;
 end;
 
-function kHzStr(Hz: integer): string;
+function kHzStr(Hz: Int64): string;
 var
-   k, kk: integer;
+   k, kk: Int64;
 begin
    k := Hz div 1000;
    kk := Hz mod 1000;
