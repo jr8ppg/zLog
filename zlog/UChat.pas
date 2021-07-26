@@ -13,20 +13,25 @@ type
     Edit: TEdit;
     Button1: TButton;
     Panel2: TPanel;
-    CheckBox: TCheckBox;
+    checkPopup: TCheckBox;
     Button2: TButton;
-    cbStayOnTop: TCheckBox;
+    checkStayOnTop: TCheckBox;
+    checkRecord: TCheckBox;
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure cbStayOnTopClick(Sender: TObject);
+    procedure checkStayOnTopClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure CreateParams(var Params: TCreateParams); override;
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
+    FChatFileName: string;
     procedure SendMessage;
+    procedure Chat(S: string);
+    procedure RecordChat(S: string);
   public
     { Public declarations }
     procedure Add(S : string);
@@ -49,6 +54,8 @@ procedure TChatForm.FormCreate(Sender: TObject);
 begin
    Edit.Clear();
    ListBox.Clear();
+
+   FChatFileName := StringReplace(Application.ExeName, '.exe', '_chat_' + FormatDateTime('yyyymmdd', Now) + '.txt', [rfReplaceAll]);
 end;
 
 procedure TChatForm.Add(S: string);
@@ -56,7 +63,8 @@ var
    _VisRows: integer;
    _TopRow: integer;
 begin
-   ListBox.Items.Add(S);
+   Chat(S);
+
    _VisRows := ListBox.ClientHeight div ListBox.ItemHeight;
    _TopRow := ListBox.Items.Count - _VisRows + 1;
 
@@ -65,9 +73,9 @@ begin
    else
       ListBox.TopIndex := 0;
 
-   if CheckBox.Checked then
+   if checkPopup.Checked then begin
       Show;
-   // BringToFront;
+   end;
 end;
 
 procedure TChatForm.SendMessage;
@@ -78,7 +86,8 @@ begin
 
    if (Length(Edit.Text) > 0) and (Edit.Text[1] = '\') then begin // raw command input
       str := Edit.Text;
-      ListBox.Items.Add(str);
+      Chat(str);
+
       Delete(str, 1, 1);
       str := ZLinkHeader + ' ' + str;
       MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
@@ -87,17 +96,18 @@ begin
 
    if (Length(Edit.Text) > 0) and (Edit.Text[1] = '!') then begin // Red
       str := Edit.Text;
-      // ListBox.Items.Add(str);
       Delete(str, 1, 1);
+
       str := ZLinkHeader + ' PUTMESSAGE !' + t + FillRight(Main.CurrentQSO.BandStr + 'MHz>', 9) + str;
       Add(Copy(str, Length(ZLinkHeader + ' PUTMESSAGE !') + 1, 255));
+
       MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
       exit;
    end;
 
    str := ZLinkHeader + ' PUTMESSAGE ' + t + FillRight(Main.CurrentQSO.BandStr + 'MHz>', 9) + Edit.Text;
-   // ListBox.Items.Add(Copy(str, length(ZLinkHeader+' PUTMESSAGE ')+1, 255));
    Add(Copy(str, Length(ZLinkHeader + ' PUTMESSAGE ') + 1, 255));
+
    MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
 end;
 
@@ -128,12 +138,46 @@ begin
    end;
 end;
 
-procedure TChatForm.cbStayOnTopClick(Sender: TObject);
+procedure TChatForm.FormShow(Sender: TObject);
 begin
-   if cbStayOnTop.Checked then
+   if FileExists(FChatFileName) = True then begin
+      ListBox.Items.LoadFromFile(FChatFileName);
+   end;
+end;
+
+procedure TChatForm.checkStayOnTopClick(Sender: TObject);
+begin
+   if checkStayOnTop.Checked then
       FormStyle := fsStayOnTop
    else
       FormStyle := fsNormal;
+end;
+
+procedure TChatForm.Chat(S: string);
+begin
+   ListBox.Items.Add(S);
+
+   if checkRecord.Checked = True then begin
+      RecordChat(S);
+   end;
+end;
+
+procedure TChatForm.RecordChat(S: string);
+var
+   F: TextFile;
+begin
+   AssignFile(F, FChatFileName);
+
+   if FileExists(FChatFileName) = True then begin
+      Append(F);
+   end
+   else begin
+      Rewrite(F);
+   end;
+
+   WriteLn(F, S);
+
+   CloseFile(F);
 end;
 
 end.
