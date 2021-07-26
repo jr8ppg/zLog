@@ -12,9 +12,7 @@ object ChatForm: TChatForm
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
-  OnActivate = FormActivate
   OnCreate = FormCreate
-  OnDeactivate = FormDeactivate
   OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 12
@@ -25,8 +23,6 @@ object ChatForm: TChatForm
     Height = 34
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 120
-    ExplicitWidth = 364
     DesignSize = (
       354
       34)
@@ -41,11 +37,9 @@ object ChatForm: TChatForm
       Font.Height = -12
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
       ParentFont = False
       TabOrder = 0
       OnKeyPress = EditKeyPress
-      ExplicitWidth = 281
     end
     object Button1: TButton
       Left = 6
@@ -72,8 +66,6 @@ object ChatForm: TChatForm
     ItemHeight = 12
     ParentFont = False
     TabOrder = 1
-    ExplicitWidth = 364
-    ExplicitHeight = 95
   end
   object Panel2: TPanel
     Left = 0
@@ -82,7 +74,6 @@ object ChatForm: TChatForm
     Height = 25
     Align = alTop
     TabOrder = 2
-    ExplicitWidth = 364
     DesignSize = (
       354
       25)
@@ -103,7 +94,6 @@ object ChatForm: TChatForm
       Caption = 'Clear'
       TabOrder = 1
       OnClick = Button2Click
-      ExplicitLeft = 294
     end
     object cbStayOnTop: TCheckBox
       Left = 168

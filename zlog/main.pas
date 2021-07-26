@@ -4400,7 +4400,6 @@ begin
          dmZlogGlobal.Settings._pcname := temp;
          dmZlogGlobal.SaveCurrentSettings();
          // dmZlogGlobal.Ini.SetString('Z-Link', 'PCName', temp);
-         FChatForm.PCNameSet := True;
          WriteStatusLine('PC name set to ' + dmZlogGlobal.Settings._pcname, True);
       end;
    end;

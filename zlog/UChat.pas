@@ -23,23 +23,19 @@ type
       Shift: TShiftState);
     procedure cbStayOnTopClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormDeactivate(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
     procedure CreateParams(var Params: TCreateParams); override;
   private
     { Private declarations }
-    PrevIMEMode : integer;
-  public
-    PCNameSet : boolean;
-    function IDString : string; // MHz > or PCname >
     procedure SendMessage;
-    procedure Add(S : string);
+  public
     { Public declarations }
+    procedure Add(S : string);
   end;
 
 implementation
 
-uses Main, UZLinkForm, UOptions;
+uses
+  Main;
 
 {$R *.DFM}
 
@@ -49,12 +45,10 @@ begin
    Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
-function TChatForm.IDString: string;
+procedure TChatForm.FormCreate(Sender: TObject);
 begin
-   if PCNameSet then
-      Result := FillRight(dmZlogGlobal.Settings._pcname + '>', 9)
-   else
-      Result := FillRight(Main.CurrentQSO.BandStr + 'MHz>', 9);
+   Edit.Clear();
+   ListBox.Clear();
 end;
 
 procedure TChatForm.Add(S: string);
@@ -140,23 +134,6 @@ begin
       FormStyle := fsStayOnTop
    else
       FormStyle := fsNormal;
-end;
-
-procedure TChatForm.FormCreate(Sender: TObject);
-begin
-   PrevIMEMode := ord(imClose);
-   PCNameSet := False;
-end;
-
-procedure TChatForm.FormDeactivate(Sender: TObject);
-begin
-   PrevIMEMode := ord(Edit.ImeMode);
-end;
-
-procedure TChatForm.FormActivate(Sender: TObject);
-begin
-   Edit.ImeMode := TIMEMode(PrevIMEMode);
-   // Edit.SetIme;
 end;
 
 end.
