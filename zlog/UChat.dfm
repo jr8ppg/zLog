@@ -14,6 +14,7 @@ object ChatForm: TChatForm
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
@@ -21,19 +22,19 @@ object ChatForm: TChatForm
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
-    Top = 118
+    Top = 124
     Width = 374
-    Height = 34
+    Height = 28
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
     DesignSize = (
       374
-      34)
+      28)
     object editMessage: TEdit
       Left = 80
-      Top = 6
-      Width = 224
+      Top = 4
+      Width = 238
       Height = 20
       Anchors = [akLeft, akTop, akRight]
       Font.Charset = DEFAULT_CHARSET
@@ -48,10 +49,10 @@ object ChatForm: TChatForm
       OnKeyPress = editMessageKeyPress
     end
     object buttonSend: TButton
-      Left = 306
-      Top = 6
-      Width = 65
-      Height = 21
+      Left = 320
+      Top = 4
+      Width = 51
+      Height = 20
       Anchors = [akTop, akRight]
       Caption = 'Send'
       TabOrder = 1
@@ -59,7 +60,7 @@ object ChatForm: TChatForm
     end
     object comboPromptType: TComboBox
       Left = 4
-      Top = 6
+      Top = 4
       Width = 73
       Height = 20
       Style = csDropDownList
@@ -77,7 +78,7 @@ object ChatForm: TChatForm
     Left = 0
     Top = 25
     Width = 374
-    Height = 93
+    Height = 99
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -88,6 +89,7 @@ object ChatForm: TChatForm
     ItemHeight = 12
     ParentFont = False
     TabOrder = 1
+    ExplicitHeight = 93
   end
   object Panel2: TPanel
     Left = 0

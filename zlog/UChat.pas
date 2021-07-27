@@ -29,6 +29,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure editMessageEnter(Sender: TObject);
     procedure editMessageExit(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   private
     { Private declarations }
     FChatFileName: string;
@@ -36,6 +37,7 @@ type
     procedure Chat(S: string);
     procedure RecordChat(S: string);
     function GetPrompt(): string;
+    procedure ShowLast();
   public
     { Public declarations }
     procedure Add(S : string);
@@ -55,6 +57,13 @@ begin
    Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
+procedure TChatForm.FormActivate(Sender: TObject);
+begin
+   if editMessage.Enabled = True then begin
+      editMessage.SetFocus();
+   end;
+end;
+
 procedure TChatForm.FormCreate(Sender: TObject);
 begin
    editMessage.Clear();
@@ -65,22 +74,29 @@ begin
 end;
 
 procedure TChatForm.Add(S: string);
+begin
+   Chat(S);
+
+   ShowLast();
+
+   if checkPopup.Checked then begin
+      Show;
+   end;
+end;
+
+procedure TChatForm.ShowLast();
 var
    _VisRows: integer;
    _TopRow: integer;
 begin
-   Chat(S);
-
    _VisRows := ListBox.ClientHeight div ListBox.ItemHeight;
    _TopRow := ListBox.Items.Count - _VisRows + 1;
 
-   if _TopRow > 0 then
-      ListBox.TopIndex := _TopRow
-   else
+   if _TopRow > 0 then begin
+      ListBox.TopIndex := _TopRow;
+   end
+   else begin
       ListBox.TopIndex := 0;
-
-   if checkPopup.Checked then begin
-      Show;
    end;
 end;
 
@@ -142,7 +158,8 @@ end;
 procedure TChatForm.buttonSendClick(Sender: TObject);
 begin
    SendMessage(editMessage.Text);
-   editMessage.Clear;
+   editMessage.Clear();
+   editMessage.SetFocus();
 end;
 
 procedure TChatForm.Button2Click(Sender: TObject);
@@ -162,6 +179,7 @@ procedure TChatForm.FormShow(Sender: TObject);
 begin
    if FileExists(FChatFileName) = True then begin
       ListBox.Items.LoadFromFile(FChatFileName);
+      ShowLast();
    end;
 end;
 
