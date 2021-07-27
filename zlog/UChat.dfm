@@ -25,15 +25,15 @@ object ChatForm: TChatForm
     Width = 374
     Height = 34
     Align = alBottom
+    BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 354
     DesignSize = (
       374
       34)
-    object Edit: TEdit
-      Left = 76
+    object editMessage: TEdit
+      Left = 80
       Top = 6
-      Width = 291
+      Width = 224
       Height = 20
       Anchors = [akLeft, akTop, akRight]
       Font.Charset = DEFAULT_CHARSET
@@ -43,17 +43,34 @@ object ChatForm: TChatForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      OnKeyPress = EditKeyPress
-      ExplicitWidth = 271
+      OnEnter = editMessageEnter
+      OnExit = editMessageExit
+      OnKeyPress = editMessageKeyPress
     end
-    object Button1: TButton
-      Left = 6
+    object buttonSend: TButton
+      Left = 306
       Top = 6
       Width = 65
       Height = 21
-      Caption = 'OK'
+      Anchors = [akTop, akRight]
+      Caption = 'Send'
       TabOrder = 1
-      OnClick = Button1Click
+      OnClick = buttonSendClick
+    end
+    object comboPromptType: TComboBox
+      Left = 4
+      Top = 6
+      Width = 73
+      Height = 20
+      Style = csDropDownList
+      ItemIndex = 0
+      TabOrder = 2
+      Text = 'Band'
+      Items.Strings = (
+        'Band'
+        'PCNAME'
+        'OPNAME'
+        'CALL')
     end
   end
   object ListBox: TListBox
@@ -71,7 +88,6 @@ object ChatForm: TChatForm
     ItemHeight = 12
     ParentFont = False
     TabOrder = 1
-    ExplicitWidth = 354
   end
   object Panel2: TPanel
     Left = 0
@@ -79,13 +95,13 @@ object ChatForm: TChatForm
     Width = 374
     Height = 25
     Align = alTop
+    BevelOuter = bvNone
     TabOrder = 2
-    ExplicitWidth = 354
     DesignSize = (
       374
       25)
     object checkPopup: TCheckBox
-      Left = 8
+      Left = 4
       Top = 4
       Width = 145
       Height = 17
@@ -93,7 +109,7 @@ object ChatForm: TChatForm
       TabOrder = 0
     end
     object Button2: TButton
-      Left = 303
+      Left = 304
       Top = 4
       Width = 67
       Height = 18

@@ -10,15 +10,16 @@ type
   TChatForm = class(TForm)
     Panel1: TPanel;
     ListBox: TListBox;
-    Edit: TEdit;
-    Button1: TButton;
+    editMessage: TEdit;
+    buttonSend: TButton;
     Panel2: TPanel;
     checkPopup: TCheckBox;
     Button2: TButton;
     checkStayOnTop: TCheckBox;
     checkRecord: TCheckBox;
-    procedure EditKeyPress(Sender: TObject; var Key: Char);
-    procedure Button1Click(Sender: TObject);
+    comboPromptType: TComboBox;
+    procedure editMessageKeyPress(Sender: TObject; var Key: Char);
+    procedure buttonSendClick(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -26,15 +27,19 @@ type
     procedure FormCreate(Sender: TObject);
     procedure CreateParams(var Params: TCreateParams); override;
     procedure FormShow(Sender: TObject);
+    procedure editMessageEnter(Sender: TObject);
+    procedure editMessageExit(Sender: TObject);
   private
     { Private declarations }
     FChatFileName: string;
-    procedure SendMessage;
+    procedure SendMessage(S: string);
     procedure Chat(S: string);
     procedure RecordChat(S: string);
+    function GetPrompt(): string;
   public
     { Public declarations }
     procedure Add(S : string);
+    procedure SetConnectStatus(fConnected: Boolean);
   end;
 
 implementation
@@ -52,8 +57,9 @@ end;
 
 procedure TChatForm.FormCreate(Sender: TObject);
 begin
-   Edit.Clear();
+   editMessage.Clear();
    ListBox.Clear();
+   SetConnectStatus(False);
 
    FChatFileName := StringReplace(Application.ExeName, '.exe', '_chat_' + FormatDateTime('yyyymmdd', Now) + '.txt', [rfReplaceAll]);
 end;
@@ -78,51 +84,65 @@ begin
    end;
 end;
 
-procedure TChatForm.SendMessage;
+procedure TChatForm.SendMessage(S: string);
 var
    t, str: string;
+   strMessage: string;
 begin
+   if (Length(S) = 0) then begin
+      Exit;
+   end;
+
    t := FormatDateTime('hh:nn ', SysUtils.Now);
 
-   if (Length(Edit.Text) > 0) and (Edit.Text[1] = '\') then begin // raw command input
-      str := Edit.Text;
+   if (S[1] = '\') then begin // raw command input
+      str := S;
       Chat(str);
 
       Delete(str, 1, 1);
       str := ZLinkHeader + ' ' + str;
       MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
-      exit;
+      Exit;
    end;
 
-   if (Length(Edit.Text) > 0) and (Edit.Text[1] = '!') then begin // Red
-      str := Edit.Text;
+   if (S[1] = '!') then begin // Red
+      str := S;
       Delete(str, 1, 1);
 
-      str := ZLinkHeader + ' PUTMESSAGE !' + t + FillRight(Main.CurrentQSO.BandStr + 'MHz>', 9) + str;
-      Add(Copy(str, Length(ZLinkHeader + ' PUTMESSAGE !') + 1, 255));
+      strMessage := t + GetPrompt() + str;
+      str := ZLinkHeader + ' PUTMESSAGE !' + strMessage;
+      Add(strMessage);
 
       MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
-      exit;
+      Exit;
    end;
 
-   str := ZLinkHeader + ' PUTMESSAGE ' + t + FillRight(Main.CurrentQSO.BandStr + 'MHz>', 9) + Edit.Text;
-   Add(Copy(str, Length(ZLinkHeader + ' PUTMESSAGE ') + 1, 255));
+   strMessage := t + GetPrompt() + S;
+   str := ZLinkHeader + ' PUTMESSAGE ' + strMessage;
+   Add(strMessage);
 
    MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
 end;
 
-procedure TChatForm.EditKeyPress(Sender: TObject; var Key: Char);
+procedure TChatForm.editMessageEnter(Sender: TObject);
 begin
-   if Key = Chr($0D) then begin
-      SendMessage;
-      Edit.Clear;
-      Key := #0;
-   end;
+   buttonSend.Default := True;
 end;
 
-procedure TChatForm.Button1Click(Sender: TObject);
+procedure TChatForm.editMessageExit(Sender: TObject);
 begin
-   Close;
+   buttonSend.Default := False;
+end;
+
+procedure TChatForm.editMessageKeyPress(Sender: TObject; var Key: Char);
+begin
+//
+end;
+
+procedure TChatForm.buttonSendClick(Sender: TObject);
+begin
+   SendMessage(editMessage.Text);
+   editMessage.Clear;
 end;
 
 procedure TChatForm.Button2Click(Sender: TObject);
@@ -178,6 +198,57 @@ begin
    WriteLn(F, S);
 
    CloseFile(F);
+end;
+
+procedure TChatForm.SetConnectStatus(fConnected: Boolean);
+begin
+   editMessage.Enabled := fConnected;
+   if fConnected = True then begin
+      editMessage.Color := clWindow;
+      buttonSend.Enabled := True;
+   end
+   else begin
+      editMessage.Color := clBtnFace;
+      buttonSend.Enabled := False;
+   end;
+end;
+
+function TChatForm.GetPrompt(): string;
+var
+   strPrompt: string;
+begin
+   case comboPromptType.ItemIndex of
+      // Band
+      0: begin
+         strPrompt := Main.CurrentQSO.BandStr + 'MHz';
+      end;
+
+      // PCNAME
+      1: begin
+         strPrompt := dmZLogGlobal.Settings._pcname;
+      end;
+
+      // OPNAME
+      2: begin
+         if Main.CurrentQSO.Operator = '' then begin
+            strPrompt := dmZLogGlobal.Settings._mycall;
+         end
+         else begin
+            strPrompt := Main.CurrentQSO.Operator;
+         end;
+      end;
+
+      // CALL
+      3: begin
+         strPrompt := dmZLogGlobal.Settings._mycall;
+      end;
+
+      else begin
+         strPrompt := Main.CurrentQSO.BandStr + 'MHz';
+      end;
+   end;
+
+   Result := FillRight(strPrompt + '>', 9);
 end;
 
 end.
