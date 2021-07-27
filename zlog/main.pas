@@ -1053,6 +1053,7 @@ type
     procedure ApplyCQRepeatInterval();
     procedure ShowToggleStatus(text: string; fON: Boolean);
     procedure SetListWidth();
+    procedure SelectOperator(O: string);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -5712,30 +5713,8 @@ begin
 end;
 
 procedure TMainForm.OpMenuClick(Sender: TObject);
-var
-   O: string;
-   op: TOperatorInfo;
 begin
-   O := TMenuItem(Sender).Caption;
-
-   if O = 'Clear' then begin
-      O := '';
-      op := nil;
-   end
-   else begin
-      op := dmZlogGlobal.OpList.ObjectOf(O);
-   end;
-
-   OpEdit.Text := O;
-   CurrentQSO.Operator := O;
-
-   LastFocus.SetFocus;
-   dmZlogGlobal.SetOpPower(CurrentQSO);
-   NewPowerEdit.Text := CurrentQSO.NewPowerStr;
-   FZLinkForm.SendOperator;
-
-   // Change Voice Files
-   FVoiceForm.SetOperator(op);
+   SelectOperator(TMenuItem(Sender).Caption);
 end;
 
 procedure TMainForm.CWPauseButtonClick(Sender: TObject);
@@ -7365,6 +7344,10 @@ begin
 
       BandEdit.Text := MHzString[CurrentQSO.Band];
       CurrentQSO.TX := dmZlogGlobal.TXNr;
+
+      if (dmZlogGlobal.MultiOp > 0) and (Log.TotalQSO > 0) then begin
+         SelectOperator(Log.QsoList.Last.Operator);
+      end;
 
       // ç≈èâÇÕCQÉÇÅ[ÉhÇ©ÇÁ
       SetCQ(True);
@@ -9782,6 +9765,30 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('FormResize():VisibleRowCount=' + IntToStr(MainForm.Grid.VisibleRowCount)));
    {$ENDIF}
+end;
+
+procedure TMainForm.SelectOperator(O: string);
+var
+   op: TOperatorInfo;
+begin
+   if O = 'Clear' then begin
+      O := '';
+      op := nil;
+   end
+   else begin
+      op := dmZlogGlobal.OpList.ObjectOf(O);
+   end;
+
+   OpEdit.Text := O;
+   CurrentQSO.Operator := O;
+
+   LastFocus.SetFocus;
+   dmZlogGlobal.SetOpPower(CurrentQSO);
+   NewPowerEdit.Text := CurrentQSO.NewPowerStr;
+   FZLinkForm.SendOperator;
+
+   // Change Voice Files
+   FVoiceForm.SetOperator(op);
 end;
 
 end.
