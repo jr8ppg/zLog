@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UWWMulti, UMultipliers, StdCtrls, ExtCtrls, JLLabel, Grids,
-  UzLogConst, UzLogGlobal, UzLogQSO;
+  UzLogConst, UzLogGlobal, UzLogQSO, USpotClass;
 
 type
   TARRLWMulti = class(TWWMulti)
@@ -19,6 +19,7 @@ type
     function ValidMulti(aQSO : TQSO) : boolean; override;
     procedure CheckMulti(aQSO : TQSO); override;
     function GetInfoAA(aQSO : TQSO) : string; // called from spacebarproc in TAllAsianContest
+    procedure ProcessCluster(var Sp : TBaseSpot); override;
   end;
 
 implementation
@@ -111,6 +112,15 @@ begin
    ALLASIANFLAG := False;
 
    Reset;
+end;
+
+procedure TARRLWMulti.ProcessCluster(var Sp : TBaseSpot);
+begin
+   Inherited;
+
+   if ALLASIANFLAG = True then begin
+      Sp.NewZone := False;
+   end;
 end;
 
 end.

@@ -612,7 +612,11 @@ begin
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[2].FForeColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[2].FBold;
             end
-            else if (D.NewMulti = False) and (D.Number <> '') then begin // マルチゲット済み
+            else if (D.NewJaMulti = False) and (D.Number <> '') then begin // マルチゲット済み
+               Font.Color  := dmZLogGlobal.Settings._bandscopecolor[3].FForeColor;
+               D.Bold      := dmZLogGlobal.Settings._bandscopecolor[3].FBold;
+            end
+            else if (D.NewMulti = False) then begin // マルチゲット済み
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[3].FForeColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[3].FBold;
             end
