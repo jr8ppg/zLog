@@ -1755,12 +1755,12 @@ top:
 
 xxx:
 
-   if RigControl.Rig <> nil then begin // keep band within Rig
-      if (BX > RigControl.Rig.MaxBand) or (BX < RigControl.Rig.MinBand) then begin
-         B0 := BX;
-         goto top;
-      end;
-   end;
+//   if RigControl.Rig <> nil then begin // keep band within Rig
+//      if (BX > RigControl.Rig.MaxBand) or (BX < RigControl.Rig.MinBand) then begin
+//         B0 := BX;
+//         goto top;
+//      end;
+//   end;
 
    Result := BX;
 end;
