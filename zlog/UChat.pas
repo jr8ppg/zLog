@@ -221,7 +221,7 @@ begin
    case comboPromptType.ItemIndex of
       // Band
       0: begin
-         strPrompt := Main.CurrentQSO.BandStr + 'MHz';
+         strPrompt := Main.CurrentQSO.BandStr;  // + 'MHz';
       end;
 
       // PCNAME
@@ -245,7 +245,7 @@ begin
       end;
 
       else begin
-         strPrompt := Main.CurrentQSO.BandStr + 'MHz';
+         strPrompt := Main.CurrentQSO.BandStr;  // + 'MHz';
       end;
    end;
 
