@@ -447,6 +447,7 @@ type
     function GetCurrentRig : integer;
     function ToggleCurrentRig : integer;
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
+    function IsAvailableBand(B: TBand): Boolean;
     procedure SetSendFreq();
     procedure UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer; b: TBand; m: TMode);
 
@@ -575,6 +576,21 @@ begin
       if R._currentband = B then begin
          Result := True;
       end;
+   end;
+end;
+
+function TRigControl.IsAvailableBand(B: TBand): Boolean;
+begin
+   if Rig = nil then begin
+      Result := True;
+      Exit;
+   end;
+
+   if (Rig.MinBand <= B) and (B <= Rig.MaxBand) then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
    end;
 end;
 

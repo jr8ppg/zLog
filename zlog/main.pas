@@ -1054,6 +1054,9 @@ type
     procedure ShowToggleStatus(text: string; fON: Boolean);
     procedure SetListWidth();
     procedure SelectOperator(O: string);
+    function ScanNextBand(B0: TBand): TBand;
+    function ScanPrevBand(B0: TBand): TBand;
+    function IsAvailableBand(B: TBand): Boolean;
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1668,101 +1671,82 @@ begin
 end;
 
 function TMainForm.GetNextBand(BB: TBand; Up: Boolean): TBand;
-var
-   B0, B, BX: TBand;
-   boo: Boolean;
-label
-   xxx;
-label
-   top;
 begin
-   Result := BB;
-
-   boo := False;
-   for B := b19 to HiBand do begin
-      if BandMenu.Items[Ord(B)].Visible and BandMenu.Items[Ord(B)].Enabled then begin
-         boo := True;
-      end;
-   end;
-
-   if boo = False then begin
-      exit; { No QRVable and Contest allowed band }
-   end;
-
-   B0 := BB;
-
-top:
    if Up then begin
-      if B0 = HiBand then
-         B0 := b19
-      else
-         inc(B0);
-
-      for B := B0 to HiBand do begin
-         if BandMenu.Items[Ord(B)].Visible and BandMenu.Items[Ord(B)].Enabled then begin
-            if dmZlogGlobal.Settings._dontallowsameband and RigControl.CheckSameBand(B) then begin
-            end
-            else begin
-               BX := B;
-               goto xxx;
-            end;
-         end;
-      end;
-
-      for B := b19 to B0 do begin
-         if BandMenu.Items[Ord(B)].Visible and BandMenu.Items[Ord(B)].Enabled then begin
-            if dmZlogGlobal.Settings._dontallowsameband and RigControl.CheckSameBand(B) then begin
-            end
-            else begin
-               BX := B;
-               goto xxx;
-            end;
-         end;
-      end;
-
-      BX := B0;
+      Result := ScanNextBand(BB);
    end
    else begin
-      if B0 = b19 then
-         B0 := HiBand
-      else
-         dec(B0);
+      Result := ScanPrevBand(BB);
+   end;
+end;
 
-      for B := B0 downto b19 do begin
-         if BandMenu.Items[Ord(B)].Visible and BandMenu.Items[Ord(B)].Enabled then begin
-            if dmZlogGlobal.Settings._dontallowsameband and RigControl.CheckSameBand(B) then begin
-            end
-            else begin
-               BX := B;
-               goto xxx;
-            end;
-         end;
-      end;
+function TMainForm.ScanNextBand(B0: TBand): TBand;
+var
+   B: TBand;
+begin
+   Result := B0;
 
-      for B := HiBand downto B0 do begin
-         if BandMenu.Items[Ord(B)].Visible and BandMenu.Items[Ord(B)].Enabled then begin
-            if dmZlogGlobal.Settings._dontallowsameband and RigControl.CheckSameBand(B) then begin
-            end
-            else begin
-               BX := B;
-               goto xxx;
-            end;
-         end;
-      end;
-
-      BX := B0;
+   if B0 = HiBand then begin
+      B0 := b19;
+   end
+   else begin
+      inc(B0);
    end;
 
-xxx:
+   for B := B0 to HiBand do begin
+      if IsAvailableBand(B) = True then begin
+         Result := B;
+         Exit;
+      end;
+   end;
 
-//   if RigControl.Rig <> nil then begin // keep band within Rig
-//      if (BX > RigControl.Rig.MaxBand) or (BX < RigControl.Rig.MinBand) then begin
-//         B0 := BX;
-//         goto top;
-//      end;
-//   end;
+   for B := b19 to B0 do begin
+      if IsAvailableBand(B) = True then begin
+         Result := B;
+         Exit;
+      end;
+   end;
+end;
 
-   Result := BX;
+function TMainForm.ScanPrevBand(B0: TBand): TBand;
+var
+   B: TBand;
+begin
+   Result := B0;
+
+   if B0 = b19 then begin
+      B0 := HiBand;
+   end
+   else begin
+      dec(B0);
+   end;
+
+   for B := B0 downto b19 do begin
+      if IsAvailableBand(B) = True then begin
+         Result := B;
+         Exit;
+      end;
+   end;
+
+   for B := HiBand downto B0 do begin
+      if IsAvailableBand(B) = True then begin
+         Result := B;
+         Exit;
+      end;
+   end;
+end;
+
+function TMainForm.IsAvailableBand(B: TBand): Boolean;
+begin
+   if (BandMenu.Items[Ord(B)].Visible = True) and
+      (BandMenu.Items[Ord(B)].Enabled = True) and
+      (RigControl.IsAvailableBand(B) = True) and
+      ((dmZlogGlobal.Settings._dontallowsameband = False) or (RigControl.CheckSameBand(B) = False)) then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
+   end;
 end;
 
 procedure TMainForm.BandMenuClick(Sender: TObject);
