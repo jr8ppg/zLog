@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal;
+  StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal, HelperLib;
 
 type
   TChatForm = class(TForm)
@@ -37,7 +37,6 @@ type
     procedure Chat(S: string);
     procedure RecordChat(S: string);
     function GetPrompt(): string;
-    procedure ShowLast();
   public
     { Public declarations }
     procedure Add(S : string);
@@ -77,26 +76,10 @@ procedure TChatForm.Add(S: string);
 begin
    Chat(S);
 
-   ShowLast();
+   ListBox.ShowLast();
 
    if checkPopup.Checked then begin
       Show;
-   end;
-end;
-
-procedure TChatForm.ShowLast();
-var
-   _VisRows: integer;
-   _TopRow: integer;
-begin
-   _VisRows := ListBox.ClientHeight div ListBox.ItemHeight;
-   _TopRow := ListBox.Items.Count - _VisRows + 1;
-
-   if _TopRow > 0 then begin
-      ListBox.TopIndex := _TopRow;
-   end
-   else begin
-      ListBox.TopIndex := 0;
    end;
 end;
 
@@ -179,7 +162,7 @@ procedure TChatForm.FormShow(Sender: TObject);
 begin
    if FileExists(FChatFileName) = True then begin
       ListBox.Items.LoadFromFile(FChatFileName);
-      ShowLast();
+      ListBox.ShowLast();
    end;
 end;
 
@@ -266,7 +249,7 @@ begin
       end;
    end;
 
-   Result := FillRight(strPrompt + '>', 9);
+   Result := FillLeft(strPrompt + '> ', 10);
 end;
 
 end.
