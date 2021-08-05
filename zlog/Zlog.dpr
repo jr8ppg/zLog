@@ -122,7 +122,8 @@ uses
   UQsoTarget in 'UQsoTarget.pas',
   ToneGen in 'ToneGen.pas',
   MSACM in 'MSACM.pas',
-  UNRDialog in 'UNRDialog.pas' {NRDialog};
+  UNRDialog in 'UNRDialog.pas' {NRDialog},
+  UQsyInfo in 'UQsyInfo.pas' {formQsyInfo};
 
 {$R *.RES}
 
