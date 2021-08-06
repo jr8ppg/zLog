@@ -6484,7 +6484,7 @@ object MainForm: TMainForm
       OnExecute = actionShowQsoRateExExecute
     end
     object actionShowQsyInfo: TAction
-      Caption = 'QSY Info.'
+      Caption = 'QSY Indicator'
       OnExecute = actionShowQsyInfoExecute
     end
   end

@@ -138,6 +138,8 @@ type
     _allowdupe : boolean;
     _countdown : boolean;
     _qsycount : boolean;
+    _countdownminute: Integer;
+    _countperhour: Integer;
 
     _sameexchange : boolean; //true if exchange is same for all bands. false if serial etc.
     _entersuperexchange : boolean;
@@ -559,9 +561,11 @@ begin
 
       // 10 min count down
       Settings._countdown := ini.ReadBool('Preferences', 'CountDown', False);
+      Settings._countdownminute := ini.ReadInteger('Preferences','CountDownMinute', 10);
 
       // QSY count / hr
       Settings._qsycount := ini.ReadBool('Preferences', 'QSYCount', False);
+      Settings._countperhour := ini.ReadInteger('Preferences','CountPerHour', 8);
 
       // J-mode
       Settings._jmode := ini.ReadBool('Preferences', 'JMode', False);
@@ -1094,9 +1098,11 @@ begin
 
       // 10 min count down
       ini.WriteBool('Preferences', 'CountDown', Settings._countdown);
+      ini.WriteInteger('Preferences','CountDownMinute', Settings._countdownminute);
 
       // QSY count / hr
       ini.WriteBool('Preferences', 'QSYCount', Settings._qsycount);
+      ini.WriteInteger('Preferences','CountPerHour', Settings._countperhour);
 
       // J-mode
       ini.WriteBool('Preferences', 'JMode', Settings._jmode);

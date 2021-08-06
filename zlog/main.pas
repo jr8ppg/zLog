@@ -5798,6 +5798,7 @@ var
    S: string;
    S2: string;
    fQsyOK: Boolean;
+   nCountDownMinute: Integer;
 begin
    S := TimeToStr(CurrentTime);
    if length(S) = 7 then begin
@@ -5808,17 +5809,19 @@ begin
 
    S2 := '';
    if dmZlogGlobal.Settings._countdown then begin
+      nCountDownMinute := dmZLogGlobal.Settings._countdownminute;
+
       if CountDownStartTime > 0 then begin
          Diff := CurrentTime - CountDownStartTime;
-         if Diff * 24 * 60 > 10.00 then begin
+         if (Diff * 24 * 60) > nCountDownMinute then begin
             CountDownStartTime := 0;
             S2 := 'QSY OK';
             fQsyOK := True;
          end
          else begin
             if Diff > 0 then begin
-               Min := Trunc(10 - Diff * 24 * 60);
-               Sec := Trunc(Integer(round(600 - Diff * 24 * 60 * 60)) mod 60);
+               Min := Trunc(nCountDownMinute - Diff * 24 * 60);
+               Sec := Trunc(Integer(round((nCountDownMinute * 60) - Diff * 24 * 60 * 60)) mod 60);
                if Min = 0 then begin
                   S2 := RightStr('00' + IntToStr(Sec), 2);
                end
@@ -5842,7 +5845,7 @@ begin
    if dmZlogGlobal.Settings._qsycount then begin
       S2 := 'QSY# ' + IntToStr(QSYCount);
 
-      if QSYCount < 8 then begin
+      if QSYCount < dmZLogGlobal.Settings._countperhour then begin
          fQsyOK := True;
       end
       else begin

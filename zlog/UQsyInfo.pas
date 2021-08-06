@@ -44,6 +44,10 @@ begin
          Panel1.Color := clYellow;
          Panel1.Font.Color := clRed;
       end;
+
+      if Visible = False then begin
+         Show();
+      end;
    end;
    Panel1.Caption := S;
 end;
