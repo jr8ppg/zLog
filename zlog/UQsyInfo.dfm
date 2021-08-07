@@ -3,11 +3,12 @@ object formQsyInfo: TformQsyInfo
   Top = 0
   BorderStyle = bsSizeToolWin
   Caption = 'QSY Indicator'
-  ClientHeight = 63
-  ClientWidth = 184
+  ClientHeight = 114
+  ClientWidth = 157
   Color = clBtnFace
-  Constraints.MinHeight = 100
-  Constraints.MinWidth = 100
+  Constraints.MinHeight = 150
+  Constraints.MinWidth = 150
+  DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -15,16 +16,16 @@ object formQsyInfo: TformQsyInfo
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnResize = FormResize
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 184
-    Height = 63
+    Width = 157
+    Height = 114
     Align = alClient
     BevelOuter = bvNone
-    Caption = 'QSY OK'
     Color = clYellow
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
@@ -34,8 +35,16 @@ object formQsyInfo: TformQsyInfo
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
-    ExplicitTop = 32
-    ExplicitWidth = 185
-    ExplicitHeight = 41
+    object Label1: TLabel
+      Left = 0
+      Top = 0
+      Width = 157
+      Height = 114
+      Align = alClient
+      Alignment = taCenter
+      AutoSize = False
+      Layout = tlCenter
+      WordWrap = True
+    end
   end
 end

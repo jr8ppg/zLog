@@ -9,6 +9,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, StrUtils,
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
+  System.DateUtils,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
@@ -5793,7 +5794,7 @@ end;
 
 procedure TMainForm.Update10MinTimer;
 var
-   Diff: TDateTime;
+   Diff: Integer;
    Min, Sec: Integer;
    S: string;
    S2: string;
@@ -5812,18 +5813,20 @@ begin
       nCountDownMinute := dmZLogGlobal.Settings._countdownminute;
 
       if CountDownStartTime > 0 then begin
-         Diff := CurrentTime - CountDownStartTime;
-         if (Diff * 24 * 60) > nCountDownMinute then begin
+         Diff := SecondsBetween(CurrentTime , CountDownStartTime);
+         if (Diff / 60) > nCountDownMinute then begin
             CountDownStartTime := 0;
             S2 := 'QSY OK';
             fQsyOK := True;
          end
          else begin
             if Diff > 0 then begin
-               Min := Trunc(nCountDownMinute - Diff * 24 * 60);
-               Sec := Trunc(Integer(round((nCountDownMinute * 60) - Diff * 24 * 60 * 60)) mod 60);
+               Diff := (nCountDownMinute * 60) - Diff;
+               Min := Diff div 60;
+               Sec := Diff - (Min * 60);
+//               Sec := Trunc(Integer(round((nCountDownMinute * 60) - Diff * 24 * 60 * 60)) mod 60);
                if Min = 0 then begin
-                  S2 := RightStr('00' + IntToStr(Sec), 2);
+                  S2 := IntToStr(Sec);
                end
                else begin
                   S2 := RightStr('00' + IntToStr(Min), 2);
@@ -7400,6 +7403,9 @@ begin
 
       MyContest.MultiForm.FontSize := dmZlogGlobal.Settings._mainfontsize;
 
+      CountDownStartTime := 0;
+      QSYCount := 0;
+
       UpdateBand(CurrentQSO.Band);
       UpdateMode(CurrentQSO.mode);
 
@@ -7427,6 +7433,7 @@ begin
 
       // èâä˙âªäÆóπ
       FInitialized := True;
+      Timer1.Enabled := True;
       zyloContestOpened(MyContest.Name, menu.CFGFileName);
 
    finally

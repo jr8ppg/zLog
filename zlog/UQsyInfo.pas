@@ -4,12 +4,14 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls;
 
 type
   TformQsyInfo = class(TForm)
     Panel1: TPanel;
+    Label1: TLabel;
     procedure FormCreate(Sender: TObject);
+    procedure FormResize(Sender: TObject);
   private
     { Private éŒ¾ }
   public
@@ -27,6 +29,16 @@ begin
    Panel1.Color := clBtnFace;
    Panel1.Font.Color := clWindow;
    Panel1.Caption := '';
+end;
+
+procedure TformQsyInfo.FormResize(Sender: TObject);
+begin
+   if ClientWidth > ClientHeight then begin
+      ClientHeight := ClientWidth;
+   end
+   else begin
+      ClientWidth := ClientHeight;
+   end;
 end;
 
 procedure TformQsyInfo.SetQsyInfo(qsyok: Boolean; S: string);
@@ -49,7 +61,7 @@ begin
          Show();
       end;
    end;
-   Panel1.Caption := S;
+   Label1.Caption := S;
 end;
 
 end.
