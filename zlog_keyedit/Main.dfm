@@ -103,7 +103,8 @@ object formMain: TformMain
           '#087 N+1'#12454#12452#12531#12489#12454#12398#34920#31034'='
           '#088 N+1'#12454#12452#12531#12489#12454#12363#12425#12398#12467#12540#12523#12469#12452#12531#12398#21462#12426#36796#12415'=Shift+Ctrl+I'
           '#131 '#12501#12449#12531#12463#12471#12519#12531#12461#12540#12497#12493#12523#12398#34920#31034'='
-          '#132 QSO'#12524#12540#12488'('#25313#24373#29256')'#12454#12452#12531#12489#12454#12398#34920#31034'=')
+          '#132 QSO'#12524#12540#12488'('#25313#24373#29256')'#12454#12452#12531#12489#12454#12398#34920#31034'='
+          '#133 QSY Indicator'#12454#12452#12531#12489#12454#12398#34920#31034'=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
@@ -117,10 +118,6 @@ object formMain: TformMain
     object TabSheet3: TTabSheet
       Caption = 'CW'#12461#12540#12452#12531#12464
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleCWKeying: TValueListEditor
         Left = 0
         Top = 0
@@ -182,10 +179,6 @@ object formMain: TformMain
     object TabSheet4: TTabSheet
       Caption = #12522#12464#12467#12531#12488#12525#12540#12523
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleRigControl: TValueListEditor
         Left = 0
         Top = 0
@@ -219,10 +212,6 @@ object formMain: TformMain
     object TabSheet5: TTabSheet
       Caption = #20837#21147#12392#32232#38598
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleEdit: TValueListEditor
         Left = 0
         Top = 0
@@ -268,10 +257,6 @@ object formMain: TformMain
     object TabSheet6: TTabSheet
       Caption = #20107#24460#20837#21147
       ImageIndex = 5
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vlePostContest: TValueListEditor
         Left = 0
         Top = 0
@@ -296,10 +281,6 @@ object formMain: TformMain
     object TabSheet7: TTabSheet
       Caption = #12381#12398#20182
       ImageIndex = 6
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object vleOther: TValueListEditor
         Left = 0
         Top = 0
