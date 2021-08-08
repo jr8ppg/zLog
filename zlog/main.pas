@@ -981,6 +981,9 @@ type
 
     FQsyFromBS: Boolean;
 
+    // QSY Violation (10 min rule / per hour)
+    FQsyViolation: Boolean;
+
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -1814,6 +1817,12 @@ begin
 
    if dmZlogGlobal.Settings._countdown and (CountDownStartTime > 0) then begin
       WriteStatusLineRed('Less than 10 min since last QSY!', False);
+      FQsyViolation := True;
+   end;
+
+   if dmZlogGlobal.Settings._qsycount and (QSYCount > dmZLogGlobal.Settings._countperhour) then begin
+      WriteStatusLineRed('QSY count exceeded limit!', False);
+      FQsyViolation := True;
    end;
 
    if RigControl.Rig = nil then begin
@@ -5354,6 +5363,14 @@ begin
       end;
    end;
 
+   // QSY Violation
+   if FQsyViolation = True then begin
+      if CurrentQso.Memo <> '' then begin
+         CurrentQso.Memo := CurrentQso.Memo + ' ';
+      end;
+      CurrentQso.Memo := CurrentQso.Memo + 'QSY Violation';
+   end;
+
    // if MyContest.Name = 'Pedition mode' then
    if not FPostContest then begin
       CurrentQSO.UpdateTime;
@@ -5818,20 +5835,18 @@ begin
             CountDownStartTime := 0;
             S2 := 'QSY OK';
             fQsyOK := True;
+            FQsyViolation := False;
          end
          else begin
-            if Diff > 0 then begin
-               Diff := (nCountDownMinute * 60) - Diff;
-               Min := Diff div 60;
-               Sec := Diff - (Min * 60);
-//               Sec := Trunc(Integer(round((nCountDownMinute * 60) - Diff * 24 * 60 * 60)) mod 60);
-               if Min = 0 then begin
-                  S2 := IntToStr(Sec);
-               end
-               else begin
-                  S2 := RightStr('00' + IntToStr(Min), 2);
-                  S2 := S2 + ':' + RightStr('00' + IntToStr(Sec), 2);
-               end;
+            Diff := (nCountDownMinute * 60) - Diff;
+            Min := Diff div 60;
+            Sec := Diff - (Min * 60);
+            if Min = 0 then begin
+               S2 := IntToStr(Sec);
+            end
+            else begin
+               S2 := RightStr('00' + IntToStr(Min), 2);
+               S2 := S2 + ':' + RightStr('00' + IntToStr(Sec), 2);
             end;
          end;
       end
@@ -5839,6 +5854,7 @@ begin
       begin
          S2 := 'QSY OK';
          fQsyOK := True;
+         FQsyViolation := False;
       end;
    end
    else begin
@@ -5850,6 +5866,7 @@ begin
 
       if QSYCount < dmZLogGlobal.Settings._countperhour then begin
          fQsyOK := True;
+         FQsyViolation := False;
       end
       else begin
          fQsyOK := False;
