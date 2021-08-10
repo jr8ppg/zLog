@@ -404,6 +404,9 @@ function LD_ond(str1, str2: string): Integer;
 function IsDomestic(strCallsign: string): Boolean;
 function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
 
+procedure SetQsyViolation(aQSO: TQSO);
+procedure ResetQsyViolation(aQSO: TQSO);
+
 var
   dmZLogGlobal: TdmZLogGlobal;
 
@@ -3106,6 +3109,24 @@ begin
    end;
 
    Result := True;
+end;
+
+procedure SetQsyViolation(aQSO: TQSO);
+begin
+   if Pos(QSY_VIOLATION, aQSO.Memo) > 0 then begin
+      Exit;
+   end;
+
+   if aQSO.Memo <> '' then begin
+      aQSO.Memo := aQSO.Memo + ' ';
+   end;
+
+   aQSO.Memo := aQSO.Memo + QSY_VIOLATION;
+end;
+
+procedure ResetQsyViolation(aQSO: TQSO);
+begin
+   aQSO.Memo := Trim(StringReplace(aQSO.Memo, QSY_VIOLATION, '', [rfReplaceAll]));
 end;
 
 end.

@@ -1199,56 +1199,8 @@ begin
 end;
 
 procedure TMainForm.ReEvaluateQSYCount;
-var
-   mytx, i: Integer;
-   TL: TQSOList;
-   Q, QQ: TQSO;
-   aTime: TDateTime;
-   Hr, Min, Sec, mSec: word;
 begin
-   if dmZlogGlobal.Settings._qsycount = False then
-      exit;
-
-   TL := TQSOList.Create();
-   try
-      mytx := dmZlogGlobal.TXNr;
-
-      for i := 1 to Log.TotalQSO do begin
-         if Log.QsoList[i].TX = mytx then begin
-            Q := TQSO.Create();
-            Q.Assign(Log.QsoList[i]);
-            TL.Add(Q);
-         end;
-      end;
-
-      QSYCount := 0;
-      if TL.Count = 0 then begin
-         exit;
-      end;
-
-      Q := TL[TL.Count - 1];
-
-      aTime := CurrentTime;
-      DecodeTime(aTime, Hr, Min, Sec, mSec);
-      aTime := EncodeTime(Hr, 0, 0, 0);
-      aTime := Int(CurrentTime) + aTime;
-
-      for i := TL.Count - 1 downto 0 do // if there's only 1 qso then it won't loop
-      begin
-         QQ := TL[i];
-         if QQ.Time < aTime then begin
-            break;
-         end;
-
-         if QQ.Band <> Q.Band then begin
-            inc(QSYCount);
-         end;
-
-         Q := QQ;
-      end;
-   finally
-      TL.Free;
-   end;
+   QSYCount := Log.EvaluateQSYCount(Log.TotalQSO);
 end;
 
 procedure TMainForm.WriteStatusLine(S: string; WriteConsole: Boolean);
@@ -4980,7 +4932,8 @@ begin
       R := MessageDlg('Are you sure to delete this QSO?', mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
       if R = mrNo then
          exit;
-      DeleteCurrentRow
+
+      DeleteCurrentRow;
    end
    else begin
       if ShowCurrentBandOnly.Checked then begin
@@ -4999,6 +4952,8 @@ begin
          MultipleDelete(_top, _bottom);
       end;
    end;
+
+   Log.SetDupeFlags;
 
    EditScreen.RefreshScreen;
 end;
@@ -5365,10 +5320,7 @@ begin
 
    // QSY Violation
    if FQsyViolation = True then begin
-      if CurrentQso.Memo <> '' then begin
-         CurrentQso.Memo := CurrentQso.Memo + ' ';
-      end;
-      CurrentQso.Memo := CurrentQso.Memo + 'QSY Violation';
+      SetQsyViolation(CurrentQSO);
    end;
 
    // if MyContest.Name = 'Pedition mode' then
@@ -5870,6 +5822,7 @@ begin
       end
       else begin
          fQsyOK := False;
+         FQsyViolation := True;
       end;
    end;
 
@@ -5986,6 +5939,9 @@ begin
    end;
 
    Grid.TopRow := _oldtop;
+
+   Log.SetDupeFlags;
+
    EditScreen.RefreshScreen;
 end;
 
@@ -7421,7 +7377,7 @@ begin
       MyContest.MultiForm.FontSize := dmZlogGlobal.Settings._mainfontsize;
 
       CountDownStartTime := 0;
-      QSYCount := 0;
+//      QSYCount := 0;
 
       UpdateBand(CurrentQSO.Band);
       UpdateMode(CurrentQSO.mode);
