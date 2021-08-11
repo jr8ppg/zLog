@@ -387,9 +387,7 @@ const
   MEMO_DUPE = '-DUPE-';
   MEMO_PSE_QSL = 'PSE QSL';
   MEMO_NO_QSL = 'NO QSL';
-
-const
-  QSY_VIOLATION = '#QSY Violation#';
+  MEMO_QSY_VIOLATION = '*QSY Violation*';
 
 implementation
 

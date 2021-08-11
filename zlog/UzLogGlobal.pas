@@ -406,6 +406,8 @@ function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
 
 procedure SetQsyViolation(aQSO: TQSO);
 procedure ResetQsyViolation(aQSO: TQSO);
+procedure SetDupeQso(aQSO: TQSO);
+procedure ResetDupeQso(aQSO: TQSO);
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -3113,7 +3115,7 @@ end;
 
 procedure SetQsyViolation(aQSO: TQSO);
 begin
-   if Pos(QSY_VIOLATION, aQSO.Memo) > 0 then begin
+   if Pos(MEMO_QSY_VIOLATION, aQSO.Memo) > 0 then begin
       Exit;
    end;
 
@@ -3121,12 +3123,35 @@ begin
       aQSO.Memo := aQSO.Memo + ' ';
    end;
 
-   aQSO.Memo := aQSO.Memo + QSY_VIOLATION;
+   aQSO.Memo := aQSO.Memo + MEMO_QSY_VIOLATION;
 end;
 
 procedure ResetQsyViolation(aQSO: TQSO);
 begin
-   aQSO.Memo := Trim(StringReplace(aQSO.Memo, QSY_VIOLATION, '', [rfReplaceAll]));
+   aQSO.Memo := Trim(StringReplace(aQSO.Memo, MEMO_QSY_VIOLATION, '', [rfReplaceAll]));
+end;
+
+procedure SetDupeQso(aQSO: TQSO);
+begin
+   aQSO.Points := 0;
+   aQSO.Dupe := True;
+
+   if Pos(MEMO_DUPE, aQSO.Memo) > 0 then begin
+      Exit;
+   end;
+
+   if aQSO.Memo <> '' then begin
+      aQSO.Memo := MEMO_DUPE + ' ' + aQSO.Memo;
+   end
+   else begin
+      aQSO.Memo := MEMO_DUPE;
+   end;
+end;
+
+procedure ResetDupeQso(aQSO: TQSO);
+begin
+   aQSO.Dupe := False;
+   aQSO.Memo := Trim(StringReplace(aQSO.Memo, MEMO_DUPE, '', [rfReplaceAll]));
 end;
 
 end.

@@ -1776,21 +1776,10 @@ begin
          ch := 'Z';
 
       if TempList[ord(ch)].Find(str, j) = True then begin
-         aQSO.Points := 0;
-         aQSO.Dupe := True;
-         temp := aQSO.Memo;
-         if Pos(MEMO_DUPE, temp) = 0 then begin
-            aQSO.Memo := MEMO_DUPE + ' ' + temp;
-         end;
+         SetDupeQSO(aQSO);
       end
       else begin
-         aQSO.Dupe := False;
-
-         temp := aQSO.Memo;
-         if Pos(MEMO_DUPE, temp) = 1 then begin
-            aQSO.Memo := copy(temp, 8, 255);
-         end;
-
+         ResetDupeQSO(aQSO);
          TempList[ord(ch)].Add(str);
       end;
 
