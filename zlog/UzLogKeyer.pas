@@ -2157,7 +2157,11 @@ end;
 procedure TdmZLogKeyer.SetSideToneVolume(v: Integer);
 begin
    FSideToneVolume := v;
-   FTone.Volume := v;
+   {$IFDEF USESIDETONE}
+   if Assigned(FTone) then begin
+      FTone.Volume := v;
+   end;
+   {$ENDIF}
 end;
 
 { TKeyerMonitorThread }
