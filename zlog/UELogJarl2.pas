@@ -322,7 +322,7 @@ begin
    WriteLn(f, '<EMAIL>' + edEMail.Text + '</EMAIL>');
    WriteLn(f, '<POWER>' + edPower.Text + '</POWER>');
 
-   if fFdCoeff > 1 then begin
+   if fFdCoeff > 0 then begin
       WriteLn(f, '<FDCOEFF>' + FloatToStr(fFdCoeff) + '</FDCOEFF>');
    end;
 

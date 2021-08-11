@@ -460,7 +460,7 @@ begin
    WriteLn(f, '<SCORE BAND=TOTAL>' + S + '</SCORE>');
 
    fFdCoeff := StrToFloatDef(editFdcoeff.Text, 1);
-   if fFdCoeff > 1 then begin
+   if fFdCoeff > 0 then begin
       WriteLn(f, '<FDCOEFF>' + FloatToStr(fFdCoeff) + '</FDCOEFF>');
    end;
 
