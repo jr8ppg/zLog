@@ -2860,6 +2860,7 @@ end;
 constructor TGeneralContest.Create(N, CFGFileName: string);
 begin
    inherited Create(N);
+   FUseCoeff := True;
    MultiForm := TGeneralMulti2.Create(MainForm);
    ScoreForm := TGeneralScore.Create(MainForm);
    TGeneralScore(ScoreForm).formMulti := TGeneralMulti2(MultiForm);
