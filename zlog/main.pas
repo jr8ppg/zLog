@@ -168,6 +168,7 @@ type
   TContest = class
   protected
     FNeedCtyDat: Boolean;
+    FUseCoeff: Boolean;
   private
     procedure SelectPowerCode();
   public
@@ -213,6 +214,7 @@ type
     procedure ADIF_Export(FileName : string);
 
     property NeedCtyDat: Boolean read FNeedCtyDat;
+    property UseCoeff: Boolean read FUseCoeff;
   end;
 
   TPedi = class(TContest)
@@ -1941,6 +1943,7 @@ begin
    SentStr := '';
 
    FNeedCtyDat := False;
+   FUseCoeff := False;
 end;
 
 procedure TContest.PostWanted(S: string);
@@ -2839,6 +2842,7 @@ begin
    ScoreForm := TALLJAScore.Create(MainForm, b19, HiBand);
    PastEditForm := TALLJAEditDialog.Create(MainForm);
    SentStr := '$Q$P';
+   FUseCoeff := True;
 end;
 
 constructor TSixDownContest.Create(N: string);
