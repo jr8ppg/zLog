@@ -5,12 +5,11 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UACAGMulti, StdCtrls, JLLabel, ExtCtrls, Grids, Menus,
-  UzLogConst, UzLogGlobal, UzLogQSO, UWPXMulti, UMultipliers;
+  UzLogConst, UzLogGlobal, UzLogQSO, UWPXMulti, UMultipliers, UserDefinedContest;
 
-const  MAXLOCAL = 31;
-       PX_WPX    = 1;
-       PX_NORMAL = 2;
-       BANDLABELMAX = 30;
+const
+  BANDLABELMAX = 30;
+
 type
   TGeneralMulti2 = class(TACAGMulti)
     procedure FormCreate(Sender: TObject);
@@ -21,31 +20,19 @@ type
     procedure UpdateLabelPos(); override;
   private
     { Private declarations }
+    FConfig: TUserDefinedContest;
     function GetPX(aQSO : TQSO) : string;
   public
     { Public declarations }
-    PXMulti : Integer;
-    _DXTEST : Boolean;
-    NoMulti : Boolean;
-    WARC: Boolean;
-    CutTailingAlphabets : Boolean; // JARL/CUTTAILABT
-    LocalString : array[0..MAXLOCAL] of string;
-    MinLocalLen : Integer;
-    _cut, _lcut, _tail, _ltail : Integer;
-    NoCTYMulti : string; // use citylist for these countries
-    LocalCTY, LocalCONT : string;
-    UndefMulti : Boolean; //
-    CountOnce : Boolean; // count multi once regardless of band
-    AllowUnlistedMulti : Boolean; // allows unlisted multi to be logged but not counted as a multi.
     function IsLocal(aQSO : TQSO) : Boolean;
     procedure LoadDAT(Filename : string);
-    procedure LoadCTY(CTYTYPE : string);
     function ExtractMulti(aQSO : TQSO) : string; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     function ValidMulti(aQSO : TQSO) : Boolean; override;
     procedure CheckMulti(aQSO : TQSO); override;
     procedure Reset; override;
     procedure UpdateData; override;
+    property Config: TUserDefinedContest read FConfig write FConfig;
   end;
 
 implementation
@@ -65,7 +52,7 @@ begin
       exit;
 
    slash := pos('/',s);
-   if PXMulti = PX_WPX then begin
+   if FConfig.PXMulti = PX_WPX then begin
       Result := UWPXMulti.GetWPXPrefix(aQSO);
       exit;
    end
@@ -117,9 +104,9 @@ begin
       Grid.RowCount := CityList.List.Count;
    end;
 
-   if _DXTEST then begin
+   if FConfig.UseCtyDat then begin
       if dmZLogGlobal.CountryList.Count > 0 then begin
-         if NoCTYMulti <> '*' then begin
+         if FConfig.NoCountryMulti <> '*' then begin
             Grid.RowCount := CityList.List.Count + dmZLogGlobal.CountryList.Count;
          end;
       end;
@@ -137,7 +124,7 @@ begin
       else begin
          Grid.Cells[0, i] := CTY.SummaryGeneral;
 
-         if CountOnce then begin
+         if FConfig.CountMultiOnce then begin
             for B2 := b19 to HiBand do begin
                if CTY.Worked[B2] then begin
                   Grid.Cells[0, i] := '~' + CTY.SummaryGeneral;
@@ -149,7 +136,7 @@ begin
    end;
 
    // CountryList‚ðGrid‚ÉƒZƒbƒg
-   if _DXTEST and (NoCTYMulti <> '*') then begin
+   if FConfig.UseCtyDat and (FConfig.NoCountryMulti <> '*') then begin
       for i := 0 to dmZLogGlobal.CountryList.Count - 1 do begin
          CNT := TCountry(dmZLogGlobal.CountryList.List[i]);
          R := CityList.List.Count + i;
@@ -160,7 +147,7 @@ begin
          else begin
             Grid.Cells[0, R] := CNT.SummaryGeneral;
 
-            if CountOnce then begin
+            if FConfig.CountMultiOnce then begin
                for B2 := b19 to HiBand do begin
                   if CNT.Worked[B2] then begin
                      Grid.Cells[0, R] := '*' + CNT.SummaryGeneral;
@@ -194,7 +181,7 @@ var
    C : TCity;
    boo : Boolean;
 begin
-   if UndefMulti or AllowUnlistedMulti or (PXMulti <> 0) or _DXTEST or NoMulti then begin
+   if FConfig.UndefMulti or FConfig.AllowUnlistedMulti or (FConfig.PXMulti <> 0) or FConfig.UseCtyDat or FConfig.NoMulti then begin
       Result := True;
       exit;
    end;
@@ -231,12 +218,12 @@ begin
 
    str := aQSO.NrRcvd;
 
-   if PXMulti <> 0 then begin
+   if FConfig.PXMulti <> 0 then begin
       Result := GetPX(aQSO);
       exit;
    end;
 
-   if CutTailingAlphabets then begin // deletes any tailing non-digits
+   if FConfig.CutTailingAlphabets then begin // deletes any tailing non-digits
       for i := length(str) downto 1 do
          if CharInSet(str[i], ['0'..'9']) then
             break;
@@ -248,33 +235,33 @@ begin
    end;
 
    if IsLocal(aQSO) then begin
-      if _lcut <> 0 then begin
-         if _lcut > 0 then
-            Delete(str, length(str)-_lcut+1, _lcut)
+      if FConfig.LCut <> 0 then begin
+         if FConfig.LCut > 0 then
+            Delete(str, length(str)-FConfig.LCut+1, FConfig.LCut)
          else
-            Delete(str, 1, _lcut * -1);
+            Delete(str, 1, FConfig.LCut * -1);
       end
       else begin {lcut = 0}
-         if _ltail <> 0 then
-            if _ltail > 0 then
-               str := copy(str, length(str)-_ltail+1, _ltail)
+         if FConfig.LTail <> 0 then
+            if FConfig.LTail > 0 then
+               str := copy(str, length(str)-FConfig.LTail+1, FConfig.LTail)
             else
-               str := copy(str, 1, -1*_ltail);
+               str := copy(str, 1, -1*FConfig.LTail);
       end;
    end
    else begin {not local}
-      if _cut <> 0 then begin
-         if _cut > 0 then
-            Delete(str, length(str)-_cut+1, _cut)
+      if FConfig.Cut <> 0 then begin
+         if FConfig.Cut > 0 then
+            Delete(str, length(str)-FConfig.Cut+1, FConfig.Cut)
          else
-            Delete(str, 1, _cut * -1);
+            Delete(str, 1, FConfig.Cut * -1);
       end
       else begin {cut = 0}
-         if _tail <> 0 then
-            if _tail > 0 then
-               str := copy(str, length(str)-_tail+1, _tail)
+         if FConfig.Tail <> 0 then
+            if FConfig.Tail > 0 then
+               str := copy(str, length(str)-FConfig.Tail+1, FConfig.Tail)
             else
-               str := copy(str, 1, -1*_tail);
+               str := copy(str, 1, -1*FConfig.Tail);
       end;
    end;
 
@@ -292,18 +279,18 @@ var
 label aaa;
 begin
    aQSO.NewMulti1 := False;
-   if NoMulti then exit;
+   if FConfig.NoMulti then exit;
    aQSO.Power2 := 2; // not local CTY
 
-   if _DXTEST then begin
+   if FConfig.UseCtyDat then begin
       Cty := dmZLogGlobal.GetPrefix(aQSO).Country;
 
       aQSO.Power2 := Cty.Index;
 
-      if NoCtyMulti = '*' then
+      if FConfig.NoCountryMulti = '*' then
          goto aaa;
 
-      if pos(',' + Cty.Country + ',', ',' + NoCTYMulti + ',') > 0 then
+      if pos(',' + Cty.Country + ',', ',' + FConfig.NoCountryMulti + ',') > 0 then
          goto aaa;
 
 
@@ -314,7 +301,7 @@ begin
 
       LatestMultiAddition := CityList.List.Count + Cty.Index;
 
-      if CountOnce then begin // multi once regardless of band
+      if FConfig.CountMultiOnce then begin // multi once regardless of band
          boo := false;
          for B := b19 to HiBand do begin
              if Cty.Worked[B] then begin
@@ -362,11 +349,11 @@ aaa:
 
    // no match with CityList
 
-   if AllowUnlistedMulti then begin
+   if FConfig.AllowUnlistedMulti then begin
       exit;
    end;
 
-   if UndefMulti or (PXMulti <> 0) then begin
+   if FConfig.UndefMulti or (FConfig.PXMulti <> 0) then begin
       C := TCity.Create;
       C.CityNumber := str;
       C.Worked[aQSO.Band] := True;
@@ -382,20 +369,20 @@ var
 begin
    Result := False;
 
-   if _DXTEST then begin
-      if LocalCTY <> '' then begin
+   if FConfig.UseCtyDat then begin
+      if FConfig.LocalCountry <> '' then begin
          i := aQSO.Power2;
          if (i > -1) and (i < dmZLogGlobal.CountryList.Count) then
-            if pos(',' + TCountry(dmZLogGlobal.CountryList.List[i]).Country + ',', ',' + LocalCTY + ',') > 0 then begin
+            if pos(',' + TCountry(dmZLogGlobal.CountryList.List[i]).Country + ',', ',' + FConfig.LocalCountry + ',') > 0 then begin
                Result := True;
                exit;
             end;
       end;
 
-      if LocalCONT <> '' then begin
+      if FConfig.LocalContinental <> '' then begin
          i := aQSO.Power2;
          if (i > -1) and (i < dmZLogGlobal.CountryList.Count) then
-            if pos(',' + TCountry(dmZLogGlobal.CountryList.List[i]).Continent + ',', ',' + LocalCONT + ',') > 0 then begin
+            if pos(',' + TCountry(dmZLogGlobal.CountryList.List[i]).Continent + ',', ',' + FConfig.LocalContinental + ',') > 0 then begin
                Result := True;
                exit;
             end;
@@ -403,12 +390,12 @@ begin
    end;
 
    for i := 0 to MAXLOCAL do begin
-      if LocalString[i] = '' then begin
+      if FConfig.LocalString[i] = '' then begin
          exit;
       end
       else begin
-         if (Pos(LocalString[i], aQSO.NrRcvd) = 1) and
-            (Length(aQSO.NrRcvd) >= MinLocalLen) then begin
+         if (Pos(FConfig.LocalString[i], aQSO.NrRcvd) = 1) and
+            (Length(aQSO.NrRcvd) >= FConfig.MinLocalLen) then begin
             Result := True;
             exit;
          end;
@@ -423,11 +410,6 @@ begin
    Reset;
 end;
 
-procedure TGeneralMulti2.LoadCTY(CTYTYPE : string);
-begin
-   _DXTEST := True;
-end;
-
 procedure TGeneralMulti2.FormCreate(Sender: TObject);
 var
    i : Integer;
@@ -436,17 +418,6 @@ begin
    LatestMultiAddition := 0;
    Label1R9.Visible := True;
    CityList := TCityList.Create;
-   UndefMulti := False;
-   NoMulti := False;
-   CountOnce := False;
-   CutTailingAlphabets := False;
-   AllowUnlistedMulti := False;
-   PXMulti := 0;
-   _DXTEST := false;
-   NoCtyMulti := '';
-   LocalCTY := '';
-   LocalCONT := '';
-   //SetActiveBands;
 
    Label1R9.Visible := False;
    Label3R5.Visible := False;
@@ -511,7 +482,7 @@ begin
       end;
    end;
 
-   if UndefMulti then
+   if FConfig.UndefMulti then
       MainForm.WriteStatusLine(str+ ' : '+'Not worked on any band', false)
    else
       MainForm.WriteStatusLine('Invalid number', false);
