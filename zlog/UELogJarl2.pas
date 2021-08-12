@@ -80,6 +80,7 @@ uses
 
 procedure TformELogJarl2.FormCreate(Sender: TObject);
 begin
+   edFDCoefficient.Enabled := MyContest.UseCoeff;
    InitializeFields;
 end;
 
@@ -322,7 +323,7 @@ begin
    WriteLn(f, '<EMAIL>' + edEMail.Text + '</EMAIL>');
    WriteLn(f, '<POWER>' + edPower.Text + '</POWER>');
 
-   if fFdCoeff > 1 then begin
+   if (fFdCoeff > 1) or (MyContest.UseCoeff = True) then begin
       WriteLn(f, '<FDCOEFF>' + FloatToStr(fFdCoeff) + '</FDCOEFF>');
    end;
 
