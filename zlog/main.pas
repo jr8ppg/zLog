@@ -6,9 +6,10 @@ unit Main;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls,
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, StrUtils,
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
+  System.DateUtils,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
@@ -19,7 +20,7 @@ uses
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel,
-  UserDefinedContest;
+  UQsyInfo, UserDefinedContest;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -698,6 +699,8 @@ type
     actionShowQsoRateEx: TAction;
     QSORateEx1: TMenuItem;
     menuTargetEditor: TMenuItem;
+    actionShowQsyInfo: TAction;
+    QSYInfo1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -923,6 +926,7 @@ type
     procedure menuQSORateSettingsClick(Sender: TObject);
     procedure actionShowQsoRateExExecute(Sender: TObject);
     procedure menuTargetEditorClick(Sender: TObject);
+    procedure actionShowQsyInfoExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -949,6 +953,7 @@ type
     FCWMessagePad: TCwMessagePad;
     FVoiceForm: TVoiceForm;
     FFunctionKeyPanel: TformFunctionKeyPanel;
+    FQsyInfoForm: TformQsyInfo;
 
     FInitialized: Boolean;
 
@@ -980,6 +985,9 @@ type
     FCurrentCQMessageNo: Integer;
 
     FQsyFromBS: Boolean;
+
+    // QSY Violation (10 min rule / per hour)
+    FQsyViolation: Boolean;
 
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
@@ -1152,6 +1160,7 @@ var
    mytx, i: Integer;
    TL: TQSOList;
    Q, QQ: TQSO;
+   diff: TDateTime;
 begin
    TL := TQSOList.Create();
    try
@@ -1173,7 +1182,14 @@ begin
       for i := TL.Count - 1 downto 0 do begin // if there's only 1 qso then it won't loop
          QQ := TL[i];
          if QQ.Band <> Q.Band then begin
-            CountDownStartTime := Q.Time;
+            // バンド変更があっても10分以上経過でOK
+            diff := Q.Time - QQ.Time;
+            if Diff * 24 * 60 > 10.00 then begin
+               CountDownStartTime := 0;
+            end
+            else begin
+               CountDownStartTime := Q.Time;
+            end;
             break;
          end
          else begin
@@ -1181,63 +1197,15 @@ begin
          end;
       end;
 
-      CountDownStartTime := Q.Time;
+//      CountDownStartTime := Q.Time;
    finally
       TL.Free;
    end;
 end;
 
 procedure TMainForm.ReEvaluateQSYCount;
-var
-   mytx, i: Integer;
-   TL: TQSOList;
-   Q, QQ: TQSO;
-   aTime: TDateTime;
-   Hr, Min, Sec, mSec: word;
 begin
-   if dmZlogGlobal.Settings._qsycount = False then
-      exit;
-
-   TL := TQSOList.Create();
-   try
-      mytx := dmZlogGlobal.TXNr;
-
-      for i := 1 to Log.TotalQSO do begin
-         if Log.QsoList[i].TX = mytx then begin
-            Q := TQSO.Create();
-            Q.Assign(Log.QsoList[i]);
-            TL.Add(Q);
-         end;
-      end;
-
-      QSYCount := 0;
-      if TL.Count = 0 then begin
-         exit;
-      end;
-
-      Q := TL[TL.Count - 1];
-
-      aTime := CurrentTime;
-      DecodeTime(aTime, Hr, Min, Sec, mSec);
-      aTime := EncodeTime(Hr, 0, 0, 0);
-      aTime := Int(CurrentTime) + aTime;
-
-      for i := TL.Count - 1 downto 0 do // if there's only 1 qso then it won't loop
-      begin
-         QQ := TL[i];
-         if QQ.Time < aTime then begin
-            break;
-         end;
-
-         if QQ.Band <> Q.Band then begin
-            inc(QSYCount);
-         end;
-
-         Q := QQ;
-      end;
-   finally
-      TL.Free;
-   end;
+   QSYCount := Log.EvaluateQSYCount(Log.TotalQSO);
 end;
 
 procedure TMainForm.WriteStatusLine(S: string; WriteConsole: Boolean);
@@ -1806,6 +1774,12 @@ begin
 
    if dmZlogGlobal.Settings._countdown and (CountDownStartTime > 0) then begin
       WriteStatusLineRed('Less than 10 min since last QSY!', False);
+      FQsyViolation := True;
+   end;
+
+   if dmZlogGlobal.Settings._qsycount and (QSYCount > dmZLogGlobal.Settings._countperhour) then begin
+      WriteStatusLineRed('QSY count exceeded limit!', False);
+      FQsyViolation := True;
    end;
 
    if RigControl.Rig = nil then begin
@@ -3863,6 +3837,7 @@ begin
    FVoiceForm.OnNotifyStarted  := OnVoicePlayStarted;
    FVoiceForm.OnNotifyFinished := OnVoicePlayFinished;
    FFunctionKeyPanel := TformFunctionKeyPanel.Create(Self);
+   FQsyInfoForm   := TformQsyInfo.Create(Self);
 
    FCurrentCQMessageNo := 101;
    FQsyFromBS := False;
@@ -4104,6 +4079,7 @@ begin
    dmZlogGlobal.ReadWindowState(FZAnalyze);
    dmZlogGlobal.ReadWindowState(FCwMessagePad);
    dmZlogGlobal.ReadWindowState(FFunctionKeyPanel);
+   dmZlogGlobal.ReadWindowState(FQsyInfoForm);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZlogGlobal.ReadWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
@@ -4134,6 +4110,7 @@ begin
    dmZlogGlobal.WriteWindowState(FZAnalyze);
    dmZlogGlobal.WriteWindowState(FCwMessagePad);
    dmZlogGlobal.WriteWindowState(FFunctionKeyPanel);
+   dmZlogGlobal.WriteWindowState(FQsyInfoForm);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZlogGlobal.WriteWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
@@ -5007,7 +4984,8 @@ begin
       R := MessageDlg('Are you sure to delete this QSO?', mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
       if R = mrNo then
          exit;
-      DeleteCurrentRow
+
+      DeleteCurrentRow;
    end
    else begin
       if ShowCurrentBandOnly.Checked then begin
@@ -5026,6 +5004,8 @@ begin
          MultipleDelete(_top, _bottom);
       end;
    end;
+
+   Log.SetDupeFlags;
 
    EditScreen.RefreshScreen;
 end;
@@ -5390,6 +5370,11 @@ begin
       end;
    end;
 
+   // QSY Violation
+   if FQsyViolation = True then begin
+      SetQsyViolation(CurrentQSO);
+   end;
+
    // if MyContest.Name = 'Pedition mode' then
    if not FPostContest then begin
       CurrentQSO.UpdateTime;
@@ -5603,6 +5588,7 @@ begin
    FCWMessagePad.Release();
    FVoiceForm.Release();
    FFunctionKeyPanel.Release();
+   FQsyInfoForm.Release();
    CurrentQSO.Free();
 
    SuperCheckFreeData();
@@ -5829,51 +5815,72 @@ end;
 
 procedure TMainForm.Update10MinTimer;
 var
-   Diff: TDateTime;
+   Diff: Integer;
    Min, Sec: Integer;
    S: string;
+   S2: string;
+   fQsyOK: Boolean;
+   nCountDownMinute: Integer;
 begin
    S := TimeToStr(CurrentTime);
-   if length(S) = 7 then
+   if length(S) = 7 then begin
       S := '0' + S;
-   S := S + ' ';
+   end;
+
+   fQsyOK := False;
+
+   S2 := '';
    if dmZlogGlobal.Settings._countdown then begin
+      nCountDownMinute := dmZLogGlobal.Settings._countdownminute;
+
       if CountDownStartTime > 0 then begin
-         Diff := CurrentTime - CountDownStartTime;
-         if Diff * 24 * 60 > 10.00 then begin
+         Diff := SecondsBetween(CurrentTime , CountDownStartTime);
+         if (Diff / 60) > nCountDownMinute then begin
             CountDownStartTime := 0;
-            // StatusLine.Panels[1].Text := '';
-            S := S + '[QSY OK]';
+            S2 := 'QSY OK';
+            fQsyOK := True;
+            FQsyViolation := False;
          end
          else begin
-            if Diff > 0 then begin
-               Min := Trunc(10 - Diff * 24 * 60);
-               Sec := Trunc(Integer(round(600 - Diff * 24 * 60 * 60)) mod 60);
-               if Min = 10 then
-                  S := S + IntToStr(Min)
-               else
-                  S := S + '0' + IntToStr(Min);
-               if Sec >= 10 then
-                  S := S + ':' + IntToStr(Sec)
-               else
-                  S := S + ':0' + IntToStr(Sec);
+            Diff := (nCountDownMinute * 60) - Diff;
+            Min := Diff div 60;
+            Sec := Diff - (Min * 60);
+            if Min = 0 then begin
+               S2 := IntToStr(Sec);
+            end
+            else begin
+               S2 := RightStr('00' + IntToStr(Min), 2);
+               S2 := S2 + ':' + RightStr('00' + IntToStr(Sec), 2);
             end;
          end;
       end
       else // Countdownstarttime = 0;
       begin
-         S := S + '[QSY OK]';
+         S2 := 'QSY OK';
+         fQsyOK := True;
+         FQsyViolation := False;
       end;
    end
    else begin
-      // s := '';
+      S2 := '';
    end;
 
    if dmZlogGlobal.Settings._qsycount then begin
-      S := S + 'QSY# ' + IntToStr(QSYCount);
+      S2 := 'QSY# ' + IntToStr(QSYCount);
+
+      if QSYCount < dmZLogGlobal.Settings._countperhour then begin
+         fQsyOK := True;
+         FQsyViolation := False;
+      end
+      else begin
+         fQsyOK := False;
+         FQsyViolation := True;
+      end;
    end;
 
    StatusLine.Panels[2].Text := S;
+
+   FQsyInfoForm.SetQsyInfo(fQsyOK, S2);
 end;
 
 procedure TMainForm.CallsignSentProc(Sender: TObject);
@@ -5984,6 +5991,9 @@ begin
    end;
 
    Grid.TopRow := _oldtop;
+
+   Log.SetDupeFlags;
+
    EditScreen.RefreshScreen;
 end;
 
@@ -7418,6 +7428,9 @@ begin
 
       MyContest.MultiForm.FontSize := dmZlogGlobal.Settings._mainfontsize;
 
+      CountDownStartTime := 0;
+//      QSYCount := 0;
+
       UpdateBand(CurrentQSO.Band);
       UpdateMode(CurrentQSO.mode);
 
@@ -7445,6 +7458,7 @@ begin
 
       // 初期化完了
       FInitialized := True;
+      Timer1.Enabled := True;
       zyloContestOpened(MyContest.Name, menu.CFGFileName);
 
    finally
@@ -8663,11 +8677,6 @@ begin
    FRateDialog.Show;
 end;
 
-procedure TMainForm.actionShowQsoRateExExecute(Sender: TObject);
-begin
-   FRateDialogEx.Show;
-end;
-
 // #79 Check Callウインドウ
 procedure TMainForm.actionShowCheckCallExecute(Sender: TObject);
 begin
@@ -9161,6 +9170,18 @@ procedure TMainForm.actionFunctionKeyPanelExecute(Sender: TObject);
 begin
    FFunctionKeyPanel.Show();
    LastFocus.SetFocus();
+end;
+
+// #132 Rate Dialog Ex
+procedure TMainForm.actionShowQsoRateExExecute(Sender: TObject);
+begin
+   FRateDialogEx.Show();
+end;
+
+// #133 QSY Infomation
+procedure TMainForm.actionShowQsyInfoExecute(Sender: TObject);
+begin
+   FQsyInfoForm.Show();
 end;
 
 procedure TMainForm.RestoreWindowsPos();

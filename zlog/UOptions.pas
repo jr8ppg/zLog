@@ -132,7 +132,6 @@ type
     SaveEvery: TSpinEdit;
     Label40: TLabel;
     Label41: TLabel;
-    cbCountDown: TCheckBox;
     rbBankA: TRadioButton;
     rbBankB: TRadioButton;
     cbDispExchange: TCheckBox;
@@ -161,7 +160,6 @@ type
     Label48: TLabel;
     Label49: TLabel;
     cbUpdateThread: TCheckBox;
-    cbQSYCount: TCheckBox;
     cbRecordRigFreq: TCheckBox;
     cbTransverter1: TCheckBox;
     cbTransverter2: TCheckBox;
@@ -417,6 +415,14 @@ type
     Label84: TLabel;
     Label85: TLabel;
     VolumeSpinEdit: TSpinEdit;
+    groupQsyAssist: TGroupBox;
+    radioQsyNone: TRadioButton;
+    radioQsyCountDown: TRadioButton;
+    radioQsyCount: TRadioButton;
+    Label86: TLabel;
+    editQsyCountDownMinute: TSpinEdit;
+    editQsyCountPerHour: TSpinEdit;
+    Label87: TLabel;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -441,8 +447,6 @@ type
     procedure CQRepEditKeyPress(Sender: TObject; var Key: Char);
     procedure editMessage1Change(Sender: TObject);
     procedure CWBankClick(Sender: TObject);
-    procedure cbCountDownClick(Sender: TObject);
-    procedure cbQSYCountClick(Sender: TObject);
     procedure cbTransverter1Click(Sender: TObject);
     procedure comboRig1NameChange(Sender: TObject);
     procedure comboRig2NameChange(Sender: TObject);
@@ -460,6 +464,7 @@ type
     procedure OpListBoxDblClick(Sender: TObject);
     procedure vAdditionalButtonClick(Sender: TObject);
     procedure comboIcomModeChange(Sender: TObject);
+    procedure radioQsyAssistClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -700,9 +705,13 @@ begin
       Settings._pttenabled := PTTEnabledCheckBox.Checked;
       Settings.CW._keying_signal_reverse := checkCwReverseSignal.Checked;
 
-      Settings._saveevery := SaveEvery.Value;
-      Settings._countdown := cbCountDown.Checked;
-      Settings._qsycount := cbQSYCount.Checked;
+      Settings._saveevery        := SaveEvery.Value;
+
+      // QSY Assist
+      Settings._countdown        := radioQsyCountDown.Checked;
+      Settings._qsycount         := radioQsyCount.Checked;
+      Settings._countdownminute  := editQsyCountDownMinute.Value;
+      Settings._countperhour     := editQsyCountPerHour.Value;
 
       i := Settings._pttbefore;
       Settings._pttbefore := StrToIntDef(BeforeEdit.Text, i);
@@ -1103,8 +1112,12 @@ begin
       // Send NR? automatically
       checkSendNrAuto.Checked := Settings.CW._send_nr_auto;
 
-      cbCountDown.Checked := Settings._countdown;
-      cbQSYCount.Checked := Settings._qsycount;
+      // QSY Assist
+      radioQsyNone.Checked          := True;
+      radioQsyCountDown.Checked     := Settings._countdown;
+      radioQsyCount.Checked         := Settings._qsycount;
+      editQsyCountDownMinute.Value  := Settings._countdownminute;
+      editQsyCountPerHour.Value     := Settings._countperhour;
 
       cbDispExchange.Checked := Settings._sameexchange;
       cbAutoEnterSuper.Checked := Settings._entersuperexchange;
@@ -1658,6 +1671,34 @@ begin
    end;
 end;
 
+procedure TformOptions.radioQsyAssistClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TRadioButton(Sender).Tag;
+   case n of
+      // None
+      0: begin
+         editQsyCountDownMinute.Enabled := False;
+         editQsyCountPerHour.Enabled := False;
+      end;
+
+      // Count down
+      1: begin
+         editQsyCountDownMinute.Enabled := True;
+         editQsyCountPerHour.Enabled := False;
+         editQsyCountDownMinute.SetFocus();
+      end;
+
+      // QSY Count / hr
+      2: begin
+         editQsyCountDownMinute.Enabled := False;
+         editQsyCountPerHour.Enabled := True;
+         editQsyCountPerHour.SetFocus();
+      end;
+   end;
+end;
+
 procedure TformOptions.OnNeedSuperCheckLoad(Sender: TObject);
 begin
    FNeedSuperCheckLoad := True;
@@ -1682,18 +1723,6 @@ procedure TformOptions.CWBankClick(Sender: TObject);
 begin
    TempCurrentBank := TRadioButton(Sender).Tag;
    RenewCWStrBankDisp;
-end;
-
-procedure TformOptions.cbCountDownClick(Sender: TObject);
-begin
-   if cbCountDown.Checked then
-      cbQSYCount.Checked := False;
-end;
-
-procedure TformOptions.cbQSYCountClick(Sender: TObject);
-begin
-   if cbQSYCount.Checked then
-      cbCountDown.Checked := False;
 end;
 
 procedure TformOptions.cbTransverter1Click(Sender: TObject);

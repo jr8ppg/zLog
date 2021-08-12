@@ -5339,6 +5339,9 @@ object MainForm: TMainForm
       object FunctionKeyPanel1: TMenuItem
         Action = actionFunctionKeyPanel
       end
+      object QSYInfo1: TMenuItem
+        Action = actionShowQsyInfo
+      end
     end
     object menuSettings: TMenuItem
       Caption = '&Settings'
@@ -5746,6 +5749,7 @@ object MainForm: TMainForm
     Top = 296
   end
   object Timer1: TTimer
+    Enabled = False
     Interval = 500
     OnTimer = Timer1Timer
     Left = 24
@@ -6479,6 +6483,10 @@ object MainForm: TMainForm
     object actionShowQsoRateEx: TAction
       Caption = 'QSO Rate Ex'
       OnExecute = actionShowQsoRateExExecute
+    end
+    object actionShowQsyInfo: TAction
+      Caption = 'QSY Indicator'
+      OnExecute = actionShowQsyInfoExecute
     end
   end
   object SPCMenu: TPopupMenu

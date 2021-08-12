@@ -138,6 +138,8 @@ type
     _allowdupe : boolean;
     _countdown : boolean;
     _qsycount : boolean;
+    _countdownminute: Integer;
+    _countperhour: Integer;
 
     _sameexchange : boolean; //true if exchange is same for all bands. false if serial etc.
     _entersuperexchange : boolean;
@@ -402,6 +404,11 @@ function LD_ond(str1, str2: string): Integer;
 function IsDomestic(strCallsign: string): Boolean;
 function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
 
+procedure SetQsyViolation(aQSO: TQSO);
+procedure ResetQsyViolation(aQSO: TQSO);
+procedure SetDupeQso(aQSO: TQSO);
+procedure ResetDupeQso(aQSO: TQSO);
+
 var
   dmZLogGlobal: TdmZLogGlobal;
 
@@ -559,9 +566,11 @@ begin
 
       // 10 min count down
       Settings._countdown := ini.ReadBool('Preferences', 'CountDown', False);
+      Settings._countdownminute := ini.ReadInteger('Preferences','CountDownMinute', 10);
 
       // QSY count / hr
       Settings._qsycount := ini.ReadBool('Preferences', 'QSYCount', False);
+      Settings._countperhour := ini.ReadInteger('Preferences','CountPerHour', 8);
 
       // J-mode
       Settings._jmode := ini.ReadBool('Preferences', 'JMode', False);
@@ -1094,9 +1103,11 @@ begin
 
       // 10 min count down
       ini.WriteBool('Preferences', 'CountDown', Settings._countdown);
+      ini.WriteInteger('Preferences','CountDownMinute', Settings._countdownminute);
 
       // QSY count / hr
       ini.WriteBool('Preferences', 'QSYCount', Settings._qsycount);
+      ini.WriteInteger('Preferences','CountPerHour', Settings._countperhour);
 
       // J-mode
       ini.WriteBool('Preferences', 'JMode', Settings._jmode);
@@ -3100,6 +3111,47 @@ begin
    end;
 
    Result := True;
+end;
+
+procedure SetQsyViolation(aQSO: TQSO);
+begin
+   if Pos(MEMO_QSY_VIOLATION, aQSO.Memo) > 0 then begin
+      Exit;
+   end;
+
+   if aQSO.Memo <> '' then begin
+      aQSO.Memo := aQSO.Memo + ' ';
+   end;
+
+   aQSO.Memo := aQSO.Memo + MEMO_QSY_VIOLATION;
+end;
+
+procedure ResetQsyViolation(aQSO: TQSO);
+begin
+   aQSO.Memo := Trim(StringReplace(aQSO.Memo, MEMO_QSY_VIOLATION, '', [rfReplaceAll]));
+end;
+
+procedure SetDupeQso(aQSO: TQSO);
+begin
+   aQSO.Points := 0;
+   aQSO.Dupe := True;
+
+   if Pos(MEMO_DUPE, aQSO.Memo) > 0 then begin
+      Exit;
+   end;
+
+   if aQSO.Memo <> '' then begin
+      aQSO.Memo := MEMO_DUPE + ' ' + aQSO.Memo;
+   end
+   else begin
+      aQSO.Memo := MEMO_DUPE;
+   end;
+end;
+
+procedure ResetDupeQso(aQSO: TQSO);
+begin
+   aQSO.Dupe := False;
+   aQSO.Memo := Trim(StringReplace(aQSO.Memo, MEMO_DUPE, '', [rfReplaceAll]));
 end;
 
 end.

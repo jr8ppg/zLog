@@ -242,6 +242,8 @@ type
     function IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
     function IsNewMulti(band: TBand; multi: string): Boolean;
 
+    function EvaluateQSYCount(nStartIndex: Integer): Integer;
+
     property Saved: Boolean read FSaved write FSaved;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode write FAcceptDifferentMode;
     property CountHigherPoints: Boolean read FCountHigherPoints write FCountHigherPoints;
@@ -1741,6 +1743,10 @@ var
    TempList: array [ord('A') .. ord('Z')] of TStringList;
    ch: Char;
    core: string;
+   pQSO: TQSO;
+   Diff: Integer;
+   fQsyViolation: Boolean;
+   nQsyCount: Integer;
 begin
    if TotalQSO = 0 then
       exit;
@@ -1751,6 +1757,7 @@ begin
       TempList[i].Capacity := 200;
    end;
 
+   pQSO := nil;
    for i := 1 to TotalQSO do begin
       aQSO := FQsoList[i];
       core := CoreCall(aQSO.CallSign);
@@ -1769,23 +1776,46 @@ begin
          ch := 'Z';
 
       if TempList[ord(ch)].Find(str, j) = True then begin
-         aQSO.Points := 0;
-         aQSO.Dupe := True;
-         temp := aQSO.Memo;
-         if Pos(MEMO_DUPE, temp) = 0 then begin
-            aQSO.Memo := MEMO_DUPE + ' ' + temp;
-         end;
+         SetDupeQSO(aQSO);
       end
       else begin
-         aQSO.Dupe := False;
-
-         temp := aQSO.Memo;
-         if Pos(MEMO_DUPE, temp) = 1 then begin
-            aQSO.Memo := copy(temp, 8, 255);
-         end;
-
+         ResetDupeQSO(aQSO);
          TempList[ord(ch)].Add(str);
       end;
+
+      // QSY violation check
+      fQsyViolation := False;
+
+      // 今回と前回のバンドが違っている場合、
+      if dmZlogGlobal.Settings._countdown then begin
+         if (pQSO <> nil) and (pQSO.Band <> aQSO.Band) then begin
+         // 設定値以内のQSYならviolation
+            Diff := SecondsBetween(aQSO.Time, pQSO.Time);
+            if (Diff / 60) <= dmZLogGlobal.Settings._countdownminute then begin
+               fQsyViolation := True;
+            end;
+         end;
+      end;
+
+      // 設定回数以上ならviolation
+      if dmZlogGlobal.Settings._qsycount then begin
+         // 現在QSOから1hour前の交信までのQSY数を数える
+         nQsyCount := EvaluateQSYCount(i);
+
+         // QSY数が設定値を超えていたらviolation
+         if (nQsyCount > dmZLogGlobal.Settings._countperhour) then begin
+            fQsyViolation := True;
+         end;
+      end;
+
+      if fQsyViolation = True then begin
+         SetQsyViolation(aQSO);
+      end
+      else begin
+         ResetQsyViolation(aQSO);
+      end;
+
+      pQSO := aQSO;
    end;
 
    for i := ord('A') to ord('Z') do begin
@@ -2010,6 +2040,40 @@ begin
       FQsoList[0].RSTRcvd := N;
       Saved := False;
    end;
+end;
+
+function TLog.EvaluateQSYCount(nStartIndex: Integer): Integer;
+var
+   nQsyCount: Integer;
+   aQSO: TQSO;
+   bQSO: TQSO;
+   i: Integer;
+   Diff: Integer;
+begin
+   if dmZlogGlobal.Settings._qsycount = False then begin
+      Result := 0;
+      Exit;
+   end;
+
+   nQsyCount := 0;
+   aQSO := FQsoList[nStartIndex];
+
+   for i := nStartIndex - 1 downto 1 do begin
+      bQSO := FQsoList[i];
+
+      // 時間差が1hourあるか
+      Diff := SecondsBetween(aQSO.Time, bQSO.Time);
+      if (Diff / 60) > 60 then begin
+         Break;
+      end;
+
+      // バンドが違えばカウント
+      if aQSO.Band <> bQSO.Band then begin
+         Inc(nQsyCount);
+      end;
+   end;
+
+   Result := nQsyCount;
 end;
 
 { TQSOCallsignComparer }

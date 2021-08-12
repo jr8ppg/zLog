@@ -442,7 +442,7 @@ object formOptions: TformOptions
         Width = 113
         Height = 17
         Caption = 'Allow to log dupes'
-        TabOrder = 4
+        TabOrder = 2
       end
       object SaveEvery: TSpinEdit
         Left = 271
@@ -452,17 +452,8 @@ object formOptions: TformOptions
         AutoSize = False
         MaxValue = 99
         MinValue = 1
-        TabOrder = 6
+        TabOrder = 4
         Value = 3
-      end
-      object cbCountDown: TCheckBox
-        Left = 253
-        Top = 21
-        Width = 121
-        Height = 17
-        Caption = '10 min count down'
-        TabOrder = 1
-        OnClick = cbCountDownClick
       end
       object cbDispExchange: TCheckBox
         Left = 17
@@ -470,7 +461,7 @@ object formOptions: TformOptions
         Width = 193
         Height = 17
         Caption = 'Display exchange on other bands'
-        TabOrder = 8
+        TabOrder = 6
       end
       object cbJMode: TCheckBox
         Left = 253
@@ -478,7 +469,7 @@ object formOptions: TformOptions
         Width = 97
         Height = 17
         Caption = 'J-mode'
-        TabOrder = 3
+        TabOrder = 1
       end
       object cbSaveWhenNoCW: TCheckBox
         Left = 17
@@ -486,16 +477,7 @@ object formOptions: TformOptions
         Width = 161
         Height = 17
         Caption = 'Save when not sending CW'
-        TabOrder = 5
-      end
-      object cbQSYCount: TCheckBox
-        Left = 253
-        Top = 42
-        Width = 121
-        Height = 17
-        Caption = 'QSY count / hr'
-        TabOrder = 2
-        OnClick = cbQSYCountClick
+        TabOrder = 3
       end
       object cbAutoEnterSuper: TCheckBox
         Left = 17
@@ -503,7 +485,7 @@ object formOptions: TformOptions
         Width = 260
         Height = 17
         Caption = 'Automatically enter exchange from SuperCheck'
-        TabOrder = 7
+        TabOrder = 5
       end
       object checkUseMultiStationWarning: TCheckBox
         Left = 17
@@ -512,7 +494,80 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'Use Multi station warning'
         Enabled = False
-        TabOrder = 9
+        TabOrder = 7
+      end
+      object groupQsyAssist: TGroupBox
+        Left = 170
+        Top = 304
+        Width = 204
+        Height = 89
+        Caption = 'QSY Assist'
+        TabOrder = 8
+        object Label86: TLabel
+          Left = 148
+          Top = 40
+          Width = 16
+          Height = 13
+          Caption = 'min'
+        end
+        object Label87: TLabel
+          Left = 142
+          Top = 64
+          Width = 47
+          Height = 13
+          Caption = 'count / hr'
+        end
+        object radioQsyNone: TRadioButton
+          Left = 11
+          Top = 16
+          Width = 65
+          Height = 17
+          Caption = 'None'
+          TabOrder = 0
+          OnClick = radioQsyAssistClick
+        end
+        object radioQsyCountDown: TRadioButton
+          Tag = 1
+          Left = 11
+          Top = 39
+          Width = 78
+          Height = 17
+          Caption = 'Count down'
+          TabOrder = 1
+          OnClick = radioQsyAssistClick
+        end
+        object radioQsyCount: TRadioButton
+          Tag = 2
+          Left = 11
+          Top = 62
+          Width = 78
+          Height = 17
+          Caption = 'QSY count'
+          TabOrder = 2
+          OnClick = radioQsyAssistClick
+        end
+        object editQsyCountDownMinute: TSpinEdit
+          Left = 104
+          Top = 37
+          Width = 38
+          Height = 22
+          AutoSize = False
+          MaxValue = 99
+          MinValue = 1
+          TabOrder = 3
+          Value = 10
+        end
+        object editQsyCountPerHour: TSpinEdit
+          Left = 104
+          Top = 60
+          Width = 38
+          Height = 22
+          AutoSize = False
+          MaxValue = 99
+          MinValue = 1
+          TabOrder = 4
+          Value = 10
+        end
       end
     end
     object tabsheetCategories: TTabSheet
