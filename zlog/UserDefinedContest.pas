@@ -5,9 +5,22 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
   System.StrUtils, Vcl.Forms,
-  Generics.Collections, Generics.Defaults;
+  Generics.Collections, Generics.Defaults,
+  UzLogConst, UzLogGlobal;
+
+const
+  MAXLOCAL = 31;
+  PX_WPX    = 1;
+  PX_NORMAL = 2;
 
 type
+  TPointsTable = array[b19..HiBand, mCW..mOther] of Integer;
+  PTPointsTable = ^TPointsTable;
+  TPowerTable = array[b19..HiBand] of string;
+  TSerialTable = array[b19..HiBand] of Integer;
+  TAlphabetPointsTable = array[ord('0')..ord('Z')] of Integer;
+  TLocalStringTable = array[0..MAXLOCAL] of string;
+
   TUserDefinedContest = class(TObject)
     FFullpath: string;
     FFileName: string;
@@ -15,12 +28,61 @@ type
     FProv: string;
     FCity: string;
     FPower: string;
-    FDatFile: string;
     FCoeff: Boolean;
     FSent: string;
     FCwMessageA: array[1..8] of string;
     FCwMessageB: array[1..8] of string;
     FCfgSource: TStringList;
+
+    FPointsTable: TPointsTable;
+    FLocalPointsTable: TPointsTable;
+
+    FSameCTYPoints: Boolean;
+    FSameCTYPointsTable: TPointsTable;
+
+    FSameCONTPointsTable: TPointsTable;
+    FSameCONTPoints: Boolean;
+
+    FSpecialCallPointsTable: TPointsTable;
+    FSpecialCalls: string;  // special callsigns for specialcallpointstable
+
+    FLocalCountry: string;
+    FLocalContinental: string;
+
+    FLocalString: TLocalStringTable;
+
+    FAlphabetPoints: Boolean;
+    FAlphabetPointsTable: TAlphabetPointsTable;
+
+    FMinLocalLen: Integer;
+    FDatFileName: string;
+
+    FUseCtyDat: Boolean;
+
+    FCountMultiOnce: Boolean;
+    FNoCountryMulti: string;
+    FAcceptDifferentMode: Boolean;
+
+    FCut: Integer;
+    FLCut: Integer;
+    FTail: Integer;
+    FLTail: Integer;
+
+    FUndefMulti: Boolean;
+    FCutTailingAlphabets: Boolean;
+    FAllowUnlistedMulti: Boolean;
+    FNoMulti: Boolean;
+
+    FPXMulti: Integer;
+    FSerialContestType: Integer;
+
+    FPowerTable: TPowerTable;
+    FSerialArray: TSerialTable;
+
+    FCountHigherPoints: Boolean;
+    FUseWarcBand: Boolean;
+
+    FUseUTC: Boolean;
   private
     procedure SetFullPath(v: string);
     function GetCwMessageA(Index: Integer): string;
@@ -33,6 +95,11 @@ type
     procedure SetPower(v: string);
     function ParseCommand(strLine: string; var strCmd, strParam: string): Boolean;
     procedure EditParam(strCommand, strNewValue: string);
+    procedure ClearPointsTable(var PT: TPointsTable);
+    class function GetBand(strBand: string): TBand;
+    class procedure SetPointsTable(PT: PTPointsTable; str: string);
+    class function ParseOnOff(strOn: string): Boolean;
+    class function ParseIntDef(strParam: string; def: Integer): Integer;
   public
     constructor Create(); overload;
     constructor Create(strFullPath: string); overload;
@@ -46,12 +113,61 @@ type
     property Prov: string read FProv write SetProv;
     property City: string read FCity write SetCity;
     property Power: string read FPower write SetPower;
-    property DatFile: string read FDatFile write FDatFile;
     property Coeff: Boolean read FCoeff write FCoeff;
     property Sent: string read FSent write SetSent;
     property CwMessageA[Index: Integer]: string read GetCwMessageA write SetCwMessageA;
     property CwMessageB[Index: Integer]: string read GetCwMessageB write SetCwMessageB;
     property CfgSource: TStringList read FCfgSource;
+
+    property PointsTable: TPointsTable read FPointsTable;
+    property LocalPointsTable: TPointsTable read FLocalPointsTable;
+
+    property SameCTYPoints: Boolean read FSameCTYPoints;
+    property SameCTYPointsTable: TPointsTable read FSameCTYPointsTable;
+
+    property SameCONTPointsTable: TPointsTable read FSameCONTPointsTable;
+    property SameCONTPoints: Boolean read FSameCONTPoints;
+
+    property SpecialCallPointsTable: TPointsTable read FSpecialCallPointsTable;
+    property SpecialCalls: string read FSpecialCalls;
+
+    property LocalCountry: string read FLocalCountry;
+    property LocalContinental: string read FLocalContinental;
+
+    property LocalString: TLocalStringTable read FLocalString;
+
+    property AlphabetPoints: Boolean read FAlphabetPoints;
+    property AlphabetPointsTable: TAlphabetPointsTable read FAlphabetPointsTable;
+
+    property MinLocalLen: Integer read FMinLocalLen;
+    property DatFileName: string read FDatFileName;
+
+    property UseCtyDat: Boolean read FUseCtyDat;
+
+    property CountMultiOnce: Boolean read FCountMultiOnce;
+    property NoCountryMulti: string read FNoCountryMulti;
+    property AcceptDifferentMode: Boolean read FAcceptDifferentMode;
+
+    property Cut: Integer read FCut;
+    property LCut: Integer read FLCut;
+    property Tail: Integer read FTail;
+    property LTail: Integer read FLTail;
+
+    property UndefMulti: Boolean read FUndefMulti;
+    property CutTailingAlphabets: Boolean read FCutTailingAlphabets;
+    property AllowUnlistedMulti: Boolean read FAllowUnlistedMulti;
+    property NoMulti: Boolean read FNoMulti write FNoMulti;
+
+    property PXMulti: Integer read FPXMulti;
+    property SerialContestType: Integer read FSerialContestType;
+
+    property PowerTable: TPowerTable read FPowerTable;
+    property SerialArray: TSerialTable read FSerialArray;
+
+    property CountHigherPoints: Boolean read FCountHigherPoints;
+    property UseWarcBand: Boolean read FUseWarcBand;
+
+    property UseUTC: Boolean read FUseUTC;
   end;
 
   TUserDefinedContestList = class(TObjectList<TUserDefinedContest>)
@@ -75,12 +191,62 @@ begin
    FProv := '';
    FCity := '';
    FPower := '';
-   FDatFile := '';
+//   FDatFile := '';
    FCoeff := False;
    for i := 1 to 8 do begin
       FCwMessageA[i] := '';
       FCwMessageB[i] := '';
    end;
+
+   ClearPointsTable(FPointsTable);
+   ClearPointsTable(FLocalPointsTable);
+
+   FSameCTYPoints := False;
+   ClearPointsTable(FSameCTYPointsTable);
+
+   FSameCONTPoints := False;
+   ClearPointsTable(FSameCONTPointsTable);
+
+   ClearPointsTable(FSpecialCallPointsTable);
+   FSpecialCalls := '';
+
+   FLocalCountry := '';
+   FLocalContinental := '';
+
+   for i := 0 to High(FLocalString) do begin
+      FLocalString[i] := '';
+   end;
+
+   FAlphabetPoints := False;
+
+   for i := Low(FAlphabetPointsTable) to High(FAlphabetPointsTable) do begin
+      FAlphabetPointsTable[i] := 0;
+   end;
+
+   FMinLocalLen := 0;
+   FDatFileName := '';
+
+   FUseCtyDat := False;
+
+   FCountMultiOnce := False;
+   FNoCountryMulti := '';
+   FAcceptDifferentMode := False;
+
+   FCut := 0;
+   FLCut := 0;
+   FTail := 0;
+   FLTail := 0;
+
+   FUndefMulti := False;
+   FCutTailingAlphabets := False;
+   FAllowUnlistedMulti := False;
+   FNoMulti := False;
+   FPXMulti := 0;
+   FSerialContestType := 0;
+   FCountHigherPoints := False;
+   FUseWarcBand := False;
+
+   FUseUTC := False;
 end;
 
 constructor TUserDefinedContest.Create(strFullPath: string);
@@ -105,15 +271,33 @@ begin
    FCfgSource.SaveToFile(FFullPath);
 end;
 
+procedure TUserDefinedContest.ClearPointsTable(var PT: TPointsTable);
+var
+   B: TBand;
+   M: TMode;
+begin
+   for B := b19 to HiBand do begin
+      for M := mCW to mOther do begin
+         PT[B, M] := 0;
+      end;
+   end;
+end;
+
 class function TUserDefinedContest.Parse(strPath: string): TUserDefinedContest;
 var
    strLine: string;
    strCmd: string;
    strParam: string;
+   strTmp: string;
    D: TUserDefinedContest;
    i: Integer;
+   j: Integer;
+   k: Integer;
+   B: TBand;
+   SL: TStringList;
 begin
    D := TUserDefinedContest.Create(strPath);
+   SL := TStringList.Create();
    try
       D.Load();
 
@@ -134,9 +318,6 @@ begin
          end
          else if strCmd = 'POWER' then begin
             D.Power := strParam;
-         end
-         else if strCmd = 'DAT' then begin
-            D.DatFile := strParam;
          end
          else if strCmd = 'COEFF' then begin
             if strParam = 'ON' then begin
@@ -197,9 +378,379 @@ begin
          else if strCmd = 'F8_B' then begin
             D.FCwMessageB[8] := strParam;
          end;
+
+         if Pos('PT', strCmd) = 1 then begin
+            strTmp := Copy(strCmd, 3, 3);
+            B := GetBand(strTmp);
+
+            if Length(strParam) >= 2 then begin
+               D.FPointsTable[B, mSSB] := StrToIntDef(strParam[1], 1);
+               D.FPointsTable[B, mCW]  := StrToIntDef(strParam[2], 1);
+               D.FPointsTable[B, mFM]  := StrToIntDef(strParam[3], 1);
+               D.FPointsTable[B, mAM]  := StrToIntDef(strParam[4], 1);
+            end;
+         end;
+
+         if Pos('LPT', strCmd) = 1 then begin
+            strTmp := Copy(strCmd, 4, 3);
+            B := GetBand(strTmp);
+
+            if Length(strParam) >= 2 then begin
+               D.FLocalPointsTable[B, mSSB] := StrToIntDef(strParam[1], 1);
+               D.FLocalPointsTable[B, mCW]  := StrToIntDef(strParam[2], 1);
+               D.FLocalPointsTable[B, mFM]  := StrToIntDef(strParam[3], 1);
+               D.FLocalPointsTable[B, mAM]  := StrToIntDef(strParam[4], 1);
+            end;
+         end;
+
+         if Pos('XPT', strCmd) = 1 then begin
+            strTmp := Copy(strCmd, 4, 3);
+            B := GetBand(strTmp);
+
+            if Length(strParam) >= 4 then begin
+               D.FPointsTable[B, mSSB] := StrToIntDef(strParam[1] + strParam[2], 1);
+               D.FPointsTable[B, mCW]  := StrToIntDef(strParam[3] + strParam[4], 1);
+               D.FPointsTable[B, mFM]  := StrToIntDef(strParam[5] + strParam[6], 1);
+               D.FPointsTable[B, mAM]  := StrToIntDef(strParam[7] + strParam[8], 1);
+            end;
+         end;
+
+         if Pos('XLPT', strCmd) = 1 then begin
+            strTmp := Copy(strCmd, 5, 3);
+            B := GetBand(strTmp);
+
+            if Length(strParam) >= 4 then begin
+               D.FLocalPointsTable[B, mSSB] := StrToIntDef(strParam[1] + strParam[2], 1);
+               D.FLocalPointsTable[B, mCW]  := StrToIntDef(strParam[3] + strParam[4], 1);
+               D.FLocalPointsTable[B, mFM]  := StrToIntDef(strParam[5] + strParam[6], 1);
+               D.FLocalPointsTable[B, mAM]  := StrToIntDef(strParam[7] + strParam[8], 1);
+            end;
+         end;
+
+         if strCmd = 'SAMECTYPT' then begin
+            SetPointsTable(@D.SameCTYPointsTable, strParam);
+            D.FSameCTYPoints := True;
+         end;
+
+         if strCmd = 'SAMECONTPT' then begin
+            SetPointsTable(@D.SameCONTPointsTable, strParam);
+            D.FSameCONTPoints := True;
+         end;
+
+         if strCmd = 'LOCALPT' then begin
+            SetPointsTable(@D.LocalPointsTable, strParam);
+         end;
+
+         if strCmd = 'DEFAULTPT' then begin
+            SetPointsTable(@D.FPointsTable, strParam);
+         end;
+
+         if strCmd = 'SPECIALCALLPT' then begin
+            SetPointsTable(@D.SpecialCallPointsTable, strParam);
+         end;
+
+         if strCmd = 'SPECIALCALLS' then begin
+            if D.FSpecialCalls <> '' then begin
+               D.FSpecialCalls := D.FSpecialCalls + ',' + strParam;
+            end
+            else begin
+               D.FSpecialCalls := strParam;
+            end;
+         end;
+
+         if strCmd = 'LOCALCTY' then begin
+            D.FLocalCountry := UpperCase(strParam)
+         end;
+
+         if strCmd = 'LOCALCONT' then begin
+            D.FLocalContinental := UpperCase(strParam)
+         end;
+
+         if strCmd = 'LOCAL' then begin
+            SL.CommaText := strParam;
+            for k := 0 to SL.Count - 1 do begin
+               if k > MAXLOCAL then begin
+                  Break;
+               end;
+               D.FLocalString[k] := SL.Strings[k];
+            end;
+         end;
+
+         if pos('ALPHAPT', strCmd) = 1 then begin
+            D.FAlphabetPoints := True;
+            for j := 1 to (length(strParam) div 2) do begin
+               if strParam[2 * j - 1] = '?' then begin
+                  if CharInSet(strParam[2 * j], ['0' .. '9']) = True then begin
+                     for k := ord('0') to ord('Z') do begin
+                        D.FAlphabetPointsTable[k] := StrToIntDef(strParam[2 * j], 0);
+                     end;
+                  end;
+               end
+            end;
+
+            for j := 1 to (length(strParam) div 2) do begin
+               if CharInSet(strParam[2 * j - 1], ['0' .. 'Z']) = True then begin
+                  if CharInSet(strParam[2 * j], ['0' .. '9']) = True then begin
+                     D.FAlphabetPointsTable[ord(strParam[2 * j - 1])] := StrToIntDef(strParam[2 * j], 0);
+                  end;
+               end
+            end;
+         end;
+
+         if strCmd = 'LOCMIN' then begin
+            D.FMinLocalLen := ParseIntDef(strParam, D.MinLocalLen);
+         end;
+
+         if strCmd = 'DAT' then begin
+            strTmp := strParam;
+            if Pos('.', strTmp) = 0 then begin
+               strTmp := strTmp + '.DAT';
+            end;
+
+            strTmp := ExtractFilePath(strPath) + strTmp;
+
+            D.FDatFileName := strTmp;
+         end;
+
+         if strCmd = 'TIME' then begin
+            if strParam = 'UTC' then begin
+               D.FUseUTC := True;
+            end;
+         end;
+
+         if strCmd = 'CTY' then begin
+            D.FUseCtyDat := True;
+         end;
+
+         if strCmd = 'COUNTMULTIONCE' then begin
+            D.FCountMultiOnce := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'NOCTYMULTI' then begin
+            D.FNoCountryMulti := UpperCase(strParam)
+         end;
+
+         if strCmd = 'MODE' then begin
+            D.FAcceptDifferentMode := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'CUT' then begin
+            D.FCut := ParseIntDef(strParam, D.Cut);
+         end;
+
+         if strCmd = 'LCUT' then begin
+            D.FLCut := ParseIntDef(strParam, D.LCut);
+         end;
+
+         if strCmd = 'TAIL' then begin
+            D.FTail := ParseIntDef(strParam, D.Tail);
+         end;
+
+         if strCmd = 'LTAIL' then begin
+            D.FLTail := ParseIntDef(strParam, D.LTail);
+         end;
+
+         if strCmd = 'UNDEFMULTI' then begin
+            D.FUndefMulti := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'JARL' then begin
+            D.FCutTailingAlphabets := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'CUTTAILABT' then // equivalent to JARL
+         begin
+            D.FCutTailingAlphabets := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'POWER' then begin
+            B := b19;
+            for j := 1 to length(strParam) do begin
+               D.FPowerTable[B] := strParam[j];
+
+               if B < HiBand then begin
+                  repeat
+                     inc(B);
+                     D.FPowerTable[B] := '-';
+                  until NotWARC(B);
+               end;
+            end;
+         end;
+
+         if strCmd = 'UNLISTEDMULTI' then begin
+            D.FAllowUnlistedMulti := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'NOMULTI' then begin
+            D.NoMulti := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'PXMULTI' then begin
+            if strParam = 'NORMAL' then begin
+               D.FPXMulti := PX_Normal;
+            end;
+            if strParam = 'WPX' then begin
+               D.FPXMulti := PX_WPX;
+            end;
+            if strParam = 'OFF' then begin
+               D.FPXMulti := 0;
+            end;
+         end;
+
+         if strCmd = 'SERIAL' then begin
+            if strParam = 'ALL' then begin
+               D.FSerialContestType := SER_ALL;
+            end;
+            if strParam = 'BAND' then begin
+               D.FSerialContestType := SER_BAND;
+            end;
+         end;
+
+         if strCmd = 'SERIALSTART' then begin
+            for B := b19 to HiBand do begin
+               D.FSerialArray[B] := StrToInt(strParam);
+            end;
+         end;
+
+         if strCmd = 'COUNTHIGH' then begin
+            D.FCountHigherPoints := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'WARC' then begin
+            D.FUseWarcBand := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'EXIT' then begin
+            Break;
+         end;
       end;
    finally
+      SL.Free();
       Result := D;
+   end;
+end;
+
+class function TUserDefinedContest.GetBand(strBand: string): TBand;
+var
+   B: TBand;
+begin
+   if strBand = '1.9' then begin
+      B := b19;
+   end
+   else if strBand = '3.5' then begin
+      B := b35;
+   end
+   else if strBand = '7' then begin
+      B := b7;
+   end
+   else if strBand = '10' then begin
+      B := b10;
+   end
+   else if strBand = '14' then begin
+      B := b14;
+   end
+   else if strBand = '18' then begin
+      B := b18;
+   end
+   else if strBand = '21' then begin
+      B := b21;
+   end
+   else if strBand = '24' then begin
+      B := b24;
+   end
+   else if strBand = '28' then begin
+      B := b28;
+   end
+   else if strBand = '50' then begin
+      B := b50;
+   end
+   else if strBand = '144' then begin
+      B := b144;
+   end
+   else if strBand = '430' then begin
+      B := b430;
+   end
+   else if strBand = '120' then begin
+      B := b1200;
+   end
+   else if strBand = '240' then begin
+      B := b2400;
+   end
+   else if strBand = '560' then begin
+      B := b5600;
+   end
+   else if strBand = '10G' then begin
+      B := b10g;
+   end
+   else begin
+      B := b19;
+   end;
+
+   Result := B;
+end;
+
+class procedure TUserDefinedContest.SetPointsTable(PT: PTPointsTable; str: string);
+var
+   i, k: Integer;
+   tempstr, pstr: string;
+   B: TBand;
+begin
+   tempstr := str + ',';
+   B := b19;
+
+   while pos(',', tempstr) > 0 do begin
+      i := pos(',', tempstr);
+      if i > 0 then begin
+         pstr := copy(tempstr, 1, i - 1);
+      end
+      else begin
+         exit;
+      end;
+
+      k := StrToIntDef(pstr, 0);
+      PT[B, mCW] := k;
+      delete(tempstr, 1, i);
+
+      i := pos(',', tempstr);
+      if i > 0 then begin
+         pstr := copy(tempstr, 1, i - 1);
+      end
+      else begin
+         exit;
+      end;
+
+      k := StrToIntDef(pstr, 0);
+      PT[B, mSSB] := k;
+      PT[B, mFM] := k;
+      PT[B, mAM] := k;
+      delete(tempstr, 1, i);
+
+      repeat
+         inc(B);
+      until NotWARC(B);
+   end;
+end;
+
+class function TUserDefinedContest.ParseOnOff(strOn: string): Boolean;
+begin
+   if strOn = 'ON' then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
+   end;
+end;
+
+class function TUserDefinedContest.ParseIntDef(strParam: string; def: Integer): Integer;
+var
+   w: Integer;
+begin
+   w := StrToIntDef(strParam, -99);
+   if w <> -99 then begin
+      Result := w;
+   end
+   else begin
+      Result := def;
    end;
 end;
 

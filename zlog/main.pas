@@ -18,7 +18,8 @@ uses
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
-  UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel;
+  UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel,
+  UserDefinedContest;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -253,7 +254,10 @@ type
   end;
 
   TGeneralContest = class(TContest)
+    FConfig: TUserDefinedContest;
+  public
     constructor Create(N, CFGFileName: string); reintroduce;
+    destructor Destroy(); override;
     procedure SetPoints(var aQSO : TQSO); override;
   end;
 
@@ -2858,14 +2862,51 @@ begin
 end;
 
 constructor TGeneralContest.Create(N, CFGFileName: string);
+var
+   B: TBand;
 begin
    inherited Create(N);
-   FUseCoeff := True;
    MultiForm := TGeneralMulti2.Create(MainForm);
    ScoreForm := TGeneralScore.Create(MainForm);
    TGeneralScore(ScoreForm).formMulti := TGeneralMulti2(MultiForm);
-   TGeneralScore(ScoreForm).LoadCFG(CFGFileName);
    PastEditForm := TALLJAEditDialog.Create(MainForm);
+
+   FConfig := TUserDefinedContest.Parse(CFGFileName);
+   TGeneralScore(ScoreForm).Config := FConfig;
+   TGeneralMulti2(MultiForm).Config := FConfig;
+
+   TGeneralMulti2(MultiForm).LoadDAT(FConfig.DatFileName);
+   dmZlogGlobal.Settings._sentstr         := FConfig.Sent;
+
+   Log.AcceptDifferentMode                := FConfig.AcceptDifferentMode;
+   Log.CountHigherPoints                  := FConfig.CountHigherPoints;
+
+   if FConfig.UseUTC = True then begin
+      UseUTC := True;
+      Log.QsoList[0].RSTSent := _USEUTC; // JST = 0; UTC = $FFFF
+   end;
+
+
+   for B := b19 to High(FConfig.PowerTable) do begin
+      if FConfig.PowerTable[B] = '-' then begin
+         MainForm.HideBandMenu(B);
+      end;
+   end;
+
+   if FConfig.UseWarcBand = True then begin
+      MainForm.BandMenu.Items[ord(b10)].Visible := True;
+      MainForm.BandMenu.Items[ord(b18)].Visible := True;
+      MainForm.BandMenu.Items[ord(b24)].Visible := True;
+   end
+   else begin
+      MainForm.HideBandMenuWarc();
+   end;
+
+   SerialContestType := FConfig.SerialContestType;
+
+   for B := b19 to High(FConfig.SerialArray) do begin
+      SerialArray[B] := FConfig.SerialArray[B];
+   end;
 
    if SerialContestType = 0 then begin
       MainForm.EditScreen := TGeneralEdit.Create(MainForm);
@@ -2880,7 +2921,14 @@ begin
 
    SentStr := dmZlogGlobal.Settings._sentstr;
 
-   FNeedCtyDat := TGeneralMulti2(MultiForm)._DXTEST;
+   FNeedCtyDat := FConfig.UseCtyDat;
+   FUseCoeff   := FConfig.Coeff;
+end;
+
+destructor TGeneralContest.Destroy();
+begin
+   Inherited;
+   FConfig.Free();
 end;
 
 procedure TGeneralContest.SetPoints(var aQSO: TQSO);
@@ -3588,7 +3636,7 @@ var
    temp: string;
 begin
    Result := '';
-   if formMulti.PXMulti = 0 then begin
+   if formMulti.Config.PXMulti = 0 then begin
       if aQSO.NewMulti1 then
          Result := aQSO.Multi1;
    end
