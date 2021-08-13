@@ -191,8 +191,7 @@ begin
    FProv := '';
    FCity := '';
    FPower := '';
-//   FDatFile := '';
-   FCoeff := False;
+   FCoeff := True;
    for i := 1 to 8 do begin
       FCwMessageA[i] := '';
       FCwMessageB[i] := '';
@@ -278,7 +277,7 @@ var
 begin
    for B := b19 to HiBand do begin
       for M := mCW to mOther do begin
-         PT[B, M] := 0;
+         PT[B, M] := 1;
       end;
    end;
 end;
