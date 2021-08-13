@@ -1789,7 +1789,7 @@ begin
       // 今回と前回のバンドが違っている場合、
       if dmZlogGlobal.Settings._countdown then begin
          if (pQSO <> nil) and (pQSO.Band <> aQSO.Band) then begin
-         // 設定値以内のQSYならviolation
+            // 設定値以内のQSYならviolation
             Diff := SecondsBetween(aQSO.Time, pQSO.Time);
             if (Diff / 60) <= dmZLogGlobal.Settings._countdownminute then begin
                fQsyViolation := True;
@@ -1805,6 +1805,9 @@ begin
          // QSY数が設定値を超えていたらviolation
          if (nQsyCount > dmZLogGlobal.Settings._countperhour) then begin
             fQsyViolation := True;
+         end
+         else begin
+            pQSO := aQSO;
          end;
       end;
 
@@ -1814,8 +1817,6 @@ begin
       else begin
          ResetQsyViolation(aQSO);
       end;
-
-      pQSO := aQSO;
    end;
 
    for i := ord('A') to ord('Z') do begin
