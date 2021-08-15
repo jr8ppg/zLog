@@ -10,8 +10,10 @@ type
   TformQsyInfo = class(TForm)
     Panel1: TPanel;
     Label1: TLabel;
+    procedure CreateParams(var Params: TCreateParams); override;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private êÈåæ }
   public
@@ -24,11 +26,28 @@ implementation
 
 {$R *.dfm}
 
+uses
+  Main;
+
+procedure TformQsyInfo.CreateParams(var Params: TCreateParams);
+begin
+   inherited CreateParams(Params);
+   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+end;
+
 procedure TformQsyInfo.FormCreate(Sender: TObject);
 begin
    Panel1.Color := clBtnFace;
    Panel1.Font.Color := clWindow;
    Panel1.Caption := '';
+end;
+
+procedure TformQsyInfo.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+   case Key of
+      VK_ESCAPE:
+         MainForm.LastFocus.SetFocus;
+   end;
 end;
 
 procedure TformQsyInfo.FormResize(Sender: TObject);
@@ -45,7 +64,8 @@ procedure TformQsyInfo.SetQsyInfo(qsyok: Boolean; S: string);
 begin
    if S = '' then begin
       Panel1.Color := clBtnFace;
-      Panel1.Font.Color := clWindow;
+      Panel1.Font.Color := clBlack;
+      S := 'None';
    end
    else begin
       if qsyok = True then begin
