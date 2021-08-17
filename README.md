@@ -1,16 +1,15 @@
-# zLog for Windows
+# zLog 令和 Edition
 
 Amateur Radio Contest Logging Program
 
 # Dependency
-Delphi
+Delphi 10.4
 
 # Requirement
-Windows
-Windows専用ですが，Delphiで書かれているのでMacOSやLinuxへの移植も可能かもしれません
+Windows 10(64bit)
 
 # Licence
-This software is released under the GNU General Public License.
+This software is released under the MIT License.
 
 # Authors
 Yokobayashi Yohei, JARL Contest Committee, JR8PPG
@@ -21,49 +20,38 @@ There is no documentation for the developer.
 
 zLog for Windowsは元東京大学アマチュア無線部JA1ZLOの横林洋平さんが開発した，
 アマチュア無線コンテストロギングソフトです．
-すでに横林さんはzLog for Windowsのメンテナンスに係わっておらず，現在公開され
-ている最新版は2004年11月20日に公開されたzLog for Windows 2.2です．
+最後にアップデートされたのは2004年11月20日に公開されたzLog for Windows 2.2です．
+それから15年が経過し、JARLコンテスト委員会の手によりMITライセンスによるオープンソースとして
+公開されたものを令和Editionとして改良し公開したものです。
 
 https://zlog.org/
 
-Windows 10での動作は不安定で，動作することもあれば動作しないこともあるという状
-態です．
-また，JARL電子ログでの提出時に「59 M」のように，送信マルチが空白になることがあ
-るという，問題があります．また，全市全郡コンテストで市郡区ナンバーが6桁の場合，
-RSTと送信マルチがつながってしまい，自動解析ができません．
-
-JARLコンテスト委員会は横林さんからzLog for Windowsのソースコードをいただき，
-ここにMITライセンスによるオープンソースとして公開します．有志による改良を期待します．
-
 ------
-# 令和 Second Edition
-## Delphi 10.3.3 Community Editionでのビルド方法 de JR8PPG
-
-※zlog_requiresより、未使用となったTwsaGraphコンポーネントを削除したため、一度zlog_requiresをアンインストールしてから再度ビルド－インストールを行って下さい。  
-※64ビットコンパイルに対応しました。
-※V2.5 beta3でVoice機能復活しました。
+# Delphi 10.4.2 Community Editionでのビルド方法
 
 1. TeeChart Standard（Delphi付属）のインストール
    - Delphiインストール時に指定するか、インストール後にウェルカムページ内の「機能拡張」－「プラットフォーム＆拡張マネージャ」よりインストール。（「RAD Studio 追加オプション」ウインドウの「追加オプション」タブ内にある「TeeChart Standard」をチェックON）
 
-2. ICS for VCL 8.62 のインストール
+2. ICS for VCL 8.65 のインストール
    - ウェルカムページの「GetItからアドオンを取得する」をクリック。
-   - 「GetItパッケージマネージャ」ウインドウで「ICS for VCL 8.62」を選択し、「インストール」ボタンをクリック。
+   - 「GetItパッケージマネージャ」ウインドウで「ICS for VCL 8.65」を選択し、「インストール」ボタンをクリック。
    - 後は画面の指示に従ってインストールする。
 
-3. JEDI Code Library 3.3 のインストール
+3. JEDI Code Library 3.4 のインストール
 
+   - 既にDelphi 10.3がインストールされている場合は、先に10.3側でJEDI Code Libraryをアンインストールして下さい。
    - ウェルカムページの「GetItからアドオンを取得する」をクリック。
-   - 「GetItパッケージマネージャ」ウインドウで「JEDI Code Library 3.3」を選択し、「インストール」ボタンをクリック。
+   - 「GetItパッケージマネージャ」ウインドウで「JEDI Code Library 3.4」を選択し、「インストール」ボタンをクリック。
    - 後は画面の指示に従ってインストールする。
    - RAD Studioを再起動するようにとのメッセージが出るので、Delphiを終了する。
    - 終了させるとJEDIインストーラがいるので、指示に従ってインストールを完了させる。
    - インストール後、Delphiを起動する。
 
-4. JEDI Visual Component Library 3.8 のインストール
+4. JEDI Visual Component Library 3.9 のインストール
 
+   - 既にDelphi 10.3がインストールされている場合は、先に10.3側でVisual Component Libraryをアンインストールして下さい。
    - ウェルカムページの「GetItからアドオンを取得する」をクリック。
-   - 「GetItパッケージマネージャ」ウインドウで「JEDI Visual Component Library 3.8」を選択し、「インストール」ボタンをクリック。
+   - 「GetItパッケージマネージャ」ウインドウで「JEDI Visual Component Library 3.9」を選択し、「インストール」ボタンをクリック。
    - 後は画面の指示に従ってインストールする。
    - RAD Studioを再起動するようにとのメッセージが出るので、Delphiを終了する。
    - 終了させるとJVCLインストーラがいるので、指示に従ってインストールを完了させる。
@@ -139,10 +127,10 @@ https://github.com/jr8ppg/zLog/wiki/%E3%83%AA%E3%82%B0%E3%82%B3%E3%83%B3%E3%83%8
 
 ## 第三者著作権情報
 
-* ICS - Internet Component Suite - V8 - Delphi 7 to RAD Studio 10.3 Rio
+* ICS - Internet Component Suite - V8 - Delphi 7 to RAD Studio 10.4 Sydney
 ```
 This product includes software developed by François PIETTE
-Copyright (C) 1997-2018 by François PIETTE
+Copyright (C) 1997-2020 by François PIETTE
 Rue de Grady 24, 4053 Embourg, Belgium
 <francois.piette@overbyte.be>
 http://www.overbyte.eu/frame_index.html?redirTo=/products/ics.html
