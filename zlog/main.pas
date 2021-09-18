@@ -1278,9 +1278,9 @@ begin
       DateEdit.Text := CurrentQSO.DateStr;
       // ModeEdit.Text := CurrentQSO.ModeStr;
 
-      ModeEdit.Text := ModeString[CurrentQSO.mode];
+      ModeEdit.Text := ModeString[CurrentQSO.Mode];
 
-      If CurrentQSO.mode in [mSSB .. mAM] then begin
+      If CurrentQSO.Mode in [mSSB .. mAM] then begin
          Grid.Align := alNone;
          SSBToolBar.Visible := True;
          CWToolBar.Visible := False;
@@ -1803,7 +1803,7 @@ end;
 procedure TMainForm.UpdateMode(M: TMode);
 begin
    ModeEdit.Text := ModeString[M];
-   CurrentQSO.mode := M;
+   CurrentQSO.Mode := M;
    If M in [mSSB, mFM, mAM] then begin
       CurrentQSO.RSTRcvd := 59;
       CurrentQSO.RSTsent := 59;
@@ -1858,7 +1858,7 @@ begin
       maxmode := mOther;
 
    if aQSO.Mode < maxmode then begin
-      aQSO.Mode := TMode(Integer(aQSO.Mode) + 1);
+      aQSO.Mode := TMode(Integer(aQSO.Mode));
    end
    else begin
       aQSO.Mode := mCW;
@@ -4159,7 +4159,7 @@ begin
    if RigControl.Rig <> nil then begin
       RigControl.Rig.SetBand(Q);
 
-      if CurrentQSO.mode = mSSB then begin
+      if CurrentQSO.Mode = mSSB then begin
          RigControl.Rig.SetMode(CurrentQSO);
       end;
    end;
@@ -4495,7 +4495,7 @@ begin
    if (i > 1799) and (i < 1000000) then begin
       if RigControl.Rig <> nil then begin
          RigControl.Rig.SetFreq(round(i * 1000), IsCQ());
-         if CurrentQSO.mode = mSSB then
+         if CurrentQSO.Mode = mSSB then
             RigControl.Rig.SetMode(CurrentQSO);
          // ZLinkForm.SendRigStatus;
          FZLinkForm.SendFreqInfo(round(i * 1000));
@@ -4908,7 +4908,7 @@ begin
    // 現在QSOへセット
    CurrentQSO.Assign(Q);
    CurrentQSO.Band := Q.Band;
-   CurrentQSO.mode := Q.mode;
+   CurrentQSO.Mode := Q.Mode;
    CurrentQSO.Callsign := '';
    CurrentQSO.NrRcvd := '';
    CurrentQSO.Time := Date + Time;
@@ -5065,7 +5065,7 @@ var
    Q: TQSO;
 begin
    // PHONE
-   if Main.CurrentQSO.mode in [mSSB, mFM, mAM] then begin
+   if Main.CurrentQSO.Mode in [mSSB, mFM, mAM] then begin
       Q := Log.QuickDupe(CurrentQSO);
       if Q <> nil then begin  // dupe
          // ALLOW DUPEしない場合は4番を送出
@@ -5093,7 +5093,7 @@ begin
    end;
 
    // RTTY
-   if Main.CurrentQSO.mode = mRTTY then begin
+   if Main.CurrentQSO.Mode = mRTTY then begin
       TabPressed := True;
       if TTYConsole <> nil then
          TTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), CurrentQSO));
@@ -5151,7 +5151,7 @@ begin
       exit;
    end;
 
-   case CurrentQSO.mode of
+   case CurrentQSO.Mode of
       mCW: begin
             if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
                // NR?自動送出使う場合
@@ -5459,7 +5459,7 @@ begin
    CurrentQSO.Reserve3 := 0;
    CurrentQSO.TX := dmZlogGlobal.TXNr;
 
-   if CurrentQSO.mode in [mCW, mRTTY] then begin
+   if CurrentQSO.Mode in [mCW, mRTTY] then begin
       CurrentQSO.RSTRcvd := 599;
    end
    else begin
@@ -5761,7 +5761,7 @@ procedure TMainForm.RcvdRSTEditChange(Sender: TObject);
 var
    i: Integer;
 begin
-   if CurrentQSO.mode in [mCW, mRTTY] then begin
+   if CurrentQSO.Mode in [mCW, mRTTY] then begin
       i := 599;
    end
    else begin
@@ -6994,7 +6994,7 @@ begin
          UpdateBand(Log.QsoList[i].Band);
          if RigControl.Rig <> nil then begin
             RigControl.Rig.SetBand(CurrentQSO);
-            if CurrentQSO.mode = mSSB then
+            if CurrentQSO.Mode = mSSB then
                RigControl.Rig.SetMode(CurrentQSO);
          end;
 
@@ -7089,7 +7089,7 @@ procedure TMainForm.MyIdleEvent(Sender: TObject; var Done: Boolean);
 var
    fPlaying: Boolean;
 begin
-   if (CurrentQSO.mode = mCW) then begin
+   if (CurrentQSO.Mode = mCW) then begin
       if (dmZLogGlobal.Settings._use_winkeyer = True) then begin
          CWPauseButton.Visible := False;
       end
@@ -7101,7 +7101,7 @@ begin
    fPlaying := dmZlogKeyer.IsPlaying;
 
    if fPlaying then begin
-      if CurrentQSO.mode = mCW then begin
+      if CurrentQSO.Mode = mCW then begin
          CWPauseButton.Enabled := True;
          CWPlayButton.Visible := False;
          CWStopButton.Enabled := True;
@@ -7111,7 +7111,7 @@ begin
    end
    else begin
       // if Paused = False then
-      if CurrentQSO.mode = mCW then begin
+      if CurrentQSO.Mode = mCW then begin
          TabPressed := False;
       end;
 
@@ -7124,7 +7124,7 @@ begin
       CWStopButton.Enabled := False;
    end;
 
-   if CurrentQSO.mode = mRTTY then begin
+   if CurrentQSO.Mode = mRTTY then begin
       if TTYConsole <> nil then begin
          if TTYConsole.Sending = False then begin
             TabPressed := False;
@@ -7304,13 +7304,34 @@ begin
          end;
       end;
 
-      if menu.ModeGroupIndex = 1 then begin
-         CurrentQSO.Mode := mCW;
+      // #201 モード選択によって動作を変える(NEW CONTESTのみ)
+      case menu.ModeGroupIndex of
+         // PH/CW
+         0: begin
+            CurrentQSO.Mode := dmZLogGlobal.LastMode;
+         end;
+
+         // CW
+         1: begin
+            CurrentQSO.Mode := mCW;
+         end;
+
+         // PH
+         2: begin
+            CurrentQSO.Mode := mSSB;
+         end;
+
+         // Other
+         else begin
+            CurrentQSO.Mode := dmZLogGlobal.LastMode;
+         end;
+      end;
+
+      if (CurrentQSO.Mode = mCW) or (CurrentQSO.Mode = mRTTY) then begin
          CurrentQSO.RSTRcvd := 599;
          CurrentQSO.RSTSent := 599;
       end
       else begin
-         CurrentQSO.mode := mSSB;
          CurrentQSO.RSTRcvd := 59;
          CurrentQSO.RSTSent := 59;
       end;
@@ -7384,7 +7405,6 @@ begin
       // 低いバンドから使用可能なバンドを探して最初のバンドとする
       CurrentQSO.Band := GetFirstAvailableBand(dmZLogGlobal.LastBand);
       FRateDialogEx.Band := CurrentQSO.Band;
-      CurrentQSO.Mode := dmZLogGlobal.LastMode;
 
       CurrentQSO.Serial := SerialArray[CurrentQSO.Band];
       SerialEdit.Text := CurrentQSO.SerialStr;
@@ -7399,7 +7419,7 @@ begin
       // 最初はCQモードから
       SetCQ(True);
 
-      if CurrentQSO.mode in [mCW, mRTTY] then begin
+      if CurrentQSO.Mode in [mCW, mRTTY] then begin
          Grid.Align := alNone;
          CWToolBar.Visible := True;
          SSBToolBar.Visible := False;
@@ -7432,7 +7452,7 @@ begin
 //      QSYCount := 0;
 
       UpdateBand(CurrentQSO.Band);
-      UpdateMode(CurrentQSO.mode);
+      UpdateMode(CurrentQSO.Mode);
 
       MyContest.ScoreForm.UpdateData();
       MyContest.MultiForm.UpdateData();
@@ -7931,7 +7951,7 @@ begin
       end;
    end;
 
-   if CurrentQSO.mode <> m then begin
+   if CurrentQSO.Mode <> m then begin
       UpdateMode(m);
    end;
 
@@ -7944,7 +7964,7 @@ procedure TMainForm.PlayMessage(bank: Integer; no: Integer);
 begin
    WriteStatusLine('', False);
 
-   case CurrentQSO.mode of
+   case CurrentQSO.Mode of
       mCW: begin
          if dmZLogKeyer.KeyingPort = tkpNone then begin
             WriteStatusLineRed('CW port is not set', False);
@@ -8455,7 +8475,7 @@ end;
 // #54 CW Tune
 procedure TMainForm.actionCwTuneExecute(Sender: TObject);
 begin
-   if CurrentQSO.mode = mCW then begin
+   if CurrentQSO.Mode = mCW then begin
       CtrlZCQLoop := True;
       dmZLogKeyer.TuneOn;
    end;
