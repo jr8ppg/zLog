@@ -76,6 +76,8 @@ type
     FClusterLogFileName: string;
     FDisconnectClicked: Boolean;
 
+    FAutoLogined: Boolean;
+
     procedure DeleteSpot(_from, _to : integer);
 
     function GetFontSize(): Integer;
@@ -324,6 +326,7 @@ begin
    FDisconnectClicked := False;
    FUseClusterLog := False;
    FClusterLogFileName := StringReplace(Application.ExeName, '.exe', '_telnet_log_' + FormatDateTime('yyyymmdd', Now) + '.txt', [rfReplaceAll]);
+   FAutoLogined := False;
 end;
 
 procedure TCommForm.RenewListBox;
@@ -491,11 +494,12 @@ begin
       str := FCommBuffer.Strings[0];
 
       // Auto Login
-      if (checkAutoLogin.Checked = True) then begin
+      if (checkAutoLogin.Checked = True) and (FAutoLogined = False) then begin
          if (Pos('login:', str) > 0) or
             (Pos('Please enter your call:', str) > 0) then begin
             Sleep(500);
             WriteLine(dmZlogGlobal.MyCall);
+            FAutoLogined := True;
          end;
       end;
 
@@ -633,6 +637,8 @@ begin
 
       ConnectButton.Caption := 'Disconnect';
       WriteLineConsole('connected to ' + Telnet.Host);
+
+      FAutoLogined := False;
    except
       on E: Exception do begin
          Console.WriteString(E.Message);
