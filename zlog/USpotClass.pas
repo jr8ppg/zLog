@@ -371,6 +371,7 @@ begin
    FSpotGroup := O.FSpotGroup;
    FCQ := O.FCQ;
    FNewJaMulti := O.FNewJaMulti;
+   FReportedBy := O.ReportedBy;
 end;
 
 function TBSData.InText : string;
