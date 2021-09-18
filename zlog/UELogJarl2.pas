@@ -368,7 +368,14 @@ var
 begin
    WriteLn(f, '<LOGSHEET TYPE=ZLOG>');
 
-   Write(f, 'DATE(JST)' + TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVNo');
+   if Log.QsoList[0].RSTsent = _USEUTC then begin
+      Write(f, 'DATE(UTC)');
+   end
+   else begin
+      Write(f, 'DATE(JST)');
+   end;
+   Write(f, TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVNo');
+
    if fExtend = True then begin
       Write(f, TAB + 'Multi1' + TAB + 'Multi2' + TAB + 'Points' + TAB + 'TX#');
    end;
