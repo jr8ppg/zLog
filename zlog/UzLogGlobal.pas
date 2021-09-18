@@ -59,6 +59,11 @@ type
     FFullMatchColor: TColor;
   end;
 
+  TPartialCheckParam = record
+    FCurrentBandForeColor: TColor;
+    FCurrentBandBackColor: TColor;
+  end;
+
   TColorSetting = record
     FForeColor: TColor;
     FBackColor: TColor;
@@ -182,6 +187,7 @@ type
 
     FQuickQSY: array[1..8] of TQuickQSY;
     FSuperCheck: TSuperCheckParam;
+    FPartialCheck: TPartialCheckParam;
 
     FQuickMemoText: array[1..5] of string;
 
@@ -902,6 +908,10 @@ begin
       Settings.FSuperCheck.FFullMatchHighlight := ini.ReadBool('SuperCheck', 'FullMatchHighlight', True);
       Settings.FSuperCheck.FFullMatchColor := ZStringToColorDef(ini.ReadString('SuperCheck', 'FullMatchColor', '$7fffff'), clYellow);
 
+      // Partial Check
+      Settings.FPartialCheck.FCurrentBandForeColor := ZStringToColorDef(ini.ReadString('PartialCheck', 'CurrentBandForeColor', '$ff00ff'), clFuchsia);
+      Settings.FPartialCheck.FCurrentBandBackColor := ZStringToColorDef(ini.ReadString('PartialCheck', 'CurrentBandBackColor', '$ffffff'), clWhite);
+
       // BandScope
       Settings._usebandscope[b19]   := ini.ReadBool('BandScopeEx', 'BandScope1.9MHz', False);
       Settings._usebandscope[b35]   := ini.ReadBool('BandScopeEx', 'BandScope3.5MHz', False);
@@ -1397,7 +1407,11 @@ begin
       ini.WriteInteger('SuperCheck', 'Method', Settings.FSuperCheck.FSuperCheckMethod);
       ini.WriteString('SuperCheck', 'Folder', Settings.FSuperCheck.FSuperCheckFolder);
       ini.WriteBool('SuperCheck', 'FullMatchHighlight', Settings.FSuperCheck.FFullMatchHighlight);
-      ini.WriteString('SuperCheck', 'FullMatchColor', ColorToString(Settings.FSuperCheck.FFullMatchColor));
+      ini.WriteString('SuperCheck', 'FullMatchColor', ZColorToString(Settings.FSuperCheck.FFullMatchColor));
+
+      // Partial Check
+      ini.WriteString('PartialCheck', 'CurrentBandForeColor', ZColorToString(Settings.FPartialCheck.FCurrentBandForeColor));
+      ini.WriteString('PartialCheck', 'CurrentBandBackColor', ZColorToString(Settings.FPartialCheck.FCurrentBandBackColor));
 
       // BandScope
       ini.WriteBool('BandScopeEx', 'BandScope1.9MHz', Settings._usebandscope[b19]);

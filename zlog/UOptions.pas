@@ -423,6 +423,12 @@ type
     editQsyCountDownMinute: TSpinEdit;
     editQsyCountPerHour: TSpinEdit;
     Label87: TLabel;
+    GroupBox22: TGroupBox;
+    Label88: TLabel;
+    editPartialCheckColor: TEdit;
+    buttonPartialCheckForeColor: TButton;
+    buttonPartialCheckInitColor: TButton;
+    buttonPartialCheckBackColor: TButton;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -465,6 +471,9 @@ type
     procedure vAdditionalButtonClick(Sender: TObject);
     procedure comboIcomModeChange(Sender: TObject);
     procedure radioQsyAssistClick(Sender: TObject);
+    procedure buttonPartialCheckForeColorClick(Sender: TObject);
+    procedure buttonPartialCheckBackColorClick(Sender: TObject);
+    procedure buttonPartialCheckInitColorClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -800,6 +809,10 @@ begin
       Settings.FSuperCheck.FSuperCheckFolder := editSuperCheckFolder.Text;
       Settings.FSuperCheck.FFullMatchHighlight := checkHighlightFullmatch.Checked;
       Settings.FSuperCheck.FFullMatchColor := editFullmatchColor.Color;
+
+      // Partial Check
+      Settings.FPartialCheck.FCurrentBandForeColor := editPartialCheckColor.Font.Color;
+      Settings.FPartialCheck.FCurrentBandBackColor := editPartialCheckColor.Color;
 
       // Band Scope
       Settings._usebandscope[b19]   := checkBS01.Checked;
@@ -1168,6 +1181,10 @@ begin
       editSuperCheckFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
       checkHighlightFullmatch.Checked := Settings.FSuperCheck.FFullMatchHighlight;
       editFullmatchColor.Color := Settings.FSuperCheck.FFullMatchColor;
+
+      // Partial Check
+      editPartialCheckColor.Font.Color := Settings.FPartialCheck.FCurrentBandForeColor;
+      editPartialCheckColor.Color := Settings.FPartialCheck.FCurrentBandBackColor;
 
       // Band Scope
       checkBS01.Checked := Settings._usebandscope[b19];
@@ -1974,6 +1991,28 @@ begin
    finally
       L.Free();
    end;
+end;
+
+procedure TformOptions.buttonPartialCheckForeColorClick(Sender: TObject);
+begin
+   ColorDialog1.Color := editPartialCheckColor.Font.Color;
+   if ColorDialog1.Execute = True then begin
+      editPartialCheckColor.Font.Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions.buttonPartialCheckBackColorClick(Sender: TObject);
+begin
+   ColorDialog1.Color := editPartialCheckColor.Color;
+   if ColorDialog1.Execute = True then begin
+      editPartialCheckColor.Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions.buttonPartialCheckInitColorClick(Sender: TObject);
+begin
+   editPartialCheckColor.Font.Color := clFuchsia;
+   editPartialCheckColor.Color := clWhite;
 end;
 
 procedure TformOptions.buttonPlayVoiceClick(Sender: TObject);

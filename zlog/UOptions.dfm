@@ -1,7 +1,7 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = act19
+  ActiveControl = rgSearchAfter
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -25,7 +25,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 394
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetMisc
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -2605,12 +2605,12 @@ object formOptions: TformOptions
         Value = 60
       end
       object cbUpdateThread: TCheckBox
-        Left = 16
-        Top = 272
+        Left = 18
+        Top = 325
         Width = 161
         Height = 17
         Caption = 'Update using a thread'
-        TabOrder = 7
+        TabOrder = 8
       end
       object spSpotExpire: TSpinEdit
         Left = 293
@@ -2710,9 +2710,9 @@ object formOptions: TformOptions
           Text = 'CALLSIGN'
         end
         object buttonFullmatchSelectColor: TButton
-          Left = 263
+          Left = 264
           Top = 20
-          Width = 49
+          Width = 45
           Height = 20
           Caption = 'Color...'
           Font.Charset = DEFAULT_CHARSET
@@ -2725,9 +2725,9 @@ object formOptions: TformOptions
           OnClick = buttonFullmatchSelectColorClick
         end
         object buttonFullmatchInitColor: TButton
-          Left = 318
+          Left = 314
           Top = 20
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
           Font.Charset = DEFAULT_CHARSET
@@ -2738,6 +2738,77 @@ object formOptions: TformOptions
           ParentFont = False
           TabOrder = 3
           OnClick = buttonFullmatchInitColorClick
+        end
+      end
+      object GroupBox22: TGroupBox
+        Left = 3
+        Top = 269
+        Width = 368
+        Height = 50
+        Caption = 'Partial Check'
+        TabOrder = 7
+        object Label88: TLabel
+          Left = 15
+          Top = 24
+          Width = 61
+          Height = 13
+          Caption = 'Current band'
+        end
+        object editPartialCheckColor: TEdit
+          Left = 96
+          Top = 20
+          Width = 112
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 0
+          Text = 'CALLSIGN'
+        end
+        object buttonPartialCheckForeColor: TButton
+          Left = 214
+          Top = 20
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+          OnClick = buttonPartialCheckForeColorClick
+        end
+        object buttonPartialCheckInitColor: TButton
+          Left = 314
+          Top = 20
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 3
+          OnClick = buttonPartialCheckInitColorClick
+        end
+        object buttonPartialCheckBackColor: TButton
+          Tag = 1
+          Left = 264
+          Top = 20
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 2
+          OnClick = buttonPartialCheckBackColorClick
         end
       end
     end

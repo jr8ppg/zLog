@@ -60,7 +60,8 @@ type
 
 implementation
 
-uses Main, UOptions;
+uses
+  Main;
 
 {$R *.DFM}
 
@@ -296,7 +297,6 @@ var
    H: Integer;
 begin
    with (Control as TListBox).Canvas do begin
-      FillRect(Rect); { clear the rectangle }
       XOffSet := 2; { provide default offset }
 
       H := Rect.Bottom - Rect.Top;
@@ -307,10 +307,12 @@ begin
          Delete(S, 1, 1);
          if odSelected in State then begin
             Font.Color := clYellow;
+            //Brush.Color := clWhite;
          end
          else begin
-            Font.Color := clPurple;
+            Font.Color := dmZLogGlobal.Settings.FPartialCheck.FCurrentBandForeColor;
             // Font.Style := [fsBold];
+            Brush.Color := dmZLogGlobal.Settings.FPartialCheck.FCurrentBandBackColor
          end;
       end
       else begin
@@ -320,7 +322,10 @@ begin
          else begin
             Font.Color := clWindowText;
          end;
+         //Brush.Color := clWhite;
       end;
+
+      FillRect(Rect); { clear the rectangle }
 
       TextOut(Rect.Left + XOffSet, Rect.Top + YOffSet, S) { display the text }
    end;
