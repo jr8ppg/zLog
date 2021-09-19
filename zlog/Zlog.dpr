@@ -123,7 +123,8 @@ uses
   ToneGen in 'ToneGen.pas',
   MSACM in 'MSACM.pas',
   UNRDialog in 'UNRDialog.pas' {NRDialog},
-  UQsyInfo in 'UQsyInfo.pas' {formQsyInfo};
+  UQsyInfo in 'UQsyInfo.pas' {formQsyInfo},
+  UExportHamlog in 'UExportHamlog.pas' {formExportHamlog};
 
 {$R *.RES}
 

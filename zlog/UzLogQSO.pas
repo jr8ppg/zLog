@@ -67,22 +67,24 @@ type
                                       RR:Random(00-99) CC:Edit counter 00 and up}
     function GetFileRecord(): TQSOData;
     procedure SetFileRecord(src: TQSOData);
+
+    function GetSerialStr(): string;
+    function GetTimeStr(): string;
+    function GetDateStr(): string;
+    function GetBandStr(): string;
+    function GetModeStr(): string;
+    function GetPowerStr(): string;
+    function GetNewPowerStr(): string;
+    function GetPointStr(): string;
+    function GetRSTStr(): string;
+    function GetRSTSentStr(): string;
+    function GetRSTRcvdStr(): string;
+    function GetFreqStr(): string;
+    function GetMemoStr(): string;
   public
     constructor Create;
     procedure IncTime;
     procedure DecTime;
-    function SerialStr : string;
-    function TimeStr : string;
-    function DateStr : string;
-    function BandStr : string;
-    function ModeStr : string;
-    function PowerStr : string;
-    function NewPowerStr : string;
-    function PointStr : string;
-    function RSTStr : string;
-    function RSTSentStr: string;
-    function RSTRcvdStr: string;
-    function FreqStr: string;
     function PartialSummary(DispDate: Boolean) : string;
     function CheckCallSummary : string;
     procedure UpdateTime;
@@ -104,6 +106,7 @@ type
     property Callsign: string read FCallsign write FCallsign;
     property NrSent: string read FNrSent write FNrSent;
     property NrRcvd: string read FNrRcvd write FNrRcvd;
+
     property RSTSent: Integer read FRSTSent write FRSTSent;
     property RSTRcvd: Integer read FRSTRcvd write FRSTRcvd;
     property Serial: Integer read FSerial write FSerial;
@@ -124,6 +127,20 @@ type
     property Power2: Integer read FPower2 write FPower2;
     property Reserve2: Integer read FReserve2 write FReserve2;
     property Reserve3: Integer read FReserve3 write FReserve3;
+
+    property SerialStr: string read GetSerialStr;
+    property TimeStr: string read GetTimeStr;
+    property DateStr: string read GetDateStr;
+    property BandStr: string read GetBandStr;
+    property ModeStr: string read GetModeStr;
+    property PowerStr: string read GetPowerStr;
+    property NewPowerStr: string read GetNewPowerStr;
+    property PointStr: string read GetPointStr;
+    property RSTStr: string read GetRSTStr;
+    property RSTSentStr: string read GetRSTSentStr;
+    property RSTRcvdStr: string read GetRSTRcvdStr;
+    property FreqStr: string read GetFreqStr;
+    property MemoStr: string read GetMemoStr;
 
     property FileRecord: TQSOData read GetFileRecord write SetFileRecord;
   end;
@@ -218,7 +235,7 @@ type
     procedure SaveToFilezLogALL(Filename : string);
     procedure SaveToFileByTX(Filename : string);
     procedure SaveToFileByCabrillo(Filename: string);
-    procedure SaveToFileByHamlog(Filename: string);
+    procedure SaveToFileByHamlog(Filename: string; nOutputTo: Integer; strRemarks1: string; strRemarks2: string);
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
     procedure AddQue(aQSO : TQSO);
@@ -409,7 +426,7 @@ begin
    end;
 end;
 
-function TQSO.SerialStr: string;
+function TQSO.GetSerialStr: string;
 var
    S: string;
 begin
@@ -429,27 +446,27 @@ begin
    Result := FormatDateTime('hhnn', Self.Time) + ' ' + Self.CallSign + ' ' + Self.NrRcvd;
 end;
 
-function TQSO.TimeStr: string;
+function TQSO.GetTimeStr: string;
 begin
    Result := FormatDateTime('hh:nn', Self.Time);
 end;
 
-function TQSO.DateStr: string;
+function TQSO.GetDateStr: string;
 begin
    Result := FormatDateTime('yy/mm/dd', Self.Time);
 end;
 
-function TQSO.BandStr: string;
+function TQSO.GetBandStr: string;
 begin
    Result := MHzString[Self.FBand];
 end;
 
-function TQSO.ModeStr: string;
+function TQSO.GetModeStr: string;
 begin
    Result := ModeString[Self.FMode];
 end;
 
-function TQSO.PowerStr: string;
+function TQSO.GetPowerStr: string;
 var
    i: Integer;
 begin
@@ -466,32 +483,32 @@ begin
    end;
 end;
 
-function TQSO.NewPowerStr: string;
+function TQSO.GetNewPowerStr: string;
 begin
    Result := NewPowerString[Self.FPower];
 end;
 
-function TQSO.PointStr: string;
+function TQSO.GetPointStr: string;
 begin
    Result := IntToStr(Self.FPoints);
 end;
 
-function TQSO.RSTStr: string;
+function TQSO.GetRSTStr(): string;
 begin
    Result := IntToStr(Self.FRSTRcvd);
 end;
 
-function TQSO.RSTSentStr: string;
+function TQSO.GetRSTSentStr(): string;
 begin
    Result := IntToStr(Self.FRSTSent);
 end;
 
-function TQSO.RSTRcvdStr: string;
+function TQSO.GetRSTRcvdStr(): string;
 begin
    Result := IntToStr(Self.FRSTRcvd);
 end;
 
-function TQSO.FreqStr: string;
+function TQSO.GetFreqStr(): string;
 var
    strFreq: string;
    Index1: Integer;
@@ -522,6 +539,28 @@ begin
    strFreq := Format('%.4f', [fFreq]);
 
    Result := strFreq;
+end;
+
+function TQSO.GetMemoStr(): string;
+var
+   strMemo: string;
+   Index: Integer;
+begin
+   Index := Pos('(', Self.Memo);
+   if Index = 0 then begin
+      Result := Self.Memo;
+      Exit;
+   end;
+
+   Index := Pos(')', Self.Memo);
+   if Index = 0 then begin
+      Result := Self.Memo;
+      Exit;
+   end;
+
+   strMemo := Trim(Copy(Self.Memo, Index + 1));
+
+   Result := strMemo;
 end;
 
 function TQSO.PartialSummary(DispDate: Boolean): string;
@@ -1691,7 +1730,7 @@ HAMLOG CSV仕様
 　基本的に国内局…0・海外局…8
 　でもそれ以外の場合もある
 }
-procedure TLog.SaveToFileByHamlog(Filename: string);
+procedure TLog.SaveToFileByHamlog(Filename: string; nOutputTo: Integer; strRemarks1: string; strRemarks2: string);
 var
    F: TextFile;
    i: Integer;
@@ -1757,10 +1796,28 @@ begin
          slCsv.Add('');
 
          //13列目　Remarks1
-         slCsv.Add('');
-
          //14列目　Remarks2
-         slCsv.Add('');
+         case nOutputTo of
+            0: begin
+               slCsv.Add(strRemarks1);
+               slCsv.Add(strRemarks2);
+            end;
+
+            1: begin
+               slCsv.Add(Q.MemoStr);
+               slCsv.Add(strRemarks2);
+            end;
+
+            2: begin
+               slCsv.Add(strRemarks1);
+               slCsv.Add(Q.MemoStr);
+            end;
+
+            else begin
+               slCsv.Add('');
+               slCsv.Add('');
+            end;
+         end;
 
          //15列目　なんかの識別子
          if IsDomestic(Q.Callsign) = True then begin
