@@ -6057,6 +6057,9 @@ begin
       if ext = '.CBR' then begin
          Log.SaveToFileByCabrillo(f);
       end;
+      if ext = '.CSV' then begin
+         Log.SaveToFileByHamlog(f);
+      end;
 
       { Add code to save current file under SaveDialog.FileName }
    end;

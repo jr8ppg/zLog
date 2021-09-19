@@ -80,7 +80,9 @@ type
     function NewPowerStr : string;
     function PointStr : string;
     function RSTStr : string;
-    function RSTSentStr : string;
+    function RSTSentStr: string;
+    function RSTRcvdStr: string;
+    function FreqStr: string;
     function PartialSummary(DispDate: Boolean) : string;
     function CheckCallSummary : string;
     procedure UpdateTime;
@@ -216,6 +218,7 @@ type
     procedure SaveToFilezLogALL(Filename : string);
     procedure SaveToFileByTX(Filename : string);
     procedure SaveToFileByCabrillo(Filename: string);
+    procedure SaveToFileByHamlog(Filename: string);
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
     procedure AddQue(aQSO : TQSO);
@@ -481,6 +484,44 @@ end;
 function TQSO.RSTSentStr: string;
 begin
    Result := IntToStr(Self.FRSTSent);
+end;
+
+function TQSO.RSTRcvdStr: string;
+begin
+   Result := IntToStr(Self.FRSTRcvd);
+end;
+
+function TQSO.FreqStr: string;
+var
+   strFreq: string;
+   Index1: Integer;
+   Index2: Integer;
+   fFreq: Extended;
+begin
+   Index1 := Pos('(', Self.Memo);
+   if Index1 = 0 then begin
+      Result := Self.BandStr;
+      Exit;
+   end;
+   strFreq := Copy(Self.Memo, Index1 + 1);
+
+   Index2 := Pos(')', strFreq);
+   if Index2 = 0 then begin
+      Result := strFreq;
+      Exit;
+   end;
+
+   strFreq := Copy(strFreq, 1, Index2 - 1);
+
+   fFreq := StrToFloatDef(strFreq, 0) / 1000;
+   if fFreq = 0 then begin
+      Result := Self.BandStr;
+      Exit;
+   end;
+
+   strFreq := Format('%.4f', [fFreq]);
+
+   Result := strFreq;
 end;
 
 function TQSO.PartialSummary(DispDate: Boolean): string;
@@ -1625,6 +1666,118 @@ begin
    WriteLn(F, 'END-OF-LOG:');
 
    CloseFile(F);
+end;
+
+{
+HAMLOG CSV仕様
+
+1列目　コールサイン
+2列目　交信年月日（YY/MM/DD）　※「YYYY/MM/DD」でもOKだった記憶
+3列目　交信時分（HH:MM*）　※「*」にはJST…J・UTC…U
+4列目　相手局へ送ったレポート
+5列目　相手局からもらったレポート
+6列目　周波数
+7列目　電波型式
+8列目　相手局の運用地コード
+9列目　相手局の運用地グリッドロケータ
+10列目　QSLマーク　※取りあえず「J」を入れておけばOK
+11列目　相手局の名前・名称
+12列目　相手局の運用地
+13列目　Remarks1
+14列目　Remarks2
+15列目　なんかの識別子
+
+15列目の識別子：
+　基本的に国内局…0・海外局…8
+　でもそれ以外の場合もある
+}
+procedure TLog.SaveToFileByHamlog(Filename: string);
+var
+   F: TextFile;
+   i: Integer;
+   strText: string;
+   Q: TQSO;
+   offsetmin: Integer;
+   slCsv: TStringList;
+begin
+   slCsv := TStringList.Create();
+   slCsv.StrictDelimiter := True;
+   try
+      AssignFile(F, Filename);
+      ReWrite(F);
+
+      offsetmin := FQsoList[0].RSTsent;
+
+      for i := 1 to FQSOList.Count - 1 do begin
+         Q := FQSOList[i];
+
+         slCsv.Clear();
+
+         //1列目　コールサイン
+         slCsv.Add(Q.Callsign);
+
+         //2列目　交信年月日（YY/MM/DD）　※「YYYY/MM/DD」でもOKだった記憶
+         slCsv.Add(FormatDateTime('yyyy/mm/dd', Q.Time));
+
+         //3列目　交信時分（HH:MM*）　※「*」にはJST…J・UTC…U
+         strText := FormatDateTime('HH:MM', Q.Time);
+         if offsetmin = _USEUTC then begin
+            strText := strText + 'U';
+         end
+         else begin
+            strText := strText + 'J';
+         end;
+         slCsv.Add(strText);
+
+         //4列目　相手局へ送ったレポート
+         slCsv.Add(Q.RSTSentStr);
+
+         //5列目　相手局からもらったレポート
+         slCsv.Add(Q.RSTRcvdStr);
+
+         //6列目　周波数
+         slCsv.Add(Q.FreqStr);
+
+         //7列目　電波型式
+         slCsv.Add(Q.ModeStr);
+
+         //8列目　相手局の運用地コード
+         slCsv.Add('');
+
+         //9列目　相手局の運用地グリッドロケータ
+         slCsv.Add('');
+
+         //10列目　QSLマーク　※取りあえず「J」を入れておけばOK
+         slCsv.Add('J');
+
+         //11列目　相手局の名前・名称
+         slCsv.Add('');
+
+         //12列目　相手局の運用地
+         slCsv.Add('');
+
+         //13列目　Remarks1
+         slCsv.Add('');
+
+         //14列目　Remarks2
+         slCsv.Add('');
+
+         //15列目　なんかの識別子
+         if IsDomestic(Q.Callsign) = True then begin
+            strText := '0';
+         end
+         else begin
+            strText := '8';
+         end;
+         slCsv.Add(strText);
+
+         WriteLn(F, slCsv.CommaText);
+      end;
+
+      CloseFile(F);
+   finally
+      slCsv.Free();
+   end;
 end;
 
 procedure TLog.RebuildDupeCheckList;
