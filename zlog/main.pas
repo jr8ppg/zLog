@@ -1858,7 +1858,7 @@ begin
       maxmode := mOther;
 
    if aQSO.Mode < maxmode then begin
-      aQSO.Mode := TMode(Integer(aQSO.Mode));
+      aQSO.Mode := TMode(Integer(aQSO.Mode) + 1);
    end
    else begin
       aQSO.Mode := mCW;
