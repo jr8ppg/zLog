@@ -210,6 +210,7 @@ begin
    D.CtyIndex := Sp.CtyIndex;
    D.Zone := Sp.Zone;
    D.Band := Sp.Band;
+   D.Mode := Sp.Mode;
    D.NewCty := Sp.NewCty;
    D.NewZone := Sp.NewZone;
    D.Worked := Sp.Worked;

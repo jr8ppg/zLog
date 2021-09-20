@@ -422,9 +422,12 @@ begin
          end;
       end;
 
+      // 周波数よりモードを決める
+      // この時点でmOtherならBAND PLAN外と見なして良い
+      Sp.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(Sp.FreqHz);
+
       // BAND PLAN内？
       if dmZLogGlobal.Settings._bandscope_show_only_in_bandplan = True then begin
-         Sp.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(Sp.FreqHz);
          if dmZLogGlobal.BandPlan.IsInBand(Sp.Band, Sp.Mode, Sp.FreqHz) = False then begin
             Sp.Free();
             Exit;
