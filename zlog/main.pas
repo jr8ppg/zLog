@@ -5773,6 +5773,7 @@ end;
 
 procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+   Timer1.Enabled := False;
    TerminateNPlusOne();
    TerminateSuperCheckDataLoad();
    dmZLogKeyer.CloseBGK;
