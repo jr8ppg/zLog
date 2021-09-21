@@ -564,6 +564,21 @@ var
    x, y: Integer;
    rc: TRect;
    sec: Integer;
+
+   function AdjustDark(c: TColor): TColor;
+   var
+      R, G, B: Byte;
+   begin
+      B := GetBValue(c);
+      G := GetGValue(c);
+      R := GetRValue(c);
+
+      B := Trunc(B * 0.75);
+      G := Trunc(G * 0.75);
+      R := Trunc(R * 0.75);
+
+      Result := RGB(R, G, B);
+   end;
 begin
    with Grid.Canvas do begin
       Font.Name := 'ÇlÇr ÉSÉVÉbÉN';
@@ -668,8 +683,14 @@ begin
             Font.Style := [];
          end;
 
+         if D.Mode = mOther then begin
+            Font.Color := AdjustDark(Font.Color);
+            Brush.Color := AdjustDark(Brush.Color);
+         end;
+
          {$IFDEF DEBUG}
-         strText := strText + ' (' + IntToStr(sec) + ')';
+//         strText := strText + ' (' + IntToStr(sec) + ')';
+         strText := strText + ' (' + ModeString[D.Mode][1] + ')';
          {$ENDIF}
       end;
 
