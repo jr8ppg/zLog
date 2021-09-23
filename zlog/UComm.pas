@@ -540,13 +540,18 @@ end;
 
 procedure TCommForm.TimerProcess;
 begin
-   // Auto Reconnect
-   if (checkAutoReconnect.Checked = True) and (Telnet.IsConnected() = False) and
-      (FDisconnectClicked = False) and (ConnectButton.Caption = 'Connect') then begin
-      ConnectButton.Click();
-   end;
+   Timer1.Enabled := False;
+   try
+      // Auto Reconnect
+      if (checkAutoReconnect.Checked = True) and (Telnet.IsConnected() = False) and
+         (FDisconnectClicked = False) and (ConnectButton.Caption = 'Connect') then begin
+         ConnectButton.Click();
+      end;
 
-   CommProcess;
+      CommProcess;
+   finally
+      Timer1.Enabled := True;
+   end;
 end;
 
 procedure TCommForm.FormDestroy(Sender: TObject);
