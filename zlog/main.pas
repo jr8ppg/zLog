@@ -5963,14 +5963,19 @@ procedure TMainForm.Timer1Timer(Sender: TObject);
 var
    S: String;
 begin
-   Update10MinTimer;
+   Timer1.Enabled := False;
+   try
+      Update10MinTimer;
 
-   if not FPostContest then begin
-      CurrentQSO.UpdateTime;
-      S := CurrentQSO.TimeStr;
-      if S <> TimeEdit.Text then begin
-         TimeEdit.Text := S;
+      if not FPostContest then begin
+         CurrentQSO.UpdateTime;
+         S := CurrentQSO.TimeStr;
+         if S <> TimeEdit.Text then begin
+            TimeEdit.Text := S;
+         end;
       end;
+   finally
+      Timer1.Enabled := True;
    end;
 end;
 

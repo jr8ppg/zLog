@@ -3725,15 +3725,25 @@ end;
 
 procedure TRigControl.Timer1Timer(Sender: TObject);
 begin
-   MainForm.ZLinkForm.SendRigStatus;
+   Timer1.Enabled := False;
+   try
+      MainForm.ZLinkForm.SendRigStatus;
+   finally
+      Timer1.Enabled := True;
+   end;
 end;
 
 procedure TRigControl.PollingTimerTimer(Sender: TObject);
 var
    nRigNo: Integer;
 begin
-   nRigNo := TTimer(Sender).Tag;
-   FRigs[nRigNo].PollingProcess();
+   TTimer(Sender).Enabled := False;
+   try
+      nRigNo := TTimer(Sender).Tag;
+      FRigs[nRigNo].PollingProcess();
+   finally
+      TTimer(Sender).Enabled := True;
+   end;
 end;
 
 procedure TRigControl.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);

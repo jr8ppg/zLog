@@ -133,8 +133,13 @@ end;
 
 procedure TZLinkForm.Timer1Timer(Sender: TObject);
 begin
-   if not(CommProcessing) then
-      CommProcess;
+   Timer1.Enabled := False;
+   try
+      if not(CommProcessing) then
+         CommProcess;
+   finally
+      Timer1.Enabled := True;
+   end;
 end;
 
 procedure TZLinkForm.SendLogToZServer;
