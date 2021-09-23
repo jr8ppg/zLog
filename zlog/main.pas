@@ -6230,6 +6230,7 @@ begin
       FCheckMulti.ResetListBox();
       FCheckCountry.ResetListBox();
       FRateDialogEx.InitScoreGrid();
+      FFunctionKeyPanel.UpdateInfo();
 
       SetWindowCaption();
 
@@ -6287,6 +6288,7 @@ begin
       end;
 
       RenewCWToolBar;
+      FFunctionKeyPanel.UpdateInfo();
 
       LastFocus.SetFocus;
    finally
@@ -6308,6 +6310,7 @@ begin
       end;
 
       RenewVoiceToolBar;
+      FFunctionKeyPanel.UpdateInfo();
 
       LastFocus.SetFocus;
    finally
