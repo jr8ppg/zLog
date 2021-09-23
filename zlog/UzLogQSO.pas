@@ -235,7 +235,7 @@ type
     procedure SaveToFilezLogALL(Filename : string);
     procedure SaveToFileByTX(Filename : string);
     procedure SaveToFileByCabrillo(Filename: string);
-    procedure SaveToFileByHamlog(Filename: string; nOutputTo: Integer; strRemarks1: string; strRemarks2: string);
+    procedure SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string);
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
     procedure AddQue(aQSO : TQSO);
@@ -1730,7 +1730,7 @@ HAMLOG CSV仕様
 　基本的に国内局…0・海外局…8
 　でもそれ以外の場合もある
 }
-procedure TLog.SaveToFileByHamlog(Filename: string; nOutputTo: Integer; strRemarks1: string; strRemarks2: string);
+procedure TLog.SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string);
 var
    F: TextFile;
    i: Integer;
@@ -1787,7 +1787,7 @@ begin
          slCsv.Add('');
 
          //10列目　QSLマーク　※取りあえず「J」を入れておけばOK
-         slCsv.Add('J');
+         slCsv.Add('J  ');
 
          //11列目　相手局の名前・名称
          slCsv.Add('');
@@ -1796,30 +1796,45 @@ begin
          slCsv.Add('');
 
          //13列目　Remarks1
-         //14列目　Remarks2
-         case nOutputTo of
+         case nRemarks1Option of
             0: begin
                slCsv.Add(strRemarks1);
-               slCsv.Add(strRemarks2);
             end;
 
             1: begin
-               slCsv.Add(Q.MemoStr);
-               slCsv.Add(strRemarks2);
+               slCsv.Add(Q.Operator);
             end;
 
             2: begin
-               slCsv.Add(strRemarks1);
                slCsv.Add(Q.MemoStr);
             end;
 
             else begin
                slCsv.Add('');
+            end;
+         end;
+
+         //14列目　Remarks2
+         case nRemarks2Option of
+            0: begin
+               slCsv.Add(strRemarks2);
+            end;
+
+            1: begin
+               slCsv.Add(Q.Operator);
+            end;
+
+            2: begin
+               slCsv.Add(Q.MemoStr);
+            end;
+
+            else begin
                slCsv.Add('');
             end;
          end;
 
          //15列目　なんかの識別子
+         //zlistではUTCだと8、JSTは0
          if IsDomestic(Q.Callsign) = True then begin
             strText := '0';
          end

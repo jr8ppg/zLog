@@ -6065,7 +6065,7 @@ begin
             if dlg.ShowModal() = mrCancel then begin
                Exit;
             end;
-            Log.SaveToFileByHamlog(f, dlg.MemoOutputTo, dlg.Remarks1, dlg.Remarks2);
+            Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2);
          finally
             dlg.Release();
          end;
