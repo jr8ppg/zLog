@@ -89,9 +89,9 @@ type
     procedure WriteData(str : string);
     procedure WriteConsole(strText: string);
 
+    procedure RenewListBox;
   public
     { Public declarations }
-    procedure RenewListBox;
     procedure PreProcessSpotFromZLink(S : string; N: Integer);
     procedure TransmitSpot(S : string); // local or via network
     procedure ImplementOptions;
@@ -391,6 +391,7 @@ begin
          S := FSpotList[i];
          if Now - S.Time > Expire then begin
             FSpotList.Delete(i);
+            ListBox.Items.Delete(i);
             _deleted := True;
          end;
 
@@ -401,7 +402,7 @@ begin
       end;
 
       if _deleted then begin
-         RenewListBox;
+//         RenewListBox;
       end;
 
       if FSpotList.Count > SPOTMAX then begin
