@@ -218,15 +218,20 @@ end;
 
 procedure TRateDialogEx.TimerTimer(Sender: TObject);
 begin
-   if Visible = False then begin
-      Exit;
-   end;
+   Timer.Enabled := False;
+   try
+      if Visible = False then begin
+         Exit;
+      end;
 
-   dmZLogGlobal.Target.UpdateLastRate();
-   Last10.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRate]) + ' QSOs/hr';
-   Max10.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRateMax]) + ' QSOs/hr';
-   Last100.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRate]) + ' QSOs/hr';
-   Max100.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRateMax]) + ' QSOs/hr';
+      dmZLogGlobal.Target.UpdateLastRate();
+      Last10.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRate]) + ' QSOs/hr';
+      Max10.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRateMax]) + ' QSOs/hr';
+      Last100.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRate]) + ' QSOs/hr';
+      Max100.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRateMax]) + ' QSOs/hr';
+   finally
+      Timer.Enabled := True;
+   end;
 end;
 
 procedure TRateDialogEx.OKBtnClick(Sender: TObject);

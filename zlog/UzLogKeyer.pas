@@ -2805,6 +2805,8 @@ var
    n: Integer;
    S: string;
 begin
+   RepeatTimer.Enabled := False;
+
    if (FUseRandomRepeat = True) and (FCQLoopCount > 4) then begin
       n := FCQLoopCount mod 3; // random(3);
       if n > 2 then begin
@@ -2829,7 +2831,6 @@ begin
    end;
 
    WinKeyerSendStr(S);
-   RepeatTimer.Enabled := False;
 end;
 
 procedure TdmZLogKeyer.IncCWSpeed();

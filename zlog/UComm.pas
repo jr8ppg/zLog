@@ -89,9 +89,9 @@ type
     procedure WriteData(str : string);
     procedure WriteConsole(strText: string);
 
+    procedure RenewListBox;
   public
     { Public declarations }
-    procedure RenewListBox;
     procedure PreProcessSpotFromZLink(S : string; N: Integer);
     procedure TransmitSpot(S : string); // local or via network
     procedure ImplementOptions;
@@ -391,6 +391,7 @@ begin
          S := FSpotList[i];
          if Now - S.Time > Expire then begin
             FSpotList.Delete(i);
+            ListBox.Items.Delete(i);
             _deleted := True;
          end;
 
@@ -401,7 +402,7 @@ begin
       end;
 
       if _deleted then begin
-         RenewListBox;
+//         RenewListBox;
       end;
 
       if FSpotList.Count > SPOTMAX then begin
@@ -422,9 +423,12 @@ begin
          end;
       end;
 
+      // 周波数よりモードを決める
+      // この時点でmOtherならBAND PLAN外と見なして良い
+      Sp.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(Sp.FreqHz);
+
       // BAND PLAN内？
       if dmZLogGlobal.Settings._bandscope_show_only_in_bandplan = True then begin
-         Sp.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(Sp.FreqHz);
          if dmZLogGlobal.BandPlan.IsInBand(Sp.Band, Sp.Mode, Sp.FreqHz) = False then begin
             Sp.Free();
             Exit;
@@ -537,13 +541,18 @@ end;
 
 procedure TCommForm.TimerProcess;
 begin
-   // Auto Reconnect
-   if (checkAutoReconnect.Checked = True) and (Telnet.IsConnected() = False) and
-      (FDisconnectClicked = False) and (ConnectButton.Caption = 'Connect') then begin
-      ConnectButton.Click();
-   end;
+   Timer1.Enabled := False;
+   try
+      // Auto Reconnect
+      if (checkAutoReconnect.Checked = True) and (Telnet.IsConnected() = False) and
+         (FDisconnectClicked = False) and (ConnectButton.Caption = 'Connect') then begin
+         ConnectButton.Click();
+      end;
 
-   CommProcess;
+      CommProcess;
+   finally
+      Timer1.Enabled := True;
+   end;
 end;
 
 procedure TCommForm.FormDestroy(Sender: TObject);

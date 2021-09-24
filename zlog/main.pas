@@ -1151,7 +1151,7 @@ uses
   UIntegerDialog, UNewPrefix, UKCJScore,
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension,
-  UTargetEditor;
+  UTargetEditor, UExportHamlog;
 
 {$R *.DFM}
 
@@ -5773,6 +5773,7 @@ end;
 
 procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+   Timer1.Enabled := False;
    TerminateNPlusOne();
    TerminateSuperCheckDataLoad();
    dmZLogKeyer.CloseBGK;
@@ -5962,14 +5963,19 @@ procedure TMainForm.Timer1Timer(Sender: TObject);
 var
    S: String;
 begin
-   Update10MinTimer;
+   Timer1.Enabled := False;
+   try
+      Update10MinTimer;
 
-   if not FPostContest then begin
-      CurrentQSO.UpdateTime;
-      S := CurrentQSO.TimeStr;
-      if S <> TimeEdit.Text then begin
-         TimeEdit.Text := S;
+      if not FPostContest then begin
+         CurrentQSO.UpdateTime;
+         S := CurrentQSO.TimeStr;
+         if S <> TimeEdit.Text then begin
+            TimeEdit.Text := S;
+         end;
       end;
+   finally
+      Timer1.Enabled := True;
    end;
 end;
 
@@ -6032,6 +6038,7 @@ end;
 procedure TMainForm.Export1Click(Sender: TObject);
 var
    f, ext: string;
+   dlg: TformExportHamlog;
 begin
    TXTSaveDialog.InitialDir := ExtractFilePath(CurrentFileName);
    TXTSaveDialog.FileName := ChangeFileExt(ExtractFileName(CurrentFileName), '');
@@ -6056,6 +6063,17 @@ begin
       end;
       if ext = '.CBR' then begin
          Log.SaveToFileByCabrillo(f);
+      end;
+      if ext = '.CSV' then begin
+         dlg := TformExportHamlog.Create(Self);
+         try
+            if dlg.ShowModal() = mrCancel then begin
+               Exit;
+            end;
+            Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2);
+         finally
+            dlg.Release();
+         end;
       end;
 
       { Add code to save current file under SaveDialog.FileName }
@@ -6212,6 +6230,7 @@ begin
       FCheckMulti.ResetListBox();
       FCheckCountry.ResetListBox();
       FRateDialogEx.InitScoreGrid();
+      FFunctionKeyPanel.UpdateInfo();
 
       SetWindowCaption();
 
@@ -6269,6 +6288,7 @@ begin
       end;
 
       RenewCWToolBar;
+      FFunctionKeyPanel.UpdateInfo();
 
       LastFocus.SetFocus;
    finally
@@ -6290,6 +6310,7 @@ begin
       end;
 
       RenewVoiceToolBar;
+      FFunctionKeyPanel.UpdateInfo();
 
       LastFocus.SetFocus;
    finally

@@ -249,16 +249,21 @@ procedure TformFunctionKeyPanel.Timer1Timer(Sender: TObject);
 var
    fShift: Boolean;
 begin
-   if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-      fShift := True;
-   end
-   else begin
-      fShift := False;
-   end;
+   Timer1.Enabled := False;
+   try
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         fShift := True;
+      end
+      else begin
+         fShift := False;
+      end;
 
-   if FPrevShift <> fShift then begin
-      FPrevShift := fShift;
-      UpdateInfo();
+      if FPrevShift <> fShift then begin
+         FPrevShift := fShift;
+         UpdateInfo();
+      end;
+   finally
+      Timer1.Enabled := True;
    end;
 end;
 

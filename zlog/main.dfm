@@ -5759,7 +5759,8 @@ object MainForm: TMainForm
     DefaultExt = 'all'
     Filter = 
       'ALL bands (*.all)|*.all|zLog DOS compatible text (*.txt)|*.txt|T' +
-      'X# (*.tx)|*.tx|ADIF (*.adi)|*.adi|Cabrillo(*.CBR)|*.CBR'
+      'X# (*.tx)|*.tx|ADIF (*.adi)|*.adi|Cabrillo(*.CBR)|*.CBR|HAMLOG(*' +
+      '.csv)|*.csv'
     Title = 'Export'
     OnTypeChange = TXTSaveDialogTypeChange
     Left = 464

@@ -272,7 +272,7 @@ begin
    u := FLimit[m][b].Upper;
 
    if (l = 0) and (u = 0) then begin
-      Result := True;
+      Result := False;  // UPPERとLOWERの両方が0はバンド外とする（主にmOther）
       Exit;
    end;
 
