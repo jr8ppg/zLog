@@ -29,7 +29,6 @@ object formExportHamlog: TformExportHamlog
     Caption = 'OK'
     ModalResult = 1
     TabOrder = 0
-    ExplicitTop = 304
   end
   object buttonCancel: TButton
     Left = 203
@@ -39,8 +38,8 @@ object formExportHamlog: TformExportHamlog
     Anchors = [akLeft, akBottom]
     Cancel = True
     Caption = 'Cancel'
+    ModalResult = 2
     TabOrder = 1
-    ExplicitTop = 304
   end
   object GroupBox1: TGroupBox
     Left = 8
