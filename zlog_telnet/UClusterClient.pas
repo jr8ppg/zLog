@@ -65,6 +65,7 @@ type
     FClusterLog: TextFile;
     FClusterLogFileName: string;
     FDisconnectClicked: Boolean;
+    FAutoLogined: Boolean;
 
     procedure LoadSettings();
     procedure SaveSettings();
@@ -98,6 +99,7 @@ begin
    FCommBuffer := TStringList.Create;
    FCommTemp := '';
    Timer1.Enabled := False;
+   FAutoLogined := False;
    LoadSettings();
    ImplementOptions();
 
@@ -303,11 +305,12 @@ begin
       str := FCommBuffer.Strings[0];
 
       // Auto Login
-      if (FClusterAutoLogin = True) and (FClusterLoginID <> '') then begin
+      if (FClusterAutoLogin = True) and (FClusterLoginID <> '') and (FAutoLogined = False) then begin
          if (Pos('login:', str) > 0) or
             (Pos('Please enter your call:', str) > 0) then begin
             Sleep(500);
             WriteLine(FClusterLoginID);
+            FAutoLogined := True;
          end;
       end;
 
@@ -344,13 +347,18 @@ end;
 
 procedure TClusterClient.TimerProcess;
 begin
-   // Auto Reconnect
-   if (FClusterAutoReconnect = True) and (Telnet.IsConnected() = False) and
-      (FDisconnectClicked = False) and (buttonConnect.Caption = 'Connect') then begin
-      buttonConnect.Click();
-   end;
+   Timer1.Enabled := False;
+   try
+      // Auto Reconnect
+      if (FClusterAutoReconnect = True) and (Telnet.IsConnected() = False) and
+         (FDisconnectClicked = False) and (buttonConnect.Caption = 'Connect') then begin
+         buttonConnect.Click();
+      end;
 
-   CommProcess;
+      CommProcess;
+   finally
+      Timer1.Enabled := True;
+   end;
 end;
 
 procedure TClusterClient.TelnetDisplay(Sender: TTnCnx; Str: String);
@@ -401,6 +409,7 @@ begin
       buttonConnect.Caption := 'Disconnect';
       WriteLineConsole('connected to ' + Telnet.Host);
       Caption := Application.Title + ' - ' + FClusterHostname + ' [' + FZServerClientName + ']';
+      FAutoLogined := False;
    except
       on E: Exception do begin
          Console.WriteString(E.Message);
