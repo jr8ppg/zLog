@@ -94,7 +94,8 @@ type
     { Public declarations }
     procedure PreProcessSpotFromZLink(S : string; N: Integer);
     procedure TransmitSpot(S : string); // local or via network
-    procedure ImplementOptions;
+    procedure ImplementOptions();
+    procedure RenewOptions();
     procedure EnableConnectButton(boo : boolean);
     procedure Renew; // red or black
     procedure RemoteConnectButtonPush;
@@ -281,7 +282,7 @@ begin
    end;
 end;
 
-procedure TCommForm.ImplementOptions;
+procedure TCommForm.ImplementOptions();
 var
    i: Integer;
 begin
@@ -311,6 +312,21 @@ begin
       Telnet.Host := Copy(dmZlogGlobal.Settings._cluster_telnet.FHostName, 1, i - 1);
       Telnet.Port := Copy(dmZlogGlobal.Settings._cluster_telnet.FHostName, i + 1);
    end;
+
+   checkAutoLogin.Checked     := dmZlogGlobal.Settings.FClusterAutoLogin;
+   checkAutoReconnect.Checked := dmZlogGlobal.Settings.FClusterAutoReconnect;
+   checkRelaySpot.Checked     := dmZlogGlobal.Settings.FClusterRelaySpot;
+   checkNotifyCurrentBand.Checked := dmZlogGlobal.Settings.FClusterNotifyCurrentBand;
+   checkRecordLogs.Checked    := dmZlogGlobal.Settings.FClusterRecordLogs;
+end;
+
+procedure TCommForm.RenewOptions();
+begin
+   dmZlogGlobal.Settings.FClusterAutoLogin      := checkAutoLogin.Checked;
+   dmZlogGlobal.Settings.FClusterAutoReconnect  := checkAutoReconnect.Checked;
+   dmZlogGlobal.Settings.FClusterRelaySpot      := checkRelaySpot.Checked;
+   dmZlogGlobal.Settings.FClusterNotifyCurrentBand := checkNotifyCurrentBand.Checked;
+   dmZlogGlobal.Settings.FClusterRecordLogs     := checkRecordLogs.Checked;
 end;
 
 procedure TCommForm.FormCreate(Sender: TObject);
@@ -321,7 +337,8 @@ begin
    FCommStarted := False;
    FCommBuffer := TStringList.Create;
    FCommTemp := '';
-   ImplementOptions;
+
+   ImplementOptions();
 
    FDisconnectClicked := False;
    FUseClusterLog := False;
@@ -557,7 +574,6 @@ end;
 
 procedure TCommForm.FormDestroy(Sender: TObject);
 begin
-   inherited;
    ClusterComm.Disconnect;
    ClusterComm.Free;
    FSpotList.Free();

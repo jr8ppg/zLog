@@ -217,6 +217,18 @@ type
     FGraphStartPosition: TQSORateStartPosition;
     FGraphBarColor: array[b19..HiBand] of TColor;
     FGraphTextColor: array[b19..HiBand] of TColor;
+
+    // Cluster Window(Comm)
+    FClusterAutoLogin: Boolean;
+    FClusterAutoReconnect: Boolean;
+    FClusterRelaySpot: Boolean;
+    FClusterNotifyCurrentBand: Boolean;
+    FClusterRecordLogs: Boolean;
+
+    // Z-Server Messages(ChatForm)
+    FChatFormPopupNewMsg: Boolean;
+    FChatFormStayOnTop: Boolean;
+    FChatFormRecordLogs: Boolean;
   end;
 
 var
@@ -1046,6 +1058,18 @@ begin
          Settings.FGraphBarColor[b]  := ZStringToColorDef(ini.ReadString('Graph', strKey + '_BarColor',  ''), default_graph_bar_color[b]);
          Settings.FGraphTextColor[b] := ZStringToColorDef(ini.ReadString('Graph', strKey + '_TextColor', ''), default_graph_text_color[b]);
       end;
+
+      // Cluster Window(Comm)
+      Settings.FClusterAutoLogin       := ini.ReadBool('ClusterWindow', 'AutoLogin', True);
+      Settings.FClusterAutoReconnect   := ini.ReadBool('ClusterWindow', 'AutoReconnect', True);
+      Settings.FClusterRelaySpot       := ini.ReadBool('ClusterWindow', 'RelaySpot', False);
+      Settings.FClusterNotifyCurrentBand := ini.ReadBool('ClusterWindow', 'NotifyCurrentBand', False);
+      Settings.FClusterRecordLogs      := ini.ReadBool('ClusterWindow', 'RecordLogs', False);
+
+      // Z-Server Messages(ChatForm)
+      Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
+      Settings.FChatFormStayOnTop      := ini.ReadBool('ChatWindow', 'StayOnTop', False);
+      Settings.FChatFormRecordLogs     := ini.ReadBool('ChatWindow', 'RecordLogs', True);
    finally
       ini.Free();
       slParam.Free();
@@ -1506,6 +1530,18 @@ begin
          ini.WriteString('Graph', strKey + '_BarColor', ZColorToString(Settings.FGraphBarColor[b]));
          ini.WriteString('Graph', strKey + '_TextColor', ZColorToString(Settings.FGraphTextColor[b]));
       end;
+
+      // Cluster Window(Comm)
+      ini.WriteBool('ClusterWindow', 'AutoLogin', Settings.FClusterAutoLogin);
+      ini.WriteBool('ClusterWindow', 'AutoReconnect', Settings.FClusterAutoReconnect);
+      ini.WriteBool('ClusterWindow', 'RelaySpot', Settings.FClusterRelaySpot);
+      ini.WriteBool('ClusterWindow', 'NotifyCurrentBand', Settings.FClusterNotifyCurrentBand);
+      ini.WriteBool('ClusterWindow', 'RecordLogs', Settings.FClusterRecordLogs);
+
+      // Z-Server Messages(ChatForm)
+      ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);
+      ini.WriteBool('ChatWindow', 'StayOnTop', Settings.FChatFormStayOnTop);
+      ini.WriteBool('ChatWindow', 'RecordLogs', Settings.FChatFormRecordLogs);
    finally
       ini.Free();
       slParam.Free();
@@ -1537,6 +1573,7 @@ begin
 
    MainForm.CommForm.ImplementOptions;
    MainForm.ZLinkForm.ImplementOptions;
+   MainForm.ChatForm.ImplementOptions;
 
    InitializeCW();
 

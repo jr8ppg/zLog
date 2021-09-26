@@ -41,6 +41,8 @@ type
     { Public declarations }
     procedure Add(S : string);
     procedure SetConnectStatus(fConnected: Boolean);
+    procedure ImplementOptions();
+    procedure RenewOptions();
   end;
 
 implementation
@@ -65,6 +67,8 @@ end;
 
 procedure TChatForm.FormCreate(Sender: TObject);
 begin
+   ImplementOptions();
+
    editMessage.Clear();
    ListBox.Clear();
    SetConnectStatus(False);
@@ -250,6 +254,20 @@ begin
    end;
 
    Result := FillLeft(strPrompt + '> ', 10);
+end;
+
+procedure TChatForm.ImplementOptions();
+begin
+   checkPopup.Checked     := dmZlogGlobal.Settings.FChatFormPopupNewMsg;
+   checkStayOnTop.Checked := dmZlogGlobal.Settings.FChatFormStayOnTop;
+   checkRecord.Checked    := dmZlogGlobal.Settings.FChatFormRecordLogs;
+end;
+
+procedure TChatForm.RenewOptions();
+begin
+   dmZlogGlobal.Settings.FChatFormPopupNewMsg   := checkPopup.Checked;
+   dmZlogGlobal.Settings.FChatFormStayOnTop     := checkStayOnTop.Checked;
+   dmZlogGlobal.Settings.FChatFormRecordLogs    := checkRecord.Checked;
 end;
 
 end.

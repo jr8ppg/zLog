@@ -5773,6 +5773,9 @@ end;
 
 procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+   FChatForm.RenewOptions();
+   FCommForm.RenewOptions();
+
    Timer1.Enabled := False;
    TerminateNPlusOne();
    TerminateSuperCheckDataLoad();
