@@ -11,18 +11,24 @@ type
     OKBtn: TButton;
     CancelBtn: TButton;
     editSentNR: TEdit;
-    Label1: TLabel;
     checkAutoAddPowerCode: TCheckBox;
+    editSentNR2: TEdit;
+    Label2: TLabel;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
     procedure FormCreate(Sender: TObject);
   private
     { Private êÈåæ }
     function GetNewSentNR(): string;
     procedure SetNewSentNR(v: string);
+    function GetNewSentNR2(): string;
+    procedure SetNewSentNR2(v: string);
     function GetAutoAddPowerCode(): Boolean;
     procedure SetAutoAddPowerCode(v: Boolean);
   public
     { Public êÈåæ }
     property NewSentNR: string read GetNewSentNR write SetNewSentNR;
+    property NewSentNR2: string read GetNewSentNR2 write SetNewSentNR2;
     property AutoAddPowerCode: Boolean read GetAutoAddPowerCode write SetAutoAddPowerCode;
   end;
 
@@ -43,6 +49,16 @@ end;
 procedure TNRDialog.SetNewSentNR(v: string);
 begin
    editSentNR.Text := v;
+end;
+
+function TNRDialog.GetNewSentNR2(): string;
+begin
+   Result := editSentNR2.Text;
+end;
+
+procedure TNRDialog.SetNewSentNR2(v: string);
+begin
+   editSentNR2.Text := v;
 end;
 
 function TNRDialog.GetAutoAddPowerCode(): Boolean;

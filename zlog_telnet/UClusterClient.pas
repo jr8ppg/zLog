@@ -51,18 +51,32 @@ type
     FClusterHostname: string;
     FClusterPortNumber: string;
     FClusterLineBreak: Integer;
+    FClusterLoginID: string;
+    FClusterAutoLogin: Boolean;
+    FClusterAutoReconnect: Boolean;
+    FClusterRecordLogs: Boolean;
     FZServerClientName: string;
     FZServerHostname: string;
     FZServerPortNumber: string;
     FCommBuffer: TStringList;
     FCommTemp: string; {command work string}
+
+    FUseClusterLog: Boolean;
+    FClusterLog: TextFile;
+    FClusterLogFileName: string;
+    FDisconnectClicked: Boolean;
+    FAutoLogined: Boolean;
+
     procedure LoadSettings();
     procedure SaveSettings();
     procedure ImplementOptions;
     procedure ProcessSpot(Sp : TSpot);
     procedure CommProcess;
+    procedure WriteLine(str: string);
     procedure WriteData(str : string);
     procedure RelaySpot(S: string);
+    procedure WriteLineConsole(str : string);
+    procedure WriteConsole(strText: string);
   public
     { Public declarations }
   end;
@@ -75,6 +89,9 @@ var
 
 implementation
 
+uses
+  UzLogGlobal;
+
 {$R *.DFM}
 
 procedure TClusterClient.FormCreate(Sender: TObject);
@@ -82,8 +99,13 @@ begin
    FCommBuffer := TStringList.Create;
    FCommTemp := '';
    Timer1.Enabled := False;
+   FAutoLogined := False;
    LoadSettings();
    ImplementOptions();
+
+   FDisconnectClicked := False;
+   FUseClusterLog := False;
+   FClusterLogFileName := StringReplace(Application.ExeName, '.exe', '_telnet_log_' + FormatDateTime('yyyymmdd', Now) + '.txt', [rfReplaceAll]);
 end;
 
 procedure TClusterClient.FormDestroy(Sender: TObject);
@@ -92,6 +114,11 @@ begin
    ZServer.Close();
    SaveSettings();
    FCommBuffer.Free();
+end;
+
+procedure TClusterClient.WriteLine(str: string);
+begin
+   WriteData(str + LineBreakCode[ord(Console.LineBreak)]);
 end;
 
 procedure TClusterClient.WriteData(str : string);
@@ -121,7 +148,7 @@ begin
       WriteData(Edit.Text + LineBreakCode[ord(Console.LineBreak)]);
 
       if boo then begin
-         Console.WriteString(Edit.Text+LineBreakCode[ord(Console.LineBreak)]);
+         WriteConsole(Edit.Text+LineBreakCode[ord(Console.LineBreak)]);
       end;
 
       Key := Chr($0);
@@ -145,6 +172,10 @@ begin
       FClusterHostName := ini.ReadString('cluster', 'hostname', '');
       FClusterPortNumber := ini.ReadString('cluster', 'port', '7000');
       FClusterLineBreak := ini.ReadInteger('cluster', 'linebreak', 0);
+      FClusterLoginID := ini.ReadString('cluster', 'loginid', '');
+      FClusterAutoLogin := ini.ReadBool('cluster', 'autologin', False);
+      FClusterAutoReconnect := ini.ReadBool('cluster', 'autoreconnect', True);
+      FClusterRecordLogs := ini.ReadBool('cluster', 'recordlogs', False);
       FZServerClientName := ini.ReadString('zserver', 'clientname', '');
       FZServerHostName := ini.ReadString('zserver', 'hostname', '');
       FZServerPortNumber := ini.ReadString('zserver', 'port', '23');
@@ -169,6 +200,11 @@ begin
       ini.WriteString('cluster', 'hostname', FClusterHostName);
       ini.WriteString('cluster', 'port', FClusterPortNumber);
       ini.WriteInteger('cluster', 'linebreak', FClusterLineBreak);
+      ini.WriteString('cluster', 'loginid', FClusterLoginID);
+      ini.WriteBool('cluster', 'autologin', FClusterAutoLogin);
+      ini.WriteBool('cluster', 'autoreconnect', FClusterAutoReconnect);
+      ini.WriteBool('cluster', 'recordlogs', FClusterRecordLogs);
+
       ini.WriteString('zserver', 'clientname', FZServerClientName);
       ini.WriteString('zserver', 'hostname', FZServerHostName);
       ini.WriteString('zserver', 'port', FZServerPortNumber);
@@ -262,11 +298,22 @@ var
 begin
    max := FCommBuffer.Count - 1;
    for i := 0 to max do begin
-      Console.WriteString(FCommBuffer.Strings[i]);
+      WriteConsole(FCommBuffer.Strings[i]);
    end;
 
    for i := 0 to max do begin
       str := FCommBuffer.Strings[0];
+
+      // Auto Login
+      if (FClusterAutoLogin = True) and (FClusterLoginID <> '') and (FAutoLogined = False) then begin
+         if (Pos('login:', str) > 0) or
+            (Pos('Please enter your call:', str) > 0) then begin
+            Sleep(500);
+            WriteLine(FClusterLoginID);
+            FAutoLogined := True;
+         end;
+      end;
+
       for j := 1 to length(str) do begin
          if (str[j] = Chr($0D)) or (str[j] = Chr($0A)) then begin
             Sp := TSpot.Create;
@@ -300,7 +347,18 @@ end;
 
 procedure TClusterClient.TimerProcess;
 begin
-   CommProcess;
+   Timer1.Enabled := False;
+   try
+      // Auto Reconnect
+      if (FClusterAutoReconnect = True) and (Telnet.IsConnected() = False) and
+         (FDisconnectClicked = False) and (buttonConnect.Caption = 'Connect') then begin
+         buttonConnect.Click();
+      end;
+
+      CommProcess;
+   finally
+      Timer1.Enabled := True;
+   end;
 end;
 
 procedure TClusterClient.TelnetDisplay(Sender: TTnCnx; Str: String);
@@ -311,14 +369,15 @@ end;
 procedure TClusterClient.buttonConnectClick(Sender: TObject);
 begin
    if Telnet.IsConnected then begin
-      Timer1.Enabled := False;
-      Telnet.Close();
-      ZServer.Close();
       buttonConnect.Caption := 'Disconnecting...';
+      FDisconnectClicked := True;
+      Telnet.Close;
+      ZServer.Close();
    end
    else begin
       Telnet.Connect;
       buttonConnect.Caption := 'Connecting...';
+      FDisconnectClicked := False;
       Timer1.Enabled := True;
       Edit.SetFocus;
    end;
@@ -326,15 +385,48 @@ end;
 
 procedure TClusterClient.TelnetSessionConnected(Sender: TTnCnx; Error: Word);
 begin
-   buttonConnect.Caption := 'Disconnect';
-   Console.WriteString('connected to '+ Telnet.Host);
+   try
+      if FClusterRecordLogs = True then begin
+         // 300MÇÃãÛÇ´óeó Ç™Ç†Ç¡ÇΩèÍçáÇ…recordÇ∑ÇÈ
+         if CheckDiskFreeSpace(ExtractFilePath(FClusterLogFileName), 300) = True then begin
+            AssignFile(FClusterLog, FClusterLogFileName);
 
-   Caption := Application.Title + ' - ' + FClusterHostname + ' [' + FZServerClientName + ']';
+            if FileExists(FClusterLogFileName) = True then begin
+               Append(FClusterLog);
+            end
+            else begin
+               Rewrite(FClusterLog);
+            end;
+
+            FUseClusterLog := True;
+         end
+         else begin
+            Console.WriteString('**** Not enough free disk space (Not Record!) ****');
+            FUseClusterLog := False;
+         end;
+      end;
+
+      buttonConnect.Caption := 'Disconnect';
+      WriteLineConsole('connected to ' + Telnet.Host);
+      Caption := Application.Title + ' - ' + FClusterHostname + ' [' + FZServerClientName + ']';
+      FAutoLogined := False;
+   except
+      on E: Exception do begin
+         Console.WriteString(E.Message);
+         FUseClusterLog := False;
+      end;
+   end;
 end;
 
 procedure TClusterClient.TelnetSessionClosed(Sender: TTnCnx; Error: Word);
 begin
-   Console.WriteString('disconnected...');
+   WriteLineConsole('disconnected...');
+
+   if FClusterRecordLogs = True then begin
+      CloseFile(FClusterLog);
+   end;
+   FUseClusterLog := False;
+
    buttonConnect.Caption := 'Connect';
    Caption := Application.Title;
 end;
@@ -427,6 +519,10 @@ begin
       dlg.ClusterHost := FClusterHostname;
       dlg.ClusterPort := FClusterPortNumber;
       dlg.ClusterLineBreak := FClusterLineBreak;
+      dlg.ClusterLoginID := FClusterLoginID;
+      dlg.ClusterAutoLogin := FClusterAutoLogin;
+      dlg.ClusterAutoReconnect := FClusterAutoReconnect;
+      dlg.ClusterRecordLogs := FClusterRecordLogs;
       dlg.ZServerClientName := FZServerClientName;
       dlg.ZServerHost := FZServerHostname;
       dlg.ZServerPort := FZServerPortNumber;
@@ -440,6 +536,10 @@ begin
       FClusterHostname := dlg.ClusterHost;
       FClusterPortNumber := dlg.ClusterPort;
       FClusterLineBreak := dlg.ClusterLineBreak;
+      FClusterLoginID := dlg.ClusterLoginID;
+      FClusterAutoLogin := dlg.ClusterAutoLogin;
+      FClusterAutoReconnect := dlg.ClusterAutoReconnect;
+      FClusterRecordLogs := dlg.ClusterRecordLogs;
       FZServerClientName := dlg.ZServerClientName;
       FZServerHostname := dlg.ZServerHost;
       FZServerPortNumber := dlg.ZServerPort;
@@ -448,6 +548,29 @@ begin
       SaveSettings();
    finally
       dlg.Release();
+   end;
+end;
+
+procedure TClusterClient.WriteLineConsole(str : string);
+begin
+   WriteConsole(str + LineBreakCode[ord(Console.LineBreak)]);
+end;
+
+procedure TClusterClient.WriteConsole(strText: string);
+begin
+   Console.WriteString(strText);
+
+   try
+      if (FClusterRecordLogs = True) and (FUseClusterLog = True) then begin
+         Write(FClusterLog, strText);
+         Flush(FClusterLog);
+      end;
+   except
+      on E: Exception do begin
+         Console.WriteString(E.Message);
+         FUseClusterLog := False;
+         CloseFile(FClusterLog);
+      end;
    end;
 end;
 

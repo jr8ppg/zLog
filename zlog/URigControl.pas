@@ -80,24 +80,6 @@ const
        (name: 'IC-1275';      addr: $18; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False)
      );
 
-  BaseMHz : array[b19..b10g] of LongInt =
-    (   1900000,
-        3500000,
-        7000000,
-       10000000,
-       14000000,
-       18000000,
-       21000000,
-       24000000,
-       28000000,
-       50000000,
-      144000000,
-      430000000,
-     1200000000,
-              0,
-              0,
-              0);
-
   VFOString : array[0..1] of string =
     ('VFO A', 'VFO B');
 
@@ -408,8 +390,8 @@ type
     PollingTimer1: TTimer;
     ZCom1: TCommPortDriver;
     ZCom2: TCommPortDriver;
-    dispFreqA: TStaticText;
-    dispFreqB: TStaticText;
+    dispFreqA: TLabel;
+    dispFreqB: TLabel;
     dispVFO: TStaticText;
     btnOmniRig: TButton;
     PollingTimer2: TTimer;
@@ -434,8 +416,9 @@ type
     { Private declarations }
     FRigs: array[1..2] of TRig;
     FCurrentRig : TRig;
-    FPrevVfoA: Integer;
+    FPrevVfo: array[0..1] of Integer;
     FOnVFOChanged: TNotifyEvent;
+    FFreqLabel: array[0..1] of TLabel;
 
     FCurrentRigNumber: Integer;  // 1 or 2
     FMaxRig: Integer;            // default = 2.  may be larger with virtual rigs
@@ -464,8 +447,9 @@ type
     function GetCurrentRig : integer;
     function ToggleCurrentRig : integer;
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
+    function IsAvailableBand(B: TBand): Boolean;
     procedure SetSendFreq();
-    procedure UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer);
+    procedure UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer; b: TBand; m: TMode);
 
     procedure SetRit(fOnOff: Boolean);
     procedure SetXit(fOnOff: Boolean);
@@ -592,6 +576,21 @@ begin
       if R._currentband = B then begin
          Result := True;
       end;
+   end;
+end;
+
+function TRigControl.IsAvailableBand(B: TBand): Boolean;
+begin
+   if Rig = nil then begin
+      Result := True;
+      Exit;
+   end;
+
+   if (Rig.MinBand <= B) and (B <= Rig.MaxBand) then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
    end;
 end;
 
@@ -1575,6 +1574,7 @@ begin
    PollingTimer2.Enabled := False;
    FreeAndNil(FRigs[1]);
    FreeAndNil(FRigs[2]);
+   FCurrentRig := nil;
 end;
 
 constructor TRig.Create(RigNum: Integer);
@@ -2233,9 +2233,6 @@ var
    Command: AnsiString;
    para: byte;
 begin
-   if FPollingCount = 0 then begin
-      Exit;
-   end;
    FPollingTimer.Enabled := False;
    try
       para := 3;
@@ -2299,29 +2296,29 @@ end;
 
 procedure TRig.SetBand(Q: TQSO);
 var
-   f, ff: LongInt;
+   f: LongInt;
 begin
    if (Q.Band < _minband) or (Q.Band > _maxband) then begin
       Exit;
    end;
 
-//   _currentband := Q.Band; // ver 2.0e
-
+   // 周波数を記憶している場合
    if FreqMem[Q.Band, Q.Mode] > 0 then begin
       f := FreqMem[Q.Band, Q.Mode];
    end
    else begin
-      ff := (_currentfreq[_currentvfo] + _freqoffset) mod 1000000;
-      if ff > 500000 then
-         ff := 0;
-      f := BaseMHz[Q.Band] + ff;
+      // 周波数を記憶していない場合はバンドプランの下限値を使う
+      f := dmZLogGlobal.BandPlan.Limit[Q.Mode][Q.Band].Lower;
+      if f = 0 then begin
+         f := dmZLogGlobal.BandPlan.Limit[mCW][Q.Band].Lower;
+      end;
+   end;
+
+   if f = 0 then begin
+      Exit;
    end;
 
    SetFreq(f, Q.CQ);
-
-//   if Q.QSO.Mode = mSSB then begin
-//      Self.SetMode(Q);
-//   end;
 end;
 
 procedure TRig.RitClear();
@@ -2515,9 +2512,6 @@ var
    fstr: AnsiString;
    freq, i: LongInt;
 begin
-   if FPollingCount = 0 then begin
-      Exit;
-   end;
    FPollingTimer.Enabled := False;
    try
       if fSetLastFreq = True then begin
@@ -3558,7 +3552,7 @@ begin
  }
  //  BufferString := '';
    Fchange := True;
-   sleep(100);    //コマンド投げた後100mS待ってからポーリング再開
+   sleep(130);    //waitがないとコマンド連投時に後のコマンドが欠落する
    FPollingTimer.Enabled := True;
 end;
 
@@ -3577,7 +3571,7 @@ begin
  }
  //  BufferString := '';
    Fchange := True;
-   sleep(100);  //コマンド投げた後100mS待ってからポーリング再開
+   sleep(130);  //waitがないとコマンド連投時に後のコマンドが欠落する
    FPollingTimer.Enabled := True;
 end;
 
@@ -3646,19 +3640,21 @@ var
    S: string;
 begin
    MainForm.RigControl.dispVFO.Caption := VFOString[_currentvfo];
-   if _currentmode <> Main.CurrentQSO.Mode then begin
+   if _currentmode <> CurrentQSO.Mode then begin
       MainForm.UpdateMode(_currentmode);
    end;
 
    MainForm.RigControl.dispMode.Caption := ModeString[_currentmode];
-   if Main.CurrentQSO.Band <> _currentband then begin
+   if _currentband <> CurrentQSO.Band then begin
       MainForm.UpdateBand(_currentband);
    end;
 
    MainForm.RigControl.UpdateFreq(_currentvfo,
                                   _freqoffset + _currentfreq[0],
                                   _freqoffset + _currentfreq[1],
-                                  _freqoffset + LastFreq);
+                                  _freqoffset + LastFreq,
+                                  CurrentQSO.Band,
+                                  CurrentQSO.Mode);
 
    S := 'R' + IntToStr(_rignumber) + ' ' + 'V';
    if _currentvfo = 0 then begin
@@ -3684,8 +3680,11 @@ begin
    FCurrentRig := nil;
    FRigs[1] := nil;
    FRigs[2] := nil;
-   FPrevVfoA := 0;
+   FPrevVfo[0] := 0;
+   FPrevVfo[1] := 0;
    FOnVFOChanged := nil;
+   FFreqLabel[0] := dispFreqA;
+   FFreqLabel[1] := dispFreqB;
 
    FCurrentRigNumber := 1;
    FMaxRig := 2;
@@ -3726,15 +3725,25 @@ end;
 
 procedure TRigControl.Timer1Timer(Sender: TObject);
 begin
-   MainForm.ZLinkForm.SendRigStatus;
+   Timer1.Enabled := False;
+   try
+      MainForm.ZLinkForm.SendRigStatus;
+   finally
+      Timer1.Enabled := True;
+   end;
 end;
 
 procedure TRigControl.PollingTimerTimer(Sender: TObject);
 var
    nRigNo: Integer;
 begin
-   nRigNo := TTimer(Sender).Tag;
-   FRigs[nRigNo].PollingProcess();
+   TTimer(Sender).Enabled := False;
+   try
+      nRigNo := TTimer(Sender).Tag;
+      FRigs[nRigNo].PollingProcess();
+   finally
+      TTimer(Sender).Enabled := True;
+   end;
 end;
 
 procedure TRigControl.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -3792,9 +3801,14 @@ begin
    end;
 end;
 
-procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer);
+procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer; b: TBand; m: TMode);
+var
+   vfo: array[0..1] of Integer;
 begin
-   if Abs(FPrevVfoA - VfoA) > 20 then begin
+   vfo[0] := VfoA;
+   vfo[1] := VfoB;
+
+   if Abs(FPrevVfo[currentvfo] - vfo[currentvfo]) > 20 then begin
       if Assigned(FOnVFOChanged) then begin
          FOnVFOChanged(TObject(currentvfo));
       end;
@@ -3803,27 +3817,23 @@ begin
    dispFreqA.Caption := kHzStr(VfoA) + ' kHz';
    dispFreqB.Caption := kHzStr(VfoB) + ' kHz';
    dispLastFreq.Caption := kHzStr(Last) + ' kHz';
-   FPrevVfoA := VfoA;
+   FPrevVfo[0] := VfoA;
+   FPrevVfo[1] := VfoB;
 
-   if currentvfo = 0 then begin
-      if dmZLogGlobal.BandPlan.IsInBand(Main.CurrentQSO.Band, Main.CurrentQSO.Mode, VfoA) = True then begin
-         dispFreqA.Font.Color := clBlack;
-      end
-      else begin
-         dispFreqA.Font.Color := clRed;
-      end;
-      dispFreqA.Font.Style := [fsBold];
-      dispFreqB.Font.Style := [];
+   if dmZLogGlobal.BandPlan.IsInBand(b, m, vfo[currentvfo]) = True then begin
+      FFreqLabel[currentvfo].Font.Color := clBlack;
    end
    else begin
-      if dmZLogGlobal.BandPlan.IsInBand(Main.CurrentQSO.Band, Main.CurrentQSO.Mode, VfoB) = True then begin
-         dispFreqB.Font.Color := clBlack;
-      end
-      else begin
-         dispFreqB.Font.Color := clRed;
-      end;
-      dispFreqB.Font.Style := [fsBold];
-      dispFreqA.Font.Style := [];
+      FFreqLabel[currentvfo].Font.Color := clRed;
+   end;
+
+   if currentvfo = 0 then begin
+      FFreqLabel[0].Font.Style := [fsBold];
+      FFreqLabel[1].Font.Style := [];
+   end
+   else begin
+      FFreqLabel[0].Font.Style := [];
+      FFreqLabel[1].Font.Style := [fsBold];
    end;
 end;
 

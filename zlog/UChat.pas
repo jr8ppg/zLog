@@ -4,114 +4,145 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal;
+  StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal, HelperLib;
 
 type
   TChatForm = class(TForm)
     Panel1: TPanel;
     ListBox: TListBox;
-    Edit: TEdit;
-    Button1: TButton;
+    editMessage: TEdit;
+    buttonSend: TButton;
     Panel2: TPanel;
-    CheckBox: TCheckBox;
+    checkPopup: TCheckBox;
     Button2: TButton;
-    cbStayOnTop: TCheckBox;
-    procedure EditKeyPress(Sender: TObject; var Key: Char);
-    procedure Button1Click(Sender: TObject);
+    checkStayOnTop: TCheckBox;
+    checkRecord: TCheckBox;
+    comboPromptType: TComboBox;
+    procedure editMessageKeyPress(Sender: TObject; var Key: Char);
+    procedure buttonSendClick(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure cbStayOnTopClick(Sender: TObject);
+    procedure checkStayOnTopClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormDeactivate(Sender: TObject);
+    procedure CreateParams(var Params: TCreateParams); override;
+    procedure FormShow(Sender: TObject);
+    procedure editMessageEnter(Sender: TObject);
+    procedure editMessageExit(Sender: TObject);
     procedure FormActivate(Sender: TObject);
   private
     { Private declarations }
-    PrevIMEMode : integer;
+    FChatFileName: string;
+    procedure SendMessage(S: string);
+    procedure Chat(S: string);
+    procedure RecordChat(S: string);
+    function GetPrompt(): string;
   public
-    PCNameSet : boolean;
-    function IDString : string; // MHz > or PCname >
-    procedure SendMessage;
-    procedure Add(S : string);
     { Public declarations }
+    procedure Add(S : string);
+    procedure SetConnectStatus(fConnected: Boolean);
   end;
 
 implementation
 
-uses Main, UZLinkForm, UOptions;
+uses
+  Main;
 
 {$R *.DFM}
 
-function TChatForm.IDString: string;
+procedure TChatForm.CreateParams(var Params: TCreateParams);
 begin
-   if PCNameSet then
-      Result := FillRight(dmZlogGlobal.Settings._pcname + '>', 9)
-   else
-      Result := FillRight(Main.CurrentQSO.BandStr + 'MHz>', 9);
+   inherited CreateParams(Params);
+   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+end;
+
+procedure TChatForm.FormActivate(Sender: TObject);
+begin
+   if editMessage.Enabled = True then begin
+      editMessage.SetFocus();
+   end;
+end;
+
+procedure TChatForm.FormCreate(Sender: TObject);
+begin
+   editMessage.Clear();
+   ListBox.Clear();
+   SetConnectStatus(False);
+
+   FChatFileName := StringReplace(Application.ExeName, '.exe', '_chat_' + FormatDateTime('yyyymmdd', Now) + '.txt', [rfReplaceAll]);
 end;
 
 procedure TChatForm.Add(S: string);
-var
-   _VisRows: integer;
-   _TopRow: integer;
 begin
-   ListBox.Items.Add(S);
-   _VisRows := ListBox.ClientHeight div ListBox.ItemHeight;
-   _TopRow := ListBox.Items.Count - _VisRows + 1;
+   Chat(S);
 
-   if _TopRow > 0 then
-      ListBox.TopIndex := _TopRow
-   else
-      ListBox.TopIndex := 0;
+   ListBox.ShowLast();
 
-   if CheckBox.Checked then
+   if checkPopup.Checked then begin
       Show;
-   // BringToFront;
+   end;
 end;
 
-procedure TChatForm.SendMessage;
+procedure TChatForm.SendMessage(S: string);
 var
    t, str: string;
+   strMessage: string;
 begin
+   if (Length(S) = 0) then begin
+      Exit;
+   end;
+
    t := FormatDateTime('hh:nn ', SysUtils.Now);
 
-   if (Length(Edit.Text) > 0) and (Edit.Text[1] = '\') then begin // raw command input
-      str := Edit.Text;
-      ListBox.Items.Add(str);
+   if (S[1] = '\') then begin // raw command input
+      str := S;
+      Chat(str);
+
       Delete(str, 1, 1);
       str := ZLinkHeader + ' ' + str;
       MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
-      exit;
+      Exit;
    end;
 
-   if (Length(Edit.Text) > 0) and (Edit.Text[1] = '!') then begin // Red
-      str := Edit.Text;
-      // ListBox.Items.Add(str);
+   if (S[1] = '!') then begin // Red
+      str := S;
       Delete(str, 1, 1);
-      str := ZLinkHeader + ' PUTMESSAGE !' + t + FillRight(Main.CurrentQSO.BandStr + 'MHz>', 9) + str;
-      Add(Copy(str, Length(ZLinkHeader + ' PUTMESSAGE !') + 1, 255));
+
+      strMessage := t + GetPrompt() + str;
+      str := ZLinkHeader + ' PUTMESSAGE !' + strMessage;
+      Add(strMessage);
+
       MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
-      exit;
+      Exit;
    end;
 
-   str := ZLinkHeader + ' PUTMESSAGE ' + t + FillRight(Main.CurrentQSO.BandStr + 'MHz>', 9) + Edit.Text;
-   // ListBox.Items.Add(Copy(str, length(ZLinkHeader+' PUTMESSAGE ')+1, 255));
-   Add(Copy(str, Length(ZLinkHeader + ' PUTMESSAGE ') + 1, 255));
+   strMessage := t + GetPrompt() + S;
+   str := ZLinkHeader + ' PUTMESSAGE ' + strMessage;
+   Add(strMessage);
+
    MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
 end;
 
-procedure TChatForm.EditKeyPress(Sender: TObject; var Key: Char);
+procedure TChatForm.editMessageEnter(Sender: TObject);
 begin
-   if Key = Chr($0D) then begin
-      SendMessage;
-      Edit.Clear;
-      Key := #0;
-   end;
+   buttonSend.Default := True;
 end;
 
-procedure TChatForm.Button1Click(Sender: TObject);
+procedure TChatForm.editMessageExit(Sender: TObject);
 begin
-   Close;
+   buttonSend.Default := False;
+end;
+
+procedure TChatForm.editMessageKeyPress(Sender: TObject; var Key: Char);
+begin
+//
+end;
+
+procedure TChatForm.buttonSendClick(Sender: TObject);
+begin
+   SendMessage(editMessage.Text);
+   editMessage.Clear();
+   editMessage.SetFocus();
 end;
 
 procedure TChatForm.Button2Click(Sender: TObject);
@@ -127,29 +158,98 @@ begin
    end;
 end;
 
-procedure TChatForm.cbStayOnTopClick(Sender: TObject);
+procedure TChatForm.FormShow(Sender: TObject);
 begin
-   if cbStayOnTop.Checked then
+   if FileExists(FChatFileName) = True then begin
+      ListBox.Items.LoadFromFile(FChatFileName);
+      ListBox.ShowLast();
+   end;
+end;
+
+procedure TChatForm.checkStayOnTopClick(Sender: TObject);
+begin
+   if checkStayOnTop.Checked then
       FormStyle := fsStayOnTop
    else
       FormStyle := fsNormal;
 end;
 
-procedure TChatForm.FormCreate(Sender: TObject);
+procedure TChatForm.Chat(S: string);
 begin
-   PrevIMEMode := ord(imClose);
-   PCNameSet := False;
+   ListBox.Items.Add(S);
+
+   if checkRecord.Checked = True then begin
+      RecordChat(S);
+   end;
 end;
 
-procedure TChatForm.FormDeactivate(Sender: TObject);
+procedure TChatForm.RecordChat(S: string);
+var
+   F: TextFile;
 begin
-   PrevIMEMode := ord(Edit.ImeMode);
+   AssignFile(F, FChatFileName);
+
+   if FileExists(FChatFileName) = True then begin
+      Append(F);
+   end
+   else begin
+      Rewrite(F);
+   end;
+
+   WriteLn(F, S);
+
+   CloseFile(F);
 end;
 
-procedure TChatForm.FormActivate(Sender: TObject);
+procedure TChatForm.SetConnectStatus(fConnected: Boolean);
 begin
-   Edit.ImeMode := TIMEMode(PrevIMEMode);
-   // Edit.SetIme;
+   editMessage.Enabled := fConnected;
+   if fConnected = True then begin
+      editMessage.Color := clWindow;
+      buttonSend.Enabled := True;
+   end
+   else begin
+      editMessage.Color := clBtnFace;
+      buttonSend.Enabled := False;
+   end;
+end;
+
+function TChatForm.GetPrompt(): string;
+var
+   strPrompt: string;
+begin
+   case comboPromptType.ItemIndex of
+      // Band
+      0: begin
+         strPrompt := Main.CurrentQSO.BandStr;  // + 'MHz';
+      end;
+
+      // PCNAME
+      1: begin
+         strPrompt := dmZLogGlobal.Settings._pcname;
+      end;
+
+      // OPNAME
+      2: begin
+         if Main.CurrentQSO.Operator = '' then begin
+            strPrompt := dmZLogGlobal.Settings._mycall;
+         end
+         else begin
+            strPrompt := Main.CurrentQSO.Operator;
+         end;
+      end;
+
+      // CALL
+      3: begin
+         strPrompt := dmZLogGlobal.Settings._mycall;
+      end;
+
+      else begin
+         strPrompt := Main.CurrentQSO.BandStr;  // + 'MHz';
+      end;
+   end;
+
+   Result := FillLeft(strPrompt + '> ', 10);
 end;
 
 end.

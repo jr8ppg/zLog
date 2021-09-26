@@ -66,7 +66,7 @@ type
   public
     { Public 宣言 }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
-    procedure AddSelfSpot(aQSO : TQSO; Hz : LongInt);
+    procedure AddSelfSpot(aQSO : TQSO; Hz : Int64);
     procedure AddSelfSpotFromNetwork(BSText : string);
     procedure AddClusterSpot(Sp: TSpot);
     procedure RewriteBandScope();
@@ -86,7 +86,7 @@ type
   TBandScopeArray = array[b19..b10g] of TBandScope2;
 
 var
-  CurrentRigFrequency : Integer; // in Hertz
+  CurrentRigFrequency : Int64; // in Hertz
 
 implementation
 
@@ -149,7 +149,7 @@ begin
 end;
 
 // Self Spot
-procedure TBandScope2.AddSelfSpot(aQSO: TQSO; Hz: LongInt);
+procedure TBandScope2.AddSelfSpot(aQSO: TQSO; Hz: Int64);
 var
    D: TBSData;
 begin
@@ -210,6 +210,7 @@ begin
    D.CtyIndex := Sp.CtyIndex;
    D.Zone := Sp.Zone;
    D.Band := Sp.Band;
+   D.Mode := Sp.Mode;
    D.NewCty := Sp.NewCty;
    D.NewZone := Sp.NewZone;
    D.Worked := Sp.Worked;
@@ -563,6 +564,21 @@ var
    x, y: Integer;
    rc: TRect;
    sec: Integer;
+
+   function AdjustDark(c: TColor): TColor;
+   var
+      R, G, B: Byte;
+   begin
+      B := GetBValue(c);
+      G := GetGValue(c);
+      R := GetRValue(c);
+
+      B := Trunc(B * 0.75);
+      G := Trunc(G * 0.75);
+      R := Trunc(R * 0.75);
+
+      Result := RGB(R, G, B);
+   end;
 begin
    with Grid.Canvas do begin
       Font.Name := 'ＭＳ ゴシック';
@@ -612,7 +628,11 @@ begin
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[2].FForeColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[2].FBold;
             end
-            else if (D.NewMulti = False) and (D.Number <> '') then begin // マルチゲット済み
+            else if (D.NewJaMulti = False) and (D.Number <> '') then begin // マルチゲット済み
+               Font.Color  := dmZLogGlobal.Settings._bandscopecolor[3].FForeColor;
+               D.Bold      := dmZLogGlobal.Settings._bandscopecolor[3].FBold;
+            end
+            else if (D.NewMulti = False) then begin // マルチゲット済み
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[3].FForeColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[3].FBold;
             end
@@ -663,8 +683,14 @@ begin
             Font.Style := [];
          end;
 
+         if D.Mode = mOther then begin
+            Font.Color := AdjustDark(Font.Color);
+            Brush.Color := AdjustDark(Brush.Color);
+         end;
+
          {$IFDEF DEBUG}
-         strText := strText + ' (' + IntToStr(sec) + ')';
+//         strText := strText + ' (' + IntToStr(sec) + ')';
+         strText := strText + ' (' + ModeString[D.Mode][1] + ')';
          {$ENDIF}
       end;
 

@@ -194,7 +194,9 @@ end;
 
 procedure TMenuForm.rbGeneralExit(Sender: TObject);
 begin
-   OKButton.Enabled := True;
+   if FSelectDlg.SelectedContest <> nil then begin
+      OKButton.Enabled := True;
+   end;
 end;
 
 procedure TMenuForm.SelectButtonClick(Sender: TObject);

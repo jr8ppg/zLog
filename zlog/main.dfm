@@ -5278,6 +5278,9 @@ object MainForm: TMainForm
       object QSOrate1: TMenuItem
         Action = actionShowQsoRate
       end
+      object QSORateEx1: TMenuItem
+        Action = actionShowQsoRateEx
+      end
       object SuperCheck1: TMenuItem
         Action = actionShowSuperCheck
       end
@@ -5336,6 +5339,9 @@ object MainForm: TMainForm
       object FunctionKeyPanel1: TMenuItem
         Action = actionFunctionKeyPanel
       end
+      object QSYInfo1: TMenuItem
+        Action = actionShowQsyInfo
+      end
     end
     object menuSettings: TMenuItem
       Caption = '&Settings'
@@ -5350,6 +5356,10 @@ object MainForm: TMainForm
       object menuQSORateSettings: TMenuItem
         Caption = 'QSO &Rate'
         OnClick = menuQSORateSettingsClick
+      end
+      object menuTargetEditor: TMenuItem
+        Caption = '&Target Editor'
+        OnClick = menuTargetEditorClick
       end
     end
     object Network1: TMenuItem
@@ -5739,6 +5749,7 @@ object MainForm: TMainForm
     Top = 296
   end
   object Timer1: TTimer
+    Enabled = False
     Interval = 500
     OnTimer = Timer1Timer
     Left = 24
@@ -5748,7 +5759,8 @@ object MainForm: TMainForm
     DefaultExt = 'all'
     Filter = 
       'ALL bands (*.all)|*.all|zLog DOS compatible text (*.txt)|*.txt|T' +
-      'X# (*.tx)|*.tx|ADIF (*.adi)|*.adi|Cabrillo(*.CBR)|*.CBR'
+      'X# (*.tx)|*.tx|ADIF (*.adi)|*.adi|Cabrillo(*.CBR)|*.CBR|HAMLOG(*' +
+      '.csv)|*.csv'
     Title = 'Export'
     OnTypeChange = TXTSaveDialogTypeChange
     Left = 464
@@ -6468,6 +6480,14 @@ object MainForm: TMainForm
     object actionFunctionKeyPanel: TAction
       Caption = 'Function Key Panel'
       OnExecute = actionFunctionKeyPanelExecute
+    end
+    object actionShowQsoRateEx: TAction
+      Caption = 'QSO Rate Ex'
+      OnExecute = actionShowQsoRateExExecute
+    end
+    object actionShowQsyInfo: TAction
+      Caption = 'QSY Indicator'
+      OnExecute = actionShowQsyInfoExecute
     end
   end
   object SPCMenu: TPopupMenu

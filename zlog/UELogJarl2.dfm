@@ -3,7 +3,7 @@ object formELogJarl2: TformELogJarl2
   Top = 10
   BorderStyle = bsDialog
   Caption = 'E-Log (JARL 2.0)'
-  ClientHeight = 671
+  ClientHeight = 687
   ClientWidth = 516
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -483,12 +483,13 @@ object formELogJarl2: TformELogJarl2
   end
   object Panel1: TPanel
     Left = 0
-    Top = 640
+    Top = 656
     Width = 516
     Height = 31
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 18
+    TabOrder = 19
+    ExplicitTop = 640
     object buttonCreateLog: TButton
       Left = 215
       Top = 2
@@ -517,6 +518,14 @@ object formELogJarl2: TformELogJarl2
       TabOrder = 2
       OnClick = buttonCancelClick
     end
+  end
+  object checkFieldExtend: TCheckBox
+    Left = 304
+    Top = 636
+    Width = 185
+    Height = 17
+    Caption = #25313#24373#65288#12510#12523#12481#65292#24471#28857#65292'TX#'#12434#36861#21152#65289
+    TabOrder = 18
   end
   object SaveDialog1: TSaveDialog
     DefaultExt = 'em'

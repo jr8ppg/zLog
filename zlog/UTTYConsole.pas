@@ -206,20 +206,25 @@ procedure TTTYConsole.Timer1Timer(Sender: TObject);
 var
    i: integer;
 begin
-   case TTYMode of
-      ttyMMTTY: begin
-         if MMTTYBuffer = '' then
+   Timer1.Enabled := False;
+   try
+      case TTYMode of
+         ttyMMTTY: begin
+            if MMTTYBuffer = '' then
+               exit;
+
+            // RXLog.Text := RXLog.Text + MMTTYBuffer;
+            for i := 1 to length(MMTTYBuffer) do
+               RXChar(AnsiChar(MMTTYBuffer[i]));
+
+            MMTTYBuffer := '';
+         end;
+
+         ttyPSK31:
             exit;
-
-         // RXLog.Text := RXLog.Text + MMTTYBuffer;
-         for i := 1 to length(MMTTYBuffer) do
-            RXChar(AnsiChar(MMTTYBuffer[i]));
-
-         MMTTYBuffer := '';
       end;
-
-      ttyPSK31:
-         exit;
+   finally
+      Timer1.Enabled := True;
    end;
 end;
 

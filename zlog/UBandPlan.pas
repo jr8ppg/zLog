@@ -28,7 +28,7 @@ type
     function GetEstimatedMode(b: TBand; Hz: Integer): TMode; overload;
     function IsInBand(b: TBand; m: TMode; Hz: Integer): Boolean;
     function IsOffBand(b: TBand; m: TMode; Hz: Integer): Boolean;
-    function FreqToBand(Hz: Integer; default: Integer = -1): TBand; // Returns -1 if Hz is outside ham bands
+    function FreqToBand(Hz: Int64): TBand; // Returns -1 if Hz is outside ham bands
     property Limit[m: TMode]: TFreqLimitArray read GetLimit write SetLimit;
     property Defaults[m: TMode]: TFreqLimitArray read GetDefaults;
   end;
@@ -272,7 +272,7 @@ begin
    u := FLimit[m][b].Upper;
 
    if (l = 0) and (u = 0) then begin
-      Result := True;
+      Result := False;  // UPPERとLOWERの両方が0はバンド外とする（主にmOther）
       Exit;
    end;
 
@@ -314,11 +314,10 @@ begin
    end;
 end;
 
-function TBandPlan.FreqToBand(Hz: Integer; default: Integer): TBand; // Returns -1 if Hz is outside ham bands
+function TBandPlan.FreqToBand(Hz: Int64): TBand; // Returns -1 if Hz is outside ham bands
 var
    b: TBand;
 begin
-   b := TBand(default);
    case Hz div 1000 of
       1800 .. 1999:
          b := b19;
@@ -352,6 +351,8 @@ begin
          b := b5600;
       10000000..90000000:
          b := b10g;
+      else
+         b := bUnknown;
    end;
 
    Result := b;

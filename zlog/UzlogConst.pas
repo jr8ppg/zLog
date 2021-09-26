@@ -7,7 +7,7 @@ uses
 
 type
   TMode = (mCW, mSSB, mFM, mAM, mRTTY, mOther);
-  TBand = (b19, b35, b7, b10, b14, b18, b21, b24, b28, b50, b144, b430, b1200, b2400, b5600, b10g, bUnknown);
+  TBand = (b19, b35, b7, b10, b14, b18, b21, b24, b28, b50, b144, b430, b1200, b2400, b5600, b10g, bTarget, bUnknown);
   TPower = (p001, p002, p005, p010, p020, p025, p050, p100, p200, p500, p1000);
 
 const
@@ -109,7 +109,7 @@ const
   );
 
 const
-  default_primary_shortcut: array[0..131] of string = (
+  default_primary_shortcut: array[0..133] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -241,10 +241,12 @@ const
     '',                 // #128 actionRitClear
     '',                 // #129 actionToggleAntiZeroin
     '',                 // #130 actionAntiZeroin
-    ''                  // #131 actionFunctionKeyPanel
+    '',                 // #131 actionFunctionKeyPanel
+    '',                 // #132 actionShowQsoRateEx
+    ''                  // #133 actionShowQsyInfo
   );
 
-  default_secondary_shortcut: array[0..131] of string = (
+  default_secondary_shortcut: array[0..133] of string = (
     '',                 // #00
     '',
     '',
@@ -376,13 +378,16 @@ const
     '',                 // #128 actionRitClear
     '',                 // #129 actionToggleAntiZeroin
     '',                 // #130 actionAntiZeroin
-    ''                  // #131 actionFunctionKeyPanel
+    '',                 // #131 actionFunctionKeyPanel
+    '',                 // #132 actionShowQsoRateEx
+    ''                  // #133 actionShowQsyInfo
   );
 
 const
   MEMO_DUPE = '-DUPE-';
   MEMO_PSE_QSL = 'PSE QSL';
   MEMO_NO_QSL = 'NO QSL';
+  MEMO_QSY_VIOLATION = '*QSY Violation*';
 
 implementation
 

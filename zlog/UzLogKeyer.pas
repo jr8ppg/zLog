@@ -153,6 +153,7 @@ type
     FBeforeSpeed: Integer;
 
     FUseSideTone: Boolean;
+    FSideToneVolume: Integer;
     FSideTonePitch: Integer;       {side tone pitch}
 
     FPaddleReverse: Boolean;
@@ -211,6 +212,7 @@ type
     procedure USB_OFF();
     procedure SetPaddleReverse(fReverse: Boolean);
     procedure SetUseSideTone(fUse: Boolean);
+    procedure SetSideToneVolume(v: Integer);
 
     procedure WinKeyerOpen(nPort: TKeyingPort);
     procedure WinKeyerClose();
@@ -263,6 +265,7 @@ type
 
     property WPM: Integer read FKeyerWPM write SetWPM;
     property UseSideTone: Boolean read FUseSideTone write SetUseSideTone;
+    property SideToneVolume: Integer read FSideToneVolume write SetSideToneVolume;
     property SideTonePitch: Integer read FSideTonePitch write SetSideTonePitch;
     property SpaceFactor: Integer read FSpaceFactor write SetSpaceFactor;
     property EISpaceFactor: Integer read FEISpaceFactor write SetEISpaceFactor;
@@ -2151,6 +2154,16 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.SetSideToneVolume(v: Integer);
+begin
+   FSideToneVolume := v;
+   {$IFDEF USESIDETONE}
+   if Assigned(FTone) then begin
+      FTone.Volume := v;
+   end;
+   {$ENDIF}
+end;
+
 { TKeyerMonitorThread }
 
 constructor TKeyerMonitorThread.Create(AKeyer: TdmZLogKeyer);
@@ -2792,6 +2805,8 @@ var
    n: Integer;
    S: string;
 begin
+   RepeatTimer.Enabled := False;
+
    if (FUseRandomRepeat = True) and (FCQLoopCount > 4) then begin
       n := FCQLoopCount mod 3; // random(3);
       if n > 2 then begin
@@ -2816,7 +2831,6 @@ begin
    end;
 
    WinKeyerSendStr(S);
-   RepeatTimer.Enabled := False;
 end;
 
 procedure TdmZLogKeyer.IncCWSpeed();

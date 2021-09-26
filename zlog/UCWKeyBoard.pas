@@ -119,21 +119,29 @@ procedure TCWKeyBoard.ConsoleKeyPress(Sender: TObject; var Key: Char);
 var
    K: Char;
 begin
-   if Key = Chr($1B) then
-      exit;
+   if Key = Chr($1B) then begin
+      Exit;
+   end;
 
    if Key = Chr($08) then begin
       dmZLogKeyer.CancelLastChar;
+      Exit;
+   end;
+
+   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+      Exit;
+   end;
+
+   if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+      K := LowCase(Key);
    end
    else begin
-      if HiWord(GetKeyState(VK_SHIFT)) <> 0 then
-         K := LowCase(Key)
-      else
-         K := UpCase(Key);
-
-      dmZLogKeyer.SetCWSendBufCharPTT(K);
-      Key := K;
+      K := UpCase(Key);
    end;
+
+   dmZLogKeyer.SetCWSendBufCharPTT(K);
+
+   Key := K;
 end;
 
 procedure TCWKeyBoard.buttonOKClick(Sender: TObject);

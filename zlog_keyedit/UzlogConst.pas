@@ -2,9 +2,12 @@ unit UzLogConst;
 
 interface
 
+uses
+  Graphics;
+
 type
   TMode = (mCW, mSSB, mFM, mAM, mRTTY, mOther);
-  TBand = (b19, b35, b7, b10, b14, b18, b21, b24, b28, b50, b144, b430, b1200, b2400, b5600, b10g);
+  TBand = (b19, b35, b7, b10, b14, b18, b21, b24, b28, b50, b144, b430, b1200, b2400, b5600, b10g, bTarget, bUnknown);
   TPower = (p001, p002, p005, p010, p020, p025, p050, p100, p200, p500, p1000);
 
 const
@@ -87,8 +90,26 @@ const
   pwrM = TPower(2);
   pwrH = TPower(3);
 
+type
+  TQSORateStyle = ( rsOriginal = 0, rsByBand, rsByFreqRange );
+  TQSORateStartPosition = ( spFirstQSO = 0, spCurrentTime, spLastQSO );
+
 const
-  default_primary_shortcut: array[0..131] of string = (
+  default_graph_bar_color: array[b19..HiBand] of TColor = (
+    $0080FF00, $000000FF, $00FF0000, $00808080,
+    $0000FFFF, $00808080, $00FF00FF, $00808080,
+    $00FFFF80, $004080FF, $00FF8000, $00C080FF,
+    $00FF0080, $00359CF3, $00144CF1, $0080FFFF
+  );
+  default_graph_text_color: array[b19..HiBand] of TColor = (
+    $00400040, $00FFFFFF, $00FFFFFF, $00FFFFFF,
+    $00000000, $00FFFFFF, $00000000, $00FFFFFF,
+    $00000000, $00FFFFFF, $00FFFFFF, $00000000,
+    $00FFFFFF, $00000000, $00FFFFFF, $00400040
+  );
+
+const
+  default_primary_shortcut: array[0..133] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -220,10 +241,12 @@ const
     '',                 // #128 actionRitClear
     '',                 // #129 actionToggleAntiZeroin
     '',                 // #130 actionAntiZeroin
-    ''                  // #131 actionFunctionKeyPanel
+    '',                 // #131 actionFunctionKeyPanel
+    '',                 // #132 actionShowQsoRateEx
+    ''                  // #133 actionShowQsyInfo
   );
 
-  default_secondary_shortcut: array[0..131] of string = (
+  default_secondary_shortcut: array[0..133] of string = (
     '',                 // #00
     '',
     '',
@@ -355,7 +378,9 @@ const
     '',                 // #128 actionRitClear
     '',                 // #129 actionToggleAntiZeroin
     '',                 // #130 actionAntiZeroin
-    ''                  // #131 actionFunctionKeyPanel
+    '',                 // #131 actionFunctionKeyPanel
+    '',                 // #132 actionShowQsoRateEx
+    ''                  // #133 actionShowQsyInfo
   );
 
 const

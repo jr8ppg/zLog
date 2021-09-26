@@ -27,6 +27,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormHide(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure CreateParams(var Params: TCreateParams); override;
   protected
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
@@ -51,6 +53,12 @@ implementation
 uses
   Main, UzLogGlobal;
 
+procedure TformFunctionKeyPanel.CreateParams(var Params: TCreateParams);
+begin
+   inherited CreateParams(Params);
+   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+end;
+
 procedure TformFunctionKeyPanel.FormCreate(Sender: TObject);
 var
    i: Integer;
@@ -66,6 +74,14 @@ end;
 procedure TformFunctionKeyPanel.FormHide(Sender: TObject);
 begin
    Timer1.Enabled := False;
+end;
+
+procedure TformFunctionKeyPanel.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+   case Key of
+      VK_ESCAPE:
+         MainForm.LastFocus.SetFocus;
+   end;
 end;
 
 procedure TformFunctionKeyPanel.FormShow(Sender: TObject);
@@ -233,16 +249,21 @@ procedure TformFunctionKeyPanel.Timer1Timer(Sender: TObject);
 var
    fShift: Boolean;
 begin
-   if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-      fShift := True;
-   end
-   else begin
-      fShift := False;
-   end;
+   Timer1.Enabled := False;
+   try
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         fShift := True;
+      end
+      else begin
+         fShift := False;
+      end;
 
-   if FPrevShift <> fShift then begin
-      FPrevShift := fShift;
-      UpdateInfo();
+      if FPrevShift <> fShift then begin
+         FPrevShift := fShift;
+         UpdateInfo();
+      end;
+   finally
+      Timer1.Enabled := True;
    end;
 end;
 

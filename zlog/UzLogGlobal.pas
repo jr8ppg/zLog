@@ -5,7 +5,8 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.Math, Vcl.Graphics, System.DateUtils,
-  UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan;
+  UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
+  UQsoTarget;
 
 type
   TCWSettingsParam = record
@@ -14,6 +15,7 @@ type
     _fixwpm : integer;
     _paddlereverse : boolean;
     _sidetone: Boolean;
+    _sidetone_volume: Integer;
     _tonepitch : integer;
     _cqmax : integer;
     _cqrepeat : double;
@@ -55,6 +57,11 @@ type
     FSuperCheckFolder: string;
     FFullMatchHighlight: Boolean;
     FFullMatchColor: TColor;
+  end;
+
+  TPartialCheckParam = record
+    FCurrentBandForeColor: TColor;
+    FCurrentBandBackColor: TColor;
   end;
 
   TColorSetting = record
@@ -136,6 +143,8 @@ type
     _allowdupe : boolean;
     _countdown : boolean;
     _qsycount : boolean;
+    _countdownminute: Integer;
+    _countperhour: Integer;
 
     _sameexchange : boolean; //true if exchange is same for all bands. false if serial etc.
     _entersuperexchange : boolean;
@@ -178,6 +187,7 @@ type
 
     FQuickQSY: array[1..8] of TQuickQSY;
     FSuperCheck: TSuperCheckParam;
+    FPartialCheck: TPartialCheckParam;
 
     FQuickMemoText: array[1..5] of string;
 
@@ -233,6 +243,8 @@ type
     { Private 宣言 }
     FBandPlan: TBandPlan;
     FOpList: TOperatorInfoList;
+
+    FTarget: TContestTarget;
 
     FMyCountry: string;
     FMyContinent: string;
@@ -340,6 +352,7 @@ public
     property MyCQZone: string read FMyCQZone;
     property MyITUZone: string read FMyITUZone;
     property BandPlan: TBandPlan read FBandPlan;
+    property Target: TContestTarget read FTarget;
   end;
 
 function Log(): TLog;
@@ -347,7 +360,7 @@ function CurrentFileName(): string;
 function Random10 : integer;
 function UTCOffset : integer;   //in minutes; utc = localtime + utcoffset
 function ContainsDoubleByteChar(S : string) : boolean;
-function kHzStr(Hz : integer) : string;
+function kHzStr(Hz : Int64) : string;
 procedure IncEditCounter(aQSO : TQSO);
 function ExtractKenNr(S : string) : string; //extracts ken nr from aja#+power
 function ExtractPower(S : string) : string;
@@ -395,6 +408,12 @@ function LD_dp(str1, str2: string): Integer;
 function LD_ond(str1, str2: string): Integer;
 
 function IsDomestic(strCallsign: string): Boolean;
+function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
+
+procedure SetQsyViolation(aQSO: TQSO);
+procedure ResetQsyViolation(aQSO: TQSO);
+procedure SetDupeQso(aQSO: TQSO);
+procedure ResetDupeQso(aQSO: TQSO);
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -438,10 +457,14 @@ begin
 
    FBandPlan := TBandPlan.Create();
    FBandPlan.LoadFromFile();
+
+   FTarget := TContestTarget.Create();
+   FTarget.LoadFromFile();
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
 begin
+   FTarget.Free();
    FBandPlan.Free();
    FCountryList.Free();
    FPrefixList.Free();
@@ -549,9 +572,11 @@ begin
 
       // 10 min count down
       Settings._countdown := ini.ReadBool('Preferences', 'CountDown', False);
+      Settings._countdownminute := ini.ReadInteger('Preferences','CountDownMinute', 10);
 
       // QSY count / hr
       Settings._qsycount := ini.ReadBool('Preferences', 'QSYCount', False);
+      Settings._countperhour := ini.ReadInteger('Preferences','CountPerHour', 8);
 
       // J-mode
       Settings._jmode := ini.ReadBool('Preferences', 'JMode', False);
@@ -650,6 +675,9 @@ begin
 
       // Side Tone
       Settings.CW._sidetone := ini.ReadBool('CW', 'use_sidetone', False);
+
+      // Side Tone Volume
+      Settings.CW._sidetone_volume := ini.ReadInteger('CW', 'sidetone_volume', 100);
 
       // Tone Pitch (Hz)
       Settings.CW._tonepitch := ini.ReadInteger('CW', 'Pitch', 800);
@@ -880,6 +908,10 @@ begin
       Settings.FSuperCheck.FFullMatchHighlight := ini.ReadBool('SuperCheck', 'FullMatchHighlight', True);
       Settings.FSuperCheck.FFullMatchColor := ZStringToColorDef(ini.ReadString('SuperCheck', 'FullMatchColor', '$7fffff'), clYellow);
 
+      // Partial Check
+      Settings.FPartialCheck.FCurrentBandForeColor := ZStringToColorDef(ini.ReadString('PartialCheck', 'CurrentBandForeColor', '$ff00ff'), clFuchsia);
+      Settings.FPartialCheck.FCurrentBandBackColor := ZStringToColorDef(ini.ReadString('PartialCheck', 'CurrentBandBackColor', '$ffffff'), clWhite);
+
       // BandScope
       Settings._usebandscope[b19]   := ini.ReadBool('BandScopeEx', 'BandScope1.9MHz', False);
       Settings._usebandscope[b35]   := ini.ReadBool('BandScopeEx', 'BandScope3.5MHz', False);
@@ -1081,9 +1113,11 @@ begin
 
       // 10 min count down
       ini.WriteBool('Preferences', 'CountDown', Settings._countdown);
+      ini.WriteInteger('Preferences','CountDownMinute', Settings._countdownminute);
 
       // QSY count / hr
       ini.WriteBool('Preferences', 'QSYCount', Settings._qsycount);
+      ini.WriteInteger('Preferences','CountPerHour', Settings._countperhour);
 
       // J-mode
       ini.WriteBool('Preferences', 'JMode', Settings._jmode);
@@ -1165,6 +1199,9 @@ begin
 
       // Side Tone
       ini.WriteBool('CW', 'use_sidetone', Settings.CW._sidetone);
+
+      // Side Tone Volume
+      ini.WriteInteger('CW', 'sidetone_volume', Settings.CW._sidetone_volume);
 
       // Tone Pitch (Hz)
       ini.WriteInteger('CW', 'Pitch', Settings.CW._tonepitch);
@@ -1370,7 +1407,11 @@ begin
       ini.WriteInteger('SuperCheck', 'Method', Settings.FSuperCheck.FSuperCheckMethod);
       ini.WriteString('SuperCheck', 'Folder', Settings.FSuperCheck.FSuperCheckFolder);
       ini.WriteBool('SuperCheck', 'FullMatchHighlight', Settings.FSuperCheck.FFullMatchHighlight);
-      ini.WriteString('SuperCheck', 'FullMatchColor', ColorToString(Settings.FSuperCheck.FFullMatchColor));
+      ini.WriteString('SuperCheck', 'FullMatchColor', ZColorToString(Settings.FSuperCheck.FFullMatchColor));
+
+      // Partial Check
+      ini.WriteString('PartialCheck', 'CurrentBandForeColor', ZColorToString(Settings.FPartialCheck.FCurrentBandForeColor));
+      ini.WriteString('PartialCheck', 'CurrentBandBackColor', ZColorToString(Settings.FPartialCheck.FCurrentBandBackColor));
 
       // BandScope
       ini.WriteBool('BandScopeEx', 'BandScope1.9MHz', Settings._usebandscope[b19]);
@@ -1518,6 +1559,7 @@ procedure TdmZLogGlobal.InitializeCW();
 begin
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
+   dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;
 
    // RIGコントロールと同じポートの場合は無しとする
    if (Settings._rigport[1] <> Settings._lptnr) and
@@ -2352,9 +2394,9 @@ begin
       end;
 end;
 
-function kHzStr(Hz: integer): string;
+function kHzStr(Hz: Int64): string;
 var
-   k, kk: integer;
+   k, kk: Int64;
 begin
    k := Hz div 1000;
    kk := Hz mod 1000;
@@ -3059,6 +3101,71 @@ begin
    end;
 
    Result := False;
+end;
+
+function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
+var
+   nAvailable: TLargeInteger;
+   nTotalBytes: TLargeInteger;
+   nTotalFreeBytes: TLargeInteger;
+   nNeedBytes: TLargeInteger;
+begin
+   nNeedBytes := TLargeInteger(nNeed_MegaByte) * TLargeInteger(1024) * TLargeInteger(1024);
+
+   // 空き容量取得
+   if GetDiskFreeSpaceEx(PWideChar(strPath), nAvailable, nTotalBytes, @nTotalFreeBytes) = False then begin
+      Result := False;
+      Exit;
+   end;
+
+   // 空き領域は必要としている容量未満か
+   if (nTotalFreeBytes < nNeedBytes) then begin
+      Result := False;
+      Exit;
+   end;
+
+   Result := True;
+end;
+
+procedure SetQsyViolation(aQSO: TQSO);
+begin
+   if Pos(MEMO_QSY_VIOLATION, aQSO.Memo) > 0 then begin
+      Exit;
+   end;
+
+   if aQSO.Memo <> '' then begin
+      aQSO.Memo := aQSO.Memo + ' ';
+   end;
+
+   aQSO.Memo := aQSO.Memo + MEMO_QSY_VIOLATION;
+end;
+
+procedure ResetQsyViolation(aQSO: TQSO);
+begin
+   aQSO.Memo := Trim(StringReplace(aQSO.Memo, MEMO_QSY_VIOLATION, '', [rfReplaceAll]));
+end;
+
+procedure SetDupeQso(aQSO: TQSO);
+begin
+   aQSO.Points := 0;
+   aQSO.Dupe := True;
+
+   if Pos(MEMO_DUPE, aQSO.Memo) > 0 then begin
+      Exit;
+   end;
+
+   if aQSO.Memo <> '' then begin
+      aQSO.Memo := MEMO_DUPE + ' ' + aQSO.Memo;
+   end
+   else begin
+      aQSO.Memo := MEMO_DUPE;
+   end;
+end;
+
+procedure ResetDupeQso(aQSO: TQSO);
+begin
+   aQSO.Dupe := False;
+   aQSO.Memo := Trim(StringReplace(aQSO.Memo, MEMO_DUPE, '', [rfReplaceAll]));
 end;
 
 end.

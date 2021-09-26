@@ -201,60 +201,65 @@ var
    mytx, k: integer;
    aQSO: TQSO;
 begin
-   if Visible = False then begin
-      Exit;
-   end;
-
-   i := Log.TotalQSO;
-   if i < 10 then begin
-      Exit;
-   end;
-
-   mytx := dmZlogGlobal.TXNr;
-
-   k := 0;
-   repeat
-      aQSO := Log.QsoList[i];
-      if aQSO.TX = mytx then begin
-         inc(k);
+   Timer.Enabled := False;
+   try
+      if Visible = False then begin
+         Exit;
       end;
 
-      dec(i)
-   until (i = 1) or (k = 10);
-
-   if (k = 10) then begin
-      Last := aQSO.time;
-      Diff := (CurrentTime - Last) * 24.0;
-      Rate := 10 / Diff;
-
-      FLast10QsoRateMax := Max(FLast10QsoRateMax, Rate);
-
-      Last10.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
-      Max10.Caption := 'max ' + Format('%3.2f', [FLast10QsoRateMax]) + ' QSOs/hr';
-   end
-   else begin
-      Exit;
-   end;
-
-   i := Log.TotalQSO;
-   k := 0;
-   repeat
-      aQSO := Log.QsoList[i];
-      if aQSO.TX = mytx then begin
-         inc(k);
+      i := Log.TotalQSO;
+      if i < 10 then begin
+         Exit;
       end;
-      dec(i)
-   until (i = 1) or (k = 100);
 
-   if k = 100 then begin
-      Last := aQSO.time;
-      Diff := (CurrentTime - Last) * 24.0;
-      Rate := 100 / Diff;
+      mytx := dmZlogGlobal.TXNr;
 
-      FLast100QsoRateMax := Max(FLast100QsoRateMax, Rate);
+      k := 0;
+      repeat
+         aQSO := Log.QsoList[i];
+         if aQSO.TX = mytx then begin
+            inc(k);
+         end;
 
-      Last100.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
-      Max100.Caption := 'max ' + Format('%3.2f', [FLast100QsoRateMax]) + ' QSOs/hr';
+         dec(i)
+      until (i = 1) or (k = 10);
+
+      if (k = 10) then begin
+         Last := aQSO.time;
+         Diff := (CurrentTime - Last) * 24.0;
+         Rate := 10 / Diff;
+
+         FLast10QsoRateMax := Max(FLast10QsoRateMax, Rate);
+
+         Last10.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
+         Max10.Caption := 'max ' + Format('%3.2f', [FLast10QsoRateMax]) + ' QSOs/hr';
+      end
+      else begin
+         Exit;
+      end;
+
+      i := Log.TotalQSO;
+      k := 0;
+      repeat
+         aQSO := Log.QsoList[i];
+         if aQSO.TX = mytx then begin
+            inc(k);
+         end;
+         dec(i)
+      until (i = 1) or (k = 100);
+
+      if k = 100 then begin
+         Last := aQSO.time;
+         Diff := (CurrentTime - Last) * 24.0;
+         Rate := 100 / Diff;
+
+         FLast100QsoRateMax := Max(FLast100QsoRateMax, Rate);
+
+         Last100.Caption := Format('%3.2f', [Rate]) + ' QSOs/hr';
+         Max100.Caption := 'max ' + Format('%3.2f', [FLast100QsoRateMax]) + ' QSOs/hr';
+      end;
+   finally
+      Timer.Enabled := True;
    end;
 end;
 

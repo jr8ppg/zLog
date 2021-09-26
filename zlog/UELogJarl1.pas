@@ -214,6 +214,8 @@ begin
    FScorePoints[b5600] := editPoints14;
    FScorePoints[b10g] := editPoints15;
 
+   editFdcoeff.Enabled := MyContest.UseCoeff;
+
    InitializeFields;
 end;
 
@@ -460,7 +462,7 @@ begin
    WriteLn(f, '<SCORE BAND=TOTAL>' + S + '</SCORE>');
 
    fFdCoeff := StrToFloatDef(editFdcoeff.Text, 1);
-   if fFdCoeff > 1 then begin
+   if (fFdCoeff > 1) or (MyContest.UseCoeff = True) then begin
       WriteLn(f, '<FDCOEFF>' + FloatToStr(fFdCoeff) + '</FDCOEFF>');
    end;
 

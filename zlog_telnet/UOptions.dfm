@@ -3,8 +3,8 @@ object Options: TOptions
   Top = 0
   BorderStyle = bsDialog
   Caption = #35373#23450
-  ClientHeight = 357
-  ClientWidth = 449
+  ClientHeight = 416
+  ClientWidth = 431
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,13 +15,17 @@ object Options: TOptions
   Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  DesignSize = (
+    431
+    416)
   PixelsPerInch = 96
   TextHeight = 12
   object GroupBox1: TGroupBox
     Left = 8
     Top = 126
-    Width = 337
-    Height = 105
+    Width = 415
+    Height = 131
+    Anchors = [akLeft, akTop, akRight]
     Caption = 'PacketCluster'
     TabOrder = 1
     object Label1: TLabel
@@ -44,6 +48,13 @@ object Options: TOptions
       Width = 24
       Height = 12
       Caption = #25913#34892
+    end
+    object Label9: TLabel
+      Left = 16
+      Top = 106
+      Width = 52
+      Height = 12
+      Caption = #12525#12464#12452#12531'ID'
     end
     object comboClusterHost: TComboBox
       Left = 80
@@ -75,12 +86,48 @@ object Options: TOptions
         'CR'
         'LF')
     end
+    object checkAutoLogin: TCheckBox
+      Left = 285
+      Top = 67
+      Width = 121
+      Height = 17
+      Caption = 'Auto Login'
+      TabOrder = 4
+    end
+    object checkAutoReconnect: TCheckBox
+      Left = 285
+      Top = 86
+      Width = 121
+      Height = 17
+      Caption = 'Auto Reconnect'
+      TabOrder = 5
+    end
+    object checkRecordLogs: TCheckBox
+      Left = 285
+      Top = 105
+      Width = 121
+      Height = 17
+      Caption = 'Record logs'
+      TabOrder = 6
+    end
+    object editLoginID: TEdit
+      Left = 80
+      Top = 103
+      Width = 138
+      Height = 20
+      AutoSize = False
+      BiDiMode = bdLeftToRight
+      ImeMode = imClose
+      ParentBiDiMode = False
+      TabOrder = 3
+    end
   end
   object GroupBox2: TGroupBox
     Left = 8
-    Top = 237
-    Width = 337
+    Top = 269
+    Width = 415
     Height = 108
+    Anchors = [akLeft, akTop, akRight]
     Caption = 'Z-Server'
     TabOrder = 2
     object Label4: TLabel
@@ -133,8 +180,9 @@ object Options: TOptions
   object GroupBox3: TGroupBox
     Left = 8
     Top = 8
-    Width = 337
+    Width = 415
     Height = 105
+    Anchors = [akLeft, akTop, akRight]
     Caption = #20840#33324
     TabOrder = 0
     object Label6: TLabel
@@ -205,24 +253,40 @@ object Options: TOptions
       end
     end
   end
-  object buttonOK: TButton
-    Left = 360
-    Top = 8
-    Width = 81
-    Height = 25
-    Caption = 'OK'
-    Default = True
+  object Panel1: TPanel
+    Left = 0
+    Top = 386
+    Width = 431
+    Height = 30
+    Align = alBottom
+    BevelOuter = bvNone
     TabOrder = 3
-    OnClick = buttonOKClick
-  end
-  object buttonCancel: TButton
-    Left = 360
-    Top = 39
-    Width = 81
-    Height = 25
-    Cancel = True
-    Caption = #12461#12515#12531#12475#12523
-    ModalResult = 2
-    TabOrder = 4
+    ExplicitTop = 376
+    ExplicitWidth = 449
+    DesignSize = (
+      431
+      30)
+    object buttonCancel: TButton
+      Left = 346
+      Top = 2
+      Width = 81
+      Height = 25
+      Anchors = [akTop, akRight]
+      Cancel = True
+      Caption = #12461#12515#12531#12475#12523
+      ModalResult = 2
+      TabOrder = 0
+    end
+    object buttonOK: TButton
+      Left = 259
+      Top = 2
+      Width = 81
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = 'OK'
+      Default = True
+      TabOrder = 1
+      OnClick = buttonOKClick
+    end
   end
 end

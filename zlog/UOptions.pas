@@ -132,7 +132,6 @@ type
     SaveEvery: TSpinEdit;
     Label40: TLabel;
     Label41: TLabel;
-    cbCountDown: TCheckBox;
     rbBankA: TRadioButton;
     rbBankB: TRadioButton;
     cbDispExchange: TCheckBox;
@@ -161,7 +160,6 @@ type
     Label48: TLabel;
     Label49: TLabel;
     cbUpdateThread: TCheckBox;
-    cbQSYCount: TCheckBox;
     cbRecordRigFreq: TCheckBox;
     cbTransverter1: TCheckBox;
     cbTransverter2: TCheckBox;
@@ -187,7 +185,6 @@ type
     comboRig1Speed: TComboBox;
     comboRig2Speed: TComboBox;
     comboCwPttPort: TComboBox;
-    checkUseTransceiveMode: TCheckBox;
     tabsheetQuickQSY: TTabSheet;
     checkUseQuickQSY01: TCheckBox;
     comboQuickQsyBand01: TComboBox;
@@ -299,7 +296,6 @@ type
     comboQuickQsyRig06: TComboBox;
     comboQuickQsyRig07: TComboBox;
     comboQuickQsyRig08: TComboBox;
-    checkGetBandAndMode: TCheckBox;
     checkCwReverseSignal: TCheckBox;
     tabsheetQuickMemo: TTabSheet;
     GroupBox11: TGroupBox;
@@ -412,6 +408,27 @@ type
     checkUseEstimatedMode: TCheckBox;
     checkShowOnlyInBandplan: TCheckBox;
     checkShowOnlyDomestic: TCheckBox;
+    GroupBox21: TGroupBox;
+    comboIcomMode: TComboBox;
+    comboIcomMethod: TComboBox;
+    Label83: TLabel;
+    Label84: TLabel;
+    Label85: TLabel;
+    VolumeSpinEdit: TSpinEdit;
+    groupQsyAssist: TGroupBox;
+    radioQsyNone: TRadioButton;
+    radioQsyCountDown: TRadioButton;
+    radioQsyCount: TRadioButton;
+    Label86: TLabel;
+    editQsyCountDownMinute: TSpinEdit;
+    editQsyCountPerHour: TSpinEdit;
+    Label87: TLabel;
+    GroupBox22: TGroupBox;
+    Label88: TLabel;
+    editPartialCheckColor: TEdit;
+    buttonPartialCheckForeColor: TButton;
+    buttonPartialCheckInitColor: TButton;
+    buttonPartialCheckBackColor: TButton;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -436,8 +453,6 @@ type
     procedure CQRepEditKeyPress(Sender: TObject; var Key: Char);
     procedure editMessage1Change(Sender: TObject);
     procedure CWBankClick(Sender: TObject);
-    procedure cbCountDownClick(Sender: TObject);
-    procedure cbQSYCountClick(Sender: TObject);
     procedure cbTransverter1Click(Sender: TObject);
     procedure comboRig1NameChange(Sender: TObject);
     procedure comboRig2NameChange(Sender: TObject);
@@ -454,6 +469,11 @@ type
     procedure buttonStopVoiceClick(Sender: TObject);
     procedure OpListBoxDblClick(Sender: TObject);
     procedure vAdditionalButtonClick(Sender: TObject);
+    procedure comboIcomModeChange(Sender: TObject);
+    procedure radioQsyAssistClick(Sender: TObject);
+    procedure buttonPartialCheckForeColorClick(Sender: TObject);
+    procedure buttonPartialCheckBackColorClick(Sender: TObject);
+    procedure buttonPartialCheckInitColorClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -628,6 +648,7 @@ begin
       Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
       Settings.CW._FIFO := FIFOCheck.Checked;
       Settings.CW._sidetone := SideToneCheck.Checked;
+      Settings.CW._sidetone_volume := VolumeSpinEdit.Value;
       Settings.CW._tonepitch := ToneSpinEdit.Value;
       Settings.CW._cqmax := CQmaxSpinEdit.Value;
 
@@ -670,8 +691,20 @@ begin
 
       Settings._rigspeed[2] := comboRig2Speed.ItemIndex;
 
-      Settings._use_transceive_mode := checkUseTransceiveMode.Checked;
-      Settings._icom_polling_freq_and_mode := checkGetBandAndMode.Checked;
+      if comboIcomMode.ItemIndex = 0 then begin
+         Settings._use_transceive_mode := True;
+      end
+      else begin
+         Settings._use_transceive_mode := False;
+      end;
+
+      if comboIcomMethod.ItemIndex = 0 then begin
+         Settings._icom_polling_freq_and_mode := True;
+      end
+      else begin
+         Settings._icom_polling_freq_and_mode := False;
+      end;
+
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
 
       Settings._zlinkport := ZLinkCombo.ItemIndex;
@@ -681,9 +714,13 @@ begin
       Settings._pttenabled := PTTEnabledCheckBox.Checked;
       Settings.CW._keying_signal_reverse := checkCwReverseSignal.Checked;
 
-      Settings._saveevery := SaveEvery.Value;
-      Settings._countdown := cbCountDown.Checked;
-      Settings._qsycount := cbQSYCount.Checked;
+      Settings._saveevery        := SaveEvery.Value;
+
+      // QSY Assist
+      Settings._countdown        := radioQsyCountDown.Checked;
+      Settings._qsycount         := radioQsyCount.Checked;
+      Settings._countdownminute  := editQsyCountDownMinute.Value;
+      Settings._countperhour     := editQsyCountPerHour.Value;
 
       i := Settings._pttbefore;
       Settings._pttbefore := StrToIntDef(BeforeEdit.Text, i);
@@ -772,6 +809,10 @@ begin
       Settings.FSuperCheck.FSuperCheckFolder := editSuperCheckFolder.Text;
       Settings.FSuperCheck.FFullMatchHighlight := checkHighlightFullmatch.Checked;
       Settings.FSuperCheck.FFullMatchColor := editFullmatchColor.Color;
+
+      // Partial Check
+      Settings.FPartialCheck.FCurrentBandForeColor := editPartialCheckColor.Font.Color;
+      Settings.FPartialCheck.FCurrentBandBackColor := editPartialCheckColor.Color;
 
       // Band Scope
       Settings._usebandscope[b19]   := checkBS01.Checked;
@@ -963,6 +1004,7 @@ begin
       WeightLabel.Caption := IntToStr(Settings.CW._weight) + ' %';
       FIFOCheck.Checked := Settings.CW._FIFO;
       SideToneCheck.Checked := Settings.CW._sidetone;
+      VolumeSpinEdit.Value := Settings.CW._sidetone_volume;
       ToneSpinEdit.Value := Settings.CW._tonepitch;
       CQmaxSpinEdit.Value := Settings.CW._cqmax;
       AbbrevEdit.Text := Settings.CW._zero + Settings.CW._one + Settings.CW._nine;
@@ -1014,8 +1056,22 @@ begin
 
       comboRig2Speed.ItemIndex := Settings._rigspeed[2];
 
-      checkUseTransceiveMode.Checked := Settings._use_transceive_mode;
-      checkGetBandAndMode.Checked := Settings._icom_polling_freq_and_mode;
+      if Settings._use_transceive_mode = True then begin
+         comboIcomMode.ItemIndex := 0;
+      end
+      else begin
+         comboIcomMode.ItemIndex := 1;
+      end;
+
+      if Settings._icom_polling_freq_and_mode = True then begin
+         comboIcomMethod.ItemIndex := 0;
+      end
+      else begin
+         comboIcomMethod.ItemIndex := 1;
+      end;
+
+      comboIcomModeChange(nil);
+
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
 
       // Packet Clusterí êMê›íËÉ{É^Éì
@@ -1069,8 +1125,12 @@ begin
       // Send NR? automatically
       checkSendNrAuto.Checked := Settings.CW._send_nr_auto;
 
-      cbCountDown.Checked := Settings._countdown;
-      cbQSYCount.Checked := Settings._qsycount;
+      // QSY Assist
+      radioQsyNone.Checked          := True;
+      radioQsyCountDown.Checked     := Settings._countdown;
+      radioQsyCount.Checked         := Settings._qsycount;
+      editQsyCountDownMinute.Value  := Settings._countdownminute;
+      editQsyCountPerHour.Value     := Settings._countperhour;
 
       cbDispExchange.Checked := Settings._sameexchange;
       cbAutoEnterSuper.Checked := Settings._entersuperexchange;
@@ -1121,6 +1181,10 @@ begin
       editSuperCheckFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
       checkHighlightFullmatch.Checked := Settings.FSuperCheck.FFullMatchHighlight;
       editFullmatchColor.Color := Settings.FSuperCheck.FFullMatchColor;
+
+      // Partial Check
+      editPartialCheckColor.Font.Color := Settings.FPartialCheck.FCurrentBandForeColor;
+      editPartialCheckColor.Color := Settings.FPartialCheck.FCurrentBandBackColor;
 
       // Band Scope
       checkBS01.Checked := Settings._usebandscope[b19];
@@ -1624,6 +1688,34 @@ begin
    end;
 end;
 
+procedure TformOptions.radioQsyAssistClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TRadioButton(Sender).Tag;
+   case n of
+      // None
+      0: begin
+         editQsyCountDownMinute.Enabled := False;
+         editQsyCountPerHour.Enabled := False;
+      end;
+
+      // Count down
+      1: begin
+         editQsyCountDownMinute.Enabled := True;
+         editQsyCountPerHour.Enabled := False;
+         editQsyCountDownMinute.SetFocus();
+      end;
+
+      // QSY Count / hr
+      2: begin
+         editQsyCountDownMinute.Enabled := False;
+         editQsyCountPerHour.Enabled := True;
+         editQsyCountPerHour.SetFocus();
+      end;
+   end;
+end;
+
 procedure TformOptions.OnNeedSuperCheckLoad(Sender: TObject);
 begin
    FNeedSuperCheckLoad := True;
@@ -1648,18 +1740,6 @@ procedure TformOptions.CWBankClick(Sender: TObject);
 begin
    TempCurrentBank := TRadioButton(Sender).Tag;
    RenewCWStrBankDisp;
-end;
-
-procedure TformOptions.cbCountDownClick(Sender: TObject);
-begin
-   if cbCountDown.Checked then
-      cbQSYCount.Checked := False;
-end;
-
-procedure TformOptions.cbQSYCountClick(Sender: TObject);
-begin
-   if cbQSYCount.Checked then
-      cbCountDown.Checked := False;
 end;
 
 procedure TformOptions.cbTransverter1Click(Sender: TObject);
@@ -1698,6 +1778,17 @@ begin
       end;
    finally
       F.Release();
+   end;
+end;
+
+procedure TformOptions.comboIcomModeChange(Sender: TObject);
+begin
+   if comboIcomMode.ItemIndex = 0 then begin
+      comboIcomMethod.Enabled := False;
+      comboIcomMethod.ItemIndex := 0;
+   end
+   else begin
+      comboIcomMethod.Enabled := True;
    end;
 end;
 
@@ -1900,6 +1991,28 @@ begin
    finally
       L.Free();
    end;
+end;
+
+procedure TformOptions.buttonPartialCheckForeColorClick(Sender: TObject);
+begin
+   ColorDialog1.Color := editPartialCheckColor.Font.Color;
+   if ColorDialog1.Execute = True then begin
+      editPartialCheckColor.Font.Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions.buttonPartialCheckBackColorClick(Sender: TObject);
+begin
+   ColorDialog1.Color := editPartialCheckColor.Color;
+   if ColorDialog1.Execute = True then begin
+      editPartialCheckColor.Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions.buttonPartialCheckInitColorClick(Sender: TObject);
+begin
+   editPartialCheckColor.Font.Color := clFuchsia;
+   editPartialCheckColor.Color := clWhite;
 end;
 
 procedure TformOptions.buttonPlayVoiceClick(Sender: TObject);

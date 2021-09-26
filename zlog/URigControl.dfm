@@ -110,11 +110,11 @@ object RigControl: TRigControl
     Height = 25
     BevelOuter = bvLowered
     TabOrder = 3
-    object dispFreqA: TStaticText
-      Left = 3
-      Top = 2
-      Width = 134
-      Height = 23
+    object dispFreqA: TLabel
+      Left = 4
+      Top = 4
+      Width = 136
+      Height = 15
       Alignment = taCenter
       AutoSize = False
       Caption = '00000.000 kHz'
@@ -124,7 +124,6 @@ object RigControl: TRigControl
       Font.Name = 'Arial'
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 0
     end
   end
   object Panel2: TPanel
@@ -134,11 +133,11 @@ object RigControl: TRigControl
     Height = 25
     BevelOuter = bvLowered
     TabOrder = 4
-    object dispFreqB: TStaticText
-      Left = 3
-      Top = 2
-      Width = 134
-      Height = 23
+    object dispFreqB: TLabel
+      Left = 4
+      Top = 4
+      Width = 136
+      Height = 15
       Alignment = taCenter
       AutoSize = False
       Caption = '00000.000 kHz'
@@ -148,7 +147,6 @@ object RigControl: TRigControl
       Font.Name = 'Arial'
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 0
     end
   end
   object Panel3: TPanel

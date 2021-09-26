@@ -25,7 +25,7 @@ unit Console2;
 interface
 
 uses WinTypes, WinProcs, Messages, Classes, Controls,
-     Forms, Graphics, SysUtils;
+     Forms, Graphics, SysUtils, AnsiStrings;
 
 
 { TConsole2
@@ -282,6 +282,7 @@ type
     procedure RecalcSizeAndRange;
     function  ScreenPtr(X, Y: Integer): PAnsiChar;
     procedure ShowText(L, R: Integer);
+    procedure WriteFill(X,Y: Integer; Ch: AnsiChar; Count: Cardinal); virtual;
     procedure WriteBlock(X,Y: Integer; Buffer: PAnsiChar; Count: Cardinal); virtual;
     procedure WriteBuf(Buffer: PAnsiChar; Count: Cardinal);
     procedure SetScrollbars;
@@ -300,7 +301,6 @@ type
     procedure DefaultProcessControlCodes(Buffer: PAnsiChar; Count: Cardinal);
     procedure WriteCodedBuf(Buffer: PAnsiChar; Count: Cardinal);
     procedure WriteChar(Ch: AnsiChar);
-    procedure WriteFill(X,Y: Integer; Ch: AnsiChar; Count: Cardinal); virtual;
     procedure WriteString(const S: String);
     function  KeyPressed: Boolean;
     function  ReadKey: AnsiChar;
@@ -507,7 +507,7 @@ end;
 destructor TConsole2.Destroy;
 begin
   Options := Options - [coStdInput, coStdOutput];  { close files }
-  StrDispose(FBuffer);
+  AnsiStrings.StrDispose(FBuffer);
   FOldFont.Free;
   FFont.Free;
   inherited Destroy;
@@ -540,7 +540,7 @@ procedure TConsole2.ResizeBuffer;
 var Temp: PAnsiChar;
 begin
   Temp := PAnsiChar(StrAlloc(Cols * Rows));
-  StrDispose(FBuffer);
+  AnsiStrings.StrDispose(FBuffer);
   FBuffer := Temp;
   FillChar(FBuffer^,Cols * Rows,' ');
 end;
@@ -1026,7 +1026,7 @@ var
   I: Integer;
 begin
   if Count = 0 then Exit;
-  if (X + Count) > Cols then
+  if (Int64(X) + Int64(Count)) > Cols then
   begin
     FillChar(ScreenPtr(X,Y)^, Cols - X, Ch);
     Dec(Count, Cols - X);
@@ -1571,9 +1571,9 @@ end;
 destructor TColorConsole2.Destroy;
 begin
   inherited Destroy;
-  StrDispose(PAnsiChar(FIndexes));
+  AnsiStrings.StrDispose(PAnsiChar(FIndexes));
   FAttrList.Free;
-  StrDispose(PAnsiChar(FCellWidths));
+  AnsiStrings.StrDispose(PAnsiChar(FCellWidths));
 end;
 
 function TColorConsole2.IndexPtr(X,Y: Integer): PInteger;
@@ -1606,8 +1606,8 @@ begin
     Exchange(Pointer(FIndexes), Pointer(P));
     Exchange(Pointer(FCellWidths), P2);
   finally
-    StrDispose(PAnsiChar(P));
-    StrDispose(PAnsiChar(P2));
+    AnsiStrings.StrDispose(PAnsiChar(P));
+    AnsiStrings.StrDispose(PAnsiChar(P2));
   end;
   FAttrList.Clear;
   A := FAttrList.Allocate(Font);
@@ -1684,40 +1684,13 @@ procedure TColorConsole2.FillAttr(X,Y: Integer; Count: Cardinal);
   begin
     while Count > 0 do
     begin
-{$IFDEF Win32}
       RunValue := P^;
       RunCount := 0;
       repeat
         P^ := A;
         Inc(P);
         Inc(RunCount);
-      until (RunCount >= Count) or (P^ <> RunValue);
-{$ELSE}
-      asm
-        LES   DI, P
-        MOV   SI, DI
-        MOV   AX, ES:[DI]
-        MOV   CX, Count
-        MOV   DX, CX
-        REPE  SCASW
-        JZ    @@1
-        INC   CX
-        DEC   DI
-        DEC   DI
-      @@1:
-        SUB   DX, CX
-        MOV   RunCount, DX
-        MOV   RunValue, AX
-        MOV   P.Word[0], DI
-        CMP   AX, A         { If attrs are same, no need to write over them. }
-        JE    @@2
-        MOV   DI, SI
-        MOV   CX, DX
-        MOV   AX, A
-        REP   STOSW
-      @@2:
-      end;
-{$ENDIF}
+      until (Int64(RunCount) >= Int64(Count)) or (P^ <> RunValue);
       FAttrList.Reference(RunValue, -RunCount);
       Dec(Count, RunCount);
     end;
@@ -1729,7 +1702,7 @@ var
 begin
   A := FAttrList.Allocate(Font);
   FAttrList.Reference(A, Count);
-  if (X + Count) > Cols then
+  if (Int64(X) + Int64(Count)) > Cols then
   begin
     ReplaceAttr(A, IndexPtr(X,Y), Cols - X);
     Dec(Count, Cols - X);
@@ -1761,6 +1734,7 @@ var
   A: TAttr;
   C: TPoint;
   DC: HDC;
+  L: Integer;
 begin
   C := FCharSize;
   SetViewportOrgEx(Canvas.Handle, -FOrigin.X * FCharSize.X, -FOrigin.Y * C.Y, nil);
@@ -1839,9 +1813,18 @@ begin
         SetTextColor(DC, ColorToRGB(A.Color));
         SetBkColor(DC, ColorToRGB(A.BkColor));
         Prev := RunValue;
+      end
+      else begin
+        A := nil;
       end;
       R.Right := R.Left + Len * C.X;
-      ExtTextOutA(DC, R.Left - A.Underhang, R.Top + FCharAscent,
+      if Assigned(A) then begin
+        L := R.Left - A.Underhang;
+      end
+      else begin
+        L := R.Left;
+      end;
+      ExtTextOutA(DC, L, R.Top + FCharAscent,
         ETO_Opaque or ETO_Clipped, @R, Buf, Len, Pointer(FCellWidths));
       R.Left := R.Right;
       Inc(Buf, Len);

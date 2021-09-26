@@ -133,8 +133,13 @@ end;
 
 procedure TZLinkForm.Timer1Timer(Sender: TObject);
 begin
-   if not(CommProcessing) then
-      CommProcess;
+   Timer1.Enabled := False;
+   try
+      if not(CommProcessing) then
+         CommProcess;
+   finally
+      Timer1.Enabled := True;
+   end;
 end;
 
 procedure TZLinkForm.SendLogToZServer;
@@ -903,6 +908,7 @@ begin
    MainForm.ConnectToZServer1.Caption := 'Connect to Z-Server';
    MainForm.ZServerIcon.Visible := false;
    MainForm.DisableNetworkMenus;
+   MainForm.ChatForm.SetConnectStatus(False);
 
    if DisconnectedByMenu = false then begin
       MessageDlg('Z-Server connection failed.', mtError, [mbOK], 0); { HELP context 0 }
@@ -926,6 +932,7 @@ begin
    MainForm.ZServerInquiry.ShowModal;
    MainForm.ZServerIcon.Visible := true;
    MainForm.EnableNetworkMenus;
+   MainForm.ChatForm.SetConnectStatus(True);
 end;
 
 end.

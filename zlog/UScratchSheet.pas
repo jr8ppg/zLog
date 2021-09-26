@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UConsolePad, StdCtrls, ExtCtrls, Menus;
+  UConsolePad, StdCtrls, ExtCtrls, Menus, System.UITypes;
 
 type
   TScratchSheet = class(TConsolePad)
@@ -16,6 +16,7 @@ type
     procedure LocalOnlyClick(Sender: TObject);
     procedure Clear1Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
     Buffer : TStringList;
@@ -40,7 +41,7 @@ end;
 procedure TScratchSheet.EditKeyPress(Sender: TObject; var Key: Char);
 begin
    case Key of
-      Chr($0D): begin
+      Char(vkReturn): begin
          // AddLine(Edit.Text);
          Buffer.Add('&' + Edit.Text);
          MainForm.ZLinkForm.SendScratchMessage(Edit.Text);
@@ -50,8 +51,7 @@ begin
          Key := #0;
       end;
 
-      Chr($1B): begin
-         MainForm.LastFocus.SetFocus;
+      Char(vkEscape): begin
          Key := #0;
       end;
    end;
@@ -74,6 +74,15 @@ procedure TScratchSheet.FormDestroy(Sender: TObject);
 begin
    inherited;
    Buffer.Free();
+end;
+
+procedure TScratchSheet.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+   inherited;
+   case Key of
+      VK_ESCAPE:
+         MainForm.LastFocus.SetFocus;
+   end;
 end;
 
 procedure TScratchSheet.UpdateData;

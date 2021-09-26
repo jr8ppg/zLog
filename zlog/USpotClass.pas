@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Windows, Classes,
   Generics.Collections, Generics.Defaults,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogSpc;
+  UzLogConst, UzLogGlobal{$IFNDEF ZLOG_TELNET}, UzLogQSO, UzLogSpc{$ENDIF};
 
 type
   TSpotSource = ( ssSelf = 0, ssCluster, ssSelfFromZServer, ssClusterFromZServer );
@@ -15,7 +15,7 @@ type
     FTime : TDateTime; // moved from TBSdata 2.6e
     FCall : string;
     FNumber : string;
-    FFreqHz : LongInt;
+    FFreqHz : Int64;
     FCtyIndex : integer;
     FZone : integer;
     FNewCty : boolean;
@@ -39,7 +39,7 @@ type
     property Time: TDateTime read FTime write FTime;
     property Call: string read FCall write FCall;
     property Number: string read FNumber write FNumber;
-    property FreqHz: LongInt read FFreqHz write FFreqHz;
+    property FreqHz: Int64 read FFreqHz write FFreqHz;
     property CtyIndex: Integer read FCtyIndex write FCtyIndex;
     property Zone: Integer read FZone write FZone;
     property NewCty: Boolean read FNewCty write FNewCty;
@@ -93,12 +93,16 @@ type
     constructor Create(OwnsObjects: Boolean = True);
   end;
 
+  {$IFNDEF ZLOG_TELNET}
   procedure SpotCheckWorked(Sp: TBaseSpot);
+  {$ENDIF}
 
 implementation
 
+{$IFNDEF ZLOG_TELNET}
 uses
   Main;
+{$ENDIF}
 
 constructor TBaseSpot.Create;
 begin
@@ -147,7 +151,10 @@ function TSpot.Analyze(S : string) : boolean;
 var
    temp, temp2 : string;
    i : integer;
+
+   {$IFNDEF ZLOG_TELNET}
    b: TBand;
+   {$ENDIF}
 begin
    Result := False;
 
@@ -198,12 +205,16 @@ begin
             exit;
       end;
 
+      {$IFDEF ZLOG_TELNET}
+      Band := TBand(GetBandIndex(FreqHz, 0));
+      {$ELSE}
       b := dmZLogGlobal.BandPlan.FreqToBand(FreqHz);
       if b = bUnknown then begin
          Exit;
       end;
 
       Band := b;
+      {$ENDIF}
 
       Delete(temp, 1, i);
       temp := TrimLeft(temp);
@@ -278,12 +289,16 @@ begin
             exit;
       end;
 
+      {$IFDEF ZLOG_TELNET}
+      Band := TBand(GetBandIndex(FreqHz, 0));
+      {$ELSE}
       b := dmZLogGlobal.BandPlan.FreqToBand(FreqHz);
       if b = bUnknown then begin
          Exit;
       end;
 
       Band := b;
+      {$ENDIF}
 
       Delete(temp, 1, i);
       temp := TrimLeft(temp);
@@ -371,6 +386,7 @@ begin
    FSpotGroup := O.FSpotGroup;
    FCQ := O.FCQ;
    FNewJaMulti := O.FNewJaMulti;
+   FReportedBy := O.ReportedBy;
 end;
 
 function TBSData.InText : string;
@@ -399,6 +415,7 @@ begin
       SL.Add(FloatToStr(Time));
       SL.Add(ZBoolToStr(CQ));
       SL.Add(Number);
+      SL.Add(ReportedBy);
       Result := SL.DelimitedText;
    finally
       SL.Free();
@@ -413,7 +430,7 @@ begin
    SL.Delimiter := '%';
    SL.StrictDelimiter := True;
    try
-      SL.DelimitedText := S + '%%%%%%%';
+      SL.DelimitedText := S + '%%%%%%%%';
       Call := SL[0];
       FreqHz := StrToIntDef(SL[1], 0);
       Band := TBand(StrToIntDef(SL[2], Integer(b19)));
@@ -421,6 +438,7 @@ begin
       Time := StrToFloatDef(SL[4], 0);
       CQ := ZStrToBool(SL[5]);
       Number := SL[6];
+      ReportedBy := SL[7];
    finally
       SL.Free();
    end;
@@ -442,10 +460,12 @@ begin
    Inherited Create(OwnsObjects);
 end;
 
+{$IFNDEF ZLOG_TELNET}
 procedure SpotCheckWorked(Sp: TBaseSpot);
 var
    multi: string;
    SD, SD2: TSuperData;
+   Q: TQSO;
 begin
    // 交信済みか確認する
    Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
@@ -470,8 +490,19 @@ begin
 
    // そのマルチはSp.BandでNEW MULTIか
    if Sp.Number <> '' then begin
-      Sp.NewJaMulti := Log.IsNewMulti(Sp.Band, Sp.Number);
+      Q := TQSO.Create();
+      try
+         Q.Callsign := Sp.Call;
+         Q.Band := Sp.Band;
+         Q.Mode := Sp.Mode;
+         Q.NrRcvd := Sp.Number;
+         multi := MyContest.MultiForm.ExtractMulti(Q);
+         Sp.NewJaMulti := Log.IsNewMulti(Sp.Band, multi);
+      finally
+         Q.Free();
+      end;
    end;
 end;
+{$ENDIF}
 
 end.
