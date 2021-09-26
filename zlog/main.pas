@@ -7663,6 +7663,7 @@ end;
 
 procedure TMainForm.InitUserDefined(ContestName, ConfigFile: string);
 begin
+   zyloContestSwitch(ContestName, ConfigFile);
    MyContest := TGeneralContest.Create(ContestName, ConfigFile);
 end;
 
