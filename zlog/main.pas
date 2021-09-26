@@ -7578,7 +7578,7 @@ end;
 
 procedure TMainForm.InitUserDefined(ContestName, ConfigFile: string);
 begin
-//   QTHString := dmZlogGlobal.Settings._city;
+   zyloContestSwitch(ContestName, ConfigFile);
    MyContest := TGeneralContest.Create(ContestName, ConfigFile);
 end;
 
