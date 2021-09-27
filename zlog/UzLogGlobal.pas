@@ -64,6 +64,12 @@ type
     FCurrentBandBackColor: TColor;
   end;
 
+  TInputAssistParam = record
+    FFocusedForeColor: TColor;
+    FFocusedBackColor: TColor;
+    FFocusedBold: Boolean;
+  end;
+
   TColorSetting = record
     FForeColor: TColor;
     FBackColor: TColor;
@@ -188,6 +194,7 @@ type
     FQuickQSY: array[1..8] of TQuickQSY;
     FSuperCheck: TSuperCheckParam;
     FPartialCheck: TPartialCheckParam;
+    FInputAssist: TInputAssistParam;
 
     FQuickMemoText: array[1..5] of string;
 
@@ -924,6 +931,11 @@ begin
       Settings.FPartialCheck.FCurrentBandForeColor := ZStringToColorDef(ini.ReadString('PartialCheck', 'CurrentBandForeColor', '$ff00ff'), clFuchsia);
       Settings.FPartialCheck.FCurrentBandBackColor := ZStringToColorDef(ini.ReadString('PartialCheck', 'CurrentBandBackColor', '$ffffff'), clWhite);
 
+      // Input Assist
+      Settings.FInputAssist.FFocusedForeColor := ZStringToColorDef(ini.ReadString('InputAssist', 'FocusedForeColor', '$000000'), clBlack);
+      Settings.FInputAssist.FFocusedBackColor := ZStringToColorDef(ini.ReadString('InputAssist', 'FocusedBackColor', '$ffffff'), clWhite);
+      Settings.FInputAssist.FFocusedBold      := ini.ReadBool('InputAssist', 'FocusedBold', False);
+
       // BandScope
       Settings._usebandscope[b19]   := ini.ReadBool('BandScopeEx', 'BandScope1.9MHz', False);
       Settings._usebandscope[b35]   := ini.ReadBool('BandScopeEx', 'BandScope3.5MHz', False);
@@ -1436,6 +1448,11 @@ begin
       // Partial Check
       ini.WriteString('PartialCheck', 'CurrentBandForeColor', ZColorToString(Settings.FPartialCheck.FCurrentBandForeColor));
       ini.WriteString('PartialCheck', 'CurrentBandBackColor', ZColorToString(Settings.FPartialCheck.FCurrentBandBackColor));
+
+      // Input Assist
+      ini.WriteString('InputAssist', 'FocusedForeColor', ZColorToString(Settings.FInputAssist.FFocusedForeColor));
+      ini.WriteString('InputAssist', 'FocusedBackColor', ZColorToString(Settings.FInputAssist.FFocusedBackColor));
+      ini.WriteBool('InputAssist', 'FocusedBold', Settings.FInputAssist.FFocusedBold);
 
       // BandScope
       ini.WriteBool('BandScopeEx', 'BandScope1.9MHz', Settings._usebandscope[b19]);

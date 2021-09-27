@@ -2605,12 +2605,12 @@ object formOptions: TformOptions
         Value = 60
       end
       object cbUpdateThread: TCheckBox
-        Left = 18
-        Top = 325
+        Left = 125
+        Top = 112
         Width = 161
         Height = 17
         Caption = 'Update using a thread'
-        TabOrder = 8
+        TabOrder = 5
       end
       object spSpotExpire: TSpinEdit
         Left = 293
@@ -2637,7 +2637,7 @@ object formOptions: TformOptions
         Width = 368
         Height = 74
         Caption = 'Super Check'
-        TabOrder = 5
+        TabOrder = 6
         object buttonSuperCheckFolderRef: TSpeedButton
           Left = 338
           Top = 43
@@ -2690,7 +2690,7 @@ object formOptions: TformOptions
         Width = 368
         Height = 50
         Caption = 'N+1'
-        TabOrder = 6
+        TabOrder = 7
         object checkHighlightFullmatch: TCheckBox
           Left = 12
           Top = 22
@@ -2741,12 +2741,12 @@ object formOptions: TformOptions
         end
       end
       object GroupBox22: TGroupBox
-        Left = 3
+        Left = 6
         Top = 269
         Width = 368
         Height = 50
         Caption = 'Partial Check'
-        TabOrder = 7
+        TabOrder = 8
         object Label88: TLabel
           Left = 15
           Top = 24
@@ -2809,6 +2809,86 @@ object formOptions: TformOptions
           ParentFont = False
           TabOrder = 2
           OnClick = buttonPartialCheckBackColorClick
+        end
+      end
+      object GroupBox23: TGroupBox
+        Left = 6
+        Top = 325
+        Width = 368
+        Height = 72
+        Caption = 'Input Assist'
+        TabOrder = 9
+        object Label89: TLabel
+          Left = 15
+          Top = 23
+          Width = 75
+          Height = 13
+          Caption = 'Focused Color'
+        end
+        object editFocusedColor: TEdit
+          Left = 96
+          Top = 20
+          Width = 112
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 0
+          Text = 'CALLSIGN'
+        end
+        object buttonFocusedBackColor: TButton
+          Tag = 1
+          Left = 264
+          Top = 21
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 2
+          OnClick = buttonFocusedBackColorClick
+        end
+        object buttonFocusedInitColor: TButton
+          Left = 314
+          Top = 21
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 3
+          OnClick = buttonFocusedInitColorClick
+        end
+        object checkFocusedBold: TCheckBox
+          Left = 96
+          Top = 47
+          Width = 45
+          Height = 13
+          Caption = 'Bold'
+          TabOrder = 4
+          OnClick = checkFocusedBoldClick
+        end
+        object buttonFocusedForeColor: TButton
+          Left = 214
+          Top = 21
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+          OnClick = buttonFocusedForeColorClick
         end
       end
     end

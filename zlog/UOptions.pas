@@ -429,6 +429,13 @@ type
     buttonPartialCheckForeColor: TButton;
     buttonPartialCheckInitColor: TButton;
     buttonPartialCheckBackColor: TButton;
+    GroupBox23: TGroupBox;
+    Label89: TLabel;
+    editFocusedColor: TEdit;
+    buttonFocusedBackColor: TButton;
+    buttonFocusedInitColor: TButton;
+    checkFocusedBold: TCheckBox;
+    buttonFocusedForeColor: TButton;
     procedure MultiOpRadioBtnClick(Sender: TObject);
     procedure SingleOpRadioBtnClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -474,6 +481,10 @@ type
     procedure buttonPartialCheckForeColorClick(Sender: TObject);
     procedure buttonPartialCheckBackColorClick(Sender: TObject);
     procedure buttonPartialCheckInitColorClick(Sender: TObject);
+    procedure buttonFocusedBackColorClick(Sender: TObject);
+    procedure buttonFocusedInitColorClick(Sender: TObject);
+    procedure checkFocusedBoldClick(Sender: TObject);
+    procedure buttonFocusedForeColorClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -813,6 +824,11 @@ begin
       // Partial Check
       Settings.FPartialCheck.FCurrentBandForeColor := editPartialCheckColor.Font.Color;
       Settings.FPartialCheck.FCurrentBandBackColor := editPartialCheckColor.Color;
+
+      // Input Assist
+      Settings.FInputAssist.FFocusedForeColor := editFocusedColor.Font.Color;
+      Settings.FInputAssist.FFocusedBackColor := editFocusedColor.Color;
+      Settings.FInputAssist.FFocusedBold := checkFocusedBold.Checked;
 
       // Band Scope
       Settings._usebandscope[b19]   := checkBS01.Checked;
@@ -1185,6 +1201,11 @@ begin
       // Partial Check
       editPartialCheckColor.Font.Color := Settings.FPartialCheck.FCurrentBandForeColor;
       editPartialCheckColor.Color := Settings.FPartialCheck.FCurrentBandBackColor;
+
+      // Input Assist
+      editFocusedColor.Font.Color := Settings.FInputAssist.FFocusedForeColor;
+      editFocusedColor.Color := Settings.FInputAssist.FFocusedBackColor;
+      checkFocusedBold.Checked := Settings.FInputAssist.FFocusedBold;
 
       // Band Scope
       checkBS01.Checked := Settings._usebandscope[b19];
@@ -2013,6 +2034,39 @@ procedure TformOptions.buttonPartialCheckInitColorClick(Sender: TObject);
 begin
    editPartialCheckColor.Font.Color := clFuchsia;
    editPartialCheckColor.Color := clWhite;
+end;
+
+procedure TformOptions.buttonFocusedForeColorClick(Sender: TObject);
+begin
+   ColorDialog1.Color := editFocusedColor.Font.Color;
+   if ColorDialog1.Execute = True then begin
+      editFocusedColor.Font.Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions.buttonFocusedBackColorClick(Sender: TObject);
+begin
+   ColorDialog1.Color := editFocusedColor.Color;
+   if ColorDialog1.Execute = True then begin
+      editFocusedColor.Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions.buttonFocusedInitColorClick(Sender: TObject);
+begin
+   editFocusedColor.Font.Color := clBlack;
+   editFocusedColor.Color := clWhite;
+   checkFocusedBold.Checked := False;
+end;
+
+procedure TformOptions.checkFocusedBoldClick(Sender: TObject);
+begin
+   if checkFocusedBold.Checked = True then begin
+      editFocusedColor.Font.Style := editFocusedColor.Font.Style + [fsBold];
+   end
+   else begin
+      editFocusedColor.Font.Style := editFocusedColor.Font.Style - [fsBold];
+   end;
 end;
 
 procedure TformOptions.buttonPlayVoiceClick(Sender: TObject);

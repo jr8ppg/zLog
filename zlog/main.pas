@@ -6259,6 +6259,10 @@ begin
       // Voice‰Šú‰»
       FVoiceForm.Init();
 
+      // Input Assist
+      EditExit(LastFocus);
+      EditEnter(LastFocus);
+
       LastFocus.SetFocus;
    finally
       f.Release();
@@ -6410,6 +6414,18 @@ var
    P: Integer;
 begin
    LastFocus := TEdit(Sender);
+
+   with TEdit(Sender) do begin
+      Font.Color := dmZLogGlobal.Settings.FInputAssist.FFocusedForeColor;
+      Color := dmZLogGlobal.Settings.FInputAssist.FFocusedBackColor;
+      if dmZLogGlobal.Settings.FInputAssist.FFocusedBold = True then begin
+         Font.Style := Font.Style + [fsBold];
+      end
+      else begin
+         Font.Style := Font.Style - [fsBold];
+      end;
+   end;
+
    if TEdit(Sender).Name = 'CallsignEdit' then begin
       P := Pos('.', CallsignEdit.Text);
       if P > 0 then begin
@@ -6424,6 +6440,12 @@ end;
 
 procedure TMainForm.EditExit(Sender: TObject);
 begin
+   with TEdit(Sender) do begin
+      Font.Color := clBlack;
+      Color := clWhite;
+      Font.Style := Font.Style - [fsBold];
+   end;
+
    actionQsoStart.Enabled:= False;
    actionQsoComplete.Enabled:= False;
 end;
