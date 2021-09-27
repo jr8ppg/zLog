@@ -29,8 +29,6 @@ object CommForm: TCommForm
     Height = 80
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 248
-    ExplicitWidth = 367
     object Edit: TEdit
       Left = 8
       Top = 6
@@ -43,6 +41,7 @@ object CommForm: TCommForm
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
+      PopupMenu = popupCommand
       TabOrder = 0
       OnKeyPress = EditKeyPress
     end
@@ -108,8 +107,6 @@ object CommForm: TCommForm
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
-    ExplicitWidth = 367
-    ExplicitHeight = 248
     object Splitter1: TSplitter
       Left = 1
       Top = 16
@@ -141,8 +138,6 @@ object CommForm: TCommForm
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
-      ExplicitWidth = 365
-      ExplicitHeight = 154
     end
     object Console: TColorConsole2
       Left = 1
@@ -158,8 +153,6 @@ object CommForm: TCommForm
       Font.Style = []
       Rows = 500
       LineBreak = CR
-      ExplicitTop = 159
-      ExplicitWidth = 365
     end
   end
   object StatusLine: TStatusBar
@@ -169,8 +162,6 @@ object CommForm: TCommForm
     Height = 23
     Panels = <>
     SimplePanel = True
-    ExplicitTop = 328
-    ExplicitWidth = 367
   end
   object Timer1: TTimer
     Enabled = False
@@ -221,5 +212,16 @@ object CommForm: TCommForm
       'UTF-8')
     Left = 216
     Top = 40
+  end
+  object popupCommand: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 276
+    Top = 48
+    object menuPasteCommand: TMenuItem
+      Caption = #36028#12426#20184#12369
+      ShortCut = 16470
+      OnClick = menuPasteCommandClick
+    end
   end
 end
