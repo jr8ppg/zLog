@@ -1569,8 +1569,6 @@ begin
       // no rs232c anymore
    end;
 
-   MainForm.CommForm.EnableConnectButton(Settings._clusterport = 7);
-
    MainForm.CommForm.ImplementOptions;
    MainForm.ZLinkForm.ImplementOptions;
    MainForm.ChatForm.ImplementOptions;

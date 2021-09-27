@@ -2,9 +2,11 @@ object CommForm: TCommForm
   Left = 117
   Top = 174
   Caption = 'Cluster'
-  ClientHeight = 351
-  ClientWidth = 367
+  ClientHeight = 212
+  ClientWidth = 354
   Color = clBtnFace
+  Constraints.MinHeight = 250
+  Constraints.MinWidth = 350
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -22,11 +24,13 @@ object CommForm: TCommForm
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 248
-    Width = 367
+    Top = 109
+    Width = 354
     Height = 80
     Align = alBottom
     TabOrder = 0
+    ExplicitTop = 248
+    ExplicitWidth = 367
     object Edit: TEdit
       Left = 8
       Top = 6
@@ -99,15 +103,17 @@ object CommForm: TCommForm
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 367
-    Height = 248
+    Width = 354
+    Height = 109
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
+    ExplicitWidth = 367
+    ExplicitHeight = 248
     object Splitter1: TSplitter
       Left = 1
-      Top = 155
-      Width = 365
+      Top = 16
+      Width = 352
       Height = 4
       Cursor = crVSplit
       Align = alBottom
@@ -118,8 +124,8 @@ object CommForm: TCommForm
     object ListBox: TListBox
       Left = 1
       Top = 1
-      Width = 365
-      Height = 154
+      Width = 352
+      Height = 15
       Style = lbOwnerDrawVariable
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -135,11 +141,13 @@ object CommForm: TCommForm
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
+      ExplicitWidth = 365
+      ExplicitHeight = 154
     end
     object Console: TColorConsole2
       Left = 1
-      Top = 159
-      Width = 365
+      Top = 20
+      Width = 352
       Height = 88
       Align = alBottom
       ParentColor = False
@@ -150,15 +158,19 @@ object CommForm: TCommForm
       Font.Style = []
       Rows = 500
       LineBreak = CR
+      ExplicitTop = 159
+      ExplicitWidth = 365
     end
   end
   object StatusLine: TStatusBar
     Left = 0
-    Top = 328
-    Width = 367
+    Top = 189
+    Width = 354
     Height = 23
     Panels = <>
     SimplePanel = True
+    ExplicitTop = 328
+    ExplicitWidth = 367
   end
   object Timer1: TTimer
     Enabled = False

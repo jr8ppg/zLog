@@ -4080,6 +4080,7 @@ begin
    dmZlogGlobal.ReadWindowState(FCwMessagePad);
    dmZlogGlobal.ReadWindowState(FFunctionKeyPanel);
    dmZlogGlobal.ReadWindowState(FQsyInfoForm);
+   dmZlogGlobal.ReadWindowState(FZLinkForm);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZlogGlobal.ReadWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
@@ -4111,6 +4112,7 @@ begin
    dmZlogGlobal.WriteWindowState(FCwMessagePad);
    dmZlogGlobal.WriteWindowState(FFunctionKeyPanel);
    dmZlogGlobal.WriteWindowState(FQsyInfoForm);
+   dmZlogGlobal.WriteWindowState(FZLinkForm);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZlogGlobal.WriteWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');

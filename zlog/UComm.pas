@@ -90,13 +90,13 @@ type
     procedure WriteConsole(strText: string);
 
     procedure RenewListBox;
+    procedure EnableConnectButton(boo : boolean);
   public
     { Public declarations }
     procedure PreProcessSpotFromZLink(S : string; N: Integer);
     procedure TransmitSpot(S : string); // local or via network
     procedure ImplementOptions();
     procedure RenewOptions();
-    procedure EnableConnectButton(boo : boolean);
     procedure Renew; // red or black
     procedure RemoteConnectButtonPush;
     function MaybeConnected : boolean; {returns false if port = telnet and
@@ -139,10 +139,12 @@ begin
          Exit;
       end;
 
+      ListBox.Items.BeginUpdate();
       for i := _from to _to do begin
          FSpotList.Delete(_from);
          ListBox.Items.Delete(_from);
       end;
+      ListBox.Items.EndUpdate();
    finally
       Unlock();
    end;
@@ -286,6 +288,8 @@ procedure TCommForm.ImplementOptions();
 var
    i: Integer;
 begin
+   EnableConnectButton((dmZlogGlobal.Settings._clusterport = 7) and (dmZlogGlobal.Settings._cluster_telnet.FHostName <> ''));
+
    if dmZlogGlobal.Settings._clusterbaud <> 99 then begin
       ClusterComm.BaudRate := TBaudRate(dmZlogGlobal.Settings._clusterbaud+1);
    end;
@@ -350,15 +354,17 @@ procedure TCommForm.RenewListBox;
 var
    i: Integer;
 begin
-   ListBox.Clear;
+   ListBox.Items.BeginUpdate();
    Lock();
-
    try
+      ListBox.Clear;
+
       for i := 0 to FSpotList.Count - 1 do begin
          ListBox.AddItem(FSpotList[i].ClusterSummary, FSpotList[i]);
       end;
    finally
       Unlock();
+      ListBox.Items.EndUpdate();
    end;
 
    ListBox.ShowLast();
@@ -404,6 +410,7 @@ begin
 
       Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
 
+      ListBox.Items.BeginUpdate();
       for i := FSpotList.Count - 1 downto 0 do begin
          S := FSpotList[i];
          if Now - S.Time > Expire then begin
@@ -417,6 +424,7 @@ begin
             break;
          end;
       end;
+      ListBox.Items.EndUpdate();
 
       if _deleted then begin
 //         RenewListBox;
@@ -467,7 +475,9 @@ begin
       MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
    end;
 
+   ListBox.Items.BeginUpdate();
    ListBox.AddItem(Sp.ClusterSummary, Sp);
+   ListBox.Items.EndUpdate();
    ListBox.ShowLast();
 
    // BandScope‚É“o˜^

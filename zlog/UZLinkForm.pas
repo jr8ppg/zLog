@@ -17,26 +17,19 @@ type
   TZLinkForm = class(TForm)
     StatusLine: TStatusBar;
     Panel1: TPanel;
-    Button1: TButton;
-    Button2: TButton;
     Edit: TEdit;
-    Button: TButton;
+    ConnectButton: TButton;
     Console: TColorConsole2;
     Timer1: TTimer;
-    Button3: TButton;
     ZSocket: TWSocket;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure Button1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure ButtonClick(Sender: TObject);
-    //procedure AsyncCommRxChar(Sender: TObject; Count: Integer);
-    //procedure AsyncCommError(Sender: TObject; Errors: Integer);
-    procedure Button3Click(Sender: TObject);
+    procedure ConnectButtonClick(Sender: TObject);
     procedure ZSocketDataAvailable(Sender: TObject; Error: Word);
     procedure ZSocketSessionClosed(Sender: TObject; Error: Word);
     procedure ZSocketSessionConnected(Sender: TObject; Error: Word);
@@ -45,16 +38,19 @@ type
     { Private declarations }
     CommTemp : string; {command work string}
     CommStarted : boolean;
-  public
-    { Public declarations }
-    //Transparent : boolean; // only for loading log from ZServer. False by default
+
     CommBuffer : TStringList;
     CommandQue : TStringList;
     MergeTempList : TList; // temporary list to hold Z-Server QSOID list
                            // created when GETQSOIDS is issued and destroyed
                            // when all merge process is finished. List of TQSOID
-    DisconnectedByMenu : boolean;
+
+    procedure EnableConnectButton(boo : boolean);
     procedure CommProcess;
+  public
+    { Public declarations }
+    //Transparent : boolean; // only for loading log from ZServer. False by default
+    DisconnectedByMenu : boolean;
     procedure ImplementOptions;
     procedure WriteData(str : string);
     procedure SendMergeTempList; // request to send the qsos in the MergeTempList
@@ -70,14 +66,11 @@ type
     procedure SendLogToZServer;
     procedure MergeLogWithZServer;
     procedure DeleteQSO(aQSO : TQSO);
-    //procedure SendQSOLog(aQSO : TQSO);
     procedure LockQSO(aQSO : TQSO);
     procedure UnLockQSO(aQSO : TQSO);
-    //procedure EditQSO(aQSO, bQSO : TQSO);
     procedure EditQSObyID(aQSO : TQSO);
     procedure InsertQSO(bQSO : TQSO);
     procedure LoadLogFromZLink;
-    //procedure LoadLogFromZServer;
     function ZServerConnected : boolean;
     procedure GetCurrentBandData(B : TBand); // loads data from Z-Server to main Log. Issues SENDCURRENT n
     procedure SendRemoteCluster(S : String);
@@ -117,18 +110,6 @@ end;
 procedure TZLinkForm.Button1Click(Sender: TObject);
 begin
    Close;
-end;
-
-procedure TZLinkForm.Button2Click(Sender: TObject);
-begin
-   if Self.FormStyle = fsStayOnTop then begin
-      Self.FormStyle := fsNormal;
-      Button2.Caption := 'Stay on Top';
-   end
-   else begin
-      Self.FormStyle := fsStayOnTop;
-      Button2.Caption := 'Normal';
-   end;
 end;
 
 procedure TZLinkForm.Timer1Timer(Sender: TObject);
@@ -787,9 +768,15 @@ begin
    CommandQue.Free();
 end;
 
+procedure TZLinkForm.EnableConnectButton(boo : boolean);
+begin
+   ConnectButton.Enabled := boo;
+end;
+
 procedure TZLinkForm.ImplementOptions;
 begin
    try
+      EnableConnectButton((dmZlogGlobal.Settings._zlinkport = 1) and (dmZlogGlobal.Settings._zlink_telnet.FHostName <> ''));
       Console.LineBreak := TConsole2LineBreak(dmZlogGlobal.Settings._zlink_telnet.FLineBreak);
       ZSocket.Addr := dmZlogGlobal.Settings._zlink_telnet.FHostName;
    except
@@ -829,31 +816,19 @@ begin
    Result := (ZSocket.State = wsConnected);
 end;
 
-procedure TZLinkForm.ButtonClick(Sender: TObject);
+procedure TZLinkForm.ConnectButtonClick(Sender: TObject);
 begin
    if (ZSocket.State = wsConnected) then begin
-      Button.Caption := 'Disconnecting...';
+      DisconnectedByMenu := True;
+      ConnectButton.Caption := 'Disconnecting...';
       ZSocket.Close;
    end
    else begin
-      Button.Caption := 'Connecting...';
+      ConnectButton.Caption := 'Connecting...';
       ZSocket.Addr := dmZlogGlobal.Settings._zlink_telnet.FHostName;
       ZSocket.Port := 'telnet';
       ZSocket.Connect;
    end;
-end;
-
-procedure TZLinkForm.Button3Click(Sender: TObject);
-var
-   i: integer;
-begin
-   for i := 1 to Log.TotalQSO do begin
-      // repeat until AsyncComm.OutQueCount = 0;
-      SendQSO(Log.QsoList[i]);
-   end;
-
-   // repeat until AsyncComm.OutQueCount = 0;
-   WriteData(ZLinkHeader + ' ' + 'RENEW' + LineBreakCode[Ord(Console.LineBreak)]);
 end;
 
 procedure TZLinkForm.LoadLogFromZLink;
@@ -904,7 +879,7 @@ end;
 procedure TZLinkForm.ZSocketSessionClosed(Sender: TObject; Error: Word);
 begin
    Console.WriteString('disconnected...');
-   Button.Caption := 'Connect';
+   ConnectButton.Caption := 'Connect';
    MainForm.ConnectToZServer1.Caption := 'Connect to Z-Server';
    MainForm.ZServerIcon.Visible := false;
    MainForm.DisableNetworkMenus;
@@ -924,7 +899,7 @@ begin
       Exit;
    end;
 
-   Button.Caption := 'Disconnect';
+   ConnectButton.Caption := 'Disconnect';
    MainForm.ConnectToZServer1.Caption := 'Disconnect Z-Server'; // 0.23
    Console.WriteString('connected to ' + ZSocket.Addr + LineBreakCode[Ord(Console.LineBreak)]);
    SendBand; { tell Z-Server current band }
