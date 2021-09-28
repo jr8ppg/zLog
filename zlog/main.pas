@@ -1068,6 +1068,7 @@ type
     procedure ShowToggleStatus(text: string; fON: Boolean);
     procedure SetListWidth();
     procedure SelectOperator(O: string);
+    procedure SetEditColor(edit: TEdit; fHighlight: Boolean);
     function ScanNextBand(B0: TBand): TBand;
     function ScanPrevBand(B0: TBand): TBand;
     function IsAvailableBand(B: TBand): Boolean;
@@ -6415,16 +6416,7 @@ var
 begin
    LastFocus := TEdit(Sender);
 
-   with TEdit(Sender) do begin
-      Font.Color := dmZLogGlobal.Settings.FInputAssist.FFocusedForeColor;
-      Color := dmZLogGlobal.Settings.FInputAssist.FFocusedBackColor;
-      if dmZLogGlobal.Settings.FInputAssist.FFocusedBold = True then begin
-         Font.Style := Font.Style + [fsBold];
-      end
-      else begin
-         Font.Style := Font.Style - [fsBold];
-      end;
-   end;
+   SetEditColor(TEdit(Sender), False);
 
    if TEdit(Sender).Name = 'CallsignEdit' then begin
       P := Pos('.', CallsignEdit.Text);
@@ -9606,13 +9598,7 @@ end;
 
 procedure TMainForm.HighlightCallsign(fHighlight: Boolean);
 begin
-   if (dmZlogGlobal.Settings.FSuperCheck.FFullMatchHighlight = True) and
-      (fHighlight = True) then begin
-      CallsignEdit.Color := dmZlogGlobal.Settings.FSuperCheck.FFullMatchColor;
-   end
-   else begin
-      CallsignEdit.Color := clWindow;
-   end;
+   SetEditColor(CallsignEdit, fHighlight);
 end;
 
 procedure TMainForm.BandScopeNotifyWorked(aQSO: TQSO);
@@ -9916,6 +9902,27 @@ begin
 
    // Change Voice Files
    FVoiceForm.SetOperator(op);
+end;
+
+procedure TMainForm.SetEditColor(edit: TEdit; fHighlight: Boolean);
+begin
+   with edit do begin
+      if (dmZlogGlobal.Settings.FSuperCheck.FFullMatchHighlight = True) and
+         (fHighlight = True) then begin
+         Color := dmZlogGlobal.Settings.FSuperCheck.FFullMatchColor;
+      end
+      else begin
+         Color := dmZLogGlobal.Settings.FInputAssist.FFocusedBackColor;
+      end;
+
+      Font.Color := dmZLogGlobal.Settings.FInputAssist.FFocusedForeColor;
+      if dmZLogGlobal.Settings.FInputAssist.FFocusedBold = True then begin
+         Font.Style := Font.Style + [fsBold];
+      end
+      else begin
+         Font.Style := Font.Style - [fsBold];
+      end;
+   end;
 end;
 
 end.
