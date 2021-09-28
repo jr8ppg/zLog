@@ -931,7 +931,7 @@ begin
       Settings.FPartialCheck.FCurrentBandForeColor := ZStringToColorDef(ini.ReadString('PartialCheck', 'CurrentBandForeColor', '$ff00ff'), clFuchsia);
       Settings.FPartialCheck.FCurrentBandBackColor := ZStringToColorDef(ini.ReadString('PartialCheck', 'CurrentBandBackColor', '$ffffff'), clWhite);
 
-      // Input Assist
+      // Accessibility
       Settings.FInputAssist.FFocusedForeColor := ZStringToColorDef(ini.ReadString('InputAssist', 'FocusedForeColor', '$000000'), clBlack);
       Settings.FInputAssist.FFocusedBackColor := ZStringToColorDef(ini.ReadString('InputAssist', 'FocusedBackColor', '$ffffff'), clWhite);
       Settings.FInputAssist.FFocusedBold      := ini.ReadBool('InputAssist', 'FocusedBold', False);
@@ -1449,7 +1449,7 @@ begin
       ini.WriteString('PartialCheck', 'CurrentBandForeColor', ZColorToString(Settings.FPartialCheck.FCurrentBandForeColor));
       ini.WriteString('PartialCheck', 'CurrentBandBackColor', ZColorToString(Settings.FPartialCheck.FCurrentBandBackColor));
 
-      // Input Assist
+      // Accessibility
       ini.WriteString('InputAssist', 'FocusedForeColor', ZColorToString(Settings.FInputAssist.FFocusedForeColor));
       ini.WriteString('InputAssist', 'FocusedBackColor', ZColorToString(Settings.FInputAssist.FFocusedBackColor));
       ini.WriteBool('InputAssist', 'FocusedBold', Settings.FInputAssist.FFocusedBold);

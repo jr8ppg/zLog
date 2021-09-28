@@ -1,7 +1,7 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = rgSearchAfter
+  ActiveControl = act19
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -25,7 +25,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 394
     Height = 434
-    ActivePage = tabsheetMisc
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -2816,12 +2816,12 @@ object formOptions: TformOptions
         Top = 325
         Width = 368
         Height = 72
-        Caption = 'Input Assist'
+        Caption = 'Accessibility'
         TabOrder = 9
         object Label89: TLabel
           Left = 15
           Top = 23
-          Width = 75
+          Width = 68
           Height = 13
           Caption = 'Focused Color'
         end

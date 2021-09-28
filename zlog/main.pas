@@ -6260,7 +6260,7 @@ begin
       // Voice‰Šú‰»
       FVoiceForm.Init();
 
-      // Input Assist
+      // Accessibility
       EditExit(LastFocus);
       EditEnter(LastFocus);
 

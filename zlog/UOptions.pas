@@ -825,7 +825,7 @@ begin
       Settings.FPartialCheck.FCurrentBandForeColor := editPartialCheckColor.Font.Color;
       Settings.FPartialCheck.FCurrentBandBackColor := editPartialCheckColor.Color;
 
-      // Input Assist
+      // Accessibility
       Settings.FInputAssist.FFocusedForeColor := editFocusedColor.Font.Color;
       Settings.FInputAssist.FFocusedBackColor := editFocusedColor.Color;
       Settings.FInputAssist.FFocusedBold := checkFocusedBold.Checked;
@@ -1202,7 +1202,7 @@ begin
       editPartialCheckColor.Font.Color := Settings.FPartialCheck.FCurrentBandForeColor;
       editPartialCheckColor.Color := Settings.FPartialCheck.FCurrentBandBackColor;
 
-      // Input Assist
+      // Accessibility
       editFocusedColor.Font.Color := Settings.FInputAssist.FFocusedForeColor;
       editFocusedColor.Color := Settings.FInputAssist.FFocusedBackColor;
       checkFocusedBold.Checked := Settings.FInputAssist.FFocusedBold;
