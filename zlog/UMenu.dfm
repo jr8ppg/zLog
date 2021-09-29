@@ -107,6 +107,13 @@ object MenuForm: TMenuForm
       Visible = False
       OnClick = OldSelectButtonClick
     end
+    object Label4: TLabel
+      Left = 24
+      Top = 124
+      Width = 91
+      Height = 13
+      Caption = '(not recommended)'
+    end
     object rbALLJA: TRadioButton
       Left = 8
       Top = 16
@@ -318,7 +325,7 @@ object MenuForm: TMenuForm
       Tag = 6
       Left = 8
       Top = 112
-      Width = 89
+      Width = 65
       Height = 17
       Caption = 'KCJ'
       TabOrder = 19

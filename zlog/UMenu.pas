@@ -47,6 +47,7 @@ type
       rbKCJ: TRadioButton;
       rbWAE: TRadioButton;
     OldSelectButton: TSpeedButton;
+    Label4: TLabel;
       procedure FormCreate(Sender: TObject);
       procedure FormShow(Sender: TObject);
       procedure rbCQWWClick(Sender: TObject);
