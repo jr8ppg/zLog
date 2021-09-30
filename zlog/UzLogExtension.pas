@@ -173,6 +173,8 @@ begin
 	Props.AddOrSetValue('{V}', Version);
 	Props.AddOrSetValue('{F}', CurrentFileName);
 	Props.AddOrSetValue('{C}', UpperCase(dmZLogGlobal.MyCall));
+	Props.AddOrSetValue('{B}', qso.BandStr);
+	Props.AddOrSetValue('{M}', qso.ModeStr);
 	if MyContest <> nil then v := UzLogCW.SetStrNoAbbrev(v, qso);
 	for key in Props.Keys do v := ReplaceStr(v, key, Props[key]);
 	Result := v;
