@@ -826,9 +826,9 @@ begin
       Settings.FPartialCheck.FCurrentBandBackColor := editPartialCheckColor.Color;
 
       // Accessibility
-      Settings.FInputAssist.FFocusedForeColor := editFocusedColor.Font.Color;
-      Settings.FInputAssist.FFocusedBackColor := editFocusedColor.Color;
-      Settings.FInputAssist.FFocusedBold := checkFocusedBold.Checked;
+      Settings.FAccessibility.FFocusedForeColor := editFocusedColor.Font.Color;
+      Settings.FAccessibility.FFocusedBackColor := editFocusedColor.Color;
+      Settings.FAccessibility.FFocusedBold := checkFocusedBold.Checked;
 
       // Band Scope
       Settings._usebandscope[b19]   := checkBS01.Checked;
@@ -1203,9 +1203,9 @@ begin
       editPartialCheckColor.Color := Settings.FPartialCheck.FCurrentBandBackColor;
 
       // Accessibility
-      editFocusedColor.Font.Color := Settings.FInputAssist.FFocusedForeColor;
-      editFocusedColor.Color := Settings.FInputAssist.FFocusedBackColor;
-      checkFocusedBold.Checked := Settings.FInputAssist.FFocusedBold;
+      editFocusedColor.Font.Color := Settings.FAccessibility.FFocusedForeColor;
+      editFocusedColor.Color := Settings.FAccessibility.FFocusedBackColor;
+      checkFocusedBold.Checked := Settings.FAccessibility.FFocusedBold;
 
       // Band Scope
       checkBS01.Checked := Settings._usebandscope[b19];

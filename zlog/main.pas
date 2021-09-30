@@ -9912,11 +9912,11 @@ begin
          Color := dmZlogGlobal.Settings.FSuperCheck.FFullMatchColor;
       end
       else begin
-         Color := dmZLogGlobal.Settings.FInputAssist.FFocusedBackColor;
+         Color := dmZLogGlobal.Settings.FAccessibility.FFocusedBackColor;
       end;
 
-      Font.Color := dmZLogGlobal.Settings.FInputAssist.FFocusedForeColor;
-      if dmZLogGlobal.Settings.FInputAssist.FFocusedBold = True then begin
+      Font.Color := dmZLogGlobal.Settings.FAccessibility.FFocusedForeColor;
+      if dmZLogGlobal.Settings.FAccessibility.FFocusedBold = True then begin
          Font.Style := Font.Style + [fsBold];
       end
       else begin

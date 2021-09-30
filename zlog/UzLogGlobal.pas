@@ -64,7 +64,7 @@ type
     FCurrentBandBackColor: TColor;
   end;
 
-  TInputAssistParam = record
+  TAccessibilityParam = record
     FFocusedForeColor: TColor;
     FFocusedBackColor: TColor;
     FFocusedBold: Boolean;
@@ -194,7 +194,7 @@ type
     FQuickQSY: array[1..8] of TQuickQSY;
     FSuperCheck: TSuperCheckParam;
     FPartialCheck: TPartialCheckParam;
-    FInputAssist: TInputAssistParam;
+    FAccessibility: TAccessibilityParam;
 
     FQuickMemoText: array[1..5] of string;
 
@@ -932,9 +932,9 @@ begin
       Settings.FPartialCheck.FCurrentBandBackColor := ZStringToColorDef(ini.ReadString('PartialCheck', 'CurrentBandBackColor', '$ffffff'), clWhite);
 
       // Accessibility
-      Settings.FInputAssist.FFocusedForeColor := ZStringToColorDef(ini.ReadString('InputAssist', 'FocusedForeColor', '$000000'), clBlack);
-      Settings.FInputAssist.FFocusedBackColor := ZStringToColorDef(ini.ReadString('InputAssist', 'FocusedBackColor', '$ffffff'), clWhite);
-      Settings.FInputAssist.FFocusedBold      := ini.ReadBool('InputAssist', 'FocusedBold', False);
+      Settings.FAccessibility.FFocusedForeColor := ZStringToColorDef(ini.ReadString('Accessibility', 'FocusedForeColor', '$000000'), clBlack);
+      Settings.FAccessibility.FFocusedBackColor := ZStringToColorDef(ini.ReadString('Accessibility', 'FocusedBackColor', '$ffffff'), clWhite);
+      Settings.FAccessibility.FFocusedBold      := ini.ReadBool('Accessibility', 'FocusedBold', False);
 
       // BandScope
       Settings._usebandscope[b19]   := ini.ReadBool('BandScopeEx', 'BandScope1.9MHz', False);
@@ -1450,9 +1450,9 @@ begin
       ini.WriteString('PartialCheck', 'CurrentBandBackColor', ZColorToString(Settings.FPartialCheck.FCurrentBandBackColor));
 
       // Accessibility
-      ini.WriteString('InputAssist', 'FocusedForeColor', ZColorToString(Settings.FInputAssist.FFocusedForeColor));
-      ini.WriteString('InputAssist', 'FocusedBackColor', ZColorToString(Settings.FInputAssist.FFocusedBackColor));
-      ini.WriteBool('InputAssist', 'FocusedBold', Settings.FInputAssist.FFocusedBold);
+      ini.WriteString('Accessibility', 'FocusedForeColor', ZColorToString(Settings.FAccessibility.FFocusedForeColor));
+      ini.WriteString('Accessibility', 'FocusedBackColor', ZColorToString(Settings.FAccessibility.FFocusedBackColor));
+      ini.WriteBool('Accessibility', 'FocusedBold', Settings.FAccessibility.FFocusedBold);
 
       // BandScope
       ini.WriteBool('BandScopeEx', 'BandScope1.9MHz', Settings._usebandscope[b19]);
