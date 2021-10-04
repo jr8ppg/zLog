@@ -53,9 +53,6 @@ type
     { Public declarations }
   end;
 
-var
-  TTYConsole: TTTYConsole;
-
 implementation
 
 uses Main, UOptions;
