@@ -952,11 +952,11 @@ begin
 
       // RIT Status
       strTemp := string(Copy(S, 19, 1));
-      FRit := StrToBool(strTemp);
+      FRit := StrToBoolDef(strTemp, False);
 
       // XIT Status
       strTemp := string(Copy(S, 20, 1));
-      FXit := StrToBool(strTemp);
+      FXit := StrToBoolDef(strTemp, False);
 
       if Selected then begin
          UpdateStatus;
@@ -2991,11 +2991,11 @@ begin
 
       // RIT Status
       strTemp := string(Copy(S, 24, 1));
-      FRit := StrToBool(strTemp);
+      FRit := StrToBoolDef(strTemp, False);
 
       // XIT Status
       strTemp := string(Copy(S, 25, 1));
-      FXit := StrToBool(strTemp);
+      FXit := StrToBoolDef(strTemp, False);
 
       if Selected then begin
          UpdateStatus;
@@ -3737,13 +3737,8 @@ procedure TRigControl.PollingTimerTimer(Sender: TObject);
 var
    nRigNo: Integer;
 begin
-   TTimer(Sender).Enabled := False;
-   try
-      nRigNo := TTimer(Sender).Tag;
-      FRigs[nRigNo].PollingProcess();
-   finally
-      TTimer(Sender).Enabled := True;
-   end;
+   nRigNo := TTimer(Sender).Tag;
+   FRigs[nRigNo].PollingProcess();
 end;
 
 procedure TRigControl.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
