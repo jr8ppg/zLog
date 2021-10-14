@@ -261,6 +261,12 @@ begin
    checkPopup.Checked     := dmZlogGlobal.Settings.FChatFormPopupNewMsg;
    checkStayOnTop.Checked := dmZlogGlobal.Settings.FChatFormStayOnTop;
    checkRecord.Checked    := dmZlogGlobal.Settings.FChatFormRecordLogs;
+
+   if (dmZlogGlobal.Settings.FChatFormPrompt < 0) or
+      (dmZlogGlobal.Settings.FChatFormPrompt >= comboPromptType.Items.Count) then begin
+      dmZlogGlobal.Settings.FChatFormPrompt := 0;
+   end;
+   comboPromptType.ItemIndex := dmZlogGlobal.Settings.FChatFormPrompt;
 end;
 
 procedure TChatForm.RenewOptions();
@@ -268,6 +274,7 @@ begin
    dmZlogGlobal.Settings.FChatFormPopupNewMsg   := checkPopup.Checked;
    dmZlogGlobal.Settings.FChatFormStayOnTop     := checkStayOnTop.Checked;
    dmZlogGlobal.Settings.FChatFormRecordLogs    := checkRecord.Checked;
+   dmZlogGlobal.Settings.FChatFormPrompt        := comboPromptType.ItemIndex;
 end;
 
 end.

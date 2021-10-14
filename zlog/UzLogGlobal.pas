@@ -236,6 +236,7 @@ type
     FChatFormPopupNewMsg: Boolean;
     FChatFormStayOnTop: Boolean;
     FChatFormRecordLogs: Boolean;
+    FChatFormPrompt: Integer;
   end;
 
 var
@@ -1082,6 +1083,7 @@ begin
       Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
       Settings.FChatFormStayOnTop      := ini.ReadBool('ChatWindow', 'StayOnTop', False);
       Settings.FChatFormRecordLogs     := ini.ReadBool('ChatWindow', 'RecordLogs', True);
+      Settings.FChatFormPrompt         := ini.ReadInteger('ChatWindow', 'Prompt', 0);
    finally
       ini.Free();
       slParam.Free();
@@ -1559,6 +1561,7 @@ begin
       ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);
       ini.WriteBool('ChatWindow', 'StayOnTop', Settings.FChatFormStayOnTop);
       ini.WriteBool('ChatWindow', 'RecordLogs', Settings.FChatFormRecordLogs);
+      ini.WriteInteger('ChatWindow', 'Prompt', Settings.FChatFormPrompt);
    finally
       ini.Free();
       slParam.Free();
