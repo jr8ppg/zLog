@@ -5606,8 +5606,10 @@ begin
    dmZLogGlobal.Settings.CW._speed := SpeedBar.Position;
    SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
 
-   if LastFocus <> nil then begin
-      LastFocus.SetFocus;
+   if Active = True then begin
+      if LastFocus <> nil then begin
+         LastFocus.SetFocus;
+      end;
    end;
 end;
 
