@@ -3,7 +3,7 @@ unit UMMTTY;
 interface
 
 uses
-  Windows, ShellAPI, SysUtils;
+  Windows, ShellAPI, SysUtils, Forms;
 
 var
    MSG_MMTTY: UINT = 0;
@@ -72,12 +72,31 @@ implementation
 
 procedure InitializeMMTTY(_Handle: THandle);
 var
-   zFileName, zParams, zDir: array [0 .. 79] of Char;
+   strMmtty: string;
+   si: STARTUPINFO;
+   pi: PROCESS_INFORMATION;
+   strCurDir: string;
 begin
-   if MMTTYRunning then
-      exit;
+   if MMTTYRunning then begin
+      Exit;
+   end;
 
-   ShellExecute(_Handle, nil, StrPCopy(zFileName, 'MMTTY'), StrPCopy(zParams, '-r'), StrPCopy(zDir, ''), SW_SHOW);
+   GetStartupInfo(si);
+
+   strCurDir := ExtractFilePath(Application.ExeName);
+   strMmtty :=  strCurDir + 'mmtty.exe';
+   if FileExists(strMmtty) = False then begin
+      Application.MessageBox(PChar('MMTTY not exists' + #13#10 + strMmtty), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
+   if CreateProcess(nil, PChar(strMmtty + ' -r'), nil, nil, False, 0, nil, PChar(strCurDir), si, pi) = False then begin
+      Application.MessageBox(PChar('can not execute MMTTY'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
+   CloseHandle(pi.hProcess);
+   CloseHandle(pi.hThread);
 
    MyHandle := _Handle;
    MSG_MMTTY := RegisterWindowMessage('MMTTY');

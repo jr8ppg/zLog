@@ -954,6 +954,7 @@ type
     FVoiceForm: TVoiceForm;
     FFunctionKeyPanel: TformFunctionKeyPanel;
     FQsyInfoForm: TformQsyInfo;
+    FTTYConsole: TTTYConsole;
 
     FInitialized: Boolean;
 
@@ -3839,6 +3840,7 @@ begin
    FVoiceForm.OnNotifyFinished := OnVoicePlayFinished;
    FFunctionKeyPanel := TformFunctionKeyPanel.Create(Self);
    FQsyInfoForm   := TformQsyInfo.Create(Self);
+   FTTYConsole    := nil;
 
    FCurrentCQMessageNo := 101;
    FQsyFromBS := False;
@@ -4225,18 +4227,16 @@ begin
    end;
 
    if S = 'T' then begin
-      if TTYConsole <> nil then begin
-         TTYConsole.Show;
+      if FTTYConsole <> nil then begin
+         FTTYConsole.Show;
       end;
    end;
 
    if S = 'MMTTY' then begin
-      mnMMTTY.Tag := 1;
-      mnMMTTY.Caption := 'Exit MMTTY';
-      mnTTYConsole.Visible := True;
-      Application.CreateForm(TTTYConsole, TTYConsole);
-      TTYConsole.SetTTYMode(ttyMMTTY);
-      InitializeMMTTY(Handle);
+      if Not Assigned(FTTYConsole) then begin
+         mnMMTTY.Tag := 0;
+         mnMMTTY.Click();
+      end;
    end;
 
    if S = 'OP' then begin
@@ -4252,9 +4252,10 @@ begin
    end;
 
    if S = 'EXITMMTTY' then begin
-      TTYConsole.close;
-      TTYConsole.Destroy;
-      ExitMMTTY;
+      if Assigned(FTTYConsole) then begin
+         mnMMTTY.Tag := 1;
+         mnMMTTY.Click();
+      end;
    end;
 
    if S = 'MMCLR' then begin
@@ -5098,8 +5099,8 @@ begin
    // RTTY
    if Main.CurrentQSO.Mode = mRTTY then begin
       TabPressed := True;
-      if TTYConsole <> nil then
-         TTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), CurrentQSO));
+      if FTTYConsole <> nil then
+         FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), CurrentQSO));
       MyContest.SpaceBarProc;
       NumberEdit.SetFocus;
       exit;
@@ -5180,8 +5181,8 @@ begin
             if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
                S := dmZlogGlobal.CWMessage(3, 5);
                S := SetStrNoAbbrev(S, CurrentQSO);
-               if TTYConsole <> nil then begin
-                  TTYConsole.SendStrNow(S);
+               if FTTYConsole <> nil then begin
+                  FTTYConsole.SendStrNow(S);
                end;
                WriteStatusLine('Invalid Number', False);
                NumberEdit.SetFocus;
@@ -5192,8 +5193,8 @@ begin
             S := dmZlogGlobal.CWMessage(3, 3);
 
             S := SetStrNoAbbrev(S, CurrentQSO);
-            if TTYConsole <> nil then begin
-               TTYConsole.SendStrNow(S);
+            if FTTYConsole <> nil then begin
+               FTTYConsole.SendStrNow(S);
             end;
 
             LogButtonClick(Self);
@@ -5592,6 +5593,11 @@ begin
    FVoiceForm.Release();
    FFunctionKeyPanel.Release();
    FQsyInfoForm.Release();
+
+   if Assigned(FTTYConsole) then begin
+      FTTYConsole.Release();
+   end;
+
    CurrentQSO.Free();
 
    SuperCheckFreeData();
@@ -7056,30 +7062,32 @@ begin
       mnMMTTY.Tag := 1;
       mnMMTTY.Caption := 'Exit MMTTY';
       mnTTYConsole.Visible := True;
-      Application.CreateForm(TTTYConsole, TTYConsole);
-      repeat
-      until TTYConsole <> nil;
+
+      FTTYConsole := TTTYConsole.Create(Self);
+      dmZlogGlobal.ReadWindowState(FTTYConsole);
 
       dmZLogKeyer.CloseBGK();
 
-      TTYConsole.SetTTYMode(ttyMMTTY);
+      FTTYConsole.SetTTYMode(ttyMMTTY);
       InitializeMMTTY(Handle);
-      TTYConsole.Show;
-      TTYConsole.SetFocus;
-      exit;
+
+      FTTYConsole.Show;
+      FTTYConsole.SetFocus;
    end
    else begin
       mnMMTTY.Tag := 0;
       mnMMTTY.Caption := 'Load MMTTY';
       mnTTYConsole.Visible := False;
-      TTYConsole.close;
-      TTYConsole.Destroy;
+
+      dmZlogGlobal.WriteWindowState(FTTYConsole);
+
+      FTTYConsole.Close();
+      FTTYConsole.Release();
+
       ExitMMTTY;
 
       dmZLogKeyer.InitializeBGK(dmZlogGlobal.Settings.CW._interval);
       dmZLogGlobal.InitializeCW();
-
-      exit;
    end;
 end;
 
@@ -7167,8 +7175,8 @@ begin
    end;
 
    if CurrentQSO.Mode = mRTTY then begin
-      if TTYConsole <> nil then begin
-         if TTYConsole.Sending = False then begin
+      if FTTYConsole <> nil then begin
+         if FTTYConsole.Sending = False then begin
             TabPressed := False;
          end;
       end;
@@ -8079,7 +8087,7 @@ procedure TMainForm.PlayMessageRTTY(no: Integer);
 var
    S: string;
 begin
-   if TTYConsole = nil then begin
+   if FTTYConsole = nil then begin
       Exit;
    end;
 
@@ -8090,7 +8098,7 @@ begin
    end;
 
    S := SetStrNoAbbrev(S, CurrentQSO);
-   TTYConsole.SendStrNow(S);
+   FTTYConsole.SendStrNow(S);
 end;
 
 procedure TMainForm.OnVoicePlayStarted(Sender: TObject);
@@ -8710,8 +8718,8 @@ end;
 // #74 Teletype Console
 procedure TMainForm.actionShowTeletypeConsoleExecute(Sender: TObject);
 begin
-   if Assigned(TTYConsole) then begin
-      TTYConsole.Show;
+   if Assigned(FTTYConsole) then begin
+      FTTYConsole.Show;
    end;
 end;
 
