@@ -4492,6 +4492,7 @@ begin
 
    if S = 'CWON' then begin
       dmZLogKeyer.InitializeBGK(dmZlogGlobal.Settings.CW._interval);
+      dmZLogGlobal.InitializeCW();
    end;
 
    i := StrToFloatDef(S, 0);
