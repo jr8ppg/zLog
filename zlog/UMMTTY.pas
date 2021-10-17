@@ -96,6 +96,7 @@ begin
    end;
 
    CloseHandle(pi.hProcess);
+   CloseHandle(pi.hThread);
 
    MyHandle := _Handle;
    MSG_MMTTY := RegisterWindowMessage('MMTTY');
