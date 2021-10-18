@@ -28,7 +28,6 @@ object EditDialog: TEditDialog
     Height = 25
     Caption = 'OK'
     Default = True
-    ModalResult = 1
     TabOrder = 1
     OnClick = OKBtnClick
   end
@@ -39,7 +38,6 @@ object EditDialog: TEditDialog
     Height = 25
     Cancel = True
     Caption = 'Cancel'
-    ModalResult = 2
     TabOrder = 2
     OnClick = CancelBtnClick
   end

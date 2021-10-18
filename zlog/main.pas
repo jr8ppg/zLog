@@ -2294,13 +2294,12 @@ end;
 
 procedure TContest.EditCurrentRow;
 var
-   _top, _row: Integer;
+   R: Integer;
    aQSO: TQSO;
 begin
-   _top := MainForm.Grid.TopRow;
-   _row := MainForm.Grid.Row;
+   R := MainForm.Grid.Row;
 
-   aQSO := TQSO(MainForm.Grid.Objects[0, _row]);
+   aQSO := TQSO(MainForm.Grid.Objects[0, R]);
    if aQSO = nil then begin
       Exit;
    end;
@@ -2312,20 +2311,19 @@ begin
 
    PastEditForm.Init(aQSO, _ActChange);
 
-   if PastEditForm.ShowModal = mrOK then begin
-      if MainForm.FPartialCheck.Visible and MainForm.FPartialCheck._CheckCall then begin
-         MainForm.FPartialCheck.CheckPartial(CurrentQSO);
-      end;
-
-      if MainForm.FCheckCall2.Visible then begin
-         MainForm.FCheckCall2.Renew(CurrentQSO);
-      end;
+   if PastEditForm.ShowModal <> mrOK then begin
+      Exit;
    end;
 
-   MainForm.Grid.TopRow := _top;
-   MainForm.Grid.Row := _row;
+   MainForm.EditScreen.WriteQSO(R, aQSO);
 
-   MainForm.EditScreen.RefreshScreen(False);
+   if MainForm.FPartialCheck.Visible and MainForm.FPartialCheck._CheckCall then begin
+      MainForm.FPartialCheck.CheckPartial(CurrentQSO);
+   end;
+
+   if MainForm.FCheckCall2.Visible then begin
+      MainForm.FCheckCall2.Renew(CurrentQSO);
+   end;
 end;
 
 constructor TJIDXContest.Create(N: string);
