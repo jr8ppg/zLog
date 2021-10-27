@@ -1,5 +1,6 @@
 ![image](https://img.shields.io/badge/Delphi-10.4-brightgreen)
 ![image](https://img.shields.io/github/v/release/jr8ppg/zLog?include_prereleases)
+![image](https://img.shields.io/github/license/jr8ppg/zLog)
 # zLog 令和 Edition
 
 Amateur Radio Contest Logging Program
