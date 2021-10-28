@@ -216,7 +216,6 @@ begin
    MainForm.LastFocus.SetFocus;
    MainForm.ZLinkForm.UnlockQSO(origQSO);
    ModalResult := mrCancel;
-   Close;
 end;
 
 procedure TEditDialog.OKBtnClick(Sender: TObject);
@@ -264,8 +263,6 @@ begin
    MyContest.Renew;
    MainForm.Grid.SetFocus;
    ModalResult := mrOK;
-
-   Close;
 end;
 
 procedure TEditDialog.CallsignEditChange(Sender: TObject);

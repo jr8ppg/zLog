@@ -3031,6 +3031,8 @@ object MainForm: TMainForm
       AutoSize = False
       TabOrder = 9
       OnChange = MemoEditChange
+      OnEnter = EditEnter
+      OnExit = EditExit
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
       TabOnEnter = False

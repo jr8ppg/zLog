@@ -6,7 +6,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, Console, ExtCtrls, Menus, AnsiStrings, ComCtrls,
+  StdCtrls, Console, ExtCtrls, Menus, AnsiStrings, ComCtrls, Vcl.ClipBrd,
   Console2, USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, HelperLib,
   OverbyteIcsWndControl, OverbyteIcsTnCnx, Vcl.ExtDlgs;
 
@@ -34,6 +34,8 @@ type
     SaveTextFileDialog1: TSaveTextFileDialog;
     checkAutoReconnect: TCheckBox;
     checkRecordLogs: TCheckBox;
+    popupCommand: TPopupMenu;
+    menuPasteCommand: TMenuItem;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -62,6 +64,7 @@ type
       var Height: Integer);
     procedure menuSaveToFileClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure menuPasteCommandClick(Sender: TObject);
   private
     { Private declarations }
     FCommBuffer : TStringList;
@@ -90,12 +93,14 @@ type
     procedure WriteConsole(strText: string);
 
     procedure RenewListBox;
+    procedure EnableConnectButton(boo : boolean);
+    function GetLocalEcho(): Boolean;
   public
     { Public declarations }
     procedure PreProcessSpotFromZLink(S : string; N: Integer);
     procedure TransmitSpot(S : string); // local or via network
-    procedure ImplementOptions;
-    procedure EnableConnectButton(boo : boolean);
+    procedure ImplementOptions();
+    procedure RenewOptions();
     procedure Renew; // red or black
     procedure RemoteConnectButtonPush;
     function MaybeConnected : boolean; {returns false if port = telnet and
@@ -138,10 +143,12 @@ begin
          Exit;
       end;
 
+      ListBox.Items.BeginUpdate();
       for i := _from to _to do begin
          FSpotList.Delete(_from);
          ListBox.Items.Delete(_from);
       end;
+      ListBox.Items.EndUpdate();
    finally
       Unlock();
    end;
@@ -226,17 +233,10 @@ end;
 
 procedure TCommForm.EditKeyPress(Sender: TObject; var Key: Char);
 var
-   boo, noport : boolean;
+   fLocalEcho: Boolean;
    s : string;
 begin
-   noport := False;
-   boo := False;
-
-   case dmZlogGlobal.Settings._clusterport of
-      0 : noport := True;
-      1..6 : boo := dmZlogGlobal.Settings._cluster_com.FLocalEcho;
-      7 : boo := dmZlogGlobal.Settings._cluster_telnet.FLocalEcho;
-   end;
+   fLocalEcho := GetLocalEcho();
 
    s := '';
    if Key = Chr($0D) then begin
@@ -252,26 +252,28 @@ begin
          exit;
       end;
 
-      if noport then begin
+      if dmZlogGlobal.Settings._clusterport = 0 then begin
          MainForm.ZLinkForm.SendRemoteCluster(Edit.Text);
       end
       else begin
-         WriteData(Edit.Text+LineBreakCode[ord(Console.LineBreak)]);
+         WriteData(Edit.Text + LineBreakCode[ord(Console.LineBreak)]);
       end;
 
-      if boo then begin
+      if fLocalEcho then begin
          WriteLineConsole(Edit.Text);
       end;
 
       Key := Chr($0);
       Edit.Text := '';
+      Exit;
    end;
 
    case Key of
       ^A, ^B, ^C, ^D, ^E, ^F, ^G, {^H,} ^I, ^J, ^K, ^L,
       ^M, ^N, ^O, ^P, ^Q, ^R, ^S, ^T, ^U, ^V, ^W, ^X, ^Y, ^Z: begin
          s := s + Key;
-         if noport then begin
+
+         if dmZlogGlobal.Settings._clusterport = 0 then begin
             MainForm.ZLinkForm.SendRemoteCluster(s);
          end
          else begin
@@ -281,10 +283,12 @@ begin
    end;
 end;
 
-procedure TCommForm.ImplementOptions;
+procedure TCommForm.ImplementOptions();
 var
    i: Integer;
 begin
+   EnableConnectButton((dmZlogGlobal.Settings._clusterport = 7) and (dmZlogGlobal.Settings._cluster_telnet.FHostName <> ''));
+
    if dmZlogGlobal.Settings._clusterbaud <> 99 then begin
       ClusterComm.BaudRate := TBaudRate(dmZlogGlobal.Settings._clusterbaud+1);
    end;
@@ -311,6 +315,21 @@ begin
       Telnet.Host := Copy(dmZlogGlobal.Settings._cluster_telnet.FHostName, 1, i - 1);
       Telnet.Port := Copy(dmZlogGlobal.Settings._cluster_telnet.FHostName, i + 1);
    end;
+
+   checkAutoLogin.Checked     := dmZlogGlobal.Settings.FClusterAutoLogin;
+   checkAutoReconnect.Checked := dmZlogGlobal.Settings.FClusterAutoReconnect;
+   checkRelaySpot.Checked     := dmZlogGlobal.Settings.FClusterRelaySpot;
+   checkNotifyCurrentBand.Checked := dmZlogGlobal.Settings.FClusterNotifyCurrentBand;
+   checkRecordLogs.Checked    := dmZlogGlobal.Settings.FClusterRecordLogs;
+end;
+
+procedure TCommForm.RenewOptions();
+begin
+   dmZlogGlobal.Settings.FClusterAutoLogin      := checkAutoLogin.Checked;
+   dmZlogGlobal.Settings.FClusterAutoReconnect  := checkAutoReconnect.Checked;
+   dmZlogGlobal.Settings.FClusterRelaySpot      := checkRelaySpot.Checked;
+   dmZlogGlobal.Settings.FClusterNotifyCurrentBand := checkNotifyCurrentBand.Checked;
+   dmZlogGlobal.Settings.FClusterRecordLogs     := checkRecordLogs.Checked;
 end;
 
 procedure TCommForm.FormCreate(Sender: TObject);
@@ -321,7 +340,8 @@ begin
    FCommStarted := False;
    FCommBuffer := TStringList.Create;
    FCommTemp := '';
-   ImplementOptions;
+
+   ImplementOptions();
 
    FDisconnectClicked := False;
    FUseClusterLog := False;
@@ -333,15 +353,17 @@ procedure TCommForm.RenewListBox;
 var
    i: Integer;
 begin
-   ListBox.Clear;
+   ListBox.Items.BeginUpdate();
    Lock();
-
    try
+      ListBox.Clear;
+
       for i := 0 to FSpotList.Count - 1 do begin
          ListBox.AddItem(FSpotList[i].ClusterSummary, FSpotList[i]);
       end;
    finally
       Unlock();
+      ListBox.Items.EndUpdate();
    end;
 
    ListBox.ShowLast();
@@ -387,6 +409,7 @@ begin
 
       Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
 
+      ListBox.Items.BeginUpdate();
       for i := FSpotList.Count - 1 downto 0 do begin
          S := FSpotList[i];
          if Now - S.Time > Expire then begin
@@ -400,6 +423,7 @@ begin
             break;
          end;
       end;
+      ListBox.Items.EndUpdate();
 
       if _deleted then begin
 //         RenewListBox;
@@ -450,7 +474,9 @@ begin
       MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
    end;
 
+   ListBox.Items.BeginUpdate();
    ListBox.AddItem(Sp.ClusterSummary, Sp);
+   ListBox.Items.EndUpdate();
    ListBox.ShowLast();
 
    // BandScope‚É“o˜^
@@ -557,7 +583,6 @@ end;
 
 procedure TCommForm.FormDestroy(Sender: TObject);
 begin
-   inherited;
    ClusterComm.Disconnect;
    ClusterComm.Free;
    FSpotList.Free();
@@ -822,6 +847,38 @@ begin
    Console.Font.Size := v;
 end;
 
+procedure TCommForm.menuPasteCommandClick(Sender: TObject);
+var
+   i: Integer;
+   slText: TStringList;
+   fLocalEcho: Boolean;
+   strCommand: string;
+begin
+   fLocalEcho := GetLocalEcho();
+   ClipBoard.Open();
+   slText := TStringList.Create();
+   try
+      if ClipBoard.HasFormat(CF_TEXT) = False then begin
+         Exit;
+      end;
+
+      slText.Text := ClipBoard.AsText;
+      for i := 0 to slText.Count - 1 do begin
+         strCommand := slText.Strings[i];
+         WriteData(strCommand + LineBreakCode[ord(Console.LineBreak)]);
+
+         if fLocalEcho then begin
+            WriteLineConsole(strCommand);
+         end;
+
+         Sleep(100);
+      end;
+   finally
+      ClipBoard.Close();
+      slText.Free();
+   end;
+end;
+
 procedure TCommForm.menuSaveToFileClick(Sender: TObject);
 var
    i: Integer;
@@ -849,6 +906,15 @@ end;
 procedure TCommForm.Unlock();
 begin
    LeaveCriticalSection(FSpotListLock);
+end;
+
+function TCommForm.GetLocalEcho(): Boolean;
+begin
+   case dmZlogGlobal.Settings._clusterport of
+      1..6: Result := dmZlogGlobal.Settings._cluster_com.FLocalEcho;
+      7:    Result := dmZlogGlobal.Settings._cluster_telnet.FLocalEcho;
+      else  Result := False;
+   end;
 end;
 
 end.

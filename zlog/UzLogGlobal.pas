@@ -64,6 +64,12 @@ type
     FCurrentBandBackColor: TColor;
   end;
 
+  TAccessibilityParam = record
+    FFocusedForeColor: TColor;
+    FFocusedBackColor: TColor;
+    FFocusedBold: Boolean;
+  end;
+
   TColorSetting = record
     FForeColor: TColor;
     FBackColor: TColor;
@@ -188,6 +194,7 @@ type
     FQuickQSY: array[1..8] of TQuickQSY;
     FSuperCheck: TSuperCheckParam;
     FPartialCheck: TPartialCheckParam;
+    FAccessibility: TAccessibilityParam;
 
     FQuickMemoText: array[1..5] of string;
 
@@ -217,6 +224,19 @@ type
     FGraphStartPosition: TQSORateStartPosition;
     FGraphBarColor: array[b19..HiBand] of TColor;
     FGraphTextColor: array[b19..HiBand] of TColor;
+
+    // Cluster Window(Comm)
+    FClusterAutoLogin: Boolean;
+    FClusterAutoReconnect: Boolean;
+    FClusterRelaySpot: Boolean;
+    FClusterNotifyCurrentBand: Boolean;
+    FClusterRecordLogs: Boolean;
+
+    // Z-Server Messages(ChatForm)
+    FChatFormPopupNewMsg: Boolean;
+    FChatFormStayOnTop: Boolean;
+    FChatFormRecordLogs: Boolean;
+    FChatFormPrompt: Integer;
   end;
 
 var
@@ -912,6 +932,11 @@ begin
       Settings.FPartialCheck.FCurrentBandForeColor := ZStringToColorDef(ini.ReadString('PartialCheck', 'CurrentBandForeColor', '$ff00ff'), clFuchsia);
       Settings.FPartialCheck.FCurrentBandBackColor := ZStringToColorDef(ini.ReadString('PartialCheck', 'CurrentBandBackColor', '$ffffff'), clWhite);
 
+      // Accessibility
+      Settings.FAccessibility.FFocusedForeColor := ZStringToColorDef(ini.ReadString('Accessibility', 'FocusedForeColor', '$000000'), clBlack);
+      Settings.FAccessibility.FFocusedBackColor := ZStringToColorDef(ini.ReadString('Accessibility', 'FocusedBackColor', '$ffffff'), clWhite);
+      Settings.FAccessibility.FFocusedBold      := ini.ReadBool('Accessibility', 'FocusedBold', False);
+
       // BandScope
       Settings._usebandscope[b19]   := ini.ReadBool('BandScopeEx', 'BandScope1.9MHz', False);
       Settings._usebandscope[b35]   := ini.ReadBool('BandScopeEx', 'BandScope3.5MHz', False);
@@ -1046,6 +1071,19 @@ begin
          Settings.FGraphBarColor[b]  := ZStringToColorDef(ini.ReadString('Graph', strKey + '_BarColor',  ''), default_graph_bar_color[b]);
          Settings.FGraphTextColor[b] := ZStringToColorDef(ini.ReadString('Graph', strKey + '_TextColor', ''), default_graph_text_color[b]);
       end;
+
+      // Cluster Window(Comm)
+      Settings.FClusterAutoLogin       := ini.ReadBool('ClusterWindow', 'AutoLogin', True);
+      Settings.FClusterAutoReconnect   := ini.ReadBool('ClusterWindow', 'AutoReconnect', True);
+      Settings.FClusterRelaySpot       := ini.ReadBool('ClusterWindow', 'RelaySpot', False);
+      Settings.FClusterNotifyCurrentBand := ini.ReadBool('ClusterWindow', 'NotifyCurrentBand', False);
+      Settings.FClusterRecordLogs      := ini.ReadBool('ClusterWindow', 'RecordLogs', False);
+
+      // Z-Server Messages(ChatForm)
+      Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
+      Settings.FChatFormStayOnTop      := ini.ReadBool('ChatWindow', 'StayOnTop', False);
+      Settings.FChatFormRecordLogs     := ini.ReadBool('ChatWindow', 'RecordLogs', True);
+      Settings.FChatFormPrompt         := ini.ReadInteger('ChatWindow', 'Prompt', 0);
    finally
       ini.Free();
       slParam.Free();
@@ -1413,6 +1451,11 @@ begin
       ini.WriteString('PartialCheck', 'CurrentBandForeColor', ZColorToString(Settings.FPartialCheck.FCurrentBandForeColor));
       ini.WriteString('PartialCheck', 'CurrentBandBackColor', ZColorToString(Settings.FPartialCheck.FCurrentBandBackColor));
 
+      // Accessibility
+      ini.WriteString('Accessibility', 'FocusedForeColor', ZColorToString(Settings.FAccessibility.FFocusedForeColor));
+      ini.WriteString('Accessibility', 'FocusedBackColor', ZColorToString(Settings.FAccessibility.FFocusedBackColor));
+      ini.WriteBool('Accessibility', 'FocusedBold', Settings.FAccessibility.FFocusedBold);
+
       // BandScope
       ini.WriteBool('BandScopeEx', 'BandScope1.9MHz', Settings._usebandscope[b19]);
       ini.WriteBool('BandScopeEx', 'BandScope3.5MHz', Settings._usebandscope[b35]);
@@ -1506,6 +1549,19 @@ begin
          ini.WriteString('Graph', strKey + '_BarColor', ZColorToString(Settings.FGraphBarColor[b]));
          ini.WriteString('Graph', strKey + '_TextColor', ZColorToString(Settings.FGraphTextColor[b]));
       end;
+
+      // Cluster Window(Comm)
+      ini.WriteBool('ClusterWindow', 'AutoLogin', Settings.FClusterAutoLogin);
+      ini.WriteBool('ClusterWindow', 'AutoReconnect', Settings.FClusterAutoReconnect);
+      ini.WriteBool('ClusterWindow', 'RelaySpot', Settings.FClusterRelaySpot);
+      ini.WriteBool('ClusterWindow', 'NotifyCurrentBand', Settings.FClusterNotifyCurrentBand);
+      ini.WriteBool('ClusterWindow', 'RecordLogs', Settings.FClusterRecordLogs);
+
+      // Z-Server Messages(ChatForm)
+      ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);
+      ini.WriteBool('ChatWindow', 'StayOnTop', Settings.FChatFormStayOnTop);
+      ini.WriteBool('ChatWindow', 'RecordLogs', Settings.FChatFormRecordLogs);
+      ini.WriteInteger('ChatWindow', 'Prompt', Settings.FChatFormPrompt);
    finally
       ini.Free();
       slParam.Free();
@@ -1533,10 +1589,9 @@ begin
       // no rs232c anymore
    end;
 
-   MainForm.CommForm.EnableConnectButton(Settings._clusterport = 7);
-
    MainForm.CommForm.ImplementOptions;
    MainForm.ZLinkForm.ImplementOptions;
+   MainForm.ChatForm.ImplementOptions;
 
    InitializeCW();
 

@@ -346,7 +346,7 @@ begin
 		RuleDLL := Rules[link];
 		RuleName := test;
 		RulePath := path;
-	end else
+	end else if link <> '' then
 		MessageDlg(link + ' not installed', mtWarning, [mbOK], 0);
 	list.Free;
 end;

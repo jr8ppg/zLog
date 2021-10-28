@@ -2,9 +2,11 @@ object CommForm: TCommForm
   Left = 117
   Top = 174
   Caption = 'Cluster'
-  ClientHeight = 351
-  ClientWidth = 367
+  ClientHeight = 212
+  ClientWidth = 354
   Color = clBtnFace
+  Constraints.MinHeight = 250
+  Constraints.MinWidth = 350
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -22,8 +24,8 @@ object CommForm: TCommForm
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 248
-    Width = 367
+    Top = 109
+    Width = 354
     Height = 80
     Align = alBottom
     TabOrder = 0
@@ -39,6 +41,7 @@ object CommForm: TCommForm
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
+      PopupMenu = popupCommand
       TabOrder = 0
       OnKeyPress = EditKeyPress
     end
@@ -99,15 +102,15 @@ object CommForm: TCommForm
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 367
-    Height = 248
+    Width = 354
+    Height = 109
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
     object Splitter1: TSplitter
       Left = 1
-      Top = 155
-      Width = 365
+      Top = 16
+      Width = 352
       Height = 4
       Cursor = crVSplit
       Align = alBottom
@@ -118,8 +121,8 @@ object CommForm: TCommForm
     object ListBox: TListBox
       Left = 1
       Top = 1
-      Width = 365
-      Height = 154
+      Width = 352
+      Height = 15
       Style = lbOwnerDrawVariable
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -138,8 +141,8 @@ object CommForm: TCommForm
     end
     object Console: TColorConsole2
       Left = 1
-      Top = 159
-      Width = 365
+      Top = 20
+      Width = 352
       Height = 88
       Align = alBottom
       ParentColor = False
@@ -154,8 +157,8 @@ object CommForm: TCommForm
   end
   object StatusLine: TStatusBar
     Left = 0
-    Top = 328
-    Width = 367
+    Top = 189
+    Width = 354
     Height = 23
     Panels = <>
     SimplePanel = True
@@ -209,5 +212,16 @@ object CommForm: TCommForm
       'UTF-8')
     Left = 216
     Top = 40
+  end
+  object popupCommand: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 276
+    Top = 48
+    object menuPasteCommand: TMenuItem
+      Caption = #36028#12426#20184#12369
+      ShortCut = 16470
+      OnClick = menuPasteCommandClick
+    end
   end
 end

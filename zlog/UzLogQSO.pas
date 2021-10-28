@@ -1963,7 +1963,7 @@ end;
 procedure TLog.SetDupeFlags;
 var
    i, j: Integer;
-   str, temp: string;
+   str: string;
    aQSO: TQSO;
    TempList: array [ord('A') .. ord('Z')] of TStringList;
    ch: Char;

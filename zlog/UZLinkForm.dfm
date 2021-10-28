@@ -2,9 +2,11 @@ object ZLinkForm: TZLinkForm
   Left = 200
   Top = 139
   Caption = 'Z-Link'
-  ClientHeight = 333
-  ClientWidth = 364
+  ClientHeight = 212
+  ClientWidth = 334
   Color = clBtnFace
+  Constraints.MinHeight = 250
+  Constraints.MinWidth = 300
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -19,37 +21,24 @@ object ZLinkForm: TZLinkForm
   TextHeight = 12
   object StatusLine: TStatusBar
     Left = 0
-    Top = 310
-    Width = 364
+    Top = 189
+    Width = 334
     Height = 23
     Panels = <>
     SimplePanel = True
+    ExplicitTop = 310
+    ExplicitWidth = 364
   end
   object Panel1: TPanel
     Left = 0
-    Top = 247
-    Width = 364
-    Height = 63
+    Top = 132
+    Width = 334
+    Height = 57
     Align = alBottom
+    BevelOuter = bvNone
     TabOrder = 1
-    object Button1: TButton
-      Left = 8
-      Top = 32
-      Width = 75
-      Height = 25
-      Caption = 'OK'
-      TabOrder = 0
-      OnClick = Button1Click
-    end
-    object Button2: TButton
-      Left = 96
-      Top = 32
-      Width = 75
-      Height = 25
-      Caption = 'Stay on top'
-      TabOrder = 1
-      OnClick = Button2Click
-    end
+    ExplicitTop = 247
+    ExplicitWidth = 364
     object Edit: TEdit
       Left = 8
       Top = 6
@@ -63,34 +52,24 @@ object ZLinkForm: TZLinkForm
       Font.Style = []
       ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
       ParentFont = False
-      TabOrder = 2
+      TabOrder = 0
       OnKeyPress = EditKeyPress
     end
-    object Button: TButton
-      Left = 176
-      Top = 6
-      Width = 105
+    object ConnectButton: TButton
+      Left = 8
+      Top = 32
+      Width = 90
       Height = 20
       Caption = 'Connect'
-      TabOrder = 3
-      OnClick = ButtonClick
-    end
-    object Button3: TButton
-      Left = 232
-      Top = 32
-      Width = 75
-      Height = 25
-      Caption = 'Button3'
-      TabOrder = 4
-      Visible = False
-      OnClick = Button3Click
+      TabOrder = 1
+      OnClick = ConnectButtonClick
     end
   end
   object Console: TColorConsole2
     Left = 0
     Top = 0
-    Width = 364
-    Height = 247
+    Width = 334
+    Height = 132
     Align = alClient
     ParentColor = False
     Font.Charset = DEFAULT_CHARSET
@@ -100,13 +79,15 @@ object ZLinkForm: TZLinkForm
     Font.Style = []
     Rows = 500
     LineBreak = CR
+    ExplicitWidth = 364
+    ExplicitHeight = 247
   end
   object Timer1: TTimer
     Enabled = False
     Interval = 100
     OnTimer = Timer1Timer
-    Left = 8
-    Top = 88
+    Left = 36
+    Top = 36
   end
   object ZSocket: TWSocket
     LineEnd = #13#10
@@ -122,7 +103,7 @@ object ZLinkForm: TZLinkForm
     OnSessionClosed = ZSocketSessionClosed
     OnSessionConnected = ZSocketSessionConnected
     SocketErrs = wsErrTech
-    Left = 264
-    Top = 184
+    Left = 68
+    Top = 36
   end
 end
