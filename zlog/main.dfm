@@ -5363,6 +5363,10 @@ object MainForm: TMainForm
         Caption = '&Target Editor'
         OnClick = menuTargetEditorClick
       end
+      object menuPluginManager: TMenuItem
+        Caption = '&Plugin Manager'
+        OnClick = menuPluginManagerClick
+      end
     end
     object Network1: TMenuItem
       Caption = '&Network'
