@@ -2102,7 +2102,6 @@ begin
    { str := 'zLog for Windows Text File'; }
    WriteLn(f, Header);
    WriteLn(f, 'All times in UTC');
-   WriteLn(f, 'Yohei Yokobayashi AD6AJ/JJ1MED');
    WriteLn(f, '<eoh>');
 
    offsetmin := Log.QsoList[0].RSTsent;
