@@ -4821,6 +4821,12 @@ end;
 procedure TMainForm.NumberEditChange(Sender: TObject);
 begin
    CurrentQSO.NrRcvd := NumberEdit.Text;
+
+   if Assigned(MyContest) then begin
+      if MyContest.MultiForm.IsIncrementalSearchPresent = True then begin
+         MyContest.MultiForm.CheckMulti(CurrentQSO);
+      end;
+   end;
 end;
 
 procedure TMainForm.BandEditClick(Sender: TObject);
