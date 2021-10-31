@@ -50,8 +50,8 @@ begin
    i := StrToIntDef(str, 0);
 
    if i in [1..MAXCQZONE] then begin
-      if Zone[B,i] = False then begin
-         Zone[B,i] := True;
+      if FZoneFlag[B, i] = False then begin
+         FZoneFlag[B, i] := True;
          aQSO.NewMulti1 := True;
          FZoneForm.Mark(B,i);
       end;
@@ -62,7 +62,7 @@ begin
       Exit;
    end;
 
-   MostRecentCty := C;
+   FMostRecentCty := C;
    aQSO.Multi2 := C.Country;
 
    if C.Worked[B] = False then begin

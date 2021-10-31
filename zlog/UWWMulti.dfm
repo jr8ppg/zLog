@@ -2,24 +2,27 @@ inherited WWMulti: TWWMulti
   Left = 153
   Top = 98
   Caption = 'CQ WW Country Multipliers'
-  ClientWidth = 335
+  ClientHeight = 282
+  ClientWidth = 360
   OnResize = FormResize
   OnShow = FormShow
-  ExplicitWidth = 351
+  ExplicitWidth = 376
+  ExplicitHeight = 320
   PixelsPerInch = 96
   TextHeight = 13
   object Panel: TPanel
     Left = 0
     Top = 0
-    Width = 335
+    Width = 360
     Height = 41
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 335
     object RotateLabel1: TRotateLabel
       Left = 252
       Top = 20
-      Width = 15
-      Height = 14
+      Width = 14
+      Height = 15
       Escapement = 90
       TextStyle = tsNone
       Caption = '1.9'
@@ -33,8 +36,8 @@ inherited WWMulti: TWWMulti
     object RotateLabel2: TRotateLabel
       Left = 264
       Top = 20
-      Width = 15
-      Height = 14
+      Width = 14
+      Height = 15
       Escapement = 90
       TextStyle = tsNone
       Caption = '3.5'
@@ -48,8 +51,8 @@ inherited WWMulti: TWWMulti
     object RotateLabel3: TRotateLabel
       Left = 276
       Top = 29
-      Width = 6
-      Height = 14
+      Width = 14
+      Height = 6
       Escapement = 90
       TextStyle = tsNone
       Caption = '7'
@@ -63,8 +66,8 @@ inherited WWMulti: TWWMulti
     object RotateLabel4: TRotateLabel
       Left = 287
       Top = 23
-      Width = 12
-      Height = 14
+      Width = 14
+      Height = 12
       Escapement = 90
       TextStyle = tsNone
       Caption = '14'
@@ -78,8 +81,8 @@ inherited WWMulti: TWWMulti
     object RotateLabel5: TRotateLabel
       Left = 299
       Top = 23
-      Width = 12
-      Height = 14
+      Width = 14
+      Height = 12
       Escapement = 90
       TextStyle = tsNone
       Caption = '21'
@@ -93,8 +96,8 @@ inherited WWMulti: TWWMulti
     object RotateLabel6: TRotateLabel
       Left = 311
       Top = 23
-      Width = 12
-      Height = 14
+      Width = 14
+      Height = 12
       Escapement = 90
       TextStyle = tsNone
       Caption = '28'
@@ -123,51 +126,58 @@ inherited WWMulti: TWWMulti
   end
   object Panel1: TPanel
     Left = 0
-    Top = 221
-    Width = 335
+    Top = 241
+    Width = 360
     Height = 41
     Align = alBottom
     TabOrder = 1
+    ExplicitTop = 221
+    ExplicitWidth = 335
     DesignSize = (
-      335
+      360
       41)
-    object Button1: TButton
-      Left = 8
-      Top = 10
-      Width = 65
-      Height = 22
-      Caption = 'OK'
-      TabOrder = 0
-      OnClick = Button1Click
-    end
-    object Button3: TButton
-      Left = 268
+    object buttonGo: TButton
+      Left = 293
       Top = 11
       Width = 57
       Height = 21
       Anchors = [akTop, akRight]
       Caption = 'Go'
-      TabOrder = 1
+      TabOrder = 0
       OnClick = GoButtonClick
+      ExplicitLeft = 268
     end
     object Edit1: TEdit
-      Left = 228
+      Left = 225
       Top = 11
-      Width = 33
+      Width = 61
       Height = 21
       Anchors = [akTop, akRight]
       AutoSize = False
       CharCase = ecUpperCase
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
-      TabOrder = 2
-      OnKeyPress = Edit1KeyPress
+      TabOrder = 1
+      OnChange = Edit1Change
+      OnEnter = Edit1Enter
+      OnExit = Edit1Exit
     end
     object StayOnTop: TCheckBox
-      Left = 80
+      Left = 8
       Top = 13
       Width = 81
       Height = 17
       Caption = 'Stay on top'
+      TabOrder = 2
+      OnClick = StayOnTopClick
+    end
+    object checkIncremental: TCheckBox
+      Left = 95
+      Top = 13
+      Width = 81
+      Height = 17
+      Anchors = [akLeft, akBottom]
+      Caption = 'Incremental'
+      Checked = True
+      State = cbChecked
       TabOrder = 3
       OnClick = StayOnTopClick
     end
@@ -175,8 +185,8 @@ inherited WWMulti: TWWMulti
   object Grid: TStringGrid
     Left = 0
     Top = 41
-    Width = 335
-    Height = 180
+    Width = 360
+    Height = 200
     Align = alClient
     ColCount = 1
     DefaultColWidth = 500
@@ -195,5 +205,7 @@ inherited WWMulti: TWWMulti
     TabOrder = 2
     OnDrawCell = GridDrawCell
     OnTopLeftChanged = GridTopLeftChanged
+    ExplicitWidth = 335
+    ExplicitHeight = 180
   end
 end

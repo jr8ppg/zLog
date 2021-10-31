@@ -11,11 +11,11 @@ const
   WM_ZLOG_UPDATELABEL = (WM_USER + 100);
 
 type
+  TZoneArray = array[b19..HiBand, 1..40] of Boolean;
   TWWMulti = class(TBasicMulti)
     Panel: TPanel;
     Panel1: TPanel;
-    Button1: TButton;
-    Button3: TButton;
+    buttonGo: TButton;
     Edit1: TEdit;
     RotateLabel1: TRotateLabel;
     RotateLabel2: TRotateLabel;
@@ -26,39 +26,35 @@ type
     SortBy: TRadioGroup;
     StayOnTop: TCheckBox;
     Grid: TStringGrid;
+    checkIncremental: TCheckBox;
     procedure FormCreate(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure GoButtonClick(Sender: TObject);
-    procedure Edit1KeyPress(Sender: TObject; var Key: Char);
     procedure SortByClick(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
     procedure GridTopLeftChanged(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+    procedure Edit1Change(Sender: TObject);
+    procedure Edit1Enter(Sender: TObject);
+    procedure Edit1Exit(Sender: TObject);
   private
     { Private declarations }
+    procedure GoForwardMatch(strCode: string);
   protected
     FZoneForm: TWWZone;
+    FZoneFlag: TZoneArray;
+    FMostRecentCty: TCountry;
+    FGridReverse: array[0..500] of integer; {pointer from grid row to countrylist index}
     procedure SetFontSize(v: Integer); override;
     procedure OnZLogUpdateLabel( var Message: TMessage ); message WM_ZLOG_UPDATELABEL;
     procedure UpdateLabelPos(); virtual;
+    function GetIsIncrementalSearchPresent(): Boolean; override;
   public
     { Public declarations }
-    MostRecentCty : TCountry;
 
-    GridReverse : array[0..500] of integer; {pointer from grid row to countrylist index}
-    //CountryList : TCountryList;
-    //PrefixList : TPrefixList;
-    Zone : array[b19..HiBand, 1..40] of boolean;
-    //MyCountry : string;
-    //MyZone : string;
-    //MyContinent : string;
-//    procedure AddNewPrefixToFile(NewPX : string; CtyIndex : integer);
     procedure AddNewPrefix(PX : string; CtyIndex : integer); override;
     procedure SelectAndAddNewPrefix(Call : string); override;
-    //function GetCountryIndex(aQSO : TQSO) : integer;
-    //function GetPrefix(aQSO : TQSO) : TPrefix;
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Add(var aQSO : TQSO); override; // only calls addnoupdate but no update
@@ -76,6 +72,7 @@ type
     procedure RefreshZone;
     procedure ProcessSpotData(var S : TBaseSpot); override;
     property ZoneForm: TWWZone read FZoneForm write FZoneForm;
+    property Zone: TZoneArray read FZoneFlag write FZoneFlag;
   end;
 
 implementation
@@ -188,8 +185,8 @@ procedure TWWMulti.Add(var aQSO : TQSO);
 begin
    AddNoUpdate(aQSO);
 
-   if (aQSO.Reserve2 <> $AA) and (MostRecentCty <> nil) then begin
-      Grid.TopRow := MostRecentCty.GridIndex;
+   if (aQSO.Reserve2 <> $AA) and (FMostRecentCty <> nil) then begin
+      Grid.TopRow := FMostRecentCty.GridIndex;
    end;
 
    RefreshGrid;
@@ -221,7 +218,7 @@ begin
 
    for i := 0 to dmZLogGlobal.CountryList.Count-1 do begin
       TCountry(dmZLogGlobal.CountryList.List[i]).GridIndex := i;
-      GridReverse[i] := i;
+      FGridReverse[i] := i;
    end;
 end;
 
@@ -233,13 +230,13 @@ begin
       exit;
    end;
 
-   GridReverse[0] := 0;
+   FGridReverse[0] := 0;
    x := 1;
    for i := 1 to 40 do begin
       for j := 1 to dmZLogGlobal.CountryList.Count - 1 do begin
          if TCountry(dmZLogGlobal.CountryList.List[j]).CQZone = IntToStr(i) then begin
             TCountry(dmZLogGlobal.CountryList.List[j]).GridIndex := x;
-            GridReverse[x] := j;
+            FGridReverse[x] := j;
             inc(x);
          end;
       end;
@@ -258,14 +255,14 @@ begin
    cont[4] := 'SA';
    cont[5] := 'OC';
    if dmZLogGlobal.CountryList.Count = 0 then exit;
-   GridReverse[0] := 0;
+   FGridReverse[0] := 0;
    x := 1;
 
    for i := 0 to 5 do begin
       for j := 1 to dmZLogGlobal.CountryList.Count - 1 do begin
          if TCountry(dmZLogGlobal.CountryList.List[j]).Continent = cont[i] then begin
             TCountry(dmZLogGlobal.CountryList.List[j]).GridIndex := x;
-            GridReverse[x] := j;
+            FGridReverse[x] := j;
             inc(x);
          end;
       end;
@@ -288,17 +285,17 @@ begin
       exit;
    end;
 
-   GridReverse[0] := 0;
+   FGridReverse[0] := 0;
 
    for i := 1 to 500 do
-      GridReverse[i] := -1;
+      FGridReverse[i] := -1;
 
    x := 1;
 
    for j := 1 to dmZLogGlobal.CountryList.Count - 1 do begin
       if TCountry(dmZLogGlobal.CountryList.List[j]).Continent = CT then begin
          TCountry(dmZLogGlobal.CountryList.List[j]).GridIndex := x;
-         GridReverse[x] := j;
+         FGridReverse[x] := j;
          inc(x);
       end
       else begin
@@ -322,7 +319,7 @@ begin
 
    for B := b19 to HiBand do begin
       for i := 1 to MAXCQZONE do begin
-         Zone[B, i] := false;
+         FZoneFlag[B, i] := False;
       end;
    end;
 
@@ -354,7 +351,7 @@ begin
          exit;
       end
       else begin
-         k := GridReverse[i];
+         k := FGridReverse[i];
          C := TCountry(dmZLogGlobal.CountryList.List[k]);
          if (k >= 0) and (k < dmZLogGlobal.CountryList.Count) then begin
             if C.Worked[B] = True then begin
@@ -397,7 +394,7 @@ procedure TWWMulti.FormCreate(Sender: TObject);
 begin
    Inherited;
    FZoneForm := nil;
-   MostRecentCty := nil;
+   FMostRecentCty := nil;
    MainForm.mnGridAddNewPX.Visible := True;
 end;
 
@@ -406,12 +403,6 @@ begin
    Inherited;
    AdjustGridSize(Grid);
    RefreshGrid;
-end;
-
-procedure TWWMulti.Button1Click(Sender: TObject);
-begin
-   Inherited;
-   Close;
 end;
 
 procedure TWWMulti.AddNoUpdate(var aQSO : TQSO);
@@ -436,8 +427,8 @@ begin
    i := StrToIntDef(str, 0);
 
    if i in [1..MAXCQZONE] then begin
-      if Zone[B,i] = False then begin
-        Zone[B,i] := True;
+      if FZoneFlag[B, i] = False then begin
+        FZoneFlag[B, i] := True;
         aQSO.NewMulti1 := True;
       end;
    end;
@@ -452,7 +443,7 @@ begin
    end;
 
    C := P.Country;
-   MostRecentCty := C;
+   FMostRecentCty := C;
 
    aQSO.Multi2 := C.Country;
 
@@ -528,8 +519,10 @@ begin
       exit;
    end;
 
+   GoForwardMatch(C.Country);
+
    temp := '';
-   temp := C.Country+' '+C.Continent+ ' ';
+   temp := C.Country + ' ' + C.Continent + ' ';
 
    temp2 := '';
    if C.Worked[aQSO.Band] = false then
@@ -558,27 +551,53 @@ end;
 
 
 procedure TWWMulti.GoButtonClick(Sender: TObject);
-var
-   temp : string;
-   i : integer;
 begin
-   temp := Edit1.Text;
-   for i := 0 to dmZLogGlobal.CountryList.Count-1 do begin
-      if pos(temp,TCountry(dmZLogGlobal.CountryList.List[i]).Country) = 1 then begin
-         Grid.TopRow := TCountry(dmZLogGlobal.CountryList.List[i]).GridIndex;
-         break;
+   GoForwardMatch(Edit1.Text);
+end;
+
+procedure TWWMulti.GoForwardMatch(strCode: string);
+var
+   i: Integer;
+   l: Integer;
+
+   function GetRowIndex(Index: Integer): Integer;
+   var
+      i: Integer;
+   begin
+      for i := 0 to High(FGridReverse) do begin
+         if FGridReverse[i] = Index then begin
+            Result := i;
+            Exit;
+         end;
+      end;
+
+      Result := 0;
+   end;
+begin
+   l := Length(strCode);
+   for i := 0 to dmZLogGlobal.CountryList.Count - 1 do begin
+      if (strCode = Copy(TCountry(dmZLogGlobal.CountryList.List[i]).Country, 1, l)) then begin
+         Grid.TopRow := GetRowIndex(i);
+         Break;
       end;
    end;
 end;
 
-procedure TWWMulti.Edit1KeyPress(Sender: TObject; var Key: Char);
+procedure TWWMulti.Edit1Change(Sender: TObject);
 begin
-   Inherited;
-
-   if Key = Chr($0D) then begin
-      GoButtonClick(Self);
-      Key := #0;
+   if (checkIncremental.Checked = True) then begin
+      GoForwardMatch(Edit1.Text);
    end;
+end;
+
+procedure TWWMulti.Edit1Enter(Sender: TObject);
+begin
+   buttonGo.Default := True;
+end;
+
+procedure TWWMulti.Edit1Exit(Sender: TObject);
+begin
+   buttonGo.Default := False;
 end;
 
 procedure TWWMulti.ProcessCluster(var Sp : TBaseSpot);
@@ -726,6 +745,11 @@ procedure TWWMulti.OnZLogUpdateLabel( var Message: TMessage );
 begin
    Application.ProcessMessages();
    UpdateLabelPos();
+end;
+
+function TWWMulti.GetIsIncrementalSearchPresent(): Boolean;
+begin
+   Result := True;
 end;
 
 end.

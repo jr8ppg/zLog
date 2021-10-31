@@ -34,7 +34,6 @@ type
     Grid: TStringGrid;
     checkIncremental: TCheckBox;
     procedure FormCreate(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure GoButtonClick2(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
@@ -269,11 +268,6 @@ procedure TACAGMulti.FormResize(Sender: TObject);
 begin
    inherited;
    AdjustGridSize(Grid);
-end;
-
-procedure TACAGMulti.Button1Click(Sender: TObject);
-begin
-   Close;
 end;
 
 procedure TACAGMulti.GoButtonClick2(Sender: TObject);
