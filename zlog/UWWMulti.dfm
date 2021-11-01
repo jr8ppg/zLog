@@ -17,7 +17,6 @@ inherited WWMulti: TWWMulti
     Height = 41
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 335
     object RotateLabel1: TRotateLabel
       Left = 252
       Top = 20
@@ -131,8 +130,6 @@ inherited WWMulti: TWWMulti
     Height = 41
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 221
-    ExplicitWidth = 335
     DesignSize = (
       360
       41)
@@ -145,7 +142,6 @@ inherited WWMulti: TWWMulti
       Caption = 'Go'
       TabOrder = 0
       OnClick = GoButtonClick
-      ExplicitLeft = 268
     end
     object Edit1: TEdit
       Left = 225
@@ -167,18 +163,6 @@ inherited WWMulti: TWWMulti
       Height = 17
       Caption = 'Stay on top'
       TabOrder = 2
-      OnClick = StayOnTopClick
-    end
-    object checkIncremental: TCheckBox
-      Left = 95
-      Top = 13
-      Width = 81
-      Height = 17
-      Anchors = [akLeft, akBottom]
-      Caption = 'Incremental'
-      Checked = True
-      State = cbChecked
-      TabOrder = 3
       OnClick = StayOnTopClick
     end
   end
@@ -205,7 +189,5 @@ inherited WWMulti: TWWMulti
     TabOrder = 2
     OnDrawCell = GridDrawCell
     OnTopLeftChanged = GridTopLeftChanged
-    ExplicitWidth = 335
-    ExplicitHeight = 180
   end
 end

@@ -26,7 +26,6 @@ type
     SortBy: TRadioGroup;
     StayOnTop: TCheckBox;
     Grid: TStringGrid;
-    checkIncremental: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure GoButtonClick(Sender: TObject);
@@ -49,7 +48,6 @@ type
     procedure SetFontSize(v: Integer); override;
     procedure OnZLogUpdateLabel( var Message: TMessage ); message WM_ZLOG_UPDATELABEL;
     procedure UpdateLabelPos(); virtual;
-    function GetIsIncrementalSearchPresent(): Boolean; override;
   public
     { Public declarations }
 
@@ -585,9 +583,7 @@ end;
 
 procedure TWWMulti.Edit1Change(Sender: TObject);
 begin
-   if (checkIncremental.Checked = True) then begin
-      GoForwardMatch(Edit1.Text);
-   end;
+   GoForwardMatch(Edit1.Text);
 end;
 
 procedure TWWMulti.Edit1Enter(Sender: TObject);
@@ -745,11 +741,6 @@ procedure TWWMulti.OnZLogUpdateLabel( var Message: TMessage );
 begin
    Application.ProcessMessages();
    UpdateLabelPos();
-end;
-
-function TWWMulti.GetIsIncrementalSearchPresent(): Boolean;
-begin
-   Result := True;
 end;
 
 end.

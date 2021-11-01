@@ -45,6 +45,7 @@ object ACAGMulti: TACAGMulti
       Width = 61
       Height = 21
       Anchors = [akRight, akBottom]
+      CharCase = ecUpperCase
       TabOrder = 0
       OnChange = Edit1Change
       OnEnter = Edit1Enter

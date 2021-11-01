@@ -5168,7 +5168,7 @@ begin
                   zLogSendStr2(S, CurrentQSO);
                end;
 
-               WriteStatusLine('Invalid Number', False);
+               WriteStatusLine('Invalid number', False);
                NumberEdit.SetFocus;
                NumberEdit.SelectAll;
                exit;
@@ -5188,7 +5188,7 @@ begin
                if FTTYConsole <> nil then begin
                   FTTYConsole.SendStrNow(S);
                end;
-               WriteStatusLine('Invalid Number', False);
+               WriteStatusLine('Invalid number', False);
                NumberEdit.SetFocus;
                NumberEdit.SelectAll;
                exit;
@@ -5207,7 +5207,7 @@ begin
       mSSB, mFM, mAM: begin
             if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
                PlayMessage(1, 5);
-               WriteStatusLine('Invalid Number', False);
+               WriteStatusLine('Invalid number', False);
                NumberEdit.SetFocus;
                NumberEdit.SelectAll;
                exit;
@@ -5334,7 +5334,7 @@ begin
       else begin  // UNIQUE!
          // –³Œøƒ}ƒ‹ƒ`‚Í“ü—Í‚Å‚«‚È‚¢
          if MyContest.MultiForm.ValidMulti(CurrentQSO) = False then begin
-            WriteStatusLine('Invalid Number', False);
+            WriteStatusLine('Invalid number', False);
             NumberEdit.SetFocus;
             NumberEdit.SelectAll;
             Exit;

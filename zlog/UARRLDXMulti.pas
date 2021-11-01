@@ -32,8 +32,11 @@ type
     procedure FormCreate(Sender: TObject);
     procedure GoButtonClick2(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure Edit1Change(Sender: TObject);
+    function GetIsIncrementalSearchPresent(): Boolean; override;
   private
     { Private declarations }
+    procedure GoForwardMatch(strCode: string);
   public
     { Public declarations }
     StateList : TStateList;
@@ -68,6 +71,13 @@ begin
          Result := S;
          exit;
       end;
+   end;
+end;
+
+procedure TARRLDXMulti.Edit1Change(Sender: TObject);
+begin
+   if (checkIncremental.Checked = True) then begin
+      GoForwardMatch(Edit1.Text);
    end;
 end;
 
@@ -123,6 +133,13 @@ var
    str: string;
    S: TState;
 begin
+   Edit1.Text := aQSO.NrRcvd;
+
+   if aQSO.NrRcvd = '' then begin
+      MainForm.WriteStatusLine('', False);
+      Exit;
+   end;
+
    S := GetState(aQSO, StateList);
    if S = nil then begin
       MainForm.WriteStatusLine('Invalid number', False);
@@ -314,20 +331,27 @@ begin
 end;
 
 procedure TARRLDXMulti.GoButtonClick2(Sender: TObject);
-var
-   i: integer;
-   str: string;
 begin
-   if StateList.List.Count = 0 then
-      exit;
+   GoForwardMatch(Edit1.Text);
+end;
 
+procedure TARRLDXMulti.GoForwardMatch(strCode: string);
+var
+   i: Integer;
+   l: Integer;
+begin
+   l := Length(strCode);
    for i := 0 to StateList.List.Count - 1 do begin
-      str := TState(StateList.List[i]).Summary;
-      if pos(Edit1.Text, str) = 1 then begin
+      if (strCode = Copy(TState(StateList.List[i]).StateAbbrev, 1, l)) then begin
          Grid.TopRow := i;
-         exit;
+         Break;
       end;
    end;
+end;
+
+function TARRLDXMulti.GetIsIncrementalSearchPresent(): Boolean;
+begin
+   Result := checkIncremental.Checked;
 end;
 
 end.

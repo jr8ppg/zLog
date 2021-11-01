@@ -104,20 +104,19 @@ var
    str: string;
    i: Integer;
    C: TCity;
-   l: Integer;
 begin
-   str := aQSO.NrRcvd;
-   if str = '' then begin
-      Edit1.Text := '';
+   Edit1.Text := aQSO.NrRcvd;
+
+   if aQSO.NrRcvd = '' then begin
+      MainForm.WriteStatusLine('', False);
       Exit;
    end;
+
+   str := Edit1.Text;
 
    if CharInSet(str[length(str)], ['H', 'P', 'L', 'M']) = True then begin
       System.Delete(str, length(str), 1);
    end;
-
-   l := Length(str);
-   Edit1.Text := str;
 
    for i := 0 to CityList.List.Count - 1 do begin
       C := TCity(CityList.List[i]);
@@ -133,12 +132,6 @@ begin
          end;
 
          MainForm.WriteStatusLine(str, False);
-         Exit;
-      end
-      else if (checkIncremental.Checked = True) and
-              (str = Copy(TCity(CityList.List[i]).CityNumber, 1, l)) then begin
-         Grid.TopRow := i;
-         MainForm.WriteStatusLine('', False);
          Exit;
       end;
    end;
@@ -373,7 +366,7 @@ end;
 
 function TACAGMulti.GetIsIncrementalSearchPresent(): Boolean;
 begin
-   Result := True;
+   Result := checkIncremental.Checked;
 end;
 
 end.
