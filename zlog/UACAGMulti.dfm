@@ -68,8 +68,6 @@ object ACAGMulti: TACAGMulti
       Height = 17
       Anchors = [akLeft, akBottom]
       Caption = 'Incremental'
-      Checked = True
-      State = cbChecked
       TabOrder = 3
       OnClick = StayOnTopClick
     end
