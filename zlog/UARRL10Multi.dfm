@@ -11,19 +11,19 @@ inherited ARRL10Multi: TARRL10Multi
     ExplicitWidth = 368
     inherited RotateLabel1: TRotateLabel
       Left = 316
-      Width = 12
+      Height = 12
       Caption = 'Ph'
       Visible = False
       ExplicitLeft = 316
-      ExplicitWidth = 12
+      ExplicitHeight = 12
     end
     inherited RotateLabel2: TRotateLabel
       Left = 328
-      Width = 17
+      Height = 17
       Caption = 'CW'
       Visible = False
       ExplicitLeft = 328
-      ExplicitWidth = 17
+      ExplicitHeight = 17
     end
     inherited RotateLabel3: TRotateLabel
       Left = 292
@@ -74,14 +74,6 @@ inherited ARRL10Multi: TARRL10Multi
   inherited Panel1: TPanel
     Width = 368
     ExplicitWidth = 368
-    inherited Button3: TButton
-      Left = 265
-      ExplicitLeft = 232
-    end
-    inherited Edit1: TEdit
-      Left = 225
-      ExplicitLeft = 192
-    end
   end
   inherited Grid: TStringGrid
     Width = 368

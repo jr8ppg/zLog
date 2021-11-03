@@ -28,11 +28,14 @@ type
     procedure FormCreate(Sender: TObject);
     procedure GoButtonClick2(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure Edit1Change(Sender: TObject);
   protected
     procedure UpdateLabelPos(); override;
+    function GetIsIncrementalSearchPresent(): Boolean; override;
   private
     { Private declarations }
     IslandList : TIslandList;
+    procedure GoForwardMatch(strCode: string);
   public
     { Public declarations }
     MyIOTA, MyDXCC : string;
@@ -159,6 +162,13 @@ begin
       writeln(f, str);
    end;
    system.close(f);
+end;
+
+procedure TIOTAMulti.Edit1Change(Sender: TObject);
+begin
+   if (checkIncremental.Checked = True) then begin
+      GoForwardMatch(Edit1.Text);
+   end;
 end;
 
 function TIOTAMulti.ExtractMulti(aQSO: TQSO): string;
@@ -362,15 +372,20 @@ begin
 end;
 
 procedure TIOTAMulti.GoButtonClick2(Sender: TObject);
-var
-   temp: string;
-   i: Integer;
 begin
-   temp := Edit1.Text;
+   GoForwardMatch(Edit1.Text);
+end;
+
+procedure TIOTAMulti.GoForwardMatch(strCode: string);
+var
+   i: Integer;
+   l: Integer;
+begin
+   l := Length(strCode);
    for i := 0 to IslandList.List.Count - 1 do begin
-      if Pos(temp, TIsland(IslandList.List[i]).RefNumber) = 1 then begin
+      if (strCode = Copy(TIsland(IslandList.List[i]).RefNumber, 1, l)) then begin
          Grid.TopRow := i;
-         break;
+         Break;
       end;
    end;
 end;
@@ -387,19 +402,30 @@ var
    i: Integer;
    C: TIsland;
 begin
+   Edit1.Text := aQSO.NrRcvd;
+
+   if aQSO.NrRcvd = '' then begin
+      MainForm.WriteStatusLine('', False);
+      Exit;
+   end;
+
    str := ExtractMulti(aQSO);
-   if str = '' then
-      exit;
+   if str = '' then begin
+      Exit;
+   end;
+
    for i := 0 to IslandList.List.Count - 1 do begin
       C := TIsland(IslandList.List[i]);
       if str = C.RefNumber then begin
          // ListBox.TopIndex := i;
          Grid.TopRow := i;
          str := C.Summary;
+
          if C.Worked[aQSO.band, aQSO.Mode] then
             str := str + 'Worked on this band/mode.'
          else
             str := str + 'Needed on this band/mode.';
+
          MainForm.WriteStatusLine(str, False);
          exit;
       end;
@@ -424,6 +450,11 @@ begin
    Label144.Left  := Label50.Left + (w * 2);
    Label430.Left  := Label144.Left + (w * 2);
    Label1200.Left := Label430.Left + (w * 2);
+end;
+
+function TIOTAMulti.GetIsIncrementalSearchPresent(): Boolean;
+begin
+   Result := checkIncremental.Checked;
 end;
 
 end.

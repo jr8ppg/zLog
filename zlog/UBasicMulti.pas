@@ -20,6 +20,7 @@ type
     procedure AdjustGridSize(Grid: TStringGrid);
     procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
     procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
+    function GetIsIncrementalSearchPresent(): Boolean; virtual;
   private
     { Private declarations }
   public
@@ -48,6 +49,7 @@ type
     // called from CheckMultiWindow for each band without QSO to the current stn
     // returns nothing when the multi is worked in that band.
     property FontSize: Integer read GetFontSize write SetFontSize;
+    property IsIncrementalSearchPresent: Boolean read GetIsIncrementalSearchPresent;
   end;
 
 implementation
@@ -307,6 +309,11 @@ begin
 
       TextRect(Rect, strText, [tfLeft,tfVerticalCenter,tfSingleLine]);
    end;
+end;
+
+function TBasicMulti.GetIsIncrementalSearchPresent(): Boolean;
+begin
+   Result := False;
 end;
 
 end.

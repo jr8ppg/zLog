@@ -237,6 +237,10 @@ type
     FChatFormStayOnTop: Boolean;
     FChatFormRecordLogs: Boolean;
     FChatFormPrompt: Integer;
+
+    // QuickReference
+    FQuickRefFontSize: Integer;
+    FQuickRefFontFace: string;
   end;
 
 var
@@ -1084,6 +1088,10 @@ begin
       Settings.FChatFormStayOnTop      := ini.ReadBool('ChatWindow', 'StayOnTop', False);
       Settings.FChatFormRecordLogs     := ini.ReadBool('ChatWindow', 'RecordLogs', True);
       Settings.FChatFormPrompt         := ini.ReadInteger('ChatWindow', 'Prompt', 0);
+
+      // Quick Reference
+      Settings.FQuickRefFontSize       := ini.ReadInteger('QuickReference', 'FontSize', 9);
+      Settings.FQuickRefFontFace       := ini.ReadString('QuickReference', 'FontFace', 'ＭＳ ゴシック');
    finally
       ini.Free();
       slParam.Free();
@@ -1562,6 +1570,10 @@ begin
       ini.WriteBool('ChatWindow', 'StayOnTop', Settings.FChatFormStayOnTop);
       ini.WriteBool('ChatWindow', 'RecordLogs', Settings.FChatFormRecordLogs);
       ini.WriteInteger('ChatWindow', 'Prompt', Settings.FChatFormPrompt);
+
+      // Quick Reference
+      ini.WriteInteger('QuickReference', 'FontSize', Settings.FQuickRefFontSize);
+      ini.WriteString('QuickReference', 'FontFace', Settings.FQuickRefFontFace);
    finally
       ini.Free();
       slParam.Free();

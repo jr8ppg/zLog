@@ -198,7 +198,7 @@ begin
       S := TState(StateList.List[i]).SummaryARRL10;
       // Grid.Cells[0,i] := S;
       TState(StateList.List[i]).Index := i;
-      GridReverse[i] := i;
+      FGridReverse[i] := i;
    end;
 
    offset := StateList.List.Count;
@@ -209,7 +209,7 @@ begin
    for i := 0 to dmZLogGlobal.CountryList.Count - 1 do begin
       // Grid.Cells[0,i + offset] := TCountry(CountryList.List[i]).SummaryARRL10;
       TCountry(dmZLogGlobal.CountryList.List[i]).GridIndex := i + offset;
-      GridReverse[i + offset] := i;
+      FGridReverse[i + offset] := i;
    end;
 
    Grid.TopRow := j;
@@ -280,7 +280,7 @@ begin
          exit;
       end
       else begin
-         k := GridReverse[i];
+         k := FGridReverse[i];
          if (i >= 0) and (i < StateList.List.Count) then begin
             S := TState(StateList.List[k]).SummaryARRL10;
             if TState(StateList.List[k]).Worked[B] = True then begin
