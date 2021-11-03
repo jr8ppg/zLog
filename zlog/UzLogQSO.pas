@@ -65,6 +65,9 @@ type
     FReserve3: Integer; { QSO ID# }
     {TTSSSSRRCC   TT:TX#(00-21) SSSS:Serial counter
                                       RR:Random(00-99) CC:Edit counter 00 and up}
+
+    function GetMode2(): TMode;
+
     function GetFileRecord(): TQSOData;
     procedure SetFileRecord(src: TQSOData);
 
@@ -73,6 +76,7 @@ type
     function GetDateStr(): string;
     function GetBandStr(): string;
     function GetModeStr(): string;
+    function GetMode2Str(): string;
     function GetPowerStr(): string;
     function GetNewPowerStr(): string;
     function GetPointStr(): string;
@@ -97,8 +101,8 @@ type
 
     function SameQSO(aQSO: TQSO) : Boolean;
     function SameQSOID(aQSO: TQSO) : Boolean;
-    function SameMode(aQSO: TQSO): Boolean;
-    function SameMode2(aMode: TMode) : Boolean;
+    function SameMode(aQSO: TQSO; IsAllPhone: Boolean): Boolean;
+//    function SameMode2(aMode: TMode) : Boolean;
 
     procedure Assign(src: TQSO);
 
@@ -111,6 +115,7 @@ type
     property RSTRcvd: Integer read FRSTRcvd write FRSTRcvd;
     property Serial: Integer read FSerial write FSerial;
     property Mode: TMode read FMode write FMode;
+    property Mode2: TMode read GetMode2;
     property Band: TBand read FBand write FBand;
     property Power: TPower read FPower write FPower;
     property Multi1: string read FMulti1 write FMulti1;
@@ -133,6 +138,7 @@ type
     property DateStr: string read GetDateStr;
     property BandStr: string read GetBandStr;
     property ModeStr: string read GetModeStr;
+    property Mode2Str: string read GetMode2Str;
     property PowerStr: string read GetPowerStr;
     property NewPowerStr: string read GetNewPowerStr;
     property PointStr: string read GetPointStr;
@@ -170,6 +176,11 @@ type
     function Compare(const Left, Right: TQSO): Integer; override;
   end;
 
+  TQSODupeWithMode2Comparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
   TSortMethod = ( soCallsign = 0, soTime, soBand, soDupeCheck );
 
   TQSOList = class(TObjectList<TQSO>)
@@ -179,14 +190,15 @@ type
     FBandComparer: TQSOBandComparer;
     FDupeWithoutModeComparer: TQSODupeWithoutModeComparer;
     FDupeWithModeComparer: TQSODupeWithModeComparer;
+    FDupeWithMode2Comparer: TQSODupeWithMode2Comparer;
   public
     constructor Create(OwnsObjects: Boolean = True);
     destructor Destroy(); override;
     function IndexOf(C: string): Integer; overload;
     function IndexOf(Q: TQSO): Integer; overload;
     function MergeFile(filename: string; fFullMatch: Boolean): Integer;
-    procedure Sort(SortMethod: TSortMethod; fWithMode: Boolean = False); overload;
-    function DupeCheck(aQSO: TQSO; fWithMode: Boolean): TQSO;
+    procedure Sort(SortMethod: TSortMethod; fWithMode: Boolean = False; fAllPhone: Boolean = True); overload;
+    function DupeCheck(aQSO: TQSO; fWithMode: Boolean; fAllPhone: Boolean): TQSO;
     procedure SaveToFile(filename: string);
   end;
 
@@ -203,6 +215,7 @@ type
     FDifferentModePointer : Integer; //points to a qso on a different mode but not dupe
     FDupeCheckList: TQSOListArray;
     FBandList: TQSOListArray;
+    FAllPhone: Boolean;    // True: SSB, FM, AM are same
     procedure Delete(i : Integer);
     procedure ProcessDelete(beforeQSO: TQSO);
     procedure ProcessEdit(afterQSO: TQSO);
@@ -273,6 +286,8 @@ type
     property BandList: TQSOListArray read FBandList;
 
     property ScoreCoeff: Extended read GetScoreCoeff write SetScoreCoeff;
+
+    property AllPhone: Boolean read FAllPhone write FAllPhone;
   end;
 
 implementation
@@ -464,6 +479,11 @@ end;
 function TQSO.GetModeStr: string;
 begin
    Result := ModeString[Self.FMode];
+end;
+
+function TQSO.GetMode2Str: string;
+begin
+   Result := ModeString2[Self.FMode];
 end;
 
 function TQSO.GetPowerStr: string;
@@ -748,7 +768,7 @@ begin
    end;
 end;
 
-function TQSO.SameMode(aQSO: TQSO): Boolean;
+function TQSO.SameMode(aQSO: TQSO; IsAllPhone: Boolean): Boolean;
 begin
    Result := False;
    case Self.FMode of
@@ -759,8 +779,21 @@ begin
       end;
 
       mSSB, mFM, mAM: begin
-         if aQSO.FMode in [mSSB, mFM, mAM] then begin
-            Result := True;
+         if IsAllPhone = True then begin
+            if aQSO.FMode in [mSSB, mFM, mAM] then begin
+               Result := True;
+            end;
+         end
+         else begin
+            if aQSO.Mode = mSSB then begin
+               Result := True;
+            end
+            else if aQSO.Mode = mFM then begin
+               Result := True;
+            end
+            else if aQSO.Mode = mAM then begin
+               Result := True;
+            end;
          end;
       end;
 
@@ -782,6 +815,7 @@ begin
    end;
 end;
 
+{
 function TQSO.SameMode2(aMode: TMode): Boolean;
 begin
    Result := False;
@@ -814,6 +848,14 @@ begin
          Result := False;
       end;
    end;
+end;
+}
+
+function TQSO.GetMode2(): TMode;
+const
+   Mode2: array[mCW..mOther] of TMode = (mCW, mSSB, mSSB, mSSB, mRTTY, mOther );
+begin
+   Result := Mode2[Self.Mode];
 end;
 
 procedure TQSO.Assign(src: TQSO);
@@ -911,6 +953,7 @@ begin
    FBandComparer := TQSOBandComparer.Create();
    FDupeWithoutModeComparer := TQSODupeWithoutModeComparer.Create();
    FDupeWithModeComparer := TQSODupeWithModeComparer.Create();
+   FDupeWithMode2Comparer := TQSODupeWithMode2Comparer.Create();
 end;
 
 destructor TQSOList.Destroy();
@@ -921,6 +964,7 @@ begin
    FBandComparer.Free();
    FDupeWithoutModeComparer.Free();
    FDupeWithModeComparer.Free();
+   FDupeWithMode2Comparer.Free();
 end;
 
 function TQSOList.IndexOf(C: string): Integer;
@@ -991,7 +1035,7 @@ begin
    Result := merged;
 end;
 
-procedure TQSOList.Sort(SortMethod: TSortMethod; fWithMode: Boolean);
+procedure TQSOList.Sort(SortMethod: TSortMethod; fWithMode: Boolean; fAllPhone: Boolean);
 begin
    case SortMethod of
       soCallsign: begin
@@ -1008,7 +1052,12 @@ begin
 
       soDupeCheck: begin
          if fWithMode = True then begin
-            Sort(FDupeWithModeComparer);
+            if fAllPhone = True then begin
+               Sort(FDupeWithMode2Comparer);
+            end
+            else begin
+               Sort(FDupeWithModeComparer);
+            end;
          end
          else begin
             Sort(FDupeWithoutModeComparer);
@@ -1017,7 +1066,7 @@ begin
    end;
 end;
 
-function TQSOList.DupeCheck(aQSO: TQSO; fWithMode: Boolean): TQSO;
+function TQSOList.DupeCheck(aQSO: TQSO; fWithMode: Boolean; fAllPhone: Boolean): TQSO;
 var
    Index: Integer;
    Q: TQSO;
@@ -1029,7 +1078,12 @@ begin
       Q.Callsign := CoreCall(Q.Callsign);
 
       if fWithMode = True then begin
-         C := FDupeWithModeComparer;
+         if fAllPhone = True then begin
+            C := FDupeWithMode2Comparer;
+         end
+         else begin
+            C := FDupeWithModeComparer;
+         end;
       end
       else begin
          C := FDupeWithoutModeComparer;
@@ -1097,6 +1151,7 @@ begin
    FAcceptDifferentMode := False;
    FCountHigherPoints := False;
    FDifferentModePointer := 0;
+   FAllPhone := True;
 end;
 
 destructor TLog.Destroy;
@@ -1156,7 +1211,7 @@ begin
       exit;
    end;
 
-   FQSOList.Sort(soTime);
+   FQSOList.Sort(soTime, FAcceptDifferentMode, FAllPhone);
 end;
 
 procedure TLog.Clear2();
@@ -1190,7 +1245,7 @@ begin
    xQSO.Assign(aQSO);
    xQSO.Callsign := CoreCall(xQSO.Callsign);
    FDupeCheckList[xQSO.FBand].Add(xQSO);
-   FDupeCheckList[xQSO.FBand].Sort(soDupeCheck, FAcceptDifferentMode);
+   FDupeCheckList[xQSO.FBand].Sort(soDupeCheck, FAcceptDifferentMode, FAllPhone);
 
    FBandList[xQSO.Band].Add(aQSO);
 
@@ -1868,7 +1923,7 @@ begin
    end;
 
    for B := b19 to HiBand do begin
-      FDupeCheckList[B].Sort(soDupeCheck, FAcceptDifferentMode);
+      FDupeCheckList[B].Sort(soDupeCheck, FAcceptDifferentMode, FAllPhone);
    end;
 end;
 
@@ -1877,7 +1932,7 @@ var
    Q: TQSO;
 begin
    // 同一バンドで交信済みか
-   Q := FDupeCheckList[aQSO.FBand].DupeCheck(aQSO, FAcceptDifferentMode);
+   Q := FDupeCheckList[aQSO.FBand].DupeCheck(aQSO, FAcceptDifferentMode, FAllPhone);
    if Q = nil then begin   // 未交信
       Result := nil;
       Exit;
@@ -1918,7 +1973,7 @@ begin
             break;
          end
          else begin
-            if aQSO.SameMode(FQsoList[i]) then begin
+            if aQSO.SameMode(FQsoList[i], FAllPhone) then begin
                x := i;
                break;
             end
@@ -1948,7 +2003,7 @@ begin
       end;
 
       if (aQSO.FBand = FQsoList[i].Band) and (str = CoreCall(FQsoList[i].CallSign)) then begin
-         if Not(AcceptDifferentMode) or (AcceptDifferentMode and aQSO.SameMode(FQsoList[i])) then begin
+         if Not(AcceptDifferentMode) or (AcceptDifferentMode and aQSO.SameMode(FQsoList[i], FAllPhone)) then begin
             boo := True;
             if index > 0 then begin
                dupeindex := i;
@@ -1987,10 +2042,17 @@ begin
       aQSO := FQsoList[i];
       core := CoreCall(aQSO.CallSign);
 
-      if AcceptDifferentMode then
-         str := core + aQSO.BandStr + aQSO.ModeStr
-      else
+      if AcceptDifferentMode then begin
+         if FAllPhone = True then begin
+            str := core + aQSO.BandStr + aQSO.Mode2Str
+         end
+         else begin
+            str := core + aQSO.BandStr + aQSO.ModeStr
+         end;
+      end
+      else begin
          str := core + aQSO.BandStr;
+      end;
 
       if core = '' then
          ch := 'Z'
@@ -2189,7 +2251,7 @@ begin
       Q.Callsign := strCallsign;
       Q.Band := band;
 
-      if FDupeCheckList[band].DupeCheck(Q, False) <> nil then begin
+      if FDupeCheckList[band].DupeCheck(Q, FAcceptDifferentMode, FAllPhone) <> nil then begin
          Result := True;
       end
       else begin
@@ -2224,7 +2286,7 @@ begin
          Q.Callsign := strCallsign;
          Q.Band := b;
 
-         R := FDupeCheckList[b].DupeCheck(Q, False);
+         R := FDupeCheckList[b].DupeCheck(Q, FAcceptDifferentMode, FAllPhone);
          if R <> nil then begin
             workdmulti := R.Multi1;
             Result := True;
@@ -2338,6 +2400,15 @@ begin
    Result := CompareText(Left.Callsign, Right.Callsign) +
              ((Integer(Left.Band) - Integer(Right.Band)) * 10) +
              ((Integer(Left.Mode) - Integer(Right.Mode)) * 100);
+end;
+
+{ TQSODupeWithMode2Comparer }
+
+function TQSODupeWithMode2Comparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   Result := CompareText(Left.Callsign, Right.Callsign) +
+             ((Integer(Left.Band) - Integer(Right.Band)) * 10) +
+             ((Integer(Left.Mode2) - Integer(Right.Mode2)) * 100);
 end;
 
 end.

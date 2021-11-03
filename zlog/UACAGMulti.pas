@@ -13,7 +13,7 @@ const
 type
   TACAGMulti = class(TBasicMulti)
     Panel1: TPanel;
-    Button3: TButton;
+    buttonGo: TButton;
     Panel: TPanel;
     Label1R9: TRotateLabel;
     Label3R5: TRotateLabel;
@@ -29,27 +29,30 @@ type
     Label5600: TRotateLabel;
     Edit1: TEdit;
     Label10g: TRotateLabel;
-    Button1: TButton;
     StayOnTop: TCheckBox;
     checkJumpLatestMulti: TCheckBox;
     Grid: TStringGrid;
+    checkIncremental: TCheckBox;
     procedure FormCreate(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure GoButtonClick2(Sender: TObject);
-    procedure Edit1KeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure FormResize(Sender: TObject);
+    procedure Edit1Enter(Sender: TObject);
+    procedure Edit1Exit(Sender: TObject);
+    procedure Edit1Change(Sender: TObject);
   protected
     CityList : TCityList;
     LatestMultiAddition : integer; // Grid.TopRow
     procedure SetFontSize(v: Integer); override;
     procedure OnZLogUpdateLabel( var Message: TMessage ); message WM_ZLOG_UPDATELABEL;
     procedure UpdateLabelPos(); virtual;
+    function GetIsIncrementalSearchPresent(): Boolean; override;
   private
     { Private declarations }
+    procedure GoForwardMatch(strCode: string);
   public
     { Public declarations }
     procedure UpdateData; override;
@@ -102,12 +105,14 @@ var
    i: Integer;
    C: TCity;
 begin
-   inherited;
+   Edit1.Text := aQSO.NrRcvd;
 
-   str := aQSO.NrRcvd;
-   if str = '' then begin
+   if aQSO.NrRcvd = '' then begin
+      MainForm.WriteStatusLine('', False);
       Exit;
    end;
+
+   str := Edit1.Text;
 
    if CharInSet(str[length(str)], ['H', 'P', 'L', 'M']) = True then begin
       System.Delete(str, length(str), 1);
@@ -258,33 +263,40 @@ begin
    AdjustGridSize(Grid);
 end;
 
-procedure TACAGMulti.Button1Click(Sender: TObject);
+procedure TACAGMulti.GoButtonClick2(Sender: TObject);
 begin
-   Close;
+   GoForwardMatch(Edit1.Text);
 end;
 
-procedure TACAGMulti.GoButtonClick2(Sender: TObject);
+procedure TACAGMulti.GoForwardMatch(strCode: string);
 var
-   temp: string;
    i: Integer;
+   l: Integer;
 begin
-   temp := Edit1.Text;
+   l := Length(strCode);
    for i := 0 to CityList.List.Count - 1 do begin
-      if pos(temp, TCity(CityList.List[i]).CityNumber) = 1 then begin
+      if (strCode = Copy(TCity(CityList.List[i]).CityNumber, 1, l)) then begin
          Grid.TopRow := i;
          Break;
       end;
    end;
 end;
 
-procedure TACAGMulti.Edit1KeyPress(Sender: TObject; var Key: Char);
+procedure TACAGMulti.Edit1Change(Sender: TObject);
 begin
-   inherited;
-
-   if Key = Chr($0D) then begin
-      GoButtonClick2(Self);
-      Key := #0;
+   if (checkIncremental.Checked = True) then begin
+      GoForwardMatch(Edit1.Text);
    end;
+end;
+
+procedure TACAGMulti.Edit1Enter(Sender: TObject);
+begin
+   buttonGo.Default := True;
+end;
+
+procedure TACAGMulti.Edit1Exit(Sender: TObject);
+begin
+   buttonGo.Default := False;
 end;
 
 procedure TACAGMulti.FormShow(Sender: TObject);
@@ -350,6 +362,11 @@ procedure TACAGMulti.OnZLogUpdateLabel( var Message: TMessage );
 begin
    Application.ProcessMessages();
    UpdateLabelPos();
+end;
+
+function TACAGMulti.GetIsIncrementalSearchPresent(): Boolean;
+begin
+   Result := checkIncremental.Checked;
 end;
 
 end.

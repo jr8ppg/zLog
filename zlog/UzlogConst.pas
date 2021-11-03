@@ -84,6 +84,7 @@ const
                                              '6cm','3cm');
 
   ModeString : array[mCW..mOther] of string = ('CW','SSB','FM','AM','RTTY','Other');
+  ModeString2 : array[mCW..mOther] of string = ('CW','PH','PH','PH','RTTY','Other');
 
   pwrP = TPower(0);
   pwrL = TPower(1);

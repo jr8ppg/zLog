@@ -29,42 +29,45 @@ object ACAGMulti: TACAGMulti
     DesignSize = (
       360
       41)
-    object Button3: TButton
+    object buttonGo: TButton
       Left = 292
       Top = 11
       Width = 57
       Height = 21
       Anchors = [akRight, akBottom]
       Caption = 'Go'
-      TabOrder = 0
+      TabOrder = 1
       OnClick = GoButtonClick2
     end
     object Edit1: TEdit
-      Left = 244
+      Left = 225
       Top = 11
-      Width = 33
+      Width = 61
       Height = 21
       Anchors = [akRight, akBottom]
-      TabOrder = 1
-      OnKeyPress = Edit1KeyPress
-    end
-    object Button1: TButton
-      Left = 8
-      Top = 11
-      Width = 65
-      Height = 22
-      Anchors = [akLeft, akBottom]
-      Caption = 'OK'
-      TabOrder = 2
-      OnClick = Button1Click
+      CharCase = ecUpperCase
+      TabOrder = 0
+      OnChange = Edit1Change
+      OnEnter = Edit1Enter
+      OnExit = Edit1Exit
     end
     object StayOnTop: TCheckBox
-      Left = 80
+      Left = 8
       Top = 13
       Width = 81
       Height = 17
       Anchors = [akLeft, akBottom]
       Caption = 'Stay on top'
+      TabOrder = 2
+      OnClick = StayOnTopClick
+    end
+    object checkIncremental: TCheckBox
+      Left = 95
+      Top = 13
+      Width = 81
+      Height = 17
+      Anchors = [akLeft, akBottom]
+      Caption = 'Incremental'
       TabOrder = 3
       OnClick = StayOnTopClick
     end

@@ -2102,7 +2102,6 @@ begin
    { str := 'zLog for Windows Text File'; }
    WriteLn(f, Header);
    WriteLn(f, 'All times in UTC');
-   WriteLn(f, 'Yohei Yokobayashi AD6AJ/JJ1MED');
    WriteLn(f, '<eoh>');
 
    offsetmin := Log.QsoList[0].RSTsent;
@@ -4822,6 +4821,12 @@ end;
 procedure TMainForm.NumberEditChange(Sender: TObject);
 begin
    CurrentQSO.NrRcvd := NumberEdit.Text;
+
+   if Assigned(MyContest) then begin
+      if MyContest.MultiForm.IsIncrementalSearchPresent = True then begin
+         MyContest.MultiForm.CheckMulti(CurrentQSO);
+      end;
+   end;
 end;
 
 procedure TMainForm.BandEditClick(Sender: TObject);
@@ -5163,7 +5168,7 @@ begin
                   zLogSendStr2(S, CurrentQSO);
                end;
 
-               WriteStatusLine('Invalid Number', False);
+               WriteStatusLine('Invalid number', False);
                NumberEdit.SetFocus;
                NumberEdit.SelectAll;
                exit;
@@ -5183,7 +5188,7 @@ begin
                if FTTYConsole <> nil then begin
                   FTTYConsole.SendStrNow(S);
                end;
-               WriteStatusLine('Invalid Number', False);
+               WriteStatusLine('Invalid number', False);
                NumberEdit.SetFocus;
                NumberEdit.SelectAll;
                exit;
@@ -5202,7 +5207,7 @@ begin
       mSSB, mFM, mAM: begin
             if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
                PlayMessage(1, 5);
-               WriteStatusLine('Invalid Number', False);
+               WriteStatusLine('Invalid number', False);
                NumberEdit.SetFocus;
                NumberEdit.SelectAll;
                exit;
@@ -5329,7 +5334,7 @@ begin
       else begin  // UNIQUE!
          // –³Œøƒ}ƒ‹ƒ`‚Í“ü—Í‚Å‚«‚È‚¢
          if MyContest.MultiForm.ValidMulti(CurrentQSO) = False then begin
-            WriteStatusLine('Invalid Number', False);
+            WriteStatusLine('Invalid number', False);
             NumberEdit.SetFocus;
             NumberEdit.SelectAll;
             Exit;

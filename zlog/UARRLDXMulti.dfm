@@ -5,10 +5,6 @@ inherited ARRLDXMulti: TARRLDXMulti
   PixelsPerInch = 96
   TextHeight = 13
   inherited Panel1: TPanel
-    inherited Button3: TButton
-      Left = 216
-      ExplicitLeft = 216
-    end
     inherited StayOnTop: TCheckBox
       Width = 73
       ExplicitWidth = 73
