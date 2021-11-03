@@ -1,3 +1,8 @@
+{*******************************************************************************
+ * Amateur Radio Operational Logging Software 'ZyLO' since 2020 June 22
+ * License : GNU General Public License v3 (see LICENSE)
+ * Author: Journal of Hamradio Informatics (http://pafelog.net)
+*******************************************************************************}
 unit UPluginManager;
 
 interface
@@ -299,7 +304,7 @@ end;
 procedure TMarketForm.FormShow(Sender: TObject);
 begin
 	ListBox.Clear;
-	LoadJSON('https://nextzlog.github.io/zylo/market.json');
+	LoadJSON('https://zylo.pafelog.net/market.json');
 end;
 
 procedure TMarketForm.LoadJSON(url: string);
