@@ -427,7 +427,9 @@ type
     Windows1: TMenuItem;
     Help1: TMenuItem;
     menuAbout: TMenuItem;
+    HelpZyLO: TMenuItem;
     N3: TMenuItem;
+    N5: TMenuItem;
     HowtoUseHelp1: TMenuItem;
     SearchforHelpOn1: TMenuItem;
     Contents1: TMenuItem;
@@ -765,6 +767,7 @@ type
     procedure Load1Click(Sender: TObject);
     procedure SortbyTime1Click(Sender: TObject);
     procedure menuAboutClick(Sender: TObject);
+    procedure HelpZyLOClick(Sender: TObject);
     procedure DateEditChange(Sender: TObject);
     procedure TimeEditDblClick(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -4153,6 +4156,11 @@ begin
    menuAbout.Click();
 end;
 
+procedure TMainForm.HelpZyLOClick(Sender: TObject);
+begin
+   UPluginManager.BrowseURL(UPluginManager.URL_MANUAL);
+end;
+
 procedure TMainForm.ConsoleRigBandSet(B: TBand);
 var
    Q: TQSO;
@@ -6421,7 +6429,7 @@ end;
 
 procedure TMainForm.menuPluginManagerClick(Sender: TObject);
 begin
-	 MarketForm.Show;
+   MarketForm.Show;
 end;
 
 procedure TMainForm.CWFMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);

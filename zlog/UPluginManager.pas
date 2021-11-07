@@ -1,6 +1,6 @@
 {*******************************************************************************
  * Amateur Radio Operational Logging Software 'ZyLO' since 2020 June 22
- * License : GNU General Public License v3 (see LICENSE)
+ * License: The MIT License since 2021 October 28 (see LICENSE)
  * Author: Journal of Hamradio Informatics (http://pafelog.net)
 *******************************************************************************}
 unit UPluginManager;
@@ -99,11 +99,15 @@ var
 	MarketDict: TMarketDict;
 
 const
-	PKG = 'pkg';
-	CFG = 'cfg';
-	DAT = 'dat';
-	DLL = 'dll';
-	EXE = 'exe';
+	URL_MARKET = 'https://zylo.pafelog.net/market.json';
+	URL_MANUAL = 'https://zylo.pafelog.net';
+
+procedure BrowseURL(url: string);
+
+function GetItemPathINI: string;
+function GetItemListINI: TList<String>;
+procedure SetItemPathINI(path: String);
+procedure SetItemListINI(list: TList<String>);
 
 implementation
 
@@ -111,9 +115,13 @@ uses main;
 
 {$R *.dfm}
 
-function LoadIniFile: TIniFile;
+function GetItemPathINI: string;
+var
+	init: TIniFile;
 begin
-	Result := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+	init := LoadIniFile;
+	Result := init.ReadString(KEY_ZYLO, KEY_PATH, GetCurrentDir);
+	init.Free;
 end;
 
 function GetItemListINI: TList<String>;
@@ -122,10 +130,33 @@ var
 	text: string;
 begin
 	init := LoadIniFile;
-	text := init.ReadString('zylo', 'items', '');
+	text := init.ReadString(KEY_ZYLO, KEY_LIST, '');
 	Result := TList<String>.Create;
 	Result.AddRange(text.Split([',']));
 	init.Free;
+end;
+
+procedure SetItemPathINI(path: String);
+function Confirm: boolean;
+var
+	text: string;
+	icon: TMsgDlgType;
+	btns: TMsgDlgButtons;
+begin
+	icon := mtConfirmation;
+	btns := [mbYes, mbCancel];
+	text := 'Installed plugins will be disabled. Are you sure?';
+	Result := MessageDlg(text, icon, btns, 0, mbCancel) = mrYes;
+end;
+var
+	init: TIniFile;
+begin
+	if (path <> GetItemPathINI) and Confirm then begin
+		init := LoadIniFile;
+		init.WriteString(KEY_ZYLO, KEY_PATH, path);
+		init.WriteString(KEY_ZYLO, KEY_LIST, '');
+		init.Free;
+	end;
 end;
 
 procedure SetItemListINI(list: TList<String>);
@@ -137,14 +168,14 @@ begin
 	init := LoadIniFile;
 	text := TStringList.Create;
 	for item in list do text.Append(item);
-	init.WriteString('zylo', 'items', text.DelimitedText);
+	init.WriteString(KEY_ZYLO, KEY_LIST, text.DelimitedText);
 	init.Free;
 end;
 
 function TMarketItem.ref: string;
 function dir: string;
 begin
-	Result := GetCurrentDir;
+	Result := GetItemPathINI;
 	if isCFG then Result := dmZLogGlobal.Settings._cfgdatpath;
 	if isDAT then Result := dmZLogGlobal.Settings._cfgdatpath;
 end;
@@ -166,22 +197,22 @@ end;
 
 function TMarketItem.IsCFG: boolean;
 begin
-	Result := cls = CFG;
+	Result := cls = 'cfg';
 end;
 
 function TMarketItem.IsDAT: boolean;
 begin
-	Result := cls = DAT;
+	Result := cls = 'dat';
 end;
 
 function TMarketItem.IsDLL: boolean;
 begin
-	Result := cls = DLL;
+	Result := cls = 'dll';
 end;
 
 function TMarketItem.IsPKG: boolean;
 begin
-	Result := cls = PKG;
+	Result := cls = 'pkg';
 end;
 
 procedure TMarketItem.Install;
@@ -304,7 +335,8 @@ end;
 procedure TMarketForm.FormShow(Sender: TObject);
 begin
 	ListBox.Clear;
-	LoadJSON('https://zylo.pafelog.net/market.json');
+	LoadJSON(URL_MARKET);
+	ListBoxClick(Self);
 end;
 
 procedure TMarketForm.LoadJSON(url: string);
@@ -421,8 +453,6 @@ begin
 end;
 
 procedure TMarketForm.UpgradeButtonClick(Sender: TObject);
-var
-	Item: TMarketItem;
 begin
 	InstallButton.Enabled := false;
 	DisableButton.Enabled := false;
@@ -432,11 +462,16 @@ begin
 end;
 
 procedure TMarketForm.WebLabelLinkClick(Sender: TObject; const Link: string; LinkType: TSysLinkType);
+begin
+	BrowseURL(Link);
+end;
+
+procedure BrowseURL(url: string);
 var
 	action: TBrowseURL;
 begin
-	action := TBrowseURL.Create(Self);
-	action.URL := Link;
+	action := TBrowseURL.Create(MarketForm);
+	action.URL := url;
 	action.Execute;
 end;
 

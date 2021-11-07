@@ -1,6 +1,6 @@
 ﻿{*******************************************************************************
  * Amateur Radio Operational Logging Software 'ZyLO' since 2020 June 22
- * License : GNU General Public License v3 (see LICENSE)
+ * License: The MIT License since 2021 October 28 (see LICENSE)
  * Author: Journal of Hamradio Informatics (http://pafelog.net)
 *******************************************************************************}
 unit UzLogExtension;
@@ -100,8 +100,13 @@ var
 
 const
 	ResponseCapacity = 256;
+	KEY_LIST = 'items';
+	KEY_DLLS = 'DLLs';
+	KEY_PATH = 'path';
+	KEY_ZYLO = 'zylo';
 
 (*enable/remove DLLs*)
+function LoadIniFile: TIniFile;
 procedure InstallDLL(path: string);
 procedure DisableDLL(path: string);
 function CanInstallDLL(path: string): boolean;
@@ -321,7 +326,7 @@ var
 	text: string;
 begin
 	init := LoadIniFile;
-	text := init.ReadString('zylo', 'DLLs', '');
+	text := init.ReadString(KEY_ZYLO, KEY_DLLS, '');
 	Result := TList<String>.Create;
 	Result.AddRange(text.Split([',']));
 	init.Free;
@@ -336,7 +341,7 @@ begin
 	init := LoadIniFile;
 	text := TStringList.Create;
 	for item in list do text.Append(item);
-	init.WriteString('zylo', 'DLLs', text.DelimitedText);
+	init.WriteString(KEY_ZYLO, KEY_DLLS, text.DelimitedText);
 	init.Free;
 end;
 
@@ -360,6 +365,15 @@ var
 begin
 	list := GetDLLsINI;
 	list.Remove(path);
+	SetDLLsINI(list);
+	list.Free;
+end;
+
+procedure DisableAll;
+var
+	list: TList<String>;
+begin
+	list := TList<String>.Create;
 	SetDLLsINI(list);
 	list.Free;
 end;
@@ -591,7 +605,10 @@ var
 	hnd: THandle;
 begin
 	hnd := LoadLibrary(PChar(path));
-	if hnd = 0 then Exit;
+	if hnd = 0 then begin
+		DisableDLL(path);
+		Exit;
+	end;
 	AllowInsert := MustGetProc(hnd, 'zylo_allow_insert');
 	AllowDelete := MustGetProc(hnd, 'zylo_allow_delete');
 	AllowUpdate := MustGetProc(hnd, 'zylo_allow_update');

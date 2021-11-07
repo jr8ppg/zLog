@@ -2430,10 +2430,17 @@ object formOptions: TformOptions
       end
       object Label74: TLabel
         Left = 16
-        Top = 94
+        Top = 93
         Width = 31
         Height = 13
         Caption = 'Sound'
+      end
+      object Label90: TLabel
+        Left = 16
+        Top = 118
+        Width = 40
+        Height = 13
+        Caption = 'Plugins'
       end
       object edCFGDATPath: TEdit
         Left = 88
@@ -2511,7 +2518,7 @@ object formOptions: TformOptions
       object buttonBrowseSoundPath: TButton
         Tag = 40
         Left = 302
-        Top = 92
+        Top = 91
         Width = 65
         Height = 20
         Caption = 'Browse...'
@@ -2520,7 +2527,7 @@ object formOptions: TformOptions
       end
       object SoundPathEdit: TEdit
         Left = 88
-        Top = 92
+        Top = 91
         Width = 200
         Height = 20
         Font.Charset = DEFAULT_CHARSET
@@ -2530,6 +2537,29 @@ object formOptions: TformOptions
         Font.Style = []
         ParentFont = False
         TabOrder = 6
+      end
+      object buttonBrowsePluginPath: TButton
+        Tag = 50
+        Left = 302
+        Top = 116
+        Width = 65
+        Height = 20
+        Caption = 'Browse...'
+        TabOrder = 9
+        OnClick = BrowsePathClick
+      end
+      object PluginPathEdit: TEdit
+        Left = 88
+        Top = 116
+        Width = 200
+        Height = 20
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 8
       end
     end
     object tabsheetMisc: TTabSheet
