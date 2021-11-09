@@ -99,7 +99,7 @@ type
     procedure TextToQSO(str : string); {convert text to bin}
     function QTCStr : string;
 
-    function SameQSO(aQSO: TQSO) : Boolean;
+//    function SameQSO(aQSO: TQSO) : Boolean;
     function SameQSOID(aQSO: TQSO) : Boolean;
     function SameMode(aQSO: TQSO; IsAllPhone: Boolean): Boolean;
 //    function SameMode2(aMode: TMode) : Boolean;
@@ -744,6 +744,7 @@ begin
    Result := S;
 end;
 
+{
 function TQSO.SameQSO(aQSO: TQSO): Boolean;
 begin
    if (aQSO.FBand = Self.FBand) and
@@ -757,6 +758,7 @@ begin
       Result := False;
    end;
 end;
+}
 
 function TQSO.SameQSOID(aQSO: TQSO): Boolean;
 begin
@@ -986,7 +988,7 @@ var
    i: Integer;
 begin
    for i := 1 to Count - 1 do begin
-      if Items[i].SameQSO(Q) then begin
+      if Items[i].SameQSOID(Q) then begin
          Result := i;
          Exit;
       end;
@@ -2177,7 +2179,7 @@ var
    i: Integer;
 begin
    for i := 1 to TotalQSO do begin
-      if FQsoList[i].SameQSO(aQSO) then begin
+      if FQsoList[i].SameQSOID(aQSO) then begin
          Result := i;
          Exit;
       end;
@@ -2225,7 +2227,13 @@ begin
          Q.Reserve3 := dmZLogGlobal.NewQSOID;
       end;
 
-      Add(Q);
+      // ìØàÍQSOÇ™ÇQèdÇ…ì¸Ç¡ÇƒÇµÇ‹Ç¡ÇΩèÍçáÇÃébíËëŒçÙ
+      if IndexOf(Q) = -1 then begin
+         Add(Q);
+      end
+      else begin
+         FreeAndNil(Q);
+      end;
    end;
 
    if Q <> nil then begin
