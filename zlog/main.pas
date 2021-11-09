@@ -4754,17 +4754,20 @@ begin
             Q := Log.QuickDupe(CurrentQSO);
             if Q <> nil then begin
                MessageBeep(0);
+
                if dmZLogGlobal.Settings._allowdupe = True then begin
-                  WriteStatusLineRed(Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck), True);
                   MyContest.SpaceBarProc;
                   NumberEdit.SetFocus;
-                  exit;
+               end
+               else begin
+                  CallsignEdit.SelectAll;
                end;
-               CallsignEdit.SelectAll;
+
                WriteStatusLineRed(Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck), True);
-               exit;
+               Exit;
             end
             else begin { if not dupe }
+               WriteStatusLine('', False);
                MyContest.SpaceBarProc;
             end;
 
