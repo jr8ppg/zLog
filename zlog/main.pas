@@ -7971,8 +7971,16 @@ end;
 procedure TMainForm.SetWindowCaption();
 var
    strCap: string;
+   strTxNo: string;
 begin
-   strCap := 'zLog for Windows';
+   if dmZLogGlobal.TXNr = 0 then begin
+      strTxNo := '';
+   end
+   else begin
+      strTxNo := '[TX#' + IntToStr(dmZLogGlobal.TXNr) + '] ';
+   end;
+
+   strCap := strTxNo + 'zLog for Windows';
 
    if dmZlogGlobal.Settings._multistation = True then begin
       strCap := strCap + ' - Multi station';
