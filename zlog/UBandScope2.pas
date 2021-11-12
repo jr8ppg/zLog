@@ -278,12 +278,14 @@ var
    R: Integer;
    toprow: Integer;
    currow: Integer;
+   markrow: Integer;
    str: string;
    MarkCurrent: Boolean;
    Marked: Boolean;
 begin
    toprow := Grid.TopRow;
    currow := Grid.Row;
+   markrow := -1;
 
    // クリーンアップ
    Cleanup(nil);
@@ -327,9 +329,10 @@ begin
          if MarkCurrent and Not(Marked) then begin
             if D.FreqHz >= CurrentRigFrequency then begin
                Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
-               Grid.Objects[0, R] := nil;;
+               Grid.Objects[0, R] := nil;
                Marked := true;
-               inc(R);
+               markrow := R;
+               Inc(R);
             end;
          end;
 
@@ -365,14 +368,29 @@ begin
    if MarkCurrent and Not(Marked) then begin
       Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
       Grid.Objects[0, R] := nil;
+      markrow := R;
    end;
 
-   if toprow <= Grid.RowCount - 1 then begin
-      Grid.TopRow := toprow;
+   if markrow = -1 then begin
+      if toprow <= Grid.RowCount - 1 then begin
+         Grid.TopRow := toprow;
+      end
+      else begin
+         Grid.TopRow := 0;
+      end;
    end
    else begin
-      Grid.TopRow := 0;
+      if Grid.TopRow > markrow then begin
+         Grid.TopRow := markrow;
+      end;
+      if (Grid.TopRow + Grid.VisibleRowCount - 1) < markrow then begin
+         i := markrow - Grid.VisibleRowCount + 1;
+         if i >= 0 then begin
+            Grid.TopRow := i;
+         end;
+      end;
    end;
+
    if currow <= Grid.RowCount - 1 then begin
       Grid.Row := currow;
    end
