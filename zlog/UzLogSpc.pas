@@ -41,6 +41,8 @@ type
     function IndexOf(SD: TSuperData): Integer;
     function ObjectOf(SD: TSuperData): TSuperData;
     procedure SortByCallsign();
+    function Search(SD: TSuperData; var Index: Integer): Boolean;
+    procedure SaveToFile(filename: string);
   end;
   PTSuperList = ^TSuperList;
 
@@ -196,6 +198,26 @@ begin
    Sort(FCallsignComparer);
 end;
 
+function TSuperList.Search(SD: TSuperData; var Index: Integer): Boolean;
+begin
+   Result := BinarySearch(SD, Index, FCallsignComparer);
+end;
+
+procedure TSuperList.SaveToFile(filename: string);
+var
+   F: TextFile;
+   i: Integer;
+begin
+   AssignFile(F, filename);
+   ReWrite(F);
+
+   for i := 0 to Count - 1 do begin
+      WriteLn(F, items[i].Callsign);
+   end;
+
+   CloseFile(F);
+end;
+
 { TSuperListComparer1 }
 
 function TSuperListComparer1.Compare(const Left, Right: TSuperData): Integer;
@@ -278,7 +300,7 @@ end;
 procedure TSuperCheckDataLoadThread.Execute();
 var
    strFolder: string;
-   x, y: Integer;
+   //x, y: Integer;
    {$IFDEF DEBUG}
    dwTick: DWORD;
    {$ENDIF}
@@ -312,13 +334,15 @@ begin
       end;
 
       // 一応並び替えておく（見た目の問題）
+{
       FSuperList.SortByCallsign();
       for x := 0 to 255 do begin
          for y := 0 to 255 do begin
             FPSuperListTwoLetterMatrix^[x, y].SortByCallsign();
          end;
       end;
-
+}
+      //FSuperList.SaveToFile('superlist.txt');
    finally
       {$IFDEF DEBUG}
       OutputDebugString(PChar('--- END TSuperCheckDataLoadThread --- time=' + IntToStr(GetTickCount() - dwTick) + 'ms'));
@@ -383,6 +407,9 @@ var
    i: Integer;
    str: string;
    dtNow: TDateTime;
+   {$IFDEF DEBUG}
+   dwTick: DWORD;
+   {$ENDIF}
 begin
    // 指定フォルダ優先
    filename := IncludeTrailingPathDelimiter(strStartFoler) + strFileName;
@@ -393,6 +420,10 @@ begin
          Exit;
       end;
    end;
+
+   {$IFDEF DEBUG}
+   dwTick := GetTickCount();
+   {$ENDIF}
 
    dtNow := Now;
 
@@ -435,6 +466,10 @@ begin
 
       SetTwoMatrix(dtNow, C, N);
    end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('[' + filename + '] loading time = ' + IntToStr(GetTickCount() - dwTick)));
+   {$ENDIF}
 
    CloseFile(F);
 end;
@@ -510,20 +545,21 @@ var
    x: Integer;
    y: Integer;
    O: TSuperData;
+   Index: Integer;
 begin
    sd1 := TSuperData.Create(D, C, N);
 
    // リストに追加
-   O := FSuperList.ObjectOf(sd1);
-   if O = nil then begin
-      FSuperList.Add(sd1);
-   end
-   else begin
+   if FSuperList.Search(sd1, Index) = True then begin
+      O := FSuperList.Items[Index];
       if O.Date < D then begin
          O.Date := D;
          O.Number := N;
       end;
       sd1.Free();
+   end
+   else begin
+      FSuperList.Insert(Index, sd1);
    end;
 
    // TwoLetterリストに追加
@@ -535,16 +571,17 @@ begin
       sd2 := TSuperData.Create(D, C, N);
       x := Ord(sd2.callsign[i]);
       y := Ord(sd2.callsign[i + 1]);
-      O := FPSuperListTwoLetterMatrix^[x, y].ObjectOf(sd2);
-      if O = nil then begin
-         FPSuperListTwoLetterMatrix^[x, y].Add(sd2);
-      end
-      else begin
+
+      if FPSuperListTwoLetterMatrix^[x, y].Search(sd2, Index) = True then begin
+         O := FPSuperListTwoLetterMatrix^[x, y].Items[Index];
          if O.Date < D then begin
             O.Date := D;
             O.Number := N;
          end;
          sd2.Free();
+      end
+      else begin
+          FPSuperListTwoLetterMatrix^[x, y].Insert(Index, sd2);
       end;
    end;
 end;
