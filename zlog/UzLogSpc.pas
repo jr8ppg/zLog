@@ -41,7 +41,7 @@ type
     function IndexOf(SD: TSuperData): Integer;
     function ObjectOf(SD: TSuperData): TSuperData;
     procedure SortByCallsign();
-    function Search(SD: TSuperData; var Index: Integer): Boolean;
+    procedure AddData(D: TDateTime; C, N: string);
     procedure SaveToFile(filename: string);
   end;
   PTSuperList = ^TSuperList;
@@ -151,9 +151,10 @@ end;
 
 function TSuperList.IndexOf(SD: TSuperData): Integer;
 var
-//   Index: Integer;
-   i: Integer;
+   Index: Integer;
+//   i: Integer;
 begin
+{
    for i := 0 to Count - 1 do begin
       if SD.Callsign = Items[i].Callsign then begin
          Result := i;
@@ -161,21 +162,21 @@ begin
       end;
    end;
    Result := -1;
-{
+}
    if BinarySearch(SD, Index, FCallsignComparer) = True then begin
       Result := Index;
    end
    else begin
       Result := -1;
    end;
-}
 end;
 
 function TSuperList.ObjectOf(SD: TSuperData): TSuperData;
 var
-//   Index: Integer;
-   i: Integer;
+   Index: Integer;
+//   i: Integer;
 begin
+{
    for i := 0 to Count - 1 do begin
       if SD.Callsign = Items[i].Callsign then begin
          Result := Items[i];
@@ -183,14 +184,14 @@ begin
       end;
    end;
    Result := nil;
-{
+}
+
    if BinarySearch(SD, Index, FCallsignComparer) = True then begin
       Result := Items[Index];
    end
    else begin
       Result := nil;
    end;
-}
 end;
 
 procedure TSuperList.SortByCallsign();
@@ -198,9 +199,24 @@ begin
    Sort(FCallsignComparer);
 end;
 
-function TSuperList.Search(SD: TSuperData; var Index: Integer): Boolean;
+procedure TSuperList.AddData(D: TDateTime; C, N: string);
+var
+   O: TSuperData;
+   SD: TSuperData;
+   Index: Integer;
 begin
-   Result := BinarySearch(SD, Index, FCallsignComparer);
+   SD := TSuperData.Create(D, C, N);
+   if BinarySearch(SD, Index, FCallsignComparer) = True then begin
+      O := Items[Index];
+      if O.Date < SD.Date then begin
+         O.Date := SD.Date;
+         O.Number := SD.Number;
+      end;
+      SD.Free();
+   end
+   else begin
+      Insert(Index, SD);
+   end;
 end;
 
 procedure TSuperList.SaveToFile(filename: string);
@@ -333,15 +349,6 @@ begin
          end;
       end;
 
-      // 一応並び替えておく（見た目の問題）
-{
-      FSuperList.SortByCallsign();
-      for x := 0 to 255 do begin
-         for y := 0 to 255 do begin
-            FPSuperListTwoLetterMatrix^[x, y].SortByCallsign();
-         end;
-      end;
-}
       //FSuperList.SaveToFile('superlist.txt');
    finally
       {$IFDEF DEBUG}
@@ -539,28 +546,12 @@ end;
 
 procedure TSuperCheckDataLoadThread.SetTwoMatrix(D: TDateTime; C, N: string);
 var
-   sd1: TSuperData;
-   sd2: TSuperData;
    i: Integer;
    x: Integer;
    y: Integer;
-   O: TSuperData;
-   Index: Integer;
 begin
-   sd1 := TSuperData.Create(D, C, N);
-
    // リストに追加
-   if FSuperList.Search(sd1, Index) = True then begin
-      O := FSuperList.Items[Index];
-      if O.Date < D then begin
-         O.Date := D;
-         O.Number := N;
-      end;
-      sd1.Free();
-   end
-   else begin
-      FSuperList.Insert(Index, sd1);
-   end;
+   FSuperList.AddData(D, C, N);
 
    // TwoLetterリストに追加
    for i := 1 to Length(C) - 1 do begin
@@ -568,21 +559,10 @@ begin
          Break;
       end;
 
-      sd2 := TSuperData.Create(D, C, N);
-      x := Ord(sd2.callsign[i]);
-      y := Ord(sd2.callsign[i + 1]);
+      x := Ord(C[i]);
+      y := Ord(C[i + 1]);
 
-      if FPSuperListTwoLetterMatrix^[x, y].Search(sd2, Index) = True then begin
-         O := FPSuperListTwoLetterMatrix^[x, y].Items[Index];
-         if O.Date < D then begin
-            O.Date := D;
-            O.Number := N;
-         end;
-         sd2.Free();
-      end
-      else begin
-          FPSuperListTwoLetterMatrix^[x, y].Insert(Index, sd2);
-      end;
+      FPSuperListTwoLetterMatrix^[x, y].AddData(D, C, N);
    end;
 end;
 
