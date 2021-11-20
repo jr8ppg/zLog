@@ -7206,6 +7206,7 @@ end;
 
 procedure TMainForm.MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 begin
+   zyloWindowMessage(msg);
    if MMTTYInitialized then begin
       UMMTTY.ProcessMMTTYMessage(Msg, Handled);
    end;
