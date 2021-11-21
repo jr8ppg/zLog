@@ -11,6 +11,7 @@ object PackageLoader: TPackageLoader
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  FormStyle = fsStayOnTop
   OldCreateOrder = False
   Position = poMainFormCenter
   PixelsPerInch = 96

@@ -24,8 +24,6 @@ object MarketForm: TMarketForm
     Align = alTop
     AutoSnap = False
     Beveled = True
-    ExplicitTop = 242
-    ExplicitWidth = 624
   end
   object ShowPanel: TPanel
     Left = 0
@@ -42,8 +40,6 @@ object MarketForm: TMarketForm
     BorderWidth = 10
     ParentBackground = False
     ParentColor = True
-    TabOrder = 0
-    ExplicitHeight = 165
     object TagLabel: TLabel
       AlignWithMargins = True
       Left = 10
@@ -61,7 +57,6 @@ object MarketForm: TMarketForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      ExplicitWidth = 333
     end
     object MsgLabel: TLinkLabel
       Left = 10
@@ -70,7 +65,6 @@ object MarketForm: TMarketForm
       Height = 76
       Align = alClient
       Caption = 'Empower zLog with great features developed by third parties.'
-      Color = clGrayText
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
@@ -78,10 +72,7 @@ object MarketForm: TMarketForm
       Font.Style = []
       ParentColor = False
       ParentFont = False
-      TabOrder = 1
       OnLinkClick = WebLabelLinkClick
-      ExplicitWidth = 440
-      ExplicitHeight = 23
     end
     object WebLabel: TLinkLabel
       Left = 10
@@ -96,10 +87,7 @@ object MarketForm: TMarketForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      TabOrder = 0
       OnLinkClick = WebLabelLinkClick
-      ExplicitTop = 137
-      ExplicitWidth = 116
     end
   end
   object ListPanel: TPanel
@@ -112,13 +100,12 @@ object MarketForm: TMarketForm
     BevelOuter = bvNone
     ParentColor = True
     ShowCaption = False
-    TabOrder = 1
     object ListBox: TListBox
       AlignWithMargins = True
       Left = 10
       Top = 47
       Width = 614
-      Height = 343
+      Height = 310
       Margins.Left = 10
       Margins.Top = 10
       Margins.Right = 10
@@ -131,7 +118,6 @@ object MarketForm: TMarketForm
       Font.Style = []
       ItemHeight = 19
       ParentFont = False
-      TabOrder = 0
       OnClick = ListBoxClick
     end
     object SearchBox: TSearchBox
@@ -153,9 +139,23 @@ object MarketForm: TMarketForm
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 1
       TextHint = 'Search'
       OnChange = SearchBoxChange
+    end
+    object CheckBox: TCheckBox
+      AlignWithMargins = True
+      Margins.Left = 10
+      Margins.Right = 10
+      Margins.Bottom = 10
+      Align = alBottom
+      Caption = 'Show unstable (experimental) plugins'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      OnClick = SearchBoxChange
     end
   end
   object GridPanel: TGridPanel
@@ -199,14 +199,10 @@ object MarketForm: TMarketForm
       item
         Value = 100.000000000000000000
       end>
-    TabOrder = 2
-    ExplicitTop = 551
     object InstallButton: TButton
       AlignWithMargins = True
-      Left = 15
-      Top = 5
-      Width = 188
-      Height = 40
+      Width = 202
+      Height = 34
       Align = alClient
       Caption = 'Install'
       Enabled = False
@@ -216,16 +212,12 @@ object MarketForm: TMarketForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      TabOrder = 0
       OnClick = InstallButtonClick
-      ExplicitHeight = 31
     end
     object DisableButton: TButton
       AlignWithMargins = True
-      Left = 223
-      Top = 5
-      Width = 188
-      Height = 40
+      Width = 202
+      Height = 34
       Align = alClient
       Caption = 'Disable'
       Enabled = False
@@ -235,16 +227,12 @@ object MarketForm: TMarketForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      TabOrder = 1
       OnClick = DisableButtonClick
-      ExplicitHeight = 31
     end
     object UpgradeButton: TButton
       AlignWithMargins = True
-      Left = 431
-      Top = 5
-      Width = 188
-      Height = 40
+      Width = 202
+      Height = 34
       Align = alClient
       Caption = 'Upgrade'
       Enabled = False
@@ -254,9 +242,7 @@ object MarketForm: TMarketForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      TabOrder = 2
       OnClick = UpgradeButtonClick
-      ExplicitHeight = 31
     end
   end
   object NetHTTPClient: TNetHTTPClient

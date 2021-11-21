@@ -70,7 +70,6 @@ type
 		EditorEvent: procedure(idx, key: integer); stdcall;
 		constructor Create(path: string);
 	private
-		bad: boolean;
 		hnd: THandle;
 	end;
 	TButtonBridge = class
@@ -463,8 +462,8 @@ begin
 	for dll in Rules.Values do
 		if dll.FinishEvent then
 			FreeLibrary(dll.hnd);
-	FreeAndNil(ImportDialog);
-	FreeAndNil(ExportDialog);
+	ImportDialog.Free;
+	ExportDialog.Free;
 end;
 
 procedure zyloWindowMessage(var msg: TMsg);
@@ -656,10 +655,9 @@ procedure NotifyMismatch;
 var
 	msg: string;
 begin
-	if bad then Exit;
-	bad := True;
-	msg := 'ZyLO API-version mismatch was detected in %s';
-	MessageDlg(Format(msg, [path]), mtWarning, [mbOK], 0);
+	msg := 'ZyLO API mismatch in ' + path;
+	MessageDlg(msg, mtWarning, [mbOK], 0);
+	raise Exception.Create(msg);
 end;
 function MustGetProc(name: PWideChar): pointer;
 begin
@@ -672,49 +670,50 @@ begin
 		DisableDLL(path);
 		Exit;
 	end;
-	AllowInsert := MustGetProc('zylo_allow_insert');
-	AllowDelete := MustGetProc('zylo_allow_delete');
-	AllowUpdate := MustGetProc('zylo_allow_update');
-	AllowDialog := MustGetProc('zylo_allow_dialog');
-	AllowNotify := MustGetProc('zylo_allow_notify');
-	AllowAccess := MustGetProc('zylo_allow_access');
-	AllowHandle := MustGetProc('zylo_allow_handle');
-	AllowButton := MustGetProc('zylo_allow_button');
-	AllowEditor := MustGetProc('zylo_allow_editor');
-	QueryFormat := MustGetProc('zylo_query_format');
-	QueryCities := MustGetProc('zylo_query_cities');
-	LaunchEvent := MustGetProc('zylo_launch_event');
-	FinishEvent := MustGetProc('zylo_finish_event');
-	WindowEvent := MustGetProc('zylo_window_event');
-	ImportEvent := MustGetProc('zylo_import_event');
-	ExportEvent := MustGetProc('zylo_export_event');
-	AttachEvent := MustGetProc('zylo_attach_event');
-	AssignEvent := MustGetProc('zylo_assign_event');
-	DetachEvent := MustGetProc('zylo_detach_event');
-	OffsetEvent := MustGetProc('zylo_offset_event');
-	InsertEvent := MustGetProc('zylo_insert_event');
-	DeleteEvent := MustGetProc('zylo_delete_event');
-	VerifyEvent := MustGetProc('zylo_verify_event');
-	PointsEvent := MustGetProc('zylo_points_event');
-	ButtonEvent := MustGetProc('zylo_button_event');
-	EditorEvent := MustGetProc('zylo_editor_event');
-	if bad then Exit;
-	LastDLL := Self;
-	(*LastDLL must be set here*)
-	AllowInsert(@InsertCallBack);
-	AllowDelete(@DeleteCallBack);
-	AllowUpdate(@UpdateCallBack);
-	AllowDialog(@DialogCallBack);
-	AllowNotify(@NotifyCallBack);
-	AllowAccess(@AccessCallBack);
-	AllowHandle(@HandleCallBack);
-	AllowButton(@ButtonCallBack);
-	AllowEditor(@EditorCallBack);
-	QueryFormat(@FormatCallBack);
-	if not LaunchEvent then NotifyMismatch;
-	Rules.Add(ExtractFileName(path), Self);
-	LastDLL := nil;
-	(*LastDLL must be nil here*)
+	try
+		AllowInsert := MustGetProc('zylo_allow_insert');
+		AllowDelete := MustGetProc('zylo_allow_delete');
+		AllowUpdate := MustGetProc('zylo_allow_update');
+		AllowDialog := MustGetProc('zylo_allow_dialog');
+		AllowNotify := MustGetProc('zylo_allow_notify');
+		AllowAccess := MustGetProc('zylo_allow_access');
+		AllowHandle := MustGetProc('zylo_allow_handle');
+		AllowButton := MustGetProc('zylo_allow_button');
+		AllowEditor := MustGetProc('zylo_allow_editor');
+		QueryFormat := MustGetProc('zylo_query_format');
+		QueryCities := MustGetProc('zylo_query_cities');
+		LaunchEvent := MustGetProc('zylo_launch_event');
+		FinishEvent := MustGetProc('zylo_finish_event');
+		WindowEvent := MustGetProc('zylo_window_event');
+		ImportEvent := MustGetProc('zylo_import_event');
+		ExportEvent := MustGetProc('zylo_export_event');
+		AttachEvent := MustGetProc('zylo_attach_event');
+		AssignEvent := MustGetProc('zylo_assign_event');
+		DetachEvent := MustGetProc('zylo_detach_event');
+		OffsetEvent := MustGetProc('zylo_offset_event');
+		InsertEvent := MustGetProc('zylo_insert_event');
+		DeleteEvent := MustGetProc('zylo_delete_event');
+		VerifyEvent := MustGetProc('zylo_verify_event');
+		PointsEvent := MustGetProc('zylo_points_event');
+		ButtonEvent := MustGetProc('zylo_button_event');
+		EditorEvent := MustGetProc('zylo_editor_event');
+		LastDLL := Self;
+		(*LastDLL must be set here*)
+		AllowInsert(@InsertCallBack);
+		AllowDelete(@DeleteCallBack);
+		AllowUpdate(@UpdateCallBack);
+		AllowDialog(@DialogCallBack);
+		AllowNotify(@NotifyCallBack);
+		AllowAccess(@AccessCallBack);
+		AllowHandle(@HandleCallBack);
+		AllowButton(@ButtonCallBack);
+		AllowEditor(@EditorCallBack);
+		QueryFormat(@FormatCallBack);
+		if not LaunchEvent then NotifyMismatch;
+		Rules.Add(ExtractFileName(path), Self);
+	except
+		LastDLL := nil;
+	end;
 end;
 
 initialization

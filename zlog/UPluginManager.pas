@@ -45,6 +45,7 @@ type
 		url: string;
 		web: string;
 		sum: string;
+		exp: string;
 		use: TList<string>;
 		function ref: string;
 		function name: string;
@@ -56,12 +57,14 @@ type
 		procedure Install;
 		procedure Disable;
 		procedure Upgrade;
+		function IsStable: boolean;
 		function IsUpToDate: boolean;
 		function CanInstall: boolean;
 		function CanDisable: boolean;
 		function CanUpgrade: boolean;
 		function Dependency: TArray<TMarketItem>;
 	end;
+	TMarketList = TList<TMarketItem>;
 	TMarketDict = TDictionary<string, TMarketItem>;
 	TMarketTest = reference to function(Item: TMarketItem): boolean;
 	TMarketForm = class(TForm)
@@ -72,6 +75,7 @@ type
 		MsgLabel: TLinkLabel;
 		WebLabel: TLinkLabel;
 		Splitter: TSplitter;
+		CheckBox: TCheckBox;
 		ListPanel: TPanel;
 		ShowPanel: TPanel;
 		GridPanel: TGridPanel;
@@ -97,6 +101,7 @@ var
 	MarketForm: TMarketForm;
 	MarketItem: TMarketItem;
 	MarketDict: TMarketDict;
+	MarketList: TMarketList;
 
 const
 	URL_MARKET = 'https://zylo.pafelog.net/market.json';
@@ -274,6 +279,11 @@ begin
 	end;
 end;
 
+function TMarketItem.IsStable: boolean;
+begin
+	Result := exp = 'stable';
+end;
+
 function TMarketItem.IsUpToDate: boolean;
 var
 	sum: string;
@@ -334,9 +344,8 @@ end;
 
 procedure TMarketForm.FormShow(Sender: TObject);
 begin
-	ListBox.Clear;
 	LoadJSON(URL_MARKET);
-	ListBoxClick(Self);
+	SearchBoxChange(Self);
 end;
 
 procedure TMarketForm.LoadJSON(url: string);
@@ -349,6 +358,7 @@ var
 	cls, obj: TJsonPair;
 begin
 	try
+		MarketList.Clear;
 		buf := TMemoryStream.Create;
 		res := NetHttpRequest.Get(url, buf);
 		txt := res.ContentAsString(TEncoding.UTF8);
@@ -386,11 +396,12 @@ begin
 	Item.url := Value(obj.JsonValue, 'url');
 	Item.web := Value(obj.JsonValue, 'web');
 	Item.sum := Value(obj.JsonValue, 'sum');
+	Item.exp := Value(obj.JsonValue, 'exp');
 	def := TJsonArray.Create;
 	arr := obj.JsonValue.GetValue('use', def);
 	for use in arr do Item.use.Add(use.Value);
 	MarketDict.AddOrSetvalue(Item.name, Item);
-	if Item.IsPKG then ListBox.AddItem(Item.tag, Item);
+	MarketList.Add(Item);
 	def.Free;
 end;
 
@@ -425,12 +436,17 @@ begin
 	end else
 		Result := False;
 end;
+function Check(Item: TMarketItem): boolean;
+begin
+	Result := Match(Item) and (Item.IsStable or CheckBox.Checked);
+end;
 var
 	Item: TMarketItem;
 begin
 	ListBox.Clear;
-	for Item in MarketDict.Values do
-		if Match(Item) then ListBox.AddItem(Item.tag, Item);
+	for Item in MarketList do
+		if Check(Item) then ListBox.AddItem(Item.tag, Item);
+	ListBoxClick(Self);
 end;
 
 procedure TMarketForm.InstallButtonClick(Sender: TObject);
@@ -477,8 +493,10 @@ end;
 
 initialization
 	MarketDict := TMarketDict.Create;
+	MarketList := TMarketList.Create;
 
 finalization
 	MarketDict.Free;
+	MarketList.Free;
 
 end.
