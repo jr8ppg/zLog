@@ -1,4 +1,6 @@
 object MarketForm: TMarketForm
+  Left = 0
+  Top = 0
   BorderStyle = bsDialog
   Caption = 'ZyLO Plugin Manager'
   ClientHeight = 611
@@ -40,11 +42,12 @@ object MarketForm: TMarketForm
     BorderWidth = 10
     ParentBackground = False
     ParentColor = True
+    TabOrder = 0
     object TagLabel: TLabel
       AlignWithMargins = True
       Left = 10
       Top = 13
-      Width = 614
+      Width = 333
       Height = 29
       Margins.Left = 0
       Margins.Right = 0
@@ -65,6 +68,7 @@ object MarketForm: TMarketForm
       Height = 76
       Align = alClient
       Caption = 'Empower zLog with great features developed by third parties.'
+      Color = clBtnFace
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
@@ -72,6 +76,7 @@ object MarketForm: TMarketForm
       Font.Style = []
       ParentColor = False
       ParentFont = False
+      TabOrder = 0
       OnLinkClick = WebLabelLinkClick
     end
     object WebLabel: TLinkLabel
@@ -87,6 +92,7 @@ object MarketForm: TMarketForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      TabOrder = 1
       OnLinkClick = WebLabelLinkClick
     end
   end
@@ -100,12 +106,13 @@ object MarketForm: TMarketForm
     BevelOuter = bvNone
     ParentColor = True
     ShowCaption = False
+    TabOrder = 1
     object ListBox: TListBox
       AlignWithMargins = True
       Left = 10
       Top = 47
       Width = 614
-      Height = 310
+      Height = 313
       Margins.Left = 10
       Margins.Top = 10
       Margins.Right = 10
@@ -118,6 +125,7 @@ object MarketForm: TMarketForm
       Font.Style = []
       ItemHeight = 19
       ParentFont = False
+      TabOrder = 0
       OnClick = ListBoxClick
     end
     object SearchBox: TSearchBox
@@ -139,11 +147,16 @@ object MarketForm: TMarketForm
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
+      TabOrder = 1
       TextHint = 'Search'
       OnChange = SearchBoxChange
     end
     object CheckBox: TCheckBox
       AlignWithMargins = True
+      Left = 10
+      Top = 373
+      Width = 614
+      Height = 17
       Margins.Left = 10
       Margins.Right = 10
       Margins.Bottom = 10
@@ -155,7 +168,11 @@ object MarketForm: TMarketForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      TabOrder = 2
       OnClick = SearchBoxChange
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 97
     end
   end
   object GridPanel: TGridPanel
@@ -199,8 +216,11 @@ object MarketForm: TMarketForm
       item
         Value = 100.000000000000000000
       end>
+    TabOrder = 2
     object InstallButton: TButton
       AlignWithMargins = True
+      Left = 0
+      Top = 0
       Width = 202
       Height = 34
       Align = alClient
@@ -212,10 +232,13 @@ object MarketForm: TMarketForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      TabOrder = 0
       OnClick = InstallButtonClick
     end
     object DisableButton: TButton
       AlignWithMargins = True
+      Left = 0
+      Top = 0
       Width = 202
       Height = 34
       Align = alClient
@@ -227,10 +250,13 @@ object MarketForm: TMarketForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      TabOrder = 1
       OnClick = DisableButtonClick
     end
     object UpgradeButton: TButton
       AlignWithMargins = True
+      Left = 0
+      Top = 0
       Width = 202
       Height = 34
       Align = alClient
@@ -242,20 +268,16 @@ object MarketForm: TMarketForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      TabOrder = 2
       OnClick = UpgradeButtonClick
     end
   end
   object NetHTTPClient: TNetHTTPClient
-    Asynchronous = False
-    ConnectionTimeout = 60000
-    ResponseTimeout = 60000
-    HandleRedirects = True
-    AllowCookies = True
     UserAgent = 'zLog'
   end
   object NetHTTPRequest: TNetHTTPRequest
-    Asynchronous = False
     ConnectionTimeout = 0
+    SendTimeout = 0
     ResponseTimeout = 0
     Left = 120
   end

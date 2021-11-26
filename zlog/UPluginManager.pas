@@ -34,7 +34,8 @@ uses
 	UzLogExtension,
 	UPackageLoader,
 	WinXCtrls,
-	Windows;
+	Windows,
+   System.UITypes;
 
 type
 	TMarketItem = class(TObject)
@@ -63,6 +64,9 @@ type
 		function CanDisable: boolean;
 		function CanUpgrade: boolean;
 		function Dependency: TArray<TMarketItem>;
+   public
+      constructor Create;
+      destructor Destroy(); override;
 	end;
 	TMarketList = TList<TMarketItem>;
 	TMarketDict = TDictionary<string, TMarketItem>;
@@ -116,9 +120,27 @@ procedure SetItemListINI(list: TList<String>);
 
 implementation
 
-uses main;
+//uses main;
 
 {$R *.dfm}
+
+procedure MarketListClear;
+var
+   Item: TMarketItem;
+begin
+   for Item In MarketList do
+      Item.Free;
+   MarketList.Clear;
+end;
+
+procedure MarketListFree;
+var
+   Item: TMarketItem;
+begin
+   for Item In MarketList do
+      Item.Free;
+   MarketList.Free;
+end;
 
 function GetItemPathINI: string;
 var
@@ -188,6 +210,16 @@ begin
 	Result := TPath.GetFileName(url);
 	if isCFG then Result := TPath.Combine(dir, Result);
 	if isDAT then Result := TPath.Combine(dir, Result);
+end;
+
+constructor TMarketItem.Create;
+begin
+	use := TList<string>.create;
+end;
+
+destructor TMarketItem.Destroy;
+begin
+   use.Free;
 end;
 
 function TMarketItem.name: string;
@@ -322,7 +354,10 @@ var
 	Item: TMarketItem;
 begin
 	if CanInstall then Exit(false);
-	for Item in Dependency do if Test(Item) then Exit(true);
+	for Item in Dependency do
+      if Test(Item) then Exit(true);
+
+   Result := False;
 end;
 
 function TMarketItem.Dependency: TArray<TMarketItem>;
@@ -358,7 +393,7 @@ var
 	cls, obj: TJsonPair;
 begin
 	try
-		MarketList.Clear;
+		MarketListClear;
 		buf := TMemoryStream.Create;
 		res := NetHttpRequest.Get(url, buf);
 		txt := res.ContentAsString(TEncoding.UTF8);
@@ -390,7 +425,6 @@ begin
 	Item := TMarketItem.Create;
 	Item.cls := cls.JsonString.Value;
 	Item.key := obj.JsonString.Value;
-	Item.use := TList<string>.create;
 	Item.tag := Value(obj.JsonValue, 'tag');
 	Item.msg := Value(obj.JsonValue, 'msg');
 	Item.url := Value(obj.JsonValue, 'url');
@@ -497,6 +531,6 @@ initialization
 
 finalization
 	MarketDict.Free;
-	MarketList.Free;
+	MarketListFree;
 
 end.

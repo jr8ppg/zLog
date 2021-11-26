@@ -3948,6 +3948,10 @@ begin
    SetFontSize(dmZlogGlobal.Settings._mainfontsize);
    FFunctionKeyPanel.Init();
 
+   {$IFDEF WIN32}
+   menuPluginManager.Visible := False;
+   {$ENDIF}
+
    zyloRuntimeLaunch;
 end;
 
