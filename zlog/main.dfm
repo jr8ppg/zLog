@@ -5363,6 +5363,10 @@ object MainForm: TMainForm
         Caption = '&Target Editor'
         OnClick = menuTargetEditorClick
       end
+      object menuPluginManager: TMenuItem
+        Caption = '&Plugin Manager'
+        OnClick = menuPluginManagerClick
+      end
     end
     object Network1: TMenuItem
       Caption = '&Network'
@@ -5437,6 +5441,15 @@ object MainForm: TMainForm
       object menuQuickReference: TMenuItem
         Caption = '&Quick Reference'
         OnClick = menuQuickReferenceClick
+      end
+      object N5: TMenuItem
+        Caption = '-'
+        Visible = False
+      end
+      object HelpZyLO: TMenuItem
+        Caption = '&ZyLO Reference Manual'
+        Hint = 'How to make ZyLO plugin'
+        OnClick = HelpZyLOClick
       end
     end
   end

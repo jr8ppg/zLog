@@ -124,7 +124,9 @@ uses
   MSACM in 'MSACM.pas',
   UNRDialog in 'UNRDialog.pas' {NRDialog},
   UQsyInfo in 'UQsyInfo.pas' {formQsyInfo},
-  UExportHamlog in 'UExportHamlog.pas' {formExportHamlog};
+  UExportHamlog in 'UExportHamlog.pas' {formExportHamlog},
+  UPackageLoader in 'UPackageLoader.pas' {PackageLoader},
+  UPluginManager in 'UPluginManager.pas' {MarketForm};
 
 {$R *.RES}
 
@@ -138,6 +140,7 @@ begin
   Application.CreateForm(TdmZLogGlobal, dmZLogGlobal);
   Application.CreateForm(TdmZLogKeyer, dmZLogKeyer);
   Application.CreateForm(TMainForm, MainForm);
+  Application.CreateForm(TMarketForm, MarketForm);
   Application.ShowMainForm := False;
 //  Application.MainFormOnTaskBar := True;
 

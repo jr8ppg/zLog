@@ -1,6 +1,6 @@
 ﻿{*******************************************************************************
  * Amateur Radio Operational Logging Software 'ZyLO' since 2020 June 22
- * License : GNU General Public License v3 (see LICENSE)
+ * License: The MIT License since 2021 October 28 (see LICENSE)
  * Author: Journal of Hamradio Informatics (http://pafelog.net)
 *******************************************************************************}
 unit UzLogExtension;
@@ -29,6 +29,7 @@ uses
 	AnsiStrings,
 	JclFileUtils,
 	RegularExpressions,
+	System.Notification,
 	Generics.Collections;
 
 type
@@ -45,13 +46,16 @@ type
 		AllowDelete: procedure(fun: pointer); stdcall;
 		AllowUpdate: procedure(fun: pointer); stdcall;
 		AllowDialog: procedure(fun: pointer); stdcall;
+		AllowNotify: procedure(fun: pointer); stdcall;
 		AllowAccess: procedure(fun: pointer); stdcall;
+		AllowHandle: procedure(fun: pointer); stdcall;
 		AllowButton: procedure(fun: pointer); stdcall;
 		AllowEditor: procedure(fun: pointer); stdcall;
 		QueryFormat: procedure(fun: pointer); stdcall;
 		QueryCities: procedure(fun: pointer); stdcall;
-		LaunchEvent: procedure; stdcall;
-		FinishEvent: procedure; stdcall;
+		LaunchEvent: function: boolean; stdcall;
+		FinishEvent: function: boolean; stdcall;
+		WindowEvent: procedure(msg: pointer); stdcall;
 		ImportEvent: procedure(path, target: PAnsiChar); stdcall;
 		ExportEvent: procedure(path, format: PAnsiChar); stdcall;
 		AttachEvent: procedure(rule, config: PAnsiChar); stdcall;
@@ -65,6 +69,8 @@ type
 		ButtonEvent: procedure(idx, btn: integer); stdcall;
 		EditorEvent: procedure(idx, key: integer); stdcall;
 		constructor Create(path: string);
+	private
+		hnd: THandle;
 	end;
 	TButtonBridge = class
 		Source: TButton;
@@ -95,15 +101,28 @@ var
 	ExportMenu: TMenuItem;
 	ImportDialog: TImportDialog;
 	ExportDialog: TExportDialog;
+	Toasts: TNotificationCenter;
 	Rules: TDictionary<string, TDLL>;
 	Props: TDictionary<string, string>;
 
 const
 	ResponseCapacity = 256;
+	KEY_LIST = 'items';
+	KEY_DLLS = 'DLLs';
+	KEY_PATH = 'path';
+	KEY_ZYLO = 'zylo';
+
+(*enable/remove DLLs*)
+function LoadIniFile: TIniFile;
+procedure InstallDLL(path: string);
+procedure DisableDLL(path: string);
+function CanInstallDLL(path: string): boolean;
+function CanDisableDLL(path: string): boolean;
 
 (*zLog event handlers*)
 procedure zyloRuntimeLaunch;
 procedure zyloRuntimeFinish;
+procedure zyloWindowMessage(var msg: TMsg);
 procedure zyloContestSwitch(test, path: string);
 procedure zyloContestOpened(test, path: string);
 procedure zyloContestClosed;
@@ -123,7 +142,9 @@ procedure UpdateCallBack(ptr: pointer); stdcall;
 procedure FormatCallBack(f: PAnsiChar); stdcall;
 procedure CitiesCallBack(f: PAnsiChar); stdcall;
 procedure DialogCallBack(f: PAnsiChar); stdcall;
+procedure NotifyCallBack(f: PAnsiChar); stdcall;
 procedure AccessCallBack(f: PAnsiChar); stdcall;
+function HandleCallBack(f: PAnsiChar): THandle; stdcall;
 function ButtonCallBack(f: PAnsiChar): integer; stdcall;
 function EditorCallBack(f: PAnsiChar): integer; stdcall;
 
@@ -131,7 +152,7 @@ function EditorCallBack(f: PAnsiChar): integer; stdcall;
 function DtoC(str: string): PAnsiChar;
 function CtoD(str: PAnsiChar): string;
 
-function FindUI(Name: string): TComponent;
+function FindUI(name: string): TComponent;
 
 (*zylo query handlers*)
 function Version: string;
@@ -152,9 +173,11 @@ begin
 	Result := string(UTF8String(str));
 end;
 
-function FindUI(Name: string): TComponent;
+function FindUI(name: string): TComponent;
 begin
-	Result := MainForm.FindComponent(Name);
+	Result := Application;
+	for name in SplitString(name, '.') do
+		Result := Result.FindComponent(name);
 end;
 
 function Version: string;
@@ -173,6 +196,8 @@ begin
 	Props.AddOrSetValue('{V}', Version);
 	Props.AddOrSetValue('{F}', CurrentFileName);
 	Props.AddOrSetValue('{C}', UpperCase(dmZLogGlobal.MyCall));
+	Props.AddOrSetValue('{B}', qso.BandStr);
+	Props.AddOrSetValue('{M}', qso.ModeStr);
 	if MyContest <> nil then v := UzLogCW.SetStrNoAbbrev(v, qso);
 	for key in Props.Keys do v := ReplaceStr(v, key, Props[key]);
 	Result := v;
@@ -255,6 +280,25 @@ begin
 end;
 
 (*callback function that will be invoked by DLL*)
+procedure NotifyCallBack(f: PAnsiChar); stdcall;
+begin
+	TThread.Queue(nil, procedure
+	var
+		Toast: TNotification;
+	begin
+		Toast := Toasts.CreateNotification;
+		Toast.name := 'zLog';
+		Toast.Title := 'ZyLO';
+		Toast.AlertBody := CtoD(f);
+		try
+			Toasts.PresentNotification(Toast);
+		finally
+			Toast.Free;
+		end;
+	end);
+end;
+
+(*callback function that will be invoked by DLL*)
 procedure AccessCallBack(f: PAnsiChar); stdcall;
 var
 	v: string;
@@ -262,6 +306,22 @@ begin
 	v := Request(CtoD(f), main.CurrentQSO);
 	SetLength(v, Min(Length(v), ResponseCapacity));
 	AnsiStrings.StrCopy(f, DtoC(v));
+end;
+
+(*callback function that will be invoked by DLL*)
+function HandleCallBack(f: PAnsiChar): THandle; stdcall;
+var
+	comp: TComponent;
+begin
+	comp := FindUI(CtoD(f));
+	if comp is TMenu then
+		Result := TMenu(comp).Handle
+	else if comp is TMenuItem then
+		Result := TMenuItem(comp).Handle
+	else if comp is TWinControl then
+		Result := TWinControl(comp).Handle
+	else
+		Result := 0;
 end;
 
 (*callback function that will be invoked by DLL*)
@@ -302,20 +362,96 @@ begin
 	end;
 end;
 
+function LoadIniFile: TIniFile;
+begin
+	Result := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+end;
+
+function GetDLLsINI: TList<String>;
+var
+	init: TIniFile;
+	text: string;
+begin
+	init := LoadIniFile;
+	text := init.ReadString(KEY_ZYLO, KEY_DLLS, '');
+	Result := TList<String>.Create;
+	Result.AddRange(text.Split([',']));
+	init.Free;
+end;
+
+procedure SetDLLsINI(list: TList<String>);
+var
+	init: TIniFile;
+	text: TStringList;
+	item: string;
+begin
+	init := LoadIniFile;
+	text := TStringList.Create;
+	for item in list do text.Append(item);
+	init.WriteString(KEY_ZYLO, KEY_DLLS, text.DelimitedText);
+	init.Free;
+end;
+
+procedure InstallDLL(path: string);
+var
+	list: TList<String>;
+begin
+	MainForm.actionBackupExecute(MainForm);
+	list := GetDLLsINI;
+	if not list.Contains(path) then begin
+		list.Add(path);
+		SetDLLsINI(list);
+	end;
+	if not Rules.ContainsKey(path) then TDLL.Create(path);
+	list.Free;
+end;
+
+procedure DisableDLL(path: string);
+var
+	list: TList<String>;
+begin
+	list := GetDLLsINI;
+	list.Remove(path);
+	SetDLLsINI(list);
+	list.Free;
+end;
+
+procedure DisableAll;
+var
+	list: TList<String>;
+begin
+	list := TList<String>.Create;
+	SetDLLsINI(list);
+	list.Free;
+end;
+
+function CanInstallDLL(path: string): boolean;
+begin
+	Result := not CanDisableDLL(path);
+end;
+
+function CanDisableDLL(path: string): boolean;
+var
+	list: TList<string>;
+begin
+	list := GetDLLsINI;
+	Result := list.Contains(path);
+	list.Free;
+end;
+
 procedure zyloRuntimeLaunch;
 var
+	list: TList<String>;
 	path: string;
-	init: TIniFile;
 begin
 	ImportMenu := MainForm.MergeFile1;
 	ExportMenu := MainForm.Export1;
 	ImportDialog := TImportDialog.Create(MainForm);
 	ExportDialog := TExportDialog.Create(MainForm);
-	path := ChangeFileExt(Application.ExeName, '.ini');
-	init := TIniFile.Create(path);
-	path := init.ReadString('zylo', 'DLLs', '');
-	for path in path.Split([',']) do TDLL.Create(path);
-	init.Free;
+	Toasts := TNotificationCenter.Create(MainForm);
+	list := GetDLLsINI;
+	for path in list do TDLL.Create(path);
+	list.Free;
 end;
 
 procedure zyloRuntimeFinish;
@@ -323,9 +459,18 @@ var
 	dll: TDLL;
 begin
 	(*do not close Go DLL*)
-	for dll in Rules.Values do dll.FinishEvent;
-	FreeAndNil(ImportDialog);
-	FreeAndNil(ExportDialog);
+	for dll in Rules.Values do
+		if dll.FinishEvent then
+			FreeLibrary(dll.hnd);
+	ImportDialog.Free;
+	ExportDialog.Free;
+end;
+
+procedure zyloWindowMessage(var msg: TMsg);
+var
+	dll: TDLL;
+begin
+	for dll in Rules.Values do dll.WindowEvent(@msg);
 end;
 
 procedure zyloContestSwitch(test, path: string);
@@ -505,56 +650,70 @@ begin
 	Parent(Sender, key);
 end;
 
-function MustGetProc(hnd: THandle; name: PWideChar): pointer;
+constructor TDLL.Create(path: string);
+procedure NotifyMismatch;
+var
+	msg: string;
+begin
+	msg := 'ZyLO API mismatch in ' + path;
+	MessageDlg(msg, mtWarning, [mbOK], 0);
+	raise Exception.Create(msg);
+end;
+function MustGetProc(name: PWideChar): pointer;
 begin
 	Result := GetProcAddress(hnd, name);
-	if Result = nil then
-		raise Exception.Create(name + ' not provided');
+	if Result = nil then NotifyMismatch;
 end;
-
-constructor TDLL.Create(path: string);
-var
-	hnd: THandle;
 begin
 	hnd := LoadLibrary(PChar(path));
-	if hnd = 0 then Exit;
-	AllowInsert := MustGetProc(hnd, 'zylo_allow_insert');
-	AllowDelete := MustGetProc(hnd, 'zylo_allow_delete');
-	AllowUpdate := MustGetProc(hnd, 'zylo_allow_update');
-	AllowDialog := MustGetProc(hnd, 'zylo_allow_dialog');
-	AllowAccess := MustGetProc(hnd, 'zylo_allow_access');
-	AllowButton := MustGetProc(hnd, 'zylo_allow_button');
-	AllowEditor := MustGetProc(hnd, 'zylo_allow_editor');
-	QueryFormat := MustGetProc(hnd, 'zylo_query_format');
-	QueryCities := MustGetProc(hnd, 'zylo_query_cities');
-	LaunchEvent := MustGetProc(hnd, 'zylo_launch_event');
-	FinishEvent := MustGetProc(hnd, 'zylo_finish_event');
-	ImportEvent := MustGetProc(hnd, 'zylo_import_event');
-	ExportEvent := MustGetProc(hnd, 'zylo_export_event');
-	AttachEvent := MustGetProc(hnd, 'zylo_attach_event');
-	AssignEvent := MustGetProc(hnd, 'zylo_assign_event');
-	DetachEvent := MustGetProc(hnd, 'zylo_detach_event');
-	OffsetEvent := MustGetProc(hnd, 'zylo_offset_event');
-	InsertEvent := MustGetProc(hnd, 'zylo_insert_event');
-	DeleteEvent := MustGetProc(hnd, 'zylo_delete_event');
-	VerifyEvent := MustGetProc(hnd, 'zylo_verify_event');
-	PointsEvent := MustGetProc(hnd, 'zylo_points_event');
-	ButtonEvent := MustGetProc(hnd, 'zylo_button_event');
-	EditorEvent := MustGetProc(hnd, 'zylo_editor_event');
-	LastDLL := Self;
-	(*LastDLL must be set here*)
-	AllowInsert(@InsertCallBack);
-	AllowDelete(@DeleteCallBack);
-	AllowUpdate(@UpdateCallBack);
-	AllowDialog(@DialogCallBack);
-	AllowAccess(@AccessCallBack);
-	AllowButton(@ButtonCallBack);
-	AllowEditor(@EditorCallBack);
-	QueryFormat(@FormatCallBack);
-	LaunchEvent;
-	LastDLL := nil;
-	(*LastDLL must be nil here*)
-	Rules.Add(ExtractFileName(path), Self);
+	if hnd = 0 then begin
+		DisableDLL(path);
+		Exit;
+	end;
+	try
+		AllowInsert := MustGetProc('zylo_allow_insert');
+		AllowDelete := MustGetProc('zylo_allow_delete');
+		AllowUpdate := MustGetProc('zylo_allow_update');
+		AllowDialog := MustGetProc('zylo_allow_dialog');
+		AllowNotify := MustGetProc('zylo_allow_notify');
+		AllowAccess := MustGetProc('zylo_allow_access');
+		AllowHandle := MustGetProc('zylo_allow_handle');
+		AllowButton := MustGetProc('zylo_allow_button');
+		AllowEditor := MustGetProc('zylo_allow_editor');
+		QueryFormat := MustGetProc('zylo_query_format');
+		QueryCities := MustGetProc('zylo_query_cities');
+		LaunchEvent := MustGetProc('zylo_launch_event');
+		FinishEvent := MustGetProc('zylo_finish_event');
+		WindowEvent := MustGetProc('zylo_window_event');
+		ImportEvent := MustGetProc('zylo_import_event');
+		ExportEvent := MustGetProc('zylo_export_event');
+		AttachEvent := MustGetProc('zylo_attach_event');
+		AssignEvent := MustGetProc('zylo_assign_event');
+		DetachEvent := MustGetProc('zylo_detach_event');
+		OffsetEvent := MustGetProc('zylo_offset_event');
+		InsertEvent := MustGetProc('zylo_insert_event');
+		DeleteEvent := MustGetProc('zylo_delete_event');
+		VerifyEvent := MustGetProc('zylo_verify_event');
+		PointsEvent := MustGetProc('zylo_points_event');
+		ButtonEvent := MustGetProc('zylo_button_event');
+		EditorEvent := MustGetProc('zylo_editor_event');
+		LastDLL := Self;
+		(*LastDLL must be set here*)
+		AllowInsert(@InsertCallBack);
+		AllowDelete(@DeleteCallBack);
+		AllowUpdate(@UpdateCallBack);
+		AllowDialog(@DialogCallBack);
+		AllowNotify(@NotifyCallBack);
+		AllowAccess(@AccessCallBack);
+		AllowHandle(@HandleCallBack);
+		AllowButton(@ButtonCallBack);
+		AllowEditor(@EditorCallBack);
+		QueryFormat(@FormatCallBack);
+		if not LaunchEvent then NotifyMismatch;
+		Rules.Add(ExtractFileName(path), Self);
+	except
+		LastDLL := nil;
+	end;
 end;
 
 initialization

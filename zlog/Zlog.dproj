@@ -1,4 +1,4 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{83497C9C-5934-4E18-AC20-2AB9247B7276}</ProjectGuid>
         <MainSource>zlog.dpr</MainSource>
@@ -446,6 +446,14 @@
         <DCCReference Include="UzLogSound.pas"/>
         <DCCReference Include="MMReg.pas"/>
         <DCCReference Include="UzLogExtension.pas"/>
+        <DCCReference Include="UPluginManager.pas">
+            <Form>MarketForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UPackageLoader.pas">
+            <Form>PackageLoader</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <DCCReference Include="UOperatorEdit.pas">
             <Form>formOperatorEdit</Form>
             <FormType>dfm</FormType>

@@ -20,7 +20,7 @@ uses
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel,
-  UQsyInfo, UserDefinedContest;
+  UQsyInfo, UserDefinedContest, UPluginManager;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -427,7 +427,9 @@ type
     Windows1: TMenuItem;
     Help1: TMenuItem;
     menuAbout: TMenuItem;
+    HelpZyLO: TMenuItem;
     N3: TMenuItem;
+    N5: TMenuItem;
     HowtoUseHelp1: TMenuItem;
     SearchforHelpOn1: TMenuItem;
     Contents1: TMenuItem;
@@ -701,6 +703,7 @@ type
     menuTargetEditor: TMenuItem;
     actionShowQsyInfo: TAction;
     QSYInfo1: TMenuItem;
+    menuPluginManager: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -764,6 +767,7 @@ type
     procedure Load1Click(Sender: TObject);
     procedure SortbyTime1Click(Sender: TObject);
     procedure menuAboutClick(Sender: TObject);
+    procedure HelpZyLOClick(Sender: TObject);
     procedure DateEditChange(Sender: TObject);
     procedure TimeEditDblClick(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -927,6 +931,7 @@ type
     procedure actionShowQsoRateExExecute(Sender: TObject);
     procedure menuTargetEditorClick(Sender: TObject);
     procedure actionShowQsyInfoExecute(Sender: TObject);
+    procedure menuPluginManagerClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -4151,6 +4156,11 @@ begin
    menuAbout.Click();
 end;
 
+procedure TMainForm.HelpZyLOClick(Sender: TObject);
+begin
+   UPluginManager.BrowseURL(UPluginManager.URL_MANUAL);
+end;
+
 procedure TMainForm.ConsoleRigBandSet(B: TBand);
 var
    Q: TQSO;
@@ -6420,6 +6430,11 @@ begin
    end;
 end;
 
+procedure TMainForm.menuPluginManagerClick(Sender: TObject);
+begin
+   MarketForm.Show;
+end;
+
 procedure TMainForm.CWFMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
    CWFMenu.Items[0].Tag := THemisphereButton(Sender).Tag;
@@ -7194,6 +7209,7 @@ end;
 
 procedure TMainForm.MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 begin
+   zyloWindowMessage(msg);
    if MMTTYInitialized then begin
       UMMTTY.ProcessMMTTYMessage(Msg, Handled);
    end;
@@ -9951,4 +9967,3 @@ begin
 end;
 
 end.
-

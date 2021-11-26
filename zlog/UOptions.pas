@@ -346,6 +346,9 @@ type
     Label74: TLabel;
     buttonBrowseSoundPath: TButton;
     SoundPathEdit: TEdit;
+    Label90: TLabel;
+    buttonBrowsePluginPath: TButton;
+    PluginPathEdit: TEdit;
     checkBsCurrent: TCheckBox;
     Label75: TLabel;
     editMessage11: TEdit;
@@ -543,7 +546,7 @@ const
 implementation
 
 uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet,
-  UZlinkTelnetSet, UZLinkForm, URigControl;
+  UZlinkTelnetSet, UZLinkForm, URigControl, UPluginManager;
 
 {$R *.DFM}
 
@@ -755,6 +758,7 @@ begin
 
 //      Settings._sentstr := SentEdit.Text;
 
+      UPluginManager.SetItemPathINI(IncludeTrailingPathDelimiter(PluginPathEdit.Text));
       Settings._soundpath := IncludeTrailingPathDelimiter(SoundPathEdit.Text);
       Settings._backuppath := IncludeTrailingPathDelimiter(BackUpPathEdit.Text);
       Settings._cfgdatpath := IncludeTrailingPathDelimiter(edCFGDATPath.Text);
@@ -1117,6 +1121,7 @@ begin
       // Sent欄は表示専用
       SentEdit.Text := Settings._sentstr;
 
+      PluginPathEdit.Text := UPluginManager.GetItemPathINI;
       SoundPathEdit.Text := Settings._soundpath;
       BackUpPathEdit.Text := Settings._backuppath;
       edCFGDATPath.Text := Settings._cfgdatpath;
@@ -1679,6 +1684,8 @@ begin
          strDir := BackUpPathEdit.Text;
       40:
          strDir := SoundPathEdit.Text;
+      50:
+         strDir := PluginPathEdit.Text;
    end;
 
    if SelectDirectory('フォルダの参照', '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
@@ -1694,6 +1701,8 @@ begin
          BackUpPathEdit.Text := strDir;
       40:
          SoundPathEdit.Text := strDir;
+      50:
+         PluginPathEdit.Text := strDir;
    end;
 end;
 
