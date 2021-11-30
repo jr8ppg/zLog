@@ -3,7 +3,7 @@ object MenuForm: TMenuForm
   Top = 64
   BorderStyle = bsDialog
   Caption = 'zLog Menu'
-  ClientHeight = 286
+  ClientHeight = 306
   ClientWidth = 484
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,12 +21,12 @@ object MenuForm: TMenuForm
   OnShow = FormShow
   DesignSize = (
     484
-    286)
+    306)
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 367
-    Top = 260
+    Top = 280
     Width = 36
     Height = 13
     Anchors = [akRight, akBottom]
@@ -35,21 +35,21 @@ object MenuForm: TMenuForm
   end
   object Label2: TLabel
     Left = 272
-    Top = 234
+    Top = 256
     Width = 67
     Height = 13
     Caption = 'TX# (optional)'
   end
   object Label3: TLabel
     Left = 385
-    Top = 234
+    Top = 256
     Width = 58
     Height = 13
     Caption = 'Score coeff.'
   end
   object OKButton: TButton
     Left = 12
-    Top = 255
+    Top = 275
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -57,10 +57,11 @@ object MenuForm: TMenuForm
     Default = True
     TabOrder = 0
     OnClick = OKButtonClick
+    ExplicitTop = 255
   end
   object CancelButton: TButton
     Left = 92
-    Top = 255
+    Top = 275
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -68,16 +69,18 @@ object MenuForm: TMenuForm
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
+    ExplicitTop = 255
   end
   object Button3: TButton
     Left = 172
-    Top = 255
+    Top = 275
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
     Caption = '&Help'
     TabOrder = 2
     Visible = False
+    ExplicitTop = 255
   end
   object ContestGroup: TGroupBox
     Left = 8
@@ -346,13 +349,14 @@ object MenuForm: TMenuForm
     Left = 272
     Top = 144
     Width = 113
-    Height = 81
+    Height = 105
     Caption = 'Operator'
     ItemIndex = 0
     Items.Strings = (
       'Single-Op'
       'Multi-Op'
-      'Multi-Op/S-TX')
+      'Multi-Op/S-TX'
+      'Multi-Op/2-TX')
     TabOrder = 4
     OnClick = OpGroupClick
   end
@@ -385,37 +389,40 @@ object MenuForm: TMenuForm
     Left = 392
     Top = 144
     Width = 81
-    Height = 81
+    Height = 105
     Caption = 'Mode'
     ItemIndex = 0
     Items.Strings = (
       'Ph/CW'
       'CW'
       'Ph'
-      'Other')
+      'Other'
+      'ALL')
     TabOrder = 6
   end
   object editCallsign: TEdit
     Left = 408
-    Top = 257
+    Top = 277
     Width = 65
     Height = 18
     Anchors = [akRight, akBottom]
     AutoSize = False
     TabOrder = 7
+    ExplicitTop = 257
   end
   object CheckBox1: TCheckBox
     Left = 274
-    Top = 258
+    Top = 278
     Width = 87
     Height = 17
     Anchors = [akRight, akBottom]
     Caption = 'Post-contest'
     TabOrder = 8
+    ExplicitTop = 258
   end
   object TXNrEdit: TEdit
     Left = 344
-    Top = 231
+    Top = 253
     Width = 25
     Height = 18
     AutoSize = False
@@ -424,7 +431,7 @@ object MenuForm: TMenuForm
   end
   object ScoreCoeffEdit: TEdit
     Left = 448
-    Top = 231
+    Top = 253
     Width = 25
     Height = 18
     AutoSize = False

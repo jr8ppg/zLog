@@ -80,9 +80,9 @@ type
 
   TSettingsParam = record
     _dontallowsameband : boolean; // same band on two rigs?
-    _multiop : integer;  {multi op/ single op}
+    _multiop : TContestCategory;  {multi op/ single op}
     _band : integer; {0 = all band; 1 = 1.9MHz 2 = 3.5MHz ...}
-    _mode : integer; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
+    _mode : TContestMode; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
     _contestmenuno : integer; {selected contest in the menu}
     _mycall : string;
     _prov : string;
@@ -288,10 +288,10 @@ type
     procedure SetMyCall(s: string);
     function GetBand(): Integer;
     procedure SetBand(b: Integer);
-    function GetMode(): Integer;
-    procedure SetMode(m: Integer);
-    function GetMultiOp(): Integer;
-    procedure SetMultiOp(i: Integer);
+    function GetMode(): TContestMode;
+    procedure SetMode(m: TContestMode);
+    function GetMultiOp(): TContestCategory;
+    procedure SetMultiOp(i: TContestCategory);
     function GetContestMenuNo() : Integer;
     procedure SetContestMenuNo(i: Integer);
     function GetFIFO(): Boolean;
@@ -325,8 +325,8 @@ public
     property OpList: TOperatorInfoList read FOpList;
     property MyCall: string read GetMyCall write SetMyCall;
     property Band: Integer read GetBand write SetBand;
-    property Mode: Integer read GetMode write SetMode;
-    property MultiOp: Integer read GetMultiOp write SetMultiOp;
+    property ContestMode: TContestMode read GetMode write SetMode;
+    property ContestCategory: TCOntestCategory read GetMultiOp write SetMultiOp;
     property ContestMenuNo: Integer read GetContestMenuNo write SetContestMenuNo;
     property FIFO: Boolean read GetFIFO write SetFIFO;
     property TXNr: Byte read GetTXNr write SetTXNr;
@@ -619,13 +619,13 @@ begin
       //
 
       // Operator
-      Settings._multiop := ini.ReadInteger('Categories', 'Operator2', 0);
+      Settings._multiop := TContestCategory(ini.ReadInteger('Categories', 'Operator2', 0));
 
       // Band
       Settings._band := ini.ReadInteger('Categories', 'Band', 0);
 
       // Mode
-      Settings._mode := ini.ReadInteger('Categories', 'Mode', 0);
+      Settings._mode := TContestMode(ini.ReadInteger('Categories', 'Mode', 0));
 
 //      // Prov/State($V)
 //      Settings._prov := ini.ReadString('Profiles', 'Province/State', '');
@@ -1182,13 +1182,13 @@ begin
       //
 
       // Operator
-      ini.WriteInteger('Categories', 'Operator2', Settings._multiop);
+      ini.WriteInteger('Categories', 'Operator2', Integer(Settings._multiop));
 
       // Band
       ini.WriteInteger('Categories', 'Band', Settings._band);
 
       // Mode
-      ini.WriteInteger('Categories', 'Mode', Settings._mode);
+      ini.WriteInteger('Categories', 'Mode', Integer(Settings._mode));
 
       if Settings.ProvCityImported = False then begin
          // Prov/State($V)
@@ -1608,7 +1608,7 @@ begin
    InitializeCW();
 
    // SetBand(Settings._band);
-   Mode := Settings._mode;
+   ContestMode := Settings._mode;
 
    if Settings._backuppath = '' then begin
       MainForm.BackUp1.Enabled := False;
@@ -1742,22 +1742,22 @@ begin
    end;
 end;
 
-function TdmZLogGlobal.GetMode: integer;
+function TdmZLogGlobal.GetMode: TContestMode;
 begin
    Result := Settings._mode;
 end;
 
-procedure TdmZLogGlobal.SetMode(m: integer);
+procedure TdmZLogGlobal.SetMode(m: TContestMode);
 begin
    Settings._mode := m;
 end;
 
-function TdmZLogGlobal.GetMultiOp(): Integer;
+function TdmZLogGlobal.GetMultiOp(): TContestCategory;
 begin
    Result := Settings._multiop;
 end;
 
-procedure TdmZLogGlobal.SetMultiOp(i: integer);
+procedure TdmZLogGlobal.SetMultiOp(i: TContestCategory);
 begin
    Settings._multiop := i;
 end;

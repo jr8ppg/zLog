@@ -1011,7 +1011,7 @@ type
     procedure InitDxPedi();
     procedure InitUserDefined(ContestName, ConfigFile: string);
     procedure InitCQWW();
-    procedure InitWPX(OpGroupIndex: Integer);
+    procedure InitWPX(ContestCategory: TContestCategory);
     procedure InitJIDX();
     procedure InitAPSprint();
     procedure InitARRL_W();
@@ -1376,23 +1376,29 @@ begin
    WriteLn(f, 'Country: ');
    WriteLn(f);
    S := FillRight('Category:', 12);
-   if dmZlogGlobal.MultiOp > 0 then
-      S := S + 'Multi Operator  '
-   else
+
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       S := S + 'Single Operator  ';
+   end
+   else begin
+      S := S + 'Multi Operator  ';
+   end;
+
    if dmZlogGlobal.Band = 0 then
       S := S + 'All band'
    else
       S := S + MHzString[TBand(Ord(dmZlogGlobal.Band) - 1)];
+
    S := S + '  ';
-   case dmZlogGlobal.mode of
-      0:
+   case dmZlogGlobal.ContestMode of
+      cmMix:
          S := S + 'Phone/CW';
-      1:
+      cmCw:
          S := S + 'CW';
-      2:
+      cmPh:
          S := S + 'Phone';
    end;
+
    WriteLn(f, S);
    WriteLn(f);
    WriteLn(f, 'Band(MHz)      QSOs         Points       Multi.');
@@ -1849,20 +1855,26 @@ procedure TMainForm.SetQSOMode(aQSO: TQSO);
 var
    maxmode: TMode;
 begin
-   maxmode := mOther;
-   case aQSO.Band of
-      b19 .. b24:
-         maxmode := mSSB;
-      b28:
-         maxmode := mFM;
-      b50:
-         maxmode := mAM;
-      b144 .. HiBand:
-         maxmode := mFM;
+   if dmZLogGlobal.ContestMode = cmAll then begin
+      maxmode := mOther;
+   end
+   else begin
+      maxmode := mOther;
+      case aQSO.Band of
+         b19 .. b24:
+            maxmode := mSSB;
+         b28:
+            maxmode := mFM;
+         b50:
+            maxmode := mAM;
+         b144 .. HiBand:
+            maxmode := mFM;
+      end;
    end;
 
-   if Pos('Pedition', MyContest.Name) > 0 then
+   if Pos('Pedition', MyContest.Name) > 0 then begin
       maxmode := mOther;
+   end;
 
    if aQSO.Mode < maxmode then begin
       aQSO.Mode := TMode(Integer(aQSO.Mode) + 1);
@@ -3046,7 +3058,7 @@ begin
 
       if colOp >= 0 then begin
          temp := IntToStr(aQSO.TX);
-         if dmZlogGlobal.Settings._multiop = 2 then begin
+         if dmZlogGlobal.ContestCategory = ccMultiOneTx then begin
             case aQSO.TX of
                1:
                   temp := 'R';
@@ -3320,15 +3332,15 @@ begin
       MainForm.Grid.ColCount := 10;
    end;
 
-   if dmZlogGlobal.MultiOp > 0 then begin
-      OpWid := 6;
-      MemoWid := 7;
-      MainForm.OpEdit.Visible := True;
-   end
-   else begin
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;
       MemoWid := 13;
       MainForm.OpEdit.Visible := False;
+   end
+   else begin
+      OpWid := 6;
+      MemoWid := 7;
+      MainForm.OpEdit.Visible := True;
    end;
 
    SetGridWidth;
@@ -3351,15 +3363,16 @@ begin
    colOp := 9;
    colMemo := 10;
    MainForm.Grid.ColCount := 11;
-   if dmZlogGlobal.MultiOp > 0 then begin
-      OpWid := 6;
-      MemoWid := 7;
-      MainForm.OpEdit.Visible := True;
-   end
-   else begin
+
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;
       MemoWid := 13;
       MainForm.OpEdit.Visible := False;
+   end
+   else begin
+      OpWid := 6;
+      MemoWid := 7;
+      MainForm.OpEdit.Visible := True;
    end;
 
    NumberWid := 3;
@@ -3388,15 +3401,15 @@ begin
    NumberWid := 3;
    NewMulti1Wid := 6;
 
-   if dmZlogGlobal.MultiOp > 0 then begin
-      OpWid := 6;
-      MemoWid := 10;
-      MainForm.OpEdit.Visible := True;
-   end
-   else begin
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;
       MemoWid := 16;
       MainForm.OpEdit.Visible := False;
+   end
+   else begin
+      OpWid := 6;
+      MemoWid := 10;
+      MainForm.OpEdit.Visible := True;
    end;
 
    SetGridWidth;
@@ -3447,15 +3460,15 @@ begin
    NumberWid := 4;
    NewMulti1Wid := 5;
 
-   if dmZlogGlobal.MultiOp > 0 then begin
-      OpWid := 6;
-      MemoWid := 10;
-      MainForm.OpEdit.Visible := True;
-   end
-   else begin
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;
       MemoWid := 16;
       MainForm.OpEdit.Visible := False;
+   end
+   else begin
+      OpWid := 6;
+      MemoWid := 10;
+      MainForm.OpEdit.Visible := True;
    end;
 
    SetGridWidth;
@@ -3502,15 +3515,16 @@ begin
    MainForm.Grid.ColCount := 10;
    MainForm.ModeEdit.Visible := False;
    MainForm.SerialEdit.Visible := True;
-   if dmZlogGlobal.MultiOp > 0 then begin
-      OpWid := 6;
-      MemoWid := 10;
-      MainForm.OpEdit.Visible := True;
-   end
-   else begin
+
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;
       MemoWid := 16;
       MainForm.OpEdit.Visible := False;
+   end
+   else begin
+      OpWid := 6;
+      MemoWid := 10;
+      MainForm.OpEdit.Visible := True;
    end;
 
    SetGridWidth;
@@ -3536,15 +3550,16 @@ begin
 
    MainForm.ModeEdit.Visible := True;
    MainForm.SerialEdit.Visible := True;
-   if dmZlogGlobal.MultiOp > 0 then begin
-      OpWid := 6;
-      MemoWid := 10;
-      MainForm.OpEdit.Visible := True;
-   end
-   else begin
+
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;
       MemoWid := 16;
       MainForm.OpEdit.Visible := False;
+   end
+   else begin
+      OpWid := 6;
+      MemoWid := 10;
+      MainForm.OpEdit.Visible := True;
    end;
 
    SetGridWidth;
@@ -3594,15 +3609,16 @@ begin
    MainForm.Grid.ColCount := 11;
    MainForm.ModeEdit.Visible := True;
    MainForm.SerialEdit.Visible := True;
-   if dmZlogGlobal.MultiOp > 0 then begin
-      OpWid := 6;
-      MemoWid := 7;
-      MainForm.OpEdit.Visible := True;
-   end
-   else begin
+
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;
       MemoWid := 13;
       MainForm.OpEdit.Visible := False;
+   end
+   else begin
+      OpWid := 6;
+      MemoWid := 7;
+      MainForm.OpEdit.Visible := True;
    end;
 
    SetGridWidth;
@@ -3659,15 +3675,16 @@ begin
    MainForm.Grid.ColCount := 11;
    // MainForm.ModeEdit.Visible := False;
    MainForm.SerialEdit.Visible := True;
-   if dmZlogGlobal.MultiOp > 0 then begin
-      OpWid := 6;
-      MemoWid := 5;
-      MainForm.OpEdit.Visible := True;
-   end
-   else begin
+
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;
       MemoWid := 11;
       MainForm.OpEdit.Visible := False;
+   end
+   else begin
+      OpWid := 6;
+      MemoWid := 5;
+      MainForm.OpEdit.Visible := True;
    end;
 
    SetGridWidth;
@@ -3712,15 +3729,16 @@ begin
    colMemo := 10;
    MainForm.Grid.ColCount := 11;
    MainForm.NewPowerEdit.Visible := True;
-   if dmZlogGlobal.MultiOp > 0 then begin
-      OpWid := 6;
-      MemoWid := 7;
-      MainForm.OpEdit.Visible := True;
-   end
-   else begin
+
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;
       MemoWid := 13;
       MainForm.OpEdit.Visible := False;
+   end
+   else begin
+      OpWid := 6;
+      MemoWid := 7;
+      MainForm.OpEdit.Visible := True;
    end;
 
    SetGridWidth;
@@ -3760,15 +3778,16 @@ begin
 
    MainForm.Grid.ColCount := 10;
    // MainForm.NewPowerEdit.Visible := True;
-   if dmZlogGlobal.MultiOp > 0 then begin
-      OpWid := 6;
-      MemoWid := 11;
-      MainForm.OpEdit.Visible := True;
-   end
-   else begin
+
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;
       MemoWid := 17;
       MainForm.OpEdit.Visible := False;
+   end
+   else begin
+      OpWid := 6;
+      MemoWid := 11;
+      MainForm.OpEdit.Visible := True;
    end;
 
    SetGridWidth;
@@ -7240,17 +7259,17 @@ begin
       CurrentQSO.Serial := 1;
       mPXListWPX.Visible := False;
 
-      dmZlogGlobal.MultiOp := menu.OpGroupIndex;
+      dmZlogGlobal.ContestCategory := menu.ContestCategory;
 
       dmZlogGlobal.Band := menu.BandGroupIndex;
 
-      dmZlogGlobal.Mode := menu.ModeGroupIndex;
+      dmZlogGlobal.ContestMode := menu.ContestMode;
 
       dmZlogGlobal.MyCall := menu.Callsign;
 
       dmZlogGlobal.ContestMenuNo := menu.ContestNumber;
 
-      if menu.OpGroupIndex > 0 then begin
+      if menu.ContestCategory in [ccMultiOp, ccMultiOneTx, ccMultiTwoTx] then begin
          dmZlogGlobal.TXNr := menu.TxNumber;    // TX#
          if dmZlogGlobal.Settings._pcname = '' then begin
             dmZlogGlobal.Settings._pcname := 'PC' + IntToStr(menu.TxNumber);
@@ -7331,7 +7350,7 @@ begin
 
          // WPX
          11: begin
-            InitWPX(menu.OpGroupIndex);
+            InitWPX(menu.ContestCategory);
          end;
 
          // JIDX
@@ -7382,19 +7401,19 @@ begin
       end;
 
       // #201 モード選択によって動作を変える(NEW CONTESTのみ)
-      case menu.ModeGroupIndex of
+      case menu.ContestMode of
          // PH/CW
-         0: begin
+         cmMix: begin
             CurrentQSO.Mode := dmZLogGlobal.LastMode;
          end;
 
          // CW
-         1: begin
+         cmCw: begin
             CurrentQSO.Mode := mCW;
          end;
 
          // PH
-         2: begin
+         cmPh: begin
             CurrentQSO.Mode := mSSB;
          end;
 
@@ -7489,7 +7508,8 @@ begin
       BandEdit.Text := MHzString[CurrentQSO.Band];
       CurrentQSO.TX := dmZlogGlobal.TXNr;
 
-      if (dmZlogGlobal.MultiOp > 0) and (Log.TotalQSO > 0) then begin
+      // マルチオペの場合は最後のOPをセット
+      if (dmZlogGlobal.ContestCategory in [ccMultiOp, ccMultiOneTx, ccMultiTwoTx]) and (Log.TotalQSO > 0) then begin
          SelectOperator(Log.QsoList.Last.Operator);
       end;
 
@@ -7525,8 +7545,16 @@ begin
 
       MyContest.MultiForm.FontSize := dmZlogGlobal.Settings._mainfontsize;
 
+      // QSY Assist
       CountDownStartTime := 0;
 //      QSYCount := 0;
+
+      // M/S,M/2の場合はQsyAssist強制
+      if (dmZLogGlobal.ContestCategory in [ccMultiOneTx, ccMultiTwoTx]) then begin
+         if (dmZLogGlobal.Settings._qsycount = False) and (dmZLogGlobal.Settings._countdown = False) then begin
+            dmZLogGlobal.Settings._countdown := True;
+         end;
+      end;
 
       UpdateBand(CurrentQSO.Band);
       UpdateMode(CurrentQSO.Mode);
@@ -7732,7 +7760,7 @@ begin
    MyContest := TCQWWContest.Create('CQWW DX Contest');
 end;
 
-procedure TMainForm.InitWPX(OpGroupIndex: Integer);
+procedure TMainForm.InitWPX(ContestCategory: TContestCategory);
 begin
    HideBandMenuWARC();
    HideBandMenuVU();
@@ -7741,11 +7769,11 @@ begin
 
    MyContest := TCQWPXContest.Create('CQ WPX Contest');
 
-   if OpGroupIndex = 1 then begin
-      SerialContestType := SER_BAND;
-   end;
-   if OpGroupIndex = 2 then begin
-      SerialContestType := SER_MS;
+   case ContestCategory of
+      ccSingleOp:   SerialContestType := SER_ALL;
+      ccMultiOp:    SerialContestType := SER_BAND;
+      ccMultiOneTx: SerialContestType := SER_MS;
+      ccMultiTwoTx: SerialContestType := SER_MS;
    end;
 
    mPXListWPX.Visible := True;

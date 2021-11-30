@@ -74,7 +74,7 @@ type
       procedure rbWAEClick(Sender: TObject);
       procedure OKButtonClick(Sender: TObject);
       procedure FormDestroy(Sender: TObject);
-    procedure OldSelectButtonClick(Sender: TObject);
+      procedure OldSelectButtonClick(Sender: TObject);
    private
       FSelectContest: array[0..20] of TRadioButton;
       FBandTemp: Integer; // temporary storage for bandgroup.itemindex
@@ -84,9 +84,9 @@ type
 
       procedure EnableEveryThing;
 
-      function GetOpGroupIndex(): Integer;
+      function GetContestCategory(): TContestCategory;
       function GetBandGroupIndex(): Integer;
-      function GetModeGroupIndex(): Integer;
+      function GetContestMode(): TContestMode;
       function GetCallsign(): string;
       function GetContestNumber(): Integer;
       procedure SetContestNumber(v: Integer);
@@ -97,9 +97,9 @@ type
       procedure SelectFirstBand();
    public
       property CFGFileName: string read FCFGFileName;
-      property OpGroupIndex: Integer read GetOpGroupIndex;
+      property ContestCategory: TContestCategory read GetContestCategory;
       property BandGroupIndex: Integer read GetBandGroupIndex;
-      property ModeGroupIndex: Integer read GetModeGroupIndex;
+      property ContestMode: TContestMode read GetContestMode;
       property Callsign: string read GetCallsign;
       property ContestNumber: Integer read GetContestNumber write SetContestNumber;
       property TxNumber: Integer read GetTxNumber;
@@ -154,15 +154,16 @@ begin
    else begin
       BandGroup.ItemIndex := OldBandOrd(TBand(dmZlogGlobal.Band - 1)) + 1;
    end;
-   ModeGroup.ItemIndex := dmZlogGlobal.Mode;
 
-   if dmZlogGlobal.MultiOp > 0 then begin
-      OpGroup.ItemIndex := dmZlogGlobal.MultiOp;
-      TXNrEdit.Enabled := True;
-   end
-   else begin
+   ModeGroup.ItemIndex := Integer(dmZlogGlobal.ContestMode);
+
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpGroup.ItemIndex := 0;
       TXNrEdit.Enabled := False;
+   end
+   else begin
+      OpGroup.ItemIndex := Integer(dmZlogGlobal.ContestCategory);
+      TXNrEdit.Enabled := True;
    end;
 
    TXNrEdit.Text := IntToStr(dmZlogGlobal.TXNr);
@@ -529,9 +530,9 @@ begin
    ModeGroup.Controls[3].Enabled := False;
 end;
 
-function TMenuForm.GetOpGroupIndex(): Integer;
+function TMenuForm.GetContestCategory(): TContestCategory;
 begin
-   Result := OpGroup.ItemIndex;
+   Result := TContestCategory(OpGroup.ItemIndex);
 end;
 
 // WARCÉoÉìÉhÇçló∂ÇµÇΩî‘çÜÇï‘Ç∑
@@ -557,9 +558,9 @@ begin
    end;
 end;
 
-function TMenuForm.GetModeGroupIndex(): Integer;
+function TMenuForm.GetContestMode(): TContestMode;
 begin
-   Result := ModeGroup.ItemIndex;
+   Result := TContestMode(ModeGroup.ItemIndex);
 end;
 
 function TMenuForm.GetCallsign(): string;

@@ -574,35 +574,35 @@ object formOptions: TformOptions
       Caption = 'Categories'
       object Label14: TLabel
         Left = 257
-        Top = 105
+        Top = 128
         Width = 71
         Height = 13
         Caption = 'Prov/State($V)'
       end
       object Label18: TLabel
         Left = 257
-        Top = 129
+        Top = 152
         Width = 37
         Height = 13
         Caption = 'City($Q)'
       end
       object Label19: TLabel
         Left = 257
-        Top = 201
+        Top = 224
         Width = 22
         Height = 13
         Caption = 'Sent'
       end
       object Label34: TLabel
         Left = 257
-        Top = 153
+        Top = 176
         Width = 62
         Height = 13
         Caption = 'CQ Zone($Z)'
       end
       object Label35: TLabel
         Left = 257
-        Top = 177
+        Top = 200
         Width = 61
         Height = 13
         Caption = 'ITU Zone($I)'
@@ -699,21 +699,22 @@ object formOptions: TformOptions
         Left = 248
         Top = 3
         Width = 129
-        Height = 92
+        Height = 114
         Caption = 'Mode'
         ItemIndex = 0
         Items.Strings = (
           'Phone/CW'
           'CW'
           'Phone'
-          'Other')
+          'Other'
+          'ALL')
         TabOrder = 2
         TabStop = True
         Visible = False
       end
       object ProvEdit: TEdit
         Left = 352
-        Top = 101
+        Top = 124
         Width = 25
         Height = 20
         AutoSize = False
@@ -722,7 +723,7 @@ object formOptions: TformOptions
       end
       object CItyEdit: TEdit
         Left = 328
-        Top = 125
+        Top = 148
         Width = 49
         Height = 20
         AutoSize = False
@@ -731,7 +732,7 @@ object formOptions: TformOptions
       end
       object SentEdit: TEdit
         Left = 320
-        Top = 197
+        Top = 220
         Width = 57
         Height = 20
         AutoSize = False
@@ -742,7 +743,7 @@ object formOptions: TformOptions
       end
       object CQZoneEdit: TEdit
         Left = 352
-        Top = 149
+        Top = 172
         Width = 25
         Height = 20
         AutoSize = False
@@ -753,7 +754,7 @@ object formOptions: TformOptions
       end
       object IARUZoneEdit: TEdit
         Left = 352
-        Top = 173
+        Top = 196
         Width = 25
         Height = 20
         AutoSize = False
@@ -764,7 +765,7 @@ object formOptions: TformOptions
       end
       object cbMultiStn: TCheckBox
         Left = 257
-        Top = 229
+        Top = 252
         Width = 97
         Height = 17
         Caption = 'Multi station'
@@ -2438,7 +2439,7 @@ object formOptions: TformOptions
       object Label90: TLabel
         Left = 16
         Top = 118
-        Width = 40
+        Width = 34
         Height = 13
         Caption = 'Plugins'
       end

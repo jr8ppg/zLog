@@ -621,7 +621,7 @@ begin
             Settings._band := BandGroup.ItemIndex + 3;
       end;
 
-      Settings._mode := ModeGroup.ItemIndex;
+      Settings._mode := TContestMode(ModeGroup.ItemIndex);
       // Settings._multiop := MultiOpRadioBtn.Checked;
 
       Settings._prov := ProvEdit.Text;
@@ -983,17 +983,19 @@ begin
       comboPower5600.Text := Settings._power[b5600];
       comboPower10g.Text := Settings._power[b10g];
 
-      if Settings._multiop <> 0 then
-         MultiOpRadioBtn.Checked := True
-      else
+      if Settings._multiop = ccSingleOp then begin
          SingleOpRadioBtn.Checked := True;
+      end
+      else begin
+         MultiOpRadioBtn.Checked := True;
+      end;
 
       if Settings._band = 0 then
          BandGroup.ItemIndex := 0
       else
          BandGroup.ItemIndex := OldBandOrd(TBand(Settings._band - 1)) + 1;
 
-      ModeGroup.ItemIndex := Settings._mode;
+      ModeGroup.ItemIndex := Integer(Settings._mode);
       { OpListBox.Items := OpList; }
 
       for i := 1 to maxbank do begin

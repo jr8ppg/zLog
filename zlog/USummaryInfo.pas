@@ -84,11 +84,11 @@ begin
       CallEdit.Text := dmZlogGlobal.Settings._mycall;
    end;
 
-   if dmZlogGlobal.Settings._multiop > 0 then begin
-      str := 'Multi-op ';
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
+      str := 'Single-op ';
    end
    else begin
-      str := 'Single-op ';
+      str := 'Multi-op ';
    end;
 
    if dmZlogGlobal.Settings._band = 0 then begin
@@ -98,10 +98,10 @@ begin
       str := str + BandString[TBand(dmZlogGlobal.Settings._band - 1)] + ' ';
    end;
 
-   case dmZlogGlobal.Settings._mode of
-      0 : str := str + 'Mixed';
-      1 : str := str + 'CW';
-      2 : str := str + 'Ph';
+   case dmZlogGlobal.ContestMode of
+      cmMix: str := str + 'Mixed';
+      cmCw: str := str + 'CW';
+      cmPh: str := str + 'Ph';
    end;
 
    if CategoryEdit.Text = '' then begin

@@ -397,7 +397,7 @@ begin
       NewPowerMenu.Items[i].Visible := MainForm.ModeMenu.Items[i].Visible;
    end;
 
-   OpEdit.Visible := (dmZlogGlobal.MultiOp > 0);
+   OpEdit.Visible := (dmZlogGlobal.ContestCategory <> ccSingleOp);
    OpLabel.Visible := OpEdit.Visible;
 
    if MainForm.OpMenu.Items.Count > 0 then // update op menu 1.31
