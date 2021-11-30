@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicMulti, StdCtrls, JLLabel, ExtCtrls, Grids,
+  UBasicMulti, StdCtrls, JLLabel, ExtCtrls, Grids, StrUtils,
   UzLogConst, UzLogGlobal, UzLogQSO, USpotClass, UComm, UMultipliers, UWWZone;
 
 const
@@ -223,6 +223,7 @@ end;
 procedure TWWMulti.SortZone;
 var
    i, j, x: integer;
+   strZone: string;
 begin
    if dmZLogGlobal.CountryList.Count = 0 then begin
       exit;
@@ -231,8 +232,9 @@ begin
    FGridReverse[0] := 0;
    x := 1;
    for i := 1 to 40 do begin
+      strZone := RightStr('00' + IntToStr(i), 2);
       for j := 1 to dmZLogGlobal.CountryList.Count - 1 do begin
-         if TCountry(dmZLogGlobal.CountryList.List[j]).CQZone = IntToStr(i) then begin
+         if TCountry(dmZLogGlobal.CountryList.List[j]).CQZone = strZone then begin
             TCountry(dmZLogGlobal.CountryList.List[j]).GridIndex := x;
             FGridReverse[x] := j;
             inc(x);
