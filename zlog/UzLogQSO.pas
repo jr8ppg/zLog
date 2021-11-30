@@ -1754,7 +1754,13 @@ begin
       strText := strText + FillLeft(IntToStr(Q.RSTRcvd), 3) + ' ';
       strText := strText + FillRight(Q.NrRcvd, 6) + ' ';
 
-      strText := strText + IntToStr(Q.TX);
+      // M/S, M/2ÇÃÇ›TXNOÇèoóÕÅAÇªÇÍà»äOÇÕ0å≈íË
+      if (dmZLogGlobal.ContestCategory in [ccMultiOneTx, ccMultiTwoTx]) then begin
+         strText := strText + IntToStr(Q.TX);
+      end
+      else begin
+         strText := strText + '0';
+      end;
 
       WriteLn(F, strText);
    end;
