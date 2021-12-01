@@ -196,6 +196,7 @@ begin
 	text := TStringList.Create;
 	for item in list do text.Append(item);
 	init.WriteString(KEY_ZYLO, KEY_LIST, text.DelimitedText);
+   text.Free;
 	init.Free;
 end;
 
