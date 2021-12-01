@@ -326,7 +326,7 @@ public
     property MyCall: string read GetMyCall write SetMyCall;
     property Band: Integer read GetBand write SetBand;
     property ContestMode: TContestMode read GetMode write SetMode;
-    property ContestCategory: TCOntestCategory read GetMultiOp write SetMultiOp;
+    property ContestCategory: TContestCategory read GetMultiOp write SetMultiOp;
     property ContestMenuNo: Integer read GetContestMenuNo write SetContestMenuNo;
     property FIFO: Boolean read GetFIFO write SetFIFO;
     property TXNr: Byte read GetTXNr write SetTXNr;
@@ -1618,7 +1618,7 @@ begin
    end;
 
    if Settings._multistation = True then begin
-      Settings._txnr := 2;
+      Settings._txnr := 1;
    end;
 end;
 

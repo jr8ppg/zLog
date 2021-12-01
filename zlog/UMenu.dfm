@@ -4,7 +4,7 @@ object MenuForm: TMenuForm
   BorderStyle = bsDialog
   Caption = 'zLog Menu'
   ClientHeight = 306
-  ClientWidth = 484
+  ClientWidth = 486
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,29 +20,23 @@ object MenuForm: TMenuForm
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   DesignSize = (
-    484
+    486
     306)
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
-    Left = 367
+    Left = 369
     Top = 280
     Width = 36
     Height = 13
     Anchors = [akRight, akBottom]
     Caption = 'Callsign'
+    ExplicitLeft = 367
     ExplicitTop = 278
   end
-  object Label2: TLabel
-    Left = 272
-    Top = 256
-    Width = 67
-    Height = 13
-    Caption = 'TX# (optional)'
-  end
   object Label3: TLabel
-    Left = 385
-    Top = 256
+    Left = 177
+    Top = 258
     Width = 58
     Height = 13
     Caption = 'Score coeff.'
@@ -57,7 +51,6 @@ object MenuForm: TMenuForm
     Default = True
     TabOrder = 0
     OnClick = OKButtonClick
-    ExplicitTop = 255
   end
   object CancelButton: TButton
     Left = 92
@@ -69,7 +62,6 @@ object MenuForm: TMenuForm
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
-    ExplicitTop = 255
   end
   object Button3: TButton
     Left = 172
@@ -80,7 +72,6 @@ object MenuForm: TMenuForm
     Caption = '&Help'
     TabOrder = 2
     Visible = False
-    ExplicitTop = 255
   end
   object ContestGroup: TGroupBox
     Left = 8
@@ -345,25 +336,10 @@ object MenuForm: TMenuForm
       OnClick = rbWAEClick
     end
   end
-  object OpGroup: TRadioGroup
-    Left = 272
-    Top = 144
-    Width = 113
-    Height = 105
-    Caption = 'Operator'
-    ItemIndex = 0
-    Items.Strings = (
-      'Single-Op'
-      'Multi-Op'
-      'Multi-Op/S-TX'
-      'Multi-Op/2-TX')
-    TabOrder = 4
-    OnClick = OpGroupClick
-  end
   object BandGroup: TRadioGroup
     Left = 272
     Top = 8
-    Width = 201
+    Width = 208
     Height = 129
     Caption = 'Band'
     Columns = 2
@@ -383,13 +359,13 @@ object MenuForm: TMenuForm
       '2400 MHz'
       '5600 MHz'
       '10GHz && up')
-    TabOrder = 5
+    TabOrder = 4
   end
   object ModeGroup: TRadioGroup
-    Left = 392
+    Left = 399
     Top = 144
     Width = 81
-    Height = 105
+    Height = 128
     Caption = 'Mode'
     ItemIndex = 0
     Items.Strings = (
@@ -398,46 +374,99 @@ object MenuForm: TMenuForm
       'Ph'
       'Other'
       'ALL')
-    TabOrder = 6
+    TabOrder = 5
   end
   object editCallsign: TEdit
-    Left = 408
+    Left = 410
     Top = 277
     Width = 65
     Height = 18
     Anchors = [akRight, akBottom]
     AutoSize = False
-    TabOrder = 7
-    ExplicitTop = 257
+    TabOrder = 6
+    ExplicitLeft = 408
   end
   object CheckBox1: TCheckBox
-    Left = 274
+    Left = 276
     Top = 278
     Width = 87
     Height = 17
     Anchors = [akRight, akBottom]
     Caption = 'Post-contest'
-    TabOrder = 8
-    ExplicitTop = 258
-  end
-  object TXNrEdit: TEdit
-    Left = 344
-    Top = 253
-    Width = 25
-    Height = 18
-    AutoSize = False
-    MaxLength = 3
-    TabOrder = 9
+    TabOrder = 7
+    ExplicitLeft = 274
   end
   object ScoreCoeffEdit: TEdit
-    Left = 448
-    Top = 253
+    Left = 240
+    Top = 255
     Width = 25
     Height = 18
     AutoSize = False
     MaxLength = 3
-    TabOrder = 10
+    TabOrder = 8
     Text = '1'
+  end
+  object GroupBox1: TGroupBox
+    Left = 272
+    Top = 144
+    Width = 121
+    Height = 128
+    Caption = 'Category'
+    TabOrder = 9
+    object Label2: TLabel
+      Left = 43
+      Top = 104
+      Width = 21
+      Height = 13
+      Caption = 'TX#'
+    end
+    object radioSingleOp: TRadioButton
+      Left = 7
+      Top = 19
+      Width = 77
+      Height = 13
+      Caption = 'Single-Op'
+      TabOrder = 0
+      OnClick = OpGroupClick
+    end
+    object radioMultiOpMultiTx: TRadioButton
+      Tag = 1
+      Left = 7
+      Top = 38
+      Width = 101
+      Height = 13
+      Caption = 'Multi-Op/Multi-TX'
+      TabOrder = 1
+      OnClick = OpGroupClick
+    end
+    object radioMultiOpSingleTx: TRadioButton
+      Tag = 2
+      Left = 7
+      Top = 58
+      Width = 107
+      Height = 13
+      Caption = 'Multi-Op/Single-TX'
+      TabOrder = 2
+      OnClick = OpGroupClick
+    end
+    object radioMultiOpTwoTx: TRadioButton
+      Tag = 3
+      Left = 7
+      Top = 78
+      Width = 101
+      Height = 13
+      Caption = 'Multi-Op/Two-TX'
+      TabOrder = 3
+      OnClick = OpGroupClick
+    end
+    object comboTxNo: TComboBox
+      Left = 73
+      Top = 101
+      Width = 41
+      Height = 21
+      Style = csDropDownList
+      TabOrder = 4
+    end
   end
   object CFGOpenDialog: TOpenDialog
     DefaultExt = 'CFG'

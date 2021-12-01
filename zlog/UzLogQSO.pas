@@ -736,7 +736,7 @@ begin
       S := S + FillRight('%%' + Self.Operator + '%%', 19);
    end;
 
-   if dmZlogGlobal.ContestCategory in [ccMultiOp, ccMultiOneTx, ccMultiTwoTx] then begin
+   if dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
       S := S + FillRight('TX#' + IntToStr(Self.TX), 6);
    end;
 
@@ -1755,7 +1755,7 @@ begin
       strText := strText + FillRight(Q.NrRcvd, 6) + ' ';
 
       // M/S, M/2ÇÃÇ›TXNOÇèoóÕÅAÇªÇÍà»äOÇÕ0å≈íË
-      if (dmZLogGlobal.ContestCategory in [ccMultiOneTx, ccMultiTwoTx]) then begin
+      if (dmZLogGlobal.ContestCategory in [ccMultiOpSingleTx, ccMultiOpTwoTx]) then begin
          strText := strText + IntToStr(Q.TX);
       end
       else begin

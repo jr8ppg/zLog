@@ -13,7 +13,6 @@ type
       CancelButton: TButton;
       Button3: TButton;
       ContestGroup: TGroupBox;
-      OpGroup: TRadioGroup;
       BandGroup: TRadioGroup;
       rbALLJA: TRadioButton;
       rb6D: TRadioButton;
@@ -36,8 +35,6 @@ type
       rbAPSprint: TRadioButton;
       rbJA0in: TRadioButton;
       rbJA0out: TRadioButton;
-      TXNrEdit: TEdit;
-      Label2: TLabel;
       ScoreCoeffEdit: TEdit;
       Label3: TLabel;
       rbIARU: TRadioButton;
@@ -48,6 +45,13 @@ type
       rbWAE: TRadioButton;
     OldSelectButton: TSpeedButton;
     Label4: TLabel;
+    GroupBox1: TGroupBox;
+    radioSingleOp: TRadioButton;
+    radioMultiOpMultiTx: TRadioButton;
+    radioMultiOpSingleTx: TRadioButton;
+    radioMultiOpTwoTx: TRadioButton;
+    comboTxNo: TComboBox;
+    Label2: TLabel;
       procedure FormCreate(Sender: TObject);
       procedure FormShow(Sender: TObject);
       procedure rbCQWWClick(Sender: TObject);
@@ -157,16 +161,29 @@ begin
 
    ModeGroup.ItemIndex := Integer(dmZlogGlobal.ContestMode);
 
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpGroup.ItemIndex := 0;
-      TXNrEdit.Enabled := False;
-   end
-   else begin
-      OpGroup.ItemIndex := Integer(dmZlogGlobal.ContestCategory);
-      TXNrEdit.Enabled := True;
+   case dmZlogGlobal.ContestCategory of
+      ccSingleOp: begin
+         radioSingleOp.Checked := True;
+         OpGroupClick(radioSingleOp);
+      end;
+
+      ccMultiOpMultiTx: begin
+         radioMultiOpMultiTx.Checked := True;
+         OpGroupClick(radioMultiOpMultiTx);
+      end;
+
+      ccMultiOpSingleTx: begin
+         radioMultiOpSingleTx.Checked := True;
+         OpGroupClick(radioMultiOpSingleTx);
+      end;
+
+      ccMultiOpTwoTx: begin
+         radioMultiOpTwoTx.Checked := True;
+         OpGroupClick(radioMultiOpTwoTx);
+      end;
    end;
 
-   TXNrEdit.Text := IntToStr(dmZlogGlobal.TXNr);
+   comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(dmZlogGlobal.TXNr));
 
    editCallsign.Text := dmZlogGlobal.MyCall;
 
@@ -178,8 +195,6 @@ begin
       SelectButton.Enabled := True;
       OldSelectButton.Enabled := True;
    end;
-
-   OpGroup.OnClick(Self); // enables or disables TXNrEdit
 end;
 
 procedure TMenuForm.rbCQWWClick(Sender: TObject);
@@ -281,16 +296,20 @@ begin
       BandGroup.Controls[i].Enabled := True;
    end;
 
-   for i := 0 to OpGroup.Items.Count - 1 do begin
-      OpGroup.Controls[i].Enabled := True;
-   end;
+   radioSingleOp.Enabled := True;
+   radioMultiOpMultiTx.Enabled := True;
+   radioMultiOpSingleTx.Enabled := True;
+   radioMultiOpTwoTx.Enabled := True;
+
+   if radioSingleOp.Checked = True then OpGroupClick(radioSingleOp);
+   if radioMultiOpMultiTx.Checked = True then OpGroupClick(radioMultiOpMultiTx);
+   if radioMultiOpSingleTx.Checked = True then OpGroupClick(radioMultiOpSingleTx);
+   if radioMultiOpTwoTx.Checked = True then OpGroupClick(radioMultiOpTwoTx);
 
    for i := 0 to ModeGroup.Items.Count - 1 do begin
       ModeGroup.Controls[i].Enabled := True;
    end;
 
-   TXNrEdit.Enabled := True;
-   OpGroup.OnClick(Self);
    SelectButton.Enabled := False;
    OldSelectButton.Enabled := False;
    ScoreCoeffEdit.Enabled := False;
@@ -377,8 +396,10 @@ begin
 
    ModeGroup.Controls[2].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
-   OpGroup.Controls[1].Enabled := False;
-   TXNrEdit.Enabled := False;
+
+   radioSingleOp.Checked := True;
+   radioMultiOpMultiTx.Enabled := False;
+   comboTxNo.Enabled := False;
 end;
 
 procedure TMenuForm.rbARRLWClick(Sender: TObject);
@@ -411,17 +432,38 @@ begin
 
    ModeGroup.Controls[0].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
-   OpGroup.Controls[1].Enabled := False;
-   TXNrEdit.Enabled := False;
+
+   radioSingleOp.Checked := True;
+   radioMultiOpMultiTx.Enabled := False;
+   comboTxNo.Enabled := False;
 end;
 
 procedure TMenuForm.OpGroupClick(Sender: TObject);
+var
+   n: Integer;
 begin
-   if OpGroup.ItemIndex = 0 then begin
-      TXNrEdit.Enabled := False;
-   end
-   else begin
-      TXNrEdit.Enabled := True;
+   n := TRadioButton(Sender).Tag;
+   case n of
+      // Single-Op
+      0: begin
+         comboTxNo.Enabled := False;
+         comboTxNo.Items.CommaText := '0,1';
+         comboTxNo.ItemIndex := 0;
+      end;
+
+      // Multi-Op/Multi-Tx
+      1: begin
+         comboTxNo.Enabled := True;
+         comboTxNo.Items.CommaText := '0,1,2,3,4,5,6,7,8,9';
+         comboTxNo.ItemIndex := 0;
+      end;
+
+      // Multi-Op/Single-Tx, Multi-Op/Two-Tx
+      2, 3: begin
+         comboTxNo.Enabled := True;
+         comboTxNo.Items.CommaText := '0,1';
+         comboTxNo.ItemIndex := 0;
+      end;
    end;
 end;
 
@@ -513,8 +555,12 @@ begin
    ModeGroup.Controls[0].Enabled := False;
    ModeGroup.Controls[2].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
-   OpGroup.Controls[1].Enabled := False;
-   OpGroup.Controls[2].Enabled := False;
+
+   radioSingleOp.Checked := True;
+   radioMultiOpMultiTx.Enabled := False;
+   radioMultiOpSingleTx.Enabled := False;
+   radioMultiOpTwoTx.Enabled := False;
+   comboTxNo.Enabled := False;
 end;
 
 procedure TMenuForm.rbWAEClick(Sender: TObject);
@@ -532,7 +578,18 @@ end;
 
 function TMenuForm.GetContestCategory(): TContestCategory;
 begin
-   Result := TContestCategory(OpGroup.ItemIndex);
+   if radioSingleOp.Checked = True then begin
+      Result := ccSingleOp;
+   end
+   else if radioMultiOpMultiTx.Checked = True then begin
+      Result := ccMultiOpMultiTx;
+   end
+   else if radioMultiOpSingleTx.Checked = True then begin
+      Result := ccMultiOpSingleTx;
+   end
+   else if radioMultiOpTwoTx.Checked = True then begin
+      Result := ccMultiOpTwoTx;
+   end;
 end;
 
 // WARCÉoÉìÉhÇçló∂ÇµÇΩî‘çÜÇï‘Ç∑
@@ -589,7 +646,7 @@ end;
 
 function TMenuForm.GetTxNumber(): Integer;
 begin
-   Result := StrToIntDef(TXNrEdit.Text, 0);
+   Result := StrToIntDef(comboTxNo.Text, 0);
 end;
 
 function TMenuForm.GetScoreCoeff(): Extended;

@@ -11,7 +11,7 @@ type
   TPower = (p001, p002, p005, p010, p020, p025, p050, p100, p200, p500, p1000);
 
   TContestMode = (cmMix = 0, cmCw, cmPh, cmOther, cmAll);
-  TContestCategory = (ccSingleOp = 0, ccMultiOp, ccMultiOneTx, ccMultiTwoTx);
+  TContestCategory = (ccSingleOp = 0, ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx);
 
 const
   HiBand = b10g;

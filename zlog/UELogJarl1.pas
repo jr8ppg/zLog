@@ -571,7 +571,7 @@ begin
       S := S + FillRight('%%' + q.Operator + '%%', 19);
    end;
 
-   if dmZlogGlobal.ContestCategory in [ccMultiOp, ccMultiOneTx, ccMultiTwoTx] then begin
+   if dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
       S := S + FillRight('TX#' + IntToStr(q.TX), 6);
    end;
 

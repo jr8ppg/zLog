@@ -3058,11 +3058,11 @@ begin
 
       if colOp >= 0 then begin
          temp := IntToStr(aQSO.TX);
-         if dmZlogGlobal.ContestCategory = ccMultiOneTx then begin
+         if dmZlogGlobal.ContestCategory = ccMultiOpSingleTx then begin
             case aQSO.TX of
-               1:
+               0:
                   temp := 'R';
-               2:
+               1:
                   temp := 'M';
             end;
          end;
@@ -7269,7 +7269,7 @@ begin
 
       dmZlogGlobal.ContestMenuNo := menu.ContestNumber;
 
-      if menu.ContestCategory in [ccMultiOp, ccMultiOneTx, ccMultiTwoTx] then begin
+      if menu.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
          dmZlogGlobal.TXNr := menu.TxNumber;    // TX#
          if dmZlogGlobal.Settings._pcname = '' then begin
             dmZlogGlobal.Settings._pcname := 'PC' + IntToStr(menu.TxNumber);
@@ -7509,7 +7509,8 @@ begin
       CurrentQSO.TX := dmZlogGlobal.TXNr;
 
       // マルチオペの場合は最後のOPをセット
-      if (dmZlogGlobal.ContestCategory in [ccMultiOp, ccMultiOneTx, ccMultiTwoTx]) and (Log.TotalQSO > 0) then begin
+      if (dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx]) and
+         (Log.TotalQSO > 0) then begin
          SelectOperator(Log.QsoList.Last.Operator);
       end;
 
@@ -7550,7 +7551,7 @@ begin
 //      QSYCount := 0;
 
       // M/S,M/2の場合はQsyAssist強制
-      if (dmZLogGlobal.ContestCategory in [ccMultiOneTx, ccMultiTwoTx]) then begin
+      if (dmZLogGlobal.ContestCategory in [ccMultiOpSingleTx, ccMultiOpTwoTx]) then begin
          if (dmZLogGlobal.Settings._qsycount = False) and (dmZLogGlobal.Settings._countdown = False) then begin
             dmZLogGlobal.Settings._countdown := True;
          end;
@@ -7770,10 +7771,10 @@ begin
    MyContest := TCQWPXContest.Create('CQ WPX Contest');
 
    case ContestCategory of
-      ccSingleOp:   SerialContestType := SER_ALL;
-      ccMultiOp:    SerialContestType := SER_BAND;
-      ccMultiOneTx: SerialContestType := SER_MS;
-      ccMultiTwoTx: SerialContestType := SER_MS;
+      ccSingleOp:          SerialContestType := SER_ALL;
+      ccMultiOpMultiTx:    SerialContestType := SER_BAND;
+      ccMultiOpSingleTx:   SerialContestType := SER_MS;
+      ccMultiOpTwoTx:      SerialContestType := SER_MS;
    end;
 
    mPXListWPX.Visible := True;
@@ -8024,7 +8025,7 @@ var
    strCap: string;
    strTxNo: string;
 begin
-   if dmZLogGlobal.TXNr = 0 then begin
+   if dmZLogGlobal.ContestCategory = ccSingleOp then begin
       strTxNo := '';
    end
    else begin
