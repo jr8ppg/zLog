@@ -389,6 +389,7 @@ begin
 	text := TStringList.Create;
 	for item in list do text.Append(item);
 	init.WriteString(KEY_ZYLO, KEY_DLLS, text.DelimitedText);
+   text.Free;
 	init.Free;
 end;
 
@@ -716,12 +717,22 @@ begin
 	end;
 end;
 
+procedure FreeRules;
+var
+   Rule: TDLL;
+begin
+   for Rule in Rules.Values do begin
+      Rule.Free;
+   end;
+   Rules.Free;
+end;
+
 initialization
 	Rules := TDictionary<string, TDLL>.Create;
 	Props := TDictionary<string, string>.Create;
 
 finalization
-	Rules.Free;
+	FreeRules;
 	Props.Free;
 
 end.
