@@ -161,7 +161,6 @@ type
     _ritclear : boolean; // clear rit after each qso
     _searchafter : integer; // 0 default. for super / partial check
     _savewhennocw : boolean; // def=false. save when cw is not being sent
-    _multistation : boolean; // warn when logging non-newmulti qso
     _maxsuperhit : integer; // max # qso hit
     _bsexpire : integer; // bandscope expiration time in minutes
     _spotexpire : integer; // spot expiration time in minutes
@@ -362,6 +361,7 @@ public
     function GetArea(str: string): Integer;
     function GuessCQZone(aQSO: TQSO): string;
     function IsUSA(): Boolean;
+    function IsMultiStation(): Boolean;
 
     property PowerOfBand[b: TBand]: TPower read GetPowerOfBand;
 
@@ -641,9 +641,6 @@ begin
 
       // Sent
 //      Settings._sentstr := ini.ReadString('Profiles', 'SentStr', '');
-
-      // Multi Station
-      Settings._multistation := ini.ReadBool('Categories', 'MultiStn', False);
 
       // CFGファイルにもある項目をロード
       LoadCfgParams(ini);
@@ -1207,9 +1204,6 @@ begin
       // Sent
 //      ini.WriteString('Profiles', 'SentStr', Settings._sentstr);
 
-      // Multi Station
-      ini.WriteBool('Categories', 'MultiStn', Settings._multistation);
-
       //
       // CW/RTTY
       //
@@ -1615,10 +1609,6 @@ begin
    end
    else begin
       MainForm.BackUp1.Enabled := True;
-   end;
-
-   if Settings._multistation = True then begin
-      Settings._txnr := 1;
    end;
 end;
 
@@ -2414,6 +2404,16 @@ end;
 function TdmZLogGlobal.IsUSA(): Boolean;
 begin
    if (MyCountry = 'K') or (MyCountry = 'N') or (MyCountry = 'W') then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
+   end;
+end;
+
+function TdmZLogGlobal.IsMultiStation(): Boolean;
+begin
+   if (ContestCategory = ccMultiOpSingleTx) and (TXNr = 1) then begin
       Result := True;
    end
    else begin

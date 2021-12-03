@@ -490,7 +490,7 @@ var
 begin
    S := '';
 
-   if dmZlogGlobal.Settings._multistation = True then begin
+   if (dmZLogGlobal.IsMultiStation() = True) then begin
       ss := '30';
    end
    else begin
@@ -523,7 +523,7 @@ var
 begin
    S := '';
 
-   if dmZlogGlobal.Settings._multistation = True then begin
+   if (dmZLogGlobal.IsMultiStation() = True) then begin
       ss := '30';
    end
    else begin

@@ -152,7 +152,6 @@ type
     Label45: TLabel;
     Label46: TLabel;
     cbSaveWhenNoCW: TCheckBox;
-    cbMultiStn: TCheckBox;
     rgSearchAfter: TRadioGroup;
     spMaxSuperHit: TSpinEdit;
     Label47: TLabel;
@@ -566,7 +565,6 @@ var
    i, j: integer;
 begin
    with dmZlogGlobal do begin
-      Settings._multistation := cbMultiStn.Checked;
       Settings._savewhennocw := cbSaveWhenNoCW.Checked;
       Settings._jmode := cbJMode.Checked;
       Settings._searchafter := rgSearchAfter.ItemIndex;
@@ -946,8 +944,6 @@ begin
       spSpotExpire.Value := Settings._spotexpire;
       cbUpdateThread.Checked := Settings._renewbythread;
       cbDisplayDatePartialCheck.Checked := Settings._displaydatepartialcheck;
-
-      cbMultiStn.Checked := Settings._multistation;
 
       act19.Checked := Settings._activebands[b19];
       act35.Checked := Settings._activebands[b35];

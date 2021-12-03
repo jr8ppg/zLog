@@ -1041,6 +1041,7 @@ type
     procedure CallsignSentProc(Sender: TObject); // called when callsign is sent;
     procedure Update10MinTimer; //10 min countdown
     procedure SaveFileAndBackUp;
+    procedure ChangeTxNr(txnr: Byte);
     procedure IncFontSize();
     procedure DecFontSize();
     procedure SetFontSize(font_size: Integer);
@@ -2234,7 +2235,7 @@ begin
       if SerialContestType = SER_MS then // WPX M/S type. Separate serial for mult/run
       begin
          SerialArrayTX[aQSO.TX] := aQSO.Serial + 1;
-         if aQSO.TX = dmZlogGlobal.Settings._txnr then begin
+         if aQSO.TX = dmZlogGlobal.TXNr then begin
             CurrentQSO.Serial := aQSO.Serial + 1;
             MainForm.SerialEdit.Text := CurrentQSO.SerialStr;
          end;
@@ -2259,7 +2260,8 @@ begin
       MainForm.FRateDialogEx.UpdateGraph;
    end;
 
-   if dmZlogGlobal.Settings._multistation then begin
+   // M/S時、本来Multi StationはNEW MULTIしか交信できない
+   if (dmZLogGlobal.IsMultiStation() = True) then begin
       if Local { (mytx = aQSO.TX) } and (aQSO.NewMulti1 = False) and (aQSO.NewMulti2 = False) and (dmZlogGlobal.Settings._multistationwarning)
       then begin
          MessageDlg('This station is not a new multiplier, but will be logged anyway.', mtError, [mbOK], 0); { HELP context 0 }
@@ -2645,7 +2647,7 @@ begin
    if MainForm.FCheckCountry.Visible then
       MainForm.FCheckCountry.Renew(CurrentQSO);
 
-   if dmZlogGlobal.Settings._multistation then begin
+   if (dmZLogGlobal.IsMultiStation() = True) then begin
       if MainForm.FCheckCountry.Visible = False then
          MainForm.FCheckCountry.Renew(CurrentQSO);
       if MainForm.FCheckCountry.NotNewMulti(CurrentQSO.Band) then begin
@@ -2663,7 +2665,7 @@ begin
    if MainForm.FCheckCountry.Visible then
       MainForm.FCheckCountry.Renew(CurrentQSO);
 
-   if dmZlogGlobal.Settings._multistation then begin
+   if (dmZLogGlobal.IsMultiStation() = True) then begin
       if MainForm.FCheckCountry.Visible = False then
          MainForm.FCheckCountry.Renew(CurrentQSO);
       if MainForm.FCheckCountry.NotNewMulti(CurrentQSO.Band) then begin
@@ -4311,38 +4313,26 @@ begin
          WriteStatusLine('CQ status : SP', False);
    end;
 
-   if (S = 'MUL') or (S = 'MULTI') or (S = 'MULT') then begin
-      dmZlogGlobal.Settings._multistation := True;
-      dmZlogGlobal.TXNr := 2;
-      CurrentQSO.TX := dmZlogGlobal.TXNr;
-      WriteStatusLine('Multi station', True);
+   if ((S = 'MUL') or (S = 'MULTI') or (S = 'MULT')) and (dmZLogGlobal.ContestCategory = ccMultiOpSingleTx) then begin
+      ChangeTxNr(1);
 
-      if SerialEdit.Visible then
+      if SerialEdit.Visible then begin
          if (dmZlogGlobal.Settings._syncserial) and (SerialContestType = SER_MS) then begin
             CurrentQSO.Serial := SerialArrayTX[CurrentQSO.TX];
             SerialEdit.Text := CurrentQSO.SerialStr;
          end;
-
-      SetWindowCaption();
-      ReEvaluateCountDownTimer;
-      ReEvaluateQSYCount;
+      end;
    end;
 
-   if S = 'RUN' then begin
-      dmZlogGlobal.Settings._multistation := False;
-      dmZlogGlobal.TXNr := 1;
-      CurrentQSO.TX := dmZlogGlobal.TXNr;
-      WriteStatusLine('Running station', True);
+   if (S = 'RUN') and (dmZLogGlobal.ContestCategory = ccMultiOpSingleTx) then begin
+      ChangeTxNr(0);
 
-      if SerialEdit.Visible then
+      if SerialEdit.Visible then begin
          if (dmZlogGlobal.Settings._syncserial) and (SerialContestType = SER_MS) then begin
             CurrentQSO.Serial := SerialArrayTX[CurrentQSO.TX];
             SerialEdit.Text := CurrentQSO.SerialStr;
          end;
-
-      SetWindowCaption();
-      ReEvaluateCountDownTimer;
-      ReEvaluateQSYCount;
+      end;
    end;
 
    if S = 'SERIALTYPE' then begin
@@ -4420,24 +4410,21 @@ begin
 
    if Pos('TXNR', S) = 1 then begin
       if length(temp) = 4 then
-         WriteStatusLine('TX# = ' + IntToStr(dmZlogGlobal.Settings._txnr), True)
+         WriteStatusLine('TX# = ' + IntToStr(dmZlogGlobal.TXNr), True)
       else begin
          Delete(temp, 1, 4);
-         temp := TrimRight(temp);
-         try
-            j := StrToInt(temp);
-         except
-            on EConvertError do
-               exit;
-         end;
-         if (j >= 0) and (j <= 99) then begin
-            dmZlogGlobal.TXNr := j;
-         end;
+         j := StrToIntDef(temp, 0);
 
-         CurrentQSO.TX := dmZlogGlobal.TXNr;
-         WriteStatusLine('TX# set to ' + IntToStr(dmZlogGlobal.Settings._txnr), True);
-         ReEvaluateQSYCount;
+         ChangeTxNr(j);
       end;
+   end;
+
+   if (S = 'RUN1') and (dmZLogGlobal.ContestCategory = ccMultiOpTwoTx) then begin
+      ChangeTxNr(0);
+   end;
+
+   if (S = 'RUN2') and (dmZLogGlobal.ContestCategory = ccMultiOpTwoTx) then begin
+      ChangeTxNr(1);
    end;
 
    if Pos('PCNAME', S) = 1 then begin
@@ -4618,6 +4605,48 @@ begin
    if S = 'AZ' then begin
       actionAntiZeroin.Execute();
    end;
+end;
+
+procedure TMainForm.ChangeTxNr(txnr: Byte);
+begin
+   case dmZLogGlobal.ContestCategory of
+      ccSingleOp: Exit;
+      ccMultiOpMultiTx: begin
+         if {(txnr < 0) or} (txnr > 9) then begin
+            Exit;
+         end;
+
+         WriteStatusLine('TX# set to ' + IntToStr(dmZlogGlobal.TXNr), True);
+      end;
+
+      ccMultiOpSingleTx: begin
+         if (txnr <> 0) and (txnr <> 1) then begin
+            Exit;
+         end;
+
+         if txnr = 0 then begin
+            WriteStatusLine('Running station', True);
+         end
+         else begin
+            WriteStatusLine('Multi station', True);
+         end;
+      end;
+
+      ccMultiOpTwoTx: begin
+         if (txnr <> 0) and (txnr <> 1) then begin
+            Exit;
+         end;
+
+         WriteStatusLine('TX# set to ' + IntToStr(dmZlogGlobal.TXNr), True);
+      end;
+   end;
+
+   dmZlogGlobal.TXNr := txnr;
+   CurrentQSO.TX := dmZlogGlobal.TXNr;
+
+   SetWindowCaption();
+   ReEvaluateCountDownTimer;
+   ReEvaluateQSYCount;
 end;
 
 procedure TMainForm.IncFontSize();
@@ -6925,7 +6954,7 @@ begin
       if _top = _bottom then begin
          aQSO := TQSO(Grid.Objects[0, _top]);
 
-         F.Init(dmZlogGlobal.Settings._txnr, 'Enter new TX#');
+         F.Init(dmZlogGlobal.TXNr, 'Enter new TX#');
          if F.ShowModal <> mrOK then begin
             Exit;
          end;
@@ -6947,7 +6976,7 @@ begin
 
 //            aQSO := TQSO(Log.List[EditScreen.IndexArray[_top]]);
 
-            F.Init(dmZlogGlobal.Settings._txnr, 'Enter new TX#');
+            F.Init(dmZlogGlobal.TXNr, 'Enter new TX#');
             if F.ShowModal <> mrOK then begin
                Exit;
             end;
@@ -8025,6 +8054,7 @@ var
    strCap: string;
    strTxNo: string;
 begin
+   // SingleOP以外はTX#を表示する
    if dmZLogGlobal.ContestCategory = ccSingleOp then begin
       strTxNo := '';
    end
@@ -8034,19 +8064,24 @@ begin
 
    strCap := strTxNo + 'zLog for Windows';
 
-   if dmZlogGlobal.Settings._multistation = True then begin
-      strCap := strCap + ' - Multi station';
-   end
-   else begin
-      strCap := strCap + ' - Running station';
+   // M/Sの場合は RUN/MULTI表示を追加
+   if dmZLogGlobal.ContestCategory = ccMultiOpSingleTx then begin
+      if dmZlogGlobal.TXNr = 0 then begin
+         strCap := strCap + ' - Running station';
+      end
+      else begin
+         strCap := strCap + ' - Multi station';
+      end;
    end;
 
+   // Z-LINK利用時はPC名表示を追加
    if dmZlogGlobal.Settings._zlinkport <> 0 then begin
       if dmZlogGlobal.Settings._pcname <> '' then begin
           strCap := strCap + ' [' + dmZlogGlobal.Settings._pcname + ']';
       end;
    end;
 
+   // 使用中のファイル名
    strCap := strCap + ' - ' + ExtractFileName(CurrentFileName);
 
    Caption := strCap;

@@ -763,14 +763,6 @@ object formOptions: TformOptions
         TabOrder = 6
         Text = '45'
       end
-      object cbMultiStn: TCheckBox
-        Left = 257
-        Top = 252
-        Width = 97
-        Height = 17
-        Caption = 'Multi station'
-        TabOrder = 8
-      end
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
