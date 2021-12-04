@@ -610,12 +610,19 @@ object formOptions: TformOptions
       object GroupBox1: TGroupBox
         Left = 6
         Top = 4
-        Width = 137
-        Height = 261
-        Caption = 'Operator'
+        Width = 143
+        Height = 129
+        Caption = 'Category'
         TabOrder = 0
-        object SingleOpRadioBtn: TRadioButton
-          Left = 16
+        object Label91: TLabel
+          Left = 62
+          Top = 100
+          Width = 21
+          Height = 13
+          Caption = 'TX#'
+        end
+        object radioSingleOp: TRadioButton
+          Left = 11
           Top = 16
           Width = 113
           Height = 17
@@ -623,57 +630,50 @@ object formOptions: TformOptions
           Checked = True
           TabOrder = 0
           TabStop = True
-          OnClick = SingleOpRadioBtnClick
+          OnClick = radioCategoryClick
         end
-        object MultiOpRadioBtn: TRadioButton
-          Left = 16
-          Top = 35
+        object comboTxNo: TComboBox
+          Left = 91
+          Top = 97
+          Width = 41
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 4
+        end
+        object radioMultiOpMultiTx: TRadioButton
+          Tag = 1
+          Left = 11
+          Top = 34
           Width = 113
           Height = 17
-          Caption = 'Multi-Op'
+          Caption = 'Multi-Op/Multi-TX'
           TabOrder = 1
-          TabStop = True
-          OnClick = MultiOpRadioBtnClick
+          OnClick = radioCategoryClick
         end
-        object Add: TButton
-          Left = 8
-          Top = 227
-          Width = 57
-          Height = 25
-          Caption = 'Add'
+        object radioMultiOpSingleTx: TRadioButton
+          Tag = 2
+          Left = 11
+          Top = 52
+          Width = 113
+          Height = 17
+          Caption = 'Multi-Op/Single-TX'
           TabOrder = 2
-          OnClick = AddClick
+          OnClick = radioCategoryClick
         end
-        object Delete: TButton
-          Left = 72
-          Top = 227
-          Width = 57
-          Height = 25
-          Caption = 'Delete'
+        object radioMultiOpTwoTx: TRadioButton
+          Tag = 3
+          Left = 11
+          Top = 70
+          Width = 113
+          Height = 17
+          Caption = 'Multi-Op/Two-TX'
           TabOrder = 3
-          OnClick = DeleteClick
-        end
-        object OpListBox: TListBox
-          Left = 8
-          Top = 59
-          Width = 121
-          Height = 162
-          TabStop = False
-          Enabled = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#12468#12471#12483#12463
-          Font.Style = []
-          ItemHeight = 12
-          ParentFont = False
-          TabOrder = 4
-          OnDblClick = OpListBoxDblClick
+          OnClick = radioCategoryClick
         end
       end
       object BandGroup: TRadioGroup
-        Left = 153
-        Top = 88
+        Left = 281
+        Top = 316
         Width = 89
         Height = 233
         ItemIndex = 0
@@ -762,6 +762,49 @@ object formOptions: TformOptions
         MaxLength = 3
         TabOrder = 6
         Text = '45'
+      end
+      object GroupBox24: TGroupBox
+        Left = 6
+        Top = 139
+        Width = 143
+        Height = 222
+        Caption = 'Operators'
+        TabOrder = 8
+        object OpListBox: TListBox
+          Left = 11
+          Top = 19
+          Width = 121
+          Height = 162
+          TabStop = False
+          Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#12468#12471#12483#12463
+          Font.Style = []
+          ItemHeight = 12
+          ParentFont = False
+          TabOrder = 0
+          OnDblClick = OpListBoxDblClick
+        end
+        object buttonOpAdd: TButton
+          Left = 11
+          Top = 187
+          Width = 57
+          Height = 25
+          Caption = 'Add'
+          TabOrder = 1
+          OnClick = buttonOpAddClick
+        end
+        object buttonOpDelete: TButton
+          Left = 75
+          Top = 187
+          Width = 57
+          Height = 25
+          Caption = 'Delete'
+          TabOrder = 2
+          OnClick = buttonOpDeleteClick
+        end
       end
     end
     object tabsheetCW: TTabSheet

@@ -4616,7 +4616,7 @@ begin
             Exit;
          end;
 
-         WriteStatusLine('TX# set to ' + IntToStr(dmZlogGlobal.TXNr), True);
+         WriteStatusLine('TX# set to ' + IntToStr(txnr), True);
       end;
 
       ccMultiOpSingleTx: begin
@@ -4637,7 +4637,7 @@ begin
             Exit;
          end;
 
-         WriteStatusLine('TX# set to ' + IntToStr(dmZlogGlobal.TXNr), True);
+         WriteStatusLine('TX# set to ' + IntToStr(txnr), True);
       end;
    end;
 

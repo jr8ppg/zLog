@@ -21,13 +21,9 @@ type
     buttonOK: TButton;
     buttonCancel: TButton;
     GroupBox1: TGroupBox;
-    SingleOpRadioBtn: TRadioButton;
-    MultiOpRadioBtn: TRadioButton;
+    radioSingleOp: TRadioButton;
     BandGroup: TRadioGroup;
-    OpListBox: TListBox;
     ModeGroup: TRadioGroup;
-    Add: TButton;
-    Delete: TButton;
     GroupBox2: TGroupBox;
     editMessage2: TEdit;
     editMessage3: TEdit;
@@ -438,17 +434,22 @@ type
     buttonFocusedInitColor: TButton;
     checkFocusedBold: TCheckBox;
     buttonFocusedForeColor: TButton;
-    procedure MultiOpRadioBtnClick(Sender: TObject);
-    procedure SingleOpRadioBtnClick(Sender: TObject);
+    Label91: TLabel;
+    comboTxNo: TComboBox;
+    GroupBox24: TGroupBox;
+    OpListBox: TListBox;
+    buttonOpAdd: TButton;
+    buttonOpDelete: TButton;
+    radioMultiOpMultiTx: TRadioButton;
+    radioMultiOpSingleTx: TRadioButton;
+    radioMultiOpTwoTx: TRadioButton;
+    procedure radioCategoryClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure AddClick(Sender: TObject);
-    procedure DeleteClick(Sender: TObject);
+    procedure buttonOpAddClick(Sender: TObject);
+    procedure buttonOpDeleteClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonCancelClick(Sender: TObject);
-    procedure OpEditKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure OpEditEnter(Sender: TObject);
-    procedure OpEditExit(Sender: TObject);
     procedure SpeedBarChange(Sender: TObject);
     procedure WeightBarChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -549,14 +550,42 @@ uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet,
 
 {$R *.DFM}
 
-procedure TformOptions.MultiOpRadioBtnClick(Sender: TObject);
+procedure TformOptions.radioCategoryClick(Sender: TObject);
+var
+   n: Integer;
 begin
-   OpListBox.Enabled := True;
-end;
+   n := TRadioButton(Sender).Tag;
+   case n of
+      // Single-Op
+      0: begin
+         comboTxNo.Enabled := False;
+         comboTxNo.Items.CommaText := '0,1';
+         comboTxNo.ItemIndex := 0;
+         OpListBox.Enabled := False;
+         buttonOpAdd.Enabled := False;
+         buttonOpDelete.Enabled := False;
+      end;
 
-procedure TformOptions.SingleOpRadioBtnClick(Sender: TObject);
-begin
-   OpListBox.Enabled := False;
+      // Multi-Op/Multi-Tx
+      1: begin
+         comboTxNo.Enabled := True;
+         comboTxNo.Items.CommaText := '0,1,2,3,4,5,6,7,8,9';
+         comboTxNo.ItemIndex := 0;
+         OpListBox.Enabled := True;
+         buttonOpAdd.Enabled := True;
+         buttonOpDelete.Enabled := True;
+      end;
+
+      // Multi-Op/Single-Tx, Multi-Op/Two-Tx
+      2, 3: begin
+         comboTxNo.Enabled := True;
+         comboTxNo.Items.CommaText := '0,1';
+         comboTxNo.ItemIndex := 0;
+         OpListBox.Enabled := True;
+         buttonOpAdd.Enabled := True;
+         buttonOpDelete.Enabled := True;
+      end;
+   end;
 end;
 
 procedure TformOptions.RenewSettings;
@@ -620,7 +649,23 @@ begin
       end;
 
       Settings._mode := TContestMode(ModeGroup.ItemIndex);
-      // Settings._multiop := MultiOpRadioBtn.Checked;
+
+      // Category
+      if radioSingleOp.Checked = True then begin
+         Settings._multiop := ccSingleOp;
+      end
+      else if radioMultiOpMultiTx.Checked = True then begin
+         Settings._multiop := ccMultiOpMultiTx;
+      end
+      else if radioMultiOpSingleTx.Checked = True then begin
+         Settings._multiop := ccMultiOpSingleTx;
+      end
+      else if radioMultiOpTwoTx.Checked = True then begin
+         Settings._multiop := ccMultiOpTwoTx;
+      end;
+
+      // #TXNR
+      Settings._txnr := StrToIntDef(comboTxNo.Text, 0);
 
       Settings._prov := ProvEdit.Text;
       Settings._city := CityEdit.Text;
@@ -979,12 +1024,28 @@ begin
       comboPower5600.Text := Settings._power[b5600];
       comboPower10g.Text := Settings._power[b10g];
 
-      if Settings._multiop = ccSingleOp then begin
-         SingleOpRadioBtn.Checked := True;
+      // Category
+      if ContestCategory = ccSingleOp then begin
+         radioSingleOp.Checked := True;
       end
-      else begin
-         MultiOpRadioBtn.Checked := True;
+      else if ContestCategory = ccMultiOpMultiTx then begin
+         radioMultiOpMultiTx.Checked := True
+      end
+      else if ContestCategory = ccMultiOpSingleTx then begin
+         radioMultiOpSingleTx.Checked := True
+      end
+      else if ContestCategory = ccMultiOpTwoTx then begin
+         radioMultiOpTwoTx.Checked := True
       end;
+//      case ContestCategory of
+//         ccSingleOp:          radioSingleOp.Checked := True;
+//         ccMultiOpMultiTx:    radioMultiOpMultiTx.Checked := True;
+//         ccMultiOpSingleTx:   radioMultiOpSingleTx.Checked := True;
+//         ccMultiOpTwoTx:      radioMultiOpTwoTx.Checked := True;
+//      end;
+
+      // #TXNR
+      comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(Settings._txnr));
 
       if Settings._band = 0 then
          BandGroup.ItemIndex := 0
@@ -1338,7 +1399,7 @@ begin
    FNeedSuperCheckLoad := False;
 end;
 
-procedure TformOptions.AddClick(Sender: TObject);
+procedure TformOptions.buttonOpAddClick(Sender: TObject);
 var
    F: TformOperatorEdit;
    obj: TOperatorInfo;
@@ -1359,7 +1420,7 @@ begin
    end;
 end;
 
-procedure TformOptions.DeleteClick(Sender: TObject);
+procedure TformOptions.buttonOpDeleteClick(Sender: TObject);
 var
    obj: TOperatorInfo;
    i: Integer;
@@ -1488,14 +1549,6 @@ begin
 //   Close;
 end;
 
-procedure TformOptions.OpEditKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
-begin
-   case Key of
-      VK_RETURN:
-         AddClick(Self);
-   end;
-end;
-
 procedure TformOptions.OpListBoxDblClick(Sender: TObject);
 var
    F: TformOperatorEdit;
@@ -1520,16 +1573,6 @@ begin
    finally
       F.Free();
    end;
-end;
-
-procedure TformOptions.OpEditEnter(Sender: TObject);
-begin
-   Add.Default := True;
-end;
-
-procedure TformOptions.OpEditExit(Sender: TObject);
-begin
-   buttonOK.Default := True;
 end;
 
 procedure TformOptions.SpeedBarChange(Sender: TObject);

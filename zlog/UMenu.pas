@@ -164,26 +164,20 @@ begin
    case dmZlogGlobal.ContestCategory of
       ccSingleOp: begin
          radioSingleOp.Checked := True;
-         OpGroupClick(radioSingleOp);
       end;
 
       ccMultiOpMultiTx: begin
          radioMultiOpMultiTx.Checked := True;
-         OpGroupClick(radioMultiOpMultiTx);
       end;
 
       ccMultiOpSingleTx: begin
          radioMultiOpSingleTx.Checked := True;
-         OpGroupClick(radioMultiOpSingleTx);
       end;
 
       ccMultiOpTwoTx: begin
          radioMultiOpTwoTx.Checked := True;
-         OpGroupClick(radioMultiOpTwoTx);
       end;
    end;
-
-   comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(dmZlogGlobal.TXNr));
 
    editCallsign.Text := dmZlogGlobal.MyCall;
 
@@ -448,23 +442,22 @@ begin
       0: begin
          comboTxNo.Enabled := False;
          comboTxNo.Items.CommaText := '0,1';
-         comboTxNo.ItemIndex := 0;
       end;
 
       // Multi-Op/Multi-Tx
       1: begin
          comboTxNo.Enabled := True;
          comboTxNo.Items.CommaText := '0,1,2,3,4,5,6,7,8,9';
-         comboTxNo.ItemIndex := 0;
       end;
 
       // Multi-Op/Single-Tx, Multi-Op/Two-Tx
       2, 3: begin
          comboTxNo.Enabled := True;
          comboTxNo.Items.CommaText := '0,1';
-         comboTxNo.ItemIndex := 0;
       end;
    end;
+
+   comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(dmZlogGlobal.TXNr));
 end;
 
 procedure TMenuForm.UserDefClick(Sender: TObject);
@@ -589,6 +582,9 @@ begin
    end
    else if radioMultiOpTwoTx.Checked = True then begin
       Result := ccMultiOpTwoTx;
+   end
+   else begin
+      Result := ccSingleOp;
    end;
 end;
 
