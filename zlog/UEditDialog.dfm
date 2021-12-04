@@ -4,7 +4,7 @@ object EditDialog: TEditDialog
   BorderStyle = bsDialog
   Caption = 'Dialog'
   ClientHeight = 82
-  ClientWidth = 553
+  ClientWidth = 618
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -44,7 +44,7 @@ object EditDialog: TEditDialog
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 553
+    Width = 618
     Height = 41
     Align = alTop
     BevelOuter = bvNone
@@ -55,6 +55,7 @@ object EditDialog: TEditDialog
     Font.Style = []
     ParentFont = False
     TabOrder = 0
+    ExplicitWidth = 553
     object SerialLabel: TLabel
       Left = 8
       Top = 0
@@ -132,6 +133,13 @@ object EditDialog: TEditDialog
       Width = 24
       Height = 12
       Caption = 'memo'
+    end
+    object TxLabel: TLabel
+      Left = 543
+      Top = 0
+      Width = 18
+      Height = 12
+      Caption = 'TX#'
     end
     object TimeEdit: TEdit
       Left = 8
@@ -290,6 +298,15 @@ object EditDialog: TEditDialog
       TabOrder = 12
       Visible = False
       OnClick = NewPowerEditClick
+    end
+    object comboTxNo: TComboBox
+      Left = 543
+      Top = 13
+      Width = 41
+      Height = 20
+      Style = csDropDownList
+      TabOrder = 13
+      OnChange = comboTxNoChange
     end
   end
   object BandMenu: TPopupMenu

@@ -87,6 +87,8 @@ type
     actionPlayMessageA10: TAction;
     actionPlayCQA2: TAction;
     actionPlayCQA3: TAction;
+    TxLabel: TLabel;
+    comboTxNo: TComboBox;
     procedure CancelBtnClick(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure CallsignEditChange(Sender: TObject);
@@ -142,6 +144,7 @@ type
     procedure actionQuickMemo3Execute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
+    procedure comboTxNoChange(Sender: TObject);
   private
     { Private declarations }
     workQSO : TQSO;
@@ -169,6 +172,11 @@ begin
    end;
 
    NewPowerEdit.Text := workQSO.NewPowerStr;
+end;
+
+procedure TEditDialog.comboTxNoChange(Sender: TObject);
+begin
+   workQSO.TX := StrToIntDef(comboTxNo.Items[comboTxNo.ItemIndex], 0);
 end;
 
 procedure TEditDialog.Init(aQSO: TQSO; Action_: integer);
@@ -209,6 +217,21 @@ begin
    PointEdit.Text := workQSO.PointStr;
    MemoEdit.Text := workQSO.memo;
    OpEdit.Text := workQSO.Operator;
+
+   case dmZLogGlobal.ContestCategory of
+      ccSingleOp: begin
+      end;
+
+      ccMultiOpMultiTx: begin
+         comboTxNo.Items.CommaText := '0,1,2,3,4,5,6,7,8,9';
+         comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(workQSO.TX));
+      end;
+
+      ccMultiOpSingleTx, ccMultiOpTwoTx: begin
+         comboTxNo.Items.CommaText := '0,1';
+         comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(workQSO.TX));
+      end;
+   end;
 end;
 
 procedure TEditDialog.CancelBtnClick(Sender: TObject);
@@ -474,7 +497,29 @@ begin
    MemoEdit.Width := MainForm.MemoEdit.Width;
    MemoLabel.Left := MemoEdit.Left + 1;
 
-   Width := MainForm.Width;
+   case dmZLogGlobal.ContestCategory of
+      ccSingleOp: begin
+         Width := MainForm.Width;
+         comboTxNo.Visible := False;
+         TxLabel.Visible := False;
+      end;
+
+      ccMultiOpMultiTx: begin
+         comboTxNo.Visible := True;
+         TxLabel.Visible := True;
+         comboTxNo.Left := MemoEdit.Left + MemoEdit.Width + offset;
+         TxLabel.Left := comboTxNo.Left + 1;
+         Width := MainForm.Width + comboTxNo.Width;
+      end;
+
+      ccMultiOpSingleTx, ccMultiOpTwoTx: begin
+         comboTxNo.Visible := True;
+         TxLabel.Visible := True;
+         comboTxNo.Left := MemoEdit.Left + MemoEdit.Width + offset;
+         TxLabel.Left := comboTxNo.Left + 1;
+         Width := MainForm.Width + comboTxNo.Width;
+      end;
+   end;
 end;
 
 procedure TEditDialog.RcvdRSTEditChange(Sender: TObject);
