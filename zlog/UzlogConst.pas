@@ -28,6 +28,9 @@ const
   SER_BAND = 2;
   SER_MS = 3;    // separate serial for run/multi stns
 
+  TXLIST_MM = '0,1,2,3,4,5,6,7,8,9';
+  TXLIST_MS = '0,1';
+
 const
   RIGNAMES : array[0..17] of string =
 ('None',

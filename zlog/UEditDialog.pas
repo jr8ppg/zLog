@@ -223,12 +223,12 @@ begin
       end;
 
       ccMultiOpMultiTx: begin
-         comboTxNo.Items.CommaText := '0,1,2,3,4,5,6,7,8,9';
+         comboTxNo.Items.CommaText := TXLIST_MM;
          comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(workQSO.TX));
       end;
 
       ccMultiOpSingleTx, ccMultiOpTwoTx: begin
-         comboTxNo.Items.CommaText := '0,1';
+         comboTxNo.Items.CommaText := TXLIST_MS;
          comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(workQSO.TX));
       end;
    end;

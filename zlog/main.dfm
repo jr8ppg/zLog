@@ -5599,6 +5599,9 @@ object MainForm: TMainForm
       Caption = '&Insert QSO'
       OnClick = InsertQSO1Click
     end
+    object N7: TMenuItem
+      Caption = '-'
+    end
     object GBand: TMenuItem
       Caption = 'Change &Band'
       object G1R9MHz: TMenuItem
@@ -5747,7 +5750,9 @@ object MainForm: TMainForm
     end
     object mnChangeTXNr: TMenuItem
       Caption = 'Change &TX#'
-      OnClick = mnChangeTXNrClick
+    end
+    object N8: TMenuItem
+      Caption = '-'
     end
     object SendSpot1: TMenuItem
       Caption = 'Send &Spot'

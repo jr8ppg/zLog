@@ -447,13 +447,13 @@ begin
       // Multi-Op/Multi-Tx
       1: begin
          comboTxNo.Enabled := True;
-         comboTxNo.Items.CommaText := '0,1,2,3,4,5,6,7,8,9';
+         comboTxNo.Items.CommaText := TXLIST_MM;
       end;
 
       // Multi-Op/Single-Tx, Multi-Op/Two-Tx
       2, 3: begin
          comboTxNo.Enabled := True;
-         comboTxNo.Items.CommaText := '0,1';
+         comboTxNo.Items.CommaText := TXLIST_MS;
       end;
    end;
 

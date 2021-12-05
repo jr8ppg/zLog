@@ -704,6 +704,8 @@ type
     actionShowQsyInfo: TAction;
     QSYInfo1: TMenuItem;
     menuPluginManager: TMenuItem;
+    N7: TMenuItem;
+    N8: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1113,6 +1115,7 @@ type
     procedure BSRefresh();
     procedure BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
+    procedure BuildTxNrMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
 
     procedure BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Int64);
     procedure BandScopeAddSelfSpotFromNetwork(BSText: string);
@@ -4929,6 +4932,7 @@ begin
    end;
 
    BuildOpListMenu2(GOperator, GridOperatorClick);
+   BuildTxNrMenu2(mnChangeTXNr, mnChangeTXNrClick);
 
    if Grid.Row > Log.TotalQSO then begin
       for i := 0 to GridMenu.Items.Count - 1 do
@@ -6942,69 +6946,45 @@ procedure TMainForm.mnChangeTXNrClick(Sender: TObject);
 var
    i, _top, _bottom, NewTX, R: Integer;
    aQSO: TQSO;
-   F: TIntegerDialog;
+   M: TMenuItem;
 begin
-   F := TIntegerDialog.Create(Self);
-   try
-      with Grid do begin
-         _top := Selection.top;
-         _bottom := Selection.Bottom;
-      end;
-
-      if _top = _bottom then begin
-         aQSO := TQSO(Grid.Objects[0, _top]);
-
-         F.Init(dmZlogGlobal.TXNr, 'Enter new TX#');
-         if F.ShowModal <> mrOK then begin
-            Exit;
-         end;
-
-         NewTX := F.GetValue;
-
-         if (NewTX >= 0) and (NewTX <= 255) then begin
-            IncEditCounter(aQSO);
-            aQSO.TX := NewTX;
-            // aQSO.Memo := 'TX#'+IntToStr(aQSO.TX)+' '+aQSO.Memo;
-            FZLinkForm.EditQSObyID(aQSO); // added 0.24
-         end;
-      end
-      else begin
-         if (_top < Log.TotalQSO) and (_bottom <= Log.TotalQSO) then begin
-            R := MessageDlg('Are you sure to change the TX# for these QSO''s?', mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
-            if R = mrNo then
-               exit;
-
-//            aQSO := TQSO(Log.List[EditScreen.IndexArray[_top]]);
-
-            F.Init(dmZlogGlobal.TXNr, 'Enter new TX#');
-            if F.ShowModal <> mrOK then begin
-               Exit;
-            end;
-
-            NewTX := F.GetValue;
-
-            if (NewTX > 255) or (NewTX < 0) then begin
-               Exit;
-            end;
-
-            for i := _top to _bottom do begin
-               aQSO := TQSO(Grid.Objects[0, i]);
-               aQSO.TX := NewTX;
-               // aQSO.Memo := 'TX#'+IntToStr(aQSO.TX)+' '+aQSO.Memo;
-               IncEditCounter(aQSO);
-               FZLinkForm.EditQSObyID(aQSO); // 0.24
-            end;
-         end;
-      end;
-
-      i := Grid.TopRow;
-      MyContest.Renew;
-      Grid.TopRow := i;
-      EditScreen.RefreshScreen;
-      Log.Saved := False;
-   finally
-      F.Release();
+   M := TMenuItem(Sender);
+   NewTx := StrToIntDef(M.Caption, 0);
+   if (NewTX > 255) or (NewTX < 0) then begin
+      Exit;
    end;
+
+   _top := Grid.Selection.top;
+   _bottom := Grid.Selection.Bottom;
+
+   if _top = _bottom then begin
+      aQSO := TQSO(Grid.Objects[0, _top]);
+
+      IncEditCounter(aQSO);
+      aQSO.TX := NewTX;
+      FZLinkForm.EditQSObyID(aQSO); // added 0.24
+   end
+   else begin
+      if (_top < Log.TotalQSO) and (_bottom <= Log.TotalQSO) then begin
+         R := MessageDlg('Are you sure to change the TX# for these QSO''s?', mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
+         if R = mrNo then begin
+            exit;
+         end;
+
+         for i := _top to _bottom do begin
+            aQSO := TQSO(Grid.Objects[0, i]);
+            aQSO.TX := NewTX;
+            IncEditCounter(aQSO);
+            FZLinkForm.EditQSObyID(aQSO); // 0.24
+         end;
+      end;
+   end;
+
+   i := Grid.TopRow;
+   MyContest.Renew;
+   Grid.TopRow := i;
+   EditScreen.RefreshScreen;
+   Log.Saved := False;
 end;
 
 procedure TMainForm.GridKeyPress(Sender: TObject; var Key: Char);
@@ -9851,6 +9831,46 @@ begin
       M.Caption := Trim(dmZlogGlobal.OpList[i].Callsign);
       M.OnClick := OnClickHandler;
       P.Add(m);
+   end;
+end;
+
+procedure TMainForm.BuildTxNrMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
+var
+   i: Integer;
+   M: TMenuItem;
+   L: TStringList;
+begin
+   L := TStringList.Create();
+   try
+      for i := P.Count - 1 downto 0 do begin
+         P.Delete(i);
+      end;
+
+      case dmZlogGlobal.ContestCategory of
+         ccSingleOp: begin
+            P.Visible := False;
+            Exit;
+         end;
+
+         ccMultiOpMultiTx: begin
+            P.Visible := True;
+            L.CommaText := TXLIST_MM;
+         end;
+
+         ccMultiOpSingleTx, ccMultiOpTwoTx: begin
+            P.Visible := True;
+            L.CommaText := TXLIST_MS;
+         end;
+      end;
+
+      for i := 0 to L.Count - 1 do begin
+         M := TMenuItem.Create(Self);
+         M.Caption := Trim(L[i]);
+         M.OnClick := OnClickHandler;
+         P.Add(m);
+      end;
+   finally
+      L.Free();
    end;
 end;
 
