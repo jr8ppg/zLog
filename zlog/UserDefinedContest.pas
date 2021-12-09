@@ -182,6 +182,7 @@ implementation
 constructor TUserDefinedContest.Create();
 var
    i: Integer;
+   B: TBand;
 begin
    Inherited;
    FCfgSource := TStringList.Create();
@@ -246,6 +247,10 @@ begin
    FUseWarcBand := False;
 
    FUseUTC := False;
+
+   for B := b19 to HiBand do begin
+      FSerialArray[B] := 1;
+   end;
 end;
 
 constructor TUserDefinedContest.Create(strFullPath: string);
