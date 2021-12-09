@@ -173,6 +173,7 @@ begin
       dmZLogKeyer.WinKeyerSendStr(S);
    end
    else begin
+      dmZLogKeyer.ClrBuffer();
       dmZLogKeyer.PauseCW;
 
       if dmZLogGlobal.FIFO then begin
