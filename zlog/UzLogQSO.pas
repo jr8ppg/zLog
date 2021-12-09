@@ -2039,7 +2039,7 @@ begin
       TempList[i].Capacity := 200;
    end;
 
-   pQSO := nil;
+   pQSO := FQsoList[1];
    for i := 1 to TotalQSO do begin
       aQSO := FQsoList[i];
       core := CoreCall(aQSO.CallSign);
@@ -2082,6 +2082,9 @@ begin
             Diff := SecondsBetween(aQSO.Time, pQSO.Time);
             if (Diff / 60) <= dmZLogGlobal.Settings._countdownminute then begin
                fQsyViolation := True;
+            end
+            else begin
+               pQSO := aQSO;
             end;
          end;
       end;
