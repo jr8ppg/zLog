@@ -77,7 +77,14 @@ begin
    temp := StringReplace(temp, '$Q', Abbreviate(MyContest.QTHString(aQSO)), [rfReplaceAll]);
    temp := StringReplace(temp, '$V', Abbreviate(dmZLogGlobal.Settings._prov), [rfReplaceAll]);
    temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
-   temp := StringReplace(temp, '$S', Abbreviate(aQSO.SerialStr), [rfReplaceAll]);
+
+   if dmZLogGlobal.Settings.CW._nosend_leading_zeros = False then begin
+      temp := StringReplace(temp, '$S', Abbreviate(aQSO.SerialStr), [rfReplaceAll]);
+   end
+   else begin
+      temp := StringReplace(temp, '$S', Abbreviate(IntToStr(aQSO.Serial)), [rfReplaceAll]);
+   end;
+
    temp := StringReplace(temp, '$P', aQSO.NewPowerStr, [rfReplaceAll]);
    temp := StringReplace(temp, '$A', Abbreviate(UpperCase(dmZLogGlobal.GetAge(aQSO))), [rfReplaceAll]);
    temp := StringReplace(temp, '$N', Abbreviate(aQSO.PowerStr), [rfReplaceAll]);
@@ -154,7 +161,14 @@ begin
    temp := StringReplace(temp, '$Q', MyContest.QTHString(aQSO), [rfReplaceAll]);
    temp := StringReplace(temp, '$V', dmZLogGlobal.Settings._prov, [rfReplaceAll]);
    temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
-   temp := StringReplace(temp, '$S', aQSO.SerialStr, [rfReplaceAll]);
+
+   if dmZLogGlobal.Settings.CW._nosend_leading_zeros = False then begin
+      temp := StringReplace(temp, '$S', aQSO.SerialStr, [rfReplaceAll]);
+   end
+   else begin
+      temp := StringReplace(temp, '$S', IntToStr(aQSO.Serial), [rfReplaceAll]);
+   end;
+
    temp := StringReplace(temp, '$P', aQSO.NewPowerStr, [rfReplaceAll]);
    temp := StringReplace(temp, '$A', UpperCase(dmZLogGlobal.GetAge(aQSO)), [rfReplaceAll]);
    temp := StringReplace(temp, '$N', aQSO.PowerStr, [rfReplaceAll]);
