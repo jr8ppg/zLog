@@ -435,6 +435,15 @@ type
     checkFocusedBold: TCheckBox;
     buttonFocusedForeColor: TButton;
     checkNoSendLeadingZeros: TCheckBox;
+    Label91: TLabel;
+    comboTxNo: TComboBox;
+    GroupBox24: TGroupBox;
+    OpListBox: TListBox;
+    buttonOpAdd: TButton;
+    buttonOpDelete: TButton;
+    radioMultiOpMultiTx: TRadioButton;
+    radioMultiOpSingleTx: TRadioButton;
+    radioMultiOpTwoTx: TRadioButton;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -479,6 +488,7 @@ type
     procedure buttonFocusedInitColorClick(Sender: TObject);
     procedure checkFocusedBoldClick(Sender: TObject);
     procedure buttonFocusedForeColorClick(Sender: TObject);
+    procedure radioCategoryClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
