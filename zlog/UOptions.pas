@@ -434,16 +434,7 @@ type
     buttonFocusedInitColor: TButton;
     checkFocusedBold: TCheckBox;
     buttonFocusedForeColor: TButton;
-    Label91: TLabel;
-    comboTxNo: TComboBox;
-    GroupBox24: TGroupBox;
-    OpListBox: TListBox;
-    buttonOpAdd: TButton;
-    buttonOpDelete: TButton;
-    radioMultiOpMultiTx: TRadioButton;
-    radioMultiOpSingleTx: TRadioButton;
-    radioMultiOpTwoTx: TRadioButton;
-    procedure radioCategoryClick(Sender: TObject);
+    checkNoSendLeadingZeros: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -720,6 +711,9 @@ begin
 
       // Send NR? automatically
       Settings.CW._send_nr_auto := checkSendNrAuto.Checked;
+
+      // No send leading zeros in serial number
+      Settings.CW._nosend_leading_zeros := checkNosendLeadingZeros.Checked;
 
       Settings._clusterport := ClusterCombo.ItemIndex;
    //   Settings._clusterbaud := ClusterCOMSet.BaudCombo.ItemIndex;
@@ -1204,6 +1198,9 @@ begin
 
       // Send NR? automatically
       checkSendNrAuto.Checked := Settings.CW._send_nr_auto;
+
+      // No send leading zeros in serial number
+      checkNosendLeadingZeros.Checked := Settings.CW._nosend_leading_zeros;
 
       // QSY Assist
       radioQsyNone.Checked          := True;

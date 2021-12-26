@@ -1,7 +1,7 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = act19
+  ActiveControl = editMessage1
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -25,7 +25,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 394
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetCW
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1238,7 +1238,7 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'CW A'
         Checked = True
-        TabOrder = 14
+        TabOrder = 15
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1249,7 +1249,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'CW B'
-        TabOrder = 15
+        TabOrder = 16
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1260,7 +1260,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'RTTY'
-        TabOrder = 16
+        TabOrder = 17
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1362,6 +1362,14 @@ object formOptions: TformOptions
         MinValue = 1
         TabOrder = 7
         Value = 100
+      end
+      object checkNoSendLeadingZeros: TCheckBox
+        Left = 213
+        Top = 331
+        Width = 172
+        Height = 17
+        Caption = 'cut leading zeros in serial numbers'
+        TabOrder = 14
       end
     end
     object tabsheetVoice: TTabSheet
