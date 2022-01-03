@@ -1,4 +1,4 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{83497C9C-5934-4E18-AC20-2AB9247B7276}</ProjectGuid>
         <MainSource>zlog.dpr</MainSource>
@@ -68,27 +68,26 @@
         <SanitizedProjectName>zlog</SanitizedProjectName>
         <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1041</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=2.6.0.1;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=2.7.2.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
         <VerInfo_MajorVer>2</VerInfo_MajorVer>
-        <VerInfo_MinorVer>6</VerInfo_MinorVer>
-        <VerInfo_Build>1</VerInfo_Build>
+        <VerInfo_MinorVer>7</VerInfo_MinorVer>
+        <DCC_MapFile>3</DCC_MapFile>
+        <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+        <VerInfo_Release>2</VerInfo_Release>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.7.1.7;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2021 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.7.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.7.2.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2022 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.7.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <Icon_MainIcon>zlog.ico</Icon_MainIcon>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <DCC_MapFile>3</DCC_MapFile>
-        <VerInfo_MinorVer>7</VerInfo_MinorVer>
-        <VerInfo_Release>1</VerInfo_Release>
-        <VerInfo_Build>7</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <Icon_MainIcon>zlog.ico</Icon_MainIcon>
@@ -96,12 +95,9 @@
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.7.1.7;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2021 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.7.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.7.2.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2022 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.7.0.0;Comments=</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_MapFile>3</DCC_MapFile>
-        <VerInfo_MinorVer>7</VerInfo_MinorVer>
-        <VerInfo_Release>1</VerInfo_Release>
-        <VerInfo_Build>7</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -113,18 +109,12 @@
         <BT_BuildType>Debug</BT_BuildType>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.7.1.7;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2021 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.7.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.7.2.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2022 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.7.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <VerInfo_MinorVer>7</VerInfo_MinorVer>
-        <VerInfo_Release>1</VerInfo_Release>
-        <VerInfo_Build>7</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.7.1.7;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2021 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.7.0.0;Comments=</VerInfo_Keys>
-        <VerInfo_MinorVer>7</VerInfo_MinorVer>
-        <VerInfo_Release>1</VerInfo_Release>
-        <VerInfo_Build>7</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.7.2.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2022 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.7.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
@@ -134,21 +124,15 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.7.1.7;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2021 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.7.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.7.2.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2022 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.7.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <VerInfo_Debug>true</VerInfo_Debug>
-        <VerInfo_MinorVer>7</VerInfo_MinorVer>
-        <VerInfo_Release>1</VerInfo_Release>
-        <VerInfo_Build>7</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.7.1.7;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2021 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.7.0.0;Comments=</VerInfo_Keys>
-        <VerInfo_MinorVer>7</VerInfo_MinorVer>
-        <VerInfo_Release>1</VerInfo_Release>
-        <VerInfo_Build>7</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.7.2.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2022 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.7.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -180,7 +164,6 @@
         </DCCReference>
         <DCCReference Include="URateDialog.pas">
             <Form>RateDialog</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UOptions.pas">
             <Form>formOptions</Form>
@@ -389,112 +372,89 @@
         </DCCReference>
         <DCCReference Include="UELogJarl1.pas">
             <Form>formELogJarl1</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UELogJarl2.pas">
             <Form>formELogJarl2</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzLogKeyer.pas">
             <Form>dmZLogKeyer</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="DialogHook.pas"/>
         <DCCReference Include="UZAnalyze.pas">
             <Form>ZAnalyze</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzLogConst.pas"/>
         <DCCReference Include="UzLogQSO.pas"/>
         <DCCReference Include="USuperCheck.pas">
             <Form>SuperCheck</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzLogSpc.pas"/>
         <DCCReference Include="Progress.pas">
             <Form>formProgress</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="HelperLib.pas"/>
         <DCCReference Include="UCwMessageEditor.pas"/>
         <DCCReference Include="UCwMessagePad.pas">
             <Form>CwMessagePad</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UTextEditor.pas">
             <Form>TextEditor</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="USelectUserDefinedContest.pas">
             <Form>SelectUserDefinedContest</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UserDefinedContest.pas"/>
         <DCCReference Include="UVoiceForm.pas">
             <Form>VoiceForm</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UCFGEdit.pas">
             <Form>CFGEdit</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UExceptionDialog.pas">
             <Form>ExceptionDialog</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzLogSound.pas"/>
         <DCCReference Include="MMReg.pas"/>
         <DCCReference Include="UzLogExtension.pas"/>
-        <DCCReference Include="UPluginManager.pas">
-            <Form>MarketForm</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="UPackageLoader.pas">
-            <Form>PackageLoader</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="UOperatorEdit.pas">
             <Form>formOperatorEdit</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzLogOperatorInfo.pas"/>
         <DCCReference Include="WinKeyer.pas"/>
         <DCCReference Include="UFunctionKeyPanel.pas">
             <Form>formFunctionKeyPanel</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UBandPlan.pas"/>
         <DCCReference Include="UBandPlanEditDialog.pas">
             <Form>BandPlanEditDialog</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UGraphColorDialog.pas">
             <Form>GraphColorDialog</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UTargetEditor.pas">
             <Form>TargetEditor</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="URateDialogEx.pas">
             <Form>RateDialogEx</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UQsoTarget.pas"/>
         <DCCReference Include="ToneGen.pas"/>
         <DCCReference Include="MSACM.pas"/>
         <DCCReference Include="UNRDialog.pas">
             <Form>NRDialog</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UQsyInfo.pas">
             <Form>formQsyInfo</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UExportHamlog.pas">
             <Form>formExportHamlog</Form>
-            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UPackageLoader.pas">
+            <Form>PackageLoader</Form>
+        </DCCReference>
+        <DCCReference Include="UPluginManager.pas">
+            <Form>MarketForm</Form>
         </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
@@ -753,6 +713,12 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="resource\t2.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\b4.bmp" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
@@ -771,13 +737,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="resource\e0.bmp" Configuration="Release" Class="ProjectFile">
-                    <Platform Name="Win64">
-                        <RemoteDir>.\</RemoteDir>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="resource\n4.bmp" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="resource\e4.bmp" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -789,7 +749,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="resource\t2.bmp" Configuration="Release" Class="ProjectFile">
+                <DeployFile LocalName="resource\n4.bmp" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -801,8 +761,8 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="resource\e4.bmp" Configuration="Release" Class="ProjectFile">
-                    <Platform Name="Win32">
+                <DeployFile LocalName="resource\e0.bmp" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win64">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
