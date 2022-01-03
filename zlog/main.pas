@@ -1060,6 +1060,7 @@ type
     procedure ReadKeymap();
     procedure ResetKeymap();
     procedure SetShortcutEnabled(shortcut: string; fEnabled: Boolean);
+    procedure CQRepeatProc();
 
     // Super Check関係
     procedure SuperCheckDataLoad();
@@ -1081,6 +1082,7 @@ type
     function ScanNextBand(B0: TBand): TBand;
     function ScanPrevBand(B0: TBand): TBand;
     function IsAvailableBand(B: TBand): Boolean;
+    function GetCurrentRigID(): Integer;
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1138,6 +1140,8 @@ type
     property FreqList: TFreqList read FFreqList;
     property ScratchSheet: TScratchSheet read FScratchSheet;
     property SuperCheckList: TSuperList read FSuperCheckList;
+
+    property CurrentRigID: Integer read GetCurrentRigID;
   end;
 
 var
@@ -3966,7 +3970,8 @@ begin
 
    RestoreWindowsPos();
 
-   dmZLogKeyer.ControlPTT(False);
+   dmZLogKeyer.ControlPTT(0, False);
+   dmZLogKeyer.ControlPTT(1, False);
 
    // フォントサイズの設定
    SetFontSize(dmZlogGlobal.Settings._mainfontsize);
@@ -5223,6 +5228,7 @@ end;
 procedure TMainForm.DownKeyPress;
 var
    S: String;
+   nID: Integer;
 begin
    if CallsignEdit.Text = '' then begin
       exit;
@@ -5233,8 +5239,9 @@ begin
             if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
                // NR?自動送出使う場合
                if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
+                  nID := GetCurrentRigID();
                   S := dmZlogGlobal.CWMessage(5);
-                  zLogSendStr2(S, CurrentQSO);
+                  zLogSendStr2(nID, S, CurrentQSO);
                end;
 
                WriteStatusLine('Invalid number', False);
@@ -5244,8 +5251,9 @@ begin
             end;
 
             // TU $M TEST
+            nID := GetCurrentRigID();
             S := dmZlogGlobal.CWMessage(3);
-            zLogSendStr2(S, CurrentQSO);
+            zLogSendStr2(nID, S, CurrentQSO);
 
             LogButtonClick(Self);
          end;
@@ -5766,26 +5774,39 @@ begin
 end;
 
 procedure TMainForm.CQRepeatClick1(Sender: TObject);
-var
-   S: String;
 begin
    SetCQ(True);
    CtrlZCQLoop := False;
-   S := dmZlogGlobal.CWMessage(1, FCurrentCQMessageNo);
-   S := SetStr(UpperCase(S), CurrentQSO);
-   dmZLogKeyer.SendStrLoop(S);
+   CQRepeatProc();
 end;
 
 procedure TMainForm.CQRepeatClick2(Sender: TObject);
-var
-   S: String;
 begin
    SetCQ(True);
    CtrlZCQLoop := True;
+   CQRepeatProc();
+end;
+
+procedure TMainForm.CQRepeatProc();
+var
+   S: String;
+   nID: Integer;
+begin
    S := dmZlogGlobal.CWMessage(1, FCurrentCQMessageNo);
    S := SetStr(UpperCase(S), CurrentQSO);
-   dmZLogKeyer.SendStrLoop(S);
+   nID := GetCurrentRigID();
+
+   if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
+      WriteStatusLineRed('CW port is not set', False);
+      Exit;
+   end
+   else begin
+      WriteStatusLine('', False);
+   end;
+
+   dmZLogKeyer.SendStrLoop(nID, S);
 end;
+
 
 procedure TMainForm.buttonCwKeyboardClick(Sender: TObject);
 begin
@@ -5975,6 +5996,7 @@ procedure TMainForm.CallsignSentProc(Sender: TObject);
 var
    Q: TQSO;
    S: String;
+   nID: Integer;
 
    procedure WinKeyerQSO();
    begin
@@ -6012,11 +6034,12 @@ begin
 
                // 4番(QSO B4 TU)送出
                S := ' ' + SetStr(dmZlogGlobal.CWMessage(1, 4), CurrentQSO);
+               nID := GetCurrentRigID();
                if dmZLogKeyer.UseWinKeyer = True then begin
-                  zLogSendStr(S);
+                  zLogSendStr(nID, S);
                end
                else begin
-                  dmZLogKeyer.SendStr(S);
+                  dmZLogKeyer.SendStr(nID, S);
                   dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
                end;
 
@@ -6294,7 +6317,8 @@ begin
    f := TformOptions.Create(Self);
    try
       // KeyingとRigControlを一旦終了
-      dmZLogKeyer.ResetCommPortDriver(TKeyingPort(dmZlogGlobal.Settings._lptnr));
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
       RigControl.Stop();
 
       f.EditMode := 0;
@@ -8091,15 +8115,20 @@ begin
 end;
 
 procedure TMainForm.PlayMessage(bank: Integer; no: Integer);
+var
+   nID: Integer;
 begin
    WriteStatusLine('', False);
 
+   nID := GetCurrentRigID();
+
    case CurrentQSO.Mode of
       mCW: begin
-         if dmZLogKeyer.KeyingPort = tkpNone then begin
+         if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
             WriteStatusLineRed('CW port is not set', False);
             Exit;
          end;
+         WriteStatusLine('', False);
          PlayMessageCW(bank, no);
       end;
 
@@ -8120,6 +8149,7 @@ end;
 procedure TMainForm.PlayMessageCW(bank: Integer; no: Integer);
 var
    S: string;
+   nID: Integer;
 begin
    if no >= 101 then begin
       SetCQ(True);
@@ -8134,7 +8164,8 @@ begin
       Exit;
    end;
 
-   zLogSendStr2(S, CurrentQSO);
+   nID := GetCurrentRigID();
+   zLogSendStr2(nID, S, CurrentQSO);
 end;
 
 procedure TMainForm.PlayMessagePH(no: Integer);
@@ -8604,10 +8635,13 @@ end;
 
 // #54 CW Tune
 procedure TMainForm.actionCwTuneExecute(Sender: TObject);
+var
+   nID: Integer;
 begin
    if CurrentQSO.Mode = mCW then begin
       CtrlZCQLoop := True;
-      dmZLogKeyer.TuneOn;
+      nID := GetCurrentRigID();
+      dmZLogKeyer.TuneOn(nID);
    end;
 end;
 
@@ -8764,6 +8798,8 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #71 ToggleRIG ---'));
    {$ENDIF}
+   CtrlZCQLoop := False;
+   dmZLogKeyer.CQLoopCount := 999;
    RigControl.ToggleCurrentRig;
 end;
 
@@ -8889,8 +8925,12 @@ end;
 
 // #86 PTT制御出力の手動トグル
 procedure TMainForm.actionControlPTTExecute(Sender: TObject);
+var
+   nID: Integer;
 begin
-   dmZLogKeyer.ControlPTT(not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
+   nID := GetCurrentRigID();
+
+   dmZLogKeyer.ControlPTT(nID, not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
 end;
 
 // #87 N+1ウインドウの表示
@@ -9211,7 +9251,8 @@ begin
 
    // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
    if dmZLogGlobal.Settings._pttenabled = False then begin
-      dmZLogKeyer.ControlPTT(False);
+      dmZLogKeyer.ControlPTT(0, False);
+      dmZLogKeyer.ControlPTT(1, False);
    end;
 end;
 
@@ -10051,6 +10092,19 @@ begin
       else begin
          Font.Style := Font.Style - [fsBold];
       end;
+   end;
+end;
+
+function TMainForm.GetCurrentRigID(): Integer;
+var
+   n: Integer;
+begin
+   n := RigControl.GetCurrentRig;
+   if ((n = 1) or (n = 2)) then begin
+      Result := n - 1;
+   end
+   else begin
+      Result := 0;
    end;
 end;
 

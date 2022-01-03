@@ -74,7 +74,7 @@ type
     procedure actionPlayMessageVAExecute(Sender: TObject);
   private
     { Private declarations }
-    procedure PlayMessage(cb: Integer; no: Integer);
+    procedure PlayMessage(nID: Integer; cb: Integer; no: Integer);
     procedure ApplyShortcut();
   public
     { Public declarations }
@@ -118,6 +118,7 @@ end;
 procedure TCWKeyBoard.ConsoleKeyPress(Sender: TObject; var Key: Char);
 var
    K: Char;
+   nID: Integer;
 begin
    if Key = Chr($1B) then begin
       Exit;
@@ -139,7 +140,9 @@ begin
       K := UpCase(Key);
    end;
 
-   dmZLogKeyer.SetCWSendBufCharPTT(K);
+   nID := MainForm.CurrentRigID;
+
+   dmZLogKeyer.SetCWSendBufCharPTT(nID, K);
 
    Key := K;
 end;
@@ -159,24 +162,28 @@ procedure TCWKeyBoard.actionPlayMessageAExecute(Sender: TObject);
 var
    no: Integer;
    cb: Integer;
+   nID: Integer;
 begin
    no := TAction(Sender).Tag;
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
+   nID := MainForm.CurrentRigID;
 
    {$IFDEF DEBUG}
    OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
    {$ENDIF}
 
-   PlayMessage(cb, no);
+   PlayMessage(nID, cb, no);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageBExecute(Sender: TObject);
 var
    no: Integer;
    cb: Integer;
+   nID: Integer;
 begin
    no := TAction(Sender).Tag;
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
+   nID := MainForm.CurrentRigID;
 
    if cb = 1 then
       cb := 2
@@ -187,47 +194,47 @@ begin
    OutputDebugString(PChar('PlayMessageB(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
    {$ENDIF}
 
-   PlayMessage(cb, no);
+   PlayMessage(nID, cb, no);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageARExecute(Sender: TObject);
 begin
-   dmZLogKeyer.SetCWSendBufCharPTT('a');
+   dmZLogKeyer.SetCWSendBufCharPTT(MainForm.CurrentRigID, 'a');
    Console.Text := Console.Text + '[AR]';
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageBKExecute(Sender: TObject);
 begin
-   dmZLogKeyer.SetCWSendBufCharPTT('b');
+   dmZLogKeyer.SetCWSendBufCharPTT(MainForm.CurrentRigID, 'b');
    Console.Text := Console.Text + '[BK]';
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageBTExecute(Sender: TObject);
 begin
-   dmZLogKeyer.SetCWSendBufCharPTT('t');
+   dmZLogKeyer.SetCWSendBufCharPTT(MainForm.CurrentRigID, 't');
    Console.Text := Console.Text + '[BT]';
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageKNExecute(Sender: TObject);
 begin
-   dmZLogKeyer.SetCWSendBufCharPTT('k');
+   dmZLogKeyer.SetCWSendBufCharPTT(MainForm.CurrentRigID,'k');
    Console.Text := Console.Text + '[KN]';
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageSKExecute(Sender: TObject);
 begin
-   dmZLogKeyer.SetCWSendBufCharPTT('s');
+   dmZLogKeyer.SetCWSendBufCharPTT(MainForm.CurrentRigID,'s');
    Console.Text := Console.Text + '[SK]';
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageVAExecute(Sender: TObject);
 begin
-   dmZLogKeyer.SetCWSendBufCharPTT('s');
+   dmZLogKeyer.SetCWSendBufCharPTT(MainForm.CurrentRigID,'s');
    Console.Text := Console.Text + '[VA]';
    Console.SelStart := Length(Console.Text);
 end;
@@ -236,10 +243,10 @@ procedure TCWKeyBoard.actionESCExecute(Sender: TObject);
 begin
    if dmZLogKeyer.IsPlaying then begin
       dmZLogKeyer.ClrBuffer;
-      dmZLogKeyer.ControlPTT(False);
+      dmZLogKeyer.ControlPTT(MainForm.CurrentRigID, False);
    end
    else begin
-      dmZLogKeyer.ControlPTT(False);
+      dmZLogKeyer.ControlPTT(MainForm.CurrentRigID, False);
       MainForm.LastFocus.SetFocus;
    end;
 end;
@@ -256,7 +263,7 @@ begin
    SetFocus();
 end;
 
-procedure TCWKeyBoard.PlayMessage(cb: Integer; no: Integer);
+procedure TCWKeyBoard.PlayMessage(nID: Integer; cb: Integer; no: Integer);
 var
    S: string;
    i: Integer;
@@ -266,7 +273,7 @@ begin
       Exit;
    end;
 
-   zLogSendStr2(S, CurrentQSO);
+   zLogSendStr2(nID, S, CurrentQSO);
 
    while Pos(':***********', S) > 0 do begin
       i := Pos(':***********', S);

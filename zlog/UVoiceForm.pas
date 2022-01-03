@@ -311,14 +311,16 @@ begin
       dmZlogKeyer.SetVoiceFlag(1);
 
       if dmZLogGlobal.Settings._pttenabled then begin
-         dmZlogKeyer.ControlPTT(True);
+         dmZlogKeyer.ControlPTT(0, True);
+         dmZlogKeyer.ControlPTT(1, True);
       end;
    end
    else begin
       dmZlogKeyer.SetVoiceFlag(0);
 
       if dmZLogGlobal.Settings._pttenabled then begin
-         dmZlogKeyer.ControlPTT(False);
+         dmZlogKeyer.ControlPTT(0, False);
+         dmZlogKeyer.ControlPTT(1, False);
       end;
    end;
 end;

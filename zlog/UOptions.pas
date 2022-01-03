@@ -22,7 +22,6 @@ type
     buttonCancel: TButton;
     GroupBox1: TGroupBox;
     radioSingleOp: TRadioButton;
-    BandGroup: TRadioGroup;
     ModeGroup: TRadioGroup;
     GroupBox2: TGroupBox;
     editMessage2: TEdit;
@@ -118,7 +117,7 @@ type
     IARUZoneEdit: TEdit;
     Label34: TLabel;
     Label35: TLabel;
-    GroupBox7: TGroupBox;
+    groupOptCwPtt: TGroupBox;
     Label38: TLabel;
     PTTEnabledCheckBox: TCheckBox;
     Label39: TLabel;
@@ -131,16 +130,12 @@ type
     rbBankA: TRadioButton;
     rbBankB: TRadioButton;
     cbDispExchange: TCheckBox;
-    gbCWPort: TGroupBox;
     cbJMode: TCheckBox;
     comboRig1Port: TComboBox;
-    Label42: TLabel;
     comboRig1Name: TComboBox;
     Label43: TLabel;
-    Label31: TLabel;
     comboRig2Port: TComboBox;
     comboRig2Name: TComboBox;
-    Label44: TLabel;
     tabsheetMisc: TTabSheet;
     cbRITClear: TCheckBox;
     cbDontAllowSameBand: TCheckBox;
@@ -179,7 +174,7 @@ type
     checkZLinkSyncSerial: TCheckBox;
     comboRig1Speed: TComboBox;
     comboRig2Speed: TComboBox;
-    comboCwPttPort: TComboBox;
+    comboCwPttPort1: TComboBox;
     tabsheetQuickQSY: TTabSheet;
     checkUseQuickQSY01: TCheckBox;
     comboQuickQsyBand01: TComboBox;
@@ -406,7 +401,7 @@ type
     checkUseEstimatedMode: TCheckBox;
     checkShowOnlyInBandplan: TCheckBox;
     checkShowOnlyDomestic: TCheckBox;
-    GroupBox21: TGroupBox;
+    groupOptCI_V: TGroupBox;
     comboIcomMode: TComboBox;
     comboIcomMethod: TComboBox;
     Label83: TLabel;
@@ -444,6 +439,16 @@ type
     radioMultiOpMultiTx: TRadioButton;
     radioMultiOpSingleTx: TRadioButton;
     radioMultiOpTwoTx: TRadioButton;
+    comboCwPttPort2: TComboBox;
+    groupRig1: TGroupBox;
+    Label92: TLabel;
+    Label93: TLabel;
+    Label94: TLabel;
+    groupRig2: TGroupBox;
+    Label95: TLabel;
+    Label96: TLabel;
+    Label97: TLabel;
+    Label98: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -489,6 +494,8 @@ type
     procedure checkFocusedBoldClick(Sender: TObject);
     procedure buttonFocusedForeColorClick(Sender: TObject);
     procedure radioCategoryClick(Sender: TObject);
+    procedure comboCwPttPortChange(Sender: TObject);
+    procedure checkUseWinKeyerClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -637,18 +644,6 @@ begin
       Settings._power[b5600] := comboPower5600.Text;
       Settings._power[b10g] := comboPower10g.Text;
 
-      // Settings._band := BandGroup.ItemIndex;
-      case BandGroup.ItemIndex of
-         0 .. 3:
-            Settings._band := BandGroup.ItemIndex;
-         4:
-            Settings._band := BandGroup.ItemIndex + 1;
-         5:
-            Settings._band := BandGroup.ItemIndex + 2;
-         6 .. 13:
-            Settings._band := BandGroup.ItemIndex + 3;
-      end;
-
       Settings._mode := TContestMode(ModeGroup.ItemIndex);
 
       // Category
@@ -790,14 +785,24 @@ begin
       Settings._pttafter := StrToIntDef(AfterEdit.Text, i);
 
       // CW/PTT port
-      if (comboCwPttPort.ItemIndex >= 1) and (comboCwPttPort.ItemIndex <= 20) then begin
-         Settings._lptnr := comboCwPttPort.ItemIndex;
+      if (comboCwPttPort1.ItemIndex >= 1) and (comboCwPttPort1.ItemIndex <= 20) then begin
+         Settings._keyingport[1] := comboCwPttPort1.ItemIndex;
       end
-      else if comboCwPttPort.ItemIndex = 21 then begin    // USB
-         Settings._lptnr := 21;
+      else if comboCwPttPort1.ItemIndex = 21 then begin    // USB
+         Settings._keyingport[1] := 21;
       end
       else begin
-         Settings._lptnr := 0;
+         Settings._keyingport[1] := 0;
+      end;
+
+      if (comboCwPttPort2.ItemIndex >= 1) and (comboCwPttPort2.ItemIndex <= 20) then begin
+         Settings._keyingport[2] := comboCwPttPort2.ItemIndex;
+      end
+      else if comboCwPttPort2.ItemIndex = 21 then begin    // USB
+         Settings._keyingport[2] := 21;
+      end
+      else begin
+         Settings._keyingport[2] := 0;
       end;
 
       // Use Winkeyer
@@ -1051,11 +1056,6 @@ begin
       // #TXNR
       comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(Settings._txnr));
 
-      if Settings._band = 0 then
-         BandGroup.ItemIndex := 0
-      else
-         BandGroup.ItemIndex := OldBandOrd(TBand(Settings._band - 1)) + 1;
-
       ModeGroup.ItemIndex := Integer(Settings._mode);
       { OpListBox.Items := OpList; }
 
@@ -1168,14 +1168,24 @@ begin
       SaveEvery.Value := Settings._saveevery;
 
       // CW/PTT port
-      if (Settings._lptnr >= 1) and (Settings._lptnr <= 20) then begin
-         comboCwPttPort.ItemIndex := Settings._lptnr;
+      if (Settings._keyingport[1] >= 1) and (Settings._keyingport[1] <= 20) then begin
+         comboCwPttPort1.ItemIndex := Settings._keyingport[1];
       end
-      else if (Settings._lptnr >= 21) then begin
-         comboCwPttPort.ItemIndex := 21;
+      else if (Settings._keyingport[1] >= 21) then begin
+         comboCwPttPort1.ItemIndex := 21;
       end
       else begin
-         comboCwPttPort.ItemIndex := 0;
+         comboCwPttPort1.ItemIndex := 0;
+      end;
+
+      if (Settings._keyingport[2] >= 1) and (Settings._keyingport[2] <= 20) then begin
+         comboCwPttPort2.ItemIndex := Settings._keyingport[2];
+      end
+      else if (Settings._keyingport[2] >= 21) then begin
+         comboCwPttPort2.ItemIndex := 21;
+      end
+      else begin
+         comboCwPttPort2.ItemIndex := 0;
       end;
 
       // Use Winkeyer
@@ -1859,6 +1869,20 @@ begin
    end;
 end;
 
+procedure TformOptions.comboCwPttPortChange(Sender: TObject);
+var
+   Index: Integer;
+begin
+   Index := TComboBox(Sender).ItemIndex;
+   if (Index = 0) or (Index = 21) then begin
+      checkUseWinKeyer.Enabled := False;
+      checkUseWinKeyer.Checked := False;
+   end
+   else begin
+      checkUseWinKeyer.Enabled := True;
+   end;
+end;
+
 procedure TformOptions.comboIcomModeChange(Sender: TObject);
 begin
    if comboIcomMode.ItemIndex = 0 then begin
@@ -1922,6 +1946,13 @@ begin
    FQuickQSYBand[no].Enabled := FQuickQSYCheck[no].Checked;
    FQuickQSYMode[no].Enabled := FQuickQSYCheck[no].Checked;
    FQuickQSYRig[no].Enabled  := FQuickQSYCheck[no].Checked;
+end;
+
+procedure TformOptions.checkUseWinKeyerClick(Sender: TObject);
+begin
+   if TCheckBox(Sender).Checked = True then begin
+      comboCwPttPort2.ItemIndex := comboCwPttPort1.ItemIndex;
+   end;
 end;
 
 procedure TformOptions.InitRigNames();

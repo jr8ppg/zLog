@@ -12,7 +12,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, Windows, MMSystem, Math, Forms,
-  Messages, JvComponentBase, JvHidControllerClass, CPDrv
+  Messages, JvComponentBase, JvHidControllerClass, CPDrv, Generics.Collections
   {$IFDEF USESIDETONE},ToneGen, UzLogSound, Vcl.ExtCtrls{$ENDIF};
 
 const
@@ -56,9 +56,22 @@ type
 
   TUsbPortDataArray = array[0..1] of Byte;
 
+  TUsbInfo = record
+    FUSBIF4CW: TJvHIDDevice;
+
+    FPrevUsbPortData: Byte;
+    FUsbPortData: Byte;
+
+    FUsbPortIn: TUsbPortDataArray;
+    FUsbPortOut: TUsbPortDataArray;
+
+    FPrevPortIn: array[0..7] of Byte;
+  end;
+
   TdmZLogKeyer = class(TDataModule)
-    ZComKeying: TCommPortDriver;
+    ZComKeying1: TCommPortDriver;
     RepeatTimer: TTimer;
+    ZComKeying2: TCommPortDriver;
     procedure WndMethod(var msg: TMessage);
     procedure DoDeviceChanges(Sender: TObject);
     function DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
@@ -67,38 +80,36 @@ type
     procedure HidControllerDeviceData(HidDev: TJvHidDevice; ReportID: Byte; const Data: Pointer; Size: Word);
     procedure HidControllerDeviceUnplug(HidDev: TJvHidDevice);
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
-    procedure ZComKeyingReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
+    procedure ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
     procedure RepeatTimerTimer(Sender: TObject);
     procedure HidControllerDeviceCreateError(Controller: TJvHidDeviceController;
       PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
   private
     { Private 宣言 }
-    FComKeying: TCommPortDriver;
+    FDefautCom: array[0..1] of TCommPortDriver;
+    FComKeying: array[0..1] of TCommPortDriver;
 
     FMonitorThread: TKeyerMonitorThread;
 
     HidController: TJvHidDeviceController;
+    usbdevlist: TList<TJvHIDDevice>;
     FUSBIF4CW_Detected: Boolean;
-    FUSBIF4CW: TJvHIDDevice;
-    FUSBIF4CW_Version: Long;
+
+    FUsbInfo: array[0..1] of TUsbInfo;
+
+    // 現在送信中のポートID
+    FCurrentID: Integer;
 
     {$IFDEF USESIDETONE}
     FTone: TSideTone;
     {$ENDIF}
 
     FUsbPortDataLock: TRTLCriticalSection;
-    FPrevUsbPortData: Byte;
-    FUsbPortData: Byte;
-
-    FUsbPortIn: TUsbPortDataArray;
-    FUsbPortOut: TUsbPortDataArray;
-
-    FPrevPortIn: array[0..7] of Byte;
 
     FUserFlag: Boolean; // can be set to True by user. set to False only when ClrBuffer is called or "  is reached in the sending buffer. // 1.9z2 used in QTCForm
     FVoiceFlag: Integer;  //temporary
 
-    FKeyingPort: TKeyingPort;
+    FKeyingPort: array[0..1] of TKeyingPort;
 
     FSpaceFactor: Integer; {space length factor in %}
     FEISpaceFactor: Integer; {space length factor after E and I}
@@ -185,10 +196,11 @@ type
     procedure Sound();
     procedure NoSound();
 
-    procedure SetCWSendBufChar( C : char ); {Adds a char to the end of buffer}
+    procedure SetCWSendBufChar(b: Integer; C: Char); {Adds a char to the end of buffer}
+    procedure SetCWSendBufFinish(b: Integer);
     function DecodeCommands(S: string): string;
-    procedure CW_ON;
-    procedure CW_OFF;
+    procedure CW_ON(nID: Integer);
+    procedure CW_OFF(nID: Integer);
     procedure TimerProcess(uTimerID, uMessage: Word; dwUser, dw1, dw2: Longint); stdcall;
     procedure IncWPM; {Increases CW speed by 1WPM}
     procedure DecWPM; {Decreases CW speed by 1WPM}
@@ -204,9 +216,10 @@ type
     procedure SetSideTonePitch(Hertz: Integer); {Sets the pitch of the side tone}
     procedure SetSpaceFactor(R: Integer);
     procedure SetEISpaceFactor(R: Integer);
-    procedure SetKeyingPort(port: TKeyingPort);
-    procedure SendUsbPortData();
-    procedure COM_ON(port: TKeyingPort);
+    function  GetKeyingPort(Index: Integer): TKeyingPort;
+    procedure SetKeyingPort(Index: Integer; port: TKeyingPort);
+    procedure SendUsbPortData(nID: Integer);
+    procedure COM_ON();
     procedure COM_OFF();
     procedure USB_ON();
     procedure USB_OFF();
@@ -232,8 +245,8 @@ type
     function Paused : Boolean; {Returns True if SendOK is False}
     function CallSignSent : Boolean; {Returns True if realtime callsign is sent already}
 
-    procedure ControlPTT(PTTON : Boolean); {Sets PTT on/off}
-    procedure TuneOn;
+    procedure ControlPTT(nID: Integer; PTTON : Boolean); {Sets PTT on/off}
+    procedure TuneOn(nID: Integer);
 
     procedure SetCallSign(S: string); {Update realtime callsign}
     procedure ClrBuffer; {Stops CW and clears buffer}
@@ -242,15 +255,15 @@ type
     procedure PauseCW; {Pause}
     procedure ResumeCW; {Resume}
 
-    procedure SendStr(sStr: string); {Sends a string (Overwrites buffer)}
-    procedure SendStrLoop(S: string); {Sends a string (repeat CQmax times)}
-    procedure SendStrFIFO(sStr: string); {Sends a string (adds to buffer)}
+    procedure SendStr(nID: Integer; sStr: string); {Sends a string (Overwrites buffer)}
+    procedure SendStrLoop(nID: Integer; S: string); {Sends a string (repeat CQmax times)}
+    procedure SendStrFIFO(nID: Integer; sStr: string); {Sends a string (adds to buffer)}
 
     procedure SetCWSendBuf(b: byte; S: string); {Sets str to buffer but does not start sending}
-    procedure SetCWSendBufCharPTT( C : char ); {Adds a char to the end of buffer. Also controls PTT if enabled. Called from Keyboard}
+    procedure SetCWSendBufCharPTT(nID: Integer; C: char); {Adds a char to the end of buffer. Also controls PTT if enabled. Called from Keyboard}
 
-    procedure SetRigFlag(i : Integer); // 0 : no rigs, 1 : rig 1, etc
-    procedure SetVoiceFlag(i : Integer); // 0 : no rigs, 1 : rig 1, etc
+    procedure SetRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+    procedure SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
 
     procedure SetPTT(_on : Boolean);
     procedure SetPTTDelay(before, after : word);
@@ -272,15 +285,15 @@ type
 
     property USBIF4CW_Detected: Boolean read FUSBIF4CW_Detected;
     property UserFlag: Boolean read FUserFlag write FUserFlag;
-    property KeyingPort: TKeyingPort read FKeyingPort write SetKeyingPort;
+    property KeyingPort[Index: Integer]: TKeyingPort read GetKeyingPort write SetKeyingPort;
 
     property OnCallsignSentProc: TNotifyEvent read FOnCallsignSentProc write FOnCallsignSentProc;
     property OnPaddle: TNotifyEvent read FOnPaddleEvent write FOnPaddleEvent;
     property OnSpeedChanged: TNotifyEvent read FOnSpeedChanged write FOnSpeedChanged;
     property KeyingSignalReverse: Boolean read FKeyingSignalReverse write FKeyingSignalReverse;
 
-    property UsbPortIn: TUsbPortDataArray read FUsbPortIn;
-    property UsbPortOut: TUsbPortDataArray read FUsbPortOut;
+//    property UsbPortIn: TUsbPortDataArray read FUsbPortIn;
+//    property UsbPortOut: TUsbPortDataArray read FUsbPortOut;
 
     property Usbif4cwSyncWpm: Boolean read FUsbif4cwSyncWpm write FUsbif4cwSyncWpm;
     property PaddleReverse: Boolean read FPaddleReverse write SetPaddleReverse;
@@ -293,8 +306,8 @@ type
     function usbif4cwSetPaddle(nId: Integer; param: Byte): Long;
 
     // 1Port Control support
-    procedure SetCommPortDriver(CP: TCommPortDriver);
-    procedure ResetCommPortDriver(port: TKeyingPort);
+    procedure SetCommPortDriver(Index: Integer; CP: TCommPortDriver);
+    procedure ResetCommPortDriver(Index: Integer; port: TKeyingPort);
 
     // WinKeyer support
     property UseWinKeyer: Boolean read FUseWinKeyer write FUseWinKeyer;
@@ -311,6 +324,8 @@ type
     procedure DecCWSpeed();
     procedure ToggleFixedSpeed();
     property FixedSpeed: Integer read FFixedSpeed write FFixedSpeed;
+
+    procedure Open();
   end;
 
 var
@@ -338,10 +353,15 @@ begin
 end;
 
 procedure TdmZLogKeyer.DataModuleCreate(Sender: TObject);
+var
+   i: Integer;
 begin
    RepeatTimer.Enabled := False;
    FInitialized := False;
-   FComKeying := ZComKeying;
+   FDefautCom[0] := ZComKeying1;
+   FDefautCom[1] := ZComKeying2;
+   FComKeying[0] := FDefautCom[0];
+   FComKeying[1] := FDefautCom[1];
    FUseWinKeyer := False;
    FOnSpeedChanged := nil;
    FUseFixedSpeed := False;
@@ -350,6 +370,7 @@ begin
    FUseRandomRepeat := True;
 
    FWnd := AllocateHWnd(WndMethod);
+   usbdevlist := TList<TJvHidDevice>.Create();
 
    {$IFDEF USESIDETONE}
    if TSideTone.NumDevices() = 0 then begin
@@ -367,12 +388,15 @@ begin
    HidController.OnRemoval := HidControllerRemoval;
    HidController.OnEnumerate := DoEnumeration;
    FUSBIF4CW_Detected := False;
-   FUSBIF4CW := nil;
-   FUSBIF4CW_Version := 0;
+
+   for i := 0 to 1 do begin
+      FUsbInfo[i].FUSBIF4CW := nil;
+      FUsbInfo[i].FPrevUsbPortData := $00;
+      FUsbInfo[i].FUsbPortData := $FF;
+      ZeroMemory(@FUsbInfo[i].FPrevPortIn, SizeOf(FUsbInfo[i].FPrevPortIn));
+   end;
 
    InitializeCriticalSection(FUsbPortDataLock);
-   FPrevUsbPortData := $00;
-   FUsbPortData := $FF;
 
    FUserFlag := False;
    FVoiceFlag := 0;
@@ -386,9 +410,8 @@ begin
    FKeyingSignalReverse := False;
    FUsbif4cwSyncWpm := False;
 
-   ZeroMemory(@FPrevPortIn, SizeOf(FPrevPortIn));
-
-   KeyingPort := tkpNone;
+   KeyingPort[0] := tkpNone;
+   KeyingPort[1] := tkpNone;
 end;
 
 procedure TdmZLogKeyer.DataModuleDestroy(Sender: TObject);
@@ -400,50 +423,34 @@ begin
    COM_OFF();
    USB_OFF();
    DeallocateHWnd(FWnd);
+   usbdevlist.Free();
    HidController.Free();
 end;
 
+// Device抜去時、Unplug->Removal->Changeの順でfire eventする
 procedure TdmZLogKeyer.DoDeviceChanges(Sender: TObject);
 begin
-   if FKeyingPort <> tkpUSB then begin
-      Exit;
-   end;
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('***HidControllerDeviceChanges()***'));
+   {$ENDIF}
 
    USB_OFF();
 
-   HidController.Enumerate;
-   repeat
-      Sleep(1);
-   until FUsbDetecting = False;
+   Open();
 end;
 
 function TdmZLogKeyer.DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
-var
-   n: Integer;
-   s: string;
 begin
    FUsbDetecting := True;
    try
-      if FKeyingPort <> tkpUSB then begin
-         Result := True;
-         Exit;
-      end;
+      // FNumUsbif4cw := HidController.CountByID(USBIF4CW_VENDORID, USBIF4CW_PRODID);
 
       if (HidDev.Attributes.ProductID = USBIF4CW_PRODID) and
          (HidDev.Attributes.VendorID = USBIF4CW_VENDORID) then begin
          if HidDev.CheckOut() = True then begin
-            FUSBIF4CW := HidDev;
-            FUSBIF4CW.OpenFile;
+            HidDev.OpenFile();
+            usbdevlist.Add(HidDev);
             FUSBIF4CW_Detected := True;
-
-            n := Pos('Ver.', HidDev.ProductName);
-            if n > 0 then begin
-               s := Copy(HidDev.ProductName, n + 4); // 2.3
-               FUSBIF4CW_Version := Trunc(StrToFloatDef(s, 0) * 10);
-            end;
-
-            Result := False;
-            Exit;
          end;
       end;
 
@@ -477,12 +484,27 @@ var
    s: string;
    {$ENDIF}
    p: PBYTE;
+   nID: BYTE;
 begin
-   if FKeyingPort <> tkpUSB then begin
+   if (FKeyingPort[0] <> tkpUSB) and
+      (FKeyingPort[1] <> tkpUSB) then begin
       Exit;
    end;
 
    p := Data;
+
+   if FUsbInfo[0].FUSBIF4CW = HidDev then begin
+      nID := 0;
+   end
+   else if FUsbInfo[1].FUSBIF4CW = HidDev then begin
+      nID := 1;
+   end
+   else begin
+      Exit;
+   end;
+   {$IFDEF DEBUG}
+//   OutputDebugString(PChar('**ID=[' + IntToStr(nID) + ']**'));
+   {$ENDIF}
 
    {$IFDEF DEBUG}
    s := IntToHex(p[0], 2) + ' ' +
@@ -496,38 +518,38 @@ begin
    {$ENDIF}
 
    // 前回とステータスに変化があったら
-   if (p[0] <> FPrevPortIn[0]) or
-      (p[1] <> FPrevPortIn[1]) or
-      (p[2] <> FPrevPortIn[2]) or
-      (p[3] <> FPrevPortIn[3]) or
-      (p[4] <> FPrevPortIn[4]) or
-      (p[5] <> FPrevPortIn[5]) or
-      (p[6] <> FPrevPortIn[6]) or
-      (p[7] <> FPrevPortIn[7]) then begin
+   if (p[0] <> FUsbInfo[nID].FPrevPortIn[0]) or
+      (p[1] <> FUsbInfo[nID].FPrevPortIn[1]) or
+      (p[2] <> FUsbInfo[nID].FPrevPortIn[2]) or
+      (p[3] <> FUsbInfo[nID].FPrevPortIn[3]) or
+      (p[4] <> FUsbInfo[nID].FPrevPortIn[4]) or
+      (p[5] <> FUsbInfo[nID].FPrevPortIn[5]) or
+      (p[6] <> FUsbInfo[nID].FPrevPortIn[6]) or
+      (p[7] <> FUsbInfo[nID].FPrevPortIn[7]) then begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('***HidControllerDeviceData*** ReportID=' + IntToHex(ReportID,2) + ' DATA=' + s));
       {$ENDIF}
 
       // Port Data In
-      FUsbPortIn[0] := p[6];
-      FUsbPortIn[1] := p[7];
+      FUsbInfo[nID].FUsbPortIn[0] := p[6];
+      FUsbInfo[nID].FUsbPortIn[1] := p[7];
 
       // パドル入力があったか？
-      if ((FUsbPortIn[1] and $01) = 0) or
-         ((FUsbPortIn[1] and $04) = 0) then begin
+      if ((FUsbInfo[nID].FUsbPortIn[1] and $01) = 0) or
+         ((FUsbInfo[nID].FUsbPortIn[1] and $04) = 0) then begin
          {$IFDEF DEBUG}
          OutputDebugString(PChar('**PADDLE IN**'));
          {$ENDIF}
 
          // fire event
-         if usbif4cwGetVersion(0) >= 20 then begin
+         if usbif4cwGetVersion(nID) >= 20 then begin
             if Assigned(FOnPaddleEvent) then begin
                FOnPaddleEvent(Self);
             end;
          end;
       end;
 
-      CopyMemory(@FPrevPortIn, p, 8);
+      CopyMemory(@FUsbInfo[nID].FPrevPortIn, p, 8);
    end;
 end;
 
@@ -536,7 +558,6 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('***HidControllerDeviceUnplug()***'));
    {$ENDIF}
-   USB_OFF();
 end;
 
 procedure TdmZLogKeyer.HidControllerRemoval(HidDev: TJvHidDevice);
@@ -546,38 +567,50 @@ begin
    {$ENDIF}
 end;
 
-procedure TdmZLogKeyer.SetRigFlag(i: Integer); // 0 : no rigs, 1 : rig 1, etc
+procedure TdmZLogKeyer.SetRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+var
+   i: Integer;
 begin
-   if FKeyingPort = tkpUSB then begin
-      EnterCriticalSection(FUsbPortDataLock);
+   for i := 0 to 1 do begin
+      if FKeyingPort[i] = tkpUSB then begin
+         EnterCriticalSection(FUsbPortDataLock);
+         case flag of
+            0, 1: begin
+               FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData or $04;
+            end;
 
-      case i of
-         0, 1:
-            FUsbPortData := FUsbPortData or $04;
-         2:
-            FUsbPortData := FUsbPortData and $FB;
-         else
-            FUsbPortData := FUsbPortData;
+            2: begin
+               FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData and $FB;
+            end;
+
+            else begin
+               FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData;
+            end;
+         end;
+
+         SendUsbPortData(i);
+         LeaveCriticalSection(FUsbPortDataLock);
       end;
-      SendUsbPortData();
-      LeaveCriticalSection(FUsbPortDataLock);
-      Exit;
    end;
 end;
 
-procedure TdmZLogKeyer.SetVoiceFlag(i : Integer); // 0 : no rigs, 1 : rig 1, etc
+procedure TdmZLogKeyer.SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+var
+   i: Integer;
 begin
-   if FKeyingPort = tkpUSB then begin
-      EnterCriticalSection(FUsbPortDataLock);
-      if i = 1 then begin
-         FUsbPortData := FUsbPortData and $F7;
-      end
-      else begin
-         FUsbPortData := FUsbPortData or $08;
+   for i := 0 to 1 do begin
+      if FKeyingPort[i] = tkpUSB then begin
+         EnterCriticalSection(FUsbPortDataLock);
+         if flag = 1 then begin
+            FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData and $F7;
+         end
+         else begin
+            FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData or $08;
+         end;
+
+         SendUsbPortData(i);
+         LeaveCriticalSection(FUsbPortDataLock);
       end;
-      SendUsbPortData();
-      LeaveCriticalSection(FUsbPortDataLock);
-      Exit;
    end;
 end;
 
@@ -599,34 +632,34 @@ begin
    {$ENDIF}
 end;
 
-procedure TdmZLogKeyer.ControlPTT(PTTON: Boolean);
+procedure TdmZLogKeyer.ControlPTT(nID: Integer; PTTON: Boolean);
 begin
    FPTTFLAG := PTTON;
 
-   if FKeyingPort = tkpUSB then begin
+   if FKeyingPort[nID] = tkpUSB then begin
       EnterCriticalSection(FUsbPortDataLock);
       if PTTON then begin
-         FUsbPortData := FUsbPortData and $FD;
+         FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData and $FD;
       end
       else begin
-         FUsbPortData := FUsbPortData or $02;
+         FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData or $02;
       end;
-      SendUsbPortData();
+      SendUsbPortData(nID);
       LeaveCriticalSection(FUsbPortDataLock);
       Exit;
    end;
 
-   if (FKeyingPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
+   if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
       if FKeyingSignalReverse = False then begin
-         FComKeying.ToggleRTS(PTTON);
+         FComKeying[nID].ToggleRTS(PTTON);
       end
       else begin
-         FComKeying.ToggleDTR(PTTON);
+         FComKeying[nID].ToggleDTR(PTTON);
       end;
       Exit;
    end;
 
-   if (FKeyingPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
+   if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
       if PTTON = True then begin
          WinKeyerSetPTTMode(True);
          WinkeyerControlPTT(PTTON);
@@ -639,21 +672,25 @@ begin
 end;
 
 procedure TdmZLogKeyer.SetPTT(_on: Boolean);
+var
+   i: Integer;
 begin
    FPTTEnabled := _on;
 
-   if FKeyingPort = tkpUSB then begin
-      if _on = True then begin
-         usbif4cwSetPTTParam(0, FPttDelayBeforeTime, FPttDelayAfterTime);
-      end
-      else begin
-         ControlPTT(False);
-         usbif4cwSetPTTParam(0, 0, 0);
+   for i := 0 to 1 do begin
+      if FKeyingPort[i] = tkpUSB then begin
+         if _on = True then begin
+            usbif4cwSetPTTParam(i, FPttDelayBeforeTime, FPttDelayAfterTime);
+         end
+         else begin
+            ControlPTT(i, False);
+            usbif4cwSetPTTParam(i, 0, 0);
+         end;
       end;
-   end;
 
-   if (FKeyingPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
-      WinKeyerSetPTTDelay(FPttDelayBeforeTime, FPttDelayAfterTime);
+      if (FKeyingPort[i] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
+         WinKeyerSetPTTDelay(FPttDelayBeforeTime, FPttDelayAfterTime);
+      end;
    end;
 end;
 
@@ -708,24 +745,30 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetCWSendBufChar(C: char);
-var
-   m: byte;
-begin
-   for m := 1 to codemax do
-      FCWSendBuf[0, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
-
-   inc(tailcwstrptr);
-   if tailcwstrptr > charmax then
-      tailcwstrptr := 1;
-
-   for m := 1 to codemax do
-      FCWSendBuf[0, codemax * (tailcwstrptr - 1) + m] := $FF;
-end;
-
-procedure TdmZLogKeyer.SetCWSendBufCharPTT(C: char);
+procedure TdmZLogKeyer.SetCWSendBufChar(b: Integer; C: Char);
 var
    m: Integer;
+begin
+   for m := 1 to codemax do begin
+      FCWSendBuf[b, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
+   end;
+
+   inc(tailcwstrptr);
+   if tailcwstrptr > charmax then begin
+      tailcwstrptr := 1;
+   end;
+end;
+
+procedure TdmZLogKeyer.SetCWSendBufFinish(b: Integer);
+var
+   m: Integer;
+begin
+   for m := 1 to codemax do begin
+      FCWSendBuf[b, codemax * (tailcwstrptr - 1) + m] := $FF;
+   end;
+end;
+
+procedure TdmZLogKeyer.SetCWSendBufCharPTT(nID: Integer; C: char);
 begin
    if UseWinKeyer = True then begin
       WinKeyerSendChar(C, True);
@@ -733,34 +776,30 @@ begin
    end;
 
    if FPTTEnabled and Not(PTTIsOn) then begin
-      ControlPTT(True);
+      ControlPTT(nID, True);
       FKeyingCounter := FPttDelayBeforeCount;
    end;
 
    // SendOK := False;
-   for m := 1 to codemax do
-      FCWSendBuf[0, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
+
+   // select keying port
+   SetCWSendBufChar(0, Char($90 + nID));
+
+   // set send char
+   SetCWSendBufChar(0, C);
 
    if FPTTEnabled then begin
       FPttHoldCounter := FPttDelayAfterCount;
-      FCWSendBuf[0, codemax * (tailcwstrptr - 1) + codemax + 1] := $A2; { holds PTT until pttafter expires }
 
-      inc(tailcwstrptr);
-      if tailcwstrptr > charmax then begin
-         tailcwstrptr := 1;
-      end;
+      { holds PTT until pttafter expires }
+      SetCWSendBufChar(0, Char($A2));
 
       FSendOK := True;
       Exit;
    end;
 
-   inc(tailcwstrptr);
-   if tailcwstrptr > charmax then
-      tailcwstrptr := 1;
-
-   for m := 1 to codemax do begin
-      FCWSendBuf[0, codemax * (tailcwstrptr - 1) + m] := $FF;
-   end;
+   // set finish char
+   SetCWSendBufFinish(0);
 
    FSendOK := True;
 end;
@@ -803,7 +842,7 @@ end;
 
 procedure TdmZLogKeyer.SetCWSendBuf(b: byte; S: string);
 var
-   n, m, Len: word;
+   n, Len: word;
    Code: Integer;
    SS: string;
 begin
@@ -816,29 +855,42 @@ begin
 
    SS := DecodeCommands(SS);
 
+   tailcwstrptr := 1;
+
    Len := length(SS);
    for n := 1 to Len do begin
-      if SS[n] = ':' then { callsign 1st char }
+      if SS[n] = ':' then begin { callsign 1st char }
          callsignptr := n;
+      end;
 
-      for m := 1 to codemax do
-         FCWSendBuf[b, codemax * (n - 1) + m] := FCodeTable[Ord(SS[n])][m];
+      SetCWSendBufChar(b, SS[n]);
    end;
 
-   FCWSendBuf[b, codemax * Len + 1] := $FF;
+   SetCWSendBufFinish(b);
 end;
 
-procedure TdmZLogKeyer.SendStr(sStr: string);
+procedure TdmZLogKeyer.SendStr(nID: Integer; sStr: string);
 var
    SS: string;
+   CW: string;
 begin
    if sStr = '' then
       Exit;
 
-   SS := DecodeCommands(sStr);
+   if ((nID = 0) or (nID = 1)) then begin
+      CW := Char($90) + Char(nID);
+   end
+   else begin
+      CW := Char($90);
+   end;
 
-   if FPTTEnabled { and Not(PTTIsOn) } then
+   SS := SS + DecodeCommands(sStr);
+
+   if FPTTEnabled { and Not(PTTIsOn) } then begin
       SS := '(' + SS + ')';
+   end;
+
+   SS := CW + SS;
 
    SetCWSendBuf(0, SS);
    cwstrptr := 1;
@@ -846,11 +898,13 @@ begin
    FKeyingCounter := 1;
 end;
 
-procedure TdmZLogKeyer.SendStrLoop(S: string);
+procedure TdmZLogKeyer.SendStrLoop(nID: Integer; S: string);
 var
    SS: string;
+   CW: string;
 begin
    SS := S;
+   CW := '';
 
    FCQLoopCount := 1;
 
@@ -860,13 +914,20 @@ begin
       WinkeyerSendStr(SS);
    end
    else begin
+      if ((nID = 0) or (nID = 1)) then begin
+         CW := Char($90 + nID);
+      end
+      else begin
+         CW := Char($90);
+      end;
+
       SS := DecodeCommands(S);
 
       if FPTTEnabled then begin
          SS := '(' + SS + ')';
       end;
 
-      SS := SS + '@';
+      SS := CW + SS + '@';
 
       SetCWSendBuf(0, SS);
       cwstrptr := 1;
@@ -875,61 +936,74 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SendStrFIFO(sStr: string);
+procedure TdmZLogKeyer.SendStrFIFO(nID: Integer; sStr: string);
 var
    n: Integer;
    SS: string;
+   CW: string;
 begin
+   if ((nID = 0) or (nID = 1)) then begin
+      CW := Char($90 + nID);
+   end
+   else begin
+      CW := Char($90);
+   end;
+
    { StringBuffer := StringBuffer + sStr; }
-   SS := DecodeCommands(sStr);
-   if FPTTEnabled then
+   SS := SS + DecodeCommands(sStr);
+   if FPTTEnabled then begin
       SS := '(' + SS + ')';
+   end;
+
+   SS := CW + SS;
 
    for n := 1 to length(SS) do begin
       if SS[n] = ':' then { callsign 1st char }
          callsignptr := n;
 
-      SetCWSendBufChar(SS[n]);
+      SetCWSendBufChar(0, SS[n]);
    end;
+
+   SetCWSendBufFinish(0);
 end;
 
-procedure TdmZLogKeyer.CW_ON;
+procedure TdmZLogKeyer.CW_ON(nID: Integer);
 begin
-   case FKeyingPort of
+   case FKeyingPort[nID] of
       tkpSerial1..tkpSerial20: begin
          if FKeyingSignalReverse = False then begin
-            FComKeying.ToggleDTR(True);
+            FComKeying[nID].ToggleDTR(True);
          end
          else begin
-            FComKeying.ToggleRTS(True);
+            FComKeying[nID].ToggleRTS(True);
          end;
       end;
 
       tkpUSB: begin
          EnterCriticalSection(FUsbPortDataLock);
-         FUsbPortData := FUsbPortData and $FE;
-         SendUsbPortData();
+         FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData and $FE;
+         SendUsbPortData(nID);
          LeaveCriticalSection(FUsbPortDataLock);
       end;
    end;
 end;
 
-procedure TdmZLogKeyer.CW_OFF;
+procedure TdmZLogKeyer.CW_OFF(nID: Integer);
 begin
-   case FKeyingPort of
+   case FKeyingPort[nID] of
       tkpSerial1..tkpSerial20: begin
          if FKeyingSignalReverse = False then begin
-            FComKeying.ToggleDTR(False);
+            FComKeying[nID].ToggleDTR(False);
          end
          else begin
-            FComKeying.ToggleRTS(False);
+            FComKeying[nID].ToggleRTS(False);
          end;
       end;
 
       tkpUSB: begin
          EnterCriticalSection(FUsbPortDataLock);
-         FUsbPortData := FUsbPortData or $01;
-         SendUsbPortData();
+         FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData or $01;
+         SendUsbPortData(nID);
          LeaveCriticalSection(FUsbPortDataLock);
       end;
    end;
@@ -945,8 +1019,8 @@ procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: 
       tailcwstrptr := 1;
       FCWSendBuf[FSelectedBuf, 1] := $FF;
 
-      if FKeyingPort <> tkpUSB then begin
-         CW_OFF;
+      if FKeyingPort[FCurrentID] <> tkpUSB then begin
+         CW_OFF(FCurrentID);
       end;
 
       if FUseSideTone then begin
@@ -971,15 +1045,15 @@ begin
       end;
 
       $10: begin
-         ControlPTT(True);
+         ControlPTT(FCurrentID, True);
       end;
 
       $1F: begin
-         ControlPTT(False);
+         ControlPTT(FCurrentID, False);
       end;
 
       0: begin
-         CW_OFF;
+         CW_OFF(FCurrentID);
          if FUseSideTone then begin
             NoSound();
          end;
@@ -987,7 +1061,7 @@ begin
       end;
 
       2: begin { normal space x space factor (%) }
-         CW_OFF;
+         CW_OFF(FCurrentID);
          if FUseSideTone then begin
             NoSound();
          end;
@@ -995,7 +1069,7 @@ begin
       end;
 
       $E: begin { normal space x space factor x eispacefactor(%) }
-         CW_OFF;
+         CW_OFF(FCurrentID);
          if FUseSideTone then begin
             NoSound();
          end;
@@ -1003,7 +1077,7 @@ begin
       end;
 
       1: begin
-         CW_ON;
+         CW_ON(FCurrentID);
          if FUseSideTone then begin
             Sound();
          end;
@@ -1012,7 +1086,7 @@ begin
       end;
 
       3: begin
-         CW_ON;
+         CW_ON(FCurrentID);
          if FUseSideTone then begin
             Sound();
          end;
@@ -1059,7 +1133,7 @@ begin
          if FPttHoldCounter <= 0 then begin
             Finish();
             if FPTTEnabled then begin
-               ControlPTT(False);
+               ControlPTT(FCurrentID, False);
             end;
          end
          else begin
@@ -1152,12 +1226,22 @@ begin
       $0B: begin
          FUserFlag := False;
       end;
+
+      $20: begin
+         FCurrentID := 0;
+      end;
+
+      $21: begin
+         FCurrentID := 1;
+      end;
    end;
 
    Inc(cwstrptr);
 end; { TimerProcess }
 
 procedure TdmZLogKeyer.SetWPM(wpm: Integer);
+var
+   i: Integer;
 begin
    if FKeyerWPM = wpm then begin
       Exit;
@@ -1175,16 +1259,18 @@ begin
 
       FKeyerWPM := wpm;
 
-      if (FKeyingPort = tkpUSB) and (FUsbif4cwSyncWpm = True) then begin
-         usbif4cwSetWPM(0, FKeyerWPM);
-      end;
+      for i := 0 to 1 do begin
+         if (FKeyingPort[i] = tkpUSB) and (FUsbif4cwSyncWpm = True) then begin
+            usbif4cwSetWPM(i, FKeyerWPM);
+         end;
 
-      if (FKeyingPort in [tkpSerial1 .. tkpSerial20]) and (FUseWinKeyer = True) then begin
-         WinKeyerSetSpeed(FKeyerWPM);
-      end;
+         if (FKeyingPort[i] in [tkpSerial1 .. tkpSerial20]) and (FUseWinKeyer = True) then begin
+            WinKeyerSetSpeed(FKeyerWPM);
+         end;
 
-      if Assigned(FOnSpeedChanged) then begin
-         FOnSpeedChanged(Self);
+         if Assigned(FOnSpeedChanged) then begin
+            FOnSpeedChanged(Self);
+         end;
       end;
    end;
 end;
@@ -1788,6 +1874,11 @@ begin
       FCodeTable[Ord('{')][n] := $14;
    end;
 
+   FCodeTable[$90][1] := $20;
+   FCodeTable[$90][2] := 9;
+   FCodeTable[$91][1] := $21;
+   FCodeTable[$91][2] := 9;
+
    if FMonitorThread = nil then begin
       FMonitorThread := TKeyerMonitorThread.Create(Self);
    end;
@@ -1798,7 +1889,8 @@ end;
 
 procedure TdmZLogKeyer.CloseBGK();
 begin
-   ControlPTT(False);
+   ControlPTT(0, False);
+   ControlPTT(1, False);
 
    if Assigned(FMonitorThread) then begin
       FMonitorThread.Terminate();
@@ -1817,9 +1909,11 @@ begin
       NoSound();
    end;
 
-   CW_OFF;
+   CW_OFF(0);
+   CW_OFF(1);
 
-   KeyingPort := tkpNone;
+   KeyingPort[0] := tkpNone;
+   KeyingPort[1] := tkpNone;
 end;
 
 procedure TdmZLogKeyer.PauseCW;
@@ -1830,13 +1924,13 @@ begin
 
    FSendOK := False;
 
-   CW_OFF;
+   CW_OFF(FCurrentID);
    if FUseSideTone then begin
       NoSound();
    end;
 
    if FPTTEnabled then begin
-      ControlPTT(False);
+      ControlPTT(FCurrentID, False);
    end;
 end;
 
@@ -1847,7 +1941,7 @@ begin
    end;
 
    if FPTTEnabled then begin
-      ControlPTT(True);
+      ControlPTT(FCurrentID, True);
       FKeyingCounter := FPttDelayBeforeCount;
    end;
 
@@ -1897,14 +1991,14 @@ begin
       if FUseSideTone then begin
          NoSound();
       end;
-      CW_OFF;
+      CW_OFF(FCurrentID);
 
       FUserFlag := False;
 
       FSendOK := True;
 
       if FPTTEnabled then begin
-         ControlPTT(False);
+         ControlPTT(FCurrentID, False);
       end;
    end;
 
@@ -1912,8 +2006,6 @@ begin
 end;
 
 procedure TdmZLogKeyer.CancelLastChar;
-var
-   m: Integer;
 begin
    if FUseWinKeyer = True then begin
       WinKeyerCancelLastChar();
@@ -1921,9 +2013,7 @@ begin
    else begin
       if ((tailcwstrptr - 1) * codemax + 1) > (cwstrptr) then begin
          dec(tailcwstrptr, 1);
-         for m := 1 to codemax do begin
-            FCWSendBuf[FSelectedBuf, codemax * (tailcwstrptr - 1) + m] := $FF;
-         end;
+         SetCWSendBufFinish(0);
       end;
    end;
 end;
@@ -2018,126 +2108,296 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetKeyingPort(port: TKeyingPort);
+function TdmZLogKeyer.GetKeyingPort(Index: Integer): TKeyingPort;
 begin
-//   if FKeyingPort = port then begin
-//      Exit;
-//   end;
+   Result := FKeyingPort[Index];
+end;
 
-   FKeyingPort := port;
-   case port of
-      tkpNone: begin
-         COM_OFF();
-         USB_OFF();
+procedure TdmZLogKeyer.SetKeyingPort(Index: Integer; port: TKeyingPort);
+begin
+   FKeyingPort[Index] := port;
+end;
+
+procedure TdmZLogKeyer.Open();
+   procedure UsbInfoClear(n: Integer);
+   begin
+      FUsbInfo[n].FUSBIF4CW := nil;
+      FUsbInfo[n].FPrevUsbPortData := $00;
+      FUsbInfo[n].FUsbPortData := $FF;
+   end;
+
+   procedure UsbInfoClearAll();
+   var
+      i: Integer;
+   begin
+      for i := 0 to 1 do begin
+         UsbInfoClear(i);
+      end;
+   end;
+begin
+   HidController.Enumerate;
+   repeat
+      Sleep(1);
+   until FUsbDetecting = False;
+
+   // RIG1/RIG2共に無し
+   if (FKeyingPort[0] = tkpNone) and
+      (FKeyingPort[1] = tkpNone) then begin
+      COM_OFF();
+      USB_OFF();
+      FComKeying[0] := nil;
+      FComKeying[1] := nil;
+      UsbInfoClearAll();
+      Exit;
+   end;
+
+   // RIG1/RIG2共にUSB
+   if ((FKeyingPort[0] = tkpUSB) and (FKeyingPort[1] = tkpUSB)) then begin
+      case usbdevlist.Count of
+         0: begin
+            FKeyingPort[0] := tkpNone;
+            FKeyingPort[1] := tkpNone;
+            UsbInfoClearAll();
+         end;
+
+         1: begin
+            FUsbInfo[0].FUSBIF4CW := usbdevlist[0];
+            FUsbInfo[1].FUSBIF4CW := usbdevlist[0];
+         end;
+
+         2: begin
+            FUsbInfo[0].FUSBIF4CW := usbdevlist[0];
+            FUsbInfo[1].FUSBIF4CW := usbdevlist[1];
+         end;
       end;
 
-      tkpSerial1 .. tkpSerial20: begin
-         USB_OFF();
-         COM_ON(port);
+      COM_OFF();
+      USB_ON();
+   end;
+
+   // RIG1がUSB,RIG2がなし
+   if ((FKeyingPort[0] = tkpUSB) and (FKeyingPort[1] = tkpNone)) then begin
+      case usbdevlist.Count of
+         0: begin
+            FKeyingPort[0] := tkpNone;
+            FKeyingPort[1] := tkpNone;
+            UsbInfoClearAll();
+         end;
+
+         1, 2: begin
+            FUsbInfo[0].FUSBIF4CW := usbdevlist[0];
+            UsbInfoClear(1);
+         end;
       end;
 
-      tkpUSB: begin
-         COM_OFF();
-         USB_ON();
+      COM_OFF();
+      USB_ON();
+      Exit;
+   end;
+
+   // RIG1がなし,RIG2がUSB
+   if ((FKeyingPort[0] = tkpNone) and (FKeyingPort[1] = tkpUSB)) then begin
+      case usbdevlist.Count of
+         0: begin
+            FKeyingPort[0] := tkpNone;
+            FKeyingPort[1] := tkpNone;
+            UsbInfoClearAll();
+         end;
+
+         1, 2: begin
+            UsbInfoClear(0);
+            FUsbInfo[1].FUSBIF4CW := usbdevlist[0];
+         end;
       end;
+
+      COM_OFF();
+      USB_ON();
+      Exit;
+   end;
+
+   // RIG1,RIG2がCOMポート
+   if ((FKeyingPort[0] in [tkpSerial1 .. tkpSerial20]) and
+       (FKeyingPort[1] in [tkpSerial1 .. tkpSerial20])) or
+      ((FKeyingPort[0] in [tkpSerial1 .. tkpSerial20]) and
+       (FKeyingPort[1] =tkpNone)) then begin
+      USB_OFF();
+      COM_ON();
+      Exit;
+   end;
+
+   // RIG1がCOMポート,RIG2がUSB
+   if ((FKeyingPort[0] in [tkpSerial1 .. tkpSerial20]) and (FKeyingPort[1] = tkpUSB)) then begin
+      case usbdevlist.Count of
+         0: begin
+            FKeyingPort[0] := tkpNone;
+            FKeyingPort[1] := tkpNone;
+            UsbInfoClearAll();
+         end;
+
+         1, 2: begin
+            UsbInfoClear(0);
+            FUsbInfo[1].FUSBIF4CW := usbdevlist[0];
+         end;
+      end;
+
+      USB_ON();
+      COM_ON();
+   end;
+
+   // RIG1がUSB,RIG2がCOMポート
+   if ((FKeyingPort[0] = tkpUSB) and (FKeyingPort[1] in [tkpSerial1 .. tkpSerial20])) then begin
+      case usbdevlist.Count of
+         0: begin
+            FKeyingPort[0] := tkpNone;
+            FKeyingPort[1] := tkpNone;
+            UsbInfoClearAll();
+         end;
+
+         1, 2: begin
+            FUsbInfo[0].FUSBIF4CW := usbdevlist[0];
+            UsbInfoClear(1);
+         end;
+      end;
+
+      USB_ON();
+      COM_ON();
    end;
 end;
 
-procedure TdmZLogKeyer.TuneOn;
+procedure TdmZLogKeyer.TuneOn(nID: Integer);
 begin
    ClrBuffer;
    FSendOK := False;
+
    if FPTTEnabled then begin
-      ControlPTT(True);
+      ControlPTT(nID, True);
    end;
-   CW_ON;
+
+   CW_ON(nID);
 
    if FUseSideTone then begin
       Sound();
    end;
 end;
 
-procedure TdmZLogKeyer.SendUsbPortData();
+procedure TdmZLogKeyer.SendUsbPortData(nID: Integer);
 var
 //   BR: DWORD;
    OutReport: array[0..8] of Byte;
 begin
-   if FUSBIF4CW = nil then begin
+   if FUsbInfo[nID].FUSBIF4CW = nil then begin
       Exit;
    end;
-   if FUsbPortData = FPrevUsbPortData then begin
+   if FUsbInfo[nID].FUsbPortData = FUsbInfo[nID].FPrevUsbPortData then begin
       Exit;
    end;
 
    OutReport[0] := 0;
    OutReport[1] := 1;
-   OutReport[2] := FUsbPortData;
+   OutReport[2] := FUsbInfo[nID].FUsbPortData;
    OutReport[3] := 0;
    OutReport[4] := 0;
    OutReport[5] := 0;
    OutReport[6] := 0;
    OutReport[7] := 0;
    OutReport[8] := 0;
-   FUSBIF4CW.SetOutputReport(OutReport, 9);
-   FPrevUsbPortData := FUsbPortData;
+   FUsbInfo[nID].FUSBIF4CW.SetOutputReport(OutReport, 9);
+   FUsbInfo[nID].FPrevUsbPortData := FUsbInfo[nID].FUsbPortData;
 //   FUSBIF4CW.WriteFile(OutReport, FUSBIF4CW.Caps.OutputReportByteLength, BR);
 end;
 
-procedure TdmZLogKeyer.COM_ON(port: TKeyingPort);
+procedure TdmZLogKeyer.COM_ON();
+var
+   i: Integer;
 begin
    if FUseWinKeyer = True then begin
-      WinKeyerOpen(port);
-   end
-   else begin
-      if FComKeying.Connected = False then begin
-         FComKeying.Port := TPortNumber(port);
-         FComKeying.Connect;
+      WinKeyerOpen(FKeyingPort[0]);
+      Exit;
+   end;
+
+   for i := 0 to 1 do begin
+      if FComKeying[i] = nil then begin
+         Continue;
       end;
-      FComKeying.ToggleDTR(False);
-      FComKeying.ToggleRTS(False);
+
+      if FComKeying[i].Connected = False then begin
+         FComKeying[i].Port := TPortNumber(FKeyingPort[i]);
+         FComKeying[i].Connect;
+      end;
+
+      FComKeying[i].ToggleDTR(False);
+      FComKeying[i].ToggleRTS(False);
    end;
 end;
 
 procedure TdmZLogKeyer.COM_OFF();
+var
+   i: Integer;
 begin
    if FUseWinKeyer = True then begin
       WinKeyerClose();
-   end
-   else begin
-      FComKeying.Disconnect();
+      Exit;
+   end;
+
+   for i := 0 to 1 do begin
+      if FComKeying[i] = nil then begin
+         Continue;
+      end;
+
+      FComKeying[i].Disconnect();
    end;
 end;
 
 procedure TdmZLogKeyer.USB_ON();
+var
+   i: Integer;
 begin
-   HidController.Enumerate();
-   repeat
-      Sleep(1);
-   until FUsbDetecting = False;
-   ZeroMemory(@FPrevPortIn, SizeOf(FPrevPortIn));
-   FPrevUsbPortData := $00;
-   FUsbPortData := $FF;
-   SendUsbPortData();
-end;
+//   HidController.Enumerate();
+//   repeat
+//      Sleep(1);
+//   until FUsbDetecting = False;
 
-procedure TdmZLogKeyer.USB_OFF();
-begin
-   if FUSBIF4CW <> nil then begin
-      HidController.CheckIn(FUSBIF4CW);
-      FUSBIF4CW_Detected := False;
-      FUSBIF4CW := nil;
+   for i := 0 to 1 do begin
+      if FUsbInfo[i].FUSBIF4CW <> nil then begin
+         ZeroMemory(@FUsbInfo[i].FPrevPortIn, SizeOf(FUsbInfo[i].FPrevPortIn));
+         FUsbInfo[i].FPrevUsbPortData := $00;
+         FUsbInfo[i].FUsbPortData := $FF;
+         SendUsbPortData(i);
+      end;
    end;
 end;
 
+procedure TdmZLogKeyer.USB_OFF();
+var
+   i: Integer;
+   HidDev: TJvHidDevice;
+begin
+   for i := 0 to usbdevlist.Count - 1 do begin
+      HidDev := usbdevlist[i];
+      HidController.CheckIn(HidDev);
+   end;
+   usbdevlist.Clear();
+
+   FUsbInfo[0].FUSBIF4CW := nil;
+   FUsbInfo[1].FUSBIF4CW := nil;
+
+   FUSBIF4CW_Detected := False;
+end;
+
 procedure TdmZLogKeyer.SetPaddleReverse(fReverse: Boolean);
+var
+   i: Integer;
 begin
    FPaddleReverse := fReverse;
-   if FKeyingPort = tkpUSB then begin
-      if fReverse = True then begin
-         usbif4cwSetPaddle(0, 1);
-      end
-      else begin
-         usbif4cwSetPaddle(0, 0);
+
+   for i := 0 to 1 do begin
+      if FKeyingPort[i] = tkpUSB then begin
+         if fReverse = True then begin
+            usbif4cwSetPaddle(i, 1);
+         end
+         else begin
+            usbif4cwSetPaddle(i, 0);
+         end;
       end;
    end;
 end;
@@ -2200,12 +2460,12 @@ var
    OutReport: array[0..8] of Byte;
    P: Byte;
 begin
-   if FUSBIF4CW = nil then begin
+   if FUsbInfo[nID].FUSBIF4CW = nil then begin
       Result := -1;
       Exit;
    end;
 
-   if usbif4cwGetVersion(0) < 20 then begin
+   if usbif4cwGetVersion(nID) < 20 then begin
       Result := -2;
       Exit;
    end;
@@ -2224,21 +2484,21 @@ begin
    OutReport[6] := 0;
    OutReport[7] := 0;
    OutReport[8] := $FC;
-   FUSBIF4CW.SetOutputReport(OutReport, 9);
+   FUsbInfo[nID].FUSBIF4CW.SetOutputReport(OutReport, 9);
    Result := 0;
 end;
 
-function TdmZLogKeyer.usbif4cwSetPTTParam(nId: Integer; nLen1: Byte; nLen2: Byte): Long;
+function TdmZLogKeyer.usbif4cwSetPTTParam(nID: Integer; nLen1: Byte; nLen2: Byte): Long;
 var
    OutReport: array[0..8] of Byte;
    P: Byte;
 begin
-   if FUSBIF4CW = nil then begin
+   if FUsbInfo[nID].FUSBIF4CW = nil then begin
       Result := -1;
       Exit;
    end;
 
-   if usbif4cwGetVersion(0) < 20 then begin
+   if usbif4cwGetVersion(nID) < 20 then begin
       Result := -2;
       Exit;
    end;
@@ -2260,7 +2520,7 @@ begin
       OutReport[6] := 0;
       OutReport[7] := 0;
       OutReport[8] := 0;
-      FUSBIF4CW.SetOutputReport(OutReport, 9);
+      FUsbInfo[nID].FUSBIF4CW.SetOutputReport(OutReport, 9);
    end;
 
    OutReport[0] := nID;
@@ -2272,21 +2532,21 @@ begin
    OutReport[6] := 0;
    OutReport[7] := 0;
    OutReport[8] := 0;
-   FUSBIF4CW.SetOutputReport(OutReport, 9);
+   FUsbInfo[nID].FUSBIF4CW.SetOutputReport(OutReport, 9);
 
    Result := 0;
 end;
 
-function TdmZLogKeyer.usbif4cwSetPTT(nId: Integer; tx: Byte): Long;
+function TdmZLogKeyer.usbif4cwSetPTT(nID: Integer; tx: Byte): Long;
 var
    OutReport: array[0..8] of Byte;
 begin
-   if FUSBIF4CW = nil then begin
+   if FUsbInfo[nID].FUSBIF4CW = nil then begin
       Result := -1;
       Exit;
    end;
 
-   if usbif4cwGetVersion(0) < 20 then begin
+   if usbif4cwGetVersion(nID) < 20 then begin
       Result := -2;
       Exit;
    end;
@@ -2300,25 +2560,45 @@ begin
    OutReport[6] := 0;
    OutReport[7] := 0;
    OutReport[8] := $FC;
-   FUSBIF4CW.SetOutputReport(OutReport, 9);
+   FUsbInfo[nID].FUSBIF4CW.SetOutputReport(OutReport, 9);
    Result := 0;
 end;
 
-function TdmZLogKeyer.usbif4cwGetVersion(nId: Integer): Long;
+function TdmZLogKeyer.usbif4cwGetVersion(nID: Integer): Long;
+var
+   HidDev: TJvHidDevice;
+   n: Integer;
+   s: string;
+   ver: Long;
 begin
-   Result := FUSBIF4CW_Version;
+   HidDev := FUsbInfo[nID].FUSBIF4CW;
+   if HidDev = nil then begin
+      Result := 0;
+      Exit;
+   end;
+
+   n := Pos('Ver.', HidDev.ProductName);
+   if n > 0 then begin
+      s := Copy(HidDev.ProductName, n + 4); // 2.3
+      ver := Trunc(StrToFloatDef(s, 0) * 10);
+   end
+   else begin
+      ver := 0;
+   end;
+
+   Result := ver;
 end;
 
-function TdmZLogKeyer.usbif4cwSetPaddle(nId: Integer; param: Byte): Long;
+function TdmZLogKeyer.usbif4cwSetPaddle(nID: Integer; param: Byte): Long;
 var
    OutReport: array[0..8] of Byte;
 begin
-   if FUSBIF4CW = nil then begin
+   if FUsbInfo[nID].FUSBIF4CW = nil then begin
       Result := -1;
       Exit;
    end;
 
-   if usbif4cwGetVersion(0) < 20 then begin
+   if usbif4cwGetVersion(nID) < 20 then begin
       Result := -2;
       Exit;
    end;
@@ -2332,34 +2612,34 @@ begin
    OutReport[6] := 0;
    OutReport[7] := 0;
    OutReport[8] := $FC;
-   FUSBIF4CW.SetOutputReport(OutReport, 9);
+   FUsbInfo[nID].FUSBIF4CW.SetOutputReport(OutReport, 9);
    Result := 0;
 end;
 
-procedure TdmZLogKeyer.SetCommPortDriver(CP: TCommPortDriver);
+procedure TdmZLogKeyer.SetCommPortDriver(Index: Integer; CP: TCommPortDriver);
 begin
-   if FComKeying = CP then begin
+   if FComKeying[Index] = CP then begin
       Exit;
    end;
 
    COM_OFF();
-   FComKeying := CP;
+   FComKeying[Index] := CP;
 //   COM_ON(FKeyingPort);
 
-   FKeyingPort := TKeyingPort(CP.Port);
+   FKeyingPort[Index] := TKeyingPort(CP.Port);
 end;
 
-procedure TdmZLogKeyer.ResetCommPortDriver(port: TKeyingPort);
+procedure TdmZLogKeyer.ResetCommPortDriver(Index: Integer; port: TKeyingPort);
 begin
-   if FComKeying = ZComKeying then begin
+   if FComKeying[Index] = FDefautCom[Index] then begin
       Exit;
    end;
 
 //   COM_OFF();
-   FComKeying := ZComKeying;
+   FComKeying[Index] := FDefautCom[Index];
 //   COM_ON(FKeyingPort);
 
-   KeyingPort := port;
+   KeyingPort[Index] := port;
 end;
 
 procedure TdmZLogKeyer.WinKeyerOpen(nPort: TKeyingPort);
@@ -2378,13 +2658,13 @@ begin
    RepeatTimer.Interval := Trunc(FCQRepeatIntervalSec * 1000);
 
    //1) Open serial communications port. Use 1200 baud, 8 data bits, no parity
-   FComKeying.Port := TPortNumber(nPort);
-   FComKeying.BaudRate := br1200;
-   FComKeying.Connect();
+   FComKeying[0].Port := TPortNumber(nPort);
+   FComKeying[0].BaudRate := br1200;
+   FComKeying[0].Connect();
 
    //2) To power up WK enable DTR and disable RTS
-   FComKeying.ToggleDTR(True);
-   FComKeying.ToggleRTS(False);
+   FComKeying[0].ToggleDTR(True);
+   FComKeying[0].ToggleRTS(False);
 
    //3) Delay for ? second to allow WK to finish init
    Sleep(500);
@@ -2399,10 +2679,10 @@ begin
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_CAL;
-   FComKeying.SendData(@Buff, 2);
+   FComKeying[0].SendData(@Buff, 2);
    Sleep(100);
    Buff[0] := $FF;
-   FComKeying.SendData(@Buff, 1);
+   FComKeying[0].SendData(@Buff, 1);
 
    // Baud rate change must be handled in a specific way. Since most applications expect WK3 to run at
    // 1200 baud, this is always the default and will be reinstated whenever WK3 is closed. If an
@@ -2412,9 +2692,9 @@ begin
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_SET_HIGH_BAUD;
-   FComKeying.SendData(@Buff, 2);
+   FComKeying[0].SendData(@Buff, 2);
    Sleep(50);
-   FComKeying.BaudRate := br9600;
+   FComKeying[0].BaudRate := br9600;
 
    //6) Check to make sure WK is attached and operational
    //Byte 0: ADMIN_CMD
@@ -2438,7 +2718,7 @@ begin
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_OPEN;
-   FComKeying.SendData(@Buff, 2);
+   FComKeying[0].SendData(@Buff, 2);
 
    //set speed pot range  5 to 50wpm
    FillChar(Buff, SizeOf(Buff), 0);
@@ -2446,7 +2726,7 @@ begin
    Buff[1] := $05;    // min 5wpm
    Buff[2] := $32;    //range 50wpm
    Buff[3] := $00;
-   FComKeying.SendData(@Buff, 4);
+   FComKeying[0].SendData(@Buff, 4);
 
    dwTick := GetTickCount();
    while FWkRevision = 0 do begin
@@ -2473,7 +2753,7 @@ begin
    // 現在のSPEED POT位置を取得
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_GET_SPEEDPOT_CMD;
-   FComKeying.SendData(@Buff, 1);
+   FComKeying[0].SendData(@Buff, 1);
 
    // Set PTT Mode(PINCFG)
    WinKeyerSetPTTMode(False);
@@ -2489,8 +2769,8 @@ begin
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_CLOSE;
-   FComKeying.SendData(@Buff, 2);
-   FComKeying.Disconnect();
+   FComKeying[0].SendData(@Buff, 2);
+   FComKeying[0].Disconnect();
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetSpeed(nWPM: Integer);
@@ -2500,7 +2780,7 @@ begin
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_SETWPM_CMD;
    Buff[1] := nWPM;
-   FComKeying.SendData(@Buff, 2);
+   FComKeying[0].SendData(@Buff, 2);
 end;
 
 procedure TdmZLogKeyer.WinKeyerAbort();
@@ -2514,7 +2794,7 @@ var
 begin
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_CLEAR_CMD;
-   FComKeying.SendData(@Buff, 1);
+   FComKeying[0].SendData(@Buff, 1);
    FWkLastMessage := '';
    FWkAbort := False;
    WinKeyerSetPTTMode(False);
@@ -2532,7 +2812,7 @@ begin
    else begin
       Buff[1] := $86;
    end;
-   FComKeying.SendData(@Buff, 2);
+   FComKeying[0].SendData(@Buff, 2);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetPTTMode(fUse: Boolean);
@@ -2551,7 +2831,7 @@ begin
    if FUseSideTone = True then begin
       Buff[1] := Buff[1] or $2;
    end;
-   FComKeying.SendData(@Buff, 2);
+   FComKeying[0].SendData(@Buff, 2);
 end;
 
 procedure TdmZLogKeyer.WinKeyerControlPTT(fOn: Boolean);
@@ -2566,7 +2846,7 @@ begin
    else begin
       Buff[1] := WK_PTT_OFF;
    end;
-   FComKeying.SendData(@Buff, 2);
+   FComKeying[0].SendData(@Buff, 2);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetPTTDelay(before, after: Byte);
@@ -2577,7 +2857,7 @@ begin
    Buff[0] := WK_SET_PTTDELAY_CMD;
    Buff[1] := before;
    Buff[2] := after;
-   FComKeying.SendData(@Buff, 3);
+   FComKeying[0].SendData(@Buff, 3);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetMode(mode: Byte);
@@ -2587,7 +2867,7 @@ begin
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_SETMODE_CMD;
    Buff[1] := mode;
-   FComKeying.SendData(@Buff, 2);
+   FComKeying[0].SendData(@Buff, 2);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSendCallsign(S: string);
@@ -2696,7 +2976,7 @@ begin
       end;
    end;
 
-   FComKeying.SendString(AnsiString(S));
+   FComKeying[0].SendString(AnsiString(S));
 end;
 
 procedure TdmZLogKeyer.WinKeyerCancelLastChar();
@@ -2705,10 +2985,10 @@ var
 begin
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_BACKSPACE_CMD;
-   FComKeying.SendData(@Buff, 1);
+   FComKeying[0].SendData(@Buff, 1);
 end;
 
-procedure TdmZLogKeyer.ZComKeyingReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
+procedure TdmZLogKeyer.ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
 var
    i: Integer;
    b: Byte;

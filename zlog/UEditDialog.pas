@@ -821,7 +821,7 @@ begin
       end;
 
       S := dmZlogGlobal.CWMessage(cb, no);
-      zLogSendStr2(S, CurrentQSO);
+      zLogSendStr2(MainForm.CurrentRigID, S, CurrentQSO);
    end
    else begin
       // SendVoice(i);
@@ -911,8 +911,11 @@ begin
 end;
 
 procedure TEditDialog.actionControlPTTExecute(Sender: TObject);
+var
+   nID: Integer;
 begin
-   dmZLogKeyer.ControlPTT(not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
+   nID := MainForm.CurrentRigID;
+   dmZLogKeyer.ControlPTT(nID, not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
 end;
 
 procedure TEditDialog.actionChangeBandExecute(Sender: TObject);

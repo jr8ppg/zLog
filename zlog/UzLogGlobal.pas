@@ -115,6 +115,7 @@ type
     _rigport:  array[1..2] of Integer; {0 : none 1-4 : com#}
     _rigspeed: array[1..2] of Integer;
     _rigname:  array[1..2] of string;
+    _keyingport: array[1..2] of Integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
 
     _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
@@ -131,7 +132,6 @@ type
     _zlink_telnet: TCommParam;
 
     _multistationwarning : boolean; // true by default. turn off not new mult warning dialog
-    _lptnr : integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
     _sentstr : string; {exchanges sent $Q$P$O etc. Set at menu select}
 
     _soundpath : string;
@@ -776,6 +776,7 @@ begin
       Settings._rigspeed[1] := ini.ReadInteger('Hardware', 'RigSpeed', 0);
       Settings._transverter1 := ini.ReadBool('Hardware', 'Transverter1', False);
       Settings._transverteroffset1 := ini.ReadInteger('Hardware', 'Transverter1Offset', 0);
+      Settings._keyingport[1] := ini.ReadInteger('Hardware', 'CWLPTPort', 0);
 
       // RIG2
       Settings._rigport[2] := ini.ReadInteger('Hardware', 'Rig2', 0);
@@ -783,6 +784,7 @@ begin
       Settings._rigspeed[2] := ini.ReadInteger('Hardware', 'RigSpeed2', 0);
       Settings._transverter2 := ini.ReadBool('Hardware', 'Transverter2', False);
       Settings._transverteroffset2 := ini.ReadInteger('Hardware', 'Transverter2Offset', 0);
+      Settings._keyingport[2] := ini.ReadInteger('Hardware', 'CWLPTPort2', 0);
 
       // USE TRANSCEIVE MODE(ICOM only)
       Settings._use_transceive_mode := ini.ReadBool('Hardware', 'UseTransceiveMode', True);
@@ -798,9 +800,6 @@ begin
 
       // Use WinKeyer USB
       Settings._use_winkeyer := ini.ReadBool('Hardware', 'UseWinKeyer', False);
-
-      // CW/PTT port
-      Settings._lptnr := ini.ReadInteger('Hardware', 'CWLPTPort', 0);
 
       // CW PTT control
 
@@ -1317,6 +1316,7 @@ begin
       ini.WriteInteger('Hardware', 'RigSpeed', Settings._rigspeed[1]);
       ini.WriteBool('Hardware', 'Transverter1', Settings._transverter1);
       ini.WriteInteger('Hardware', 'Transverter1Offset', Settings._transverteroffset1);
+      ini.WriteInteger('Hardware', 'CWLPTPort2', Settings._keyingport[1]);
 
       // RIG2
       ini.WriteInteger('Hardware', 'Rig2', Settings._rigport[2]);
@@ -1324,6 +1324,7 @@ begin
       ini.WriteInteger('Hardware', 'RigSpeed2', Settings._rigspeed[2]);
       ini.WriteBool('Hardware', 'Transverter2', Settings._transverter2);
       ini.WriteInteger('Hardware', 'Transverter2Offset', Settings._transverteroffset2);
+      ini.WriteInteger('Hardware', 'CWLPTPort2', Settings._keyingport[2]);
 
       // USE TRANSCEIVE MODE(ICOM only)
       ini.WriteBool('Hardware', 'UseTransceiveMode', Settings._use_transceive_mode);
@@ -1339,9 +1340,6 @@ begin
 
       // Use WinKeyer USB
       ini.WriteBool('Hardware', 'UseWinKeyer', Settings._use_winkeyer);
-
-      // CW/PTT port
-      ini.WriteInteger('Hardware', 'CWLPTPort', Settings._lptnr);
 
       // CW PTT control
 
@@ -1620,18 +1618,21 @@ begin
 end;
 
 procedure TdmZLogGlobal.InitializeCW();
+var
+   i: Integer;
 begin
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
    dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;
 
    // RIGコントロールと同じポートの場合は無しとする
-   if (Settings._rigport[1] <> Settings._lptnr) and
-      (Settings._rigport[2] <> Settings._lptnr) then begin
-      dmZLogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
-   end
-   else begin
-      dmZLogKeyer.KeyingPort := tkpNone;
+   for i := 0 to 1 do begin
+      if (Settings._rigport[i + 1] <> Settings._keyingport[i + 1]) then begin
+         dmZLogKeyer.KeyingPort[i] := TKeyingPort(Settings._keyingport[i + 1]);
+      end
+      else begin
+         dmZLogKeyer.KeyingPort[i] := tkpNone;
+      end;
    end;
 
    dmZlogKeyer.KeyingSignalReverse := Settings.CW._keying_signal_reverse;
@@ -1655,6 +1656,8 @@ begin
 
    dmZLogKeyer.SpaceFactor := Settings.CW._spacefactor;
    dmZLogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
+
+   dmZLogKeyer.Open();
 end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;

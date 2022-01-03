@@ -1552,18 +1552,33 @@ begin
 
    // RIGコントロールのCOMポートと、CWキーイングのポートが同じなら
    // CWキーイングのCPDrvをRIGコントロールの物にすり替える
-   if (FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._lptnr) then begin
+   if ((FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._keyingport[1])) and
+      ((FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._keyingport[2])) then begin
       PollingTimer1.Enabled := False;
-      dmZLogKeyer.SetCommPortDriver(FRigs[1].CommPortDriver);
+      dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
       PollingTimer1.Enabled := True;
-   end
-   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._lptnr) then begin
+
       PollingTimer2.Enabled := False;
-      dmZLogKeyer.SetCommPortDriver(FRigs[2].CommPortDriver);
+      dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
+      PollingTimer2.Enabled := True;
+   end
+   else if (FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._keyingport[1]) then begin
+      PollingTimer1.Enabled := False;
+      dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
+      PollingTimer1.Enabled := True;
+
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
+   end
+   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._keyingport[2]) then begin
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
+
+      PollingTimer2.Enabled := False;
+      dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
       PollingTimer2.Enabled := True;
    end
    else begin
-      dmZLogKeyer.ResetCommPortDriver(TKeyingPort(dmZlogGlobal.Settings._lptnr));
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
    end;
 end;
 
