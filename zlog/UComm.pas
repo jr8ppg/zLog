@@ -11,7 +11,7 @@ uses
   OverbyteIcsWndControl, OverbyteIcsTnCnx, Vcl.ExtDlgs;
 
 const
-  SPOTMAX = 2000;
+  SPOTMAX = 20000;
 
 type
   TCommForm = class(TForm)
