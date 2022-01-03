@@ -884,7 +884,7 @@ begin
       Settings._bsexpire := ini.ReadInteger('Misc', 'BandScopeExpire', 60);
 
       // Delete spot data after
-      Settings._spotexpire := ini.ReadInteger('Misc', 'SpotExpire', 90);
+      Settings._spotexpire := ini.ReadInteger('Misc', 'SpotExpire', 30);
 
       // Display date in partial check
       Settings._displaydatepartialcheck := ini.ReadBool('Misc', 'DisplayDatePartialCheck', False);
