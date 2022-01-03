@@ -30,7 +30,7 @@ type
     _spacefactor : word; {factor in % for default space between characters}
     _eispacefactor : word;
     _send_nr_auto: Boolean;            // Send NR automatically
-    _nosend_leading_zeros: Boolean;    // No send leading zeros in serial number
+    _not_send_leading_zeros: Boolean;  // Not send leading zeros in serial number
     _keying_signal_reverse: Boolean;
 
     CWStrImported: array[1..maxbank, 1..maxmessage] of Boolean;
@@ -729,8 +729,8 @@ begin
       // Send NR? automatically
       Settings.CW._send_nr_auto  := ini.ReadBool('CW', 'send_nr_auto', True);
 
-      // No send leading zeros in serial number
-      Settings.CW._nosend_leading_zeros := ini.ReadBool('CW', 'nosend_leading_zeros', False);
+      // Not send leading zeros in serial number
+      Settings.CW._not_send_leading_zeros := ini.ReadBool('CW', 'not_send_leading_zeros', False);
 
       // Keying Signal(DTR) reverse
       Settings.CW._keying_signal_reverse := ini.ReadBool('CW', 'keying_signal_reverse', False);
@@ -1273,8 +1273,8 @@ begin
       // Send NR? automatically
       ini.WriteBool('CW', 'send_nr_auto', Settings.CW._send_nr_auto);
 
-      // No send leading zeros in serial number
-      ini.ReadBool('CW', 'nosend_leading_zeros', Settings.CW._nosend_leading_zeros);
+      // Not send leading zeros in serial number
+      ini.ReadBool('CW', 'not_send_leading_zeros', Settings.CW._not_send_leading_zeros);
 
       // Keying Signal(DTR) reverse
       ini.WriteBool('CW', 'keying_signal_reverse', Settings.CW._keying_signal_reverse);
