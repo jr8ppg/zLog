@@ -78,7 +78,7 @@ begin
    temp := StringReplace(temp, '$V', Abbreviate(dmZLogGlobal.Settings._prov), [rfReplaceAll]);
    temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
 
-   if dmZLogGlobal.Settings.CW._nosend_leading_zeros = False then begin
+   if dmZLogGlobal.Settings.CW._not_send_leading_zeros = False then begin
       temp := StringReplace(temp, '$S', Abbreviate(aQSO.SerialStr), [rfReplaceAll]);
    end
    else begin
@@ -162,7 +162,7 @@ begin
    temp := StringReplace(temp, '$V', dmZLogGlobal.Settings._prov, [rfReplaceAll]);
    temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
 
-   if dmZLogGlobal.Settings.CW._nosend_leading_zeros = False then begin
+   if dmZLogGlobal.Settings.CW._not_send_leading_zeros = False then begin
       temp := StringReplace(temp, '$S', aQSO.SerialStr, [rfReplaceAll]);
    end
    else begin

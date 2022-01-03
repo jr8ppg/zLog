@@ -1340,12 +1340,12 @@ object formOptions: TformOptions
         TabOrder = 7
         Value = 100
       end
-      object checkNoSendLeadingZeros: TCheckBox
+      object checkNotSendLeadingZeros: TCheckBox
         Left = 228
         Top = 326
         Width = 204
         Height = 17
-        Caption = 'No send leading zeros in serial numbers'
+        Caption = 'Not send leading zeros in serial numbers'
         TabOrder = 14
       end
     end
