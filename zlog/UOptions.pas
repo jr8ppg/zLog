@@ -913,7 +913,7 @@ begin
       Settings._bandscopecolor[7].FBackColor2 := FBSColor[72].Color;
       Settings._bandscopecolor[7].FBackColor3 := FBSColor[73].Color;
 
-      // Spot‘N“x•\¦
+      // Spoté®®åº¦è¡¨ç¤º
       if radioFreshness1.Checked = True then begin
          Settings._bandscope_freshness_mode := 0;           // Remain time1
          Settings._bandscope_freshness_icon := 2;
@@ -936,9 +936,9 @@ begin
       end;
 
       // BandScope Options
-      Settings._bandscope_use_estimated_mode := checkUseEstimatedMode.Checked;      // ü”g”‚©‚ç‚Ìƒ‚[ƒh‚Ì„’è
-      Settings._bandscope_show_only_in_bandplan := checkShowOnlyInBandplan.Checked; // ƒoƒ“ƒh“à‚Ì‚İ
-      Settings._bandscope_show_only_domestic := checkShowOnlyDomestic.Checked;      // ‘“à‚Ì‚İ
+      Settings._bandscope_use_estimated_mode := checkUseEstimatedMode.Checked;      // å‘¨æ³¢æ•°ã‹ã‚‰ã®ãƒ¢ãƒ¼ãƒ‰ã®æ¨å®š
+      Settings._bandscope_show_only_in_bandplan := checkShowOnlyInBandplan.Checked; // ãƒãƒ³ãƒ‰å†…ã®ã¿
+      Settings._bandscope_show_only_domestic := checkShowOnlyDomestic.Checked;      // å›½å†…ã®ã¿
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -1157,11 +1157,11 @@ begin
 
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
 
-      // Packet Cluster’ÊMİ’èƒ{ƒ^ƒ“
+      // Packet Clusteré€šä¿¡è¨­å®šãƒœã‚¿ãƒ³
       buttonClusterSettings.Enabled := True;
       ClusterComboChange(nil);
 
-      // ZLink’ÊMİ’èƒ{ƒ^ƒ“
+      // ZLinké€šä¿¡è¨­å®šãƒœã‚¿ãƒ³
       buttonZLinkSettings.Enabled := True;
       ZLinkComboChange(nil);
 
@@ -1191,7 +1191,7 @@ begin
       // Use Winkeyer
       checkUseWinkeyer.Checked := Settings._use_winkeyer;
 
-      // Sent—“‚Í•\¦ê—p
+      // Sentæ¬„ã¯è¡¨ç¤ºå°‚ç”¨
       SentEdit.Text := Settings._sentstr;
 
       PluginPathEdit.Text := UPluginManager.GetItemPathINI;
@@ -1315,7 +1315,7 @@ begin
       FBSColor[72].Color      := Settings._bandscopecolor[7].FBackColor2;
       FBSColor[73].Color      := Settings._bandscopecolor[7].FBackColor3;
 
-      // Spot‘N“x•\¦
+      // Spoté®®åº¦è¡¨ç¤º
       case Settings._bandscope_freshness_mode of
          0: radioFreshness1.Checked := True;
          1: radioFreshness2.Checked := True;
@@ -1325,9 +1325,9 @@ begin
       end;
 
       // BandScope Options
-      checkUseEstimatedMode.Checked := Settings._bandscope_use_estimated_mode;      // ü”g”‚©‚ç‚Ìƒ‚[ƒh‚Ì„’è
-      checkShowOnlyInBandplan.Checked := Settings._bandscope_show_only_in_bandplan; // ƒoƒ“ƒh“à‚Ì‚İ
-      checkShowOnlyDomestic.Checked := Settings._bandscope_show_only_domestic;      // ‘“à‚Ì‚İ
+      checkUseEstimatedMode.Checked := Settings._bandscope_use_estimated_mode;      // å‘¨æ³¢æ•°ã‹ã‚‰ã®ãƒ¢ãƒ¼ãƒ‰ã®æ¨å®š
+      checkShowOnlyInBandplan.Checked := Settings._bandscope_show_only_in_bandplan; // ãƒãƒ³ãƒ‰å†…ã®ã¿
+      checkShowOnlyDomestic.Checked := Settings._bandscope_show_only_domestic;      // å›½å†…ã®ã¿
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -1358,7 +1358,7 @@ begin
       comboVoiceDevice.ItemIndex := Settings.FSoundDevice;
    end;
 
-   if FEditMode = 0 then begin   // ’Êíƒ‚[ƒh
+   if FEditMode = 0 then begin   // é€šå¸¸ãƒ¢ãƒ¼ãƒ‰
       tabsheetPreferences.TabVisible := True;
       tabsheetCategories.TabVisible := True;
       tabsheetCW.TabVisible := True;
@@ -1689,7 +1689,7 @@ var
 begin
    strSelected := editSuperCheckFolder.Text;
 
-   fResult := SelectDirectory('SuperCheck—p‚Ìƒtƒ@ƒCƒ‹‚ª•Û‘¶‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚ğ‘I‘ğ‚µ‚Ä‰º‚³‚¢', '', strSelected, [sdNewUI, sdNewFolder, sdValidateDir], Self);
+   fResult := SelectDirectory('SuperCheckç”¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒä¿å­˜ã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã‚’é¸æŠã—ã¦ä¸‹ã•ã„', '', strSelected, [sdNewUI, sdNewFolder, sdValidateDir], Self);
    if fResult = False then begin
       Exit;
    end;
@@ -1746,7 +1746,7 @@ begin
          strDir := PluginPathEdit.Text;
    end;
 
-   if SelectDirectory('ƒtƒHƒ‹ƒ_‚ÌQÆ', '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
+   if SelectDirectory('ãƒ•ã‚©ãƒ«ãƒ€ã®å‚ç…§', '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
       exit;
    end;
 
