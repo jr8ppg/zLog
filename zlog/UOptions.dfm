@@ -28,7 +28,6 @@ object formOptions: TformOptions
     ActivePage = tabsheetHardware
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 394
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
       object Label40: TLabel
@@ -1955,7 +1954,7 @@ object formOptions: TformOptions
       object GroupBox13: TGroupBox
         Left = 6
         Top = 354
-        Width = 423
+        Width = 189
         Height = 43
         Caption = 'USBIF4CW'
         TabOrder = 5
@@ -1968,9 +1967,9 @@ object formOptions: TformOptions
           TabOrder = 0
         end
         object checkUsbif4cwPaddleReverse: TCheckBox
-          Left = 96
+          Left = 89
           Top = 17
-          Width = 101
+          Width = 96
           Height = 17
           Caption = 'Paddle Reverse'
           TabOrder = 1
@@ -2304,6 +2303,75 @@ object formOptions: TformOptions
             'COM19'
             'COM20'
             'USB')
+        end
+      end
+      object GroupBox7: TGroupBox
+        Left = 201
+        Top = 354
+        Width = 228
+        Height = 43
+        Caption = 'SO2R Support'
+        TabOrder = 6
+        object radioSo2rZLog: TRadioButton
+          Tag = 1
+          Left = 56
+          Top = 19
+          Width = 41
+          Height = 13
+          Caption = 'zLog'
+          TabOrder = 1
+          OnClick = radioSo2rClick
+        end
+        object radioSo2rNeo: TRadioButton
+          Tag = 2
+          Left = 180
+          Top = 19
+          Width = 41
+          Height = 13
+          Caption = 'Neo'
+          TabOrder = 3
+          OnClick = radioSo2rClick
+        end
+        object comboSo2rPort: TComboBox
+          Left = 103
+          Top = 15
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 2
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20')
+        end
+        object radioSo2rNone: TRadioButton
+          Left = 8
+          Top = 19
+          Width = 46
+          Height = 13
+          Caption = 'None'
+          Checked = True
+          TabOrder = 0
+          TabStop = True
+          OnClick = radioSo2rClick
         end
       end
     end
@@ -4365,12 +4433,11 @@ object formOptions: TformOptions
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 394
     DesignSize = (
       444
       37)
     object buttonOK: TButton
-      Left = 124
+      Left = 149
       Top = 6
       Width = 75
       Height = 25
@@ -4382,7 +4449,7 @@ object formOptions: TformOptions
       OnClick = buttonOKClick
     end
     object buttonCancel: TButton
-      Left = 204
+      Left = 229
       Top = 6
       Width = 75
       Height = 25

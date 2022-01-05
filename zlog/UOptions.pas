@@ -1,4 +1,4 @@
-unit UOptions;
+﻿unit UOptions;
 
 interface
 
@@ -449,6 +449,11 @@ type
     Label96: TLabel;
     Label97: TLabel;
     Label98: TLabel;
+    GroupBox7: TGroupBox;
+    radioSo2rZLog: TRadioButton;
+    radioSo2rNeo: TRadioButton;
+    comboSo2rPort: TComboBox;
+    radioSo2rNone: TRadioButton;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -496,6 +501,7 @@ type
     procedure radioCategoryClick(Sender: TObject);
     procedure comboCwPttPortChange(Sender: TObject);
     procedure checkUseWinKeyerClick(Sender: TObject);
+    procedure radioSo2rClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -807,6 +813,18 @@ begin
 
       // Use Winkeyer
       Settings._use_winkeyer := checkUseWinkeyer.Checked;
+
+      // SO2R Support
+      if radioSo2rNone.Checked = True then begin
+         Settings._so2r_type := 0;
+      end
+      else if radioSo2rZLog.Checked = True then begin
+         Settings._so2r_type := 1;
+      end
+      else begin
+         Settings._so2r_type := 2;
+      end;
+      Settings._so2r_port := comboSo2rPort.ItemIndex;
 
 //      Settings._sentstr := SentEdit.Text;
 
@@ -1190,6 +1208,25 @@ begin
 
       // Use Winkeyer
       checkUseWinkeyer.Checked := Settings._use_winkeyer;
+
+      // SO2R Support
+      case Settings._so2r_type of
+         0: begin
+            radioSo2rNone.Checked := True;
+            radioSo2rClick(radioSo2rNone);
+         end;
+
+         1: begin
+            radioSo2rZLog.Checked := True;
+            radioSo2rClick(radioSo2rZLog);
+         end;
+
+         2: begin
+            radioSo2rNeo.Checked := True;
+            radioSo2rClick(radioSo2rNeo);
+         end;
+      end;
+      comboSo2rPort.ItemIndex := Settings._so2r_port;
 
       // Sent欄は表示専用
       SentEdit.Text := Settings._sentstr;
@@ -1800,6 +1837,26 @@ begin
          editQsyCountDownMinute.Enabled := False;
          editQsyCountPerHour.Enabled := True;
          editQsyCountPerHour.SetFocus();
+      end;
+   end;
+end;
+
+procedure TformOptions.radioSo2rClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TRadioButton(Sender).Tag;
+   case n of
+      0: begin
+         comboSo2rPort.Enabled := False;
+      end;
+
+      1: begin
+         comboSo2rPort.Enabled := True;
+      end;
+
+      2: begin
+         comboSo2rPort.Enabled := False;
       end;
    end;
 end;

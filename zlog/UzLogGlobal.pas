@@ -124,6 +124,10 @@ type
 
     _use_winkeyer: Boolean;
 
+    // SO2R Support
+    _so2r_type: Integer;   // 0:none 1:zlog 2:SO2R Neo
+    _so2r_port: Integer;   // 0:none 1-20:com1-20
+
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
     _clusterbaud : integer; {}
 
@@ -802,6 +806,10 @@ begin
       // Use WinKeyer USB
       Settings._use_winkeyer := ini.ReadBool('Hardware', 'UseWinKeyer', False);
 
+      // SO2R Support
+      Settings._so2r_type  := ini.ReadInteger('SO2R', 'type', 0);
+      Settings._so2r_port  := ini.ReadInteger('SO2R', 'port', 0);
+
       // CW PTT control
 
       // Enable PTT control
@@ -1342,6 +1350,10 @@ begin
 
       // Use WinKeyer USB
       ini.WriteBool('Hardware', 'UseWinKeyer', Settings._use_winkeyer);
+
+      // SO2R Support
+      ini.WriteInteger('SO2R', 'type', Settings._so2r_type);
+      ini.WriteInteger('SO2R', 'port', Settings._so2r_port);
 
       // CW PTT control
 
