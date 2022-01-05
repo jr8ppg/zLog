@@ -146,6 +146,12 @@ begin
 
       for i := 1 to log.TotalQSO do begin
          aQSO := log.QsoList[i];
+
+         // ìæì_0ÇÕèúÇ≠
+         if aQSO.Points = 0 then begin
+            Continue;
+         end;
+
          diff := aQSO.Time - origin;
          DecodeTime(diff, H, M, S, ms);
          d := Trunc(DaySpan(aQSO.Time, origin));
