@@ -224,6 +224,7 @@ type
     FGraphStartPosition: TQSORateStartPosition;
     FGraphBarColor: array[b19..HiBand] of TColor;
     FGraphTextColor: array[b19..HiBand] of TColor;
+    FZaqAchievement: Boolean;
 
     // Cluster Window(Comm)
     FClusterAutoLogin: Boolean;
@@ -1075,6 +1076,7 @@ begin
          Settings.FGraphBarColor[b]  := ZStringToColorDef(ini.ReadString('Graph', strKey + '_BarColor',  ''), default_graph_bar_color[b]);
          Settings.FGraphTextColor[b] := ZStringToColorDef(ini.ReadString('Graph', strKey + '_TextColor', ''), default_graph_text_color[b]);
       end;
+      Settings.FZaqAchievement      := ini.ReadBool('rateex_zaq', 'achievement', True);
 
       // Cluster Window(Comm)
       Settings.FClusterAutoLogin       := ini.ReadBool('ClusterWindow', 'AutoLogin', True);
@@ -1556,6 +1558,7 @@ begin
          ini.WriteString('Graph', strKey + '_BarColor', ZColorToString(Settings.FGraphBarColor[b]));
          ini.WriteString('Graph', strKey + '_TextColor', ZColorToString(Settings.FGraphTextColor[b]));
       end;
+      ini.WriteBool('rateex_zaq', 'achievement', Settings.FZaqAchievement);
 
       // Cluster Window(Comm)
       ini.WriteBool('ClusterWindow', 'AutoLogin', Settings.FClusterAutoLogin);

@@ -5880,6 +5880,7 @@ procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    FChatForm.RenewOptions();
    FCommForm.RenewOptions();
+   FRateDialogEx.SaveSettings();
 
    Timer1.Enabled := False;
    TerminateNPlusOne();
