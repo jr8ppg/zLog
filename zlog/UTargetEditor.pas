@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.ExtCtrls, System.DateUtils,
-  UzLogConst, UzLogQSO, UQsoTarget;
+  UzLogConst, UzLogQSO, UQsoTarget, Vcl.Menus, Vcl.Clipbrd;
 
 type
   TTargetEditor = class(TForm)
@@ -20,6 +20,9 @@ type
     buttonAdjust10: TButton;
     checkShowWarc: TCheckBox;
     checkShowZero: TCheckBox;
+    popupScore: TPopupMenu;
+    menuCopy: TMenuItem;
+    menuPaste: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure ScoreGridSetEditText(Sender: TObject; ACol, ARow: Integer;
       const Value: string);
@@ -35,6 +38,9 @@ type
     procedure ScoreGridSelectCell(Sender: TObject; ACol, ARow: Integer;
       var CanSelect: Boolean);
     procedure ScoreGridTopLeftChanged(Sender: TObject);
+    procedure menuCopyClick(Sender: TObject);
+    procedure popupScorePopup(Sender: TObject);
+    procedure menuPasteClick(Sender: TObject);
   private
     { Private êÈåæ }
     FTarget: TContestTarget;
@@ -85,6 +91,8 @@ begin
 
    TargetToGrid(dmZLogGlobal.Target);
    GridToTarget(FTarget);
+   FTarget.Refresh();
+   TargetToGrid(FTarget);
 end;
 
 procedure TTargetEditor.FormDestroy(Sender: TObject);
@@ -217,6 +225,121 @@ begin
    end;
 end;
 
+procedure TTargetEditor.popupScorePopup(Sender: TObject);
+begin
+   if ClipBoard.HasFormat(CF_TEXT) = True then begin
+      menuPaste.Enabled := True;
+   end
+   else begin
+      menuPaste.Enabled := False;
+   end;
+end;
+
+procedure TTargetEditor.menuCopyClick(Sender: TObject);
+var
+   b: TBand;
+   i: Integer;
+   slText: TStringList;
+   slLine: TStringList;
+begin
+   slText := TStringList.Create();
+   slLine := TStringList.Create();
+   slLine.StrictDelimiter := True;
+   slLine.Delimiter := #09;
+   try
+      slLine.Add('');
+      for i := 1 to 24 do begin
+         slLine.Add(IntToStr(i));
+      end;
+      slText.Add(slLine.DelimitedText);
+
+      for b := b19 to b10g do begin
+
+         slLine.Clear();
+         slLine.Add(BandString[b]);
+
+         for i := 1 to 24 do begin
+            slLine.Add(ScoreGrid.Cells[i, Ord(b)+1]);
+         end;
+
+         slText.Add(slLine.DelimitedText);
+      end;
+
+      ClipBoard.AsText := slText.Text;
+   finally
+      slText.Free();
+      slLine.Free();
+   end;
+end;
+
+procedure TTargetEditor.menuPasteClick(Sender: TObject);
+var
+   b: TBand;
+   i: Integer;
+   j: Integer;
+   slText: TStringList;
+   slLine: TStringList;
+   strBand: string;
+   txt: string;
+
+   function FindBand(strBand: string): TBand;
+   var
+      b: TBand;
+   begin
+      for b := Low(BandString) to High(BandString) do begin
+         if BandString[b] = strBand then begin
+            Result := b;
+            Exit;
+         end;
+      end;
+
+      Result := TBand(-1);
+   end;
+begin
+   slText := TStringList.Create();
+   slLine := TStringList.Create();
+   slLine.StrictDelimiter := True;
+   slLine.Delimiter := #09;
+   try
+      slText.Text := ClipBoard.AsText;
+
+      for i := 1 to slText.Count - 1 do begin
+         // ÇPçséÊÇËÇæÇµ
+         slLine.DelimitedText := slText[i];
+
+         // ÇQÇTçÄñ⁄ñ¢ñûÇÕÉpÉX
+         if slLine.Count < 25 then begin
+            Continue;
+         end;
+
+         // ÇPóÒñ⁄ÇÕÉoÉìÉh
+         strBand := slLine[0];
+
+         b := FindBand(strBand);
+         if b = TBand(-1) then begin
+            Continue;
+         end;
+
+         // ÇQóÒñ⁄à»ç~ÇÕñ⁄ïWíl
+         for j := 1 to 24 do begin
+            txt := slLine[j];
+
+            // ì¸óÕÇ≥ÇÍÇΩílÇäiî[
+            FTarget.Bands[b].Hours[j].Target := StrToIntDef(txt, 0);
+         end;
+      end;
+
+      // çáåvçƒåvéZ
+      FTarget.Refresh();
+
+      // âÊñ Ç…ï\é¶
+      TargetToGrid(FTarget);
+   finally
+      slText.Free();
+      slLine.Free();
+   end;
+end;
+
 procedure TTargetEditor.ScoreGridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
 var
    strText: string;
@@ -232,7 +355,7 @@ begin
       Brush.Color := ScoreGrid.Color;
       FillRect(Rect);
 
-      if ACol = 0 then begin
+      if ACol = 0 then begin           // ÉoÉìÉhñº
          strText := ScoreGrid.Cells[ACol, ARow];
          TextRect(Rect, strText, [tfLeft, tfVerticalCenter, tfSingleLine]);
 
@@ -240,7 +363,7 @@ begin
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
-      else if ARow = 0 then begin
+      else if ARow = 0 then begin      // å©èoÇµçs
          strText := ScoreGrid.Cells[ACol, ARow];
          TextRect(Rect, strText, [tfCenter, tfVerticalCenter, tfSingleLine]);
 
@@ -248,7 +371,7 @@ begin
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
-      else if ACol = 25 then begin
+      else if ACol = 25 then begin     // â°çáåvóÒ
          strText := ScoreGrid.Cells[ACol, ARow];
          TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
 
@@ -256,7 +379,7 @@ begin
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
-      else begin
+      else begin                       // ñ⁄ïWíl
          t := FTarget.Bands[TBand(ARow - 1)].Hours[ACol].Target;
 
          if checkShowZero.Checked = True then begin
@@ -275,8 +398,13 @@ begin
          Pen.Color := RGB(220, 220, 220);
          Brush.Style := bsClear;
 
-         if ScoreGrid.RowHeights[ARow] >= 2 then begin
-            Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
+         Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
+
+         if gdSelected in State then begin
+            Pen.Color := RGB(80, 80, 80);
+            Pen.Style := psDot;
+            Brush.Style := bsClear;
+            Rectangle(Rect);
          end;
       end;
    end;
