@@ -403,6 +403,7 @@ procedure TEditDialog.FormShow(Sender: TObject);
 var
    i: integer;
    M: TMenuItem;
+   nID: Integer;
 const
    offset = 3;
 begin
@@ -440,6 +441,8 @@ begin
          OpMenu.Items.Add(M);
       end;
    end;
+
+   nID := MainForm.CurrentRigID;
 
    SerialEdit.Visible := MainForm.SerialEdit.Visible;
    SerialEdit.Left := MainForm.SerialEdit.Left + offset;
@@ -479,9 +482,9 @@ begin
    PowerLabel.Visible := PowerEdit.Visible;
    PowerLabel.Left := PowerEdit.Left + 1;
 
-   NewPowerEdit.Left := MainForm.NewPowerEdit.Left + offset;
-   NewPowerEdit.Width := MainForm.NewPowerEdit.Width;
-   NewPowerEdit.Visible := MainForm.NewPowerEdit.Visible;
+   NewPowerEdit.Left := MainForm.PowerEdit.Left + offset;
+   NewPowerEdit.Width := MainForm.PowerEdit.Width;
+   NewPowerEdit.Visible := MainForm.PowerEdit.Visible;
    PowerLabel.Visible := NewPowerEdit.Visible;
    PowerLabel.Left := NewPowerEdit.Left + 1;
 

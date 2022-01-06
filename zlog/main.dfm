@@ -2872,7 +2872,7 @@ object MainForm: TMainForm
       OnChange = SpeedBarChange
     end
   end
-  object EditPanel: TPanel
+  object EditPanel1R: TPanel
     Left = 0
     Top = 321
     Width = 524
@@ -2885,7 +2885,7 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
     TabOrder = 4
-    object RcvdRSTEdit: TEdit
+    object RcvdRSTEdit1: TEdit
       Left = 117
       Top = 4
       Width = 52
@@ -2894,11 +2894,11 @@ object MainForm: TMainForm
       AutoSize = False
       ImeMode = imDisable
       TabOrder = 0
-      OnChange = RcvdRSTEditChange
+      OnChange = RcvdRSTEdit1Change
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
     end
-    object BandEdit: TEdit
+    object BandEdit1: TEdit
       Left = 368
       Top = 4
       Width = 73
@@ -2909,11 +2909,11 @@ object MainForm: TMainForm
       PopupMenu = BandMenu
       ReadOnly = True
       TabOrder = 1
-      Text = 'BandEdit'
-      OnClick = BandEditClick
+      Text = 'BandEdit1'
+      OnClick = BandEdit1Click
       OnKeyDown = EditKeyDown
     end
-    object ModeEdit: TEdit
+    object ModeEdit1: TEdit
       Left = 192
       Top = 4
       Width = 33
@@ -2924,10 +2924,10 @@ object MainForm: TMainForm
       PopupMenu = ModeMenu
       ReadOnly = True
       TabOrder = 2
-      OnClick = ModeEditClick
+      OnClick = ModeEdit1Click
       OnKeyDown = EditKeyDown
     end
-    object PointEdit: TEdit
+    object PointEdit1: TEdit
       Left = 320
       Top = 4
       Width = 70
@@ -2936,11 +2936,11 @@ object MainForm: TMainForm
       AutoSize = False
       ImeMode = imDisable
       TabOrder = 3
-      Text = 'PointEdit'
+      Text = 'PointEdit1'
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
     end
-    object OpEdit: TEdit
+    object OpEdit1: TEdit
       Left = 37
       Top = 4
       Width = 124
@@ -2953,10 +2953,10 @@ object MainForm: TMainForm
       ReadOnly = True
       ShowHint = False
       TabOrder = 4
-      OnClick = OpEditClick
+      OnClick = OpEdit1Click
       OnKeyDown = EditKeyDown
     end
-    object SerialEdit: TEdit
+    object SerialEdit1: TEdit
       Left = 32
       Top = 4
       Width = 73
@@ -2966,10 +2966,10 @@ object MainForm: TMainForm
       ImeMode = imDisable
       TabOrder = 5
       Visible = False
-      OnChange = SerialEditChange
+      OnChange = SerialEdit1Change
       OnKeyDown = EditKeyDown
     end
-    object NewPowerEdit: TEdit
+    object PowerEdit1: TEdit
       Left = 416
       Top = 4
       Width = 49
@@ -2980,10 +2980,10 @@ object MainForm: TMainForm
       PopupMenu = NewPowerMenu
       TabOrder = 6
       Visible = False
-      OnClick = NewPowerEditClick
+      OnClick = PowerEdit1Click
       OnKeyDown = EditKeyDown
     end
-    object CallsignEdit: TOvrEdit
+    object CallsignEdit1: TOvrEdit
       Left = 144
       Top = 4
       Width = 121
@@ -2994,15 +2994,15 @@ object MainForm: TMainForm
       CharCase = ecUpperCase
       ImeMode = imDisable
       TabOrder = 7
-      OnChange = CallsignEditChange
+      OnChange = CallsignEdit1Change
       OnEnter = EditEnter
       OnExit = EditExit
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
-      OnKeyUp = CallsignEditKeyUp
+      OnKeyUp = CallsignEdit1KeyUp
       TabOnEnter = False
     end
-    object NumberEdit: TOvrEdit
+    object NumberEdit1: TOvrEdit
       Left = 136
       Top = 4
       Width = 73
@@ -3014,15 +3014,15 @@ object MainForm: TMainForm
       ImeMode = imDisable
       TabOrder = 8
       Text = 'NUMBER'
-      OnChange = NumberEditChange
+      OnChange = NumberEdit1Change
       OnEnter = EditEnter
       OnExit = EditExit
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
-      OnKeyUp = NumberEditKeyUp
+      OnKeyUp = NumberEdit1KeyUp
       TabOnEnter = False
     end
-    object MemoEdit: TOvrEdit
+    object MemoEdit1: TOvrEdit
       Left = 432
       Top = 4
       Width = 73
@@ -3030,14 +3030,14 @@ object MainForm: TMainForm
       TabStop = False
       AutoSize = False
       TabOrder = 9
-      OnChange = MemoEditChange
+      OnChange = MemoEdit1Change
       OnEnter = EditEnter
       OnExit = EditExit
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
       TabOnEnter = False
     end
-    object TimeEdit: TOvrEdit
+    object TimeEdit1: TOvrEdit
       Left = 64
       Top = 4
       Width = 57
@@ -3047,13 +3047,13 @@ object MainForm: TMainForm
       ImeMode = imDisable
       TabOrder = 10
       Text = 'TIME'
-      OnChange = TimeEditChange
-      OnDblClick = TimeEditDblClick
+      OnChange = TimeEdit1Change
+      OnDblClick = TimeEdit1DblClick
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
       TabOnEnter = False
     end
-    object DateEdit: TOvrEdit
+    object DateEdit1: TOvrEdit
       Left = 8
       Top = 4
       Width = 57
@@ -3064,8 +3064,8 @@ object MainForm: TMainForm
       TabOrder = 11
       Text = 'date'
       Visible = False
-      OnChange = DateEditChange
-      OnDblClick = TimeEditDblClick
+      OnChange = DateEdit1Change
+      OnDblClick = TimeEdit1DblClick
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
       TabOnEnter = False
@@ -5466,8 +5466,8 @@ object MainForm: TMainForm
     Top = 253
   end
   object BandMenu: TPopupMenu
-    Left = 96
-    Top = 296
+    Left = 92
+    Top = 252
     object N19MHz: TMenuItem
       Caption = '1.9MHz'
       OnClick = BandMenuClick
@@ -5549,8 +5549,8 @@ object MainForm: TMainForm
     end
   end
   object ModeMenu: TPopupMenu
-    Left = 128
-    Top = 296
+    Left = 124
+    Top = 252
     object CW1: TMenuItem
       Caption = 'CW'
       OnClick = ModeMenuClick
@@ -5585,8 +5585,8 @@ object MainForm: TMainForm
     AutoHotkeys = maManual
     AutoLineReduction = maManual
     OnPopup = GridMenuPopup
-    Left = 64
-    Top = 296
+    Left = 60
+    Top = 252
     object EditQSO: TMenuItem
       Caption = '&Edit QSO'
       OnClick = EditQSOClick
@@ -5765,15 +5765,15 @@ object MainForm: TMainForm
   end
   object OpMenu: TPopupMenu
     AutoHotkeys = maManual
-    Left = 192
-    Top = 296
+    Left = 188
+    Top = 252
   end
   object Timer1: TTimer
     Enabled = False
     Interval = 500
     OnTimer = Timer1Timer
-    Left = 24
-    Top = 296
+    Left = 20
+    Top = 252
   end
   object TXTSaveDialog: TSaveDialog
     DefaultExt = 'all'
@@ -5795,8 +5795,8 @@ object MainForm: TMainForm
     end
   end
   object NewPowerMenu: TPopupMenu
-    Left = 160
-    Top = 328
+    Left = 156
+    Top = 284
     object P1: TMenuItem
       Caption = 'P (QRP)'
       OnClick = NewPowerMenuClick

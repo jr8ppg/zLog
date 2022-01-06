@@ -9,38 +9,35 @@ uses
 type
   TBasicEdit = class
   public
-    colSerial : Integer;
-    colTime : Integer;
-    colCall : Integer;
-    colrcvdRST : Integer;
-    colrcvdNumber : Integer;
-    colMode : Integer;
-    colPower : Integer;
-    colNewPower : Integer;
-    colBand : Integer;
-    colPoint : Integer;
-    colMemo : Integer;
-    colOp : Integer;
-    colNewMulti1 : Integer;
-    colNewMulti2 : Integer;
-    colsentRST : Integer;
-    colsentNumber : Integer;
-    colCQ : Integer;
+    colSerial : Integer;         // 0
+    colTime : Integer;           // 1
+    colCall : Integer;           // 2
+    colrcvdRST : Integer;        // 3
+    colrcvdNumber : Integer;     // 4
+    colMode : Integer;           // 5
+    colNewPower : Integer;       // 6
+    colBand : Integer;           // 7
+    colPoint : Integer;          // 8
+    colOp : Integer;             // 9
+    colMemo : Integer;           // 10
+    colNewMulti1 : Integer;      // 11
+    colNewMulti2 : Integer;      // 12
+
     GridColCount: Integer;
   public
-    SerialWid : Integer;
-    TimeWid : Integer;
-    CallSignWid : Integer;
-    rcvdRSTWid : Integer;
-    NumberWid : Integer;
-    BandWid : Integer;
-    ModeWid : Integer;
-    NewPowerWid : Integer;
-    PointWid : Integer;
-    OpWid : Integer;
-    MemoWid : Integer;
-    NewMulti1Wid : Integer;
-    NewMulti2Wid : Integer;
+    SerialWid : Integer;         // 0
+    TimeWid : Integer;           // 1
+    CallSignWid : Integer;       // 2
+    rcvdRSTWid : Integer;        // 3
+    NumberWid : Integer;         // 4
+    BandWid : Integer;           // 5
+    ModeWid : Integer;           // 6
+    NewPowerWid : Integer;       // 7
+    PointWid : Integer;          // 8
+    OpWid : Integer;             // 9
+    MemoWid : Integer;           // 10
+    NewMulti1Wid : Integer;      // 11
+    NewMulti2Wid : Integer;      // 12
 
     DirectEdit : Boolean;
     BeforeEdit : string; // temp var for directedit mode
@@ -148,7 +145,6 @@ begin
    colrcvdRST := -1;
    colrcvdNumber := -1;
    colMode := -1;
-   colPower := -1;
    colNewPower := -1;
    colBand := -1;
    colPoint := -1;
@@ -157,9 +153,6 @@ begin
    colOp := -1;
    colNewMulti1 := -1;
    colNewMulti2 := -1;
-   colsentRST := -1;
-   colsentNumber := -1;
-   colCQ := -1;
 
    SerialWid := 4;
    TimeWid := 6;
@@ -211,7 +204,6 @@ begin
    end;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      colOp := -1;
       OpWid := 0;
       MemoWid := 13;
    end
@@ -219,9 +211,6 @@ begin
       OpWid := 6;
       MemoWid := 7;
    end;
-
-//   SetGridWidth;
-//   SetEditFields;
 end;
 
 constructor TARRLDXEdit.Create(AOwner: TComponent);
@@ -236,13 +225,12 @@ begin
    colMode := 5;
    colPoint := 6;
    colNewMulti1 := 7;
-   colPower := 8;
-   colOp := 9;
-   colMemo := 10;
-   GridColCount := 11;
+   colOp := 8;
+   colMemo := 9;
+
+   GridColCount := 10;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      colOp := -1;
       OpWid := 0;
       MemoWid := 13;
    end
@@ -252,9 +240,6 @@ begin
    end;
 
    NumberWid := 3;
-
-//   SetGridWidth;
-//   SetEditFields;
 end;
 
 constructor TWWEdit.Create(AOwner: TComponent);
@@ -277,7 +262,6 @@ begin
    NewMulti1Wid := 6;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      colOp := -1;
       OpWid := 0;
       MemoWid := 16;
    end
@@ -285,9 +269,6 @@ begin
       OpWid := 6;
       MemoWid := 10;
    end;
-
-//   SetGridWidth;
-//   SetEditFields;
 end;
 
 function TWWEdit.GetNewMulti1(aQSO: TQSO): string;
@@ -334,7 +315,6 @@ begin
    NewMulti1Wid := 5;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      colOp := -1;
       OpWid := 0;
       MemoWid := 16;
    end
@@ -342,9 +322,6 @@ begin
       OpWid := 6;
       MemoWid := 10;
    end;
-
-//   SetGridWidth;
-//   SetEditFields;
 end;
 
 function TDXCCEdit.GetNewMulti1(aQSO: TQSO): string;
@@ -385,7 +362,6 @@ begin
    GridColCount := 10;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      colOp := -1;
       OpWid := 0;
       MemoWid := 16;
    end
@@ -393,9 +369,6 @@ begin
       OpWid := 6;
       MemoWid := 10;
    end;
-
-//   SetGridWidth;
-//   SetEditFields;
 end;
 
 constructor TJA0Edit.Create(AOwner: TComponent);
@@ -416,7 +389,6 @@ begin
    colMemo := 10;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      colOp := -1;
       OpWid := 0;
       MemoWid := 16;
    end
@@ -424,9 +396,6 @@ begin
       OpWid := 6;
       MemoWid := 10;
    end;
-
-//   SetGridWidth;
-//   SetEditFields;
 end;
 
 function TWPXEdit.GetNewMulti1(aQSO: TQSO): string;
@@ -470,7 +439,6 @@ begin
    GridColCount := 11;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      colOp := -1;
       OpWid := 0;
       MemoWid := 13;
    end
@@ -478,9 +446,6 @@ begin
       OpWid := 6;
       MemoWid := 7;
    end;
-
-//   SetGridWidth;
-//   SetEditFields;
 end;
 
 function TSerialGeneralEdit.GetNewMulti1(aQSO: TQSO): string;
@@ -528,12 +493,9 @@ begin
    MemoWid := 7;
    NewMulti1Wid := 6;
 
-   // MainForm.Grid.Cells[colNewMulti1,0] := '';
-
    GridColCount := 11;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      colOp := -1;
       OpWid := 0;
       MemoWid := 11;
    end
@@ -541,9 +503,6 @@ begin
       OpWid := 6;
       MemoWid := 5;
    end;
-
-//   SetGridWidth;
-//   SetEditFields;
 end;
 
 function TIOTAEdit.GetNewMulti1(aQSO: TQSO): string;
@@ -586,7 +545,6 @@ begin
    GridColCount := 11;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      colOp := -1;
       OpWid := 0;
       MemoWid := 13;
    end
@@ -594,9 +552,6 @@ begin
       OpWid := 6;
       MemoWid := 7;
    end;
-
-//   SetGridWidth;
-//   SetEditFields;
 end;
 
 function TALLJAEdit.GetNewMulti1(aQSO: TQSO): string;
@@ -634,7 +589,6 @@ begin
    // MainForm.NewPowerEdit.Visible := True;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      colOp := -1;
       OpWid := 0;
       MemoWid := 17;
    end
@@ -642,9 +596,6 @@ begin
       OpWid := 6;
       MemoWid := 11;
    end;
-
-//   SetGridWidth;
-//   SetEditFields;
 end;
 
 function TIARUEdit.GetNewMulti1(aQSO: TQSO): string;
