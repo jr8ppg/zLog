@@ -20,7 +20,7 @@ uses
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel,
-  UQsyInfo, UserDefinedContest, UPluginManager;
+  UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -28,139 +28,6 @@ const
   WM_ZLOG_SPCDATALOADED = (WM_USER + 102);
 
 type
-  TBasicEdit = class
-  private
-    colSerial : Integer;
-    colTime : Integer;
-    colCall : Integer;
-    colrcvdRST : Integer;
-    colrcvdNumber : Integer;
-    colMode : Integer;
-    colPower : Integer;
-    colNewPower : Integer;
-    colBand : Integer;
-    colPoint : Integer;
-    colMemo : Integer;
-    colOp : Integer;
-    colNewMulti1 : Integer;
-    colNewMulti2 : Integer;
-    colsentRST : Integer;
-    colsentNumber : Integer;
-    colCQ : Integer;
-    function GetLeft(col : Integer) : Integer;
-    procedure WriteQSO(R: Integer; aQSO : TQSO);
-    procedure ClearQSO(R: Integer);
-  public
-    SerialWid : Integer;
-    TimeWid : Integer;
-    CallSignWid : Integer;
-    rcvdRSTWid : Integer;
-    NumberWid : Integer;
-    BandWid : Integer;
-    ModeWid : Integer;
-    NewPowerWid : Integer;
-    PointWid : Integer;
-    OpWid : Integer;
-    MemoWid : Integer;
-    NewMulti1Wid : Integer;
-    NewMulti2Wid : Integer;
-
-    DirectEdit : Boolean;
-    BeforeEdit : string; // temp var for directedit mode
-
-    constructor Create(AOwner: TComponent); virtual;
-    procedure SetDirectEdit(Direct : Boolean);
-    procedure Add(aQSO : TQSO); virtual;
-    procedure SetGridWidth;
-    procedure SetEditFields;
-    function GetNewMulti1(aQSO : TQSO) : string; virtual;
-    procedure RefreshScreen(fSelectRow: Boolean = True);
-  end;
-
-  TGeneralEdit = class(TBasicEdit)
-  private
-  public
-    constructor Create(AOwner: TComponent); override;
-    function GetNewMulti1(aQSO : TQSO) : string; override;
-  end;
-
-  TALLJAEdit = class(TBasicEdit)
-  private
-  public
-    constructor Create(AOwner: TComponent); override;
-    function GetNewMulti1(aQSO : TQSO) : string; override;
-  end;
-
-  TIARUEdit = class(TBasicEdit)
-  private
-  public
-    constructor Create(AOwner: TComponent); override;
-    function GetNewMulti1(aQSO : TQSO) : string; override;
-  end;
-
-  TARRLDXEdit = class(TBasicEdit)
-  private
-  public
-    constructor Create(AOwner: TComponent); override;
-    function GetNewMulti1(aQSO : TQSO) : string; override;
-  end;
-
-  TACAGEdit = class(TALLJAEdit)
-  private
-  public
-    // constructor Create; override;
-    function GetNewMulti1(aQSO : TQSO) : string; override;
-  end;
-
-  TWWEdit = class(TBasicEdit)
-  private
-  public
-    constructor Create(AOwner: TComponent); override;
-    function GetNewMulti1(aQSO : TQSO) : string; override;
-  end;
-
-  TKCJEdit = class(TWWEdit)
-  private
-  public
-    //constructor Create; override;
-    function GetNewMulti1(aQSO : TQSO) : string; override;
-  end;
-
-  TDXCCEdit = class(TBasicEdit)
-  private
-  public
-    constructor Create(AOwner: TComponent); override;
-    function GetNewMulti1(aQSO : TQSO) : string; override;
-  end;
-
-  TWPXEdit = class(TBasicEdit)
-  private
-  public
-    constructor Create(AOwner: TComponent); override;
-    function GetNewMulti1(aQSO : TQSO) : string; override;
-  end;
-
-  TJA0Edit = class(TWPXEdit)
-  private
-  public
-    constructor Create(AOwner: TComponent); override;
-  end;
-
-  TSerialGeneralEdit = class(TWPXEdit)
-  private
-  public
-    formMulti: TGeneralMulti2;
-    constructor Create(AOwner: TComponent); override;
-    function GetNewMulti1(aQSO : TQSO) : string; override;
-  end;
-
-  TIOTAEdit = class(TBasicEdit)
-  private
-  public
-    constructor Create(AOwner: TComponent); override;
-    function GetNewMulti1(aQSO : TQSO) : string; override;
-  end;
-
   TWanted = class
     Multi : string;
     Bands : set of TBand;
@@ -1083,6 +950,13 @@ type
     function ScanPrevBand(B0: TBand): TBand;
     function IsAvailableBand(B: TBand): Boolean;
     function GetCurrentRigID(): Integer;
+
+    procedure GridAdd(aQSO: TQSO);
+    procedure GridWriteQSO(R: Integer; aQSO: TQSO);
+    procedure GridClearQSO(R: Integer);
+    procedure SetGridWidth(editor: TBasicEdit);
+    function GetGridColmunLeft(col: Integer): Integer;
+    procedure SetEditFields1R(editor: TBasicEdit);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1090,6 +964,8 @@ type
     procedure SetS(var aQSO : TQSO);
 
     function GetNextBand(BB : TBand; Up : Boolean) : TBand;
+
+    procedure GridRefreshScreen(fSelectRow: Boolean = True);
 
     procedure SetQSOMode(aQSO : TQSO);
     procedure WriteStatusLine(S : string; WriteConsole : Boolean);
@@ -1790,7 +1666,7 @@ begin
    end;
 
    if ShowCurrentBandOnly.Checked then begin
-      EditScreen.RefreshScreen;
+      GridRefreshScreen();
    end;
 
    if dmZlogGlobal.Settings._countdown and (CountDownStartTime > 0) then begin
@@ -2235,7 +2111,7 @@ begin
    if Local = False then
       aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
 
-   MainForm.EditScreen.Add(aQSO);
+   MainForm.GridAdd(aQSO);
 
    // synchronization of serial # over network
    if dmZlogGlobal.Settings._syncserial and (SerialContestType <> 0) and (Local = False) then begin
@@ -2340,7 +2216,7 @@ begin
       Exit;
    end;
 
-   MainForm.EditScreen.WriteQSO(R, aQSO);
+   MainForm.GridWriteQSO(R, aQSO);
 
    if MainForm.FPartialCheck.Visible and MainForm.FPartialCheck._CheckCall then begin
       MainForm.FPartialCheck.CheckPartial(CurrentQSO);
@@ -2912,7 +2788,11 @@ begin
    end
    else begin
       MainForm.EditScreen := TSerialGeneralEdit.Create(MainForm);
+
+      MainForm.Grid.Cells[MainForm.EditScreen.colNewMulti1, 0] := 'prefix';
+
       TSerialGeneralEdit(MainForm.EditScreen).formMulti := TGeneralMulti2(MultiForm);
+
       Log.QsoList[0].Serial := $01; // uses serial number
       SameExchange := False;
       dmZlogGlobal.Settings._sameexchange := SameExchange;
@@ -2935,137 +2815,66 @@ begin
    TGeneralScore(ScoreForm).CalcPoints(aQSO);
 end;
 
-constructor TBasicEdit.Create(AOwner: TComponent);
-var
-   i, j: Integer;
-begin
-   Inherited Create();
-
-   DirectEdit := False;
-
-   with MainForm.Grid do begin
-      ColCount := 10;
-      colSerial := -1;
-      colTime := 1;
-      colCall := -1;
-      colrcvdRST := -1;
-      colrcvdNumber := -1;
-      colMode := -1;
-      colPower := -1;
-      colNewPower := -1;
-      colBand := -1;
-      colPoint := -1;
-      colMemo := -1;
-      colSerial := -1;
-      colOp := -1;
-      colNewMulti1 := -1;
-      colNewMulti2 := -1;
-      colsentRST := -1;
-      colsentNumber := -1;
-      colCQ := -1;
-      // Align := alTop;
-      FixedCols := 0;
-      FixedRows := 1;
-      ColCount := 10;
-      Height := 291;
-      DefaultRowHeight := 17;
-
-      SerialWid := 4;
-      TimeWid := 6;
-      CallSignWid := 12;
-      rcvdRSTWid := 4;
-      NumberWid := 10;
-      BandWid := 4;
-      ModeWid := 4;
-      NewPowerWid := 2;
-      PointWid := 3;
-      OpWid := 8;
-      MemoWid := 10;
-      NewMulti1Wid := 3;
-      NewMulti2Wid := 0;
-   end;
-
-   MainForm.SerialEdit.Visible := False;
-   MainForm.NewPowerEdit.Visible := False;
-   MainForm.ModeEdit.Visible := True;
-
-   for i := 1 to MainForm.Grid.RowCount - 1 do
-      for j := 0 to MainForm.Grid.ColCount - 1 do
-         MainForm.Grid.Cells[j, i] := '';
-end;
-
-procedure TBasicEdit.SetDirectEdit(Direct: Boolean);
-begin
-   if Direct then begin
-      MainForm.Grid.Options := MainForm.Grid.Options + [goEditing { , goAlwaysShowEditor } ];
-      MainForm.Grid.Options := MainForm.Grid.Options - [goRowSelect];
-      DirectEdit := True;
-   end
-   else begin
-      MainForm.Grid.Options := MainForm.Grid.Options - [goEditing, goAlwaysShowEditor];
-      MainForm.Grid.Options := MainForm.Grid.Options + [goRowSelect];
-      DirectEdit := False;
-   end;
-end;
-
-procedure TBasicEdit.Add(aQSO: TQSO);
+procedure TMainForm.GridAdd(aQSO: TQSO);
 var
    L: TQSOList;
 begin
-   if MainForm.ShowCurrentBandOnly.Checked and (aQSO.Band <> CurrentQSO.Band) then begin
+   if ShowCurrentBandOnly.Checked and (aQSO.Band <> CurrentQSO.Band) then begin
       Exit;
    end;
 
-   if MainForm.ShowCurrentBandOnly.Checked then begin
+   if ShowCurrentBandOnly.Checked then begin
       L := Log.BandList[CurrentQSO.Band];
    end
    else begin
       L := Log.QsoList;
    end;
 
-   WriteQSO(L.Count, aQSO);
+   GridWriteQSO(L.Count, aQSO);
 
-   RefreshScreen;
+   GridRefreshScreen;
 end;
 
-procedure TBasicEdit.WriteQSO(R: Integer; aQSO: TQSO);
+procedure TMainForm.GridWriteQSO(R: Integer; aQSO: TQSO);
 var
    temp: string;
+   editor: TBasicEdit;
 begin
-   with MainForm.Grid do begin
+   editor := EditScreen;
+   with Grid do begin
       Objects[0, R] := aQSO;
 
-      if colSerial >= 0 then
-         Cells[colSerial, R] := aQSO.SerialStr;
+      if editor.colSerial >= 0 then
+         Cells[editor.colSerial, R] := aQSO.SerialStr;
 
-      if colTime >= 0 then
-         Cells[colTime, R] := aQSO.TimeStr;
+      if editor.colTime >= 0 then
+         Cells[editor.colTime, R] := aQSO.TimeStr;
 
-      if colCall >= 0 then
-         Cells[colCall, R] := aQSO.Callsign;
+      if editor.colCall >= 0 then
+         Cells[editor.colCall, R] := aQSO.Callsign;
 
-      if colrcvdRST >= 0 then
-         Cells[colrcvdRST, R] := aQSO.RSTStr;
+      if editor.colrcvdRST >= 0 then
+         Cells[editor.colrcvdRST, R] := aQSO.RSTStr;
 
-      if colrcvdNumber >= 0 then
-         Cells[colrcvdNumber, R] := aQSO.NrRcvd;
+      if editor.colrcvdNumber >= 0 then
+         Cells[editor.colrcvdNumber, R] := aQSO.NrRcvd;
 
-      if colBand >= 0 then
-         Cells[colBand, R] := aQSO.BandStr;
+      if editor.colBand >= 0 then
+         Cells[editor.colBand, R] := aQSO.BandStr;
 
-      if colMode >= 0 then
-         Cells[colMode, R] := aQSO.ModeStr;
+      if editor.colMode >= 0 then
+         Cells[editor.colMode, R] := aQSO.ModeStr;
 
-      if colPower >= 0 then
-         Cells[colPower, R] := aQSO.PowerStr;
+      if editor.colPower >= 0 then
+         Cells[editor.colPower, R] := aQSO.PowerStr;
 
-      if colNewPower >= 0 then
-         Cells[colNewPower, R] := aQSO.NewPowerStr;
+      if editor.colNewPower >= 0 then
+         Cells[editor.colNewPower, R] := aQSO.NewPowerStr;
 
-      if colPoint >= 0 then
-         Cells[colPoint, R] := aQSO.PointStr;
+      if editor.colPoint >= 0 then
+         Cells[editor.colPoint, R] := aQSO.PointStr;
 
-      if colOp >= 0 then begin
+      if editor.colOp >= 0 then begin
          temp := IntToStr(aQSO.TX);
          if dmZlogGlobal.ContestCategory = ccMultiOpSingleTx then begin
             case aQSO.TX of
@@ -3075,26 +2884,26 @@ begin
                   temp := 'M';
             end;
          end;
-         Cells[colOp, R] := temp + ' ' + aQSO.Operator;
+         Cells[editor.colOp, R] := temp + ' ' + aQSO.Operator;
       end;
       IntToStr(aQSO.Reserve3);
 
-      if colNewMulti1 >= 0 then
-         Cells[colNewMulti1, R] := GetNewMulti1(aQSO);
+      if editor.colNewMulti1 >= 0 then
+         Cells[editor.colNewMulti1, R] := editor.GetNewMulti1(aQSO);
 
-      if colMemo >= 0 then
-         Cells[colMemo, R] := aQSO.Memo; // + IntToStr(aQSO.Reserve3);
+      if editor.colMemo >= 0 then
+         Cells[editor.colMemo, R] := aQSO.Memo; // + IntToStr(aQSO.Reserve3);
 
       if aQSO.Reserve = actLock then
-         Cells[colMemo, R] := 'locked';
+         Cells[editor.colMemo, R] := 'locked';
    end;
 end;
 
-procedure TBasicEdit.ClearQSO(R: Integer);
+procedure TMainForm.GridClearQSO(R: Integer);
 var
    i: Integer;
 begin
-   with MainForm.Grid do begin
+   with Grid do begin
       Objects[0, R] := nil;
       for i := 0 to ColCount - 1 do begin
          Cells[i, R] := '';
@@ -3102,129 +2911,144 @@ begin
    end;
 end;
 
-procedure TBasicEdit.RefreshScreen(fSelectRow: Boolean);
+procedure TMainForm.GridRefreshScreen(fSelectRow: Boolean);
 var
    i: Integer;
    L: TQSOList;
 begin
-   with MainForm do begin
-      if ShowCurrentBandOnly.Checked then begin
-         L := Log.BandList[CurrentQSO.Band];
-      end
-      else begin
-         L := Log.QsoList;
-      end;
-      Grid.Tag := Integer(L);
-
-      Grid.RowCount := (((L.Count div 50) + 1) * 50) + 1;
-
-      for i := 1 to L.Count - 1 do begin
-         WriteQSO(i, L.Items[i]);
-      end;
-
-      for i := L.Count to Grid.RowCount - 1 do begin
-         ClearQSO(i);
-      end;
-
-      Grid.ShowLast(L.Count - 1);
-
-      Grid.Refresh;
+   if ShowCurrentBandOnly.Checked then begin
+      L := Log.BandList[CurrentQSO.Band];
+   end
+   else begin
+      L := Log.QsoList;
    end;
+   Grid.Tag := Integer(L);
+
+   Grid.RowCount := (((L.Count div 50) + 1) * 50) + 1;
+
+   for i := 1 to L.Count - 1 do begin
+      GridWriteQSO(i, L.Items[i]);
+   end;
+
+   for i := L.Count to Grid.RowCount - 1 do begin
+      GridClearQSO(i);
+   end;
+
+   Grid.ShowLast(L.Count - 1);
+
+   Grid.Refresh;
 end;
 
-procedure TBasicEdit.SetGridWidth;
+procedure TMainForm.SetGridWidth(editor: TBasicEdit);
 var
    nColWidth: Integer;
    nRowHeight: Integer;
 begin
-   with MainForm.Grid do begin
+   with Grid do begin
+      ColCount := editor.GridColCount;
 
       nColWidth := Canvas.TextWidth('0') + 1;
       nRowHeight := Canvas.TextHeight('0') + 4;
 
       DefaultRowHeight := nRowHeight;
 
-      if colSerial >= 0 then begin
-         Cells[colSerial, 0] := 'serial';
-         ColWidths[colSerial] := SerialWid * nColWidth;
+      if editor.colSerial >= 0 then begin
+         Cells[editor.colSerial, 0] := 'serial';
+         ColWidths[editor.colSerial] := editor.SerialWid * nColWidth;
+         SerialEdit.Visible := True;
+      end
+      else begin
+         SerialEdit.Visible := False;
       end;
-      MainForm.SerialEdit.Tag := colSerial;
+      SerialEdit.Tag := editor.colSerial;
 
-      if colTime >= 0 then begin
-         Cells[colTime, 0] := 'time';
-         ColWidths[colTime] := TimeWid * nColWidth;
+      if editor.colTime >= 0 then begin
+         Cells[editor.colTime, 0] := 'time';
+         ColWidths[editor.colTime] := editor.TimeWid * nColWidth;
       end;
-      MainForm.TimeEdit.Tag := colTime;
+      TimeEdit.Tag := editor.colTime;
 
-      if colCall >= 0 then begin
-         Cells[colCall, 0] := 'call';
-         ColWidths[colCall] := CallSignWid * nColWidth;
+      if editor.colCall >= 0 then begin
+         Cells[editor.colCall, 0] := 'call';
+         ColWidths[editor.colCall] := editor.CallSignWid * nColWidth;
       end;
-      MainForm.CallsignEdit.Tag := colCall;
+      CallsignEdit.Tag := editor.colCall;
 
-      if colrcvdRST >= 0 then begin
-         Cells[colrcvdRST, 0] := 'RST';
-         ColWidths[colrcvdRST] := rcvdRSTWid * nColWidth;
+      if editor.colrcvdRST >= 0 then begin
+         Cells[editor.colrcvdRST, 0] := 'RST';
+         ColWidths[editor.colrcvdRST] := editor.rcvdRSTWid * nColWidth;
       end;
-      MainForm.RcvdRSTEdit.Tag := colrcvdRST;
+      RcvdRSTEdit.Tag := editor.colrcvdRST;
 
-      if colrcvdNumber >= 0 then begin
-         Cells[colrcvdNumber, 0] := 'rcvd';
-         ColWidths[colrcvdNumber] := NumberWid * nColWidth;
+      if editor.colrcvdNumber >= 0 then begin
+         Cells[editor.colrcvdNumber, 0] := 'rcvd';
+         ColWidths[editor.colrcvdNumber] := editor.NumberWid * nColWidth;
       end;
-      MainForm.NumberEdit.Tag := colrcvdNumber;
+      NumberEdit.Tag := editor.colrcvdNumber;
 
-      if colBand >= 0 then begin
-         Cells[colBand, 0] := 'band';
-         ColWidths[colBand] := BandWid * nColWidth;
+      if editor.colBand >= 0 then begin
+         Cells[editor.colBand, 0] := 'band';
+         ColWidths[editor.colBand] := editor.BandWid * nColWidth;
       end;
-      MainForm.BandEdit.Tag := colBand;
+      BandEdit.Tag := editor.colBand;
 
-      if colMode >= 0 then begin
-         Cells[colMode, 0] := 'mod';
-         ColWidths[colMode] := ModeWid * nColWidth;
+      if editor.colMode >= 0 then begin
+         Cells[editor.colMode, 0] := 'mod';
+         ColWidths[editor.colMode] := editor.ModeWid * nColWidth;
+         ModeEdit.Visible := True;
+      end
+      else begin
+         ModeEdit.Visible := False;
       end;
-      MainForm.ModeEdit.Tag := colMode;
+      ModeEdit.Tag := editor.colMode;
 
-      if colNewPower >= 0 then begin
-         Cells[colNewPower, 0] := 'pwr';
-         ColWidths[colNewPower] := NewPowerWid * nColWidth;
+      if editor.colNewPower >= 0 then begin
+         Cells[editor.colNewPower, 0] := 'pwr';
+         ColWidths[editor.colNewPower] := editor.NewPowerWid * nColWidth;
+         NewPowerEdit.Visible := True;
+      end
+      else begin
+         NewPowerEdit.Visible := False;
       end;
-      MainForm.NewPowerEdit.Tag := colNewPower;
+      NewPowerEdit.Tag := editor.colNewPower;
 
-      if colPoint >= 0 then begin
-         Cells[colPoint, 0] := 'pts';
-         ColWidths[colPoint] := PointWid * nColWidth;
+      if editor.colPoint >= 0 then begin
+         Cells[editor.colPoint, 0] := 'pts';
+         ColWidths[editor.colPoint] := editor.PointWid * nColWidth;
       end;
-      MainForm.PointEdit.Tag := colPoint;
+      PointEdit.Tag := editor.colPoint;
 
-      if colNewMulti1 >= 0 then begin
-         Cells[colNewMulti1, 0] := 'new';
-         ColWidths[colNewMulti1] := NewMulti1Wid * nColWidth;
-      end;
-
-      if colNewMulti2 >= 0 then begin
-         Cells[colNewMulti2, 0] := 'new';
-         ColWidths[colNewMulti2] := NewMulti2Wid * nColWidth;
+      if editor.colNewMulti1 >= 0 then begin
+         Cells[editor.colNewMulti1, 0] := 'new';
+         ColWidths[editor.colNewMulti1] := editor.NewMulti1Wid * nColWidth;
       end;
 
-      if colOp >= 0 then begin
-         Cells[colOp, 0] := 'op';
-         ColWidths[colOp] := OpWid * nColWidth;
+      if editor.colNewMulti2 >= 0 then begin
+         Cells[editor.colNewMulti2, 0] := 'new';
+         ColWidths[editor.colNewMulti2] := editor.NewMulti2Wid * nColWidth;
       end;
-      MainForm.OpEdit.Tag := colOp;
 
-      if colMemo >= 0 then begin
-         Cells[colMemo, 0] := 'memo';
-         ColWidths[colMemo] := MemoWid * nColWidth;
+      if editor.colOp >= 0 then begin
+         Cells[editor.colOp, 0] := 'op';
+         ColWidths[editor.colOp] := editor.OpWid * nColWidth;
+         OpEdit.Visible := True;
+      end
+      else begin
+         OpEdit.Visible := False;
       end;
-      MainForm.MemoEdit.Tag := colMemo;
+      OpEdit.Tag := editor.colOp;
+
+      if editor.colMemo >= 0 then begin
+         Cells[editor.colMemo, 0] := 'memo';
+         ColWidths[editor.colMemo] := editor.MemoWid * nColWidth;
+      end;
+      MemoEdit.Tag := editor.colMemo;
 
       Refresh();
    end;
 end;
 
-function TBasicEdit.GetLeft(col: Integer): Integer;
+function TMainForm.GetGridColmunLeft(col: Integer): Integer;
 var
    i, j: Integer;
 begin
@@ -3232,608 +3056,80 @@ begin
       Result := 0;
       exit;
    end;
+
    j := 0;
-   for i := 0 to col - 1 do
-      j := j + MainForm.Grid.ColWidths[i] + 1;
+   for i := 0 to col - 1 do begin
+      j := j + Grid.ColWidths[i] + 1;
+   end;
+
    Result := j;
 end;
 
-Procedure TBasicEdit.SetEditFields;
+procedure TMainForm.SetEditFields1R(editor: TBasicEdit);
 var
    h: Integer;
 begin
-   with MainForm do begin
-      h := MainForm.Grid.RowHeights[0];
-      EditPanel.Height := h + 10;
+   h := Grid.RowHeights[0];
+   EditPanel.Height := h + 10;
 
-      if colSerial >= 0 then begin
-         SerialEdit.Width := MainForm.Grid.ColWidths[colSerial];
-         SerialEdit.Height := h;
-         SerialEdit.Left := GetLeft(colSerial);
-      end;
-      if colTime >= 0 then begin
-         TimeEdit.Width := MainForm.Grid.ColWidths[colTime];
-         TimeEdit.Height := h;
-         TimeEdit.Left := GetLeft(colTime);
-         DateEdit.Width := TimeEdit.Width;
-         DateEdit.Left := TimeEdit.Left;
-         DateEdit.Height := TimeEdit.Height;
-      end;
-      if colCall >= 0 then begin
-         CallsignEdit.Width := MainForm.Grid.ColWidths[colCall];
-         CallsignEdit.Height := h;
-         CallsignEdit.Left := GetLeft(colCall);
-      end;
-      if colrcvdRST >= 0 then begin
-         RcvdRSTEdit.Width := MainForm.Grid.ColWidths[colrcvdRST];
-         RcvdRSTEdit.Height := h;
-         RcvdRSTEdit.Left := GetLeft(colrcvdRST);
-      end;
-      if colrcvdNumber >= 0 then begin
-         NumberEdit.Width := MainForm.Grid.ColWidths[colrcvdNumber];
-         NumberEdit.Height := h;
-         NumberEdit.Left := GetLeft(colrcvdNumber);
-      end;
-      if colBand >= 0 then begin
-         BandEdit.Width := MainForm.Grid.ColWidths[colBand];
-         BandEdit.Height := h;
-         BandEdit.Left := GetLeft(colBand);
-      end;
-      if colMode >= 0 then begin
-         ModeEdit.Width := MainForm.Grid.ColWidths[colMode];
-         ModeEdit.Height := h;
-         ModeEdit.Left := GetLeft(colMode);
-      end;
-      if colNewPower >= 0 then begin
-         NewPowerEdit.Width := MainForm.Grid.ColWidths[colNewPower];
-         NewPowerEdit.Height := h;
-         NewPowerEdit.Left := GetLeft(colNewPower);
-      end;
-      if colPoint >= 0 then begin
-         PointEdit.Width := MainForm.Grid.ColWidths[colPoint];
-         PointEdit.Height := h;
-         PointEdit.Left := GetLeft(colPoint);
-      end;
-      if colOp >= 0 then begin
-         OpEdit.Width := MainForm.Grid.ColWidths[colOp];
-         OpEdit.Height := h;
-         OpEdit.Left := GetLeft(colOp);
-      end;
-      if colMemo >= 0 then begin
-         MemoEdit.Left := GetLeft(colMemo);
-         MemoEdit.Width := EditPanel.Width - MemoEdit.Left - 3;
-         MemoEdit.Height := h;
-      end;
+   if editor.colSerial >= 0 then begin
+      SerialEdit.Width := Grid.ColWidths[editor.colSerial];
+      SerialEdit.Height := h;
+      SerialEdit.Left := GetGridColmunLeft(editor.colSerial);
    end;
-end;
-
-function TBasicEdit.GetNewMulti1(aQSO: TQSO): string;
-begin
-   if aQSO.NewMulti1 then
-      Result := '*'
-   else
-      Result := '';
-end;
-
-constructor TGeneralEdit.Create;
-begin
-   inherited;
-
-   colTime := 0;
-   colCall := 1;
-   colrcvdRST := 2;
-   colrcvdNumber := 3;
-   colBand := 4;
-   colMode := 5;
-   colPoint := 6;
-   colNewMulti1 := 7;
-
-   if Pos('$P', dmZlogGlobal.Settings._sentstr) > 0 then begin
-      colNewPower := 8;
-      colOp := 9;
-      colMemo := 10;
-      MainForm.Grid.ColCount := 11;
-      MainForm.NewPowerEdit.Visible := True;
-   end
-   else begin
-      colOp := 8;
-      colMemo := 9;
-      MainForm.Grid.ColCount := 10;
+   if editor.colTime >= 0 then begin
+      TimeEdit.Width := Grid.ColWidths[editor.colTime];
+      TimeEdit.Height := h;
+      TimeEdit.Left := GetGridColmunLeft(editor.colTime);
+      DateEdit.Width := TimeEdit.Width;
+      DateEdit.Left := TimeEdit.Left;
+      DateEdit.Height := TimeEdit.Height;
    end;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 13;
-      MainForm.OpEdit.Visible := False;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 7;
-      MainForm.OpEdit.Visible := True;
+   if editor.colCall >= 0 then begin
+      CallsignEdit.Width := Grid.ColWidths[editor.colCall];
+      CallsignEdit.Height := h;
+      CallsignEdit.Left := GetGridColmunLeft(editor.colCall);
    end;
-
-   SetGridWidth;
-   SetEditFields;
-end;
-
-constructor TARRLDXEdit.Create(AOwner: TComponent);
-begin
-   inherited Create(AOwner);
-
-   colTime := 0;
-   colCall := 1;
-   colrcvdRST := 2;
-   colrcvdNumber := 3;
-   colBand := 4;
-   colMode := 5;
-   colPoint := 6;
-   colNewMulti1 := 7;
-   colPower := 8;
-   colOp := 9;
-   colMemo := 10;
-   MainForm.Grid.ColCount := 11;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 13;
-      MainForm.OpEdit.Visible := False;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 7;
-      MainForm.OpEdit.Visible := True;
+   if editor.colrcvdRST >= 0 then begin
+      RcvdRSTEdit.Width := Grid.ColWidths[editor.colrcvdRST];
+      RcvdRSTEdit.Height := h;
+      RcvdRSTEdit.Left := GetGridColmunLeft(editor.colrcvdRST);
    end;
-
-   NumberWid := 3;
-
-   SetGridWidth;
-   SetEditFields;
-end;
-
-constructor TWWEdit.Create(AOwner: TComponent);
-begin
-   inherited Create(AOwner);
-   colTime := 0;
-   colCall := 1;
-   colrcvdRST := 2;
-   colrcvdNumber := 3;
-   colBand := 4;
-   { colMode := 5; }
-   { colPower := 6; }
-   colPoint := 5;
-   colNewMulti1 := 6;
-   // colNewMulti2 := 7;
-   colOp := 7;
-   colMemo := 8;
-   MainForm.Grid.ColCount := 9;
-   MainForm.ModeEdit.Visible := False;
-   NumberWid := 3;
-   NewMulti1Wid := 6;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 16;
-      MainForm.OpEdit.Visible := False;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 10;
-      MainForm.OpEdit.Visible := True;
+   if editor.colrcvdNumber >= 0 then begin
+      NumberEdit.Width := Grid.ColWidths[editor.colrcvdNumber];
+      NumberEdit.Height := h;
+      NumberEdit.Left := GetGridColmunLeft(editor.colrcvdNumber);
    end;
-
-   SetGridWidth;
-   SetEditFields;
-end;
-
-function TWWEdit.GetNewMulti1(aQSO: TQSO): string;
-var
-   str: string;
-begin
-   if aQSO.NewMulti1 then
-      str := FillRight(aQSO.Multi1, 3)
-   else
-      str := '   ';
-   if aQSO.NewMulti2 then
-      str := str + aQSO.Multi2;
-   Result := str;
-end;
-
-function TKCJEdit.GetNewMulti1(aQSO: TQSO): string;
-var
-   str: string;
-begin
-   if aQSO.NewMulti1 then
-      str := aQSO.Multi1
-   else
-      str := '';
-   Result := str;
-end;
-
-constructor TDXCCEdit.Create(AOwner: TComponent);
-begin
-   inherited Create(AOwner);
-   colTime := 0;
-   colCall := 1;
-   colrcvdRST := 2;
-   colrcvdNumber := 3;
-   colBand := 4;
-   { colMode := 5; }
-   { colPower := 6; }
-   colPoint := 5;
-   colNewMulti1 := 6;
-   colOp := 7;
-   colMemo := 8;
-   MainForm.Grid.ColCount := 9;
-   MainForm.ModeEdit.Visible := False;
-
-   NumberWid := 4;
-   NewMulti1Wid := 5;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 16;
-      MainForm.OpEdit.Visible := False;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 10;
-      MainForm.OpEdit.Visible := True;
+   if editor.colBand >= 0 then begin
+      BandEdit.Width := Grid.ColWidths[editor.colBand];
+      BandEdit.Height := h;
+      BandEdit.Left := GetGridColmunLeft(editor.colBand);
    end;
-
-   SetGridWidth;
-   SetEditFields;
-end;
-
-function TDXCCEdit.GetNewMulti1(aQSO: TQSO): string;
-begin
-   if aQSO.NewMulti1 then
-      Result := aQSO.Multi1
-   else
-      Result := '';
-end;
-
-constructor TWPXEdit.Create(AOwner: TComponent);
-begin
-   inherited Create(AOwner);
-   colSerial := 0;
-   colTime := 1;
-   colCall := 2;
-   colrcvdRST := 3;
-   colrcvdNumber := 4;
-   colBand := 5;
-   { colMode := 5; }
-   { colPower := 6; }
-   colPoint := 6;
-   colNewMulti1 := 7;
-   colOp := 8;
-   colMemo := 9;
-
-   SerialWid := 5;
-   TimeWid := 6;
-   CallSignWid := 12;
-   rcvdRSTWid := 4;
-   NumberWid := 6;
-   BandWid := 4;
-   PointWid := 3;
-   OpWid := 8;
-   MemoWid := 10;
-   NewMulti1Wid := 5;
-
-   MainForm.Grid.Cells[colNewMulti1, 0] := 'prefix';
-
-   MainForm.Grid.ColCount := 10;
-   MainForm.ModeEdit.Visible := False;
-   MainForm.SerialEdit.Visible := True;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 16;
-      MainForm.OpEdit.Visible := False;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 10;
-      MainForm.OpEdit.Visible := True;
+   if editor.colMode >= 0 then begin
+      ModeEdit.Width := Grid.ColWidths[editor.colMode];
+      ModeEdit.Height := h;
+      ModeEdit.Left := GetGridColmunLeft(editor.colMode);
    end;
-
-   SetGridWidth;
-   SetEditFields;
-end;
-
-constructor TJA0Edit.Create(AOwner: TComponent);
-begin
-   inherited Create(AOwner);
-   MainForm.Grid.ColCount := 11;
-
-   colSerial := 0;
-   colTime := 1;
-   colCall := 2;
-   colrcvdRST := 3;
-   colrcvdNumber := 4;
-   colBand := 5;
-   colMode := 6;
-   colPoint := 7;
-   colNewMulti1 := 8;
-   colOp := 9;
-   colMemo := 10;
-
-   MainForm.ModeEdit.Visible := True;
-   MainForm.SerialEdit.Visible := True;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 16;
-      MainForm.OpEdit.Visible := False;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 10;
-      MainForm.OpEdit.Visible := True;
+   if editor.colNewPower >= 0 then begin
+      NewPowerEdit.Width := Grid.ColWidths[editor.colNewPower];
+      NewPowerEdit.Height := h;
+      NewPowerEdit.Left := GetGridColmunLeft(editor.colNewPower);
    end;
-
-   SetGridWidth;
-   SetEditFields;
-end;
-
-function TWPXEdit.GetNewMulti1(aQSO: TQSO): string;
-var
-   temp: string;
-begin
-   temp := '  ' + aQSO.Multi1;
-   if aQSO.NewMulti1 then
-      temp[1] := '*';
-   Result := temp;
-end;
-
-constructor TSerialGeneralEdit.Create(AOwner: TComponent);
-begin
-   inherited Create(AOwner);
-   colSerial := 0;
-   colTime := 1;
-   colCall := 2;
-   colrcvdRST := 3;
-   colrcvdNumber := 4;
-   colBand := 5;
-   colMode := 6;
-   { colPower := 6; }
-   colPoint := 7;
-   colNewMulti1 := 8;
-   colOp := 9;
-   colMemo := 10;
-
-   SerialWid := 4;
-   TimeWid := 4;
-   CallSignWid := 8;
-   rcvdRSTWid := 3;
-   NumberWid := 4;
-   BandWid := 3;
-   ModeWid := 3;
-   PointWid := 2;
-   OpWid := 6;
-   MemoWid := 7;
-   NewMulti1Wid := 5;
-
-   MainForm.Grid.Cells[colNewMulti1, 0] := 'prefix';
-
-   MainForm.Grid.ColCount := 11;
-   MainForm.ModeEdit.Visible := True;
-   MainForm.SerialEdit.Visible := True;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 13;
-      MainForm.OpEdit.Visible := False;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 7;
-      MainForm.OpEdit.Visible := True;
+   if editor.colPoint >= 0 then begin
+      PointEdit.Width := Grid.ColWidths[editor.colPoint];
+      PointEdit.Height := h;
+      PointEdit.Left := GetGridColmunLeft(editor.colPoint);
    end;
-
-   SetGridWidth;
-   SetEditFields;
-end;
-
-function TSerialGeneralEdit.GetNewMulti1(aQSO: TQSO): string;
-var
-   temp: string;
-begin
-   Result := '';
-   if formMulti.Config.PXMulti = 0 then begin
-      if aQSO.NewMulti1 then
-         Result := aQSO.Multi1;
-   end
-   else begin
-      temp := '  ' + aQSO.Multi1;
-      if aQSO.NewMulti1 then
-         temp[1] := '*';
-      Result := temp;
+   if editor.colOp >= 0 then begin
+      OpEdit.Width := Grid.ColWidths[editor.colOp];
+      OpEdit.Height := h;
+      OpEdit.Left := GetGridColmunLeft(editor.colOp);
    end;
-end;
-
-constructor TIOTAEdit.Create(AOwner: TComponent);
-begin
-   inherited Create(AOwner);
-   colSerial := 0;
-   colTime := 1;
-   colCall := 2;
-   colrcvdRST := 3;
-   colrcvdNumber := 4;
-   colBand := 5;
-   colMode := 6;
-   { colPower := 6; }
-   colPoint := 7;
-   colNewMulti1 := 8;
-   colOp := 9;
-   colMemo := 10;
-
-   SerialWid := 4;
-   TimeWid := 6;
-   CallSignWid := 8;
-   rcvdRSTWid := 4;
-   NumberWid := 6;
-   BandWid := 4;
-   ModeWid := 4;
-   PointWid := 4;
-   OpWid := 6;
-   MemoWid := 7;
-   NewMulti1Wid := 6;
-
-   // MainForm.Grid.Cells[colNewMulti1,0] := '';
-
-   MainForm.Grid.ColCount := 11;
-   // MainForm.ModeEdit.Visible := False;
-   MainForm.SerialEdit.Visible := True;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 11;
-      MainForm.OpEdit.Visible := False;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 5;
-      MainForm.OpEdit.Visible := True;
+   if editor.colMemo >= 0 then begin
+      MemoEdit.Left := GetGridColmunLeft(editor.colMemo);
+      MemoEdit.Width := EditPanel.Width - MemoEdit.Left - 3;
+      MemoEdit.Height := h;
    end;
-
-   SetGridWidth;
-   SetEditFields;
-end;
-
-function TIOTAEdit.GetNewMulti1(aQSO: TQSO): string;
-var
-   temp: string;
-begin
-   // temp := '  '+aQSO.Multi1;
-   if aQSO.NewMulti1 then
-      temp := aQSO.Multi1;
-   Result := temp;
-end;
-
-function TGeneralEdit.GetNewMulti1(aQSO: TQSO): string;
-var
-   temp: string;
-begin
-   if aQSO.NewMulti1 then
-      temp := aQSO.Multi1
-   else
-      temp := '';
-   Result := temp;
-end;
-
-constructor TALLJAEdit.Create(AOwner: TComponent);
-begin
-   inherited Create(AOWner);
-
-   colTime := 0;
-   colCall := 1;
-   colrcvdRST := 2;
-   colrcvdNumber := 3;
-   colBand := 4;
-   colMode := 5;
-   colPoint := 6;
-   colNewMulti1 := 7;
-   colNewPower := 8;
-   colOp := 9;
-   colMemo := 10;
-   MainForm.Grid.ColCount := 11;
-   MainForm.NewPowerEdit.Visible := True;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 13;
-      MainForm.OpEdit.Visible := False;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 7;
-      MainForm.OpEdit.Visible := True;
-   end;
-
-   SetGridWidth;
-   SetEditFields;
-end;
-
-function TALLJAEdit.GetNewMulti1(aQSO: TQSO): string;
-var
-   temp: string;
-begin
-   if aQSO.NewMulti1 then
-      temp := aQSO.Multi1
-   else
-      temp := '';
-   Result := temp;
-end;
-
-constructor TIARUEdit.Create(AOwner: TComponent);
-begin
-   inherited Create(AOwner);
-
-   colTime := 0;
-   colCall := 1;
-   colrcvdRST := 2;
-   colrcvdNumber := 3;
-   colBand := 4;
-   colMode := 5;
-   colPoint := 6;
-   colNewMulti1 := 7;
-   // colNewPower := 8;
-   colOp := 8;
-   colMemo := 9;
-
-   NumberWid := 4;
-   BandWid := 3;
-   NewMulti1Wid := 4;
-
-   MainForm.Grid.ColCount := 10;
-   // MainForm.NewPowerEdit.Visible := True;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 17;
-      MainForm.OpEdit.Visible := False;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 11;
-      MainForm.OpEdit.Visible := True;
-   end;
-
-   SetGridWidth;
-   SetEditFields;
-end;
-
-function TIARUEdit.GetNewMulti1(aQSO: TQSO): string;
-var
-   temp: string;
-begin
-   if aQSO.NewMulti1 then
-      temp := aQSO.Multi1
-   else
-      temp := '';
-   Result := temp;
-end;
-
-function TARRLDXEdit.GetNewMulti1(aQSO: TQSO): string;
-var
-   temp: string;
-begin
-   if aQSO.NewMulti1 then
-      temp := aQSO.Multi1
-   else
-      temp := '';
-   Result := temp;
-end;
-
-function TACAGEdit.GetNewMulti1(aQSO: TQSO): string;
-var
-   temp: string;
-begin
-   if aQSO.NewMulti1 then
-      temp := '*'
-   else
-      temp := '';
-   Result := temp;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -4026,7 +3322,7 @@ begin
       MyContest.Renew;
       WriteStatusLine('', False);
       SetWindowCaption();
-      EditScreen.RefreshScreen(False);
+      GridRefreshScreen(False);
       FRateDialog.UpdateGraph();
       FRateDialogEx.UpdateGraph();
    end;
@@ -5089,7 +4385,7 @@ begin
 
    Log.SetDupeFlags;
 
-   EditScreen.RefreshScreen;
+   GridRefreshScreen();
 end;
 
 procedure TMainForm.GridKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
@@ -6111,7 +5407,7 @@ begin
 
    Log.SetDupeFlags;
 
-   EditScreen.RefreshScreen;
+   GridRefreshScreen();
 end;
 
 procedure TMainForm.VoiceFMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -6244,7 +5540,7 @@ begin
    i := Grid.TopRow;
    MyContest.Renew;
    Grid.TopRow := i;
-   EditScreen.RefreshScreen;
+   GridRefreshScreen();
    Log.Saved := False;
 end;
 
@@ -6261,7 +5557,7 @@ end;
 procedure TMainForm.SortbyTime1Click(Sender: TObject);
 begin
    Log.SortByTime;
-   EditScreen.RefreshScreen;
+   GridRefreshScreen();
 end;
 
 procedure TMainForm.menuAboutClick(Sender: TObject);
@@ -6648,7 +5944,7 @@ begin
    i := Grid.TopRow;
    MyContest.Renew;
    Grid.TopRow := i;
-   EditScreen.RefreshScreen;
+   GridRefreshScreen();
    Log.Saved := False;
 end;
 
@@ -6692,7 +5988,7 @@ begin
    i := Grid.TopRow;
    MyContest.Renew;
    Grid.TopRow := i;
-   EditScreen.RefreshScreen;
+   GridRefreshScreen();
    Log.Saved := False;
 end;
 
@@ -6814,8 +6110,9 @@ end;
 
 procedure TMainForm.GridMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-   if EditScreen <> nil then
-      EditScreen.SetEditFields;
+   if EditScreen <> nil then begin
+      SetEditFields1R(EditScreen);
+   end;
 end;
 
 procedure TMainForm.StatusLineResize(Sender: TObject);
@@ -6920,7 +6217,7 @@ begin
    i := Grid.TopRow;
    MyContest.Renew;
    Grid.TopRow := i;
-   EditScreen.RefreshScreen;
+   GridRefreshScreen();
    Log.Saved := False;
 end;
 
@@ -6946,7 +6243,7 @@ begin
          Log.SortByTime;
          MyContest.Renew;
          // EditScreen.Renew;
-         EditScreen.RefreshScreen;
+         GridRefreshScreen();
          FileSave(Self);
       end;
       WriteStatusLine(IntToStr(i) + ' QSO(s) merged.', True);
@@ -7008,7 +6305,7 @@ begin
    i := Grid.TopRow;
    MyContest.Renew;
    Grid.TopRow := i;
-   EditScreen.RefreshScreen;
+   GridRefreshScreen();
    Log.Saved := False;
 end;
 
@@ -7276,6 +6573,7 @@ procedure TMainForm.OnZLogInit( var Message: TMessage );
 var
    menu: TMenuForm;
    c, r: Integer;
+   i, j: Integer;
 begin
    FInitialized := False;
 
@@ -7330,6 +6628,23 @@ begin
       end;
 
       RenewBandMenu();
+
+      with Grid do begin
+         ColCount := 10;
+         // Align := alTop;
+         FixedCols := 0;
+         FixedRows := 1;
+         ColCount := 10;
+         Height := 291;
+         DefaultRowHeight := 17;
+      end;
+      SerialEdit.Visible := False;
+      NewPowerEdit.Visible := False;
+      ModeEdit.Visible := True;
+
+      for i := 1 to Grid.RowCount - 1 do
+         for j := 0 to Grid.ColCount - 1 do
+            Grid.Cells[j, i] := '';
 
       case dmZlogGlobal.ContestMenuNo of
          // ALL JA
@@ -7434,6 +6749,9 @@ begin
          end;
       end;
 
+      SetGridWidth(EditScreen);
+      SetEditFields1R(EditScreen);
+
       // #201 ÉÇÅ[ÉhëIëÇ…ÇÊÇ¡ÇƒìÆçÏÇïœÇ¶ÇÈ(NEW CONTESTÇÃÇ›)
       case menu.ContestMode of
          // PH/CW
@@ -7492,7 +6810,7 @@ begin
       dmZlogGlobal.Settings._sentstr := MyContest.SentStr;
 
       MyContest.Renew;
-      EditScreen.RefreshScreen;
+      GridRefreshScreen();
       ReEvaluateCountDownTimer;
       ReEvaluateQSYCount;
 
@@ -7576,7 +6894,7 @@ begin
 
       Grid.Row := 1;
       Grid.ShowLast(Log.TotalQSO);
-      EditScreen.RefreshScreen; // added 2,2e
+      GridRefreshScreen();
 
       MyContest.MultiForm.FontSize := dmZlogGlobal.Settings._mainfontsize;
 
@@ -7788,6 +7106,7 @@ begin
    HideBandMenuWARC();
    HideBandMenuVU();
 
+
    mnCheckCountry.Visible := True;
    mnCheckMulti.Caption := 'Check Zone';
    EditScreen := TWWEdit.Create(Self);
@@ -7801,6 +7120,8 @@ begin
    HideBandMenuVU();
 
    EditScreen := TWPXEdit.Create(Self);
+
+   Grid.Cells[EditScreen.colNewMulti1, 0] := 'prefix';
 
    MyContest := TCQWPXContest.Create('CQ WPX Contest');
 
@@ -8591,7 +7912,7 @@ end;
 procedure TMainForm.actionShowCurrentBandOnlyExecute(Sender: TObject);
 begin
    ShowCurrentBandOnly.Checked := not(ShowCurrentBandOnly.Checked);
-   EditScreen.RefreshScreen;
+   GridRefreshScreen();
 end;
 
 // #50 éûçèÇÇPï™ñﬂÇ∑
@@ -10022,10 +9343,12 @@ var
    shortcut: Word;
 begin
    shortcut := TextToShortCut('F1') + (no - 1);
-   for i := 0 to MainForm.ActionList1.ActionCount - 1 do begin
-      act := TAction(MainForm.ActionList1.Actions[i]);
+   for i := 0 to ActionList1.ActionCount - 1 do begin
+      act := TAction(ActionList1.Actions[i]);
       if act.ShortCut = shortcut then begin
-   OutputDebugString(PChar('Action=[' + act.Name + ']'));
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('Action=[' + act.Name + ']'));
+         {$ENDIF}
 //       act.Execute();
          act.OnExecute(act);
          Exit;
@@ -10043,7 +9366,7 @@ begin
    end;
 
    if EditScreen <> nil then begin
-      EditScreen.SetEditFields;
+      SetEditFields1R(EditScreen);
    end;
 
    {$IFDEF DEBUG}

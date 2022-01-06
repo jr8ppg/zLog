@@ -126,7 +126,8 @@ uses
   UQsyInfo in 'UQsyInfo.pas' {formQsyInfo},
   UExportHamlog in 'UExportHamlog.pas' {formExportHamlog},
   UPackageLoader in 'UPackageLoader.pas' {PackageLoader},
-  UPluginManager in 'UPluginManager.pas' {MarketForm};
+  UPluginManager in 'UPluginManager.pas' {MarketForm},
+  UQsoEdit in 'UQsoEdit.pas';
 
 {$R *.RES}
 

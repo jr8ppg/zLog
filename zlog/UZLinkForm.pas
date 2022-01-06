@@ -462,7 +462,7 @@ begin
          Log.AddQue(aQSO);
          Log.ProcessQue;
          MyContest.Renew;
-         MainForm.EditScreen.RefreshScreen;
+         MainForm.GridRefreshScreen;
          aQSO.Free;
       end;
 
@@ -504,7 +504,7 @@ begin
          Log.AddQue(aQSO);
          Log.ProcessQue;
          MyContest.Renew;
-         MainForm.EditScreen.RefreshScreen;
+         MainForm.GridRefreshScreen;
          aQSO.Free;
       end;
       if pos('INSQSO ', temp) = 1 then begin
@@ -515,7 +515,7 @@ begin
          Log.AddQue(aQSO);
          Log.ProcessQue;
          MyContest.Renew;
-         MainForm.EditScreen.RefreshScreen;
+         MainForm.GridRefreshScreen;
          aQSO.Free;
       end;
 
@@ -532,7 +532,7 @@ begin
       if pos('RENEW', temp) = 1 then begin
          Log.ProcessQue;
          MyContest.Renew;
-         MainForm.EditScreen.RefreshScreen;
+         MainForm.GridRefreshScreen;
       end;
 
       if pos('SENDLOG', temp) = 1 then begin
