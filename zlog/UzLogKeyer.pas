@@ -190,6 +190,7 @@ type
     FWkCallsignStr: string;
     FOnSpeedChanged: TNotifyEvent;
     FWkAbort: Boolean;
+    FUseWkSo2rNeo: Boolean;
 
     FWnd: HWND;
 
@@ -313,12 +314,18 @@ type
     property UseWinKeyer: Boolean read FUseWinKeyer write FUseWinKeyer;
     property WinKeyerRevision: Integer read FWkRevision;
     property WkCallsignSending: Boolean read FWkCallsignSending write FWkCallsignSending;
+    property UseWkSo2rNeo: Boolean read FUseWkSo2rNeo write FUseWkSo2rNeo;
     procedure WinKeyerSendCallsign(S: string);
     procedure WinKeyerSendChar(C: Char; fUsePTT: Boolean);
     procedure WinKeyerSendStr(S: string; fUsePTT: Boolean = True);
     procedure WinKeyerAbort();
     procedure WinKeyerClear();
     procedure WinKeyerCancelLastChar();
+
+    // SO2R Neo support
+    procedure So2rNeoSetAudioBlendMode(fOn: Boolean);
+    procedure So2rNeoSetAudioBlendRatio(ratio: Byte);
+    procedure So2rNeoSwitchRig(tx: Integer; rx: Integer);
 
     procedure IncCWSpeed();
     procedure DecCWSpeed();
@@ -368,6 +375,7 @@ begin
    FBeforeSpeed := 0;
    FFixedSpeed := 0;
    FUseRandomRepeat := True;
+   FUseWkSo2rNeo := False;
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
@@ -572,6 +580,7 @@ var
    i: Integer;
 begin
    for i := 0 to 1 do begin
+      // USBIF4CWでのRIG SELECT
       if FKeyingPort[i] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
          case flag of
@@ -590,6 +599,23 @@ begin
 
          SendUsbPortData(i);
          LeaveCriticalSection(FUsbPortDataLock);
+      end;
+
+      // COMポートでのRIG SELECT
+      if (i = 1) and (FKeyingPort[i] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
+         // ZComRigSelect.ToggleDTR(True)
+      end;
+
+      // WinKeyerの場合
+      if (i = 0) and (FKeyingPort[i] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
+         if flag = 0 then flag := 1;
+//         So2rNeoSwitchRig(flag - 1, flag - 1);
+      end;
+
+      // SO2R Neoの場合
+      if (i = 0) and (FKeyingPort[i] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
+         if flag = 0 then flag := 1;
+         So2rNeoSwitchRig(flag - 1, flag - 1);
       end;
    end;
 end;
@@ -2145,8 +2171,8 @@ begin
       (FKeyingPort[1] = tkpNone) then begin
       COM_OFF();
       USB_OFF();
-      FComKeying[0] := nil;
-      FComKeying[1] := nil;
+//      FComKeying[0] := nil;
+//      FComKeying[1] := nil;
       UsbInfoClearAll();
       Exit;
    end;
@@ -2659,7 +2685,12 @@ begin
 
    //1) Open serial communications port. Use 1200 baud, 8 data bits, no parity
    FComKeying[0].Port := TPortNumber(nPort);
-   FComKeying[0].BaudRate := br1200;
+   if FUseWkSo2rNeo = True then begin
+      FComKeying[0].BaudRate := br9600;
+   end
+   else begin
+      FComKeying[0].BaudRate := br1200;
+   end;
    FComKeying[0].Connect();
 
    //2) To power up WK enable DTR and disable RTS
@@ -2689,12 +2720,14 @@ begin
    // application wants to run at 9600 baud, it must start out at 1200 baud mode and then issue the Set
    // High Baud command. When the application closes it should issue a WK close command which will
    // reset the baud rate to 1200.
-   FillChar(Buff, SizeOf(Buff), 0);
-   Buff[0] := WK_ADMIN_CMD;
-   Buff[1] := WK_ADMIN_SET_HIGH_BAUD;
-   FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
-   FComKeying[0].BaudRate := br9600;
+   if FUseWkSo2rNeo = False then begin
+      FillChar(Buff, SizeOf(Buff), 0);
+      Buff[0] := WK_ADMIN_CMD;
+      Buff[1] := WK_ADMIN_SET_HIGH_BAUD;
+      FComKeying[0].SendData(@Buff, 2);
+      Sleep(50);
+      FComKeying[0].BaudRate := br9600;
+   end;
 
    //6) Check to make sure WK is attached and operational
    //Byte 0: ADMIN_CMD
@@ -2758,14 +2791,26 @@ begin
    // Set PTT Mode(PINCFG)
    WinKeyerSetPTTMode(False);
 
+   // Set PTT Delay time
+   WinKeyerSetPTTDelay(FPttDelayBeforeTime, FPttDelayAfterTime);
+
+   // Set keying speed
+   WinKeyerSetSpeed(FKeyerWPM);
+
    // SideTone
    WinKeyerSetSideTone(FUseSideTone);
+
+   // set serial echo back to on
+   WinKeyerSetMode(WK_SETMODE_SERIALECHOBACK);
 end;
 
 procedure TdmZLogKeyer.WinKeyerClose();
 var
    Buff: array[0..4] of Byte;
 begin
+   if Assigned(FComKeying[0]) = False then Exit;
+   if FComKeying[0].Connected = False then Exit;
+
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_CLOSE;
@@ -2777,6 +2822,9 @@ procedure TdmZLogKeyer.WinKeyerSetSpeed(nWPM: Integer);
 var
    Buff: array[0..10] of Byte;
 begin
+   if Assigned(FComKeying[0]) = False then Exit;
+   if FComKeying[0].Connected = False then Exit;
+
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_SETWPM_CMD;
    Buff[1] := nWPM;
@@ -2804,6 +2852,9 @@ procedure TdmZLogKeyer.WinKeyerSetSideTone(fOn: Boolean);
 var
    Buff: array[0..10] of Byte;
 begin
+   if Assigned(FComKeying[0]) = False then Exit;
+   if FComKeying[0].Connected = False then Exit;
+
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_SIDETONE_CMD;
    if fOn = True then begin
@@ -2853,6 +2904,9 @@ procedure TdmZLogKeyer.WinKeyerSetPTTDelay(before, after: Byte);
 var
    Buff: array[0..10] of Byte;
 begin
+   if Assigned(FComKeying[0]) = False then Exit;
+   if FComKeying[0].Connected = False then Exit;
+
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_SET_PTTDELAY_CMD;
    Buff[1] := before;
@@ -3034,21 +3088,21 @@ begin
             end;
 
             //コールサイン送信時：１文字送信終了
-            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
-               {$IFDEF DEBUG}
-               OutputDebugString(PChar('WinKey BUSY->IDLE [' + IntToHex(b, 2) + ']'));
-               {$ENDIF}
-
-               // 次の文字を送信
-               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
-            end;
+//            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
+//               {$IFDEF DEBUG}
+//               OutputDebugString(PChar('WinKey BUSY->IDLE [' + IntToHex(b, 2) + ']'));
+//               {$ENDIF}
+//
+//               // 次の文字を送信
+//               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
+//            end;
 
             // コールサイン送信時：１文字送信開始
-            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = 0) and ((b and WK_STATUS_BUSY) = WK_STATUS_BUSY) then begin
-               {$IFDEF DEBUG}
-               OutputDebugString(PChar('WinKey IDLE->BUSY [' + IntToHex(b, 2) + ']'));
-               {$ENDIF}
-            end;
+//            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = 0) and ((b and WK_STATUS_BUSY) = WK_STATUS_BUSY) then begin
+//               {$IFDEF DEBUG}
+//               OutputDebugString(PChar('WinKey IDLE->BUSY [' + IntToHex(b, 2) + ']'));
+//               {$ENDIF}
+//            end;
 
             // 送信中→送信終了に変わったら、リピートタイマー起動
             if (FWkCallsignSending = False) and (FWkLastMessage <> '') and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
@@ -3073,8 +3127,13 @@ begin
             FWkEcho := b;
 
             {$IFDEF DEBUG}
-            OutputDebugString(PChar('WinKey STATUS=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
+            OutputDebugString(PChar('WinKey ECHOBACK=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
             {$ENDIF}
+
+            if (FWkCallsignSending = True) and (Char(b) = FWkCallsignStr[FWkCallsignIndex]) then begin
+               // 次の文字を送信
+               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
+            end;
          end;
       end;
    end;
@@ -3228,6 +3287,77 @@ begin
          msg.Result := DefWindowProc(FWnd, msg.Msg, msg.WParam, msg.LParam);
       end;
    end;
+end;
+
+//
+// SO2R Neo のAudioブレンドON/OFF
+// fOn: TrueでON
+//
+procedure TdmZLogKeyer.So2rNeoSetAudioBlendMode(fOn: Boolean);
+var
+   Buff: array[0..10] of Byte;
+begin
+   FillChar(Buff, SizeOf(Buff), 0);
+   if fOn = True then begin
+      Buff[0] := $86;
+   end
+   else begin
+      Buff[0] := $87;
+   end;
+   FComKeying[0].SendData(@Buff, 1);
+end;
+
+//
+// SO2R Neo のAudioブレンド割合の設定
+// ratio: 0-255
+//
+procedure TdmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio: Byte);
+var
+   Buff: array[0..10] of Byte;
+begin
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := $c0 or ((ratio shr 4) and $0f);
+   Buff[1] := $c0 or (ratio and $0f);
+   FComKeying[0].SendData(@Buff, 2);
+end;
+
+//
+// SO2R Neo のTX/RX変更コマンド
+// tx: 0 or 1
+// rx: 0: 1/1
+//     1: 2/2
+//     2: 1/2
+//
+procedure TdmZLogKeyer.So2rNeoSwitchRig(tx: Integer; rx: Integer);
+var
+   Buff: array[0..10] of Byte;
+begin
+   FillChar(Buff, SizeOf(Buff), 0);
+
+   if tx = 0 then begin
+      if rx = 0 then begin
+         Buff[0] := $90;
+      end
+      else if rx = 1 then begin
+         Buff[0] := $91;
+      end
+      else begin
+         Buff[0] := $92;
+      end;
+   end
+   else begin
+      if rx = 0 then begin
+         Buff[0] := $94;
+      end
+      else if rx = 1 then begin
+         Buff[0] := $95;
+      end
+      else begin
+         Buff[0] := $96;
+      end;
+   end;
+
+   FComKeying[0].SendData(@Buff, 1);
 end;
 
 end.
