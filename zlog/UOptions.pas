@@ -816,13 +816,13 @@ begin
 
       // SO2R Support
       if radioSo2rNone.Checked = True then begin
-         Settings._so2r_type := 0;
+         Settings._so2r_type := so2rNone;
       end
       else if radioSo2rZLog.Checked = True then begin
-         Settings._so2r_type := 1;
+         Settings._so2r_type := so2rCom;
       end
       else begin
-         Settings._so2r_type := 2;
+         Settings._so2r_type := so2rNeo;
       end;
       Settings._so2r_port := comboSo2rPort.ItemIndex;
 
@@ -1211,17 +1211,17 @@ begin
 
       // SO2R Support
       case Settings._so2r_type of
-         0: begin
+         so2rNone: begin
             radioSo2rNone.Checked := True;
             radioSo2rClick(radioSo2rNone);
          end;
 
-         1: begin
+         so2rCom: begin
             radioSo2rZLog.Checked := True;
             radioSo2rClick(radioSo2rZLog);
          end;
 
-         2: begin
+         so2rNeo: begin
             radioSo2rNeo.Checked := True;
             radioSo2rClick(radioSo2rNeo);
          end;

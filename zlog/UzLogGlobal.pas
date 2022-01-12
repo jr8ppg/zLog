@@ -125,8 +125,8 @@ type
     _use_winkeyer: Boolean;
 
     // SO2R Support
-    _so2r_type: Integer;   // 0:none 1:zlog 2:SO2R Neo
-    _so2r_port: Integer;   // 0:none 1-20:com1-20
+    _so2r_type: TSo2rType;    // 0:none 1:zlog 2:SO2R Neo
+    _so2r_port: Integer;      // 0:none 1-20:com1-20
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
     _clusterbaud : integer; {}
@@ -807,7 +807,7 @@ begin
       Settings._use_winkeyer := ini.ReadBool('Hardware', 'UseWinKeyer', False);
 
       // SO2R Support
-      Settings._so2r_type  := ini.ReadInteger('SO2R', 'type', 0);
+      Settings._so2r_type  := TSo2rType(ini.ReadInteger('SO2R', 'type', 0));
       Settings._so2r_port  := ini.ReadInteger('SO2R', 'port', 0);
 
       // CW PTT control
@@ -1326,7 +1326,7 @@ begin
       ini.WriteInteger('Hardware', 'RigSpeed', Settings._rigspeed[1]);
       ini.WriteBool('Hardware', 'Transverter1', Settings._transverter1);
       ini.WriteInteger('Hardware', 'Transverter1Offset', Settings._transverteroffset1);
-      ini.WriteInteger('Hardware', 'CWLPTPort2', Settings._keyingport[1]);
+      ini.WriteInteger('Hardware', 'CWLPTPort', Settings._keyingport[1]);
 
       // RIG2
       ini.WriteInteger('Hardware', 'Rig2', Settings._rigport[2]);
@@ -1352,7 +1352,7 @@ begin
       ini.WriteBool('Hardware', 'UseWinKeyer', Settings._use_winkeyer);
 
       // SO2R Support
-      ini.WriteInteger('SO2R', 'type', Settings._so2r_type);
+      ini.WriteInteger('SO2R', 'type', Integer(Settings._so2r_type));
       ini.WriteInteger('SO2R', 'port', Settings._so2r_port);
 
       // CW PTT control
@@ -1637,6 +1637,8 @@ var
    i: Integer;
 begin
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
+   dmZLogKeyer.UseWkSo2rNeo := (dmZLogGlobal.Settings._so2r_type = so2rNeo);
+
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
    dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;
 

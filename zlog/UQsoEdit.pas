@@ -39,9 +39,6 @@ type
     NewMulti1Wid : Integer;      // 11
     NewMulti2Wid : Integer;      // 12
 
-    DirectEdit : Boolean;
-    BeforeEdit : string; // temp var for directedit mode
-
     constructor Create(AOwner: TComponent); virtual;
     function GetNewMulti1(aQSO : TQSO) : string; virtual;
   end;
@@ -136,8 +133,6 @@ implementation
 constructor TBasicEdit.Create(AOwner: TComponent);
 begin
    Inherited Create();
-
-   DirectEdit := False;
 
    colSerial := -1;
    colTime := 1;

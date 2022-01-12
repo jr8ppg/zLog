@@ -1,7 +1,7 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = ClusterCombo
+  ActiveControl = act19
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -25,7 +25,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetHardware
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -2318,7 +2318,7 @@ object formOptions: TformOptions
           Top = 19
           Width = 41
           Height = 13
-          Caption = 'zLog'
+          Caption = 'COM'
           TabOrder = 1
           OnClick = radioSo2rClick
         end

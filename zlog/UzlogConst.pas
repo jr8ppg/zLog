@@ -12,6 +12,7 @@ type
 
   TContestMode = (cmMix = 0, cmCw, cmPh, cmOther, cmAll);
   TContestCategory = (ccSingleOp = 0, ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx);
+  TSo2rType = (so2rNone = 0, so2rCom, so2rNeo );
 
 const
   HiBand = b10g;
