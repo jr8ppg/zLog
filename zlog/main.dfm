@@ -5721,6 +5721,9 @@ object MainForm: TMainForm
       object QSYInfo1: TMenuItem
         Action = actionShowQsyInfo
       end
+      object SO2RNeoControlPanel1: TMenuItem
+        Action = actionShowSo2rNeoCp
+      end
     end
     object menuSettings: TMenuItem
       Caption = '&Settings'
@@ -6885,6 +6888,22 @@ object MainForm: TMainForm
     object actionShowQsyInfo: TAction
       Caption = 'QSY Indicator'
       OnExecute = actionShowQsyInfoExecute
+    end
+    object actionShowSo2rNeoCp: TAction
+      Caption = 'SO2R Neo Control Panel'
+      OnExecute = actionShowSo2rNeoCpExecute
+    end
+    object actionSo2rNeoSelRx1: TAction
+      Caption = 'actionSo2rNeoSelRx1'
+      OnExecute = actionSo2rNeoSelRx1Execute
+    end
+    object actionSo2rNeoSelRx2: TAction
+      Caption = 'actionSo2rNeoSelRx2'
+      OnExecute = actionSo2rNeoSelRx2Execute
+    end
+    object actionSo2rNeoSelRxBoth: TAction
+      Caption = 'actionSo2rNeoSelRxBoth'
+      OnExecute = actionSo2rNeoSelRxBothExecute
     end
   end
   object SPCMenu: TPopupMenu

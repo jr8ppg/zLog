@@ -457,6 +457,10 @@
             <Form>MarketForm</Form>
         </DCCReference>
         <DCCReference Include="UQsoEdit.pas"/>
+        <DCCReference Include="USo2rNeoCp.pas">
+            <Form>formSo2rNeoCp</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>

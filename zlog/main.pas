@@ -20,7 +20,7 @@ uses
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel,
-  UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit;
+  UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -620,6 +620,11 @@ type
     BandEdit2C: TEdit;
     ModeEdit2C: TEdit;
     SerialEdit2C: TEdit;
+    actionShowSo2rNeoCp: TAction;
+    actionSo2rNeoSelRx1: TAction;
+    actionSo2rNeoSelRx2: TAction;
+    actionSo2rNeoSelRxBoth: TAction;
+    SO2RNeoControlPanel1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -848,6 +853,10 @@ type
     procedure menuTargetEditorClick(Sender: TObject);
     procedure actionShowQsyInfoExecute(Sender: TObject);
     procedure menuPluginManagerClick(Sender: TObject);
+    procedure actionShowSo2rNeoCpExecute(Sender: TObject);
+    procedure actionSo2rNeoSelRx1Execute(Sender: TObject);
+    procedure actionSo2rNeoSelRx2Execute(Sender: TObject);
+    procedure actionSo2rNeoSelRxBothExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -875,6 +884,7 @@ type
     FVoiceForm: TVoiceForm;
     FFunctionKeyPanel: TformFunctionKeyPanel;
     FQsyInfoForm: TformQsyInfo;
+    FSo2rNeoCp: TformSo2rNeoCp;
     FTTYConsole: TTTYConsole;
 
     FInitialized: Boolean;
@@ -3254,6 +3264,7 @@ begin
    FVoiceForm.OnNotifyFinished := OnVoicePlayFinished;
    FFunctionKeyPanel := TformFunctionKeyPanel.Create(Self);
    FQsyInfoForm   := TformQsyInfo.Create(Self);
+   FSo2rNeoCp     := TformSo2rNeoCp.Create(Self);
    FTTYConsole    := nil;
 
    FCurrentCQMessageNo := 101;
@@ -3502,6 +3513,7 @@ begin
    dmZlogGlobal.ReadWindowState(FCwMessagePad);
    dmZlogGlobal.ReadWindowState(FFunctionKeyPanel);
    dmZlogGlobal.ReadWindowState(FQsyInfoForm);
+   dmZlogGlobal.ReadWindowState(FSo2rNeoCp);
    dmZlogGlobal.ReadWindowState(FZLinkForm);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -3534,6 +3546,7 @@ begin
    dmZlogGlobal.WriteWindowState(FCwMessagePad);
    dmZlogGlobal.WriteWindowState(FFunctionKeyPanel);
    dmZlogGlobal.WriteWindowState(FQsyInfoForm);
+   dmZlogGlobal.WriteWindowState(FSo2rNeoCp);
    dmZlogGlobal.WriteWindowState(FZLinkForm);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -5044,6 +5057,7 @@ begin
    FVoiceForm.Release();
    FFunctionKeyPanel.Release();
    FQsyInfoForm.Release();
+   FSo2rNeoCp.Release();
 
    if Assigned(FTTYConsole) then begin
       FTTYConsole.Release();
@@ -8765,6 +8779,39 @@ end;
 procedure TMainForm.actionShowQsyInfoExecute(Sender: TObject);
 begin
    FQsyInfoForm.Show();
+end;
+
+// #134 SO2R Neo Control Panel
+procedure TMainForm.actionShowSo2rNeoCpExecute(Sender: TObject);
+begin
+   FSo2rNeoCp.Show();
+end;
+
+// #135 SO2R Neo Select RX1
+procedure TMainForm.actionSo2rNeoSelRx1Execute(Sender: TObject);
+var
+   tx: Integer;
+begin
+   tx := GetCurrentRigID();
+   dmZLogKeyer.So2rNeoSwitchRig(tx, 0);
+end;
+
+// #136 SO2R Neo Select RX2
+procedure TMainForm.actionSo2rNeoSelRx2Execute(Sender: TObject);
+var
+   tx: Integer;
+begin
+   tx := GetCurrentRigID();
+   dmZLogKeyer.So2rNeoSwitchRig(tx, 1);
+end;
+
+// #137 SO2R Neo Select RX Both
+procedure TMainForm.actionSo2rNeoSelRxBothExecute(Sender: TObject);
+var
+   tx: Integer;
+begin
+   tx := GetCurrentRigID();
+   dmZLogKeyer.So2rNeoSwitchRig(tx, 2);
 end;
 
 procedure TMainForm.RestoreWindowsPos();
