@@ -6895,15 +6895,32 @@ object MainForm: TMainForm
     end
     object actionSo2rNeoSelRx1: TAction
       Caption = 'actionSo2rNeoSelRx1'
-      OnExecute = actionSo2rNeoSelRx1Execute
+      OnExecute = actionSo2rNeoSelRxExecute
     end
     object actionSo2rNeoSelRx2: TAction
+      Tag = 1
       Caption = 'actionSo2rNeoSelRx2'
-      OnExecute = actionSo2rNeoSelRx2Execute
+      OnExecute = actionSo2rNeoSelRxExecute
     end
     object actionSo2rNeoSelRxBoth: TAction
+      Tag = 2
       Caption = 'actionSo2rNeoSelRxBoth'
-      OnExecute = actionSo2rNeoSelRxBothExecute
+      OnExecute = actionSo2rNeoSelRxExecute
+    end
+    object actionSelectRig1: TAction
+      Tag = 1
+      Caption = 'actionSelectRig1'
+      OnExecute = actionSelectRigExecute
+    end
+    object actionSelectRig2: TAction
+      Tag = 2
+      Caption = 'actionSelectRig2'
+      OnExecute = actionSelectRigExecute
+    end
+    object actionSelectRig3: TAction
+      Tag = 3
+      Caption = 'actionSelectRig3'
+      OnExecute = actionSelectRigExecute
     end
   end
   object SPCMenu: TPopupMenu

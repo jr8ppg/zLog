@@ -625,6 +625,9 @@ type
     actionSo2rNeoSelRx2: TAction;
     actionSo2rNeoSelRxBoth: TAction;
     SO2RNeoControlPanel1: TMenuItem;
+    actionSelectRig1: TAction;
+    actionSelectRig2: TAction;
+    actionSelectRig3: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -854,9 +857,8 @@ type
     procedure actionShowQsyInfoExecute(Sender: TObject);
     procedure menuPluginManagerClick(Sender: TObject);
     procedure actionShowSo2rNeoCpExecute(Sender: TObject);
-    procedure actionSo2rNeoSelRx1Execute(Sender: TObject);
-    procedure actionSo2rNeoSelRx2Execute(Sender: TObject);
-    procedure actionSo2rNeoSelRxBothExecute(Sender: TObject);
+    procedure actionSo2rNeoSelRxExecute(Sender: TObject);
+    procedure actionSelectRigExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1027,6 +1029,7 @@ type
     function GetNewMulti2Edit(): TEdit;   // 12
     procedure InitQsoEditPanel();
     procedure UpdateQsoEditPanel(rig: Integer);
+    procedure SwitchRig(rig: Integer);
 
     procedure GridAdd(aQSO: TQSO);
     procedure GridWriteQSO(R: Integer; aQSO: TQSO);
@@ -3772,26 +3775,25 @@ begin
       actionShowSuperCheck.Execute();
    end;
 
-   if S = 'RESET' then
+   if S = 'RESET' then begin
       if RigControl.Rig <> nil then
          RigControl.Rig.reset;
+   end;
 
-   if S = 'R1' then
-      RigControl.SetCurrentRig(1);
+   if S = 'R1' then begin
+      actionSelectRig1.Execute();
+   end;
 
-   if S = 'R2' then
-      RigControl.SetCurrentRig(2);
+   if S = 'R2' then begin
+      actionSelectRig2.Execute();
+   end;
 
-   if Pos('R', S) = 1 then
-      if length(S) = 2 then begin
-         case S[2] of
-            '3' .. '9':
-               RigControl.SetCurrentRig(Ord(S[2]) - Ord('0'));
-         end;
-      end;
+   if S = 'R3' then begin
+      actionSelectRig3.Execute();
+   end;
 
    if S = 'TR' then begin
-      RigControl.ToggleCurrentRig;
+      actionToggleRig.Execute();
    end;
 
    if Pos('TXNR', S) = 1 then begin
@@ -4153,6 +4155,7 @@ end;
 procedure TMainForm.EditKeyPress(Sender: TObject; var Key: Char);
 var
    Q: TQSO;
+   S: string;
 begin
    if CallsignEdit.Font.Color = clGrayText then begin
       if Key <> ' ' then begin
@@ -4227,9 +4230,10 @@ begin
 
       // Enter / SHIFT+Enter
       Char($0D): begin
-         if CallsignEdit.Focused and (Pos(',', CallsignEdit.Text) = 1) then begin
-            ProcessConsoleCommand(CallsignEdit.Text);
+         S := CallsignEdit.Text;
+         if CallsignEdit.Focused and (Pos(',', S) = 1) then begin
             CallsignEdit.Text := '';
+            ProcessConsoleCommand(S);
          end
          else begin
             if GetAsyncKeyState(VK_SHIFT) < 0 then begin
@@ -8207,11 +8211,7 @@ begin
    CtrlZCQLoop := False;
    dmZLogKeyer.CQLoopCount := 999;
    rig := RigControl.ToggleCurrentRig();
-   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-      UpdateQsoEditPanel(rig);
-      FEditPanel[rig - 1].CallsignEdit.SetFocus();
-      EditEnter(FEditPanel[rig - 1].CallsignEdit);
-   end;
+   SwitchRig(rig);
 end;
 
 // #72 BandScope
@@ -8787,31 +8787,25 @@ begin
    FSo2rNeoCp.Show();
 end;
 
-// #135 SO2R Neo Select RX1
-procedure TMainForm.actionSo2rNeoSelRx1Execute(Sender: TObject);
+// #135-137 SO2R Neo Select RX N
+procedure TMainForm.actionSo2rNeoSelRxExecute(Sender: TObject);
 var
    tx: Integer;
+   rx: Integer;
 begin
+   rx := TAction(Sender).Tag;
    tx := GetCurrentRigID();
-   dmZLogKeyer.So2rNeoSwitchRig(tx, 0);
+   dmZLogKeyer.So2rNeoSwitchRig(tx, rx);
 end;
 
-// #136 SO2R Neo Select RX2
-procedure TMainForm.actionSo2rNeoSelRx2Execute(Sender: TObject);
+// #138-140 Select Rig N
+procedure TMainForm.actionSelectRigExecute(Sender: TObject);
 var
-   tx: Integer;
+   rig: Integer;
 begin
-   tx := GetCurrentRigID();
-   dmZLogKeyer.So2rNeoSwitchRig(tx, 1);
-end;
-
-// #137 SO2R Neo Select RX Both
-procedure TMainForm.actionSo2rNeoSelRxBothExecute(Sender: TObject);
-var
-   tx: Integer;
-begin
-   tx := GetCurrentRigID();
-   dmZLogKeyer.So2rNeoSwitchRig(tx, 2);
+   rig := TAction(Sender).Tag;
+   RigControl.SetCurrentRig(rig);
+   SwitchRig(rig);
 end;
 
 procedure TMainForm.RestoreWindowsPos();
@@ -9766,6 +9760,15 @@ begin
             UpdateMode(RigControl.Rigs[rig].CurrentMode);
          end;
       end;
+   end;
+end;
+
+procedure TMainForm.SwitchRig(rig: Integer);
+begin
+   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+      UpdateQsoEditPanel(rig);
+      FEditPanel[rig - 1].CallsignEdit.SetFocus();
+      EditEnter(FEditPanel[rig - 1].CallsignEdit);
    end;
 end;
 
