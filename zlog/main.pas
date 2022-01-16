@@ -1031,6 +1031,7 @@ type
     procedure InitQsoEditPanel();
     procedure UpdateQsoEditPanel(rig: Integer);
     procedure SwitchRig(rig: Integer);
+    procedure ShowCurrentQSO();
 
     procedure GridAdd(aQSO: TQSO);
     procedure GridWriteQSO(R: Integer; aQSO: TQSO);
@@ -4400,18 +4401,8 @@ begin
    CurrentQSO.Memo := '';
 
    // 画面に表示
-//   SerialEdit.Text := CurrentQSO.SerialStr;
-   TimeEdit.Text := CurrentQSO.TimeStr;
-   DateEdit.Text := CurrentQSO.DateStr;
-   CallsignEdit.Text := CurrentQSO.Callsign;
-   RcvdRSTEdit.Text := CurrentQSO.RSTStr;
-   NumberEdit.Text := CurrentQSO.NrRcvd;
-   ModeEdit.Text := CurrentQSO.ModeStr;
-   BandEdit.Text := CurrentQSO.BandStr;
-   PowerEdit.Text := CurrentQSO.NewPowerStr;
-   PointEdit.Text := CurrentQSO.PointStr;
-   OpEdit.Text := CurrentQSO.Operator;
-   { CallsignEdit.SetFocus; }
+   ShowCurrentQSO();
+
    WriteStatusLine('', False);
 
    Log.Saved := True;
@@ -5723,9 +5714,11 @@ begin
 
       RenewCWToolBar;
       RenewVoiceToolBar;
+
       InitQsoEditPanel();
       UpdateQsoEditPanel(1);
       LastFocus := CallsignEdit;
+      ShowCurrentQSO();
 
       MyContest.ScoreForm.UpdateData();
       MyContest.MultiForm.UpdateData();
@@ -5924,9 +5917,13 @@ begin
    edit := TEdit(Sender);
    rig := edit.Tag;
 
-   if FCurrentRig <> rig then begin
-      RigControl.SetCurrentRig(rig);
-      SwitchRig(rig);
+   // SO2Rの場合、現在RIGとクリックされたControlのRIGが違うと強制切り替え
+   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+      if FCurrentRig <> rig then begin
+         if RigControl.SetCurrentRig(rig) = True then begin
+            SwitchRig(rig);
+         end;
+      end;
    end;
 
    SetEditColor(TEdit(Sender), False);
@@ -7513,7 +7510,9 @@ end;
 procedure TMainForm.QSY(b: TBand; m: TMode; r: Integer);
 begin
    if r <> 0 then begin
-      RigControl.SetCurrentRig(r);
+      if RigControl.SetCurrentRig(r) = True then begin
+         SwitchRig(r);
+      end;
    end;
 
    if CurrentQSO.band <> b then begin
@@ -8815,8 +8814,9 @@ var
    rig: Integer;
 begin
    rig := TAction(Sender).Tag;
-   RigControl.SetCurrentRig(rig);
-   SwitchRig(rig);
+   if RigControl.SetCurrentRig(rig) = True then begin
+      SwitchRig(rig);
+   end;
 end;
 
 procedure TMainForm.RestoreWindowsPos();
@@ -9631,6 +9631,8 @@ end;
 
 procedure TMainForm.InitQsoEditPanel();
 begin
+   Grid.Align := alNone;
+
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
       // 1R
       FEditPanel[0].SerialEdit   := SerialEdit1;
@@ -9705,6 +9707,7 @@ begin
       EditPanel1R.Visible := False;
       EditPanel2R.Visible := True;
    end;
+   Grid.Align := alClient;
 end;
 
 procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
@@ -9787,6 +9790,22 @@ begin
          EditEnter(FEditPanel[rig - 1].CallsignEdit);
       end;
    end;
+end;
+
+procedure TMainForm.ShowCurrentQSO();
+begin
+//   SerialEdit.Text := CurrentQSO.SerialStr;
+   TimeEdit.Text := CurrentQSO.TimeStr;
+   DateEdit.Text := CurrentQSO.DateStr;
+   CallsignEdit.Text := CurrentQSO.Callsign;
+   RcvdRSTEdit.Text := CurrentQSO.RSTStr;
+   NumberEdit.Text := CurrentQSO.NrRcvd;
+   ModeEdit.Text := CurrentQSO.ModeStr;
+   BandEdit.Text := CurrentQSO.BandStr;
+   PowerEdit.Text := CurrentQSO.NewPowerStr;
+   PointEdit.Text := CurrentQSO.PointStr;
+   OpEdit.Text := CurrentQSO.Operator;
+   { CallsignEdit.SetFocus; }
 end;
 
 end.

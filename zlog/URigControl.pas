@@ -446,7 +446,7 @@ type
     function StatusSummary: string; // returns current rig's band freq mode
     procedure ImplementOptions;
     procedure Stop();
-    procedure SetCurrentRig(N : integer);
+    function SetCurrentRig(N : integer): Boolean;
     function GetCurrentRig : integer;
     function ToggleCurrentRig : integer;
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
@@ -596,7 +596,7 @@ begin
    end;
 end;
 
-procedure TRigControl.SetCurrentRig(N: Integer);
+function TRigControl.SetCurrentRig(N: Integer): Boolean;
 var
    MF: TMainForm;
 
@@ -608,6 +608,7 @@ begin
    MF := TMainForm(Owner);
 
    if (N > FMaxRig) or (N < 0) then begin
+      Result := False;
       Exit;
    end;
 
@@ -634,6 +635,8 @@ begin
          MF.SetStatusLine('R' + IntToStr(FCurrentRigNumber));
       end;
    end;
+
+   Result := True;
 end;
 
 function TRigControl.GetCurrentRig: Integer;
@@ -1482,6 +1485,13 @@ end;
 procedure TRigControl.ImplementOptions;
 begin
    Stop();
+
+   if (dmZLogGlobal.Settings._so2r_type = so2rNone) then begin
+      FMaxRig := 2;
+   end
+   else begin
+      FMaxRig := 3;
+   end;
 
    FRigs[1] := BuildRigObject(1);
    FRigs[2] := BuildRigObject(2);
