@@ -5227,6 +5227,7 @@ object MainForm: TMainForm
       BevelOuter = bvNone
       TabOrder = 2
       object RigPanelShape2A: TShape
+        Tag = 1
         Left = 0
         Top = 0
         Width = 217
@@ -5237,6 +5238,7 @@ object MainForm: TMainForm
         ExplicitLeft = -1
       end
       object CallsignEdit2A: TOvrEdit
+        Tag = 1
         Left = 6
         Top = 28
         Width = 75
@@ -5256,6 +5258,7 @@ object MainForm: TMainForm
         TabOnEnter = False
       end
       object NumberEdit2A: TOvrEdit
+        Tag = 1
         Left = 120
         Top = 28
         Width = 59
@@ -5275,6 +5278,7 @@ object MainForm: TMainForm
         TabOnEnter = False
       end
       object RcvdRSTEdit2A: TEdit
+        Tag = 1
         Left = 87
         Top = 28
         Width = 27
@@ -5288,6 +5292,7 @@ object MainForm: TMainForm
         OnKeyPress = EditKeyPress
       end
       object BandEdit2A: TEdit
+        Tag = 1
         Left = 6
         Top = 5
         Width = 45
@@ -5302,6 +5307,7 @@ object MainForm: TMainForm
         OnKeyDown = EditKeyDown
       end
       object ModeEdit2A: TEdit
+        Tag = 1
         Left = 54
         Top = 5
         Width = 27
@@ -5316,6 +5322,7 @@ object MainForm: TMainForm
         OnKeyDown = EditKeyDown
       end
       object SerialEdit2A: TEdit
+        Tag = 1
         Left = 175
         Top = 5
         Width = 35
@@ -5337,6 +5344,7 @@ object MainForm: TMainForm
       BevelOuter = bvNone
       TabOrder = 3
       object RigPanelShape2B: TShape
+        Tag = 2
         Left = 0
         Top = 0
         Width = 217
@@ -5347,6 +5355,7 @@ object MainForm: TMainForm
         ExplicitLeft = -1
       end
       object CallsignEdit2B: TOvrEdit
+        Tag = 2
         Left = 6
         Top = 28
         Width = 75
@@ -5366,6 +5375,7 @@ object MainForm: TMainForm
         TabOnEnter = False
       end
       object NumberEdit2B: TOvrEdit
+        Tag = 2
         Left = 120
         Top = 28
         Width = 59
@@ -5385,6 +5395,7 @@ object MainForm: TMainForm
         TabOnEnter = False
       end
       object RcvdRSTEdit2B: TEdit
+        Tag = 2
         Left = 87
         Top = 28
         Width = 27
@@ -5398,6 +5409,7 @@ object MainForm: TMainForm
         OnKeyPress = EditKeyPress
       end
       object BandEdit2B: TEdit
+        Tag = 2
         Left = 6
         Top = 5
         Width = 45
@@ -5412,6 +5424,7 @@ object MainForm: TMainForm
         OnKeyDown = EditKeyDown
       end
       object ModeEdit2B: TEdit
+        Tag = 2
         Left = 54
         Top = 5
         Width = 27
@@ -5426,6 +5439,7 @@ object MainForm: TMainForm
         OnKeyDown = EditKeyDown
       end
       object SerialEdit2B: TEdit
+        Tag = 2
         Left = 176
         Top = 5
         Width = 35
@@ -5447,6 +5461,7 @@ object MainForm: TMainForm
       BevelOuter = bvNone
       TabOrder = 4
       object RigPanelShape2C: TShape
+        Tag = 3
         Left = 0
         Top = 0
         Width = 437
@@ -5457,6 +5472,7 @@ object MainForm: TMainForm
         ExplicitHeight = 17
       end
       object CallsignEdit2C: TOvrEdit
+        Tag = 3
         Left = 6
         Top = 5
         Width = 75
@@ -5476,6 +5492,7 @@ object MainForm: TMainForm
         TabOnEnter = False
       end
       object NumberEdit2C: TOvrEdit
+        Tag = 3
         Left = 120
         Top = 5
         Width = 59
@@ -5495,6 +5512,7 @@ object MainForm: TMainForm
         TabOnEnter = False
       end
       object RcvdRSTEdit2C: TEdit
+        Tag = 3
         Left = 87
         Top = 5
         Width = 27
@@ -5508,6 +5526,7 @@ object MainForm: TMainForm
         OnKeyPress = EditKeyPress
       end
       object BandEdit2C: TEdit
+        Tag = 3
         Left = 226
         Top = 5
         Width = 45
@@ -5522,6 +5541,7 @@ object MainForm: TMainForm
         OnKeyDown = EditKeyDown
       end
       object ModeEdit2C: TEdit
+        Tag = 3
         Left = 274
         Top = 5
         Width = 27
@@ -5536,6 +5556,7 @@ object MainForm: TMainForm
         OnKeyDown = EditKeyDown
       end
       object SerialEdit2C: TEdit
+        Tag = 3
         Left = 396
         Top = 5
         Width = 35

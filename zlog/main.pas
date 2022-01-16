@@ -923,6 +923,7 @@ type
     // QSY Violation (10 min rule / per hour)
     FQsyViolation: Boolean;
 
+    FCurrentRig: Integer;
     FEditPanel: TEditPanelArray;
 
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
@@ -5916,16 +5917,26 @@ end;
 procedure TMainForm.EditEnter(Sender: TObject);
 var
    P: Integer;
+   edit: TEdit;
+   rig: Integer;
 begin
    LastFocus := TEdit(Sender);
+   edit := TEdit(Sender);
+   rig := edit.Tag;
+
+   if FCurrentRig <> rig then begin
+      RigControl.SetCurrentRig(rig);
+      SwitchRig(rig);
+   end;
 
    SetEditColor(TEdit(Sender), False);
 
-   if TEdit(Sender).Name = 'CallsignEdit' then begin
-      P := Pos('.', CallsignEdit.Text);
+   if (edit = CallsignEdit1) or
+      (edit = CallsignEdit2A) or (edit = CallsignEdit2B) or (edit = CallsignEdit2C) then begin
+      P := Pos('.', edit.Text);
       if P > 0 then begin
-         CallsignEdit.SelStart := P - 1;
-         CallsignEdit.SelLength := 1;
+         edit.SelStart := P - 1;
+         edit.SelLength := 1;
       end;
    end;
 
@@ -9726,6 +9737,7 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
       FEditPanel[id].BandEdit.Enabled := False;
    end;
 begin
+   FCurrentRig := rig;
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
       Exit;
    end
@@ -9767,8 +9779,13 @@ procedure TMainForm.SwitchRig(rig: Integer);
 begin
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       UpdateQsoEditPanel(rig);
-      FEditPanel[rig - 1].CallsignEdit.SetFocus();
-      EditEnter(FEditPanel[rig - 1].CallsignEdit);
+      if LastFocus = FEditPanel[rig - 1].rcvdNumber then begin
+         EditEnter(FEditPanel[rig - 1].rcvdNumber);
+      end
+      else begin
+         FEditPanel[rig - 1].CallsignEdit.SetFocus();
+         EditEnter(FEditPanel[rig - 1].CallsignEdit);
+      end;
    end;
 end;
 
