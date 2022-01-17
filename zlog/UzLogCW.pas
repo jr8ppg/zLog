@@ -183,8 +183,14 @@ end;
 procedure zLogSendStr(nID: Integer; S: string);
 begin
    if dmZLogKeyer.UseWinKeyer = True then begin
+
+      if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+         dmZLogKeyer.So2rNeoReverseRx(nID)
+      end;
+
       dmZLogKeyer.WinKeyerClear();
-      dmZLogKeyer.WinKeyerSendStr(S);
+      dmZLogKeyer.WinKeyerPTT(True);
+      dmZLogKeyer.WinKeyerSendStr2(S);
    end
    else begin
       dmZLogKeyer.ClrBuffer();

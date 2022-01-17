@@ -1001,6 +1001,8 @@ type
     procedure TerminateSuperCheckDataLoad();
     procedure OnSPCMenuItemCick(Sender: TObject);
 
+    procedure DoMessageSendFinish(Sender: TObject);
+    procedure DoWkAbortProc(Sender: TObject);
     procedure DoCwSpeedChange(Sender: TObject);
     procedure DoVFOChange(Sender: TObject);
     procedure ApplyCQRepeatInterval();
@@ -3330,6 +3332,8 @@ begin
          dmZLogKeyer.OnCallsignSentProc := CallsignSentProc;
          dmZLogKeyer.OnPaddle := OnPaddle;
          dmZLogKeyer.OnSpeedChanged := DoCwSpeedChange;
+         dmZLogKeyer.OnSendFinishProc := DoMessageSendFinish;
+         dmZLogKeyer.OnWkAbortProc := DoWkAbortProc;
          dmZLogKeyer.InitializeBGK(mSec);
       end;
    end;
@@ -4527,6 +4531,7 @@ procedure TMainForm.OnTabPress;
 var
    S: String;
    Q: TQSO;
+   nID: Integer;
 begin
    // PHONE
    if Main.CurrentQSO.Mode in [mSSB, mFM, mAM] then begin
@@ -4580,7 +4585,15 @@ begin
    S := SetStr(S, CurrentQSO);
 
    if dmZLogKeyer.UseWinKeyer = True then begin
+
+      if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+         nID := GetCurrentRigID();
+         dmZLogKeyer.So2rNeoReverseRx(nID)
+      end;
+
       dmZLogKeyer.WinKeyerClear();
+      dmZLogKeyer.WinKeyerPTT(True);
+
       if (CurrentQSO.CQ = True) or (dmZlogGlobal.Settings._switchcqsp = False) then begin
          dmZLogKeyer.WinkeyerSendCallsign(CurrentQSO.Callsign);
       end
@@ -5385,7 +5398,7 @@ var
          S := dmZlogGlobal.CWMessage(2);
          S := StringReplace(S, '$C', '', [rfReplaceAll]);
          S := SetStr(S, CurrentQSO);
-         dmZLogKeyer.WinkeyerSendStr(S, False);
+         dmZLogKeyer.WinkeyerSendStr2(S, False);
       end;
    end;
 begin
@@ -9806,6 +9819,36 @@ begin
    PointEdit.Text := CurrentQSO.PointStr;
    OpEdit.Text := CurrentQSO.Operator;
    { CallsignEdit.SetFocus; }
+end;
+
+procedure TMainForm.DoMessageSendFinish(Sender: TObject);
+var
+   tx: Integer;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** DoMessageSendFinish ***'));
+   {$ENDIF}
+   tx := GetCurrentRigID();
+   dmZLogKeyer.WinKeyerPTT(False);
+
+   if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+      dmZLogKeyer.So2rNeoNormalRx(tx);
+   end;
+end;
+
+procedure TMainForm.DoWkAbortProc(Sender: TObject);
+var
+   tx: Integer;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** DoWkAbortProc ***'));
+   {$ENDIF}
+   tx := GetCurrentRigID();
+   dmZLogKeyer.WinKeyerPTT(False);
+
+   if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+      dmZLogKeyer.So2rNeoNormalRx(tx);
+   end;
 end;
 
 end.
