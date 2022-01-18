@@ -1003,6 +1003,7 @@ type
 
     procedure DoMessageSendFinish(Sender: TObject);
     procedure DoWkAbortProc(Sender: TObject);
+    procedure DoWkStatusProc(Sender: TObject; tx: Integer; rx: Integer; ptt: Boolean);
     procedure DoCwSpeedChange(Sender: TObject);
     procedure DoVFOChange(Sender: TObject);
     procedure ApplyCQRepeatInterval();
@@ -3334,6 +3335,7 @@ begin
          dmZLogKeyer.OnSpeedChanged := DoCwSpeedChange;
          dmZLogKeyer.OnSendFinishProc := DoMessageSendFinish;
          dmZLogKeyer.OnWkAbortProc := DoWkAbortProc;
+         dmZLogKeyer.OnWkStatusProc := DoWkStatusProc;
          dmZLogKeyer.InitializeBGK(mSec);
       end;
    end;
@@ -4592,7 +4594,7 @@ begin
       end;
 
       dmZLogKeyer.WinKeyerClear();
-      dmZLogKeyer.WinKeyerPTT(True);
+      dmZLogKeyer.WinKeyerControlPTT(True);
 
       if (CurrentQSO.CQ = True) or (dmZlogGlobal.Settings._switchcqsp = False) then begin
          dmZLogKeyer.WinkeyerSendCallsign(CurrentQSO.Callsign);
@@ -5398,7 +5400,7 @@ var
          S := dmZlogGlobal.CWMessage(2);
          S := StringReplace(S, '$C', '', [rfReplaceAll]);
          S := SetStr(S, CurrentQSO);
-         dmZLogKeyer.WinkeyerSendStr2(S, False);
+         dmZLogKeyer.WinkeyerSendStr2(S);
       end;
    end;
 begin
@@ -9829,7 +9831,7 @@ begin
    OutputDebugString(PChar('*** DoMessageSendFinish ***'));
    {$ENDIF}
    tx := GetCurrentRigID();
-   dmZLogKeyer.WinKeyerPTT(False);
+   dmZLogKeyer.WinKeyerControlPTT(False);
 
    if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
       dmZLogKeyer.So2rNeoNormalRx(tx);
@@ -9844,11 +9846,17 @@ begin
    OutputDebugString(PChar('*** DoWkAbortProc ***'));
    {$ENDIF}
    tx := GetCurrentRigID();
-   dmZLogKeyer.WinKeyerPTT(False);
+   dmZLogKeyer.WinKeyerControlPTT(False);
 
    if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
       dmZLogKeyer.So2rNeoNormalRx(tx);
    end;
+end;
+
+procedure TMainForm.DoWkStatusProc(Sender: TObject; tx: Integer; rx: Integer; ptt: Boolean);
+begin
+   FSo2rNeoCp.Rx := rx;
+   FSo2rNeoCp.Ptt := ptt;
 end;
 
 end.

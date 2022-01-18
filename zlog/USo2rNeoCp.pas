@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.Buttons, Vcl.StdCtrls,
-  System.Actions, Vcl.ActnList;
+  System.Actions, Vcl.ActnList, JvExControls, JvLED;
 
 type
   TformSo2rNeoCp = class(TForm)
@@ -23,6 +23,7 @@ type
     buttonPer100: TSpeedButton;
     buttonPer0: TSpeedButton;
     buttonPer50: TSpeedButton;
+    ledPtt: TJvLED;
     procedure FormCreate(Sender: TObject);
     procedure buttonRigClick(Sender: TObject);
     procedure actionSo2rNeoSelRx1Execute(Sender: TObject);
@@ -33,8 +34,14 @@ type
     procedure buttonPerNClick(Sender: TObject);
   private
     { Private êÈåæ }
+    function GetRx(): Integer;
+    procedure SetRx(rx: Integer);
+    function GetPtt(): Boolean;
+    procedure SetPtt(ptt: Boolean);
   public
     { Public êÈåæ }
+    property Rx: Integer read GetRx write SetRx;
+    property Ptt: Boolean read GetPtt write SetPtt;
   end;
 
 implementation
@@ -128,6 +135,38 @@ var
 begin
    tx := MainForm.CurrentRigID;
    dmZLogKeyer.So2rNeoSwitchRig(tx, 2);
+end;
+
+function TformSo2rNeoCp.GetRx(): Integer;
+begin
+   if (buttonRig1.Down = True) then begin
+      Result := 0;
+   end
+   else if (buttonRig2.Down = True) then begin
+      Result := 1;
+   end
+   else begin
+      Result := 2;
+   end;
+end;
+
+procedure TformSo2rNeoCp.SetRx(rx: Integer);
+begin
+   case rx of
+      0: buttonRig1.Down := True;
+      1: buttonRig2.Down := True;
+      2: buttonRigBoth.Down := True;
+   end;
+end;
+
+function TformSo2rNeoCp.GetPtt(): Boolean;
+begin
+   Result := ledPtt.Status;
+end;
+
+procedure TformSo2rNeoCp.SetPtt(ptt: Boolean);
+begin
+   ledPtt.Status := ptt;
 end;
 
 end.

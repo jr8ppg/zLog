@@ -3,7 +3,7 @@ object formSo2rNeoCp: TformSo2rNeoCp
   Top = 0
   BorderStyle = bsToolWindow
   Caption = 'SO2R Neo Control Panel'
-  ClientHeight = 77
+  ClientHeight = 102
   ClientWidth = 486
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,6 +15,11 @@ object formSo2rNeoCp: TformSo2rNeoCp
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 12
+  object ledPtt: TJvLED
+    Left = 8
+    Top = 79
+    Status = False
+  end
   object groupAfControl: TGroupBox
     Left = 163
     Top = 4

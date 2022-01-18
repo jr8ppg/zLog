@@ -43,6 +43,7 @@ type
 
 type
   TdmZLogKeyer = class;
+  TWkStatusEvent = procedure(Sender: TObject; tx: Integer; rx: Integer; ptt: Boolean) of object;
 
   TKeyerMonitorThread = class(TThread)
   private
@@ -175,6 +176,7 @@ type
     FOnPaddleEvent: TNotifyEvent;
     FOnSendFinishProc: TNotifyEvent;
     FOnWkAbortProc: TNotifyEvent;
+    FOnWkStatusProc: TWkStatusEvent;
 
     // False: PTT=RTS,KEY=DTR
     // True:  PTT=DTR,KEY=RTS
@@ -195,6 +197,8 @@ type
     FOnSpeedChanged: TNotifyEvent;
     FWkAbort: Boolean;
     FUseWkSo2rNeo: Boolean;
+    FWkRx: Integer;
+    FWkTx: Integer;
 
     FWkMessageSending: Boolean;
     FWkMessageIndex: Integer;
@@ -241,7 +245,6 @@ type
     procedure WinKeyerSetSpeed(nWPM: Integer);
     procedure WinKeyerSetSideTone(fOn: Boolean);
     procedure WinKeyerSetPTTMode(fUse: Boolean);
-    procedure WinKeyerControlPTT(fOn: Boolean);
     procedure WinKeyerSetPTTDelay(before, after: Byte);
     procedure WinKeyerSetMode(mode: Byte);
   public
@@ -301,6 +304,7 @@ type
     property OnSendFinishProc: TNotifyEvent read FOnSendFinishProc write FOnSendFinishProc;
     property OnSpeedChanged: TNotifyEvent read FOnSpeedChanged write FOnSpeedChanged;
     property OnWkAbortProc: TNotifyEvent read FOnWkAbortProc write FOnWkAbortProc;
+    property OnWkStatusProc: TWkStatusEvent read FOnWkStatusProc write FOnWkStatusProc;
     property KeyingSignalReverse: Boolean read FKeyingSignalReverse write FKeyingSignalReverse;
 
 //    property UsbPortIn: TUsbPortDataArray read FUsbPortIn;
@@ -324,18 +328,18 @@ type
     property UseWinKeyer: Boolean read FUseWinKeyer write FUseWinKeyer;
     property WinKeyerRevision: Integer read FWkRevision;
     property WkCallsignSending: Boolean read FWkCallsignSending write FWkCallsignSending;
-    property UseWkSo2rNeo: Boolean read FUseWkSo2rNeo write FUseWkSo2rNeo;
     procedure WinKeyerSendCallsign(S: string);
-    procedure WinKeyerSendChar(C: Char; fUsePTT: Boolean);
-    procedure WinKeyerSendStr(S: string; fUsePTT: Boolean = True);
-    procedure WinKeyerSendStr2(S: string; fUsePTT: Boolean = True);
+    procedure WinKeyerSendChar(C: Char);
+    procedure WinKeyerSendStr(S: string);
+    procedure WinKeyerSendStr2(S: string);
     function WinKeyerBuildMessage(S: string): string;
-    procedure WinKeyerPTT(fOn: Boolean);
+    procedure WinKeyerControlPTT(fOn: Boolean);
     procedure WinKeyerAbort();
     procedure WinKeyerClear();
     procedure WinKeyerCancelLastChar();
 
     // SO2R Neo support
+    property UseWkSo2rNeo: Boolean read FUseWkSo2rNeo write FUseWkSo2rNeo;
     procedure So2rNeoSetAudioBlendMode(fOn: Boolean);
     procedure So2rNeoSetAudioBlendRatio(ratio: Byte);
     procedure So2rNeoSwitchRig(tx: Integer; rx: Integer);
@@ -811,10 +815,22 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetCWSendBufCharPTT(nID: Integer; C: char);
+procedure TdmZLogKeyer.SetCWSendBufCharPTT(nID: Integer; C: Char);
 begin
    if UseWinKeyer = True then begin
-      WinKeyerSendChar(C, True);
+      FWkAbort := False;
+      WinKeyerControlPTT(True);
+      FWkMessageStr := FWkMessageStr + C;
+
+      if FWkMessageSending = False then begin
+         if FUseWkSo2rNeo = True then begin
+            So2rNeoSwitchRig(nID, nID)
+         end;
+
+         C := FWkMessageStr[FWkMessageIndex];
+         WinKeyerSendChar(C);
+         FWkMessageSending := True;
+      end;
       Exit;
    end;
 
@@ -2907,19 +2923,37 @@ begin
    FComKeying[0].SendData(@Buff, 2);
 end;
 
+// PTT On/Off <18><nn> nn = 01 PTT on, n = 00 PTT off
 procedure TdmZLogKeyer.WinKeyerControlPTT(fOn: Boolean);
 var
    Buff: array[0..10] of Byte;
 begin
+   if FPTTEnabled = False then begin
+      Exit;
+   end;
+
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_PTT_CMD;
    if fOn = True then begin
+      if FPTTFLAG = True then begin
+         Exit;
+      end;
       Buff[1] := WK_PTT_ON;
+      FPTTFLAG := True;
    end
    else begin
+      if FPTTFLAG = False then begin
+         Exit;
+      end;
       Buff[1] := WK_PTT_OFF;
+      FPTTFLAG := False;
    end;
+
    FComKeying[0].SendData(@Buff, 2);
+
+   if Assigned(FOnWkStatusProc) then begin
+      FOnWkStatusProc(nil, FWkTx, FWkRx, FPTTFLAG);
+   end;
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetPTTDelay(before, after: Byte);
@@ -2958,35 +2992,26 @@ begin
    FWkCallsignIndex := 1;
    FWkCallsignStr := S;
    C := FWkCallsignStr[FWkCallsignIndex];
-   WinKeyerSendChar(C, False);
+   WinKeyerSendChar(C);
    FWkCallsignSending := True;
 end;
 
-procedure TdmZLogKeyer.WinKeyerSendChar(C: Char; fUsePTT: Boolean);
+procedure TdmZLogKeyer.WinKeyerSendChar(C: Char);
 var
    S: string;
 begin
    case C of
       ' ', 'A'..'Z', '0'..'9', '/', '?', '.', 'a', 'b', 'k', 's', 't', 'v', '-', '=': begin
-         if (fUsePTT = True) and (FPTTEnabled = True) { and Not(PTTIsOn) } then begin
-            S := '(' + C + ')';
-         end
-         else begin
-            S := C;
-         end;
-
-         WinKeyerSendStr(S, False);
+         S := C;
+         WinKeyerSendStr(S);
       end;
    end;
 end;
 
-procedure TdmZLogKeyer.WinKeyerSendStr(S: string; fUsePTT: Boolean);
+procedure TdmZLogKeyer.WinKeyerSendStr(S: string);
 begin
    if FWkAbort = True then begin
       Exit;
-   end;
-   if (fUsePTT = True) and (FPTTEnabled = True) { and Not(PTTIsOn) } then begin
-      S := '(' + S + ')';
    end;
 
    S := WinKeyerBuildMessage(S);
@@ -2994,15 +3019,12 @@ begin
    FComKeying[0].SendString(AnsiString(S));
 end;
 
-procedure TdmZLogKeyer.WinKeyerSendStr2(S: string; fUsePTT: Boolean);
+procedure TdmZLogKeyer.WinKeyerSendStr2(S: string);
 var
    C: Char;
 begin
    if FWkAbort = True then begin
       Exit;
-   end;
-   if (fUsePTT = True) and (FPTTEnabled = True) { and Not(PTTIsOn) } then begin
-      S := '(' + S + ')';
    end;
 
    S := WinKeyerBuildMessage(S);
@@ -3011,7 +3033,7 @@ begin
    FWkMessageIndex := 1;
    FWkMessageStr := S;
    C := FWkMessageStr[FWkMessageIndex];
-   WinKeyerSendChar(C, False);
+   WinKeyerSendChar(C);
    FWkMessageSending := True;
 end;
 
@@ -3081,28 +3103,6 @@ begin
    end;
 
    Result := S;
-end;
-
-// PTT On/Off <18><nn> nn = 01 PTT on, n = 00 PTT off
-procedure TdmZLogKeyer.WinKeyerPTT(fOn: Boolean);
-var
-   Buff: array[0..10] of Byte;
-begin
-   if FPTTEnabled = False then begin
-      Exit;
-   end;
-
-   FillChar(Buff, SizeOf(Buff), 0);
-   Buff[0] := WK_PTT_CMD;
-   if fOn = True then begin
-      Buff[1] := WK_PTT_ON;
-      FPTTFLAG := True;
-   end
-   else begin
-      Buff[1] := WK_PTT_OFF;
-      FPTTFLAG := False;
-   end;
-   FComKeying[0].SendData(@Buff, 2);
 end;
 
 procedure TdmZLogKeyer.WinKeyerCancelLastChar();
@@ -3301,7 +3301,7 @@ begin
          Inc(FWkCallsignIndex);
          if FWkCallsignIndex <= Length(FWkCallsignStr) then begin
             C := FWkCallsignStr[FWkCallsignIndex];
-            WinKeyerSendChar(C, False);
+            WinKeyerSendChar(C);
          end
          else begin
             FWkCallsignSending := False;
@@ -3318,10 +3318,12 @@ begin
          Inc(FWkMessageIndex);
          if FWkMessageIndex <= Length(FWkMessageStr) then begin
             C := FWkMessageStr[FWkMessageIndex];
-            WinKeyerSendChar(C, False);
+            WinKeyerSendChar(C);
          end
          else begin
             FWkMessageSending := False;
+            FWkMessageIndex := 1;
+            FWkMessageStr := '';
 
             {$IFDEF DEGBUG}
             OutputDebugString(PChar(' *** Send Finish !!! ***'));
@@ -3439,6 +3441,12 @@ begin
    end;
 
    FComKeying[0].SendData(@Buff, 1);
+
+   FWkTx := tx;
+   FWkRx := rx;
+   if Assigned(FOnWkStatusProc) then begin
+      FOnWkStatusProc(nil, FWkTx, FWkRx, FPTTFLAG);
+   end;
 end;
 
 procedure TdmZLogKeyer.So2rNeoReverseRx(tx: Integer);

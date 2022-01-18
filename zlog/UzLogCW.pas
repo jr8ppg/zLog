@@ -189,7 +189,7 @@ begin
       end;
 
       dmZLogKeyer.WinKeyerClear();
-      dmZLogKeyer.WinKeyerPTT(True);
+      dmZLogKeyer.WinKeyerControlPTT(True);
       dmZLogKeyer.WinKeyerSendStr2(S);
    end
    else begin
