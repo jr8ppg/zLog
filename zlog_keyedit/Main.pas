@@ -28,6 +28,8 @@ type
     vlePostContest: TValueListEditor;
     vleOther: TValueListEditor;
     buttonAllReset: TButton;
+    TabSheet8: TTabSheet;
+    vleSo2r: TValueListEditor;
     procedure vleDblClick(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
     procedure buttonCancelClick(Sender: TObject);
@@ -79,6 +81,7 @@ begin
       ReadKeymap(ini, vleEdit);
       ReadKeymap(ini, vlePostContest);
       ReadKeymap(ini, vleOther);
+      ReadKeymap(ini, vleSo2r);
    finally
       ini.Free();
    end;
@@ -143,6 +146,7 @@ begin
       WriteKeymap(ini, vleEdit);
       WriteKeymap(ini, vlePostContest);
       WriteKeymap(ini, vleOther);
+      WriteKeymap(ini, vleSo2r);
 
       CreateHelpFile();
 
@@ -236,6 +240,15 @@ begin
          end;
       end;
 
+      for i := 1 to vleSo2r.RowCount - 1 do begin
+         sl.CommaText := vleSo2r.Cells[1, i] + ',';
+         if sl[0] = strKey then begin
+            strFuncName := vleSo2r.Cells[0, i];
+            Result := True;
+            Exit;
+         end;
+      end;
+
       strFuncName := '';
       Result := False;
    finally
@@ -292,6 +305,13 @@ begin
    for i := 1 to vleOther.RowCount - 1 do begin
       if vleOther.Cells[0, i] = strFuncName then begin
          vleOther.Cells[1, i] := '';
+         Exit;
+      end;
+   end;
+
+   for i := 1 to vleSo2r.RowCount - 1 do begin
+      if vleSo2r.Cells[0, i] = strFuncName then begin
+         vleSo2r.Cells[1, i] := '';
          Exit;
       end;
    end;
@@ -369,6 +389,7 @@ begin
    ResetKeymap(vleEdit);
    ResetKeymap(vlePostContest);
    ResetKeymap(vleOther);
+   ResetKeymap(vleSo2r);
 end;
 
 procedure TformMain.CreateHelpFile();
@@ -384,6 +405,7 @@ begin
       CreateHelp2(SL, TabSheet5.Caption, vleEdit);
       CreateHelp2(SL, TabSheet6.Caption, vlePostContest);
       CreateHelp2(SL, TabSheet7.Caption, vleOther);
+      CreateHelp2(SL, TabSheet8.Caption, vleSo2r);
 
       SL.SaveToFile(ExtractFilePath(Application.ExeName) + '\ZLOGHELP.TXT');
    finally

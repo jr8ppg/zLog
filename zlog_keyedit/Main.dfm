@@ -20,7 +20,7 @@ object formMain: TformMain
     Top = 0
     Width = 575
     Height = 421
-    ActivePage = TabSheet1
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -198,7 +198,10 @@ object formMain: TformMain
           '#127 XIT'#12398#12488#12464#12523'='
           '#128 RIT'#21608#27874#25968#12398#12463#12522#12450'='
           '#129 Magical Calling'#27231#33021#12398'ON/OFF='
-          '#130 Anti Zeroin=')
+          '#130 Anti Zeroin='
+          '#138 RIG1'#12434#36984#25246'='
+          '#139 RIG2'#12434#36984#25246'='
+          '#140 RIG3'#12434#36984#25246'=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
@@ -293,6 +296,32 @@ object formMain: TformMain
           '#058 '#35373#23450#12375#12383#12497#12473#12395#22806#37096#12496#12483#12463#12450#12483#12503'=Alt+B'
           '#084 '#65326#65327#65328'=Ctrl+M'
           '#086 '#65328#65332#65332#20986#21147#12398#65327#65326#65295#65327#65318#65318'=,\')
+        TabOrder = 0
+        TitleCaptions.Strings = (
+          #27231#33021
+          #12471#12519#12540#12488#12459#12483#12488#12461#12540)
+        OnDblClick = vleDblClick
+        ColWidths = (
+          448
+          113)
+      end
+    end
+    object TabSheet8: TTabSheet
+      Caption = 'SO2R'
+      ImageIndex = 7
+      object vleSo2r: TValueListEditor
+        Left = 0
+        Top = 0
+        Width = 567
+        Height = 393
+        Align = alClient
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking]
+        Strings.Strings = (
+          '#134 SO2R Neo '#12467#12531#12488#12525#12540#12523#12497#12493#12523#12398#34920#31034'='
+          '#135 SO2R Neo '#21463#20449#12434'RX1'#12395#22793#26356'='
+          '#136 SO2R Neo '#21463#20449#12434'RX2'#12395#22793#26356'='
+          '#137 SO2R Neo '#21463#20449#12434'RX1+RX2'#12395#22793#26356'='
+          '#141 SO2R Neo '#33258#21205'RX'#36984#25246#12434#12461#12515#12531#12475#12523'=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
