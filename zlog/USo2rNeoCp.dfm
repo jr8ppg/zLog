@@ -3,7 +3,7 @@ object formSo2rNeoCp: TformSo2rNeoCp
   Top = 0
   BorderStyle = bsToolWindow
   Caption = 'SO2R Neo Control Panel'
-  ClientHeight = 102
+  ClientHeight = 116
   ClientWidth = 486
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,9 +16,40 @@ object formSo2rNeoCp: TformSo2rNeoCp
   PixelsPerInch = 96
   TextHeight = 12
   object ledPtt: TJvLED
-    Left = 8
-    Top = 79
+    Left = 12
+    Top = 94
     Status = False
+  end
+  object Label1: TLabel
+    Left = 8
+    Top = 81
+    Width = 21
+    Height = 12
+    Caption = 'PTT'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
+  end
+  object ledCancelRxSel: TJvLED
+    Left = 84
+    Top = 94
+    Status = False
+  end
+  object Label2: TLabel
+    Left = 49
+    Top = 81
+    Width = 90
+    Height = 12
+    Caption = 'Cancel RX Select'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
   end
   object groupAfControl: TGroupBox
     Left = 163

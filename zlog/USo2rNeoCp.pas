@@ -24,6 +24,9 @@ type
     buttonPer0: TSpeedButton;
     buttonPer50: TSpeedButton;
     ledPtt: TJvLED;
+    Label1: TLabel;
+    ledCancelRxSel: TJvLED;
+    Label2: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure buttonRigClick(Sender: TObject);
     procedure actionSo2rNeoSelRx1Execute(Sender: TObject);
@@ -38,10 +41,13 @@ type
     procedure SetRx(rx: Integer);
     function GetPtt(): Boolean;
     procedure SetPtt(ptt: Boolean);
+    function GetCanRxSel(): Boolean;
+    procedure SetCanRxSel(flag: Boolean);
   public
     { Public êÈåæ }
     property Rx: Integer read GetRx write SetRx;
     property Ptt: Boolean read GetPtt write SetPtt;
+    property CanRxSel: Boolean read GetCanRxSel write SetCanRxSel;
   end;
 
 implementation
@@ -76,11 +82,15 @@ begin
       ratio := trackBlendRatio.Position;
       dmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio);
    end;
+
+   MainForm.LastFocus.SetFocus;
 end;
 
 procedure TformSo2rNeoCp.buttonPerNClick(Sender: TObject);
 begin
    trackBlendRatio.Position := TSpeedButton(Sender).Tag;
+
+   MainForm.LastFocus.SetFocus;
 end;
 
 procedure TformSo2rNeoCp.trackBlendRatioChange(Sender: TObject);
@@ -89,6 +99,8 @@ var
 begin
    ratio := trackBlendRatio.Position;
    dmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio);
+
+   MainForm.LastFocus.SetFocus;
 end;
 
 procedure TformSo2rNeoCp.buttonRigClick(Sender: TObject);
@@ -111,6 +123,8 @@ begin
       buttonAfBlend.Down := True;
       buttonAfBlend.Click();
    end;
+
+   MainForm.LastFocus.SetFocus;
 end;
 
 procedure TformSo2rNeoCp.actionSo2rNeoSelRx1Execute(Sender: TObject);
@@ -119,6 +133,8 @@ var
 begin
    tx := MainForm.CurrentRigID;
    dmZLogKeyer.So2rNeoSwitchRig(tx, 0);
+
+   MainForm.LastFocus.SetFocus;
 end;
 
 procedure TformSo2rNeoCp.actionSo2rNeoSelRx2Execute(Sender: TObject);
@@ -127,6 +143,8 @@ var
 begin
    tx := MainForm.CurrentRigID;
    dmZLogKeyer.So2rNeoSwitchRig(tx, 1);
+
+   MainForm.LastFocus.SetFocus;
 end;
 
 procedure TformSo2rNeoCp.actionSo2rNeoSelRxBothExecute(Sender: TObject);
@@ -135,6 +153,8 @@ var
 begin
    tx := MainForm.CurrentRigID;
    dmZLogKeyer.So2rNeoSwitchRig(tx, 2);
+
+   MainForm.LastFocus.SetFocus;
 end;
 
 function TformSo2rNeoCp.GetRx(): Integer;
@@ -167,6 +187,16 @@ end;
 procedure TformSo2rNeoCp.SetPtt(ptt: Boolean);
 begin
    ledPtt.Status := ptt;
+end;
+
+function TformSo2rNeoCp.GetCanRxSel(): Boolean;
+begin
+   Result := ledCancelRxSel.Status;
+end;
+
+procedure TformSo2rNeoCp.SetCanRxSel(flag: Boolean);
+begin
+   ledCancelRxSel.Status := flag;
 end;
 
 end.

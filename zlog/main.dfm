@@ -6943,6 +6943,10 @@ object MainForm: TMainForm
       Caption = 'actionSelectRig3'
       OnExecute = actionSelectRigExecute
     end
+    object actionSo2rNeoCanRxSel: TAction
+      Caption = 'actionSo2rNeoCanRxSel'
+      OnExecute = actionSo2rNeoCanRxSelExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

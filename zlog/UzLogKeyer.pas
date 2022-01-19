@@ -199,6 +199,7 @@ type
     FUseWkSo2rNeo: Boolean;
     FWkRx: Integer;
     FWkTx: Integer;
+    FSo2rNeoCanRxSel: Boolean;
 
     FWkMessageSending: Boolean;
     FWkMessageIndex: Integer;
@@ -345,6 +346,7 @@ type
     procedure So2rNeoSwitchRig(tx: Integer; rx: Integer);
     procedure So2rNeoReverseRx(tx: Integer);
     procedure So2rNeoNormalRx(tx: Integer);
+    property So2rNeoCanRxSel: Boolean read FSo2rNeoCanRxSel write FSo2rNeoCanRxSel;
 
     procedure IncCWSpeed();
     procedure DecCWSpeed();
@@ -395,6 +397,7 @@ begin
    FFixedSpeed := 0;
    FUseRandomRepeat := True;
    FUseWkSo2rNeo := False;
+   FSo2rNeoCanRxSel := False;
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
@@ -3461,7 +3464,15 @@ end;
 
 procedure TdmZLogKeyer.So2rNeoNormalRx(tx: Integer);
 begin
-   So2rNeoSwitchRig(tx, 2);
+   try
+      if FSo2rNeoCanRxSel = True then begin
+         Exit;
+      end;
+
+      So2rNeoSwitchRig(tx, 2);
+   finally
+      FSo2rNeoCanRxSel := False;
+   end;
 end;
 
 end.

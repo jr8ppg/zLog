@@ -628,6 +628,7 @@ type
     actionSelectRig1: TAction;
     actionSelectRig2: TAction;
     actionSelectRig3: TAction;
+    actionSo2rNeoCanRxSel: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -859,6 +860,7 @@ type
     procedure actionShowSo2rNeoCpExecute(Sender: TObject);
     procedure actionSo2rNeoSelRxExecute(Sender: TObject);
     procedure actionSelectRigExecute(Sender: TObject);
+    procedure actionSo2rNeoCanRxSelExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -3524,7 +3526,7 @@ begin
    dmZlogGlobal.ReadWindowState(FCwMessagePad);
    dmZlogGlobal.ReadWindowState(FFunctionKeyPanel);
    dmZlogGlobal.ReadWindowState(FQsyInfoForm);
-   dmZlogGlobal.ReadWindowState(FSo2rNeoCp);
+   dmZlogGlobal.ReadWindowState(FSo2rNeoCp, '', True);
    dmZlogGlobal.ReadWindowState(FZLinkForm);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -8834,6 +8836,16 @@ begin
    end;
 end;
 
+// #141 SO2R Neo Cancel auto RX select
+procedure TMainForm.actionSo2rNeoCanRxSelExecute(Sender: TObject);
+var
+   fCancel: Boolean;
+begin
+   fCancel := not dmZLogKeyer.So2rNeoCanRxSel;
+   dmZLogKeyer.So2rNeoCanRxSel := fCancel;
+   FSo2rNeoCp.CanRxSel := fCancel;
+end;
+
 procedure TMainForm.RestoreWindowsPos();
 var
    X, Y, W, H: Integer;
@@ -9835,6 +9847,7 @@ begin
 
    if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
       dmZLogKeyer.So2rNeoNormalRx(tx);
+      FSo2rNeoCp.CanRxSel := False;
    end;
 end;
 
@@ -9850,6 +9863,7 @@ begin
 
    if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
       dmZLogKeyer.So2rNeoNormalRx(tx);
+      FSo2rNeoCp.CanRxSel := False;
    end;
 end;
 
