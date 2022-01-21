@@ -684,39 +684,45 @@ end;
 
 procedure TdmZLogKeyer.ControlPTT(nID: Integer; PTTON: Boolean);
 begin
-   FPTTFLAG := PTTON;
+   try
+      FPTTFLAG := PTTON;
 
-   if FKeyingPort[nID] = tkpUSB then begin
-      EnterCriticalSection(FUsbPortDataLock);
-      if PTTON then begin
-         FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData and $FD;
-      end
-      else begin
-         FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData or $02;
+      if FKeyingPort[nID] = tkpUSB then begin
+         EnterCriticalSection(FUsbPortDataLock);
+         if PTTON then begin
+            FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData and $FD;
+         end
+         else begin
+            FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData or $02;
+         end;
+         SendUsbPortData(nID);
+         LeaveCriticalSection(FUsbPortDataLock);
+         Exit;
       end;
-      SendUsbPortData(nID);
-      LeaveCriticalSection(FUsbPortDataLock);
-      Exit;
-   end;
 
-   if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-      if FKeyingSignalReverse = False then begin
-         FComKeying[nID].ToggleRTS(PTTON);
-      end
-      else begin
-         FComKeying[nID].ToggleDTR(PTTON);
+      if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
+         if FKeyingSignalReverse = False then begin
+            FComKeying[nID].ToggleRTS(PTTON);
+         end
+         else begin
+            FComKeying[nID].ToggleDTR(PTTON);
+         end;
+         Exit;
       end;
-      Exit;
-   end;
 
-   if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
-      if PTTON = True then begin
-         WinKeyerSetPTTMode(True);
-         WinkeyerControlPTT(PTTON);
-      end
-      else begin
-         WinkeyerControlPTT(PTTON);
-         WinKeyerSetPTTMode(False);
+      if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
+         if PTTON = True then begin
+            WinKeyerSetPTTMode(True);
+            WinkeyerControlPTT(PTTON);
+         end
+         else begin
+            WinkeyerControlPTT(PTTON);
+            WinKeyerSetPTTMode(False);
+         end;
+      end;
+   finally
+      if Assigned(FOnWkStatusProc) then begin
+         FOnWkStatusProc(Self, nId, nId, PTTON);
       end;
    end;
 end;

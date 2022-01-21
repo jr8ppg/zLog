@@ -20,7 +20,7 @@ uses
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel,
-  UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp;
+  UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -581,7 +581,7 @@ type
     actionToggleAntiZeroin: TAction;
     actionAntiZeroin: TAction;
     actionFunctionKeyPanel: TAction;
-    FunctionKeyPanel1: TMenuItem;
+    menuShowFunctionKeyPanel: TMenuItem;
     menuBandPlanSettings: TMenuItem;
     menuQSORateSettings: TMenuItem;
     menuSettings: TMenuItem;
@@ -589,7 +589,7 @@ type
     QSORateEx1: TMenuItem;
     menuTargetEditor: TMenuItem;
     actionShowQsyInfo: TAction;
-    QSYInfo1: TMenuItem;
+    menuShowQSYInfo: TMenuItem;
     menuPluginManager: TMenuItem;
     N7: TMenuItem;
     N8: TMenuItem;
@@ -624,11 +624,13 @@ type
     actionSo2rNeoSelRx1: TAction;
     actionSo2rNeoSelRx2: TAction;
     actionSo2rNeoSelRxBoth: TAction;
-    SO2RNeoControlPanel1: TMenuItem;
+    menuShowSO2RNeoCp: TMenuItem;
     actionSelectRig1: TAction;
     actionSelectRig2: TAction;
     actionSelectRig3: TAction;
     actionSo2rNeoCanRxSel: TAction;
+    actionShowInformation: TAction;
+    menuShowInformation: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -861,6 +863,7 @@ type
     procedure actionSo2rNeoSelRxExecute(Sender: TObject);
     procedure actionSelectRigExecute(Sender: TObject);
     procedure actionSo2rNeoCanRxSelExecute(Sender: TObject);
+    procedure actionShowInformationExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -889,6 +892,7 @@ type
     FFunctionKeyPanel: TformFunctionKeyPanel;
     FQsyInfoForm: TformQsyInfo;
     FSo2rNeoCp: TformSo2rNeoCp;
+    FInformation: TformInformation;
     FTTYConsole: TTTYConsole;
 
     FInitialized: Boolean;
@@ -1297,6 +1301,7 @@ var
 begin
    SpeedBar.Position := dmZLogKeyer.WPM;
    SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
+   FInformation.WPM := dmZLogKeyer.WPM;
    i := dmZlogGlobal.Settings.CW.CurrentBank;
    CWF1.Hint := dmZlogGlobal.CWMessage(i, 1);
    CWF2.Hint := dmZlogGlobal.CWMessage(i, 2);
@@ -3275,6 +3280,7 @@ begin
    FFunctionKeyPanel := TformFunctionKeyPanel.Create(Self);
    FQsyInfoForm   := TformQsyInfo.Create(Self);
    FSo2rNeoCp     := TformSo2rNeoCp.Create(Self);
+   FInformation   := TformInformation.Create(Self);
    FTTYConsole    := nil;
 
    FCurrentCQMessageNo := 101;
@@ -3527,6 +3533,7 @@ begin
    dmZlogGlobal.ReadWindowState(FFunctionKeyPanel);
    dmZlogGlobal.ReadWindowState(FQsyInfoForm);
    dmZlogGlobal.ReadWindowState(FSo2rNeoCp, '', True);
+   dmZlogGlobal.ReadWindowState(FInformation);
    dmZlogGlobal.ReadWindowState(FZLinkForm);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -3560,6 +3567,7 @@ begin
    dmZlogGlobal.WriteWindowState(FFunctionKeyPanel);
    dmZlogGlobal.WriteWindowState(FQsyInfoForm);
    dmZlogGlobal.WriteWindowState(FSo2rNeoCp);
+   dmZlogGlobal.WriteWindowState(FInformation);
    dmZlogGlobal.WriteWindowState(FZLinkForm);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -5071,6 +5079,7 @@ begin
    FFunctionKeyPanel.Release();
    FQsyInfoForm.Release();
    FSo2rNeoCp.Release();
+   FInformation.Release();
 
    if Assigned(FTTYConsole) then begin
       FTTYConsole.Release();
@@ -5089,6 +5098,8 @@ begin
    dmZLogKeyer.WPM := SpeedBar.Position;
    dmZLogGlobal.Settings.CW._speed := SpeedBar.Position;
    SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
+
+   FInformation.WPM := SpeedBar.Position;
 
    if Active = True then begin
       if LastFocus <> nil then begin
@@ -5119,6 +5130,8 @@ end;
 procedure TMainForm.SetCQ(CQ: Boolean);
 begin
    CurrentQSO.CQ := CQ;
+
+   FInformation.CQMode := CQ;
 
    if CQ = True then begin
       panelCQMode.Caption := 'CQ';
@@ -5386,6 +5399,7 @@ begin
    end;
 
    StatusLine.Panels[2].Text := S;
+   FInformation.Time := S;
 
    FQsyInfoForm.SetQsyInfo(fQsyOK, S2);
 end;
@@ -8846,6 +8860,12 @@ begin
    FSo2rNeoCp.CanRxSel := fCancel;
 end;
 
+// #142 Information Window
+procedure TMainForm.actionShowInformationExecute(Sender: TObject);
+begin
+   FInformation.Show();
+end;
+
 procedure TMainForm.RestoreWindowsPos();
 var
    X, Y, W, H: Integer;
@@ -9440,6 +9460,7 @@ begin
    dmZLogGlobal.Settings.CW._speed := i;
    SpeedBar.Position := i;
    SpeedLabel.Caption := IntToStr(i) + ' wpm';
+   FInformation.WPM := i;
 end;
 
 procedure TMainForm.DoVFOChange(Sender: TObject);
@@ -9462,6 +9483,7 @@ end;
 procedure TMainForm.SetStatusLine(strText: string);
 begin
    StatusLine.Panels[1].Text := strText;
+   FInformation.RigInfo := strText;
 end;
 
 procedure TMainForm.ApplyCQRepeatInterval();
@@ -9871,6 +9893,7 @@ procedure TMainForm.DoWkStatusProc(Sender: TObject; tx: Integer; rx: Integer; pt
 begin
    FSo2rNeoCp.Rx := rx;
    FSo2rNeoCp.Ptt := ptt;
+   FInformation.Ptt := ptt;
 end;
 
 end.

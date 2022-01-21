@@ -35,6 +35,7 @@ type
     procedure buttonAfBlendClick(Sender: TObject);
     procedure trackBlendRatioChange(Sender: TObject);
     procedure buttonPerNClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private êÈåæ }
     function GetRx(): Integer;
@@ -68,6 +69,16 @@ begin
    actionSo2rNeoSelRx1.SecondaryShortCuts.Assign(MainForm.actionSo2rNeoSelRx1.SecondaryShortCuts);
    actionSo2rNeoSelRx2.SecondaryShortCuts.Assign(MainForm.actionSo2rNeoSelRx2.SecondaryShortCuts);
    actionSo2rNeoSelRxBoth.SecondaryShortCuts.Assign(MainForm.actionSo2rNeoSelRxBoth.SecondaryShortCuts);
+end;
+
+procedure TformSo2rNeoCp.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   case Key of
+      VK_ESCAPE:
+         MainForm.LastFocus.SetFocus;
+      // VK_ALT
+   end;
 end;
 
 procedure TformSo2rNeoCp.buttonAfBlendClick(Sender: TObject);

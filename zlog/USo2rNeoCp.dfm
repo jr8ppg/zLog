@@ -11,8 +11,10 @@ object formSo2rNeoCp: TformSo2rNeoCp
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 12
   object ledPtt: TJvLED

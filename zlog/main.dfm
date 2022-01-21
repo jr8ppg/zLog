@@ -5736,14 +5736,17 @@ object MainForm: TMainForm
       object menuAnalyze: TMenuItem
         Action = actionShowAnalyze
       end
-      object FunctionKeyPanel1: TMenuItem
+      object menuShowFunctionKeyPanel: TMenuItem
         Action = actionFunctionKeyPanel
       end
-      object QSYInfo1: TMenuItem
+      object menuShowQSYInfo: TMenuItem
         Action = actionShowQsyInfo
       end
-      object SO2RNeoControlPanel1: TMenuItem
+      object menuShowSO2RNeoCp: TMenuItem
         Action = actionShowSo2rNeoCp
+      end
+      object menuShowInformation: TMenuItem
+        Action = actionShowInformation
       end
     end
     object menuSettings: TMenuItem
@@ -6946,6 +6949,10 @@ object MainForm: TMainForm
     object actionSo2rNeoCanRxSel: TAction
       Caption = 'actionSo2rNeoCanRxSel'
       OnExecute = actionSo2rNeoCanRxSelExecute
+    end
+    object actionShowInformation: TAction
+      Caption = 'Show Information Window'
+      OnExecute = actionShowInformationExecute
     end
   end
   object SPCMenu: TPopupMenu
