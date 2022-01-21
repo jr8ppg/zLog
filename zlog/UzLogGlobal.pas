@@ -1637,7 +1637,8 @@ var
    i: Integer;
 begin
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
-   dmZLogKeyer.UseWkSo2rNeo := (dmZLogGlobal.Settings._so2r_type = so2rNeo);
+   dmZLogKeyer.UseWkSo2rNeo := (Settings._so2r_type = so2rNeo);
+   dmZLogKeyer.So2rSelectPort := TKeyingPort(Settings._so2r_port);
 
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
    dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;

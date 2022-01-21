@@ -185,6 +185,7 @@ type
     FUsbDetecting: Boolean;
     FUsbif4cwSyncWpm: Boolean;
 
+    // WinKeyer and SO2R Neo support
     FUseWinKeyer: Boolean;
     FWkInitializeMode: Boolean;
     FWkRevision: Integer;
@@ -204,6 +205,9 @@ type
     FWkMessageSending: Boolean;
     FWkMessageIndex: Integer;
     FWkMessageStr: string;
+
+    // SO2R support
+    FSo2rSelectPort: TKeyingPort;
 
     FWnd: HWND;
 
@@ -248,6 +252,8 @@ type
     procedure WinKeyerSetPTTMode(fUse: Boolean);
     procedure WinKeyerSetPTTDelay(before, after: Byte);
     procedure WinKeyerSetMode(mode: Byte);
+
+    procedure SetSo2rSelectPort(port: TKeyingPort);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -339,6 +345,9 @@ type
     procedure WinKeyerClear();
     procedure WinKeyerCancelLastChar();
 
+    // SO2R support
+    property So2rSelectPort: TKeyingPort read FSo2rSelectPort write SetSo2rSelectPort;
+
     // SO2R Neo support
     property UseWkSo2rNeo: Boolean read FUseWkSo2rNeo write FUseWkSo2rNeo;
     procedure So2rNeoSetAudioBlendMode(fOn: Boolean);
@@ -398,6 +407,7 @@ begin
    FUseRandomRepeat := True;
    FUseWkSo2rNeo := False;
    FSo2rNeoCanRxSel := False;
+   FSo2rSelectPort := tkpNone;
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
@@ -603,6 +613,53 @@ procedure TdmZLogKeyer.SetRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
 var
    i: Integer;
 begin
+   // COMポートでのRIG SELECT
+   if (FSo2RSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
+      case flag of
+         0: begin
+            ZComRigSelect.ToggleDTR(False);
+            ZComRigSelect.ToggleRTS(False);
+         end;
+
+         1: begin
+            ZComRigSelect.ToggleDTR(True);
+            ZComRigSelect.ToggleRTS(False);
+         end;
+
+         2: begin
+            ZComRigSelect.ToggleDTR(False);
+            ZComRigSelect.ToggleRTS(True);
+         end;
+      end;
+      Exit;
+   end;
+
+   // SO2R Neoの場合
+   if (FKeyingPort[i] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
+      case flag of
+         0: begin
+            So2rNeoSwitchRig(0, 0);
+         end;
+
+         1: begin
+            So2rNeoSwitchRig(0, 0);
+         end;
+
+         2: begin
+            So2rNeoSwitchRig(1, 1);
+         end;
+      end;
+      Exit;
+   end;
+
+   // WinKeyerの場合
+   if (FKeyingPort[i] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
+      if flag = 0 then flag := 1;
+//         So2rNeoSwitchRig(flag - 1, flag - 1);
+
+      Exit;
+   end;
+
    for i := 0 to 1 do begin
       // USBIF4CWでのRIG SELECT
       if FKeyingPort[i] = tkpUSB then begin
@@ -623,23 +680,6 @@ begin
 
          SendUsbPortData(i);
          LeaveCriticalSection(FUsbPortDataLock);
-      end;
-
-      // COMポートでのRIG SELECT
-      if (i = 1) and (FKeyingPort[i] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-         // ZComRigSelect.ToggleDTR(True)
-      end;
-
-      // WinKeyerの場合
-      if (i = 0) and (FKeyingPort[i] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
-         if flag = 0 then flag := 1;
-//         So2rNeoSwitchRig(flag - 1, flag - 1);
-      end;
-
-      // SO2R Neoの場合
-      if (i = 0) and (FKeyingPort[i] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
-         if flag = 0 then flag := 1;
-         So2rNeoSwitchRig(flag - 1, flag - 1);
       end;
    end;
 end;
@@ -3479,6 +3519,11 @@ begin
    finally
       FSo2rNeoCanRxSel := False;
    end;
+end;
+
+procedure TdmZLogKeyer.SetSo2rSelectPort(port: TKeyingPort);
+begin
+   FSo2rSelectPort := port;
 end;
 
 end.
