@@ -6954,6 +6954,10 @@ object MainForm: TMainForm
       Caption = 'Show Information Window'
       OnExecute = actionShowInformationExecute
     end
+    object actionToggleAutoRigSwitch: TAction
+      Caption = 'actionToggleAutoRigSwitch'
+      OnExecute = actionToggleAutoRigSwitchExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

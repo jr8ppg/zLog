@@ -631,6 +631,7 @@ type
     actionSo2rNeoCanRxSel: TAction;
     actionShowInformation: TAction;
     menuShowInformation: TMenuItem;
+    actionToggleAutoRigSwitch: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -864,6 +865,7 @@ type
     procedure actionSelectRigExecute(Sender: TObject);
     procedure actionSo2rNeoCanRxSelExecute(Sender: TObject);
     procedure actionShowInformationExecute(Sender: TObject);
+    procedure actionToggleAutoRigSwitchExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1010,6 +1012,7 @@ type
     procedure DoMessageSendFinish(Sender: TObject);
     procedure DoWkAbortProc(Sender: TObject);
     procedure DoWkStatusProc(Sender: TObject; tx: Integer; rx: Integer; ptt: Boolean);
+    procedure DoSendRepeatProc(Sender: TObject; nLoopCount: Integer);
     procedure DoCwSpeedChange(Sender: TObject);
     procedure DoVFOChange(Sender: TObject);
     procedure ApplyCQRepeatInterval();
@@ -3344,6 +3347,7 @@ begin
          dmZLogKeyer.OnSendFinishProc := DoMessageSendFinish;
          dmZLogKeyer.OnWkAbortProc := DoWkAbortProc;
          dmZLogKeyer.OnWkStatusProc := DoWkStatusProc;
+         dmZLogKeyer.OnSendRepeatEvent := DoSendRepeatProc;
          dmZLogKeyer.InitializeBGK(mSec);
       end;
    end;
@@ -8866,6 +8870,12 @@ begin
    FInformation.Show();
 end;
 
+// #143 Toggle Auto RIG switch
+procedure TMainForm.actionToggleAutoRigSwitchExecute(Sender: TObject);
+begin
+   FInformation.AutoRigSwitch := not FInformation.AutoRigSwitch;
+end;
+
 procedure TMainForm.RestoreWindowsPos();
 var
    X, Y, W, H: Integer;
@@ -9838,6 +9848,7 @@ begin
          FEditPanel[rig - 1].CallsignEdit.SetFocus();
          EditEnter(FEditPanel[rig - 1].CallsignEdit);
       end;
+      FSo2rNeoCp.Rx := rig - 1;
    end;
 end;
 
@@ -9865,7 +9876,7 @@ begin
    OutputDebugString(PChar('*** DoMessageSendFinish ***'));
    {$ENDIF}
    tx := GetCurrentRigID();
-   dmZLogKeyer.WinKeyerControlPTT(False);
+   dmZLogKeyer.ControlPTT(tx, False);
 
    if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
       dmZLogKeyer.So2rNeoNormalRx(tx);
@@ -9881,7 +9892,7 @@ begin
    OutputDebugString(PChar('*** DoWkAbortProc ***'));
    {$ENDIF}
    tx := GetCurrentRigID();
-   dmZLogKeyer.WinKeyerControlPTT(False);
+   dmZLogKeyer.ControlPTT(tx, False);
 
    if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
       dmZLogKeyer.So2rNeoNormalRx(tx);
@@ -9891,9 +9902,35 @@ end;
 
 procedure TMainForm.DoWkStatusProc(Sender: TObject; tx: Integer; rx: Integer; ptt: Boolean);
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** DoWkStatusProc(' + IntToStr(tx) + ', ' + IntToStr(rx) + ', ' + BoolToStr(ptt) + ') ***'));
+   {$ENDIF}
    FSo2rNeoCp.Rx := rx;
    FSo2rNeoCp.Ptt := ptt;
    FInformation.Ptt := ptt;
+end;
+
+procedure TMainForm.DoSendRepeatProc(Sender: TObject; nLoopCount: Integer);
+var
+   rig: Integer;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** DoSendRepeatProc ***'));
+   {$ENDIF}
+
+   rig := RigControl.GetCurrentRig();
+
+   if FInformation.AutoRigSwitch = True then begin
+      if rig = 1 then begin
+         rig := 2;
+      end
+      else begin
+         rig := 1;
+      end;
+   end;
+
+   RigControl.SetCurrentRig(rig);
+   SwitchRig(rig);
 end;
 
 end.

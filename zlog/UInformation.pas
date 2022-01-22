@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
-  JvExControls, JvLED;
+  JvExControls, JvLED, Vcl.Buttons;
 
 type
   TformInformation = class(TForm)
@@ -16,9 +16,11 @@ type
     Panel1: TPanel;
     ledPtt: TJvLED;
     Label1: TLabel;
+    buttonAutoRigSwitch: TSpeedButton;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure buttonAutoRigSwitchClick(Sender: TObject);
   private
     { Private êÈåæ }
     function GetCQMode(): Boolean;
@@ -28,6 +30,8 @@ type
     procedure SetTime(T: string);
     procedure SetRigInfo(S: string);
     procedure SetPtt(fOn: Boolean);
+    function GetAutoRigSwitch(): Boolean;
+    procedure SetAutoRigSwitch(fOn: Boolean);
   public
     { Public êÈåæ }
     property CQMode: Boolean read GetCQMode write SetCQMode;
@@ -35,6 +39,7 @@ type
     property Time: string write SetTime;
     property RigInfo: string write SetRigInfo;
     property Ptt: Boolean write SetPtt;
+    property AutoRigSwitch: Boolean read GetAutoRigSwitch write SetAutoRigSwitch;
   end;
 
 implementation
@@ -43,6 +48,11 @@ implementation
 
 uses
   Main;
+
+procedure TformInformation.buttonAutoRigSwitchClick(Sender: TObject);
+begin
+   MainForm.LastFocus.SetFocus;
+end;
 
 procedure TformInformation.FormCreate(Sender: TObject);
 begin
@@ -109,6 +119,16 @@ end;
 procedure TformInformation.SetPtt(fOn: Boolean);
 begin
    ledPtt.Status := fOn;
+end;
+
+function TformInformation.GetAutoRigSwitch(): Boolean;
+begin
+   Result := buttonAutoRigSwitch.Down;
+end;
+
+procedure TformInformation.SetAutoRigSwitch(fOn: Boolean);
+begin
+   buttonAutoRigSwitch.Down := fOn;
 end;
 
 end.

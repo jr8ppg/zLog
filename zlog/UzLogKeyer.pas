@@ -43,6 +43,7 @@ type
 
 type
   TdmZLogKeyer = class;
+  TSendRepeatEvent = procedure(Sender: TObject; nLoopCount: Integer) of object;
   TWkStatusEvent = procedure(Sender: TObject; tx: Integer; rx: Integer; ptt: Boolean) of object;
 
   TKeyerMonitorThread = class(TThread)
@@ -174,6 +175,7 @@ type
 
     FOnCallsignSentProc: TNotifyEvent;
     FOnPaddleEvent: TNotifyEvent;
+    FOnSendRepeatEvent: TSendRepeatEvent;
     FOnSendFinishProc: TNotifyEvent;
     FOnWkAbortProc: TNotifyEvent;
     FOnWkStatusProc: TWkStatusEvent;
@@ -308,6 +310,7 @@ type
 
     property OnCallsignSentProc: TNotifyEvent read FOnCallsignSentProc write FOnCallsignSentProc;
     property OnPaddle: TNotifyEvent read FOnPaddleEvent write FOnPaddleEvent;
+    property OnSendRepeatEvent: TSendRepeatEvent read FOnSendRepeatEvent write FOnSendRepeatEvent;
     property OnSendFinishProc: TNotifyEvent read FOnSendFinishProc write FOnSendFinishProc;
     property OnSpeedChanged: TNotifyEvent read FOnSpeedChanged write FOnSpeedChanged;
     property OnWkAbortProc: TNotifyEvent read FOnWkAbortProc write FOnWkAbortProc;
@@ -337,7 +340,7 @@ type
     property WkCallsignSending: Boolean read FWkCallsignSending write FWkCallsignSending;
     procedure WinKeyerSendCallsign(S: string);
     procedure WinKeyerSendChar(C: Char);
-    procedure WinKeyerSendStr(S: string);
+    procedure WinKeyerSendStr(nID: Integer; S: string);
     procedure WinKeyerSendStr2(S: string);
     function WinKeyerBuildMessage(S: string): string;
     procedure WinKeyerControlPTT(fOn: Boolean);
@@ -446,6 +449,7 @@ begin
 
    FMonitorThread := nil;
    FOnCallsignSentProc := nil;
+   FOnSendRepeatEvent := nil;
    FOnSendFinishProc := nil;
    FOnPaddleEvent := nil;
    FOnWkAbortProc := nil;
@@ -613,6 +617,13 @@ procedure TdmZLogKeyer.SetRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
 var
    i: Integer;
 begin
+   if (flag = 0) or (flag = 1) then begin
+      FCurrentID := 0;
+   end
+   else begin
+      FCurrentID := 1;
+   end;
+
    // COMポートでのRIG SELECT
    if (FSo2RSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
       case flag of
@@ -635,7 +646,7 @@ begin
    end;
 
    // SO2R Neoの場合
-   if (FKeyingPort[i] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
+   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
       case flag of
          0: begin
             So2rNeoSwitchRig(0, 0);
@@ -653,7 +664,7 @@ begin
    end;
 
    // WinKeyerの場合
-   if (FKeyingPort[i] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
+   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
       if flag = 0 then flag := 1;
 //         So2rNeoSwitchRig(flag - 1, flag - 1);
 
@@ -868,7 +879,7 @@ procedure TdmZLogKeyer.SetCWSendBufCharPTT(nID: Integer; C: Char);
 begin
    if UseWinKeyer = True then begin
       FWkAbort := False;
-      WinKeyerControlPTT(True);
+      ControlPTT(nID, True);
       FWkMessageStr := FWkMessageStr + C;
 
       if FWkMessageSending = False then begin
@@ -986,7 +997,7 @@ begin
       Exit;
 
    if ((nID = 0) or (nID = 1)) then begin
-      CW := Char($90) + Char(nID);
+      CW := Char($90 + nID);
    end
    else begin
       CW := Char($90);
@@ -1019,7 +1030,7 @@ begin
    if FUseWinKeyer = True then begin
       WinKeyerClear();
       FWkLastMessage := SS;
-      WinkeyerSendStr(SS);
+      WinkeyerSendStr(nID, SS);
    end
    else begin
       if ((nID = 0) or (nID = 1)) then begin
@@ -1290,6 +1301,9 @@ begin
       end;
 
       $DD: begin
+         if Assigned(FOnSendRepeatEvent) then begin
+            FOnSendRepeatEvent(Self, FCQLoopCount);
+         end;
          FKeyingCounter := FCQRepeatIntervalCount;
       end;
 
@@ -3052,16 +3066,20 @@ begin
    case C of
       ' ', 'A'..'Z', '0'..'9', '/', '?', '.', 'a', 'b', 'k', 's', 't', 'v', '-', '=': begin
          S := C;
-         WinKeyerSendStr(S);
+         WinKeyerSendStr(FCurrentID, S);
       end;
    end;
 end;
 
-procedure TdmZLogKeyer.WinKeyerSendStr(S: string);
+procedure TdmZLogKeyer.WinKeyerSendStr(nID: Integer; S: string);
 begin
    if FWkAbort = True then begin
       Exit;
    end;
+
+   FCurrentID := nID;
+
+   ControlPTT(nID, True);
 
    S := WinKeyerBuildMessage(S);
 
@@ -3227,7 +3245,18 @@ begin
 
             // 送信中→送信終了に変わったら、リピートタイマー起動
             if (FWkCallsignSending = False) and (FWkLastMessage <> '') and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
+
+               if Assigned(FOnSendFinishProc) then begin
+                  {$IFDEF DEGBUG}
+                  OutputDebugString(PChar(' *** FOnSendFinishProc() called ***'));
+                  {$ENDIF}
+                  FOnSendFinishProc(Self);
+               end;
+
                if FCQLoopCount < FCQLoopMax then begin
+                  {$IFDEF DEGBUG}
+                  OutputDebugString(PChar(' *** RepeatTimer started ***'));
+                  {$ENDIF}
                   RepeatTimer.Enabled := True;
                   Inc(FCQLoopCount);
                end;
@@ -3248,7 +3277,7 @@ begin
             FWkEcho := b;
 
             {$IFDEF DEBUG}
-            OutputDebugString(PChar('WinKey ECHOBACK=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
+//            OutputDebugString(PChar('WinKey ECHOBACK=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
             {$ENDIF}
 
             // コールサイン送信
@@ -3297,7 +3326,11 @@ begin
       S := FWkLastMessage;
    end;
 
-   WinKeyerSendStr(S);
+   if Assigned(FOnSendRepeatEvent) then begin
+      FOnSendRepeatEvent(Self, FCQLoopCount);
+   end;
+
+   WinKeyerSendStr(FCurrentID, S);
 end;
 
 procedure TdmZLogKeyer.IncCWSpeed();
@@ -3356,7 +3389,7 @@ begin
             FWkCallsignSending := False;
 
             if Assigned(FOnCallsignSentProc) then begin
-               FOnCallsignSentProc(nil);
+               FOnCallsignSentProc(Self);
             end;
          end;
 
@@ -3382,7 +3415,7 @@ begin
                {$IFDEF DEGBUG}
                OutputDebugString(PChar(' *** FOnSendFinishProc() called ***'));
                {$ENDIF}
-               FOnSendFinishProc(nil);
+               FOnSendFinishProc(Self);
             end;
          end;
 

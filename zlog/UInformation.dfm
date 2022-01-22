@@ -4,12 +4,12 @@ object formInformation: TformInformation
   BorderStyle = bsSizeToolWin
   Caption = 'Information'
   ClientHeight = 32
-  ClientWidth = 426
+  ClientWidth = 476
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Height = -12
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
@@ -17,7 +17,7 @@ object formInformation: TformInformation
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 12
   object panelCQMode: TPanel
     Left = 0
     Top = 0
@@ -32,10 +32,9 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 0
-    ExplicitHeight = 31
   end
   object panelWpmInfo: TPanel
-    Left = 171
+    Left = 221
     Top = 0
     Width = 108
     Height = 32
@@ -47,10 +46,10 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 1
-    ExplicitHeight = 31
+    ExplicitLeft = 171
   end
   object panelTime: TPanel
-    Left = 340
+    Left = 390
     Top = 0
     Width = 86
     Height = 32
@@ -63,10 +62,10 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 2
-    ExplicitHeight = 31
+    ExplicitLeft = 340
   end
   object panelRigInfo: TPanel
-    Left = 279
+    Left = 329
     Top = 0
     Width = 61
     Height = 32
@@ -78,12 +77,12 @@ object formInformation: TformInformation
     Font.Style = []
     ParentFont = False
     TabOrder = 3
-    ExplicitHeight = 31
+    ExplicitLeft = 279
   end
   object Panel1: TPanel
     Left = 42
     Top = 0
-    Width = 129
+    Width = 179
     Height = 32
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
@@ -93,7 +92,7 @@ object formInformation: TformInformation
     Font.Style = []
     ParentFont = False
     TabOrder = 4
-    ExplicitHeight = 31
+    ExplicitWidth = 129
     object ledPtt: TJvLED
       Left = 33
       Top = 8
@@ -111,6 +110,23 @@ object formInformation: TformInformation
       Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
+    end
+    object buttonAutoRigSwitch: TSpeedButton
+      Left = 60
+      Top = 3
+      Width = 109
+      Height = 25
+      AllowAllUp = True
+      GroupIndex = 1
+      Down = True
+      Caption = 'Auto RIG switch'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+      Font.Style = []
+      ParentFont = False
+      OnClick = buttonAutoRigSwitchClick
     end
   end
 end
