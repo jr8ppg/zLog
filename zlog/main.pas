@@ -632,6 +632,7 @@ type
     actionShowInformation: TAction;
     menuShowInformation: TMenuItem;
     actionToggleAutoRigSwitch: TAction;
+    checkUseRig3: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -866,6 +867,7 @@ type
     procedure actionSo2rNeoCanRxSelExecute(Sender: TObject);
     procedure actionShowInformationExecute(Sender: TObject);
     procedure actionToggleAutoRigSwitchExecute(Sender: TObject);
+    procedure checkUseRig3Click(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -5312,6 +5314,9 @@ begin
    // Last Band/Mode
    dmZLogGlobal.LastBand := CurrentQSO.Band;
    dmZLogGlobal.LastMode := CurrentQSO.Mode;
+
+   // SO2R
+   dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -7061,6 +7066,11 @@ begin
       // CTY.DATが必要なコンテストでロードされていない場合はお知らせする
       if (MyContest.NeedCtyDat = True) and (dmZLogGlobal.CtyDatLoaded = False) then begin
          WriteStatusLineRed('CTY.DAT not loaded', True);
+      end;
+
+      // SO2R
+      if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+         checkUseRig3.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       end;
 
       // 初期化完了
@@ -9931,6 +9941,41 @@ begin
 
    RigControl.SetCurrentRig(rig);
    SwitchRig(rig);
+end;
+
+procedure TMainForm.checkUseRig3Click(Sender: TObject);
+var
+   rig: Integer;
+begin
+   rig := RigControl.GetCurrentRig();
+
+   if checkUseRig3.Checked = True then begin
+      RigControl.MaxRig := 3;
+      CallsignEdit2C.Enabled := True;
+      RcvdRSTEdit2C.Enabled := True;
+      NumberEdit2C.Enabled := True;
+      BandEdit2C.Enabled := True;
+      ModeEdit2C.Enabled := True;
+      SerialEdit2C.Enabled := True;
+      RigPanelShape2C.Pen.Color := clBlack;
+
+      FEditPanel[rig - 1].CallsignEdit.SetFocus();
+   end
+   else begin
+      if rig = 3 then begin
+         rig := 1;
+      end;
+      RigControl.MaxRig := 2;
+      RigControl.SetCurrentRig(rig);
+      SwitchRig(rig);
+      CallsignEdit2C.Enabled := False;
+      RcvdRSTEdit2C.Enabled := False;
+      NumberEdit2C.Enabled := False;
+      BandEdit2C.Enabled := False;
+      ModeEdit2C.Enabled := False;
+      SerialEdit2C.Enabled := False;
+      RigPanelShape2C.Pen.Color := clGray;
+   end;
 end;
 
 end.

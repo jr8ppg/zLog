@@ -5570,6 +5570,17 @@ object MainForm: TMainForm
         OnKeyDown = EditKeyDown
       end
     end
+    object checkUseRig3: TCheckBox
+      Left = 8
+      Top = 62
+      Width = 49
+      Height = 13
+      Caption = 'RIG3'
+      Checked = True
+      State = cbChecked
+      TabOrder = 5
+      OnClick = checkUseRig3Click
+    end
   end
   object MainMenu: TMainMenu
     Left = 24

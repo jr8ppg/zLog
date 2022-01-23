@@ -127,6 +127,7 @@ type
     // SO2R Support
     _so2r_type: TSo2rType;    // 0:none 1:zlog 2:SO2R Neo
     _so2r_port: Integer;      // 0:none 1-20:com1-20
+    _so2r_use_rig3: Boolean;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
     _clusterbaud : integer; {}
@@ -809,6 +810,7 @@ begin
       // SO2R Support
       Settings._so2r_type  := TSo2rType(ini.ReadInteger('SO2R', 'type', 0));
       Settings._so2r_port  := ini.ReadInteger('SO2R', 'port', 0);
+      Settings._so2r_use_rig3 := ini.ReadBool('SO2R', 'use_rig3', True);
 
       // CW PTT control
 
@@ -1354,6 +1356,7 @@ begin
       // SO2R Support
       ini.WriteInteger('SO2R', 'type', Integer(Settings._so2r_type));
       ini.WriteInteger('SO2R', 'port', Settings._so2r_port);
+      ini.WriteBool('SO2R', 'use_rig3', Settings._so2r_use_rig3);
 
       // CW PTT control
 
