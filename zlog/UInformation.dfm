@@ -32,6 +32,7 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 0
+    OnClick = panelCQModeClick
   end
   object panelWpmInfo: TPanel
     Left = 221
@@ -46,7 +47,6 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 1
-    ExplicitLeft = 171
   end
   object panelTime: TPanel
     Left = 390
@@ -62,7 +62,6 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 2
-    ExplicitLeft = 340
   end
   object panelRigInfo: TPanel
     Left = 329
@@ -77,7 +76,6 @@ object formInformation: TformInformation
     Font.Style = []
     ParentFont = False
     TabOrder = 3
-    ExplicitLeft = 279
   end
   object Panel1: TPanel
     Left = 42
@@ -92,7 +90,6 @@ object formInformation: TformInformation
     Font.Style = []
     ParentFont = False
     TabOrder = 4
-    ExplicitWidth = 129
     object ledPtt: TJvLED
       Left = 33
       Top = 8
@@ -118,7 +115,6 @@ object formInformation: TformInformation
       Height = 25
       AllowAllUp = True
       GroupIndex = 1
-      Down = True
       Caption = 'Auto RIG switch'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText

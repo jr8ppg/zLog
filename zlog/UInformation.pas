@@ -21,6 +21,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonAutoRigSwitchClick(Sender: TObject);
+    procedure panelCQModeClick(Sender: TObject);
   private
     { Private êÈåæ }
     function GetCQMode(): Boolean;
@@ -99,6 +100,12 @@ end;
 function TformInformation.GetWPM(): Integer;
 begin
    Result := 0;
+end;
+
+procedure TformInformation.panelCQModeClick(Sender: TObject);
+begin
+   MainForm.actionToggleCqSpExecute(nil);
+   MainForm.LastFocus.SetFocus;
 end;
 
 procedure TformInformation.SetWPM(nWpm: Integer);
