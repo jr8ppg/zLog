@@ -2480,6 +2480,9 @@ begin
 
    // SideTone
    WinKeyerSetSideTone(FUseSideTone);
+
+   // set serial echo back to on
+   WinKeyerSetMode(WK_SETMODE_SERIALECHOBACK);
 end;
 
 procedure TdmZLogKeyer.WinKeyerClose();
@@ -2754,21 +2757,21 @@ begin
             end;
 
             //コールサイン送信時：１文字送信終了
-            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
-               {$IFDEF DEBUG}
-               OutputDebugString(PChar('WinKey BUSY->IDLE [' + IntToHex(b, 2) + ']'));
-               {$ENDIF}
-
-               // 次の文字を送信
-               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
-            end;
+//            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
+//               {$IFDEF DEBUG}
+//               OutputDebugString(PChar('WinKey BUSY->IDLE [' + IntToHex(b, 2) + ']'));
+//               {$ENDIF}
+//
+//               // 次の文字を送信
+//               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
+//            end;
 
             // コールサイン送信時：１文字送信開始
-            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = 0) and ((b and WK_STATUS_BUSY) = WK_STATUS_BUSY) then begin
-               {$IFDEF DEBUG}
-               OutputDebugString(PChar('WinKey IDLE->BUSY [' + IntToHex(b, 2) + ']'));
-               {$ENDIF}
-            end;
+//            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = 0) and ((b and WK_STATUS_BUSY) = WK_STATUS_BUSY) then begin
+//               {$IFDEF DEBUG}
+//               OutputDebugString(PChar('WinKey IDLE->BUSY [' + IntToHex(b, 2) + ']'));
+//               {$ENDIF}
+//            end;
 
             // 送信中→送信終了に変わったら、リピートタイマー起動
             if (FWkCallsignSending = False) and (FWkLastMessage <> '') and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
@@ -2793,8 +2796,14 @@ begin
             FWkEcho := b;
 
             {$IFDEF DEBUG}
-            OutputDebugString(PChar('WinKey STATUS=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
+//            OutputDebugString(PChar('WinKey ECHOBACK=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
             {$ENDIF}
+
+            // コールサイン送信
+            if (FWkCallsignSending = True) and (Char(b) = FWkCallsignStr[FWkCallsignIndex]) then begin
+               // 次の文字を送信
+               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
+            end;
          end;
       end;
    end;
