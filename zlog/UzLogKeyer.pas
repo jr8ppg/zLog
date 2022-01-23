@@ -2036,6 +2036,10 @@ begin
 
    KeyingPort[0] := tkpNone;
    KeyingPort[1] := tkpNone;
+
+   if ZComRigSelect.Connected then begin
+      ZComRigSelect.Disconnect();
+   end;
 end;
 
 procedure TdmZLogKeyer.PauseCW;
@@ -2383,6 +2387,14 @@ begin
 
       USB_ON();
       COM_ON();
+   end;
+
+   // RIG選択用ポート
+   if FSo2rSelectPort <> tkpNone then begin
+      ZComRigSelect.Port := TPortNumber(FSo2rSelectPort);
+      ZComRigSelect.Connect();
+      ZComRigSelect.ToggleDTR(False);
+      ZComRigSelect.ToggleRTS(False);
    end;
 end;
 
