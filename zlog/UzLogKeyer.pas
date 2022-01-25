@@ -876,51 +876,82 @@ begin
 end;
 
 procedure TdmZLogKeyer.SetCWSendBufCharPTT(nID: Integer; C: Char);
+var
+   S: string;
 begin
    if UseWinKeyer = True then begin
       FWkAbort := False;
-      ControlPTT(nID, True);
-      FWkMessageStr := FWkMessageStr + C;
 
+      // 特殊文字をデコード
+      S := WinKeyerBuildMessage(C);
+
+      // 初回送信？
       if FWkMessageSending = False then begin
+         // PTT-ON
+         ControlPTT(nID, True);
+
+         // SO2R Neo利用時はRIG切り替え・・・TX=RXで
          if FUseWkSo2rNeo = True then begin
             So2rNeoSwitchRig(nID, nID)
          end;
 
-         C := FWkMessageStr[FWkMessageIndex];
-         WinKeyerSendChar(C);
+         // 送信中
          FWkMessageSending := True;
+
+         // S[1]が$1bは合わせ文字 $1bはecho backしない
+         if Char(S[1]) = Char($1b) then begin
+            FWkMessageIndex := 1;
+            FWkMessageStr := Copy(S, 2);
+            FComKeying[0].SendString(AnsiString(S));
+         end
+         else begin  // 通常キャラクタ
+            FWkMessageIndex := 1;
+            FWkMessageStr := S;
+            C := FWkMessageStr[FWkMessageIndex];
+            WinKeyerSendChar(C);
+         end;
+      end
+      else begin
+         if Char(S[1]) = Char($1b) then begin
+            FWkMessageIndex := 1;
+            FWkMessageStr := FWkMessageStr + Copy(S, 2);
+            FComKeying[0].SendString(AnsiString(S));
+         end
+         else begin
+            FWkMessageStr := FWkMessageStr + S;
+         end;
       end;
       Exit;
-   end;
+   end
+   else begin  // COM/USB
+      if FPTTEnabled and Not(PTTIsOn) then begin
+         ControlPTT(nID, True);
+         FKeyingCounter := FPttDelayBeforeCount;
+      end;
 
-   if FPTTEnabled and Not(PTTIsOn) then begin
-      ControlPTT(nID, True);
-      FKeyingCounter := FPttDelayBeforeCount;
-   end;
+      // SendOK := False;
 
-   // SendOK := False;
+      // select keying port
+      SetCWSendBufChar(0, Char($90 + nID));
 
-   // select keying port
-   SetCWSendBufChar(0, Char($90 + nID));
+      // set send char
+      SetCWSendBufChar(0, C);
 
-   // set send char
-   SetCWSendBufChar(0, C);
+      if FPTTEnabled then begin
+         FPttHoldCounter := FPttDelayAfterCount;
 
-   if FPTTEnabled then begin
-      FPttHoldCounter := FPttDelayAfterCount;
+         { holds PTT until pttafter expires }
+         SetCWSendBufChar(0, Char($A2));
 
-      { holds PTT until pttafter expires }
-      SetCWSendBufChar(0, Char($A2));
+         FSendOK := True;
+         Exit;
+      end;
+
+      // set finish char
+      SetCWSendBufFinish(0);
 
       FSendOK := True;
-      Exit;
    end;
-
-   // set finish char
-   SetCWSendBufFinish(0);
-
-   FSendOK := True;
 end;
 
 function TdmZLogKeyer.DecodeCommands(S: string): string;
@@ -2958,7 +2989,11 @@ begin
    FComKeying[0].SendData(@Buff, 1);
    FWkLastMessage := '';
    FWkAbort := False;
-   WinKeyerSetPTTMode(False);
+   FWkCallsignSending := False;
+   FWkMessageSending := False;
+   FWkMessageStr := '';
+   FWkMessageIndex := 1;
+//   WinKeyerSetPTTMode(False);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetSideTone(fOn: Boolean);
@@ -3078,7 +3113,8 @@ begin
    case C of
       ' ', 'A'..'Z', '0'..'9', '/', '?', '.', 'a', 'b', 'k', 's', 't', 'v', '-', '=': begin
          S := C;
-         WinKeyerSendStr(FCurrentID, S);
+         FComKeying[0].SendString(AnsiString(S));
+//         WinKeyerSendStr(FCurrentID, S);
       end;
    end;
 end;
@@ -3092,6 +3128,10 @@ begin
    FCurrentID := nID;
 
    ControlPTT(nID, True);
+
+   if FUseWkSo2rNeo = True then begin
+      So2rNeoReverseRx(nID)
+   end;
 
    S := WinKeyerBuildMessage(S);
 
@@ -3111,9 +3151,9 @@ begin
    FWkAbort := False;
    FWkMessageIndex := 1;
    FWkMessageStr := S;
+   FWkMessageSending := True;
    C := FWkMessageStr[FWkMessageIndex];
    WinKeyerSendChar(C);
-   FWkMessageSending := True;
 end;
 
 function TdmZLogKeyer.WinKeyerBuildMessage(S: string): string;

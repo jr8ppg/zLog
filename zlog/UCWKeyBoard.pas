@@ -156,6 +156,7 @@ end;
 procedure TCWKeyBoard.buttonClearClick(Sender: TObject);
 begin
    Console.Clear;
+   dmZLogKeyer.ClrBuffer();
 end;
 
 procedure TCWKeyBoard.actionPlayMessageAExecute(Sender: TObject);
