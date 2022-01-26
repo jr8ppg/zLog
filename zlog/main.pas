@@ -26,6 +26,8 @@ const
   WM_ZLOG_INIT = (WM_USER + 100);
   WM_ZLOG_SETGRIDCOL = (WM_USER + 101);
   WM_ZLOG_SPCDATALOADED = (WM_USER + 102);
+  WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
+  WM_ZLOG_GETVERSION = (WM_USER + 201);
 
 type
   TEditPanel = record
@@ -754,6 +756,8 @@ type
     procedure OnZLogInit( var Message: TMessage ); message WM_ZLOG_INIT;
     procedure OnZLogSetGridCol( var Message: TMessage ); message WM_ZLOG_SETGRIDCOL;
     procedure OnZLogSpcDataLoaded( var Message: TMessage ); message WM_ZLOG_SPCDATALOADED;
+    procedure OnZLogGetCallsign( var Message: TMessage ); message WM_ZLOG_GETCALLSIGN;
+    procedure OnZLogGetVersion( var Message: TMessage ); message WM_ZLOG_GETVERSION;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -3252,6 +3256,7 @@ var
    b: TBand;
 begin
    FInitialized   := False;
+   InitAtomTable(1000);
 
    // QSO EditÉpÉlÉãÇÃèâä˙ê›íË
    InitQsoEditPanel();
@@ -7096,6 +7101,23 @@ begin
    FSuperCheck.ListBox.Clear();
    FSuperCheck2.ListBox.Clear();
    FSpcDataLoading := False;
+end;
+
+procedure TMainForm.OnZLogGetCallsign( var Message: TMessage );
+var
+   callsign_atom: ATOM;
+   S: string;
+begin
+   S := CallsignEdit.Text;
+   callsign_atom := GlobalAddAtom(PChar(S));
+
+   Message.ResultLo := callsign_atom;
+   Message.ResultHi := 0;
+end;
+
+procedure TMainForm.OnZLogGetVersion( var Message: TMessage );
+begin
+   Message.Result := 2800;
 end;
 
 procedure TMainForm.InitALLJA();
