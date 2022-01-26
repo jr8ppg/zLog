@@ -251,7 +251,7 @@ type
     procedure WinKeyerClose();
     procedure WinKeyerSetSpeed(nWPM: Integer);
     procedure WinKeyerSetSideTone(fOn: Boolean);
-    procedure WinKeyerSetPTTMode(fUse: Boolean);
+    procedure WinKeyerSetPinCfg(fUseAutoPtt: Boolean);
     procedure WinKeyerSetPTTDelay(before, after: Byte);
     procedure WinKeyerSetMode(mode: Byte);
 
@@ -665,9 +665,7 @@ begin
 
    // WinKeyer�̏ꍇ
    if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
-      if flag = 0 then flag := 1;
-//         So2rNeoSwitchRig(flag - 1, flag - 1);
-
+      WinKeyerSetPinCfg(False);
       Exit;
    end;
 
@@ -763,12 +761,12 @@ begin
 
       if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
          if PTTON = True then begin
-            WinKeyerSetPTTMode(True);
+//            WinKeyerSetPinCfg(False);
             WinkeyerControlPTT(PTTON);
          end
          else begin
             WinkeyerControlPTT(PTTON);
-            WinKeyerSetPTTMode(False);
+//            WinKeyerSetPinCfg(False);
          end;
       end;
    finally
@@ -2930,7 +2928,7 @@ begin
    end;
 
    // Set PTT Mode(PINCFG)
-   WinKeyerSetPTTMode(True);
+   WinKeyerSetPinCfg(False);
 
    // Set PTT Delay time
    WinKeyerSetPTTDelay(FPttDelayBeforeTime, FPttDelayAfterTime);
@@ -2993,7 +2991,7 @@ begin
    FWkMessageSending := False;
    FWkMessageStr := '';
    FWkMessageIndex := 1;
-//   WinKeyerSetPTTMode(False);
+   WinKeyerSetPinCfg(False);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetSideTone(fOn: Boolean);
@@ -3014,7 +3012,7 @@ begin
    FComKeying[0].SendData(@Buff, 2);
 end;
 
-procedure TdmZLogKeyer.WinKeyerSetPTTMode(fUse: Boolean);
+procedure TdmZLogKeyer.WinKeyerSetPinCfg(fUseAutoPtt: Boolean);
 var
    Buff: array[0..10] of Byte;
 begin
@@ -3023,13 +3021,26 @@ begin
    //     A    C
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_SET_PINCFG_CMD;
-   Buff[1] := $ac;
-   if fUse = False then begin
+   Buff[1] := $a0;
+
+   if fUseAutoPtt = True then begin
       Buff[1] := Buff[1] or $1;
    end;
+
    if FUseSideTone = True then begin
       Buff[1] := Buff[1] or $2;
    end;
+
+   if FCurrentID = 0 then begin
+      Buff[1] := Buff[1] or $4;
+   end
+   else if FCurrentID = 1 then begin
+      Buff[1] := Buff[1] or $8;
+   end
+   else begin
+      Buff[1] := Buff[1] or $c;  // $4 + $8
+   end;
+
    FComKeying[0].SendData(@Buff, 2);
 end;
 
