@@ -29,18 +29,18 @@ type
     function GetWPM(): Integer;
     procedure SetWPM(nWpm: Integer);
     procedure SetTime(T: string);
-    procedure SetRigInfo(S: string);
     procedure SetPtt(fOn: Boolean);
     function GetAutoRigSwitch(): Boolean;
     procedure SetAutoRigSwitch(fOn: Boolean);
+    procedure SetRigNo(rig: Integer);
   public
     { Public êÈåæ }
     property CQMode: Boolean read GetCQMode write SetCQMode;
     property WPM: Integer read GetWPM write SetWPM;
     property Time: string write SetTime;
-    property RigInfo: string write SetRigInfo;
     property Ptt: Boolean write SetPtt;
     property AutoRigSwitch: Boolean read GetAutoRigSwitch write SetAutoRigSwitch;
+    property RigNo: Integer write SetRigNo;
   end;
 
 implementation
@@ -118,11 +118,6 @@ begin
    panelTime.Caption := T;
 end;
 
-procedure TformInformation.SetRigInfo(S: string);
-begin
-   panelRigInfo.Caption := S;
-end;
-
 procedure TformInformation.SetPtt(fOn: Boolean);
 begin
    ledPtt.Status := fOn;
@@ -136,6 +131,11 @@ end;
 procedure TformInformation.SetAutoRigSwitch(fOn: Boolean);
 begin
    buttonAutoRigSwitch.Down := fOn;
+end;
+
+procedure TformInformation.SetRigNo(rig: Integer);
+begin
+   panelRigInfo.Caption := 'R' + IntToStr(rig);
 end;
 
 end.

@@ -597,16 +597,11 @@ begin
 end;
 
 function TRigControl.SetCurrentRig(N: Integer): Boolean;
-var
-   MF: TMainForm;
-
    procedure SetRigName(rigno: Integer; rigname: string);
    begin
       RigLabel.Caption := 'Current rig : ' + IntToStr(rigno) + ' (' + rigname + ')';
    end;
 begin
-   MF := TMainForm(Owner);
-
    if (N > FMaxRig) or (N < 0) then begin
       Result := False;
       Exit;
@@ -624,16 +619,8 @@ begin
    end
    else begin
       FCurrentRig := nil;
-
-      if FCurrentRigNumber > 0 then begin // virtual rig
-         SetRigName(FCurrentRigNumber, 'Virtual');
-         dmZlogKeyer.SetRigFlag(0);
-      end
-      else begin
-         SetRigName(FCurrentRigNumber, '(none)');
-         dmZlogKeyer.SetRigFlag(0);
-         MF.SetStatusLine('R' + IntToStr(FCurrentRigNumber));
-      end;
+      SetRigName(FCurrentRigNumber, '(none)');
+      dmZlogKeyer.SetRigFlag(0);
    end;
 
    Result := True;

@@ -6988,6 +6988,9 @@ begin
       CurrentQSO.Band := GetFirstAvailableBand(dmZLogGlobal.LastBand);
       FRateDialogEx.Band := CurrentQSO.Band;
 
+      // ç≈èâÇÕRIG1Ç©ÇÁ
+      SwitchRig(1);
+
       CurrentQSO.Serial := SerialArray[CurrentQSO.Band];
       SerialEdit.Text := CurrentQSO.SerialStr;
 
@@ -9517,7 +9520,6 @@ end;
 procedure TMainForm.SetStatusLine(strText: string);
 begin
    StatusLine.Panels[1].Text := strText;
-   FInformation.RigInfo := strText;
 end;
 
 procedure TMainForm.ApplyCQRepeatInterval();
@@ -9874,6 +9876,8 @@ begin
       end;
       FSo2rNeoCp.Rx := rig - 1;
    end;
+
+   FInformation.RigNo := rig;
 end;
 
 procedure TMainForm.ShowCurrentQSO();
