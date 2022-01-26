@@ -8042,9 +8042,10 @@ end;
 procedure TMainForm.actionClearCallAndRptExecute(Sender: TObject);
 begin
    EditedSinceTABPressed := tabstate_normal;
+   CWStopButtonClick(Self);
    CallsignEdit.Clear;
    NumberEdit.Clear;
-   MemoEdit.Clear;
+   if Assigned(MemoEdit) then MemoEdit.Clear;
    CallsignEdit.SetFocus;
    WriteStatusLine('', False);
 end;
@@ -8180,7 +8181,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actionFocusMemoExecute---'));
    {$ENDIF}
-   MemoEdit.SetFocus;
+   if Assigned(MemoEdit) then MemoEdit.SetFocus;
 end;
 
 // #62 Number欄にフォーカス移動 / Alt+N
@@ -8242,9 +8243,10 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actoinClearCallAndNumAftFocusExecute---'));
    {$ENDIF}
+   CWStopButtonClick(Self);
    CallsignEdit.Clear();
    NumberEdit.Clear();
-   MemoEdit.Clear();
+   if Assigned(MemoEdit) then MemoEdit.Clear();
    WriteStatusLine('', False);
    CallsignEdit.SetFocus;
 end;
@@ -8554,6 +8556,10 @@ var
    strPseQsl: string;
    strNoQsl: string;
 begin
+   if not Assigned(MemoEdit) then begin
+      Exit;
+   end;
+
    strPseQsl := dmZlogGlobal.Settings.FQuickMemoText[1];
    strNoQsl  := dmZlogGlobal.Settings.FQuickMemoText[2];
 
@@ -8579,6 +8585,10 @@ var
    strPseQsl: string;
    strNoQsl: string;
 begin
+   if not Assigned(MemoEdit) then begin
+      Exit;
+   end;
+
    strPseQsl := dmZlogGlobal.Settings.FQuickMemoText[1];
    strNoQsl  := dmZlogGlobal.Settings.FQuickMemoText[2];
 
@@ -8677,6 +8687,10 @@ var
    strTemp: string;
    n: Integer;
 begin
+   if not Assigned(MemoEdit) then begin
+      Exit;
+   end;
+
    // 設定された文字列を取得
    n := TAction(Sender).Tag;
    strQuickMemoText := dmZlogGlobal.Settings.FQuickMemoText[n];

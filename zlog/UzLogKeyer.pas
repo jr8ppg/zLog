@@ -3333,13 +3333,17 @@ begin
             {$ENDIF}
 
             // コールサイン送信
-            if (FWkCallsignSending = True) and (Char(b) = FWkCallsignStr[FWkCallsignIndex]) then begin
+            if (FWkCallsignSending = True) and
+               (Length(FWkCallsignStr) >= FWkCallsignIndex) and
+               (Char(b) = FWkCallsignStr[FWkCallsignIndex]) then begin
                // 次の文字を送信
                PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
             end;
 
             // 通常メッセージ送信
-            if (FWkMessageSending = True) and (Char(b) = FWkMessageStr[FWkMessageIndex]) then begin
+            if (FWkMessageSending = True) and
+               (Length(FWkMessageStr) >= FWkMessageIndex) and
+               (Char(b) = FWkMessageStr[FWkMessageIndex]) then begin
                // 次の文字を送信
                PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
             end;
