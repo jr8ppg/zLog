@@ -454,6 +454,7 @@ type
     radioSo2rNeo: TRadioButton;
     comboSo2rPort: TComboBox;
     radioSo2rNone: TRadioButton;
+    checkWk9600: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -813,6 +814,7 @@ begin
 
       // Use Winkeyer
       Settings._use_winkeyer := checkUseWinkeyer.Checked;
+      Settings._use_wk_9600 := checkWk9600.Checked;
 
       // SO2R Support
       if radioSo2rNone.Checked = True then begin
@@ -1208,6 +1210,7 @@ begin
 
       // Use Winkeyer
       checkUseWinkeyer.Checked := Settings._use_winkeyer;
+      checkWk9600.Checked := Settings._use_wk_9600;
 
       // SO2R Support
       case Settings._so2r_type of

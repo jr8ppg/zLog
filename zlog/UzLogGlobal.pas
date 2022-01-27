@@ -122,7 +122,9 @@ type
     _usbif4cw_sync_wpm: Boolean;
     _polling_interval: Integer;
 
+    // WinKeyer
     _use_winkeyer: Boolean;
+    _use_wk_9600: Boolean;
 
     // SO2R Support
     _so2r_type: TSo2rType;    // 0:none 1:zlog 2:SO2R Neo
@@ -806,6 +808,7 @@ begin
 
       // Use WinKeyer USB
       Settings._use_winkeyer := ini.ReadBool('Hardware', 'UseWinKeyer', False);
+      Settings._use_wk_9600 := ini.ReadBool('Hardware', 'UseWk9600', False);
 
       // SO2R Support
       Settings._so2r_type  := TSo2rType(ini.ReadInteger('SO2R', 'type', 0));
@@ -1352,6 +1355,7 @@ begin
 
       // Use WinKeyer USB
       ini.WriteBool('Hardware', 'UseWinKeyer', Settings._use_winkeyer);
+      ini.WriteBool('Hardware', 'UseWk9600', Settings._use_wk_9600);
 
       // SO2R Support
       ini.WriteInteger('SO2R', 'type', Integer(Settings._so2r_type));
@@ -1640,6 +1644,7 @@ var
    i: Integer;
 begin
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
+   dmZLogKeyer.UseWk9600 := Settings._use_wk_9600;
    dmZLogKeyer.UseWkSo2rNeo := (Settings._so2r_type = so2rNeo);
    dmZLogKeyer.So2rSelectPort := TKeyingPort(Settings._so2r_port);
 

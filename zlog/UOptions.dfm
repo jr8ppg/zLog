@@ -1,7 +1,7 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = act19
+  ActiveControl = ClusterCombo
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -25,7 +25,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetHardware
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1948,6 +1948,15 @@ object formOptions: TformOptions
           Height = 25
           Caption = 'Use WinKeyer'
           TabOrder = 2
+          OnClick = checkUseWinKeyerClick
+        end
+        object checkWk9600: TCheckBox
+          Left = 323
+          Top = 34
+          Width = 89
+          Height = 25
+          Caption = 'WK 9600bps'
+          TabOrder = 5
           OnClick = checkUseWinKeyerClick
         end
       end

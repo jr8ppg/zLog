@@ -189,6 +189,7 @@ type
 
     // WinKeyer and SO2R Neo support
     FUseWinKeyer: Boolean;
+    FUseWk9600: Boolean;
     FWkInitializeMode: Boolean;
     FWkRevision: Integer;
     FWkStatus: Integer;
@@ -336,6 +337,7 @@ type
 
     // WinKeyer support
     property UseWinKeyer: Boolean read FUseWinKeyer write FUseWinKeyer;
+    property UseWk9600: Boolean read FUseWk9600 write FUseWk9600;
     property WinKeyerRevision: Integer read FWkRevision;
     property WkCallsignSending: Boolean read FWkCallsignSending write FWkCallsignSending;
     procedure WinKeyerSendCallsign(S: string);
@@ -403,6 +405,7 @@ begin
    FComKeying[0] := FDefautCom[0];
    FComKeying[1] := FDefautCom[1];
    FUseWinKeyer := False;
+   FUseWk9600 := False;
    FOnSpeedChanged := nil;
    FUseFixedSpeed := False;
    FBeforeSpeed := 0;
@@ -2857,7 +2860,7 @@ begin
    // application wants to run at 9600 baud, it must start out at 1200 baud mode and then issue the Set
    // High Baud command. When the application closes it should issue a WK close command which will
    // reset the baud rate to 1200.
-   if FUseWkSo2rNeo = False then begin
+   if (FUseWkSo2rNeo = False) and (FUseWk9600 = True)then begin
       FillChar(Buff, SizeOf(Buff), 0);
       Buff[0] := WK_ADMIN_CMD;
       Buff[1] := WK_ADMIN_SET_HIGH_BAUD;
