@@ -9739,6 +9739,9 @@ end;
 procedure TMainForm.InitQsoEditPanel();
 begin
    Grid.Align := alNone;
+   StatusLine.Align := alNone;
+   EditPanel1R.Align := alNone;
+   EditPanel2R.Align := alNone;
 
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
       // 1R
@@ -9768,8 +9771,24 @@ begin
       FEditPanel[1].OpEdit       := OpEdit1;
       FEditPanel[1].MemoEdit     := MemoEdit1;
 
+      FEditPanel[2].SerialEdit   := SerialEdit1;
+      FEditPanel[2].DateEdit     := DateEdit1;
+      FEditPanel[2].TimeEdit     := TimeEdit1;
+      FEditPanel[2].CallsignEdit := CallsignEdit1;
+      FEditPanel[2].rcvdRSTEdit  := rcvdRSTEdit1;
+      FEditPanel[2].rcvdNumber   := NumberEdit1;
+      FEditPanel[2].ModeEdit     := ModeEdit1;
+      FEditPanel[2].PowerEdit    := PowerEdit1;
+      FEditPanel[2].BandEdit     := BandEdit1;
+      FEditPanel[2].PointEdit    := PointEdit1;
+      FEditPanel[2].OpEdit       := OpEdit1;
+      FEditPanel[2].MemoEdit     := MemoEdit1;
+
       EditPanel1R.Visible := True;
       EditPanel2R.Visible := False;
+
+      StatusLine.Align := alBottom;
+      EditPanel1R.Align := alBottom;
    end
    else begin  // 2R
       FEditPanel[0].SerialEdit   := SerialEdit2A;
@@ -9813,7 +9832,11 @@ begin
 
       EditPanel1R.Visible := False;
       EditPanel2R.Visible := True;
+
+      StatusLine.Align := alBottom;
+      EditPanel2R.Align := alBottom;
    end;
+
    Grid.Align := alClient;
 end;
 
@@ -9849,6 +9872,7 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
 begin
    FCurrentRig := rig;
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+      LastFocus := CallsignEdit1;
       Exit;
    end
    else begin
