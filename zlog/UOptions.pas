@@ -94,14 +94,6 @@ type
     vEdit1: TEdit;
     memo: TLabel;
     OpenDialog: TOpenDialog;
-    GroupBox6: TGroupBox;
-    Label30: TLabel;
-    ClusterCombo: TComboBox;
-    Port: TLabel;
-    buttonClusterSettings: TButton;
-    Label32: TLabel;
-    ZLinkCombo: TComboBox;
-    buttonZLinkSettings: TButton;
     vButton1: TButton;
     vButton2: TButton;
     vButton3: TButton;
@@ -169,9 +161,6 @@ type
     cbDisplayDatePartialCheck: TCheckBox;
     cbAutoBandMap: TCheckBox;
     checkUseMultiStationWarning: TCheckBox;
-    Label55: TLabel;
-    editZLinkPcName: TEdit;
-    checkZLinkSyncSerial: TCheckBox;
     comboRig1Speed: TComboBox;
     comboRig2Speed: TComboBox;
     comboCwPttPort1: TComboBox;
@@ -455,6 +444,21 @@ type
     comboSo2rPort: TComboBox;
     radioSo2rNone: TRadioButton;
     checkWk9600: TCheckBox;
+    tabsheetNetwork: TTabSheet;
+    GroupBox6: TGroupBox;
+    Label30: TLabel;
+    Port: TLabel;
+    Label32: TLabel;
+    Label55: TLabel;
+    ClusterCombo: TComboBox;
+    buttonClusterSettings: TButton;
+    ZLinkCombo: TComboBox;
+    buttonZLinkSettings: TButton;
+    editZLinkPcName: TEdit;
+    checkZLinkSyncSerial: TCheckBox;
+    groupRig3: TGroupBox;
+    Label99: TLabel;
+    comboCwPttPort3: TComboBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -792,6 +796,7 @@ begin
       Settings._pttafter := StrToIntDef(AfterEdit.Text, i);
 
       // CW/PTT port
+      // RIG1
       if (comboCwPttPort1.ItemIndex >= 1) and (comboCwPttPort1.ItemIndex <= 20) then begin
          Settings._keyingport[1] := comboCwPttPort1.ItemIndex;
       end
@@ -802,6 +807,7 @@ begin
          Settings._keyingport[1] := 0;
       end;
 
+      // RIG2
       if (comboCwPttPort2.ItemIndex >= 1) and (comboCwPttPort2.ItemIndex <= 20) then begin
          Settings._keyingport[2] := comboCwPttPort2.ItemIndex;
       end
@@ -810,6 +816,17 @@ begin
       end
       else begin
          Settings._keyingport[2] := 0;
+      end;
+
+      // RIG3
+      if (comboCwPttPort3.ItemIndex >= 1) and (comboCwPttPort3.ItemIndex <= 20) then begin
+         Settings._keyingport[3] := comboCwPttPort3.ItemIndex;
+      end
+      else if comboCwPttPort3.ItemIndex = 21 then begin    // USB
+         Settings._keyingport[3] := 21;
+      end
+      else begin
+         Settings._keyingport[3] := 0;
       end;
 
       // Use Winkeyer
@@ -1188,6 +1205,7 @@ begin
       SaveEvery.Value := Settings._saveevery;
 
       // CW/PTT port
+      // RIG1
       if (Settings._keyingport[1] >= 1) and (Settings._keyingport[1] <= 20) then begin
          comboCwPttPort1.ItemIndex := Settings._keyingport[1];
       end
@@ -1198,6 +1216,7 @@ begin
          comboCwPttPort1.ItemIndex := 0;
       end;
 
+      // RIG2
       if (Settings._keyingport[2] >= 1) and (Settings._keyingport[2] <= 20) then begin
          comboCwPttPort2.ItemIndex := Settings._keyingport[2];
       end
@@ -1206,6 +1225,17 @@ begin
       end
       else begin
          comboCwPttPort2.ItemIndex := 0;
+      end;
+
+      // RIG3
+      if (Settings._keyingport[3] >= 1) and (Settings._keyingport[3] <= 20) then begin
+         comboCwPttPort3.ItemIndex := Settings._keyingport[3];
+      end
+      else if (Settings._keyingport[3] >= 21) then begin
+         comboCwPttPort3.ItemIndex := 21;
+      end
+      else begin
+         comboCwPttPort3.ItemIndex := 0;
       end;
 
       // Use Winkeyer

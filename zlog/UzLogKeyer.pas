@@ -76,6 +76,7 @@ type
     RepeatTimer: TTimer;
     ZComKeying2: TCommPortDriver;
     ZComRigSelect: TCommPortDriver;
+    ZComKeying3: TCommPortDriver;
     procedure WndMethod(var msg: TMessage);
     procedure DoDeviceChanges(Sender: TObject);
     function DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
@@ -90,8 +91,8 @@ type
       PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
   private
     { Private 宣言 }
-    FDefautCom: array[0..1] of TCommPortDriver;
-    FComKeying: array[0..1] of TCommPortDriver;
+    FDefautCom: array[0..2] of TCommPortDriver;
+    FComKeying: array[0..2] of TCommPortDriver;
 
     FMonitorThread: TKeyerMonitorThread;
 
@@ -99,7 +100,7 @@ type
     usbdevlist: TList<TJvHIDDevice>;
     FUSBIF4CW_Detected: Boolean;
 
-    FUsbInfo: array[0..1] of TUsbInfo;
+    FUsbInfo: array[0..2] of TUsbInfo;
 
     // 現在送信中のポートID
     FCurrentID: Integer;
@@ -113,7 +114,7 @@ type
     FUserFlag: Boolean; // can be set to True by user. set to False only when ClrBuffer is called or "  is reached in the sending buffer. // 1.9z2 used in QTCForm
     FVoiceFlag: Integer;  //temporary
 
-    FKeyingPort: array[0..1] of TKeyingPort;
+    FKeyingPort: array[0..2] of TKeyingPort;
 
     FSpaceFactor: Integer; {space length factor in %}
     FEISpaceFactor: Integer; {space length factor after E and I}
@@ -402,8 +403,10 @@ begin
    FInitialized := False;
    FDefautCom[0] := ZComKeying1;
    FDefautCom[1] := ZComKeying2;
+   FDefautCom[2] := ZComKeying3;
    FComKeying[0] := FDefautCom[0];
    FComKeying[1] := FDefautCom[1];
+   FComKeying[2] := FDefautCom[2];
    FUseWinKeyer := False;
    FUseWk9600 := False;
    FOnSpeedChanged := nil;
@@ -435,7 +438,7 @@ begin
    HidController.OnEnumerate := DoEnumeration;
    FUSBIF4CW_Detected := False;
 
-   for i := 0 to 1 do begin
+   for i := 0 to 2 do begin
       FUsbInfo[i].FUSBIF4CW := nil;
       FUsbInfo[i].FPrevUsbPortData := $00;
       FUsbInfo[i].FUsbPortData := $FF;
@@ -461,6 +464,7 @@ begin
 
    KeyingPort[0] := tkpNone;
    KeyingPort[1] := tkpNone;
+   KeyingPort[2] := tkpNone;
 end;
 
 procedure TdmZLogKeyer.DataModuleDestroy(Sender: TObject);
@@ -548,6 +552,9 @@ begin
    else if FUsbInfo[1].FUSBIF4CW = HidDev then begin
       nID := 1;
    end
+   else if FUsbInfo[2].FUSBIF4CW = HidDev then begin
+      nID := 2;
+   end
    else begin
       Exit;
    end;
@@ -623,8 +630,11 @@ begin
    if (flag = 0) or (flag = 1) then begin
       FCurrentID := 0;
    end
-   else begin
+   else if (flag = 2) then begin
       FCurrentID := 1;
+   end
+   else begin
+      FCurrentID := 2;
    end;
 
    // COMポートでのRIG SELECT
@@ -642,6 +652,11 @@ begin
 
          2: begin
             ZComRigSelect.ToggleDTR(False);
+            ZComRigSelect.ToggleRTS(True);
+         end;
+
+         3: begin
+            ZComRigSelect.ToggleDTR(True);
             ZComRigSelect.ToggleRTS(True);
          end;
       end;
@@ -662,6 +677,10 @@ begin
          2: begin
             So2rNeoSwitchRig(1, 1);
          end;
+
+         3: begin
+            So2rNeoSwitchRig(0, 0);
+         end;
       end;
       Exit;
    end;
@@ -672,7 +691,7 @@ begin
       Exit;
    end;
 
-   for i := 0 to 1 do begin
+   for i := 0 to 2 do begin
       // USBIF4CWでのRIG SELECT
       if FKeyingPort[i] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
@@ -700,7 +719,7 @@ procedure TdmZLogKeyer.SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, e
 var
    i: Integer;
 begin
-   for i := 0 to 1 do begin
+   for i := 0 to 2 do begin
       if FKeyingPort[i] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
          if flag = 1 then begin
@@ -1028,7 +1047,7 @@ begin
    if sStr = '' then
       Exit;
 
-   if ((nID = 0) or (nID = 1)) then begin
+   if ((nID = 0) or (nID = 1) or (nID = 2)) then begin
       CW := Char($90 + nID);
    end
    else begin
@@ -1065,7 +1084,7 @@ begin
       WinkeyerSendStr(nID, SS);
    end
    else begin
-      if ((nID = 0) or (nID = 1)) then begin
+   if ((nID = 0) or (nID = 1) or (nID = 2)) then begin
          CW := Char($90 + nID);
       end
       else begin
@@ -1093,7 +1112,7 @@ var
    SS: string;
    CW: string;
 begin
-   if ((nID = 0) or (nID = 1)) then begin
+   if ((nID = 0) or (nID = 1) or (nID = 2)) then begin
       CW := Char($90 + nID);
    end
    else begin
@@ -1387,6 +1406,10 @@ begin
 
       $21: begin
          FCurrentID := 1;
+      end;
+
+      $22: begin
+         FCurrentID := 2;
       end;
    end;
 
@@ -2032,6 +2055,8 @@ begin
    FCodeTable[$90][2] := 9;
    FCodeTable[$91][1] := $21;
    FCodeTable[$91][2] := 9;
+   FCodeTable[$92][1] := $22;
+   FCodeTable[$92][2] := 9;
 
    if FMonitorThread = nil then begin
       FMonitorThread := TKeyerMonitorThread.Create(Self);
@@ -2045,6 +2070,7 @@ procedure TdmZLogKeyer.CloseBGK();
 begin
    ControlPTT(0, False);
    ControlPTT(1, False);
+   ControlPTT(2, False);
 
    if Assigned(FMonitorThread) then begin
       FMonitorThread.Terminate();
@@ -2065,9 +2091,11 @@ begin
 
    CW_OFF(0);
    CW_OFF(1);
+   CW_OFF(2);
 
    KeyingPort[0] := tkpNone;
    KeyingPort[1] := tkpNone;
+   KeyingPort[2] := tkpNone;
 
    if ZComRigSelect.Connected then begin
       ZComRigSelect.Disconnect();
@@ -2277,6 +2305,12 @@ begin
 end;
 
 procedure TdmZLogKeyer.Open();
+var
+   i: Integer;
+   usb_no: Integer;
+   fUseUSB: Boolean;
+   fUseCOM: Boolean;
+
    procedure UsbInfoClear(n: Integer);
    begin
       FUsbInfo[n].FUSBIF4CW := nil;
@@ -2288,8 +2322,23 @@ procedure TdmZLogKeyer.Open();
    var
       i: Integer;
    begin
-      for i := 0 to 1 do begin
+      for i := 0 to 2 do begin
          UsbInfoClear(i);
+      end;
+   end;
+
+   function GetUsbInfo(no: Integer): TJvHidDevice;
+   begin
+      if usbdevlist.Count = 0 then begin
+         Result := nil;
+         Exit;
+      end;
+
+      if usbdevlist.Count >= (no + 1) then begin
+         Result := usbdevlist[no];
+      end
+      else begin
+         Result := usbdevlist[0];
       end;
    end;
 begin
@@ -2298,17 +2347,64 @@ begin
       Sleep(1);
    until FUsbDetecting = False;
 
-   // RIG1/RIG2共に無し
+   fUseUSB := False;
+   fUseCOM := False;
+   UsbInfoClearAll();
+
+   // RIG1/RIG2/RIG3全て無し
    if (FKeyingPort[0] = tkpNone) and
-      (FKeyingPort[1] = tkpNone) then begin
+      (FKeyingPort[1] = tkpNone) and
+      (FKeyingPort[2] = tkpNone) then begin
       COM_OFF();
       USB_OFF();
-//      FComKeying[0] := nil;
-//      FComKeying[1] := nil;
-      UsbInfoClearAll();
       Exit;
    end;
 
+   //
+   usb_no := 0;
+   for i := 0 to 2 do begin
+      if (FKeyingPort[i] = tkpUSB) then begin
+         FUsbInfo[i].FUSBIF4CW := GetUsbInfo(usb_no);
+         Inc(usb_no);
+         fUseUSB := True;
+         FComKeying[i] := nil;
+      end
+      else if (FKeyingPort[i] = tkpNone) then begin
+         FKeyingPort[i] := tkpNone;
+         FComKeying[i] := nil;
+      end
+      else begin
+         fUseCom := True;
+      end;
+   end;
+
+   // RIG1がCOMポートで
+   if (FKeyingPort[0] in [tkpSerial1 .. tkpSerial20]) then begin
+      // RIG1 = RIG2 なら RIG1
+      if (FKeyingPort[0] = FKeyingPort[1]) then begin
+         FComKeying[1] := FComKeying[0];
+      end;
+
+      // RIG1 = RIG3 なら RIG1
+      if (FKeyingPort[0] = FKeyingPort[2]) then begin
+         FComKeying[2] := FComKeying[0];
+      end;
+
+      // RIG2 = RIG3 なら RIG2
+      if (FKeyingPort[1] = FKeyingPort[2]) then begin
+         FComKeying[2] := FComKeying[1];
+      end;
+   end;
+
+
+   if fUseUSB = True then begin
+      USB_ON();
+   end;
+   if fUseCOM = True then begin
+      COM_ON();
+   end;
+
+{
    // RIG1/RIG2共にUSB
    if ((FKeyingPort[0] = tkpUSB) and (FKeyingPort[1] = tkpUSB)) then begin
       case usbdevlist.Count of
@@ -2420,6 +2516,7 @@ begin
       USB_ON();
       COM_ON();
    end;
+}
 
    // RIG選択用ポート
    if FSo2rSelectPort <> tkpNone then begin
@@ -2481,7 +2578,7 @@ begin
       Exit;
    end;
 
-   for i := 0 to 1 do begin
+   for i := 0 to 2 do begin
       if FComKeying[i] = nil then begin
          Continue;
       end;
@@ -2505,7 +2602,7 @@ begin
       Exit;
    end;
 
-   for i := 0 to 1 do begin
+   for i := 0 to 2 do begin
       if FComKeying[i] = nil then begin
          Continue;
       end;
@@ -2523,7 +2620,7 @@ begin
 //      Sleep(1);
 //   until FUsbDetecting = False;
 
-   for i := 0 to 1 do begin
+   for i := 0 to 2 do begin
       if FUsbInfo[i].FUSBIF4CW <> nil then begin
          ZeroMemory(@FUsbInfo[i].FPrevPortIn, SizeOf(FUsbInfo[i].FPrevPortIn));
          FUsbInfo[i].FPrevUsbPortData := $00;
@@ -2546,6 +2643,7 @@ begin
 
    FUsbInfo[0].FUSBIF4CW := nil;
    FUsbInfo[1].FUSBIF4CW := nil;
+   FUsbInfo[2].FUSBIF4CW := nil;
 
    FUSBIF4CW_Detected := False;
 end;

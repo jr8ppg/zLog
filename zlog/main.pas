@@ -5745,6 +5745,7 @@ begin
       // Keying‚ÆRigControl‚ğˆê’UI—¹
       dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
       dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
+      dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZlogGlobal.Settings._keyingport[3]));
       RigControl.Stop();
 
       f.EditMode := 0;

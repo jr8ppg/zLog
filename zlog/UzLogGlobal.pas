@@ -115,7 +115,7 @@ type
     _rigport:  array[1..2] of Integer; {0 : none 1-4 : com#}
     _rigspeed: array[1..2] of Integer;
     _rigname:  array[1..2] of string;
-    _keyingport: array[1..2] of Integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
+    _keyingport: array[1..3] of Integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
 
     _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
@@ -794,6 +794,9 @@ begin
       Settings._transverteroffset2 := ini.ReadInteger('Hardware', 'Transverter2Offset', 0);
       Settings._keyingport[2] := ini.ReadInteger('Hardware', 'CWLPTPort2', 0);
 
+      // RIG3
+      Settings._keyingport[3] := ini.ReadInteger('Hardware', 'CWLPTPort3', 0);
+
       // USE TRANSCEIVE MODE(ICOM only)
       Settings._use_transceive_mode := ini.ReadBool('Hardware', 'UseTransceiveMode', True);
 
@@ -1341,6 +1344,9 @@ begin
       ini.WriteInteger('Hardware', 'Transverter2Offset', Settings._transverteroffset2);
       ini.WriteInteger('Hardware', 'CWLPTPort2', Settings._keyingport[2]);
 
+      // RIG3
+      ini.WriteInteger('Hardware', 'CWLPTPort3', Settings._keyingport[3]);
+
       // USE TRANSCEIVE MODE(ICOM only)
       ini.WriteBool('Hardware', 'UseTransceiveMode', Settings._use_transceive_mode);
 
@@ -1660,6 +1666,7 @@ begin
          dmZLogKeyer.KeyingPort[i] := tkpNone;
       end;
    end;
+   dmZLogKeyer.KeyingPort[2] := TKeyingPort(Settings._keyingport[3]);
 
    dmZlogKeyer.KeyingSignalReverse := Settings.CW._keying_signal_reverse;
    dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;

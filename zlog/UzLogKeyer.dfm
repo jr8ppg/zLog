@@ -44,4 +44,15 @@ object dmZLogKeyer: TdmZLogKeyer
     Left = 27
     Top = 64
   end
+  object ZComKeying3: TCommPortDriver
+    Tag = 3
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    OnReceiveData = ZComKeying1ReceiveData
+    Left = 147
+    Top = 72
+  end
 end

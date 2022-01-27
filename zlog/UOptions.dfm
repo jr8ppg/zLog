@@ -1,7 +1,6 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = ClusterCombo
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -1781,111 +1780,9 @@ object formOptions: TformOptions
     end
     object tabsheetHardware: TTabSheet
       Caption = 'Hardware'
-      object GroupBox6: TGroupBox
-        Left = 6
-        Top = 4
-        Width = 423
-        Height = 112
-        Caption = 'Ports'
-        TabOrder = 0
-        object Label30: TLabel
-          Left = 8
-          Top = 32
-          Width = 66
-          Height = 13
-          Caption = 'PacketCluster'
-        end
-        object Port: TLabel
-          Left = 112
-          Top = 14
-          Width = 19
-          Height = 13
-          Caption = 'Port'
-        end
-        object Label32: TLabel
-          Left = 8
-          Top = 56
-          Width = 80
-          Height = 13
-          Caption = 'Z-Link (Z-Server)'
-        end
-        object Label55: TLabel
-          Left = 8
-          Top = 84
-          Width = 78
-          Height = 13
-          Caption = 'Z-Link PC Name'
-        end
-        object ClusterCombo: TComboBox
-          Left = 96
-          Top = 28
-          Width = 73
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 0
-          OnChange = ClusterComboChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'TELNET')
-        end
-        object buttonClusterSettings: TButton
-          Left = 179
-          Top = 28
-          Width = 102
-          Height = 21
-          Caption = 'COM port settings'
-          Default = True
-          TabOrder = 1
-          OnClick = buttonClusterSettingsClick
-        end
-        object ZLinkCombo: TComboBox
-          Left = 96
-          Top = 52
-          Width = 73
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 2
-          OnChange = ZLinkComboChange
-          Items.Strings = (
-            'None'
-            'TELNET')
-        end
-        object buttonZLinkSettings: TButton
-          Left = 179
-          Top = 52
-          Width = 102
-          Height = 21
-          Caption = 'TELNET settings'
-          Default = True
-          TabOrder = 5
-          OnClick = buttonZLinkSettingsClick
-        end
-        object editZLinkPcName: TEdit
-          Left = 96
-          Top = 81
-          Width = 101
-          Height = 21
-          TabOrder = 3
-        end
-        object checkZLinkSyncSerial: TCheckBox
-          Left = 210
-          Top = 83
-          Width = 91
-          Height = 17
-          Caption = 'SyncSerial'
-          TabOrder = 4
-          OnClick = PTTEnabledCheckBoxClick
-        end
-      end
       object groupOptCwPtt: TGroupBox
         Left = 6
-        Top = 289
+        Top = 237
         Width = 423
         Height = 62
         Caption = 'CW/PTT control'
@@ -1962,8 +1859,8 @@ object formOptions: TformOptions
       end
       object GroupBox13: TGroupBox
         Left = 6
-        Top = 354
-        Width = 189
+        Top = 305
+        Width = 213
         Height = 43
         Caption = 'USBIF4CW'
         TabOrder = 5
@@ -1976,7 +1873,7 @@ object formOptions: TformOptions
           TabOrder = 0
         end
         object checkUsbif4cwPaddleReverse: TCheckBox
-          Left = 89
+          Left = 93
           Top = 17
           Width = 96
           Height = 17
@@ -1986,7 +1883,7 @@ object formOptions: TformOptions
       end
       object groupOptCI_V: TGroupBox
         Left = 6
-        Top = 237
+        Top = 184
         Width = 423
         Height = 49
         Caption = 'ICOM CI-V Options'
@@ -2036,11 +1933,11 @@ object formOptions: TformOptions
       end
       object groupRig1: TGroupBox
         Left = 6
-        Top = 119
+        Top = 4
         Width = 423
         Height = 56
         Caption = 'RIG1'
-        TabOrder = 1
+        TabOrder = 0
         object Label43: TLabel
           Left = 156
           Top = 13
@@ -2176,11 +2073,11 @@ object formOptions: TformOptions
       end
       object groupRig2: TGroupBox
         Left = 6
-        Top = 178
+        Top = 64
         Width = 423
         Height = 56
         Caption = 'RIG2'
-        TabOrder = 2
+        TabOrder = 1
         object Label95: TLabel
           Left = 156
           Top = 13
@@ -2315,35 +2212,35 @@ object formOptions: TformOptions
         end
       end
       object GroupBox7: TGroupBox
-        Left = 201
-        Top = 354
-        Width = 228
-        Height = 43
+        Left = 225
+        Top = 305
+        Width = 204
+        Height = 92
         Caption = 'SO2R Support'
         TabOrder = 6
         object radioSo2rZLog: TRadioButton
           Tag = 1
-          Left = 56
-          Top = 19
-          Width = 41
+          Left = 12
+          Top = 42
+          Width = 69
           Height = 13
-          Caption = 'COM'
+          Caption = 'COM Port'
           TabOrder = 1
           OnClick = radioSo2rClick
         end
         object radioSo2rNeo: TRadioButton
           Tag = 2
-          Left = 180
-          Top = 19
-          Width = 41
+          Left = 12
+          Top = 65
+          Width = 85
           Height = 13
-          Caption = 'Neo'
+          Caption = 'SO2R Neo'
           TabOrder = 3
           OnClick = radioSo2rClick
         end
         object comboSo2rPort: TComboBox
-          Left = 103
-          Top = 15
+          Left = 99
+          Top = 38
           Width = 64
           Height = 21
           Style = csDropDownList
@@ -2372,7 +2269,7 @@ object formOptions: TformOptions
             'COM20')
         end
         object radioSo2rNone: TRadioButton
-          Left = 8
+          Left = 12
           Top = 19
           Width = 46
           Height = 13
@@ -2381,6 +2278,159 @@ object formOptions: TformOptions
           TabOrder = 0
           TabStop = True
           OnClick = radioSo2rClick
+        end
+      end
+      object groupRig3: TGroupBox
+        Left = 6
+        Top = 124
+        Width = 423
+        Height = 56
+        Caption = 'RIG3'
+        TabOrder = 2
+        object Label99: TLabel
+          Left = 282
+          Top = 13
+          Width = 39
+          Height = 13
+          Caption = 'CW port'
+        end
+        object comboCwPttPort3: TComboBox
+          Left = 278
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+          OnChange = comboCwPttPortChange
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20'
+            'USB')
+        end
+      end
+    end
+    object tabsheetNetwork: TTabSheet
+      Caption = 'Network'
+      ImageIndex = 12
+      object GroupBox6: TGroupBox
+        Left = 6
+        Top = 4
+        Width = 423
+        Height = 137
+        Caption = 'Ports'
+        TabOrder = 0
+        object Label30: TLabel
+          Left = 8
+          Top = 31
+          Width = 66
+          Height = 13
+          Caption = 'PacketCluster'
+        end
+        object Port: TLabel
+          Left = 112
+          Top = 14
+          Width = 19
+          Height = 13
+          Caption = 'Port'
+        end
+        object Label32: TLabel
+          Left = 8
+          Top = 58
+          Width = 80
+          Height = 13
+          Caption = 'Z-Link (Z-Server)'
+        end
+        object Label55: TLabel
+          Left = 8
+          Top = 87
+          Width = 78
+          Height = 13
+          Caption = 'Z-Link PC Name'
+        end
+        object ClusterCombo: TComboBox
+          Left = 96
+          Top = 28
+          Width = 73
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+          OnChange = ClusterComboChange
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'TELNET')
+        end
+        object buttonClusterSettings: TButton
+          Left = 179
+          Top = 28
+          Width = 102
+          Height = 21
+          Caption = 'COM port settings'
+          Default = True
+          TabOrder = 1
+          OnClick = buttonClusterSettingsClick
+        end
+        object ZLinkCombo: TComboBox
+          Left = 96
+          Top = 55
+          Width = 73
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 2
+          OnChange = ZLinkComboChange
+          Items.Strings = (
+            'None'
+            'TELNET')
+        end
+        object buttonZLinkSettings: TButton
+          Left = 179
+          Top = 55
+          Width = 102
+          Height = 21
+          Caption = 'TELNET settings'
+          Default = True
+          TabOrder = 5
+          OnClick = buttonZLinkSettingsClick
+        end
+        object editZLinkPcName: TEdit
+          Left = 96
+          Top = 84
+          Width = 101
+          Height = 21
+          TabOrder = 3
+        end
+        object checkZLinkSyncSerial: TCheckBox
+          Left = 210
+          Top = 86
+          Width = 91
+          Height = 17
+          Caption = 'SyncSerial'
+          TabOrder = 4
+          OnClick = PTTEnabledCheckBoxClick
         end
       end
     end
