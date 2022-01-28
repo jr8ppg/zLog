@@ -1084,12 +1084,7 @@ begin
       WinkeyerSendStr(nID, SS);
    end
    else begin
-   if ((nID = 0) or (nID = 1) or (nID = 2)) then begin
-         CW := Char($90 + nID);
-      end
-      else begin
-         CW := Char($90);
-      end;
+      FCurrentID := nID;
 
       SS := DecodeCommands(S);
 
@@ -1097,7 +1092,7 @@ begin
          SS := '(' + SS + ')';
       end;
 
-      SS := CW + SS + '@';
+      SS := SS + '@';
 
       SetCWSendBuf(0, SS);
       cwstrptr := 1;

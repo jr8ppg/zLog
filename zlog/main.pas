@@ -8293,6 +8293,7 @@ begin
    {$ENDIF}
    CtrlZCQLoop := False;
    dmZLogKeyer.CQLoopCount := 999;
+   dmZLogKeyer.ClrBuffer();
    rig := RigControl.ToggleCurrentRig();
    SwitchRig(rig);
 end;
