@@ -236,7 +236,7 @@ end;
 
 procedure TEditDialog.CancelBtnClick(Sender: TObject);
 begin
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
    MainForm.ZLinkForm.UnlockQSO(origQSO);
    ModalResult := mrCancel;
 end;

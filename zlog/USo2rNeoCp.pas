@@ -94,7 +94,7 @@ procedure TformSo2rNeoCp.FormKeyDown(Sender: TObject; var Key: Word;
 begin
    case Key of
       VK_ESCAPE:
-         MainForm.LastFocus.SetFocus;
+         MainForm.SetLastFocus();
       // VK_ALT
    end;
 end;
@@ -112,14 +112,14 @@ begin
       dmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio);
    end;
 
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TformSo2rNeoCp.buttonPerNClick(Sender: TObject);
 begin
    trackBlendRatio.Position := TSpeedButton(Sender).Tag;
 
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TformSo2rNeoCp.trackBlendRatioChange(Sender: TObject);
@@ -129,7 +129,7 @@ begin
    ratio := trackBlendRatio.Position;
    dmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio);
 
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TformSo2rNeoCp.buttonRigClick(Sender: TObject);
@@ -147,7 +147,7 @@ begin
       DispRigBothState();
    end;
 
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TformSo2rNeoCp.actionSo2rNeoSelRx1Execute(Sender: TObject);
@@ -157,7 +157,7 @@ begin
    tx := MainForm.CurrentRigID;
    dmZLogKeyer.So2rNeoSwitchRig(tx, 0);
 
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TformSo2rNeoCp.actionSo2rNeoSelRx2Execute(Sender: TObject);
@@ -167,7 +167,7 @@ begin
    tx := MainForm.CurrentRigID;
    dmZLogKeyer.So2rNeoSwitchRig(tx, 1);
 
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TformSo2rNeoCp.actionSo2rNeoSelRxBothExecute(Sender: TObject);
@@ -177,14 +177,14 @@ begin
    tx := MainForm.CurrentRigID;
    dmZLogKeyer.So2rNeoSwitchRig(tx, 2);
 
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TformSo2rNeoCp.actionSo2rNeoToggleAutoRxSelectExecute(Sender: TObject);
 begin
    ToggleRxSelect();
 
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 function TformSo2rNeoCp.GetRx(): Integer;
@@ -218,9 +218,7 @@ begin
       dmZLogKeyer.So2rNeoUseRxSelect := True;
    end;
 
-   if MainForm.Visible then begin
-      MainForm.LastFocus.SetFocus;
-   end;
+   MainForm.SetLastFocus();
 end;
 
 function TformSo2rNeoCp.GetPtt(): Boolean;

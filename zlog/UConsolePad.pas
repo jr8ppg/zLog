@@ -58,7 +58,7 @@ begin
       end;
 
       Chr($1B): begin
-         MainForm.LastFocus.SetFocus;
+         MainForm.SetLastFocus();
          Key := #0;
       end;
    end;

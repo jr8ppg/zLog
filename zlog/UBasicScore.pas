@@ -249,7 +249,7 @@ procedure TBasicScore.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftS
 begin
    case Key of
       VK_ESCAPE:
-         MainForm.LastFocus.SetFocus;
+         MainForm.SetLastFocus();
       // VK_ALT
    end;
 end;

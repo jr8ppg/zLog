@@ -89,7 +89,6 @@ object ChatForm: TChatForm
     ItemHeight = 12
     ParentFont = False
     TabOrder = 1
-    ExplicitHeight = 93
   end
   object Panel2: TPanel
     Left = 0

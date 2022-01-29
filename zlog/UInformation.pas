@@ -52,7 +52,7 @@ uses
 
 procedure TformInformation.buttonAutoRigSwitchClick(Sender: TObject);
 begin
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TformInformation.FormCreate(Sender: TObject);
@@ -70,7 +70,7 @@ procedure TformInformation.FormKeyDown(Sender: TObject; var Key: Word;
 begin
    case Key of
       VK_ESCAPE:
-         MainForm.LastFocus.SetFocus;
+         MainForm.SetLastFocus();
       // VK_ALT
    end;
 end;
@@ -105,7 +105,7 @@ end;
 procedure TformInformation.panelCQModeClick(Sender: TObject);
 begin
    MainForm.actionToggleCqSpExecute(nil);
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TformInformation.SetWPM(nWpm: Integer);

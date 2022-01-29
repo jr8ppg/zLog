@@ -211,7 +211,7 @@ procedure TRateDialogEx.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShif
 begin
    case Key of
       VK_ESCAPE:
-         MainForm.LastFocus.SetFocus;
+         MainForm.SetLastFocus();
    end;
 end;
 
@@ -242,7 +242,7 @@ end;
 procedure TRateDialogEx.OKBtnClick(Sender: TObject);
 begin
    Close;
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TRateDialogEx.radioOriginClick(Sender: TObject);

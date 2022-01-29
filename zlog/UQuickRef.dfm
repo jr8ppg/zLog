@@ -34,8 +34,6 @@ object QuickRef: TQuickRef
     ScrollBars = ssVertical
     TabOrder = 0
     OnKeyPress = MemoKeyPress
-    ExplicitTop = 0
-    ExplicitHeight = 442
   end
   object ToolBar1: TToolBar
     Left = 0

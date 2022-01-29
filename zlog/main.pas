@@ -1137,6 +1137,8 @@ type
     property MemoEdit: TEdit read GetMemoEdit;
     property NewMultiEdit1: TEdit read GetNewMulti1Edit;
     property NewMultiEdit2: TEdit read GetNewMulti2Edit;
+
+    procedure SetLastFocus();
   end;
 
 var
@@ -10069,6 +10071,13 @@ begin
       SerialEdit2C.Enabled := False;
       RigPanelShape2C.Pen.Color := clGray;
    end;
+end;
+
+procedure TMainForm.SetLastFocus();
+begin
+   if Visible = False then Exit;
+   if not Assigned(LastFocus) then Exit;
+   LastFocus.SetFocus;
 end;
 
 end.

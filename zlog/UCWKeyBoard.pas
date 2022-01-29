@@ -150,7 +150,7 @@ end;
 procedure TCWKeyBoard.buttonOKClick(Sender: TObject);
 begin
    Close;
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TCWKeyBoard.buttonClearClick(Sender: TObject);
@@ -248,7 +248,7 @@ begin
    end
    else begin
       dmZLogKeyer.ControlPTT(MainForm.CurrentRigID, False);
-      MainForm.LastFocus.SetFocus;
+      MainForm.SetLastFocus();
    end;
 end;
 

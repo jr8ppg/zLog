@@ -531,7 +531,7 @@ procedure TBandScope2.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftS
 begin
    case Key of
       VK_ESCAPE:
-         MainForm.LastFocus.SetFocus;
+         MainForm.SetLastFocus();
    end;
 end;
 

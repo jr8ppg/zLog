@@ -53,7 +53,7 @@ end;
 procedure TQuickRef.MemoKeyPress(Sender: TObject; var Key: Char);
 begin
    if Key = Chr($1B) then
-      MainForm.LastFocus.SetFocus;
+      MainForm.SetLastFocus();
 end;
 
 procedure TQuickRef.toolbuttonPlusClick(Sender: TObject);

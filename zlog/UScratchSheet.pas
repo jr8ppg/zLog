@@ -81,7 +81,7 @@ begin
    inherited;
    case Key of
       VK_ESCAPE:
-         MainForm.LastFocus.SetFocus;
+         MainForm.SetLastFocus();
    end;
 end;
 
