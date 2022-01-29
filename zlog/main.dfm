@@ -6969,6 +6969,10 @@ object MainForm: TMainForm
       Caption = 'actionToggleAutoRigSwitch'
       OnExecute = actionToggleAutoRigSwitchExecute
     end
+    object actionSo2rNeoToggleAutoRxSelect: TAction
+      Caption = 'actionSo2rNeoToggleAutoRxSelect'
+      OnExecute = actionSo2rNeoToggleAutoRxSelectExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

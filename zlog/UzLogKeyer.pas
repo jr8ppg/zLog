@@ -205,6 +205,7 @@ type
     FWkRx: Integer;
     FWkTx: Integer;
     FSo2rNeoCanRxSel: Boolean;
+    FSo2rNeoUseRxSelect: Boolean;
 
     FWkMessageSending: Boolean;
     FWkMessageIndex: Integer;
@@ -357,6 +358,7 @@ type
 
     // SO2R Neo support
     property UseWkSo2rNeo: Boolean read FUseWkSo2rNeo write FUseWkSo2rNeo;
+    property So2rNeoUseRxSelect: Boolean read FSo2rNeoUseRxSelect write FSo2rNeoUseRxSelect;
     procedure So2rNeoSetAudioBlendMode(fOn: Boolean);
     procedure So2rNeoSetAudioBlendRatio(ratio: Byte);
     procedure So2rNeoSwitchRig(tx: Integer; rx: Integer);
@@ -417,6 +419,7 @@ begin
    FUseRandomRepeat := True;
    FUseWkSo2rNeo := False;
    FSo2rNeoCanRxSel := False;
+   FSo2rNeoUseRxSelect := False;
    FSo2rSelectPort := tkpNone;
 
    FWnd := AllocateHWnd(WndMethod);
@@ -758,6 +761,7 @@ procedure TdmZLogKeyer.ControlPTT(nID: Integer; PTTON: Boolean);
 begin
    try
       FPTTFLAG := PTTON;
+      FWkTx := nID;
 
       if FKeyingPort[nID] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
@@ -791,8 +795,11 @@ begin
          end;
       end;
    finally
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('*** ControlPTT ***'));
+      {$ENDIF}
       if Assigned(FOnWkStatusProc) then begin
-         FOnWkStatusProc(Self, nId, nId, PTTON);
+         FOnWkStatusProc(Self, FWkTx, FWkRx, PTTON);
       end;
    end;
 end;
@@ -3068,6 +3075,10 @@ end;
 
 procedure TdmZLogKeyer.WinKeyerAbort();
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** WinKeyerAbort ***'));
+   {$ENDIF}
+
    FWkAbort := True;
    if Assigned(FOnWkAbortProc) then begin
       FOnWkAbortProc(nil);
@@ -3145,6 +3156,10 @@ procedure TdmZLogKeyer.WinKeyerControlPTT(fOn: Boolean);
 var
    Buff: array[0..10] of Byte;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** WinKeyerControlPTT ***'));
+   {$ENDIF}
+
    FPTTFLAG := fOn;
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_PTT_CMD;
@@ -3656,6 +3671,10 @@ procedure TdmZLogKeyer.So2rNeoSwitchRig(tx: Integer; rx: Integer);
 var
    Buff: array[0..10] of Byte;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** So2rNeoSwitchRig ***'));
+   {$ENDIF}
+
    FillChar(Buff, SizeOf(Buff), 0);
 
    if tx = 0 then begin
@@ -3696,6 +3715,10 @@ var
 const
    reverse_rig: array[0..2] of Integer = ( 1, 0, 2 );
 begin
+   if FSo2rNeoUseRxSelect = False then begin
+      Exit;
+   end;
+
    rx := reverse_rig[tx];
    So2rNeoSwitchRig(tx, rx);
 end;

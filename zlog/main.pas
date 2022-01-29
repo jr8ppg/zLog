@@ -635,6 +635,7 @@ type
     menuShowInformation: TMenuItem;
     actionToggleAutoRigSwitch: TAction;
     checkUseRig3: TCheckBox;
+    actionSo2rNeoToggleAutoRxSelect: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -872,6 +873,7 @@ type
     procedure actionShowInformationExecute(Sender: TObject);
     procedure actionToggleAutoRigSwitchExecute(Sender: TObject);
     procedure checkUseRig3Click(Sender: TObject);
+    procedure actionSo2rNeoToggleAutoRxSelectExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -8759,7 +8761,8 @@ begin
    TabPressed2 := False;
 
    // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
-   if dmZLogGlobal.Settings._pttenabled = False then begin
+   if (dmZLogGlobal.Settings._pttenabled = False) and
+      (dmZLogKeyer.UseWinKeyer = False) then begin
       dmZLogKeyer.ControlPTT(0, False);
       dmZLogKeyer.ControlPTT(1, False);
    end;
@@ -8932,6 +8935,12 @@ end;
 procedure TMainForm.actionToggleAutoRigSwitchExecute(Sender: TObject);
 begin
    FInformation.AutoRigSwitch := not FInformation.AutoRigSwitch;
+end;
+
+// #144 SO2R Neo Toggle Auto RX select
+procedure TMainForm.actionSo2rNeoToggleAutoRxSelectExecute(Sender: TObject);
+begin
+   FSo2rNeoCp.ToggleRxSelect();
 end;
 
 procedure TMainForm.RestoreWindowsPos();
@@ -9951,6 +9960,7 @@ begin
    { CallsignEdit.SetFocus; }
 end;
 
+// WinKeyer Message送信完了イベント
 procedure TMainForm.DoMessageSendFinish(Sender: TObject);
 var
    tx: Integer;
@@ -9967,6 +9977,7 @@ begin
    end;
 end;
 
+// WinKeyer送信中止イベント
 procedure TMainForm.DoWkAbortProc(Sender: TObject);
 var
    tx: Integer;
@@ -9983,6 +9994,7 @@ begin
    end;
 end;
 
+// WinKeyer状態変更イベント
 procedure TMainForm.DoWkStatusProc(Sender: TObject; tx: Integer; rx: Integer; ptt: Boolean);
 begin
    {$IFDEF DEBUG}
@@ -9993,6 +10005,7 @@ begin
    FInformation.Ptt := ptt;
 end;
 
+// CQリピートイベント
 procedure TMainForm.DoSendRepeatProc(Sender: TObject; nLoopCount: Integer);
 var
    rig: Integer;
@@ -10004,16 +10017,23 @@ begin
    rig := RigControl.GetCurrentRig();
 
    if FInformation.AutoRigSwitch = True then begin
+      // SHIFTキー押下でキャンセル
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         Exit;
+      end;
+
+      // RIG番号をトグル
       if rig = 1 then begin
          rig := 2;
       end
       else begin
          rig := 1;
       end;
-   end;
 
-   RigControl.SetCurrentRig(rig);
-   SwitchRig(rig);
+      // カレントRIGを変更
+      RigControl.SetCurrentRig(rig);
+      SwitchRig(rig);
+   end;
 end;
 
 procedure TMainForm.checkUseRig3Click(Sender: TObject);

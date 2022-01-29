@@ -18,13 +18,13 @@ object formSo2rNeoCp: TformSo2rNeoCp
   PixelsPerInch = 96
   TextHeight = 12
   object ledPtt: TJvLED
-    Left = 12
-    Top = 94
+    Left = 176
+    Top = 88
     Status = False
   end
   object Label1: TLabel
-    Left = 8
-    Top = 81
+    Left = 172
+    Top = 75
     Width = 21
     Height = 12
     Caption = 'PTT'
@@ -36,13 +36,13 @@ object formSo2rNeoCp: TformSo2rNeoCp
     ParentFont = False
   end
   object ledCancelRxSel: TJvLED
-    Left = 84
-    Top = 94
+    Left = 248
+    Top = 88
     Status = False
   end
   object Label2: TLabel
-    Left = 49
-    Top = 81
+    Left = 213
+    Top = 75
     Width = 90
     Height = 12
     Caption = 'Cancel RX Select'
@@ -113,14 +113,14 @@ object formSo2rNeoCp: TformSo2rNeoCp
     Left = 4
     Top = 4
     Width = 153
-    Height = 69
-    Caption = 'RX'
+    Height = 107
+    Caption = 'RX Auto Select'
     TabOrder = 1
     object buttonRig1: TSpeedButton
       Left = 8
-      Top = 15
+      Top = 43
       Width = 45
-      Height = 45
+      Height = 39
       GroupIndex = 1
       Down = True
       Caption = 'RIG1'
@@ -128,26 +128,51 @@ object formSo2rNeoCp: TformSo2rNeoCp
     end
     object buttonRig2: TSpeedButton
       Left = 52
-      Top = 15
+      Top = 43
       Width = 45
-      Height = 45
+      Height = 39
       GroupIndex = 1
       Caption = 'RIG2'
       OnClick = buttonRigClick
     end
     object buttonRigBoth: TSpeedButton
       Left = 96
-      Top = 15
+      Top = 43
       Width = 45
-      Height = 45
+      Height = 39
       GroupIndex = 1
       Caption = 'Both'
       OnClick = buttonRigClick
     end
+    object ledRig1: TJvLED
+      Left = 24
+      Top = 84
+      Status = False
+    end
+    object ledRig2: TJvLED
+      Left = 68
+      Top = 84
+      Status = False
+    end
+    object ledRig3: TJvLED
+      Left = 112
+      Top = 84
+      Status = False
+    end
+    object ToggleSwitch1: TToggleSwitch
+      Left = 8
+      Top = 18
+      Width = 78
+      Height = 20
+      StateCaptions.CaptionOn = 'ON'
+      StateCaptions.CaptionOff = 'OFF'
+      TabOrder = 0
+      OnClick = ToggleSwitch1Click
+    end
   end
   object ActionList1: TActionList
-    Left = 256
-    Top = 56
+    Left = 276
+    Top = 65524
     object actionSo2rNeoSelRx1: TAction
       Caption = 'actionSo2rNeoSelRx1'
       OnExecute = actionSo2rNeoSelRx1Execute
@@ -159,6 +184,10 @@ object formSo2rNeoCp: TformSo2rNeoCp
     object actionSo2rNeoSelRxBoth: TAction
       Caption = 'actionSo2rNeoSelRxBoth'
       OnExecute = actionSo2rNeoSelRxBothExecute
+    end
+    object actionSo2rNeoToggleAutoRxSelect: TAction
+      Caption = 'actionSo2rNeoToggleAutoRxSelect'
+      OnExecute = actionSo2rNeoToggleAutoRxSelectExecute
     end
   end
 end
