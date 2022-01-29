@@ -347,6 +347,7 @@ type
     procedure WinKeyerSendStr2(S: string);
     function WinKeyerBuildMessage(S: string): string;
     procedure WinKeyerControlPTT(fOn: Boolean);
+    procedure WinKeyerControlPTT2(fOn: Boolean);
     procedure WinKeyerAbort();
     procedure WinKeyerClear();
     procedure WinKeyerCancelLastChar();
@@ -783,12 +784,10 @@ begin
 
       if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
          if PTTON = True then begin
-//            WinKeyerSetPinCfg(True);
             WinkeyerControlPTT(PTTON);
          end
          else begin
             WinkeyerControlPTT(PTTON);
-//            WinKeyerSetPinCfg(FPTTEnabled);
          end;
       end;
    finally
@@ -816,6 +815,7 @@ begin
       end;
 
       if (FKeyingPort[i] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
+         WinKeyerSetPinCfg(FPTTEnabled);
          WinKeyerSetPTTDelay(FPttDelayBeforeTime, FPttDelayAfterTime);
       end;
    end;
@@ -3145,10 +3145,7 @@ procedure TdmZLogKeyer.WinKeyerControlPTT(fOn: Boolean);
 var
    Buff: array[0..10] of Byte;
 begin
-   if FPTTEnabled = False then begin
-      Exit;
-   end;
-
+   FPTTFLAG := fOn;
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_PTT_CMD;
    if fOn = True then begin
@@ -3163,6 +3160,13 @@ begin
    if Assigned(FOnWkStatusProc) then begin
       FOnWkStatusProc(nil, FWkTx, FWkRx, FPTTFLAG);
    end;
+end;
+
+procedure TdmZLogKeyer.WinKeyerControlPTT2(fOn: Boolean);
+begin
+   WinKeyerSetPinCfg(True);
+   WinKeyerControlPTT(fOn);
+   WinKeyerSetPinCfg(FPTTEnabled);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetPTTDelay(before, after: Byte);

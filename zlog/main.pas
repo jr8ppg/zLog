@@ -8422,10 +8422,17 @@ end;
 procedure TMainForm.actionControlPTTExecute(Sender: TObject);
 var
    nID: Integer;
+   fOn: Boolean;
 begin
    nID := GetCurrentRigID();
+   fOn := not dmZLogKeyer.PTTIsOn;
 
-   dmZLogKeyer.ControlPTT(nID, not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
+   if dmZLogGlobal.Settings._use_winkeyer = True then begin
+      dmZLogKeyer.WinKeyerControlPTT2(fOn);
+   end
+   else begin
+      dmZLogKeyer.ControlPTT(nID, fOn);
+   end;
 end;
 
 // #87 N+1ウインドウの表示
