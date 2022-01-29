@@ -253,7 +253,7 @@ type
     procedure WinKeyerClose();
     procedure WinKeyerSetSpeed(nWPM: Integer);
     procedure WinKeyerSetSideTone(fOn: Boolean);
-    procedure WinKeyerSetPinCfg(fUseAutoPtt: Boolean);
+    procedure WinKeyerSetPinCfg(fUsePttPort: Boolean);
     procedure WinKeyerSetPTTDelay(before, after: Byte);
     procedure WinKeyerSetMode(mode: Byte);
 
@@ -687,7 +687,7 @@ begin
 
    // WinKeyer�̏ꍇ
    if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
-      WinKeyerSetPinCfg(False);
+      WinKeyerSetPinCfg(FPTTEnabled);
       Exit;
    end;
 
@@ -783,12 +783,12 @@ begin
 
       if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
          if PTTON = True then begin
-//            WinKeyerSetPinCfg(False);
+//            WinKeyerSetPinCfg(True);
             WinkeyerControlPTT(PTTON);
          end
          else begin
             WinkeyerControlPTT(PTTON);
-//            WinKeyerSetPinCfg(False);
+//            WinKeyerSetPinCfg(FPTTEnabled);
          end;
       end;
    finally
@@ -3024,7 +3024,7 @@ begin
    end;
 
    // Set PTT Mode(PINCFG)
-   WinKeyerSetPinCfg(False);
+   WinKeyerSetPinCfg(FPTTEnabled);
 
    // Set PTT Delay time
    WinKeyerSetPTTDelay(FPttDelayBeforeTime, FPttDelayAfterTime);
@@ -3087,7 +3087,7 @@ begin
    FWkMessageSending := False;
    FWkMessageStr := '';
    FWkMessageIndex := 1;
-   WinKeyerSetPinCfg(False);
+//   WinKeyerSetPinCfg(FPTTEnabled);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetSideTone(fOn: Boolean);
@@ -3108,7 +3108,7 @@ begin
    FComKeying[0].SendData(@Buff, 2);
 end;
 
-procedure TdmZLogKeyer.WinKeyerSetPinCfg(fUseAutoPtt: Boolean);
+procedure TdmZLogKeyer.WinKeyerSetPinCfg(fUsePttPort: Boolean);
 var
    Buff: array[0..10] of Byte;
 begin
@@ -3119,7 +3119,7 @@ begin
    Buff[0] := WK_SET_PINCFG_CMD;
    Buff[1] := $a0;
 
-   if fUseAutoPtt = True then begin
+   if fUsePttPort = True then begin
       Buff[1] := Buff[1] or $1;
    end;
 
@@ -3152,18 +3152,10 @@ begin
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_PTT_CMD;
    if fOn = True then begin
-      if FPTTFLAG = True then begin
-         Exit;
-      end;
       Buff[1] := WK_PTT_ON;
-      FPTTFLAG := True;
    end
    else begin
-      if FPTTFLAG = False then begin
-         Exit;
-      end;
       Buff[1] := WK_PTT_OFF;
-      FPTTFLAG := False;
    end;
 
    FComKeying[0].SendData(@Buff, 2);
