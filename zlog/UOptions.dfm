@@ -2028,6 +2028,7 @@ object formOptions: TformOptions
             '256000')
         end
         object comboCwPttPort1: TComboBox
+          Tag = 1
           Left = 278
           Top = 27
           Width = 64
@@ -2179,6 +2180,7 @@ object formOptions: TformOptions
             '256000')
         end
         object comboCwPttPort2: TComboBox
+          Tag = 2
           Left = 278
           Top = 27
           Width = 64
@@ -2295,6 +2297,7 @@ object formOptions: TformOptions
           Caption = 'CW port'
         end
         object comboCwPttPort3: TComboBox
+          Tag = 3
           Left = 278
           Top = 27
           Width = 64

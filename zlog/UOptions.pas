@@ -1962,14 +1962,21 @@ end;
 procedure TformOptions.comboCwPttPortChange(Sender: TObject);
 var
    Index: Integer;
+   rigno: Integer;
 begin
    Index := TComboBox(Sender).ItemIndex;
+   rigno := TComboBox(Sender).Tag;
+
    if (Index = 0) or (Index = 21) then begin
-      checkUseWinKeyer.Enabled := False;
-      checkUseWinKeyer.Checked := False;
+      if rigno = 1 then begin
+         checkUseWinKeyer.Enabled := False;
+         checkUseWinKeyer.Checked := False;
+         checkWk9600.Enabled := False;
+      end;
    end
    else begin
       checkUseWinKeyer.Enabled := True;
+      checkWk9600.Enabled := True;
    end;
 end;
 
