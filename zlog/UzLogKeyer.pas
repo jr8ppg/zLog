@@ -3193,9 +3193,9 @@ end;
 procedure TdmZLogKeyer.WinKeyerControlPTT2(fOn: Boolean);
 begin
    if FUseWkSo2rNeo = True then begin
-      WinKeyerSetPinCfg(True);
+//      WinKeyerSetPinCfg(True);
       WinKeyerControlPTT(fOn);
-      WinKeyerSetPinCfg(FPTTEnabled);
+//      WinKeyerSetPinCfg(FPTTEnabled);
    end
    else begin
       WinKeyerControlPTT(fOn);
