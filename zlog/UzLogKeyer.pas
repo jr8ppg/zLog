@@ -3130,9 +3130,11 @@ begin
    Buff[0] := WK_SET_PINCFG_CMD;
    Buff[1] := $a0;
 
-//   if fUsePttPort = True then begin
-//      Buff[1] := Buff[1] or $1;
-//   end;
+   if FUseWkSo2rNeo = True then begin
+      if fUsePttPort = True then begin
+         Buff[1] := Buff[1] or $1;
+      end;
+   end;
 
    if FUseSideTone = True then begin
       Buff[1] := Buff[1] or $2;
@@ -3167,6 +3169,11 @@ begin
    {$ENDIF}
 
    FPTTFLAG := fOn;
+
+   if (FUseWkSo2rNeo = False) and (FPttEnabled = False) then begin
+      Exit;
+   end;
+
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_PTT_CMD;
    if fOn = True then begin
@@ -3185,9 +3192,14 @@ end;
 
 procedure TdmZLogKeyer.WinKeyerControlPTT2(fOn: Boolean);
 begin
-//   WinKeyerSetPinCfg(True);
-   WinKeyerControlPTT(fOn);
-//   WinKeyerSetPinCfg(FPTTEnabled);
+   if FUseWkSo2rNeo = True then begin
+      WinKeyerSetPinCfg(True);
+      WinKeyerControlPTT(fOn);
+      WinKeyerSetPinCfg(FPTTEnabled);
+   end
+   else begin
+      WinKeyerControlPTT(fOn);
+   end;
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetPTTDelay(before, after: Byte);
