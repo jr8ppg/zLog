@@ -3130,9 +3130,9 @@ begin
    Buff[0] := WK_SET_PINCFG_CMD;
    Buff[1] := $a0;
 
-   if fUsePttPort = True then begin
-      Buff[1] := Buff[1] or $1;
-   end;
+//   if fUsePttPort = True then begin
+//      Buff[1] := Buff[1] or $1;
+//   end;
 
    if FUseSideTone = True then begin
       Buff[1] := Buff[1] or $2;
@@ -3148,6 +3148,12 @@ begin
       Buff[1] := Buff[1] or $c;  // $4 + $8
    end;
 
+   FComKeying[0].SendData(@Buff, 2);
+
+   FPTTFLAG := False;
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_PTT_CMD;
+   Buff[1] := WK_PTT_OFF;
    FComKeying[0].SendData(@Buff, 2);
 end;
 
@@ -3179,9 +3185,9 @@ end;
 
 procedure TdmZLogKeyer.WinKeyerControlPTT2(fOn: Boolean);
 begin
-   WinKeyerSetPinCfg(True);
+//   WinKeyerSetPinCfg(True);
    WinKeyerControlPTT(fOn);
-   WinKeyerSetPinCfg(FPTTEnabled);
+//   WinKeyerSetPinCfg(FPTTEnabled);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetPTTDelay(before, after: Byte);
