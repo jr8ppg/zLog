@@ -103,7 +103,8 @@ type
     FUsbInfo: array[0..2] of TUsbInfo;
 
     // 現在送信中のポートID
-    FCurrentID: Integer;
+    FWkRx: Integer;
+    FWkTx: Integer;
 
     {$IFDEF USESIDETONE}
     FTone: TSideTone;
@@ -202,8 +203,6 @@ type
     FOnSpeedChanged: TNotifyEvent;
     FWkAbort: Boolean;
     FUseWkSo2rNeo: Boolean;
-    FWkRx: Integer;
-    FWkTx: Integer;
     FSo2rNeoCanRxSel: Boolean;
     FSo2rNeoUseRxSelect: Boolean;
 
@@ -286,7 +285,8 @@ type
     procedure SetCWSendBuf(b: byte; S: string); {Sets str to buffer but does not start sending}
     procedure SetCWSendBufCharPTT(nID: Integer; C: char); {Adds a char to the end of buffer. Also controls PTT if enabled. Called from Keyboard}
 
-    procedure SetRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+    procedure SetTxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+    procedure SetRxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
     procedure SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
 
     procedure SetPTT(_on : Boolean);
@@ -627,20 +627,23 @@ begin
    {$ENDIF}
 end;
 
-procedure TdmZLogKeyer.SetRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+procedure TdmZLogKeyer.SetTxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+begin
+   if (flag = 0) or (flag = 1) then begin
+      FWkTx := 0;
+   end
+   else if (flag = 2) then begin
+      FWkTx := 1;
+   end
+   else begin
+      FWkTx := 2;
+   end;
+end;
+
+procedure TdmZLogKeyer.SetRxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
 var
    i: Integer;
 begin
-   if (flag = 0) or (flag = 1) then begin
-      FCurrentID := 0;
-   end
-   else if (flag = 2) then begin
-      FCurrentID := 1;
-   end
-   else begin
-      FCurrentID := 2;
-   end;
-
    // COMポートでのRIG SELECT
    if (FSo2RSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
       case flag of
@@ -1091,7 +1094,7 @@ begin
       WinkeyerSendStr(nID, SS);
    end
    else begin
-      FCurrentID := nID;
+      FWkTx := nID;
 
       SS := DecodeCommands(S);
 
@@ -1191,8 +1194,8 @@ procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: 
       tailcwstrptr := 1;
       FCWSendBuf[FSelectedBuf, 1] := $FF;
 
-      if FKeyingPort[FCurrentID] <> tkpUSB then begin
-         CW_OFF(FCurrentID);
+      if FKeyingPort[FWkTx] <> tkpUSB then begin
+         CW_OFF(FWkTx);
       end;
 
       if FUseSideTone then begin
@@ -1217,15 +1220,15 @@ begin
       end;
 
       $10: begin
-         ControlPTT(FCurrentID, True);
+         ControlPTT(FWkTx, True);
       end;
 
       $1F: begin
-         ControlPTT(FCurrentID, False);
+         ControlPTT(FWkTx, False);
       end;
 
       0: begin
-         CW_OFF(FCurrentID);
+         CW_OFF(FWkTx);
          if FUseSideTone then begin
             NoSound();
          end;
@@ -1233,7 +1236,7 @@ begin
       end;
 
       2: begin { normal space x space factor (%) }
-         CW_OFF(FCurrentID);
+         CW_OFF(FWkTx);
          if FUseSideTone then begin
             NoSound();
          end;
@@ -1241,7 +1244,7 @@ begin
       end;
 
       $E: begin { normal space x space factor x eispacefactor(%) }
-         CW_OFF(FCurrentID);
+         CW_OFF(FWkTx);
          if FUseSideTone then begin
             NoSound();
          end;
@@ -1249,7 +1252,7 @@ begin
       end;
 
       1: begin
-         CW_ON(FCurrentID);
+         CW_ON(FWkTx);
          if FUseSideTone then begin
             Sound();
          end;
@@ -1258,7 +1261,7 @@ begin
       end;
 
       3: begin
-         CW_ON(FCurrentID);
+         CW_ON(FWkTx);
          if FUseSideTone then begin
             Sound();
          end;
@@ -1305,7 +1308,7 @@ begin
          if FPttHoldCounter <= 0 then begin
             Finish();
             if FPTTEnabled then begin
-               ControlPTT(FCurrentID, False);
+               ControlPTT(FWkTx, False);
             end;
          end
          else begin
@@ -1403,15 +1406,15 @@ begin
       end;
 
       $20: begin
-         FCurrentID := 0;
+         FWkTx := 0;
       end;
 
       $21: begin
-         FCurrentID := 1;
+         FWkTx := 1;
       end;
 
       $22: begin
-         FCurrentID := 2;
+         FWkTx := 2;
       end;
    end;
 
@@ -2112,13 +2115,13 @@ begin
 
    FSendOK := False;
 
-   CW_OFF(FCurrentID);
+   CW_OFF(FWkTx);
    if FUseSideTone then begin
       NoSound();
    end;
 
    if FPTTEnabled then begin
-      ControlPTT(FCurrentID, False);
+      ControlPTT(FWkTx, False);
    end;
 end;
 
@@ -2129,7 +2132,7 @@ begin
    end;
 
    if FPTTEnabled then begin
-      ControlPTT(FCurrentID, True);
+      ControlPTT(FWkTx, True);
       FKeyingCounter := FPttDelayBeforeCount;
    end;
 
@@ -2179,14 +2182,14 @@ begin
       if FUseSideTone then begin
          NoSound();
       end;
-      CW_OFF(FCurrentID);
+      CW_OFF(FWkTx);
 
       FUserFlag := False;
 
       FSendOK := True;
 
       if FPTTEnabled then begin
-         ControlPTT(FCurrentID, False);
+         ControlPTT(FWkTx, False);
       end;
    end;
 
@@ -3140,10 +3143,10 @@ begin
       Buff[1] := Buff[1] or $2;
    end;
 
-   if FCurrentID = 0 then begin
+   if FWkTx = 0 then begin
       Buff[1] := Buff[1] or $4;
    end
-   else if FCurrentID = 1 then begin
+   else if FWkTx = 1 then begin
       Buff[1] := Buff[1] or $8;
    end
    else begin
@@ -3261,7 +3264,7 @@ begin
       Exit;
    end;
 
-   FCurrentID := nID;
+   FWkTx := nID;
 
    ControlPTT(nID, True);
 
@@ -3522,7 +3525,7 @@ begin
       FOnSendRepeatEvent(Self, FCQLoopCount);
    end;
 
-   WinKeyerSendStr(FCurrentID, S);
+   WinKeyerSendStr(FWkTx, S);
 end;
 
 procedure TdmZLogKeyer.IncCWSpeed();

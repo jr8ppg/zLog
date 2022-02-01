@@ -12,11 +12,13 @@ type
     panelCQMode: TPanel;
     panelWpmInfo: TPanel;
     panelTime: TPanel;
-    panelRigInfo: TPanel;
+    panelRxInfo: TPanel;
     Panel1: TPanel;
     ledPtt: TJvLED;
     Label1: TLabel;
     buttonAutoRigSwitch: TSpeedButton;
+    panelTxInfo: TPanel;
+    buttonCqInvert: TSpeedButton;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -32,7 +34,10 @@ type
     procedure SetPtt(fOn: Boolean);
     function GetAutoRigSwitch(): Boolean;
     procedure SetAutoRigSwitch(fOn: Boolean);
-    procedure SetRigNo(rig: Integer);
+    function GetCqInvert(): Boolean;
+    procedure SetCqInvert(fOn: Boolean);
+    procedure SetRx(rx: Integer);
+    procedure SetTx(tx: Integer);
   public
     { Public êÈåæ }
     property CQMode: Boolean read GetCQMode write SetCQMode;
@@ -40,7 +45,9 @@ type
     property Time: string write SetTime;
     property Ptt: Boolean write SetPtt;
     property AutoRigSwitch: Boolean read GetAutoRigSwitch write SetAutoRigSwitch;
-    property RigNo: Integer write SetRigNo;
+    property CqInvert: Boolean read GetCqInvert write SetCqInvert;
+    property Rx: Integer write SetRx;
+    property Tx: Integer write SetTx;
   end;
 
 implementation
@@ -133,9 +140,24 @@ begin
    buttonAutoRigSwitch.Down := fOn;
 end;
 
-procedure TformInformation.SetRigNo(rig: Integer);
+function TformInformation.GetCqInvert(): Boolean;
 begin
-   panelRigInfo.Caption := 'R' + IntToStr(rig);
+   Result := buttonCqInvert.Down;
+end;
+
+procedure TformInformation.SetCqInvert(fOn: Boolean);
+begin
+   buttonCqInvert.Down := fOn;
+end;
+
+procedure TformInformation.SetRx(rx: Integer);
+begin
+   panelRxInfo.Caption := 'R' + IntToStr(rx + 1);
+end;
+
+procedure TformInformation.SetTx(tx: Integer);
+begin
+   panelTxInfo.Caption := 'T' + IntToStr(tx + 1);
 end;
 
 end.

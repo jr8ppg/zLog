@@ -614,13 +614,11 @@ begin
       FCurrentRig.InquireStatus;
 
       SetRigName(FCurrentRigNumber, FCurrentRig.name);
-      dmZlogKeyer.SetRigFlag(FCurrentRigNumber);
       FCurrentRig.UpdateStatus;
    end
    else begin
       FCurrentRig := nil;
       SetRigName(FCurrentRigNumber, '(none)');
-      dmZlogKeyer.SetRigFlag(0);
    end;
 
    Result := True;

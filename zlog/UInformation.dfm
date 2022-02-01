@@ -4,7 +4,7 @@ object formInformation: TformInformation
   BorderStyle = bsSizeToolWin
   Caption = 'Information'
   ClientHeight = 32
-  ClientWidth = 476
+  ClientWidth = 538
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlue
@@ -35,7 +35,7 @@ object formInformation: TformInformation
     OnClick = panelCQModeClick
   end
   object panelWpmInfo: TPanel
-    Left = 221
+    Left = 222
     Top = 0
     Width = 108
     Height = 32
@@ -47,9 +47,10 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 1
+    ExplicitLeft = 221
   end
   object panelTime: TPanel
-    Left = 390
+    Left = 452
     Top = 0
     Width = 86
     Height = 32
@@ -62,9 +63,10 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 2
+    ExplicitLeft = 390
   end
-  object panelRigInfo: TPanel
-    Left = 329
+  object panelRxInfo: TPanel
+    Left = 391
     Top = 0
     Width = 61
     Height = 32
@@ -76,11 +78,12 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 3
+    ExplicitLeft = 329
   end
   object Panel1: TPanel
     Left = 42
     Top = 0
-    Width = 179
+    Width = 180
     Height = 32
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
@@ -90,6 +93,7 @@ object formInformation: TformInformation
     Font.Style = []
     ParentFont = False
     TabOrder = 4
+    ExplicitWidth = 179
     object ledPtt: TJvLED
       Left = 33
       Top = 8
@@ -111,11 +115,11 @@ object formInformation: TformInformation
     object buttonAutoRigSwitch: TSpeedButton
       Left = 60
       Top = 3
-      Width = 109
+      Width = 57
       Height = 25
       AllowAllUp = True
       GroupIndex = 1
-      Caption = 'Auto RIG switch'
+      Caption = 'RIG sw.'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -124,5 +128,37 @@ object formInformation: TformInformation
       ParentFont = False
       OnClick = buttonAutoRigSwitchClick
     end
+    object buttonCqInvert: TSpeedButton
+      Left = 116
+      Top = 3
+      Width = 57
+      Height = 25
+      AllowAllUp = True
+      GroupIndex = 2
+      Caption = 'CQ Inv.'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+      Font.Style = []
+      ParentFont = False
+      OnClick = buttonAutoRigSwitchClick
+    end
+  end
+  object panelTxInfo: TPanel
+    Left = 330
+    Top = 0
+    Width = 61
+    Height = 32
+    Align = alRight
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -21
+    Font.Name = 'Arial'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 5
+    ExplicitLeft = 263
+    ExplicitTop = -2
   end
 end

@@ -20,7 +20,8 @@ uses
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel,
-  UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation;
+  UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
+  JvExControls, JvLED;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -47,6 +48,7 @@ type
     NewMulti2Edit: TEdit;     // 12
     CurrentBand: TBand;
     CurrentMode: TMode;
+    TxLed: TJvLED;
   end;
   TEditPanelArray = array[0..2] of TEditPanel;
 
@@ -636,6 +638,10 @@ type
     actionToggleAutoRigSwitch: TAction;
     checkUseRig3: TCheckBox;
     actionSo2rNeoToggleAutoRxSelect: TAction;
+    actionToggleTx: TAction;
+    ledTx2A: TJvLED;
+    ledTx2B: TJvLED;
+    actionToggleCqInvert: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -874,6 +880,8 @@ type
     procedure actionToggleAutoRigSwitchExecute(Sender: TObject);
     procedure checkUseRig3Click(Sender: TObject);
     procedure actionSo2rNeoToggleAutoRxSelectExecute(Sender: TObject);
+    procedure actionToggleTxExecute(Sender: TObject);
+    procedure actionToggleCqInvertExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -939,7 +947,8 @@ type
     // QSY Violation (10 min rule / per hour)
     FQsyViolation: Boolean;
 
-    FCurrentRig: Integer;
+    FCurrentRx: Integer;
+    FCurrentTx: Integer;
     FEditPanel: TEditPanelArray;
 
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
@@ -1051,6 +1060,8 @@ type
     procedure InitQsoEditPanel();
     procedure UpdateQsoEditPanel(rig: Integer);
     procedure SwitchRig(rig: Integer);
+    procedure ShowTxIndicator();
+    procedure InvertTx();
     procedure ShowCurrentQSO();
 
     procedure GridAdd(aQSO: TQSO);
@@ -4614,7 +4625,7 @@ begin
    if dmZLogKeyer.UseWinKeyer = True then begin
 
       if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
-         nID := GetCurrentRigID();
+         nID := FCurrentTx;
          dmZLogKeyer.So2rNeoReverseRx(nID)
       end;
 
@@ -4661,7 +4672,7 @@ begin
             if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
                // NR?自動送出使う場合
                if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
-                  nID := GetCurrentRigID();
+                  nID := FCurrentTx;
                   S := dmZlogGlobal.CWMessage(5);
                   zLogSendStr2(nID, S, CurrentQSO);
                end;
@@ -4673,7 +4684,7 @@ begin
             end;
 
             // TU $M TEST
-            nID := GetCurrentRigID();
+            nID := FCurrentTx;
             S := dmZlogGlobal.CWMessage(3);
             zLogSendStr2(nID, S, CurrentQSO);
 
@@ -5217,9 +5228,13 @@ var
    S: String;
    nID: Integer;
 begin
+   if FInformation.CqInvert = True then begin
+      InvertTx();
+   end;
+
    S := dmZlogGlobal.CWMessage(1, FCurrentCQMessageNo);
    S := SetStr(UpperCase(S), CurrentQSO);
-   nID := GetCurrentRigID();
+   nID := FCurrentTx;
 
    if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
       WriteStatusLineRed('CW port is not set', False);
@@ -5464,7 +5479,7 @@ begin
 
                // 4番(QSO B4 TU)送出
                S := ' ' + SetStr(dmZlogGlobal.CWMessage(1, 4), CurrentQSO);
-               nID := GetCurrentRigID();
+               nID := FCurrentTx;
                if dmZLogKeyer.UseWinKeyer = True then begin
                   zLogSendStr(nID, S);
                end
@@ -5969,7 +5984,7 @@ begin
 
    // SO2Rの場合、現在RIGとクリックされたControlのRIGが違うと強制切り替え
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-      if FCurrentRig <> rig then begin
+      if FCurrentRx <> rig then begin
          if RigControl.SetCurrentRig(rig) = True then begin
             SwitchRig(rig);
          end;
@@ -7613,7 +7628,7 @@ var
 begin
    WriteStatusLine('', False);
 
-   nID := GetCurrentRigID();
+   nID := FCurrentTx;
 
    case CurrentQSO.Mode of
       mCW: begin
@@ -7657,7 +7672,7 @@ begin
       Exit;
    end;
 
-   nID := GetCurrentRigID();
+   nID := FCurrentTx;
    zLogSendStr2(nID, S, CurrentQSO);
 end;
 
@@ -8134,7 +8149,7 @@ var
 begin
    if CurrentQSO.Mode = mCW then begin
       CtrlZCQLoop := True;
-      nID := GetCurrentRigID();
+      nID := FCurrentTx;
       dmZLogKeyer.TuneOn(nID);
    end;
 end;
@@ -8287,19 +8302,20 @@ begin
    FChatForm.Show;
 end;
 
-// #71 RIG切り替え / Alt+. , Shift+X
+// #71 RX RIG切り替え / Alt+. , Shift+X
 procedure TMainForm.actionToggleRigExecute(Sender: TObject);
 var
    rig: Integer;
 begin
    {$IFDEF DEBUG}
-   OutputDebugString(PChar('--- #71 ToggleRIG ---'));
+   OutputDebugString(PChar('--- #71 Toggle RX ---'));
    {$ENDIF}
    CtrlZCQLoop := False;
    dmZLogKeyer.CQLoopCount := 999;
    dmZLogKeyer.ClrBuffer();
    rig := RigControl.ToggleCurrentRig();
    SwitchRig(rig);
+   dmZlogKeyer.SetRxRigFlag(rig);
 end;
 
 // #72 BandScope
@@ -8428,7 +8444,7 @@ var
    nID: Integer;
    fOn: Boolean;
 begin
-   nID := GetCurrentRigID();
+   nID := FCurrentTx;
    fOn := not dmZLogKeyer.PTTIsOn;
 
    if dmZLogGlobal.Settings._use_winkeyer = True then begin
@@ -8768,6 +8784,8 @@ begin
       dmZLogKeyer.ControlPTT(0, False);
       dmZLogKeyer.ControlPTT(1, False);
    end;
+
+   SwitchRig(FCurrentRx + 1);
 end;
 
 // #120 CQモード、SPモードのトグル
@@ -8902,7 +8920,7 @@ var
    rx: Integer;
 begin
    rx := TAction(Sender).Tag;
-   tx := GetCurrentRigID();
+   tx := FCurrentTx;
    dmZLogKeyer.So2rNeoSwitchRig(tx, rx);
 end;
 
@@ -8943,6 +8961,42 @@ end;
 procedure TMainForm.actionSo2rNeoToggleAutoRxSelectExecute(Sender: TObject);
 begin
    FSo2rNeoCp.ToggleRxSelect();
+end;
+
+// #145 SO2R Toggle TX
+procedure TMainForm.actionToggleTxExecute(Sender: TObject);
+var
+   tx: Integer;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('--- #145 ToggleTx ---'));
+   {$ENDIF}
+   CtrlZCQLoop := False;
+   dmZLogKeyer.CQLoopCount := 999;
+   dmZLogKeyer.ClrBuffer();
+
+   tx := FCurrentTx;
+
+   Inc(tx);
+   if tx >= RigControl.MaxRig then begin
+      tx := 0;
+   end;
+
+   FCurrentTx := tx;
+   FInformation.Tx := tx;
+
+   dmZLogKeyer.SetTxRigFlag(tx + 1);
+
+   ShowTxIndicator();
+end;
+
+// #146 SO2R Toggle CQ Invert
+procedure TMainForm.actionToggleCqInvertExecute(Sender: TObject);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('--- #146 Toggle CQ Invert ---'));
+   {$ENDIF}
+   FInformation.CqInvert := not FInformation.CqInvert;
 end;
 
 procedure TMainForm.RestoreWindowsPos();
@@ -9777,6 +9831,7 @@ begin
       FEditPanel[0].PointEdit    := PointEdit1;
       FEditPanel[0].OpEdit       := OpEdit1;
       FEditPanel[0].MemoEdit     := MemoEdit1;
+      FEditPanel[0].TxLed        := nil;
 
       FEditPanel[1].SerialEdit   := SerialEdit1;
       FEditPanel[1].DateEdit     := DateEdit1;
@@ -9790,6 +9845,7 @@ begin
       FEditPanel[1].PointEdit    := PointEdit1;
       FEditPanel[1].OpEdit       := OpEdit1;
       FEditPanel[1].MemoEdit     := MemoEdit1;
+      FEditPanel[1].TxLed        := nil;
 
       FEditPanel[2].SerialEdit   := SerialEdit1;
       FEditPanel[2].DateEdit     := DateEdit1;
@@ -9803,6 +9859,7 @@ begin
       FEditPanel[2].PointEdit    := PointEdit1;
       FEditPanel[2].OpEdit       := OpEdit1;
       FEditPanel[2].MemoEdit     := MemoEdit1;
+      FEditPanel[2].TxLed        := nil;
 
       EditPanel1R.Visible := True;
       EditPanel2R.Visible := False;
@@ -9823,6 +9880,7 @@ begin
       FEditPanel[0].PointEdit    := nil;
       FEditPanel[0].OpEdit       := nil;
       FEditPanel[0].MemoEdit     := nil;
+      FEditPanel[0].TxLed        := ledTx2A;
 
       FEditPanel[1].SerialEdit   := SerialEdit2B;
       FEditPanel[1].DateEdit     := DateEdit2;
@@ -9836,6 +9894,7 @@ begin
       FEditPanel[1].PointEdit    := nil;
       FEditPanel[1].OpEdit       := nil;
       FEditPanel[1].MemoEdit     := nil;
+      FEditPanel[1].TxLed        := ledTx2B;
 
       FEditPanel[2].SerialEdit   := SerialEdit2C;
       FEditPanel[2].DateEdit     := DateEdit2;
@@ -9849,12 +9908,15 @@ begin
       FEditPanel[2].PointEdit    := nil;
       FEditPanel[2].OpEdit       := nil;
       FEditPanel[2].MemoEdit     := nil;
+      FEditPanel[2].TxLed        := nil;
 
       EditPanel1R.Visible := False;
       EditPanel2R.Visible := True;
 
       StatusLine.Align := alBottom;
       EditPanel2R.Align := alBottom;
+
+      ShowTxIndicator();
    end;
 
    Grid.Align := alClient;
@@ -9890,7 +9952,7 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
       FEditPanel[id].BandEdit.Enabled := False;
    end;
 begin
-   FCurrentRig := rig;
+   FCurrentRx := rig;
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
       LastFocus := CallsignEdit1;
       Exit;
@@ -9943,7 +10005,49 @@ begin
       FSo2rNeoCp.Rx := rig - 1;
    end;
 
-   FInformation.RigNo := rig;
+   FCurrentRx := rig - 1;
+   FCurrentTx := rig - 1;
+   FInformation.Rx := rig - 1;
+   FInformation.Tx := rig - 1;
+   ShowTxIndicator();
+end;
+
+procedure TMainForm.ShowTxIndicator();
+var
+   i: Integer;
+begin
+   for i := 0 to 2 do begin
+      if Assigned(FEditPanel[i].TxLed) then begin
+         if i = FCurrentTx then begin
+            FEditPanel[i].TxLed.Status := True;
+         end
+         else begin
+            FEditPanel[i].TxLed.Status := False;
+         end;
+      end;
+   end;
+end;
+
+procedure TMainForm.InvertTx();
+var
+   tx: Integer;
+begin
+   if FCurrentRx = 0 then begin
+      tx := 1;
+   end
+   else if FCurrentRx = 1 then begin
+      tx := 0;
+   end
+   else begin
+      tx := 2;
+   end;
+
+   FCurrentTx := tx;
+   FInformation.Tx := tx;
+
+   dmZLogKeyer.SetTxRigFlag(tx + 1);
+
+   ShowTxIndicator();
 end;
 
 procedure TMainForm.ShowCurrentQSO();
@@ -9970,7 +10074,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('*** DoMessageSendFinish ***'));
    {$ENDIF}
-   tx := GetCurrentRigID();
+   tx := FCurrentTx;
    dmZLogKeyer.ControlPTT(tx, False);
 
    if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
@@ -9987,7 +10091,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('*** DoWkAbortProc ***'));
    {$ENDIF}
-   tx := GetCurrentRigID();
+   tx := FCurrentTx;
    dmZLogKeyer.ControlPTT(tx, False);
 
    if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin

@@ -5237,6 +5237,11 @@ object MainForm: TMainForm
         Pen.Width = 2
         ExplicitLeft = -1
       end
+      object ledTx2A: TJvLED
+        Left = 6
+        Top = 5
+        Status = False
+      end
       object CallsignEdit2A: TOvrEdit
         Tag = 1
         Left = 6
@@ -5293,7 +5298,7 @@ object MainForm: TMainForm
       end
       object BandEdit2A: TEdit
         Tag = 1
-        Left = 6
+        Left = 87
         Top = 5
         Width = 45
         Height = 18
@@ -5308,7 +5313,7 @@ object MainForm: TMainForm
       end
       object ModeEdit2A: TEdit
         Tag = 1
-        Left = 54
+        Left = 135
         Top = 5
         Width = 27
         Height = 18
@@ -5353,6 +5358,11 @@ object MainForm: TMainForm
         Brush.Style = bsClear
         Pen.Width = 2
         ExplicitLeft = -1
+      end
+      object ledTx2B: TJvLED
+        Left = 6
+        Top = 5
+        Status = False
       end
       object CallsignEdit2B: TOvrEdit
         Tag = 2
@@ -5410,7 +5420,7 @@ object MainForm: TMainForm
       end
       object BandEdit2B: TEdit
         Tag = 2
-        Left = 6
+        Left = 87
         Top = 5
         Width = 45
         Height = 18
@@ -5425,7 +5435,7 @@ object MainForm: TMainForm
       end
       object ModeEdit2B: TEdit
         Tag = 2
-        Left = 54
+        Left = 135
         Top = 5
         Width = 27
         Height = 18
@@ -6972,6 +6982,14 @@ object MainForm: TMainForm
     object actionSo2rNeoToggleAutoRxSelect: TAction
       Caption = 'actionSo2rNeoToggleAutoRxSelect'
       OnExecute = actionSo2rNeoToggleAutoRxSelectExecute
+    end
+    object actionToggleTx: TAction
+      Caption = 'actionToggleTx'
+      OnExecute = actionToggleTxExecute
+    end
+    object actionToggleCqInvert: TAction
+      Caption = 'actionToggleCqInvert'
+      OnExecute = actionToggleCqInvertExecute
     end
   end
   object SPCMenu: TPopupMenu
