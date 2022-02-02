@@ -11,6 +11,7 @@ object dmZLogKeyer: TdmZLogKeyer
     HwFlow = hfNONE
     InBufSize = 4096
     EnableDTROnOpen = False
+    InputTimeout = 500
     OnReceiveData = ZComKeying1ReceiveData
     Left = 91
     Top = 16

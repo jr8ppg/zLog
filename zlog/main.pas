@@ -21,6 +21,7 @@ uses
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
+  UWinKeyerTester,
   JvExControls, JvLED;
 
 const
@@ -912,6 +913,7 @@ type
     FSo2rNeoCp: TformSo2rNeoCp;
     FInformation: TformInformation;
     FTTYConsole: TTTYConsole;
+    FWinKeyerTester: TformWinKeyerTester;
 
     FInitialized: Boolean;
 
@@ -3307,6 +3309,7 @@ begin
    FSo2rNeoCp     := TformSo2rNeoCp.Create(Self);
    FInformation   := TformInformation.Create(Self);
    FTTYConsole    := nil;
+   FWinKeyerTester := TformWinKeyerTester.Create(Self);
 
    FCurrentCQMessageNo := 101;
    FQsyFromBS := False;
@@ -3561,6 +3564,7 @@ begin
    dmZlogGlobal.ReadWindowState(FSo2rNeoCp, '', True);
    dmZlogGlobal.ReadWindowState(FInformation);
    dmZlogGlobal.ReadWindowState(FZLinkForm);
+   dmZlogGlobal.ReadWindowState(FWinKeyerTester);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZlogGlobal.ReadWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
@@ -3595,6 +3599,7 @@ begin
    dmZlogGlobal.WriteWindowState(FSo2rNeoCp);
    dmZlogGlobal.WriteWindowState(FInformation);
    dmZlogGlobal.WriteWindowState(FZLinkForm);
+   dmZlogGlobal.WriteWindowState(FWinKeyerTester);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZlogGlobal.WriteWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
@@ -4036,6 +4041,10 @@ begin
    end;
    if S = 'AZ' then begin
       actionAntiZeroin.Execute();
+   end;
+
+   if S = 'WKTEST' then begin
+      FWinKeyerTester.Show();
    end;
 end;
 
@@ -5106,6 +5115,7 @@ begin
    FQsyInfoForm.Release();
    FSo2rNeoCp.Release();
    FInformation.Release();
+   FWinKeyerTester.Release();
 
    if Assigned(FTTYConsole) then begin
       FTTYConsole.Release();

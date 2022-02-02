@@ -352,6 +352,8 @@ type
     procedure WinKeyerAbort();
     procedure WinKeyerClear();
     procedure WinKeyerCancelLastChar();
+    procedure WinKeyerSendCommand(cmd: Byte; p1: Byte);
+    procedure WinKeyerSendMessage(S: string);
 
     // SO2R support
     property So2rSelectPort: TKeyingPort read FSo2rSelectPort write SetSo2rSelectPort;
@@ -2995,6 +2997,17 @@ begin
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_OPEN;
    FComKeying[0].SendData(@Buff, 2);
+   Sleep(50);
+
+   // set to WK2 mode
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_ADMIN_CMD;
+   Buff[1] := WK_ADMIN_SET_WK2_MODE;
+   FComKeying[0].SendData(@Buff, 2);
+   Sleep(50);
+
+   // set serial echo back to on
+   WinKeyerSetMode(WK_SETMODE_SERIALECHOBACK);
 
    //set speed pot range  5 to 50wpm
    FillChar(Buff, SizeOf(Buff), 0);
@@ -3031,6 +3044,7 @@ begin
       FillChar(Buff, SizeOf(Buff), 0);
       Buff[0] := WK_GET_SPEEDPOT_CMD;
       FComKeying[0].SendData(@Buff, 1);
+      Sleep(50);
    end;
 
    // Set PTT Mode(PINCFG)
@@ -3044,9 +3058,6 @@ begin
 
    // SideTone
    WinKeyerSetSideTone(FUseSideTone);
-
-   // set serial echo back to on
-   WinKeyerSetMode(WK_SETMODE_SERIALECHOBACK);
 end;
 
 procedure TdmZLogKeyer.WinKeyerClose();
@@ -3060,6 +3071,7 @@ begin
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_CLOSE;
    FComKeying[0].SendData(@Buff, 2);
+   Sleep(50);
    FComKeying[0].Disconnect();
 end;
 
@@ -3074,6 +3086,7 @@ begin
    Buff[0] := WK_SETWPM_CMD;
    Buff[1] := nWPM;
    FComKeying[0].SendData(@Buff, 2);
+   Sleep(50);
 end;
 
 procedure TdmZLogKeyer.WinKeyerAbort();
@@ -3120,6 +3133,7 @@ begin
       Buff[1] := $86;
    end;
    FComKeying[0].SendData(@Buff, 2);
+   Sleep(50);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetPinCfg(fUsePttPort: Boolean);
@@ -3160,6 +3174,7 @@ begin
    Buff[0] := WK_PTT_CMD;
    Buff[1] := WK_PTT_OFF;
    FComKeying[0].SendData(@Buff, 2);
+   Sleep(50);
 end;
 
 // PTT On/Off <18><nn> nn = 01 PTT on, n = 00 PTT off
@@ -3187,6 +3202,7 @@ begin
    end;
 
    FComKeying[0].SendData(@Buff, 2);
+   Sleep(50);
 
    if Assigned(FOnWkStatusProc) then begin
       FOnWkStatusProc(nil, FWkTx, FWkRx, FPTTFLAG);
@@ -3217,6 +3233,7 @@ begin
    Buff[1] := before;
    Buff[2] := after;
    FComKeying[0].SendData(@Buff, 3);
+   Sleep(50);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetMode(mode: Byte);
@@ -3227,6 +3244,7 @@ begin
    Buff[0] := WK_SETMODE_CMD;
    Buff[1] := mode;
    FComKeying[0].SendData(@Buff, 2);
+   Sleep(50);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSendCallsign(S: string);
@@ -3372,6 +3390,21 @@ begin
    FComKeying[0].SendData(@Buff, 1);
 end;
 
+procedure TdmZLogKeyer.WinKeyerSendCommand(cmd: Byte; p1: Byte);
+var
+   Buff: array[0..10] of Byte;
+begin
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := cmd;
+   Buff[1] := p1;
+   FComKeying[0].SendData(@Buff, 2);
+end;
+
+procedure TdmZLogKeyer.WinKeyerSendMessage(S: string);
+begin
+   FComKeying[0].SendString(AnsiString(S));
+end;
+
 procedure TdmZLogKeyer.ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
 var
    i: Integer;
@@ -3387,8 +3420,16 @@ begin
          Exit;
       end;
 
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('WinKey DataSize=[' + IntToStr(DataSize) + ']'));
+      {$ENDIF}
+
       for i := 0 to DataSize - 1 do begin
          b := (PP + i)^;
+
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('WinKey Data(' + IntToStr(i) + ')=[' + IntToHex(b, 2) + ']'));
+      {$ENDIF}
 
          if FWkAbort = True then begin
             FWkAbort := False;
@@ -3468,7 +3509,7 @@ begin
             FWkEcho := b;
 
             {$IFDEF DEBUG}
-//            OutputDebugString(PChar('WinKey ECHOBACK=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
+            OutputDebugString(PChar('WinKey ECHOBACK=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
             {$ENDIF}
 
             // コールサイン送信
