@@ -3186,6 +3186,11 @@ begin
    // Set PINCFG
    //     1010 1100
    //     A    C
+   // b7 b6 b5 b4 b3 b2 b1 b0
+   //              K  K  S  P
+   //              e  e  i  T
+   //              y  y  d  T
+   //              1  2  e
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_SET_PINCFG_CMD;
    Buff[1] := $a0;
@@ -3201,10 +3206,10 @@ begin
    end;
 
    if FWkTx = 0 then begin
-      Buff[1] := Buff[1] or $4;
+      Buff[1] := Buff[1] or $8;
    end
    else if FWkTx = 1 then begin
-      Buff[1] := Buff[1] or $8;
+      Buff[1] := Buff[1] or $4;
    end
    else begin
       Buff[1] := Buff[1] or $c;  // $4 + $8
