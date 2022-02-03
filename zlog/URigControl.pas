@@ -444,7 +444,7 @@ type
     function StatusSummaryFreq(kHz : integer): string; // returns current rig's band freq mode
     function StatusSummaryFreqHz(Hz : integer): string; // returns current rig's band freq mode
     function StatusSummary: string; // returns current rig's band freq mode
-    procedure ImplementOptions;
+    procedure ImplementOptions();
     procedure Stop();
     function SetCurrentRig(N : integer): Boolean;
     function GetCurrentRig : integer;
@@ -1467,11 +1467,11 @@ begin
    end;
 end;
 
-procedure TRigControl.ImplementOptions;
+procedure TRigControl.ImplementOptions();
 begin
    Stop();
 
-   if (dmZLogGlobal.Settings._so2r_type = so2rNone) then begin
+   if (dmZLogGlobal.Settings._so2r_type = so2rNone) or (dmZLogGlobal.Settings._so2r_use_rig3 = False) then begin
       FMaxRig := 2;
    end
    else begin
