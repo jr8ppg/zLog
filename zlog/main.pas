@@ -5776,6 +5776,7 @@ begin
       dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
       dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZlogGlobal.Settings._keyingport[3]));
       RigControl.Stop();
+      dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
 
       f.EditMode := 0;
 
@@ -5783,6 +5784,7 @@ begin
          Exit;
       end;
 
+      checkUseRig3.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       dmZlogGlobal.ImplementSettings(False);
       dmZlogGlobal.SaveCurrentSettings();
       InitBandMenu();
@@ -5829,7 +5831,7 @@ begin
       f.Release();
 
       // リグコントロール/Keying再開
-      RigControl.ImplementOptions;
+      RigControl.ImplementOptions();
 
       // Accessibility
       if LastFocus.Visible then begin
@@ -7098,17 +7100,17 @@ begin
 
       LastFocus := CallsignEdit; { the place to set focus when ESC is pressed from Grid }
 
+      // SO2R
+      if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+         checkUseRig3.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
+      end;
+
       // リグコントロール開始
-      RigControl.ImplementOptions;
+      RigControl.ImplementOptions();
 
       // CTY.DATが必要なコンテストでロードされていない場合はお知らせする
       if (MyContest.NeedCtyDat = True) and (dmZLogGlobal.CtyDatLoaded = False) then begin
          WriteStatusLineRed('CTY.DAT not loaded', True);
-      end;
-
-      // SO2R
-      if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-         checkUseRig3.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       end;
 
       // 初期化完了
@@ -8326,6 +8328,7 @@ begin
    rig := RigControl.ToggleCurrentRig();
    SwitchRig(rig);
    dmZlogKeyer.SetRxRigFlag(rig);
+   dmZlogKeyer.SetTxRigFlag(rig);
 end;
 
 // #72 BandScope
@@ -10149,6 +10152,12 @@ begin
       // カレントRIGを変更
       RigControl.SetCurrentRig(rig);
       SwitchRig(rig);
+      dmZLogKeyer.SetRxRigFlag(rig);
+      dmZLogKeyer.SetTxRigFlag(rig);
+   end;
+
+   if FInformation.CqInvert = True then begin
+      InvertTx();
    end;
 end;
 
