@@ -2,8 +2,8 @@ object dmZLogKeyer: TdmZLogKeyer
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Height = 150
-  Width = 215
+  Height = 175
+  Width = 299
   object ZComKeying1: TCommPortDriver
     Tag = 3
     Port = pnCustom
@@ -20,8 +20,8 @@ object dmZLogKeyer: TdmZLogKeyer
     Enabled = False
     Interval = 10
     OnTimer = RepeatTimerTimer
-    Left = 88
-    Top = 88
+    Left = 136
+    Top = 96
   end
   object ZComKeying2: TCommPortDriver
     Tag = 3
@@ -34,7 +34,7 @@ object dmZLogKeyer: TdmZLogKeyer
     Left = 151
     Top = 16
   end
-  object ZComRigSelect: TCommPortDriver
+  object ZComRxRigSelect: TCommPortDriver
     Tag = 3
     Port = pnCustom
     PortName = '\\.\COM2'
@@ -53,7 +53,18 @@ object dmZLogKeyer: TdmZLogKeyer
     InBufSize = 4096
     EnableDTROnOpen = False
     OnReceiveData = ZComKeying1ReceiveData
-    Left = 147
-    Top = 72
+    Left = 211
+    Top = 16
+  end
+  object ZComTxRigSelect: TCommPortDriver
+    Tag = 3
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    OnReceiveData = ZComKeying1ReceiveData
+    Left = 27
+    Top = 116
   end
 end

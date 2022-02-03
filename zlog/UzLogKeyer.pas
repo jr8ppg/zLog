@@ -75,8 +75,9 @@ type
     ZComKeying1: TCommPortDriver;
     RepeatTimer: TTimer;
     ZComKeying2: TCommPortDriver;
-    ZComRigSelect: TCommPortDriver;
+    ZComRxRigSelect: TCommPortDriver;
     ZComKeying3: TCommPortDriver;
+    ZComTxRigSelect: TCommPortDriver;
     procedure WndMethod(var msg: TMessage);
     procedure DoDeviceChanges(Sender: TObject);
     function DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
@@ -211,7 +212,8 @@ type
     FWkMessageStr: string;
 
     // SO2R support
-    FSo2rSelectPort: TKeyingPort;
+    FSo2rRxSelectPort: TKeyingPort;
+    FSo2rTxSelectPort: TKeyingPort;
 
     FWnd: HWND;
 
@@ -257,7 +259,8 @@ type
     procedure WinKeyerSetPTTDelay(before, after: Byte);
     procedure WinKeyerSetMode(mode: Byte);
 
-    procedure SetSo2rSelectPort(port: TKeyingPort);
+    procedure SetSo2rRxSelectPort(port: TKeyingPort);
+    procedure SetSo2rTxSelectPort(port: TKeyingPort);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -356,7 +359,8 @@ type
     procedure WinKeyerSendMessage(S: string);
 
     // SO2R support
-    property So2rSelectPort: TKeyingPort read FSo2rSelectPort write SetSo2rSelectPort;
+    property So2rRxSelectPort: TKeyingPort read FSo2rRxSelectPort write SetSo2rRxSelectPort;
+    property So2rTxSelectPort: TKeyingPort read FSo2rTxSelectPort write SetSo2rTxSelectPort;
 
     // SO2R Neo support
     property UseWkSo2rNeo: Boolean read FUseWkSo2rNeo write FUseWkSo2rNeo;
@@ -422,7 +426,8 @@ begin
    FUseWkSo2rNeo := False;
    FSo2rNeoCanRxSel := False;
    FSo2rNeoUseRxSelect := False;
-   FSo2rSelectPort := tkpNone;
+   FSo2rRxSelectPort := tkpNone;
+   FSo2rTxSelectPort := tkpNone;
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
@@ -640,6 +645,32 @@ begin
    else begin
       FWkTx := 2;
    end;
+
+   // COMポートでのRIG SELECT
+   if (FSo2rTxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
+      case flag of
+         0: begin
+            ZComTxRigSelect.ToggleDTR(False);
+            ZComTxRigSelect.ToggleRTS(False);
+         end;
+
+         1: begin
+            ZComTxRigSelect.ToggleDTR(True);
+            ZComTxRigSelect.ToggleRTS(False);
+         end;
+
+         2: begin
+            ZComTxRigSelect.ToggleDTR(False);
+            ZComTxRigSelect.ToggleRTS(True);
+         end;
+
+         3: begin
+            ZComTxRigSelect.ToggleDTR(True);
+            ZComTxRigSelect.ToggleRTS(True);
+         end;
+      end;
+      Exit;
+   end;
 end;
 
 procedure TdmZLogKeyer.SetRxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
@@ -647,26 +678,26 @@ var
    i: Integer;
 begin
    // COMポートでのRIG SELECT
-   if (FSo2RSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
+   if (FSo2rRxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
       case flag of
          0: begin
-            ZComRigSelect.ToggleDTR(False);
-            ZComRigSelect.ToggleRTS(False);
+            ZComRxRigSelect.ToggleDTR(False);
+            ZComRxRigSelect.ToggleRTS(False);
          end;
 
          1: begin
-            ZComRigSelect.ToggleDTR(True);
-            ZComRigSelect.ToggleRTS(False);
+            ZComRxRigSelect.ToggleDTR(True);
+            ZComRxRigSelect.ToggleRTS(False);
          end;
 
          2: begin
-            ZComRigSelect.ToggleDTR(False);
-            ZComRigSelect.ToggleRTS(True);
+            ZComRxRigSelect.ToggleDTR(False);
+            ZComRxRigSelect.ToggleRTS(True);
          end;
 
          3: begin
-            ZComRigSelect.ToggleDTR(True);
-            ZComRigSelect.ToggleRTS(True);
+            ZComRxRigSelect.ToggleDTR(True);
+            ZComRxRigSelect.ToggleRTS(True);
          end;
       end;
       Exit;
@@ -2104,8 +2135,11 @@ begin
    KeyingPort[1] := tkpNone;
    KeyingPort[2] := tkpNone;
 
-   if ZComRigSelect.Connected then begin
-      ZComRigSelect.Disconnect();
+   if ZComTxRigSelect.Connected then begin
+      ZComTxRigSelect.Disconnect();
+   end;
+   if ZComRxRigSelect.Connected then begin
+      ZComRxRigSelect.Disconnect();
    end;
 end;
 
@@ -2526,11 +2560,20 @@ begin
 }
 
    // RIG選択用ポート
-   if FSo2rSelectPort <> tkpNone then begin
-      ZComRigSelect.Port := TPortNumber(FSo2rSelectPort);
-      ZComRigSelect.Connect();
-      ZComRigSelect.ToggleDTR(False);
-      ZComRigSelect.ToggleRTS(False);
+   // RX
+   if FSo2rRxSelectPort <> tkpNone then begin
+      ZComRxRigSelect.Port := TPortNumber(FSo2rRxSelectPort);
+      ZComRxRigSelect.Connect();
+      ZComRxRigSelect.ToggleDTR(False);
+      ZComRxRigSelect.ToggleRTS(False);
+   end;
+
+   // TX
+   if FSo2rTxSelectPort <> tkpNone then begin
+      ZComTxRigSelect.Port := TPortNumber(FSo2rTxSelectPort);
+      ZComTxRigSelect.Connect();
+      ZComTxRigSelect.ToggleDTR(False);
+      ZComTxRigSelect.ToggleRTS(False);
    end;
 end;
 
@@ -3798,9 +3841,14 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetSo2rSelectPort(port: TKeyingPort);
+procedure TdmZLogKeyer.SetSo2rRxSelectPort(port: TKeyingPort);
 begin
-   FSo2rSelectPort := port;
+   FSo2rRxSelectPort := port;
+end;
+
+procedure TdmZLogKeyer.SetSo2rTxSelectPort(port: TKeyingPort);
+begin
+   FSo2rTxSelectPort := port;
 end;
 
 end.

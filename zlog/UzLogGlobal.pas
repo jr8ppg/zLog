@@ -127,8 +127,9 @@ type
     _use_wk_9600: Boolean;
 
     // SO2R Support
-    _so2r_type: TSo2rType;    // 0:none 1:zlog 2:SO2R Neo
-    _so2r_port: Integer;      // 0:none 1-20:com1-20
+    _so2r_type: TSo2rType;       // 0:none 1:zlog 2:SO2R Neo
+    _so2r_tx_port: Integer;      // 0:none 1-20:com1-20
+    _so2r_rx_port: Integer;      // 0:none 1-20:com1-20
     _so2r_use_rig3: Boolean;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
@@ -815,7 +816,8 @@ begin
 
       // SO2R Support
       Settings._so2r_type  := TSo2rType(ini.ReadInteger('SO2R', 'type', 0));
-      Settings._so2r_port  := ini.ReadInteger('SO2R', 'port', 0);
+      Settings._so2r_tx_port  := ini.ReadInteger('SO2R', 'tx_select_port', 0);
+      Settings._so2r_rx_port  := ini.ReadInteger('SO2R', 'rx_select_port', 0);
       Settings._so2r_use_rig3 := ini.ReadBool('SO2R', 'use_rig3', True);
 
       // CW PTT control
@@ -1365,7 +1367,8 @@ begin
 
       // SO2R Support
       ini.WriteInteger('SO2R', 'type', Integer(Settings._so2r_type));
-      ini.WriteInteger('SO2R', 'port', Settings._so2r_port);
+      ini.WriteInteger('SO2R', 'tx_select_port', Settings._so2r_tx_port);
+      ini.WriteInteger('SO2R', 'rx_select_port', Settings._so2r_rx_port);
       ini.WriteBool('SO2R', 'use_rig3', Settings._so2r_use_rig3);
 
       // CW PTT control
@@ -1652,7 +1655,8 @@ begin
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
    dmZLogKeyer.UseWk9600 := Settings._use_wk_9600;
    dmZLogKeyer.UseWkSo2rNeo := (Settings._so2r_type = so2rNeo);
-   dmZLogKeyer.So2rSelectPort := TKeyingPort(Settings._so2r_port);
+   dmZLogKeyer.So2rRxSelectPort := TKeyingPort(Settings._so2r_rx_port);
+   dmZLogKeyer.So2rTxSelectPort := TKeyingPort(Settings._so2r_tx_port);
 
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
    dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;

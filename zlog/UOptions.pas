@@ -347,7 +347,7 @@ type
     Label79: TLabel;
     Label80: TLabel;
     Label81: TLabel;
-    GroupBox13: TGroupBox;
+    groupUsif4cw: TGroupBox;
     checkUsbif4cwSyncWpm: TCheckBox;
     checkUsbif4cwPaddleReverse: TCheckBox;
     GroupBox14: TGroupBox;
@@ -438,14 +438,14 @@ type
     Label96: TLabel;
     Label97: TLabel;
     Label98: TLabel;
-    GroupBox7: TGroupBox;
+    groupSo2rSupport: TGroupBox;
     radioSo2rZLog: TRadioButton;
     radioSo2rNeo: TRadioButton;
-    comboSo2rPort: TComboBox;
+    comboSo2rRxSelectPort: TComboBox;
     radioSo2rNone: TRadioButton;
     checkWk9600: TCheckBox;
     tabsheetNetwork: TTabSheet;
-    GroupBox6: TGroupBox;
+    groupNetwork: TGroupBox;
     Label30: TLabel;
     Port: TLabel;
     Label32: TLabel;
@@ -459,6 +459,10 @@ type
     groupRig3: TGroupBox;
     Label99: TLabel;
     comboCwPttPort3: TComboBox;
+    GroupBox6: TGroupBox;
+    Label31: TLabel;
+    comboSo2rTxSelectPort: TComboBox;
+    Label42: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -843,7 +847,8 @@ begin
       else begin
          Settings._so2r_type := so2rNeo;
       end;
-      Settings._so2r_port := comboSo2rPort.ItemIndex;
+      Settings._so2r_tx_port := comboSo2rTxSelectPort.ItemIndex;
+      Settings._so2r_rx_port := comboSo2rRxSelectPort.ItemIndex;
 
 //      Settings._sentstr := SentEdit.Text;
 
@@ -1259,7 +1264,8 @@ begin
             radioSo2rClick(radioSo2rNeo);
          end;
       end;
-      comboSo2rPort.ItemIndex := Settings._so2r_port;
+      comboSo2rTxSelectPort.ItemIndex := Settings._so2r_tx_port;
+      comboSo2rRxSelectPort.ItemIndex := Settings._so2r_rx_port;
 
       // Sent欄は表示専用
       SentEdit.Text := Settings._sentstr;
@@ -1881,15 +1887,18 @@ begin
    n := TRadioButton(Sender).Tag;
    case n of
       0: begin
-         comboSo2rPort.Enabled := False;
+         comboSo2rTxSelectPort.Enabled := False;
+         comboSo2rRxSelectPort.Enabled := False;
       end;
 
       1: begin
-         comboSo2rPort.Enabled := True;
+         comboSo2rTxSelectPort.Enabled := True;
+         comboSo2rRxSelectPort.Enabled := True;
       end;
 
       2: begin
-         comboSo2rPort.Enabled := False;
+         comboSo2rTxSelectPort.Enabled := False;
+         comboSo2rRxSelectPort.Enabled := False;
       end;
    end;
 end;

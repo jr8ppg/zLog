@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetHardware
+    ActivePage = tabsheetNetwork
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1857,7 +1857,7 @@ object formOptions: TformOptions
           OnClick = checkUseWinKeyerClick
         end
       end
-      object GroupBox13: TGroupBox
+      object groupUsif4cw: TGroupBox
         Left = 6
         Top = 305
         Width = 213
@@ -2213,75 +2213,6 @@ object formOptions: TformOptions
             'USB')
         end
       end
-      object GroupBox7: TGroupBox
-        Left = 225
-        Top = 305
-        Width = 204
-        Height = 92
-        Caption = 'SO2R Support'
-        TabOrder = 6
-        object radioSo2rZLog: TRadioButton
-          Tag = 1
-          Left = 12
-          Top = 42
-          Width = 69
-          Height = 13
-          Caption = 'COM Port'
-          TabOrder = 1
-          OnClick = radioSo2rClick
-        end
-        object radioSo2rNeo: TRadioButton
-          Tag = 2
-          Left = 12
-          Top = 65
-          Width = 85
-          Height = 13
-          Caption = 'SO2R Neo'
-          TabOrder = 3
-          OnClick = radioSo2rClick
-        end
-        object comboSo2rPort: TComboBox
-          Left = 99
-          Top = 38
-          Width = 64
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 2
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20')
-        end
-        object radioSo2rNone: TRadioButton
-          Left = 12
-          Top = 19
-          Width = 46
-          Height = 13
-          Caption = 'None'
-          Checked = True
-          TabOrder = 0
-          TabStop = True
-          OnClick = radioSo2rClick
-        end
-      end
       object groupRig3: TGroupBox
         Left = 6
         Top = 124
@@ -2332,9 +2263,9 @@ object formOptions: TformOptions
       end
     end
     object tabsheetNetwork: TTabSheet
-      Caption = 'Network'
+      Caption = 'Hardware2'
       ImageIndex = 12
-      object GroupBox6: TGroupBox
+      object groupNetwork: TGroupBox
         Left = 6
         Top = 4
         Width = 423
@@ -2434,6 +2365,127 @@ object formOptions: TformOptions
           Caption = 'SyncSerial'
           TabOrder = 4
           OnClick = PTTEnabledCheckBoxClick
+        end
+      end
+      object groupSo2rSupport: TGroupBox
+        Left = 6
+        Top = 147
+        Width = 423
+        Height = 110
+        Caption = 'SO2R Support'
+        TabOrder = 1
+        object radioSo2rZLog: TRadioButton
+          Tag = 1
+          Left = 12
+          Top = 48
+          Width = 69
+          Height = 13
+          Caption = 'COM Port'
+          TabOrder = 1
+          OnClick = radioSo2rClick
+        end
+        object radioSo2rNeo: TRadioButton
+          Tag = 2
+          Left = 12
+          Top = 77
+          Width = 85
+          Height = 13
+          Caption = 'SO2R Neo'
+          TabOrder = 2
+          OnClick = radioSo2rClick
+        end
+        object radioSo2rNone: TRadioButton
+          Left = 12
+          Top = 19
+          Width = 46
+          Height = 13
+          Caption = 'None'
+          Checked = True
+          TabOrder = 0
+          TabStop = True
+          OnClick = radioSo2rClick
+        end
+        object GroupBox6: TGroupBox
+          Left = 103
+          Top = 23
+          Width = 206
+          Height = 53
+          Caption = 'RIG Select'
+          TabOrder = 3
+          object Label31: TLabel
+            Left = 12
+            Top = 23
+            Width = 14
+            Height = 13
+            Caption = 'TX'
+          end
+          object Label42: TLabel
+            Left = 107
+            Top = 23
+            Width = 15
+            Height = 13
+            Caption = 'RX'
+          end
+          object comboSo2rRxSelectPort: TComboBox
+            Left = 127
+            Top = 20
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 0
+            Items.Strings = (
+              'None'
+              'COM1'
+              'COM2'
+              'COM3'
+              'COM4'
+              'COM5'
+              'COM6'
+              'COM7'
+              'COM8'
+              'COM9'
+              'COM10'
+              'COM11'
+              'COM12'
+              'COM13'
+              'COM14'
+              'COM15'
+              'COM16'
+              'COM17'
+              'COM18'
+              'COM19'
+              'COM20')
+          end
+          object comboSo2rTxSelectPort: TComboBox
+            Left = 32
+            Top = 20
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 1
+            Items.Strings = (
+              'None'
+              'COM1'
+              'COM2'
+              'COM3'
+              'COM4'
+              'COM5'
+              'COM6'
+              'COM7'
+              'COM8'
+              'COM9'
+              'COM10'
+              'COM11'
+              'COM12'
+              'COM13'
+              'COM14'
+              'COM15'
+              'COM16'
+              'COM17'
+              'COM18'
+              'COM19'
+              'COM20')
+          end
         end
       end
     end
