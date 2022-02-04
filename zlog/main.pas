@@ -8329,6 +8329,9 @@ begin
    SwitchRig(rig);
    dmZlogKeyer.SetRxRigFlag(rig);
    dmZlogKeyer.SetTxRigFlag(rig);
+   if Assigned(CallsignEdit.OnChange) then begin
+      CallsignEdit.OnChange(nil);
+   end;
 end;
 
 // #72 BandScope

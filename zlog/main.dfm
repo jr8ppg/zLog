@@ -5240,6 +5240,7 @@ object MainForm: TMainForm
       object ledTx2A: TJvLED
         Left = 6
         Top = 5
+        ColorOff = clSilver
         Status = False
       end
       object CallsignEdit2A: TOvrEdit
@@ -5362,6 +5363,7 @@ object MainForm: TMainForm
       object ledTx2B: TJvLED
         Left = 6
         Top = 5
+        ColorOff = clSilver
         Status = False
       end
       object CallsignEdit2B: TOvrEdit
