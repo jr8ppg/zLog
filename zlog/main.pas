@@ -3413,8 +3413,8 @@ begin
 
    RestoreWindowsPos();
 
-   dmZLogKeyer.ControlPTT(0, False);
    dmZLogKeyer.ControlPTT(1, False);
+   dmZLogKeyer.ControlPTT(0, False);
 
    // フォントサイズの設定
    SetFontSize(dmZlogGlobal.Settings._mainfontsize);

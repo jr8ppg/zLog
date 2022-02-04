@@ -463,6 +463,8 @@ type
     Label31: TLabel;
     comboSo2rTxSelectPort: TComboBox;
     Label42: TLabel;
+    groupWinKeyer: TGroupBox;
+    checkWkOutportSelect: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -836,6 +838,7 @@ begin
       // Use Winkeyer
       Settings._use_winkeyer := checkUseWinkeyer.Checked;
       Settings._use_wk_9600 := checkWk9600.Checked;
+      Settings._use_wk_outp_select := checkWkOutportSelect.Checked;
 
       // SO2R Support
       if radioSo2rNone.Checked = True then begin
@@ -1246,6 +1249,7 @@ begin
       // Use Winkeyer
       checkUseWinkeyer.Checked := Settings._use_winkeyer;
       checkWk9600.Checked := Settings._use_wk_9600;
+      checkWkOutportSelect.Checked := Settings._use_wk_outp_select;
 
       // SO2R Support
       case Settings._so2r_type of

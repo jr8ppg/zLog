@@ -193,6 +193,7 @@ type
     // WinKeyer and SO2R Neo support
     FUseWinKeyer: Boolean;
     FUseWk9600: Boolean;
+    FUseWkOutpSelect: Boolean;
     FWkInitializeMode: Boolean;
     FWkRevision: Integer;
     FWkStatus: Integer;
@@ -343,6 +344,7 @@ type
     // WinKeyer support
     property UseWinKeyer: Boolean read FUseWinKeyer write FUseWinKeyer;
     property UseWk9600: Boolean read FUseWk9600 write FUseWk9600;
+    property UseWkOutpSelect: Boolean read FUseWkOutpSelect write FUseWkOutpSelect;
     property WinKeyerRevision: Integer read FWkRevision;
     property WkCallsignSending: Boolean read FWkCallsignSending write FWkCallsignSending;
     procedure WinKeyerSendCallsign(S: string);
@@ -418,6 +420,7 @@ begin
    FComKeying[2] := FDefautCom[2];
    FUseWinKeyer := False;
    FUseWk9600 := False;
+   FUseWkOutpSelect := True;
    FOnSpeedChanged := nil;
    FUseFixedSpeed := False;
    FBeforeSpeed := 0;
@@ -460,6 +463,9 @@ begin
 
    FUserFlag := False;
    FVoiceFlag := 0;
+
+   FWkTx := 0;
+   FWkRx := 0;
 
    FSpaceFactor := 100; {space length factor in %}
    FEISpaceFactor := 100; {space length factor after E and I}
@@ -677,6 +683,16 @@ procedure TdmZLogKeyer.SetRxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, e
 var
    i: Integer;
 begin
+   if (flag = 0) or (flag = 1) then begin
+      FWkRx := 0;
+   end
+   else if (flag = 2) then begin
+      FWkRx := 1;
+   end
+   else begin
+      FWkRx := 2;
+   end;
+
    // COMÉ|Å[ÉgÇ≈ÇÃRIG SELECT
    if (FSo2rRxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
       case flag of
@@ -3205,14 +3221,16 @@ begin
       Buff[1] := Buff[1] or $2;
    end;
 
-   if FWkTx = 0 then begin
-      Buff[1] := Buff[1] or $8;
-   end
-   else if FWkTx = 1 then begin
-      Buff[1] := Buff[1] or $4;
-   end
-   else begin
-      //Buff[1] := Buff[1] or $c;  // $4 + $8
+   if FUseWkOutpSelect = True then begin
+      if FWkTx = 0 then begin
+         Buff[1] := Buff[1] or $8;
+      end
+      else if FWkTx = 1 then begin
+         Buff[1] := Buff[1] or $4;
+      end
+      else begin
+         //Buff[1] := Buff[1] or $c;  // $4 + $8
+      end;
    end;
 
    FComKeying[0].SendData(@Buff, 2);

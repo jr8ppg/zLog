@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetNetwork
+    ActivePage = tabsheetHardware
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1815,7 +1815,7 @@ object formOptions: TformOptions
           Top = 35
           Width = 40
           Height = 21
-          TabOrder = 3
+          TabOrder = 2
           Text = 'CWPortEdit'
         end
         object AfterEdit: TEdit
@@ -1823,7 +1823,7 @@ object formOptions: TformOptions
           Top = 35
           Width = 40
           Height = 21
-          TabOrder = 4
+          TabOrder = 3
           Text = 'CWPortEdit'
         end
         object checkCwReverseSignal: TCheckBox
@@ -1838,35 +1838,17 @@ object formOptions: TformOptions
           TabOrder = 1
           OnClick = PTTEnabledCheckBoxClick
         end
-        object checkUseWinKeyer: TCheckBox
-          Left = 323
-          Top = 10
-          Width = 89
-          Height = 25
-          Caption = 'Use WinKeyer'
-          TabOrder = 2
-          OnClick = checkUseWinKeyerClick
-        end
-        object checkWk9600: TCheckBox
-          Left = 323
-          Top = 34
-          Width = 89
-          Height = 25
-          Caption = 'WK 9600bps'
-          TabOrder = 5
-          OnClick = checkUseWinKeyerClick
-        end
       end
       object groupUsif4cw: TGroupBox
         Left = 6
-        Top = 305
+        Top = 303
         Width = 213
-        Height = 43
+        Height = 45
         Caption = 'USBIF4CW'
         TabOrder = 5
         object checkUsbif4cwSyncWpm: TCheckBox
           Left = 8
-          Top = 17
+          Top = 19
           Width = 82
           Height = 17
           Caption = 'Sync WPM'
@@ -1874,7 +1856,7 @@ object formOptions: TformOptions
         end
         object checkUsbif4cwPaddleReverse: TCheckBox
           Left = 93
-          Top = 17
+          Top = 19
           Width = 96
           Height = 17
           Caption = 'Paddle Reverse'
@@ -2259,6 +2241,41 @@ object formOptions: TformOptions
             'COM19'
             'COM20'
             'USB')
+        end
+      end
+      object groupWinKeyer: TGroupBox
+        Left = 6
+        Top = 352
+        Width = 335
+        Height = 45
+        Caption = 'WinKeyer Option'
+        TabOrder = 6
+        object checkUseWinKeyer: TCheckBox
+          Left = 8
+          Top = 18
+          Width = 89
+          Height = 17
+          Caption = 'Use WinKeyer'
+          TabOrder = 0
+          OnClick = checkUseWinKeyerClick
+        end
+        object checkWk9600: TCheckBox
+          Left = 113
+          Top = 18
+          Width = 89
+          Height = 17
+          Caption = 'WK 9600bps'
+          TabOrder = 1
+          OnClick = checkUseWinKeyerClick
+        end
+        object checkWkOutportSelect: TCheckBox
+          Left = 217
+          Top = 18
+          Width = 89
+          Height = 17
+          Caption = 'Out port Select'
+          TabOrder = 2
+          OnClick = checkUseWinKeyerClick
         end
       end
     end
