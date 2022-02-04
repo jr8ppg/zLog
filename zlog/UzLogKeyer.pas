@@ -3212,10 +3212,11 @@ begin
       Buff[1] := Buff[1] or $4;
    end
    else begin
-      Buff[1] := Buff[1] or $c;  // $4 + $8
+      //Buff[1] := Buff[1] or $c;  // $4 + $8
    end;
 
    FComKeying[0].SendData(@Buff, 2);
+   Sleep(50);
 
    FPTTFLAG := False;
    FillChar(Buff, SizeOf(Buff), 0);
