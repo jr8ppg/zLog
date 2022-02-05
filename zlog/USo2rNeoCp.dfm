@@ -20,6 +20,7 @@ object formSo2rNeoCp: TformSo2rNeoCp
   object ledPtt: TJvLED
     Left = 176
     Top = 88
+    ColorOff = clSilver
     Status = False
   end
   object Label1: TLabel
@@ -38,6 +39,7 @@ object formSo2rNeoCp: TformSo2rNeoCp
   object ledCancelRxSel: TJvLED
     Left = 248
     Top = 88
+    ColorOff = clSilver
     Status = False
   end
   object Label2: TLabel
@@ -147,16 +149,19 @@ object formSo2rNeoCp: TformSo2rNeoCp
     object ledRig1: TJvLED
       Left = 24
       Top = 84
+      ColorOff = clSilver
       Status = False
     end
     object ledRig2: TJvLED
       Left = 68
       Top = 84
+      ColorOff = clSilver
       Status = False
     end
     object ledRig3: TJvLED
       Left = 112
       Top = 84
+      ColorOff = clSilver
       Status = False
     end
     object ToggleSwitch1: TToggleSwitch
