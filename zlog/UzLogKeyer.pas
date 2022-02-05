@@ -273,6 +273,7 @@ type
     function CallSignSent : Boolean; {Returns True if realtime callsign is sent already}
 
     procedure ControlPTT(nID: Integer; PTTON : Boolean); {Sets PTT on/off}
+    procedure ResetPTT();
     procedure TuneOn(nID: Integer);
 
     procedure SetCallSign(S: string); {Update realtime callsign}
@@ -815,6 +816,7 @@ begin
       FPTTFLAG := PTTON;
       FWkTx := nID;
 
+      // USBIF4CW
       if FKeyingPort[nID] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
          if PTTON then begin
@@ -828,6 +830,7 @@ begin
          Exit;
       end;
 
+      // COM port
       if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
          if FKeyingSignalReverse = False then begin
             FComKeying[nID].ToggleRTS(PTTON);
@@ -838,13 +841,9 @@ begin
          Exit;
       end;
 
+      // WinKeyer
       if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
-         if PTTON = True then begin
-            WinkeyerControlPTT(PTTON);
-         end
-         else begin
-            WinkeyerControlPTT(PTTON);
-         end;
+         WinkeyerControlPTT(PTTON);
       end;
    finally
       {$IFDEF DEBUG}
@@ -853,6 +852,44 @@ begin
       if Assigned(FOnWkStatusProc) then begin
          FOnWkStatusProc(Self, FWkTx, FWkRx, PTTON);
       end;
+   end;
+end;
+
+procedure TdmZLogKeyer.ResetPTT();
+var
+   nID: Integer;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** Enter -- ResetPTT ***'));
+   {$ENDIF}
+   try
+      FPTTFLAG := False;
+
+      for nID := 0 to 2 do begin
+         if FKeyingPort[nID] = tkpUSB then begin
+            EnterCriticalSection(FUsbPortDataLock);
+            FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData or $02;
+            SendUsbPortData(nID);
+            LeaveCriticalSection(FUsbPortDataLock);
+         end;
+
+         if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
+            if FKeyingSignalReverse = False then begin
+               FComKeying[nID].ToggleRTS(False);
+            end
+            else begin
+               FComKeying[nID].ToggleDTR(False);
+            end;
+         end;
+
+         if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
+            WinkeyerControlPTT(False);
+         end;
+      end;
+   finally
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('*** Leave -- ResetPTT ***'));
+      {$ENDIF}
    end;
 end;
 

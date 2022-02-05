@@ -1985,11 +1985,13 @@ begin
          checkUseWinKeyer.Enabled := False;
          checkUseWinKeyer.Checked := False;
          checkWk9600.Enabled := False;
+         checkWkOutportSelect.Enabled := False;
       end;
    end
    else begin
       checkUseWinKeyer.Enabled := True;
       checkWk9600.Enabled := True;
+      checkWkOutportSelect.Enabled := True;
    end;
 end;
 

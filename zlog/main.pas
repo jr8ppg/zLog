@@ -3413,8 +3413,7 @@ begin
 
    RestoreWindowsPos();
 
-   dmZLogKeyer.ControlPTT(1, False);
-   dmZLogKeyer.ControlPTT(0, False);
+   dmZLogKeyer.ResetPTT();
 
    // フォントサイズの設定
    SetFontSize(dmZlogGlobal.Settings._mainfontsize);
@@ -8797,8 +8796,7 @@ begin
    // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
    if (dmZLogGlobal.Settings._pttenabled = False) and
       (dmZLogKeyer.UseWinKeyer = False) then begin
-      dmZLogKeyer.ControlPTT(0, False);
-      dmZLogKeyer.ControlPTT(1, False);
+      dmZLogKeyer.ResetPTT();
    end;
 
    SwitchRig(FCurrentRx + 1);
