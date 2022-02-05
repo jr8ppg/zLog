@@ -3802,6 +3802,10 @@ procedure TdmZLogKeyer.So2rNeoSetAudioBlendMode(fOn: Boolean);
 var
    Buff: array[0..10] of Byte;
 begin
+   if FUseWkSo2rNeo = False then begin
+      Exit;
+   end;
+
    FillChar(Buff, SizeOf(Buff), 0);
    if fOn = True then begin
       Buff[0] := $86;
@@ -3820,6 +3824,10 @@ procedure TdmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio: Byte);
 var
    Buff: array[0..10] of Byte;
 begin
+   if FUseWkSo2rNeo = False then begin
+      Exit;
+   end;
+
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := $c0 or ((ratio shr 4) and $0f);
    Buff[1] := $c0 or (ratio and $0f);
@@ -3840,6 +3848,10 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('*** So2rNeoSwitchRig ***'));
    {$ENDIF}
+
+   if FUseWkSo2rNeo = False then begin
+      Exit;
+   end;
 
    FillChar(Buff, SizeOf(Buff), 0);
 
@@ -3881,6 +3893,10 @@ var
 const
    reverse_rig: array[0..2] of Integer = ( 1, 0, 2 );
 begin
+   if FUseWkSo2rNeo = False then begin
+      Exit;
+   end;
+
    if FSo2rNeoUseRxSelect = False then begin
       Exit;
    end;
@@ -3892,6 +3908,10 @@ end;
 procedure TdmZLogKeyer.So2rNeoNormalRx(tx: Integer);
 begin
    try
+      if FUseWkSo2rNeo = False then begin
+         Exit;
+      end;
+
       if FSo2rNeoCanRxSel = True then begin
          Exit;
       end;

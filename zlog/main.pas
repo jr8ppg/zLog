@@ -4578,6 +4578,7 @@ var
    S: String;
    Q: TQSO;
    nID: Integer;
+   rig: Integer;
 begin
    // PHONE
    if Main.CurrentQSO.Mode in [mSSB, mFM, mAM] then begin
@@ -4649,6 +4650,10 @@ begin
    end
    else begin
       dmZLogKeyer.ClrBuffer;
+
+      rig := RigControl.GetCurrentRig();
+      dmZlogKeyer.SetTxRigFlag(rig);
+
       dmZLogKeyer.PauseCW;
       if dmZlogGlobal.PTTEnabled then begin
          S := S + ')'; // PTT is turned on in ResumeCW
@@ -5149,12 +5154,19 @@ begin
 end;
 
 procedure TMainForm.CWStopButtonClick(Sender: TObject);
+var
+   rig: Integer;
 begin
    CtrlZCQLoop := False;
    dmZLogKeyer.ClrBuffer;
    CWPlayButton.Visible := False;
    CWPauseButton.Visible := True;
    dmZLogKeyer.WinKeyerAbort();
+
+   rig := RigControl.GetCurrentRig();
+   SwitchRig(rig);
+   dmZLogKeyer.SetRxRigFlag(rig);
+   dmZLogKeyer.SetTxRigFlag(rig);
 end;
 
 procedure TMainForm.VoiceStopButtonClick(Sender: TObject);
