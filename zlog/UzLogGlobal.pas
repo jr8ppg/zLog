@@ -132,6 +132,10 @@ type
     _so2r_tx_port: Integer;      // 0:none 1-20:com1-20
     _so2r_rx_port: Integer;      // 0:none 1-20:com1-20
     _so2r_use_rig3: Boolean;
+    _so2r_cq_rpt_interval_sec: Double;
+    _so2r_cq_msg_bank: Integer;     // 0:Bank-A 1:Bank-B
+    _so2r_cq_msg_number: Integer;   // 1-12
+
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
     _clusterbaud : integer; {}
@@ -822,6 +826,16 @@ begin
       Settings._so2r_rx_port  := ini.ReadInteger('SO2R', 'rx_select_port', 0);
       Settings._so2r_use_rig3 := ini.ReadBool('SO2R', 'use_rig3', True);
 
+      Settings._so2r_cq_rpt_interval_sec := ini.ReadFloat('SO2R', 'cq_repeat_interval_sec', 2.0);
+      Settings._so2r_cq_msg_bank    := ini.ReadInteger('SO2R', 'cq_msg_bank', 1);
+      if (Settings._so2r_cq_msg_bank < 1) or (Settings._so2r_cq_msg_bank > 2) then begin
+         Settings._so2r_cq_msg_bank := 1;
+      end;
+      Settings._so2r_cq_msg_number  := ini.ReadInteger('SO2R', 'cq_msg_number', 1);
+      if (Settings._so2r_cq_msg_number < 1) or (Settings._so2r_cq_msg_number > 12) then begin
+         Settings._so2r_cq_msg_number := 1;
+      end;
+
       // CW PTT control
 
       // Enable PTT control
@@ -1373,6 +1387,10 @@ begin
       ini.WriteInteger('SO2R', 'tx_select_port', Settings._so2r_tx_port);
       ini.WriteInteger('SO2R', 'rx_select_port', Settings._so2r_rx_port);
       ini.WriteBool('SO2R', 'use_rig3', Settings._so2r_use_rig3);
+
+      ini.WriteFloat('SO2R', 'cq_repeat_interval_sec', Settings._so2r_cq_rpt_interval_sec);
+      ini.WriteInteger('SO2R', 'cq_msg_bank', Settings._so2r_cq_msg_bank);
+      ini.WriteInteger('SO2R', 'cq_msg_number', Settings._so2r_cq_msg_number);
 
       // CW PTT control
 

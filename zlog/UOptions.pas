@@ -465,6 +465,15 @@ type
     Label42: TLabel;
     groupWinKeyer: TGroupBox;
     checkWkOutportSelect: TCheckBox;
+    GroupBox7: TGroupBox;
+    groupSo2rCqOption: TGroupBox;
+    Label44: TLabel;
+    editSo2rCqRptIntervalSec: TEdit;
+    Label100: TLabel;
+    panelSo2rMessageNumber: TPanel;
+    radioSo2rCqMsgBankA: TRadioButton;
+    radioSo2rCqMsgBankB: TRadioButton;
+    comboSo2rCqMsgNumber: TComboBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -852,6 +861,16 @@ begin
       end;
       Settings._so2r_tx_port := comboSo2rTxSelectPort.ItemIndex;
       Settings._so2r_rx_port := comboSo2rRxSelectPort.ItemIndex;
+
+      r := Settings._so2r_cq_rpt_interval_sec;
+      Settings._so2r_cq_rpt_interval_sec := StrToFloatDef(editSo2rCqRptIntervalSec.Text, r);
+      if radioSo2rCqMsgBankA.Checked = True then begin
+         Settings._so2r_cq_msg_bank := 1;
+      end
+      else begin
+         Settings._so2r_cq_msg_bank := 2;
+      end;
+      Settings._so2r_cq_msg_number  := comboSo2rCqMsgNumber.ItemIndex + 1;
 
 //      Settings._sentstr := SentEdit.Text;
 
@@ -1270,6 +1289,15 @@ begin
       end;
       comboSo2rTxSelectPort.ItemIndex := Settings._so2r_tx_port;
       comboSo2rRxSelectPort.ItemIndex := Settings._so2r_rx_port;
+
+      editSo2rCqRptIntervalSec.Text := FloatToStrF(Settings._so2r_cq_rpt_interval_sec, ffFixed, 3, 1);
+      if Settings._so2r_cq_msg_bank = 1 then begin
+         radioSo2rCqMsgBankA.Checked := True;
+      end
+      else begin
+         radioSo2rCqMsgBankB.Checked := True;
+      end;
+      comboSo2rCqMsgNumber.ItemIndex := Settings._so2r_cq_msg_number - 1;
 
       // Sent欄は表示専用
       SentEdit.Text := Settings._sentstr;
@@ -1914,6 +1942,10 @@ end;
 
 procedure TformOptions.CQRepEditKeyPress(Sender: TObject; var Key: char);
 begin
+   if (Key < Char(Ord('0'))) then begin
+      Exit;
+   end;
+
    if not(SysUtils.CharInSet(Key, ['0' .. '9', '.'])) then begin
       Key := #0;
    end;

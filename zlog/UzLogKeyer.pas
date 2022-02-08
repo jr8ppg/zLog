@@ -558,7 +558,8 @@ var
    nID: BYTE;
 begin
    if (FKeyingPort[0] <> tkpUSB) and
-      (FKeyingPort[1] <> tkpUSB) then begin
+      (FKeyingPort[1] <> tkpUSB) and
+      (FKeyingPort[2] <> tkpUSB) then begin
       Exit;
    end;
 
@@ -3022,7 +3023,6 @@ begin
    FWkCallsignSending := False;
    FWkAbort := False;
    RepeatTimer.Enabled := False;
-   RepeatTimer.Interval := Trunc(FCQRepeatIntervalSec * 1000);
 
    //1) Open serial communications port. Use 1200 baud, 8 data bits, no parity
    FComKeying[0].Port := TPortNumber(nPort);
@@ -3599,6 +3599,7 @@ begin
                   {$IFDEF DEGBUG}
                   OutputDebugString(PChar(' *** RepeatTimer started ***'));
                   {$ENDIF}
+                  RepeatTimer.Interval := Trunc(FCQRepeatIntervalSec * 1000);
                   RepeatTimer.Enabled := True;
                   Inc(FCQLoopCount);
                end;

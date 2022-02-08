@@ -5248,12 +5248,26 @@ procedure TMainForm.CQRepeatProc();
 var
    S: String;
    nID: Integer;
+   bank: Integer;
+   msgno: Integer;
 begin
    if FInformation.CqInvert = True then begin
       InvertTx();
    end;
 
-   S := dmZlogGlobal.CWMessage(1, FCurrentCQMessageNo);
+   // SO2RÇÃèÍçáMessageÇêÿÇËë÷Ç¶ÇÈ
+   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+      bank := dmZLogGlobal.Settings._so2r_cq_msg_bank;
+      msgno := dmZLogGlobal.Settings._so2r_cq_msg_number;
+      dmZLogKeyer.CQRepeatIntervalSec := dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec;
+   end
+   else begin
+      bank := 1;
+      msgno := FCurrentCQMessageNo;
+      dmZLogKeyer.CQRepeatIntervalSec := dmZLogGlobal.Settings.CW._cqrepeat;
+   end;
+
+   S := dmZlogGlobal.CWMessage(bank, msgno);
    S := SetStr(UpperCase(S), CurrentQSO);
    nID := FCurrentTx;
 

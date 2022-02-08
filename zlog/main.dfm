@@ -5329,7 +5329,7 @@ object MainForm: TMainForm
       end
       object SerialEdit2A: TEdit
         Tag = 1
-        Left = 175
+        Left = 46
         Top = 5
         Width = 35
         Height = 18
@@ -5452,7 +5452,7 @@ object MainForm: TMainForm
       end
       object SerialEdit2B: TEdit
         Tag = 2
-        Left = 176
+        Left = 46
         Top = 5
         Width = 35
         Height = 18
