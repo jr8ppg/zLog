@@ -4767,15 +4767,15 @@ begin
             exit;
          end;
 
-         if (CtrlZCQLoop = True) and (TEdit(Sender).Name = 'CallsignEdit') then begin
+         if (CtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
             CtrlZBreak;
          end;
 
-         if (FVoiceForm.CtrlZCQLoopVoice = True) and (TEdit(Sender).Name = 'CallsignEdit') then begin
+         if (FVoiceForm.CtrlZCQLoopVoice = True) and (Sender = CallsignEdit) then begin
             FVoiceForm.CtrlZBreakVoice();
          end;
 
-         if (dmZlogGlobal.Settings._jmode) and (TEdit(Sender).Name = 'CallsignEdit') then begin
+         if (dmZlogGlobal.Settings._jmode) and (Sender = CallsignEdit) then begin
             if CallsignEdit.Text = '' then begin
                if (Key <> Ord('7')) and (Key <> Ord('8')) then begin
                   CallsignEdit.Text := 'J';
