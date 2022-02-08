@@ -3258,6 +3258,7 @@ begin
       Buff[1] := Buff[1] or $2;
    end;
 
+   // b2とb3の両方を0にするとKEY/PTT両方が全く出力されなくなる
    if FUseWkOutpSelect = True then begin
       if FWkTx = 0 then begin
          Buff[1] := Buff[1] or $8;
@@ -3266,8 +3267,13 @@ begin
          Buff[1] := Buff[1] or $4;
       end
       else begin
+         // RIG3は全く出力しなくて良い
          //Buff[1] := Buff[1] or $c;  // $4 + $8
       end;
+   end
+   else begin
+      // RIG選択を使用しない時は両方に出力する
+      Buff[1] := Buff[1] or $c;  // $4 + $8
    end;
 
    FComKeying[0].SendData(@Buff, 2);
