@@ -995,6 +995,7 @@ end;
 procedure TdmZLogKeyer.SetCWSendBufCharPTT(nID: Integer; C: Char);
 var
    S: string;
+   m: Integer;
 begin
    if UseWinKeyer = True then begin
       FWkAbort := False;
@@ -1052,16 +1053,29 @@ begin
 //      SetCWSendBufChar(0, Char($90 + nID));
 
       // set send char
-      SetCWSendBufChar(0, C);
+      for m := 1 to codemax do
+         FCWSendBuf[0, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
+      //SetCWSendBufChar(0, C);
 
       if FPTTEnabled then begin
          FPttHoldCounter := FPttDelayAfterCount;
 
          { holds PTT until pttafter expires }
-         SetCWSendBufChar(0, Char($A2));
+//         SetCWSendBufChar(0, ')');  //Char($A2));
+         FCWSendBuf[0, codemax * (tailcwstrptr - 1) + codemax + 1] := $A2; { holds PTT until pttafter expires }
+
+         inc(tailcwstrptr);
+         if tailcwstrptr > charmax then begin
+            tailcwstrptr := 1;
+         end;
 
          FSendOK := True;
          Exit;
+      end;
+
+      inc(tailcwstrptr);
+      if tailcwstrptr > charmax then begin
+         tailcwstrptr := 1;
       end;
 
       // set finish char

@@ -56,6 +56,7 @@ type
     procedure DispRig1State();
     procedure DispRig2State();
     procedure DispRigBothState();
+    procedure SetAfBlend(fOn: Boolean; ratio: Byte);
   public
     { Public êÈåæ }
     property Rx: Integer read GetRx write SetRx;
@@ -106,11 +107,7 @@ var
 begin
    fOn := buttonAfBlend.Down;
 
-   dmZLogKeyer.So2rNeoSetAudioBlendMode(fOn);
-   if fOn then begin
-      ratio := trackBlendRatio.Position;
-      dmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio);
-   end;
+   SetAfBlend(fOn, trackBlendRatio.Position);
 
    MainForm.SetLastFocus();
 end;
@@ -274,7 +271,7 @@ end;
 procedure TformSo2rNeoCp.DispRig1State();
 begin
    buttonAfBlend.Down := False;
-   buttonAfBlend.Click();
+   SetAfBlend(False, trackBlendRatio.Position);
    groupAfControl.Enabled := False;
    ledRig1.Status := True;
    ledRig2.Status := False;
@@ -284,7 +281,7 @@ end;
 procedure TformSo2rNeoCp.DispRig2State();
 begin
    buttonAfBlend.Down := False;
-   buttonAfBlend.Click();
+   SetAfBlend(False, trackBlendRatio.Position);
    groupAfControl.Enabled := False;
    ledRig1.Status := False;
    ledRig2.Status := True;
@@ -296,9 +293,18 @@ begin
    groupAfControl.Enabled := True;
    buttonAfBlend.Down := True;
    buttonAfBlend.Click();
+   SetAfBlend(True, trackBlendRatio.Position);
    ledRig1.Status := False;
    ledRig2.Status := False;
    ledRig3.Status := True;
+end;
+
+procedure TformSo2rNeoCp.SetAfBlend(fOn: Boolean; ratio: Byte);
+begin
+   dmZLogKeyer.So2rNeoSetAudioBlendMode(fOn);
+   if fOn then begin
+      dmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio);
+   end;
 end;
 
 end.
