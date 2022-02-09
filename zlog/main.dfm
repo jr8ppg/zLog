@@ -6993,6 +6993,10 @@ object MainForm: TMainForm
       Caption = 'actionToggleCqInvert'
       OnExecute = actionToggleCqInvertExecute
     end
+    object actionToggleRx: TAction
+      Caption = 'actionToggleRx'
+      OnExecute = actionToggleRxExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

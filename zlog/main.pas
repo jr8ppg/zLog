@@ -643,6 +643,7 @@ type
     ledTx2A: TJvLED;
     ledTx2B: TJvLED;
     actionToggleCqInvert: TAction;
+    actionToggleRx: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -883,6 +884,7 @@ type
     procedure actionSo2rNeoToggleAutoRxSelectExecute(Sender: TObject);
     procedure actionToggleTxExecute(Sender: TObject);
     procedure actionToggleCqInvertExecute(Sender: TObject);
+    procedure actionToggleRxExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1062,6 +1064,8 @@ type
     procedure InitQsoEditPanel();
     procedure UpdateQsoEditPanel(rig: Integer);
     procedure SwitchRig(rig: Integer);
+    procedure SwitchTx(rig: Integer);
+    procedure SwitchRx(rig: Integer);
     procedure ShowTxIndicator();
     procedure InvertTx();
     procedure ShowCurrentQSO();
@@ -5165,8 +5169,6 @@ begin
 
    rig := RigControl.GetCurrentRig();
    SwitchRig(rig);
-   dmZLogKeyer.SetRxRigFlag(rig);
-   dmZLogKeyer.SetTxRigFlag(rig);
 end;
 
 procedure TMainForm.VoiceStopButtonClick(Sender: TObject);
@@ -8350,10 +8352,10 @@ begin
    CtrlZCQLoop := False;
    dmZLogKeyer.CQLoopCount := 999;
    dmZLogKeyer.ClrBuffer();
+
    rig := RigControl.ToggleCurrentRig();
    SwitchRig(rig);
-   dmZlogKeyer.SetRxRigFlag(rig);
-   dmZlogKeyer.SetTxRigFlag(rig);
+
    if Assigned(CallsignEdit.OnChange) then begin
       CallsignEdit.OnChange(nil);
    end;
@@ -9037,6 +9039,28 @@ begin
    OutputDebugString(PChar('--- #146 Toggle CQ Invert ---'));
    {$ENDIF}
    FInformation.CqInvert := not FInformation.CqInvert;
+end;
+
+// #147 SO2R Toggle RX
+procedure TMainForm.actionToggleRxExecute(Sender: TObject);
+var
+   rx: Integer;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('--- #147 ToggleRx ---'));
+   {$ENDIF}
+//   CtrlZCQLoop := False;
+//   dmZLogKeyer.CQLoopCount := 999;
+//   dmZLogKeyer.ClrBuffer();
+
+   rx := FCurrentRx;
+
+   Inc(rx);
+   if rx >= RigControl.MaxRig then begin
+      rx := 0;
+   end;
+
+   SwitchRx(rx + 1);
 end;
 
 procedure TMainForm.RestoreWindowsPos();
@@ -10050,6 +10074,50 @@ begin
    FInformation.Rx := rig - 1;
    FInformation.Tx := rig - 1;
    ShowTxIndicator();
+
+   dmZLogKeyer.SetRxRigFlag(rig);
+   dmZLogKeyer.SetTxRigFlag(rig);
+end;
+
+procedure TMainForm.SwitchTx(rig: Integer);
+begin
+   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+      UpdateQsoEditPanel(rig);
+      if LastFocus = FEditPanel[rig - 1].rcvdNumber then begin
+         EditEnter(FEditPanel[rig - 1].rcvdNumber);
+      end
+      else begin
+         FEditPanel[rig - 1].CallsignEdit.SetFocus();
+         EditEnter(FEditPanel[rig - 1].CallsignEdit);
+      end;
+//      FSo2rNeoCp.Rx := rig - 1;
+   end;
+
+   FCurrentTx := rig - 1;
+   FInformation.Tx := rig - 1;
+   ShowTxIndicator();
+
+   dmZLogKeyer.SetTxRigFlag(rig);
+end;
+
+procedure TMainForm.SwitchRx(rig: Integer);
+begin
+   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+      UpdateQsoEditPanel(rig);
+      if LastFocus = FEditPanel[rig - 1].rcvdNumber then begin
+         EditEnter(FEditPanel[rig - 1].rcvdNumber);
+      end
+      else begin
+         FEditPanel[rig - 1].CallsignEdit.SetFocus();
+         EditEnter(FEditPanel[rig - 1].CallsignEdit);
+      end;
+      FSo2rNeoCp.Rx := rig - 1;
+   end;
+
+   FCurrentRx := rig - 1;
+   FInformation.Rx := rig - 1;
+
+   dmZLogKeyer.SetRxRigFlag(rig);
 end;
 
 procedure TMainForm.ShowTxIndicator();
@@ -10179,8 +10247,6 @@ begin
       // ÉJÉåÉìÉgRIGÇïœçX
       RigControl.SetCurrentRig(rig);
       SwitchRig(rig);
-      dmZLogKeyer.SetRxRigFlag(rig);
-      dmZLogKeyer.SetTxRigFlag(rig);
    end;
 
    if FInformation.CqInvert = True then begin
