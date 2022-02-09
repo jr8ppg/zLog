@@ -1049,7 +1049,7 @@ begin
       // SendOK := False;
 
       // select keying port
-      SetCWSendBufChar(0, Char($90 + nID));
+//      SetCWSendBufChar(0, Char($90 + nID));
 
       // set send char
       SetCWSendBufChar(0, C);
@@ -3210,6 +3210,7 @@ begin
    FWkMessageSending := False;
    FWkMessageStr := '';
    FWkMessageIndex := 1;
+   RepeatTimer.Enabled := False;
 //   WinKeyerSetPinCfg(FPTTEnabled);
 end;
 
