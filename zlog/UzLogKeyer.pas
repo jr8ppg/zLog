@@ -2269,6 +2269,8 @@ procedure TdmZLogKeyer.ClrBuffer;
 var
    m: Integer;
 begin
+   CQLoopCount := 999;
+
    if FUseWinKeyer = True then begin
       WinKeyerClear();
    end

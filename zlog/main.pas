@@ -8347,11 +8347,14 @@ var
    rig: Integer;
 begin
    {$IFDEF DEBUG}
-   OutputDebugString(PChar('--- #71 Toggle RX ---'));
+   OutputDebugString(PChar('--- #71 Toggle RIG ---'));
    {$ENDIF}
-   CtrlZCQLoop := False;
-   dmZLogKeyer.CQLoopCount := 999;
-   dmZLogKeyer.ClrBuffer();
+
+   CWStopButtonClick(Self);
+   VoiceStopButtonClick(Self);
+
+   TabPressed := False;
+   TabPressed2 := False;
 
    rig := RigControl.ToggleCurrentRig();
    SwitchRig(rig);
