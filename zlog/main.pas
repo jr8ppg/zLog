@@ -30,6 +30,7 @@ const
   WM_ZLOG_SPCDATALOADED = (WM_USER + 102);
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
+  WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
 
 type
   TEditPanel = record
@@ -767,6 +768,7 @@ type
     procedure OnZLogSpcDataLoaded( var Message: TMessage ); message WM_ZLOG_SPCDATALOADED;
     procedure OnZLogGetCallsign( var Message: TMessage ); message WM_ZLOG_GETCALLSIGN;
     procedure OnZLogGetVersion( var Message: TMessage ); message WM_ZLOG_GETVERSION;
+    procedure OnZLogSetPttState( var Message: TMessage ); message WM_ZLOG_SETPTTSTATE;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -7179,6 +7181,21 @@ begin
    Message.Result := 2800;
 end;
 
+procedure TMainForm.OnZLogSetPttState( var Message: TMessage );
+var
+   fPtt: Boolean;
+begin
+   if Message.WParam = 0 then begin
+      fPtt := False;
+   end
+   else begin
+      fPtt := True;
+   end;
+
+   FSo2rNeoCp.Ptt := fPtt;
+   FInformation.Ptt := fPtt;
+end;
+
 procedure TMainForm.InitALLJA();
 begin
 //   BandMenu.Items[Ord(b19)].Visible := False;
@@ -10213,13 +10230,22 @@ end;
 
 // WinKeyer状態変更イベント
 procedure TMainForm.DoWkStatusProc(Sender: TObject; tx: Integer; rx: Integer; ptt: Boolean);
+var
+   wp: WPARAM;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('*** DoWkStatusProc(' + IntToStr(tx) + ', ' + IntToStr(rx) + ', ' + BoolToStr(ptt) + ') ***'));
    {$ENDIF}
    FSo2rNeoCp.Rx := rx;
-   FSo2rNeoCp.Ptt := ptt;
-   FInformation.Ptt := ptt;
+
+   if ptt = True then begin
+      wp := 1;
+   end
+   else begin
+      wp := 0;
+   end;
+
+   PostMessage(Handle, WM_ZLOG_SETPTTSTATE, wp, 0);
 end;
 
 // CQリピートイベント
