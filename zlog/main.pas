@@ -3850,6 +3850,14 @@ begin
       actionToggleRig.Execute();
    end;
 
+   if S = 'TRX' then begin
+      actionToggleRx.Execute();
+   end;
+
+   if S = 'TTX' then begin
+      actionToggleTx.Execute();
+   end;
+
    if Pos('TXNR', S) = 1 then begin
       if length(temp) = 4 then
          WriteStatusLine('TX# = ' + IntToStr(dmZlogGlobal.TXNr), True)
@@ -4050,6 +4058,14 @@ begin
 
    if S = 'WKTEST' then begin
       FWinKeyerTester.Show();
+   end;
+
+   if S = 'CQINV' then begin
+      actionToggleCqInvert.Execute();
+   end;
+
+   if S = 'ATRSW' then begin
+      actionToggleAutoRigSwitch.Execute();
    end;
 end;
 
@@ -8859,14 +8875,24 @@ end;
 // #121 CQŠÔŠuUP
 procedure TMainForm.actionCQRepeatIntervalUpExecute(Sender: TObject);
 begin
-   dmZLogGlobal.Settings.CW._cqrepeat := dmZLogGlobal.Settings.CW._cqrepeat + 1.0;
+   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+      dmZLogGlobal.Settings.CW._cqrepeat := dmZLogGlobal.Settings.CW._cqrepeat + 1.0;
+   end
+   else begin
+      dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec := dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec + 1.0;
+   end;
    ApplyCQRepeatInterval();
 end;
 
 // #122 CQŠÔŠuDOWN
 procedure TMainForm.actionCQRepeatIntervalDownExecute(Sender: TObject);
 begin
-   dmZLogGlobal.Settings.CW._cqrepeat := dmZLogGlobal.Settings.CW._cqrepeat - 1.0;
+   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+      dmZLogGlobal.Settings.CW._cqrepeat := dmZLogGlobal.Settings.CW._cqrepeat - 1.0;
+   end
+   else begin
+      dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec := dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec - 1.0;
+   end;
    ApplyCQRepeatInterval();
 end;
 
@@ -9705,11 +9731,20 @@ end;
 procedure TMainForm.ApplyCQRepeatInterval();
 var
    msg: string;
+   interval: double;
 begin
-   dmZLogGlobal.Settings.CW._cqrepeat := Max(Min(dmZLogGlobal.Settings.CW._cqrepeat, 60), 0);
-   dmZLogKeyer.CQRepeatIntervalSec := dmZLogGlobal.Settings.CW._cqrepeat;
+   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+      interval := Max(Min(dmZLogGlobal.Settings.CW._cqrepeat, 60), 0);
+      dmZLogGlobal.Settings.CW._cqrepeat := interval;
+   end
+   else begin
+      interval := Max(Min(dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec, 60), 0);
+      dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec := interval;
+   end;
 
-   msg := 'CQ Repeat Int. ' + Format('%.1f', [dmZLogGlobal.Settings.CW._cqrepeat]) + ' sec.';
+   dmZLogKeyer.CQRepeatIntervalSec := interval;
+
+   msg := 'CQ Repeat Int. ' + Format('%.1f', [interval]) + ' sec.';
    WriteStatusLine(msg, False);
 end;
 
