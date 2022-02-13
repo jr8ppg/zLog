@@ -2517,7 +2517,7 @@ object formOptions: TformOptions
           Top = 135
           Width = 405
           Height = 82
-          Caption = 'CQ Options'
+          Caption = 'Auto RIG switch Options'
           TabOrder = 1
           object Label44: TLabel
             Left = 12

@@ -5274,8 +5274,8 @@ begin
       InvertTx();
    end;
 
-   // SO2R‚Ìê‡Message‚ğØ‚è‘Ö‚¦‚é
-   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+   // ©“®ƒŠƒO•ÏX‚Ìê‡Message‚ğØ‚è‘Ö‚¦‚é
+   if FInformation.AutoRigSwitch = True then begin
       bank := dmZLogGlobal.Settings._so2r_cq_msg_bank;
       msgno := dmZLogGlobal.Settings._so2r_cq_msg_number;
       dmZLogKeyer.CQRepeatIntervalSec := dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec;
