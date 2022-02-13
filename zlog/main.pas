@@ -31,6 +31,7 @@ const
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
+  WM_ZLOG_SETTXINDICATOR = (WM_USER + 203);
 
 type
   TEditPanel = record
@@ -769,6 +770,7 @@ type
     procedure OnZLogGetCallsign( var Message: TMessage ); message WM_ZLOG_GETCALLSIGN;
     procedure OnZLogGetVersion( var Message: TMessage ); message WM_ZLOG_GETVERSION;
     procedure OnZLogSetPttState( var Message: TMessage ); message WM_ZLOG_SETPTTSTATE;
+    procedure OnZLogSetTxIndicator( var Message: TMessage ); message WM_ZLOG_SETTXINDICATOR;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -5176,17 +5178,12 @@ begin
 end;
 
 procedure TMainForm.CWStopButtonClick(Sender: TObject);
-var
-   rig: Integer;
 begin
    CtrlZCQLoop := False;
    dmZLogKeyer.ClrBuffer;
    CWPlayButton.Visible := False;
    CWPauseButton.Visible := True;
    dmZLogKeyer.WinKeyerAbort();
-
-   rig := RigControl.GetCurrentRig();
-   SwitchRig(rig);
 end;
 
 procedure TMainForm.VoiceStopButtonClick(Sender: TObject);
@@ -7210,6 +7207,11 @@ begin
 
    FSo2rNeoCp.Ptt := fPtt;
    FInformation.Ptt := fPtt;
+end;
+
+procedure TMainForm.OnZLogSetTxIndicator( var Message: TMessage );
+begin
+   ShowTxIndicator();
 end;
 
 procedure TMainForm.InitALLJA();
@@ -10128,10 +10130,12 @@ begin
    FCurrentTx := rig - 1;
    FInformation.Rx := rig - 1;
    FInformation.Tx := rig - 1;
-   ShowTxIndicator();
 
    dmZLogKeyer.SetRxRigFlag(rig);
    dmZLogKeyer.SetTxRigFlag(rig);
+
+   // ShowTxIndicator();
+   PostMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);
 end;
 
 procedure TMainForm.SwitchTx(rig: Integer);
