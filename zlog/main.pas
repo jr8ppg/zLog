@@ -8161,7 +8161,6 @@ end;
 procedure TMainForm.actionClearCallAndRptExecute(Sender: TObject);
 begin
    EditedSinceTABPressed := tabstate_normal;
-   CWStopButtonClick(Self);
    CallsignEdit.Clear;
    NumberEdit.Clear;
    if Assigned(MemoEdit) then MemoEdit.Clear;
@@ -8362,7 +8361,6 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actoinClearCallAndNumAftFocusExecute---'));
    {$ENDIF}
-   CWStopButtonClick(Self);
    CallsignEdit.Clear();
    NumberEdit.Clear();
    if Assigned(MemoEdit) then MemoEdit.Clear();
@@ -8376,7 +8374,7 @@ begin
    FChatForm.Show;
 end;
 
-// #71 RX RIGêÿÇËë÷Ç¶ / Alt+. , Shift+X
+// #71 TX/RX RIGêÿÇËë÷Ç¶ / Alt+. , Shift+X
 procedure TMainForm.actionToggleRigExecute(Sender: TObject);
 var
    rig: Integer;
