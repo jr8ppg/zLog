@@ -5812,6 +5812,7 @@ procedure TMainForm.menuOptionsClick(Sender: TObject);
 var
    f: TformOptions;
    b: TBand;
+   rig: Integer;
 begin
    f := TformOptions.Create(Self);
    try
@@ -5821,6 +5822,7 @@ begin
       dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZlogGlobal.Settings._keyingport[3]));
       RigControl.Stop();
       dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
+      rig := RigControl.GetCurrentRig();
 
       f.EditMode := 0;
 
@@ -5837,7 +5839,7 @@ begin
       RenewVoiceToolBar;
 
       InitQsoEditPanel();
-      UpdateQsoEditPanel(1);
+      UpdateQsoEditPanel(rig);
       LastFocus := CallsignEdit;
       ShowCurrentQSO();
 
