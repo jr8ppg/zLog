@@ -1457,10 +1457,14 @@ begin
          cwstrptr := 0;
       end;
 
-      $DD: begin
+      $CD: begin
          if Assigned(FOnSendRepeatEvent) then begin
             FOnSendRepeatEvent(Self, FCQLoopCount);
          end;
+         FKeyingCounter := 100;
+      end;
+
+      $DD: begin
          FKeyingCounter := FCQRepeatIntervalCount;
       end;
 
@@ -2108,7 +2112,8 @@ begin
    FCodeTable[Ord('~')][15] := 9;
 
    FCodeTable[Ord('@')][1] := $DD;
-   FCodeTable[Ord('@')][2] := $CC;
+   FCodeTable[Ord('@')][2] := $CD;
+   FCodeTable[Ord('@')][3] := $CC;
 
    FCodeTable[Ord('|')][1] := $D1;
    FCodeTable[Ord('|')][2] := $C1;
