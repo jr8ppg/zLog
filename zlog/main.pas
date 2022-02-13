@@ -32,6 +32,7 @@ const
   WM_ZLOG_GETVERSION = (WM_USER + 201);
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
   WM_ZLOG_SETTXINDICATOR = (WM_USER + 203);
+  WM_ZLOG_SETFOCUS_CALLSIGN = (WM_USER + 204);
 
 type
   TEditPanel = record
@@ -771,6 +772,7 @@ type
     procedure OnZLogGetVersion( var Message: TMessage ); message WM_ZLOG_GETVERSION;
     procedure OnZLogSetPttState( var Message: TMessage ); message WM_ZLOG_SETPTTSTATE;
     procedure OnZLogSetTxIndicator( var Message: TMessage ); message WM_ZLOG_SETTXINDICATOR;
+    procedure OnZLogSetFocusCallsign( var Message: TMessage ); message WM_ZLOG_SETFOCUS_CALLSIGN;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -6038,7 +6040,7 @@ begin
 
    // SO2Rの場合、現在RIGとクリックされたControlのRIGが違うと強制切り替え
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-      if FCurrentRx <> rig then begin
+      if FCurrentRx <> (rig - 1) then begin
          if RigControl.SetCurrentRig(rig) = True then begin
             SwitchRig(rig);
          end;
@@ -7212,6 +7214,18 @@ end;
 procedure TMainForm.OnZLogSetTxIndicator( var Message: TMessage );
 begin
    ShowTxIndicator();
+end;
+
+procedure TMainForm.OnZLogSetFocusCallsign( var Message: TMessage );
+var
+   nID: Integer;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** OnZLogSetFocusCallsign() w = ' + IntToStr(Message.WParam) + ' ***'));
+   {$ENDIF}
+   nID := Message.WParam;
+   FEditPanel[nID].CallsignEdit.SetFocus();
+   LastFocus := FEditPanel[nID].CallsignEdit;
 end;
 
 procedure TMainForm.InitALLJA();
@@ -10118,8 +10132,7 @@ begin
          EditEnter(FEditPanel[rig - 1].rcvdNumber);
       end
       else begin
-         FEditPanel[rig - 1].CallsignEdit.SetFocus();
-         EditEnter(FEditPanel[rig - 1].CallsignEdit);
+         PostMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rig - 1, 0);
       end;
       FSo2rNeoCp.Rx := rig - 1;
    end;
@@ -10165,8 +10178,7 @@ begin
          EditEnter(FEditPanel[rig - 1].rcvdNumber);
       end
       else begin
-         FEditPanel[rig - 1].CallsignEdit.SetFocus();
-         EditEnter(FEditPanel[rig - 1].CallsignEdit);
+         PostMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rig - 1, 0);
       end;
       FSo2rNeoCp.Rx := rig - 1;
    end;
@@ -10175,6 +10187,7 @@ begin
    FInformation.Rx := rig - 1;
 
    dmZLogKeyer.SetRxRigFlag(rig);
+   RigControl.SetCurrentRig(rig);
 end;
 
 procedure TMainForm.ShowTxIndicator();
@@ -10212,7 +10225,8 @@ begin
 
    dmZLogKeyer.SetTxRigFlag(tx + 1);
 
-   ShowTxIndicator();
+   // ShowTxIndicator();
+   PostMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);
 end;
 
 procedure TMainForm.ShowCurrentQSO();
@@ -10293,6 +10307,9 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('*** DoSendRepeatProc ***'));
    {$ENDIF}
+
+   // CQモードに変更
+   SetCQ(True);
 
    rig := RigControl.GetCurrentRig();
 
