@@ -910,11 +910,6 @@ begin
             usbif4cwSetPTTParam(i, 0, 0);
          end;
       end;
-
-      if (FKeyingPort[i] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
-         WinKeyerSetPinCfg(FPTTEnabled);
-         WinKeyerSetPTTDelay(FPttDelayBeforeTime, FPttDelayAfterTime);
-      end;
    end;
 end;
 
