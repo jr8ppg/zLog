@@ -5815,6 +5815,7 @@ var
    rig: Integer;
 begin
    f := TformOptions.Create(Self);
+   rig := RigControl.GetCurrentRig();
    try
       // KeyingとRigControlを一旦終了
       dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
@@ -5822,7 +5823,6 @@ begin
       dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZlogGlobal.Settings._keyingport[3]));
       RigControl.Stop();
       dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
-      rig := RigControl.GetCurrentRig();
 
       f.EditMode := 0;
 
@@ -5877,7 +5877,7 @@ begin
       f.Release();
 
       // リグコントロール/Keying再開
-      RigControl.ImplementOptions();
+      RigControl.ImplementOptions(rig);
 
       // Accessibility
       if LastFocus.Visible then begin

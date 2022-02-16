@@ -444,7 +444,7 @@ type
     function StatusSummaryFreq(kHz : integer): string; // returns current rig's band freq mode
     function StatusSummaryFreqHz(Hz : integer): string; // returns current rig's band freq mode
     function StatusSummary: string; // returns current rig's band freq mode
-    procedure ImplementOptions();
+    procedure ImplementOptions(rig: Integer = 1);
     procedure Stop();
     function SetCurrentRig(N : integer): Boolean;
     function GetCurrentRig : integer;
@@ -1467,7 +1467,7 @@ begin
    end;
 end;
 
-procedure TRigControl.ImplementOptions();
+procedure TRigControl.ImplementOptions(rig: Integer);
 begin
    Stop();
 
@@ -1500,7 +1500,7 @@ begin
       end;
    end;
 
-   SetCurrentRig(1);
+   SetCurrentRig(rig);
 
    SetSendFreq();
 
