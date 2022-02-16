@@ -643,6 +643,8 @@ begin
 end;
 
 procedure TdmZLogKeyer.SetTxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+var
+   i: Integer;
 begin
    if (flag = 0) or (flag = 1) then begin
       FWkTx := 0;
@@ -679,11 +681,38 @@ begin
       end;
       Exit;
    end;
+
+   // WinKeyerÇÃèÍçá
+   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
+      WinKeyerSetPinCfg(FPTTEnabled);
+      Exit;
+   end;
+
+   for i := 0 to 2 do begin
+      // USBIF4CWÇ≈ÇÃRIG SELECT
+      if FKeyingPort[i] = tkpUSB then begin
+         EnterCriticalSection(FUsbPortDataLock);
+         case flag of
+            0, 1: begin
+               FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData or $04;
+            end;
+
+            2: begin
+               FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData and $FB;
+            end;
+
+            else begin
+               FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData;
+            end;
+         end;
+
+         SendUsbPortData(i);
+         LeaveCriticalSection(FUsbPortDataLock);
+      end;
+   end;
 end;
 
 procedure TdmZLogKeyer.SetRxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
-var
-   i: Integer;
 begin
    if (flag = 0) or (flag = 1) then begin
       FWkRx := 0;
@@ -741,35 +770,6 @@ begin
          end;
       end;
       Exit;
-   end;
-
-   // WinKeyerÇÃèÍçá
-   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
-      WinKeyerSetPinCfg(FPTTEnabled);
-      Exit;
-   end;
-
-   for i := 0 to 2 do begin
-      // USBIF4CWÇ≈ÇÃRIG SELECT
-      if FKeyingPort[i] = tkpUSB then begin
-         EnterCriticalSection(FUsbPortDataLock);
-         case flag of
-            0, 1: begin
-               FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData or $04;
-            end;
-
-            2: begin
-               FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData and $FB;
-            end;
-
-            else begin
-               FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData;
-            end;
-         end;
-
-         SendUsbPortData(i);
-         LeaveCriticalSection(FUsbPortDataLock);
-      end;
    end;
 end;
 
