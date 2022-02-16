@@ -900,7 +900,7 @@ var
 begin
    FPTTEnabled := _on;
 
-   for i := 0 to 1 do begin
+   for i := 0 to 2 do begin
       if FKeyingPort[i] = tkpUSB then begin
          if _on = True then begin
             usbif4cwSetPTTParam(i, FPttDelayBeforeTime, FPttDelayAfterTime);
@@ -1541,7 +1541,7 @@ begin
 
       FKeyerWPM := wpm;
 
-      for i := 0 to 1 do begin
+      for i := 0 to 2 do begin
          if (FKeyingPort[i] = tkpUSB) and (FUsbif4cwSyncWpm = True) then begin
             usbif4cwSetWPM(i, FKeyerWPM);
          end;
@@ -2774,7 +2774,7 @@ var
 begin
    FPaddleReverse := fReverse;
 
-   for i := 0 to 1 do begin
+   for i := 0 to 2 do begin
       if FKeyingPort[i] = tkpUSB then begin
          if fReverse = True then begin
             usbif4cwSetPaddle(i, 1);
