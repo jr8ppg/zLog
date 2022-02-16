@@ -7,6 +7,11 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.Buttons, Vcl.StdCtrls,
   System.Actions, Vcl.ActnList, JvExControls, JvLED, Vcl.WinXCtrls;
 
+const
+  WM_ZLOG_SO2RNEO_SETRX = (WM_USER + 1);
+  WM_ZLOG_SO2RNEO_SETPTT = (WM_USER + 2);
+  WM_ZLOG_SO2RNEO_CANRXSEL = (WM_USER + 3);
+
 type
   TformSo2rNeoCp = class(TForm)
     groupAfControl: TGroupBox;
@@ -32,6 +37,9 @@ type
     ledRig3: TJvLED;
     ToggleSwitch1: TToggleSwitch;
     actionSo2rNeoToggleAutoRxSelect: TAction;
+    procedure OnZLogSo2rNeoSetRx( var Message: TMessage ); message WM_ZLOG_SO2RNEO_SETRX;
+    procedure OnZLogSo2rNeoSetPtt( var Message: TMessage ); message WM_ZLOG_SO2RNEO_SETPTT;
+    procedure OnZLogSo2rNeoCanRxSel( var Message: TMessage ); message WM_ZLOG_SO2RNEO_CANRXSEL;
     procedure FormCreate(Sender: TObject);
     procedure buttonRigClick(Sender: TObject);
     procedure actionSo2rNeoSelRx1Execute(Sender: TObject);
@@ -98,6 +106,21 @@ begin
          MainForm.SetLastFocus();
       // VK_ALT
    end;
+end;
+
+procedure TformSo2rNeoCp.OnZLogSo2rNeoSetRx( var Message: TMessage );
+begin
+   SetRx(Message.WParam);
+end;
+
+procedure TformSo2rNeoCp.OnZLogSo2rNeoSetPtt( var Message: TMessage );
+begin
+   SetPtt(Boolean(Message.WParam));
+end;
+
+procedure TformSo2rNeoCp.OnZLogSo2rNeoCanRxSel( var Message: TMessage );
+begin
+   SetCanRxSel(Boolean(Message.WParam));
 end;
 
 procedure TformSo2rNeoCp.buttonAfBlendClick(Sender: TObject);

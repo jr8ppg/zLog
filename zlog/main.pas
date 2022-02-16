@@ -7199,18 +7199,8 @@ begin
 end;
 
 procedure TMainForm.OnZLogSetPttState( var Message: TMessage );
-var
-   fPtt: Boolean;
 begin
-   if Message.WParam = 0 then begin
-      fPtt := False;
-   end
-   else begin
-      fPtt := True;
-   end;
-
-   FSo2rNeoCp.Ptt := fPtt;
-   FInformation.Ptt := fPtt;
+   FInformation.Ptt := Boolean(Message.WParam);
 end;
 
 procedure TMainForm.OnZLogSetTxIndicator( var Message: TMessage );
@@ -10136,7 +10126,9 @@ begin
       else begin
          PostMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rig - 1, 0);
       end;
-      FSo2rNeoCp.Rx := rig - 1;
+
+//      FSo2rNeoCp.Rx := rig - 1;
+      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rig - 1, 0);
    end;
 
    FCurrentRx := rig - 1;
@@ -10182,7 +10174,8 @@ begin
       else begin
          PostMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rig - 1, 0);
       end;
-      FSo2rNeoCp.Rx := rig - 1;
+//      FSo2rNeoCp.Rx := rig - 1;
+      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rig - 1, 0);
    end;
 
    FCurrentRx := rig - 1;
@@ -10260,7 +10253,8 @@ begin
 
    if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
       dmZLogKeyer.So2rNeoNormalRx(tx);
-      FSo2rNeoCp.CanRxSel := False;
+//      FSo2rNeoCp.CanRxSel := False;
+      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_CANRXSEL, Integer(False), 0);
    end;
 end;
 
@@ -10277,28 +10271,22 @@ begin
 
    if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
       dmZLogKeyer.So2rNeoNormalRx(tx);
-      FSo2rNeoCp.CanRxSel := False;
+//      FSo2rNeoCp.CanRxSel := False;
+      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_CANRXSEL, Integer(False), 0);
    end;
 end;
 
 // WinKeyer状態変更イベント
 procedure TMainForm.DoWkStatusProc(Sender: TObject; tx: Integer; rx: Integer; ptt: Boolean);
-var
-   wp: WPARAM;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('*** DoWkStatusProc(' + IntToStr(tx) + ', ' + IntToStr(rx) + ', ' + BoolToStr(ptt) + ') ***'));
    {$ENDIF}
-   FSo2rNeoCp.Rx := rx;
+//   FSo2rNeoCp.Rx := rx;
+   PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rx, 0);
 
-   if ptt = True then begin
-      wp := 1;
-   end
-   else begin
-      wp := 0;
-   end;
-
-   PostMessage(Handle, WM_ZLOG_SETPTTSTATE, wp, 0);
+   PostMessage(Handle, WM_ZLOG_SETPTTSTATE, Integer(ptt), 0);
+   PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETPTT, Integer(ptt), 0);
 end;
 
 // CQリピートイベント
