@@ -10077,7 +10077,6 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
       FEditPanel[id].BandEdit.Enabled := False;
    end;
 begin
-   FCurrentRx := rig;
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
       LastFocus := CallsignEdit1;
       Exit;
@@ -10109,8 +10108,8 @@ begin
       end;
       if Assigned(RigControl) then begin
          if Assigned(RigControl.Rigs[rig]) then begin
-            UpdateBand(RigControl.Rigs[rig].CurrentBand);
-            UpdateMode(RigControl.Rigs[rig].CurrentMode);
+//            UpdateBand(RigControl.Rigs[rig].CurrentBand);
+//            UpdateMode(RigControl.Rigs[rig].CurrentMode);
          end;
       end;
    end;
@@ -10118,6 +10117,14 @@ end;
 
 procedure TMainForm.SwitchRig(rig: Integer);
 begin
+   FCurrentRx := rig - 1;
+   FCurrentTx := rig - 1;
+   FInformation.Rx := rig - 1;
+   FInformation.Tx := rig - 1;
+
+   dmZLogKeyer.SetRxRigFlag(rig);
+   dmZLogKeyer.SetTxRigFlag(rig);
+
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       UpdateQsoEditPanel(rig);
       if LastFocus = FEditPanel[rig - 1].rcvdNumber then begin
@@ -10131,20 +10138,18 @@ begin
       PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rig - 1, 0);
    end;
 
-   FCurrentRx := rig - 1;
-   FCurrentTx := rig - 1;
-   FInformation.Rx := rig - 1;
-   FInformation.Tx := rig - 1;
-
-   dmZLogKeyer.SetRxRigFlag(rig);
-   dmZLogKeyer.SetTxRigFlag(rig);
-
    // ShowTxIndicator();
    PostMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);
 end;
 
 procedure TMainForm.SwitchTx(rig: Integer);
 begin
+   FCurrentTx := rig - 1;
+   FInformation.Tx := rig - 1;
+   ShowTxIndicator();
+
+   dmZLogKeyer.SetTxRigFlag(rig);
+
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       UpdateQsoEditPanel(rig);
       if LastFocus = FEditPanel[rig - 1].rcvdNumber then begin
@@ -10156,16 +10161,16 @@ begin
       end;
 //      FSo2rNeoCp.Rx := rig - 1;
    end;
-
-   FCurrentTx := rig - 1;
-   FInformation.Tx := rig - 1;
-   ShowTxIndicator();
-
-   dmZLogKeyer.SetTxRigFlag(rig);
 end;
 
 procedure TMainForm.SwitchRx(rig: Integer);
 begin
+   FCurrentRx := rig - 1;
+   FInformation.Rx := rig - 1;
+
+   dmZLogKeyer.SetRxRigFlag(rig);
+   RigControl.SetCurrentRig(rig);
+
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       UpdateQsoEditPanel(rig);
       if LastFocus = FEditPanel[rig - 1].rcvdNumber then begin
@@ -10177,12 +10182,6 @@ begin
 //      FSo2rNeoCp.Rx := rig - 1;
       PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rig - 1, 0);
    end;
-
-   FCurrentRx := rig - 1;
-   FInformation.Rx := rig - 1;
-
-   dmZLogKeyer.SetRxRigFlag(rig);
-   RigControl.SetCurrentRig(rig);
 end;
 
 procedure TMainForm.ShowTxIndicator();
