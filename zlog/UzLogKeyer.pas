@@ -3261,6 +3261,7 @@ begin
    //              e  e  i  T
    //              y  y  d  T
    //              1  2  e
+   // b2とb3はdatasheetと現物は逆になっている
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_SET_PINCFG_CMD;
    Buff[1] := $a0;
@@ -3278,10 +3279,10 @@ begin
    // b2とb3の両方を0にするとKEY/PTT両方が全く出力されなくなる
    if FUseWkOutpSelect = True then begin
       if FWkTx = 0 then begin
-         Buff[1] := Buff[1] or $8;
+         Buff[1] := Buff[1] or $4;
       end
       else if FWkTx = 1 then begin
-         Buff[1] := Buff[1] or $4;
+         Buff[1] := Buff[1] or $8;
       end
       else begin
          // RIG3は全く出力しなくて良い
