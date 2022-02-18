@@ -6997,6 +6997,14 @@ object MainForm: TMainForm
       Caption = 'actionToggleRx'
       OnExecute = actionToggleRxExecute
     end
+    object actionMatchRxToTx: TAction
+      Caption = 'actionMatchRxToTx'
+      OnExecute = actionMatchRxToTxExecute
+    end
+    object actionMatchTxToRx: TAction
+      Caption = 'actionMatchTxToRx'
+      OnExecute = actionMatchTxToRxExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

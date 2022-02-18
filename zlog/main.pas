@@ -647,6 +647,8 @@ type
     ledTx2B: TJvLED;
     actionToggleCqInvert: TAction;
     actionToggleRx: TAction;
+    actionMatchRxToTx: TAction;
+    actionMatchTxToRx: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -891,6 +893,8 @@ type
     procedure actionToggleTxExecute(Sender: TObject);
     procedure actionToggleCqInvertExecute(Sender: TObject);
     procedure actionToggleRxExecute(Sender: TObject);
+    procedure actionMatchRxToTxExecute(Sender: TObject);
+    procedure actionMatchTxToRxExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -4070,6 +4074,14 @@ begin
 
    if S = 'ATRSW' then begin
       actionToggleAutoRigSwitch.Execute();
+   end;
+
+   if S = 'RX2TX' then begin
+      actionMatchRxToTx.Execute();
+   end;
+
+   if S = 'TX2RX' then begin
+      actionMatchTxToRx.Execute();
    end;
 end;
 
@@ -9113,6 +9125,32 @@ begin
    end;
 
    SwitchRx(rx + 1);
+end;
+
+// #148 SO2R Match RX to TX
+procedure TMainForm.actionMatchRxToTxExecute(Sender: TObject);
+var
+   tx: Integer;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('--- #148 Match RX to TX ---'));
+   {$ENDIF}
+
+   tx := FCurrentTx;
+   SwitchRx(tx + 1);
+end;
+
+// #149 SO2R Match TX to RX
+procedure TMainForm.actionMatchTxToRxExecute(Sender: TObject);
+var
+   rx: Integer;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('--- #149 Match TX to RX ---'));
+   {$ENDIF}
+
+   rx := FCurrentRx;
+   SwitchTx(rx + 1);
 end;
 
 procedure TMainForm.RestoreWindowsPos();
