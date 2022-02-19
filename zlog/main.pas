@@ -10163,6 +10163,12 @@ begin
    dmZLogKeyer.SetRxRigFlag(rig);
    dmZLogKeyer.SetTxRigFlag(rig);
 
+   // SetCurrentRig()ÇÕToggleRigì‡Ç≈ä˘Ç…çsÇÌÇÍÇƒÇ¢ÇÈ
+   if Assigned(RigControl.Rig) then begin
+      UpdateBand(RigControl.Rig.CurrentBand);
+      UpdateMode(RigControl.Rig.CurrentMode);
+   end;
+
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       UpdateQsoEditPanel(rig);
       if LastFocus = FEditPanel[rig - 1].rcvdNumber then begin
@@ -10208,6 +10214,10 @@ begin
 
    dmZLogKeyer.SetRxRigFlag(rig);
    RigControl.SetCurrentRig(rig);
+   if Assigned(RigControl.Rig) then begin
+      UpdateBand(RigControl.Rig.CurrentBand);
+      UpdateMode(RigControl.Rig.CurrentMode);
+   end;
 
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       UpdateQsoEditPanel(rig);
