@@ -6773,7 +6773,6 @@ object MainForm: TMainForm
     end
     object actionToggleVFO: TAction
       Caption = 'actionToggleVFO'
-      ShortCut = 8278
       OnExecute = actionToggleVFOExecute
     end
     object actionEditLastQSO: TAction

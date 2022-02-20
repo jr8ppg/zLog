@@ -263,9 +263,9 @@ const
     '',                 // #142 actionShowInformation
     '',                 // #143 actionToggleAutoRigSwitch
     '',                 // #144 actionSo2rNeoToggleAutoRxSelect
-    '',                 // #145 actionToggleTx
+    'Shift+V',          // #145 actionToggleTx
     '',                 // #146 actionToggleCqInvert
-    '',                 // #147 actionToggleRx
+    'Shift+C',          // #147 actionToggleRx
     '',                 // #148 actionMatchRxToTx
     ''                  // #149 actionMatchTxToRx
   );
