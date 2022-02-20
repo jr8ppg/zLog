@@ -5,7 +5,7 @@ unit UzLogKeyer;
 // CW Keyer Module
 //
 
-// ƒTƒCƒhƒg[ƒ“‚ğg—p‚·‚éê‡A‰º‹L‚Ì’è‹`‚ğ—LŒø‚É‚·‚é —vToneGen.pas
+// ã‚µã‚¤ãƒ‰ãƒˆãƒ¼ãƒ³ã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã€ä¸‹è¨˜ã®å®šç¾©ã‚’æœ‰åŠ¹ã«ã™ã‚‹ è¦ToneGen.pas
 {$DEFINE USESIDETONE}
 
 interface
@@ -91,7 +91,7 @@ type
     procedure HidControllerDeviceCreateError(Controller: TJvHidDeviceController;
       PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
   private
-    { Private éŒ¾ }
+    { Private å®£è¨€ }
     FDefautCom: array[0..2] of TCommPortDriver;
     FComKeying: array[0..2] of TCommPortDriver;
 
@@ -103,7 +103,7 @@ type
 
     FUsbInfo: array[0..2] of TUsbInfo;
 
-    // Œ»İ‘—M’†‚Ìƒ|[ƒgID
+    // ç¾åœ¨é€ä¿¡ä¸­ã®ãƒãƒ¼ãƒˆID
     FWkRx: Integer;
     FWkTx: Integer;
 
@@ -263,7 +263,7 @@ type
     procedure SetSo2rRxSelectPort(port: TKeyingPort);
     procedure SetSo2rTxSelectPort(port: TKeyingPort);
   public
-    { Public éŒ¾ }
+    { Public å®£è¨€ }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
     procedure CloseBGK; {Closes BGK}
 
@@ -498,7 +498,7 @@ begin
    HidController.Free();
 end;
 
-// Device”²‹AUnplug->Removal->Change‚Ì‡‚Åfire event‚·‚é
+// DeviceæŠœå»æ™‚ã€Unplug->Removal->Changeã®é †ã§fire eventã™ã‚‹
 procedure TdmZLogKeyer.DoDeviceChanges(Sender: TObject);
 begin
    {$IFDEF DEBUG}
@@ -592,7 +592,7 @@ begin
         IntToHex(p[7], 2);
    {$ENDIF}
 
-   // ‘O‰ñ‚ÆƒXƒe[ƒ^ƒX‚É•Ï‰»‚ª‚ ‚Á‚½‚ç
+   // å‰å›ã¨ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã«å¤‰åŒ–ãŒã‚ã£ãŸã‚‰
    if (p[0] <> FUsbInfo[nID].FPrevPortIn[0]) or
       (p[1] <> FUsbInfo[nID].FPrevPortIn[1]) or
       (p[2] <> FUsbInfo[nID].FPrevPortIn[2]) or
@@ -609,7 +609,7 @@ begin
       FUsbInfo[nID].FUsbPortIn[0] := p[6];
       FUsbInfo[nID].FUsbPortIn[1] := p[7];
 
-      // ƒpƒhƒ‹“ü—Í‚ª‚ ‚Á‚½‚©H
+      // ãƒ‘ãƒ‰ãƒ«å…¥åŠ›ãŒã‚ã£ãŸã‹ï¼Ÿ
       if ((FUsbInfo[nID].FUsbPortIn[1] and $01) = 0) or
          ((FUsbInfo[nID].FUsbPortIn[1] and $04) = 0) then begin
          {$IFDEF DEBUG}
@@ -656,7 +656,7 @@ begin
       FWkTx := 2;
    end;
 
-   // COMƒ|[ƒg‚Å‚ÌRIG SELECT
+   // COMãƒãƒ¼ãƒˆã§ã®RIG SELECT
    if (FSo2rTxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
       case flag of
          0: begin
@@ -682,14 +682,14 @@ begin
       Exit;
    end;
 
-   // WinKeyer‚Ìê‡
+   // WinKeyerã®å ´åˆ
    if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
       WinKeyerSetPinCfg(FPTTEnabled);
       Exit;
    end;
 
    for i := 0 to 2 do begin
-      // USBIF4CW‚Å‚ÌRIG SELECT
+      // USBIF4CWã§ã®RIG SELECT
       if FKeyingPort[i] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
          case flag of
@@ -724,7 +724,7 @@ begin
       FWkRx := 2;
    end;
 
-   // COMƒ|[ƒg‚Å‚ÌRIG SELECT
+   // COMãƒãƒ¼ãƒˆã§ã®RIG SELECT
    if (FSo2rRxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
       case flag of
          0: begin
@@ -750,7 +750,7 @@ begin
       Exit;
    end;
 
-   // SO2R Neo‚Ìê‡
+   // SO2R Neoã®å ´åˆ
    if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
       case flag of
          0: begin
@@ -995,29 +995,29 @@ begin
    if UseWinKeyer = True then begin
       FWkAbort := False;
 
-      // “Áê•¶š‚ğƒfƒR[ƒh
+      // ç‰¹æ®Šæ–‡å­—ã‚’ãƒ‡ã‚³ãƒ¼ãƒ‰
       S := WinKeyerBuildMessage(C);
 
-      // ‰‰ñ‘—MH
+      // åˆå›é€ä¿¡ï¼Ÿ
       if FWkMessageSending = False then begin
          // PTT-ON
          ControlPTT(nID, True);
 
-         // SO2R Neo—˜—p‚ÍRIGØ‚è‘Ö‚¦EEETX=RX‚Å
+         // SO2R Neoåˆ©ç”¨æ™‚ã¯RIGåˆ‡ã‚Šæ›¿ãˆãƒ»ãƒ»ãƒ»TX=RXã§
          if FUseWkSo2rNeo = True then begin
             So2rNeoSwitchRig(nID, nID)
          end;
 
-         // ‘—M’†
+         // é€ä¿¡ä¸­
          FWkMessageSending := True;
 
-         // S[1]‚ª$1b‚Í‡‚í‚¹•¶š $1b‚Íecho back‚µ‚È‚¢
+         // S[1]ãŒ$1bã¯åˆã‚ã›æ–‡å­— $1bã¯echo backã—ãªã„
          if Char(S[1]) = Char($1b) then begin
             FWkMessageIndex := 1;
             FWkMessageStr := Copy(S, 2);
             FComKeying[0].SendString(AnsiString(S));
          end
-         else begin  // ’ÊíƒLƒƒƒ‰ƒNƒ^
+         else begin  // é€šå¸¸ã‚­ãƒ£ãƒ©ã‚¯ã‚¿
             FWkMessageIndex := 1;
             FWkMessageStr := S;
             C := FWkMessageStr[FWkMessageIndex];
@@ -2462,7 +2462,7 @@ begin
    fUseCOM := False;
    UsbInfoClearAll();
 
-   // RIG1/RIG2/RIG3‘S‚Ä–³‚µ
+   // RIG1/RIG2/RIG3å…¨ã¦ç„¡ã—
    if (FKeyingPort[0] = tkpNone) and
       (FKeyingPort[1] = tkpNone) and
       (FKeyingPort[2] = tkpNone) then begin
@@ -2489,19 +2489,19 @@ begin
       end;
    end;
 
-   // RIG1‚ªCOMƒ|[ƒg‚Å
+   // RIG1ãŒCOMãƒãƒ¼ãƒˆã§
    if (FKeyingPort[0] in [tkpSerial1 .. tkpSerial20]) then begin
-      // RIG1 = RIG2 ‚È‚ç RIG1
+      // RIG1 = RIG2 ãªã‚‰ RIG1
       if (FKeyingPort[0] = FKeyingPort[1]) then begin
          FComKeying[1] := FComKeying[0];
       end;
 
-      // RIG1 = RIG3 ‚È‚ç RIG1
+      // RIG1 = RIG3 ãªã‚‰ RIG1
       if (FKeyingPort[0] = FKeyingPort[2]) then begin
          FComKeying[2] := FComKeying[0];
       end;
 
-      // RIG2 = RIG3 ‚È‚ç RIG2
+      // RIG2 = RIG3 ãªã‚‰ RIG2
       if (FKeyingPort[1] = FKeyingPort[2]) then begin
          FComKeying[2] := FComKeying[1];
       end;
@@ -2516,7 +2516,7 @@ begin
    end;
 
 {
-   // RIG1/RIG2‹¤‚ÉUSB
+   // RIG1/RIG2å…±ã«USB
    if ((FKeyingPort[0] = tkpUSB) and (FKeyingPort[1] = tkpUSB)) then begin
       case usbdevlist.Count of
          0: begin
@@ -2540,7 +2540,7 @@ begin
       USB_ON();
    end;
 
-   // RIG1‚ªUSB,RIG2‚ª‚È‚µ
+   // RIG1ãŒUSB,RIG2ãŒãªã—
    if ((FKeyingPort[0] = tkpUSB) and (FKeyingPort[1] = tkpNone)) then begin
       case usbdevlist.Count of
          0: begin
@@ -2560,7 +2560,7 @@ begin
       Exit;
    end;
 
-   // RIG1‚ª‚È‚µ,RIG2‚ªUSB
+   // RIG1ãŒãªã—,RIG2ãŒUSB
    if ((FKeyingPort[0] = tkpNone) and (FKeyingPort[1] = tkpUSB)) then begin
       case usbdevlist.Count of
          0: begin
@@ -2580,7 +2580,7 @@ begin
       Exit;
    end;
 
-   // RIG1,RIG2‚ªCOMƒ|[ƒg
+   // RIG1,RIG2ãŒCOMãƒãƒ¼ãƒˆ
    if ((FKeyingPort[0] in [tkpSerial1 .. tkpSerial20]) and
        (FKeyingPort[1] in [tkpSerial1 .. tkpSerial20])) or
       ((FKeyingPort[0] in [tkpSerial1 .. tkpSerial20]) and
@@ -2590,7 +2590,7 @@ begin
       Exit;
    end;
 
-   // RIG1‚ªCOMƒ|[ƒg,RIG2‚ªUSB
+   // RIG1ãŒCOMãƒãƒ¼ãƒˆ,RIG2ãŒUSB
    if ((FKeyingPort[0] in [tkpSerial1 .. tkpSerial20]) and (FKeyingPort[1] = tkpUSB)) then begin
       case usbdevlist.Count of
          0: begin
@@ -2609,7 +2609,7 @@ begin
       COM_ON();
    end;
 
-   // RIG1‚ªUSB,RIG2‚ªCOMƒ|[ƒg
+   // RIG1ãŒUSB,RIG2ãŒCOMãƒãƒ¼ãƒˆ
    if ((FKeyingPort[0] = tkpUSB) and (FKeyingPort[1] in [tkpSerial1 .. tkpSerial20])) then begin
       case usbdevlist.Count of
          0: begin
@@ -2629,7 +2629,7 @@ begin
    end;
 }
 
-   // RIG‘I‘ğ—pƒ|[ƒg
+   // RIGé¸æŠç”¨ãƒãƒ¼ãƒˆ
    // RX
    if FSo2rRxSelectPort <> tkpNone then begin
       ZComRxRigSelect.Port := TPortNumber(FSo2rRxSelectPort);
@@ -2887,14 +2887,14 @@ begin
       Exit;
    end;
 
-   if (nLen1 = 0) and (nLen2 = 0) then begin    // —¼•û0‚ÍOFF
+   if (nLen1 = 0) and (nLen2 = 0) then begin    // ä¸¡æ–¹0ã¯OFF
       P := 0;
    end
    else begin
       P := 1;
-      nLen1 := Min(nLen1, 254);                 // Å‘å’l‚Í254ms
-      nLen2 := Max(nLen2, 50);                  // after‚ª50ms–¢–‚Í“®ì‚ª‚¨‚©‚µ‚­‚È‚é–Í—l
-      nLen2 := Min(nLen2, 254);                 // Å‘å’l‚Í254ms
+      nLen1 := Min(nLen1, 254);                 // æœ€å¤§å€¤ã¯254ms
+      nLen2 := Max(nLen2, 50);                  // afterãŒ50msæœªæº€ã¯å‹•ä½œãŒãŠã‹ã—ããªã‚‹æ¨¡æ§˜
+      nLen2 := Min(nLen2, 254);                 // æœ€å¤§å€¤ã¯254ms
       OutReport[0] := nID;
       OutReport[1] := $22;
       OutReport[2] := nLen1;
@@ -3100,7 +3100,7 @@ begin
    //out that means WK is not connected, the serial port selection is incorrect, there is
    //something wrong with the cable or WK itself is no working.
 
-   //7) Now itfs time to officially open the WK interface, this is done by the following
+   //7) Now itâ€™s time to officially open the WK interface, this is done by the following
    //command sequence:
    // Byte 0: ADMIN_CMD
    // Byte 1: ADMIN_OPEN
@@ -3151,7 +3151,7 @@ begin
 //
 //   Sleep(200);
 
-   // Œ»İ‚ÌSPEED POTˆÊ’u‚ğæ“¾
+   // ç¾åœ¨ã®SPEED POTä½ç½®ã‚’å–å¾—
    if FUseWkSo2rNeo = False then begin
       FillChar(Buff, SizeOf(Buff), 0);
       Buff[0] := WK_GET_SPEEDPOT_CMD;
@@ -3170,6 +3170,9 @@ begin
 
    // SideTone
    WinKeyerSetSideTone(FUseSideTone);
+
+   // set serial echo back to on
+   WinKeyerSetMode(WK_SETMODE_SERIALECHOBACK);
 end;
 
 procedure TdmZLogKeyer.WinKeyerClose();
@@ -3261,7 +3264,7 @@ begin
    //              e  e  i  T
    //              y  y  d  T
    //              1  2  e
-   // b2‚Æb3‚Ídatasheet‚ÆŒ»•¨‚Í‹t‚É‚È‚Á‚Ä‚¢‚é
+   // b2ã¨b3ã¯datasheetã¨ç¾ç‰©ã¯é€†ã«ãªã£ã¦ã„ã‚‹
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_SET_PINCFG_CMD;
    Buff[1] := $a0;
@@ -3276,7 +3279,7 @@ begin
       Buff[1] := Buff[1] or $2;
    end;
 
-   // b2‚Æb3‚Ì—¼•û‚ğ0‚É‚·‚é‚ÆKEY/PTT—¼•û‚ª‘S‚­o—Í‚³‚ê‚È‚­‚È‚é
+   // b2ã¨b3ã®ä¸¡æ–¹ã‚’0ã«ã™ã‚‹ã¨KEY/PTTä¸¡æ–¹ãŒå…¨ãå‡ºåŠ›ã•ã‚Œãªããªã‚‹
    if FUseWkOutpSelect = True then begin
       if FWkTx = 0 then begin
          Buff[1] := Buff[1] or $4;
@@ -3285,12 +3288,12 @@ begin
          Buff[1] := Buff[1] or $8;
       end
       else begin
-         // RIG3‚Í‘S‚­o—Í‚µ‚È‚­‚Ä—Ç‚¢
+         // RIG3ã¯å…¨ãå‡ºåŠ›ã—ãªãã¦è‰¯ã„
          //Buff[1] := Buff[1] or $c;  // $4 + $8
       end;
    end
    else begin
-      // RIG‘I‘ğ‚ğg—p‚µ‚È‚¢‚Í—¼•û‚Éo—Í‚·‚é
+      // RIGé¸æŠã‚’ä½¿ç”¨ã—ãªã„æ™‚ã¯ä¸¡æ–¹ã«å‡ºåŠ›ã™ã‚‹
       Buff[1] := Buff[1] or $c;  // $4 + $8
    end;
 
@@ -3586,24 +3589,24 @@ begin
                {$ENDIF}
             end;
 
-            //ƒR[ƒ‹ƒTƒCƒ“‘—MF‚P•¶š‘—MI—¹
+            //ã‚³ãƒ¼ãƒ«ã‚µã‚¤ãƒ³é€ä¿¡æ™‚ï¼šï¼‘æ–‡å­—é€ä¿¡çµ‚äº†
 //            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
 //               {$IFDEF DEBUG}
 //               OutputDebugString(PChar('WinKey BUSY->IDLE [' + IntToHex(b, 2) + ']'));
 //               {$ENDIF}
 //
-//               // Ÿ‚Ì•¶š‚ğ‘—M
+//               // æ¬¡ã®æ–‡å­—ã‚’é€ä¿¡
 //               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
 //            end;
 
-            // ƒR[ƒ‹ƒTƒCƒ“‘—MF‚P•¶š‘—MŠJn
+            // ã‚³ãƒ¼ãƒ«ã‚µã‚¤ãƒ³é€ä¿¡æ™‚ï¼šï¼‘æ–‡å­—é€ä¿¡é–‹å§‹
 //            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = 0) and ((b and WK_STATUS_BUSY) = WK_STATUS_BUSY) then begin
 //               {$IFDEF DEBUG}
 //               OutputDebugString(PChar('WinKey IDLE->BUSY [' + IntToHex(b, 2) + ']'));
 //               {$ENDIF}
 //            end;
 
-            // ‘—M’†¨‘—MI—¹‚É•Ï‚í‚Á‚½‚çAƒŠƒs[ƒgƒ^ƒCƒ}[‹N“®
+            // é€ä¿¡ä¸­â†’é€ä¿¡çµ‚äº†ã«å¤‰ã‚ã£ãŸã‚‰ã€ãƒªãƒ”ãƒ¼ãƒˆã‚¿ã‚¤ãƒãƒ¼èµ·å‹•
             if (FWkCallsignSending = False) and (FWkLastMessage <> '') and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
 
                if Assigned(FOnSendFinishProc) then begin
@@ -3623,7 +3626,7 @@ begin
                end;
             end;
 
-            // STATUS‚ğ•Û‘¶
+            // STATUSã‚’ä¿å­˜
             FWkStatus := b;
 
 //            {$IFDEF DEBUG}
@@ -3641,19 +3644,19 @@ begin
             OutputDebugString(PChar('WinKey ECHOBACK=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
             {$ENDIF}
 
-            // ƒR[ƒ‹ƒTƒCƒ“‘—M
+            // ã‚³ãƒ¼ãƒ«ã‚µã‚¤ãƒ³é€ä¿¡
             if (FWkCallsignSending = True) and
                (Length(FWkCallsignStr) >= FWkCallsignIndex) and
                (Char(b) = FWkCallsignStr[FWkCallsignIndex]) then begin
-               // Ÿ‚Ì•¶š‚ğ‘—M
+               // æ¬¡ã®æ–‡å­—ã‚’é€ä¿¡
                PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
             end;
 
-            // ’ÊíƒƒbƒZ[ƒW‘—M
+            // é€šå¸¸ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é€ä¿¡
             if (FWkMessageSending = True) and
                (Length(FWkMessageStr) >= FWkMessageIndex) and
                (Char(b) = FWkMessageStr[FWkMessageIndex]) then begin
-               // Ÿ‚Ì•¶š‚ğ‘—M
+               // æ¬¡ã®æ–‡å­—ã‚’é€ä¿¡
                PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
             end;
          end;
@@ -3820,8 +3823,8 @@ begin
 end;
 
 //
-// SO2R Neo ‚ÌAudioƒuƒŒƒ“ƒhON/OFF
-// fOn: True‚ÅON
+// SO2R Neo ã®Audioãƒ–ãƒ¬ãƒ³ãƒ‰ON/OFF
+// fOn: Trueã§ON
 //
 procedure TdmZLogKeyer.So2rNeoSetAudioBlendMode(fOn: Boolean);
 var
@@ -3842,7 +3845,7 @@ begin
 end;
 
 //
-// SO2R Neo ‚ÌAudioƒuƒŒƒ“ƒhŠ„‡‚Ìİ’è
+// SO2R Neo ã®Audioãƒ–ãƒ¬ãƒ³ãƒ‰å‰²åˆã®è¨­å®š
 // ratio: 0-255
 //
 procedure TdmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio: Byte);
@@ -3860,7 +3863,7 @@ begin
 end;
 
 //
-// SO2R Neo ‚ÌTX/RX•ÏXƒRƒ}ƒ“ƒh
+// SO2R Neo ã®TX/RXå¤‰æ›´ã‚³ãƒãƒ³ãƒ‰
 // tx: 0 or 1
 // rx: 0: 1/1
 //     1: 2/2
