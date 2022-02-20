@@ -322,7 +322,7 @@ begin
          PostMessage(Handle, WM_ZLOG_UPDATEALLLIST, 0, 0);
    end;
 
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TALLJAMulti.Reset;

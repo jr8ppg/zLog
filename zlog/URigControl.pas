@@ -88,13 +88,6 @@ const
     ( br300, br1200, br2400, br4800, br9600, br19200, br38400, br56000, br57600, br115200, br128000, br256000 );
 
 type
-  TVirtualRig = record
-    Callsign : string;
-    Band : TBand;
-    Mode : TMode;
-    FirstTime : Boolean;
-  end;
-
   TRig = class
   private
     FFILO : Boolean; // FILO buffer flag used for YAESU
@@ -174,9 +167,6 @@ type
     property Rit: Boolean read FRit write SetRit;
     property Xit: Boolean read FXit write SetXit;
     property RitOffset: Integer read FRitOffset write SetRitOffset;
-
-    property LastCall: string read FLastCall write FLastCall;
-    property LastRcvd: string read FLastRcvd write FLastRcvd;
   end;
 
   TTS690 = class(TRig) // TS-450 as well
@@ -380,6 +370,23 @@ type
     procedure Reset; override;
   end;
 
+  TVirtualRig = class(TRig)
+    constructor Create(RigNum : integer); override;
+    destructor Destroy; override;
+    procedure Initialize(); override;
+    procedure ExecuteCommand(S: AnsiString); override;
+    procedure ParseBufferString; override;
+    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetMode(Q : TQSO); override;
+    procedure SetBand(Q: TQSO); override;
+    procedure InquireStatus; override;
+    procedure SetVFO(i : integer); override;
+    procedure Reset; override;
+  end;
+
+  TRigArray = array[1..3] of TRig;
+  TFreqArray = array [b19..HiBand] of Double;
+
   TRigControl = class(TForm)
     dispMode: TLabel;
     Button1: TButton;
@@ -414,7 +421,7 @@ type
     procedure buttonJumpLastFreqClick(Sender: TObject);
   private
     { Private declarations }
-    FRigs: array[1..2] of TRig;
+    FRigs: TRigArray;
     FCurrentRig : TRig;
     FPrevVfo: array[0..1] of Integer;
     FOnVFOChanged: TNotifyEvent;
@@ -422,6 +429,8 @@ type
 
     FCurrentRigNumber: Integer;  // 1 or 2
     FMaxRig: Integer;            // default = 2.  may be larger with virtual rigs
+
+    FOmniRig: TOmniRigX;
 
     procedure VisibleChangeEvent(Sender: TObject);
     procedure RigTypeChangeEvent(Sender: TObject; RigNumber: Integer);
@@ -431,19 +440,13 @@ type
     function BuildRigObject(rignum: Integer): TRig;
   public
     { Public declarations }
-
-    OmniRig : TOmniRigX;
-
-    TempFreq : array [b19..HiBand] of Double; //  temp. freq storage when rig is not connected. in kHz
-
-    VirtualRig : array[1..MAXVIRTUALRIG] of TVirtualRig;
-
+    TempFreq: TFreqArray; //  temp. freq storage when rig is not connected. in kHz
     function StatusSummaryFreq(kHz : integer): string; // returns current rig's band freq mode
     function StatusSummaryFreqHz(Hz : integer): string; // returns current rig's band freq mode
     function StatusSummary: string; // returns current rig's band freq mode
-    procedure ImplementOptions;
+    procedure ImplementOptions(rig: Integer = 1);
     procedure Stop();
-    procedure SetCurrentRig(N : integer);
+    function SetCurrentRig(N : integer): Boolean;
     function GetCurrentRig : integer;
     function ToggleCurrentRig : integer;
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
@@ -456,8 +459,7 @@ type
     procedure SetRitOffset(offset: Integer);
 
     property Rig: TRig read FCurrentRig;
-    property Rig1: TRig read FRigs[1];
-    property Rig2: TRig read FRigs[2];
+    property Rigs: TRigArray read FRigs;
     property MaxRig: Integer read FMaxRig write FMaxRig;
 
     property OnVFOChanged: TNotifyEvent read FOnVFOChanged write FOnVFOChanged;
@@ -490,7 +492,7 @@ var
 begin
    S := '';
 
-   if dmZlogGlobal.Settings._multistation = True then begin
+   if (dmZLogGlobal.IsMultiStation() = True) then begin
       ss := '30';
    end
    else begin
@@ -523,7 +525,7 @@ var
 begin
    S := '';
 
-   if dmZlogGlobal.Settings._multistation = True then begin
+   if (dmZLogGlobal.IsMultiStation() = True) then begin
       ss := '30';
    end
    else begin
@@ -594,88 +596,32 @@ begin
    end;
 end;
 
-procedure TRigControl.SetCurrentRig(N: Integer);
-var
-   MF: TMainForm;
-   strCurrentCall: string;
-   strCurrentRcvd: string;
-   TempRig: TRig;
-
+function TRigControl.SetCurrentRig(N: Integer): Boolean;
    procedure SetRigName(rigno: Integer; rigname: string);
    begin
       RigLabel.Caption := 'Current rig : ' + IntToStr(rigno) + ' (' + rigname + ')';
    end;
 begin
-   MF := TMainForm(Owner);
-
    if (N > FMaxRig) or (N < 0) then begin
+      Result := False;
       Exit;
-   end;
-
-   // 現在入力中のcallとrcvdを保存
-   if (FCurrentRigNumber = 1) or (FCurrentRigNumber = 2) then begin
-      TempRig := FRigs[FCurrentRigNumber];
-   end
-   else begin
-      TempRig := nil;
-   end;
-
-   strCurrentCall := CurrentQSO.Callsign;
-   strCurrentRcvd := CurrentQSO.NrRcvd;
-   if strCurrentCall <> '' then begin
-      if strCurrentCall[1] = ',' then begin
-         strCurrentCall := '';
-         strCurrentRcvd := '';
-      end;
-   end;
-
-   if TempRig <> nil then begin
-      TempRig.LastCall := strCurrentCall;
-      TempRig.LastRcvd := strCurrentRcvd;
-   end
-   else begin // could be virtual rig
-      if FCurrentRigNumber > 0 then begin
-         VirtualRig[FCurrentRigNumber].Callsign := strCurrentCall;
-         VirtualRig[FCurrentRigNumber].Band := CurrentQSO.Band;
-         VirtualRig[FCurrentRigNumber].Mode := CurrentQSO.Mode;
-      end;
    end;
 
    // RIG切り替え
    FCurrentRigNumber := N;
-   if ((N = 1) or (N = 2)) and (FRigs[N] <> nil) then begin
+   if ((N = 1) or (N = 2) or (N = 3)) and (FRigs[N] <> nil) then begin
       FCurrentRig := FRigs[FCurrentRigNumber];
-
       FCurrentRig.InquireStatus;
 
       SetRigName(FCurrentRigNumber, FCurrentRig.name);
-      dmZlogKeyer.SetRigFlag(FCurrentRigNumber);
       FCurrentRig.UpdateStatus;
-
-      MF.SetYourCallsign(FCurrentRig.LastCall, FCurrentRig.LastRcvd);
    end
    else begin
       FCurrentRig := nil;
-
-      if FCurrentRigNumber > 0 then begin // virtual rig
-         SetRigName(FCurrentRigNumber, 'Virtual');
-         dmZlogKeyer.SetRigFlag(0);
-         if VirtualRig[FCurrentRigNumber].FirstTime then begin
-            VirtualRig[FCurrentRigNumber].FirstTime := False;
-         end
-         else begin
-            MF.UpdateMode(VirtualRig[FCurrentRigNumber].Mode);
-            MF.UpdateBand(VirtualRig[FCurrentRigNumber].Band);
-            MF.SetStatusLine('R' + IntToStr(FCurrentRigNumber));
-            MF.SetYourCallsign(VirtualRig[FCurrentRigNumber].Callsign, '');
-         end;
-      end
-      else begin
-         SetRigName(FCurrentRigNumber, '(none)');
-         dmZlogKeyer.SetRigFlag(0);
-         MF.SetStatusLine('R' + IntToStr(FCurrentRigNumber));
-      end;
+      SetRigName(FCurrentRigNumber, '(none)');
    end;
+
+   Result := True;
 end;
 
 function TRigControl.GetCurrentRig: Integer;
@@ -1521,12 +1467,20 @@ begin
    end;
 end;
 
-procedure TRigControl.ImplementOptions;
+procedure TRigControl.ImplementOptions(rig: Integer);
 begin
    Stop();
 
+   if (dmZLogGlobal.Settings._so2r_type = so2rNone) or (dmZLogGlobal.Settings._so2r_use_rig3 = False) then begin
+      FMaxRig := 2;
+   end
+   else begin
+      FMaxRig := 3;
+   end;
+
    FRigs[1] := BuildRigObject(1);
    FRigs[2] := BuildRigObject(2);
+   FRigs[3] := TVirtualRig.Create(3);
 
    if FRigs[1] <> nil then begin
       if dmZlogGlobal.Settings._transverter1 then begin
@@ -1546,24 +1500,39 @@ begin
       end;
    end;
 
-   SetCurrentRig(1);
+   SetCurrentRig(rig);
 
    SetSendFreq();
 
    // RIGコントロールのCOMポートと、CWキーイングのポートが同じなら
    // CWキーイングのCPDrvをRIGコントロールの物にすり替える
-   if (FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._lptnr) then begin
+   if ((FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._keyingport[1])) and
+      ((FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._keyingport[2])) then begin
       PollingTimer1.Enabled := False;
-      dmZLogKeyer.SetCommPortDriver(FRigs[1].CommPortDriver);
+      dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
       PollingTimer1.Enabled := True;
-   end
-   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._lptnr) then begin
+
       PollingTimer2.Enabled := False;
-      dmZLogKeyer.SetCommPortDriver(FRigs[2].CommPortDriver);
+      dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
+      PollingTimer2.Enabled := True;
+   end
+   else if (FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._keyingport[1]) then begin
+      PollingTimer1.Enabled := False;
+      dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
+      PollingTimer1.Enabled := True;
+
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
+   end
+   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._keyingport[2]) then begin
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
+
+      PollingTimer2.Enabled := False;
+      dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
       PollingTimer2.Enabled := True;
    end
    else begin
-      dmZLogKeyer.ResetCommPortDriver(TKeyingPort(dmZlogGlobal.Settings._lptnr));
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
    end;
 end;
 
@@ -1574,6 +1543,7 @@ begin
    PollingTimer2.Enabled := False;
    FreeAndNil(FRigs[1]);
    FreeAndNil(FRigs[2]);
+   FreeAndNil(FRigs[3]);
    FCurrentRig := nil;
 end;
 
@@ -2318,6 +2288,8 @@ begin
       Exit;
    end;
 
+   _currentband := Q.Band;
+
    SetFreq(f, Q.CQ);
 end;
 
@@ -2677,19 +2649,19 @@ begin
    With MainForm.RigControl do begin
       ZCom1.Disconnect;
       ZCom2.Disconnect;
-      OmniRig.OnVisibleChange := VisibleChangeEvent;
-      OmniRig.OnRigTypeChange := RigTypeChangeEvent;
-      OmniRig.OnStatusChange := StatusChangeEvent;
-      OmniRig.OnParamsChange := ParamsChangeEvent;
-      OmniRig.OnCustomReply := CustomReplyEvent;
+      FOmniRig.OnVisibleChange := VisibleChangeEvent;
+      FOmniRig.OnRigTypeChange := RigTypeChangeEvent;
+      FOmniRig.OnStatusChange := StatusChangeEvent;
+      FOmniRig.OnParamsChange := ParamsChangeEvent;
+      FOmniRig.OnCustomReply := CustomReplyEvent;
 //      OmniRig.Connect;
    end;
 
    if _rignumber = 1 then begin
-      Self.name := 'Omni-Rig: ' + MainForm.RigControl.OmniRig.Rig1.Get_RigType;
+      Self.name := 'Omni-Rig: ' + MainForm.RigControl.FOmniRig.Rig1.Get_RigType;
    end
    else begin
-      Self.name := 'Omni-Rig: ' + MainForm.RigControl.OmniRig.Rig2.Get_RigType;
+      Self.name := 'Omni-Rig: ' + MainForm.RigControl.FOmniRig.Rig2.Get_RigType;
    end;
 end;
 
@@ -2710,10 +2682,10 @@ procedure TOmni.RitClear;
 begin
    Inherited;
    if _rignumber = 1 then begin
-      MainForm.RigControl.OmniRig.Rig1.ClearRit;
+      MainForm.RigControl.FOmniRig.Rig1.ClearRit;
    end
    else if _rignumber = 2 then begin
-      MainForm.RigControl.OmniRig.Rig2.ClearRit;
+      MainForm.RigControl.FOmniRig.Rig2.ClearRit;
    end;
 end;
 
@@ -2722,10 +2694,10 @@ var
    o_RIG: IRigX;
 begin
    if _rignumber = 1 then begin
-      o_RIG := MainForm.RigControl.OmniRig.Rig1;
+      o_RIG := MainForm.RigControl.FOmniRig.Rig1;
    end
    else begin
-      o_RIG := MainForm.RigControl.OmniRig.Rig2;
+      o_RIG := MainForm.RigControl.FOmniRig.Rig2;
    end;
 
    if fSetLastFreq = True then begin
@@ -2743,10 +2715,10 @@ var
    o_RIG: IRigX;
 begin
    if _rignumber = 1 then begin
-      o_RIG := MainForm.RigControl.OmniRig.Rig1;
+      o_RIG := MainForm.RigControl.FOmniRig.Rig1;
    end
    else begin
-      o_RIG := MainForm.RigControl.OmniRig.Rig2;
+      o_RIG := MainForm.RigControl.FOmniRig.Rig2;
    end;
 
    case Q.Mode of
@@ -2771,10 +2743,10 @@ var
    o_RIG: IRigX;
 begin
    if _rignumber = 1 then begin
-      o_RIG := MainForm.RigControl.OmniRig.Rig1;
+      o_RIG := MainForm.RigControl.FOmniRig.Rig1;
    end
    else begin
-      o_RIG := MainForm.RigControl.OmniRig.Rig2;
+      o_RIG := MainForm.RigControl.FOmniRig.Rig2;
    end;
 
    if (i > 1) or (i < 0) then begin
@@ -2803,12 +2775,12 @@ var
 begin
    inherited;
    if _rignumber = 1 then begin
-      if MainForm.RigControl.OmniRig.Rig1.Status <> ST_ONLINE then Exit;
-      _rname := MainForm.RigControl.OmniRig.Rig1.RigType;
+      if MainForm.RigControl.FOmniRig.Rig1.Status <> ST_ONLINE then Exit;
+      _rname := MainForm.RigControl.FOmniRig.Rig1.RigType;
    end
    else begin
-      if MainForm.RigControl.OmniRig.Rig2.Status <> ST_ONLINE then Exit;
-      _rname := MainForm.RigControl.OmniRig.Rig2.RigType;
+      if MainForm.RigControl.FOmniRig.Rig2.Status <> ST_ONLINE then Exit;
+      _rname := MainForm.RigControl.FOmniRig.Rig2.RigType;
    end;
 
    MainForm.RigControl.RigLabel.Caption := 'Current rig : ' + IntToStr(MainForm.RigControl.FCurrentRigNumber) + ' Omni-Rig: ' + _rname;
@@ -2821,11 +2793,11 @@ end;
 destructor TOmni.Destroy;
 begin
    With MainForm.RigControl do begin
-      OmniRig.OnVisibleChange := nil;
-      OmniRig.OnRigTypeChange := nil;
-      OmniRig.OnStatusChange := nil;
-      OmniRig.OnParamsChange := nil;
-      OmniRig.OnCustomReply := nil;
+      FOmniRig.OnVisibleChange := nil;
+      FOmniRig.OnRigTypeChange := nil;
+      FOmniRig.OnStatusChange := nil;
+      FOmniRig.OnParamsChange := nil;
+      FOmniRig.OnCustomReply := nil;
 //      OmniRig.Disconnect();
    end;
    inherited;
@@ -2833,6 +2805,98 @@ end;
 
 procedure TOmni.PassOnRxData(S: AnsiString);
 begin
+end;
+
+constructor TVirtualRig.Create(RigNum: Integer);
+var
+   M: TMode;
+   B: TBand;
+begin
+   for M := mCW to mOther do begin
+      ModeWidth[M] := -1;
+   end;
+
+   FFILO := False; // used for YAESU
+   _freqoffset := 0;
+   _minband := b19;
+   _maxband := b10g;
+   Name := '';
+   _rignumber := RigNum;
+   TerminatorCode := ';';
+   BufferString := '';
+
+   _currentmode := Main.CurrentQSO.Mode; // mCW;
+
+   _currentband := b19;
+   B := Main.CurrentQSO.Band;
+   if (B >= _minband) and (B <= _maxband) then
+      _currentband := B;
+
+   _currentfreq[0] := 0;
+   _currentfreq[1] := 0;
+   _currentvfo := 0; // VFO A
+   LastFreq := 0;
+
+   for B := b19 to b10g do begin
+      for M := mCW to mOther do begin
+         FreqMem[B, M] := 0;
+      end;
+   end;
+
+   Self.name := 'VirtualRig';
+end;
+
+procedure TVirtualRig.Initialize();
+begin
+//
+end;
+
+procedure TVirtualRig.ExecuteCommand(S: AnsiString);
+begin
+   Inherited;
+end;
+
+procedure TVirtualRig.ParseBufferString;
+begin
+   Inherited;
+end;
+
+procedure TVirtualRig.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+var
+   b: TBand;
+begin
+   b := dmZLogGlobal.BandPlan.FreqToBand(Hz);
+   _currentband := b;
+end;
+
+procedure TVirtualRig.SetMode(Q: TQSO);
+begin
+   _currentmode := Q.Mode;
+end;
+
+procedure TVirtualRig.SetBand(Q: TQSO);
+begin
+   _currentband := Q.Band;
+end;
+
+procedure TVirtualRig.InquireStatus;
+begin
+   Inherited;
+end;
+
+procedure TVirtualRig.SetVFO(i : integer);
+begin
+   Inherited;
+end;
+
+procedure TVirtualRig.Reset;
+begin
+   Inherited;
+end;
+
+destructor TVirtualRig.Destroy;
+begin
+   inherited;
 end;
 
 function dec2hex(i: Integer): Integer;
@@ -3673,13 +3737,13 @@ end;
 
 procedure TRigControl.FormCreate(Sender: TObject);
 var
-   i: Integer;
    B: TBand;
 begin
    RigLabel.Caption := '';
    FCurrentRig := nil;
    FRigs[1] := nil;
    FRigs[2] := nil;
+   FRigs[3] := nil;
    FPrevVfo[0] := 0;
    FPrevVfo[1] := 0;
    FOnVFOChanged := nil;
@@ -3687,20 +3751,13 @@ begin
    FFreqLabel[1] := dispFreqB;
 
    FCurrentRigNumber := 1;
-   FMaxRig := 2;
+   FMaxRig := 3;
 
    for B := b19 to HiBand do begin
       TempFreq[B] := 0;
    end;
 
-   for i := 1 to MAXVIRTUALRIG do begin
-      VirtualRig[i].Callsign := '';
-      VirtualRig[i].Band := b19;
-      VirtualRig[i].Mode := mCW;
-      VirtualRig[i].FirstTime := True;
-   end;
-
-   OmniRig := TOmniRigX.Create(Self);
+   FOmniRig := TOmniRigX.Create(Self);
 end;
 
 procedure TRigControl.FormDestroy(Sender: TObject);
@@ -3745,7 +3802,7 @@ procedure TRigControl.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftS
 begin
    case Key of
       VK_ESCAPE:
-         MainForm.LastFocus.SetFocus;
+         MainForm.SetLastFocus();
    end;
 end;
 
@@ -3767,7 +3824,7 @@ end;
 
 procedure TRigControl.btnOmniRigClick(Sender: TObject);
 begin
-   MainForm.RigControl.OmniRig.DialogVisible := True;
+   MainForm.RigControl.FOmniRig.DialogVisible := True;
 end;
 
 procedure TRigControl.CreateParams(var Params: TCreateParams);

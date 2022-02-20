@@ -44,7 +44,7 @@ begin
    boo := False;
    if MainForm.Grid.Focused then
       boo := True;
-   MainForm.EditScreen.RefreshScreen;
+   MainForm.GridRefreshScreen;
    MainForm.ReevaluateCountDownTimer;
    MainForm.ReevaluateQSYCount;
 

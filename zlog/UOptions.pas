@@ -1,4 +1,4 @@
-unit UOptions;
+ï»¿unit UOptions;
 
 interface
 
@@ -21,13 +21,8 @@ type
     buttonOK: TButton;
     buttonCancel: TButton;
     GroupBox1: TGroupBox;
-    SingleOpRadioBtn: TRadioButton;
-    MultiOpRadioBtn: TRadioButton;
-    BandGroup: TRadioGroup;
-    OpListBox: TListBox;
+    radioSingleOp: TRadioButton;
     ModeGroup: TRadioGroup;
-    Add: TButton;
-    Delete: TButton;
     GroupBox2: TGroupBox;
     editMessage2: TEdit;
     editMessage3: TEdit;
@@ -99,14 +94,6 @@ type
     vEdit1: TEdit;
     memo: TLabel;
     OpenDialog: TOpenDialog;
-    GroupBox6: TGroupBox;
-    Label30: TLabel;
-    ClusterCombo: TComboBox;
-    Port: TLabel;
-    buttonClusterSettings: TButton;
-    Label32: TLabel;
-    ZLinkCombo: TComboBox;
-    buttonZLinkSettings: TButton;
     vButton1: TButton;
     vButton2: TButton;
     vButton3: TButton;
@@ -122,7 +109,7 @@ type
     IARUZoneEdit: TEdit;
     Label34: TLabel;
     Label35: TLabel;
-    GroupBox7: TGroupBox;
+    groupOptCwPtt: TGroupBox;
     Label38: TLabel;
     PTTEnabledCheckBox: TCheckBox;
     Label39: TLabel;
@@ -135,16 +122,12 @@ type
     rbBankA: TRadioButton;
     rbBankB: TRadioButton;
     cbDispExchange: TCheckBox;
-    gbCWPort: TGroupBox;
     cbJMode: TCheckBox;
     comboRig1Port: TComboBox;
-    Label42: TLabel;
     comboRig1Name: TComboBox;
     Label43: TLabel;
-    Label31: TLabel;
     comboRig2Port: TComboBox;
     comboRig2Name: TComboBox;
-    Label44: TLabel;
     tabsheetMisc: TTabSheet;
     cbRITClear: TCheckBox;
     cbDontAllowSameBand: TCheckBox;
@@ -152,7 +135,6 @@ type
     Label45: TLabel;
     Label46: TLabel;
     cbSaveWhenNoCW: TCheckBox;
-    cbMultiStn: TCheckBox;
     rgSearchAfter: TRadioGroup;
     spMaxSuperHit: TSpinEdit;
     Label47: TLabel;
@@ -179,12 +161,9 @@ type
     cbDisplayDatePartialCheck: TCheckBox;
     cbAutoBandMap: TCheckBox;
     checkUseMultiStationWarning: TCheckBox;
-    Label55: TLabel;
-    editZLinkPcName: TEdit;
-    checkZLinkSyncSerial: TCheckBox;
     comboRig1Speed: TComboBox;
     comboRig2Speed: TComboBox;
-    comboCwPttPort: TComboBox;
+    comboCwPttPort1: TComboBox;
     tabsheetQuickQSY: TTabSheet;
     checkUseQuickQSY01: TCheckBox;
     comboQuickQsyBand01: TComboBox;
@@ -368,7 +347,7 @@ type
     Label79: TLabel;
     Label80: TLabel;
     Label81: TLabel;
-    GroupBox13: TGroupBox;
+    groupUsif4cw: TGroupBox;
     checkUsbif4cwSyncWpm: TCheckBox;
     checkUsbif4cwPaddleReverse: TCheckBox;
     GroupBox14: TGroupBox;
@@ -411,7 +390,7 @@ type
     checkUseEstimatedMode: TCheckBox;
     checkShowOnlyInBandplan: TCheckBox;
     checkShowOnlyDomestic: TCheckBox;
-    GroupBox21: TGroupBox;
+    groupOptCI_V: TGroupBox;
     comboIcomMode: TComboBox;
     comboIcomMethod: TComboBox;
     Label83: TLabel;
@@ -440,17 +419,67 @@ type
     checkFocusedBold: TCheckBox;
     buttonFocusedForeColor: TButton;
     checkNotSendLeadingZeros: TCheckBox;
-    procedure MultiOpRadioBtnClick(Sender: TObject);
-    procedure SingleOpRadioBtnClick(Sender: TObject);
+    Label91: TLabel;
+    comboTxNo: TComboBox;
+    GroupBox24: TGroupBox;
+    OpListBox: TListBox;
+    buttonOpAdd: TButton;
+    buttonOpDelete: TButton;
+    radioMultiOpMultiTx: TRadioButton;
+    radioMultiOpSingleTx: TRadioButton;
+    radioMultiOpTwoTx: TRadioButton;
+    comboCwPttPort2: TComboBox;
+    groupRig1: TGroupBox;
+    Label92: TLabel;
+    Label93: TLabel;
+    Label94: TLabel;
+    groupRig2: TGroupBox;
+    Label95: TLabel;
+    Label96: TLabel;
+    Label97: TLabel;
+    Label98: TLabel;
+    groupSo2rSupport: TGroupBox;
+    radioSo2rZLog: TRadioButton;
+    radioSo2rNeo: TRadioButton;
+    comboSo2rRxSelectPort: TComboBox;
+    radioSo2rNone: TRadioButton;
+    checkWk9600: TCheckBox;
+    tabsheetNetwork: TTabSheet;
+    groupNetwork: TGroupBox;
+    Label30: TLabel;
+    Port: TLabel;
+    Label32: TLabel;
+    Label55: TLabel;
+    ClusterCombo: TComboBox;
+    buttonClusterSettings: TButton;
+    ZLinkCombo: TComboBox;
+    buttonZLinkSettings: TButton;
+    editZLinkPcName: TEdit;
+    checkZLinkSyncSerial: TCheckBox;
+    groupRig3: TGroupBox;
+    Label99: TLabel;
+    comboCwPttPort3: TComboBox;
+    GroupBox6: TGroupBox;
+    Label31: TLabel;
+    comboSo2rTxSelectPort: TComboBox;
+    Label42: TLabel;
+    groupWinKeyer: TGroupBox;
+    checkWkOutportSelect: TCheckBox;
+    GroupBox7: TGroupBox;
+    groupSo2rCqOption: TGroupBox;
+    Label44: TLabel;
+    editSo2rCqRptIntervalSec: TEdit;
+    Label100: TLabel;
+    panelSo2rMessageNumber: TPanel;
+    radioSo2rCqMsgBankA: TRadioButton;
+    radioSo2rCqMsgBankB: TRadioButton;
+    comboSo2rCqMsgNumber: TComboBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure AddClick(Sender: TObject);
-    procedure DeleteClick(Sender: TObject);
+    procedure buttonOpAddClick(Sender: TObject);
+    procedure buttonOpDeleteClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonCancelClick(Sender: TObject);
-    procedure OpEditKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure OpEditEnter(Sender: TObject);
-    procedure OpEditExit(Sender: TObject);
     procedure SpeedBarChange(Sender: TObject);
     procedure WeightBarChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -489,6 +518,10 @@ type
     procedure buttonFocusedInitColorClick(Sender: TObject);
     procedure checkFocusedBoldClick(Sender: TObject);
     procedure buttonFocusedForeColorClick(Sender: TObject);
+    procedure radioCategoryClick(Sender: TObject);
+    procedure comboCwPttPortChange(Sender: TObject);
+    procedure checkUseWinKeyerClick(Sender: TObject);
+    procedure radioSo2rClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -551,14 +584,42 @@ uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet,
 
 {$R *.DFM}
 
-procedure TformOptions.MultiOpRadioBtnClick(Sender: TObject);
+procedure TformOptions.radioCategoryClick(Sender: TObject);
+var
+   n: Integer;
 begin
-   OpListBox.Enabled := True;
-end;
+   n := TRadioButton(Sender).Tag;
+   case n of
+      // Single-Op
+      0: begin
+         comboTxNo.Enabled := False;
+         comboTxNo.Items.CommaText := '0,1';
+         comboTxNo.ItemIndex := 0;
+         OpListBox.Enabled := False;
+         buttonOpAdd.Enabled := False;
+         buttonOpDelete.Enabled := False;
+      end;
 
-procedure TformOptions.SingleOpRadioBtnClick(Sender: TObject);
-begin
-   OpListBox.Enabled := False;
+      // Multi-Op/Multi-Tx
+      1: begin
+         comboTxNo.Enabled := True;
+         comboTxNo.Items.CommaText := TXLIST_MM;
+         comboTxNo.ItemIndex := 0;
+         OpListBox.Enabled := True;
+         buttonOpAdd.Enabled := True;
+         buttonOpDelete.Enabled := True;
+      end;
+
+      // Multi-Op/Single-Tx, Multi-Op/Two-Tx
+      2, 3: begin
+         comboTxNo.Enabled := True;
+         comboTxNo.Items.CommaText := TXLIST_MS;
+         comboTxNo.ItemIndex := 0;
+         OpListBox.Enabled := True;
+         buttonOpAdd.Enabled := True;
+         buttonOpDelete.Enabled := True;
+      end;
+   end;
 end;
 
 procedure TformOptions.RenewSettings;
@@ -567,7 +628,6 @@ var
    i, j: integer;
 begin
    with dmZlogGlobal do begin
-      Settings._multistation := cbMultiStn.Checked;
       Settings._savewhennocw := cbSaveWhenNoCW.Checked;
       Settings._jmode := cbJMode.Checked;
       Settings._searchafter := rgSearchAfter.ItemIndex;
@@ -610,20 +670,24 @@ begin
       Settings._power[b5600] := comboPower5600.Text;
       Settings._power[b10g] := comboPower10g.Text;
 
-      // Settings._band := BandGroup.ItemIndex;
-      case BandGroup.ItemIndex of
-         0 .. 3:
-            Settings._band := BandGroup.ItemIndex;
-         4:
-            Settings._band := BandGroup.ItemIndex + 1;
-         5:
-            Settings._band := BandGroup.ItemIndex + 2;
-         6 .. 13:
-            Settings._band := BandGroup.ItemIndex + 3;
+      Settings._mode := TContestMode(ModeGroup.ItemIndex);
+
+      // Category
+      if radioSingleOp.Checked = True then begin
+         Settings._multiop := ccSingleOp;
+      end
+      else if radioMultiOpMultiTx.Checked = True then begin
+         Settings._multiop := ccMultiOpMultiTx;
+      end
+      else if radioMultiOpSingleTx.Checked = True then begin
+         Settings._multiop := ccMultiOpSingleTx;
+      end
+      else if radioMultiOpTwoTx.Checked = True then begin
+         Settings._multiop := ccMultiOpTwoTx;
       end;
 
-      Settings._mode := ModeGroup.ItemIndex;
-      // Settings._multiop := MultiOpRadioBtn.Checked;
+      // #TXNR
+      Settings._txnr := StrToIntDef(comboTxNo.Text, 0);
 
       Settings._prov := ProvEdit.Text;
       Settings._city := CityEdit.Text;
@@ -747,18 +811,66 @@ begin
       Settings._pttafter := StrToIntDef(AfterEdit.Text, i);
 
       // CW/PTT port
-      if (comboCwPttPort.ItemIndex >= 1) and (comboCwPttPort.ItemIndex <= 20) then begin
-         Settings._lptnr := comboCwPttPort.ItemIndex;
+      // RIG1
+      if (comboCwPttPort1.ItemIndex >= 1) and (comboCwPttPort1.ItemIndex <= 20) then begin
+         Settings._keyingport[1] := comboCwPttPort1.ItemIndex;
       end
-      else if comboCwPttPort.ItemIndex = 21 then begin    // USB
-         Settings._lptnr := 21;
+      else if comboCwPttPort1.ItemIndex = 21 then begin    // USB
+         Settings._keyingport[1] := 21;
       end
       else begin
-         Settings._lptnr := 0;
+         Settings._keyingport[1] := 0;
+      end;
+
+      // RIG2
+      if (comboCwPttPort2.ItemIndex >= 1) and (comboCwPttPort2.ItemIndex <= 20) then begin
+         Settings._keyingport[2] := comboCwPttPort2.ItemIndex;
+      end
+      else if comboCwPttPort2.ItemIndex = 21 then begin    // USB
+         Settings._keyingport[2] := 21;
+      end
+      else begin
+         Settings._keyingport[2] := 0;
+      end;
+
+      // RIG3
+      if (comboCwPttPort3.ItemIndex >= 1) and (comboCwPttPort3.ItemIndex <= 20) then begin
+         Settings._keyingport[3] := comboCwPttPort3.ItemIndex;
+      end
+      else if comboCwPttPort3.ItemIndex = 21 then begin    // USB
+         Settings._keyingport[3] := 21;
+      end
+      else begin
+         Settings._keyingport[3] := 0;
       end;
 
       // Use Winkeyer
       Settings._use_winkeyer := checkUseWinkeyer.Checked;
+      Settings._use_wk_9600 := checkWk9600.Checked;
+      Settings._use_wk_outp_select := checkWkOutportSelect.Checked;
+
+      // SO2R Support
+      if radioSo2rNone.Checked = True then begin
+         Settings._so2r_type := so2rNone;
+      end
+      else if radioSo2rZLog.Checked = True then begin
+         Settings._so2r_type := so2rCom;
+      end
+      else begin
+         Settings._so2r_type := so2rNeo;
+      end;
+      Settings._so2r_tx_port := comboSo2rTxSelectPort.ItemIndex;
+      Settings._so2r_rx_port := comboSo2rRxSelectPort.ItemIndex;
+
+      r := Settings._so2r_cq_rpt_interval_sec;
+      Settings._so2r_cq_rpt_interval_sec := StrToFloatDef(editSo2rCqRptIntervalSec.Text, r);
+      if radioSo2rCqMsgBankA.Checked = True then begin
+         Settings._so2r_cq_msg_bank := 1;
+      end
+      else begin
+         Settings._so2r_cq_msg_bank := 2;
+      end;
+      Settings._so2r_cq_msg_number  := comboSo2rCqMsgNumber.ItemIndex + 1;
 
 //      Settings._sentstr := SentEdit.Text;
 
@@ -865,7 +977,7 @@ begin
       Settings._bandscopecolor[7].FBackColor2 := FBSColor[72].Color;
       Settings._bandscopecolor[7].FBackColor3 := FBSColor[73].Color;
 
-      // Spot‘N“x•\¦
+      // Spoté®®åº¦è¡¨ç¤º
       if radioFreshness1.Checked = True then begin
          Settings._bandscope_freshness_mode := 0;           // Remain time1
          Settings._bandscope_freshness_icon := 2;
@@ -888,9 +1000,9 @@ begin
       end;
 
       // BandScope Options
-      Settings._bandscope_use_estimated_mode := checkUseEstimatedMode.Checked;      // ü”g”‚©‚ç‚Ìƒ‚[ƒh‚Ì„’è
-      Settings._bandscope_show_only_in_bandplan := checkShowOnlyInBandplan.Checked; // ƒoƒ“ƒh“à‚Ì‚İ
-      Settings._bandscope_show_only_domestic := checkShowOnlyDomestic.Checked;      // ‘“à‚Ì‚İ
+      Settings._bandscope_use_estimated_mode := checkUseEstimatedMode.Checked;      // å‘¨æ³¢æ•°ã‹ã‚‰ã®ãƒ¢ãƒ¼ãƒ‰ã®æ¨å®š
+      Settings._bandscope_show_only_in_bandplan := checkShowOnlyInBandplan.Checked; // ãƒãƒ³ãƒ‰å†…ã®ã¿
+      Settings._bandscope_show_only_domestic := checkShowOnlyDomestic.Checked;      // å›½å†…ã®ã¿
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -951,8 +1063,6 @@ begin
       cbUpdateThread.Checked := Settings._renewbythread;
       cbDisplayDatePartialCheck.Checked := Settings._displaydatepartialcheck;
 
-      cbMultiStn.Checked := Settings._multistation;
-
       act19.Checked := Settings._activebands[b19];
       act35.Checked := Settings._activebands[b35];
       act7.Checked := Settings._activebands[b7];
@@ -987,17 +1097,30 @@ begin
       comboPower5600.Text := Settings._power[b5600];
       comboPower10g.Text := Settings._power[b10g];
 
-      if Settings._multiop <> 0 then
-         MultiOpRadioBtn.Checked := True
-      else
-         SingleOpRadioBtn.Checked := True;
+      // Category
+      if ContestCategory = ccSingleOp then begin
+         radioSingleOp.Checked := True;
+      end
+      else if ContestCategory = ccMultiOpMultiTx then begin
+         radioMultiOpMultiTx.Checked := True
+      end
+      else if ContestCategory = ccMultiOpSingleTx then begin
+         radioMultiOpSingleTx.Checked := True
+      end
+      else if ContestCategory = ccMultiOpTwoTx then begin
+         radioMultiOpTwoTx.Checked := True
+      end;
+//      case ContestCategory of
+//         ccSingleOp:          radioSingleOp.Checked := True;
+//         ccMultiOpMultiTx:    radioMultiOpMultiTx.Checked := True;
+//         ccMultiOpSingleTx:   radioMultiOpSingleTx.Checked := True;
+//         ccMultiOpTwoTx:      radioMultiOpTwoTx.Checked := True;
+//      end;
 
-      if Settings._band = 0 then
-         BandGroup.ItemIndex := 0
-      else
-         BandGroup.ItemIndex := OldBandOrd(TBand(Settings._band - 1)) + 1;
+      // #TXNR
+      comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(Settings._txnr));
 
-      ModeGroup.ItemIndex := Settings._mode;
+      ModeGroup.ItemIndex := Integer(Settings._mode);
       { OpListBox.Items := OpList; }
 
       for i := 1 to maxbank do begin
@@ -1098,31 +1221,85 @@ begin
 
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
 
-      // Packet Cluster’ÊMİ’èƒ{ƒ^ƒ“
+      // Packet Clusteré€šä¿¡è¨­å®šãƒœã‚¿ãƒ³
       buttonClusterSettings.Enabled := True;
       ClusterComboChange(nil);
 
-      // ZLink’ÊMİ’èƒ{ƒ^ƒ“
+      // ZLinké€šä¿¡è¨­å®šãƒœã‚¿ãƒ³
       buttonZLinkSettings.Enabled := True;
       ZLinkComboChange(nil);
 
       SaveEvery.Value := Settings._saveevery;
 
       // CW/PTT port
-      if (Settings._lptnr >= 1) and (Settings._lptnr <= 20) then begin
-         comboCwPttPort.ItemIndex := Settings._lptnr;
+      // RIG1
+      if (Settings._keyingport[1] >= 1) and (Settings._keyingport[1] <= 20) then begin
+         comboCwPttPort1.ItemIndex := Settings._keyingport[1];
       end
-      else if (Settings._lptnr >= 21) then begin
-         comboCwPttPort.ItemIndex := 21;
+      else if (Settings._keyingport[1] >= 21) then begin
+         comboCwPttPort1.ItemIndex := 21;
       end
       else begin
-         comboCwPttPort.ItemIndex := 0;
+         comboCwPttPort1.ItemIndex := 0;
+      end;
+
+      // RIG2
+      if (Settings._keyingport[2] >= 1) and (Settings._keyingport[2] <= 20) then begin
+         comboCwPttPort2.ItemIndex := Settings._keyingport[2];
+      end
+      else if (Settings._keyingport[2] >= 21) then begin
+         comboCwPttPort2.ItemIndex := 21;
+      end
+      else begin
+         comboCwPttPort2.ItemIndex := 0;
+      end;
+
+      // RIG3
+      if (Settings._keyingport[3] >= 1) and (Settings._keyingport[3] <= 20) then begin
+         comboCwPttPort3.ItemIndex := Settings._keyingport[3];
+      end
+      else if (Settings._keyingport[3] >= 21) then begin
+         comboCwPttPort3.ItemIndex := 21;
+      end
+      else begin
+         comboCwPttPort3.ItemIndex := 0;
       end;
 
       // Use Winkeyer
       checkUseWinkeyer.Checked := Settings._use_winkeyer;
+      checkWk9600.Checked := Settings._use_wk_9600;
+      checkWkOutportSelect.Checked := Settings._use_wk_outp_select;
 
-      // Sent—“‚Í•\¦ê—p
+      // SO2R Support
+      case Settings._so2r_type of
+         so2rNone: begin
+            radioSo2rNone.Checked := True;
+            radioSo2rClick(radioSo2rNone);
+         end;
+
+         so2rCom: begin
+            radioSo2rZLog.Checked := True;
+            radioSo2rClick(radioSo2rZLog);
+         end;
+
+         so2rNeo: begin
+            radioSo2rNeo.Checked := True;
+            radioSo2rClick(radioSo2rNeo);
+         end;
+      end;
+      comboSo2rTxSelectPort.ItemIndex := Settings._so2r_tx_port;
+      comboSo2rRxSelectPort.ItemIndex := Settings._so2r_rx_port;
+
+      editSo2rCqRptIntervalSec.Text := FloatToStrF(Settings._so2r_cq_rpt_interval_sec, ffFixed, 3, 1);
+      if Settings._so2r_cq_msg_bank = 1 then begin
+         radioSo2rCqMsgBankA.Checked := True;
+      end
+      else begin
+         radioSo2rCqMsgBankB.Checked := True;
+      end;
+      comboSo2rCqMsgNumber.ItemIndex := Settings._so2r_cq_msg_number - 1;
+
+      // Sentæ¬„ã¯è¡¨ç¤ºå°‚ç”¨
       SentEdit.Text := Settings._sentstr;
 
       PluginPathEdit.Text := UPluginManager.GetItemPathINI;
@@ -1246,7 +1423,7 @@ begin
       FBSColor[72].Color      := Settings._bandscopecolor[7].FBackColor2;
       FBSColor[73].Color      := Settings._bandscopecolor[7].FBackColor3;
 
-      // Spot‘N“x•\¦
+      // Spoté®®åº¦è¡¨ç¤º
       case Settings._bandscope_freshness_mode of
          0: radioFreshness1.Checked := True;
          1: radioFreshness2.Checked := True;
@@ -1256,9 +1433,9 @@ begin
       end;
 
       // BandScope Options
-      checkUseEstimatedMode.Checked := Settings._bandscope_use_estimated_mode;      // ü”g”‚©‚ç‚Ìƒ‚[ƒh‚Ì„’è
-      checkShowOnlyInBandplan.Checked := Settings._bandscope_show_only_in_bandplan; // ƒoƒ“ƒh“à‚Ì‚İ
-      checkShowOnlyDomestic.Checked := Settings._bandscope_show_only_domestic;      // ‘“à‚Ì‚İ
+      checkUseEstimatedMode.Checked := Settings._bandscope_use_estimated_mode;      // å‘¨æ³¢æ•°ã‹ã‚‰ã®ãƒ¢ãƒ¼ãƒ‰ã®æ¨å®š
+      checkShowOnlyInBandplan.Checked := Settings._bandscope_show_only_in_bandplan; // ãƒãƒ³ãƒ‰å†…ã®ã¿
+      checkShowOnlyDomestic.Checked := Settings._bandscope_show_only_domestic;      // å›½å†…ã®ã¿
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -1289,7 +1466,7 @@ begin
       comboVoiceDevice.ItemIndex := Settings.FSoundDevice;
    end;
 
-   if FEditMode = 0 then begin   // ’Êíƒ‚[ƒh
+   if FEditMode = 0 then begin   // é€šå¸¸ãƒ¢ãƒ¼ãƒ‰
       tabsheetPreferences.TabVisible := True;
       tabsheetCategories.TabVisible := True;
       tabsheetCW.TabVisible := True;
@@ -1347,7 +1524,7 @@ begin
    FNeedSuperCheckLoad := False;
 end;
 
-procedure TformOptions.AddClick(Sender: TObject);
+procedure TformOptions.buttonOpAddClick(Sender: TObject);
 var
    F: TformOperatorEdit;
    obj: TOperatorInfo;
@@ -1368,7 +1545,7 @@ begin
    end;
 end;
 
-procedure TformOptions.DeleteClick(Sender: TObject);
+procedure TformOptions.buttonOpDeleteClick(Sender: TObject);
 var
    obj: TOperatorInfo;
    i: Integer;
@@ -1497,14 +1674,6 @@ begin
 //   Close;
 end;
 
-procedure TformOptions.OpEditKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
-begin
-   case Key of
-      VK_RETURN:
-         AddClick(Self);
-   end;
-end;
-
 procedure TformOptions.OpListBoxDblClick(Sender: TObject);
 var
    F: TformOperatorEdit;
@@ -1529,16 +1698,6 @@ begin
    finally
       F.Free();
    end;
-end;
-
-procedure TformOptions.OpEditEnter(Sender: TObject);
-begin
-   Add.Default := True;
-end;
-
-procedure TformOptions.OpEditExit(Sender: TObject);
-begin
-   buttonOK.Default := True;
 end;
 
 procedure TformOptions.SpeedBarChange(Sender: TObject);
@@ -1638,7 +1797,7 @@ var
 begin
    strSelected := editSuperCheckFolder.Text;
 
-   fResult := SelectDirectory('SuperCheck—p‚Ìƒtƒ@ƒCƒ‹‚ª•Û‘¶‚³‚ê‚Ä‚¢‚éƒtƒHƒ‹ƒ_‚ğ‘I‘ğ‚µ‚Ä‰º‚³‚¢', '', strSelected, [sdNewUI, sdNewFolder, sdValidateDir], Self);
+   fResult := SelectDirectory('SuperCheckç”¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒä¿å­˜ã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã‚’é¸æŠã—ã¦ä¸‹ã•ã„', '', strSelected, [sdNewUI, sdNewFolder, sdValidateDir], Self);
    if fResult = False then begin
       Exit;
    end;
@@ -1695,7 +1854,7 @@ begin
          strDir := PluginPathEdit.Text;
    end;
 
-   if SelectDirectory('ƒtƒHƒ‹ƒ_‚ÌQÆ', '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
+   if SelectDirectory('ãƒ•ã‚©ãƒ«ãƒ€ã®å‚ç…§', '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
       exit;
    end;
 
@@ -1753,6 +1912,29 @@ begin
    end;
 end;
 
+procedure TformOptions.radioSo2rClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TRadioButton(Sender).Tag;
+   case n of
+      0: begin
+         comboSo2rTxSelectPort.Enabled := False;
+         comboSo2rRxSelectPort.Enabled := False;
+      end;
+
+      1: begin
+         comboSo2rTxSelectPort.Enabled := True;
+         comboSo2rRxSelectPort.Enabled := True;
+      end;
+
+      2: begin
+         comboSo2rTxSelectPort.Enabled := False;
+         comboSo2rRxSelectPort.Enabled := False;
+      end;
+   end;
+end;
+
 procedure TformOptions.OnNeedSuperCheckLoad(Sender: TObject);
 begin
    FNeedSuperCheckLoad := True;
@@ -1760,6 +1942,10 @@ end;
 
 procedure TformOptions.CQRepEditKeyPress(Sender: TObject; var Key: char);
 begin
+   if (Key < Char(Ord('0'))) then begin
+      Exit;
+   end;
+
    if not(SysUtils.CharInSet(Key, ['0' .. '9', '.'])) then begin
       Key := #0;
    end;
@@ -1815,6 +2001,29 @@ begin
       end;
    finally
       F.Release();
+   end;
+end;
+
+procedure TformOptions.comboCwPttPortChange(Sender: TObject);
+var
+   Index: Integer;
+   rigno: Integer;
+begin
+   Index := TComboBox(Sender).ItemIndex;
+   rigno := TComboBox(Sender).Tag;
+
+   if (Index = 0) or (Index = 21) then begin
+      if rigno = 1 then begin
+         checkUseWinKeyer.Enabled := False;
+         checkUseWinKeyer.Checked := False;
+         checkWk9600.Enabled := False;
+         checkWkOutportSelect.Enabled := False;
+      end;
+   end
+   else begin
+      checkUseWinKeyer.Enabled := True;
+      checkWk9600.Enabled := True;
+      checkWkOutportSelect.Enabled := True;
    end;
 end;
 
@@ -1881,6 +2090,13 @@ begin
    FQuickQSYBand[no].Enabled := FQuickQSYCheck[no].Checked;
    FQuickQSYMode[no].Enabled := FQuickQSYCheck[no].Checked;
    FQuickQSYRig[no].Enabled  := FQuickQSYCheck[no].Checked;
+end;
+
+procedure TformOptions.checkUseWinKeyerClick(Sender: TObject);
+begin
+   if TCheckBox(Sender).Checked = True then begin
+      comboCwPttPort2.ItemIndex := comboCwPttPort1.ItemIndex;
+   end;
 end;
 
 procedure TformOptions.InitRigNames();

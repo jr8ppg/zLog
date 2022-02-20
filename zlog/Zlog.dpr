@@ -126,7 +126,11 @@ uses
   UQsyInfo in 'UQsyInfo.pas' {formQsyInfo},
   UExportHamlog in 'UExportHamlog.pas' {formExportHamlog},
   UPackageLoader in 'UPackageLoader.pas' {PackageLoader},
-  UPluginManager in 'UPluginManager.pas' {MarketForm};
+  UPluginManager in 'UPluginManager.pas' {MarketForm},
+  UQsoEdit in 'UQsoEdit.pas',
+  USo2rNeoCp in 'USo2rNeoCp.pas' {formSo2rNeoCp},
+  UInformation in 'UInformation.pas' {formInformation},
+  UWinKeyerTester in 'UWinKeyerTester.pas' {formWinkeyerTester};
 
 {$R *.RES}
 

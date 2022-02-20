@@ -80,7 +80,7 @@ procedure TformFunctionKeyPanel.FormKeyDown(Sender: TObject; var Key: Word; Shif
 begin
    case Key of
       VK_ESCAPE:
-         MainForm.LastFocus.SetFocus;
+         MainForm.SetLastFocus();
    end;
 end;
 

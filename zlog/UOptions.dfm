@@ -1,11 +1,10 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = editMessage1
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
-  ClientWidth = 394
+  ClientWidth = 444
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -23,9 +22,9 @@ object formOptions: TformOptions
   object PageControl: TPageControl
     Left = 0
     Top = 0
-    Width = 394
+    Width = 444
     Height = 434
-    ActivePage = tabsheetCW
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -47,7 +46,7 @@ object formOptions: TformOptions
       object GroupBox3: TGroupBox
         Left = 6
         Top = 4
-        Width = 238
+        Width = 256
         Height = 202
         Caption = 'Active bands and powers'
         TabOrder = 0
@@ -102,7 +101,7 @@ object formOptions: TformOptions
           TabOrder = 12
         end
         object act28: TCheckBox
-          Left = 122
+          Left = 138
           Top = 20
           Width = 67
           Height = 17
@@ -112,7 +111,7 @@ object formOptions: TformOptions
           TabOrder = 16
         end
         object act50: TCheckBox
-          Left = 122
+          Left = 138
           Top = 41
           Width = 67
           Height = 17
@@ -122,7 +121,7 @@ object formOptions: TformOptions
           TabOrder = 18
         end
         object act144: TCheckBox
-          Left = 122
+          Left = 138
           Top = 62
           Width = 67
           Height = 17
@@ -132,7 +131,7 @@ object formOptions: TformOptions
           TabOrder = 20
         end
         object act430: TCheckBox
-          Left = 122
+          Left = 138
           Top = 83
           Width = 67
           Height = 17
@@ -142,7 +141,7 @@ object formOptions: TformOptions
           TabOrder = 22
         end
         object act1200: TCheckBox
-          Left = 122
+          Left = 138
           Top = 104
           Width = 67
           Height = 17
@@ -152,7 +151,7 @@ object formOptions: TformOptions
           TabOrder = 24
         end
         object act2400: TCheckBox
-          Left = 122
+          Left = 138
           Top = 125
           Width = 67
           Height = 17
@@ -162,7 +161,7 @@ object formOptions: TformOptions
           TabOrder = 26
         end
         object act5600: TCheckBox
-          Left = 122
+          Left = 138
           Top = 146
           Width = 67
           Height = 17
@@ -172,7 +171,7 @@ object formOptions: TformOptions
           TabOrder = 28
         end
         object act10g: TCheckBox
-          Left = 122
+          Left = 138
           Top = 167
           Width = 67
           Height = 17
@@ -324,7 +323,7 @@ object formOptions: TformOptions
             'P')
         end
         object comboPower28: TComboBox
-          Left = 192
+          Left = 208
           Top = 18
           Width = 36
           Height = 21
@@ -338,7 +337,7 @@ object formOptions: TformOptions
             'P')
         end
         object comboPower50: TComboBox
-          Left = 192
+          Left = 208
           Top = 39
           Width = 36
           Height = 21
@@ -352,7 +351,7 @@ object formOptions: TformOptions
             'P')
         end
         object comboPower144: TComboBox
-          Left = 192
+          Left = 208
           Top = 60
           Width = 36
           Height = 21
@@ -366,7 +365,7 @@ object formOptions: TformOptions
             'P')
         end
         object comboPower430: TComboBox
-          Left = 192
+          Left = 208
           Top = 81
           Width = 36
           Height = 21
@@ -380,7 +379,7 @@ object formOptions: TformOptions
             'P')
         end
         object comboPower1200: TComboBox
-          Left = 192
+          Left = 208
           Top = 102
           Width = 36
           Height = 21
@@ -394,7 +393,7 @@ object formOptions: TformOptions
             'P')
         end
         object comboPower2400: TComboBox
-          Left = 192
+          Left = 208
           Top = 123
           Width = 36
           Height = 21
@@ -408,7 +407,7 @@ object formOptions: TformOptions
             'P')
         end
         object comboPower5600: TComboBox
-          Left = 192
+          Left = 208
           Top = 144
           Width = 36
           Height = 21
@@ -422,7 +421,7 @@ object formOptions: TformOptions
             'P')
         end
         object comboPower10g: TComboBox
-          Left = 192
+          Left = 208
           Top = 165
           Width = 36
           Height = 21
@@ -437,8 +436,8 @@ object formOptions: TformOptions
         end
       end
       object AllowDupeCheckBox: TCheckBox
-        Left = 253
-        Top = 84
+        Left = 316
+        Top = 87
         Width = 113
         Height = 17
         Caption = 'Allow to log dupes'
@@ -464,8 +463,8 @@ object formOptions: TformOptions
         TabOrder = 6
       end
       object cbJMode: TCheckBox
-        Left = 253
-        Top = 63
+        Left = 316
+        Top = 66
         Width = 97
         Height = 17
         Caption = 'J-mode'
@@ -497,8 +496,8 @@ object formOptions: TformOptions
         TabOrder = 7
       end
       object groupQsyAssist: TGroupBox
-        Left = 170
-        Top = 304
+        Left = 222
+        Top = 300
         Width = 204
         Height = 89
         Caption = 'QSY Assist'
@@ -573,36 +572,36 @@ object formOptions: TformOptions
     object tabsheetCategories: TTabSheet
       Caption = 'Categories'
       object Label14: TLabel
-        Left = 257
-        Top = 105
+        Left = 305
+        Top = 128
         Width = 71
         Height = 13
         Caption = 'Prov/State($V)'
       end
       object Label18: TLabel
-        Left = 257
-        Top = 129
+        Left = 305
+        Top = 152
         Width = 37
         Height = 13
         Caption = 'City($Q)'
       end
       object Label19: TLabel
-        Left = 257
-        Top = 201
+        Left = 305
+        Top = 224
         Width = 22
         Height = 13
         Caption = 'Sent'
       end
       object Label34: TLabel
-        Left = 257
-        Top = 153
+        Left = 305
+        Top = 176
         Width = 62
         Height = 13
         Caption = 'CQ Zone($Z)'
       end
       object Label35: TLabel
-        Left = 257
-        Top = 177
+        Left = 305
+        Top = 200
         Width = 61
         Height = 13
         Caption = 'ITU Zone($I)'
@@ -610,12 +609,19 @@ object formOptions: TformOptions
       object GroupBox1: TGroupBox
         Left = 6
         Top = 4
-        Width = 137
-        Height = 261
-        Caption = 'Operator'
+        Width = 143
+        Height = 129
+        Caption = 'Category'
         TabOrder = 0
-        object SingleOpRadioBtn: TRadioButton
-          Left = 16
+        object Label91: TLabel
+          Left = 62
+          Top = 100
+          Width = 21
+          Height = 13
+          Caption = 'TX#'
+        end
+        object radioSingleOp: TRadioButton
+          Left = 11
           Top = 16
           Width = 113
           Height = 17
@@ -623,39 +629,125 @@ object formOptions: TformOptions
           Checked = True
           TabOrder = 0
           TabStop = True
-          OnClick = SingleOpRadioBtnClick
+          OnClick = radioCategoryClick
         end
-        object MultiOpRadioBtn: TRadioButton
-          Left = 16
-          Top = 35
+        object comboTxNo: TComboBox
+          Left = 91
+          Top = 97
+          Width = 41
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 4
+        end
+        object radioMultiOpMultiTx: TRadioButton
+          Tag = 1
+          Left = 11
+          Top = 34
           Width = 113
           Height = 17
-          Caption = 'Multi-Op'
+          Caption = 'Multi-Op/Multi-TX'
           TabOrder = 1
-          TabStop = True
-          OnClick = MultiOpRadioBtnClick
+          OnClick = radioCategoryClick
         end
-        object Add: TButton
-          Left = 8
-          Top = 227
-          Width = 57
-          Height = 25
-          Caption = 'Add'
+        object radioMultiOpSingleTx: TRadioButton
+          Tag = 2
+          Left = 11
+          Top = 52
+          Width = 113
+          Height = 17
+          Caption = 'Multi-Op/Single-TX'
           TabOrder = 2
-          OnClick = AddClick
+          OnClick = radioCategoryClick
         end
-        object Delete: TButton
-          Left = 72
-          Top = 227
-          Width = 57
-          Height = 25
-          Caption = 'Delete'
+        object radioMultiOpTwoTx: TRadioButton
+          Tag = 3
+          Left = 11
+          Top = 70
+          Width = 113
+          Height = 17
+          Caption = 'Multi-Op/Two-TX'
           TabOrder = 3
-          OnClick = DeleteClick
+          OnClick = radioCategoryClick
         end
+      end
+      object ModeGroup: TRadioGroup
+        Left = 296
+        Top = 3
+        Width = 129
+        Height = 114
+        Caption = 'Mode'
+        ItemIndex = 0
+        Items.Strings = (
+          'Phone/CW'
+          'CW'
+          'Phone'
+          'Other'
+          'ALL')
+        TabOrder = 1
+        TabStop = True
+        Visible = False
+      end
+      object ProvEdit: TEdit
+        Left = 400
+        Top = 124
+        Width = 25
+        Height = 20
+        AutoSize = False
+        CharCase = ecUpperCase
+        TabOrder = 2
+      end
+      object CItyEdit: TEdit
+        Left = 376
+        Top = 148
+        Width = 49
+        Height = 20
+        AutoSize = False
+        CharCase = ecUpperCase
+        TabOrder = 3
+      end
+      object SentEdit: TEdit
+        Left = 368
+        Top = 220
+        Width = 57
+        Height = 20
+        AutoSize = False
+        CharCase = ecUpperCase
+        Color = clBtnFace
+        ReadOnly = True
+        TabOrder = 6
+      end
+      object CQZoneEdit: TEdit
+        Left = 400
+        Top = 172
+        Width = 25
+        Height = 20
+        AutoSize = False
+        CharCase = ecUpperCase
+        MaxLength = 3
+        TabOrder = 4
+        Text = '25'
+      end
+      object IARUZoneEdit: TEdit
+        Left = 400
+        Top = 196
+        Width = 25
+        Height = 20
+        AutoSize = False
+        CharCase = ecUpperCase
+        MaxLength = 3
+        TabOrder = 5
+        Text = '45'
+      end
+      object GroupBox24: TGroupBox
+        Left = 6
+        Top = 139
+        Width = 143
+        Height = 222
+        Caption = 'Operators'
+        TabOrder = 7
         object OpListBox: TListBox
-          Left = 8
-          Top = 59
+          Left = 11
+          Top = 19
           Width = 121
           Height = 162
           TabStop = False
@@ -667,170 +759,89 @@ object formOptions: TformOptions
           Font.Style = []
           ItemHeight = 12
           ParentFont = False
-          TabOrder = 4
+          TabOrder = 0
           OnDblClick = OpListBoxDblClick
         end
-      end
-      object BandGroup: TRadioGroup
-        Left = 153
-        Top = 88
-        Width = 89
-        Height = 233
-        ItemIndex = 0
-        Items.Strings = (
-          'All band'
-          '1.9 MHz'
-          '3.5 MHz'
-          '7 MHz'
-          '14 MHz'
-          '21 MHz'
-          '28 MHz'
-          '50 MHz'
-          '144 MHz'
-          '430 MHz'
-          '1200 MHz'
-          '2400 MHz'
-          '5600 MHz')
-        TabOrder = 1
-        TabStop = True
-        Visible = False
-      end
-      object ModeGroup: TRadioGroup
-        Left = 248
-        Top = 3
-        Width = 129
-        Height = 92
-        Caption = 'Mode'
-        ItemIndex = 0
-        Items.Strings = (
-          'Phone/CW'
-          'CW'
-          'Phone'
-          'Other')
-        TabOrder = 2
-        TabStop = True
-        Visible = False
-      end
-      object ProvEdit: TEdit
-        Left = 352
-        Top = 101
-        Width = 25
-        Height = 20
-        AutoSize = False
-        CharCase = ecUpperCase
-        TabOrder = 3
-      end
-      object CItyEdit: TEdit
-        Left = 328
-        Top = 125
-        Width = 49
-        Height = 20
-        AutoSize = False
-        CharCase = ecUpperCase
-        TabOrder = 4
-      end
-      object SentEdit: TEdit
-        Left = 320
-        Top = 197
-        Width = 57
-        Height = 20
-        AutoSize = False
-        CharCase = ecUpperCase
-        Color = clBtnFace
-        ReadOnly = True
-        TabOrder = 7
-      end
-      object CQZoneEdit: TEdit
-        Left = 352
-        Top = 149
-        Width = 25
-        Height = 20
-        AutoSize = False
-        CharCase = ecUpperCase
-        MaxLength = 3
-        TabOrder = 5
-        Text = '25'
-      end
-      object IARUZoneEdit: TEdit
-        Left = 352
-        Top = 173
-        Width = 25
-        Height = 20
-        AutoSize = False
-        CharCase = ecUpperCase
-        MaxLength = 3
-        TabOrder = 6
-        Text = '45'
-      end
-      object cbMultiStn: TCheckBox
-        Left = 257
-        Top = 229
-        Width = 97
-        Height = 17
-        Caption = 'Multi station'
-        TabOrder = 8
+        object buttonOpAdd: TButton
+          Left = 11
+          Top = 187
+          Width = 57
+          Height = 25
+          Caption = 'Add'
+          TabOrder = 1
+          OnClick = buttonOpAddClick
+        end
+        object buttonOpDelete: TButton
+          Left = 75
+          Top = 187
+          Width = 57
+          Height = 25
+          Caption = 'Delete'
+          TabOrder = 2
+          OnClick = buttonOpDeleteClick
+        end
       end
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
       object Label11: TLabel
-        Left = 240
-        Top = 0
+        Left = 285
+        Top = 2
         Width = 31
         Height = 13
         Caption = 'Speed'
       end
       object SpeedLabel: TLabel
-        Left = 312
-        Top = 16
+        Left = 395
+        Top = 19
         Width = 37
         Height = 13
         Caption = '25 wpm'
       end
       object Label13: TLabel
-        Left = 240
-        Top = 40
+        Left = 285
+        Top = 42
         Width = 34
         Height = 13
         Caption = 'Weight'
       end
       object WeightLabel: TLabel
-        Left = 312
-        Top = 56
+        Left = 395
+        Top = 59
         Width = 23
         Height = 13
         Caption = '50 %'
       end
       object Label15: TLabel
-        Left = 262
+        Left = 277
         Top = 234
         Width = 37
         Height = 13
         Caption = 'CQ max'
       end
       object Label16: TLabel
-        Left = 225
+        Left = 255
         Top = 126
         Width = 74
         Height = 13
         Caption = 'Tone Pitch (Hz)'
       end
       object Label17: TLabel
-        Left = 213
+        Left = 228
         Top = 207
         Width = 96
         Height = 13
         Caption = 'CQ rpt. interval (sec)'
       end
       object Label12: TLabel
-        Left = 213
+        Left = 228
         Top = 180
         Width = 86
         Height = 13
         Caption = 'Abbreviation (019)'
       end
       object Label85: TLabel
-        Left = 225
+        Left = 255
         Top = 152
         Width = 71
         Height = 13
@@ -839,7 +850,7 @@ object formOptions: TformOptions
       object GroupBox2: TGroupBox
         Left = 6
         Top = 4
-        Width = 193
+        Width = 211
         Height = 256
         Caption = 'Messages'
         TabOrder = 0
@@ -931,7 +942,7 @@ object formOptions: TformOptions
           Tag = 2
           Left = 32
           Top = 50
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -947,7 +958,7 @@ object formOptions: TformOptions
           Tag = 3
           Left = 32
           Top = 68
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -963,7 +974,7 @@ object formOptions: TformOptions
           Tag = 4
           Left = 32
           Top = 86
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -979,7 +990,7 @@ object formOptions: TformOptions
           Tag = 5
           Left = 32
           Top = 104
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -995,7 +1006,7 @@ object formOptions: TformOptions
           Tag = 6
           Left = 32
           Top = 122
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -1011,7 +1022,7 @@ object formOptions: TformOptions
           Tag = 7
           Left = 32
           Top = 140
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -1027,7 +1038,7 @@ object formOptions: TformOptions
           Tag = 8
           Left = 32
           Top = 158
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -1043,7 +1054,7 @@ object formOptions: TformOptions
           Tag = 1
           Left = 32
           Top = 32
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -1060,7 +1071,7 @@ object formOptions: TformOptions
           Tag = 9
           Left = 32
           Top = 176
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -1076,7 +1087,7 @@ object formOptions: TformOptions
           Tag = 10
           Left = 32
           Top = 194
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -1092,7 +1103,7 @@ object formOptions: TformOptions
           Tag = 11
           Left = 32
           Top = 212
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -1108,7 +1119,7 @@ object formOptions: TformOptions
           Tag = 12
           Left = 32
           Top = 230
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -1122,9 +1133,9 @@ object formOptions: TformOptions
         end
       end
       object SpeedBar: TTrackBar
-        Left = 203
+        Left = 218
         Top = 16
-        Width = 105
+        Width = 166
         Height = 17
         Max = 50
         Min = 5
@@ -1135,9 +1146,9 @@ object formOptions: TformOptions
         OnChange = SpeedBarChange
       end
       object WeightBar: TTrackBar
-        Left = 203
+        Left = 218
         Top = 56
-        Width = 105
+        Width = 166
         Height = 17
         Max = 100
         Frequency = 10
@@ -1145,8 +1156,8 @@ object formOptions: TformOptions
         OnChange = WeightBarChange
       end
       object CQmaxSpinEdit: TSpinEdit
-        Left = 321
-        Top = 229
+        Left = 351
+        Top = 230
         Width = 46
         Height = 22
         MaxValue = 999
@@ -1155,7 +1166,7 @@ object formOptions: TformOptions
         Value = 15
       end
       object ToneSpinEdit: TSpinEdit
-        Left = 321
+        Left = 351
         Top = 121
         Width = 46
         Height = 22
@@ -1166,8 +1177,8 @@ object formOptions: TformOptions
         Value = 100
       end
       object CQRepEdit: TEdit
-        Left = 321
-        Top = 204
+        Left = 351
+        Top = 203
         Width = 41
         Height = 21
         TabOrder = 9
@@ -1175,7 +1186,7 @@ object formOptions: TformOptions
         OnKeyPress = CQRepEditKeyPress
       end
       object FIFOCheck: TCheckBox
-        Left = 213
+        Left = 228
         Top = 80
         Width = 97
         Height = 17
@@ -1185,8 +1196,8 @@ object formOptions: TformOptions
         TabOrder = 4
       end
       object AbbrevEdit: TEdit
-        Left = 321
-        Top = 176
+        Left = 351
+        Top = 175
         Width = 41
         Height = 21
         CharCase = ecUpperCase
@@ -1229,10 +1240,10 @@ object formOptions: TformOptions
         OnClick = CWBankClick
       end
       object cbCQSP: TCheckBox
-        Left = 213
-        Top = 279
-        Width = 123
-        Height = 24
+        Left = 228
+        Top = 280
+        Width = 196
+        Height = 17
         Hint = 
           'This option will switch the CW message sent when TAB or ; key is' +
           ' pressed to that in the current message bank. '
@@ -1241,8 +1252,8 @@ object formOptions: TformOptions
         WordWrap = True
       end
       object checkSendNrAuto: TCheckBox
-        Left = 213
-        Top = 308
+        Left = 228
+        Top = 303
         Width = 161
         Height = 17
         Caption = 'Send NR? automatically'
@@ -1251,7 +1262,7 @@ object formOptions: TformOptions
       object GroupBox14: TGroupBox
         Left = 6
         Top = 264
-        Width = 193
+        Width = 211
         Height = 61
         Caption = 'Additional CQ Messages'
         TabOrder = 1
@@ -1273,7 +1284,7 @@ object formOptions: TformOptions
           Tag = 13
           Left = 32
           Top = 17
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -1288,7 +1299,7 @@ object formOptions: TformOptions
           Tag = 14
           Left = 32
           Top = 35
-          Width = 153
+          Width = 170
           Height = 17
           AutoSize = False
           Font.Charset = DEFAULT_CHARSET
@@ -1301,7 +1312,7 @@ object formOptions: TformOptions
         end
       end
       object SideToneCheck: TCheckBox
-        Left = 213
+        Left = 228
         Top = 103
         Width = 97
         Height = 17
@@ -1309,16 +1320,16 @@ object formOptions: TformOptions
         TabOrder = 5
       end
       object checkUseCQRamdomRepeat: TCheckBox
-        Left = 213
-        Top = 252
+        Left = 228
+        Top = 258
         Width = 149
-        Height = 24
+        Height = 17
         Caption = 'Use CQ Random Repeat'
         TabOrder = 11
         WordWrap = True
       end
       object VolumeSpinEdit: TSpinEdit
-        Left = 321
+        Left = 351
         Top = 147
         Width = 46
         Height = 22
@@ -1328,11 +1339,11 @@ object formOptions: TformOptions
         Value = 100
       end
       object checkNotSendLeadingZeros: TCheckBox
-        Left = 213
-        Top = 331
-        Width = 172
+        Left = 228
+        Top = 326
+        Width = 204
         Height = 17
-        Caption = 'Cut leading zeros in serial numbers'
+        Caption = 'Not send leading zeros in serial numbers'
         TabOrder = 14
       end
     end
@@ -1341,7 +1352,7 @@ object formOptions: TformOptions
       object GroupBox4: TGroupBox
         Left = 6
         Top = 4
-        Width = 371
+        Width = 423
         Height = 261
         Caption = 'Messages'
         TabOrder = 0
@@ -1440,7 +1451,7 @@ object formOptions: TformOptions
           Tag = 2
           Left = 32
           Top = 50
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           TabOrder = 2
@@ -1449,7 +1460,7 @@ object formOptions: TformOptions
           Tag = 3
           Left = 32
           Top = 68
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           TabOrder = 4
@@ -1458,7 +1469,7 @@ object formOptions: TformOptions
           Tag = 4
           Left = 32
           Top = 86
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           TabOrder = 6
@@ -1467,7 +1478,7 @@ object formOptions: TformOptions
           Tag = 5
           Left = 32
           Top = 104
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           TabOrder = 8
@@ -1476,7 +1487,7 @@ object formOptions: TformOptions
           Tag = 6
           Left = 32
           Top = 122
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           TabOrder = 10
@@ -1485,7 +1496,7 @@ object formOptions: TformOptions
           Tag = 7
           Left = 32
           Top = 140
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           TabOrder = 12
@@ -1494,7 +1505,7 @@ object formOptions: TformOptions
           Tag = 8
           Left = 32
           Top = 158
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           TabOrder = 14
@@ -1503,7 +1514,7 @@ object formOptions: TformOptions
           Tag = 1
           Left = 32
           Top = 32
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           MaxLength = 255
@@ -1511,7 +1522,7 @@ object formOptions: TformOptions
         end
         object vButton1: TButton
           Tag = 1
-          Left = 235
+          Left = 287
           Top = 32
           Width = 125
           Height = 19
@@ -1521,7 +1532,7 @@ object formOptions: TformOptions
         end
         object vButton2: TButton
           Tag = 2
-          Left = 235
+          Left = 287
           Top = 50
           Width = 125
           Height = 19
@@ -1531,7 +1542,7 @@ object formOptions: TformOptions
         end
         object vButton3: TButton
           Tag = 3
-          Left = 235
+          Left = 287
           Top = 68
           Width = 125
           Height = 19
@@ -1541,7 +1552,7 @@ object formOptions: TformOptions
         end
         object vButton4: TButton
           Tag = 4
-          Left = 235
+          Left = 287
           Top = 86
           Width = 125
           Height = 19
@@ -1551,7 +1562,7 @@ object formOptions: TformOptions
         end
         object vButton5: TButton
           Tag = 5
-          Left = 235
+          Left = 287
           Top = 104
           Width = 125
           Height = 19
@@ -1561,7 +1572,7 @@ object formOptions: TformOptions
         end
         object vButton6: TButton
           Tag = 6
-          Left = 235
+          Left = 287
           Top = 122
           Width = 125
           Height = 19
@@ -1571,7 +1582,7 @@ object formOptions: TformOptions
         end
         object vButton7: TButton
           Tag = 7
-          Left = 235
+          Left = 287
           Top = 140
           Width = 125
           Height = 19
@@ -1581,7 +1592,7 @@ object formOptions: TformOptions
         end
         object vButton8: TButton
           Tag = 8
-          Left = 235
+          Left = 287
           Top = 158
           Width = 125
           Height = 19
@@ -1593,7 +1604,7 @@ object formOptions: TformOptions
           Tag = 7
           Left = 32
           Top = 176
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           TabOrder = 16
@@ -1602,14 +1613,14 @@ object formOptions: TformOptions
           Tag = 8
           Left = 32
           Top = 194
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           TabOrder = 18
         end
         object vButton9: TButton
           Tag = 9
-          Left = 235
+          Left = 287
           Top = 176
           Width = 125
           Height = 19
@@ -1619,7 +1630,7 @@ object formOptions: TformOptions
         end
         object vButton10: TButton
           Tag = 10
-          Left = 235
+          Left = 287
           Top = 194
           Width = 125
           Height = 19
@@ -1631,14 +1642,14 @@ object formOptions: TformOptions
           Tag = 8
           Left = 32
           Top = 212
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           TabOrder = 20
         end
         object vButton11: TButton
           Tag = 11
-          Left = 235
+          Left = 287
           Top = 212
           Width = 125
           Height = 19
@@ -1650,14 +1661,14 @@ object formOptions: TformOptions
           Tag = 8
           Left = 32
           Top = 230
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           TabOrder = 22
         end
         object vButton12: TButton
           Tag = 12
-          Left = 235
+          Left = 287
           Top = 230
           Width = 125
           Height = 19
@@ -1668,13 +1679,13 @@ object formOptions: TformOptions
       end
       object GroupBox16: TGroupBox
         Left = 6
-        Top = 351
-        Width = 371
+        Top = 352
+        Width = 423
         Height = 50
         Caption = 'Device'
         TabOrder = 2
         object buttonPlayVoice: TSpeedButton
-          Left = 235
+          Left = 287
           Top = 16
           Width = 60
           Height = 26
@@ -1682,7 +1693,7 @@ object formOptions: TformOptions
           OnClick = buttonPlayVoiceClick
         end
         object buttonStopVoice: TSpeedButton
-          Left = 300
+          Left = 352
           Top = 16
           Width = 60
           Height = 26
@@ -1692,7 +1703,7 @@ object formOptions: TformOptions
         object comboVoiceDevice: TComboBox
           Left = 17
           Top = 19
-          Width = 208
+          Width = 260
           Height = 21
           Style = csDropDownList
           TabOrder = 0
@@ -1700,8 +1711,8 @@ object formOptions: TformOptions
       end
       object GroupBox19: TGroupBox
         Left = 6
-        Top = 269
-        Width = 371
+        Top = 270
+        Width = 423
         Height = 77
         Caption = 'Additional CQ Messages'
         TabOrder = 1
@@ -1730,7 +1741,7 @@ object formOptions: TformOptions
           Tag = 3
           Left = 32
           Top = 50
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           TabOrder = 2
@@ -1739,7 +1750,7 @@ object formOptions: TformOptions
           Tag = 2
           Left = 32
           Top = 32
-          Width = 195
+          Width = 245
           Height = 17
           AutoSize = False
           MaxLength = 255
@@ -1747,7 +1758,7 @@ object formOptions: TformOptions
         end
         object vButton13: TButton
           Tag = 2
-          Left = 235
+          Left = 287
           Top = 32
           Width = 125
           Height = 19
@@ -1757,7 +1768,7 @@ object formOptions: TformOptions
         end
         object vButton14: TButton
           Tag = 3
-          Left = 235
+          Left = 287
           Top = 50
           Width = 125
           Height = 19
@@ -1769,384 +1780,13 @@ object formOptions: TformOptions
     end
     object tabsheetHardware: TTabSheet
       Caption = 'Hardware'
-      object GroupBox6: TGroupBox
+      object groupOptCwPtt: TGroupBox
         Left = 6
-        Top = 4
-        Width = 371
-        Height = 273
-        Caption = 'Ports'
-        TabOrder = 0
-        object Label30: TLabel
-          Left = 8
-          Top = 32
-          Width = 66
-          Height = 13
-          Caption = 'PacketCluster'
-        end
-        object Port: TLabel
-          Left = 112
-          Top = 14
-          Width = 19
-          Height = 13
-          Caption = 'Port'
-        end
-        object Label32: TLabel
-          Left = 8
-          Top = 56
-          Width = 80
-          Height = 13
-          Caption = 'Z-Link (Z-Server)'
-        end
-        object Label42: TLabel
-          Left = 8
-          Top = 118
-          Width = 25
-          Height = 13
-          Caption = 'Rig 1'
-        end
-        object Label43: TLabel
-          Left = 174
-          Top = 118
-          Width = 16
-          Height = 13
-          Caption = 'Rig'
-        end
-        object Label31: TLabel
-          Left = 8
-          Top = 142
-          Width = 25
-          Height = 13
-          Caption = 'Rig 2'
-        end
-        object Label44: TLabel
-          Left = 174
-          Top = 142
-          Width = 16
-          Height = 13
-          Caption = 'Rig'
-        end
-        object Label55: TLabel
-          Left = 8
-          Top = 84
-          Width = 78
-          Height = 13
-          Caption = 'Z-Link PC Name'
-        end
-        object ClusterCombo: TComboBox
-          Left = 96
-          Top = 28
-          Width = 73
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 0
-          OnChange = ClusterComboChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'TELNET')
-        end
-        object buttonClusterSettings: TButton
-          Left = 179
-          Top = 28
-          Width = 102
-          Height = 21
-          Caption = 'COM port settings'
-          Default = True
-          TabOrder = 1
-          OnClick = buttonClusterSettingsClick
-        end
-        object ZLinkCombo: TComboBox
-          Left = 96
-          Top = 52
-          Width = 73
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 2
-          OnChange = ZLinkComboChange
-          Items.Strings = (
-            'None'
-            'TELNET')
-        end
-        object buttonZLinkSettings: TButton
-          Left = 179
-          Top = 52
-          Width = 102
-          Height = 21
-          Caption = 'TELNET settings'
-          Default = True
-          TabOrder = 5
-          OnClick = buttonZLinkSettingsClick
-        end
-        object gbCWPort: TGroupBox
-          Left = 8
-          Top = 176
-          Width = 123
-          Height = 81
-          Caption = 'CW/PTT port'
-          TabOrder = 14
-          object comboCwPttPort: TComboBox
-            Left = 28
-            Top = 20
-            Width = 64
-            Height = 21
-            Style = csDropDownList
-            TabOrder = 0
-            Items.Strings = (
-              'None'
-              'COM1'
-              'COM2'
-              'COM3'
-              'COM4'
-              'COM5'
-              'COM6'
-              'COM7'
-              'COM8'
-              'COM9'
-              'COM10'
-              'COM11'
-              'COM12'
-              'COM13'
-              'COM14'
-              'COM15'
-              'COM16'
-              'COM17'
-              'COM18'
-              'COM19'
-              'COM20'
-              'USB')
-          end
-          object checkUseWinKeyer: TCheckBox
-            Left = 14
-            Top = 47
-            Width = 89
-            Height = 25
-            Caption = 'Use WinKeyer'
-            TabOrder = 1
-          end
-        end
-        object comboRig1Port: TComboBox
-          Left = 36
-          Top = 115
-          Width = 64
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 6
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20')
-        end
-        object comboRig1Name: TComboBox
-          Left = 194
-          Top = 114
-          Width = 120
-          Height = 21
-          Style = csDropDownList
-          DropDownCount = 20
-          TabOrder = 8
-          OnChange = comboRig1NameChange
-        end
-        object comboRig2Port: TComboBox
-          Left = 36
-          Top = 139
-          Width = 64
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 10
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20')
-        end
-        object comboRig2Name: TComboBox
-          Left = 194
-          Top = 138
-          Width = 120
-          Height = 21
-          Style = csDropDownList
-          DropDownCount = 20
-          TabOrder = 12
-          OnChange = comboRig2NameChange
-        end
-        object cbTransverter1: TCheckBox
-          Tag = 101
-          Left = 320
-          Top = 116
-          Width = 41
-          Height = 17
-          Hint = 'Check here if you are using a transverter'
-          Caption = 'XVT'
-          TabOrder = 9
-          OnClick = cbTransverter1Click
-        end
-        object cbTransverter2: TCheckBox
-          Tag = 102
-          Left = 320
-          Top = 138
-          Width = 41
-          Height = 17
-          Hint = 'Check here if you are using a transverter'
-          Caption = 'XVT'
-          TabOrder = 13
-          OnClick = cbTransverter1Click
-        end
-        object editZLinkPcName: TEdit
-          Left = 96
-          Top = 81
-          Width = 101
-          Height = 21
-          TabOrder = 3
-        end
-        object checkZLinkSyncSerial: TCheckBox
-          Left = 210
-          Top = 83
-          Width = 91
-          Height = 17
-          Caption = 'SyncSerial'
-          TabOrder = 4
-          OnClick = PTTEnabledCheckBoxClick
-        end
-        object comboRig1Speed: TComboBox
-          Left = 103
-          Top = 115
-          Width = 65
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 7
-          Items.Strings = (
-            '300'
-            '1200'
-            '2400'
-            '4800'
-            '9600'
-            '19200'
-            '38400'
-            '56000'
-            '57600'
-            '115200'
-            '128000'
-            '256000')
-        end
-        object comboRig2Speed: TComboBox
-          Left = 103
-          Top = 139
-          Width = 65
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 11
-          Items.Strings = (
-            '300'
-            '1200'
-            '2400'
-            '4800'
-            '9600'
-            '19200'
-            '38400'
-            '56000'
-            '57600'
-            '115200'
-            '128000'
-            '256000')
-        end
-        object GroupBox21: TGroupBox
-          Left = 137
-          Top = 176
-          Width = 224
-          Height = 81
-          Caption = 'ICOM CI-V Options'
-          TabOrder = 15
-          object Label83: TLabel
-            Left = 9
-            Top = 23
-            Width = 27
-            Height = 13
-            Caption = 'Mode'
-          end
-          object Label84: TLabel
-            Left = 9
-            Top = 52
-            Width = 36
-            Height = 13
-            Caption = 'Method'
-          end
-          object comboIcomMode: TComboBox
-            Left = 53
-            Top = 20
-            Width = 160
-            Height = 21
-            Style = csDropDownList
-            ImeMode = imDisable
-            ItemIndex = 0
-            TabOrder = 0
-            Text = 'CI-V Transceive On'
-            OnChange = comboIcomModeChange
-            Items.Strings = (
-              'CI-V Transceive On'
-              'CI-V Transceive Off (Polling)')
-          end
-          object comboIcomMethod: TComboBox
-            Left = 53
-            Top = 49
-            Width = 160
-            Height = 21
-            Style = csDropDownList
-            ItemIndex = 0
-            TabOrder = 1
-            Text = 'Get freq. and mode (slow)'
-            Items.Strings = (
-              'Get freq. and mode (slow)'
-              'Get freq. only (fast)')
-          end
-        end
-      end
-      object GroupBox7: TGroupBox
-        Left = 6
-        Top = 283
-        Width = 371
+        Top = 237
+        Width = 423
         Height = 62
         Caption = 'CW/PTT control'
-        TabOrder = 1
+        TabOrder = 4
         object Label38: TLabel
           Left = 8
           Top = 38
@@ -2187,7 +1827,7 @@ object formOptions: TformOptions
           Text = 'CWPortEdit'
         end
         object checkCwReverseSignal: TCheckBox
-          Left = 173
+          Left = 162
           Top = 14
           Width = 144
           Height = 17
@@ -2199,28 +1839,760 @@ object formOptions: TformOptions
           OnClick = PTTEnabledCheckBoxClick
         end
       end
-      object GroupBox13: TGroupBox
+      object groupUsif4cw: TGroupBox
         Left = 6
-        Top = 354
-        Width = 371
-        Height = 43
+        Top = 303
+        Width = 213
+        Height = 45
         Caption = 'USBIF4CW'
-        TabOrder = 2
+        TabOrder = 5
         object checkUsbif4cwSyncWpm: TCheckBox
           Left = 8
-          Top = 17
+          Top = 19
           Width = 82
           Height = 17
           Caption = 'Sync WPM'
           TabOrder = 0
         end
         object checkUsbif4cwPaddleReverse: TCheckBox
-          Left = 96
-          Top = 17
-          Width = 101
+          Left = 93
+          Top = 19
+          Width = 96
           Height = 17
           Caption = 'Paddle Reverse'
           TabOrder = 1
+        end
+      end
+      object groupOptCI_V: TGroupBox
+        Left = 6
+        Top = 184
+        Width = 423
+        Height = 49
+        Caption = 'ICOM CI-V Options'
+        TabOrder = 3
+        object Label83: TLabel
+          Left = 9
+          Top = 23
+          Width = 27
+          Height = 13
+          Caption = 'Mode'
+        end
+        object Label84: TLabel
+          Left = 209
+          Top = 23
+          Width = 36
+          Height = 13
+          Caption = 'Method'
+        end
+        object comboIcomMode: TComboBox
+          Left = 42
+          Top = 20
+          Width = 160
+          Height = 21
+          Style = csDropDownList
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 0
+          Text = 'CI-V Transceive On'
+          OnChange = comboIcomModeChange
+          Items.Strings = (
+            'CI-V Transceive On'
+            'CI-V Transceive Off (Polling)')
+        end
+        object comboIcomMethod: TComboBox
+          Left = 253
+          Top = 20
+          Width = 160
+          Height = 21
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 1
+          Text = 'Get freq. and mode (slow)'
+          Items.Strings = (
+            'Get freq. and mode (slow)'
+            'Get freq. only (fast)')
+        end
+      end
+      object groupRig1: TGroupBox
+        Left = 6
+        Top = 4
+        Width = 423
+        Height = 56
+        Caption = 'RIG1'
+        TabOrder = 0
+        object Label43: TLabel
+          Left = 156
+          Top = 13
+          Width = 16
+          Height = 13
+          Caption = 'Rig'
+        end
+        object Label92: TLabel
+          Left = 15
+          Top = 13
+          Width = 54
+          Height = 13
+          Caption = 'Control port'
+        end
+        object Label93: TLabel
+          Left = 88
+          Top = 13
+          Width = 31
+          Height = 13
+          Caption = 'Speed'
+        end
+        object Label94: TLabel
+          Left = 282
+          Top = 13
+          Width = 39
+          Height = 13
+          Caption = 'CW port'
+        end
+        object comboRig1Name: TComboBox
+          Left = 152
+          Top = 27
+          Width = 120
+          Height = 21
+          Style = csDropDownList
+          DropDownCount = 20
+          TabOrder = 2
+          OnChange = comboRig1NameChange
+        end
+        object comboRig1Port: TComboBox
+          Left = 11
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20')
+        end
+        object comboRig1Speed: TComboBox
+          Left = 81
+          Top = 27
+          Width = 65
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 1
+          Items.Strings = (
+            '300'
+            '1200'
+            '2400'
+            '4800'
+            '9600'
+            '19200'
+            '38400'
+            '56000'
+            '57600'
+            '115200'
+            '128000'
+            '256000')
+        end
+        object comboCwPttPort1: TComboBox
+          Tag = 1
+          Left = 278
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 3
+          OnChange = comboCwPttPortChange
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20'
+            'USB')
+        end
+        object cbTransverter1: TCheckBox
+          Tag = 101
+          Left = 351
+          Top = 29
+          Width = 41
+          Height = 17
+          Hint = 'Check here if you are using a transverter'
+          Caption = 'XVT'
+          TabOrder = 4
+          OnClick = cbTransverter1Click
+        end
+      end
+      object groupRig2: TGroupBox
+        Left = 6
+        Top = 64
+        Width = 423
+        Height = 56
+        Caption = 'RIG2'
+        TabOrder = 1
+        object Label95: TLabel
+          Left = 156
+          Top = 13
+          Width = 16
+          Height = 13
+          Caption = 'Rig'
+        end
+        object Label96: TLabel
+          Left = 15
+          Top = 13
+          Width = 54
+          Height = 13
+          Caption = 'Control port'
+        end
+        object Label97: TLabel
+          Left = 88
+          Top = 13
+          Width = 31
+          Height = 13
+          Caption = 'Speed'
+        end
+        object Label98: TLabel
+          Left = 282
+          Top = 13
+          Width = 39
+          Height = 13
+          Caption = 'CW port'
+        end
+        object cbTransverter2: TCheckBox
+          Tag = 102
+          Left = 351
+          Top = 29
+          Width = 41
+          Height = 17
+          Hint = 'Check here if you are using a transverter'
+          Caption = 'XVT'
+          TabOrder = 4
+          OnClick = cbTransverter1Click
+        end
+        object comboRig2Name: TComboBox
+          Left = 152
+          Top = 27
+          Width = 120
+          Height = 21
+          Style = csDropDownList
+          DropDownCount = 20
+          TabOrder = 2
+          OnChange = comboRig2NameChange
+        end
+        object comboRig2Port: TComboBox
+          Left = 11
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20')
+        end
+        object comboRig2Speed: TComboBox
+          Left = 81
+          Top = 27
+          Width = 65
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 1
+          Items.Strings = (
+            '300'
+            '1200'
+            '2400'
+            '4800'
+            '9600'
+            '19200'
+            '38400'
+            '56000'
+            '57600'
+            '115200'
+            '128000'
+            '256000')
+        end
+        object comboCwPttPort2: TComboBox
+          Tag = 2
+          Left = 278
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 3
+          OnChange = comboCwPttPortChange
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20'
+            'USB')
+        end
+      end
+      object groupRig3: TGroupBox
+        Left = 6
+        Top = 124
+        Width = 423
+        Height = 56
+        Caption = 'RIG3'
+        TabOrder = 2
+        object Label99: TLabel
+          Left = 282
+          Top = 13
+          Width = 39
+          Height = 13
+          Caption = 'CW port'
+        end
+        object comboCwPttPort3: TComboBox
+          Tag = 3
+          Left = 278
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+          OnChange = comboCwPttPortChange
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20'
+            'USB')
+        end
+      end
+      object groupWinKeyer: TGroupBox
+        Left = 6
+        Top = 352
+        Width = 355
+        Height = 45
+        Caption = 'WinKeyer Option'
+        TabOrder = 6
+        object checkUseWinKeyer: TCheckBox
+          Left = 8
+          Top = 18
+          Width = 89
+          Height = 17
+          Caption = 'Use WinKeyer'
+          TabOrder = 0
+          OnClick = checkUseWinKeyerClick
+        end
+        object checkWk9600: TCheckBox
+          Left = 113
+          Top = 18
+          Width = 89
+          Height = 17
+          Caption = 'WK 9600bps'
+          TabOrder = 1
+          OnClick = checkUseWinKeyerClick
+        end
+        object checkWkOutportSelect: TCheckBox
+          Left = 217
+          Top = 18
+          Width = 112
+          Height = 17
+          Caption = 'Use Out port Select'
+          TabOrder = 2
+          OnClick = checkUseWinKeyerClick
+        end
+      end
+    end
+    object tabsheetNetwork: TTabSheet
+      Caption = 'Hardware2'
+      ImageIndex = 12
+      object groupNetwork: TGroupBox
+        Left = 6
+        Top = 4
+        Width = 423
+        Height = 137
+        Caption = 'Ports'
+        TabOrder = 0
+        object Label30: TLabel
+          Left = 8
+          Top = 31
+          Width = 66
+          Height = 13
+          Caption = 'PacketCluster'
+        end
+        object Port: TLabel
+          Left = 112
+          Top = 14
+          Width = 19
+          Height = 13
+          Caption = 'Port'
+        end
+        object Label32: TLabel
+          Left = 8
+          Top = 58
+          Width = 80
+          Height = 13
+          Caption = 'Z-Link (Z-Server)'
+        end
+        object Label55: TLabel
+          Left = 8
+          Top = 87
+          Width = 78
+          Height = 13
+          Caption = 'Z-Link PC Name'
+        end
+        object ClusterCombo: TComboBox
+          Left = 96
+          Top = 28
+          Width = 73
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+          OnChange = ClusterComboChange
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'TELNET')
+        end
+        object buttonClusterSettings: TButton
+          Left = 179
+          Top = 28
+          Width = 102
+          Height = 21
+          Caption = 'COM port settings'
+          Default = True
+          TabOrder = 1
+          OnClick = buttonClusterSettingsClick
+        end
+        object ZLinkCombo: TComboBox
+          Left = 96
+          Top = 55
+          Width = 73
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 2
+          OnChange = ZLinkComboChange
+          Items.Strings = (
+            'None'
+            'TELNET')
+        end
+        object buttonZLinkSettings: TButton
+          Left = 179
+          Top = 55
+          Width = 102
+          Height = 21
+          Caption = 'TELNET settings'
+          Default = True
+          TabOrder = 5
+          OnClick = buttonZLinkSettingsClick
+        end
+        object editZLinkPcName: TEdit
+          Left = 96
+          Top = 84
+          Width = 101
+          Height = 21
+          TabOrder = 3
+        end
+        object checkZLinkSyncSerial: TCheckBox
+          Left = 210
+          Top = 86
+          Width = 91
+          Height = 17
+          Caption = 'SyncSerial'
+          TabOrder = 4
+          OnClick = PTTEnabledCheckBoxClick
+        end
+      end
+      object groupSo2rSupport: TGroupBox
+        Left = 6
+        Top = 147
+        Width = 423
+        Height = 238
+        Caption = 'SO2R Support'
+        TabOrder = 1
+        object GroupBox7: TGroupBox
+          Left = 8
+          Top = 20
+          Width = 405
+          Height = 109
+          Caption = 'RIG Select'
+          TabOrder = 0
+          object GroupBox6: TGroupBox
+            Left = 155
+            Top = 27
+            Width = 206
+            Height = 53
+            Caption = 'Output Port'
+            TabOrder = 3
+            object Label31: TLabel
+              Left = 12
+              Top = 23
+              Width = 14
+              Height = 13
+              Caption = 'TX'
+            end
+            object Label42: TLabel
+              Left = 107
+              Top = 23
+              Width = 15
+              Height = 13
+              Caption = 'RX'
+            end
+            object comboSo2rRxSelectPort: TComboBox
+              Left = 127
+              Top = 20
+              Width = 64
+              Height = 21
+              Style = csDropDownList
+              TabOrder = 1
+              Items.Strings = (
+                'None'
+                'COM1'
+                'COM2'
+                'COM3'
+                'COM4'
+                'COM5'
+                'COM6'
+                'COM7'
+                'COM8'
+                'COM9'
+                'COM10'
+                'COM11'
+                'COM12'
+                'COM13'
+                'COM14'
+                'COM15'
+                'COM16'
+                'COM17'
+                'COM18'
+                'COM19'
+                'COM20')
+            end
+            object comboSo2rTxSelectPort: TComboBox
+              Left = 32
+              Top = 20
+              Width = 64
+              Height = 21
+              Style = csDropDownList
+              TabOrder = 0
+              Items.Strings = (
+                'None'
+                'COM1'
+                'COM2'
+                'COM3'
+                'COM4'
+                'COM5'
+                'COM6'
+                'COM7'
+                'COM8'
+                'COM9'
+                'COM10'
+                'COM11'
+                'COM12'
+                'COM13'
+                'COM14'
+                'COM15'
+                'COM16'
+                'COM17'
+                'COM18'
+                'COM19'
+                'COM20')
+            end
+          end
+          object radioSo2rNeo: TRadioButton
+            Tag = 2
+            Left = 12
+            Top = 81
+            Width = 85
+            Height = 13
+            Caption = 'SO2R Neo'
+            TabOrder = 2
+            OnClick = radioSo2rClick
+          end
+          object radioSo2rNone: TRadioButton
+            Left = 12
+            Top = 23
+            Width = 46
+            Height = 13
+            Caption = 'None'
+            Checked = True
+            TabOrder = 0
+            TabStop = True
+            OnClick = radioSo2rClick
+          end
+          object radioSo2rZLog: TRadioButton
+            Tag = 1
+            Left = 12
+            Top = 52
+            Width = 69
+            Height = 13
+            Caption = 'COM Port'
+            TabOrder = 1
+            OnClick = radioSo2rClick
+          end
+        end
+        object groupSo2rCqOption: TGroupBox
+          Left = 8
+          Top = 135
+          Width = 405
+          Height = 82
+          Caption = 'Auto RIG switch Options'
+          TabOrder = 1
+          object Label44: TLabel
+            Left = 12
+            Top = 23
+            Width = 96
+            Height = 13
+            Caption = 'CQ rpt. interval (sec)'
+          end
+          object Label100: TLabel
+            Left = 12
+            Top = 51
+            Width = 83
+            Height = 13
+            Caption = 'Message Number'
+          end
+          object editSo2rCqRptIntervalSec: TEdit
+            Left = 127
+            Top = 20
+            Width = 41
+            Height = 21
+            ImeMode = imDisable
+            MaxLength = 5
+            TabOrder = 0
+            Text = '2.0'
+            OnKeyPress = CQRepEditKeyPress
+          end
+          object panelSo2rMessageNumber: TPanel
+            Left = 116
+            Top = 46
+            Width = 221
+            Height = 23
+            BevelOuter = bvNone
+            TabOrder = 1
+            object radioSo2rCqMsgBankA: TRadioButton
+              Left = 12
+              Top = 4
+              Width = 53
+              Height = 17
+              Caption = 'Bank-A'
+              Checked = True
+              TabOrder = 0
+              TabStop = True
+            end
+            object radioSo2rCqMsgBankB: TRadioButton
+              Left = 76
+              Top = 4
+              Width = 53
+              Height = 17
+              Caption = 'Bank-B'
+              TabOrder = 1
+            end
+            object comboSo2rCqMsgNumber: TComboBox
+              Left = 148
+              Top = 2
+              Width = 37
+              Height = 21
+              Style = csDropDownList
+              ItemIndex = 0
+              TabOrder = 2
+              Text = '1'
+              Items.Strings = (
+                '1'
+                '2'
+                '3'
+                '4'
+                '5'
+                '6'
+                '7'
+                '8'
+                '9'
+                '10'
+                '11'
+                '12')
+            end
+          end
         end
       end
     end
@@ -2283,9 +2655,9 @@ object formOptions: TformOptions
         TabOrder = 3
       end
       object GroupBox15: TGroupBox
-        Left = 8
+        Left = 6
         Top = 230
-        Width = 369
+        Width = 423
         Height = 167
         Caption = 'Magical Calling'
         TabOrder = 5
@@ -2453,7 +2825,7 @@ object formOptions: TformOptions
       object edCFGDATPath: TEdit
         Left = 88
         Top = 16
-        Width = 200
+        Width = 256
         Height = 20
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -2466,7 +2838,7 @@ object formOptions: TformOptions
       end
       object buttonBrowseCFGDATPath: TButton
         Tag = 10
-        Left = 302
+        Left = 350
         Top = 16
         Width = 65
         Height = 20
@@ -2478,7 +2850,7 @@ object formOptions: TformOptions
         Tag = 20
         Left = 88
         Top = 41
-        Width = 200
+        Width = 256
         Height = 20
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -2491,7 +2863,7 @@ object formOptions: TformOptions
       end
       object buttonBrowseLogsPath: TButton
         Tag = 20
-        Left = 302
+        Left = 350
         Top = 41
         Width = 65
         Height = 20
@@ -2501,7 +2873,7 @@ object formOptions: TformOptions
       end
       object buttonBrowseBackupPath: TButton
         Tag = 30
-        Left = 302
+        Left = 350
         Top = 66
         Width = 65
         Height = 20
@@ -2512,7 +2884,7 @@ object formOptions: TformOptions
       object BackUpPathEdit: TEdit
         Left = 88
         Top = 66
-        Width = 200
+        Width = 256
         Height = 20
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -2525,7 +2897,7 @@ object formOptions: TformOptions
       end
       object buttonBrowseSoundPath: TButton
         Tag = 40
-        Left = 302
+        Left = 350
         Top = 91
         Width = 65
         Height = 20
@@ -2536,7 +2908,7 @@ object formOptions: TformOptions
       object SoundPathEdit: TEdit
         Left = 88
         Top = 91
-        Width = 200
+        Width = 256
         Height = 20
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -2548,7 +2920,7 @@ object formOptions: TformOptions
       end
       object buttonBrowsePluginPath: TButton
         Tag = 50
-        Left = 302
+        Left = 350
         Top = 116
         Width = 65
         Height = 20
@@ -2559,7 +2931,7 @@ object formOptions: TformOptions
       object PluginPathEdit: TEdit
         Left = 88
         Top = 116
-        Width = 200
+        Width = 256
         Height = 20
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -2573,35 +2945,35 @@ object formOptions: TformOptions
     object tabsheetMisc: TTabSheet
       Caption = 'Misc'
       object Label47: TLabel
-        Left = 125
+        Left = 177
         Top = 14
         Width = 117
         Height = 13
         Caption = 'Max super check search'
       end
       object Label48: TLabel
-        Left = 125
+        Left = 177
         Top = 39
         Width = 138
         Height = 13
         Caption = 'Delete band scope data after'
       end
       object Label49: TLabel
-        Left = 349
+        Left = 401
         Top = 39
         Width = 16
         Height = 13
         Caption = 'min'
       end
       object Label52: TLabel
-        Left = 125
+        Left = 177
         Top = 66
         Width = 102
         Height = 13
         Caption = 'Delete spot data after'
       end
       object Label53: TLabel
-        Left = 349
+        Left = 401
         Top = 63
         Width = 16
         Height = 13
@@ -2622,7 +2994,7 @@ object formOptions: TformOptions
         TabStop = True
       end
       object spMaxSuperHit: TSpinEdit
-        Left = 293
+        Left = 345
         Top = 12
         Width = 49
         Height = 22
@@ -2632,7 +3004,7 @@ object formOptions: TformOptions
         Value = 1
       end
       object spBSExpire: TSpinEdit
-        Left = 293
+        Left = 345
         Top = 36
         Width = 49
         Height = 22
@@ -2643,7 +3015,7 @@ object formOptions: TformOptions
         Value = 60
       end
       object cbUpdateThread: TCheckBox
-        Left = 125
+        Left = 177
         Top = 112
         Width = 161
         Height = 17
@@ -2651,7 +3023,7 @@ object formOptions: TformOptions
         TabOrder = 5
       end
       object spSpotExpire: TSpinEdit
-        Left = 293
+        Left = 345
         Top = 60
         Width = 49
         Height = 22
@@ -2662,7 +3034,7 @@ object formOptions: TformOptions
         Value = 60
       end
       object cbDisplayDatePartialCheck: TCheckBox
-        Left = 125
+        Left = 177
         Top = 89
         Width = 169
         Height = 17
@@ -2672,12 +3044,12 @@ object formOptions: TformOptions
       object GroupBox8: TGroupBox
         Left = 6
         Top = 133
-        Width = 368
+        Width = 423
         Height = 74
         Caption = 'Super Check'
         TabOrder = 6
         object buttonSuperCheckFolderRef: TSpeedButton
-          Left = 338
+          Left = 392
           Top = 43
           Width = 21
           Height = 21
@@ -2707,7 +3079,7 @@ object formOptions: TformOptions
         object editSuperCheckFolder: TEdit
           Left = 12
           Top = 43
-          Width = 320
+          Width = 374
           Height = 21
           TabOrder = 3
           OnChange = OnNeedSuperCheckLoad
@@ -2725,7 +3097,7 @@ object formOptions: TformOptions
       object GroupBox5: TGroupBox
         Left = 6
         Top = 213
-        Width = 368
+        Width = 423
         Height = 50
         Caption = 'N+1'
         TabOrder = 7
@@ -2748,8 +3120,8 @@ object formOptions: TformOptions
           Text = 'CALLSIGN'
         end
         object buttonFullmatchSelectColor: TButton
-          Left = 264
-          Top = 20
+          Left = 318
+          Top = 21
           Width = 45
           Height = 20
           Caption = 'Color...'
@@ -2763,8 +3135,8 @@ object formOptions: TformOptions
           OnClick = buttonFullmatchSelectColorClick
         end
         object buttonFullmatchInitColor: TButton
-          Left = 314
-          Top = 20
+          Left = 368
+          Top = 21
           Width = 45
           Height = 20
           Caption = 'Reset'
@@ -2781,7 +3153,7 @@ object formOptions: TformOptions
       object GroupBox22: TGroupBox
         Left = 6
         Top = 269
-        Width = 368
+        Width = 423
         Height = 50
         Caption = 'Partial Check'
         TabOrder = 8
@@ -2793,8 +3165,8 @@ object formOptions: TformOptions
           Caption = 'Current band'
         end
         object editPartialCheckColor: TEdit
-          Left = 96
-          Top = 20
+          Left = 145
+          Top = 19
           Width = 112
           Height = 21
           TabStop = False
@@ -2803,7 +3175,7 @@ object formOptions: TformOptions
           Text = 'CALLSIGN'
         end
         object buttonPartialCheckForeColor: TButton
-          Left = 214
+          Left = 268
           Top = 20
           Width = 45
           Height = 20
@@ -2818,7 +3190,7 @@ object formOptions: TformOptions
           OnClick = buttonPartialCheckForeColorClick
         end
         object buttonPartialCheckInitColor: TButton
-          Left = 314
+          Left = 368
           Top = 20
           Width = 45
           Height = 20
@@ -2834,7 +3206,7 @@ object formOptions: TformOptions
         end
         object buttonPartialCheckBackColor: TButton
           Tag = 1
-          Left = 264
+          Left = 318
           Top = 20
           Width = 45
           Height = 20
@@ -2852,7 +3224,7 @@ object formOptions: TformOptions
       object GroupBox23: TGroupBox
         Left = 6
         Top = 325
-        Width = 368
+        Width = 423
         Height = 72
         Caption = 'Accessibility'
         TabOrder = 9
@@ -2864,7 +3236,7 @@ object formOptions: TformOptions
           Caption = 'Focused Color'
         end
         object editFocusedColor: TEdit
-          Left = 96
+          Left = 145
           Top = 20
           Width = 112
           Height = 21
@@ -2875,7 +3247,7 @@ object formOptions: TformOptions
         end
         object buttonFocusedBackColor: TButton
           Tag = 1
-          Left = 264
+          Left = 318
           Top = 21
           Width = 45
           Height = 20
@@ -2890,7 +3262,7 @@ object formOptions: TformOptions
           OnClick = buttonFocusedBackColorClick
         end
         object buttonFocusedInitColor: TButton
-          Left = 314
+          Left = 368
           Top = 21
           Width = 45
           Height = 20
@@ -2905,16 +3277,16 @@ object formOptions: TformOptions
           OnClick = buttonFocusedInitColorClick
         end
         object checkFocusedBold: TCheckBox
-          Left = 96
+          Left = 145
           Top = 47
           Width = 45
-          Height = 13
+          Height = 14
           Caption = 'Bold'
           TabOrder = 4
           OnClick = checkFocusedBoldClick
         end
         object buttonFocusedForeColor: TButton
-          Left = 214
+          Left = 268
           Top = 21
           Width = 45
           Height = 20
@@ -3313,7 +3685,7 @@ object formOptions: TformOptions
       object GroupBox9: TGroupBox
         Left = 6
         Top = 4
-        Width = 371
+        Width = 423
         Height = 128
         Caption = 'Bands'
         TabOrder = 0
@@ -3348,7 +3720,7 @@ object formOptions: TformOptions
           TabOrder = 2
         end
         object checkBs05: TCheckBox
-          Left = 100
+          Left = 108
           Top = 18
           Width = 60
           Height = 17
@@ -3358,7 +3730,7 @@ object formOptions: TformOptions
           TabOrder = 4
         end
         object checkBs07: TCheckBox
-          Left = 100
+          Left = 108
           Top = 60
           Width = 60
           Height = 17
@@ -3368,7 +3740,7 @@ object formOptions: TformOptions
           TabOrder = 6
         end
         object checkBs09: TCheckBox
-          Left = 189
+          Left = 205
           Top = 18
           Width = 67
           Height = 17
@@ -3378,7 +3750,7 @@ object formOptions: TformOptions
           TabOrder = 8
         end
         object checkBs10: TCheckBox
-          Left = 189
+          Left = 205
           Top = 39
           Width = 67
           Height = 17
@@ -3388,7 +3760,7 @@ object formOptions: TformOptions
           TabOrder = 9
         end
         object checkBs11: TCheckBox
-          Left = 189
+          Left = 205
           Top = 60
           Width = 67
           Height = 17
@@ -3398,7 +3770,7 @@ object formOptions: TformOptions
           TabOrder = 10
         end
         object checkBs12: TCheckBox
-          Left = 189
+          Left = 205
           Top = 81
           Width = 67
           Height = 17
@@ -3408,7 +3780,7 @@ object formOptions: TformOptions
           TabOrder = 11
         end
         object checkBs13: TCheckBox
-          Left = 277
+          Left = 301
           Top = 18
           Width = 67
           Height = 17
@@ -3418,7 +3790,7 @@ object formOptions: TformOptions
           TabOrder = 12
         end
         object checkBs14: TCheckBox
-          Left = 277
+          Left = 301
           Top = 39
           Width = 67
           Height = 17
@@ -3428,7 +3800,7 @@ object formOptions: TformOptions
           TabOrder = 13
         end
         object checkBs15: TCheckBox
-          Left = 277
+          Left = 301
           Top = 60
           Width = 67
           Height = 17
@@ -3438,7 +3810,7 @@ object formOptions: TformOptions
           TabOrder = 14
         end
         object checkBs16: TCheckBox
-          Left = 277
+          Left = 301
           Top = 81
           Width = 67
           Height = 17
@@ -3448,7 +3820,7 @@ object formOptions: TformOptions
           TabOrder = 15
         end
         object checkBs08: TCheckBox
-          Left = 100
+          Left = 108
           Top = 81
           Width = 60
           Height = 17
@@ -3458,7 +3830,7 @@ object formOptions: TformOptions
           TabOrder = 7
         end
         object checkBs06: TCheckBox
-          Left = 100
+          Left = 108
           Top = 39
           Width = 60
           Height = 17
@@ -3478,7 +3850,7 @@ object formOptions: TformOptions
           TabOrder = 3
         end
         object checkBsCurrent: TCheckBox
-          Left = 277
+          Left = 301
           Top = 102
           Width = 67
           Height = 17
@@ -3491,7 +3863,7 @@ object formOptions: TformOptions
       object GroupBox10: TGroupBox
         Left = 6
         Top = 145
-        Width = 371
+        Width = 423
         Height = 130
         Caption = 'Info. Colors'
         TabOrder = 1
@@ -3524,9 +3896,9 @@ object formOptions: TformOptions
           Caption = 'Unknown'
         end
         object editBSColor1: TEdit
-          Left = 94
+          Left = 108
           Top = 20
-          Width = 70
+          Width = 100
           Height = 21
           TabStop = False
           ReadOnly = True
@@ -3535,7 +3907,7 @@ object formOptions: TformOptions
         end
         object buttonBSFore1: TButton
           Tag = 1
-          Left = 172
+          Left = 221
           Top = 21
           Width = 45
           Height = 20
@@ -3551,7 +3923,7 @@ object formOptions: TformOptions
         end
         object buttonBSReset1: TButton
           Tag = 1
-          Left = 319
+          Left = 368
           Top = 20
           Width = 41
           Height = 20
@@ -3567,7 +3939,7 @@ object formOptions: TformOptions
         end
         object buttonBSBack1: TButton
           Tag = 1
-          Left = 221
+          Left = 270
           Top = 21
           Width = 45
           Height = 20
@@ -3583,9 +3955,9 @@ object formOptions: TformOptions
           OnClick = buttonBSBackClick
         end
         object editBSColor2: TEdit
-          Left = 94
+          Left = 108
           Top = 45
-          Width = 70
+          Width = 100
           Height = 21
           TabStop = False
           ReadOnly = True
@@ -3594,7 +3966,7 @@ object formOptions: TformOptions
         end
         object buttonBSFore2: TButton
           Tag = 2
-          Left = 172
+          Left = 221
           Top = 46
           Width = 45
           Height = 20
@@ -3610,7 +3982,7 @@ object formOptions: TformOptions
         end
         object buttonBSReset2: TButton
           Tag = 2
-          Left = 319
+          Left = 368
           Top = 46
           Width = 41
           Height = 20
@@ -3626,7 +3998,7 @@ object formOptions: TformOptions
         end
         object buttonBSBack2: TButton
           Tag = 2
-          Left = 221
+          Left = 270
           Top = 46
           Width = 45
           Height = 20
@@ -3642,9 +4014,9 @@ object formOptions: TformOptions
           OnClick = buttonBSBackClick
         end
         object editBSColor3: TEdit
-          Left = 94
+          Left = 108
           Top = 70
-          Width = 70
+          Width = 100
           Height = 21
           TabStop = False
           ReadOnly = True
@@ -3653,7 +4025,7 @@ object formOptions: TformOptions
         end
         object buttonBSFore3: TButton
           Tag = 3
-          Left = 172
+          Left = 221
           Top = 71
           Width = 45
           Height = 20
@@ -3669,7 +4041,7 @@ object formOptions: TformOptions
         end
         object buttonBSReset3: TButton
           Tag = 3
-          Left = 319
+          Left = 368
           Top = 71
           Width = 41
           Height = 20
@@ -3685,7 +4057,7 @@ object formOptions: TformOptions
         end
         object buttonBSBack3: TButton
           Tag = 3
-          Left = 221
+          Left = 270
           Top = 71
           Width = 45
           Height = 20
@@ -3701,9 +4073,9 @@ object formOptions: TformOptions
           OnClick = buttonBSBackClick
         end
         object editBSColor4: TEdit
-          Left = 94
+          Left = 108
           Top = 95
-          Width = 70
+          Width = 100
           Height = 21
           TabStop = False
           ReadOnly = True
@@ -3712,7 +4084,7 @@ object formOptions: TformOptions
         end
         object buttonBSFore4: TButton
           Tag = 4
-          Left = 172
+          Left = 221
           Top = 96
           Width = 45
           Height = 20
@@ -3728,7 +4100,7 @@ object formOptions: TformOptions
         end
         object buttonBSReset4: TButton
           Tag = 4
-          Left = 319
+          Left = 368
           Top = 96
           Width = 41
           Height = 20
@@ -3744,7 +4116,7 @@ object formOptions: TformOptions
         end
         object buttonBSBack4: TButton
           Tag = 4
-          Left = 221
+          Left = 270
           Top = 96
           Width = 45
           Height = 20
@@ -3761,7 +4133,7 @@ object formOptions: TformOptions
         end
         object checkBSBold1: TCheckBox
           Tag = 1
-          Left = 272
+          Left = 321
           Top = 22
           Width = 41
           Height = 17
@@ -3771,7 +4143,7 @@ object formOptions: TformOptions
         end
         object checkBSBold2: TCheckBox
           Tag = 2
-          Left = 272
+          Left = 321
           Top = 47
           Width = 41
           Height = 17
@@ -3781,7 +4153,7 @@ object formOptions: TformOptions
         end
         object checkBSBold3: TCheckBox
           Tag = 3
-          Left = 272
+          Left = 321
           Top = 72
           Width = 41
           Height = 17
@@ -3791,7 +4163,7 @@ object formOptions: TformOptions
         end
         object checkBSBold4: TCheckBox
           Tag = 4
-          Left = 272
+          Left = 321
           Top = 97
           Width = 41
           Height = 17
@@ -3803,7 +4175,7 @@ object formOptions: TformOptions
       object GroupBox20: TGroupBox
         Left = 6
         Top = 281
-        Width = 371
+        Width = 423
         Height = 112
         Caption = 'BandScope Options'
         TabOrder = 2
@@ -3839,7 +4211,7 @@ object formOptions: TformOptions
       object GroupBox12: TGroupBox
         Left = 6
         Top = 3
-        Width = 371
+        Width = 423
         Height = 158
         Caption = 'SpotSource Colors'
         TabOrder = 0
@@ -3888,7 +4260,7 @@ object formOptions: TformOptions
         object editBSColor5: TEdit
           Left = 92
           Top = 20
-          Width = 70
+          Width = 100
           Height = 21
           TabStop = False
           ReadOnly = True
@@ -3897,7 +4269,7 @@ object formOptions: TformOptions
         end
         object buttonBSFore5: TButton
           Tag = 5
-          Left = 174
+          Left = 221
           Top = 21
           Width = 45
           Height = 20
@@ -3914,7 +4286,7 @@ object formOptions: TformOptions
         end
         object buttonBSBack5: TButton
           Tag = 5
-          Left = 223
+          Left = 270
           Top = 21
           Width = 45
           Height = 20
@@ -3930,7 +4302,7 @@ object formOptions: TformOptions
         end
         object checkBSBold5: TCheckBox
           Tag = 5
-          Left = 274
+          Left = 321
           Top = 22
           Width = 41
           Height = 17
@@ -3941,7 +4313,7 @@ object formOptions: TformOptions
         end
         object buttonBSReset5: TButton
           Tag = 5
-          Left = 321
+          Left = 368
           Top = 21
           Width = 41
           Height = 20
@@ -3958,7 +4330,7 @@ object formOptions: TformOptions
         object editBSColor6: TEdit
           Left = 92
           Top = 47
-          Width = 70
+          Width = 100
           Height = 21
           TabStop = False
           ReadOnly = True
@@ -3967,7 +4339,7 @@ object formOptions: TformOptions
         end
         object buttonBSFore6: TButton
           Tag = 6
-          Left = 174
+          Left = 221
           Top = 48
           Width = 45
           Height = 20
@@ -3984,7 +4356,7 @@ object formOptions: TformOptions
         end
         object buttonBSBack6: TButton
           Tag = 6
-          Left = 223
+          Left = 270
           Top = 48
           Width = 45
           Height = 20
@@ -4000,7 +4372,7 @@ object formOptions: TformOptions
         end
         object checkBSBold6: TCheckBox
           Tag = 6
-          Left = 274
+          Left = 321
           Top = 49
           Width = 41
           Height = 17
@@ -4011,7 +4383,7 @@ object formOptions: TformOptions
         end
         object buttonBSReset6: TButton
           Tag = 6
-          Left = 321
+          Left = 368
           Top = 48
           Width = 41
           Height = 20
@@ -4028,7 +4400,7 @@ object formOptions: TformOptions
         object editBSColor7: TEdit
           Left = 92
           Top = 74
-          Width = 70
+          Width = 100
           Height = 21
           TabStop = False
           ReadOnly = True
@@ -4037,7 +4409,7 @@ object formOptions: TformOptions
         end
         object buttonBSFore7: TButton
           Tag = 7
-          Left = 174
+          Left = 221
           Top = 75
           Width = 45
           Height = 20
@@ -4054,7 +4426,7 @@ object formOptions: TformOptions
         end
         object buttonBSBack7: TButton
           Tag = 7
-          Left = 223
+          Left = 270
           Top = 75
           Width = 45
           Height = 20
@@ -4070,7 +4442,7 @@ object formOptions: TformOptions
         end
         object checkBSBold7: TCheckBox
           Tag = 7
-          Left = 274
+          Left = 321
           Top = 76
           Width = 41
           Height = 17
@@ -4081,7 +4453,7 @@ object formOptions: TformOptions
         end
         object buttonBSReset7: TButton
           Tag = 7
-          Left = 321
+          Left = 368
           Top = 75
           Width = 41
           Height = 20
@@ -4098,7 +4470,7 @@ object formOptions: TformOptions
         object editBSColor7_2: TEdit
           Left = 92
           Top = 100
-          Width = 70
+          Width = 100
           Height = 21
           TabStop = False
           ReadOnly = True
@@ -4107,7 +4479,7 @@ object formOptions: TformOptions
         end
         object buttonBSBack7_2: TButton
           Tag = 72
-          Left = 223
+          Left = 270
           Top = 101
           Width = 45
           Height = 20
@@ -4123,7 +4495,7 @@ object formOptions: TformOptions
         end
         object buttonBSBack7_3: TButton
           Tag = 73
-          Left = 223
+          Left = 270
           Top = 127
           Width = 45
           Height = 20
@@ -4140,7 +4512,7 @@ object formOptions: TformOptions
         object editBSColor7_3: TEdit
           Left = 92
           Top = 126
-          Width = 70
+          Width = 100
           Height = 21
           TabStop = False
           ReadOnly = True
@@ -4151,7 +4523,7 @@ object formOptions: TformOptions
       object groupSpotFreshness: TGroupBox
         Left = 6
         Top = 171
-        Width = 371
+        Width = 423
         Height = 121
         Caption = 'Spot Freshness'
         TabOrder = 1
@@ -4195,7 +4567,7 @@ object formOptions: TformOptions
       object GroupBox11: TGroupBox
         Left = 6
         Top = 4
-        Width = 371
+        Width = 423
         Height = 166
         Caption = 'Settings'
         TabOrder = 0
@@ -4277,16 +4649,16 @@ object formOptions: TformOptions
   object Panel1: TPanel
     Left = 0
     Top = 434
-    Width = 394
+    Width = 444
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
     DesignSize = (
-      394
+      444
       37)
     object buttonOK: TButton
-      Left = 124
+      Left = 149
       Top = 6
       Width = 75
       Height = 25
@@ -4298,7 +4670,7 @@ object formOptions: TformOptions
       OnClick = buttonOKClick
     end
     object buttonCancel: TButton
-      Left = 204
+      Left = 229
       Top = 6
       Width = 75
       Height = 25

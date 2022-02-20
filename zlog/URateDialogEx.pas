@@ -7,7 +7,7 @@ uses
   Buttons, ExtCtrls, System.Math, System.DateUtils,
   VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart,
   VCLTee.Series, UOptions, UzLogGlobal, UzLogQSO, UzLogConst, Vcl.ComCtrls,
-  Vcl.Grids, UQsoTarget;
+  Vcl.Grids, UQsoTarget, Vcl.Menus;
 
 type
   TRateDialogEx = class(TForm)
@@ -51,6 +51,9 @@ type
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     ScoreGrid: TStringGrid;
+    popupScore: TPopupMenu;
+    menuAchievementRate: TMenuItem;
+    menuWinLoss: TMenuItem;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -66,6 +69,7 @@ type
     procedure ScoreGridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure ScoreGridTopLeftChanged(Sender: TObject);
     procedure ScoreGridSelectCell(Sender: TObject; ACol, ARow: Integer; var CanSelect: Boolean);
+    procedure menuAchievementRateClick(Sender: TObject);
   private
     { Private declarations }
     FBand: TBand;
@@ -193,7 +197,7 @@ end;
 
 procedure TRateDialogEx.FormDestroy(Sender: TObject);
 begin
-   SaveSettings();
+//   SaveSettings();
 end;
 
 procedure TRateDialogEx.FormShow(Sender: TObject);
@@ -207,13 +211,14 @@ procedure TRateDialogEx.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShif
 begin
    case Key of
       VK_ESCAPE:
-         MainForm.LastFocus.SetFocus;
+         MainForm.SetLastFocus();
    end;
 end;
 
 procedure TRateDialogEx.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    Timer.Enabled := False;
+   SaveSettings();
 end;
 
 procedure TRateDialogEx.TimerTimer(Sender: TObject);
@@ -237,7 +242,7 @@ end;
 procedure TRateDialogEx.OKBtnClick(Sender: TObject);
 begin
    Close;
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TRateDialogEx.radioOriginClick(Sender: TObject);
@@ -572,6 +577,22 @@ begin
       GraphSeries[b].Marks.Font.Color := dmZLogGlobal.Settings.FGraphTextColor[b];
    end;
    SetGraphStartPositionUI(FGraphStartPosition);
+   menuAchievementRate.Checked := dmZLogGlobal.Settings.FZaqAchievement;
+end;
+
+procedure TRateDialogEx.menuAchievementRateClick(Sender: TObject);
+begin
+   TargetToGrid(dmZLogGlobal.Target);
+   ScoreGrid.Refresh();
+
+   if menuAchievementRate.Checked = True then begin
+      ScoreGrid.Cells[0, 35] := '%';
+      ScoreGrid.Cells[26, 0] := '%';
+   end
+   else begin
+      ScoreGrid.Cells[0, 35] := 'Win/Loss';
+      ScoreGrid.Cells[26, 0] := 'W/L';
+   end;
 end;
 
 procedure TRateDialogEx.SaveSettings();
@@ -584,8 +605,12 @@ begin
       dmZLogGlobal.Settings.FGraphBarColor[b] := GraphSeries[b].SeriesColor;
       dmZLogGlobal.Settings.FGraphTextColor[b] := GraphSeries[b].Marks.Font.Color;
    end;
+   dmZLogGlobal.Settings.FZaqAchievement := menuAchievementRate.Checked;
 end;
 
+//
+// ZAQグリッドの描画
+//
 procedure TRateDialogEx.ScoreGridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
 var
    strText: string;
@@ -596,7 +621,10 @@ begin
       Font.Size := ScoreGrid.Font.Size;
       Font.Name := ScoreGrid.Font.Name;
 
+      // 現在バンドの行（１行目）
       r := (Ord(FBand) * 2) + 1;
+
+      // 現在バンドの背景色
       if (ARow = (r + 0)) or
          (ARow = (r + 1)) then begin
          Pen.Style := psSolid;
@@ -604,7 +632,7 @@ begin
          Brush.Style := bsSolid;
          Brush.Color := RGB($9F, $FF, $FF);
       end
-      else begin
+      else begin  // その他のバンドの背景色
          Pen.Style := psSolid;
          Pen.Color := ScoreGrid.Color;
          Brush.Style := bsSolid;
@@ -612,7 +640,7 @@ begin
       end;
       FillRect(Rect);
 
-      if ACol = 0 then begin
+      if ACol = 0 then begin        // バンド名表示
          strText := ScoreGrid.Cells[ACol, ARow];
          Font.Color := clBlack;
          TextRect(Rect, strText, [tfLeft, tfVerticalCenter, tfSingleLine]);
@@ -621,7 +649,7 @@ begin
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
-      else if ARow = 0 then begin
+      else if ARow = 0 then begin   // タイトル行（１行目）の表示
          strText := ScoreGrid.Cells[ACol, ARow];
          Font.Color := clBlack;
          TextRect(Rect, strText, [tfCenter, tfVerticalCenter, tfSingleLine]);
@@ -629,13 +657,27 @@ begin
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
-      else if (ARow = 35) or (ACol = 26) then begin
+      else if (ARow = 35) or (ACol = 26) then begin   // 合計行(35)、合計列(26)の表示
+         // 達成率/WinLoss
          strText := ScoreGrid.Cells[ACol, ARow];
-         if StrToFloatDef(strText, 0) >= 80 then begin
-            Font.Color := clBlue;
+
+         if menuAchievementRate.Checked = True then begin
+            // 80%以上は青表示
+            if StrToFloatDef(strText, 0) >= 80 then begin
+               Font.Color := clBlue;
+            end
+            else begin
+               Font.Color := clRed;
+            end;
          end
          else begin
-            Font.Color := clRed;
+            // 勝敗0以上は青
+            if StrToFloatDef(strText, 0) >= 0 then begin
+               Font.Color := clBlue;
+            end
+            else begin  // 負け越しは赤
+               Font.Color := clRed;
+            end;
          end;
          Font.Size := 10;
 
@@ -645,7 +687,7 @@ begin
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
-      else begin
+      else begin     // TARGET数、QSO数表示
 //         t := dmZLogGlobal.Target.Bands[TBand(ARow - 1)].Hours[ACol].Target;
          t := StrToIntDef(ScoreGrid.Cells[ACol, ARow], 0);
 
@@ -793,17 +835,34 @@ begin
          ScoreGrid.Cells[i, R + 1] := IntToStr(ATarget.Bands[b].Hours[i].Actual);
          ScoreGrid.Cells[i, 33]       := IntToStr(ATarget.Total.Hours[i].Target);
          ScoreGrid.Cells[i, 34]       := IntToStr(ATarget.Total.Hours[i].Actual);
-         ScoreGrid.Cells[i, 35]       := FloatToStrF(ATarget.Total.Hours[i].Rate, ffFixed, 1000, 1);
+         if menuAchievementRate.Checked = True then begin
+            ScoreGrid.Cells[i, 35]    := FloatToStrF(ATarget.Total.Hours[i].Rate, ffFixed, 1000, 1);
+         end
+         else begin
+            ScoreGrid.Cells[i, 35]    := IntToStr(ATarget.Total.Hours[i].Actual - ATarget.Total.Hours[i].Target);
+         end;
       end;
       ScoreGrid.Cells[25, R + 0]   := IntToStr(ATarget.Bands[b].Total.Target);
       ScoreGrid.Cells[25, R + 1]   := IntToStr(ATarget.Bands[b].Total.Actual);
-      ScoreGrid.Cells[26, R + 1]   := FloatToStrF(ATarget.Bands[b].Total.Rate, ffFixed, 1000, 1);
+
+      if menuAchievementRate.Checked = True then begin
+         ScoreGrid.Cells[26, R + 1]   := FloatToStrF(ATarget.Bands[b].Total.Rate, ffFixed, 1000, 1);
+      end
+      else begin
+         ScoreGrid.Cells[26, R + 1]   := IntToStr(ATarget.Bands[b].Total.Actual - ATarget.Bands[b].Total.Target);
+      end;
    end;
 
    ScoreGrid.Cells[25, 33]   := IntToStr(ATarget.TotalTotal.Target);
    ScoreGrid.Cells[25, 34]   := IntToStr(ATarget.TotalTotal.Actual);
-   ScoreGrid.Cells[25, 35]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
-   ScoreGrid.Cells[26, 34]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
+   if menuAchievementRate.Checked = True then begin
+      ScoreGrid.Cells[25, 35]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
+      ScoreGrid.Cells[26, 34]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
+   end
+   else begin
+      ScoreGrid.Cells[25, 35]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
+      ScoreGrid.Cells[26, 34]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
+   end;
 
    ScoreGrid.Refresh();
 end;

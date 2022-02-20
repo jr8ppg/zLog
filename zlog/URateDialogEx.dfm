@@ -84,10 +84,6 @@ object RateDialogEx: TRateDialogEx
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = 'Graph'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel2: TPanel
         Left = 0
         Top = 167
@@ -467,6 +463,7 @@ object RateDialogEx: TRateDialogEx
         Font.Style = []
         Options = [goFixedVertLine, goFixedHorzLine]
         ParentFont = False
+        PopupMenu = popupScore
         TabOrder = 0
         OnDrawCell = ScoreGridDrawCell
         OnSelectCell = ScoreGridSelectCell
@@ -480,5 +477,26 @@ object RateDialogEx: TRateDialogEx
     OnTimer = TimerTimer
     Left = 288
     Top = 12
+  end
+  object popupScore: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 200
+    Top = 153
+    object menuAchievementRate: TMenuItem
+      AutoCheck = True
+      Caption = #36948#25104#29575#34920#31034
+      Checked = True
+      GroupIndex = 1
+      RadioItem = True
+      OnClick = menuAchievementRateClick
+    end
+    object menuWinLoss: TMenuItem
+      AutoCheck = True
+      Caption = #21213#12385#36000#12369#34920#31034
+      GroupIndex = 1
+      RadioItem = True
+      OnClick = menuAchievementRateClick
+    end
   end
 end

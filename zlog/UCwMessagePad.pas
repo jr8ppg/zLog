@@ -83,7 +83,7 @@ procedure TCwMessagePad.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShif
 begin
    case Key of
       VK_ESCAPE: begin
-         MainForm.LastFocus.SetFocus;
+         MainForm.SetLastFocus();
       end;
    end;
 end;
@@ -167,7 +167,7 @@ begin
    {$ENDIF}
 
    S := Button.Caption;
-   zLogSendStr2(S, CurrentQSO);
+   zLogSendStr2(MainForm.CurrentRigID, S, CurrentQSO);
 
    while Pos(':***********', S) > 0 do begin
       i := Pos(':***********', S);
@@ -175,7 +175,7 @@ begin
       Insert(CurrentQSO.Callsign, S, i);
    end;
 
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 function TCwMessagePad.GetFontSize(): Integer;

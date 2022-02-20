@@ -101,7 +101,8 @@ end;
 procedure TWWZone.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
    case Key of
-      VK_ESCAPE : MainForm.LastFocus.SetFocus;
+      VK_ESCAPE:
+         MainForm.SetLastFocus();
    end;
 end;
 

@@ -87,6 +87,8 @@ type
     actionPlayMessageA10: TAction;
     actionPlayCQA2: TAction;
     actionPlayCQA3: TAction;
+    TxLabel: TLabel;
+    comboTxNo: TComboBox;
     procedure CancelBtnClick(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure CallsignEditChange(Sender: TObject);
@@ -142,6 +144,7 @@ type
     procedure actionQuickMemo3Execute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
+    procedure comboTxNoChange(Sender: TObject);
   private
     { Private declarations }
     workQSO : TQSO;
@@ -169,6 +172,11 @@ begin
    end;
 
    NewPowerEdit.Text := workQSO.NewPowerStr;
+end;
+
+procedure TEditDialog.comboTxNoChange(Sender: TObject);
+begin
+   workQSO.TX := StrToIntDef(comboTxNo.Items[comboTxNo.ItemIndex], 0);
 end;
 
 procedure TEditDialog.Init(aQSO: TQSO; Action_: integer);
@@ -209,11 +217,26 @@ begin
    PointEdit.Text := workQSO.PointStr;
    MemoEdit.Text := workQSO.memo;
    OpEdit.Text := workQSO.Operator;
+
+   case dmZLogGlobal.ContestCategory of
+      ccSingleOp: begin
+      end;
+
+      ccMultiOpMultiTx: begin
+         comboTxNo.Items.CommaText := TXLIST_MM;
+         comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(workQSO.TX));
+      end;
+
+      ccMultiOpSingleTx, ccMultiOpTwoTx: begin
+         comboTxNo.Items.CommaText := TXLIST_MS;
+         comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(workQSO.TX));
+      end;
+   end;
 end;
 
 procedure TEditDialog.CancelBtnClick(Sender: TObject);
 begin
-   MainForm.LastFocus.SetFocus;
+   MainForm.SetLastFocus();
    MainForm.ZLinkForm.UnlockQSO(origQSO);
    ModalResult := mrCancel;
 end;
@@ -380,6 +403,7 @@ procedure TEditDialog.FormShow(Sender: TObject);
 var
    i: integer;
    M: TMenuItem;
+   nID: Integer;
 const
    offset = 3;
 begin
@@ -397,7 +421,7 @@ begin
       NewPowerMenu.Items[i].Visible := MainForm.ModeMenu.Items[i].Visible;
    end;
 
-   OpEdit.Visible := (dmZlogGlobal.MultiOp > 0);
+   OpEdit.Visible := (dmZlogGlobal.ContestCategory <> ccSingleOp);
    OpLabel.Visible := OpEdit.Visible;
 
    if MainForm.OpMenu.Items.Count > 0 then // update op menu 1.31
@@ -418,63 +442,87 @@ begin
       end;
    end;
 
-   SerialEdit.Visible := MainForm.SerialEdit.Visible;
-   SerialEdit.Left := MainForm.SerialEdit.Left + offset;
-   SerialEdit.Width := MainForm.SerialEdit.Width;
+   nID := MainForm.CurrentRigID;
+
+   SerialEdit.Visible := MainForm.SerialEdit1.Visible;
+   SerialEdit.Left := MainForm.SerialEdit1.Left + offset;
+   SerialEdit.Width := MainForm.SerialEdit1.Width;
    SerialLabel.Visible := SerialEdit.Visible;
    SerialLabel.Left := SerialEdit.Left + 1;
 
-   TimeEdit.Left := MainForm.TimeEdit.Left + offset;
-   TimeEdit.Width := MainForm.TimeEdit.Width;
+   TimeEdit.Left := MainForm.TimeEdit1.Left + offset;
+   TimeEdit.Width := MainForm.TimeEdit1.Width;
    TimeLabel.Left := TimeEdit.Left + 1;
 
    DateEdit.Left := TimeEdit.Left;
    DateEdit.Width := TimeEdit.Width;
 
-   CallsignEdit.Left := MainForm.CallsignEdit.Left + offset;
-   CallsignEdit.Width := MainForm.CallsignEdit.Width;
+   CallsignEdit.Left := MainForm.CallsignEdit1.Left + offset;
+   CallsignEdit.Width := MainForm.CallsignEdit1.Width;
    CallsignLabel.Left := CallsignEdit.Left + 1;
 
-   RcvdRSTEdit.Left := MainForm.RcvdRSTEdit.Left + offset;
-   RcvdRSTEdit.Width := MainForm.RcvdRSTEdit.Width;
+   RcvdRSTEdit.Left := MainForm.RcvdRSTEdit1.Left + offset;
+   RcvdRSTEdit.Width := MainForm.RcvdRSTEdit1.Width;
    rcvdRSTLabel.Left := RcvdRSTEdit.Left + 1;
 
-   NumberEdit.Left := MainForm.NumberEdit.Left + offset;
-   NumberEdit.Width := MainForm.NumberEdit.Width;
+   NumberEdit.Left := MainForm.NumberEdit1.Left + offset;
+   NumberEdit.Width := MainForm.NumberEdit1.Width;
    NumberLabel.Left := NumberEdit.Left + 1;
 
-   BandEdit.Left := MainForm.BandEdit.Left + offset;
-   BandEdit.Width := MainForm.BandEdit.Width;
+   BandEdit.Left := MainForm.BandEdit1.Left + offset;
+   BandEdit.Width := MainForm.BandEdit1.Width;
    BandLabel.Left := BandEdit.Left + 1;
 
-   ModeEdit.Left := MainForm.ModeEdit.Left + offset;
-   ModeEdit.Width := MainForm.ModeEdit.Width;
-   ModeEdit.Visible := MainForm.ModeEdit.Visible;
+   ModeEdit.Left := MainForm.ModeEdit1.Left + offset;
+   ModeEdit.Width := MainForm.ModeEdit1.Width;
+   ModeEdit.Visible := MainForm.ModeEdit1.Visible;
    ModeLabel.Visible := ModeEdit.Visible;
    ModeLabel.Left := ModeEdit.Left + 1;
 
    PowerLabel.Visible := PowerEdit.Visible;
    PowerLabel.Left := PowerEdit.Left + 1;
 
-   NewPowerEdit.Left := MainForm.NewPowerEdit.Left + offset;
-   NewPowerEdit.Width := MainForm.NewPowerEdit.Width;
-   NewPowerEdit.Visible := MainForm.NewPowerEdit.Visible;
+   NewPowerEdit.Left := MainForm.PowerEdit1.Left + offset;
+   NewPowerEdit.Width := MainForm.PowerEdit1.Width;
+   NewPowerEdit.Visible := MainForm.PowerEdit1.Visible;
    PowerLabel.Visible := NewPowerEdit.Visible;
    PowerLabel.Left := NewPowerEdit.Left + 1;
 
-   PointEdit.Left := MainForm.PointEdit.Left + offset;
-   PointEdit.Width := MainForm.PointEdit.Width;
+   PointEdit.Left := MainForm.PointEdit1.Left + offset;
+   PointEdit.Width := MainForm.PointEdit1.Width;
    PointLabel.Left := PointEdit.Left + 1;
 
-   OpEdit.Left := MainForm.OpEdit.Left + offset;
-   OpEdit.Width := MainForm.OpEdit.Width;
+   OpEdit.Left := MainForm.OpEdit1.Left + offset;
+   OpEdit.Width := MainForm.OpEdit1.Width;
    OpLabel.Left := OpEdit.Left + 1;
 
-   MemoEdit.Left := MainForm.MemoEdit.Left + offset;
-   MemoEdit.Width := MainForm.MemoEdit.Width;
+   MemoEdit.Left := MainForm.MemoEdit1.Left + offset;
+   MemoEdit.Width := MainForm.MemoEdit1.Width;
    MemoLabel.Left := MemoEdit.Left + 1;
 
-   Width := MainForm.Width;
+   case dmZLogGlobal.ContestCategory of
+      ccSingleOp: begin
+         Width := MainForm.Width;
+         comboTxNo.Visible := False;
+         TxLabel.Visible := False;
+      end;
+
+      ccMultiOpMultiTx: begin
+         comboTxNo.Visible := True;
+         TxLabel.Visible := True;
+         comboTxNo.Left := MemoEdit.Left + MemoEdit.Width + offset;
+         TxLabel.Left := comboTxNo.Left + 1;
+         Width := MainForm.Width + comboTxNo.Width;
+      end;
+
+      ccMultiOpSingleTx, ccMultiOpTwoTx: begin
+         comboTxNo.Visible := True;
+         TxLabel.Visible := True;
+         comboTxNo.Left := MemoEdit.Left + MemoEdit.Width + offset;
+         TxLabel.Left := comboTxNo.Left + 1;
+         Width := MainForm.Width + comboTxNo.Width;
+      end;
+   end;
 end;
 
 procedure TEditDialog.RcvdRSTEditChange(Sender: TObject);
@@ -776,7 +824,7 @@ begin
       end;
 
       S := dmZlogGlobal.CWMessage(cb, no);
-      zLogSendStr2(S, CurrentQSO);
+      zLogSendStr2(MainForm.CurrentRigID, S, CurrentQSO);
    end
    else begin
       // SendVoice(i);
@@ -866,8 +914,11 @@ begin
 end;
 
 procedure TEditDialog.actionControlPTTExecute(Sender: TObject);
+var
+   nID: Integer;
 begin
-   dmZLogKeyer.ControlPTT(not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
+   nID := MainForm.CurrentRigID;
+   dmZLogKeyer.ControlPTT(nID, not(dmZLogKeyer.PTTIsOn)); // toggle PTT;
 end;
 
 procedure TEditDialog.actionChangeBandExecute(Sender: TObject);

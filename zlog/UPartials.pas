@@ -237,7 +237,7 @@ procedure TPartialCheck.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShif
 begin
    case Key of
       VK_ESCAPE:
-         MainForm.LastFocus.SetFocus;
+         MainForm.SetLastFocus();
    end;
 end;
 

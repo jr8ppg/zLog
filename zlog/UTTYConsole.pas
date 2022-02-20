@@ -276,7 +276,7 @@ var
 begin
    case Key of
       VK_ESCAPE:
-         MainForm.LastFocus.SetFocus;
+         MainForm.SetLastFocus();
 
       VK_F1 .. VK_F8, VK_F11, VK_F12: begin
          i := Key - VK_F1 + 1;

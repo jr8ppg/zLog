@@ -81,9 +81,9 @@ type
 
   TSettingsParam = record
     _dontallowsameband : boolean; // same band on two rigs?
-    _multiop : integer;  {multi op/ single op}
+    _multiop : TContestCategory;  {multi op/ single op}
     _band : integer; {0 = all band; 1 = 1.9MHz 2 = 3.5MHz ...}
-    _mode : integer; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
+    _mode : TContestMode; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
     _contestmenuno : integer; {selected contest in the menu}
     _mycall : string;
     _prov : string;
@@ -115,13 +115,27 @@ type
     _rigport:  array[1..2] of Integer; {0 : none 1-4 : com#}
     _rigspeed: array[1..2] of Integer;
     _rigname:  array[1..2] of string;
+    _keyingport: array[1..3] of Integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
 
     _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
     _usbif4cw_sync_wpm: Boolean;
     _polling_interval: Integer;
 
+    // WinKeyer
     _use_winkeyer: Boolean;
+    _use_wk_9600: Boolean;
+    _use_wk_outp_select: Boolean;
+
+    // SO2R Support
+    _so2r_type: TSo2rType;       // 0:none 1:zlog 2:SO2R Neo
+    _so2r_tx_port: Integer;      // 0:none 1-20:com1-20
+    _so2r_rx_port: Integer;      // 0:none 1-20:com1-20
+    _so2r_use_rig3: Boolean;
+    _so2r_cq_rpt_interval_sec: Double;
+    _so2r_cq_msg_bank: Integer;     // 0:Bank-A 1:Bank-B
+    _so2r_cq_msg_number: Integer;   // 1-12
+
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
     _clusterbaud : integer; {}
@@ -131,7 +145,6 @@ type
     _zlink_telnet: TCommParam;
 
     _multistationwarning : boolean; // true by default. turn off not new mult warning dialog
-    _lptnr : integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
     _sentstr : string; {exchanges sent $Q$P$O etc. Set at menu select}
 
     _soundpath : string;
@@ -162,7 +175,6 @@ type
     _ritclear : boolean; // clear rit after each qso
     _searchafter : integer; // 0 default. for super / partial check
     _savewhennocw : boolean; // def=false. save when cw is not being sent
-    _multistation : boolean; // warn when logging non-newmulti qso
     _maxsuperhit : integer; // max # qso hit
     _bsexpire : integer; // bandscope expiration time in minutes
     _spotexpire : integer; // spot expiration time in minutes
@@ -225,6 +237,7 @@ type
     FGraphStartPosition: TQSORateStartPosition;
     FGraphBarColor: array[b19..HiBand] of TColor;
     FGraphTextColor: array[b19..HiBand] of TColor;
+    FZaqAchievement: Boolean;
 
     // Cluster Window(Comm)
     FClusterAutoLogin: Boolean;
@@ -289,10 +302,10 @@ type
     procedure SetMyCall(s: string);
     function GetBand(): Integer;
     procedure SetBand(b: Integer);
-    function GetMode(): Integer;
-    procedure SetMode(m: Integer);
-    function GetMultiOp(): Integer;
-    procedure SetMultiOp(i: Integer);
+    function GetMode(): TContestMode;
+    procedure SetMode(m: TContestMode);
+    function GetMultiOp(): TContestCategory;
+    procedure SetMultiOp(i: TContestCategory);
     function GetContestMenuNo() : Integer;
     procedure SetContestMenuNo(i: Integer);
     function GetFIFO(): Boolean;
@@ -326,8 +339,8 @@ public
     property OpList: TOperatorInfoList read FOpList;
     property MyCall: string read GetMyCall write SetMyCall;
     property Band: Integer read GetBand write SetBand;
-    property Mode: Integer read GetMode write SetMode;
-    property MultiOp: Integer read GetMultiOp write SetMultiOp;
+    property ContestMode: TContestMode read GetMode write SetMode;
+    property ContestCategory: TContestCategory read GetMultiOp write SetMultiOp;
     property ContestMenuNo: Integer read GetContestMenuNo write SetContestMenuNo;
     property FIFO: Boolean read GetFIFO write SetFIFO;
     property TXNr: Byte read GetTXNr write SetTXNr;
@@ -363,6 +376,7 @@ public
     function GetArea(str: string): Integer;
     function GuessCQZone(aQSO: TQSO): string;
     function IsUSA(): Boolean;
+    function IsMultiStation(): Boolean;
 
     property PowerOfBand[b: TBand]: TPower read GetPowerOfBand;
 
@@ -620,13 +634,13 @@ begin
       //
 
       // Operator
-      Settings._multiop := ini.ReadInteger('Categories', 'Operator2', 0);
+      Settings._multiop := TContestCategory(ini.ReadInteger('Categories', 'Operator2', 0));
 
       // Band
       Settings._band := ini.ReadInteger('Categories', 'Band', 0);
 
       // Mode
-      Settings._mode := ini.ReadInteger('Categories', 'Mode', 0);
+      Settings._mode := TContestMode(ini.ReadInteger('Categories', 'Mode', 0));
 
 //      // Prov/State($V)
 //      Settings._prov := ini.ReadString('Profiles', 'Province/State', '');
@@ -642,9 +656,6 @@ begin
 
       // Sent
 //      Settings._sentstr := ini.ReadString('Profiles', 'SentStr', '');
-
-      // Multi Station
-      Settings._multistation := ini.ReadBool('Categories', 'MultiStn', False);
 
       // CFGファイルにもある項目をロード
       LoadCfgParams(ini);
@@ -779,6 +790,7 @@ begin
       Settings._rigspeed[1] := ini.ReadInteger('Hardware', 'RigSpeed', 0);
       Settings._transverter1 := ini.ReadBool('Hardware', 'Transverter1', False);
       Settings._transverteroffset1 := ini.ReadInteger('Hardware', 'Transverter1Offset', 0);
+      Settings._keyingport[1] := ini.ReadInteger('Hardware', 'CWLPTPort', 0);
 
       // RIG2
       Settings._rigport[2] := ini.ReadInteger('Hardware', 'Rig2', 0);
@@ -786,6 +798,10 @@ begin
       Settings._rigspeed[2] := ini.ReadInteger('Hardware', 'RigSpeed2', 0);
       Settings._transverter2 := ini.ReadBool('Hardware', 'Transverter2', False);
       Settings._transverteroffset2 := ini.ReadInteger('Hardware', 'Transverter2Offset', 0);
+      Settings._keyingport[2] := ini.ReadInteger('Hardware', 'CWLPTPort2', 0);
+
+      // RIG3
+      Settings._keyingport[3] := ini.ReadInteger('Hardware', 'CWLPTPort3', 0);
 
       // USE TRANSCEIVE MODE(ICOM only)
       Settings._use_transceive_mode := ini.ReadBool('Hardware', 'UseTransceiveMode', True);
@@ -801,9 +817,24 @@ begin
 
       // Use WinKeyer USB
       Settings._use_winkeyer := ini.ReadBool('Hardware', 'UseWinKeyer', False);
+      Settings._use_wk_9600 := ini.ReadBool('Hardware', 'UseWk9600', False);
+      Settings._use_wk_outp_select := ini.ReadBool('Hardware', 'UseWkOutpSelect', True);
 
-      // CW/PTT port
-      Settings._lptnr := ini.ReadInteger('Hardware', 'CWLPTPort', 0);
+      // SO2R Support
+      Settings._so2r_type  := TSo2rType(ini.ReadInteger('SO2R', 'type', 0));
+      Settings._so2r_tx_port  := ini.ReadInteger('SO2R', 'tx_select_port', 0);
+      Settings._so2r_rx_port  := ini.ReadInteger('SO2R', 'rx_select_port', 0);
+      Settings._so2r_use_rig3 := ini.ReadBool('SO2R', 'use_rig3', True);
+
+      Settings._so2r_cq_rpt_interval_sec := ini.ReadFloat('SO2R', 'cq_repeat_interval_sec', 2.0);
+      Settings._so2r_cq_msg_bank    := ini.ReadInteger('SO2R', 'cq_msg_bank', 1);
+      if (Settings._so2r_cq_msg_bank < 1) or (Settings._so2r_cq_msg_bank > 2) then begin
+         Settings._so2r_cq_msg_bank := 1;
+      end;
+      Settings._so2r_cq_msg_number  := ini.ReadInteger('SO2R', 'cq_msg_number', 1);
+      if (Settings._so2r_cq_msg_number < 1) or (Settings._so2r_cq_msg_number > 12) then begin
+         Settings._so2r_cq_msg_number := 1;
+      end;
 
       // CW PTT control
 
@@ -1079,6 +1110,7 @@ begin
          Settings.FGraphBarColor[b]  := ZStringToColorDef(ini.ReadString('Graph', strKey + '_BarColor',  ''), default_graph_bar_color[b]);
          Settings.FGraphTextColor[b] := ZStringToColorDef(ini.ReadString('Graph', strKey + '_TextColor', ''), default_graph_text_color[b]);
       end;
+      Settings.FZaqAchievement      := ini.ReadBool('rateex_zaq', 'achievement', True);
 
       // Cluster Window(Comm)
       Settings.FClusterAutoLogin       := ini.ReadBool('ClusterWindow', 'AutoLogin', True);
@@ -1186,13 +1218,13 @@ begin
       //
 
       // Operator
-      ini.WriteInteger('Categories', 'Operator2', Settings._multiop);
+      ini.WriteInteger('Categories', 'Operator2', Integer(Settings._multiop));
 
       // Band
       ini.WriteInteger('Categories', 'Band', Settings._band);
 
       // Mode
-      ini.WriteInteger('Categories', 'Mode', Settings._mode);
+      ini.WriteInteger('Categories', 'Mode', Integer(Settings._mode));
 
       if Settings.ProvCityImported = False then begin
          // Prov/State($V)
@@ -1210,9 +1242,6 @@ begin
 
       // Sent
 //      ini.WriteString('Profiles', 'SentStr', Settings._sentstr);
-
-      // Multi Station
-      ini.WriteBool('Categories', 'MultiStn', Settings._multistation);
 
       //
       // CW/RTTY
@@ -1323,6 +1352,7 @@ begin
       ini.WriteInteger('Hardware', 'RigSpeed', Settings._rigspeed[1]);
       ini.WriteBool('Hardware', 'Transverter1', Settings._transverter1);
       ini.WriteInteger('Hardware', 'Transverter1Offset', Settings._transverteroffset1);
+      ini.WriteInteger('Hardware', 'CWLPTPort', Settings._keyingport[1]);
 
       // RIG2
       ini.WriteInteger('Hardware', 'Rig2', Settings._rigport[2]);
@@ -1330,6 +1360,10 @@ begin
       ini.WriteInteger('Hardware', 'RigSpeed2', Settings._rigspeed[2]);
       ini.WriteBool('Hardware', 'Transverter2', Settings._transverter2);
       ini.WriteInteger('Hardware', 'Transverter2Offset', Settings._transverteroffset2);
+      ini.WriteInteger('Hardware', 'CWLPTPort2', Settings._keyingport[2]);
+
+      // RIG3
+      ini.WriteInteger('Hardware', 'CWLPTPort3', Settings._keyingport[3]);
 
       // USE TRANSCEIVE MODE(ICOM only)
       ini.WriteBool('Hardware', 'UseTransceiveMode', Settings._use_transceive_mode);
@@ -1345,9 +1379,18 @@ begin
 
       // Use WinKeyer USB
       ini.WriteBool('Hardware', 'UseWinKeyer', Settings._use_winkeyer);
+      ini.WriteBool('Hardware', 'UseWk9600', Settings._use_wk_9600);
+      ini.WriteBool('Hardware', 'UseWkOutpSelect', Settings._use_wk_outp_select);
 
-      // CW/PTT port
-      ini.WriteInteger('Hardware', 'CWLPTPort', Settings._lptnr);
+      // SO2R Support
+      ini.WriteInteger('SO2R', 'type', Integer(Settings._so2r_type));
+      ini.WriteInteger('SO2R', 'tx_select_port', Settings._so2r_tx_port);
+      ini.WriteInteger('SO2R', 'rx_select_port', Settings._so2r_rx_port);
+      ini.WriteBool('SO2R', 'use_rig3', Settings._so2r_use_rig3);
+
+      ini.WriteFloat('SO2R', 'cq_repeat_interval_sec', Settings._so2r_cq_rpt_interval_sec);
+      ini.WriteInteger('SO2R', 'cq_msg_bank', Settings._so2r_cq_msg_bank);
+      ini.WriteInteger('SO2R', 'cq_msg_number', Settings._so2r_cq_msg_number);
 
       // CW PTT control
 
@@ -1564,6 +1607,7 @@ begin
          ini.WriteString('Graph', strKey + '_BarColor', ZColorToString(Settings.FGraphBarColor[b]));
          ini.WriteString('Graph', strKey + '_TextColor', ZColorToString(Settings.FGraphTextColor[b]));
       end;
+      ini.WriteBool('rateex_zaq', 'achievement', Settings.FZaqAchievement);
 
       // Cluster Window(Comm)
       ini.WriteBool('ClusterWindow', 'AutoLogin', Settings.FClusterAutoLogin);
@@ -1615,7 +1659,7 @@ begin
    InitializeCW();
 
    // SetBand(Settings._band);
-   Mode := Settings._mode;
+   ContestMode := Settings._mode;
 
    if Settings._backuppath = '' then begin
       MainForm.BackUp1.Enabled := False;
@@ -1623,28 +1667,34 @@ begin
    else begin
       MainForm.BackUp1.Enabled := True;
    end;
-
-   if Settings._multistation = True then begin
-      Settings._txnr := 2;
-   end;
 end;
 
 procedure TdmZLogGlobal.InitializeCW();
+var
+   i: Integer;
 begin
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
+   dmZLogKeyer.UseWk9600 := Settings._use_wk_9600;
+   dmZLogKeyer.UseWkOutpSelect := Settings._use_wk_outp_select;
+   dmZLogKeyer.UseWkSo2rNeo := (Settings._so2r_type = so2rNeo);
+   dmZLogKeyer.So2rRxSelectPort := TKeyingPort(Settings._so2r_rx_port);
+   dmZLogKeyer.So2rTxSelectPort := TKeyingPort(Settings._so2r_tx_port);
+
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
    dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;
 
    // RIGコントロールと同じポートの場合は無しとする
-   if (Settings._rigport[1] <> Settings._lptnr) and
-      (Settings._rigport[2] <> Settings._lptnr) then begin
-      dmZLogKeyer.KeyingPort := TKeyingPort(Settings._lptnr);
-   end
-   else begin
-      dmZLogKeyer.KeyingPort := tkpNone;
+   for i := 0 to 1 do begin
+      if (Settings._rigport[i + 1] <> Settings._keyingport[i + 1]) then begin
+         dmZLogKeyer.KeyingPort[i] := TKeyingPort(Settings._keyingport[i + 1]);
+      end
+      else begin
+         dmZLogKeyer.KeyingPort[i] := tkpNone;
+      end;
    end;
+   dmZLogKeyer.KeyingPort[2] := TKeyingPort(Settings._keyingport[3]);
 
-   dmZlogKeyer.KeyingSignalReverse := Settings.CW._keying_signal_reverse;
+   dmZLogKeyer.KeyingSignalReverse := Settings.CW._keying_signal_reverse;
    dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;
 
@@ -1665,6 +1715,8 @@ begin
 
    dmZLogKeyer.SpaceFactor := Settings.CW._spacefactor;
    dmZLogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
+
+   dmZLogKeyer.Open();
 end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;
@@ -1749,22 +1801,22 @@ begin
    end;
 end;
 
-function TdmZLogGlobal.GetMode: integer;
+function TdmZLogGlobal.GetMode: TContestMode;
 begin
    Result := Settings._mode;
 end;
 
-procedure TdmZLogGlobal.SetMode(m: integer);
+procedure TdmZLogGlobal.SetMode(m: TContestMode);
 begin
    Settings._mode := m;
 end;
 
-function TdmZLogGlobal.GetMultiOp(): Integer;
+function TdmZLogGlobal.GetMultiOp(): TContestCategory;
 begin
    Result := Settings._multiop;
 end;
 
-procedure TdmZLogGlobal.SetMultiOp(i: integer);
+procedure TdmZLogGlobal.SetMultiOp(i: TContestCategory);
 begin
    Settings._multiop := i;
 end;
@@ -2421,6 +2473,16 @@ end;
 function TdmZLogGlobal.IsUSA(): Boolean;
 begin
    if (MyCountry = 'K') or (MyCountry = 'N') or (MyCountry = 'W') then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
+   end;
+end;
+
+function TdmZLogGlobal.IsMultiStation(): Boolean;
+begin
+   if (ContestCategory = ccMultiOpSingleTx) and (TXNr = 1) then begin
       Result := True;
    end
    else begin

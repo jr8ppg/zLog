@@ -135,7 +135,7 @@ begin
    if QTCToBeSent = 0 then begin
       if QTCReqStn.Mode = mCW then begin
          S := '   ' + QTCReqStn.CallSign + ' QTC ' + IntToStr(QTCSeries) + '/' + IntToStr(SpinEdit.Value);
-         zLogSendStr(S + '"');
+         zLogSendStr(MainForm.CurrentRigID, S + '"');
 
          btnSend.Enabled := False;
          btnBack.Enabled := False;
@@ -159,7 +159,7 @@ begin
       if QTCReqStn.Mode = mCW then begin
          // S := SetStr(cQ.QTCStr, cQ);
          S := cQ.QTCStr;
-         zLogSendStr(S + '"');
+         zLogSendStr(MainForm.CurrentRigID, S + '"');
 
          btnSend.Enabled := False;
          btnBack.Enabled := False;
@@ -257,23 +257,30 @@ begin
 end;
 
 procedure TQTCForm.FormKeyPress(Sender: TObject; var Key: Char);
+var
+   nID: Integer;
 begin
    case Key of
       Chr($08), 'B', 'b':
          btnBackClick(Self);
       'F', 'f':
          btnSendClick(Self);
-      '\':
-         dmZlogKeyer.ControlPTT(not(dmZlogKeyer.PTTIsOn)); // toggle PTT;
+      '\': begin
+         nID := MainForm.CurrentRigID;
+         dmZlogKeyer.ControlPTT(nID, not(dmZlogKeyer.PTTIsOn)); // toggle PTT;
+      end;
    end;
 end;
 
 procedure TQTCForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+var
+   nID: Integer;
 begin
    case Key of
       29: { MUHENKAN KEY } begin
-            dmZlogKeyer.ControlPTT(not(dmZlogKeyer.PTTIsOn)); // toggle PTT;
-         end;
+         nID := MainForm.CurrentRigID;
+         dmZlogKeyer.ControlPTT(nID, not(dmZlogKeyer.PTTIsOn)); // toggle PTT;
+      end;
    end;
 end;
 

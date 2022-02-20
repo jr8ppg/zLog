@@ -612,7 +612,7 @@ begin
 		Log.QsoList.MergeFile(tmp, True);
 		Log.SortByTime;
 		MyContest.Renew;
-		MainForm.EditScreen.RefreshScreen;
+		MainForm.GridRefreshScreen;
 	finally
 		TFile.Delete(tmp);
 	end;

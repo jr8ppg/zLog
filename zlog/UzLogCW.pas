@@ -17,8 +17,8 @@ var
 function LastCallsign : string;
 function SetStr(S : string; aQSO : TQSO) : String;
 function SetStrNoAbbrev(S : string; aQSO : TQSO) : String; {for QSO.NrSent}
-procedure zLogSendStr(S: string);
-procedure zLogSendStr2(S: string; aQSO: TQSO);
+procedure zLogSendStr(nID: Integer; S: string);
+procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
 procedure CtrlZBreak;
 
 implementation
@@ -180,21 +180,27 @@ begin
    Result := temp;
 end;
 
-procedure zLogSendStr(S: string);
+procedure zLogSendStr(nID: Integer; S: string);
 begin
    if dmZLogKeyer.UseWinKeyer = True then begin
+
+      if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+         dmZLogKeyer.So2rNeoReverseRx(nID)
+      end;
+
       dmZLogKeyer.WinKeyerClear();
-      dmZLogKeyer.WinKeyerSendStr(S);
+      dmZLogKeyer.ControlPTT(nID, True);
+      dmZLogKeyer.WinKeyerSendStr2(S);
    end
    else begin
       dmZLogKeyer.ClrBuffer();
       dmZLogKeyer.PauseCW;
 
       if dmZLogGlobal.FIFO then begin
-         dmZLogKeyer.SendStrFIFO(S);
+         dmZLogKeyer.SendStrFIFO(nID, S);
       end
       else begin
-         dmZLogKeyer.SendStr(S);
+         dmZLogKeyer.SendStr(nID, S);
       end;
 
       dmZLogKeyer.SetCallSign(Main.CurrentQSO.Callsign);
@@ -202,7 +208,7 @@ begin
    end;
 end;
 
-procedure zLogSendStr2(S: string; aQSO: TQSO);
+procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
 begin
    if aQSO.Mode = mCW then begin
       S := SetStr(S, aQSO);
@@ -211,7 +217,7 @@ begin
       S := SetStrNoAbbrev(S, aQSO);
    end;
 
-   zLogSendStr(S);
+   zLogSendStr(nID, S);
 end;
 
 procedure CtrlZBreak;
