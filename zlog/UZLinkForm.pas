@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ExtCtrls, Console2, StdCtrls, ComCtrls, UITypes,
-  OverbyteIcsWndControl, OverbyteIcsWSocket,
+  OverbyteIcsWndControl, OverbyteIcsWSocket, Generics.Collections,
   UzLogConst, UzLogGlobal, UzLogQSO, UScratchSheet;
 
 type
@@ -41,7 +41,8 @@ type
 
     CommBuffer : TStringList;
     CommandQue : TStringList;
-    MergeTempList : TList; // temporary list to hold Z-Server QSOID list
+
+    FMergeTempList: TList<TQSOID>; // temporary list to hold Z-Server QSOID list
                            // created when GETQSOIDS is issued and destroyed
                            // when all merge process is finished. List of TQSOID
 
@@ -158,7 +159,7 @@ var
    str: string;
 begin
    str := ZLinkHeader + ' GETQSOIDS';
-   MergeTempList := TList.Create;
+   FMergeTempList := TList<TQSOID>.Create;
    WriteData(str + LineBreakCode[Ord(Console.LineBreak)]);
 end;
 
@@ -233,27 +234,32 @@ var
    qid: TQSOID;
    str: string;
 begin
-   count := MergeTempList.count;
-   if count = 0 then begin
-      MergeTempList.Free;
-      exit;
-   end;
+   try
+      count := FMergeTempList.count;
+      if count = 0 then begin
+         Exit;
+      end;
 
-   i := 0;
-   str := '';
-   while i <= count - 1 do begin
-      repeat
-         qid := TQSOID(MergeTempList[i]);
-         str := str + IntToStr(qid.FullQSOID) + ' ';
-         qid.Free;
-         inc(i);
-      until (i = count) or (i mod 20 = 0);
-      WriteData(ZLinkHeader + ' ' + 'GETLOGQSOID ' + str + LineBreakCode[Ord(Console.LineBreak)]);
-      str := ''; // 2.0q
-   end;
+      i := 0;
+      str := '';
+      while i <= count - 1 do begin
+         repeat
+            qid := FMergeTempList[i];
+            str := str + IntToStr(qid.FullQSOID) + ' ';
+            inc(i);
+         until (i = count) or (i mod 20 = 0);
+         WriteData(ZLinkHeader + ' ' + 'GETLOGQSOID ' + str + LineBreakCode[Ord(Console.LineBreak)]);
+         str := ''; // 2.0q
+      end;
 
-   WriteData(ZLinkHeader + ' ' + 'SENDRENEW' + LineBreakCode[Ord(Console.LineBreak)]);
-   MergeTempList.Free;
+      WriteData(ZLinkHeader + ' ' + 'SENDRENEW' + LineBreakCode[Ord(Console.LineBreak)]);
+   finally
+      for i := FMergeTempList.Count - 1 downto 0 do begin
+         FMergeTempList[i].Free();
+         FMergeTempList.Delete(i);
+      end;
+      FMergeTempList.Free();
+   end;
 end;
 
 procedure TZLinkForm.ProcessCommand;
@@ -301,7 +307,7 @@ begin
             qid := TQSOID.Create;
             qid.FullQSOID := j;
             qid.QSOIDwoCounter := j div 100;
-            MergeTempList.Add(qid);
+            FMergeTempList.Add(qid);
             i := pos(' ', temp);
          end;
       end;
@@ -314,11 +320,11 @@ begin
 
             boo := false;
 
-            for j := 0 to MergeTempList.Count - 1 do begin
-               qid := TQSOID(MergeTempList[j]);
+            for j := 0 to FMergeTempList.Count - 1 do begin
+               qid := TQSOID(FMergeTempList[j]);
                if (aQSO.Reserve3 div 100) = qid.QSOIDwoCounter then begin
                   if aQSO.Reserve3 = qid.FullQSOID then begin // exactly the same qso
-                     MergeTempList.Delete(j);
+                     FMergeTempList.Delete(j);
                      qid.Free;
                      boo := true;
                      break;
@@ -327,13 +333,13 @@ begin
                      if qid.FullQSOID > aQSO.Reserve3 then begin // serverdata is newer
                         boo := true;
                         WriteData(ZLinkHeader + ' ' + 'SENDQSOIDEDIT ' + IntToStr(qid.FullQSOID) + LineBreakCode[Ord(Console.LineBreak)]);
-                        qid.Free;
+//                        qid.Free;
                         break;
                         // qid qso must be sent as editqsoto command;
                      end
                      else begin // local data is newer
                         boo := true;
-                        MergeTempList.Delete(j);
+                        FMergeTempList.Delete(j);
                         WriteData(ZLinkHeader + ' ' + 'EDITQSOTO ' + aQSO.QSOinText + LineBreakCode[Ord(Console.LineBreak)]);
                         qid.Free;
                         break;
@@ -747,7 +753,7 @@ begin
    // Transparent := False;
    DisconnectedByMenu := false;
    CommProcessing := false;
-   MergeTempList := nil;
+   FMergeTempList := nil;
 
    if dmZlogGlobal.Settings._zlinkport in [1 .. 6] then begin
       // Transparent := True; // rs-232c
