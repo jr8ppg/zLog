@@ -3170,9 +3170,6 @@ begin
 
    // SideTone
    WinKeyerSetSideTone(FUseSideTone);
-
-   // set serial echo back to on
-   WinKeyerSetMode(WK_SETMODE_SERIALECHOBACK);
 end;
 
 procedure TdmZLogKeyer.WinKeyerClose();
