@@ -7024,13 +7024,13 @@ begin
             if FileExists(OpenDialog.FileName) then begin
                LoadNewContestFromFile(OpenDialog.FileName);
             end;
-
-            SetWindowCaption();
          end
          else begin // user hit cancel
             MessageDlg('Data will NOT be saved until you enter the file name', mtWarning, [mbOK], 0); { HELP context 0 }
          end;
       end;
+
+      SetWindowCaption();
 
       // 局種係数
       Log.ScoreCoeff := menu.ScoreCoeff;
@@ -7656,15 +7656,17 @@ var
    strCap: string;
    strTxNo: string;
 begin
+   strCap := 'zLog for Windows';
+
    // SingleOP以外はTX#を表示する
    if dmZLogGlobal.ContestCategory = ccSingleOp then begin
-      strTxNo := '';
+      strTxNo := ' ';
    end
    else begin
-      strTxNo := '[TX#' + IntToStr(dmZLogGlobal.TXNr) + '] ';
+      strTxNo := ' [TX#' + IntToStr(dmZLogGlobal.TXNr) + ']';
    end;
 
-   strCap := strTxNo + 'zLog for Windows';
+   strCap := strCap + strTxNo;
 
    // M/Sの場合は RUN/MULTI表示を追加
    if dmZLogGlobal.ContestCategory = ccMultiOpSingleTx then begin
@@ -7684,7 +7686,9 @@ begin
    end;
 
    // 使用中のファイル名
-   strCap := strCap + ' - ' + ExtractFileName(CurrentFileName);
+   if CurrentFileName <> '' then begin
+      strCap := strCap + ' - ' + ExtractFileName(CurrentFileName);
+   end;
 
    Caption := strCap;
 end;
