@@ -48,23 +48,29 @@ type
 
     procedure EnableConnectButton(boo : boolean);
     procedure CommProcess;
+    procedure ProcessCommand;
+    procedure EndQsoIDsProc();
+    procedure SendMergeTempList; // request to send the qsos in the MergeTempList
+    procedure SendQSO_PUTLOG(aQSO : TQSO);
+
+    { unused commands
+    procedure SendLogToZServer;
+    procedure GetCurrentBandData(B : TBand); // loads data from Z-Server to main Log. Issues SENDCURRENT n
+    procedure SendNewPrefix(PX : string; CtyIndex : integer);
+    }
   public
     { Public declarations }
     //Transparent : boolean; // only for loading log from ZServer. False by default
     DisconnectedByMenu : boolean;
     procedure ImplementOptions;
     procedure WriteData(str : string);
-    procedure SendMergeTempList; // request to send the qsos in the MergeTempList
-    procedure ProcessCommand;
     procedure SendBand; {Sends current band (to Z-Server) #ZLOG# BAND 3 etc}
     procedure SendOperator;
     procedure SendQSO(aQSO : TQSO);
-    procedure SendQSO_PUTLOG(aQSO : TQSO);
     procedure RelaySpot(S : string); //called from CommForm to relay spot info
     procedure SendSpotViaNetwork(S : string);
     procedure SendFreqInfo(Hz : integer);
     procedure SendRigStatus;
-    procedure SendLogToZServer;
     procedure MergeLogWithZServer;
     procedure DeleteQSO(aQSO : TQSO);
     procedure LockQSO(aQSO : TQSO);
@@ -73,11 +79,9 @@ type
     procedure InsertQSO(bQSO : TQSO);
     procedure LoadLogFromZLink;
     function ZServerConnected : boolean;
-    procedure GetCurrentBandData(B : TBand); // loads data from Z-Server to main Log. Issues SENDCURRENT n
     procedure SendRemoteCluster(S : String);
     procedure SendPacketData(S : String);
     procedure SendScratchMessage(S : string);
-    procedure SendNewPrefix(PX : string; CtyIndex : integer);
     procedure SendBandScopeData(BSText : string);
     procedure PostWanted(Band: TBand; Mult : string);
     procedure DelWanted(Band: TBand; Mult : string);
@@ -124,6 +128,7 @@ begin
    end;
 end;
 
+{
 procedure TZLinkForm.SendLogToZServer;
 var
    i: integer;
@@ -153,6 +158,7 @@ begin
          WriteData(str + LineBreakCode[Ord(Console.LineBreak)]);
       end;
 end;
+}
 
 procedure TZLinkForm.MergeLogWithZServer;
 var
@@ -187,6 +193,7 @@ begin
    WriteData(str + LineBreakCode[Ord(Console.LineBreak)]);
 end;
 
+{
 procedure TZLinkForm.SendNewPrefix(PX: string; CtyIndex: integer);
 var
    str: string; // NEWPX xxx...NEWPX
@@ -195,6 +202,7 @@ begin
    str := str + FillRight(IntToStr(CtyIndex), 6) + PX;
    WriteData(str + LineBreakCode[Ord(Console.LineBreak)]);
 end;
+}
 
 procedure TZLinkForm.SendBandScopeData(BSText: string);
 var
@@ -235,7 +243,7 @@ var
    str: string;
 begin
    try
-      count := FMergeTempList.count;
+      count := FMergeTempList.Count;
       if count = 0 then begin
          Exit;
       end;
@@ -268,7 +276,6 @@ var
    aQSO: TQSO;
    i, j: integer;
    qid: TQSOID;
-   boo, needtorenew: boolean;
 begin
    while CommandQue.count > 0 do begin
       temp := CommandQue.Strings[0];
@@ -313,59 +320,7 @@ begin
       end;
 
       if pos('ENDQSOIDS', temp) = 1 then begin
-         needtorenew := false;
-
-         for i := 1 to Log.TotalQSO do begin
-            aQSO := Log.QsoList[i];
-
-            boo := false;
-
-            for j := 0 to FMergeTempList.Count - 1 do begin
-               qid := TQSOID(FMergeTempList[j]);
-               if (aQSO.Reserve3 div 100) = qid.QSOIDwoCounter then begin
-                  if aQSO.Reserve3 = qid.FullQSOID then begin // exactly the same qso
-                     FMergeTempList.Delete(j);
-                     qid.Free;
-                     boo := true;
-                     break;
-                  end
-                  else begin // counter is different
-                     if qid.FullQSOID > aQSO.Reserve3 then begin // serverdata is newer
-                        boo := true;
-                        WriteData(ZLinkHeader + ' ' + 'SENDQSOIDEDIT ' + IntToStr(qid.FullQSOID) + LineBreakCode[Ord(Console.LineBreak)]);
-//                        qid.Free;
-                        break;
-                        // qid qso must be sent as editqsoto command;
-                     end
-                     else begin // local data is newer
-                        boo := true;
-                        FMergeTempList.Delete(j);
-                        WriteData(ZLinkHeader + ' ' + 'EDITQSOTO ' + aQSO.QSOinText + LineBreakCode[Ord(Console.LineBreak)]);
-                        qid.Free;
-                        break;
-                        // aQSO moved to ToSendList (but edit)
-                        // or just ask to send immediately
-                     end;
-                  end;
-               end;
-            end;
-
-            if boo = false then begin
-               SendQSO_PUTLOG(aQSO);
-               needtorenew := true;
-               // add aQSO to ToSendList;
-               // or just send putlog ...
-               // renew after done.
-            end;
-         end;
-
-         // getqsos from MergeTempList; (whatever is left)
-         // Free MergeTempList;
-         if needtorenew then begin
-            WriteData(ZLinkHeader + ' ' + 'RENEW' + LineBreakCode[Ord(Console.LineBreak)]);
-         end;
-
-         SendMergeTempList;
+         EndQsoIDsProc();
       end;
 
       if pos('PROMPTUPDATE', temp) = 1 then begin // file loaded on ZServer
@@ -525,8 +480,16 @@ begin
          aQSO.Free;
       end;
 
+      if pos('PUTLOGEX ', temp) = 1 then begin
+         aQSO := TQSO.Create;
+         Delete(temp, 1, 9);
+         aQSO.TextToQSO(temp);
+         aQSO.Reserve := actEdit;
+         Log.AddQue(aQSO);
+         aQSO.Free;
+      end;
+
       if pos('PUTLOG ', temp) = 1 then begin
-         // ZLinkForm.caption := 'PUTLOG';
          aQSO := TQSO.Create;
          Delete(temp, 1, 7);
          aQSO.TextToQSO(temp);
@@ -705,6 +668,68 @@ begin
    end;
 end;
 
+procedure TZLinkForm.EndQsoIDsProc();
+var
+   aQSO: TQSO;
+   fFoundQso: Boolean;
+   fNeedToRenew: Boolean;
+   i: Integer;
+   j: Integer;
+   qid: TQSOID;
+begin
+   fNeedToRenew := False;
+
+   for i := 1 to Log.TotalQSO do begin
+      aQSO := Log.QsoList[i];
+
+      fFoundQso := False;
+
+      for j := 0 to FMergeTempList.Count - 1 do begin
+         qid := FMergeTempList[j];
+         if (aQSO.Reserve3 div 100) = qid.QSOIDwoCounter then begin
+            fFoundQso := True;
+
+            if aQSO.Reserve3 = qid.FullQSOID then begin // exactly the same qso
+               FMergeTempList.Delete(j);
+               qid.Free;
+               break;
+            end
+            else begin // counter is different
+               if qid.FullQSOID > aQSO.Reserve3 then begin // serverdata is newer
+                  break;
+                  // qid qso must be sent as editqsoto command;
+               end
+               else begin // local data is newer
+                  FMergeTempList.Delete(j);
+                  qid.Free;
+
+                  WriteData(ZLinkHeader + ' ' + 'EDITQSOTO ' + aQSO.QSOinText + LineBreakCode[Ord(Console.LineBreak)]);
+                  break;
+                  // aQSO moved to ToSendList (but edit)
+                  // or just ask to send immediately
+               end;
+            end;
+         end;
+      end;
+
+      if fFoundQso = False then begin
+         SendQSO_PUTLOG(aQSO);
+         fNeedToRenew := true;
+         // add aQSO to ToSendList;
+         // or just send putlog ...
+         // renew after done.
+      end;
+   end;
+
+   // getqsos from MergeTempList; (whatever is left)
+   // Free MergeTempList;
+   if fNeedToRenew then begin
+      WriteData(ZLinkHeader + ' ' + 'RENEW' + LineBreakCode[Ord(Console.LineBreak)]);
+   end;
+
+   SendMergeTempList;
+end;
+
 procedure TZLinkForm.CommProcess;
 var
    max, i, j, x: integer;
@@ -850,6 +875,7 @@ begin
    WriteData(ZLinkHeader + ' ' + 'SENDLOG' + LineBreakCode[Ord(Console.LineBreak)]);
 end;
 
+{
 procedure TZLinkForm.GetCurrentBandData(B: TBand);
 var
    str: string;
@@ -858,6 +884,7 @@ begin
    // repeat until AsyncComm.OutQueCount = 0;
    WriteData(str + LineBreakCode[Ord(Console.LineBreak)]);
 end;
+}
 
 procedure TZLinkForm.ZSocketDataAvailable(Sender: TObject; Error: Word);
 var
