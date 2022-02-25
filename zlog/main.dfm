@@ -5243,6 +5243,19 @@ object MainForm: TMainForm
         ColorOff = clSilver
         Status = False
       end
+      object labelRig1Title: TLabel
+        Left = 175
+        Top = 4
+        Width = 35
+        Height = 18
+        Caption = 'RIG1'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial Black'
+        Font.Style = []
+        ParentFont = False
+      end
       object CallsignEdit2A: TOvrEdit
         Tag = 1
         Left = 6
@@ -5366,6 +5379,19 @@ object MainForm: TMainForm
         ColorOff = clSilver
         Status = False
       end
+      object labelRig2Title: TLabel
+        Left = 175
+        Top = 4
+        Width = 35
+        Height = 18
+        Caption = 'RIG2'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial Black'
+        Font.Style = []
+        ParentFont = False
+      end
       object CallsignEdit2B: TOvrEdit
         Tag = 2
         Left = 6
@@ -5483,6 +5509,19 @@ object MainForm: TMainForm
         Pen.Width = 2
         ExplicitHeight = 17
       end
+      object labelRig3Title: TLabel
+        Left = 395
+        Top = 5
+        Width = 35
+        Height = 18
+        Caption = 'RIG3'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial Black'
+        Font.Style = []
+        ParentFont = False
+      end
       object CallsignEdit2C: TOvrEdit
         Tag = 3
         Left = 6
@@ -5569,7 +5608,7 @@ object MainForm: TMainForm
       end
       object SerialEdit2C: TEdit
         Tag = 3
-        Left = 396
+        Left = 347
         Top = 5
         Width = 35
         Height = 18

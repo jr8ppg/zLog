@@ -649,6 +649,9 @@ type
     actionToggleRx: TAction;
     actionMatchRxToTx: TAction;
     actionMatchTxToRx: TAction;
+    labelRig1Title: TLabel;
+    labelRig2Title: TLabel;
+    labelRig3Title: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -10128,6 +10131,9 @@ begin
          RigPanelShape2A.Pen.Color := clBlue;
          RigPanelShape2B.Pen.Color := clBlack;
          RigPanelShape2C.Pen.Color := clBlack;
+         labelRig1Title.Font.Color := clBlue;
+         labelRig2Title.Font.Color := clBlack;
+         labelRig3Title.Font.Color := clBlack;
          SetWhite(0);
          SetGlay(1);
          SetGlay(2);
@@ -10136,6 +10142,9 @@ begin
          RigPanelShape2A.Pen.Color := clBlack;
          RigPanelShape2B.Pen.Color := clBlue;
          RigPanelShape2C.Pen.Color := clBlack;
+         labelRig1Title.Font.Color := clBlack;
+         labelRig2Title.Font.Color := clBlue;
+         labelRig3Title.Font.Color := clBlack;
          SetGlay(0);
          SetWhite(1);
          SetGlay(2);
@@ -10144,6 +10153,9 @@ begin
          RigPanelShape2A.Pen.Color := clBlack;
          RigPanelShape2B.Pen.Color := clBlack;
          RigPanelShape2C.Pen.Color := clBlue;
+         labelRig1Title.Font.Color := clBlack;
+         labelRig2Title.Font.Color := clBlack;
+         labelRig3Title.Font.Color := clBlue;
          SetGlay(0);
          SetGlay(1);
          SetWhite(2);
