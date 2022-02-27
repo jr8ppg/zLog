@@ -5181,16 +5181,16 @@ object MainForm: TMainForm
     Align = alBottom
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
-    Font.Height = -12
+    Font.Height = -15
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
     TabOrder = 6
     object TimeEdit2: TOvrEdit
-      Left = 8
+      Left = 5
       Top = 28
       Width = 57
-      Height = 18
+      Height = 20
       TabStop = False
       AutoSize = False
       ImeMode = imDisable
@@ -5203,10 +5203,10 @@ object MainForm: TMainForm
       TabOnEnter = False
     end
     object DateEdit2: TOvrEdit
-      Left = 8
+      Left = 5
       Top = 6
       Width = 57
-      Height = 18
+      Height = 20
       TabStop = False
       AutoSize = False
       ImeMode = imDisable
@@ -5220,9 +5220,9 @@ object MainForm: TMainForm
       TabOnEnter = False
     end
     object RigPanelA: TPanel
-      Left = 70
+      Left = 66
       Top = 1
-      Width = 217
+      Width = 225
       Height = 51
       BevelOuter = bvNone
       TabOrder = 2
@@ -5230,16 +5230,17 @@ object MainForm: TMainForm
         Tag = 1
         Left = 0
         Top = 0
-        Width = 217
+        Width = 225
         Height = 51
         Align = alClient
         Brush.Style = bsClear
         Pen.Width = 2
         ExplicitLeft = -1
+        ExplicitWidth = 217
       end
       object ledTx2A: TJvLED
         Left = 6
-        Top = 29
+        Top = 28
         ColorOff = clSilver
         Status = False
       end
@@ -5247,7 +5248,7 @@ object MainForm: TMainForm
         Left = 6
         Top = 5
         Width = 35
-        Height = 18
+        Height = 20
         Caption = 'RIG1'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -5258,10 +5259,10 @@ object MainForm: TMainForm
       end
       object CallsignEdit2A: TOvrEdit
         Tag = 1
-        Left = 30
-        Top = 28
-        Width = 75
-        Height = 18
+        Left = 28
+        Top = 27
+        Width = 80
+        Height = 20
         TabStop = False
         AutoSelect = False
         AutoSize = False
@@ -5278,16 +5279,17 @@ object MainForm: TMainForm
       end
       object NumberEdit2A: TOvrEdit
         Tag = 1
-        Left = 144
-        Top = 28
-        Width = 59
-        Height = 18
+        Left = 148
+        Top = 27
+        Width = 70
+        Height = 20
         TabStop = False
         AutoSelect = False
         AutoSize = False
         CharCase = ecUpperCase
         ImeMode = imDisable
         TabOrder = 1
+        Text = '010103M'
         OnChange = NumberEdit1Change
         OnEnter = EditEnter
         OnExit = EditExit
@@ -5299,53 +5301,56 @@ object MainForm: TMainForm
       object RcvdRSTEdit2A: TEdit
         Tag = 1
         Left = 111
-        Top = 28
-        Width = 27
-        Height = 18
+        Top = 27
+        Width = 34
+        Height = 20
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
         TabOrder = 2
+        Text = '599'
         OnChange = RcvdRSTEdit1Change
         OnKeyDown = EditKeyDown
         OnKeyPress = EditKeyPress
       end
       object BandEdit2A: TEdit
         Tag = 1
-        Left = 129
+        Left = 111
         Top = 5
-        Width = 45
-        Height = 18
+        Width = 50
+        Height = 20
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
         PopupMenu = BandMenu
         ReadOnly = True
         TabOrder = 3
+        Text = '1200'
         OnClick = BandEdit1Click
         OnKeyDown = EditKeyDown
       end
       object ModeEdit2A: TEdit
         Tag = 1
-        Left = 177
+        Left = 165
         Top = 5
-        Width = 27
-        Height = 18
+        Width = 50
+        Height = 20
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
         PopupMenu = ModeMenu
         ReadOnly = True
         TabOrder = 4
+        Text = 'RTTY'
         OnClick = ModeEdit1Click
         OnKeyDown = EditKeyDown
       end
       object SerialEdit2A: TEdit
         Tag = 1
-        Left = 88
+        Left = 63
         Top = 5
-        Width = 35
-        Height = 18
+        Width = 45
+        Height = 20
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
@@ -5356,9 +5361,9 @@ object MainForm: TMainForm
       end
     end
     object RigPanelB: TPanel
-      Left = 290
+      Left = 294
       Top = 1
-      Width = 217
+      Width = 225
       Height = 51
       BevelOuter = bvNone
       TabOrder = 3
@@ -5366,16 +5371,17 @@ object MainForm: TMainForm
         Tag = 2
         Left = 0
         Top = 0
-        Width = 217
+        Width = 225
         Height = 51
         Align = alClient
         Brush.Style = bsClear
         Pen.Width = 2
         ExplicitLeft = -1
+        ExplicitWidth = 217
       end
       object ledTx2B: TJvLED
         Left = 6
-        Top = 29
+        Top = 28
         ColorOff = clSilver
         Status = False
       end
@@ -5383,7 +5389,7 @@ object MainForm: TMainForm
         Left = 5
         Top = 5
         Width = 35
-        Height = 18
+        Height = 20
         Caption = 'RIG2'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -5394,10 +5400,10 @@ object MainForm: TMainForm
       end
       object CallsignEdit2B: TOvrEdit
         Tag = 2
-        Left = 30
-        Top = 28
-        Width = 75
-        Height = 18
+        Left = 28
+        Top = 27
+        Width = 80
+        Height = 20
         TabStop = False
         AutoSelect = False
         AutoSize = False
@@ -5414,10 +5420,10 @@ object MainForm: TMainForm
       end
       object NumberEdit2B: TOvrEdit
         Tag = 2
-        Left = 144
-        Top = 28
-        Width = 59
-        Height = 18
+        Left = 148
+        Top = 27
+        Width = 70
+        Height = 20
         TabStop = False
         AutoSelect = False
         AutoSize = False
@@ -5435,9 +5441,9 @@ object MainForm: TMainForm
       object RcvdRSTEdit2B: TEdit
         Tag = 2
         Left = 111
-        Top = 28
-        Width = 27
-        Height = 18
+        Top = 27
+        Width = 34
+        Height = 20
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
@@ -5448,10 +5454,10 @@ object MainForm: TMainForm
       end
       object BandEdit2B: TEdit
         Tag = 2
-        Left = 129
+        Left = 111
         Top = 5
-        Width = 45
-        Height = 18
+        Width = 50
+        Height = 20
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
@@ -5463,10 +5469,10 @@ object MainForm: TMainForm
       end
       object ModeEdit2B: TEdit
         Tag = 2
-        Left = 177
+        Left = 165
         Top = 5
-        Width = 27
-        Height = 18
+        Width = 50
+        Height = 20
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
@@ -5478,10 +5484,10 @@ object MainForm: TMainForm
       end
       object SerialEdit2B: TEdit
         Tag = 2
-        Left = 88
+        Left = 63
         Top = 5
-        Width = 35
-        Height = 18
+        Width = 45
+        Height = 20
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
@@ -5492,9 +5498,9 @@ object MainForm: TMainForm
       end
     end
     object RigPanelC: TPanel
-      Left = 8
+      Left = 4
       Top = 53
-      Width = 499
+      Width = 515
       Height = 28
       BevelOuter = bvNone
       TabOrder = 4
@@ -5502,24 +5508,25 @@ object MainForm: TMainForm
         Tag = 3
         Left = 0
         Top = 0
-        Width = 499
+        Width = 515
         Height = 28
         Align = alClient
         Brush.Style = bsClear
         Pen.Width = 2
         ExplicitLeft = 1
+        ExplicitWidth = 499
       end
       object ledTx2C: TJvLED
         Left = 68
-        Top = 6
+        Top = 5
         ColorOff = clSilver
         Status = False
       end
       object labelRig3Title: TLabel
         Left = 25
-        Top = 5
+        Top = 4
         Width = 35
-        Height = 18
+        Height = 20
         Caption = 'RIG3'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -5531,10 +5538,10 @@ object MainForm: TMainForm
       end
       object CallsignEdit2C: TOvrEdit
         Tag = 3
-        Left = 92
-        Top = 5
-        Width = 75
-        Height = 18
+        Left = 90
+        Top = 4
+        Width = 80
+        Height = 20
         TabStop = False
         AutoSelect = False
         AutoSize = False
@@ -5551,10 +5558,10 @@ object MainForm: TMainForm
       end
       object NumberEdit2C: TOvrEdit
         Tag = 3
-        Left = 206
-        Top = 5
-        Width = 59
-        Height = 18
+        Left = 210
+        Top = 4
+        Width = 70
+        Height = 20
         TabStop = False
         AutoSelect = False
         AutoSize = False
@@ -5572,9 +5579,9 @@ object MainForm: TMainForm
       object RcvdRSTEdit2C: TEdit
         Tag = 3
         Left = 173
-        Top = 5
-        Width = 27
-        Height = 18
+        Top = 4
+        Width = 34
+        Height = 20
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
@@ -5585,10 +5592,10 @@ object MainForm: TMainForm
       end
       object BandEdit2C: TEdit
         Tag = 3
-        Left = 323
-        Top = 5
-        Width = 45
-        Height = 18
+        Left = 283
+        Top = 4
+        Width = 50
+        Height = 20
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
@@ -5600,10 +5607,10 @@ object MainForm: TMainForm
       end
       object ModeEdit2C: TEdit
         Tag = 3
-        Left = 371
-        Top = 5
-        Width = 27
-        Height = 18
+        Left = 336
+        Top = 4
+        Width = 50
+        Height = 20
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
@@ -5615,10 +5622,10 @@ object MainForm: TMainForm
       end
       object SerialEdit2C: TEdit
         Tag = 3
-        Left = 282
-        Top = 5
-        Width = 35
-        Height = 18
+        Left = 389
+        Top = 4
+        Width = 45
+        Height = 20
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
