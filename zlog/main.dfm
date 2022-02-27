@@ -5239,13 +5239,13 @@ object MainForm: TMainForm
       end
       object ledTx2A: TJvLED
         Left = 6
-        Top = 5
+        Top = 29
         ColorOff = clSilver
         Status = False
       end
       object labelRig1Title: TLabel
-        Left = 175
-        Top = 4
+        Left = 6
+        Top = 5
         Width = 35
         Height = 18
         Caption = 'RIG1'
@@ -5258,7 +5258,7 @@ object MainForm: TMainForm
       end
       object CallsignEdit2A: TOvrEdit
         Tag = 1
-        Left = 6
+        Left = 30
         Top = 28
         Width = 75
         Height = 18
@@ -5278,7 +5278,7 @@ object MainForm: TMainForm
       end
       object NumberEdit2A: TOvrEdit
         Tag = 1
-        Left = 120
+        Left = 144
         Top = 28
         Width = 59
         Height = 18
@@ -5298,7 +5298,7 @@ object MainForm: TMainForm
       end
       object RcvdRSTEdit2A: TEdit
         Tag = 1
-        Left = 87
+        Left = 111
         Top = 28
         Width = 27
         Height = 18
@@ -5312,7 +5312,7 @@ object MainForm: TMainForm
       end
       object BandEdit2A: TEdit
         Tag = 1
-        Left = 87
+        Left = 129
         Top = 5
         Width = 45
         Height = 18
@@ -5327,7 +5327,7 @@ object MainForm: TMainForm
       end
       object ModeEdit2A: TEdit
         Tag = 1
-        Left = 135
+        Left = 177
         Top = 5
         Width = 27
         Height = 18
@@ -5342,7 +5342,7 @@ object MainForm: TMainForm
       end
       object SerialEdit2A: TEdit
         Tag = 1
-        Left = 46
+        Left = 88
         Top = 5
         Width = 35
         Height = 18
@@ -5375,13 +5375,13 @@ object MainForm: TMainForm
       end
       object ledTx2B: TJvLED
         Left = 6
-        Top = 5
+        Top = 29
         ColorOff = clSilver
         Status = False
       end
       object labelRig2Title: TLabel
-        Left = 175
-        Top = 4
+        Left = 5
+        Top = 5
         Width = 35
         Height = 18
         Caption = 'RIG2'
@@ -5394,7 +5394,7 @@ object MainForm: TMainForm
       end
       object CallsignEdit2B: TOvrEdit
         Tag = 2
-        Left = 6
+        Left = 30
         Top = 28
         Width = 75
         Height = 18
@@ -5414,7 +5414,7 @@ object MainForm: TMainForm
       end
       object NumberEdit2B: TOvrEdit
         Tag = 2
-        Left = 120
+        Left = 144
         Top = 28
         Width = 59
         Height = 18
@@ -5434,7 +5434,7 @@ object MainForm: TMainForm
       end
       object RcvdRSTEdit2B: TEdit
         Tag = 2
-        Left = 87
+        Left = 111
         Top = 28
         Width = 27
         Height = 18
@@ -5448,7 +5448,7 @@ object MainForm: TMainForm
       end
       object BandEdit2B: TEdit
         Tag = 2
-        Left = 87
+        Left = 129
         Top = 5
         Width = 45
         Height = 18
@@ -5463,7 +5463,7 @@ object MainForm: TMainForm
       end
       object ModeEdit2B: TEdit
         Tag = 2
-        Left = 135
+        Left = 177
         Top = 5
         Width = 27
         Height = 18
@@ -5478,7 +5478,7 @@ object MainForm: TMainForm
       end
       object SerialEdit2B: TEdit
         Tag = 2
-        Left = 46
+        Left = 88
         Top = 5
         Width = 35
         Height = 18
@@ -5492,9 +5492,9 @@ object MainForm: TMainForm
       end
     end
     object RigPanelC: TPanel
-      Left = 70
+      Left = 8
       Top = 53
-      Width = 437
+      Width = 499
       Height = 28
       BevelOuter = bvNone
       TabOrder = 4
@@ -5502,15 +5502,21 @@ object MainForm: TMainForm
         Tag = 3
         Left = 0
         Top = 0
-        Width = 437
+        Width = 499
         Height = 28
         Align = alClient
         Brush.Style = bsClear
         Pen.Width = 2
-        ExplicitHeight = 17
+        ExplicitLeft = 1
+      end
+      object ledTx2C: TJvLED
+        Left = 68
+        Top = 6
+        ColorOff = clSilver
+        Status = False
       end
       object labelRig3Title: TLabel
-        Left = 395
+        Left = 25
         Top = 5
         Width = 35
         Height = 18
@@ -5521,10 +5527,11 @@ object MainForm: TMainForm
         Font.Name = 'Arial Black'
         Font.Style = []
         ParentFont = False
+        OnClick = labelRig3TitleClick
       end
       object CallsignEdit2C: TOvrEdit
         Tag = 3
-        Left = 6
+        Left = 92
         Top = 5
         Width = 75
         Height = 18
@@ -5544,7 +5551,7 @@ object MainForm: TMainForm
       end
       object NumberEdit2C: TOvrEdit
         Tag = 3
-        Left = 120
+        Left = 206
         Top = 5
         Width = 59
         Height = 18
@@ -5553,7 +5560,7 @@ object MainForm: TMainForm
         AutoSize = False
         CharCase = ecUpperCase
         ImeMode = imDisable
-        TabOrder = 1
+        TabOrder = 2
         OnChange = NumberEdit1Change
         OnEnter = EditEnter
         OnExit = EditExit
@@ -5564,21 +5571,21 @@ object MainForm: TMainForm
       end
       object RcvdRSTEdit2C: TEdit
         Tag = 3
-        Left = 87
+        Left = 173
         Top = 5
         Width = 27
         Height = 18
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
-        TabOrder = 2
+        TabOrder = 3
         OnChange = RcvdRSTEdit1Change
         OnKeyDown = EditKeyDown
         OnKeyPress = EditKeyPress
       end
       object BandEdit2C: TEdit
         Tag = 3
-        Left = 226
+        Left = 323
         Top = 5
         Width = 45
         Height = 18
@@ -5587,13 +5594,13 @@ object MainForm: TMainForm
         ImeMode = imDisable
         PopupMenu = BandMenu
         ReadOnly = True
-        TabOrder = 3
+        TabOrder = 4
         OnClick = BandEdit1Click
         OnKeyDown = EditKeyDown
       end
       object ModeEdit2C: TEdit
         Tag = 3
-        Left = 274
+        Left = 371
         Top = 5
         Width = 27
         Height = 18
@@ -5602,35 +5609,40 @@ object MainForm: TMainForm
         ImeMode = imDisable
         PopupMenu = ModeMenu
         ReadOnly = True
-        TabOrder = 4
+        TabOrder = 5
         OnClick = ModeEdit1Click
         OnKeyDown = EditKeyDown
       end
       object SerialEdit2C: TEdit
         Tag = 3
-        Left = 347
+        Left = 282
         Top = 5
         Width = 35
         Height = 18
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
-        TabOrder = 5
+        TabOrder = 6
         Visible = False
         OnChange = SerialEdit1Change
         OnKeyDown = EditKeyDown
       end
-    end
-    object checkUseRig3: TCheckBox
-      Left = 8
-      Top = 62
-      Width = 49
-      Height = 13
-      Caption = 'RIG3'
-      Checked = True
-      State = cbChecked
-      TabOrder = 5
-      OnClick = checkUseRig3Click
+      object checkUseRig3: TCheckBox
+        Left = 7
+        Top = 7
+        Width = 18
+        Height = 13
+        Checked = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial Black'
+        Font.Style = []
+        ParentFont = False
+        State = cbChecked
+        TabOrder = 1
+        OnClick = checkUseRig3Click
+      end
     end
   end
   object MainMenu: TMainMenu

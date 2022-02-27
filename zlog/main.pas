@@ -651,6 +651,7 @@ type
     actionMatchTxToRx: TAction;
     labelRig1Title: TLabel;
     labelRig2Title: TLabel;
+    ledTx2C: TJvLED;
     labelRig3Title: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -898,6 +899,7 @@ type
     procedure actionToggleRxExecute(Sender: TObject);
     procedure actionMatchRxToTxExecute(Sender: TObject);
     procedure actionMatchTxToRxExecute(Sender: TObject);
+    procedure labelRig3TitleClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1089,6 +1091,7 @@ type
     procedure SetGridWidth(editor: TBasicEdit);
     function GetGridColmunLeft(col: Integer): Integer;
     procedure SetEditFields1R(editor: TBasicEdit);
+    function GetNextRigID(curid: Integer): Integer;
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -5262,6 +5265,11 @@ end;
 function TMainForm.IsCQ(): Boolean;
 begin
    Result := CurrentQSO.CQ;
+end;
+
+procedure TMainForm.labelRig3TitleClick(Sender: TObject);
+begin
+   checkUseRig3.Checked := not checkUseRig3.Checked;
 end;
 
 procedure TMainForm.CQRepeatClick1(Sender: TObject);
@@ -10078,7 +10086,7 @@ begin
       FEditPanel[2].PointEdit    := nil;
       FEditPanel[2].OpEdit       := nil;
       FEditPanel[2].MemoEdit     := nil;
-      FEditPanel[2].TxLed        := nil;
+      FEditPanel[2].TxLed        := ledTx2C;
 
       EditPanel1R.Visible := False;
       EditPanel2R.Visible := True;
@@ -10121,6 +10129,20 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
       FEditPanel[id].ModeEdit.Enabled := False;
       FEditPanel[id].BandEdit.Enabled := False;
    end;
+
+   procedure SetRigTitleColor(rig1, rig2, rig3: Boolean);
+   const
+      title_color: array[False .. True] of TColor = (clBlack, clBlue);
+   begin
+      labelRig1Title.Font.Color := title_color[rig1];
+      labelRig2Title.Font.Color := title_color[rig2];
+      if checkUseRig3.Checked = True then begin
+         labelRig3Title.Font.Color := title_color[rig3];
+      end
+      else begin
+         labelRig3Title.Font.Color := clGray;
+      end;
+   end;
 begin
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
       LastFocus := CallsignEdit1;
@@ -10131,9 +10153,7 @@ begin
          RigPanelShape2A.Pen.Color := clBlue;
          RigPanelShape2B.Pen.Color := clBlack;
          RigPanelShape2C.Pen.Color := clBlack;
-         labelRig1Title.Font.Color := clBlue;
-         labelRig2Title.Font.Color := clBlack;
-         labelRig3Title.Font.Color := clBlack;
+         SetRigTitleColor(True, False, False);
          SetWhite(0);
          SetGlay(1);
          SetGlay(2);
@@ -10142,9 +10162,7 @@ begin
          RigPanelShape2A.Pen.Color := clBlack;
          RigPanelShape2B.Pen.Color := clBlue;
          RigPanelShape2C.Pen.Color := clBlack;
-         labelRig1Title.Font.Color := clBlack;
-         labelRig2Title.Font.Color := clBlue;
-         labelRig3Title.Font.Color := clBlack;
+         SetRigTitleColor(False, True, False);
          SetGlay(0);
          SetWhite(1);
          SetGlay(2);
@@ -10153,9 +10171,7 @@ begin
          RigPanelShape2A.Pen.Color := clBlack;
          RigPanelShape2B.Pen.Color := clBlack;
          RigPanelShape2C.Pen.Color := clBlue;
-         labelRig1Title.Font.Color := clBlack;
-         labelRig2Title.Font.Color := clBlack;
-         labelRig3Title.Font.Color := clBlue;
+         SetRigTitleColor(False, False, True);
          SetGlay(0);
          SetGlay(1);
          SetWhite(2);
@@ -10268,15 +10284,7 @@ procedure TMainForm.InvertTx();
 var
    tx: Integer;
 begin
-   if FCurrentRx = 0 then begin
-      tx := 1;
-   end
-   else if FCurrentRx = 1 then begin
-      tx := 0;
-   end
-   else begin
-      tx := 2;
-   end;
+   tx := GetNextRigID(FCurrentRx);
 
    FCurrentTx := tx;
    FInformation.Tx := tx;
@@ -10373,12 +10381,7 @@ begin
       end;
 
       // RIG番号をトグル
-      if rig = 1 then begin
-         rig := 2;
-      end
-      else begin
-         rig := 1;
-      end;
+      rig := GetNextRigID(rig - 1) + 1;
 
       // カレントRIGを変更
       RigControl.SetCurrentRig(rig);
@@ -10405,6 +10408,7 @@ begin
       ModeEdit2C.Enabled := True;
       SerialEdit2C.Enabled := True;
       RigPanelShape2C.Pen.Color := clBlack;
+      labelRig3Title.Font.Color := clBlack;
 
       FEditPanel[rig - 1].CallsignEdit.SetFocus();
    end
@@ -10422,6 +10426,7 @@ begin
       ModeEdit2C.Enabled := False;
       SerialEdit2C.Enabled := False;
       RigPanelShape2C.Pen.Color := clGray;
+      labelRig3Title.Font.Color := clGray;
    end;
 end;
 
@@ -10430,6 +10435,28 @@ begin
    if Visible = False then Exit;
    if not Assigned(LastFocus) then Exit;
    LastFocus.SetFocus;
+end;
+
+function TMainForm.GetNextRigID(curid: Integer): Integer;
+var
+   nextid: Integer;
+begin
+   if curid = 0 then begin
+      nextid := 1;
+   end
+   else if curid = 1 then begin
+      if RigControl.MaxRig = 3 then begin
+         nextid := 2;
+      end
+      else begin
+         nextid := 0;
+      end;
+   end
+   else begin
+      nextid := 0;
+   end;
+
+   Result := nextid;
 end;
 
 end.
