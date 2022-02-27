@@ -5288,8 +5288,7 @@ object MainForm: TMainForm
         AutoSize = False
         CharCase = ecUpperCase
         ImeMode = imDisable
-        TabOrder = 1
-        Text = '010103M'
+        TabOrder = 2
         OnChange = NumberEdit1Change
         OnEnter = EditEnter
         OnExit = EditExit
@@ -5307,8 +5306,7 @@ object MainForm: TMainForm
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
-        TabOrder = 2
-        Text = '599'
+        TabOrder = 1
         OnChange = RcvdRSTEdit1Change
         OnKeyDown = EditKeyDown
         OnKeyPress = EditKeyPress
@@ -5325,7 +5323,6 @@ object MainForm: TMainForm
         PopupMenu = BandMenu
         ReadOnly = True
         TabOrder = 3
-        Text = '1200'
         OnClick = BandEdit1Click
         OnKeyDown = EditKeyDown
       end
@@ -5341,7 +5338,6 @@ object MainForm: TMainForm
         PopupMenu = ModeMenu
         ReadOnly = True
         TabOrder = 4
-        Text = 'RTTY'
         OnClick = ModeEdit1Click
         OnKeyDown = EditKeyDown
       end
@@ -5585,7 +5581,7 @@ object MainForm: TMainForm
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
-        TabOrder = 3
+        TabOrder = 1
         OnChange = RcvdRSTEdit1Change
         OnKeyDown = EditKeyDown
         OnKeyPress = EditKeyPress
@@ -5601,7 +5597,7 @@ object MainForm: TMainForm
         ImeMode = imDisable
         PopupMenu = BandMenu
         ReadOnly = True
-        TabOrder = 4
+        TabOrder = 3
         OnClick = BandEdit1Click
         OnKeyDown = EditKeyDown
       end
@@ -5616,7 +5612,7 @@ object MainForm: TMainForm
         ImeMode = imDisable
         PopupMenu = ModeMenu
         ReadOnly = True
-        TabOrder = 5
+        TabOrder = 4
         OnClick = ModeEdit1Click
         OnKeyDown = EditKeyDown
       end
@@ -5629,7 +5625,7 @@ object MainForm: TMainForm
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
-        TabOrder = 6
+        TabOrder = 5
         Visible = False
         OnChange = SerialEdit1Change
         OnKeyDown = EditKeyDown
@@ -5647,7 +5643,7 @@ object MainForm: TMainForm
         Font.Style = []
         ParentFont = False
         State = cbChecked
-        TabOrder = 1
+        TabOrder = 6
         OnClick = checkUseRig3Click
       end
     end
