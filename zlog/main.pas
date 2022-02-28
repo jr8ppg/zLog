@@ -653,6 +653,8 @@ type
     labelRig2Title: TLabel;
     ledTx2C: TJvLED;
     labelRig3Title: TLabel;
+    radioWithRig1: TRadioButton;
+    radioWithRig2: TRadioButton;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -10442,10 +10444,15 @@ var
    nextid: Integer;
 begin
    if curid = 0 then begin
-      nextid := 1;
+      if (RigControl.MaxRig = 3) and (radioWithRig1.Checked = True) then begin
+         nextid := 2;
+      end
+      else begin
+         nextid := 1;
+      end;
    end
    else if curid = 1 then begin
-      if RigControl.MaxRig = 3 then begin
+      if (RigControl.MaxRig = 3) and (radioWithRig2.Checked = True) then begin
          nextid := 2;
       end
       else begin
@@ -10453,7 +10460,12 @@ begin
       end;
    end
    else begin
-      nextid := 0;
+      if radioWithRig1.Checked = True then begin
+         nextid := 0;
+      end
+      else begin
+         nextid := 1;
+      end;
    end;
 
    Result := nextid;

@@ -5643,8 +5643,37 @@ object MainForm: TMainForm
         Font.Style = []
         ParentFont = False
         State = cbChecked
-        TabOrder = 6
+        TabOrder = 8
         OnClick = checkUseRig3Click
+      end
+      object radioWithRig1: TRadioButton
+        Left = 439
+        Top = 5
+        Width = 33
+        Height = 16
+        Caption = '1'
+        Checked = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Arial Black'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 6
+      end
+      object radioWithRig2: TRadioButton
+        Left = 476
+        Top = 5
+        Width = 33
+        Height = 16
+        Caption = '2'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Arial Black'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 7
       end
     end
   end
