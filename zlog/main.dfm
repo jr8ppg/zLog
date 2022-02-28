@@ -5248,7 +5248,7 @@ object MainForm: TMainForm
         Left = 6
         Top = 5
         Width = 35
-        Height = 20
+        Height = 18
         Caption = 'RIG1'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -5385,7 +5385,7 @@ object MainForm: TMainForm
         Left = 5
         Top = 5
         Width = 35
-        Height = 20
+        Height = 18
         Caption = 'RIG2'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -5522,7 +5522,7 @@ object MainForm: TMainForm
         Left = 25
         Top = 4
         Width = 35
-        Height = 20
+        Height = 18
         Caption = 'RIG3'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -5712,7 +5712,7 @@ object MainForm: TMainForm
         OnClick = CreateELogJARL1Click
       end
       object CreateELogJARL2: TMenuItem
-        Caption = 'Create E-Log (&JARL 2.0)'
+        Caption = 'Create E-Log (&JARL 2.x)'
         OnClick = CreateELogJARL2Click
       end
       object CreateDupeCheckSheetZPRINT1: TMenuItem

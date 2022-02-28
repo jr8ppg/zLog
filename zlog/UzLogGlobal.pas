@@ -255,6 +255,10 @@ type
     // QuickReference
     FQuickRefFontSize: Integer;
     FQuickRefFontFace: string;
+
+    // JARL E-LOG
+    FELogSeniorJuniorCategory: string;
+    FELogNewComerCategory: string;
   end;
 
 var
@@ -1128,6 +1132,10 @@ begin
       // Quick Reference
       Settings.FQuickRefFontSize       := ini.ReadInteger('QuickReference', 'FontSize', 9);
       Settings.FQuickRefFontFace       := ini.ReadString('QuickReference', 'FontFace', 'ＭＳ ゴシック');
+
+      // JARL E-LOG
+      Settings.FELogSeniorJuniorCategory  := ini.ReadString('ELOG', 'SeniorJunior', 'XS,CS,SOSV,SOJR');
+      Settings.FELogNewComerCategory      := ini.ReadString('ELOG', 'NewComer', 'PN');
    finally
       ini.Free();
       slParam.Free();

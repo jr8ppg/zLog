@@ -171,7 +171,7 @@ object formELogJarl2: TformELogJarl2
     Caption = #12510#12523#12481#12458#12506#12289#12466#12473#12488#12458#12506#12398#22580#21512#12398#36939#29992#32773#12398#12467#12540#12523#12469#12452#12531#65288#27663#21517#65289#12362#12424#12403#28961#32218#24467#20107#32773#12398#36039#26684' '
   end
   object Label18: TLabel
-    Left = 287
+    Left = 267
     Top = 436
     Width = 79
     Height = 12
@@ -223,6 +223,32 @@ object formELogJarl2: TformELogJarl2
     Height = 12
     Caption = #12510#12523#12481#12458#12506#31278#30446#36939#29992#32773#65288#19968#20154#19968#34892#12391#65289
   end
+  object Label11: TLabel
+    Left = 247
+    Top = 464
+    Width = 119
+    Height = 12
+    Caption = #23616#20813#35377#24180#26376#26085'(PN'#24517#38920')'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label12: TLabel
+    Left = 247
+    Top = 488
+    Width = 151
+    Height = 12
+    Caption = #24180#40802'(XS,CS,SOSV,SOJR'#24517#38920')'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
+    ParentFont = False
+  end
   object mOath: TMemo
     Left = 23
     Top = 541
@@ -240,7 +266,7 @@ object formELogJarl2: TformELogJarl2
       #12289#31169#12398#21517#35465#12395#12362#12356#12390#35475#12356#12414#12377#12290)
     ParentFont = False
     ScrollBars = ssVertical
-    TabOrder = 15
+    TabOrder = 17
   end
   object edContestName: TEdit
     Left = 115
@@ -384,7 +410,7 @@ object formELogJarl2: TformELogJarl2
     Text = #12467#12531#12486#12473#12488
   end
   object edClubID: TEdit
-    Left = 372
+    Left = 352
     Top = 432
     Width = 121
     Height = 21
@@ -436,7 +462,7 @@ object formELogJarl2: TformELogJarl2
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 16
+    TabOrder = 18
     Text = #12467#12531#12486#12473#12488
   end
   object edSignature: TEdit
@@ -450,7 +476,7 @@ object formELogJarl2: TformELogJarl2
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 17
+    TabOrder = 19
   end
   object mAddress: TMemo
     Left = 23
@@ -488,8 +514,7 @@ object formELogJarl2: TformELogJarl2
     Height = 31
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 19
-    ExplicitTop = 640
+    TabOrder = 21
     object buttonCreateLog: TButton
       Left = 215
       Top = 2
@@ -525,7 +550,56 @@ object formELogJarl2: TformELogJarl2
     Width = 185
     Height = 17
     Caption = #25313#24373#65288#12510#12523#12481#65292#24471#28857#65292'TX#'#12434#36861#21152#65289
-    TabOrder = 18
+    TabOrder = 20
+  end
+  object datetimeLicenseDate: TDateTimePicker
+    Left = 372
+    Top = 459
+    Width = 101
+    Height = 20
+    Date = 36526.000000000000000000
+    Time = 0.963688356481725400
+    TabOrder = 15
+  end
+  object comboAge: TComboBox
+    Left = 412
+    Top = 485
+    Width = 61
+    Height = 20
+    DropDownCount = 10
+    TabOrder = 16
+    Items.Strings = (
+      '70'
+      '71'
+      '72'
+      '73'
+      '74'
+      '75'
+      '76'
+      '77'
+      '78'
+      '79'
+      '80'
+      '81'
+      '82'
+      '83'
+      '84'
+      '85'
+      '86'
+      '87'
+      '88'
+      '89'
+      '90'
+      '91'
+      '92'
+      '93'
+      '94'
+      '95'
+      '96'
+      '97'
+      '98'
+      '99'
+      '100')
   end
   object SaveDialog1: TSaveDialog
     DefaultExt = 'em'

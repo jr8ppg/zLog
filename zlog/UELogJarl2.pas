@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes, Math,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension;
+  Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes, Math, DateUtils,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension, Vcl.ComCtrls;
 
 type
   TformELogJarl2 = class(TForm)
@@ -52,6 +52,10 @@ type
     buttonSave: TButton;
     buttonCancel: TButton;
     checkFieldExtend: TCheckBox;
+    Label11: TLabel;
+    datetimeLicenseDate: TDateTimePicker;
+    Label12: TLabel;
+    comboAge: TComboBox;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -64,6 +68,8 @@ type
     procedure WriteSummarySheet(var f: TextFile);
     procedure WriteLogSheet(var f: TextFile; fExtend: Boolean);
     function FormatQSO(q: TQSO; fExtend: Boolean): string;
+    function IsNewcomer(cate: string): Boolean;
+    function IsSeniorJunior(cate: string): Boolean;
   public
     { Public 宣言 }
   end;
@@ -135,6 +141,9 @@ begin
       edQTH.Text           := ini.ReadString('SummaryInfo', 'QTH', '');
       edPowerSupply.Text   := ini.ReadString('SummaryInfo', 'PowerSupply', '');
 
+      datetimeLicenseDate.Date := ini.ReadDate('SummaryInfo', 'LicenseDate', EncodeDate(2000, 1, 1));
+      comboAge.Text        := ini.ReadString('SummaryInfo', 'Age', '');
+
       mComments.Clear;
       mComments.Lines.Add(ini.ReadString('SummaryInfo', 'Comment1', ''));
       mComments.Lines.Add(ini.ReadString('SummaryInfo', 'Comment2', ''));
@@ -180,6 +189,23 @@ var
    f: TextFile;
    fname: string;
 begin
+   // 入力チェック
+   if IsNewcomer(edCategoryCode.Text) = True then begin
+      if datetimeLicenseDate.Date = EncodeDate(2000, 1, 1) then begin
+         MessageDlg('参加部門が ' + dmZLogGlobal.Settings.FELogNewcomerCategory + ' の場合は、局免許年月日を入力して下さい', mtWarning, [mbOK], 0);
+         datetimeLicenseDate.SetFocus();
+         Exit;
+      end;
+   end;
+
+   if IsSeniorJunior(edCategoryCode.Text) = True then begin
+      if comboAge.Text = '' then begin
+         MessageDlg('参加部門が ' + dmZLogGlobal.Settings.FELogSeniorJuniorCategory + ' の場合は、年齢を入力して下さい', mtWarning, [mbOK], 0);
+         comboAge.SetFocus();
+         Exit;
+      end;
+   end;
+
    if CurrentFileName <> '' then begin
       SaveDialog1.InitialDir := ExtractFilePath(CurrentFileName);
       SaveDialog1.FileName := ChangeFileExt(ExtractFileName(CurrentFileName), '.em');
@@ -232,6 +258,9 @@ begin
       ini.WriteString('SummaryInfo', 'Power', edPower.Text);
       ini.WriteString('SummaryInfo', 'QTH', edQTH.Text);
       ini.WriteString('SummaryInfo', 'PowerSupply', edPowerSupply.Text);
+
+      ini.WriteDate('SummaryInfo', 'LicenseDate', datetimeLicenseDate.Date);
+      ini.WriteString('SummaryInfo', 'Age', comboAge.Text);
 
       ini.WriteString('SummaryInfo', 'Comment1', mComments.Lines[0]);
       ini.WriteString('SummaryInfo', 'Comment2', mComments.Lines[1]);
@@ -301,7 +330,7 @@ var
 begin
    fFdCoeff := StrToFloatDef(edFDCoefficient.Text, 1);
 
-   WriteLn(f, '<SUMMARYSHEET VERSION=R2.0>');
+   WriteLn(f, '<SUMMARYSHEET VERSION=R2.1>');
 
    WriteLn(f, '<CONTESTNAME>' + edContestName.Text + '</CONTESTNAME>');
    WriteLn(f, '<CATEGORYCODE>' + edCategoryCode.Text + '</CATEGORYCODE>');
@@ -329,6 +358,14 @@ begin
 
    WriteLn(f, '<OPPLACE>' + edQTH.Text + '</OPPLACE>');
    WriteLn(f, '<POWERSUPPLY>' + edPowerSupply.Text + '</POWERSUPPLY>');
+
+   if IsNewcomer(edCategoryCode.Text) = True then begin
+      WriteLn(f, '<LICENSEDATE>' + FormatDateTime('yyyy年mm月dd日', datetimeLicenseDate.Date) + '</LICENSEDATE>');
+   end;
+
+   if IsSeniorJunior(edCategoryCode.Text) = True then begin
+      WriteLn(f, '<AGE>' + comboAge.Text + '</AGE>');
+   end;
 
    Write(f, '<COMMENTS>');
    Write(f, mComments.Text);
@@ -429,6 +466,48 @@ begin
       Result := slLine.DelimitedText;
    finally
       slLine.Free();
+   end;
+end;
+
+function TformELogJarl2.IsNewcomer(cate: string): Boolean;
+var
+   list: TStringList;
+   i: Integer;
+begin
+   list := TStringList.Create();
+   list.StrictDelimiter := True;
+   list.CommaText := dmZLogGlobal.Settings.FELogNewComerCategory;
+   try
+      for i := 0 to list.Count - 1 do begin
+         if cate = list[i] then begin
+            Result := True;
+            Exit;
+         end;
+      end;
+      Result := False;
+   finally
+      list.Free();
+   end;
+end;
+
+function TformELogJarl2.IsSeniorJunior(cate: string): Boolean;
+var
+   list: TStringList;
+   i: Integer;
+begin
+   list := TStringList.Create();
+   list.StrictDelimiter := True;
+   list.CommaText := dmZLogGlobal.Settings.FELogSeniorJuniorCategory;
+   try
+      for i := 0 to list.Count - 1 do begin
+         if cate = list[i] then begin
+            Result := True;
+            Exit;
+         end;
+      end;
+      Result := False;
+   finally
+      list.Free();
    end;
 end;
 
