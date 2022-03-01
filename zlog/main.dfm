@@ -5643,7 +5643,7 @@ object MainForm: TMainForm
         Font.Style = []
         ParentFont = False
         State = cbChecked
-        TabOrder = 6
+        TabOrder = 8
         OnClick = checkUseRig3Click
       end
       object checkWithRig1: TCheckBox
@@ -5651,6 +5651,7 @@ object MainForm: TMainForm
         Top = 7
         Width = 31
         Height = 13
+        TabStop = False
         Caption = '1'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -5658,15 +5659,16 @@ object MainForm: TMainForm
         Font.Name = 'Arial Black'
         Font.Style = []
         ParentFont = False
-        TabOrder = 7
+        TabOrder = 6
         OnClick = checkWithRigClick
       end
       object checkWithRig2: TCheckBox
         Tag = 1
-        Left = 478
+        Left = 477
         Top = 7
         Width = 28
         Height = 13
+        TabStop = False
         Caption = '2'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -5674,7 +5676,7 @@ object MainForm: TMainForm
         Font.Name = 'Arial Black'
         Font.Style = []
         ParentFont = False
-        TabOrder = 8
+        TabOrder = 7
         OnClick = checkWithRigClick
       end
     end
