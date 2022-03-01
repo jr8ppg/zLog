@@ -5520,7 +5520,7 @@ object MainForm: TMainForm
       end
       object labelRig3Title: TLabel
         Left = 25
-        Top = 4
+        Top = 5
         Width = 35
         Height = 18
         Caption = 'RIG3'
@@ -5643,30 +5643,15 @@ object MainForm: TMainForm
         Font.Style = []
         ParentFont = False
         State = cbChecked
-        TabOrder = 8
+        TabOrder = 6
         OnClick = checkUseRig3Click
       end
-      object radioWithRig1: TRadioButton
-        Left = 439
-        Top = 5
-        Width = 33
-        Height = 16
+      object checkWithRig1: TCheckBox
+        Left = 440
+        Top = 7
+        Width = 31
+        Height = 13
         Caption = '1'
-        Checked = True
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -15
-        Font.Name = 'Arial Black'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 6
-      end
-      object radioWithRig2: TRadioButton
-        Left = 476
-        Top = 5
-        Width = 33
-        Height = 16
-        Caption = '2'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -15
@@ -5674,6 +5659,23 @@ object MainForm: TMainForm
         Font.Style = []
         ParentFont = False
         TabOrder = 7
+        OnClick = checkWithRigClick
+      end
+      object checkWithRig2: TCheckBox
+        Tag = 1
+        Left = 478
+        Top = 7
+        Width = 28
+        Height = 13
+        Caption = '2'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -15
+        Font.Name = 'Arial Black'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 8
+        OnClick = checkWithRigClick
       end
     end
   end
@@ -7086,6 +7088,10 @@ object MainForm: TMainForm
     object actionMatchTxToRx: TAction
       Caption = 'actionMatchTxToRx'
       OnExecute = actionMatchTxToRxExecute
+    end
+    object actionSo2rToggleRigPair: TAction
+      Caption = 'actionSo2rToggleRigPair'
+      OnExecute = actionSo2rToggleRigPairExecute
     end
   end
   object SPCMenu: TPopupMenu
