@@ -9176,22 +9176,30 @@ end;
 // #150 SO2R Toggle Rig Pair
 procedure TMainForm.actionSo2rToggleRigPairExecute(Sender: TObject);
 const
-  rig1: array[0..2] of Boolean = ( False, True, False );
-  rig2: array[0..2] of Boolean = ( False, False, True );
+  rig1: array[0..3] of Boolean = ( False, True, False, True );
+  rig2: array[0..3] of Boolean = ( False, False, True, True );
 var
    n: Integer;
-begin
-   if (checkWithRig1.Checked = False) and (checkWithRig2.Checked = False) then begin
-      n := 0;
-   end
-   else if (checkWithRig1.Checked = True) and (checkWithRig2.Checked = False) then begin
-      n := 1;
-   end
-   else begin
-      n := 2;
+
+   function FindIndex(): Integer;
+   var
+      i: Integer;
+   begin
+      for i := 0 to 3 do begin
+         if (rig1[i] = checkWithRig1.Checked) and (rig2[i] = checkWithRig2.Checked) then begin
+            Result := i;
+            Exit;
+         end;
+      end;
+      Result := 0;
    end;
+begin
+   n := FindIndex();
 
    Inc(n);
+   if n > 3 then begin
+      n := 0;
+   end;
 
    checkWithRig1.Checked := rig1[n];
    checkWithRig2.Checked := rig2[n];
@@ -10467,27 +10475,24 @@ begin
 end;
 
 procedure TMainForm.checkWithRigClick(Sender: TObject);
-var
-   chks: array[0..1] of TCheckBox;
-   n: Integer;
 begin
-   chks[0] := checkWithRig1;
-   chks[1] := checkWithRig2;
-
-   n := TCheckBox(Sender).Tag;
-
-   // —¼•ûON‚¾‚Á‚½‚çA‰Ÿ‚³‚ê‚½•û‚ðŽc‚·
-   if (chks[0].Checked = True) and (chks[1].Checked = True) then begin
-      Inc(n);
-      n := n and 1;
-      chks[n].Checked := False;
-   end;
+   //
 end;
 
 function TMainForm.GetNextRigID(curid: Integer): Integer;
 var
    nextid: Integer;
 begin
+   if (checkWithRig1.Checked = True) and (checkWithRig2.Checked = True) then begin
+      nextid := curid;
+      Inc(nextid);
+      if nextid >= RigControl.MaxRig then begin
+         nextid := 0;
+      end;
+      Result := nextid;
+      Exit;
+   end;
+
    if curid = 0 then begin
       if (RigControl.MaxRig = 3) and (checkWithRig1.Checked = True) then begin
          nextid := 2;
