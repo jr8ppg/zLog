@@ -8427,7 +8427,9 @@ begin
    TabPressed := False;
    TabPressed2 := False;
 
-   rig := RigControl.ToggleCurrentRig();
+   rig := RigControl.GetCurrentRig();
+   rig := GetNextRigID(rig - 1) + 1;
+   RigControl.SetCurrentRig(rig);
    SwitchRig(rig);
 
    if Assigned(CallsignEdit.OnChange) then begin
@@ -9101,12 +9103,7 @@ begin
    dmZLogKeyer.CQLoopCount := 999;
    dmZLogKeyer.ClrBuffer();
 
-   tx := FCurrentTx;
-
-   Inc(tx);
-   if tx >= RigControl.MaxRig then begin
-      tx := 0;
-   end;
+   tx := GetNextRigID(FCurrentTx);
 
    FCurrentTx := tx;
    FInformation.Tx := tx;
@@ -9133,17 +9130,8 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #147 ToggleRx ---'));
    {$ENDIF}
-//   CtrlZCQLoop := False;
-//   dmZLogKeyer.CQLoopCount := 999;
-//   dmZLogKeyer.ClrBuffer();
 
-   rx := FCurrentRx;
-
-   Inc(rx);
-   if rx >= RigControl.MaxRig then begin
-      rx := 0;
-   end;
-
+   rx := GetNextRigID(FCurrentRx);
    SwitchRx(rx + 1);
 end;
 
@@ -9198,7 +9186,7 @@ begin
 
    Inc(n);
    if n > 3 then begin
-      n := 0;
+      n := 1;
    end;
 
    checkWithRig1.Checked := rig1[n];
@@ -10244,7 +10232,7 @@ begin
          EditEnter(FEditPanel[rig - 1].rcvdNumber);
       end
       else begin
-         PostMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rig - 1, 0);
+         SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rig - 1, 0);
       end;
 
 //      FSo2rNeoCp.Rx := rig - 1;
@@ -10294,7 +10282,7 @@ begin
          EditEnter(FEditPanel[rig - 1].rcvdNumber);
       end
       else begin
-         PostMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rig - 1, 0);
+         SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rig - 1, 0);
       end;
 //      FSo2rNeoCp.Rx := rig - 1;
       PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rig - 1, 0);
@@ -10482,43 +10470,59 @@ end;
 function TMainForm.GetNextRigID(curid: Integer): Integer;
 var
    nextid: Integer;
-begin
-   if (checkWithRig1.Checked = True) and (checkWithRig2.Checked = True) then begin
-      nextid := curid;
-      Inc(nextid);
-      if nextid >= RigControl.MaxRig then begin
-         nextid := 0;
-      end;
-      Result := nextid;
-      Exit;
-   end;
 
-   if curid = 0 then begin
-      if (RigControl.MaxRig = 3) and (checkWithRig1.Checked = True) then begin
-         nextid := 2;
-      end
-      else begin
-         nextid := 1;
+   function ToggleRigID(id: Integer): Integer;
+   begin
+      Inc(id);
+      if id >= RigControl.MaxRig then begin
+         id := 0;
       end;
-   end
-   else if curid = 1 then begin
-      if (RigControl.MaxRig = 3) and (checkWithRig2.Checked = True) then begin
-         nextid := 2;
+      Result := id;
+   end;
+begin
+   if ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (RigControl.MaxRig = 3)) then begin
+      // RIG1,RIG2両方にチェックがある場合と
+      // RIG1,RIG2両方にチェックがない場合
+      // RIG1-RIG3を巡回
+      if ((checkWithRig1.Checked = True) and (checkWithRig2.Checked = True)) or
+         ((checkWithRig1.Checked = False) and (checkWithRig2.Checked = False)) then begin
+         Result := ToggleRigID(curid);
+         Exit;
+      end;
+
+      if curid = 0 then begin
+         // 現在RIG1で、RIG3にチェックがあってRIG1とペアなら、RIG1-RIG3をトグル
+         if (checkWithRig1.Checked = True) then begin
+            nextid := 2;
+         end
+         else begin  // そうでなければRIG1-RIG2でトグル
+            nextid := 1;
+         end;
+      end
+      else if curid = 1 then begin
+         // 現在RIG2で、RIG3にチェックがあってRIG2とペアなら、RIG2-RIG3をトグル
+         if (checkWithRig2.Checked = True) then begin
+            nextid := 2;
+         end
+         else begin  // そうでなければRIG1-RIG2でトグル
+            nextid := 0;
+         end;
       end
       else begin
-         nextid := 0;
+         // 現在RIG3ならチェックのある方とペア
+         if checkWithRig1.Checked = True then begin
+            nextid := 0;
+         end
+         else if checkWithRig2.Checked = True then begin
+            nextid := 1;
+         end
+         else begin
+            nextid := 2;
+         end;
       end;
    end
    else begin
-      if checkWithRig1.Checked = True then begin
-         nextid := 0;
-      end
-      else if checkWithRig2.Checked = True then begin
-         nextid := 1;
-      end
-      else begin
-         nextid := 2;
-      end;
+      nextid := ToggleRigID(curid);
    end;
 
    Result := nextid;

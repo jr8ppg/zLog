@@ -55,7 +55,6 @@ object EditDialog: TEditDialog
     Font.Style = []
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 553
     object SerialLabel: TLabel
       Left = 8
       Top = 0
@@ -554,6 +553,18 @@ object EditDialog: TEditDialog
       Tag = 103
       Caption = 'actionPlayCQA3'
       OnExecute = actionPlayMessageAExecute
+    end
+    object actionToggleRX: TAction
+      Caption = 'actionToggleRX'
+      OnExecute = actionToggleRXExecute
+    end
+    object actionToggleTX: TAction
+      Caption = 'actionToggleTX'
+      OnExecute = actionToggleTXExecute
+    end
+    object actionSo2rToggleRigPair: TAction
+      Caption = 'actionSo2rToggleRigPair'
+      OnExecute = actionSo2rToggleRigPairExecute
     end
   end
 end

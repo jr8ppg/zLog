@@ -89,6 +89,9 @@ type
     actionPlayCQA3: TAction;
     TxLabel: TLabel;
     comboTxNo: TComboBox;
+    actionToggleRX: TAction;
+    actionToggleTX: TAction;
+    actionSo2rToggleRigPair: TAction;
     procedure CancelBtnClick(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
     procedure CallsignEditChange(Sender: TObject);
@@ -145,6 +148,9 @@ type
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
     procedure comboTxNoChange(Sender: TObject);
+    procedure actionToggleRXExecute(Sender: TObject);
+    procedure actionToggleTXExecute(Sender: TObject);
+    procedure actionSo2rToggleRigPairExecute(Sender: TObject);
   private
     { Private declarations }
     workQSO : TQSO;
@@ -403,7 +409,6 @@ procedure TEditDialog.FormShow(Sender: TObject);
 var
    i: integer;
    M: TMenuItem;
-   nID: Integer;
 const
    offset = 3;
 begin
@@ -441,8 +446,6 @@ begin
          OpMenu.Items.Add(M);
       end;
    end;
-
-   nID := MainForm.CurrentRigID;
 
    SerialEdit.Visible := MainForm.SerialEdit1.Visible;
    SerialEdit.Left := MainForm.SerialEdit1.Left + offset;
@@ -640,6 +643,9 @@ begin
    actionQuickMemo5.ShortCut := MainForm.actionQuickMemo5.ShortCut;
    actionPlayCQA2.ShortCut := MainForm.actionPlayCQA2.ShortCut;
    actionPlayCQA3.ShortCut := MainForm.actionPlayCQA3.ShortCut;
+   actionToggleRx.ShortCut := MainForm.actionToggleRx.ShortCut;
+   actionToggleTx.ShortCut := MainForm.actionToggleTx.ShortCut;
+   actionSo2rToggleRigPair.ShortCut := MainForm.actionSo2rToggleRigPair.ShortCut;
 
    actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
    actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
@@ -684,6 +690,9 @@ begin
    actionQuickMemo5.SecondaryShortCuts.Assign(MainForm.actionQuickMemo5.SecondaryShortCuts);
    actionPlayCQA2.SecondaryShortCuts.Assign(MainForm.actionPlayCQA2.SecondaryShortCuts);
    actionPlayCQA3.SecondaryShortCuts.Assign(MainForm.actionPlayCQA3.SecondaryShortCuts);
+   actionToggleRx.SecondaryShortCuts.Assign(MainForm.actionToggleRx.SecondaryShortCuts);
+   actionToggleTx.SecondaryShortCuts.Assign(MainForm.actionToggleTx.SecondaryShortCuts);
+   actionSo2rToggleRigPair.SecondaryShortCuts.Assign(MainForm.actionSo2rToggleRigPair.SecondaryShortCuts);
 end;
 
 procedure TEditDialog.FormDeactivate(Sender: TObject);
@@ -844,6 +853,11 @@ begin
    TEdit(ActiveControl).SetFocus;
 end;
 
+procedure TEditDialog.actionSo2rToggleRigPairExecute(Sender: TObject);
+begin
+   MainForm.actionSo2rToggleRigPairExecute(Sender);
+end;
+
 procedure TEditDialog.actionClearCallAndRptExecute(Sender: TObject);
 begin
    CallsignEdit.Clear;
@@ -910,7 +924,18 @@ end;
 
 procedure TEditDialog.actionToggleRigExecute(Sender: TObject);
 begin
-   MainForm.RigControl.ToggleCurrentRig;
+//   MainForm.RigControl.ToggleCurrentRig;
+   MainForm.actionToggleRigExecute(Sender);
+end;
+
+procedure TEditDialog.actionToggleRXExecute(Sender: TObject);
+begin
+   MainForm.actionToggleRxExecute(Sender);
+end;
+
+procedure TEditDialog.actionToggleTXExecute(Sender: TObject);
+begin
+   MainForm.actionToggleTxExecute(Sender);
 end;
 
 procedure TEditDialog.actionControlPTTExecute(Sender: TObject);
