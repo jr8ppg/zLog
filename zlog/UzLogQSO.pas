@@ -218,7 +218,7 @@ type
     FAllPhone: Boolean;    // True: SSB, FM, AM are same
     procedure Delete(i : Integer);
     procedure ProcessDelete(beforeQSO: TQSO);
-    procedure ProcessEdit(afterQSO: TQSO);
+    procedure ProcessEdit(afterQSO: TQSO; fAdd: Boolean);
     procedure ProcessInsert(afterQSO: TQSO);
     procedure ProcessLock(xQSO: TQSO);
     procedure ProcessUnlock(xQSO: TQSO);
@@ -1293,8 +1293,7 @@ begin
          end;
 
          actEdit: begin
-            ProcessEdit(xQSO);
-            xQSO.Free();
+            ProcessEdit(xQSO, False);
          end;
 
          actInsert: begin
@@ -1309,9 +1308,12 @@ begin
          actUnlock: begin
             ProcessUnlock(xQSO);
          end;
+
+         actEditOrAdd: begin
+            ProcessEdit(xQSO, True);
+         end;
       end;
 
-//      FQueList[0].Free; // added 0.23
       FQueList.Delete(0);
    end;
 
@@ -1332,7 +1334,7 @@ begin
    end;
 end;
 
-procedure TLog.ProcessEdit(afterQSO: TQSO);
+procedure TLog.ProcessEdit(afterQSO: TQSO; fAdd: Boolean);
 var
    i: Integer;
    beforeQSO: TQSO;
@@ -1345,10 +1347,17 @@ begin
          if afterQSO.SameQSOID(wQSO) then begin
             beforeQSO.Assign(wQSO);
             wQSO.Assign(afterQSO);  // wQSO = FQsoList[i]
+            wQSO.FReserve := actEdit;
             RebuildDupeCheckList;
             zyloLogUpdated(evUpdateQSO, beforeQSO, afterQSO);
-            Break;
+            afterQSO.Free();
+            Exit;
          end;
+      end;
+
+      if fAdd = True then begin
+         afterQSO.FReserve := actAdd;
+         Add(afterQSO);
       end;
    finally
       beforeQSO.Free();

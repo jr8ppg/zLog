@@ -484,7 +484,7 @@ begin
          aQSO := TQSO.Create;
          Delete(temp, 1, 9);
          aQSO.TextToQSO(temp);
-         aQSO.Reserve := actEdit;
+         aQSO.Reserve := actEditOrAdd;
          Log.AddQue(aQSO);
          aQSO.Free;
       end;

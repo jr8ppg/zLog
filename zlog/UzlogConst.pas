@@ -66,6 +66,7 @@ const
   actEdit = $0E;
   actLock = $AA;
   actUnlock = $BB;
+  actEditOrAdd = $0C;
 
   LineBreakCode : array [0..2] of string
     = (Chr($0d)+Chr($0a), Chr($0d), Chr($0a));
