@@ -52,157 +52,13 @@ object MainForm: TMainForm
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
   end
-  object Grid: TStringGrid
-    Left = 0
-    Top = 99
-    Width = 524
-    Height = 174
-    TabStop = False
-    Align = alClient
-    ColCount = 10
-    DefaultRowHeight = 16
-    FixedCols = 0
-    RowCount = 101
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = #65325#65331' '#12468#12471#12483#12463
-    Font.Style = []
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goRowSelect, goThumbTracking]
-    ParentFont = False
-    PopupMenu = GridMenu
-    ScrollBars = ssVertical
-    TabOrder = 1
-    OnClick = GridClick
-    OnDblClick = GridDblClick
-    OnEnter = GridEnter
-    OnExit = GridExit
-    OnKeyDown = GridKeyDown
-    OnKeyPress = GridKeyPress
-    OnMouseUp = GridMouseUp
-    OnSelectCell = GridSelectCell
-    OnTopLeftChanged = GridTopLeftChanged
-    ColWidths = (
-      38
-      65
-      37
-      44
-      36
-      33
-      46
-      64
-      64
-      64)
-    RowHeights = (
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16
-      16)
-  end
   object MainToolBar: TPanel
     Left = 0
     Top = 66
     Width = 524
     Height = 33
     Align = alTop
-    TabOrder = 2
+    TabOrder = 1
     object SpeedButton4: TSpeedButton
       Left = 8
       Top = 4
@@ -752,7 +608,7 @@ object MainForm: TMainForm
     Align = alTop
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 3
+    TabOrder = 2
     Visible = False
     object CWStopButton: TSpeedButton
       Left = 312
@@ -2872,212 +2728,13 @@ object MainForm: TMainForm
       OnChange = SpeedBarChange
     end
   end
-  object EditPanel1R: TPanel
-    Left = 0
-    Top = 273
-    Width = 524
-    Height = 27
-    Align = alBottom
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = #65325#65331' '#12468#12471#12483#12463
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 4
-    object RcvdRSTEdit1: TEdit
-      Left = 117
-      Top = 4
-      Width = 52
-      Height = 18
-      TabStop = False
-      AutoSize = False
-      ImeMode = imDisable
-      TabOrder = 0
-      OnChange = RcvdRSTEdit1Change
-      OnKeyDown = EditKeyDown
-      OnKeyPress = EditKeyPress
-    end
-    object BandEdit1: TEdit
-      Left = 368
-      Top = 4
-      Width = 73
-      Height = 18
-      TabStop = False
-      AutoSize = False
-      ImeMode = imDisable
-      PopupMenu = BandMenu
-      ReadOnly = True
-      TabOrder = 1
-      Text = 'BandEdit1'
-      OnClick = BandEdit1Click
-      OnKeyDown = EditKeyDown
-    end
-    object ModeEdit1: TEdit
-      Left = 192
-      Top = 4
-      Width = 33
-      Height = 18
-      TabStop = False
-      AutoSize = False
-      ImeMode = imDisable
-      PopupMenu = ModeMenu
-      ReadOnly = True
-      TabOrder = 2
-      OnClick = ModeEdit1Click
-      OnKeyDown = EditKeyDown
-    end
-    object PointEdit1: TEdit
-      Left = 320
-      Top = 4
-      Width = 70
-      Height = 18
-      TabStop = False
-      AutoSize = False
-      ImeMode = imDisable
-      TabOrder = 3
-      Text = 'PointEdit1'
-      OnKeyDown = EditKeyDown
-      OnKeyPress = EditKeyPress
-    end
-    object OpEdit1: TEdit
-      Left = 37
-      Top = 4
-      Width = 124
-      Height = 18
-      TabStop = False
-      AutoSize = False
-      ImeMode = imDisable
-      ParentShowHint = False
-      PopupMenu = OpMenu
-      ReadOnly = True
-      ShowHint = False
-      TabOrder = 4
-      OnClick = OpEdit1Click
-      OnKeyDown = EditKeyDown
-    end
-    object SerialEdit1: TEdit
-      Left = 32
-      Top = 4
-      Width = 73
-      Height = 18
-      TabStop = False
-      AutoSize = False
-      ImeMode = imDisable
-      TabOrder = 5
-      Visible = False
-      OnChange = SerialEdit1Change
-      OnKeyDown = EditKeyDown
-    end
-    object PowerEdit1: TEdit
-      Left = 416
-      Top = 4
-      Width = 49
-      Height = 18
-      TabStop = False
-      AutoSize = False
-      ImeMode = imDisable
-      PopupMenu = NewPowerMenu
-      TabOrder = 6
-      Visible = False
-      OnClick = PowerEdit1Click
-      OnKeyDown = EditKeyDown
-    end
-    object CallsignEdit1: TOvrEdit
-      Left = 144
-      Top = 4
-      Width = 121
-      Height = 18
-      TabStop = False
-      AutoSelect = False
-      AutoSize = False
-      CharCase = ecUpperCase
-      ImeMode = imDisable
-      TabOrder = 7
-      OnChange = CallsignEdit1Change
-      OnEnter = EditEnter
-      OnExit = EditExit
-      OnKeyDown = EditKeyDown
-      OnKeyPress = EditKeyPress
-      OnKeyUp = CallsignEdit1KeyUp
-      TabOnEnter = False
-    end
-    object NumberEdit1: TOvrEdit
-      Left = 136
-      Top = 4
-      Width = 73
-      Height = 18
-      TabStop = False
-      AutoSelect = False
-      AutoSize = False
-      CharCase = ecUpperCase
-      ImeMode = imDisable
-      TabOrder = 8
-      Text = 'NUMBER'
-      OnChange = NumberEdit1Change
-      OnEnter = EditEnter
-      OnExit = EditExit
-      OnKeyDown = EditKeyDown
-      OnKeyPress = EditKeyPress
-      OnKeyUp = NumberEdit1KeyUp
-      TabOnEnter = False
-    end
-    object MemoEdit1: TOvrEdit
-      Left = 432
-      Top = 4
-      Width = 73
-      Height = 18
-      TabStop = False
-      AutoSize = False
-      TabOrder = 9
-      OnChange = MemoEdit1Change
-      OnEnter = EditEnter
-      OnExit = EditExit
-      OnKeyDown = EditKeyDown
-      OnKeyPress = EditKeyPress
-      TabOnEnter = False
-    end
-    object TimeEdit1: TOvrEdit
-      Left = 64
-      Top = 4
-      Width = 57
-      Height = 18
-      TabStop = False
-      AutoSize = False
-      ImeMode = imDisable
-      TabOrder = 10
-      Text = 'TIME'
-      OnChange = TimeEdit1Change
-      OnDblClick = TimeEdit1DblClick
-      OnKeyDown = EditKeyDown
-      OnKeyPress = EditKeyPress
-      TabOnEnter = False
-    end
-    object DateEdit1: TOvrEdit
-      Left = 8
-      Top = 4
-      Width = 57
-      Height = 18
-      TabStop = False
-      AutoSize = False
-      ImeMode = imDisable
-      TabOrder = 11
-      Text = 'date'
-      Visible = False
-      OnChange = DateEdit1Change
-      OnDblClick = TimeEdit1DblClick
-      OnKeyDown = EditKeyDown
-      OnKeyPress = EditKeyPress
-      TabOnEnter = False
-    end
-  end
   object SSBToolBar: TPanel
     Left = 0
     Top = 33
     Width = 524
     Height = 33
     Align = alTop
-    TabOrder = 5
+    TabOrder = 3
     object VoiceStopButton: TSpeedButton
       Left = 312
       Top = 4
@@ -5173,512 +4830,872 @@ object MainForm: TMainForm
         00000000000000000000FF7FFF7FFF7FFF7FFF7FFF7FFF7F0000}
     end
   end
-  object EditPanel2R: TPanel
+  object MainPanel: TPanel
     Left = 0
-    Top = 300
+    Top = 99
     Width = 524
-    Height = 83
-    Align = alBottom
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -15
-    Font.Name = #65325#65331' '#12468#12471#12483#12463
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 6
-    object TimeEdit2: TOvrEdit
-      Left = 5
-      Top = 28
-      Width = 57
-      Height = 20
-      TabStop = False
-      AutoSize = False
-      ImeMode = imDisable
+    Height = 284
+    Align = alClient
+    BevelOuter = bvNone
+    TabOrder = 4
+    ExplicitLeft = 336
+    ExplicitTop = 196
+    ExplicitWidth = 185
+    ExplicitHeight = 41
+    object EditPanel1R: TPanel
+      Left = 0
+      Top = 174
+      Width = 524
+      Height = 27
+      Align = alBottom
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -12
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
+      Font.Style = []
+      ParentFont = False
       TabOrder = 0
-      Text = 'TIME'
-      OnChange = TimeEdit1Change
-      OnDblClick = TimeEdit1DblClick
-      OnKeyDown = EditKeyDown
-      OnKeyPress = EditKeyPress
-      TabOnEnter = False
+      ExplicitTop = 273
+      object RcvdRSTEdit1: TEdit
+        Left = 117
+        Top = 4
+        Width = 52
+        Height = 18
+        TabStop = False
+        AutoSize = False
+        ImeMode = imDisable
+        TabOrder = 0
+        OnChange = RcvdRSTEdit1Change
+        OnKeyDown = EditKeyDown
+        OnKeyPress = EditKeyPress
+      end
+      object BandEdit1: TEdit
+        Left = 368
+        Top = 4
+        Width = 73
+        Height = 18
+        TabStop = False
+        AutoSize = False
+        ImeMode = imDisable
+        PopupMenu = BandMenu
+        ReadOnly = True
+        TabOrder = 1
+        Text = 'BandEdit1'
+        OnClick = BandEdit1Click
+        OnKeyDown = EditKeyDown
+      end
+      object ModeEdit1: TEdit
+        Left = 192
+        Top = 4
+        Width = 33
+        Height = 18
+        TabStop = False
+        AutoSize = False
+        ImeMode = imDisable
+        PopupMenu = ModeMenu
+        ReadOnly = True
+        TabOrder = 2
+        OnClick = ModeEdit1Click
+        OnKeyDown = EditKeyDown
+      end
+      object PointEdit1: TEdit
+        Left = 320
+        Top = 4
+        Width = 70
+        Height = 18
+        TabStop = False
+        AutoSize = False
+        ImeMode = imDisable
+        TabOrder = 3
+        Text = 'PointEdit1'
+        OnKeyDown = EditKeyDown
+        OnKeyPress = EditKeyPress
+      end
+      object OpEdit1: TEdit
+        Left = 37
+        Top = 4
+        Width = 124
+        Height = 18
+        TabStop = False
+        AutoSize = False
+        ImeMode = imDisable
+        ParentShowHint = False
+        PopupMenu = OpMenu
+        ReadOnly = True
+        ShowHint = False
+        TabOrder = 4
+        OnClick = OpEdit1Click
+        OnKeyDown = EditKeyDown
+      end
+      object SerialEdit1: TEdit
+        Left = 32
+        Top = 4
+        Width = 73
+        Height = 18
+        TabStop = False
+        AutoSize = False
+        ImeMode = imDisable
+        TabOrder = 5
+        Visible = False
+        OnChange = SerialEdit1Change
+        OnKeyDown = EditKeyDown
+      end
+      object PowerEdit1: TEdit
+        Left = 416
+        Top = 4
+        Width = 49
+        Height = 18
+        TabStop = False
+        AutoSize = False
+        ImeMode = imDisable
+        PopupMenu = NewPowerMenu
+        TabOrder = 6
+        Visible = False
+        OnClick = PowerEdit1Click
+        OnKeyDown = EditKeyDown
+      end
+      object CallsignEdit1: TOvrEdit
+        Left = 144
+        Top = 4
+        Width = 121
+        Height = 18
+        TabStop = False
+        AutoSelect = False
+        AutoSize = False
+        CharCase = ecUpperCase
+        ImeMode = imDisable
+        TabOrder = 7
+        OnChange = CallsignEdit1Change
+        OnEnter = EditEnter
+        OnExit = EditExit
+        OnKeyDown = EditKeyDown
+        OnKeyPress = EditKeyPress
+        OnKeyUp = CallsignEdit1KeyUp
+        TabOnEnter = False
+      end
+      object NumberEdit1: TOvrEdit
+        Left = 136
+        Top = 4
+        Width = 73
+        Height = 18
+        TabStop = False
+        AutoSelect = False
+        AutoSize = False
+        CharCase = ecUpperCase
+        ImeMode = imDisable
+        TabOrder = 8
+        Text = 'NUMBER'
+        OnChange = NumberEdit1Change
+        OnEnter = EditEnter
+        OnExit = EditExit
+        OnKeyDown = EditKeyDown
+        OnKeyPress = EditKeyPress
+        OnKeyUp = NumberEdit1KeyUp
+        TabOnEnter = False
+      end
+      object MemoEdit1: TOvrEdit
+        Left = 432
+        Top = 4
+        Width = 73
+        Height = 18
+        TabStop = False
+        AutoSize = False
+        TabOrder = 9
+        OnChange = MemoEdit1Change
+        OnEnter = EditEnter
+        OnExit = EditExit
+        OnKeyDown = EditKeyDown
+        OnKeyPress = EditKeyPress
+        TabOnEnter = False
+      end
+      object TimeEdit1: TOvrEdit
+        Left = 64
+        Top = 4
+        Width = 57
+        Height = 18
+        TabStop = False
+        AutoSize = False
+        ImeMode = imDisable
+        TabOrder = 10
+        Text = 'TIME'
+        OnChange = TimeEdit1Change
+        OnDblClick = TimeEdit1DblClick
+        OnKeyDown = EditKeyDown
+        OnKeyPress = EditKeyPress
+        TabOnEnter = False
+      end
+      object DateEdit1: TOvrEdit
+        Left = 8
+        Top = 4
+        Width = 57
+        Height = 18
+        TabStop = False
+        AutoSize = False
+        ImeMode = imDisable
+        TabOrder = 11
+        Text = 'date'
+        Visible = False
+        OnChange = DateEdit1Change
+        OnDblClick = TimeEdit1DblClick
+        OnKeyDown = EditKeyDown
+        OnKeyPress = EditKeyPress
+        TabOnEnter = False
+      end
     end
-    object DateEdit2: TOvrEdit
-      Left = 5
-      Top = 6
-      Width = 57
-      Height = 20
-      TabStop = False
-      AutoSize = False
-      ImeMode = imDisable
+    object EditPanel2R: TPanel
+      Left = 0
+      Top = 201
+      Width = 524
+      Height = 83
+      Align = alBottom
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -15
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
+      Font.Style = []
+      ParentFont = False
       TabOrder = 1
-      Text = 'date'
-      Visible = False
-      OnChange = DateEdit1Change
-      OnDblClick = TimeEdit1DblClick
-      OnKeyDown = EditKeyDown
-      OnKeyPress = EditKeyPress
-      TabOnEnter = False
-    end
-    object RigPanelA: TPanel
-      Left = 66
-      Top = 1
-      Width = 225
-      Height = 51
-      BevelOuter = bvNone
-      TabOrder = 2
-      object RigPanelShape2A: TShape
-        Tag = 1
-        Left = 0
-        Top = 0
-        Width = 225
-        Height = 51
-        Align = alClient
-        Brush.Style = bsClear
-        Pen.Width = 2
-        ExplicitLeft = -1
-        ExplicitWidth = 217
-      end
-      object ledTx2A: TJvLED
-        Left = 6
-        Top = 28
-        ColorOff = clSilver
-        Status = False
-      end
-      object labelRig1Title: TLabel
-        Left = 6
-        Top = 5
-        Width = 35
-        Height = 18
-        Caption = 'RIG1'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Arial Black'
-        Font.Style = []
-        ParentFont = False
-      end
-      object CallsignEdit2A: TOvrEdit
-        Tag = 1
-        Left = 28
-        Top = 27
-        Width = 80
-        Height = 20
-        TabStop = False
-        AutoSelect = False
-        AutoSize = False
-        CharCase = ecUpperCase
-        ImeMode = imDisable
-        TabOrder = 0
-        OnChange = CallsignEdit1Change
-        OnEnter = EditEnter
-        OnExit = EditExit
-        OnKeyDown = EditKeyDown
-        OnKeyPress = EditKeyPress
-        OnKeyUp = CallsignEdit1KeyUp
-        TabOnEnter = False
-      end
-      object NumberEdit2A: TOvrEdit
-        Tag = 1
-        Left = 148
-        Top = 27
-        Width = 70
-        Height = 20
-        TabStop = False
-        AutoSelect = False
-        AutoSize = False
-        CharCase = ecUpperCase
-        ImeMode = imDisable
-        TabOrder = 2
-        OnChange = NumberEdit1Change
-        OnEnter = EditEnter
-        OnExit = EditExit
-        OnKeyDown = EditKeyDown
-        OnKeyPress = EditKeyPress
-        OnKeyUp = NumberEdit1KeyUp
-        TabOnEnter = False
-      end
-      object RcvdRSTEdit2A: TEdit
-        Tag = 1
-        Left = 111
-        Top = 27
-        Width = 34
-        Height = 20
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
-        TabOrder = 1
-        OnChange = RcvdRSTEdit1Change
-        OnKeyDown = EditKeyDown
-        OnKeyPress = EditKeyPress
-      end
-      object BandEdit2A: TEdit
-        Tag = 1
-        Left = 111
-        Top = 5
-        Width = 50
-        Height = 20
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
-        PopupMenu = BandMenu
-        ReadOnly = True
-        TabOrder = 3
-        OnClick = BandEdit1Click
-        OnKeyDown = EditKeyDown
-      end
-      object ModeEdit2A: TEdit
-        Tag = 1
-        Left = 165
-        Top = 5
-        Width = 50
-        Height = 20
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
-        PopupMenu = ModeMenu
-        ReadOnly = True
-        TabOrder = 4
-        OnClick = ModeEdit1Click
-        OnKeyDown = EditKeyDown
-      end
-      object SerialEdit2A: TEdit
-        Tag = 1
-        Left = 63
-        Top = 5
-        Width = 45
-        Height = 20
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
-        TabOrder = 5
-        Visible = False
-        OnChange = SerialEdit1Change
-        OnKeyDown = EditKeyDown
-      end
-    end
-    object RigPanelB: TPanel
-      Left = 294
-      Top = 1
-      Width = 225
-      Height = 51
-      BevelOuter = bvNone
-      TabOrder = 3
-      object RigPanelShape2B: TShape
-        Tag = 2
-        Left = 0
-        Top = 0
-        Width = 225
-        Height = 51
-        Align = alClient
-        Brush.Style = bsClear
-        Pen.Width = 2
-        ExplicitLeft = -1
-        ExplicitWidth = 217
-      end
-      object ledTx2B: TJvLED
-        Left = 6
-        Top = 28
-        ColorOff = clSilver
-        Status = False
-      end
-      object labelRig2Title: TLabel
+      ExplicitTop = 300
+      object TimeEdit2: TOvrEdit
         Left = 5
-        Top = 5
-        Width = 35
-        Height = 18
-        Caption = 'RIG2'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Arial Black'
-        Font.Style = []
-        ParentFont = False
-      end
-      object CallsignEdit2B: TOvrEdit
-        Tag = 2
-        Left = 28
-        Top = 27
-        Width = 80
+        Top = 28
+        Width = 57
         Height = 20
         TabStop = False
-        AutoSelect = False
         AutoSize = False
-        CharCase = ecUpperCase
         ImeMode = imDisable
         TabOrder = 0
-        OnChange = CallsignEdit1Change
-        OnEnter = EditEnter
-        OnExit = EditExit
+        Text = 'TIME'
+        OnChange = TimeEdit1Change
+        OnDblClick = TimeEdit1DblClick
         OnKeyDown = EditKeyDown
         OnKeyPress = EditKeyPress
-        OnKeyUp = CallsignEdit1KeyUp
         TabOnEnter = False
       end
-      object NumberEdit2B: TOvrEdit
-        Tag = 2
-        Left = 148
-        Top = 27
-        Width = 70
+      object DateEdit2: TOvrEdit
+        Left = 5
+        Top = 6
+        Width = 57
         Height = 20
         TabStop = False
-        AutoSelect = False
         AutoSize = False
-        CharCase = ecUpperCase
         ImeMode = imDisable
         TabOrder = 1
-        OnChange = NumberEdit1Change
-        OnEnter = EditEnter
-        OnExit = EditExit
+        Text = 'date'
+        Visible = False
+        OnChange = DateEdit1Change
+        OnDblClick = TimeEdit1DblClick
         OnKeyDown = EditKeyDown
         OnKeyPress = EditKeyPress
-        OnKeyUp = NumberEdit1KeyUp
         TabOnEnter = False
       end
-      object RcvdRSTEdit2B: TEdit
-        Tag = 2
-        Left = 111
-        Top = 27
-        Width = 34
-        Height = 20
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
+      object RigPanelA: TPanel
+        Left = 66
+        Top = 1
+        Width = 225
+        Height = 51
+        BevelOuter = bvNone
         TabOrder = 2
-        OnChange = RcvdRSTEdit1Change
-        OnKeyDown = EditKeyDown
-        OnKeyPress = EditKeyPress
+        object RigPanelShape2A: TShape
+          Tag = 1
+          Left = 0
+          Top = 0
+          Width = 225
+          Height = 51
+          Align = alClient
+          Brush.Style = bsClear
+          Pen.Width = 2
+          ExplicitLeft = -1
+          ExplicitWidth = 217
+        end
+        object ledTx2A: TJvLED
+          Left = 6
+          Top = 28
+          ColorOff = clSilver
+          Status = False
+        end
+        object labelRig1Title: TLabel
+          Left = 6
+          Top = 5
+          Width = 35
+          Height = 18
+          Caption = 'RIG1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial Black'
+          Font.Style = []
+          ParentFont = False
+        end
+        object CallsignEdit2A: TOvrEdit
+          Tag = 1
+          Left = 28
+          Top = 27
+          Width = 80
+          Height = 20
+          TabStop = False
+          AutoSelect = False
+          AutoSize = False
+          CharCase = ecUpperCase
+          ImeMode = imDisable
+          TabOrder = 0
+          OnChange = CallsignEdit1Change
+          OnEnter = EditEnter
+          OnExit = EditExit
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
+          OnKeyUp = CallsignEdit1KeyUp
+          TabOnEnter = False
+        end
+        object NumberEdit2A: TOvrEdit
+          Tag = 1
+          Left = 148
+          Top = 27
+          Width = 70
+          Height = 20
+          TabStop = False
+          AutoSelect = False
+          AutoSize = False
+          CharCase = ecUpperCase
+          ImeMode = imDisable
+          TabOrder = 2
+          OnChange = NumberEdit1Change
+          OnEnter = EditEnter
+          OnExit = EditExit
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
+          OnKeyUp = NumberEdit1KeyUp
+          TabOnEnter = False
+        end
+        object RcvdRSTEdit2A: TEdit
+          Tag = 1
+          Left = 111
+          Top = 27
+          Width = 34
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          TabOrder = 1
+          OnChange = RcvdRSTEdit1Change
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
+        end
+        object BandEdit2A: TEdit
+          Tag = 1
+          Left = 111
+          Top = 5
+          Width = 50
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          PopupMenu = BandMenu
+          ReadOnly = True
+          TabOrder = 3
+          OnClick = BandEdit1Click
+          OnKeyDown = EditKeyDown
+        end
+        object ModeEdit2A: TEdit
+          Tag = 1
+          Left = 165
+          Top = 5
+          Width = 50
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          PopupMenu = ModeMenu
+          ReadOnly = True
+          TabOrder = 4
+          OnClick = ModeEdit1Click
+          OnKeyDown = EditKeyDown
+        end
+        object SerialEdit2A: TEdit
+          Tag = 1
+          Left = 63
+          Top = 5
+          Width = 45
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          TabOrder = 5
+          Visible = False
+          OnChange = SerialEdit1Change
+          OnKeyDown = EditKeyDown
+        end
       end
-      object BandEdit2B: TEdit
-        Tag = 2
-        Left = 111
-        Top = 5
-        Width = 50
-        Height = 20
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
-        PopupMenu = BandMenu
-        ReadOnly = True
+      object RigPanelB: TPanel
+        Left = 294
+        Top = 1
+        Width = 225
+        Height = 51
+        BevelOuter = bvNone
         TabOrder = 3
-        OnClick = BandEdit1Click
-        OnKeyDown = EditKeyDown
+        object RigPanelShape2B: TShape
+          Tag = 2
+          Left = 0
+          Top = 0
+          Width = 225
+          Height = 51
+          Align = alClient
+          Brush.Style = bsClear
+          Pen.Width = 2
+          ExplicitLeft = -1
+          ExplicitWidth = 217
+        end
+        object ledTx2B: TJvLED
+          Left = 6
+          Top = 28
+          ColorOff = clSilver
+          Status = False
+        end
+        object labelRig2Title: TLabel
+          Left = 5
+          Top = 5
+          Width = 35
+          Height = 18
+          Caption = 'RIG2'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial Black'
+          Font.Style = []
+          ParentFont = False
+        end
+        object CallsignEdit2B: TOvrEdit
+          Tag = 2
+          Left = 28
+          Top = 27
+          Width = 80
+          Height = 20
+          TabStop = False
+          AutoSelect = False
+          AutoSize = False
+          CharCase = ecUpperCase
+          ImeMode = imDisable
+          TabOrder = 0
+          OnChange = CallsignEdit1Change
+          OnEnter = EditEnter
+          OnExit = EditExit
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
+          OnKeyUp = CallsignEdit1KeyUp
+          TabOnEnter = False
+        end
+        object NumberEdit2B: TOvrEdit
+          Tag = 2
+          Left = 148
+          Top = 27
+          Width = 70
+          Height = 20
+          TabStop = False
+          AutoSelect = False
+          AutoSize = False
+          CharCase = ecUpperCase
+          ImeMode = imDisable
+          TabOrder = 1
+          OnChange = NumberEdit1Change
+          OnEnter = EditEnter
+          OnExit = EditExit
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
+          OnKeyUp = NumberEdit1KeyUp
+          TabOnEnter = False
+        end
+        object RcvdRSTEdit2B: TEdit
+          Tag = 2
+          Left = 111
+          Top = 27
+          Width = 34
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          TabOrder = 2
+          OnChange = RcvdRSTEdit1Change
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
+        end
+        object BandEdit2B: TEdit
+          Tag = 2
+          Left = 111
+          Top = 5
+          Width = 50
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          PopupMenu = BandMenu
+          ReadOnly = True
+          TabOrder = 3
+          OnClick = BandEdit1Click
+          OnKeyDown = EditKeyDown
+        end
+        object ModeEdit2B: TEdit
+          Tag = 2
+          Left = 165
+          Top = 5
+          Width = 50
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          PopupMenu = ModeMenu
+          ReadOnly = True
+          TabOrder = 4
+          OnClick = ModeEdit1Click
+          OnKeyDown = EditKeyDown
+        end
+        object SerialEdit2B: TEdit
+          Tag = 2
+          Left = 63
+          Top = 5
+          Width = 45
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          TabOrder = 5
+          Visible = False
+          OnChange = SerialEdit1Change
+          OnKeyDown = EditKeyDown
+        end
       end
-      object ModeEdit2B: TEdit
-        Tag = 2
-        Left = 165
-        Top = 5
-        Width = 50
-        Height = 20
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
-        PopupMenu = ModeMenu
-        ReadOnly = True
-        TabOrder = 4
-        OnClick = ModeEdit1Click
-        OnKeyDown = EditKeyDown
-      end
-      object SerialEdit2B: TEdit
-        Tag = 2
-        Left = 63
-        Top = 5
-        Width = 45
-        Height = 20
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
-        TabOrder = 5
-        Visible = False
-        OnChange = SerialEdit1Change
-        OnKeyDown = EditKeyDown
-      end
-    end
-    object RigPanelC: TPanel
-      Left = 4
-      Top = 53
-      Width = 515
-      Height = 28
-      BevelOuter = bvNone
-      TabOrder = 4
-      object RigPanelShape2C: TShape
-        Tag = 3
-        Left = 0
-        Top = 0
+      object RigPanelC: TPanel
+        Left = 4
+        Top = 53
         Width = 515
         Height = 28
-        Align = alClient
-        Brush.Style = bsClear
-        Pen.Width = 2
-        ExplicitLeft = 1
-        ExplicitWidth = 499
-      end
-      object ledTx2C: TJvLED
-        Left = 68
-        Top = 5
-        ColorOff = clSilver
-        Status = False
-      end
-      object labelRig3Title: TLabel
-        Left = 25
-        Top = 5
-        Width = 35
-        Height = 18
-        Caption = 'RIG3'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Arial Black'
-        Font.Style = []
-        ParentFont = False
-        OnClick = labelRig3TitleClick
-      end
-      object CallsignEdit2C: TOvrEdit
-        Tag = 3
-        Left = 90
-        Top = 4
-        Width = 80
-        Height = 20
-        TabStop = False
-        AutoSelect = False
-        AutoSize = False
-        CharCase = ecUpperCase
-        ImeMode = imDisable
-        TabOrder = 0
-        OnChange = CallsignEdit1Change
-        OnEnter = EditEnter
-        OnExit = EditExit
-        OnKeyDown = EditKeyDown
-        OnKeyPress = EditKeyPress
-        OnKeyUp = CallsignEdit1KeyUp
-        TabOnEnter = False
-      end
-      object NumberEdit2C: TOvrEdit
-        Tag = 3
-        Left = 210
-        Top = 4
-        Width = 70
-        Height = 20
-        TabStop = False
-        AutoSelect = False
-        AutoSize = False
-        CharCase = ecUpperCase
-        ImeMode = imDisable
-        TabOrder = 2
-        OnChange = NumberEdit1Change
-        OnEnter = EditEnter
-        OnExit = EditExit
-        OnKeyDown = EditKeyDown
-        OnKeyPress = EditKeyPress
-        OnKeyUp = NumberEdit1KeyUp
-        TabOnEnter = False
-      end
-      object RcvdRSTEdit2C: TEdit
-        Tag = 3
-        Left = 173
-        Top = 4
-        Width = 34
-        Height = 20
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
-        TabOrder = 1
-        OnChange = RcvdRSTEdit1Change
-        OnKeyDown = EditKeyDown
-        OnKeyPress = EditKeyPress
-      end
-      object BandEdit2C: TEdit
-        Tag = 3
-        Left = 283
-        Top = 4
-        Width = 50
-        Height = 20
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
-        PopupMenu = BandMenu
-        ReadOnly = True
-        TabOrder = 3
-        OnClick = BandEdit1Click
-        OnKeyDown = EditKeyDown
-      end
-      object ModeEdit2C: TEdit
-        Tag = 3
-        Left = 336
-        Top = 4
-        Width = 50
-        Height = 20
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
-        PopupMenu = ModeMenu
-        ReadOnly = True
+        BevelOuter = bvNone
         TabOrder = 4
-        OnClick = ModeEdit1Click
-        OnKeyDown = EditKeyDown
+        object RigPanelShape2C: TShape
+          Tag = 3
+          Left = 0
+          Top = 0
+          Width = 515
+          Height = 28
+          Align = alClient
+          Brush.Style = bsClear
+          Pen.Width = 2
+          ExplicitLeft = 1
+          ExplicitWidth = 499
+        end
+        object ledTx2C: TJvLED
+          Left = 68
+          Top = 5
+          ColorOff = clSilver
+          Status = False
+        end
+        object labelRig3Title: TLabel
+          Left = 25
+          Top = 5
+          Width = 35
+          Height = 18
+          Caption = 'RIG3'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial Black'
+          Font.Style = []
+          ParentFont = False
+          OnClick = labelRig3TitleClick
+        end
+        object CallsignEdit2C: TOvrEdit
+          Tag = 3
+          Left = 90
+          Top = 4
+          Width = 80
+          Height = 20
+          TabStop = False
+          AutoSelect = False
+          AutoSize = False
+          CharCase = ecUpperCase
+          ImeMode = imDisable
+          TabOrder = 0
+          OnChange = CallsignEdit1Change
+          OnEnter = EditEnter
+          OnExit = EditExit
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
+          OnKeyUp = CallsignEdit1KeyUp
+          TabOnEnter = False
+        end
+        object NumberEdit2C: TOvrEdit
+          Tag = 3
+          Left = 210
+          Top = 4
+          Width = 70
+          Height = 20
+          TabStop = False
+          AutoSelect = False
+          AutoSize = False
+          CharCase = ecUpperCase
+          ImeMode = imDisable
+          TabOrder = 2
+          OnChange = NumberEdit1Change
+          OnEnter = EditEnter
+          OnExit = EditExit
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
+          OnKeyUp = NumberEdit1KeyUp
+          TabOnEnter = False
+        end
+        object RcvdRSTEdit2C: TEdit
+          Tag = 3
+          Left = 173
+          Top = 4
+          Width = 34
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          TabOrder = 1
+          OnChange = RcvdRSTEdit1Change
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
+        end
+        object BandEdit2C: TEdit
+          Tag = 3
+          Left = 283
+          Top = 4
+          Width = 50
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          PopupMenu = BandMenu
+          ReadOnly = True
+          TabOrder = 3
+          OnClick = BandEdit1Click
+          OnKeyDown = EditKeyDown
+        end
+        object ModeEdit2C: TEdit
+          Tag = 3
+          Left = 336
+          Top = 4
+          Width = 50
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          PopupMenu = ModeMenu
+          ReadOnly = True
+          TabOrder = 4
+          OnClick = ModeEdit1Click
+          OnKeyDown = EditKeyDown
+        end
+        object SerialEdit2C: TEdit
+          Tag = 3
+          Left = 389
+          Top = 4
+          Width = 45
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          TabOrder = 5
+          Visible = False
+          OnChange = SerialEdit1Change
+          OnKeyDown = EditKeyDown
+        end
+        object checkUseRig3: TCheckBox
+          Left = 7
+          Top = 7
+          Width = 18
+          Height = 13
+          Checked = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial Black'
+          Font.Style = []
+          ParentFont = False
+          State = cbChecked
+          TabOrder = 8
+          OnClick = checkUseRig3Click
+        end
+        object checkWithRig1: TCheckBox
+          Left = 440
+          Top = 7
+          Width = 31
+          Height = 13
+          TabStop = False
+          Caption = '1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -15
+          Font.Name = 'Arial Black'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 6
+          OnClick = checkWithRigClick
+        end
+        object checkWithRig2: TCheckBox
+          Tag = 1
+          Left = 477
+          Top = 7
+          Width = 28
+          Height = 13
+          TabStop = False
+          Caption = '2'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -15
+          Font.Name = 'Arial Black'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 7
+          OnClick = checkWithRigClick
+        end
       end
-      object SerialEdit2C: TEdit
-        Tag = 3
-        Left = 389
-        Top = 4
-        Width = 45
-        Height = 20
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
-        TabOrder = 5
-        Visible = False
-        OnChange = SerialEdit1Change
-        OnKeyDown = EditKeyDown
-      end
-      object checkUseRig3: TCheckBox
-        Left = 7
-        Top = 7
-        Width = 18
-        Height = 13
-        Checked = True
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Arial Black'
-        Font.Style = []
-        ParentFont = False
-        State = cbChecked
-        TabOrder = 8
-        OnClick = checkUseRig3Click
-      end
-      object checkWithRig1: TCheckBox
-        Left = 440
-        Top = 7
-        Width = 31
-        Height = 13
-        TabStop = False
-        Caption = '1'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -15
-        Font.Name = 'Arial Black'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 6
-        OnClick = checkWithRigClick
-      end
-      object checkWithRig2: TCheckBox
-        Tag = 1
-        Left = 477
-        Top = 7
-        Width = 28
-        Height = 13
-        TabStop = False
-        Caption = '2'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -15
-        Font.Name = 'Arial Black'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 7
-        OnClick = checkWithRigClick
-      end
+    end
+    object Grid: TStringGrid
+      Left = 0
+      Top = 0
+      Width = 524
+      Height = 174
+      TabStop = False
+      Align = alClient
+      ColCount = 10
+      DefaultRowHeight = 16
+      FixedCols = 0
+      RowCount = 101
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -12
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
+      Font.Style = []
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goRowSelect, goThumbTracking]
+      ParentFont = False
+      PopupMenu = GridMenu
+      ScrollBars = ssVertical
+      TabOrder = 2
+      OnClick = GridClick
+      OnDblClick = GridDblClick
+      OnEnter = GridEnter
+      OnExit = GridExit
+      OnKeyDown = GridKeyDown
+      OnKeyPress = GridKeyPress
+      OnMouseUp = GridMouseUp
+      OnSelectCell = GridSelectCell
+      OnTopLeftChanged = GridTopLeftChanged
+      ExplicitTop = 99
+      ExplicitHeight = 284
+      ColWidths = (
+        38
+        65
+        37
+        44
+        36
+        33
+        46
+        64
+        64
+        64)
+      RowHeights = (
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16)
     end
   end
   object MainMenu: TMainMenu
