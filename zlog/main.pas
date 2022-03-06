@@ -10017,7 +10017,6 @@ end;
 procedure TMainForm.InitQsoEditPanel();
 begin
    Grid.Align := alNone;
-   StatusLine.Align := alNone;
    EditPanel1R.Align := alNone;
    EditPanel2R.Align := alNone;
 
@@ -10068,7 +10067,6 @@ begin
       EditPanel1R.Visible := True;
       EditPanel2R.Visible := False;
 
-      StatusLine.Align := alBottom;
       EditPanel1R.Align := alBottom;
    end
    else begin  // 2R
@@ -10117,7 +10115,6 @@ begin
       EditPanel1R.Visible := False;
       EditPanel2R.Visible := True;
 
-      StatusLine.Align := alBottom;
       EditPanel2R.Align := alBottom;
 
       ShowTxIndicator();
