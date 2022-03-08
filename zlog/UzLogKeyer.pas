@@ -1,4 +1,4 @@
-unit UzLogKeyer;
+﻿unit UzLogKeyer;
 
 //
 // zLog for Windows
@@ -688,6 +688,17 @@ begin
       Exit;
    end;
 
+   // SO2R Neoの場合
+   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
+      if flag = 2 then begin
+         So2rNeoSwitchRig(1, FWkRx);
+      end
+      else begin
+         So2rNeoSwitchRig(0, FWkRx);
+      end;
+      Exit;
+   end;
+
    for i := 0 to 2 do begin
       // USBIF4CWでのRIG SELECT
       if FKeyingPort[i] = tkpUSB then begin
@@ -752,22 +763,11 @@ begin
 
    // SO2R Neoの場合
    if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
-      case flag of
-         0: begin
-            So2rNeoSwitchRig(0, 0);
-         end;
-
-         1: begin
-            So2rNeoSwitchRig(0, 0);
-         end;
-
-         2: begin
-            So2rNeoSwitchRig(1, 1);
-         end;
-
-         3: begin
-            So2rNeoSwitchRig(0, 0);
-         end;
+      if flag = 2 then begin
+         So2rNeoSwitchRig(FWkTx, 1);
+      end
+      else begin
+         So2rNeoSwitchRig(FWkTx, 0);
       end;
       Exit;
    end;
@@ -3415,7 +3415,7 @@ begin
    ControlPTT(nID, True);
 
    if FUseWkSo2rNeo = True then begin
-      So2rNeoReverseRx(nID)
+      So2rNeoReverseRx(nID);
    end;
 
    S := WinKeyerBuildMessage(S);
