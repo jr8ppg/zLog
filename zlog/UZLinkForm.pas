@@ -445,6 +445,7 @@ begin
          Log.AddQue(aQSO);
          Log.ProcessQue;
          MyContest.Renew;
+         MainForm.GridRefreshScreen();
          aQSO.Free;
       end;
       if pos('UNLOCKQSO', temp) = 1 then begin
@@ -455,6 +456,7 @@ begin
          Log.AddQue(aQSO);
          Log.ProcessQue;
          MyContest.Renew;
+         MainForm.GridRefreshScreen();
          aQSO.Free;
       end;
       if pos('EDITQSOTO ', temp) = 1 then begin
