@@ -73,6 +73,8 @@ type
     procedure SendRigStatus;
     procedure MergeLogWithZServer;
     procedure DeleteQSO(aQSO : TQSO);
+    procedure DeleteQsoEx(aQSO: TQSO);
+    procedure Renew();
     procedure LockQSO(aQSO : TQSO);
     procedure UnLockQSO(aQSO : TQSO);
     procedure EditQSObyID(aQSO : TQSO);
@@ -525,6 +527,26 @@ var
 begin
    if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
       str := ZLinkHeader + ' DELQSO ' + aQSO.QSOinText;
+      WriteData(str + LineBreakCode[Ord(Console.LineBreak)]);
+   end;
+end;
+
+procedure TZLinkForm.DeleteQsoEx(aQSO: TQSO);
+var
+   str: string;
+begin
+   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+      str := ZLinkHeader + ' EXDELQSO ' + aQSO.QSOinText;
+      WriteData(str + LineBreakCode[Ord(Console.LineBreak)]);
+   end;
+end;
+
+procedure TZLinkForm.Renew();
+var
+   str: string;
+begin
+   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+      str := ZLinkHeader + ' RENEW ';
       WriteData(str + LineBreakCode[Ord(Console.LineBreak)]);
    end;
 end;

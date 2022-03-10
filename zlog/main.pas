@@ -4529,10 +4529,12 @@ begin
          //
       end
       else begin
-         FZLinkForm.DeleteQSO(aQSO);
+         FZLinkForm.DeleteQsoEx(aQSO);
          Log.DeleteQSO(aQSO);
       end;
    end;
+
+   FZLinkForm.Renew();
 
    MyContest.Renew;
 end;
