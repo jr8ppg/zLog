@@ -435,8 +435,6 @@ begin
          aQSO.Reserve := actDelete;
          Log.AddQue(aQSO);
          Log.ProcessQue;
-         MyContest.Renew;
-         MainForm.GridRefreshScreen;
          aQSO.Free;
       end;
 
