@@ -369,7 +369,7 @@ type
     property UseWkSo2rNeo: Boolean read FUseWkSo2rNeo write FUseWkSo2rNeo;
     property So2rNeoUseRxSelect: Boolean read FSo2rNeoUseRxSelect write FSo2rNeoUseRxSelect;
     procedure So2rNeoSetAudioBlendMode(fOn: Boolean);
-    procedure So2rNeoSetAudioBlendRatio(ratio: Byte);
+    procedure So2rNeoSetAudioBlendRatio(ratio: Integer);
     procedure So2rNeoSwitchRig(tx: Integer; rx: Integer);
     procedure So2rNeoReverseRx(tx: Integer);
     procedure So2rNeoNormalRx(tx: Integer);
@@ -3827,17 +3827,26 @@ procedure TdmZLogKeyer.So2rNeoSetAudioBlendMode(fOn: Boolean);
 var
    Buff: array[0..10] of Byte;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** So2rNeoSetAudioBlendMode ***'));
+   {$ENDIF}
+
    if FUseWkSo2rNeo = False then begin
       Exit;
    end;
 
    FillChar(Buff, SizeOf(Buff), 0);
    if fOn = True then begin
-      Buff[0] := $86;
+      Buff[0] := $87;
    end
    else begin
-      Buff[0] := $87;
+      Buff[0] := $86;
    end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('CMD=[' + IntToHex(Buff[0], 2) + ']'));
+   {$ENDIF}
+
    FComKeying[0].SendData(@Buff, 1);
 end;
 
@@ -3845,17 +3854,29 @@ end;
 // SO2R Neo のAudioブレンド割合の設定
 // ratio: 0-255
 //
-procedure TdmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio: Byte);
+procedure TdmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio: Integer);
 var
    Buff: array[0..10] of Byte;
+   bRatio: Byte;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** So2rNeoSetAudioBlendRatio ***'));
+   {$ENDIF}
+
    if FUseWkSo2rNeo = False then begin
       Exit;
    end;
 
+   bRatio := Trunc(255 * (ratio / 100));
+
    FillChar(Buff, SizeOf(Buff), 0);
-   Buff[0] := $c0 or ((ratio shr 4) and $0f);
-   Buff[1] := $c0 or (ratio and $0f);
+   Buff[0] := $c0 or ((bRatio shr 4) and $0f);
+   Buff[1] := $c0 or (bRatio and $0f);
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('CMD=[' + IntToHex(Buff[0], 2) + '][' + IntToHex(Buff[1], 2) + ']'));
+   {$ENDIF}
+
    FComKeying[0].SendData(@Buff, 2);
 end;
 
@@ -3902,6 +3923,10 @@ begin
          Buff[0] := $96;
       end;
    end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('CMD=[' + IntToHex(Buff[0], 2) + ']'));
+   {$ENDIF}
 
    FComKeying[0].SendData(@Buff, 1);
 
