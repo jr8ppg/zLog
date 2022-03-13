@@ -10018,10 +10018,6 @@ end;
 
 procedure TMainForm.InitQsoEditPanel();
 begin
-   Grid.Align := alNone;
-   EditPanel1R.Align := alNone;
-   EditPanel2R.Align := alNone;
-
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
       // 1R
       FEditPanel[0].SerialEdit   := SerialEdit1;
@@ -10068,8 +10064,6 @@ begin
 
       EditPanel1R.Visible := True;
       EditPanel2R.Visible := False;
-
-      EditPanel1R.Align := alBottom;
    end
    else begin  // 2R
       FEditPanel[0].SerialEdit   := SerialEdit2A;
@@ -10117,12 +10111,8 @@ begin
       EditPanel1R.Visible := False;
       EditPanel2R.Visible := True;
 
-      EditPanel2R.Align := alBottom;
-
       ShowTxIndicator();
    end;
-
-   Grid.Align := alClient;
 end;
 
 procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
