@@ -83,7 +83,7 @@ uses
 
 procedure TformSo2rNeoCp.FormCreate(Sender: TObject);
 begin
-   ToggleSwitch1.State := tssOn;
+   ToggleSwitch1.State := tssOff;
    buttonRig1.Down := True;
    buttonRig2.Down := False;
    buttonRigBoth.Down := False;
