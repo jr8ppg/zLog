@@ -657,6 +657,8 @@ type
     checkWithRig2: TCheckBox;
     actionSo2rToggleRigPair: TAction;
     MainPanel: TPanel;
+    EditUpperLeftPanel: TPanel;
+    EditUpperRightPanel: TGridPanel;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
