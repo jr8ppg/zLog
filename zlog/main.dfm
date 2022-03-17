@@ -5058,9 +5058,6 @@ object MainForm: TMainForm
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitLeft = 4
-        ExplicitTop = 53
-        ExplicitWidth = 515
         DesignSize = (
           522
           28)
@@ -5226,7 +5223,6 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 6
           OnClick = checkWithRigClick
-          ExplicitLeft = 440
         end
         object checkWithRig2: TCheckBox
           Tag = 1
@@ -5245,7 +5241,6 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 7
           OnClick = checkWithRigClick
-          ExplicitLeft = 477
         end
       end
       object EditUpperLeftPanel: TPanel
@@ -5320,10 +5315,6 @@ object MainForm: TMainForm
             Value = 100.000000000000000000
           end>
         TabOrder = 2
-        ExplicitLeft = 228
-        ExplicitTop = 20
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object RigPanelA: TPanel
           Left = 0
           Top = 0
@@ -5332,10 +5323,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitLeft = -40
-          ExplicitTop = 1
-          ExplicitWidth = 225
-          ExplicitHeight = 20
           object RigPanelShape2A: TShape
             Tag = 1
             Left = 0
@@ -5475,8 +5462,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 232
-          ExplicitWidth = 225
           object RigPanelShape2B: TShape
             Tag = 2
             Left = 0

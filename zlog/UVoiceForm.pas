@@ -20,6 +20,10 @@ type
     FCurrentOperator: TOperatorInfo;
     FCurrentVoice: Integer;
     FCtrlZCQLoopVoice: Boolean;
+    FCQLoopCount: Integer;
+    FCQLoopMax: Integer;
+    FTxID: Integer;
+    FOnSendRepeatEvent: TSendRepeatEvent;
     FOnNotifyStarted: TNotifyEvent;
     FOnNotifyFinished: TNotifyEvent;
 
@@ -27,18 +31,23 @@ type
     LoopCount : integer;
     function Playing : boolean;
     procedure SetLoopInterval(Intvl : integer);
-    procedure VoiceControl(fOn: Boolean);
+    procedure VoiceControl(nID: Integer; fOn: Boolean);
   public
     { Public êÈåæ }
     procedure Init();
     procedure SendVoice(i: integer);
     procedure StopVoice();
-    procedure CQLoopVoice(no: Integer);
+    procedure CQLoopVoice(no: Integer; interval: Double);
     procedure CtrlZBreakVoice();
     procedure SetOperator(op: TOperatorInfo);
 
     property CtrlZCQLoopVoice: Boolean read FCtrlZCQLoopVoice write FCtrlZCQLoopVoice;
+    property Tx: Integer read FTxID write FTxID;
 
+    property CQLoopCount: Integer read FCQLoopCount write FCQLoopCount;
+    property CQLoopMax: Integer read FCQLoopMax write FCQLoopMax;
+
+    property OnSendRepeatEvent: TSendRepeatEvent read FOnSendRepeatEvent write FOnSendRepeatEvent;
     property OnNotifyStarted: TNotifyEvent read FOnNotifyStarted write FOnNotifyStarted;
     property OnNotifyFinished: TNotifyEvent read FOnNotifyFinished write FOnNotifyFinished;
   end;
@@ -153,7 +162,7 @@ begin
    end;
    FWaveSound[i].Stop();
 
-   VoiceControl(True);
+   VoiceControl(FTxID, True);
 
    LoopInterval := 0;
    FCurrentVoice := i;
@@ -173,14 +182,14 @@ begin
    if FCurrentVoice <> 0 then begin
       FWaveSound[FCurrentVoice].Stop();
    end;
-   VoiceControl(False);
+   VoiceControl(FTxID, False);
 end;
 
 // no ÇÕ 1,2,..12,101,102,103
-procedure TVoiceForm.CQLoopVoice(no: Integer);
+procedure TVoiceForm.CQLoopVoice(no: Integer; interval: Double);
 var
    filename: string;
-   Interval: integer;
+   nInterval: integer;
 begin
    filename := '';
    StopVoice;
@@ -200,8 +209,8 @@ begin
       end;
    end;
 
-   Interval := Trunc(1000 * dmZLogGlobal.Settings.CW._cqrepeat);
-   SetLoopInterval(Interval);
+   nInterval := Trunc(1000 * interval);
+   SetLoopInterval(nInterval);
 
    if filename = '' then begin
       Exit;
@@ -220,8 +229,9 @@ begin
    end;
    FWaveSound[1].Stop();
 
-   VoiceControl(True);
+   VoiceControl(FTxID, True);
 
+   FCQLoopCount := 1;
    FCurrentVoice := 1;
    FWaveSound[1].Play();
 
@@ -262,16 +272,27 @@ begin
       Exit;
    end;
 
-   VoiceControl(False);
+   VoiceControl(FTxID, False);
 
    if LoopInterval > 0 then begin
       if LoopCount > 0 then begin
          dec(LoopCount);
       end
       else begin // end of wait time
+         Inc(FCQLoopCount);
+         if FCQLoopCount > FCQLoopMax then begin
+            FCQLoopCount := 0;
+            Timer.Enabled := False;
+            Exit;
+         end;
+
          LoopCount := LoopInterval div 100;
 
-         VoiceControl(True);
+         if Assigned(FOnSendRepeatEvent) then begin
+            FOnSendRepeatEvent(Self, FCQLoopCount);
+         end;
+
+         VoiceControl(FTxID, True);
 
          FWaveSound[FCurrentVoice].Play();
 
@@ -305,22 +326,20 @@ begin
    {$ENDIF}
 end;
 
-procedure TVoiceForm.VoiceControl(fOn: Boolean);
+procedure TVoiceForm.VoiceControl(nID: Integer; fOn: Boolean);
 begin
    if fOn = True then begin
       dmZlogKeyer.SetVoiceFlag(1);
 
       if dmZLogGlobal.Settings._pttenabled then begin
-         dmZlogKeyer.ControlPTT(0, True);
-         dmZlogKeyer.ControlPTT(1, True);
+         dmZlogKeyer.ControlPTT(nID, True);
       end;
    end
    else begin
       dmZlogKeyer.SetVoiceFlag(0);
 
       if dmZLogGlobal.Settings._pttenabled then begin
-         dmZlogKeyer.ControlPTT(0, False);
-         dmZlogKeyer.ControlPTT(1, False);
+         dmZlogKeyer.ControlPTT(nID, False);
       end;
    end;
 end;

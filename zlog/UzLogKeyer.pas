@@ -12,7 +12,8 @@ interface
 
 uses
   System.SysUtils, System.Classes, Windows, MMSystem, Math, Forms,
-  Messages, JvComponentBase, JvHidControllerClass, CPDrv, Generics.Collections
+  Messages, JvComponentBase, JvHidControllerClass, CPDrv, Generics.Collections,
+  UzLogConst
   {$IFDEF USESIDETONE},ToneGen, UzLogSound, Vcl.ExtCtrls{$ENDIF};
 
 const
@@ -43,7 +44,6 @@ type
 
 type
   TdmZLogKeyer = class;
-  TSendRepeatEvent = procedure(Sender: TObject; nLoopCount: Integer) of object;
   TWkStatusEvent = procedure(Sender: TObject; tx: Integer; rx: Integer; ptt: Boolean) of object;
 
   TKeyerMonitorThread = class(TThread)

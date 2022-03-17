@@ -1042,6 +1042,7 @@ type
     procedure ResetKeymap();
     procedure SetShortcutEnabled(shortcut: string; fEnabled: Boolean);
     procedure CQRepeatProc();
+    procedure CQRepeatVoiceProc();
 
     // Super Checkä÷åW
     procedure SuperCheckDataLoad();
@@ -3330,6 +3331,7 @@ begin
    FZAnalyze      := TZAnalyze.Create(Self);
    FCWMessagePad  := TCwMessagePad.Create(Self);
    FVoiceForm     := TVoiceForm.Create(Self);
+   FVoiceForm.OnSendRepeatEvent := DoSendRepeatProc;
    FVoiceForm.OnNotifyStarted  := OnVoicePlayStarted;
    FVoiceForm.OnNotifyFinished := OnVoicePlayFinished;
    FFunctionKeyPanel := TformFunctionKeyPanel.Create(Self);
@@ -4707,6 +4709,7 @@ begin
 
       rig := RigControl.GetCurrentRig();
       dmZlogKeyer.SetTxRigFlag(rig);
+      FVoiceForm.Tx := rig - 1;
 
       dmZLogKeyer.PauseCW;
       if dmZlogGlobal.PTTEnabled then begin
@@ -6396,14 +6399,49 @@ procedure TMainForm.VoiceCQ3Click(Sender: TObject);
 begin
    SetCQ(True);
    FVoiceForm.CtrlZCQLoopVoice := True;
-   FVoiceForm.CQLoopVoice(FCurrentCQMessageNo);
+   CQRepeatVoiceProc();
 end;
 
 procedure TMainForm.VoiceCQ2Click(Sender: TObject);
 begin
    SetCQ(True);
    FVoiceForm.CtrlZCQLoopVoice := False;
-   FVoiceForm.CQLoopVoice(FCurrentCQMessageNo);
+   CQRepeatVoiceProc();
+end;
+
+procedure TMainForm.CQRepeatVoiceProc();
+var
+   nID: Integer;
+   msgno: Integer;
+   interval: Double;
+begin
+   if FInformation.CqInvert = True then begin
+      InvertTx();
+   end;
+
+   // é©ìÆÉäÉOïœçXÇÃèÍçáMessageÇêÿÇËë÷Ç¶ÇÈ
+   if FInformation.AutoRigSwitch = True then begin
+      msgno := dmZLogGlobal.Settings._so2r_cq_msg_number;
+      interval := dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec;
+   end
+   else begin
+      msgno := FCurrentCQMessageNo;
+      interval := dmZLogGlobal.Settings.CW._cqrepeat;
+   end;
+
+   nID := FCurrentTx;
+
+//   if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
+//      WriteStatusLineRed('CW port is not set', False);
+//      Exit;
+//   end
+//   else begin
+      WriteStatusLine('', False);
+//   end;
+
+   FVoiceForm.CQLoopMax := dmZLogGlobal.Settings.CW._cqmax;
+   FVoiceForm.Tx := nID;
+   FVoiceForm.CQLoopVoice(msgno, interval);
 end;
 
 procedure TMainForm.mPXListWPXClick(Sender: TObject);
@@ -7795,6 +7833,7 @@ end;
 
 procedure TMainForm.PlayMessagePH(no: Integer);
 begin
+   FVoiceForm.Tx := FCurrentTx;
    case no of
       1, 2, 3, 4, 5, 6,
       7, 8, 9, 10, 11, 12: begin
@@ -9114,6 +9153,7 @@ begin
    FInformation.Tx := tx;
 
    dmZLogKeyer.SetTxRigFlag(tx + 1);
+   FVoiceForm.Tx := tx;
 
    ShowTxIndicator();
 end;
@@ -10211,6 +10251,7 @@ begin
 
    dmZLogKeyer.SetRxRigFlag(rig);
    dmZLogKeyer.SetTxRigFlag(rig);
+   FVoiceForm.Tx := rig - 1;
 
    // SetCurrentRig()ÇÕToggleRigì‡Ç≈ä˘Ç…çsÇÌÇÍÇƒÇ¢ÇÈ
    if Assigned(RigControl.Rig) then begin
@@ -10242,6 +10283,7 @@ begin
    ShowTxIndicator();
 
    dmZLogKeyer.SetTxRigFlag(rig);
+   FVoiceForm.Tx := rig - 1;
 
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       UpdateQsoEditPanel(rig);
@@ -10307,6 +10349,7 @@ begin
    FInformation.Tx := tx;
 
    dmZLogKeyer.SetTxRigFlag(tx + 1);
+   FVoiceForm.Tx := tx;
 
    // ShowTxIndicator();
    PostMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);

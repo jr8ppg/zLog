@@ -103,6 +103,9 @@ type
   TQSORateStyle = ( rsOriginal = 0, rsByBand, rsByFreqRange );
   TQSORateStartPosition = ( spFirstQSO = 0, spCurrentTime, spLastQSO );
 
+type
+  TSendRepeatEvent = procedure(Sender: TObject; nLoopCount: Integer) of object;
+
 const
   default_graph_bar_color: array[b19..HiBand] of TColor = (
     $0080FF00, $000000FF, $00FF0000, $00808080,
