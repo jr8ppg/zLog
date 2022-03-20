@@ -196,6 +196,8 @@ begin
 
    if FCurrentOperator = nil then begin
       case no of
+         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12:
+              filename := dmZLogGlobal.Settings.FSoundFiles[no];
          101: filename := dmZLogGlobal.Settings.FSoundFiles[1];
          102: filename := dmZLogGlobal.Settings.FAdditionalSoundFiles[2];
          103: filename := dmZLogGlobal.Settings.FAdditionalSoundFiles[3];
@@ -203,6 +205,8 @@ begin
    end
    else begin
       case no of
+         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12:
+              filename := FCurrentOperator.VoiceFile[no];
          101: filename := FCurrentOperator.VoiceFile[1];
          102: filename := FCurrentOperator.AdditionalVoiceFile[2];
          103: filename := FCurrentOperator.AdditionalVoiceFile[3];
