@@ -5,8 +5,6 @@ interface
 uses
   SysUtils, UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, UOptions;
 
-var CtrlZCQLoop : boolean;
-
 const tabstate_normal = 0;
       tabstate_tabpressedbutnotedited = 1;
       tabstate_tabpressedandedited = 2;
@@ -19,7 +17,6 @@ function SetStr(S : string; aQSO : TQSO) : String;
 function SetStrNoAbbrev(S : string; aQSO : TQSO) : String; {for QSO.NrSent}
 procedure zLogSendStr(nID: Integer; S: string);
 procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
-procedure CtrlZBreak;
 
 implementation
 
@@ -220,13 +217,4 @@ begin
    zLogSendStr(nID, S);
 end;
 
-procedure CtrlZBreak;
-begin
-  CtrlZCQLoop := False;
-  dmZLogKeyer.ClrBuffer;
-end;
-
-initialization
-  CtrlZCQLoop := False;
-//  QTHString := '';
 end.

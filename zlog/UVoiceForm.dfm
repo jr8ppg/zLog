@@ -15,12 +15,6 @@ object VoiceForm: TVoiceForm
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 12
-  object Timer: TTimer
-    Enabled = False
-    Interval = 100
-    OnTimer = TimerTimer
-    Left = 240
-  end
   object Timer2: TTimer
     Enabled = False
     Interval = 50

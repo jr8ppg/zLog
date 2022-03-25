@@ -458,6 +458,9 @@ procedure ResetQsyViolation(aQSO: TQSO);
 procedure SetDupeQso(aQSO: TQSO);
 procedure ResetDupeQso(aQSO: TQSO);
 
+function TextToBand(text: string): TBand;
+function TextToMode(text: string): TMode;
+
 var
   dmZLogGlobal: TdmZLogGlobal;
 
@@ -1713,13 +1716,7 @@ begin
 
    dmZLogKeyer.WPM := Settings.CW._speed;
    dmZLogKeyer.SetWeight(Settings.CW._weight);
-   dmZLogKeyer.CQLoopMax := Settings.CW._cqmax;
-   dmZLogKeyer.CQRepeatIntervalSec := Settings.CW._cqrepeat;
-   dmZLogKeyer.UseRandomRepeat := Settings.CW._cq_random_repeat;
    dmZLogKeyer.SideTonePitch := Settings.CW._tonepitch;
-
-   dmZLogKeyer.RandCQStr[1] := SetStr(Settings.CW.AdditionalCQMessages[2], CurrentQSO);
-   dmZLogKeyer.RandCQStr[2] := SetStr(Settings.CW.AdditionalCQMessages[3], CurrentQSO);
 
    dmZLogKeyer.SpaceFactor := Settings.CW._spacefactor;
    dmZLogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
@@ -3310,6 +3307,32 @@ procedure ResetDupeQso(aQSO: TQSO);
 begin
    aQSO.Dupe := False;
    aQSO.Memo := Trim(StringReplace(aQSO.Memo, MEMO_DUPE, '', [rfReplaceAll]));
+end;
+
+function TextToBand(text: string): TBand;
+var
+   b: TBand;
+begin
+   for b := Low(MHzString) to High(MHzString) do begin
+      if MHzString[b] = text then begin
+         Result := b;
+         Exit;
+      end;
+   end;
+   Result := bUnknown;
+end;
+
+function TextToMode(text: string): TMode;
+var
+   m: TMode;
+begin
+   for m := Low(ModeString) to High(ModeString) do begin
+      if ModeString[m] = text then begin
+         Result := m;
+         Exit;
+      end;
+   end;
+   Result := mOther;
 end;
 
 end.

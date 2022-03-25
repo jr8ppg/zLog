@@ -73,7 +73,6 @@ type
 
   TdmZLogKeyer = class(TDataModule)
     ZComKeying1: TCommPortDriver;
-    RepeatTimer: TTimer;
     ZComKeying2: TCommPortDriver;
     ZComRxRigSelect: TCommPortDriver;
     ZComKeying3: TCommPortDriver;
@@ -87,7 +86,6 @@ type
     procedure HidControllerDeviceUnplug(HidDev: TJvHidDevice);
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
     procedure ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
-    procedure RepeatTimerTimer(Sender: TObject);
     procedure HidControllerDeviceCreateError(Controller: TJvHidDeviceController;
       PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
   private
@@ -127,8 +125,6 @@ type
 
     FCodeTable: CodeTableType;
 
-    FRandCQStr: array[1..2] of string;
-
     FInitialized: Boolean;
 
     FPTTFLAG : Boolean; {internal PTT flag}
@@ -158,12 +154,6 @@ type
     FBlank1Count: Integer;
     FBlank3Count: Integer;
 
-    FCQLoopCount: Integer; //word;
-    FCQLoopMax: Integer; //word;
-    FCQRepeatIntervalSec: Double;
-    FCQRepeatIntervalCount: Integer;
-    FUseRandomRepeat: Boolean;
-
     FKeyerWPM: Integer; //word;
     FKeyerWeight: Integer; //word;
     FUseFixedSpeed: Boolean;
@@ -178,7 +168,6 @@ type
 
     FOnCallsignSentProc: TNotifyEvent;
     FOnPaddleEvent: TNotifyEvent;
-    FOnSendRepeatEvent: TSendRepeatEvent;
     FOnSendFinishProc: TNotifyEvent;
     FOnWkAbortProc: TNotifyEvent;
     FOnWkStatusProc: TWkStatusEvent;
@@ -231,12 +220,6 @@ type
     procedure DecWPM; {Decreases CW speed by 1WPM}
     procedure SetCWSendBufChar2(C: char; CharPos: word);
 
-    procedure SetRandCQStr(Index: Integer; cqstr: string);
-
-    procedure SetCQLoopCount(cnt: Integer);
-    procedure SetCQLoopMax(cnt: Integer);
-    procedure SetCQRepeatInterval(sec: Double); {Sets the pause between repeats}
-
     procedure SetWPM(wpm: Integer); {Sets CW speed 1-60 wpm}
     procedure SetSideTonePitch(Hertz: Integer); {Sets the pitch of the side tone}
     procedure SetSpaceFactor(R: Integer);
@@ -284,7 +267,6 @@ type
     procedure ResumeCW; {Resume}
 
     procedure SendStr(nID: Integer; sStr: string); {Sends a string (Overwrites buffer)}
-    procedure SendStrLoop(nID: Integer; S: string); {Sends a string (repeat CQmax times)}
     procedure SendStrFIFO(nID: Integer; sStr: string); {Sends a string (adds to buffer)}
 
     procedure SetCWSendBuf(b: byte; S: string); {Sets str to buffer but does not start sending}
@@ -297,13 +279,6 @@ type
     procedure SetPTT(_on : Boolean);
     procedure SetPTTDelay(before, after : word);
     procedure SetWeight(W : word); {Sets the weight 0-100 %}
-
-    property RandCQStr[Index: Integer]: string write SetRandCQStr;
-
-    property CQLoopCount: Integer read FCQLoopCount write SetCQLoopCount;
-    property CQLoopMax: Integer read FCQLoopMax write SetCQLoopMax;
-    property CQRepeatIntervalSec: Double read FCQRepeatIntervalSec write SetCQRepeatInterval;
-    property UseRandomRepeat: Boolean read FUseRandomRepeat write FUseRandomRepeat;
 
     property WPM: Integer read FKeyerWPM write SetWPM;
     property UseSideTone: Boolean read FUseSideTone write SetUseSideTone;
@@ -318,15 +293,11 @@ type
 
     property OnCallsignSentProc: TNotifyEvent read FOnCallsignSentProc write FOnCallsignSentProc;
     property OnPaddle: TNotifyEvent read FOnPaddleEvent write FOnPaddleEvent;
-    property OnSendRepeatEvent: TSendRepeatEvent read FOnSendRepeatEvent write FOnSendRepeatEvent;
     property OnSendFinishProc: TNotifyEvent read FOnSendFinishProc write FOnSendFinishProc;
     property OnSpeedChanged: TNotifyEvent read FOnSpeedChanged write FOnSpeedChanged;
     property OnWkAbortProc: TNotifyEvent read FOnWkAbortProc write FOnWkAbortProc;
     property OnWkStatusProc: TWkStatusEvent read FOnWkStatusProc write FOnWkStatusProc;
     property KeyingSignalReverse: Boolean read FKeyingSignalReverse write FKeyingSignalReverse;
-
-//    property UsbPortIn: TUsbPortDataArray read FUsbPortIn;
-//    property UsbPortOut: TUsbPortDataArray read FUsbPortOut;
 
     property Usbif4cwSyncWpm: Boolean read FUsbif4cwSyncWpm write FUsbif4cwSyncWpm;
     property PaddleReverse: Boolean read FPaddleReverse write SetPaddleReverse;
@@ -411,7 +382,6 @@ procedure TdmZLogKeyer.DataModuleCreate(Sender: TObject);
 var
    i: Integer;
 begin
-   RepeatTimer.Enabled := False;
    FInitialized := False;
    FDefautCom[0] := ZComKeying1;
    FDefautCom[1] := ZComKeying2;
@@ -426,7 +396,6 @@ begin
    FUseFixedSpeed := False;
    FBeforeSpeed := 0;
    FFixedSpeed := 0;
-   FUseRandomRepeat := True;
    FUseWkSo2rNeo := False;
    FSo2rNeoCanRxSel := False;
    FSo2rNeoUseRxSelect := False;
@@ -473,7 +442,6 @@ begin
 
    FMonitorThread := nil;
    FOnCallsignSentProc := nil;
-   FOnSendRepeatEvent := nil;
    FOnSendFinishProc := nil;
    FOnPaddleEvent := nil;
    FOnWkAbortProc := nil;
@@ -942,16 +910,6 @@ begin
    Result := not FSendOK;
 end;
 
-procedure TdmZLogKeyer.SetCQLoopCount(cnt: Integer);
-begin
-   FCQLoopCount := cnt;
-end;
-
-procedure TdmZLogKeyer.SetCQLoopMax(cnt: Integer);
-begin
-   FCQLoopMax := cnt;
-end;
-
 procedure TdmZLogKeyer.SetSideTonePitch(Hertz: Integer);
 begin
    if Hertz < 2500 then begin
@@ -1174,39 +1132,6 @@ begin
    FKeyingCounter := 1;
 end;
 
-procedure TdmZLogKeyer.SendStrLoop(nID: Integer; S: string);
-var
-   SS: string;
-   CW: string;
-begin
-   SS := S;
-   CW := '';
-
-   FCQLoopCount := 1;
-
-   if FUseWinKeyer = True then begin
-      WinKeyerClear();
-      FWkLastMessage := SS;
-      WinkeyerSendStr(nID, SS);
-   end
-   else begin
-      FWkTx := nID;
-
-      SS := DecodeCommands(S);
-
-      if FPTTEnabled then begin
-         SS := '(' + SS + ')';
-      end;
-
-      SS := SS + '@';
-
-      SetCWSendBuf(0, SS);
-      cwstrptr := 1;
-      FSendOK := True;
-      FKeyingCounter := 1;
-   end;
-end;
-
 procedure TdmZLogKeyer.SendStrFIFO(nID: Integer; sStr: string);
 var
    n: Integer;
@@ -1424,59 +1349,6 @@ begin
          Dec(cwstrptr);
       end;
 
-      $CC: begin
-         Inc(FCQLoopCount);
-         if FCQLoopCount > FCQLoopMax then begin
-            FCWSendBuf[FSelectedBuf, 1] := $FF;
-            FCQLoopCount := 0;
-            FSelectedBuf := 0;
-            Finish();
-         end
-         else if FCQLoopCount > 4 then begin
-            if FUseRandomRepeat = True then begin
-               FSelectedBuf := FCQLoopCount mod 3; // random(3);
-               if FSelectedBuf > 2 then begin
-                  FSelectedBuf := 0;
-               end;
-
-               if FSelectedBuf in [1 .. 2] then begin
-                  if FRandCQStr[FSelectedBuf] = '' then begin
-                     FSelectedBuf := 0;
-                  end;
-               end;
-            end
-            else begin
-               FSelectedBuf := 0;
-            end;
-         end;
-         cwstrptr := 0;
-      end;
-
-      $CD: begin
-         if Assigned(FOnSendRepeatEvent) then begin
-            FOnSendRepeatEvent(Self, FCQLoopCount);
-         end;
-         FKeyingCounter := 100;
-      end;
-
-      $DD: begin
-         FKeyingCounter := FCQRepeatIntervalCount;
-      end;
-
-      $C1: begin { voice }
-         inc(FCQLoopCount);
-         if FCQLoopCount > FCQLoopMax then begin
-            FSendOK := False;
-            cwstrptr := 0;
-         end
-         else begin
-            cwstrptr := 0;
-         end;
-      end;
-
-      $D1: begin { sss:=voiceLoopCount; }
-      end;
-
       $EE: begin { cwstrptr:=(BGKcall+callmax-1)*codemax; }
       end;
 
@@ -1486,6 +1358,14 @@ begin
 
       $FF: begin { SendOK:=False; }
          Finish();
+
+         if Assigned(FOnSendFinishProc) then begin
+            {$IFDEF DEGBUG}
+            OutputDebugString(PChar(' *** FOnSendFinishProc() called ***'));
+            {$ENDIF}
+            FOnSendFinishProc(Self);
+         end;
+
          FSendOK := False;
       end;
 
@@ -1557,23 +1437,10 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetCQRepeatInterval(sec: Double);
-begin
-   if FTimerMicroSec = 0 then begin
-      FTimerMicroSec := 1000;
-   end;
-
-   FCQRepeatIntervalCount := Trunc(sec * 1000000 / FTimerMicroSec);
-   FCQRepeatIntervalSec := sec;
-end;
-
 procedure TdmZLogKeyer.InitializeBGK(msec: Integer);
 var
    n, m: word;
 begin
-   FRandCQStr[1] := '';
-   FRandCQStr[2] := '';
-
    FPTTFLAG := False;
 
    callsignptr := 0; { points to the 1st char of realtime updated callsign }
@@ -1602,10 +1469,6 @@ begin
    FUseSideTone := True;
    FPaddleReverse := False;
    FKeyerWPM := 1;
-
-   CQRepeatIntervalSec := 2.0;
-   CQLoopCount := 0;
-   CQLoopMax := 15;
 
    timeBeginPeriod(1);
 
@@ -2106,22 +1969,9 @@ begin
    FCodeTable[Ord('~')][14] := 2;
    FCodeTable[Ord('~')][15] := 9;
 
-   FCodeTable[Ord('@')][1] := $DD;
-   FCodeTable[Ord('@')][2] := $CD;
-   FCodeTable[Ord('@')][3] := $CC;
-
-   FCodeTable[Ord('|')][1] := $D1;
-   FCodeTable[Ord('|')][2] := $C1;
-
    FCodeTable[Ord(']')][1] := 4;
    FCodeTable[Ord(']')][2] := 5;
    FCodeTable[Ord(']')][3] := 9;
-
-   FCodeTable[Ord('<')][1] := $B0;
-   FCodeTable[Ord('<')][2] := $B1;
-   FCodeTable[Ord('<')][3] := $B2;
-   FCodeTable[Ord('<')][4] := $DD;
-   FCodeTable[Ord('<')][5] := $C1;
 
    FCodeTable[Ord('#')][1] := $BB;
 
@@ -2269,8 +2119,6 @@ procedure TdmZLogKeyer.ClrBuffer;
 var
    m: Integer;
 begin
-   CQLoopCount := 999;
-
    if FUseWinKeyer = True then begin
       WinKeyerClear();
    end
@@ -2298,8 +2146,6 @@ begin
          ControlPTT(FWkTx, False);
       end;
    end;
-
-   FCQLoopCount := 0;
 end;
 
 procedure TdmZLogKeyer.CancelLastChar;
@@ -2375,19 +2221,6 @@ begin
       else begin
          Result := False;
       end;
-   end;
-end;
-
-procedure TdmZLogKeyer.SetRandCQStr(Index: Integer; cqstr: string);
-begin
-   FRandCQStr[Index] := cqstr;
-
-   if FUseWinKeyer = False then begin
-      if FPTTEnabled then begin
-         cqstr := '(' + cqstr + ')';
-      end;
-      cqstr := cqstr + '@';
-      SetCWSendBuf(Index, cqstr);
    end;
 end;
 
@@ -3038,7 +2871,6 @@ begin
    FWkLastMessage := '';
    FWkCallsignSending := False;
    FWkAbort := False;
-   RepeatTimer.Enabled := False;
 
    //1) Open serial communications port. Use 1200 baud, 8 data bits, no parity
    FComKeying[0].Port := TPortNumber(nPort);
@@ -3226,8 +3058,6 @@ begin
    FWkMessageSending := False;
    FWkMessageStr := '';
    FWkMessageIndex := 1;
-   RepeatTimer.Enabled := False;
-//   WinKeyerSetPinCfg(FPTTEnabled);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetSideTone(fOn: Boolean);
@@ -3612,15 +3442,6 @@ begin
                   {$ENDIF}
                   FOnSendFinishProc(Self);
                end;
-
-               if FCQLoopCount < FCQLoopMax then begin
-                  {$IFDEF DEGBUG}
-                  OutputDebugString(PChar(' *** RepeatTimer started ***'));
-                  {$ENDIF}
-                  RepeatTimer.Interval := Trunc(FCQRepeatIntervalSec * 1000);
-                  RepeatTimer.Enabled := True;
-                  Inc(FCQLoopCount);
-               end;
             end;
 
             // STATUSを保存
@@ -3659,43 +3480,6 @@ begin
          end;
       end;
    end;
-end;
-
-procedure TdmZLogKeyer.RepeatTimerTimer(Sender: TObject);
-var
-   n: Integer;
-   S: string;
-begin
-   RepeatTimer.Enabled := False;
-
-   if (FUseRandomRepeat = True) and (FCQLoopCount > 4) then begin
-      n := FCQLoopCount mod 3; // random(3);
-      if n > 2 then begin
-         n := 0;
-      end;
-
-      if n in [1 .. 2] then begin
-         if FRandCQStr[n] = '' then begin
-            n := 0;
-         end;
-      end;
-
-      if n = 0 then begin
-         S := FWkLastMessage;
-      end
-      else begin
-         S := FRandCQStr[n];
-      end;
-   end
-   else begin
-      S := FWkLastMessage;
-   end;
-
-   if Assigned(FOnSendRepeatEvent) then begin
-      FOnSendRepeatEvent(Self, FCQLoopCount);
-   end;
-
-   WinKeyerSendStr(FWkTx, S);
 end;
 
 procedure TdmZLogKeyer.IncCWSpeed();

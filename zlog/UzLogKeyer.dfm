@@ -16,13 +16,6 @@ object dmZLogKeyer: TdmZLogKeyer
     Left = 91
     Top = 16
   end
-  object RepeatTimer: TTimer
-    Enabled = False
-    Interval = 10
-    OnTimer = RepeatTimerTimer
-    Left = 136
-    Top = 96
-  end
   object ZComKeying2: TCommPortDriver
     Tag = 3
     Port = pnCustom

@@ -8,9 +8,7 @@ uses
 
 type
   TVoiceForm = class(TForm)
-    Timer: TTimer;
     Timer2: TTimer;
-    procedure TimerTimer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -19,35 +17,21 @@ type
     FWaveSound: array[1..maxmessage + 2] of TWaveSound;
     FCurrentOperator: TOperatorInfo;
     FCurrentVoice: Integer;
-    FCtrlZCQLoopVoice: Boolean;
-    FCQLoopCount: Integer;
-    FCQLoopMax: Integer;
     FTxID: Integer;
-    FOnSendRepeatEvent: TSendRepeatEvent;
     FOnNotifyStarted: TNotifyEvent;
     FOnNotifyFinished: TNotifyEvent;
 
-    LoopInterval : integer; // in milliseconds;
-    LoopCount : integer;
     function Playing : boolean;
-    procedure SetLoopInterval(Intvl : integer);
     procedure VoiceControl(nID: Integer; fOn: Boolean);
   public
     { Public 宣言 }
     procedure Init();
     procedure SendVoice(i: integer);
     procedure StopVoice();
-    procedure CQLoopVoice(no: Integer; interval: Double);
-    procedure CtrlZBreakVoice();
     procedure SetOperator(op: TOperatorInfo);
 
-    property CtrlZCQLoopVoice: Boolean read FCtrlZCQLoopVoice write FCtrlZCQLoopVoice;
     property Tx: Integer read FTxID write FTxID;
 
-    property CQLoopCount: Integer read FCQLoopCount write FCQLoopCount;
-    property CQLoopMax: Integer read FCQLoopMax write FCQLoopMax;
-
-    property OnSendRepeatEvent: TSendRepeatEvent read FOnSendRepeatEvent write FOnSendRepeatEvent;
     property OnNotifyStarted: TNotifyEvent read FOnNotifyStarted write FOnNotifyStarted;
     property OnNotifyFinished: TNotifyEvent read FOnNotifyFinished write FOnNotifyFinished;
   end;
@@ -63,7 +47,6 @@ procedure TVoiceForm.FormCreate(Sender: TObject);
 var
    i: Integer;
 begin
-   FCtrlZCQLoopVoice := False;
    FOnNotifyStarted := nil;
    FOnNotifyFinished := nil;
    FCurrentVoice := 0;
@@ -164,7 +147,6 @@ begin
 
    VoiceControl(FTxID, True);
 
-   LoopInterval := 0;
    FCurrentVoice := i;
    FWaveSound[i].Play();
 
@@ -172,85 +154,16 @@ begin
       FOnNotifyStarted(FWaveSound[i]);
    end;
 
-   Timer.Enabled := True;
    Timer2.Enabled := True;
 end;
 
 procedure TVoiceForm.StopVoice();
 begin
-   Timer.Enabled := False;
+   Timer2.Enabled := False;
    if FCurrentVoice <> 0 then begin
       FWaveSound[FCurrentVoice].Stop();
    end;
    VoiceControl(FTxID, False);
-end;
-
-// no は 1,2,..12,101,102,103
-procedure TVoiceForm.CQLoopVoice(no: Integer; interval: Double);
-var
-   filename: string;
-   nInterval: integer;
-begin
-   filename := '';
-   StopVoice;
-
-   if FCurrentOperator = nil then begin
-      case no of
-         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12:
-              filename := dmZLogGlobal.Settings.FSoundFiles[no];
-         101: filename := dmZLogGlobal.Settings.FSoundFiles[1];
-         102: filename := dmZLogGlobal.Settings.FAdditionalSoundFiles[2];
-         103: filename := dmZLogGlobal.Settings.FAdditionalSoundFiles[3];
-      end;
-   end
-   else begin
-      case no of
-         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12:
-              filename := FCurrentOperator.VoiceFile[no];
-         101: filename := FCurrentOperator.VoiceFile[1];
-         102: filename := FCurrentOperator.AdditionalVoiceFile[2];
-         103: filename := FCurrentOperator.AdditionalVoiceFile[3];
-      end;
-   end;
-
-   nInterval := Trunc(1000 * interval);
-   SetLoopInterval(nInterval);
-
-   if filename = '' then begin
-      Exit;
-   end;
-   if FileExists(filename) = False then begin
-      Exit;
-   end;
-
-   // 前回Soundと変わったか
-   if FWaveSound[1].FileName <> filename then begin
-      FWaveSound[1].Close();
-   end;
-
-   if FWaveSound[1].IsLoaded = False then begin
-      FWaveSound[1].Open(filename, dmZLogGlobal.Settings.FSoundDevice);
-   end;
-   FWaveSound[1].Stop();
-
-   VoiceControl(FTxID, True);
-
-   FCQLoopCount := 1;
-   FCurrentVoice := 1;
-   FWaveSound[1].Play();
-
-   if Assigned(FOnNotifyStarted) then begin
-      FOnNotifyStarted(FWaveSound[1]);
-   end;
-
-   Timer.Enabled := True;
-   Timer2.Enabled := True;
-end;
-
-procedure TVoiceForm.CtrlZBreakVoice();
-begin
-   CtrlZCQLoopVoice := False;
-   StopVoice;
 end;
 
 procedure TVoiceForm.SetOperator(op: TOperatorInfo);
@@ -259,67 +172,20 @@ begin
    Init();
 end;
 
-procedure TVoiceForm.SetLoopInterval(Intvl: integer);
-begin
-   LoopInterval := Intvl;
-   LoopCount := Intvl div 100;
-end;
-
 function TVoiceForm.Playing: boolean;
 begin
    Result := FWaveSound[FCurrentVoice].Playing;
 end;
 
-procedure TVoiceForm.TimerTimer(Sender: TObject);
-begin
-   if Playing = True then begin
-      Exit;
-   end;
-
-   VoiceControl(FTxID, False);
-
-   if LoopInterval > 0 then begin
-      if LoopCount > 0 then begin
-         dec(LoopCount);
-      end
-      else begin // end of wait time
-         Inc(FCQLoopCount);
-         if FCQLoopCount > FCQLoopMax then begin
-            FCQLoopCount := 0;
-            Timer.Enabled := False;
-            Exit;
-         end;
-
-         LoopCount := LoopInterval div 100;
-
-         if Assigned(FOnSendRepeatEvent) then begin
-            FOnSendRepeatEvent(Self, FCQLoopCount);
-         end;
-
-         VoiceControl(FTxID, True);
-
-         FWaveSound[FCurrentVoice].Play();
-
-         if Assigned(FOnNotifyStarted) then begin
-            FOnNotifyStarted(FWaveSound[FCurrentVoice]);
-         end;
-
-         Timer2.Enabled := True;
-      end;
-
-      Exit;
-   end;
-
-   Timer.Enabled := False;
-end;
-
+// Voice再生終了まで待つタイマー
 procedure TVoiceForm.Timer2Timer(Sender: TObject);
 begin
    if Playing = True then begin
       Exit;
    end;
-
    Timer2.Enabled := False;
+
+   VoiceControl(FTxID, False);
 
    if Assigned(FOnNotifyFinished) then begin
       FOnNotifyFinished(FWaveSound[FCurrentVoice]);

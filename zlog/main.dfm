@@ -3993,7 +3993,7 @@ object MainForm: TMainForm
       GlyphTransparent = True
       GroupIndex = 0
       NumGlyphs = 1
-      OnClick = VoiceCQ2Click
+      OnClick = CQRepeatClick1
       OnMouseDown = VoiceFMouseDown
       ParentFont = False
       ParentShowHint = False
@@ -4190,7 +4190,7 @@ object MainForm: TMainForm
       GlyphTransparent = True
       GroupIndex = 0
       NumGlyphs = 1
-      OnClick = VoiceCQ3Click
+      OnClick = CQRepeatClick2
       OnMouseDown = VoiceFMouseDown
       ParentFont = False
       ParentShowHint = False
@@ -7168,5 +7168,11 @@ object MainForm: TMainForm
       Caption = 'Edit'
       OnClick = menuVoiceEditClick
     end
+  end
+  object timerCqRepeat: TTimer
+    Enabled = False
+    OnTimer = timerCqRepeatTimer
+    Left = 240
+    Top = 171
   end
 end
