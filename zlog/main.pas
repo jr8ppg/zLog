@@ -983,6 +983,7 @@ type
     FCQLoopCount: Integer;
     FCwCtrlZCQLoop: Boolean;
     FPhCtrlZCQLoop: Boolean;
+    FCancelNextLoop: Boolean;
 
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
@@ -1107,6 +1108,7 @@ type
     function GetNextRigID(curid: Integer): Integer;
 
     procedure ContinueCQRepeat();
+    procedure UpdateBandAndMode();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -3350,6 +3352,7 @@ begin
    FCQLoopRunning := False;
    FCwCtrlZCQLoop := False;
    FPhCtrlZCQLoop := False;
+   FCancelNextLoop := False;
 
    FQsyFromBS := False;
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -4832,16 +4835,23 @@ begin
             exit;
          end;
 
-         if (FCwCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
-            FCwCtrlZCQLoop := False;
-            timerCqRepeat.Enabled := False;
-            dmZLogKeyer.ClrBuffer;
-         end;
+         if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+            if (FCwCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
+               FCwCtrlZCQLoop := False;
+               timerCqRepeat.Enabled := False;
+               dmZLogKeyer.ClrBuffer;
+            end;
 
-         if (FPhCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
-            FPhCtrlZCQLoop := False;
-            timerCqRepeat.Enabled := False;
-            FVoiceForm.StopVoice();
+            if (FPhCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
+               FPhCtrlZCQLoop := False;
+               timerCqRepeat.Enabled := False;
+               FVoiceForm.StopVoice();
+            end;
+         end
+         else begin
+            if FCQLoopRunning = True then begin
+               FCancelNextLoop := True;
+            end;
          end;
 
          if (dmZlogGlobal.Settings._jmode) and (Sender = CallsignEdit) then begin
@@ -5330,6 +5340,7 @@ begin
    if fFirstCall = True then begin
       FCQLoopRunning := True;
       FCQLoopCount := 0;
+      FCancelNextLoop := False;
    end;
 
    SetCQ(True);
@@ -9204,6 +9215,8 @@ begin
    dmZLogKeyer.SetTxRigFlag(tx + 1);
    FVoiceForm.Tx := tx;
 
+   UpdateMode(TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));
+
    ShowTxIndicator();
 end;
 
@@ -10300,11 +10313,7 @@ begin
    dmZLogKeyer.SetTxRigFlag(rig);
    FVoiceForm.Tx := rig - 1;
 
-   // SetCurrentRig()ÇÕToggleRigì‡Ç≈ä˘Ç…çsÇÌÇÍÇƒÇ¢ÇÈ
-   if Assigned(RigControl.Rig) then begin
-      UpdateBand(RigControl.Rig.CurrentBand);
-      UpdateMode(RigControl.Rig.CurrentMode);
-   end;
+   UpdateBandAndMode();
 
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       UpdateQsoEditPanel(rig);
@@ -10584,6 +10593,17 @@ procedure TMainForm.ContinueCQRepeat();
 var
    interval: Double;
 begin
+   if FCancelNextLoop = True then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**** NEXT CQ Canceled ****'));
+      {$ENDIF}
+      FCQLoopRunning := False;
+      FCwCtrlZCQLoop := False;
+      FPhCtrlZCQLoop := False;
+      FCancelNextLoop := False;
+      Exit;
+   end;
+
    if FCQLoopRunning = True then begin
       if FInformation.AutoRigSwitch = True then begin
          interval := dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec;
@@ -10593,6 +10613,18 @@ begin
       end;
       timerCqRepeat.Interval := Trunc(1000 * interval);
       timerCqRepeat.Enabled := True;
+   end;
+end;
+
+procedure TMainForm.UpdateBandAndMode();
+begin
+   // SetCurrentRig()ÇÕToggleRigì‡Ç≈ä˘Ç…çsÇÌÇÍÇƒÇ¢ÇÈ
+   if Assigned(RigControl.Rig) then begin
+      UpdateBand(RigControl.Rig.CurrentBand);
+      UpdateMode(RigControl.Rig.CurrentMode);
+   end
+   else begin
+      UpdateMode(TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));
    end;
 end;
 
