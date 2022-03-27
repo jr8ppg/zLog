@@ -21,7 +21,6 @@ type
     FOnNotifyStarted: TNotifyEvent;
     FOnNotifyFinished: TNotifyEvent;
 
-    function Playing : boolean;
     procedure VoiceControl(nID: Integer; fOn: Boolean);
   public
     { Public 宣言 }
@@ -31,6 +30,8 @@ type
     procedure SetOperator(op: TOperatorInfo);
 
     property Tx: Integer read FTxID write FTxID;
+
+    function IsPlaying(): Boolean;
 
     property OnNotifyStarted: TNotifyEvent read FOnNotifyStarted write FOnNotifyStarted;
     property OnNotifyFinished: TNotifyEvent read FOnNotifyFinished write FOnNotifyFinished;
@@ -172,7 +173,7 @@ begin
    Init();
 end;
 
-function TVoiceForm.Playing: boolean;
+function TVoiceForm.IsPlaying(): Boolean;
 begin
    Result := FWaveSound[FCurrentVoice].Playing;
 end;
@@ -180,7 +181,7 @@ end;
 // Voice再生終了まで待つタイマー
 procedure TVoiceForm.Timer2Timer(Sender: TObject);
 begin
-   if Playing = True then begin
+   if IsPlaying() = True then begin
       Exit;
    end;
    Timer2.Enabled := False;

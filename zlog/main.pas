@@ -984,6 +984,7 @@ type
     FCwCtrlZCQLoop: Boolean;
     FPhCtrlZCQLoop: Boolean;
     FCancelNextLoop: Boolean;
+    FCQRepeatPlaying: Boolean;
 
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
@@ -3353,6 +3354,7 @@ begin
    FCwCtrlZCQLoop := False;
    FPhCtrlZCQLoop := False;
    FCancelNextLoop := False;
+   FCQRepeatPlaying := False;
 
    FQsyFromBS := False;
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -4647,6 +4649,14 @@ var
    nID: Integer;
    rig: Integer;
 begin
+   // SO2RÇÃèÍçáÇÕêÊçsÇ∑ÇÈCQÇ™èIÇÌÇÈÇÃÇë“Ç¬
+   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+      FCancelNextLoop := True;
+      while FCQRepeatPlaying = True do begin
+         Application.ProcessMessages();
+      end;
+   end;
+
    // PHONE
    if Main.CurrentQSO.Mode in [mSSB, mFM, mAM] then begin
       Q := Log.QuickDupe(CurrentQSO);
@@ -5421,11 +5431,22 @@ begin
          Exit;
       end;
 
+      while FCQRepeatPlaying = True do begin
+         Application.ProcessMessages();
+      end;
+
       // TODO: Ç±Ç±Ç1shotÇ…Ç∑ÇÍÇŒOK
+      FCQRepeatPlaying := True;
       zLogSendStr2(nID, S, CurrentQSO);
    end
    else begin
+
+      while FCQRepeatPlaying = True do begin
+         Application.ProcessMessages();
+      end;
+
       // Voiceçƒê∂(1shot)
+      FCQRepeatPlaying := True;
       FVoiceForm.Tx := nID;
       FVoiceForm.SendVoice(msgno);
    end;
@@ -7943,6 +7964,7 @@ begin
    VoiceStopButton.Enabled := False;
 
    // CQåJÇËï‘Çµ
+   FCQRepeatPlaying := False;
    ContinueCQRepeat();
 end;
 
@@ -10445,6 +10467,7 @@ begin
    end;
 
    // CQåJÇËï‘Çµ
+   FCQRepeatPlaying := False;
    ContinueCQRepeat();
 end;
 
