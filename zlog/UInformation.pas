@@ -19,6 +19,8 @@ type
     buttonAutoRigSwitch: TSpeedButton;
     panelTxInfo: TPanel;
     buttonCqInvert: TSpeedButton;
+    ledWait: TJvLED;
+    Label2: TLabel;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -32,6 +34,7 @@ type
     procedure SetWPM(nWpm: Integer);
     procedure SetTime(T: string);
     procedure SetPtt(fOn: Boolean);
+    procedure SetWait(fOn: Boolean);
     function GetAutoRigSwitch(): Boolean;
     procedure SetAutoRigSwitch(fOn: Boolean);
     function GetCqInvert(): Boolean;
@@ -44,6 +47,7 @@ type
     property WPM: Integer read GetWPM write SetWPM;
     property Time: string write SetTime;
     property Ptt: Boolean write SetPtt;
+    property Wait: Boolean write SetWait;
     property AutoRigSwitch: Boolean read GetAutoRigSwitch write SetAutoRigSwitch;
     property CqInvert: Boolean read GetCqInvert write SetCqInvert;
     property Rx: Integer write SetRx;
@@ -128,6 +132,11 @@ end;
 procedure TformInformation.SetPtt(fOn: Boolean);
 begin
    ledPtt.Status := fOn;
+end;
+
+procedure TformInformation.SetWait(fOn: Boolean);
+begin
+   ledWait.Status := fOn;
 end;
 
 function TformInformation.GetAutoRigSwitch(): Boolean;

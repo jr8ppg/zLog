@@ -4651,10 +4651,12 @@ var
 begin
    // SO2RÇÃèÍçáÇÕêÊçsÇ∑ÇÈCQÇ™èIÇÌÇÈÇÃÇë“Ç¬
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+      FInformation.Wait := True;
       FCancelNextLoop := True;
       while FCQRepeatPlaying = True do begin
          Application.ProcessMessages();
       end;
+      FInformation.Wait := False;
    end;
 
    // PHONE
@@ -5431,9 +5433,11 @@ begin
          Exit;
       end;
 
+      FInformation.Wait := True;
       while FCQRepeatPlaying = True do begin
          Application.ProcessMessages();
       end;
+      FInformation.Wait := False;
 
       // TODO: Ç±Ç±Ç1shotÇ…Ç∑ÇÍÇŒOK
       FCQRepeatPlaying := True;
@@ -5441,9 +5445,11 @@ begin
    end
    else begin
 
+      FInformation.Wait := True;
       while FCQRepeatPlaying = True do begin
          Application.ProcessMessages();
       end;
+      FInformation.Wait := False;
 
       // Voiceçƒê∂(1shot)
       FCQRepeatPlaying := True;
@@ -7860,6 +7866,10 @@ procedure TMainForm.PlayMessage(bank: Integer; no: Integer);
 var
    nID: Integer;
 begin
+   if FCQRepeatPlaying = True then begin
+      Exit;
+   end;
+
    WriteStatusLine('', False);
 
    nID := FCurrentTx;
