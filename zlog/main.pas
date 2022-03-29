@@ -1110,6 +1110,8 @@ type
 
     procedure ContinueCQRepeat();
     procedure UpdateBandAndMode();
+    procedure WaitForPlayMessageAhead();
+    procedure CancelCqRepeat();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -4649,14 +4651,12 @@ var
    nID: Integer;
    rig: Integer;
 begin
+   // 次のCQはキャンセル
+   CancelCqRepeat();
+
    // SO2Rの場合は先行するCQが終わるのを待つ
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-      FInformation.Wait := True;
-      FCancelNextLoop := True;
-      while FCQRepeatPlaying = True do begin
-         Application.ProcessMessages();
-      end;
-      FInformation.Wait := False;
+      WaitForPlayMessageAhead();
    end;
 
    // PHONE
@@ -5246,9 +5246,7 @@ end;
 
 procedure TMainForm.CWStopButtonClick(Sender: TObject);
 begin
-   timerCqRepeat.Enabled := False;
-   FCQLoopRunning := False;
-   FCwCtrlZCQLoop := False;
+   CancelCqRepeat();
    dmZLogKeyer.ClrBuffer;
    CWPlayButton.Visible := False;
    CWPauseButton.Visible := True;
@@ -5257,9 +5255,7 @@ end;
 
 procedure TMainForm.VoiceStopButtonClick(Sender: TObject);
 begin
-   timerCqRepeat.Enabled := False;
-   FCQLoopRunning := False;
-   FPhCtrlZCQLoop := False;
+   CancelCqRepeat();
    FVoiceForm.StopVoice;
 end;
 
@@ -5433,11 +5429,7 @@ begin
          Exit;
       end;
 
-      FInformation.Wait := True;
-      while FCQRepeatPlaying = True do begin
-         Application.ProcessMessages();
-      end;
-      FInformation.Wait := False;
+      WaitForPlayMessageAhead();
 
       // TODO: ここを1shotにすればOK
       FCQRepeatPlaying := True;
@@ -5445,11 +5437,7 @@ begin
    end
    else begin
 
-      FInformation.Wait := True;
-      while FCQRepeatPlaying = True do begin
-         Application.ProcessMessages();
-      end;
-      FInformation.Wait := False;
+      WaitForPlayMessageAhead();
 
       // Voice再生(1shot)
       FCQRepeatPlaying := True;
@@ -5457,10 +5445,10 @@ begin
       FVoiceForm.SendVoice(msgno);
    end;
 
+   // 規定回数CQかけたら終了
    Inc(FCQLoopCount);
-   if FCQLoopCount > dmZLogGlobal.Settings.CW._cqmax then begin
-      FCQLoopCount := 0;
-      FCQLoopRunning := False;
+   if FCQLoopCount >= dmZLogGlobal.Settings.CW._cqmax then begin
+      CancelCqRepeat();
    end;
 end;
 
@@ -10630,10 +10618,7 @@ begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('**** NEXT CQ Canceled ****'));
       {$ENDIF}
-      FCQLoopRunning := False;
-      FCwCtrlZCQLoop := False;
-      FPhCtrlZCQLoop := False;
-      FCancelNextLoop := False;
+      CancelCqRepeat();
       Exit;
    end;
 
@@ -10659,6 +10644,25 @@ begin
    else begin
       UpdateMode(TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));
    end;
+end;
+
+procedure TMainForm.WaitForPlayMessageAhead();
+begin
+   FInformation.Wait := True;
+   while FCQRepeatPlaying = True do begin
+      Application.ProcessMessages();
+   end;
+   FInformation.Wait := False;
+end;
+
+procedure TMainForm.CancelCqRepeat();
+begin
+   timerCqRepeat.Enabled := False;
+   FCQLoopCount := 0;
+   FCQLoopRunning := False;
+   FCwCtrlZCQLoop := False;
+   FPhCtrlZCQLoop := False;
+   FCancelNextLoop := False;
 end;
 
 end.
