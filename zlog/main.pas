@@ -4662,11 +4662,13 @@ begin
    // CQ InvertéûÇÕëóêMRIGÇñﬂÇ∑
    if FInformation.CqInvert = True then begin
       rig := RigControl.GetCurrentRig();
+      FCurrentTx := rig - 1;
+      FInformation.Tx := rig - 1;
       dmZlogKeyer.SetTxRigFlag(rig);
       FVoiceForm.Tx := rig - 1;
 
       // ShowTxIndicator();
-      PostMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);
+      SendMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);
    end;
 
    // PHONE
@@ -4765,10 +4767,6 @@ begin
       exit;
    end;
 
-   if FInformation.CqInvert = True then begin
-      InvertTx();
-   end;
-
    nID := FCurrentTx;
 
    case CurrentQSO.Mode of
@@ -4788,6 +4786,7 @@ begin
 
          // TU $M TEST
          S := dmZlogGlobal.CWMessage(3);
+         FCQRepeatPlaying := True;
          zLogSendStr2(nID, S, CurrentQSO);
 
          LogButtonClick(Self);
@@ -4825,9 +4824,17 @@ begin
             exit;
          end;
 
+         FCQRepeatPlaying := True;
          PlayMessage(1, 3);
          LogButtonClick(Self);
       end;
+   end;
+
+   if FCancelNextLoop = True then begin
+      WaitForPlayMessageAhead();
+      FCancelNextLoop := False;
+      FCQLoopRunning := True;
+      timerCqRepeat.Enabled := True;
    end;
 end;
 
@@ -4840,6 +4847,7 @@ begin
          OutputDebugString(PChar('[ñ≥ïœä∑]'));
          {$ENDIF}
          actionControlPTT.Execute();
+         FCancelNextLoop := True;
       end;
 
       VK_UP: begin
@@ -10671,7 +10679,7 @@ begin
    FCQLoopRunning := False;
    FCwCtrlZCQLoop := False;
    FPhCtrlZCQLoop := False;
-   FCancelNextLoop := False;
+//   FCancelNextLoop := False;
 end;
 
 end.
