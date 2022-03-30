@@ -4659,6 +4659,16 @@ begin
       WaitForPlayMessageAhead();
    end;
 
+   // CQ Invert時は送信RIGを戻す
+   if FInformation.CqInvert = True then begin
+      rig := RigControl.GetCurrentRig();
+      dmZlogKeyer.SetTxRigFlag(rig);
+      FVoiceForm.Tx := rig - 1;
+
+      // ShowTxIndicator();
+      PostMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);
+   end;
+
    // PHONE
    if Main.CurrentQSO.Mode in [mSSB, mFM, mAM] then begin
       Q := Log.QuickDupe(CurrentQSO);
@@ -4677,14 +4687,13 @@ begin
 
          S := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
          WriteStatusLineRed(S, True);
-         Exit;
       end
       else begin  // not dupe
          MyContest.SpaceBarProc;
          NumberEdit.SetFocus;
          PlayMessage(1, 2);
-         Exit;
       end;
+      Exit;
    end;
 
    // RTTY
@@ -4694,7 +4703,7 @@ begin
          FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), CurrentQSO));
       MyContest.SpaceBarProc;
       NumberEdit.SetFocus;
-      exit;
+      Exit;
    end;
 
    // CW
@@ -4730,10 +4739,6 @@ begin
    else begin
       dmZLogKeyer.ClrBuffer;
 
-      rig := RigControl.GetCurrentRig();
-      dmZlogKeyer.SetTxRigFlag(rig);
-      FVoiceForm.Tx := rig - 1;
-
       dmZLogKeyer.PauseCW;
       if dmZlogGlobal.PTTEnabled then begin
          S := S + ')'; // PTT is turned on in ResumeCW
@@ -4760,65 +4765,69 @@ begin
       exit;
    end;
 
+   if FInformation.CqInvert = True then begin
+      InvertTx();
+   end;
+
+   nID := FCurrentTx;
+
    case CurrentQSO.Mode of
       mCW: begin
-            if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
-               // NR?自動送出使う場合
-               if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
-                  nID := FCurrentTx;
-                  S := dmZlogGlobal.CWMessage(5);
-                  zLogSendStr2(nID, S, CurrentQSO);
-               end;
-
-               WriteStatusLine('Invalid number', False);
-               NumberEdit.SetFocus;
-               NumberEdit.SelectAll;
-               exit;
+         if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
+            // NR?自動送出使う場合
+            if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
+               S := dmZlogGlobal.CWMessage(5);
+               zLogSendStr2(nID, S, CurrentQSO);
             end;
 
-            // TU $M TEST
-            nID := FCurrentTx;
-            S := dmZlogGlobal.CWMessage(3);
-            zLogSendStr2(nID, S, CurrentQSO);
-
-            LogButtonClick(Self);
+            WriteStatusLine('Invalid number', False);
+            NumberEdit.SetFocus;
+            NumberEdit.SelectAll;
+            exit;
          end;
 
+         // TU $M TEST
+         S := dmZlogGlobal.CWMessage(3);
+         zLogSendStr2(nID, S, CurrentQSO);
+
+         LogButtonClick(Self);
+      end;
+
       mRTTY: begin
-            if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
-               S := dmZlogGlobal.CWMessage(3, 5);
-               S := SetStrNoAbbrev(S, CurrentQSO);
-               if FTTYConsole <> nil then begin
-                  FTTYConsole.SendStrNow(S);
-               end;
-               WriteStatusLine('Invalid number', False);
-               NumberEdit.SetFocus;
-               NumberEdit.SelectAll;
-               exit;
-            end;
-
-            S := dmZlogGlobal.CWMessage(3, 3);
-
+         if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
+            S := dmZlogGlobal.CWMessage(3, 5);
             S := SetStrNoAbbrev(S, CurrentQSO);
             if FTTYConsole <> nil then begin
                FTTYConsole.SendStrNow(S);
             end;
-
-            LogButtonClick(Self);
+            WriteStatusLine('Invalid number', False);
+            NumberEdit.SetFocus;
+            NumberEdit.SelectAll;
+            exit;
          end;
+
+         S := dmZlogGlobal.CWMessage(3, 3);
+
+         S := SetStrNoAbbrev(S, CurrentQSO);
+         if FTTYConsole <> nil then begin
+            FTTYConsole.SendStrNow(S);
+         end;
+
+         LogButtonClick(Self);
+      end;
 
       mSSB, mFM, mAM: begin
-            if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
-               PlayMessage(1, 5);
-               WriteStatusLine('Invalid number', False);
-               NumberEdit.SetFocus;
-               NumberEdit.SelectAll;
-               exit;
-            end;
-
-            PlayMessage(1, 3);
-            LogButtonClick(Self);
+         if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
+            PlayMessage(1, 5);
+            WriteStatusLine('Invalid number', False);
+            NumberEdit.SetFocus;
+            NumberEdit.SelectAll;
+            exit;
          end;
+
+         PlayMessage(1, 3);
+         LogButtonClick(Self);
+      end;
    end;
 end;
 
