@@ -985,6 +985,7 @@ type
     FPhCtrlZCQLoop: Boolean;
     FCancelNextLoop: Boolean;
     FCQRepeatPlaying: Boolean;
+    FCancelAutoRigSwitch: Boolean;
 
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
@@ -1110,7 +1111,7 @@ type
 
     procedure ContinueCQRepeat();
     procedure UpdateBandAndMode();
-    procedure WaitForPlayMessageAhead();
+    procedure WaitForPlayMessageAhead(fIsWait: Boolean);
     procedure CancelCqRepeat();
   public
     EditScreen : TBasicEdit;
@@ -3357,6 +3358,7 @@ begin
    FPhCtrlZCQLoop := False;
    FCancelNextLoop := False;
    FCQRepeatPlaying := False;
+   FCancelAutoRigSwitch := False;
 
    FQsyFromBS := False;
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -4653,14 +4655,16 @@ var
 begin
    // 次のCQはキャンセル
    CancelCqRepeat();
+   FCancelNextLoop := True;
+   FCancelAutoRigSwitch := True;
 
    // SO2Rの場合は先行するCQが終わるのを待つ
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-      WaitForPlayMessageAhead();
+      WaitForPlayMessageAhead(FInformation.IsWait);
    end;
 
    // CQ Invert時は送信RIGを戻す
-   if FInformation.CqInvert = True then begin
+   if FInformation.Is2bsiq = True then begin
       rig := RigControl.GetCurrentRig();
       FCurrentTx := rig - 1;
       FInformation.Tx := rig - 1;
@@ -4762,9 +4766,31 @@ procedure TMainForm.DownKeyPress;
 var
    S: String;
    nID: Integer;
+   rig: Integer;
 begin
    if CallsignEdit.Text = '' then begin
       exit;
+   end;
+
+   // 次のCQはキャンセル
+   CancelCqRepeat();
+   FCancelNextLoop := True;
+
+   // SO2Rの場合は先行するCQが終わるのを待つ
+   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+      WaitForPlayMessageAhead(FInformation.IsWait);
+   end;
+
+   // CQ Invert時は送信RIGを戻す
+   if FInformation.Is2bsiq = True then begin
+      rig := RigControl.GetCurrentRig();
+      FCurrentTx := rig - 1;
+      FInformation.Tx := rig - 1;
+      dmZlogKeyer.SetTxRigFlag(rig);
+      FVoiceForm.Tx := rig - 1;
+
+      // ShowTxIndicator();
+      SendMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);
    end;
 
    nID := FCurrentTx;
@@ -4830,11 +4856,14 @@ begin
       end;
    end;
 
-   if FCancelNextLoop = True then begin
-      WaitForPlayMessageAhead();
-      FCancelNextLoop := False;
-      FCQLoopRunning := True;
-      timerCqRepeat.Enabled := True;
+   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+      FCancelAutoRigSwitch := True;
+      if FCancelNextLoop = True then begin
+         WaitForPlayMessageAhead(True);
+         FCancelNextLoop := False;
+         FCQLoopRunning := True;
+         timerCqRepeat.Enabled := True;
+      end;
    end;
 end;
 
@@ -5374,7 +5403,7 @@ begin
 
    rig := RigControl.GetCurrentRig();
 
-   if (FInformation.AutoRigSwitch = True) and (fFirstCall = False) then begin
+   if (FInformation.is2bSiq = True) and (fFirstCall = False) and (FCancelAutoRigSwitch = False) then begin
       // SHIFTキー押下でキャンセル
       if GetAsyncKeyState(VK_SHIFT) < 0 then begin
          Exit;
@@ -5389,12 +5418,12 @@ begin
    end;
 
    // CQ Invert
-   if FInformation.CqInvert = True then begin
+   if FInformation.Is2bsiq = True then begin
       InvertTx();
    end;
 
    // 自動リグ変更の場合Messageを切り替える
-   if FInformation.AutoRigSwitch = True then begin
+   if FInformation.Is2bsiq = True then begin
       bank := dmZLogGlobal.Settings._so2r_cq_msg_bank;
       msgno := dmZLogGlobal.Settings._so2r_cq_msg_number;
    end
@@ -5446,15 +5475,17 @@ begin
          Exit;
       end;
 
-      WaitForPlayMessageAhead();
+      WaitForPlayMessageAhead(FInformation.IsWait);
 
       // TODO: ここを1shotにすればOK
       FCQRepeatPlaying := True;
       zLogSendStr2(nID, S, CurrentQSO);
+
+      FCancelAutoRigSwitch := False;
    end
    else begin
 
-      WaitForPlayMessageAhead();
+      WaitForPlayMessageAhead(FInformation.IsWait);
 
       // Voice再生(1shot)
       FCQRepeatPlaying := True;
@@ -5685,6 +5716,9 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- Begin CallsignSentProc() ---'));
    {$ENDIF}
+
+   FCQRepeatPlaying := True;
+
    try
 //      if CallsignEdit.Focused then begin
          Q := Log.QuickDupe(CurrentQSO);
@@ -5740,6 +5774,15 @@ begin
       dmZLogKeyer.ResumeCW;
       TabPressed := False;
       TabPressed2 := False;
+
+      if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+         if FCancelNextLoop = True then begin
+            WaitForPlayMessageAhead(True);
+            FCancelNextLoop := False;
+            FCQLoopRunning := True;
+            timerCqRepeat.Enabled := True;
+         end;
+      end;
    end;
 end;
 
@@ -8431,6 +8474,7 @@ procedure TMainForm.actionCQRepeatExecute(Sender: TObject);
 begin
    FCwCtrlZCQLoop := True;
    FPhCtrlZCQLoop := True;
+   FCancelAutoRigSwitch := False;
    CQRepeatProc(True);
 end;
 
@@ -9222,7 +9266,7 @@ end;
 // #143 Toggle Auto RIG switch
 procedure TMainForm.actionToggleAutoRigSwitchExecute(Sender: TObject);
 begin
-   FInformation.AutoRigSwitch := not FInformation.AutoRigSwitch;
+   FInformation.Is2bsiq := not FInformation.Is2bsiq;
 end;
 
 // #144 SO2R Neo Toggle Auto RX select
@@ -9263,7 +9307,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #146 Toggle CQ Invert ---'));
    {$ENDIF}
-   FInformation.CqInvert := not FInformation.CqInvert;
+   FInformation.Is2bsiq := not FInformation.Is2bsiq;
 end;
 
 // #147 SO2R Toggle RX
@@ -10640,7 +10684,7 @@ begin
    end;
 
    if FCQLoopRunning = True then begin
-      if FInformation.AutoRigSwitch = True then begin
+      if FInformation.Is2bsiq = True then begin
          interval := dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec;
       end
       else begin
@@ -10663,8 +10707,16 @@ begin
    end;
 end;
 
-procedure TMainForm.WaitForPlayMessageAhead();
+procedure TMainForm.WaitForPlayMessageAhead(fIsWait: Boolean);
 begin
+   if fIsWait = False then begin
+//      actionCqAbort.Execute();
+      CWStopButtonClick(Self);
+      VoiceStopButtonClick(Self);
+      FCQLoopRunning := True;
+      Exit;
+   end;
+
    FInformation.Wait := True;
    while FCQRepeatPlaying = True do begin
       Application.ProcessMessages();

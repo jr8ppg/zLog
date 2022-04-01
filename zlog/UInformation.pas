@@ -16,15 +16,15 @@ type
     Panel1: TPanel;
     ledPtt: TJvLED;
     Label1: TLabel;
-    buttonAutoRigSwitch: TSpeedButton;
+    button2bsiq: TSpeedButton;
     panelTxInfo: TPanel;
-    buttonCqInvert: TSpeedButton;
+    buttonWait: TSpeedButton;
     ledWait: TJvLED;
     Label2: TLabel;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure buttonAutoRigSwitchClick(Sender: TObject);
+    procedure button2bsiqClick(Sender: TObject);
     procedure panelCQModeClick(Sender: TObject);
   private
     { Private êÈåæ }
@@ -35,10 +35,10 @@ type
     procedure SetTime(T: string);
     procedure SetPtt(fOn: Boolean);
     procedure SetWait(fOn: Boolean);
-    function GetAutoRigSwitch(): Boolean;
-    procedure SetAutoRigSwitch(fOn: Boolean);
-    function GetCqInvert(): Boolean;
-    procedure SetCqInvert(fOn: Boolean);
+    function GetIsWait(): Boolean;
+    procedure SetIsWait(fOn: Boolean);
+    function GetIs2bsiq(): Boolean;
+    procedure SetIs2bsiq(fOn: Boolean);
     procedure SetRx(rx: Integer);
     procedure SetTx(tx: Integer);
   public
@@ -48,8 +48,8 @@ type
     property Time: string write SetTime;
     property Ptt: Boolean write SetPtt;
     property Wait: Boolean write SetWait;
-    property AutoRigSwitch: Boolean read GetAutoRigSwitch write SetAutoRigSwitch;
-    property CqInvert: Boolean read GetCqInvert write SetCqInvert;
+    property Is2bsiq: Boolean read GetIs2bsiq write SetIs2bsiq;
+    property IsWait: Boolean read GetIsWait write SetIsWait;
     property Rx: Integer write SetRx;
     property Tx: Integer write SetTx;
   end;
@@ -61,7 +61,7 @@ implementation
 uses
   Main;
 
-procedure TformInformation.buttonAutoRigSwitchClick(Sender: TObject);
+procedure TformInformation.button2bsiqClick(Sender: TObject);
 begin
    MainForm.SetLastFocus();
 end;
@@ -139,24 +139,24 @@ begin
    ledWait.Status := fOn;
 end;
 
-function TformInformation.GetAutoRigSwitch(): Boolean;
+function TformInformation.GetIs2bsiq(): Boolean;
 begin
-   Result := buttonAutoRigSwitch.Down;
+   Result := button2bsiq.Down;
 end;
 
-procedure TformInformation.SetAutoRigSwitch(fOn: Boolean);
+procedure TformInformation.SetIs2bsiq(fOn: Boolean);
 begin
-   buttonAutoRigSwitch.Down := fOn;
+   button2bsiq.Down := fOn;
 end;
 
-function TformInformation.GetCqInvert(): Boolean;
+function TformInformation.GetIsWait(): Boolean;
 begin
-   Result := buttonCqInvert.Down;
+   Result := buttonWait.Down;
 end;
 
-procedure TformInformation.SetCqInvert(fOn: Boolean);
+procedure TformInformation.SetIsWait(fOn: Boolean);
 begin
-   buttonCqInvert.Down := fOn;
+   buttonWait.Down := fOn;
 end;
 
 procedure TformInformation.SetRx(rx: Integer);

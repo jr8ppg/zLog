@@ -47,7 +47,6 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 1
-    ExplicitLeft = 222
   end
   object panelTime: TPanel
     Left = 451
@@ -63,7 +62,6 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 2
-    ExplicitLeft = 452
   end
   object panelRxInfo: TPanel
     Left = 390
@@ -78,7 +76,6 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 3
-    ExplicitLeft = 391
   end
   object Panel1: TPanel
     Left = 42
@@ -93,7 +90,6 @@ object formInformation: TformInformation
     Font.Style = []
     ParentFont = False
     TabOrder = 4
-    ExplicitWidth = 180
     object ledPtt: TJvLED
       Left = 7
       Top = 12
@@ -113,37 +109,38 @@ object formInformation: TformInformation
       Font.Style = []
       ParentFont = False
     end
-    object buttonAutoRigSwitch: TSpeedButton
+    object button2bsiq: TSpeedButton
       Left = 60
       Top = 3
       Width = 57
       Height = 25
       AllowAllUp = True
       GroupIndex = 1
-      Caption = 'RIG sw.'
+      Caption = '2BSIQ'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
       Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
-      OnClick = buttonAutoRigSwitchClick
+      OnClick = button2bsiqClick
     end
-    object buttonCqInvert: TSpeedButton
+    object buttonWait: TSpeedButton
       Left = 116
       Top = 3
       Width = 57
       Height = 25
       AllowAllUp = True
       GroupIndex = 2
-      Caption = 'CQ Inv.'
+      Down = True
+      Caption = 'Wait'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
       Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
-      OnClick = buttonAutoRigSwitchClick
+      OnClick = button2bsiqClick
     end
     object ledWait: TJvLED
       Left = 30
@@ -179,6 +176,5 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 5
-    ExplicitLeft = 330
   end
 end
