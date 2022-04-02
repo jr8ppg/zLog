@@ -126,13 +126,14 @@ begin
       end;
    end;
 
-   // ファイル名が空は何もしない
-   if filename = '' then begin
-      Exit;
-   end;
-
-   // ファイルが無ければ何もしない
-   if FileExists(filename) = False then begin
+   // ファイル名が空か、ファイルがなければ何もしない
+   if (filename = '') or (FileExists(filename) = False) then begin
+//      if Assigned(FOnNotifyStarted) then begin
+//         FOnNotifyStarted(nil);
+//      end;
+      if Assigned(FOnNotifyFinished) then begin
+         FOnNotifyFinished(nil);
+      end;
       Exit;
    end;
 

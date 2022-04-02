@@ -7122,9 +7122,9 @@ object MainForm: TMainForm
       Caption = 'Show Information Window'
       OnExecute = actionShowInformationExecute
     end
-    object actionToggleAutoRigSwitch: TAction
-      Caption = 'actionToggleAutoRigSwitch'
-      OnExecute = actionToggleAutoRigSwitchExecute
+    object actionToggleSo2r2bsiq: TAction
+      Caption = 'actionToggleSo2r2bsiq'
+      OnExecute = actionToggleSo2r2bsiqExecute
     end
     object actionSo2rNeoToggleAutoRxSelect: TAction
       Caption = 'actionSo2rNeoToggleAutoRxSelect'
@@ -7134,9 +7134,9 @@ object MainForm: TMainForm
       Caption = 'actionToggleTx'
       OnExecute = actionToggleTxExecute
     end
-    object actionToggleCqInvert: TAction
-      Caption = 'actionToggleCqInvert'
-      OnExecute = actionToggleCqInvertExecute
+    object actionToggleSo2rWait: TAction
+      Caption = 'actionToggleSo2rWait'
+      OnExecute = actionToggleSo2rWaitExecute
     end
     object actionToggleRx: TAction
       Caption = 'actionToggleRx'

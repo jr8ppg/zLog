@@ -639,13 +639,13 @@ type
     actionSo2rNeoCanRxSel: TAction;
     actionShowInformation: TAction;
     menuShowInformation: TMenuItem;
-    actionToggleAutoRigSwitch: TAction;
+    actionToggleSo2r2bsiq: TAction;
     checkUseRig3: TCheckBox;
     actionSo2rNeoToggleAutoRxSelect: TAction;
     actionToggleTx: TAction;
     ledTx2A: TJvLED;
     ledTx2B: TJvLED;
-    actionToggleCqInvert: TAction;
+    actionToggleSo2rWait: TAction;
     actionToggleRx: TAction;
     actionMatchRxToTx: TAction;
     actionMatchTxToRx: TAction;
@@ -896,11 +896,11 @@ type
     procedure actionSelectRigExecute(Sender: TObject);
     procedure actionSo2rNeoCanRxSelExecute(Sender: TObject);
     procedure actionShowInformationExecute(Sender: TObject);
-    procedure actionToggleAutoRigSwitchExecute(Sender: TObject);
+    procedure actionToggleSo2r2bsiqExecute(Sender: TObject);
     procedure checkUseRig3Click(Sender: TObject);
     procedure actionSo2rNeoToggleAutoRxSelectExecute(Sender: TObject);
     procedure actionToggleTxExecute(Sender: TObject);
-    procedure actionToggleCqInvertExecute(Sender: TObject);
+    procedure actionToggleSo2rWaitExecute(Sender: TObject);
     procedure actionToggleRxExecute(Sender: TObject);
     procedure actionMatchRxToTxExecute(Sender: TObject);
     procedure actionMatchTxToRxExecute(Sender: TObject);
@@ -1113,6 +1113,8 @@ type
     procedure UpdateBandAndMode();
     procedure WaitForPlayMessageAhead(fIsWait: Boolean);
     procedure CancelCqRepeat();
+    procedure ResetTx();
+    procedure RestartCqRepeat();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -4101,12 +4103,12 @@ begin
       FWinKeyerTester.Show();
    end;
 
-   if S = 'CQINV' then begin
-      actionToggleCqInvert.Execute();
+   if S = 'WAIT' then begin
+      actionToggleSo2rWait.Execute();
    end;
 
-   if S = 'ATRSW' then begin
-      actionToggleAutoRigSwitch.Execute();
+   if S = '2BSIQ' then begin
+      actionToggleSo2r2bsiq.Execute();
    end;
 
    if S = 'RX2TX' then begin
@@ -4651,7 +4653,6 @@ var
    S: String;
    Q: TQSO;
    nID: Integer;
-   rig: Integer;
 begin
    // 次のCQはキャンセル
    CancelCqRepeat();
@@ -4665,14 +4666,7 @@ begin
 
    // CQ Invert時は送信RIGを戻す
    if FInformation.Is2bsiq = True then begin
-      rig := RigControl.GetCurrentRig();
-      FCurrentTx := rig - 1;
-      FInformation.Tx := rig - 1;
-      dmZlogKeyer.SetTxRigFlag(rig);
-      FVoiceForm.Tx := rig - 1;
-
-      // ShowTxIndicator();
-      SendMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);
+      ResetTx();
    end;
 
    // PHONE
@@ -4698,6 +4692,10 @@ begin
          MyContest.SpaceBarProc;
          NumberEdit.SetFocus;
          PlayMessage(1, 2);
+      end;
+
+      if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+         RestartCqRepeat();
       end;
       Exit;
    end;
@@ -4766,7 +4764,6 @@ procedure TMainForm.DownKeyPress;
 var
    S: String;
    nID: Integer;
-   rig: Integer;
 begin
    if CallsignEdit.Text = '' then begin
       exit;
@@ -4783,14 +4780,7 @@ begin
 
    // CQ Invert時は送信RIGを戻す
    if FInformation.Is2bsiq = True then begin
-      rig := RigControl.GetCurrentRig();
-      FCurrentTx := rig - 1;
-      FInformation.Tx := rig - 1;
-      dmZlogKeyer.SetTxRigFlag(rig);
-      FVoiceForm.Tx := rig - 1;
-
-      // ShowTxIndicator();
-      SendMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);
+      ResetTx();
    end;
 
    nID := FCurrentTx;
@@ -4858,12 +4848,7 @@ begin
 
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       FCancelAutoRigSwitch := True;
-      if FCancelNextLoop = True then begin
-         WaitForPlayMessageAhead(True);
-         FCancelNextLoop := False;
-         FCQLoopRunning := True;
-         timerCqRepeat.Enabled := True;
-      end;
+      RestartCqRepeat();
    end;
 end;
 
@@ -4875,8 +4860,20 @@ begin
          {$IFDEF DEBUG}
          OutputDebugString(PChar('[無変換]'));
          {$ENDIF}
+
+         // 2BSIQ時は受信中の方でPTT制御する
+         if FInformation.Is2bsiq = True then begin
+
+            WaitForPlayMessageAhead(FInformation.IsWait);
+
+            ResetTx();
+
+            if FCQLoopRunning = True then begin
+               FCancelNextLoop := True;
+            end;
+         end;
+
          actionControlPTT.Execute();
-         FCancelNextLoop := True;
       end;
 
       VK_UP: begin
@@ -5441,6 +5438,9 @@ begin
       mode := CurrentQSO.Mode;
    end;
 
+   // 先行メッセージの終了待ち
+   WaitForPlayMessageAhead(FInformation.IsWait);
+
    if mode = mCW then begin
       if (dmZLogGlobal.Settings.CW._cq_random_repeat = True) and (FCQLoopCount > 4) then begin
          RandCQStr[1] := SetStr(dmZLogGlobal.Settings.CW.AdditionalCQMessages[2], CurrentQSO);
@@ -5475,23 +5475,18 @@ begin
          Exit;
       end;
 
-      WaitForPlayMessageAhead(FInformation.IsWait);
-
       // TODO: ここを1shotにすればOK
       FCQRepeatPlaying := True;
       zLogSendStr2(nID, S, CurrentQSO);
-
-      FCancelAutoRigSwitch := False;
    end
    else begin
-
-      WaitForPlayMessageAhead(FInformation.IsWait);
-
       // Voice再生(1shot)
       FCQRepeatPlaying := True;
       FVoiceForm.Tx := nID;
       FVoiceForm.SendVoice(msgno);
    end;
+
+   FCancelAutoRigSwitch := False;
 
    // 規定回数CQかけたら終了
    Inc(FCQLoopCount);
@@ -5776,12 +5771,7 @@ begin
       TabPressed2 := False;
 
       if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-         if FCancelNextLoop = True then begin
-            WaitForPlayMessageAhead(True);
-            FCancelNextLoop := False;
-            FCQLoopRunning := True;
-            timerCqRepeat.Enabled := True;
-         end;
+         RestartCqRepeat();
       end;
    end;
 end;
@@ -7914,10 +7904,6 @@ procedure TMainForm.PlayMessage(bank: Integer; no: Integer);
 var
    nID: Integer;
 begin
-   if FCQRepeatPlaying = True then begin
-      Exit;
-   end;
-
    WriteStatusLine('', False);
 
    nID := FCurrentTx;
@@ -8019,6 +8005,9 @@ end;
 
 procedure TMainForm.OnVoicePlayFinished(Sender: TObject);
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('--- OnVoicePlayFinished ---'));
+   {$ENDIF}
    VoiceStopButton.Enabled := False;
 
    // CQ繰り返し
@@ -9075,6 +9064,7 @@ procedure TMainForm.actionCQAbortExecute(Sender: TObject);
 begin
    WriteStatusLine('', False);
 
+   FCQRepeatPlaying := False;
    CWStopButtonClick(Self);
    VoiceStopButtonClick(Self);
 
@@ -9263,9 +9253,12 @@ begin
    FInformation.Show();
 end;
 
-// #143 Toggle Auto RIG switch
-procedure TMainForm.actionToggleAutoRigSwitchExecute(Sender: TObject);
+// #143 SO2R Toggle 2BSIQ
+procedure TMainForm.actionToggleSo2r2bsiqExecute(Sender: TObject);
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('--- #143 SO2R Toggle 2BSIQ ---'));
+   {$ENDIF}
    FInformation.Is2bsiq := not FInformation.Is2bsiq;
 end;
 
@@ -9301,13 +9294,13 @@ begin
    ShowTxIndicator();
 end;
 
-// #146 SO2R Toggle CQ Invert
-procedure TMainForm.actionToggleCqInvertExecute(Sender: TObject);
+// #146 SO2R Toggle Wait Message
+procedure TMainForm.actionToggleSo2rWaitExecute(Sender: TObject);
 begin
    {$IFDEF DEBUG}
-   OutputDebugString(PChar('--- #146 Toggle CQ Invert ---'));
+   OutputDebugString(PChar('--- #146 SO2R Toggle Wait Message ---'));
    {$ENDIF}
-   FInformation.Is2bsiq := not FInformation.Is2bsiq;
+   FInformation.IsWait := not FInformation.IsWait;
 end;
 
 // #147 SO2R Toggle RX
@@ -10732,6 +10725,30 @@ begin
    FCwCtrlZCQLoop := False;
    FPhCtrlZCQLoop := False;
 //   FCancelNextLoop := False;
+end;
+
+procedure TMainForm.ResetTx();
+var
+   rig: Integer;
+begin
+   rig := RigControl.GetCurrentRig();
+   FCurrentTx := rig - 1;
+   FInformation.Tx := rig - 1;
+   dmZlogKeyer.SetTxRigFlag(rig);
+   FVoiceForm.Tx := rig - 1;
+
+   // ShowTxIndicator();
+   SendMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);
+end;
+
+procedure TMainForm.RestartCqRepeat();
+begin
+   if FCancelNextLoop = True then begin
+      WaitForPlayMessageAhead(True);
+      FCancelNextLoop := False;
+      FCQLoopRunning := True;
+      timerCqRepeat.Enabled := True;
+   end;
 end;
 
 end.
