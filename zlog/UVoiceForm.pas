@@ -166,6 +166,10 @@ begin
       FWaveSound[FCurrentVoice].Stop();
    end;
    VoiceControl(FTxID, False);
+
+   if Assigned(FOnNotifyFinished) then begin
+      FOnNotifyFinished(nil);
+   end;
 end;
 
 procedure TVoiceForm.SetOperator(op: TOperatorInfo);

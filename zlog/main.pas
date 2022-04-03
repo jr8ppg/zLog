@@ -1115,6 +1115,7 @@ type
     procedure CancelCqRepeat();
     procedure ResetTx();
     procedure RestartCqRepeat();
+    procedure StopMessage(mode: TMode);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -4671,6 +4672,7 @@ begin
 
    // PHONE
    if Main.CurrentQSO.Mode in [mSSB, mFM, mAM] then begin
+      FCQRepeatPlaying := True;
       Q := Log.QuickDupe(CurrentQSO);
       if Q <> nil then begin  // dupe
          // ALLOW DUPEしない場合は4番を送出
@@ -5291,6 +5293,7 @@ procedure TMainForm.CWStopButtonClick(Sender: TObject);
 begin
    CancelCqRepeat();
    dmZLogKeyer.ClrBuffer;
+   dmZLogKeyer.PauseCW();
    CWPlayButton.Visible := False;
    CWPauseButton.Visible := True;
    dmZLogKeyer.WinKeyerAbort();
@@ -5388,6 +5391,9 @@ var
    n: Integer;
    RandCQStr: array[1..2] of string;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('**** CQRepeatProc(' + BoolToStr(fFirstCall, True) + ') ****'));
+   {$ENDIF}
    if fFirstCall = True then begin
       FCQLoopRunning := True;
       FCQLoopCount := 0;
@@ -5772,6 +5778,7 @@ begin
 
       if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
          RestartCqRepeat();
+         FCQLoopRunning := True;
       end;
    end;
 end;
@@ -8590,13 +8597,16 @@ end;
 procedure TMainForm.actionToggleRigExecute(Sender: TObject);
 var
    rig: Integer;
+   nID: Integer;
+   mode: TMode;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #71 Toggle RIG ---'));
    {$ENDIF}
 
-   CWStopButtonClick(Self);
-   VoiceStopButtonClick(Self);
+   nID := FCurrentTx;
+   mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
+   StopMessage(mode);
 
    TabPressed := False;
    TabPressed2 := False;
@@ -9061,12 +9071,17 @@ end;
 
 // #113 CW/Voice送出中止 ESC
 procedure TMainForm.actionCQAbortExecute(Sender: TObject);
+var
+   nID: Integer;
+   mode: TMode;
 begin
    WriteStatusLine('', False);
 
    FCQRepeatPlaying := False;
-   CWStopButtonClick(Self);
-   VoiceStopButtonClick(Self);
+
+   nID := FCurrentTx;
+   mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
+   StopMessage(mode);
 
    TabPressed := False;
    TabPressed2 := False;
@@ -10668,6 +10683,10 @@ procedure TMainForm.ContinueCQRepeat();
 var
    interval: Double;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('**** ContinueCQRepeat() ****'));
+   {$ENDIF}
+
    if FCancelNextLoop = True then begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('**** NEXT CQ Canceled ****'));
@@ -10701,11 +10720,23 @@ begin
 end;
 
 procedure TMainForm.WaitForPlayMessageAhead(fIsWait: Boolean);
+var
+   nID: Integer;
+   mode: TMode;
 begin
    if fIsWait = False then begin
-//      actionCqAbort.Execute();
-      CWStopButtonClick(Self);
-      VoiceStopButtonClick(Self);
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**** WaitForPlayMessageAhead(False) ****'));
+      {$ENDIF}
+
+      // 送信側RIGのモードを判定
+      nID := FCurrentTx;
+
+      // TODO:↓はTX側のモードを取得する
+      mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
+
+      StopMessage(mode);
+
       FCQLoopRunning := True;
       Exit;
    end;
@@ -10743,6 +10774,10 @@ end;
 
 procedure TMainForm.RestartCqRepeat();
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('**** RestartCQRepeat() ****'));
+   {$ENDIF}
+
    if FCancelNextLoop = True then begin
       WaitForPlayMessageAhead(True);
       FCancelNextLoop := False;
@@ -10751,4 +10786,15 @@ begin
    end;
 end;
 
+procedure TMainForm.StopMessage(mode: TMode);
+begin
+   if mode = mCW then begin
+      CWStopButtonClick(Self);
+   end
+   else if (mode = mSSB) or (mode = mFM) or (mode = mAM) then begin
+      VoiceStopButtonClick(Self);
+   end;
+end;
+
 end.
+

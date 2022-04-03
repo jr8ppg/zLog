@@ -1360,8 +1360,8 @@ begin
          Finish();
 
          if Assigned(FOnSendFinishProc) then begin
-            {$IFDEF DEGBUG}
-            OutputDebugString(PChar(' *** FOnSendFinishProc() called ***'));
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar(' *** FOnSendFinishProc() called in TimerProcess() ***'));
             {$ENDIF}
             FOnSendFinishProc(Self);
          end;
@@ -3437,8 +3437,8 @@ begin
             if (FWkCallsignSending = False) and (FWkLastMessage <> '') and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
 
                if Assigned(FOnSendFinishProc) then begin
-                  {$IFDEF DEGBUG}
-                  OutputDebugString(PChar(' *** FOnSendFinishProc() called ***'));
+                  {$IFDEF DEBUG}
+                  OutputDebugString(PChar(' *** FOnSendFinishProc() called in ZComKeying1ReceiveData() ***'));
                   {$ENDIF}
                   FOnSendFinishProc(Self);
                end;
@@ -3556,13 +3556,13 @@ begin
             FWkMessageIndex := 1;
             FWkMessageStr := '';
 
-            {$IFDEF DEGBUG}
+            {$IFDEF DEBUG}
             OutputDebugString(PChar(' *** Send Finish !!! ***'));
             {$ENDIF}
 
             if Assigned(FOnSendFinishProc) then begin
-               {$IFDEF DEGBUG}
-               OutputDebugString(PChar(' *** FOnSendFinishProc() called ***'));
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar(' *** FOnSendFinishProc() called in WndMethod() ***'));
                {$ENDIF}
                FOnSendFinishProc(Self);
             end;
