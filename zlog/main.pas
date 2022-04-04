@@ -10782,6 +10782,7 @@ begin
       WaitForPlayMessageAhead(True);
       FCancelNextLoop := False;
       FCQLoopRunning := True;
+      FCQLoopCount := 0;
       timerCqRepeat.Enabled := True;
    end;
 end;
