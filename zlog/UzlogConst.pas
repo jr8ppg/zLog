@@ -265,10 +265,10 @@ const
     '',                 // #140 actionSelectRig3
     '',                 // #141 actionSo2rNeoCanRxSel
     '',                 // #142 actionShowInformation
-    '',                 // #143 actionToggleAutoRigSwitch
+    '',                 // #143 actionToggleSo2r2bsiq
     '',                 // #144 actionSo2rNeoToggleAutoRxSelect
     'Shift+V',          // #145 actionToggleTx
-    '',                 // #146 actionToggleCqInvert
+    '',                 // #146 actionToggleSo2rWait
     'Shift+C',          // #147 actionToggleRx
     '',                 // #148 actionMatchRxToTx
     '',                 // #149 actionMatchTxToRx

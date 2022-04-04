@@ -66,6 +66,7 @@ const
   actEdit = $0E;
   actLock = $AA;
   actUnlock = $BB;
+  actEditOrAdd = $0C;
 
   LineBreakCode : array [0..2] of string
     = (Chr($0d)+Chr($0a), Chr($0d), Chr($0a));
@@ -101,6 +102,9 @@ const
 type
   TQSORateStyle = ( rsOriginal = 0, rsByBand, rsByFreqRange );
   TQSORateStartPosition = ( spFirstQSO = 0, spCurrentTime, spLastQSO );
+
+type
+  TSendRepeatEvent = procedure(Sender: TObject; nLoopCount: Integer) of object;
 
 const
   default_graph_bar_color: array[b19..HiBand] of TColor = (
@@ -261,10 +265,10 @@ const
     '',                 // #140 actionSelectRig3
     '',                 // #141 actionSo2rNeoCanRxSel
     '',                 // #142 actionShowInformation
-    '',                 // #143 actionToggleAutoRigSwitch
+    '',                 // #143 actionToggleSo2r2bsiq
     '',                 // #144 actionSo2rNeoToggleAutoRxSelect
     'Shift+V',          // #145 actionToggleTx
-    '',                 // #146 actionToggleCqInvert
+    '',                 // #146 actionToggleSo2rWait
     'Shift+C',          // #147 actionToggleRx
     '',                 // #148 actionMatchRxToTx
     '',                 // #149 actionMatchTxToRx
