@@ -4664,10 +4664,8 @@ begin
    FCancelNextLoop := True;
    FCancelAutoRigSwitch := True;
 
-   // SO2Rの場合は先行するCQが終わるのを待つ
-   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-      WaitForPlayMessageAhead(FInformation.IsWait);
-   end;
+   // 先行するCQが終わるのを待つ
+   WaitForPlayMessageAhead(FInformation.IsWait);
 
    // CQ Invert時は送信RIGを戻す
    if FInformation.Is2bsiq = True then begin
