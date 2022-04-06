@@ -1116,6 +1116,10 @@ type
     procedure ResetTx();
     procedure RestartCqRepeat();
     procedure StopMessage(mode: TMode);
+    procedure ControlPTT(fOn: Boolean);
+    procedure OnNonconvertKeyProc();
+    procedure OnUpKeyProc(Sender: TObject);
+    procedure OnAlphaNumericKeyProc(Sender: TObject; var Key: word);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -4859,66 +4863,21 @@ begin
    case Key of
       { MUHENKAN KEY }
       VK_NONCONVERT: begin
-         {$IFDEF DEBUG}
-         OutputDebugString(PChar('[無変換]'));
-         {$ENDIF}
-
-         // 2BSIQ時は受信中の方でPTT制御する
-         if FInformation.Is2bsiq = True then begin
-
-            WaitForPlayMessageAhead(FInformation.IsWait);
-
-            ResetTx();
-
-            if FCQLoopRunning = True then begin
-               FCancelNextLoop := True;
-            end;
-         end;
-
-         actionControlPTT.Execute();
+         OnNonconvertKeyProc();
+         Key := 0;
       end;
 
       VK_UP: begin
-         Grid.Row := TQSOList(Grid.Tag).Count - 1;
-
-         LastFocus := TEdit(Sender);
-         Grid.SetFocus;
-
+         OnUpKeyProc(Sender);
          Key := 0;
       end;
 
       Ord('A') .. Ord('Z'), Ord('0') .. Ord('9'): begin
          if Shift <> [] then begin
-            exit;
+            Exit;
          end;
 
-         if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
-            if (FCwCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
-               FCwCtrlZCQLoop := False;
-               timerCqRepeat.Enabled := False;
-               dmZLogKeyer.ClrBuffer;
-            end;
-
-            if (FPhCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
-               FPhCtrlZCQLoop := False;
-               timerCqRepeat.Enabled := False;
-               FVoiceForm.StopVoice();
-            end;
-         end
-         else begin
-            if FCQLoopRunning = True then begin
-               FCancelNextLoop := True;
-            end;
-         end;
-
-         if (dmZlogGlobal.Settings._jmode) and (Sender = CallsignEdit) then begin
-            if CallsignEdit.Text = '' then begin
-               if (Key <> Ord('7')) and (Key <> Ord('8')) then begin
-                  CallsignEdit.Text := 'J';
-                  CallsignEdit.SelStart := 1;
-               end;
-            end;
-         end;
+         OnAlphaNumericKeyProc(Sender, Key);
       end;
    end;
 end;
@@ -8744,18 +8703,10 @@ end;
 // #86 PTT制御出力の手動トグル
 procedure TMainForm.actionControlPTTExecute(Sender: TObject);
 var
-   nID: Integer;
    fOn: Boolean;
 begin
-   nID := FCurrentTx;
    fOn := not dmZLogKeyer.PTTIsOn;
-
-   if dmZLogGlobal.Settings._use_winkeyer = True then begin
-      dmZLogKeyer.WinKeyerControlPTT2(fOn);
-   end
-   else begin
-      dmZLogKeyer.ControlPTT(nID, fOn);
-   end;
+   ControlPTT(fOn);
 end;
 
 // #87 N+1ウインドウの表示
@@ -10794,6 +10745,99 @@ begin
    end
    else if (mode = mSSB) or (mode = mFM) or (mode = mAM) then begin
       VoiceStopButtonClick(Self);
+   end;
+end;
+
+procedure TMainForm.ControlPTT(fOn: Boolean);
+var
+   nID: Integer;
+begin
+   nID := FCurrentTx;
+
+   if dmZLogGlobal.Settings._use_winkeyer = True then begin
+      dmZLogKeyer.WinKeyerControlPTT2(fOn);
+   end
+   else begin
+      dmZLogKeyer.ControlPTT(nID, fOn);
+   end;
+end;
+
+procedure TMainForm.OnNonconvertKeyProc();
+var
+   fBeforePTT: Boolean;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('[無変換]'));
+   {$ENDIF}
+
+   // 2BSIQ時は受信中の方でPTT制御する
+   if (FCurrentTx <> FCurrentRx) and (FInformation.Is2bsiq = True) then begin
+      // TX側終了待ち ここでPTT=OFF
+      WaitForPlayMessageAhead(FInformation.IsWait);
+
+      // TXをRXに合わせる
+      ResetTx();
+
+      if FCQLoopRunning = True then begin
+         FCancelNextLoop := True;
+      end;
+
+      ControlPTT(True);
+   end
+   else begin
+      // 現在のPTT状態
+      fBeforePTT := dmZLogKeyer.PTTIsOn;
+
+      // TX側終了待ち ここでPTT=OFF
+      WaitForPlayMessageAhead(FInformation.IsWait);
+
+      // PTTをトグル
+      if fBeforePTT = True then begin
+         ControlPTT(False);
+      end
+      else begin
+         ControlPTT(True);
+      end;
+   end;
+end;
+
+procedure TMainForm.OnUpKeyProc(Sender: TObject);
+begin
+   Grid.Row := TQSOList(Grid.Tag).Count - 1;
+   LastFocus := TEdit(Sender);
+   Grid.SetFocus;
+end;
+
+procedure TMainForm.OnAlphaNumericKeyProc(Sender: TObject; var Key: word);
+begin
+   // CQループ中のキー入力割り込み
+   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+      if (FCwCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
+         FCwCtrlZCQLoop := False;
+         timerCqRepeat.Enabled := False;
+         dmZLogKeyer.ClrBuffer;
+      end;
+
+      if (FPhCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
+         FPhCtrlZCQLoop := False;
+         timerCqRepeat.Enabled := False;
+         FVoiceForm.StopVoice();
+      end;
+   end
+   else begin
+      if FCQLoopRunning = True then begin
+         FCancelNextLoop := True;
+      end;
+   end;
+
+   // J-Modeの処理
+   if (dmZlogGlobal.Settings._jmode) and (Sender = CallsignEdit) then begin
+      if CallsignEdit.Text = '' then begin
+         if (Key <> Ord('7')) and (Key <> Ord('8')) then begin
+            CallsignEdit.Text := 'J';
+            CallsignEdit.SelStart := 1;
+         end;
+      end;
    end;
 end;
 
