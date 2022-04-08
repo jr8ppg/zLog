@@ -20,6 +20,9 @@ const
 type
   TBandBool = array[b19..HiBand] of boolean;
 
+type
+  TPlayMessageFinishedProc = procedure(Sender: TObject; mode: TMode; fAbort: Boolean) of object;
+
 const
   // SerialContestType
   _USEUTC = 32767;

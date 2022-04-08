@@ -17,11 +17,8 @@ type
     FWaveSound: array[1..maxmessage + 2] of TWaveSound;
     FCurrentOperator: TOperatorInfo;
     FCurrentVoice: Integer;
-    FTxID: Integer;
     FOnNotifyStarted: TNotifyEvent;
-    FOnNotifyFinished: TNotifyEvent;
-
-    procedure VoiceControl(nID: Integer; fOn: Boolean);
+    FOnNotifyFinished: TPlayMessageFinishedProc;
   public
     { Public êÈåæ }
     procedure Init();
@@ -29,12 +26,10 @@ type
     procedure StopVoice();
     procedure SetOperator(op: TOperatorInfo);
 
-    property Tx: Integer read FTxID write FTxID;
-
     function IsPlaying(): Boolean;
 
     property OnNotifyStarted: TNotifyEvent read FOnNotifyStarted write FOnNotifyStarted;
-    property OnNotifyFinished: TNotifyEvent read FOnNotifyFinished write FOnNotifyFinished;
+    property OnNotifyFinished: TPlayMessageFinishedProc read FOnNotifyFinished write FOnNotifyFinished;
   end;
 
 implementation
@@ -132,7 +127,7 @@ begin
 //         FOnNotifyStarted(nil);
 //      end;
       if Assigned(FOnNotifyFinished) then begin
-         FOnNotifyFinished(nil);
+         FOnNotifyFinished(nil, mSSB, False);
       end;
       Exit;
    end;
@@ -147,14 +142,12 @@ begin
    end;
    FWaveSound[i].Stop();
 
-   VoiceControl(FTxID, True);
-
-   FCurrentVoice := i;
-   FWaveSound[i].Play();
-
    if Assigned(FOnNotifyStarted) then begin
       FOnNotifyStarted(FWaveSound[i]);
    end;
+
+   FCurrentVoice := i;
+   FWaveSound[i].Play();
 
    Timer2.Enabled := True;
 end;
@@ -165,10 +158,9 @@ begin
    if FCurrentVoice <> 0 then begin
       FWaveSound[FCurrentVoice].Stop();
    end;
-   VoiceControl(FTxID, False);
 
    if Assigned(FOnNotifyFinished) then begin
-      FOnNotifyFinished(nil);
+      FOnNotifyFinished(nil, mSSB, True);
    end;
 end;
 
@@ -191,33 +183,13 @@ begin
    end;
    Timer2.Enabled := False;
 
-   VoiceControl(FTxID, False);
-
    if Assigned(FOnNotifyFinished) then begin
-      FOnNotifyFinished(FWaveSound[FCurrentVoice]);
+      FOnNotifyFinished(FWaveSound[FCurrentVoice], mSSB, False);
    end;
 
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---Voice Play finished!! ---'));
    {$ENDIF}
-end;
-
-procedure TVoiceForm.VoiceControl(nID: Integer; fOn: Boolean);
-begin
-   if fOn = True then begin
-      dmZlogKeyer.SetVoiceFlag(1);
-
-      if dmZLogGlobal.Settings._pttenabled then begin
-         dmZlogKeyer.ControlPTT(nID, True);
-      end;
-   end
-   else begin
-      dmZlogKeyer.SetVoiceFlag(0);
-
-      if dmZLogGlobal.Settings._pttenabled then begin
-         dmZlogKeyer.ControlPTT(nID, False);
-      end;
-   end;
 end;
 
 end.

@@ -7175,4 +7175,11 @@ object MainForm: TMainForm
     Left = 240
     Top = 171
   end
+  object timerRepeatWatch: TTimer
+    Enabled = False
+    Interval = 50
+    OnTimer = timerRepeatWatchTimer
+    Left = 240
+    Top = 139
+  end
 end

@@ -168,8 +168,7 @@ type
 
     FOnCallsignSentProc: TNotifyEvent;
     FOnPaddleEvent: TNotifyEvent;
-    FOnSendFinishProc: TNotifyEvent;
-    FOnWkAbortProc: TNotifyEvent;
+    FOnSendFinishProc: TPlayMessageFinishedProc;
     FOnWkStatusProc: TWkStatusEvent;
 
     // False: PTT=RTS,KEY=DTR
@@ -293,9 +292,8 @@ type
 
     property OnCallsignSentProc: TNotifyEvent read FOnCallsignSentProc write FOnCallsignSentProc;
     property OnPaddle: TNotifyEvent read FOnPaddleEvent write FOnPaddleEvent;
-    property OnSendFinishProc: TNotifyEvent read FOnSendFinishProc write FOnSendFinishProc;
+    property OnSendFinishProc: TPlayMessageFinishedProc read FOnSendFinishProc write FOnSendFinishProc;
     property OnSpeedChanged: TNotifyEvent read FOnSpeedChanged write FOnSpeedChanged;
-    property OnWkAbortProc: TNotifyEvent read FOnWkAbortProc write FOnWkAbortProc;
     property OnWkStatusProc: TWkStatusEvent read FOnWkStatusProc write FOnWkStatusProc;
     property KeyingSignalReverse: Boolean read FKeyingSignalReverse write FKeyingSignalReverse;
 
@@ -444,7 +442,6 @@ begin
    FOnCallsignSentProc := nil;
    FOnSendFinishProc := nil;
    FOnPaddleEvent := nil;
-   FOnWkAbortProc := nil;
    FKeyingSignalReverse := False;
    FUsbif4cwSyncWpm := False;
 
@@ -1363,7 +1360,7 @@ begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar(' *** FOnSendFinishProc() called in TimerProcess() ***'));
             {$ENDIF}
-            FOnSendFinishProc(Self);
+            FOnSendFinishProc(Self, mCW, False);
          end;
 
          FSendOK := False;
@@ -3040,8 +3037,8 @@ begin
    {$ENDIF}
 
    FWkAbort := True;
-   if Assigned(FOnWkAbortProc) then begin
-      FOnWkAbortProc(nil);
+   if Assigned(FOnSendFinishProc) then begin
+      FOnSendFinishProc(nil, mCW, True);
    end;
 end;
 
@@ -3440,7 +3437,7 @@ begin
                   {$IFDEF DEBUG}
                   OutputDebugString(PChar(' *** FOnSendFinishProc() called in ZComKeying1ReceiveData() ***'));
                   {$ENDIF}
-                  FOnSendFinishProc(Self);
+                  FOnSendFinishProc(Self, mCW, False);
                end;
             end;
 
@@ -3564,7 +3561,7 @@ begin
                {$IFDEF DEBUG}
                OutputDebugString(PChar(' *** FOnSendFinishProc() called in WndMethod() ***'));
                {$ENDIF}
-               FOnSendFinishProc(Self);
+               FOnSendFinishProc(Self, mCW, False);
             end;
          end;
 
