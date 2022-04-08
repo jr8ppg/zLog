@@ -9,7 +9,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, StrUtils,
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
-  System.DateUtils,
+  System.DateUtils, System.SyncObjs,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
@@ -1208,6 +1208,9 @@ var
 
 var
   MyContest : TContest = nil;
+
+var
+  csPttLock: TCriticalSection;
 
 implementation
 
@@ -8557,24 +8560,29 @@ var
    nID: Integer;
    mode: TMode;
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('--- #71 Toggle RIG ---'));
-   {$ENDIF}
+   csPttLock.Enter();
+   try
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('--- #71 Toggle RIG ---'));
+      {$ENDIF}
 
-   nID := FCurrentTx;
-   mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
-   StopMessage(mode);
+      nID := FCurrentTx;
+      mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
+      StopMessage(mode);
 
-   TabPressed := False;
-   TabPressed2 := False;
+      TabPressed := False;
+      TabPressed2 := False;
 
-   rig := RigControl.GetCurrentRig();
-   rig := GetNextRigID(rig - 1) + 1;
-   RigControl.SetCurrentRig(rig);
-   SwitchRig(rig);
+      rig := RigControl.GetCurrentRig();
+      rig := GetNextRigID(rig - 1) + 1;
+      RigControl.SetCurrentRig(rig);
+      SwitchRig(rig);
 
-   if Assigned(CallsignEdit.OnChange) then begin
-      CallsignEdit.OnChange(nil);
+      if Assigned(CallsignEdit.OnChange) then begin
+         CallsignEdit.OnChange(nil);
+      end;
+   finally
+      csPttLock.Leave();
    end;
 end;
 
@@ -9298,12 +9306,17 @@ procedure TMainForm.actionMatchTxToRxExecute(Sender: TObject);
 var
    rx: Integer;
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('--- #149 Match TX to RX ---'));
-   {$ENDIF}
+   csPttLock.Enter();
+   try
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('--- #149 Match TX to RX ---'));
+      {$ENDIF}
 
-   rx := FCurrentRx;
-   SwitchTx(rx + 1);
+      rx := FCurrentRx;
+      SwitchTx(rx + 1);
+   finally
+      csPttLock.Leave();
+   end;
 end;
 
 // #150 SO2R Toggle Rig Pair
@@ -10372,23 +10385,28 @@ end;
 
 procedure TMainForm.SwitchTx(rig: Integer);
 begin
-   FCurrentTx := rig - 1;
-   FInformation.Tx := rig - 1;
-   ShowTxIndicator();
+   csPttLock.Enter();
+   try
+      FCurrentTx := rig - 1;
+      FInformation.Tx := rig - 1;
+      ShowTxIndicator();
 
-   dmZLogKeyer.SetTxRigFlag(rig);
-   FVoiceForm.Tx := rig - 1;
+      dmZLogKeyer.SetTxRigFlag(rig);
+      FVoiceForm.Tx := rig - 1;
 
-   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-      UpdateQsoEditPanel(rig);
-      if LastFocus = FEditPanel[rig - 1].rcvdNumber then begin
-         EditEnter(FEditPanel[rig - 1].rcvdNumber);
-      end
-      else begin
-         FEditPanel[rig - 1].CallsignEdit.SetFocus();
-         EditEnter(FEditPanel[rig - 1].CallsignEdit);
+      if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+         UpdateQsoEditPanel(rig);
+         if LastFocus = FEditPanel[rig - 1].rcvdNumber then begin
+            EditEnter(FEditPanel[rig - 1].rcvdNumber);
+         end
+         else begin
+            FEditPanel[rig - 1].CallsignEdit.SetFocus();
+            EditEnter(FEditPanel[rig - 1].CallsignEdit);
+         end;
+   //      FSo2rNeoCp.Rx := rig - 1;
       end;
-//      FSo2rNeoCp.Rx := rig - 1;
+   finally
+      csPttLock.Leave();
    end;
 end;
 
@@ -10764,38 +10782,43 @@ procedure TMainForm.OnNonconvertKeyProc();
 var
    fBeforePTT: Boolean;
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('[無変換]'));
-   {$ENDIF}
+   csPttLock.Enter();
+   try
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('[無変換]'));
+      {$ENDIF}
 
-   // 2BSIQ時は受信中の方でPTT制御する
-   if (FCurrentTx <> FCurrentRx) and (FInformation.Is2bsiq = True) then begin
-      // TX側終了待ち ここでPTT=OFF
-      WaitForPlayMessageAhead(FInformation.IsWait);
+      // 2BSIQ時は受信中の方でPTT制御する
+      if (FCurrentTx <> FCurrentRx) and (FInformation.Is2bsiq = True) then begin
+         // TX側終了待ち ここでPTT=OFF
+         WaitForPlayMessageAhead(FInformation.IsWait);
 
-      // TXをRXに合わせる
-      ResetTx();
+         // TXをRXに合わせる
+         ResetTx();
 
-      if FCQLoopRunning = True then begin
-         FCancelNextLoop := True;
-      end;
+         if FCQLoopRunning = True then begin
+            FCancelNextLoop := True;
+         end;
 
-      ControlPTT(True);
-   end
-   else begin
-      // 現在のPTT状態
-      fBeforePTT := dmZLogKeyer.PTTIsOn;
-
-      // TX側終了待ち ここでPTT=OFF
-      WaitForPlayMessageAhead(FInformation.IsWait);
-
-      // PTTをトグル
-      if fBeforePTT = True then begin
-         ControlPTT(False);
+         ControlPTT(True);
       end
       else begin
-         ControlPTT(True);
+         // 現在のPTT状態
+         fBeforePTT := dmZLogKeyer.PTTIsOn;
+
+         // TX側終了待ち ここでPTT=OFF
+         WaitForPlayMessageAhead(FInformation.IsWait);
+
+         // PTTをトグル
+         if fBeforePTT = True then begin
+            ControlPTT(False);
+         end
+         else begin
+            ControlPTT(True);
+         end;
       end;
+   finally
+      csPttLock.Leave();
    end;
 end;
 
@@ -10838,6 +10861,12 @@ begin
       end;
    end;
 end;
+
+initialization
+  csPttLock := TCriticalSection.Create();
+
+finalization
+  csPttLock.Free();
 
 end.
 
