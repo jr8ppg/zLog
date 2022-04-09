@@ -2266,7 +2266,6 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'WK 9600bps'
           TabOrder = 1
-          OnClick = checkUseWinKeyerClick
         end
         object checkWkOutportSelect: TCheckBox
           Left = 217
@@ -2275,7 +2274,6 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'Use Out port Select'
           TabOrder = 2
-          OnClick = checkUseWinKeyerClick
         end
       end
     end
