@@ -140,7 +140,7 @@ object formInformation: TformInformation
       Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
-      OnClick = button2bsiqClick
+      OnClick = buttonWaitClick
     end
     object ledWait: TJvLED
       Left = 30

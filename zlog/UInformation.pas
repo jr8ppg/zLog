@@ -26,6 +26,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure button2bsiqClick(Sender: TObject);
     procedure panelCQModeClick(Sender: TObject);
+    procedure buttonWaitClick(Sender: TObject);
   private
     { Private êÈåæ }
     function GetCQMode(): Boolean;
@@ -63,6 +64,12 @@ uses
 
 procedure TformInformation.button2bsiqClick(Sender: TObject);
 begin
+   MainForm.SetLastFocus();
+end;
+
+procedure TformInformation.buttonWaitClick(Sender: TObject);
+begin
+   SetWait(ledWait.Status);
    MainForm.SetLastFocus();
 end;
 
@@ -136,6 +143,14 @@ end;
 
 procedure TformInformation.SetWait(fOn: Boolean);
 begin
+   if fOn = False then begin
+      if buttonWait.Down = True then begin
+         ledWait.ColorOff := clLime;
+      end
+      else begin
+         ledWait.ColorOff := clSilver;
+      end;
+   end;
    ledWait.Status := fOn;
 end;
 
