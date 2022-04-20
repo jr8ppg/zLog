@@ -7960,8 +7960,10 @@ begin
          ControlPTT(False);
 
          if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
-            tx := FCurrentTx;
-            dmZLogKeyer.So2rNeoNormalRx(tx);
+            if FSo2rNeoCp.UseRxSelect = True then begin
+               tx := FCurrentTx;
+               dmZLogKeyer.So2rNeoNormalRx(tx);
+            end;
       //      FSo2rNeoCp.CanRxSel := False;
             PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_CANRXSEL, Integer(False), 0);
          end;
