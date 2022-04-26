@@ -5320,6 +5320,10 @@ end;
 
 procedure TMainForm.CQRepeatClick1(Sender: TObject);
 begin
+   if FCQRepeatPlaying = True then begin
+      Exit;
+   end;
+
    FCwCtrlZCQLoop := False;
    FPhCtrlZCQLoop := False;
    CQRepeatProc(True);
@@ -5327,6 +5331,10 @@ end;
 
 procedure TMainForm.CQRepeatClick2(Sender: TObject);
 begin
+   if FCQRepeatPlaying = True then begin
+      Exit;
+   end;
+
    FCwCtrlZCQLoop := True;
    FPhCtrlZCQLoop := True;
    CQRepeatProc(True);
@@ -8471,6 +8479,10 @@ end;
 // #57 ＣＱ送出
 procedure TMainForm.actionCQRepeatExecute(Sender: TObject);
 begin
+   if FCQRepeatPlaying = True then begin
+      Exit;
+   end;
+
    FCwCtrlZCQLoop := True;
    FPhCtrlZCQLoop := True;
    FCancelAutoRigSwitch := False;
@@ -8879,6 +8891,10 @@ end;
 // #98 連続CQ、ESCを押さないと送信解除しない Shift+Z
 procedure TMainForm.actionCQRepeat2Execute(Sender: TObject);
 begin
+   if FCQRepeatPlaying = True then begin
+      Exit;
+   end;
+
    FCwCtrlZCQLoop := False;
    FPhCtrlZCQLoop := False;
    CQRepeatProc(True);
