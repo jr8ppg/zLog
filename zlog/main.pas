@@ -4200,10 +4200,27 @@ end;
 procedure TMainForm.SetFontSize(font_size: Integer);
 var
    b: TBand;
+   h: Integer;
 begin
-   EditPanel1R.Font.Size := font_size;
    Grid.Font.Size := font_size;
+   h := Abs(Grid.Font.Height);
+   Grid.DefaultRowHeight := h + 4;
    Grid.Refresh();
+
+   EditPanel1R.Font.Size := font_size;
+   DateEdit1.Height := h + 6;
+   TimeEdit1.Height := h + 6;
+   CallsignEdit1.Height := h + 6;
+   RcvdRSTEdit1.Height := h + 6;
+   NumberEdit1.Height := h + 6;
+   ModeEdit1.Height := h + 6;
+   BandEdit1.Height := h + 6;
+   PointEdit1.Height := h + 6;
+   PowerEdit1.Height := h + 6;
+   OpEdit1.Height := h + 6;
+   MemoEdit1.Height := h + 6;
+   SerialEdit1.Height := h + 6;
+   EditPanel1R.Height := h + 6 + 8;
 
    dmZlogGlobal.Settings._mainfontsize := font_size;
 
