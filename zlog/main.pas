@@ -8027,7 +8027,7 @@ begin
          FCQLoopCount := 0;
       end;
 
-      if FCQLoopRunning = True then begin
+      if (FCQLoopRunning = True) and (FCQLoopPause = False) then begin
          if FInformation.Is2bsiq = True then begin
             interval := dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec;
          end
@@ -10797,12 +10797,14 @@ begin
    {$ENDIF}
 
    // 2BSIQéûÇÕéÛêMíÜÇÃï˚Ç≈PTTêßå‰Ç∑ÇÈ
-   if (FCurrentTx <> FCurrentRx) and (FInformation.Is2bsiq = True) then begin
+   if FInformation.Is2bsiq = True then begin
       // TXë§èIóπë“Çø Ç±Ç±Ç≈PTT=OFF
 //         WaitForPlayMessageAhead(FInformation.IsWait);
 
       // TXÇRXÇ…çáÇÌÇπÇÈ
-      ResetTx();
+      if FCurrentTx <> FCurrentRx then begin
+         ResetTx();
+      end;
 
       if FCQLoopRunning = True then begin
          FCQLoopPause := True;
