@@ -6350,10 +6350,12 @@ object MainForm: TMainForm
   end
   object FileExportDialog: TSaveDialog
     Filter = 
-      'ALL bands (*.all)|*.all|zLog CSV(*.csv)|*.csv|zLog DOS compatibl' +
-      'e text (*.txt)|*.txt|TX# (*.tx)|*.tx|ADIF (*.adi)|*.adi|Cabrillo' +
-      '(*.CBR)|*.CBR|HAMLOG(*.csv)|*.csv'
+      'ALL bands (*.all)|*.all|zLog DOS compatible text (*.txt)|*.txt|T' +
+      'X# (*.tx)|*.tx|ADIF (*.adi)|*.adi|Cabrillo(*.CBR)|*.CBR|zLog CSV' +
+      '(*.csv)|*.csv|HAMLOG(*.csv)|*.csv'
+    Options = [ofOverwritePrompt, ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Title = 'Export'
+    OnTypeChange = FileExportDialogTypeChange
     Left = 472
     Top = 196
   end

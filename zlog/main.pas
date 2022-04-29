@@ -908,6 +908,7 @@ type
     procedure checkWithRigClick(Sender: TObject);
     procedure actionSo2rToggleRigPairExecute(Sender: TObject);
     procedure timerCqRepeatTimer(Sender: TObject);
+    procedure FileExportDialogTypeChange(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -3669,6 +3670,24 @@ begin
    Close();
 end;
 
+procedure TMainForm.FileExportDialogTypeChange(Sender: TObject);
+var
+   L: TStringList;
+   Index: Integer;
+begin
+   L := TStringList.Create();
+   L.StrictDelimiter := True;
+   L.Delimiter := '|';
+   L.DelimitedText := FileExportDialog.Filter;
+
+   Index := FileExportDialog.FilterIndex - 1;
+   Index := Index * 2 + 1;
+
+   FileExportDialog.DefaultExt := Copy(L.Strings[Index], 3);
+
+   L.Free();
+end;
+
 procedure TMainForm.HelpContents(Sender: TObject);
 begin
    Application.HelpCommand(HELP_CONTENTS, 0);
@@ -5835,60 +5854,49 @@ begin
    f := FileExportDialog.filename;
    ext := UpperCase(ExtractFileExt(f));
 
-   case FileExportDialog.FilterIndex of
-
-      1: begin
-         if ext = '.ALL' then begin
-            Log.SaveToFilezLogALL(f);
-         end;
-      end;
-
-      2: begin
-         if ext = '.CSV' then begin
-            Log.SaveToFilezLogCsv(f);
-         end;
-      end;
-
-      3: begin
-         if ext = '.TXT' then begin
-            Log.SaveToFilezLogDOSTXT(f);
-         end;
-      end;
-
-      4: begin
-         if ext = '.TX' then begin
-            Log.SaveToFileByTX(f);
-         end;
-      end;
-
-      5: begin
-         if ext = '.ADI' then begin
-            MyContest.ADIF_Export(f);
-         end;
-      end;
-
-      6: begin
-         if ext = '.CBR' then begin
-            Log.SaveToFileByCabrillo(f);
-         end;
-      end;
-
-      7: begin
-         if ext = '.CSV' then begin
-            dlg := TformExportHamlog.Create(Self);
-            try
-               if dlg.ShowModal() = mrCancel then begin
-                  Exit;
-               end;
-               Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2);
-            finally
-               dlg.Release();
-            end;
-         end;
-      end;
-
-      { Add code to save current file under SaveDialog.FileName }
+   if ext = '' then begin
+      f := f + '.' + FileExportDialog.DefaultExt;
+      ext := '.' + UpperCase(FileExportDialog.DefaultExt);
    end;
+
+   if ext = '.ALL' then begin
+      Log.SaveToFilezLogALL(f);
+   end;
+
+   if ext = '.TXT' then begin
+      Log.SaveToFilezLogDOSTXT(f);
+   end;
+
+   if ext = '.TX' then begin
+      Log.SaveToFileByTX(f);
+   end;
+
+   if ext = '.ADI' then begin
+      MyContest.ADIF_Export(f);
+   end;
+
+   if ext = '.CBR' then begin
+      Log.SaveToFileByCabrillo(f);
+   end;
+
+   if ext = '.CSV' then begin
+      if FileExportDialog.FilterIndex = 7 then begin
+         dlg := TformExportHamlog.Create(Self);
+         try
+            if dlg.ShowModal() = mrCancel then begin
+               Exit;
+            end;
+            Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2);
+         finally
+            dlg.Release();
+         end;
+      end
+      else begin
+         Log.SaveToFilezLogCsv(f);
+      end;
+   end;
+
+   { Add code to save current file under SaveDialog.FileName }
 end;
 
 procedure TMainForm.SpeedButton9Click(Sender: TObject);
@@ -6630,9 +6638,9 @@ end;
 procedure TMainForm.MergeFile1Click(Sender: TObject);
 var
    ff: string;
+   ext: string;
    i: Integer;
 begin
-   FileImportDialog.Title := 'Merge file';
    FileImportDialog.InitialDir := dmZlogGlobal.Settings._logspath;
    FileImportDialog.FileName := '';
 
@@ -6648,20 +6656,21 @@ begin
 
    i := 0;
 
-   if FileImportDialog.FilterIndex = 1 then begin
+   ext := UpperCase(ExtractFileExt(ff));
+
+   if ext = '.ZLO' then begin
       WriteStatusLine('Merging...', False);
 
       i := Log.QsoList.MergeFile(ff, True);
    end;
 
-   if FileImportDialog.FilterIndex = 2 then begin
+   if ext = '.CSV' then begin
       i := Log.LoadFromFilezLogCsv(ff);
    end;
 
    if i > 0 then begin
       Log.SortByTime;
       MyContest.Renew;
-      // EditScreen.Renew;
       GridRefreshScreen();
       FileSave(Self);
    end;
