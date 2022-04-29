@@ -246,6 +246,7 @@ type
     procedure SaveToFile(Filename : string);
     procedure SaveToFilezLogDOSTXT(Filename : string);
     procedure SaveToFilezLogALL(Filename : string);
+    procedure SaveToFilezLogCsv(Filename: string);
     procedure SaveToFileByTX(Filename : string);
     procedure SaveToFileByCabrillo(Filename: string);
     procedure SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string);
@@ -269,6 +270,7 @@ type
     function ObjectOf(callsign: string): TQSO; overload;
 
     function LoadFromFile(filename: string): Integer;
+    function LoadFromFilezLogCsv(Filename: string): Integer;
 //    function MergeFile(filename: string): Integer;
 
     function IsWorked(strCallsign: string; band: TBand): Boolean;
@@ -1602,6 +1604,128 @@ begin
    CloseFile(f);
 end;
 
+procedure TLog.SaveToFilezLogCsv(Filename: string);
+const
+   csvheader = '"Date","Time","TimeZone","CallSign","RSTSent","NrSent","RSTRcvd","NrRcvd","Serial","Mode",' +
+               '"Band","Power","Multi1","Multi2","NewMulti1","NewMulti2","Points","Operator","Memo","CQ",' +
+               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3"';
+var
+   F: TextFile;
+   i: Integer;
+   strText: string;
+   Q: TQSO;
+   offsetmin: Integer;
+   slCsv: TStringList;
+begin
+   slCsv := TStringList.Create();
+   slCsv.StrictDelimiter := True;
+   slCsv.QuoteChar := #0;
+   try
+      AssignFile(F, Filename);
+      ReWrite(F);
+
+      offsetmin := FQsoList[0].RSTsent;
+
+      WriteLn(F, csvheader);
+
+      for i := 1 to FQSOList.Count - 1 do begin
+         Q := FQSOList[i];
+
+         slCsv.Clear();
+
+         // 1列目　交信年月日（YY/MM/DD）
+         slCsv.Add(FormatDateTime('yyyy/mm/dd', Q.Time));
+
+         // 2列目　交信時分（HH:MM）
+         slCsv.Add(FormatDateTime('HH:MM', Q.Time));
+
+         // 3列目 TimeZone
+         if offsetmin = _USEUTC then begin
+            strText := 'UTC';
+         end
+         else begin
+            strText := 'JST';
+         end;
+         slCsv.Add(strText);
+
+         // 4列目 コールサイン
+         slCsv.Add('"' + Q.Callsign + '"');
+
+         // 5列目 相手局へ送ったRST
+         slCsv.Add('"' + Q.RSTSentStr + '"');
+
+         // 6列目 相手局へ送ったNumber
+         slCsv.Add('"' + Q.NrSent + '"');
+
+         // 7列目 相手局からもらったレポート
+         slCsv.Add('"' + Q.RSTRcvdStr + '"');
+
+         // 8列目 相手局へ送ったNumber
+         slCsv.Add('"' + Q.NrRcvd + '"');
+
+         // 9列目 シリアルNO
+         slCsv.Add(Q.SerialStr);
+
+         // 10列目 Mode
+         slCsv.Add('"' + Q.ModeStr + '"');
+
+         // 11列目 Band
+         slCsv.Add('"' + Q.BandStr + '"');
+
+         // 1列目 Power
+         slCsv.Add('"' + Q.NewPowerStr + '"');
+
+         // 13列目 マルチ１
+         slCsv.Add('"' + Q.Multi1 + '"');
+
+         // 14列目 マルチ１
+         slCsv.Add('"' + Q.Multi2 + '"');
+
+         // 15列目 Newマルチ１
+         slCsv.Add(BoolToStr(Q.NewMulti1, True));
+
+         // 16列目 Newマルチ２
+         slCsv.Add(BoolToStr(Q.NewMulti2, True));
+
+         // 17列目 Points
+         slCsv.Add(IntToStr(Q.Points));
+
+         // 18列目 Operator
+         slCsv.Add('"' + Q.Operator + '"');
+
+         // 19列目 memo
+         slCsv.Add('"' + Q.Memo + '"');
+
+         // 20列目 CQ
+         slCsv.Add(BoolToStr(Q.CQ, True));
+
+         // 21列目 Dupe
+         slCsv.Add(BoolToStr(Q.Dupe, True));
+
+         // 22列目 Reserve
+         slCsv.Add(IntToStr(Q.Reserve));
+
+         // 23列目 Reserve
+         slCsv.Add(IntToStr(Q.TX));
+
+         // 24列目 Power2
+         slCsv.Add(IntToStr(Q.Power2));
+
+         // 25列目 Reserve2
+         slCsv.Add(IntToStr(Q.Reserve2));
+
+         // 26列目 Reserve3
+         slCsv.Add(IntToStr(Q.Reserve3));
+
+         WriteLn(F, slCsv.DelimitedText);
+      end;
+
+      CloseFile(F);
+   finally
+      slCsv.Free();
+   end;
+end;
+
 procedure TLog.SaveToFileByTX(Filename: string);
 var
    f: textfile;
@@ -2261,6 +2385,143 @@ begin
    CloseFile(f);
 
    Result := FQsoList.Count;
+end;
+
+function TLog.LoadFromFilezLogCsv(Filename: string): Integer;
+var
+   i: Integer;
+   strText: string;
+   Q: TQSO;
+   offsetmin: Integer;
+   slFile: TStringList;
+   slLine: TStringList;
+   strMsg: string;
+begin
+   slFile := TStringList.Create();
+   slFile.StrictDelimiter := True;
+   slLine := TStringList.Create();
+   slLine.StrictDelimiter := True;
+   try
+      if FileExists(Filename) = False then begin
+         Result := 0;
+         Exit;
+      end;
+
+      slFile.LoadFromFile(Filename);
+
+      if slFile.Count = 1 then begin
+         Result := 0;
+         Exit;
+      end;
+
+//      FQsoList[0].RSTsent :=
+
+      try
+         for i := 1 to slFile.Count - 1 do begin
+            slLine.Clear();
+            slLine.CommaText := slFile.Strings[i];
+
+            Q := TQSO.Create();
+
+            // 1列目　交信年月日（YY/MM/DD）
+            // 2列目　交信時分（HH:MM）
+            Q.Time := StrToDateTime(slLine[0] + ' ' + slLine[1]);
+
+            // 3列目 TimeZone
+            if slLine[2] = 'UTC' then begin
+               offsetmin := _USEUTC;
+            end
+            else begin
+               offsetmin := 0;
+            end;
+
+            // 4列目 コールサイン
+            Q.Callsign := slLine[3];
+
+            // 5列目 相手局へ送ったRST
+            Q.RSTSent := StrToIntDef(slLine[4], 599);
+
+            // 6列目 相手局へ送ったNumber
+            Q.NrSent := slLine[5];
+
+            // 7列目 相手局からもらったレポート
+            Q.RSTRcvd := StrToIntDef(slLine[6], 599);
+
+            // 8列目 相手局からもらったNumber
+            Q.NrRcvd := slLine[7];
+
+            // 9列目 シリアルNO
+            Q.Serial := StrToIntDef(slLine[8], 0);
+
+            // 10列目 Mode
+            Q.Mode := StrToModeDef(slLine[9], mCW);
+
+            // 11列目 Band
+            Q.Band := StrToBandDef(slLine[10], b7);
+
+            // 12列目 Power 0:P 1:L 2:M 3:H
+            if slLine[11] = 'P' then Q.Power := TPower(0)
+            else if slLine[11] = 'L' then Q.Power := TPower(1)
+            else if slLine[11] = 'M' then Q.Power := TPower(2)
+            else if slLine[11] = 'H' then Q.Power := TPower(3)
+            else Q.Power := TPower(2);
+
+            // 13列目 マルチ１
+            Q.Multi1 := slLine[12];
+
+            // 14列目 マルチ２
+            Q.Multi2 := slLine[13];
+
+            // 15列目 Newマルチ１
+            Q.NewMulti1 := StrToBoolDef(slLine[14], False);
+
+            // 16列目 Newマルチ２
+            Q.NewMulti2 := StrToBoolDef(slLine[15], False);
+
+            // 17列目 Points
+            Q.Points := StrToIntDef(slLine[16], 0);
+
+            // 18列目 Operator
+            Q.Operator := slLine[17];
+
+            // 19列目 memo
+            Q.Memo := slLine[18];
+
+            // 20列目 CQ
+            Q.CQ := StrToBoolDef(slLine[19], False);
+
+            // 21列目 Dupe
+            Q.Dupe := StrToBoolDef(slLine[20], False);
+
+            // 22列目 Reserve
+            Q.Reserve := StrToIntDef(slLine[21], 0);
+
+            // 23列目 TX
+            Q.TX := StrtoIntDef(slLine[22], 0);
+
+            // 24列目 Power2
+            Q.Power2 := StrToIntDef(slLine[23], 0);
+
+            // 25列目 Reserve2
+            Q.Reserve2 := StrToIntDef(slLine[24], 0);
+
+            // 26列目 Reserve3
+            Q.Reserve3 := StrToIntDef(slLine[25], 0);
+
+            Add(Q);
+         end;
+      except
+         on E: Exception do begin
+            strMsg := IntToStr(i) + '行目でデータ取り込みエラーが発生しました' + #13#10 + E.Message;
+            MessageBox(0, PChar(strMsg), PChar(Application.Title), MB_OK + MB_ICONEXCLAMATION);
+         end;
+      end;
+
+      Result := FQsoList.Count;
+   finally
+      slFile.Free();
+      slLine.Free();
+   end;
 end;
 
 function TLog.IsWorked(strCallsign: string; band: TBand): Boolean;

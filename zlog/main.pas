@@ -305,7 +305,7 @@ type
     InsertQSO1: TMenuItem;
     N10GHzup1: TMenuItem;
     Export1: TMenuItem;
-    TXTSaveDialog: TSaveDialog;
+    FileExportDialog: TSaveDialog;
     SerialEdit1: TEdit;
     PacketClusterButton: TSpeedButton;
     CWF1: THemisphereButton;
@@ -660,6 +660,7 @@ type
     EditUpperLeftPanel: TPanel;
     EditUpperRightPanel: TGridPanel;
     timerCqRepeat: TTimer;
+    FileImportDialog: TOpenDialog;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -747,7 +748,6 @@ type
     procedure CreateDupeCheckSheetZPRINT1Click(Sender: TObject);
     procedure MemoHotKeyEnter(Sender: TObject);
     procedure GridTopLeftChanged(Sender: TObject);
-    procedure TXTSaveDialogTypeChange(Sender: TObject);
     procedure GridMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure StatusLineResize(Sender: TObject);
@@ -5825,39 +5825,65 @@ var
    f, ext: string;
    dlg: TformExportHamlog;
 begin
-   TXTSaveDialog.InitialDir := ExtractFilePath(CurrentFileName);
-   TXTSaveDialog.FileName := ChangeFileExt(ExtractFileName(CurrentFileName), '');
+   FileExportDialog.InitialDir := ExtractFilePath(CurrentFileName);
+   FileExportDialog.FileName := ChangeFileExt(ExtractFileName(CurrentFileName), '');
 
-   if TXTSaveDialog.Execute then begin
-      f := TXTSaveDialog.filename;
-      ext := UpperCase(ExtractFileExt(f));
-      if ext = '.ALL' then begin
-         Log.SaveToFilezLogALL(f);
-         { delete(f, length(f) - 3, 4);
-           f := f + '.sum';
-           MyContest.WriteSummary(f); }
+   if FileExportDialog.Execute() = False then begin
+      Exit;
+   end;
+
+   f := FileExportDialog.filename;
+   ext := UpperCase(ExtractFileExt(f));
+
+   case FileExportDialog.FilterIndex of
+
+      1: begin
+         if ext = '.ALL' then begin
+            Log.SaveToFilezLogALL(f);
+         end;
       end;
-      if ext = '.TXT' then begin
-         Log.SaveToFilezLogDOSTXT(f);
+
+      2: begin
+         if ext = '.CSV' then begin
+            Log.SaveToFilezLogCsv(f);
+         end;
       end;
-      if ext = '.TX' then begin
-         Log.SaveToFileByTX(f);
+
+      3: begin
+         if ext = '.TXT' then begin
+            Log.SaveToFilezLogDOSTXT(f);
+         end;
       end;
-      if ext = '.ADI' then begin
-         MyContest.ADIF_Export(f);
+
+      4: begin
+         if ext = '.TX' then begin
+            Log.SaveToFileByTX(f);
+         end;
       end;
-      if ext = '.CBR' then begin
-         Log.SaveToFileByCabrillo(f);
+
+      5: begin
+         if ext = '.ADI' then begin
+            MyContest.ADIF_Export(f);
+         end;
       end;
-      if ext = '.CSV' then begin
-         dlg := TformExportHamlog.Create(Self);
-         try
-            if dlg.ShowModal() = mrCancel then begin
-               Exit;
+
+      6: begin
+         if ext = '.CBR' then begin
+            Log.SaveToFileByCabrillo(f);
+         end;
+      end;
+
+      7: begin
+         if ext = '.CSV' then begin
+            dlg := TformExportHamlog.Create(Self);
+            try
+               if dlg.ShowModal() = mrCancel then begin
+                  Exit;
+               end;
+               Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2);
+            finally
+               dlg.Release();
             end;
-            Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2);
-         finally
-            dlg.Release();
          end;
       end;
 
@@ -6502,17 +6528,6 @@ begin
       Grid.LeftCol := 0;
 end;
 
-procedure TMainForm.TXTSaveDialogTypeChange(Sender: TObject);
-var
-   i: Integer;
-begin
-   i := TXTSaveDialog.FilterIndex;
-   if i = 2 then
-      TXTSaveDialog.DefaultExt := 'txt'
-   else
-      TXTSaveDialog.DefaultExt := 'all';
-end;
-
 procedure TMainForm.GridMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
    if EditScreen <> nil then begin
@@ -6617,28 +6632,41 @@ var
    ff: string;
    i: Integer;
 begin
-   OpenDialog.Title := 'Merge file';
-   OpenDialog.InitialDir := dmZlogGlobal.Settings._logspath;
-   OpenDialog.FileName := '';
+   FileImportDialog.Title := 'Merge file';
+   FileImportDialog.InitialDir := dmZlogGlobal.Settings._logspath;
+   FileImportDialog.FileName := '';
 
-   if OpenDialog.Execute then begin
+   if FileImportDialog.Execute() = False then begin
+      Exit;
+   end;
+
+   ff := FileImportDialog.filename;
+   if ff = CurrentFileName then begin
+      WriteStatusLine('Cannot merge current file', True);
+      Exit;
+   end;
+
+   i := 0;
+
+   if FileImportDialog.FilterIndex = 1 then begin
       WriteStatusLine('Merging...', False);
-      ff := OpenDialog.filename;
-      if ff = CurrentFileName then begin
-         WriteStatusLine('Cannot merge current file', True);
-         exit;
-      end;
 
       i := Log.QsoList.MergeFile(ff, True);
-      if i > 0 then begin
-         Log.SortByTime;
-         MyContest.Renew;
-         // EditScreen.Renew;
-         GridRefreshScreen();
-         FileSave(Self);
-      end;
-      WriteStatusLine(IntToStr(i) + ' QSO(s) merged.', True);
    end;
+
+   if FileImportDialog.FilterIndex = 2 then begin
+      i := Log.LoadFromFilezLogCsv(ff);
+   end;
+
+   if i > 0 then begin
+      Log.SortByTime;
+      MyContest.Renew;
+      // EditScreen.Renew;
+      GridRefreshScreen();
+      FileSave(Self);
+   end;
+
+   WriteStatusLine(IntToStr(i) + ' QSO(s) merged.', True);
 end;
 
 procedure TMainForm.SaveFileAndBackUp;

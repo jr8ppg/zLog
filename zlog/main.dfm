@@ -6348,16 +6348,14 @@ object MainForm: TMainForm
     Left = 16
     Top = 212
   end
-  object TXTSaveDialog: TSaveDialog
-    DefaultExt = 'all'
+  object FileExportDialog: TSaveDialog
     Filter = 
-      'ALL bands (*.all)|*.all|zLog DOS compatible text (*.txt)|*.txt|T' +
-      'X# (*.tx)|*.tx|ADIF (*.adi)|*.adi|Cabrillo(*.CBR)|*.CBR|HAMLOG(*' +
-      '.csv)|*.csv'
+      'ALL bands (*.all)|*.all|zLog CSV(*.csv)|*.csv|zLog DOS compatibl' +
+      'e text (*.txt)|*.txt|TX# (*.tx)|*.tx|ADIF (*.adi)|*.adi|Cabrillo' +
+      '(*.CBR)|*.CBR|HAMLOG(*.csv)|*.csv'
     Title = 'Export'
-    OnTypeChange = TXTSaveDialogTypeChange
-    Left = 460
-    Top = 208
+    Left = 472
+    Top = 196
   end
   object CWFMenu: TPopupMenu
     Left = 376
@@ -7174,5 +7172,11 @@ object MainForm: TMainForm
     OnTimer = timerCqRepeatTimer
     Left = 240
     Top = 171
+  end
+  object FileImportDialog: TOpenDialog
+    Filter = 'zLog binary File(*.ZLO)|*.ZLO|zLog CSV(*.csv)|*.csv'
+    Title = 'Import'
+    Left = 472
+    Top = 144
   end
 end
