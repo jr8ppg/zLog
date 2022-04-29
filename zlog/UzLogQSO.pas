@@ -2390,7 +2390,6 @@ end;
 function TLog.LoadFromFilezLogCsv(Filename: string): Integer;
 var
    i: Integer;
-   strText: string;
    Q: TQSO;
    offsetmin: Integer;
    slFile: TStringList;
@@ -2416,6 +2415,7 @@ begin
 
 //      FQsoList[0].RSTsent :=
 
+      i := 0;
       try
          for i := 1 to slFile.Count - 1 do begin
             slLine.Clear();

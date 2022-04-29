@@ -5386,6 +5386,7 @@ var
    rig: Integer;
    n: Integer;
    RandCQStr: array[1..2] of string;
+   dwTick: DWORD;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('**** CQRepeatProc(' + BoolToStr(fFirstCall, True) + ') ****'));
@@ -5419,6 +5420,15 @@ begin
       // カレントRIGを変更
       RigControl.SetCurrentRig(rig);
       SwitchRig(rig);
+
+      // RIG変更後Wait
+      dwTick := GetTickCount();
+      while True do begin
+         if (GetTickCount() - dwTick) >= (dmZLogGlobal.Settings._so2r_rigsw_after_delay) then begin
+            Break;
+         end;
+         Application.ProcessMessages();
+      end;
    end;
    FCancelAutoRigSwitch := False;
 
@@ -8053,17 +8063,20 @@ begin
          Exit;
       end;
 
+      // TABキー押下後
       if FTabKeyPressed = True then begin
          FCancelAutoRigSwitch := True;
-//         Exit;
+         FCQLoopPause := False;
       end;
 
+      // DOWNキー押下後
       if FDownKeyPressed = True then begin
          FCQLoopRunning := True;
          FCancelAutoRigSwitch := True;
          FCQLoopCount := 0;
       end;
 
+      // CQリピート中で、一時停止無し
       if (FCQLoopRunning = True) and (FCQLoopPause = False) then begin
          if FInformation.Is2bsiq = True then begin
             interval := dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec;
@@ -8073,13 +8086,8 @@ begin
          end;
          timerCqRepeat.Interval := Trunc(1000 * interval);
 
-//         timerRepeatWatch.Enabled := True;
-         if FInformation.Is2bsiq = True then begin
-            timerCqRepeat.Enabled := True;
-         end
-         else begin
-            timerCqRepeat.Enabled := True;
-         end;
+         // CQリピート開始
+         timerCqRepeat.Enabled := True;
       end;
    finally
       FTabKeyPressed := False;
@@ -10808,12 +10816,14 @@ begin
 
       if dmZLogGlobal.Settings._pttenabled then begin
          dmZlogKeyer.ControlPTT(nID, True);
+         Sleep(dmZLogGlobal.Settings._pttbefore);
       end;
    end
    else begin
       dmZlogKeyer.SetVoiceFlag(0);
 
       if dmZLogGlobal.Settings._pttenabled then begin
+         Sleep(dmZLogGlobal.Settings._pttafter);
          dmZlogKeyer.ControlPTT(nID, False);
       end;
    end;

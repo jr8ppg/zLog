@@ -133,6 +133,7 @@ type
     _so2r_rx_port: Integer;      // 0:none 1-20:com1-20
     _so2r_use_rig3: Boolean;
     _so2r_cq_rpt_interval_sec: Double;
+    _so2r_rigsw_after_delay: Integer;
     _so2r_cq_msg_bank: Integer;     // 0:Bank-A 1:Bank-B
     _so2r_cq_msg_number: Integer;   // 1-12
 
@@ -834,6 +835,7 @@ begin
       Settings._so2r_use_rig3 := ini.ReadBool('SO2R', 'use_rig3', True);
 
       Settings._so2r_cq_rpt_interval_sec := ini.ReadFloat('SO2R', 'cq_repeat_interval_sec', 2.0);
+      Settings._so2r_rigsw_after_delay := ini.ReadInteger('SO2R', 'rigsw_after_delay', 200);
       Settings._so2r_cq_msg_bank    := ini.ReadInteger('SO2R', 'cq_msg_bank', 1);
       if (Settings._so2r_cq_msg_bank < 1) or (Settings._so2r_cq_msg_bank > 2) then begin
          Settings._so2r_cq_msg_bank := 1;
@@ -1400,6 +1402,7 @@ begin
       ini.WriteBool('SO2R', 'use_rig3', Settings._so2r_use_rig3);
 
       ini.WriteFloat('SO2R', 'cq_repeat_interval_sec', Settings._so2r_cq_rpt_interval_sec);
+      ini.WriteInteger('SO2R', 'rigsw_after_delay', Settings._so2r_rigsw_after_delay);
       ini.WriteInteger('SO2R', 'cq_msg_bank', Settings._so2r_cq_msg_bank);
       ini.WriteInteger('SO2R', 'cq_msg_number', Settings._so2r_cq_msg_number);
 

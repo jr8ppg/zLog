@@ -474,6 +474,8 @@ type
     radioSo2rCqMsgBankA: TRadioButton;
     radioSo2rCqMsgBankB: TRadioButton;
     comboSo2rCqMsgNumber: TComboBox;
+    Label101: TLabel;
+    editSo2rRigSwAfterDelay: TEdit;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -864,6 +866,7 @@ begin
 
       r := Settings._so2r_cq_rpt_interval_sec;
       Settings._so2r_cq_rpt_interval_sec := StrToFloatDef(editSo2rCqRptIntervalSec.Text, r);
+      Settings._so2r_rigsw_after_delay := StrToIntDef(editSo2rRigSwAfterDelay.Text, 200);
       if radioSo2rCqMsgBankA.Checked = True then begin
          Settings._so2r_cq_msg_bank := 1;
       end
@@ -1291,6 +1294,8 @@ begin
       comboSo2rRxSelectPort.ItemIndex := Settings._so2r_rx_port;
 
       editSo2rCqRptIntervalSec.Text := FloatToStrF(Settings._so2r_cq_rpt_interval_sec, ffFixed, 3, 1);
+      editSo2rRigSwAfterDelay.Text := IntToStr(Settings._so2r_rigsw_after_delay);
+
       if Settings._so2r_cq_msg_bank = 1 then begin
          radioSo2rCqMsgBankA.Checked := True;
       end

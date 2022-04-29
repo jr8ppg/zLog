@@ -2531,6 +2531,13 @@ object formOptions: TformOptions
             Height = 13
             Caption = 'Message Number'
           end
+          object Label101: TLabel
+            Left = 188
+            Top = 23
+            Width = 71
+            Height = 13
+            Caption = 'After Delay(ms)'
+          end
           object editSo2rCqRptIntervalSec: TEdit
             Left = 127
             Top = 20
@@ -2548,7 +2555,7 @@ object formOptions: TformOptions
             Width = 221
             Height = 23
             BevelOuter = bvNone
-            TabOrder = 1
+            TabOrder = 2
             object radioSo2rCqMsgBankA: TRadioButton
               Left = 12
               Top = 4
@@ -2590,6 +2597,17 @@ object formOptions: TformOptions
                 '11'
                 '12')
             end
+          end
+          object editSo2rRigSwAfterDelay: TEdit
+            Left = 264
+            Top = 20
+            Width = 41
+            Height = 21
+            ImeMode = imDisable
+            MaxLength = 4
+            TabOrder = 1
+            Text = '200'
+            OnKeyPress = CQRepEditKeyPress
           end
         end
       end
