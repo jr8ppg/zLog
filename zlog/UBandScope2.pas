@@ -283,119 +283,126 @@ var
    MarkCurrent: Boolean;
    Marked: Boolean;
 begin
-   toprow := Grid.TopRow;
-   currow := Grid.Row;
-   markrow := -1;
-
-   // クリーンアップ
-   Cleanup(nil);
-
-   if dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand then begin
-      MarkCurrent := True;
-   end
-   else begin
-      MarkCurrent := False;
-   end;
-
-   R := EstimateNumRows();
-   if R = 0 then begin
-      R := 1;    // Gridは0行にできない
-   end
-   else begin
-      // 周波数マーカー分追加
-      if MarkCurrent = True then begin
-         Inc(R);
-      end;
-   end;
-
-   // 行数再設定
-   Grid.RowCount := R;
-
-   // 先頭行は必ずクリアする
-   Grid.Cells[0, 0] := '';
-   Grid.Objects[0, 0] := nil;
-
-   Marked := False;
-
-   Lock();
    try
-      R := 0;
-      for i := 0 to FBSList.Count - 1 do begin
-         D := FBSList[i];
-         if D.Band <> FCurrBand then begin
-            Continue;
-         end;
+      toprow := Grid.TopRow;
+      currow := Grid.Row;
+      markrow := -1;
 
-         if MarkCurrent and Not(Marked) then begin
-            if D.FreqHz >= CurrentRigFrequency then begin
-               Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
-               Grid.Objects[0, R] := nil;
-               Marked := true;
-               markrow := R;
-               Inc(R);
-            end;
-         end;
+      // クリーンアップ
+      Cleanup(nil);
 
-         str := FillRight(D.LabelStr, 20);
-
-         if D.SpotSource <> ssSelf then begin
-            str := str + '+ ';
-         end
-         else begin
-            str := str + '  ';
-         end;
-
-         if D.CQ = True then begin
-            str := str + 'CQ';
-         end
-         else begin
-            str := str + '  ';
-         end;
-
-         Grid.Cells[0, R] := str;
-         Grid.Objects[0, R] := D;
-
-//         if (Main.CurrentQSO.CQ = false) and ((D.FreqHz - CurrentRigFrequency) <= 100) then begin
-//            MainForm.AutoInput(D);
-//         end;
-
-         Inc(R);
-      end;
-   finally
-      Unlock();
-   end;
-
-   if MarkCurrent and Not(Marked) then begin
-      Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
-      Grid.Objects[0, R] := nil;
-      markrow := R;
-   end;
-
-   if markrow = -1 then begin
-      if toprow <= Grid.RowCount - 1 then begin
-         Grid.TopRow := toprow;
+      if dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand then begin
+         MarkCurrent := True;
       end
       else begin
-         Grid.TopRow := 0;
+         MarkCurrent := False;
       end;
-   end
-   else begin
-      if Grid.TopRow > markrow then begin
-         Grid.TopRow := markrow;
-      end;
-      if (Grid.TopRow + Grid.VisibleRowCount - 1) < markrow then begin
-         i := markrow - Grid.VisibleRowCount + 1;
-         if i >= 0 then begin
-            Grid.TopRow := i;
+
+      R := EstimateNumRows();
+      if R = 0 then begin
+         R := 1;    // Gridは0行にできない
+      end
+      else begin
+         // 周波数マーカー分追加
+         if MarkCurrent = True then begin
+            Inc(R);
          end;
       end;
-   end;
 
-   if currow <= Grid.RowCount - 1 then begin
-      Grid.Row := currow;
-   end
-   else begin
-      Grid.Row := 0;
+      // 行数再設定
+      Grid.RowCount := R;
+
+      // 先頭行は必ずクリアする
+      Grid.Cells[0, 0] := '';
+      Grid.Objects[0, 0] := nil;
+
+      Marked := False;
+
+      Lock();
+      try
+         R := 0;
+         for i := 0 to FBSList.Count - 1 do begin
+            D := FBSList[i];
+            if D.Band <> FCurrBand then begin
+               Continue;
+            end;
+
+            if MarkCurrent and Not(Marked) then begin
+               if D.FreqHz >= CurrentRigFrequency then begin
+                  Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
+                  Grid.Objects[0, R] := nil;
+                  Marked := true;
+                  markrow := R;
+                  Inc(R);
+               end;
+            end;
+
+            str := FillRight(D.LabelStr, 20);
+
+            if D.SpotSource <> ssSelf then begin
+               str := str + '+ ';
+            end
+            else begin
+               str := str + '  ';
+            end;
+
+            if D.CQ = True then begin
+               str := str + 'CQ';
+            end
+            else begin
+               str := str + '  ';
+            end;
+
+            Grid.Cells[0, R] := str;
+            Grid.Objects[0, R] := D;
+
+   //         if (Main.CurrentQSO.CQ = false) and ((D.FreqHz - CurrentRigFrequency) <= 100) then begin
+   //            MainForm.AutoInput(D);
+   //         end;
+
+            Inc(R);
+         end;
+      finally
+         Unlock();
+      end;
+
+      if MarkCurrent and Not(Marked) then begin
+         Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
+         Grid.Objects[0, R] := nil;
+         markrow := R;
+      end;
+
+      if markrow = -1 then begin
+         if toprow <= Grid.RowCount - 1 then begin
+            Grid.TopRow := toprow;
+         end
+         else begin
+            Grid.TopRow := 0;
+         end;
+      end
+      else begin
+         if Grid.TopRow > markrow then begin
+            Grid.TopRow := markrow;
+         end;
+         if (Grid.TopRow + Grid.VisibleRowCount - 1) < markrow then begin
+            i := markrow - Grid.VisibleRowCount + 1;
+            if i >= 0 then begin
+               Grid.TopRow := i;
+            end;
+         end;
+      end;
+
+      if currow <= Grid.RowCount - 1 then begin
+         Grid.Row := currow;
+      end
+      else begin
+         Grid.Row := 0;
+      end;
+   except
+      on E: Exception do begin
+         dmZLogGlobal.WriteErrorLog(E.Message);
+         dmZLogGlobal.WriteErrorLog(E.StackTrace);
+      end;
    end;
 end;
 
@@ -463,6 +470,10 @@ var
    i: Integer;
    B: TBSData;
 begin
+   if dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = bUnknown then begin
+      Exit;
+   end;
+
    if (CurrentRigFrequency div 100) = (Hz div 100) then begin
       Exit;
    end;

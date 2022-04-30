@@ -402,85 +402,92 @@ var
    dupe, _deleted : boolean;
    Expire : double;
 begin
-   Lock();
    try
-      dupe := false;
-      _deleted := false;
+      Lock();
+      try
+         dupe := false;
+         _deleted := false;
 
-      Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
+         Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
+
+         ListBox.Items.BeginUpdate();
+         for i := FSpotList.Count - 1 downto 0 do begin
+            S := FSpotList[i];
+            if Now - S.Time > Expire then begin
+               FSpotList.Delete(i);
+               ListBox.Items.Delete(i);
+               _deleted := True;
+            end;
+
+            if (S.Call = Sp.Call) and (S.FreqHz = Sp.FreqHz) then begin
+               dupe := True;
+               break;
+            end;
+         end;
+         ListBox.Items.EndUpdate();
+
+         if _deleted then begin
+   //         RenewListBox;
+         end;
+
+         if FSpotList.Count > SPOTMAX then begin
+            Sp.Free();
+            exit;
+         end;
+
+         if dupe then begin
+            Sp.Free();
+            exit;
+         end;
+
+         // JAのみ？
+         if dmZLogGlobal.Settings._bandscope_show_only_domestic = True then begin
+            if IsDomestic(Sp.Call) = False then begin
+               Sp.Free();
+               Exit;
+            end;
+         end;
+
+         // 周波数よりモードを決める
+         // この時点でmOtherならBAND PLAN外と見なして良い
+         Sp.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(Sp.FreqHz);
+
+         // BAND PLAN内？
+         if dmZLogGlobal.Settings._bandscope_show_only_in_bandplan = True then begin
+            if dmZLogGlobal.BandPlan.IsInBand(Sp.Band, Sp.Mode, Sp.FreqHz) = False then begin
+               Sp.Free();
+               Exit;
+            end;
+         end;
+
+         // 交信済みチェック
+         SpotCheckWorked(Sp);
+
+         // Spotリストへ追加
+         FSpotList.Add(Sp);
+      finally
+         Unlock();
+      end;
+
+      if checkNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
+      end
+      else begin
+         MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
+      end;
 
       ListBox.Items.BeginUpdate();
-      for i := FSpotList.Count - 1 downto 0 do begin
-         S := FSpotList[i];
-         if Now - S.Time > Expire then begin
-            FSpotList.Delete(i);
-            ListBox.Items.Delete(i);
-            _deleted := True;
-         end;
-
-         if (S.Call = Sp.Call) and (S.FreqHz = Sp.FreqHz) then begin
-            dupe := True;
-            break;
-         end;
-      end;
+      ListBox.AddItem(Sp.ClusterSummary, Sp);
       ListBox.Items.EndUpdate();
+      ListBox.ShowLast();
 
-      if _deleted then begin
-//         RenewListBox;
+      // BandScopeに登録
+      MainForm.BandScopeAddClusterSpot(Sp);
+   except
+      on E: Exception do begin
+         dmZLogGlobal.WriteErrorLog(E.Message);
+         dmZLogGlobal.WriteErrorLog(E.StackTrace);
       end;
-
-      if FSpotList.Count > SPOTMAX then begin
-         Sp.Free();
-         exit;
-      end;
-
-      if dupe then begin
-         Sp.Free();
-         exit;
-      end;
-
-      // JAのみ？
-      if dmZLogGlobal.Settings._bandscope_show_only_domestic = True then begin
-         if IsDomestic(Sp.Call) = False then begin
-            Sp.Free();
-            Exit;
-         end;
-      end;
-
-      // 周波数よりモードを決める
-      // この時点でmOtherならBAND PLAN外と見なして良い
-      Sp.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(Sp.FreqHz);
-
-      // BAND PLAN内？
-      if dmZLogGlobal.Settings._bandscope_show_only_in_bandplan = True then begin
-         if dmZLogGlobal.BandPlan.IsInBand(Sp.Band, Sp.Mode, Sp.FreqHz) = False then begin
-            Sp.Free();
-            Exit;
-         end;
-      end;
-
-      // 交信済みチェック
-      SpotCheckWorked(Sp);
-
-      // Spotリストへ追加
-      FSpotList.Add(Sp);
-   finally
-      Unlock();
    end;
-
-   if checkNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
-   end
-   else begin
-      MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
-   end;
-
-   ListBox.Items.BeginUpdate();
-   ListBox.AddItem(Sp.ClusterSummary, Sp);
-   ListBox.Items.EndUpdate();
-   ListBox.ShowLast();
-
-   // BandScopeに登録
-   MainForm.BandScopeAddClusterSpot(Sp);
 end;
 
 procedure TCommForm.TransmitSpot(S : string); // local or via network

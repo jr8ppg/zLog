@@ -284,6 +284,7 @@ type
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private 宣言 }
+    FErrorLogFileName: string;
     FBandPlan: TBandPlan;
     FOpList: TOperatorInfoList;
 
@@ -397,6 +398,8 @@ public
     property MyITUZone: string read FMyITUZone;
     property BandPlan: TBandPlan read FBandPlan;
     property Target: TContestTarget read FTarget;
+
+    procedure WriteErrorLog(msg: string);
   end;
 
 function Log(): TLog;
@@ -507,6 +510,11 @@ begin
 
    FTarget := TContestTarget.Create();
    FTarget.LoadFromFile();
+
+   // エラーログファイル名
+   FErrorLogFileName := ExtractFileName(Application.ExeName);
+   FErrorLogFileName := StringReplace(FErrorLogFileName, ExtractFileExt(FErrorLogFileName), '', [rfReplaceAll]);
+   FErrorLogFileName := FErrorLogFileName + '_errorlog.txt'
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
@@ -3336,6 +3344,27 @@ begin
       end;
    end;
    Result := mOther;
+end;
+
+procedure TdmZLogGlobal.WriteErrorLog(msg: string);
+var
+   str: string;
+   txt: TextFile;
+begin
+   AssignFile(txt, FErrorLogFileName);
+   if FileExists(FErrorLogFileName) then begin
+      Reset(txt);
+   end
+   else begin
+      Rewrite(txt);
+   end;
+
+   str := FormatDateTime( 'yyyy/mm/dd hh:nn:ss ', Now ) + msg;
+
+   Append( txt );
+   WriteLn( txt, str );
+   Flush( txt );
+   CloseFile( txt );
 end;
 
 end.
