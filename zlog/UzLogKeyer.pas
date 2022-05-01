@@ -591,6 +591,21 @@ begin
 
       CopyMemory(@FUsbInfo[nID].FPrevPortIn, p, 8);
    end;
+
+   if FUsbInfo[0].FUSBIF4CW = FUsbInfo[1].FUSBIF4CW then begin
+      FUsbInfo[1].FUsbPortData := FUsbInfo[0].FUsbPortData;
+      FUsbInfo[1].FPrevUsbPortData := FUsbInfo[0].FPrevUsbPortData;
+      FUsbInfo[1].FUsbPortIn := FUsbInfo[0].FUsbPortIn;
+      FUsbInfo[1].FUsbPortOut := FUsbInfo[0].FUsbPortOut;
+      FUsbInfo[1].FPrevPortIn := FUsbInfo[0].FPrevPortIn;
+   end;
+   if FUsbInfo[0].FUSBIF4CW = FUsbInfo[2].FUSBIF4CW then begin
+      FUsbInfo[2].FUsbPortData := FUsbInfo[0].FUsbPortData;
+      FUsbInfo[2].FPrevUsbPortData := FUsbInfo[0].FPrevUsbPortData;
+      FUsbInfo[2].FUsbPortIn := FUsbInfo[0].FUsbPortIn;
+      FUsbInfo[2].FUsbPortOut := FUsbInfo[0].FUsbPortOut;
+      FUsbInfo[2].FPrevPortIn := FUsbInfo[0].FPrevPortIn;
+   end;
 end;
 
 procedure TdmZLogKeyer.HidControllerDeviceUnplug(HidDev: TJvHidDevice);
