@@ -1637,7 +1637,7 @@ begin
          slCsv.Add(FormatDateTime('yyyy/mm/dd', Q.Time));
 
          // 2列目　交信時分（HH:MM）
-         slCsv.Add(FormatDateTime('HH:MM', Q.Time));
+         slCsv.Add(FormatDateTime('HH:MM:SS', Q.Time));
 
          // 3列目 TimeZone
          if offsetmin = _USEUTC then begin
@@ -2424,7 +2424,7 @@ begin
             Q := TQSO.Create();
 
             // 1列目　交信年月日（YY/MM/DD）
-            // 2列目　交信時分（HH:MM）
+            // 2列目　交信時分（HH:MM:SS）
             Q.Time := StrToDateTime(slLine[0] + ' ' + slLine[1]);
 
             // 3列目 TimeZone
