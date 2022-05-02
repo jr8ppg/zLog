@@ -611,23 +611,31 @@ end;
 
 procedure TCommForm.ConnectButtonClick(Sender: TObject);
 begin
-   Edit.SetFocus;
+   try
+      Edit.SetFocus;
 
-   if dmZlogGlobal.Settings._clusterport = 0 then begin
-      MainForm.ZLinkForm.PushRemoteConnect;
-      exit;
-   end;
+      if dmZlogGlobal.Settings._clusterport = 0 then begin
+         MainForm.ZLinkForm.PushRemoteConnect;
+         exit;
+      end;
 
-   if Telnet.IsConnected then begin
-      ConnectButton.Caption := 'Disconnecting...';
-      FDisconnectClicked := True;
-      Telnet.Close;
-   end
-   else begin
-      Telnet.Connect;
-      ConnectButton.Caption := 'Connecting...';
-      FDisconnectClicked := False;
-      Timer1.Enabled := True;
+      if Telnet.IsConnected then begin
+         ConnectButton.Caption := 'Disconnecting...';
+         FDisconnectClicked := True;
+         Telnet.Close;
+      end
+      else begin
+         Telnet.Connect;
+         ConnectButton.Caption := 'Connecting...';
+         FDisconnectClicked := False;
+         Timer1.Enabled := True;
+      end;
+   except
+      on E: Exception do begin
+         WriteConsole(E.Message);
+         Timer1.Enabled := False;
+         checkAutoReconnect.Checked := False;
+      end;
    end;
 end;
 
