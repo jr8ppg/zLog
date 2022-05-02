@@ -1083,8 +1083,10 @@ type
     function GetDateEdit(): TEdit;        // 1
     function GetTimeEdit(): TEdit;        // 1
     function GetCallsignEdit(): TEdit;    // 2
+    function GetCallsignEditEx(): TEdit;    // 2
     function GetRSTEdit(): TEdit;         // 3
     function GetNumberEdit(): TEdit;      // 4
+    function GetNumberEditEx(): TEdit;      // 4
     function GetModeEdit(): TEdit;        // 5
     function GetPowerEdit(): TEdit;       // 6
     function GetBandEdit(): TEdit;        // 7
@@ -1188,8 +1190,10 @@ type
     property DateEdit: TEdit read GetDateEdit;
     property TimeEdit: TEdit read GetTimeEdit;
     property CallsignEdit: TEdit read GetCallsignEdit;
+    property CallsignEditEx: TEdit read GetCallsignEditEx;
     property RcvdRSTEdit: TEdit read GetRSTEdit;
     property NumberEdit: TEdit read GetNumberEdit;
+    property NumberEditEx: TEdit read GetNumberEditEx;
     property ModeEdit: TEdit read GetModeEdit;
     property PowerEdit: TEdit read GetPowerEdit;
     property BandEdit: TEdit read GetBandEdit;
@@ -1514,19 +1518,22 @@ begin
       Exit;
    end;
 
-   MainForm.NumberEdit.Text := Q.NrRcvd;
+   MainForm.NumberEditEx.Text := Q.NrRcvd;
    CurrentQSO.NrRcvd := Q.NrRcvd;
 end;
 
 procedure TContest.SelectPowerCode();
 var
    str: string;
+   NumberEdit: TEdit;
 begin
-   str := MainForm.NumberEdit.Text;
+   NumberEdit := MainForm.NumberEdit;
+
+   str := NumberEdit.Text;
    if str <> '' then begin
       if CharInSet(str[length(str)], ['H', 'M', 'L', 'P']) then begin
-         MainForm.NumberEdit.SelStart := length(str) - 1;
-         MainForm.NumberEdit.SelLength := 1;
+         NumberEdit.SelStart := length(str) - 1;
+         NumberEdit.SelLength := 1;
       end;
    end;
 end;
@@ -1553,7 +1560,9 @@ var
    str: string;
    currshf: Boolean;
    pastQSO, tempQSO: TQSO;
+   NumberEdit: TEdit;
 begin
+   NumberEdit := MainForm.NumberEditEx;
    currshf := IsSHF(CurrentQSO.Band);
    pastQSO := nil;
    tempQSO := nil;
@@ -1571,7 +1580,7 @@ begin
    end;
 
    if pastQSO <> nil then begin
-      MainForm.NumberEdit.Text := pastQSO.NrRcvd;
+      NumberEdit.Text := pastQSO.NrRcvd;
       CurrentQSO.NrRcvd := pastQSO.NrRcvd;
    end
    else begin
@@ -1581,12 +1590,12 @@ begin
                str := '01' + ExtractPower(tempQSO.NrRcvd)
             else
                str := tempQSO.NrRcvd;
-            MainForm.NumberEdit.Text := str;
+            NumberEdit.Text := str;
             CurrentQSO.NrRcvd := str;
          end
          else begin
             str := ExtractKenNr(tempQSO.NrRcvd) + ExtractPower(tempQSO.NrRcvd);
-            MainForm.NumberEdit.Text := str;
+            NumberEdit.Text := str;
             CurrentQSO.NrRcvd := str;
          end;
       end
@@ -1606,7 +1615,9 @@ var
    str: string;
    currshf: Boolean;
    pastQSO, tempQSO: TQSO;
+   NumberEdit: TEdit;
 begin
+   NumberEdit := MainForm.NumberEditEx;
    currshf := IsSHF(CurrentQSO.Band);
    pastQSO := nil;
    tempQSO := nil;
@@ -1624,7 +1635,7 @@ begin
    end;
 
    if pastQSO <> nil then begin
-      MainForm.NumberEdit.Text := pastQSO.NrRcvd;
+      NumberEdit.Text := pastQSO.NrRcvd;
       CurrentQSO.NrRcvd := pastQSO.NrRcvd;
    end
    else begin
@@ -1634,12 +1645,12 @@ begin
                str := '01' + ExtractPower(tempQSO.NrRcvd)
             else
                str := tempQSO.NrRcvd;
-            MainForm.NumberEdit.Text := str;
+            NumberEdit.Text := str;
             CurrentQSO.NrRcvd := str;
          end
          else begin
             str := ExtractKenNr(tempQSO.NrRcvd) + ExtractPower(tempQSO.NrRcvd);
-            MainForm.NumberEdit.Text := str;
+            NumberEdit.Text := str;
             CurrentQSO.NrRcvd := str;
          end;
       end
@@ -1653,18 +1664,25 @@ begin
    SelectPowerCode();
 end;
 
-Procedure TContest.SpaceBarProc;
+procedure TContest.SpaceBarProc;
+var
+   CallsignEdit: TEdit;
+   NumberEdit: TEdit;
 begin
+   CallsignEdit := MainForm.CallsignEditEx;
+   NumberEdit := MainForm.NumberEditEx;
+
    MultiFound := False;
-   if (MainForm.NumberEdit.Text = '') and (SameExchange = True) then begin
+   if (NumberEdit.Text = '') and (SameExchange = True) then begin
       DispExchangeOnOtherBands;
-      if MainForm.NumberEdit.Text <> '' then
+      if NumberEdit.Text <> '' then
          MultiFound := True;
    end;
+
    if dmZlogGlobal.Settings._entersuperexchange and (MainForm.FSpcRcvd_Estimate <> '') then
-      if MainForm.NumberEdit.Text = '' then
-         if CoreCall(MainForm.FSpcFirstDataCall) = CoreCall(MainForm.CallsignEdit.Text) then begin
-            MainForm.NumberEdit.Text := TrimRight(MainForm.FSpcRcvd_Estimate);
+      if NumberEdit.Text = '' then
+         if CoreCall(MainForm.FSpcFirstDataCall) = CoreCall(CallsignEdit.Text) then begin
+            NumberEdit.Text := TrimRight(MainForm.FSpcRcvd_Estimate);
             MultiFound := True;
          end;
 
@@ -1673,10 +1691,16 @@ begin
 end;
 
 Procedure TIOTAContest.SpaceBarProc;
+var
+   NumberEdit: TEdit;
 begin
    inherited;
-   if MultiFound and (TIOTAMulti(MyContest.MultiForm).ExtractMulti(CurrentQSO) = '') then // serial number
-      MainForm.NumberEdit.Text := '';
+
+   NumberEdit := MainForm.NumberEditEx;
+
+   if MultiFound and (TIOTAMulti(MyContest.MultiForm).ExtractMulti(CurrentQSO) = '') then begin // serial number
+      NumberEdit.Text := '';
+   end;
 end;
 
 procedure TMainForm.SetR(var aQSO: TQSO); // r of RST
@@ -2696,12 +2720,15 @@ end;
 procedure TCQWWContest.SpaceBarProc;
 var
    temp: string;
+   NumberEdit: TEdit;
 begin
+   NumberEdit := MainForm.NumberEditEx;
+
    // inherited;
    { if MainForm.NumberEdit.Text = '' then
      begin }
    temp := MultiForm.GuessZone(CurrentQSO);
-   MainForm.NumberEdit.Text := temp;
+   NumberEdit.Text := temp;
    CurrentQSO.NrRcvd := temp;
    // end;
 
@@ -2782,12 +2809,16 @@ end;
 procedure TIARUContest.SpaceBarProc;
 var
    temp: string;
+   NumberEdit: TEdit;
 begin
    inherited;
+
+   NumberEdit := MainForm.NumberEditEx;
+
    MainForm.WriteStatusLine(MultiForm.GetInfo(CurrentQSO), False);
-   if (MultiFound = False) and (MainForm.NumberEdit.Text = '') then begin
+   if (MultiFound = False) and (NumberEdit.Text = '') then begin
       temp := MultiForm.GuessZone(CurrentQSO);
-      MainForm.NumberEdit.Text := temp;
+      NumberEdit.Text := temp;
       CurrentQSO.NrRcvd := temp;
    end;
 end;
@@ -4694,6 +4725,7 @@ var
    S: String;
    Q: TQSO;
    nID: Integer;
+   rx: Integer;
 begin
    if CallsignEdit.Text = '' then begin
       Exit;
@@ -4713,6 +4745,9 @@ begin
    // CQ Invert時は送信RIGを戻す
    if FInformation.Is2bsiq = True then begin
       ResetTx();
+
+      rx := GetNextRigID(FCurrentRx);
+      SwitchRx(rx + 1);
    end;
 
    // PHONE
@@ -4736,7 +4771,9 @@ begin
       end
       else begin  // not dupe
          MyContest.SpaceBarProc;
-         NumberEdit.SetFocus;
+         if FInformation.Is2bsiq = False then begin
+            NumberEdit.SetFocus;
+         end;
          PlayMessage(1, 2);
       end;
 
@@ -4749,13 +4786,15 @@ begin
       if FTTYConsole <> nil then
          FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), CurrentQSO));
       MyContest.SpaceBarProc;
-      NumberEdit.SetFocus;
+      if FInformation.Is2bsiq = False then begin
+         NumberEdit.SetFocus;
+      end;
       FCQRepeatPlaying := False;
       Exit;
    end;
 
    // CW
-   if NumberEdit.Text = '' then begin
+   if NumberEditEx.Text = '' then begin
       CurrentQSO.UpdateTime;
       TimeEdit.Text := CurrentQSO.TimeStr;
       DateEdit.Text := CurrentQSO.DateStr;
@@ -4942,7 +4981,10 @@ var
    workedZLO: Boolean;
    st, st2: string;
    B: TBand;
+   band_bakup: TBand;
 begin
+   band_bakup := CurrentQSO.Band;
+
    EditedSinceTABPressed := tabstate_normal;
 
    // Callsign入力チェック
@@ -5033,6 +5075,7 @@ begin
    end;
 
    // ログに記録
+   CurrentQSO.Band := band_bakup;
    MyContest.LogQSO(CurrentQSO, True);
 
    workedZLO := False;
@@ -5408,6 +5451,9 @@ begin
 
    rig := RigControl.GetCurrentRig();
 
+   // 次回キャンセルは不要か？
+//   FCancelAutoRigSwitch := False;
+
    if (FInformation.is2bSiq = True) and (fFirstCall = False) and (FCancelAutoRigSwitch = False) then begin
       // SHIFTキー押下でキャンセル
       if GetAsyncKeyState(VK_SHIFT) < 0 then begin
@@ -5748,7 +5794,7 @@ begin
                dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
             end;
 
-            CallsignEdit.SelectAll;
+            CallsignEditEx.SelectAll;
 
             exit; { BECAREFUL!!!!!!!!!!!!!!!!!!!!!!!! }
          end
@@ -5762,7 +5808,10 @@ begin
 
       if TabPressed2 then begin
          MyContest.SpaceBarProc;
-         NumberEdit.SetFocus;
+
+         if FInformation.Is2bsiq = False then begin
+            NumberEdit.SetFocus;
+         end;
          EditedSinceTABPressed := tabstate_tabpressedbutnotedited; // UzLogCW
       end;
 
@@ -7425,8 +7474,16 @@ begin
    OutputDebugString(PChar('*** OnZLogSetFocusCallsign() w = ' + IntToStr(Message.WParam) + ' ***'));
    {$ENDIF}
    nID := Message.WParam;
-   FEditPanel[nID].CallsignEdit.SetFocus();
-   LastFocus := FEditPanel[nID].CallsignEdit;
+   if FEditPanel[nID].CallsignEdit.Text <> '' then begin
+      FEditPanel[nID].rcvdNumber.SetFocus();
+      FEditPanel[nID].rcvdNumber.SelStart := Length(FEditPanel[nID].rcvdNumber.Text);
+      LastFocus := FEditPanel[nID].rcvdNumber;
+   end
+   else begin
+      FEditPanel[nID].CallsignEdit.SetFocus();
+      FEditPanel[nID].CallsignEdit.SelStart := Length(FEditPanel[nID].CallsignEdit.Text);
+      LastFocus := FEditPanel[nID].CallsignEdit;
+   end;
 end;
 
 procedure TMainForm.InitALLJA();
@@ -8021,6 +8078,7 @@ end;
 procedure TMainForm.OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: Boolean);
 var
    tx: Integer;
+   rx: Integer;
    interval: Double;
 begin
    {$IFDEF DEBUG}
@@ -8065,15 +8123,22 @@ begin
 
       // TABキー押下後
       if FTabKeyPressed = True then begin
-         FCancelAutoRigSwitch := True;
-         FCQLoopPause := False;
+         if FInformation.Is2bsiq = True then begin
+            FCancelAutoRigSwitch := True;
+            FCQLoopPause := False;
+
+            rx := GetNextRigID(FCurrentRx);
+            SwitchRx(rx + 1);
+         end;
       end;
 
       // DOWNキー押下後
       if FDownKeyPressed = True then begin
          FCQLoopRunning := True;
-         FCancelAutoRigSwitch := True;
          FCQLoopCount := 0;
+         if FInformation.Is2bsiq = True then begin
+            FCancelAutoRigSwitch := True;
+         end;
       end;
 
       // CQリピート中で、一時停止無し
@@ -9168,7 +9233,10 @@ begin
       dmZLogKeyer.ResetPTT();
    end;
 
-   SwitchRig(FCurrentRx + 1);
+   // TXとRXを合わせる
+   if FCurrentTx <> FCurrentRx then begin
+      SwitchRig(FCurrentRx + 1);
+   end;
 end;
 
 // #120 CQモード、SPモードのトグル
@@ -10235,6 +10303,16 @@ begin
    Result := FEditPanel[CurrentRigID].CallsignEdit;
 end;
 
+function TMainForm.GetCallsignEditEx(): TEdit;    // 2
+begin
+   if FInformation.Is2bsiq = True then begin
+      Result := FEditPanel[FCurrentTx].CallsignEdit;
+   end
+   else begin
+      Result := FEditPanel[CurrentRigID].CallsignEdit;
+   end;
+end;
+
 function TMainForm.GetRSTEdit(): TEdit;         // 3
 begin
    Result := FEditPanel[CurrentRigID].rcvdRSTEdit;
@@ -10243,6 +10321,16 @@ end;
 function TMainForm.GetNumberEdit(): TEdit;      // 4
 begin
    Result := FEditPanel[CurrentRigID].rcvdNumber;
+end;
+
+function TMainForm.GetNumberEditEx(): TEdit;      // 4
+begin
+   if FInformation.Is2bsiq = True then begin
+      Result := FEditPanel[FCurrentTx].rcvdNumber;
+   end
+   else begin
+      Result := FEditPanel[CurrentRigID].rcvdNumber;
+   end;
 end;
 
 function TMainForm.GetModeEdit(): TEdit;        // 5
@@ -10855,6 +10943,7 @@ begin
 
       if FCQLoopRunning = True then begin
          FCQLoopPause := True;
+         timerCqRepeat.Enabled := False;
       end;
 
       ControlPTT(True);
