@@ -1099,7 +1099,7 @@ type
     procedure UpdateQsoEditPanel(rig: Integer);
     procedure SwitchRig(rig: Integer);
     procedure SwitchTx(rig: Integer);
-    procedure SwitchRx(rig: Integer);
+    procedure SwitchRx(rig: Integer; focusonly: Boolean = False);
     procedure ShowTxIndicator();
     procedure InvertTx();
     procedure ShowCurrentQSO();
@@ -1122,6 +1122,7 @@ type
     procedure OnNonconvertKeyProc();
     procedure OnUpKeyProc(Sender: TObject);
     procedure OnAlphaNumericKeyProc(Sender: TObject; var Key: word);
+    procedure UpdateCurrentQSO();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -4747,7 +4748,7 @@ begin
       ResetTx();
 
       rx := GetNextRigID(FCurrentRx);
-      SwitchRx(rx + 1);
+      SwitchRx(rx + 1, True);
    end;
 
    // PHONE
@@ -8128,7 +8129,7 @@ begin
             FCQLoopPause := False;
 
             rx := GetNextRigID(FCurrentRx);
-            SwitchRx(rx + 1);
+            SwitchRx(rx + 1, True);
          end;
       end;
 
@@ -8138,6 +8139,9 @@ begin
          FCQLoopCount := 0;
          if FInformation.Is2bsiq = True then begin
             FCancelAutoRigSwitch := True;
+
+//            rx := GetNextRigID(FCurrentRx);
+//            SwitchRx(rx + 1, True);
          end;
       end;
 
@@ -8761,9 +8765,7 @@ begin
    RigControl.SetCurrentRig(rig);
    SwitchRig(rig);
 
-   if Assigned(CallsignEdit.OnChange) then begin
-      CallsignEdit.OnChange(nil);
-   end;
+   UpdateCurrentQSO();
 end;
 
 // #72 BandScope
@@ -10584,6 +10586,8 @@ begin
 
    // ShowTxIndicator();
    PostMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);
+
+   UpdateCurrentQSO();
 end;
 
 procedure TMainForm.SwitchTx(rig: Integer);
@@ -10610,16 +10614,19 @@ begin
    end;
 end;
 
-procedure TMainForm.SwitchRx(rig: Integer);
+procedure TMainForm.SwitchRx(rig: Integer; focusonly: Boolean);
 begin
    FCurrentRx := rig - 1;
    FInformation.Rx := rig - 1;
 
    dmZLogKeyer.SetRxRigFlag(rig);
-   RigControl.SetCurrentRig(rig);
-   if Assigned(RigControl.Rig) then begin
-      UpdateBand(RigControl.Rig.CurrentBand);
-      UpdateMode(RigControl.Rig.CurrentMode);
+
+   if focusonly = False then begin
+      RigControl.SetCurrentRig(rig);
+      if Assigned(RigControl.Rig) then begin
+         UpdateBand(RigControl.Rig.CurrentBand);
+         UpdateMode(RigControl.Rig.CurrentMode);
+      end;
    end;
 
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
@@ -11003,6 +11010,16 @@ begin
          end;
       end;
    end;
+end;
+
+procedure TMainForm.UpdateCurrentQSO();
+begin
+   if Assigned(CallsignEdit.OnChange) then begin
+      CallsignEdit.OnChange(nil);
+   end;
+   CurrentQSO.NrRcvd := NumberEdit.Text;
+   CurrentQSO.Band := TextToBand(BandEdit.Text);
+   CurrentQSO.Mode := TextToMode(ModeEdit.Text);
 end;
 
 end.
