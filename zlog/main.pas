@@ -10900,7 +10900,7 @@ begin
    nID := FCurrentTx;
 
    if fOn = True then begin
-      dmZlogKeyer.SetVoiceFlag(1);
+//      dmZlogKeyer.SetVoiceFlag(1);
 
       if dmZLogGlobal.Settings._pttenabled then begin
          dmZlogKeyer.ControlPTT(nID, True);
@@ -10908,7 +10908,7 @@ begin
       end;
    end
    else begin
-      dmZlogKeyer.SetVoiceFlag(0);
+//      dmZlogKeyer.SetVoiceFlag(0);
 
       if dmZLogGlobal.Settings._pttenabled then begin
          Sleep(dmZLogGlobal.Settings._pttafter);
