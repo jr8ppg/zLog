@@ -30,6 +30,16 @@ const
   WM_USER_WKPADDLE = (WM_USER + 3);
   WM_USER_WKSENDNEXTCHAR2 = (WM_USER + 4);
 
+const
+  USBIF4CW_KEY = $01;
+  USBIF4CW_PTT = $02;
+  USBIF4CW_RIG = $04;
+  USBIF4CW_MIC = $08;
+  USBIF4CW_KEY_MASK = (not USBIF4CW_KEY);
+  USBIF4CW_PTT_MASK = (not USBIF4CW_PTT);
+  USBIF4CW_RIG_MASK = (not USBIF4CW_RIG);
+  USBIF4CW_MIC_MASK = (not USBIF4CW_MIC);
+
 type
   TKeyingPort = (tkpNone,
                  tkpSerial1, tkpSerial2, tkpSerial3, tkpSerial4, tkpSerial5,
@@ -59,9 +69,7 @@ type
 
   TUsbPortDataArray = array[0..1] of Byte;
 
-  TUsbInfo = record
-    FUSBIF4CW: TJvHIDDevice;
-
+  TUsbPortInfo = class
     FPrevUsbPortData: Byte;
     FUsbPortData: Byte;
 
@@ -69,6 +77,18 @@ type
     FUsbPortOut: TUsbPortDataArray;
 
     FPrevPortIn: array[0..7] of Byte;
+  public
+    constructor Create();
+    procedure Clear();
+    procedure SetKeyFlag(fOn: Boolean);
+    procedure SetPttFlag(fOn: Boolean);
+    procedure SetVoiceFlag(flag: Integer);
+    procedure SetRigFlag(flag: Integer);
+  end;
+
+  TUsbInfo = record
+    FUSBIF4CW: TJvHIDDevice;
+    FPORTDATA: TUsbPortInfo;
   end;
 
   TdmZLogKeyer = class(TDataModule)
@@ -97,6 +117,7 @@ type
 
     HidController: TJvHidDeviceController;
     usbdevlist: TList<TJvHIDDevice>;
+    usbinflist: TList<TUsbPortInfo>;
     FUSBIF4CW_Detected: Boolean;
 
     FUsbInfo: array[0..2] of TUsbInfo;
@@ -402,6 +423,7 @@ begin
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
+   usbinflist := TList<TUsbPortInfo>.Create();
 
    {$IFDEF USESIDETONE}
    if TSideTone.NumDevices() = 0 then begin
@@ -422,9 +444,7 @@ begin
 
    for i := 0 to 2 do begin
       FUsbInfo[i].FUSBIF4CW := nil;
-      FUsbInfo[i].FPrevUsbPortData := $00;
-      FUsbInfo[i].FUsbPortData := $FF;
-      ZeroMemory(@FUsbInfo[i].FPrevPortIn, SizeOf(FUsbInfo[i].FPrevPortIn));
+      FUsbInfo[i].FPORTDATA := nil;
    end;
 
    InitializeCriticalSection(FUsbPortDataLock);
@@ -451,6 +471,8 @@ begin
 end;
 
 procedure TdmZLogKeyer.DataModuleDestroy(Sender: TObject);
+var
+   i: Integer;
 begin
    {$IFDEF USESIDETONE}
    FTone.Free();
@@ -460,6 +482,12 @@ begin
    USB_OFF();
    DeallocateHWnd(FWnd);
    usbdevlist.Free();
+
+   for i := 0 to usbinflist.Count -1 do begin
+      usbinflist[i].Free();
+   end;
+   usbinflist.Free();
+
    HidController.Free();
 end;
 
@@ -486,6 +514,7 @@ begin
          if HidDev.CheckOut() = True then begin
             HidDev.OpenFile();
             usbdevlist.Add(HidDev);
+            usbinflist.Add(TUsbPortInfo.Create());
             FUSBIF4CW_Detected := True;
          end;
       end;
@@ -558,25 +587,25 @@ begin
    {$ENDIF}
 
    // 前回とステータスに変化があったら
-   if (p[0] <> FUsbInfo[nID].FPrevPortIn[0]) or
-      (p[1] <> FUsbInfo[nID].FPrevPortIn[1]) or
-      (p[2] <> FUsbInfo[nID].FPrevPortIn[2]) or
-      (p[3] <> FUsbInfo[nID].FPrevPortIn[3]) or
-      (p[4] <> FUsbInfo[nID].FPrevPortIn[4]) or
-      (p[5] <> FUsbInfo[nID].FPrevPortIn[5]) or
-      (p[6] <> FUsbInfo[nID].FPrevPortIn[6]) or
-      (p[7] <> FUsbInfo[nID].FPrevPortIn[7]) then begin
+   if (p[0] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[0]) or
+      (p[1] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[1]) or
+      (p[2] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[2]) or
+      (p[3] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[3]) or
+      (p[4] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[4]) or
+      (p[5] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[5]) or
+      (p[6] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[6]) or
+      (p[7] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[7]) then begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('***HidControllerDeviceData*** ReportID=' + IntToHex(ReportID,2) + ' DATA=' + s));
       {$ENDIF}
 
       // Port Data In
-      FUsbInfo[nID].FUsbPortIn[0] := p[6];
-      FUsbInfo[nID].FUsbPortIn[1] := p[7];
+      FUsbInfo[nID].FPORTDATA.FUsbPortIn[0] := p[6];
+      FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] := p[7];
 
       // パドル入力があったか？
-      if ((FUsbInfo[nID].FUsbPortIn[1] and $01) = 0) or
-         ((FUsbInfo[nID].FUsbPortIn[1] and $04) = 0) then begin
+      if ((FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $01) = 0) or
+         ((FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $04) = 0) then begin
          {$IFDEF DEBUG}
          OutputDebugString(PChar('**PADDLE IN**'));
          {$ENDIF}
@@ -589,23 +618,8 @@ begin
          end;
       end;
 
-      CopyMemory(@FUsbInfo[nID].FPrevPortIn, p, 8);
+      CopyMemory(@FUsbInfo[nID].FPORTDATA.FPrevPortIn, p, 8);
    end;
-
-//   if FUsbInfo[0].FUSBIF4CW = FUsbInfo[1].FUSBIF4CW then begin
-//      FUsbInfo[1].FUsbPortData := FUsbInfo[0].FUsbPortData;
-//      FUsbInfo[1].FPrevUsbPortData := FUsbInfo[0].FPrevUsbPortData;
-//      FUsbInfo[1].FUsbPortIn := FUsbInfo[0].FUsbPortIn;
-//      FUsbInfo[1].FUsbPortOut := FUsbInfo[0].FUsbPortOut;
-//      FUsbInfo[1].FPrevPortIn := FUsbInfo[0].FPrevPortIn;
-//   end;
-//   if FUsbInfo[0].FUSBIF4CW = FUsbInfo[2].FUSBIF4CW then begin
-//      FUsbInfo[2].FUsbPortData := FUsbInfo[0].FUsbPortData;
-//      FUsbInfo[2].FPrevUsbPortData := FUsbInfo[0].FPrevUsbPortData;
-//      FUsbInfo[2].FUsbPortIn := FUsbInfo[0].FUsbPortIn;
-//      FUsbInfo[2].FUsbPortOut := FUsbInfo[0].FUsbPortOut;
-//      FUsbInfo[2].FPrevPortIn := FUsbInfo[0].FPrevPortIn;
-//   end;
 end;
 
 procedure TdmZLogKeyer.HidControllerDeviceUnplug(HidDev: TJvHidDevice);
@@ -679,30 +693,15 @@ begin
       Exit;
    end;
 
-{
    for i := 0 to 2 do begin
       // USBIF4CWでのRIG SELECT
       if FKeyingPort[i] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
-         case flag of
-            0, 1: begin
-               FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData or $04;
-            end;
-
-            2: begin
-               FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData and $FB;
-            end;
-
-            else begin
-               FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData;
-            end;
-         end;
-
+         FUsbInfo[i].FPORTDATA.SetRigFlag(flag);
          SendUsbPortData(i);
          LeaveCriticalSection(FUsbPortDataLock);
       end;
    end;
-}
 end;
 
 procedure TdmZLogKeyer.SetRxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
@@ -762,13 +761,7 @@ begin
    for i := 0 to 2 do begin
       if FKeyingPort[i] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
-         if flag = 1 then begin
-            FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData and $F7;
-         end
-         else begin
-            FUsbInfo[i].FUsbPortData := FUsbInfo[i].FUsbPortData or $08;
-         end;
-
+         FUsbInfo[i].FPORTDATA.SetVoiceFlag(flag);
          SendUsbPortData(i);
          LeaveCriticalSection(FUsbPortDataLock);
       end;
@@ -802,12 +795,7 @@ begin
       // USBIF4CW
       if FKeyingPort[nID] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
-         if PTTON then begin
-            FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData and $FD;
-         end
-         else begin
-            FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData or $02;
-         end;
+         FUsbInfo[nID].FPORTDATA.SetPttFlag(PTTON);
          SendUsbPortData(nID);
          LeaveCriticalSection(FUsbPortDataLock);
          Exit;
@@ -851,7 +839,7 @@ begin
       for nID := 0 to 2 do begin
          if FKeyingPort[nID] = tkpUSB then begin
             EnterCriticalSection(FUsbPortDataLock);
-            FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData or $02;
+            FUsbInfo[nID].FPORTDATA.SetPttFlag(False);
             SendUsbPortData(nID);
             LeaveCriticalSection(FUsbPortDataLock);
          end;
@@ -1191,7 +1179,7 @@ begin
 
       tkpUSB: begin
          EnterCriticalSection(FUsbPortDataLock);
-         FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData and $FE;
+         FUsbInfo[nID].FPORTDATA.SetKeyFlag(True);
          SendUsbPortData(nID);
          LeaveCriticalSection(FUsbPortDataLock);
       end;
@@ -1212,7 +1200,7 @@ begin
 
       tkpUSB: begin
          EnterCriticalSection(FUsbPortDataLock);
-         FUsbInfo[nID].FUsbPortData := FUsbInfo[nID].FUsbPortData or $01;
+         FUsbInfo[nID].FPORTDATA.SetKeyFlag(False);
          SendUsbPortData(nID);
          LeaveCriticalSection(FUsbPortDataLock);
       end;
@@ -2272,8 +2260,7 @@ var
    procedure UsbInfoClear(n: Integer);
    begin
       FUsbInfo[n].FUSBIF4CW := nil;
-      FUsbInfo[n].FPrevUsbPortData := $00;
-      FUsbInfo[n].FUsbPortData := $FF;
+      FUsbInfo[n].FPORTDATA := nil;
    end;
 
    procedure UsbInfoClearAll();
@@ -2285,7 +2272,7 @@ var
       end;
    end;
 
-   function GetUsbInfo(no: Integer): TJvHidDevice;
+   function GetUsbDev(no: Integer): TJvHidDevice;
    begin
       if usbdevlist.Count = 0 then begin
          Result := nil;
@@ -2297,6 +2284,21 @@ var
       end
       else begin
          Result := usbdevlist[0];
+      end;
+   end;
+
+   function GetUsbInf(no: Integer): TUsbPortInfo;
+   begin
+      if usbinflist.Count = 0 then begin
+         Result := nil;
+         Exit;
+      end;
+
+      if usbinflist.Count >= (no + 1) then begin
+         Result := usbinflist[no];
+      end
+      else begin
+         Result := usbinflist[0];
       end;
    end;
 begin
@@ -2322,7 +2324,8 @@ begin
    usb_no := 0;
    for i := 0 to 2 do begin
       if (FKeyingPort[i] = tkpUSB) then begin
-         FUsbInfo[i].FUSBIF4CW := GetUsbInfo(usb_no);
+         FUsbInfo[i].FUSBIF4CW := GetUsbDev(usb_no);
+         FUsbInfo[i].FPORTDATA := GetUsbInf(usb_no);
          Inc(usb_no);
          fUseUSB := True;
          FComKeying[i] := nil;
@@ -2354,127 +2357,12 @@ begin
       end;
    end;
 
-
    if fUseUSB = True then begin
       USB_ON();
    end;
    if fUseCOM = True then begin
       COM_ON();
    end;
-
-{
-   // RIG1/RIG2共にUSB
-   if ((FKeyingPort[0] = tkpUSB) and (FKeyingPort[1] = tkpUSB)) then begin
-      case usbdevlist.Count of
-         0: begin
-            FKeyingPort[0] := tkpNone;
-            FKeyingPort[1] := tkpNone;
-            UsbInfoClearAll();
-         end;
-
-         1: begin
-            FUsbInfo[0].FUSBIF4CW := usbdevlist[0];
-            FUsbInfo[1].FUSBIF4CW := usbdevlist[0];
-         end;
-
-         2: begin
-            FUsbInfo[0].FUSBIF4CW := usbdevlist[0];
-            FUsbInfo[1].FUSBIF4CW := usbdevlist[1];
-         end;
-      end;
-
-      COM_OFF();
-      USB_ON();
-   end;
-
-   // RIG1がUSB,RIG2がなし
-   if ((FKeyingPort[0] = tkpUSB) and (FKeyingPort[1] = tkpNone)) then begin
-      case usbdevlist.Count of
-         0: begin
-            FKeyingPort[0] := tkpNone;
-            FKeyingPort[1] := tkpNone;
-            UsbInfoClearAll();
-         end;
-
-         1, 2: begin
-            FUsbInfo[0].FUSBIF4CW := usbdevlist[0];
-            UsbInfoClear(1);
-         end;
-      end;
-
-      COM_OFF();
-      USB_ON();
-      Exit;
-   end;
-
-   // RIG1がなし,RIG2がUSB
-   if ((FKeyingPort[0] = tkpNone) and (FKeyingPort[1] = tkpUSB)) then begin
-      case usbdevlist.Count of
-         0: begin
-            FKeyingPort[0] := tkpNone;
-            FKeyingPort[1] := tkpNone;
-            UsbInfoClearAll();
-         end;
-
-         1, 2: begin
-            UsbInfoClear(0);
-            FUsbInfo[1].FUSBIF4CW := usbdevlist[0];
-         end;
-      end;
-
-      COM_OFF();
-      USB_ON();
-      Exit;
-   end;
-
-   // RIG1,RIG2がCOMポート
-   if ((FKeyingPort[0] in [tkpSerial1 .. tkpSerial20]) and
-       (FKeyingPort[1] in [tkpSerial1 .. tkpSerial20])) or
-      ((FKeyingPort[0] in [tkpSerial1 .. tkpSerial20]) and
-       (FKeyingPort[1] =tkpNone)) then begin
-      USB_OFF();
-      COM_ON();
-      Exit;
-   end;
-
-   // RIG1がCOMポート,RIG2がUSB
-   if ((FKeyingPort[0] in [tkpSerial1 .. tkpSerial20]) and (FKeyingPort[1] = tkpUSB)) then begin
-      case usbdevlist.Count of
-         0: begin
-            FKeyingPort[0] := tkpNone;
-            FKeyingPort[1] := tkpNone;
-            UsbInfoClearAll();
-         end;
-
-         1, 2: begin
-            UsbInfoClear(0);
-            FUsbInfo[1].FUSBIF4CW := usbdevlist[0];
-         end;
-      end;
-
-      USB_ON();
-      COM_ON();
-   end;
-
-   // RIG1がUSB,RIG2がCOMポート
-   if ((FKeyingPort[0] = tkpUSB) and (FKeyingPort[1] in [tkpSerial1 .. tkpSerial20])) then begin
-      case usbdevlist.Count of
-         0: begin
-            FKeyingPort[0] := tkpNone;
-            FKeyingPort[1] := tkpNone;
-            UsbInfoClearAll();
-         end;
-
-         1, 2: begin
-            FUsbInfo[0].FUSBIF4CW := usbdevlist[0];
-            UsbInfoClear(1);
-         end;
-      end;
-
-      USB_ON();
-      COM_ON();
-   end;
-}
 
    // RIG選択用ポート
    // RX
@@ -2518,13 +2406,13 @@ begin
    if FUsbInfo[nID].FUSBIF4CW = nil then begin
       Exit;
    end;
-   if FUsbInfo[nID].FUsbPortData = FUsbInfo[nID].FPrevUsbPortData then begin
+   if FUsbInfo[nID].FPORTDATA.FUsbPortData = FUsbInfo[nID].FPORTDATA.FPrevUsbPortData then begin
       Exit;
    end;
 
    OutReport[0] := 0;
    OutReport[1] := 1;
-   OutReport[2] := FUsbInfo[nID].FUsbPortData;
+   OutReport[2] := FUsbInfo[nID].FPORTDATA.FUsbPortData;
    OutReport[3] := 0;
    OutReport[4] := 0;
    OutReport[5] := 0;
@@ -2532,7 +2420,7 @@ begin
    OutReport[7] := 0;
    OutReport[8] := 0;
    FUsbInfo[nID].FUSBIF4CW.SetOutputReport(OutReport, 9);
-   FUsbInfo[nID].FPrevUsbPortData := FUsbInfo[nID].FUsbPortData;
+   FUsbInfo[nID].FPORTDATA.FPrevUsbPortData := FUsbInfo[nID].FPORTDATA.FUsbPortData;
 //   FUSBIF4CW.WriteFile(OutReport, FUSBIF4CW.Caps.OutputReportByteLength, BR);
 end;
 
@@ -2582,16 +2470,9 @@ procedure TdmZLogKeyer.USB_ON();
 var
    i: Integer;
 begin
-//   HidController.Enumerate();
-//   repeat
-//      Sleep(1);
-//   until FUsbDetecting = False;
-
    for i := 0 to 2 do begin
       if FUsbInfo[i].FUSBIF4CW <> nil then begin
-         ZeroMemory(@FUsbInfo[i].FPrevPortIn, SizeOf(FUsbInfo[i].FPrevPortIn));
-         FUsbInfo[i].FPrevUsbPortData := $00;
-         FUsbInfo[i].FUsbPortData := $FF;
+         FUsbInfo[i].FPORTDATA.Clear();
          SendUsbPortData(i);
       end;
    end;
@@ -3778,6 +3659,61 @@ end;
 procedure TdmZLogKeyer.SetSo2rTxSelectPort(port: TKeyingPort);
 begin
    FSo2rTxSelectPort := port;
+end;
+
+{ TUSBPortInfo }
+
+constructor TUsbPortInfo.Create();
+begin
+   Inherited;
+   Clear();
+end;
+
+procedure TUsbPortInfo.Clear();
+begin
+   FPrevUsbPortData := $00;
+   FUsbPortData := $FF;
+   ZeroMemory(@FPrevPortIn, SizeOf(FPrevPortIn));
+end;
+
+procedure TUsbPortInfo.SetKeyFlag(fOn: Boolean);
+begin
+   if fOn = True then begin
+      FUsbPortData := FUsbPortData and USBIF4CW_KEY_MASK;
+   end
+   else begin
+      FUsbPortData := FUsbPortData or USBIF4CW_KEY;
+   end;
+end;
+
+procedure TUsbPortInfo.SetPttFlag(fOn: Boolean);
+begin
+   if fOn = True then begin
+      FUsbPortData := FUsbPortData and USBIF4CW_PTT_MASK;
+   end
+   else begin
+      FUsbPortData := FUsbPortData or USBIF4CW_PTT;
+   end;
+end;
+
+procedure TUsbPortInfo.SetRigFlag(flag: Integer);
+begin
+   if flag = 0 then begin
+      FUsbPortData := FUsbPortData and USBIF4CW_RIG_MASK;
+   end
+   else if flag = 1 then begin
+      FUsbPortData := FUsbPortData or USBIF4CW_RIG;
+   end;
+end;
+
+procedure TUsbPortInfo.SetVoiceFlag(flag: Integer);
+begin
+   if flag = 0 then begin
+      FUsbPortData := FUsbPortData and USBIF4CW_MIC_MASK;
+   end
+   else begin
+      FUsbPortData := FUsbPortData or USBIF4CW_MIC;
+   end;
 end;
 
 end.
