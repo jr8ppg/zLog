@@ -203,6 +203,7 @@ type
     FUseWinKeyer: Boolean;
     FUseWk9600: Boolean;
     FUseWkOutpSelect: Boolean;
+    FUseWkIgnoreSpeedPod: Boolean;
     FWkInitializeMode: Boolean;
     FWkRevision: Integer;
     FWkStatus: Integer;
@@ -336,6 +337,7 @@ type
     property UseWinKeyer: Boolean read FUseWinKeyer write FUseWinKeyer;
     property UseWk9600: Boolean read FUseWk9600 write FUseWk9600;
     property UseWkOutpSelect: Boolean read FUseWkOutpSelect write FUseWkOutpSelect;
+    property UseWkIgnoreSpeedPod: Boolean read FUseWkIgnoreSpeedPod write FUseWkIgnoreSpeedPod;
     property WinKeyerRevision: Integer read FWkRevision;
     property WkCallsignSending: Boolean read FWkCallsignSending write FWkCallsignSending;
     procedure WinKeyerSendCallsign(S: string);
@@ -3347,8 +3349,10 @@ begin
 //            {$ENDIF}
          end
          else if ((b and $c0) = $80) then begin   // POT POSITION
-            newwpm := (b and $3F);
-            PostMessage(FWnd, WM_USER_WKCHANGEWPM, 0, newwpm);
+            if FUseWkIgnoreSpeedPod = False then begin
+               newwpm := (b and $3F);
+               PostMessage(FWnd, WM_USER_WKCHANGEWPM, 0, newwpm);
+            end;
          end
          else begin  // ECHO TEST
             FWkEcho := b;

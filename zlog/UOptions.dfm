@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetHardware
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -2246,7 +2246,7 @@ object formOptions: TformOptions
       object groupWinKeyer: TGroupBox
         Left = 6
         Top = 352
-        Width = 355
+        Width = 423
         Height = 45
         Caption = 'WinKeyer Option'
         TabOrder = 6
@@ -2260,7 +2260,7 @@ object formOptions: TformOptions
           OnClick = checkUseWinKeyerClick
         end
         object checkWk9600: TCheckBox
-          Left = 113
+          Left = 101
           Top = 18
           Width = 89
           Height = 17
@@ -2268,12 +2268,20 @@ object formOptions: TformOptions
           TabOrder = 1
         end
         object checkWkOutportSelect: TCheckBox
-          Left = 217
+          Left = 190
           Top = 18
           Width = 112
           Height = 17
           Caption = 'Use Out port Select'
           TabOrder = 2
+        end
+        object checkWkIgnoreSpeedPod: TCheckBox
+          Left = 312
+          Top = 18
+          Width = 105
+          Height = 17
+          Caption = 'Ignore Speed Pod'
+          TabOrder = 3
         end
       end
     end
