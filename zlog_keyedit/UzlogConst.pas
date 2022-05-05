@@ -20,6 +20,9 @@ const
 type
   TBandBool = array[b19..HiBand] of boolean;
 
+type
+  TPlayMessageFinishedProc = procedure(Sender: TObject; mode: TMode; fAbort: Boolean) of object;
+
 const
   // SerialContestType
   _USEUTC = 32767;
@@ -121,7 +124,7 @@ const
   );
 
 const
-  default_primary_shortcut: array[0..150] of string = (
+  default_primary_shortcut: array[0..153] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -272,10 +275,13 @@ const
     'Shift+C',          // #147 actionToggleRx
     '',                 // #148 actionMatchRxToTx
     '',                 // #149 actionMatchTxToRx
-    'Shift+D'           // #150 actionToggleRigPair
+    'Shift+D',          // #150 actionToggleRigPair
+    'Ctrl+0',           // #151 actionChangeTxNr0
+    'Ctrl+1',           // #152 actionChangeTxNr1
+    ''                  // #153 actionChangeTxNr2
   );
 
-  default_secondary_shortcut: array[0..150] of string = (
+  default_secondary_shortcut: array[0..153] of string = (
     '',                 // #00
     '',
     '',
@@ -426,7 +432,10 @@ const
     '',                 // #147 actionToggleRx
     '',                 // #148 actionMatchRxToTx
     '',                 // #149 actionMatchTxToRx
-    ''                  // #150 actionToggleRigPair
+    '',                 // #150 actionToggleRigPair
+    '',                 // #151 actionChangeTxNr0
+    '',                 // #152 actionChangeTxNr1
+    ''                  // #153 actionChangeTxNr2
   );
 
 const

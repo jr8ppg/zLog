@@ -661,6 +661,9 @@ type
     EditUpperRightPanel: TGridPanel;
     timerCqRepeat: TTimer;
     FileImportDialog: TOpenDialog;
+    actionChangeTxNr0: TAction;
+    actionChangeTxNr1: TAction;
+    actionChangeTxNr2: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -909,6 +912,7 @@ type
     procedure actionSo2rToggleRigPairExecute(Sender: TObject);
     procedure timerCqRepeatTimer(Sender: TObject);
     procedure FileExportDialogTypeChange(Sender: TObject);
+    procedure actionChangeTxNrExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -3876,24 +3880,10 @@ begin
 
    if ((S = 'MUL') or (S = 'MULTI') or (S = 'MULT')) and (dmZLogGlobal.ContestCategory = ccMultiOpSingleTx) then begin
       ChangeTxNr(1);
-
-      if SerialEdit.Visible then begin
-         if (dmZlogGlobal.Settings._syncserial) and (SerialContestType = SER_MS) then begin
-            CurrentQSO.Serial := SerialArrayTX[CurrentQSO.TX];
-            SerialEdit.Text := CurrentQSO.SerialStr;
-         end;
-      end;
    end;
 
    if (S = 'RUN') and (dmZLogGlobal.ContestCategory = ccMultiOpSingleTx) then begin
       ChangeTxNr(0);
-
-      if SerialEdit.Visible then begin
-         if (dmZlogGlobal.Settings._syncserial) and (SerialContestType = SER_MS) then begin
-            CurrentQSO.Serial := SerialArrayTX[CurrentQSO.TX];
-            SerialEdit.Text := CurrentQSO.SerialStr;
-         end;
-      end;
    end;
 
    if S = 'SERIALTYPE' then begin
@@ -4216,6 +4206,13 @@ begin
    SetWindowCaption();
    ReEvaluateCountDownTimer;
    ReEvaluateQSYCount;
+
+   if SerialEdit.Visible then begin
+      if (dmZlogGlobal.Settings._syncserial) and (SerialContestType = SER_MS) then begin
+         CurrentQSO.Serial := SerialArrayTX[CurrentQSO.TX];
+         SerialEdit.Text := CurrentQSO.SerialStr;
+      end;
+   end;
 end;
 
 procedure TMainForm.IncFontSize();
@@ -9535,6 +9532,15 @@ begin
 
    checkWithRig1.Checked := rig1[n];
    checkWithRig2.Checked := rig2[n];
+end;
+
+// #151-#153 Change TX NR
+procedure TMainForm.actionChangeTxNrExecute(Sender: TObject);
+var
+   txnr: Integer;
+begin
+   txnr := TAction(Sender).Tag;
+   ChangeTxNr(txnr);
 end;
 
 procedure TMainForm.RestoreWindowsPos();

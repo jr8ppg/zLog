@@ -7154,6 +7154,20 @@ object MainForm: TMainForm
       Caption = 'actionSo2rToggleRigPair'
       OnExecute = actionSo2rToggleRigPairExecute
     end
+    object actionChangeTxNr0: TAction
+      Caption = 'actionChangeTxNr0'
+      OnExecute = actionChangeTxNrExecute
+    end
+    object actionChangeTxNr1: TAction
+      Tag = 1
+      Caption = 'actionChangeTxNr1'
+      OnExecute = actionChangeTxNrExecute
+    end
+    object actionChangeTxNr2: TAction
+      Tag = 2
+      Caption = 'actionChangeTxNr2'
+      OnExecute = actionChangeTxNrExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual
