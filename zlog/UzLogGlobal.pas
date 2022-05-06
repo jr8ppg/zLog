@@ -126,7 +126,7 @@ type
     _use_winkeyer: Boolean;
     _use_wk_9600: Boolean;
     _use_wk_outp_select: Boolean;
-    _use_wk_ignore_speed_pod: Boolean;
+    _use_wk_ignore_speed_pot: Boolean;
 
     // SO2R Support
     _so2r_type: TSo2rType;       // 0:none 1:zlog 2:SO2R Neo
@@ -836,7 +836,7 @@ begin
       Settings._use_winkeyer := ini.ReadBool('Hardware', 'UseWinKeyer', False);
       Settings._use_wk_9600 := ini.ReadBool('Hardware', 'UseWk9600', False);
       Settings._use_wk_outp_select := ini.ReadBool('Hardware', 'UseWkOutpSelect', True);
-      Settings._use_wk_ignore_speed_pod := ini.ReadBool('Hardware', 'UseWkIgnoreSpeedPod', False);
+      Settings._use_wk_ignore_speed_pot := ini.ReadBool('Hardware', 'UseWkIgnoreSpeedPot', False);
 
       // SO2R Support
       Settings._so2r_type  := TSo2rType(ini.ReadInteger('SO2R', 'type', 0));
@@ -1404,7 +1404,7 @@ begin
       ini.WriteBool('Hardware', 'UseWinKeyer', Settings._use_winkeyer);
       ini.WriteBool('Hardware', 'UseWk9600', Settings._use_wk_9600);
       ini.WriteBool('Hardware', 'UseWkOutpSelect', Settings._use_wk_outp_select);
-      ini.WriteBool('Hardware', 'UseWkIgnoreSpeedPod', Settings._use_wk_ignore_speed_pod);
+      ini.WriteBool('Hardware', 'UseWkIgnoreSpeedPot', Settings._use_wk_ignore_speed_pot);
 
       // SO2R Support
       ini.WriteInteger('SO2R', 'type', Integer(Settings._so2r_type));
@@ -1701,7 +1701,7 @@ begin
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
    dmZLogKeyer.UseWk9600 := Settings._use_wk_9600;
    dmZLogKeyer.UseWkOutpSelect := Settings._use_wk_outp_select;
-   dmZLogKeyer.UseWkIgnoreSpeedPod := Settings._use_wk_ignore_speed_pod;
+   dmZLogKeyer.UseWkIgnoreSpeedPot := Settings._use_wk_ignore_speed_pot;
    dmZLogKeyer.UseWkSo2rNeo := (Settings._so2r_type = so2rNeo);
    dmZLogKeyer.So2rRxSelectPort := TKeyingPort(Settings._so2r_rx_port);
    dmZLogKeyer.So2rTxSelectPort := TKeyingPort(Settings._so2r_tx_port);

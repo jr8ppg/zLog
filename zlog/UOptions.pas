@@ -476,7 +476,7 @@ type
     comboSo2rCqMsgNumber: TComboBox;
     Label101: TLabel;
     editSo2rRigSwAfterDelay: TEdit;
-    checkWkIgnoreSpeedPod: TCheckBox;
+    checkWkIgnoreSpeedPot: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -851,7 +851,7 @@ begin
       Settings._use_winkeyer := checkUseWinkeyer.Checked;
       Settings._use_wk_9600 := checkWk9600.Checked;
       Settings._use_wk_outp_select := checkWkOutportSelect.Checked;
-      Settings._use_wk_ignore_speed_pod := checkWkIgnoreSpeedPod.Checked;
+      Settings._use_wk_ignore_speed_pot := checkWkIgnoreSpeedPot.Checked;
 
       // SO2R Support
       if radioSo2rNone.Checked = True then begin
@@ -1274,7 +1274,7 @@ begin
       checkUseWinkeyer.Checked := Settings._use_winkeyer;
       checkWk9600.Checked := Settings._use_wk_9600;
       checkWkOutportSelect.Checked := Settings._use_wk_outp_select;
-      checkWkIgnoreSpeedPod.Checked := Settings._use_wk_ignore_speed_pod;
+      checkWkIgnoreSpeedPot.Checked := Settings._use_wk_ignore_speed_pot;
 
       // SO2R Support
       case Settings._so2r_type of
@@ -2026,14 +2026,14 @@ begin
          checkUseWinKeyer.Checked := False;
          checkWk9600.Enabled := False;
          checkWkOutportSelect.Enabled := False;
-         checkWkIgnoreSpeedPod.Enabled := False;
+         checkWkIgnoreSpeedPot.Enabled := False;
       end;
    end
    else begin
       checkUseWinKeyer.Enabled := True;
       checkWk9600.Enabled := True;
       checkWkOutportSelect.Enabled := True;
-      checkWkIgnoreSpeedPod.Enabled := True;
+      checkWkIgnoreSpeedPot.Enabled := True;
    end;
 end;
 

@@ -2275,12 +2275,12 @@ object formOptions: TformOptions
           Caption = 'Use Out port Select'
           TabOrder = 2
         end
-        object checkWkIgnoreSpeedPod: TCheckBox
+        object checkWkIgnoreSpeedPot: TCheckBox
           Left = 312
           Top = 18
           Width = 105
           Height = 17
-          Caption = 'Ignore Speed Pod'
+          Caption = 'Ignore Speed Pot'
           TabOrder = 3
         end
       end
