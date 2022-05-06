@@ -430,7 +430,6 @@ type
     mnHideCWPhToolBar: TMenuItem;
     mnHideMenuToolbar: TMenuItem;
     Scratchsheet1: TMenuItem;
-    OpenDialog1: TOpenDialog;
     IncreaseFontSize1: TMenuItem;
     mnMMTTY: TMenuItem;
     mnTTYConsole: TMenuItem;
@@ -3110,7 +3109,7 @@ begin
          Cells[editor.colNewMulti1, R] := editor.GetNewMulti1(aQSO);
 
       if editor.colMemo >= 0 then
-         Cells[editor.colMemo, R] := aQSO.Memo; // + IntToStr(aQSO.Reserve3);
+         Cells[editor.colMemo, R] := aQSO.MemoStr; // + IntToStr(aQSO.Reserve3);
 
       if aQSO.Reserve = actLock then
          Cells[editor.colMemo, R] := 'locked';
@@ -5012,7 +5011,6 @@ begin
             CurrentQSO.NewMulti2 := False;
             CurrentQSO.Multi1 := '';
             CurrentQSO.Multi2 := '';
-            CurrentQSO.Memo := MEMO_DUPE + ' ' + CurrentQSO.Memo;
          end;
       end
       else begin  // UNIQUE!
@@ -5029,12 +5027,12 @@ begin
       if _dupe <> 0 then begin
          CurrentQSO.Dupe := True;
       end;
+      CurrentQSO.Forced := True;
       CurrentQSO.Points := 0;
       CurrentQSO.NewMulti1 := False;
       CurrentQSO.NewMulti2 := False;
       CurrentQSO.Multi1 := '';
       CurrentQSO.Multi2 := '';
-      CurrentQSO.Memo := '* ' + CurrentQSO.Memo;
       CurrentQSO.Reserve2 := $00;
    end;
 
@@ -5048,9 +5046,9 @@ begin
    CurrentQSO.Reserve3 := i;
 
    if RigControl.Rig <> nil then begin
-      // memoóìÇ…é¸îgêîÇãLò^
+      // é¸îgêîÇãLò^
       if dmZlogGlobal.Settings._recrigfreq = True then begin
-         CurrentQSO.Memo := CurrentQSO.Memo + '(' + RigControl.Rig.CurrentFreqkHzStr + ')';
+         CurrentQSO.Freq := RigControl.Rig.CurrentFreqkHzStr;
       end;
 
       // é©ìÆbandmap
@@ -5063,9 +5061,10 @@ begin
    end;
 
    // QSY Violation
-   if FQsyViolation = True then begin
-      SetQsyViolation(CurrentQSO);
-   end;
+   CurrentQSO.QsyViolation := FQsyViolation;
+
+   // PCName
+   CurrentQSO.PCName := dmZLogGlobal.Settings._pcname;
 
    // if MyContest.Name = 'Pedition mode' then
    if not FPostContest then begin
@@ -6721,6 +6720,12 @@ begin
       i := Log.QsoList.MergeFile(ff, True);
    end;
 
+   if ext = '.ZLOX' then begin
+      WriteStatusLine('Merging...', False);
+
+      i := Log.QsoList.MergeFileEx(ff, True);
+   end;
+
    if ext = '.CSV' then begin
       i := Log.LoadFromFilezLogCsv(ff);
    end;
@@ -7691,7 +7696,6 @@ begin
    EditScreen := TWPXEdit.Create(Self);
 
    MyContest := TAPSprint.Create('Asia Pacific Sprint');
-   // Log.QsoList[0].memo := 'WPX Contest';
 end;
 
 procedure TMainForm.InitARRL_W();

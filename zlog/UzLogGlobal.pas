@@ -458,8 +458,8 @@ function LD_ond(str1, str2: string): Integer;
 function IsDomestic(strCallsign: string): Boolean;
 function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
 
-procedure SetQsyViolation(aQSO: TQSO);
-procedure ResetQsyViolation(aQSO: TQSO);
+//procedure SetQsyViolation(aQSO: TQSO);
+//procedure ResetQsyViolation(aQSO: TQSO);
 procedure SetDupeQso(aQSO: TQSO);
 procedure ResetDupeQso(aQSO: TQSO);
 

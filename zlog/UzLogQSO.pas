@@ -8,33 +8,72 @@ uses
   UzlogConst;
 
 type
-  TQSOData = record
-    Time : TDateTime;
-    CallSign: string[12]; { 13 bytes }
-    NrSent: string[30];
-    NrRcvd: string[30];
-    RSTSent: Smallint; // word;  {2 bytes}
-    RSTRcvd: word;
-    Serial: Integer; { 4 bytes ? }
-    Mode: TMode; { 1 byte }
-    Band: TBand; { 1 byte }
-    Power: TPower; { 1 byte }
-    Multi1: string[30];
-    Multi2: string[30];
-    NewMulti1: Boolean;
-    NewMulti2: Boolean;
-    Points: byte;
-    Operator: string[14]; { Operator's name }
-    Memo: string[64]; { max 64 char = 65 bytes }
-    CQ: Boolean; { not used yet }
-    Dupe: Boolean;
-    Reserve: byte; { used for z-link commands }
-    TX: byte; { Transmitter number for 2 TX category }
-    Power2: Integer; { used by ARRL DX side only }
-    Reserve2: Integer; { $FF when forcing to log }
-    Reserve3: Integer; { QSO ID# }
+  TQSOData = packed record
+    Time : TDateTime;      {  8 bytes }
+    CallSign: string[12];  { 13 bytes }
+    NrSent: string[30];    { 31 bytes }
+    NrRcvd: string[30];    { 31 bytes }
+    filler: Byte;          {  1 byte }
+    RSTSent: Word;         {  2 bytes }
+    RSTRcvd: Word;         {  2 bytes }
+    Serial: Integer;       {  4 bytes }
+    Mode: TMode;           {  1 byte }
+    Band: TBand;           {  1 byte }
+    Power: TPower;         {  1 byte }
+    Multi1: string[30];    { 31 bytes }
+    Multi2: string[30];    { 31 bytes }
+    NewMulti1: Boolean;    {  1 byte }
+    NewMulti2: Boolean;    {  1 byte }
+    Points: byte;          {  1 byte }
+    Operator: string[14];  { 15 bytes Operator's name }
+    Memo: string[64];      { 65 bytes max 64 char }
+    CQ: Boolean;           {  1 byte }
+    Dupe: Boolean;         {  1 byte }
+    Reserve: byte;         {  1 byte used for z-link commands }
+    TX: byte;              {  1 byte Transmitter number for 2 TX category }
+    Power2: Integer;       {  4 bytes used by ARRL DX side only }
+    Reserve2: Integer;     {  4 bytes $FF when forcing to log }
+    Reserve3: Integer;     {  4 bytes QSO ID# }
     {TTSSSSRRCC   TT:TX#(00-21) SSSS:Serial counter
                                      RR:Random(00-99) CC:Edit counter 00 and up}
+  end;
+
+  TQSODataEx = packed record
+    Time : TDateTime;      {  8 bytes }
+    CallSign: string[12];  { 13 bytes }
+    NrSent: string[30];    { 31 bytes }
+    NrRcvd: string[30];    { 31 bytes }
+    filler: Byte;          {  1 byte }
+    RSTSent: Word;         {  2 bytes }
+    RSTRcvd: Word;         {  2 bytes }
+    Serial: Integer;       {  4 bytes }
+    Mode: TMode;           {  1 byte }
+    Band: TBand;           {  1 byte }
+    Power: TPower;         {  1 byte }
+    Multi1: string[30];    { 31 bytes }
+    Multi2: string[30];    { 31 bytes }
+    NewMulti1: Boolean;    {  1 byte }
+    NewMulti2: Boolean;    {  1 byte }
+    Points: byte;          {  1 byte }
+    Operator: string[14];  { 15 bytes Operator's name }
+    Memo: string[64];      { 65 bytes max 64 char }
+    CQ: Boolean;           {  1 byte }
+    Dupe: Boolean;         {  1 byte }
+    Reserve: byte;         {  1 byte used for z-link commands }
+    TX: byte;              {  1 byte Transmitter number for 2 TX category }
+    Power2: Integer;       {  4 bytes used by ARRL DX side only }
+    Reserve2: Integer;     {  4 bytes $FF when forcing to log }
+    Reserve3: Integer;     {  4 bytes QSO ID# }
+    {TTSSSSRRCC   TT:TX#(00-21) SSSS:Serial counter
+                                     RR:Random(00-99) CC:Edit counter 00 and up}
+    // 256bytes
+
+    Freq: string[10];      { 11 bytes "1800.0    " - "1200000.0 " }
+    QsyViolation: Boolean; { 1 byte }
+    PCName: string[10];    { 11 bytes max 10 char }
+    Forced: Boolean;       { 1 byte }
+    Reserve4: string[39];  { 40 bytes }
+    // 320bytes
   end;
 
   TQSO = class(TObject)
@@ -66,10 +105,17 @@ type
     {TTSSSSRRCC   TT:TX#(00-21) SSSS:Serial counter
                                       RR:Random(00-99) CC:Edit counter 00 and up}
 
+    FFreq: string;
+    FQsyViolation: Boolean;
+    FPCName: string;
+    FForced: Boolean;
+
     function GetMode2(): TMode;
 
     function GetFileRecord(): TQSOData;
     procedure SetFileRecord(src: TQSOData);
+    function GetFileRecordEx(): TQSODataEx;
+    procedure SetFileRecordEx(src: TQSODataEx);
 
     function GetSerialStr(): string;
     function GetTimeStr(): string;
@@ -132,6 +178,10 @@ type
     property Power2: Integer read FPower2 write FPower2;
     property Reserve2: Integer read FReserve2 write FReserve2;
     property Reserve3: Integer read FReserve3 write FReserve3;
+    property Freq: string read FFreq write FFreq;
+    property QsyViolation: Boolean read FQsyViolation write FQsyViolation;
+    property PCName: string read FPCName write FPCName;
+    property Forced: Boolean read FForced write FForced;
 
     property SerialStr: string read GetSerialStr;
     property TimeStr: string read GetTimeStr;
@@ -149,6 +199,7 @@ type
     property MemoStr: string read GetMemoStr;
 
     property FileRecord: TQSOData read GetFileRecord write SetFileRecord;
+    property FileRecordEx: TQSODataEx read GetFileRecordEx write SetFileRecordEx;
   end;
 
   TQSOCallsignComparer = class(TComparer<TQSO>)
@@ -197,9 +248,9 @@ type
     function IndexOf(C: string): Integer; overload;
     function IndexOf(Q: TQSO): Integer; overload;
     function MergeFile(filename: string; fFullMatch: Boolean): Integer;
+    function MergeFileEx(filename: string; fFullMatch: Boolean): Integer;
     procedure Sort(SortMethod: TSortMethod; fWithMode: Boolean = False; fAllPhone: Boolean = True); overload;
     function DupeCheck(aQSO: TQSO; fWithMode: Boolean; fAllPhone: Boolean): TQSO;
-    procedure SaveToFile(filename: string);
   end;
 
   TQSOListArray = array[b19..HiBand] of TQSOList;
@@ -224,7 +275,7 @@ type
     procedure ProcessUnlock(xQSO: TQSO);
     procedure SetScoreCoeff(E: Extended);
     function GetScoreCoeff(): Extended;
-    function GetActualFreq(b: TBand; memo: string): string;
+    function GetActualFreq(b: TBand; strFreq: string): string;
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -243,7 +294,9 @@ type
 
     procedure Backup(Filename: string);
 
+
     procedure SaveToFile(Filename : string);
+    procedure SaveToFileEx(Filename: string);
     procedure SaveToFilezLogDOSTXT(Filename : string);
     procedure SaveToFilezLogALL(Filename : string);
     procedure SaveToFilezLogCsv(Filename: string);
@@ -270,6 +323,7 @@ type
     function ObjectOf(callsign: string): TQSO; overload;
 
     function LoadFromFile(filename: string): Integer;
+    function LoadFromFileEx(filename: string): Integer;
     function LoadFromFilezLogCsv(Filename: string): Integer;
 //    function MergeFile(filename: string): Integer;
 
@@ -332,6 +386,11 @@ begin
    FPower2 := 500;
    FReserve2 := 0;
    FReserve3 := 0;
+
+   FFreq := '';
+   FQsyViolation := False;
+   FPCName := '';
+   FForced := False;
 end;
 
 procedure TQSO.IncTime;
@@ -377,6 +436,10 @@ begin
       slText.Add(IntToStr(Power2));
       slText.Add(IntToStr(Reserve2));
       slText.Add(IntToStr(Reserve3));
+      slText.Add(Freq);
+      slText.Add(ZBoolToStr(QsyViolation));
+      slText.Add(PCName);
+      slText.Add(ZBoolToStr(Forced));
 
       Result := slText.DelimitedText;
    finally
@@ -393,7 +456,7 @@ begin
    slText.Delimiter := _sep;
    try
    try
-      slText.DelimitedText := str;
+      slText.DelimitedText := str + DupeString(_sep, 28);
 
       if slText[0] <> 'ZLOGQSODATA:' then begin
          Exit;
@@ -423,6 +486,10 @@ begin
       Power2   := StrToInt(slText[22]);
       Reserve2 := StrToInt(slText[23]);
       Reserve3 := StrToInt(slText[24]);
+      Freq     := slText[25];
+      QsyViolation := ZStrToBool(slText[26]);
+      PCName   := slText[27];
+      Forced   := ZStrToBool(slText[28]);
    except
       on EConvertError do begin
          FMemo := 'Convert Error!';
@@ -537,20 +604,7 @@ var
    Index2: Integer;
    fFreq: Extended;
 begin
-   Index1 := Pos('(', Self.Memo);
-   if Index1 = 0 then begin
-      Result := Self.BandStr;
-      Exit;
-   end;
-   strFreq := Copy(Self.Memo, Index1 + 1);
-
-   Index2 := Pos(')', strFreq);
-   if Index2 = 0 then begin
-      Result := strFreq;
-      Exit;
-   end;
-
-   strFreq := Copy(strFreq, 1, Index2 - 1);
+   strFreq := Self.Freq;
 
    fFreq := StrToFloatDef(strFreq, 0) / 1000;
    if fFreq = 0 then begin
@@ -568,19 +622,36 @@ var
    strMemo: string;
    Index: Integer;
 begin
-   Index := Pos('(', Self.Memo);
-   if Index = 0 then begin
-      Result := Self.Memo;
-      Exit;
+   strMemo := '';
+
+   if FForced = True then begin
+      strMemo := '*';
    end;
 
-   Index := Pos(')', Self.Memo);
-   if Index = 0 then begin
-      Result := Self.Memo;
-      Exit;
+   if FDupe = True then begin
+      if strMemo <> '' then begin
+         strMemo := strMemo + ' ';
+      end;
+
+      strMemo := strMemo + MEMO_DUPE;
    end;
 
-   strMemo := Trim(Copy(Self.Memo, Index + 1));
+   if FFreq <> '' then begin
+      if strMemo <> '' then begin
+         strMemo := strMemo + ' ';
+      end;
+
+      strMemo := strMemo + '(' + FFreq + ')';
+   end;
+
+   strMemo := strMemo + Self.Memo;
+
+   if FQsyViolation = True then begin
+      if strMemo <> '' then begin
+         strMemo := strMemo + ' ';
+      end;
+      strMemo := strMemo + MEMO_QSY_VIOLATION;
+   end;
 
    Result := strMemo;
 end;
@@ -658,7 +729,7 @@ begin
       S := S + '%%' + Self.Operator + '%%';
    end;
 
-   S := S + Self.Memo;
+   S := S + Self.MemoStr;
 
    Result := S;
 end;
@@ -701,7 +772,7 @@ begin
       S := S + '  ' + '%%' + Self.Operator + '%%';
    end;
 
-   S := S + '  ' + Self.Memo;
+   S := S + '  ' + Self.MemoStr;
 
    Result := S;
 end;
@@ -742,7 +813,7 @@ begin
       S := S + FillRight('TX#' + IntToStr(Self.TX), 6);
    end;
 
-   S := S + Self.Memo;
+   S := S + Self.MemoStr;
    Result := S;
 end;
 
@@ -888,6 +959,10 @@ begin
    FPower2 := src.FPower2;
    FReserve2 := src.FReserve2;
    FReserve3 := src.FReserve3;
+   FFreq := src.FFreq;
+   FQsyViolation := src.FQsyViolation;
+   FPCName := src.FPCName;
+   FForced := src.FForced;
 end;
 
 function TQSO.GetFileRecord(): TQSOData;
@@ -897,7 +972,7 @@ begin
    Result.CallSign   := ShortString(FCallSign);
    Result.NrSent     := ShortString(FNrSent);
    Result.NrRcvd     := ShortString(FNrRcvd);
-   Result.RSTSent    := SmallInt(FRSTSent);
+   Result.RSTSent    := Word(FRSTSent);
    Result.RSTRcvd    := Word(FRSTRcvd);
    Result.Serial     := FSerial;
    Result.Mode       := FMode;
@@ -909,7 +984,7 @@ begin
    Result.NewMulti2  := FNewMulti2;
    Result.Points     := Byte(FPoints);
    Result.Operator   := ShortString(FOperator);
-   Result.Memo       := ShortString(FMemo);
+   Result.Memo       := ShortString(MemoStr);
    Result.CQ         := FCQ;
    Result.Dupe       := FDupe;
    Result.Reserve    := Byte(FReserve);
@@ -920,6 +995,10 @@ begin
 end;
 
 procedure TQSO.SetFileRecord(src: TQSOData);
+var
+   Index1: Integer;
+   Index2: Integer;
+   strTemp: string;
 begin
    FTime       := src.Time;
    FCallSign   := string(src.CallSign);
@@ -945,6 +1024,91 @@ begin
    FPower2     := src.Power2;
    FReserve2   := src.Reserve2;
    FReserve3   := src.Reserve3;
+
+   FFreq := '';
+   Index1 := Pos('(', FMemo);
+   if Index1 > 0 then begin
+      strTemp := Copy(FMemo, Index1 + 1);
+      Index2 := Pos(')', strTemp);
+      if Index2 > 0 then begin
+         FFreq := Copy(strTemp, 1, Index2 - 1);
+         FMemo := Copy(strTemp, Index2 + 1);
+      end;
+   end;
+
+   if Pos(FMemo, MEMO_QSY_VIOLATION) > 0 then begin
+      FQsyViolation := True;
+      FMemo := Trim(StringReplace(FMemo, MEMO_QSY_VIOLATION, '', [rfReplaceAll]));
+   end;
+   if Pos(src.Memo, '*') > 0 then begin
+      FForced := True;
+      FMemo := Trim(StringReplace(FMemo, '*', '', [rfReplaceAll]));
+   end;
+end;
+
+function TQSO.GetFileRecordEx(): TQSODataEx;
+begin
+   FillChar(Result, SizeOf(Result), #00);
+   Result.Time       := FTime;
+   Result.CallSign   := ShortString(FCallSign);
+   Result.NrSent     := ShortString(FNrSent);
+   Result.NrRcvd     := ShortString(FNrRcvd);
+   Result.RSTSent    := Word(FRSTSent);
+   Result.RSTRcvd    := Word(FRSTRcvd);
+   Result.Serial     := FSerial;
+   Result.Mode       := FMode;
+   Result.Band       := FBand;
+   Result.Power      := FPower;
+   Result.Multi1     := ShortString(FMulti1);
+   Result.Multi2     := ShortString(FMulti2);
+   Result.NewMulti1  := FNewMulti1;
+   Result.NewMulti2  := FNewMulti2;
+   Result.Points     := Byte(FPoints);
+   Result.Operator   := ShortString(FOperator);
+   Result.Memo       := ShortString(FMemo);
+   Result.CQ         := FCQ;
+   Result.Dupe       := FDupe;
+   Result.Reserve    := Byte(FReserve);
+   Result.TX         := Byte(FTX);
+   Result.Power2     := FPower2;
+   Result.Reserve2   := FReserve2;
+   Result.Reserve3   := FReserve3;
+   Result.Freq       := ShortString(FFreq);
+   Result.QsyViolation := FQsyViolation;
+   Result.PCName     := ShortString(FPCName);
+   Result.Forced     := FForced;
+end;
+
+procedure TQSO.SetFileRecordEx(src: TQSODataEx);
+begin
+   FTime       := src.Time;
+   FCallSign   := string(src.CallSign);
+   FNrSent     := string(src.NrSent);
+   FNrRcvd     := string(src.NrRcvd);
+   FRSTSent    := Integer(src.RSTSent);
+   FRSTRcvd    := Integer(src.RSTRcvd);
+   FSerial     := src.Serial;
+   FMode       := src.Mode;
+   FBand       := src.Band;
+   FPower      := src.Power;
+   FMulti1     := string(src.Multi1);
+   FMulti2     := string(src.Multi2);
+   FNewMulti1  := src.NewMulti1;
+   FNewMulti2  := src.NewMulti2;
+   FPoints     := Integer(src.Points);
+   FOperator   := string(src.Operator);
+   FMemo       := string(src.Memo);
+   FCQ         := src.CQ;
+   FDupe       := src.Dupe;
+   FReserve    := Integer(src.Reserve);
+   FTX         := Integer(src.TX);
+   FPower2     := src.Power2;
+   FReserve2   := src.Reserve2;
+   FReserve3   := src.Reserve3;
+   FFreq       := string(src.Freq);
+   FQsyViolation := src.QsyViolation;
+   FPCName     := string(src.PCName);
+   FForced     := src.Forced;
 end;
 
 { TQSOList }
@@ -1039,6 +1203,46 @@ begin
    Result := merged;
 end;
 
+function TQSOList.MergeFileEx(filename: string; fFullMatch: Boolean): Integer;
+var
+   qso: TQSO;
+   dat: TQSODataEx;
+   f: file of TQSODataEx;
+   i, merged: integer;
+   Index: Integer;
+begin
+   merged := 0;
+
+   AssignFile(f, filename);
+   Reset(f);
+   Read(f, dat); // first qso comment
+
+   for i := 1 to FileSize(f) - 1 do begin
+      Read(f, dat);
+
+      qso := TQSO.Create;
+      qso.FileRecordEx := dat;
+
+      if fFullMatch = True then begin
+         Index := IndexOf(qso);
+      end
+      else begin
+         Index := IndexOf(qso.Callsign);
+      end;
+
+      if Index = -1 then begin
+         Add(qso);
+         Inc(merged);
+      end
+      else begin
+         qso.Free();
+      end;
+   end;
+
+   CloseFile(f);
+   Result := merged;
+end;
+
 procedure TQSOList.Sort(SortMethod: TSortMethod; fWithMode: Boolean; fAllPhone: Boolean);
 begin
    case SortMethod of
@@ -1102,21 +1306,6 @@ begin
    finally
       Q.Free();
    end;
-end;
-
-procedure TQSOList.SaveToFile(filename: string);
-var
-   i: Integer;
-   F: TextFile;
-begin
-   AssignFile(F, filename);
-   Rewrite(F);
-
-   for i := 0 to Count - 1 do begin
-      WriteLn(F, Items[i].Callsign);
-   end;
-
-   CloseFile(F);
 end;
 
 { TLog }
@@ -1464,7 +1653,7 @@ var
 begin
    for i := 1 to TotalQSO do begin
       aQSO := FQsoList[i];
-      if Pos(MEMO_DUPE, aQSO.Memo) > 0 then begin
+      if aQSO.Dupe = True then begin
          Delete(i);
       end;
    end;
@@ -1529,11 +1718,35 @@ var
    f: file of TQSOData;
    i: Integer;
 begin
+   if UpperCase(ExtractFileExt(filename)) = '.ZLOX' then begin
+      SaveToFileEx(filename);
+      Exit;
+   end;
+
    AssignFile(f, Filename);
    Rewrite(f);
 
    for i := 0 to TotalQSO do begin // changed from 1 to TotalQSO to 0 to TotalQSO
       D := FQsoList[i].FileRecord;
+      Write(f, D);
+   end;
+
+   CloseFile(f);
+
+   FSaved := True;
+end;
+
+procedure TLog.SaveToFileEx(Filename: string);
+var
+   D: TQSODataEx;
+   f: file of TQSODataEx;
+   i: Integer;
+begin
+   AssignFile(f, Filename);
+   Rewrite(f);
+
+   for i := 0 to TotalQSO do begin // changed from 1 to TotalQSO to 0 to TotalQSO
+      D := FQsoList[i].FileRecordEx;
       Write(f, D);
    end;
 
@@ -1608,7 +1821,7 @@ procedure TLog.SaveToFilezLogCsv(Filename: string);
 const
    csvheader = '"Date","Time","TimeZone","CallSign","RSTSent","NrSent","RSTRcvd","NrRcvd","Serial","Mode",' +
                '"Band","Power","Multi1","Multi2","NewMulti1","NewMulti2","Points","Operator","Memo","CQ",' +
-               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3"';
+               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","PCName"';
 var
    F: TextFile;
    i: Integer;
@@ -1717,6 +1930,15 @@ begin
          // 26óÒñ⁄ Reserve3
          slCsv.Add(IntToStr(Q.Reserve3));
 
+         // 27óÒñ⁄ Freq
+         slCsv.Add('"' + Q.Freq + '"');
+
+         // 28óÒñ⁄ QsyViolation
+         slCsv.Add(BoolToStr(Q.QsyViolation, True));
+
+         // 29óÒñ⁄ PCName
+         slCsv.Add('"' + Q.PCName + '"');
+
          WriteLn(F, slCsv.DelimitedText);
       end;
 
@@ -1753,7 +1975,7 @@ begin
    end;
 end;
 
-function TLog.GetActualFreq(b: TBand; memo: string): string;
+function TLog.GetActualFreq(b: TBand; strFreq: string): string;
 var
    p: Integer;
    s: string;
@@ -1768,21 +1990,12 @@ begin
       Exit;
    end;
 
-   p := Pos('(', memo);
-   if p = 0 then begin
+   if strFreq = '' then begin
       Result := FREQ[b];
       Exit;
    end;
 
-   s := Copy(memo, p + 1);
-
-   p := Pos(')', s);
-   if p = 0 then begin
-      Result := FREQ[b];
-      Exit;
-   end;
-
-   s := Copy(s, 1, p - 1);
+   s := strFreq;
 
    p := Pos('.', s);
    if p = 0 then begin
@@ -1857,7 +2070,7 @@ begin
 
       strText := 'QSO: ';
 
-      strText := strText  + GetActualFreq(Q.Band, Q.Memo) + ' ';
+      strText := strText  + GetActualFreq(Q.Band, Q.Freq) + ' ';
 
       if Q.Mode = mCW then begin
          strText := strText + 'CW ';
@@ -2002,7 +2215,7 @@ begin
             end;
 
             2: begin
-               slCsv.Add(Q.MemoStr);
+               slCsv.Add(Q.Memo);
             end;
 
             else begin
@@ -2021,7 +2234,7 @@ begin
             end;
 
             2: begin
-               slCsv.Add(Q.MemoStr);
+               slCsv.Add(Q.Memo);
             end;
 
             else begin
@@ -2242,12 +2455,7 @@ begin
          end;
       end;
 
-      if fQsyViolation = True then begin
-         SetQsyViolation(aQSO);
-      end
-      else begin
-         ResetQsyViolation(aQSO);
-      end;
+      aQSO.QsyViolation := fQsyViolation;
    end;
 
    for i := ord('A') to ord('Z') do begin
@@ -2352,6 +2560,11 @@ var
    f: file of TQSOData;
    i: Integer;
 begin
+   if UpperCase(ExtractFileExt(filename)) = '.ZLOX' then begin
+      Result := LoadFromFileEx(filename);
+      Exit;
+   end;
+
    AssignFile(f, filename);
    Reset(f);
    Read(f, D);
@@ -2364,6 +2577,48 @@ begin
 
       Q := TQSO.Create();
       Q.FileRecord := D;
+
+      if Q.Reserve3 = 0 then begin
+         Q.Reserve3 := dmZLogGlobal.NewQSOID;
+      end;
+
+      // ìØàÍQSOÇ™ÇQèdÇ…ì¸Ç¡ÇƒÇµÇ‹Ç¡ÇΩèÍçáÇÃébíËëŒçÙ
+      if IndexOf(Q) = -1 then begin
+         Add(Q);
+      end
+      else begin
+         FreeAndNil(Q);
+      end;
+   end;
+
+   if Q <> nil then begin
+      GLOBALSERIAL := (Q.Reserve3 div 10000) mod 10000;
+   end;
+
+   CloseFile(f);
+
+   Result := FQsoList.Count;
+end;
+
+function TLog.LoadFromFileEx(filename: string): Integer;
+var
+   Q: TQSO;
+   D: TQSODataEx;
+   f: file of TQSODataEx;
+   i: Integer;
+begin
+   AssignFile(f, filename);
+   Reset(f);
+   Read(f, D);
+
+   Q := nil;
+   GLOBALSERIAL := 0;
+
+   for i := 1 to FileSize(f) - 1 do begin
+      Read(f, D);
+
+      Q := TQSO.Create();
+      Q.FileRecordEx := D;
 
       if Q.Reserve3 = 0 then begin
          Q.Reserve3 := dmZLogGlobal.NewQSOID;
@@ -2507,6 +2762,15 @@ begin
 
             // 26óÒñ⁄ Reserve3
             Q.Reserve3 := StrToIntDef(slLine[25], 0);
+
+            // 27óÒñ⁄ Freq
+            Q.Freq := slLine[26];
+
+            // 28óÒñ⁄ QsyViolation
+            Q.QsyViolation := StrToBoolDef(slLine[27], False);
+
+            // 29óÒñ⁄ PCName
+            Q.Freq := slLine[29];
 
             Add(Q);
          end;

@@ -6028,13 +6028,15 @@ object MainForm: TMainForm
   end
   object OpenDialog: TOpenDialog
     DefaultExt = 'ZLO'
-    Filter = 'zLog binary file|*.ZLO|any file|*.*'
+    Filter = 
+      'zLog binary file|*.ZLO|zLog Extended binary file|*.ZLOX|any file' +
+      '|*.*'
     Left = 418
     Top = 207
   end
   object SaveDialog: TSaveDialog
     DefaultExt = 'zlo'
-    Filter = 'zLog binary file (.ZLO)|*.zlo'
+    Filter = 'zLog binary file|*.ZLO|zLog Extended binary file|*.ZLOX'
     Left = 376
     Top = 213
   end
@@ -6350,9 +6352,8 @@ object MainForm: TMainForm
   end
   object FileExportDialog: TSaveDialog
     Filter = 
-      'ALL bands (*.all)|*.all|zLog DOS compatible text (*.txt)|*.txt|T' +
-      'X# (*.tx)|*.tx|ADIF (*.adi)|*.adi|Cabrillo(*.CBR)|*.CBR|zLog CSV' +
-      '(*.csv)|*.csv|HAMLOG(*.csv)|*.csv'
+      'ALL bands|*.all|zLog DOS compatible text|*.txt|TX#|*.tx|ADIF|*.a' +
+      'di|Cabrillo|*.CBR|zLog CSV|*.csv|HAMLOG|*.csv'
     Options = [ofOverwritePrompt, ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Title = 'Export'
     OnTypeChange = FileExportDialogTypeChange
@@ -6393,10 +6394,6 @@ object MainForm: TMainForm
   object GeneralSaveDialog: TSaveDialog
     Left = 268
     Top = 208
-  end
-  object OpenDialog1: TOpenDialog
-    Left = 304
-    Top = 136
   end
   object ActionList1: TActionList
     Left = 108
@@ -7190,7 +7187,9 @@ object MainForm: TMainForm
     Top = 171
   end
   object FileImportDialog: TOpenDialog
-    Filter = 'zLog binary File(*.ZLO)|*.ZLO|zLog CSV(*.csv)|*.csv'
+    Filter = 
+      'zLog binary File|*.ZLO|zLog Extended binary File|*.ZLOX|zLog CSV' +
+      '|*.csv'
     Title = 'Import'
     Left = 472
     Top = 144
