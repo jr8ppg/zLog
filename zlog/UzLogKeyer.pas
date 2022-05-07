@@ -675,7 +675,6 @@ begin
             ZComTxRigSelect.ToggleRTS(True);
          end;
       end;
-      Exit;
    end;
 
    // WinKeyerの場合
@@ -699,7 +698,8 @@ begin
       // USBIF4CWでのRIG SELECT
       if FKeyingPort[i] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
-         FUsbInfo[i].FPORTDATA.SetRigFlag(flag);
+         FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTx);
+         FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTx);
          SendUsbPortData(i);
          LeaveCriticalSection(FUsbPortDataLock);
       end;
