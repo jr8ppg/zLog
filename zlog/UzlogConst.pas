@@ -12,7 +12,8 @@ type
 
   TContestMode = (cmMix = 0, cmCw, cmPh, cmOther, cmAll);
   TContestCategory = (ccSingleOp = 0, ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx);
-  TSo2rType = (so2rNone = 0, so2rCom, so2rNeo );
+  TSo2rType = (so2rNone = 0, so2rCom, so2rNeo);
+  TQslState = (qsNone = 0, qsPseQsl, qsNoQsl);
 
 const
   HiBand = b10g;
@@ -124,7 +125,7 @@ const
   );
 
 const
-  default_primary_shortcut: array[0..153] of string = (
+  default_primary_shortcut: array[0..155] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -278,10 +279,12 @@ const
     'Shift+D',          // #150 actionToggleRigPair
     'Ctrl+0',           // #151 actionChangeTxNr0
     'Ctrl+1',           // #152 actionChangeTxNr1
-    ''                  // #153 actionChangeTxNr2
+    '',                 // #153 actionChangeTxNr2
+    '',                 // #154 actionPseQsl
+    ''                  // #155 actionNoQsl
   );
 
-  default_secondary_shortcut: array[0..153] of string = (
+  default_secondary_shortcut: array[0..155] of string = (
     '',                 // #00
     '',
     '',
@@ -435,7 +438,9 @@ const
     '',                 // #150 actionToggleRigPair
     '',                 // #151 actionChangeTxNr0
     '',                 // #152 actionChangeTxNr1
-    ''                  // #153 actionChangeTxNr2
+    '',                 // #153 actionChangeTxNr2
+    '',                 // #154 actionPseQsl
+    ''                  // #155 actionNoQsl
   );
 
 const

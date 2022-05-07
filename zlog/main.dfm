@@ -7165,6 +7165,14 @@ object MainForm: TMainForm
       Caption = 'actionChangeTxNr2'
       OnExecute = actionChangeTxNrExecute
     end
+    object actionPseQsl: TAction
+      Caption = 'actionPseQsl'
+      OnExecute = actionPseQslExecute
+    end
+    object actionNoQsl: TAction
+      Caption = 'actionNoQsl'
+      OnExecute = actionNoQslExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

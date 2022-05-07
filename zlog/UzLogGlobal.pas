@@ -195,6 +195,9 @@ type
     _super_check_columns: Integer;
     _super_check2_columns: Integer;
 
+    // QSL Default
+    _qsl_default: TQslState;
+
     // Anti Zeroin
     FUseAntiZeroin: Boolean;
     FAntiZeroinShiftMax: Integer;   // 0-200
@@ -645,6 +648,9 @@ begin
 
       // Save every N QSOs
       Settings._saveevery := ini.ReadInteger('Preferences', 'SaveEvery', 3);
+
+      // QSL Default
+      Settings._qsl_default := TQslState(ini.ReadInteger('Preferences', 'QslDefault', 0));
 
       //
       // Categories
@@ -1235,6 +1241,9 @@ begin
 
       // Save every N QSOs
       ini.WriteInteger('Preferences', 'SaveEvery', Settings._saveevery);
+
+      // QSL Default
+      ini.WriteInteger('Preferences', 'QslDefault', Integer(Settings._qsl_default));
 
       //
       // Categories

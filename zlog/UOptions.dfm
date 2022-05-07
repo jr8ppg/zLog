@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetHardware
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -501,7 +501,7 @@ object formOptions: TformOptions
         Width = 204
         Height = 89
         Caption = 'QSY Assist'
-        TabOrder = 8
+        TabOrder = 9
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -566,6 +566,43 @@ object formOptions: TformOptions
           MinValue = 1
           TabOrder = 4
           Value = 10
+        end
+      end
+      object GroupBox13: TGroupBox
+        Left = 17
+        Top = 299
+        Width = 101
+        Height = 89
+        Caption = 'QSL Default'
+        TabOrder = 8
+        object radioQslNone: TRadioButton
+          Left = 15
+          Top = 16
+          Width = 65
+          Height = 17
+          Caption = 'None'
+          TabOrder = 0
+          OnClick = radioQsyAssistClick
+        end
+        object radioPseQsl: TRadioButton
+          Tag = 1
+          Left = 15
+          Top = 39
+          Width = 65
+          Height = 17
+          Caption = 'PSE QSL'
+          TabOrder = 1
+          OnClick = radioQsyAssistClick
+        end
+        object radioNoQsl: TRadioButton
+          Tag = 2
+          Left = 15
+          Top = 62
+          Width = 65
+          Height = 17
+          Caption = 'NO QSL'
+          TabOrder = 2
+          OnClick = radioQsyAssistClick
         end
       end
     end

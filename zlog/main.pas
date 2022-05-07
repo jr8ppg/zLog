@@ -663,6 +663,8 @@ type
     actionChangeTxNr0: TAction;
     actionChangeTxNr1: TAction;
     actionChangeTxNr2: TAction;
+    actionPseQsl: TAction;
+    actionNoQsl: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -912,6 +914,8 @@ type
     procedure timerCqRepeatTimer(Sender: TObject);
     procedure FileExportDialogTypeChange(Sender: TObject);
     procedure actionChangeTxNrExecute(Sender: TObject);
+    procedure actionPseQslExecute(Sender: TObject);
+    procedure actionNoQslExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -5157,6 +5161,7 @@ begin
    else begin
       CurrentQSO.RSTRcvd := 59;
    end;
+   CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
 
    SerialEdit.Text := CurrentQSO.SerialStr;
    TimeEdit.Text := CurrentQSO.TimeStr;
@@ -9545,6 +9550,18 @@ var
 begin
    txnr := TAction(Sender).Tag;
    ChangeTxNr(txnr);
+end;
+
+// #154 Pse QSL
+procedure TMainForm.actionPseQslExecute(Sender: TObject);
+begin
+   CurrentQSO.QslState := qsPseQsl;
+end;
+
+// #155 No QSL
+procedure TMainForm.actionNoQslExecute(Sender: TObject);
+begin
+   CurrentQSO.QslState := qsNoQsl;
 end;
 
 procedure TMainForm.RestoreWindowsPos();

@@ -477,6 +477,10 @@ type
     Label101: TLabel;
     editSo2rRigSwAfterDelay: TEdit;
     checkWkIgnoreSpeedPot: TCheckBox;
+    GroupBox13: TGroupBox;
+    radioQslNone: TRadioButton;
+    radioPseQsl: TRadioButton;
+    radioNoQsl: TRadioButton;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -800,6 +804,17 @@ begin
       Settings.CW._keying_signal_reverse := checkCwReverseSignal.Checked;
 
       Settings._saveevery        := SaveEvery.Value;
+
+      // QSL Default
+      if radioQslNone.Checked = True then begin
+         Settings._qsl_default   := qsNone;
+      end
+      else if radioPseQsl.Checked = True then begin
+         Settings._qsl_default   := qsPseQsl;
+      end
+      else begin
+         Settings._qsl_default   := qsNoQsl;
+      end;
 
       // QSY Assist
       Settings._countdown        := radioQsyCountDown.Checked;
@@ -1337,6 +1352,17 @@ begin
 
       // Not send leading zeros in serial number
       checkNotSendLeadingZeros.Checked := Settings.CW._not_send_leading_zeros;
+
+      // QSL Default
+      if Settings._qsl_default = qsNone then begin
+         radioQslNone.Checked := True;
+      end
+      else if Settings._qsl_default = qsPseQsl then begin
+         radioPseQsl.Checked := True;
+      end
+      else begin
+         radioNoQsl.Checked := True;
+      end;
 
       // QSY Assist
       radioQsyNone.Checked          := True;

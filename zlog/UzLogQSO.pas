@@ -72,7 +72,8 @@ type
     QsyViolation: Boolean; { 1 byte }
     PCName: string[10];    { 11 bytes max 10 char }
     Forced: Boolean;       { 1 byte }
-    Reserve4: string[39];  { 40 bytes }
+    QslState: Byte;        { 1 byte 0:None 1:Pse QSL 2:No QSL }
+    Reserve4: string[38];  { 39 bytes }
     // 320bytes
   end;
 
@@ -109,6 +110,7 @@ type
     FQsyViolation: Boolean;
     FPCName: string;
     FForced: Boolean;
+    FQslState: TQslState;
 
     function GetMode2(): TMode;
 
@@ -182,6 +184,7 @@ type
     property QsyViolation: Boolean read FQsyViolation write FQsyViolation;
     property PCName: string read FPCName write FPCName;
     property Forced: Boolean read FForced write FForced;
+    property QslState: TQslState read FQslState write FQslState;
 
     property SerialStr: string read GetSerialStr;
     property TimeStr: string read GetTimeStr;
@@ -391,6 +394,7 @@ begin
    FQsyViolation := False;
    FPCName := '';
    FForced := False;
+   FQslState := qsNone;
 end;
 
 procedure TQSO.IncTime;
@@ -440,6 +444,7 @@ begin
       slText.Add(ZBoolToStr(QsyViolation));
       slText.Add(PCName);
       slText.Add(ZBoolToStr(Forced));
+      slText.Add(IntToStr(Integer(QslState)));
 
       Result := slText.DelimitedText;
    finally
@@ -456,7 +461,7 @@ begin
    slText.Delimiter := _sep;
    try
    try
-      slText.DelimitedText := str + DupeString(_sep, 28);
+      slText.DelimitedText := str + DupeString(_sep, 29);
 
       if slText[0] <> 'ZLOGQSODATA:' then begin
          Exit;
@@ -490,6 +495,7 @@ begin
       QsyViolation := ZStrToBool(slText[26]);
       PCName   := slText[27];
       Forced   := ZStrToBool(slText[28]);
+      QslState  := TQslState(StrToInt(slText[29]));
    except
       on EConvertError do begin
          FMemo := 'Convert Error!';
@@ -963,6 +969,7 @@ begin
    FQsyViolation := src.FQsyViolation;
    FPCName := src.FPCName;
    FForced := src.FForced;
+   FQslState := src.FQslState;
 end;
 
 function TQSO.GetFileRecord(): TQSOData;
@@ -1044,6 +1051,14 @@ begin
       FForced := True;
       FMemo := Trim(StringReplace(FMemo, '*', '', [rfReplaceAll]));
    end;
+   if Pos(FMemo, MEMO_PSE_QSL) > 0 then begin
+      FQslState := qsPseQsl;
+      FMemo := Trim(StringReplace(FMemo, MEMO_PSE_QSL, '', [rfReplaceAll]));
+   end;
+   if Pos(FMemo, MEMO_NO_QSL) > 0 then begin
+      FQslState := qsNoQsl;
+      FMemo := Trim(StringReplace(FMemo, MEMO_NO_QSL, '', [rfReplaceAll]));
+   end;
 end;
 
 function TQSO.GetFileRecordEx(): TQSODataEx;
@@ -1077,6 +1092,7 @@ begin
    Result.QsyViolation := FQsyViolation;
    Result.PCName     := ShortString(FPCName);
    Result.Forced     := FForced;
+   Result.QslState   := Byte(FQslState);
 end;
 
 procedure TQSO.SetFileRecordEx(src: TQSODataEx);
@@ -1109,6 +1125,7 @@ begin
    FQsyViolation := src.QsyViolation;
    FPCName     := string(src.PCName);
    FForced     := src.Forced;
+   FQslState   := TQslState(src.QslState);
 end;
 
 { TQSOList }
@@ -1821,7 +1838,7 @@ procedure TLog.SaveToFilezLogCsv(Filename: string);
 const
    csvheader = '"Date","Time","TimeZone","CallSign","RSTSent","NrSent","RSTRcvd","NrRcvd","Serial","Mode",' +
                '"Band","Power","Multi1","Multi2","NewMulti1","NewMulti2","Points","Operator","Memo","CQ",' +
-               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","PCName"';
+               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","PCName","QslState"';
 var
    F: TextFile;
    i: Integer;
@@ -1938,6 +1955,12 @@ begin
 
          // 29—ñ–Ú PCName
          slCsv.Add('"' + Q.PCName + '"');
+
+         // 30—ñ–Ú Forced
+         slCsv.Add(BoolToStr(Q.Forced, True));
+
+         // 31—ñ–Ú QslState
+         slCsv.Add(IntToStr(Integer(Q.QslState)));
 
          WriteLn(F, slCsv.DelimitedText);
       end;
@@ -2674,7 +2697,7 @@ begin
       try
          for i := 1 to slFile.Count - 1 do begin
             slLine.Clear();
-            slLine.CommaText := slFile.Strings[i];
+            slLine.CommaText := slFile.Strings[i] + DupeString(',', 31);
 
             Q := TQSO.Create();
 
@@ -2770,7 +2793,13 @@ begin
             Q.QsyViolation := StrToBoolDef(slLine[27], False);
 
             // 29—ñ–Ú PCName
-            Q.Freq := slLine[29];
+            Q.PCName := slLine[28];
+
+            // 30—ñ–Ú Forced
+            Q.Forced := StrToBoolDef(slLine[29], False);
+
+            // 31—ñ–Ú QslState
+            Q.QslState := TQslState(StrToIntDef(slLine[30], 0));
 
             Add(Q);
          end;
