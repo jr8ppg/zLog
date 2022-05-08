@@ -2673,6 +2673,7 @@ var
    slFile: TStringList;
    slLine: TStringList;
    strMsg: string;
+   Index: Integer;
 begin
    slFile := TStringList.Create();
    slFile.StrictDelimiter := True;
@@ -2801,7 +2802,18 @@ begin
             // 31—ñ–Ú QslState
             Q.QslState := TQslState(StrToIntDef(slLine[30], 0));
 
-            Add(Q);
+            if Q.Reserve3 = 0 then begin
+               Q.Reserve3 := dmZLogGlobal.NewQSOID;
+            end;
+
+            Index := IndexOf(Q);
+            if Index = -1 then begin
+               Add(Q);
+            end
+            else begin
+               FQsoList[Index].Assign(Q);
+               FreeAndNil(Q);
+            end;
          end;
       except
          on E: Exception do begin
