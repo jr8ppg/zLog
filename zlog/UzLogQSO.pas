@@ -606,8 +606,6 @@ end;
 function TQSO.GetFreqStr(): string;
 var
    strFreq: string;
-   Index1: Integer;
-   Index2: Integer;
    fFreq: Extended;
 begin
    strFreq := Self.Freq;
@@ -626,7 +624,6 @@ end;
 function TQSO.GetMemoStr(): string;
 var
    strMemo: string;
-   Index: Integer;
 begin
    strMemo := '';
 
@@ -650,7 +647,7 @@ begin
       strMemo := strMemo + '(' + FFreq + ')';
    end;
 
-   strMemo := strMemo + Self.Memo;
+   strMemo := strMemo + FMemo;
 
    if FQsyViolation = True then begin
       if strMemo <> '' then begin
@@ -1043,19 +1040,23 @@ begin
       end;
    end;
 
-   if Pos(FMemo, MEMO_QSY_VIOLATION) > 0 then begin
+   if Pos(MEMO_DUPE, FMemo) > 0 then begin
+      FDupe := True;
+      FMemo := Trim(StringReplace(FMemo, MEMO_DUPE, '', [rfReplaceAll]));
+   end;
+   if Pos(MEMO_QSY_VIOLATION, FMemo) > 0 then begin
       FQsyViolation := True;
       FMemo := Trim(StringReplace(FMemo, MEMO_QSY_VIOLATION, '', [rfReplaceAll]));
    end;
-   if Pos(src.Memo, '*') > 0 then begin
+   if Pos('*', FMemo) > 0 then begin
       FForced := True;
       FMemo := Trim(StringReplace(FMemo, '*', '', [rfReplaceAll]));
    end;
-   if Pos(FMemo, MEMO_PSE_QSL) > 0 then begin
+   if Pos(MEMO_PSE_QSL, FMemo) > 0 then begin
       FQslState := qsPseQsl;
       FMemo := Trim(StringReplace(FMemo, MEMO_PSE_QSL, '', [rfReplaceAll]));
    end;
-   if Pos(FMemo, MEMO_NO_QSL) > 0 then begin
+   if Pos(MEMO_NO_QSL, FMemo) > 0 then begin
       FQslState := qsNoQsl;
       FMemo := Trim(StringReplace(FMemo, MEMO_NO_QSL, '', [rfReplaceAll]));
    end;

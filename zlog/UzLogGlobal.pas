@@ -3314,17 +3314,6 @@ procedure SetDupeQso(aQSO: TQSO);
 begin
    aQSO.Points := 0;
    aQSO.Dupe := True;
-
-   if Pos(MEMO_DUPE, aQSO.Memo) > 0 then begin
-      Exit;
-   end;
-
-   if aQSO.Memo <> '' then begin
-      aQSO.Memo := MEMO_DUPE + ' ' + aQSO.Memo;
-   end
-   else begin
-      aQSO.Memo := MEMO_DUPE;
-   end;
 end;
 
 procedure ResetDupeQso(aQSO: TQSO);
