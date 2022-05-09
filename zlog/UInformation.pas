@@ -27,6 +27,7 @@ type
     procedure button2bsiqClick(Sender: TObject);
     procedure panelCQModeClick(Sender: TObject);
     procedure buttonWaitClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private êÈåæ }
     function GetCQMode(): Boolean;
@@ -44,6 +45,7 @@ type
     procedure SetTx(tx: Integer);
   public
     { Public êÈåæ }
+    procedure DispUpdate();
     property CQMode: Boolean read GetCQMode write SetCQMode;
     property WPM: Integer read GetWPM write SetWPM;
     property Time: string write SetTime;
@@ -64,12 +66,13 @@ uses
 
 procedure TformInformation.button2bsiqClick(Sender: TObject);
 begin
+   DispUpdate();
    MainForm.SetLastFocus();
 end;
 
 procedure TformInformation.buttonWaitClick(Sender: TObject);
 begin
-   SetWait(ledWait.Status);
+   DispUpdate();
    MainForm.SetLastFocus();
 end;
 
@@ -91,6 +94,11 @@ begin
          MainForm.SetLastFocus();
       // VK_ALT
    end;
+end;
+
+procedure TformInformation.FormShow(Sender: TObject);
+begin
+   DispUpdate();
 end;
 
 function TformInformation.GetCQMode(): Boolean;
@@ -166,7 +174,7 @@ end;
 
 function TformInformation.GetIsWait(): Boolean;
 begin
-   Result := buttonWait.Down;
+   Result := (buttonWait.Down and button2bsiq.Down);
 end;
 
 procedure TformInformation.SetIsWait(fOn: Boolean);
@@ -182,6 +190,19 @@ end;
 procedure TformInformation.SetTx(tx: Integer);
 begin
    panelTxInfo.Caption := 'T' + IntToStr(tx + 1);
+end;
+
+procedure TformInformation.DispUpdate();
+begin
+   if button2bsiq.Down = True then begin
+      buttonWait.Enabled := True;
+      SetWait(ledWait.Status);
+   end
+   else begin
+      buttonWait.Enabled := False;
+      ledWait.ColorOff := clSilver;
+      ledWait.Status := False;
+   end;
 end;
 
 end.

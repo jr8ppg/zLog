@@ -4743,7 +4743,20 @@ begin
    FCQLoopPause := True;
    FCancelAutoRigSwitch := True;
 
-   // CQ Invert時は送信RIGを戻す
+   // 2BSIQ OFFの場合はTXをRXにあわせる
+   // CQ+S&P
+   // 現在RIGがRIG2(SP)ならRIG1(CQ)へ戻る
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+      (FInformation.Is2bsiq = False) then begin
+      ResetTx();
+      if FCurrentRx = 0 then begin
+         SetCQ(True);
+      end
+      else begin
+         SetCQ(False);
+      end;
+   end;
+
    if FInformation.Is2bsiq = True then begin
       ResetTx();
 
@@ -5445,6 +5458,19 @@ begin
       FCQLoopRunning := True;
       FCQLoopCount := 0;
       FCQLoopPause := False;
+   end;
+
+   // CQ+S&P
+   // 現在RIGがRIG2(SP)ならRIG1(CQ)へ戻る
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+      (FInformation.Is2bsiq = False) then begin
+      rig := RigControl.GetCurrentRig();
+      if rig <> 1 then begin
+         rig := 1;
+         RigControl.SetCurrentRig(rig);
+         SwitchRig(rig);
+         UpdateCurrentQSO();
+      end;
    end;
 
    SetCQ(True);
@@ -7985,10 +8011,17 @@ var
 begin
    WriteStatusLine('', False);
 
-   nID := FCurrentTx;
+   // 2R:CQ+S&P時、F1/F2/F3以外はSPモード
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+      (FInformation.Is2bsiq = False) then begin
+      if no > 3 then begin
+         SetCQ(False);
+      end;
+   end;
 
    case CurrentQSO.Mode of
       mCW: begin
+         nID := FCurrentTx;
          if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
             WriteStatusLineRed('CW port is not set', False);
             Exit;
@@ -9241,9 +9274,20 @@ begin
       dmZLogKeyer.ResetPTT();
    end;
 
-   // TXとRXを合わせる
-   if FCurrentTx <> FCurrentRx then begin
-      SwitchRig(FCurrentRx + 1);
+   // 2R:2BSIQ OFFの場合はRIG1に戻す
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+      if (FInformation.Is2bsiq = False) then begin
+         if FCurrentRx <> 0 then begin
+            SwitchRig(1);
+         end;
+      end;
+   end;
+
+   // 1R:TXとRXを合わせる
+   if (dmZLogGlobal.Settings._so2r_type = so2rNone) then begin
+      if FCurrentTx <> FCurrentRx then begin
+         SwitchRig(FCurrentRx + 1);
+      end;
    end;
 end;
 
@@ -10666,6 +10710,8 @@ begin
       end;
 //      FSo2rNeoCp.Rx := rig - 1;
       PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rig - 1, 0);
+
+      UpdateCurrentQSO();
    end;
 end;
 
