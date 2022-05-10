@@ -28,6 +28,7 @@ const
   WM_ZLOG_INIT = (WM_USER + 100);
   WM_ZLOG_SETGRIDCOL = (WM_USER + 101);
   WM_ZLOG_SPCDATALOADED = (WM_USER + 102);
+  WM_ZLOG_CQREPEAT_CONTINUE = (WM_USER + 103);
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
@@ -783,6 +784,7 @@ type
     procedure OnZLogInit( var Message: TMessage ); message WM_ZLOG_INIT;
     procedure OnZLogSetGridCol( var Message: TMessage ); message WM_ZLOG_SETGRIDCOL;
     procedure OnZLogSpcDataLoaded( var Message: TMessage ); message WM_ZLOG_SPCDATALOADED;
+    procedure OnZLogCqRepeatContinue( var Message: TMessage ); message WM_ZLOG_CQREPEAT_CONTINUE;
     procedure OnZLogGetCallsign( var Message: TMessage ); message WM_ZLOG_GETCALLSIGN;
     procedure OnZLogGetVersion( var Message: TMessage ); message WM_ZLOG_GETVERSION;
     procedure OnZLogSetPttState( var Message: TMessage ); message WM_ZLOG_SETPTTSTATE;
@@ -7473,6 +7475,11 @@ begin
    FSpcDataLoading := False;
 end;
 
+procedure TMainForm.OnZLogCqRepeatContinue( var Message: TMessage );
+begin
+   CQRepeatProc(False);
+end;
+
 procedure TMainForm.OnZLogGetCallsign( var Message: TMessage );
 var
    callsign_atom: ATOM;
@@ -8178,9 +8185,14 @@ begin
          FCQLoopCount := 0;
          if FInformation.Is2bsiq = True then begin
             FCancelAutoRigSwitch := True;
+         end;
 
-//            rx := GetNextRigID(FCurrentRx);
-//            SwitchRx(rx + 1, True);
+         // 2R:Ç∑ÇÆÇ…CQçƒäJ
+         if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+            if FInformation.Is2bsiq = False then begin
+               PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+               Exit;
+            end;
          end;
       end;
 
