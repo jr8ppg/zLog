@@ -2881,7 +2881,7 @@ begin
 
          R := FDupeCheckList[b].DupeCheck(Q, FAcceptDifferentMode, FAllPhone);
          if R <> nil then begin
-            workdmulti := R.Multi1;
+            workdmulti := R.NrRcvd;
             Result := True;
             Exit;
          end;
