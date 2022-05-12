@@ -4761,22 +4761,25 @@ begin
    // 2BSIQ OFFの場合はTXをRXにあわせる
    // CQ+S&P
    // 現在RIGがRIG2(SP)ならRIG1(CQ)へ戻る
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
-      (FInformation.Is2bsiq = False) then begin
-      ResetTx();
-      if FCurrentRx = (FCQLoopStartRig - 1) then begin
-         SetCQ(True);
-      end
-      else begin
-         SetCQ(False);
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+      // CQ+SP
+      if FInformation.Is2bsiq = False then begin
+         ResetTx();
+         if FCurrentRx = (FCQLoopStartRig - 1) then begin
+            SetCQ(True);
+         end
+         else begin
+            SetCQ(False);
+         end;
       end;
-   end;
 
-   if FInformation.Is2bsiq = True then begin
-      ResetTx();
+      // 2BSIQ
+      if FInformation.Is2bsiq = True then begin
+         ResetTx();
 
-      rx := GetNextRigID(FCurrentRx);
-      SwitchRx(rx + 1, True);
+         rx := GetNextRigID(FCurrentRx);
+         SwitchRx(rx + 1, True);
+      end;
    end;
 
    // PHONE
@@ -8192,33 +8195,39 @@ begin
 
       // TABキー押下後
       if FTabKeyPressed = True then begin
+         // SO2R
          if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+            // CQ+SP
             if (FInformation.Is2bsiq = False) and (FCQLoopRunning = True) then begin
                if (CurrentQSO.CQ = False) and (dmZlogGlobal.Settings._switchcqsp = True) then begin
                   PostMessage(Handle, WM_ZLOG_SPACEBAR_PROC, 0, 0);
                end;
             end;
-         end;
 
-         if FInformation.Is2bsiq = True then begin
-            FCancelAutoRigSwitch := True;
-            FCQLoopPause := False;
+            // 2BSIQ
+            if (FInformation.Is2bsiq = True) and (FCQLoopRunning = True) then begin
+               FCancelAutoRigSwitch := True;
+               FCQLoopPause := False;
 
-            rx := GetNextRigID(FCurrentRx);
-            SwitchRx(rx + 1, True);
+               // TODO:何故かCWの時はRXが逆になっている
+               if mode = mCW then begin
+                  rx := GetNextRigID(FCurrentRx);
+                  SwitchRx(rx + 1, True);
+               end;
+
+               PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+               Exit;
+            end;
          end;
       end;
 
       // DOWNキー押下後
       if FDownKeyPressed = True then begin
-//         FCQLoopRunning := True;
          FCQLoopCount := 0;
-         if FInformation.Is2bsiq = True then begin
-            FCancelAutoRigSwitch := True;
-         end;
 
          // 2R:すぐにCQ再開
          if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+            // CQ+SP
             if (FInformation.Is2bsiq = False) and (FCQLoopRunning = True) then begin
                // CQ開始時のRIGと違う場合はすぐにCQ開始
                rig := RigControl.GetCurrentRig();
@@ -8226,6 +8235,18 @@ begin
                   PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
                   Exit;
                end;
+            end;
+
+            // 2BSIQ
+            if (FInformation.Is2bsiq = True) and (FCQLoopRunning = True) then begin
+               FCancelAutoRigSwitch := True;
+               FCQLoopPause := False;
+
+//               rx := GetNextRigID(FCurrentRx);
+//               SwitchRx(rx + 1, True);
+
+               PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+               Exit;
             end;
          end;
       end;
@@ -10969,6 +10990,7 @@ begin
    FInformation.Wait := True;
    while FCQRepeatPlaying = True do begin
       Application.ProcessMessages();
+      Sleep(0);
    end;
    FInformation.Wait := False;
 end;
