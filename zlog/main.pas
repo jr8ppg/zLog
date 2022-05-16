@@ -1135,6 +1135,7 @@ type
     procedure OnUpKeyProc(Sender: TObject);
     procedure OnAlphaNumericKeyProc(Sender: TObject; var Key: word);
     procedure UpdateCurrentQSO();
+    procedure CQAbort(fReturnStartRig: Boolean);
     procedure SpaceBarProc();
   public
     EditScreen : TBasicEdit;
@@ -5363,12 +5364,14 @@ begin
    if dmZLogKeyer.UseWinKeyer = True then begin
       dmZLogKeyer.WinKeyerClear();
    end;
+   FCQRepeatPlaying := False;
 end;
 
 procedure TMainForm.VoiceStopButtonClick(Sender: TObject);
 begin
 //   CancelCqRepeat();
    FVoiceForm.StopVoice;
+   FCQRepeatPlaying := False;
 end;
 
 procedure TMainForm.SetCQ(CQ: Boolean);
@@ -5461,7 +5464,8 @@ var
    bank: Integer;
    msgno: Integer;
    mode: TMode;
-   rig: Integer;
+   newrig: Integer;
+   currig: Integer;
    n: Integer;
    RandCQStr: array[1..2] of string;
    dwTick: DWORD;
@@ -5485,12 +5489,11 @@ begin
    // 現在RIGがRIG2(SP)ならRIG1(CQ)へ戻る
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
       (FInformation.Is2bsiq = False) then begin
-      rig := RigControl.GetCurrentRig();
-      if rig <> FCQLoopStartRig then begin
-         rig := FCQLoopStartRig;
-         RigControl.SetCurrentRig(rig);
-         SwitchRig(rig);
-         UpdateCurrentQSO();
+      currig := RigControl.GetCurrentRig();
+      if currig <> FCQLoopStartRig then begin
+         newrig := FCQLoopStartRig;
+         SwitchTx(newrig);
+         SwitchRx(currig);
       end;
    end;
 
@@ -5498,39 +5501,41 @@ begin
 
    WriteStatusLine('', False);
 
-   rig := RigControl.GetCurrentRig();
+   currig := RigControl.GetCurrentRig();
 
    // 次回キャンセルは不要か？
 //   FCancelAutoRigSwitch := False;
 
-   if (FInformation.is2bSiq = True) and (fFirstCall = False) and (FCancelAutoRigSwitch = False) then begin
-      // SHIFTキー押下でキャンセル
-      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-         Exit;
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+      if (FInformation.Is2bsiq = True) and (fFirstCall = False) and (FCancelAutoRigSwitch = False) then begin
+         // SHIFTキー押下でキャンセル
+         if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+            Exit;
+         end;
+
+         // RIG番号をトグル
+         newrig := GetNextRigID(currig - 1) + 1;
+
+         // カレントRIGを変更
+         RigControl.SetCurrentRig(newrig);
+         SwitchRig(newrig);
+
+         // RIG変更後Wait
+         dwTick := GetTickCount();
+         while True do begin
+            if (GetTickCount() - dwTick) >= (dmZLogGlobal.Settings._so2r_rigsw_after_delay) then begin
+               Break;
+            end;
+            Application.ProcessMessages();
+         end;
       end;
 
-      // RIG番号をトグル
-      rig := GetNextRigID(rig - 1) + 1;
-
-      // カレントRIGを変更
-      RigControl.SetCurrentRig(rig);
-      SwitchRig(rig);
-
-      // RIG変更後Wait
-      dwTick := GetTickCount();
-      while True do begin
-         if (GetTickCount() - dwTick) >= (dmZLogGlobal.Settings._so2r_rigsw_after_delay) then begin
-            Break;
-         end;
-         Application.ProcessMessages();
+      // CQ Invert
+      if FInformation.Is2bsiq = True then begin
+         InvertTx();
       end;
    end;
    FCancelAutoRigSwitch := False;
-
-   // CQ Invert
-   if FInformation.Is2bsiq = True then begin
-      InvertTx();
-   end;
 
    // 自動リグ変更の場合Messageを切り替える
    if FInformation.Is2bsiq = True then begin
@@ -8151,7 +8156,7 @@ var
    tx: Integer;
    rx: Integer;
    interval: Double;
-   rig: Integer;
+//   rig: Integer;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- OnPlayMessageFinished ---'));
@@ -8227,6 +8232,7 @@ begin
 
          // 2R:すぐにCQ再開
          if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+{ 不要との事
             // CQ+SP
             if (FInformation.Is2bsiq = False) and (FCQLoopRunning = True) then begin
                // CQ開始時のRIGと違う場合はすぐにCQ開始
@@ -8236,6 +8242,7 @@ begin
                   Exit;
                end;
             end;
+}
 
             // 2BSIQ
             if (FInformation.Is2bsiq = True) and (FCQLoopRunning = True) then begin
@@ -8272,7 +8279,7 @@ end;
 
 procedure TMainForm.OnPaddle(Sender: TObject);
 begin
-   actionCQAbort.Execute();
+   CQAbort(False);
 end;
 
 // バンドスコープへ追加
@@ -8866,10 +8873,26 @@ begin
    TabPressed := False;
    TabPressed2 := False;
 
-   rig := RigControl.GetCurrentRig();
-   rig := GetNextRigID(rig - 1) + 1;
-   RigControl.SetCurrentRig(rig);
-   SwitchRig(rig);
+   // 1Rの場合
+   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+      rig := RigControl.GetCurrentRig();
+      rig := GetNextRigID(rig - 1) + 1;
+      RigControl.SetCurrentRig(rig);
+      SwitchRig(rig);
+   end
+   else begin
+      // 2Rの場合
+      if FCurrentTX = FCurrentRX then begin
+         rig := RigControl.GetCurrentRig();
+         rig := GetNextRigID(rig - 1) + 1;
+         RigControl.SetCurrentRig(rig);
+         SwitchRig(rig);
+      end
+      else begin
+         // RXにTXを合わせる
+         SwitchTx(FCurrentRx + 1);
+      end;
+   end;
 
    UpdateCurrentQSO();
 end;
@@ -9320,43 +9343,8 @@ end;
 
 // #113 CW/Voice送出中止 ESC
 procedure TMainForm.actionCQAbortExecute(Sender: TObject);
-var
-   nID: Integer;
-   mode: TMode;
 begin
-   WriteStatusLine('', False);
-
-   FCQRepeatPlaying := False;
-   FCQLoopRunning := False;
-
-   nID := FCurrentTx;
-   mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
-   StopMessage(mode);
-
-   TabPressed := False;
-   TabPressed2 := False;
-
-   // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
-   if (dmZLogGlobal.Settings._pttenabled = False) and
-      (dmZLogKeyer.UseWinKeyer = False) then begin
-      dmZLogKeyer.ResetPTT();
-   end;
-
-   // 2R:2BSIQ OFFの場合はRIG1に戻す
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
-      if (FInformation.Is2bsiq = False) then begin
-         if FCurrentRx <> 0 then begin
-            SwitchRig(1);
-         end;
-      end;
-   end;
-
-   // 1R:TXとRXを合わせる
-   if (dmZLogGlobal.Settings._so2r_type = so2rNone) then begin
-      if FCurrentTx <> FCurrentRx then begin
-         SwitchRig(FCurrentRx + 1);
-      end;
-   end;
+   CQAbort(True);
 end;
 
 // #120 CQモード、SPモードのトグル
@@ -11134,8 +11122,15 @@ begin
       end;
    end
    else begin
-      if FCQLoopRunning = True then begin
-         FCQLoopPause := True;
+      if FInformation.Is2bsiq = False then begin
+         if FCurrentTx = FCurrentRx then begin
+            FCQLoopPause := True;
+         end;
+      end
+      else begin
+         if FCQLoopRunning = True then begin
+            FCQLoopPause := True;
+         end;
       end;
    end;
 
@@ -11158,6 +11153,49 @@ begin
    CurrentQSO.NrRcvd := NumberEdit.Text;
    CurrentQSO.Band := TextToBand(BandEdit.Text);
    CurrentQSO.Mode := TextToMode(ModeEdit.Text);
+end;
+
+procedure TMainForm.CQAbort(fReturnStartRig: Boolean);
+var
+   nID: Integer;
+   mode: TMode;
+begin
+   WriteStatusLine('', False);
+
+   FCQRepeatPlaying := False;
+   FCQLoopRunning := False;
+   timerCqRepeat.Enabled := False;
+
+   nID := FCurrentTx;
+   mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
+   StopMessage(mode);
+
+   TabPressed := False;
+   TabPressed2 := False;
+
+   // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
+   if (dmZLogGlobal.Settings._pttenabled = False) and
+      (dmZLogKeyer.UseWinKeyer = False) then begin
+      dmZLogKeyer.ResetPTT();
+   end;
+
+   // 2R:2BSIQ OFFの場合はRIG1に戻す
+   if fReturnStartRig = True then begin
+      if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+         if (FInformation.Is2bsiq = False) then begin
+            if FCurrentRx <> 0 then begin
+               SwitchRig(1);
+            end;
+         end;
+      end;
+   end;
+
+   // 1R:TXとRXを合わせる
+   if (dmZLogGlobal.Settings._so2r_type = so2rNone) then begin
+      if FCurrentTx <> FCurrentRx then begin
+         SwitchRig(FCurrentRx + 1);
+      end;
+   end;
 end;
 
 end.
