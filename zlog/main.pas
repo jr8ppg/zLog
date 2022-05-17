@@ -11081,9 +11081,11 @@ begin
    end
    else begin
       if FInformation.Is2bsiq = False then begin
-         if FCurrentTx = FCurrentRx then begin
-            FCQLoopPause := True;
-         end;
+//         if FCurrentTx = FCurrentRx then begin
+//            FCQLoopPause := True;
+//         end;
+         FCQLoopRunning := False;
+         timerCqRepeat.Enabled := False;
       end
       else begin
          if FCQLoopRunning = True then begin
