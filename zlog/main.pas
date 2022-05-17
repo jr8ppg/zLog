@@ -667,6 +667,7 @@ type
     actionChangeTxNr2: TAction;
     actionPseQsl: TAction;
     actionNoQsl: TAction;
+    ToolBarPanel: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1137,6 +1138,7 @@ type
     procedure UpdateCurrentQSO();
     procedure CQAbort(fReturnStartRig: Boolean);
     procedure SpaceBarProc();
+    procedure ShowToolBar(M: TMode);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1372,18 +1374,8 @@ begin
          ModeEdit.Text := ModeString[CurrentQSO.Mode];
       end;
 
-      If CurrentQSO.Mode in [mSSB .. mAM] then begin
-         Grid.Align := alNone;
-         SSBToolBar.Visible := True;
-         CWToolBar.Visible := False;
-         Grid.Align := alClient;
-      end
-      else begin
-         Grid.Align := alNone;
-         CWToolBar.Visible := True;
-         SSBToolBar.Visible := False;
-         Grid.Align := alClient;
-      end;
+      ShowToolBar(CurrentQSO.Mode);
+
       FTempQSOList.Move(0, i - 1);
    end;
 end;
@@ -1927,20 +1919,14 @@ begin
       CurrentQSO.RSTRcvd := 59;
       CurrentQSO.RSTsent := 59;
       RcvdRSTEdit.Text := '59';
-      Grid.Align := alNone;
-      SSBToolBar.Visible := True;
-      CWToolBar.Visible := False;
-      Grid.Align := alClient;
    end
    else begin
       CurrentQSO.RSTRcvd := 599;
       CurrentQSO.RSTsent := 599;
       RcvdRSTEdit.Text := '599';
-      Grid.Align := alNone;
-      CWToolBar.Visible := True;
-      SSBToolBar.Visible := False;
-      Grid.Align := alClient;
    end;
+
+   ShowToolBar(M);
 
    if MyContest <> nil then begin
       if MyContest.MultiForm.Visible then begin
@@ -5241,13 +5227,12 @@ begin
    if (W > 0) and (H > 0) then begin
       if B then begin
          mnHideCWPhToolBar.Checked := True;
-         CWToolBar.Height := 1;
-         SSBToolBar.Height := 1;
       end;
       if BB then begin
          mnHideMenuToolbar.Checked := True;
-         MainToolBar.Height := 1;
       end;
+      ShowToolBar(mOther);
+
       Left := X;
       top := Y;
       Width := W;
@@ -6900,37 +6885,23 @@ end;
 procedure TMainForm.mnHideCWPhToolBarClick(Sender: TObject);
 begin
    if mnHideCWPhToolBar.Checked = False then begin
-      Grid.Align := alNone;
-      CWToolBar.Height := 1;
-      SSBToolBar.Height := 1;
       mnHideCWPhToolBar.Checked := True;
-      Grid.Align := alClient;
    end
    else begin
-      Grid.Align := alNone;
-      CWToolBar.Height := 33;
-      SSBToolBar.Height := 33;
       mnHideCWPhToolBar.Checked := False;
-      Grid.Align := alClient;
    end;
-   FormResize(Self);
+   ShowToolBar(CurrentQSO.Mode);
 end;
 
 procedure TMainForm.mnHideMenuToolbarClick(Sender: TObject);
 begin
    if mnHideMenuToolbar.Checked = False then begin
-      Grid.Align := alNone;
-      MainToolBar.Height := 1;
       mnHideMenuToolbar.Checked := True;
-      Grid.Align := alClient;
    end
    else begin
-      Grid.Align := alNone;
-      MainToolBar.Height := 33;
       mnHideMenuToolbar.Checked := False;
-      Grid.Align := alClient;
    end;
-   FormResize(Self);
+   ShowToolBar(CurrentQSO.Mode);
 end;
 
 procedure TMainForm.SwitchLastQSOBandMode;
@@ -7407,18 +7378,7 @@ begin
       // ç≈èâÇÕCQÉÇÅ[ÉhÇ©ÇÁ
       SetCQ(True);
 
-      if CurrentQSO.Mode in [mCW, mRTTY] then begin
-         Grid.Align := alNone;
-         CWToolBar.Visible := True;
-         SSBToolBar.Visible := False;
-         Grid.Align := alClient;
-      end
-      else begin
-         Grid.Align := alNone;
-         SSBToolBar.Visible := True;
-         CWToolBar.Visible := False;
-         Grid.Align := alClient;
-      end;
+      ShowToolBar(CurrentQSO.Mode);
 
       ModeEdit.Text := CurrentQSO.ModeStr;
       RcvdRSTEdit.Text := CurrentQSO.RSTStr;
@@ -9692,14 +9652,12 @@ begin
 
       if B then begin
          mnHideCWPhToolBar.Checked := True;
-         CWToolBar.Height := 1;
-         SSBToolBar.Height := 1;
       end;
-
       if BB then begin
          mnHideMenuToolbar.Checked := True;
-         MainToolBar.Height := 1;
       end;
+      ShowToolBar(mOther);
+
       Position := poDesigned;
       Left := X;
       top := Y;
@@ -11195,6 +11153,57 @@ begin
       if FCurrentTx <> FCurrentRx then begin
          SwitchRig(FCurrentRx + 1);
       end;
+   end;
+end;
+
+procedure TMainForm.ShowToolBar(M: TMode);
+var
+ v: Boolean;
+ h: Integer;
+begin
+   if (mnHideCWPhToolBar.Checked = False) then begin
+      if M in [mCW, mRTTY] then begin
+         v := True; // CW
+      end
+      else begin
+         v := False;
+      end;
+
+      if CWToolBar.Visible <> v then begin
+         if v = True then begin
+            CWToolBar.Visible := v;
+            SSBToolBar.Visible := not v;
+         end
+         else begin
+            SSBToolBar.Visible := not v;
+            CWToolBar.Visible := v;
+         end;
+      end;
+   end
+   else begin
+      CWToolBar.Visible := False;
+      SSBToolBar.Visible := False;
+   end;
+
+   if (mnHideMenuToolbar.Checked = True) and (mnHideCWPhToolBar.Checked = True) then begin
+      v := False;
+      h := ToolBarPanel.Height;
+   end
+   else if ((mnHideMenuToolbar.Checked = True) and (mnHideCWPhToolBar.Checked = False)) or
+           ((mnHideMenuToolbar.Checked = False) and (mnHideCWPhToolBar.Checked = True)) then begin
+      v := True;
+      h := 33;
+   end
+   else begin
+      v := True;
+      h := 66;
+   end;
+
+   if ToolBarPanel.Visible <> v then begin
+      ToolBarPanel.Visible := v;
+   end;
+   if ToolBarPanel.Height <> h then begin
+      ToolBarPanel.Height := h;
    end;
 end;
 
