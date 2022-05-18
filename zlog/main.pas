@@ -11144,7 +11144,7 @@ begin
       if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
          if (FInformation.Is2bsiq = False) then begin
             if FCurrentRx <> 0 then begin
-               SwitchRig(1);
+               SwitchRig(FCQLoopStartRig);
             end;
          end;
       end;
