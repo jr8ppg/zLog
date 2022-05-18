@@ -73,8 +73,8 @@ type
     PCName: string[10];    { 11 bytes max 10 char }
     Forced: Boolean;       { 1 byte }
     QslState: Byte;        { 1 byte 0:None 1:Pse QSL 2:No QSL }
-    Reserve4: string[38];  { 39 bytes }
-    // 320bytes
+    Reserve4: string[102]; { 103 bytes }
+    // 384bytes
   end;
 
   TQSO = class(TObject)
