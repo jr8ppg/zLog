@@ -5502,7 +5502,6 @@ begin
          newrig := GetNextRigID(currig - 1) + 1;
 
          // カレントRIGを変更
-         RigControl.SetCurrentRig(newrig);
          SwitchRig(newrig);
 
          // RIG変更後Wait
@@ -6351,9 +6350,7 @@ begin
    // SO2Rの場合、現在RIGとクリックされたControlのRIGが違うと強制切り替え
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       if FCurrentRx <> (rig - 1) then begin
-         if RigControl.SetCurrentRig(rig) = True then begin
-            SwitchRig(rig);
-         end;
+         SwitchRig(rig);
       end;
    end;
 
@@ -7979,9 +7976,7 @@ end;
 procedure TMainForm.QSY(b: TBand; m: TMode; r: Integer);
 begin
    if r <> 0 then begin
-      if RigControl.SetCurrentRig(r) = True then begin
-         SwitchRig(r);
-      end;
+      SwitchRig(r);
    end;
 
    if CurrentQSO.band <> b then begin
@@ -8837,7 +8832,6 @@ begin
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
       rig := RigControl.GetCurrentRig();
       rig := GetNextRigID(rig - 1) + 1;
-      RigControl.SetCurrentRig(rig);
       SwitchRig(rig);
    end
    else begin
@@ -8845,7 +8839,6 @@ begin
       if FCurrentTX = FCurrentRX then begin
          rig := RigControl.GetCurrentRig();
          rig := GetNextRigID(rig - 1) + 1;
-         RigControl.SetCurrentRig(rig);
          SwitchRig(rig);
       end
       else begin
@@ -9459,9 +9452,7 @@ var
    rig: Integer;
 begin
    rig := TAction(Sender).Tag;
-   if RigControl.SetCurrentRig(rig) = True then begin
-      SwitchRig(rig);
-   end;
+   SwitchRig(rig);
 end;
 
 // #141 SO2R Neo Cancel auto RX select
@@ -10651,6 +10642,8 @@ begin
    FInformation.Rx := rig - 1;
    FInformation.Tx := rig - 1;
 
+   RigControl.SetCurrentRig(rig);
+
    dmZLogKeyer.SetRxRigFlag(rig);
    dmZLogKeyer.SetTxRigFlag(rig);
 
@@ -10813,7 +10806,6 @@ begin
          rig := 1;
       end;
       RigControl.MaxRig := 2;
-      RigControl.SetCurrentRig(rig);
       SwitchRig(rig);
       CallsignEdit2C.Enabled := False;
       RcvdRSTEdit2C.Enabled := False;
