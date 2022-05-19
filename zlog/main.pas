@@ -30,6 +30,7 @@ const
   WM_ZLOG_SPCDATALOADED = (WM_USER + 102);
   WM_ZLOG_CQREPEAT_CONTINUE = (WM_USER + 103);
   WM_ZLOG_SPACEBAR_PROC = (WM_USER + 104);
+  WM_ZLOG_SWITCH_RIG = (WM_USER + 105);
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
@@ -788,6 +789,7 @@ type
     procedure OnZLogSpcDataLoaded( var Message: TMessage ); message WM_ZLOG_SPCDATALOADED;
     procedure OnZLogCqRepeatContinue( var Message: TMessage ); message WM_ZLOG_CQREPEAT_CONTINUE;
     procedure OnZLogSpaceBarProc( var Message: TMessage ); message WM_ZLOG_SPACEBAR_PROC;
+    procedure OnZLogSwitchRig( var Message: TMessage ); message WM_ZLOG_SWITCH_RIG;
     procedure OnZLogGetCallsign( var Message: TMessage ); message WM_ZLOG_GETCALLSIGN;
     procedure OnZLogGetVersion( var Message: TMessage ); message WM_ZLOG_GETVERSION;
     procedure OnZLogSetPttState( var Message: TMessage ); message WM_ZLOG_SETPTTSTATE;
@@ -1139,6 +1141,7 @@ type
     procedure CQAbort(fReturnStartRig: Boolean);
     procedure SpaceBarProc();
     procedure ShowToolBar(M: TMode);
+    procedure SetSo2rCqMode();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -4752,12 +4755,7 @@ begin
       // CQ+SP
       if FInformation.Is2bsiq = False then begin
          ResetTx();
-         if FCurrentRx = (FCQLoopStartRig - 1) then begin
-            SetCQ(True);
-         end
-         else begin
-            SetCQ(False);
-         end;
+         SetSo2rCqMode();
       end;
 
       // 2BSIQ
@@ -7466,6 +7464,23 @@ begin
    SpaceBarProc();
 end;
 
+procedure TMainForm.OnZLogSwitchRig( var Message: TMessage );
+var
+   rig: Integer;
+   proc: Integer;
+begin
+   rig := Message.WParam;
+   proc := Message.LParam;
+
+   if proc = 0 then begin
+      SwitchRig(rig);
+   end
+   else begin
+      SwitchTx(rig);
+      SwitchRx(rig);
+   end;
+end;
+
 procedure TMainForm.OnZLogGetCallsign( var Message: TMessage );
 var
    callsign_atom: ATOM;
@@ -8175,7 +8190,15 @@ begin
                   SwitchRx(rx + 1, True);
                end;
 
-               PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+               rx := GetNextRigID(FCurrentRx);
+//               SwitchRx(rx + 1, True);
+               if (FEditPanel[rx].CallsignEdit.Text = '') and
+                  (FEditPanel[rx].rcvdNumber.Text = '') then begin
+                  PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+               end
+               else begin
+                  PostMessage(Handle, WM_ZLOG_SWITCH_RIG, rx + 1, 1);
+               end;
                Exit;
             end;
          end;
@@ -8204,10 +8227,15 @@ begin
                FCancelAutoRigSwitch := True;
                FCQLoopPause := False;
 
-//               rx := GetNextRigID(FCurrentRx);
+               rx := GetNextRigID(FCurrentRx);
 //               SwitchRx(rx + 1, True);
-
-               PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+               if (FEditPanel[rx].CallsignEdit.Text = '') and
+                  (FEditPanel[rx].rcvdNumber.Text = '') then begin
+                  PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+               end
+               else begin
+                  PostMessage(Handle, WM_ZLOG_SWITCH_RIG, rx + 1, 1);
+               end;
                Exit;
             end;
          end;
@@ -9509,6 +9537,8 @@ begin
    UpdateMode(TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));
 
    ShowTxIndicator();
+
+   SetSo2rCqMode();
 end;
 
 // #146 SO2R Toggle Wait Message
@@ -11076,8 +11106,8 @@ begin
 //         if FCurrentTx = FCurrentRx then begin
 //            FCQLoopPause := True;
 //         end;
-         FCQLoopRunning := False;
-         timerCqRepeat.Enabled := False;
+//         FCQLoopRunning := False;
+//         timerCqRepeat.Enabled := False;
       end
       else begin
          if FCQLoopRunning = True then begin
@@ -11198,6 +11228,16 @@ begin
    end;
    if ToolBarPanel.Height <> h then begin
       ToolBarPanel.Height := h;
+   end;
+end;
+
+procedure TMainForm.SetSo2rCqMode();
+begin
+   if FCurrentTx = (FCQLoopStartRig - 1) then begin
+      SetCQ(True);
+   end
+   else begin
+      SetCQ(False);
    end;
 end;
 
