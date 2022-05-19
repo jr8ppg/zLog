@@ -8197,6 +8197,7 @@ begin
                   PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
                end
                else begin
+                  FCQLoopPause := True;
                   PostMessage(Handle, WM_ZLOG_SWITCH_RIG, rx + 1, 1);
                end;
                Exit;
@@ -8234,6 +8235,7 @@ begin
                   PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
                end
                else begin
+                  FCQLoopPause := True;
                   PostMessage(Handle, WM_ZLOG_SWITCH_RIG, rx + 1, 1);
                end;
                Exit;
@@ -9538,7 +9540,9 @@ begin
 
    ShowTxIndicator();
 
-   SetSo2rCqMode();
+   if FInformation.Is2bsiq = False then begin
+      SetSo2rCqMode();
+   end;
 end;
 
 // #146 SO2R Toggle Wait Message
