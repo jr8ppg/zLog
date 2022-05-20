@@ -11169,7 +11169,11 @@ begin
    if fReturnStartRig = True then begin
       if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
          if (FInformation.Is2bsiq = False) then begin
-            if FCurrentRx <> 0 then begin
+            // TXÇ∆RXÇ™à·Ç§èÍçáÇÕÅATXÇ…çáÇÌÇπÇÈ
+            if FCurrentRx <> FCurrentTx then begin
+               SwitchRx(FCurrentTx + 1);
+            end
+            else if FCurrentRx <> (FCQLoopStartRig - 1) then begin
                SwitchRig(FCQLoopStartRig);
             end;
          end;
@@ -11237,6 +11241,10 @@ end;
 
 procedure TMainForm.SetSo2rCqMode();
 begin
+   if dmZLogGlobal.Settings._switchcqsp = False then begin
+      Exit;
+   end;
+
    if FCurrentTx = (FCQLoopStartRig - 1) then begin
       SetCQ(True);
    end
