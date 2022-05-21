@@ -11241,10 +11241,6 @@ end;
 
 procedure TMainForm.SetSo2rCqMode();
 begin
-   if dmZLogGlobal.Settings._switchcqsp = False then begin
-      Exit;
-   end;
-
    if FCurrentTx = (FCQLoopStartRig - 1) then begin
       SetCQ(True);
    end
