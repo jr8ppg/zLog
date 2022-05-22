@@ -60,8 +60,6 @@ object MainForm: TMainForm
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 99
-    ExplicitHeight = 284
     object EditPanel1R: TPanel
       Left = 0
       Top = 207
@@ -75,7 +73,6 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitTop = 174
       object RcvdRSTEdit1: TEdit
         Left = 117
         Top = 4
@@ -275,7 +272,6 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = 201
       object RigPanelC: TPanel
         Left = 1
         Top = 54
@@ -851,7 +847,6 @@ object MainForm: TMainForm
       OnMouseUp = GridMouseUp
       OnSelectCell = GridSelectCell
       OnTopLeftChanged = GridTopLeftChanged
-      ExplicitHeight = 174
       ColWidths = (
         38
         65
@@ -987,7 +982,6 @@ object MainForm: TMainForm
       ShowHint = True
       TabOrder = 0
       Visible = False
-      ExplicitTop = 77
       object CWStopButton: TSpeedButton
         Left = 312
         Top = 4
@@ -3113,7 +3107,6 @@ object MainForm: TMainForm
       Height = 33
       Align = alTop
       TabOrder = 1
-      ExplicitTop = 77
       object VoiceStopButton: TSpeedButton
         Left = 312
         Top = 4
@@ -5216,9 +5209,6 @@ object MainForm: TMainForm
       Height = 33
       Align = alTop
       TabOrder = 2
-      ExplicitLeft = 1
-      ExplicitTop = 44
-      ExplicitWidth = 522
       object SpeedButton4: TSpeedButton
         Left = 8
         Top = 4
@@ -6947,12 +6937,12 @@ object MainForm: TMainForm
     object actionQuickMemo1: TAction
       Tag = 1
       Caption = 'PSE QSL'
-      OnExecute = actionQuickMemo1Execute
+      OnExecute = actionQuickMemo3Execute
     end
     object actionQuickMemo2: TAction
       Tag = 2
       Caption = 'NO QSL'
-      OnExecute = actionQuickMemo2Execute
+      OnExecute = actionQuickMemo3Execute
     end
     object actionCwMessagePad: TAction
       Caption = 'CW Message Pad'

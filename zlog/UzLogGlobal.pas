@@ -1063,8 +1063,8 @@ begin
       Settings._bandscope_show_only_domestic := ini.ReadBool('BandScopeOptions', 'show_only_domestic', True);
 
       // Quick Memo
-      Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', MEMO_PSE_QSL);
-      Settings.FQuickMemoText[2] := ini.ReadString('QuickMemo', '#2', MEMO_NO_QSL);
+      Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', '');
+      Settings.FQuickMemoText[2] := ini.ReadString('QuickMemo', '#2', '');
       Settings.FQuickMemoText[3] := ini.ReadString('QuickMemo', '#3', 'NR?');
       Settings.FQuickMemoText[4] := ini.ReadString('QuickMemo', '#4', '');
       Settings.FQuickMemoText[5] := ini.ReadString('QuickMemo', '#5', '');

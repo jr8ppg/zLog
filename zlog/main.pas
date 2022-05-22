@@ -872,8 +872,6 @@ type
     procedure actionCQRepeat2Execute(Sender: TObject);
     procedure actionToggleVFOExecute(Sender: TObject);
     procedure actionEditLastQSOExecute(Sender: TObject);
-    procedure actionQuickMemo1Execute(Sender: TObject);
-    procedure actionQuickMemo2Execute(Sender: TObject);
     procedure actionCwMessagePadExecute(Sender: TObject);
     procedure actionCorrectSentNrExecute(Sender: TObject);
     procedure actionSetLastFreqExecute(Sender: TObject);
@@ -1236,7 +1234,7 @@ var
 implementation
 
 uses
-  UALLJAEditDialog, UAbout, UMenu, UACAGMulti,
+  UAbout, UMenu, UACAGMulti,
   UALLJAScore,
   UJIDXMulti, UJIDXScore, UJIDXScore2, UWPXMulti, UWPXScore,
   UPediScore, UJIDX_DX_Multi, UJIDX_DX_Score,
@@ -2464,7 +2462,7 @@ begin
    inherited;
    MultiForm := TARRLDXMulti.Create(MainForm);
    ScoreForm := TARRLDXScore.Create(MainForm);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -2478,7 +2476,7 @@ begin
    MultiForm := TARRLWMulti.Create(MainForm);
    TARRLWMulti(MultiForm).ALLASIANFLAG := False;
    ScoreForm := TARRLDXScore.Create(MainForm);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
    ZoneForm := TWWZone.Create(MainForm);
 
    UseUTC := True;
@@ -2495,7 +2493,7 @@ begin
    TARRLWMulti(MultiForm).ALLASIANFLAG := True;
    ScoreForm := TAllAsianScore.Create(MainForm);
    ZoneForm := TWWZone.Create(MainForm);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -2518,7 +2516,7 @@ begin
    inherited;
    MultiForm := TJIDX_DX_Multi.Create(MainForm);
    ScoreForm := TJIDX_DX_Score.Create(MainForm);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    SentStr := '$V';
@@ -2538,7 +2536,7 @@ begin
    ZoneForm := nil;
    MultiForm.Reset();
 
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
 
    TWPXScore(ScoreForm).MultiForm := TWPXMulti(MultiForm);
 
@@ -2559,7 +2557,7 @@ begin
    MultiForm := TWAEMulti.Create(MainForm);
    ScoreForm := TWAEScore.Create(MainForm);
    ZoneForm := TWWZone.Create(MainForm);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
    QTCForm := TQTCForm.Create(MainForm);
 
    UseUTC := True;
@@ -2589,7 +2587,7 @@ begin
    MultiForm := TIOTAMulti.Create(MainForm);
    ScoreForm := TIARUScore.Create(MainForm);
    TIARUScore(ScoreForm).InitGrid(b35, b28);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
 
    UseUTC := True;
    Log.AcceptDifferentMode := True;
@@ -2609,7 +2607,7 @@ begin
    ZoneForm := TWWZone.Create(MainForm);
    MainForm.FCheckMulti.ListCWandPh := True;
 
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
 
    UseUTC := True;
    Log.AcceptDifferentMode := True;
@@ -2626,7 +2624,7 @@ begin
    inherited;
    MultiForm := TJA0Multi.Create(MainForm);
    ScoreForm := TJA0Score.Create(MainForm);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
 
    Log.QsoList[0].Serial := $01; // uses serial number
    SerialContestType := SER_ALL;
@@ -2684,7 +2682,7 @@ begin
    inherited;
    MultiForm := TWPXMulti.Create(MainForm);
    ScoreForm := TAPSprintScore.Create(MainForm);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
    ZoneForm := TWWZone.Create(MainForm);
 
    TAPSprintScore(ScoreForm).MultiForm := TWPXMulti(MultiForm);
@@ -2713,7 +2711,7 @@ begin
 
    MainForm.FCheckCountry.ParentMulti := TWWMulti(MultiForm);
 
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -2801,7 +2799,7 @@ begin
    MultiForm := TIARUMulti.Create(MainForm);
    ScoreForm := TIARUScore.Create(MainForm);
    ZoneForm := TWWZone.Create(MainForm);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
 
    UseUTC := True;
    Log.AcceptDifferentMode := True;
@@ -2838,7 +2836,7 @@ begin
    inherited;
    MultiForm := TBasicMulti.Create(MainForm);
    ScoreForm := TPediScore.Create(MainForm);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
 
    Log.AcceptDifferentMode := True;
    if UseUTC then
@@ -2859,7 +2857,7 @@ begin
    inherited;
    MultiForm := TALLJAMulti.Create(MainForm);
    ScoreForm := TALLJAScore.Create(MainForm, b19, b50);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
    SentStr := '$V$P';
 end;
 
@@ -2868,7 +2866,7 @@ begin
    inherited;
    MultiForm := TKCJMulti.Create(MainForm);
    ScoreForm := TKCJScore.Create(MainForm);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
    SentStr := 'TK';
 end;
 
@@ -2930,7 +2928,7 @@ begin
    inherited;
    MultiForm := TACAGMulti.Create(MainForm);
    ScoreForm := TALLJAScore.Create(MainForm, b19, HiBand);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
    SentStr := '$Q$P';
 end;
 
@@ -2939,7 +2937,7 @@ begin
    inherited;
    MultiForm := TFDMulti.Create(MainForm);
    ScoreForm := TALLJAScore.Create(MainForm, b19, HiBand);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
    SentStr := '$Q$P';
    FUseCoeff := True;
 end;
@@ -2952,7 +2950,7 @@ begin
    TALLJAScore(ScoreForm).PointTable[b2400] := 2;
    TALLJAScore(ScoreForm).PointTable[b5600] := 2;
    TALLJAScore(ScoreForm).PointTable[b10g] := 2;
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
    SentStr := '$Q$P';
 end;
 
@@ -2964,7 +2962,7 @@ begin
    MultiForm := TGeneralMulti2.Create(MainForm);
    ScoreForm := TGeneralScore.Create(MainForm);
    TGeneralScore(ScoreForm).formMulti := TGeneralMulti2(MultiForm);
-   PastEditForm := TALLJAEditDialog.Create(MainForm);
+   PastEditForm := TEditDialog.Create(MainForm);
 
    FConfig := TUserDefinedContest.Parse(CFGFileName);
    TGeneralScore(ScoreForm).Config := FConfig;
@@ -7095,6 +7093,14 @@ begin
 
       dmZlogGlobal.ContestCategory := menu.ContestCategory;
 
+      // SO2RÇÕSingleOpÇÃÇ›Ç™ê›íËâ¬î\
+      if dmZLogGlobal.ContestCategory <> ccSingleOp then begin
+         if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+            dmZLogGlobal.Settings._so2r_type := so2rNone;
+            InitQsoEditPanel();
+         end;
+      end;
+
       dmZlogGlobal.Band := menu.BandGroupIndex;
 
       dmZlogGlobal.ContestMode := menu.ContestMode;
@@ -9160,64 +9166,6 @@ begin
    MyContest.EditCurrentRow;
 end;
 
-// #101 PSE QSL
-procedure TMainForm.actionQuickMemo1Execute(Sender: TObject);
-var
-   strTemp: string;
-   strPseQsl: string;
-   strNoQsl: string;
-begin
-   if not Assigned(MemoEdit) then begin
-      Exit;
-   end;
-
-   strPseQsl := dmZlogGlobal.Settings.FQuickMemoText[1];
-   strNoQsl  := dmZlogGlobal.Settings.FQuickMemoText[2];
-
-   strTemp := MemoEdit.Text;
-   if Pos(strNoQsl, strTemp) > 0 then begin
-      strTemp := Trim(StringReplace(strTemp, strNoQsl, '', [rfReplaceAll]));
-   end;
-
-   if Pos(strPseQsl, strTemp) = 0 then begin
-      strTemp := strPseQsl + ' ' + strTemp;
-   end
-   else begin
-      strTemp := Trim(StringReplace(strTemp, strPseQsl, '', [rfReplaceAll]));
-   end;
-
-   MemoEdit.Text := strTemp;
-end;
-
-// #102 NO QSL
-procedure TMainForm.actionQuickMemo2Execute(Sender: TObject);
-var
-   strTemp: string;
-   strPseQsl: string;
-   strNoQsl: string;
-begin
-   if not Assigned(MemoEdit) then begin
-      Exit;
-   end;
-
-   strPseQsl := dmZlogGlobal.Settings.FQuickMemoText[1];
-   strNoQsl  := dmZlogGlobal.Settings.FQuickMemoText[2];
-
-   strTemp := MemoEdit.Text;
-   if Pos(strPseQsl, strTemp) > 0 then begin
-      strTemp := Trim(StringReplace(strTemp, strPseQsl, '', [rfReplaceAll]));
-   end;
-
-   if Pos(strNoQsl, strTemp) = 0 then begin
-      strTemp := strNoQsl + ' ' + strTemp;
-   end
-   else begin
-      strTemp := Trim(StringReplace(strTemp, strNoQsl, '', [rfReplaceAll]));
-   end;
-
-   MemoEdit.Text := strTemp;
-end;
-
 // #103 CW Message Pad
 procedure TMainForm.actionCwMessagePadExecute(Sender: TObject);
 begin
@@ -9291,7 +9239,7 @@ begin
    SetCQ(True);
 end;
 
-// #106,#107,#108 QuickMemo3-5
+// #101,#102,#106,#107,#108 QuickMemo3-5
 procedure TMainForm.actionQuickMemo3Execute(Sender: TObject);
 var
    strQuickMemoText: string;

@@ -543,7 +543,7 @@ end;
 
 function TQSO.GetDateStr: string;
 begin
-   Result := FormatDateTime('yy/mm/dd', Self.Time);
+   Result := FormatDateTime('yyyy/mm/dd', Self.Time);
 end;
 
 function TQSO.GetBandStr: string;

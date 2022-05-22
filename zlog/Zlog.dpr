@@ -13,7 +13,6 @@ uses
   UALLJAMulti in 'UALLJAMulti.pas' {ALLJAMulti},
   UPartials in 'UPartials.pas' {PartialCheck},
   UEditDialog in 'UEditDialog.pas' {EditDialog},
-  UALLJAEditDialog in 'UALLJAEditDialog.pas' {ALLJAEditDialog},
   UAbout in 'UAbout.pas' {AboutBox},
   URateDialog in 'URateDialog.pas' {RateDialog},
   UOptions in 'UOptions.pas' {formOptions},
