@@ -13,7 +13,6 @@ object EditDialog: TEditDialog
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
-  Scaled = False
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -74,6 +73,7 @@ object EditDialog: TEditDialog
       Width = 46
       Height = 17
       Caption = 'DUPE'
+      Enabled = False
       TabOrder = 1
     end
     object checkQsyViolation: TCheckBox
@@ -82,6 +82,7 @@ object EditDialog: TEditDialog
       Width = 85
       Height = 17
       Caption = 'QSY Violation'
+      Enabled = False
       TabOrder = 2
     end
     object checkForced: TCheckBox
@@ -90,6 +91,7 @@ object EditDialog: TEditDialog
       Width = 51
       Height = 17
       Caption = 'Forced'
+      Enabled = False
       TabOrder = 3
     end
   end
@@ -161,8 +163,6 @@ object EditDialog: TEditDialog
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 5
-    ExplicitTop = 140
-    ExplicitWidth = 652
     DesignSize = (
       658
       33)
@@ -176,7 +176,6 @@ object EditDialog: TEditDialog
       Default = True
       TabOrder = 0
       OnClick = OKBtnClick
-      ExplicitLeft = 491
     end
     object CancelBtn: TButton
       Left = 578
@@ -188,7 +187,6 @@ object EditDialog: TEditDialog
       Caption = 'Cancel'
       TabOrder = 1
       OnClick = CancelBtnClick
-      ExplicitLeft = 572
     end
   end
   object groupQsoData: TGroupBox
@@ -260,7 +258,6 @@ object EditDialog: TEditDialog
       Width = 17
       Height = 13
       Caption = 'pwr'
-      Visible = False
     end
     object OpLabel: TLabel
       Left = 460
@@ -405,7 +402,9 @@ object EditDialog: TEditDialog
       TabStop = False
       AutoSize = False
       CharCase = ecUpperCase
+      Color = clBtnFace
       ImeMode = imDisable
+      ReadOnly = True
       TabOrder = 10
     end
     object NewPowerEdit: TEdit
@@ -418,7 +417,6 @@ object EditDialog: TEditDialog
       PopupMenu = NewPowerMenu
       ReadOnly = True
       TabOrder = 5
-      Visible = False
       OnClick = NewPowerEditClick
     end
   end

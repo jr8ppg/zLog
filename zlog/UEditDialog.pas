@@ -363,11 +363,11 @@ begin
    SerialEdit.Visible := MainForm.SerialEdit1.Visible;
    SerialLabel.Visible := SerialEdit.Visible;
 
-   ModeEdit.Visible := MainForm.ModeEdit1.Visible;
-   ModeLabel.Visible := ModeEdit.Visible;
+//   ModeEdit.Visible := MainForm.ModeEdit1.Visible;
+//   ModeLabel.Visible := ModeEdit.Visible;
 
-   NewPowerEdit.Visible := MainForm.PowerEdit1.Visible;
-   PowerLabel.Visible := NewPowerEdit.Visible;
+//   NewPowerEdit.Visible := MainForm.PowerEdit1.Visible;
+//   PowerLabel.Visible := NewPowerEdit.Visible;
 
    case dmZLogGlobal.ContestCategory of
       ccSingleOp: begin
