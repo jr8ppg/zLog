@@ -495,7 +495,7 @@ begin
       QsyViolation := ZStrToBool(slText[26]);
       PCName   := slText[27];
       Forced   := ZStrToBool(slText[28]);
-      QslState  := TQslState(StrToInt(slText[29]));
+      QslState  := TQslState(StrToIntDef(slText[29], 0));
    except
       on EConvertError do begin
          FMemo := 'Convert Error!';
@@ -2402,6 +2402,7 @@ var
    ch: Char;
    core: string;
    pQSO: TQSO;
+   vQSO: TQSO;
    Diff: Integer;
    fQsyViolation: Boolean;
    nQsyCount: Integer;
@@ -2416,6 +2417,7 @@ begin
    end;
 
    pQSO := FQsoList[1];
+   vQSO := nil;
    for i := 1 to TotalQSO do begin
       aQSO := FQsoList[i];
       core := CoreCall(aQSO.CallSign);
@@ -2453,14 +2455,14 @@ begin
 
       // 今回と前回のバンドが違っている場合、
       if dmZlogGlobal.Settings._countdown then begin
-         if (pQSO <> nil) and (pQSO.Band <> aQSO.Band) then begin
+         if (vQSO <> nil) and (vQSO.TX = aQSO.TX) and (vQSO.Band <> aQSO.Band) then begin
             // 設定値以内のQSYならviolation
-            Diff := SecondsBetween(aQSO.Time, pQSO.Time);
+            Diff := SecondsBetween(aQSO.Time, vQSO.Time);
             if (Diff / 60) <= dmZLogGlobal.Settings._countdownminute then begin
                fQsyViolation := True;
             end
             else begin
-               pQSO := aQSO;
+               vQSO := aQSO;
             end;
          end;
       end;
@@ -2475,9 +2477,11 @@ begin
             fQsyViolation := True;
          end
          else begin
-            pQSO := aQSO;
+            vQSO := aQSO;
          end;
       end;
+
+      vQSO := aQSO;
 
       aQSO.QsyViolation := fQsyViolation;
    end;
@@ -2948,8 +2952,8 @@ begin
          Break;
       end;
 
-      // バンドが違えばカウント
-      if aQSO.Band <> bQSO.Band then begin
+      // TXが同じでバンドが違えばカウント
+      if (aQSO.TX = bQSO.TX) and (aQSO.Band <> bQSO.Band) then begin
          Inc(nQsyCount);
       end;
    end;

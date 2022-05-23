@@ -4997,6 +4997,20 @@ var
    st, st2: string;
    B: TBand;
    band_bakup: TBand;
+
+   function FindPrevQSO(): Integer;
+   var
+      i: Integer;
+   begin
+      for i := Log.QsoList.Count - 1 downto 1 do begin
+         if Log.QsoList[i].TX = CurrentQSO.TX then begin
+            Result := i;
+            Exit;
+         end;
+      end;
+      Result := -1;
+   end;
+
 begin
    band_bakup := CurrentQSO.Band;
 
@@ -5079,7 +5093,13 @@ begin
    end;
 
    // QSY Violation
-   CurrentQSO.QsyViolation := FQsyViolation;
+   i := FindPrevQSO();
+   if (i > 0) and (Log.QsoList[i].Band <> band_bakup) then begin
+      CurrentQSO.QsyViolation := FQsyViolation;
+   end
+   else begin
+      CurrentQSO.QsyViolation := False;
+   end;
 
    // PCName
    CurrentQSO.PCName := dmZLogGlobal.Settings._pcname;
