@@ -201,7 +201,7 @@ procedure TBandScope2.AddClusterSpot(Sp: TSpot);
 var
    D: TBSData;
 begin
-   if FCurrBand <> Sp.Band then begin
+   if (FCurrBand <> bUnknown) and (FCurrBand <> Sp.Band) then begin
       Exit;
    end;
 
@@ -257,6 +257,11 @@ begin
                FBSList[i] := nil;
                Continue;
             end;
+
+            if (FCurrBand = bUnknown) and (BS.NewMulti() = False) then begin
+               FBSList[i] := nil;
+               Continue;
+            end;
          end;
 
          Diff := Now - BS.Time;
@@ -291,7 +296,7 @@ begin
       // クリーンアップ
       Cleanup(nil);
 
-      if dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand then begin
+      if (FCurrBand <> bUnknown) and (dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand) then begin
          MarkCurrent := True;
       end
       else begin
@@ -323,7 +328,7 @@ begin
          R := 0;
          for i := 0 to FBSList.Count - 1 do begin
             D := FBSList[i];
-            if D.Band <> FCurrBand then begin
+            if (FCurrBand <> bUnknown) and (FCurrBand <> D.Band) then begin
                Continue;
             end;
 
@@ -417,7 +422,7 @@ begin
       j := 0;
       for i := 0 to FBSList.Count - 1 do begin
          D := FBSList[i];
-         if D.Band <> FCurrBand then begin
+         if (FCurrBand <> bUnknown) and (FCurrBand <> D.Band) then begin
             Continue;
          end;
 
@@ -839,7 +844,12 @@ begin
       for i := 0 to FBSList.Count - 1 do begin
          D := FBSList[i];
          SpotCheckWorked(D);
+
+         if (FCurrBand = bUnknown) and (D.Call = aQSO.Callsign) then begin
+            FBSList[i] := nil;
+         end;
       end;
+      FBSList.Pack();
    finally
       Unlock();
    end;
@@ -957,7 +967,12 @@ begin
       Caption := '[Current] ' + BandString[FCurrBand];
    end
    else begin
-      Caption := BandString[FCurrBand];
+      if FCurrBand = bUnknown then begin
+         Caption := 'New Multi';
+      end
+      else begin
+         Caption := BandString[FCurrBand];
+      end;
    end;
 end;
 
@@ -992,9 +1007,15 @@ begin
          if (S.Call = aQSO.Callsign) and (S.Band = aQSO.Band) then begin
             S.NewCty := False;
             S.NewZone := False;
+            S.NewJaMulti := False;
             S.Worked := True;
+
+            if FCurrBand = bUnknown then begin
+               FBSList[i] := nil;
+            end;
          end;
       end;
+      FBSList.Pack;
    finally
       Unlock();
    end;

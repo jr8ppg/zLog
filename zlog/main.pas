@@ -942,6 +942,7 @@ type
     FScratchSheet: TScratchSheet;
     FBandScopeEx: TBandScopeArray;
     FBandScope: TBandScope2;
+    FBandScopeNewMulti: TBandScope2;
     FQuickRef: TQuickRef;              // Quick Reference
     FZAnalyze: TZAnalyze;              // Analyze window
     FCWMessagePad: TCwMessagePad;
@@ -3410,6 +3411,8 @@ begin
    FBandScope := TBandScope2.Create(Self, b19);
    FBandScope.CurrentBandOnly := True;
 
+   FBandScopeNewMulti := TBandScope2.Create(Self, bUnknown);
+
    FNPlusOneThread := nil;
    FSuperCheckDataLoadThread := nil;
    FSpcDataLoading := False;
@@ -3658,6 +3661,7 @@ begin
       dmZlogGlobal.ReadWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
    end;
    dmZlogGlobal.ReadWindowState(FBandScope, 'BandScope');
+   dmZlogGlobal.ReadWindowState(FBandScopeNewMulti, 'BandScopeNewMulti');
 
    FSuperCheck.Columns := dmZlogGlobal.SuperCheckColumns;
    FSuperCheck2.Columns := dmZlogGlobal.SuperCheck2Columns;
@@ -3693,6 +3697,7 @@ begin
       dmZlogGlobal.WriteWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
    end;
    dmZlogGlobal.WriteWindowState(FBandScope, 'BandScope');
+   dmZlogGlobal.WriteWindowState(FBandScopeNewMulti, 'BandScopeNewMulti');
 
    dmZlogGlobal.WriteMainFormState(Left, top, Width, Height, mnHideCWPhToolBar.Checked, mnHideMenuToolbar.Checked);
    dmZlogGlobal.SuperCheckColumns := FSuperCheck.Columns;
@@ -4285,6 +4290,7 @@ begin
       FBandScopeEx[b].FontSize := font_size;
    end;
    FBandScope.FontSize := font_size;
+   FBandScopeNewMulti.FontSize := font_size;
 
    FCWMessagePad.FontSize := font_size;
 
@@ -5304,6 +5310,7 @@ begin
       FBandScopeEx[b].Release();
    end;
    FBandScope.Release();
+   FBandScopeNewMulti.Release();
 
    if MyContest <> nil then begin
       dmZlogGlobal.WriteWindowState(MyContest.MultiForm, 'MultiForm');
@@ -6189,6 +6196,8 @@ begin
       end;
       FBandScope.FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
       FBandScope.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
+      FBandScopeNewMulti.FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
+      FBandScopeNewMulti.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
       actionShowBandScope.Execute();
 
       // OpListçƒÉçÅ[Éh
@@ -8919,11 +8928,19 @@ begin
          FBandScopeEx[b].Hide();
       end;
    end;
+
    if dmZLogGlobal.Settings._usebandscope_current = True then begin
       FBandScope.Show();
    end
    else begin
       FBandScope.Hide();
+   end;
+
+   if dmZLogGlobal.Settings._usebandscope_newmulti = True then begin
+      FBandScopeNewMulti.Show();
+   end
+   else begin
+      FBandScopeNewMulti.Hide();
    end;
 end;
 
@@ -9979,6 +9996,7 @@ begin
       FBandScopeEx[b].NotifyWorked(aQSO);
    end;
    FBandScope.NotifyWorked(aQSO);
+   FBandScopeNewMulti.NotifyWorked(aQSO);
 end;
 
 procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
@@ -10061,6 +10079,7 @@ begin
       FBandScopeEx[b].RewriteBandScope();
    end;
    FBandScope.RewriteBandScope();
+   FBandScopeNewMulti.RewriteBandScope();
 end;
 
 procedure TMainForm.BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
@@ -10175,6 +10194,10 @@ procedure TMainForm.BandScopeAddClusterSpot(Sp: TSpot);
 begin
    FBandScopeEx[Sp.Band].AddClusterSpot(Sp);
    FBandScope.AddClusterSpot(Sp);
+
+   if Sp.NewMulti() = True then begin
+      FBandScopeNewMulti.AddClusterSpot(Sp);
+   end;
 end;
 
 procedure TMainForm.BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
@@ -10190,6 +10213,8 @@ begin
    if FBandScope.CurrentBand = aQSO.Band then begin
       FBandScope.SetSpotWorked(aQSO);
    end;
+
+   FBandScopeNewMulti.SetSpotWorked(aQSO);
 end;
 
 procedure TMainForm.InitBandMenu();

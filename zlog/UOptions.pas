@@ -481,6 +481,7 @@ type
     radioQslNone: TRadioButton;
     radioPseQsl: TRadioButton;
     radioNoQsl: TRadioButton;
+    checkBsNewMulti: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -988,6 +989,7 @@ begin
       Settings._usebandscope[b5600] := checkBS15.Checked;
       Settings._usebandscope[b10g]  := checkBS16.Checked;
       Settings._usebandscope_current := checkBsCurrent.Checked;
+      Settings._usebandscope_newmulti := checkBsNewMulti.Checked;
 
       for i := 1 to 7 do begin
          Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
@@ -1448,6 +1450,7 @@ begin
       checkBS15.Checked := Settings._usebandscope[b5600];
       checkBS16.Checked := Settings._usebandscope[b10g];
       checkBsCurrent.Checked := Settings._usebandscope_current;
+      checkBsNewMulti.Checked := Settings._usebandscope_newmulti;
 
       for i := 1 to 7 do begin
          FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;

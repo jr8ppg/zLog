@@ -3911,14 +3911,24 @@ object formOptions: TformOptions
           TabOrder = 3
         end
         object checkBsCurrent: TCheckBox
-          Left = 301
-          Top = 102
+          Left = 205
+          Top = 104
           Width = 67
           Height = 17
           Caption = 'Current'
           Checked = True
           State = cbChecked
           TabOrder = 16
+        end
+        object checkBsNewMulti: TCheckBox
+          Left = 301
+          Top = 104
+          Width = 67
+          Height = 17
+          Caption = 'New Multi'
+          Checked = True
+          State = cbChecked
+          TabOrder = 17
         end
       end
       object GroupBox10: TGroupBox

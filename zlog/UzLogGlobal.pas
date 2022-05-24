@@ -101,6 +101,7 @@ type
     _power: array[b19..HiBand] of string;
     _usebandscope: array[b19..HiBand] of Boolean;
     _usebandscope_current: Boolean;
+    _usebandscope_newmulti: Boolean;
     _bandscopecolor: array[1..7] of TColorSetting;
     _bandscope_freshness_mode: Integer;
     _bandscope_freshness_icon: Integer;
@@ -1019,6 +1020,7 @@ begin
       Settings._usebandscope[b5600] := ini.ReadBool('BandScopeEx', 'BandScope5600MHz', False);
       Settings._usebandscope[b10g]  := ini.ReadBool('BandScopeEx', 'BandScope10GHz', False);
       Settings._usebandscope_current := ini.ReadBool('BandScope', 'Current', False);
+      Settings._usebandscope_newmulti := ini.ReadBool('BandScope', 'NewMulti', False);
       Settings._bandscopecolor[1].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor1', '$000000'), clBlack);
       Settings._bandscopecolor[1].FBackColor := clWhite; //ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor1', '$ffffff'), clWhite);
       Settings._bandscopecolor[1].FBold      := ini.ReadBool('BandScopeEx', 'Bold1', True);
@@ -1566,6 +1568,7 @@ begin
       ini.WriteBool('BandScopeEx', 'BandScope5600MHz', Settings._usebandscope[b5600]);
       ini.WriteBool('BandScopeEx', 'BandScope10GHz', Settings._usebandscope[b10g]);
       ini.WriteBool('BandScope', 'Current', Settings._usebandscope_current);
+      ini.WriteBool('BandScope', 'NewMulti', Settings._usebandscope_newmulti);
       ini.WriteString('BandScopeEx', 'ForeColor1', ZColorToString(Settings._bandscopecolor[1].FForeColor));
       ini.WriteString('BandScopeEx', 'BackColor1', ZColorToString(Settings._bandscopecolor[1].FBackColor));
       ini.WriteBool('BandScopeEx', 'Bold1', Settings._bandscopecolor[1].FBold);
