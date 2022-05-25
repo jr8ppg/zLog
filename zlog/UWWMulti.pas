@@ -639,7 +639,7 @@ begin
          Sp.NewCty := True;
       end;
 
-      if Sp.NewMulti{Pos('new', temp) > 0} then begin
+      if Sp.IsNewMulti() then begin
          temp := temp + ' at ' + MHzString[aQSO.band]+ 'MHz';
 //         MainForm.CommForm.WriteStatusLine(temp);
          MainForm.WriteStatusLineRed(temp, true);

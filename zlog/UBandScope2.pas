@@ -258,7 +258,7 @@ begin
                Continue;
             end;
 
-            if (FCurrBand = bUnknown) and (BS.NewMulti() = False) then begin
+            if (FCurrBand = bUnknown) and (BS.IsNewMulti() = False) then begin
                FBSList[i] := nil;
                Continue;
             end;
@@ -599,6 +599,7 @@ var
    x, y: Integer;
    rc: TRect;
    sec: Integer;
+   fNewMulti: Boolean;
 
    function AdjustDark(c: TColor): TColor;
    var
@@ -659,15 +660,16 @@ begin
             D.Bold      := dmZLogGlobal.Settings._bandscopecolor[1].FBold;
          end
          else begin  // 未交信
-            if D.NewMulti = True then begin         // マルチ未ゲット
+            fNewMulti := D.IsNewMulti();
+            if fNewMulti = True then begin         // マルチ未ゲット
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[2].FForeColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[2].FBold;
             end
-            else if (D.NewJaMulti = False) and (D.Number <> '') then begin // マルチゲット済み
+            else if (fNewMulti = False) and (D.Number <> '') then begin // マルチゲット済みでナンバー判明
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[3].FForeColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[3].FBold;
             end
-            else if (D.NewMulti = False) then begin // マルチゲット済み
+            else if (fNewMulti = False) and (D.Number = '') then begin // マルチゲット済みでナンバー不明
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[3].FForeColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[3].FBold;
             end

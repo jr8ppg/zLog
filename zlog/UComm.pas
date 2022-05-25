@@ -780,7 +780,7 @@ begin
 
       S := TListBox(Control).Items[Index];
       SP := TSpot(TListBox(Control).Items.Objects[Index]);
-      if SP.NewMulti then begin
+      if SP.IsNewMulti() then begin
          if odSelected in State then begin
             Font.Color := clFuchsia;
          end
