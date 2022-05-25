@@ -17,6 +17,8 @@ type
     Panel1: TPanel;
     Grid: TStringGrid;
     ImageList1: TImageList;
+    Panel2: TPanel;
+    checkSyncVfo: TCheckBox;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure mnDeleteClick(Sender: TObject);
     procedure Deleteallworkedstations1Click(Sender: TObject);
@@ -33,12 +35,11 @@ type
   private
     { Private 宣言 }
     FProcessing: Boolean;
-//    FMinFreq: Integer;
-//    FMaxFreq: Integer; // in Hz
 
     FCurrentBandOnly: Boolean;
+    FNewMultiOnly: Boolean;
     FCurrBand : TBand;
-//    FCurrMode : TMode;
+    FSelectFlag: Boolean;
 
     FBSList: TBSList;
     FBSLock: TRTLCriticalSection;
@@ -61,7 +62,9 @@ type
     function CalcElapsedTime(T1, T2: TDateTime): Integer;
     procedure SetCurrentBand(b: TBand);
     procedure SetCurrentBandOnly(v: Boolean);
+    procedure SetNewMultiOnly(v: Boolean);
     procedure SetCaption();
+    procedure SetColor();
     procedure Lock();
     procedure Unlock();
   public
@@ -82,6 +85,7 @@ type
     property IconType: Integer read FIconType write SetIconType;
     property CurrentBand: TBand read FCurrBand write SetCurrentBand;
     property CurrentBandOnly: Boolean read FCurrentBandOnly write SetCurrentBandOnly;
+    property NewMultiOnly: Boolean read FNewMultiOnly write SetNewMultiOnly;
   end;
 
   TBandScopeArray = array[b19..b10g] of TBandScope2;
@@ -100,6 +104,8 @@ constructor TBandScope2.Create(AOwner: TComponent; b: TBand);
 begin
    Inherited Create(AOwner);
    FCurrentBandOnly := False;
+   FNewMultiOnly := False;
+   FSelectFlag := False;
    FCurrBand := b;
    SetCaption();
    FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
@@ -201,7 +207,7 @@ procedure TBandScope2.AddClusterSpot(Sp: TSpot);
 var
    D: TBSData;
 begin
-   if (FCurrBand <> bUnknown) and (FCurrBand <> Sp.Band) then begin
+   if (FNewMultiOnly = False) and (FCurrBand <> Sp.Band) then begin
       Exit;
    end;
 
@@ -258,7 +264,7 @@ begin
                Continue;
             end;
 
-            if (FCurrBand = bUnknown) and (BS.IsNewMulti() = False) then begin
+            if (FNewMultiOnly = True) and (BS.IsNewMulti() = False) then begin
                FBSList[i] := nil;
                Continue;
             end;
@@ -296,7 +302,7 @@ begin
       // クリーンアップ
       Cleanup(nil);
 
-      if (FCurrBand <> bUnknown) and (dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand) then begin
+      if (FNewMultiOnly = False) and (dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand) then begin
          MarkCurrent := True;
       end
       else begin
@@ -328,7 +334,7 @@ begin
          R := 0;
          for i := 0 to FBSList.Count - 1 do begin
             D := FBSList[i];
-            if (FCurrBand <> bUnknown) and (FCurrBand <> D.Band) then begin
+            if (FNewMultiOnly = False) and (FCurrBand <> D.Band) then begin
                Continue;
             end;
 
@@ -377,31 +383,33 @@ begin
          markrow := R;
       end;
 
-      if markrow = -1 then begin
-         if toprow <= Grid.RowCount - 1 then begin
-            Grid.TopRow := toprow;
+      if checkSyncVfo.Checked = True then begin
+         if markrow = -1 then begin
+            if toprow <= Grid.RowCount - 1 then begin
+               Grid.TopRow := toprow;
+            end
+            else begin
+               Grid.TopRow := 0;
+            end;
          end
          else begin
-            Grid.TopRow := 0;
-         end;
-      end
-      else begin
-         if Grid.TopRow > markrow then begin
-            Grid.TopRow := markrow;
-         end;
-         if (Grid.TopRow + Grid.VisibleRowCount - 1) < markrow then begin
-            i := markrow - Grid.VisibleRowCount + 1;
-            if i >= 0 then begin
-               Grid.TopRow := i;
+            if Grid.TopRow > markrow then begin
+               Grid.TopRow := markrow;
+            end;
+            if (Grid.TopRow + Grid.VisibleRowCount - 1) < markrow then begin
+               i := markrow - Grid.VisibleRowCount + 1;
+               if i >= 0 then begin
+                  Grid.TopRow := i;
+               end;
             end;
          end;
-      end;
 
-      if currow <= Grid.RowCount - 1 then begin
-         Grid.Row := currow;
-      end
-      else begin
-         Grid.Row := 0;
+         if currow <= Grid.RowCount - 1 then begin
+            Grid.Row := currow;
+         end
+         else begin
+            Grid.Row := 0;
+         end;
       end;
    except
       on E: Exception do begin
@@ -422,7 +430,7 @@ begin
       j := 0;
       for i := 0 to FBSList.Count - 1 do begin
          D := FBSList[i];
-         if (FCurrBand <> bUnknown) and (FCurrBand <> D.Band) then begin
+         if (FNewMultiOnly = False) and (FCurrBand <> D.Band) then begin
             Continue;
          end;
 
@@ -828,12 +836,8 @@ end;
 
 procedure TBandScope2.SetSelect(fSelect: Boolean);
 begin
-   if fSelect = True then begin
-      Panel1.Color := clBlue;
-   end
-   else begin
-      Panel1.Color := clGray;
-   end;
+   FSelectFlag := fSelect;
+   SetColor();
 end;
 
 procedure TBandScope2.NotifyWorked(aQSO: TQSO);
@@ -847,7 +851,7 @@ begin
          D := FBSList[i];
          SpotCheckWorked(D);
 
-         if (FCurrBand = bUnknown) and (D.Call = aQSO.Callsign) then begin
+         if (FNewMultiOnly = True) and (D.Call = aQSO.Callsign) then begin
             FBSList[i] := nil;
          end;
       end;
@@ -963,17 +967,39 @@ begin
    SetCaption();
 end;
 
+procedure TBandScope2.SetNewMultiOnly(v: Boolean);
+begin
+   FNewMultiOnly := v;
+   SetCaption();
+   SetColor();
+end;
+
 procedure TBandScope2.SetCaption();
 begin
    if FCurrentBandOnly = True then begin
       Caption := '[Current] ' + BandString[FCurrBand];
    end
    else begin
-      if FCurrBand = bUnknown then begin
-         Caption := 'New Multi';
+      if FNewMultiOnly = True then begin
+         Caption := '[New Multi]';
       end
       else begin
          Caption := BandString[FCurrBand];
+      end;
+   end;
+end;
+
+procedure TBandScope2.SetColor();
+begin
+   if FNewMultiOnly = True then begin
+      Panel1.Color := dmZLogGlobal.Settings._bandscopecolor[2].FForeColor;
+   end
+   else begin
+      if FSelectFlag = True then begin
+         Panel1.Color := clBlue;
+      end
+      else begin
+         Panel1.Color := clGray;
       end;
    end;
 end;
@@ -1012,7 +1038,7 @@ begin
             S.NewJaMulti := False;
             S.Worked := True;
 
-            if FCurrBand = bUnknown then begin
+            if FNewMultiOnly = True then begin
                FBSList[i] := nil;
             end;
          end;

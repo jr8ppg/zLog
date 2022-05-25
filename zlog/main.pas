@@ -3412,6 +3412,7 @@ begin
    FBandScope.CurrentBandOnly := True;
 
    FBandScopeNewMulti := TBandScope2.Create(Self, bUnknown);
+   FBandScopeNewMulti.NewMultiOnly := True;
 
    FNPlusOneThread := nil;
    FSuperCheckDataLoadThread := nil;

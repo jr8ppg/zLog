@@ -26,9 +26,9 @@ object BandScope2: TBandScope2
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
-    Top = 0
+    Top = 19
     Width = 204
-    Height = 416
+    Height = 397
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 4
@@ -36,11 +36,13 @@ object BandScope2: TBandScope2
     Color = clRed
     ParentBackground = False
     TabOrder = 0
+    ExplicitTop = 0
+    ExplicitHeight = 416
     object Grid: TStringGrid
       Left = 4
       Top = 4
       Width = 192
-      Height = 404
+      Height = 385
       Align = alClient
       ColCount = 1
       DefaultColWidth = 188
@@ -58,6 +60,26 @@ object BandScope2: TBandScope2
       OnDblClick = GridDblClick
       OnDrawCell = GridDrawCell
       OnMouseMove = GridMouseMove
+      ExplicitHeight = 404
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 0
+    Width = 204
+    Height = 19
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 1
+    object checkSyncVfo: TCheckBox
+      Left = 4
+      Top = 3
+      Width = 121
+      Height = 13
+      Caption = 'Sync. VFO'
+      Checked = True
+      State = cbChecked
+      TabOrder = 0
     end
   end
   object BSMenu: TPopupMenu
