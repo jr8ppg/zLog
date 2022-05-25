@@ -30,6 +30,7 @@ type
     procedure FormShow(Sender: TObject);
   private
     { Private êÈåæ }
+    FSo2rMode: Boolean;
     function GetCQMode(): Boolean;
     procedure SetCQMode(fCQ: Boolean);
     function GetWPM(): Integer;
@@ -41,6 +42,7 @@ type
     procedure SetIsWait(fOn: Boolean);
     function GetIs2bsiq(): Boolean;
     procedure SetIs2bsiq(fOn: Boolean);
+    procedure SetSo2rMode(fOn: Boolean);
     procedure SetRx(rx: Integer);
     procedure SetTx(tx: Integer);
   public
@@ -51,6 +53,7 @@ type
     property Time: string write SetTime;
     property Ptt: Boolean write SetPtt;
     property Wait: Boolean write SetWait;
+    property So2rMode: Boolean read FSo2rMode write SetSo2rMode;
     property Is2bsiq: Boolean read GetIs2bsiq write SetIs2bsiq;
     property IsWait: Boolean read GetIsWait write SetIsWait;
     property Rx: Integer write SetRx;
@@ -78,7 +81,7 @@ end;
 
 procedure TformInformation.FormCreate(Sender: TObject);
 begin
-//
+   FSo2rMode := False;
 end;
 
 procedure TformInformation.FormDestroy(Sender: TObject);
@@ -172,6 +175,20 @@ begin
    button2bsiq.Down := fOn;
 end;
 
+procedure TformInformation.SetSo2rMode(fOn: Boolean);
+begin
+   FSo2rMode := fOn;
+
+   if fOn then begin
+      button2bsiq.Enabled := True;
+   end
+   else begin
+      button2bsiq.Enabled := False;
+   end;
+
+   DispUpdate();
+end;
+
 function TformInformation.GetIsWait(): Boolean;
 begin
    Result := (buttonWait.Down and button2bsiq.Down);
@@ -194,7 +211,7 @@ end;
 
 procedure TformInformation.DispUpdate();
 begin
-   if button2bsiq.Down = True then begin
+   if (button2bsiq.Down = True) and (FSo2rMode = True) then begin
       buttonWait.Enabled := True;
       SetWait(ledWait.Status);
    end

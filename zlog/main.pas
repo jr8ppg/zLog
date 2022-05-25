@@ -1389,6 +1389,7 @@ begin
    SpeedBar.Position := dmZLogKeyer.WPM;
    SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
    FInformation.WPM := dmZLogKeyer.WPM;
+   FInformation.So2rMode :=(dmZLogGlobal.Settings._so2r_type <> so2rNone);
    i := dmZlogGlobal.Settings.CW.CurrentBank;
    CWF1.Hint := dmZlogGlobal.CWMessage(i, 1);
    CWF2.Hint := dmZlogGlobal.CWMessage(i, 2);
@@ -4793,7 +4794,8 @@ begin
       end
       else begin  // not dupe
          MyContest.SpaceBarProc;
-         if FInformation.Is2bsiq = False then begin
+         if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+            (FInformation.Is2bsiq = False) then begin
             NumberEdit.SetFocus;
          end;
          PlayMessage(1, 2);
@@ -4808,7 +4810,8 @@ begin
       if FTTYConsole <> nil then
          FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), CurrentQSO));
       MyContest.SpaceBarProc;
-      if FInformation.Is2bsiq = False then begin
+      if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+         (FInformation.Is2bsiq = False) then begin
          NumberEdit.SetFocus;
       end;
       FCQRepeatPlaying := False;
@@ -4881,7 +4884,8 @@ begin
    FCQLoopPause := False;
 
    // CQ Invert時は送信RIGを戻す
-   if FInformation.Is2bsiq = True then begin
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+      (FInformation.Is2bsiq = True) then begin
       ResetTx();
    end;
 
@@ -5546,7 +5550,8 @@ begin
    FCancelAutoRigSwitch := False;
 
    // 自動リグ変更の場合Messageを切り替える
-   if FInformation.Is2bsiq = True then begin
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+      (FInformation.Is2bsiq = True) then begin
       bank := dmZLogGlobal.Settings._so2r_cq_msg_bank;
       msgno := dmZLogGlobal.Settings._so2r_cq_msg_number;
    end
@@ -5871,7 +5876,8 @@ begin
       if TabPressed2 then begin
          MyContest.SpaceBarProc;
 
-         if FInformation.Is2bsiq = False then begin
+         if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+            (FInformation.Is2bsiq = False) then begin
             NumberEdit.SetFocus;
          end;
          EditedSinceTABPressed := tabstate_tabpressedbutnotedited; // UzLogCW
@@ -8281,7 +8287,8 @@ begin
 
       // CQリピート中で、一時停止無し
       if (FCQLoopRunning = True) and (FCQLoopPause = False) then begin
-         if FInformation.Is2bsiq = True then begin
+         if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+            (FInformation.Is2bsiq = True) then begin
             interval := dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec;
          end
          else begin
@@ -9526,7 +9533,8 @@ begin
 
    ShowTxIndicator();
 
-   if FInformation.Is2bsiq = False then begin
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+      (FInformation.Is2bsiq = False) then begin
       SetSo2rCqMode();
    end;
 end;
@@ -10411,7 +10419,8 @@ end;
 
 function TMainForm.GetCallsignEditEx(): TEdit;    // 2
 begin
-   if FInformation.Is2bsiq = True then begin
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+      (FInformation.Is2bsiq = True) then begin
       Result := FEditPanel[FCurrentTx].CallsignEdit;
    end
    else begin
@@ -10431,7 +10440,8 @@ end;
 
 function TMainForm.GetNumberEditEx(): TEdit;      // 4
 begin
-   if FInformation.Is2bsiq = True then begin
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+      (FInformation.Is2bsiq = True) then begin
       Result := FEditPanel[FCurrentTx].rcvdNumber;
    end
    else begin
@@ -11043,7 +11053,8 @@ begin
    {$ENDIF}
 
    // 2BSIQ時は受信中の方でPTT制御する
-   if FInformation.Is2bsiq = True then begin
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+      (FInformation.Is2bsiq = True) then begin
       // TX側終了待ち ここでPTT=OFF
 //         WaitForPlayMessageAhead(FInformation.IsWait);
 
