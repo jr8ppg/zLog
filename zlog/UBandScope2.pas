@@ -32,6 +32,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure GridMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FormResize(Sender: TObject);
+    procedure checkSyncVfoClick(Sender: TObject);
   private
     { Private êÈåæ }
     FProcessing: Boolean;
@@ -483,7 +484,7 @@ var
    i: Integer;
    B: TBSData;
 begin
-   if dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = bUnknown then begin
+   if dmZLogGlobal.BandPlan.FreqToBand(Hz) = bUnknown then begin
       Exit;
    end;
 
@@ -936,6 +937,11 @@ begin
    else begin
       Result := 0;
    end;
+end;
+
+procedure TBandScope2.checkSyncVfoClick(Sender: TObject);
+begin
+   RewriteBandScope();
 end;
 
 function TBandScope2.CalcElapsedTime(T1, T2: TDateTime): Integer;

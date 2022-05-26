@@ -4,7 +4,7 @@ object BandScope2: TBandScope2
   BorderStyle = bsSizeToolWin
   Caption = 'Band Scope'
   ClientHeight = 416
-  ClientWidth = 204
+  ClientWidth = 194
   Color = clBtnFace
   Constraints.MinHeight = 140
   Constraints.MinWidth = 210
@@ -27,7 +27,7 @@ object BandScope2: TBandScope2
   object Panel1: TPanel
     Left = 0
     Top = 19
-    Width = 204
+    Width = 194
     Height = 397
     Align = alClient
     BevelOuter = bvNone
@@ -36,12 +36,11 @@ object BandScope2: TBandScope2
     Color = clRed
     ParentBackground = False
     TabOrder = 0
-    ExplicitTop = 0
-    ExplicitHeight = 416
+    ExplicitWidth = 204
     object Grid: TStringGrid
       Left = 4
       Top = 4
-      Width = 192
+      Width = 182
       Height = 385
       Align = alClient
       ColCount = 1
@@ -60,26 +59,28 @@ object BandScope2: TBandScope2
       OnDblClick = GridDblClick
       OnDrawCell = GridDrawCell
       OnMouseMove = GridMouseMove
-      ExplicitHeight = 404
+      ExplicitWidth = 192
     end
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 204
+    Width = 194
     Height = 19
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 204
     object checkSyncVfo: TCheckBox
       Left = 4
       Top = 3
-      Width = 121
+      Width = 133
       Height = 13
-      Caption = 'Sync. VFO'
+      Caption = 'Scroll sync with VFO'
       Checked = True
       State = cbChecked
       TabOrder = 0
+      OnClick = checkSyncVfoClick
     end
   end
   object BSMenu: TPopupMenu
