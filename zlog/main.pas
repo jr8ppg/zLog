@@ -1003,6 +1003,7 @@ type
     FCancelAutoRigSwitch: Boolean;
     FTabKeyPressed: Boolean;
     FDownKeyPressed: Boolean;
+    FOtherKeyPressed: Boolean;
 
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
@@ -1112,6 +1113,7 @@ type
     procedure InitQsoEditPanel();
     procedure UpdateQsoEditPanel(rig: Integer);
     procedure SwitchRig(rig: Integer);
+    procedure SwitchTxRx(tx_rig, rx_rig: Integer);
     procedure SwitchTx(rig: Integer);
     procedure SwitchRx(rig: Integer; focusonly: Boolean = False);
     procedure ShowTxIndicator();
@@ -3404,6 +3406,7 @@ begin
    FCancelAutoRigSwitch := False;
    FTabKeyPressed := False;
    FDownKeyPressed := False;
+   FOtherKeyPressed := False;
 
    FQsyFromBS := False;
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -5505,8 +5508,7 @@ begin
       currig := RigControl.GetCurrentRig();
       if currig <> FCQLoopStartRig then begin
          newrig := FCQLoopStartRig;
-         SwitchTx(newrig);
-         SwitchRx(currig);
+         SwitchTxRX(newrig, currig);
       end;
    end;
 
@@ -7134,6 +7136,8 @@ begin
          if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
             dmZLogGlobal.Settings._so2r_type := so2rNone;
             InitQsoEditPanel();
+            UpdateQsoEditPanel(1);
+            LastFocus := CallsignEdit;
          end;
       end;
 
@@ -8285,6 +8289,13 @@ begin
          end;
       end;
 
+      if FOtherKeyPressed = True then begin
+         if (FCQLoopRunning = True) then begin
+            FCQLoopPause := True;
+         end;
+         FOtherKeyPressed := False;
+      end;
+
       // CQリピート中で、一時停止無し
       if (FCQLoopRunning = True) and (FCQLoopPause = False) then begin
          if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
@@ -8412,6 +8423,7 @@ var
 begin
    no := TAction(Sender).Tag;
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
+   FOtherKeyPressed := True;
 
    {$IFDEF DEBUG}
    OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
@@ -8464,6 +8476,7 @@ var
 begin
    no := TAction(Sender).Tag;
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
+   FOtherKeyPressed := True;
 
    if cb = 1 then
       cb := 2
@@ -8473,6 +8486,14 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('PlayMessageB(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
    {$ENDIF}
+
+   if RigControl.Rig <> nil then begin
+      if dmZLogGlobal.Settings.FAntiZeroinXitOn2 = True then begin
+         if RigControl.Rig.Xit = False then begin
+            actionAntiZeroin.Execute();
+         end;
+      end;
+   end;
 
    PlayMessage(cb, no);
 end;
@@ -10702,6 +10723,28 @@ begin
 
    // ShowTxIndicator();
    PostMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);
+
+   UpdateCurrentQSO();
+end;
+
+procedure TMainForm.SwitchTxRx(tx_rig, rx_rig: Integer);
+begin
+   WaitForPlayMessageAhead(FInformation.IsWait);
+   timerCqRepeat.Enabled := False;
+
+   FCurrentTx := tx_rig - 1;
+   FInformation.Tx := tx_rig - 1;
+   ShowTxIndicator();
+
+   dmZLogKeyer.SetTxRigFlag(tx_rig);
+
+   FCurrentRx := rx_rig - 1;
+   FInformation.Rx := rx_rig - 1;
+
+   dmZLogKeyer.SetRxRigFlag(rx_rig);
+
+   FEditPanel[rx_rig - 1].CallsignEdit.SetFocus();
+   PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rx_rig - 1, 0);
 
    UpdateCurrentQSO();
 end;
