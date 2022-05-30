@@ -265,6 +265,9 @@ type
     // JARL E-LOG
     FELogSeniorJuniorCategory: string;
     FELogNewComerCategory: string;
+
+    // Guard Time after RIG Switch
+    FRigSwitchGuardTime: Integer;
   end;
 
 var
@@ -903,6 +906,9 @@ begin
       Settings.FAntiZeroinAutoCancel := ini.ReadBool('Rig', 'anti_zeroin_auto_cancel', False);
       Settings.FAntiZeroinStopCq := ini.ReadBool('Rig', 'anti_zeroin_stop_cq_in_spmode', False);
 
+      // Guard Time
+      Settings.FRigSwitchGuardTime     := ini.ReadInteger('Rig', 'RigSwitchGuardTime', 100);
+
       //
       // Path
       //
@@ -1468,6 +1474,9 @@ begin
       ini.WriteBool('Rig', 'anti_zeroin_xit_on2', Settings.FAntiZeroinXitOn2);
       ini.WriteBool('Rig', 'anti_zeroin_auto_cancel', Settings.FAntiZeroinAutoCancel);
       ini.WriteBool('Rig', 'anti_zeroin_stop_cq_in_spmode', Settings.FAntiZeroinStopCq);
+
+      // Guard Time
+      ini.WriteInteger('Rig', 'RigSwitchGuardTime', Settings.FRigSwitchGuardTime);
 
       //
       // Path

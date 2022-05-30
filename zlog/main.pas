@@ -964,7 +964,7 @@ type
     SaveInBackGround: Boolean;
     TabPressed: Boolean;
     TabPressed2: Boolean; // for moving focus to numberedit
-    LastTabPress: TDateTime;
+    FLastTabPress: TDateTime;
 
     FPostContest: Boolean;
 
@@ -991,6 +991,8 @@ type
     FCurrentRx: Integer;
     FCurrentTx: Integer;
     FEditPanel: TEditPanelArray;
+    FRigSwitchTime: TDateTime;
+    FKeyPressedRigID: Integer;
 
     // NEW CQRepeat
     FCQLoopRunning: Boolean;
@@ -3407,6 +3409,8 @@ begin
    FTabKeyPressed := False;
    FDownKeyPressed := False;
    FOtherKeyPressed := False;
+   FRigSwitchTime := Now();
+   FKeyPressedRigID := 0;
 
    FQsyFromBS := False;
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -3443,7 +3447,7 @@ begin
    SaveInBackGround := False;
    TabPressed := False;
    TabPressed2 := False;
-   LastTabPress := Now;
+   FLastTabPress := Now;
    FPostContest := False;
 
    Application.OnIdle := MyIdleEvent;
@@ -4394,6 +4398,7 @@ begin
                Exit;
             end;
 
+            FKeyPressedRigID := CurrentRigID;
             SpaceBarProc();
          end
          else begin
@@ -4742,6 +4747,25 @@ var
    nID: Integer;
    rx: Integer;
 begin
+   if TabPressed = True then begin
+      Exit;
+   end;
+
+   if Not(CallsignEdit.Focused or NumberEdit.Focused) then begin
+      Exit;
+   end;
+
+   // TABキー連打対策か？ 100ミリ秒ではあまり対策になっていない
+   if MilliSecondsBetween(Now(), FLastTabPress) <= 100 then begin
+      Exit;
+   end;
+   FLastTabPress := Now;
+
+   // RIG Switch後のガードタイム
+   if MilliSecondsBetween(Now(), FRigSwitchTime) <= dmZLogGlobal.Settings.FRigSwitchGuardTime then begin
+      Exit;
+   end;
+
    if CallsignEdit.Text = '' then begin
       Exit;
    end;
@@ -4752,6 +4776,7 @@ begin
    FCQRepeatPlaying := True;
 
    FTabKeyPressed := True;
+   FKeyPressedRigID := CurrentRigID;
 
    // 次のCQはキャンセル
    FCQLoopPause := True;
@@ -4872,6 +4897,11 @@ var
    S: String;
    nID: Integer;
 begin
+   // RIG Switch後のガードタイム
+   if MilliSecondsBetween(Now(), FRigSwitchTime) <= dmZLogGlobal.Settings.FRigSwitchGuardTime then begin
+      Exit;
+   end;
+
    if CallsignEdit.Text = '' then begin
       Exit;
    end;
@@ -4882,6 +4912,7 @@ begin
    FCQRepeatPlaying := True;
 
    FDownKeyPressed := True;
+   FKeyPressedRigID := CurrentRigID;
 
    // 次のCQは実行
    FCQLoopPause := False;
@@ -9040,14 +9071,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actionQsoStartExecute---'));
    {$ENDIF}
-
-   if not(TabPressed) and (CallsignEdit.Focused or NumberEdit.Focused) then begin
-      if Trunc((Now - LastTabPress) * 24 * 60 * 60 * 1000) > 100 then begin
-         OnTabPress;
-      end;
-
-      LastTabPress := Now;
-   end;
+   OnTabPress;
 end;
 
 // #83 交信完了 / ↓
@@ -10442,7 +10466,7 @@ function TMainForm.GetCallsignEditEx(): TEdit;    // 2
 begin
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
       (FInformation.Is2bsiq = True) then begin
-      Result := FEditPanel[FCurrentTx].CallsignEdit;
+      Result := FEditPanel[FKeyPressedRigID].CallsignEdit;
    end
    else begin
       Result := FEditPanel[CurrentRigID].CallsignEdit;
@@ -10463,7 +10487,7 @@ function TMainForm.GetNumberEditEx(): TEdit;      // 4
 begin
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
       (FInformation.Is2bsiq = True) then begin
-      Result := FEditPanel[FCurrentTx].rcvdNumber;
+      Result := FEditPanel[FKeyPressedRigID].rcvdNumber;
    end
    else begin
       Result := FEditPanel[CurrentRigID].rcvdNumber;
@@ -10696,6 +10720,8 @@ end;
 
 procedure TMainForm.SwitchRig(rig: Integer);
 begin
+   FRigSwitchTime := Now();
+
    FCurrentRx := rig - 1;
    FCurrentTx := rig - 1;
    FInformation.Rx := rig - 1;
@@ -10717,7 +10743,6 @@ begin
          SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rig - 1, 0);
       end;
 
-//      FSo2rNeoCp.Rx := rig - 1;
       PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rig - 1, 0);
    end;
 
