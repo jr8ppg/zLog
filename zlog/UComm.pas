@@ -372,23 +372,15 @@ end;
 procedure TCommForm.PreProcessSpotFromZLink(S : string; N: Integer);
 var
    Sp : TSpot;
-   B : TBand;
 begin
    Sp := TSpot.Create;
    if Sp.Analyze(S) = True then begin
-      B := Sp.Band; // 1.9c modified to filter out unrelevant bands
-      if MainForm.BandMenu.Items[ord(B)].Visible and
-         MainForm.BandMenu.Items[ord(B)].Enabled then begin
 
-         // データ発生源はZ-Server
-         Sp.SpotSource := ssClusterFromZServer;
-         Sp.SpotGroup := N;
+      // データ発生源はZ-Server
+      Sp.SpotSource := ssClusterFromZServer;
+      Sp.SpotGroup := N;
 
-         ProcessSpot(Sp);
-      end
-      else begin
-         Sp.Free;
-      end;
+      ProcessSpot(Sp);
    end
    else begin
       Sp.Free;
@@ -430,14 +422,28 @@ begin
    //         RenewListBox;
          end;
 
+         // このコンテストで使用しないバンドは除く
+         if (MainForm.BandMenu.Items[ord(Sp.Band)].Visible = False) or
+            (MainForm.BandMenu.Items[ord(Sp.Band)].Enabled = False) then begin
+            Sp.Free();
+            Exit;
+         end;
+
+         // 使わないBandScopeは除く
+         if dmZLogGlobal.Settings._usebandscope[Sp.Band] = False then begin
+            Sp.Free();
+            Exit;
+         end;
+
+         // Spot上限を超えたか？
          if FSpotList.Count > SPOTMAX then begin
             Sp.Free();
-            exit;
+            Exit;
          end;
 
          if dupe then begin
             Sp.Free();
-            exit;
+            Exit;
          end;
 
          // JAのみ？
