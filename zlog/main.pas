@@ -1145,6 +1145,14 @@ type
     procedure SpaceBarProc();
     procedure ShowToolBar(M: TMode);
     procedure SetSo2rCqMode();
+    procedure InitSerialPanel();
+    procedure DispSerialNumber(B: TBand);
+    procedure InitSerialNumber();
+    procedure RestoreSerialNumber();
+    procedure SetInitSerialNumber(aQSO: TQSO);
+    procedure SetNextSerialNumber(aQSO: TQSO);
+    procedure SetNextSerialNumber2(aQSO: TQSO; Local : Boolean);
+    procedure SetNextSerialNumber3(aQSO: TQSO);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1853,12 +1861,8 @@ var
 begin
    BandEdit.Text := MHzString[B];
 
-   if SerialEdit.Visible then
-      if SerialContestType = SER_BAND then begin
-         SerialArray[CurrentQSO.Band] := CurrentQSO.Serial;
-         CurrentQSO.Serial := SerialArray[B];
-         SerialEdit.Text := CurrentQSO.SerialStr;
-      end;
+   // Serial Numberをバンドに合わせて表示
+   DispSerialNumber(B);
 
    CurrentQSO.Band := B;
 
@@ -2004,9 +2008,6 @@ begin
 end;
 
 constructor TContest.Create(N: string);
-var
-   i: Integer;
-   B: TBand;
 begin
    MultiForm := nil;
    ScoreForm := nil;
@@ -2029,14 +2030,6 @@ begin
    Log.QsoList[0].Memo := N; // Contest name
    Log.QsoList[0].RSTsent := UTCOffset; // UTC = $FFFF else UTC + x hrs;
    Log.QsoList[0].RSTRcvd := 0; // or Field Day coefficient
-
-   SerialContestType := 0;
-
-   for B := b19 to HiBand do
-      SerialArray[B] := 1;
-
-   for i := 0 to 64 do
-      SerialArrayTX[i] := 1;
 
    SentStr := '';
 
@@ -2314,7 +2307,9 @@ begin
 
    if Local = False then
       aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
+
    MultiForm.AddNoUpdate(aQSO);
+
    aQSO.Reserve2 := $00;
    ScoreForm.AddNoUpdate(aQSO);
 
@@ -2329,25 +2324,6 @@ begin
       aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
 
    MainForm.GridAdd(aQSO);
-
-   // synchronization of serial # over network
-   if dmZlogGlobal.Settings._syncserial and (SerialContestType <> 0) and (Local = False) then begin
-      if SerialContestType = SER_MS then // WPX M/S type. Separate serial for mult/run
-      begin
-         SerialArrayTX[aQSO.TX] := aQSO.Serial + 1;
-         if aQSO.TX = dmZlogGlobal.TXNr then begin
-            CurrentQSO.Serial := aQSO.Serial + 1;
-            MainForm.SerialEdit.Text := CurrentQSO.SerialStr;
-         end;
-      end
-      else begin
-         SerialArray[aQSO.Band] := aQSO.Serial + 1;
-         if (SerialContestType = SER_ALL) or ((SerialContestType = SER_BAND) and (CurrentQSO.Band = aQSO.Band)) then begin
-            CurrentQSO.Serial := aQSO.Serial + 1;
-            MainForm.SerialEdit.Text := CurrentQSO.SerialStr;
-         end;
-      end;
-   end;
 
    aQSO.Reserve2 := $00;
 
@@ -3004,7 +2980,7 @@ begin
    SerialContestType := FConfig.SerialContestType;
 
    for B := b19 to High(FConfig.SerialArray) do begin
-      SerialArray[B] := FConfig.SerialArray[B];
+      SerialArrayBand[B] := FConfig.SerialArray[B];
    end;
 
    if SerialContestType = 0 then begin
@@ -3178,10 +3154,10 @@ begin
       if editor.colSerial >= 0 then begin
          Cells[editor.colSerial, 0] := 'serial';
          ColWidths[editor.colSerial] := editor.SerialWid * nColWidth;
-         SerialEdit.Visible := True;
+         SerialEdit1.Visible := True;
       end
       else begin
-         SerialEdit.Visible := False;
+         SerialEdit1.Visible := False;
       end;
 
       // Time
@@ -4219,12 +4195,7 @@ begin
    ReEvaluateCountDownTimer;
    ReEvaluateQSYCount;
 
-   if SerialEdit.Visible then begin
-      if (dmZlogGlobal.Settings._syncserial) and (SerialContestType = SER_MS) then begin
-         CurrentQSO.Serial := SerialArrayTX[CurrentQSO.TX];
-         SerialEdit.Text := CurrentQSO.SerialStr;
-      end;
-   end;
+   SetNextSerialNumber3(CurrentQSO);
 end;
 
 procedure TMainForm.IncFontSize();
@@ -4570,8 +4541,6 @@ procedure TMainForm.LoadNewContestFromFile(filename: string);
 var
    Q: TQSO;
    boo, Boo2: Boolean;
-   i: Integer;
-   b: TBand;
 begin
    // 一度はCreateLogされてる前提
    Q := TQSO.Create();
@@ -4589,17 +4558,7 @@ begin
    Log.LoadFromFile(filename);
 
    // 各バンドのSerialを復帰
-   // SerialArrayには次の番号を入れる
-   for b := b19 to HiBand do begin
-      SerialArray[b] := 0;
-   end;
-   for i := 1 to Log.TotalQSO do begin
-      Q := Log.QsoList[i];
-      SerialArray[Q.Band] := Q.Serial;
-   end;
-   for b := b19 to HiBand do begin
-      Inc(SerialArray[b]);
-   end;
+   RestoreSerialNumber();
 
    // 最後のレコード取りだし
    Q := Log.QsoList[Log.TotalQSO];
@@ -4612,7 +4571,6 @@ begin
    CurrentQSO.NrRcvd := '';
    CurrentQSO.Time := Date + Time;
    CurrentQSO.TX := dmZlogGlobal.TXNr;
-//   CurrentQSO.Serial := SerialArray[Q.Band];
    CurrentQSO.Memo := '';
 
    // 画面に表示
@@ -5158,6 +5116,9 @@ begin
    CurrentQSO.Band := band_bakup;
    MyContest.LogQSO(CurrentQSO, True);
 
+   // シリアルナンバーを更新
+   SetNextSerialNumber2(CurrentQSO, True);
+
    workedZLO := False;
    if CurrentQSO.Callsign = 'JA1ZLO' then begin
       if MyContest.Name = 'ALL JA コンテスト' then begin
@@ -5214,8 +5175,8 @@ begin
    BandScopeNotifyWorked(CurrentQSO);
 
    // 次のＱＳＯの準備
-   CurrentQSO.Serial := CurrentQSO.Serial + 1;
-   SerialArrayTX[dmZlogGlobal.TXNr] := CurrentQSO.Serial;
+
+   SetNextSerialNumber(CurrentQSO);
 
    if Not(FPostContest) then
       CurrentQSO.UpdateTime;
@@ -5242,7 +5203,6 @@ begin
    end;
    CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
 
-   SerialEdit.Text := CurrentQSO.SerialStr;
    TimeEdit.Text := CurrentQSO.TimeStr;
    DateEdit.Text := CurrentQSO.DateStr;
    CallsignEdit.Text := CurrentQSO.Callsign;
@@ -6068,7 +6028,7 @@ procedure TMainForm.SerialEdit1Change(Sender: TObject);
 var
    i: Integer;
 begin
-   i := StrToIntDef(SerialEdit.Text, 0);
+   i := StrToIntDef(TEdit(Sender).Text, 0);
 
    if i > 0 then begin
       CurrentQSO.Serial := i;
@@ -6209,6 +6169,7 @@ begin
       RenewVoiceToolBar;
 
       InitQsoEditPanel();
+      InitSerialPanel();
       UpdateQsoEditPanel(rig);
       LastFocus := CallsignEdit;
       ShowCurrentQSO();
@@ -7157,7 +7118,7 @@ begin
 
       dmZlogGlobal.SetLogFileName('');
 
-      CurrentQSO.Serial := 1;
+      InitSerialNumber();
       mPXListWPX.Visible := False;
 
       dmZlogGlobal.ContestCategory := menu.ContestCategory;
@@ -7216,9 +7177,6 @@ begin
          Height := 291;
          DefaultRowHeight := 17;
       end;
-//      SerialEdit.Visible := False;
-//      PowerEdit.Visible := False;
-//      ModeEdit.Visible := True;
 
       for i := 1 to Grid.RowCount - 1 do
          for j := 0 to Grid.ColCount - 1 do
@@ -7329,6 +7287,7 @@ begin
 
       SetGridWidth(EditScreen);
       SetEditFields1R(EditScreen);
+      InitSerialPanel();
 
       // #201 モード選択によって動作を変える(NEW CONTESTのみ)
       case menu.ContestMode of
@@ -7435,9 +7394,6 @@ begin
       // 最初はRIG1から
       SwitchRig(1);
 
-      CurrentQSO.Serial := SerialArray[CurrentQSO.Band];
-      SerialEdit.Text := CurrentQSO.SerialStr;
-
       BandEdit.Text := MHzString[CurrentQSO.Band];
       CurrentQSO.TX := dmZlogGlobal.TXNr;
 
@@ -7456,7 +7412,8 @@ begin
       RcvdRSTEdit.Text := CurrentQSO.RSTStr;
 
       // CurrentQSO.Serial := SerialArray[b19]; // in case SERIALSTART is defined. SERIALSTART applies to all bands.
-      SerialEdit.Text := CurrentQSO.SerialStr;
+      SetInitSerialNumber(CurrentQSO);
+      DispSerialNumber(CurrentQSO.Band);
 
       // フォントサイズの設定
 //      SetFontSize(dmZlogGlobal.Settings._mainfontsize);
@@ -10637,7 +10594,7 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
 
    procedure SetWhite(id: Integer);
    begin
-//      FEditPanel[id].SerialEdit.Color := clWindow;
+      FEditPanel[id].SerialEdit.Color := clWindow;
 //      FEditPanel[id].DateEdit.Color := clWindow;
 //      FEditPanel[id].TimeEdit.Color := clWindow;
       FEditPanel[id].CallsignEdit.Color := clWindow;
@@ -10651,7 +10608,7 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
 
    procedure SetGlay(id: Integer);
    begin
-//      FEditPanel[id].SerialEdit.Color := clBtnFace;
+      FEditPanel[id].SerialEdit.Color := clBtnFace;
 //      FEditPanel[id].DateEdit.Color := clBtnFace;
 //      FEditPanel[id].TimeEdit.Color := clBtnFace;
       FEditPanel[id].CallsignEdit.Color := clBtnFace;
@@ -11319,6 +11276,186 @@ begin
    end
    else begin
       SetCQ(False);
+   end;
+end;
+
+procedure TMainForm.InitSerialPanel();
+begin
+   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+
+   end
+   else begin
+      if SerialContestType = 0 then begin
+         SerialEdit2A.Visible := False;
+         SerialEdit2B.Visible := False;
+         SerialEdit2C.Visible := False;
+      end
+      else begin
+         SerialEdit2A.Visible := True;
+         SerialEdit2B.Visible := True;
+         SerialEdit2C.Visible := True;
+      end;
+   end;
+end;
+
+procedure TMainForm.DispSerialNumber(B: TBand);
+begin
+   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+      if SerialContestType = SER_BAND then begin
+         CurrentQSO.Serial := SerialArrayBand[B];
+      end
+      else begin
+         CurrentQSO.Serial := SerialNumber;
+      end;
+      SerialEdit.Text := CurrentQSO.SerialStr;
+   end
+   else begin
+      case SerialContestType of
+         0: begin
+            //
+         end;
+
+         SER_ALL: begin
+            CurrentQSO.Serial := SerialNumber;
+            SerialEdit2A.Text := CurrentQSO.SerialStr;
+            SerialEdit2B.Text := CurrentQSO.SerialStr;
+            SerialEdit2C.Text := CurrentQSO.SerialStr;
+         end;
+
+         SER_BAND: begin
+            CurrentQSO.Serial := SerialArrayBand[B];
+            SerialEdit.Text := CurrentQSO.SerialStr;
+         end;
+
+         SER_MS: begin
+            CurrentQSO.Serial := SerialArrayTX[CurrentQSO.TX];
+            SerialEdit2A.Text := CurrentQSO.SerialStr;
+            SerialEdit2B.Text := CurrentQSO.SerialStr;
+            SerialEdit2C.Text := CurrentQSO.SerialStr;
+         end;
+      end;
+   end;
+end;
+
+procedure TMainForm.InitSerialNumber();
+var
+   b: TBand;
+   i: Integer;
+begin
+   SerialNumber := 1;
+
+   for B := b19 to HiBand do begin
+      SerialArrayBand[B] := 1;
+   end;
+
+   for i := Low(SerialArrayTx) to High(SerialArrayTx) do begin
+      SerialArrayTX[i] := 1;
+   end;
+end;
+
+procedure TMainForm.RestoreSerialNumber();
+var
+   b: TBand;
+   i: Integer;
+   Q: TQSO;
+begin
+   for b := b19 to HiBand do begin
+      SerialArrayBand[b] := 0;
+   end;
+
+   for i := Low(SerialArrayTx) to High(SerialArrayTx) do begin
+      SerialArrayTx[i] := 0;
+   end;
+
+   for i := 1 to Log.TotalQSO do begin
+      Q := Log.QsoList[i];
+      SerialNumber := Q.Serial;
+      SerialArrayBand[Q.Band] := Q.Serial;
+      SerialArrayTx[Q.Tx] := Q.Serial;
+   end;
+
+   // SerialNumber,SerialArrayには次の番号を入れる
+   Inc(SerialNumber);
+
+   for b := b19 to HiBand do begin
+      Inc(SerialArrayBand[b]);
+   end;
+
+   for i := Low(SerialArrayTx) to High(SerialArrayTx) do begin
+      Inc(SerialArrayTx[i]);
+   end;
+end;
+
+procedure TMainForm.SetInitSerialNumber(aQSO: TQSO);
+begin
+   case SerialContestType of
+      0: begin
+         //
+      end;
+
+      SER_ALL: begin
+         aQSO.Serial := SerialNumber;
+      end;
+
+      SER_BAND: begin
+         aQSO.Serial := SerialArrayBand[aQSO.Band];
+      end;
+
+      SER_MS: begin
+         aQSO.Serial := SerialArrayTX[aQSO.TX];
+      end;
+   end;
+end;
+
+procedure TMainForm.SetNextSerialNumber(aQSO: TQSO);
+begin
+   case SerialContestType of
+      0: begin
+         //
+      end;
+
+      SER_ALL: begin
+         Inc(SerialNumber);
+      end;
+
+      SER_BAND: begin
+         Inc(SerialArrayBand[aQSO.Band]);
+      end;
+
+      SER_MS: begin
+         Inc(SerialArrayTX[aQSO.TX]);
+      end;
+   end;
+
+   DispSerialNumber(aQSO.Band);
+end;
+
+procedure TMainForm.SetNextSerialNumber2(aQSO: TQSO; Local : Boolean);
+begin
+   // synchronization of serial # over network
+   if dmZlogGlobal.Settings._syncserial and (SerialContestType <> 0) and (Local = False) then begin
+      if SerialContestType = SER_MS then begin // WPX M/S type. Separate serial for mult/run
+         SerialArrayTX[aQSO.TX] := aQSO.Serial + 1;
+         if aQSO.TX = dmZlogGlobal.TXNr then begin
+            aQSO.Serial := aQSO.Serial + 1;
+         end;
+      end
+      else begin
+         SerialArrayBand[aQSO.Band] := aQSO.Serial + 1;
+         if (SerialContestType = SER_ALL) or ((SerialContestType = SER_BAND) and (CurrentQSO.Band = aQSO.Band)) then begin
+            aQSO.Serial := aQSO.Serial + 1;
+         end;
+      end;
+
+      DispSerialNumber(aQSO.Band);
+   end;
+end;
+
+procedure TMainForm.SetNextSerialNumber3(aQSO: TQSO);
+begin
+   if (dmZlogGlobal.Settings._syncserial) and (SerialContestType = SER_MS) then begin
+      aQSO.Serial := SerialArrayTX[aQSO.TX];
+      DispSerialNumber(aQSO.Band);
    end;
 end;
 

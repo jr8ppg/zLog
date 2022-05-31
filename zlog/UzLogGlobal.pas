@@ -279,8 +279,9 @@ var
 
 var
   SerialContestType : integer;  // 0 if no serial # or SER_ALL, SER_BAND
-  SerialArray : array [b19..HiBand] of integer;  // initialized in TContest.Create;
-  SerialArrayTX : array[0..64] of integer;
+  SerialNumber: Integer;
+  SerialArrayBand : array[b19..HiBand] of Integer;  // initialized in TContest.Create;
+  SerialArrayTX : array[0..64] of Integer;
 
 var
   GLOBALSERIAL : integer = 0;
