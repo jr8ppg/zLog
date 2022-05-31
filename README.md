@@ -61,16 +61,22 @@ https://zlog.org/
    - インストール後、Delphiを起動する。
    - 時間かかります。
 
-5. zlog_requires のインストール
+5. JCL/JVCLがインストールできない場合
+   - Delphi/C++Builder Community Edition 10.4.2を利用時、GetItパッケージマネージャ経由でJEDI/JVCLパッケージがインストールできない問題があることが判明しています。
+   - その場合、Andreas Hausladen氏が用意しているコンパイル済みファイルをインストールすることで利用可能になります。  
+ https://www.idefixpack.de/blog/bugfix-units/jedi-binary-installer/
+   - 詳しい情報はこちらです。  https://docwiki.embarcadero.com/Support/ja/Delphi/C%2B%2BBuilder_Community_Edition_10.4.2%E3%82%92%E5%88%A9%E7%94%A8%E6%99%82%E3%80%81GetIt%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%83%9E%E3%83%8D%E3%83%BC%E3%82%B8%E3%83%A3%E7%B5%8C%E7%94%B1%E3%81%A7JEDI/JVCL%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%81%8C%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84
+   
+6. zlog_requires のインストール
 
    - VCLフォルダのzlog_requires.dpkを開き、32ビットを選択しビルド→インストール。
    - 次に64ビットを選択しビルド。
    - ツール－オプション－言語－Delphiでライブラリのライブラリパスに VCLフォルダ\\$(Platform)\\Release を追加。32ビットと64ビットの両方に設定する。
       - ライブラリパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Release」
       - デバッグ用DCUパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Debug」
-6. zlogフォルダのzlog.dprojを開き、ビルド
+7. zlogフォルダのzlog.dprojを開き、ビルド
 
-7. 完成
+8. 完成
 
 ## オリジナルからの変更点
 
