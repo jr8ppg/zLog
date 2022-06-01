@@ -6052,6 +6052,8 @@ object MainForm: TMainForm
     Top = 213
   end
   object BandMenu: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 88
     Top = 212
     object N19MHz: TMenuItem
@@ -6135,6 +6137,8 @@ object MainForm: TMainForm
     end
   end
   object ModeMenu: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 120
     Top = 212
     object CW1: TMenuItem
@@ -6351,6 +6355,7 @@ object MainForm: TMainForm
   end
   object OpMenu: TPopupMenu
     AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 184
     Top = 212
   end
@@ -6372,6 +6377,8 @@ object MainForm: TMainForm
     Top = 196
   end
   object CWFMenu: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 376
     Top = 137
     object Edit1: TMenuItem
@@ -6380,6 +6387,8 @@ object MainForm: TMainForm
     end
   end
   object NewPowerMenu: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 152
     Top = 212
     object P1: TMenuItem
@@ -7192,6 +7201,8 @@ object MainForm: TMainForm
     Top = 144
   end
   object VoiceFMenu: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 420
     Top = 137
     object menuVoiceEdit: TMenuItem

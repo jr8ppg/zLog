@@ -421,18 +421,26 @@ object EditDialog: TEditDialog
     end
   end
   object BandMenu: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 312
     Top = 120
   end
   object ModeMenu: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 344
     Top = 120
   end
   object OpMenu: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 376
     Top = 120
   end
   object NewPowerMenu: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 240
     Top = 120
   end
