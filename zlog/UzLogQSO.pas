@@ -1,5 +1,7 @@
 unit UzLogQSO;
 
+//{$DEFINE ZSERVER}
+
 interface
 
 uses
@@ -140,7 +142,9 @@ type
     function PartialSummary(DispDate: Boolean) : string;
     function CheckCallSummary : string;
     procedure UpdateTime;
+    {$IFNDEF ZSERVER}
     function zLogALL : string;
+    {$ENDIF}
     function DOSzLogText : string;
     function DOSzLogTextShort : string;
     function QSOinText : string; {for data transfer}
@@ -301,11 +305,13 @@ type
     procedure SaveToFile(Filename : string);
     procedure SaveToFileEx(Filename: string);
     procedure SaveToFilezLogDOSTXT(Filename : string);
-    procedure SaveToFilezLogALL(Filename : string);
     procedure SaveToFilezLogCsv(Filename: string);
+    {$IFNDEF ZSERVER}
+    procedure SaveToFilezLogALL(Filename : string);
     procedure SaveToFileByTX(Filename : string);
     procedure SaveToFileByCabrillo(Filename: string);
     procedure SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string);
+    {$ENDIF}
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
     procedure AddQue(aQSO : TQSO);
@@ -331,10 +337,11 @@ type
 //    function MergeFile(filename: string): Integer;
 
     function IsWorked(strCallsign: string; band: TBand): Boolean;
-    function IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
     function IsNewMulti(band: TBand; multi: string): Boolean;
-
+    {$IFNDEF ZSERVER}
+    function IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
     function EvaluateQSYCount(nStartIndex: Integer): Integer;
+    {$ENDIF}
 
     property Saved: Boolean read FSaved write FSaved;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode write FAcceptDifferentMode;
@@ -780,6 +787,7 @@ begin
    Result := S;
 end;
 
+{$IFNDEF ZSERVER}
 function TQSO.zLogALL: string;
 var
    S: string;
@@ -819,6 +827,7 @@ begin
    S := S + Self.MemoStr;
    Result := S;
 end;
+{$ENDIF}
 
 {
 function TQSO.SameQSO(aQSO: TQSO): Boolean;
@@ -1815,6 +1824,7 @@ begin
    CloseFile(f);
 end;
 
+{$IFNDEF ZSERVER}
 procedure TLog.SaveToFilezLogALL(Filename: string);
 var
    f: textfile;
@@ -1834,6 +1844,7 @@ begin
 
    CloseFile(f);
 end;
+{$ENDIF}
 
 procedure TLog.SaveToFilezLogCsv(Filename: string);
 const
@@ -1972,6 +1983,7 @@ begin
    end;
 end;
 
+{$IFNDEF ZSERVER}
 procedure TLog.SaveToFileByTX(Filename: string);
 var
    f: textfile;
@@ -1998,6 +2010,7 @@ begin
       end;
    end;
 end;
+{$ENDIF}
 
 function TLog.GetActualFreq(b: TBand; strFreq: string): string;
 var
@@ -2039,6 +2052,7 @@ end;
 //QSO:  3799 PH 1999-03-06 0711 HC8N           59 700    W1AW           59 CT     0
 //QSO:  3799 PH 1999-03-06 0712 HC8N           59 700    N5KO           59 CA     0
 
+{$IFNDEF ZSERVER}
 procedure TLog.SaveToFileByCabrillo(Filename: string);
 var
    F: TextFile;
@@ -2139,6 +2153,7 @@ begin
 
    CloseFile(F);
 end;
+{$ENDIF}
 
 {
 HAMLOG CSV仕様
@@ -2163,6 +2178,7 @@ HAMLOG CSV仕様
 　基本的に国内局…0・海外局…8
 　でもそれ以外の場合もある
 }
+{$IFNDEF ZSERVER}
 procedure TLog.SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string);
 var
    F: TextFile;
@@ -2284,6 +2300,7 @@ begin
       slCsv.Free();
    end;
 end;
+{$ENDIF}
 
 procedure TLog.RebuildDupeCheckList;
 var
@@ -2401,7 +2418,6 @@ var
    TempList: array [ord('A') .. ord('Z')] of TStringList;
    ch: Char;
    core: string;
-   pQSO: TQSO;
    vQSO: TQSO;
    Diff: Integer;
    fQsyViolation: Boolean;
@@ -2416,7 +2432,6 @@ begin
       TempList[i].Capacity := 200;
    end;
 
-   pQSO := FQsoList[1];
    vQSO := nil;
    for i := 1 to TotalQSO do begin
       aQSO := FQsoList[i];
@@ -2450,6 +2465,7 @@ begin
          TempList[ord(ch)].Add(str);
       end;
 
+      {$IFNDEF ZSERVER}
       // QSY violation check
       fQsyViolation := False;
 
@@ -2460,9 +2476,6 @@ begin
             Diff := SecondsBetween(aQSO.Time, vQSO.Time);
             if (Diff / 60) <= dmZLogGlobal.Settings._countdownminute then begin
                fQsyViolation := True;
-            end
-            else begin
-               vQSO := aQSO;
             end;
          end;
       end;
@@ -2475,15 +2488,13 @@ begin
          // QSY数が設定値を超えていたらviolation
          if (nQsyCount > dmZLogGlobal.Settings._countperhour) then begin
             fQsyViolation := True;
-         end
-         else begin
-            vQSO := aQSO;
          end;
       end;
 
       vQSO := aQSO;
 
       aQSO.QsyViolation := fQsyViolation;
+      {$ENDIF}
    end;
 
    for i := ord('A') to ord('Z') do begin
@@ -2863,6 +2874,7 @@ begin
    end;
 end;
 
+{$IFNDEF ZSERVER}
 function TLog.IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
 var
    Q: TQSO;
@@ -2896,6 +2908,7 @@ begin
       Q.Free();
    end;
 end;
+{$ENDIF}
 
 function TLog.IsNewMulti(band: TBand; multi: string): Boolean;
 var
@@ -2927,6 +2940,7 @@ begin
    end;
 end;
 
+{$IFNDEF ZSERVER}
 function TLog.EvaluateQSYCount(nStartIndex: Integer): Integer;
 var
    nQsyCount: Integer;
@@ -2960,6 +2974,7 @@ begin
 
    Result := nQsyCount;
 end;
+{$ENDIF}
 
 { TQSOCallsignComparer }
 

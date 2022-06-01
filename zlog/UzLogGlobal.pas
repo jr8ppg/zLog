@@ -3185,7 +3185,7 @@ end;
 
 function ZStrToBool(strValue: string): Boolean;
 begin
-   if strValue = '0' then begin
+   if (strValue = '0') or (strValue = '') then begin
       Result := False;
    end
    else begin
