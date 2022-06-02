@@ -7418,11 +7418,11 @@ begin
       CurrentQSO.Band := GetFirstAvailableBand(dmZLogGlobal.LastBand);
       FRateDialogEx.Band := CurrentQSO.Band;
 
-      // 最初はRIG1から
-      SwitchRig(1);
-
       BandEdit.Text := MHzString[CurrentQSO.Band];
       CurrentQSO.TX := dmZlogGlobal.TXNr;
+
+      // 最初はRIG1から
+      SwitchRig(1);
 
       // マルチオペの場合は最後のOPをセット
       if (dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx]) and
