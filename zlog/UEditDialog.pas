@@ -107,6 +107,7 @@ type
     SerialEdit: TEdit;
     DateEdit: TEdit;
     NewPowerEdit: TEdit;
+    checkInvalid: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -471,6 +472,7 @@ begin
    workQSO.Dupe := checkDupe.Checked;
    workQSO.QsyViolation := checkQsyViolation.Checked;
    workQSO.Forced := checkForced.Checked;
+   workQSO.Invalid := checkInvalid.Checked;
 
    // QSL Status
    if radioQslNone.Checked then workQSO.QslState := qsNone;
@@ -716,6 +718,7 @@ begin
    checkDupe.Checked := workQSO.Dupe;
    checkQsyViolation.Checked := workQSO.QsyViolation;
    checkForced.Checked := workQSO.Forced;
+   checkInvalid.Checked := workQSO.Invalid;
 
    // QSL Status
    radioQslNone.Checked := (workQSO.QslState = qsNone);

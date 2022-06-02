@@ -55,7 +55,7 @@ object EditDialog: TEditDialog
   object GroupBox2: TGroupBox
     Left = 336
     Top = 66
-    Width = 261
+    Width = 320
     Height = 42
     Caption = 'QSO Flags'
     TabOrder = 3
@@ -93,6 +93,14 @@ object EditDialog: TEditDialog
       Caption = 'Forced'
       Enabled = False
       TabOrder = 3
+    end
+    object checkInvalid: TCheckBox
+      Left = 259
+      Top = 16
+      Width = 51
+      Height = 17
+      Caption = 'Invalid'
+      TabOrder = 4
     end
   end
   object GroupBox3: TGroupBox

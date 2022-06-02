@@ -75,7 +75,8 @@ type
     PCName: string[10];    { 11 bytes max 10 char }
     Forced: Boolean;       { 1 byte }
     QslState: Byte;        { 1 byte 0:None 1:Pse QSL 2:No QSL }
-    Reserve4: string[102]; { 103 bytes }
+    Invalid: Boolean;      { 1 byte false:valid true:invalid }
+    Reserve4: string[101]; { 102 bytes }
     // 384bytes
   end;
 
@@ -113,8 +114,10 @@ type
     FPCName: string;
     FForced: Boolean;
     FQslState: TQslState;
+    FInvalid: Boolean;
 
     function GetMode2(): TMode;
+    function GetPoints(): Integer;
 
     function GetFileRecord(): TQSOData;
     procedure SetFileRecord(src: TQSOData);
@@ -174,7 +177,7 @@ type
     property Multi2: string read FMulti2 write FMulti2;
     property NewMulti1: Boolean read FNewMulti1 write FNewMulti1;
     property NewMulti2: Boolean read FNewMulti2 write FNewMulti2;
-    property Points: Integer read FPoints write FPoints;
+    property Points: Integer read GetPoints write FPoints;
     property Operator: string read FOperator write FOperator;
     property Memo: string read FMemo write FMemo;
     property CQ: Boolean read FCQ write FCQ;
@@ -189,6 +192,7 @@ type
     property PCName: string read FPCName write FPCName;
     property Forced: Boolean read FForced write FForced;
     property QslState: TQslState read FQslState write FQslState;
+    property Invalid: Boolean read FInvalid write FInvalid;
 
     property SerialStr: string read GetSerialStr;
     property TimeStr: string read GetTimeStr;
@@ -338,6 +342,7 @@ type
 
     function IsWorked(strCallsign: string; band: TBand): Boolean;
     function IsNewMulti(band: TBand; multi: string): Boolean;
+    procedure RenewMulti();
     {$IFNDEF ZSERVER}
     function IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
     function EvaluateQSYCount(nStartIndex: Integer): Integer;
@@ -402,6 +407,7 @@ begin
    FPCName := '';
    FForced := False;
    FQslState := qsNone;
+   FInvalid := False;
 end;
 
 procedure TQSO.IncTime;
@@ -452,6 +458,7 @@ begin
       slText.Add(PCName);
       slText.Add(ZBoolToStr(Forced));
       slText.Add(IntToStr(Integer(QslState)));
+      slText.Add(ZBoolToStr(Invalid));
 
       Result := slText.DelimitedText;
    finally
@@ -468,7 +475,7 @@ begin
    slText.Delimiter := _sep;
    try
    try
-      slText.DelimitedText := str + DupeString(_sep, 29);
+      slText.DelimitedText := str + DupeString(_sep, 30);
 
       if slText[0] <> 'ZLOGQSODATA:' then begin
          Exit;
@@ -503,6 +510,7 @@ begin
       PCName   := slText[27];
       Forced   := ZStrToBool(slText[28]);
       QslState  := TQslState(StrToIntDef(slText[29], 0));
+      Invalid  := ZStrToBool(slText[30]);
    except
       on EConvertError do begin
          FMemo := 'Convert Error!';
@@ -945,6 +953,16 @@ begin
    Result := Mode2[Self.Mode];
 end;
 
+function TQSO.GetPoints(): Integer;
+begin
+   if FInvalid = True then begin
+      Result := 0;
+   end
+   else begin
+      Result := FPoints;
+   end;
+end;
+
 procedure TQSO.Assign(src: TQSO);
 begin
    FTime := src.FTime;
@@ -976,6 +994,7 @@ begin
    FPCName := src.FPCName;
    FForced := src.FForced;
    FQslState := src.FQslState;
+   FInvalid := src.Invalid;
 end;
 
 function TQSO.GetFileRecord(): TQSOData;
@@ -1069,6 +1088,8 @@ begin
       FQslState := qsNoQsl;
       FMemo := Trim(StringReplace(FMemo, MEMO_NO_QSL, '', [rfReplaceAll]));
    end;
+
+   FInvalid := False;
 end;
 
 function TQSO.GetFileRecordEx(): TQSODataEx;
@@ -1103,6 +1124,7 @@ begin
    Result.PCName     := ShortString(FPCName);
    Result.Forced     := FForced;
    Result.QslState   := Byte(FQslState);
+   Result.Invalid    := FInvalid;
 end;
 
 procedure TQSO.SetFileRecordEx(src: TQSODataEx);
@@ -1136,6 +1158,7 @@ begin
    FPCName     := string(src.PCName);
    FForced     := src.Forced;
    FQslState   := TQslState(src.QslState);
+   FInvalid    := src.Invalid;
 end;
 
 { TQSOList }
@@ -1850,7 +1873,7 @@ procedure TLog.SaveToFilezLogCsv(Filename: string);
 const
    csvheader = '"Date","Time","TimeZone","CallSign","RSTSent","NrSent","RSTRcvd","NrRcvd","Serial","Mode",' +
                '"Band","Power","Multi1","Multi2","NewMulti1","NewMulti2","Points","Operator","Memo","CQ",' +
-               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","PCName","QslState"';
+               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","PCName","QslState","Invalid"';
 var
    F: TextFile;
    i: Integer;
@@ -1973,6 +1996,9 @@ begin
 
          // 31列目 QslState
          slCsv.Add(IntToStr(Integer(Q.QslState)));
+
+         // 32列目 Invalid
+         slCsv.Add(BoolToStr(Q.Invalid, True));
 
          WriteLn(F, slCsv.DelimitedText);
       end;
@@ -2106,7 +2132,12 @@ begin
    for i := 1 to FQSOList.Count - 1 do begin
       Q := FQSOList[i];
 
-      strText := 'QSO: ';
+      if Q.Invalid = True then begin
+         strText := 'X-QSO: ';
+      end
+      else begin
+         strText := 'QSO: ';
+      end;
 
       strText := strText  + GetActualFreq(Q.Band, Q.Freq) + ' ';
 
@@ -2236,7 +2267,12 @@ begin
          slCsv.Add('');
 
          //10列目　QSLマーク　※取りあえず「J」を入れておけばOK
-         slCsv.Add('J  ');
+         if Q.QslState = qsPseQsl then begin
+            slCsv.Add('J  ');
+         end
+         else begin
+            slCsv.Add('N  ');
+         end;
 
          //11列目　相手局の名前・名称
          slCsv.Add('');
@@ -2708,13 +2744,11 @@ begin
          Exit;
       end;
 
-//      FQsoList[0].RSTsent :=
-
       i := 0;
       try
          for i := 1 to slFile.Count - 1 do begin
             slLine.Clear();
-            slLine.CommaText := slFile.Strings[i] + DupeString(',', 31);
+            slLine.CommaText := slFile.Strings[i] + DupeString(',', 32);
 
             Q := TQSO.Create();
 
@@ -2723,11 +2757,14 @@ begin
             Q.Time := StrToDateTime(slLine[0] + ' ' + slLine[1]);
 
             // 3列目 TimeZone
-            if slLine[2] = 'UTC' then begin
-               offsetmin := _USEUTC;
-            end
-            else begin
-               offsetmin := 0;
+            if i = 1 then begin
+               if slLine[2] = 'UTC' then begin
+                  offsetmin := _USEUTC;
+               end
+               else begin
+                  offsetmin := 0;
+               end;
+               FQsoList[0].RSTsent := offsetmin;
             end;
 
             // 4列目 コールサイン
@@ -2817,6 +2854,9 @@ begin
 
             // 31列目 QslState
             Q.QslState := TQslState(StrToIntDef(slLine[30], 0));
+
+            // 32列目 Invalid
+            Q.Invalid := StrToBoolDef(slLine[31], False);
 
             if Q.Reserve3 = 0 then begin
                Q.Reserve3 := dmZLogGlobal.NewQSOID;
@@ -2913,9 +2953,11 @@ end;
 function TLog.IsNewMulti(band: TBand; multi: string): Boolean;
 var
    i: Integer;
+   Q: TQSO;
 begin
    for i := 1 to FBandList[band].Count - 1 do begin
-      if FBandList[band].Items[i].Multi1 = multi then begin
+      Q := FBandList[band].Items[i];
+      if (Q.Invalid = False) and (Q.Multi1 = multi) then begin
          Result := False;
          Exit;
       end;
@@ -2975,6 +3017,58 @@ begin
    Result := nQsyCount;
 end;
 {$ENDIF}
+
+procedure TLog.RenewMulti();
+var
+   multi1: array[b19..HiBand] of TDictionary<string, string>;
+   multi2: array[b19..HiBand] of TDictionary<string, string>;
+   i: Integer;
+   aQSO: TQSO;
+   b: TBand;
+begin
+   for b := b19 to HiBand do begin
+      multi1[b] := TDictionary<string, string>.Create();
+      multi2[b] := TDictionary<string, string>.Create();
+   end;
+   try
+      for i := 1 to TotalQSO do begin
+         aQSO := FQsoList[i];
+         aQSO.NewMulti1 := False;
+         aQSO.NewMulti2 := False;
+      end;
+
+      for i := 1 to TotalQSO do begin
+         aQSO := FQsoList[i];
+
+         if aQSO.Invalid = True then begin
+            Continue;
+         end;
+         if aQSO.Dupe = True then begin
+            Continue;
+         end;
+
+         if aQSO.Multi1 <> '' then begin
+            if multi1[aQSO.Band].ContainsKey(aQSO.Multi1) = False then begin
+               multi1[aQSO.Band].Add(aQSO.Multi1, aQSO.Callsign);
+               aQSO.NewMulti1 := True;
+            end;
+         end;
+
+         if aQSO.Multi2 <> '' then begin
+            if multi2[aQSO.Band].ContainsKey(aQSO.Multi2) = False then begin
+               multi2[aQSO.Band].Add(aQSO.Multi2, aQSO.Callsign);
+               aQSO.NewMulti2 := True;
+            end;
+         end;
+      end;
+
+   finally
+      for b := b19 to HiBand do begin
+         multi1[b].Free();
+         multi2[b].Free();
+      end;
+   end;
+end;
 
 { TQSOCallsignComparer }
 

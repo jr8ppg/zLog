@@ -2390,6 +2390,7 @@ procedure TContest.EditCurrentRow;
 var
    R: Integer;
    aQSO: TQSO;
+   i: Integer;
 begin
    R := MainForm.Grid.Row;
 
@@ -2418,6 +2419,25 @@ begin
    if MainForm.FCheckCall2.Visible then begin
       MainForm.FCheckCall2.Renew(CurrentQSO);
    end;
+
+   // NewMulti再計算
+   MultiForm.Reset();
+   for i := 1 to Log.TotalQSO do begin
+      aQSO := Log.QSOList[i];
+      aQSO.NewMulti1 := False;
+      aQSO.NewMulti2 := False;
+      if aQSO.Invalid = False then begin
+         MultiForm.AddNoUpdate(aQSO);
+      end;
+   end;
+   MultiForm.UpdateData();
+
+   // スコア再計算
+   ScoreForm.Renew();
+   ScoreForm.UpdateData();
+
+   // 画面リフレッシュ
+   MainForm.GridRefreshScreen;
 end;
 
 constructor TJIDXContest.Create(N: string);
@@ -3093,6 +3113,9 @@ begin
 
       if aQSO.Reserve = actLock then
          Cells[editor.colMemo, R] := 'locked';
+
+      if aQSO.Invalid = True then
+         Cells[editor.colMemo, R] := 'Invalid';
    end;
 end;
 
@@ -5046,6 +5069,8 @@ begin
             CurrentQSO.NewMulti2 := False;
             CurrentQSO.Multi1 := '';
             CurrentQSO.Multi2 := '';
+            CurrentQSO.Reserve2 := $00;
+            CurrentQSO.Invalid := False;
          end;
       end
       else begin  // UNIQUE!
@@ -5069,6 +5094,7 @@ begin
       CurrentQSO.Multi1 := '';
       CurrentQSO.Multi2 := '';
       CurrentQSO.Reserve2 := $00;
+      CurrentQSO.Invalid := False;
    end;
 
    // ここからがLoggingメイン処理
@@ -5202,6 +5228,7 @@ begin
       CurrentQSO.RSTRcvd := 59;
    end;
    CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
+   CurrentQSO.Invalid := False;
 
    TimeEdit.Text := CurrentQSO.TimeStr;
    DateEdit.Text := CurrentQSO.DateStr;
