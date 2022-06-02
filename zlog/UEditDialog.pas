@@ -5,7 +5,7 @@ interface
 uses
   Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, Menus, System.Actions, Vcl.ActnList,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer;
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, Vcl.ComCtrls;
 
 const _ActInsert = 0;
       _ActChange = 1;
@@ -95,7 +95,6 @@ type
     OpLabel: TLabel;
     MemoLabel: TLabel;
     Label2: TLabel;
-    TimeEdit: TEdit;
     CallsignEdit: TEdit;
     RcvdRSTEdit: TEdit;
     NumberEdit: TEdit;
@@ -105,9 +104,10 @@ type
     PointEdit: TEdit;
     OpEdit: TEdit;
     SerialEdit: TEdit;
-    DateEdit: TEdit;
     NewPowerEdit: TEdit;
     checkInvalid: TCheckBox;
+    DateTimePicker1: TDateTimePicker;
+    DateTimePicker2: TDateTimePicker;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -405,7 +405,7 @@ procedure TEditDialog.OKBtnClick(Sender: TObject);
 var
    i, j: integer;
    // aQSO : TQSO;
-   T: TDateTime;
+//   T: TDateTime;
 begin
    // QSO Data
 
@@ -418,25 +418,8 @@ begin
       end;
    end;
 
-   // Date
-   FormatSettings.ShortDateFormat := 'y/m/d';
-
-   T := StrToDateDef(DateEdit.Text, workQSO.Time);
-
-//   if workQSO.DateStr = FormatDateTime('yyyy/mm/dd', T) then begin
-//      exit;
-//   end;
-
-   workQSO.Time := Int(T) + Frac(workQSO.Time);
-
-   // Time
-   T := StrToTimeDef(TimeEdit.Text, workQSO.Time);
-
-//   if workQSO.TimeStr = FormatDateTime('hh:nn', T) then begin
-//      exit;
-//   end;
-
-   workQSO.Time := Trunc(workQSO.Time) + Frac(T); // (T-Trunc(T));
+   // Date & Time
+   workQSO.Time := Trunc(DateTimePicker1.Date) + Frac(DateTimePicker2.Time);
 
    // Call
    workQSO.Callsign := CallsignEdit.Text;
@@ -680,8 +663,8 @@ begin
 
    // QSO Data
    SerialEdit.Text := workQSO.SerialStr;
-   TimeEdit.Text := workQSO.TimeStr;
-   DateEdit.Text := workQSO.DateStr;
+   DateTimePicker1.Date := workQSO.Time;
+   DateTimePicker2.Time := workQSO.Time;
    CallsignEdit.Text := workQSO.Callsign;
    RcvdRSTEdit.Text := workQSO.RSTStr;
    NumberEdit.Text := workQSO.NRRcvd;
@@ -797,15 +780,15 @@ end;
 procedure TEditDialog.actionDecreaseTimeExecute(Sender: TObject);
 begin
    workQSO.DecTime;
-   TimeEdit.Text := workQSO.TimeStr;
-   DateEdit.Text := workQSO.DateStr;
+   DateTimePicker1.Date := workQSO.Time;
+   DateTimePicker2.Time := workQSO.Time;
 end;
 
 procedure TEditDialog.actionIncreaseTimeExecute(Sender: TObject);
 begin
    workQSO.IncTime;
-   TimeEdit.Text := workQSO.TimeStr;
-   DateEdit.Text := workQSO.DateStr;
+   DateTimePicker1.Date := workQSO.Time;
+   DateTimePicker2.Time := workQSO.Time;
 end;
 
 procedure TEditDialog.actionReversePaddleExecute(Sender: TObject);
@@ -917,8 +900,8 @@ end;
 procedure TEditDialog.actionSetCurTimeExecute(Sender: TObject);
 begin
    workQSO.UpdateTime;
-   TimeEdit.Text := workQSO.TimeStr;
-   DateEdit.Text := workQSO.DateStr;
+   DateTimePicker1.Date := workQSO.Time;
+   DateTimePicker2.Time := workQSO.Time;
 end;
 
 procedure TEditDialog.actionDecreaseCwSpeedExecute(Sender: TObject);

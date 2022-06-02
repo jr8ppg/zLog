@@ -4,7 +4,7 @@ object EditDialog: TEditDialog
   BorderStyle = bsDialog
   Caption = 'Dialog'
   ClientHeight = 194
-  ClientWidth = 658
+  ClientWidth = 692
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -55,7 +55,7 @@ object EditDialog: TEditDialog
   object GroupBox2: TGroupBox
     Left = 336
     Top = 66
-    Width = 320
+    Width = 351
     Height = 42
     Caption = 'QSO Flags'
     TabOrder = 3
@@ -68,7 +68,7 @@ object EditDialog: TEditDialog
       TabOrder = 0
     end
     object checkDupe: TCheckBox
-      Left = 55
+      Left = 59
       Top = 16
       Width = 46
       Height = 17
@@ -77,7 +77,7 @@ object EditDialog: TEditDialog
       TabOrder = 1
     end
     object checkQsyViolation: TCheckBox
-      Left = 107
+      Left = 115
       Top = 16
       Width = 85
       Height = 17
@@ -86,7 +86,7 @@ object EditDialog: TEditDialog
       TabOrder = 2
     end
     object checkForced: TCheckBox
-      Left = 198
+      Left = 210
       Top = 16
       Width = 51
       Height = 17
@@ -95,7 +95,7 @@ object EditDialog: TEditDialog
       TabOrder = 3
     end
     object checkInvalid: TCheckBox
-      Left = 259
+      Left = 275
       Top = 16
       Width = 51
       Height = 17
@@ -166,16 +166,17 @@ object EditDialog: TEditDialog
   object Panel2: TPanel
     Left = 0
     Top = 161
-    Width = 658
+    Width = 692
     Height = 33
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 5
+    ExplicitWidth = 658
     DesignSize = (
-      658
+      692
       33)
     object OKBtn: TButton
-      Left = 497
+      Left = 531
       Top = 4
       Width = 75
       Height = 25
@@ -184,9 +185,10 @@ object EditDialog: TEditDialog
       Default = True
       TabOrder = 0
       OnClick = OKBtnClick
+      ExplicitLeft = 497
     end
     object CancelBtn: TButton
-      Left = 578
+      Left = 612
       Top = 4
       Width = 75
       Height = 25
@@ -195,12 +197,13 @@ object EditDialog: TEditDialog
       Caption = 'Cancel'
       TabOrder = 1
       OnClick = CancelBtnClick
+      ExplicitLeft = 578
     end
   end
   object groupQsoData: TGroupBox
     Left = 2
     Top = 2
-    Width = 654
+    Width = 685
     Height = 57
     Caption = 'QSO Data'
     TabOrder = 0
@@ -212,70 +215,70 @@ object EditDialog: TEditDialog
       Caption = 'ser#'
     end
     object TimeLabel: TLabel
-      Left = 110
+      Left = 120
       Top = 14
       Width = 19
       Height = 13
       Caption = 'time'
     end
     object rcvdRSTLabel: TLabel
-      Left = 236
+      Left = 271
       Top = 14
       Width = 22
       Height = 13
       Caption = 'RST'
     end
     object CallsignLabel: TLabel
-      Left = 153
+      Left = 188
       Top = 14
       Width = 16
       Height = 13
       Caption = 'call'
     end
     object PointLabel: TLabel
-      Left = 439
+      Left = 474
       Top = 14
       Width = 14
       Height = 13
       Caption = 'pts'
     end
     object BandLabel: TLabel
-      Left = 337
+      Left = 372
       Top = 14
       Width = 24
       Height = 13
       Caption = 'band'
     end
     object NumberLabel: TLabel
-      Left = 268
+      Left = 303
       Top = 14
       Width = 21
       Height = 13
       Caption = 'rcvd'
     end
     object ModeLabel: TLabel
-      Left = 379
+      Left = 414
       Top = 14
       Width = 26
       Height = 13
       Caption = 'mode'
     end
     object PowerLabel: TLabel
-      Left = 413
+      Left = 448
       Top = 14
       Width = 17
       Height = 13
       Caption = 'pwr'
     end
     object OpLabel: TLabel
-      Left = 460
+      Left = 495
       Top = 14
       Width = 12
       Height = 13
       Caption = 'op'
     end
     object MemoLabel: TLabel
-      Left = 526
+      Left = 561
       Top = 14
       Width = 28
       Height = 13
@@ -288,20 +291,10 @@ object EditDialog: TEditDialog
       Height = 13
       Caption = 'date'
     end
-    object TimeEdit: TEdit
-      Left = 110
-      Top = 28
-      Width = 43
-      Height = 21
-      TabStop = False
-      AutoSize = False
-      ImeMode = imDisable
-      TabOrder = 11
-    end
     object CallsignEdit: TEdit
-      Left = 153
+      Left = 188
       Top = 28
-      Width = 76
+      Width = 80
       Height = 21
       AutoSize = False
       CharCase = ecUpperCase
@@ -312,7 +305,7 @@ object EditDialog: TEditDialog
       OnKeyPress = EditKeyPress
     end
     object RcvdRSTEdit: TEdit
-      Left = 234
+      Left = 269
       Top = 28
       Width = 34
       Height = 21
@@ -323,7 +316,7 @@ object EditDialog: TEditDialog
       OnKeyPress = EditKeyPress
     end
     object NumberEdit: TEdit
-      Left = 268
+      Left = 303
       Top = 28
       Width = 65
       Height = 21
@@ -335,7 +328,7 @@ object EditDialog: TEditDialog
       OnKeyPress = EditKeyPress
     end
     object BandEdit: TEdit
-      Left = 337
+      Left = 372
       Top = 28
       Width = 41
       Height = 21
@@ -348,7 +341,7 @@ object EditDialog: TEditDialog
       OnClick = BandEditClick
     end
     object ModeEdit: TEdit
-      Left = 379
+      Left = 414
       Top = 28
       Width = 33
       Height = 21
@@ -361,7 +354,7 @@ object EditDialog: TEditDialog
       OnClick = ModeEditClick
     end
     object MemoEdit: TEdit
-      Left = 525
+      Left = 560
       Top = 28
       Width = 121
       Height = 21
@@ -371,7 +364,7 @@ object EditDialog: TEditDialog
       OnKeyPress = EditKeyPress
     end
     object PointEdit: TEdit
-      Left = 439
+      Left = 474
       Top = 28
       Width = 19
       Height = 21
@@ -380,7 +373,7 @@ object EditDialog: TEditDialog
       TabOrder = 6
     end
     object OpEdit: TEdit
-      Left = 460
+      Left = 495
       Top = 28
       Width = 65
       Height = 21
@@ -402,21 +395,8 @@ object EditDialog: TEditDialog
       TabOrder = 9
       Visible = False
     end
-    object DateEdit: TEdit
-      Left = 41
-      Top = 28
-      Width = 68
-      Height = 21
-      TabStop = False
-      AutoSize = False
-      CharCase = ecUpperCase
-      Color = clBtnFace
-      ImeMode = imDisable
-      ReadOnly = True
-      TabOrder = 10
-    end
     object NewPowerEdit: TEdit
-      Left = 413
+      Left = 448
       Top = 28
       Width = 24
       Height = 21
@@ -426,6 +406,27 @@ object EditDialog: TEditDialog
       ReadOnly = True
       TabOrder = 5
       OnClick = NewPowerEditClick
+    end
+    object DateTimePicker1: TDateTimePicker
+      Left = 41
+      Top = 28
+      Width = 80
+      Height = 21
+      Date = 44714.000000000000000000
+      Format = 'yyyy/MM/dd'
+      Time = 0.882441875000949900
+      TabOrder = 10
+    end
+    object DateTimePicker2: TDateTimePicker
+      Left = 120
+      Top = 28
+      Width = 67
+      Height = 21
+      Date = 44714.000000000000000000
+      Format = 'HH:mm:ss'
+      Time = 0.882441875000949900
+      Kind = dtkTime
+      TabOrder = 11
     end
   end
   object BandMenu: TPopupMenu
