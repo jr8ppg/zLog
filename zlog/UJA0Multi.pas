@@ -79,12 +79,15 @@ var
    Band: TBand;
 begin
    Band := Main.CurrentQSO.Band;
-   ListBox.Items.Clear;
-   { if PXList.Count = 0 then
-     exit; }
+   if Band = bUnknown then begin
+      Exit;
+   end;
 
-   if PXListX[Band].Count = 0 then
-      exit;
+   ListBox.Items.Clear;
+
+   if PXListX[Band].Count = 0 then begin
+      Exit;
+   end;
 
    { for i := 0 to PXList.Count - 1 do
      ListBox.Items.Add(PXList.Strings[i]); }

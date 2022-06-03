@@ -346,6 +346,10 @@ var
    B: TBand;
 begin
    B := Main.CurrentQSO.Band;
+   if B = bUnknown then begin
+      Exit;
+   end;
+
    for i := Grid.TopRow to Grid.TopRow + Grid.VisibleRowCount - 1 do begin
       if (i > Grid.RowCount - 1) then begin
          exit;

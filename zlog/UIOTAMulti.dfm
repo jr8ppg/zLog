@@ -10,90 +10,90 @@ inherited IOTAMulti: TIOTAMulti
     inherited Label1R9: TRotateLabel
       Left = 223
       Top = 12
-      Height = 32
+      Width = 32
       Caption = '3.5CW'
       ExplicitLeft = 223
       ExplicitTop = 12
-      ExplicitHeight = 32
+      ExplicitWidth = 32
     end
     inherited Label3R5: TRotateLabel
       Left = 235
       Top = 8
-      Height = 36
+      Width = 36
       Caption = '3.5SSB'
       ExplicitLeft = 235
       ExplicitTop = 8
-      ExplicitHeight = 36
+      ExplicitWidth = 36
     end
     inherited Label7: TRotateLabel
       Left = 247
       Top = 21
-      Height = 23
+      Width = 23
       Caption = '7CW'
       ExplicitLeft = 247
       ExplicitTop = 21
-      ExplicitHeight = 23
+      ExplicitWidth = 23
     end
     inherited Label14: TRotateLabel
       Left = 259
       Top = 17
-      Height = 27
+      Width = 27
       Caption = '7SSB'
       ExplicitLeft = 259
       ExplicitTop = 17
-      ExplicitHeight = 27
+      ExplicitWidth = 27
     end
     inherited Label21: TRotateLabel
       Left = 271
       Top = 15
-      Height = 29
+      Width = 29
       Caption = '14CW'
       ExplicitLeft = 271
       ExplicitTop = 15
-      ExplicitHeight = 29
+      ExplicitWidth = 29
     end
     inherited Label28: TRotateLabel
       Left = 283
       Top = 11
-      Height = 33
+      Width = 33
       Caption = '14SSB'
       ExplicitLeft = 283
       ExplicitTop = 11
-      ExplicitHeight = 33
+      ExplicitWidth = 33
     end
     inherited Label50: TRotateLabel
       Left = 295
       Top = 15
-      Height = 29
+      Width = 29
       Caption = '21CW'
       ExplicitLeft = 295
       ExplicitTop = 15
-      ExplicitHeight = 29
+      ExplicitWidth = 29
     end
     inherited Label144: TRotateLabel
       Left = 307
       Top = 11
-      Height = 33
+      Width = 33
       Caption = '21SSB'
       ExplicitLeft = 307
       ExplicitTop = 11
-      ExplicitHeight = 33
+      ExplicitWidth = 33
     end
     inherited Label430: TRotateLabel
       Left = 319
       Top = 15
-      Height = 29
+      Width = 29
       Caption = '28CW'
       ExplicitLeft = 319
       ExplicitTop = 15
-      ExplicitHeight = 29
+      ExplicitWidth = 29
     end
     inherited Label1200: TRotateLabel
       Left = 331
-      Height = 33
+      Width = 33
       Caption = '28SSB'
       ExplicitLeft = 331
-      ExplicitHeight = 33
+      ExplicitWidth = 33
     end
     inherited Label2400: TRotateLabel
       Left = 71

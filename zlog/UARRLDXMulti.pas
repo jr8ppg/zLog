@@ -319,6 +319,10 @@ var
    B: TBand;
 begin
    B := Main.CurrentQSO.Band;
+   if B = bUnknown then begin
+      Exit;
+   end;
+
    for i := 0 to StateList.List.Count - 1 do begin
       str := TState(StateList.List[i]).Summary;
       if TState(StateList.List[i]).Worked[B] = True then begin

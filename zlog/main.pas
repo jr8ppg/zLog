@@ -7994,10 +7994,12 @@ function TMainForm.GetFirstAvailableBand(defband: TBand): TBand;
 var
    b: TBand;
 begin
-   if (BandMenu.Items[Ord(defband)].Enabled = True) and
-      (dmZlogGlobal.Settings._activebands[defband] = True) then begin
-      Result := defband;
-      Exit;
+   if defband <> bUnknown then begin
+      if (BandMenu.Items[Ord(defband)].Enabled = True) and
+         (dmZlogGlobal.Settings._activebands[defband] = True) then begin
+         Result := defband;
+         Exit;
+      end;
    end;
 
    for b := b19 to HiBand do begin

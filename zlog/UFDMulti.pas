@@ -185,10 +185,16 @@ const
    kenmax = 62;
 begin
    B := Main.CurrentQSO.Band;
+   if B = bUnknown then begin
+      Exit;
+   end;
 
    for i := 0 to CityList.List.Count - 1 do begin
       C := TCity(CityList.List[i]);
       B := Main.CurrentQSO.Band;
+      if B = bUnknown then begin
+         Exit;
+      end;
       if C.Worked[B] then begin
          Grid.Cells[0, i] := '~' + C.FDSummary(sband);
       end

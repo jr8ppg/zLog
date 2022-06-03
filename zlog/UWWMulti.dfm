@@ -7,7 +7,7 @@ inherited WWMulti: TWWMulti
   OnResize = FormResize
   OnShow = FormShow
   ExplicitWidth = 376
-  ExplicitHeight = 321
+  ExplicitHeight = 320
   PixelsPerInch = 96
   TextHeight = 13
   object Panel: TPanel

@@ -84,6 +84,10 @@ var
    B: TBand;
 begin
    B := Main.CurrentQSO.Band;
+   if B = bUnknown then begin
+      Exit;
+   end;
+
    for i := 0 to CityList.List.Count - 1 do begin
       C := TCity(CityList.List[i]);
       if C.Worked[B] then begin

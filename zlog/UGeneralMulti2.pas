@@ -114,6 +114,9 @@ begin
 
    // B=現在バンド
    B := Main.CurrentQSO.Band;
+   if B = bUnknown then begin
+      Exit;
+   end;
 
    // CityListをGridにセット
    for i := 0 to CityList.List.Count - 1 do begin

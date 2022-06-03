@@ -563,7 +563,12 @@ end;
 
 function TQSO.GetBandStr: string;
 begin
-   Result := MHzString[Self.FBand];
+   if FBand = bUnknown then begin
+      Result := 'Unknown';
+   end
+   else begin
+      Result := MHzString[Self.FBand];
+   end;
 end;
 
 function TQSO.GetModeStr: string;

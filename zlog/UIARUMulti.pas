@@ -362,6 +362,10 @@ var
    B: TBand;
 begin
    B := Main.CurrentQSO.Band;
+   if B = bUnknown then begin
+      Exit;
+   end;
+
    Grid.RowCount := ZoneList.List.Count;
    for j := 0 to ZoneList.List.Count - 1 do begin
       if TIARUZone(ZoneList.List[j]).Worked[B] = True then begin
