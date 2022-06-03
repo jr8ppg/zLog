@@ -622,16 +622,24 @@ function TQSO.GetFreqStr(): string;
 var
    strFreq: string;
    fFreq: Extended;
+   b2: TBand;
 begin
    strFreq := Self.Freq;
 
-   fFreq := StrToFloatDef(strFreq, 0) / 1000;
+   fFreq := StrToFloatDef(strFreq, 0);
    if fFreq = 0 then begin
       Result := Self.BandStr;
       Exit;
    end;
 
-   strFreq := Format('%.4f', [fFreq]);
+   // Freq‚ªBand‚Æˆá‚¤ê‡‚ÍBand‚ğ•Ô‚·
+   b2 := dmZLogGlobal.BandPlan.FreqToBand(Trunc(fFreq) * 1000);
+   if b2 <> Self.Band then begin
+      Result := Self.BandStr;
+      Exit;
+   end;
+
+   strFreq := Format('%.4f', [fFreq / 1000]);
 
    Result := strFreq;
 end;
@@ -2042,13 +2050,18 @@ function TLog.GetActualFreq(b: TBand; strFreq: string): string;
 var
    p: Integer;
    s: string;
+   f: Int64;
+   b2: TBand;
 const
    FREQ: array[b19..b10g] of string = (
    ' 1800', ' 3500', ' 7000', '10000', '14000', '18000', '21000', '24500',
    '28000', '   50', '  144', '  432', ' 1.2G', ' 2.3G', ' 5.7G', '  10G'
    );
 begin
-   if b > b28 then begin
+   // Freq‚ªBand‚Æˆê’v‚µ‚È‚¢ê‡‚ÍBand‚©‚çActual‚ğ‹‚ß‚é
+   f := Trunc(StrToFloatDef(strFreq, 0)) * 1000;
+   b2 := dmZLogGlobal.BandPlan.FreqToBand(f);
+   if (f = 0) or (b <> b2) or (b > b28) then begin
       Result := FREQ[b];
       Exit;
    end;
