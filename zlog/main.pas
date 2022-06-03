@@ -5109,15 +5109,18 @@ begin
    CurrentQSO.Reserve3 := i;
 
    if RigControl.Rig <> nil then begin
-      // ü”g”‚ğ‹L˜^
-      if dmZlogGlobal.Settings._recrigfreq = True then begin
-         CurrentQSO.Freq := RigControl.Rig.CurrentFreqkHzStr;
-      end;
+      // RIG‚Ìü”g”‚ğæ“¾
+      j := RigControl.Rig.CurrentFreqHz;
 
-      // ©“®bandmap
-      if dmZlogGlobal.Settings._autobandmap then begin
-         j := RigControl.Rig.CurrentFreqHz;
-         if j > 0 then begin
+      // ü”g”‚ªæ“¾‚Å‚«‚½‚ç(>0)‹L˜^‚·‚é
+      if j > 0 then begin
+         // ü”g”‚ğ‹L˜^
+         if dmZlogGlobal.Settings._recrigfreq = True then begin
+            CurrentQSO.Freq := RigControl.Rig.CurrentFreqkHzStr;
+         end;
+
+         // ©“®bandmap
+         if dmZlogGlobal.Settings._autobandmap then begin
             BandScopeAddSelfSpot(CurrentQSO, j);
          end;
       end;
