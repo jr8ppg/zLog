@@ -4584,17 +4584,19 @@ begin
    RestoreSerialNumber();
 
    // 最後のレコード取りだし
-   Q := Log.QsoList[Log.TotalQSO];
+   if Log.TotalQSO > 0 then begin
+      Q := Log.QsoList[Log.TotalQSO];
 
-   // 現在QSOへセット
-   CurrentQSO.Assign(Q);
-   CurrentQSO.Band := Q.Band;
-   CurrentQSO.Mode := Q.Mode;
-   CurrentQSO.Callsign := '';
-   CurrentQSO.NrRcvd := '';
-   CurrentQSO.Time := Date + Time;
-   CurrentQSO.TX := dmZlogGlobal.TXNr;
-   CurrentQSO.Memo := '';
+      // 現在QSOへセット
+      CurrentQSO.Assign(Q);
+      CurrentQSO.Band := Q.Band;
+      CurrentQSO.Mode := Q.Mode;
+      CurrentQSO.Callsign := '';
+      CurrentQSO.NrRcvd := '';
+      CurrentQSO.Time := Date + Time;
+      CurrentQSO.TX := dmZlogGlobal.TXNr;
+      CurrentQSO.Memo := '';
+   end;
 
    // 画面に表示
    ShowCurrentQSO();
@@ -7421,6 +7423,9 @@ begin
       BandEdit.Text := MHzString[CurrentQSO.Band];
       CurrentQSO.TX := dmZlogGlobal.TXNr;
 
+      ModeEdit.Text := CurrentQSO.ModeStr;
+      RcvdRSTEdit.Text := CurrentQSO.RSTStr;
+
       // 最初はRIG1から
       SwitchRig(1);
 
@@ -7434,9 +7439,6 @@ begin
       SetCQ(True);
 
       ShowToolBar(CurrentQSO.Mode);
-
-      ModeEdit.Text := CurrentQSO.ModeStr;
-      RcvdRSTEdit.Text := CurrentQSO.RSTStr;
 
       // CurrentQSO.Serial := SerialArray[b19]; // in case SERIALSTART is defined. SERIALSTART applies to all bands.
       SetInitSerialNumber(CurrentQSO);
