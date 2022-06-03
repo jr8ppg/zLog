@@ -101,6 +101,7 @@ object EditDialog: TEditDialog
       Height = 17
       Caption = 'Invalid'
       TabOrder = 4
+      OnClick = checkInvalidClick
     end
   end
   object GroupBox3: TGroupBox
@@ -171,7 +172,6 @@ object EditDialog: TEditDialog
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 5
-    ExplicitWidth = 658
     DesignSize = (
       692
       33)
@@ -185,7 +185,6 @@ object EditDialog: TEditDialog
       Default = True
       TabOrder = 0
       OnClick = OKBtnClick
-      ExplicitLeft = 497
     end
     object CancelBtn: TButton
       Left = 612
@@ -197,7 +196,6 @@ object EditDialog: TEditDialog
       Caption = 'Cancel'
       TabOrder = 1
       OnClick = CancelBtnClick
-      ExplicitLeft = 578
     end
   end
   object groupQsoData: TGroupBox
@@ -370,6 +368,7 @@ object EditDialog: TEditDialog
       Height = 21
       AutoSize = False
       ImeMode = imDisable
+      ReadOnly = True
       TabOrder = 6
     end
     object OpEdit: TEdit

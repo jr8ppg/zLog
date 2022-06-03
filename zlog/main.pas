@@ -3088,8 +3088,14 @@ begin
       if editor.colNewPower >= 0 then
          Cells[editor.colNewPower, R] := aQSO.NewPowerStr;
 
-      if editor.colPoint >= 0 then
-         Cells[editor.colPoint, R] := aQSO.PointStr;
+      if editor.colPoint >= 0 then begin
+         if aQSO.Invalid = True then begin
+            Cells[editor.colPoint, R] := '0';
+         end
+         else begin
+            Cells[editor.colPoint, R] := aQSO.PointStr;
+         end;
+      end;
 
       if editor.colOp >= 0 then begin
          temp := IntToStr(aQSO.TX);

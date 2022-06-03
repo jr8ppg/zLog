@@ -156,6 +156,7 @@ type
     procedure actionToggleRXExecute(Sender: TObject);
     procedure actionToggleTXExecute(Sender: TObject);
     procedure actionSo2rToggleRigPairExecute(Sender: TObject);
+    procedure checkInvalidClick(Sender: TObject);
   private
     { Private declarations }
     workQSO : TQSO;
@@ -702,6 +703,7 @@ begin
    checkQsyViolation.Checked := workQSO.QsyViolation;
    checkForced.Checked := workQSO.Forced;
    checkInvalid.Checked := workQSO.Invalid;
+   checkInvalidClick(checkInvalid);
 
    // QSL Status
    radioQslNone.Checked := (workQSO.QslState = qsNone);
@@ -719,6 +721,16 @@ begin
    end;
 
    NewPowerEdit.Text := workQSO.NewPowerStr;
+end;
+
+procedure TEditDialog.checkInvalidClick(Sender: TObject);
+begin
+   if TCheckBox(Sender).Checked = True then begin
+      PointEdit.Text := '0';
+   end
+   else begin
+      PointEdit.Text := workQSO.PointStr;
+   end;
 end;
 
 procedure TEditDialog.actionPlayMessageAExecute(Sender: TObject);
