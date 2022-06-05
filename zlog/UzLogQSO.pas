@@ -1810,6 +1810,12 @@ begin
 
    for i := 0 to TotalQSO do begin // changed from 1 to TotalQSO to 0 to TotalQSO
       D := FQsoList[i].FileRecordEx;
+
+      if i = 0 then begin
+         D.filler := $01;
+         D.Serial := TotalQSO;
+      end;
+
       Write(f, D);
    end;
 
