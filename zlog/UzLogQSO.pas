@@ -40,8 +40,19 @@ type
                                      RR:Random(00-99) CC:Edit counter 00 and up}
   end;
 
+  TQSODataExHeader = packed record
+    case Integer of
+      0:(
+        MagicNo: array[0..3] of Byte;
+        NumRecords: Integer;
+      );
+      1:(
+        Time : TDateTime;
+      );
+  end;
+
   TQSODataEx = packed record
-    Time : TDateTime;      {  8 bytes }
+    Header: TQSODataExHeader; {  8 bytes }
     CallSign: string[12];  { 13 bytes }
     NrSent: string[30];    { 31 bytes }
     NrRcvd: string[30];    { 31 bytes }
@@ -1108,7 +1119,7 @@ end;
 function TQSO.GetFileRecordEx(): TQSODataEx;
 begin
    FillChar(Result, SizeOf(Result), #00);
-   Result.Time       := FTime;
+   Result.Header.Time := FTime;
    Result.CallSign   := ShortString(FCallSign);
    Result.NrSent     := ShortString(FNrSent);
    Result.NrRcvd     := ShortString(FNrRcvd);
@@ -1142,7 +1153,16 @@ end;
 
 procedure TQSO.SetFileRecordEx(src: TQSODataEx);
 begin
-   FTime       := src.Time;
+   if (src.header.MagicNo[0] = Ord('Z')) and
+      (src.header.MagicNo[1] = Ord('L')) and
+      (src.header.MagicNo[2] = Ord('O')) and
+      (src.header.MagicNo[3] = Ord('X')) then begin
+      FTime       := 0;
+   end
+   else begin
+      FTime       := src.Header.Time;
+   end;
+
    FCallSign   := string(src.CallSign);
    FNrSent     := string(src.NrSent);
    FNrRcvd     := string(src.NrRcvd);
@@ -1812,8 +1832,11 @@ begin
       D := FQsoList[i].FileRecordEx;
 
       if i = 0 then begin
-         D.filler := $01;
-         D.Serial := TotalQSO;
+         D.Header.MagicNo[0] := Ord('Z');
+         D.Header.MagicNo[1] := Ord('L');
+         D.Header.MagicNo[2] := Ord('O');
+         D.Header.MagicNo[3] := Ord('X');
+         D.Header.NumRecords := TotalQSO;
       end;
 
       Write(f, D);
