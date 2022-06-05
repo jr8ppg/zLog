@@ -5114,7 +5114,7 @@ begin
 
    CurrentQSO.Reserve3 := i;
 
-   if RigControl.Rig <> nil then begin
+   if (RigControl.Rig <> nil) and (RigControl.GetCurrentRig() <> 3) then begin
       // RIG‚Ìü”g”‚ğæ“¾
       j := RigControl.Rig.CurrentFreqHz;
 
@@ -5130,6 +5130,9 @@ begin
             BandScopeAddSelfSpot(CurrentQSO, j);
          end;
       end;
+   end
+   else begin
+      CurrentQSO.Freq := '';
    end;
 
    // QSY Violation
@@ -5194,7 +5197,7 @@ begin
    end;
 
    if CurrentQSO.Mode = mCW then begin
-      if RigControl.Rig <> nil then begin
+      if (RigControl.Rig <> nil) and (RigControl.GetCurrentRig() <> 3) then begin
          // RITƒNƒŠƒA
          if (dmZlogGlobal.Settings._ritclear = True) or
             (dmZlogGlobal.Settings.FAntiZeroinAutoCancel = True) then begin
