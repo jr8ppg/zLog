@@ -10,8 +10,19 @@ uses
   UzlogConst;
 
 type
+  TQSODataExHeader = packed record
+    case Integer of
+      0:(
+        MagicNo: array[0..3] of Byte;
+        NumRecords: Integer;
+      );
+      1:(
+        Time : TDateTime;
+      );
+  end;
+
   TQSOData = packed record
-    Time : TDateTime;      {  8 bytes }
+    Header: TQSODataExHeader; {  8 bytes }
     CallSign: string[12];  { 13 bytes }
     NrSent: string[30];    { 31 bytes }
     NrRcvd: string[30];    { 31 bytes }
@@ -38,17 +49,6 @@ type
     Reserve3: Integer;     {  4 bytes QSO ID# }
     {TTSSSSRRCC   TT:TX#(00-21) SSSS:Serial counter
                                      RR:Random(00-99) CC:Edit counter 00 and up}
-  end;
-
-  TQSODataExHeader = packed record
-    case Integer of
-      0:(
-        MagicNo: array[0..3] of Byte;
-        NumRecords: Integer;
-      );
-      1:(
-        Time : TDateTime;
-      );
   end;
 
   TQSODataEx = packed record
@@ -1024,7 +1024,7 @@ end;
 function TQSO.GetFileRecord(): TQSOData;
 begin
    FillChar(Result, SizeOf(Result), #00);
-   Result.Time       := FTime;
+   Result.Header.Time := FTime;
    Result.CallSign   := ShortString(FCallSign);
    Result.NrSent     := ShortString(FNrSent);
    Result.NrRcvd     := ShortString(FNrRcvd);
@@ -1056,7 +1056,7 @@ var
    Index2: Integer;
    strTemp: string;
 begin
-   FTime       := src.Time;
+   FTime       := src.Header.Time;
    FCallSign   := string(src.CallSign);
    FNrSent     := string(src.NrSent);
    FNrRcvd     := string(src.NrRcvd);
@@ -2690,6 +2690,15 @@ begin
    AssignFile(f, filename);
    Reset(f);
    Read(f, D);
+
+   if (D.Header.MagicNo[0] = Ord('Z')) and
+      (D.Header.MagicNo[1] = Ord('L')) and
+      (D.Header.MagicNo[2] = Ord('O')) and
+      (D.Header.MagicNo[3] = Ord('X')) then begin
+      CloseFile(f);
+      Result := LoadFromFileEx(filename);
+      Exit;
+   end;
 
    Q := nil;
    GLOBALSERIAL := 0;
