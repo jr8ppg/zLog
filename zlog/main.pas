@@ -7449,6 +7449,7 @@ begin
       if (dmZLogGlobal.ContestCategory in [ccMultiOpSingleTx, ccMultiOpTwoTx]) then begin
          if (dmZLogGlobal.Settings._qsycount = False) and (dmZLogGlobal.Settings._countdown = False) then begin
             dmZLogGlobal.Settings._countdown := True;
+            RenewScore();
          end;
       end;
 
