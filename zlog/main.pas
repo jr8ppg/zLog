@@ -7557,14 +7557,18 @@ begin
    {$ENDIF}
    nID := Message.WParam;
    if FEditPanel[nID].CallsignEdit.Text <> '' then begin
-      FEditPanel[nID].rcvdNumber.SetFocus();
-      FEditPanel[nID].rcvdNumber.SelStart := Length(FEditPanel[nID].rcvdNumber.Text);
-      LastFocus := FEditPanel[nID].rcvdNumber;
+      if FEditPanel[nID].rcvdNumber.Visible and FEditPanel[nID].rcvdNumber.Enabled then begin
+         FEditPanel[nID].rcvdNumber.SetFocus();
+         FEditPanel[nID].rcvdNumber.SelStart := Length(FEditPanel[nID].rcvdNumber.Text);
+         LastFocus := FEditPanel[nID].rcvdNumber;
+      end;
    end
    else begin
-      FEditPanel[nID].CallsignEdit.SetFocus();
-      FEditPanel[nID].CallsignEdit.SelStart := Length(FEditPanel[nID].CallsignEdit.Text);
-      LastFocus := FEditPanel[nID].CallsignEdit;
+      if FEditPanel[nID].CallsignEdit.Visible and FEditPanel[nID].CallsignEdit.Enabled then begin
+         FEditPanel[nID].CallsignEdit.SetFocus();
+         FEditPanel[nID].CallsignEdit.SelStart := Length(FEditPanel[nID].CallsignEdit.Text);
+         LastFocus := FEditPanel[nID].CallsignEdit;
+      end;
    end;
 end;
 
