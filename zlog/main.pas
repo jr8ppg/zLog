@@ -1163,7 +1163,7 @@ type
 
     function GetNextBand(BB : TBand; Up : Boolean) : TBand;
 
-    procedure GridRefreshScreen(fSelectRow: Boolean = True);
+    procedure GridRefreshScreen(fSelectRow: Boolean = False);
 
     procedure SetQSOMode(aQSO : TQSO);
     procedure WriteStatusLine(S : string; WriteConsole : Boolean);
@@ -2408,8 +2408,10 @@ begin
    ScoreForm.Renew();
    ScoreForm.UpdateData();
 
+   Log.SetDupeFlags;
+
    // ‰æ–ÊƒŠƒtƒŒƒbƒVƒ…
-   MainForm.GridRefreshScreen;
+   MainForm.GridRefreshScreen(True);
 end;
 
 constructor TJIDXContest.Create(N: string);
@@ -3132,7 +3134,9 @@ begin
       GridClearQSO(i);
    end;
 
-   Grid.ShowLast(L.Count - 1);
+   if fSelectRow = False then begin
+      Grid.ShowLast(L.Count - 1);
+   end;
 
    Grid.Refresh;
 end;

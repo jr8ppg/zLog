@@ -2520,6 +2520,10 @@ begin
       aQSO := FQsoList[i];
       core := CoreCall(aQSO.CallSign);
 
+      if aQSO.Invalid then begin
+         Continue;
+      end;
+
       if AcceptDifferentMode then begin
          if FAllPhone = True then begin
             str := core + aQSO.BandStr + aQSO.Mode2Str
