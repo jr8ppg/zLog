@@ -1153,6 +1153,8 @@ type
     procedure SetNextSerialNumber(aQSO: TQSO);
     procedure SetNextSerialNumber2(aQSO: TQSO; Local : Boolean);
     procedure SetNextSerialNumber3(aQSO: TQSO);
+    procedure RenewScore();
+    procedure ScrollGrid();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1896,12 +1898,10 @@ begin
 
    if dmZlogGlobal.Settings._countdown and (CountDownStartTime > 0) then begin
       WriteStatusLineRed('Less than 10 min since last QSY!', False);
-      FQsyViolation := True;
    end;
 
    if dmZlogGlobal.Settings._qsycount and (QSYCount > dmZLogGlobal.Settings._countperhour) then begin
       WriteStatusLineRed('QSY count exceeded limit!', False);
-      FQsyViolation := True;
    end;
 
    if RigControl.Rig = nil then begin
@@ -2276,35 +2276,7 @@ begin
 end;
 
 procedure TContest.LogQSO(var aQSO: TQSO; Local: Boolean);
-var
-   i, T, mytx: Integer;
-   boo: Boolean;
 begin
-   if Log.TotalQSO > 0 then begin
-      T := Log.TotalQSO;
-      mytx := dmZlogGlobal.TXNr;
-      if { Local = True } mytx = aQSO.TX then // same tx # could be through network
-      begin
-         boo := False;
-         for i := T downto 1 do begin
-            if Log.QsoList[i].TX = mytx then begin
-               boo := True;
-               break;
-            end;
-         end;
-         if (boo = False) or (boo and (Log.QsoList[i].Band <> aQSO.Band)) then begin
-            CountDownStartTime := CurrentTime; // Now;
-         end;
-      end;
-   end
-   else // log.total = 0
-   begin
-      CountDownStartTime := CurrentTime;
-   end;
-   { if Local then
-     if dmZlogGlobal.Settings._multistation = True then
-     aQSO.Memo := 'MULT '+aQSO.Memo; }
-
    if Local = False then
       aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
 
@@ -3571,10 +3543,9 @@ begin
       WriteStatusLine('Loading...', False);
       dmZLogGlobal.SetLogFileName(OpenDialog.filename);
       LoadNewContestFromFile(OpenDialog.filename);
-      MyContest.Renew;
       WriteStatusLine('', False);
       SetWindowCaption();
-      GridRefreshScreen(False);
+      RenewScore();
       FRateDialog.UpdateGraph();
       FRateDialogEx.UpdateGraph();
    end;
@@ -3862,7 +3833,7 @@ begin
 
    if (S = 'DELDUPES') or (S = 'DELDUPE') then begin
       Log.RemoveDupes;
-      MyContest.Renew;
+      RenewScore();
    end;
 
    if S = 'EXITMMTTY' then begin
@@ -4180,6 +4151,10 @@ begin
 
    if S = 'TX2RX' then begin
       actionMatchTxToRx.Execute();
+   end;
+
+   if S = 'RENEW' then begin
+      RenewScore();
    end;
 end;
 
@@ -4619,7 +4594,7 @@ begin
    aQSO := TQSO(Grid.Objects[0, Grid.Row]);
    FZLinkForm.DeleteQSO(aQSO);
    Log.DeleteQSO(aQSO);
-   MyContest.Renew;
+   RenewScore();
 end;
 
 Procedure TMainForm.MultipleDelete(A, B: LongInt);
@@ -4640,7 +4615,7 @@ begin
 
    FZLinkForm.Renew();
 
-   MyContest.Renew;
+   RenewScore();
 end;
 
 procedure TMainForm.DeleteQSO1Click(Sender: TObject);
@@ -5139,9 +5114,13 @@ begin
    i := FindPrevQSO();
    if (i > 0) and (Log.QsoList[i].Band <> band_bakup) then begin
       CurrentQSO.QsyViolation := FQsyViolation;
+      CountDownStartTime := CurrentTime; // Now;
    end
    else begin
       CurrentQSO.QsyViolation := False;
+      if i = -1 then begin
+         CountDownStartTime := CurrentTime; // Now;
+      end;
    end;
 
    // PCName
@@ -5796,13 +5775,14 @@ begin
 
       if CountDownStartTime > 0 then begin
          Diff := SecondsBetween(CurrentTime , CountDownStartTime);
-         if (Diff / 60) > nCountDownMinute then begin
+         if (Diff / 60) >= nCountDownMinute then begin
             CountDownStartTime := 0;
             S2 := 'QSY OK';
             fQsyOK := True;
             FQsyViolation := False;
          end
          else begin
+            FQsyViolation := True;
             Diff := (nCountDownMinute * 60) - Diff;
             Min := Diff div 60;
             Sec := Diff - (Min * 60);
@@ -6109,11 +6089,8 @@ begin
          end;
       end;
    end;
-   // aQSO.Free;
-   i := Grid.TopRow;
-   MyContest.Renew;
-   Grid.TopRow := i;
-   GridRefreshScreen();
+
+   ScrollGrid();
    Log.Saved := False;
 end;
 
@@ -6247,6 +6224,10 @@ begin
 
       // Voice初期化
       FVoiceForm.Init();
+
+      // QSY Violation
+      RenewScore();
+
    finally
       f.Release();
 
@@ -6539,11 +6520,8 @@ begin
          end;
       end;
    end;
-   // aQSO.Free;
-   i := Grid.TopRow;
-   MyContest.Renew;
-   Grid.TopRow := i;
-   GridRefreshScreen();
+
+   ScrollGrid();
    Log.Saved := False;
 end;
 
@@ -6583,11 +6561,8 @@ begin
          end;
       end;
    end;
-   // aQSO.Free;
-   i := Grid.TopRow;
-   MyContest.Renew;
-   Grid.TopRow := i;
-   GridRefreshScreen();
+
+   ScrollGrid();
    Log.Saved := False;
 end;
 
@@ -6790,10 +6765,7 @@ begin
       end;
    end;
 
-   i := Grid.TopRow;
-   MyContest.Renew;
-   Grid.TopRow := i;
-   GridRefreshScreen();
+   ScrollGrid();
    Log.Saved := False;
 end;
 
@@ -6838,8 +6810,7 @@ begin
 
    if i > 0 then begin
       Log.SortByTime;
-      MyContest.Renew;
-      GridRefreshScreen();
+      RenewScore();
       FileSave(Self);
    end;
 
@@ -6898,10 +6869,7 @@ begin
       end;
    end;
 
-   i := Grid.TopRow;
-   MyContest.Renew;
-   Grid.TopRow := i;
-   GridRefreshScreen();
+   ScrollGrid();
    Log.Saved := False;
 end;
 
@@ -7387,10 +7355,7 @@ begin
       // Sentは各コンテストで設定された値
       dmZlogGlobal.Settings._sentstr := MyContest.SentStr;
 
-      MyContest.Renew;
-      GridRefreshScreen();
-      ReEvaluateCountDownTimer;
-      ReEvaluateQSYCount;
+      RenewScore();
 
       // Issues #148 [CW]ボタンは常に表示にする
 //      if menu.ModeGroupIndex = 0 then begin
@@ -11500,6 +11465,24 @@ begin
       aQSO.Serial := SerialArrayTX[aQSO.TX];
       DispSerialNumber(aQSO.Band);
    end;
+end;
+
+procedure TMainForm.RenewScore();
+begin
+   MyContest.Renew;
+   GridRefreshScreen();
+   ReEvaluateCountDownTimer;
+   ReEvaluateQSYCount;
+end;
+
+procedure TMainForm.ScrollGrid();
+var
+   i: Integer;
+begin
+   i := Grid.TopRow;
+   MyContest.Renew;
+   Grid.TopRow := i;
+   GridRefreshScreen();
 end;
 
 end.

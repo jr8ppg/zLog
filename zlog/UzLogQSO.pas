@@ -2557,9 +2557,14 @@ begin
          if (vQSO <> nil) and (vQSO.TX = aQSO.TX) and (vQSO.Band <> aQSO.Band) then begin
             // ê›íËílà»ì‡ÇÃQSYÇ»ÇÁviolation
             Diff := SecondsBetween(aQSO.Time, vQSO.Time);
-            if (Diff / 60) <= dmZLogGlobal.Settings._countdownminute then begin
+            if (Diff / 60) < dmZLogGlobal.Settings._countdownminute then begin
                fQsyViolation := True;
             end;
+
+            vQSO := aQSO;
+         end
+         else if vQSO = nil then begin
+            vQSO := aQSO;
          end;
       end;
 
@@ -2573,8 +2578,6 @@ begin
             fQsyViolation := True;
          end;
       end;
-
-      vQSO := aQSO;
 
       aQSO.QsyViolation := fQsyViolation;
       {$ENDIF}
