@@ -5114,12 +5114,22 @@ begin
    i := FindPrevQSO();
    if (i > 0) and (Log.QsoList[i].Band <> band_bakup) then begin
       CurrentQSO.QsyViolation := FQsyViolation;
-      CountDownStartTime := CurrentTime; // Now;
+      if FQsyViolation = False then begin
+         CountDownStartTime := CurrentTime; // Now;
+      end;
    end
    else begin
-      CurrentQSO.QsyViolation := False;
       if i = -1 then begin
          CountDownStartTime := CurrentTime; // Now;
+         CurrentQSO.QsyViolation := False;
+      end
+      else begin
+         if FQsyViolation = True then begin
+            CurrentQSO.QsyViolation := Log.QsoList[i].QsyViolation;
+         end
+         else begin
+            CurrentQSO.QsyViolation := False;
+         end;
       end;
    end;
 

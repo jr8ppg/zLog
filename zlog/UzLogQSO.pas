@@ -2559,12 +2559,25 @@ begin
             Diff := SecondsBetween(aQSO.Time, vQSO.Time);
             if (Diff / 60) < dmZLogGlobal.Settings._countdownminute then begin
                fQsyViolation := True;
+            end
+            else begin
+               vQSO := aQSO;
             end;
-
-            vQSO := aQSO;
          end
-         else if vQSO = nil then begin
-            vQSO := aQSO;
+         else begin
+            if vQSO = nil then begin
+               vQSO := aQSO;
+               fQsyViolation := False;
+            end
+            else begin
+               Diff := SecondsBetween(aQSO.Time, vQSO.Time);
+               if (Diff / 60) < dmZLogGlobal.Settings._countdownminute then begin
+                  fQsyViolation := vQSO.QsyViolation;
+               end
+               else begin
+                  fQsyViolation := False;
+               end;
+            end;
          end;
       end;
 
