@@ -6153,7 +6153,7 @@ end;
 
 procedure TMainForm.TimeEdit1DblClick(Sender: TObject);
 begin
-   if TEdit(Sender).Name = 'TimeEdit' then begin
+   if (TEdit(Sender).Name = 'TimeEdit1') or (TEdit(Sender).Name = 'TimeEdit2') then begin
       TimeEdit.Visible := False;
       DateEdit.Visible := True;
       // TimeLabel.Caption := 'date';
