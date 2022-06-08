@@ -2445,6 +2445,11 @@ begin
    str := CoreCall(aQSO.CallSign);
 
    for i := 1 to TotalQSO do begin
+      // –³ŒøQSO‚Íœ‚­
+      if FQsoList[i].Invalid then begin
+         Continue;
+      end;
+
       if (aQSO.FBand = FQsoList[i].Band) and (str = CoreCall(FQsoList[i].CallSign)) then begin
          if Not(FAcceptDifferentMode) then begin
             x := i;
@@ -2475,6 +2480,11 @@ begin
    str := CoreCall(aQSO.CallSign);
 
    for i := 1 to TotalQSO do begin
+      // –³ŒøQSO‚Íœ‚­
+      if FQsoList[i].Invalid then begin
+         Continue;
+      end;
+
       // “¯ˆêQSO‚Íœ‚­
       if FQsoList[i].SameQSOID(aQSO) = True then begin
          Continue;
@@ -2520,6 +2530,7 @@ begin
       aQSO := FQsoList[i];
       core := CoreCall(aQSO.CallSign);
 
+      // –³ŒøQSO‚Íœ‚­
       if aQSO.Invalid then begin
          Continue;
       end;
