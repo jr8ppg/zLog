@@ -475,7 +475,7 @@ object MainForm: TMainForm
         TabOrder = 0
         object DateEdit2: TOvrEdit
           Left = 5
-          Top = 5
+          Top = 27
           Width = 57
           Height = 20
           TabStop = False
