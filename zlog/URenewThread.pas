@@ -72,7 +72,9 @@ begin
          Log.IsDupe(aQSO); // called to set log.differentmodepointer
       end;
 
-      Main.MyContest.MultiForm.AddNoUpdate(aQSO);
+      if aQSO.Invalid = False then begin
+         Main.MyContest.MultiForm.AddNoUpdate(aQSO);
+      end;
       Main.MyContest.ScoreForm.AddNoUpdate(aQSO);
    end;
 

@@ -2349,7 +2349,9 @@ begin
          Log.IsDupe(aQSO); // called to set log.differentmodepointer
       end;
 
-      MultiForm.AddNoUpdate(aQSO);
+      if aQSO.Invalid = False then begin
+         MultiForm.AddNoUpdate(aQSO);
+      end;
       ScoreForm.AddNoUpdate(aQSO);
    end;
 
@@ -6205,9 +6207,6 @@ begin
       UpdateQsoEditPanel(rig);
       LastFocus := CallsignEdit;
       ShowCurrentQSO();
-
-      MyContest.ScoreForm.UpdateData();
-      MyContest.MultiForm.UpdateData();
 
       FCheckCall2.ResetListBox();
       FCheckMulti.ResetListBox();
