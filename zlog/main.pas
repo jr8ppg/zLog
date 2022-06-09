@@ -4249,6 +4249,8 @@ begin
    Grid.Refresh();
 
    EditPanel1R.Font.Size := font_size;
+   CallsignEdit1.Font.Size := font_size;
+   NumberEdit1.Font.Size := font_size;
    DateEdit1.Height := h + 6;
    TimeEdit1.Height := h + 6;
    CallsignEdit1.Height := h + 6;
