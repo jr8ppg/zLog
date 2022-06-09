@@ -582,7 +582,6 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'None'
           TabOrder = 0
-          OnClick = radioQsyAssistClick
         end
         object radioPseQsl: TRadioButton
           Tag = 1
@@ -592,7 +591,6 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'PSE QSL'
           TabOrder = 1
-          OnClick = radioQsyAssistClick
         end
         object radioNoQsl: TRadioButton
           Tag = 2
@@ -602,7 +600,6 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'NO QSL'
           TabOrder = 2
-          OnClick = radioQsyAssistClick
         end
       end
     end

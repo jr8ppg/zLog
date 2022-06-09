@@ -5038,6 +5038,13 @@ begin
       Exit;
    end;
 
+   // 初期値セット
+   CurrentQSO.Points := 0;
+   CurrentQSO.NewMulti1 := False;
+   CurrentQSO.NewMulti2 := False;
+   CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
+   CurrentQSO.Invalid := False;
+
    // DUPEチェック
    _dupe := Log.IsDupe(CurrentQSO);
 
@@ -5053,13 +5060,9 @@ begin
          end
          else begin // DUPEをallow
             CurrentQSO.Dupe := True;
-            CurrentQSO.Points := 0;
-            CurrentQSO.NewMulti1 := False;
-            CurrentQSO.NewMulti2 := False;
             CurrentQSO.Multi1 := '';
             CurrentQSO.Multi2 := '';
             CurrentQSO.Reserve2 := $00;
-            CurrentQSO.Invalid := False;
          end;
       end
       else begin  // UNIQUE!
@@ -5077,13 +5080,9 @@ begin
          CurrentQSO.Dupe := True;
       end;
       CurrentQSO.Forced := True;
-      CurrentQSO.Points := 0;
-      CurrentQSO.NewMulti1 := False;
-      CurrentQSO.NewMulti2 := False;
       CurrentQSO.Multi1 := '';
       CurrentQSO.Multi2 := '';
       CurrentQSO.Reserve2 := $00;
-      CurrentQSO.Invalid := False;
    end;
 
    // ここからがLoggingメイン処理
@@ -5220,9 +5219,6 @@ begin
    CurrentQSO.NrRcvd := '';
    CurrentQSO.Memo := '';
 
-   CurrentQSO.NewMulti1 := False;
-   CurrentQSO.NewMulti2 := False;
-
    CurrentQSO.Dupe := False;
    // CurrentQSO.CQ := False;
 
@@ -5236,8 +5232,6 @@ begin
    else begin
       CurrentQSO.RSTRcvd := 59;
    end;
-   CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
-   CurrentQSO.Invalid := False;
 
    TimeEdit.Text := CurrentQSO.TimeStr;
    DateEdit.Text := CurrentQSO.DateStr;
