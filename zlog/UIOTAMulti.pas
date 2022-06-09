@@ -320,6 +320,10 @@ var
    M: TMode;
 begin
    B := Main.CurrentQSO.Band;
+   if B = bUnknown then begin
+      Exit;
+   end;
+
    M := Main.CurrentQSO.Mode;
 
    for i := 0 to IslandList.List.Count - 1 do begin

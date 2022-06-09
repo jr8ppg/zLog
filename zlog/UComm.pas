@@ -372,23 +372,15 @@ end;
 procedure TCommForm.PreProcessSpotFromZLink(S : string; N: Integer);
 var
    Sp : TSpot;
-   B : TBand;
 begin
    Sp := TSpot.Create;
    if Sp.Analyze(S) = True then begin
-      B := Sp.Band; // 1.9c modified to filter out unrelevant bands
-      if MainForm.BandMenu.Items[ord(B)].Visible and
-         MainForm.BandMenu.Items[ord(B)].Enabled then begin
 
-         // データ発生源はZ-Server
-         Sp.SpotSource := ssClusterFromZServer;
-         Sp.SpotGroup := N;
+      // データ発生源はZ-Server
+      Sp.SpotSource := ssClusterFromZServer;
+      Sp.SpotGroup := N;
 
-         ProcessSpot(Sp);
-      end
-      else begin
-         Sp.Free;
-      end;
+      ProcessSpot(Sp);
    end
    else begin
       Sp.Free;
@@ -402,85 +394,106 @@ var
    dupe, _deleted : boolean;
    Expire : double;
 begin
-   Lock();
    try
-      dupe := false;
-      _deleted := false;
+      Lock();
+      try
+         dupe := false;
+         _deleted := false;
 
-      Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
+         Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
+
+         ListBox.Items.BeginUpdate();
+         for i := FSpotList.Count - 1 downto 0 do begin
+            S := FSpotList[i];
+            if Now - S.Time > Expire then begin
+               FSpotList.Delete(i);
+               ListBox.Items.Delete(i);
+               _deleted := True;
+            end;
+
+            if (S.Call = Sp.Call) and (S.FreqHz = Sp.FreqHz) then begin
+               dupe := True;
+               break;
+            end;
+         end;
+         ListBox.Items.EndUpdate();
+
+         if _deleted then begin
+   //         RenewListBox;
+         end;
+
+         // このコンテストで使用しないバンドは除く
+         if (MainForm.BandMenu.Items[ord(Sp.Band)].Visible = False) or
+            (MainForm.BandMenu.Items[ord(Sp.Band)].Enabled = False) then begin
+            Sp.Free();
+            Exit;
+         end;
+
+         // 使わないBandScopeは除く
+         if dmZLogGlobal.Settings._usebandscope[Sp.Band] = False then begin
+            Sp.Free();
+            Exit;
+         end;
+
+         // Spot上限を超えたか？
+         if FSpotList.Count > SPOTMAX then begin
+            Sp.Free();
+            Exit;
+         end;
+
+         if dupe then begin
+            Sp.Free();
+            Exit;
+         end;
+
+         // JAのみ？
+         if dmZLogGlobal.Settings._bandscope_show_only_domestic = True then begin
+            if IsDomestic(Sp.Call) = False then begin
+               Sp.Free();
+               Exit;
+            end;
+         end;
+
+         // 周波数よりモードを決める
+         // この時点でmOtherならBAND PLAN外と見なして良い
+         Sp.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(Sp.FreqHz);
+
+         // BAND PLAN内？
+         if dmZLogGlobal.Settings._bandscope_show_only_in_bandplan = True then begin
+            if dmZLogGlobal.BandPlan.IsInBand(Sp.Band, Sp.Mode, Sp.FreqHz) = False then begin
+               Sp.Free();
+               Exit;
+            end;
+         end;
+
+         // 交信済みチェック
+         SpotCheckWorked(Sp);
+
+         // Spotリストへ追加
+         FSpotList.Add(Sp);
+      finally
+         Unlock();
+      end;
+
+      if checkNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
+      end
+      else begin
+         MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
+      end;
 
       ListBox.Items.BeginUpdate();
-      for i := FSpotList.Count - 1 downto 0 do begin
-         S := FSpotList[i];
-         if Now - S.Time > Expire then begin
-            FSpotList.Delete(i);
-            ListBox.Items.Delete(i);
-            _deleted := True;
-         end;
-
-         if (S.Call = Sp.Call) and (S.FreqHz = Sp.FreqHz) then begin
-            dupe := True;
-            break;
-         end;
-      end;
+      ListBox.AddItem(Sp.ClusterSummary, Sp);
       ListBox.Items.EndUpdate();
+      ListBox.ShowLast();
 
-      if _deleted then begin
-//         RenewListBox;
+      // BandScopeに登録
+      MainForm.BandScopeAddClusterSpot(Sp);
+   except
+      on E: Exception do begin
+         dmZLogGlobal.WriteErrorLog(E.Message);
+         dmZLogGlobal.WriteErrorLog(E.StackTrace);
       end;
-
-      if FSpotList.Count > SPOTMAX then begin
-         Sp.Free();
-         exit;
-      end;
-
-      if dupe then begin
-         Sp.Free();
-         exit;
-      end;
-
-      // JAのみ？
-      if dmZLogGlobal.Settings._bandscope_show_only_domestic = True then begin
-         if IsDomestic(Sp.Call) = False then begin
-            Sp.Free();
-            Exit;
-         end;
-      end;
-
-      // 周波数よりモードを決める
-      // この時点でmOtherならBAND PLAN外と見なして良い
-      Sp.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(Sp.FreqHz);
-
-      // BAND PLAN内？
-      if dmZLogGlobal.Settings._bandscope_show_only_in_bandplan = True then begin
-         if dmZLogGlobal.BandPlan.IsInBand(Sp.Band, Sp.Mode, Sp.FreqHz) = False then begin
-            Sp.Free();
-            Exit;
-         end;
-      end;
-
-      // 交信済みチェック
-      SpotCheckWorked(Sp);
-
-      // Spotリストへ追加
-      FSpotList.Add(Sp);
-   finally
-      Unlock();
    end;
-
-   if checkNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
-   end
-   else begin
-      MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
-   end;
-
-   ListBox.Items.BeginUpdate();
-   ListBox.AddItem(Sp.ClusterSummary, Sp);
-   ListBox.Items.EndUpdate();
-   ListBox.ShowLast();
-
-   // BandScopeに登録
-   MainForm.BandScopeAddClusterSpot(Sp);
 end;
 
 procedure TCommForm.TransmitSpot(S : string); // local or via network
@@ -604,23 +617,31 @@ end;
 
 procedure TCommForm.ConnectButtonClick(Sender: TObject);
 begin
-   Edit.SetFocus;
+   try
+      Edit.SetFocus;
 
-   if dmZlogGlobal.Settings._clusterport = 0 then begin
-      MainForm.ZLinkForm.PushRemoteConnect;
-      exit;
-   end;
+      if dmZlogGlobal.Settings._clusterport = 0 then begin
+         MainForm.ZLinkForm.PushRemoteConnect;
+         exit;
+      end;
 
-   if Telnet.IsConnected then begin
-      ConnectButton.Caption := 'Disconnecting...';
-      FDisconnectClicked := True;
-      Telnet.Close;
-   end
-   else begin
-      Telnet.Connect;
-      ConnectButton.Caption := 'Connecting...';
-      FDisconnectClicked := False;
-      Timer1.Enabled := True;
+      if Telnet.IsConnected then begin
+         ConnectButton.Caption := 'Disconnecting...';
+         FDisconnectClicked := True;
+         Telnet.Close;
+      end
+      else begin
+         Telnet.Connect;
+         ConnectButton.Caption := 'Connecting...';
+         FDisconnectClicked := False;
+         Timer1.Enabled := True;
+      end;
+   except
+      on E: Exception do begin
+         WriteConsole(E.Message);
+         Timer1.Enabled := False;
+         checkAutoReconnect.Checked := False;
+      end;
    end;
 end;
 
@@ -765,7 +786,7 @@ begin
 
       S := TListBox(Control).Items[Index];
       SP := TSpot(TListBox(Control).Items.Objects[Index]);
-      if SP.NewMulti then begin
+      if SP.IsNewMulti() then begin
          if odSelected in State then begin
             Font.Color := clFuchsia;
          end

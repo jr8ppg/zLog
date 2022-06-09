@@ -101,6 +101,7 @@ type
     _power: array[b19..HiBand] of string;
     _usebandscope: array[b19..HiBand] of Boolean;
     _usebandscope_current: Boolean;
+    _usebandscope_newmulti: Boolean;
     _bandscopecolor: array[1..7] of TColorSetting;
     _bandscope_freshness_mode: Integer;
     _bandscope_freshness_icon: Integer;
@@ -126,6 +127,7 @@ type
     _use_winkeyer: Boolean;
     _use_wk_9600: Boolean;
     _use_wk_outp_select: Boolean;
+    _use_wk_ignore_speed_pot: Boolean;
 
     // SO2R Support
     _so2r_type: TSo2rType;       // 0:none 1:zlog 2:SO2R Neo
@@ -133,6 +135,7 @@ type
     _so2r_rx_port: Integer;      // 0:none 1-20:com1-20
     _so2r_use_rig3: Boolean;
     _so2r_cq_rpt_interval_sec: Double;
+    _so2r_rigsw_after_delay: Integer;
     _so2r_cq_msg_bank: Integer;     // 0:Bank-A 1:Bank-B
     _so2r_cq_msg_number: Integer;   // 1-12
 
@@ -192,6 +195,9 @@ type
 
     _super_check_columns: Integer;
     _super_check2_columns: Integer;
+
+    // QSL Default
+    _qsl_default: TQslState;
 
     // Anti Zeroin
     FUseAntiZeroin: Boolean;
@@ -259,6 +265,9 @@ type
     // JARL E-LOG
     FELogSeniorJuniorCategory: string;
     FELogNewComerCategory: string;
+
+    // Guard Time after RIG Switch
+    FRigSwitchGuardTime: Integer;
   end;
 
 var
@@ -270,8 +279,9 @@ var
 
 var
   SerialContestType : integer;  // 0 if no serial # or SER_ALL, SER_BAND
-  SerialArray : array [b19..HiBand] of integer;  // initialized in TContest.Create;
-  SerialArrayTX : array[0..64] of integer;
+  SerialNumber: Integer;
+  SerialArrayBand : array[b19..HiBand] of Integer;  // initialized in TContest.Create;
+  SerialArrayTX : array[0..64] of Integer;
 
 var
   GLOBALSERIAL : integer = 0;
@@ -283,6 +293,7 @@ type
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private 宣言 }
+    FErrorLogFileName: string;
     FBandPlan: TBandPlan;
     FOpList: TOperatorInfoList;
 
@@ -396,6 +407,8 @@ public
     property MyITUZone: string read FMyITUZone;
     property BandPlan: TBandPlan read FBandPlan;
     property Target: TContestTarget read FTarget;
+
+    procedure WriteErrorLog(msg: string);
   end;
 
 function Log(): TLog;
@@ -453,10 +466,13 @@ function LD_ond(str1, str2: string): Integer;
 function IsDomestic(strCallsign: string): Boolean;
 function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
 
-procedure SetQsyViolation(aQSO: TQSO);
-procedure ResetQsyViolation(aQSO: TQSO);
+//procedure SetQsyViolation(aQSO: TQSO);
+//procedure ResetQsyViolation(aQSO: TQSO);
 procedure SetDupeQso(aQSO: TQSO);
 procedure ResetDupeQso(aQSO: TQSO);
+
+function TextToBand(text: string): TBand;
+function TextToMode(text: string): TMode;
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -503,6 +519,11 @@ begin
 
    FTarget := TContestTarget.Create();
    FTarget.LoadFromFile();
+
+   // エラーログファイル名
+   FErrorLogFileName := ExtractFileName(Application.ExeName);
+   FErrorLogFileName := StringReplace(FErrorLogFileName, ExtractFileExt(FErrorLogFileName), '', [rfReplaceAll]);
+   FErrorLogFileName := FErrorLogFileName + '_errorlog.txt'
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
@@ -632,6 +653,9 @@ begin
 
       // Save every N QSOs
       Settings._saveevery := ini.ReadInteger('Preferences', 'SaveEvery', 3);
+
+      // QSL Default
+      Settings._qsl_default := TQslState(ini.ReadInteger('Preferences', 'QslDefault', 0));
 
       //
       // Categories
@@ -823,6 +847,7 @@ begin
       Settings._use_winkeyer := ini.ReadBool('Hardware', 'UseWinKeyer', False);
       Settings._use_wk_9600 := ini.ReadBool('Hardware', 'UseWk9600', False);
       Settings._use_wk_outp_select := ini.ReadBool('Hardware', 'UseWkOutpSelect', True);
+      Settings._use_wk_ignore_speed_pot := ini.ReadBool('Hardware', 'UseWkIgnoreSpeedPot', False);
 
       // SO2R Support
       Settings._so2r_type  := TSo2rType(ini.ReadInteger('SO2R', 'type', 0));
@@ -831,6 +856,7 @@ begin
       Settings._so2r_use_rig3 := ini.ReadBool('SO2R', 'use_rig3', True);
 
       Settings._so2r_cq_rpt_interval_sec := ini.ReadFloat('SO2R', 'cq_repeat_interval_sec', 2.0);
+      Settings._so2r_rigsw_after_delay := ini.ReadInteger('SO2R', 'rigsw_after_delay', 200);
       Settings._so2r_cq_msg_bank    := ini.ReadInteger('SO2R', 'cq_msg_bank', 1);
       if (Settings._so2r_cq_msg_bank < 1) or (Settings._so2r_cq_msg_bank > 2) then begin
          Settings._so2r_cq_msg_bank := 1;
@@ -880,6 +906,9 @@ begin
       Settings.FAntiZeroinXitOn2 := ini.ReadBool('Rig', 'anti_zeroin_xit_on2', False);
       Settings.FAntiZeroinAutoCancel := ini.ReadBool('Rig', 'anti_zeroin_auto_cancel', False);
       Settings.FAntiZeroinStopCq := ini.ReadBool('Rig', 'anti_zeroin_stop_cq_in_spmode', False);
+
+      // Guard Time
+      Settings.FRigSwitchGuardTime     := ini.ReadInteger('Rig', 'RigSwitchGuardTime', 100);
 
       //
       // Path
@@ -998,6 +1027,7 @@ begin
       Settings._usebandscope[b5600] := ini.ReadBool('BandScopeEx', 'BandScope5600MHz', False);
       Settings._usebandscope[b10g]  := ini.ReadBool('BandScopeEx', 'BandScope10GHz', False);
       Settings._usebandscope_current := ini.ReadBool('BandScope', 'Current', False);
+      Settings._usebandscope_newmulti := ini.ReadBool('BandScope', 'NewMulti', False);
       Settings._bandscopecolor[1].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor1', '$000000'), clBlack);
       Settings._bandscopecolor[1].FBackColor := clWhite; //ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor1', '$ffffff'), clWhite);
       Settings._bandscopecolor[1].FBold      := ini.ReadBool('BandScopeEx', 'Bold1', True);
@@ -1042,8 +1072,8 @@ begin
       Settings._bandscope_show_only_domestic := ini.ReadBool('BandScopeOptions', 'show_only_domestic', True);
 
       // Quick Memo
-      Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', MEMO_PSE_QSL);
-      Settings.FQuickMemoText[2] := ini.ReadString('QuickMemo', '#2', MEMO_NO_QSL);
+      Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', '');
+      Settings.FQuickMemoText[2] := ini.ReadString('QuickMemo', '#2', '');
       Settings.FQuickMemoText[3] := ini.ReadString('QuickMemo', '#3', 'NR?');
       Settings.FQuickMemoText[4] := ini.ReadString('QuickMemo', '#4', '');
       Settings.FQuickMemoText[5] := ini.ReadString('QuickMemo', '#5', '');
@@ -1221,6 +1251,9 @@ begin
       // Save every N QSOs
       ini.WriteInteger('Preferences', 'SaveEvery', Settings._saveevery);
 
+      // QSL Default
+      ini.WriteInteger('Preferences', 'QslDefault', Integer(Settings._qsl_default));
+
       //
       // Categories
       //
@@ -1389,6 +1422,7 @@ begin
       ini.WriteBool('Hardware', 'UseWinKeyer', Settings._use_winkeyer);
       ini.WriteBool('Hardware', 'UseWk9600', Settings._use_wk_9600);
       ini.WriteBool('Hardware', 'UseWkOutpSelect', Settings._use_wk_outp_select);
+      ini.WriteBool('Hardware', 'UseWkIgnoreSpeedPot', Settings._use_wk_ignore_speed_pot);
 
       // SO2R Support
       ini.WriteInteger('SO2R', 'type', Integer(Settings._so2r_type));
@@ -1397,6 +1431,7 @@ begin
       ini.WriteBool('SO2R', 'use_rig3', Settings._so2r_use_rig3);
 
       ini.WriteFloat('SO2R', 'cq_repeat_interval_sec', Settings._so2r_cq_rpt_interval_sec);
+      ini.WriteInteger('SO2R', 'rigsw_after_delay', Settings._so2r_rigsw_after_delay);
       ini.WriteInteger('SO2R', 'cq_msg_bank', Settings._so2r_cq_msg_bank);
       ini.WriteInteger('SO2R', 'cq_msg_number', Settings._so2r_cq_msg_number);
 
@@ -1440,6 +1475,9 @@ begin
       ini.WriteBool('Rig', 'anti_zeroin_xit_on2', Settings.FAntiZeroinXitOn2);
       ini.WriteBool('Rig', 'anti_zeroin_auto_cancel', Settings.FAntiZeroinAutoCancel);
       ini.WriteBool('Rig', 'anti_zeroin_stop_cq_in_spmode', Settings.FAntiZeroinStopCq);
+
+      // Guard Time
+      ini.WriteInteger('Rig', 'RigSwitchGuardTime', Settings.FRigSwitchGuardTime);
 
       //
       // Path
@@ -1540,6 +1578,7 @@ begin
       ini.WriteBool('BandScopeEx', 'BandScope5600MHz', Settings._usebandscope[b5600]);
       ini.WriteBool('BandScopeEx', 'BandScope10GHz', Settings._usebandscope[b10g]);
       ini.WriteBool('BandScope', 'Current', Settings._usebandscope_current);
+      ini.WriteBool('BandScope', 'NewMulti', Settings._usebandscope_newmulti);
       ini.WriteString('BandScopeEx', 'ForeColor1', ZColorToString(Settings._bandscopecolor[1].FForeColor));
       ini.WriteString('BandScopeEx', 'BackColor1', ZColorToString(Settings._bandscopecolor[1].FBackColor));
       ini.WriteBool('BandScopeEx', 'Bold1', Settings._bandscopecolor[1].FBold);
@@ -1684,6 +1723,7 @@ begin
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
    dmZLogKeyer.UseWk9600 := Settings._use_wk_9600;
    dmZLogKeyer.UseWkOutpSelect := Settings._use_wk_outp_select;
+   dmZLogKeyer.UseWkIgnoreSpeedPot := Settings._use_wk_ignore_speed_pot;
    dmZLogKeyer.UseWkSo2rNeo := (Settings._so2r_type = so2rNeo);
    dmZLogKeyer.So2rRxSelectPort := TKeyingPort(Settings._so2r_rx_port);
    dmZLogKeyer.So2rTxSelectPort := TKeyingPort(Settings._so2r_tx_port);
@@ -1713,13 +1753,7 @@ begin
 
    dmZLogKeyer.WPM := Settings.CW._speed;
    dmZLogKeyer.SetWeight(Settings.CW._weight);
-   dmZLogKeyer.CQLoopMax := Settings.CW._cqmax;
-   dmZLogKeyer.CQRepeatIntervalSec := Settings.CW._cqrepeat;
-   dmZLogKeyer.UseRandomRepeat := Settings.CW._cq_random_repeat;
    dmZLogKeyer.SideTonePitch := Settings.CW._tonepitch;
-
-   dmZLogKeyer.RandCQStr[1] := SetStr(Settings.CW.AdditionalCQMessages[2], CurrentQSO);
-   dmZLogKeyer.RandCQStr[2] := SetStr(Settings.CW.AdditionalCQMessages[3], CurrentQSO);
 
    dmZLogKeyer.SpaceFactor := Settings.CW._spacefactor;
    dmZLogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
@@ -3151,7 +3185,7 @@ end;
 
 function ZStrToBool(strValue: string): Boolean;
 begin
-   if strValue = '0' then begin
+   if (strValue = '0') or (strValue = '') then begin
       Result := False;
    end
    else begin
@@ -3293,23 +3327,59 @@ procedure SetDupeQso(aQSO: TQSO);
 begin
    aQSO.Points := 0;
    aQSO.Dupe := True;
-
-   if Pos(MEMO_DUPE, aQSO.Memo) > 0 then begin
-      Exit;
-   end;
-
-   if aQSO.Memo <> '' then begin
-      aQSO.Memo := MEMO_DUPE + ' ' + aQSO.Memo;
-   end
-   else begin
-      aQSO.Memo := MEMO_DUPE;
-   end;
 end;
 
 procedure ResetDupeQso(aQSO: TQSO);
 begin
    aQSO.Dupe := False;
    aQSO.Memo := Trim(StringReplace(aQSO.Memo, MEMO_DUPE, '', [rfReplaceAll]));
+end;
+
+function TextToBand(text: string): TBand;
+var
+   b: TBand;
+begin
+   for b := Low(MHzString) to High(MHzString) do begin
+      if MHzString[b] = text then begin
+         Result := b;
+         Exit;
+      end;
+   end;
+   Result := bUnknown;
+end;
+
+function TextToMode(text: string): TMode;
+var
+   m: TMode;
+begin
+   for m := Low(ModeString) to High(ModeString) do begin
+      if ModeString[m] = text then begin
+         Result := m;
+         Exit;
+      end;
+   end;
+   Result := mOther;
+end;
+
+procedure TdmZLogGlobal.WriteErrorLog(msg: string);
+var
+   str: string;
+   txt: TextFile;
+begin
+   AssignFile(txt, FErrorLogFileName);
+   if FileExists(FErrorLogFileName) then begin
+      Reset(txt);
+   end
+   else begin
+      Rewrite(txt);
+   end;
+
+   str := FormatDateTime( 'yyyy/mm/dd hh:nn:ss ', Now ) + msg;
+
+   Append( txt );
+   WriteLn( txt, str );
+   Flush( txt );
+   CloseFile( txt );
 end;
 
 end.

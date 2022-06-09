@@ -17,6 +17,8 @@ type
     Panel1: TPanel;
     Grid: TStringGrid;
     ImageList1: TImageList;
+    Panel2: TPanel;
+    checkSyncVfo: TCheckBox;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure mnDeleteClick(Sender: TObject);
     procedure Deleteallworkedstations1Click(Sender: TObject);
@@ -30,15 +32,15 @@ type
     procedure FormShow(Sender: TObject);
     procedure GridMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FormResize(Sender: TObject);
+    procedure checkSyncVfoClick(Sender: TObject);
   private
     { Private 宣言 }
     FProcessing: Boolean;
-//    FMinFreq: Integer;
-//    FMaxFreq: Integer; // in Hz
 
     FCurrentBandOnly: Boolean;
+    FNewMultiOnly: Boolean;
     FCurrBand : TBand;
-//    FCurrMode : TMode;
+    FSelectFlag: Boolean;
 
     FBSList: TBSList;
     FBSLock: TRTLCriticalSection;
@@ -61,7 +63,9 @@ type
     function CalcElapsedTime(T1, T2: TDateTime): Integer;
     procedure SetCurrentBand(b: TBand);
     procedure SetCurrentBandOnly(v: Boolean);
+    procedure SetNewMultiOnly(v: Boolean);
     procedure SetCaption();
+    procedure SetColor();
     procedure Lock();
     procedure Unlock();
   public
@@ -82,6 +86,7 @@ type
     property IconType: Integer read FIconType write SetIconType;
     property CurrentBand: TBand read FCurrBand write SetCurrentBand;
     property CurrentBandOnly: Boolean read FCurrentBandOnly write SetCurrentBandOnly;
+    property NewMultiOnly: Boolean read FNewMultiOnly write SetNewMultiOnly;
   end;
 
   TBandScopeArray = array[b19..b10g] of TBandScope2;
@@ -100,6 +105,8 @@ constructor TBandScope2.Create(AOwner: TComponent; b: TBand);
 begin
    Inherited Create(AOwner);
    FCurrentBandOnly := False;
+   FNewMultiOnly := False;
+   FSelectFlag := False;
    FCurrBand := b;
    SetCaption();
    FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
@@ -201,7 +208,7 @@ procedure TBandScope2.AddClusterSpot(Sp: TSpot);
 var
    D: TBSData;
 begin
-   if FCurrBand <> Sp.Band then begin
+   if (FNewMultiOnly = False) and (FCurrBand <> Sp.Band) then begin
       Exit;
    end;
 
@@ -257,6 +264,11 @@ begin
                FBSList[i] := nil;
                Continue;
             end;
+
+            if (FNewMultiOnly = True) and (BS.IsNewMulti() = False) then begin
+               FBSList[i] := nil;
+               Continue;
+            end;
          end;
 
          Diff := Now - BS.Time;
@@ -283,119 +295,128 @@ var
    MarkCurrent: Boolean;
    Marked: Boolean;
 begin
-   toprow := Grid.TopRow;
-   currow := Grid.Row;
-   markrow := -1;
-
-   // クリーンアップ
-   Cleanup(nil);
-
-   if dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand then begin
-      MarkCurrent := True;
-   end
-   else begin
-      MarkCurrent := False;
-   end;
-
-   R := EstimateNumRows();
-   if R = 0 then begin
-      R := 1;    // Gridは0行にできない
-   end
-   else begin
-      // 周波数マーカー分追加
-      if MarkCurrent = True then begin
-         Inc(R);
-      end;
-   end;
-
-   // 行数再設定
-   Grid.RowCount := R;
-
-   // 先頭行は必ずクリアする
-   Grid.Cells[0, 0] := '';
-   Grid.Objects[0, 0] := nil;
-
-   Marked := False;
-
-   Lock();
    try
-      R := 0;
-      for i := 0 to FBSList.Count - 1 do begin
-         D := FBSList[i];
-         if D.Band <> FCurrBand then begin
-            Continue;
-         end;
+      toprow := Grid.TopRow;
+      currow := Grid.Row;
+      markrow := -1;
 
-         if MarkCurrent and Not(Marked) then begin
-            if D.FreqHz >= CurrentRigFrequency then begin
-               Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
-               Grid.Objects[0, R] := nil;
-               Marked := true;
-               markrow := R;
-               Inc(R);
+      // クリーンアップ
+      Cleanup(nil);
+
+      if (FNewMultiOnly = False) and (dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand) then begin
+         MarkCurrent := True;
+      end
+      else begin
+         MarkCurrent := False;
+      end;
+
+      R := EstimateNumRows();
+      if R = 0 then begin
+         R := 1;    // Gridは0行にできない
+      end
+      else begin
+         // 周波数マーカー分追加
+         if MarkCurrent = True then begin
+            Inc(R);
+         end;
+      end;
+
+      // 行数再設定
+      Grid.RowCount := R;
+
+      // 先頭行は必ずクリアする
+      Grid.Cells[0, 0] := '';
+      Grid.Objects[0, 0] := nil;
+
+      Marked := False;
+
+      Lock();
+      try
+         R := 0;
+         for i := 0 to FBSList.Count - 1 do begin
+            D := FBSList[i];
+            if (FNewMultiOnly = False) and (FCurrBand <> D.Band) then begin
+               Continue;
+            end;
+
+            if MarkCurrent and Not(Marked) then begin
+               if D.FreqHz >= CurrentRigFrequency then begin
+                  Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
+                  Grid.Objects[0, R] := nil;
+                  Marked := true;
+                  markrow := R;
+                  Inc(R);
+               end;
+            end;
+
+            str := FillRight(D.LabelStr, 20);
+
+            if D.SpotSource <> ssSelf then begin
+               str := str + '+ ';
+            end
+            else begin
+               str := str + '  ';
+            end;
+
+            if D.CQ = True then begin
+               str := str + 'CQ';
+            end
+            else begin
+               str := str + '  ';
+            end;
+
+            Grid.Cells[0, R] := str;
+            Grid.Objects[0, R] := D;
+
+   //         if (Main.CurrentQSO.CQ = false) and ((D.FreqHz - CurrentRigFrequency) <= 100) then begin
+   //            MainForm.AutoInput(D);
+   //         end;
+
+            Inc(R);
+         end;
+      finally
+         Unlock();
+      end;
+
+      if MarkCurrent and Not(Marked) then begin
+         Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
+         Grid.Objects[0, R] := nil;
+         markrow := R;
+      end;
+
+      if checkSyncVfo.Checked = True then begin
+         if markrow = -1 then begin
+            if toprow <= Grid.RowCount - 1 then begin
+               Grid.TopRow := toprow;
+            end
+            else begin
+               Grid.TopRow := 0;
+            end;
+         end
+         else begin
+            if Grid.TopRow > markrow then begin
+               Grid.TopRow := markrow;
+            end;
+            if (Grid.TopRow + Grid.VisibleRowCount - 1) < markrow then begin
+               i := markrow - Grid.VisibleRowCount + 1;
+               if i >= 0 then begin
+                  Grid.TopRow := i;
+               end;
             end;
          end;
 
-         str := FillRight(D.LabelStr, 20);
-
-         if D.SpotSource <> ssSelf then begin
-            str := str + '+ ';
+         if currow <= Grid.RowCount - 1 then begin
+            Grid.Row := currow;
          end
          else begin
-            str := str + '  ';
-         end;
-
-         if D.CQ = True then begin
-            str := str + 'CQ';
-         end
-         else begin
-            str := str + '  ';
-         end;
-
-         Grid.Cells[0, R] := str;
-         Grid.Objects[0, R] := D;
-
-//         if (Main.CurrentQSO.CQ = false) and ((D.FreqHz - CurrentRigFrequency) <= 100) then begin
-//            MainForm.AutoInput(D);
-//         end;
-
-         Inc(R);
-      end;
-   finally
-      Unlock();
-   end;
-
-   if MarkCurrent and Not(Marked) then begin
-      Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
-      Grid.Objects[0, R] := nil;
-      markrow := R;
-   end;
-
-   if markrow = -1 then begin
-      if toprow <= Grid.RowCount - 1 then begin
-         Grid.TopRow := toprow;
-      end
-      else begin
-         Grid.TopRow := 0;
-      end;
-   end
-   else begin
-      if Grid.TopRow > markrow then begin
-         Grid.TopRow := markrow;
-      end;
-      if (Grid.TopRow + Grid.VisibleRowCount - 1) < markrow then begin
-         i := markrow - Grid.VisibleRowCount + 1;
-         if i >= 0 then begin
-            Grid.TopRow := i;
+            Grid.Row := 0;
          end;
       end;
-   end;
-
-   if currow <= Grid.RowCount - 1 then begin
-      Grid.Row := currow;
-   end
-   else begin
-      Grid.Row := 0;
+   except
+      on E: Exception do begin
+         dmZLogGlobal.WriteErrorLog(E.Message);
+         dmZLogGlobal.WriteErrorLog(E.StackTrace);
+      end;
    end;
 end;
 
@@ -410,7 +431,7 @@ begin
       j := 0;
       for i := 0 to FBSList.Count - 1 do begin
          D := FBSList[i];
-         if D.Band <> FCurrBand then begin
+         if (FNewMultiOnly = False) and (FCurrBand <> D.Band) then begin
             Continue;
          end;
 
@@ -463,6 +484,10 @@ var
    i: Integer;
    B: TBSData;
 begin
+   if dmZLogGlobal.BandPlan.FreqToBand(Hz) = bUnknown then begin
+      Exit;
+   end;
+
    if (CurrentRigFrequency div 100) = (Hz div 100) then begin
       Exit;
    end;
@@ -583,6 +608,7 @@ var
    x, y: Integer;
    rc: TRect;
    sec: Integer;
+   fNewMulti: Boolean;
 
    function AdjustDark(c: TColor): TColor;
    var
@@ -643,15 +669,16 @@ begin
             D.Bold      := dmZLogGlobal.Settings._bandscopecolor[1].FBold;
          end
          else begin  // 未交信
-            if D.NewMulti = True then begin         // マルチ未ゲット
+            fNewMulti := D.IsNewMulti();
+            if fNewMulti = True then begin         // マルチ未ゲット
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[2].FForeColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[2].FBold;
             end
-            else if (D.NewJaMulti = False) and (D.Number <> '') then begin // マルチゲット済み
+            else if (fNewMulti = False) and (D.Number <> '') then begin // マルチゲット済みでナンバー判明
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[3].FForeColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[3].FBold;
             end
-            else if (D.NewMulti = False) then begin // マルチゲット済み
+            else if (fNewMulti = False) and (D.Number = '') then begin // マルチゲット済みでナンバー不明
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[3].FForeColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[3].FBold;
             end
@@ -810,12 +837,8 @@ end;
 
 procedure TBandScope2.SetSelect(fSelect: Boolean);
 begin
-   if fSelect = True then begin
-      Panel1.Color := clBlue;
-   end
-   else begin
-      Panel1.Color := clGray;
-   end;
+   FSelectFlag := fSelect;
+   SetColor();
 end;
 
 procedure TBandScope2.NotifyWorked(aQSO: TQSO);
@@ -828,7 +851,12 @@ begin
       for i := 0 to FBSList.Count - 1 do begin
          D := FBSList[i];
          SpotCheckWorked(D);
+
+         if (FNewMultiOnly = True) and (D.Call = aQSO.Callsign) then begin
+            FBSList[i] := nil;
+         end;
       end;
+      FBSList.Pack();
    finally
       Unlock();
    end;
@@ -911,6 +939,11 @@ begin
    end;
 end;
 
+procedure TBandScope2.checkSyncVfoClick(Sender: TObject);
+begin
+   RewriteBandScope();
+end;
+
 function TBandScope2.CalcElapsedTime(T1, T2: TDateTime): Integer;
 begin
    Result := Trunc(SecondSpan(T2, T1));
@@ -940,13 +973,40 @@ begin
    SetCaption();
 end;
 
+procedure TBandScope2.SetNewMultiOnly(v: Boolean);
+begin
+   FNewMultiOnly := v;
+   SetCaption();
+   SetColor();
+end;
+
 procedure TBandScope2.SetCaption();
 begin
    if FCurrentBandOnly = True then begin
       Caption := '[Current] ' + BandString[FCurrBand];
    end
    else begin
-      Caption := BandString[FCurrBand];
+      if FNewMultiOnly = True then begin
+         Caption := '[New Multi]';
+      end
+      else begin
+         Caption := BandString[FCurrBand];
+      end;
+   end;
+end;
+
+procedure TBandScope2.SetColor();
+begin
+   if FNewMultiOnly = True then begin
+      Panel1.Color := dmZLogGlobal.Settings._bandscopecolor[2].FForeColor;
+   end
+   else begin
+      if FSelectFlag = True then begin
+         Panel1.Color := clBlue;
+      end
+      else begin
+         Panel1.Color := clGray;
+      end;
    end;
 end;
 
@@ -981,9 +1041,15 @@ begin
          if (S.Call = aQSO.Callsign) and (S.Band = aQSO.Band) then begin
             S.NewCty := False;
             S.NewZone := False;
+            S.NewJaMulti := False;
             S.Worked := True;
+
+            if FNewMultiOnly = True then begin
+               FBSList[i] := nil;
+            end;
          end;
       end;
+      FBSList.Pack;
    finally
       Unlock();
    end;

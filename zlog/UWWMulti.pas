@@ -346,6 +346,10 @@ var
    B: TBand;
 begin
    B := Main.CurrentQSO.Band;
+   if B = bUnknown then begin
+      Exit;
+   end;
+
    for i := Grid.TopRow to Grid.TopRow + Grid.VisibleRowCount - 1 do begin
       if (i > Grid.RowCount - 1) then begin
          exit;
@@ -639,7 +643,7 @@ begin
          Sp.NewCty := True;
       end;
 
-      if Sp.NewMulti{Pos('new', temp) > 0} then begin
+      if Sp.IsNewMulti() then begin
          temp := temp + ' at ' + MHzString[aQSO.band]+ 'MHz';
 //         MainForm.CommForm.WriteStatusLine(temp);
          MainForm.WriteStatusLineRed(temp, true);

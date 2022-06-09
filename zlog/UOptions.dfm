@@ -501,7 +501,7 @@ object formOptions: TformOptions
         Width = 204
         Height = 89
         Caption = 'QSY Assist'
-        TabOrder = 8
+        TabOrder = 9
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -566,6 +566,40 @@ object formOptions: TformOptions
           MinValue = 1
           TabOrder = 4
           Value = 10
+        end
+      end
+      object GroupBox13: TGroupBox
+        Left = 17
+        Top = 299
+        Width = 101
+        Height = 89
+        Caption = 'QSL Default'
+        TabOrder = 8
+        object radioQslNone: TRadioButton
+          Left = 15
+          Top = 16
+          Width = 65
+          Height = 17
+          Caption = 'None'
+          TabOrder = 0
+        end
+        object radioPseQsl: TRadioButton
+          Tag = 1
+          Left = 15
+          Top = 39
+          Width = 65
+          Height = 17
+          Caption = 'PSE QSL'
+          TabOrder = 1
+        end
+        object radioNoQsl: TRadioButton
+          Tag = 2
+          Left = 15
+          Top = 62
+          Width = 65
+          Height = 17
+          Caption = 'NO QSL'
+          TabOrder = 2
         end
       end
     end
@@ -2246,7 +2280,7 @@ object formOptions: TformOptions
       object groupWinKeyer: TGroupBox
         Left = 6
         Top = 352
-        Width = 355
+        Width = 423
         Height = 45
         Caption = 'WinKeyer Option'
         TabOrder = 6
@@ -2260,7 +2294,7 @@ object formOptions: TformOptions
           OnClick = checkUseWinKeyerClick
         end
         object checkWk9600: TCheckBox
-          Left = 113
+          Left = 101
           Top = 18
           Width = 89
           Height = 17
@@ -2268,12 +2302,20 @@ object formOptions: TformOptions
           TabOrder = 1
         end
         object checkWkOutportSelect: TCheckBox
-          Left = 217
+          Left = 190
           Top = 18
           Width = 112
           Height = 17
           Caption = 'Use Out port Select'
           TabOrder = 2
+        end
+        object checkWkIgnoreSpeedPot: TCheckBox
+          Left = 312
+          Top = 18
+          Width = 105
+          Height = 17
+          Caption = 'Ignore Speed Pot'
+          TabOrder = 3
         end
       end
     end
@@ -2531,6 +2573,13 @@ object formOptions: TformOptions
             Height = 13
             Caption = 'Message Number'
           end
+          object Label101: TLabel
+            Left = 188
+            Top = 23
+            Width = 71
+            Height = 13
+            Caption = 'After Delay(ms)'
+          end
           object editSo2rCqRptIntervalSec: TEdit
             Left = 127
             Top = 20
@@ -2548,7 +2597,7 @@ object formOptions: TformOptions
             Width = 221
             Height = 23
             BevelOuter = bvNone
-            TabOrder = 1
+            TabOrder = 2
             object radioSo2rCqMsgBankA: TRadioButton
               Left = 12
               Top = 4
@@ -2590,6 +2639,17 @@ object formOptions: TformOptions
                 '11'
                 '12')
             end
+          end
+          object editSo2rRigSwAfterDelay: TEdit
+            Left = 264
+            Top = 20
+            Width = 41
+            Height = 21
+            ImeMode = imDisable
+            MaxLength = 4
+            TabOrder = 1
+            Text = '200'
+            OnKeyPress = CQRepEditKeyPress
           end
         end
       end
@@ -3848,14 +3908,24 @@ object formOptions: TformOptions
           TabOrder = 3
         end
         object checkBsCurrent: TCheckBox
-          Left = 301
-          Top = 102
+          Left = 205
+          Top = 104
           Width = 67
           Height = 17
           Caption = 'Current'
           Checked = True
           State = cbChecked
           TabOrder = 16
+        end
+        object checkBsNewMulti: TCheckBox
+          Left = 301
+          Top = 104
+          Width = 67
+          Height = 17
+          Caption = 'New Multi'
+          Checked = True
+          State = cbChecked
+          TabOrder = 17
         end
       end
       object GroupBox10: TGroupBox

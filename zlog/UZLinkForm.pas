@@ -882,16 +882,22 @@ end;
 
 procedure TZLinkForm.ConnectButtonClick(Sender: TObject);
 begin
-   if (ZSocket.State = wsConnected) then begin
-      DisconnectedByMenu := True;
-      ConnectButton.Caption := 'Disconnecting...';
-      ZSocket.Close;
-   end
-   else begin
-      ConnectButton.Caption := 'Connecting...';
-      ZSocket.Addr := dmZlogGlobal.Settings._zlink_telnet.FHostName;
-      ZSocket.Port := 'telnet';
-      ZSocket.Connect;
+   try
+      if (ZSocket.State = wsConnected) then begin
+         DisconnectedByMenu := True;
+         ConnectButton.Caption := 'Disconnecting...';
+         ZSocket.Close;
+      end
+      else begin
+         ConnectButton.Caption := 'Connecting...';
+         ZSocket.Addr := dmZlogGlobal.Settings._zlink_telnet.FHostName;
+         ZSocket.Port := 'telnet';
+         ZSocket.Connect;
+      end;
+   except
+      on E: Exception do begin
+         Console.WriteString(E.Message + LineBreakCode[Ord(Console.LineBreak)]);
+      end;
    end;
 end;
 

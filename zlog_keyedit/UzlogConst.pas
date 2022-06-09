@@ -12,13 +12,17 @@ type
 
   TContestMode = (cmMix = 0, cmCw, cmPh, cmOther, cmAll);
   TContestCategory = (ccSingleOp = 0, ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx);
-  TSo2rType = (so2rNone = 0, so2rCom, so2rNeo );
+  TSo2rType = (so2rNone = 0, so2rCom, so2rNeo);
+  TQslState = (qsNone = 0, qsPseQsl, qsNoQsl);
 
 const
   HiBand = b10g;
 
 type
   TBandBool = array[b19..HiBand] of boolean;
+
+type
+  TPlayMessageFinishedProc = procedure(Sender: TObject; mode: TMode; fAbort: Boolean) of object;
 
 const
   // SerialContestType
@@ -66,6 +70,7 @@ const
   actEdit = $0E;
   actLock = $AA;
   actUnlock = $BB;
+  actEditOrAdd = $0C;
 
   LineBreakCode : array [0..2] of string
     = (Chr($0d)+Chr($0a), Chr($0d), Chr($0a));
@@ -102,6 +107,9 @@ type
   TQSORateStyle = ( rsOriginal = 0, rsByBand, rsByFreqRange );
   TQSORateStartPosition = ( spFirstQSO = 0, spCurrentTime, spLastQSO );
 
+type
+  TSendRepeatEvent = procedure(Sender: TObject; nLoopCount: Integer) of object;
+
 const
   default_graph_bar_color: array[b19..HiBand] of TColor = (
     $0080FF00, $000000FF, $00FF0000, $00808080,
@@ -117,7 +125,7 @@ const
   );
 
 const
-  default_primary_shortcut: array[0..150] of string = (
+  default_primary_shortcut: array[0..155] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -261,17 +269,22 @@ const
     '',                 // #140 actionSelectRig3
     '',                 // #141 actionSo2rNeoCanRxSel
     '',                 // #142 actionShowInformation
-    '',                 // #143 actionToggleAutoRigSwitch
+    '',                 // #143 actionToggleSo2r2bsiq
     '',                 // #144 actionSo2rNeoToggleAutoRxSelect
     'Shift+V',          // #145 actionToggleTx
-    '',                 // #146 actionToggleCqInvert
+    '',                 // #146 actionToggleSo2rWait
     'Shift+C',          // #147 actionToggleRx
     '',                 // #148 actionMatchRxToTx
     '',                 // #149 actionMatchTxToRx
-    'Shift+D'           // #150 actionToggleRigPair
+    'Shift+D',          // #150 actionToggleRigPair
+    'Ctrl+0',           // #151 actionChangeTxNr0
+    'Ctrl+1',           // #152 actionChangeTxNr1
+    '',                 // #153 actionChangeTxNr2
+    '',                 // #154 actionPseQsl
+    ''                  // #155 actionNoQsl
   );
 
-  default_secondary_shortcut: array[0..150] of string = (
+  default_secondary_shortcut: array[0..155] of string = (
     '',                 // #00
     '',
     '',
@@ -422,7 +435,12 @@ const
     '',                 // #147 actionToggleRx
     '',                 // #148 actionMatchRxToTx
     '',                 // #149 actionMatchTxToRx
-    ''                  // #150 actionToggleRigPair
+    '',                 // #150 actionToggleRigPair
+    '',                 // #151 actionChangeTxNr0
+    '',                 // #152 actionChangeTxNr1
+    '',                 // #153 actionChangeTxNr2
+    '',                 // #154 actionPseQsl
+    ''                  // #155 actionNoQsl
   );
 
 const

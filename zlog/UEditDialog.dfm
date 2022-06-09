@@ -3,17 +3,16 @@ object EditDialog: TEditDialog
   Top = 386
   BorderStyle = bsDialog
   Caption = 'Dialog'
-  ClientHeight = 82
-  ClientWidth = 618
+  ClientHeight = 194
+  ClientWidth = 692
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = True
+  OldCreateOrder = False
   Position = poOwnerFormCenter
-  Scaled = False
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -21,182 +20,316 @@ object EditDialog: TEditDialog
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object OKBtn: TButton
-    Left = 7
-    Top = 52
-    Width = 75
-    Height = 25
-    Caption = 'OK'
-    Default = True
-    TabOrder = 1
-    OnClick = OKBtnClick
+  object GroupBox1: TGroupBox
+    Left = 2
+    Top = 114
+    Width = 205
+    Height = 42
+    Caption = 'QSL Status'
+    TabOrder = 4
+    object radioQslNone: TRadioButton
+      Left = 16
+      Top = 16
+      Width = 45
+      Height = 17
+      Caption = 'None'
+      TabOrder = 0
+    end
+    object radioPseQsl: TRadioButton
+      Left = 67
+      Top = 16
+      Width = 61
+      Height = 17
+      Caption = 'PSE QSL'
+      TabOrder = 1
+    end
+    object radioNoQsl: TRadioButton
+      Left = 137
+      Top = 16
+      Width = 61
+      Height = 17
+      Caption = 'NO QSL'
+      TabOrder = 2
+    end
   end
-  object CancelBtn: TButton
-    Left = 95
-    Top = 52
-    Width = 75
-    Height = 25
-    Cancel = True
-    Caption = 'Cancel'
+  object GroupBox2: TGroupBox
+    Left = 336
+    Top = 66
+    Width = 351
+    Height = 42
+    Caption = 'QSO Flags'
+    TabOrder = 3
+    object checkCQ: TCheckBox
+      Left = 16
+      Top = 16
+      Width = 33
+      Height = 17
+      Caption = 'CQ'
+      TabOrder = 0
+    end
+    object checkDupe: TCheckBox
+      Left = 59
+      Top = 16
+      Width = 46
+      Height = 17
+      Caption = 'DUPE'
+      Enabled = False
+      TabOrder = 1
+    end
+    object checkQsyViolation: TCheckBox
+      Left = 115
+      Top = 16
+      Width = 85
+      Height = 17
+      Caption = 'QSY Violation'
+      Enabled = False
+      TabOrder = 2
+    end
+    object checkForced: TCheckBox
+      Left = 210
+      Top = 16
+      Width = 51
+      Height = 17
+      Caption = 'Forced'
+      Enabled = False
+      TabOrder = 3
+    end
+    object checkInvalid: TCheckBox
+      Left = 275
+      Top = 16
+      Width = 51
+      Height = 17
+      Caption = 'Invalid'
+      TabOrder = 4
+      OnClick = checkInvalidClick
+    end
+  end
+  object GroupBox3: TGroupBox
+    Left = 229
+    Top = 66
+    Width = 101
+    Height = 42
+    Caption = 'Frequency'
     TabOrder = 2
-    OnClick = CancelBtnClick
+    object editFrequency: TEdit
+      Left = 16
+      Top = 14
+      Width = 73
+      Height = 21
+      AutoSize = False
+      MaxLength = 10
+      TabOrder = 0
+    end
   end
-  object Panel1: TPanel
+  object GroupBox4: TGroupBox
+    Left = 2
+    Top = 66
+    Width = 221
+    Height = 42
+    Caption = 'Station'
+    TabOrder = 1
+    DesignSize = (
+      221
+      42)
+    object TxLabel: TLabel
+      Left = 144
+      Top = 17
+      Width = 21
+      Height = 13
+      Caption = 'TX#'
+    end
+    object Label1: TLabel
+      Left = 11
+      Top = 17
+      Width = 42
+      Height = 13
+      Anchors = [akTop, akRight]
+      Caption = 'PCName'
+    end
+    object comboTxNo: TComboBox
+      Left = 171
+      Top = 14
+      Width = 41
+      Height = 21
+      Style = csDropDownList
+      TabOrder = 1
+    end
+    object editPCName: TEdit
+      Left = 64
+      Top = 14
+      Width = 73
+      Height = 21
+      AutoSize = False
+      MaxLength = 10
+      TabOrder = 0
+    end
+  end
+  object Panel2: TPanel
     Left = 0
-    Top = 0
-    Width = 618
-    Height = 41
-    Align = alTop
+    Top = 161
+    Width = 692
+    Height = 33
+    Align = alBottom
     BevelOuter = bvNone
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = #65325#65331' '#12468#12471#12483#12463
-    Font.Style = []
-    ParentFont = False
+    TabOrder = 5
+    DesignSize = (
+      692
+      33)
+    object OKBtn: TButton
+      Left = 531
+      Top = 4
+      Width = 75
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = 'OK'
+      Default = True
+      TabOrder = 0
+      OnClick = OKBtnClick
+    end
+    object CancelBtn: TButton
+      Left = 612
+      Top = 4
+      Width = 75
+      Height = 25
+      Anchors = [akTop, akRight]
+      Cancel = True
+      Caption = 'Cancel'
+      TabOrder = 1
+      OnClick = CancelBtnClick
+    end
+  end
+  object groupQsoData: TGroupBox
+    Left = 2
+    Top = 2
+    Width = 685
+    Height = 57
+    Caption = 'QSO Data'
     TabOrder = 0
     object SerialLabel: TLabel
       Left = 8
-      Top = 0
-      Width = 24
-      Height = 12
+      Top = 14
+      Width = 21
+      Height = 13
       Caption = 'ser#'
     end
     object TimeLabel: TLabel
-      Left = 48
-      Top = 0
-      Width = 24
-      Height = 12
+      Left = 120
+      Top = 14
+      Width = 19
+      Height = 13
       Caption = 'time'
     end
     object rcvdRSTLabel: TLabel
-      Left = 104
-      Top = 0
-      Width = 18
-      Height = 12
+      Left = 271
+      Top = 14
+      Width = 22
+      Height = 13
       Caption = 'RST'
     end
     object CallsignLabel: TLabel
-      Left = 72
-      Top = 0
-      Width = 24
-      Height = 12
+      Left = 188
+      Top = 14
+      Width = 16
+      Height = 13
       Caption = 'call'
     end
     object PointLabel: TLabel
-      Left = 336
-      Top = 0
-      Width = 18
-      Height = 12
+      Left = 474
+      Top = 14
+      Width = 14
+      Height = 13
       Caption = 'pts'
     end
     object BandLabel: TLabel
-      Left = 224
-      Top = 0
+      Left = 372
+      Top = 14
       Width = 24
-      Height = 12
+      Height = 13
       Caption = 'band'
     end
     object NumberLabel: TLabel
-      Left = 176
-      Top = 0
-      Width = 24
-      Height = 12
+      Left = 303
+      Top = 14
+      Width = 21
+      Height = 13
       Caption = 'rcvd'
     end
     object ModeLabel: TLabel
-      Left = 256
-      Top = 0
-      Width = 24
-      Height = 12
+      Left = 414
+      Top = 14
+      Width = 26
+      Height = 13
       Caption = 'mode'
     end
     object PowerLabel: TLabel
-      Left = 480
-      Top = 0
-      Width = 18
-      Height = 12
+      Left = 448
+      Top = 14
+      Width = 17
+      Height = 13
       Caption = 'pwr'
-      Visible = False
     end
     object OpLabel: TLabel
-      Left = 416
-      Top = 0
+      Left = 495
+      Top = 14
       Width = 12
-      Height = 12
+      Height = 13
       Caption = 'op'
     end
     object MemoLabel: TLabel
-      Left = 368
-      Top = 0
-      Width = 24
-      Height = 12
+      Left = 561
+      Top = 14
+      Width = 28
+      Height = 13
       Caption = 'memo'
     end
-    object TxLabel: TLabel
-      Left = 543
-      Top = 0
-      Width = 18
-      Height = 12
-      Caption = 'TX#'
-    end
-    object TimeEdit: TEdit
-      Left = 8
-      Top = 15
-      Width = 49
-      Height = 18
-      AutoSize = False
-      ImeMode = imDisable
-      TabOrder = 10
-      OnChange = TimeEditChange
-      OnDblClick = DateEditDblClick
+    object Label2: TLabel
+      Left = 41
+      Top = 14
+      Width = 21
+      Height = 13
+      Caption = 'date'
     end
     object CallsignEdit: TEdit
-      Left = 117
-      Top = 15
-      Width = 76
-      Height = 18
-      AutoSelect = False
+      Left = 188
+      Top = 28
+      Width = 80
+      Height = 21
       AutoSize = False
       CharCase = ecUpperCase
       ImeMode = imDisable
       MaxLength = 12
       TabOrder = 0
-      OnChange = CallsignEditChange
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
     end
     object RcvdRSTEdit: TEdit
-      Left = 181
-      Top = 15
-      Width = 52
-      Height = 18
+      Left = 269
+      Top = 28
+      Width = 34
+      Height = 21
       AutoSize = False
       ImeMode = imDisable
       TabOrder = 1
-      OnChange = RcvdRSTEditChange
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
     end
     object NumberEdit: TEdit
-      Left = 197
-      Top = 15
-      Width = 100
-      Height = 18
-      AutoSelect = False
+      Left = 303
+      Top = 28
+      Width = 65
+      Height = 21
       AutoSize = False
       CharCase = ecUpperCase
       ImeMode = imDisable
       TabOrder = 2
-      OnChange = NumberEditChange
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
     end
     object BandEdit: TEdit
-      Left = 176
-      Top = 15
-      Width = 73
-      Height = 18
+      Left = 372
+      Top = 28
+      Width = 41
+      Height = 21
       TabStop = False
       AutoSize = False
       ImeMode = imDisable
@@ -206,10 +339,10 @@ object EditDialog: TEditDialog
       OnClick = BandEditClick
     end
     object ModeEdit: TEdit
-      Left = 328
-      Top = 15
+      Left = 414
+      Top = 28
       Width = 33
-      Height = 18
+      Height = 21
       TabStop = False
       AutoSize = False
       ImeMode = imDisable
@@ -219,42 +352,30 @@ object EditDialog: TEditDialog
       OnClick = ModeEditClick
     end
     object MemoEdit: TEdit
-      Left = 344
-      Top = 15
+      Left = 560
+      Top = 28
       Width = 121
-      Height = 18
+      Height = 21
       AutoSize = False
       TabOrder = 8
-      OnChange = MemoEditChange
       OnKeyDown = EditKeyDown
       OnKeyPress = EditKeyPress
     end
     object PointEdit: TEdit
-      Left = 256
-      Top = 15
-      Width = 81
-      Height = 18
+      Left = 474
+      Top = 28
+      Width = 19
+      Height = 21
       AutoSize = False
       ImeMode = imDisable
-      TabOrder = 5
-    end
-    object PowerEdit: TEdit
-      Left = 397
-      Top = 15
-      Width = 44
-      Height = 18
-      AutoSize = False
-      CharCase = ecUpperCase
-      ImeMode = imDisable
-      MaxLength = 4
+      ReadOnly = True
       TabOrder = 6
-      OnChange = PowerEditChange
     end
     object OpEdit: TEdit
-      Left = 472
-      Top = 15
+      Left = 495
+      Top = 28
       Width = 65
-      Height = 18
+      Height = 21
       AutoSize = False
       ImeMode = imDisable
       PopupMenu = OpMenu
@@ -263,71 +384,78 @@ object EditDialog: TEditDialog
       OnClick = OpEditClick
     end
     object SerialEdit: TEdit
-      Left = 32
-      Top = 15
-      Width = 49
-      Height = 18
+      Left = 8
+      Top = 28
+      Width = 33
+      Height = 21
+      TabStop = False
       AutoSize = False
       ImeMode = imDisable
       TabOrder = 9
       Visible = False
     end
-    object DateEdit: TEdit
-      Left = 48
-      Top = 15
-      Width = 81
-      Height = 18
-      AutoSize = False
-      CharCase = ecUpperCase
-      ImeMode = imDisable
-      TabOrder = 11
-      Visible = False
-      OnChange = DateEditChange
-      OnDblClick = DateEditDblClick
-    end
     object NewPowerEdit: TEdit
-      Left = 437
-      Top = 15
-      Width = 44
-      Height = 18
+      Left = 448
+      Top = 28
+      Width = 24
+      Height = 21
       AutoSize = False
       ImeMode = imDisable
       PopupMenu = NewPowerMenu
       ReadOnly = True
-      TabOrder = 12
-      Visible = False
+      TabOrder = 5
       OnClick = NewPowerEditClick
     end
-    object comboTxNo: TComboBox
-      Left = 543
-      Top = 13
-      Width = 41
-      Height = 20
-      Style = csDropDownList
-      TabOrder = 13
-      OnChange = comboTxNoChange
+    object DateTimePicker1: TDateTimePicker
+      Left = 41
+      Top = 28
+      Width = 80
+      Height = 21
+      Date = 44714.000000000000000000
+      Format = 'yyyy/MM/dd'
+      Time = 0.882441875000949900
+      TabOrder = 10
+    end
+    object DateTimePicker2: TDateTimePicker
+      Left = 120
+      Top = 28
+      Width = 67
+      Height = 21
+      Date = 44714.000000000000000000
+      Format = 'HH:mm:ss'
+      Time = 0.882441875000949900
+      Kind = dtkTime
+      TabOrder = 11
     end
   end
   object BandMenu: TPopupMenu
-    Left = 368
-    Top = 40
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 312
+    Top = 120
   end
   object ModeMenu: TPopupMenu
-    Left = 400
-    Top = 40
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 344
+    Top = 120
   end
   object OpMenu: TPopupMenu
-    Left = 432
-    Top = 40
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 376
+    Top = 120
   end
   object NewPowerMenu: TPopupMenu
-    Left = 296
-    Top = 40
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 240
+    Top = 120
   end
   object ActionList1: TActionList
     State = asSuspended
-    Left = 488
-    Top = 40
+    Left = 432
+    Top = 120
     object actionPlayMessageA01: TAction
       Tag = 1
       Caption = 'actionPlayMessageA01'
@@ -512,12 +640,12 @@ object EditDialog: TEditDialog
     object actionQuickMemo1: TAction
       Tag = 1
       Caption = 'PSE QSL'
-      OnExecute = actionQuickMemo1Execute
+      OnExecute = actionQuickMemo3Execute
     end
     object actionQuickMemo2: TAction
       Tag = 2
       Caption = 'NO QSL'
-      OnExecute = actionQuickMemo2Execute
+      OnExecute = actionQuickMemo3Execute
     end
     object actionQuickMemo3: TAction
       Tag = 3

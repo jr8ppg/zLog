@@ -31,7 +31,7 @@ type
   public
     constructor Create; virtual;
     function FreqKHzStr : string;
-    function NewMulti : boolean; // newcty or newzone
+    function IsNewMulti(): boolean; // newcty or newzone
     function InText : string; virtual; abstract;
     procedure FromText(S : string); virtual; abstract;
     procedure Assign(O: TBaseSpot); virtual;
@@ -364,7 +364,7 @@ begin
    FComment := TSpot(O).FComment;
 end;
 
-Function TBaseSpot.NewMulti : boolean;
+function TBaseSpot.IsNewMulti(): Boolean;
 begin
    Result := NewCty or NewZone or NewJaMulti;
 end;

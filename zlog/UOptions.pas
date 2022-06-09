@@ -474,6 +474,14 @@ type
     radioSo2rCqMsgBankA: TRadioButton;
     radioSo2rCqMsgBankB: TRadioButton;
     comboSo2rCqMsgNumber: TComboBox;
+    Label101: TLabel;
+    editSo2rRigSwAfterDelay: TEdit;
+    checkWkIgnoreSpeedPot: TCheckBox;
+    GroupBox13: TGroupBox;
+    radioQslNone: TRadioButton;
+    radioPseQsl: TRadioButton;
+    radioNoQsl: TRadioButton;
+    checkBsNewMulti: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -798,6 +806,17 @@ begin
 
       Settings._saveevery        := SaveEvery.Value;
 
+      // QSL Default
+      if radioQslNone.Checked = True then begin
+         Settings._qsl_default   := qsNone;
+      end
+      else if radioPseQsl.Checked = True then begin
+         Settings._qsl_default   := qsPseQsl;
+      end
+      else begin
+         Settings._qsl_default   := qsNoQsl;
+      end;
+
       // QSY Assist
       Settings._countdown        := radioQsyCountDown.Checked;
       Settings._qsycount         := radioQsyCount.Checked;
@@ -848,6 +867,7 @@ begin
       Settings._use_winkeyer := checkUseWinkeyer.Checked;
       Settings._use_wk_9600 := checkWk9600.Checked;
       Settings._use_wk_outp_select := checkWkOutportSelect.Checked;
+      Settings._use_wk_ignore_speed_pot := checkWkIgnoreSpeedPot.Checked;
 
       // SO2R Support
       if radioSo2rNone.Checked = True then begin
@@ -864,6 +884,7 @@ begin
 
       r := Settings._so2r_cq_rpt_interval_sec;
       Settings._so2r_cq_rpt_interval_sec := StrToFloatDef(editSo2rCqRptIntervalSec.Text, r);
+      Settings._so2r_rigsw_after_delay := StrToIntDef(editSo2rRigSwAfterDelay.Text, 200);
       if radioSo2rCqMsgBankA.Checked = True then begin
          Settings._so2r_cq_msg_bank := 1;
       end
@@ -968,6 +989,7 @@ begin
       Settings._usebandscope[b5600] := checkBS15.Checked;
       Settings._usebandscope[b10g]  := checkBS16.Checked;
       Settings._usebandscope_current := checkBsCurrent.Checked;
+      Settings._usebandscope_newmulti := checkBsNewMulti.Checked;
 
       for i := 1 to 7 do begin
          Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
@@ -1269,6 +1291,7 @@ begin
       checkUseWinkeyer.Checked := Settings._use_winkeyer;
       checkWk9600.Checked := Settings._use_wk_9600;
       checkWkOutportSelect.Checked := Settings._use_wk_outp_select;
+      checkWkIgnoreSpeedPot.Checked := Settings._use_wk_ignore_speed_pot;
 
       // SO2R Support
       case Settings._so2r_type of
@@ -1291,6 +1314,8 @@ begin
       comboSo2rRxSelectPort.ItemIndex := Settings._so2r_rx_port;
 
       editSo2rCqRptIntervalSec.Text := FloatToStrF(Settings._so2r_cq_rpt_interval_sec, ffFixed, 3, 1);
+      editSo2rRigSwAfterDelay.Text := IntToStr(Settings._so2r_rigsw_after_delay);
+
       if Settings._so2r_cq_msg_bank = 1 then begin
          radioSo2rCqMsgBankA.Checked := True;
       end
@@ -1329,6 +1354,17 @@ begin
 
       // Not send leading zeros in serial number
       checkNotSendLeadingZeros.Checked := Settings.CW._not_send_leading_zeros;
+
+      // QSL Default
+      if Settings._qsl_default = qsNone then begin
+         radioQslNone.Checked := True;
+      end
+      else if Settings._qsl_default = qsPseQsl then begin
+         radioPseQsl.Checked := True;
+      end
+      else begin
+         radioNoQsl.Checked := True;
+      end;
 
       // QSY Assist
       radioQsyNone.Checked          := True;
@@ -1414,6 +1450,7 @@ begin
       checkBS15.Checked := Settings._usebandscope[b5600];
       checkBS16.Checked := Settings._usebandscope[b10g];
       checkBsCurrent.Checked := Settings._usebandscope_current;
+      checkBsNewMulti.Checked := Settings._usebandscope_newmulti;
 
       for i := 1 to 7 do begin
          FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
@@ -2018,12 +2055,14 @@ begin
          checkUseWinKeyer.Checked := False;
          checkWk9600.Enabled := False;
          checkWkOutportSelect.Enabled := False;
+         checkWkIgnoreSpeedPot.Enabled := False;
       end;
    end
    else begin
       checkUseWinKeyer.Enabled := True;
       checkWk9600.Enabled := True;
       checkWkOutportSelect.Enabled := True;
+      checkWkIgnoreSpeedPot.Enabled := True;
    end;
 end;
 
