@@ -878,7 +878,7 @@ begin
             usbif4cwSetPTTParam(i, FPttDelayBeforeTime, FPttDelayAfterTime);
          end
          else begin
-            ControlPTT(i, False);
+//            ControlPTT(i, False);
             usbif4cwSetPTTParam(i, 0, 0);
          end;
       end;
