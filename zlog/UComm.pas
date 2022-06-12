@@ -429,11 +429,12 @@ begin
             Exit;
          end;
 
-         // 使わないBandScopeは除く
-         if dmZLogGlobal.Settings._usebandscope[Sp.Band] = False then begin
-            Sp.Free();
-            Exit;
-         end;
+// #300 これは余計だった
+//         // 使わないBandScopeは除く
+//         if dmZLogGlobal.Settings._usebandscope[Sp.Band] = False then begin
+//            Sp.Free();
+//            Exit;
+//         end;
 
          // Spot上限を超えたか？
          if FSpotList.Count > SPOTMAX then begin
