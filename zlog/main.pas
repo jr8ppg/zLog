@@ -6039,7 +6039,7 @@ begin
             if dlg.ShowModal() = mrCancel then begin
                Exit;
             end;
-            Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2);
+            Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2, dlg.CodeOption, dlg.NameOption, dlg.TimeOption, dlg.QslStateText);
          finally
             dlg.Release();
          end;

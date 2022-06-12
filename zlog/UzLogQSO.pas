@@ -325,7 +325,7 @@ type
     procedure SaveToFilezLogALL(Filename : string);
     procedure SaveToFileByTX(Filename : string);
     procedure SaveToFileByCabrillo(Filename: string);
-    procedure SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string);
+    procedure SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string; nCodeOption: Integer; nNameOption: Integer; nTimeOption: Integer; strQslStateText: string);
     {$ENDIF}
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
@@ -375,7 +375,7 @@ type
 implementation
 
 uses
-  UzLogGlobal, UzLogExtension;
+  UzLogGlobal, UzLogExtension, Main;
 
 { TQSO }
 
@@ -663,36 +663,42 @@ end;
 function TQSO.GetMemoStr(): string;
 var
    strMemo: string;
+
+   function AddStr(S1, S2: string): string;
+   begin
+      if S1 <> '' then begin
+         Result := S1 + ' ';
+      end;
+      Result := Result + S2;
+   end;
 begin
    strMemo := '';
 
+   // QSL
+   if dmZLogGlobal.Settings._qsl_default <> FQslState then begin
+      case FQslState of
+         qsNone:   strMemo := AddStr(strMemo, '');
+         qsPseQsl: strMemo := AddStr(strMemo, MEMO_PSE_QSL);
+         qsNoQsl:  strMemo := AddStr(strMemo, MEMO_NO_QSL);
+      end;
+   end;
+
    if FForced = True then begin
-      strMemo := '*';
+      strMemo := AddStr(strMemo, '*');
    end;
 
    if FDupe = True then begin
-      if strMemo <> '' then begin
-         strMemo := strMemo + ' ';
-      end;
-
-      strMemo := strMemo + MEMO_DUPE;
+      strMemo := AddStr(strMemo, MEMO_DUPE);
    end;
 
    if FFreq <> '' then begin
-      if strMemo <> '' then begin
-         strMemo := strMemo + ' ';
-      end;
-
-      strMemo := strMemo + '(' + FFreq + ')';
+      strMemo := AddStr(strMemo, '(' + FFreq + ')');
    end;
 
-   strMemo := strMemo + FMemo;
+   strMemo := AddStr(strMemo, FMemo);
 
    if FQsyViolation = True then begin
-      if strMemo <> '' then begin
-         strMemo := strMemo + ' ';
-      end;
-      strMemo := strMemo + MEMO_QSY_VIOLATION;
+      strMemo := AddStr(strMemo, MEMO_QSY_VIOLATION);
    end;
 
    Result := strMemo;
@@ -2257,7 +2263,11 @@ HAMLOG CSV仕様
 　でもそれ以外の場合もある
 }
 {$IFNDEF ZSERVER}
-procedure TLog.SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string);
+procedure TLog.SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer;
+                                 strRemarks1: string; strRemarks2: string;
+                                 nCodeOption: Integer; nNameOption: Integer;
+                                 nTimeOption: Integer;
+                                 strQslStateText: string);
 var
    F: TextFile;
    i: Integer;
@@ -2265,7 +2275,15 @@ var
    Q: TQSO;
    offsetmin: Integer;
    slCsv: TStringList;
+   strQslState: array[qsNone..qsNoQsl] of string;
+   strMulti: string;
+   newoffsetmin: Integer;
+   offsethour: Integer;
 begin
+   strQslState[qsNone]   := Copy(strQslStateText, 1, 1);
+   strQslState[qsPseQsl] := Copy(strQslStateText, 2, 1);
+   strQslState[qsNoQsl]  := Copy(strQslStateText, 3, 1);
+
    slCsv := TStringList.Create();
    slCsv.StrictDelimiter := True;
    try
@@ -2273,9 +2291,44 @@ begin
       ReWrite(F);
 
       offsetmin := FQsoList[0].RSTsent;
+      if offsetmin = _USEUTC then begin
+         offsethour := 0;
+      end
+      else begin
+         offsethour := offsetmin div 60;
+      end;
 
       for i := 1 to FQSOList.Count - 1 do begin
          Q := FQSOList[i];
+
+         strMulti := MyContest.MultiForm.ExtractMulti(Q);
+
+         case nTimeOption of
+            // そのまま出力
+            0: begin
+               newoffsetmin := offsetmin;
+            end;
+
+            // JST統一
+            1: begin
+               if offsetmin = _USEUTC then begin
+                  Q.Time := IncHour(Q.Time, offsethour);
+               end;
+               newoffsetmin := offsetmin;
+            end;
+
+            // UTC統一
+            2: begin
+               if offsetmin <> _USEUTC then begin
+                  Q.Time := IncHour(Q.Time, offsethour);
+               end;
+               newoffsetmin := _USEUTC;
+            end;
+
+            else begin
+               newoffsetmin := offsetmin;
+            end;
+         end;
 
          slCsv.Clear();
 
@@ -2287,7 +2340,7 @@ begin
 
          //3列目　交信時分（HH:MM*）　※「*」にはJST…J・UTC…U
          strText := FormatDateTime('HH:MM', Q.Time);
-         if offsetmin = _USEUTC then begin
+         if newoffsetmin = _USEUTC then begin
             strText := strText + 'U';
          end
          else begin
@@ -2308,21 +2361,26 @@ begin
          slCsv.Add(Q.ModeStr);
 
          //8列目　相手局の運用地コード
-         slCsv.Add('');
+         if nCodeOption = 1 then begin
+            slCsv.Add(strMulti);
+         end
+         else begin
+            slCsv.Add('');
+         end;
 
          //9列目　相手局の運用地グリッドロケータ
          slCsv.Add('');
 
          //10列目　QSLマーク　※取りあえず「J」を入れておけばOK
-         if Q.QslState = qsPseQsl then begin
-            slCsv.Add('J  ');
-         end
-         else begin
-            slCsv.Add('N  ');
-         end;
+         slCsv.Add(strQslState[Q.QslState] + '  ');
 
          //11列目　相手局の名前・名称
-         slCsv.Add('');
+         if nNameOption = 1 then begin
+            slCsv.Add(strMulti);
+         end
+         else begin
+            slCsv.Add('');
+         end;
 
          //12列目　相手局の運用地
          slCsv.Add('');
