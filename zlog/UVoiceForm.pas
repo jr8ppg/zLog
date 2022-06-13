@@ -160,7 +160,8 @@ begin
    end;
 
    if Assigned(FOnNotifyFinished) then begin
-      FOnNotifyFinished(nil, mSSB, True);
+      // Stop時のFinishイベントは不要
+      //FOnNotifyFinished(nil, mSSB, True);
    end;
 end;
 
