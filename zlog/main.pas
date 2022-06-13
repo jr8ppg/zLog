@@ -5259,6 +5259,11 @@ begin
    if workedZLO then begin
       WriteStatusLine('QSOありがとうございます', False);
    end;
+
+   // Analyzeウインドウが表示されている場合は表示更新する
+   if FZAnalyze.Visible then begin
+      PostMessage(FZAnalyze.Handle, WM_ANALYZE_UPDATE, 0, 0);
+   end;
 end;
 
 procedure TMainForm.OptionsButtonClick(Sender: TObject);

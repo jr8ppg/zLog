@@ -29,6 +29,9 @@ uses
 ó›åv|      106      115      115      161      202      245      306         |
 }
 
+const
+  WM_ANALYZE_UPDATE = (WM_USER + 100);
+
 type
   TQsoCount = record
     FQso: Integer;
@@ -59,6 +62,7 @@ type
     procedure TabControl1Change(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure CreateParams(var Params: TCreateParams); override;
+    procedure OnAnalyzeUpdate( var Message: TMessage ); message WM_ANALYZE_UPDATE;
   private
     { Private êÈåæ }
     FStartHour: Integer;
@@ -804,6 +808,11 @@ begin
    end;
 
    Result := RightStr('00' + IntToStr(t), 2);
+end;
+
+procedure TZAnalyze.OnAnalyzeUpdate( var Message: TMessage );
+begin
+   buttonUpdateClick(nil);
 end;
 
 end.
