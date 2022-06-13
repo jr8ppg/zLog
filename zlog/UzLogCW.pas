@@ -13,8 +13,8 @@ var
    EditedSinceTABPressed : integer = 0;
 
 function LastCallsign : string;
-function SetStr(S : string; aQSO : TQSO) : String;
-function SetStrNoAbbrev(S : string; aQSO : TQSO) : String; {for QSO.NrSent}
+function SetStr(sendtext: string; aQSO : TQSO) : String;
+function SetStrNoAbbrev(sendtext: string; aQSO : TQSO) : String; {for QSO.NrSent}
 procedure zLogSendStr(nID: Integer; S: string);
 procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
 
@@ -53,11 +53,12 @@ begin
   Result := SS;
 end;
 
-function SetStr(S : string; aQSO : TQSO) : string;
+function SetStr(sendtext : string; aQSO : TQSO) : string;
 var
    temp: string;
+   S: string;
 begin
-   temp := UpperCase(S);
+   temp := sendtext;
 
    temp := StringReplace(temp, '[AR]', 'a', [rfReplaceAll]);
    temp := StringReplace(temp, '[SK]', 's', [rfReplaceAll]);
@@ -65,40 +66,85 @@ begin
    temp := StringReplace(temp, '[KN]', 'k', [rfReplaceAll]);
    temp := StringReplace(temp, '[BK]', '~', [rfReplaceAll]);
 
-   temp := StringReplace(temp, '$B', Main.CurrentQSO.Callsign, [rfReplaceAll]);
    temp := StringReplace(temp, '$X', dmZLogGlobal.Settings._sentstr, [rfReplaceAll]);
-   temp := StringReplace(temp, '$R', Abbreviate(aQSO.RSTSentStr), [rfReplaceAll]);
-   temp := StringReplace(temp, '$F', Abbreviate(aQSO.NrRcvd), [rfReplaceAll]);
-   temp := StringReplace(temp, '$Z', Abbreviate(dmZLogGlobal.Settings._cqzone), [rfReplaceAll]);
-   temp := StringReplace(temp, '$I', Abbreviate(dmZLogGlobal.Settings._iaruzone), [rfReplaceAll]);
-   temp := StringReplace(temp, '$Q', Abbreviate(MyContest.QTHString(aQSO)), [rfReplaceAll]);
-   temp := StringReplace(temp, '$V', Abbreviate(dmZLogGlobal.Settings._prov), [rfReplaceAll]);
-   temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
+   temp := StringReplace(temp, '$x', LowerCase(dmZLogGlobal.Settings._sentstr), [rfReplaceAll]);
+
+   S := Main.CurrentQSO.Callsign;
+   temp := StringReplace(temp, '$B', S, [rfReplaceAll]);
+   temp := StringReplace(temp, '$b', S, [rfReplaceAll]);
+
+   S := aQSO.RSTSentStr;
+   temp := StringReplace(temp, '$R', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$r', S, [rfReplaceAll]);
+
+   S := aQSO.NrRcvd;
+   temp := StringReplace(temp, '$F', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$f', S, [rfReplaceAll]);
+
+   S := dmZLogGlobal.Settings._cqzone;
+   temp := StringReplace(temp, '$Z', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$z', S, [rfReplaceAll]);
+
+   S := dmZLogGlobal.Settings._iaruzone;
+   temp := StringReplace(temp, '$I', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$i', S, [rfReplaceAll]);
+
+   S := dmZLogGlobal.Settings._prov;
+   temp := StringReplace(temp, '$Q', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$q', S, [rfReplaceAll]);
+
+   S := dmZLogGlobal.Settings._prov;
+   temp := StringReplace(temp, '$V', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$v', S, [rfReplaceAll]);
+
+   S := aQSO.Operator;
+   temp := StringReplace(temp, '$O', S, [rfReplaceAll]);
+   temp := StringReplace(temp, '$o', S, [rfReplaceAll]);
 
    if dmZLogGlobal.Settings.CW._not_send_leading_zeros = False then begin
-      temp := StringReplace(temp, '$S', Abbreviate(aQSO.SerialStr), [rfReplaceAll]);
+      S := aQSO.SerialStr;
+      temp := StringReplace(temp, '$S', Abbreviate(S), [rfReplaceAll]);
+      temp := StringReplace(temp, '$s', S, [rfReplaceAll]);
    end
    else begin
-      temp := StringReplace(temp, '$S', Abbreviate(IntToStr(aQSO.Serial)), [rfReplaceAll]);
+      S := IntToStr(aQSO.Serial);
+      temp := StringReplace(temp, '$S', Abbreviate(S), [rfReplaceAll]);
+      temp := StringReplace(temp, '$s', S, [rfReplaceAll]);
    end;
 
-   temp := StringReplace(temp, '$P', aQSO.NewPowerStr, [rfReplaceAll]);
-   temp := StringReplace(temp, '$A', Abbreviate(UpperCase(dmZLogGlobal.GetAge(aQSO))), [rfReplaceAll]);
-   temp := StringReplace(temp, '$N', Abbreviate(aQSO.PowerStr), [rfReplaceAll]);
-   temp := StringReplace(temp, '$L', LastCallSign, [rfReplaceAll]);
-   temp := StringReplace(temp, '$G', dmZLogGlobal.GetGreetingsCode(), [rfReplaceAll]);
+   S := aQSO.NewPowerStr;
+   temp := StringReplace(temp, '$P', S, [rfReplaceAll]);
+   temp := StringReplace(temp, '$p', S, [rfReplaceAll]);
+
+   S := UpperCase(dmZLogGlobal.GetAge(aQSO));
+   temp := StringReplace(temp, '$A', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$a', S, [rfReplaceAll]);
+
+   S := aQSO.PowerStr;
+   temp := StringReplace(temp, '$N', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$n', S, [rfReplaceAll]);
+
+   S := LastCallSign;
+   temp := StringReplace(temp, '$L', S, [rfReplaceAll]);
+   temp := StringReplace(temp, '$l', S, [rfReplaceAll]);
+
+   S := dmZLogGlobal.GetGreetingsCode();
+   temp := StringReplace(temp, '$G', S, [rfReplaceAll]);
+   temp := StringReplace(temp, '$g', S, [rfReplaceAll]);
 
    if aQSO.mode = mRTTY then begin
-      temp := StringReplace(temp, '$C', aQSO.Callsign, [rfReplaceAll]);
+      S := aQSO.Callsign;
    end
    else begin
       if dmZLogKeyer.UseWinKeyer = True then begin
-         temp := StringReplace(temp, '$C', aQSO.Callsign, [rfReplaceAll]);
+         S := aQSO.Callsign;
       end
       else begin
-         temp := StringReplace(temp, '$C', ':***************', [rfReplaceAll]);
+         S := ':***************';
       end;
    end;
+   temp := StringReplace(temp, '$C', S, [rfReplaceAll]);
+   temp := StringReplace(temp, '$c', S, [rfReplaceAll]);
 
 //  while Pos('$C',temp) > 0 do
 //    begin
@@ -111,14 +157,15 @@ begin
 //    end;
 
    if aQSO.Callsign = '' then begin
-      temp := StringReplace(temp, '$E', LastCallsign, [rfReplaceAll]);
+      S := LastCallsign;
    end
    else if EditedSinceTABPressed = tabstate_tabpressedandedited then begin
-      temp := StringReplace(temp, '$E', aQSO.Callsign, [rfReplaceAll]);
+      S := aQSO.Callsign;
    end
    else begin
-      temp := StringReplace(temp, '$E', '', [rfReplaceAll]);
+      S := '';
    end;
+   temp := StringReplace(temp, '$E', S, [rfReplaceAll]);
 
 //  while Pos('$E',temp) > 0 do
 //    begin
@@ -132,16 +179,18 @@ begin
 //        Insert(aQSO.Callsign, temp, i);
 //    end;
 
-   temp := StringReplace(temp, '$M', UpperCase(dmZLogGlobal.MyCall), [rfReplaceAll]);
+   S := UpperCase(dmZLogGlobal.MyCall);
+   temp := StringReplace(temp, '$M', S, [rfReplaceAll]);
+   temp := StringReplace(temp, '$m', S, [rfReplaceAll]);
 
-   Result := temp;
+   Result := UpperCase(temp);
 end;
 
-function SetStrNoAbbrev(S : string; aQSO : TQSO) : string;
+function SetStrNoAbbrev(sendtext: string; aQSO : TQSO) : string;
 var
    temp: string;
 begin
-   temp := UpperCase(S);
+   temp := UpperCase(sendtext);
 
    temp := StringReplace(temp, '[AR]', '', [rfReplaceAll]);
    temp := StringReplace(temp, '[SK]', '', [rfReplaceAll]);
