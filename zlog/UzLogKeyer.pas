@@ -697,11 +697,13 @@ begin
    for i := 0 to 2 do begin
       // USBIF4CWでのRIG SELECT
       if FKeyingPort[i] = tkpUSB then begin
-         EnterCriticalSection(FUsbPortDataLock);
-         FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTx);
-         FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTx);
-         SendUsbPortData(i);
-         LeaveCriticalSection(FUsbPortDataLock);
+         if Assigned(FUsbInfo[i].FPORTDATA) then begin
+            EnterCriticalSection(FUsbPortDataLock);
+            FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTx);
+            FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTx);
+            SendUsbPortData(i);
+            LeaveCriticalSection(FUsbPortDataLock);
+         end;
       end;
    end;
 end;

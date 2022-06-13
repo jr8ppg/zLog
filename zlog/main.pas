@@ -5044,7 +5044,6 @@ begin
    CurrentQSO.Points := 0;
    CurrentQSO.NewMulti1 := False;
    CurrentQSO.NewMulti2 := False;
-   CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
    CurrentQSO.Invalid := False;
 
    // DUPEチェック
@@ -5227,6 +5226,7 @@ begin
    CurrentQSO.Reserve2 := 0;
    CurrentQSO.Reserve3 := 0;
    CurrentQSO.TX := dmZlogGlobal.TXNr;
+   CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
 
    if CurrentQSO.Mode in [mCW, mRTTY] then begin
       CurrentQSO.RSTRcvd := 599;
@@ -7417,9 +7417,6 @@ begin
       ModeEdit.Text := CurrentQSO.ModeStr;
       RcvdRSTEdit.Text := CurrentQSO.RSTStr;
 
-      // 最初はRIG1から
-      SwitchRig(1);
-
       // マルチオペの場合は最後のOPをセット
       if (dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx]) and
          (Log.TotalQSO > 0) then begin
@@ -7487,11 +7484,13 @@ begin
          WriteStatusLineRed('CTY.DAT not loaded', True);
       end;
 
+      // 最初はRIG1から
+      SwitchRig(1);
+
       // 初期化完了
       FInitialized := True;
       Timer1.Enabled := True;
       zyloContestOpened(MyContest.Name, menu.CFGFileName);
-
    finally
       menu.Release();
    end;
@@ -9664,12 +9663,14 @@ end;
 procedure TMainForm.actionPseQslExecute(Sender: TObject);
 begin
    CurrentQSO.QslState := qsPseQsl;
+   WriteStatusLine(MEMO_PSE_QSL, False);
 end;
 
 // #155 No QSL
 procedure TMainForm.actionNoQslExecute(Sender: TObject);
 begin
    CurrentQSO.QslState := qsNoQsl;
+   WriteStatusLine(MEMO_NO_QSL, False);
 end;
 
 procedure TMainForm.RestoreWindowsPos();
