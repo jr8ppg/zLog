@@ -5907,8 +5907,8 @@ begin
       if TabPressed2 then begin
          MyContest.SpaceBarProc;
 
-         if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
-            (FInformation.Is2bsiq = False) then begin
+         if (dmZLogGlobal.Settings._so2r_type = so2rNone) or
+            ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (FInformation.Is2bsiq = False)) then begin
             NumberEdit.SetFocus;
          end;
          EditedSinceTABPressed := tabstate_tabpressedbutnotedited; // UzLogCW
