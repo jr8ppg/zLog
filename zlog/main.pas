@@ -8228,6 +8228,14 @@ begin
          Exit;
       end;
 
+      // Ctrl+Zでのキー入力
+      if (FCwCtrlZCQLoop = True) or (FPhCtrlZCQLoop = True) then begin
+         if FCQLoopPause = True then begin
+            CancelCqRepeat();
+            Exit;
+         end;
+      end;
+
       // 中止
       if fAbort = True then begin
          CancelCqRepeat();
@@ -11158,13 +11166,13 @@ begin
    // CQループ中のキー入力割り込み
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
       if (FCwCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
-         FCwCtrlZCQLoop := False;
+         FCQLoopPause := True;
          timerCqRepeat.Enabled := False;
          dmZLogKeyer.ClrBuffer;
       end;
 
       if (FPhCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
-         FPhCtrlZCQLoop := False;
+         FCQLoopPause := True;
          timerCqRepeat.Enabled := False;
          FVoiceForm.StopVoice();
       end;
