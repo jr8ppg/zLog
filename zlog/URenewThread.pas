@@ -39,12 +39,17 @@ procedure TRenewThread.SyncProc;
 var
    boo: boolean;
 begin
+   boo := MainForm.Grid.Focused;
+
    Main.MyContest.MultiForm.UpdateData;
    Main.MyContest.ScoreForm.UpdateData;
-   boo := False;
-   if MainForm.Grid.Focused then
-      boo := True;
-   MainForm.GridRefreshScreen;
+
+   // 画面リフレッシュ
+   MainForm.GridRefreshScreen(True);
+
+   // バンドスコープリフレッシュ
+   MainForm.BSRefresh();
+
    MainForm.ReevaluateCountDownTimer;
    MainForm.ReevaluateQSYCount;
 
@@ -53,10 +58,8 @@ begin
 end;
 
 procedure TRenewThread.Execute;
-var
-   i: integer;
-   aQSO: TQSO;
 begin
+   { Place thread code here }
    FreeOnTerminate := True;
 
    Repeat
@@ -64,31 +67,17 @@ begin
 
    Renewing := True;
 
-   Log.SetDupeFlags;
-
-   for i := 1 to Log.TotalQSO do begin
-      aQSO := Log.QsoList[i];
-      if Log.CountHigherPoints = True then begin
-         Log.IsDupe(aQSO); // called to set log.differentmodepointer
-      end;
-
-      if aQSO.Invalid = False then begin
-         Main.MyContest.MultiForm.AddNoUpdate(aQSO);
-      end;
-      Main.MyContest.ScoreForm.AddNoUpdate(aQSO);
-   end;
+   Main.MyContest.RenewScoreAndMulti();
 
    Synchronize(SyncProc);
+
    Renewing := False;
-   { Place thread code here }
 end;
 
 procedure RequestRenewThread;
 var
    RTh: TRenewThread;
 begin
-   Main.MyContest.MultiForm.Reset;
-   Main.MyContest.ScoreForm.Reset;
    RTh := TRenewThread.Create(False);
 end;
 

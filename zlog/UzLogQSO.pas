@@ -375,7 +375,10 @@ type
 implementation
 
 uses
-  UzLogGlobal, UzLogExtension, Main;
+  UzLogGlobal, UzLogExtension
+  {$IFNDEF ZSERVER}
+  , Main
+  {$ENDIF};
 
 { TQSO }
 
@@ -648,12 +651,14 @@ begin
       Exit;
    end;
 
+   {$IFNDEF ZSERVER}
    // FreqÇ™BandÇ∆à·Ç§èÍçáÇÕBandÇï‘Ç∑
    b2 := dmZLogGlobal.BandPlan.FreqToBand(Trunc(fFreq) * 1000);
    if b2 <> Self.Band then begin
       Result := Self.BandStr;
       Exit;
    end;
+   {$ENDIF}
 
    strFreq := Format('%.4f', [fFreq / 1000]);
 
@@ -674,6 +679,7 @@ var
 begin
    strMemo := '';
 
+   {$IFNDEF ZSERVER}
    // QSL
    if dmZLogGlobal.Settings._qsl_default <> FQslState then begin
       case FQslState of
@@ -682,6 +688,7 @@ begin
          qsNoQsl:  strMemo := AddStr(strMemo, MEMO_NO_QSL);
       end;
    end;
+   {$ENDIF}
 
    if FForced = True then begin
       strMemo := AddStr(strMemo, '*');
@@ -2098,6 +2105,7 @@ const
    '28000', '   50', '  144', '  432', ' 1.2G', ' 2.3G', ' 5.7G', '  10G'
    );
 begin
+   {$IFNDEF ZSERVER}
    // FreqÇ™BandÇ∆àÍívÇµÇ»Ç¢èÍçáÇÕBandÇ©ÇÁActualÇãÅÇﬂÇÈ
    f := Trunc(StrToFloatDef(strFreq, 0)) * 1000;
    b2 := dmZLogGlobal.BandPlan.FreqToBand(f);
@@ -2110,6 +2118,7 @@ begin
       Result := FREQ[b];
       Exit;
    end;
+   {$ENDIF}
 
    s := strFreq;
 

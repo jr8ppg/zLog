@@ -115,6 +115,8 @@ type
 
     property NeedCtyDat: Boolean read FNeedCtyDat;
     property UseCoeff: Boolean read FUseCoeff;
+
+    procedure RenewScoreAndMulti();
   end;
 
   TPedi = class(TContest)
@@ -2328,43 +2330,28 @@ begin
 end;
 
 procedure TContest.Renew;
-var
-   i: Integer;
-   aQSO: TQSO;
 begin
    if dmZlogGlobal.Settings._renewbythread then begin
       RequestRenewThread;
       exit;
    end;
 
-   MultiForm.reset;
-   ScoreForm.reset;
-
-   Log.SetDupeFlags;
-
-   for i := 1 to Log.TotalQSO do begin
-      aQSO := Log.QsoList[i];
-
-      if Log.CountHigherPoints = True then begin
-         Log.IsDupe(aQSO); // called to set log.differentmodepointer
-      end;
-
-      if aQSO.Invalid = False then begin
-         MultiForm.AddNoUpdate(aQSO);
-      end;
-      ScoreForm.AddNoUpdate(aQSO);
-   end;
+   RenewScoreAndMulti();
 
    MultiForm.UpdateData;
    ScoreForm.UpdateData;
-   MultiForm.RenewBandScope;
+
+   // 画面リフレッシュ
+   MainForm.GridRefreshScreen(True);
+
+   // バンドスコープリフレッシュ
+   MainForm.BSRefresh();
 end;
 
 procedure TContest.EditCurrentRow;
 var
    R: Integer;
    aQSO: TQSO;
-   i: Integer;
 begin
    R := MainForm.Grid.Row;
 
@@ -2394,26 +2381,45 @@ begin
       MainForm.FCheckCall2.Renew(CurrentQSO);
    end;
 
-   // NewMulti再計算
-   MultiForm.Reset();
-   for i := 1 to Log.TotalQSO do begin
-      aQSO := Log.QSOList[i];
-      aQSO.NewMulti1 := False;
-      aQSO.NewMulti2 := False;
-      if aQSO.Invalid = False then begin
-         MultiForm.AddNoUpdate(aQSO);
-      end;
-   end;
-   MultiForm.UpdateData();
+   RenewScoreAndMulti();
 
-   // スコア再計算
-   ScoreForm.Renew();
-   ScoreForm.UpdateData();
-
-   Log.SetDupeFlags;
+   MultiForm.UpdateData;
+   ScoreForm.UpdateData;
 
    // 画面リフレッシュ
    MainForm.GridRefreshScreen(True);
+
+   // バンドスコープリフレッシュ
+   MainForm.BSRefresh();
+end;
+
+procedure TContest.RenewScoreAndMulti();
+var
+   i: Integer;
+   aQSO: TQSO;
+begin
+   MultiForm.Reset();
+   ScoreForm.Reset();
+
+   // DUPE再計算
+   Log.SetDupeFlags;
+
+   // Score&NewMulti再計算
+   for i := 1 to Log.TotalQSO do begin
+      aQSO := Log.QsoList[i];
+
+      if Log.CountHigherPoints = True then begin
+         Log.IsDupe(aQSO); // called to set log.differentmodepointer
+      end;
+
+      aQSO.NewMulti1 := False;
+      aQSO.NewMulti2 := False;
+
+      if aQSO.Invalid = False then begin
+         MultiForm.AddNoUpdate(aQSO);
+         ScoreForm.AddNoUpdate(aQSO);
+      end;
+   end;
 end;
 
 constructor TJIDXContest.Create(N: string);
