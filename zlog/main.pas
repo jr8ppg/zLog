@@ -11250,7 +11250,7 @@ begin
             if FCurrentRx <> FCurrentTx then begin
                SwitchRx(FCurrentTx + 1);
             end
-            else if FCurrentRx <> (FCQLoopStartRig - 1) then begin
+            else if (FCQLoopRunning = True) and (FCurrentRx <> (FCQLoopStartRig - 1)) then begin
                SwitchRig(FCQLoopStartRig);
             end;
          end;
