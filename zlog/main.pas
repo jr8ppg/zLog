@@ -5422,6 +5422,11 @@ begin
 //   CancelCqRepeat();
    FVoiceForm.StopVoice;
    FCQRepeatPlaying := False;
+
+   // 元々Finishイベントで行っていたがCQループとの
+   // 兼ね合いでFinishイベントをやめたのでこちらに変更
+   VoiceStopButton.Enabled := False;
+   VoiceControl(False);
 end;
 
 procedure TMainForm.SetCQ(CQ: Boolean);
