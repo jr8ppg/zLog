@@ -2396,15 +2396,15 @@ begin
 
          //13óÒñ⁄Å@Remarks1
          case nRemarks1Option of
-            0: begin
+            1: begin
                slCsv.Add(strRemarks1);
             end;
 
-            1: begin
+            2: begin
                slCsv.Add(Q.Operator);
             end;
 
-            2: begin
+            3: begin
                slCsv.Add(Q.Memo);
             end;
 
@@ -2415,15 +2415,15 @@ begin
 
          //14óÒñ⁄Å@Remarks2
          case nRemarks2Option of
-            0: begin
+            1: begin
                slCsv.Add(strRemarks2);
             end;
 
-            1: begin
+            2: begin
                slCsv.Add(Q.Operator);
             end;
 
-            2: begin
+            3: begin
                slCsv.Add(Q.Memo);
             end;
 

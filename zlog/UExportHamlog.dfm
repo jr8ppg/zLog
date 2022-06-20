@@ -15,6 +15,7 @@ object formExportHamlog: TformExportHamlog
   Position = poOwnerFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
   object GroupBox1: TGroupBox
@@ -25,10 +26,6 @@ object formExportHamlog: TformExportHamlog
     Align = alClient
     Caption = 'HAMLOG'#20986#21147#35373#23450
     TabOrder = 0
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    ExplicitWidth = 373
-    ExplicitHeight = 329
     object groupRemarks1: TGroupBox
       Left = 12
       Top = 24
@@ -292,8 +289,6 @@ object formExportHamlog: TformExportHamlog
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 428
-    ExplicitWidth = 390
     DesignSize = (
       372
       29)

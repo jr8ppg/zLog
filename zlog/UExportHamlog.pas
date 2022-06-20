@@ -49,6 +49,7 @@ type
     procedure radioRemarks2Opt2Click(Sender: TObject);
     procedure radioRemarks2Opt3Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
   private
     { Private êÈåæ }
     function GetRemarks1Option(): Integer;
@@ -90,6 +91,17 @@ begin
    Load();
 end;
 
+procedure TformExportHamlog.FormShow(Sender: TObject);
+begin
+   if radioRemarks1Opt1.Checked = True then begin
+      editRemarks1Opt1.SetFocus();
+   end;
+
+   if radioRemarks2Opt1.Checked = True then begin
+      editRemarks2Opt1.SetFocus();
+   end;
+end;
+
 procedure TformExportHamlog.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    Save();
@@ -98,7 +110,6 @@ end;
 procedure TformExportHamlog.radioRemarks1Opt1Click(Sender: TObject);
 begin
    editRemarks1Opt1.Enabled := True;
-   editRemarks1Opt1.SetFocus();
 end;
 
 procedure TformExportHamlog.radioRemarks1Opt2Click(Sender: TObject);
@@ -114,7 +125,6 @@ end;
 procedure TformExportHamlog.radioRemarks2Opt1Click(Sender: TObject);
 begin
    editRemarks2Opt1.Enabled := True;
-   editRemarks2Opt1.SetFocus();
 end;
 
 procedure TformExportHamlog.radioRemarks2Opt2Click(Sender: TObject);
