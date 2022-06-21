@@ -89,7 +89,7 @@ begin
    temp := StringReplace(temp, '$I', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$i', S, [rfReplaceAll]);
 
-   S := dmZLogGlobal.Settings._prov;
+   S := MyContest.QTHString(aQSO);
    temp := StringReplace(temp, '$Q', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$q', S, [rfReplaceAll]);
 
