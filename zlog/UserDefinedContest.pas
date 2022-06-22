@@ -835,8 +835,6 @@ begin
       strLine := Copy(strLine, 1, p - 1);
    end;
 
-   strLine := UpperCase(strLine);
-
    p := Pos(#$09, strLine);
    if p = 0 then begin
       p := Pos(' ', strLine);
@@ -847,7 +845,7 @@ begin
       Exit;
    end;
 
-   strCmd := Trim(Copy(strLine, 1, p - 1));
+   strCmd := UpperCase(Trim(Copy(strLine, 1, p - 1)));
    strParam := Trim(Copy(strLine, p + 1));
 
    Result := True;
