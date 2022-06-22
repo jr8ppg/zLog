@@ -315,21 +315,16 @@ begin
          end;
 
          if strCmd = 'PROV' then begin
-            D.Prov := strParam;
+            D.Prov := UpperCase(strParam);
          end
          else if strCmd = 'CITY' then begin
-            D.City := strParam;
+            D.City := UpperCase(strParam);
          end
          else if strCmd = 'POWER' then begin
-            D.Power := strParam;
+            D.Power := UpperCase(strParam);
          end
          else if strCmd = 'COEFF' then begin
-            if strParam = 'ON' then begin
-               D.Coeff := True;
-            end
-            else begin
-               D.Coeff := False;
-            end;
+            D.Coeff := ParseOnOff(strParam);
          end
          else if strCmd = 'SENDNR' then begin
             D.Sent := strParam;
@@ -387,6 +382,7 @@ begin
             strTmp := Copy(strCmd, 3, 3);
             B := GetBand(strTmp);
 
+            strParam := UpperCase(strParam);
             if Length(strParam) >= 2 then begin
                D.FPointsTable[B, mSSB] := StrToIntDef(strParam[1], 1);
                D.FPointsTable[B, mCW]  := StrToIntDef(strParam[2], 1);
@@ -399,6 +395,7 @@ begin
             strTmp := Copy(strCmd, 4, 3);
             B := GetBand(strTmp);
 
+            strParam := UpperCase(strParam);
             if Length(strParam) >= 2 then begin
                D.FLocalPointsTable[B, mSSB] := StrToIntDef(strParam[1], 1);
                D.FLocalPointsTable[B, mCW]  := StrToIntDef(strParam[2], 1);
@@ -411,6 +408,7 @@ begin
             strTmp := Copy(strCmd, 4, 3);
             B := GetBand(strTmp);
 
+            strParam := UpperCase(strParam);
             if Length(strParam) >= 4 then begin
                D.FPointsTable[B, mSSB] := StrToIntDef(strParam[1] + strParam[2], 1);
                D.FPointsTable[B, mCW]  := StrToIntDef(strParam[3] + strParam[4], 1);
@@ -423,6 +421,7 @@ begin
             strTmp := Copy(strCmd, 5, 3);
             B := GetBand(strTmp);
 
+            strParam := UpperCase(strParam);
             if Length(strParam) >= 4 then begin
                D.FLocalPointsTable[B, mSSB] := StrToIntDef(strParam[1] + strParam[2], 1);
                D.FLocalPointsTable[B, mCW]  := StrToIntDef(strParam[3] + strParam[4], 1);
@@ -454,6 +453,7 @@ begin
          end;
 
          if strCmd = 'SPECIALCALLS' then begin
+            strParam := UpperCase(strParam);
             if D.FSpecialCalls <> '' then begin
                D.FSpecialCalls := D.FSpecialCalls + ',' + strParam;
             end
@@ -471,7 +471,7 @@ begin
          end;
 
          if strCmd = 'LOCAL' then begin
-            SL.CommaText := strParam;
+            SL.CommaText := UpperCase(strParam);
             for k := 0 to SL.Count - 1 do begin
                if k > MAXLOCAL then begin
                   Break;
@@ -481,6 +481,7 @@ begin
          end;
 
          if pos('ALPHAPT', strCmd) = 1 then begin
+            strParam := UpperCase(strParam);
             D.FAlphabetPoints := True;
             for j := 1 to (length(strParam) div 2) do begin
                if strParam[2 * j - 1] = '?' then begin
@@ -517,7 +518,7 @@ begin
          end;
 
          if strCmd = 'TIME' then begin
-            if strParam = 'UTC' then begin
+            if UpperCase(strParam) = 'UTC' then begin
                D.FUseUTC := True;
             end;
          end;
@@ -568,6 +569,7 @@ begin
          end;
 
          if strCmd = 'POWER' then begin
+            strParam := UpperCase(strParam);
             B := b19;
             for j := 1 to length(strParam) do begin
                D.FPowerTable[B] := strParam[j];
@@ -590,6 +592,7 @@ begin
          end;
 
          if strCmd = 'PXMULTI' then begin
+            strParam := UpperCase(strParam);
             if strParam = 'NORMAL' then begin
                D.FPXMulti := PX_Normal;
             end;
@@ -602,6 +605,7 @@ begin
          end;
 
          if strCmd = 'SERIAL' then begin
+            strParam := UpperCase(strParam);
             if strParam = 'ALL' then begin
                D.FSerialContestType := SER_ALL;
             end;
@@ -612,7 +616,7 @@ begin
 
          if strCmd = 'SERIALSTART' then begin
             for B := b19 to HiBand do begin
-               D.FSerialArray[B] := StrToInt(strParam);
+               D.FSerialArray[B] := StrToIntDef(strParam, 1);
             end;
          end;
 
@@ -737,7 +741,7 @@ end;
 
 class function TUserDefinedContest.ParseOnOff(strOn: string): Boolean;
 begin
-   if strOn = 'ON' then begin
+   if UpperCase(strOn) = 'ON' then begin
       Result := True;
    end
    else begin
