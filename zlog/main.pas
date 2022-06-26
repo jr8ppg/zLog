@@ -3709,6 +3709,7 @@ end;
 procedure TMainForm.FileExportDialogTypeChange(Sender: TObject);
 var
    L: TStringList;
+   E: TStringList;
    Index: Integer;
 begin
    L := TStringList.Create();
@@ -3719,9 +3720,15 @@ begin
    Index := FileExportDialog.FilterIndex - 1;
    Index := Index * 2 + 1;
 
-   FileExportDialog.DefaultExt := Copy(L.Strings[Index], 3);
+   E := TStringList.Create();
+   E.StrictDelimiter := True;
+   E.Delimiter := ';';
+   E.DelimitedText := L.Strings[Index];
+
+   FileExportDialog.DefaultExt := Copy(E.Strings[0], 3);
 
    L.Free();
+   E.Free();
 end;
 
 procedure TMainForm.HelpContents(Sender: TObject);
@@ -6028,6 +6035,8 @@ begin
       ext := '.' + UpperCase(FileExportDialog.DefaultExt);
    end;
 
+   if zyloExportFile(f) then Exit;
+
    if ext = '.ALL' then begin
       Log.SaveToFilezLogALL(f);
    end;
@@ -6063,7 +6072,7 @@ begin
       else begin
          Log.SaveToFilezLogCsv(f);
       end;
-   end;
+   end
 
    { Add code to save current file under SaveDialog.FileName }
 end;
@@ -6831,6 +6840,11 @@ begin
 
    if ext = '.CSV' then begin
       i := Log.LoadFromFilezLogCsv(ff);
+   end;
+
+   if i = 0 then begin
+      (* if none of the avobe formats succeeed *)
+      i := zyloImportFile(ff);
    end;
 
    if i > 0 then begin
