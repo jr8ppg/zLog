@@ -5407,6 +5407,10 @@ end;
 procedure TMainForm.CWStopButtonClick(Sender: TObject);
 begin
 //   CancelCqRepeat();
+   if dmZLogKeyer.IsPlaying = False then begin
+      Exit;
+   end;
+
    dmZLogKeyer.ClrBuffer;
    dmZLogKeyer.PauseCW();
    CWPlayButton.Visible := False;
