@@ -852,8 +852,13 @@ begin
          D := FBSList[i];
          SpotCheckWorked(D);
 
-         if (FNewMultiOnly = True) and (D.Call = aQSO.Callsign) then begin
-            FBSList[i] := nil;
+         if (FNewMultiOnly = True) then begin
+            if (D.IsNewMulti() = False) then begin
+               FBSList[i] := nil;
+            end;
+            if (D.Call = aQSO.Callsign) and (D.Band = aQSO.Band) then begin
+               FBSList[i] := nil;
+            end;
          end;
       end;
       FBSList.Pack();
