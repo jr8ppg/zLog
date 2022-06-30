@@ -2,7 +2,7 @@ object RateDialogEx: TRateDialogEx
   Left = 69
   Top = 213
   ActiveControl = ScoreGrid
-  Caption = 'QSO rate'
+  Caption = 'QSO Rate Ex'
   ClientHeight = 262
   ClientWidth = 390
   Color = clBtnFace
