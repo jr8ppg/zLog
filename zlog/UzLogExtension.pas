@@ -34,13 +34,6 @@ uses
 
 type
 	TzLogEvent = (evInsertQSO = 0, evUpdateQSO, evDeleteQSO);
-	TImportDialog = class(TOpenDialog)
-		procedure ImportMenuClicked(Sender: TObject);
-	end;
-	TExportDialog = class(TSaveDialog)
-		procedure ExportMenuClicked(Sender: TObject);
-		procedure FilterTypeChanged(Sender: TObject);
-	end;
 	TDLL = class
 		AllowInsert: procedure(fun: pointer); stdcall;
 		AllowDelete: procedure(fun: pointer); stdcall;
@@ -56,8 +49,8 @@ type
 		LaunchEvent: function: boolean; stdcall;
 		FinishEvent: function: boolean; stdcall;
 		WindowEvent: procedure(msg: pointer); stdcall;
-		ImportEvent: procedure(path, target: PAnsiChar); stdcall;
-		ExportEvent: procedure(path, format: PAnsiChar); stdcall;
+		ImportEvent: function (path, target: PAnsiChar): boolean; stdcall;
+		ExportEvent: function (path, format: PAnsiChar): boolean; stdcall;
 		AttachEvent: procedure(rule, config: PAnsiChar); stdcall;
 		AssignEvent: procedure(rule, config: PAnsiChar); stdcall;
 		DetachEvent: procedure(rule, config: PAnsiChar); stdcall;
@@ -88,7 +81,6 @@ type
 	end;
 
 var
-	Fmt: string;
 	LastDLL: TDLL;
 	FileDLL: TDLL;
 	RuleDLL: TDLL;
@@ -97,10 +89,9 @@ var
 	Enabled: boolean;
 	CityList: TCityList;
 	handlerNum: integer;
-	ImportMenu: TMenuItem;
-	ExportMenu: TMenuItem;
-	ImportDialog: TImportDialog;
-	ExportDialog: TExportDialog;
+	NumExports: integer;
+	ImportDialog: TOpenDialog;
+	ExportDialog: TSaveDialog;
 	Toasts: TNotificationCenter;
 	Rules: TDictionary<string, TDLL>;
 	Props: TDictionary<string, string>;
@@ -126,6 +117,8 @@ procedure zyloWindowMessage(var msg: TMsg);
 procedure zyloContestSwitch(test, path: string);
 procedure zyloContestOpened(test, path: string);
 procedure zyloContestClosed;
+function  zyloImportFile(FileName: string): integer;
+function  zyloExportFile(FileName: string): boolean;
 procedure zyloLogUpdated(event: TzLogEvent; bQSO, aQSO: TQSO);
 
 (*zLog contest rules*)
@@ -243,11 +236,9 @@ end;
 procedure FormatCallBack(f: PAnsiChar); stdcall;
 begin
 	if CtoD(f) = '' then Exit;
-	ImportDialog.Filter := CtoD(f);
-	ExportDialog.Filter := CtoD(f);
-	ImportMenu.OnClick := ImportDialog.ImportMenuClicked;
-	ExportMenu.OnClick := ExportDialog.ExportMenuClicked;
-	ExportDialog.OnTypeChange := ExportDialog.FilterTypeChanged;
+	NumExports := Length(SplitString(ExportDialog.Filter, '|')) div 2;
+	ImportDialog.Filter := ImportDialog.Filter + '|' + CtoD(f);
+	ExportDialog.Filter := ExportDialog.Filter + '|' + CtoD(f);
 	FileDLL := LastDLL;
 end;
 
@@ -367,19 +358,19 @@ begin
 	Result := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
 end;
 
-function GetDLLsINI: TList<String>;
+function GetDLLsINI: TList<string>;
 var
 	init: TIniFile;
 	text: string;
 begin
 	init := LoadIniFile;
 	text := init.ReadString(KEY_ZYLO, KEY_DLLS, '');
-	Result := TList<String>.Create;
+	Result := TList<string>.Create;
 	Result.AddRange(text.Split([',']));
 	init.Free;
 end;
 
-procedure SetDLLsINI(list: TList<String>);
+procedure SetDLLsINI(list: TList<string>);
 var
 	init: TIniFile;
 	text: TStringList;
@@ -389,13 +380,13 @@ begin
 	text := TStringList.Create;
 	for item in list do text.Append(item);
 	init.WriteString(KEY_ZYLO, KEY_DLLS, text.DelimitedText);
-   text.Free;
+	text.Free;
 	init.Free;
 end;
 
 procedure InstallDLL(path: string);
 var
-	list: TList<String>;
+	list: TList<string>;
 begin
 	MainForm.actionBackupExecute(MainForm);
 	list := GetDLLsINI;
@@ -409,7 +400,7 @@ end;
 
 procedure DisableDLL(path: string);
 var
-	list: TList<String>;
+	list: TList<string>;
 begin
 	list := GetDLLsINI;
 	list.Remove(path);
@@ -419,9 +410,9 @@ end;
 
 procedure DisableAll;
 var
-	list: TList<String>;
+	list: TList<string>;
 begin
-	list := TList<String>.Create;
+	list := TList<string>.Create;
 	SetDLLsINI(list);
 	list.Free;
 end;
@@ -442,13 +433,11 @@ end;
 
 procedure zyloRuntimeLaunch;
 var
-	list: TList<String>;
+	list: TList<string>;
 	path: string;
 begin
-	ImportMenu := MainForm.MergeFile1;
-	ExportMenu := MainForm.Export1;
-	ImportDialog := TImportDialog.Create(MainForm);
-	ExportDialog := TExportDialog.Create(MainForm);
+	ImportDialog := MainForm.FileImportDialog;
+	ExportDialog := MainForm.FileExportDialog;
 	Toasts := TNotificationCenter.Create(MainForm);
 	list := GetDLLsINI;
 	for path in list do TDLL.Create(path);
@@ -463,8 +452,6 @@ begin
 	for dll in Rules.Values do
 		if dll.FinishEvent then
 			FreeLibrary(dll.hnd);
-	ImportDialog.Free;
-	ExportDialog.Free;
 end;
 
 procedure zyloWindowMessage(var msg: TMsg);
@@ -522,6 +509,40 @@ begin
 	cfg := DtoC(RulePath);
 	for dll in Rules.Values do dll.DetachEvent(tag, cfg);
 	RuleDLL := nil;
+end;
+
+function zyloImportFile(FileName: string): integer;
+var
+	tmp: string;
+	msg: string;
+begin
+	if FileDLL <> nil then try
+		tmp := TPath.GetTempFileName;
+		if FileDLL.ImportEvent(DtoC(FileName), DtoC(tmp)) then
+			Result := Log.QsoList.MergeFile(tmp, True)
+		else begin
+			msg := FileName + ' is not supported';
+			MessageDlg(msg, mtWarning, [mbOK], 0);
+		end;
+	finally
+		TFile.Delete(tmp);
+	end;
+end;
+
+function zyloExportFile(FileName: string): boolean;
+var
+	fmt: string;
+	fil: string;
+	idx: integer;
+begin
+	fil := ExportDialog.Filter;
+	idx := ExportDialog.FilterIndex;
+	if (FileDLL <> nil) and (idx > NumExports) then begin
+		fmt := SplitString(fil, '|')[2 * idx - 2];
+		Log.SaveToFile(FileName);
+		FileDLL.ExportEvent(DtoC(FileName), DtoC(fmt));
+		Result := True;
+	end else Result := False;
 end;
 
 procedure zyloLogUpdated(event: TzLogEvent; bQSO, aQSO: TQSO);
@@ -599,44 +620,6 @@ begin
 	end else
 		Result := False;
 	CityList := nil;
-end;
-
-procedure TImportDialog.ImportMenuClicked(Sender: TObject);
-var
-	tmp: string;
-begin
-	if Execute then
-	try
-		tmp := TPath.GetTempFileName;
-		FileDLL.ImportEvent(DtoC(FileName), DtoC(tmp));
-		Log.QsoList.MergeFile(tmp, True);
-		Log.SortByTime;
-		MyContest.Renew;
-		MainForm.GridRefreshScreen;
-	finally
-		TFile.Delete(tmp);
-	end;
-end;
-
-procedure TExportDialog.ExportMenuClicked(Sender: TObject);
-begin
-	FilterTypeChanged(Sender);
-	FileName := ChangeFileExt(CurrentFileName, DefaultExt);
-	if Execute then begin
-		Log.SaveToFile(FileName);
-		FileDLL.ExportEvent(DtoC(FileName), DtoC(Fmt));
-	end;
-end;
-
-procedure TExportDialog.FilterTypeChanged(Sender: TObject);
-var
-	ext: string;
-begin
-	ext := SplitString(Filter, '|')[2 * FilterIndex - 1];
-	Fmt := SplitString(Filter, '|')[2 * FilterIndex - 2];
-	ext := TRegEx.Split(ext, ';')[0];
-	ext := copy(ext, 2, Length(ext));
-	DefaultExt := ext;
 end;
 
 procedure TButtonBridge.Handle(Sender: TObject);
@@ -719,12 +702,9 @@ end;
 
 procedure FreeRules;
 var
-   Rule: TDLL;
+	Rule: TDLL;
 begin
-   for Rule in Rules.Values do begin
-      Rule.Free;
-   end;
-   Rules.Free;
+	for Rule in Rules.Values do Rule.Free;
 end;
 
 initialization
@@ -733,6 +713,7 @@ initialization
 
 finalization
 	FreeRules;
+	Rules.Free;
 	Props.Free;
 
 end.
