@@ -3128,9 +3128,9 @@ object formOptions: TformOptions
         object radioSuperCheck1: TRadioButton
           Left = 64
           Top = 20
-          Width = 41
+          Width = 70
           Height = 17
-          Caption = 'ZLO'
+          Caption = 'ZLO/ZLOX'
           TabOrder = 1
           OnClick = OnNeedSuperCheckLoad
         end
@@ -3143,7 +3143,7 @@ object formOptions: TformOptions
           OnChange = OnNeedSuperCheckLoad
         end
         object radioSuperCheck2: TRadioButton
-          Left = 116
+          Left = 153
           Top = 20
           Width = 41
           Height = 17
