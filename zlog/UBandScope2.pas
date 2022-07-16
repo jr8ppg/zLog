@@ -104,6 +104,7 @@ uses
 constructor TBandScope2.Create(AOwner: TComponent; b: TBand);
 begin
    Inherited Create(AOwner);
+   Grid.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
    FCurrentBandOnly := False;
    FNewMultiOnly := False;
    FSelectFlag := False;
@@ -626,7 +627,7 @@ var
    end;
 begin
    with Grid.Canvas do begin
-      Font.Name := 'ÇlÇr ÉSÉVÉbÉN';
+      Font.Name := dmZLogGlobal.Settings.FBaseFontName;
       Brush.Color := Grid.Color;
       Brush.Style := bsSolid;
       FillRect(Rect);

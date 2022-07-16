@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
-  Dialogs, Menus, FileCtrl,
+  Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
   UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit, UzLogOperatorInfo;
 
 type
@@ -482,6 +482,11 @@ type
     radioPseQsl: TRadioButton;
     radioNoQsl: TRadioButton;
     checkBsNewMulti: TCheckBox;
+    tabsheetFont: TTabSheet;
+    GroupBox21: TGroupBox;
+    comboFontBase: TJvFontComboBox;
+    Label102: TLabel;
+    Label103: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -1041,6 +1046,9 @@ begin
          Settings.FAdditionalSoundComments[i] := FAdditionalVoiceEdit[i].Text;
       end;
       Settings.FSoundDevice := comboVoiceDevice.ItemIndex;
+
+      // Font
+      Settings.FBaseFontName := comboFontBase.FontName;
    end;
 end;
 
@@ -1501,6 +1509,9 @@ begin
          FAdditionalVoiceEdit[i].Text := Settings.FAdditionalSoundComments[i];
       end;
       comboVoiceDevice.ItemIndex := Settings.FSoundDevice;
+
+      // Font
+      comboFontBase.FontName := Settings.FBaseFontName;
    end;
 
    if FEditMode = 0 then begin   // 通常モード
