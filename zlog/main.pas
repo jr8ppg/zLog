@@ -2269,6 +2269,11 @@ begin
          S := S + '<comment:' + IntToStr(length(temp)) + '>' + temp;
       end;
 
+      temp := aQSO.FreqStr2;
+      if temp <> '' then begin
+         S := S + '<freq:' + IntToStr(length(temp)) + '>' + temp;
+      end;
+
       S := S + '<eor>';
 
       WriteLn(f, S);
