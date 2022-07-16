@@ -3554,6 +3554,7 @@ begin
    OpenDialog.Title := 'Open file';
    OpenDialog.InitialDir := dmZlogGlobal.Settings._logspath;
    OpenDialog.FileName := '';
+   OpenDialog.FilterIndex := dmZLogGlobal.Settings.FLastFileFilterIndex;
 
    if OpenDialog.Execute then begin
       zyloContestClosed;
@@ -3565,6 +3566,7 @@ begin
       RenewScore();
       FRateDialog.UpdateGraph();
       FRateDialogEx.UpdateGraph();
+      dmZLogGlobal.Settings.FLastFileFilterIndex := OpenDialog.FilterIndex;
    end;
 end;
 
@@ -7382,6 +7384,7 @@ begin
       if CurrentFileName = '' then begin
          OpenDialog.InitialDir := dmZlogGlobal.Settings._logspath;
          OpenDialog.FileName := '';
+         OpenDialog.FilterIndex := dmZLogGlobal.Settings.FLastFileFilterIndex;
 
          if OpenDialog.Execute then begin
             dmZLogGlobal.SetLogFileName(OpenDialog.FileName);
@@ -7389,6 +7392,8 @@ begin
             if FileExists(OpenDialog.FileName) then begin
                LoadNewContestFromFile(OpenDialog.FileName);
             end;
+
+            dmZLogGlobal.Settings.FLastFileFilterIndex := OpenDialog.FilterIndex;
          end
          else begin // user hit cancel
             MessageDlg('Data will NOT be saved until you enter the file name', mtWarning, [mbOK], 0); { HELP context 0 }

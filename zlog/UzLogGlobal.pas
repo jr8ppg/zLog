@@ -268,6 +268,9 @@ type
 
     // Guard Time after RIG Switch
     FRigSwitchGuardTime: Integer;
+
+    // Last FileFilter Index 0:ZLO 1:ZLOX
+    FLastFileFilterIndex: Integer;
   end;
 
 var
@@ -910,6 +913,9 @@ begin
       // Guard Time
       Settings.FRigSwitchGuardTime     := ini.ReadInteger('Rig', 'RigSwitchGuardTime', 100);
 
+      // Last FileFilter Index
+      Settings.FLastFileFilterIndex    := ini.ReadInteger('Preferences', 'LastFileFilterIndex', 0);
+
       //
       // Path
       //
@@ -1478,6 +1484,9 @@ begin
 
       // Guard Time
       ini.WriteInteger('Rig', 'RigSwitchGuardTime', Settings.FRigSwitchGuardTime);
+
+      // Last FileFilter Index
+      ini.WriteInteger('Preferences', 'LastFileFilterIndex', Settings.FLastFileFilterIndex);
 
       //
       // Path
