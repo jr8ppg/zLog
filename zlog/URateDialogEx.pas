@@ -283,6 +283,7 @@ var
    diff: TDateTime;
    H, M, S, ms: Word;
    i: Integer;
+   n: Integer;
    hindex: Integer;
    b: TBand;
    start_hour: Integer;
@@ -290,7 +291,7 @@ var
    function CalcStartTime(dt: TDateTime): TDateTime;
    begin
 //      Result := dt - (FShowLast - 1) / 24;
-      Result := IncHour(dt, FShowLast * -1);
+      Result := IncHour(dt, (FShowLast * -1) + 1);
    end;
 begin
    for b := b19 to bTarget do begin
@@ -342,7 +343,7 @@ begin
       start_hour := GetHour(_start + (1 / 24) * i);
       Str := IntToStr(start_hour);
 
-      ScoreGrid.Cells[i + 1, 0] := str;
+//      ScoreGrid.Cells[i + 1, 0] := str;
 
 //      if FShowLast > 12 then begin
 //         if (start_hour mod 2) = 1 then begin
@@ -403,6 +404,16 @@ begin
 
       // —ÝŒv
       SeriesTotalQSOs.Add(total_count);
+   end;
+
+   // ZAQ‚ÌŽžŠÔŒ©o‚µ
+   start_hour := GetHour(origin);
+   for i := 0 to 23 do begin
+      n := start_hour + i;
+      if n >= 24 then begin
+         n := n - 24;
+      end;
+      ScoreGrid.Cells[i + 1, 0] := IntToStr(n);
    end;
 
    with Chart1 do begin
@@ -762,7 +773,6 @@ var
    i: Integer;
    b: TBand;
    R: Integer;
-   h: Integer;
 begin
    ScoreGrid.Cells[0, 1] := MHzString[b19];
    ScoreGrid.Cells[0, 2] := '';
@@ -801,7 +811,7 @@ begin
    ScoreGrid.Cells[0, 35] := '%';
 
    for i := 1 to 24 do begin
-      ScoreGrid.Cells[i, 0] := IntToStr(i);
+      ScoreGrid.Cells[i, 0] := '';
       ScoreGrid.ColWidths[i] := 42;
    end;
    ScoreGrid.Cells[25, 0] := 'Total';
