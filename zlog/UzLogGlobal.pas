@@ -271,6 +271,9 @@ type
 
     // Last FileFilter Index 0:ZLO 1:ZLOX
     FLastFileFilterIndex: Integer;
+
+    // Base FontFace Name
+    FBaseFontName: string;
   end;
 
 var
@@ -916,6 +919,9 @@ begin
       // Last FileFilter Index
       Settings.FLastFileFilterIndex    := ini.ReadInteger('Preferences', 'LastFileFilterIndex', 0);
 
+      // Base FontFace Name
+      Settings.FBaseFontName           := ini.ReadString('Preferences', 'BaseFontName', 'ＭＳ ゴシック');
+
       //
       // Path
       //
@@ -1487,6 +1493,9 @@ begin
 
       // Last FileFilter Index
       ini.WriteInteger('Preferences', 'LastFileFilterIndex', Settings.FLastFileFilterIndex);
+
+      // Base FontFace Name
+      ini.WriteString('Preferences', 'BaseFontName', Settings.FBaseFontName);
 
       //
       // Path

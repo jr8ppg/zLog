@@ -335,6 +335,8 @@ end;
 procedure TCommForm.FormCreate(Sender: TObject);
 begin
    InitializeCriticalSection(FSpotListLock);
+   ListBox.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+   Console.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
    FRelayPacketData := False;
    FSpotList := TSpotList.Create;
    FCommStarted := False;

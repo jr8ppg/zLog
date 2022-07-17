@@ -3356,6 +3356,11 @@ begin
    FInitialized   := False;
    InitAtomTable(1000);
 
+   // フォント設定
+   Grid.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+   EditPanel1R.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+   EditPanel2R.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+
    // QSO Editパネルの初期設定
    InitQsoEditPanel();
    UpdateQsoEditPanel(1);

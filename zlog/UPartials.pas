@@ -221,6 +221,7 @@ end;
 
 procedure TPartialCheck.FormCreate(Sender: TObject);
 begin
+   ListBox.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
    AllBand := True;
    // CheckBox1.Checked := AllBand;
    _CheckCall := True;
