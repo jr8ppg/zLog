@@ -268,6 +268,12 @@ type
 
     // Guard Time after RIG Switch
     FRigSwitchGuardTime: Integer;
+
+    // Last FileFilter Index 0:ZLO 1:ZLOX
+    FLastFileFilterIndex: Integer;
+
+    // Base FontFace Name
+    FBaseFontName: string;
   end;
 
 var
@@ -910,6 +916,12 @@ begin
       // Guard Time
       Settings.FRigSwitchGuardTime     := ini.ReadInteger('Rig', 'RigSwitchGuardTime', 100);
 
+      // Last FileFilter Index
+      Settings.FLastFileFilterIndex    := ini.ReadInteger('Preferences', 'LastFileFilterIndex', 0);
+
+      // Base FontFace Name
+      Settings.FBaseFontName           := ini.ReadString('Preferences', 'BaseFontName', 'ＭＳ ゴシック');
+
       //
       // Path
       //
@@ -1478,6 +1490,12 @@ begin
 
       // Guard Time
       ini.WriteInteger('Rig', 'RigSwitchGuardTime', Settings.FRigSwitchGuardTime);
+
+      // Last FileFilter Index
+      ini.WriteInteger('Preferences', 'LastFileFilterIndex', Settings.FLastFileFilterIndex);
+
+      // Base FontFace Name
+      ini.WriteString('Preferences', 'BaseFontName', Settings.FBaseFontName);
 
       //
       // Path

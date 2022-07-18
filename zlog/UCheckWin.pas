@@ -120,6 +120,7 @@ end;
 
 procedure TCheckWin.FormCreate(Sender: TObject);
 begin
+   ListBox.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
    ListCWandPh := False;
 end;
 

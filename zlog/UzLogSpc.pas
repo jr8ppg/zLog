@@ -487,6 +487,7 @@ var
    F: TSearchRec;
    S: string;
    L: TQSOList;
+   ext: string;
 begin
    if strStartFoler = '' then begin
       Exit;
@@ -496,15 +497,18 @@ begin
    try
       S := IncludeTrailingPathDelimiter(strStartFoler);
 
-      ret := FindFirst(S + '*.ZLO', faAnyFile, F);
+      ret := FindFirst(S + '*.ZLO?', faAnyFile, F);
       while ret = 0 do begin
          if Terminated = True then begin
             Break;
          end;
 
+         ext := ExtractFileExt(UpperCase(F.Name));
+
          if ((F.Attr and faDirectory) = 0) and
             ((F.Attr and faVolumeID) = 0) and
-            ((F.Attr and faSysFile) = 0) then begin
+            ((F.Attr and faSysFile) = 0) and
+            ((ext = '.ZLO') or (ext = '.ZLOX')) then begin
 
             L.Clear();
 

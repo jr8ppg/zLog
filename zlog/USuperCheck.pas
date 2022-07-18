@@ -56,7 +56,7 @@ end;
 
 procedure TSuperCheck.FormCreate(Sender: TObject);
 begin
-//
+   ListBox.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
 end;
 
 procedure TSuperCheck.FormDestroy(Sender: TObject);

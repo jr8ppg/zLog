@@ -148,6 +148,7 @@ type
     function GetRSTSentStr(): string;
     function GetRSTRcvdStr(): string;
     function GetFreqStr(): string;
+    function GetFreqStr2(): string;
     function GetMemoStr(): string;
   public
     constructor Create;
@@ -218,6 +219,7 @@ type
     property RSTSentStr: string read GetRSTSentStr;
     property RSTRcvdStr: string read GetRSTRcvdStr;
     property FreqStr: string read GetFreqStr;
+    property FreqStr2: string read GetFreqStr2;
     property MemoStr: string read GetMemoStr;
 
     property FileRecord: TQSOData read GetFileRecord write SetFileRecord;
@@ -643,22 +645,37 @@ var
    fFreq: Extended;
    b2: TBand;
 begin
-   strFreq := Self.Freq;
-
-   fFreq := StrToFloatDef(strFreq, 0);
-   if fFreq = 0 then begin
+   strFreq := GetFreqStr2();
+   if strFreq = '' then begin
       Result := Self.BandStr;
       Exit;
    end;
 
    {$IFNDEF ZSERVER}
    // FreqÇ™BandÇ∆à·Ç§èÍçáÇÕBandÇï‘Ç∑
+   fFreq := StrToFloatDef(strFreq, 0);
    b2 := dmZLogGlobal.BandPlan.FreqToBand(Trunc(fFreq) * 1000);
    if b2 <> Self.Band then begin
       Result := Self.BandStr;
       Exit;
    end;
    {$ENDIF}
+
+   Result := strFreq;
+end;
+
+function TQSO.GetFreqStr2(): string;
+var
+   strFreq: string;
+   fFreq: Extended;
+begin
+   strFreq := Self.Freq;
+
+   fFreq := StrToFloatDef(strFreq, 0);
+   if fFreq = 0 then begin
+      Result := '';
+      Exit;
+   end;
 
    strFreq := Format('%.4f', [fFreq / 1000]);
 
@@ -2898,8 +2915,8 @@ begin
          Exit;
       end;
 
-      i := 0;
       try
+         i := 0;
          for i := 1 to slFile.Count - 1 do begin
             slLine.Clear();
             slLine.CommaText := slFile.Strings[i] + DupeString(',', 32);

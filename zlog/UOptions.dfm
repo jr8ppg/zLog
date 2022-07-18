@@ -3128,9 +3128,9 @@ object formOptions: TformOptions
         object radioSuperCheck1: TRadioButton
           Left = 64
           Top = 20
-          Width = 41
+          Width = 70
           Height = 17
-          Caption = 'ZLO'
+          Caption = 'ZLO/ZLOX'
           TabOrder = 1
           OnClick = OnNeedSuperCheckLoad
         end
@@ -3143,7 +3143,7 @@ object formOptions: TformOptions
           OnChange = OnNeedSuperCheckLoad
         end
         object radioSuperCheck2: TRadioButton
-          Left = 116
+          Left = 153
           Top = 20
           Width = 41
           Height = 17
@@ -4710,6 +4710,57 @@ object formOptions: TformOptions
           Width = 113
           Height = 21
           TabOrder = 4
+        end
+      end
+    end
+    object tabsheetFont: TTabSheet
+      Caption = 'Font'
+      ImageIndex = 13
+      object GroupBox21: TGroupBox
+        Left = 6
+        Top = 4
+        Width = 423
+        Height = 105
+        Caption = 'Font'
+        TabOrder = 0
+        object Label102: TLabel
+          Left = 12
+          Top = 23
+          Width = 60
+          Height = 13
+          Caption = 'Callsign Font'
+        end
+        object Label103: TLabel
+          Left = 92
+          Top = 76
+          Width = 228
+          Height = 12
+          Caption = #8251#22793#26356#12434#26377#21177#12395#12377#12427#12395#12399#12289#20877#36215#21205#12375#12390#12367#12384#12373#12356
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+        end
+        object comboFontBase: TJvFontComboBox
+          Left = 84
+          Top = 21
+          Width = 321
+          Height = 22
+          DroppedDownWidth = 321
+          MaxMRUCount = 0
+          FontName = #65325#65331' '#12468#12471#12483#12463
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = #65325#65331' '#12468#12471#12483#12463
+          Font.Style = []
+          ItemIndex = 67
+          Options = [foFixedPitchOnly, foWysiWyg]
+          ParentFont = False
+          Sorted = True
+          TabOrder = 0
         end
       end
     end
