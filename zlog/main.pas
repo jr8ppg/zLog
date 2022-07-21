@@ -673,6 +673,9 @@ type
     ToolBarPanel: TPanel;
     menuSortByTxNoBandTime: TMenuItem;
     menuSortByTxNoTime: TMenuItem;
+    N9: TMenuItem;
+    N10: TMenuItem;
+    N12: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);

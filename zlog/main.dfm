@@ -5977,17 +5977,23 @@ object MainForm: TMainForm
       object ShowCurrentBandOnly: TMenuItem
         Action = actionShowCurrentBandOnly
       end
+      object N10: TMenuItem
+        Caption = '-'
+      end
       object menuSortByTime: TMenuItem
         Caption = 'Sort by Time'
         OnClick = menuSortByTimeClick
       end
       object menuSortByTxNoBandTime: TMenuItem
-        Caption = 'Sort By TX#,Band,Time'
+        Caption = 'Sort by TX#,Band,Time'
         OnClick = menuSortByTxNoBandTimeClick
       end
       object menuSortByTxNoTime: TMenuItem
-        Caption = 'Sort By TX#,Time'
+        Caption = 'Sort by TX#,Time'
         OnClick = menuSortByTxNoTimeClick
+      end
+      object N9: TMenuItem
+        Caption = '-'
       end
       object mnHideCWPhToolBar: TMenuItem
         Caption = 'Hide CW/Ph Tool Bar'
@@ -5996,6 +6002,9 @@ object MainForm: TMainForm
       object mnHideMenuToolbar: TMenuItem
         Caption = 'Hide Menu Tool Bar'
         OnClick = mnHideMenuToolbarClick
+      end
+      object N12: TMenuItem
+        Caption = '-'
       end
       object IncreaseFontSize1: TMenuItem
         Action = actionIncreaseFontSize
