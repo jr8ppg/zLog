@@ -5977,9 +5977,17 @@ object MainForm: TMainForm
       object ShowCurrentBandOnly: TMenuItem
         Action = actionShowCurrentBandOnly
       end
-      object SortbyTime1: TMenuItem
+      object menuSortByTime: TMenuItem
         Caption = 'Sort by Time'
-        OnClick = SortbyTime1Click
+        OnClick = menuSortByTimeClick
+      end
+      object menuSortByTxNoBandTime: TMenuItem
+        Caption = 'Sort By TX#,Band,Time'
+        OnClick = menuSortByTxNoBandTimeClick
+      end
+      object menuSortByTxNoTime: TMenuItem
+        Caption = 'Sort By TX#,Time'
+        OnClick = menuSortByTxNoTimeClick
       end
       object mnHideCWPhToolBar: TMenuItem
         Caption = 'Hide CW/Ph Tool Bar'
