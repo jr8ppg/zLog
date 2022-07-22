@@ -241,6 +241,16 @@ type
     function Compare(const Left, Right: TQSO): Integer; override;
   end;
 
+  TQSOTxNoBandTimeComparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
+  TQSOTxNoTimeComparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
   TQSODupeWithoutModeComparer = class(TComparer<TQSO>)
   public
     function Compare(const Left, Right: TQSO): Integer; override;
@@ -256,13 +266,15 @@ type
     function Compare(const Left, Right: TQSO): Integer; override;
   end;
 
-  TSortMethod = ( soCallsign = 0, soTime, soBand, soDupeCheck );
+  TSortMethod = ( soCallsign = 0, soTime, soBand, soDupeCheck, soTxNoBandTime, soTxNoTime );
 
   TQSOList = class(TObjectList<TQSO>)
   private
     FCallsignComparer: TQSOCallsignComparer;
     FTimeComparer: TQSOTimeComparer;
     FBandComparer: TQSOBandComparer;
+    FTxNoBandTimeComparer: TQSOTxNoBandTimeComparer;
+    FTxNoTimeComparer: TQSOTxNoTimeComparer;
     FDupeWithoutModeComparer: TQSODupeWithoutModeComparer;
     FDupeWithModeComparer: TQSODupeWithModeComparer;
     FDupeWithMode2Comparer: TQSODupeWithMode2Comparer;
@@ -334,7 +346,10 @@ type
     procedure AddQue(aQSO : TQSO);
     procedure ProcessQue;
     procedure Clear2(); // deletes all QSOs without destroying the List. Keeps List[0] intact
-    procedure SortByTime;
+    procedure SortByTime();
+    procedure SortByTxNoBandTime();
+    procedure SortByTxNoTime();
+
     function ContainBand : TBandBool;
     procedure SetDupeFlags;
 //    procedure DeleteBand(B : TBand);
@@ -1232,6 +1247,8 @@ begin
    FCallsignComparer := TQSOCallsignComparer.Create();
    FTimeComparer := TQSOTimeComparer.Create();
    FBandComparer := TQSOBandComparer.Create();
+   FTxNoBandTimeComparer := TQSOTxNoBandTimeComparer.Create();
+   FTxNoTimeComparer := TQSOTxNoTimeComparer.Create();
    FDupeWithoutModeComparer := TQSODupeWithoutModeComparer.Create();
    FDupeWithModeComparer := TQSODupeWithModeComparer.Create();
    FDupeWithMode2Comparer := TQSODupeWithMode2Comparer.Create();
@@ -1243,6 +1260,8 @@ begin
    FCallsignComparer.Free();
    FTimeComparer.Free();
    FBandComparer.Free();
+   FTxNoBandTimeComparer.Free();
+   FTxNoTimeComparer.Free();
    FDupeWithoutModeComparer.Free();
    FDupeWithModeComparer.Free();
    FDupeWithMode2Comparer.Free();
@@ -1384,6 +1403,14 @@ begin
             Sort(FDupeWithoutModeComparer);
          end;
       end;
+
+      soTxNoBandTime: begin
+         Sort(FTxNoBandTimeComparer);
+      end;
+
+      soTxNoTime: begin
+         Sort(FTxNoTimeComparer);
+      end;
    end;
 end;
 
@@ -1511,13 +1538,45 @@ begin
    Result := y;
 end;
 
-procedure TLog.SortByTime;
+procedure TLog.SortByTime();
 begin
    if TotalQSO < 2 then begin
       exit;
    end;
 
    FQSOList.Sort(soTime, FAcceptDifferentMode, FAllPhone);
+end;
+
+procedure TLog.SortByTxNoBandTime();
+var
+   Q: TQSO;
+begin
+   if TotalQSO < 2 then begin
+      exit;
+   end;
+
+   Q := FQSOList[0];
+   FQSOList.Extract(Q);
+
+   FQSOList.Sort(soTxNoBandTime, FAcceptDifferentMode, FAllPhone);
+
+   FQSOList.Insert(0, Q);
+end;
+
+procedure TLog.SortByTxNoTime();
+var
+   Q: TQSO;
+begin
+   if TotalQSO < 2 then begin
+      exit;
+   end;
+
+   Q := FQSOList[0];
+   FQSOList.Extract(Q);
+
+   FQSOList.Sort(soTxNoTime, FAcceptDifferentMode, FAllPhone);
+
+   FQSOList.Insert(0, Q);
 end;
 
 procedure TLog.Clear2();
@@ -2915,8 +2974,8 @@ begin
          Exit;
       end;
 
+      i := 0;
       try
-         i := 0;
          for i := 1 to slFile.Count - 1 do begin
             slLine.Clear();
             slLine.CommaText := slFile.Strings[i] + DupeString(',', 32);
@@ -3260,6 +3319,23 @@ end;
 function TQSOBandComparer.Compare(const Left, Right: TQSO): Integer;
 begin
    Result := Integer(Left.Band) - Integer(Right.Band);
+end;
+
+{ TQSOTxNoBandTimeComparer }
+
+function TQSOTxNoBandTimeComparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   Result := CompareDateTime(Left.Time, Right.Time) +
+             ((Integer(Left.Band) - Integer(Right.Band)) * 10) +
+             ((Left.TX - Right.TX) * 100);
+end;
+
+{ TQSOTxNoTimeComparer }
+
+function TQSOTxNoTimeComparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   Result := CompareDateTime(Left.Time, Right.Time) +
+             ((Left.TX - Right.TX) * 10);
 end;
 
 { TQSODupeWithoutModeComparer }

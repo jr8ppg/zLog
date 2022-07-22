@@ -391,7 +391,7 @@ type
     CreateDupeCheckSheetZPRINT1: TMenuItem;
     View1: TMenuItem;
     ShowCurrentBandOnly: TMenuItem;
-    SortbyTime1: TMenuItem;
+    menuSortByTime: TMenuItem;
     CallsignEdit1: TOvrEdit;
     NumberEdit1: TOvrEdit;
     MemoEdit1: TOvrEdit;
@@ -671,6 +671,11 @@ type
     actionPseQsl: TAction;
     actionNoQsl: TAction;
     ToolBarPanel: TPanel;
+    menuSortByTxNoBandTime: TMenuItem;
+    menuSortByTxNoTime: TMenuItem;
+    N9: TMenuItem;
+    N10: TMenuItem;
+    N12: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -732,7 +737,7 @@ type
     procedure SerialEdit1Change(Sender: TObject);
     procedure GridBandChangeClick(Sender: TObject);
     procedure Load1Click(Sender: TObject);
-    procedure SortbyTime1Click(Sender: TObject);
+    procedure menuSortByTimeClick(Sender: TObject);
     procedure menuAboutClick(Sender: TObject);
     procedure HelpZyLOClick(Sender: TObject);
     procedure DateEdit1Change(Sender: TObject);
@@ -923,6 +928,8 @@ type
     procedure actionChangeTxNrExecute(Sender: TObject);
     procedure actionPseQslExecute(Sender: TObject);
     procedure actionNoQslExecute(Sender: TObject);
+    procedure menuSortByTxNoBandTimeClick(Sender: TObject);
+    procedure menuSortByTxNoTimeClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -6157,9 +6164,21 @@ begin
      ZLinkForm.LoadLogFromZServer;  // does not clear }
 end;
 
-procedure TMainForm.SortbyTime1Click(Sender: TObject);
+procedure TMainForm.menuSortByTimeClick(Sender: TObject);
 begin
-   Log.SortByTime;
+   Log.SortByTime();
+   GridRefreshScreen();
+end;
+
+procedure TMainForm.menuSortByTxNoBandTimeClick(Sender: TObject);
+begin
+   Log.SortByTxNoBandTime();
+   GridRefreshScreen();
+end;
+
+procedure TMainForm.menuSortByTxNoTimeClick(Sender: TObject);
+begin
+   Log.SortByTxNoTime();
    GridRefreshScreen();
 end;
 
