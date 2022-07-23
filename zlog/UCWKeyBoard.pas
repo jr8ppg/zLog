@@ -95,7 +95,7 @@ end;
 
 procedure TCWKeyBoard.FormCreate(Sender: TObject);
 begin
-//
+   Console.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
 end;
 
 procedure TCWKeyBoard.FormShow(Sender: TObject);
