@@ -5980,17 +5980,52 @@ object MainForm: TMainForm
       object N10: TMenuItem
         Caption = '-'
       end
-      object menuSortByTime: TMenuItem
-        Caption = 'Sort by Time'
-        OnClick = menuSortByTimeClick
-      end
-      object menuSortByTxNoBandTime: TMenuItem
-        Caption = 'Sort by TX#,Band,Time'
-        OnClick = menuSortByTxNoBandTimeClick
-      end
-      object menuSortByTxNoTime: TMenuItem
-        Caption = 'Sort by TX#,Time'
-        OnClick = menuSortByTxNoTimeClick
+      object Sort1: TMenuItem
+        Caption = 'Sort'
+        object menuSortByCallsign: TMenuItem
+          Caption = 'Sort by Callsign'
+          OnClick = menuSortByClick
+        end
+        object menuSortByTime: TMenuItem
+          Tag = 1
+          Caption = 'Sort by Time'
+          OnClick = menuSortByClick
+        end
+        object menuSortByBand: TMenuItem
+          Tag = 2
+          Caption = 'Sort by Band'
+          OnClick = menuSortByClick
+        end
+        object menuSortByMode: TMenuItem
+          Tag = 3
+          Caption = 'Sort by Mode'
+          OnClick = menuSortByClick
+        end
+        object menuSortByPower: TMenuItem
+          Tag = 4
+          Caption = 'Sort by Power'
+          OnClick = menuSortByClick
+        end
+        object menuSortByTxNo: TMenuItem
+          Tag = 5
+          Caption = 'Sort by TX#'
+          OnClick = menuSortByClick
+        end
+        object menuSortByPoint: TMenuItem
+          Tag = 6
+          Caption = 'Sort by Point'
+          OnClick = menuSortByClick
+        end
+        object menuSortByOperator: TMenuItem
+          Tag = 7
+          Caption = 'Sort by Operator'
+          OnClick = menuSortByClick
+        end
+        object menuSortByMemo: TMenuItem
+          Tag = 8
+          Caption = 'Sort by Memo'
+          OnClick = menuSortByClick
+        end
       end
       object N9: TMenuItem
         Caption = '-'

@@ -93,6 +93,7 @@ type
 
   TQSO = class(TObject)
   private
+    FIndex: Integer;
     FTime: TDateTime;
     FCallSign: string; { 13 bytes }
     FNrSent: string;
@@ -173,6 +174,7 @@ type
 
     procedure Assign(src: TQSO);
 
+    property Index: Integer read FIndex write FIndex;
     property Time: TDateTime read FTime write FTime;
     property Callsign: string read FCallsign write FCallsign;
     property NrSent: string read FNrSent write FNrSent;
@@ -241,6 +243,36 @@ type
     function Compare(const Left, Right: TQSO): Integer; override;
   end;
 
+  TQSOModeComparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
+  TQSOPowerComparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
+  TQSOTxNoComparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
+  TQSOPointComparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
+  TQSOOperatorComparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
+  TQSOMemoComparer = class(TComparer<TQSO>)
+  public
+    function Compare(const Left, Right: TQSO): Integer; override;
+  end;
+
   TQSOTxNoBandTimeComparer = class(TComparer<TQSO>)
   public
     function Compare(const Left, Right: TQSO): Integer; override;
@@ -266,15 +298,20 @@ type
     function Compare(const Left, Right: TQSO): Integer; override;
   end;
 
-  TSortMethod = ( soCallsign = 0, soTime, soBand, soDupeCheck, soTxNoBandTime, soTxNoTime );
+  TSortMethod = ( soCallsign = 0, soTime, soBand, soMode, soPower, soTxNo,
+                  soPoint, soOperator, soMemo, soDupeCheck, soTxNoBandTime, soTxNoTime );
 
   TQSOList = class(TObjectList<TQSO>)
   private
     FCallsignComparer: TQSOCallsignComparer;
     FTimeComparer: TQSOTimeComparer;
     FBandComparer: TQSOBandComparer;
-    FTxNoBandTimeComparer: TQSOTxNoBandTimeComparer;
-    FTxNoTimeComparer: TQSOTxNoTimeComparer;
+    FModeComparer: TQSOModeComparer;
+    FPowerComparer: TQSOPowerComparer;
+    FTxNoComparer: TQSOTxNoComparer;
+    FPointComparer: TQSOPointComparer;
+    FOperatorComparer: TQSOOperatorComparer;
+    FMemoComparer: TQSOMemoComparer;
     FDupeWithoutModeComparer: TQSODupeWithoutModeComparer;
     FDupeWithModeComparer: TQSODupeWithModeComparer;
     FDupeWithMode2Comparer: TQSODupeWithMode2Comparer;
@@ -346,6 +383,7 @@ type
     procedure AddQue(aQSO : TQSO);
     procedure ProcessQue;
     procedure Clear2(); // deletes all QSOs without destroying the List. Keeps List[0] intact
+    procedure SortBy(SortMethod: TSortMethod);
     procedure SortByTime();
     procedure SortByTxNoBandTime();
     procedure SortByTxNoTime();
@@ -1247,8 +1285,12 @@ begin
    FCallsignComparer := TQSOCallsignComparer.Create();
    FTimeComparer := TQSOTimeComparer.Create();
    FBandComparer := TQSOBandComparer.Create();
-   FTxNoBandTimeComparer := TQSOTxNoBandTimeComparer.Create();
-   FTxNoTimeComparer := TQSOTxNoTimeComparer.Create();
+   FModeComparer := TQSOModeComparer.Create();
+   FPowerComparer := TQSOPowerComparer.Create();
+   FTxNoComparer := TQSOTxNoComparer.Create();
+   FPointComparer := TQSOPointComparer.Create();
+   FOperatorComparer := TQSOOperatorComparer.Create();
+   FMemoComparer := TQSOMemoComparer.Create();
    FDupeWithoutModeComparer := TQSODupeWithoutModeComparer.Create();
    FDupeWithModeComparer := TQSODupeWithModeComparer.Create();
    FDupeWithMode2Comparer := TQSODupeWithMode2Comparer.Create();
@@ -1260,8 +1302,12 @@ begin
    FCallsignComparer.Free();
    FTimeComparer.Free();
    FBandComparer.Free();
-   FTxNoBandTimeComparer.Free();
-   FTxNoTimeComparer.Free();
+   FModeComparer.Free();
+   FPowerComparer.Free();
+   FTxNoComparer.Free();
+   FPointComparer.Free();
+   FOperatorComparer.Free();;
+   FMemoComparer.Free();
    FDupeWithoutModeComparer.Free();
    FDupeWithModeComparer.Free();
    FDupeWithMode2Comparer.Free();
@@ -1376,7 +1422,13 @@ begin
 end;
 
 procedure TQSOList.Sort(SortMethod: TSortMethod; fWithMode: Boolean; fAllPhone: Boolean);
+var
+   i: Integer;
 begin
+   for i := 0 to Count - 1 do begin
+      Items[i].Index := i;
+   end;
+
    case SortMethod of
       soCallsign: begin
          Sort(FCallsignComparer);
@@ -1388,6 +1440,30 @@ begin
 
       soBand: begin
          Sort(FBandComparer);
+      end;
+
+      soMode: begin
+         Sort(FModeComparer);
+      end;
+
+      soPower: begin
+         Sort(FPowerComparer);
+      end;
+
+      soTxNo: begin
+         Sort(FTxNoComparer);
+      end;
+
+      soPoint: begin
+         Sort(FPointComparer);
+      end;
+
+      soOperator: begin
+         Sort(FOperatorComparer);
+      end;
+
+      soMemo: begin
+         Sort(FMemoComparer);
       end;
 
       soDupeCheck: begin
@@ -1402,14 +1478,6 @@ begin
          else begin
             Sort(FDupeWithoutModeComparer);
          end;
-      end;
-
-      soTxNoBandTime: begin
-         Sort(FTxNoBandTimeComparer);
-      end;
-
-      soTxNoTime: begin
-         Sort(FTxNoTimeComparer);
       end;
    end;
 end;
@@ -1536,6 +1604,15 @@ begin
 
    DecodeDate(T, y, M, d);
    Result := y;
+end;
+
+procedure TLog.SortBy(SortMethod: TSortMethod);
+begin
+   if TotalQSO < 2 then begin
+      exit;
+   end;
+
+   FQSOList.Sort(SortMethod, FAcceptDifferentMode, FAllPhone);
 end;
 
 procedure TLog.SortByTime();
@@ -3304,21 +3381,108 @@ end;
 
 function TQSOCallsignComparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   Result := CompareText(Left.Callsign, Right.Callsign);
+   if CompareText(Left.Callsign, Right.Callsign) = 0 then begin
+      Result := (Left.Index - Right.Index);
+   end
+   else begin
+      Result := CompareText(Left.Callsign, Right.Callsign);
+   end;
 end;
 
 { TQSOTimeComparer }
 
 function TQSOTimeComparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   Result := CompareDateTime(Left.Time, Right.Time);
+   if CompareDateTime(Left.Time, Right.Time) = 0 then begin
+      Result := (Left.Index - Right.Index);
+   end
+   else begin
+      Result := CompareDateTime(Left.Time, Right.Time);
+   end;
 end;
 
 { TQSOBandComparer }
 
 function TQSOBandComparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   Result := Integer(Left.Band) - Integer(Right.Band);
+   if Left.Band = Right.Band then begin
+      Result := (Left.Index - Right.Index);
+   end
+   else begin
+      Result := Integer(Left.Band) - Integer(Right.Band);
+   end;
+end;
+
+{ TQSOModeComparer }
+
+function TQSOModeComparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   if Left.Mode = Right.Mode then begin
+      Result := (Left.Index - Right.Index);
+   end
+   else begin
+      Result := Integer(Left.Mode) - Integer(Right.Mode);
+   end;
+end;
+
+{ TQSOPowerComparer }
+
+function TQSOPowerComparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   if Left.Power = Right.Power then begin
+      Result := (Left.Index - Right.Index);
+   end
+   else begin
+      Result := Integer(Left.Power) - Integer(Right.Power);
+   end;
+end;
+
+{ TQSOTxNoComparer }
+
+function TQSOTxNoComparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   if Left.TX = Right.TX then begin
+      Result := (Left.Index - Right.Index);
+   end
+   else begin
+      Result := Left.TX - Right.TX;
+   end;
+end;
+
+{ TQSOPointComparer }
+
+function TQSOPointComparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   if Left.Points = Right.Points then begin
+      Result := (Left.Index - Right.Index);
+   end
+   else begin
+      Result := Left.Points - Right.Points;
+   end;
+end;
+
+{ TQSOOperatorComparer }
+
+function TQSOOperatorComparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   if CompareText(Left.Operator, Right.Operator) = 0 then begin
+      Result := (Left.Index - Right.Index);
+   end
+   else begin
+      Result := CompareText(Left.Operator, Right.Operator);
+   end;
+end;
+
+{ TQSOMemoComparer }
+
+function TQSOMemoComparer.Compare(const Left, Right: TQSO): Integer;
+begin
+   if CompareText(Left.Memo, Right.Memo) = 0 then begin
+      Result := (Left.Index - Right.Index);
+   end
+   else begin
+      Result := CompareText(Left.Memo, Right.Memo);
+   end;
 end;
 
 { TQSOTxNoBandTimeComparer }
