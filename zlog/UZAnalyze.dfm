@@ -80,7 +80,9 @@ object ZAnalyze: TZAnalyze
       'ZAF'
       'ZAQ'
       'ZAA'
-      'ZAA(ALL)')
+      'ZAA(ALL)'
+      'ZAD'
+      'ZOP')
     TabIndex = 0
     OnChange = TabControl1Change
     object Memo1: TMemo
