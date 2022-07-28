@@ -1607,21 +1607,35 @@ begin
 end;
 
 procedure TLog.SortBy(SortMethod: TSortMethod);
+var
+   Q: TQSO;
 begin
    if TotalQSO < 2 then begin
       exit;
    end;
 
+   Q := FQSOList[0];
+   FQSOList.Extract(Q);
    FQSOList.Sort(SortMethod, FAcceptDifferentMode, FAllPhone);
+   FQSOList.Insert(0, Q);
+
+   FSaved := False;
 end;
 
 procedure TLog.SortByTime();
+var
+   Q: TQSO;
 begin
    if TotalQSO < 2 then begin
       exit;
    end;
 
+   Q := FQSOList[0];
+   FQSOList.Extract(Q);
    FQSOList.Sort(soTime, FAcceptDifferentMode, FAllPhone);
+   FQSOList.Insert(0, Q);
+
+   FSaved := False;
 end;
 
 procedure TLog.SortByTxNoBandTime();
@@ -1634,10 +1648,10 @@ begin
 
    Q := FQSOList[0];
    FQSOList.Extract(Q);
-
    FQSOList.Sort(soTxNoBandTime, FAcceptDifferentMode, FAllPhone);
-
    FQSOList.Insert(0, Q);
+
+   FSaved := False;
 end;
 
 procedure TLog.SortByTxNoTime();
@@ -1650,10 +1664,10 @@ begin
 
    Q := FQSOList[0];
    FQSOList.Extract(Q);
-
    FQSOList.Sort(soTxNoTime, FAcceptDifferentMode, FAllPhone);
-
    FQSOList.Insert(0, Q);
+
+   FSaved := False;
 end;
 
 procedure TLog.Clear2();
