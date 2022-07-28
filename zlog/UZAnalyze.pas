@@ -65,6 +65,7 @@ type
     TabControl1: TTabControl;
     checkExcludeZeroPoint: TCheckBox;
     checkExcludeZeroHour: TCheckBox;
+    buttonSave: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -74,6 +75,7 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure CreateParams(var Params: TCreateParams); override;
     procedure OnAnalyzeUpdate( var Message: TMessage ); message WM_ANALYZE_UPDATE;
+    procedure buttonSaveClick(Sender: TObject);
   private
     { Private êÈåæ }
     FStartHour: Integer;
@@ -151,6 +153,43 @@ begin
    ShowAll(Memo1.Lines);
    Memo1.SelStart := 0;
    Memo1.SelLength := 0;
+end;
+
+procedure TZAnalyze.buttonSaveClick(Sender: TObject);
+var
+   fname: string;
+begin
+   fname := CurrentFileName();
+
+   // ZAF
+   TabControl1.TabIndex := 0;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.ZAF');
+   Memo1.Lines.SaveToFile(fname);
+
+   // ZAQ
+   TabControl1.TabIndex := 1;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.ZAQ');
+   Memo1.Lines.SaveToFile(fname);
+
+   // ZAA
+   TabControl1.TabIndex := 3;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.ZAA');
+   Memo1.Lines.SaveToFile(fname);
+
+   // ZAD
+   TabControl1.TabIndex := 4;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.ZAD');
+   Memo1.Lines.SaveToFile(fname);
+
+   // ZAD
+   TabControl1.TabIndex := 5;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.ZOP');
+   Memo1.Lines.SaveToFile(fname);
 end;
 
 procedure TZAnalyze.buttonUpdateClick(Sender: TObject);
