@@ -2,11 +2,11 @@ object ZAnalyze: TZAnalyze
   Left = 0
   Top = 0
   Caption = 'Analyze'
-  ClientHeight = 261
+  ClientHeight = 262
   ClientWidth = 684
   Color = clBtnFace
-  Constraints.MinHeight = 100
-  Constraints.MinWidth = 100
+  Constraints.MinHeight = 150
+  Constraints.MinWidth = 500
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -22,12 +22,13 @@ object ZAnalyze: TZAnalyze
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
-    Top = 233
+    Top = 234
     Width = 684
     Height = 28
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 233
     DesignSize = (
       684
       28)
@@ -41,53 +42,66 @@ object ZAnalyze: TZAnalyze
       OnClick = buttonUpdateClick
     end
     object buttonCopy: TButton
-      Left = 616
+      Left = 596
       Top = 1
-      Width = 65
+      Width = 84
       Height = 25
       Anchors = [akTop, akRight]
       Caption = #12467#12500#12540
-      TabOrder = 1
+      TabOrder = 4
       OnClick = buttonCopyClick
     end
     object checkExcludeZeroPoint: TCheckBox
-      Left = 104
+      Left = 92
       Top = 5
       Width = 81
       Height = 17
       Caption = #24471#28857#65296#12434#38500#12367
-      TabOrder = 2
+      TabOrder = 1
       OnClick = buttonUpdateClick
     end
     object checkExcludeZeroHour: TCheckBox
-      Left = 204
+      Left = 183
       Top = 5
       Width = 117
       Height = 17
       Caption = #65296#23616#12398#26178#38291#24111#12434#38500#12367
-      TabOrder = 3
+      TabOrder = 2
       OnClick = buttonUpdateClick
+    end
+    object buttonSave: TButton
+      Left = 511
+      Top = 1
+      Width = 84
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = #12501#12449#12452#12523#20445#23384
+      TabOrder = 3
+      OnClick = buttonSaveClick
     end
   end
   object TabControl1: TTabControl
     Left = 0
     Top = 0
     Width = 684
-    Height = 233
+    Height = 234
     Align = alClient
     TabOrder = 1
     Tabs.Strings = (
       'ZAF'
       'ZAQ'
       'ZAA'
-      'ZAA(ALL)')
+      'ZAA(ALL)'
+      'ZAD'
+      'ZOP')
     TabIndex = 0
     OnChange = TabControl1Change
+    ExplicitTop = -1
     object Memo1: TMemo
       Left = 4
       Top = 24
       Width = 676
-      Height = 205
+      Height = 206
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -99,6 +113,7 @@ object ZAnalyze: TZAnalyze
       ScrollBars = ssVertical
       TabOrder = 0
       WordWrap = False
+      ExplicitHeight = 205
     end
   end
 end

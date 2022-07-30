@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Classes, System.DateUtils, System.StrUtils,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Vcl.ClipBrd, Vcl.ComCtrls, UzLogConst, UzLogQSO, UzLogGlobal;
+  Vcl.ClipBrd, Vcl.ComCtrls, Generics.Collections, Generics.Defaults,
+  UzLogConst, UzLogQSO, UzLogGlobal;
 
 {
 タイムチャート
@@ -45,6 +46,16 @@ type
     FUnknown: Integer;
   end;
 
+  TOpCount = class(TObject)
+    FOpName: string;
+    FQsoCountPH: array[b19..b10g] of Integer;
+    FQsoCountCW: array[b19..b10g] of Integer;
+    FMultiCountPH: array[b19..b10g] of Integer;
+    FMultiCountCW: array[b19..b10g] of Integer;
+  public
+    constructor Create();
+  end;
+
 type
   TZAnalyze = class(TForm)
     Memo1: TMemo;
@@ -54,6 +65,7 @@ type
     TabControl1: TTabControl;
     checkExcludeZeroPoint: TCheckBox;
     checkExcludeZeroHour: TCheckBox;
+    buttonSave: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -63,11 +75,15 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure CreateParams(var Params: TCreateParams); override;
     procedure OnAnalyzeUpdate( var Message: TMessage ); message WM_ANALYZE_UPDATE;
+    procedure buttonSaveClick(Sender: TObject);
   private
     { Private 宣言 }
     FStartHour: Integer;
     FCountData: array[1..25] of array[b19..TBand(17)] of TQsoCount;
     FCountData2: array[1..25] of array[b19..TBand(17)] of TQsoCount2;
+    FOpCount: TList<TOpCount>;
+    FZADSupport: Boolean;
+    FMultiGet: array[02..114] of array[b19..b50] of Boolean;
     procedure ShowAll(sl: TStrings);
     procedure InitTimeChart();
     procedure TotalTimeChart(Log: TQSOList);
@@ -79,6 +95,8 @@ type
     procedure ShowZAA2(sl: TStrings; b: TBand);
     procedure ShowZAA_band(sl: TStrings; b: TBand; nLastHour: Integer);
     function HourText(hh: Integer): string;
+    procedure ShowZAD(sl: TStrings);
+    procedure ShowZOP(sl: TStrings);
   public
     { Public 宣言 }
   end;
@@ -98,13 +116,20 @@ end;
 
 procedure TZAnalyze.FormCreate(Sender: TObject);
 begin
+   FOpCount := TList<TOpCount>.Create();
    Memo1.Clear();
    InitTimeChart();
 end;
 
 procedure TZAnalyze.FormDestroy(Sender: TObject);
+var
+   i: Integer;
 begin
-   //
+   for i := FOpCount.Count - 1 downto 0 do begin
+      FOpCount[i].Free();
+      FOpCount.Delete(i);
+   end;
+   FOpCount.Free();
 end;
 
 procedure TZAnalyze.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -128,6 +153,43 @@ begin
    ShowAll(Memo1.Lines);
    Memo1.SelStart := 0;
    Memo1.SelLength := 0;
+end;
+
+procedure TZAnalyze.buttonSaveClick(Sender: TObject);
+var
+   fname: string;
+begin
+   fname := CurrentFileName();
+
+   // ZAF
+   TabControl1.TabIndex := 0;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.ZAF');
+   Memo1.Lines.SaveToFile(fname);
+
+   // ZAQ
+   TabControl1.TabIndex := 1;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.ZAQ');
+   Memo1.Lines.SaveToFile(fname);
+
+   // ZAA
+   TabControl1.TabIndex := 3;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.ZAA');
+   Memo1.Lines.SaveToFile(fname);
+
+   // ZAD
+   TabControl1.TabIndex := 4;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.ZAD');
+   Memo1.Lines.SaveToFile(fname);
+
+   // ZAD
+   TabControl1.TabIndex := 5;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.ZOP');
+   Memo1.Lines.SaveToFile(fname);
 end;
 
 procedure TZAnalyze.buttonUpdateClick(Sender: TObject);
@@ -170,6 +232,16 @@ begin
       3: begin
          ShowZAA(sl);
       end;
+
+      // ZAD
+      4: begin
+         ShowZAD(sl);
+      end;
+
+      // ZOP
+      5: begin
+         ShowZOP(sl);
+      end;
    end;
 end;
 
@@ -178,6 +250,7 @@ var
    t: Integer;
    b: TBand;
    a: Integer;
+   i: Integer;
 begin
    for t := 1 to 25 do begin
       for b := b19 to TBand(17) do begin
@@ -196,11 +269,24 @@ begin
          end;
       end;
    end;
+
+   FZADSupport := False;
+   for b := b19 to b50 do begin
+      for i := 02 to 114 do begin
+         FMultiGet[i][b] := False;
+      end;
+   end;
+
+   for i := FOpCount.Count - 1 downto 0 do begin
+      FOpCount[i].Free();
+      FOpCount.Delete(i);
+   end;
 end;
 
 procedure TZAnalyze.TotalTimeChart(Log: TQSOList);
 var
    i: Integer;
+   j: Integer;
    qso: TQSO;
    b: TBand;
    m: TMode;
@@ -209,11 +295,32 @@ var
    base_dt: TDateTime;
    dt: TDateTime;
    offset_hour: Integer;
+   O: TOpCount;
+   multi: Integer;
+
+   function FindOperator(opname: string): Integer;
+   var
+      i: Integer;
+   begin
+      for i := 0 to FOpCount.Count - 1 do begin
+         if FOpCount[i].FOpName = qso.Operator then begin
+            Result := i;
+            Exit;
+         end;
+      end;
+      Result := -1;
+   end;
 begin
    InitTimeChart();
 
    if Log.Count = 1 then begin
       Exit;
+   end;
+
+   if (MyContest is TALLJAContest) or
+      (MyContest is TSixDownContest) or
+      (MyContest is TFDContest) then begin
+      FZADSupport := True;
    end;
 
    base_dt := Log.List[1].Time;
@@ -285,6 +392,40 @@ begin
          Inc(FCountData2[t][b].FQso[11]);          // 横計
          Inc(FCountData2[25][b].FQso[a]);          // 縦計
          Inc(FCountData2[25][b].FQso[11]);         // 縦横計
+      end;
+
+      // マルチ
+      if (FZADSupport = True) and (qso.NewMulti1 = True) then begin
+         multi := StrToIntDef(qso.Multi1, 0);
+         if (multi >= 2) and (multi <= 114) then begin
+            if (qso.Band >= b19) and (qso.Band <= b50) then begin
+               FMultiGet[multi][qso.Band] := True;
+            end;
+         end;
+      end;
+
+      // Op別 (ZOP)
+      j := FindOperator(qso.Operator);
+      if j = -1 then begin
+         O := TOpCount.Create();
+         O.FOpName := qso.Operator;
+         FOpCount.Add(O);
+      end
+      else begin
+         O := FOpCount[j];
+      end;
+
+      if qso.Mode = mCW then begin
+         Inc(O.FQsoCountCW[b]);
+         if qso.NewMulti1 = True then begin
+            Inc(O.FMultiCountCW[b]);
+         end;
+      end
+      else begin
+         Inc(O.FQsoCountPH[b]);
+         if qso.NewMulti1 = True then begin
+            Inc(O.FMultiCountPH[b]);
+         end;
       end;
    end;
 
@@ -813,6 +954,372 @@ end;
 procedure TZAnalyze.OnAnalyzeUpdate( var Message: TMessage );
 begin
    buttonUpdateClick(nil);
+end;
+
+{
+＜とれたマルチ＞
+
+[7 MHz]
+ 101 102 103 104 105 106 108 109 110 112 114 02 03 04 05 06 07 08 09 10 11 12
+ 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38
+ 39 40 41 42 43 44 45 46 47
+
+＜とれなかったマルチ＞
+
+[7 MHz]
+ 107 111 113 48 49 50
+
+＜マルチマップ＞
+
+    11111111111111
+    000000000111110000000011111111112222222222333333333344444444445
+    123456789012342345678901234567890123456789012345678901234567890
+ 1.9..****.*......*********************.*****..*.*.**..*****.***...
+ 3.5*.****.**..*..**************************.********.**********...
+   7******.***.*.***********************************************...
+  14..****.***.*************************************************...
+  21..****.***.*..***********************************.**********...
+  28*.**.*.**..*..***.***********.*******************.**********...
+  50....**.*......*.....******..*.******************************...
+}
+procedure TZAnalyze.ShowZAD(sl: TStrings);
+var
+   strTitle: string;
+   b: TBand;
+   i: Integer;
+   strText: string;
+
+   procedure BuildMultiGet(fGet: Boolean);
+   var
+      b: TBand;
+      i: Integer;
+      strText: string;
+      strMulti: string;
+   begin
+      for b := b19 to b50 do begin
+         if (b = b10) or (b = b18) or (b = b24) then begin
+            Continue;
+         end;
+
+         strText := '[' + BandString[b] + ']';
+         sl.Add(strText);
+
+         strText := '';
+         for i := 101 to 114 do begin
+            if FMultiGet[i][b] = fGet then begin
+               strMulti := ' ' + IntToStr(i);
+               if Length(strText + strMulti) >= 80 then begin
+                  sl.Add(strText);
+                  strText := '';
+               end;
+
+               strText := strText + strMulti;
+            end;
+         end;
+         for i := 2 to 50 do begin
+            if FMultiGet[i][b] = fGet then begin
+               strMulti := ' ' + RightStr('00' + IntToStr(i), 2);
+               if Length(strText + strMulti) >= 80 then begin
+                  sl.Add(strText);
+                  strText := '';
+               end;
+
+               strText := strText + strMulti;
+            end;
+         end;
+
+         if strText <> '' then begin
+            sl.Add(strText);
+         end;
+         sl.Add('');
+      end;
+   end;
+begin
+   sl.Clear();
+
+   if FZADSupport = False then begin
+      strText := 'サポートされていないコンテストです';
+      sl.Add(strText);
+      Exit;
+   end;
+
+   strTitle := '＜とれたマルチ＞';
+   sl.Add(strTitle);
+   sl.Add('');
+   BuildMultiGet(True);
+   sl.Add('');
+
+   strTitle := '＜とれなかったマルチ＞';
+   sl.Add(strTitle);
+   sl.Add('');
+   BuildMultiGet(False);
+   sl.Add('');
+
+   strTitle := '＜マルチマップ＞';
+   sl.Add(strTitle);
+   sl.Add('');
+   strTitle := '    11111111111111';
+   sl.Add(strTitle);
+   strTitle := '    000000000111110000000011111111112222222222333333333344444444445';
+   sl.Add(strTitle);
+   strTitle := '    123456789012342345678901234567890123456789012345678901234567890';
+   sl.Add(strTitle);
+
+   for b := b19 to b50 do begin
+      if (b = b10) or (b = b18) or (b = b24) then begin
+         Continue;
+      end;
+
+      strText := RightStr('    ' + MHzString[b], 4);
+
+      for i := 101 to 114 do begin
+         if FMultiGet[i][b] = True then begin
+            strText := strText + '*';
+         end
+         else begin
+            strText := strText + '.';
+         end;
+      end;
+
+      for i := 2 to 50 do begin
+         if FMultiGet[i][b] = True then begin
+            strText := strText + '*';
+         end
+         else begin
+            strText := strText + '.';
+         end;
+      end;
+
+      sl.Add(strText);
+   end;
+   sl.Add('');
+end;
+
+{
+＜オペレータ別交信局数＞　（括弧内は電信の内数）
+
+         1.9      3.5        7       14       21       28       50       ALL
+
+1234567891234567891234567891234567891234567891234567891234567891234567891234567890
+JA8xxx   191(191) 106(106) 318(318) 351(351) 130(130) 129(129) 123(123) 1348(1348)
+JH8xxx    12(12)  263(263) 338(338) 120(120) 323(323) 235(235)  19(19)  1310(1310)
+
+Total    203(203) 369(369) 656(656) 471(471) 453(453) 364(364) 142(142) 2658(2658)
+
+
+＜オペレータ別取得マルチ＞　（括弧内は電信の内数）
+
+123456789123456789123456789123456789123456789123456789123456789123456789123456789
+         1.9      3.5        7       14       21       28       50       ALL
+
+JA8xxx    38(38)   15(15)   48(48)   51(51)   35(35)   43(43)   27(27)   257(257)
+JH8xxx     5(5)    37(37)    9(9)     5(5)    18(18)    7(7)    14(14)    95(95)
+
+Total     43(43)   52(52)   57(57)   56(56)   53(53)   50(50)   41(41)   352(352)
+}
+procedure TZAnalyze.ShowZOP(sl: TStrings);
+var
+   b: TBand;
+   strText: string;
+   strText2: string;
+   strTitle: string;
+   i: Integer;
+   l: Integer;
+   O: TOpCount;
+   TT1: TOpCount;
+   TT2: TOpCount;
+
+   function BuildQsoCount(O: TOpCount): string;
+   var
+      b: TBand;
+      strText2: string;
+      all_tt: Integer;
+      all_cw: Integer;
+      tt: Integer;
+      cw: Integer;
+      tt_str: string;
+      cw_str: string;
+   begin
+      strText2 := LeftStr(O.FOpName + DupeString(' ', 9), 9);
+      all_tt := 0;
+      all_cw := 0;
+      for b := b19 to b10g do begin
+         if FCountData[25][b].FQso = 0 then begin
+            Continue;
+         end;
+
+         tt := O.FQsoCountPH[b] + O.FQsoCountCW[b];
+         cw := O.FQsoCountCW[b];
+         Inc(all_tt, tt);
+         Inc(all_cw, cw);
+         tt_str := RightStr('    ' + IntToStr(tt), 3);
+         cw_str := IntToStr(cw);
+         if cw = 0 then begin
+            strText2 := strText2 + LeftStr(tt_str + DupeString(' ', 9), 9);
+         end
+         else begin
+            strText2 := strText2 + LeftStr(tt_str + '(' + cw_str + ')' + DupeString(' ', 9), 9);
+         end;
+      end;
+
+      // ALL(横計)
+      tt_str := RightStr('    ' + IntToStr(all_tt), 4);
+      cw_str := IntToStr(all_cw);
+      if all_cw = 0 then begin
+         strText2 := strText2 + LeftStr(tt_str + DupeString(' ', 10), 10);
+      end
+      else begin
+         strText2 := strText2 + LeftStr(tt_str + '(' + cw_str + ')' + DupeString(' ', 10), 10);
+      end;
+
+      Result := strText2;
+   end;
+
+   function BuildMultiCount(O: TOpCount): string;
+   var
+      b: TBand;
+      strText2: string;
+      all_tt: Integer;
+      all_cw: Integer;
+      tt: Integer;
+      cw: Integer;
+      tt_str: string;
+      cw_str: string;
+   begin
+      strText2 := LeftStr(O.FOpName + DupeString(' ', 9), 9);
+      all_tt := 0;
+      all_cw := 0;
+      for b := b19 to b10g do begin
+         if FCountData[25][b].FQso = 0 then begin
+            Continue;
+         end;
+
+         tt := O.FMultiCountPH[b] + O.FMultiCountCW[b];
+         cw := O.FMultiCountCW[b];
+         Inc(all_tt, tt);
+         Inc(all_cw, cw);
+         tt_str := RightStr('    ' + IntToStr(tt), 3);
+         cw_str := IntToStr(cw);
+         if cw = 0 then begin
+            strText2 := strText2 + LeftStr(tt_str + DupeString(' ', 9), 9);
+         end
+         else begin
+            strText2 := strText2 + LeftStr(tt_str + '(' + cw_str + ')' + DupeString(' ', 9), 9);
+         end;
+      end;
+
+      // ALL(横計)
+      tt_str := RightStr('    ' + IntToStr(all_tt), 4);
+      cw_str := IntToStr(all_cw);
+      if all_cw = 0 then begin
+         strText2 := strText2 + LeftStr(tt_str + DupeString(' ', 10), 10);
+      end
+      else begin
+         strText2 := strText2 + LeftStr(tt_str + '(' + cw_str + ')' + DupeString(' ', 10), 10);
+      end;
+
+      Result := strText2;
+   end;
+begin
+   sl.Clear();
+
+   // OP別交信数
+   strText := '＜オペレータ別交信局数＞　（括弧内は電信の内数）';
+   sl.Add(strText);
+   sl.Add('');
+
+   // バンド見出し
+   strTitle := DupeString(' ', 9);
+   for b := b19 to b10g do begin
+      if FCountData[25][b].FQso = 0 then begin
+         Continue;
+      end;
+
+      l := Length(MHzString[b]);
+      if l < 3 then begin
+         strTitle := strTitle + LeftStr(DupeString(' ', 3 - L) + MHzString[b] + DupeString(' ', 9), 9);
+      end
+      else begin
+         strTitle := strTitle + LeftStr(MHzString[b] + DupeString(' ', 9), 9);
+      end;
+   end;
+   strTitle := strTitle + ' ALL     ';
+   sl.Add(strTitle);
+   sl.Add('');
+
+   // OP別
+   TT1 := TOpCount.Create();
+   TT1.FOpName := 'Total';
+   for i := 0 to FOpCount.Count - 1 do begin
+      O := FOpCount[i];
+      strText2 := BuildQsoCount(O);
+      sl.Add(strText2);
+
+      for b := b19 to b10g do begin
+         if FCountData[25][b].FQso = 0 then begin
+            Continue;
+         end;
+         Inc(TT1.FQsoCountPH[b], O.FQsoCountPH[b]);
+         Inc(TT1.FQsoCountCW[b], O.FQsoCountCW[b]);
+      end;
+   end;
+   sl.Add('');
+
+   // 縦計
+   strText2 := BuildQsoCount(TT1);
+   sl.Add(strText2);
+   sl.Add('');
+
+   // OP別マルチ
+   strText := '＜オペレータ別取得マルチ＞　（括弧内は電信の内数）';
+   sl.Add(strText);
+   sl.Add('');
+
+   // バンド別見出し
+   sl.Add(strTitle);
+   sl.Add('');
+
+   // OP別
+   TT2 := TOpCount.Create();
+   TT2.FOpName := 'Total';
+   for i := 0 to FOpCount.Count - 1 do begin
+      O := FOpCount[i];
+      strText2 := BuildMultiCount(O);
+      sl.Add(strText2);
+
+      for b := b19 to b10g do begin
+         if FCountData[25][b].FQso = 0 then begin
+            Continue;
+         end;
+
+         Inc(TT2.FMultiCountPH[b], O.FMultiCountPH[b]);
+         Inc(TT2.FMultiCountCW[b], O.FMultiCountCW[b]);
+      end;
+   end;
+   sl.Add('');
+
+   // 縦計
+   strText2 := BuildMultiCount(TT2);
+   sl.Add(strText2);
+   sl.Add('');
+
+   TT1.Free();
+   TT2.Free();
+end;
+
+{ TOpCount }
+
+constructor TOpCount.Create();
+var
+   b: TBand;
+begin
+   Inherited;
+   for b := b19 to b10g do begin
+      FQsoCountPH[b] := 0;
+      FQsoCountCW[b] := 0;
+      FMultiCountPH[b] := 0;
+      FMultiCountCW[b] := 0;
+   end;
 end;
 
 end.

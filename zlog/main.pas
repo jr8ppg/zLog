@@ -671,11 +671,18 @@ type
     actionPseQsl: TAction;
     actionNoQsl: TAction;
     ToolBarPanel: TPanel;
-    menuSortByTxNoBandTime: TMenuItem;
-    menuSortByTxNoTime: TMenuItem;
+    menuSortByTxNo: TMenuItem;
     N9: TMenuItem;
     N10: TMenuItem;
     N12: TMenuItem;
+    Sort1: TMenuItem;
+    menuSortByCallsign: TMenuItem;
+    menuSortByMode: TMenuItem;
+    menuSortByBand: TMenuItem;
+    menuSortByPower: TMenuItem;
+    menuSortByPoint: TMenuItem;
+    menuSortByOperator: TMenuItem;
+    menuSortByMemo: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -929,7 +936,7 @@ type
     procedure actionPseQslExecute(Sender: TObject);
     procedure actionNoQslExecute(Sender: TObject);
     procedure menuSortByTxNoBandTimeClick(Sender: TObject);
-    procedure menuSortByTxNoTimeClick(Sender: TObject);
+    procedure menuSortByClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -6176,9 +6183,9 @@ begin
    GridRefreshScreen();
 end;
 
-procedure TMainForm.menuSortByTxNoTimeClick(Sender: TObject);
+procedure TMainForm.menuSortByClick(Sender: TObject);
 begin
-   Log.SortByTxNoTime();
+   Log.SortBy(TSortMethod(TMenuItem(Sender).Tag));
    GridRefreshScreen();
 end;
 
