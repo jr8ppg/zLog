@@ -765,8 +765,10 @@ begin
    for i := 0 to 2 do begin
       if FKeyingPort[i] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
-         FUsbInfo[i].FPORTDATA.SetVoiceFlag(flag);
-         SendUsbPortData(i);
+         if Assigned(FUsbInfo[i].FPORTDATA) then begin
+            FUsbInfo[i].FPORTDATA.SetVoiceFlag(flag);
+            SendUsbPortData(i);
+         end;
          LeaveCriticalSection(FUsbPortDataLock);
       end;
    end;
@@ -799,8 +801,10 @@ begin
       // USBIF4CW
       if FKeyingPort[nID] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
-         FUsbInfo[nID].FPORTDATA.SetPttFlag(PTTON);
-         SendUsbPortData(nID);
+         if Assigned(FUsbInfo[nID].FPORTDATA) then begin
+            FUsbInfo[nID].FPORTDATA.SetPttFlag(PTTON);
+            SendUsbPortData(nID);
+         end;
          LeaveCriticalSection(FUsbPortDataLock);
          Exit;
       end;
@@ -843,8 +847,10 @@ begin
       for nID := 0 to 2 do begin
          if FKeyingPort[nID] = tkpUSB then begin
             EnterCriticalSection(FUsbPortDataLock);
-            FUsbInfo[nID].FPORTDATA.SetPttFlag(False);
-            SendUsbPortData(nID);
+            if Assigned(FUsbInfo[nID].FPORTDATA) then begin
+               FUsbInfo[nID].FPORTDATA.SetPttFlag(False);
+               SendUsbPortData(nID);
+            end;
             LeaveCriticalSection(FUsbPortDataLock);
          end;
 
@@ -1183,8 +1189,10 @@ begin
 
       tkpUSB: begin
          EnterCriticalSection(FUsbPortDataLock);
-         FUsbInfo[nID].FPORTDATA.SetKeyFlag(True);
-         SendUsbPortData(nID);
+         if Assigned(FUsbInfo[nID].FPORTDATA) then begin
+            FUsbInfo[nID].FPORTDATA.SetKeyFlag(True);
+            SendUsbPortData(nID);
+         end;
          LeaveCriticalSection(FUsbPortDataLock);
       end;
    end;
@@ -1204,8 +1212,10 @@ begin
 
       tkpUSB: begin
          EnterCriticalSection(FUsbPortDataLock);
-         FUsbInfo[nID].FPORTDATA.SetKeyFlag(False);
-         SendUsbPortData(nID);
+         if Assigned(FUsbInfo[nID].FPORTDATA) then begin
+            FUsbInfo[nID].FPORTDATA.SetKeyFlag(False);
+            SendUsbPortData(nID);
+         end;
          LeaveCriticalSection(FUsbPortDataLock);
       end;
    end;
