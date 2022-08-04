@@ -132,7 +132,8 @@ object TargetEditor: TTargetEditor
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = 'ZLO'
-    Filter = 'zLog binary file|*.ZLO|any file|*.*'
+    FileName = 'D:\zlogwin2019_1\log\6d2022.ZLOX'
+    Filter = 'zLog binary file|*.ZLO;*.ZLOX|any file|*.*'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     Left = 344
     Top = 537
