@@ -9393,6 +9393,8 @@ begin
    end;
 
    SetCQ(True);
+
+   CallsignEdit.SetFocus;
 end;
 
 // #101,#102,#106,#107,#108 QuickMemo3-5
