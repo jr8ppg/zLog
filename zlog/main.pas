@@ -3602,11 +3602,16 @@ end;
 
 procedure TMainForm.FileSaveAs(Sender: TObject);
 begin
+   SaveDialog.InitialDir := dmZlogGlobal.Settings._logspath;
+   SaveDialog.FileName := '';
+   SaveDialog.FilterIndex := dmZLogGlobal.Settings.FLastFileFilterIndex;
+
    if SaveDialog.Execute then begin
       Log.SaveToFile(SaveDialog.filename);
       dmZLogGlobal.SetLogFileName(SaveDialog.filename);
       SetWindowCaption();
       { Add code to save current file under SaveDialog.FileName }
+      dmZLogGlobal.Settings.FLastFileFilterIndex := SaveDialog.FilterIndex;
    end;
 end;
 
