@@ -491,30 +491,47 @@ var
    t: Integer;
    strText: string;
    i: Integer;
+   nLastIndex: Integer;
 begin
    sl.Clear();
 
    sl.Add('＜タイムチャート＞');
    sl.Add('');
 
+   // どこまで交信があるか調べる
+   for i := 24 downto 1 do begin
+      // 最後から数えて縦計が０以外の所まで
+      if FCountData[i][TBand(16)].FQso <> 0 then begin
+         Break;
+      end;
+   end;
+   nLastIndex := i;
+
+   // 見出し（上）
    strText := '    |';
-   for i := 1 to 24 do begin
+   for i := 1 to nLastIndex do begin
       strText := strText + ' ' + HourText(i);
    end;
    strText := strText + '|合計';
-
    sl.Add(strText);
-   sl.Add('----+------------------------------------------------------------------------+----');
+
+   strText := '----+';
+   for i := 1 to nLastIndex do begin
+      strText := strText + '---';
+   end;
+   strText := strText + '+----';
+   sl.Add(strText);
 
    // 明細行
    for b := b19 to HiBand do begin
+      // １局も交信が無いバンドは除く
       if FCountData[25][b].FQso = 0 then begin
          Continue;
       end;
 
       strText := RightStr('    ' + MHzString[b], 4) + '|';
 
-      for t := 1 to 24 do begin
+      for t := 1 to nLastIndex do begin
          if FCountData[t][b].FQso = 0 then begin
             strText := strText + '  -';
          end
@@ -528,11 +545,17 @@ begin
       sl.Add(strText);
    end;
 
-   sl.Add('----+------------------------------------------------------------------------+----');
+   // 見出し（下）
+   strText := '----+';
+   for i := 1 to nLastIndex do begin
+      strText := strText + '---';
+   end;
+   strText := strText + '+----';
+   sl.Add(strText);
 
    // 合計行
    strText := '合計|';
-   for t := 1 to 24 do begin
+   for t := 1 to nLastIndex do begin
       strText := strText + RightStr('   ' + IntToStr(FCountData[t][TBand(16)].FQso), 3);
    end;
    strText := strText + '|';
@@ -541,9 +564,15 @@ begin
 
    // 累計行
    strText := '累計|';
-   for t := 1 to 24 do begin
+   for t := 1 to nLastIndex do begin
       if (t mod 3) = 0 then begin
-         strText := strText + RightStr('   ' + IntToStr(FCountData[t][TBand(17)].FQso), 3);
+         if FCountData[t][TBand(17)].FQso < 1000 then begin
+            strText := strText + RightStr('   ' + IntToStr(FCountData[t][TBand(17)].FQso), 3);
+         end
+         else begin
+            strText := Copy(strText, 1, Length(strText) - 1);
+            strText := strText + RightStr('    ' + IntToStr(FCountData[t][TBand(17)].FQso), 4);
+         end;
       end
       else begin
          strText := strText + '   ';
@@ -997,13 +1026,21 @@ var
       strMulti: string;
    begin
       for b := b19 to b50 do begin
+         // WARCバンド除く
          if (b = b10) or (b = b18) or (b = b24) then begin
             Continue;
          end;
 
+         // 交信の無いバンド除く
+         if FCountData[25][b].FQso = 0 then begin
+            Continue;
+         end;
+
+         // バンド見出し
          strText := '[' + BandString[b] + ']';
          sl.Add(strText);
 
+         // 北海道マルチ
          strText := '';
          for i := 101 to 114 do begin
             if FMultiGet[i][b] = fGet then begin
@@ -1016,6 +1053,8 @@ var
                strText := strText + strMulti;
             end;
          end;
+
+         // 本州マルチ
          for i := 2 to 50 do begin
             if FMultiGet[i][b] = fGet then begin
                strMulti := ' ' + RightStr('00' + IntToStr(i), 2);
@@ -1066,7 +1105,13 @@ begin
    sl.Add(strTitle);
 
    for b := b19 to b50 do begin
+      // WARCバンド除く
       if (b = b10) or (b = b18) or (b = b24) then begin
+         Continue;
+      end;
+
+      // 交信の無いバンド除く
+      if FCountData[25][b].FQso = 0 then begin
          Continue;
       end;
 
@@ -1152,7 +1197,7 @@ var
          cw := O.FQsoCountCW[b];
          Inc(all_tt, tt);
          Inc(all_cw, cw);
-         tt_str := RightStr('    ' + IntToStr(tt), 3);
+         tt_str := RightStr('    ' + IntToStr(tt), 4);
          cw_str := IntToStr(cw);
          if cw = 0 then begin
             strText2 := strText2 + LeftStr(tt_str + DupeString(' ', 9), 9);
