@@ -33,6 +33,10 @@ uses
 const
   WM_ANALYZE_UPDATE = (WM_USER + 100);
 
+const
+  HTOTAL = 49;
+  VTOTAL = TBand(16);
+  CTOTAL = TBand(17);
 type
   TQsoCount = record
     FQso: Integer;
@@ -79,8 +83,8 @@ type
   private
     { Private 宣言 }
     FStartHour: Integer;
-    FCountData: array[1..25] of array[b19..TBand(17)] of TQsoCount;
-    FCountData2: array[1..25] of array[b19..TBand(17)] of TQsoCount2;
+    FCountData: array[1..49] of array[b19..TBand(17)] of TQsoCount;
+    FCountData2: array[1..49] of array[b19..TBand(17)] of TQsoCount2;
     FOpCount: TList<TOpCount>;
     FZADSupport: Boolean;
     FMultiGet: array[02..114] of array[b19..b50] of Boolean;
@@ -252,7 +256,7 @@ var
    a: Integer;
    i: Integer;
 begin
-   for t := 1 to 25 do begin
+   for t := 1 to 49 do begin
       for b := b19 to TBand(17) do begin
          FCountData[t][b].FQso := 0;
          FCountData[t][b].FCw := 0;
@@ -261,7 +265,7 @@ begin
       end;
    end;
 
-   for t := 1 to 25 do begin
+   for t := 1 to 49 do begin
       for b := b19 to TBand(17) do begin
          for a := 1 to 12 do begin
             FCountData2[t][b].FQso[a] := 0;
@@ -347,7 +351,7 @@ begin
          t := HourOf(dt) + 24 - offset_hour;
       end;
 
-      if (t < 1) or (t > 24) then begin
+      if (t < 1) or (t > 48) then begin
          Continue;
       end;
 
@@ -356,31 +360,31 @@ begin
 
       // QSO
       Inc(FCountData[t][b].FQso);
-      Inc(FCountData[25][b].FQso);              // 横計
-      Inc(FCountData[t][TBand(16)].FQso);       // 縦計
-      Inc(FCountData[25][TBand(16)].FQso);      // 縦横計
+      Inc(FCountData[HTOTAL][b].FQso);                   // 横計
+      Inc(FCountData[t][VTOTAL].FQso);                   // 縦計
+      Inc(FCountData[HTOTAL][VTOTAL].FQso);              // 縦横計
 
       // PTS
       Inc(FCountData[t][b].FPts, qso.Points);
-      Inc(FCountData[25][b].FPts, qso.Points);              // 横計
-      Inc(FCountData[t][TBand(16)].FPts, qso.Points);       // 縦計
-      Inc(FCountData[25][TBand(16)].FPts, qso.Points);      // 縦横計
+      Inc(FCountData[HTOTAL][b].FPts, qso.Points);       // 横計
+      Inc(FCountData[t][VTOTAL].FPts, qso.Points);       // 縦計
+      Inc(FCountData[HTOTAL][VTOTAL].FPts, qso.Points);  // 縦横計
 
       // 内CW
       if m = mCW then begin
          Inc(FCountData[t][b].FCw);
-         Inc(FCountData[25][b].FCw);            // 横計
-         Inc(FCountData[t][TBand(16)].FCw);     // 縦計
-         Inc(FCountData[25][TBand(16)].FCw);    // 縦横計
+         Inc(FCountData[HTOTAL][b].FCw);                 // 横計
+         Inc(FCountData[t][VTOTAL].FCw);                 // 縦計
+         Inc(FCountData[HTOTAL][VTOTAL].FCw);            // 縦横計
       end;
 
       // マルチ
 //      if Trim(qso.QSO.Multi1) <> '' then begin
       if qso.NewMulti1 = True then begin
          Inc(FCountData[t][b].FMulti);
-         Inc(FCountData[25][b].FMulti);         // 横計
-         Inc(FCountData[t][TBand(16)].FMulti);  // 縦計
-         Inc(FCountData[25][TBand(16)].FMulti); // 縦横計
+         Inc(FCountData[HTOTAL][b].FMulti);              // 横計
+         Inc(FCountData[t][VTOTAL].FMulti);              // 縦計
+         Inc(FCountData[HTOTAL][VTOTAL].FMulti);         // 縦横計
       end;
 
       // エリア別
@@ -389,9 +393,9 @@ begin
       end
       else begin
          Inc(FCountData2[t][b].FQso[a]);
-         Inc(FCountData2[t][b].FQso[11]);          // 横計
-         Inc(FCountData2[25][b].FQso[a]);          // 縦計
-         Inc(FCountData2[25][b].FQso[11]);         // 縦横計
+         Inc(FCountData2[t][b].FQso[11]);                // 横計
+         Inc(FCountData2[HTOTAL][b].FQso[a]);            // 縦計
+         Inc(FCountData2[HTOTAL][b].FQso[11]);           // 縦横計
       end;
 
       // マルチ
@@ -430,9 +434,9 @@ begin
    end;
 
    // 累計
-   FCountData[1][TBand(17)].FQso := FCountData[1][TBand(16)].FQso;
-   for i := 2 to 24 do begin
-      FCountData[i][TBand(17)].FQso := FCountData[i - 1][TBand(17)].FQso + FCountData[i][TBand(16)].FQso;
+   FCountData[1][CTOTAL].FQso := FCountData[1][VTOTAL].FQso;
+   for i := 2 to 48 do begin
+      FCountData[i][CTOTAL].FQso := FCountData[i - 1][CTOTAL].FQso + FCountData[i][VTOTAL].FQso;
    end;
 end;
 
@@ -475,8 +479,8 @@ function TZAnalyze.GetLastHour(): Integer;
 var
    i: Integer;
 begin
-   for i := 24 downto 1 do begin
-      if FCountData[i][TBand(16)].FQso > 0 then begin
+   for i := 48 downto 1 do begin
+      if FCountData[i][VTOTAL].FQso > 0 then begin
          Result := i;
          Exit;
       end;
@@ -499,13 +503,7 @@ begin
    sl.Add('');
 
    // どこまで交信があるか調べる
-   for i := 24 downto 1 do begin
-      // 最後から数えて縦計が０以外の所まで
-      if FCountData[i][TBand(16)].FQso <> 0 then begin
-         Break;
-      end;
-   end;
-   nLastIndex := i;
+   nLastIndex := GetLastHour();
 
    // 見出し（上）
    strText := '    |';
@@ -525,7 +523,7 @@ begin
    // 明細行
    for b := b19 to HiBand do begin
       // １局も交信が無いバンドは除く
-      if FCountData[25][b].FQso = 0 then begin
+      if FCountData[HTOTAL][b].FQso = 0 then begin
          Continue;
       end;
 
@@ -541,7 +539,7 @@ begin
       end;
 
       strText := strText + '|';
-      strText := strText + RightStr('    ' + IntToStr(FCountData[25][b].FQso), 4);
+      strText := strText + RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FQso), 4);
       sl.Add(strText);
    end;
 
@@ -556,22 +554,22 @@ begin
    // 合計行
    strText := '合計|';
    for t := 1 to nLastIndex do begin
-      strText := strText + RightStr('   ' + IntToStr(FCountData[t][TBand(16)].FQso), 3);
+      strText := strText + RightStr('   ' + IntToStr(FCountData[t][VTOTAL].FQso), 3);
    end;
    strText := strText + '|';
-   strText := strText + RightStr('    ' + IntToStr(FCountData[25][TBand(16)].FQso), 4);
+   strText := strText + RightStr('    ' + IntToStr(FCountData[HTOTAL][VTOTAL].FQso), 4);
    sl.Add(strText);
 
    // 累計行
    strText := '累計|';
    for t := 1 to nLastIndex do begin
       if (t mod 3) = 0 then begin
-         if FCountData[t][TBand(17)].FQso < 1000 then begin
-            strText := strText + RightStr('   ' + IntToStr(FCountData[t][TBand(17)].FQso), 3);
+         if FCountData[t][CTOTAL].FQso < 1000 then begin
+            strText := strText + RightStr('   ' + IntToStr(FCountData[t][CTOTAL].FQso), 3);
          end
          else begin
             strText := Copy(strText, 1, Length(strText) - 1);
-            strText := strText + RightStr('    ' + IntToStr(FCountData[t][TBand(17)].FQso), 4);
+            strText := strText + RightStr('    ' + IntToStr(FCountData[t][CTOTAL].FQso), 4);
          end;
       end
       else begin
@@ -579,7 +577,7 @@ begin
       end;
    end;
    strText := strText + '|';
-//   strText := strText + RightStr('    ' + IntToStr(FCountData[25][TBand(17)].FQso), 4);
+//   strText := strText + RightStr('    ' + IntToStr(FCountData[HTOTAL][CTOTAL].FQso), 4);
    sl.Add(strText);
 end;
 
@@ -588,7 +586,7 @@ var
    b: TBand;
    strText: string;
    i: Integer;
-   cumulative_count: array[b19..TBand(17)] of Integer;
+   cumulative_count: array[b19..CTOTAL] of Integer;
    nLastHour: Integer;
 begin
    sl.Clear();
@@ -599,22 +597,22 @@ begin
    sl.Add('　バンド　　交信局数　　得点　　マルチ');
 
    for b := b19 to HiBand do begin
-      if FCountData[25][b].FQso = 0 then begin
+      if FCountData[HTOTAL][b].FQso = 0 then begin
          Continue;
       end;
 
       strText := ' ' + RightStr('    ' + MHzString[b], 4) + ' MHz     ' +
-                 RightStr('    ' + IntToStr(FCountData[25][b].FQso), 4) + '      ' +
-                 RightStr('    ' + IntToStr(FCountData[25][b].FPts), 4) + '    ' +
-                 RightStr('    ' + IntToStr(FCountData[25][b].FMulti), 4);
+                 RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FQso), 4) + '      ' +
+                 RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FPts), 4) + '    ' +
+                 RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FMulti), 4);
       sl.Add(strText);
    end;
 
    strText := '  合　計     ' +
-              RightStr('     ' + IntToStr(FCountData[25][TBand(16)].FQso), 5) + '     ' +
-              RightStr('     ' + IntToStr(FCountData[25][TBand(16)].FPts), 5) + ' × ' +
-              RightStr('     ' + IntToStr(FCountData[25][TBand(16)].FMulti), 4) + '  ＝  ' +
-              IntToStr(FCountData[25][TBand(16)].FPts * FCountData[25][TBand(16)].FMulti);
+              RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FQso), 5) + '     ' +
+              RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FPts), 5) + ' × ' +
+              RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FMulti), 4) + '  ＝  ' +
+              IntToStr(FCountData[HTOTAL][VTOTAL].FPts * FCountData[HTOTAL][VTOTAL].FMulti);
    sl.Add(strText);
    sl.Add('');
 
@@ -633,7 +631,7 @@ begin
 
    strText := '';
    for b := b19 to HiBand do begin
-      if FCountData[25][b].FQso = 0 then begin
+      if FCountData[HTOTAL][b].FQso = 0 then begin
          Continue;
       end;
 
@@ -648,7 +646,7 @@ begin
    for i := 1 to nLastHour do begin
       // ０局の時間帯は除く
       if checkExcludeZeroHour.Checked = True then begin
-         if FCountData[i][TBand(16)].FQso = 0 then begin
+         if FCountData[i][VTOTAL].FQso = 0 then begin
             Continue;
          end;
       end;
@@ -656,7 +654,7 @@ begin
       strText := '';
 
       for b := b19 to HiBand do begin
-         if FCountData[25][b].FQso = 0 then begin
+         if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
 
@@ -664,7 +662,7 @@ begin
       end;
 
       // ALL
-      strText := strText + '      ' + RightStr('    ' + IntToStr(FCountData[i][TBand(16)].FQso), 4);
+      strText := strText + '      ' + RightStr('    ' + IntToStr(FCountData[i][VTOTAL].FQso), 4);
 
       // 見出し
       strText := ' [' + HourText(i) + ']' + Copy(strText, 5);
@@ -678,15 +676,15 @@ begin
    strText := '';
 
    for b := b19 to HiBand do begin
-      if FCountData[25][b].FQso = 0 then begin
+      if FCountData[HTOTAL][b].FQso = 0 then begin
          Continue;
       end;
 
-      strText := strText + '     ' + RightStr('    ' + IntToStr(FCountData[25][b].FQso), 4);
+      strText := strText + '     ' + RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FQso), 4);
    end;
 
    // ALL
-   strText := strText + '      ' + RightStr('    ' + IntToStr(FCountData[25][TBand(16)].FQso), 4);
+   strText := strText + '      ' + RightStr('    ' + IntToStr(FCountData[HTOTAL][VTOTAL].FQso), 4);
    strText := 'Total ' + Copy(strText, 6);
 
    sl.Add(strText);
@@ -702,14 +700,14 @@ begin
    for b := b19 to HiBand do begin
       cumulative_count[b] := 0;
 
-      if FCountData[25][b].FQso = 0 then begin
+      if FCountData[HTOTAL][b].FQso = 0 then begin
          Continue;
       end;
 
       strText := strText + '     ' + RightStr('    ' + MHzString[b], 4);
    end;
 
-   cumulative_count[TBand(16)] := 0;
+   cumulative_count[VTOTAL] := 0;
    strText := strText + '       ALL';
 
    sl.Add('       ' + Trim(strText));
@@ -718,7 +716,7 @@ begin
    for i := 1 to nLastHour do begin
       // ０局の時間帯は除く
       if checkExcludeZeroHour.Checked = True then begin
-         if FCountData[i][TBand(16)].FQso = 0 then begin
+         if FCountData[i][VTOTAL].FQso = 0 then begin
             Continue;
          end;
       end;
@@ -726,7 +724,7 @@ begin
       strText := '';
 
       for b := b19 to HiBand do begin
-         if FCountData[25][b].FQso = 0 then begin
+         if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
 
@@ -736,8 +734,8 @@ begin
       end;
 
       // ALL
-      cumulative_count[TBand(16)] := cumulative_count[TBand(16)] + FCountData[i][TBand(16)].FQso;
-      strText := strText + '      ' + RightStr('    ' + IntToStr(cumulative_count[TBand(16)]), 4);
+      cumulative_count[VTOTAL] := cumulative_count[VTOTAL] + FCountData[i][VTOTAL].FQso;
+      strText := strText + '      ' + RightStr('    ' + IntToStr(cumulative_count[VTOTAL]), 4);
 
       // 見出し
       strText := ' [' + HourText(i) + ']' + Copy(strText, 5);
@@ -755,7 +753,7 @@ begin
 
    strText := '';
    for b := b19 to HiBand do begin
-      if FCountData[25][b].FQso = 0 then begin
+      if FCountData[HTOTAL][b].FQso = 0 then begin
          Continue;
       end;
 
@@ -770,7 +768,7 @@ begin
    for i := 1 to nLastHour do begin
       // ０局の時間帯は除く
       if checkExcludeZeroHour.Checked = True then begin
-         if FCountData[i][TBand(16)].FQso = 0 then begin
+         if FCountData[i][VTOTAL].FQso = 0 then begin
             Continue;
          end;
       end;
@@ -778,7 +776,7 @@ begin
       strText := '';
 
       for b := b19 to HiBand do begin
-         if FCountData[25][b].FQso = 0 then begin
+         if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
 
@@ -791,11 +789,11 @@ begin
       end;
 
       // ALL
-      if FCountData[i][TBand(16)].FMulti = 0 then begin
+      if FCountData[i][VTOTAL].FMulti = 0 then begin
          strText := strText + '      ' + '   -';
       end
       else begin
-         strText := strText + '      ' + RightStr('    ' + IntToStr(FCountData[i][TBand(16)].FMulti), 4);
+         strText := strText + '      ' + RightStr('    ' + IntToStr(FCountData[i][VTOTAL].FMulti), 4);
       end;
 
       // 見出し
@@ -810,24 +808,24 @@ begin
    strText := '';
 
    for b := b19 to HiBand do begin
-      if FCountData[25][b].FQso = 0 then begin
+      if FCountData[HTOTAL][b].FQso = 0 then begin
          Continue;
       end;
 
-      if FCountData[25][b].FMulti = 0 then begin
+      if FCountData[HTOTAL][b].FMulti = 0 then begin
          strText := strText + '     ' + '   -';
       end
       else begin
-         strText := strText + '     ' + RightStr('    ' + IntToStr(FCountData[25][b].FMulti), 4);
+         strText := strText + '     ' + RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FMulti), 4);
       end;
    end;
 
    // ALL
-   if FCountData[25][TBand(16)].FMulti = 0 then begin
+   if FCountData[HTOTAL][VTOTAL].FMulti = 0 then begin
       strText := strText + '      ' + '   -';
    end
    else begin
-      strText := strText + '      ' + RightStr('    ' + IntToStr(FCountData[25][TBand(16)].FMulti), 4);
+      strText := strText + '      ' + RightStr('    ' + IntToStr(FCountData[HTOTAL][VTOTAL].FMulti), 4);
    end;
    strText := 'Total ' + Copy(strText, 6);
 
@@ -875,7 +873,7 @@ begin
    sl.Add('');
 
    for b := b19 to HiBand do begin
-      if FCountData2[25][b].FQso[11] = 0 then begin
+      if FCountData2[HTOTAL][b].FQso[11] = 0 then begin
          Continue;
       end;
       ShowZAA_band(sl, b, nLastHour);
@@ -950,17 +948,17 @@ begin
    end;
 
    strText := 'Total';
-   strText := strText + RightStr('     ' + CountStr(FCountData2[25][b].FQso[1]), 5);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[25][b].FQso[2]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[25][b].FQso[3]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[25][b].FQso[4]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[25][b].FQso[5]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[25][b].FQso[6]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[25][b].FQso[7]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[25][b].FQso[8]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[25][b].FQso[9]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[25][b].FQso[10]), 6);
-   strText := strText + RightStr('       ' + CountStr(FCountData2[25][b].FQso[11]), 7);
+   strText := strText + RightStr('     ' + CountStr(FCountData2[HTOTAL][b].FQso[1]), 5);
+   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[2]), 6);
+   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[3]), 6);
+   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[4]), 6);
+   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[5]), 6);
+   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[6]), 6);
+   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[7]), 6);
+   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[8]), 6);
+   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[9]), 6);
+   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[10]), 6);
+   strText := strText + RightStr('       ' + CountStr(FCountData2[HTOTAL][b].FQso[11]), 7);
    sl.Add(strText);
 
    sl.Add('');
@@ -1032,7 +1030,7 @@ var
          end;
 
          // 交信の無いバンド除く
-         if FCountData[25][b].FQso = 0 then begin
+         if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
 
@@ -1111,7 +1109,7 @@ begin
       end;
 
       // 交信の無いバンド除く
-      if FCountData[25][b].FQso = 0 then begin
+      if FCountData[HTOTAL][b].FQso = 0 then begin
          Continue;
       end;
 
@@ -1189,7 +1187,7 @@ var
       all_tt := 0;
       all_cw := 0;
       for b := b19 to b10g do begin
-         if FCountData[25][b].FQso = 0 then begin
+         if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
 
@@ -1235,7 +1233,7 @@ var
       all_tt := 0;
       all_cw := 0;
       for b := b19 to b10g do begin
-         if FCountData[25][b].FQso = 0 then begin
+         if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
 
@@ -1276,7 +1274,7 @@ begin
    // バンド見出し
    strTitle := DupeString(' ', 9);
    for b := b19 to b10g do begin
-      if FCountData[25][b].FQso = 0 then begin
+      if FCountData[HTOTAL][b].FQso = 0 then begin
          Continue;
       end;
 
@@ -1301,7 +1299,7 @@ begin
       sl.Add(strText2);
 
       for b := b19 to b10g do begin
-         if FCountData[25][b].FQso = 0 then begin
+         if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
          Inc(TT1.FQsoCountPH[b], O.FQsoCountPH[b]);
@@ -1333,7 +1331,7 @@ begin
       sl.Add(strText2);
 
       for b := b19 to b10g do begin
-         if FCountData[25][b].FQso = 0 then begin
+         if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
 
