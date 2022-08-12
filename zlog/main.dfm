@@ -6393,6 +6393,13 @@ object MainForm: TMainForm
     object mnChangeTXNr: TMenuItem
       Caption = 'Change &TX#'
     end
+    object N13: TMenuItem
+      Caption = '-'
+    end
+    object menuEditStatus: TMenuItem
+      Caption = 'Edit Status'
+      OnClick = menuEditStatusClick
+    end
     object N8: TMenuItem
       Caption = '-'
     end
