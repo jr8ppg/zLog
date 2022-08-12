@@ -129,7 +129,8 @@ uses
   UQsoEdit in 'UQsoEdit.pas',
   USo2rNeoCp in 'USo2rNeoCp.pas' {formSo2rNeoCp},
   UInformation in 'UInformation.pas' {formInformation},
-  UWinKeyerTester in 'UWinKeyerTester.pas' {formWinkeyerTester};
+  UWinKeyerTester in 'UWinKeyerTester.pas' {formWinkeyerTester},
+  UStatusEdit in 'UStatusEdit.pas' {formStatusEdit};
 
 {$R *.RES}
 

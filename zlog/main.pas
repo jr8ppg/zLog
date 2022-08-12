@@ -21,7 +21,7 @@ uses
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
-  UWinKeyerTester,
+  UWinKeyerTester, UStatusEdit,
   JvExControls, JvLED;
 
 const
@@ -683,6 +683,8 @@ type
     menuSortByPoint: TMenuItem;
     menuSortByOperator: TMenuItem;
     menuSortByMemo: TMenuItem;
+    N13: TMenuItem;
+    menuEditStatus: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -937,6 +939,7 @@ type
     procedure actionNoQslExecute(Sender: TObject);
     procedure menuSortByTxNoBandTimeClick(Sender: TObject);
     procedure menuSortByClick(Sender: TObject);
+    procedure menuEditStatusClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -3602,11 +3605,16 @@ end;
 
 procedure TMainForm.FileSaveAs(Sender: TObject);
 begin
+   SaveDialog.InitialDir := dmZlogGlobal.Settings._logspath;
+   SaveDialog.FileName := '';
+   SaveDialog.FilterIndex := dmZLogGlobal.Settings.FLastFileFilterIndex;
+
    if SaveDialog.Execute then begin
       Log.SaveToFile(SaveDialog.filename);
       dmZLogGlobal.SetLogFileName(SaveDialog.filename);
       SetWindowCaption();
       { Add code to save current file under SaveDialog.FileName }
+      dmZLogGlobal.Settings.FLastFileFilterIndex := SaveDialog.FilterIndex;
    end;
 end;
 
@@ -6642,6 +6650,53 @@ begin
    Log.Saved := False;
 end;
 
+procedure TMainForm.menuEditStatusClick(Sender: TObject);
+var
+   dlg: TformStatusEdit;
+   i: Integer;
+   aQSO: TQSO;
+begin
+   dlg := TformStatusEdit.Create(Self);
+   try
+      // 選択行の先頭の値を初期値として採用
+      i := Grid.Selection.Top;
+      aQSO := TQSO(Grid.Objects[0, i]);
+      dlg.Invalid  := aQSO.Invalid;
+      dlg.CQ       := aQSO.CQ;
+      dlg.QslState := aQSO.QslState;
+
+      // ダイアログ表示
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      // 選択範囲に反映
+      for i := Grid.Selection.Top to Grid.Selection.Bottom do begin
+         aQSO := TQSO(Grid.Objects[0, i]);
+         if aQSO.Reserve = actLock then begin
+            Continue;
+         end;
+
+         aQSO.Invalid  := dlg.Invalid;
+         aQSO.CQ       := dlg.CQ;
+         aQSO.QslState := dlg.QslState;
+      end;
+
+      // スコア再計算
+      MyContest.RenewScoreAndMulti();
+      MyContest.MultiForm.UpdateData;
+      MyContest.ScoreForm.UpdateData;
+
+      // 未セーブです
+      Log.Saved := False;
+
+      // 画面リフレッシュ
+      GridRefreshScreen(True);
+   finally
+      dlg.Free();
+   end;
+end;
+
 procedure TMainForm.SendSpot1Click(Sender: TObject);
 var
    _top, _bottom: Integer;
@@ -9388,6 +9443,8 @@ begin
    end;
 
    SetCQ(True);
+
+   CallsignEdit.SetFocus;
 end;
 
 // #101,#102,#106,#107,#108 QuickMemo3-5

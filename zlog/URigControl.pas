@@ -3778,6 +3778,9 @@ begin
    if FCurrentRig <> nil then begin
       FCurrentRig.MoveToLastFreq();
    end;
+
+   MainForm.CallsignEdit.SetFocus;
+   MainForm.SetLastFocus();
 end;
 
 procedure TRigControl.Timer1Timer(Sender: TObject);

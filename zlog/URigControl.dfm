@@ -68,11 +68,10 @@ object RigControl: TRigControl
   end
   object buttonJumpLastFreq: TSpeedButton
     Left = 262
-    Top = 22
+    Top = 19
     Width = 44
-    Height = 17
+    Height = 20
     Caption = 'Jump'
-    Flat = True
     OnClick = buttonJumpLastFreqClick
   end
   object Button1: TButton

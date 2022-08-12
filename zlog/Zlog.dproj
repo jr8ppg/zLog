@@ -478,6 +478,10 @@
             <Form>formWinkeyerTester</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UStatusEdit.pas">
+            <Form>formStatusEdit</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
