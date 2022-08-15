@@ -3154,7 +3154,12 @@ begin
    end;
    Grid.Tag := Integer(L);
 
-   Grid.RowCount := (((L.Count div 50) + 1) * 50) + 1;
+   if Grid.VisibleRowCount > L.Count then begin
+      Grid.RowCount := Grid.VisibleRowCount + 1;   // +1‚ÍFixedRow‚Ì•ª
+   end
+   else begin
+      Grid.RowCount := L.Count;                    // TQSOList‚ÌCount‚ÍŒ³X1‘½‚¢
+   end;
 
    for i := 1 to L.Count - 1 do begin
       GridWriteQSO(i, L.Items[i]);
