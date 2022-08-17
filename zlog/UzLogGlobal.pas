@@ -393,9 +393,9 @@ public
 
     function GetGreetingsCode(): string;
 
-    function GetPrefix(aQSO: TQSO): TPrefix;
+    function GetPrefix(strCallsign: string): TPrefix;
     function GetArea(str: string): Integer;
-    function GuessCQZone(aQSO: TQSO): string;
+    function GuessCQZone(strCallsign: string): string;
     function IsUSA(): Boolean;
     function IsMultiStation(): Boolean;
 
@@ -479,6 +479,7 @@ procedure ResetDupeQso(aQSO: TQSO);
 
 function TextToBand(text: string): TBand;
 function TextToMode(text: string): TMode;
+function BandToPower(B: TBand): TPower;
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -1844,21 +1845,8 @@ begin
 end;
 
 procedure TdmZLogGlobal.SetBand(b: integer);
-var
-   BB: TBand;
 begin
    Settings._band := b;
-   if b > 0 then begin
-      Main.CurrentQSO.Band := TBand(b - 1);
-      MainForm.BandEdit.Text := Main.CurrentQSO.BandStr;
-      for BB := b19 to HiBand do
-         MainForm.BandMenu.Items[ord(BB)].Enabled := False;
-      MainForm.BandMenu.Items[b - 1].Enabled := True;
-   end
-   else begin
-      for BB := b19 to HiBand do
-         MainForm.BandMenu.Items[ord(BB)].Enabled := True;
-   end;
 end;
 
 function TdmZLogGlobal.GetMode: TContestMode;
@@ -2260,7 +2248,7 @@ begin
    FPrefixList.Insert(0, P);
 end;
 
-function TdmZLogGlobal.GetPrefix(aQSO: TQSO): TPrefix;
+function TdmZLogGlobal.GetPrefix(strCallsign: string): TPrefix;
 var
    str: string;
    i: integer;
@@ -2268,7 +2256,7 @@ var
    strCallRight: string;
    strCallFirst: string;
 begin
-   str := aQSO.CallSign;
+   str := strCallSign;
    if str = '' then begin
       Result := FPrefixList[0];
       Exit;
@@ -2375,14 +2363,14 @@ begin
    Result := k;
 end;
 
-function TdmZLogGlobal.GuessCQZone(aQSO: TQSO): string;
+function TdmZLogGlobal.GuessCQZone(strCallsign: string): string;
 var
    i, k: integer;
    C: TCountry;
    p: TPrefix;
    str: string;
 begin
-   p := GetPrefix(aQSO);
+   p := GetPrefix(strCallsign);
    if p = nil then begin
       Result := '';
       exit;
@@ -2391,7 +2379,7 @@ begin
       C := P.Country;
    end;
 
-   str := aQSO.CallSign;
+   str := strCallsign;
    i := StrToIntDef(C.CQZone, 0);
 
    if (C.Country = 'W') or (C.Country = 'K') then begin
@@ -2503,7 +2491,7 @@ begin
       aQSO := TQSO.Create;
       aQSO.CallSign := UpperCase(Settings._mycall);
 
-      P := GetPrefix(aQSO);
+      P := GetPrefix(aQSO.Callsign);
       if P <> nil then begin
          FMyCountry := P.Country.Country;
 
@@ -3377,6 +3365,18 @@ begin
       end;
    end;
    Result := mOther;
+end;
+
+function BandToPower(B: TBand): TPower;
+var
+   strPower: string;
+begin
+   Result := pwrM;
+   strPower := dmZLogGlobal.Settings._power[B];
+   if strPower = 'H' then Result := pwrH;
+   if strPower = 'M' then Result := pwrM;
+   if strPower = 'L' then Result := pwrL;
+   if strPower = 'P' then Result := pwrP;
 end;
 
 procedure TdmZLogGlobal.WriteErrorLog(msg: string);

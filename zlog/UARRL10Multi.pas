@@ -43,7 +43,7 @@ uses Main;
 
 function TARRL10Multi.GetInfoAA(aQSO: TQSO): string;
 begin
-   Result := dmZLogGlobal.GetPrefix(aQSO).Country.JustInfo;
+   Result := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country.JustInfo;
 end;
 
 procedure TARRL10Multi.CheckMulti(aQSO: TQSO);
@@ -83,7 +83,7 @@ begin
       exit;
    end;
 
-   C := dmZLogGlobal.GetPrefix(aQSO).Country;
+   C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
    if IsWVE(C.Country) then begin
       if GetState(aQSO, StateList) <> nil then
          Result := True;
@@ -105,7 +105,7 @@ begin
    aQSO.NewMulti1 := false;
    aQSO.NewMulti2 := false;
 
-   C := dmZLogGlobal.GetPrefix(aQSO).Country;
+   C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
 
    if aQSO.Mode = mCW then
       B := b35
@@ -316,7 +316,7 @@ var
 begin
    Result := '';
 
-   C := dmZLogGlobal.GetPrefix(aQSO).Country;
+   C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
    if IsWVE(C.Country) or IsMM(aQSO.Callsign) then begin
       S := GetState(aQSO, StateList);
       if S <> nil then

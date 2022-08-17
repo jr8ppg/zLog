@@ -57,7 +57,7 @@ begin
       end;
    end;
 
-   C := dmZLogGlobal.GetPrefix(aQSO).Country;
+   C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
    if C.Country = '' then begin // unknown cty. e.g. MM
       Exit;
    end;

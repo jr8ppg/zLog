@@ -7,7 +7,7 @@ uses
   System.SysUtils, System.Classes, System.DateUtils, System.StrUtils,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
   Vcl.ClipBrd, Vcl.ComCtrls, Generics.Collections, Generics.Defaults,
-  UzLogConst, UzLogQSO, UzLogGlobal;
+  UzLogConst, UzLogQSO, UzLogGlobal, UzLogContest;
 
 {
 タイムチャート

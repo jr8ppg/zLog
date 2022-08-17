@@ -13,7 +13,7 @@ uses
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
-  OEdit, URigControl, UConsolePad, URenewThread, USpotClass,
+  OEdit, URigControl, UConsolePad, USpotClass,
   UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UQuickRef, UZAnalyze,
   UPartials, URateDialog, URateDialogEx, USuperCheck, USuperCheck2, UComm, UCWKeyBoard, UChat,
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
@@ -21,7 +21,7 @@ uses
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
-  UWinKeyerTester, UStatusEdit,
+  UWinKeyerTester, UStatusEdit, UzLogContest,
   JvExControls, JvLED;
 
 const
@@ -58,190 +58,6 @@ type
     TxLed: TJvLED;
   end;
   TEditPanelArray = array[0..2] of TEditPanel;
-
-  TWanted = class
-    Multi : string;
-    Bands : set of TBand;
-    constructor Create;
-  end;
-
-  TContest = class
-  protected
-    FNeedCtyDat: Boolean;
-    FUseCoeff: Boolean;
-  private
-    procedure SelectPowerCode();
-  public
-    WantedList : TList;
-
-    MultiForm: TBasicMulti;
-    ScoreForm: TBasicScore;
-    PastEditForm: TEditDialog;
-    ZoneForm: TWWZone;
-
-    Name : string;
-    SameExchange : Boolean; // true by default. false when serial number etc
-    MultiFound : Boolean; // used in spacebarproc
-
-    SentStr: string;
-
-    constructor Create(N : string); virtual;
-    destructor Destroy; override;
-    procedure PostWanted(S : string);
-    procedure DelWanted(S : string);
-    procedure ClearWanted;
-    function QTHString(aQSO: TQSO) : string; virtual;
-    procedure LogQSO(var aQSO : TQSO; Local : Boolean); virtual;
-    procedure ShowScore; virtual;
-    procedure ShowMulti; virtual;
-    procedure Renew; virtual;
-    {procedure LoadFromFile(FileName : string); virtual; }
-    procedure EditCurrentRow; virtual;
-    procedure ChangePower; virtual;
-    procedure DispExchangeOnOtherBands; virtual;
-    procedure SpaceBarProc; virtual; {called when space is pressed when Callsign Edit
-                                      is in focus AND the callsign is not DUPE}
-    procedure SetNrSent(var aQSO : TQSO); virtual;
-    procedure SetPoints(var aQSO : TQSO); virtual; {Sets QSO.points according to band/mode}
-                                                {called from ChangeBand/ChangeMode}
-    procedure SetBand(B : TBand); virtual; {JA0}
-    procedure WriteSummary(filename : string); // creates summary file
-    function CheckWinSummary(aQSO : TQSO) : string; virtual; // returns summary for checkcall etc.
-    function ADIF_ExchangeRX_FieldName : string; virtual;
-    function ADIF_ExchangeRX(aQSO : TQSO) : string; virtual;
-    function ADIF_ExtraFieldName : string; virtual;
-    function ADIF_ExtraField(aQSO : TQSO) : string; virtual;
-    procedure ADIF_Export(FileName : string);
-
-    property NeedCtyDat: Boolean read FNeedCtyDat;
-    property UseCoeff: Boolean read FUseCoeff;
-
-    procedure RenewScoreAndMulti();
-  end;
-
-  TPedi = class(TContest)
-    constructor Create(N : string); override;
-  end;
-
-  TALLJAContest = class(TContest)
-    constructor Create(N : string); override;
-    function QTHString(aQSO: TQSO): string; override;
-    procedure DispExchangeOnOtherBands; override;
-    function CheckWinSummary(aQSO : TQSO) : string; override;
-  end;
-
-  TKCJContest = class(TContest)
-    constructor Create(N : string); override;
-    function QTHString(aQSO: TQSO): string; override;
-    //procedure DispExchangeOnOtherBands; override;
-    function CheckWinSummary(aQSO : TQSO) : string; override;
-  end;
-
-  TACAGContest = class(TContest)
-    constructor Create(N : string); override;
-    procedure DispExchangeOnOtherBands; override;
-  end;
-
-  TFDContest = class(TContest)
-    constructor Create(N : string); override;
-    function QTHString(aQSO: TQSO): string; override;
-    procedure DispExchangeOnOtherBands; override;
-  end;
-
-  TSixDownContest = class(TContest)
-    constructor Create(N : string); override;
-    function QTHString(aQSO: TQSO): string; override;
-    procedure DispExchangeOnOtherBands; override;
-  end;
-
-  TGeneralContest = class(TContest)
-    FConfig: TUserDefinedContest;
-  public
-    constructor Create(N, CFGFileName: string); reintroduce;
-    destructor Destroy(); override;
-    procedure SetPoints(var aQSO : TQSO); override;
-  end;
-
-  TCQWPXContest = class(TContest)
-    constructor Create(N : string); override;
-    function ADIF_ExtraFieldName : string; override;
-    function ADIF_ExtraField(aQSO : TQSO) : string; override;
-  end;
-
-  TWAEContest = class(TContest)
-    QTCForm: TQTCForm;
-    constructor Create(N : string); override;
-    destructor Destroy(); override;
-    procedure SpaceBarProc; override;
-  end;
-
-  TIOTAContest = class(TContest)
-    constructor Create(N : string); override;
-    function QTHString(aQSO: TQSO): string; override;
-    procedure SpaceBarProc; override;
-  end;
-
-  TARRL10Contest = class(TContest)
-    constructor Create(N : string); override;
-    function CheckWinSummary(aQSO : TQSO) : string; override;
-  end;
-
-  TJA0Contest = class(TContest)
-    constructor Create(N : string); override;
-    procedure SetBand(B : TBand); override;
-    procedure Renew; override;
-  end;
-
-  TJA0ContestZero = class(TJA0Contest)
-    constructor Create(N : string); override;
-  end;
-
-  TAPSprint = class(TContest)
-    constructor Create(N : string); override;
-  end;
-
-  TCQWWContest = class(TContest)
-    constructor Create(N : string; fJIDX: Boolean = False); reintroduce;
-    procedure SpaceBarProc; override;
-    procedure ShowMulti; override;
-    function CheckWinSummary(aQSO : TQSO) : string; override;
-    function ADIF_ExchangeRX_FieldName : string; override;
-  end;
-
-  TIARUContest = class(TContest)
-    constructor Create(N : string); override;
-    //function CheckWinSummary(aQSO : TQSO) : string; override;
-    procedure SpaceBarProc; override;
-    function ADIF_ExchangeRX_FieldName : string; override;
-  end;
-
-  TJIDXContest = class(TCQWWContest)
-    constructor Create(N : string); overload;
-    procedure SetPoints(var aQSO : TQSO); override;
-  end;
-
-  TJIDXContestDX = class(TContest)
-    constructor Create(N : string); override;
-    procedure SetPoints(var aQSO : TQSO); override;
-  end;
-
-  TARRLDXContestDX = class(TContest)
-    constructor Create(N : string); override;
-    function ADIF_ExchangeRX_FieldName : string; override;
-  end;
-
-  TARRLDXContestW = class(TContest)
-    constructor Create(N : string); override;
-    procedure SpaceBarProc; override;
-    function ADIF_ExchangeRX_FieldName : string; override;
-  end;
-
-  TAllAsianContest = class(TContest)
-    constructor Create(N : string); override;
-    procedure SetPoints(var aQSO : TQSO); override;
-    procedure SpaceBarProc; override;
-    function ADIF_ExchangeRX_FieldName : string; override;
-  end;
 
 type
   TMainForm = class(TForm)
@@ -1038,7 +854,6 @@ type
     procedure InitACAG();
     procedure InitALLJA0_JA0(BandGroupIndex: Integer);
     procedure InitALLJA0_Other(BandGroupIndex: Integer);
-    procedure InitKCJ();
     procedure InitDxPedi();
     procedure InitUserDefined(ContestName, ConfigFile: string);
     procedure InitCQWW();
@@ -1174,6 +989,7 @@ type
     procedure SetNextSerialNumber3(aQSO: TQSO);
     procedure RenewScore();
     procedure ScrollGrid();
+    procedure EditCurrentRow();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1464,288 +1280,6 @@ begin
    end;
 end;
 
-procedure TContest.SetBand(B: TBand);
-begin
-end;
-
-procedure TContest.WriteSummary(filename: string); // creates summary file
-var
-   f: textfile;
-   S: string;
-begin
-   if Log.Year = 0 then
-      exit;
-
-   AssignFile(f, filename);
-   Rewrite(f);
-
-   S := FillRight('Year:', 12) + IntToStr(Log.Year);
-   WriteLn(f, S);
-   WriteLn(f);
-   WriteLn(f, Name);
-   WriteLn(f);
-   S := FillRight('Callsign:', 12) + dmZlogGlobal.MyCall;
-   WriteLn(f, S);
-   WriteLn(f);
-   WriteLn(f, 'Country: ');
-   WriteLn(f);
-   S := FillRight('Category:', 12);
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      S := S + 'Single Operator  ';
-   end
-   else begin
-      S := S + 'Multi Operator  ';
-   end;
-
-   if dmZlogGlobal.Band = 0 then
-      S := S + 'All band'
-   else
-      S := S + MHzString[TBand(Ord(dmZlogGlobal.Band) - 1)];
-
-   S := S + '  ';
-   case dmZlogGlobal.ContestMode of
-      cmMix:
-         S := S + 'Phone/CW';
-      cmCw:
-         S := S + 'CW';
-      cmPh:
-         S := S + 'Phone';
-   end;
-
-   WriteLn(f, S);
-   WriteLn(f);
-   WriteLn(f, 'Band(MHz)      QSOs         Points       Multi.');
-
-   WriteLn(f, 'Total');
-   WriteLn(f, 'Score');
-
-   WriteLn(f);
-
-   CloseFile(f);
-end;
-
-function TARRL10Contest.CheckWinSummary(aQSO: TQSO): string; // returns summary for checkcall etc.
-var
-   str: string;
-begin
-   str := aQSO.CheckCallSummary;
-   if aQSO.mode = mCW then
-      Insert('CW ', str, 5)
-   else
-      Insert('Ph ', str, 5);
-
-   Result := str;
-end;
-
-function TContest.CheckWinSummary(aQSO: TQSO): string; // returns summary for checkcall etc.
-begin
-   Result := aQSO.CheckCallSummary;
-end;
-
-function TContest.QTHString(aQSO: TQSO): string;
-begin
-   Result := dmZlogGlobal.Settings._city;
-end;
-
-procedure TContest.SetPoints(var aQSO: TQSO);
-begin
-end;
-
-procedure TContest.DispExchangeOnOtherBands;
-var
-   Q: TQSO;
-begin
-   Q := Log.ObjectOf(CurrentQSO.Callsign);
-   if Q = nil then begin
-      Exit;
-   end;
-
-   MainForm.NumberEditEx.Text := Q.NrRcvd;
-   CurrentQSO.NrRcvd := Q.NrRcvd;
-end;
-
-procedure TContest.SelectPowerCode();
-var
-   str: string;
-   NumberEdit: TEdit;
-begin
-   NumberEdit := MainForm.NumberEdit;
-
-   str := NumberEdit.Text;
-   if str <> '' then begin
-      if CharInSet(str[length(str)], ['H', 'M', 'L', 'P']) then begin
-         NumberEdit.SelStart := length(str) - 1;
-         NumberEdit.SelLength := 1;
-      end;
-   end;
-end;
-
-procedure TACAGContest.DispExchangeOnOtherBands;
-begin
-   Inherited;
-
-   // added for acag
-   SelectPowerCode();
-end;
-
-procedure TALLJAContest.DispExchangeOnOtherBands;
-begin
-   Inherited;
-
-   // added for allja (same as acag)
-   SelectPowerCode();
-end;
-
-Procedure TFDContest.DispExchangeOnOtherBands;
-var
-   j: Integer;
-   str: string;
-   currshf: Boolean;
-   pastQSO, tempQSO: TQSO;
-   NumberEdit: TEdit;
-begin
-   NumberEdit := MainForm.NumberEditEx;
-   currshf := IsSHF(CurrentQSO.Band);
-   pastQSO := nil;
-   tempQSO := nil;
-
-   for j := 1 to Log.TotalQSO do begin
-      if CurrentQSO.Callsign = Log.QsoList[j].Callsign then begin
-         if currshf = IsSHF(Log.QsoList[j].Band) then begin
-            pastQSO := Log.QsoList[j];
-            break;
-         end
-         else begin
-            tempQSO := Log.QsoList[j];
-         end;
-      end;
-   end;
-
-   if pastQSO <> nil then begin
-      NumberEdit.Text := pastQSO.NrRcvd;
-      CurrentQSO.NrRcvd := pastQSO.NrRcvd;
-   end
-   else begin
-      if tempQSO <> nil then begin
-         if currshf = True then begin
-            if length(tempQSO.NrRcvd) > 3 then
-               str := '01' + ExtractPower(tempQSO.NrRcvd)
-            else
-               str := tempQSO.NrRcvd;
-            NumberEdit.Text := str;
-            CurrentQSO.NrRcvd := str;
-         end
-         else begin
-            str := ExtractKenNr(tempQSO.NrRcvd) + ExtractPower(tempQSO.NrRcvd);
-            NumberEdit.Text := str;
-            CurrentQSO.NrRcvd := str;
-         end;
-      end
-      else // if tempQSO = nil
-      begin
-         exit;
-      end;
-   end;
-
-   // added for acag
-   SelectPowerCode();
-end;
-
-Procedure TSixDownContest.DispExchangeOnOtherBands;
-var
-   j: Integer;
-   str: string;
-   currshf: Boolean;
-   pastQSO, tempQSO: TQSO;
-   NumberEdit: TEdit;
-begin
-   NumberEdit := MainForm.NumberEditEx;
-   currshf := IsSHF(CurrentQSO.Band);
-   pastQSO := nil;
-   tempQSO := nil;
-
-   for j := 1 to Log.TotalQSO do begin
-      if CurrentQSO.Callsign = Log.QsoList[j].Callsign then begin
-         if currshf = IsSHF(Log.QsoList[j].Band) then begin
-            pastQSO := Log.QsoList[j];
-            break;
-         end
-         else begin
-            tempQSO := Log.QsoList[j];
-         end;
-      end;
-   end;
-
-   if pastQSO <> nil then begin
-      NumberEdit.Text := pastQSO.NrRcvd;
-      CurrentQSO.NrRcvd := pastQSO.NrRcvd;
-   end
-   else begin
-      if tempQSO <> nil then begin
-         if currshf = True then begin
-            if length(tempQSO.NrRcvd) > 3 then
-               str := '01' + ExtractPower(tempQSO.NrRcvd)
-            else
-               str := tempQSO.NrRcvd;
-            NumberEdit.Text := str;
-            CurrentQSO.NrRcvd := str;
-         end
-         else begin
-            str := ExtractKenNr(tempQSO.NrRcvd) + ExtractPower(tempQSO.NrRcvd);
-            NumberEdit.Text := str;
-            CurrentQSO.NrRcvd := str;
-         end;
-      end
-      else // if tempQSO = nil
-      begin
-         exit;
-      end;
-   end;
-
-   // added for acag
-   SelectPowerCode();
-end;
-
-procedure TContest.SpaceBarProc;
-var
-   CallsignEdit: TEdit;
-   NumberEdit: TEdit;
-begin
-   CallsignEdit := MainForm.CallsignEditEx;
-   NumberEdit := MainForm.NumberEditEx;
-
-   MultiFound := False;
-   if (NumberEdit.Text = '') and (SameExchange = True) then begin
-      DispExchangeOnOtherBands;
-      if NumberEdit.Text <> '' then
-         MultiFound := True;
-   end;
-
-   if dmZlogGlobal.Settings._entersuperexchange and (MainForm.FSpcRcvd_Estimate <> '') then
-      if NumberEdit.Text = '' then
-         if CoreCall(MainForm.FSpcFirstDataCall) = CoreCall(CallsignEdit.Text) then begin
-            NumberEdit.Text := TrimRight(MainForm.FSpcRcvd_Estimate);
-            MultiFound := True;
-         end;
-
-   if MainForm.FCheckMulti.Visible then
-      MainForm.FCheckMulti.Renew(CurrentQSO);
-end;
-
-Procedure TIOTAContest.SpaceBarProc;
-var
-   NumberEdit: TEdit;
-begin
-   inherited;
-
-   NumberEdit := MainForm.NumberEditEx;
-
-   if MultiFound and (TIOTAMulti(MyContest.MultiForm).ExtractMulti(CurrentQSO) = '') then begin // serial number
-      NumberEdit.Text := '';
-   end;
-end;
-
 procedure TMainForm.SetR(var aQSO: TQSO); // r of RST
 var
    i: Integer;
@@ -2004,1028 +1538,6 @@ begin
    else begin
       aQSO.Mode := mCW;
    end;
-end;
-
-procedure TContest.ChangePower;
-begin
-   if CurrentQSO.Power = pwrH then begin
-      CurrentQSO.Power := pwrP;
-   end
-   else begin
-      CurrentQSO.Power := TPower(Integer(CurrentQSO.Power) + 1);
-   end;
-
-   if Assigned(MainForm.PowerEdit) then begin
-      MainForm.PowerEdit.Text := CurrentQSO.NewPowerStr;
-   end;
-end;
-
-constructor TWanted.Create;
-begin
-   Multi := '';
-   Bands := [];
-end;
-
-constructor TContest.Create(N: string);
-begin
-   MultiForm := nil;
-   ScoreForm := nil;
-   ZoneForm := nil;
-   PastEditForm := nil;
-   WantedList := TList.Create;
-
-   SameExchange := True;
-   dmZlogGlobal.Settings._sameexchange := SameExchange;
-   MainForm.MultiButton.Enabled := True; // toolbar
-   MainForm.Multipliers1.Enabled := True; // menu
-   MainForm.mnCheckCountry.Visible := False; // checkcountry window
-   MainForm.mnCheckMulti.Caption := 'Check Multi';
-   Name := N;
-
-   Log.AcceptDifferentMode := False;
-   Log.CountHigherPoints := False;
-
-   Log.QsoList[0].Callsign := dmZlogGlobal.Settings._mycall; // Callsign
-   Log.QsoList[0].Memo := N; // Contest name
-   Log.QsoList[0].RSTsent := UTCOffset; // UTC = $FFFF else UTC + x hrs;
-   Log.QsoList[0].RSTRcvd := 0; // or Field Day coefficient
-
-   SentStr := '';
-
-   FNeedCtyDat := False;
-   FUseCoeff := False;
-end;
-
-procedure TContest.PostWanted(S: string);
-var
-   ss, mm: string;
-   i, BB: Integer;
-   W: TWanted;
-
-begin
-   ss := copy(S, 1, 2);
-   ss := TrimRight(ss);
-
-   BB := StrToInt(ss);
-   if BB <= Ord(HiBand) then begin
-      mm := copy(S, 3, 255);
-      mm := TrimLeft(mm);
-      mm := TrimRight(mm);
-      for i := 0 to WantedList.Count - 1 do begin
-         W := TWanted(WantedList[i]);
-         if W.Multi = mm then begin
-            W.Bands := W.Bands + [TBand(BB)];
-            exit;
-         end;
-      end;
-      W := TWanted.Create;
-      W.Multi := mm;
-      W.Bands := [TBand(BB)];
-      WantedList.Add(W);
-   end;
-end;
-
-procedure TContest.DelWanted(S: string);
-var
-   ss, mm: string;
-   i, BB: Integer;
-   W: TWanted;
-begin
-   ss := copy(S, 1, 2);
-   ss := TrimRight(ss);
-
-   BB := StrToInt(ss);
-   if BB <= Ord(HiBand) then begin
-      mm := copy(S, 3, 255);
-      mm := TrimLeft(mm);
-      mm := TrimRight(mm);
-      for i := 0 to WantedList.Count - 1 do begin
-         W := TWanted(WantedList[i]);
-         if W.Multi = mm then begin
-            W.Bands := W.Bands - [TBand(BB)];
-            if W.Bands = [] then begin
-               W.Free;
-               WantedList.Delete(i);
-               WantedList.Pack;
-            end;
-            exit;
-         end;
-      end;
-   end;
-end;
-
-procedure TContest.ClearWanted;
-var
-   W: TWanted;
-   i: Integer;
-begin
-   for i := 0 to WantedList.Count - 1 do begin
-      W := TWanted(WantedList[i]);
-      W.Free;
-   end;
-   WantedList.Clear;
-end;
-
-destructor TContest.Destroy;
-begin
-   inherited;
-
-   WantedList.Free();
-
-   if Assigned(MultiForm) then begin
-      MultiForm.Release();
-   end;
-   if Assigned(ScoreForm) then begin
-      ScoreForm.Release();
-   end;
-   if Assigned(ZoneForm) then begin
-      ZoneForm.Release();
-   end;
-   if Assigned(PastEditForm) then begin
-      PastEditForm.Release();
-   end;
-end;
-
-procedure TContest.SetNrSent(var aQSO: TQSO);
-var
-   S: string;
-begin
-   S := SetStrNoAbbrev(dmZlogGlobal.Settings._sentstr, aQSO);
-
-   S := StringReplace(S, '_', '', [rfReplaceAll]);
-
-   aQSO.NrSent := S;
-end;
-
-function TContest.ADIF_ExchangeRX_FieldName: string;
-begin
-   if SerialContestType <> 0 then
-      Result := 'srx'
-   else
-      Result := 'qth';
-end;
-
-function TCQWWContest.ADIF_ExchangeRX_FieldName: string;
-begin
-   Result := 'cqz';
-end;
-
-function TIARUContest.ADIF_ExchangeRX_FieldName: string;
-begin
-   Result := 'ituz';
-end;
-
-function TARRLDXContestDX.ADIF_ExchangeRX_FieldName: string;
-begin
-   Result := 'state';
-end;
-
-function TARRLDXContestW.ADIF_ExchangeRX_FieldName: string;
-begin
-   Result := 'rx_pwr';
-end;
-
-function TAllAsianContest.ADIF_ExchangeRX_FieldName: string;
-begin
-   Result := 'age';
-end;
-
-function TContest.ADIF_ExchangeRX(aQSO: TQSO): string;
-begin
-   Result := aQSO.NrRcvd;
-end;
-
-function TContest.ADIF_ExtraFieldName: string;
-begin
-   Result := '';
-end;
-
-function TContest.ADIF_ExtraField(aQSO: TQSO): string;
-begin
-   Result := '';
-end;
-
-function TCQWPXContest.ADIF_ExtraFieldName: string;
-begin
-   Result := 'pfx';
-end;
-
-function TCQWPXContest.ADIF_ExtraField(aQSO: TQSO): string;
-begin
-   Result := aQSO.Multi1;
-end;
-
-procedure TContest.ADIF_Export(filename: string);
-var
-   f: textfile;
-   Header, S, temp: string;
-   i: Integer;
-   aQSO: TQSO;
-   offsetmin: Integer;
-   dbl: double;
-begin
-   Header := 'ADIF export from zLog for Windows'; // +dmZlogGlobal.Settings._mycall;
-
-   AssignFile(f, filename);
-   Rewrite(f);
-
-   { str := 'zLog for Windows Text File'; }
-   WriteLn(f, Header);
-   WriteLn(f, 'All times in UTC');
-   WriteLn(f, '<eoh>');
-
-   offsetmin := Log.QsoList[0].RSTsent;
-   { if offsetmin = 0 then // default JST for older versions
-     offsetmin := -1*9*60; }
-   if offsetmin = _USEUTC then // already recorded in utc
-      offsetmin := 0;
-   dbl := offsetmin / (24 * 60);
-
-   for i := 1 to Log.TotalQSO do begin
-      aQSO := Log.QsoList[i];
-      S := '<qso_date:8>';
-      S := S + FormatDateTime('yyyymmdd', aQSO.Time + dbl);
-      S := S + '<time_on:4>' + FormatDateTime('hhnn', aQSO.Time + dbl);
-      S := S + '<time_off:4>' + FormatDateTime('hhnn', aQSO.Time + dbl);
-
-      temp := aQSO.Callsign;
-      S := S + '<call:' + IntToStr(length(temp)) + '>' + temp;
-
-      temp := IntToStr(aQSO.RSTsent);
-      S := S + '<rst_sent:' + IntToStr(length(temp)) + '>' + temp;
-
-      if SerialContestType <> 0 then begin
-         temp := IntToStr(aQSO.Serial);
-         S := S + '<stx:' + IntToStr(length(temp)) + '>' + temp;
-      end;
-
-      temp := IntToStr(aQSO.RSTRcvd);
-      S := S + '<rst_rcvd:' + IntToStr(length(temp)) + '>' + temp;
-
-      temp := ADIF_ExchangeRX(aQSO);
-      S := S + '<' + ADIF_ExchangeRX_FieldName + ':' + IntToStr(length(temp)) + '>' + temp;
-
-      temp := ADIF_ExtraField(aQSO);
-      if temp <> '' then begin
-         S := S + '<' + ADIF_ExtraFieldName + ':' + IntToStr(length(temp)) + '>' + temp;
-      end;
-
-      temp := ADIFBandString[aQSO.Band];
-      S := S + '<band:' + IntToStr(length(temp)) + '>' + temp;
-
-      temp := ModeString[aQSO.mode];
-      S := S + '<mode:' + IntToStr(length(temp)) + '>' + temp;
-
-      if aQSO.Operator <> '' then begin
-         temp := aQSO.Operator;
-         S := S + '<operator:' + IntToStr(length(temp)) + '>' + temp;
-      end;
-
-      if aQSO.Memo <> '' then begin
-         temp := aQSO.Memo;
-         S := S + '<comment:' + IntToStr(length(temp)) + '>' + temp;
-      end;
-
-      temp := aQSO.FreqStr2;
-      if temp <> '' then begin
-         S := S + '<freq:' + IntToStr(length(temp)) + '>' + temp;
-      end;
-
-      S := S + '<eor>';
-
-      WriteLn(f, S);
-   end;
-
-   CloseFile(f);
-end;
-
-procedure TContest.LogQSO(var aQSO: TQSO; Local: Boolean);
-begin
-   if Local = False then
-      aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
-
-   MultiForm.AddNoUpdate(aQSO);
-
-   aQSO.Reserve2 := $00;
-   ScoreForm.AddNoUpdate(aQSO);
-
-   aQSO.Reserve := actAdd;
-   Log.AddQue(aQSO);
-   Log.ProcessQue;
-
-   MultiForm.UpdateData;
-   ScoreForm.UpdateData;
-
-   if Local = False then
-      aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
-
-   MainForm.GridAdd(aQSO);
-
-   aQSO.Reserve2 := $00;
-
-   MainForm.ReEvaluateQSYCount;
-
-   if MainForm.FRateDialog.Visible then begin
-      MainForm.FRateDialog.UpdateGraph;
-   end;
-   if MainForm.FRateDialogEx.Visible then begin
-      MainForm.FRateDialogEx.UpdateGraph;
-   end;
-
-   // M/S時、本来Multi StationはNEW MULTIしか交信できない
-   if (dmZLogGlobal.IsMultiStation() = True) then begin
-      if Local { (mytx = aQSO.TX) } and (aQSO.NewMulti1 = False) and (aQSO.NewMulti2 = False) and (dmZlogGlobal.Settings._multistationwarning)
-      then begin
-         MessageDlg('This station is not a new multiplier, but will be logged anyway.', mtError, [mbOK], 0); { HELP context 0 }
-      end;
-   end;
-end;
-
-procedure TContest.ShowScore;
-begin
-   ScoreForm.Show;
-end;
-
-procedure TContest.ShowMulti;
-begin
-   MultiForm.Show;
-end;
-
-procedure TContest.Renew;
-begin
-   if dmZlogGlobal.Settings._renewbythread then begin
-      RequestRenewThread;
-      exit;
-   end;
-
-   RenewScoreAndMulti();
-
-   MultiForm.UpdateData;
-   ScoreForm.UpdateData;
-
-   // 画面リフレッシュ
-   MainForm.GridRefreshScreen(True);
-
-   // バンドスコープリフレッシュ
-   MainForm.BSRefresh();
-end;
-
-procedure TContest.EditCurrentRow;
-var
-   R: Integer;
-   aQSO: TQSO;
-begin
-   R := MainForm.Grid.Row;
-
-   aQSO := TQSO(MainForm.Grid.Objects[0, R]);
-   if aQSO = nil then begin
-      Exit;
-   end;
-
-   if aQSO.Reserve = actLock then begin
-      MainForm.WriteStatusLine('This QSO is currently locked', False);
-      exit;
-   end;
-
-   PastEditForm.Init(aQSO, _ActChange);
-
-   if PastEditForm.ShowModal <> mrOK then begin
-      Exit;
-   end;
-
-   MainForm.GridWriteQSO(R, aQSO);
-
-   if MainForm.FPartialCheck.Visible and MainForm.FPartialCheck._CheckCall then begin
-      MainForm.FPartialCheck.CheckPartial(CurrentQSO);
-   end;
-
-   if MainForm.FCheckCall2.Visible then begin
-      MainForm.FCheckCall2.Renew(CurrentQSO);
-   end;
-end;
-
-procedure TContest.RenewScoreAndMulti();
-var
-   i: Integer;
-   aQSO: TQSO;
-begin
-   MultiForm.Reset();
-   ScoreForm.Reset();
-
-   // DUPE再計算
-   Log.SetDupeFlags;
-
-   // Score&NewMulti再計算
-   for i := 1 to Log.TotalQSO do begin
-      aQSO := Log.QsoList[i];
-
-      if Log.CountHigherPoints = True then begin
-         Log.IsDupe(aQSO); // called to set log.differentmodepointer
-      end;
-
-      aQSO.NewMulti1 := False;
-      aQSO.NewMulti2 := False;
-
-      if aQSO.Invalid = False then begin
-         MultiForm.AddNoUpdate(aQSO);
-         ScoreForm.AddNoUpdate(aQSO);
-      end;
-   end;
-end;
-
-constructor TJIDXContest.Create(N: string);
-begin
-   inherited Create(N, True);    //   <-TCQWWContestからの継承なのでinherited不可
-   MultiForm := TJIDXMulti.Create(MainForm);
-   ScoreForm := TJIDXScore2.Create(MainForm);
-   ZoneForm := TWWZone.Create(MainForm);
-   TJIDXMulti(MultiForm).ZoneForm := ZoneForm;
-   MainForm.FCheckCountry.ParentMulti := TWWMulti(MultiForm);
-   UseUTC := True;
-   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   SentStr := '$V';
-   FNeedCtyDat := True;
-end;
-
-procedure TJIDXContest.SetPoints(var aQSO: TQSO);
-begin
-   TJIDXScore2(ScoreForm).CalcPoints(aQSO);
-end;
-
-constructor TARRLDXContestDX.Create(N: string);
-begin
-   inherited;
-   MultiForm := TARRLDXMulti.Create(MainForm);
-   ScoreForm := TARRLDXScore.Create(MainForm);
-   PastEditForm := TEditDialog.Create(MainForm);
-
-   UseUTC := True;
-   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   SentStr := '$N';
-   FNeedCtyDat := True;
-end;
-
-constructor TARRLDXContestW.Create(N: string);
-begin
-   inherited;
-   MultiForm := TARRLWMulti.Create(MainForm);
-   TARRLWMulti(MultiForm).ALLASIANFLAG := False;
-   ScoreForm := TARRLDXScore.Create(MainForm);
-   PastEditForm := TEditDialog.Create(MainForm);
-   ZoneForm := TWWZone.Create(MainForm);
-
-   UseUTC := True;
-   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   SentStr := '$V';
-   FNeedCtyDat := True;
-end;
-
-constructor TAllAsianContest.Create(N: string);
-begin
-   inherited;
-
-   MultiForm := TARRLWMulti.Create(MainForm);
-   TARRLWMulti(MultiForm).ALLASIANFLAG := True;
-   ScoreForm := TAllAsianScore.Create(MainForm);
-   ZoneForm := TWWZone.Create(MainForm);
-   PastEditForm := TEditDialog.Create(MainForm);
-
-   UseUTC := True;
-   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   SentStr := '$A';
-end;
-
-procedure TAllAsianContest.SetPoints(var aQSO: TQSO);
-begin
-   TAllAsianScore(ScoreForm).CalcPoints(aQSO);
-end;
-
-procedure TAllAsianContest.SpaceBarProc;
-begin
-   inherited;
-   MainForm.WriteStatusLine(MultiForm.GetInfo(CurrentQSO), False);
-end;
-
-constructor TJIDXContestDX.Create(N: string);
-begin
-   inherited;
-   MultiForm := TJIDX_DX_Multi.Create(MainForm);
-   ScoreForm := TJIDX_DX_Score.Create(MainForm);
-   PastEditForm := TEditDialog.Create(MainForm);
-   UseUTC := True;
-   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   SentStr := '$V';
-   FNeedCtyDat := True;
-end;
-
-procedure TJIDXContestDX.SetPoints(var aQSO: TQSO);
-begin
-   TJIDX_DX_Score(ScoreForm).CalcPoints(aQSO);
-end;
-
-constructor TCQWPXContest.Create(N: string);
-begin
-   inherited;
-   MultiForm := TWPXMulti.Create(MainForm);
-   ScoreForm := TWPXScore.Create(MainForm);
-   ZoneForm := nil;
-   MultiForm.Reset();
-
-   PastEditForm := TEditDialog.Create(MainForm);
-
-   TWPXScore(ScoreForm).MultiForm := TWPXMulti(MultiForm);
-
-   UseUTC := True;
-   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
-   SameExchange := False;
-   dmZlogGlobal.Settings._sameexchange := SameExchange;
-   SentStr := '$S';
-   FNeedCtyDat := True;
-end;
-
-constructor TWAEContest.Create(N: string);
-begin
-   inherited;
-
-   MultiForm := TWAEMulti.Create(MainForm);
-   ScoreForm := TWAEScore.Create(MainForm);
-   ZoneForm := TWWZone.Create(MainForm);
-   PastEditForm := TEditDialog.Create(MainForm);
-   QTCForm := TQTCForm.Create(MainForm);
-
-   UseUTC := True;
-   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
-   SameExchange := False;
-   dmZlogGlobal.Settings._sameexchange := SameExchange;
-   SentStr := '$S';
-   FNeedCtyDat := True;
-end;
-
-destructor TWAEContest.Destroy();
-begin
-   QTCForm.Release();
-end;
-
-function TIOTAContest.QTHString(aQSO: TQSO): string;
-begin
-   Result := TIOTAMulti(MultiForm).MyIOTA;
-end;
-
-constructor TIOTAContest.Create(N: string);
-begin
-   inherited;
-
-   MultiForm := TIOTAMulti.Create(MainForm);
-   ScoreForm := TIARUScore.Create(MainForm);
-   TIARUScore(ScoreForm).InitGrid(b35, b28);
-   PastEditForm := TEditDialog.Create(MainForm);
-
-   UseUTC := True;
-   Log.AcceptDifferentMode := True;
-   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
-   SentStr := '$S$Q';
-   FNeedCtyDat := True;
-end;
-
-constructor TARRL10Contest.Create(N: string);
-begin
-   inherited;
-
-   MultiForm := TARRL10Multi.Create(MainForm);
-   ScoreForm := TARRL10Score.Create(MainForm);
-   ZoneForm := TWWZone.Create(MainForm);
-   MainForm.FCheckMulti.ListCWandPh := True;
-
-   PastEditForm := TEditDialog.Create(MainForm);
-
-   UseUTC := True;
-   Log.AcceptDifferentMode := True;
-   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
-   SameExchange := False;
-   dmZlogGlobal.Settings._sameexchange := SameExchange;
-   FNeedCtyDat := True;
-end;
-
-constructor TJA0Contest.Create(N: string);
-begin
-   inherited;
-   MultiForm := TJA0Multi.Create(MainForm);
-   ScoreForm := TJA0Score.Create(MainForm);
-   PastEditForm := TEditDialog.Create(MainForm);
-
-   Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
-   SameExchange := False;
-   dmZlogGlobal.Settings._sameexchange := SameExchange;
-   SentStr := '$S';
-end;
-
-constructor TJA0ContestZero.Create(N: string);
-begin
-   inherited;
-
-   TJA0Multi(MultiForm).JA0 := True;
-
-   Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
-   SameExchange := False;
-   dmZlogGlobal.Settings._sameexchange := SameExchange;
-   SentStr := '$S';
-end;
-
-procedure TJA0Contest.SetBand(B: TBand);
-begin
-   TJA0Score(ScoreForm).SetBand(B);
-   if (B = b21) or (B = b28) then begin
-      MainForm.BandMenu.Items[Ord(b21)].Enabled := True;
-      MainForm.BandMenu.Items[Ord(b28)].Enabled := True;
-      MainForm.BandMenu.Items[Ord(b21)].Visible := True;
-      MainForm.BandMenu.Items[Ord(b28)].Visible := True;
-   end
-   else begin
-      MainForm.BandMenu.Items[Ord(B)].Visible := True;
-   end;
-end;
-
-procedure TJA0Contest.Renew;
-var
-   B: TBand;
-begin
-   inherited;
-   B := TJA0Score(ScoreForm).JA0Band;
-   if (B = b21) or (B = b28) then begin
-      MainForm.BandMenu.Items[Ord(b21)].Enabled := True;
-      MainForm.BandMenu.Items[Ord(b28)].Enabled := True;
-      MainForm.BandMenu.Items[Ord(b21)].Visible := True;
-      MainForm.BandMenu.Items[Ord(b28)].Visible := True;
-   end
-   else begin
-      MainForm.BandMenu.Items[Ord(B)].Visible := True;
-   end;
-end;
-
-constructor TAPSprint.Create(N: string);
-begin
-   inherited;
-   MultiForm := TWPXMulti.Create(MainForm);
-   ScoreForm := TAPSprintScore.Create(MainForm);
-   PastEditForm := TEditDialog.Create(MainForm);
-   ZoneForm := TWWZone.Create(MainForm);
-
-   TAPSprintScore(ScoreForm).MultiForm := TWPXMulti(MultiForm);
-
-   UseUTC := True;
-   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
-
-   SameExchange := False;
-   dmZlogGlobal.Settings._sameexchange := SameExchange;
-   SentStr := '$S';
-end;
-
-constructor TCQWWContest.Create(N: string; fJIDX: Boolean);
-begin
-   inherited Create(N);
-
-   if fJIDX = False then begin
-      MultiForm := TWWMulti.Create(MainForm);
-      ScoreForm := TWWScore.Create(MainForm);
-      ZoneForm := TWWZone.Create(MainForm);
-      TWWMulti(MultiForm).ZoneForm := ZoneForm;
-      MultiForm.Reset();
-   end;
-
-   MainForm.FCheckCountry.ParentMulti := TWWMulti(MultiForm);
-
-   PastEditForm := TEditDialog.Create(MainForm);
-
-   UseUTC := True;
-   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   SentStr := '$Z';
-   FNeedCtyDat := True;
-end;
-
-procedure TCQWWContest.SpaceBarProc;
-var
-   temp: string;
-   NumberEdit: TEdit;
-begin
-   NumberEdit := MainForm.NumberEditEx;
-
-   // inherited;
-   { if MainForm.NumberEdit.Text = '' then
-     begin }
-   temp := MultiForm.GuessZone(CurrentQSO);
-   NumberEdit.Text := temp;
-   CurrentQSO.NrRcvd := temp;
-   // end;
-
-   { This section moved from tcontest.spacebarproc }
-   // if (MainForm.NumberEdit.Text = '') and (SameExchange = True)then
-   DispExchangeOnOtherBands;
-   if MainForm.FCheckMulti.Visible then
-      MainForm.FCheckMulti.Renew(CurrentQSO);
-   { This section moved from tcontest.spacebarproc }
-
-   if MainForm.FCheckCountry.Visible then
-      MainForm.FCheckCountry.Renew(CurrentQSO);
-
-   if (dmZLogGlobal.IsMultiStation() = True) then begin
-      if MainForm.FCheckCountry.Visible = False then
-         MainForm.FCheckCountry.Renew(CurrentQSO);
-      if MainForm.FCheckCountry.NotNewMulti(CurrentQSO.Band) then begin
-         MainForm.WriteStatusLineRed('NOT a new multiplier. (This is a multi stn)', False);
-         exit;
-      end;
-   end;
-
-   MainForm.WriteStatusLine(MultiForm.GetInfo(CurrentQSO), False);
-end;
-
-procedure TWAEContest.SpaceBarProc;
-begin
-   inherited;
-   if MainForm.FCheckCountry.Visible then
-      MainForm.FCheckCountry.Renew(CurrentQSO);
-
-   if (dmZLogGlobal.IsMultiStation() = True) then begin
-      if MainForm.FCheckCountry.Visible = False then
-         MainForm.FCheckCountry.Renew(CurrentQSO);
-      if MainForm.FCheckCountry.NotNewMulti(CurrentQSO.Band) then begin
-         MainForm.WriteStatusLineRed('NOT a new multiplier. (This is a multi stn)', False);
-         exit;
-      end;
-   end;
-
-   MainForm.WriteStatusLine(MultiForm.GetInfo(CurrentQSO), False);
-end;
-
-procedure TCQWWContest.ShowMulti;
-begin
-   MultiForm.Show;
-   ZoneForm.Show;
-end;
-
-function TCQWWContest.CheckWinSummary(aQSO: TQSO): string;
-var
-   S: string;
-begin
-   S := '';
-   S := S + FillRight(aQSO.BandStr, 5);
-   S := S + aQSO.TimeStr + ' ';
-   S := S + FillRight(aQSO.Callsign, 12);
-   S := S + FillRight(aQSO.NrRcvd, 4);
-   Result := S;
-end;
-
-constructor TIARUContest.Create(N: string);
-begin
-   inherited;
-
-   MultiForm := TIARUMulti.Create(MainForm);
-   ScoreForm := TIARUScore.Create(MainForm);
-   ZoneForm := TWWZone.Create(MainForm);
-   PastEditForm := TEditDialog.Create(MainForm);
-
-   UseUTC := True;
-   Log.AcceptDifferentMode := True;
-   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
-   SentStr := '$I';
-   FNeedCtyDat := True;
-end;
-
-procedure TIARUContest.SpaceBarProc;
-var
-   temp: string;
-   NumberEdit: TEdit;
-begin
-   inherited;
-
-   NumberEdit := MainForm.NumberEditEx;
-
-   MainForm.WriteStatusLine(MultiForm.GetInfo(CurrentQSO), False);
-   if (MultiFound = False) and (NumberEdit.Text = '') then begin
-      temp := MultiForm.GuessZone(CurrentQSO);
-      NumberEdit.Text := temp;
-      CurrentQSO.NrRcvd := temp;
-   end;
-end;
-
-procedure TARRLDXContestW.SpaceBarProc;
-begin
-   inherited;
-   MainForm.WriteStatusLine(MultiForm.GetInfo(CurrentQSO), False);
-end;
-
-constructor TPedi.Create(N: string);
-begin
-   inherited;
-   MultiForm := TBasicMulti.Create(MainForm);
-   ScoreForm := TPediScore.Create(MainForm);
-   PastEditForm := TEditDialog.Create(MainForm);
-
-   Log.AcceptDifferentMode := True;
-   if UseUTC then
-      Log.QsoList[0].RSTsent := _USEUTC
-   else
-      Log.QsoList[0].RSTsent := UTCOffset;
-   // UTC = $FFFF else UTC + x hrs;
-   {
-     UseUTC := True;
-     Log.QsoList[0].RSTSent := $FFFF; //JST = 0; UTC = $FFFF
-   }
-
-   SentStr := '';
-end;
-
-constructor TALLJAContest.Create(N: string);
-begin
-   inherited;
-   MultiForm := TALLJAMulti.Create(MainForm);
-   ScoreForm := TALLJAScore.Create(MainForm, b19, b50);
-   PastEditForm := TEditDialog.Create(MainForm);
-   SentStr := '$V$P';
-end;
-
-constructor TKCJContest.Create(N: string);
-begin
-   inherited;
-   MultiForm := TKCJMulti.Create(MainForm);
-   ScoreForm := TKCJScore.Create(MainForm);
-   PastEditForm := TEditDialog.Create(MainForm);
-   SentStr := 'TK';
-end;
-
-function TALLJAContest.QTHString(aQSO: TQSO): string;
-begin
-   Result := dmZlogGlobal.Settings._prov;
-end;
-
-function TKCJContest.QTHString(aQSO: TQSO): string;
-begin
-   Result := dmZlogGlobal.Settings._prov;
-   // get the kcj code;
-end;
-
-function TALLJAContest.CheckWinSummary(aQSO: TQSO): string;
-var
-   S: string;
-begin
-   S := '';
-   S := S + FillRight(aQSO.BandStr, 5);
-   S := S + aQSO.TimeStr + ' ';
-   S := S + FillRight(aQSO.Callsign, 12);
-   S := S + FillRight(aQSO.NrRcvd, 5);
-   S := S + FillRight(aQSO.ModeStr, 4);
-   Result := S;
-end;
-
-function TKCJContest.CheckWinSummary(aQSO: TQSO): string;
-var
-   S: string;
-begin
-   S := '';
-   S := S + FillRight(aQSO.BandStr, 5);
-   S := S + aQSO.TimeStr + ' ';
-   S := S + FillRight(aQSO.Callsign, 12);
-   S := S + FillRight(aQSO.NrRcvd, 3);
-   // S := S + FillRight(aQSO.ModeStr, 4);
-   Result := S;
-end;
-
-function TFDContest.QTHString(aQSO: TQSO): string;
-begin
-   if aQSO.Band <= b1200 then
-      Result := dmZlogGlobal.Settings._prov
-   else
-      Result := dmZlogGlobal.Settings._city;
-end;
-
-function TSixDownContest.QTHString(aQSO: TQSO): string;
-begin
-   if aQSO.Band <= b1200 then
-      Result := dmZlogGlobal.Settings._prov
-   else
-      Result := dmZlogGlobal.Settings._city;
-end;
-
-constructor TACAGContest.Create(N: string);
-begin
-   inherited;
-   MultiForm := TACAGMulti.Create(MainForm);
-   ScoreForm := TALLJAScore.Create(MainForm, b19, HiBand);
-   PastEditForm := TEditDialog.Create(MainForm);
-   SentStr := '$Q$P';
-end;
-
-constructor TFDContest.Create(N: string);
-begin
-   inherited;
-   MultiForm := TFDMulti.Create(MainForm);
-   ScoreForm := TALLJAScore.Create(MainForm, b19, HiBand);
-   PastEditForm := TEditDialog.Create(MainForm);
-   SentStr := '$Q$P';
-   FUseCoeff := True;
-end;
-
-constructor TSixDownContest.Create(N: string);
-begin
-   inherited;
-   MultiForm := TSixDownMulti.Create(MainForm);
-   ScoreForm := TALLJAScore.Create(MainForm, b50, HiBand);
-   TALLJAScore(ScoreForm).PointTable[b2400] := 2;
-   TALLJAScore(ScoreForm).PointTable[b5600] := 2;
-   TALLJAScore(ScoreForm).PointTable[b10g] := 2;
-   PastEditForm := TEditDialog.Create(MainForm);
-   SentStr := '$Q$P';
-end;
-
-constructor TGeneralContest.Create(N, CFGFileName: string);
-var
-   B: TBand;
-begin
-   inherited Create(N);
-   MultiForm := TGeneralMulti2.Create(MainForm);
-   ScoreForm := TGeneralScore.Create(MainForm);
-   TGeneralScore(ScoreForm).formMulti := TGeneralMulti2(MultiForm);
-   PastEditForm := TEditDialog.Create(MainForm);
-
-   FConfig := TUserDefinedContest.Parse(CFGFileName);
-   TGeneralScore(ScoreForm).Config := FConfig;
-   TGeneralMulti2(MultiForm).Config := FConfig;
-
-   TGeneralMulti2(MultiForm).LoadDAT(FConfig.DatFileName);
-   dmZlogGlobal.Settings._sentstr         := FConfig.Sent;
-
-   Log.AcceptDifferentMode                := FConfig.AcceptDifferentMode;
-   Log.CountHigherPoints                  := FConfig.CountHigherPoints;
-
-   if FConfig.UseUTC = True then begin
-      UseUTC := True;
-      Log.QsoList[0].RSTSent := _USEUTC; // JST = 0; UTC = $FFFF
-   end;
-
-
-   for B := b19 to High(FConfig.PowerTable) do begin
-      if FConfig.PowerTable[B] = '-' then begin
-         MainForm.HideBandMenu(B);
-      end;
-   end;
-
-   if FConfig.UseWarcBand = True then begin
-      MainForm.BandMenu.Items[ord(b10)].Visible := True;
-      MainForm.BandMenu.Items[ord(b18)].Visible := True;
-      MainForm.BandMenu.Items[ord(b24)].Visible := True;
-   end
-   else begin
-      MainForm.HideBandMenuWarc();
-   end;
-
-   SerialContestType := FConfig.SerialContestType;
-
-   for B := b19 to High(FConfig.SerialArray) do begin
-      SerialArrayBand[B] := FConfig.SerialArray[B];
-   end;
-
-   if SerialContestType = 0 then begin
-      MainForm.EditScreen := TGeneralEdit.Create(MainForm);
-   end
-   else begin
-      MainForm.EditScreen := TSerialGeneralEdit.Create(MainForm);
-
-      MainForm.Grid.Cells[MainForm.EditScreen.colNewMulti1, 0] := 'prefix';
-
-      TSerialGeneralEdit(MainForm.EditScreen).formMulti := TGeneralMulti2(MultiForm);
-
-      Log.QsoList[0].Serial := $01; // uses serial number
-      SameExchange := False;
-      dmZlogGlobal.Settings._sameexchange := SameExchange;
-   end;
-
-   SentStr := dmZlogGlobal.Settings._sentstr;
-
-   FNeedCtyDat := FConfig.UseCtyDat;
-   FUseCoeff   := FConfig.Coeff;
-end;
-
-destructor TGeneralContest.Destroy();
-begin
-   Inherited;
-   FConfig.Free();
-end;
-
-procedure TGeneralContest.SetPoints(var aQSO: TQSO);
-begin
-   TGeneralScore(ScoreForm).CalcPoints(aQSO);
 end;
 
 procedure TMainForm.GridAdd(aQSO: TQSO);
@@ -4470,7 +2982,7 @@ begin
       MessageBeep(0);
 
       if dmZLogGlobal.Settings._allowdupe = True then begin
-         MyContest.SpaceBarProc;
+         MyContest.SpaceBarProc(CallsignEdit.Text, NumberEdit.Text);
          NumberEdit.SetFocus;
       end
       else begin
@@ -4483,7 +2995,7 @@ begin
    end
    else begin { if not dupe }
       WriteStatusLine('', False);
-      MyContest.SpaceBarProc;
+      MyContest.SpaceBarProc(CallsignEdit.Text, NumberEdit.Text);
    end;
 
    NumberEdit.SetFocus;
@@ -4737,7 +3249,7 @@ begin
       end;
 
       VK_RETURN: begin
-         MyContest.EditCurrentRow;
+         EditCurrentRow;
       end;
 
       VK_ESCAPE: begin
@@ -4750,7 +3262,7 @@ end;
 
 procedure TMainForm.EditQSOClick(Sender: TObject);
 begin
-   MyContest.EditCurrentRow;
+   EditCurrentRow;
 end;
 
 procedure TMainForm.OnTabPress;
@@ -4825,7 +3337,7 @@ begin
             PlayMessage(1, 4);
          end
          else begin
-            MyContest.SpaceBarProc;
+            MyContest.SpaceBarProc(CallsignEdit.Text, NumberEdit.Text);
             NumberEdit.SetFocus;
             PlayMessage(1, 2);
          end;
@@ -4834,7 +3346,7 @@ begin
          WriteStatusLineRed(S, True);
       end
       else begin  // not dupe
-         MyContest.SpaceBarProc;
+         MyContest.SpaceBarProc(CallsignEdit.Text, NumberEdit.Text);
          if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
             (FInformation.Is2bsiq = False) then begin
             NumberEdit.SetFocus;
@@ -4850,7 +3362,7 @@ begin
       TabPressed := True;
       if FTTYConsole <> nil then
          FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), CurrentQSO));
-      MyContest.SpaceBarProc;
+      MyContest.SpaceBarProc(CallsignEdit.Text, NumberEdit.Text);
       if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
          (FInformation.Is2bsiq = False) then begin
          NumberEdit.SetFocus;
@@ -5025,7 +3537,7 @@ end;
 
 procedure TMainForm.GridDblClick(Sender: TObject);
 begin
-   MyContest.EditCurrentRow;
+   EditCurrentRow;
 end;
 
 procedure TMainForm.GridEnter(Sender: TObject);
@@ -5191,6 +3703,29 @@ begin
    // ログに記録
    CurrentQSO.Band := band_bakup;
    MyContest.LogQSO(CurrentQSO, True);
+
+   CurrentQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
+
+   MainForm.GridAdd(CurrentQSO);
+
+   CurrentQSO.Reserve2 := $00;
+
+   MainForm.ReEvaluateQSYCount;
+
+   if MainForm.FRateDialog.Visible then begin
+      MainForm.FRateDialog.UpdateGraph;
+   end;
+   if MainForm.FRateDialogEx.Visible then begin
+      MainForm.FRateDialogEx.UpdateGraph;
+   end;
+
+   // M/S時、本来Multi StationはNEW MULTIしか交信できない
+   if (dmZLogGlobal.IsMultiStation() = True) then begin
+      if (CurrentQSO.NewMulti1 = False) and (CurrentQSO.NewMulti2 = False) and (dmZlogGlobal.Settings._multistationwarning)
+      then begin
+         MessageDlg('This station is not a new multiplier, but will be logged anyway.', mtError, [mbOK], 0); { HELP context 0 }
+      end;
+   end;
 
    // シリアルナンバーを更新
    SetNextSerialNumber2(CurrentQSO, True);
@@ -5955,7 +4490,7 @@ begin
       end;
 
       if TabPressed2 then begin
-         MyContest.SpaceBarProc;
+         MyContest.SpaceBarProc(CallsignEdit.Text, NumberEdit.Text);
 
          if (dmZLogGlobal.Settings._so2r_type = so2rNone) or
             ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (FInformation.Is2bsiq = False)) then begin
@@ -6679,6 +5214,12 @@ begin
       // スコア再計算
       MyContest.Renew();
 
+      // 画面リフレッシュ
+      GridRefreshScreen(True);
+
+      // バンドスコープリフレッシュ
+      BSRefresh();
+
       // 未セーブです
       Log.Saved := False;
 
@@ -7241,6 +5782,8 @@ var
    menu: TMenuForm;
    c, r: Integer;
    i, j: Integer;
+   b: Integer;
+   BB: TBand;
 begin
    FInitialized := False;
 
@@ -7293,6 +5836,25 @@ begin
       end;
 
       dmZLogGlobal.CreateLog();
+
+      // 0:ALL BAND 1～:SINGLE BAND
+      b := menu.BandGroupIndex;
+      if b > 0 then begin
+         CurrentQSO.Band := TBand(b - 1);
+
+         BandEdit.Text := CurrentQSO.BandStr;
+
+         for BB := b19 to HiBand do begin
+            BandMenu.Items[ord(BB)].Enabled := False;
+         end;
+
+         BandMenu.Items[b - 1].Enabled := True;
+      end
+      else begin
+         for BB := b19 to HiBand do begin
+            BandMenu.Items[ord(BB)].Enabled := True;
+         end;
+      end;
 
       for r := 0 to Grid.RowCount - 1 do begin
          for c := 0 to Grid.ColCount - 1 do begin
@@ -7348,11 +5910,6 @@ begin
          // ALL JA0(other)
          5: begin
             InitALLJA0_Other(menu.BandGroupIndex);
-         end;
-
-         // KCJ
-         6: begin
-            InitKCJ();
          end;
 
          // DX pedi
@@ -7421,6 +5978,11 @@ begin
             InitWAE();
          end;
       end;
+
+      MultiButton.Enabled := True; // toolbar
+      Multipliers1.Enabled := True; // menu
+      mnCheckCountry.Visible := False; // checkcountry window
+      mnCheckMulti.Caption := 'Check Multi';
 
       SetGridWidth(EditScreen);
       SetEditFields1R(EditScreen);
@@ -7525,7 +6087,12 @@ begin
       end;
 
       // 低いバンドから使用可能なバンドを探して最初のバンドとする
-      CurrentQSO.Band := GetFirstAvailableBand(dmZLogGlobal.LastBand);
+      if (MyContest.BandLow <= dmZLogGlobal.LastBand) and (MyContest.BandHigh >= dmZLogGlobal.LastBand) then begin
+         CurrentQSO.Band := GetFirstAvailableBand(dmZLogGlobal.LastBand);
+      end
+      else begin
+         CurrentQSO.Band := MyContest.BandLow;
+      end;
       FRateDialogEx.Band := CurrentQSO.Band;
 
       BandEdit.Text := MHzString[CurrentQSO.Band];
@@ -7711,7 +6278,7 @@ begin
 
    EditScreen := TALLJAEdit.Create(Self);
 
-   MyContest := TALLJAContest.Create('ALL JA コンテスト');
+   MyContest := TALLJAContest.Create(Self, 'ALL JA コンテスト');
 end;
 
 procedure TMainForm.Init6D();
@@ -7721,7 +6288,7 @@ begin
 
    EditScreen := TACAGEdit.Create(Self);
 
-   MyContest := TSixDownContest.Create('6m and DOWNコンテスト');
+   MyContest := TSixDownContest.Create(Self, '6m and DOWNコンテスト');
 end;
 
 procedure TMainForm.InitFD();
@@ -7731,7 +6298,7 @@ begin
 
    EditScreen := TACAGEdit.Create(Self);
 
-   MyContest := TFDContest.Create('フィールドデーコンテスト');
+   MyContest := TFDContest.Create(Self, 'フィールドデーコンテスト');
 end;
 
 procedure TMainForm.InitACAG();
@@ -7741,10 +6308,24 @@ begin
 
    EditScreen := TACAGEdit.Create(Self);
 
-   MyContest := TACAGContest.Create('全市全郡コンテスト');
+   MyContest := TACAGContest.Create(Self, '全市全郡コンテスト');
 end;
 
 procedure TMainForm.InitALLJA0_JA0(BandGroupIndex: Integer);
+
+   procedure SetBand(B: TBand);
+   begin
+      TJA0Score(MyContest.ScoreForm).SetBand(B);
+      if (B = b21) or (B = b28) then begin
+         BandMenu.Items[Ord(b21)].Enabled := True;
+         BandMenu.Items[Ord(b28)].Enabled := True;
+         BandMenu.Items[Ord(b21)].Visible := True;
+         BandMenu.Items[Ord(b28)].Visible := True;
+      end
+      else begin
+         BandMenu.Items[Ord(B)].Visible := True;
+      end;
+   end;
 begin
    HideBandMenuHF();
    HideBandMenuWARC();
@@ -7752,24 +6333,24 @@ begin
 
    EditScreen := TJA0Edit.Create(Self);
 
-   MyContest := TJA0ContestZero.Create('ALL JA0 コンテスト (JA0)');
+   MyContest := TJA0ContestZero.Create(Self, 'ALL JA0 コンテスト (JA0)');
 
    case BandGroupIndex of
       // 3.5M
       2: begin
-         MyContest.SetBand(b35);
+         SetBand(b35);
          ShowBandMenu(b35);
       end;
 
       // 7M
       3: begin
-         MyContest.SetBand(b7);
+         SetBand(b7);
          ShowBandMenu(b7);
       end;
 
       // 21/28M
       7, 9: begin
-         MyContest.SetBand(b21);
+         SetBand(b21);
          dmZlogGlobal.Settings._band := 0;
          ShowBandMenu(b21);
          ShowBandMenu(b28);
@@ -7785,7 +6366,7 @@ begin
 
    EditScreen := TJA0Edit.Create(Self);
 
-   MyContest := TJA0Contest.Create('ALL JA0 コンテスト (Others)');
+   MyContest := TJA0Contest.Create(Self, 'ALL JA0 コンテスト (Others)');
 
    case BandGroupIndex of
       // 3.5M
@@ -7808,17 +6389,6 @@ begin
          ShowBandMenu(b28);
       end;
    end;
-end;
-
-procedure TMainForm.InitKCJ();
-begin
-   BandMenu.Items[Ord(b19)].Visible := True;
-   HideBandMenuWARC();
-   HideBandMenuVU(False);
-
-   EditScreen := TKCJEdit.Create(Self);
-
-   MyContest := TKCJContest.Create('KCJ コンテスト');
 end;
 
 procedure TMainForm.InitDxPedi();
@@ -7836,16 +6406,48 @@ begin
 
       EditScreen := TGeneralEdit.Create(Self);
 
-      MyContest := TPedi.Create('Pedition mode');
+      MyContest := TPedi.Create(Self, 'Pedition mode');
    finally
       F.Release();
    end;
 end;
 
 procedure TMainForm.InitUserDefined(ContestName, ConfigFile: string);
+var
+   B: TBand;
 begin
    zyloContestSwitch(ContestName, ConfigFile);
-   MyContest := TGeneralContest.Create(ContestName, ConfigFile);
+   MyContest := TGeneralContest.Create(Self, ContestName, ConfigFile);
+
+   for B := b19 to High(TGeneralContest(MyContest).Config.PowerTable) do begin
+      if TGeneralContest(MyContest).Config.PowerTable[B] = '-' then begin
+         HideBandMenu(B);
+      end;
+   end;
+
+   if TGeneralContest(MyContest).Config.UseWarcBand = True then begin
+      BandMenu.Items[ord(b10)].Visible := True;
+      BandMenu.Items[ord(b18)].Visible := True;
+      BandMenu.Items[ord(b24)].Visible := True;
+   end
+   else begin
+      HideBandMenuWarc();
+   end;
+
+   if SerialContestType = 0 then begin
+      EditScreen := TGeneralEdit.Create(Self);
+   end
+   else begin
+      EditScreen := TSerialGeneralEdit.Create(Self);
+
+      Grid.Cells[MainForm.EditScreen.colNewMulti1, 0] := 'prefix';
+
+      TSerialGeneralEdit(MainForm.EditScreen).formMulti := TGeneralMulti2(MyContest.MultiForm);
+
+      Log.QsoList[0].Serial := $01; // uses serial number
+      MyContest.SameExchange := False;
+      dmZlogGlobal.Settings._sameexchange := MyContest.SameExchange;
+   end;
 end;
 
 procedure TMainForm.InitCQWW();
@@ -7858,7 +6460,8 @@ begin
    mnCheckMulti.Caption := 'Check Zone';
    EditScreen := TWWEdit.Create(Self);
 
-   MyContest := TCQWWContest.Create('CQWW DX Contest');
+   MyContest := TCQWWContest.Create(Self, 'CQWW DX Contest');
+   FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
 end;
 
 procedure TMainForm.InitWPX(ContestCategory: TContestCategory);
@@ -7870,7 +6473,7 @@ begin
 
    Grid.Cells[EditScreen.colNewMulti1, 0] := 'prefix';
 
-   MyContest := TCQWPXContest.Create('CQ WPX Contest');
+   MyContest := TCQWPXContest.Create(Self, 'CQ WPX Contest');
 
    case ContestCategory of
       ccSingleOp:          SerialContestType := SER_ALL;
@@ -7891,12 +6494,13 @@ begin
       mnCheckCountry.Visible := True;
       mnCheckMulti.Caption := 'Check Zone';
       EditScreen := TWWEdit.Create(Self);
-      MyContest := TJIDXContest.Create('JIDX Contest (JA)');
+      MyContest := TJIDXContest.Create(Self, 'JIDX Contest (JA)');
    end
    else begin
       EditScreen := TGeneralEdit.Create(Self);
-      MyContest := TJIDXContestDX.Create('JIDX Contest (DX)');
+      MyContest := TJIDXContestDX.Create(Self, 'JIDX Contest (DX)');
    end;
+   FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
 end;
 
 procedure TMainForm.InitAPSprint();
@@ -7909,7 +6513,7 @@ begin
 
    EditScreen := TWPXEdit.Create(Self);
 
-   MyContest := TAPSprint.Create('Asia Pacific Sprint');
+   MyContest := TAPSprint.Create(Self, 'Asia Pacific Sprint');
 end;
 
 procedure TMainForm.InitARRL_W();
@@ -7919,7 +6523,7 @@ begin
 
    EditScreen := TDXCCEdit.Create(Self);
 
-   MyContest := TARRLDXContestW.Create('ARRL International DX Contest (W/VE)');
+   MyContest := TARRLDXContestW.Create(Self, 'ARRL International DX Contest (W/VE)');
 end;
 
 procedure TMainForm.InitARRL_DX();
@@ -7929,7 +6533,7 @@ begin
 
    EditScreen := TARRLDXEdit.Create(Self);
 
-   MyContest := TARRLDXContestDX.Create('ARRL International DX Contest (DX)');
+   MyContest := TARRLDXContestDX.Create(Self, 'ARRL International DX Contest (DX)');
 end;
 
 procedure TMainForm.InitARRL10m();
@@ -7942,7 +6546,7 @@ begin
    HideBandMenuWARC();
    HideBandMenuVU();
 
-   MyContest := TARRL10Contest.Create('ARRL 10m Contest');
+   MyContest := TARRL10Contest.Create(Self, 'ARRL 10m Contest');
 
    if dmZLogGlobal.IsUSA() then begin
       EditScreen := TDXCCEdit.Create(Self);
@@ -7952,6 +6556,8 @@ begin
       EditScreen := TIOTAEdit.Create(Self);
       MyContest.SentStr := '$S';
    end;
+
+   FCheckMulti.ListCWandPh := True;
 end;
 
 procedure TMainForm.InitIARU();
@@ -7960,7 +6566,7 @@ begin
 
    EditScreen := TIARUEdit.Create(Self);
 
-   MyContest := TIARUContest.Create('IARU HF World Championship');
+   MyContest := TIARUContest.Create(Self, 'IARU HF Championship');
 end;
 
 procedure TMainForm.InitAllAsianDX();
@@ -7974,7 +6580,7 @@ begin
 
       EditScreen := TDXCCEdit.Create(Self);
 
-      MyContest := TAllAsianContest.Create('All Asian DX Contest (Asia)');
+      MyContest := TAllAsianContest.Create(Self, 'All Asian DX Contest (Asia)');
 
       if F.ShowModal() <> mrOK then begin
          Exit;
@@ -7994,7 +6600,7 @@ begin
 
    EditScreen := TIOTAEdit.Create(Self);
 
-   MyContest := TIOTAContest.Create('IOTA Contest');
+   MyContest := TIOTAContest.Create(Self, 'IOTA Contest');
 end;
 
 procedure TMainForm.InitWAE();
@@ -8005,7 +6611,7 @@ begin
 
    EditScreen := TWPXEdit.Create(Self);
 
-   MyContest := TWAEContest.Create('WAEDC Contest');
+   MyContest := TWAEContest.Create(Self, 'WAEDC Contest');
 end;
 
 procedure TMainForm.ShowBandMenu(b: TBand);
@@ -9290,7 +7896,16 @@ end;
 // #91 パワー変更 Shift+P
 procedure TMainForm.actionChangePowerExecute(Sender: TObject);
 begin
-   MyContest.ChangePower;
+   if CurrentQSO.Power = pwrH then begin
+      CurrentQSO.Power := pwrP;
+   end
+   else begin
+      CurrentQSO.Power := TPower(Integer(CurrentQSO.Power) + 1);
+   end;
+
+   if Assigned(PowerEdit) then begin
+      PowerEdit.Text := CurrentQSO.NewPowerStr;
+   end;
 end;
 
 // #92 CWバンク変更 Shift+F
@@ -9361,7 +7976,7 @@ begin
    LastFocus := TEdit(ActiveControl);
    Grid.SetFocus;
 
-   MyContest.EditCurrentRow;
+   EditCurrentRow;
 end;
 
 // #103 CW Message Pad
@@ -10184,7 +8799,7 @@ begin
          NumberEdit.SelStart := Length(NumberEdit.Text);
       end
       else begin
-         MyContest.SpaceBarProc;
+         MyContest.SpaceBarProc(CallsignEdit.Text, NumberEdit.Text);
       end;
    end;
 
@@ -11617,7 +10232,13 @@ end;
 procedure TMainForm.RenewScore();
 begin
    MyContest.Renew;
+
+   // 画面リフレッシュ
    GridRefreshScreen();
+
+   // バンドスコープリフレッシュ
+   BSRefresh();
+
    ReEvaluateCountDownTimer;
    ReEvaluateQSYCount;
 end;
@@ -11630,6 +10251,47 @@ begin
    MyContest.Renew;
    Grid.TopRow := i;
    GridRefreshScreen();
+   BSRefresh();
+end;
+
+procedure TMainForm.EditCurrentRow();
+var
+   R: Integer;
+   aQSO: TQSO;
+begin
+   R := MainForm.Grid.Row;
+
+   aQSO := TQSO(MainForm.Grid.Objects[0, R]);
+   if aQSO = nil then begin
+      Exit;
+   end;
+
+   if aQSO.Reserve = actLock then begin
+      WriteStatusLine('This QSO is currently locked', False);
+      exit;
+   end;
+
+   MyContest.PastEditForm.Init(aQSO, _ActChange);
+
+   if MyContest.PastEditForm.ShowModal <> mrOK then begin
+      Exit;
+   end;
+
+   GridWriteQSO(R, aQSO);
+
+   if FPartialCheck.Visible and FPartialCheck._CheckCall then begin
+      FPartialCheck.CheckPartial(CurrentQSO);
+   end;
+
+   if FCheckCall2.Visible then begin
+      FCheckCall2.Renew(CurrentQSO);
+   end;
+
+   // 画面リフレッシュ
+   GridRefreshScreen(True);
+
+   // バンドスコープリフレッシュ
+   BSRefresh();
 end;
 
 end.

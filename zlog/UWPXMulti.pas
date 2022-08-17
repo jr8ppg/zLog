@@ -208,7 +208,7 @@ begin
       aQSO.NewMulti1 := true;
    end;
 
-   P := dmZLogGlobal.GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
    if P = nil then // /MM
    begin
       aQSO.Points := 0;

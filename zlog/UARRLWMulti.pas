@@ -32,7 +32,7 @@ function TARRLWMulti.GetInfoAA(aQSO: TQSO): string;
 var
    P: TPrefix;
 begin
-   P := dmZLogGlobal.GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
    Result := P.Country.JustInfo;
 end;
 
@@ -58,7 +58,7 @@ begin
    aQSO.NewMulti1 := False;
    aQSO.NewMulti2 := False;
 
-   P := dmZLogGlobal.GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
    C := P.Country;
    aQSO.Multi1 := C.Country;
 

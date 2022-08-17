@@ -39,7 +39,7 @@ type
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Add(var aQSO : TQSO); override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
-    function GuessZone(aQSO : TQSO) : string; override;
+    function GuessZone(strCallsign: string) : string; override;
     procedure UpdateData; override;
     procedure RefreshGrid; override;
     function GetInfo(aQSO : TQSO) : string; override;
@@ -196,21 +196,21 @@ begin
    MainForm.WriteStatusLine(str2, False);
 end;
 
-function TIARUMulti.GuessZone(aQSO: TQSO): string;
+function TIARUMulti.GuessZone(strCallsign: string): string;
 var
    i, k: Integer;
    C: TCountry;
    P: TPrefix;
    str: string;
 begin
-   P := dmZLogGlobal.GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(strCallsign);
    if P = nil then begin
       Result := '';
       exit;
    end;
 
    C := P.Country;
-   str := aQSO.CallSign;
+   str := strCallSign;
    i := StrToIntDef(C.ITUZone, 0);
 
    if (C.Country = 'W') or (C.Country = 'K') then begin
@@ -321,7 +321,7 @@ var
    zone: string;
    B: TBand;
 begin
-   P := dmZLogGlobal.GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
    if P = nil then begin
       Result := 'Unknown prefix';
       exit;
@@ -426,7 +426,7 @@ begin
       // Grid.Cells[0,ZoneList.List.Count-1] := M.Summary;
    end;
 
-   P := dmZLogGlobal.GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
    C := P.Country;
 
    if P = nil then
