@@ -2402,17 +2402,6 @@ begin
    if MainForm.FCheckCall2.Visible then begin
       MainForm.FCheckCall2.Renew(CurrentQSO);
    end;
-
-   RenewScoreAndMulti();
-
-   MultiForm.UpdateData;
-   ScoreForm.UpdateData;
-
-   // 画面リフレッシュ
-   MainForm.GridRefreshScreen(True);
-
-   // バンドスコープリフレッシュ
-   MainForm.BSRefresh();
 end;
 
 procedure TContest.RenewScoreAndMulti();
@@ -6688,9 +6677,7 @@ begin
       end;
 
       // スコア再計算
-      MyContest.RenewScoreAndMulti();
-      MyContest.MultiForm.UpdateData;
-      MyContest.ScoreForm.UpdateData;
+      MyContest.Renew();
 
       // 未セーブです
       Log.Saved := False;

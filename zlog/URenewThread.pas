@@ -41,6 +41,8 @@ var
 begin
    boo := MainForm.Grid.Focused;
 
+   Main.MyContest.RenewScoreAndMulti();
+
    Main.MyContest.MultiForm.UpdateData;
    Main.MyContest.ScoreForm.UpdateData;
 
@@ -66,8 +68,6 @@ begin
    until Renewing = False;
 
    Renewing := True;
-
-   Main.MyContest.RenewScoreAndMulti();
 
    Synchronize(SyncProc);
 
