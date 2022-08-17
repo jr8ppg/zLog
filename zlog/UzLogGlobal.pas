@@ -99,6 +99,7 @@ type
     _autobandmap: boolean;
     _activebands: array[b19..HiBand] of Boolean;
     _power: array[b19..HiBand] of string;
+    _useant: array[b19..HiBand] of Integer;
     _usebandscope: array[b19..HiBand] of Boolean;
     _usebandscope_current: Boolean;
     _usebandscope_newmulti: Boolean;
@@ -1022,6 +1023,24 @@ begin
       Settings.FAccessibility.FFocusedBackColor := ZStringToColorDef(ini.ReadString('Accessibility', 'FocusedBackColor', '$ffffff'), clWhite);
       Settings.FAccessibility.FFocusedBold      := ini.ReadBool('Accessibility', 'FocusedBold', False);
 
+      // Use Ant
+      Settings._useant[b19]         := ini.ReadInteger('Ant', '1.9MHz', 0);
+      Settings._useant[b35]         := ini.ReadInteger('Ant', '3.5MHz', 0);
+      Settings._useant[b7]          := ini.ReadInteger('Ant', '7MHz', 0);
+      Settings._useant[b10]         := ini.ReadInteger('Ant', '10MHz', 0);
+      Settings._useant[b14]         := ini.ReadInteger('Ant', '14MHz', 0);
+      Settings._useant[b18]         := ini.ReadInteger('Ant', '18MHz', 0);
+      Settings._useant[b21]         := ini.ReadInteger('Ant', '21MHz', 0);
+      Settings._useant[b24]         := ini.ReadInteger('Ant', '24MHz', 0);
+      Settings._useant[b28]         := ini.ReadInteger('Ant', '28MHz', 0);
+      Settings._useant[b50]         := ini.ReadInteger('Ant', '50MHz', 0);
+      Settings._useant[b144]        := ini.ReadInteger('Ant', '144MHz', 0);
+      Settings._useant[b430]        := ini.ReadInteger('Ant', '430MHz', 0);
+      Settings._useant[b1200]       := ini.ReadInteger('Ant', '1200MHz', 0);
+      Settings._useant[b2400]       := ini.ReadInteger('Ant', '2400MHz', 0);
+      Settings._useant[b5600]       := ini.ReadInteger('Ant', '5600MHz', 0);
+      Settings._useant[b10g]        := ini.ReadInteger('Ant', '10GHz', 0);
+
       // BandScope
       Settings._usebandscope[b19]   := ini.ReadBool('BandScopeEx', 'BandScope1.9MHz', False);
       Settings._usebandscope[b35]   := ini.ReadBool('BandScopeEx', 'BandScope3.5MHz', False);
@@ -1578,6 +1597,24 @@ begin
       ini.WriteString('Accessibility', 'FocusedForeColor', ZColorToString(Settings.FAccessibility.FFocusedForeColor));
       ini.WriteString('Accessibility', 'FocusedBackColor', ZColorToString(Settings.FAccessibility.FFocusedBackColor));
       ini.WriteBool('Accessibility', 'FocusedBold', Settings.FAccessibility.FFocusedBold);
+
+      // Use Ant
+      ini.WriteInteger('Ant', '1.9MHz', Settings._useant[b19]);
+      ini.WriteInteger('Ant', '3.5MHz', Settings._useant[b35]);
+      ini.WriteInteger('Ant', '7MHz', Settings._useant[b7]);
+      ini.WriteInteger('Ant', '10MHz', Settings._useant[b10]);
+      ini.WriteInteger('Ant', '14MHz', Settings._useant[b14]);
+      ini.WriteInteger('Ant', '18MHz', Settings._useant[b18]);
+      ini.WriteInteger('Ant', '21MHz', Settings._useant[b21]);
+      ini.WriteInteger('Ant', '24MHz', Settings._useant[b24]);
+      ini.WriteInteger('Ant', '28MHz', Settings._useant[b28]);
+      ini.WriteInteger('Ant', '50MHz', Settings._useant[b50]);
+      ini.WriteInteger('Ant', '144MHz', Settings._useant[b144]);
+      ini.WriteInteger('Ant', '430MHz', Settings._useant[b430]);
+      ini.WriteInteger('Ant', '1200MHz', Settings._useant[b1200]);
+      ini.WriteInteger('Ant', '2400MHz', Settings._useant[b2400]);
+      ini.WriteInteger('Ant', '5600MHz', Settings._useant[b5600]);
+      ini.WriteInteger('Ant', '10GHz', Settings._useant[b10g]);
 
       // BandScope
       ini.WriteBool('BandScopeEx', 'BandScope1.9MHz', Settings._usebandscope[b19]);

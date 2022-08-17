@@ -2658,14 +2658,14 @@ object formOptions: TformOptions
       Caption = 'Rig control'
       object Label45: TLabel
         Left = 8
-        Top = 107
+        Top = 127
         Width = 114
         Height = 13
         Caption = 'Send current freq. every'
       end
       object Label46: TLabel
-        Left = 185
-        Top = 107
+        Left = 130
+        Top = 150
         Width = 20
         Height = 13
         Caption = 'sec.'
@@ -2681,14 +2681,15 @@ object formOptions: TformOptions
       object cbDontAllowSameBand: TCheckBox
         Left = 8
         Top = 34
-        Width = 233
-        Height = 17
+        Width = 141
+        Height = 32
         Caption = 'Do not allow two rigs to be on same band'
         TabOrder = 1
+        WordWrap = True
       end
       object SendFreqEdit: TEdit
-        Left = 128
-        Top = 103
+        Left = 73
+        Top = 146
         Width = 35
         Height = 21
         Hint = 'Only when using Z-Server network'
@@ -2698,19 +2699,21 @@ object formOptions: TformOptions
       end
       object cbRecordRigFreq: TCheckBox
         Left = 8
-        Top = 57
-        Width = 185
-        Height = 17
+        Top = 68
+        Width = 161
+        Height = 19
         Caption = 'Record rig frequency in memo'
         TabOrder = 2
+        WordWrap = True
       end
       object cbAutoBandMap: TCheckBox
         Left = 8
-        Top = 80
-        Width = 209
-        Height = 17
+        Top = 90
+        Width = 141
+        Height = 31
         Caption = 'Automatically create band scope'
         TabOrder = 3
+        WordWrap = True
       end
       object GroupBox15: TGroupBox
         Left = 6
@@ -2718,7 +2721,7 @@ object formOptions: TformOptions
         Width = 423
         Height = 167
         Caption = 'Magical Calling'
-        TabOrder = 5
+        TabOrder = 7
         object Label28: TLabel
           Left = 185
           Top = 21
@@ -2833,14 +2836,350 @@ object formOptions: TformOptions
         end
       end
       object updownSendFreqInterval: TUpDown
-        Left = 163
-        Top = 103
+        Left = 108
+        Top = 146
         Width = 16
         Height = 21
         Associate = SendFreqEdit
         Max = 300
         Position = 60
+        TabOrder = 5
+      end
+      object GroupBox25: TGroupBox
+        Left = 181
+        Top = 11
+        Width = 248
+        Height = 202
+        Caption = 'ANT Control'
         TabOrder = 6
+        object Label104: TLabel
+          Left = 8
+          Top = 21
+          Width = 40
+          Height = 13
+          Caption = '1.9 MHz'
+        end
+        object Label105: TLabel
+          Left = 8
+          Top = 42
+          Width = 40
+          Height = 13
+          Caption = '3.5 MHz'
+        end
+        object Label106: TLabel
+          Left = 8
+          Top = 63
+          Width = 31
+          Height = 13
+          Caption = '7 MHz'
+        end
+        object Label107: TLabel
+          Left = 8
+          Top = 84
+          Width = 37
+          Height = 13
+          Caption = '10 MHz'
+        end
+        object Label108: TLabel
+          Left = 8
+          Top = 105
+          Width = 37
+          Height = 13
+          Caption = '14 MHz'
+        end
+        object Label109: TLabel
+          Left = 8
+          Top = 126
+          Width = 37
+          Height = 13
+          Caption = '18 MHz'
+        end
+        object Label110: TLabel
+          Left = 8
+          Top = 147
+          Width = 37
+          Height = 13
+          Caption = '21 MHz'
+        end
+        object Label111: TLabel
+          Left = 8
+          Top = 168
+          Width = 37
+          Height = 13
+          Caption = '24 MHz'
+        end
+        object Label112: TLabel
+          Left = 123
+          Top = 21
+          Width = 37
+          Height = 13
+          Caption = '28 MHz'
+        end
+        object Label113: TLabel
+          Left = 123
+          Top = 42
+          Width = 37
+          Height = 13
+          Caption = '50 MHz'
+        end
+        object Label114: TLabel
+          Left = 123
+          Top = 63
+          Width = 43
+          Height = 13
+          Caption = '144 MHz'
+        end
+        object Label115: TLabel
+          Left = 123
+          Top = 84
+          Width = 43
+          Height = 13
+          Caption = '430 MHz'
+        end
+        object Label116: TLabel
+          Left = 123
+          Top = 105
+          Width = 49
+          Height = 13
+          Caption = '1200 MHz'
+        end
+        object Label117: TLabel
+          Left = 123
+          Top = 126
+          Width = 49
+          Height = 13
+          Caption = '2400 MHz'
+        end
+        object Label118: TLabel
+          Left = 123
+          Top = 147
+          Width = 49
+          Height = 13
+          Caption = '5600 MHz'
+        end
+        object Label119: TLabel
+          Left = 123
+          Top = 168
+          Width = 47
+          Height = 13
+          Caption = '10 G && up'
+        end
+        object comboAnt19: TComboBox
+          Left = 55
+          Top = 18
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 0
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt35: TComboBox
+          Left = 55
+          Top = 39
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 1
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt7: TComboBox
+          Left = 55
+          Top = 60
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 2
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt10: TComboBox
+          Left = 55
+          Top = 81
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 3
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt14: TComboBox
+          Left = 55
+          Top = 102
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 4
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt18: TComboBox
+          Left = 55
+          Top = 123
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 5
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt21: TComboBox
+          Left = 55
+          Top = 144
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 6
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt24: TComboBox
+          Left = 55
+          Top = 165
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 7
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt28: TComboBox
+          Left = 180
+          Top = 18
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 8
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt50: TComboBox
+          Left = 180
+          Top = 39
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 9
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt144: TComboBox
+          Left = 180
+          Top = 60
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 10
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt430: TComboBox
+          Left = 180
+          Top = 81
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 11
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt1200: TComboBox
+          Left = 180
+          Top = 102
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 12
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt2400: TComboBox
+          Left = 180
+          Top = 123
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 13
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt5600: TComboBox
+          Left = 180
+          Top = 144
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 14
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboAnt10g: TComboBox
+          Left = 180
+          Top = 165
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 15
+          Text = 'none'
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
       end
     end
     object tabsheetPath: TTabSheet
@@ -4750,13 +5089,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = #65325#65331' '#12468#12471#12483#12463
+          FontName = '@MingLiU'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 67
+          ItemIndex = 23
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

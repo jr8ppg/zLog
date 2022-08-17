@@ -487,6 +487,39 @@ type
     comboFontBase: TJvFontComboBox;
     Label102: TLabel;
     Label103: TLabel;
+    GroupBox25: TGroupBox;
+    comboAnt19: TComboBox;
+    comboAnt35: TComboBox;
+    comboAnt7: TComboBox;
+    comboAnt10: TComboBox;
+    comboAnt14: TComboBox;
+    comboAnt18: TComboBox;
+    comboAnt21: TComboBox;
+    comboAnt24: TComboBox;
+    comboAnt28: TComboBox;
+    comboAnt50: TComboBox;
+    comboAnt144: TComboBox;
+    comboAnt430: TComboBox;
+    comboAnt1200: TComboBox;
+    comboAnt2400: TComboBox;
+    comboAnt5600: TComboBox;
+    comboAnt10g: TComboBox;
+    Label104: TLabel;
+    Label105: TLabel;
+    Label106: TLabel;
+    Label107: TLabel;
+    Label108: TLabel;
+    Label109: TLabel;
+    Label110: TLabel;
+    Label111: TLabel;
+    Label112: TLabel;
+    Label113: TLabel;
+    Label114: TLabel;
+    Label115: TLabel;
+    Label116: TLabel;
+    Label117: TLabel;
+    Label118: TLabel;
+    Label119: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -917,12 +950,36 @@ begin
       Settings._cluster_com := FTempClusterCom;
       Settings._zlink_telnet := FTempZLinkTelnet;
 
+      //
       // Rig Control
+      //
+
+      // general
       Settings._ritclear := cbRITClear.Checked;
       Settings._dontallowsameband := cbDontAllowSameBand.Checked;
       Settings._recrigfreq := cbRecordRigFreq.Checked;
       Settings._autobandmap := cbAutoBandMap.Checked;
       Settings._send_freq_interval := updownSendFreqInterval.Position;
+
+      // Ant Control
+      Settings._useant[b19]   := comboAnt19.ItemIndex;
+      Settings._useant[b35]   := comboAnt35.ItemIndex;
+      Settings._useant[b7]    := comboAnt7.ItemIndex;
+      Settings._useant[b10]   := comboAnt10.ItemIndex;
+      Settings._useant[b14]   := comboAnt14.ItemIndex;
+      Settings._useant[b18]   := comboAnt18.ItemIndex;
+      Settings._useant[b21]   := comboAnt21.ItemIndex;
+      Settings._useant[b24]   := comboAnt24.ItemIndex;
+      Settings._useant[b28]   := comboAnt28.ItemIndex;
+      Settings._useant[b50]   := comboAnt50.ItemIndex;
+      Settings._useant[b144]  := comboAnt144.ItemIndex;
+      Settings._useant[b430]  := comboAnt430.ItemIndex;
+      Settings._useant[b1200] := comboAnt1200.ItemIndex;
+      Settings._useant[b2400] := comboAnt2400.ItemIndex;
+      Settings._useant[b5600] := comboAnt5600.ItemIndex;
+      Settings._useant[b10g]  := comboAnt10g.ItemIndex;
+
+      // Anti Zeroin
       Settings.FUseAntiZeroin := checkUseAntiZeroin.Checked;
       Settings.FAntiZeroinShiftMax := updownAntiZeroinShiftMax.Position;
       Settings.FAntiZeroinRitOff := checkAntiZeroinRitOff.Checked;
@@ -1387,12 +1444,36 @@ begin
       cbTransverter1.Checked := Settings._transverter1;
       cbTransverter2.Checked := Settings._transverter2;
 
+      //
       // Rig Control
+      //
+
+      // general
       cbRITClear.Checked := Settings._ritclear;
       cbDontAllowSameBand.Checked := Settings._dontallowsameband;
       cbRecordRigFreq.Checked := Settings._recrigfreq;
       cbAutoBandMap.Checked := Settings._autobandmap;
       updownSendFreqInterval.Position := Settings._send_freq_interval;
+
+      // Ant Control
+      comboAnt19.ItemIndex    := Settings._useant[b19];
+      comboAnt35.ItemIndex    := Settings._useant[b35];
+      comboAnt7.ItemIndex     := Settings._useant[b7];
+      comboAnt10.ItemIndex    := Settings._useant[b10];
+      comboAnt14.ItemIndex    := Settings._useant[b14];
+      comboAnt18.ItemIndex    := Settings._useant[b18];
+      comboAnt21.ItemIndex    := Settings._useant[b21];
+      comboAnt24.ItemIndex    := Settings._useant[b24];
+      comboAnt28.ItemIndex    := Settings._useant[b28];
+      comboAnt50.ItemIndex    := Settings._useant[b50];
+      comboAnt144.ItemIndex   := Settings._useant[b144];
+      comboAnt430.ItemIndex   := Settings._useant[b430];
+      comboAnt1200.ItemIndex  := Settings._useant[b1200];
+      comboAnt2400.ItemIndex  := Settings._useant[b2400];
+      comboAnt5600.ItemIndex  := Settings._useant[b5600];
+      comboAnt10g.ItemIndex   := Settings._useant[b10g];
+
+      // Anti Zeroin
       checkUseAntiZeroin.Checked := Settings.FUseAntiZeroin;
       updownAntiZeroinShiftMax.Position := Settings.FAntiZeroinShiftMax;
       checkAntiZeroinRitOff.Checked := Settings.FAntiZeroinRitOff;

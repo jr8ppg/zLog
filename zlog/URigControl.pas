@@ -150,6 +150,7 @@ type
     procedure WriteData(str : AnsiString);
     procedure InquireStatus; virtual; abstract;
     procedure MoveToLastFreq; virtual;
+    procedure AntSelect(no: Integer); virtual;
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
     property CommPortDriver: TCommPortDriver read FComm;
@@ -188,6 +189,7 @@ type
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
+    procedure AntSelect(no: Integer); override;
   end;
 
   TTS2000 = class(TTS690)
@@ -229,6 +231,7 @@ type
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
+    procedure AntSelect(no: Integer); override;
     procedure ICOMWriteData(S : AnsiString);
     procedure PollingProcess; override;
     procedure SetRit(flag: Boolean); override;
@@ -274,6 +277,7 @@ type
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
+    procedure AntSelect(no: Integer); override;
     procedure PollingProcess; override;
     procedure PassOnRxData(S : AnsiString); override;
     procedure SetRit(flag: Boolean); override;
@@ -987,6 +991,22 @@ begin
 end;
 
 //
+// ANTENNA NUMBER
+// SET    A N P1 P2 ;
+// READ   A N P1 ;
+// ANSWER A N P1 P3 P4 ;
+// P1:0(fixed) P2:1/2/5 P3:1/2 P4 0/1
+//
+procedure TFT2000.AntSelect(no: Integer);
+begin
+   case no of
+      0: Exit;
+      1: WriteData('AN01;');
+      2: WriteData('AN02;');
+   end;
+end;
+
+//
 // INFORMATION
 //        0 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27
 // SET
@@ -1691,6 +1711,11 @@ begin
    SetFreq(LastFreq, False);
 end;
 
+procedure TRig.AntSelect(no: Integer);
+begin
+   //
+end;
+
 constructor TTS690.Create(RigNum: Integer);
 begin
    Inherited;
@@ -2291,6 +2316,9 @@ begin
    _currentband := Q.Band;
 
    SetFreq(f, Q.CQ);
+
+   // Antenna Select
+   AntSelect(dmZLogGlobal.Settings._useant[Q.Band]);
 end;
 
 procedure TRig.RitClear();
@@ -2332,6 +2360,15 @@ end;
 procedure TTS690.InquireStatus;
 begin
    WriteData('IF;');
+end;
+
+procedure TTS690.AntSelect(no: Integer);
+begin
+   case no of
+      0: Exit;
+      1: WriteData('AN1;');
+      2: WriteData('AN2;');
+   end;
 end;
 
 procedure TTS690.SetRit(flag: Boolean);
@@ -2415,6 +2452,15 @@ end;
 
 procedure TICOM.InquireStatus;
 begin
+end;
+
+procedure TICOM.AntSelect(no: Integer);
+begin
+   case no of
+      0: Exit;
+      1: ICOMWriteData(AnsiChar($12) + AnsiChar($00) + AnsiChar($00));
+      2: ICOMWriteData(AnsiChar($12) + AnsiChar($01) + AnsiChar($00));
+   end;
 end;
 
 procedure TFT1000MP.InquireStatus;
