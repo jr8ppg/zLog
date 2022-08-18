@@ -3,7 +3,7 @@ unit USpotClass;
 interface
 
 uses
-  SysUtils, Windows, Classes,
+  SysUtils, Windows, Classes, Messages,
   Generics.Collections, Generics.Defaults,
   UzLogConst, UzLogGlobal{$IFNDEF ZLOG_TELNET}, UzLogQSO, UzLogSpc{$ENDIF};
 
@@ -96,6 +96,12 @@ type
   {$IFNDEF ZLOG_TELNET}
   procedure SpotCheckWorked(Sp: TBaseSpot);
   {$ENDIF}
+
+var
+  hLookupServer: HWND;
+
+  function ExecLookup(strCallsign: string): string;
+  function FindLookupServer(): HWND;
 
 implementation
 
@@ -483,6 +489,9 @@ begin
          SD2 := MainForm.SuperCheckList.ObjectOf(SD);
          if SD2 <> nil then begin
             Sp.Number := SD2.Number;
+         end
+         else begin  // SPCÇ©ÇÁÇ‡éÊìæÇ≈Ç´Ç»Ç¢èÍçáÇÕLookup ServerÇ…àÀóäÇ∑ÇÈ
+            Sp.Number := ExecLookup(Sp.Call);
          end;
          SD.Free();
       end;
@@ -503,6 +512,62 @@ begin
       end;
    end;
 end;
+
+function ExecLookup(strCallsign: string): string;
+var
+   callsign_atom: ATOM;
+   number_atom: ATOM;
+   S: string;
+   r: LRESULT;
+   szWindowText: array[0..255] of Char;
+   nLen: Integer;
+begin
+   if dmZLogGlobal.Settings.FUseLookupServer = False then begin
+      Result := '';
+      Exit;
+   end;
+
+   if hLookupServer = 0 then begin
+      hLookupServer := FindLookupServer();
+   end;
+
+   if hLookupServer = 0 then begin
+      Result := '';
+      Exit;
+   end;
+
+   S := strCallsign;
+   callsign_atom := GlobalAddAtom(PChar(S));
+   r := SendMessage(hLookupServer, (WM_USER+501), callsign_atom, 0);
+   if r = 0 then begin
+      Result := '';
+      Exit;
+   end;
+
+   ZeroMemory(@szWindowText, SizeOf(szWindowText));
+   number_atom := LOWORD(r);
+   nLen := GlobalGetAtomName(number_atom, PChar(@szWindowText), SizeOf(szWindowText));
+   if (nLen = 0) then begin
+      Exit;
+   end;
+
+   GlobalDeleteAtom(number_atom);
+
+   Result := StrPas(szWindowText);
+end;
+
+function FindLookupServer(): HWND;
+var
+   wnd: HWND;
+begin
+   wnd := FindWindow(PChar('TformQthLookup'), nil);
+
+   Result := wnd;
+end;
+
 {$ENDIF}
+
+initialization
+  hLookupServer := FindLookupServer();
 
 end.

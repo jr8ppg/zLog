@@ -275,6 +275,9 @@ type
 
     // Base FontFace Name
     FBaseFontName: string;
+
+    // Lookup Server Support
+    FUseLookupServer: Boolean;
   end;
 
 var
@@ -924,6 +927,9 @@ begin
       // Base FontFace Name
       Settings.FBaseFontName           := ini.ReadString('Preferences', 'BaseFontName', 'ＭＳ ゴシック');
 
+      // Lookup Server Support
+      Settings.FUseLookupServer        := ini.ReadBool('Preferences', 'UseLookupServer', False);
+
       //
       // Path
       //
@@ -1516,6 +1522,9 @@ begin
 
       // Base FontFace Name
       ini.WriteString('Preferences', 'BaseFontName', Settings.FBaseFontName);
+
+      // Lookup Server Support
+      ini.WriteBool('Preferences', 'UseLookupServer', Settings.FUseLookupServer);
 
       //
       // Path
