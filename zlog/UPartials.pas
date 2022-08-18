@@ -11,7 +11,6 @@ type
   TPartialCheck = class(TForm)
     ListBox: TListBox;
     Panel: TPanel;
-    Button3: TButton;
     CheckBox1: TCheckBox;
     ShowMaxEdit: TSpinEdit;
     Label1: TLabel;
@@ -21,8 +20,10 @@ type
     rbCall: TRadioButton;
     MoreButton: TSpeedButton;
     StayOnTop: TCheckBox;
+    panelExtend: TPanel;
+    panelBody: TPanel;
+    checkShowCurrentBandFirst: TCheckBox;
     procedure FormCreate(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure CreateParams(var Params: TCreateParams); override;
@@ -149,9 +150,17 @@ begin
       S := QSOList[i].PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
       if QSOList[i].Band = Main.CurrentQSO.Band then begin
          S := '*' + S;
-      end;
 
-      ListBox.Items.Add(S);
+         if checkShowCurrentBandFirst.Checked = True then begin
+            ListBox.Items.Insert(0, S);
+         end
+         else begin
+            ListBox.Items.Add(S);
+         end;
+      end
+      else begin
+         ListBox.Items.Add(S);
+      end;
    end;
 end;
 
@@ -229,11 +238,6 @@ begin
    ShowMaxEdit.Value := DispMax;
 end;
 
-procedure TPartialCheck.Button3Click(Sender: TObject);
-begin
-   Close;
-end;
-
 procedure TPartialCheck.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
    case Key of
@@ -259,11 +263,11 @@ procedure TPartialCheck.MoreButtonClick(Sender: TObject);
 begin
    if MoreButton.Caption = 'More..' then begin
       MoreButton.Caption := 'Hide';
-      Panel.Height := 64;
+      panelExtend.Visible := True;
    end
    else begin
       MoreButton.Caption := 'More..';
-      Panel.Height := 32;
+      panelExtend.Visible := False;
    end;
 end;
 
