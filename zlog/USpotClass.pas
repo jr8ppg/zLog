@@ -521,6 +521,7 @@ var
    r: LRESULT;
    szWindowText: array[0..255] of Char;
    nLen: Integer;
+   reqcode: Integer;
 begin
    if dmZLogGlobal.Settings.FUseLookupServer = False then begin
       Result := '';
@@ -536,9 +537,17 @@ begin
       Exit;
    end;
 
+   if Pos('$Q', MyContest.SentStr) > 0 then begin
+      reqcode := 1;
+   end
+   else begin
+      reqcode := 0;
+   end;
+
+
    S := strCallsign;
    callsign_atom := GlobalAddAtom(PChar(S));
-   r := SendMessage(hLookupServer, (WM_USER+501), callsign_atom, 0);
+   r := SendMessage(hLookupServer, (WM_USER+501), callsign_atom, reqcode);
    if r = 0 then begin
       Result := '';
       Exit;
@@ -548,6 +557,7 @@ begin
    number_atom := LOWORD(r);
    nLen := GlobalGetAtomName(number_atom, PChar(@szWindowText), SizeOf(szWindowText));
    if (nLen = 0) then begin
+      Result := '';
       Exit;
    end;
 
