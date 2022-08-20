@@ -4588,7 +4588,7 @@ object formOptions: TformOptions
         TabOrder = 2
         object checkUseEstimatedMode: TCheckBox
           Left = 12
-          Top = 24
+          Top = 18
           Width = 165
           Height = 17
           Caption = 'Use Estimated Mode by Freq.'
@@ -4596,19 +4596,27 @@ object formOptions: TformOptions
         end
         object checkShowOnlyInBandplan: TCheckBox
           Left = 12
-          Top = 47
-          Width = 189
+          Top = 40
+          Width = 181
           Height = 17
           Caption = 'Show only spots in the band plan.'
           TabOrder = 1
         end
         object checkShowOnlyDomestic: TCheckBox
           Left = 12
-          Top = 70
-          Width = 189
+          Top = 62
+          Width = 145
           Height = 17
           Caption = 'Show only domestic spots.'
           TabOrder = 2
+        end
+        object checkUseLookupServer: TCheckBox
+          Left = 12
+          Top = 84
+          Width = 117
+          Height = 17
+          Caption = 'Use Lookup Server'
+          TabOrder = 3
         end
       end
     end
@@ -5089,13 +5097,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@MingLiU'
+          FontName = '@KaiTi'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 23
+          ItemIndex = 22
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

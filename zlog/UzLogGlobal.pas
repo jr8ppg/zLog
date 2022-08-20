@@ -110,6 +110,7 @@ type
     _bandscope_use_estimated_mode: Boolean;
     _bandscope_show_only_in_bandplan: Boolean;
     _bandscope_show_only_domestic: Boolean;
+    _bandscope_use_lookup_server: Boolean;
 
     CW : TCWSettingsParam;
     _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
@@ -275,9 +276,6 @@ type
 
     // Base FontFace Name
     FBaseFontName: string;
-
-    // Lookup Server Support
-    FUseLookupServer: Boolean;
   end;
 
 var
@@ -927,9 +925,6 @@ begin
       // Base FontFace Name
       Settings.FBaseFontName           := ini.ReadString('Preferences', 'BaseFontName', 'ＭＳ ゴシック');
 
-      // Lookup Server Support
-      Settings.FUseLookupServer        := ini.ReadBool('Preferences', 'UseLookupServer', False);
-
       //
       // Path
       //
@@ -1108,6 +1103,7 @@ begin
       Settings._bandscope_use_estimated_mode := ini.ReadBool('BandScopeOptions', 'use_estimated_mode', True);
       Settings._bandscope_show_only_in_bandplan := ini.ReadBool('BandScopeOptions', 'show_only_in_bandplan', True);
       Settings._bandscope_show_only_domestic := ini.ReadBool('BandScopeOptions', 'show_only_domestic', True);
+      Settings._bandscope_use_lookup_server := ini.ReadBool('BandScopeOptions', 'use_lookup_server', False);
 
       // Quick Memo
       Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', '');
@@ -1523,9 +1519,6 @@ begin
       // Base FontFace Name
       ini.WriteString('Preferences', 'BaseFontName', Settings.FBaseFontName);
 
-      // Lookup Server Support
-      ini.WriteBool('Preferences', 'UseLookupServer', Settings.FUseLookupServer);
-
       //
       // Path
       //
@@ -1678,6 +1671,7 @@ begin
       ini.WriteBool('BandScopeOptions', 'use_estimated_mode', Settings._bandscope_use_estimated_mode);
       ini.WriteBool('BandScopeOptions', 'show_only_in_bandplan', Settings._bandscope_show_only_in_bandplan);
       ini.WriteBool('BandScopeOptions', 'show_only_domestic', Settings._bandscope_show_only_domestic);
+      ini.WriteBool('BandScopeOptions', 'use_lookup_server', Settings._bandscope_use_lookup_server);
 
       // Quick Memo
       for i := 1 to 5 do begin

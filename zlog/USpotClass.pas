@@ -523,7 +523,7 @@ var
    nLen: Integer;
    reqcode: Integer;
 begin
-   if dmZLogGlobal.Settings.FUseLookupServer = False then begin
+   if dmZLogGlobal.Settings._bandscope_use_lookup_server = False then begin
       Result := '';
       Exit;
    end;
