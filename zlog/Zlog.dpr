@@ -130,7 +130,8 @@ uses
   USo2rNeoCp in 'USo2rNeoCp.pas' {formSo2rNeoCp},
   UInformation in 'UInformation.pas' {formInformation},
   UWinKeyerTester in 'UWinKeyerTester.pas' {formWinkeyerTester},
-  UStatusEdit in 'UStatusEdit.pas' {formStatusEdit};
+  UStatusEdit in 'UStatusEdit.pas' {formStatusEdit},
+  UzLogContest in 'UzLogContest.pas';
 
 {$R *.RES}
 

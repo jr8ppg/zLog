@@ -528,9 +528,8 @@ begin
          end
          else { if space is pressed when Callsign edit is in focus }
          begin
-            if NumberEdit.Text = '' then begin
-            end;
-            Key := Chr(0);
+            Key := #0;
+            workQSO.Callsign := CallsignEdit.Text;
             if Log.IsDupe2(workQSO, 1, dupeindex) then begin
                CallsignEdit.SelectAll;
                exit;
@@ -538,30 +537,17 @@ begin
             NumberEdit.SetFocus;
          end;
       end;
-
-      Chr($0D): begin
-         if HiWord(GetKeyState(VK_SHIFT)) <> 0 then begin
-         end;
-         OKBtnClick(Self);
-         Key := #0;
-      end;
    end;
-   { of case }
 end;
 
 procedure TEditDialog.NumberEditKeyPress(Sender: TObject; var Key: Char);
 begin
    case Key of
       ' ': begin
-         Key := Chr(0);
+         Key := #0;
          CallsignEdit.SetFocus;
       end;
-
-      Chr($0D): begin
-         OKBtnClick(Self);
-         Key := #0;
-      end;
-   end; { of case }
+   end;
 end;
 
 procedure TEditDialog.BandEditClick(Sender: TObject);

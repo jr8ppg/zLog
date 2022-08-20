@@ -58,7 +58,7 @@ type
     procedure Add(var aQSO : TQSO); override; // only calls addnoupdate but no update
     procedure UpdateData; override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
-    function GuessZone(aQSO : TQSO) : string; override;
+    function GuessZone(strCallsign: string) : string; override;
     function GetInfo(aQSO : TQSO): string; override;
     procedure ProcessCluster(var Sp : TBaseSpot); override;
     procedure SortZone; virtual;
@@ -437,7 +437,7 @@ begin
       end;
    end;
 
-   P := dmZLogGlobal.GetPrefix(aQSO);
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
 
    if P = nil then begin
       aQSO.Points := 0;
@@ -505,9 +505,9 @@ begin
    end;
 end;
 
-function TWWMulti.GuessZone(aQSO : TQSO) : string;
+function TWWMulti.GuessZone(strCallsign: string) : string;
 begin
-   Result := dmZLogGlobal.GuessCQZone(aQSO);
+   Result := dmZLogGlobal.GuessCQZone(strCallsign);
 end;
 
 function TWWMulti.GetInfo(aQSO : TQSO) : string;
@@ -517,7 +517,7 @@ var
    i : integer;
    C : TCountry;
 begin
-   C := dmZLogGlobal.GetPrefix(aQSO).Country;
+   C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
    if C.CountryName = 'Unknown' then begin
       Result := 'Unknown CTY';
       exit;
@@ -622,19 +622,19 @@ begin
          exit;
       end;
 
-      temp := GuessZone(aQSO);
+      temp := GuessZone(aQSO.Callsign);
       if temp <> '' then
-         Z := StrToInt(GuessZone(aQSO))
+         Z := StrToInt(GuessZone(aQSO.Callsign))
       else
          Z := 0;
 
-      C := dmZLogGlobal.GetPrefix(aQSO).Country;
+      C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
       Sp.Zone := Z;
       Sp.CtyIndex := C.Index;
 
       temp := aQSO.CallSign;
       if (Z > 0) and (Zone[aQSO.band, Z] = False) then begin {and not singlebander on other band}
-         temp := temp + '  new zone : ' + GuessZone(aQSO);
+         temp := temp + '  new zone : ' + GuessZone(aQSO.Callsign);
          Sp.NewZone := True;
       end;
 

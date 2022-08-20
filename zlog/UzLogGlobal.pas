@@ -99,6 +99,7 @@ type
     _autobandmap: boolean;
     _activebands: array[b19..HiBand] of Boolean;
     _power: array[b19..HiBand] of string;
+    _useant: array[b19..HiBand] of Integer;
     _usebandscope: array[b19..HiBand] of Boolean;
     _usebandscope_current: Boolean;
     _usebandscope_newmulti: Boolean;
@@ -109,6 +110,7 @@ type
     _bandscope_use_estimated_mode: Boolean;
     _bandscope_show_only_in_bandplan: Boolean;
     _bandscope_show_only_domestic: Boolean;
+    _bandscope_use_lookup_server: Boolean;
 
     CW : TCWSettingsParam;
     _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
@@ -393,9 +395,9 @@ public
 
     function GetGreetingsCode(): string;
 
-    function GetPrefix(aQSO: TQSO): TPrefix;
+    function GetPrefix(strCallsign: string): TPrefix;
     function GetArea(str: string): Integer;
-    function GuessCQZone(aQSO: TQSO): string;
+    function GuessCQZone(strCallsign: string): string;
     function IsUSA(): Boolean;
     function IsMultiStation(): Boolean;
 
@@ -479,6 +481,7 @@ procedure ResetDupeQso(aQSO: TQSO);
 
 function TextToBand(text: string): TBand;
 function TextToMode(text: string): TMode;
+function BandToPower(B: TBand): TPower;
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -1021,6 +1024,24 @@ begin
       Settings.FAccessibility.FFocusedBackColor := ZStringToColorDef(ini.ReadString('Accessibility', 'FocusedBackColor', '$ffffff'), clWhite);
       Settings.FAccessibility.FFocusedBold      := ini.ReadBool('Accessibility', 'FocusedBold', False);
 
+      // Use Ant
+      Settings._useant[b19]         := ini.ReadInteger('Ant', '1.9MHz', 0);
+      Settings._useant[b35]         := ini.ReadInteger('Ant', '3.5MHz', 0);
+      Settings._useant[b7]          := ini.ReadInteger('Ant', '7MHz', 0);
+      Settings._useant[b10]         := ini.ReadInteger('Ant', '10MHz', 0);
+      Settings._useant[b14]         := ini.ReadInteger('Ant', '14MHz', 0);
+      Settings._useant[b18]         := ini.ReadInteger('Ant', '18MHz', 0);
+      Settings._useant[b21]         := ini.ReadInteger('Ant', '21MHz', 0);
+      Settings._useant[b24]         := ini.ReadInteger('Ant', '24MHz', 0);
+      Settings._useant[b28]         := ini.ReadInteger('Ant', '28MHz', 0);
+      Settings._useant[b50]         := ini.ReadInteger('Ant', '50MHz', 0);
+      Settings._useant[b144]        := ini.ReadInteger('Ant', '144MHz', 0);
+      Settings._useant[b430]        := ini.ReadInteger('Ant', '430MHz', 0);
+      Settings._useant[b1200]       := ini.ReadInteger('Ant', '1200MHz', 0);
+      Settings._useant[b2400]       := ini.ReadInteger('Ant', '2400MHz', 0);
+      Settings._useant[b5600]       := ini.ReadInteger('Ant', '5600MHz', 0);
+      Settings._useant[b10g]        := ini.ReadInteger('Ant', '10GHz', 0);
+
       // BandScope
       Settings._usebandscope[b19]   := ini.ReadBool('BandScopeEx', 'BandScope1.9MHz', False);
       Settings._usebandscope[b35]   := ini.ReadBool('BandScopeEx', 'BandScope3.5MHz', False);
@@ -1082,6 +1103,7 @@ begin
       Settings._bandscope_use_estimated_mode := ini.ReadBool('BandScopeOptions', 'use_estimated_mode', True);
       Settings._bandscope_show_only_in_bandplan := ini.ReadBool('BandScopeOptions', 'show_only_in_bandplan', True);
       Settings._bandscope_show_only_domestic := ini.ReadBool('BandScopeOptions', 'show_only_domestic', True);
+      Settings._bandscope_use_lookup_server := ini.ReadBool('BandScopeOptions', 'use_lookup_server', False);
 
       // Quick Memo
       Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', '');
@@ -1578,6 +1600,24 @@ begin
       ini.WriteString('Accessibility', 'FocusedBackColor', ZColorToString(Settings.FAccessibility.FFocusedBackColor));
       ini.WriteBool('Accessibility', 'FocusedBold', Settings.FAccessibility.FFocusedBold);
 
+      // Use Ant
+      ini.WriteInteger('Ant', '1.9MHz', Settings._useant[b19]);
+      ini.WriteInteger('Ant', '3.5MHz', Settings._useant[b35]);
+      ini.WriteInteger('Ant', '7MHz', Settings._useant[b7]);
+      ini.WriteInteger('Ant', '10MHz', Settings._useant[b10]);
+      ini.WriteInteger('Ant', '14MHz', Settings._useant[b14]);
+      ini.WriteInteger('Ant', '18MHz', Settings._useant[b18]);
+      ini.WriteInteger('Ant', '21MHz', Settings._useant[b21]);
+      ini.WriteInteger('Ant', '24MHz', Settings._useant[b24]);
+      ini.WriteInteger('Ant', '28MHz', Settings._useant[b28]);
+      ini.WriteInteger('Ant', '50MHz', Settings._useant[b50]);
+      ini.WriteInteger('Ant', '144MHz', Settings._useant[b144]);
+      ini.WriteInteger('Ant', '430MHz', Settings._useant[b430]);
+      ini.WriteInteger('Ant', '1200MHz', Settings._useant[b1200]);
+      ini.WriteInteger('Ant', '2400MHz', Settings._useant[b2400]);
+      ini.WriteInteger('Ant', '5600MHz', Settings._useant[b5600]);
+      ini.WriteInteger('Ant', '10GHz', Settings._useant[b10g]);
+
       // BandScope
       ini.WriteBool('BandScopeEx', 'BandScope1.9MHz', Settings._usebandscope[b19]);
       ini.WriteBool('BandScopeEx', 'BandScope3.5MHz', Settings._usebandscope[b35]);
@@ -1631,6 +1671,7 @@ begin
       ini.WriteBool('BandScopeOptions', 'use_estimated_mode', Settings._bandscope_use_estimated_mode);
       ini.WriteBool('BandScopeOptions', 'show_only_in_bandplan', Settings._bandscope_show_only_in_bandplan);
       ini.WriteBool('BandScopeOptions', 'show_only_domestic', Settings._bandscope_show_only_domestic);
+      ini.WriteBool('BandScopeOptions', 'use_lookup_server', Settings._bandscope_use_lookup_server);
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -1844,21 +1885,8 @@ begin
 end;
 
 procedure TdmZLogGlobal.SetBand(b: integer);
-var
-   BB: TBand;
 begin
    Settings._band := b;
-   if b > 0 then begin
-      Main.CurrentQSO.Band := TBand(b - 1);
-      MainForm.BandEdit.Text := Main.CurrentQSO.BandStr;
-      for BB := b19 to HiBand do
-         MainForm.BandMenu.Items[ord(BB)].Enabled := False;
-      MainForm.BandMenu.Items[b - 1].Enabled := True;
-   end
-   else begin
-      for BB := b19 to HiBand do
-         MainForm.BandMenu.Items[ord(BB)].Enabled := True;
-   end;
 end;
 
 function TdmZLogGlobal.GetMode: TContestMode;
@@ -2260,7 +2288,7 @@ begin
    FPrefixList.Insert(0, P);
 end;
 
-function TdmZLogGlobal.GetPrefix(aQSO: TQSO): TPrefix;
+function TdmZLogGlobal.GetPrefix(strCallsign: string): TPrefix;
 var
    str: string;
    i: integer;
@@ -2268,7 +2296,7 @@ var
    strCallRight: string;
    strCallFirst: string;
 begin
-   str := aQSO.CallSign;
+   str := strCallSign;
    if str = '' then begin
       Result := FPrefixList[0];
       Exit;
@@ -2375,14 +2403,14 @@ begin
    Result := k;
 end;
 
-function TdmZLogGlobal.GuessCQZone(aQSO: TQSO): string;
+function TdmZLogGlobal.GuessCQZone(strCallsign: string): string;
 var
    i, k: integer;
    C: TCountry;
    p: TPrefix;
    str: string;
 begin
-   p := GetPrefix(aQSO);
+   p := GetPrefix(strCallsign);
    if p = nil then begin
       Result := '';
       exit;
@@ -2391,7 +2419,7 @@ begin
       C := P.Country;
    end;
 
-   str := aQSO.CallSign;
+   str := strCallsign;
    i := StrToIntDef(C.CQZone, 0);
 
    if (C.Country = 'W') or (C.Country = 'K') then begin
@@ -2503,7 +2531,7 @@ begin
       aQSO := TQSO.Create;
       aQSO.CallSign := UpperCase(Settings._mycall);
 
-      P := GetPrefix(aQSO);
+      P := GetPrefix(aQSO.Callsign);
       if P <> nil then begin
          FMyCountry := P.Country.Country;
 
@@ -3377,6 +3405,18 @@ begin
       end;
    end;
    Result := mOther;
+end;
+
+function BandToPower(B: TBand): TPower;
+var
+   strPower: string;
+begin
+   Result := pwrM;
+   strPower := dmZLogGlobal.Settings._power[B];
+   if strPower = 'H' then Result := pwrH;
+   if strPower = 'M' then Result := pwrM;
+   if strPower = 'L' then Result := pwrL;
+   if strPower = 'P' then Result := pwrP;
 end;
 
 procedure TdmZLogGlobal.WriteErrorLog(msg: string);

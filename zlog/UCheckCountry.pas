@@ -47,7 +47,7 @@ begin
       BoxFlags[i] := False;
    end;
 
-   C := dmZLogGlobal.GetPrefix(aQSO).Country;
+   C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
    TempCountry := C;
    Caption := C.Country + ': ' + C.CountryName + ' ' + C.Continent;
    cty := C.Country;

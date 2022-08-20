@@ -34,7 +34,7 @@ type
     procedure Reset; virtual;
     procedure CheckMulti(aQSO : TQSO); virtual;
     procedure ProcessCluster(var Sp : TBaseSpot); virtual;
-    function GuessZone(aQSO : TQSO) : string; virtual;
+    function GuessZone(strCallsign: string) : string; virtual;
     function GetInfo(aQSO : TQSO): string; virtual;
     procedure RenewCluster; virtual;
     procedure RenewBandScope; virtual;
@@ -126,7 +126,7 @@ procedure TBasicMulti.ProcessCluster(var Sp: TBaseSpot);
 begin
 end;
 
-function TBasicMulti.GuessZone(aQSO: TQSO): string;
+function TBasicMulti.GuessZone(strCallsign: string): string;
 begin
    Result := '';
 end;

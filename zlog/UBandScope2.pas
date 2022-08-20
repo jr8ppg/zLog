@@ -350,7 +350,7 @@ begin
                end;
             end;
 
-            str := FillRight(D.LabelStr, 20);
+            str := FillRight(D.LabelStr, 24);
 
             if D.SpotSource <> ssSelf then begin
                str := str + '+ ';

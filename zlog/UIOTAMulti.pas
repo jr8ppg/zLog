@@ -342,23 +342,18 @@ end;
 
 procedure TIOTAMulti.FormCreate(Sender: TObject);
 var
-   Q: TQSO;
    P: TPrefix;
    dlg: TIOTACategory;
+   strCallsign: string;
 begin
    // inherited;
    IslandList := TIslandList.Create;
    IslandList.LoadFromFile('IOTA.DAT');
    Reset;
 
-   Q := TQSO.Create;
-   try
-      Q.Callsign := UpperCase(dmZLogGlobal.MyCall);
-      P := dmZLogGlobal.GetPrefix(Q);
-      MyDXCC := P.Country.Country;
-   finally
-      Q.Free;
-   end;
+   strCallsign := UpperCase(dmZLogGlobal.MyCall);
+   P := dmZLogGlobal.GetPrefix(strCallsign);
+   MyDXCC := P.Country.Country;
 
    dlg := TIOTACategory.Create(MainForm);
    try

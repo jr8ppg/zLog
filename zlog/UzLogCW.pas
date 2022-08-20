@@ -69,7 +69,7 @@ begin
    temp := StringReplace(temp, '$X', dmZLogGlobal.Settings._sentstr, [rfReplaceAll]);
    temp := StringReplace(temp, '$x', LowerCase(dmZLogGlobal.Settings._sentstr), [rfReplaceAll]);
 
-   S := Main.CurrentQSO.Callsign;
+   S := aQSO.Callsign;
    temp := StringReplace(temp, '$B', S, [rfReplaceAll]);
    temp := StringReplace(temp, '$b', S, [rfReplaceAll]);
 
@@ -198,7 +198,7 @@ begin
    temp := StringReplace(temp, '[KN]', '', [rfReplaceAll]);
    temp := StringReplace(temp, '[BK]', '', [rfReplaceAll]);
 
-   temp := StringReplace(temp, '$B', Main.CurrentQSO.Callsign, [rfReplaceAll]);
+   temp := StringReplace(temp, '$B', aQSO.Callsign, [rfReplaceAll]);
    temp := StringReplace(temp, '$X', dmZLogGlobal.Settings._sentstr, [rfReplaceAll]);
    temp := StringReplace(temp, '$R', aQSO.RSTSentStr, [rfReplaceAll]);
    temp := StringReplace(temp, '$F', aQSO.NrRcvd, [rfReplaceAll]);

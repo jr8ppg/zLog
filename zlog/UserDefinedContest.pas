@@ -100,6 +100,8 @@ type
     class procedure SetPointsTable(PT: PTPointsTable; str: string);
     class function ParseOnOff(strOn: string): Boolean;
     class function ParseIntDef(strParam: string; def: Integer): Integer;
+    function GetBandLow(): TBand;
+    function GetBandHigh(): TBand;
   public
     constructor Create(); overload;
     constructor Create(strFullPath: string); overload;
@@ -168,6 +170,9 @@ type
     property UseWarcBand: Boolean read FUseWarcBand;
 
     property UseUTC: Boolean read FUseUTC;
+
+    property BandLow: TBand read GetBandLow;
+    property BandHigh: TBand read GetBandHigh;
   end;
 
   TUserDefinedContestList = class(TObjectList<TUserDefinedContest>)
@@ -877,6 +882,32 @@ begin
 
    // ñ≥Ç©Ç¡ÇΩÅI
    CfgSource.Add(strCommand + #09 + strNewValue + ';');
+end;
+
+function TUserDefinedContest.GetBandLow(): TBand;
+var
+   i: Integer;
+begin
+   for i := 1 to 13 do begin
+      if FPower[i] <> '-' then begin
+         Result := TBand(i - 1);
+         Exit;
+      end;
+   end;
+   Result := b19;
+end;
+
+function TUserDefinedContest.GetBandHigh(): TBand;
+var
+   i: Integer;
+begin
+   for i := 13 downto 1 do begin
+      if FPower[i] <> '-' then begin
+         Result := TBand(i - 1);
+         Exit;
+      end;
+   end;
+   Result := b50;
 end;
 
 { TUserDefinedContestList }

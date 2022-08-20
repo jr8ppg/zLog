@@ -2739,25 +2739,28 @@ end;
 
 procedure TLog.SetDupeFlags;
 var
-   i, j: Integer;
+   i: Integer;
    str: string;
    aQSO: TQSO;
-   TempList: array [ord('A') .. ord('Z')] of TStringList;
-   ch: Char;
+   TempList: TDictionary<string, Integer>;
    core: string;
    vQSO: TQSO;
    Diff: Integer;
    fQsyViolation: Boolean;
    nQsyCount: Integer;
+   {$IFDEF DEBUG}
+   dwTick: DWORD;
+   {$ENDIF}
 begin
-   if TotalQSO = 0 then
-      exit;
+   {$IFDEF DEBUG}
+   dwTick := GetTickCount();
+   {$ENDIF}
 
-   for i := ord('A') to ord('Z') do begin
-      TempList[i] := TStringList.Create;
-      TempList[i].Sorted := True;
-      TempList[i].Capacity := 200;
+   if TotalQSO = 0 then begin
+      exit;
    end;
+
+   TempList := TDictionary<string, Integer>.Create();
 
    vQSO := nil;
    for i := 1 to TotalQSO do begin
@@ -2781,20 +2784,13 @@ begin
          str := core + aQSO.BandStr;
       end;
 
-      if core = '' then
-         ch := 'Z'
-      else
-         ch := core[length(core)];
-
-      if not CharInSet(ch, ['A' .. 'Z']) then
-         ch := 'Z';
-
-      if TempList[ord(ch)].Find(str, j) = True then begin
+      // DUPE CHECK
+      if TempList.ContainsKey(str) = True then begin
          SetDupeQSO(aQSO);
       end
       else begin
          ResetDupeQSO(aQSO);
-         TempList[ord(ch)].Add(str);
+         TempList.Add(str, 1);
       end;
 
       {$IFNDEF ZSERVER}
@@ -2845,10 +2841,12 @@ begin
       {$ENDIF}
    end;
 
-   for i := ord('A') to ord('Z') do begin
-      TempList[i].Clear;
-      TempList[i].Free;
-   end;
+   TempList.Free();
+
+   {$IFDEF DEBUG}
+   dwTick := GetTickCount() - dwTick;
+   OutputDebugString(PChar('SetDupeFlags() = ' + IntToStr(dwTick) + ' milisec'));
+   {$ENDIF}
 end;
 
 function TLog.TotalQSO: Integer;

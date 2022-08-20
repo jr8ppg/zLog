@@ -67,6 +67,7 @@ object ChatForm: TChatForm
       ItemIndex = 0
       TabOrder = 2
       Text = 'Band'
+      OnChange = comboPromptTypeChange
       Items.Strings = (
         'Band'
         'PCNAME'

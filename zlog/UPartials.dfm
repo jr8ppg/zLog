@@ -16,88 +16,40 @@ object PartialCheck: TPartialCheck
   OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
-  object ListBox: TListBox
-    Left = 0
-    Top = 0
-    Width = 303
-    Height = 190
-    Style = lbOwnerDrawVariable
-    Align = alClient
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -13
-    Font.Name = #65325#65331' '#12468#12471#12483#12463
-    Font.Pitch = fpFixed
-    Font.Style = []
-    ItemHeight = 13
-    ParentFont = False
-    TabOrder = 0
-    OnDblClick = ListBoxDblClick
-    OnDrawItem = ListBoxDrawItem
-    OnMeasureItem = ListBoxMeasureItem
-  end
-  object Panel: TPanel
+  object panelExtend: TPanel
     Left = 0
     Top = 190
     Width = 303
     Height = 64
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 1
+    TabOrder = 0
+    ExplicitTop = 193
     object Label1: TLabel
-      Left = 200
-      Top = 42
+      Left = 199
+      Top = 18
       Width = 49
       Height = 13
       Caption = 'Show max'
     end
-    object MoreButton: TSpeedButton
-      Left = 264
-      Top = 7
-      Width = 37
-      Height = 21
-      Caption = 'Hide'
-      OnClick = MoreButtonClick
-    end
-    object Button3: TButton
-      Left = 6
-      Top = 7
-      Width = 63
-      Height = 21
-      Caption = 'OK'
-      Default = True
-      TabOrder = 0
-      OnClick = Button3Click
-    end
-    object CheckBox1: TCheckBox
-      Left = 165
-      Top = 9
-      Width = 97
-      Height = 17
-      Caption = 'Check all bands'
-      Checked = True
-      State = cbChecked
-      TabOrder = 1
-      OnClick = CheckBox1Click
-    end
     object ShowMaxEdit: TSpinEdit
-      Left = 256
-      Top = 38
+      Left = 252
+      Top = 15
       Width = 49
       Height = 22
       MaxValue = 9999
       MinValue = 1
-      TabOrder = 2
+      TabOrder = 0
       Value = 1
       OnChange = ShowMaxEditChange
     end
     object SortByGroup: TGroupBox
-      Left = 8
-      Top = 31
+      Left = 4
+      Top = 5
       Width = 190
-      Height = 31
+      Height = 36
       Caption = 'Sort by'
-      TabOrder = 3
+      TabOrder = 1
       object rbTime: TRadioButton
         Left = 8
         Top = 13
@@ -128,14 +80,88 @@ object PartialCheck: TPartialCheck
         OnClick = rbSortClick
       end
     end
-    object StayOnTop: TCheckBox
-      Left = 80
-      Top = 8
-      Width = 81
+    object checkShowCurrentBandFirst: TCheckBox
+      Left = 12
+      Top = 44
+      Width = 133
       Height = 17
-      Caption = 'Stay on top'
-      TabOrder = 4
-      OnClick = StayOnTopClick
+      Caption = 'Show current band first'
+      Checked = True
+      State = cbChecked
+      TabOrder = 2
+      OnClick = CheckBox1Click
+    end
+  end
+  object panelBody: TPanel
+    Left = 0
+    Top = 0
+    Width = 303
+    Height = 190
+    Align = alClient
+    BevelOuter = bvNone
+    TabOrder = 1
+    ExplicitLeft = 8
+    ExplicitTop = 8
+    ExplicitWidth = 287
+    ExplicitHeight = 153
+    object Panel: TPanel
+      Left = 0
+      Top = 164
+      Width = 303
+      Height = 26
+      Align = alBottom
+      BevelOuter = bvNone
+      TabOrder = 0
+      ExplicitTop = 187
+      object MoreButton: TSpeedButton
+        Left = 264
+        Top = 2
+        Width = 37
+        Height = 21
+        Caption = 'Hide'
+        OnClick = MoreButtonClick
+      end
+      object CheckBox1: TCheckBox
+        Left = 95
+        Top = 4
+        Width = 97
+        Height = 17
+        Caption = 'Check all bands'
+        Checked = True
+        State = cbChecked
+        TabOrder = 0
+        OnClick = CheckBox1Click
+      end
+      object StayOnTop: TCheckBox
+        Left = 8
+        Top = 4
+        Width = 81
+        Height = 17
+        Caption = 'Stay on top'
+        TabOrder = 1
+        OnClick = StayOnTopClick
+      end
+    end
+    object ListBox: TListBox
+      Left = 0
+      Top = 0
+      Width = 303
+      Height = 164
+      Style = lbOwnerDrawVariable
+      Align = alClient
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
+      Font.Pitch = fpFixed
+      Font.Style = []
+      ItemHeight = 13
+      ParentFont = False
+      TabOrder = 1
+      OnDblClick = ListBoxDblClick
+      OnDrawItem = ListBoxDrawItem
+      OnMeasureItem = ListBoxMeasureItem
+      ExplicitHeight = 213
     end
   end
 end

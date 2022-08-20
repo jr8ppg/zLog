@@ -286,7 +286,7 @@ begin
    aQSO.Power2 := 2; // not local CTY
 
    if FConfig.UseCtyDat then begin
-      Cty := dmZLogGlobal.GetPrefix(aQSO).Country;
+      Cty := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
 
       aQSO.Power2 := Cty.Index;
 

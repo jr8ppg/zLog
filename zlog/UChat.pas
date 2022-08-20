@@ -30,6 +30,7 @@ type
     procedure editMessageEnter(Sender: TObject);
     procedure editMessageExit(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure comboPromptTypeChange(Sender: TObject);
   private
     { Private declarations }
     FChatFileName: string;
@@ -176,6 +177,11 @@ begin
       FormStyle := fsStayOnTop
    else
       FormStyle := fsNormal;
+end;
+
+procedure TChatForm.comboPromptTypeChange(Sender: TObject);
+begin
+   dmZlogGlobal.Settings.FChatFormPrompt := comboPromptType.ItemIndex;
 end;
 
 procedure TChatForm.Chat(S: string);

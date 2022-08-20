@@ -36,7 +36,6 @@ object BandScope2: TBandScope2
     Color = clRed
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 204
     object Grid: TStringGrid
       Left = 4
       Top = 4
@@ -59,7 +58,6 @@ object BandScope2: TBandScope2
       OnDblClick = GridDblClick
       OnDrawCell = GridDrawCell
       OnMouseMove = GridMouseMove
-      ExplicitWidth = 192
     end
   end
   object Panel2: TPanel
@@ -70,7 +68,6 @@ object BandScope2: TBandScope2
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 204
     object checkSyncVfo: TCheckBox
       Left = 4
       Top = 3
