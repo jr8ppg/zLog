@@ -8832,6 +8832,9 @@ begin
          Q.Free();
       end;
 
+      // Antenna Select
+      RigControl.Rig.AntSelect(dmZLogGlobal.Settings._useant[b]);
+
       RigControl.Rig.UpdateStatus();
 
       // Zeroin”ð‚¯
