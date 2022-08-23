@@ -41,17 +41,14 @@ type
       rbAllAsian: TRadioButton;
       rbIOTA: TRadioButton;
       rbARRL10: TRadioButton;
-      rbKCJ: TRadioButton;
       rbWAE: TRadioButton;
-    OldSelectButton: TSpeedButton;
-    Label4: TLabel;
-    GroupBox1: TGroupBox;
-    radioSingleOp: TRadioButton;
-    radioMultiOpMultiTx: TRadioButton;
-    radioMultiOpSingleTx: TRadioButton;
-    radioMultiOpTwoTx: TRadioButton;
-    comboTxNo: TComboBox;
-    Label2: TLabel;
+      GroupBox1: TGroupBox;
+      radioSingleOp: TRadioButton;
+      radioMultiOpMultiTx: TRadioButton;
+      radioMultiOpSingleTx: TRadioButton;
+      radioMultiOpTwoTx: TRadioButton;
+      comboTxNo: TComboBox;
+      Label2: TLabel;
       procedure FormCreate(Sender: TObject);
       procedure FormShow(Sender: TObject);
       procedure rbCQWWClick(Sender: TObject);
@@ -73,12 +70,9 @@ type
       procedure rbARRL10Click(Sender: TObject);
       procedure rbARRL10Exit(Sender: TObject);
       procedure FnugrySingleInstance1AlreadyRunning(Sender: TObject; hPrevInst, hPrevWnd: Integer);
-      procedure FormKeyPress(Sender: TObject; var Key: Char);
-      procedure rbKCJClick(Sender: TObject);
       procedure rbWAEClick(Sender: TObject);
       procedure OKButtonClick(Sender: TObject);
       procedure FormDestroy(Sender: TObject);
-      procedure OldSelectButtonClick(Sender: TObject);
    private
       FSelectContest: array[0..20] of TRadioButton;
       FBandTemp: Integer; // temporary storage for bandgroup.itemindex
@@ -112,6 +106,9 @@ type
       property PostContest: Boolean read GetPostContest;
    end;
 
+resourcestring
+   UMenu_PleaseEnterYourCallsign = 'Please enter your callsign';
+
 implementation
 
 {$R *.DFM}
@@ -125,7 +122,7 @@ begin
    FSelectContest[3] := rbACAG;
    FSelectContest[4] := rbJA0in;
    FSelectContest[5] := rbJA0out;
-   FSelectContest[6] := rbKCJ;
+   FSelectContest[6] := nil;
    FSelectContest[7] := rbJIDXDX;
    FSelectContest[8] := rbPedi;
    FSelectContest[9] := rbGeneral;
@@ -187,7 +184,6 @@ begin
 
    if rbGeneral.Checked then begin
       SelectButton.Enabled := True;
-      OldSelectButton.Enabled := True;
    end;
 end;
 
@@ -230,32 +226,13 @@ begin
    OKButton.Enabled := True;
 end;
 
-procedure TMenuForm.OldSelectButtonClick(Sender: TObject);
-var
-   D: TUserDefinedContest;
-begin
-   CFGOpenDialog.InitialDir := dmZlogGlobal.Settings._cfgdatpath;
-   if CFGOpenDialog.Execute = False then begin
-      Exit;
-   end;
-
-   FCFGFileName := CFGOpenDialog.FileName;
-
-   D := TUserDefinedContest.Parse(FCFGFileName);
-   rbGeneral.Caption := D.ContestName;
-   ScoreCoeffEdit.Enabled := D.Coeff;
-   D.Free();
-
-   FModernStyle := False;
-   OKButton.Enabled := True;
-end;
-
 procedure TMenuForm.OKButtonClick(Sender: TObject);
 var
    i: Integer;
+   S: string;
 begin
    if editCallsign.Text = '' then begin
-      Application.MessageBox(PChar('Please enter your callsign'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Application.MessageBox(PChar(UMenu_PleaseEnterYourCallsign), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       editCallsign.SetFocus();
       Exit;
    end;
@@ -305,7 +282,6 @@ begin
    end;
 
    SelectButton.Enabled := False;
-   OldSelectButton.Enabled := False;
    ScoreCoeffEdit.Enabled := False;
    OKButton.Enabled := True;
 end;
@@ -474,7 +450,6 @@ begin
    end;
 
    SelectButton.Enabled := True;
-   OldSelectButton.Enabled := True;
 end;
 
 procedure TMenuForm.rbIARUClick(Sender: TObject);
@@ -530,30 +505,6 @@ end;
 procedure TMenuForm.FnugrySingleInstance1AlreadyRunning(Sender: TObject; hPrevInst, hPrevWnd: Integer);
 begin
    Close;
-end;
-
-procedure TMenuForm.FormKeyPress(Sender: TObject; var Key: Char);
-begin
-   if Key = ^X then rbKCJ.Visible := True;
-   if Key = ^T then rbKCJ.Visible := True;
-end;
-
-procedure TMenuForm.rbKCJClick(Sender: TObject);
-var i: Integer;
-begin
-   EnableEveryThing;
-   for i := 8 to 13 do
-      BandGroup.Controls[i].Enabled := False;
-
-   ModeGroup.Controls[0].Enabled := False;
-   ModeGroup.Controls[2].Enabled := False;
-   ModeGroup.Controls[3].Enabled := False;
-
-   radioSingleOp.Checked := True;
-   radioMultiOpMultiTx.Enabled := False;
-   radioMultiOpSingleTx.Enabled := False;
-   radioMultiOpTwoTx.Enabled := False;
-   comboTxNo.Enabled := False;
 end;
 
 procedure TMenuForm.rbWAEClick(Sender: TObject);
@@ -626,7 +577,7 @@ var
    i: Integer;
 begin
    for i := Low(FSelectContest) to High(FSelectContest) do begin
-      if TRadioButton(FSelectContest[i]).Checked then begin
+      if Assigned(FSelectContest[i]) and TRadioButton(FSelectContest[i]).Checked then begin
          Result := i;
          Exit;
       end;

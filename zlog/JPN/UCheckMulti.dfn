@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\GITHUB\zLog\zlog\UCheckMulti.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog\zlog\UCheckMulti.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">44796.8925</prop>
+        <prop prop-type="OrigDateTime">44011.6923611111</prop>
+        <prop prop-type="XlatDateTime">44011.6923611111</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">5</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="I:CheckMulti.Left" resname="I:CheckMulti.Left">
+        <source>394</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925173032</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TCheckMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:CheckMulti.Top" resname="I:CheckMulti.Top">
+        <source>112</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925173032</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TCheckMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:CheckMulti.Caption" resname="I:CheckMulti.Caption">
+        <source>'CheckMulti'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925173032</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TCheckMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:CheckMulti.PixelsPerInch" resname="I:CheckMulti.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925173032</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TCheckMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:CheckMulti.TextHeight" resname="I:CheckMulti.TextHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925173032</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TCheckMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

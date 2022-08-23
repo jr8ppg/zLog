@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\GITHUB\zLog\zlog\UWAEMulti.dfm" source-language="ja-JP" target-language="en-US" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog\zlog\UWAEMulti.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">44796.8935185185</prop>
+        <prop prop-type="OrigDateTime">44011.6923611111</prop>
+        <prop prop-type="XlatDateTime">44011.6923611111</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">6</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="I:WAEMulti.Left" resname="I:WAEMulti.Left">
+        <source>160</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935223264</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TWAEMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:WAEMulti.Top" resname="I:WAEMulti.Top">
+        <source>213</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935223264</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TWAEMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:WAEMulti.PixelsPerInch" resname="I:WAEMulti.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935223264</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TWAEMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:WAEMulti.TextHeight" resname="I:WAEMulti.TextHeight">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935223264</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TWAEMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:WAEMulti.I:Panel." resname="I:WAEMulti.I:Panel.">
+        <source></source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935223264</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">0</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:WAEMulti.I:Panel.I:RotateLabel1.Visible" resname="I:WAEMulti.I:Panel.I:RotateLabel1.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935223264</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:WAEMulti.I:Panel.I:SortBy.Visible" resname="I:WAEMulti.I:Panel.I:SortBy.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935223264</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TRadioGroup</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

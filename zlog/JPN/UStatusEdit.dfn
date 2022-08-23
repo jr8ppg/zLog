@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\GITHUB\zLog\zlog\UStatusEdit.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog\zlog\UStatusEdit.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">44796.8928935185</prop>
+        <prop prop-type="OrigDateTime">44785.8513425926</prop>
+        <prop prop-type="XlatDateTime">44785.8513425926</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">85</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="O:formStatusEdit.Left" resname="O:formStatusEdit.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.Top" resname="O:formStatusEdit.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.BorderStyle" resname="O:formStatusEdit.BorderStyle">
+        <source>bsDialog</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.Caption" resname="O:formStatusEdit.Caption">
+        <source>'Status Edit'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.ClientHeight" resname="O:formStatusEdit.ClientHeight">
+        <source>88</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.ClientWidth" resname="O:formStatusEdit.ClientWidth">
+        <source>364</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.Color" resname="O:formStatusEdit.Color">
+        <source>clBtnFace</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.Font.Charset" resname="O:formStatusEdit.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.Font.Color" resname="O:formStatusEdit.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.Font.Height" resname="O:formStatusEdit.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.Font.Name" resname="O:formStatusEdit.Font.Name">
+        <source>'MS Sans Serif'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.Font.Style" resname="O:formStatusEdit.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.OldCreateOrder" resname="O:formStatusEdit.OldCreateOrder">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.Position" resname="O:formStatusEdit.Position">
+        <source>poOwnerFormCenter</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.PixelsPerInch" resname="O:formStatusEdit.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.TextHeight" resname="O:formStatusEdit.TextHeight">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TformStatusEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.Left" resname="O:formStatusEdit.O:GroupBox2.Left">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.Top" resname="O:formStatusEdit.O:GroupBox2.Top">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.Width" resname="O:formStatusEdit.O:GroupBox2.Width">
+        <source>137</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.Height" resname="O:formStatusEdit.O:GroupBox2.Height">
+        <source>42</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.Caption" resname="O:formStatusEdit.O:GroupBox2.Caption">
+        <source>'QSO Flags'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.TabOrder" resname="O:formStatusEdit.O:GroupBox2.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.O:checkCQ.Left" resname="O:formStatusEdit.O:GroupBox2.O:checkCQ.Left">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.O:checkCQ.Top" resname="O:formStatusEdit.O:GroupBox2.O:checkCQ.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.O:checkCQ.Width" resname="O:formStatusEdit.O:GroupBox2.O:checkCQ.Width">
+        <source>33</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.O:checkCQ.Height" resname="O:formStatusEdit.O:GroupBox2.O:checkCQ.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.O:checkCQ.Caption" resname="O:formStatusEdit.O:GroupBox2.O:checkCQ.Caption">
+        <source>'CQ'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.O:checkCQ.TabOrder" resname="O:formStatusEdit.O:GroupBox2.O:checkCQ.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.O:checkInvalid.Left" resname="O:formStatusEdit.O:GroupBox2.O:checkInvalid.Left">
+        <source>71</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.O:checkInvalid.Top" resname="O:formStatusEdit.O:GroupBox2.O:checkInvalid.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.O:checkInvalid.Width" resname="O:formStatusEdit.O:GroupBox2.O:checkInvalid.Width">
+        <source>51</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.O:checkInvalid.Height" resname="O:formStatusEdit.O:GroupBox2.O:checkInvalid.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.O:checkInvalid.Caption" resname="O:formStatusEdit.O:GroupBox2.O:checkInvalid.Caption">
+        <source>'Invalid'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox2.O:checkInvalid.TabOrder" resname="O:formStatusEdit.O:GroupBox2.O:checkInvalid.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.Left" resname="O:formStatusEdit.O:GroupBox1.Left">
+        <source>151</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.Top" resname="O:formStatusEdit.O:GroupBox1.Top">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.Width" resname="O:formStatusEdit.O:GroupBox1.Width">
+        <source>205</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.Height" resname="O:formStatusEdit.O:GroupBox1.Height">
+        <source>42</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.Caption" resname="O:formStatusEdit.O:GroupBox1.Caption">
+        <source>'QSL Status'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.TabOrder" resname="O:formStatusEdit.O:GroupBox1.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioQslNone.Left" resname="O:formStatusEdit.O:GroupBox1.O:radioQslNone.Left">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioQslNone.Top" resname="O:formStatusEdit.O:GroupBox1.O:radioQslNone.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioQslNone.Width" resname="O:formStatusEdit.O:GroupBox1.O:radioQslNone.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioQslNone.Height" resname="O:formStatusEdit.O:GroupBox1.O:radioQslNone.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioQslNone.Caption" resname="O:formStatusEdit.O:GroupBox1.O:radioQslNone.Caption">
+        <source>'None'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioQslNone.TabOrder" resname="O:formStatusEdit.O:GroupBox1.O:radioQslNone.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioPseQsl.Left" resname="O:formStatusEdit.O:GroupBox1.O:radioPseQsl.Left">
+        <source>67</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioPseQsl.Top" resname="O:formStatusEdit.O:GroupBox1.O:radioPseQsl.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioPseQsl.Width" resname="O:formStatusEdit.O:GroupBox1.O:radioPseQsl.Width">
+        <source>61</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioPseQsl.Height" resname="O:formStatusEdit.O:GroupBox1.O:radioPseQsl.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioPseQsl.Caption" resname="O:formStatusEdit.O:GroupBox1.O:radioPseQsl.Caption">
+        <source>'PSE QSL'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioPseQsl.TabOrder" resname="O:formStatusEdit.O:GroupBox1.O:radioPseQsl.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioNoQsl.Left" resname="O:formStatusEdit.O:GroupBox1.O:radioNoQsl.Left">
+        <source>137</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioNoQsl.Top" resname="O:formStatusEdit.O:GroupBox1.O:radioNoQsl.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioNoQsl.Width" resname="O:formStatusEdit.O:GroupBox1.O:radioNoQsl.Width">
+        <source>61</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioNoQsl.Height" resname="O:formStatusEdit.O:GroupBox1.O:radioNoQsl.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioNoQsl.Caption" resname="O:formStatusEdit.O:GroupBox1.O:radioNoQsl.Caption">
+        <source>'NO QSL'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:GroupBox1.O:radioNoQsl.TabOrder" resname="O:formStatusEdit.O:GroupBox1.O:radioNoQsl.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.Left" resname="O:formStatusEdit.O:Panel2.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.Top" resname="O:formStatusEdit.O:Panel2.Top">
+        <source>55</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.Width" resname="O:formStatusEdit.O:Panel2.Width">
+        <source>364</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.Height" resname="O:formStatusEdit.O:Panel2.Height">
+        <source>33</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.Align" resname="O:formStatusEdit.O:Panel2.Align">
+        <source>alBottom</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.BevelOuter" resname="O:formStatusEdit.O:Panel2.BevelOuter">
+        <source>bvNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.TabOrder" resname="O:formStatusEdit.O:Panel2.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.DesignSize[0]" resname="O:formStatusEdit.O:Panel2.DesignSize[0]">
+        <source>364</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.DesignSize[1]" resname="O:formStatusEdit.O:Panel2.DesignSize[1]">
+        <source>33</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:OKBtn.Left" resname="O:formStatusEdit.O:Panel2.O:OKBtn.Left">
+        <source>203</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:OKBtn.Top" resname="O:formStatusEdit.O:Panel2.O:OKBtn.Top">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:OKBtn.Width" resname="O:formStatusEdit.O:Panel2.O:OKBtn.Width">
+        <source>75</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:OKBtn.Height" resname="O:formStatusEdit.O:Panel2.O:OKBtn.Height">
+        <source>25</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:OKBtn.Anchors" resname="O:formStatusEdit.O:Panel2.O:OKBtn.Anchors">
+        <source>[akTop, akRight]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:OKBtn.Caption" resname="O:formStatusEdit.O:Panel2.O:OKBtn.Caption">
+        <source>'OK'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:OKBtn.Default" resname="O:formStatusEdit.O:Panel2.O:OKBtn.Default">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:OKBtn.ModalResult" resname="O:formStatusEdit.O:Panel2.O:OKBtn.ModalResult">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:OKBtn.TabOrder" resname="O:formStatusEdit.O:Panel2.O:OKBtn.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:CancelBtn.Left" resname="O:formStatusEdit.O:Panel2.O:CancelBtn.Left">
+        <source>284</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:CancelBtn.Top" resname="O:formStatusEdit.O:Panel2.O:CancelBtn.Top">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:CancelBtn.Width" resname="O:formStatusEdit.O:Panel2.O:CancelBtn.Width">
+        <source>75</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:CancelBtn.Height" resname="O:formStatusEdit.O:Panel2.O:CancelBtn.Height">
+        <source>25</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:CancelBtn.Anchors" resname="O:formStatusEdit.O:Panel2.O:CancelBtn.Anchors">
+        <source>[akTop, akRight]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:CancelBtn.Cancel" resname="O:formStatusEdit.O:Panel2.O:CancelBtn.Cancel">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:CancelBtn.Caption" resname="O:formStatusEdit.O:Panel2.O:CancelBtn.Caption">
+        <source>'Cancel'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:CancelBtn.ModalResult" resname="O:formStatusEdit.O:Panel2.O:CancelBtn.ModalResult">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formStatusEdit.O:Panel2.O:CancelBtn.TabOrder" resname="O:formStatusEdit.O:Panel2.O:CancelBtn.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929059259</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,1383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\GITHUB\zLog\zlog\UACAGMulti.dfm" source-language="ja-JP" target-language="en-US" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog\zlog\UACAGMulti.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">44796.8931018518</prop>
+        <prop prop-type="OrigDateTime">44721.8912731481</prop>
+        <prop prop-type="XlatDateTime">44721.8912731481</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">273</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="O:ACAGMulti.Left" resname="O:ACAGMulti.Left">
+        <source>331</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.Top" resname="O:ACAGMulti.Top">
+        <source>79</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.Caption" resname="O:ACAGMulti.Caption">
+        <source>'Multipliers Info'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.ClientHeight" resname="O:ACAGMulti.ClientHeight">
+        <source>282</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.ClientWidth" resname="O:ACAGMulti.ClientWidth">
+        <source>360</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.Color" resname="O:ACAGMulti.Color">
+        <source>clBtnFace</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.Font.Charset" resname="O:ACAGMulti.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.Font.Color" resname="O:ACAGMulti.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.Font.Height" resname="O:ACAGMulti.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.Font.Name" resname="O:ACAGMulti.Font.Name">
+        <source>'MS Sans Serif'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.Font.Style" resname="O:ACAGMulti.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.OldCreateOrder" resname="O:ACAGMulti.OldCreateOrder">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.Scaled" resname="O:ACAGMulti.Scaled">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.OnCreate" resname="O:ACAGMulti.OnCreate">
+        <source>FormCreate</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.OnDestroy" resname="O:ACAGMulti.OnDestroy">
+        <source>FormDestroy</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.OnResize" resname="O:ACAGMulti.OnResize">
+        <source>FormResize</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.OnShow" resname="O:ACAGMulti.OnShow">
+        <source>FormShow</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.PixelsPerInch" resname="O:ACAGMulti.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.TextHeight" resname="O:ACAGMulti.TextHeight">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TACAGMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.Left" resname="O:ACAGMulti.O:Panel1.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.Top" resname="O:ACAGMulti.O:Panel1.Top">
+        <source>241</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.Width" resname="O:ACAGMulti.O:Panel1.Width">
+        <source>360</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.Height" resname="O:ACAGMulti.O:Panel1.Height">
+        <source>41</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.Align" resname="O:ACAGMulti.O:Panel1.Align">
+        <source>alBottom</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.BevelOuter" resname="O:ACAGMulti.O:Panel1.BevelOuter">
+        <source>bvNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.TabOrder" resname="O:ACAGMulti.O:Panel1.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.DesignSize[0]" resname="O:ACAGMulti.O:Panel1.DesignSize[0]">
+        <source>360</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.DesignSize[1]" resname="O:ACAGMulti.O:Panel1.DesignSize[1]">
+        <source>41</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:buttonGo.Left" resname="O:ACAGMulti.O:Panel1.O:buttonGo.Left">
+        <source>292</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:buttonGo.Top" resname="O:ACAGMulti.O:Panel1.O:buttonGo.Top">
+        <source>11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:buttonGo.Width" resname="O:ACAGMulti.O:Panel1.O:buttonGo.Width">
+        <source>57</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:buttonGo.Height" resname="O:ACAGMulti.O:Panel1.O:buttonGo.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:buttonGo.Anchors" resname="O:ACAGMulti.O:Panel1.O:buttonGo.Anchors">
+        <source>[akRight, akBottom]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:buttonGo.Caption" resname="O:ACAGMulti.O:Panel1.O:buttonGo.Caption">
+        <source>'Go'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:buttonGo.TabOrder" resname="O:ACAGMulti.O:Panel1.O:buttonGo.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:buttonGo.OnClick" resname="O:ACAGMulti.O:Panel1.O:buttonGo.OnClick">
+        <source>GoButtonClick2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:Edit1.Left" resname="O:ACAGMulti.O:Panel1.O:Edit1.Left">
+        <source>225</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:Edit1.Top" resname="O:ACAGMulti.O:Panel1.O:Edit1.Top">
+        <source>11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:Edit1.Width" resname="O:ACAGMulti.O:Panel1.O:Edit1.Width">
+        <source>61</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:Edit1.Height" resname="O:ACAGMulti.O:Panel1.O:Edit1.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:Edit1.Anchors" resname="O:ACAGMulti.O:Panel1.O:Edit1.Anchors">
+        <source>[akRight, akBottom]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:Edit1.CharCase" resname="O:ACAGMulti.O:Panel1.O:Edit1.CharCase">
+        <source>ecUpperCase</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:Edit1.TabOrder" resname="O:ACAGMulti.O:Panel1.O:Edit1.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:Edit1.OnChange" resname="O:ACAGMulti.O:Panel1.O:Edit1.OnChange">
+        <source>Edit1Change</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:Edit1.OnEnter" resname="O:ACAGMulti.O:Panel1.O:Edit1.OnEnter">
+        <source>Edit1Enter</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:Edit1.OnExit" resname="O:ACAGMulti.O:Panel1.O:Edit1.OnExit">
+        <source>Edit1Exit</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:StayOnTop.Left" resname="O:ACAGMulti.O:Panel1.O:StayOnTop.Left">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:StayOnTop.Top" resname="O:ACAGMulti.O:Panel1.O:StayOnTop.Top">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:StayOnTop.Width" resname="O:ACAGMulti.O:Panel1.O:StayOnTop.Width">
+        <source>81</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:StayOnTop.Height" resname="O:ACAGMulti.O:Panel1.O:StayOnTop.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:StayOnTop.Anchors" resname="O:ACAGMulti.O:Panel1.O:StayOnTop.Anchors">
+        <source>[akLeft, akBottom]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:StayOnTop.Caption" resname="O:ACAGMulti.O:Panel1.O:StayOnTop.Caption">
+        <source>'Stay on top'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:StayOnTop.TabOrder" resname="O:ACAGMulti.O:Panel1.O:StayOnTop.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:StayOnTop.OnClick" resname="O:ACAGMulti.O:Panel1.O:StayOnTop.OnClick">
+        <source>StayOnTopClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:checkIncremental.Left" resname="O:ACAGMulti.O:Panel1.O:checkIncremental.Left">
+        <source>95</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:checkIncremental.Top" resname="O:ACAGMulti.O:Panel1.O:checkIncremental.Top">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:checkIncremental.Width" resname="O:ACAGMulti.O:Panel1.O:checkIncremental.Width">
+        <source>81</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:checkIncremental.Height" resname="O:ACAGMulti.O:Panel1.O:checkIncremental.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:checkIncremental.Anchors" resname="O:ACAGMulti.O:Panel1.O:checkIncremental.Anchors">
+        <source>[akLeft, akBottom]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:checkIncremental.Caption" resname="O:ACAGMulti.O:Panel1.O:checkIncremental.Caption">
+        <source>'Incremental'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:checkIncremental.TabOrder" resname="O:ACAGMulti.O:Panel1.O:checkIncremental.TabOrder">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel1.O:checkIncremental.OnClick" resname="O:ACAGMulti.O:Panel1.O:checkIncremental.OnClick">
+        <source>StayOnTopClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.Left" resname="O:ACAGMulti.O:Panel.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.Top" resname="O:ACAGMulti.O:Panel.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.Width" resname="O:ACAGMulti.O:Panel.Width">
+        <source>360</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.Height" resname="O:ACAGMulti.O:Panel.Height">
+        <source>41</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.Align" resname="O:ACAGMulti.O:Panel.Align">
+        <source>alTop</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.BevelOuter" resname="O:ACAGMulti.O:Panel.BevelOuter">
+        <source>bvNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.Font.Charset" resname="O:ACAGMulti.O:Panel.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.Font.Color" resname="O:ACAGMulti.O:Panel.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.Font.Height" resname="O:ACAGMulti.O:Panel.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.Font.Name" resname="O:ACAGMulti.O:Panel.Font.Name">
+        <source>'MS Sans Serif'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.Font.Style" resname="O:ACAGMulti.O:Panel.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.ParentFont" resname="O:ACAGMulti.O:Panel.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.TabOrder" resname="O:ACAGMulti.O:Panel.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1R9.Left" resname="O:ACAGMulti.O:Panel.O:Label1R9.Left">
+        <source>174</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1R9.Top" resname="O:ACAGMulti.O:Panel.O:Label1R9.Top">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1R9.Width" resname="O:ACAGMulti.O:Panel.O:Label1R9.Width">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1R9.Height" resname="O:ACAGMulti.O:Panel.O:Label1R9.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1R9.Escapement" resname="O:ACAGMulti.O:Panel.O:Label1R9.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1R9.TextStyle" resname="O:ACAGMulti.O:Panel.O:Label1R9.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1R9.Caption" resname="O:ACAGMulti.O:Panel.O:Label1R9.Caption">
+        <source>'1.9'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1R9.Font.Charset" resname="O:ACAGMulti.O:Panel.O:Label1R9.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1R9.Font.Color" resname="O:ACAGMulti.O:Panel.O:Label1R9.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1R9.Font.Height" resname="O:ACAGMulti.O:Panel.O:Label1R9.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1R9.Font.Name" resname="O:ACAGMulti.O:Panel.O:Label1R9.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1R9.Font.Style" resname="O:ACAGMulti.O:Panel.O:Label1R9.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1R9.ParentFont" resname="O:ACAGMulti.O:Panel.O:Label1R9.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label3R5.Left" resname="O:ACAGMulti.O:Panel.O:Label3R5.Left">
+        <source>186</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label3R5.Top" resname="O:ACAGMulti.O:Panel.O:Label3R5.Top">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label3R5.Width" resname="O:ACAGMulti.O:Panel.O:Label3R5.Width">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label3R5.Height" resname="O:ACAGMulti.O:Panel.O:Label3R5.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label3R5.Escapement" resname="O:ACAGMulti.O:Panel.O:Label3R5.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label3R5.TextStyle" resname="O:ACAGMulti.O:Panel.O:Label3R5.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label3R5.Caption" resname="O:ACAGMulti.O:Panel.O:Label3R5.Caption">
+        <source>'3.5'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label3R5.Font.Charset" resname="O:ACAGMulti.O:Panel.O:Label3R5.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label3R5.Font.Color" resname="O:ACAGMulti.O:Panel.O:Label3R5.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label3R5.Font.Height" resname="O:ACAGMulti.O:Panel.O:Label3R5.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label3R5.Font.Name" resname="O:ACAGMulti.O:Panel.O:Label3R5.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label3R5.Font.Style" resname="O:ACAGMulti.O:Panel.O:Label3R5.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label3R5.ParentFont" resname="O:ACAGMulti.O:Panel.O:Label3R5.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label7.Left" resname="O:ACAGMulti.O:Panel.O:Label7.Left">
+        <source>198</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label7.Top" resname="O:ACAGMulti.O:Panel.O:Label7.Top">
+        <source>29</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label7.Width" resname="O:ACAGMulti.O:Panel.O:Label7.Width">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label7.Height" resname="O:ACAGMulti.O:Panel.O:Label7.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label7.Escapement" resname="O:ACAGMulti.O:Panel.O:Label7.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label7.TextStyle" resname="O:ACAGMulti.O:Panel.O:Label7.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label7.Caption" resname="O:ACAGMulti.O:Panel.O:Label7.Caption">
+        <source>'7'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label7.Font.Charset" resname="O:ACAGMulti.O:Panel.O:Label7.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label7.Font.Color" resname="O:ACAGMulti.O:Panel.O:Label7.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label7.Font.Height" resname="O:ACAGMulti.O:Panel.O:Label7.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label7.Font.Name" resname="O:ACAGMulti.O:Panel.O:Label7.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label7.Font.Style" resname="O:ACAGMulti.O:Panel.O:Label7.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label7.ParentFont" resname="O:ACAGMulti.O:Panel.O:Label7.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label14.Left" resname="O:ACAGMulti.O:Panel.O:Label14.Left">
+        <source>210</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label14.Top" resname="O:ACAGMulti.O:Panel.O:Label14.Top">
+        <source>23</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label14.Width" resname="O:ACAGMulti.O:Panel.O:Label14.Width">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label14.Height" resname="O:ACAGMulti.O:Panel.O:Label14.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label14.Escapement" resname="O:ACAGMulti.O:Panel.O:Label14.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label14.TextStyle" resname="O:ACAGMulti.O:Panel.O:Label14.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label14.Caption" resname="O:ACAGMulti.O:Panel.O:Label14.Caption">
+        <source>'14'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">120</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label14.Font.Charset" resname="O:ACAGMulti.O:Panel.O:Label14.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">121</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label14.Font.Color" resname="O:ACAGMulti.O:Panel.O:Label14.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">122</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label14.Font.Height" resname="O:ACAGMulti.O:Panel.O:Label14.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label14.Font.Name" resname="O:ACAGMulti.O:Panel.O:Label14.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label14.Font.Style" resname="O:ACAGMulti.O:Panel.O:Label14.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">125</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label14.ParentFont" resname="O:ACAGMulti.O:Panel.O:Label14.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">126</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label21.Left" resname="O:ACAGMulti.O:Panel.O:Label21.Left">
+        <source>222</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label21.Top" resname="O:ACAGMulti.O:Panel.O:Label21.Top">
+        <source>23</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">128</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label21.Width" resname="O:ACAGMulti.O:Panel.O:Label21.Width">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">129</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label21.Height" resname="O:ACAGMulti.O:Panel.O:Label21.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">130</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label21.Escapement" resname="O:ACAGMulti.O:Panel.O:Label21.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">131</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label21.TextStyle" resname="O:ACAGMulti.O:Panel.O:Label21.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label21.Caption" resname="O:ACAGMulti.O:Panel.O:Label21.Caption">
+        <source>'21'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">133</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label21.Font.Charset" resname="O:ACAGMulti.O:Panel.O:Label21.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label21.Font.Color" resname="O:ACAGMulti.O:Panel.O:Label21.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">135</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label21.Font.Height" resname="O:ACAGMulti.O:Panel.O:Label21.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">136</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label21.Font.Name" resname="O:ACAGMulti.O:Panel.O:Label21.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">137</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label21.Font.Style" resname="O:ACAGMulti.O:Panel.O:Label21.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">138</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label21.ParentFont" resname="O:ACAGMulti.O:Panel.O:Label21.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">139</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label28.Left" resname="O:ACAGMulti.O:Panel.O:Label28.Left">
+        <source>234</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">140</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label28.Top" resname="O:ACAGMulti.O:Panel.O:Label28.Top">
+        <source>23</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">141</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label28.Width" resname="O:ACAGMulti.O:Panel.O:Label28.Width">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">142</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label28.Height" resname="O:ACAGMulti.O:Panel.O:Label28.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">143</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label28.Escapement" resname="O:ACAGMulti.O:Panel.O:Label28.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">144</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label28.TextStyle" resname="O:ACAGMulti.O:Panel.O:Label28.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">145</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label28.Caption" resname="O:ACAGMulti.O:Panel.O:Label28.Caption">
+        <source>'28'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">146</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label28.Font.Charset" resname="O:ACAGMulti.O:Panel.O:Label28.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label28.Font.Color" resname="O:ACAGMulti.O:Panel.O:Label28.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">148</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label28.Font.Height" resname="O:ACAGMulti.O:Panel.O:Label28.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">149</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label28.Font.Name" resname="O:ACAGMulti.O:Panel.O:Label28.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">150</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label28.Font.Style" resname="O:ACAGMulti.O:Panel.O:Label28.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">151</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label28.ParentFont" resname="O:ACAGMulti.O:Panel.O:Label28.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">152</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label50.Left" resname="O:ACAGMulti.O:Panel.O:Label50.Left">
+        <source>247</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label50.Top" resname="O:ACAGMulti.O:Panel.O:Label50.Top">
+        <source>23</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">154</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label50.Width" resname="O:ACAGMulti.O:Panel.O:Label50.Width">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">155</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label50.Height" resname="O:ACAGMulti.O:Panel.O:Label50.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">156</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label50.Escapement" resname="O:ACAGMulti.O:Panel.O:Label50.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">157</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label50.TextStyle" resname="O:ACAGMulti.O:Panel.O:Label50.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">158</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label50.Caption" resname="O:ACAGMulti.O:Panel.O:Label50.Caption">
+        <source>'50'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">159</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label50.Font.Charset" resname="O:ACAGMulti.O:Panel.O:Label50.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">160</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label50.Font.Color" resname="O:ACAGMulti.O:Panel.O:Label50.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label50.Font.Height" resname="O:ACAGMulti.O:Panel.O:Label50.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label50.Font.Name" resname="O:ACAGMulti.O:Panel.O:Label50.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label50.Font.Style" resname="O:ACAGMulti.O:Panel.O:Label50.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">164</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label50.ParentFont" resname="O:ACAGMulti.O:Panel.O:Label50.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">165</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label144.Left" resname="O:ACAGMulti.O:Panel.O:Label144.Left">
+        <source>259</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">166</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label144.Top" resname="O:ACAGMulti.O:Panel.O:Label144.Top">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">167</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label144.Width" resname="O:ACAGMulti.O:Panel.O:Label144.Width">
+        <source>18</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label144.Height" resname="O:ACAGMulti.O:Panel.O:Label144.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label144.Escapement" resname="O:ACAGMulti.O:Panel.O:Label144.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">170</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label144.TextStyle" resname="O:ACAGMulti.O:Panel.O:Label144.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">171</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label144.Caption" resname="O:ACAGMulti.O:Panel.O:Label144.Caption">
+        <source>'144'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label144.Font.Charset" resname="O:ACAGMulti.O:Panel.O:Label144.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">173</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label144.Font.Color" resname="O:ACAGMulti.O:Panel.O:Label144.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">174</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label144.Font.Height" resname="O:ACAGMulti.O:Panel.O:Label144.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label144.Font.Name" resname="O:ACAGMulti.O:Panel.O:Label144.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label144.Font.Style" resname="O:ACAGMulti.O:Panel.O:Label144.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label144.ParentFont" resname="O:ACAGMulti.O:Panel.O:Label144.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label430.Left" resname="O:ACAGMulti.O:Panel.O:Label430.Left">
+        <source>271</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label430.Top" resname="O:ACAGMulti.O:Panel.O:Label430.Top">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label430.Width" resname="O:ACAGMulti.O:Panel.O:Label430.Width">
+        <source>18</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label430.Height" resname="O:ACAGMulti.O:Panel.O:Label430.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label430.Escapement" resname="O:ACAGMulti.O:Panel.O:Label430.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">183</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label430.TextStyle" resname="O:ACAGMulti.O:Panel.O:Label430.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label430.Caption" resname="O:ACAGMulti.O:Panel.O:Label430.Caption">
+        <source>'430'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">185</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label430.Font.Charset" resname="O:ACAGMulti.O:Panel.O:Label430.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">186</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label430.Font.Color" resname="O:ACAGMulti.O:Panel.O:Label430.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label430.Font.Height" resname="O:ACAGMulti.O:Panel.O:Label430.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label430.Font.Name" resname="O:ACAGMulti.O:Panel.O:Label430.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label430.Font.Style" resname="O:ACAGMulti.O:Panel.O:Label430.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">190</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label430.ParentFont" resname="O:ACAGMulti.O:Panel.O:Label430.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1200.Left" resname="O:ACAGMulti.O:Panel.O:Label1200.Left">
+        <source>283</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">192</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1200.Top" resname="O:ACAGMulti.O:Panel.O:Label1200.Top">
+        <source>11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">193</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1200.Width" resname="O:ACAGMulti.O:Panel.O:Label1200.Width">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">194</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1200.Height" resname="O:ACAGMulti.O:Panel.O:Label1200.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">195</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1200.Escapement" resname="O:ACAGMulti.O:Panel.O:Label1200.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">196</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1200.TextStyle" resname="O:ACAGMulti.O:Panel.O:Label1200.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1200.Caption" resname="O:ACAGMulti.O:Panel.O:Label1200.Caption">
+        <source>'1200'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">198</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1200.Font.Charset" resname="O:ACAGMulti.O:Panel.O:Label1200.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">199</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1200.Font.Color" resname="O:ACAGMulti.O:Panel.O:Label1200.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">200</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1200.Font.Height" resname="O:ACAGMulti.O:Panel.O:Label1200.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">201</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1200.Font.Name" resname="O:ACAGMulti.O:Panel.O:Label1200.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">202</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1200.Font.Style" resname="O:ACAGMulti.O:Panel.O:Label1200.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">203</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label1200.ParentFont" resname="O:ACAGMulti.O:Panel.O:Label1200.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">204</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label2400.Left" resname="O:ACAGMulti.O:Panel.O:Label2400.Left">
+        <source>295</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">205</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label2400.Top" resname="O:ACAGMulti.O:Panel.O:Label2400.Top">
+        <source>11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">206</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label2400.Width" resname="O:ACAGMulti.O:Panel.O:Label2400.Width">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">207</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label2400.Height" resname="O:ACAGMulti.O:Panel.O:Label2400.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">208</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label2400.Escapement" resname="O:ACAGMulti.O:Panel.O:Label2400.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">209</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label2400.TextStyle" resname="O:ACAGMulti.O:Panel.O:Label2400.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">210</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label2400.Caption" resname="O:ACAGMulti.O:Panel.O:Label2400.Caption">
+        <source>'2400'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">211</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label2400.Font.Charset" resname="O:ACAGMulti.O:Panel.O:Label2400.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">212</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label2400.Font.Color" resname="O:ACAGMulti.O:Panel.O:Label2400.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931121644</prop><prop prop-type="Status">0</prop><prop prop-type="Order">213</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label2400.Font.Height" resname="O:ACAGMulti.O:Panel.O:Label2400.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">214</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label2400.Font.Name" resname="O:ACAGMulti.O:Panel.O:Label2400.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">215</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label2400.Font.Style" resname="O:ACAGMulti.O:Panel.O:Label2400.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">216</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label2400.ParentFont" resname="O:ACAGMulti.O:Panel.O:Label2400.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">217</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label5600.Left" resname="O:ACAGMulti.O:Panel.O:Label5600.Left">
+        <source>307</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">218</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label5600.Top" resname="O:ACAGMulti.O:Panel.O:Label5600.Top">
+        <source>11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">219</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label5600.Width" resname="O:ACAGMulti.O:Panel.O:Label5600.Width">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">220</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label5600.Height" resname="O:ACAGMulti.O:Panel.O:Label5600.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">221</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label5600.Escapement" resname="O:ACAGMulti.O:Panel.O:Label5600.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">222</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label5600.TextStyle" resname="O:ACAGMulti.O:Panel.O:Label5600.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">223</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label5600.Caption" resname="O:ACAGMulti.O:Panel.O:Label5600.Caption">
+        <source>'5600'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">224</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label5600.Font.Charset" resname="O:ACAGMulti.O:Panel.O:Label5600.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">225</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label5600.Font.Color" resname="O:ACAGMulti.O:Panel.O:Label5600.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">226</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label5600.Font.Height" resname="O:ACAGMulti.O:Panel.O:Label5600.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">227</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label5600.Font.Name" resname="O:ACAGMulti.O:Panel.O:Label5600.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">228</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label5600.Font.Style" resname="O:ACAGMulti.O:Panel.O:Label5600.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">229</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label5600.ParentFont" resname="O:ACAGMulti.O:Panel.O:Label5600.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">230</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label10g.Left" resname="O:ACAGMulti.O:Panel.O:Label10g.Left">
+        <source>319</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">231</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label10g.Top" resname="O:ACAGMulti.O:Panel.O:Label10g.Top">
+        <source>9</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">232</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label10g.Width" resname="O:ACAGMulti.O:Panel.O:Label10g.Width">
+        <source>26</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">233</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label10g.Height" resname="O:ACAGMulti.O:Panel.O:Label10g.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">234</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label10g.Escapement" resname="O:ACAGMulti.O:Panel.O:Label10g.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">235</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label10g.TextStyle" resname="O:ACAGMulti.O:Panel.O:Label10g.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">236</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label10g.Caption" resname="O:ACAGMulti.O:Panel.O:Label10g.Caption">
+        <source>'10G+'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">237</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label10g.Font.Charset" resname="O:ACAGMulti.O:Panel.O:Label10g.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">238</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label10g.Font.Color" resname="O:ACAGMulti.O:Panel.O:Label10g.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">239</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label10g.Font.Height" resname="O:ACAGMulti.O:Panel.O:Label10g.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">240</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label10g.Font.Name" resname="O:ACAGMulti.O:Panel.O:Label10g.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">241</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label10g.Font.Style" resname="O:ACAGMulti.O:Panel.O:Label10g.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">242</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:Label10g.ParentFont" resname="O:ACAGMulti.O:Panel.O:Label10g.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">243</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.Left" resname="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.Left">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">244</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.Top" resname="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.Top">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">245</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.Width" resname="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.Width">
+        <source>121</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">246</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.Height" resname="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">247</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.Caption" resname="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.Caption">
+        <source>'Jump to Latest Multi'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">248</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.Checked" resname="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.Checked">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">249</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.State" resname="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.State">
+        <source>cbChecked</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">250</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.TabOrder" resname="O:ACAGMulti.O:Panel.O:checkJumpLatestMulti.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">251</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.Left" resname="O:ACAGMulti.O:Grid.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">252</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.Top" resname="O:ACAGMulti.O:Grid.Top">
+        <source>41</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">253</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.Width" resname="O:ACAGMulti.O:Grid.Width">
+        <source>360</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">254</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.Height" resname="O:ACAGMulti.O:Grid.Height">
+        <source>200</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">255</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.Align" resname="O:ACAGMulti.O:Grid.Align">
+        <source>alClient</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">256</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.ColCount" resname="O:ACAGMulti.O:Grid.ColCount">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">257</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.DefaultColWidth" resname="O:ACAGMulti.O:Grid.DefaultColWidth">
+        <source>500</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">258</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.DefaultDrawing" resname="O:ACAGMulti.O:Grid.DefaultDrawing">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">259</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.FixedCols" resname="O:ACAGMulti.O:Grid.FixedCols">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">260</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.RowCount" resname="O:ACAGMulti.O:Grid.RowCount">
+        <source>61</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">261</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.FixedRows" resname="O:ACAGMulti.O:Grid.FixedRows">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">262</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.Font.Charset" resname="O:ACAGMulti.O:Grid.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">263</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.Font.Color" resname="O:ACAGMulti.O:Grid.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">264</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.Font.Height" resname="O:ACAGMulti.O:Grid.Font.Height">
+        <source>-15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">265</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.Font.Name" resname="O:ACAGMulti.O:Grid.Font.Name">
+        <source>'ＭＳ ゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">266</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.Font.Style" resname="O:ACAGMulti.O:Grid.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">267</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.Options" resname="O:ACAGMulti.O:Grid.Options">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">268</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.ParentFont" resname="O:ACAGMulti.O:Grid.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">269</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.ScrollBars" resname="O:ACAGMulti.O:Grid.ScrollBars">
+        <source>ssVertical</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">270</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.TabOrder" resname="O:ACAGMulti.O:Grid.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">271</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ACAGMulti.O:Grid.OnDrawCell" resname="O:ACAGMulti.O:Grid.OnDrawCell">
+        <source>GridDrawCell</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931123495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">272</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\GITHUB\zLog\zlog\UQuickRef.dfm" source-language="ja-JP" target-language="en-US" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog\zlog\UQuickRef.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">44796.8934953704</prop>
+        <prop prop-type="OrigDateTime">44612.957037037</prop>
+        <prop prop-type="XlatDateTime">44612.957037037</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">52</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="O:QuickRef.Left" resname="O:QuickRef.Left">
+        <source>506</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.Top" resname="O:QuickRef.Top">
+        <source>120</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.Caption" resname="O:QuickRef.Caption">
+        <source>'Quick Reference'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.ClientHeight" resname="O:QuickRef.ClientHeight">
+        <source>442</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.ClientWidth" resname="O:QuickRef.ClientWidth">
+        <source>359</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.Color" resname="O:QuickRef.Color">
+        <source>clBtnFace</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.Font.Charset" resname="O:QuickRef.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.Font.Color" resname="O:QuickRef.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.Font.Height" resname="O:QuickRef.Font.Height">
+        <source>-12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.Font.Name" resname="O:QuickRef.Font.Name">
+        <source>'ＭＳ Ｐゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.Font.Style" resname="O:QuickRef.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.OldCreateOrder" resname="O:QuickRef.OldCreateOrder">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.OnCreate" resname="O:QuickRef.OnCreate">
+        <source>FormCreate</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.OnDestroy" resname="O:QuickRef.OnDestroy">
+        <source>FormDestroy</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.PixelsPerInch" resname="O:QuickRef.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.TextHeight" resname="O:QuickRef.TextHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TQuickRef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.Left" resname="O:QuickRef.O:Memo.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.Top" resname="O:QuickRef.O:Memo.Top">
+        <source>23</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.Width" resname="O:QuickRef.O:Memo.Width">
+        <source>359</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.Height" resname="O:QuickRef.O:Memo.Height">
+        <source>419</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.Align" resname="O:QuickRef.O:Memo.Align">
+        <source>alClient</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.Font.Charset" resname="O:QuickRef.O:Memo.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.Font.Color" resname="O:QuickRef.O:Memo.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.Font.Height" resname="O:QuickRef.O:Memo.Font.Height">
+        <source>-12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.Font.Name" resname="O:QuickRef.O:Memo.Font.Name">
+        <source>'ＭＳ ゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.Font.Style" resname="O:QuickRef.O:Memo.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.ImeMode" resname="O:QuickRef.O:Memo.ImeMode">
+        <source>imDisable</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.Lines.Strings[0]" resname="O:QuickRef.O:Memo.Lines.Strings[0]">
+        <source>'Memo'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.ParentFont" resname="O:QuickRef.O:Memo.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.ReadOnly" resname="O:QuickRef.O:Memo.ReadOnly">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.ScrollBars" resname="O:QuickRef.O:Memo.ScrollBars">
+        <source>ssVertical</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.TabOrder" resname="O:QuickRef.O:Memo.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:Memo.OnKeyPress" resname="O:QuickRef.O:Memo.OnKeyPress">
+        <source>MemoKeyPress</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.Left" resname="O:QuickRef.O:ToolBar1.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TToolBar</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.Top" resname="O:QuickRef.O:ToolBar1.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TToolBar</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.Width" resname="O:QuickRef.O:ToolBar1.Width">
+        <source>359</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TToolBar</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.Height" resname="O:QuickRef.O:ToolBar1.Height">
+        <source>23</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TToolBar</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.Caption" resname="O:QuickRef.O:ToolBar1.Caption">
+        <source>'ToolBar1'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TToolBar</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.Images" resname="O:QuickRef.O:ToolBar1.Images">
+        <source>ImageList1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TToolBar</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.TabOrder" resname="O:QuickRef.O:ToolBar1.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TToolBar</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.O:toolbuttonPlus.Left" resname="O:QuickRef.O:ToolBar1.O:toolbuttonPlus.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TToolButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.O:toolbuttonPlus.Top" resname="O:QuickRef.O:ToolBar1.O:toolbuttonPlus.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TToolButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.O:toolbuttonPlus.ImageIndex" resname="O:QuickRef.O:ToolBar1.O:toolbuttonPlus.ImageIndex">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TToolButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.O:toolbuttonPlus.OnClick" resname="O:QuickRef.O:ToolBar1.O:toolbuttonPlus.OnClick">
+        <source>toolbuttonPlusClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TToolButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.O:toolbuttonMinus.Left" resname="O:QuickRef.O:ToolBar1.O:toolbuttonMinus.Left">
+        <source>23</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TToolButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.O:toolbuttonMinus.Top" resname="O:QuickRef.O:ToolBar1.O:toolbuttonMinus.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TToolButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.O:toolbuttonMinus.Caption" resname="O:QuickRef.O:ToolBar1.O:toolbuttonMinus.Caption">
+        <source>'toolbuttonMinus'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TToolButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.O:toolbuttonMinus.ImageIndex" resname="O:QuickRef.O:ToolBar1.O:toolbuttonMinus.ImageIndex">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TToolButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ToolBar1.O:toolbuttonMinus.OnClick" resname="O:QuickRef.O:ToolBar1.O:toolbuttonMinus.OnClick">
+        <source>toolbuttonMinusClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TToolButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ImageList1.Left" resname="O:QuickRef.O:ImageList1.Left">
+        <source>144</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ImageList1.Top" resname="O:QuickRef.O:ImageList1.Top">
+        <source>88</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QuickRef.O:ImageList1.Bitmap" resname="O:QuickRef.O:ImageList1.Bitmap">
+        <source>494C010102003C03040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D36000000000000003600000028000000400000001000000001002000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000D7D6D700D4D4D400D4D4D40000000000000000000000000000000000D4D4D400D4D3D400D4D3D400D4D3D40000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000E4E5E4006F6F6F003B343B003B3B3B00000000000000000000000000AAADAA002020200020282000202820002C2C2C000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003B3B3B00000000000000000000000000000000000000000089858900202020002C2C2C0000000000000000000000000000000000000000000000000000000000000000005E5E5E002E2E2E00BEBEBE00000000008E8E8E00000000002E2E2E00BEBEBE000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006F756F0062626200D4D6D400C6C8C600CAC8CA00D7D6D7003028300020282000646A64000000000000000000000000000000000000000000000000000000000000000000000000003E3E3E0000000000000000009E9E9E0000000000BEBEBE0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000E4E5E400303830005555550055555500555555003B3B3B003030300020282000E2E2E2000000000000000000000000000000000000000000000000000000000000000000000000006E6E6E006E6E6E008E8E8E002E2E2E001E1E1E00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000625C6200D7D9D70000000000000000003B3B3B00303030006262620000000000000000000000000000000000000000000000000000000000000000000000000000000000CECECE006E6E6E00DEDEDE00000000008E8E8E00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000B6B3B600625C620000000000CACCCA003030300030303000CACACA0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003E3E3E008E8E8E0000000000DEDEDE00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004A434A00000000005555550030303000484848000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008E8E8E00000000005E5E5E00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000086868600868186003038300030303000BDBDBD00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000FA3FFA0000000000BEBEBE0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040404000404040003B433B000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000CECECE00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005048500040404000C7CAC70000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000CECECE006E6E6E00000000000000000000000000C386680090503000905830009048200080402000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008040200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000C386680090503000C078600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000B0705000905030008040200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000C088700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000C3866800C0886000B0786000B0705000A0583000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000424D3E000000000000003E0000002800000040000000100000000100010000000000800000000000000000000000000000000000000000000000FFFFFF00FFFFFFFF00000000C787FFFF000000008707FFFF00000000EF8FF10F00000000E00FFB1F00000000E00FF83F00000000F31FF83F00000000F21FFC3F00000000FA3FFC7F00000000F83FFC7F00000000FC7FFEFF00000000FC7FFFFF00000000FCE0FFFB00000000FFF1FFF100000000FFFBFFE000000000FFFFFFFF0000000000000000000000000000000000000000000000000000</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8935062384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">{</prop><prop prop-type="Close">}</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

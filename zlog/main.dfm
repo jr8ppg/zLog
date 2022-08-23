@@ -5752,6 +5752,8 @@ object MainForm: TMainForm
     end
   end
   object MainMenu: TMainMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 24
     Top = 144
     object FileMenu: TMenuItem
@@ -6554,7 +6556,7 @@ object MainForm: TMainForm
       OnExecute = actionPlayMessageAExecute
     end
     object actionCheckMulti: TAction
-      Caption = 'actionCheckMulti'
+      Caption = 'Check Multi'
       OnExecute = actionCheckMultiExecute
     end
     object actionShowCheckPartial: TAction

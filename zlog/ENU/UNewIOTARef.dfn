@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\GITHUB\zLog\zlog\UNewIOTARef.dfm" source-language="ja-JP" target-language="en-US" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog\zlog\UNewIOTARef.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">44796.8931944444</prop>
+        <prop prop-type="OrigDateTime">44011.6923611111</prop>
+        <prop prop-type="XlatDateTime">44011.6923611111</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">54</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="O:NewIOTARef.Left" resname="O:NewIOTARef.Left">
+        <source>217</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.Top" resname="O:NewIOTARef.Top">
+        <source>265</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.BorderStyle" resname="O:NewIOTARef.BorderStyle">
+        <source>bsDialog</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.Caption" resname="O:NewIOTARef.Caption">
+        <source>'New IOTA Ref #'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.ClientHeight" resname="O:NewIOTARef.ClientHeight">
+        <source>99</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.ClientWidth" resname="O:NewIOTARef.ClientWidth">
+        <source>265</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.Color" resname="O:NewIOTARef.Color">
+        <source>clBtnFace</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.Font.Charset" resname="O:NewIOTARef.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.Font.Color" resname="O:NewIOTARef.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.Font.Height" resname="O:NewIOTARef.Font.Height">
+        <source>-12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.Font.Name" resname="O:NewIOTARef.Font.Name">
+        <source>'MS Sans Serif'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.Font.Style" resname="O:NewIOTARef.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.OldCreateOrder" resname="O:NewIOTARef.OldCreateOrder">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.Position" resname="O:NewIOTARef.Position">
+        <source>poScreenCenter</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.OnShow" resname="O:NewIOTARef.OnShow">
+        <source>FormShow</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.PixelsPerInch" resname="O:NewIOTARef.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.TextHeight" resname="O:NewIOTARef.TextHeight">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TNewIOTARef</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Bevel1.Left" resname="O:NewIOTARef.O:Bevel1.Left">
+        <source>7</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TBevel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Bevel1.Top" resname="O:NewIOTARef.O:Bevel1.Top">
+        <source>7</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TBevel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Bevel1.Width" resname="O:NewIOTARef.O:Bevel1.Width">
+        <source>251</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TBevel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Bevel1.Height" resname="O:NewIOTARef.O:Bevel1.Height">
+        <source>58</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TBevel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Bevel1.Shape" resname="O:NewIOTARef.O:Bevel1.Shape">
+        <source>bsFrame</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TBevel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Label1.Left" resname="O:NewIOTARef.O:Label1.Left">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Label1.Top" resname="O:NewIOTARef.O:Label1.Top">
+        <source>18</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Label1.Width" resname="O:NewIOTARef.O:Label1.Width">
+        <source>32</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Label1.Height" resname="O:NewIOTARef.O:Label1.Height">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Label1.Caption" resname="O:NewIOTARef.O:Label1.Caption">
+        <source>'Label1'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Name.Left" resname="O:NewIOTARef.O:Name.Left">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Name.Top" resname="O:NewIOTARef.O:Name.Top">
+        <source>40</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Name.Width" resname="O:NewIOTARef.O:Name.Width">
+        <source>28</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Name.Height" resname="O:NewIOTARef.O:Name.Height">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Name.Caption" resname="O:NewIOTARef.O:Name.Caption">
+        <source>'Name'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:OKBtn.Left" resname="O:NewIOTARef.O:OKBtn.Left">
+        <source>67</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:OKBtn.Top" resname="O:NewIOTARef.O:OKBtn.Top">
+        <source>72</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:OKBtn.Width" resname="O:NewIOTARef.O:OKBtn.Width">
+        <source>63</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:OKBtn.Height" resname="O:NewIOTARef.O:OKBtn.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:OKBtn.Caption" resname="O:NewIOTARef.O:OKBtn.Caption">
+        <source>'OK'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:OKBtn.Default" resname="O:NewIOTARef.O:OKBtn.Default">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:OKBtn.ModalResult" resname="O:NewIOTARef.O:OKBtn.ModalResult">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:OKBtn.TabOrder" resname="O:NewIOTARef.O:OKBtn.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:CancelBtn.Left" resname="O:NewIOTARef.O:CancelBtn.Left">
+        <source>135</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:CancelBtn.Top" resname="O:NewIOTARef.O:CancelBtn.Top">
+        <source>72</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:CancelBtn.Width" resname="O:NewIOTARef.O:CancelBtn.Width">
+        <source>63</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:CancelBtn.Height" resname="O:NewIOTARef.O:CancelBtn.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:CancelBtn.Cancel" resname="O:NewIOTARef.O:CancelBtn.Cancel">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:CancelBtn.Caption" resname="O:NewIOTARef.O:CancelBtn.Caption">
+        <source>'Cancel'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:CancelBtn.ModalResult" resname="O:NewIOTARef.O:CancelBtn.ModalResult">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:CancelBtn.TabOrder" resname="O:NewIOTARef.O:CancelBtn.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Edit1.Left" resname="O:NewIOTARef.O:Edit1.Left">
+        <source>48</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Edit1.Top" resname="O:NewIOTARef.O:Edit1.Top">
+        <source>36</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Edit1.Width" resname="O:NewIOTARef.O:Edit1.Width">
+        <source>201</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Edit1.Height" resname="O:NewIOTARef.O:Edit1.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Edit1.ImeName" resname="O:NewIOTARef.O:Edit1.ImeName">
+        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:NewIOTARef.O:Edit1.TabOrder" resname="O:NewIOTARef.O:Edit1.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.893199919</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

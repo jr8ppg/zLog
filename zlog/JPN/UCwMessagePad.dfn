@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\GITHUB\zLog\zlog\UCwMessagePad.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog\zlog\UCwMessagePad.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">44796.8925</prop>
+        <prop prop-type="OrigDateTime">44102.0453703704</prop>
+        <prop prop-type="XlatDateTime">44102.0453703704</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">59</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="O:CwMessagePad.Left" resname="O:CwMessagePad.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.Top" resname="O:CwMessagePad.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.BorderIcons" resname="O:CwMessagePad.BorderIcons">
+        <source>[biSystemMenu, biMinimize]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.Caption" resname="O:CwMessagePad.Caption">
+        <source>'CW Message Pad'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.ClientHeight" resname="O:CwMessagePad.ClientHeight">
+        <source>402</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.ClientWidth" resname="O:CwMessagePad.ClientWidth">
+        <source>179</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.Color" resname="O:CwMessagePad.Color">
+        <source>clBtnFace</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.Constraints.MinHeight" resname="O:CwMessagePad.Constraints.MinHeight">
+        <source>150</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.Constraints.MinWidth" resname="O:CwMessagePad.Constraints.MinWidth">
+        <source>195</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.Font.Charset" resname="O:CwMessagePad.Font.Charset">
+        <source>ANSI_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.Font.Color" resname="O:CwMessagePad.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.Font.Height" resname="O:CwMessagePad.Font.Height">
+        <source>-12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.Font.Name" resname="O:CwMessagePad.Font.Name">
+        <source>'ＭＳ Ｐゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.Font.Style" resname="O:CwMessagePad.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.KeyPreview" resname="O:CwMessagePad.KeyPreview">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.OldCreateOrder" resname="O:CwMessagePad.OldCreateOrder">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.OnClose" resname="O:CwMessagePad.OnClose">
+        <source>FormClose</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.OnCreate" resname="O:CwMessagePad.OnCreate">
+        <source>FormCreate</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.OnDestroy" resname="O:CwMessagePad.OnDestroy">
+        <source>FormDestroy</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.OnKeyDown" resname="O:CwMessagePad.OnKeyDown">
+        <source>FormKeyDown</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.OnShow" resname="O:CwMessagePad.OnShow">
+        <source>FormShow</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.PixelsPerInch" resname="O:CwMessagePad.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.TextHeight" resname="O:CwMessagePad.TextHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TCwMessagePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.Left" resname="O:CwMessagePad.O:CategoryButtons1.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.Top" resname="O:CwMessagePad.O:CategoryButtons1.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.Width" resname="O:CwMessagePad.O:CategoryButtons1.Width">
+        <source>179</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.Height" resname="O:CwMessagePad.O:CategoryButtons1.Height">
+        <source>402</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.Align" resname="O:CwMessagePad.O:CategoryButtons1.Align">
+        <source>alClient</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.ButtonFlow" resname="O:CwMessagePad.O:CategoryButtons1.ButtonFlow">
+        <source>cbfVertical</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.ButtonWidth" resname="O:CwMessagePad.O:CategoryButtons1.ButtonWidth">
+        <source>150</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.ButtonOptions" resname="O:CwMessagePad.O:CategoryButtons1.ButtonOptions">
+        <source>[boAllowReorder, boAllowCopyingButtons, boGradientFill, boShowCaptions, boBoldCaptions]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.Categories" resname="O:CwMessagePad.O:CategoryButtons1.Categories">
+        <source>&lt;&gt;</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.PopupMenu" resname="O:CwMessagePad.O:CategoryButtons1.PopupMenu">
+        <source>PopupMenu1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.RegularButtonColor" resname="O:CwMessagePad.O:CategoryButtons1.RegularButtonColor">
+        <source>clWhite</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.SelectedButtonColor" resname="O:CwMessagePad.O:CategoryButtons1.SelectedButtonColor">
+        <source>15132390</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.ShowHint" resname="O:CwMessagePad.O:CategoryButtons1.ShowHint">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.TabOrder" resname="O:CwMessagePad.O:CategoryButtons1.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:CategoryButtons1.OnButtonClicked" resname="O:CwMessagePad.O:CategoryButtons1.OnButtonClicked">
+        <source>CategoryButtons1ButtonClicked</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TCategoryButtons</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:PopupMenu1.AutoHotkeys" resname="O:CwMessagePad.O:PopupMenu1.AutoHotkeys">
+        <source>maManual</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:PopupMenu1.AutoLineReduction" resname="O:CwMessagePad.O:PopupMenu1.AutoLineReduction">
+        <source>maManual</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:PopupMenu1.Left" resname="O:CwMessagePad.O:PopupMenu1.Left">
+        <source>28</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:PopupMenu1.Top" resname="O:CwMessagePad.O:PopupMenu1.Top">
+        <source>212</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:PopupMenu1.O:menuEdit.Caption" resname="O:CwMessagePad.O:PopupMenu1.O:menuEdit.Caption">
+        <source>'編集'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:PopupMenu1.O:menuEdit.OnClick" resname="O:CwMessagePad.O:PopupMenu1.O:menuEdit.OnClick">
+        <source>menuEditClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:PopupMenu1.O:N1.Caption" resname="O:CwMessagePad.O:PopupMenu1.O:N1.Caption">
+        <source>'-'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:PopupMenu1.O:menuLoadFromFile.Caption" resname="O:CwMessagePad.O:PopupMenu1.O:menuLoadFromFile.Caption">
+        <source>'ファイルから読み込み'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:PopupMenu1.O:menuLoadFromFile.OnClick" resname="O:CwMessagePad.O:PopupMenu1.O:menuLoadFromFile.OnClick">
+        <source>menuLoadFromFileClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:PopupMenu1.O:menuSaveToFile.Caption" resname="O:CwMessagePad.O:PopupMenu1.O:menuSaveToFile.Caption">
+        <source>'ファイルに保存'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:PopupMenu1.O:menuSaveToFile.OnClick" resname="O:CwMessagePad.O:PopupMenu1.O:menuSaveToFile.OnClick">
+        <source>menuSaveToFileClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:OpenTextFileDialog1.DefaultExt" resname="O:CwMessagePad.O:OpenTextFileDialog1.DefaultExt">
+        <source>'*.txt'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TOpenTextFileDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:OpenTextFileDialog1.Filter" resname="O:CwMessagePad.O:OpenTextFileDialog1.Filter">
+        <source>'テキストファイル(*.txt)|*.txt|全てのファイル(*.*)|*.*'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TOpenTextFileDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:OpenTextFileDialog1.FilterIndex" resname="O:CwMessagePad.O:OpenTextFileDialog1.FilterIndex">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TOpenTextFileDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:OpenTextFileDialog1.Options" resname="O:CwMessagePad.O:OpenTextFileDialog1.Options">
+        <source>[ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TOpenTextFileDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:OpenTextFileDialog1.Left" resname="O:CwMessagePad.O:OpenTextFileDialog1.Left">
+        <source>60</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TOpenTextFileDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:OpenTextFileDialog1.Top" resname="O:CwMessagePad.O:OpenTextFileDialog1.Top">
+        <source>268</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TOpenTextFileDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:SaveTextFileDialog1.DefaultExt" resname="O:CwMessagePad.O:SaveTextFileDialog1.DefaultExt">
+        <source>'*.txt'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TSaveTextFileDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:SaveTextFileDialog1.Filter" resname="O:CwMessagePad.O:SaveTextFileDialog1.Filter">
+        <source>'テキストファイル(*.txt)|*.txt|全てのファイル(*.*)|*.*'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TSaveTextFileDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:SaveTextFileDialog1.Left" resname="O:CwMessagePad.O:SaveTextFileDialog1.Left">
+        <source>56</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TSaveTextFileDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CwMessagePad.O:SaveTextFileDialog1.Top" resname="O:CwMessagePad.O:SaveTextFileDialog1.Top">
+        <source>332</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925216319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TSaveTextFileDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

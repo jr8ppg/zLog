@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\GITHUB\zLog\zlog\UExceptionDialog.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog\zlog\UExceptionDialog.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">44796.8925462963</prop>
+        <prop prop-type="OrigDateTime">44214.9010185185</prop>
+        <prop prop-type="XlatDateTime">44214.9010185185</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">82</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="O:ExceptionDialog.Left" resname="O:ExceptionDialog.Left">
+        <source>310</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.Top" resname="O:ExceptionDialog.Top">
+        <source>255</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.BorderIcons" resname="O:ExceptionDialog.BorderIcons">
+        <source>[biSystemMenu]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.Caption" resname="O:ExceptionDialog.Caption">
+        <source>'ExceptionDialog'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.ClientHeight" resname="O:ExceptionDialog.ClientHeight">
+        <source>283</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.ClientWidth" resname="O:ExceptionDialog.ClientWidth">
+        <source>483</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.Color" resname="O:ExceptionDialog.Color">
+        <source>clBtnFace</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.Constraints.MinWidth" resname="O:ExceptionDialog.Constraints.MinWidth">
+        <source>200</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.Font.Charset" resname="O:ExceptionDialog.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.Font.Color" resname="O:ExceptionDialog.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.Font.Height" resname="O:ExceptionDialog.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.Font.Name" resname="O:ExceptionDialog.Font.Name">
+        <source>'MS Sans Serif'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.Font.Style" resname="O:ExceptionDialog.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.KeyPreview" resname="O:ExceptionDialog.KeyPreview">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.OldCreateOrder" resname="O:ExceptionDialog.OldCreateOrder">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.Position" resname="O:ExceptionDialog.Position">
+        <source>poScreenCenter</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.ShowHint" resname="O:ExceptionDialog.ShowHint">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.OnCreate" resname="O:ExceptionDialog.OnCreate">
+        <source>FormCreate</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.OnDestroy" resname="O:ExceptionDialog.OnDestroy">
+        <source>FormDestroy</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.OnKeyDown" resname="O:ExceptionDialog.OnKeyDown">
+        <source>FormKeyDown</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.OnPaint" resname="O:ExceptionDialog.OnPaint">
+        <source>FormPaint</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.OnResize" resname="O:ExceptionDialog.OnResize">
+        <source>FormResize</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.OnShow" resname="O:ExceptionDialog.OnShow">
+        <source>FormShow</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.DesignSize[0]" resname="O:ExceptionDialog.DesignSize[0]">
+        <source>483</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.DesignSize[1]" resname="O:ExceptionDialog.DesignSize[1]">
+        <source>283</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.PixelsPerInch" resname="O:ExceptionDialog.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.TextHeight" resname="O:ExceptionDialog.TextHeight">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TExceptionDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:BevelDetails.Left" resname="O:ExceptionDialog.O:BevelDetails.Left">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TBevel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:BevelDetails.Top" resname="O:ExceptionDialog.O:BevelDetails.Top">
+        <source>119</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TBevel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:BevelDetails.Width" resname="O:ExceptionDialog.O:BevelDetails.Width">
+        <source>473</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TBevel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:BevelDetails.Height" resname="O:ExceptionDialog.O:BevelDetails.Height">
+        <source>9</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TBevel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:BevelDetails.Anchors" resname="O:ExceptionDialog.O:BevelDetails.Anchors">
+        <source>[akLeft, akTop, akRight]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TBevel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:BevelDetails.Shape" resname="O:ExceptionDialog.O:BevelDetails.Shape">
+        <source>bsTopLine</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TBevel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:TextMemo.Left" resname="O:ExceptionDialog.O:TextMemo.Left">
+        <source>56</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:TextMemo.Top" resname="O:ExceptionDialog.O:TextMemo.Top">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:TextMemo.Width" resname="O:ExceptionDialog.O:TextMemo.Width">
+        <source>332</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:TextMemo.Height" resname="O:ExceptionDialog.O:TextMemo.Height">
+        <source>105</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:TextMemo.Hint" resname="O:ExceptionDialog.O:TextMemo.Hint">
+        <source>'Use Ctrl+C to copy the report to the clipboard'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:TextMemo.Anchors" resname="O:ExceptionDialog.O:TextMemo.Anchors">
+        <source>[akLeft, akTop, akRight]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:TextMemo.BorderStyle" resname="O:ExceptionDialog.O:TextMemo.BorderStyle">
+        <source>bsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:TextMemo.Ctl3D" resname="O:ExceptionDialog.O:TextMemo.Ctl3D">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:TextMemo.ParentColor" resname="O:ExceptionDialog.O:TextMemo.ParentColor">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:TextMemo.ParentCtl3D" resname="O:ExceptionDialog.O:TextMemo.ParentCtl3D">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:TextMemo.ReadOnly" resname="O:ExceptionDialog.O:TextMemo.ReadOnly">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:TextMemo.TabOrder" resname="O:ExceptionDialog.O:TextMemo.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:TextMemo.WantReturns" resname="O:ExceptionDialog.O:TextMemo.WantReturns">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:OkBtn.Left" resname="O:ExceptionDialog.O:OkBtn.Left">
+        <source>403</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:OkBtn.Top" resname="O:ExceptionDialog.O:OkBtn.Top">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:OkBtn.Width" resname="O:ExceptionDialog.O:OkBtn.Width">
+        <source>75</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:OkBtn.Height" resname="O:ExceptionDialog.O:OkBtn.Height">
+        <source>25</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:OkBtn.Anchors" resname="O:ExceptionDialog.O:OkBtn.Anchors">
+        <source>[akTop, akRight]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:OkBtn.Caption" resname="O:ExceptionDialog.O:OkBtn.Caption">
+        <source>'&amp;OK'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:OkBtn.Default" resname="O:ExceptionDialog.O:OkBtn.Default">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:OkBtn.ModalResult" resname="O:ExceptionDialog.O:OkBtn.ModalResult">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:OkBtn.TabOrder" resname="O:ExceptionDialog.O:OkBtn.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsBtn.Left" resname="O:ExceptionDialog.O:DetailsBtn.Left">
+        <source>403</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsBtn.Top" resname="O:ExceptionDialog.O:DetailsBtn.Top">
+        <source>88</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsBtn.Width" resname="O:ExceptionDialog.O:DetailsBtn.Width">
+        <source>75</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsBtn.Height" resname="O:ExceptionDialog.O:DetailsBtn.Height">
+        <source>25</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsBtn.Hint" resname="O:ExceptionDialog.O:DetailsBtn.Hint">
+        <source>'Show or hide additional information|'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsBtn.Anchors" resname="O:ExceptionDialog.O:DetailsBtn.Anchors">
+        <source>[akTop, akRight]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsBtn.Caption" resname="O:ExceptionDialog.O:DetailsBtn.Caption">
+        <source>'&amp;Details'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsBtn.Enabled" resname="O:ExceptionDialog.O:DetailsBtn.Enabled">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsBtn.TabOrder" resname="O:ExceptionDialog.O:DetailsBtn.TabOrder">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsBtn.OnClick" resname="O:ExceptionDialog.O:DetailsBtn.OnClick">
+        <source>DetailsBtnClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.Left" resname="O:ExceptionDialog.O:DetailsMemo.Left">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.Top" resname="O:ExceptionDialog.O:DetailsMemo.Top">
+        <source>129</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.Width" resname="O:ExceptionDialog.O:DetailsMemo.Width">
+        <source>472</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.Height" resname="O:ExceptionDialog.O:DetailsMemo.Height">
+        <source>147</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.Anchors" resname="O:ExceptionDialog.O:DetailsMemo.Anchors">
+        <source>[akLeft, akTop, akRight, akBottom]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.Font.Charset" resname="O:ExceptionDialog.O:DetailsMemo.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.Font.Color" resname="O:ExceptionDialog.O:DetailsMemo.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.Font.Height" resname="O:ExceptionDialog.O:DetailsMemo.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.Font.Name" resname="O:ExceptionDialog.O:DetailsMemo.Font.Name">
+        <source>'Courier New'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.Font.Style" resname="O:ExceptionDialog.O:DetailsMemo.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.ParentColor" resname="O:ExceptionDialog.O:DetailsMemo.ParentColor">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.ParentFont" resname="O:ExceptionDialog.O:DetailsMemo.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.ReadOnly" resname="O:ExceptionDialog.O:DetailsMemo.ReadOnly">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.ScrollBars" resname="O:ExceptionDialog.O:DetailsMemo.ScrollBars">
+        <source>ssBoth</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.TabOrder" resname="O:ExceptionDialog.O:DetailsMemo.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.WantReturns" resname="O:ExceptionDialog.O:DetailsMemo.WantReturns">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ExceptionDialog.O:DetailsMemo.WordWrap" resname="O:ExceptionDialog.O:DetailsMemo.WordWrap">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.892550162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

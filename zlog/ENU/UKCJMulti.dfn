@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\GITHUB\zLog\zlog\UKCJMulti.dfm" source-language="ja-JP" target-language="en-US" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog\zlog\UKCJMulti.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">44796.8931712963</prop>
+        <prop prop-type="OrigDateTime">44011.6923611111</prop>
+        <prop prop-type="XlatDateTime">44011.6923611111</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">90</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="I:KCJMulti.Left" resname="I:KCJMulti.Left">
+        <source>577</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TKCJMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.Top" resname="I:KCJMulti.Top">
+        <source>55</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TKCJMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.HorzScrollBar.Visible" resname="I:KCJMulti.HorzScrollBar.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TKCJMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.VertScrollBar.Visible" resname="I:KCJMulti.VertScrollBar.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TKCJMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.Caption" resname="I:KCJMulti.Caption">
+        <source>'Multipliers info'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TKCJMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.OnDestroy" resname="I:KCJMulti.OnDestroy">
+        <source>FormDestroy</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TKCJMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.OnShow" resname="I:KCJMulti.OnShow">
+        <source>FormShow</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TKCJMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.PixelsPerInch" resname="I:KCJMulti.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TKCJMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.TextHeight" resname="I:KCJMulti.TextHeight">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TKCJMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.Left" resname="I:KCJMulti.O:Panel1.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.Top" resname="I:KCJMulti.O:Panel1.Top">
+        <source>222</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.Width" resname="I:KCJMulti.O:Panel1.Width">
+        <source>314</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.Height" resname="I:KCJMulti.O:Panel1.Height">
+        <source>40</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.Align" resname="I:KCJMulti.O:Panel1.Align">
+        <source>alBottom</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.TabOrder" resname="I:KCJMulti.O:Panel1.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button1.Left" resname="I:KCJMulti.O:Panel1.O:Button1.Left">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button1.Top" resname="I:KCJMulti.O:Panel1.O:Button1.Top">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button1.Width" resname="I:KCJMulti.O:Panel1.O:Button1.Width">
+        <source>57</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button1.Height" resname="I:KCJMulti.O:Panel1.O:Button1.Height">
+        <source>23</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button1.Caption" resname="I:KCJMulti.O:Panel1.O:Button1.Caption">
+        <source>'OK'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button1.TabOrder" resname="I:KCJMulti.O:Panel1.O:Button1.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button1.OnClick" resname="I:KCJMulti.O:Panel1.O:Button1.OnClick">
+        <source>Button1Click</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:cbStayOnTop.Left" resname="I:KCJMulti.O:Panel1.O:cbStayOnTop.Left">
+        <source>144</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:cbStayOnTop.Top" resname="I:KCJMulti.O:Panel1.O:cbStayOnTop.Top">
+        <source>11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:cbStayOnTop.Width" resname="I:KCJMulti.O:Panel1.O:cbStayOnTop.Width">
+        <source>81</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:cbStayOnTop.Height" resname="I:KCJMulti.O:Panel1.O:cbStayOnTop.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:cbStayOnTop.Caption" resname="I:KCJMulti.O:Panel1.O:cbStayOnTop.Caption">
+        <source>'Stay on top'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:cbStayOnTop.TabOrder" resname="I:KCJMulti.O:Panel1.O:cbStayOnTop.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:cbStayOnTop.OnClick" resname="I:KCJMulti.O:Panel1.O:cbStayOnTop.OnClick">
+        <source>cbStayOnTopClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.Left" resname="I:KCJMulti.O:Panel1.O:combBand.Left">
+        <source>224</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.Top" resname="I:KCJMulti.O:Panel1.O:combBand.Top">
+        <source>9</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.Width" resname="I:KCJMulti.O:Panel1.O:combBand.Width">
+        <source>73</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.Height" resname="I:KCJMulti.O:Panel1.O:combBand.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.ImeName" resname="I:KCJMulti.O:Panel1.O:combBand.ImeName">
+        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.TabOrder" resname="I:KCJMulti.O:Panel1.O:combBand.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.Text" resname="I:KCJMulti.O:Panel1.O:combBand.Text">
+        <source>'combBand'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.OnChange" resname="I:KCJMulti.O:Panel1.O:combBand.OnChange">
+        <source>combBandChange</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[0]" resname="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[0]">
+        <source>'1.9 MHz'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[1]" resname="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[1]">
+        <source>'3.5 MHz'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[2]" resname="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[2]">
+        <source>'7 MHz'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[3]" resname="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[3]">
+        <source>'14 MHz'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[4]" resname="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[4]">
+        <source>'21 MHz'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[5]" resname="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[5]">
+        <source>'28 MHz'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[6]" resname="I:KCJMulti.O:Panel1.O:combBand.Items.Strings[6]">
+        <source>'50 MHz'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button2.Left" resname="I:KCJMulti.O:Panel1.O:Button2.Left">
+        <source>77</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button2.Top" resname="I:KCJMulti.O:Panel1.O:Button2.Top">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button2.Width" resname="I:KCJMulti.O:Panel1.O:Button2.Width">
+        <source>57</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button2.Height" resname="I:KCJMulti.O:Panel1.O:Button2.Height">
+        <source>23</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button2.Caption" resname="I:KCJMulti.O:Panel1.O:Button2.Caption">
+        <source>'Multi map'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button2.TabOrder" resname="I:KCJMulti.O:Panel1.O:Button2.TabOrder">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Panel1.O:Button2.OnClick" resname="I:KCJMulti.O:Panel1.O:Button2.OnClick">
+        <source>Button2Click</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.Left" resname="I:KCJMulti.O:Grid.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.Top" resname="I:KCJMulti.O:Grid.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.Width" resname="I:KCJMulti.O:Grid.Width">
+        <source>314</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.Height" resname="I:KCJMulti.O:Grid.Height">
+        <source>222</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.Align" resname="I:KCJMulti.O:Grid.Align">
+        <source>alClient</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.DefaultDrawing" resname="I:KCJMulti.O:Grid.DefaultDrawing">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.FixedCols" resname="I:KCJMulti.O:Grid.FixedCols">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowCount" resname="I:KCJMulti.O:Grid.RowCount">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.FixedRows" resname="I:KCJMulti.O:Grid.FixedRows">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.Font.Charset" resname="I:KCJMulti.O:Grid.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.Font.Color" resname="I:KCJMulti.O:Grid.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.Font.Height" resname="I:KCJMulti.O:Grid.Font.Height">
+        <source>-15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.Font.Name" resname="I:KCJMulti.O:Grid.Font.Name">
+        <source>'ＭＳ ゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.Font.Style" resname="I:KCJMulti.O:Grid.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.Options" resname="I:KCJMulti.O:Grid.Options">
+        <source>[goHorzLine]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.ParentFont" resname="I:KCJMulti.O:Grid.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.ScrollBars" resname="I:KCJMulti.O:Grid.ScrollBars">
+        <source>ssNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.TabOrder" resname="I:KCJMulti.O:Grid.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.OnDrawCell" resname="I:KCJMulti.O:Grid.OnDrawCell">
+        <source>GridDrawCell</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.ColWidths[0]" resname="I:KCJMulti.O:Grid.ColWidths[0]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.ColWidths[1]" resname="I:KCJMulti.O:Grid.ColWidths[1]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.ColWidths[2]" resname="I:KCJMulti.O:Grid.ColWidths[2]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.ColWidths[3]" resname="I:KCJMulti.O:Grid.ColWidths[3]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.ColWidths[4]" resname="I:KCJMulti.O:Grid.ColWidths[4]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[0]" resname="I:KCJMulti.O:Grid.RowHeights[0]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[1]" resname="I:KCJMulti.O:Grid.RowHeights[1]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[2]" resname="I:KCJMulti.O:Grid.RowHeights[2]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[3]" resname="I:KCJMulti.O:Grid.RowHeights[3]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[4]" resname="I:KCJMulti.O:Grid.RowHeights[4]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[5]" resname="I:KCJMulti.O:Grid.RowHeights[5]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[6]" resname="I:KCJMulti.O:Grid.RowHeights[6]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[7]" resname="I:KCJMulti.O:Grid.RowHeights[7]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[8]" resname="I:KCJMulti.O:Grid.RowHeights[8]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[9]" resname="I:KCJMulti.O:Grid.RowHeights[9]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[10]" resname="I:KCJMulti.O:Grid.RowHeights[10]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[11]" resname="I:KCJMulti.O:Grid.RowHeights[11]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[12]" resname="I:KCJMulti.O:Grid.RowHeights[12]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[13]" resname="I:KCJMulti.O:Grid.RowHeights[13]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:KCJMulti.O:Grid.RowHeights[14]" resname="I:KCJMulti.O:Grid.RowHeights[14]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8931941435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
