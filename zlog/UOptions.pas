@@ -160,7 +160,6 @@ type
     spSpotExpire: TSpinEdit;
     cbDisplayDatePartialCheck: TCheckBox;
     cbAutoBandMap: TCheckBox;
-    checkUseMultiStationWarning: TCheckBox;
     comboRig1Speed: TComboBox;
     comboRig2Speed: TComboBox;
     comboCwPttPort1: TComboBox;

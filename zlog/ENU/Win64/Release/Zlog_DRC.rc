@@ -8,27 +8,28 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMainThreadCallStack 64448
-#define UExceptionDialog_RsThreadCallStack 64449
-#define UExceptionDialog_RsErrorMessage 64450
-#define UExceptionDialog_RsDetailsIntro 64451
-#define UExceptionDialog_RsUnitVersioningIntro 64452
-#define UExceptionDialog_RsAppError 64464
-#define UExceptionDialog_RsExceptionClass 64465
-#define UExceptionDialog_RsExceptionMessage 64466
-#define UExceptionDialog_RsExceptionAddr 64467
-#define UExceptionDialog_RsStackList 64468
-#define UExceptionDialog_RsModulesList 64469
-#define UExceptionDialog_RsOSVersion 64470
-#define UExceptionDialog_RsProcessor 64471
-#define UExceptionDialog_RsMemory 64472
-#define UExceptionDialog_RsScreenRes 64473
-#define UExceptionDialog_RsActiveControl 64474
-#define UExceptionDialog_RsThread 64475
-#define UExceptionDialog_RsMissingVersionInfo 64476
-#define UExceptionDialog_RsExceptionStack 64477
-#define UExceptionDialog_RsMainThreadID 64478
-#define UExceptionDialog_RsExceptionThreadID 64479
+#define UExceptionDialog_RsExceptionThreadID 64448
+#define UExceptionDialog_RsMainThreadCallStack 64449
+#define UExceptionDialog_RsThreadCallStack 64450
+#define UExceptionDialog_RsErrorMessage 64451
+#define UExceptionDialog_RsDetailsIntro 64452
+#define UExceptionDialog_RsUnitVersioningIntro 64453
+#define UMenu_UMenu_PleaseEnterYourCallsign 64464
+#define UExceptionDialog_RsAppError 64465
+#define UExceptionDialog_RsExceptionClass 64466
+#define UExceptionDialog_RsExceptionMessage 64467
+#define UExceptionDialog_RsExceptionAddr 64468
+#define UExceptionDialog_RsStackList 64469
+#define UExceptionDialog_RsModulesList 64470
+#define UExceptionDialog_RsOSVersion 64471
+#define UExceptionDialog_RsProcessor 64472
+#define UExceptionDialog_RsMemory 64473
+#define UExceptionDialog_RsScreenRes 64474
+#define UExceptionDialog_RsActiveControl 64475
+#define UExceptionDialog_RsThread 64476
+#define UExceptionDialog_RsMissingVersionInfo 64477
+#define UExceptionDialog_RsExceptionStack 64478
+#define UExceptionDialog_RsMainThreadID 64479
 #define Vcl_Imaging_pnglang_EPNGCannotAddInvalidImageText 64480
 #define Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText 64481
 #define Vcl_Imaging_pnglang_EPNGOutMemoryText 64482
@@ -1087,11 +1088,13 @@
 #define System_SysConst_SFileNotFound 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
 	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	UMenu_UMenu_PleaseEnterYourCallsign,	L"Please enter your callsign"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1107,7 +1110,6 @@ BEGIN
 	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
 	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
-	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	Vcl_Imaging_pnglang_EPNGCannotAddInvalidImageText,	L"\x65B0\x3057\x3044\x30C1\x30E3\x30F3\x30AF\x306E\x8FFD\x52A0\x306F\x8A31\x53EF\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002\x73FE\x5728\x306E\x753B\x50CF\x304C\x6709\x52B9\x3067\x306F\x306A\x3044\x304B\x3089\x3067\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText,	L"PNG \x753B\x50CF\x306F\x30EA\x30BD\x30FC\x30B9 ID \x304B\x3089\x8AAD\x307F\x8FBC\x3081\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
 	Vcl_Imaging_pnglang_EPNGOutMemoryText,	L"\x4E00\x90E8\x306E\x64CD\x4F5C\x304C\x5B9F\x884C\x3055\x308C\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x30B7\x30B9\x30C6\x30E0\x306E\x30EA\x30BD\x30FC\x30B9\x304C\x4E0D\x8DB3\x3057\x3066\x3044\x308B\x305F\x3081\x3067\x3059\x3002\x4E00\x90E8\x306E\x30A6\x30A3\x30F3\x30C9\x30A6\x3092\x9589\x3058\x3066\x3084\x308A\x76F4\x3057\x3066\x304F\x3060\x3055\x3044\x3002"
@@ -2284,7 +2286,6 @@ END
 /* D:\GITHUB\zLog\zlog\UExportHamlog.dfm */
 /* D:\GITHUB\zLog\zlog\Main.DFM */
 /* D:\GITHUB\zLog\zlog\UExceptionDialog.dfm */
-/* D:\GITHUB\zLog\zlog\zLogMessages.res */
 /* D:\GITHUB\zLog\zlog\zLog.dres */
 /* D:\GITHUB\zLog\zlog\zLog.RES */
 /* D:\GITHUB\zLog\zlog\zLog.drf */

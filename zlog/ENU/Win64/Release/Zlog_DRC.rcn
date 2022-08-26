@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44796.9538657407</prop>
-        <prop prop-type="OrigDateTime">44796.9538425926</prop>
+        <prop prop-type="SelfDateTime">44799.9205324074</prop>
+        <prop prop-type="OrigDateTime">44799.9199537037</prop>
         <prop prop-type="XlatDateTime">44796.8923148148</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">1077</prop>
+        <prop prop-type="UnTranslated">1078</prop>
       </prop-group>
     </header>
     <body>
@@ -7549,6 +7549,13 @@
         <source>"ファイルが見つかりません"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44796.893529919</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UMenu_UMenu_PleaseEnterYourCallsign" resname="UMenu_UMenu_PleaseEnterYourCallsign">
+        <source>"Please enter your callsign"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44799.717695463</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
       </trans-unit>

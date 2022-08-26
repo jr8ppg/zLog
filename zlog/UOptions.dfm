@@ -8,7 +8,7 @@ object formOptions: TformOptions
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -12
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = True
@@ -213,7 +213,7 @@ object formOptions: TformOptions
         object comboPower19: TComboBox
           Left = 73
           Top = 18
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 1
@@ -227,7 +227,7 @@ object formOptions: TformOptions
         object comboPower35: TComboBox
           Left = 73
           Top = 39
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 3
@@ -241,7 +241,7 @@ object formOptions: TformOptions
         object comboPower7: TComboBox
           Left = 73
           Top = 60
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 5
@@ -255,7 +255,7 @@ object formOptions: TformOptions
         object comboPower10: TComboBox
           Left = 73
           Top = 81
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 7
@@ -269,7 +269,7 @@ object formOptions: TformOptions
         object comboPower14: TComboBox
           Left = 73
           Top = 102
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 9
@@ -283,7 +283,7 @@ object formOptions: TformOptions
         object comboPower18: TComboBox
           Left = 73
           Top = 123
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 11
@@ -297,7 +297,7 @@ object formOptions: TformOptions
         object comboPower21: TComboBox
           Left = 73
           Top = 144
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 13
@@ -311,7 +311,7 @@ object formOptions: TformOptions
         object comboPower24: TComboBox
           Left = 73
           Top = 165
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 15
@@ -325,7 +325,7 @@ object formOptions: TformOptions
         object comboPower28: TComboBox
           Left = 208
           Top = 18
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 17
@@ -339,7 +339,7 @@ object formOptions: TformOptions
         object comboPower50: TComboBox
           Left = 208
           Top = 39
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 19
@@ -353,7 +353,7 @@ object formOptions: TformOptions
         object comboPower144: TComboBox
           Left = 208
           Top = 60
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 21
@@ -367,7 +367,7 @@ object formOptions: TformOptions
         object comboPower430: TComboBox
           Left = 208
           Top = 81
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 23
@@ -381,7 +381,7 @@ object formOptions: TformOptions
         object comboPower1200: TComboBox
           Left = 208
           Top = 102
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 25
@@ -395,7 +395,7 @@ object formOptions: TformOptions
         object comboPower2400: TComboBox
           Left = 208
           Top = 123
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 27
@@ -409,7 +409,7 @@ object formOptions: TformOptions
         object comboPower5600: TComboBox
           Left = 208
           Top = 144
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 29
@@ -423,7 +423,7 @@ object formOptions: TformOptions
         object comboPower10g: TComboBox
           Left = 208
           Top = 165
-          Width = 36
+          Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 31
@@ -486,22 +486,13 @@ object formOptions: TformOptions
         Caption = 'Automatically enter exchange from SuperCheck'
         TabOrder = 5
       end
-      object checkUseMultiStationWarning: TCheckBox
-        Left = 17
-        Top = 276
-        Width = 137
-        Height = 17
-        Caption = 'Use Multi station warning'
-        Enabled = False
-        TabOrder = 7
-      end
       object groupQsyAssist: TGroupBox
         Left = 222
         Top = 300
         Width = 204
         Height = 89
         Caption = 'QSY Assist'
-        TabOrder = 9
+        TabOrder = 8
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -574,7 +565,7 @@ object formOptions: TformOptions
         Width = 101
         Height = 89
         Caption = 'QSL Default'
-        TabOrder = 8
+        TabOrder = 7
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -979,12 +970,6 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 1
           OnChange = editMessage1Change
         end
@@ -995,12 +980,6 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 2
           OnChange = editMessage1Change
         end
@@ -1011,12 +990,6 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 3
           OnChange = editMessage1Change
         end
@@ -1027,12 +1000,6 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 4
           OnChange = editMessage1Change
         end
@@ -1043,12 +1010,6 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 5
           OnChange = editMessage1Change
         end
@@ -1059,12 +1020,6 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 6
           OnChange = editMessage1Change
         end
@@ -1075,12 +1030,6 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 7
           OnChange = editMessage1Change
         end
@@ -1091,13 +1040,7 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
           MaxLength = 255
-          ParentFont = False
           TabOrder = 0
           OnChange = editMessage1Change
         end
@@ -1108,12 +1051,6 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 8
           OnChange = editMessage1Change
         end
@@ -1124,12 +1061,6 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 9
           OnChange = editMessage1Change
         end
@@ -1140,12 +1071,6 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 10
           OnChange = editMessage1Change
         end
@@ -1156,12 +1081,6 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 11
           OnChange = editMessage1Change
         end
@@ -1321,12 +1240,6 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 0
         end
         object editCQMessage3: TEdit
@@ -1336,12 +1249,6 @@ object formOptions: TformOptions
           Width = 170
           Height = 17
           AutoSize = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 1
         end
       end
@@ -2569,7 +2476,7 @@ object formOptions: TformOptions
           object Label100: TLabel
             Left = 12
             Top = 51
-            Width = 83
+            Width = 96
             Height = 13
             Caption = 'Message Number'
           end
@@ -3522,12 +3429,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Color...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 2
           OnClick = buttonFullmatchSelectColorClick
         end
@@ -3537,12 +3438,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 3
           OnClick = buttonFullmatchInitColorClick
         end
@@ -3577,12 +3472,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 1
           OnClick = buttonPartialCheckForeColorClick
         end
@@ -3592,12 +3481,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 3
           OnClick = buttonPartialCheckInitColorClick
         end
@@ -3608,12 +3491,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 2
           OnClick = buttonPartialCheckBackColorClick
         end
@@ -3649,12 +3526,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 2
           OnClick = buttonFocusedBackColorClick
         end
@@ -3664,12 +3535,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 3
           OnClick = buttonFocusedInitColorClick
         end
@@ -3688,12 +3553,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 1
           OnClick = buttonFocusedForeColorClick
         end
@@ -4319,12 +4178,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 1
           OnClick = buttonBSForeClick
         end
@@ -4335,12 +4188,6 @@ object formOptions: TformOptions
           Width = 41
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 4
           OnClick = buttonBSResetClick
         end
@@ -4351,12 +4198,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 2
           Visible = False
           OnClick = buttonBSBackClick
@@ -4378,12 +4219,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 6
           OnClick = buttonBSForeClick
         end
@@ -4394,12 +4229,6 @@ object formOptions: TformOptions
           Width = 41
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 9
           OnClick = buttonBSResetClick
         end
@@ -4410,12 +4239,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 7
           Visible = False
           OnClick = buttonBSBackClick
@@ -4437,12 +4260,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 11
           OnClick = buttonBSForeClick
         end
@@ -4453,12 +4270,6 @@ object formOptions: TformOptions
           Width = 41
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 14
           OnClick = buttonBSResetClick
         end
@@ -4469,12 +4280,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 12
           Visible = False
           OnClick = buttonBSBackClick
@@ -4496,12 +4301,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 16
           OnClick = buttonBSForeClick
         end
@@ -4512,12 +4311,6 @@ object formOptions: TformOptions
           Width = 41
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 19
           OnClick = buttonBSResetClick
         end
@@ -4528,12 +4321,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 17
           Visible = False
           OnClick = buttonBSBackClick
@@ -4689,12 +4476,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 1
           Visible = False
           OnClick = buttonBSForeClick
@@ -4706,12 +4487,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 2
           OnClick = buttonBSBackClick
         end
@@ -4733,12 +4508,6 @@ object formOptions: TformOptions
           Width = 41
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 4
           OnClick = buttonBSResetClick
         end
@@ -4759,12 +4528,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 6
           Visible = False
           OnClick = buttonBSForeClick
@@ -4776,12 +4539,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 7
           OnClick = buttonBSBackClick
         end
@@ -4803,12 +4560,6 @@ object formOptions: TformOptions
           Width = 41
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 9
           OnClick = buttonBSResetClick
         end
@@ -4829,12 +4580,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 11
           Visible = False
           OnClick = buttonBSForeClick
@@ -4846,12 +4591,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 12
           OnClick = buttonBSBackClick
         end
@@ -4873,12 +4612,6 @@ object formOptions: TformOptions
           Width = 41
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 14
           OnClick = buttonBSResetClick
         end
@@ -4899,12 +4632,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 16
           OnClick = buttonBSBackClick
         end
@@ -4915,12 +4642,6 @@ object formOptions: TformOptions
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 17
           OnClick = buttonBSBackClick
         end
@@ -5097,13 +4818,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@KaiTi'
+          FontName = #65325#65331' '#12468#12471#12483#12463
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 22
+          ItemIndex = 67
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
