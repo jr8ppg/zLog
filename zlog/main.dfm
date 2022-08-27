@@ -5752,6 +5752,8 @@ object MainForm: TMainForm
     end
   end
   object MainMenu: TMainMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 24
     Top = 144
     object FileMenu: TMenuItem
@@ -5825,17 +5827,6 @@ object MainForm: TMainForm
       object mnMMTTY: TMenuItem
         Caption = 'Load MMTTY'
         OnClick = mnMMTTYClick
-      end
-      object PrintLogSummaryzLog1: TMenuItem
-        Caption = 'Print Log && Summary (zLog)...'
-        Visible = False
-        OnClick = PrintLogSummaryzLog1Click
-      end
-      object FilePrintSetupItem: TMenuItem
-        Caption = 'P&rint Setup...'
-        Hint = 'Change printer setup'
-        Visible = False
-        OnClick = FilePrintSetup
       end
       object N4: TMenuItem
         Caption = '-'
@@ -6050,25 +6041,6 @@ object MainForm: TMainForm
     end
     object Help1: TMenuItem
       Caption = '&Help'
-      object Contents1: TMenuItem
-        Caption = '&Contents'
-        Hint = 'Display the help contents screen'
-        Visible = False
-      end
-      object SearchforHelpOn1: TMenuItem
-        Caption = '&Search for Help On...'
-        Hint = 'Search help file for a topic'
-        Visible = False
-      end
-      object HowtoUseHelp1: TMenuItem
-        Caption = '&How to Use Help'
-        Hint = 'Help on using the help system'
-        Visible = False
-      end
-      object N3: TMenuItem
-        Caption = '-'
-        Visible = False
-      end
       object menuAbout: TMenuItem
         Caption = '&About...'
         Hint = 'Show program information'
@@ -6584,7 +6556,7 @@ object MainForm: TMainForm
       OnExecute = actionPlayMessageAExecute
     end
     object actionCheckMulti: TAction
-      Caption = 'actionCheckMulti'
+      Caption = 'Check Multi'
       OnExecute = actionCheckMultiExecute
     end
     object actionShowCheckPartial: TAction

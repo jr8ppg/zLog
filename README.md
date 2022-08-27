@@ -74,9 +74,9 @@ https://zlog.org/
    - ツール－オプション－言語－Delphiでライブラリのライブラリパスに VCLフォルダ\\$(Platform)\\Release を追加。32ビットと64ビットの両方に設定する。
       - ライブラリパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Release」
       - デバッグ用DCUパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Debug」
-7. zlogフォルダのzlog.dprojを開き、ビルド
-
-8. 完成
+7. zlogフォルダのzlog_project.groupprojを開く
+8. プロジェクトウインドウ一番上のzlog_projectを右クリックし「すべてビルド」をクリック
+9. 完成
 
 ## オリジナルからの変更点
 

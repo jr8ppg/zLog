@@ -67,7 +67,6 @@ type
     FileSaveItem: TMenuItem;
     FileSaveAsItem: TMenuItem;
     FilePrintItem: TMenuItem;
-    FilePrintSetupItem: TMenuItem;
     FileExitItem: TMenuItem;
     StatusLine: TStatusBar;
     OpenDialog: TOpenDialog;
@@ -144,11 +143,7 @@ type
     Help1: TMenuItem;
     menuAbout: TMenuItem;
     HelpZyLO: TMenuItem;
-    N3: TMenuItem;
     N5: TMenuItem;
-    HowtoUseHelp1: TMenuItem;
-    SearchforHelpOn1: TMenuItem;
-    Contents1: TMenuItem;
     Score1: TMenuItem;
     Multipliers1: TMenuItem;
     QSOrate1: TMenuItem;
@@ -214,7 +209,6 @@ type
     TimeEdit1: TOvrEdit;
     DateEdit1: TOvrEdit;
     ZServerIcon: TImage;
-    PrintLogSummaryzLog1: TMenuItem;
     GeneralSaveDialog: TSaveDialog;
     mPXListWPX: TMenuItem;
     mSummaryFile: TMenuItem;
@@ -591,7 +585,6 @@ type
     procedure GridMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure StatusLineResize(Sender: TObject);
-    procedure PrintLogSummaryzLog1Click(Sender: TObject);
     procedure mPXListWPXClick(Sender: TObject);
     procedure mSummaryFileClick(Sender: TObject);
     procedure GridPowerChangeClick(Sender: TObject);
@@ -5352,11 +5345,6 @@ begin
    else
       StatusLine.Panels[1].Width := 0;
    StatusLine.Panels[0].Width := StatusLine.Width - 100 - StatusLine.Panels[1].Width;
-end;
-
-procedure TMainForm.PrintLogSummaryzLog1Click(Sender: TObject);
-begin
-   // PrinterDialog.Execute;
 end;
 
 procedure TMainForm.mPXListWPXClick(Sender: TObject);

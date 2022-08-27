@@ -483,6 +483,8 @@ function TextToBand(text: string): TBand;
 function TextToMode(text: string): TMode;
 function BandToPower(B: TBand): TPower;
 
+function LoadResourceString(uID: Integer): string;
+
 var
   dmZLogGlobal: TdmZLogGlobal;
 
@@ -3438,6 +3440,23 @@ begin
    WriteLn( txt, str );
    Flush( txt );
    CloseFile( txt );
+end;
+
+function LoadResourceString(uID: Integer): string;
+var
+   szText: array[0..1024] of Char;
+   nLen: Integer;
+   hInst: THandle;
+begin
+   ZeroMemory(@szText, SizeOf(szText));
+   hInst := GetModuleHandle(nil);
+   nLen := LoadString(hInst, uID, @szText, SizeOf(szText));
+   if nLen > 0 then begin
+      Result := StrPas(szText);
+   end
+   else begin
+      Result := '';
+   end;
 end;
 
 end.

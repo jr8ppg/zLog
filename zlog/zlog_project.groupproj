@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{F896C089-DB49-4E74-907F-8C7B4E26EDF6}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Zlog.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="JPN\Zlog_JPN.bdsproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="ENU\Zlog_ENU.bdsproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Zlog">
+        <MSBuild Projects="Zlog.dproj"/>
+    </Target>
+    <Target Name="Zlog:Clean">
+        <MSBuild Projects="Zlog.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Zlog:Make">
+        <MSBuild Projects="Zlog.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Zlog_JPN">
+        <MSBuild Projects="JPN\Zlog_JPN.bdsproj"/>
+    </Target>
+    <Target Name="Zlog_JPN:Clean">
+        <MSBuild Projects="JPN\Zlog_JPN.bdsproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Zlog_JPN:Make">
+        <MSBuild Projects="JPN\Zlog_JPN.bdsproj" Targets="Make"/>
+    </Target>
+    <Target Name="Zlog_ENU">
+        <MSBuild Projects="ENU\Zlog_ENU.bdsproj"/>
+    </Target>
+    <Target Name="Zlog_ENU:Clean">
+        <MSBuild Projects="ENU\Zlog_ENU.bdsproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Zlog_ENU:Make">
+        <MSBuild Projects="ENU\Zlog_ENU.bdsproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Zlog;Zlog_JPN;Zlog_ENU"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Zlog:Clean;Zlog_JPN:Clean;Zlog_ENU:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Zlog:Make;Zlog_JPN:Make;Zlog_ENU:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

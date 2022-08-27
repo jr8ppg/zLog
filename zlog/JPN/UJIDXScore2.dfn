@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\GITHUB\zLog\zlog\UJIDXScore2.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog\zlog\UJIDXScore2.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">44796.8925694444</prop>
+        <prop prop-type="OrigDateTime">44282.9763425926</prop>
+        <prop prop-type="XlatDateTime">44282.9763425926</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">25</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="I:JIDXScore2.Left" resname="I:JIDXScore2.Left">
+        <source>99</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TJIDXScore2</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.Top" resname="I:JIDXScore2.Top">
+        <source>209</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TJIDXScore2</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.Caption" resname="I:JIDXScore2.Caption">
+        <source>'Score'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TJIDXScore2</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.OnShow" resname="I:JIDXScore2.OnShow">
+        <source>FormShow</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TJIDXScore2</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.PixelsPerInch" resname="I:JIDXScore2.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TJIDXScore2</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.TextHeight" resname="I:JIDXScore2.TextHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TJIDXScore2</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.Left" resname="I:JIDXScore2.O:Grid.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.Top" resname="I:JIDXScore2.O:Grid.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.Width" resname="I:JIDXScore2.O:Grid.Width">
+        <source>281</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.Height" resname="I:JIDXScore2.O:Grid.Height">
+        <source>202</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.Align" resname="I:JIDXScore2.O:Grid.Align">
+        <source>alClient</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.DefaultDrawing" resname="I:JIDXScore2.O:Grid.DefaultDrawing">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.FixedCols" resname="I:JIDXScore2.O:Grid.FixedCols">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.RowCount" resname="I:JIDXScore2.O:Grid.RowCount">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.FixedRows" resname="I:JIDXScore2.O:Grid.FixedRows">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.Font.Charset" resname="I:JIDXScore2.O:Grid.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.Font.Color" resname="I:JIDXScore2.O:Grid.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.Font.Height" resname="I:JIDXScore2.O:Grid.Font.Height">
+        <source>-15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.Font.Name" resname="I:JIDXScore2.O:Grid.Font.Name">
+        <source>'ＭＳ ゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.Font.Style" resname="I:JIDXScore2.O:Grid.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.Options" resname="I:JIDXScore2.O:Grid.Options">
+        <source>[goHorzLine]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.ParentFont" resname="I:JIDXScore2.O:Grid.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.ScrollBars" resname="I:JIDXScore2.O:Grid.ScrollBars">
+        <source>ssNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.TabOrder" resname="I:JIDXScore2.O:Grid.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore2.O:Grid.OnDrawCell" resname="I:JIDXScore2.O:Grid.OnDrawCell">
+        <source>GridDrawCell</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8925812384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
