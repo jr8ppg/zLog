@@ -75,11 +75,8 @@ https://zlog.org/
       - ライブラリパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Release」
       - デバッグ用DCUパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Debug」
 7. zlogフォルダのzlog_project.groupprojを開く
-8. プロジェクトウインドウよりzlog.JPNをビルド（右クリックメニュー）
-9. プロジェクトウインドウよりzlog.ENUをビルド（右クリックメニュー）
-10. プロジェクトウインドウよりzlog.exeをビルド（右クリックメニュー）
-
-11. 完成
+8. プロジェクトウインドウ一番上のzlog_projectを右クリックし「すべてビルド」をクリック
+9. 完成
 
 ## オリジナルからの変更点
 
