@@ -1094,7 +1094,7 @@ BEGIN
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
-	UMenu_UMenu_PleaseEnterYourCallsign,	L"Please enter your callsign"
+	UMenu_UMenu_PleaseEnterYourCallsign,	L"\x8CB4\x5C40\x306E\x30B3\x30FC\x30EB\x30B5\x30A4\x30F3\x3092\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
