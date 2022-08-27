@@ -274,7 +274,7 @@ begin
       Exit;
    end;
 
-   zLogSendStr2(nID, S, CurrentQSO);
+   MainForm.MsgMgrAddQue(nID, S, CurrentQSO);
 
    while Pos(':***********', S) > 0 do begin
       i := Pos(':***********', S);

@@ -131,7 +131,8 @@ uses
   UInformation in 'UInformation.pas' {formInformation},
   UWinKeyerTester in 'UWinKeyerTester.pas' {formWinkeyerTester},
   UStatusEdit in 'UStatusEdit.pas' {formStatusEdit},
-  UzLogContest in 'UzLogContest.pas';
+  UzLogContest in 'UzLogContest.pas',
+  UMessageManager in 'UMessageManager.pas' {formMessageManager};
 
 {$R *.RES}
 

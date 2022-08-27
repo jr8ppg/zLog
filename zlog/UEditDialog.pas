@@ -742,7 +742,8 @@ begin
       end;
 
       S := dmZlogGlobal.CWMessage(cb, no);
-      zLogSendStr2(MainForm.CurrentRigID, S, CurrentQSO);
+
+      MainForm.MsgMgrAddQue(MainForm.CurrentRigID, S, CurrentQSO);
    end
    else begin
       // SendVoice(i);

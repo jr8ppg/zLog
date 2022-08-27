@@ -484,6 +484,10 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzLogContest.pas"/>
+        <DCCReference Include="UMessageManager.pas">
+            <Form>formMessageManager</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>

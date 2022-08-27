@@ -5919,6 +5919,9 @@ object MainForm: TMainForm
       object menuShowInformation: TMenuItem
         Action = actionShowInformation
       end
+      object ShowMessageManagerSO2R1: TMenuItem
+        Action = actionShowMsgMgr
+      end
     end
     object menuSettings: TMenuItem
       Caption = '&Settings'
@@ -6556,7 +6559,7 @@ object MainForm: TMainForm
       OnExecute = actionPlayMessageAExecute
     end
     object actionCheckMulti: TAction
-      Caption = 'Check Multi'
+      Caption = 'actionCheckMulti'
       OnExecute = actionCheckMultiExecute
     end
     object actionShowCheckPartial: TAction
@@ -7223,6 +7226,10 @@ object MainForm: TMainForm
     object actionNoQsl: TAction
       Caption = 'actionNoQsl'
       OnExecute = actionNoQslExecute
+    end
+    object actionShowMsgMgr: TAction
+      Caption = 'Show Message Manager (SO2R)'
+      OnExecute = actionShowMsgMgrExecute
     end
   end
   object SPCMenu: TPopupMenu

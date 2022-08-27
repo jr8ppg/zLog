@@ -15,8 +15,8 @@ var
 function LastCallsign : string;
 function SetStr(sendtext: string; aQSO : TQSO) : String;
 function SetStrNoAbbrev(sendtext: string; aQSO : TQSO) : String; {for QSO.NrSent}
-procedure zLogSendStr(nID: Integer; S: string);
-procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
+procedure zLogSendStr(nID: Integer; S: string; C: string = '');
+//procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
 
 implementation
 
@@ -226,7 +226,7 @@ begin
    Result := temp;
 end;
 
-procedure zLogSendStr(nID: Integer; S: string);
+procedure zLogSendStr(nID: Integer; S: string; C: string);
 begin
    if dmZLogKeyer.UseWinKeyer = True then begin
 
@@ -249,21 +249,28 @@ begin
          dmZLogKeyer.SendStr(nID, S);
       end;
 
-      dmZLogKeyer.SetCallSign(Main.CurrentQSO.Callsign);
+      if C <> '' then begin
+         if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+            dmZLogKeyer.SetCallSign(C);
+         end
+         else begin
+            dmZLogKeyer.SetCallSign(C);
+         end;
+      end;
       dmZLogKeyer.ResumeCW;
    end;
 end;
 
-procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
-begin
-   if aQSO.Mode = mCW then begin
-      S := SetStr(S, aQSO);
-   end;
-   if aQSO.Mode = mRTTY then begin
-      S := SetStrNoAbbrev(S, aQSO);
-   end;
-
-   zLogSendStr(nID, S);
-end;
+//procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
+//begin
+//   if aQSO.Mode = mCW then begin
+//      S := SetStr(S, aQSO);
+//   end;
+//   if aQSO.Mode = mRTTY then begin
+//      S := SetStrNoAbbrev(S, aQSO);
+//   end;
+//
+//   zLogSendStr(nID, S);
+//end;
 
 end.
