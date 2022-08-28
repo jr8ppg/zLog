@@ -73,7 +73,7 @@ object BandScope2: TBandScope2
       Top = 3
       Width = 133
       Height = 13
-      Caption = 'Scroll sync with VFO'
+      Caption = 'VFO'#21516#26399
       Checked = True
       State = cbChecked
       TabOrder = 0
@@ -86,11 +86,11 @@ object BandScope2: TBandScope2
     Left = 48
     Top = 48
     object mnDelete: TMenuItem
-      Caption = 'Delete'
+      Caption = #21066#38500
       OnClick = mnDeleteClick
     end
     object Deleteallworkedstations1: TMenuItem
-      Caption = 'Delete all worked stations'
+      Caption = #20132#20449#28168#12415#12434#20840#12390#21066#38500
       OnClick = Deleteallworkedstations1Click
     end
   end

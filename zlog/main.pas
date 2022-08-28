@@ -6168,7 +6168,6 @@ begin
       MultiButton.Enabled := True; // toolbar
       Multipliers1.Enabled := True; // menu
       mnCheckCountry.Visible := False; // checkcountry window
-      mnCheckMulti.Caption := 'Check Multi';
 
       SetGridWidth(EditScreen);
       SetEditFields1R(EditScreen);

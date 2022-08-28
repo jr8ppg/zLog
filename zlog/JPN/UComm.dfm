@@ -9,8 +9,8 @@ object CommForm: TCommForm
   Constraints.MinWidth = 350
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Height = -12
+  Font.Name = 'MS P'#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
@@ -50,16 +50,16 @@ object CommForm: TCommForm
       Top = 32
       Width = 89
       Height = 20
-      Caption = 'Connect'
+      Caption = #25509#32154
       TabOrder = 1
       OnClick = ConnectButtonClick
     end
     object checkAutoLogin: TCheckBox
       Left = 176
       Top = 5
-      Width = 73
+      Width = 80
       Height = 17
-      Caption = 'Auto Login'
+      Caption = #33258#21205#12525#12464#12452#12531
       Checked = True
       State = cbChecked
       TabOrder = 2
@@ -67,9 +67,9 @@ object CommForm: TCommForm
     object checkRelaySpot: TCheckBox
       Left = 176
       Top = 23
-      Width = 145
+      Width = 160
       Height = 17
-      Caption = 'Relay spot to other bands'
+      Caption = #12473#12509#12483#12488#12434#20182#12398#12496#12531#12489#12408#12522#12524#12540
       TabOrder = 4
     end
     object checkNotifyCurrentBand: TCheckBox
@@ -77,15 +77,15 @@ object CommForm: TCommForm
       Top = 40
       Width = 153
       Height = 17
-      Caption = 'Notify current band only'
+      Caption = #29694#22312#12496#12531#12489#12398#12415#36890#30693
       TabOrder = 5
     end
     object checkAutoReconnect: TCheckBox
-      Left = 255
+      Left = 270
       Top = 5
       Width = 98
       Height = 17
-      Caption = 'Auto Reconnect'
+      Caption = #33258#21205#20877#25509#32154
       Checked = True
       State = cbChecked
       TabOrder = 3
@@ -95,7 +95,7 @@ object CommForm: TCommForm
       Top = 57
       Width = 153
       Height = 17
-      Caption = 'Record logs'
+      Caption = #21463#20449#12525#12464#12434#20445#23384
       TabOrder = 6
     end
   end

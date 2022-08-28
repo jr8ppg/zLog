@@ -118,6 +118,12 @@ type
     property SpotList: TSpotList read FSpotList;
   end;
 
+resourcestring
+  UComm_Connect = 'Connect';
+  UComm_Disconnect = 'Disconnect';
+  UComm_Connecting = 'Connecting...';
+  UComm_Disconnecting = 'Disconnecting...';
+
 implementation
 
 uses
@@ -629,13 +635,13 @@ begin
       end;
 
       if Telnet.IsConnected then begin
-         ConnectButton.Caption := 'Disconnecting...';
+         ConnectButton.Caption := UComm_Disconnecting;
          FDisconnectClicked := True;
          Telnet.Close;
       end
       else begin
          Telnet.Connect;
-         ConnectButton.Caption := 'Connecting...';
+         ConnectButton.Caption := UComm_Connecting;
          FDisconnectClicked := False;
          Timer1.Enabled := True;
       end;
@@ -661,7 +667,7 @@ begin
    end
    else begin
       Telnet.Connect;
-      ConnectButton.Caption := 'Connecting...';
+      ConnectButton.Caption := UComm_Connecting;
    end;
 end;
 
@@ -694,7 +700,7 @@ begin
       checkNotifyCurrentBand.Enabled := False;
       checkRecordLogs.Enabled := False;
 
-      ConnectButton.Caption := 'Disconnect';
+      ConnectButton.Caption := UComm_Disconnect;
       WriteLineConsole('connected to ' + Telnet.Host);
 
       FAutoLogined := False;
@@ -720,7 +726,7 @@ begin
    checkRelaySpot.Enabled := True;
    checkNotifyCurrentBand.Enabled := True;
    checkRecordLogs.Enabled := True;
-   ConnectButton.Caption := 'Connect';
+   ConnectButton.Caption := UComm_Connect;
 end;
 
 procedure TCommForm.FormShow(Sender: TObject);
