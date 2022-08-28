@@ -458,7 +458,7 @@ type
     procedure Stop();
     function SetCurrentRig(N : integer): Boolean;
     function GetCurrentRig : integer;
-    function ToggleCurrentRig : integer;
+//    function ToggleCurrentRig : integer;
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
     function IsAvailableBand(B: TBand): Boolean;
     procedure SetSendFreq();
@@ -615,10 +615,10 @@ function TRigControl.SetCurrentRig(N: Integer): Boolean;
       RigLabel.Caption := 'Current rig : ' + IntToStr(rigno) + ' (' + rigname + ')';
    end;
 begin
-   if (N > FMaxRig) or (N < 0) then begin
-      Result := False;
-      Exit;
-   end;
+//   if (N > FMaxRig) or (N < 0) then begin
+//      Result := False;
+//      Exit;
+//   end;
 
    // RIGØ‚è‘Ö‚¦
    FCurrentRigNumber := N;
@@ -642,21 +642,21 @@ begin
    Result := FCurrentRigNumber;
 end;
 
-function TRigControl.ToggleCurrentRig: Integer;
-var
-   i: Integer;
-begin
-   if FCurrentRigNumber < FMaxRig then begin
-      i := FCurrentRigNumber + 1;
-   end
-   else begin
-      i := 1;
-   end;
-
-   SetCurrentRig(i); // FCurrentRigNumber is changed by SetCurrentRig;
-
-   Result := FCurrentRigNumber;
-end;
+//function TRigControl.ToggleCurrentRig: Integer;
+//var
+//   i: Integer;
+//begin
+//   if FCurrentRigNumber < FMaxRig then begin
+//      i := FCurrentRigNumber + 1;
+//   end
+//   else begin
+//      i := 1;
+//   end;
+//
+//   SetCurrentRig(i); // FCurrentRigNumber is changed by SetCurrentRig;
+//
+//   Result := FCurrentRigNumber;
+//end;
 
 procedure TRig.PollingProcess;
 begin
@@ -1506,7 +1506,7 @@ begin
       FMaxRig := 2;
    end
    else begin
-      FMaxRig := 5;
+      FMaxRig := 3;
    end;
 
    FRigs[1] := BuildRigObject(1);
@@ -2349,9 +2349,6 @@ begin
    _currentband := Q.Band;
 
    SetFreq(f, Q.CQ);
-
-   // Antenna Select
-   //AntSelect(dmZLogGlobal.Settings._useant[Q.Band]);
 end;
 
 procedure TRig.RitClear();
@@ -4020,7 +4017,7 @@ begin
    else begin
       rigno := dmZLogGlobal.Settings.FRigSet[setno].FRig[b];
       if rigno = 0 then begin
-         Result := nil;
+         Result := FRigs[5];  // nil
       end
       else begin
          Result := FRigs[rigno];

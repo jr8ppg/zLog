@@ -951,9 +951,9 @@ begin
       //
       for b := b19 to b10g do begin
          Settings.FRigSet[1].FRig[b] := FRigSetA_rig[b].ItemIndex;
-         Settings.FRigSet[1].FRig[b] := FRigSetA_ant[b].ItemIndex;
+         Settings.FRigSet[1].FAnt[b] := FRigSetA_ant[b].ItemIndex;
          Settings.FRigSet[2].FRig[b] := FRigSetB_rig[b].ItemIndex;
-         Settings.FRigSet[2].FRig[b] := FRigSetB_ant[b].ItemIndex;
+         Settings.FRigSet[2].FAnt[b] := FRigSetB_ant[b].ItemIndex;
       end;
 
       if comboIcomMode.ItemIndex = 0 then begin
@@ -1404,9 +1404,9 @@ begin
       //
       for b := b19 to b10g do begin
          FRigSetA_rig[b].ItemIndex := Settings.FRigSet[1].FRig[b];
-         FRigSetA_ant[b].ItemIndex := Settings.FRigSet[1].FRig[b];
+         FRigSetA_ant[b].ItemIndex := Settings.FRigSet[1].FAnt[b];
          FRigSetB_rig[b].ItemIndex := Settings.FRigSet[2].FRig[b];
-         FRigSetB_ant[b].ItemIndex := Settings.FRigSet[2].FRig[b];
+         FRigSetB_ant[b].ItemIndex := Settings.FRigSet[2].FAnt[b];
       end;
 
       if Settings._use_transceive_mode = True then begin

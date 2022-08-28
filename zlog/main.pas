@@ -1984,6 +1984,7 @@ begin
    OldCallsign := '';
    OldNumber := '';
 
+   FCurrentRigSet := 1;
    EditScreen := nil;
    clStatusLine := clWindowText;
    mSec := dmZlogGlobal.Settings.CW._interval;
@@ -2338,6 +2339,9 @@ begin
       if CurrentQSO.Mode = mSSB then begin
          Rig.SetMode(CurrentQSO);
       end;
+
+      // Antenna Select
+      rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[Q.Band]);
    end;
 
    UpdateBand(Q.Band);
@@ -5838,9 +5842,13 @@ begin
 
          if rig <> nil then begin
             rig.SetBand(CurrentQSO);
+
             if CurrentQSO.Mode = mSSB then begin
                rig.SetMode(CurrentQSO);
             end;
+
+            // Antenna Select
+            rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
          end;
 
          UpdateMode(Log.QsoList[i].mode);
@@ -7076,6 +7084,9 @@ begin
 
       if rig <> nil then begin
          rig.SetBand(CurrentQSO);
+
+         // Antenna Select
+         rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
       end;
    end;
 
@@ -7979,7 +7990,7 @@ begin
    else begin
       // 2R�̏ꍇ
       if FCurrentTX = FCurrentRX then begin
-         rig := RigControl.GetCurrentRig();
+         rig := FCurrentRigSet;
          rig := GetNextRigID(rig - 1) + 1;
          SwitchRig(rig);
       end
@@ -8185,6 +8196,11 @@ begin
       if CurrentQSO.Mode = mSSB then begin
          rig.SetMode(CurrentQSO);
       end;
+
+      // Antenna Select
+      rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
+
+      RigControl.SetCurrentRig(rig.RigNumber);
    end;
 end;
 
@@ -9512,7 +9528,8 @@ function TMainForm.GetCurrentRigID(): Integer;
 var
    n: Integer;
 begin
-   n := RigControl.GetCurrentRig;
+//   n := RigControl.GetCurrentRig;
+   n := FCurrentRigSet;
    if ((n = 1) or (n = 2) or (n = 3)) then begin
       Result := n - 1;
    end
@@ -9782,7 +9799,9 @@ begin
    FInformation.Tx := rigno - 1;
 
    rig := RigControl.GetRig(rigno, TextToBand(BandEdit.Text));
-   RigControl.SetCurrentRig(rig.RigNumber);
+   if rig <> nil then begin
+      RigControl.SetCurrentRig(rig.RigNumber);
+   end;
 
    dmZLogKeyer.SetRxRigFlag(rigno);
    dmZLogKeyer.SetTxRigFlag(rigno);

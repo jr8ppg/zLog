@@ -834,7 +834,6 @@ end;
 
 procedure TEditDialog.actionToggleRigExecute(Sender: TObject);
 begin
-//   MainForm.RigControl.ToggleCurrentRig;
    MainForm.actionToggleRigExecute(Sender);
 end;
 
