@@ -489,8 +489,10 @@ begin
          SD2 := MainForm.SuperCheckList.ObjectOf(SD);
          if SD2 <> nil then begin
             Sp.Number := SD2.Number;
-         end
-         else begin  // SPC‚©‚ç‚àæ“¾‚Å‚«‚È‚¢ê‡‚ÍLookup Server‚ÉˆË—Š‚·‚é
+         end;
+
+         // SPC‚©‚ç‚àæ“¾‚Å‚«‚È‚¢ê‡‚ÍLookup Server‚ÉˆË—Š‚·‚é
+         if Sp.Number = '' then begin
             Sp.Number := ExecLookup(Sp.Call);
          end;
          SD.Free();
