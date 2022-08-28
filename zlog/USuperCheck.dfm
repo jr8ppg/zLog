@@ -10,7 +10,7 @@ object SuperCheck: TSuperCheck
   Constraints.MinWidth = 250
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -12
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
@@ -35,11 +35,12 @@ object SuperCheck: TSuperCheck
       35)
     object Label1: TLabel
       Left = 153
-      Top = 11
+      Top = 9
       Width = 40
-      Height = 13
+      Height = 17
       Anchors = [akTop, akRight]
       Caption = 'Columns'
+      Layout = tlCenter
     end
     object Button3: TButton
       Left = 4
@@ -55,7 +56,6 @@ object SuperCheck: TSuperCheck
       Top = 9
       Width = 81
       Height = 17
-      Anchors = [akTop, akRight]
       Caption = 'Stay on top'
       TabOrder = 1
       OnClick = StayOnTopClick

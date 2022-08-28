@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.3320138889</prop>
-        <prop prop-type="OrigDateTime">0</prop>
-        <prop prop-type="XlatDateTime">44801.3297916667</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">1078</prop>
+        <prop prop-type="SelfDateTime">44801.4702546296</prop>
+        <prop prop-type="OrigDateTime">44801.4702314815</prop>
+        <prop prop-type="XlatDateTime">44801.333287037</prop>
+        <prop prop-type="Translated">5</prop>
+        <prop prop-type="UnTranslated">1077</prop>
       </prop-group>
     </header>
     <body>
@@ -7556,8 +7556,41 @@
         <source>"Please enter your callsign"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44799.7173573843</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"貴局のコールサインを入力して下さい"</target>
+      </trans-unit>
+      <trans-unit id="UComm_UComm_Connect" resname="UComm_UComm_Connect">
+        <source>"Connect"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44801.4283334838</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"接続"</target>
+      </trans-unit>
+      <trans-unit id="UComm_UComm_Disconnect" resname="UComm_UComm_Disconnect">
+        <source>"Disconnect"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44801.4283334838</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"切断"</target>
+      </trans-unit>
+      <trans-unit id="UComm_UComm_Connecting" resname="UComm_UComm_Connecting">
+        <source>"Connecting..."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44801.4283334838</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"接続中..."</target>
+      </trans-unit>
+      <trans-unit id="UComm_UComm_Disconnecting" resname="UComm_UComm_Disconnecting">
+        <source>"Disconnecting..."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44801.4283334838</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"切断中..."</target>
       </trans-unit>
     </body>
   </file>

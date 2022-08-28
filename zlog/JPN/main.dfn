@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44799.9071296296</prop>
-        <prop prop-type="OrigDateTime">44799.90625</prop>
+        <prop prop-type="SelfDateTime">44801.4281481481</prop>
+        <prop prop-type="OrigDateTime">44801.4243287037</prop>
         <prop prop-type="XlatDateTime">44796.8901388889</prop>
-        <prop prop-type="Translated">73</prop>
-        <prop prop-type="UnTranslated">2989</prop>
+        <prop prop-type="Translated">84</prop>
+        <prop prop-type="UnTranslated">2978</prop>
       </prop-group>
     </header>
     <body>
@@ -11381,7 +11381,7 @@
         <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2269</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainMenu.O:Windows1.O:mnCheckMulti.Action" resname="O:MainForm.O:MainMenu.O:Windows1.O:mnCheckMulti.Action">
-        <source>actionShowCheckMulti</source>
+        <source>actionCheckMulti</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2270</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -12282,8 +12282,9 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:EditQSO.Caption" resname="O:MainForm.O:GridMenu.O:EditQSO.Caption">
         <source>'&amp;Edit QSO'</source>
+        <target>'QSOの修正(&amp;E)'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2444</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2444</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:EditQSO.OnClick" resname="O:MainForm.O:GridMenu.O:EditQSO.OnClick">
         <source>EditQSOClick</source>
@@ -12292,8 +12293,9 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:DeleteQSO1.Caption" resname="O:MainForm.O:GridMenu.O:DeleteQSO1.Caption">
         <source>'&amp;Delete QSO'</source>
+        <target>'QSOの削除(&amp;D)'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2446</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2446</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:DeleteQSO1.OnClick" resname="O:MainForm.O:GridMenu.O:DeleteQSO1.OnClick">
         <source>DeleteQSO1Click</source>
@@ -12302,8 +12304,9 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:InsertQSO1.Caption" resname="O:MainForm.O:GridMenu.O:InsertQSO1.Caption">
         <source>'&amp;Insert QSO'</source>
+        <target>'QSOの挿入(&amp;I)'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2448</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2448</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:InsertQSO1.OnClick" resname="O:MainForm.O:GridMenu.O:InsertQSO1.OnClick">
         <source>InsertQSO1Click</source>
@@ -12317,8 +12320,9 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:GBand.Caption" resname="O:MainForm.O:GridMenu.O:GBand.Caption">
         <source>'Change &amp;Band'</source>
+        <target>'バンドの変更(&amp;B)'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2451</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2451</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:GBand.O:G1R9MHz.Caption" resname="O:MainForm.O:GridMenu.O:GBand.O:G1R9MHz.Caption">
         <source>'1.9 MHz'</source>
@@ -12572,8 +12576,9 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:Changemode.Caption" resname="O:MainForm.O:GridMenu.O:Changemode.Caption">
         <source>'Change &amp;Mode'</source>
+        <target>'モードの変更(&amp;M)'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2502</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2502</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:Changemode.O:CW2.Caption" resname="O:MainForm.O:GridMenu.O:Changemode.O:CW2.Caption">
         <source>'CW'</source>
@@ -12662,8 +12667,9 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:mChangePower.Caption" resname="O:MainForm.O:GridMenu.O:mChangePower.Caption">
         <source>'Change &amp;Power'</source>
+        <target>'電力符号の変更(&amp;P)'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2520</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2520</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:mChangePower.O:H2.Caption" resname="O:MainForm.O:GridMenu.O:mChangePower.O:H2.Caption">
         <source>'P (QRP)'</source>
@@ -12722,13 +12728,15 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:GOperator.Caption" resname="O:MainForm.O:GridMenu.O:GOperator.Caption">
         <source>'Change &amp;Operator'</source>
+        <target>'オペレーターの変更(&amp;O)'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2532</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2532</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:GOperator.O:Clear1.Caption" resname="O:MainForm.O:GridMenu.O:GOperator.O:Clear1.Caption">
         <source>'Clear'</source>
+        <target>'クリア'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2533</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2533</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:GOperator.O:Clear1.OnClick" resname="O:MainForm.O:GridMenu.O:GOperator.O:Clear1.OnClick">
         <source>GridOperatorClick</source>
@@ -12747,8 +12755,9 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:menuEditStatus.Caption" resname="O:MainForm.O:GridMenu.O:menuEditStatus.Caption">
         <source>'Edit Status'</source>
+        <target>'ステータス修正'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2537</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2537</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:menuEditStatus.OnClick" resname="O:MainForm.O:GridMenu.O:menuEditStatus.OnClick">
         <source>menuEditStatusClick</source>
@@ -12762,8 +12771,9 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:SendSpot1.Caption" resname="O:MainForm.O:GridMenu.O:SendSpot1.Caption">
         <source>'Send &amp;Spot'</source>
+        <target>'スポット情報の送信(&amp;S)'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2540</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2540</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:SendSpot1.OnClick" resname="O:MainForm.O:GridMenu.O:SendSpot1.OnClick">
         <source>SendSpot1Click</source>
@@ -12772,8 +12782,9 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:mnGridAddNewPX.Caption" resname="O:MainForm.O:GridMenu.O:mnGridAddNewPX.Caption">
         <source>'&amp;Add new prefix'</source>
+        <target>'新しいプリフィックスの追加(&amp;A)'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2542</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2542</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:GridMenu.O:mnGridAddNewPX.OnClick" resname="O:MainForm.O:GridMenu.O:mnGridAddNewPX.OnClick">
         <source>mnGridAddNewPXClick</source>

@@ -5865,7 +5865,7 @@ object MainForm: TMainForm
         Action = actionShowCheckCall
       end
       object mnCheckMulti: TMenuItem
-        Action = actionShowCheckMulti
+        Action = actionCheckMulti
       end
       object mnCheckCountry: TMenuItem
         Action = actionShowCheckCountry
@@ -6200,22 +6200,22 @@ object MainForm: TMainForm
     Left = 56
     Top = 212
     object EditQSO: TMenuItem
-      Caption = '&Edit QSO'
+      Caption = 'QSO'#12398#20462#27491'(&E)'
       OnClick = EditQSOClick
     end
     object DeleteQSO1: TMenuItem
-      Caption = '&Delete QSO'
+      Caption = 'QSO'#12398#21066#38500'(&D)'
       OnClick = DeleteQSO1Click
     end
     object InsertQSO1: TMenuItem
-      Caption = '&Insert QSO'
+      Caption = 'QSO'#12398#25407#20837'(&I)'
       OnClick = InsertQSO1Click
     end
     object N7: TMenuItem
       Caption = '-'
     end
     object GBand: TMenuItem
-      Caption = 'Change &Band'
+      Caption = #12496#12531#12489#12398#22793#26356'(&B)'
       object G1R9MHz: TMenuItem
         Caption = '1.9 MHz'
         OnClick = GridBandChangeClick
@@ -6300,7 +6300,7 @@ object MainForm: TMainForm
       end
     end
     object Changemode: TMenuItem
-      Caption = 'Change &Mode'
+      Caption = #12514#12540#12489#12398#22793#26356'(&M)'
       object CW2: TMenuItem
         Caption = 'CW'
         OnClick = GridModeChangeClick
@@ -6332,7 +6332,7 @@ object MainForm: TMainForm
       end
     end
     object mChangePower: TMenuItem
-      Caption = 'Change &Power'
+      Caption = #38651#21147#31526#21495#12398#22793#26356'(&P)'
       object H2: TMenuItem
         Caption = 'P (QRP)'
         OnClick = GridPowerChangeClick
@@ -6354,9 +6354,9 @@ object MainForm: TMainForm
       end
     end
     object GOperator: TMenuItem
-      Caption = 'Change &Operator'
+      Caption = #12458#12506#12524#12540#12479#12540#12398#22793#26356'(&O)'
       object Clear1: TMenuItem
-        Caption = 'Clear'
+        Caption = #12463#12522#12450
         OnClick = GridOperatorClick
       end
     end
@@ -6367,18 +6367,18 @@ object MainForm: TMainForm
       Caption = '-'
     end
     object menuEditStatus: TMenuItem
-      Caption = 'Edit Status'
+      Caption = #12473#12486#12540#12479#12473#20462#27491
       OnClick = menuEditStatusClick
     end
     object N8: TMenuItem
       Caption = '-'
     end
     object SendSpot1: TMenuItem
-      Caption = 'Send &Spot'
+      Caption = #12473#12509#12483#12488#24773#22577#12398#36865#20449'(&S)'
       OnClick = SendSpot1Click
     end
     object mnGridAddNewPX: TMenuItem
-      Caption = '&Add new prefix'
+      Caption = #26032#12375#12356#12503#12522#12501#12451#12483#12463#12473#12398#36861#21152'(&A)'
       OnClick = mnGridAddNewPXClick
     end
   end

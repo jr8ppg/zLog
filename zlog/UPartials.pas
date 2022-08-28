@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, Buttons, Spin,
-  UzLogConst, UzLogGlobal, UzLogQSO;
+  UzLogConst, UzLogGlobal, UzLogQSO, System.ImageList, Vcl.ImgList;
 
 type
   TPartialCheck = class(TForm)
@@ -23,6 +23,7 @@ type
     panelExtend: TPanel;
     panelBody: TPanel;
     checkShowCurrentBandFirst: TCheckBox;
+    ImageList1: TImageList;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -37,6 +38,7 @@ type
     procedure StayOnTopClick(Sender: TObject);
     procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer;
       var Height: Integer);
+    procedure FormShow(Sender: TObject);
 
   private
     { Private declarations }
@@ -232,7 +234,6 @@ procedure TPartialCheck.FormCreate(Sender: TObject);
 begin
    ListBox.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
    AllBand := True;
-   // CheckBox1.Checked := AllBand;
    _CheckCall := True;
    DispMax := 200;
    ShowMaxEdit.Value := DispMax;
@@ -246,9 +247,11 @@ begin
    end;
 end;
 
-{ procedure TPartialCheck.CheckBox1Click(Sender: TObject);
-  begin
-  end; }
+procedure TPartialCheck.FormShow(Sender: TObject);
+begin
+   MoreButton.ImageIndex := 0;
+   panelExtend.Visible := False;
+end;
 
 procedure TPartialCheck.CheckBox1Click(Sender: TObject);
 begin
@@ -261,12 +264,12 @@ end;
 
 procedure TPartialCheck.MoreButtonClick(Sender: TObject);
 begin
-   if MoreButton.Caption = 'More..' then begin
-      MoreButton.Caption := 'Hide';
+   if MoreButton.ImageIndex = 0 then begin
+      MoreButton.ImageIndex := 1;
       panelExtend.Visible := True;
    end
    else begin
-      MoreButton.Caption := 'More..';
+      MoreButton.ImageIndex := 0;
       panelExtend.Visible := False;
    end;
 end;
@@ -278,11 +281,6 @@ end;
 
 procedure TPartialCheck.UpdateData(aQSO: TQSO);
 begin
-   // MainForm.PartialClick(Self);
-   { if MainForm.ActiveControl = MainForm.NumberEdit then
-     CheckPartialNumber(Main.CurrentQSO)
-     else
-     CheckPartial(Main.CurrentQSO); }
    if _CheckCall then
       CheckPartial(aQSO)
    else
