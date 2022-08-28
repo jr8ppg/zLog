@@ -215,4 +215,40 @@ object RigControl: TRigControl
     Left = 160
     Top = 144
   end
+  object ZCom3: TCommPortDriver
+    Tag = 3
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfRTSCTS
+    InBufSize = 4096
+    OnReceiveData = ZCom1ReceiveData
+    Left = 212
+    Top = 192
+  end
+  object ZCom4: TCommPortDriver
+    Tag = 4
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfRTSCTS
+    InBufSize = 4096
+    OnReceiveData = ZCom1ReceiveData
+    Left = 240
+    Top = 192
+  end
+  object PollingTimer3: TTimer
+    Tag = 3
+    Enabled = False
+    Interval = 100
+    OnTimer = PollingTimerTimer
+    Left = 132
+    Top = 196
+  end
+  object PollingTimer4: TTimer
+    Tag = 4
+    Enabled = False
+    Interval = 100
+    OnTimer = PollingTimerTimer
+    Left = 160
+    Top = 196
+  end
 end

@@ -773,7 +773,8 @@
                     <RDP_Source_Files Name="Item100">UInformation.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item101">UWinKeyerTester.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item102">UStatusEdit.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item103">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item103">UMessageManager.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item104">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file original="D:\GITHUB\zLog\zlog\URigControl.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog\zlog\URigControl.dfm">
+  <file original="D:\GITHUB\zLog_2bsiq\zlog\URigControl.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog_2bsiq\zlog\URigControl.dfm">
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44796.8928935185</prop>
-        <prop prop-type="OrigDateTime">44782.9278009259</prop>
-        <prop prop-type="XlatDateTime">44782.9278009259</prop>
+        <prop prop-type="SelfDateTime">44801.7152777778</prop>
+        <prop prop-type="OrigDateTime">44801.6573842593</prop>
+        <prop prop-type="XlatDateTime">44800.8836574074</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">173</prop>
+        <prop prop-type="UnTranslated">201</prop>
       </prop-group>
     </header>
     <body>
@@ -877,6 +877,146 @@
         <source>144</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8929021412</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom3.Tag" resname="O:RigControl.O:ZCom3.Tag">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">173</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom3.Port" resname="O:RigControl.O:ZCom3.Port">
+        <source>pnCustom</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">174</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom3.PortName" resname="O:RigControl.O:ZCom3.PortName">
+        <source>'\\.\COM2'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom3.HwFlow" resname="O:RigControl.O:ZCom3.HwFlow">
+        <source>hfRTSCTS</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom3.InBufSize" resname="O:RigControl.O:ZCom3.InBufSize">
+        <source>4096</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom3.OnReceiveData" resname="O:RigControl.O:ZCom3.OnReceiveData">
+        <source>ZCom1ReceiveData</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom3.Left" resname="O:RigControl.O:ZCom3.Left">
+        <source>212</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom3.Top" resname="O:RigControl.O:ZCom3.Top">
+        <source>192</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom4.Tag" resname="O:RigControl.O:ZCom4.Tag">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom4.Port" resname="O:RigControl.O:ZCom4.Port">
+        <source>pnCustom</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom4.PortName" resname="O:RigControl.O:ZCom4.PortName">
+        <source>'\\.\COM2'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">183</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom4.HwFlow" resname="O:RigControl.O:ZCom4.HwFlow">
+        <source>hfRTSCTS</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom4.InBufSize" resname="O:RigControl.O:ZCom4.InBufSize">
+        <source>4096</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">185</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom4.OnReceiveData" resname="O:RigControl.O:ZCom4.OnReceiveData">
+        <source>ZCom1ReceiveData</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">186</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom4.Left" resname="O:RigControl.O:ZCom4.Left">
+        <source>240</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:ZCom4.Top" resname="O:RigControl.O:ZCom4.Top">
+        <source>192</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:PollingTimer3.Tag" resname="O:RigControl.O:PollingTimer3.Tag">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:PollingTimer3.Enabled" resname="O:RigControl.O:PollingTimer3.Enabled">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">190</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:PollingTimer3.Interval" resname="O:RigControl.O:PollingTimer3.Interval">
+        <source>100</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:PollingTimer3.OnTimer" resname="O:RigControl.O:PollingTimer3.OnTimer">
+        <source>PollingTimerTimer</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">192</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:PollingTimer3.Left" resname="O:RigControl.O:PollingTimer3.Left">
+        <source>132</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">193</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:PollingTimer3.Top" resname="O:RigControl.O:PollingTimer3.Top">
+        <source>196</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">194</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:PollingTimer4.Tag" resname="O:RigControl.O:PollingTimer4.Tag">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">195</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:PollingTimer4.Enabled" resname="O:RigControl.O:PollingTimer4.Enabled">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">196</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:PollingTimer4.Interval" resname="O:RigControl.O:PollingTimer4.Interval">
+        <source>100</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:PollingTimer4.OnTimer" resname="O:RigControl.O:PollingTimer4.OnTimer">
+        <source>PollingTimerTimer</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">198</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:PollingTimer4.Left" resname="O:RigControl.O:PollingTimer4.Left">
+        <source>160</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803357</prop><prop prop-type="Status">0</prop><prop prop-type="Order">199</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.O:PollingTimer4.Top" resname="O:RigControl.O:PollingTimer4.Top">
+        <source>196</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44801.7152803357</prop><prop prop-type="Status">0</prop><prop prop-type="Order">200</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

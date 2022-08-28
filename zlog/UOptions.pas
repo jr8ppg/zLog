@@ -109,12 +109,6 @@ type
     IARUZoneEdit: TEdit;
     Label34: TLabel;
     Label35: TLabel;
-    groupOptCwPtt: TGroupBox;
-    Label38: TLabel;
-    PTTEnabledCheckBox: TCheckBox;
-    Label39: TLabel;
-    BeforeEdit: TEdit;
-    AfterEdit: TEdit;
     AllowDupeCheckBox: TCheckBox;
     SaveEvery: TSpinEdit;
     Label40: TLabel;
@@ -123,11 +117,6 @@ type
     rbBankB: TRadioButton;
     cbDispExchange: TCheckBox;
     cbJMode: TCheckBox;
-    comboRig1Port: TComboBox;
-    comboRig1Name: TComboBox;
-    Label43: TLabel;
-    comboRig2Port: TComboBox;
-    comboRig2Name: TComboBox;
     tabsheetMisc: TTabSheet;
     cbRITClear: TCheckBox;
     cbDontAllowSameBand: TCheckBox;
@@ -143,8 +132,6 @@ type
     Label49: TLabel;
     cbUpdateThread: TCheckBox;
     cbRecordRigFreq: TCheckBox;
-    cbTransverter1: TCheckBox;
-    cbTransverter2: TCheckBox;
     tabsheetPath: TTabSheet;
     Label50: TLabel;
     edCFGDATPath: TEdit;
@@ -160,9 +147,6 @@ type
     spSpotExpire: TSpinEdit;
     cbDisplayDatePartialCheck: TCheckBox;
     cbAutoBandMap: TCheckBox;
-    comboRig1Speed: TComboBox;
-    comboRig2Speed: TComboBox;
-    comboCwPttPort1: TComboBox;
     tabsheetQuickQSY: TTabSheet;
     checkUseQuickQSY01: TCheckBox;
     comboQuickQsyBand01: TComboBox;
@@ -274,7 +258,6 @@ type
     comboQuickQsyRig06: TComboBox;
     comboQuickQsyRig07: TComboBox;
     comboQuickQsyRig08: TComboBox;
-    checkCwReverseSignal: TCheckBox;
     tabsheetQuickMemo: TTabSheet;
     GroupBox11: TGroupBox;
     Label63: TLabel;
@@ -346,9 +329,6 @@ type
     Label79: TLabel;
     Label80: TLabel;
     Label81: TLabel;
-    groupUsif4cw: TGroupBox;
-    checkUsbif4cwSyncWpm: TCheckBox;
-    checkUsbif4cwPaddleReverse: TCheckBox;
     GroupBox14: TGroupBox;
     Label9: TLabel;
     Label10: TLabel;
@@ -367,7 +347,6 @@ type
     comboVoiceDevice: TComboBox;
     buttonPlayVoice: TSpeedButton;
     buttonStopVoice: TSpeedButton;
-    checkUseWinKeyer: TCheckBox;
     checkAntiZeroinStopCq: TCheckBox;
     checkUseCQRamdomRepeat: TCheckBox;
     GroupBox17: TGroupBox;
@@ -389,11 +368,6 @@ type
     checkUseEstimatedMode: TCheckBox;
     checkShowOnlyInBandplan: TCheckBox;
     checkShowOnlyDomestic: TCheckBox;
-    groupOptCI_V: TGroupBox;
-    comboIcomMode: TComboBox;
-    comboIcomMethod: TComboBox;
-    Label83: TLabel;
-    Label84: TLabel;
     Label85: TLabel;
     VolumeSpinEdit: TSpinEdit;
     groupQsyAssist: TGroupBox;
@@ -427,22 +401,11 @@ type
     radioMultiOpMultiTx: TRadioButton;
     radioMultiOpSingleTx: TRadioButton;
     radioMultiOpTwoTx: TRadioButton;
-    comboCwPttPort2: TComboBox;
-    groupRig1: TGroupBox;
-    Label92: TLabel;
-    Label93: TLabel;
-    Label94: TLabel;
-    groupRig2: TGroupBox;
-    Label95: TLabel;
-    Label96: TLabel;
-    Label97: TLabel;
-    Label98: TLabel;
     groupSo2rSupport: TGroupBox;
     radioSo2rZLog: TRadioButton;
     radioSo2rNeo: TRadioButton;
     comboSo2rRxSelectPort: TComboBox;
     radioSo2rNone: TRadioButton;
-    checkWk9600: TCheckBox;
     tabsheetNetwork: TTabSheet;
     groupNetwork: TGroupBox;
     Label30: TLabel;
@@ -455,15 +418,13 @@ type
     buttonZLinkSettings: TButton;
     editZLinkPcName: TEdit;
     checkZLinkSyncSerial: TCheckBox;
-    groupRig3: TGroupBox;
+    groupRig5: TGroupBox;
     Label99: TLabel;
-    comboCwPttPort3: TComboBox;
+    comboRig3Keying: TComboBox;
     GroupBox6: TGroupBox;
     Label31: TLabel;
     comboSo2rTxSelectPort: TComboBox;
     Label42: TLabel;
-    groupWinKeyer: TGroupBox;
-    checkWkOutportSelect: TCheckBox;
     GroupBox7: TGroupBox;
     groupSo2rCqOption: TGroupBox;
     Label44: TLabel;
@@ -475,7 +436,6 @@ type
     comboSo2rCqMsgNumber: TComboBox;
     Label101: TLabel;
     editSo2rRigSwAfterDelay: TEdit;
-    checkWkIgnoreSpeedPot: TCheckBox;
     GroupBox13: TGroupBox;
     radioQslNone: TRadioButton;
     radioPseQsl: TRadioButton;
@@ -486,40 +446,171 @@ type
     comboFontBase: TJvFontComboBox;
     Label102: TLabel;
     Label103: TLabel;
-    GroupBox25: TGroupBox;
-    comboAnt19: TComboBox;
-    comboAnt35: TComboBox;
-    comboAnt7: TComboBox;
-    comboAnt10: TComboBox;
-    comboAnt14: TComboBox;
-    comboAnt18: TComboBox;
-    comboAnt21: TComboBox;
-    comboAnt24: TComboBox;
-    comboAnt28: TComboBox;
-    comboAnt50: TComboBox;
-    comboAnt144: TComboBox;
-    comboAnt430: TComboBox;
-    comboAnt1200: TComboBox;
-    comboAnt2400: TComboBox;
-    comboAnt5600: TComboBox;
-    comboAnt10g: TComboBox;
+    checkUseLookupServer: TCheckBox;
+    tabsheetHardware3: TTabSheet;
+    groupOptCI_V: TGroupBox;
+    Label83: TLabel;
+    Label84: TLabel;
+    comboIcomMode: TComboBox;
+    comboIcomMethod: TComboBox;
+    groupOptCwPtt: TGroupBox;
+    Label38: TLabel;
+    Label39: TLabel;
+    PTTEnabledCheckBox: TCheckBox;
+    BeforeEdit: TEdit;
+    AfterEdit: TEdit;
+    checkCwReverseSignal: TCheckBox;
+    groupUsif4cw: TGroupBox;
+    checkUsbif4cwSyncWpm: TCheckBox;
+    checkUsbif4cwPaddleReverse: TCheckBox;
+    groupWinKeyer: TGroupBox;
+    checkUseWinKeyer: TCheckBox;
+    checkWk9600: TCheckBox;
+    checkWkOutportSelect: TCheckBox;
+    checkWkIgnoreSpeedPot: TCheckBox;
+    groupRig1: TGroupBox;
+    Label43: TLabel;
+    Label92: TLabel;
+    Label93: TLabel;
+    Label94: TLabel;
+    comboRig1AName: TComboBox;
+    comboRig1AControl: TComboBox;
+    comboRig1ASpeed: TComboBox;
+    comboRig1AKeying: TComboBox;
+    checkRig1AXvt: TCheckBox;
+    groupRig2: TGroupBox;
+    Label120: TLabel;
+    Label121: TLabel;
+    Label122: TLabel;
+    Label123: TLabel;
+    checkRig1BXvt: TCheckBox;
+    comboRig1BName: TComboBox;
+    comboRig1BControl: TComboBox;
+    comboRig1BSpeed: TComboBox;
+    comboRig1BKeying: TComboBox;
+    groupRig3: TGroupBox;
+    Label95: TLabel;
+    Label96: TLabel;
+    Label97: TLabel;
+    Label98: TLabel;
+    checkRig2AXvt: TCheckBox;
+    comboRig2AName: TComboBox;
+    comboRig2AControl: TComboBox;
+    comboRig2ASpeed: TComboBox;
+    comboRig2AKeying: TComboBox;
+    groupRig4: TGroupBox;
+    Label124: TLabel;
+    Label125: TLabel;
+    Label126: TLabel;
+    Label127: TLabel;
+    checkRig2BXvt: TCheckBox;
+    comboRig2BName: TComboBox;
+    comboRig2BControl: TComboBox;
+    comboRig2BSpeed: TComboBox;
+    comboRig2BKeying: TComboBox;
+    tabsheetHardware2: TTabSheet;
+    groupRigSetA: TGroupBox;
+    Label128: TLabel;
+    Label129: TLabel;
+    Label130: TLabel;
+    Label131: TLabel;
+    Label132: TLabel;
+    Label133: TLabel;
+    Label134: TLabel;
+    Label135: TLabel;
+    Label136: TLabel;
+    Label137: TLabel;
+    Label138: TLabel;
+    Label139: TLabel;
+    Label140: TLabel;
+    Label141: TLabel;
+    Label142: TLabel;
+    Label143: TLabel;
+    comboRigA_b19: TComboBox;
+    comboRigA_b35: TComboBox;
+    comboRigA_b7: TComboBox;
+    comboRigA_b10: TComboBox;
+    comboRigA_b14: TComboBox;
+    comboRigA_b18: TComboBox;
+    comboRigA_b21: TComboBox;
+    comboRigA_b24: TComboBox;
+    comboRigA_b28: TComboBox;
+    comboRigA_b50: TComboBox;
+    comboRigA_b144: TComboBox;
+    comboRigA_b430: TComboBox;
+    comboRigA_b1200: TComboBox;
+    comboRigA_b2400: TComboBox;
+    comboRigA_b5600: TComboBox;
+    comboRigA_b10g: TComboBox;
+    groupRigSetB: TGroupBox;
+    Label144: TLabel;
+    Label145: TLabel;
+    Label146: TLabel;
+    Label147: TLabel;
+    Label148: TLabel;
+    Label149: TLabel;
+    Label150: TLabel;
+    Label151: TLabel;
+    Label152: TLabel;
+    Label153: TLabel;
+    Label154: TLabel;
+    Label155: TLabel;
+    Label156: TLabel;
+    Label157: TLabel;
+    Label158: TLabel;
+    Label159: TLabel;
+    comboRigB_b19: TComboBox;
+    comboRigB_b35: TComboBox;
+    comboRigB_b7: TComboBox;
+    comboRigB_b10: TComboBox;
+    comboRigB_b14: TComboBox;
+    comboRigB_b18: TComboBox;
+    comboRigB_b21: TComboBox;
+    comboRigB_b24: TComboBox;
+    comboRigB_b28: TComboBox;
+    comboRigB_b50: TComboBox;
+    comboRigB_b144: TComboBox;
+    comboRigB_b430: TComboBox;
+    comboRigB_b1200: TComboBox;
+    comboRigB_b2400: TComboBox;
+    comboRigB_b5600: TComboBox;
+    comboRigB_b10g: TComboBox;
+    comboRigA_Antb19: TComboBox;
+    comboRigA_Antb35: TComboBox;
+    comboRigA_Antb7: TComboBox;
+    comboRigA_Antb10: TComboBox;
+    comboRigA_Antb14: TComboBox;
+    comboRigA_Antb18: TComboBox;
+    comboRigA_Antb21: TComboBox;
+    comboRigA_Antb24: TComboBox;
+    comboRigA_Antb28: TComboBox;
+    comboRigA_Antb50: TComboBox;
+    comboRigA_Antb144: TComboBox;
+    comboRigA_Antb430: TComboBox;
+    comboRigA_Antb1200: TComboBox;
+    comboRigA_Antb2400: TComboBox;
+    comboRigA_Antb5600: TComboBox;
+    comboRigA_Antb10g: TComboBox;
+    comboRigB_Antb19: TComboBox;
+    comboRigB_Antb35: TComboBox;
+    comboRigB_Antb7: TComboBox;
+    comboRigB_Antb10: TComboBox;
+    comboRigB_Antb14: TComboBox;
+    comboRigB_Antb18: TComboBox;
+    comboRigB_Antb21: TComboBox;
+    comboRigB_Antb24: TComboBox;
+    comboRigB_Antb28: TComboBox;
+    comboRigB_Antb50: TComboBox;
+    comboRigB_Antb144: TComboBox;
+    comboRigB_Antb430: TComboBox;
+    comboRigB_Antb1200: TComboBox;
+    comboRigB_Antb2400: TComboBox;
+    comboRigB_Antb5600: TComboBox;
+    comboRigB_Antb10g: TComboBox;
     Label104: TLabel;
     Label105: TLabel;
     Label106: TLabel;
     Label107: TLabel;
-    Label108: TLabel;
-    Label109: TLabel;
-    Label110: TLabel;
-    Label111: TLabel;
-    Label112: TLabel;
-    Label113: TLabel;
-    Label114: TLabel;
-    Label115: TLabel;
-    Label116: TLabel;
-    Label117: TLabel;
-    Label118: TLabel;
-    Label119: TLabel;
-    checkUseLookupServer: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -539,9 +630,9 @@ type
     procedure CQRepEditKeyPress(Sender: TObject; var Key: Char);
     procedure editMessage1Change(Sender: TObject);
     procedure CWBankClick(Sender: TObject);
-    procedure cbTransverter1Click(Sender: TObject);
-    procedure comboRig1NameChange(Sender: TObject);
-    procedure comboRig2NameChange(Sender: TObject);
+    procedure checkRig1AXvtClick(Sender: TObject);
+    procedure comboRig1ANameChange(Sender: TObject);
+    procedure comboRig2ANameChange(Sender: TObject);
     procedure checkUseQuickQSYClick(Sender: TObject);
     procedure buttonSuperCheckFolderRefClick(Sender: TObject);
     procedure OnNeedSuperCheckLoad(Sender: TObject);
@@ -568,6 +659,10 @@ type
     procedure comboCwPttPortChange(Sender: TObject);
     procedure checkUseWinKeyerClick(Sender: TObject);
     procedure radioSo2rClick(Sender: TObject);
+    procedure comboRigA_b19Change(Sender: TObject);
+    procedure comboRigA_Antb19Change(Sender: TObject);
+    procedure comboRigB_b19Change(Sender: TObject);
+    procedure comboRigB_Antb19Change(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -600,6 +695,11 @@ type
     FAdditionalVoiceEdit: array[2..3] of TEdit;
     FAdditionalVoiceButton: array[2..3] of TButton;
 
+    FRigSetA_rig: array[b19..b10g] of TComboBox;
+    FRigSetA_ant: array[b19..b10g] of TComboBox;
+    FRigSetB_rig: array[b19..b10g] of TComboBox;
+    FRigSetB_ant: array[b19..b10g] of TComboBox;
+
     procedure RenewCWStrBankDisp();
     procedure InitRigNames();
     procedure SetEditNumber(no: Integer);
@@ -622,6 +722,9 @@ const
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True )
   );
+
+resourcestring
+  UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins = 'Do you want the following bands to have the same settings?';
 
 implementation
 
@@ -672,6 +775,45 @@ procedure TformOptions.RenewSettings;
 var
    r: double;
    i, j: integer;
+   b: TBand;
+
+   procedure SetRigControlParam(no: Integer; C, S, N, K: TComboBox; T: TCheckBox);
+   begin
+      with dmZlogGlobal do begin
+         if Assigned(C) then begin
+            Settings.FRigControl[no].FControlPort := C.ItemIndex;
+         end;
+
+         if Assigned(S) then begin
+            Settings.FRigControl[no].FSpeed := S.ItemIndex;
+         end;
+
+         if Assigned(N) then begin
+            if N.ItemIndex <= 0 then begin
+               Settings.FRigControl[no].FRigName := '';
+            end
+            else begin
+               Settings.FRigControl[no].FRigName := N.Text;
+            end;
+         end;
+
+         if Assigned(K) then begin
+            if (K.ItemIndex >= 1) and (K.ItemIndex <= 20) then begin
+               Settings.FRigControl[no].FKeyingPort := K.ItemIndex;
+            end
+            else if K.ItemIndex = 21 then begin    // USB
+               Settings.FRigControl[no].FKeyingPort := 21;
+            end
+            else begin
+               Settings.FRigControl[no].FKeyingPort := 0;
+            end;
+         end;
+
+         if Assigned(T) then begin
+            Settings.FRigControl[no].FUseTransverter := T.Checked;
+         end;
+      end;
+   end;
 begin
    with dmZlogGlobal do begin
       Settings._savewhennocw := cbSaveWhenNoCW.Checked;
@@ -795,29 +937,24 @@ begin
       Settings._clusterport := ClusterCombo.ItemIndex;
    //   Settings._clusterbaud := ClusterCOMSet.BaudCombo.ItemIndex;
 
-      // RIG1
-      Settings._rigport[1] := comboRig1Port.ItemIndex;
+      //
+      // RIG1-5
+      //
+      SetRigControlParam(1, comboRig1AControl, comboRig1ASpeed, comboRig1AName, comboRig1AKeying, checkRig1AXvt);
+      SetRigControlParam(2, comboRig1BControl, comboRig1BSpeed, comboRig1BName, comboRig1BKeying, checkRig1BXvt);
+      SetRigControlParam(3, comboRig2AControl, comboRig2ASpeed, comboRig2AName, comboRig2AKeying, checkRig2AXvt);
+      SetRigControlParam(4, comboRig2BControl, comboRig2BSpeed, comboRig2BName, comboRig2BKeying, checkRig2BXvt);
+      SetRigControlParam(5, nil,               nil,             nil,            comboRig3Keying,  nil);
 
-      if comboRig1Name.ItemIndex <= 0 then begin
-         Settings._rigname[1] := '';
-      end
-      else begin
-         Settings._rigname[1] := comboRig1Name.Text;
+      //
+      // Set of RIG
+      //
+      for b := b19 to b10g do begin
+         Settings.FRigSet[1].FRig[b] := FRigSetA_rig[b].ItemIndex;
+         Settings.FRigSet[1].FRig[b] := FRigSetA_ant[b].ItemIndex;
+         Settings.FRigSet[2].FRig[b] := FRigSetB_rig[b].ItemIndex;
+         Settings.FRigSet[2].FRig[b] := FRigSetB_ant[b].ItemIndex;
       end;
-
-      Settings._rigspeed[1] := comboRig1Speed.ItemIndex;
-
-      // RIG2
-      Settings._rigport[2] := comboRig2Port.ItemIndex;
-
-      if comboRig2Name.ItemIndex <= 0 then begin
-         Settings._rigname[2] := '';
-      end
-      else begin
-         Settings._rigname[2] := comboRig2Name.Text;
-      end;
-
-      Settings._rigspeed[2] := comboRig2Speed.ItemIndex;
 
       if comboIcomMode.ItemIndex = 0 then begin
          Settings._use_transceive_mode := True;
@@ -867,40 +1004,6 @@ begin
       i := Settings._pttafter;
       Settings._pttafter := StrToIntDef(AfterEdit.Text, i);
 
-      // CW/PTT port
-      // RIG1
-      if (comboCwPttPort1.ItemIndex >= 1) and (comboCwPttPort1.ItemIndex <= 20) then begin
-         Settings._keyingport[1] := comboCwPttPort1.ItemIndex;
-      end
-      else if comboCwPttPort1.ItemIndex = 21 then begin    // USB
-         Settings._keyingport[1] := 21;
-      end
-      else begin
-         Settings._keyingport[1] := 0;
-      end;
-
-      // RIG2
-      if (comboCwPttPort2.ItemIndex >= 1) and (comboCwPttPort2.ItemIndex <= 20) then begin
-         Settings._keyingport[2] := comboCwPttPort2.ItemIndex;
-      end
-      else if comboCwPttPort2.ItemIndex = 21 then begin    // USB
-         Settings._keyingport[2] := 21;
-      end
-      else begin
-         Settings._keyingport[2] := 0;
-      end;
-
-      // RIG3
-      if (comboCwPttPort3.ItemIndex >= 1) and (comboCwPttPort3.ItemIndex <= 20) then begin
-         Settings._keyingport[3] := comboCwPttPort3.ItemIndex;
-      end
-      else if comboCwPttPort3.ItemIndex = 21 then begin    // USB
-         Settings._keyingport[3] := 21;
-      end
-      else begin
-         Settings._keyingport[3] := 0;
-      end;
-
       // Use Winkeyer
       Settings._use_winkeyer := checkUseWinkeyer.Checked;
       Settings._use_wk_9600 := checkWk9600.Checked;
@@ -943,9 +1046,6 @@ begin
       Settings._sameexchange := cbDispExchange.Checked;
       Settings._entersuperexchange := cbAutoEnterSuper.Checked;
 
-      Settings._transverter1 := cbTransverter1.Checked;
-      Settings._transverter2 := cbTransverter2.Checked;
-
       Settings._cluster_telnet := FTempClusterTelnet;
       Settings._cluster_com := FTempClusterCom;
       Settings._zlink_telnet := FTempZLinkTelnet;
@@ -960,24 +1060,6 @@ begin
       Settings._recrigfreq := cbRecordRigFreq.Checked;
       Settings._autobandmap := cbAutoBandMap.Checked;
       Settings._send_freq_interval := updownSendFreqInterval.Position;
-
-      // Ant Control
-      Settings._useant[b19]   := comboAnt19.ItemIndex;
-      Settings._useant[b35]   := comboAnt35.ItemIndex;
-      Settings._useant[b7]    := comboAnt7.ItemIndex;
-      Settings._useant[b10]   := comboAnt10.ItemIndex;
-      Settings._useant[b14]   := comboAnt14.ItemIndex;
-      Settings._useant[b18]   := comboAnt18.ItemIndex;
-      Settings._useant[b21]   := comboAnt21.ItemIndex;
-      Settings._useant[b24]   := comboAnt24.ItemIndex;
-      Settings._useant[b28]   := comboAnt28.ItemIndex;
-      Settings._useant[b50]   := comboAnt50.ItemIndex;
-      Settings._useant[b144]  := comboAnt144.ItemIndex;
-      Settings._useant[b430]  := comboAnt430.ItemIndex;
-      Settings._useant[b1200] := comboAnt1200.ItemIndex;
-      Settings._useant[b2400] := comboAnt2400.ItemIndex;
-      Settings._useant[b5600] := comboAnt5600.ItemIndex;
-      Settings._useant[b10g]  := comboAnt10g.ItemIndex;
 
       // Anti Zeroin
       Settings.FUseAntiZeroin := checkUseAntiZeroin.Checked;
@@ -1135,6 +1217,45 @@ end;
 procedure TformOptions.FormShow(Sender: TObject);
 var
    i, j: integer;
+   b: TBand;
+
+   procedure GetRigControlParam(no: Integer; C, S, N, K: TComboBox; T: TCheckBox);
+   begin
+      with dmZlogGlobal do begin
+         if Assigned(C) then begin
+            C.ItemIndex := Settings.FRigControl[no].FControlPort;
+         end;
+
+         if Assigned(S) then begin
+            S.ItemIndex := Settings.FRigControl[no].FSpeed;
+         end;
+
+         if Assigned(N) then begin
+            if Settings.FRigControl[no].FRigName = '' then begin
+               N.ItemIndex := 0;
+            end
+            else begin
+               N.ItemIndex := N.Items.Indexof(Settings.FRigControl[no].FRigName);
+            end;
+         end;
+
+         if Assigned(K) then begin
+            if (Settings.FRigControl[no].FKeyingPort >= 1) and (Settings.FRigControl[no].FKeyingPort <= 20) then begin
+               K.ItemIndex := Settings.FRigControl[no].FKeyingPort;
+            end
+            else if Settings.FRigControl[no].FKeyingPort = 21 then begin    // USB
+               K.ItemIndex := 21;
+            end
+            else begin
+               K.ItemIndex := 0;
+            end;
+         end;
+
+         if Assigned(T) then begin
+            T.Checked := Settings.FRigControl[no].FUseTransverter;
+         end;
+      end;
+   end;
 begin
    with dmZlogGlobal do begin
       FTempClusterTelnet := Settings._cluster_telnet;
@@ -1269,27 +1390,24 @@ begin
       editZLinkPcName.Text := Settings._pcname;
       checkZLinkSyncSerial.Checked := Settings._syncserial;
 
-      // RIG1
-      comboRig1Port.ItemIndex := Settings._rigport[1];
+      //
+      // RIG1-5
+      //
+      GetRigControlParam(1, comboRig1AControl, comboRig1ASpeed, comboRig1AName, comboRig1AKeying, checkRig1AXvt);
+      GetRigControlParam(2, comboRig1BControl, comboRig1BSpeed, comboRig1BName, comboRig1BKeying, checkRig1BXvt);
+      GetRigControlParam(3, comboRig2AControl, comboRig2ASpeed, comboRig2AName, comboRig2AKeying, checkRig2AXvt);
+      GetRigControlParam(4, comboRig2BControl, comboRig2BSpeed, comboRig2BName, comboRig2BKeying, checkRig2BXvt);
+      GetRigControlParam(5, nil,               nil,             nil,            comboRig3Keying,  nil);
 
-      i := comboRig1Name.Items.IndexOf(Settings._rigname[1]);
-      if i = -1 then begin
-         i := 0;
+      //
+      // Set of RIG
+      //
+      for b := b19 to b10g do begin
+         FRigSetA_rig[b].ItemIndex := Settings.FRigSet[1].FRig[b];
+         FRigSetA_ant[b].ItemIndex := Settings.FRigSet[1].FRig[b];
+         FRigSetB_rig[b].ItemIndex := Settings.FRigSet[2].FRig[b];
+         FRigSetB_ant[b].ItemIndex := Settings.FRigSet[2].FRig[b];
       end;
-      comboRig1Name.ItemIndex := i;
-
-      comboRig1Speed.ItemIndex := Settings._rigspeed[1];
-
-      // RIG2
-      comboRig2Port.ItemIndex := Settings._rigport[2];
-
-      i := comboRig2Name.Items.IndexOf(Settings._rigname[2]);
-      if i = -1 then begin
-         i := 0;
-      end;
-      comboRig2Name.ItemIndex := i;
-
-      comboRig2Speed.ItemIndex := Settings._rigspeed[2];
 
       if Settings._use_transceive_mode = True then begin
          comboIcomMode.ItemIndex := 0;
@@ -1318,40 +1436,6 @@ begin
       ZLinkComboChange(nil);
 
       SaveEvery.Value := Settings._saveevery;
-
-      // CW/PTT port
-      // RIG1
-      if (Settings._keyingport[1] >= 1) and (Settings._keyingport[1] <= 20) then begin
-         comboCwPttPort1.ItemIndex := Settings._keyingport[1];
-      end
-      else if (Settings._keyingport[1] >= 21) then begin
-         comboCwPttPort1.ItemIndex := 21;
-      end
-      else begin
-         comboCwPttPort1.ItemIndex := 0;
-      end;
-
-      // RIG2
-      if (Settings._keyingport[2] >= 1) and (Settings._keyingport[2] <= 20) then begin
-         comboCwPttPort2.ItemIndex := Settings._keyingport[2];
-      end
-      else if (Settings._keyingport[2] >= 21) then begin
-         comboCwPttPort2.ItemIndex := 21;
-      end
-      else begin
-         comboCwPttPort2.ItemIndex := 0;
-      end;
-
-      // RIG3
-      if (Settings._keyingport[3] >= 1) and (Settings._keyingport[3] <= 20) then begin
-         comboCwPttPort3.ItemIndex := Settings._keyingport[3];
-      end
-      else if (Settings._keyingport[3] >= 21) then begin
-         comboCwPttPort3.ItemIndex := 21;
-      end
-      else begin
-         comboCwPttPort3.ItemIndex := 0;
-      end;
 
       // Use Winkeyer
       checkUseWinkeyer.Checked := Settings._use_winkeyer;
@@ -1442,9 +1526,6 @@ begin
       cbDispExchange.Checked := Settings._sameexchange;
       cbAutoEnterSuper.Checked := Settings._entersuperexchange;
 
-      cbTransverter1.Checked := Settings._transverter1;
-      cbTransverter2.Checked := Settings._transverter2;
-
       //
       // Rig Control
       //
@@ -1455,24 +1536,6 @@ begin
       cbRecordRigFreq.Checked := Settings._recrigfreq;
       cbAutoBandMap.Checked := Settings._autobandmap;
       updownSendFreqInterval.Position := Settings._send_freq_interval;
-
-      // Ant Control
-      comboAnt19.ItemIndex    := Settings._useant[b19];
-      comboAnt35.ItemIndex    := Settings._useant[b35];
-      comboAnt7.ItemIndex     := Settings._useant[b7];
-      comboAnt10.ItemIndex    := Settings._useant[b10];
-      comboAnt14.ItemIndex    := Settings._useant[b14];
-      comboAnt18.ItemIndex    := Settings._useant[b18];
-      comboAnt21.ItemIndex    := Settings._useant[b21];
-      comboAnt24.ItemIndex    := Settings._useant[b24];
-      comboAnt28.ItemIndex    := Settings._useant[b28];
-      comboAnt50.ItemIndex    := Settings._useant[b50];
-      comboAnt144.ItemIndex   := Settings._useant[b144];
-      comboAnt430.ItemIndex   := Settings._useant[b430];
-      comboAnt1200.ItemIndex  := Settings._useant[b1200];
-      comboAnt2400.ItemIndex  := Settings._useant[b2400];
-      comboAnt5600.ItemIndex  := Settings._useant[b5600];
-      comboAnt10g.ItemIndex   := Settings._useant[b10g];
 
       // Anti Zeroin
       checkUseAntiZeroin.Checked := Settings.FUseAntiZeroin;
@@ -1790,6 +1853,75 @@ begin
       OpListBox.Items.AddObject(dmZlogGlobal.OpList[i].Callsign, dmZlogGlobal.OpList[i]);
    end;
 
+   // Set of RIG
+   FRigSetA_rig[b19]    := comboRigA_b19;
+   FRigSetA_rig[b35]    := comboRigA_b35;
+   FRigSetA_rig[b7]     := comboRigA_b7;
+   FRigSetA_rig[b10]    := comboRigA_b10;
+   FRigSetA_rig[b14]    := comboRigA_b14;
+   FRigSetA_rig[b18]    := comboRigA_b18;
+   FRigSetA_rig[b21]    := comboRigA_b21;
+   FRigSetA_rig[b24]    := comboRigA_b24;
+   FRigSetA_rig[b28]    := comboRigA_b28;
+   FRigSetA_rig[b50]    := comboRigA_b50;
+   FRigSetA_rig[b144]   := comboRigA_b144;
+   FRigSetA_rig[b430]   := comboRigA_b430;
+   FRigSetA_rig[b1200]  := comboRigA_b1200;
+   FRigSetA_rig[b2400]  := comboRigA_b2400;
+   FRigSetA_rig[b5600]  := comboRigA_b5600;
+   FRigSetA_rig[b10g]   := comboRigA_b10g;
+
+   FRigSetA_ant[b19]    := comboRigA_Antb19;
+   FRigSetA_ant[b35]    := comboRigA_Antb35;
+   FRigSetA_ant[b7]     := comboRigA_Antb7;
+   FRigSetA_ant[b10]    := comboRigA_Antb10;
+   FRigSetA_ant[b14]    := comboRigA_Antb14;
+   FRigSetA_ant[b18]    := comboRigA_Antb18;
+   FRigSetA_ant[b21]    := comboRigA_Antb21;
+   FRigSetA_ant[b24]    := comboRigA_Antb24;
+   FRigSetA_ant[b28]    := comboRigA_Antb28;
+   FRigSetA_ant[b50]    := comboRigA_Antb50;
+   FRigSetA_ant[b144]   := comboRigA_Antb144;
+   FRigSetA_ant[b430]   := comboRigA_Antb430;
+   FRigSetA_ant[b1200]  := comboRigA_Antb1200;
+   FRigSetA_ant[b2400]  := comboRigA_Antb2400;
+   FRigSetA_ant[b5600]  := comboRigA_Antb5600;
+   FRigSetA_ant[b10g]   := comboRigA_Antb10g;
+
+   FRigSetB_rig[b19]    := comboRigB_b19;
+   FRigSetB_rig[b35]    := comboRigB_b35;
+   FRigSetB_rig[b7]     := comboRigB_b7;
+   FRigSetB_rig[b10]    := comboRigB_b10;
+   FRigSetB_rig[b14]    := comboRigB_b14;
+   FRigSetB_rig[b18]    := comboRigB_b18;
+   FRigSetB_rig[b21]    := comboRigB_b21;
+   FRigSetB_rig[b24]    := comboRigB_b24;
+   FRigSetB_rig[b28]    := comboRigB_b28;
+   FRigSetB_rig[b50]    := comboRigB_b50;
+   FRigSetB_rig[b144]   := comboRigB_b144;
+   FRigSetB_rig[b430]   := comboRigB_b430;
+   FRigSetB_rig[b1200]  := comboRigB_b1200;
+   FRigSetB_rig[b2400]  := comboRigB_b2400;
+   FRigSetB_rig[b5600]  := comboRigB_b5600;
+   FRigSetB_rig[b10g]   := comboRigB_b10g;
+
+   FRigSetB_ant[b19]    := comboRigB_Antb19;
+   FRigSetB_ant[b35]    := comboRigB_Antb35;
+   FRigSetB_ant[b7]     := comboRigB_Antb7;
+   FRigSetB_ant[b10]    := comboRigB_Antb10;
+   FRigSetB_ant[b14]    := comboRigB_Antb14;
+   FRigSetB_ant[b18]    := comboRigB_Antb18;
+   FRigSetB_ant[b21]    := comboRigB_Antb21;
+   FRigSetB_ant[b24]    := comboRigB_Antb24;
+   FRigSetB_ant[b28]    := comboRigB_Antb28;
+   FRigSetB_ant[b50]    := comboRigB_Antb50;
+   FRigSetB_ant[b144]   := comboRigB_Antb144;
+   FRigSetB_ant[b430]   := comboRigB_Antb430;
+   FRigSetB_ant[b1200]  := comboRigB_Antb1200;
+   FRigSetB_ant[b2400]  := comboRigB_Antb2400;
+   FRigSetB_ant[b5600]  := comboRigB_Antb5600;
+   FRigSetB_ant[b10g]   := comboRigB_Antb10g;
+
    PageControl.ActivePage := tabsheetPreferences;
 
    InitRigNames();
@@ -2096,7 +2228,7 @@ begin
    RenewCWStrBankDisp;
 end;
 
-procedure TformOptions.cbTransverter1Click(Sender: TObject);
+procedure TformOptions.checkRig1AXvtClick(Sender: TObject);
 var
    i, r: integer;
    F: TIntegerDialog;
@@ -2107,12 +2239,7 @@ begin
       r := r - 100;
 
       if TCheckBox(Sender).Checked then begin
-         i := 0;
-         if r = 1 then
-            i := dmZlogGlobal.Settings._transverteroffset1;
-
-         if r = 2 then
-            i := dmZlogGlobal.Settings._transverteroffset2;
+         i := dmZlogGlobal.Settings.FRigControl[r].FTransverterOffset;
 
          F.Init(i, 'Please input the offset frequency in kHz');
          if F.ShowModal() <> mrOK then begin
@@ -2124,11 +2251,7 @@ begin
             Exit;
          end;
 
-         if r = 1 then
-            dmZlogGlobal.Settings._transverteroffset1 := i;
-
-         if r = 2 then
-            dmZlogGlobal.Settings._transverteroffset2 := i;
+         dmZlogGlobal.Settings.FRigControl[r].FTransverterOffset := i;
       end;
    finally
       F.Release();
@@ -2171,47 +2294,113 @@ begin
    end;
 end;
 
-procedure TformOptions.comboRig1NameChange(Sender: TObject);
+procedure TformOptions.comboRig1ANameChange(Sender: TObject);
 begin
-   if comboRig1Name.ItemIndex = comboRig1Name.Items.Count - 1 then begin
-      comboRig2Name.ItemIndex := comboRig2Name.Items.Count - 1;
-      comboRig1Port.ItemIndex := 0;
-      comboRig1Port.Enabled := False;
-      comboRig1Speed.Enabled := False;
-      comboRig2Port.Enabled := False;
-      comboRig2Speed.Enabled := False;
-   end
-   else begin
-      comboRig1Port.Enabled := True;
-      comboRig1Speed.Enabled := True;
-      if comboRig2Name.ItemIndex = comboRig2Name.Items.Count - 1 then begin
-         comboRig2Name.ItemIndex := 0;
-         comboRig2Port.ItemIndex := 0;
-         comboRig2Port.Enabled := True;
-         comboRig2Speed.Enabled := True;
-      end;
+   // 選択されているのがOmni-Rigの場合
+//   if comboRig1AName.ItemIndex = comboRig1AName.Items.Count - 1 then begin
+//      comboRig1BName.ItemIndex := comboRig1BName.Items.Count - 1;
+//      comboRig2AName.ItemIndex := comboRig2AName.Items.Count - 1;
+//      comboRig2BName.ItemIndex := comboRig2BName.Items.Count - 1;
+//      comboRig1AControl.ItemIndex := 0;
+//
+//      comboRig1AControl.Enabled := False;
+//      comboRig1ASpeed.Enabled := False;
+//      comboRig1BControl.Enabled := False;
+//      comboRig1BSpeed.Enabled := False;
+//      comboRig2AControl.Enabled := False;
+//      comboRig2ASpeed.Enabled := False;
+//      comboRig2BControl.Enabled := False;
+//      comboRig2BSpeed.Enabled := False;
+//   end
+//   else begin
+//      comboRig1AControl.Enabled := True;
+//      comboRig1ASpeed.Enabled := True;
+//      if comboRig2AName.ItemIndex = comboRig2AName.Items.Count - 1 then begin
+//         comboRig2AName.ItemIndex := 0;
+//         comboRig2AControl.ItemIndex := 0;
+//         comboRig2AControl.Enabled := True;
+//         comboRig2ASpeed.Enabled := True;
+//         comboRig2BControl.Enabled := True;
+//         comboRig2BSpeed.Enabled := True;
+//      end;
+//   end;
+end;
+
+procedure TformOptions.comboRig2ANameChange(Sender: TObject);
+begin
+//   if comboRig2AName.ItemIndex = comboRig2AName.Items.Count - 1 then begin
+//      comboRig1AName.ItemIndex := comboRig1AName.Items.Count - 1;
+//      comboRig2AControl.ItemIndex := 0;
+//      comboRig2AControl.Enabled := False;
+//      comboRig2ASpeed.Enabled := False;
+//      comboRig2BControl.Enabled := False;
+//      comboRig2BSpeed.Enabled := False;
+//      comboRig1AControl.Enabled := False;
+//      comboRig1ASpeed.Enabled := False;
+//      comboRig1BControl.Enabled := False;
+//      comboRig1BSpeed.Enabled := False;
+//   end
+//   else begin
+//      comboRig2AControl.Enabled := True;
+//      comboRig2ASpeed.Enabled := True;
+//      if comboRig1AName.ItemIndex = comboRig1AName.Items.Count - 1 then begin
+//         comboRig1AName.ItemIndex := 0;
+//         comboRig1AControl.ItemIndex := 0;
+//         comboRig1AControl.Enabled := True;
+//         comboRig1ASpeed.Enabled := True;
+//      end;
+//   end;
+end;
+
+procedure TformOptions.comboRigA_b19Change(Sender: TObject);
+var
+   b: TBand;
+begin
+   if Application.MessageBox(PChar(UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   for b := TBand(TComboBox(Sender).Tag + 1) to b10g do begin
+      FRigSetA_rig[b].ItemIndex := TComboBox(Sender).ItemIndex;
    end;
 end;
 
-procedure TformOptions.comboRig2NameChange(Sender: TObject);
+procedure TformOptions.comboRigA_Antb19Change(Sender: TObject);
+var
+   b: TBand;
 begin
-   if comboRig2Name.ItemIndex = comboRig2Name.Items.Count - 1 then begin
-      comboRig1Name.ItemIndex := comboRig1Name.Items.Count - 1;
-      comboRig2Port.ItemIndex := 0;
-      comboRig2Port.Enabled := False;
-      comboRig2Speed.Enabled := False;
-      comboRig1Port.Enabled := False;
-      comboRig1Speed.Enabled := False;
-   end
-   else begin
-      comboRig2Port.Enabled := True;
-      comboRig2Speed.Enabled := True;
-      if comboRig1Name.ItemIndex = comboRig1Name.Items.Count - 1 then begin
-         comboRig1Name.ItemIndex := 0;
-         comboRig1Port.ItemIndex := 0;
-         comboRig1Port.Enabled := True;
-         comboRig1Speed.Enabled := True;
-      end;
+   if Application.MessageBox(PChar(UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   for b := TBand(TComboBox(Sender).Tag + 1) to b10g do begin
+      FRigSetA_ant[b].ItemIndex := TComboBox(Sender).ItemIndex;
+   end;
+end;
+
+procedure TformOptions.comboRigB_b19Change(Sender: TObject);
+var
+   b: TBand;
+begin
+   if Application.MessageBox(PChar(UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   for b := TBand(TComboBox(Sender).Tag + 1) to b10g do begin
+      FRigSetB_rig[b].ItemIndex := TComboBox(Sender).ItemIndex;
+   end;
+end;
+
+procedure TformOptions.comboRigB_Antb19Change(Sender: TObject);
+var
+   b: TBand;
+begin
+   if Application.MessageBox(PChar(UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   for b := TBand(TComboBox(Sender).Tag + 1) to b10g do begin
+      FRigSetB_ant[b].ItemIndex := TComboBox(Sender).ItemIndex;
    end;
 end;
 
@@ -2228,18 +2417,24 @@ end;
 procedure TformOptions.checkUseWinKeyerClick(Sender: TObject);
 begin
    if TCheckBox(Sender).Checked = True then begin
-      comboCwPttPort2.ItemIndex := comboCwPttPort1.ItemIndex;
+      comboRig1BKeying.ItemIndex := comboRig1AKeying.ItemIndex;
+      comboRig2AKeying.ItemIndex := comboRig1AKeying.ItemIndex;
+      comboRig2BKeying.ItemIndex := comboRig1AKeying.ItemIndex;
    end;
 end;
 
 procedure TformOptions.InitRigNames();
 begin
-   comboRig1Name.Items.Clear;
-   comboRig2Name.Items.Clear;
+   comboRig1AName.Items.Clear;
+   comboRig1BName.Items.Clear;
+   comboRig2AName.Items.Clear;
+   comboRig2BName.Items.Clear;
 
-   dmZlogGlobal.MakeRigList(comboRig1Name.Items);
+   dmZlogGlobal.MakeRigList(comboRig1AName.Items);
 
-   comboRig2Name.Items.Assign(comboRig1Name.Items);
+   comboRig1BName.Items.Assign(comboRig1AName.Items);
+   comboRig2AName.Items.Assign(comboRig1AName.Items);
+   comboRig2BName.Items.Assign(comboRig1AName.Items);
 end;
 
 procedure TformOptions.SetEditNumber(no: Integer);

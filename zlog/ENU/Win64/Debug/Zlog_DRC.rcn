@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.46375</prop>
-        <prop prop-type="OrigDateTime">44801.4637268518</prop>
-        <prop prop-type="XlatDateTime">44801.3296064815</prop>
+        <prop prop-type="SelfDateTime">44801.7865046296</prop>
+        <prop prop-type="OrigDateTime">44801.7855787037</prop>
+        <prop prop-type="XlatDateTime">44801.4782638889</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">1082</prop>
+        <prop prop-type="UnTranslated">1083</prop>
       </prop-group>
     </header>
     <body>
@@ -7584,6 +7584,13 @@
         <source>"Disconnecting..."</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44801.4297550463</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins" resname="UOptions_UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins">
+        <source>"Do you want the following bands to have the same settings?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44801.7865228588</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
       </trans-unit>

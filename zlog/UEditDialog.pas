@@ -922,9 +922,9 @@ end;
 
 procedure TEditDialog.actionToggleVFOExecute(Sender: TObject);
 begin
-   if MainForm.RigControl.Rig <> nil then begin
-      MainForm.RigControl.Rig.ToggleVFO;
-   end;
+//   if MainForm.RigControl.Rig <> nil then begin
+//      MainForm.RigControl.Rig.ToggleVFO;
+//   end;
 end;
 
 procedure TEditDialog.actionQuickMemo3Execute(Sender: TObject);

@@ -60,6 +60,7 @@ library Zlog;
 {ITE} {DFMFileType} {UKCJScore.dfm}
 {ITE} {DFMFileType} {UKCJZone.dfm}
 {ITE} {DFMFileType} {UMenu.dfm}
+{ITE} {DFMFileType} {UMessageManager.dfm}
 {ITE} {DFMFileType} {UNewIOTARef.dfm}
 {ITE} {DFMFileType} {UNewPrefix.dfm}
 {ITE} {DFMFileType} {UNRDialog.dfm}
@@ -163,6 +164,7 @@ library Zlog;
 {$R 'UKCJScore.dfm' 'KCJScore:TForm(BasicScore)'}
 {$R 'UKCJZone.dfm' 'KCJZone:TForm'}
 {$R 'UMenu.dfm' 'MenuForm:TForm'}
+{$R 'UMessageManager.dfm' 'formMessageManager:TForm'}
 {$R 'UNewIOTARef.dfm' 'NewIOTARef:TForm'}
 {$R 'UNewPrefix.dfm' 'NewPrefix:TForm'}
 {$R 'UNRDialog.dfm' 'NRDialog:TForm'}

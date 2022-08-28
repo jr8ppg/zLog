@@ -859,6 +859,8 @@ type
     FCQRepeatCount: Integer;
     FCQRepeatInterval: Integer;
 
+    FCurrentRigSet: Integer; // 現在のRIGSET 1/2/3
+
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -961,10 +963,10 @@ type
     function GetMemoEdit(): TEdit;        // 10
     procedure InitQsoEditPanel();
     procedure UpdateQsoEditPanel(rig: Integer);
-    procedure SwitchRig(rig: Integer);
+    procedure SwitchRig(rigno: Integer);
     procedure SwitchTxRx(tx_rig, rx_rig: Integer);
-    procedure SwitchTx(rig: Integer);
-    procedure SwitchRx(rig: Integer; focusonly: Boolean = False);
+    procedure SwitchTx(rigno: Integer);
+    procedure SwitchRx(rigno: Integer; focusonly: Boolean = False);
     procedure ShowTxIndicator();
     procedure InvertTx();
     procedure ShowCurrentQSO();
@@ -1432,6 +1434,7 @@ end;
 procedure TMainForm.UpdateBand(B: TBand); // called from rigcontrol too
 var
    bb: TBand;
+   rig: TRig;
 begin
    BandEdit.Text := MHzString[B];
 
@@ -1476,7 +1479,8 @@ begin
       WriteStatusLineRed('QSY count exceeded limit!', False);
    end;
 
-   if RigControl.Rig = nil then begin
+   rig := RigControl.GetRig(FCurrentRigSet, B);
+   if rig = nil then begin
       FZLinkForm.SendFreqInfo(round(RigControl.TempFreq[B] * 1000));
    end;
 
@@ -2322,15 +2326,17 @@ end;
 procedure TMainForm.ConsoleRigBandSet(B: TBand);
 var
    Q: TQSO;
+   rig: TRig;
 begin
    Q := TQSO.Create;
    Q.Band := B;
 
-   if RigControl.Rig <> nil then begin
-      RigControl.Rig.SetBand(Q);
+   rig := RigControl.GetRig(FCurrentRigSet, B);
+   if rig <> nil then begin
+      rig.SetBand(Q);
 
       if CurrentQSO.Mode = mSSB then begin
-         RigControl.Rig.SetMode(CurrentQSO);
+         Rig.SetMode(CurrentQSO);
       end;
    end;
 
@@ -2344,9 +2350,12 @@ var
    i: double;
    j: Integer;
    temp, temp2: string;
+   rig: TRig;
 begin
    Delete(S, 1, 1);
    temp := S;
+
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
 
    // if S = 'ELOG' then
    // ELogJapanese.ShowModal;
@@ -2466,29 +2475,33 @@ begin
       actionSetLastFreq.Execute();
    end;
 
-   if S = 'TV' then
-      if RigControl.Rig <> nil then
-         RigControl.Rig.ToggleVFO;
+   if S = 'TV' then begin
+      if rig <> nil then
+         rig.ToggleVFO;
+   end;
 
-   if S = 'VA' then
-      if RigControl.Rig <> nil then
-         RigControl.Rig.SetVFO(0);
+   if S = 'VA' then begin
+      if rig <> nil then
+         rig.SetVFO(0);
+   end;
 
-   if S = 'VB' then
-      if RigControl.Rig <> nil then
-         RigControl.Rig.SetVFO(1);
+   if S = 'VB' then begin
+      if rig <> nil then
+         rig.SetVFO(1);
+   end;
 
-   if S = 'YAESUTEST' then
-      if RigControl.Rig <> nil then
-         RigControl.Rig.FILO := not(RigControl.Rig.FILO);
+   if S = 'YAESUTEST' then begin
+      if rig <> nil then
+         rig.FILO := not(rig.FILO);
+   end;
 
    if S = 'SC' then begin
       actionShowSuperCheck.Execute();
    end;
 
    if S = 'RESET' then begin
-      if RigControl.Rig <> nil then
-         RigControl.Rig.reset;
+      if rig <> nil then
+         rig.Reset;
    end;
 
    if S = 'R1' then begin
@@ -2622,11 +2635,11 @@ begin
    i := StrToFloatDef(S, 0);
 
    if (i > 1799) and (i < 1000000) then begin
-      if RigControl.Rig <> nil then begin
-         RigControl.Rig.SetFreq(round(i * 1000), IsCQ());
-         if CurrentQSO.Mode = mSSB then
-            RigControl.Rig.SetMode(CurrentQSO);
-         // ZLinkForm.SendRigStatus;
+      if rig <> nil then begin
+         rig.SetFreq(round(i * 1000), IsCQ());
+         if CurrentQSO.Mode = mSSB then begin
+            rig.SetMode(CurrentQSO);
+         end;
          FZLinkForm.SendFreqInfo(round(i * 1000));
       end
       else begin
@@ -3646,6 +3659,7 @@ var
    st, st2: string;
    B: TBand;
    band_bakup: TBand;
+   rig: TRig;
 
    function FindPrevQSO(): Integer;
    var
@@ -3727,15 +3741,16 @@ begin
 
    CurrentQSO.Reserve3 := i;
 
-   if (RigControl.Rig <> nil) and (RigControl.GetCurrentRig() <> 3) then begin
+   rig := RigControl.GetRig(FCurrentRigSet, CurrentQSO.Band);
+   if (rig <> nil) and (RigControl.GetCurrentRig() <> 5) then begin
       // RIGの周波数を取得
-      j := RigControl.Rig.CurrentFreqHz;
+      j := rig.CurrentFreqHz;
 
       // 周波数が取得できたら(>0)記録する
       if j > 0 then begin
          // 周波数を記録
          if dmZlogGlobal.Settings._recrigfreq = True then begin
-            CurrentQSO.Freq := RigControl.Rig.CurrentFreqkHzStr;
+            CurrentQSO.Freq := rig.CurrentFreqkHzStr;
          end;
 
          // 自動bandmap
@@ -3847,16 +3862,16 @@ begin
    end;
 
    if CurrentQSO.Mode = mCW then begin
-      if (RigControl.Rig <> nil) and (RigControl.GetCurrentRig() <> 3) then begin
+      if (rig <> nil) and (RigControl.GetCurrentRig() <> 5) then begin
          // RITクリア
          if (dmZlogGlobal.Settings._ritclear = True) or
             (dmZlogGlobal.Settings.FAntiZeroinAutoCancel = True) then begin
-            RigControl.Rig.RitClear;
+            rig.RitClear;
          end;
 
          // Anti Zeroin
          if dmZlogGlobal.Settings.FAntiZeroinAutoCancel = True then begin
-            RigControl.Rig.Xit := False;
+            rig.Xit := False;
          end;
       end;
    end;
@@ -4083,6 +4098,8 @@ begin
 end;
 
 procedure TMainForm.SetCQ(CQ: Boolean);
+var
+   rig: TRig;
 begin
    CurrentQSO.CQ := CQ;
 
@@ -4107,7 +4124,8 @@ begin
 
    FZLinkForm.SendRigStatus;
 
-   if RigControl.Rig = nil then begin
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig = nil then begin
       FZLinkForm.SendFreqInfo(round(RigControl.TempFreq[CurrentQSO.Band] * 1000));
    end;
 
@@ -4119,15 +4137,15 @@ begin
    end;
 
    if (dmZLogGlobal.Settings.FUseAntiZeroin = True) and (CQ = True) and (CurrentQSO.Mode = mCW) then begin
-      if RigControl.Rig <> nil then begin
+      if rig <> nil then begin
          if dmZLogGlobal.Settings.FAntiZeroinRitOff = True then begin
-            RigControl.Rig.Rit := False;
+            rig.Rit := False;
          end;
          if dmZLogGlobal.Settings.FAntiZeroinXitOff = True then begin
-            RigControl.Rig.Xit := False;
+            rig.Xit := False;
          end;
          if dmZLogGlobal.Settings.FAntiZeroinRitClear = True then begin
-            RigControl.Rig.RitClear();
+            rig.RitClear();
          end;
       end;
    end;
@@ -4971,9 +4989,9 @@ begin
    rig := RigControl.GetCurrentRig();
    try
       // KeyingとRigControlを一旦終了
-      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
-      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
-      dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZlogGlobal.Settings._keyingport[3]));
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
+      dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZlogGlobal.Settings.FRigControl[3].FKeyingPort));
       RigControl.Stop();
       dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
 
@@ -5191,16 +5209,15 @@ procedure TMainForm.EditEnter(Sender: TObject);
 var
    P: Integer;
    edit: TEdit;
-   rig: Integer;
 begin
    LastFocus := TEdit(Sender);
    edit := TEdit(Sender);
-   rig := edit.Tag;
+   FCurrentRigSet := edit.Tag;
 
    // SO2Rの場合、現在RIGとクリックされたControlのRIGが違うと強制切り替え
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-      if FCurrentRx <> (rig - 1) then begin
-         SwitchRig(rig);
+      if FCurrentRx <> (FCurrentRigSet - 1) then begin
+         SwitchRig(FCurrentRigSet);
       end;
    end;
 
@@ -5215,7 +5232,7 @@ begin
       end;
    end;
 
-   SetCurrentQSO(rig - 1);
+   SetCurrentQSO(FCurrentRigSet - 1);
 
    actionQsoStart.Enabled:= True;
    actionQsoComplete.Enabled:= True;
@@ -5536,12 +5553,17 @@ begin
 end;
 
 procedure TMainForm.StatusLineResize(Sender: TObject);
+var
+   rig: TRig;
 begin
    StatusLine.Panels[2].Width := 100;
-   if RigControl.Rig <> nil then
+
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then
       StatusLine.Panels[1].Width := 47
    else
       StatusLine.Panels[1].Width := 0;
+
    StatusLine.Panels[0].Width := StatusLine.Width - 100 - StatusLine.Panels[1].Width;
 end;
 
@@ -5795,6 +5817,7 @@ procedure TMainForm.SwitchLastQSOBandMode;
 var
    T, mytx, i: Integer;
    boo: Boolean;
+   rig: TRig;
 begin
    if Log.TotalQSO > 0 then begin
       T := Log.TotalQSO;
@@ -5810,16 +5833,21 @@ begin
       if boo = True then begin
 
          UpdateBand(Log.QsoList[i].Band);
-         if RigControl.Rig <> nil then begin
-            RigControl.Rig.SetBand(CurrentQSO);
-            if CurrentQSO.Mode = mSSB then
-               RigControl.Rig.SetMode(CurrentQSO);
+
+         rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+
+         if rig <> nil then begin
+            rig.SetBand(CurrentQSO);
+            if CurrentQSO.Mode = mSSB then begin
+               rig.SetMode(CurrentQSO);
+            end;
          end;
 
          UpdateMode(Log.QsoList[i].mode);
 
-         if RigControl.Rig <> nil then
-            RigControl.Rig.SetMode(CurrentQSO);
+         if rig <> nil then begin
+            rig.SetMode(CurrentQSO);
+         end;
 
          LastFocus.SetFocus;
       end;
@@ -7034,16 +7062,20 @@ begin
 end;
 
 procedure TMainForm.QSY(b: TBand; m: TMode; r: Integer);
+var
+   rig: TRig;
 begin
    if r <> 0 then begin
       SwitchRig(r);
    end;
 
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+
    if CurrentQSO.band <> b then begin
       UpdateBand(b);
 
-      if RigControl.Rig <> nil then begin
-         RigControl.Rig.SetBand(CurrentQSO);
+      if rig <> nil then begin
+         rig.SetBand(CurrentQSO);
       end;
    end;
 
@@ -7051,8 +7083,8 @@ begin
       UpdateMode(m);
    end;
 
-   if RigControl.Rig <> nil then begin
-      RigControl.Rig.SetMode(CurrentQSO);
+   if rig <> nil then begin
+      rig.SetMode(CurrentQSO);
    end;
 end;
 
@@ -7335,6 +7367,7 @@ end;
 procedure TMainForm.InsertBandScope(fShiftKey: Boolean);
 var
    nFreq: Integer;
+   rig: TRig;
 
    function InputFreq(): Boolean;
    var
@@ -7362,8 +7395,9 @@ var
       Result := True;
    end;
 begin
-   if RigControl.Rig <> nil then begin
-      nFreq := RigControl.Rig.CurrentFreqHz;
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      nFreq := rig.CurrentFreqHz;
       if nFreq > 0 then begin
          BandScopeAddSelfSpot(CurrentQSO, nFreq);
       end
@@ -7430,6 +7464,7 @@ procedure TMainForm.actionPlayMessageAExecute(Sender: TObject);
 var
    no: Integer;
    cb: Integer;
+   rig: TRig;
 begin
    no := TAction(Sender).Tag;
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
@@ -7439,9 +7474,10 @@ begin
    OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
    {$ENDIF}
 
-   if RigControl.Rig <> nil then begin
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
       if dmZLogGlobal.Settings.FAntiZeroinXitOn2 = True then begin
-         if RigControl.Rig.Xit = False then begin
+         if rig.Xit = False then begin
             actionAntiZeroin.Execute();
          end;
       end;
@@ -7483,6 +7519,7 @@ procedure TMainForm.actionPlayMessageBExecute(Sender: TObject);
 var
    no: Integer;
    cb: Integer;
+   rig: TRig;
 begin
    no := TAction(Sender).Tag;
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
@@ -7497,9 +7534,10 @@ begin
    OutputDebugString(PChar('PlayMessageB(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
    {$ENDIF}
 
-   if RigControl.Rig <> nil then begin
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
       if dmZLogGlobal.Settings.FAntiZeroinXitOn2 = True then begin
-         if RigControl.Rig.Xit = False then begin
+         if rig.Xit = False then begin
             actionAntiZeroin.Execute();
          end;
       end;
@@ -8135,26 +8173,32 @@ end;
 
 // #89 バンド変更 Shift+B
 procedure TMainForm.actionChangeBandExecute(Sender: TObject);
+var
+   rig: TRig;
 begin
    UpdateBand(GetNextBand(CurrentQSO.Band, True));
 
-   if RigControl.Rig <> nil then begin
-      RigControl.Rig.SetBand(CurrentQSO);
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      rig.SetBand(CurrentQSO);
 
       if CurrentQSO.Mode = mSSB then begin
-         RigControl.Rig.SetMode(CurrentQSO);
+         rig.SetMode(CurrentQSO);
       end;
    end;
 end;
 
 // #90 モード変更 Shift+M
 procedure TMainForm.actionChangeModeExecute(Sender: TObject);
+var
+   rig: TRig;
 begin
    SetQSOMode(CurrentQSO);
    UpdateMode(CurrentQSO.Mode);
 
-   if RigControl.Rig <> nil then begin
-      RigControl.Rig.SetMode(CurrentQSO);
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      rig.SetMode(CurrentQSO);
    end;
 end;
 
@@ -8227,9 +8271,12 @@ end;
 
 // #99 VFOのトグル
 procedure TMainForm.actionToggleVFOExecute(Sender: TObject);
+var
+   rig: TRig;
 begin
-   if RigControl.Rig <> nil then begin
-      RigControl.Rig.ToggleVFO;
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      rig.ToggleVFO;
    end;
 end;
 
@@ -8306,12 +8353,16 @@ end;
 
 // #105 Jump to the last frequency
 procedure TMainForm.actionSetLastFreqExecute(Sender: TObject);
+var
+   rig: TRig;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actionSetLastFreqExecute---'));
    {$ENDIF}
-   if RigControl.Rig <> nil then begin
-      RigControl.Rig.MoveToLastFreq;
+
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      rig.MoveToLastFreq;
    end;
 
    SetCQ(True);
@@ -8400,30 +8451,42 @@ end;
 
 // #126 Toggle RIT
 procedure TMainForm.actionToggleRitExecute(Sender: TObject);
+var
+   rig: TRig;
 begin
-   if RigControl.Rig = nil then begin
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig = nil then begin
       Exit;
    end;
 
-   RigControl.Rig.Rit := not RigControl.Rig.Rit;
-   ShowToggleStatus('RIT', RigControl.Rig.Rit);
+   rig.Rit := not rig.Rit;
+   ShowToggleStatus('RIT', rig.Rit);
 end;
 
 // #127 Toggle XIT
 procedure TMainForm.actionToggleXitExecute(Sender: TObject);
+var
+   rig: TRig;
 begin
-   if RigControl.Rig = nil then begin
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig = nil then begin
       Exit;
    end;
 
-   RigControl.Rig.Xit := not RigControl.Rig.Xit;
-   ShowToggleStatus('XIT', RigControl.Rig.Xit);
+   rig.Xit := not rig.Xit;
+   ShowToggleStatus('XIT', rig.Xit);
 end;
 
 // #128 RIT Clear
 procedure TMainForm.actionRitClearExecute(Sender: TObject);
+var
+   rig: TRig;
 begin
-   RigControl.SetRitOffset(0);
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      rig.RitClear();
+   end;
+
    WriteStatusLine('RIT/XIT Offset Cleared', False);
 end;
 
@@ -8439,6 +8502,7 @@ procedure TMainForm.actionAntiZeroinExecute(Sender: TObject);
 var
    offset: Integer;
    randmax: Integer;
+   rig: TRig;
 begin
    if CurrentQSO.Mode <> mCW then begin
       Exit;
@@ -8461,9 +8525,12 @@ begin
       offset := offset * -1;
    end;
 
-   RigControl.Rig.Rit := False;
-   RigControl.Rig.Xit := True;
-   RigControl.Rig.RitOffset := offset;
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      rig.Rit := False;
+      rig.Xit := True;
+      rig.RitOffset := offset;
+   end;
 
    WriteStatusLine('** Anti Zeroin **', False);
 end;
@@ -9091,6 +9158,7 @@ procedure TMainForm.SetFrequency(freq: Integer);
 var
    b: TBand;
    Q: TQSO;
+   rig: TRig;
 begin
    if freq = 0 then begin
       Exit;
@@ -9100,22 +9168,23 @@ begin
 
    b := dmZLogGlobal.BandPlan.FreqToBand(freq);
 
-   if RigControl.Rig <> nil then begin
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
       // RIGにfreq設定
-      RigControl.Rig.SetFreq(freq, IsCQ());
+      rig.SetFreq(freq, IsCQ());
 
       if dmZLogGlobal.Settings._bandscope_use_estimated_mode = True then begin
          Q := TQSO.Create();
          Q.Band := b;
          Q.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(freq);
-         RigControl.Rig.SetMode(Q);
+         rig.SetMode(Q);
          Q.Free();
       end;
 
       // Antenna Select
-      RigControl.Rig.AntSelect(dmZLogGlobal.Settings._useant[b]);
+      rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[b]);
 
-      RigControl.Rig.UpdateStatus();
+      rig.UpdateStatus();
 
       // Zeroin避け
       if dmZLogGlobal.Settings.FAntiZeroinXitOn1 = True then begin
@@ -9302,6 +9371,8 @@ begin
 end;
 
 procedure TMainForm.DoVFOChange(Sender: TObject);
+var
+   rig: TRig;
 begin
    if FInitialized = False then begin
       Exit;
@@ -9310,7 +9381,10 @@ begin
    // AntiZeroin利用時
    if (dmZLogGlobal.Settings.FUseAntiZeroin = True) and (FQsyFromBS = False) then begin
       // XIT OFF
-      RigControl.SetXit(False);
+      rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+      if rig <> nil then begin
+         rig.Xit := False;
+      end;
    end;
 
    SetCQ(False);
@@ -9687,41 +9761,44 @@ begin
          SetGlay(1);
          SetWhite(2);
       end;
-      if Assigned(RigControl) then begin
-         if Assigned(RigControl.Rigs[rig]) then begin
+//      if Assigned(RigControl) then begin
+//         if Assigned(RigControl.Rigs[rig]) then begin
 //            UpdateBand(RigControl.Rigs[rig].CurrentBand);
 //            UpdateMode(RigControl.Rigs[rig].CurrentMode);
-         end;
-      end;
+//         end;
+//      end;
    end;
 end;
 
-procedure TMainForm.SwitchRig(rig: Integer);
+procedure TMainForm.SwitchRig(rigno: Integer);
+var
+   rig: TRig;
 begin
    FRigSwitchTime := Now();
 
-   FCurrentRx := rig - 1;
-   FCurrentTx := rig - 1;
-   FInformation.Rx := rig - 1;
-   FInformation.Tx := rig - 1;
+   FCurrentRx := rigno - 1;
+   FCurrentTx := rigno - 1;
+   FInformation.Rx := rigno - 1;
+   FInformation.Tx := rigno - 1;
 
-   RigControl.SetCurrentRig(rig);
+   rig := RigControl.GetRig(rigno, TextToBand(BandEdit.Text));
+   RigControl.SetCurrentRig(rig.RigNumber);
 
-   dmZLogKeyer.SetRxRigFlag(rig);
-   dmZLogKeyer.SetTxRigFlag(rig);
+   dmZLogKeyer.SetRxRigFlag(rigno);
+   dmZLogKeyer.SetTxRigFlag(rigno);
 
    UpdateBandAndMode();
 
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-      UpdateQsoEditPanel(rig);
-      if LastFocus = FEditPanel[rig - 1].rcvdNumber then begin
-         EditEnter(FEditPanel[rig - 1].rcvdNumber);
+      UpdateQsoEditPanel(rigno);
+      if LastFocus = FEditPanel[rigno - 1].rcvdNumber then begin
+         EditEnter(FEditPanel[rigno - 1].rcvdNumber);
       end
       else begin
-         SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rig - 1, 0);
+         SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rigno - 1, 0);
       end;
 
-      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rig - 1, 0);
+      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rigno - 1, 0);
    end;
 
    // ShowTxIndicator();
@@ -9752,55 +9829,59 @@ begin
    UpdateCurrentQSO();
 end;
 
-procedure TMainForm.SwitchTx(rig: Integer);
+procedure TMainForm.SwitchTx(rigno: Integer);
 begin
    // CQ Repeat 中止
    SetCqRepeatMode(False);
 
-   FCurrentTx := rig - 1;
-   FInformation.Tx := rig - 1;
+   FCurrentTx := rigno - 1;
+   FInformation.Tx := rigno - 1;
    ShowTxIndicator();
 
-   dmZLogKeyer.SetTxRigFlag(rig);
+   dmZLogKeyer.SetTxRigFlag(rigno);
 
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-      UpdateQsoEditPanel(rig);
-      if LastFocus = FEditPanel[rig - 1].rcvdNumber then begin
-         EditEnter(FEditPanel[rig - 1].rcvdNumber);
+      UpdateQsoEditPanel(rigno);
+      if LastFocus = FEditPanel[rigno - 1].rcvdNumber then begin
+         EditEnter(FEditPanel[rigno - 1].rcvdNumber);
       end
       else begin
-         FEditPanel[rig - 1].CallsignEdit.SetFocus();
-         EditEnter(FEditPanel[rig - 1].CallsignEdit);
+         FEditPanel[rigno - 1].CallsignEdit.SetFocus();
+         EditEnter(FEditPanel[rigno - 1].CallsignEdit);
       end;
 //      FSo2rNeoCp.Rx := rig - 1;
    end;
 end;
 
-procedure TMainForm.SwitchRx(rig: Integer; focusonly: Boolean);
+procedure TMainForm.SwitchRx(rigno: Integer; focusonly: Boolean);
+var
+   rig: TRig;
 begin
-   FCurrentRx := rig - 1;
-   FInformation.Rx := rig - 1;
+   FCurrentRx := rigno - 1;
+   FInformation.Rx := rigno - 1;
 
-   dmZLogKeyer.SetRxRigFlag(rig);
+   dmZLogKeyer.SetRxRigFlag(rigno);
 
    if focusonly = False then begin
-      RigControl.SetCurrentRig(rig);
-      if Assigned(RigControl.Rig) then begin
-         UpdateBand(RigControl.Rig.CurrentBand);
-         UpdateMode(RigControl.Rig.CurrentMode);
+      rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+
+      RigControl.SetCurrentRig(rig.RigNumber);
+      if Assigned(rig) then begin
+         UpdateBand(rig.CurrentBand);
+         UpdateMode(rig.CurrentMode);
       end;
    end;
 
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-      UpdateQsoEditPanel(rig);
-      if LastFocus = FEditPanel[rig - 1].rcvdNumber then begin
-         EditEnter(FEditPanel[rig - 1].rcvdNumber);
+      UpdateQsoEditPanel(rigno);
+      if LastFocus = FEditPanel[rigno - 1].rcvdNumber then begin
+         EditEnter(FEditPanel[rigno - 1].rcvdNumber);
       end
       else begin
-         SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rig - 1, 0);
+         SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rigno - 1, 0);
       end;
 //      FSo2rNeoCp.Rx := rig - 1;
-      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rig - 1, 0);
+      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rigno - 1, 0);
 
       UpdateCurrentQSO();
    end;
@@ -9976,11 +10057,16 @@ begin
 end;
 
 procedure TMainForm.UpdateBandAndMode();
+var
+   rig: TRig;
 begin
    // SetCurrentRig()はToggleRig内で既に行われている
-   if Assigned(RigControl.Rig) then begin
-      UpdateBand(RigControl.Rig.CurrentBand);
-      UpdateMode(RigControl.Rig.CurrentMode);
+
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if Assigned(rig) then begin
+      RigControl.SetCurrentRig(rig.RigNumber);
+      UpdateBand(rig.CurrentBand);
+      UpdateMode(rig.CurrentMode);
    end
    else begin
       UpdateMode(TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));

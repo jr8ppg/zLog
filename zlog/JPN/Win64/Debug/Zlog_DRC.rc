@@ -8,32 +8,33 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsThread 64448
-#define UExceptionDialog_RsMissingVersionInfo 64449
-#define UExceptionDialog_RsExceptionStack 64450
-#define UExceptionDialog_RsMainThreadID 64451
-#define UExceptionDialog_RsExceptionThreadID 64452
-#define UExceptionDialog_RsMainThreadCallStack 64453
-#define UExceptionDialog_RsThreadCallStack 64454
-#define UExceptionDialog_RsErrorMessage 64455
-#define UExceptionDialog_RsDetailsIntro 64456
-#define UExceptionDialog_RsUnitVersioningIntro 64457
-#define System_RegularExpressionsConsts_SRegExStringsRequired 64464
-#define System_RegularExpressionsConsts_SRegExInvalidIndexType 64465
-#define System_RegularExpressionsConsts_SRegExIndexOutOfBounds 64466
-#define System_RegularExpressionsConsts_SRegExInvalidGroupName 64467
-#define UMenu_UMenu_PleaseEnterYourCallsign 64468
-#define UExceptionDialog_RsAppError 64469
-#define UExceptionDialog_RsExceptionClass 64470
-#define UExceptionDialog_RsExceptionMessage 64471
-#define UExceptionDialog_RsExceptionAddr 64472
-#define UExceptionDialog_RsStackList 64473
-#define UExceptionDialog_RsModulesList 64474
-#define UExceptionDialog_RsOSVersion 64475
-#define UExceptionDialog_RsProcessor 64476
-#define UExceptionDialog_RsMemory 64477
-#define UExceptionDialog_RsScreenRes 64478
-#define UExceptionDialog_RsActiveControl 64479
+#define UExceptionDialog_RsActiveControl 64448
+#define UExceptionDialog_RsThread 64449
+#define UExceptionDialog_RsMissingVersionInfo 64450
+#define UExceptionDialog_RsExceptionStack 64451
+#define UExceptionDialog_RsMainThreadID 64452
+#define UExceptionDialog_RsExceptionThreadID 64453
+#define UExceptionDialog_RsMainThreadCallStack 64454
+#define UExceptionDialog_RsThreadCallStack 64455
+#define UExceptionDialog_RsErrorMessage 64456
+#define UExceptionDialog_RsDetailsIntro 64457
+#define UExceptionDialog_RsUnitVersioningIntro 64458
+#define System_RegularExpressionsConsts_SRegExMatchRequired 64464
+#define System_RegularExpressionsConsts_SRegExStringsRequired 64465
+#define System_RegularExpressionsConsts_SRegExInvalidIndexType 64466
+#define System_RegularExpressionsConsts_SRegExIndexOutOfBounds 64467
+#define System_RegularExpressionsConsts_SRegExInvalidGroupName 64468
+#define UMenu_UMenu_PleaseEnterYourCallsign 64469
+#define UExceptionDialog_RsAppError 64470
+#define UExceptionDialog_RsExceptionClass 64471
+#define UExceptionDialog_RsExceptionMessage 64472
+#define UExceptionDialog_RsExceptionAddr 64473
+#define UExceptionDialog_RsStackList 64474
+#define UExceptionDialog_RsModulesList 64475
+#define UExceptionDialog_RsOSVersion 64476
+#define UExceptionDialog_RsProcessor 64477
+#define UExceptionDialog_RsMemory 64478
+#define UExceptionDialog_RsScreenRes 64479
 #define Vcl_Imaging_pnglang_EPNGCannotAssignChunkText 64480
 #define Vcl_Imaging_pnglang_EPNGUnexpectedEndText 64481
 #define Vcl_Imaging_pnglang_EPNGNoImageDataText 64482
@@ -46,10 +47,10 @@
 #define Vcl_Imaging_pnglang_EInvalidNewSize 64489
 #define Vcl_Imaging_pnglang_EInvalidSpec 64490
 #define Vcl_Imaging_pnglang_EPNGInvalidBitDepthText 64491
-#define System_RegularExpressionsConsts_SRegExMissingExpression 64492
-#define System_RegularExpressionsConsts_SRegExExpressionError 64493
-#define System_RegularExpressionsConsts_SRegExStudyError 64494
-#define System_RegularExpressionsConsts_SRegExMatchRequired 64495
+#define UOptions_UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins 64492
+#define System_RegularExpressionsConsts_SRegExMissingExpression 64493
+#define System_RegularExpressionsConsts_SRegExExpressionError 64494
+#define System_RegularExpressionsConsts_SRegExStudyError 64495
 #define System_NetConsts_SMimeTypeEmpty 64496
 #define System_NetConsts_SMimeValueEmpty 64497
 #define System_NetConsts_SMimeWeightOutOfRange 64498
@@ -1092,6 +1093,7 @@
 #define System_SysConst_SFileNotFound 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
 	UExceptionDialog_RsThread,	L"Thread: %s"
 	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
 	UExceptionDialog_RsExceptionStack,	L"Exception stack"
@@ -1102,6 +1104,7 @@ BEGIN
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	System_RegularExpressionsConsts_SRegExMatchRequired,	L"\x6B63\x898F\x8868\x73FE\x306B\x4E00\x81F4\x3059\x308B\x3082\x306E\x304C\x5FC5\x8981\x3067\x3059"
 	System_RegularExpressionsConsts_SRegExStringsRequired,	L"Strings \x30D1\x30E9\x30E1\x30FC\x30BF\x306B\x306F\x6709\x52B9\x306A\x5024\x304C\x5FC5\x8981\x3067\x3059"
 	System_RegularExpressionsConsts_SRegExInvalidIndexType,	L"\x30A4\x30F3\x30C7\x30C3\x30AF\x30B9 \x30BF\x30A4\x30D7\x304C\x7121\x52B9\x3067\x3059"
 	System_RegularExpressionsConsts_SRegExIndexOutOfBounds,	L"\x30A4\x30F3\x30C7\x30C3\x30AF\x30B9\x304C\x7BC4\x56F2\x5916\x3067\x3059 (%d)"
@@ -1117,7 +1120,6 @@ BEGIN
 	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
-	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
 	Vcl_Imaging_pnglang_EPNGCannotAssignChunkText,	L"\x30C1\x30E3\x30F3\x30AF\x306F\x5272\x308A\x5F53\x3066\x5BFE\x8C61\x3068\x4E92\x63DB\x6027\x304C\x5FC5\x8981\x3067\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGUnexpectedEndText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x7121\x52B9\x3067\x3059\x3002\x30C7\x30B3\x30FC\x30C0\x304C\x4E88\x671F\x3057\x306A\x3044\x30D5\x30A1\x30A4\x30EB\x306E\x7D42\x7AEF\x3092\x691C\x51FA\x3057\x305F\x305F\x3081\x3067\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGNoImageDataText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306B\x306F\x30C7\x30FC\x30BF\x304C\x542B\x307E\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
@@ -1130,10 +1132,10 @@ BEGIN
 	Vcl_Imaging_pnglang_EInvalidNewSize,	L"\x30B5\x30A4\x30BA\x5909\x66F4\x3059\x308B\x753B\x50CF\x306E\x65B0\x3057\x3044\x30B5\x30A4\x30BA\x306F\x6709\x52B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002"
 	Vcl_Imaging_pnglang_EInvalidSpec,	L"""Portable Network Graphics"" \x3092\x4F5C\x6210\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x4E0D\x6B63\x306A\x753B\x50CF\x30BF\x30A4\x30D7 \x30D1\x30E9\x30E1\x30FC\x30BF\x304C\x6307\x5B9A\x3055\x308C\x3066\x3044\x307E\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGInvalidBitDepthText,	L"\x3053\x306E""\x30DD\x30FC\x30BF\x30D6\x30EB \x30CD\x30C3\x30C8\x30EF\x30FC\x30AF \x30B0\x30E9\x30D5\x30A3\x30C3\x30AF""\x30A4\x30E1\x30FC\x30B8\x306F\x3001\x4E0D\x6B63\x306A\x30A4\x30E1\x30FC\x30B8 \x30D3\x30C3\x30C8\x6DF1\x5EA6\x3092\x4F7F\x7528\x3057\x3066\x3044\x308B\x305F\x3081\x3001\x8AAD\x307F\x8FBC\x3080\x3053\x3068\x304C\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
+	UOptions_UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins,	L"\x4EE5\x964D\x306E\x30D0\x30F3\x30C9\x3082\x540C\x3058\x8A2D\x5B9A\x306B\x5909\x66F4\x3057\x307E\x3059\x304B\xFF1F"
 	System_RegularExpressionsConsts_SRegExMissingExpression,	L"RegEx \x306B\x6B63\x898F\x8868\x73FE\x3092\x6307\x5B9A\x3059\x308B\x5FC5\x8981\x304C\x3042\x308A\x307E\x3059"
 	System_RegularExpressionsConsts_SRegExExpressionError,	L"\x30AA\x30D5\x30BB\x30C3\x30C8 %d \x3067\x6B63\x898F\x8868\x73FE\x306B\x30A8\x30E9\x30FC\x304C\x3042\x308A\x307E\x3059: %s"
 	System_RegularExpressionsConsts_SRegExStudyError,	L"\x6B63\x898F\x8868\x73FE\x306E\x89E3\x6790\x3067\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: %s"
-	System_RegularExpressionsConsts_SRegExMatchRequired,	L"\x6B63\x898F\x8868\x73FE\x306B\x4E00\x81F4\x3059\x308B\x3082\x306E\x304C\x5FC5\x8981\x3067\x3059"
 	System_NetConsts_SMimeTypeEmpty,	L"MIME \x30BF\x30A4\x30D7\x304C\x6307\x5B9A\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_NetConsts_SMimeValueEmpty,	L"\x5024\x306E\x540D\x524D\x304C\x5165\x529B\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_NetConsts_SMimeWeightOutOfRange,	L"\x54C1\x8CEA\x306E\x91CD\x307F\x304C\x7BC4\x56F2\x5916\x3067\x3059"
@@ -2180,120 +2182,121 @@ END
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\Dialogs.res */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\Buttons.res */
 /* D:\Users\tmuto\documents\Embarcadero\Studio\21.0\CatalogRepository\JEDICodeLibraryJCL-3.4\lib\d27\win64\JclUnicode.res */
-/* D:\GITHUB\zLog\zlog\UzLogKeyer.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UzLogKeyer.dfm */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\SPIN.RES */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\FileCtrl.res */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\ExtDlgs.res */
 /* D:\Users\tmuto\documents\Embarcadero\Studio\21.0\CatalogRepository\JEDIVisualComponentLibraryJVCL-3.9\Resources\JvConsts.res */
 /* D:\Users\tmuto\documents\Embarcadero\Studio\21.0\CatalogRepository\JEDIVisualComponentLibraryJVCL-3.9\Resources\JvToolEdit.res */
 /* D:\Users\tmuto\documents\Embarcadero\Studio\21.0\CatalogRepository\JEDIVisualComponentLibraryJVCL-3.9\Resources\JvColorCombo.res */
-/* D:\GITHUB\zLog\zlog\UIntegerDialog.DFM */
-/* D:\GITHUB\zLog\zlog\UOperatorEdit.dfm */
-/* D:\GITHUB\zLog\zlog\UConsolePad.DFM */
-/* D:\GITHUB\zLog\zlog\UScratchSheet.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UIntegerDialog.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UOperatorEdit.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UConsolePad.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UScratchSheet.DFM */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\CategoryButtons.res */
-/* D:\GITHUB\zLog\zlog\UChat.DFM */
-/* D:\GITHUB\zLog\zlog\UZServerInquiry.DFM */
-/* D:\GITHUB\zLog\zlog\UCheckWin.DFM */
-/* D:\GITHUB\zLog\zlog\UFreqList.DFM */
-/* D:\GITHUB\zLog\zlog\URigControl.DFM */
-/* D:\GITHUB\zLog\zlog\UZLinkForm.DFM */
-/* D:\GITHUB\zLog\zlog\UBandScope2.dfm */
-/* D:\GITHUB\zLog\zlog\UBasicMulti.DFM */
-/* D:\GITHUB\zLog\zlog\USummaryInfo.DFM */
-/* D:\GITHUB\zLog\zlog\UBasicScore.DFM */
-/* D:\GITHUB\zLog\zlog\UQTCForm.DFM */
-/* D:\GITHUB\zLog\zlog\UPartials.DFM */
-/* D:\GITHUB\zLog\zlog\UEditDialog.DFM */
-/* D:\GITHUB\zLog\zlog\UWWZone.DFM */
-/* D:\GITHUB\zLog\zlog\UACAGMulti.DFM */
-/* D:\GITHUB\zLog\zlog\UNewIOTARef.DFM */
-/* D:\GITHUB\zLog\zlog\UIOTACategory.DFM */
-/* D:\GITHUB\zLog\zlog\UIOTAMulti.DFM */
-/* D:\GITHUB\zLog\zlog\UNewPrefix.DFM */
-/* D:\GITHUB\zLog\zlog\UWWMulti.DFM */
-/* D:\GITHUB\zLog\zlog\UJIDXMulti.DFM */
-/* D:\GITHUB\zLog\zlog\UJIDXScore2.DFM */
-/* D:\GITHUB\zLog\zlog\UWWScore.DFM */
-/* D:\GITHUB\zLog\zlog\UARRLDXMulti.DFM */
-/* D:\GITHUB\zLog\zlog\UARRLDXScore.DFM */
-/* D:\GITHUB\zLog\zlog\UWPXMulti.DFM */
-/* D:\GITHUB\zLog\zlog\UAPSprintScore.DFM */
-/* D:\GITHUB\zLog\zlog\UJA0Score.DFM */
-/* D:\GITHUB\zLog\zlog\UJA0Multi.DFM */
-/* D:\GITHUB\zLog\zlog\UARRLWMulti.DFM */
-/* D:\GITHUB\zLog\zlog\UIARUScore.DFM */
-/* D:\GITHUB\zLog\zlog\UAllAsianScore.DFM */
-/* D:\GITHUB\zLog\zlog\UJIDX_DX_Multi.DFM */
-/* D:\GITHUB\zLog\zlog\UJIDX_DX_Score.DFM */
-/* D:\GITHUB\zLog\zlog\UWPXScore.DFM */
-/* D:\GITHUB\zLog\zlog\UWAEMulti.DFM */
-/* D:\GITHUB\zLog\zlog\UWAEScore.DFM */
-/* D:\GITHUB\zLog\zlog\UIARUMulti.DFM */
-/* D:\GITHUB\zLog\zlog\UARRL10Multi.DFM */
-/* D:\GITHUB\zLog\zlog\UARRL10Score.DFM */
-/* D:\GITHUB\zLog\zlog\UPediScore.DFM */
-/* D:\GITHUB\zLog\zlog\UALLJAMulti.DFM */
-/* D:\GITHUB\zLog\zlog\UALLJAScore.DFM */
-/* D:\GITHUB\zLog\zlog\UFDMulti.DFM */
-/* D:\GITHUB\zLog\zlog\USixDownMulti.DFM */
-/* D:\GITHUB\zLog\zlog\UGeneralScore.DFM */
-/* D:\GITHUB\zLog\zlog\UGeneralMulti2.DFM */
-/* D:\GITHUB\zLog\zlog\UComm.DFM */
-/* D:\GITHUB\zLog\zlog\UClusterTelnetSet.DFM */
-/* D:\GITHUB\zLog\zlog\UClusterCOMSet.DFM */
-/* D:\GITHUB\zLog\zlog\UZlinkTelnetSet.DFM */
-/* D:\GITHUB\zLog\zlog\UPackageLoader.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UChat.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UZServerInquiry.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UCheckWin.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UFreqList.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\URigControl.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UZLinkForm.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UBandScope2.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UBasicMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\USummaryInfo.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UBasicScore.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UQTCForm.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UPartials.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UEditDialog.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UWWZone.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UACAGMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UNewIOTARef.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UIOTACategory.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UIOTAMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UNewPrefix.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UWWMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UJIDXMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UJIDXScore2.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UWWScore.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UARRLDXMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UARRLDXScore.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UWPXMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UAPSprintScore.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UJA0Score.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UJA0Multi.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UARRLWMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UIARUScore.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UAllAsianScore.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UJIDX_DX_Multi.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UJIDX_DX_Score.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UWPXScore.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UWAEMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UWAEScore.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UIARUMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UARRL10Multi.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UARRL10Score.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UPediScore.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UALLJAMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UALLJAScore.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UFDMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\USixDownMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UGeneralScore.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UGeneralMulti2.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UComm.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UClusterTelnetSet.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UClusterCOMSet.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UZlinkTelnetSet.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UPackageLoader.dfm */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\WinXCtrls.res */
-/* D:\GITHUB\zLog\zlog\UPluginManager.dfm */
-/* D:\GITHUB\zLog\zlog\UOptions.DFM */
-/* D:\GITHUB\zLog\zlog\UzLogGlobal.dfm */
-/* D:\GITHUB\zLog\zlog\UTTYConsole.DFM */
-/* D:\GITHUB\zLog\zlog\UELogJarl1.dfm */
-/* D:\GITHUB\zLog\zlog\UELogJarl2.dfm */
-/* D:\GITHUB\zLog\zlog\UQuickRef.dfm */
-/* D:\GITHUB\zLog\zlog\UZAnalyze.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UPluginManager.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UOptions.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UzLogGlobal.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UTTYConsole.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UELogJarl1.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UELogJarl2.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UQuickRef.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UZAnalyze.dfm */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\TeeFonts.res */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\TeeResou.res */
-/* D:\GITHUB\zLog\zlog\URateDialog.DFM */
-/* D:\GITHUB\zLog\zlog\URateDialogEx.DFM */
-/* D:\GITHUB\zLog\zlog\USuperCheck.DFM */
-/* D:\GITHUB\zLog\zlog\USuperCheck2.DFM */
-/* D:\GITHUB\zLog\zlog\UCWKeyBoard.DFM */
-/* D:\GITHUB\zLog\zlog\USpotForm.DFM */
-/* D:\GITHUB\zLog\zlog\UCheckCall2.DFM */
-/* D:\GITHUB\zLog\zlog\UCheckMulti.DFM */
-/* D:\GITHUB\zLog\zlog\UCheckCountry.DFM */
-/* D:\GITHUB\zLog\zlog\UTextEditor.dfm */
-/* D:\GITHUB\zLog\zlog\UCwMessageEditor.dfm */
-/* D:\GITHUB\zLog\zlog\UCwMessagePad.dfm */
-/* D:\GITHUB\zLog\zlog\UNRDialog.dfm */
-/* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\MPlayer.res */
-/* D:\GITHUB\zLog\zlog\UVoiceForm.dfm */
-/* D:\GITHUB\zLog\zlog\UFunctionKeyPanel.dfm */
-/* D:\GITHUB\zLog\zlog\UQsyInfo.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\URateDialog.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\URateDialogEx.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\USuperCheck.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\USuperCheck2.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UCWKeyBoard.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\USpotForm.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UCheckCall2.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UCheckMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UCheckCountry.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UTextEditor.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UCwMessageEditor.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UCwMessagePad.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UNRDialog.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UFunctionKeyPanel.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UQsyInfo.dfm */
 /* D:\Users\tmuto\documents\Embarcadero\Studio\21.0\CatalogRepository\JEDIVisualComponentLibraryJVCL-3.9\Resources\JvLED.res */
-/* D:\GITHUB\zLog\zlog\USo2rNeoCp.dfm */
-/* D:\GITHUB\zLog\zlog\UInformation.dfm */
-/* D:\GITHUB\zLog\zlog\UWinKeyerTester.dfm */
-/* D:\GITHUB\zLog\zlog\UStatusEdit.dfm */
-/* D:\GITHUB\zLog\zlog\UAbout.DFM */
-/* D:\GITHUB\zLog\zlog\UCFGEdit.dfm */
-/* D:\GITHUB\zLog\zlog\USelectUserDefinedContest.dfm */
-/* D:\GITHUB\zLog\zlog\UMenu.DFM */
-/* D:\GITHUB\zLog\zlog\UJIDXScore.DFM */
-/* D:\GITHUB\zLog\zlog\UKCJZone.DFM */
-/* D:\GITHUB\zLog\zlog\UKCJMulti.DFM */
-/* D:\GITHUB\zLog\zlog\UKCJScore.DFM */
-/* D:\GITHUB\zLog\zlog\UBandPlanEditDialog.dfm */
-/* D:\GITHUB\zLog\zlog\UGraphColorDialog.dfm */
-/* D:\GITHUB\zLog\zlog\UAgeDialog.DFM */
-/* D:\GITHUB\zLog\zlog\UUTCDialog.DFM */
-/* D:\GITHUB\zLog\zlog\Progress.dfm */
-/* D:\GITHUB\zLog\zlog\UTargetEditor.dfm */
-/* D:\GITHUB\zLog\zlog\UExportHamlog.dfm */
-/* D:\GITHUB\zLog\zlog\Main.DFM */
-/* D:\GITHUB\zLog\zlog\UExceptionDialog.dfm */
-/* D:\GITHUB\zLog\zlog\zLog.dres */
-/* D:\GITHUB\zLog\zlog\zLog.RES */
-/* D:\GITHUB\zLog\zlog\zLog.drf */
+/* D:\GITHUB\zLog_2bsiq\zlog\USo2rNeoCp.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UInformation.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UWinKeyerTester.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UStatusEdit.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UMessageManager.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UAbout.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UCFGEdit.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\USelectUserDefinedContest.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UMenu.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UJIDXScore.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UKCJZone.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UKCJMulti.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UKCJScore.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UBandPlanEditDialog.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UGraphColorDialog.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UAgeDialog.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\UUTCDialog.DFM */
+/* D:\GITHUB\zLog_2bsiq\zlog\Progress.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UTargetEditor.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UExportHamlog.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\Main.DFM */
+/* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\MPlayer.res */
+/* D:\GITHUB\zLog_2bsiq\zlog\UVoiceForm.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\UExceptionDialog.dfm */
+/* D:\GITHUB\zLog_2bsiq\zlog\zLog.dres */
+/* D:\GITHUB\zLog_2bsiq\zlog\zLog.RES */
+/* D:\GITHUB\zLog_2bsiq\zlog\zLog.drf */

@@ -160,6 +160,7 @@ type
     property MaxBand: TBand read _maxband write _maxband;
     property CurrentBand: TBand read _currentband;
     property CurrentMode: TMode read _currentmode;
+    property RigNumber: Integer read _rignumber;
 //    property PollingInterval: Integer read FPollingInterval write FPollingInterval;
 
     property RitCtrlSupported: Boolean read FRitCtrlSupported write FRitCtrlSupported;
@@ -388,7 +389,7 @@ type
     procedure Reset; override;
   end;
 
-  TRigArray = array[1..3] of TRig;
+  TRigArray = array[1..5] of TRig;
   TFreqArray = array [b19..HiBand] of Double;
 
   TRigControl = class(TForm)
@@ -413,6 +414,10 @@ type
     Label1: TLabel;
     Label4: TLabel;
     buttonJumpLastFreq: TSpeedButton;
+    ZCom3: TCommPortDriver;
+    ZCom4: TCommPortDriver;
+    PollingTimer3: TTimer;
+    PollingTimer4: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -430,6 +435,7 @@ type
     FPrevVfo: array[0..1] of Integer;
     FOnVFOChanged: TNotifyEvent;
     FFreqLabel: array[0..1] of TLabel;
+    FPollingTimer: array[1..4] of TTimer;
 
     FCurrentRigNumber: Integer;  // 1 or 2
     FMaxRig: Integer;            // default = 2.  may be larger with virtual rigs
@@ -458,13 +464,15 @@ type
     procedure SetSendFreq();
     procedure UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer; b: TBand; m: TMode);
 
-    procedure SetRit(fOnOff: Boolean);
-    procedure SetXit(fOnOff: Boolean);
-    procedure SetRitOffset(offset: Integer);
+//    procedure SetRit(fOnOff: Boolean);
+//    procedure SetXit(fOnOff: Boolean);
+//    procedure SetRitOffset(offset: Integer);
 
-    property Rig: TRig read FCurrentRig;
-    property Rigs: TRigArray read FRigs;
+//    property Rig: TRig read FCurrentRig;
+//    property Rigs: TRigArray read FRigs;
     property MaxRig: Integer read FMaxRig write FMaxRig;
+
+    function GetRig(setno: Integer; b: TBand): TRig;
 
     property OnVFOChanged: TNotifyEvent read FOnVFOChanged write FOnVFOChanged;
   end;
@@ -587,17 +595,18 @@ end;
 
 function TRigControl.IsAvailableBand(B: TBand): Boolean;
 begin
-   if Rig = nil then begin
-      Result := True;
-      Exit;
-   end;
-
-   if (Rig.MinBand <= B) and (B <= Rig.MaxBand) then begin
-      Result := True;
-   end
-   else begin
-      Result := False;
-   end;
+//   if Rig = nil then begin
+//      Result := True;
+//      Exit;
+//   end;
+//
+//   if (Rig.MinBand <= B) and (B <= Rig.MaxBand) then begin
+//      Result := True;
+//   end
+//   else begin
+//      Result := False;
+//   end;
+   Result := True;
 end;
 
 function TRigControl.SetCurrentRig(N: Integer): Boolean;
@@ -613,7 +622,7 @@ begin
 
    // RIG切り替え
    FCurrentRigNumber := N;
-   if ((N = 1) or (N = 2) or (N = 3)) and (FRigs[N] <> nil) then begin
+   if ((N = 1) or (N = 2) or (N = 3) or (N = 4) or (N = 5)) and (FRigs[N] <> nil) then begin
       FCurrentRig := FRigs[FCurrentRigNumber];
       FCurrentRig.InquireStatus;
 
@@ -1336,7 +1345,7 @@ begin
          btnOmniRig.Enabled := False;
       end;
 
-      if dmZlogGlobal.Settings._rigport[rignum] in [1 .. 20] then begin
+      if dmZlogGlobal.Settings.FRigControl[rignum].FControlPort in [1 .. 20] then begin
          rname := dmZlogGlobal.RigNameStr[rignum];
          if rname = 'None' then begin
             Exit;
@@ -1488,6 +1497,8 @@ begin
 end;
 
 procedure TRigControl.ImplementOptions(rig: Integer);
+var
+   i: Integer;
 begin
    Stop();
 
@@ -1495,28 +1506,23 @@ begin
       FMaxRig := 2;
    end
    else begin
-      FMaxRig := 3;
+      FMaxRig := 5;
    end;
 
    FRigs[1] := BuildRigObject(1);
    FRigs[2] := BuildRigObject(2);
-   FRigs[3] := TVirtualRig.Create(3);
+   FRigs[3] := BuildRigObject(3);
+   FRigs[4] := BuildRigObject(4);
+   FRigs[5] := TVirtualRig.Create(5);
 
-   if FRigs[1] <> nil then begin
-      if dmZlogGlobal.Settings._transverter1 then begin
-         FRigs[1]._freqoffset := 1000 * dmZlogGlobal.Settings._transverteroffset1;
-      end
-      else begin
-         FRigs[1]._freqoffset := 0;
-      end;
-   end;
-
-   if FRigs[2] <> nil then begin
-      if dmZlogGlobal.Settings._transverter2 then begin
-         FRigs[2]._freqoffset := 1000 * dmZlogGlobal.Settings._transverteroffset2;
-      end
-      else begin
-         FRigs[2]._freqoffset := 0;
+   for i := 1 to 4 do begin
+      if FRigs[i] <> nil then begin
+         if dmZlogGlobal.Settings.FRigControl[i].FUseTransverter then begin
+            FRigs[i]._freqoffset := 1000 * dmZlogGlobal.Settings.FRigControl[i].FTransverterOffset;
+         end
+         else begin
+            FRigs[i]._freqoffset := 0;
+         end;
       end;
    end;
 
@@ -1526,8 +1532,20 @@ begin
 
    // RIGコントロールのCOMポートと、CWキーイングのポートが同じなら
    // CWキーイングのCPDrvをRIGコントロールの物にすり替える
-   if ((FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._keyingport[1])) and
-      ((FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._keyingport[2])) then begin
+   for i := 1 to 4 do begin
+      if (FRigs[i] <> nil) and (dmZlogGlobal.Settings.FRigControl[i].FControlPort = dmZlogGlobal.Settings.FRigControl[i].FKeyingPort) then begin
+         FPollingTimer[i].Enabled := False;
+         dmZLogKeyer.SetCommPortDriver(i - 1, FRigs[i].CommPortDriver);
+         FPollingTimer[i].Enabled := True;
+      end
+      else begin
+         dmZLogKeyer.ResetCommPortDriver(i - 1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[i].FKeyingPort));
+      end;
+   end;
+
+(*
+   if ((FRigs[1] <> nil) and (dmZlogGlobal.Settings.FRigControl[1].FControlPort = dmZlogGlobal.Settings.FRigControl[1].FKeyingPort)) and
+      ((FRigs[2] <> nil) and (dmZlogGlobal.Settings.FRigControl[2].FControlPort = dmZlogGlobal.Settings.FRigControl[2].FKeyingPort)) then begin
       PollingTimer1.Enabled := False;
       dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
       PollingTimer1.Enabled := True;
@@ -1536,24 +1554,25 @@ begin
       dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
       PollingTimer2.Enabled := True;
    end
-   else if (FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._keyingport[1]) then begin
+   else if (FRigs[1] <> nil) and (dmZlogGlobal.Settings.FRigControl[1].FControlPort = dmZlogGlobal.Settings.FRigControl[1].FKeyingPort) then begin
       PollingTimer1.Enabled := False;
       dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
       PollingTimer1.Enabled := True;
 
-      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
    end
-   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._keyingport[2]) then begin
-      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
+   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings.FRigControl[2].FControlPort = dmZlogGlobal.Settings.FRigControl[2].FKeyingPort) then begin
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
 
       PollingTimer2.Enabled := False;
       dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
       PollingTimer2.Enabled := True;
    end
    else begin
-      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
-      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
    end;
+*)
 end;
 
 procedure TRigControl.Stop();
@@ -1561,9 +1580,13 @@ begin
    Timer1.Enabled := False;
    PollingTimer1.Enabled := False;
    PollingTimer2.Enabled := False;
+   PollingTimer3.Enabled := False;
+   PollingTimer4.Enabled := False;
    FreeAndNil(FRigs[1]);
    FreeAndNil(FRigs[2]);
    FreeAndNil(FRigs[3]);
+   FreeAndNil(FRigs[4]);
+   FreeAndNil(FRigs[5]);
    FCurrentRig := nil;
 end;
 
@@ -1586,18 +1609,28 @@ begin
 
    _rignumber := RigNum;
    if _rignumber = 1 then begin
-      prtnr := dmZlogGlobal.Settings._rigport[1];
+      prtnr := dmZlogGlobal.Settings.FRigControl[1].FControlPort;
       FComm := MainForm.RigControl.ZCom1;
       FPollingTimer := MainForm.RigControl.PollingTimer1;
    end
-   else begin
-      prtnr := dmZlogGlobal.Settings._rigport[2];
+   else if _rignumber = 2 then begin
+      prtnr := dmZlogGlobal.Settings.FRigControl[2].FControlPort;
       FComm := MainForm.RigControl.ZCom2;
       FPollingTimer := MainForm.RigControl.PollingTimer2;
+   end
+   else if _rignumber = 3 then begin
+      prtnr := dmZlogGlobal.Settings.FRigControl[3].FControlPort;
+      FComm := MainForm.RigControl.ZCom3;
+      FPollingTimer := MainForm.RigControl.PollingTimer3;
+   end
+   else begin
+      prtnr := dmZlogGlobal.Settings.FRigControl[4].FControlPort;
+      FComm := MainForm.RigControl.ZCom4;
+      FPollingTimer := MainForm.RigControl.PollingTimer4;
    end;
 
    // 9600bps以下は200msec, 19200bps以上は100msec
-   if dmZlogGlobal.Settings._rigspeed[RigNum] <= 4 then begin
+   if dmZlogGlobal.Settings.FRigControl[RigNum].FSpeed <= 4 then begin
       FPollingInterval := Min(dmZLogGlobal.Settings._polling_interval, 150);   // milisec
    end
    else begin
@@ -1606,7 +1639,7 @@ begin
 
    FComm.Disconnect;
    FComm.Port := TPortNumber(prtnr);
-   FComm.BaudRate := BaudRateToSpeed[ dmZlogGlobal.Settings._rigspeed[RigNum] ];
+   FComm.BaudRate := BaudRateToSpeed[ dmZlogGlobal.Settings.FRigControl[RigNum].FSpeed ];
    FComm.HwFlow := hfRTSCTS;
    FComm.SwFlow := sfNONE;
    FComm.EnableDTROnOpen := True;
@@ -2318,7 +2351,7 @@ begin
    SetFreq(f, Q.CQ);
 
    // Antenna Select
-   AntSelect(dmZLogGlobal.Settings._useant[Q.Band]);
+   //AntSelect(dmZLogGlobal.Settings._useant[Q.Band]);
 end;
 
 procedure TRig.RitClear();
@@ -3790,6 +3823,8 @@ begin
    FRigs[1] := nil;
    FRigs[2] := nil;
    FRigs[3] := nil;
+   FRigs[4] := nil;
+   FRigs[5] := nil;
    FPrevVfo[0] := 0;
    FPrevVfo[1] := 0;
    FOnVFOChanged := nil;
@@ -3804,6 +3839,11 @@ begin
    end;
 
    FOmniRig := TOmniRigX.Create(Self);
+
+   FPollingTimer[1] := PollingTimer1;
+   FPollingTimer[2] := PollingTimer2;
+   FPollingTimer[3] := PollingTimer3;
+   FPollingTimer[4] := PollingTimer4;
 end;
 
 procedure TRigControl.FormDestroy(Sender: TObject);
@@ -3938,35 +3978,53 @@ begin
    end;
 end;
 
-procedure TRigControl.SetRit(fOnOff: Boolean);
+//procedure TRigControl.SetRit(fOnOff: Boolean);
+//begin
+//   if Rig = nil then begin
+//      Exit;
+//   end;
+//
+//   Rig.Rit := fOnOff;
+//end;
+//
+//procedure TRigControl.SetXit(fOnOff: Boolean);
+//begin
+//   if Rig = nil then begin
+//      Exit;
+//   end;
+//
+//   Rig.Xit := fOnOff;
+//end;
+//
+//procedure TRigControl.SetRitOffset(offset: Integer);
+//begin
+//   if Rig = nil then begin
+//      Exit;
+//   end;
+//
+//   if offset = 0 then begin
+//      Rig.RitClear();
+//   end
+//   else begin
+//      Rig.RitOffset := offset;
+//   end;
+//end;
+
+function TRigControl.GetRig(setno: Integer; b: TBand): TRig;
+var
+   rigno: Integer;
 begin
-   if Rig = nil then begin
-      Exit;
-   end;
-
-   Rig.Rit := fOnOff;
-end;
-
-procedure TRigControl.SetXit(fOnOff: Boolean);
-begin
-   if Rig = nil then begin
-      Exit;
-   end;
-
-   Rig.Xit := fOnOff;
-end;
-
-procedure TRigControl.SetRitOffset(offset: Integer);
-begin
-   if Rig = nil then begin
-      Exit;
-   end;
-
-   if offset = 0 then begin
-      Rig.RitClear();
+   if setno = 3 then begin
+      Result := FRigs[5];
    end
    else begin
-      Rig.RitOffset := offset;
+      rigno := dmZLogGlobal.Settings.FRigSet[setno].FRig[b];
+      if rigno = 0 then begin
+         Result := nil;
+      end
+      else begin
+         Result := FRigs[rigno];
+      end;
    end;
 end;
 

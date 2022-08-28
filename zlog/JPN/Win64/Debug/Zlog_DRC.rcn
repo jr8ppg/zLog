@@ -5,10 +5,10 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.4637268518</prop>
-        <prop prop-type="OrigDateTime">44801.4637268518</prop>
-        <prop prop-type="XlatDateTime">44801.3297685185</prop>
-        <prop prop-type="Translated">5</prop>
+        <prop prop-type="SelfDateTime">44801.7877314815</prop>
+        <prop prop-type="OrigDateTime">44801.4756944444</prop>
+        <prop prop-type="XlatDateTime">44801.4782638889</prop>
+        <prop prop-type="Translated">6</prop>
         <prop prop-type="UnTranslated">1077</prop>
       </prop-group>
     </header>
@@ -7591,6 +7591,14 @@
           <prop prop-type="Status">1</prop>
         </prop-group>
         <target>"切断中..."</target>
+      </trans-unit>
+      <trans-unit id="UOptions_UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins" resname="UOptions_UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins">
+        <source>"Do you want the following bands to have the same settings?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44801.7860512269</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"以降のバンドも同じ設定に変更しますか？"</target>
       </trans-unit>
     </body>
   </file>
