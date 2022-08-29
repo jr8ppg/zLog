@@ -8201,6 +8201,7 @@ begin
       rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
 
       RigControl.SetCurrentRig(rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
    end;
 end;
 
@@ -8631,6 +8632,7 @@ end;
 procedure TMainForm.actionToggleTxExecute(Sender: TObject);
 var
    tx: Integer;
+   rig: TRig;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #145 ToggleTx ---'));
@@ -8645,7 +8647,10 @@ begin
    FCurrentTx := tx;
    FInformation.Tx := tx;
 
-   dmZLogKeyer.SetTxRigFlag(tx + 1);
+   rig := RigControl.GetRig(tx + 1, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+   end;
 
    UpdateMode(TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));
 
@@ -9801,10 +9806,11 @@ begin
    rig := RigControl.GetRig(rigno, TextToBand(BandEdit.Text));
    if rig <> nil then begin
       RigControl.SetCurrentRig(rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
    end;
 
    dmZLogKeyer.SetRxRigFlag(rigno);
-   dmZLogKeyer.SetTxRigFlag(rigno);
+   dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
 
    UpdateBandAndMode();
 
@@ -9827,6 +9833,8 @@ begin
 end;
 
 procedure TMainForm.SwitchTxRx(tx_rig, rx_rig: Integer);
+var
+   rig: TRig;
 begin
    // CQ Repeat ’†Ž~
    SetCqRepeatMode(False);
@@ -9835,7 +9843,10 @@ begin
    FInformation.Tx := tx_rig - 1;
    ShowTxIndicator();
 
-   dmZLogKeyer.SetTxRigFlag(tx_rig);
+   rig := RigControl.GetRig(tx_rig, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+   end;
 
    FCurrentRx := rx_rig - 1;
    FInformation.Rx := rx_rig - 1;
@@ -9849,6 +9860,8 @@ begin
 end;
 
 procedure TMainForm.SwitchTx(rigno: Integer);
+var
+   rig: TRig;
 begin
    // CQ Repeat ’†Ž~
    SetCqRepeatMode(False);
@@ -9857,7 +9870,10 @@ begin
    FInformation.Tx := rigno - 1;
    ShowTxIndicator();
 
-   dmZLogKeyer.SetTxRigFlag(rigno);
+   rig := RigControl.GetRig(rigno, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+   end;
 
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       UpdateQsoEditPanel(rigno);
@@ -9883,9 +9899,9 @@ begin
 
    if focusonly = False then begin
       rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
-
-      RigControl.SetCurrentRig(rig.RigNumber);
       if Assigned(rig) then begin
+         RigControl.SetCurrentRig(rig.RigNumber);
+         dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
          UpdateBand(rig.CurrentBand);
          UpdateMode(rig.CurrentMode);
       end;
@@ -9925,13 +9941,17 @@ end;
 procedure TMainForm.InvertTx();
 var
    tx: Integer;
+   rig: TRig;
 begin
    tx := GetNextRigID(FCurrentRx);
 
    FCurrentTx := tx;
    FInformation.Tx := tx;
 
-   dmZLogKeyer.SetTxRigFlag(tx + 1);
+   rig := RigControl.GetRig(tx + 1, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+   end;
 
    // ShowTxIndicator();
    PostMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);
@@ -10084,6 +10104,7 @@ begin
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if Assigned(rig) then begin
       RigControl.SetCurrentRig(rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
       UpdateBand(rig.CurrentBand);
       UpdateMode(rig.CurrentMode);
    end
@@ -10099,12 +10120,17 @@ end;
 
 procedure TMainForm.ResetTx();
 var
-   rig: Integer;
+   rigno: Integer;
+   rig: TRig;
 begin
-   rig := RigControl.GetCurrentRig();
-   FCurrentTx := rig - 1;
-   FInformation.Tx := rig - 1;
-   dmZlogKeyer.SetTxRigFlag(rig);
+   rigno := RigControl.GetCurrentRig();
+   FCurrentTx := rigno - 1;
+   FInformation.Tx := rigno - 1;
+
+   rig := RigControl.GetRig(rigno, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+   end;
 
    // ShowTxIndicator();
    SendMessage(Handle, WM_ZLOG_SETTXINDICATOR, 0, 0);

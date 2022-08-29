@@ -671,22 +671,26 @@ begin
    // COMポートでのRIG SELECT
    if (FSo2rTxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
       case flag of
-         0: begin
+         // RigSet:0 RIG:0
+         1: begin
             ZComTxRigSelect.ToggleDTR(False);
             ZComTxRigSelect.ToggleRTS(False);
          end;
 
-         1: begin
-            ZComTxRigSelect.ToggleDTR(True);
-            ZComTxRigSelect.ToggleRTS(False);
-         end;
-
+         // RigSet:0 RIG:1
          2: begin
             ZComTxRigSelect.ToggleDTR(False);
             ZComTxRigSelect.ToggleRTS(True);
          end;
 
+         // RigSet:1 RIG:0
          3: begin
+            ZComTxRigSelect.ToggleDTR(True);
+            ZComTxRigSelect.ToggleRTS(False);
+         end;
+
+         // RigSet:1 RIG:1
+         4: begin
             ZComTxRigSelect.ToggleDTR(True);
             ZComTxRigSelect.ToggleRTS(True);
          end;
