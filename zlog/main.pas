@@ -6431,7 +6431,7 @@ begin
 //   rig := Message.WParam;
    proc := Message.LParam;
 
-   rig := RigControl.GetCurrentRig();
+   rig := FCurrentRigSet;  //RigControl.GetCurrentRig();
    rig := GetNextRigID(rig - 1) + 1;
 
    if proc = 0 then begin
@@ -9797,7 +9797,7 @@ var
    rig: TRig;
 begin
    FRigSwitchTime := Now();
-
+   FCurrentRigSet := rigno;
    FCurrentRx := rigno - 1;
    FCurrentTx := rigno - 1;
    FInformation.Rx := rigno - 1;
@@ -9810,7 +9810,7 @@ begin
    end;
 
    dmZLogKeyer.SetRxRigFlag(rigno);
-   dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+   //dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
 
    UpdateBandAndMode();
 
@@ -9990,7 +9990,8 @@ procedure TMainForm.checkUseRig3Click(Sender: TObject);
 var
    rig: Integer;
 begin
-   rig := RigControl.GetCurrentRig();
+//   rig := RigControl.GetCurrentRig();
+   rig := FCurrentRigSet;
 
    if checkUseRig3.Checked = True then begin
       RigControl.MaxRig := 3;
@@ -10123,7 +10124,7 @@ var
    rigno: Integer;
    rig: TRig;
 begin
-   rigno := RigControl.GetCurrentRig();
+   rigno := FCurrentRigSet;   //RigControl.GetCurrentRig();
    FCurrentTx := rigno - 1;
    FInformation.Tx := rigno - 1;
 
