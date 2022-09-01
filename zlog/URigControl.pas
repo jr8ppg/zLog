@@ -296,6 +296,12 @@ type
     procedure SetVFO(i : integer); override;
   end;
 
+  TFT1011 = class(TFT1000MP)
+    procedure ExecuteCommand(S: AnsiString); override;
+    procedure RitClear; override;
+    procedure SetVFO(i : integer); override;
+  end;
+
   TMARKV = class(TFT1000MP)
     procedure ExecuteCommand(S: AnsiString); override;
     procedure RitClear; override;
@@ -1159,6 +1165,84 @@ begin
    end;
 end;
 
+procedure TFT1011.ExecuteCommand(S: AnsiString);
+var
+   i: LongInt;
+   M: TMode;
+begin
+   try
+      if length(S) = 32 then begin
+         if _currentvfo = 0 then
+            i := Ord(S[8])
+         else
+            i := Ord(S[8 + 16]);
+
+         case i of
+            0, 1:
+               M := mSSB;
+            2:
+               M := mCW;
+            3:
+               M := mAM;
+            4:
+               M := mFM;
+            5:
+               M := mRTTY;
+            else
+               M := mOther;
+         end;
+         _currentmode := M;
+
+         i := Ord(S[2]) * 256 * 256 + Ord(S[3]) * 256 + Ord(S[4]);
+         i := i * 10;
+         _currentfreq[0] := i;
+         i := i + _freqoffset;
+
+         if _currentvfo = 0 then begin
+            UpdateFreqMem(0, i);
+         end;
+
+         i := Ord(S[18]) * 256 * 256 + Ord(S[19]) * 256 + Ord(S[20]);
+         i := i * 10;
+         _currentfreq[1] := i;
+         i := i + _freqoffset;
+
+         if _currentvfo = 1 then begin
+            UpdateFreqMem(1, i);
+         end;
+      end;
+
+      if Selected then begin
+         UpdateStatus;
+      end;
+   finally
+      FPollingTimer.Enabled := True;
+   end;
+end;
+
+procedure TFT1011.RitClear;
+begin
+   Inherited;
+   WriteData(_nil3 + AnsiChar($FF) + AnsiChar($09));
+end;
+
+procedure TFT1011.SetVFO(i: Integer); // A:0, B:1
+begin
+   if (i > 1) or (i < 0) then begin
+      Exit;
+   end;
+
+   _currentvfo := i;
+   if i = 0 then
+      WriteData(_nil3 + AnsiChar(0) + AnsiChar($05))
+   else
+      WriteData(_nil3 + AnsiChar(1) + AnsiChar($05));
+
+   if Selected then begin
+      UpdateStatus;
+   end;
+end;
+
 procedure TMARKV.ExecuteCommand(S: AnsiString);
 var
    i: LongInt;
@@ -1408,6 +1492,12 @@ begin
 
          if rname = 'FT-1000' then begin
             rig := TFT1000.Create(rignum);
+            rig._minband := b19;
+            rig._maxband := b28;
+         end;
+
+         if rname = 'FT-1011' then begin
+            rig := TFT1011.Create(rignum);
             rig._minband := b19;
             rig._maxband := b28;
          end;

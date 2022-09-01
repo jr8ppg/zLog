@@ -37,7 +37,7 @@ const
   TXLIST_MS = '0,1';
 
 const
-  RIGNAMES : array[0..17] of string =
+  RIGNAMES : array[0..18] of string =
 ('None',
  'TS-690/450',
  'TS-850',
@@ -52,6 +52,7 @@ const
  'FT-991',
  'FT-100',
  'FT-1000',
+ 'FT-1011',
  'FT-1000MP',
  'MarkV/FT-1000MP',
  'FT-1000MP Mark-V Field',
