@@ -4715,6 +4715,8 @@ begin
    if str <> '' then begin
       WriteStatusLine(str, False);
    end;
+
+   Q.Free();
 end;
 
 procedure TMainForm.Timer1Timer(Sender: TObject);
