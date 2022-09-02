@@ -297,8 +297,11 @@ type
   end;
 
   TFT1011 = class(TFT1000MP)
+    procedure Initialize(); override;
+    procedure SetMode(Q : TQSO); override;
     procedure ExecuteCommand(S: AnsiString); override;
     procedure RitClear; override;
+    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
     procedure SetVFO(i : integer); override;
   end;
 
@@ -474,6 +477,8 @@ type
 
     property OnVFOChanged: TNotifyEvent read FOnVFOChanged write FOnVFOChanged;
   end;
+
+function dec2hex(i: Integer): Integer;
 
 implementation
 
@@ -1165,6 +1170,46 @@ begin
    end;
 end;
 
+procedure TFT1011.Initialize();
+begin
+   Inherited;
+   FPollingTimer.Enabled := False;
+end;
+
+procedure TFT1011.SetMode(Q: TQSO);
+var
+   Command: AnsiString;
+   para: byte;
+begin
+   para := 0;
+
+   case Q.Mode of
+      mSSB:
+         if Q.Band <= b7 then
+            para := 0
+         else
+            para := 1;
+      mCW:
+         para := 2;
+      mFM:
+         para := 6;
+      mAM:
+         para := 4;
+      mRTTY:
+         para := 8;
+      mOther:
+         para := $0A;
+   end;
+
+   Command := _nil3 + AnsiChar(para) + AnsiChar($0C);
+   WriteData(Command);
+
+   _currentmode := Q.Mode;
+   if Selected then begin
+      UpdateStatus;
+   end;
+end;
+
 procedure TFT1011.ExecuteCommand(S: AnsiString);
 var
    i: LongInt;
@@ -1224,6 +1269,45 @@ procedure TFT1011.RitClear;
 begin
    Inherited;
    WriteData(_nil3 + AnsiChar($FF) + AnsiChar($09));
+end;
+
+procedure TFT1011.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+var
+   fstr: AnsiString;
+   i, j: LongInt;
+begin
+   if fSetLastFreq = True then begin
+      LastFreq := _currentfreq[_currentvfo];
+   end;
+
+   i := Hz;
+   i := i div 10;
+
+   j := i mod 100;
+   fstr := AnsiChar(dec2hex(j));
+   i := i div 100;
+
+   j := i mod 100;
+   fstr := fstr + AnsiChar(dec2hex(j));
+   i := i div 100;
+
+   j := i mod 100;
+   fstr := fstr + AnsiChar(dec2hex(j));
+   i := i div 100;
+
+   j := i mod 100;
+   fstr := fstr + AnsiChar(dec2hex(j));
+   // i := i div 100;
+
+   fstr := fstr + AnsiChar($0A);
+
+   WriteData(fstr);
+
+   _currentfreq[_currentvfo] := Hz;
+   UpdateFreqMem(_currentvfo, Hz);
+   if Selected then begin
+      UpdateStatus;
+   end;
 end;
 
 procedure TFT1011.SetVFO(i: Integer); // A:0, B:1
