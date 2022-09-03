@@ -7079,7 +7079,7 @@ begin
       SwitchRig(r);
    end;
 
-   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   rig := RigControl.GetRig(FCurrentRigSet, b);
 
    if CurrentQSO.band <> b then begin
       UpdateBand(b);
@@ -7088,7 +7088,7 @@ begin
          rig.SetBand(CurrentQSO);
 
          // Antenna Select
-         rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
+         rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[b]);
       end;
    end;
 
