@@ -6060,13 +6060,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@MingLiU'
+          FontName = '@KaiTi'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 23
+          ItemIndex = 22
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

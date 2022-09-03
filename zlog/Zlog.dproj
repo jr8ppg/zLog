@@ -3,7 +3,7 @@
         <ProjectGuid>{83497C9C-5934-4E18-AC20-2AB9247B7276}</ProjectGuid>
         <MainSource>zlog.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
@@ -78,6 +78,7 @@
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
         <VerInfo_Release>2</VerInfo_Release>
         <DCC_OutputDRCFile>true</DCC_OutputDRCFile>
+        <DCC_Define>EUREKALOG_VER7;EUREKALOG;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
@@ -469,24 +470,19 @@
         <DCCReference Include="UQsoEdit.pas"/>
         <DCCReference Include="USo2rNeoCp.pas">
             <Form>formSo2rNeoCp</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UInformation.pas">
             <Form>formInformation</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UWinKeyerTester.pas">
             <Form>formWinkeyerTester</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UStatusEdit.pas">
             <Form>formStatusEdit</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzLogContest.pas"/>
         <DCCReference Include="UMessageManager.pas">
             <Form>formMessageManager</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
@@ -671,110 +667,111 @@
                 </Resource_DLL_Projects>
                 <RDP_Source_Files>
                     <RDP_Source_Files Name="Item0">Win64\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item1">main.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item2">UBasicScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item3">UBasicMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item4">UALLJAMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item5">UPartials.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item6">UEditDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item7">UAbout.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item8">URateDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item9">UOptions.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item10">UMenu.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item11">UACAGMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item12">USuperCheck2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item13">UALLJAScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item14">UWWScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item15">UWWMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item16">UWWZone.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item17">UComm.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item18">UClusterTelnetSet.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item19">UClusterCOMSet.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item20">UJIDXMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item21">UJIDXScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item22">UJIDXScore2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item23">UZlinkTelnetSet.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item24">UWPXMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item25">UWPXScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item26">UPediScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item27">UCWKeyBoard.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item28">UJIDX_DX_Score.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item29">UJIDX_DX_Multi.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item30">UChat.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item31">UZServerInquiry.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item32">UZLinkForm.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item33">UGeneralScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item34">UGeneralMulti2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item35">USpotForm.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item36">UFDMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item37">UARRLDXMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item38">UARRLDXScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item39">UARRLWMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item40">UAPSprintScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item41">UJA0Score.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item42">UJA0Multi.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item43">UKCJMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item44">USixDownMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item45">UIARUMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item46">UIARUScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item47">UAllAsianScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item48">UAgeDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item49">UIOTAMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item50">UNewIOTARef.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item51">UIOTACategory.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item52">UUTCDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item53">UARRL10Multi.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item54">UARRL10Score.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item55">USummaryInfo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item56">URigControl.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item57">UConsolePad.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item58">UFreqList.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item59">UCheckWin.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item60">UCheckCall2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item61">UCheckMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item62">UCheckCountry.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item63">UIntegerDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item64">UNewPrefix.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item65">UKCJZone.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item66">UScratchSheet.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item67">UKCJScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item68">UTTYConsole.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item69">UQTCForm.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item70">UWAEScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item71">UWAEMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item72">UQuickRef.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item73">UBandScope2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item74">UzLogGlobal.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item75">UELogJarl1.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item76">UELogJarl2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item77">UzLogKeyer.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item78">UZAnalyze.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item79">USuperCheck.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item80">Progress.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item81">UCwMessageEditor.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item82">UCwMessagePad.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item83">UTextEditor.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item84">USelectUserDefinedContest.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item85">UVoiceForm.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item86">UCFGEdit.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item87">UExceptionDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item88">UOperatorEdit.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item89">UFunctionKeyPanel.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item90">UBandPlanEditDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item91">UGraphColorDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item92">UTargetEditor.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item93">URateDialogEx.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item94">UNRDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item95">UQsyInfo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item96">UExportHamlog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item97">UPackageLoader.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item98">UPluginManager.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item99">USo2rNeoCp.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item100">UInformation.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item101">UWinKeyerTester.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item102">UStatusEdit.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item103">UMessageManager.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item104">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item1">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item2">main.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item3">UBasicScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item4">UBasicMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item5">UALLJAMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item6">UPartials.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item7">UEditDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item8">UAbout.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item9">URateDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item10">UOptions.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item11">UMenu.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item12">UACAGMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item13">USuperCheck2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item14">UALLJAScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item15">UWWScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item16">UWWMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item17">UWWZone.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item18">UComm.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item19">UClusterTelnetSet.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item20">UClusterCOMSet.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item21">UJIDXMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item22">UJIDXScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item23">UJIDXScore2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item24">UZlinkTelnetSet.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item25">UWPXMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item26">UWPXScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item27">UPediScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item28">UCWKeyBoard.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item29">UJIDX_DX_Score.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item30">UJIDX_DX_Multi.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item31">UChat.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item32">UZServerInquiry.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item33">UZLinkForm.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item34">UGeneralScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item35">UGeneralMulti2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item36">USpotForm.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item37">UFDMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item38">UARRLDXMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item39">UARRLDXScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item40">UARRLWMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item41">UAPSprintScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item42">UJA0Score.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item43">UJA0Multi.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item44">UKCJMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item45">USixDownMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item46">UIARUMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item47">UIARUScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item48">UAllAsianScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item49">UAgeDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item50">UIOTAMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item51">UNewIOTARef.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item52">UIOTACategory.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item53">UUTCDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item54">UARRL10Multi.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item55">UARRL10Score.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item56">USummaryInfo.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item57">URigControl.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item58">UConsolePad.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item59">UFreqList.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item60">UCheckWin.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item61">UCheckCall2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item62">UCheckMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item63">UCheckCountry.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item64">UIntegerDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item65">UNewPrefix.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item66">UKCJZone.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item67">UScratchSheet.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item68">UKCJScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item69">UTTYConsole.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item70">UQTCForm.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item71">UWAEScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item72">UWAEMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item73">UQuickRef.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item74">UBandScope2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item75">UzLogGlobal.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item76">UELogJarl1.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item77">UELogJarl2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item78">UzLogKeyer.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item79">UZAnalyze.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item80">USuperCheck.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item81">Progress.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item82">UCwMessageEditor.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item83">UCwMessagePad.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item84">UTextEditor.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item85">USelectUserDefinedContest.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item86">UVoiceForm.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item87">UCFGEdit.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item88">UExceptionDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item89">UOperatorEdit.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item90">UFunctionKeyPanel.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item91">UBandPlanEditDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item92">UGraphColorDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item93">UTargetEditor.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item94">URateDialogEx.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item95">UNRDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item96">UQsyInfo.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item97">UExportHamlog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item98">UPackageLoader.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item99">UPluginManager.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item100">USo2rNeoCp.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item101">UInformation.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item102">UWinKeyerTester.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item103">UStatusEdit.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item104">UMessageManager.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item105">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

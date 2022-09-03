@@ -5,8 +5,8 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5678009259</prop>
-        <prop prop-type="OrigDateTime">44801.4782638889</prop>
+        <prop prop-type="SelfDateTime">44807.6042592593</prop>
+        <prop prop-type="OrigDateTime">44807.6000694444</prop>
         <prop prop-type="XlatDateTime">44801.4782638889</prop>
         <prop prop-type="Translated">83</prop>
         <prop prop-type="UnTranslated">2982</prop>
@@ -1310,7 +1310,7 @@
         <prop prop-type="Created">44796.8923295023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">258</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainPanel.O:EditPanel2R.O:RigPanelC.O:labelRig3Title.Width" resname="O:MainForm.O:MainPanel.O:EditPanel2R.O:RigPanelC.O:labelRig3Title.Width">
-        <source>35</source>
+        <source>40</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8923295023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">259</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1320,7 +1320,7 @@
         <prop prop-type="Created">44796.8923295023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">260</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainPanel.O:EditPanel2R.O:RigPanelC.O:labelRig3Title.Caption" resname="O:MainForm.O:MainPanel.O:EditPanel2R.O:RigPanelC.O:labelRig3Title.Caption">
-        <source>'RIG3'</source>
+        <source>'RIG-C'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8923295023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">261</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -2395,7 +2395,7 @@
         <prop prop-type="Created">44796.8923296875</prop><prop prop-type="Status">0</prop><prop prop-type="Order">475</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainPanel.O:EditPanel2R.O:EditUpperRightPanel.O:RigPanelA.O:labelRig1Title.Width" resname="O:MainForm.O:MainPanel.O:EditPanel2R.O:EditUpperRightPanel.O:RigPanelA.O:labelRig1Title.Width">
-        <source>35</source>
+        <source>40</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8923296875</prop><prop prop-type="Status">0</prop><prop prop-type="Order">476</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -2405,7 +2405,7 @@
         <prop prop-type="Created">44796.8923296875</prop><prop prop-type="Status">0</prop><prop prop-type="Order">477</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainPanel.O:EditPanel2R.O:EditUpperRightPanel.O:RigPanelA.O:labelRig1Title.Caption" resname="O:MainForm.O:MainPanel.O:EditPanel2R.O:EditUpperRightPanel.O:RigPanelA.O:labelRig1Title.Caption">
-        <source>'RIG1'</source>
+        <source>'RIG-A'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8923296875</prop><prop prop-type="Status">0</prop><prop prop-type="Order">478</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -2990,7 +2990,7 @@
         <prop prop-type="Created">44796.8923296875</prop><prop prop-type="Status">0</prop><prop prop-type="Order">594</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainPanel.O:EditPanel2R.O:EditUpperRightPanel.O:RigPanelB.O:labelRig2Title.Width" resname="O:MainForm.O:MainPanel.O:EditPanel2R.O:EditUpperRightPanel.O:RigPanelB.O:labelRig2Title.Width">
-        <source>35</source>
+        <source>40</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8923296875</prop><prop prop-type="Status">0</prop><prop prop-type="Order">595</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -3000,7 +3000,7 @@
         <prop prop-type="Created">44796.8923296875</prop><prop prop-type="Status">0</prop><prop prop-type="Order">596</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainPanel.O:EditPanel2R.O:EditUpperRightPanel.O:RigPanelB.O:labelRig2Title.Caption" resname="O:MainForm.O:MainPanel.O:EditPanel2R.O:EditUpperRightPanel.O:RigPanelB.O:labelRig2Title.Caption">
-        <source>'RIG2'</source>
+        <source>'RIG-B'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8923296875</prop><prop prop-type="Status">0</prop><prop prop-type="Order">597</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
