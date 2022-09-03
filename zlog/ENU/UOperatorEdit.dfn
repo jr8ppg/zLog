@@ -5,8 +5,8 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44796.8931944444</prop>
-        <prop prop-type="OrigDateTime">44253.958287037</prop>
+        <prop prop-type="SelfDateTime">44807.6527546296</prop>
+        <prop prop-type="OrigDateTime">44807.6525694444</prop>
         <prop prop-type="XlatDateTime">44253.958287037</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">365</prop>
@@ -59,7 +59,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TformOperatorEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.Font.Height" resname="O:formOperatorEdit.Font.Height">
-        <source>-11</source>
+        <source>-12</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TformOperatorEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>

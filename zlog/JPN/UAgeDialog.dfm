@@ -9,7 +9,7 @@ object AgeDialog: TAgeDialog
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = 'MS Sans Serif'
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   OldCreateOrder = True
   Position = poOwnerFormCenter
@@ -24,10 +24,10 @@ object AgeDialog: TAgeDialog
   end
   object Label1: TLabel
     Left = 24
-    Top = 20
+    Top = 19
     Width = 105
     Height = 13
-    Caption = 'Please input your age:'
+    Caption = #24180#40802#12434#20837#21147#12375#12390#19979#12373#12356
   end
   object OKBtn: TButton
     Left = 75

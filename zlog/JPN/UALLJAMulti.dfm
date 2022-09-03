@@ -8,7 +8,7 @@ object ALLJAMulti: TALLJAMulti
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -12
-  Font.Name = 'MS Sans Serif'
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   OldCreateOrder = True
   Scaled = False
@@ -272,7 +272,7 @@ object ALLJAMulti: TALLJAMulti
       Top = 10
       Width = 97
       Height = 17
-      Caption = 'Stay on top'
+      Caption = #25163#21069#12395#34920#31034
       TabOrder = 1
       OnClick = cbStayOnTopClick
     end
