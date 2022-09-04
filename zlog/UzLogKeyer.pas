@@ -614,7 +614,7 @@ begin
       (p[6] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[6]) or
       (p[7] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[7]) then begin
       {$IFDEF DEBUG}
-      OutputDebugString(PChar('***HidControllerDeviceData*** ReportID=' + IntToHex(ReportID,2) + ' DATA=' + s));
+//      OutputDebugString(PChar('***HidControllerDeviceData*** ReportID=' + IntToHex(ReportID,2) + ' DATA=' + s));
       {$ENDIF}
 
       // Port Data In
@@ -2583,7 +2583,10 @@ end;
 procedure TKeyerMonitorThread.DotheJob;
 begin
    if Assigned(FKeyer.OnCallsignSentProc) then begin
-      FKeyer.OnCallsignSentProc(FKeyer);
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('*** TKeyerMonitorThread.DotheJob ****'));
+      {$ENDIF}
+      FKeyer.OnCallsignSentProc(TObject(FKeyer.FWkTx));
    end;
 end;
 

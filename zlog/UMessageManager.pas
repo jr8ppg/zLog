@@ -127,6 +127,10 @@ var
    msg: TPlayMessage;
    strCallsign: string;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('>>> Enter - TformMessageManager.AddQue(' + IntToStr(nID) + ',''' + S + ''');'));
+   {$ENDIF}
+
    if Assigned(aQSO) then begin
       if aQSO.Mode = mCW then begin
          S := SetStr(S, aQSO);
@@ -148,6 +152,10 @@ begin
    msg.FCallsign := strCallsign;
 
    AddQue(msg);
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('<<< Leave - TformMessageManager.AddQue();'));
+   {$ENDIF}
 end;
 
 procedure TformMessageManager.AddQue(nID: Integer; nVoiceNo: Integer);
@@ -181,6 +189,9 @@ var
    i: Integer;
    msg: TPlayMessage;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('>>> Enter - TformMessageManager.ClearQue();'));
+   {$ENDIF}
    StopCW();
    StopVoice();
 
@@ -190,6 +201,9 @@ begin
    end;
    FMessageQueue.Clear();
    Memo1.Clear();
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('<<< Leave - TformMessageManager.ClearQue();'));
+   {$ENDIF}
 end;
 
 procedure TformMessageManager.StopCW();
@@ -233,7 +247,7 @@ begin
                nID := MainForm.CurrentRX;
             end
             else begin
-               nID := MainForm.TabKeyPressedRigID;
+               nID := msg.FRigID - 10;
             end;
 
             zLogSendStr(nID, msg.FText, msg.FCallsign);
@@ -292,6 +306,10 @@ end;
 
 procedure TformMessageManager.ContinueQue();
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('>>> Enter - TformMessageManager.ContinueQue();'));
+   {$ENDIF}
+
    // ‰½‚©‚ ‚ê‚Î‘—M
    if (dmZLogKeyer.IsPlaying = False) and (IsPlaying = False) and
       (FMessageQueue.Count > 0) then begin
@@ -300,6 +318,10 @@ begin
       {$ENDIF}
       PostMessage(Handle, WM_MSGMAN_PLAYQUEUE, 0, 0);
    end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('<<< Leave - TformMessageManager.ContinueQue();'));
+   {$ENDIF}
 end;
 
 procedure TformMessageManager.ClearText();

@@ -3349,6 +3349,10 @@ begin
       Exit;
    end;
 
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('------ >>> Enter OnTabPress ------'));
+   {$ENDIF}
+
    // CQリピート停止
    timerCqRepeat.Enabled := False;
    FCQRepeatPlaying := True;
@@ -3456,16 +3460,23 @@ begin
          dmZLogKeyer.So2rNeoReverseRx(nID)
       end;
 
-      FMessageManager.AddQue(2, S, nil);
+      FMessageManager.AddQue(FKeyPressedRigID + 10, S, nil);
    end
    else begin
-      FMessageManager.AddQue(2, S, curQSO);
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar(S));
+      {$ENDIF}
+      FMessageManager.AddQue(FKeyPressedRigID + 10, S, curQSO);
 //      FMessageManager.AddQue(WM_ZLOG_CALLSIGNSENT, 0, FKeyPressedRigID);
    end;
 
    FMessageManager.ContinueQue();
 
    curQSO.Free();
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('------ <<< Leave OnTabPress ------'));
+   {$ENDIF}
 end;
 
 procedure TMainForm.OnDownKeyPress;
@@ -3485,6 +3496,10 @@ begin
       {$ENDIF}
       Exit;
    end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('------ >>> Enter OnDownkeyPress ------'));
+   {$ENDIF}
 
    // CQリピート停止
    timerCqRepeat.Enabled := False;
@@ -3512,7 +3527,7 @@ begin
             // NR?自動送出使う場合
             if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
                S := dmZlogGlobal.CWMessage(5);
-               FMessageManager.AddQue(1, S, CurrentQSO);
+               FMessageManager.AddQue(FKeyPressedRigID + 10, S, CurrentQSO);
             end;
 
             WriteStatusLine('Invalid number', False);
@@ -3523,7 +3538,11 @@ begin
 
          // TU $M TEST
          S := dmZlogGlobal.CWMessage(3);
-         FMessageManager.AddQue(1, S, CurrentQSO);
+
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar(S));
+         {$ENDIF}
+         FMessageManager.AddQue(FKeyPressedRigID + 10, S, CurrentQSO);
 
          FMessageManager.ContinueQue();
 
@@ -3602,9 +3621,13 @@ begin
 
             FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 1, 0);
          end;
-         Exit;
+//         Exit;
       end;
    end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('------ <<< Leave OnDownkeyPress ------'));
+   {$ENDIF}
 end;
 
 procedure TMainForm.EditKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
@@ -3804,17 +3827,17 @@ begin
 
    CurrentQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
 
-   MainForm.GridAdd(CurrentQSO);
+   GridAdd(CurrentQSO);
 
    CurrentQSO.Reserve2 := $00;
 
-   MainForm.ReEvaluateQSYCount;
+   ReEvaluateQSYCount;
 
-   if MainForm.FRateDialog.Visible then begin
-      MainForm.FRateDialog.UpdateGraph;
+   if FRateDialog.Visible then begin
+      FRateDialog.UpdateGraph;
    end;
-   if MainForm.FRateDialogEx.Visible then begin
-      MainForm.FRateDialogEx.UpdateGraph;
+   if FRateDialogEx.Visible then begin
+      FRateDialogEx.UpdateGraph;
    end;
 
    // M/S時、本来Multi StationはNEW MULTIしか交信できない
@@ -4557,11 +4580,11 @@ var
       end;
    end;
 begin
-   nID := FKeyPressedRigID;   //Integer(Sender);
+   nID := Integer(Sender); //FKeyPressedRigID;   //Integer(Sender);
    curQSO := TQSO.Create();
 
    {$IFDEF DEBUG}
-   OutputDebugString(PChar('--- Begin CallsignSentProc() ---'));
+   OutputDebugString(PChar('--- Begin CallsignSentProc() ID = [' + IntToStr(nID) + ']'));
    {$ENDIF}
    try
       AssignControls(nID, C, N, B, M);
@@ -4628,6 +4651,9 @@ begin
       TabPressed := False;
       TabPressed2 := False;
       curQSO.Free();
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('--- End CallsignSentProc() ---'));
+      {$ENDIF}
    end;
 end;
 
@@ -8099,9 +8125,14 @@ end;
 procedure TMainForm.actionQsoStartExecute(Sender: TObject);
 begin
    {$IFDEF DEBUG}
-   OutputDebugString(PChar('---actionQsoStartExecute---'));
+   OutputDebugString(PChar('--- BEGIN - actionQsoStartExecute---'));
    {$ENDIF}
+
    OnTabPress;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('--- END - actionQsoStartExecute---'));
+   {$ENDIF}
 end;
 
 // #83 交信完了 / ↓
@@ -8109,9 +8140,14 @@ end;
 procedure TMainForm.actionQsoCompleteExecute(Sender: TObject);
 begin
    {$IFDEF DEBUG}
-   OutputDebugString(PChar('---actionQsoCompleteExecute---'));
+   OutputDebugString(PChar('--- BEGIN - actionQsoCompleteExecute---'));
    {$ENDIF}
+
    OnDownKeyPress;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('--- END - actionQsoCompleteExecute---'));
+   {$ENDIF}
 end;
 
 // #84 No Operation
@@ -10232,6 +10268,10 @@ end;
 
 procedure TMainForm.OnAlphaNumericKeyProc(Sender: TObject; var Key: word);
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('BEGIN - TMainForm.OnAlphaNumericKeyProc() Key = ' + IntToStr(Key)));
+   {$ENDIF}
+
    // CQループ中のキー入力割り込み
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
       if (FCwCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
@@ -10270,6 +10310,10 @@ begin
          end;
       end;
    end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('END - TMainForm.OnAlphaNumericKeyProc() Key = ' + IntToStr(Key)));
+   {$ENDIF}
 end;
 
 procedure TMainForm.UpdateCurrentQSO();
