@@ -200,6 +200,7 @@ type
     H1: TMenuItem;
     CheckCall1: TMenuItem;
     CreateDupeCheckSheetZPRINT1: TMenuItem;
+    PluginMenu: TMenuItem;
     View1: TMenuItem;
     ShowCurrentBandOnly: TMenuItem;
     menuSortByTime: TMenuItem;

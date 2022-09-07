@@ -35,7 +35,7 @@ uses
 	UPackageLoader,
 	WinXCtrls,
 	Windows,
-   System.UITypes;
+	System.UITypes;
 
 type
 	TMarketItem = class(TObject)
@@ -64,9 +64,9 @@ type
 		function CanDisable: boolean;
 		function CanUpgrade: boolean;
 		function Dependency: TArray<TMarketItem>;
-   public
-      constructor Create;
-      destructor Destroy(); override;
+	public
+		constructor Create;
+		destructor Destroy(); override;
 	end;
 	TMarketList = TList<TMarketItem>;
 	TMarketDict = TDictionary<string, TMarketItem>;
@@ -126,20 +126,20 @@ implementation
 
 procedure MarketListClear;
 var
-   Item: TMarketItem;
+	Item: TMarketItem;
 begin
-   for Item In MarketList do
-      Item.Free;
-   MarketList.Clear;
+	for Item In MarketList do
+		Item.Free;
+	MarketList.Clear;
 end;
 
 procedure MarketListFree;
 var
-   Item: TMarketItem;
+	Item: TMarketItem;
 begin
-   for Item In MarketList do
-      Item.Free;
-   MarketList.Free;
+	for Item In MarketList do
+		Item.Free;
+	MarketList.Free;
 end;
 
 function GetItemPathINI: string;
@@ -196,7 +196,7 @@ begin
 	text := TStringList.Create;
 	for item in list do text.Append(item);
 	init.WriteString(KEY_ZYLO, KEY_LIST, text.DelimitedText);
-   text.Free;
+	text.Free;
 	init.Free;
 end;
 
@@ -220,7 +220,7 @@ end;
 
 destructor TMarketItem.Destroy;
 begin
-   use.Free;
+	use.Free;
 end;
 
 function TMarketItem.name: string;
@@ -297,7 +297,6 @@ begin
 	raise Exception.Create('checksum');
 end;
 var
-	msg: string;
 	Item: TMarketItem;
 begin
 	for Item in Dependency do begin
@@ -306,8 +305,7 @@ begin
 			Update(Item);
 			Verify(Item);
 		except
-			msg := 'download failed: ' + Item.ref;
-			MessageDlg(msg, mtWarning, [mbOK], 0);
+			TaskMessageDlg('download failed', Item.ref, mtWarning, [mbOK], 0);
 		end;
 	end;
 end;
@@ -356,9 +354,8 @@ var
 begin
 	if CanInstall then Exit(false);
 	for Item in Dependency do
-      if Test(Item) then Exit(true);
-
-   Result := False;
+		if Test(Item) then Exit(true);
+	Result := False;
 end;
 
 function TMarketItem.Dependency: TArray<TMarketItem>;
