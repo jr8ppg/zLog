@@ -52,7 +52,7 @@ const
  'FT-991',
  'FT-100',
  'FT-1000',
- 'FT-1011',
+ 'FT-1011(PC->RIG)',
  'FT-1000MP',
  'MarkV/FT-1000MP',
  'FT-1000MP Mark-V Field',
