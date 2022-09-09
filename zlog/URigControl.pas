@@ -303,6 +303,7 @@ type
     procedure RitClear; override;
     procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
     procedure SetVFO(i : integer); override;
+    procedure PollingProcess(); override;
   end;
 
   TMARKV = class(TFT1000MP)
@@ -1211,57 +1212,18 @@ begin
 end;
 
 procedure TFT1011.ExecuteCommand(S: AnsiString);
-var
-   i: LongInt;
-   M: TMode;
 begin
    try
-      if length(S) = 32 then begin
-         if _currentvfo = 0 then
-            i := Ord(S[8])
-         else
-            i := Ord(S[8 + 16]);
-
-         case i of
-            0, 1:
-               M := mSSB;
-            2:
-               M := mCW;
-            3:
-               M := mAM;
-            4:
-               M := mFM;
-            5:
-               M := mRTTY;
-            else
-               M := mOther;
-         end;
-         _currentmode := M;
-
-         i := Ord(S[2]) * 256 * 256 + Ord(S[3]) * 256 + Ord(S[4]);
-         i := i * 10;
-         _currentfreq[0] := i;
-         i := i + _freqoffset;
-
-         if _currentvfo = 0 then begin
-            UpdateFreqMem(0, i);
-         end;
-
-         i := Ord(S[18]) * 256 * 256 + Ord(S[19]) * 256 + Ord(S[20]);
-         i := i * 10;
-         _currentfreq[1] := i;
-         i := i + _freqoffset;
-
-         if _currentvfo = 1 then begin
-            UpdateFreqMem(1, i);
-         end;
-      end;
+      _currentfreq[0] := 0;
+      _currentfreq[1] := 0;
+      UpdateFreqMem(0, 0);
+      UpdateFreqMem(1, 0);
 
       if Selected then begin
          UpdateStatus;
       end;
    finally
-      FPollingTimer.Enabled := True;
+//      FPollingTimer.Enabled := True;
    end;
 end;
 
@@ -1276,10 +1238,6 @@ var
    fstr: AnsiString;
    i, j: LongInt;
 begin
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
-
    i := Hz;
    i := i div 10;
 
@@ -1308,6 +1266,12 @@ begin
    if Selected then begin
       UpdateStatus;
    end;
+
+   if fSetLastFreq = True then begin
+      LastFreq := Hz;
+   end;
+
+   FPollingTimer.Enabled := True;
 end;
 
 procedure TFT1011.SetVFO(i: Integer); // A:0, B:1
@@ -1325,6 +1289,12 @@ begin
    if Selected then begin
       UpdateStatus;
    end;
+end;
+
+procedure TFT1011.PollingProcess;
+begin
+   FPollingTimer.Enabled := False;
+   ExecuteCommand('');
 end;
 
 procedure TMARKV.ExecuteCommand(S: AnsiString);
@@ -1580,7 +1550,7 @@ begin
             rig._maxband := b28;
          end;
 
-         if rname = 'FT-1011' then begin
+         if rname = 'FT-1011(PC->RIG)' then begin
             rig := TFT1011.Create(rignum);
             rig._minband := b19;
             rig._maxband := b28;
