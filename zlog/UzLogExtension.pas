@@ -1064,6 +1064,7 @@ begin
 		QueryFormat(@FormatCallBack);
 		if not LaunchEvent then NotifyMismatch;
 		Rules.Add(ExtractFileName(path), Self);
+		MainForm.PluginMenu.Visible := True;
 	except
 		LastDLL := nil;
 	end;
