@@ -8798,6 +8798,7 @@ procedure TMainForm.SetFrequency(freq: Integer);
 var
    b: TBand;
    Q: TQSO;
+   m: TMode;
 begin
    if freq = 0 then begin
       Exit;
@@ -8814,8 +8815,20 @@ begin
       if dmZLogGlobal.Settings._bandscope_use_estimated_mode = True then begin
          Q := TQSO.Create();
          Q.Band := b;
+
+         // 周波数より推定モード取得
          Q.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(freq);
-         RigControl.Rig.SetMode(Q);
+
+         // 現在のモードと異なるなら
+         m := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
+         if m <> Q.Mode then begin
+            // 推定モードセット
+            RigControl.Rig.SetMode(Q);
+
+            // もう一度周波数を設定(side bandずれ対策)
+            RigControl.Rig.SetFreq(freq, IsCQ());
+         end;
+
          Q.Free();
       end;
 
