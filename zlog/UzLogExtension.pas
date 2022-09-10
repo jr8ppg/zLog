@@ -82,7 +82,7 @@ type
 	/// event handler of button components.
 	/// </summary>
 	TButtonBridge = class
-		Source: TButton;
+		Source: TComponent;
 		Target: TDLL;
 		Number: integer;
 		Parent: TNotifyEvent;
@@ -490,19 +490,26 @@ end;
 /// </returns>
 function ButtonCallBack(f: PAnsiChar): integer; stdcall;
 var
-	Source: TButton;
+	Source: TComponent;
 	Bridge: TButtonBridge;
 begin
 	Inc(handlerNum);
 	Result := handlerNum;
-	Source := TButton(GetUI(CtoD(f)));
+	Source := TComponent(GetUI(CtoD(f)));
 	if (Source <> nil) and (LastDLL <> nil) then begin
 		Bridge := TButtonBridge.Create;
 		Bridge.Source := Source;
 		Bridge.Target := LastDLL;
 		Bridge.Number := Result;
-		Bridge.Parent := Source.OnClick;
-		Source.OnClick := Bridge.Handle;
+		if Source is TButton then begin
+			var comp := TButton(Source);
+			Bridge.Parent := comp.OnClick;
+			comp.OnClick := Bridge.Handle;
+		end else if Source is TMenuItem then begin
+			var comp := TMenuItem(Source);
+			Bridge.Parent := comp.OnClick;
+			comp.OnClick := Bridge.Handle;
+		end;
 	end;
 end;
 
