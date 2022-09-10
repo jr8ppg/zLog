@@ -996,13 +996,13 @@ end;
 procedure TButtonBridge.Handle(Sender: TObject);
 begin
 	Target.ButtonEvent(Number, Number);
-	Parent(Sender);
+	if @Parent <> nil then Parent(Sender);
 end;
 
 procedure TEditorBridge.Handle(Sender: TObject; var Key: char);
 begin
 	Target.EditorEvent(Number, integer(key));
-	Parent(Sender, key);
+	if @Parent <> nil then Parent(Sender, key);
 end;
 
 function TScriptOp.Int(num: extended): integer;
