@@ -2400,6 +2400,7 @@ begin
       ICOMWriteData(Command);
    finally
       FPollingCount := 0;
+      Sleep(20);    // 9600bps以上の場合、waitがないとコマンド連投時に後のコマンドが欠落する
       FPollingTimer.Enabled := True;
    end;
 end;
