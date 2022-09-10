@@ -164,7 +164,7 @@ procedure AccessCallBack(f: PAnsiChar); stdcall;
 function HandleCallBack(f: PAnsiChar): THandle; stdcall;
 function ButtonCallBack(f: PAnsiChar): integer; stdcall;
 function EditorCallBack(f: PAnsiChar): integer; stdcall;
-function ScriptCallBack(f: PAnsiChar): boolean; stdcall;
+function ScriptCallBack(f: PAnsiChar): integer; stdcall;
 
 function DtoC(str: string): PAnsiChar;
 function CtoD(str: PAnsiChar): string;
@@ -544,17 +544,22 @@ end;
 /// </param>
 ///
 /// <returns>
-/// true for success
+/// 1 for success,
+/// 0 for failure,
+/// or the value of an integer expression
 /// <returns>
-function ScriptCallBack(f: PAnsiChar): boolean; stdcall;
+function ScriptCallBack(f: PAnsiChar): integer; stdcall;
 begin
 	try
-		RunScript(CtoD(f));
-		Result := True;
+		var value := RunScript(CtoD(f));
+		if value.IsOrdinal then
+			Result := value.AsInteger
+		else
+			Result := 1;
 	except
 		on e: Exception do begin
 			TaskMessageDlg(e.Message, CtoD(f), mtError, [mbOk], 0);
-			Result := False;
+			Result := 0;
 		end;
 	end;
 end;
