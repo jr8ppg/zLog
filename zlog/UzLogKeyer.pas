@@ -694,6 +694,12 @@ begin
             ZComTxRigSelect.ToggleDTR(True);
             ZComTxRigSelect.ToggleRTS(True);
          end;
+
+         // other case
+         else begin
+            ZComTxRigSelect.ToggleDTR(False);
+            ZComTxRigSelect.ToggleRTS(True);
+         end;
       end;
    end;
 
@@ -728,7 +734,12 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetRxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+//
+// flag  1:左(RIG-A)
+//       2:右(RIG-B)
+//       3:下(RIG-C)
+//
+procedure TdmZLogKeyer.SetRxRigFlag(flag: Integer);
 begin
    if (flag = 0) or (flag = 1) then begin
       FWkRx := 0;
@@ -743,29 +754,27 @@ begin
    // COMポートでのRIG SELECT
    if (FSo2rRxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
       case flag of
-         0: begin
-            ZComRxRigSelect.ToggleDTR(False);
-            ZComRxRigSelect.ToggleRTS(False);
-         end;
-
+         // RIG-A(左)
          1: begin
+            ZComRxRigSelect.ToggleDTR(False);
+            ZComRxRigSelect.ToggleRTS(False);
+         end;
+
+         // RIG-B(右)
+         2: begin
             ZComRxRigSelect.ToggleDTR(True);
             ZComRxRigSelect.ToggleRTS(False);
          end;
 
-         2: begin
-            ZComRxRigSelect.ToggleDTR(False);
-            ZComRxRigSelect.ToggleRTS(True);
-         end;
-
+         // RIG-C(下)
          3: begin
-            ZComRxRigSelect.ToggleDTR(True);
+            ZComRxRigSelect.ToggleDTR(False);
             ZComRxRigSelect.ToggleRTS(True);
          end;
       end;
       Exit;
    end;
-
+{
    // SO2R Neoの場合
    if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
       if flag = 2 then begin
@@ -776,6 +785,7 @@ begin
       end;
       Exit;
    end;
+}
 end;
 
 procedure TdmZLogKeyer.SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc

@@ -9249,6 +9249,10 @@ begin
       if dmZLogGlobal.Settings.FAntiZeroinXitOn1 = True then begin
          actionAntiZeroin.Execute();
       end;
+
+      // RIG切替信号
+      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+      dmZLogKeyer.SetRxRigFlag(FCurrentRigSet);
    end
    else begin
       // バンド変更
