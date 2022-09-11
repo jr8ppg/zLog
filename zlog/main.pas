@@ -8826,7 +8826,9 @@ begin
             RigControl.Rig.SetMode(Q);
 
             // ‚à‚¤ˆê“xü”g”‚ğİ’è(side band‚¸‚ê‘Îô)
-            RigControl.Rig.SetFreq(freq, IsCQ());
+            if RigControl.Rig.IsYaesu = True then begin
+               RigControl.Rig.SetFreq(freq, IsCQ());
+            end;
          end;
 
          Q.Free();
