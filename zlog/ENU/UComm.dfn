@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file original="D:\GITHUB\zLog\zlog\UComm.dfm" source-language="ja-JP" target-language="en-US" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog\zlog\UComm.dfm">
+  <file original="D:\GITHUB\zlog_ft1011\zlog\UComm.dfm" source-language="ja-JP" target-language="en-US" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zlog_ft1011\zlog\UComm.dfm">
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.4214351852</prop>
-        <prop prop-type="OrigDateTime">44801.4206481481</prop>
-        <prop prop-type="XlatDateTime">44466.9410416667</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">182</prop>
+        <prop prop-type="SelfDateTime">44816.8816898148</prop>
+        <prop prop-type="OrigDateTime">44805.8805787037</prop>
+        <prop prop-type="XlatDateTime">44805.8805787037</prop>
+        <prop prop-type="Translated">1</prop>
+        <prop prop-type="UnTranslated">181</prop>
       </prop-group>
     </header>
     <body>
@@ -65,8 +65,9 @@
       </trans-unit>
       <trans-unit id="O:CommForm.Font.Height" resname="O:CommForm.Font.Height">
         <source>-12</source>
+        <target>-11</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931318519</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TCommForm</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931318519</prop><prop prop-type="Status">1</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TCommForm</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CommForm.Font.Name" resname="O:CommForm.Font.Name">
         <source>'MS Sans Serif'</source>

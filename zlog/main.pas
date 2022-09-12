@@ -8826,7 +8826,9 @@ begin
             RigControl.Rig.SetMode(Q);
 
             // ‚à‚¤ˆê“xü”g”‚ğİ’è(side band‚¸‚ê‘Îô)
-            RigControl.Rig.SetFreq(freq, IsCQ());
+            if dmZLogGlobal.Settings._bandscope_setfreq_after_mode_change = True then begin
+               RigControl.Rig.SetFreq(freq, IsCQ());
+            end;
          end;
 
          Q.Free();

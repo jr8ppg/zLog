@@ -558,7 +558,7 @@ object formELogJarl2: TformELogJarl2
     Width = 101
     Height = 20
     Date = 36526
-    Time = 0.963688356481725100
+    Time = 0.963688356481725000
     TabOrder = 15
   end
   object comboAge: TComboBox
