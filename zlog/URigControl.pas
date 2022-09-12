@@ -121,8 +121,6 @@ type
     FLastCall: string;
     FLastRcvd: string;
 
-    FIsYaesu: Boolean;
-
     procedure SetRit(flag: Boolean); virtual;
     procedure SetXit(flag: Boolean); virtual;
     procedure SetRitOffset(offset: Integer); virtual;
@@ -170,8 +168,6 @@ type
     property Rit: Boolean read FRit write SetRit;
     property Xit: Boolean read FXit write SetXit;
     property RitOffset: Integer read FRitOffset write SetRitOffset;
-
-    property IsYaesu: Boolean read FIsYaesu;
   end;
 
   TTS690 = class(TRig) // TS-450 as well
@@ -823,8 +819,6 @@ begin
    TerminatorCode := ';';
    FComm.StopBits := sb2BITS;
    FComm.DataBits := db8BITS;
-
-   FIsYaesu := True;
 end;
 
 destructor TFT2000.Destroy;
@@ -1792,8 +1786,6 @@ begin
    FRit := False;
    FXit := False;
    FRitOffset := 0;
-
-   FIsYaesu := False;
 end;
 
 destructor TRig.Destroy;
@@ -1996,8 +1988,6 @@ begin
    inherited;
    WaitSize := 32;
    FComm.StopBits := sb2BITS;
-
-   FIsYaesu := True;
 end;
 
 procedure TFT1000MP.Initialize();
