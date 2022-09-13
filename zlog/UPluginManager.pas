@@ -58,6 +58,7 @@ type
 		procedure Install;
 		procedure Disable;
 		procedure Upgrade;
+		function CheckSum: string;
 		function IsStable: boolean;
 		function IsUpToDate: boolean;
 		function CanInstall: boolean;
@@ -89,6 +90,7 @@ type
 		UpgradeButton: TButton;
 		procedure FormCreate(Sender: TObject);
 		procedure FormShow(Sender: TObject);
+		procedure LoadText(url: string; var txt: string);
 		procedure LoadJSON(url: string);
 		procedure AddItem(cls, obj: TJsonPair);
 		procedure ListBoxClick(Sender: TObject);
@@ -310,6 +312,15 @@ begin
 	end;
 end;
 
+function TMarketItem.CheckSum: string;
+begin
+	try
+		MarketForm.LoadText(Self.sum, Result);
+	except
+		Result := Self.sum;
+	end;
+end;
+
 function TMarketItem.IsStable: boolean;
 begin
 	Result := exp = 'stable';
@@ -326,7 +337,7 @@ begin
 	md5 := TIdHashMessageDigest5.Create;
 	bin := TFile.ReadAllBytes(Self.ref);
 	sum := md5.HashBytesAsHex(TIdBytes(bin));
-	Result := AnsiCompareText(Self.sum, sum) = 0;
+	Result := AnsiCompareText(CheckSum, sum) = 0;
 	md5.Free;
 end;
 
@@ -381,27 +392,36 @@ begin
 	SearchBoxChange(Self);
 end;
 
+procedure TMarketForm.LoadText(url: string; var txt: string);
+var
+	buf: TMemoryStream;
+	res: IHTTPResponse;
+begin
+	try
+		buf := TMemoryStream.Create;
+		res := NetHttpRequest.Get(url, buf);
+		txt := res.ContentAsString(TEncoding.UTF8);
+	finally
+		FreeAndNil(buf);
+	end;
+end;
+
 procedure TMarketForm.LoadJSON(url: string);
 var
 	txt: string;
-	buf: TMemoryStream;
-	res: IHTTPResponse;
 	all: TJsonValue;
 	map: TJsonObject;
 	cls, obj: TJsonPair;
 begin
 	try
 		MarketListClear;
-		buf := TMemoryStream.Create;
-		res := NetHttpRequest.Get(url, buf);
-		txt := res.ContentAsString(TEncoding.UTF8);
+		LoadText(url, txt);
 		all := TJsonObject.ParseJSONValue(txt);
 		for cls in (all as TJsonObject) do begin
 			map := cls.JsonValue as TJsonObject;
 			for obj in map do AddItem(cls, obj);
 		end;
 	finally
-		FreeAndNil(buf);
 		FreeAndNil(all);
 	end;
 end;
