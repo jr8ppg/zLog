@@ -521,6 +521,7 @@ type
     Label119: TLabel;
     checkUseLookupServer: TCheckBox;
     checkSetFreqAfterModeChange: TCheckBox;
+    checkAlwaysChangeMode: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -1090,6 +1091,7 @@ begin
       Settings._bandscope_show_only_domestic := checkShowOnlyDomestic.Checked;      // 国内のみ
       Settings._bandscope_use_lookup_server := checkUseLookupServer.Checked;        // Lookup Server
       Settings._bandscope_setfreq_after_mode_change := checkSetFreqAfterModeChange.Checked;  // モード変更後周波数セット
+      Settings._bandscope_always_chenge_mode := checkAlwaysChangeMode.Checked;      // 常にモード変更
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -1567,6 +1569,7 @@ begin
       checkShowOnlyDomestic.Checked := Settings._bandscope_show_only_domestic;      // 国内のみ
       checkUseLookupServer.Checked := Settings._bandscope_use_lookup_server;        // Lookup Server
       checkSetFreqAfterModeChange.Checked := Settings._bandscope_setfreq_after_mode_change;  // モード変更後周波数セット
+      checkAlwaysChangeMode.Checked := Settings._bandscope_always_chenge_mode;      // 常にモード変更
 
       // Quick Memo
       for i := 1 to 5 do begin

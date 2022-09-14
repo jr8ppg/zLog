@@ -8819,9 +8819,9 @@ begin
          // 周波数より推定モード取得
          Q.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(freq);
 
-         // 現在のモードと異なるなら
+         // 現在のモードと異なる or 常にモードセットなら
          m := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
-         if m <> Q.Mode then begin
+         if (m <> Q.Mode) or (dmZLogGlobal.Settings._bandscope_always_chenge_mode = True) then begin
             // 推定モードセット
             RigControl.Rig.SetMode(Q);
 

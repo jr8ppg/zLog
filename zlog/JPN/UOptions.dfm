@@ -4413,6 +4413,14 @@ object formOptions: TformOptions
           Caption = #12514#12540#12489#22793#26356#24460#12289#21608#27874#25968#12434#12475#12483#12488#12377#12427
           TabOrder = 4
         end
+        object checkAlwaysChangeMode: TCheckBox
+          Left = 220
+          Top = 40
+          Width = 204
+          Height = 17
+          Caption = #24120#12395#12514#12540#12489#22793#26356#12377#12427
+          TabOrder = 5
+        end
       end
     end
     object tabsheetBandScope2: TTabSheet
@@ -4826,13 +4834,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@MingLiU'
+          FontName = '@'#65325#65331' '#26126#26397
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 23
+          ItemIndex = 14
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
