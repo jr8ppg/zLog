@@ -4374,32 +4374,33 @@ object formOptions: TformOptions
         Caption = 'BandScope Options'
         TabOrder = 2
         object checkUseEstimatedMode: TCheckBox
-          Left = 12
-          Top = 18
+          Left = 205
+          Top = 17
           Width = 165
           Height = 17
           Caption = 'Use Estimated Mode by Freq.'
-          TabOrder = 0
+          TabOrder = 2
+          OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
           Left = 12
-          Top = 40
+          Top = 17
           Width = 181
           Height = 17
           Caption = 'Show only spots in the band plan.'
-          TabOrder = 1
+          TabOrder = 0
         end
         object checkShowOnlyDomestic: TCheckBox
           Left = 12
-          Top = 62
+          Top = 39
           Width = 145
           Height = 17
           Caption = 'Show only domestic spots.'
-          TabOrder = 2
+          TabOrder = 1
         end
         object checkUseLookupServer: TCheckBox
           Left = 12
-          Top = 84
+          Top = 61
           Width = 117
           Height = 17
           Caption = 'Use Lookup Server'
@@ -4407,11 +4408,11 @@ object formOptions: TformOptions
         end
         object checkSetFreqAfterModeChange: TCheckBox
           Left = 205
-          Top = 18
+          Top = 63
           Width = 204
           Height = 17
           Caption = 'Set the frequency after mode change.'
-          TabOrder = 4
+          TabOrder = 5
         end
         object checkAlwaysChangeMode: TCheckBox
           Left = 205
@@ -4419,7 +4420,7 @@ object formOptions: TformOptions
           Width = 204
           Height = 17
           Caption = 'Always change mode'
-          TabOrder = 5
+          TabOrder = 4
         end
       end
     end
@@ -4834,13 +4835,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@'#65325#65331' '#26126#26397
+          FontName = '@NSimSun'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 14
+          ItemIndex = 26
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
