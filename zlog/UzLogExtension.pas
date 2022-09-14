@@ -42,20 +42,15 @@ type
 	TzLogEvent = (evInsertQSO = 0, evUpdateQSO, evDeleteQSO);
 
 	/// <summary>
+	/// DLL function that accepts callback function
+	/// </summary>
+	TAllowProc = procedure(fun: pointer); stdcall;
+
+	/// <summary>
 	/// TDLL is an instance of a plugin DLL implementing ZyLO.
 	/// will be installed dynamically by invoking constructor.
 	/// </summary>
 	TDLL = class
-		AllowInsert: procedure(fun: pointer); stdcall;
-		AllowDelete: procedure(fun: pointer); stdcall;
-		AllowUpdate: procedure(fun: pointer); stdcall;
-		AllowDialog: procedure(fun: pointer); stdcall;
-		AllowNotify: procedure(fun: pointer); stdcall;
-		AllowAccess: procedure(fun: pointer); stdcall;
-		AllowHandle: procedure(fun: pointer); stdcall;
-		AllowButton: procedure(fun: pointer); stdcall;
-		AllowEditor: procedure(fun: pointer); stdcall;
-		AllowScript: procedure(fun: pointer); stdcall;
 		QueryFormat: procedure(fun: pointer); stdcall;
 		QueryCities: procedure(fun: pointer); stdcall;
 		LaunchEvent: function: boolean; stdcall;
@@ -1019,8 +1014,13 @@ end;
 constructor TDLL.Create(path: string);
 procedure NotifyMismatch;
 begin
-	TaskMessageDlg('ZyLO API mismatch', path, mtWarning, [mbOK], 0);
-	raise Exception.Create(Format('ZyLO API mismatch: %s', [path]));
+	TaskMessageDlg('zLog is too old', path, mtWarning, [mbOK], 0);
+	raise Exception.Create(Format('zLog is too old: %s', [path]));
+end;
+procedure Allow(name: PWideChar; cb: pointer);
+begin
+	var p := GetProcAddress(hnd, name);
+	if p <> nil then TAllowProc(p)(cb);
 end;
 function MustGetProc(name: PWideChar): pointer;
 begin
@@ -1034,17 +1034,7 @@ begin
 		Exit;
 	end;
 	try
-		AllowInsert := MustGetProc('zylo_allow_insert');
-		AllowDelete := MustGetProc('zylo_allow_delete');
-		AllowUpdate := MustGetProc('zylo_allow_update');
-		AllowDialog := MustGetProc('zylo_allow_dialog');
-		AllowNotify := MustGetProc('zylo_allow_notify');
-		AllowAccess := MustGetProc('zylo_allow_access');
-		AllowHandle := MustGetProc('zylo_allow_handle');
-		AllowButton := MustGetProc('zylo_allow_button');
-		AllowEditor := MustGetProc('zylo_allow_editor');
-		AllowScript := MustGetProc('zylo_allow_script');
-		QueryFormat := MustGetProc('zylo_query_format');
+		// provided regardless of how old the DLL is.
 		QueryCities := MustGetProc('zylo_query_cities');
 		LaunchEvent := MustGetProc('zylo_launch_event');
 		FinishEvent := MustGetProc('zylo_finish_event');
@@ -1063,17 +1053,18 @@ begin
 		EditorEvent := MustGetProc('zylo_editor_event');
 		LastDLL := Self;
 		// LastDLL must be set here
-		AllowInsert(@InsertCallBack);
-		AllowDelete(@DeleteCallBack);
-		AllowUpdate(@UpdateCallBack);
-		AllowDialog(@DialogCallBack);
-		AllowNotify(@NotifyCallBack);
-		AllowAccess(@AccessCallBack);
-		AllowHandle(@HandleCallBack);
-		AllowButton(@ButtonCallBack);
-		AllowEditor(@EditorCallBack);
-		AllowScript(@ScriptCallBack);
-		QueryFormat(@FormatCallBack);
+		// DLL may accept the following callbacks
+		Allow('zylo_allow_insert', @InsertCallBack);
+		Allow('zylo_allow_delete', @DeleteCallBack);
+		Allow('zylo_allow_update', @UpdateCallBack);
+		Allow('zylo_allow_dialog', @DialogCallBack);
+		Allow('zylo_allow_notify', @NotifyCallBack);
+		Allow('zylo_allow_access', @AccessCallBack);
+		Allow('zylo_allow_handle', @HandleCallBack);
+		Allow('zylo_allow_button', @ButtonCallBack);
+		Allow('zylo_allow_editor', @EditorCallBack);
+		Allow('zylo_allow_script', @ScriptCallBack);
+		Allow('zylo_query_format', @FormatCallBack);
 		if not LaunchEvent then NotifyMismatch;
 		Rules.Add(ExtractFileName(path), Self);
 		MainForm.PluginMenu.Visible := True;
