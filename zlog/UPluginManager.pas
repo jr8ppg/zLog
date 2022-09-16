@@ -113,6 +113,9 @@ const
 	URL_MARKET = 'https://zylo.pafelog.net/market.json';
 	URL_MANUAL = 'https://zylo.pafelog.net';
 
+resourcestring
+	UPluginManager_Installed_Plugins_Disabled = 'Installed plugins will be disabled. Are you sure?';
+
 procedure BrowseURL(url: string);
 
 function GetItemPathINI: string;
@@ -174,7 +177,7 @@ var
 begin
 	icon := mtConfirmation;
 	btns := [mbYes, mbCancel];
-	text := 'Installed plugins will be disabled. Are you sure?';
+	text := UPluginManager_Installed_Plugins_Disabled;
 	Result := MessageDlg(text, icon, btns, 0, mbCancel) = mrYes;
 end;
 var

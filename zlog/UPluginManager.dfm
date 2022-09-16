@@ -47,7 +47,7 @@ object MarketForm: TMarketForm
       AlignWithMargins = True
       Left = 10
       Top = 13
-      Width = 333
+      Width = 614
       Height = 29
       Margins.Left = 0
       Margins.Right = 0
@@ -60,6 +60,7 @@ object MarketForm: TMarketForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      ExplicitWidth = 333
     end
     object MsgLabel: TLinkLabel
       Left = 10
@@ -78,6 +79,8 @@ object MarketForm: TMarketForm
       ParentFont = False
       TabOrder = 0
       OnLinkClick = WebLabelLinkClick
+      ExplicitWidth = 440
+      ExplicitHeight = 23
     end
     object WebLabel: TLinkLabel
       Left = 10
@@ -94,6 +97,7 @@ object MarketForm: TMarketForm
       ParentFont = False
       TabOrder = 1
       OnLinkClick = WebLabelLinkClick
+      ExplicitWidth = 114
     end
   end
   object ListPanel: TPanel
@@ -170,9 +174,6 @@ object MarketForm: TMarketForm
       ParentFont = False
       TabOrder = 2
       OnClick = SearchBoxChange
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 97
     end
   end
   object GridPanel: TGridPanel
@@ -192,7 +193,7 @@ object MarketForm: TMarketForm
         Value = 33.333333333333340000
       end
       item
-        Value = 33.333333333333340000
+        Value = 33.333333333333310000
       end>
     ControlCollection = <
       item
@@ -219,8 +220,8 @@ object MarketForm: TMarketForm
     TabOrder = 2
     object InstallButton: TButton
       AlignWithMargins = True
-      Left = 0
-      Top = 0
+      Left = 8
+      Top = 8
       Width = 202
       Height = 34
       Align = alClient
@@ -237,8 +238,8 @@ object MarketForm: TMarketForm
     end
     object DisableButton: TButton
       AlignWithMargins = True
-      Left = 0
-      Top = 0
+      Left = 216
+      Top = 8
       Width = 202
       Height = 34
       Align = alClient
@@ -255,8 +256,8 @@ object MarketForm: TMarketForm
     end
     object UpgradeButton: TButton
       AlignWithMargins = True
-      Left = 0
-      Top = 0
+      Left = 424
+      Top = 8
       Width = 202
       Height = 34
       Align = alClient
