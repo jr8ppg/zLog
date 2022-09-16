@@ -4378,47 +4378,48 @@ object formOptions: TformOptions
           Top = 18
           Width = 165
           Height = 17
-          Caption = 'Use Estimated Mode by Freq.'
+          Caption = 'Use estimated mode by freq.'
           TabOrder = 0
+          OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
           Left = 12
           Top = 40
           Width = 181
           Height = 17
-          Caption = 'Show only spots in the band plan.'
+          Caption = 'Show only spots in the band plan'
           TabOrder = 1
         end
         object checkShowOnlyDomestic: TCheckBox
           Left = 12
           Top = 62
-          Width = 145
+          Width = 165
           Height = 17
-          Caption = 'Show only domestic spots.'
+          Caption = 'Show only domestic spots'
           TabOrder = 2
         end
         object checkUseLookupServer: TCheckBox
           Left = 12
           Top = 84
-          Width = 117
+          Width = 165
           Height = 17
-          Caption = 'Use Lookup Server'
+          Caption = 'Use lookup server'
           TabOrder = 3
         end
         object checkSetFreqAfterModeChange: TCheckBox
-          Left = 205
+          Left = 216
           Top = 18
-          Width = 204
+          Width = 157
           Height = 17
-          Caption = 'Set the frequency after mode change.'
+          Caption = 'Suppress freq. deviation'
           TabOrder = 4
         end
         object checkAlwaysChangeMode: TCheckBox
-          Left = 205
+          Left = 216
           Top = 40
-          Width = 204
+          Width = 176
           Height = 17
-          Caption = 'Always change mode'
+          Caption = 'Suppress LSB/USB mode error'
           TabOrder = 5
         end
       end
@@ -4834,13 +4835,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@'#65325#65331' '#26126#26397
+          FontName = '@SimSun-ExtB'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 14
+          ItemIndex = 28
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

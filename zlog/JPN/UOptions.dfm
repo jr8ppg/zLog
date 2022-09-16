@@ -4393,7 +4393,7 @@ object formOptions: TformOptions
         object checkShowOnlyDomestic: TCheckBox
           Left = 12
           Top = 39
-          Width = 145
+          Width = 165
           Height = 17
           Caption = #22269#20869#12473#12509#12483#12488#12398#12415#34920#31034
           TabOrder = 1
@@ -4401,25 +4401,25 @@ object formOptions: TformOptions
         object checkUseLookupServer: TCheckBox
           Left = 12
           Top = 61
-          Width = 117
+          Width = 165
           Height = 17
-          Caption = 'Lookup Server'#12434#20351#29992#12377#12427
+          Caption = 'Lookup Server'#12434#20351#29992
           TabOrder = 3
         end
         object checkSetFreqAfterModeChange: TCheckBox
-          Left = 210
+          Left = 225
           Top = 63
-          Width = 204
+          Width = 157
           Height = 17
-          Caption = #12514#12540#12489#22793#26356#24460#12289#21608#27874#25968#12434#12475#12483#12488#12377#12427
+          Caption = #21608#27874#25968#12378#12428#12434#25233#21046
           TabOrder = 5
         end
         object checkAlwaysChangeMode: TCheckBox
-          Left = 210
+          Left = 225
           Top = 40
-          Width = 204
+          Width = 176
           Height = 17
-          Caption = #24120#12395#12514#12540#12489#22793#26356#12377#12427
+          Caption = 'LSB/USB'#12514#12540#12489#35492#12426#12434#25233#21046
           TabOrder = 4
         end
       end
@@ -4835,13 +4835,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@'#65325#65331' '#26126#26397
+          FontName = '@SimSun-ExtB'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 14
+          ItemIndex = 28
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
@@ -4852,7 +4852,7 @@ object formOptions: TformOptions
   end
   object Panel1: TPanel
     Left = 0
-    Top = 434
+    Top = 432
     Width = 444
     Height = 37
     Align = alBottom
