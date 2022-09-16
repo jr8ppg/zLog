@@ -296,7 +296,7 @@ type
     procedure SetCWSendBufCharPTT(nID: Integer; C: char); {Adds a char to the end of buffer. Also controls PTT if enabled. Called from Keyboard}
 
     procedure SetTxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
-    procedure SetRxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+    procedure SetRxRigFlag(rigset, rigno: Integer);
     procedure SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
 
     procedure SetPTT(_on : Boolean);
@@ -735,16 +735,19 @@ begin
 end;
 
 //
-// flag  1:左(RIG-A)
-//       2:右(RIG-B)
-//       3:下(RIG-C)
+// rigset 1: 左
+//        2: 右
+// rigno  1: HF
+//        2: VU
+//        3: HF
+//        4: VU
 //
-procedure TdmZLogKeyer.SetRxRigFlag(flag: Integer);
+procedure TdmZLogKeyer.SetRxRigFlag(rigset, rigno: Integer);
 begin
-   if (flag = 0) or (flag = 1) then begin
+   if (rigset = 0) or (rigset = 1) then begin
       FWkRx := 0;
    end
-   else if (flag = 2) then begin
+   else if (rigset = 2) then begin
       FWkRx := 1;
    end
    else begin
@@ -753,22 +756,41 @@ begin
 
    // COMポートでのRIG SELECT
    if (FSo2rRxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-      case flag of
-         // RIG-A(左)
+      // 左右選択
+      case rigset of
+         // 左
          1: begin
-            ZComRxRigSelect.ToggleDTR(False);
-            ZComRxRigSelect.ToggleRTS(False);
+            case rigno of
+               // HF
+               1, 3: begin
+                  ZComRxRigSelect.ToggleDTR(False);
+               end;
+
+               // VU
+               2, 4: begin
+                  ZComRxRigSelect.ToggleDTR(True);
+               end;
+            end;
          end;
 
-         // RIG-B(右)
+         // 右
          2: begin
-            ZComRxRigSelect.ToggleDTR(True);
-            ZComRxRigSelect.ToggleRTS(False);
+            case rigno of
+               // HF
+               1, 3: begin
+                  ZComRxRigSelect.ToggleRTS(False);
+               end;
+
+               // VU
+               2, 4: begin
+                  ZComRxRigSelect.ToggleRTS(True);
+               end;
+            end;
          end;
 
-         // RIG-C(下)
-         3: begin
-            ZComRxRigSelect.ToggleDTR(False);
+         // 下
+         else begin
+            ZComRxRigSelect.ToggleDTR(True);
             ZComRxRigSelect.ToggleRTS(True);
          end;
       end;

@@ -9252,7 +9252,7 @@ begin
 
       // RIG切替信号
       dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
-      dmZLogKeyer.SetRxRigFlag(FCurrentRigSet);
+      dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
    end
    else begin
       // バンド変更
@@ -9849,10 +9849,8 @@ begin
    if rig <> nil then begin
       RigControl.SetCurrentRig(rig.RigNumber);
       dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+      dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
    end;
-
-   dmZLogKeyer.SetRxRigFlag(rigno);
-   //dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
 
    UpdateBandAndMode();
 
@@ -9888,12 +9886,11 @@ begin
    rig := RigControl.GetRig(tx_rig, TextToBand(BandEdit.Text));
    if rig <> nil then begin
       dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+      dmZLogKeyer.SetRxRigFlag(rx_rig, rig.RigNumber);
    end;
 
    FCurrentRx := rx_rig - 1;
    FInformation.Rx := rx_rig - 1;
-
-   dmZLogKeyer.SetRxRigFlag(rx_rig);
 
    FEditPanel[rx_rig - 1].CallsignEdit.SetFocus();
    PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rx_rig - 1, 0);
@@ -9937,13 +9934,12 @@ begin
    FCurrentRx := rigno - 1;
    FInformation.Rx := rigno - 1;
 
-   dmZLogKeyer.SetRxRigFlag(rigno);
-
    if focusonly = False then begin
       rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
       if Assigned(rig) then begin
          RigControl.SetCurrentRig(rig.RigNumber);
          dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+         dmZLogKeyer.SetRxRigFlag(rigno, rig.RigNumber);
          UpdateBand(rig.CurrentBand);
          UpdateMode(rig.CurrentMode);
       end;
