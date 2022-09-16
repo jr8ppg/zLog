@@ -12,10 +12,11 @@ uses
 	Dialogs,
 	Windows,
 	Math,
+	Rtti,
 	Forms,
 	Menus,
+	TypInfo,
 	IOUtils,
-	UITypes,
 	Controls,
 	IniFiles,
 	StdCtrls,
@@ -30,20 +31,26 @@ uses
 	JclFileUtils,
 	RegularExpressions,
 	System.Notification,
-	Generics.Collections;
+	Generics.Collections,
+	Bindings.Expression,
+	Bindings.ExpressionDefaults;
 
 type
+	/// <summary>
+	/// QSO event type
+	/// </summary>
 	TzLogEvent = (evInsertQSO = 0, evUpdateQSO, evDeleteQSO);
+
+	/// <summary>
+	/// DLL function that accepts callback function
+	/// </summary>
+	TAllowProc = procedure(fun: pointer); stdcall;
+
+	/// <summary>
+	/// TDLL is an instance of a plugin DLL implementing ZyLO.
+	/// will be installed dynamically by invoking constructor.
+	/// </summary>
 	TDLL = class
-		AllowInsert: procedure(fun: pointer); stdcall;
-		AllowDelete: procedure(fun: pointer); stdcall;
-		AllowUpdate: procedure(fun: pointer); stdcall;
-		AllowDialog: procedure(fun: pointer); stdcall;
-		AllowNotify: procedure(fun: pointer); stdcall;
-		AllowAccess: procedure(fun: pointer); stdcall;
-		AllowHandle: procedure(fun: pointer); stdcall;
-		AllowButton: procedure(fun: pointer); stdcall;
-		AllowEditor: procedure(fun: pointer); stdcall;
 		QueryFormat: procedure(fun: pointer); stdcall;
 		QueryCities: procedure(fun: pointer); stdcall;
 		LaunchEvent: function: boolean; stdcall;
@@ -65,19 +72,35 @@ type
 	private
 		hnd: THandle;
 	end;
+
+	/// <summary>
+	/// event handler of button components.
+	/// </summary>
 	TButtonBridge = class
-		Source: TButton;
+		Source: TComponent;
 		Target: TDLL;
 		Number: integer;
 		Parent: TNotifyEvent;
 		procedure Handle(Sender: TObject);
 	end;
+
+	/// <summary>
+	/// event handler of editor components.
+	/// </summary>
 	TEditorBridge = class
 		Source: TEdit;
 		Target: TDLL;
 		Number: integer;
 		Parent: TKeyPressEvent;
-		procedure Handle(Sender: TObject; var Key: Char);
+		procedure Handle(Sender: TObject; var Key: char);
+	end;
+
+	/// <summary>
+	/// predefined functions for scripting.
+	/// </summary>
+	TScriptOp = class
+		function Int(num: extended): integer;
+		function Put(obj: TObject; key: string; val: variant): TObject;
 	end;
 
 var
@@ -94,7 +117,7 @@ var
 	ExportDialog: TSaveDialog;
 	Toasts: TNotificationCenter;
 	Rules: TDictionary<string, TDLL>;
-	Props: TDictionary<string, string>;
+	ScriptOp: TScriptOp;
 
 const
 	ResponseCapacity = 256;
@@ -103,14 +126,12 @@ const
 	KEY_PATH = 'path';
 	KEY_ZYLO = 'zylo';
 
-(*enable/remove DLLs*)
 function LoadIniFile: TIniFile;
 procedure InstallDLL(path: string);
 procedure DisableDLL(path: string);
 function CanInstallDLL(path: string): boolean;
 function CanDisableDLL(path: string): boolean;
 
-(*zLog event handlers*)
 procedure zyloRuntimeLaunch;
 procedure zyloRuntimeFinish;
 procedure zyloWindowMessage(var msg: TMsg);
@@ -121,14 +142,12 @@ function  zyloImportFile(FileName: string): integer;
 function  zyloExportFile(FileName: string): boolean;
 procedure zyloLogUpdated(event: TzLogEvent; bQSO, aQSO: TQSO);
 
-(*zLog contest rules*)
 function zyloRequestTotal(Points, Multi: integer): integer;
 function zyloRequestScore(aQSO: TQSO): boolean;
 function zyloRequestMulti(aQSO: TQSO; var mul: string): boolean;
 function zyloRequestValid(aQSO: TQSO; var val: boolean): boolean;
 function zyloRequestTable(Path: string; List: TCityList): boolean;
 
-(*callback functions*)
 procedure InsertCallBack(ptr: pointer); stdcall;
 procedure DeleteCallBack(ptr: pointer); stdcall;
 procedure UpdateCallBack(ptr: pointer); stdcall;
@@ -140,14 +159,14 @@ procedure AccessCallBack(f: PAnsiChar); stdcall;
 function HandleCallBack(f: PAnsiChar): THandle; stdcall;
 function ButtonCallBack(f: PAnsiChar): integer; stdcall;
 function EditorCallBack(f: PAnsiChar): integer; stdcall;
+function ScriptCallBack(f: PAnsiChar): integer; stdcall;
 
-(*C<->Delphi string converters*)
 function DtoC(str: string): PAnsiChar;
 function CtoD(str: PAnsiChar): string;
 
-function FindUI(name: string): TComponent;
+function RunScript(exp: string): TValue;
+function GetUI(name: string): TComponent;
 
-(*zylo query handlers*)
 function Version: string;
 function Request(v: string; qso: TQSO): string;
 
@@ -156,36 +175,131 @@ implementation
 uses
 	main;
 
+/// <summary>
+/// convert short string to ANSI string
+/// </summary>
+///
+/// <param name="str">
+/// short string
+/// </param>
+///
+/// <returns>
+/// ANSI string
+/// </returns>
 function DtoC(str: string): PAnsiChar;
 begin
 	Result := PAnsiChar(AnsiString(str));
 end;
 
+/// <summary>
+/// convert ANSI string to short string
+/// </summary>
+///
+/// <param name="str">
+/// ANSI string
+/// </param>
+///
+/// <returns>
+/// short string
+/// </returns>
 function CtoD(str: PAnsiChar): string;
 begin
 	Result := string(UTF8String(str));
 end;
 
-function FindUI(name: string): TComponent;
+/// <summary>
+/// evaluate expression
+/// </summary>
+///
+/// <param name="src">
+/// expression
+/// </param>
+///
+/// <returns>
+/// value of expression
+/// </returns>
+function RunScript(exp: string): TValue;
+var
+	binds: TList<TBindingAssociation>;
+	engine: TBindingExpressionDefault;
+procedure Bind(key: string; val: TObject);
+begin
+	if key <> '' then
+		binds.Add(TBindingAssociation.Create(val, key));
+end;
+procedure BindComponents(comp: TComponent);
+begin
+	Bind(comp.Name, comp);
+	for var child in comp do
+		Bind(child.Name, child);
+end;
+begin
+	binds := TList<TBindingAssociation>.Create;
+	engine := TBindingExpressionDefault.Create;
+	try
+		engine.Source := exp;
+		Bind('op', ScriptOp);
+		BindComponents(MainForm);
+		engine.Compile(binds.toArray);
+		Result := engine.Evaluate.GetValue;
+	finally
+		engine.Free;
+	end;
+end;
+
+/// <summary>
+/// find UI component under Application
+/// </summary>
+///
+/// <param name="name">
+/// component name
+/// </param>
+///
+/// <returns>
+/// component found
+/// </returns>
+function GetUI(name: string): TComponent;
 begin
 	Result := Application;
 	for name in SplitString(name, '.') do
 		Result := Result.FindComponent(name);
 end;
 
+/// <summary>
+/// return zLog version
+/// </summary>
+///
+/// <returns>
+/// version
+/// </returns>
 function Version: string;
-var
-	info: TJclFileVersionInfo;
 begin
-	info := TJclFileVersionInfo.Create(MainForm.Handle);
+	var info := TJclFileVersionInfo.Create(MainForm.Handle);
 	Result := info.FileVersion;
 	info.Free;
 end;
 
+/// <summary>
+/// format string with placeholders
+/// </summary>
+///
+/// <param name="v">
+/// string with placeholders such as '$M'
+/// </param>
+///
+/// <param name="qso">
+/// current QSO
+/// </param>
+///
+/// <returns>
+/// generated string
+/// </returns>
 function Request(v: string; qso: TQSO): string;
 var
 	key: string;
+	Props: TDictionary<string, string>;
 begin
+	Props := TDictionary<string, string>.Create;
 	Props.AddOrSetValue('{V}', Version);
 	Props.AddOrSetValue('{F}', CurrentFileName);
 	Props.AddOrSetValue('{C}', UpperCase(dmZLogGlobal.MyCall));
@@ -194,36 +308,49 @@ begin
 	if MyContest <> nil then v := UzLogCW.SetStrNoAbbrev(v, qso);
 	for key in Props.Keys do v := ReplaceStr(v, key, Props[key]);
 	Result := v;
+	Props.Free;
 end;
 
-(*callback function that will be invoked by DLL*)
+/// <summary>
+/// callback function that allows DLLs to insert a QSO.
+/// </summary>
+///
+/// <param name="ptr">
+/// pointer to QSO record
+/// </param>
 procedure InsertCallBack(ptr: pointer); stdcall;
-var
-	qso: TQSO;
 begin
-	qso := TQSO.Create;
+	var qso := TQSO.Create;
 	qso.FileRecord := TQSOData(ptr^);
 	MyContest.LogQSO(qso, True);
 end;
 
-(*callback function that will be invoked by DLL*)
+/// <summary>
+/// callback function that allows DLLs to delete a QSO.
+/// </summary>
+///
+/// <param name="ptr">
+/// pointer to QSO record
+/// </param>
 procedure DeleteCallBack(ptr: pointer); stdcall;
-var
-	qso: TQSO;
 begin
-	qso := TQSO.Create;
+	var qso := TQSO.Create;
 	qso.FileRecord := TQSOData(ptr^);
 	Log.DeleteQSO(qso);
 	MyContest.Renew;
 	qso.Free;
 end;
 
-(*callback function that will be invoked by DLL*)
+/// <summary>
+/// callback function that allows DLLs to update a QSO.
+/// </summary>
+///
+/// <param name="ptr">
+/// pointer to QSO record
+/// </param>
 procedure UpdateCallBack(ptr: pointer); stdcall;
-var
-	qso: TQSO;
 begin
-	qso := TQSO.Create;
+	var qso := TQSO.Create;
 	qso.FileRecord := TQSOData(ptr^);
 	qso.Reserve := actEdit;
 	Log.AddQue(qso);
@@ -232,7 +359,7 @@ begin
 	qso.Free;
 end;
 
-(*callback function that will be invoked by DLL*)
+/// callback function that allows DLLs to add file-format filters
 procedure FormatCallBack(f: PAnsiChar); stdcall;
 begin
 	if CtoD(f) = '' then Exit;
@@ -242,7 +369,13 @@ begin
 	FileDLL := LastDLL;
 end;
 
-(*callback function that will be invoked by DLL*)
+/// <summary>
+/// callback function that allows DLLs to provide DAT dynamically
+/// </summary>
+///
+/// <param name="f">
+/// ANSI string that contains DAT-file contents
+/// </param>
 procedure CitiesCallBack(f: PAnsiChar); stdcall;
 var
 	city: TCity;
@@ -264,13 +397,25 @@ begin
 	list.Free;
 end;
 
-(*callback function that will be invoked by DLL*)
+/// <summary>
+/// callback function that allows DLLs to display modal message
+/// </summary>
+///
+/// <param name="f">
+/// message to be displayed
+/// </param>
 procedure DialogCallBack(f: PAnsiChar); stdcall;
 begin
 	MessageDlg(CtoD(f), mtInformation, [mbOK], 0);
 end;
 
-(*callback function that will be invoked by DLL*)
+/// <summary>
+/// callback function that allows DLLs to display toast message
+/// </summary>
+///
+/// <param name="f">
+/// message to be displayed
+/// </param>
 procedure NotifyCallBack(f: PAnsiChar); stdcall;
 begin
 	TThread.Queue(nil, procedure
@@ -289,22 +434,34 @@ begin
 	end);
 end;
 
-(*callback function that will be invoked by DLL*)
+/// <summary>
+/// callback function that allows DLLs to obtain formatted string
+/// </summary>
+///
+/// <param name="f">
+/// string with placeholders
+/// </param>
 procedure AccessCallBack(f: PAnsiChar); stdcall;
-var
-	v: string;
 begin
-	v := Request(CtoD(f), main.CurrentQSO);
+	var v := Request(CtoD(f), main.CurrentQSO);
 	SetLength(v, Min(Length(v), ResponseCapacity));
 	AnsiStrings.StrCopy(f, DtoC(v));
 end;
 
-(*callback function that will be invoked by DLL*)
+/// <summary>
+/// callback function that allows DLLs to obtain component handle
+/// </summary>
+///
+/// <param name="f">
+/// component name
+/// </param>
+///
+/// <returns>
+/// handle
+/// </returns>
 function HandleCallBack(f: PAnsiChar): THandle; stdcall;
-var
-	comp: TComponent;
 begin
-	comp := FindUI(CtoD(f));
+	var comp := GetUI(CtoD(f));
 	if comp is TMenu then
 		Result := TMenu(comp).Handle
 	else if comp is TMenuItem then
@@ -315,26 +472,53 @@ begin
 		Result := 0;
 end;
 
-(*callback function that will be invoked by DLL*)
+/// <summary>
+/// callback function that allows DLLs to handle button events
+/// </summary>
+///
+/// <param name="f">
+/// component name
+/// </param>
+///
+/// <returns>
+/// event-handler ID
+/// </returns>
 function ButtonCallBack(f: PAnsiChar): integer; stdcall;
 var
-	Source: TButton;
+	Source: TComponent;
 	Bridge: TButtonBridge;
 begin
 	Inc(handlerNum);
 	Result := handlerNum;
-	Source := TButton(FindUI(CtoD(f)));
+	Source := TComponent(GetUI(CtoD(f)));
 	if (Source <> nil) and (LastDLL <> nil) then begin
 		Bridge := TButtonBridge.Create;
 		Bridge.Source := Source;
 		Bridge.Target := LastDLL;
 		Bridge.Number := Result;
-		Bridge.Parent := Source.OnClick;
-		Source.OnClick := Bridge.Handle;
+		if Source is TButton then begin
+			var comp := TButton(Source);
+			Bridge.Parent := comp.OnClick;
+			comp.OnClick := Bridge.Handle;
+		end else if Source is TMenuItem then begin
+			var comp := TMenuItem(Source);
+			Bridge.Parent := comp.OnClick;
+			comp.OnClick := Bridge.Handle;
+		end;
 	end;
 end;
 
-(*callback function that will be invoked by DLL*)
+/// <summary>
+/// callback function that allows DLLs to handle typing events
+/// </summary>
+///
+/// <param name="f">
+/// component name
+/// </param>
+///
+/// <returns>
+/// event-handler ID
+/// </returns>
 function EditorCallBack(f: PAnsiChar): integer; stdcall;
 var
 	Source: TEdit;
@@ -342,7 +526,7 @@ var
 begin
 	Inc(handlerNum);
 	Result := handlerNum;
-	Source := TEdit(FindUI(CtoD(f)));
+	Source := TEdit(GetUI(CtoD(f)));
 	if (Source <> nil) and (LastDLL <> nil) then begin
 		Bridge := TEditorBridge.Create;
 		Bridge.Source := Source;
@@ -353,43 +537,91 @@ begin
 	end;
 end;
 
+/// <summary>
+/// callback function that allows DLLs to evaluate expressions
+/// </summary>
+///
+/// <param name="f">
+/// expressions separated by line breaks
+/// </param>
+///
+/// <returns>
+/// 1 for success,
+/// 0 for failure,
+/// or the value of an integer expression
+/// <returns>
+function ScriptCallBack(f: PAnsiChar): integer; stdcall;
+begin
+	try
+		var value := RunScript(CtoD(f));
+		if value.IsOrdinal then
+			Result := value.AsInteger
+		else
+			Result := 1;
+	except
+		on e: Exception do begin
+			TaskMessageDlg(e.Message, CtoD(f), mtError, [mbOk], 0);
+			Result := 0;
+		end;
+	end;
+end;
+
+/// <summary>
+/// load zLog.ini
+/// </summary>
+///
+/// <returns>
+/// reference to zLog.ini
+/// </returns>
 function LoadIniFile: TIniFile;
 begin
 	Result := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
 end;
 
+/// <summary>
+/// return list of installed DLLs
+/// </summary>
+///
+/// <returns>
+/// list of DLL paths
+/// </returns>
 function GetDLLsINI: TList<string>;
-var
-	init: TIniFile;
-	text: string;
 begin
-	init := LoadIniFile;
-	text := init.ReadString(KEY_ZYLO, KEY_DLLS, '');
+	var init := LoadIniFile;
+	var text := init.ReadString(KEY_ZYLO, KEY_DLLS, '');
 	Result := TList<string>.Create;
 	Result.AddRange(text.Split([',']));
 	init.Free;
 end;
 
+/// <summary>
+/// set list of installed DLLs
+/// </summary>
+///
+/// <param name="list">
+/// list of DLL paths
+/// </param>
 procedure SetDLLsINI(list: TList<string>);
-var
-	init: TIniFile;
-	text: TStringList;
-	item: string;
 begin
-	init := LoadIniFile;
-	text := TStringList.Create;
-	for item in list do text.Append(item);
+	var init := LoadIniFile;
+	var text := TStringList.Create;
+	for var item in list do text.Append(item);
 	init.WriteString(KEY_ZYLO, KEY_DLLS, text.DelimitedText);
 	text.Free;
 	init.Free;
 end;
 
+/// <summary>
+/// install a DLL from the specified path
+/// </summary>
+///
+/// <param name="path">
+/// path to DLL
+/// </param>
 procedure InstallDLL(path: string);
-var
-	list: TList<string>;
 begin
 	MainForm.actionBackupExecute(MainForm);
-	list := GetDLLsINI;
+	var list := GetDLLsINI;
 	if not list.Contains(path) then begin
 		list.Add(path);
 		SetDLLsINI(list);
@@ -398,39 +630,50 @@ begin
 	list.Free;
 end;
 
+/// <summary>
+/// disable a DLL in the specified path
+/// </summary>
+///
+/// <param name="path">
+/// path to DLL
+/// </param>
 procedure DisableDLL(path: string);
-var
-	list: TList<string>;
 begin
-	list := GetDLLsINI;
+	var list := GetDLLsINI;
 	list.Remove(path);
 	SetDLLsINI(list);
 	list.Free;
 end;
 
-procedure DisableAll;
-var
-	list: TList<string>;
-begin
-	list := TList<string>.Create;
-	SetDLLsINI(list);
-	list.Free;
-end;
-
+/// <summary>
+/// test if the specified DLL can be installed
+/// </summary>
+///
+/// <param name="path">
+/// path to DLL
+/// </param>
 function CanInstallDLL(path: string): boolean;
 begin
 	Result := not CanDisableDLL(path);
 end;
 
+/// <summary>
+/// test if the specified DLL can be disabled
+/// </summary>
+///
+/// <param name="path">
+/// path to DLL
+/// </param>
 function CanDisableDLL(path: string): boolean;
-var
-	list: TList<string>;
 begin
-	list := GetDLLsINI;
+	var list := GetDLLsINI;
 	Result := list.Contains(path);
 	list.Free;
 end;
 
+/// <summary>
+/// must be called after zLog is launched
+/// </summary>
 procedure zyloRuntimeLaunch;
 var
 	list: TList<string>;
@@ -444,23 +687,40 @@ begin
 	list.Free;
 end;
 
+/// <summary>
+/// must be called before zLog is terminated
+/// </summary>
 procedure zyloRuntimeFinish;
-var
-	dll: TDLL;
 begin
-	(*do not close Go DLL*)
-	for dll in Rules.Values do
+	/// do not close Go DLL
+	for var dll in Rules.Values do
 		if dll.FinishEvent then
 			FreeLibrary(dll.hnd);
 end;
 
+/// <summary>
+/// forward window message to DLLs
+/// </summary>
+///
+/// <param name="msg">
+/// window message
+/// </param>
 procedure zyloWindowMessage(var msg: TMsg);
-var
-	dll: TDLL;
 begin
-	for dll in Rules.Values do dll.WindowEvent(@msg);
+	for var dll in Rules.Values do dll.WindowEvent(@msg);
 end;
 
+/// <summary>
+/// must be called before contest opened
+/// </summary>
+///
+/// <param name="test">
+/// contest name
+/// </param>
+///
+/// <param name="path">
+/// path to CFG file
+/// </param>
 procedure zyloContestSwitch(test, path: string);
 var
 	line: string;
@@ -478,19 +738,28 @@ begin
 		RuleName := test;
 		RulePath := path;
 	end else if link <> '' then
-		MessageDlg(link + ' not installed', mtWarning, [mbOK], 0);
+		TaskMessageDlg('not installed', link, mtWarning, [mbOK], 0);
 	list.Free;
 end;
 
+/// <summary>
+/// must be called after contest opened
+/// </summary>
+///
+/// <param name="test">
+/// contest name
+/// </param>
+///
+/// <param name="path">
+/// path to CFG file
+/// </param>
 procedure zyloContestOpened(test, path: string);
 var
 	dll: TDLL;
-	tag: PAnsiChar;
-	cfg: PAnsiChar;
 begin
 	Enabled := True;
-	tag := DtoC(RuleName);
-	cfg := DtoC(RulePath);
+	var tag := DtoC(RuleName);
+	var cfg := DtoC(RulePath);
 	for dll in Rules.Values do dll.OffsetEvent(UTCOffset);
 	for dll in Rules.Values do dll.AttachEvent(tag, cfg);
 	if RuleDLL <> nil then RuleDLL.AssignEvent(tag, cfg);
@@ -498,6 +767,9 @@ begin
 	MyContest.MultiForm.UpdateData;
 end;
 
+/// <summary>
+/// must be called when contest closed
+/// </summary>
 procedure zyloContestClosed;
 var
 	dll: TDLL;
@@ -511,24 +783,44 @@ begin
 	RuleDLL := nil;
 end;
 
+/// <summary>
+/// try to import QSOs from the specified file
+/// </summary>
+///
+/// <param name="FileName">
+/// path to the file
+/// </param>
+///
+/// <returns>
+/// number of imported QSOs
+/// <returns>
 function zyloImportFile(FileName: string): integer;
 var
 	tmp: string;
-	msg: string;
 begin
 	if FileDLL <> nil then try
 		tmp := TPath.GetTempFileName;
 		if FileDLL.ImportEvent(DtoC(FileName), DtoC(tmp)) then
 			Result := Log.QsoList.MergeFile(tmp, True)
 		else begin
-			msg := FileName + ' is not supported';
-			MessageDlg(msg, mtWarning, [mbOK], 0);
+			TaskMessageDlg('not supported', FileName, mtWarning, [mbOK], 0);
 		end;
 	finally
 		TFile.Delete(tmp);
 	end;
 end;
 
+/// <summary>
+/// try to export QSOs into the specified file
+/// </summary>
+///
+/// <param name="FileName">
+/// path to the file
+/// </param>
+///
+/// <returns>
+/// true if QSOs are exported successfully
+/// <returns>
 function zyloExportFile(FileName: string): boolean;
 var
 	fmt: string;
@@ -545,6 +837,21 @@ begin
 	end else Result := False;
 end;
 
+/// <summary>
+/// must be called when the QSO list is modified
+/// </summary>
+///
+/// <param name="event">
+/// event type
+/// </param>
+///
+/// <param name="bQSO">
+/// deleted QSO
+/// <param>
+///
+/// <param name="aQSO">
+/// inserted QSO
+/// <param>
 procedure zyloLogUpdated(event: TzLogEvent; bQSO, aQSO: TQSO);
 var
 	dll: TDLL;
@@ -561,7 +868,18 @@ begin
 	end;
 end;
 
-function zyloRequestTotal(Points, Multi: integer): Integer;
+/// <summary>
+/// calculate total score
+/// </summary>
+///
+/// <param name="Points">
+/// QSO points
+/// </param>
+///
+/// <param name="Multi">
+/// number of multipliers
+/// </param>
+function zyloRequestTotal(Points, Multi: integer): integer;
 begin
 	if RuleDLL <> nil then
 		Result := RuleDLL.PointsEvent(Points, Multi)
@@ -569,7 +887,17 @@ begin
 		Result := -1;
 end;
 
-(*returns whether the QSO score is calculated by this handler*)
+/// <summary>
+/// calculate QSO score by DLL
+/// </summary>
+///
+/// <param name="aQSO">
+/// QSO
+/// </param>
+///
+/// <returns>
+/// true if handled by DLL
+/// </returns>
 function zyloRequestScore(aQSO: TQSO): boolean;
 var
 	qso: TQSOData;
@@ -582,7 +910,17 @@ begin
 	end;
 end;
 
-(*returns whether the multiplier is extracted by this handler*)
+/// <summary>
+/// extract multiplier from the QSO
+/// </summary>
+///
+/// <param name="aQSO">
+/// QSO
+/// </param>
+///
+/// <returns>
+/// true if handled by DLL
+/// </returns>
 function zyloRequestMulti(aQSO: TQSO; var mul: string): boolean;
 var
 	qso: TQSOData;
@@ -596,7 +934,21 @@ begin
 	end;
 end;
 
-(*returns whether the multiplier is validated by this handler*)
+/// <summary>
+/// test if the QSO is valid or not
+/// </summary>
+///
+/// <param name="aQSO">
+/// QSO
+/// </param>
+///
+/// <param name="val">
+/// true if valid
+/// </param>
+///
+/// <returns>
+/// true if handled by DLL
+/// </returns>
 function zyloRequestValid(aQSO: TQSO; var val: boolean): boolean;
 var
 	qso: TQSOData;
@@ -610,7 +962,21 @@ begin
 	end;
 end;
 
-(*returns whether the cities list is provided by this handler*)
+/// <summary>
+/// request DAT-file contents
+/// </summary>
+///
+/// <param name="Path">
+/// path to DAT file (not used)
+/// </param>
+///
+/// <param name="List">
+/// target list
+/// </param>
+///
+/// <returns>
+/// true if handled by DLL
+/// </returns>
 function zyloRequestTable(Path: string; List: TCityList): boolean;
 begin
 	CityList := List;
@@ -625,23 +991,36 @@ end;
 procedure TButtonBridge.Handle(Sender: TObject);
 begin
 	Target.ButtonEvent(Number, Number);
-	Parent(Sender);
+	if @Parent <> nil then Parent(Sender);
 end;
 
-procedure TEditorBridge.Handle(Sender: TObject; var Key: Char);
+procedure TEditorBridge.Handle(Sender: TObject; var Key: char);
 begin
 	Target.EditorEvent(Number, integer(key));
-	Parent(Sender, key);
+	if @Parent <> nil then Parent(Sender, key);
+end;
+
+function TScriptOp.Int(num: extended): integer;
+begin
+	Result := Trunc(num);
+end;
+
+function TScriptOp.Put(obj: TObject; key: string; val: variant): TObject;
+begin
+	TypInfo.SetPropValue(obj, key, val);
+	Result := obj;
 end;
 
 constructor TDLL.Create(path: string);
 procedure NotifyMismatch;
-var
-	msg: string;
 begin
-	msg := 'ZyLO API mismatch in ' + path;
-	MessageDlg(msg, mtWarning, [mbOK], 0);
-	raise Exception.Create(msg);
+	TaskMessageDlg('zLog is too old', path, mtWarning, [mbOK], 0);
+	raise Exception.Create(Format('zLog is too old: %s', [path]));
+end;
+procedure Allow(name: PWideChar; cb: pointer);
+begin
+	var p := GetProcAddress(hnd, name);
+	if p <> nil then TAllowProc(p)(cb);
 end;
 function MustGetProc(name: PWideChar): pointer;
 begin
@@ -655,16 +1034,7 @@ begin
 		Exit;
 	end;
 	try
-		AllowInsert := MustGetProc('zylo_allow_insert');
-		AllowDelete := MustGetProc('zylo_allow_delete');
-		AllowUpdate := MustGetProc('zylo_allow_update');
-		AllowDialog := MustGetProc('zylo_allow_dialog');
-		AllowNotify := MustGetProc('zylo_allow_notify');
-		AllowAccess := MustGetProc('zylo_allow_access');
-		AllowHandle := MustGetProc('zylo_allow_handle');
-		AllowButton := MustGetProc('zylo_allow_button');
-		AllowEditor := MustGetProc('zylo_allow_editor');
-		QueryFormat := MustGetProc('zylo_query_format');
+		// provided regardless of how old the DLL is.
 		QueryCities := MustGetProc('zylo_query_cities');
 		LaunchEvent := MustGetProc('zylo_launch_event');
 		FinishEvent := MustGetProc('zylo_finish_event');
@@ -682,19 +1052,22 @@ begin
 		ButtonEvent := MustGetProc('zylo_button_event');
 		EditorEvent := MustGetProc('zylo_editor_event');
 		LastDLL := Self;
-		(*LastDLL must be set here*)
-		AllowInsert(@InsertCallBack);
-		AllowDelete(@DeleteCallBack);
-		AllowUpdate(@UpdateCallBack);
-		AllowDialog(@DialogCallBack);
-		AllowNotify(@NotifyCallBack);
-		AllowAccess(@AccessCallBack);
-		AllowHandle(@HandleCallBack);
-		AllowButton(@ButtonCallBack);
-		AllowEditor(@EditorCallBack);
-		QueryFormat(@FormatCallBack);
+		// LastDLL must be set here
+		// DLL may accept the following callbacks
+		Allow('zylo_allow_insert', @InsertCallBack);
+		Allow('zylo_allow_delete', @DeleteCallBack);
+		Allow('zylo_allow_update', @UpdateCallBack);
+		Allow('zylo_allow_dialog', @DialogCallBack);
+		Allow('zylo_allow_notify', @NotifyCallBack);
+		Allow('zylo_allow_access', @AccessCallBack);
+		Allow('zylo_allow_handle', @HandleCallBack);
+		Allow('zylo_allow_button', @ButtonCallBack);
+		Allow('zylo_allow_editor', @EditorCallBack);
+		Allow('zylo_allow_script', @ScriptCallBack);
+		Allow('zylo_query_format', @FormatCallBack);
 		if not LaunchEvent then NotifyMismatch;
 		Rules.Add(ExtractFileName(path), Self);
+		MainForm.PluginMenu.Visible := True;
 	except
 		LastDLL := nil;
 	end;
@@ -709,11 +1082,11 @@ end;
 
 initialization
 	Rules := TDictionary<string, TDLL>.Create;
-	Props := TDictionary<string, string>.Create;
+	ScriptOp := TScriptOp.Create;
 
 finalization
 	FreeRules;
 	Rules.Free;
-	Props.Free;
+	ScriptOp.Free;
 
 end.

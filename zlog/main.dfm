@@ -5963,6 +5963,10 @@ object MainForm: TMainForm
         OnClick = mnMergeClick
       end
     end
+    object PluginMenu: TMenuItem
+      Caption = '&Plugins'
+      Visible = False
+    end
     object View1: TMenuItem
       Caption = '&View'
       object ShowCurrentBandOnly: TMenuItem
