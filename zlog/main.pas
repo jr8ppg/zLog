@@ -8239,7 +8239,7 @@ begin
       rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
 
       RigControl.SetCurrentRig(rig.RigNumber);
-      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
    end;
 end;
 
@@ -8687,7 +8687,7 @@ begin
 
    rig := RigControl.GetRig(tx + 1, TextToBand(BandEdit.Text));
    if rig <> nil then begin
-      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(tx + 1);
    end;
 
    UpdateMode(TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));
@@ -9251,7 +9251,7 @@ begin
       end;
 
       // RIGêÿë÷êMçÜ
-      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
       dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
    end
    else begin
@@ -9848,8 +9848,8 @@ begin
    rig := RigControl.GetRig(rigno, TextToBand(BandEdit.Text));
    if rig <> nil then begin
       RigControl.SetCurrentRig(rig.RigNumber);
-      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
-      dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(rigno);
+      dmZLogKeyer.SetRxRigFlag(rigno, rig.RigNumber);
    end;
 
    UpdateBandAndMode();
@@ -9885,7 +9885,7 @@ begin
 
    rig := RigControl.GetRig(tx_rig, TextToBand(BandEdit.Text));
    if rig <> nil then begin
-      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(tx_rig);
       dmZLogKeyer.SetRxRigFlag(rx_rig, rig.RigNumber);
    end;
 
@@ -9911,7 +9911,7 @@ begin
 
    rig := RigControl.GetRig(rigno, TextToBand(BandEdit.Text));
    if rig <> nil then begin
-      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(rigno);
    end;
 
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
@@ -9938,7 +9938,7 @@ begin
       rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
       if Assigned(rig) then begin
          RigControl.SetCurrentRig(rig.RigNumber);
-         dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+         dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
          dmZLogKeyer.SetRxRigFlag(rigno, rig.RigNumber);
          UpdateBand(rig.CurrentBand);
          UpdateMode(rig.CurrentMode);
@@ -9988,7 +9988,7 @@ begin
 
    rig := RigControl.GetRig(tx + 1, TextToBand(BandEdit.Text));
    if rig <> nil then begin
-      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(tx + 1);
    end;
 
    // ShowTxIndicator();
@@ -10143,7 +10143,7 @@ begin
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if Assigned(rig) then begin
       RigControl.SetCurrentRig(rig.RigNumber);
-      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
       UpdateBand(rig.CurrentBand);
       UpdateMode(rig.CurrentMode);
    end
@@ -10168,7 +10168,7 @@ begin
 
    rig := RigControl.GetRig(rigno, TextToBand(BandEdit.Text));
    if rig <> nil then begin
-      dmZLogKeyer.SetTxRigFlag(rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(rigno);
    end;
 
    // ShowTxIndicator();
