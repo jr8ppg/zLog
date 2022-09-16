@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetBandScope1
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -2476,7 +2476,7 @@ object formOptions: TformOptions
           object Label100: TLabel
             Left = 12
             Top = 51
-            Width = 96
+            Width = 83
             Height = 13
             Caption = #12513#12483#12475#12540#12472#30058#21495
           end
@@ -4374,36 +4374,53 @@ object formOptions: TformOptions
         Caption = #12496#12531#12489#12473#12467#12540#12503#12458#12503#12471#12519#12531
         TabOrder = 2
         object checkUseEstimatedMode: TCheckBox
-          Left = 12
-          Top = 18
-          Width = 180
+          Left = 210
+          Top = 17
+          Width = 190
           Height = 17
           Caption = #21608#27874#25968#12424#12426#25512#23450#12375#12383#12514#12540#12489#12434#20351#12358
-          TabOrder = 0
+          TabOrder = 2
+          OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
           Left = 12
-          Top = 40
-          Width = 190
+          Top = 17
+          Width = 195
           Height = 17
           Caption = #12496#12531#12489#12503#12521#12531#20869#12398#12473#12509#12483#12488#12398#12415#34920#31034
-          TabOrder = 1
+          TabOrder = 0
         end
         object checkShowOnlyDomestic: TCheckBox
           Left = 12
-          Top = 62
+          Top = 39
           Width = 145
           Height = 17
           Caption = #22269#20869#12473#12509#12483#12488#12398#12415#34920#31034
-          TabOrder = 2
+          TabOrder = 1
         end
         object checkUseLookupServer: TCheckBox
           Left = 12
-          Top = 84
-          Width = 150
+          Top = 61
+          Width = 117
           Height = 17
           Caption = 'Lookup Server'#12434#20351#29992#12377#12427
           TabOrder = 3
+        end
+        object checkSetFreqAfterModeChange: TCheckBox
+          Left = 210
+          Top = 63
+          Width = 204
+          Height = 17
+          Caption = #12514#12540#12489#22793#26356#24460#12289#21608#27874#25968#12434#12475#12483#12488#12377#12427
+          TabOrder = 5
+        end
+        object checkAlwaysChangeMode: TCheckBox
+          Left = 210
+          Top = 40
+          Width = 204
+          Height = 17
+          Caption = #24120#12395#12514#12540#12489#22793#26356#12377#12427
+          TabOrder = 4
         end
       end
     end
@@ -4818,13 +4835,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = #65325#65331' '#12468#12471#12483#12463
+          FontName = '@'#65325#65331' '#26126#26397
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 67
+          ItemIndex = 14
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

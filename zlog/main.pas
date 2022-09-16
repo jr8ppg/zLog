@@ -8798,6 +8798,7 @@ procedure TMainForm.SetFrequency(freq: Integer);
 var
    b: TBand;
    Q: TQSO;
+   m: TMode;
 begin
    if freq = 0 then begin
       Exit;
@@ -8814,8 +8815,22 @@ begin
       if dmZLogGlobal.Settings._bandscope_use_estimated_mode = True then begin
          Q := TQSO.Create();
          Q.Band := b;
+
+         // 周波数より推定モード取得
          Q.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(freq);
-         RigControl.Rig.SetMode(Q);
+
+         // 現在のモードと異なる or 常にモードセットなら
+         m := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
+         if (m <> Q.Mode) or (dmZLogGlobal.Settings._bandscope_always_change_mode = True) then begin
+            // 推定モードセット
+            RigControl.Rig.SetMode(Q);
+
+            // もう一度周波数を設定(side bandずれ対策)
+            if dmZLogGlobal.Settings._bandscope_setfreq_after_mode_change = True then begin
+               RigControl.Rig.SetFreq(freq, IsCQ());
+            end;
+         end;
+
          Q.Free();
       end;
 
@@ -8946,9 +8961,12 @@ begin
 end;
 
 procedure TMainForm.BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Int64);
+var
+   b: TBand;
 begin
-   FBandScopeEx[aQSO.Band].AddSelfSpot(aQSO, nFreq);
-   FBandScope.AddSelfSpot(aQSO, nFreq);
+   b := dmZLogGlobal.BandPlan.FreqToBand(nFreq);
+   FBandScopeEx[b].AddSelfSpot(aQSO.Callsign, aQSO.NrRcvd, b, aQSO.Mode, nFreq);
+   FBandScope.AddSelfSpot(aQSO.Callsign, aQSO.NrRcvd, b, aQSO.Mode, nFreq);
 end;
 
 procedure TMainForm.BandScopeAddSelfSpotFromNetwork(BSText: string);

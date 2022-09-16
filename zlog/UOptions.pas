@@ -520,6 +520,8 @@ type
     Label118: TLabel;
     Label119: TLabel;
     checkUseLookupServer: TCheckBox;
+    checkSetFreqAfterModeChange: TCheckBox;
+    checkAlwaysChangeMode: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -568,6 +570,7 @@ type
     procedure comboCwPttPortChange(Sender: TObject);
     procedure checkUseWinKeyerClick(Sender: TObject);
     procedure radioSo2rClick(Sender: TObject);
+    procedure checkUseEstimatedModeClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -1087,7 +1090,9 @@ begin
       Settings._bandscope_use_estimated_mode := checkUseEstimatedMode.Checked;      // 周波数からのモードの推定
       Settings._bandscope_show_only_in_bandplan := checkShowOnlyInBandplan.Checked; // バンド内のみ
       Settings._bandscope_show_only_domestic := checkShowOnlyDomestic.Checked;      // 国内のみ
-      Settings._bandscope_use_lookup_server := checkUseLookupServer.Checked;
+      Settings._bandscope_use_lookup_server := checkUseLookupServer.Checked;        // Lookup Server
+      Settings._bandscope_setfreq_after_mode_change := checkSetFreqAfterModeChange.Checked;  // モード変更後周波数セット
+      Settings._bandscope_always_change_mode := checkAlwaysChangeMode.Checked;      // 常にモード変更
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -1563,7 +1568,10 @@ begin
       checkUseEstimatedMode.Checked := Settings._bandscope_use_estimated_mode;      // 周波数からのモードの推定
       checkShowOnlyInBandplan.Checked := Settings._bandscope_show_only_in_bandplan; // バンド内のみ
       checkShowOnlyDomestic.Checked := Settings._bandscope_show_only_domestic;      // 国内のみ
-      checkUseLookupServer.Checked := Settings._bandscope_use_lookup_server;
+      checkUseLookupServer.Checked := Settings._bandscope_use_lookup_server;        // Lookup Server
+      checkSetFreqAfterModeChange.Checked := Settings._bandscope_setfreq_after_mode_change;  // モード変更後周波数セット
+      checkAlwaysChangeMode.Checked := Settings._bandscope_always_change_mode;      // 常にモード変更
+      checkUseEstimatedModeClick(nil);
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -2213,6 +2221,15 @@ begin
          comboRig1Speed.Enabled := True;
       end;
    end;
+end;
+
+procedure TformOptions.checkUseEstimatedModeClick(Sender: TObject);
+var
+   f: Boolean;
+begin
+   f := checkUseEstimatedMode.Checked;
+   checkAlwaysChangeMode.Enabled := f;
+   checkSetFreqAfterModeChange.Enabled := f;
 end;
 
 procedure TformOptions.checkUseQuickQSYClick(Sender: TObject);

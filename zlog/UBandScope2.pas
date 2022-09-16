@@ -71,7 +71,7 @@ type
   public
     { Public êÈåæ }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
-    procedure AddSelfSpot(aQSO : TQSO; Hz : Int64);
+    procedure AddSelfSpot(strCallsign: string; strNrRcvd: string; b: TBand; m: TMode; Hz: Int64);
     procedure AddSelfSpotFromNetwork(BSText : string);
     procedure AddClusterSpot(Sp: TSpot);
     procedure RewriteBandScope();
@@ -158,20 +158,20 @@ begin
 end;
 
 // Self Spot
-procedure TBandScope2.AddSelfSpot(aQSO: TQSO; Hz: Int64);
+procedure TBandScope2.AddSelfSpot(strCallsign: string; strNrRcvd: string; b: TBand; m: TMode; Hz: Int64);
 var
    D: TBSData;
 begin
-   if FCurrBand <> aQSO.Band then begin
+   if FCurrBand <> b then begin
       Exit;
    end;
 
    D := TBSData.Create;
    D.FreqHz := Hz;
-   D.Band := aQSO.Band;
-   D.Mode := aQSO.Mode;
-   D.Call := aQSO.Callsign;
-   D.Number := aQSO.NrRcvd;
+   D.Band := b;
+   D.Mode := m;
+   D.Call := strCallsign;
+   D.Number := strNrRcvd;
    D.Time := Now;
    D.SpotSource := ssSelf;
 

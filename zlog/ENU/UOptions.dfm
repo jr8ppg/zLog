@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetBandScope1
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -2476,7 +2476,7 @@ object formOptions: TformOptions
           object Label100: TLabel
             Left = 12
             Top = 51
-            Width = 96
+            Width = 83
             Height = 13
             Caption = 'Message Number'
           end
@@ -4405,6 +4405,22 @@ object formOptions: TformOptions
           Caption = 'Use Lookup Server'
           TabOrder = 3
         end
+        object checkSetFreqAfterModeChange: TCheckBox
+          Left = 205
+          Top = 18
+          Width = 204
+          Height = 17
+          Caption = 'Set the frequency after mode change.'
+          TabOrder = 4
+        end
+        object checkAlwaysChangeMode: TCheckBox
+          Left = 205
+          Top = 40
+          Width = 204
+          Height = 17
+          Caption = 'Always change mode'
+          TabOrder = 5
+        end
       end
     end
     object tabsheetBandScope2: TTabSheet
@@ -4818,13 +4834,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = #65325#65331' '#12468#12471#12483#12463
+          FontName = '@'#65325#65331' '#26126#26397
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 67
+          ItemIndex = 14
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
