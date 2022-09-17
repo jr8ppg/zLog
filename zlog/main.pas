@@ -1482,6 +1482,9 @@ begin
    rig := RigControl.GetRig(FCurrentRigSet, B);
    if rig = nil then begin
       FZLinkForm.SendFreqInfo(round(RigControl.TempFreq[B] * 1000));
+   end
+   else begin
+      dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
    end;
 
    for bb := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -7115,6 +7118,10 @@ begin
 
          // Antenna Select
          rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[b]);
+
+         // RIG Select
+         dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
+         dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
       end;
    end;
 

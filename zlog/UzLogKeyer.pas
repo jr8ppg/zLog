@@ -673,20 +673,20 @@ begin
       case rigset of
          // RIG-A
          0, 1: begin
-            ZComTxRigSelect.ToggleDTR(True);
+            ZComTxRigSelect.ToggleDTR(False);
             ZComTxRigSelect.ToggleRTS(False);
          end;
 
          // RIG-B
          2: begin
-            ZComTxRigSelect.ToggleDTR(False);
-            ZComTxRigSelect.ToggleRTS(True);
+            ZComTxRigSelect.ToggleDTR(True);
+            ZComTxRigSelect.ToggleRTS(False);
          end;
 
          // RIG-C
          else begin
             ZComTxRigSelect.ToggleDTR(True);
-            ZComTxRigSelect.ToggleRTS(True);
+            ZComTxRigSelect.ToggleRTS(False);
          end;
       end;
    end;
