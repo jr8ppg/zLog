@@ -7109,11 +7109,15 @@ begin
    end;
 
    rig := RigControl.GetRig(FCurrentRigSet, b);
-
    if CurrentQSO.band <> b then begin
       UpdateBand(b);
 
       if rig <> nil then begin
+         // RIG変更
+         FRigControl.SetCurrentRig(rig.RigNumber);
+
+         // バンド変更
+         CurrentQSO.Band := b;
          rig.SetBand(CurrentQSO);
 
          // Antenna Select
@@ -9940,6 +9944,7 @@ var
 begin
    FCurrentRx := rigno - 1;
    FInformation.Rx := rigno - 1;
+   FCurrentRigSet := rigno;
 
    if focusonly = False then begin
       rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
