@@ -1077,6 +1077,16 @@ type
     procedure SetLastFocus();
   end;
 
+  TBandScopeNotifyThread = class(TThread)
+  private
+    FParent: TForm;
+    FQso: TQSO;
+  protected
+    procedure Execute; override;
+  public
+    constructor Create(formParent: TForm; aQSO: TQSO);
+  end;
+
 resourcestring
   TMainForm_Enter_Frequency = 'Enter frequency in kHz';
   TMainForm_Comfirm_Delete_Qso = 'Are you sure to delete this QSO?';
@@ -8791,12 +8801,19 @@ end;
 procedure TMainForm.BandScopeNotifyWorked(aQSO: TQSO);
 var
    b: TBand;
+   t: TBandScopeNotifyThread;
 begin
-   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      FBandScopeEx[b].NotifyWorked(aQSO);
+   if dmZLogGlobal.Settings._renewbythread = True then begin
+      t := TBandScopeNotifyThread.Create(Self, aQSO);
+      t.Start();
+   end
+   else begin
+      for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+         FBandScopeEx[b].NotifyWorked(aQSO);
+      end;
+      FBandScope.NotifyWorked(aQSO);
+      FBandScopeNewMulti.NotifyWorked(aQSO);
    end;
-   FBandScope.NotifyWorked(aQSO);
-   FBandScopeNewMulti.NotifyWorked(aQSO);
 end;
 
 procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
@@ -10332,6 +10349,33 @@ begin
 
    // バンドスコープリフレッシュ
    BSRefresh();
+end;
+
+{ TBandScopeNotifyThread }
+
+constructor TBandScopeNotifyThread.Create(formParent: TForm; aQSO: TQSO);
+begin
+   Inherited Create(True);
+   FreeOnTerminate := True;
+   FParent := formParent;
+   FQso := TQSO.Create();
+   FQso.Assign(aQSO);
+end;
+
+procedure TBandScopeNotifyThread.Execute();
+var
+   b: TBand;
+begin
+   with TMainForm(FParent) do begin
+      for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+         FBandScopeEx[b].NotifyWorked(FQso);
+      end;
+      FBandScope.NotifyWorked(FQso);
+      FBandScopeNewMulti.NotifyWorked(FQso);
+   end;
+
+   FQso.Free();
+   Terminate();
 end;
 
 end.

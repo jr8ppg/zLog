@@ -8,12 +8,21 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, Console, ExtCtrls, Menus, AnsiStrings, ComCtrls, Vcl.ClipBrd,
   Console2, USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, HelperLib,
-  OverbyteIcsWndControl, OverbyteIcsTnCnx, Vcl.ExtDlgs;
+  OverbyteIcsWndControl, OverbyteIcsTnCnx, Vcl.ExtDlgs, System.SyncObjs;
 
 const
   SPOTMAX = 20000;
 
 type
+  TCommProcessThread = class(TThread)
+  private
+    FParent: TForm;
+  protected
+    procedure Execute; override;
+  public
+    constructor Create(formParent: TForm);
+  end;
+
   TCommForm = class(TForm)
     Timer1: TTimer;
     Panel1: TPanel;
@@ -81,6 +90,7 @@ type
 
     FAutoLogined: Boolean;
 
+    FCommProcessThread: TCommProcessThread;
     procedure DeleteSpot(_from, _to : integer);
 
     function GetFontSize(): Integer;
@@ -123,6 +133,9 @@ resourcestring
   UComm_Disconnect = 'Disconnect';
   UComm_Connecting = 'Connecting...';
   UComm_Disconnecting = 'Disconnecting...';
+
+var
+  CommBufferLock: TCriticalSection;
 
 implementation
 
@@ -234,7 +247,9 @@ var
    str : string;
 begin
    str := string(AnsiStrings.StrPas(PAnsiChar(Buffer)));
+   CommBufferLock.Enter();
    FCommBuffer.Add(str);
+   CommBufferLock.Leave();
 end;
 
 procedure TCommForm.EditKeyPress(Sender: TObject; var Key: Char);
@@ -583,7 +598,9 @@ begin
          end;
       end;
 
+      CommBufferLock.Enter();
       FCommBuffer.Delete(0);
+      CommBufferLock.Leave();
    end;
 end;
 
@@ -597,7 +614,7 @@ begin
          ConnectButton.Click();
       end;
 
-      CommProcess;
+//      CommProcess;
    finally
       Timer1.Enabled := True;
    end;
@@ -607,6 +624,12 @@ procedure TCommForm.FormDestroy(Sender: TObject);
 begin
    ClusterComm.Disconnect;
    ClusterComm.Free;
+
+   Telnet.Close;
+   FCommProcessThread.Terminate();
+   FCommProcessThread.WaitFor();
+   FCommProcessThread.Free();
+
    FSpotList.Free();
    FCommBuffer.Free();
 end;
@@ -621,7 +644,9 @@ end;
 
 procedure TCommForm.TelnetDisplay(Sender: TTnCnx; Str: String);
 begin
+   CommBufferLock.Enter();
    FCommBuffer.Add(str);
+   CommBufferLock.Leave();
 end;
 
 procedure TCommForm.ConnectButtonClick(Sender: TObject);
@@ -638,12 +663,17 @@ begin
          ConnectButton.Caption := UComm_Disconnecting;
          FDisconnectClicked := True;
          Telnet.Close;
+         FCommProcessThread.Terminate();
+         FCommProcessThread.WaitFor();
+         FCommProcessThread.Free();
       end
       else begin
          Telnet.Connect;
          ConnectButton.Caption := UComm_Connecting;
          FDisconnectClicked := False;
          Timer1.Enabled := True;
+         FCommProcessThread := TCommProcessThread.Create(Self);
+         FCommProcessThread.Start();
       end;
    except
       on E: Exception do begin
@@ -856,7 +886,9 @@ begin
       str := str + AnsiChar(ptr[i]);
    end;
 
+   CommBufferLock.Enter();
    FCommBuffer.Add(string(str));
+   CommBufferLock.Leave();
 end;
 
 procedure TCommForm.TelnetDataAvailable(Sender: TTnCnx; Buffer: Pointer; Len: Integer);
@@ -864,7 +896,9 @@ var
    str : string;
 begin
    str := string(AnsiStrings.StrPas(PAnsiChar(Buffer)));
+   CommBufferLock.Enter();
    FCommBuffer.Add(str);
+   CommBufferLock.Leave();
 end;
 
 function TCommForm.GetFontSize(): Integer;
@@ -947,5 +981,35 @@ begin
       else  Result := False;
    end;
 end;
+
+{ TCommProcessThread }
+
+constructor TCommProcessThread.Create(formParent: TForm);
+begin
+   inherited Create(True);
+   FParent := formParent;
+end;
+
+procedure TCommProcessThread.Execute();
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** begin - TCommProcessThread.Execute - ****'));
+   {$ENDIF}
+
+   repeat
+      Sleep(100);
+      TCommForm(FParent).CommProcess;
+   until Terminated;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** end - TCommProcessThread.Execute - ****'));
+   {$ENDIF}
+end;
+
+initialization
+   CommBufferLock := TCriticalSection.Create();
+
+finalization
+   CommBufferLock.Free();
 
 end.
