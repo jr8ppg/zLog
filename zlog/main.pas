@@ -9976,7 +9976,7 @@ begin
       rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
       if Assigned(rig) then begin
          RigControl.SetCurrentRig(rig.RigNumber);
-         dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
+//         dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
          dmZLogKeyer.SetRxRigFlag(rigno, rig.RigNumber);
          UpdateBand(rig.CurrentBand);
          UpdateMode(rig.CurrentMode);
