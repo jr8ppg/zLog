@@ -1,5 +1,14 @@
 unit Main;
 
+{
+  zLog for Windows —ß˜aEdition
+
+  Copyright 1997-2005 by Yohei Yokobayashi.
+  Portions created by JR8PPG are Copyright (C) 2022 JR8PPG.
+
+  This software is released under the MIT License.
+}
+
 {$WARN SYMBOL_DEPRECATED OFF}
 {$WARN SYMBOL_PLATFORM OFF}
 
@@ -1093,6 +1102,16 @@ type
     procedure SetLastFocus();
 
     procedure MsgMgrAddQue(nID: Integer; S: string; aQSO: TQSO);
+  end;
+
+  TBandScopeNotifyThread = class(TThread)
+  private
+    FParent: TForm;
+    FQso: TQSO;
+  protected
+    procedure Execute; override;
+  public
+    constructor Create(formParent: TForm; aQSO: TQSO);
   end;
 
 var
@@ -9180,12 +9199,19 @@ end;
 procedure TMainForm.BandScopeNotifyWorked(aQSO: TQSO);
 var
    b: TBand;
+   t: TBandScopeNotifyThread;
 begin
-   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      FBandScopeEx[b].NotifyWorked(aQSO);
+   if dmZLogGlobal.Settings._renewbythread = True then begin
+      t := TBandScopeNotifyThread.Create(Self, aQSO);
+      t.Start();
+   end
+   else begin
+      for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+         FBandScopeEx[b].NotifyWorked(aQSO);
+      end;
+      FBandScope.NotifyWorked(aQSO);
+      FBandScopeNewMulti.NotifyWorked(aQSO);
    end;
-   FBandScope.NotifyWorked(aQSO);
-   FBandScopeNewMulti.NotifyWorked(aQSO);
 end;
 
 procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
@@ -10754,6 +10780,33 @@ end;
 procedure TMainForm.StopCqRepeatTimer();
 begin
    FInformation.CqRptCountDown := 0;
+end;
+
+{ TBandScopeNotifyThread }
+
+constructor TBandScopeNotifyThread.Create(formParent: TForm; aQSO: TQSO);
+begin
+   Inherited Create(True);
+   FreeOnTerminate := True;
+   FParent := formParent;
+   FQso := TQSO.Create();
+   FQso.Assign(aQSO);
+end;
+
+procedure TBandScopeNotifyThread.Execute();
+var
+   b: TBand;
+begin
+   with TMainForm(FParent) do begin
+      for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+         FBandScopeEx[b].NotifyWorked(FQso);
+      end;
+      FBandScope.NotifyWorked(FQso);
+      FBandScopeNewMulti.NotifyWorked(FQso);
+   end;
+
+   FQso.Free();
+   Terminate();
 end;
 
 end.
