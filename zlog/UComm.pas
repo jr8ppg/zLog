@@ -105,6 +105,7 @@ type
     procedure RenewListBox;
     procedure EnableConnectButton(boo : boolean);
     function GetLocalEcho(): Boolean;
+    procedure TerminateCommProcessThread();
   public
     { Public declarations }
     procedure PreProcessSpotFromZLink(S : string; N: Integer);
@@ -370,6 +371,7 @@ begin
    FUseClusterLog := False;
    FClusterLogFileName := StringReplace(Application.ExeName, '.exe', '_telnet_log_' + FormatDateTime('yyyymmdd', Now) + '.txt', [rfReplaceAll]);
    FAutoLogined := False;
+   FCommProcessThread := nil;
 end;
 
 procedure TCommForm.RenewListBox;
@@ -626,9 +628,8 @@ begin
    ClusterComm.Free;
 
    Telnet.Close;
-   FCommProcessThread.Terminate();
-   FCommProcessThread.WaitFor();
-   FCommProcessThread.Free();
+
+   TerminateCommProcessThread();
 
    FSpotList.Free();
    FCommBuffer.Free();
@@ -663,9 +664,7 @@ begin
          ConnectButton.Caption := UComm_Disconnecting;
          FDisconnectClicked := True;
          Telnet.Close;
-         FCommProcessThread.Terminate();
-         FCommProcessThread.WaitFor();
-         FCommProcessThread.Free();
+         TerminateCommProcessThread();
       end
       else begin
          Telnet.Connect;
@@ -979,6 +978,16 @@ begin
       1..6: Result := dmZlogGlobal.Settings._cluster_com.FLocalEcho;
       7:    Result := dmZlogGlobal.Settings._cluster_telnet.FLocalEcho;
       else  Result := False;
+   end;
+end;
+
+procedure TCommForm.TerminateCommProcessThread();
+begin
+   if Assigned(FCommProcessThread) then begin
+      FCommProcessThread.Terminate();
+      FCommProcessThread.WaitFor();
+      FCommProcessThread.Free();
+      FCommProcessThread := nil;
    end;
 end;
 
