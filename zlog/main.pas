@@ -9255,6 +9255,7 @@ var
    b: TBand;
    Q: TQSO;
    rig: TRig;
+   rigset: Integer;
 begin
    if freq = 0 then begin
       Exit;
@@ -9262,9 +9263,11 @@ begin
 
    FQsyFromBS := True;
 
+   rigset := CurrentTx + 1;
+
    b := dmZLogGlobal.BandPlan.FreqToBand(freq);
 
-   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   rig := RigControl.GetRig(rigset, b);
    if rig <> nil then begin
       // RIGにfreq設定
       rig.SetFreq(freq, IsCQ());
@@ -9278,7 +9281,7 @@ begin
       end;
 
       // Antenna Select
-      rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[b]);
+      rig.AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[b]);
 
       rig.UpdateStatus();
 
@@ -9288,8 +9291,8 @@ begin
       end;
 
       // RIG切替信号
-      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
-      dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
+//      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
+      dmZLogKeyer.SetRxRigFlag(rigset, rig.RigNumber);
    end
    else begin
       // バンド変更
