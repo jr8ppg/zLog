@@ -121,6 +121,8 @@ type
     FLastCall: string;
     FLastRcvd: string;
 
+    FRigset: Integer;
+
     procedure SetRit(flag: Boolean); virtual;
     procedure SetXit(flag: Boolean); virtual;
     procedure SetRitOffset(offset: Integer); virtual;
@@ -161,6 +163,7 @@ type
     property CurrentBand: TBand read _currentband;
     property CurrentMode: TMode read _currentmode;
     property RigNumber: Integer read _rignumber;
+    property Rigset: Integer read FRigset write FRigset;
 //    property PollingInterval: Integer read FPollingInterval write FPollingInterval;
 
     property RitCtrlSupported: Boolean read FRitCtrlSupported write FRitCtrlSupported;
@@ -456,7 +459,7 @@ type
     function StatusSummary: string; // returns current rig's band freq mode
     procedure ImplementOptions(rig: Integer = 1);
     procedure Stop();
-    function SetCurrentRig(N : integer): Boolean;
+    function SetCurrentRig(rigset: Integer; N : integer): Boolean;
     function GetCurrentRig : integer;
 //    function ToggleCurrentRig : integer;
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
@@ -609,7 +612,7 @@ begin
    Result := True;
 end;
 
-function TRigControl.SetCurrentRig(N: Integer): Boolean;
+function TRigControl.SetCurrentRig(rigset: Integer; N: Integer): Boolean;
    procedure SetRigName(rigno: Integer; rigname: string);
    begin
       RigLabel.Caption := 'Current rig : ' + IntToStr(rigno) + ' (' + rigname + ')';
@@ -627,6 +630,7 @@ begin
       FCurrentRig.InquireStatus;
 
       SetRigName(FCurrentRigNumber, FCurrentRig.name);
+      FCurrentRig.Rigset := rigset;
       FCurrentRig.UpdateStatus;
    end
    else begin
@@ -1526,7 +1530,7 @@ begin
       end;
    end;
 
-   SetCurrentRig(rig);
+   SetCurrentRig(1, rig);
 
    SetSendFreq();
 
@@ -1606,6 +1610,7 @@ begin
    _minband := b19;
    _maxband := b10g;
    Name := '';
+   FRigset := 1;
 
    _rignumber := RigNum;
    if _rignumber = 1 then begin
@@ -3780,21 +3785,21 @@ var
    S: string;
 begin
    MainForm.RigControl.dispVFO.Caption := VFOString[_currentvfo];
-   if _currentmode <> CurrentQSO.Mode then begin
-      MainForm.UpdateMode(_currentmode);
-   end;
+//   if _currentmode <> CurrentQSO.Mode then begin
+      MainForm.UpdateMode(FRigset, _currentmode);
+//   end;
 
    MainForm.RigControl.dispMode.Caption := ModeString[_currentmode];
-   if _currentband <> CurrentQSO.Band then begin
-      MainForm.UpdateBand(_currentband);
-   end;
+//   if _currentband <> CurrentQSO.Band then begin
+      MainForm.UpdateBand(FRigset, _currentband);
+//   end;
 
    MainForm.RigControl.UpdateFreq(_currentvfo,
                                   _freqoffset + _currentfreq[0],
                                   _freqoffset + _currentfreq[1],
                                   _freqoffset + LastFreq,
-                                  CurrentQSO.Band,
-                                  CurrentQSO.Mode);
+                                  _currentband,
+                                  _currentmode);
 
    S := 'R' + IntToStr(_rignumber) + ' ' + 'V';
    if _currentvfo = 0 then begin

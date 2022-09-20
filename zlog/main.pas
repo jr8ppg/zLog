@@ -1033,8 +1033,8 @@ type
     procedure WriteStatusLine(S : string; WriteConsole : Boolean);
     procedure WriteStatusLineRed(S : string; WriteConsole : Boolean);
     procedure ProcessConsoleCommand(S : string);
-    procedure UpdateBand(B : TBand); // takes care of window disp
-    procedure UpdateMode(M : TMode);
+    procedure UpdateBand(rigset: Integer;B : TBand); // takes care of window disp
+    procedure UpdateMode(rigset: Integer;M : TMode);
     procedure DisableNetworkMenus;
     procedure EnableNetworkMenus;
     procedure ReEvaluateCountDownTimer;
@@ -1051,6 +1051,7 @@ type
     procedure HighlightCallsign(fHighlight: Boolean);
     procedure BandScopeNotifyWorked(aQSO: TQSO);
     procedure SetYourCallsign(strCallsign, strNumber: string);
+    procedure SetYourCallsign2(strCallsign, strNumber: string);
     procedure SetFrequency(freq: Integer);
     procedure BSRefresh();
     procedure BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
@@ -1450,12 +1451,17 @@ begin
    LastFocus.SetFocus;
 end;
 
-procedure TMainForm.UpdateBand(B: TBand); // called from rigcontrol too
+procedure TMainForm.UpdateBand(rigset: Integer; B: TBand); // called from rigcontrol too
 var
    bb: TBand;
    rig: TRig;
 begin
-   BandEdit.Text := MHzString[B];
+   if rigset = -1 then begin
+      BandEdit.Text := MHzString[B];
+   end
+   else begin
+      FEditPanel[rigset - 1].BandEdit.Text := MHzString[B];
+   end;
 
    // Serial Numberをバンドに合わせて表示
    DispSerialNumber(B);
@@ -1498,12 +1504,12 @@ begin
       WriteStatusLineRed('QSY count exceeded limit!', False);
    end;
 
-   rig := RigControl.GetRig(FCurrentRigSet, B);
+   rig := RigControl.GetRig(rigset, B);
    if rig = nil then begin
       FZLinkForm.SendFreqInfo(round(RigControl.TempFreq[B] * 1000));
    end
    else begin
-      dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
+      dmZLogKeyer.SetRxRigFlag(rigset, rig.RigNumber);
    end;
 
    for bb := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -1520,7 +1526,7 @@ begin
    FRateDialogEx.Band := CurrentQSO.Band;
 end;
 
-procedure TMainForm.UpdateMode(M: TMode);
+procedure TMainForm.UpdateMode(rigset: Integer; M: TMode);
 begin
    ModeEdit.Text := ModeString[M];
    CurrentQSO.Mode := M;
@@ -2366,7 +2372,7 @@ begin
       rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[Q.Band]);
    end;
 
-   UpdateBand(Q.Band);
+   UpdateBand(FCurrentRigSet, Q.Band);
 
    Q.Free;
 end;
@@ -4383,7 +4389,7 @@ end;
 procedure TMainForm.timerCqRepeatTimer(Sender: TObject);
 begin
    Dec(FCQRepeatCount);
-   FInformation.CqRptCountDown := FCQRepeatCount;
+   FInformation.CqRptCountDown := FCQRepeatCount div 10;
    if FCQRepeatCount <= 0 then begin
       timerCqRepeat.Enabled := False;
       CQRepeatProc(False);
@@ -4741,7 +4747,8 @@ begin
    end;
 
    if (dmZLogGlobal.Settings._so2r_type = so2rNone) or
-      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (FInformation.Is2bsiq = False)) then begin
+      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+      (FCurrentTX = FCurrentRx)) then begin
       N.SetFocus;
    end;
 
@@ -5886,7 +5893,7 @@ begin
 
       if boo = True then begin
 
-         UpdateBand(Log.QsoList[i].Band);
+         UpdateBand(FCurrentRigSet, Log.QsoList[i].Band);
 
          rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
 
@@ -5901,7 +5908,7 @@ begin
             rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
          end;
 
-         UpdateMode(Log.QsoList[i].mode);
+         UpdateMode(FCurrentRigSet, Log.QsoList[i].mode);
 
          if rig <> nil then begin
             rig.SetMode(CurrentQSO);
@@ -6409,8 +6416,8 @@ begin
          end;
       end;
 
-      UpdateBand(CurrentQSO.Band);
-      UpdateMode(CurrentQSO.Mode);
+      UpdateBand(FCurrentRigSet, CurrentQSO.Band);
+      UpdateMode(FCurrentRigSet, CurrentQSO.Mode);
 
       MyContest.ScoreForm.UpdateData();
       MyContest.MultiForm.UpdateData();
@@ -7129,11 +7136,11 @@ begin
 
    rig := RigControl.GetRig(FCurrentRigSet, b);
    if CurrentQSO.band <> b then begin
-      UpdateBand(b);
+      UpdateBand(FCurrentRigSet, b);
 
       if rig <> nil then begin
          // RIG変更
-         FRigControl.SetCurrentRig(rig.RigNumber);
+         FRigControl.SetCurrentRig(FCurrentRigSet, rig.RigNumber);
 
          // バンド変更
          CurrentQSO.Band := b;
@@ -7149,7 +7156,7 @@ begin
    end;
 
    if CurrentQSO.Mode <> m then begin
-      UpdateMode(m);
+      UpdateMode(FCurrentRigSet, m);
    end;
 
    if rig <> nil then begin
@@ -8255,7 +8262,7 @@ procedure TMainForm.actionChangeBandExecute(Sender: TObject);
 var
    rig: TRig;
 begin
-   UpdateBand(GetNextBand(CurrentQSO.Band, True));
+   UpdateBand(FCurrentRigSet, GetNextBand(CurrentQSO.Band, True));
 
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
@@ -8268,7 +8275,7 @@ begin
       // Antenna Select
       rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
 
-      RigControl.SetCurrentRig(rig.RigNumber);
+      FRigControl.SetCurrentRig(FCurrentRigSet, rig.RigNumber);
       dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
    end;
 end;
@@ -8279,7 +8286,7 @@ var
    rig: TRig;
 begin
    SetQSOMode(CurrentQSO);
-   UpdateMode(CurrentQSO.Mode);
+   UpdateMode(FCurrentRigSet, CurrentQSO.Mode);
 
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
@@ -8720,7 +8727,7 @@ begin
       dmZLogKeyer.SetTxRigFlag(tx + 1);
    end;
 
-   UpdateMode(TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));
+   UpdateMode(tx + 1, TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));
 
    ShowTxIndicator();
 
@@ -9249,6 +9256,41 @@ begin
    MyContest.MultiForm.SetNumberEditFocus;
 end;
 
+procedure TMainForm.SetYourCallsign2(strCallsign, strNumber: string);
+var
+   nID: Integer;
+   C, N, B, M: TEdit;
+begin
+   nID := FCurrentTx;
+
+   AssignControls(nID, C, N, B, M);
+
+   CurrentQSO.CallSign := strCallsign;
+
+   C.Text := strCallsign;
+   C.SelStart := Length(C.Text);
+   N.Text := '';
+
+   if strCallsign = '' then begin
+      C.SetFocus();
+      Exit;
+   end;
+
+//   MyContest.SpaceBarProc;
+
+   if N.Text = '' then begin
+      if strNumber <> '' then begin
+         N.Text := strNumber;
+         N.SelStart := Length(N.Text);
+      end
+      else begin
+         CallSpaceBarProc(C, N, B);
+      end;
+   end;
+
+//   MyContest.MultiForm.SetNumberEditFocus;
+end;
+
 // Cluster or BandScopeから呼ばれる
 procedure TMainForm.SetFrequency(freq: Integer);
 var
@@ -9271,6 +9313,8 @@ begin
    if rig <> nil then begin
       // RIGにfreq設定
       rig.SetFreq(freq, IsCQ());
+
+      FRigControl.SetCurrentRig(rigset, rig.RigNumber);
 
       if dmZLogGlobal.Settings._bandscope_use_estimated_mode = True then begin
          Q := TQSO.Create();
@@ -9296,7 +9340,7 @@ begin
    end
    else begin
       // バンド変更
-      UpdateBand(b);
+      UpdateBand(rigset, b);
    end;
 
    // SPモードへ変更
@@ -9887,7 +9931,7 @@ begin
 
    rig := RigControl.GetRig(rigno, TextToBand(BandEdit.Text));
    if rig <> nil then begin
-      RigControl.SetCurrentRig(rig.RigNumber);
+      FRigControl.SetCurrentRig(FCurrentRigSet, rig.RigNumber);
       dmZLogKeyer.SetTxRigFlag(rigno);
       dmZLogKeyer.SetRxRigFlag(rigno, rig.RigNumber);
    end;
@@ -9978,11 +10022,11 @@ begin
    if focusonly = False then begin
       rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
       if Assigned(rig) then begin
-         RigControl.SetCurrentRig(rig.RigNumber);
+         FRigControl.SetCurrentRig(FCurrentRigSet, rig.RigNumber);
 //         dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
          dmZLogKeyer.SetRxRigFlag(rigno, rig.RigNumber);
-         UpdateBand(rig.CurrentBand);
-         UpdateMode(rig.CurrentMode);
+         UpdateBand(FCurrentRigSet, rig.CurrentBand);
+         UpdateMode(FCurrentRigSet, rig.CurrentMode);
       end;
    end;
 
@@ -10183,13 +10227,13 @@ begin
 
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if Assigned(rig) then begin
-      RigControl.SetCurrentRig(rig.RigNumber);
+      FRigControl.SetCurrentRig(FCurrentRigSet, rig.RigNumber);
       dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
-      UpdateBand(rig.CurrentBand);
-      UpdateMode(rig.CurrentMode);
+      UpdateBand(FCurrentRigSet, rig.CurrentBand);
+      UpdateMode(FCurrentRigSet, rig.CurrentMode);
    end
    else begin
-      UpdateMode(TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));
+      UpdateMode(FCurrentRigSet, TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));
    end;
 end;
 
@@ -10774,7 +10818,7 @@ begin
       interval := dmZLogGlobal.Settings.CW._cqrepeat;
    end;
    FCQRepeatInterval := Trunc(interval);
-   FCQRepeatCount := FCQRepeatInterval;
+   FCQRepeatCount := FCQRepeatInterval * 10;
 
    // CQリピート開始
    timerCqRepeat.Enabled := True;
