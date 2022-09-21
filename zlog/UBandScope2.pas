@@ -589,7 +589,7 @@ begin
       end;
 
       // 相手局をセット
-      MainForm.SetYourCallsign2(D.Call, D.Number);
+      MainForm.SetYourCallsign(D.Call, D.Number);
 
       // 周波数をセット
       MainForm.SetFrequency(D.FreqHz);
