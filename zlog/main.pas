@@ -4269,11 +4269,11 @@ begin
    // åªç›RIGÇ™RIG2(SP)Ç»ÇÁRIG1(CQ)Ç÷ñﬂÇÈ
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
       (FInformation.Is2bsiq = False) then begin
-      currig := RigControl.GetCurrentRig();
+      currig := FCurrentRigSet;  //RigControl.GetCurrentRig();
       if currig <> FCQLoopStartRig then begin
          newrig := FCQLoopStartRig;
 //         SwitchTxRX(newrig, currig);
-         FMessageManager.AddQue(WM_ZLOG_SWITCH_TXRX, newrig - 1, currig - 1);
+         FMessageManager.AddQue(WM_ZLOG_SWITCH_TXRX, newrig, currig);
       end;
    end;
 
@@ -10760,7 +10760,7 @@ begin
       FCQLoopRunning := True;
       FCQLoopCount := 0;
       FCQLoopPause := False;
-      FCQLoopStartRig := RigControl.GetCurrentRig();
+      FCQLoopStartRig := FCurrentRigSet;   //RigControl.GetCurrentRig();
       CQRepeatProc(True);
    end;
 end;
