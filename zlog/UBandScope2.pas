@@ -19,6 +19,7 @@ type
     ImageList1: TImageList;
     Panel2: TPanel;
     checkSyncVfo: TCheckBox;
+    timerCleanup: TTimer;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure mnDeleteClick(Sender: TObject);
     procedure Deleteallworkedstations1Click(Sender: TObject);
@@ -33,6 +34,7 @@ type
     procedure GridMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FormResize(Sender: TObject);
     procedure checkSyncVfoClick(Sender: TObject);
+    procedure timerCleanupTimer(Sender: TObject);
   private
     { Private 宣言 }
     FProcessing: Boolean;
@@ -244,6 +246,11 @@ begin
    end;
 end;
 
+procedure TBandScope2.timerCleanupTimer(Sender: TObject);
+begin
+   Cleanup(nil);
+end;
+
 procedure TBandScope2.Cleanup(D: TBSData);
 var
    i: Integer;
@@ -296,13 +303,12 @@ var
    MarkCurrent: Boolean;
    Marked: Boolean;
 begin
+   FProcessing := True;
+   try
    try
       toprow := Grid.TopRow;
       currow := Grid.Row;
       markrow := -1;
-
-      // クリーンアップ
-      Cleanup(nil);
 
       if (FNewMultiOnly = False) and (dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand) then begin
          MarkCurrent := True;
@@ -418,6 +424,9 @@ begin
          dmZLogGlobal.WriteErrorLog(E.Message);
          dmZLogGlobal.WriteErrorLog(E.StackTrace);
       end;
+   end;
+   finally
+      FProcessing := False;
    end;
 end;
 
@@ -541,10 +550,13 @@ begin
    InitializeCriticalSection(FBSLock);
    FBSList := TBSList.Create();
    FProcessing := False;
+   timerCleanup.Interval := 1 * 60 * 1000; // 1min.
+   timerCleanup.Enabled := True;
 end;
 
 procedure TBandScope2.FormDestroy(Sender: TObject);
 begin
+   timerCleanup.Enabled := False;
    FBSList.Free();
 end;
 
