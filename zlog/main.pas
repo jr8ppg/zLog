@@ -3069,11 +3069,8 @@ var
    C, N, B, M: TEdit;
    curQSO: TQSO;
 begin
-   if FKeyPressedRigID <> CurrentRigID then begin
-      Exit;
-   end;
+   AssignControls(FCurrentRigSet - 1, C, N, B, M);
 
-   AssignControls(FKeyPressedRigID, C, N, B, M);
    curQSO := TQSO.Create();
    curQSO.Callsign := C.Text;
 
