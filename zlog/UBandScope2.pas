@@ -19,6 +19,7 @@ type
     ImageList1: TImageList;
     Panel2: TPanel;
     checkSyncVfo: TCheckBox;
+    timerCleanup: TTimer;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure mnDeleteClick(Sender: TObject);
     procedure Deleteallworkedstations1Click(Sender: TObject);
@@ -33,6 +34,7 @@ type
     procedure GridMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FormResize(Sender: TObject);
     procedure checkSyncVfoClick(Sender: TObject);
+    procedure timerCleanupTimer(Sender: TObject);
   private
     { Private 宣言 }
     FProcessing: Boolean;
@@ -71,7 +73,7 @@ type
   public
     { Public 宣言 }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
-    procedure AddSelfSpot(aQSO : TQSO; Hz : Int64);
+    procedure AddSelfSpot(strCallsign: string; strNrRcvd: string; b: TBand; m: TMode; Hz: Int64);
     procedure AddSelfSpotFromNetwork(BSText : string);
     procedure AddClusterSpot(Sp: TSpot);
     procedure RewriteBandScope();
@@ -158,20 +160,20 @@ begin
 end;
 
 // Self Spot
-procedure TBandScope2.AddSelfSpot(aQSO: TQSO; Hz: Int64);
+procedure TBandScope2.AddSelfSpot(strCallsign: string; strNrRcvd: string; b: TBand; m: TMode; Hz: Int64);
 var
    D: TBSData;
 begin
-   if FCurrBand <> aQSO.Band then begin
+   if FCurrBand <> b then begin
       Exit;
    end;
 
    D := TBSData.Create;
    D.FreqHz := Hz;
-   D.Band := aQSO.Band;
-   D.Mode := aQSO.Mode;
-   D.Call := aQSO.Callsign;
-   D.Number := aQSO.NrRcvd;
+   D.Band := b;
+   D.Mode := m;
+   D.Call := strCallsign;
+   D.Number := strNrRcvd;
    D.Time := Now;
    D.SpotSource := ssSelf;
 
@@ -244,6 +246,11 @@ begin
    end;
 end;
 
+procedure TBandScope2.timerCleanupTimer(Sender: TObject);
+begin
+   Cleanup(nil);
+end;
+
 procedure TBandScope2.Cleanup(D: TBSData);
 var
    i: Integer;
@@ -296,13 +303,12 @@ var
    MarkCurrent: Boolean;
    Marked: Boolean;
 begin
+   FProcessing := True;
+   try
    try
       toprow := Grid.TopRow;
       currow := Grid.Row;
       markrow := -1;
-
-      // クリーンアップ
-      Cleanup(nil);
 
       if (FNewMultiOnly = False) and (dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand) then begin
          MarkCurrent := True;
@@ -418,6 +424,9 @@ begin
          dmZLogGlobal.WriteErrorLog(E.Message);
          dmZLogGlobal.WriteErrorLog(E.StackTrace);
       end;
+   end;
+   finally
+      FProcessing := False;
    end;
 end;
 
@@ -541,10 +550,13 @@ begin
    InitializeCriticalSection(FBSLock);
    FBSList := TBSList.Create();
    FProcessing := False;
+   timerCleanup.Interval := 1 * 60 * 1000; // 1min.
+   timerCleanup.Enabled := True;
 end;
 
 procedure TBandScope2.FormDestroy(Sender: TObject);
 begin
+   timerCleanup.Enabled := False;
    FBSList.Free();
 end;
 

@@ -9414,9 +9414,12 @@ begin
 end;
 
 procedure TMainForm.BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Int64);
+var
+   b: TBand;
 begin
-   FBandScopeEx[aQSO.Band].AddSelfSpot(aQSO, nFreq);
-   FBandScope.AddSelfSpot(aQSO, nFreq);
+   b := dmZLogGlobal.BandPlan.FreqToBand(nFreq);
+   FBandScopeEx[b].AddSelfSpot(aQSO.Callsign, aQSO.NrRcvd, b, aQSO.Mode, nFreq);
+   FBandScope.AddSelfSpot(aQSO.Callsign, aQSO.NrRcvd, b, aQSO.Mode, nFreq);
 end;
 
 procedure TMainForm.BandScopeAddSelfSpotFromNetwork(BSText: string);
