@@ -5865,7 +5865,7 @@ object MainForm: TMainForm
         Action = actionShowCheckCall
       end
       object mnCheckMulti: TMenuItem
-        Action = actionCheckMulti
+        Action = actionShowCheckMulti
       end
       object mnCheckCountry: TMenuItem
         Action = actionShowCheckCountry
