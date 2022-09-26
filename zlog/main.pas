@@ -993,6 +993,7 @@ type
     procedure RenewScore();
     procedure ScrollGrid();
     procedure EditCurrentRow();
+    procedure CallSpaceBarProc(C, N, B: TEdit);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -3008,55 +3009,18 @@ procedure TMainForm.SpaceBarProc();
 var
    Q: TQSO;
    S: string;
-   N: TEdit;
-   C: TEdit;
-
-   function GetSuperCheckNumber(var strNumber: string): Boolean;
-   begin
-      if dmZlogGlobal.Settings._entersuperexchange and (FSpcRcvd_Estimate <> '') then begin
-         if strNumber = '' then begin
-            if CoreCall(FSpcFirstDataCall) = CoreCall(CallsignEdit.Text) then begin
-               strNumber := TrimRight(FSpcRcvd_Estimate);
-               Result := True;
-               Exit;
-            end;
-         end;
-      end;
-      Result := False;
-   end;
-
-   procedure CheckContestNumber();
-   begin
-      N.Text := MyContest.SpaceBarProc(C.Text, N.Text);
-      S := N.Text;
-      if GetSuperCheckNumber(S) = True then begin
-         N.Text := S;
-      end;
-
-      if (MyContest is TALLJAContest) or
-         (MyContest is TSixDownContest) or
-         (MyContest is TFDContest) or
-         (MyContest is TACAGContest) then begin
-         S := N.Text;
-         if S <> '' then begin
-            if CharInSet(S[Length(S)], ['H', 'M', 'L', 'P']) then begin
-               N.SelStart := Length(S) - 1;
-               N.SelLength := 1;
-            end;
-         end;
-      end;
-   end;
+   C, N, B: TEdit;
 begin
    C := CallsignEdit;
    N := NumberEdit;
+   B := BandEdit;
 
    Q := Log.QuickDupe(CurrentQSO);
    if Q <> nil then begin
       MessageBeep(0);
 
       if dmZLogGlobal.Settings._allowdupe = True then begin
-         CheckContestNumber();
-         N.SetFocus;
+         CallSpacebarProc(C, N, B);
       end
       else begin
          C.SelectAll;
@@ -3064,16 +3028,10 @@ begin
 
       S := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
       WriteStatusLineRed(S, True);
-      Exit;
    end
    else begin { if not dupe }
+      CallSpacebarProc(C, N, B);
       WriteStatusLine('', False);
-      CheckContestNumber();
-      N.SetFocus;
-   end;
-
-   if FCheckMulti.Visible then begin
-      FCheckMulti.Renew(CurrentQSO);
    end;
 end;
 
@@ -3413,8 +3371,7 @@ begin
             PlayMessage(1, 4);
          end
          else begin
-            MyContest.SpaceBarProc(CallsignEdit.Text, NumberEdit.Text);
-            NumberEdit.SetFocus;
+            CallSpaceBarProc(CallsignEdit, NumberEdit, BandEdit);
             PlayMessage(1, 2);
          end;
 
@@ -3422,11 +3379,7 @@ begin
          WriteStatusLineRed(S, True);
       end
       else begin  // not dupe
-         MyContest.SpaceBarProc(CallsignEdit.Text, NumberEdit.Text);
-         if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
-            (FInformation.Is2bsiq = False) then begin
-            NumberEdit.SetFocus;
-         end;
+         CallSpaceBarProc(CallsignEdit, NumberEdit, BandEdit);
          PlayMessage(1, 2);
       end;
 
@@ -3436,13 +3389,10 @@ begin
    // RTTY
    if Main.CurrentQSO.Mode = mRTTY then begin
       TabPressed := True;
-      if FTTYConsole <> nil then
+      if FTTYConsole <> nil then begin
          FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), CurrentQSO));
-      MyContest.SpaceBarProc(CallsignEdit.Text, NumberEdit.Text);
-      if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
-         (FInformation.Is2bsiq = False) then begin
-         NumberEdit.SetFocus;
       end;
+      CallSpaceBarProc(CallsignEdit, NumberEdit, BandEdit);
       FCQRepeatPlaying := False;
       Exit;
    end;
@@ -4568,12 +4518,7 @@ begin
       end;
 
       if TabPressed2 then begin
-         MyContest.SpaceBarProc(CallsignEdit.Text, NumberEdit.Text);
-
-         if (dmZLogGlobal.Settings._so2r_type = so2rNone) or
-            ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (FInformation.Is2bsiq = False)) then begin
-            NumberEdit.SetFocus;
-         end;
+         CallSpaceBarProc(CallsignEdit, NumberEdit, BandEdit);
          EditedSinceTABPressed := tabstate_tabpressedbutnotedited; // UzLogCW
       end;
 
@@ -4582,6 +4527,79 @@ begin
       TabPressed := False;
       TabPressed2 := False;
    end;
+end;
+
+procedure TMainForm.CallSpaceBarProc(C, N, B: TEdit);
+var
+   strNumber: string;
+   str: string;
+   Q: TQSO;
+begin
+   Q := TQSO.Create();
+   Q.Callsign := C.Text;
+   Q.NrRcvd := N.Text;
+   Q.Band := TextToBand(B.Text);
+
+   strNumber := MyContest.SpaceBarProc(C.Text, N.Text);
+
+   if dmZlogGlobal.Settings._entersuperexchange and (MainForm.FSpcRcvd_Estimate <> '') then begin
+      if strNumber = '' then begin
+         if CoreCall(FSpcFirstDataCall) = CoreCall(C.Text) then begin
+            strNumber := TrimRight(FSpcRcvd_Estimate);
+            MyContest.MultiFound := True;
+         end;
+      end;
+   end;
+
+   if FCheckMulti.Visible then begin
+      FCheckMulti.Renew(Q);
+   end;
+
+   if FCheckCountry.Visible then begin
+      FCheckCountry.Renew(Q);
+   end;
+
+   N.Text := strNumber;
+
+   if (MyContest is TALLJAContest) or
+      (MyContest is TSixDownContest) or
+      (MyContest is TFDContest) or
+      (MyContest is TACAGContest) then begin
+      str := N.Text;
+      if str <> '' then begin
+         if CharInSet(str[length(str)], ['H', 'M', 'L', 'P']) then begin
+            N.SelStart := length(str) - 1;
+            N.SelLength := 1;
+         end;
+      end;
+   end;
+
+   if (dmZLogGlobal.Settings._so2r_type = so2rNone) or
+      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+      (FCurrentTX = FCurrentRx)) then begin
+      N.SetFocus;
+   end;
+
+   if (MyContest is TCQWWContest) or
+      (MyContest is TWAEContest) then begin
+      if (dmZLogGlobal.IsMultiStation() = True) then begin
+         if FCheckCountry.Visible = False then begin
+            FCheckCountry.Renew(Q);
+         end;
+
+         if FCheckCountry.NotNewMulti(Q.Band) then begin
+            WriteStatusLineRed('NOT a new multiplier. (This is a multi stn)', False);
+            Exit;
+         end;
+      end;
+   end;
+
+   str := MyContest.MultiForm.GetInfo(Q);
+   if str <> '' then begin
+      WriteStatusLine(str, False);
+   end;
+
+   Q.Free();
 end;
 
 procedure TMainForm.Timer1Timer(Sender: TObject);
@@ -8871,15 +8889,13 @@ begin
       Exit;
    end;
 
-//   MyContest.SpaceBarProc;
-
    if NumberEdit.Text = '' then begin
       if strNumber <> '' then begin
          NumberEdit.Text := strNumber;
          NumberEdit.SelStart := Length(NumberEdit.Text);
       end
       else begin
-         MyContest.SpaceBarProc(CallsignEdit.Text, NumberEdit.Text);
+         CallSpaceBarProc(CallsignEdit, NumberEdit, BandEdit);
       end;
    end;
 
