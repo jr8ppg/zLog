@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5687962963</prop>
-        <prop prop-type="OrigDateTime">44800.8836574074</prop>
+        <prop prop-type="SelfDateTime">44827.8940046296</prop>
+        <prop prop-type="OrigDateTime">44827.8920833333</prop>
         <prop prop-type="XlatDateTime">44800.8836574074</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">87</prop>
+        <prop prop-type="UnTranslated">92</prop>
       </prop-group>
     </header>
     <body>
@@ -447,6 +447,31 @@
         <source>176</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.893126794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:BandScope2.O:timerCleanup.Enabled" resname="O:BandScope2.O:timerCleanup.Enabled">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44827.8940217477</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:BandScope2.O:timerCleanup.Interval" resname="O:BandScope2.O:timerCleanup.Interval">
+        <source>60000</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44827.8940217477</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:BandScope2.O:timerCleanup.OnTimer" resname="O:BandScope2.O:timerCleanup.OnTimer">
+        <source>timerCleanupTimer</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44827.8940217477</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:BandScope2.O:timerCleanup.Left" resname="O:BandScope2.O:timerCleanup.Left">
+        <source>112</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44827.8940217477</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:BandScope2.O:timerCleanup.Top" resname="O:BandScope2.O:timerCleanup.Top">
+        <source>136</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44827.8940217477</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

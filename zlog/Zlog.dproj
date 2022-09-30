@@ -3,7 +3,7 @@
         <ProjectGuid>{83497C9C-5934-4E18-AC20-2AB9247B7276}</ProjectGuid>
         <MainSource>zlog.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
@@ -667,7 +667,7 @@
                 </Resource_DLL_Projects>
                 <RDP_Source_Files>
                     <RDP_Source_Files Name="Item0">Win64\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item1">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item1">Win32\Release\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item2">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item3">UBasicScore.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item4">UBasicMulti.dfm</RDP_Source_Files>
@@ -771,7 +771,7 @@
                     <RDP_Source_Files Name="Item102">UWinKeyerTester.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item103">UStatusEdit.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item104">UMessageManager.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item105">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item105">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

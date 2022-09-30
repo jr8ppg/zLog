@@ -104,4 +104,11 @@ object BandScope2: TBandScope2
     Left = 56
     Top = 176
   end
+  object timerCleanup: TTimer
+    Enabled = False
+    Interval = 60000
+    OnTimer = timerCleanupTimer
+    Left = 112
+    Top = 136
+  end
 end

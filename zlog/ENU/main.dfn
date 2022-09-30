@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44807.6044675926</prop>
-        <prop prop-type="OrigDateTime">44807.6000694444</prop>
+        <prop prop-type="SelfDateTime">44827.8938425926</prop>
+        <prop prop-type="OrigDateTime">44825.011875</prop>
         <prop prop-type="XlatDateTime">44801.4782638889</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">3065</prop>
+        <prop prop-type="UnTranslated">3066</prop>
       </prop-group>
     </header>
     <body>
@@ -15303,40 +15303,45 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3057</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:MainForm.O:timerCqRepeat.Interval" resname="O:MainForm.O:timerCqRepeat.Interval">
+        <source>100</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44827.893851088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3058</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:MainForm.O:timerCqRepeat.OnTimer" resname="O:MainForm.O:timerCqRepeat.OnTimer">
         <source>timerCqRepeatTimer</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3058</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3059</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:timerCqRepeat.Left" resname="O:MainForm.O:timerCqRepeat.Left">
         <source>240</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3059</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3060</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:timerCqRepeat.Top" resname="O:MainForm.O:timerCqRepeat.Top">
         <source>171</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3060</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3061</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:FileImportDialog.Filter" resname="O:MainForm.O:FileImportDialog.Filter">
         <source>'zLog binary File|*.ZLO|zLog Extended binary File|*.ZLOX|zLog CSV|*.csv'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3061</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3062</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:FileImportDialog.Title" resname="O:MainForm.O:FileImportDialog.Title">
         <source>'Import'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3062</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3063</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:FileImportDialog.Left" resname="O:MainForm.O:FileImportDialog.Left">
         <source>472</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3063</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3064</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:FileImportDialog.Top" resname="O:MainForm.O:FileImportDialog.Top">
         <source>144</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3064</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929456944</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3065</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

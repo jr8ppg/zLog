@@ -2155,7 +2155,7 @@ begin
    end;
 
    if FPTTEnabled then begin
-      ControlPTT(FWkTx, True);
+//      ControlPTT(FWkTx, True);
       FKeyingCounter := FPttDelayBeforeCount;
    end;
 

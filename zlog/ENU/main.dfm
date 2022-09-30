@@ -7250,6 +7250,7 @@ object MainForm: TMainForm
   end
   object timerCqRepeat: TTimer
     Enabled = False
+    Interval = 100
     OnTimer = timerCqRepeatTimer
     Left = 240
     Top = 171

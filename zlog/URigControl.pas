@@ -4011,6 +4011,11 @@ function TRigControl.GetRig(setno: Integer; b: TBand): TRig;
 var
    rigno: Integer;
 begin
+   if b = bUnknown then begin
+      Result := nil;
+      Exit;
+   end;
+
    if setno = 3 then begin
       Result := FRigs[5];
    end

@@ -6520,8 +6520,19 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('>>> Enter - OnZLogSwitchRx() '));
    {$ENDIF}
-   rx := GetNextRigID(FCurrentRx);
-   SwitchRx(rx + 1);
+   case Message.WParam of
+      // 反対側へ
+      0: begin
+         rx := GetNextRigID(FCurrentRx);
+         SwitchRx(rx + 1);
+      end;
+
+      // TXに合わせる
+      1: begin
+         SwitchRx(FCurrentTx + 1);
+      end;
+   end;
+
    {$IFDEF DEBUG}
    OutputDebugString(PChar('<<< Leave - OnZLogSwitchRx() '));
    {$ENDIF}
@@ -7344,22 +7355,24 @@ begin
                if mode = mCW then begin
 //                  rx := GetNextRigID(FCurrentRx);
 //                  SwitchRx(rx + 1, True);
-                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 0, 0);
+//                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 0, 0);
                end;
 
+               // 次のRIG入力欄
                rx := GetNextRigID(FCurrentRx);
 //               SwitchRx(rx + 1, True);
                if (FEditPanel[rx].CallsignEdit.Text = '') and
                   (FEditPanel[rx].rcvdNumber.Text = '') then begin
-//                  PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
-                  FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+//                  FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
                end
                else begin
 //                  FCQLoopPause := True;
-//                  PostMessage(Handle, WM_ZLOG_SWITCH_RIG, rx + 1, 1);
-                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RIG, 0, 1);
-                  FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 1, 0);
+//                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RIG, 0, 1);
+//                  FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 1, 0);
                end;
+                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 1, 0);
+//                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RIG, 0, 1);
+//                  FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 1, 0);
                Exit;
             end;
          end;
@@ -10274,31 +10287,57 @@ begin
    OutputDebugString(PChar('[無変換]'));
    {$ENDIF}
 
+   // 現在のPTT状態
+   fBeforePTT := dmZLogKeyer.PTTIsOn;
+
    // 2BSIQ時は受信中の方でPTT制御する
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
       (FInformation.Is2bsiq = True) then begin
-      // TXをRXに合わせる
-      if FCurrentTx <> FCurrentRx then begin
-         ResetTx();
-      end;
+      // 再生中なら
+      if FMessageManager.IsPlaying = True then begin
+         // CQを中止して
+         CQAbort(False);
 
-      if FCQLoopRunning = True then begin
-         FCQLoopPause := True;
-         timerCqRepeat.Enabled := False;
-      end;
-
-      ControlPTT(True);
-   end
-   else begin
-      // 現在のPTT状態
-      fBeforePTT := dmZLogKeyer.PTTIsOn;
-
-      // PTTをトグル
-      if fBeforePTT = True then begin
-         ControlPTT(False);
+         // PTT ON
+         ControlPTT(True);
       end
       else begin
+         if fBeforePTT = True then begin
+            ControlPTT(False);
+         end
+         else begin
+            // TXをRXに合わせる
+            if FCurrentTx <> FCurrentRx then begin
+               ResetTx();
+            end;
+
+            if FCQLoopRunning = True then begin
+               FCQLoopPause := True;
+               timerCqRepeat.Enabled := False;
+            end;
+
+            ControlPTT(True);
+         end;
+      end;
+   end
+   else begin
+
+      // 再生中なら
+      if FMessageManager.IsPlaying = True then begin
+         // CQを中止して
+         CQAbort(False);
+
+         // PTT ON
          ControlPTT(True);
+      end
+      else begin
+         // PTTをトグル
+         if fBeforePTT = True then begin
+            ControlPTT(False);
+         end
+         else begin
+            ControlPTT(True);
+         end;
       end;
    end;
 end;
