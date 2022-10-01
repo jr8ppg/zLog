@@ -29,6 +29,7 @@ type
     constructor Create();
     destructor Destroy(); override;
     property Text: string read GetText;
+    procedure Assign(src: TPlayMessage);
   end;
 
   TformMessageManager = class(TForm)
@@ -222,6 +223,7 @@ end;
 procedure TformMessageManager.WMPlayQueue( var Message: TMessage );
 var
    msg: TPlayMessage;
+   msg2: TPlayMessage;
    nID: Integer;
 begin
    // QUEUEから取り出し
@@ -232,75 +234,88 @@ begin
    // 先頭のMSGを取り出し
    msg := FMessageQueue[0];
 
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('***' + msg.Text + '***'));
-   {$ENDIF}
+   // 削除予約
+   FMessageQueue[0] := nil;
 
-   if msg.FCmd = 0 then begin
-      // TODO:送信処理
-      case msg.FMode of
-         mCW: begin
-            if msg.FRigID = 0 then begin
-               nID := MainForm.CurrentTX;
-            end
-            else if msg.FRigID = 1 then begin
-               nID := MainForm.CurrentRX;
-            end
-            else begin
-               nID := msg.FRigID - 10;
-            end;
-
-            zLogSendStr(nID, msg.FText, msg.FCallsign);
-         end;
-
-         mSSB, mFM, mAM: begin
-            SendVoice(msg.FVoiceNo);
-         end;
-
-         mRTTY: begin
-
-         end;
-
-         else begin
-         end;
-      end;
-
-      msg.Free();
-      if FMessageQueue.Count > 0 then begin
-         FMessageQueue.Delete(0);
-      end;
-   end
-   else if msg.FCmd = WM_ZLOG_AFTER_DELAY then begin
-      Sleep(dmZLogGlobal.Settings._so2r_rigsw_after_delay);
-
-      if Memo1.Lines.Count > 0 then begin
-         Memo1.Lines.Delete(0);
-      end;
-
-      msg.Free();
-      if FMessageQueue.Count > 0 then begin
-         FMessageQueue.Delete(0);
-      end;
-
-      ContinueQue();
-   end
-   else begin
+   msg2 := TPlayMessage.Create();
+   msg2.Assign(msg);
+   msg.Free();
+   try
       {$IFDEF DEBUG}
-      OutputDebugString(PChar('@@@ Call = [' + msg.Text + ']@@@'));
+      OutputDebugString(PChar('***' + msg2.Text + '***'));
       {$ENDIF}
 
-      SendMessage(MainForm.Handle, msg.FCmd, msg.FWParam, msg.FLParam);
+      if msg2.FCmd = 0 then begin
+         // TODO:送信処理
+         case msg2.FMode of
+            mCW: begin
+               if msg2.FRigID = 0 then begin
+                  nID := MainForm.CurrentTX;
+               end
+               else if msg2.FRigID = 1 then begin
+                  nID := MainForm.CurrentRX;
+               end
+               else begin
+                  nID := msg2.FRigID - 10;
+               end;
 
-      if Memo1.Lines.Count > 0 then begin
-         Memo1.Lines.Delete(0);
+               zLogSendStr(nID, msg2.FText, msg2.FCallsign);
+            end;
+
+            mSSB, mFM, mAM: begin
+               SendVoice(msg2.FVoiceNo);
+            end;
+
+            mRTTY: begin
+
+            end;
+
+            else begin
+            end;
+         end;
+
+         FMessageQueue.Pack();
+
+//         if FMessageQueue.Count > 0 then begin
+//            FMessageQueue.Delete(0);
+//         end;
+      end
+      else if msg2.FCmd = WM_ZLOG_AFTER_DELAY then begin
+         Sleep(dmZLogGlobal.Settings._so2r_rigsw_after_delay);
+
+         if Memo1.Lines.Count > 0 then begin
+            Memo1.Lines.Delete(0);
+         end;
+
+         FMessageQueue.Pack();
+
+//         if FMessageQueue.Count > 0 then begin
+//            FMessageQueue.Delete(0);
+//         end;
+
+         ContinueQue();
+      end
+      else begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('@@@ Call = [' + msg2.Text + ']@@@'));
+         {$ENDIF}
+
+         SendMessage(MainForm.Handle, msg2.FCmd, msg2.FWParam, msg2.FLParam);
+
+         if Memo1.Lines.Count > 0 then begin
+            Memo1.Lines.Delete(0);
+         end;
+
+         FMessageQueue.Pack();
+
+//         if FMessageQueue.Count > 0 then begin
+//            FMessageQueue.Delete(0);
+//         end;
+
+         ContinueQue();
       end;
-
-      msg.Free();
-      if FMessageQueue.Count > 0 then begin
-         FMessageQueue.Delete(0);
-      end;
-
-      ContinueQue();
+   finally
+      msg2.Free();
    end;
 end;
 
@@ -390,6 +405,19 @@ begin
    end;
 end;
 
+procedure TPlayMessage.Assign(src: TPlayMessage);
+begin
+   FCmd := src.FCmd;
+   FWParam := src.FWParam;
+   FLParam := src.FLParam;
+   FRigID := src.FRigID;
+   FMode := src.FMode;
+   FText := src.FText;
+   FCallsign := src.FCallsign;
+   FBank := src.FBank;
+   FMsgNo := src.FMsgNo;
+   FVoiceNo := src.FVoiceNo;
+end;
 
 procedure TformMessageManager.Init();
 var

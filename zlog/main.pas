@@ -10298,6 +10298,11 @@ begin
          // CQ‚ğ’†~‚µ‚Ä
          CQAbort(False);
 
+         // TX‚ğRX‚É‡‚í‚¹‚é
+         if FCurrentTx <> FCurrentRx then begin
+            ResetTx();
+         end;
+
          // PTT ON
          ControlPTT(True);
       end
@@ -10321,7 +10326,6 @@ begin
       end;
    end
    else begin
-
       // Ä¶’†‚È‚ç
       if FMessageManager.IsPlaying = True then begin
          // CQ‚ğ’†~‚µ‚Ä
