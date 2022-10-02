@@ -413,6 +413,7 @@ begin
          temp := copy(temp, 8, 255);
          aQSO.TextToQSO(temp);
          MyContest.LogQSO(aQSO, false);
+         MainForm.GridRefreshScreen;
          aQSO.Free;
       end;
 
@@ -435,6 +436,7 @@ begin
          aQSO.Reserve := actDelete;
          Log.AddQue(aQSO);
          Log.ProcessQue;
+         MainForm.GridRefreshScreen;
          aQSO.Free;
       end;
 
@@ -446,8 +448,10 @@ begin
          Log.AddQue(aQSO);
          // Log.ProcessQue;
          // MyContest.Renew;
+         MainForm.GridRefreshScreen;
          aQSO.Free;
       end;
+
       if pos('LOCKQSO', temp) = 1 then begin
          aQSO := TQSO.Create;
          temp := copy(temp, 9, 255);
@@ -459,6 +463,7 @@ begin
          MainForm.GridRefreshScreen();
          aQSO.Free;
       end;
+
       if pos('UNLOCKQSO', temp) = 1 then begin
          aQSO := TQSO.Create;
          temp := copy(temp, 11, 255);
@@ -470,6 +475,7 @@ begin
          MainForm.GridRefreshScreen();
          aQSO.Free;
       end;
+
       if pos('EDITQSOTO ', temp) = 1 then begin
          aQSO := TQSO.Create;
          temp := copy(temp, 11, 255);
@@ -481,6 +487,7 @@ begin
          MainForm.GridRefreshScreen;
          aQSO.Free;
       end;
+
       if pos('INSQSO ', temp) = 1 then begin
          aQSO := TQSO.Create;
          Delete(temp, 1, 7);
