@@ -4270,7 +4270,7 @@ begin
       if currig <> FCQLoopStartRig then begin
          newrig := FCQLoopStartRig;
 //         SwitchTxRX(newrig, currig);
-         FMessageManager.AddQue(WM_ZLOG_SWITCH_TXRX, newrig, currig);
+//         FMessageManager.AddQue(WM_ZLOG_SWITCH_TXRX, newrig, currig);
       end;
    end;
 
@@ -10279,6 +10279,8 @@ end;
 procedure TMainForm.OnNonconvertKeyProc();
 var
    fBeforePTT: Boolean;
+   nID: Integer;
+   mode: TMode;
 begin
    // åªç›ÇÃPTTèÛë‘
    fBeforePTT := dmZLogKeyer.PTTIsOn;
@@ -10296,7 +10298,11 @@ begin
       // çƒê∂íÜÇ»ÇÁ
       if FMessageManager.IsPlaying = True then begin
          // CQÇíÜé~ÇµÇƒ
-         CQAbort(False);
+//         CQAbort(False);
+
+         nID := FCurrentTx;
+         mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
+         StopMessage(mode);
 
          // TXÇRXÇ…çáÇÌÇπÇÈ
          if FCurrentTx <> FCurrentRx then begin
