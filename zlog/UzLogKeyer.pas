@@ -176,6 +176,7 @@ type
     FBlank3Count: Integer;
 
     FKeyerWPM: Integer; //word;
+    FKeyerInitWPM: Integer;
     FKeyerWeight: Integer; //word;
     FUseFixedSpeed: Boolean;
     FFixedSpeed: Integer;
@@ -191,6 +192,8 @@ type
     FOnPaddleEvent: TNotifyEvent;
     FOnSendFinishProc: TPlayMessageFinishedProc;
     FOnWkStatusProc: TWkStatusEvent;
+    FOnSpeedChanged: TNotifyEvent;
+    FCancelSpeedChangedEvent: Boolean;
 
     // False: PTT=RTS,KEY=DTR
     // True:  PTT=DTR,KEY=RTS
@@ -212,7 +215,6 @@ type
     FWkCallsignSending: Boolean;
     FWkCallsignIndex: Integer;
     FWkCallsignStr: string;
-    FOnSpeedChanged: TNotifyEvent;
     FWkAbort: Boolean;
     FUseWkSo2rNeo: Boolean;
     FSo2rNeoCanRxSel: Boolean;
@@ -302,6 +304,7 @@ type
     procedure SetWeight(W : word); {Sets the weight 0-100 %}
 
     property WPM: Integer read FKeyerWPM write SetWPM;
+    property InitWPM: Integer read FKeyerInitWPM write FKeyerInitWPM;
     property UseSideTone: Boolean read FUseSideTone write SetUseSideTone;
     property SideToneVolume: Integer read FSideToneVolume write SetSideToneVolume;
     property SideTonePitch: Integer read FSideTonePitch write SetSideTonePitch;
@@ -352,6 +355,7 @@ type
     procedure WinKeyerCancelLastChar();
     procedure WinKeyerSendCommand(cmd: Byte; p1: Byte);
     procedure WinKeyerSendMessage(S: string);
+    procedure WinKeyerTuneOn();
 
     // SO2R support
     property So2rRxSelectPort: TKeyingPort read FSo2rRxSelectPort write SetSo2rRxSelectPort;
@@ -370,6 +374,7 @@ type
     procedure IncCWSpeed();
     procedure DecCWSpeed();
     procedure ToggleFixedSpeed();
+    procedure ResetSpeed();
     property FixedSpeed: Integer read FFixedSpeed write FFixedSpeed;
 
     procedure Open();
@@ -414,6 +419,7 @@ begin
    FUseWk9600 := False;
    FUseWkOutpSelect := True;
    FOnSpeedChanged := nil;
+   FCancelSpeedChangedEvent := False;
    FUseFixedSpeed := False;
    FBeforeSpeed := 0;
    FFixedSpeed := 0;
@@ -1446,7 +1452,7 @@ begin
             WinKeyerSetSpeed(FKeyerWPM);
          end;
 
-         if Assigned(FOnSpeedChanged) then begin
+         if Assigned(FOnSpeedChanged) and (FCancelSpeedChangedEvent = False) then begin
             FOnSpeedChanged(Self);
          end;
       end;
@@ -2111,16 +2117,20 @@ end;
 
 procedure TdmZLogKeyer.IncWPM;
 begin
+   FCancelSpeedChangedEvent := True;
    if FKeyerWPM < MAXWPM then begin
       WPM := FKeyerWPM + 1;
    end;
+   FCancelSpeedChangedEvent := False;
 end;
 
 procedure TdmZLogKeyer.DecWPM;
 begin
+   FCancelSpeedChangedEvent := True;
    if FKeyerWPM > MINWPM then begin
       WPM := FKeyerWPM - 1;
    end;
+   FCancelSpeedChangedEvent := False;
 end;
 
 procedure TdmZLogKeyer.SetWeight(W: word);
@@ -2405,10 +2415,16 @@ begin
       ControlPTT(nID, True);
    end;
 
-   CW_ON(nID);
+   if (FUseWinKeyer = False) then begin
+      CW_ON(nID);
 
-   if FUseSideTone then begin
-      Sound();
+      if FUseSideTone then begin
+         Sound();
+      end;
+   end
+   else begin
+      // WinKeyer
+      WinkeyerTuneOn();
    end;
 end;
 
@@ -3272,6 +3288,11 @@ begin
    FComKeying[0].SendString(AnsiString(S));
 end;
 
+procedure TdmZLogKeyer.WinKeyerTuneOn();
+begin
+   WinKeyerSendCommand(WK_KEY_IMMEDIATE_CMD, WK_KEY_IMMEDIATE_KEYDOWN);
+end;
+
 procedure TdmZLogKeyer.ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
 var
    i: Integer;
@@ -3396,6 +3417,7 @@ end;
 procedure TdmZLogKeyer.IncCWSpeed();
 begin
    WPM := WPM + 1;
+   InitWPM := WPM;
 
    if Assigned(FOnSpeedChanged) then begin
       FOnSpeedChanged(Self);
@@ -3405,6 +3427,7 @@ end;
 procedure TdmZLogKeyer.DecCWSpeed();
 begin
    WPM := WPM - 1;
+   InitWPM := WPM;
 
    if Assigned(FOnSpeedChanged) then begin
       FOnSpeedChanged(Self);
@@ -3432,6 +3455,11 @@ begin
    if Assigned(FOnSpeedChanged) then begin
       FOnSpeedChanged(Self);
    end;
+end;
+
+procedure TdmZLogKeyer.ResetSpeed();
+begin
+   WPM := InitWPM;
 end;
 
 procedure TdmZLogKeyer.WndMethod(var msg: TMessage);

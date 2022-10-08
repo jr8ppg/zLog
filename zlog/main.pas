@@ -3983,6 +3983,7 @@ end;
 procedure TMainForm.SpeedBarChange(Sender: TObject);
 begin
    dmZLogKeyer.WPM := SpeedBar.Position;
+   dmZLogKeyer.InitWPM := SpeedBar.Position;
    dmZLogGlobal.Settings.CW._speed := SpeedBar.Position;
    SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
 
@@ -4014,6 +4015,7 @@ begin
    if dmZLogKeyer.UseWinKeyer = True then begin
       dmZLogKeyer.WinKeyerClear();
    end;
+   dmZLogKeyer.ResetSpeed();
    FCQRepeatPlaying := False;
 end;
 

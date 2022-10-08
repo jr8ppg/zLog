@@ -1819,6 +1819,7 @@ begin
    dmZLogKeyer.SetPTT(Settings._pttenabled);
 
    dmZLogKeyer.WPM := Settings.CW._speed;
+   dmZLogKeyer.InitWPM := Settings.CW._speed;
    dmZLogKeyer.SetWeight(Settings.CW._weight);
    dmZLogKeyer.SideTonePitch := Settings.CW._tonepitch;
 
