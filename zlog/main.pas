@@ -9095,7 +9095,7 @@ begin
    FBandScopeEx[Sp.Band].AddClusterSpot(Sp);
    FBandScope.AddClusterSpot(Sp);
 
-   if Sp.IsNewMulti() = True then begin
+   if Sp.IsNewMulti = True then begin
       FBandScopeNewMulti.AddClusterSpot(Sp);
    end;
 end;

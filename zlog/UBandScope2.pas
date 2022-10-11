@@ -273,7 +273,7 @@ begin
                Continue;
             end;
 
-            if (FNewMultiOnly = True) and (BS.IsNewMulti() = False) then begin
+            if (FNewMultiOnly = True) and (BS.IsNewMulti = False) then begin
                FBSList[i] := nil;
                Continue;
             end;
@@ -682,7 +682,7 @@ begin
             D.Bold      := dmZLogGlobal.Settings._bandscopecolor[1].FBold;
          end
          else begin  // 未交信
-            fNewMulti := D.IsNewMulti();
+            fNewMulti := D.IsNewMulti;
             if fNewMulti = True then begin         // マルチ未ゲット
                Font.Color  := dmZLogGlobal.Settings._bandscopecolor[2].FForeColor;
                D.Bold      := dmZLogGlobal.Settings._bandscopecolor[2].FBold;
@@ -863,10 +863,10 @@ begin
    try
       for i := 0 to FBSList.Count - 1 do begin
          D := FBSList[i];
-         SpotCheckWorked(D);
+         SpotCheckWorked(D, True);
 
          if (FNewMultiOnly = True) then begin
-            if (D.IsNewMulti() = False) then begin
+            if (D.IsNewMulti = False) then begin
                FBSList[i] := nil;
             end;
             if (D.Call = aQSO.Callsign) and (D.Band = aQSO.Band) then begin
