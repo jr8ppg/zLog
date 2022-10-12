@@ -35,7 +35,7 @@ uses
 	UPackageLoader,
 	WinXCtrls,
 	Windows,
-   System.UITypes;
+	System.UITypes;
 
 type
 	TMarketItem = class(TObject)
@@ -58,15 +58,16 @@ type
 		procedure Install;
 		procedure Disable;
 		procedure Upgrade;
+		function CheckSum: string;
 		function IsStable: boolean;
 		function IsUpToDate: boolean;
 		function CanInstall: boolean;
 		function CanDisable: boolean;
 		function CanUpgrade: boolean;
 		function Dependency: TArray<TMarketItem>;
-   public
-      constructor Create;
-      destructor Destroy(); override;
+	public
+		constructor Create;
+		destructor Destroy(); override;
 	end;
 	TMarketList = TList<TMarketItem>;
 	TMarketDict = TDictionary<string, TMarketItem>;
@@ -89,6 +90,7 @@ type
 		UpgradeButton: TButton;
 		procedure FormCreate(Sender: TObject);
 		procedure FormShow(Sender: TObject);
+		procedure LoadText(url: string; var txt: string);
 		procedure LoadJSON(url: string);
 		procedure AddItem(cls, obj: TJsonPair);
 		procedure ListBoxClick(Sender: TObject);
@@ -111,6 +113,9 @@ const
 	URL_MARKET = 'https://zylo.pafelog.net/market.json';
 	URL_MANUAL = 'https://zylo.pafelog.net';
 
+resourcestring
+	UPluginManager_Installed_Plugins_Disabled = 'Installed plugins will be disabled. Are you sure?';
+
 procedure BrowseURL(url: string);
 
 function GetItemPathINI: string;
@@ -126,20 +131,20 @@ implementation
 
 procedure MarketListClear;
 var
-   Item: TMarketItem;
+	Item: TMarketItem;
 begin
-   for Item In MarketList do
-      Item.Free;
-   MarketList.Clear;
+	for Item In MarketList do
+		Item.Free;
+	MarketList.Clear;
 end;
 
 procedure MarketListFree;
 var
-   Item: TMarketItem;
+	Item: TMarketItem;
 begin
-   for Item In MarketList do
-      Item.Free;
-   MarketList.Free;
+	for Item In MarketList do
+		Item.Free;
+	MarketList.Free;
 end;
 
 function GetItemPathINI: string;
@@ -172,7 +177,7 @@ var
 begin
 	icon := mtConfirmation;
 	btns := [mbYes, mbCancel];
-	text := 'Installed plugins will be disabled. Are you sure?';
+	text := UPluginManager_Installed_Plugins_Disabled;
 	Result := MessageDlg(text, icon, btns, 0, mbCancel) = mrYes;
 end;
 var
@@ -196,7 +201,7 @@ begin
 	text := TStringList.Create;
 	for item in list do text.Append(item);
 	init.WriteString(KEY_ZYLO, KEY_LIST, text.DelimitedText);
-   text.Free;
+	text.Free;
 	init.Free;
 end;
 
@@ -220,7 +225,7 @@ end;
 
 destructor TMarketItem.Destroy;
 begin
-   use.Free;
+	use.Free;
 end;
 
 function TMarketItem.name: string;
@@ -297,7 +302,6 @@ begin
 	raise Exception.Create('checksum');
 end;
 var
-	msg: string;
 	Item: TMarketItem;
 begin
 	for Item in Dependency do begin
@@ -306,9 +310,17 @@ begin
 			Update(Item);
 			Verify(Item);
 		except
-			msg := 'download failed: ' + Item.ref;
-			MessageDlg(msg, mtWarning, [mbOK], 0);
+			TaskMessageDlg('download failed', Item.ref, mtWarning, [mbOK], 0);
 		end;
+	end;
+end;
+
+function TMarketItem.CheckSum: string;
+begin
+	try
+		MarketForm.LoadText(Self.sum, Result);
+	except
+		Result := Self.sum;
 	end;
 end;
 
@@ -328,7 +340,7 @@ begin
 	md5 := TIdHashMessageDigest5.Create;
 	bin := TFile.ReadAllBytes(Self.ref);
 	sum := md5.HashBytesAsHex(TIdBytes(bin));
-	Result := AnsiCompareText(Self.sum, sum) = 0;
+	Result := AnsiCompareText(CheckSum, sum) = 0;
 	md5.Free;
 end;
 
@@ -356,9 +368,8 @@ var
 begin
 	if CanInstall then Exit(false);
 	for Item in Dependency do
-      if Test(Item) then Exit(true);
-
-   Result := False;
+		if Test(Item) then Exit(true);
+	Result := False;
 end;
 
 function TMarketItem.Dependency: TArray<TMarketItem>;
@@ -384,27 +395,36 @@ begin
 	SearchBoxChange(Self);
 end;
 
+procedure TMarketForm.LoadText(url: string; var txt: string);
+var
+	buf: TMemoryStream;
+	res: IHTTPResponse;
+begin
+	try
+		buf := TMemoryStream.Create;
+		res := NetHttpRequest.Get(url, buf);
+		txt := res.ContentAsString(TEncoding.UTF8);
+	finally
+		FreeAndNil(buf);
+	end;
+end;
+
 procedure TMarketForm.LoadJSON(url: string);
 var
 	txt: string;
-	buf: TMemoryStream;
-	res: IHTTPResponse;
 	all: TJsonValue;
 	map: TJsonObject;
 	cls, obj: TJsonPair;
 begin
 	try
 		MarketListClear;
-		buf := TMemoryStream.Create;
-		res := NetHttpRequest.Get(url, buf);
-		txt := res.ContentAsString(TEncoding.UTF8);
+		LoadText(url, txt);
 		all := TJsonObject.ParseJSONValue(txt);
 		for cls in (all as TJsonObject) do begin
 			map := cls.JsonValue as TJsonObject;
 			for obj in map do AddItem(cls, obj);
 		end;
 	finally
-		FreeAndNil(buf);
 		FreeAndNil(all);
 	end;
 end;
