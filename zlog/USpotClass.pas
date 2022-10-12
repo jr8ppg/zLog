@@ -28,16 +28,23 @@ type
     FCQ: Boolean;
     FNewJaMulti: Boolean;
     FReportedBy: string;
+    FIsDomestic: Boolean;
+    procedure SetCall(v: string);
+    function GetIsNewMulti(): Boolean; // newcty or newzone
+    function GetIsPortable(): Boolean;
   public
     constructor Create; virtual;
     function FreqKHzStr : string;
-    function IsNewMulti(): boolean; // newcty or newzone
     function InText : string; virtual; abstract;
     procedure FromText(S : string); virtual; abstract;
     procedure Assign(O: TBaseSpot); virtual;
 
+    property IsNewMulti: Boolean read GetIsNewMulti;
+    property IsPortable: Boolean read GetIsPortable;
+    property IsDomestic: Boolean read FIsDomestic write FIsDomestic;
+
     property Time: TDateTime read FTime write FTime;
-    property Call: string read FCall write FCall;
+    property Call: string read FCall write SetCall;
     property Number: string read FNumber write FNumber;
     property FreqHz: Int64 read FFreqHz write FFreqHz;
     property CtyIndex: Integer read FCtyIndex write FCtyIndex;
@@ -94,7 +101,7 @@ type
   end;
 
   {$IFNDEF ZLOG_TELNET}
-  procedure SpotCheckWorked(Sp: TBaseSpot);
+  procedure SpotCheckWorked(Sp: TBaseSpot; fWorkedScrub: Boolean = False);
   {$ENDIF}
 
 var
@@ -128,6 +135,7 @@ begin
    FCQ := False;
    FNewJaMulti := False;
    FReportedBy := '';
+   FIsDomestic := True;
 end;
 
 constructor TSpot.Create;
@@ -370,9 +378,20 @@ begin
    FComment := TSpot(O).FComment;
 end;
 
-function TBaseSpot.IsNewMulti(): Boolean;
+function TBaseSpot.GetIsNewMulti(): Boolean;
 begin
    Result := NewCty or NewZone or NewJaMulti;
+end;
+
+function TBaseSpot.GetIsPortable(): Boolean;
+begin
+   Result := (Pos('/', FCall) > 0);
+end;
+
+procedure TBaseSpot.SetCall(v: string);
+begin
+   FCall := v;
+   FIsDomestic := UzLogGlobal.IsDomestic(v);
 end;
 
 procedure TBaseSpot.Assign(O: TBaseSpot);
@@ -467,7 +486,7 @@ begin
 end;
 
 {$IFNDEF ZLOG_TELNET}
-procedure SpotCheckWorked(Sp: TBaseSpot);
+procedure SpotCheckWorked(Sp: TBaseSpot; fWorkedScrub: Boolean);
 var
    multi: string;
    SD, SD2: TSuperData;
@@ -477,7 +496,7 @@ begin
    Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
 
    // NR未入力の場合
-   if Sp.Number = '' then begin
+   if (Sp.Number = '') and (fWorkedScrub = False) then begin
       // 他のバンドで交信済みならマルチを取得
       if Log.IsOtherBandWorked(Sp.Call, Sp.Band, multi) = True then begin
          Sp.Number := multi;
@@ -492,7 +511,7 @@ begin
          end;
 
          // SPCからも取得できない場合はLookup Serverに依頼する
-         if Sp.Number = '' then begin
+         if (Sp.Number = '') and (Sp.IsPortable = False) and (Sp.IsDomestic = True) then begin
             Sp.Number := ExecLookup(Sp.Call);
          end;
          SD.Free();
