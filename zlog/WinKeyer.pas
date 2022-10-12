@@ -46,6 +46,12 @@ const
   // Clear Buffer <0A> no parameters
   WK_CLEAR_CMD = $0a;
 
+  // Key Immediate <0B><nn> nn = 01 key down, n = 00 key up
+  WK_KEY_IMMEDIATE_CMD = $0b;
+
+  WK_KEY_IMMEDIATE_KEYDOWN = $01;
+  WK_KEY_IMMEDIATE_KEYUP = $00;
+
   // Set WinKeyer Mode <0E><nn> nn = Mode bit field in binary
   WK_SETMODE_CMD = $0e;
 
