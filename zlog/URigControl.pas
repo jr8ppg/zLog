@@ -297,6 +297,16 @@ type
     procedure SetVFO(i : integer); override;
   end;
 
+  TFT1011 = class(TFT1000MP)
+    procedure Initialize(); override;
+    procedure SetMode(Q : TQSO); override;
+    procedure ExecuteCommand(S: AnsiString); override;
+    procedure RitClear; override;
+    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetVFO(i : integer); override;
+    procedure PollingProcess(); override;
+  end;
+
   TMARKV = class(TFT1000MP)
     procedure ExecuteCommand(S: AnsiString); override;
     procedure RitClear; override;
@@ -476,6 +486,8 @@ type
 
     property OnVFOChanged: TNotifyEvent read FOnVFOChanged write FOnVFOChanged;
   end;
+
+function dec2hex(i: Integer): Integer;
 
 implementation
 
@@ -1168,6 +1180,132 @@ begin
    end;
 end;
 
+procedure TFT1011.Initialize();
+begin
+   Inherited;
+   FPollingTimer.Enabled := False;
+end;
+
+procedure TFT1011.SetMode(Q: TQSO);
+var
+   Command: AnsiString;
+   para: byte;
+begin
+   para := 0;
+
+   case Q.Mode of
+      mSSB:
+         if Q.Band <= b7 then
+            para := 0
+         else
+            para := 1;
+      mCW:
+         para := 2;
+      mFM:
+         para := 6;
+      mAM:
+         para := 4;
+      mRTTY:
+         para := 8;
+      mOther:
+         para := $0A;
+   end;
+
+   Command := _nil3 + AnsiChar(para) + AnsiChar($0C);
+   WriteData(Command);
+
+   _currentmode := Q.Mode;
+   if Selected then begin
+      UpdateStatus;
+   end;
+end;
+
+procedure TFT1011.ExecuteCommand(S: AnsiString);
+begin
+   try
+      _currentfreq[0] := 0;
+      _currentfreq[1] := 0;
+      UpdateFreqMem(0, 0);
+      UpdateFreqMem(1, 0);
+
+      if Selected then begin
+         UpdateStatus;
+      end;
+   finally
+//      FPollingTimer.Enabled := True;
+   end;
+end;
+
+procedure TFT1011.RitClear;
+begin
+   Inherited;
+   WriteData(_nil3 + AnsiChar($FF) + AnsiChar($09));
+end;
+
+procedure TFT1011.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+var
+   fstr: AnsiString;
+   i, j: LongInt;
+begin
+   i := Hz;
+   i := i div 10;
+
+   j := i mod 100;
+   fstr := AnsiChar(dec2hex(j));
+   i := i div 100;
+
+   j := i mod 100;
+   fstr := fstr + AnsiChar(dec2hex(j));
+   i := i div 100;
+
+   j := i mod 100;
+   fstr := fstr + AnsiChar(dec2hex(j));
+   i := i div 100;
+
+   j := i mod 100;
+   fstr := fstr + AnsiChar(dec2hex(j));
+   // i := i div 100;
+
+   fstr := fstr + AnsiChar($0A);
+
+   WriteData(fstr);
+
+   _currentfreq[_currentvfo] := Hz;
+   UpdateFreqMem(_currentvfo, Hz);
+   if Selected then begin
+      UpdateStatus;
+   end;
+
+   if fSetLastFreq = True then begin
+      LastFreq := Hz;
+   end;
+
+   FPollingTimer.Enabled := True;
+end;
+
+procedure TFT1011.SetVFO(i: Integer); // A:0, B:1
+begin
+   if (i > 1) or (i < 0) then begin
+      Exit;
+   end;
+
+   _currentvfo := i;
+   if i = 0 then
+      WriteData(_nil3 + AnsiChar(0) + AnsiChar($05))
+   else
+      WriteData(_nil3 + AnsiChar(1) + AnsiChar($05));
+
+   if Selected then begin
+      UpdateStatus;
+   end;
+end;
+
+procedure TFT1011.PollingProcess;
+begin
+   FPollingTimer.Enabled := False;
+   ExecuteCommand('');
+end;
+
 procedure TMARKV.ExecuteCommand(S: AnsiString);
 var
    i: LongInt;
@@ -1417,6 +1555,12 @@ begin
 
          if rname = 'FT-1000' then begin
             rig := TFT1000.Create(rignum);
+            rig._minband := b19;
+            rig._maxband := b28;
+         end;
+
+         if rname = 'FT-1011(PC->RIG)' then begin
+            rig := TFT1011.Create(rignum);
             rig._minband := b19;
             rig._maxband := b28;
          end;
