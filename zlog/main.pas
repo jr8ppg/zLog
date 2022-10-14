@@ -7153,7 +7153,7 @@ begin
          rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[b]);
 
          // RIG Select
-         dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
+//         dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
          dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
       end;
    end;
