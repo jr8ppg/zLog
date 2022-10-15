@@ -1103,6 +1103,7 @@ type
     procedure SetLastFocus();
 
     procedure MsgMgrAddQue(nID: Integer; S: string; aQSO: TQSO);
+    procedure MsgMgrContinueQue();
   end;
 
   TBandScopeNotifyThread = class(TThread)
@@ -10735,6 +10736,11 @@ end;
 procedure TMainForm.MsgMgrAddQue(nID: Integer; S: string; aQSO: TQSO);
 begin
    FMessageManager.AddQue(nID, S, aQSO);
+end;
+
+procedure TMainForm.MsgMgrContinueQue();
+begin
+   FMessageManager.ContinueQue();
 end;
 
 procedure TMainForm.SetCurrentQSO(nID: Integer);

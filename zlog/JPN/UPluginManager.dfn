@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5685185185</prop>
-        <prop prop-type="OrigDateTime">44800.8836574074</prop>
+        <prop prop-type="SelfDateTime">44849.9789583333</prop>
+        <prop prop-type="OrigDateTime">44820.9212037037</prop>
         <prop prop-type="XlatDateTime">44800.8836574074</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">235</prop>
+        <prop prop-type="UnTranslated">236</prop>
       </prop-group>
     </header>
     <body>
@@ -234,7 +234,7 @@
         <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:TagLabel.Width" resname="O:MarketForm.O:ShowPanel.O:TagLabel.Width">
-        <source>333</source>
+        <source>614</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -298,895 +298,900 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:MarketForm.O:ShowPanel.O:TagLabel.ExplicitWidth" resname="O:MarketForm.O:ShowPanel.O:TagLabel.ExplicitWidth">
+        <source>333</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44849.9789633449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.Left" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.Left">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.Top" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.Top">
         <source>52</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.Width" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.Width">
         <source>614</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.Height" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.Height">
         <source>76</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.Align" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.Caption" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.Caption">
         <source>'Empower zLog with great features developed by third parties.'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.Color" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.Color">
         <source>clBtnFace</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.Font.Charset" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.Font.Color" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.Font.Height" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.Font.Height">
         <source>-16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.Font.Name" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.Font.Name">
         <source>'Tahoma'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.Font.Style" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.ParentColor" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.ParentColor">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.ParentFont" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.TabOrder" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.OnLinkClick" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.OnLinkClick">
         <source>WebLabelLinkClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.ExplicitWidth" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.ExplicitWidth">
+        <source>440</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44849.9789633565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:MarketForm.O:ShowPanel.O:MsgLabel.ExplicitHeight" resname="O:MarketForm.O:ShowPanel.O:MsgLabel.ExplicitHeight">
+        <source>23</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44849.9789633565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Left" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Left">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Top" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Top">
         <source>128</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Width" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Width">
         <source>614</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Height" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Height">
         <source>18</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Align" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Align">
         <source>alBottom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Caption" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Caption">
         <source>'&lt;a href="https://zylo.pafelog.net"&gt;How to make plugin&lt;/a&gt;'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Charset" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Color" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Height" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Height">
         <source>-12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Name" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Name">
         <source>'Tahoma'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Style" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.ParentFont" resname="O:MarketForm.O:ShowPanel.O:WebLabel.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.TabOrder" resname="O:MarketForm.O:ShowPanel.O:WebLabel.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.OnLinkClick" resname="O:MarketForm.O:ShowPanel.O:WebLabel.OnLinkClick">
         <source>WebLabelLinkClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.ExplicitWidth" resname="O:MarketForm.O:ShowPanel.O:WebLabel.ExplicitWidth">
+        <source>114</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44849.9789633565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.Left" resname="O:MarketForm.O:ListPanel.Left">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.Top" resname="O:MarketForm.O:ListPanel.Top">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.Width" resname="O:MarketForm.O:ListPanel.Width">
         <source>634</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.Height" resname="O:MarketForm.O:ListPanel.Height">
         <source>400</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.Align" resname="O:MarketForm.O:ListPanel.Align">
         <source>alTop</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.BevelEdges" resname="O:MarketForm.O:ListPanel.BevelEdges">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.BevelOuter" resname="O:MarketForm.O:ListPanel.BevelOuter">
         <source>bvNone</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.ParentColor" resname="O:MarketForm.O:ListPanel.ParentColor">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.ShowCaption" resname="O:MarketForm.O:ListPanel.ShowCaption">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.TabOrder" resname="O:MarketForm.O:ListPanel.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.AlignWithMargins" resname="O:MarketForm.O:ListPanel.O:ListBox.AlignWithMargins">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Left" resname="O:MarketForm.O:ListPanel.O:ListBox.Left">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Top" resname="O:MarketForm.O:ListPanel.O:ListBox.Top">
         <source>47</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Width" resname="O:MarketForm.O:ListPanel.O:ListBox.Width">
         <source>614</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Height" resname="O:MarketForm.O:ListPanel.O:ListBox.Height">
         <source>313</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Margins.Left" resname="O:MarketForm.O:ListPanel.O:ListBox.Margins.Left">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Margins.Top" resname="O:MarketForm.O:ListPanel.O:ListBox.Margins.Top">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Margins.Right" resname="O:MarketForm.O:ListPanel.O:ListBox.Margins.Right">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Margins.Bottom" resname="O:MarketForm.O:ListPanel.O:ListBox.Margins.Bottom">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Align" resname="O:MarketForm.O:ListPanel.O:ListBox.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Font.Charset" resname="O:MarketForm.O:ListPanel.O:ListBox.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Font.Color" resname="O:MarketForm.O:ListPanel.O:ListBox.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Font.Height" resname="O:MarketForm.O:ListPanel.O:ListBox.Font.Height">
         <source>-16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Font.Name" resname="O:MarketForm.O:ListPanel.O:ListBox.Font.Name">
         <source>'Tahoma'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.Font.Style" resname="O:MarketForm.O:ListPanel.O:ListBox.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.ItemHeight" resname="O:MarketForm.O:ListPanel.O:ListBox.ItemHeight">
         <source>19</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.ParentFont" resname="O:MarketForm.O:ListPanel.O:ListBox.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.TabOrder" resname="O:MarketForm.O:ListPanel.O:ListBox.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:ListBox.OnClick" resname="O:MarketForm.O:ListPanel.O:ListBox.OnClick">
         <source>ListBoxClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.AlignWithMargins" resname="O:MarketForm.O:ListPanel.O:SearchBox.AlignWithMargins">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">120</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Left" resname="O:MarketForm.O:ListPanel.O:SearchBox.Left">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">121</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Top" resname="O:MarketForm.O:ListPanel.O:SearchBox.Top">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">122</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Width" resname="O:MarketForm.O:ListPanel.O:SearchBox.Width">
         <source>614</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Height" resname="O:MarketForm.O:ListPanel.O:SearchBox.Height">
         <source>27</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">120</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Margins.Left" resname="O:MarketForm.O:ListPanel.O:SearchBox.Margins.Left">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">121</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">125</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Margins.Top" resname="O:MarketForm.O:ListPanel.O:SearchBox.Margins.Top">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">122</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">126</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Margins.Right" resname="O:MarketForm.O:ListPanel.O:SearchBox.Margins.Right">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Margins.Bottom" resname="O:MarketForm.O:ListPanel.O:SearchBox.Margins.Bottom">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">128</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Align" resname="O:MarketForm.O:ListPanel.O:SearchBox.Align">
         <source>alTop</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">125</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">129</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Font.Charset" resname="O:MarketForm.O:ListPanel.O:SearchBox.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">126</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">130</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Font.Color" resname="O:MarketForm.O:ListPanel.O:SearchBox.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">131</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Font.Height" resname="O:MarketForm.O:ListPanel.O:SearchBox.Font.Height">
         <source>-16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">128</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Font.Name" resname="O:MarketForm.O:ListPanel.O:SearchBox.Font.Name">
         <source>'Tahoma'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">129</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">133</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.Font.Style" resname="O:MarketForm.O:ListPanel.O:SearchBox.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">130</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.ParentFont" resname="O:MarketForm.O:ListPanel.O:SearchBox.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">131</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">135</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.ParentShowHint" resname="O:MarketForm.O:ListPanel.O:SearchBox.ParentShowHint">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">136</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.ShowHint" resname="O:MarketForm.O:ListPanel.O:SearchBox.ShowHint">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">133</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">137</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.TabOrder" resname="O:MarketForm.O:ListPanel.O:SearchBox.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">138</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.TextHint" resname="O:MarketForm.O:ListPanel.O:SearchBox.TextHint">
         <source>'Search'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">135</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">139</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:SearchBox.OnChange" resname="O:MarketForm.O:ListPanel.O:SearchBox.OnChange">
         <source>SearchBoxChange</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">136</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">140</prop><prop prop-type="Type">TSearchBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.AlignWithMargins" resname="O:MarketForm.O:ListPanel.O:CheckBox.AlignWithMargins">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">137</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">141</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Left" resname="O:MarketForm.O:ListPanel.O:CheckBox.Left">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">138</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">142</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Top" resname="O:MarketForm.O:ListPanel.O:CheckBox.Top">
         <source>373</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">139</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">143</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Width" resname="O:MarketForm.O:ListPanel.O:CheckBox.Width">
         <source>614</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">140</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">144</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Height" resname="O:MarketForm.O:ListPanel.O:CheckBox.Height">
         <source>17</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">141</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">145</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Margins.Left" resname="O:MarketForm.O:ListPanel.O:CheckBox.Margins.Left">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">142</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">146</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Margins.Right" resname="O:MarketForm.O:ListPanel.O:CheckBox.Margins.Right">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">143</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Margins.Bottom" resname="O:MarketForm.O:ListPanel.O:CheckBox.Margins.Bottom">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">144</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">148</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Align" resname="O:MarketForm.O:ListPanel.O:CheckBox.Align">
         <source>alBottom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">145</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">149</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Caption" resname="O:MarketForm.O:ListPanel.O:CheckBox.Caption">
         <source>'Show unstable (experimental) plugins'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">146</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">150</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Font.Charset" resname="O:MarketForm.O:ListPanel.O:CheckBox.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">151</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Font.Color" resname="O:MarketForm.O:ListPanel.O:CheckBox.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">148</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">152</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Font.Height" resname="O:MarketForm.O:ListPanel.O:CheckBox.Font.Height">
         <source>-13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">149</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Font.Name" resname="O:MarketForm.O:ListPanel.O:CheckBox.Font.Name">
         <source>'Tahoma'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">150</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">154</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Font.Style" resname="O:MarketForm.O:ListPanel.O:CheckBox.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">151</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">155</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.ParentFont" resname="O:MarketForm.O:ListPanel.O:CheckBox.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">152</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">156</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.TabOrder" resname="O:MarketForm.O:ListPanel.O:CheckBox.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">157</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.OnClick" resname="O:MarketForm.O:ListPanel.O:CheckBox.OnClick">
         <source>SearchBoxChange</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">154</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.ExplicitLeft" resname="O:MarketForm.O:ListPanel.O:CheckBox.ExplicitLeft">
-        <source>0</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">155</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.ExplicitTop" resname="O:MarketForm.O:ListPanel.O:CheckBox.ExplicitTop">
-        <source>0</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">156</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.ExplicitWidth" resname="O:MarketForm.O:ListPanel.O:CheckBox.ExplicitWidth">
-        <source>97</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">157</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">158</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.Left" resname="O:MarketForm.O:GridPanel.Left">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">158</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">159</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.Top" resname="O:MarketForm.O:GridPanel.Top">
         <source>561</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">159</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">160</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.Width" resname="O:MarketForm.O:GridPanel.Width">
         <source>634</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">160</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.Height" resname="O:MarketForm.O:GridPanel.Height">
         <source>50</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.Align" resname="O:MarketForm.O:GridPanel.Align">
         <source>alBottom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.BevelEdges" resname="O:MarketForm.O:GridPanel.BevelEdges">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">164</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.BevelOuter" resname="O:MarketForm.O:GridPanel.BevelOuter">
         <source>bvNone</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">164</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">165</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.BorderWidth" resname="O:MarketForm.O:GridPanel.BorderWidth">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">165</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">166</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ColumnCollection[0].Value" resname="O:MarketForm.O:GridPanel.ColumnCollection[0].Value">
         <source>33.3333333333333</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">166</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">&lt;item</prop><prop prop-type="Close">end</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">167</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">&lt;item</prop><prop prop-type="Close">end</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ColumnCollection[1].Value" resname="O:MarketForm.O:GridPanel.ColumnCollection[1].Value">
         <source>33.3333333333333</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">167</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">item</prop><prop prop-type="Close">end</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">item</prop><prop prop-type="Close">end</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ColumnCollection[2].Value" resname="O:MarketForm.O:GridPanel.ColumnCollection[2].Value">
         <source>33.3333333333333</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">item</prop><prop prop-type="Close">end&gt;</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">item</prop><prop prop-type="Close">end&gt;</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ControlCollection[0].Column" resname="O:MarketForm.O:GridPanel.ControlCollection[0].Column">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">&lt;item</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">170</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">&lt;item</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ControlCollection[0].Control" resname="O:MarketForm.O:GridPanel.ControlCollection[0].Control">
         <source>InstallButton</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">170</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">171</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ControlCollection[0].Row" resname="O:MarketForm.O:GridPanel.ControlCollection[0].Row">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">171</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">end</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">end</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ControlCollection[1].Column" resname="O:MarketForm.O:GridPanel.ControlCollection[1].Column">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">item</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">173</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">item</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ControlCollection[1].Control" resname="O:MarketForm.O:GridPanel.ControlCollection[1].Control">
         <source>DisableButton</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">173</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">174</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ControlCollection[1].Row" resname="O:MarketForm.O:GridPanel.ControlCollection[1].Row">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">174</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">end</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">end</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ControlCollection[2].Column" resname="O:MarketForm.O:GridPanel.ControlCollection[2].Column">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">item</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">item</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ControlCollection[2].Control" resname="O:MarketForm.O:GridPanel.ControlCollection[2].Control">
         <source>UpgradeButton</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ControlCollection[2].Row" resname="O:MarketForm.O:GridPanel.ControlCollection[2].Row">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">end&gt;</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">end&gt;</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ParentBackground" resname="O:MarketForm.O:GridPanel.ParentBackground">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.ParentColor" resname="O:MarketForm.O:GridPanel.ParentColor">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.RowCollection[0].Value" resname="O:MarketForm.O:GridPanel.RowCollection[0].Value">
         <source>100</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">&lt;item</prop><prop prop-type="Close">end&gt;</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">C:TGridPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">&lt;item</prop><prop prop-type="Close">end&gt;</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.TabOrder" resname="O:MarketForm.O:GridPanel.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TGridPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.AlignWithMargins" resname="O:MarketForm.O:GridPanel.O:InstallButton.AlignWithMargins">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Left" resname="O:MarketForm.O:GridPanel.O:InstallButton.Left">
-        <source>0</source>
-        <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">183</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Top" resname="O:MarketForm.O:GridPanel.O:InstallButton.Top">
-        <source>0</source>
+      <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Left" resname="O:MarketForm.O:GridPanel.O:InstallButton.Left">
+        <source>8</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Top" resname="O:MarketForm.O:GridPanel.O:InstallButton.Top">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">185</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Width" resname="O:MarketForm.O:GridPanel.O:InstallButton.Width">
         <source>202</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">185</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">186</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Height" resname="O:MarketForm.O:GridPanel.O:InstallButton.Height">
         <source>34</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">186</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Align" resname="O:MarketForm.O:GridPanel.O:InstallButton.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Caption" resname="O:MarketForm.O:GridPanel.O:InstallButton.Caption">
         <source>'Install'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Enabled" resname="O:MarketForm.O:GridPanel.O:InstallButton.Enabled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">190</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Font.Charset" resname="O:MarketForm.O:GridPanel.O:InstallButton.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">190</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Font.Color" resname="O:MarketForm.O:GridPanel.O:InstallButton.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">192</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Font.Height" resname="O:MarketForm.O:GridPanel.O:InstallButton.Font.Height">
         <source>-12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">192</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">193</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Font.Name" resname="O:MarketForm.O:GridPanel.O:InstallButton.Font.Name">
         <source>'Tahoma'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">193</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">194</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Font.Style" resname="O:MarketForm.O:GridPanel.O:InstallButton.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">194</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">195</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.ParentFont" resname="O:MarketForm.O:GridPanel.O:InstallButton.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">195</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">196</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.TabOrder" resname="O:MarketForm.O:GridPanel.O:InstallButton.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">196</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.OnClick" resname="O:MarketForm.O:GridPanel.O:InstallButton.OnClick">
         <source>InstallButtonClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">198</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.AlignWithMargins" resname="O:MarketForm.O:GridPanel.O:DisableButton.AlignWithMargins">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">198</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Left" resname="O:MarketForm.O:GridPanel.O:DisableButton.Left">
-        <source>0</source>
-        <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">199</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Top" resname="O:MarketForm.O:GridPanel.O:DisableButton.Top">
-        <source>0</source>
+      <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Left" resname="O:MarketForm.O:GridPanel.O:DisableButton.Left">
+        <source>216</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">200</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Top" resname="O:MarketForm.O:GridPanel.O:DisableButton.Top">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">201</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Width" resname="O:MarketForm.O:GridPanel.O:DisableButton.Width">
         <source>202</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">201</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">202</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Height" resname="O:MarketForm.O:GridPanel.O:DisableButton.Height">
         <source>34</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">202</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">203</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Align" resname="O:MarketForm.O:GridPanel.O:DisableButton.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">203</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">204</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Caption" resname="O:MarketForm.O:GridPanel.O:DisableButton.Caption">
         <source>'Disable'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">204</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">205</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Enabled" resname="O:MarketForm.O:GridPanel.O:DisableButton.Enabled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">205</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">206</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Font.Charset" resname="O:MarketForm.O:GridPanel.O:DisableButton.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">206</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">207</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Font.Color" resname="O:MarketForm.O:GridPanel.O:DisableButton.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">207</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">208</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Font.Height" resname="O:MarketForm.O:GridPanel.O:DisableButton.Font.Height">
         <source>-12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">208</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">209</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Font.Name" resname="O:MarketForm.O:GridPanel.O:DisableButton.Font.Name">
         <source>'Tahoma'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">209</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">210</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Font.Style" resname="O:MarketForm.O:GridPanel.O:DisableButton.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">210</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">211</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.ParentFont" resname="O:MarketForm.O:GridPanel.O:DisableButton.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">211</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">212</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.TabOrder" resname="O:MarketForm.O:GridPanel.O:DisableButton.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">212</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">213</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.OnClick" resname="O:MarketForm.O:GridPanel.O:DisableButton.OnClick">
         <source>DisableButtonClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">213</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">214</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.AlignWithMargins" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.AlignWithMargins">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">214</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Left" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Left">
-        <source>0</source>
-        <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">215</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Top" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Top">
-        <source>0</source>
+      <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Left" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Left">
+        <source>424</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">216</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Top" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Top">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">217</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Width" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Width">
         <source>202</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">217</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">218</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Height" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Height">
         <source>34</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">218</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">219</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Align" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">219</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">220</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Caption" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Caption">
         <source>'Upgrade'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">220</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">221</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Enabled" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Enabled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">221</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">222</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Font.Charset" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">222</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">223</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Font.Color" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">223</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">224</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Font.Height" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Font.Height">
         <source>-12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">224</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">225</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Font.Name" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Font.Name">
         <source>'Tahoma'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">225</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">226</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Font.Style" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">226</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">227</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.ParentFont" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">227</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">228</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.TabOrder" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">228</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">229</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.OnClick" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.OnClick">
         <source>UpgradeButtonClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">229</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">230</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:NetHTTPClient.UserAgent" resname="O:MarketForm.O:NetHTTPClient.UserAgent">
         <source>'zLog'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">230</prop><prop prop-type="Type">TNetHTTPClient</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">231</prop><prop prop-type="Type">TNetHTTPClient</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:NetHTTPRequest.ConnectionTimeout" resname="O:MarketForm.O:NetHTTPRequest.ConnectionTimeout">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">231</prop><prop prop-type="Type">TNetHTTPRequest</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">232</prop><prop prop-type="Type">TNetHTTPRequest</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:NetHTTPRequest.SendTimeout" resname="O:MarketForm.O:NetHTTPRequest.SendTimeout">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">232</prop><prop prop-type="Type">TNetHTTPRequest</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">233</prop><prop prop-type="Type">TNetHTTPRequest</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:NetHTTPRequest.ResponseTimeout" resname="O:MarketForm.O:NetHTTPRequest.ResponseTimeout">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">233</prop><prop prop-type="Type">TNetHTTPRequest</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">234</prop><prop prop-type="Type">TNetHTTPRequest</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:NetHTTPRequest.Left" resname="O:MarketForm.O:NetHTTPRequest.Left">
         <source>120</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">234</prop><prop prop-type="Type">TNetHTTPRequest</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">235</prop><prop prop-type="Type">TNetHTTPRequest</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

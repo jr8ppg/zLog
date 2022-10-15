@@ -6562,7 +6562,7 @@ object MainForm: TMainForm
       OnExecute = actionPlayMessageAExecute
     end
     object actionCheckMulti: TAction
-      Caption = #12510#12523#12481#12481#12455#12483#12463
+      Caption = 'Check Multi'
       OnExecute = actionCheckMultiExecute
     end
     object actionShowCheckPartial: TAction

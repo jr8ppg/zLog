@@ -5865,7 +5865,7 @@ object MainForm: TMainForm
         Action = actionShowCheckCall
       end
       object mnCheckMulti: TMenuItem
-        Action = actionCheckMulti
+        Action = actionShowCheckMulti
       end
       object mnCheckCountry: TMenuItem
         Action = actionShowCheckCountry
@@ -5965,6 +5965,10 @@ object MainForm: TMainForm
         Enabled = False
         OnClick = mnMergeClick
       end
+    end
+    object PluginMenu: TMenuItem
+      Caption = '&Plugins'
+      Visible = False
     end
     object View1: TMenuItem
       Caption = '&View'
@@ -6559,7 +6563,7 @@ object MainForm: TMainForm
       OnExecute = actionPlayMessageAExecute
     end
     object actionCheckMulti: TAction
-      Caption = 'actionCheckMulti'
+      Caption = 'Check Multi'
       OnExecute = actionCheckMultiExecute
     end
     object actionShowCheckPartial: TAction

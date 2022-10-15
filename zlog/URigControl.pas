@@ -3950,7 +3950,7 @@ begin
 
    MainForm.StatusLine.Panels[1].Text := S;
 
-   MainForm.BSRefresh();
+//   MainForm.BSRefresh();
 
    MainForm.BandScopeMarkCurrentFreq(_currentband, _freqoffset + _currentfreq[_currentvfo]);
 end;

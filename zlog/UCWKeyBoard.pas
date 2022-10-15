@@ -275,6 +275,7 @@ begin
    end;
 
    MainForm.MsgMgrAddQue(nID, S, CurrentQSO);
+   MainForm.MsgMgrContinueQue();
 
    while Pos(':***********', S) > 0 do begin
       i := Pos(':***********', S);

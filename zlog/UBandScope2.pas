@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, Grids, Menus, DateUtils,
   USpotClass, UzLogConst, UzLogGlobal, UzLogQSO, System.ImageList, Vcl.ImgList,
-  System.UITypes;
+  System.UITypes, Vcl.Buttons, System.Actions, Vcl.ActnList;
 
 type
   TBandScope2 = class(TForm)
@@ -20,6 +20,41 @@ type
     Panel2: TPanel;
     checkSyncVfo: TCheckBox;
     timerCleanup: TTimer;
+    buttonShowWorked: TSpeedButton;
+    ActionList1: TActionList;
+    actionPlayMessageA01: TAction;
+    actionPlayMessageA02: TAction;
+    actionPlayMessageA03: TAction;
+    actionPlayMessageA04: TAction;
+    actionPlayMessageA05: TAction;
+    actionPlayMessageA06: TAction;
+    actionPlayMessageA07: TAction;
+    actionPlayMessageA08: TAction;
+    actionPlayMessageA09: TAction;
+    actionPlayMessageA10: TAction;
+    actionPlayMessageA11: TAction;
+    actionPlayMessageA12: TAction;
+    actionPlayMessageB01: TAction;
+    actionPlayMessageB02: TAction;
+    actionPlayMessageB03: TAction;
+    actionPlayMessageB04: TAction;
+    actionPlayMessageB05: TAction;
+    actionPlayMessageB06: TAction;
+    actionPlayMessageB07: TAction;
+    actionPlayMessageB08: TAction;
+    actionPlayMessageB09: TAction;
+    actionPlayMessageB10: TAction;
+    actionPlayMessageB11: TAction;
+    actionPlayMessageB12: TAction;
+    actionESC: TAction;
+    actionPlayCQA1: TAction;
+    actionPlayCQA2: TAction;
+    actionPlayCQA3: TAction;
+    actionPlayCQB1: TAction;
+    actionPlayCQB2: TAction;
+    actionPlayCQB3: TAction;
+    actionDecreaseCwSpeed: TAction;
+    actionIncreaseCwSpeed: TAction;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure mnDeleteClick(Sender: TObject);
     procedure Deleteallworkedstations1Click(Sender: TObject);
@@ -35,6 +70,14 @@ type
     procedure FormResize(Sender: TObject);
     procedure checkSyncVfoClick(Sender: TObject);
     procedure timerCleanupTimer(Sender: TObject);
+    procedure buttonShowWorkedClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormDeactivate(Sender: TObject);
+    procedure actionPlayMessageAExecute(Sender: TObject);
+    procedure actionPlayMessageBExecute(Sender: TObject);
+    procedure actionESCExecute(Sender: TObject);
+    procedure actionDecreaseCwSpeedExecute(Sender: TObject);
+    procedure actionIncreaseCwSpeedExecute(Sender: TObject);
   private
     { Private êÈåæ }
     FProcessing: Boolean;
@@ -70,6 +113,8 @@ type
     procedure SetColor();
     procedure Lock();
     procedure Unlock();
+    procedure PlayMessage(nID: Integer; cb: Integer; no: Integer);
+    procedure ApplyShortcut();
   public
     { Public êÈåæ }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -99,7 +144,7 @@ var
 implementation
 
 uses
-  UOptions, Main, UZLinkForm, URigControl;
+  UOptions, Main, UZLinkForm, URigControl, UzLogKeyer;
 
 {$R *.dfm}
 
@@ -114,6 +159,7 @@ begin
    SetCaption();
    FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
    IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
+   buttonShowWorked.Down := True;
 end;
 
 procedure TBandScope2.CreateParams(var Params: TCreateParams);
@@ -238,9 +284,7 @@ procedure TBandScope2.Timer1Timer(Sender: TObject);
 begin
    Timer1.Enabled := False;
    try
-      if FProcessing = False then begin
-         RewriteBandScope();
-      end;
+      RewriteBandScope();
    finally
       Timer1.Enabled := True;
    end;
@@ -303,6 +347,10 @@ var
    MarkCurrent: Boolean;
    Marked: Boolean;
 begin
+   if FProcessing = True then begin
+      Exit;
+   end;
+
    FProcessing := True;
    try
    try
@@ -342,6 +390,11 @@ begin
          R := 0;
          for i := 0 to FBSList.Count - 1 do begin
             D := FBSList[i];
+
+            if (buttonShowWorked.Down = False) and (D.Worked = True) then begin
+               Continue;
+            end;
+
             if (FNewMultiOnly = False) and (FCurrBand <> D.Band) then begin
                Continue;
             end;
@@ -580,7 +633,18 @@ end;
 
 procedure TBandScope2.FormShow(Sender: TObject);
 begin
+   ApplyShortcut();
    Timer1.Enabled := True;
+end;
+
+procedure TBandScope2.FormActivate(Sender: TObject);
+begin
+   ActionList1.State := asNormal;
+end;
+
+procedure TBandScope2.FormDeactivate(Sender: TObject);
+begin
+   ActionList1.State := asSuspended;
 end;
 
 procedure TBandScope2.GridDblClick(Sender: TObject);
@@ -1083,6 +1147,169 @@ end;
 procedure TBandScope2.Unlock();
 begin
    LeaveCriticalSection(FBSLock);
+end;
+
+procedure TBandScope2.buttonShowWorkedClick(Sender: TObject);
+begin
+   RewriteBandScope();
+end;
+
+procedure TBandScope2.actionPlayMessageAExecute(Sender: TObject);
+var
+   no: Integer;
+   cb: Integer;
+   nID: Integer;
+begin
+   no := TAction(Sender).Tag;
+   cb := dmZlogGlobal.Settings.CW.CurrentBank;
+   nID := MainForm.CurrentRigID;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
+   {$ENDIF}
+
+   PlayMessage(nID, cb, no);
+end;
+
+procedure TBandScope2.actionPlayMessageBExecute(Sender: TObject);
+var
+   no: Integer;
+   cb: Integer;
+   nID: Integer;
+begin
+   no := TAction(Sender).Tag;
+   cb := dmZlogGlobal.Settings.CW.CurrentBank;
+   nID := MainForm.CurrentRigID;
+
+   if cb = 1 then
+      cb := 2
+   else
+      cb := 1;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('PlayMessageB(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
+   {$ENDIF}
+
+   PlayMessage(nID, cb, no);
+end;
+
+procedure TBandScope2.actionESCExecute(Sender: TObject);
+begin
+   if dmZLogKeyer.IsPlaying then begin
+      dmZLogKeyer.ClrBuffer;
+      dmZLogKeyer.ControlPTT(MainForm.CurrentRigID, False);
+   end
+   else begin
+      dmZLogKeyer.ControlPTT(MainForm.CurrentRigID, False);
+      MainForm.SetLastFocus();
+   end;
+end;
+
+procedure TBandScope2.actionIncreaseCwSpeedExecute(Sender: TObject);
+begin
+   dmZLogKeyer.IncCWSpeed();
+end;
+
+procedure TBandScope2.actionDecreaseCwSpeedExecute(Sender: TObject);
+begin
+   dmZLogKeyer.DecCWSpeed();
+end;
+
+procedure TBandScope2.PlayMessage(nID: Integer; cb: Integer; no: Integer);
+var
+   S: string;
+   i: Integer;
+begin
+   if CurrentQSO.Mode <> mCW then begin
+      Exit;
+   end;
+
+   S := dmZlogGlobal.CWMessage(cb, no);
+   if S = '' then begin
+      Exit;
+   end;
+
+   MainForm.MsgMgrAddQue(nID, S, CurrentQSO);
+   MainForm.MsgMgrContinueQue();
+
+   while Pos(':***********', S) > 0 do begin
+      i := Pos(':***********', S);
+      Delete(S, i, 12);
+      Insert(CurrentQSO.Callsign, S, i);
+   end;
+end;
+
+procedure TBandScope2.ApplyShortcut();
+begin
+   actionPlayMessageA01.ShortCut := MainForm.actionPlayMessageA01.ShortCut;
+   actionPlayMessageA02.ShortCut := MainForm.actionPlayMessageA02.ShortCut;
+   actionPlayMessageA03.ShortCut := MainForm.actionPlayMessageA03.ShortCut;
+   actionPlayMessageA04.ShortCut := MainForm.actionPlayMessageA04.ShortCut;
+   actionPlayMessageA05.ShortCut := MainForm.actionPlayMessageA05.ShortCut;
+   actionPlayMessageA06.ShortCut := MainForm.actionPlayMessageA06.ShortCut;
+   actionPlayMessageA07.ShortCut := MainForm.actionPlayMessageA07.ShortCut;
+   actionPlayMessageA08.ShortCut := MainForm.actionPlayMessageA08.ShortCut;
+   actionPlayMessageA09.ShortCut := MainForm.actionPlayMessageA09.ShortCut;
+   actionPlayMessageA10.ShortCut := MainForm.actionPlayMessageA10.ShortCut;
+   actionPlayMessageA11.ShortCut := MainForm.actionPlayMessageA11.ShortCut;
+   actionPlayMessageA12.ShortCut := MainForm.actionPlayMessageA12.ShortCut;
+
+   actionPlayMessageB01.ShortCut := MainForm.actionPlayMessageB01.ShortCut;
+   actionPlayMessageB02.ShortCut := MainForm.actionPlayMessageB02.ShortCut;
+   actionPlayMessageB03.ShortCut := MainForm.actionPlayMessageB03.ShortCut;
+   actionPlayMessageB04.ShortCut := MainForm.actionPlayMessageB04.ShortCut;
+   actionPlayMessageB05.ShortCut := MainForm.actionPlayMessageB05.ShortCut;
+   actionPlayMessageB06.ShortCut := MainForm.actionPlayMessageB06.ShortCut;
+   actionPlayMessageB07.ShortCut := MainForm.actionPlayMessageB07.ShortCut;
+   actionPlayMessageB08.ShortCut := MainForm.actionPlayMessageB08.ShortCut;
+   actionPlayMessageB09.ShortCut := MainForm.actionPlayMessageB09.ShortCut;
+   actionPlayMessageB10.ShortCut := MainForm.actionPlayMessageB10.ShortCut;
+   actionPlayMessageB11.ShortCut := MainForm.actionPlayMessageB11.ShortCut;
+   actionPlayMessageB12.ShortCut := MainForm.actionPlayMessageB12.ShortCut;
+
+   actionPlayCQA1.ShortCut := MainForm.actionPlayCQA1.ShortCut;
+   actionPlayCQA2.ShortCut := MainForm.actionPlayCQA2.ShortCut;
+   actionPlayCQA3.ShortCut := MainForm.actionPlayCQA3.ShortCut;
+   actionPlayCQB1.ShortCut := MainForm.actionPlayCQB1.ShortCut;
+   actionPlayCQB2.ShortCut := MainForm.actionPlayCQB2.ShortCut;
+   actionPlayCQB3.ShortCut := MainForm.actionPlayCQB3.ShortCut;
+
+   actionDecreaseCwSpeed.ShortCut := MainForm.actionDecreaseCwSpeed.ShortCut;
+   actionIncreaseCwSpeed.ShortCut := MainForm.actionIncreaseCwSpeed.ShortCut;
+
+   actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
+   actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
+   actionPlayMessageA03.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA03.SecondaryShortCuts);
+   actionPlayMessageA04.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA04.SecondaryShortCuts);
+   actionPlayMessageA05.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA05.SecondaryShortCuts);
+   actionPlayMessageA06.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA06.SecondaryShortCuts);
+   actionPlayMessageA07.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA07.SecondaryShortCuts);
+   actionPlayMessageA08.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA08.SecondaryShortCuts);
+   actionPlayMessageA09.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA09.SecondaryShortCuts);
+   actionPlayMessageA10.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA10.SecondaryShortCuts);
+   actionPlayMessageA11.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA11.SecondaryShortCuts);
+   actionPlayMessageA12.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA12.SecondaryShortCuts);
+
+   actionPlayMessageB01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB01.SecondaryShortCuts);
+   actionPlayMessageB02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB02.SecondaryShortCuts);
+   actionPlayMessageB03.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB03.SecondaryShortCuts);
+   actionPlayMessageB04.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB04.SecondaryShortCuts);
+   actionPlayMessageB05.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB05.SecondaryShortCuts);
+   actionPlayMessageB06.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB06.SecondaryShortCuts);
+   actionPlayMessageB07.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB07.SecondaryShortCuts);
+   actionPlayMessageB08.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB08.SecondaryShortCuts);
+   actionPlayMessageB09.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB09.SecondaryShortCuts);
+   actionPlayMessageB10.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB10.SecondaryShortCuts);
+   actionPlayMessageB11.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB11.SecondaryShortCuts);
+   actionPlayMessageB12.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB12.SecondaryShortCuts);
+
+   actionPlayCQA2.SecondaryShortCuts.Assign(MainForm.actionPlayCQA2.SecondaryShortCuts);
+   actionPlayCQA3.SecondaryShortCuts.Assign(MainForm.actionPlayCQA3.SecondaryShortCuts);
+   actionPlayCQB2.SecondaryShortCuts.Assign(MainForm.actionPlayCQB2.SecondaryShortCuts);
+   actionPlayCQB3.SecondaryShortCuts.Assign(MainForm.actionPlayCQB3.SecondaryShortCuts);
+
+   actionDecreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionDecreaseCwSpeed.SecondaryShortCuts);
+   actionIncreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionIncreaseCwSpeed.SecondaryShortCuts);
 end;
 
 initialization
