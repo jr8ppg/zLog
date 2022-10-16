@@ -242,6 +242,9 @@ begin
 
       Result := True;
    end
+   else if Pos('To ALL', temp) = 1 then begin
+      Exit;
+   end
    else begin    // check for SH/DX responses
       i := length(temp);
       if i = 0 then begin
