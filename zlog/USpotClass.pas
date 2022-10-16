@@ -165,6 +165,7 @@ function TSpot.Analyze(S : string) : boolean;
 var
    temp, temp2 : string;
    i : integer;
+   sjis: AnsiString;
 
    {$IFNDEF ZLOG_TELNET}
    b: TBand;
@@ -187,10 +188,19 @@ begin
    end;
 
    if pos('DX de', temp) = 1 then begin
-      //0000000001111111111222222222233333333334444444444555555555566666666667
-      //1234567890123456789012345678901234567890123456789012345678901234567890
+      //000000000111111111122222222223333333333444444444455555555556666666666777777
+      //123456789012345678901234567890123456789012345678901234567890123456789012345
       //DX de W1NT-6-#:  14045.0  V3MIWTJ      CW 16 dB 21 WPM CQ             1208Z
       //DX de W3LPL-#:   14010.6  SM5DYC       CW 14 dB 22 WPM CQ             1208Z
+      sjis := AnsiString(temp);
+      TimeStr := string(Copy(sjis, 71, 5));
+      Comment := string(Copy(sjis, 40, 30));
+      Call := Trim(string(Copy(sjis, 27, 12)));
+
+      if Pos('CQ', Comment) > 0 then begin
+         CQ := True;
+      end;
+
       i := pos(':', temp);
       if i > 0 then begin
          temp2 := copy(temp, 7, i - 7);
@@ -229,40 +239,6 @@ begin
 
       Band := b;
       {$ENDIF}
-
-      Delete(temp, 1, i);
-      temp := TrimLeft(temp);
-
-      // Callsign
-      i := pos(' ', temp);
-      if i > 0 then begin
-         Call := copy(temp, 1, i - 1);
-      end
-      else begin
-         exit;
-      end;
-
-      Delete(temp, 1, i);
-
-      // CQ/DE
-      // Callsignの後ろに'CQ 'の文字があればCQとみなす
-      i := Pos('CQ ', temp);
-      if i > 0 then begin
-         CQ := True;
-      end;
-
-      // 後ろから見て、時間を取得
-      for i := length(temp) downto 1 do begin
-         if temp[i] = ' ' then begin
-            break;
-         end;
-      end;
-
-      TimeStr := copy(temp, i + 1, 5);
-
-      // 時間を削除した残りはコメントとする
-      Delete(temp, i, 255);
-      Comment := temp;
 
       Result := True;
    end
