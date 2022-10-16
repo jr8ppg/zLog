@@ -1067,8 +1067,16 @@ begin
    FNewMultiOnly := v;
    SetCaption();
    SetColor();
-   buttonShowWorked.Visible := False;
-   buttonShowWorked.Down := False;
+   if v = True then begin
+      checkSyncVfo.Checked := False;
+      buttonShowWorked.Down := False;
+      checkSyncVfo.Visible := False;
+      buttonShowWorked.Visible := False;
+   end
+   else begin
+      checkSyncVfo.Visible := True;
+      buttonShowWorked.Visible := True;
+   end;
 end;
 
 procedure TBandScope2.SetCaption();
