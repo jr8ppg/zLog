@@ -238,9 +238,7 @@ procedure TBandScope2.Timer1Timer(Sender: TObject);
 begin
    Timer1.Enabled := False;
    try
-      if FProcessing = False then begin
-         RewriteBandScope();
-      end;
+      RewriteBandScope();
    finally
       Timer1.Enabled := True;
    end;
@@ -303,6 +301,10 @@ var
    MarkCurrent: Boolean;
    Marked: Boolean;
 begin
+   if FProcessing = True then begin
+      Exit;
+   end;
+
    FProcessing := True;
    try
    try
