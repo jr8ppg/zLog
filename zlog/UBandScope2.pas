@@ -340,6 +340,7 @@ var
    D: TBSData;
    i: Integer;
    R: Integer;
+   estimated_R: Integer;
    toprow: Integer;
    currow: Integer;
    markrow: Integer;
@@ -378,6 +379,7 @@ begin
 
       // 行数再設定
       Grid.RowCount := R;
+      estimated_R := R;
 
       // 先頭行は必ずクリアする
       Grid.Cells[0, 0] := '';
@@ -433,6 +435,11 @@ begin
    //         end;
 
             Inc(R);
+         end;
+
+         // 予定行数と実際の行数が違えば再設定
+         if estimated_R <> R then begin
+            Grid.RowCount := R;
          end;
       finally
          Unlock();
@@ -1060,6 +1067,8 @@ begin
    FNewMultiOnly := v;
    SetCaption();
    SetColor();
+   buttonShowWorked.Visible := False;
+   buttonShowWorked.Down := False;
 end;
 
 procedure TBandScope2.SetCaption();
