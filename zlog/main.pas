@@ -2966,6 +2966,10 @@ procedure TMainForm.EditKeyPress(Sender: TObject; var Key: Char);
 var
    S: string;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('BEGIN - TMainForm.EditKeyPress() Key = [' + Key + ']'));
+   {$ENDIF}
+
    if CallsignEdit.Font.Color = clGrayText then begin
       if Key <> ' ' then begin
          CallsignEdit.Text := OldCallsign;
@@ -3036,6 +3040,10 @@ begin
       end;
    end;
    { of case }
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('END - TMainForm.EditKeyPress() - '));
+   {$ENDIF}
 end;
 
 procedure TMainForm.SpaceBarProc(nID: Integer);
@@ -7159,13 +7167,14 @@ begin
       end;
    end;
 
-   if CurrentQSO.Mode <> m then begin
-      UpdateMode(m);
-   end;
-
-   if rig <> nil then begin
-      rig.SetMode(CurrentQSO);
-   end;
+// SO2Rではモード変更不要
+//   if CurrentQSO.Mode <> m then begin
+//      UpdateMode(m);
+//   end;
+//
+//   if rig <> nil then begin
+//      rig.SetMode(CurrentQSO);
+//   end;
 end;
 
 procedure TMainForm.PlayMessage(bank: Integer; no: Integer);
@@ -10390,9 +10399,10 @@ begin
 //         timerCqRepeat.Enabled := False;
       end
       else begin
-         if FCQLoopRunning = True then begin
-            FCQLoopPause := True;
-         end;
+// 不要
+//         if FCQLoopRunning = True then begin
+//            FCQLoopPause := True;
+//         end;
       end;
    end;
 
