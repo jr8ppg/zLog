@@ -3084,7 +3084,10 @@ begin
    curQSO := TQSO.Create();
    curQSO.Callsign := C.Text;
 
-   dmZLogKeyer.SetCallSign(C.Text);
+   // SO2Rなので送受が同じ場合のみコールセットする
+   if (FCurrentRigSet - 1) = FCurrentTx then begin
+      dmZLogKeyer.SetCallSign(C.Text);
+   end;
 
    if EditedSinceTABPressed = tabstate_tabpressedbutnotedited then begin
       EditedSinceTABPressed := tabstate_tabpressedandedited;
