@@ -10402,10 +10402,9 @@ begin
 //         timerCqRepeat.Enabled := False;
       end
       else begin
-// •s—v
-//         if FCQLoopRunning = True then begin
-//            FCQLoopPause := True;
-//         end;
+         if FCQLoopRunning = True then begin
+            FCQLoopPause := True;
+         end;
       end;
    end;
 
