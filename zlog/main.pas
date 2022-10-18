@@ -3540,6 +3540,10 @@ begin
    FDownKeyPressed := True;
    FKeyPressedRigID := CurrentRigID;
 
+   if FInformation.IsWait = False then begin
+      FMessageManager.ClearQue();
+   end;
+
    // éüÇÃCQÇÕé¿çs
    FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
 
@@ -7384,9 +7388,12 @@ begin
 //                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RIG, 0, 1);
 //                  FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 1, 0);
                end;
-                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 1, 0);
+
+               FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 1, 0);
 //                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RIG, 0, 1);
 //                  FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 1, 0);
+
+               FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
                Exit;
             end;
          end;
