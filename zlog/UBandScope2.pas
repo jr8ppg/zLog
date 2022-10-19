@@ -1089,7 +1089,9 @@ begin
          Caption := '[New Multi]';
       end
       else begin
-         Caption := BandString[FCurrBand];
+         if FCurrBand <> bUnknown then begin
+            Caption := BandString[FCurrBand];
+         end;
       end;
    end;
 end;
