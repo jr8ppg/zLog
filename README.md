@@ -75,8 +75,11 @@ https://zlog.org/
       - ライブラリパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Release」
       - デバッグ用DCUパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Debug」
 7. zlogフォルダのzlog_project.groupprojを開く
-8. プロジェクトウインドウ一番上のzlog_projectを右クリックし「すべてビルド」をクリック
-9. 完成
+8. 「プロジェクト」－「言語」－「ローカライズ済みプロジェクトの更新」をクリック
+9. プロジェクトウインドウのzlog.exeを右クリックし「ビルド」をクリック
+10. プロジェクトウインドウのzlog.JPNを右クリックし「ビルド」をクリック
+11. 完成
+12. Release/Debug又はWin64/Win32を切り替えた際は、8.から順に再度行う。
 
 ## オリジナルからの変更点
 
