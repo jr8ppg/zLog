@@ -870,6 +870,7 @@ type
     FCQRepeatInterval: Integer;
 
     FCurrentRigSet: Integer; // 現在のRIGSET 1/2/3
+    FWaitForQsoFinish: array[0..2] of Boolean;
 
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
@@ -1925,6 +1926,10 @@ var
 begin
    FInitialized   := False;
    InitAtomTable(1000);
+
+   FWaitForQsoFinish[0] := False;
+   FWaitForQsoFinish[1] := False;
+   FWaitForQsoFinish[2] := False;
 
    // フォント設定
    Grid.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
@@ -3392,6 +3397,9 @@ begin
    FTabKeyPressed := True;
    FKeyPressedRigID := CurrentRigID;
 
+   // 確定待ち
+   FWaitForQsoFinish[FCurrentRigSet - 1] := True;
+
    AssignControls(FKeyPressedRigID, C, N, B, M);
 
    // 次のCQはキャンセル
@@ -3539,6 +3547,9 @@ begin
 
    FDownKeyPressed := True;
    FKeyPressedRigID := CurrentRigID;
+
+   // 確定待ちクリア
+   FWaitForQsoFinish[FCurrentRigSet - 1] := False;
 
    if FInformation.IsWait = False then begin
       FMessageManager.ClearQue();
@@ -4264,6 +4275,13 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('**** CQRepeatProc(' + BoolToStr(fFirstCall, True) + ') ****'));
    {$ENDIF}
+
+   // 確定待ち中で、現在の受信と次の送信が同じRIGの場合はパス
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+      (FWaitForQsoFinish[FCurrentRigSet - 1] = True) and
+      (FCurrentRx = GetNextRigID(FCurrentTx)) then begin
+      Exit;
+   end;
 
    // CQリピート中
    FCQRepeatPlaying := True;
@@ -10821,6 +10839,11 @@ end;
 procedure TMainForm.SetCqRepeatMode(fOn: Boolean);
 begin
    FInformation.CqRepeat := fOn;
+
+   FWaitForQsoFinish[0] := False;
+   FWaitForQsoFinish[1] := False;
+   FWaitForQsoFinish[2] := False;
+
    if fOn = False then begin
       timerCqRepeat.Enabled := False;
       FCQLoopCount := 0;
