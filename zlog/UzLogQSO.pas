@@ -544,6 +544,9 @@ begin
    slText.Delimiter := _sep;
    try
    try
+      // NULL•¶š‚ª‚ ‚ê‚Îíœ
+      str := StringReplace(str, #00, '', [rfReplaceAll]);
+
       slText.DelimitedText := str + DupeString(_sep, 30);
 
       if slText[0] <> 'ZLOGQSODATA:' then begin
