@@ -7216,6 +7216,10 @@ begin
       end;
    end;
 
+   if FInformation.IsWait = False then begin
+      FMessageManager.ClearQue();
+   end;
+
    nID := FCurrentTx;
    case CurrentQSO.Mode of
       mCW: begin
@@ -7258,6 +7262,7 @@ begin
       Exit;
    end;
 
+   FMessageManager.AddQue(WM_ZLOG_RESET_TX, 0, 0);
    FMessageManager.AddQue(0, S, CurrentQSO);
    FMessageManager.ContinueQue();
 end;
