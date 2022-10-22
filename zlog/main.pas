@@ -48,6 +48,7 @@ const
   WM_ZLOG_SET_LOOP_PAUSE = (WM_USER + 111);
   WM_ZLOG_SET_CQ_LOOP = (WM_USER + 112);
   WM_ZLOG_CALLSIGNSENT = (WM_USER + 113);
+  WM_ZLOG_SWITCH_TX = (WM_USER + 114);
 
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
@@ -639,6 +640,7 @@ type
     procedure OnZLogResetTx( var Message: TMessage ); message WM_ZLOG_RESET_TX;
     procedure OnZLogInvertTx( var Message: TMessage ); message WM_ZLOG_INVERT_TX;
     procedure OnZLogSwitchRx( var Message: TMessage ); message WM_ZLOG_SWITCH_RX;
+    procedure OnZLogSwitchTx( var Message: TMessage ); message WM_ZLOG_SWITCH_TX;
     procedure OnZLogSwitchTxRx( var Message: TMessage ); message WM_ZLOG_SWITCH_TXRX;
     procedure OnZLogAfterDelay( var Message: TMessage ); message WM_ZLOG_AFTER_DELAY;
     procedure OnZLogSetLoopPause( var Message: TMessage ); message WM_ZLOG_SET_LOOP_PAUSE;
@@ -6573,6 +6575,37 @@ begin
    {$ENDIF}
 end;
 
+procedure TMainForm.OnZLogSwitchTx( var Message: TMessage );
+var
+   tx: Integer;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('>>> Enter - OnZLogSwitchTx() '));
+   {$ENDIF}
+   case Message.WParam of
+      // îΩëŒë§Ç÷
+      0: begin
+         tx := GetNextRigID(FCurrentTx);
+         SwitchTx(tx + 1);
+      end;
+
+      // RXÇ…çáÇÌÇπÇÈ
+      1: begin
+         SwitchTx(FCurrentRx + 1);
+      end;
+
+      // éwíËÇÃTXÇ÷
+      2: begin
+         tx := Message.LParam;
+         SwitchTx(tx + 1);
+      end;
+   end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('<<< Leave - OnZLogSwitchTx() '));
+   {$ENDIF}
+end;
+
 procedure TMainForm.OnZLogSwitchTxRx( var Message: TMessage );
 begin
    SwitchTxRx(Message.WParam, Message.LParam);
@@ -6595,9 +6628,11 @@ procedure TMainForm.OnZLogSetLoopPause( var Message: TMessage );
 begin
    if (Message.WParam = 0) then begin
       FCQLoopPause := False;
+//      timerCqRepeat.Enabled := True;
    end
    else begin
       FCQLoopPause := True;
+      timerCqRepeat.Enabled := False;
    end;
 end;
 
@@ -7262,9 +7297,16 @@ begin
       Exit;
    end;
 
-   FMessageManager.AddQue(WM_ZLOG_RESET_TX, 0, 0);
-   FMessageManager.AddQue(0, S, CurrentQSO);
-   FMessageManager.ContinueQue();
+   if (FInformation.Is2bsiq = True) then begin
+      FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
+      FMessageManager.AddQue(WM_ZLOG_RESET_TX, 0, 0);
+      FMessageManager.AddQue(0, S, CurrentQSO);
+      FMessageManager.AddQue(WM_ZLOG_SWITCH_TX, 2, FCurrentTx);
+      if (FCQLoopRunning = True) then begin
+         FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
+      end;
+      FMessageManager.ContinueQue();
+   end;
 end;
 
 procedure TMainForm.PlayMessagePH(no: Integer);
