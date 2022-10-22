@@ -6125,6 +6125,9 @@ begin
 
             if FileExists(OpenDialog.FileName) then begin
                LoadNewContestFromFile(OpenDialog.FileName);
+            end
+            else begin
+               Log.SaveToFile(OpenDialog.FileName);
             end;
 
             dmZLogGlobal.Settings.FLastFileFilterIndex := OpenDialog.FilterIndex;
