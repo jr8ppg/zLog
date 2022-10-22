@@ -7297,16 +7297,16 @@ begin
       Exit;
    end;
 
-   if (FInformation.Is2bsiq = True) then begin
-      FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
-      FMessageManager.AddQue(WM_ZLOG_RESET_TX, 0, 0);
-      FMessageManager.AddQue(0, S, CurrentQSO);
-      FMessageManager.AddQue(WM_ZLOG_SWITCH_TX, 2, FCurrentTx);
-      if (FCQLoopRunning = True) then begin
-         FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
-      end;
-      FMessageManager.ContinueQue();
+   SetCurrentQSO(FCurrentRigSet - 1);
+
+   FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
+   FMessageManager.AddQue(WM_ZLOG_RESET_TX, 0, 0);
+   FMessageManager.AddQue(0, S, CurrentQSO);
+   FMessageManager.AddQue(WM_ZLOG_SWITCH_TX, 2, FCurrentTx);
+   if (FCQLoopRunning = True) then begin
+      FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
    end;
+   FMessageManager.ContinueQue();
 end;
 
 procedure TMainForm.PlayMessagePH(no: Integer);
