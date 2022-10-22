@@ -3654,6 +3654,7 @@ begin
             Exit;
          end;
       end;
+      CurrentQSO.Forced := False;
    end
    else begin     // ‹­§“ü—Í
       if _dupe <> 0 then begin
