@@ -1386,7 +1386,7 @@ var
 begin
    Result := B0;
 
-   if B0 = HiBand then begin
+   if B0 >= HiBand then begin
       B0 := b19;
    end
    else begin
@@ -1414,7 +1414,7 @@ var
 begin
    Result := B0;
 
-   if B0 = b19 then begin
+   if B0 <= b19 then begin
       B0 := HiBand;
    end
    else begin
