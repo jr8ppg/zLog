@@ -436,11 +436,6 @@ begin
 
             Inc(R);
          end;
-
-         // 予定行数と実際の行数が違えば再設定
-         if estimated_R <> R then begin
-            Grid.RowCount := R;
-         end;
       finally
          Unlock();
       end;
@@ -449,6 +444,12 @@ begin
          Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
          Grid.Objects[0, R] := nil;
          markrow := R;
+         Inc(R);
+      end;
+
+      // 予定行数と実際の行数が違えば再設定
+      if estimated_R <> R then begin
+         Grid.RowCount := R;
       end;
 
       if checkSyncVfo.Checked = True then begin
