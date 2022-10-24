@@ -353,6 +353,7 @@ begin
    end;
 
    FProcessing := True;
+   Grid.BeginUpdate();
    try
    try
       toprow := Grid.TopRow;
@@ -377,13 +378,17 @@ begin
          end;
       end;
 
+      // 全部クリア
+      for i := 0 to Grid.RowCount - 1 do begin
+         Grid.Objects[0, i] := nil;
+      end;
+
       // 行数再設定
       Grid.RowCount := R;
       estimated_R := R;
 
       // 先頭行は必ずクリアする
       Grid.Cells[0, 0] := '';
-      Grid.Objects[0, 0] := nil;
 
       Marked := False;
 
@@ -487,6 +492,7 @@ begin
       end;
    end;
    finally
+      Grid.EndUpdate();
       FProcessing := False;
    end;
 end;
@@ -718,7 +724,7 @@ begin
 
       strText := Grid.Cells[ACol, ARow];
 
-      D := TBSData(Grid.Objects[ACol, ARow]);
+      D := TBSData(Grid.Objects[0, ARow]);
       if D = nil then begin
          Font.Style := [fsBold];
          Font.Color := clBlack;
@@ -851,51 +857,58 @@ var
    elapsed: Integer;
    T2: TDateTime;
 begin
-   pt.X := X;
-   pt.Y := Y;
-   pt := Grid.ClientToScreen(pt);
+   try
+      pt.X := X;
+      pt.Y := Y;
+      pt := Grid.ClientToScreen(pt);
 
-   Grid.MouseToCell(X, Y, C, R);
-   if (C = -1) or (R = -1) then begin
-      Application.CancelHint();
-      Grid.Hint := '';
-      Exit;
+      Grid.MouseToCell(X, Y, C, R);
+      if (C = -1) or (R = -1) then begin
+         Application.CancelHint();
+         Grid.Hint := '';
+         Exit;
+      end;
+
+      D := TBSData(Grid.Objects[0, R]);
+      if D = nil then begin
+         Application.CancelHint();
+         Grid.Hint := '';
+         Exit;
+      end;
+
+      T2 := Now;
+      remain := CalcRemainTime(D.Time, T2);
+      elapsed := CalcElapsedTime(D.Time, T2);
+
+      strText := D.Call + #13#10 +
+                 'Spoted at ' + FormatDateTime('hh:mm:ss', D.Time) + #13#10;
+      if remain > 60 then begin
+         strText := strText + IntToStr(Trunc(remain / 60)) + ' minutes to left' + #13#10;
+      end
+      else begin
+         strText := strText + IntToStr(remain) + ' seconds to left' + #13#10;
+      end;
+
+      if elapsed > 60 then begin
+         strText := strText + IntToStr(Trunc(elapsed / 60)) + ' minutes elapsed';
+      end
+      else begin
+         strText := strText + IntToStr(elapsed) + ' seconds elapsed';
+      end;
+
+      // Spotter
+      if D.ReportedBy <> '' then begin
+         strText := strText + #13#10 + 'Reported by ' + D.ReportedBy;
+      end;
+
+      Grid.Hint := strText;
+      Application.ActivateHint(pt);
+   except
+      on E: Exception do begin
+         dmZLogGlobal.WriteErrorLog(E.Message);
+         dmZLogGlobal.WriteErrorLog(E.StackTrace);
+      end;
    end;
-
-   D := TBSData(Grid.Objects[C, R]);
-   if D = nil then begin
-      Application.CancelHint();
-      Grid.Hint := '';
-      Exit;
-   end;
-
-   T2 := Now;
-   remain := CalcRemainTime(D.Time, T2);
-   elapsed := CalcElapsedTime(D.Time, T2);
-
-   strText := D.Call + #13#10 +
-              'Spoted at ' + FormatDateTime('hh:mm:ss', D.Time) + #13#10;
-   if remain > 60 then begin
-      strText := strText + IntToStr(Trunc(remain / 60)) + ' minutes to left' + #13#10;
-   end
-   else begin
-      strText := strText + IntToStr(remain) + ' seconds to left' + #13#10;
-   end;
-
-   if elapsed > 60 then begin
-      strText := strText + IntToStr(Trunc(elapsed / 60)) + ' minutes elapsed';
-   end
-   else begin
-      strText := strText + IntToStr(elapsed) + ' seconds elapsed';
-   end;
-
-   // Spotter
-   if D.ReportedBy <> '' then begin
-      strText := strText + #13#10 + 'Reported by ' + D.ReportedBy;
-   end;
-
-   Grid.Hint := strText;
-   Application.ActivateHint(pt);
 end;
 
 function TBandScope2.GetFontSize(): Integer;
