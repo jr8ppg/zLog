@@ -111,8 +111,17 @@ type
     function CwToStrR(cnt: Integer; len: Integer): string;
     procedure ShowZAD(sl: TStrings);
     procedure ShowZOP(sl: TStrings; fShowCW: Boolean);
+    function GetExcludeZeroPoint(): Boolean;
+    procedure SetExcludeZeroPoint(v: Boolean);
+    function GetExcludeZeroHour(): Boolean;
+    procedure SetExcludeZeroHour(v: Boolean);
+    function GetShowCW(): Boolean;
+    procedure SetShowCW(v: Boolean);
   public
     { Public êÈåæ }
+    property ExcludeZeroPoints: Boolean read GetExcludeZeroPoint write SetExcludeZeroPoint;
+    property ExcludeZeroHour: Boolean read GetExcludeZeroHour write SetExcludeZeroHour;
+    property ShowCW: Boolean read GetShowCW write SetShowCW;
   end;
 
 implementation
@@ -224,42 +233,77 @@ begin
    end;
 end;
 
+function TZAnalyze.GetExcludeZeroPoint(): Boolean;
+begin
+   Result := checkExcludeZeroPoint.Checked;
+end;
+
+procedure TZAnalyze.SetExcludeZeroPoint(v: Boolean);
+begin
+   checkExcludeZeroPoint.Checked := v;
+end;
+
+function TZAnalyze.GetExcludeZeroHour(): Boolean;
+begin
+   Result := checkExcludeZeroHour.Checked;
+end;
+
+procedure TZAnalyze.SetExcludeZeroHour(v: Boolean);
+begin
+   checkExcludeZeroHour.Checked := v;
+end;
+
+function TZAnalyze.GetShowCW(): Boolean;
+begin
+   Result := checkShowCW.Checked;
+end;
+
+procedure TZAnalyze.SetShowCW(v: Boolean);
+begin
+   checkShowCW.Checked := v;
+end;
+
 procedure TZAnalyze.ShowAll(sl: TStrings);
 var
    fShowCW: Boolean;
 begin
-   fShowCW := checkShowCW.Checked;
+   sl.BeginUpdate();
+   try
+      fShowCW := checkShowCW.Checked;
 
-   case TabControl1.TabIndex of
-      // ZAF
-      0: begin
-         ShowZAF(sl, fShowCW);
-      end;
+      case TabControl1.TabIndex of
+         // ZAF
+         0: begin
+            ShowZAF(sl, fShowCW);
+         end;
 
-      // ZAQ
-      1: begin
-         ShowZAQ(sl);
-      end;
+         // ZAQ
+         1: begin
+            ShowZAQ(sl);
+         end;
 
-      // ZAA
-      2: begin
-         ShowZAA2(sl, Main.CurrentQSO.Band, fShowCW);
-      end;
+         // ZAA
+         2: begin
+            ShowZAA2(sl, Main.CurrentQSO.Band, fShowCW);
+         end;
 
-      // ZAA(ALL)
-      3: begin
-         ShowZAA(sl, fShowCW);
-      end;
+         // ZAA(ALL)
+         3: begin
+            ShowZAA(sl, fShowCW);
+         end;
 
-      // ZAD
-      4: begin
-         ShowZAD(sl);
-      end;
+         // ZAD
+         4: begin
+            ShowZAD(sl);
+         end;
 
-      // ZOP
-      5: begin
-         ShowZOP(sl, fShowCW);
+         // ZOP
+         5: begin
+            ShowZOP(sl, fShowCW);
+         end;
       end;
+   finally
+      sl.EndUpdate();
    end;
 end;
 

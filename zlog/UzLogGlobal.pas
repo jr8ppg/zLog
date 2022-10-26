@@ -278,6 +278,11 @@ type
 
     // Base FontFace Name
     FBaseFontName: string;
+
+    // Analyze Options
+    FAnalyzeExcludeZeroPoints: Boolean;
+    FAnalyzeExcludeZeroHour: Boolean;
+    FAnalyzeShowCW: Boolean;
   end;
 
 var
@@ -929,6 +934,11 @@ begin
       // Base FontFace Name
       Settings.FBaseFontName           := ini.ReadString('Preferences', 'BaseFontName', 'ＭＳ ゴシック');
 
+      // Analyze Options
+      Settings.FAnalyzeExcludeZeroPoints  := ini.ReadBool('Analyze', 'exclude_zero_points', False);
+      Settings.FAnalyzeExcludeZeroHour    := ini.ReadBool('Analyze', 'exclude_zero_Hour', False);
+      Settings.FAnalyzeShowCW             := ini.ReadBool('Analyze', 'show_cw', False);
+
       //
       // Path
       //
@@ -1524,6 +1534,11 @@ begin
 
       // Base FontFace Name
       ini.WriteString('Preferences', 'BaseFontName', Settings.FBaseFontName);
+
+      // Analyze Options
+      ini.WriteBool('Analyze', 'exclude_zero_points', Settings.FAnalyzeExcludeZeroPoints);
+      ini.WriteBool('Analyze', 'exclude_zero_Hour', Settings.FAnalyzeExcludeZeroHour);
+      ini.WriteBool('Analyze', 'show_cw', Settings.FAnalyzeShowCW);
 
       //
       // Path
