@@ -1677,33 +1677,37 @@ var
    i: Integer;
    L: TQSOList;
 begin
-   if ShowCurrentBandOnly.Checked then begin
-      L := Log.BandList[CurrentQSO.Band];
-   end
-   else begin
-      L := Log.QsoList;
-   end;
-   Grid.Tag := Integer(L);
+   Grid.BeginUpdate();
+   try
+      if ShowCurrentBandOnly.Checked then begin
+         L := Log.BandList[CurrentQSO.Band];
+      end
+      else begin
+         L := Log.QsoList;
+      end;
+      Grid.Tag := Integer(L);
 
-   if Grid.VisibleRowCount > L.Count then begin
-      Grid.RowCount := Grid.VisibleRowCount + 1;   // +1ÇÕFixedRowÇÃï™
-   end
-   else begin
-      Grid.RowCount := L.Count;                    // TQSOListÇÃCountÇÕå≥ÅX1ëΩÇ¢
-   end;
+      if Grid.VisibleRowCount > L.Count then begin
+         Grid.RowCount := Grid.VisibleRowCount + 1;   // +1ÇÕFixedRowÇÃï™
+      end
+      else begin
+         Grid.RowCount := L.Count;                    // TQSOListÇÃCountÇÕå≥ÅX1ëΩÇ¢
+      end;
 
-   for i := 1 to L.Count - 1 do begin
-      GridWriteQSO(i, L.Items[i]);
-   end;
+      for i := 1 to L.Count - 1 do begin
+         GridWriteQSO(i, L.Items[i]);
+      end;
 
-   for i := L.Count to Grid.RowCount - 1 do begin
-      GridClearQSO(i);
-   end;
+      for i := L.Count to Grid.RowCount - 1 do begin
+         GridClearQSO(i);
+      end;
 
-   if fSelectRow = False then begin
-      Grid.ShowLast(L.Count - 1);
+      if fSelectRow = False then begin
+         Grid.ShowLast(L.Count - 1);
+      end;
+   finally
+      Grid.EndUpdate();
    end;
-
    Grid.Refresh;
 end;
 
