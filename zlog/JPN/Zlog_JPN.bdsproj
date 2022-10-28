@@ -135,6 +135,7 @@
 			<File FileName="Win64\Debug\Zlog_DRC.rc" ContainerId="W32RC" ModuleName="Zlog_DRC.rc"/>
 			<File FileName="UMessageManager.dfm" ContainerId="W32Form" ModuleName="UMessageManager.dfm"/>
 			<File FileName="Win32\Release\Zlog_DRC.rc" ContainerId="W32RC" ModuleName="Zlog_DRC.rc"/>
+			<File FileName="UExportCabrillo.dfm" ContainerId="W32Form" ModuleName="UExportCabrillo.dfm"/>
 		</FileList>
 	</W32ResourceDLL.Personality>
 </BorlandProject>

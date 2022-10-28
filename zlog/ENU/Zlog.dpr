@@ -36,6 +36,7 @@ library Zlog;
 {ITE} {DFMFileType} {UELogJarl1.dfm}
 {ITE} {DFMFileType} {UELogJarl2.dfm}
 {ITE} {DFMFileType} {UExceptionDialog.dfm}
+{ITE} {DFMFileType} {UExportCabrillo.dfm}
 {ITE} {DFMFileType} {UExportHamlog.dfm}
 {ITE} {DFMFileType} {UFDMulti.dfm}
 {ITE} {DFMFileType} {UFreqList.dfm}
@@ -140,6 +141,7 @@ library Zlog;
 {$R 'UELogJarl1.dfm' 'formELogJarl1:TForm'}
 {$R 'UELogJarl2.dfm' 'formELogJarl2:TForm'}
 {$R 'UExceptionDialog.dfm' 'ExceptionDialog:TForm'}
+{$R 'UExportCabrillo.dfm' 'formExportCabrillo:TForm'}
 {$R 'UExportHamlog.dfm' 'formExportHamlog:TForm'}
 {$R 'UFDMulti.dfm' 'FDMulti:TForm(ACAGMulti)'}
 {$R 'UFreqList.dfm' 'FreqList:TForm(CheckWin)'}

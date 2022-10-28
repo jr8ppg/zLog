@@ -375,7 +375,7 @@ type
     {$IFNDEF ZSERVER}
     procedure SaveToFilezLogALL(Filename : string);
     procedure SaveToFileByTX(Filename : string);
-    procedure SaveToFileByCabrillo(Filename: string);
+    procedure SaveToFileByCabrillo(Filename: string; nTimeZoneOffset: Integer);
     procedure SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string; nCodeOption: Integer; nNameOption: Integer; nTimeOption: Integer; strQslStateText: string);
     {$ENDIF}
     function IsDupe(aQSO : TQSO) : Integer;
@@ -2311,7 +2311,7 @@ end;
 //QSO:  3799 PH 1999-03-06 0712 HC8N           59 700    N5KO           59 CA     0
 
 {$IFNDEF ZSERVER}
-procedure TLog.SaveToFileByCabrillo(Filename: string);
+procedure TLog.SaveToFileByCabrillo(Filename: string; nTimeZoneOffset: Integer);
 var
    F: TextFile;
    i: Integer;
@@ -2389,7 +2389,12 @@ begin
          strText := strText + '   ';
       end;
 
+      // Ç¢Ç¡ÇΩÇÒUTCÇ…ìùàÍ
       utc := IncHour(Q.Time, offhour);
+
+      // Ç≥ÇÁÇ…éwíËÇÃoffsetÇë´ÇµÇƒéwíËÇÃtime zoneÇ÷
+      utc := IncHour(utc, nTimeZoneOffset);
+
       strText := strText + FormatDateTime('yyyy-mm-dd', utc) + ' ';
       strText := strText + FormatDateTime('hhmm', utc) + ' ';
 

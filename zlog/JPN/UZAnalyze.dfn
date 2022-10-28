@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44862.9122222222</prop>
+        <prop prop-type="SelfDateTime">44862.9180092593</prop>
         <prop prop-type="OrigDateTime">44862.9086111111</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">103</prop>
+        <prop prop-type="XlatDateTime">44862.9137731481</prop>
+        <prop prop-type="Translated">6</prop>
+        <prop prop-type="UnTranslated">97</prop>
       </prop-group>
     </header>
     <body>
@@ -185,8 +185,9 @@
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonUpdate.Caption" resname="O:ZAnalyze.O:Panel1.O:buttonUpdate.Caption">
         <source>'Refresh'</source>
+        <target>'更新'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929144097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929144097</prop><prop prop-type="Status">1</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonUpdate.TabOrder" resname="O:ZAnalyze.O:Panel1.O:buttonUpdate.TabOrder">
         <source>0</source>
@@ -225,8 +226,9 @@
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonCopy.Caption" resname="O:ZAnalyze.O:Panel1.O:buttonCopy.Caption">
         <source>'Copy'</source>
+        <target>'コピー'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929144097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929144097</prop><prop prop-type="Status">1</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonCopy.TabOrder" resname="O:ZAnalyze.O:Panel1.O:buttonCopy.TabOrder">
         <source>5</source>
@@ -260,8 +262,9 @@
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.Caption" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.Caption">
         <source>'Exclude 0pts'</source>
+        <target>'得点０を除く'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929144097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929144097</prop><prop prop-type="Status">1</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.TabOrder" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.TabOrder">
         <source>1</source>
@@ -295,8 +298,9 @@
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.Caption" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.Caption">
         <source>'Exclude 0qso/h'</source>
+        <target>'０局の時間帯を除く'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929144097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929144097</prop><prop prop-type="Status">1</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.TabOrder" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.TabOrder">
         <source>2</source>
@@ -335,8 +339,9 @@
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonSave.Caption" resname="O:ZAnalyze.O:Panel1.O:buttonSave.Caption">
         <source>'Save'</source>
+        <target>'ファイルに保存'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929144097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929144097</prop><prop prop-type="Status">1</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonSave.TabOrder" resname="O:ZAnalyze.O:Panel1.O:buttonSave.TabOrder">
         <source>4</source>
@@ -370,8 +375,9 @@
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkShowCW.Caption" resname="O:ZAnalyze.O:Panel1.O:checkShowCW.Caption">
         <source>'Show CW'</source>
+        <target>'CWを内数に表示'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44862.912236794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44862.912236794</prop><prop prop-type="Status">1</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkShowCW.TabOrder" resname="O:ZAnalyze.O:Panel1.O:checkShowCW.TabOrder">
         <source>3</source>

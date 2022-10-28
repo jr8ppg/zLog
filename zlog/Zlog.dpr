@@ -132,7 +132,8 @@ uses
   UWinKeyerTester in 'UWinKeyerTester.pas' {formWinkeyerTester},
   UStatusEdit in 'UStatusEdit.pas' {formStatusEdit},
   UzLogContest in 'UzLogContest.pas',
-  UMessageManager in 'UMessageManager.pas' {formMessageManager};
+  UMessageManager in 'UMessageManager.pas' {formMessageManager},
+  UExportCabrillo in 'UExportCabrillo.pas' {formExportCabrillo};
 
 {$R *.RES}
 
@@ -158,4 +159,3 @@ begin
    dmZlogKeyer.Free();
    dmZlogGlobal.Free();
 end.
-

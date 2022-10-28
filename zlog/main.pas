@@ -1141,7 +1141,7 @@ uses
   UIntegerDialog, UNewPrefix, UKCJScore,
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension,
-  UTargetEditor, UExportHamlog;
+  UTargetEditor, UExportHamlog, UExportCabrillo;
 
 {$R *.DFM}
 
@@ -4890,6 +4890,7 @@ procedure TMainForm.Export1Click(Sender: TObject);
 var
    f, ext: string;
    dlg: TformExportHamlog;
+   dlg2: TformExportCabrillo;
 begin
    FileExportDialog.InitialDir := ExtractFilePath(CurrentFileName);
    FileExportDialog.FileName := ChangeFileExt(ExtractFileName(CurrentFileName), '');
@@ -4925,7 +4926,15 @@ begin
    end;
 
    if ext = '.CBR' then begin
-      Log.SaveToFileByCabrillo(f);
+      dlg2 := TformExportCabrillo.Create(Self);
+      try
+         if dlg2.ShowModal() = mrCancel then begin
+            Exit;
+         end;
+         Log.SaveToFileByCabrillo(f, dlg2.TimeZoneOffset);
+      finally
+         dlg2.Release();
+      end;
    end;
 
    if ext = '.CSV' then begin
