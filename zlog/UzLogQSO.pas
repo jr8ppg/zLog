@@ -1702,7 +1702,6 @@ begin
 
    xQSO := TQSO.Create;
    xQSO.Assign(aQSO);
-   xQSO.Callsign := CoreCall(xQSO.Callsign);
    FDupeCheckList[xQSO.FBand].Add(xQSO);
    FDupeCheckList[xQSO.FBand].Sort(soDupeCheck, FAcceptDifferentMode, FAllPhone);
 
@@ -2638,7 +2637,6 @@ begin
    for i := 1 to FQsoList.Count - 1 do begin
       Q := TQSO.Create();
       Q.Assign(FQsoList[i]);
-      Q.Callsign := CoreCall(Q.Callsign);
       FDupeCheckList[Q.FBand].Add(Q);
    end;
 
@@ -3400,12 +3398,15 @@ end;
 { TQSOCallsignComparer }
 
 function TQSOCallsignComparer.Compare(const Left, Right: TQSO): Integer;
+var
+   n: Integer;
 begin
-   if CompareText(Left.Callsign, Right.Callsign) = 0 then begin
+   n := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign));
+   if n = 0 then begin
       Result := (Left.Index - Right.Index);
    end
    else begin
-      Result := CompareText(Left.Callsign, Right.Callsign);
+      Result := n;
    end;
 end;
 
@@ -3526,7 +3527,7 @@ end;
 
 function TQSODupeWithoutModeComparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   Result := CompareText(Left.Callsign, Right.Callsign) +
+   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign)) +
              ((Integer(Left.Band) - Integer(Right.Band)) * 10);
 end;
 
@@ -3534,7 +3535,7 @@ end;
 
 function TQSODupeWithModeComparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   Result := CompareText(Left.Callsign, Right.Callsign) +
+   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign)) +
              ((Integer(Left.Band) - Integer(Right.Band)) * 10) +
              ((Integer(Left.Mode) - Integer(Right.Mode)) * 100);
 end;
@@ -3543,7 +3544,7 @@ end;
 
 function TQSODupeWithMode2Comparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   Result := CompareText(Left.Callsign, Right.Callsign) +
+   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign)) +
              ((Integer(Left.Band) - Integer(Right.Band)) * 10) +
              ((Integer(Left.Mode2) - Integer(Right.Mode2)) * 100);
 end;
