@@ -2258,6 +2258,10 @@ begin
 
    FSuperCheck.Columns := dmZlogGlobal.SuperCheckColumns;
    FSuperCheck2.Columns := dmZlogGlobal.SuperCheck2Columns;
+
+   FZAnalyze.ExcludeZeroPoints := dmZLogGlobal.Settings.FAnalyzeExcludeZeroPoints;
+   FZAnalyze.ExcludeZeroHour := dmZLogGlobal.Settings.FAnalyzeExcludeZeroHour;
+   FZAnalyze.ShowCW := dmZLogGlobal.Settings.FAnalyzeShowCW;
 end;
 
 procedure TMainForm.RecordWindowStates;
@@ -2288,14 +2292,18 @@ begin
    dmZlogGlobal.WriteWindowState(FMessageManager);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      dmZlogGlobal.WriteWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
+      dmZLogGlobal.WriteWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
    end;
-   dmZlogGlobal.WriteWindowState(FBandScope, 'BandScope');
-   dmZlogGlobal.WriteWindowState(FBandScopeNewMulti, 'BandScopeNewMulti');
+   dmZLogGlobal.WriteWindowState(FBandScope, 'BandScope');
+   dmZLogGlobal.WriteWindowState(FBandScopeNewMulti, 'BandScopeNewMulti');
 
-   dmZlogGlobal.WriteMainFormState(Left, top, Width, Height, mnHideCWPhToolBar.Checked, mnHideMenuToolbar.Checked);
-   dmZlogGlobal.SuperCheckColumns := FSuperCheck.Columns;
-   dmZlogGlobal.SuperCheck2Columns := FSuperCheck2.Columns;
+   dmZLogGlobal.WriteMainFormState(Left, top, Width, Height, mnHideCWPhToolBar.Checked, mnHideMenuToolbar.Checked);
+   dmZLogGlobal.SuperCheckColumns := FSuperCheck.Columns;
+   dmZLogGlobal.SuperCheck2Columns := FSuperCheck2.Columns;
+
+   dmZLogGlobal.Settings.FAnalyzeExcludeZeroPoints := FZAnalyze.ExcludeZeroPoints;
+   dmZLogGlobal.Settings.FAnalyzeExcludeZeroHour := FZAnalyze.ExcludeZeroHour;
+   dmZLogGlobal.Settings.FAnalyzeShowCW := FZAnalyze.ShowCW;
 end;
 
 procedure TMainForm.FileExit(Sender: TObject);

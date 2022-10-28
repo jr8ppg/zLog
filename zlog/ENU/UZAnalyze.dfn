@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5692592593</prop>
-        <prop prop-type="OrigDateTime">44800.8836574074</prop>
+        <prop prop-type="SelfDateTime">44862.9122685185</prop>
+        <prop prop-type="OrigDateTime">44862.9086111111</prop>
         <prop prop-type="XlatDateTime">44800.8836574074</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">99</prop>
+        <prop prop-type="UnTranslated">103</prop>
       </prop-group>
     </header>
     <body>
@@ -153,360 +153,380 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:ZAnalyze.O:Panel1.ExplicitTop" resname="O:ZAnalyze.O:Panel1.ExplicitTop">
-        <source>233</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.DesignSize[0]" resname="O:ZAnalyze.O:Panel1.DesignSize[0]">
         <source>684</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.DesignSize[1]" resname="O:ZAnalyze.O:Panel1.DesignSize[1]">
         <source>28</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonUpdate.Left" resname="O:ZAnalyze.O:Panel1.O:buttonUpdate.Left">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonUpdate.Top" resname="O:ZAnalyze.O:Panel1.O:buttonUpdate.Top">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonUpdate.Width" resname="O:ZAnalyze.O:Panel1.O:buttonUpdate.Width">
         <source>65</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonUpdate.Height" resname="O:ZAnalyze.O:Panel1.O:buttonUpdate.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonUpdate.Caption" resname="O:ZAnalyze.O:Panel1.O:buttonUpdate.Caption">
-        <source>'更新'</source>
+        <source>'Refresh'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonUpdate.TabOrder" resname="O:ZAnalyze.O:Panel1.O:buttonUpdate.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonUpdate.OnClick" resname="O:ZAnalyze.O:Panel1.O:buttonUpdate.OnClick">
         <source>buttonUpdateClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonCopy.Left" resname="O:ZAnalyze.O:Panel1.O:buttonCopy.Left">
         <source>596</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonCopy.Top" resname="O:ZAnalyze.O:Panel1.O:buttonCopy.Top">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonCopy.Width" resname="O:ZAnalyze.O:Panel1.O:buttonCopy.Width">
         <source>84</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonCopy.Height" resname="O:ZAnalyze.O:Panel1.O:buttonCopy.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonCopy.Anchors" resname="O:ZAnalyze.O:Panel1.O:buttonCopy.Anchors">
         <source>[akTop, akRight]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonCopy.Caption" resname="O:ZAnalyze.O:Panel1.O:buttonCopy.Caption">
-        <source>'コピー'</source>
+        <source>'Copy'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonCopy.TabOrder" resname="O:ZAnalyze.O:Panel1.O:buttonCopy.TabOrder">
-        <source>4</source>
+        <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonCopy.OnClick" resname="O:ZAnalyze.O:Panel1.O:buttonCopy.OnClick">
         <source>buttonCopyClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.Left" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.Left">
         <source>92</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.Top" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.Top">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.Width" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.Width">
         <source>81</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.Height" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.Height">
         <source>17</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.Caption" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.Caption">
-        <source>'得点０を除く'</source>
+        <source>'Exclude 0pts'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.TabOrder" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.OnClick" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroPoint.OnClick">
         <source>buttonUpdateClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.Left" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.Left">
-        <source>183</source>
+        <source>189</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.Top" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.Top">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.Width" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.Width">
-        <source>117</source>
+        <source>111</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.Height" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.Height">
         <source>17</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.Caption" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.Caption">
-        <source>'０局の時間帯を除く'</source>
+        <source>'Exclude 0qso/h'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.TabOrder" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.OnClick" resname="O:ZAnalyze.O:Panel1.O:checkExcludeZeroHour.OnClick">
         <source>buttonUpdateClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonSave.Left" resname="O:ZAnalyze.O:Panel1.O:buttonSave.Left">
         <source>511</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonSave.Top" resname="O:ZAnalyze.O:Panel1.O:buttonSave.Top">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonSave.Width" resname="O:ZAnalyze.O:Panel1.O:buttonSave.Width">
         <source>84</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonSave.Height" resname="O:ZAnalyze.O:Panel1.O:buttonSave.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonSave.Anchors" resname="O:ZAnalyze.O:Panel1.O:buttonSave.Anchors">
         <source>[akTop, akRight]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonSave.Caption" resname="O:ZAnalyze.O:Panel1.O:buttonSave.Caption">
-        <source>'ファイル保存'</source>
+        <source>'Save'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonSave.TabOrder" resname="O:ZAnalyze.O:Panel1.O:buttonSave.TabOrder">
-        <source>3</source>
+        <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:Panel1.O:buttonSave.OnClick" resname="O:ZAnalyze.O:Panel1.O:buttonSave.OnClick">
         <source>buttonSaveClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ZAnalyze.O:Panel1.O:checkShowCW.Left" resname="O:ZAnalyze.O:Panel1.O:checkShowCW.Left">
+        <source>306</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44862.9122915856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ZAnalyze.O:Panel1.O:checkShowCW.Top" resname="O:ZAnalyze.O:Panel1.O:checkShowCW.Top">
+        <source>5</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44862.9122915856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ZAnalyze.O:Panel1.O:checkShowCW.Width" resname="O:ZAnalyze.O:Panel1.O:checkShowCW.Width">
+        <source>117</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44862.9122915856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ZAnalyze.O:Panel1.O:checkShowCW.Height" resname="O:ZAnalyze.O:Panel1.O:checkShowCW.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44862.9122915856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ZAnalyze.O:Panel1.O:checkShowCW.Caption" resname="O:ZAnalyze.O:Panel1.O:checkShowCW.Caption">
+        <source>'Show CW'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44862.9122915856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ZAnalyze.O:Panel1.O:checkShowCW.TabOrder" resname="O:ZAnalyze.O:Panel1.O:checkShowCW.TabOrder">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44862.9122915856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ZAnalyze.O:Panel1.O:checkShowCW.OnClick" resname="O:ZAnalyze.O:Panel1.O:checkShowCW.OnClick">
+        <source>buttonUpdateClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44862.9122915856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.Left" resname="O:ZAnalyze.O:TabControl1.Left">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.Top" resname="O:ZAnalyze.O:TabControl1.Top">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.Width" resname="O:ZAnalyze.O:TabControl1.Width">
         <source>684</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.Height" resname="O:ZAnalyze.O:TabControl1.Height">
         <source>234</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935259375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.Align" resname="O:ZAnalyze.O:TabControl1.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.TabOrder" resname="O:ZAnalyze.O:TabControl1.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.Tabs.Strings[0]" resname="O:ZAnalyze.O:TabControl1.Tabs.Strings[0]">
         <source>'ZAF'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.Tabs.Strings[1]" resname="O:ZAnalyze.O:TabControl1.Tabs.Strings[1]">
         <source>'ZAQ'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.Tabs.Strings[2]" resname="O:ZAnalyze.O:TabControl1.Tabs.Strings[2]">
         <source>'ZAA'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.Tabs.Strings[3]" resname="O:ZAnalyze.O:TabControl1.Tabs.Strings[3]">
         <source>'ZAA(ALL)'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.Tabs.Strings[4]" resname="O:ZAnalyze.O:TabControl1.Tabs.Strings[4]">
         <source>'ZAD'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.Tabs.Strings[5]" resname="O:ZAnalyze.O:TabControl1.Tabs.Strings[5]">
         <source>'ZOP'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.TabIndex" resname="O:ZAnalyze.O:TabControl1.TabIndex">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.OnChange" resname="O:ZAnalyze.O:TabControl1.OnChange">
         <source>TabControl1Change</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:ZAnalyze.O:TabControl1.ExplicitTop" resname="O:ZAnalyze.O:TabControl1.ExplicitTop">
-        <source>-1</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.Left" resname="O:ZAnalyze.O:TabControl1.O:Memo1.Left">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.Top" resname="O:ZAnalyze.O:TabControl1.O:Memo1.Top">
         <source>24</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.Width" resname="O:ZAnalyze.O:TabControl1.O:Memo1.Width">
         <source>676</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.Height" resname="O:ZAnalyze.O:TabControl1.O:Memo1.Height">
         <source>206</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.Align" resname="O:ZAnalyze.O:TabControl1.O:Memo1.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.Font.Charset" resname="O:ZAnalyze.O:TabControl1.O:Memo1.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.Font.Color" resname="O:ZAnalyze.O:TabControl1.O:Memo1.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.Font.Height" resname="O:ZAnalyze.O:TabControl1.O:Memo1.Font.Height">
         <source>-15</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.Font.Name" resname="O:ZAnalyze.O:TabControl1.O:Memo1.Font.Name">
         <source>'ＭＳ ゴシック'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.Font.Style" resname="O:ZAnalyze.O:TabControl1.O:Memo1.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.ParentFont" resname="O:ZAnalyze.O:TabControl1.O:Memo1.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.ReadOnly" resname="O:ZAnalyze.O:TabControl1.O:Memo1.ReadOnly">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.ScrollBars" resname="O:ZAnalyze.O:TabControl1.O:Memo1.ScrollBars">
         <source>ssVertical</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.TabOrder" resname="O:ZAnalyze.O:TabControl1.O:Memo1.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.WordWrap" resname="O:ZAnalyze.O:TabControl1.O:Memo1.WordWrap">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:ZAnalyze.O:TabControl1.O:Memo1.ExplicitHeight" resname="O:ZAnalyze.O:TabControl1.O:Memo1.ExplicitHeight">
-        <source>205</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935261227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>
