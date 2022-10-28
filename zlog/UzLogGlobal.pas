@@ -2178,6 +2178,8 @@ end;
 procedure TdmZLogGlobal.ReadMainFormState(var X, Y, W, H: integer; var TB1, TB2: boolean);
 var
    ini: TIniFile;
+   pt: TPoint;
+   mon: TMonitor;
 begin
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
@@ -2185,6 +2187,23 @@ begin
       Y := ini.ReadInteger('Windows', 'Main_Y', 0);
       W := ini.ReadInteger('Windows', 'Main_W', 0);
       H := ini.ReadInteger('Windows', 'Main_H', 0);
+
+      pt.X := X;
+      pt.Y := Y;
+      mon := Screen.MonitorFromPoint(pt, mdNearest);
+      if X < mon.Left then begin
+         X := mon.Left;
+      end;
+      if (X + W) > (mon.Left + mon.Width) then begin
+         X := (mon.Left + mon.Width) - W;
+      end;
+      if Y < mon.Top then begin
+         Y := mon.Top;
+      end;
+      if (Y + H) > (mon.Top + mon.Height) then begin
+         Y := (mon.Top + mon.Height) - H;
+      end;
+
       TB1 := ini.ReadBool('Windows', 'Main_ToolBar1', False);
       TB2 := ini.ReadBool('Windows', 'Main_ToolBar2', False);
    finally
