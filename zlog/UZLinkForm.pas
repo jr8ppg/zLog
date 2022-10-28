@@ -414,6 +414,7 @@ begin
          aQSO.TextToQSO(temp);
          MyContest.LogQSO(aQSO, false);
          MainForm.GridRefreshScreen;
+         MainForm.BandScopeNotifyWorked(aQSO);
          aQSO.Free;
       end;
 
