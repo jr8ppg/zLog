@@ -1,7 +1,7 @@
 object RateDialogEx: TRateDialogEx
   Left = 69
   Top = 213
-  ActiveControl = ScoreGrid
+  ActiveControl = ShowLastCombo
   Caption = 'QSO Rate Ex'
   ClientHeight = 262
   ClientWidth = 390
@@ -10,8 +10,8 @@ object RateDialogEx: TRateDialogEx
   Constraints.MinWidth = 350
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Height = -12
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
@@ -79,11 +79,11 @@ object RateDialogEx: TRateDialogEx
     Top = 37
     Width = 390
     Height = 225
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
-      Caption = 'Graph'
+      Caption = #12464#12521#12501
       object Panel2: TPanel
         Left = 0
         Top = 167
@@ -97,20 +97,20 @@ object RateDialogEx: TRateDialogEx
           30)
         object Label4: TLabel
           Left = 303
-          Top = 8
+          Top = 9
           Width = 26
           Height = 13
           Anchors = [akRight]
-          Caption = 'hours'
+          Caption = #26178#38291
           ExplicitLeft = 255
         end
         object Label3: TLabel
           Left = 207
-          Top = 8
+          Top = 9
           Width = 46
           Height = 13
           Anchors = [akRight]
-          Caption = 'Show last'
+          Caption = #26368#24460#12363#12425
           ExplicitLeft = 159
         end
         object ShowLastCombo: TComboBox
@@ -157,18 +157,18 @@ object RateDialogEx: TRateDialogEx
             Top = 6
             Width = 54
             Height = 17
-            Caption = 'Current'
+            Caption = #29694#22312
             Checked = True
             TabOrder = 1
             TabStop = True
             OnClick = radioOriginClick
           end
           object radioOriginLastQSO: TRadioButton
-            Left = 112
+            Left = 96
             Top = 6
             Width = 40
             Height = 17
-            Caption = 'Last'
+            Caption = #26368#24460
             TabOrder = 2
             OnClick = radioOriginClick
           end
@@ -177,7 +177,7 @@ object RateDialogEx: TRateDialogEx
             Top = 6
             Width = 39
             Height = 17
-            Caption = 'First'
+            Caption = #26368#21021
             TabOrder = 0
             OnClick = radioOriginClick
           end
