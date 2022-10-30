@@ -8,7 +8,7 @@ object CheckWin: TCheckWin
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+  Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
@@ -18,7 +18,7 @@ object CheckWin: TCheckWin
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 12
+  TextHeight = 13
   object Panel1: TPanel
     Left = 0
     Top = 130
@@ -59,7 +59,6 @@ object CheckWin: TCheckWin
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Pitch = fpFixed
     Font.Style = []
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     ItemHeight = 13
     ParentFont = False
     TabOrder = 1
