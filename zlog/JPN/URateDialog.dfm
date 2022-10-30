@@ -9,8 +9,8 @@ object RateDialog: TRateDialog
   Constraints.MinWidth = 350
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Height = -12
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
@@ -86,19 +86,19 @@ object RateDialog: TRateDialog
       30)
     object Label4: TLabel
       Left = 255
-      Top = 8
+      Top = 9
       Width = 26
       Height = 13
       Anchors = [akRight]
-      Caption = 'hours'
+      Caption = #26178#38291
     end
     object Label3: TLabel
       Left = 159
-      Top = 8
+      Top = 9
       Width = 46
       Height = 13
       Anchors = [akRight]
-      Caption = 'Show last'
+      Caption = #26368#24460#12363#12425
     end
     object ShowLastCombo: TComboBox
       Left = 209
@@ -142,29 +142,29 @@ object RateDialog: TRateDialog
       object radioOriginCurrentTime: TRadioButton
         Left = 52
         Top = 6
-        Width = 54
+        Width = 40
         Height = 17
-        Caption = 'Current'
+        Caption = #29694#22312
         Checked = True
         TabOrder = 1
         TabStop = True
         OnClick = radioOriginClick
       end
       object radioOriginLastQSO: TRadioButton
-        Left = 112
+        Left = 96
         Top = 6
         Width = 40
         Height = 17
-        Caption = 'Last'
+        Caption = #26368#24460
         TabOrder = 2
         OnClick = radioOriginClick
       end
       object radioOriginFirstQSO: TRadioButton
         Left = 8
         Top = 6
-        Width = 39
+        Width = 40
         Height = 17
-        Caption = 'First'
+        Caption = #26368#21021
         TabOrder = 0
         OnClick = radioOriginClick
       end

@@ -55,7 +55,7 @@ object BasicScore: TBasicScore
       Top = 8
       Width = 81
       Height = 17
-      Caption = 'Stay on top'
+      Caption = #25163#21069#12395#34920#31034
       TabOrder = 1
       OnClick = StayOnTopClick
     end
@@ -67,7 +67,7 @@ object BasicScore: TBasicScore
     Top = 128
     object menuMultiRate: TMenuItem
       AutoCheck = True
-      Caption = 'Multi/QSO %(Rate)'
+      Caption = #12510#12523#12481'/'#20132#20449' %('#29575')'
       Checked = True
       GroupIndex = 1
       RadioItem = True
@@ -75,14 +75,14 @@ object BasicScore: TBasicScore
     end
     object menuPtsPerMulti: TMenuItem
       AutoCheck = True
-      Caption = 'Points/Multi'
+      Caption = #24471#28857'/'#12510#12523#12481
       GroupIndex = 1
       RadioItem = True
       OnClick = menuExtraInfoClick
     end
     object menuPtsPerQSO: TMenuItem
       AutoCheck = True
-      Caption = 'Points/QSO(AVG)'
+      Caption = #24471#28857'/'#20132#20449'('#24179#22343')'
       GroupIndex = 1
       RadioItem = True
       OnClick = menuExtraInfoClick

@@ -8,8 +8,8 @@ object formOperatorEdit: TformOperatorEdit
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Height = -12
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
@@ -47,7 +47,7 @@ object formOperatorEdit: TformOperatorEdit
       Height = 25
       Anchors = [akLeft, akBottom]
       Cancel = True
-      Caption = 'Cancel'
+      Caption = #12461#12515#12531#12475#12523
       ModalResult = 2
       TabOrder = 1
     end
@@ -57,7 +57,7 @@ object formOperatorEdit: TformOperatorEdit
     Top = 84
     Width = 357
     Height = 288
-    Caption = 'Voice Files'
+    Caption = #38899#22768#12501#12449#12452#12523
     TabOrder = 1
     object Label20: TLabel
       Left = 8
@@ -353,38 +353,38 @@ object formOperatorEdit: TformOperatorEdit
     Top = 4
     Width = 357
     Height = 74
-    Caption = 'Operator Info.'
+    Caption = #12458#12506#12524#12540#12479#12540#24773#22577
     TabOrder = 0
     object Label1: TLabel
       Left = 8
       Top = 24
       Width = 36
       Height = 13
-      Caption = 'Callsign'
+      Caption = #12467#12540#12523#12469#12452#12531
     end
     object Label2: TLabel
       Left = 8
       Top = 47
       Width = 30
       Height = 13
-      Caption = 'Power'
+      Caption = #38651#21147
     end
     object Label3: TLabel
       Left = 279
       Top = 47
       Width = 19
       Height = 13
-      Caption = 'Age'
+      Caption = #24180#40802
     end
     object Label4: TLabel
-      Left = 181
+      Left = 206
       Top = 47
       Width = 80
       Height = 13
-      Caption = '(Exclude WARC)'
+      Caption = '(WARC'#38500#12367')'
     end
     object editCallsign: TEdit
-      Left = 52
+      Left = 76
       Top = 21
       Width = 81
       Height = 21
@@ -393,7 +393,7 @@ object formOperatorEdit: TformOperatorEdit
       TabOrder = 0
     end
     object editPower: TEdit
-      Left = 52
+      Left = 76
       Top = 44
       Width = 123
       Height = 21
@@ -417,7 +417,7 @@ object formOperatorEdit: TformOperatorEdit
     Top = 378
     Width = 357
     Height = 71
-    Caption = 'Additional CQ Messages'
+    Caption = #36861#21152#12398'CQ'#12513#12483#12475#12540#12472
     TabOrder = 2
     object Label5: TLabel
       Left = 8
@@ -470,10 +470,10 @@ object formOperatorEdit: TformOperatorEdit
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = 'WAV'
-    Filter = 'Wave Files|*.wav|MP3 Files|*.mp|All Files|*.*'
+    Filter = 'Wave'#12501#12449#12452#12523'|*.wav|MP3'#12501#12449#12452#12523'|*.mp|'#12377#12409#12390#12398#12501#12449#12452#12523'|*.*'
     FilterIndex = 0
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofNoTestFileCreate, ofEnableSizing]
-    Title = 'Select a voice file'
+    Title = #38899#22768#12501#12449#12452#12523#12434#36984#25246#12375#12390#19979#12373#12356
     Left = 304
     Top = 457
   end

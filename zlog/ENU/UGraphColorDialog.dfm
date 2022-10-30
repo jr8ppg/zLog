@@ -9,14 +9,14 @@ object GraphColorDialog: TGraphColorDialog
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+  Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 96
-  TextHeight = 12
+  TextHeight = 13
   object Panel1: TPanel
     Left = 0
     Top = 339
@@ -102,7 +102,7 @@ object GraphColorDialog: TGraphColorDialog
         end
       end
       object groupDrawStartPos: TGroupBox
-        Left = 3
+        Left = 4
         Top = 118
         Width = 389
         Height = 108
@@ -184,7 +184,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 18
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 0
@@ -196,27 +196,15 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 1
           OnClick = buttonFGClick
         end
         object buttonReset01: TButton
           Left = 314
           Top = 18
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 3
           OnClick = buttonResetClick
         end
@@ -226,12 +214,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 2
           OnClick = buttonBGClick
         end
@@ -239,7 +221,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 44
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 4
@@ -252,12 +234,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 5
           OnClick = buttonFGClick
         end
@@ -265,15 +241,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 1
           Left = 314
           Top = 44
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 7
           OnClick = buttonResetClick
         end
@@ -284,12 +254,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 6
           OnClick = buttonBGClick
         end
@@ -297,7 +261,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 70
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 8
@@ -310,12 +274,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 9
           OnClick = buttonFGClick
         end
@@ -323,15 +281,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 2
           Left = 314
           Top = 70
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 11
           OnClick = buttonResetClick
         end
@@ -342,12 +294,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 10
           OnClick = buttonBGClick
         end
@@ -355,7 +301,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 96
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 12
@@ -368,12 +314,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 13
           OnClick = buttonFGClick
         end
@@ -381,15 +321,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 3
           Left = 314
           Top = 96
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 15
           OnClick = buttonResetClick
         end
@@ -400,12 +334,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 14
           OnClick = buttonBGClick
         end
@@ -466,7 +394,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 18
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 0
@@ -479,12 +407,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 1
           OnClick = buttonFGClick
         end
@@ -492,15 +414,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 4
           Left = 314
           Top = 18
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 3
           OnClick = buttonResetClick
         end
@@ -511,12 +427,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 2
           OnClick = buttonBGClick
         end
@@ -524,7 +434,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 44
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 4
@@ -537,12 +447,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 5
           OnClick = buttonFGClick
         end
@@ -550,15 +454,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 5
           Left = 314
           Top = 44
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 7
           OnClick = buttonResetClick
         end
@@ -569,12 +467,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 6
           OnClick = buttonBGClick
         end
@@ -582,7 +474,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 70
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 8
@@ -595,12 +487,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 9
           OnClick = buttonFGClick
         end
@@ -608,15 +494,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 6
           Left = 314
           Top = 70
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 11
           OnClick = buttonResetClick
         end
@@ -627,12 +507,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 10
           OnClick = buttonBGClick
         end
@@ -640,7 +514,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 96
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 12
@@ -653,12 +527,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 13
           OnClick = buttonFGClick
         end
@@ -666,15 +534,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 7
           Left = 314
           Top = 96
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 15
           OnClick = buttonResetClick
         end
@@ -685,12 +547,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 14
           OnClick = buttonBGClick
         end
@@ -698,7 +554,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 122
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 16
@@ -711,12 +567,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 17
           OnClick = buttonFGClick
         end
@@ -724,15 +574,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 8
           Left = 314
           Top = 122
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 19
           OnClick = buttonResetClick
         end
@@ -743,12 +587,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 18
           OnClick = buttonBGClick
         end
@@ -786,7 +624,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 18
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 0
@@ -799,12 +637,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 1
           OnClick = buttonFGClick
         end
@@ -812,15 +644,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 9
           Left = 314
           Top = 18
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 3
           OnClick = buttonResetClick
         end
@@ -831,12 +657,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 2
           OnClick = buttonBGClick
         end
@@ -844,7 +664,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 44
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 4
@@ -857,12 +677,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 5
           OnClick = buttonFGClick
         end
@@ -870,15 +684,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 10
           Left = 314
           Top = 44
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 7
           OnClick = buttonResetClick
         end
@@ -889,12 +697,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 6
           OnClick = buttonBGClick
         end
@@ -937,7 +739,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 18
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 0
@@ -950,12 +752,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 1
           OnClick = buttonFGClick
         end
@@ -963,15 +759,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 11
           Left = 314
           Top = 18
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 3
           OnClick = buttonResetClick
         end
@@ -982,12 +772,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 2
           OnClick = buttonBGClick
         end
@@ -995,7 +779,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 44
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 4
@@ -1008,12 +792,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 5
           OnClick = buttonFGClick
         end
@@ -1021,15 +799,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 12
           Left = 314
           Top = 44
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 7
           OnClick = buttonResetClick
         end
@@ -1040,12 +812,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 6
           OnClick = buttonBGClick
         end
@@ -1053,7 +819,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 70
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 8
@@ -1066,12 +832,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 9
           OnClick = buttonFGClick
         end
@@ -1079,15 +839,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 13
           Left = 314
           Top = 70
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 11
           OnClick = buttonResetClick
         end
@@ -1098,12 +852,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 10
           OnClick = buttonBGClick
         end
@@ -1137,7 +885,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 18
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 0
@@ -1150,12 +898,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 1
           OnClick = buttonFGClick
         end
@@ -1163,15 +905,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 14
           Left = 314
           Top = 18
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 3
           OnClick = buttonResetClick
         end
@@ -1182,12 +918,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 2
           OnClick = buttonBGClick
         end
@@ -1195,7 +925,7 @@ object GraphColorDialog: TGraphColorDialog
           Left = 89
           Top = 44
           Width = 70
-          Height = 20
+          Height = 21
           TabStop = False
           ReadOnly = True
           TabOrder = 4
@@ -1208,12 +938,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Fore...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 5
           OnClick = buttonFGClick
         end
@@ -1221,15 +945,9 @@ object GraphColorDialog: TGraphColorDialog
           Tag = 15
           Left = 314
           Top = 44
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
           TabOrder = 7
           OnClick = buttonResetClick
         end
@@ -1240,12 +958,6 @@ object GraphColorDialog: TGraphColorDialog
           Width = 45
           Height = 20
           Caption = 'Back...'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-          Font.Style = []
-          ParentFont = False
           TabOrder = 6
           OnClick = buttonBGClick
         end
