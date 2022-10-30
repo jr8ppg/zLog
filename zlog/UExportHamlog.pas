@@ -10,8 +10,6 @@ type
   TformExportHamlog = class(TForm)
     buttonOK: TButton;
     buttonCancel: TButton;
-    editRemarks1Opt1: TMemo;
-    editRemarks2Opt1: TMemo;
     radioRemarks1Opt2: TRadioButton;
     radioRemarks1Opt3: TRadioButton;
     radioRemarks1Opt1: TRadioButton;
@@ -41,15 +39,16 @@ type
     radioTimeOpt0: TRadioButton;
     radioTimeOpt1: TRadioButton;
     radioTimeOpt2: TRadioButton;
+    editRemarks1Opt1: TEdit;
+    editRemarks2Opt1: TEdit;
     procedure radioRemarks1Opt1Click(Sender: TObject);
     procedure radioRemarks1Opt2Click(Sender: TObject);
     procedure radioRemarks1Opt3Click(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure radioRemarks2Opt1Click(Sender: TObject);
     procedure radioRemarks2Opt2Click(Sender: TObject);
     procedure radioRemarks2Opt3Click(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
+    procedure buttonOKClick(Sender: TObject);
   private
     { Private êÈåæ }
     function GetRemarks1Option(): Integer;
@@ -86,23 +85,22 @@ implementation
 
 {$R *.dfm}
 
-procedure TformExportHamlog.FormCreate(Sender: TObject);
-begin
-   Load();
-end;
-
 procedure TformExportHamlog.FormShow(Sender: TObject);
 begin
-   if radioRemarks1Opt1.Checked = True then begin
-      editRemarks1Opt1.SetFocus();
-   end;
+   Load();
 
    if radioRemarks2Opt1.Checked = True then begin
+      editRemarks2Opt1.Enabled := True;
       editRemarks2Opt1.SetFocus();
+   end;
+
+   if radioRemarks1Opt1.Checked = True then begin
+      editRemarks1Opt1.Enabled := True;
+      editRemarks1Opt1.SetFocus();
    end;
 end;
 
-procedure TformExportHamlog.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TformExportHamlog.buttonOKClick(Sender: TObject);
 begin
    Save();
 end;
@@ -110,6 +108,7 @@ end;
 procedure TformExportHamlog.radioRemarks1Opt1Click(Sender: TObject);
 begin
    editRemarks1Opt1.Enabled := True;
+   editRemarks1Opt1.SetFocus();
 end;
 
 procedure TformExportHamlog.radioRemarks1Opt2Click(Sender: TObject);
@@ -125,6 +124,7 @@ end;
 procedure TformExportHamlog.radioRemarks2Opt1Click(Sender: TObject);
 begin
    editRemarks2Opt1.Enabled := True;
+   editRemarks2Opt1.SetFocus();
 end;
 
 procedure TformExportHamlog.radioRemarks2Opt2Click(Sender: TObject);

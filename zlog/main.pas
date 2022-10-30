@@ -3779,6 +3779,10 @@ begin
    CurrentQSO.NewMulti1 := False;
    CurrentQSO.NewMulti2 := False;
    CurrentQSO.Invalid := False;
+   CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
+   CurrentQSO.TX := dmZlogGlobal.TXNr;
+   CurrentQSO.Forced := False;
+   CurrentQSO.Dupe := False;
 
    // DUPEチェック
    _dupe := Log.IsDupe(CurrentQSO);
@@ -3809,6 +3813,7 @@ begin
             Exit;
          end;
       end;
+      CurrentQSO.Forced := False;
    end
    else begin     // 強制入力
       if _dupe <> 0 then begin
@@ -3983,8 +3988,6 @@ begin
 
    CurrentQSO.Reserve2 := 0;
    CurrentQSO.Reserve3 := 0;
-   CurrentQSO.TX := dmZlogGlobal.TXNr;
-   CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
 
    if CurrentQSO.Mode in [mCW, mRTTY] then begin
       CurrentQSO.RSTRcvd := 599;
