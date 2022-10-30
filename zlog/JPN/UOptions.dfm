@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetBandScope1
+    ActivePage = tabsheetNetwork
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -2288,7 +2288,6 @@ object formOptions: TformOptions
           Width = 102
           Height = 21
           Caption = 'COM'#12509#12540#12488#35373#23450
-          Default = True
           TabOrder = 1
           OnClick = buttonClusterSettingsClick
         end
@@ -2310,7 +2309,6 @@ object formOptions: TformOptions
           Width = 102
           Height = 21
           Caption = 'TELNET'#35373#23450
-          Default = True
           TabOrder = 5
           OnClick = buttonZLinkSettingsClick
         end
@@ -2329,6 +2327,15 @@ object formOptions: TformOptions
           Caption = #12471#12522#12450#12523#12490#12531#12496#12540#21516#26399
           TabOrder = 4
           OnClick = PTTEnabledCheckBoxClick
+        end
+        object buttonSpotterList: TButton
+          Left = 290
+          Top = 28
+          Width = 102
+          Height = 21
+          Caption = 'Spotter list'
+          TabOrder = 6
+          OnClick = buttonSpotterListClick
         end
       end
       object groupSo2rSupport: TGroupBox
@@ -4835,13 +4842,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@SimSun-ExtB'
+          FontName = '@Terminal'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 28
+          ItemIndex = 30
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

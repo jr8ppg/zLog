@@ -522,6 +522,7 @@ type
     checkUseLookupServer: TCheckBox;
     checkSetFreqAfterModeChange: TCheckBox;
     checkAlwaysChangeMode: TCheckBox;
+    buttonSpotterList: TButton;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -571,6 +572,7 @@ type
     procedure checkUseWinKeyerClick(Sender: TObject);
     procedure radioSo2rClick(Sender: TObject);
     procedure checkUseEstimatedModeClick(Sender: TObject);
+    procedure buttonSpotterListClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -626,10 +628,26 @@ const
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True )
   );
 
+resourcestring
+  // COMポート設定
+  COM_PORT_SETTING = 'COM port settings';
+
+  // TELNET設定
+  TELNET_SETTING = 'TELNET settings';
+
+  // SuperCheck用のファイルが保存されているフォルダを選択して下さい
+  SELECT_SPC_FOLDER = 'Select the folder where the files for SuperCheck';
+
+  // フォルダの参照
+  SELECT_FOLDER = 'Select folder';
+
+  // オフセット周波数を kHz で入力してください
+  PLEASE_INPUT_OFFSET_FREQ = 'Please input the offset frequency in kHz';
+
 implementation
 
 uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet,
-  UZlinkTelnetSet, UZLinkForm, URigControl, UPluginManager;
+  UZlinkTelnetSet, UZLinkForm, URigControl, UPluginManager, USpotterListDlg;
 
 {$R *.DFM}
 
@@ -1875,13 +1893,21 @@ end;
 procedure TformOptions.ClusterComboChange(Sender: TObject);
 begin
    buttonClusterSettings.Enabled := True;
+   buttonSpotterList.Enabled := True;
+
    case ClusterCombo.ItemIndex of
-      0:
+      0: begin
          buttonClusterSettings.Enabled := False;
-      1 .. 6:
-         buttonClusterSettings.Caption := 'COM port settings';
-      7:
-         buttonClusterSettings.Caption := 'TELNET settings';
+         buttonSpotterList.Enabled := False;
+      end;
+
+      1 .. 6: begin
+         buttonClusterSettings.Caption := COM_PORT_SETTING;
+      end;
+
+      7: begin
+         buttonClusterSettings.Caption := TELNET_SETTING;
+      end;
    end;
 end;
 
@@ -1936,7 +1962,7 @@ var
 begin
    strSelected := editSuperCheckFolder.Text;
 
-   fResult := SelectDirectory('SuperCheck用のファイルが保存されているフォルダを選択して下さい', '', strSelected, [sdNewUI, sdNewFolder, sdValidateDir], Self);
+   fResult := SelectDirectory(SELECT_SPC_FOLDER, '', strSelected, [sdNewUI, sdNewFolder, sdValidateDir], Self);
    if fResult = False then begin
       Exit;
    end;
@@ -1993,7 +2019,7 @@ begin
          strDir := PluginPathEdit.Text;
    end;
 
-   if SelectDirectory('フォルダの参照', '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
+   if SelectDirectory(SELECT_FOLDER, '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
       exit;
    end;
 
@@ -2122,7 +2148,7 @@ begin
          if r = 2 then
             i := dmZlogGlobal.Settings._transverteroffset2;
 
-         F.Init(i, 'Please input the offset frequency in kHz');
+         F.Init(i, PLEASE_INPUT_OFFSET_FREQ);
          if F.ShowModal() <> mrOK then begin
             Exit;
          end;
@@ -2491,6 +2517,22 @@ procedure TformOptions.buttonStopVoiceClick(Sender: TObject);
 begin
    FVoiceSound.Stop();
    FVoiceSound.Close();
+end;
+
+procedure TformOptions.buttonSpotterListClick(Sender: TObject);
+var
+   dlg: TformSpotterListDlg;
+begin
+   dlg := TformSpotterListDlg.Create(Self);
+   try
+
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+   finally
+      dlg.Release();
+   end;
 end;
 
 end.
