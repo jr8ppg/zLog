@@ -2333,7 +2333,7 @@ object formOptions: TformOptions
           Top = 28
           Width = 102
           Height = 21
-          Caption = 'Spotter list'
+          Caption = #35377#21487'/'#31105#27490#12522#12473#12488
           TabOrder = 6
           OnClick = buttonSpotterListClick
         end

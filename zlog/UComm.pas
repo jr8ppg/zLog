@@ -45,6 +45,7 @@ type
     checkRecordLogs: TCheckBox;
     popupCommand: TPopupMenu;
     menuPasteCommand: TMenuItem;
+    checkUseAllowDenyLists: TCheckBox;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -91,6 +92,10 @@ type
     FAutoLogined: Boolean;
 
     FCommProcessThread: TCommProcessThread;
+
+    FAllowList: TStringList;
+    FDenyList: TStringList;
+
     procedure DeleteSpot(_from, _to : integer);
 
     function GetFontSize(): Integer;
@@ -106,6 +111,7 @@ type
     procedure EnableConnectButton(boo : boolean);
     function GetLocalEcho(): Boolean;
     procedure TerminateCommProcessThread();
+    procedure LoadAllowDenyList();
   public
     { Public declarations }
     procedure PreProcessSpotFromZLink(S : string; N: Integer);
@@ -338,20 +344,22 @@ begin
       Telnet.Port := Copy(dmZlogGlobal.Settings._cluster_telnet.FHostName, i + 1);
    end;
 
-   checkAutoLogin.Checked     := dmZlogGlobal.Settings.FClusterAutoLogin;
-   checkAutoReconnect.Checked := dmZlogGlobal.Settings.FClusterAutoReconnect;
-   checkRelaySpot.Checked     := dmZlogGlobal.Settings.FClusterRelaySpot;
-   checkNotifyCurrentBand.Checked := dmZlogGlobal.Settings.FClusterNotifyCurrentBand;
-   checkRecordLogs.Checked    := dmZlogGlobal.Settings.FClusterRecordLogs;
+   checkAutoLogin.Checked     := dmZLogGlobal.Settings.FClusterAutoLogin;
+   checkAutoReconnect.Checked := dmZLogGlobal.Settings.FClusterAutoReconnect;
+   checkRelaySpot.Checked     := dmZLogGlobal.Settings.FClusterRelaySpot;
+   checkNotifyCurrentBand.Checked := dmZLogGlobal.Settings.FClusterNotifyCurrentBand;
+   checkRecordLogs.Checked    := dmZLogGlobal.Settings.FClusterRecordLogs;
+   checkUseAllowDenyLists.Checked := dmZLogGlobal.Settings.FClusterUseAllowDenyLists;
 end;
 
 procedure TCommForm.RenewOptions();
 begin
-   dmZlogGlobal.Settings.FClusterAutoLogin      := checkAutoLogin.Checked;
-   dmZlogGlobal.Settings.FClusterAutoReconnect  := checkAutoReconnect.Checked;
-   dmZlogGlobal.Settings.FClusterRelaySpot      := checkRelaySpot.Checked;
-   dmZlogGlobal.Settings.FClusterNotifyCurrentBand := checkNotifyCurrentBand.Checked;
-   dmZlogGlobal.Settings.FClusterRecordLogs     := checkRecordLogs.Checked;
+   dmZLogGlobal.Settings.FClusterAutoLogin      := checkAutoLogin.Checked;
+   dmZLogGlobal.Settings.FClusterAutoReconnect  := checkAutoReconnect.Checked;
+   dmZLogGlobal.Settings.FClusterRelaySpot      := checkRelaySpot.Checked;
+   dmZLogGlobal.Settings.FClusterNotifyCurrentBand := checkNotifyCurrentBand.Checked;
+   dmZLogGlobal.Settings.FClusterRecordLogs     := checkRecordLogs.Checked;
+   dmZLogGlobal.Settings.FClusterUseAllowDenyLists := checkUseAllowDenyLists.Checked;
 end;
 
 procedure TCommForm.FormCreate(Sender: TObject);
@@ -364,6 +372,14 @@ begin
    FCommStarted := False;
    FCommBuffer := TStringList.Create;
    FCommTemp := '';
+   FAllowList := TStringList.Create();
+   FAllowList.Duplicates := dupIgnore;
+   FAllowList.Sorted := True;
+   FAllowList.CaseSensitive := False;
+   FDenyList := TStringList.Create();
+   FDenyList.Duplicates := dupIgnore;
+   FDenyList.Sorted := True;
+   FDenyList.CaseSensitive := False;
 
    ImplementOptions();
 
@@ -580,6 +596,19 @@ begin
 
             Sp := TSpot.Create;
             if Sp.Analyze(FCommTemp) = True then begin
+
+               // Spotterのチェック
+               if checkUseAllowDenyLists.Checked = True then begin
+                  if (FDenyList.Count > 0) and (FDenyList.IndexOf(Sp.ReportedBy) >= 0) then begin
+                     Sp.Free();
+                     Continue;
+                  end;
+                  if (FAllowList.Count > 0) and (FAllowList.IndexOf(Sp.ReportedBy) = -1) then begin
+                     Sp.Free();
+                     Continue;
+                  end;
+               end;
+
                // データ発生源はCluster
                Sp.SpotSource := ssCluster;
 
@@ -633,6 +662,9 @@ begin
 
    FSpotList.Free();
    FCommBuffer.Free();
+
+   FAllowList.Free();
+   FDenyList.Free();
 end;
 
 procedure TCommForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -667,6 +699,7 @@ begin
          TerminateCommProcessThread();
       end
       else begin
+         LoadAllowDenyList();
          Telnet.Connect;
          ConnectButton.Caption := UComm_Connecting;
          FDisconnectClicked := False;
@@ -728,6 +761,7 @@ begin
       checkRelaySpot.Enabled := False;
       checkNotifyCurrentBand.Enabled := False;
       checkRecordLogs.Enabled := False;
+      checkUseAllowDenyLists.Enabled := False;
 
       ConnectButton.Caption := UComm_Disconnect;
       WriteLineConsole('connected to ' + Telnet.Host);
@@ -755,6 +789,7 @@ begin
    checkRelaySpot.Enabled := True;
    checkNotifyCurrentBand.Enabled := True;
    checkRecordLogs.Enabled := True;
+   checkUseAllowDenyLists.Enabled := True;
    ConnectButton.Caption := UComm_Connect;
 end;
 
@@ -988,6 +1023,24 @@ begin
       FCommProcessThread.WaitFor();
       FCommProcessThread.Free();
       FCommProcessThread := nil;
+   end;
+end;
+
+procedure TCommForm.LoadAllowDenyList();
+var
+   fname: string;
+begin
+   FAllowList.Clear();
+   FDenyList.Clear();
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_allow.txt';
+   if FileExists(fname) then begin
+      FAllowList.LoadFromFile(fname);
+   end;
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_deny.txt';
+   if FileExists(fname) then begin
+      FDenyList.LoadFromFile(fname);
    end;
 end;
 

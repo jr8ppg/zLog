@@ -13,6 +13,9 @@ object formSpotterListDlg: TformSpotterListDlg
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -22,7 +25,7 @@ object formSpotterListDlg: TformSpotterListDlg
     Height = 35
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 0
+    TabOrder = 1
     DesignSize = (
       472
       35)
@@ -36,6 +39,7 @@ object formSpotterListDlg: TformSpotterListDlg
       Default = True
       ModalResult = 1
       TabOrder = 0
+      OnClick = buttonOKClick
     end
     object buttonCancel: TButton
       Left = 239
@@ -56,11 +60,7 @@ object formSpotterListDlg: TformSpotterListDlg
     Height = 288
     Align = alClient
     BevelOuter = bvNone
-    TabOrder = 1
-    ExplicitLeft = 24
-    ExplicitTop = 12
-    ExplicitWidth = 449
-    ExplicitHeight = 305
+    TabOrder = 0
     object Label1: TLabel
       Left = 340
       Top = 8
@@ -88,7 +88,10 @@ object formSpotterListDlg: TformSpotterListDlg
       Width = 120
       Height = 105
       ItemHeight = 13
-      TabOrder = 0
+      Sorted = True
+      TabOrder = 3
+      OnClick = listAllowClick
+      OnDblClick = listAllowDblClick
     end
     object listDeny: TListBox
       Left = 340
@@ -96,7 +99,10 @@ object formSpotterListDlg: TformSpotterListDlg
       Width = 120
       Height = 105
       ItemHeight = 13
-      TabOrder = 1
+      Sorted = True
+      TabOrder = 6
+      OnClick = listDenyClick
+      OnDblClick = listDenyDblClick
     end
     object buttonAddToAllowList: TButton
       Left = 172
@@ -104,7 +110,8 @@ object formSpotterListDlg: TformSpotterListDlg
       Width = 133
       Height = 21
       Caption = #35377#21487#12522#12473#12488#12408#36861#21152
-      TabOrder = 2
+      TabOrder = 1
+      OnClick = buttonAddToAllowListClick
     end
     object buttonRemoveFromAllowList: TButton
       Left = 172
@@ -112,15 +119,20 @@ object formSpotterListDlg: TformSpotterListDlg
       Width = 133
       Height = 21
       Caption = #35377#21487#12522#12473#12488#12363#12425#21066#38500
-      TabOrder = 3
+      TabOrder = 2
+      OnClick = buttonRemoveFromAllowListClick
     end
-    object comboSpoter: TComboBox
+    object comboSpotter: TComboBox
       Left = 12
       Top = 23
       Width = 120
-      Height = 253
+      Height = 259
       Style = csSimple
-      TabOrder = 4
+      CharCase = ecUpperCase
+      Sorted = True
+      TabOrder = 0
+      OnChange = comboSpotterChange
+      OnDblClick = comboSpotterDblClick
     end
     object buttonAddToDenyList: TButton
       Left = 172
@@ -128,7 +140,8 @@ object formSpotterListDlg: TformSpotterListDlg
       Width = 133
       Height = 21
       Caption = #25298#21542#12522#12473#12488#12408#36861#21152
-      TabOrder = 5
+      TabOrder = 4
+      OnClick = buttonAddToDenyListClick
     end
     object buttonRemoveFromDenyList: TButton
       Left = 172
@@ -136,7 +149,8 @@ object formSpotterListDlg: TformSpotterListDlg
       Width = 133
       Height = 21
       Caption = #25298#21542#12522#12473#12488#12363#12425#21066#38500
-      TabOrder = 6
+      TabOrder = 5
+      OnClick = buttonRemoveFromDenyListClick
     end
   end
 end
