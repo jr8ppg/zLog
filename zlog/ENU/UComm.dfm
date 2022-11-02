@@ -29,7 +29,6 @@ object CommForm: TCommForm
     Height = 92
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 109
     object Edit: TEdit
       Left = 8
       Top = 6
@@ -116,7 +115,6 @@ object CommForm: TCommForm
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
-    ExplicitHeight = 109
     object Splitter1: TSplitter
       Left = 1
       Top = 32
@@ -148,7 +146,6 @@ object CommForm: TCommForm
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
-      ExplicitHeight = 15
     end
     object Console: TColorConsole2
       Left = 1
@@ -164,7 +161,6 @@ object CommForm: TCommForm
       Font.Style = []
       Rows = 500
       LineBreak = CR
-      ExplicitTop = 20
     end
   end
   object StatusLine: TStatusBar
@@ -174,7 +170,6 @@ object CommForm: TCommForm
     Height = 23
     Panels = <>
     SimplePanel = True
-    ExplicitTop = 189
   end
   object Timer1: TTimer
     Enabled = False

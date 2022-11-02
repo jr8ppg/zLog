@@ -340,7 +340,9 @@ begin
       end;
 
       for j := 1 to length(str) do begin
-         if (str[j] = Chr($0D)) or (str[j] = Chr($0A)) then begin
+         if str[j] = Chr($0A) then begin
+            FCommTemp := TrimCRLF(FCommTemp);
+
             Sp := TSpot.Create;
             if Sp.Analyze(FCommTemp) = True then begin
                ProcessSpot(Sp);
@@ -349,10 +351,12 @@ begin
                if FClusterUseAllowDenyLists = True then begin
                   if (FDenyList.Count > 0) and (FDenyList.IndexOf(Sp.ReportedBy) >= 0) then begin
                      Sp.Free();
+                     FCommTemp := '';
                      Continue;
                   end;
                   if (FAllowList.Count > 0) and (FAllowList.IndexOf(Sp.ReportedBy) = -1) then begin
                      Sp.Free();
+                     FCommTemp := '';
                      Continue;
                   end;
                end;
@@ -502,7 +506,7 @@ begin
 
       S := (Control as TListBox).Items[Index];
       SP := TSpot(TListBox(Control).Items.Objects[Index]);
-      if SP.NewMulti then begin
+      if SP.IsNewMulti then begin
          if odSelected in State then begin
             Font.Color := clFuchsia;
          end

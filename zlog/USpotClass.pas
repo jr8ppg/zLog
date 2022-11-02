@@ -107,8 +107,10 @@ type
 var
   hLookupServer: HWND;
 
+{$IFNDEF ZLOG_TELNET}
   function ExecLookup(strCallsign: string): string;
   function FindLookupServer(): HWND;
+{$ENDIF}
 
 implementation
 
@@ -575,9 +577,9 @@ begin
    Result := wnd;
 end;
 
-{$ENDIF}
-
 initialization
   hLookupServer := FindLookupServer();
+
+{$ENDIF}
 
 end.

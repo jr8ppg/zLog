@@ -11,8 +11,8 @@ uses
 type
   TBandScope2 = class(TForm)
     BSMenu: TPopupMenu;
-    mnDelete: TMenuItem;
-    Deleteallworkedstations1: TMenuItem;
+    menuDeleteSpot: TMenuItem;
+    menuDeleteAllWorkedStations: TMenuItem;
     Timer1: TTimer;
     Panel1: TPanel;
     Grid: TStringGrid;
@@ -55,9 +55,11 @@ type
     actionPlayCQB3: TAction;
     actionDecreaseCwSpeed: TAction;
     actionIncreaseCwSpeed: TAction;
+    N1: TMenuItem;
+    menuAddToDenyList: TMenuItem;
     procedure CreateParams(var Params: TCreateParams); override;
-    procedure mnDeleteClick(Sender: TObject);
-    procedure Deleteallworkedstations1Click(Sender: TObject);
+    procedure menuDeleteSpotClick(Sender: TObject);
+    procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure GridDblClick(Sender: TObject);
@@ -78,6 +80,7 @@ type
     procedure actionESCExecute(Sender: TObject);
     procedure actionDecreaseCwSpeedExecute(Sender: TObject);
     procedure actionIncreaseCwSpeedExecute(Sender: TObject);
+    procedure menuAddToDenyListClick(Sender: TObject);
   private
     { Private êÈåæ }
     FProcessing: Boolean;
@@ -529,7 +532,22 @@ begin
    end;
 end;
 
-procedure TBandScope2.mnDeleteClick(Sender: TObject);
+procedure TBandScope2.menuAddToDenyListClick(Sender: TObject);
+var
+   i: Integer;
+   D: TBSData;
+begin
+   if Grid.Selection.Top < 0 then begin
+      Exit;
+   end;
+
+   for i := Grid.Selection.Top to Grid.Selection.Bottom do begin
+      D := TBSData(Grid.Objects[0, i]);
+      MainForm.CommForm.DenyList.Add(D.ReportedBy);
+   end;
+end;
+
+procedure TBandScope2.menuDeleteSpotClick(Sender: TObject);
 var
    i, j: Integer;
    s: string;
@@ -589,7 +607,7 @@ begin
    RewriteBandScope;
 end;
 
-procedure TBandScope2.Deleteallworkedstations1Click(Sender: TObject);
+procedure TBandScope2.menuDeleteAllWorkedStationsClick(Sender: TObject);
 var
    D: TBSData;
    i: Integer;

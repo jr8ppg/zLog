@@ -1,4 +1,4 @@
-unit UzLogGlobal;
+﻿unit UzLogGlobal;
 
 interface
 
@@ -11,9 +11,9 @@ type
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
-    { Private �錾 }
+    { Private 宣言 }
 public
-    { Public �錾 }
+    { Public 宣言 }
   end;
 
 function kHzStr(Hz : integer) : string;
@@ -29,6 +29,7 @@ function ZStrToBool(strValue: string): Boolean;
 
 function ZStringToColorDef(str: string; defcolor: TColor): TColor;
 
+function IsDomestic(strCallsign: string): Boolean;
 function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
 
 var
@@ -180,6 +181,57 @@ begin
    end;
 end;
 
+// JA1–JS1, 7J1, 8J1–8N1, 7K1–7N4
+// JA2–JS2, 7J2, 8J2–8N2
+// JA3–JS3, 7J3, 8J3–8N3
+// JA4–JS4, 7J4, 8J4–8N4
+// JA5–JS5, 7J5, 8J5–8N5
+// JA6–JS6, 7J6, 8J6–8N6
+// JA7–JS7, 7J7, 8J7–8N7
+// JA8–JS8, 7J8, 8J8–8N8
+// JA9–JS9, 7J9, 8J9–8N9
+// JA0–JS0, 7J0, 8J0–8N0
+function IsDomestic(strCallsign: string): Boolean;
+var
+   S1: Char;
+   S2: Char;
+   S3: Char;
+begin
+   S1 := strCallsign[1];
+   S2 := strCallsign[2];
+   S3 := strCallsign[3];
+
+   if S1 = 'J' then begin
+      if (S2 >= 'A') and (S2 <= 'S') then begin
+         Result := True;
+         Exit;
+      end;
+   end;
+
+   if (S1 = '7') and (S2 = 'J') then begin
+      Result := True;
+      Exit;
+   end;
+
+   if S1 = '7' then begin
+      if (S2 >= 'K') and (S2 <= 'N') then begin
+         if (S3 >= '1') and (S3 <= '4') then begin
+            Result := True;
+            Exit;
+         end;
+      end;
+   end;
+
+   if S1 = '8' then begin
+      if (S2 >= 'J') and (S2 <= 'N') then begin
+         Result := True;
+         Exit;
+      end;
+   end;
+
+   Result := False;
+end;
+
 function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
 var
    nAvailable: TLargeInteger;
@@ -189,13 +241,13 @@ var
 begin
    nNeedBytes := TLargeInteger(nNeed_MegaByte) * TLargeInteger(1024) * TLargeInteger(1024);
 
-   // �󂫗e�ʎ擾
+   // 空き容量取得
    if GetDiskFreeSpaceEx(PWideChar(strPath), nAvailable, nTotalBytes, @nTotalFreeBytes) = False then begin
       Result := False;
       Exit;
    end;
 
-   // �󂫗̈�͕K�v�Ƃ��Ă���e�ʖ�����
+   // 空き領域は必要としている容量未満か
    if (nTotalFreeBytes < nNeedBytes) then begin
       Result := False;
       Exit;

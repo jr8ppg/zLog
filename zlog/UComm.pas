@@ -93,6 +93,7 @@ type
 
     FCommProcessThread: TCommProcessThread;
 
+    FSpotterList: TStringList;
     FAllowList: TStringList;
     FDenyList: TStringList;
 
@@ -133,6 +134,8 @@ type
 
     property FontSize: Integer read GetFontSize write SetFontSize;
     property SpotList: TSpotList read FSpotList;
+
+    property DenyList: TStringList read FDenyList;
   end;
 
 resourcestring
@@ -372,6 +375,10 @@ begin
    FCommStarted := False;
    FCommBuffer := TStringList.Create;
    FCommTemp := '';
+   FSpotterList := TStringList.Create();
+   FSpotterList.Duplicates := dupIgnore;
+   FSpotterList.Sorted := True;
+   FSpotterList.CaseSensitive := False;
    FAllowList := TStringList.Create();
    FAllowList.Duplicates := dupIgnore;
    FAllowList.Sorted := True;
@@ -589,9 +596,15 @@ begin
       end;
 
       for j := 1 to length(str) do begin
-         if (str[j] = Chr($0D)) or (str[j] = Chr($0A)) then begin
+         if (str[j] = Chr($0A)) then begin
+            FCommTemp := TrimCRLF(FCommTemp);
+
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('FCommTemp = [' + FCommTemp + ']'));
+            {$ENDIF}
+
             if FRelayPacketData then begin
-               MainForm.ZLinkForm.SendPacketData(TrimCRLF(FCommTemp));
+               MainForm.ZLinkForm.SendPacketData(FCommTemp);
             end;
 
             Sp := TSpot.Create;
@@ -600,11 +613,19 @@ begin
                // Spotterのチェック
                if checkUseAllowDenyLists.Checked = True then begin
                   if (FDenyList.Count > 0) and (FDenyList.IndexOf(Sp.ReportedBy) >= 0) then begin
+                     {$IFDEF DEBUG}
+                     OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been rejected by the deny list'));
+                     {$ENDIF}
                      Sp.Free();
+                     FCommTemp := '';
                      Continue;
                   end;
                   if (FAllowList.Count > 0) and (FAllowList.IndexOf(Sp.ReportedBy) = -1) then begin
+                     {$IFDEF DEBUG}
+                     OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] is not on the allow list'));
+                     {$ENDIF}
                      Sp.Free();
+                     FCommTemp := '';
                      Continue;
                   end;
                end;
@@ -616,6 +637,13 @@ begin
 
                if checkRelaySpot.Checked then begin
                   MainForm.ZLinkForm.RelaySpot(FCommTemp);
+               end;
+
+               if FSpotterList.IndexOf(Sp.ReportedBy) = -1 then begin
+                  FSpotterList.Add(Sp.ReportedBy);
+                  {$IFDEF DEBUG}
+                  OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been added to your spotter list'));
+                  {$ENDIF}
                end;
             end
             else begin
@@ -663,6 +691,7 @@ begin
    FSpotList.Free();
    FCommBuffer.Free();
 
+   FSpotterList.Free();
    FAllowList.Free();
    FDenyList.Free();
 end;
@@ -776,6 +805,8 @@ begin
 end;
 
 procedure TCommForm.TelnetSessionClosed(Sender: TTnCnx; Error: Word);
+var
+   fname: string;
 begin
    WriteLineConsole('disconnected...');
 
@@ -791,6 +822,12 @@ begin
    checkRecordLogs.Enabled := True;
    checkUseAllowDenyLists.Enabled := True;
    ConnectButton.Caption := UComm_Connect;
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_list.txt';
+   FSpotterList.SaveToFile(fname);
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_deny.txt';
+   FDenyList.SaveToFile(fname);
 end;
 
 procedure TCommForm.FormShow(Sender: TObject);
@@ -1030,8 +1067,14 @@ procedure TCommForm.LoadAllowDenyList();
 var
    fname: string;
 begin
+   FSpotterList.Clear();
    FAllowList.Clear();
    FDenyList.Clear();
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_list.txt';
+   if FileExists(fname) then begin
+      FSpotterList.LoadFromFile(fname);
+   end;
 
    fname := ExtractFilePath(Application.ExeName) + 'spotter_allow.txt';
    if FileExists(fname) then begin

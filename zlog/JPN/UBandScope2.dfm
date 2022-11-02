@@ -101,13 +101,20 @@ object BandScope2: TBandScope2
     AutoLineReduction = maManual
     Left = 48
     Top = 48
-    object mnDelete: TMenuItem
-      Caption = #21066#38500
-      OnClick = mnDeleteClick
+    object menuDeleteSpot: TMenuItem
+      Caption = #12371#12398#12473#12509#12483#12488#12434#21066#38500
+      OnClick = menuDeleteSpotClick
     end
-    object Deleteallworkedstations1: TMenuItem
-      Caption = #20132#20449#28168#12415#12434#20840#12390#21066#38500
-      OnClick = Deleteallworkedstations1Click
+    object menuDeleteAllWorkedStations: TMenuItem
+      Caption = #20132#20449#28168#12415#12473#12509#12483#12488#12434#20840#12390#21066#38500
+      OnClick = menuDeleteAllWorkedStationsClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object menuAddToDenyList: TMenuItem
+      Caption = #12371#12398#22577#21578#32773#12434#25298#21542#12522#12473#12488#12395#36861#21152
+      OnClick = menuAddToDenyListClick
     end
   end
   object Timer1: TTimer
