@@ -125,7 +125,7 @@ type
     procedure AddSelfSpotFromNetwork(BSText : string);
     procedure AddClusterSpot(Sp: TSpot);
     procedure RewriteBandScope();
-    procedure MarkCurrentFreq(Hz : integer);
+    procedure MarkCurrentFreq(Hz: Int64);
     procedure NotifyWorked(aQSO: TQSO);
     procedure CopyList(F: TBandScope2);
     procedure SetSpotWorked(aQSO: TQSO);
@@ -574,7 +574,7 @@ begin
    RewriteBandScope;
 end;
 
-procedure TBandScope2.MarkCurrentFreq(Hz: Integer);
+procedure TBandScope2.MarkCurrentFreq(Hz: Int64);
 var
    i: Integer;
    B: TBSData;

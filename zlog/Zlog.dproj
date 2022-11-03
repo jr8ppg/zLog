@@ -481,6 +481,10 @@
             <Form>formSpotterListDlg</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UFreqTest.pas">
+            <Form>formFreqTest</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -663,9 +667,9 @@
                     <Resource_DLL_Projects Name="Item1">英語 (米国)*$00000409*ENU*ENU</Resource_DLL_Projects>
                 </Resource_DLL_Projects>
                 <RDP_Source_Files>
-                    <RDP_Source_Files Name="Item0">Win64\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item1">Win32\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item2">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item0">Win32\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item1">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item2">Win64\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item3">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item4">UBasicScore.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item5">UBasicMulti.dfm</RDP_Source_Files>
@@ -770,7 +774,8 @@
                     <RDP_Source_Files Name="Item104">UStatusEdit.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item105">UExportCabrillo.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item106">USpotterListDlg.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item107">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item107">UFreqTest.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item108">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

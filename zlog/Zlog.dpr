@@ -133,7 +133,8 @@ uses
   UStatusEdit in 'UStatusEdit.pas' {formStatusEdit},
   UzLogContest in 'UzLogContest.pas',
   UExportCabrillo in 'UExportCabrillo.pas' {formExportCabrillo},
-  USpotterListDlg in 'USpotterListDlg.pas' {formSpotterListDlg};
+  USpotterListDlg in 'USpotterListDlg.pas' {formSpotterListDlg},
+  UFreqTest in 'UFreqTest.pas' {formFreqTest};
 
 {$R *.RES}
 

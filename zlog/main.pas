@@ -30,7 +30,7 @@ uses
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
-  UWinKeyerTester, UStatusEdit, UzLogContest,
+  UWinKeyerTester, UStatusEdit, UzLogContest, UFreqTest,
   JvExControls, JvLED;
 
 const
@@ -791,6 +791,7 @@ type
     FInformation: TformInformation;
     FTTYConsole: TTTYConsole;
     FWinKeyerTester: TformWinKeyerTester;
+    FFreqTest: TformFreqTest;
 
     FInitialized: Boolean;
 
@@ -1026,7 +1027,7 @@ type
     procedure HighlightCallsign(fHighlight: Boolean);
     procedure BandScopeNotifyWorked(aQSO: TQSO);
     procedure SetYourCallsign(strCallsign, strNumber: string);
-    procedure SetFrequency(freq: Integer);
+    procedure SetFrequency(freq: Int64);
     procedure BSRefresh();
     procedure BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
@@ -1953,6 +1954,7 @@ begin
    FInformation   := TformInformation.Create(Self);
    FTTYConsole    := nil;
    FWinKeyerTester := TformWinKeyerTester.Create(Self);
+   FFreqTest      := TformFreqTest.Create(Self);
 
    FCurrentCQMessageNo := 101;
    FCQLoopRunning := False;
@@ -2230,6 +2232,7 @@ begin
    dmZlogGlobal.ReadWindowState(FInformation);
    dmZlogGlobal.ReadWindowState(FZLinkForm);
    dmZlogGlobal.ReadWindowState(FWinKeyerTester);
+   dmZlogGlobal.ReadWindowState(FFreqTest);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZlogGlobal.ReadWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
@@ -2270,6 +2273,7 @@ begin
    dmZlogGlobal.WriteWindowState(FInformation);
    dmZlogGlobal.WriteWindowState(FZLinkForm);
    dmZlogGlobal.WriteWindowState(FWinKeyerTester);
+   dmZlogGlobal.WriteWindowState(FFreqTest);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       dmZLogGlobal.WriteWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
@@ -2739,6 +2743,10 @@ begin
 
    if S = 'WKTEST' then begin
       FWinKeyerTester.Show();
+   end;
+
+   if S = 'FREQTEST' then begin
+      FFreqTest.Show();
    end;
 
    if S = 'WAIT' then begin
@@ -3982,6 +3990,7 @@ begin
    FSo2rNeoCp.Release();
    FInformation.Release();
    FWinKeyerTester.Release();
+   FFreqTest.Release();
 
    if Assigned(FTTYConsole) then begin
       FTTYConsole.Release();
@@ -8932,7 +8941,7 @@ begin
 end;
 
 // Cluster or BandScope‚©‚çŒÄ‚Î‚ê‚é
-procedure TMainForm.SetFrequency(freq: Integer);
+procedure TMainForm.SetFrequency(freq: Int64);
 var
    b: TBand;
    Q: TQSO;
