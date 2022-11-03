@@ -639,7 +639,8 @@ begin
                   MainForm.ZLinkForm.RelaySpot(FCommTemp);
                end;
 
-               if FSpotterList.IndexOf(Sp.ReportedBy) = -1 then begin
+               // SpotterƒŠƒXƒg‚É“o˜^
+               if (Sp.ReportedBy <> '') and (FSpotterList.IndexOf(Sp.ReportedBy) = -1) then begin
                   FSpotterList.Add(Sp.ReportedBy);
                   {$IFDEF DEBUG}
                   OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been added to your spotter list'));

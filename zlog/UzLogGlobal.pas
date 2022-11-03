@@ -2671,9 +2671,9 @@ begin
    k := Hz div 1000;
    kk := Hz mod 1000;
    kk := kk div 100;
-   if k > 100000 then
-      Result := IntToStr(k)
-   else
+//   if k > 100000 then
+//      Result := IntToStr(k)
+//   else
       Result := IntToStr(k) + '.' + IntToStr(kk);
 end;
 

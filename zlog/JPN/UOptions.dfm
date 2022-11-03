@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetNetwork
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -2297,7 +2297,7 @@ object formOptions: TformOptions
           Width = 73
           Height = 21
           Style = csDropDownList
-          TabOrder = 2
+          TabOrder = 3
           OnChange = ZLinkComboChange
           Items.Strings = (
             'None'
@@ -2309,7 +2309,7 @@ object formOptions: TformOptions
           Width = 102
           Height = 21
           Caption = 'TELNET'#35373#23450
-          TabOrder = 5
+          TabOrder = 6
           OnClick = buttonZLinkSettingsClick
         end
         object editZLinkPcName: TEdit
@@ -2317,7 +2317,7 @@ object formOptions: TformOptions
           Top = 84
           Width = 101
           Height = 21
-          TabOrder = 3
+          TabOrder = 4
         end
         object checkZLinkSyncSerial: TCheckBox
           Left = 210
@@ -2325,7 +2325,7 @@ object formOptions: TformOptions
           Width = 150
           Height = 17
           Caption = #12471#12522#12450#12523#12490#12531#12496#12540#21516#26399
-          TabOrder = 4
+          TabOrder = 5
           OnClick = PTTEnabledCheckBoxClick
         end
         object buttonSpotterList: TButton
@@ -2333,8 +2333,8 @@ object formOptions: TformOptions
           Top = 28
           Width = 102
           Height = 21
-          Caption = #35377#21487'/'#31105#27490#12522#12473#12488
-          TabOrder = 6
+          Caption = #35377#21487'/'#25298#21542#12522#12473#12488
+          TabOrder = 2
           OnClick = buttonSpotterListClick
         end
       end
@@ -4386,7 +4386,7 @@ object formOptions: TformOptions
           Width = 190
           Height = 17
           Caption = #21608#27874#25968#12424#12426#25512#23450#12375#12383#12514#12540#12489#12434#20351#12358
-          TabOrder = 2
+          TabOrder = 3
           OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
@@ -4399,7 +4399,7 @@ object formOptions: TformOptions
         end
         object checkShowOnlyDomestic: TCheckBox
           Left = 12
-          Top = 39
+          Top = 40
           Width = 165
           Height = 17
           Caption = #22269#20869#12473#12509#12483#12488#12398#12415#34920#31034
@@ -4407,11 +4407,11 @@ object formOptions: TformOptions
         end
         object checkUseLookupServer: TCheckBox
           Left = 12
-          Top = 61
+          Top = 63
           Width = 165
           Height = 17
           Caption = 'Lookup Server'#12434#20351#29992
-          TabOrder = 3
+          TabOrder = 2
         end
         object checkSetFreqAfterModeChange: TCheckBox
           Left = 225
@@ -4842,13 +4842,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@Terminal'
+          FontName = '@DFKai-SB'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 30
+          ItemIndex = 1
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
