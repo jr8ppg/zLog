@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5685416667</prop>
-        <prop prop-type="OrigDateTime">44800.8836574074</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">350</prop>
+        <prop prop-type="SelfDateTime">44868.627662037</prop>
+        <prop prop-type="OrigDateTime">44863.9217824074</prop>
+        <prop prop-type="XlatDateTime">44853.9703472222</prop>
+        <prop prop-type="Translated">11</prop>
+        <prop prop-type="UnTranslated">339</prop>
       </prop-group>
     </header>
     <body>
@@ -64,14 +64,19 @@
         <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TRateDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialog.Font.Height" resname="O:RateDialog.Font.Height">
-        <source>-11</source>
+        <source>-12</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TRateDialog</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
+      <alt-trans>  <source>-11</source>
+          <target>-12</target>
+          <prop-group name="ITEFieldProp">
+          <prop prop-type="Modified">44868.2526625116</prop></prop-group>
+        </alt-trans></trans-unit>
       <trans-unit id="O:RateDialog.Font.Name" resname="O:RateDialog.Font.Name">
         <source>'MS Sans Serif'</source>
+        <target>'ＭＳ Ｐゴシック'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TRateDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">1</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TRateDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialog.Font.Style" resname="O:RateDialog.Font.Style">
         <source>[]</source>
@@ -365,8 +370,9 @@
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Label4.Top" resname="O:RateDialog.O:Panel2.O:Label4.Top">
         <source>8</source>
+        <target>9</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">1</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Label4.Width" resname="O:RateDialog.O:Panel2.O:Label4.Width">
         <source>26</source>
@@ -385,8 +391,9 @@
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Label4.Caption" resname="O:RateDialog.O:Panel2.O:Label4.Caption">
         <source>'hours'</source>
+        <target>'時間'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">1</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Label3.Left" resname="O:RateDialog.O:Panel2.O:Label3.Left">
         <source>159</source>
@@ -395,8 +402,9 @@
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Label3.Top" resname="O:RateDialog.O:Panel2.O:Label3.Top">
         <source>8</source>
+        <target>9</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">1</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Label3.Width" resname="O:RateDialog.O:Panel2.O:Label3.Width">
         <source>46</source>
@@ -415,8 +423,9 @@
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Label3.Caption" resname="O:RateDialog.O:Panel2.O:Label3.Caption">
         <source>'Show last'</source>
+        <target>'最後から'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">1</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:ShowLastCombo.Left" resname="O:RateDialog.O:Panel2.O:ShowLastCombo.Left">
         <source>209</source>
@@ -595,8 +604,9 @@
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginCurrentTime.Width" resname="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginCurrentTime.Width">
         <source>54</source>
+        <target>40</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">1</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginCurrentTime.Height" resname="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginCurrentTime.Height">
         <source>17</source>
@@ -605,8 +615,9 @@
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginCurrentTime.Caption" resname="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginCurrentTime.Caption">
         <source>'Current'</source>
+        <target>'現在'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">1</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginCurrentTime.Checked" resname="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginCurrentTime.Checked">
         <source>True</source>
@@ -630,8 +641,9 @@
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginLastQSO.Left" resname="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginLastQSO.Left">
         <source>112</source>
+        <target>96</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">1</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginLastQSO.Top" resname="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginLastQSO.Top">
         <source>6</source>
@@ -650,8 +662,9 @@
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginLastQSO.Caption" resname="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginLastQSO.Caption">
         <source>'Last'</source>
+        <target>'最後'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">1</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginLastQSO.TabOrder" resname="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginLastQSO.TabOrder">
         <source>2</source>
@@ -675,8 +688,9 @@
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginFirstQSO.Width" resname="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginFirstQSO.Width">
         <source>39</source>
+        <target>40</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">1</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginFirstQSO.Height" resname="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginFirstQSO.Height">
         <source>17</source>
@@ -685,8 +699,9 @@
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginFirstQSO.Caption" resname="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginFirstQSO.Caption">
         <source>'First'</source>
+        <target>'最初'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928947222</prop><prop prop-type="Status">1</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginFirstQSO.TabOrder" resname="O:RateDialog.O:Panel2.O:Panel3.O:radioOriginFirstQSO.TabOrder">
         <source>0</source>

@@ -5,9 +5,9 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5692361111</prop>
-        <prop prop-type="OrigDateTime">44800.8836574074</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
+        <prop prop-type="SelfDateTime">44868.6281481481</prop>
+        <prop prop-type="OrigDateTime">44863.951875</prop>
+        <prop prop-type="XlatDateTime">44853.9703472222</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">411</prop>
       </prop-group>
@@ -24,10 +24,14 @@
         <prop prop-type="Created">44796.8935098611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TRateDialogEx</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.ActiveControl" resname="O:RateDialogEx.ActiveControl">
-        <source>ScoreGrid</source>
+        <source>ShowLastCombo</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8935098611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TRateDialogEx</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
+      <alt-trans>  <source>ScoreGrid</source>
+          <target>ShowLastCombo</target>
+          <prop-group name="ITEFieldProp">
+          <prop prop-type="Modified">44868.2531709259</prop></prop-group>
+        </alt-trans></trans-unit>
       <trans-unit id="O:RateDialogEx.Caption" resname="O:RateDialogEx.Caption">
         <source>'QSO Rate Ex'</source>
         <prop-group name="ITEFieldProp">
@@ -69,10 +73,14 @@
         <prop prop-type="Created">44796.8935098611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TRateDialogEx</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.Font.Height" resname="O:RateDialogEx.Font.Height">
-        <source>-11</source>
+        <source>-12</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8935098611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TRateDialogEx</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
+      <alt-trans>  <source>-11</source>
+          <target>-12</target>
+          <prop-group name="ITEFieldProp">
+          <prop prop-type="Modified">44868.2531709259</prop></prop-group>
+        </alt-trans></trans-unit>
       <trans-unit id="O:RateDialogEx.Font.Name" resname="O:RateDialogEx.Font.Name">
         <source>'MS Sans Serif'</source>
         <prop-group name="ITEFieldProp">
@@ -339,10 +347,14 @@
         <prop prop-type="Created">44796.8935098611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TPageControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:PageControl1.ActivePage" resname="O:RateDialogEx.O:PageControl1.ActivePage">
-        <source>TabSheet2</source>
+        <source>TabSheet1</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8935098611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TPageControl</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
+      <alt-trans>  <source>TabSheet2</source>
+          <target>TabSheet1</target>
+          <prop-group name="ITEFieldProp">
+          <prop prop-type="Modified">44868.2531709375</prop></prop-group>
+        </alt-trans></trans-unit>
       <trans-unit id="O:RateDialogEx.O:PageControl1.Align" resname="O:RateDialogEx.O:PageControl1.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">

@@ -1733,7 +1733,7 @@ object formOptions: TformOptions
           Top = 13
           Width = 39
           Height = 13
-          Caption = 'CW port'
+          Caption = #12461#12540#12452#12531#12464
         end
         object comboRig3Keying: TComboBox
           Tag = 3
@@ -1781,28 +1781,28 @@ object formOptions: TformOptions
           Top = 13
           Width = 16
           Height = 13
-          Caption = 'Rig'
+          Caption = #12522#12464
         end
         object Label121: TLabel
           Left = 15
           Top = 13
           Width = 54
           Height = 13
-          Caption = 'Control port'
+          Caption = #12522#12464#21046#24481
         end
         object Label122: TLabel
           Left = 88
           Top = 13
           Width = 31
           Height = 13
-          Caption = 'Speed'
+          Caption = #36890#20449#36895#24230
         end
         object Label123: TLabel
           Left = 282
           Top = 13
           Width = 39
           Height = 13
-          Caption = 'CW port'
+          Caption = #12461#12540#12452#12531#12464
         end
         object checkRig1BXvt: TCheckBox
           Tag = 102
@@ -1922,28 +1922,28 @@ object formOptions: TformOptions
           Top = 13
           Width = 16
           Height = 13
-          Caption = 'Rig'
+          Caption = #12522#12464
         end
         object Label92: TLabel
           Left = 15
           Top = 13
           Width = 54
           Height = 13
-          Caption = 'Control port'
+          Caption = #12522#12464#21046#24481
         end
         object Label93: TLabel
           Left = 88
           Top = 13
           Width = 31
           Height = 13
-          Caption = 'Speed'
+          Caption = #36890#20449#36895#24230
         end
         object Label94: TLabel
           Left = 282
           Top = 13
           Width = 39
           Height = 13
-          Caption = 'CW port'
+          Caption = #12461#12540#12452#12531#12464
         end
         object comboRig1AName: TComboBox
           Left = 152
@@ -2063,28 +2063,28 @@ object formOptions: TformOptions
           Top = 13
           Width = 16
           Height = 13
-          Caption = 'Rig'
+          Caption = #12522#12464
         end
         object Label125: TLabel
           Left = 15
           Top = 13
           Width = 54
           Height = 13
-          Caption = 'Control port'
+          Caption = #12522#12464#21046#24481
         end
         object Label126: TLabel
           Left = 88
           Top = 13
           Width = 31
           Height = 13
-          Caption = 'Speed'
+          Caption = #36890#20449#36895#24230
         end
         object Label127: TLabel
           Left = 282
           Top = 13
           Width = 39
           Height = 13
-          Caption = 'CW port'
+          Caption = #12461#12540#12452#12531#12464
         end
         object checkRig2BXvt: TCheckBox
           Tag = 104
@@ -2204,28 +2204,28 @@ object formOptions: TformOptions
           Top = 13
           Width = 16
           Height = 13
-          Caption = 'Rig'
+          Caption = #12522#12464
         end
         object Label96: TLabel
           Left = 15
           Top = 13
           Width = 54
           Height = 13
-          Caption = 'Control port'
+          Caption = #12522#12464#21046#24481
         end
         object Label97: TLabel
           Left = 88
           Top = 13
           Width = 31
           Height = 13
-          Caption = 'Speed'
+          Caption = #36890#20449#36895#24230
         end
         object Label98: TLabel
           Left = 282
           Top = 13
           Width = 39
           Height = 13
-          Caption = 'CW port'
+          Caption = #12461#12540#12452#12531#12464
         end
         object checkRig2AXvt: TCheckBox
           Tag = 103
@@ -2335,7 +2335,7 @@ object formOptions: TformOptions
       end
     end
     object tabsheetHardware2: TTabSheet
-      Caption = 'Hardware2'
+      Caption = #12495#12540#12489#12454#12455#12450'2'
       ImageIndex = 15
       object groupRigSetA: TGroupBox
         Left = 6
@@ -3627,7 +3627,7 @@ object formOptions: TformOptions
       end
     end
     object tabsheetHardware3: TTabSheet
-      Caption = 'Hardware3'
+      Caption = #12495#12540#12489#12454#12455#12450'3'
       ImageIndex = 14
       object groupOptCI_V: TGroupBox
         Left = 6
@@ -3774,7 +3774,7 @@ object formOptions: TformOptions
           Top = 18
           Width = 89
           Height = 17
-          Caption = 'Use WinKeyer'
+          Caption = 'WinKeyer'#12434#20351#12358
           TabOrder = 0
           OnClick = checkUseWinKeyerClick
         end
@@ -3791,7 +3791,7 @@ object formOptions: TformOptions
           Top = 18
           Width = 112
           Height = 17
-          Caption = 'Use Out port Select'
+          Caption = #20986#21147#20808#36984#25246#12377#12427
           TabOrder = 2
         end
         object checkWkIgnoreSpeedPot: TCheckBox
@@ -3799,13 +3799,13 @@ object formOptions: TformOptions
           Top = 18
           Width = 105
           Height = 17
-          Caption = 'Ignore Speed Pot'
+          Caption = 'Speed Pot'#28961#35222
           TabOrder = 3
         end
       end
     end
     object tabsheetNetwork: TTabSheet
-      Caption = 'Hardware4'
+      Caption = #12495#12540#12489#12454#12455#12450'4'
       ImageIndex = 12
       object groupNetwork: TGroupBox
         Left = 6
@@ -3866,7 +3866,6 @@ object formOptions: TformOptions
           Width = 102
           Height = 21
           Caption = 'COM'#12509#12540#12488#35373#23450
-          Default = True
           TabOrder = 1
           OnClick = buttonClusterSettingsClick
         end
@@ -3876,7 +3875,7 @@ object formOptions: TformOptions
           Width = 73
           Height = 21
           Style = csDropDownList
-          TabOrder = 2
+          TabOrder = 3
           OnChange = ZLinkComboChange
           Items.Strings = (
             'None'
@@ -3888,8 +3887,7 @@ object formOptions: TformOptions
           Width = 102
           Height = 21
           Caption = 'TELNET'#35373#23450
-          Default = True
-          TabOrder = 5
+          TabOrder = 6
           OnClick = buttonZLinkSettingsClick
         end
         object editZLinkPcName: TEdit
@@ -3897,7 +3895,7 @@ object formOptions: TformOptions
           Top = 84
           Width = 101
           Height = 21
-          TabOrder = 3
+          TabOrder = 4
         end
         object checkZLinkSyncSerial: TCheckBox
           Left = 210
@@ -3905,8 +3903,17 @@ object formOptions: TformOptions
           Width = 150
           Height = 17
           Caption = #12471#12522#12450#12523#12490#12531#12496#12540#21516#26399
-          TabOrder = 4
+          TabOrder = 5
           OnClick = PTTEnabledCheckBoxClick
+        end
+        object buttonSpotterList: TButton
+          Left = 290
+          Top = 28
+          Width = 102
+          Height = 21
+          Caption = #35377#21487'/'#25298#21542#12522#12473#12488
+          TabOrder = 2
+          OnClick = buttonSpotterListClick
         end
       end
       object groupSo2rSupport: TGroupBox
@@ -5616,36 +5623,53 @@ object formOptions: TformOptions
         Caption = #12496#12531#12489#12473#12467#12540#12503#12458#12503#12471#12519#12531
         TabOrder = 2
         object checkUseEstimatedMode: TCheckBox
-          Left = 12
-          Top = 18
+          Left = 205
+          Top = 17
           Width = 180
           Height = 17
           Caption = #21608#27874#25968#12424#12426#25512#23450#12375#12383#12514#12540#12489#12434#20351#12358
-          TabOrder = 0
+          TabOrder = 3
+          OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
           Left = 12
-          Top = 40
+          Top = 17
           Width = 190
           Height = 17
           Caption = #12496#12531#12489#12503#12521#12531#20869#12398#12473#12509#12483#12488#12398#12415#34920#31034
-          TabOrder = 1
+          TabOrder = 0
         end
         object checkShowOnlyDomestic: TCheckBox
           Left = 12
-          Top = 62
-          Width = 145
+          Top = 40
+          Width = 165
           Height = 17
           Caption = #22269#20869#12473#12509#12483#12488#12398#12415#34920#31034
-          TabOrder = 2
+          TabOrder = 1
         end
         object checkUseLookupServer: TCheckBox
           Left = 12
-          Top = 84
-          Width = 150
+          Top = 63
+          Width = 165
           Height = 17
-          Caption = 'Lookup Server'#12434#20351#29992#12377#12427
-          TabOrder = 3
+          Caption = 'Lookup Server'#12434#20351#29992
+          TabOrder = 2
+        end
+        object checkSetFreqAfterModeChange: TCheckBox
+          Left = 216
+          Top = 63
+          Width = 157
+          Height = 17
+          Caption = #21608#27874#25968#12378#12428#12434#25233#21046
+          TabOrder = 5
+        end
+        object checkAlwaysChangeMode: TCheckBox
+          Left = 216
+          Top = 40
+          Width = 176
+          Height = 17
+          Caption = 'LSB/USB'#12514#12540#12489#35492#12426#12434#25233#21046
+          TabOrder = 4
         end
       end
     end
@@ -6060,13 +6084,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Courier New Greek'
+          FontName = '@DFKai-SB'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 39
+          ItemIndex = 1
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

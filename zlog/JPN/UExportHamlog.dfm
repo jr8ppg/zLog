@@ -9,7 +9,7 @@ object formExportHamlog: TformExportHamlog
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = #65325#65331#12288#65328#12468#12471#12483#12463
+  Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
@@ -22,21 +22,21 @@ object formExportHamlog: TformExportHamlog
     Width = 372
     Height = 485
     Align = alClient
-    Caption = 'HAMLOG'#29992#20986#21147#35373#23450
+    Caption = 'Output settings for HAMLOG'
     TabOrder = 0
     object groupRemarks1: TGroupBox
       Left = 12
       Top = 24
       Width = 349
       Height = 130
-      Caption = 'Remarks1'#12398#20986#21147#20869#23481
+      Caption = 'Output for Remarks1'
       TabOrder = 0
       object radioRemarks1Opt1: TRadioButton
         Left = 25
         Top = 49
         Width = 60
         Height = 13
-        Caption = #20837#21147
+        Caption = 'Input'
         TabOrder = 1
         OnClick = radioRemarks1Opt1Click
       end
@@ -63,7 +63,7 @@ object formExportHamlog: TformExportHamlog
         Top = 23
         Width = 92
         Height = 13
-        Caption = #20309#12418#20986#12373#12394#12356
+        Caption = 'Nothing'
         TabOrder = 0
         OnClick = radioRemarks1Opt3Click
       end
@@ -80,14 +80,14 @@ object formExportHamlog: TformExportHamlog
       Top = 163
       Width = 349
       Height = 130
-      Caption = 'Remarks2'#12398#20986#21147#20869#23481
+      Caption = 'Output for Remarks2'
       TabOrder = 1
       object radioRemarks2Opt1: TRadioButton
         Left = 25
         Top = 49
         Width = 56
         Height = 13
-        Caption = #20837#21147
+        Caption = 'Input'
         TabOrder = 1
         OnClick = radioRemarks2Opt1Click
       end
@@ -114,7 +114,7 @@ object formExportHamlog: TformExportHamlog
         Top = 23
         Width = 92
         Height = 13
-        Caption = #20309#12418#20986#12373#12394#12356
+        Caption = 'Nothing'
         TabOrder = 0
         OnClick = radioRemarks2Opt3Click
       end
@@ -131,7 +131,7 @@ object formExportHamlog: TformExportHamlog
       Top = 381
       Width = 170
       Height = 96
-      Caption = 'QSL'#12510#12540#12463#12398#20986#21147#20869#23481
+      Caption = 'Output for Mark of QSL'
       TabOrder = 4
       object Label1: TLabel
         Left = 25
@@ -145,7 +145,7 @@ object formExportHamlog: TformExportHamlog
         Top = 23
         Width = 26
         Height = 13
-        Caption = #35373#23450#28961#12375'(None)'
+        Caption = 'None'
       end
       object Label3: TLabel
         Left = 25
@@ -186,14 +186,14 @@ object formExportHamlog: TformExportHamlog
       Top = 302
       Width = 170
       Height = 71
-      Caption = #30456#25163#23616#12398#36939#29992#22320#12467#12540#12489
+      Caption = 'Operation Place of UR'
       TabOrder = 2
       object radioCodeOpt0: TRadioButton
         Left = 25
         Top = 23
         Width = 92
         Height = 13
-        Caption = #20309#12418#20986#12373#12394#12356
+        Caption = 'Nothing'
         Checked = True
         TabOrder = 0
         TabStop = True
@@ -204,7 +204,7 @@ object formExportHamlog: TformExportHamlog
         Top = 48
         Width = 92
         Height = 13
-        Caption = #21463#20449#12490#12531#12496#12540
+        Caption = 'Received NR'
         TabOrder = 1
         OnClick = radioRemarks1Opt3Click
       end
@@ -214,14 +214,14 @@ object formExportHamlog: TformExportHamlog
       Top = 302
       Width = 170
       Height = 71
-      Caption = #30456#25163#23616#12398#21517#21069#12539#21517#31216
+      Caption = 'Name of UR'
       TabOrder = 3
       object radioNameOpt0: TRadioButton
         Left = 25
         Top = 23
         Width = 92
         Height = 13
-        Caption = #20309#12418#20986#12373#12394#12356
+        Caption = 'Nothing'
         Checked = True
         TabOrder = 0
         TabStop = True
@@ -232,7 +232,7 @@ object formExportHamlog: TformExportHamlog
         Top = 48
         Width = 92
         Height = 13
-        Caption = #21463#20449#12490#12531#12496#12540
+        Caption = 'Received NR'
         TabOrder = 1
         OnClick = radioRemarks1Opt3Click
       end
@@ -242,14 +242,14 @@ object formExportHamlog: TformExportHamlog
       Top = 381
       Width = 170
       Height = 96
-      Caption = #20132#20449#26178#20998#12398#20986#21147#20869#23481
+      Caption = 'Output for QSO time'
       TabOrder = 5
       object radioTimeOpt0: TRadioButton
         Left = 25
         Top = 23
         Width = 92
         Height = 13
-        Caption = #12381#12398#12414#12414
+        Caption = 'Don'#39't care'
         Checked = True
         TabOrder = 0
         TabStop = True
@@ -260,7 +260,7 @@ object formExportHamlog: TformExportHamlog
         Top = 46
         Width = 92
         Height = 13
-        Caption = 'JST'#12395#32113#19968
+        Caption = 'Change to JST'
         TabOrder = 1
         OnClick = radioRemarks1Opt3Click
       end
@@ -269,7 +269,7 @@ object formExportHamlog: TformExportHamlog
         Top = 69
         Width = 92
         Height = 13
-        Caption = 'UTC'#12395#32113#19968
+        Caption = 'Change to UTC'
         TabOrder = 2
         OnClick = radioRemarks1Opt3Click
       end

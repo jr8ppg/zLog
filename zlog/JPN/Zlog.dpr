@@ -82,6 +82,7 @@ library Zlog;
 {ITE} {DFMFileType} {USixDownMulti.dfm}
 {ITE} {DFMFileType} {USo2rNeoCp.dfm}
 {ITE} {DFMFileType} {USpotForm.dfm}
+{ITE} {DFMFileType} {USpotterListDlg.dfm}
 {ITE} {DFMFileType} {UStatusEdit.dfm}
 {ITE} {DFMFileType} {USummaryInfo.dfm}
 {ITE} {DFMFileType} {USuperCheck.dfm}
@@ -187,6 +188,7 @@ library Zlog;
 {$R 'USixDownMulti.dfm' 'SixDownMulti:TForm(FDMulti)'}
 {$R 'USo2rNeoCp.dfm' 'formSo2rNeoCp:TForm'}
 {$R 'USpotForm.dfm' 'SpotForm:TForm'}
+{$R 'USpotterListDlg.dfm' 'formSpotterListDlg:TForm'}
 {$R 'UStatusEdit.dfm' 'formStatusEdit:TForm'}
 {$R 'USummaryInfo.dfm' 'SummaryInfo:TForm'}
 {$R 'USuperCheck.dfm' 'SuperCheck:TForm'}

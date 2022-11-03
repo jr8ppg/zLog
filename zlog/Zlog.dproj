@@ -474,15 +474,19 @@
         <DCCReference Include="UQsoEdit.pas"/>
         <DCCReference Include="USo2rNeoCp.pas">
             <Form>formSo2rNeoCp</Form>
+            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UInformation.pas">
             <Form>formInformation</Form>
+            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UWinKeyerTester.pas">
             <Form>formWinkeyerTester</Form>
+            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UStatusEdit.pas">
             <Form>formStatusEdit</Form>
+            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzLogContest.pas"/>
         <DCCReference Include="UMessageManager.pas">
@@ -490,6 +494,11 @@
         </DCCReference>
         <DCCReference Include="UExportCabrillo.pas">
             <Form>formExportCabrillo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="USpotterListDlg.pas">
+            <Form>formSpotterListDlg</Form>
+            <FormType>dfm</FormType>
         </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
@@ -779,7 +788,8 @@
                     <RDP_Source_Files Name="Item103">UStatusEdit.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item104">UMessageManager.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item105">UExportCabrillo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item106">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item106">USpotterListDlg.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item107">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

@@ -2,7 +2,7 @@ object CommForm: TCommForm
   Left = 117
   Top = 174
   Caption = 'Cluster'
-  ClientHeight = 212
+  ClientHeight = 240
   ClientWidth = 354
   Color = clBtnFace
   Constraints.MinHeight = 250
@@ -24,9 +24,9 @@ object CommForm: TCommForm
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 109
+    Top = 125
     Width = 354
-    Height = 80
+    Height = 92
     Align = alBottom
     TabOrder = 0
     object Edit: TEdit
@@ -98,18 +98,26 @@ object CommForm: TCommForm
       Caption = #21463#20449#12525#12464#12434#20445#23384
       TabOrder = 6
     end
+    object checkUseAllowDenyLists: TCheckBox
+      Left = 176
+      Top = 74
+      Width = 153
+      Height = 17
+      Caption = #35377#21487'/'#25298#21542#12522#12473#12488#12434#20351#29992
+      TabOrder = 7
+    end
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
     Width = 354
-    Height = 109
+    Height = 125
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
     object Splitter1: TSplitter
       Left = 1
-      Top = 16
+      Top = 32
       Width = 352
       Height = 4
       Cursor = crVSplit
@@ -122,7 +130,7 @@ object CommForm: TCommForm
       Left = 1
       Top = 1
       Width = 352
-      Height = 15
+      Height = 31
       Style = lbOwnerDrawVariable
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -141,7 +149,7 @@ object CommForm: TCommForm
     end
     object Console: TColorConsole2
       Left = 1
-      Top = 20
+      Top = 36
       Width = 352
       Height = 88
       Align = alBottom
@@ -157,7 +165,7 @@ object CommForm: TCommForm
   end
   object StatusLine: TStatusBar
     Left = 0
-    Top = 189
+    Top = 217
     Width = 354
     Height = 23
     Panels = <>

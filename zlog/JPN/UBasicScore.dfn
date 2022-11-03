@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5680555556</prop>
+        <prop prop-type="SelfDateTime">44868.6271990741</prop>
         <prop prop-type="OrigDateTime">44800.8836574074</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">72</prop>
+        <prop prop-type="XlatDateTime">44853.9703472222</prop>
+        <prop prop-type="Translated">4</prop>
+        <prop prop-type="UnTranslated">68</prop>
       </prop-group>
     </header>
     <body>
@@ -260,8 +260,9 @@
       </trans-unit>
       <trans-unit id="O:BasicScore.O:Panel1.O:StayOnTop.Caption" resname="O:BasicScore.O:Panel1.O:StayOnTop.Caption">
         <source>'Stay on top'</source>
+        <target>'手前に表示'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925144097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925144097</prop><prop prop-type="Status">1</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BasicScore.O:Panel1.O:StayOnTop.TabOrder" resname="O:BasicScore.O:Panel1.O:StayOnTop.TabOrder">
         <source>1</source>
@@ -300,8 +301,9 @@
       </trans-unit>
       <trans-unit id="O:BasicScore.O:popupExtraInfo.O:menuMultiRate.Caption" resname="O:BasicScore.O:popupExtraInfo.O:menuMultiRate.Caption">
         <source>'Multi/QSO %(Rate)'</source>
+        <target>'マルチ/交信 %(率)'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925144097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925144097</prop><prop prop-type="Status">1</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BasicScore.O:popupExtraInfo.O:menuMultiRate.Checked" resname="O:BasicScore.O:popupExtraInfo.O:menuMultiRate.Checked">
         <source>True</source>
@@ -330,8 +332,9 @@
       </trans-unit>
       <trans-unit id="O:BasicScore.O:popupExtraInfo.O:menuPtsPerMulti.Caption" resname="O:BasicScore.O:popupExtraInfo.O:menuPtsPerMulti.Caption">
         <source>'Points/Multi'</source>
+        <target>'得点/マルチ'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925144097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925144097</prop><prop prop-type="Status">1</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BasicScore.O:popupExtraInfo.O:menuPtsPerMulti.GroupIndex" resname="O:BasicScore.O:popupExtraInfo.O:menuPtsPerMulti.GroupIndex">
         <source>1</source>
@@ -355,8 +358,9 @@
       </trans-unit>
       <trans-unit id="O:BasicScore.O:popupExtraInfo.O:menuPtsPerQSO.Caption" resname="O:BasicScore.O:popupExtraInfo.O:menuPtsPerQSO.Caption">
         <source>'Points/QSO(AVG)'</source>
+        <target>'得点/交信(平均)'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925144097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925144097</prop><prop prop-type="Status">1</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BasicScore.O:popupExtraInfo.O:menuPtsPerQSO.GroupIndex" resname="O:BasicScore.O:popupExtraInfo.O:menuPtsPerQSO.GroupIndex">
         <source>1</source>

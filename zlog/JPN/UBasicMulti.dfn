@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5680555556</prop>
+        <prop prop-type="SelfDateTime">44868.6271990741</prop>
         <prop prop-type="OrigDateTime">44800.8836574074</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">18</prop>
+        <prop prop-type="XlatDateTime">44853.9703472222</prop>
+        <prop prop-type="Translated">1</prop>
+        <prop prop-type="UnTranslated">17</prop>
       </prop-group>
     </header>
     <body>
@@ -60,8 +60,9 @@
       </trans-unit>
       <trans-unit id="O:BasicMulti.Font.Name" resname="O:BasicMulti.Font.Name">
         <source>'MS Sans Serif'</source>
+        <target>'ＭＳ Ｐゴシック'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925140509</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TBasicMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925140509</prop><prop prop-type="Status">1</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TBasicMulti</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BasicMulti.Font.Style" resname="O:BasicMulti.Font.Style">
         <source>[]</source>

@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44862.9180555556</prop>
-        <prop prop-type="OrigDateTime">44862.9180092593</prop>
+        <prop prop-type="SelfDateTime">44868.6581018519</prop>
+        <prop prop-type="OrigDateTime">44868.6571990741</prop>
         <prop prop-type="XlatDateTime">44862.9121759259</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">1192</prop>
+        <prop prop-type="UnTranslated">1197</prop>
       </prop-group>
     </header>
     <body>
@@ -7591,7 +7591,7 @@
         <source>"Do you want the following bands to have the same settings?"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44801.7868272338</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">3</prop>
         </prop-group>
       </trans-unit>
       <trans-unit id="System_Bindings_Consts_sStringToChar" resname="System_Bindings_Consts_sStringToChar">
@@ -8354,6 +8354,83 @@
         <source>"Installed plugins will be disabled. Are you sure?"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44849.9794843982</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_UOptions_SELECT_FOLDER" resname="UOptions_UOptions_SELECT_FOLDER">
+        <source>"Select folder"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44868.6281820718</prop>
+          <prop prop-type="Status">3</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_UOptions_PLEASE_INPUT_OFFSET_FREQ" resname="UOptions_UOptions_PLEASE_INPUT_OFFSET_FREQ">
+        <source>"Please input the offset frequency in kHz"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44868.6281820718</prop>
+          <prop prop-type="Status">3</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_UOptions_COM_PORT_SETTING" resname="UOptions_UOptions_COM_PORT_SETTING">
+        <source>"COM port settings"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44868.6281821065</prop>
+          <prop prop-type="Status">3</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_UOptions_TELNET_SETTING" resname="UOptions_UOptions_TELNET_SETTING">
+        <source>"TELNET settings"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44868.6281821065</prop>
+          <prop prop-type="Status">3</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_UOptions_SELECT_SPC_FOLDER" resname="UOptions_UOptions_SELECT_SPC_FOLDER">
+        <source>"Select the folder where the files for SuperCheck"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44868.6281821181</prop>
+          <prop prop-type="Status">3</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_SELECT_FOLDER" resname="UOptions_SELECT_FOLDER">
+        <source>"Select folder"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44868.6581093056</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_PLEASE_INPUT_OFFSET_FREQ" resname="UOptions_PLEASE_INPUT_OFFSET_FREQ">
+        <source>"Please input the offset frequency in kHz"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44868.6581093056</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins" resname="UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins">
+        <source>"Do you want the following bands to have the same settings?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44868.6581093171</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_COM_PORT_SETTING" resname="UOptions_COM_PORT_SETTING">
+        <source>"COM port settings"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44868.6581093403</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_TELNET_SETTING" resname="UOptions_TELNET_SETTING">
+        <source>"TELNET settings"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44868.6581093403</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_SELECT_SPC_FOLDER" resname="UOptions_SELECT_SPC_FOLDER">
+        <source>"Select the folder where the files for SuperCheck"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44868.6581093519</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
       </trans-unit>

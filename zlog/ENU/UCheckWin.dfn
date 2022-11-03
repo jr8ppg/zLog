@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5687962963</prop>
-        <prop prop-type="OrigDateTime">44800.8836574074</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
+        <prop prop-type="SelfDateTime">44868.6277083333</prop>
+        <prop prop-type="OrigDateTime">44868.6077314815</prop>
+        <prop prop-type="XlatDateTime">44853.9703472222</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">57</prop>
+        <prop prop-type="UnTranslated">56</prop>
       </prop-group>
     </header>
     <body>
@@ -59,10 +59,14 @@
         <prop prop-type="Created">44796.8931305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TCheckWin</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CheckWin.Font.Name" resname="O:CheckWin.Font.Name">
-        <source>'ＭＳ Ｐゴシック'</source>
+        <source>'MS Sans Serif'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TCheckWin</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
+      <alt-trans>  <source>'ＭＳ Ｐゴシック'</source>
+          <target>'MS Sans Serif'</target>
+          <prop-group name="ITEFieldProp">
+          <prop prop-type="Modified">44868.2527090162</prop></prop-group>
+        </alt-trans></trans-unit>
       <trans-unit id="O:CheckWin.Font.Style" resname="O:CheckWin.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
@@ -109,10 +113,14 @@
         <prop prop-type="Created">44796.8931305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TCheckWin</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CheckWin.TextHeight" resname="O:CheckWin.TextHeight">
-        <source>12</source>
+        <source>13</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TCheckWin</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
+      <alt-trans>  <source>12</source>
+          <target>13</target>
+          <prop-group name="ITEFieldProp">
+          <prop prop-type="Modified">44868.2527090162</prop></prop-group>
+        </alt-trans></trans-unit>
       <trans-unit id="O:CheckWin.O:Panel1.Left" resname="O:CheckWin.O:Panel1.Left">
         <source>0</source>
         <prop-group name="ITEFieldProp">
@@ -278,25 +286,20 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CheckWin.O:ListBox.ImeName" resname="O:CheckWin.O:ListBox.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
       <trans-unit id="O:CheckWin.O:ListBox.ItemHeight" resname="O:CheckWin.O:ListBox.ItemHeight">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CheckWin.O:ListBox.ParentFont" resname="O:CheckWin.O:ListBox.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CheckWin.O:ListBox.TabOrder" resname="O:CheckWin.O:ListBox.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

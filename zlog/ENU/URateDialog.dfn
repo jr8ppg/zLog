@@ -5,9 +5,9 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5692361111</prop>
-        <prop prop-type="OrigDateTime">44800.8836574074</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
+        <prop prop-type="SelfDateTime">44868.6281481481</prop>
+        <prop prop-type="OrigDateTime">44863.9217824074</prop>
+        <prop prop-type="XlatDateTime">44853.9703472222</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">350</prop>
       </prop-group>
@@ -64,10 +64,14 @@
         <prop prop-type="Created">44796.8935067824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TRateDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialog.Font.Height" resname="O:RateDialog.Font.Height">
-        <source>-11</source>
+        <source>-12</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8935067824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TRateDialog</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
+      <alt-trans>  <source>-11</source>
+          <target>-12</target>
+          <prop-group name="ITEFieldProp">
+          <prop prop-type="Modified">44868.2531670139</prop></prop-group>
+        </alt-trans></trans-unit>
       <trans-unit id="O:RateDialog.Font.Name" resname="O:RateDialog.Font.Name">
         <source>'MS Sans Serif'</source>
         <prop-group name="ITEFieldProp">

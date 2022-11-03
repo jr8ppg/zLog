@@ -3866,7 +3866,6 @@ object formOptions: TformOptions
           Width = 102
           Height = 21
           Caption = 'COM port settings'
-          Default = True
           TabOrder = 1
           OnClick = buttonClusterSettingsClick
         end
@@ -3876,7 +3875,7 @@ object formOptions: TformOptions
           Width = 73
           Height = 21
           Style = csDropDownList
-          TabOrder = 2
+          TabOrder = 3
           OnChange = ZLinkComboChange
           Items.Strings = (
             'None'
@@ -3888,8 +3887,7 @@ object formOptions: TformOptions
           Width = 102
           Height = 21
           Caption = 'TELNET settings'
-          Default = True
-          TabOrder = 5
+          TabOrder = 6
           OnClick = buttonZLinkSettingsClick
         end
         object editZLinkPcName: TEdit
@@ -3897,7 +3895,7 @@ object formOptions: TformOptions
           Top = 84
           Width = 101
           Height = 21
-          TabOrder = 3
+          TabOrder = 4
         end
         object checkZLinkSyncSerial: TCheckBox
           Left = 210
@@ -3905,8 +3903,17 @@ object formOptions: TformOptions
           Width = 91
           Height = 17
           Caption = 'SyncSerial'
-          TabOrder = 4
+          TabOrder = 5
           OnClick = PTTEnabledCheckBoxClick
+        end
+        object buttonSpotterList: TButton
+          Left = 290
+          Top = 28
+          Width = 102
+          Height = 21
+          Caption = 'Spotter list'
+          TabOrder = 2
+          OnClick = buttonSpotterListClick
         end
       end
       object groupSo2rSupport: TGroupBox
@@ -5616,36 +5623,53 @@ object formOptions: TformOptions
         Caption = 'BandScope Options'
         TabOrder = 2
         object checkUseEstimatedMode: TCheckBox
-          Left = 12
-          Top = 18
+          Left = 205
+          Top = 17
           Width = 165
           Height = 17
-          Caption = 'Use Estimated Mode by Freq.'
-          TabOrder = 0
+          Caption = 'Use estimated mode by freq.'
+          TabOrder = 3
+          OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
           Left = 12
-          Top = 40
+          Top = 17
           Width = 181
           Height = 17
-          Caption = 'Show only spots in the band plan.'
-          TabOrder = 1
+          Caption = 'Show only spots in the band plan'
+          TabOrder = 0
         end
         object checkShowOnlyDomestic: TCheckBox
           Left = 12
-          Top = 62
-          Width = 145
+          Top = 40
+          Width = 165
           Height = 17
-          Caption = 'Show only domestic spots.'
-          TabOrder = 2
+          Caption = 'Show only domestic spots'
+          TabOrder = 1
         end
         object checkUseLookupServer: TCheckBox
           Left = 12
-          Top = 84
-          Width = 117
+          Top = 63
+          Width = 165
           Height = 17
-          Caption = 'Use Lookup Server'
-          TabOrder = 3
+          Caption = 'Use lookup server'
+          TabOrder = 2
+        end
+        object checkSetFreqAfterModeChange: TCheckBox
+          Left = 216
+          Top = 63
+          Width = 157
+          Height = 17
+          Caption = 'Suppress freq. deviation'
+          TabOrder = 5
+        end
+        object checkAlwaysChangeMode: TCheckBox
+          Left = 216
+          Top = 40
+          Width = 176
+          Height = 17
+          Caption = 'Suppress LSB/USB mode error'
+          TabOrder = 4
         end
       end
     end
@@ -6060,13 +6084,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Courier New Greek'
+          FontName = 'HG'#24179#25104#35282#65402#65438#65404#65391#65400#20307'W9'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 39
+          ItemIndex = 56
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

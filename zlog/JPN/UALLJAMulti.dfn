@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5680324074</prop>
+        <prop prop-type="SelfDateTime">44868.6271759259</prop>
         <prop prop-type="OrigDateTime">44800.8836574074</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">236</prop>
+        <prop prop-type="XlatDateTime">44853.9703472222</prop>
+        <prop prop-type="Translated">2</prop>
+        <prop prop-type="UnTranslated">234</prop>
       </prop-group>
     </header>
     <body>
@@ -60,8 +60,9 @@
       </trans-unit>
       <trans-unit id="O:ALLJAMulti.Font.Name" resname="O:ALLJAMulti.Font.Name">
         <source>'MS Sans Serif'</source>
+        <target>'ＭＳ Ｐゴシック'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925012384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TALLJAMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925012384</prop><prop prop-type="Status">1</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TALLJAMulti</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ALLJAMulti.Font.Style" resname="O:ALLJAMulti.Font.Style">
         <source>[]</source>
@@ -1180,8 +1181,9 @@
       </trans-unit>
       <trans-unit id="O:ALLJAMulti.O:Panel1.O:cbStayOnTop.Caption" resname="O:ALLJAMulti.O:Panel1.O:cbStayOnTop.Caption">
         <source>'Stay on top'</source>
+        <target>'手前に表示'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925012384</prop><prop prop-type="Status">0</prop><prop prop-type="Order">233</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925012384</prop><prop prop-type="Status">1</prop><prop prop-type="Order">233</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ALLJAMulti.O:Panel1.O:cbStayOnTop.TabOrder" resname="O:ALLJAMulti.O:Panel1.O:cbStayOnTop.TabOrder">
         <source>1</source>

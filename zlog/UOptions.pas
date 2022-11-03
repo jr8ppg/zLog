@@ -446,7 +446,6 @@ type
     comboFontBase: TJvFontComboBox;
     Label102: TLabel;
     Label103: TLabel;
-    checkUseLookupServer: TCheckBox;
     tabsheetHardware3: TTabSheet;
     groupOptCI_V: TGroupBox;
     Label83: TLabel;
@@ -611,6 +610,11 @@ type
     Label105: TLabel;
     Label106: TLabel;
     Label107: TLabel;
+
+    checkUseLookupServer: TCheckBox;
+    checkSetFreqAfterModeChange: TCheckBox;
+    checkAlwaysChangeMode: TCheckBox;
+    buttonSpotterList: TButton;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -663,6 +667,8 @@ type
     procedure comboRigA_Antb19Change(Sender: TObject);
     procedure comboRigB_b19Change(Sender: TObject);
     procedure comboRigB_Antb19Change(Sender: TObject);
+    procedure checkUseEstimatedModeClick(Sender: TObject);
+    procedure buttonSpotterListClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -724,12 +730,28 @@ const
   );
 
 resourcestring
-  UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins = 'Do you want the following bands to have the same settings?';
+  // COMポート設定
+  COM_PORT_SETTING = 'COM port settings';
+
+  // TELNET設定
+  TELNET_SETTING = 'TELNET settings';
+
+  // SuperCheck用のファイルが保存されているフォルダを選択して下さい
+  SELECT_SPC_FOLDER = 'Select the folder where the files for SuperCheck';
+
+  // フォルダの参照
+  SELECT_FOLDER = 'Select folder';
+
+  // オフセット周波数を kHz で入力してください
+  PLEASE_INPUT_OFFSET_FREQ = 'Please input the offset frequency in kHz';
+
+  // 以降のバンドも同じ設定に変更しますか？
+  DoYouWantTheFollowingBandsToHaveTheSameSettins = 'Do you want the following bands to have the same settings?';
 
 implementation
 
 uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet,
-  UZlinkTelnetSet, UZLinkForm, URigControl, UPluginManager;
+  UZlinkTelnetSet, UZLinkForm, URigControl, UPluginManager, USpotterListDlg;
 
 {$R *.DFM}
 
@@ -1169,7 +1191,9 @@ begin
       Settings._bandscope_use_estimated_mode := checkUseEstimatedMode.Checked;      // 周波数からのモードの推定
       Settings._bandscope_show_only_in_bandplan := checkShowOnlyInBandplan.Checked; // バンド内のみ
       Settings._bandscope_show_only_domestic := checkShowOnlyDomestic.Checked;      // 国内のみ
-      Settings._bandscope_use_lookup_server := checkUseLookupServer.Checked;
+      Settings._bandscope_use_lookup_server := checkUseLookupServer.Checked;        // Lookup Server
+      Settings._bandscope_setfreq_after_mode_change := checkSetFreqAfterModeChange.Checked;  // モード変更後周波数セット
+      Settings._bandscope_always_change_mode := checkAlwaysChangeMode.Checked;      // 常にモード変更
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -1626,7 +1650,10 @@ begin
       checkUseEstimatedMode.Checked := Settings._bandscope_use_estimated_mode;      // 周波数からのモードの推定
       checkShowOnlyInBandplan.Checked := Settings._bandscope_show_only_in_bandplan; // バンド内のみ
       checkShowOnlyDomestic.Checked := Settings._bandscope_show_only_domestic;      // 国内のみ
-      checkUseLookupServer.Checked := Settings._bandscope_use_lookup_server;
+      checkUseLookupServer.Checked := Settings._bandscope_use_lookup_server;        // Lookup Server
+      checkSetFreqAfterModeChange.Checked := Settings._bandscope_setfreq_after_mode_change;  // モード変更後周波数セット
+      checkAlwaysChangeMode.Checked := Settings._bandscope_always_change_mode;      // 常にモード変更
+      checkUseEstimatedModeClick(nil);
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -1999,13 +2026,21 @@ end;
 procedure TformOptions.ClusterComboChange(Sender: TObject);
 begin
    buttonClusterSettings.Enabled := True;
+   buttonSpotterList.Enabled := True;
+
    case ClusterCombo.ItemIndex of
-      0:
+      0: begin
          buttonClusterSettings.Enabled := False;
-      1 .. 6:
-         buttonClusterSettings.Caption := 'COM port settings';
-      7:
-         buttonClusterSettings.Caption := 'TELNET settings';
+         buttonSpotterList.Enabled := False;
+      end;
+
+      1 .. 6: begin
+         buttonClusterSettings.Caption := COM_PORT_SETTING;
+      end;
+
+      7: begin
+         buttonClusterSettings.Caption := TELNET_SETTING;
+      end;
    end;
 end;
 
@@ -2060,7 +2095,7 @@ var
 begin
    strSelected := editSuperCheckFolder.Text;
 
-   fResult := SelectDirectory('SuperCheck用のファイルが保存されているフォルダを選択して下さい', '', strSelected, [sdNewUI, sdNewFolder, sdValidateDir], Self);
+   fResult := SelectDirectory(SELECT_SPC_FOLDER, '', strSelected, [sdNewUI, sdNewFolder, sdValidateDir], Self);
    if fResult = False then begin
       Exit;
    end;
@@ -2117,7 +2152,7 @@ begin
          strDir := PluginPathEdit.Text;
    end;
 
-   if SelectDirectory('フォルダの参照', '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
+   if SelectDirectory(SELECT_FOLDER, '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
       exit;
    end;
 
@@ -2241,7 +2276,7 @@ begin
       if TCheckBox(Sender).Checked then begin
          i := dmZlogGlobal.Settings.FRigControl[r].FTransverterOffset;
 
-         F.Init(i, 'Please input the offset frequency in kHz');
+         F.Init(i, PLEASE_INPUT_OFFSET_FREQ);
          if F.ShowModal() <> mrOK then begin
             Exit;
          end;
@@ -2356,7 +2391,7 @@ procedure TformOptions.comboRigA_b19Change(Sender: TObject);
 var
    b: TBand;
 begin
-   if Application.MessageBox(PChar(UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDNO then begin
+   if Application.MessageBox(PChar(DoYouWantTheFollowingBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDNO then begin
       Exit;
    end;
 
@@ -2369,7 +2404,7 @@ procedure TformOptions.comboRigA_Antb19Change(Sender: TObject);
 var
    b: TBand;
 begin
-   if Application.MessageBox(PChar(UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDNO then begin
+   if Application.MessageBox(PChar(DoYouWantTheFollowingBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDNO then begin
       Exit;
    end;
 
@@ -2382,7 +2417,7 @@ procedure TformOptions.comboRigB_b19Change(Sender: TObject);
 var
    b: TBand;
 begin
-   if Application.MessageBox(PChar(UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDNO then begin
+   if Application.MessageBox(PChar(DoYouWantTheFollowingBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDNO then begin
       Exit;
    end;
 
@@ -2395,13 +2430,22 @@ procedure TformOptions.comboRigB_Antb19Change(Sender: TObject);
 var
    b: TBand;
 begin
-   if Application.MessageBox(PChar(UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDNO then begin
+   if Application.MessageBox(PChar(DoYouWantTheFollowingBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDNO then begin
       Exit;
    end;
 
    for b := TBand(TComboBox(Sender).Tag + 1) to b10g do begin
       FRigSetB_ant[b].ItemIndex := TComboBox(Sender).ItemIndex;
    end;
+end;
+
+procedure TformOptions.checkUseEstimatedModeClick(Sender: TObject);
+var
+   f: Boolean;
+begin
+   f := checkUseEstimatedMode.Checked;
+   checkAlwaysChangeMode.Enabled := f;
+   checkSetFreqAfterModeChange.Enabled := f;
 end;
 
 procedure TformOptions.checkUseQuickQSYClick(Sender: TObject);
@@ -2669,6 +2713,22 @@ procedure TformOptions.buttonStopVoiceClick(Sender: TObject);
 begin
    FVoiceSound.Stop();
    FVoiceSound.Close();
+end;
+
+procedure TformOptions.buttonSpotterListClick(Sender: TObject);
+var
+   dlg: TformSpotterListDlg;
+begin
+   dlg := TformSpotterListDlg.Create(Self);
+   try
+
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+   finally
+      dlg.Release();
+   end;
 end;
 
 end.

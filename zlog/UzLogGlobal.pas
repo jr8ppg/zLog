@@ -262,6 +262,7 @@ type
     FClusterRelaySpot: Boolean;
     FClusterNotifyCurrentBand: Boolean;
     FClusterRecordLogs: Boolean;
+    FClusterUseAllowDenyLists: Boolean;
 
     // Z-Server Messages(ChatForm)
     FChatFormPopupNewMsg: Boolean;
@@ -1195,6 +1196,7 @@ begin
       Settings.FClusterRelaySpot       := ini.ReadBool('ClusterWindow', 'RelaySpot', False);
       Settings.FClusterNotifyCurrentBand := ini.ReadBool('ClusterWindow', 'NotifyCurrentBand', False);
       Settings.FClusterRecordLogs      := ini.ReadBool('ClusterWindow', 'RecordLogs', False);
+      Settings.FClusterUseAllowDenyLists := ini.ReadBool('ClusterWindow', 'UseAllowDenyLists', False);
 
       // Z-Server Messages(ChatForm)
       Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
@@ -1724,6 +1726,7 @@ begin
       ini.WriteBool('ClusterWindow', 'RelaySpot', Settings.FClusterRelaySpot);
       ini.WriteBool('ClusterWindow', 'NotifyCurrentBand', Settings.FClusterNotifyCurrentBand);
       ini.WriteBool('ClusterWindow', 'RecordLogs', Settings.FClusterRecordLogs);
+      ini.WriteBool('ClusterWindow', 'UseAllowDenyLists', Settings.FClusterUseAllowDenyLists);
 
       // Z-Server Messages(ChatForm)
       ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);
@@ -2648,9 +2651,9 @@ begin
    k := Hz div 1000;
    kk := Hz mod 1000;
    kk := kk div 100;
-   if k > 100000 then
-      Result := IntToStr(k)
-   else
+//   if k > 100000 then
+//      Result := IntToStr(k)
+//   else
       Result := IntToStr(k) + '.' + IntToStr(kk);
 end;
 
