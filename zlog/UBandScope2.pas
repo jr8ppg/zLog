@@ -350,6 +350,7 @@ var
    str: string;
    MarkCurrent: Boolean;
    Marked: Boolean;
+   fOnFreq: Boolean;
 begin
    if FProcessing = True then begin
       Exit;
@@ -409,11 +410,18 @@ begin
                Continue;
             end;
 
+            fOnFreq := False;
+
             if MarkCurrent and Not(Marked) then begin
-               if D.FreqHz >= CurrentRigFrequency then begin
+               if D.FreqHz = CurrentRigFrequency then begin
+                  Marked := True;
+                  markrow := R;
+                  fOnFreq :=True;
+               end
+               else if D.FreqHz > CurrentRigFrequency then begin
                   Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
                   Grid.Objects[0, R] := nil;
-                  Marked := true;
+                  Marked := True;
                   markrow := R;
                   Inc(R);
                end;
@@ -433,6 +441,10 @@ begin
             end
             else begin
                str := str + '  ';
+            end;
+
+            if fOnFreq = True then begin
+               str := '>>' + str + '<<';
             end;
 
             Grid.Cells[0, R] := str;
