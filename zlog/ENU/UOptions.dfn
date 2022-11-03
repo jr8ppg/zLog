@@ -5,8 +5,8 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44868.657662037</prop>
-        <prop prop-type="OrigDateTime">44868.6557407407</prop>
+        <prop prop-type="SelfDateTime">44868.957037037</prop>
+        <prop prop-type="OrigDateTime">44868.6763425926</prop>
         <prop prop-type="XlatDateTime">44800.8836574074</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">4825</prop>
@@ -23909,7 +23909,7 @@
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4778</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.FontName" resname="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.FontName">
-        <source>'HGｺﾞｼｯｸE'</source>
+        <source>'HG平成角ｺﾞｼｯｸ体W9'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4779</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -23939,7 +23939,7 @@
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4784</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.ItemIndex" resname="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.ItemIndex">
-        <source>47</source>
+        <source>56</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4785</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>

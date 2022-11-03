@@ -6084,13 +6084,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@DFKai-SB'
+          FontName = 'HG'#24179#25104#35282#65402#65438#65404#65391#65400#20307'W9'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 1
+          ItemIndex = 56
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

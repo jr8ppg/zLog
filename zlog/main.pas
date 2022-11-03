@@ -30,7 +30,7 @@ uses
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
-  UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest,
+  UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest,
   JvExControls, JvLED;
 
 const
@@ -813,6 +813,7 @@ type
     FInformation: TformInformation;
     FTTYConsole: TTTYConsole;
     FWinKeyerTester: TformWinKeyerTester;
+    FFreqTest: TformFreqTest;
     FMessageManager: TformMessageManager;
 
     FInitialized: Boolean;
@@ -1974,6 +1975,7 @@ begin
    FInformation   := TformInformation.Create(Self);
    FTTYConsole    := nil;
    FWinKeyerTester := TformWinKeyerTester.Create(Self);
+   FFreqTest      := TformFreqTest.Create(Self);
    FMessageManager := TformMessageManager.Create(Self);
    FMessageManager.OnNotifyStarted  := OnVoicePlayStarted;
    FMessageManager.OnNotifyFinished := OnPlayMessageFinished;
@@ -2252,6 +2254,7 @@ begin
    dmZlogGlobal.ReadWindowState(FInformation);
    dmZlogGlobal.ReadWindowState(FZLinkForm);
    dmZlogGlobal.ReadWindowState(FWinKeyerTester);
+   dmZlogGlobal.ReadWindowState(FFreqTest);
    dmZlogGlobal.ReadWindowState(FMessageManager);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -2293,6 +2296,7 @@ begin
    dmZlogGlobal.WriteWindowState(FInformation);
    dmZlogGlobal.WriteWindowState(FZLinkForm);
    dmZlogGlobal.WriteWindowState(FWinKeyerTester);
+   dmZlogGlobal.WriteWindowState(FFreqTest);
    dmZlogGlobal.WriteWindowState(FMessageManager);
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -2775,6 +2779,10 @@ begin
 
    if S = 'WKTEST' then begin
       FWinKeyerTester.Show();
+   end;
+
+   if S = 'FREQTEST' then begin
+      FFreqTest.Show();
    end;
 
    if S = 'MSGMGR' then begin
@@ -4125,6 +4133,7 @@ begin
    FSo2rNeoCp.Release();
    FInformation.Release();
    FWinKeyerTester.Release();
+   FFreqTest.Release();
    FMessageManager.Release();
 
    if Assigned(FTTYConsole) then begin

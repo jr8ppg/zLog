@@ -92,22 +92,22 @@ type
   private
     FFILO : Boolean; // FILO buffer flag used for YAESU
     Name : string;
-    _freqoffset : LongInt; // freq offset for transverters in Hz
+    _freqoffset : Int64; // freq offset for transverters in Hz
     _minband, _maxband : TBand;
     _rignumber : Integer;
 
-    FreqMem : array[b19..b10g, mCW..mOther] of LongInt;
+    FreqMem : array[b19..b10g, mCW..mOther] of Int64;
 
     TerminatorCode : AnsiChar;
     BufferString : AnsiString;
-    _currentfreq : array[0..1] of LongInt; // in Hz
+    _currentfreq : array[0..1] of Int64; // in Hz
     _currentband : TBand;
     _currentmode : TMode;
     _currentvfo : integer; // 0 : VFO A; 1 : VFO B
     FComm : TCommPortDriver; // points to the right CommPortDriver
     FPollingTimer: TTimer;
     FPollingInterval: Integer;
-    LastFreq : LongInt;
+    LastFreq : Int64;
 
     FRitCtrlSupported: Boolean;
     FXitCtrlSupported: Boolean;
@@ -140,7 +140,7 @@ type
     procedure PassOnRxData(S : AnsiString); virtual;
     procedure ParseBufferString; virtual; abstract;
     procedure RitClear(); virtual;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); virtual; abstract;
+    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); virtual; abstract;
     procedure Reset; virtual; abstract; // called when user wants to reset the rig
                                         // after power outage etc
     procedure SetVFO(i : integer); virtual; abstract; // A:0, B:1
@@ -186,7 +186,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
@@ -228,7 +228,7 @@ type
     procedure ExecuteCommand(S : AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
@@ -258,7 +258,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
@@ -274,7 +274,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
@@ -302,7 +302,7 @@ type
     procedure SetMode(Q : TQSO); override;
     procedure ExecuteCommand(S: AnsiString); override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); override;
     procedure SetVFO(i : integer); override;
     procedure PollingProcess(); override;
   end;
@@ -321,7 +321,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure RitClear; override;
     procedure SetVFO(i : integer); override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure PollingProcess; override;
   end;
@@ -330,7 +330,7 @@ type
     Fchange: Boolean;
     destructor Destroy; override;
     procedure Initialize(); override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure PollingProcess; override;
   end;
@@ -342,7 +342,7 @@ type
 
   TFT991 = class(TFT2000)
     procedure ExecuteCommand(S: AnsiString); override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); override;
   end;
 
   TFT100 = class(TFT1000MP)
@@ -362,7 +362,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
@@ -377,7 +377,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure InquireStatus; override;
     procedure SetVFO(i : integer); override;
@@ -391,7 +391,7 @@ type
     procedure Initialize(); override;
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetBand(Q: TQSO); override;
     procedure InquireStatus; override;
@@ -462,7 +462,7 @@ type
     { Public declarations }
     TempFreq: TFreqArray; //  temp. freq storage when rig is not connected. in kHz
     function StatusSummaryFreq(kHz : integer): string; // returns current rig's band freq mode
-    function StatusSummaryFreqHz(Hz : integer): string; // returns current rig's band freq mode
+    function StatusSummaryFreqHz(Hz : Int64): string; // returns current rig's band freq mode
     function StatusSummary: string; // returns current rig's band freq mode
     procedure ImplementOptions(rig: Integer = 1);
     procedure Stop();
@@ -472,7 +472,7 @@ type
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
     function IsAvailableBand(B: TBand): Boolean;
     procedure SetSendFreq();
-    procedure UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer; b: TBand; m: TMode);
+    procedure UpdateFreq(currentvfo, VfoA, VfoB, Last: Int64; b: TBand; m: TMode);
 
 //    procedure SetRit(fOnOff: Boolean);
 //    procedure SetXit(fOnOff: Boolean);
@@ -496,7 +496,7 @@ uses
 
 {$R *.DFM}
 
-function kHzStr(Hz: LongInt): string;
+function kHzStr(Hz: Int64): string;
 var
    S: string;
 begin
@@ -543,7 +543,7 @@ begin
    Result := S;
 end;
 
-function TRigControl.StatusSummaryFreqHz(Hz: Integer): string; // returns current rig's band freq mode
+function TRigControl.StatusSummaryFreqHz(Hz: Int64): string; // returns current rig's band freq mode
 var
    S, ss: string;
 begin
@@ -971,7 +971,7 @@ end;
 // READ   F A ;
 // ANSWER F A P1 P1 P1 P1 P1 P1 P1 P1 P1 ;
 //
-procedure TFT2000.SetFreq(Hz : LongInt; fSetLastFreq: Boolean);
+procedure TFT2000.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
 const
    cmd: array[0..1] of AnsiString = ( 'FA', 'FB' );
 var
@@ -1242,10 +1242,10 @@ begin
    WriteData(_nil3 + AnsiChar($FF) + AnsiChar($09));
 end;
 
-procedure TFT1011.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TFT1011.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
-   i, j: LongInt;
+   i, j: Int64;
 begin
    i := Hz;
    i := i div 10;
@@ -2660,7 +2660,7 @@ begin
    BufferString := '';
 end;
 
-procedure TTS690.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TTS690.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
 begin
@@ -2679,7 +2679,7 @@ begin
       WriteData('FB' + fstr + ';');
 end;
 
-procedure TJST145.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TJST145.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
 begin
@@ -2699,10 +2699,10 @@ begin
    WriteData('I1' + _CR);
 end;
 
-procedure TICOM.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TICOM.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
-   freq, i: LongInt;
+   freq, i: Int64;
 begin
    FPollingTimer.Enabled := False;
    try
@@ -2909,7 +2909,7 @@ begin
    end;
 end;
 
-procedure TOmni.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TOmni.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
 var
    o_RIG: IRigX;
 begin
@@ -3081,7 +3081,7 @@ begin
    Inherited;
 end;
 
-procedure TVirtualRig.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TVirtualRig.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
 var
    b: TBand;
 begin
@@ -3128,10 +3128,10 @@ begin
    end;
 end;
 
-procedure TFT1000MP.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TFT1000MP.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
-   i, j: LongInt;
+   i, j: Int64;
 begin
    if fSetLastFreq = True then begin
       LastFreq := _currentfreq[_currentvfo];
@@ -3383,24 +3383,25 @@ procedure TICOM.ExecuteCommand(S: AnsiString);
 var
    Command: byte;
    temp: byte;
-   i, i1, i2, i3, i4, i5: LongInt;
+   freq, i1, i2, i3, i4, i5: Int64;
    M: TMode;
    ss: AnsiString;
+   Index: Integer;
 begin
    try
       // RigControl.label1.caption := S;
       ss := S;
-      i := pos(AnsiChar($FE) + AnsiChar($FE), ss);
+      Index := pos(AnsiChar($FE) + AnsiChar($FE), ss);
 
-      if i = 0 then begin
+      if Index = 0 then begin
          Exit;
       end;
 
-      if i > 1 then begin
-         Delete(ss, 1, i - 1);
+      if Index > 1 then begin
+         Delete(ss, 1, Index - 1);
       end;
 
-      if length(ss) < 6 then begin
+      if Length(ss) < 6 then begin
          Exit;
       end;
 
@@ -3492,11 +3493,11 @@ begin
                i5 := 0;
             end;
 
-            i := i1 + 100 * i2 + 10000 * i3 + 1000000 * i4 + 100000000 * i5;
-            _currentfreq[_currentvfo] := i;
-            i := i + _freqoffset;
+            freq := i1 + 100 * i2 + 10000 * i3 + 1000000 * i4 + 100000000 * i5;
+            _currentfreq[_currentvfo] := freq;
+            freq := freq + _freqoffset;
 
-            UpdateFreqMem(_currentvfo, i);
+            UpdateFreqMem(_currentvfo, freq);
 
             if Selected then begin
                UpdateStatus;
@@ -3755,10 +3756,10 @@ procedure TFT847.SetVFO(i: Integer);
 begin
 end;
 
-procedure TFT847.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TFT847.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
-   i, j: LongInt;
+   i, j: Int64;
 begin
    if fSetLastFreq = True then begin
       LastFreq := _currentfreq[_currentvfo];
@@ -3821,7 +3822,7 @@ begin
 end;
 
 
-procedure TFT817.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TFT817.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
 //var
 //   StartTime: TDateTime;
 begin
@@ -3905,7 +3906,7 @@ begin
    end;
 end;
 
-procedure TFT991.SetFreq(Hz : LongInt; fSetLastFreq: Boolean);
+procedure TFT991.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
 const
    cmd: array[0..1] of AnsiString = ( 'FA', 'FB' );
 var
@@ -3949,8 +3950,6 @@ begin
    end;
 
    MainForm.StatusLine.Panels[1].Text := S;
-
-//   MainForm.BSRefresh();
 
    MainForm.BandScopeMarkCurrentFreq(_currentband, _freqoffset + _currentfreq[_currentvfo]);
 end;
@@ -4083,7 +4082,7 @@ begin
    end;
 end;
 
-procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer; b: TBand; m: TMode);
+procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: Int64; b: TBand; m: TMode);
 var
    vfo: array[0..1] of Integer;
 begin

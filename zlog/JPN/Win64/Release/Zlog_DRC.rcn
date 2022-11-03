@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44868.6576388889</prop>
-        <prop prop-type="OrigDateTime">44868.6571990741</prop>
-        <prop prop-type="XlatDateTime">44801.4782638889</prop>
-        <prop prop-type="Translated">5</prop>
-        <prop prop-type="UnTranslated">1192</prop>
+        <prop prop-type="SelfDateTime">44868.962037037</prop>
+        <prop prop-type="OrigDateTime">44868.962037037</prop>
+        <prop prop-type="XlatDateTime">44868.6602546296</prop>
+        <prop prop-type="Translated">11</prop>
+        <prop prop-type="UnTranslated">1186</prop>
       </prop-group>
     </header>
     <body>
@@ -7598,7 +7598,6 @@
           <prop prop-type="Created">44801.7867993866</prop>
           <prop prop-type="Status">3</prop>
         </prop-group>
-        <target>"以降のバンドも同じ設定に変更しますか？"</target>
       </trans-unit>
       <trans-unit id="System_Bindings_Consts_sStringToChar" resname="System_Bindings_Consts_sStringToChar">
         <source>"StringToChar"</source>
@@ -8360,8 +8359,9 @@
         <source>"Installed plugins will be disabled. Are you sure?"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44849.978974919</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"インストールされたプラグインは無効になります。よろしいですか？"</target>
       </trans-unit>
       <trans-unit id="UOptions_UOptions_SELECT_FOLDER" resname="UOptions_UOptions_SELECT_FOLDER">
         <source>"Select folder"</source>
@@ -8402,15 +8402,17 @@
         <source>"Select folder"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44868.6576470949</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"フォルダの参照"</target>
       </trans-unit>
       <trans-unit id="UOptions_PLEASE_INPUT_OFFSET_FREQ" resname="UOptions_PLEASE_INPUT_OFFSET_FREQ">
         <source>"Please input the offset frequency in kHz"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44868.6576471065</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"オフセット周波数を kHz で入力してください"</target>
       </trans-unit>
       <trans-unit id="UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins" resname="UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins">
         <source>"Do you want the following bands to have the same settings?"</source>
@@ -8423,22 +8425,25 @@
         <source>"COM port settings"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44868.6576471412</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"COMポート設定"</target>
       </trans-unit>
       <trans-unit id="UOptions_TELNET_SETTING" resname="UOptions_TELNET_SETTING">
         <source>"TELNET settings"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44868.6576471412</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"TELNET設定"</target>
       </trans-unit>
       <trans-unit id="UOptions_SELECT_SPC_FOLDER" resname="UOptions_SELECT_SPC_FOLDER">
         <source>"Select the folder where the files for SuperCheck"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44868.6576471412</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"SuperCheck用のファイルが保存されているフォルダを選択して下さい"</target>
       </trans-unit>
     </body>
   </file>

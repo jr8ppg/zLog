@@ -69,7 +69,7 @@ type
     procedure SendQSO(aQSO : TQSO);
     procedure RelaySpot(S : string); //called from CommForm to relay spot info
     procedure SendSpotViaNetwork(S : string);
-    procedure SendFreqInfo(Hz : integer);
+    procedure SendFreqInfo(Hz: Int64);
     procedure SendRigStatus;
     procedure MergeLogWithZServer;
     procedure DeleteQSO(aQSO : TQSO);
@@ -610,7 +610,7 @@ begin
    end;
 end;
 
-procedure TZLinkForm.SendFreqInfo(Hz: integer);
+procedure TZLinkForm.SendFreqInfo(Hz: Int64);
 var
    str: string;
 begin

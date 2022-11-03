@@ -500,6 +500,10 @@
             <Form>formSpotterListDlg</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UFreqTest.pas">
+            <Form>formFreqTest</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -789,7 +793,8 @@
                     <RDP_Source_Files Name="Item104">UMessageManager.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item105">UExportCabrillo.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item106">USpotterListDlg.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item107">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item107">UFreqTest.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item108">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>
