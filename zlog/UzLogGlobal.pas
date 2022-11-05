@@ -3318,6 +3318,11 @@ var
    S2: Char;
    S3: Char;
 begin
+   if strCallsign = '' then begin
+      Result := True;
+      Exit;
+   end;
+
    S1 := strCallsign[1];
    S2 := strCallsign[2];
    S3 := strCallsign[3];

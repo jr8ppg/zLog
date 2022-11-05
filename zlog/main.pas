@@ -7594,6 +7594,8 @@ var
       Result := True;
    end;
 begin
+   SetCurrentQSO(FCurrentRigSet - 1);
+
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
       nFreq := rig.CurrentFreqHz;
