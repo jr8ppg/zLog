@@ -130,6 +130,7 @@ type
 
     function GetMode2(): TMode;
     function GetPoints(): Integer;
+    function GetQsoId(): Integer;
 
     function GetFileRecord(): TQSOData;
     procedure SetFileRecord(src: TQSOData);
@@ -207,6 +208,7 @@ type
     property Forced: Boolean read FForced write FForced;
     property QslState: TQslState read FQslState write FQslState;
     property Invalid: Boolean read FInvalid write FInvalid;
+    property QsoId: Integer read GetQsoId;
 
     property SerialStr: string read GetSerialStr;
     property TimeStr: string read GetTimeStr;
@@ -340,6 +342,7 @@ type
     FDupeCheckList: TQSOListArray;
     FBandList: TQSOListArray;
     FAllPhone: Boolean;    // True: SSB, FM, AM are same
+    FQsoIdDic: TDictionary<Integer, string>;
     procedure Delete(i : Integer);
     procedure ProcessDelete(beforeQSO: TQSO);
     procedure ProcessEdit(afterQSO: TQSO; fAdd: Boolean);
@@ -360,7 +363,7 @@ type
     function TotalMulti1 : Integer;
     function TotalMulti2 : Integer;
 
-    procedure Add(aQSO : TQSO);
+    procedure Add(aQSO : TQSO; fNoSort: Boolean = False);
     procedure Insert(i : Integer; aQSO : TQSO);
 
     procedure DeleteQSO(aQSO: TQSO);
@@ -391,7 +394,7 @@ type
     function ContainBand : TBandBool;
     procedure SetDupeFlags;
 //    procedure DeleteBand(B : TBand);
-    function CheckQSOID(i : Integer) : Boolean;
+    function CheckQSOID(qsoid: Integer) : Boolean;
     procedure RebuildDupeCheckList;
     procedure ClearDupeCheckList;
     function QuickDupe(aQSO : TQSO) : TQSO;
@@ -409,6 +412,8 @@ type
     function IsWorked(strCallsign: string; band: TBand): Boolean;
     function IsNewMulti(band: TBand; multi: string): Boolean;
     procedure RenewMulti();
+    function IsContainsSameQSO(Q: TQSO): Boolean;
+
     {$IFNDEF ZSERVER}
     function IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
     function EvaluateQSYCount(nStartIndex: Integer): Integer;
@@ -1073,6 +1078,11 @@ begin
    end;
 end;
 
+function TQSO.GetQsoId(): Integer;
+begin
+   Result := FReserve3 div 100;
+end;
+
 procedure TQSO.Assign(src: TQSO);
 begin
    FTime := src.FTime;
@@ -1556,6 +1566,7 @@ begin
    FCountHigherPoints := False;
    FDifferentModePointer := 0;
    FAllPhone := True;
+   FQsoIdDic := TDictionary<Integer, string>.Create(120000);
 end;
 
 destructor TLog.Destroy;
@@ -1573,6 +1584,7 @@ begin
 
    FQsoList.Free();
    FQueList.Free();
+   FQsoIdDic.Free();
 
    Inherited;
 end;
@@ -1694,7 +1706,7 @@ begin
    end;
 end;
 
-procedure TLog.Add(aQSO: TQSO);
+procedure TLog.Add(aQSO: TQSO; fNoSort: Boolean);
 var
    xQSO: TQSO;
 begin
@@ -1703,9 +1715,15 @@ begin
    xQSO := TQSO.Create;
    xQSO.Assign(aQSO);
    FDupeCheckList[xQSO.FBand].Add(xQSO);
-   FDupeCheckList[xQSO.FBand].Sort(soDupeCheck, FAcceptDifferentMode, FAllPhone);
+   if fNoSort = False then begin
+      FDupeCheckList[xQSO.FBand].Sort(soDupeCheck, FAcceptDifferentMode, FAllPhone);
+   end;
 
    FBandList[xQSO.Band].Add(aQSO);
+
+   if FQsoIdDic.ContainsKey(xQSO.QsoId) = False then begin
+      FQsoIdDic.Add(xQSO.QsoId, xQSO.Callsign);
+   end;
 
    FSaved := False;
 
@@ -1888,6 +1906,8 @@ begin
    FSaved := False;
    RebuildDupeCheckList;
 
+   FQsoIdDic.Remove(aQSO.QsoId);
+
    zyloLogUpdated(evDeleteQSO, aQSO, nil);
 end;
 
@@ -1906,6 +1926,8 @@ begin
    if Index > -1 then begin
       FQsoList.Delete(Index);
    end;
+
+   FQsoIdDic.Remove(aQSO.QsoId);
 
    FSaved := False;
    RebuildDupeCheckList;
@@ -1927,18 +1949,12 @@ begin
    RebuildDupeCheckList;
 end;
 
-function TLog.CheckQSOID(i: Integer): Boolean;
+function TLog.CheckQSOID(qsoid: Integer): Boolean;
 var
-   j, id: Integer;
+   id: Integer;
 begin
-   Result := False;
-   id := i div 100; // last two digits are edit counter
-   for j := 1 to TotalQSO do begin
-      if id = (FQsoList[j].FReserve3 div 100) then begin
-         Result := True;
-         break;
-      end;
-   end;
+   id := qsoid div 100; // last two digits are edit counter
+   Result := FQsoIdDic.ContainsKey(id);
 end;
 
 procedure TLog.Insert(i: Integer; aQSO: TQSO);
@@ -1946,6 +1962,10 @@ begin
    FQsoList.Insert(i, aQSO);
    RebuildDupeCheckList;
    FSaved := False;
+
+   if FQsoIdDic.ContainsKey(aQSO.QsoId) = False then begin
+      FQsoIdDic.Add(aQSO.QsoId, aQSO.Callsign);
+   end;
 
    zyloLogUpdated(evInsertQSO, nil, aQSO);
 end;
@@ -2950,6 +2970,11 @@ var
    D: TQSOData;
    f: file of TQSOData;
    i: Integer;
+   b: TBand;
+   qsoid: Integer;
+   {$IFDEF DEBUG}
+   dwTick: DWORD;
+   {$ENDIF}
 begin
    if UpperCase(ExtractFileExt(filename)) = '.ZLOX' then begin
       Result := LoadFromFileEx(filename);
@@ -2969,6 +2994,10 @@ begin
       Exit;
    end;
 
+   {$IFDEF DEBUG}
+   dwTick := GetTickCount();
+   {$ENDIF}
+
    Q := nil;
    GLOBALSERIAL := 0;
 
@@ -2978,17 +3007,29 @@ begin
       Q := TQSO.Create();
       Q.FileRecord := D;
 
+      // QSOIDが無ければ発番する
       if Q.Reserve3 = 0 then begin
-         Q.Reserve3 := dmZLogGlobal.NewQSOID;
+         repeat
+            qsoid := dmZLogGlobal.NewQSOID;
+         until CheckQSOID(qsoid) = False;
+         Q.Reserve3 := qsoid;
       end;
 
       // 同一QSOが２重に入ってしまった場合の暫定対策
-      if IndexOf(Q) = -1 then begin
-         Add(Q);
+      if IsContainsSameQSO(Q) = True then begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('**** Duplicate QSO detected! [' + Q.Callsign + '] ****'));
+         {$ENDIF}
+         FreeAndNil(Q);
       end
       else begin
-         FreeAndNil(Q);
+         Add(Q, True);
       end;
+   end;
+
+   // DUPEチェック用Indexをソート
+   for b := Low(FDupeCheckList) to High(FDupeCheckList) do begin
+      FDupeCheckList[b].Sort(soDupeCheck, FAcceptDifferentMode, FAllPhone);
    end;
 
    if Q <> nil then begin
@@ -2997,7 +3038,12 @@ begin
 
    CloseFile(f);
 
-   Result := FQsoList.Count;
+   {$IFDEF DEBUG}
+   dwTick := GetTickCount() - dwTick;
+   OutputDebugString(PChar('TLog.LoadFromFile() loading time = ' + IntToStr(dwTick) + 'ms'));
+   {$ENDIF}
+
+   Result := TotalQSO;
 end;
 
 function TLog.LoadFromFileEx(filename: string): Integer;
@@ -3006,7 +3052,16 @@ var
    D: TQSODataEx;
    f: file of TQSODataEx;
    i: Integer;
+   b: TBand;
+   qsoid: Integer;
+   {$IFDEF DEBUG}
+   dwTick: DWORD;
+   {$ENDIF}
 begin
+   {$IFDEF DEBUG}
+   dwTick := GetTickCount();
+   {$ENDIF}
+
    AssignFile(f, filename);
    Reset(f);
    Read(f, D);
@@ -3020,17 +3075,29 @@ begin
       Q := TQSO.Create();
       Q.FileRecordEx := D;
 
+      // QSOIDが無ければ発番する
       if Q.Reserve3 = 0 then begin
-         Q.Reserve3 := dmZLogGlobal.NewQSOID;
+         repeat
+            qsoid := dmZLogGlobal.NewQSOID;
+         until CheckQSOID(qsoid) = False;
+         Q.Reserve3 := qsoid;
       end;
 
       // 同一QSOが２重に入ってしまった場合の暫定対策
-      if IndexOf(Q) = -1 then begin
-         Add(Q);
+      if IsContainsSameQSO(Q) = True then begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('**** Duplicate QSO detected! [' + Q.Callsign + '] ****'));
+         {$ENDIF}
+         FreeAndNil(Q);
       end
       else begin
-         FreeAndNil(Q);
+         Add(Q, True);
       end;
+   end;
+
+   // DUPEチェック用Indexをソート
+   for b := Low(FDupeCheckList) to High(FDupeCheckList) do begin
+      FDupeCheckList[b].Sort(soDupeCheck, FAcceptDifferentMode, FAllPhone);
    end;
 
    if Q <> nil then begin
@@ -3039,7 +3106,12 @@ begin
 
    CloseFile(f);
 
-   Result := FQsoList.Count;
+   {$IFDEF DEBUG}
+   dwTick := GetTickCount() - dwTick;
+   OutputDebugString(PChar('TLog.LoadFromFileEx() loading time = ' + IntToStr(dwTick) + 'ms'));
+   {$ENDIF}
+
+   Result := TotalQSO;
 end;
 
 function TLog.LoadFromFilezLogCsv(Filename: string): Integer;
@@ -3050,7 +3122,8 @@ var
    slFile: TStringList;
    slLine: TStringList;
    strMsg: string;
-   Index: Integer;
+   qsoid: Integer;
+   b: TBand;
 begin
    slFile := TStringList.Create();
    slFile.StrictDelimiter := True;
@@ -3183,18 +3256,33 @@ begin
             // 32列目 Invalid
             Q.Invalid := StrToBoolDef(slLine[31], False);
 
+            // QSOIDが無ければ発番する
             if Q.Reserve3 = 0 then begin
-               Q.Reserve3 := dmZLogGlobal.NewQSOID;
+               repeat
+                  qsoid := dmZLogGlobal.NewQSOID;
+               until CheckQSOID(qsoid) = False;
+               Q.Reserve3 := qsoid;
             end;
 
-            Index := IndexOf(Q);
-            if Index = -1 then begin
-               Add(Q);
+            // 同一QSOが２重に入ってしまった場合の暫定対策
+            if IsContainsSameQSO(Q) = True then begin
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('**** Duplicate QSO detected! [' + Q.Callsign + '] ****'));
+               {$ENDIF}
+               FreeAndNil(Q);
             end
             else begin
-               FQsoList[Index].Assign(Q);
-               FreeAndNil(Q);
+               Add(Q, True);
             end;
+         end;
+
+         // DUPEチェック用Indexをソート
+         for b := Low(FDupeCheckList) to High(FDupeCheckList) do begin
+            FDupeCheckList[b].Sort(soDupeCheck, FAcceptDifferentMode, FAllPhone);
+         end;
+
+         if Q <> nil then begin
+            GLOBALSERIAL := (Q.Reserve3 div 10000) mod 10000;
          end;
       except
          on E: Exception do begin
@@ -3203,7 +3291,7 @@ begin
          end;
       end;
 
-      Result := FQsoList.Count;
+      Result := TotalQSO;
    finally
       slFile.Free();
       slLine.Free();
@@ -3393,6 +3481,20 @@ begin
          multi2[b].Free();
       end;
    end;
+end;
+
+function TLog.IsContainsSameQSO(Q: TQSO): Boolean;
+var
+   strCall: string;
+begin
+   if FQsoIdDic.TryGetValue(Q.QsoId, strCall) = True then begin
+      if strCall = Q.Callsign then begin
+         Result := True;
+         Exit;
+      end;
+   end;
+
+   Result := False;
 end;
 
 { TQSOCallsignComparer }
