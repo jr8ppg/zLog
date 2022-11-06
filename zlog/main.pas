@@ -5611,6 +5611,11 @@ begin
    end;
 
    WriteStatusLine(IntToStr(i) + ' QSO(s) merged.', True);
+
+   // Analyzeウインドウが表示されている場合は表示更新する
+   if FZAnalyze.Visible then begin
+      PostMessage(FZAnalyze.Handle, WM_ANALYZE_UPDATE, 0, 0);
+   end;
 end;
 
 procedure TMainForm.SaveFileAndBackUp;
@@ -6299,6 +6304,11 @@ begin
 
       // 最初はRIG1から
       SwitchRig(1);
+
+      // Analyzeウインドウが表示されている場合は表示更新する
+      if FZAnalyze.Visible then begin
+         PostMessage(FZAnalyze.Handle, WM_ANALYZE_UPDATE, 0, 0);
+      end;
 
       // 初期化完了
       FInitialized := True;
