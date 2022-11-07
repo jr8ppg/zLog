@@ -247,7 +247,7 @@ begin
    else if Pos('To ALL', temp) = 1 then begin
       Exit;
    end
-   else begin    // check for SH/DX responses
+   else if dmZLogGlobal.Settings.FClusterIgnoreSHDX = False then begin    // check for SH/DX responses
       i := length(temp);
       if i = 0 then begin
          exit;
