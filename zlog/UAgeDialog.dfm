@@ -24,7 +24,7 @@ object AgeDialog: TAgeDialog
   end
   object Label1: TLabel
     Left = 24
-    Top = 20
+    Top = 19
     Width = 105
     Height = 13
     Caption = 'Please input your age:'

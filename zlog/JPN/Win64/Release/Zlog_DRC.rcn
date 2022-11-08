@@ -5,10 +5,10 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44868.962037037</prop>
-        <prop prop-type="OrigDateTime">44868.962037037</prop>
-        <prop prop-type="XlatDateTime">44868.6602546296</prop>
-        <prop prop-type="Translated">11</prop>
+        <prop prop-type="SelfDateTime">44873.9713888889</prop>
+        <prop prop-type="OrigDateTime">44873.9713888889</prop>
+        <prop prop-type="XlatDateTime">44873.9706712963</prop>
+        <prop prop-type="Translated">24</prop>
         <prop prop-type="UnTranslated">1186</prop>
       </prop-group>
     </header>
@@ -7808,6 +7808,13 @@
           <prop prop-type="Created">44849.9789745255</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
+        <alt-trans>
+          <source>""</source>
+          <target>""</target>
+          <prop-group name="ITEFieldProp">
+            <prop prop-type="Modified">44873.5964085301</prop>
+          </prop-group>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="System_Bindings_Consts_sNilToVariant" resname="System_Bindings_Consts_sNilToVariant">
         <source>"Nil からバリアントへ"</source>
@@ -8444,6 +8451,118 @@
           <prop prop-type="Status">1</prop>
         </prop-group>
         <target>"SuperCheck用のファイルが保存されているフォルダを選択して下さい"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Change_Operator_QSOs" resname="Main_TMainForm_Change_Operator_QSOs">
+        <source>"Are you sure to change the operator names for these QSO's?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.9688179282</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"これらの QSO のオペレーター名を変更してもよろしいですか？"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Change_Power_QSOs" resname="Main_TMainForm_Change_Power_QSOs">
+        <source>"Are you sure to change the power for these QSO's?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.9688179398</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"これらの QSO の電力符号を変更してもよろしいですか？"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Change_TXNO_QSOs" resname="Main_TMainForm_Change_TXNO_QSOs">
+        <source>"Are you sure to change the TX# for these QSO's?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.9688179398</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"これらの QSO の TX# を変更してもよろしいですか？"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Need_File_Name" resname="Main_TMainForm_Need_File_Name">
+        <source>"Data will NOT be saved until you enter the file name"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.9688179514</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"ファイル名を入力するまでデータは保存されません"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_QTC_Sent" resname="Main_TMainForm_QTC_Sent">
+        <source>"QTC can be sent by pressing Ctrl+Q"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.9688179514</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"Ctrl+Qを押すとQTCを送信できます"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Comfirm_Delete_Qso" resname="Main_TMainForm_Comfirm_Delete_Qso">
+        <source>"Are you sure to delete this QSO?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.9688179861</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"このQSOを削除してもよろしいですか？"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Comfirm_Delete_Qsos" resname="Main_TMainForm_Comfirm_Delete_Qsos">
+        <source>"Are you sure to delete these QSO's?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.9688179977</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"これらの QSO を削除してもよろしいですか？"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_New_Multi_Only" resname="Main_TMainForm_New_Multi_Only">
+        <source>"This station is not a new multiplier, but will be logged anyway."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.9688179977</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"この局はニューマルチではありませんが、とりあえず記録します"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Change_Date" resname="Main_TMainForm_Change_Date">
+        <source>"To change the date, double click the time field."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.9688180093</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"日付を変更するには、時刻フィールドをダブルクリックしてください。"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Confirm_Save_Changes" resname="Main_TMainForm_Confirm_Save_Changes">
+        <source>"Save changes to %s ?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.9688180093</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"変更を %s に保存しますか？"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Active_Band_Adjusted" resname="Main_TMainForm_Active_Band_Adjusted">
+        <source>"Active Bands adjusted to the required bands"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.9688180093</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"アクティブなバンドをコンテストに必要なバンドに合わせました"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Change_Band_QSOs" resname="Main_TMainForm_Change_Band_QSOs">
+        <source>"Are you sure to change the band for these QSO's?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.9688180208</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"これらの QSO のバンドを変更してもよろしいですか？"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Change_Mode_QSOs" resname="Main_TMainForm_Change_Mode_QSOs">
+        <source>"Are you sure to change the mode for these QSO's?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.9688180208</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"これらの QSO のモードを変更してもよろしいですか？"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Enter_Frequency" resname="Main_TMainForm_Enter_Frequency">
+        <source></source>
+        <target>"周波数をkHzで入力して下さい"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44873.970776331</prop>
+          <prop prop-type="Status">3</prop>
+        </prop-group>
       </trans-unit>
     </body>
   </file>

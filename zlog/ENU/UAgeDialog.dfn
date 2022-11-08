@@ -5,8 +5,8 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5687731481</prop>
-        <prop prop-type="OrigDateTime">44800.8836574074</prop>
+        <prop prop-type="SelfDateTime">44873.9688425926</prop>
+        <prop prop-type="OrigDateTime">44873.9630092593</prop>
         <prop prop-type="XlatDateTime">44800.8836574074</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">48</prop>
@@ -124,7 +124,7 @@
         <prop prop-type="Created">44796.8931143403</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:AgeDialog.O:Label1.Top" resname="O:AgeDialog.O:Label1.Top">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931143403</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>

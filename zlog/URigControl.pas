@@ -135,7 +135,7 @@ type
     function CurrentFreqkHzStr : string;
     procedure PollingProcess; virtual;
     procedure SetMode(Q : TQSO); virtual; abstract;
-    procedure SetBand(Q : TQSO); virtual; // abstract;
+    procedure SetBand(rigset: Integer; Q: TQSO); virtual; // abstract;
     procedure ExecuteCommand(S : AnsiString); virtual; abstract;
     procedure PassOnRxData(S : AnsiString); virtual;
     procedure ParseBufferString; virtual; abstract;
@@ -393,7 +393,7 @@ type
     procedure ParseBufferString; override;
     procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
-    procedure SetBand(Q: TQSO); override;
+    procedure SetBand(rigset: Integer; Q: TQSO); override;
     procedure InquireStatus; override;
     procedure SetVFO(i : integer); override;
     procedure Reset; override;
@@ -2466,7 +2466,7 @@ begin
    WriteData(Command);
 end;
 
-procedure TRig.SetBand(Q: TQSO);
+procedure TRig.SetBand(rigset: Integer; Q: TQSO);
 var
    f: LongInt;
 begin
@@ -2493,6 +2493,9 @@ begin
    _currentband := Q.Band;
 
    SetFreq(f, Q.CQ);
+
+   // Antenna Select
+   AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[Q.Band]);
 end;
 
 procedure TRig.RitClear();
@@ -3094,7 +3097,7 @@ begin
    _currentmode := Q.Mode;
 end;
 
-procedure TVirtualRig.SetBand(Q: TQSO);
+procedure TVirtualRig.SetBand(rigset: Integer; Q: TQSO);
 begin
    _currentband := Q.Band;
 end;

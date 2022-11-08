@@ -8,19 +8,32 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMemory 64336
-#define UExceptionDialog_RsScreenRes 64337
-#define UExceptionDialog_RsActiveControl 64338
-#define UExceptionDialog_RsThread 64339
-#define UExceptionDialog_RsMissingVersionInfo 64340
-#define UExceptionDialog_RsExceptionStack 64341
-#define UExceptionDialog_RsMainThreadID 64342
-#define UExceptionDialog_RsExceptionThreadID 64343
-#define UExceptionDialog_RsMainThreadCallStack 64344
-#define UExceptionDialog_RsThreadCallStack 64345
-#define UExceptionDialog_RsErrorMessage 64346
-#define UExceptionDialog_RsDetailsIntro 64347
-#define UExceptionDialog_RsUnitVersioningIntro 64348
+#define UExceptionDialog_RsThread 64320
+#define UExceptionDialog_RsMissingVersionInfo 64321
+#define UExceptionDialog_RsExceptionStack 64322
+#define UExceptionDialog_RsMainThreadID 64323
+#define UExceptionDialog_RsExceptionThreadID 64324
+#define UExceptionDialog_RsMainThreadCallStack 64325
+#define UExceptionDialog_RsThreadCallStack 64326
+#define UExceptionDialog_RsErrorMessage 64327
+#define UExceptionDialog_RsDetailsIntro 64328
+#define UExceptionDialog_RsUnitVersioningIntro 64329
+#define Main_TMainForm_Change_Operator_QSOs 64336
+#define Main_TMainForm_Change_Power_QSOs 64337
+#define Main_TMainForm_Change_TXNO_QSOs 64338
+#define Main_TMainForm_Need_File_Name 64339
+#define Main_TMainForm_QTC_Sent 64340
+#define UExceptionDialog_RsAppError 64341
+#define UExceptionDialog_RsExceptionClass 64342
+#define UExceptionDialog_RsExceptionMessage 64343
+#define UExceptionDialog_RsExceptionAddr 64344
+#define UExceptionDialog_RsStackList 64345
+#define UExceptionDialog_RsModulesList 64346
+#define UExceptionDialog_RsOSVersion 64347
+#define UExceptionDialog_RsProcessor 64348
+#define UExceptionDialog_RsMemory 64349
+#define UExceptionDialog_RsScreenRes 64350
+#define UExceptionDialog_RsActiveControl 64351
 #define System_Bindings_Consts_sFloatToIntegerDesc 64352
 #define System_Bindings_Consts_sTStringsToString 64353
 #define System_Bindings_Consts_sTStringToStringDesc 64354
@@ -29,14 +42,14 @@
 #define System_Bindings_Consts_sStringToChar 64357
 #define System_Bindings_Consts_sStringToCharDesc 64358
 #define UMenu_UMenu_PleaseEnterYourCallsign 64359
-#define UExceptionDialog_RsAppError 64360
-#define UExceptionDialog_RsExceptionClass 64361
-#define UExceptionDialog_RsExceptionMessage 64362
-#define UExceptionDialog_RsExceptionAddr 64363
-#define UExceptionDialog_RsStackList 64364
-#define UExceptionDialog_RsModulesList 64365
-#define UExceptionDialog_RsOSVersion 64366
-#define UExceptionDialog_RsProcessor 64367
+#define Main_TMainForm_Comfirm_Delete_Qso 64360
+#define Main_TMainForm_Comfirm_Delete_Qsos 64361
+#define Main_TMainForm_New_Multi_Only 64362
+#define Main_TMainForm_Change_Date 64363
+#define Main_TMainForm_Confirm_Save_Changes 64364
+#define Main_TMainForm_Active_Band_Adjusted 64365
+#define Main_TMainForm_Change_Band_QSOs 64366
+#define Main_TMainForm_Change_Mode_QSOs 64367
 #define System_Bindings_Consts_sNilToBooleanDesc 64368
 #define System_Bindings_Consts_sNilToVariant 64369
 #define System_Bindings_Consts_sNilToVariantDesc 64370
@@ -1207,9 +1220,6 @@
 #define System_SysConst_SFileNotFound 65535
 STRINGTABLE
 BEGIN
-	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
-	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
-	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
 	UExceptionDialog_RsThread,	L"Thread: %s"
 	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
 	UExceptionDialog_RsExceptionStack,	L"Exception stack"
@@ -1220,14 +1230,11 @@ BEGIN
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
-	System_Bindings_Consts_sFloatToIntegerDesc,	L"\x6D6E\x52D5\x5C0F\x6570\x70B9\x6570\x3092 Round() \x3067\x6574\x6570\x306B\x5909\x63DB"
-	System_Bindings_Consts_sTStringsToString,	L"TStringsToString"
-	System_Bindings_Consts_sTStringToStringDesc,	L""
-	System_Bindings_Consts_sStringToTStrings,	L"StringToTStrings"
-	System_Bindings_Consts_sStringToTStringsDesc,	L""
-	System_Bindings_Consts_sStringToChar,	L"StringToChar"
-	System_Bindings_Consts_sStringToCharDesc,	L""
-	UMenu_UMenu_PleaseEnterYourCallsign,	L"\x8CB4\x5C40\x306E\x30B3\x30FC\x30EB\x30B5\x30A4\x30F3\x3092\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
+	Main_TMainForm_Change_Operator_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x30AA\x30DA\x30EC\x30FC\x30BF\x30FC\x540D\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
+	Main_TMainForm_Change_Power_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x96FB\x529B\x7B26\x53F7\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
+	Main_TMainForm_Change_TXNO_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E TX# \x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
+	Main_TMainForm_Need_File_Name,	L"\x30D5\x30A1\x30A4\x30EB\x540D\x3092\x5165\x529B\x3059\x308B\x307E\x3067\x30C7\x30FC\x30BF\x306F\x4FDD\x5B58\x3055\x308C\x307E\x305B\x3093"
+	Main_TMainForm_QTC_Sent,	L"Ctrl+Q\x3092\x62BC\x3059\x3068QTC\x3092\x9001\x4FE1\x3067\x304D\x307E\x3059"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1236,6 +1243,25 @@ BEGIN
 	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
 	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
 	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
+	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
+	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
+	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
+	System_Bindings_Consts_sFloatToIntegerDesc,	L"\x6D6E\x52D5\x5C0F\x6570\x70B9\x6570\x3092 Round() \x3067\x6574\x6570\x306B\x5909\x63DB"
+	System_Bindings_Consts_sTStringsToString,	L"TStringsToString"
+	System_Bindings_Consts_sTStringToStringDesc,	L""
+	System_Bindings_Consts_sStringToTStrings,	L"StringToTStrings"
+	System_Bindings_Consts_sStringToTStringsDesc,	L""
+	System_Bindings_Consts_sStringToChar,	L"StringToChar"
+	System_Bindings_Consts_sStringToCharDesc,	L""
+	UMenu_UMenu_PleaseEnterYourCallsign,	L"\x8CB4\x5C40\x306E\x30B3\x30FC\x30EB\x30B5\x30A4\x30F3\x3092\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
+	Main_TMainForm_Comfirm_Delete_Qso,	L"\x3053\x306EQSO\x3092\x524A\x9664\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
+	Main_TMainForm_Comfirm_Delete_Qsos,	L"\x3053\x308C\x3089\x306E QSO \x3092\x524A\x9664\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
+	Main_TMainForm_New_Multi_Only,	L"\x3053\x306E\x5C40\x306F\x30CB\x30E5\x30FC\x30DE\x30EB\x30C1\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x304C\x3001\x3068\x308A\x3042\x3048\x305A\x8A18\x9332\x3057\x307E\x3059"
+	Main_TMainForm_Change_Date,	L"\x65E5\x4ED8\x3092\x5909\x66F4\x3059\x308B\x306B\x306F\x3001\x6642\x523B\x30D5\x30A3\x30FC\x30EB\x30C9\x3092\x30C0\x30D6\x30EB\x30AF\x30EA\x30C3\x30AF\x3057\x3066\x304F\x3060\x3055\x3044\x3002"
+	Main_TMainForm_Confirm_Save_Changes,	L"\x5909\x66F4\x3092 %s \x306B\x4FDD\x5B58\x3057\x307E\x3059\x304B\xFF1F"
+	Main_TMainForm_Active_Band_Adjusted,	L"\x30A2\x30AF\x30C6\x30A3\x30D6\x306A\x30D0\x30F3\x30C9\x3092\x30B3\x30F3\x30C6\x30B9\x30C8\x306B\x5FC5\x8981\x306A\x30D0\x30F3\x30C9\x306B\x5408\x308F\x305B\x307E\x3057\x305F"
+	Main_TMainForm_Change_Band_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x30D0\x30F3\x30C9\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
+	Main_TMainForm_Change_Mode_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x30E2\x30FC\x30C9\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	System_Bindings_Consts_sNilToBooleanDesc,	L""
 	System_Bindings_Consts_sNilToVariant,	L"Nil \x304B\x3089\x30D0\x30EA\x30A2\x30F3\x30C8\x3078"
 	System_Bindings_Consts_sNilToVariantDesc,	L""

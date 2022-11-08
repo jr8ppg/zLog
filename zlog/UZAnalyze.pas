@@ -690,17 +690,17 @@ begin
          Continue;
       end;
 
-      strText := ' ' + RightStr('    ' + MHzString[b], 4) + ' MHz     ' +
-                 RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FQso), 4) + '      ' +
-                 RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FPts), 4) + '    ' +
-                 RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FMulti), 4);
+      strText := ' ' + RightStr('    ' + MHzString[b], 4) + ' MHz    ' +
+                 RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FQso), 5) + '     ' +
+                 RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FPts), 5) + '   ' +
+                 RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FMulti), 5);
       sl.Add(strText);
    end;
 
-   strText := '  合　計     ' +
-              RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FQso), 5) + '     ' +
-              RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FPts), 5) + ' × ' +
-              RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FMulti), 4) + '  ＝  ' +
+   strText := '  合　計    ' +
+              RightStr('      ' + IntToStr(FCountData[HTOTAL][VTOTAL].FQso), 6) + '    ' +
+              RightStr('      ' + IntToStr(FCountData[HTOTAL][VTOTAL].FPts), 6) + ' ×' +
+              RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FMulti), 5) + '  ＝  ' +
               IntToStr(FCountData[HTOTAL][VTOTAL].FPts * FCountData[HTOTAL][VTOTAL].FMulti);
    sl.Add(strText);
    sl.Add('');
@@ -736,7 +736,7 @@ begin
          Continue;
       end;
 
-      strText := strText + '     ' + RightStr('    ' + MHzString[b], 4);
+      strText := strText + '    ' + RightStr('     ' + MHzString[b], 5);
    end;
 
    strText := strText + '       ALL';
@@ -760,11 +760,11 @@ begin
          end;
 
          if fShowCW = True then begin
-            strText := strText + RightStr('    ' + IntToStr(FCountData[i][b].FQso), 4) +
+            strText := strText + RightStr('     ' + IntToStr(FCountData[i][b].FQso), 5) +
                        CwToStr(FCountData[i][b].FCw, 5);
          end
          else begin
-            strText := strText + RightStr('    ' + IntToStr(FCountData[i][b].FQso), 4) + '     ';
+            strText := strText + RightStr('     ' + IntToStr(FCountData[i][b].FQso), 5) + '    ';
          end;
       end;
 
@@ -778,7 +778,7 @@ begin
       end;
 
       // 見出し
-      strText := ' [' + HourText(i) + '] ' + strText;
+      strText := ' [' + HourText(i) + ']' + strText;
 
       sl.Add(strText);
    end;
@@ -794,11 +794,11 @@ begin
       end;
 
       if fShowCW = True then begin
-         strText := strText + QsoToStr(FCountData[HTOTAL][b].FQso, 4) +
+         strText := strText + QsoToStr(FCountData[HTOTAL][b].FQso, 5) +
                               CwToStr(FCountData[HTOTAL][b].FCw, 5);
       end
       else begin
-         strText := strText + QsoToStr(FCountData[HTOTAL][b].FQso, 4) + '     ';
+         strText := strText + QsoToStr(FCountData[HTOTAL][b].FQso, 5) + '    ';
       end;
    end;
 
@@ -810,7 +810,7 @@ begin
    else begin
       strText := strText + QsoToStr(FCountData[HTOTAL][VTOTAL].FQso, 5);
    end;
-   strText := 'Total ' + strText;
+   strText := 'Total' + strText;
 
    sl.Add(strText);
    sl.Add('');
@@ -850,7 +850,7 @@ begin
          Continue;
       end;
 
-      strText := strText + '     ' + RightStr('    ' + MHzString[b], 4);
+      strText := strText + '    ' + RightStr('     ' + MHzString[b], 5);
    end;
 
    accumulation_count[VTOTAL] := 0;
@@ -879,11 +879,11 @@ begin
          accumulation_count2[b] := accumulation_count2[b] + FCountData[i][b].FCw;
 
          if fShowCW = True then begin
-            strText := strText + QsoToStr(accumulation_count[b], 4) +
+            strText := strText + QsoToStr(accumulation_count[b], 5) +
                                  CwToStr(accumulation_count2[b], 5);
          end
          else begin
-            strText := strText + QsoToStr(accumulation_count[b], 4) + '     ';
+            strText := strText + QsoToStr(accumulation_count[b], 5) + '    ';
          end;
       end;
 
@@ -900,7 +900,7 @@ begin
       end;
 
       // 見出し
-      strText := ' [' + HourText(i) + '] ' + strText;
+      strText := ' [' + HourText(i) + ']' + strText;
 
       sl.Add(strText);
    end;

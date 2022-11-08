@@ -1056,7 +1056,7 @@ type
     procedure HighlightCallsign(fHighlight: Boolean);
     procedure BandScopeNotifyWorked(aQSO: TQSO);
     procedure SetYourCallsign(strCallsign, strNumber: string);
-    procedure SetFrequency(freq: Integer);
+    procedure SetFrequency(freq: Int64);
     procedure BSRefresh();
     procedure BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
@@ -1119,6 +1119,22 @@ type
   public
     constructor Create(formParent: TForm; aQSO: TQSO);
   end;
+
+resourcestring
+  TMainForm_Enter_Frequency = 'Enter frequency in kHz';
+  TMainForm_Comfirm_Delete_Qso = 'Are you sure to delete this QSO?';
+  TMainForm_Comfirm_Delete_Qsos = 'Are you sure to delete these QSO''s?';
+  TMainForm_New_Multi_Only = 'This station is not a new multiplier, but will be logged anyway.';
+  TMainForm_Change_Date = 'To change the date, double click the time field.';
+  TMainForm_Confirm_Save_Changes = 'Save changes to %s ?';
+  TMainForm_Active_Band_Adjusted = 'Active Bands adjusted to the required bands';
+  TMainForm_Change_Band_QSOs = 'Are you sure to change the band for these QSO''s?';
+  TMainForm_Change_Mode_QSOs = 'Are you sure to change the mode for these QSO''s?';
+  TMainForm_Change_Operator_QSOs = 'Are you sure to change the operator names for these QSO''s?';
+  TMainForm_Change_Power_QSOs = 'Are you sure to change the power for these QSO''s?';
+  TMainForm_Change_TXNO_QSOs = 'Are you sure to change the TX# for these QSO''s?';
+  TMainForm_Need_File_Name = 'Data will NOT be saved until you enter the file name';
+  TMainForm_QTC_Sent = 'QTC can be sent by pressing Ctrl+Q';
 
 var
   MainForm: TMainForm;
@@ -2118,9 +2134,11 @@ end;
 procedure TMainForm.FileNew(Sender: TObject);
 var
    R: word;
+   S: string;
 begin
    if Log.Saved = False then begin
-      R := MessageDlg('Save changes to ' + CurrentFileName + ' ?', mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
+      S := Format(TMainForm_Confirm_Save_Changes, [CurrentFileName]);
+      R := MessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
       case R of
          mrYes:
             FileSave(Sender);
@@ -2199,7 +2217,8 @@ var
 begin
 
    if Log.Saved = False then begin
-      R := MessageDlg('Save changes to ' + CurrentFileName + ' ?', mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
+      S := Format(TMainForm_Confirm_Save_Changes, [CurrentFileName]);
+      R := MessageDlg(TMainForm_Confirm_Save_Changes, mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
       case R of
          mrYes:
             FileSave(Sender);
@@ -2381,7 +2400,7 @@ begin
 
    rig := RigControl.GetRig(FCurrentRigSet, B);
    if rig <> nil then begin
-      rig.SetBand(Q);
+      rig.SetBand(FCurrentRigSet, Q);
 
       if CurrentQSO.Mode = mSSB then begin
          Rig.SetMode(CurrentQSO);
@@ -3308,7 +3327,7 @@ begin
          WriteStatusLine('This QSO is currently locked', True);
          exit;
       end;
-      R := MessageDlg('Are you sure to delete this QSO?', mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
+      R := MessageDlg(TMainForm_Comfirm_Delete_Qso, mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
       if R = mrNo then
          exit;
 
@@ -3323,7 +3342,7 @@ begin
       end;
 
       if (_top < L.Count - 1) and (_bottom <= L.Count - 1) then begin
-         R := MessageDlg('Are you sure to delete these QSO''s?', mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
+         R := MessageDlg(TMainForm_Comfirm_Delete_Qsos, mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
          if R = mrNo then begin
             exit;
          end;
@@ -3918,7 +3937,7 @@ begin
    if (dmZLogGlobal.IsMultiStation() = True) then begin
       if (CurrentQSO.NewMulti1 = False) and (CurrentQSO.NewMulti2 = False) and (dmZlogGlobal.Settings._multistationwarning)
       then begin
-         MessageDlg('This station is not a new multiplier, but will be logged anyway.', mtError, [mbOK], 0); { HELP context 0 }
+         MessageDlg(TMainForm_New_Multi_Only, mtError, [mbOK], 0); { HELP context 0 }
       end;
    end;
 
@@ -4067,7 +4086,7 @@ begin
    end;
 
    if FPostContest then begin
-      MessageDlg('To change the date, double click the time field.', mtInformation, [mbOK], 0); { HELP context 0 }
+      MessageDlg(TMainForm_Change_Date, mtInformation, [mbOK], 0); { HELP context 0 }
    end;
 
    PostMessage(Handle, WM_ZLOG_INIT, 0, 0);
@@ -4546,13 +4565,15 @@ end;
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
    R: Integer;
+   S: string;
 begin
    if Log = nil then begin
       Exit;
    end;
 
    if Log.Saved = False then begin
-      R := MessageDlg('Save changes to ' + CurrentFileName + ' ?', mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
+      S := Format(TMainForm_Confirm_Save_Changes, [CurrentFileName]);
+      R := MessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
       case R of
          mrYes: begin
             CanClose := True;
@@ -5011,7 +5032,7 @@ begin
    end
    else begin
       if { (ShowCurrentBandOnly.Checked = False) and } (_top < Log.TotalQSO) and (_bottom <= Log.TotalQSO) then begin
-         R := MessageDlg('Are you sure to change the band for these QSO''s?', mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
+         R := MessageDlg(TMainForm_Change_Band_QSOs, mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
          if R = mrNo then
             exit;
          for i := _top to _bottom do begin
@@ -5437,7 +5458,7 @@ begin
    end
    else begin
       if { (ShowCurrentBandOnly.Checked = False) and } (_top < Log.TotalQSO) and (_bottom <= Log.TotalQSO) then begin
-         R := MessageDlg('Are you sure to change the mode for these QSO''s?', mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
+         R := MessageDlg(TMainForm_Change_Mode_QSOs, mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
          if R = mrNo then
             exit;
 
@@ -5492,7 +5513,7 @@ begin
    end
    else begin
       if (_top < Log.TotalQSO) and (_bottom <= Log.TotalQSO) then begin
-         R := MessageDlg('Are you sure to change the operator names for these QSO''s?', mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
+         R := MessageDlg(TMainForm_Change_Operator_QSOs, mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
          if R = mrNo then
             exit;
 
@@ -5632,7 +5653,8 @@ var
    S: string;
 begin
    if Log.Saved = False then begin
-      R := MessageDlg('Save changes to ' + CurrentFileName + ' ?', mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
+      S := Format(TMainForm_Confirm_Save_Changes, [CurrentFileName]);
+      R := MessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
       case R of
          mrYes:
             FileSave(Sender);
@@ -5746,7 +5768,7 @@ begin
    end
    else begin
       if (_top < Log.TotalQSO) and (_bottom <= Log.TotalQSO) then begin
-         R := MessageDlg('Are you sure to change the power for these QSO''s?', mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
+         R := MessageDlg(TMainForm_Change_Power_QSOs, mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
          if R = mrNo then
             exit;
 
@@ -5814,6 +5836,11 @@ begin
    end;
 
    WriteStatusLine(IntToStr(i) + ' QSO(s) merged.', True);
+
+   // Analyzeウインドウが表示されている場合は表示更新する
+   if FZAnalyze.Visible then begin
+      PostMessage(FZAnalyze.Handle, WM_ANALYZE_UPDATE, 0, 0);
+   end;
 end;
 
 procedure TMainForm.SaveFileAndBackUp;
@@ -5854,7 +5881,7 @@ begin
    end
    else begin
       if (_top < Log.TotalQSO) and (_bottom <= Log.TotalQSO) then begin
-         R := MessageDlg('Are you sure to change the TX# for these QSO''s?', mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
+         R := MessageDlg(TMainForm_Change_TXNO_QSOs, mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
          if R = mrNo then begin
             exit;
          end;
@@ -5959,7 +5986,7 @@ begin
          rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
 
          if rig <> nil then begin
-            rig.SetBand(CurrentQSO);
+            rig.SetBand(FCurrentRigSet, CurrentQSO);
 
             if CurrentQSO.Mode = mSSB then begin
                rig.SetMode(CurrentQSO);
@@ -6370,12 +6397,15 @@ begin
 
             if FileExists(OpenDialog.FileName) then begin
                LoadNewContestFromFile(OpenDialog.FileName);
+            end
+            else begin
+               Log.SaveToFile(OpenDialog.FileName);
             end;
 
             dmZLogGlobal.Settings.FLastFileFilterIndex := OpenDialog.FilterIndex;
          end
          else begin // user hit cancel
-            MessageDlg('Data will NOT be saved until you enter the file name', mtWarning, [mbOK], 0); { HELP context 0 }
+            MessageDlg(TMainForm_Need_File_Name, mtWarning, [mbOK], 0); { HELP context 0 }
          end;
       end;
 
@@ -6409,7 +6439,7 @@ begin
       dmZlogGlobal.ReadWindowState(MyContest.ScoreForm, 'ScoreForm', True);
 
       if Pos('WAEDC', MyContest.Name) > 0 then begin
-         MessageBox(Handle, PChar('QTC can be sent by pressing Ctrl+Q'), PChar(Application.Title), MB_ICONINFORMATION or MB_OK);
+         MessageBox(Handle, PChar(TMainForm_QTC_Sent), PChar(Application.Title), MB_ICONINFORMATION or MB_OK);
       end;
 
       CurrentQSO.UpdateTime;
@@ -6422,7 +6452,7 @@ begin
       // 使用可能なバンドが無いときは必要バンドをONにする
       if c = 0 then begin
          AdjustActiveBands();
-         MessageDlg('Active Bands adjusted to the required bands', mtInformation, [mbOK], 0);
+         MessageDlg(TMainForm_Active_Band_Adjusted, mtInformation, [mbOK], 0);
       end;
 
       // 低いバンドから使用可能なバンドを探して最初のバンドとする
@@ -6509,6 +6539,11 @@ begin
 
       // 最初はRIG1から
       SwitchRig(1);
+
+      // Analyzeウインドウが表示されている場合は表示更新する
+      if FZAnalyze.Visible then begin
+         PostMessage(FZAnalyze.Handle, WM_ANALYZE_UPDATE, 0, 0);
+      end;
 
       // 初期化完了
       FInitialized := True;
@@ -7249,7 +7284,7 @@ begin
 
          // バンド変更
          CurrentQSO.Band := b;
-         rig.SetBand(CurrentQSO);
+         rig.SetBand(FCurrentRigSet, CurrentQSO);
 
          // Antenna Select
          rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[b]);
@@ -8391,7 +8426,7 @@ begin
 
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
-      rig.SetBand(CurrentQSO);
+      rig.SetBand(FCurrentRigSet, CurrentQSO);
 
       if CurrentQSO.Mode = mSSB then begin
          rig.SetMode(CurrentQSO);
@@ -9382,10 +9417,11 @@ begin
 end;
 
 // Cluster or BandScopeから呼ばれる
-procedure TMainForm.SetFrequency(freq: Integer);
+procedure TMainForm.SetFrequency(freq: Int64);
 var
    b: TBand;
    Q: TQSO;
+   m: TMode;
    rig: TRig;
    rigset: Integer;
 begin
@@ -9409,8 +9445,22 @@ begin
       if dmZLogGlobal.Settings._bandscope_use_estimated_mode = True then begin
          Q := TQSO.Create();
          Q.Band := b;
+
+         // 周波数より推定モード取得
          Q.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(freq);
-         rig.SetMode(Q);
+
+         // 現在のモードと異なる or 常にモードセットなら
+         m := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
+         if (m <> Q.Mode) or (dmZLogGlobal.Settings._bandscope_always_change_mode = True) then begin
+            // 推定モードセット
+	        rig.SetMode(Q);
+
+            // もう一度周波数を設定(side bandずれ対策)
+            if dmZLogGlobal.Settings._bandscope_setfreq_after_mode_change = True then begin
+               rig.SetFreq(freq, IsCQ());
+            end;
+         end;
+
          Q.Free();
       end;
 
