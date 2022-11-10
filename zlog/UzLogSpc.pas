@@ -8,7 +8,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   StdCtrls, System.Math, Generics.Collections, Generics.Defaults,
-  System.Character,
+  System.Character, System.DateUtils,
   UzLogConst, UzLogGlobal, UzLogQSO;
 
 type
@@ -27,22 +27,56 @@ type
     property Text: string read GetText;
   end;
 
+  TSuperDataComparer = class(TComparer<TSuperData>)
+  public
+    function Compare(const Left, Right: TSuperData): Integer; override;
+  end;
+
+  TSuperDataList = class(TObjectList<TSuperData>)
+  private
+    FSuperDataComparer: TSuperDataComparer;
+  public
+    constructor Create(OwnsObjects: Boolean = True);
+    destructor Destroy(); override;
+    function IndexOf(SD: TSuperData): Integer;
+    procedure Add(SD: TSuperData);
+  end;
+
+  TSuperIndex = class(TObject)
+  private
+    FCallsign : string;
+    FList: TSuperDataList;
+  public
+    constructor Create();
+    destructor Destroy(); override;
+    property Callsign: string read FCallsign write FCallsign;
+    property List: TSuperDataList read FList;
+  end;
+
   TSuperListComparer1 = class(TComparer<TSuperData>)
   public
     function Compare(const Left, Right: TSuperData): Integer; override;
   end;
 
-  TSuperList = class(TObjectList<TSuperData>)
+  TSuperIndexComparer1 = class(TComparer<TSuperIndex>)
+  public
+    function Compare(const Left, Right: TSuperIndex): Integer; override;
+  end;
+
+  TSuperList = class(TObjectList<TSuperIndex>)
   private
+    FDuplicates: Boolean;
     FCallsignComparer: TSuperListComparer1;
+    FIndexComparer: TSuperIndexComparer1;
   public
     constructor Create(OwnsObjects: Boolean = True);
     destructor Destroy(); override;
-    function IndexOf(SD: TSuperData): Integer;
-    function ObjectOf(SD: TSuperData): TSuperData;
-    procedure SortByCallsign();
+    function IndexOf(SD: TSuperData): Integer;        // unused
+    function ObjectOf(SD: TSuperData): TSuperData;    // referenced from USpotClass.pas
+    procedure SortByCallsign();                       // unused
     procedure AddData(D: TDateTime; C, N: string);
     procedure SaveToFile(filename: string);
+    property Duplicates: Boolean read FDuplicates write FDuplicates;
   end;
   PTSuperList = ^TSuperList;
 
@@ -135,35 +169,25 @@ begin
    Result := FillRight(callsign, 11) + number;
 end;
 
-{ TSuperList }
+{ TSuperDataList }
 
-constructor TSuperList.Create(OwnsObjects: Boolean);
+constructor TSuperDataList.Create(OwnsObjects: Boolean);
 begin
    Inherited Create(OwnsObjects);
-   FCallsignComparer := TSuperListComparer1.Create();
+   FSuperDataComparer := TSuperDataComparer.Create();
 end;
 
-destructor TSuperList.Destroy();
+destructor TSuperDataList.Destroy();
 begin
    Inherited;
-   FCallsignComparer.Free();
+   FSuperDataComparer.Free();
 end;
 
-function TSuperList.IndexOf(SD: TSuperData): Integer;
+function TSuperDataList.IndexOf(SD: TSuperData): Integer;
 var
    Index: Integer;
-//   i: Integer;
 begin
-{
-   for i := 0 to Count - 1 do begin
-      if SD.Callsign = Items[i].Callsign then begin
-         Result := i;
-         Exit;
-      end;
-   end;
-   Result := -1;
-}
-   if BinarySearch(SD, Index, FCallsignComparer) = True then begin
+   if BinarySearch(SD, Index, FSuperDataComparer) = True then begin
       Result := Index;
    end
    else begin
@@ -171,51 +195,123 @@ begin
    end;
 end;
 
+procedure TSuperDataList.Add(SD: TSuperData);
+var
+   Index: Integer;
+begin
+   if BinarySearch(SD, Index, FSuperDataComparer) = True then begin
+      if Items[Index].Date < SD.Date then begin
+         Items[Index].Date := SD.Date;
+      end;
+      SD.Free();
+   end
+   else begin
+      Insert(Index, SD);
+   end;
+end;
+
+{ TSuperIndex }
+
+constructor TSuperIndex.Create();
+begin
+   FList := TSuperDataList.Create(True);
+end;
+
+destructor TSuperIndex.Destroy();
+begin
+   FList.Free();
+end;
+
+{ TSuperList }
+
+constructor TSuperList.Create(OwnsObjects: Boolean);
+begin
+   Inherited Create(OwnsObjects);
+   FCallsignComparer := TSuperListComparer1.Create();
+   FIndexComparer := TSuperIndexComparer1.Create();
+   FDuplicates := True;
+end;
+
+destructor TSuperList.Destroy();
+begin
+   Inherited;
+   FCallsignComparer.Free();
+   FIndexComparer.Free();
+end;
+
+function TSuperList.IndexOf(SD: TSuperData): Integer;
+var
+   Index: Integer;
+   SI: TSuperIndex;
+begin
+   SI := TSuperIndex.Create();
+   SI.Callsign := SD.Callsign;
+   try
+      if BinarySearch(SI, Index, FIndexComparer) = True then begin
+         Result := Index;
+      end
+      else begin
+         Result := -1;
+      end;
+   finally
+      SI.Free();
+   end;
+end;
+
 function TSuperList.ObjectOf(SD: TSuperData): TSuperData;
 var
    Index: Integer;
-//   i: Integer;
+   SI: TSuperIndex;
+   L: Integer;
 begin
-{
-   for i := 0 to Count - 1 do begin
-      if SD.Callsign = Items[i].Callsign then begin
-         Result := Items[i];
-         Exit;
+   SI := TSuperIndex.Create();
+   SI.Callsign := SD.Callsign;
+   try
+      if BinarySearch(SI, Index, FIndexComparer) = True then begin
+         L := Items[Index].List.Count - 1;
+         Result := Items[Index].List[L];
+      end
+      else begin
+         Result := nil;
       end;
-   end;
-   Result := nil;
-}
-
-   if BinarySearch(SD, Index, FCallsignComparer) = True then begin
-      Result := Items[Index];
-   end
-   else begin
-      Result := nil;
+   finally
+      SI.Free();
    end;
 end;
 
 procedure TSuperList.SortByCallsign();
 begin
-   Sort(FCallsignComparer);
+   Sort(FIndexComparer);
 end;
 
 procedure TSuperList.AddData(D: TDateTime; C, N: string);
 var
    O: TSuperData;
    SD: TSuperData;
+   SI: TSuperIndex;
    Index: Integer;
 begin
    SD := TSuperData.Create(D, C, N);
-   if BinarySearch(SD, Index, FCallsignComparer) = True then begin
-      O := Items[Index];
-      if O.Date < SD.Date then begin
-         O.Date := SD.Date;
-         O.Number := SD.Number;
+   SI := TSuperIndex.Create();
+   SI.Callsign := SD.Callsign;
+   if BinarySearch(SI, Index, FIndexComparer) = True then begin
+      // 重複有りならリストに追加する
+      if FDuplicates = True then begin
+         Items[Index].List.Add(SD);
+      end
+      else begin  // 重複無しは日付をUPDATEする
+         O := Items[Index].List[0];
+         if O.Date < SD.Date then begin
+            O.Date := SD.Date;
+            O.Number := SD.Number;
+         end;
+         SD.Free();
       end;
-      SD.Free();
+      SI.Free();
    end
-   else begin
-      Insert(Index, SD);
+   else begin  // 無ければIndexリストに追加
+      SI.List.Add(SD);
+      Insert(Index, SI);
    end;
 end;
 
@@ -234,9 +330,24 @@ begin
    CloseFile(F);
 end;
 
+{ TSuperDataComparer }
+
+function TSuperDataComparer.Compare(const Left, Right: TSuperData): Integer;
+begin
+   Result := CompareText(Left.Callsign, Right.Callsign) +
+             CompareText(Left.Number, Right.Number) * 10;
+end;
+
 { TSuperListComparer1 }
 
 function TSuperListComparer1.Compare(const Left, Right: TSuperData): Integer;
+begin
+   Result := CompareText(Left.Callsign, Right.Callsign);
+end;
+
+{ TSuperIndexComparer1 }
+
+function TSuperIndexComparer1.Compare(const Left, Right: TSuperIndex): Integer;
 begin
    Result := CompareText(Left.Callsign, Right.Callsign);
 end;
@@ -254,36 +365,36 @@ end;
 procedure TSuperCheckNPlusOneThread.Execute();
 var
    i: Integer;
-   sd: TSuperData;
    maxhit: Integer;
    n: Integer;
    score: Extended;
    L: TSuperResultList;
    R: TSuperResult;
+   SI: TSuperIndex;
 begin
    L := TSuperResultList.Create();
    try
       ListBox.Items.Clear();
       maxhit := dmZlogGlobal.Settings._maxsuperhit;
       for i := 0 to FSuperList.Count - 1 do begin
+         SI := FSuperList[i];
+
          if Terminated = True then begin
             Break;
          end;
 
-         sd := TSuperData(FSuperList[i]);
-
          // レーベンシュタイン距離を求める
-         n := LD_dp(sd.Callsign, FPartialStr);
+         n := LD_dp(SI.Callsign, FPartialStr);
 
          // レーベンシュタイン距離から類似度を算出
-         score := n / Max(Length(sd.Callsign), Length(FPartialStr));
+         score := n / Max(Length(SI.Callsign), Length(FPartialStr));
 
          // 0なら一致
          // 0.1667 １文字不一致
          // 0.3333 ２文字不一致
          // 0.5000 ３文字不一致
          if score < 0.3 then begin
-            R := TSuperResult.Create(sd.Callsign, n, score);
+            R := TSuperResult.Create(SI.Callsign, n, score);
             L.Add(R);
          end;
       end;

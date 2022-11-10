@@ -3757,17 +3757,17 @@ begin
 
    CurrentQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
 
-   MainForm.GridAdd(CurrentQSO);
+   GridAdd(CurrentQSO);
 
    CurrentQSO.Reserve2 := $00;
 
-   MainForm.ReEvaluateQSYCount;
+   ReEvaluateQSYCount;
 
-   if MainForm.FRateDialog.Visible then begin
-      MainForm.FRateDialog.UpdateGraph;
+   if FRateDialog.Visible then begin
+      FRateDialog.UpdateGraph;
    end;
-   if MainForm.FRateDialogEx.Visible then begin
-      MainForm.FRateDialogEx.UpdateGraph;
+   if FRateDialogEx.Visible then begin
+      FRateDialogEx.UpdateGraph;
    end;
 
    // M/SA–{—ˆMulti Station‚ÍNEW MULTI‚µ‚©ŒğM‚Å‚«‚È‚¢
@@ -8760,6 +8760,8 @@ var
    maxhit, hit: integer;
    sd, FirstData: TSuperData;
    L: TSuperList;
+   SI: TSuperIndex;
+   j: Integer;
 begin
    if FSpcDataLoading = True then begin
       Exit;
@@ -8806,23 +8808,27 @@ begin
    {$ENDIF}
 
    for i := 0 to L.Count - 1 do begin
-      sd := TSuperData(L[i]);
-      if FSuperCheck.Count = 0 then begin
-         FirstData := sd;
-      end;
+      SI := L[i];
 
-      if PartialMatch(PartialStr, sd.callsign) then begin
-         if hit = 0 then begin
-            FSpcHitCall := sd.callsign;
+      for j := 0 to SI.List.Count - 1 do begin
+         sd := SI.List[j];
+         if FSuperCheck.Count = 0 then begin
+            FirstData := sd;
          end;
 
-         FSuperCheck.Add(sd.Text);
+         if PartialMatch(PartialStr, sd.callsign) then begin
+            if hit = 0 then begin
+               FSpcHitCall := sd.callsign;
+            end;
 
-         inc(hit);
-      end;
+            FSuperCheck.Add(sd.Text);
 
-      if hit >= maxhit then begin
-         break;
+            inc(hit);
+         end;
+
+         if hit >= maxhit then begin
+            break;
+         end;
       end;
    end;
 
