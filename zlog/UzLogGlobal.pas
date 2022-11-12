@@ -56,6 +56,7 @@ type
   TSuperCheckParam = record
     FSuperCheckMethod: Integer;
     FSuperCheckFolder: string;
+    FAcceptDuplicates: Boolean;
     FFullMatchHighlight: Boolean;
     FFullMatchColor: TColor;
   end;
@@ -1028,6 +1029,7 @@ begin
       // SuperCheck
       Settings.FSuperCheck.FSuperCheckMethod := ini.ReadInteger('SuperCheck', 'Method', 0);
       Settings.FSuperCheck.FSuperCheckFolder := ini.ReadString('SuperCheck', 'Folder', '');
+      Settings.FSuperCheck.FAcceptDuplicates := ini.ReadBool('SuperCheck', 'AcceptDuplicates', True);
       Settings.FSuperCheck.FFullMatchHighlight := ini.ReadBool('SuperCheck', 'FullMatchHighlight', True);
       Settings.FSuperCheck.FFullMatchColor := ZStringToColorDef(ini.ReadString('SuperCheck', 'FullMatchColor', '$7fffff'), clYellow);
 
@@ -1613,6 +1615,7 @@ begin
       // SuperCheck
       ini.WriteInteger('SuperCheck', 'Method', Settings.FSuperCheck.FSuperCheckMethod);
       ini.WriteString('SuperCheck', 'Folder', Settings.FSuperCheck.FSuperCheckFolder);
+      ini.WriteBool('SuperCheck', 'AcceptDuplicates', Settings.FSuperCheck.FAcceptDuplicates);
       ini.WriteBool('SuperCheck', 'FullMatchHighlight', Settings.FSuperCheck.FFullMatchHighlight);
       ini.WriteString('SuperCheck', 'FullMatchColor', ZColorToString(Settings.FSuperCheck.FFullMatchColor));
 

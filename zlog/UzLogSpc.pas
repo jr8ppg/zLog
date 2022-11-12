@@ -65,7 +65,7 @@ type
 
   TSuperList = class(TObjectList<TSuperIndex>)
   private
-    FDuplicates: Boolean;
+    FAcceptDuplicates: Boolean;
     FCallsignComparer: TSuperListComparer1;
     FIndexComparer: TSuperIndexComparer1;
   public
@@ -76,7 +76,7 @@ type
     procedure SortByCallsign();                       // unused
     procedure AddData(D: TDateTime; C, N: string);
     procedure SaveToFile(filename: string);
-    property Duplicates: Boolean read FDuplicates write FDuplicates;
+    property AcceptDuplicates: Boolean read FAcceptDuplicates write FAcceptDuplicates;
   end;
   PTSuperList = ^TSuperList;
 
@@ -229,7 +229,7 @@ begin
    Inherited Create(OwnsObjects);
    FCallsignComparer := TSuperListComparer1.Create();
    FIndexComparer := TSuperIndexComparer1.Create();
-   FDuplicates := True;
+   FAcceptDuplicates := True;
 end;
 
 destructor TSuperList.Destroy();
@@ -296,7 +296,7 @@ begin
    SI.Callsign := SD.Callsign;
    if BinarySearch(SI, Index, FIndexComparer) = True then begin
       // 重複有りならリストに追加する
-      if FDuplicates = True then begin
+      if FAcceptDuplicates = True then begin
          Items[Index].List.Add(SD);
       end
       else begin  // 重複無しは日付をUPDATEする

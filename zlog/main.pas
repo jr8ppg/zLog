@@ -8726,10 +8726,12 @@ begin
    SuperCheckFreeData();
 
    FSuperCheckList := TSuperList.Create(True);
+   FSuperCheckList.AcceptDuplicates := dmZLogGlobal.Settings.FSuperCheck.FAcceptDuplicates;
 
    for i := 0 to 255 do begin // 2.1f
       for j := 0 to 255 do begin
          FTwoLetterMatrix[i, j] := TSuperList.Create(True);
+         FTwoLetterMatrix[i, j].AcceptDuplicates := dmZLogGlobal.Settings.FSuperCheck.FAcceptDuplicates;
       end;
    end;
 end;

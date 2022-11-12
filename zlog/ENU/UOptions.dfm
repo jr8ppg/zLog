@@ -3392,7 +3392,7 @@ object formOptions: TformOptions
           Top = 43
           Width = 374
           Height = 21
-          TabOrder = 3
+          TabOrder = 4
           OnChange = OnNeedSuperCheckLoad
         end
         object radioSuperCheck2: TRadioButton
@@ -3402,6 +3402,15 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'Both'
           TabOrder = 2
+          OnClick = OnNeedSuperCheckLoad
+        end
+        object checkAcceptDuplicates: TCheckBox
+          Left = 296
+          Top = 20
+          Width = 117
+          Height = 17
+          Caption = 'Accept duplicates'
+          TabOrder = 3
           OnClick = OnNeedSuperCheckLoad
         end
       end
@@ -4842,13 +4851,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@DFKai-SB'
+          FontName = 'DFKai-SB'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 1
+          ItemIndex = 41
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
