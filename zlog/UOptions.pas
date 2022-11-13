@@ -615,6 +615,7 @@ type
     checkSetFreqAfterModeChange: TCheckBox;
     checkAlwaysChangeMode: TCheckBox;
     buttonSpotterList: TButton;
+    checkAcceptDuplicates: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -1125,6 +1126,7 @@ begin
          Settings.FSuperCheck.FSuperCheckMethod := 2;
       end;
       Settings.FSuperCheck.FSuperCheckFolder := editSuperCheckFolder.Text;
+      Settings.FSuperCheck.FAcceptDuplicates := checkAcceptDuplicates.Checked;
       Settings.FSuperCheck.FFullMatchHighlight := checkHighlightFullmatch.Checked;
       Settings.FSuperCheck.FFullMatchColor := editFullmatchColor.Color;
 
@@ -1597,6 +1599,7 @@ begin
          else radioSuperCheck2.Checked := True;
       end;
       editSuperCheckFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
+      checkAcceptDuplicates.Checked := Settings.FSuperCheck.FAcceptDuplicates;
       checkHighlightFullmatch.Checked := Settings.FSuperCheck.FFullMatchHighlight;
       editFullmatchColor.Color := Settings.FSuperCheck.FFullMatchColor;
 

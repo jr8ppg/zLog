@@ -9181,10 +9181,12 @@ begin
    SuperCheckFreeData();
 
    FSuperCheckList := TSuperList.Create(True);
+   FSuperCheckList.AcceptDuplicates := dmZLogGlobal.Settings.FSuperCheck.FAcceptDuplicates;
 
    for i := 0 to 255 do begin // 2.1f
       for j := 0 to 255 do begin
          FTwoLetterMatrix[i, j] := TSuperList.Create(True);
+         FTwoLetterMatrix[i, j].AcceptDuplicates := dmZLogGlobal.Settings.FSuperCheck.FAcceptDuplicates;
       end;
    end;
 end;
@@ -9215,6 +9217,8 @@ var
    maxhit, hit: integer;
    sd, FirstData: TSuperData;
    L: TSuperList;
+   SI: TSuperIndex;
+   j: Integer;
 begin
    if FSpcDataLoading = True then begin
       Exit;
@@ -9261,23 +9265,27 @@ begin
    {$ENDIF}
 
    for i := 0 to L.Count - 1 do begin
-      sd := TSuperData(L[i]);
-      if FSuperCheck.Count = 0 then begin
-         FirstData := sd;
-      end;
+      SI := L[i];
 
-      if PartialMatch(PartialStr, sd.callsign) then begin
-         if hit = 0 then begin
-            FSpcHitCall := sd.callsign;
+      for j := 0 to SI.List.Count - 1 do begin
+         sd := SI.List[j];
+         if FSuperCheck.Count = 0 then begin
+            FirstData := sd;
          end;
 
-         FSuperCheck.Add(sd.Text);
+         if PartialMatch(PartialStr, sd.callsign) then begin
+            if hit = 0 then begin
+               FSpcHitCall := sd.callsign;
+            end;
 
-         inc(hit);
-      end;
+            FSuperCheck.Add(sd.Text);
 
-      if hit >= maxhit then begin
-         break;
+            inc(hit);
+         end;
+
+         if hit >= maxhit then begin
+            break;
+         end;
       end;
    end;
 

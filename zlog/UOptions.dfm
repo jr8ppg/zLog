@@ -4634,7 +4634,7 @@ object formOptions: TformOptions
           Top = 43
           Width = 374
           Height = 21
-          TabOrder = 3
+          TabOrder = 4
           OnChange = OnNeedSuperCheckLoad
         end
         object radioSuperCheck2: TRadioButton
@@ -4644,6 +4644,15 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'Both'
           TabOrder = 2
+          OnClick = OnNeedSuperCheckLoad
+        end
+        object checkAcceptDuplicates: TCheckBox
+          Left = 296
+          Top = 20
+          Width = 117
+          Height = 17
+          Caption = 'Accept duplicates'
+          TabOrder = 3
           OnClick = OnNeedSuperCheckLoad
         end
       end
@@ -6084,13 +6093,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'HG'#24179#25104#35282#65402#65438#65404#65391#65400#20307'W9'
+          FontName = 'HG'#34892#26360#20307
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 56
+          ItemIndex = 50
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
