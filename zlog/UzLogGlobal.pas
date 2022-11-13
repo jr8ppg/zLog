@@ -155,10 +155,13 @@ type
     _multistationwarning : boolean; // true by default. turn off not new mult warning dialog
     _sentstr : string; {exchanges sent $Q$P$O etc. Set at menu select}
 
+    _rootpath: string;
     _soundpath : string;
     _backuppath : string;
     _cfgdatpath : string;
     _logspath : string;
+    _pluginpath: string;
+    _pluginlist: string;
 
     _pttenabled : boolean;
     _pttbefore : word;
@@ -356,6 +359,21 @@ type
     procedure SetLastBand(b: TBand);
     function GetLastMode(): TMode;
     procedure SetLastMode(m: TMode);
+
+    function GetRootPath(): string;
+    procedure SetRootPath(v: string);
+    function GetCfgDatPath(): string;
+    procedure SetCfgDatPath(v: string);
+    function GetLogPath(): string;
+    procedure SetLogPath(v: string);
+    function GetBackupPath(): string;
+    procedure SetBackupPath(v: string);
+    function GetSoundPath(): string;
+    procedure SetSoundPath(v: string);
+    function GetPluginPath(): string;
+    procedure SetPluginPath(v: string);
+    function GetSpcPath(): string;
+    procedure SetSpcPath(v: string);
 public
     { Public 宣言 }
     FCurrentFileName : string;
@@ -426,6 +444,14 @@ public
     property BandPlan: TBandPlan read FBandPlan;
     property Target: TContestTarget read FTarget;
 
+    property RootPath: string read GetRootPath write SetRootPath;
+    property CfgDatPath: string read GetCfgDatPath write SetCfgDatPath;
+    property LogPath: string read GetLogPath write SetLogPath;
+    property BackupPath: string read GetBackupPath write SetBackupPath;
+    property SoundPath: string read GetSoundPath write SetSoundPath;
+    property PluginPath: string read GetPluginPath write SetPluginPath;
+    property SpcPath: string read GetSpcPath write SetSpcPath;
+
     procedure WriteErrorLog(msg: string);
   end;
 
@@ -494,6 +520,9 @@ function TextToMode(text: string): TMode;
 function BandToPower(B: TBand): TPower;
 
 function LoadResourceString(uID: Integer): string;
+
+function IsFullPath(strPath: string): Boolean;
+function AdjustPath(v: string): string;
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -946,29 +975,32 @@ begin
       // Path
       //
 
+      // Root
+      Settings._rootpath := ini.ReadString('Preferences', 'RootPath', '');
+      if Settings._rootpath <> '' then begin
+         Settings._rootpath := IncludeTrailingPathDelimiter(Settings._rootpath);
+      end;
+
       // CFG/DAT
       Settings._cfgdatpath := ini.ReadString('Preferences', 'CFGDATPath', '');
-      if Settings._cfgdatpath <> '' then begin
-         Settings._cfgdatpath := IncludeTrailingPathDelimiter(Settings._cfgdatpath);
-      end;
+      Settings._cfgdatpath := AdjustPath(Settings._cfgdatpath);
 
       // Logs
       Settings._logspath := ini.ReadString('Preferences', 'LogsPath', '');
-      if Settings._logspath <> '' then begin
-         Settings._logspath := IncludeTrailingPathDelimiter(Settings._logspath);
-      end;
+      Settings._logspath := AdjustPath(Settings._logspath);
 
       // Back up path
       Settings._backuppath := ini.ReadString('Preferences', 'BackUpPath', '');
-      if Settings._backuppath <> '' then begin
-         Settings._backuppath := IncludeTrailingPathDelimiter(Settings._backuppath);
-      end;
+      Settings._backuppath := AdjustPath(Settings._backuppath);
 
       // Sound path
       Settings._soundpath := ini.ReadString('Preferences', 'SoundPath', '');
-      if Settings._soundpath <> '' then begin
-         Settings._soundpath := IncludeTrailingPathDelimiter(Settings._soundpath);
-      end;
+      Settings._soundpath := AdjustPath(Settings._soundpath);
+
+      // Plugin path
+      Settings._pluginpath := ini.ReadString('zylo', 'path', '');
+      Settings._pluginpath := AdjustPath(Settings._pluginpath);
+      Settings._pluginlist := ini.ReadString('zylo', 'items', '');
 
       //
       // Misc
@@ -1550,6 +1582,9 @@ begin
       // Path
       //
 
+      // Root
+      ini.WriteString('Preferences', 'RootPath', Settings._rootpath);
+
       // CFG/DAT
       ini.WriteString('Preferences', 'CFGDATPath', Settings._cfgdatpath);
 
@@ -1561,6 +1596,10 @@ begin
 
       // Sound path
       ini.WriteString('Preferences', 'SoundPath', Settings._soundpath);
+
+      // Plugin path
+      ini.WriteString('zylo', 'path', Settings._pluginpath);
+      ini.WriteString('zylo', 'items', Settings._pluginlist);
 
       //
       // Misc
@@ -3476,6 +3515,145 @@ begin
    if strPower = 'P' then Result := pwrP;
 end;
 
+function TdmZLogGlobal.GetRootPath(): string;
+begin
+   if Settings._rootpath = '' then begin
+      Settings._rootpath := ExtractFilePath(Application.ExeName);
+   end;
+   Result := IncludeTrailingPathDelimiter(Settings._rootpath);
+end;
+
+procedure TdmZLogGlobal.SetRootPath(v: string);
+begin
+   Settings._rootpath := v;
+end;
+
+function TdmZLogGlobal.GetCfgDatPath(): string;
+begin
+   if IsFullPath(Settings._cfgdatpath) = True then begin
+      Result := Settings._cfgdatpath;
+   end
+   else begin
+      Result := RootPath + Settings._cfgdatpath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetCfgDatPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._cfgdatpath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._cfgdatpath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetLogPath(): string;
+begin
+   if IsFullPath(Settings._logspath) = True then begin
+      Result := Settings._logspath;
+   end
+   else begin
+      Result := RootPath + Settings._logspath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetLogPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._logspath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._logspath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetBackupPath(): string;
+begin
+   if IsFullPath(Settings._backuppath) = True then begin
+      Result := Settings._backuppath;
+   end
+   else begin
+      Result := RootPath + Settings._backuppath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetBackupPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._backuppath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._backuppath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetSoundPath(): string;
+begin
+   if IsFullPath(Settings._soundpath) = True then begin
+      Result := Settings._soundpath;
+   end
+   else begin
+      Result := RootPath + Settings._soundpath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetSoundPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._soundpath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._soundpath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetPluginPath(): string;
+begin
+   if IsFullPath(Settings._pluginpath) = True then begin
+      Result := Settings._pluginpath;
+   end
+   else begin
+      Result := RootPath + Settings._pluginpath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetPluginPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._pluginpath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._pluginpath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetSpcPath(): string;
+begin
+   if IsFullPath(Settings.FSuperCheck.FSuperCheckFolder) = True then begin
+      Result := Settings.FSuperCheck.FSuperCheckFolder;
+   end
+   else begin
+      Result := RootPath + Settings.FSuperCheck.FSuperCheckFolder;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetSpcPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings.FSuperCheck.FSuperCheckFolder := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings.FSuperCheck.FSuperCheckFolder := v;
+   end;
+end;
+
 procedure TdmZLogGlobal.WriteErrorLog(msg: string);
 var
    str: string;
@@ -3512,6 +3690,34 @@ begin
    else begin
       Result := '';
    end;
+end;
+
+function IsFullPath(strPath: string): Boolean;
+begin
+   // ２文字目に :\ があるとフルパス判定
+   if Pos(':\', strPath) = 2 then begin
+      Result := True;
+      Exit;
+   end;
+
+   // 先頭が \\ の場合もフルパス判定
+   if Pos('\\', strPath) = 1 then begin
+      Result := True;
+      Exit;
+   end;
+
+   Result := False;
+end;
+
+function AdjustPath(v: string): string;
+begin
+   if v = '\' then begin
+      v := '';
+   end;
+   if v <> '' then begin
+      v := IncludeTrailingPathDelimiter(v);
+   end;
+   Result := v;
 end;
 
 end.

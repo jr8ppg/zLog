@@ -2062,7 +2062,7 @@ begin
    TimeEdit.Text := CurrentQSO.TimeStr;
    DateEdit.Text := CurrentQSO.DateStr;
 
-   if dmZlogGlobal.Settings._backuppath = '' then begin
+   if dmZlogGlobal.BackupPath = '' then begin
       Backup1.Enabled := False;
    end;
 
@@ -2118,7 +2118,7 @@ end;
 procedure TMainForm.FileOpen(Sender: TObject);
 begin
    OpenDialog.Title := 'Open file';
-   OpenDialog.InitialDir := dmZlogGlobal.Settings._logspath;
+   OpenDialog.InitialDir := dmZlogGlobal.LogPath;
    OpenDialog.FileName := '';
    OpenDialog.FilterIndex := dmZLogGlobal.Settings.FLastFileFilterIndex;
 
@@ -2149,7 +2149,7 @@ end;
 
 procedure TMainForm.FileSaveAs(Sender: TObject);
 begin
-   SaveDialog.InitialDir := dmZlogGlobal.Settings._logspath;
+   SaveDialog.InitialDir := dmZlogGlobal.LogPath;
    SaveDialog.FileName := '';
    SaveDialog.FilterIndex := dmZLogGlobal.Settings.FLastFileFilterIndex;
 
@@ -5566,7 +5566,7 @@ var
    ext: string;
    i: Integer;
 begin
-   FileImportDialog.InitialDir := dmZlogGlobal.Settings._logspath;
+   FileImportDialog.InitialDir := dmZlogGlobal.LogPath;
    FileImportDialog.FileName := '';
 
    if FileImportDialog.Execute() = False then begin
@@ -6153,7 +6153,7 @@ begin
 
       // ファイル名の指定が無い場合は選択ダイアログを出す
       if CurrentFileName = '' then begin
-         OpenDialog.InitialDir := dmZlogGlobal.Settings._logspath;
+         OpenDialog.InitialDir := dmZlogGlobal.LogPath;
          OpenDialog.FileName := '';
          OpenDialog.FilterIndex := dmZLogGlobal.Settings.FLastFileFilterIndex;
 
@@ -7675,11 +7675,7 @@ begin
    OutputDebugString(PChar('---actionBackupExecute---'));
    {$ENDIF}
 
-   P := dmZlogGlobal.Settings._backuppath;
-   if (P = '') or (P = '\') then begin
-      P := ExtractFilePath(Application.ExeName);
-   end;
-
+   P := dmZlogGlobal.BackupPath;
    if DirectoryExists(P) = False then begin
       ForceDirectories(P);
    end;

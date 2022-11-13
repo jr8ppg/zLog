@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetPath
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -4851,13 +4851,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'DFKai-SB'
+          FontName = 'Courier New TUR'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 41
+          ItemIndex = 40
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

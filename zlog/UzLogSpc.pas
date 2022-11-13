@@ -438,7 +438,7 @@ begin
    {$ENDIF}
    try
 
-      strFolder := dmZlogGlobal.Settings.FSuperCheck.FSuperCheckFolder;
+      strFolder := dmZlogGlobal.SpcPath;
 
       case dmZlogGlobal.Settings.FSuperCheck.FSuperCheckMethod of
          // SPC

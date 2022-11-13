@@ -162,7 +162,8 @@ var
 	text: string;
 begin
 	init := LoadIniFile;
-	text := init.ReadString(KEY_ZYLO, KEY_LIST, '');
+//	text := init.ReadString(KEY_ZYLO, KEY_LIST, '');
+   text := dmZLogGlobal.Settings._pluginlist;
 	Result := TList<String>.Create;
 	Result.AddRange(text.Split([',']));
 	init.Free;
@@ -200,7 +201,8 @@ begin
 	init := LoadIniFile;
 	text := TStringList.Create;
 	for item in list do text.Append(item);
-	init.WriteString(KEY_ZYLO, KEY_LIST, text.DelimitedText);
+//	init.WriteString(KEY_ZYLO, KEY_LIST, text.DelimitedText);
+   dmZLogGlobal.Settings._pluginlist := text.DelimitedText;
 	text.Free;
 	init.Free;
 end;
@@ -209,8 +211,8 @@ function TMarketItem.ref: string;
 function dir: string;
 begin
 	Result := GetItemPathINI;
-	if isCFG then Result := dmZLogGlobal.Settings._cfgdatpath;
-	if isDAT then Result := dmZLogGlobal.Settings._cfgdatpath;
+	if isCFG then Result := dmZLogGlobal.CfgDatPath;
+	if isDAT then Result := dmZLogGlobal.CfgDatPath;
 end;
 begin
 	Result := TPath.GetFileName(url);

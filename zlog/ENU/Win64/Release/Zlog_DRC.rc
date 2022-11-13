@@ -146,8 +146,8 @@
 #define System_Bindings_Consts_sBoolOpFail 64461
 #define System_Bindings_Consts_sBoolNegateOpFail 64462
 #define System_Bindings_Consts_sParserUnexpected 64463
-#define UOptions_SELECT_FOLDER 64464
-#define UOptions_PLEASE_INPUT_OFFSET_FREQ 64465
+#define UOptions_PLEASE_INPUT_OFFSET_FREQ 64464
+#define UOptions_Installed_Plugins_Disabled 64465
 #define System_RegularExpressionsConsts_SRegExMissingExpression 64466
 #define System_RegularExpressionsConsts_SRegExExpressionError 64467
 #define System_RegularExpressionsConsts_SRegExStudyError 64468
@@ -174,10 +174,10 @@
 #define Vcl_Imaging_pnglang_EInvalidNewSize 64489
 #define Vcl_Imaging_pnglang_EInvalidSpec 64490
 #define Vcl_Imaging_pnglang_EPNGInvalidBitDepthText 64491
-#define UPluginManager_UPluginManager_Installed_Plugins_Disabled 64492
-#define UOptions_COM_PORT_SETTING 64493
-#define UOptions_TELNET_SETTING 64494
-#define UOptions_SELECT_SPC_FOLDER 64495
+#define UOptions_COM_PORT_SETTING 64492
+#define UOptions_TELNET_SETTING 64493
+#define UOptions_SELECT_SPC_FOLDER 64494
+#define UOptions_SELECT_FOLDER 64495
 #define System_NetConsts_SMimeTypeEmpty 64496
 #define System_NetConsts_SMimeValueEmpty 64497
 #define System_NetConsts_SMimeWeightOutOfRange 64498
@@ -1358,8 +1358,8 @@ BEGIN
 	System_Bindings_Consts_sBoolOpFail,	L"""%s"" \x3068 ""%s"" \x3067\x306E\x8AD6\x7406\x6F14\x7B97\x306E\x5B9F\x884C\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
 	System_Bindings_Consts_sBoolNegateOpFail,	L"""%s"" \x8AD6\x7406\x5426\x5B9A\x6F14\x7B97\x5B50\x306E\x5B9F\x884C\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
 	System_Bindings_Consts_sParserUnexpected,	L"%s \x304C\x5FC5\x8981\x3067\x3059\x304C\x53D7\x3051\x53D6\x3063\x305F\x306E\x306F %s \x3067\x3059"
-	UOptions_SELECT_FOLDER,	L"Select folder"
 	UOptions_PLEASE_INPUT_OFFSET_FREQ,	L"Please input the offset frequency in kHz"
+	UOptions_Installed_Plugins_Disabled,	L"Plugins folder changed. Installed plugins will be disabled. Are you sure?"
 	System_RegularExpressionsConsts_SRegExMissingExpression,	L"RegEx \x306B\x6B63\x898F\x8868\x73FE\x3092\x6307\x5B9A\x3059\x308B\x5FC5\x8981\x304C\x3042\x308A\x307E\x3059"
 	System_RegularExpressionsConsts_SRegExExpressionError,	L"\x30AA\x30D5\x30BB\x30C3\x30C8 %d \x3067\x6B63\x898F\x8868\x73FE\x306B\x30A8\x30E9\x30FC\x304C\x3042\x308A\x307E\x3059: %s"
 	System_RegularExpressionsConsts_SRegExStudyError,	L"\x6B63\x898F\x8868\x73FE\x306E\x89E3\x6790\x3067\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: %s"
@@ -1386,10 +1386,10 @@ BEGIN
 	Vcl_Imaging_pnglang_EInvalidNewSize,	L"\x30B5\x30A4\x30BA\x5909\x66F4\x3059\x308B\x753B\x50CF\x306E\x65B0\x3057\x3044\x30B5\x30A4\x30BA\x306F\x6709\x52B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002"
 	Vcl_Imaging_pnglang_EInvalidSpec,	L"""Portable Network Graphics"" \x3092\x4F5C\x6210\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x4E0D\x6B63\x306A\x753B\x50CF\x30BF\x30A4\x30D7 \x30D1\x30E9\x30E1\x30FC\x30BF\x304C\x6307\x5B9A\x3055\x308C\x3066\x3044\x307E\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGInvalidBitDepthText,	L"\x3053\x306E""\x30DD\x30FC\x30BF\x30D6\x30EB \x30CD\x30C3\x30C8\x30EF\x30FC\x30AF \x30B0\x30E9\x30D5\x30A3\x30C3\x30AF""\x30A4\x30E1\x30FC\x30B8\x306F\x3001\x4E0D\x6B63\x306A\x30A4\x30E1\x30FC\x30B8 \x30D3\x30C3\x30C8\x6DF1\x5EA6\x3092\x4F7F\x7528\x3057\x3066\x3044\x308B\x305F\x3081\x3001\x8AAD\x307F\x8FBC\x3080\x3053\x3068\x304C\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
-	UPluginManager_UPluginManager_Installed_Plugins_Disabled,	L"Installed plugins will be disabled. Are you sure?"
 	UOptions_COM_PORT_SETTING,	L"COM port settings"
 	UOptions_TELNET_SETTING,	L"TELNET settings"
 	UOptions_SELECT_SPC_FOLDER,	L"Select the folder where the files for SuperCheck"
+	UOptions_SELECT_FOLDER,	L"Select folder"
 	System_NetConsts_SMimeTypeEmpty,	L"MIME \x30BF\x30A4\x30D7\x304C\x6307\x5B9A\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_NetConsts_SMimeValueEmpty,	L"\x5024\x306E\x540D\x524D\x304C\x5165\x529B\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_NetConsts_SMimeWeightOutOfRange,	L"\x54C1\x8CEA\x306E\x91CD\x307F\x304C\x7BC4\x56F2\x5916\x3067\x3059"

@@ -33,7 +33,8 @@ uses
 	System.Notification,
 	Generics.Collections,
 	Bindings.Expression,
-	Bindings.ExpressionDefaults;
+	Bindings.ExpressionDefaults,
+   System.UITypes;
 
 type
 	/// <summary>
@@ -798,6 +799,7 @@ function zyloImportFile(FileName: string): integer;
 var
 	tmp: string;
 begin
+   Result := 0;
 	if FileDLL <> nil then try
 		tmp := TPath.GetTempFileName;
 		if FileDLL.ImportEvent(DtoC(FileName), DtoC(tmp)) then

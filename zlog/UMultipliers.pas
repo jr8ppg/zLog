@@ -737,7 +737,7 @@ var
 begin
    fullpath := filename;
    if FileExists(fullpath) = False then begin
-      fullpath := dmZLogGlobal.Settings._cfgdatpath + filename;
+      fullpath := dmZLogGlobal.CfgDatPath + filename;
       if FileExists(fullpath) = False then begin
          fullpath := ExtractFilePath(Application.ExeName) + filename;
          if FileExists(fullpath) = False then begin

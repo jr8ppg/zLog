@@ -645,6 +645,9 @@ resourcestring
   // オフセット周波数を kHz で入力してください
   PLEASE_INPUT_OFFSET_FREQ = 'Please input the offset frequency in kHz';
 
+  // プラグインのフォルダが変更されました。インストールされたプラグインは無効になります。よろしいですか？
+  Installed_Plugins_Disabled = 'Plugins folder changed. Installed plugins will be disabled. Are you sure?';
+
 implementation
 
 uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet,
@@ -955,11 +958,15 @@ begin
 
 //      Settings._sentstr := SentEdit.Text;
 
-      UPluginManager.SetItemPathINI(IncludeTrailingPathDelimiter(PluginPathEdit.Text));
-      Settings._soundpath := IncludeTrailingPathDelimiter(SoundPathEdit.Text);
-      Settings._backuppath := IncludeTrailingPathDelimiter(BackUpPathEdit.Text);
-      Settings._cfgdatpath := IncludeTrailingPathDelimiter(edCFGDATPath.Text);
-      Settings._logspath := IncludeTrailingPathDelimiter(edLogsPath.Text);
+      if IncludeTrailingPathDelimiter(PluginPathEdit.Text) <> Settings._pluginpath then begin
+         if Application.MessageBox(PChar(Installed_Plugins_Disabled), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDYES then begin
+            PluginPath := IncludeTrailingPathDelimiter(PluginPathEdit.Text);
+         end;
+      end;
+      SoundPath := IncludeTrailingPathDelimiter(SoundPathEdit.Text);
+      BackupPath := IncludeTrailingPathDelimiter(BackUpPathEdit.Text);
+      CfgDatPath := IncludeTrailingPathDelimiter(edCFGDATPath.Text);
+      LogPath := IncludeTrailingPathDelimiter(edLogsPath.Text);
 
       Settings._allowdupe := AllowDupeCheckBox.Checked;
       Settings._sameexchange := cbDispExchange.Checked;
@@ -1042,7 +1049,7 @@ begin
       else begin
          Settings.FSuperCheck.FSuperCheckMethod := 2;
       end;
-      Settings.FSuperCheck.FSuperCheckFolder := editSuperCheckFolder.Text;
+      SpcPath := editSuperCheckFolder.Text;
       Settings.FSuperCheck.FAcceptDuplicates := checkAcceptDuplicates.Checked;
       Settings.FSuperCheck.FFullMatchHighlight := checkHighlightFullmatch.Checked;
       Settings.FSuperCheck.FFullMatchColor := editFullmatchColor.Color;
@@ -1418,11 +1425,11 @@ begin
       // Sent欄は表示専用
       SentEdit.Text := Settings._sentstr;
 
-      PluginPathEdit.Text := UPluginManager.GetItemPathINI;
-      SoundPathEdit.Text := Settings._soundpath;
-      BackUpPathEdit.Text := Settings._backuppath;
-      edCFGDATPath.Text := Settings._cfgdatpath;
-      edLogsPath.Text := Settings._logspath;
+      PluginPathEdit.Text := PluginPath;
+      SoundPathEdit.Text := SoundPath;
+      BackUpPathEdit.Text := BackupPath;
+      edCFGDATPath.Text := CfgDatPath;
+      edLogsPath.Text := LogPath;
 
       PTTEnabledCheckBox.Checked := Settings._pttenabled;
       checkCwReverseSignal.Checked := Settings.CW._keying_signal_reverse;
@@ -1534,7 +1541,7 @@ begin
          1: radioSuperCheck1.Checked := True;
          else radioSuperCheck2.Checked := True;
       end;
-      editSuperCheckFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
+      editSuperCheckFolder.Text := SpcPath;
       checkAcceptDuplicates.Checked := Settings.FSuperCheck.FAcceptDuplicates;
       checkHighlightFullmatch.Checked := Settings.FSuperCheck.FFullMatchHighlight;
       editFullmatchColor.Color := Settings.FSuperCheck.FFullMatchColor;
@@ -1877,7 +1884,7 @@ end;
 
 procedure TformOptions.vButtonClick(Sender: TObject);
 begin
-   OpenDialog.InitialDir := dmZLogGlobal.Settings._soundpath;
+   OpenDialog.InitialDir := dmZLogGlobal.SoundPath;
    if OpenDialog.Execute then begin
       FTempVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
@@ -1886,7 +1893,7 @@ end;
 
 procedure TformOptions.vAdditionalButtonClick(Sender: TObject);
 begin
-   OpenDialog.InitialDir := dmZLogGlobal.Settings._soundpath;
+   OpenDialog.InitialDir := dmZLogGlobal.SoundPath;
    if OpenDialog.Execute then begin
       FTempAdditionalVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
