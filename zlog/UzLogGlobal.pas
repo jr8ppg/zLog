@@ -525,6 +525,8 @@ function LoadResourceString(uID: Integer): string;
 function IsFullPath(strPath: string): Boolean;
 function AdjustPath(v: string): string;
 
+function ExpandEnvironmentVariables(strOriginal: string): string;
+
 var
   dmZLogGlobal: TdmZLogGlobal;
 
@@ -3518,10 +3520,11 @@ end;
 
 function TdmZLogGlobal.GetRootPath(): string;
 begin
+   Result := ExpandEnvironmentVariables(Settings._rootpath);
    if Settings._rootpath = '' then begin
-      Settings._rootpath := ExtractFilePath(Application.ExeName);
+      Result := ExtractFilePath(Application.ExeName);
    end;
-   Result := IncludeTrailingPathDelimiter(Settings._rootpath);
+   Result := IncludeTrailingPathDelimiter(Result);
 end;
 
 procedure TdmZLogGlobal.SetRootPath(v: string);
@@ -3531,8 +3534,9 @@ end;
 
 function TdmZLogGlobal.GetCfgDatPath(): string;
 begin
-   if IsFullPath(Settings._cfgdatpath) = True then begin
-      Result := Settings._cfgdatpath;
+   Result := ExpandEnvironmentVariables(Settings._cfgdatpath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._cfgdatpath;
    end
    else begin
       Result := RootPath + Settings._cfgdatpath;
@@ -3552,8 +3556,9 @@ end;
 
 function TdmZLogGlobal.GetLogPath(): string;
 begin
-   if IsFullPath(Settings._logspath) = True then begin
-      Result := Settings._logspath;
+   Result := ExpandEnvironmentVariables(Settings._logspath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._logspath;
    end
    else begin
       Result := RootPath + Settings._logspath;
@@ -3573,8 +3578,9 @@ end;
 
 function TdmZLogGlobal.GetBackupPath(): string;
 begin
-   if IsFullPath(Settings._backuppath) = True then begin
-      Result := Settings._backuppath;
+   Result := ExpandEnvironmentVariables(Settings._backuppath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._backuppath;
    end
    else begin
       Result := RootPath + Settings._backuppath;
@@ -3594,8 +3600,9 @@ end;
 
 function TdmZLogGlobal.GetSoundPath(): string;
 begin
-   if IsFullPath(Settings._soundpath) = True then begin
-      Result := Settings._soundpath;
+   Result := ExpandEnvironmentVariables(Settings._soundpath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._soundpath;
    end
    else begin
       Result := RootPath + Settings._soundpath;
@@ -3615,8 +3622,9 @@ end;
 
 function TdmZLogGlobal.GetPluginPath(): string;
 begin
-   if IsFullPath(Settings._pluginpath) = True then begin
-      Result := Settings._pluginpath;
+   Result := ExpandEnvironmentVariables(Settings._pluginpath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._pluginpath;
    end
    else begin
       Result := RootPath + Settings._pluginpath;
@@ -3636,8 +3644,9 @@ end;
 
 function TdmZLogGlobal.GetSpcPath(): string;
 begin
-   if IsFullPath(Settings.FSuperCheck.FSuperCheckFolder) = True then begin
-      Result := Settings.FSuperCheck.FSuperCheckFolder;
+   Result := ExpandEnvironmentVariables(Settings.FSuperCheck.FSuperCheckFolder);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings.FSuperCheck.FSuperCheckFolder;
    end
    else begin
       Result := RootPath + Settings.FSuperCheck.FSuperCheckFolder;
@@ -3667,37 +3676,37 @@ begin
 
    // CFG/DAT folder
    strPath := CfgDatPath;
-   if strPath <> '' then begin
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
       ForceDirectories(strPath);
    end;
 
    // Logs folder
    strPath := LogPath;
-   if strPath <> '' then begin
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
       ForceDirectories(strPath);
    end;
 
    // Backup folder
    strPath := BackupPath;
-   if strPath <> '' then begin
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
       ForceDirectories(strPath);
    end;
 
    // Sound folder
    strPath := SoundPath;
-   if strPath <> '' then begin
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
       ForceDirectories(strPath);
    end;
 
    // Plugins folder
    strPath := PluginPath;
-   if strPath <> '' then begin
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
       ForceDirectories(strPath);
    end;
 
    // Super Check folder
    strPath := SpcPath;
-   if strPath <> '' then begin
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
       ForceDirectories(strPath);
    end;
 end;
@@ -3766,6 +3775,71 @@ begin
       v := IncludeTrailingPathDelimiter(v);
    end;
    Result := v;
+end;
+
+function GetEnvVar(strIn: string; startpos: Integer; var strOut: string): Integer;
+var
+   I: Integer;
+   S: string;
+   ch: Char;
+   fStart: Boolean;
+   L: Integer;
+begin
+   L := Length(strIn);
+   S := Copy(strIn, startpos, L - (startpos - 1) );
+
+   strOut := '';
+   fStart := False;
+   for I := 1 to Length(S) do begin
+      ch := S[I];
+      if ch = '%' then begin
+         if fStart = True then begin
+            strOut := strOut + ch;
+            Result := (i + 1);
+            Exit;
+         end
+         else begin
+            fStart := True;
+            strOut := '';
+         end;
+      end;
+
+      if fStart = True then begin
+         strOut := strOut + ch;
+      end;
+   end;
+
+   Result := -1;
+end;
+
+function ExpandEnvironmentVariables(strOriginal: string): string;
+var
+   I: Integer;
+   envstr: string;
+   envstr2: string;
+   strExpanded: string;
+   envvar_value: string;
+begin
+   strExpanded := strOriginal;
+   repeat
+      // １文字目から
+      I := 1;
+
+      // %～%の文字列を取り出す
+      I := GetEnvVar(strExpanded, I, envstr);
+
+      // あった
+      if I <> -1 then begin
+         // %削除
+         envstr2 := StringReplace(envstr, '%', '', [rfReplaceAll]);
+
+         // 環境変数の値で置き換え
+         envvar_value := GetEnvironmentVariable(envstr2);
+         strExpanded := StringReplace(strExpanded, envstr, envvar_value, [rfReplaceAll]);
+      end;
+   until I = -1;
+
+   Result := strExpanded;
 end;
 
 end.
