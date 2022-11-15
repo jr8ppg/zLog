@@ -452,6 +452,7 @@ public
     property PluginPath: string read GetPluginPath write SetPluginPath;
     property SpcPath: string read GetSpcPath write SetSpcPath;
 
+    procedure CreateFolders();
     procedure WriteErrorLog(msg: string);
   end;
 
@@ -3651,6 +3652,53 @@ begin
    end
    else begin
       Settings.FSuperCheck.FSuperCheckFolder := v;
+   end;
+end;
+
+procedure TdmZLogGlobal.CreateFolders();
+var
+   strPath: string;
+begin
+   // Root
+   strPath := RootPath;
+   if strPath <> '' then begin
+      ForceDirectories(strPath);
+   end;
+
+   // CFG/DAT folder
+   strPath := CfgDatPath;
+   if strPath <> '' then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Logs folder
+   strPath := LogPath;
+   if strPath <> '' then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Backup folder
+   strPath := BackupPath;
+   if strPath <> '' then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Sound folder
+   strPath := SoundPath;
+   if strPath <> '' then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Plugins folder
+   strPath := PluginPath;
+   if strPath <> '' then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Super Check folder
+   strPath := SpcPath;
+   if strPath <> '' then begin
+      ForceDirectories(strPath);
    end;
 end;
 

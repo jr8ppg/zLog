@@ -1154,6 +1154,8 @@ end;
 procedure TformOptions.buttonOKClick(Sender: TObject);
 begin
    RenewSettings;
+
+   dmZLogGlobal.CreateFolders();
 end;
 
 procedure TformOptions.RenewCWStrBankDisp;

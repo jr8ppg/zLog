@@ -113,19 +113,12 @@ const
 	URL_MARKET = 'https://zylo.pafelog.net/market.json';
 	URL_MANUAL = 'https://zylo.pafelog.net';
 
-resourcestring
-	UPluginManager_Installed_Plugins_Disabled = 'Installed plugins will be disabled. Are you sure?';
-
 procedure BrowseURL(url: string);
 
-function GetItemPathINI: string;
 function GetItemListINI: TList<String>;
-procedure SetItemPathINI(path: String);
 procedure SetItemListINI(list: TList<String>);
 
 implementation
-
-//uses main;
 
 {$R *.dfm}
 
@@ -147,49 +140,16 @@ begin
 	MarketList.Free;
 end;
 
-function GetItemPathINI: string;
-var
-	init: TIniFile;
-begin
-	init := LoadIniFile;
-	Result := init.ReadString(KEY_ZYLO, KEY_PATH, GetCurrentDir);
-	init.Free;
-end;
-
 function GetItemListINI: TList<String>;
 var
 	init: TIniFile;
 	text: string;
 begin
 	init := LoadIniFile;
-//	text := init.ReadString(KEY_ZYLO, KEY_LIST, '');
    text := dmZLogGlobal.Settings._pluginlist;
 	Result := TList<String>.Create;
 	Result.AddRange(text.Split([',']));
 	init.Free;
-end;
-
-procedure SetItemPathINI(path: String);
-function Confirm: boolean;
-var
-	text: string;
-	icon: TMsgDlgType;
-	btns: TMsgDlgButtons;
-begin
-	icon := mtConfirmation;
-	btns := [mbYes, mbCancel];
-	text := UPluginManager_Installed_Plugins_Disabled;
-	Result := MessageDlg(text, icon, btns, 0, mbCancel) = mrYes;
-end;
-var
-	init: TIniFile;
-begin
-	if (path <> GetItemPathINI) and Confirm then begin
-		init := LoadIniFile;
-		init.WriteString(KEY_ZYLO, KEY_PATH, path);
-		init.WriteString(KEY_ZYLO, KEY_LIST, '');
-		init.Free;
-	end;
 end;
 
 procedure SetItemListINI(list: TList<String>);
@@ -201,23 +161,17 @@ begin
 	init := LoadIniFile;
 	text := TStringList.Create;
 	for item in list do text.Append(item);
-//	init.WriteString(KEY_ZYLO, KEY_LIST, text.DelimitedText);
    dmZLogGlobal.Settings._pluginlist := text.DelimitedText;
 	text.Free;
 	init.Free;
 end;
 
 function TMarketItem.ref: string;
-function dir: string;
-begin
-	Result := GetItemPathINI;
-	if isCFG then Result := dmZLogGlobal.CfgDatPath;
-	if isDAT then Result := dmZLogGlobal.CfgDatPath;
-end;
 begin
 	Result := TPath.GetFileName(url);
-	if isCFG then Result := TPath.Combine(dir, Result);
-	if isDAT then Result := TPath.Combine(dir, Result);
+	if isCFG then Result := TPath.Combine(dmZLogGlobal.CfgDatPath, Result)
+	else if isDAT then Result := TPath.Combine(dmZLogGlobal.CfgDatPath, Result)
+   else Result := TPath.Combine(dmZLogGlobal.PluginPath, Result);
 end;
 
 constructor TMarketItem.Create;
