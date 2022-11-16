@@ -980,9 +980,6 @@ begin
 
       // Root
       Settings._rootpath := ini.ReadString('Preferences', 'RootPath', '');
-      if Settings._rootpath <> '' then begin
-         Settings._rootpath := IncludeTrailingPathDelimiter(Settings._rootpath);
-      end;
 
       // CFG/DAT
       Settings._cfgdatpath := ini.ReadString('Preferences', 'CFGDATPath', '');
@@ -3770,9 +3767,6 @@ function AdjustPath(v: string): string;
 begin
    if v = '\' then begin
       v := '';
-   end;
-   if v <> '' then begin
-      v := IncludeTrailingPathDelimiter(v);
    end;
    Result := v;
 end;

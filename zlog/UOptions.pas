@@ -964,15 +964,15 @@ begin
       //
       // Folders
       //
-      Settings._rootpath := IncludeTrailingPathDelimiter(editRootFolder.Text);
-      Settings._cfgdatpath := IncludeTrailingPathDelimiter(editCfgDatFolder.Text);
-      Settings._logspath := IncludeTrailingPathDelimiter(editLogsFolder.Text);
-      Settings._backuppath := IncludeTrailingPathDelimiter(editBackupFolder.Text);
-      Settings._soundpath := IncludeTrailingPathDelimiter(editSoundFolder.Text);
+      Settings._rootpath := editRootFolder.Text;
+      Settings._cfgdatpath := editCfgDatFolder.Text;
+      Settings._logspath := editLogsFolder.Text;
+      Settings._backuppath := editBackupFolder.Text;
+      Settings._soundpath := editSoundFolder.Text;
 
-      if IncludeTrailingPathDelimiter(editPluginsFolder.Text) <> Settings._pluginpath then begin
+      if IncludeTrailingPathDelimiter(editPluginsFolder.Text) <> IncludeTrailingPathDelimiter(Settings._pluginpath) then begin
          if Application.MessageBox(PChar(Installed_Plugins_Disabled), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDYES then begin
-            Settings._pluginpath := IncludeTrailingPathDelimiter(editPluginsFolder.Text);
+            Settings._pluginpath := editPluginsFolder.Text;
          end;
       end;
 
