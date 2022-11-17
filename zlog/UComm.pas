@@ -747,7 +747,6 @@ begin
          ConnectButton.Caption := UComm_Disconnecting;
          FDisconnectClicked := True;
          Telnet.Close;
-         TerminateCommProcessThread();
       end
       else begin
          LoadAllowDenyList();
@@ -855,7 +854,10 @@ begin
    fname := ExtractFilePath(Application.ExeName) + 'spotter_deny.txt';
    FDenyList.SaveToFile(fname);
 
-   timerReConnect.Enabled := True;
+   if FDisconnectClicked = False then begin
+      timerReConnect.Enabled := True;
+   end;
+   TerminateCommProcessThread();
 end;
 
 procedure TCommForm.FormShow(Sender: TObject);

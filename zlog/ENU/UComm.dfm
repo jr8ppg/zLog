@@ -232,4 +232,10 @@ object CommForm: TCommForm
       OnClick = menuPasteCommandClick
     end
   end
+  object timerReConnect: TTimer
+    Enabled = False
+    OnTimer = timerReConnectTimer
+    Left = 24
+    Top = 88
+  end
 end
