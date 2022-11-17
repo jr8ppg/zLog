@@ -46,6 +46,7 @@ type
     popupCommand: TPopupMenu;
     menuPasteCommand: TMenuItem;
     checkUseAllowDenyLists: TCheckBox;
+    timerReConnect: TTimer;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -75,6 +76,7 @@ type
     procedure menuSaveToFileClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure menuPasteCommandClick(Sender: TObject);
+    procedure timerReConnectTimer(Sender: TObject);
   private
     { Private declarations }
     FCommBuffer : TStringList;
@@ -96,6 +98,12 @@ type
     FSpotterList: TStringList;
     FAllowList: TStringList;
     FDenyList: TStringList;
+
+    // Auto Reconnect
+    FReConnectMax: Integer;
+    FReConnectCount: Integer;
+    FRetryIntervalSec: Integer;
+    FRetryIntervalCount: Integer;
 
     procedure DeleteSpot(_from, _to : integer);
 
@@ -388,6 +396,12 @@ begin
    FDenyList.Sorted := True;
    FDenyList.CaseSensitive := False;
 
+   FReConnectMax := dmZLogGlobal.Settings.FClusterReConnectMax;
+   FReConnectCount := 0;
+   FRetryIntervalSec := dmZLogGlobal.Settings.FClusterRetryIntervalSec;
+   FRetryIntervalCount := 0;
+   timerReConnect.Enabled := False;
+
    ImplementOptions();
 
    FDisconnectClicked := False;
@@ -670,7 +684,9 @@ begin
    try
       // Auto Reconnect
       if (checkAutoReconnect.Checked = True) and (Telnet.IsConnected() = False) and
-         (FDisconnectClicked = False) and (ConnectButton.Caption = 'Connect') then begin
+         (FDisconnectClicked = False) and (ConnectButton.Caption = 'Connect') and
+         (FReConnectCount < FReConnectMax) and
+         (FRetryIntervalCount > FRetryIntervalSec) then begin
          ConnectButton.Click();
       end;
 
@@ -678,6 +694,11 @@ begin
    finally
       Timer1.Enabled := True;
    end;
+end;
+
+procedure TCommForm.timerReConnectTimer(Sender: TObject);
+begin
+   Inc(FRetryIntervalCount);
 end;
 
 procedure TCommForm.FormDestroy(Sender: TObject);
@@ -796,6 +817,10 @@ begin
       ConnectButton.Caption := UComm_Disconnect;
       WriteLineConsole('connected to ' + Telnet.Host);
 
+      FReConnectCount := 0;
+      FRetryIntervalCount := 0;
+      timerReConnect.Enabled := False;
+
       FAutoLogined := False;
    except
       on E: Exception do begin
@@ -829,6 +854,8 @@ begin
 
    fname := ExtractFilePath(Application.ExeName) + 'spotter_deny.txt';
    FDenyList.SaveToFile(fname);
+
+   timerReConnect.Enabled := True;
 end;
 
 procedure TCommForm.FormShow(Sender: TObject);

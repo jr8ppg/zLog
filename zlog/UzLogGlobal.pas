@@ -261,6 +261,8 @@ type
     FClusterRecordLogs: Boolean;
     FClusterUseAllowDenyLists: Boolean;
     FClusterIgnoreSHDX: Boolean;
+    FClusterReConnectMax: Integer;
+    FClusterRetryIntervalSec: Integer;
 
     // Z-Server Messages(ChatForm)
     FChatFormPopupNewMsg: Boolean;
@@ -1240,6 +1242,8 @@ begin
       Settings.FClusterRecordLogs      := ini.ReadBool('ClusterWindow', 'RecordLogs', False);
       Settings.FClusterUseAllowDenyLists := ini.ReadBool('ClusterWindow', 'UseAllowDenyLists', False);
       Settings.FClusterIgnoreSHDX      := ini.ReadBool('ClusterWindow', 'IgnoreSHDX', True);
+      Settings.FClusterReConnectMax    := ini.ReadInteger('ClusterWindow', 'ReConnectMax', 10);
+      Settings.FClusterRetryIntervalSec := ini.ReadInteger('ClusterWindow', 'RetryIntervalSec', 180);
 
       // Z-Server Messages(ChatForm)
       Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
@@ -1792,6 +1796,8 @@ begin
       ini.WriteBool('ClusterWindow', 'RecordLogs', Settings.FClusterRecordLogs);
       ini.WriteBool('ClusterWindow', 'UseAllowDenyLists', Settings.FClusterUseAllowDenyLists);
       ini.WriteBool('ClusterWindow', 'IgnoreSHDX', Settings.FClusterIgnoreSHDX);
+      ini.WriteInteger('ClusterWindow', 'ReConnectMax', Settings.FClusterReConnectMax);
+      ini.WriteInteger('ClusterWindow', 'RetryIntervalSec', Settings.FClusterRetryIntervalSec);
 
       // Z-Server Messages(ChatForm)
       ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);
