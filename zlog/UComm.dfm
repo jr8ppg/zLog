@@ -235,7 +235,7 @@ object CommForm: TCommForm
   object timerReConnect: TTimer
     Enabled = False
     OnTimer = timerReConnectTimer
-    Left = 24
+    Left = 28
     Top = 88
   end
 end

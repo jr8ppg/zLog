@@ -151,6 +151,8 @@ resourcestring
   UComm_Disconnect = 'Disconnect';
   UComm_Connecting = 'Connecting...';
   UComm_Disconnecting = 'Disconnecting...';
+  UComm_SecondsLeft = '%s seconds left to reconnect';
+  UComm_ExceededLimit = 'reconnection attempts exceeded limit';
 
 var
   CommBufferLock: TCriticalSection;
@@ -684,10 +686,23 @@ begin
    try
       // Auto Reconnect
       if (checkAutoReconnect.Checked = True) and (Telnet.IsConnected() = False) and
-         (FDisconnectClicked = False) and (ConnectButton.Caption = 'Connect') and
-         (FReConnectCount < FReConnectMax) and
-         (FRetryIntervalCount > FRetryIntervalSec) then begin
+         (FDisconnectClicked = False) and (ConnectButton.Caption = UComm_Connect) then begin
+
+         if (FReConnectCount >= FReConnectMax) then begin
+            WriteLineConsole(UComm_ExceededLimit);
+            WriteStatusLine('');
+            timerReconnect.Enabled := False;
+            FReConnectCount := 0;
+            FRetryIntervalCount := 0;
+            Exit;
+         end;
+
+         if (FRetryIntervalCount <= FRetryIntervalSec) then begin
+            Exit;
+         end;
+
          ConnectButton.Click();
+         Inc(FReConnectCount);
       end;
 
 //      CommProcess;
@@ -697,7 +712,18 @@ begin
 end;
 
 procedure TCommForm.timerReConnectTimer(Sender: TObject);
+var
+   S: string;
+   C: Integer;
 begin
+   C := FRetryIntervalSec - FRetryIntervalCount;
+   if C < 0 then begin
+      C := 0;
+   end;
+
+   S := Format(UComm_SecondsLeft, [IntToStr(C)]);
+   WriteStatusLine(S);
+
    Inc(FRetryIntervalCount);
 end;
 
@@ -737,6 +763,9 @@ procedure TCommForm.ConnectButtonClick(Sender: TObject);
 begin
    try
       Edit.SetFocus;
+
+      WriteStatusLine('');
+      FRetryIntervalCount := 0;
 
       if dmZlogGlobal.Settings._clusterport = 0 then begin
          MainForm.ZLinkForm.PushRemoteConnect;
@@ -816,11 +845,14 @@ begin
       ConnectButton.Caption := UComm_Disconnect;
       WriteLineConsole('connected to ' + Telnet.Host);
 
-      FReConnectCount := 0;
-      FRetryIntervalCount := 0;
       timerReConnect.Enabled := False;
 
       FAutoLogined := False;
+
+      FRetryIntervalCount := 0;
+      if Error = 0 then begin
+         FReConnectCount := 0;
+      end;
    except
       on E: Exception do begin
          Console.WriteString(E.Message);
