@@ -5,10 +5,10 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44878.8810185185</prop>
-        <prop prop-type="OrigDateTime">44878.8805787037</prop>
-        <prop prop-type="XlatDateTime">44873.9706712963</prop>
-        <prop prop-type="Translated">24</prop>
+        <prop prop-type="SelfDateTime">44883.976087963</prop>
+        <prop prop-type="OrigDateTime">44883.975625</prop>
+        <prop prop-type="XlatDateTime">44883.9747222222</prop>
+        <prop prop-type="Translated">25</prop>
         <prop prop-type="UnTranslated">1186</prop>
       </prop-group>
     </header>
@@ -8366,9 +8366,8 @@
         <source>"Installed plugins will be disabled. Are you sure?"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44849.978974919</prop>
-          <prop prop-type="Status">1</prop>
+          <prop prop-type="Status">3</prop>
         </prop-group>
-        <target>"インストールされたプラグインは無効になります。よろしいですか？"</target>
       </trans-unit>
       <trans-unit id="UOptions_UOptions_SELECT_FOLDER" resname="UOptions_UOptions_SELECT_FOLDER">
         <source>"Select folder"</source>
@@ -8448,9 +8447,8 @@
         <source>"Select the folder where the files for SuperCheck"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44868.6576471412</prop>
-          <prop prop-type="Status">1</prop>
+          <prop prop-type="Status">3</prop>
         </prop-group>
-        <target>"SuperCheck用のファイルが保存されているフォルダを選択して下さい"</target>
       </trans-unit>
       <trans-unit id="Main_TMainForm_Change_Operator_QSOs" resname="Main_TMainForm_Change_Operator_QSOs">
         <source>"Are you sure to change the operator names for these QSO's?"</source>
@@ -8563,6 +8561,30 @@
           <prop prop-type="Created">44873.970776331</prop>
           <prop prop-type="Status">3</prop>
         </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_Installed_Plugins_Disabled" resname="UOptions_Installed_Plugins_Disabled">
+        <source>"Plugins folder changed. Installed plugins will be disabled. Are you sure?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44883.9722785532</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"プラグインのフォルダが変更されました。インストールされたプラグインは無効になります。よろしいですか？"</target>
+      </trans-unit>
+      <trans-unit id="UComm_UComm_SecondsLeft" resname="UComm_UComm_SecondsLeft">
+        <source>"%s seconds left to reconnect"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44883.9722786111</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"再接続まであと %s 秒"</target>
+      </trans-unit>
+      <trans-unit id="UComm_UComm_ExceededLimit" resname="UComm_UComm_ExceededLimit">
+        <source>"reconnection attempts exceeded limit"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44883.9722786111</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"再接続試行回数の上限を超えました"</target>
       </trans-unit>
     </body>
   </file>

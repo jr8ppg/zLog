@@ -134,10 +134,10 @@ type
     cbRecordRigFreq: TCheckBox;
     tabsheetPath: TTabSheet;
     Label50: TLabel;
-    edCFGDATPath: TEdit;
+    editCfgDatFolder: TEdit;
     buttonBrowseCFGDATPath: TButton;
     Label51: TLabel;
-    edLogsPath: TEdit;
+    editLogsFolder: TEdit;
     buttonBrowseLogsPath: TButton;
     rbRTTY: TRadioButton;
     cbCQSP: TCheckBox;
@@ -177,11 +177,9 @@ type
     GroupBox8: TGroupBox;
     radioSuperCheck0: TRadioButton;
     radioSuperCheck1: TRadioButton;
-    editSuperCheckFolder: TEdit;
     radioSuperCheck2: TRadioButton;
-    buttonSuperCheckFolderRef: TSpeedButton;
     buttonBrowseBackupPath: TButton;
-    BackUpPathEdit: TEdit;
+    editBackupFolder: TEdit;
     Label56: TLabel;
     comboPower19: TComboBox;
     comboPower35: TComboBox;
@@ -306,10 +304,10 @@ type
     vButton10: TButton;
     Label74: TLabel;
     buttonBrowseSoundPath: TButton;
-    SoundPathEdit: TEdit;
+    editSoundFolder: TEdit;
     Label90: TLabel;
     buttonBrowsePluginPath: TButton;
-    PluginPathEdit: TEdit;
+    editPluginsFolder: TEdit;
     checkBsCurrent: TCheckBox;
     Label75: TLabel;
     editMessage11: TEdit;
@@ -616,6 +614,12 @@ type
     checkAlwaysChangeMode: TCheckBox;
     buttonSpotterList: TButton;
     checkAcceptDuplicates: TCheckBox;
+    editRootFolder: TEdit;
+    buttonBrowseRootFolder: TButton;
+    buttonBrowseSpcPath: TButton;
+    editSpcFolder: TEdit;
+    Label108: TLabel;
+    Label109: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -639,7 +643,6 @@ type
     procedure comboRig1ANameChange(Sender: TObject);
     procedure comboRig2ANameChange(Sender: TObject);
     procedure checkUseQuickQSYClick(Sender: TObject);
-    procedure buttonSuperCheckFolderRefClick(Sender: TObject);
     procedure OnNeedSuperCheckLoad(Sender: TObject);
     procedure buttonFullmatchSelectColorClick(Sender: TObject);
     procedure buttonFullmatchInitColorClick(Sender: TObject);
@@ -745,6 +748,9 @@ resourcestring
 
   // オフセット周波数を kHz で入力してください
   PLEASE_INPUT_OFFSET_FREQ = 'Please input the offset frequency in kHz';
+
+  // プラグインのフォルダが変更されました。インストールされたプラグインは無効になります。よろしいですか？
+  Installed_Plugins_Disabled = 'Plugins folder changed. Installed plugins will be disabled. Are you sure?';
 
   // 以降のバンドも同じ設定に変更しますか？
   DoYouWantTheFollowingBandsToHaveTheSameSettins = 'Do you want the following bands to have the same settings?';
@@ -1059,11 +1065,22 @@ begin
 
 //      Settings._sentstr := SentEdit.Text;
 
-      UPluginManager.SetItemPathINI(IncludeTrailingPathDelimiter(PluginPathEdit.Text));
-      Settings._soundpath := IncludeTrailingPathDelimiter(SoundPathEdit.Text);
-      Settings._backuppath := IncludeTrailingPathDelimiter(BackUpPathEdit.Text);
-      Settings._cfgdatpath := IncludeTrailingPathDelimiter(edCFGDATPath.Text);
-      Settings._logspath := IncludeTrailingPathDelimiter(edLogsPath.Text);
+      //
+      // Folders
+      //
+      Settings._rootpath := editRootFolder.Text;
+      Settings._cfgdatpath := editCfgDatFolder.Text;
+      Settings._logspath := editLogsFolder.Text;
+      Settings._backuppath := editBackupFolder.Text;
+      Settings._soundpath := editSoundFolder.Text;
+
+      if IncludeTrailingPathDelimiter(editPluginsFolder.Text) <> IncludeTrailingPathDelimiter(Settings._pluginpath) then begin
+         if Application.MessageBox(PChar(Installed_Plugins_Disabled), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDYES then begin
+            Settings._pluginpath := editPluginsFolder.Text;
+         end;
+      end;
+
+      Settings.FSuperCheck.FSuperCheckFolder := editSpcFolder.Text;
 
       Settings._allowdupe := AllowDupeCheckBox.Checked;
       Settings._sameexchange := cbDispExchange.Checked;
@@ -1125,7 +1142,6 @@ begin
       else begin
          Settings.FSuperCheck.FSuperCheckMethod := 2;
       end;
-      Settings.FSuperCheck.FSuperCheckFolder := editSuperCheckFolder.Text;
       Settings.FSuperCheck.FAcceptDuplicates := checkAcceptDuplicates.Checked;
       Settings.FSuperCheck.FFullMatchHighlight := checkHighlightFullmatch.Checked;
       Settings.FSuperCheck.FFullMatchColor := editFullmatchColor.Color;
@@ -1221,6 +1237,8 @@ end;
 procedure TformOptions.buttonOKClick(Sender: TObject);
 begin
    RenewSettings;
+
+   dmZLogGlobal.CreateFolders();
 end;
 
 procedure TformOptions.RenewCWStrBankDisp;
@@ -1503,11 +1521,16 @@ begin
       // Sent欄は表示専用
       SentEdit.Text := Settings._sentstr;
 
-      PluginPathEdit.Text := UPluginManager.GetItemPathINI;
-      SoundPathEdit.Text := Settings._soundpath;
-      BackUpPathEdit.Text := Settings._backuppath;
-      edCFGDATPath.Text := Settings._cfgdatpath;
-      edLogsPath.Text := Settings._logspath;
+      //
+      // Folders
+      //
+      editRootFolder.Text := Settings._rootpath;
+      editCfgDatFolder.Text := Settings._cfgdatpath;
+      editLogsFolder.Text := Settings._logspath;
+      editBackupFolder.Text := Settings._backuppath;
+      editSoundFolder.Text := Settings._soundpath;
+      editPluginsFolder.Text := Settings._pluginpath;
+      editSpcFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
 
       PTTEnabledCheckBox.Checked := Settings._pttenabled;
       checkCwReverseSignal.Checked := Settings.CW._keying_signal_reverse;
@@ -1598,7 +1621,6 @@ begin
          1: radioSuperCheck1.Checked := True;
          else radioSuperCheck2.Checked := True;
       end;
-      editSuperCheckFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
       checkAcceptDuplicates.Checked := Settings.FSuperCheck.FAcceptDuplicates;
       checkHighlightFullmatch.Checked := Settings.FSuperCheck.FFullMatchHighlight;
       editFullmatchColor.Color := Settings.FSuperCheck.FFullMatchColor;
@@ -2010,7 +2032,7 @@ end;
 
 procedure TformOptions.vButtonClick(Sender: TObject);
 begin
-   OpenDialog.InitialDir := dmZLogGlobal.Settings._soundpath;
+   OpenDialog.InitialDir := dmZLogGlobal.SoundPath;
    if OpenDialog.Execute then begin
       FTempVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
@@ -2019,7 +2041,7 @@ end;
 
 procedure TformOptions.vAdditionalButtonClick(Sender: TObject);
 begin
-   OpenDialog.InitialDir := dmZLogGlobal.Settings._soundpath;
+   OpenDialog.InitialDir := dmZLogGlobal.SoundPath;
    if OpenDialog.Execute then begin
       FTempAdditionalVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
@@ -2091,21 +2113,6 @@ begin
    end;
 end;
 
-procedure TformOptions.buttonSuperCheckFolderRefClick(Sender: TObject);
-var
-   fResult: Boolean;
-   strSelected: string;
-begin
-   strSelected := editSuperCheckFolder.Text;
-
-   fResult := SelectDirectory(SELECT_SPC_FOLDER, '', strSelected, [sdNewUI, sdNewFolder, sdValidateDir], Self);
-   if fResult = False then begin
-      Exit;
-   end;
-
-   editSuperCheckFolder.Text := strSelected;
-end;
-
 procedure TformOptions.ZLinkComboChange(Sender: TObject);
 begin
    if ZLinkCombo.ItemIndex = 0 then begin
@@ -2143,16 +2150,20 @@ var
    strDir: string;
 begin
    case TButton(Sender).Tag of
+      0:
+         strDir := editRootFolder.Text;
       10:
-         strDir := edCFGDATPath.Text;
+         strDir := editCfgDatFolder.Text;
       20:
-         strDir := edLogsPath.Text;
+         strDir := editLogsFolder.Text;
       30:
-         strDir := BackUpPathEdit.Text;
+         strDir := editBackupFolder.Text;
       40:
-         strDir := SoundPathEdit.Text;
+         strDir := editSoundFolder.Text;
       50:
-         strDir := PluginPathEdit.Text;
+         strDir := editPluginsFolder.Text;
+      60:
+         strDir := editSpcFolder.Text;
    end;
 
    if SelectDirectory(SELECT_FOLDER, '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
@@ -2160,16 +2171,35 @@ begin
    end;
 
    case TButton(Sender).Tag of
+      // Root
+      0:
+         editRootFolder.Text := strDir;
+
+      // CFG/DAT
       10:
-         edCFGDATPath.Text := strDir;
+         editCfgDatFolder.Text := strDir;
+
+      // Logs
       20:
-         edLogsPath.Text := strDir;
+         editLogsFolder.Text := strDir;
+
+      // Backup
       30:
-         BackUpPathEdit.Text := strDir;
+         editBackupFolder.Text := strDir;
+
+      // Sound(Voice)
       40:
-         SoundPathEdit.Text := strDir;
+         editSoundFolder.Text := strDir;
+
+      // Plugins
       50:
-         PluginPathEdit.Text := strDir;
+         editPluginsFolder.Text := strDir;
+
+      // Super Check
+      60: begin
+         editSpcFolder.Text := strDir;
+         FNeedSuperCheckLoad := True;
+      end;
    end;
 end;
 

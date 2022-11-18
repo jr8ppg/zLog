@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44868.6277083333</prop>
-        <prop prop-type="OrigDateTime">44868.6086805556</prop>
+        <prop prop-type="SelfDateTime">44883.9723148148</prop>
+        <prop prop-type="OrigDateTime">44883.9317592593</prop>
         <prop prop-type="XlatDateTime">44868.6135185185</prop>
         <prop prop-type="Translated">1</prop>
-        <prop prop-type="UnTranslated">187</prop>
+        <prop prop-type="UnTranslated">191</prop>
       </prop-group>
     </header>
     <body>
@@ -985,6 +985,26 @@
         <source>menuPasteCommandClick</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931320255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CommForm.O:timerReConnect.Enabled" resname="O:CommForm.O:timerReConnect.Enabled">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44883.9723144329</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CommForm.O:timerReConnect.OnTimer" resname="O:CommForm.O:timerReConnect.OnTimer">
+        <source>timerReConnectTimer</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44883.9723144329</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CommForm.O:timerReConnect.Left" resname="O:CommForm.O:timerReConnect.Left">
+        <source>28</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44883.9723144329</prop><prop prop-type="Status">0</prop><prop prop-type="Order">190</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:CommForm.O:timerReConnect.Top" resname="O:CommForm.O:timerReConnect.Top">
+        <source>88</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44883.9723144329</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

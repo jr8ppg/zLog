@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44878.8815046296</prop>
-        <prop prop-type="OrigDateTime">44878.8805787037</prop>
-        <prop prop-type="XlatDateTime">44862.9121759259</prop>
+        <prop prop-type="SelfDateTime">44883.9761111111</prop>
+        <prop prop-type="OrigDateTime">44883.975625</prop>
+        <prop prop-type="XlatDateTime">44878.8805787037</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">1210</prop>
+        <prop prop-type="UnTranslated">1211</prop>
       </prop-group>
     </header>
     <body>
@@ -8354,7 +8354,7 @@
         <source>"Installed plugins will be disabled. Are you sure?"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44849.9794843982</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">3</prop>
         </prop-group>
       </trans-unit>
       <trans-unit id="UOptions_UOptions_SELECT_FOLDER" resname="UOptions_UOptions_SELECT_FOLDER">
@@ -8431,7 +8431,7 @@
         <source>"Select the folder where the files for SuperCheck"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44868.6581093519</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">3</prop>
         </prop-group>
       </trans-unit>
       <trans-unit id="Main_TMainForm_Change_Operator_QSOs" resname="Main_TMainForm_Change_Operator_QSOs">
@@ -8522,6 +8522,27 @@
         <source>"Are you sure to change the mode for these QSO's?"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44873.9688659606</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_Installed_Plugins_Disabled" resname="UOptions_Installed_Plugins_Disabled">
+        <source>"Plugins folder changed. Installed plugins will be disabled. Are you sure?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44883.9728263542</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UComm_UComm_SecondsLeft" resname="UComm_UComm_SecondsLeft">
+        <source>"%s seconds left to reconnect"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44883.9728263657</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UComm_UComm_ExceededLimit" resname="UComm_UComm_ExceededLimit">
+        <source>"reconnection attempts exceeded limit"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44883.9728263773</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
       </trans-unit>

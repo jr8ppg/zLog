@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetPath
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -4339,160 +4339,181 @@ object formOptions: TformOptions
       end
     end
     object tabsheetPath: TTabSheet
-      Caption = 'Path'
+      Caption = 'Folders'
       object Label50: TLabel
         Left = 16
-        Top = 18
-        Width = 48
+        Top = 44
+        Width = 64
         Height = 13
+        AutoSize = False
         Caption = 'CFG/DAT'
       end
       object Label51: TLabel
         Left = 16
-        Top = 43
-        Width = 23
+        Top = 69
+        Width = 64
         Height = 13
+        AutoSize = False
         Caption = 'Logs'
       end
       object Label56: TLabel
         Left = 16
-        Top = 68
-        Width = 40
+        Top = 94
+        Width = 64
         Height = 13
+        AutoSize = False
         Caption = 'Back up'
       end
       object Label74: TLabel
         Left = 16
-        Top = 93
-        Width = 31
+        Top = 119
+        Width = 64
         Height = 13
+        AutoSize = False
         Caption = 'Sound'
       end
       object Label90: TLabel
         Left = 16
-        Top = 118
-        Width = 34
+        Top = 144
+        Width = 64
         Height = 13
+        AutoSize = False
         Caption = 'Plugins'
       end
-      object edCFGDATPath: TEdit
+      object Label108: TLabel
+        Left = 16
+        Top = 19
+        Width = 64
+        Height = 13
+        AutoSize = False
+        Caption = 'Root'
+      end
+      object Label109: TLabel
+        Left = 16
+        Top = 169
+        Width = 64
+        Height = 13
+        AutoSize = False
+        Caption = 'Super Check'
+      end
+      object editCfgDatFolder: TEdit
         Left = 88
-        Top = 16
+        Top = 41
         Width = 256
-        Height = 20
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 0
-        Text = 'BackUpPathEdit'
+        Height = 21
+        TabOrder = 2
       end
       object buttonBrowseCFGDATPath: TButton
         Tag = 10
         Left = 350
-        Top = 16
-        Width = 65
-        Height = 20
-        Caption = 'Browse...'
-        TabOrder = 1
-        OnClick = BrowsePathClick
-      end
-      object edLogsPath: TEdit
-        Tag = 20
-        Left = 88
-        Top = 41
-        Width = 256
-        Height = 20
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 2
-        Text = 'BackUpPathEdit'
-      end
-      object buttonBrowseLogsPath: TButton
-        Tag = 20
-        Left = 350
-        Top = 41
+        Top = 42
         Width = 65
         Height = 20
         Caption = 'Browse...'
         TabOrder = 3
         OnClick = BrowsePathClick
       end
-      object buttonBrowseBackupPath: TButton
-        Tag = 30
-        Left = 350
+      object editLogsFolder: TEdit
+        Tag = 20
+        Left = 88
         Top = 66
+        Width = 256
+        Height = 21
+        TabOrder = 4
+      end
+      object buttonBrowseLogsPath: TButton
+        Tag = 20
+        Left = 350
+        Top = 67
         Width = 65
         Height = 20
         Caption = 'Browse...'
         TabOrder = 5
         OnClick = BrowsePathClick
       end
-      object BackUpPathEdit: TEdit
-        Left = 88
-        Top = 66
-        Width = 256
-        Height = 20
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 4
-        Text = 'BackUpPathEdit'
-      end
-      object buttonBrowseSoundPath: TButton
-        Tag = 40
+      object buttonBrowseBackupPath: TButton
+        Tag = 30
         Left = 350
-        Top = 91
+        Top = 92
         Width = 65
         Height = 20
         Caption = 'Browse...'
         TabOrder = 7
         OnClick = BrowsePathClick
       end
-      object SoundPathEdit: TEdit
+      object editBackupFolder: TEdit
         Left = 88
         Top = 91
         Width = 256
-        Height = 20
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
+        Height = 21
         TabOrder = 6
       end
-      object buttonBrowsePluginPath: TButton
-        Tag = 50
+      object buttonBrowseSoundPath: TButton
+        Tag = 40
         Left = 350
-        Top = 116
+        Top = 117
         Width = 65
         Height = 20
         Caption = 'Browse...'
         TabOrder = 9
         OnClick = BrowsePathClick
       end
-      object PluginPathEdit: TEdit
+      object editSoundFolder: TEdit
         Left = 88
         Top = 116
         Width = 256
-        Height = 20
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
+        Height = 21
         TabOrder = 8
+      end
+      object buttonBrowsePluginPath: TButton
+        Tag = 50
+        Left = 350
+        Top = 142
+        Width = 65
+        Height = 20
+        Caption = 'Browse...'
+        TabOrder = 11
+        OnClick = BrowsePathClick
+      end
+      object editPluginsFolder: TEdit
+        Left = 88
+        Top = 141
+        Width = 256
+        Height = 21
+        TabOrder = 10
+      end
+      object editRootFolder: TEdit
+        Left = 88
+        Top = 16
+        Width = 256
+        Height = 21
+        TabOrder = 0
+      end
+      object buttonBrowseRootFolder: TButton
+        Left = 350
+        Top = 17
+        Width = 65
+        Height = 20
+        Caption = 'Browse...'
+        TabOrder = 1
+        OnClick = BrowsePathClick
+      end
+      object buttonBrowseSpcPath: TButton
+        Tag = 60
+        Left = 350
+        Top = 167
+        Width = 65
+        Height = 20
+        Caption = 'Browse...'
+        TabOrder = 13
+        OnClick = BrowsePathClick
+      end
+      object editSpcFolder: TEdit
+        Left = 88
+        Top = 166
+        Width = 256
+        Height = 21
+        TabOrder = 12
       end
     end
     object tabsheetMisc: TTabSheet
@@ -4596,19 +4617,11 @@ object formOptions: TformOptions
       end
       object GroupBox8: TGroupBox
         Left = 6
-        Top = 133
+        Top = 155
         Width = 423
-        Height = 74
+        Height = 52
         Caption = 'Super Check'
         TabOrder = 6
-        object buttonSuperCheckFolderRef: TSpeedButton
-          Left = 392
-          Top = 43
-          Width = 21
-          Height = 21
-          Caption = '...'
-          OnClick = buttonSuperCheckFolderRefClick
-        end
         object radioSuperCheck0: TRadioButton
           Left = 12
           Top = 20
@@ -4628,14 +4641,6 @@ object formOptions: TformOptions
           Caption = 'ZLO/ZLOX'
           TabOrder = 1
           OnClick = OnNeedSuperCheckLoad
-        end
-        object editSuperCheckFolder: TEdit
-          Left = 12
-          Top = 43
-          Width = 374
-          Height = 21
-          TabOrder = 4
-          OnChange = OnNeedSuperCheckLoad
         end
         object radioSuperCheck2: TRadioButton
           Left = 153
@@ -6093,13 +6098,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'HG'#34892#26360#20307
+          FontName = '@MingLiU'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 50
+          ItemIndex = 23
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

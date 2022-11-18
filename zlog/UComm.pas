@@ -46,6 +46,7 @@ type
     popupCommand: TPopupMenu;
     menuPasteCommand: TMenuItem;
     checkUseAllowDenyLists: TCheckBox;
+    timerReConnect: TTimer;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -75,6 +76,7 @@ type
     procedure menuSaveToFileClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure menuPasteCommandClick(Sender: TObject);
+    procedure timerReConnectTimer(Sender: TObject);
   private
     { Private declarations }
     FCommBuffer : TStringList;
@@ -96,6 +98,12 @@ type
     FSpotterList: TStringList;
     FAllowList: TStringList;
     FDenyList: TStringList;
+
+    // Auto Reconnect
+    FReConnectMax: Integer;
+    FReConnectCount: Integer;
+    FRetryIntervalSec: Integer;
+    FRetryIntervalCount: Integer;
 
     procedure DeleteSpot(_from, _to : integer);
 
@@ -143,6 +151,8 @@ resourcestring
   UComm_Disconnect = 'Disconnect';
   UComm_Connecting = 'Connecting...';
   UComm_Disconnecting = 'Disconnecting...';
+  UComm_SecondsLeft = '%s seconds left to reconnect';
+  UComm_ExceededLimit = 'reconnection attempts exceeded limit';
 
 var
   CommBufferLock: TCriticalSection;
@@ -387,6 +397,12 @@ begin
    FDenyList.Duplicates := dupIgnore;
    FDenyList.Sorted := True;
    FDenyList.CaseSensitive := False;
+
+   FReConnectMax := dmZLogGlobal.Settings.FClusterReConnectMax;
+   FReConnectCount := 0;
+   FRetryIntervalSec := dmZLogGlobal.Settings.FClusterRetryIntervalSec;
+   FRetryIntervalCount := 0;
+   timerReConnect.Enabled := False;
 
    ImplementOptions();
 
@@ -670,14 +686,45 @@ begin
    try
       // Auto Reconnect
       if (checkAutoReconnect.Checked = True) and (Telnet.IsConnected() = False) and
-         (FDisconnectClicked = False) and (ConnectButton.Caption = 'Connect') then begin
+         (FDisconnectClicked = False) and (ConnectButton.Caption = UComm_Connect) then begin
+
+         if (FReConnectCount >= FReConnectMax) then begin
+            WriteLineConsole(UComm_ExceededLimit);
+            WriteStatusLine('');
+            timerReconnect.Enabled := False;
+            FReConnectCount := 0;
+            FRetryIntervalCount := 0;
+            Exit;
+         end;
+
+         if (FRetryIntervalCount <= FRetryIntervalSec) then begin
+            Exit;
+         end;
+
          ConnectButton.Click();
+         Inc(FReConnectCount);
       end;
 
 //      CommProcess;
    finally
       Timer1.Enabled := True;
    end;
+end;
+
+procedure TCommForm.timerReConnectTimer(Sender: TObject);
+var
+   S: string;
+   C: Integer;
+begin
+   C := FRetryIntervalSec - FRetryIntervalCount;
+   if C < 0 then begin
+      C := 0;
+   end;
+
+   S := Format(UComm_SecondsLeft, [IntToStr(C)]);
+   WriteStatusLine(S);
+
+   Inc(FRetryIntervalCount);
 end;
 
 procedure TCommForm.FormDestroy(Sender: TObject);
@@ -717,6 +764,9 @@ begin
    try
       Edit.SetFocus;
 
+      WriteStatusLine('');
+      FRetryIntervalCount := 0;
+
       if dmZlogGlobal.Settings._clusterport = 0 then begin
          MainForm.ZLinkForm.PushRemoteConnect;
          exit;
@@ -726,7 +776,6 @@ begin
          ConnectButton.Caption := UComm_Disconnecting;
          FDisconnectClicked := True;
          Telnet.Close;
-         TerminateCommProcessThread();
       end
       else begin
          LoadAllowDenyList();
@@ -796,7 +845,14 @@ begin
       ConnectButton.Caption := UComm_Disconnect;
       WriteLineConsole('connected to ' + Telnet.Host);
 
+      timerReConnect.Enabled := False;
+
       FAutoLogined := False;
+
+      FRetryIntervalCount := 0;
+      if Error = 0 then begin
+         FReConnectCount := 0;
+      end;
    except
       on E: Exception do begin
          Console.WriteString(E.Message);
@@ -829,6 +885,11 @@ begin
 
    fname := ExtractFilePath(Application.ExeName) + 'spotter_deny.txt';
    FDenyList.SaveToFile(fname);
+
+   if FDisconnectClicked = False then begin
+      timerReConnect.Enabled := True;
+   end;
+   TerminateCommProcessThread();
 end;
 
 procedure TCommForm.FormShow(Sender: TObject);
