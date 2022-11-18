@@ -3099,71 +3099,64 @@ object formOptions: TformOptions
     object tabsheetPath: TTabSheet
       Caption = #21508#31278#12501#12457#12523#12480
       object Label50: TLabel
-        Left = 16
+        Left = 8
         Top = 44
-        Width = 64
+        Width = 48
         Height = 13
-        AutoSize = False
         Caption = 'CFG/DAT'
       end
       object Label51: TLabel
-        Left = 16
+        Left = 8
         Top = 69
-        Width = 64
+        Width = 23
         Height = 13
-        AutoSize = False
         Caption = #12525#12464#12501#12449#12452#12523
       end
       object Label56: TLabel
-        Left = 16
+        Left = 8
         Top = 94
-        Width = 64
+        Width = 40
         Height = 13
-        AutoSize = False
         Caption = #12496#12483#12463#12450#12483#12503
       end
       object Label74: TLabel
-        Left = 16
+        Left = 8
         Top = 119
-        Width = 64
+        Width = 31
         Height = 13
-        AutoSize = False
         Caption = #38899#22768#12501#12449#12452#12523
       end
       object Label90: TLabel
-        Left = 16
+        Left = 8
         Top = 144
-        Width = 64
+        Width = 34
         Height = 13
-        AutoSize = False
         Caption = #12503#12521#12464#12452#12531
       end
       object Label120: TLabel
-        Left = 16
+        Left = 8
         Top = 19
-        Width = 64
+        Width = 55
         Height = 13
-        AutoSize = False
         Caption = #12523#12540#12488#12501#12457#12523#12480
       end
       object Label121: TLabel
-        Left = 16
+        Left = 8
         Top = 169
-        Width = 64
+        Width = 62
         Height = 13
-        AutoSize = False
         Caption = 'Super Check'
       end
       object editCfgDatFolder: TEdit
         Left = 88
         Top = 41
-        Width = 256
+        Width = 266
         Height = 21
         TabOrder = 2
       end
       object buttonBrowseCFGDATPath: TButton
         Tag = 10
-        Left = 350
+        Left = 360
         Top = 42
         Width = 65
         Height = 20
@@ -3175,13 +3168,13 @@ object formOptions: TformOptions
         Tag = 20
         Left = 88
         Top = 66
-        Width = 256
+        Width = 266
         Height = 21
         TabOrder = 4
       end
       object buttonBrowseLogsPath: TButton
         Tag = 20
-        Left = 350
+        Left = 360
         Top = 67
         Width = 65
         Height = 20
@@ -3191,7 +3184,7 @@ object formOptions: TformOptions
       end
       object buttonBrowseBackupPath: TButton
         Tag = 30
-        Left = 350
+        Left = 360
         Top = 92
         Width = 65
         Height = 20
@@ -3202,13 +3195,13 @@ object formOptions: TformOptions
       object editBackupFolder: TEdit
         Left = 88
         Top = 91
-        Width = 256
+        Width = 266
         Height = 21
         TabOrder = 6
       end
       object buttonBrowseSoundPath: TButton
         Tag = 40
-        Left = 350
+        Left = 360
         Top = 117
         Width = 65
         Height = 20
@@ -3219,13 +3212,13 @@ object formOptions: TformOptions
       object editSoundFolder: TEdit
         Left = 88
         Top = 116
-        Width = 256
+        Width = 266
         Height = 21
         TabOrder = 8
       end
       object buttonBrowsePluginPath: TButton
         Tag = 50
-        Left = 350
+        Left = 360
         Top = 142
         Width = 65
         Height = 20
@@ -3236,19 +3229,19 @@ object formOptions: TformOptions
       object editPluginsFolder: TEdit
         Left = 88
         Top = 141
-        Width = 256
+        Width = 266
         Height = 21
         TabOrder = 10
       end
       object editRootFolder: TEdit
         Left = 88
         Top = 16
-        Width = 256
+        Width = 266
         Height = 21
         TabOrder = 0
       end
       object buttonBrowseRootFolder: TButton
-        Left = 350
+        Left = 360
         Top = 17
         Width = 65
         Height = 20
@@ -3258,7 +3251,7 @@ object formOptions: TformOptions
       end
       object buttonBrowseSpcPath: TButton
         Tag = 60
-        Left = 350
+        Left = 360
         Top = 167
         Width = 65
         Height = 20
@@ -3269,7 +3262,7 @@ object formOptions: TformOptions
       object editSpcFolder: TEdit
         Left = 88
         Top = 166
-        Width = 256
+        Width = 266
         Height = 21
         TabOrder = 12
       end
@@ -4856,13 +4849,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = #65325#65331' '#12468#12471#12483#12463
+          FontName = '@MingLiU'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 67
+          ItemIndex = 23
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
