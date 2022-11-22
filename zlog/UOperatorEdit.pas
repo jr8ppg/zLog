@@ -107,7 +107,7 @@ var
    n: Integer;
 begin
    n := TButton(Sender).Tag;
-   OpenDialog1.InitialDir := dmZLogGlobal.Settings._soundpath;
+   OpenDialog1.InitialDir := dmZLogGlobal.SoundPath;
    if OpenDialog1.Execute(Self.Handle) = False then begin
       Exit;
    end;
@@ -120,7 +120,7 @@ var
    n: Integer;
 begin
    n := TButton(Sender).Tag;
-   OpenDialog1.InitialDir := dmZLogGlobal.Settings._soundpath;
+   OpenDialog1.InitialDir := dmZLogGlobal.SoundPath;
    if OpenDialog1.Execute(Self.Handle) = False then begin
       Exit;
    end;

@@ -5,8 +5,8 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.568912037</prop>
-        <prop prop-type="OrigDateTime">44800.8836574074</prop>
+        <prop prop-type="SelfDateTime">44888.0042361111</prop>
+        <prop prop-type="OrigDateTime">44887.9990509259</prop>
         <prop prop-type="XlatDateTime">44800.8836574074</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">360</prop>
@@ -129,7 +129,7 @@
         <prop prop-type="Created">44796.8931963079</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TMenuForm</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:Label1.Left" resname="O:MenuForm.O:Label1.Left">
-        <source>388</source>
+        <source>409</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931963079</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -139,7 +139,7 @@
         <prop prop-type="Created">44796.8931963079</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:Label1.Width" resname="O:MenuForm.O:Label1.Width">
-        <source>57</source>
+        <source>36</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931963079</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>

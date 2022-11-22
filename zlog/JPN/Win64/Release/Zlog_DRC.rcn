@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44883.976087963</prop>
-        <prop prop-type="OrigDateTime">44883.975625</prop>
+        <prop prop-type="SelfDateTime">44888.0041898148</prop>
+        <prop prop-type="OrigDateTime">44888.0036111111</prop>
         <prop prop-type="XlatDateTime">44883.9747222222</prop>
         <prop prop-type="Translated">25</prop>
-        <prop prop-type="UnTranslated">1186</prop>
+        <prop prop-type="UnTranslated">1187</prop>
       </prop-group>
     </header>
     <body>
@@ -8555,11 +8555,10 @@
         <target>"これらの QSO のモードを変更してもよろしいですか？"</target>
       </trans-unit>
       <trans-unit id="Main_TMainForm_Enter_Frequency" resname="Main_TMainForm_Enter_Frequency">
-        <source></source>
-        <target>"周波数をkHzで入力して下さい"</target>
+        <source>"Enter frequency in kHz"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44873.970776331</prop>
-          <prop prop-type="Status">3</prop>
+          <prop prop-type="Status">0</prop>
         </prop-group>
       </trans-unit>
       <trans-unit id="UOptions_Installed_Plugins_Disabled" resname="UOptions_Installed_Plugins_Disabled">

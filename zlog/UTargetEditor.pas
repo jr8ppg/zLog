@@ -125,7 +125,7 @@ var
    aQSO: TQSO;
    diff: TDateTime;
 begin
-   OpenDialog1.InitialDir := dmZLogGlobal.Settings._logspath;
+   OpenDialog1.InitialDir := dmZLogGlobal.LogPath;
    if OpenDialog1.Execute(Self.Handle) = False then begin
       Exit;
    end;

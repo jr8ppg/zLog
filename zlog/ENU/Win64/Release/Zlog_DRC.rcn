@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44883.9761111111</prop>
-        <prop prop-type="OrigDateTime">44883.975625</prop>
+        <prop prop-type="SelfDateTime">44888.0047685185</prop>
+        <prop prop-type="OrigDateTime">44888.0036111111</prop>
         <prop prop-type="XlatDateTime">44878.8805787037</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">1211</prop>
+        <prop prop-type="UnTranslated">1212</prop>
       </prop-group>
     </header>
     <body>
@@ -8543,6 +8543,13 @@
         <source>"reconnection attempts exceeded limit"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44883.9728263773</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Enter_Frequency" resname="Main_TMainForm_Enter_Frequency">
+        <source>"Enter frequency in kHz"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44888.0047847569</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
       </trans-unit>

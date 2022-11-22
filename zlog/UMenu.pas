@@ -208,7 +208,7 @@ end;
 
 procedure TMenuForm.SelectButtonClick(Sender: TObject);
 begin
-   FSelectDlg.CfgFolder := dmZlogGlobal.Settings._cfgdatpath;
+   FSelectDlg.CfgFolder := dmZlogGlobal.CfgDatPath;
 
    FSelectDlg.InitialContestName := rbGeneral.Caption;
 
@@ -216,7 +216,7 @@ begin
       Exit;
    end;
 
-   dmZlogGlobal.Settings._cfgdatpath := FSelectDlg.CfgFolder;
+   dmZlogGlobal.CfgDatPath := FSelectDlg.CfgFolder;
 
    FCFGFileName := FSelectDlg.SelectedContest.Fullpath;
    rbGeneral.Caption := FSelectDlg.SelectedContest.ContestName;

@@ -556,6 +556,23 @@ procedure TContest.SetNrSent(aQSO: TQSO);
 var
    S: string;
 begin
+   // セットする値が無いならセットしない
+   if (Pos('$Q', dmZlogGlobal.Settings._sentstr) > 0) and (QTHString(aQSO) = '') then begin
+      Exit;
+   end;
+   if (Pos('$V', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._prov = '') then begin
+      Exit;
+   end;
+   if (Pos('$Z', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._cqzone = '') then begin
+      Exit;
+   end;
+   if (Pos('$I', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._iaruzone = '') then begin
+      Exit;
+   end;
+   if (Pos('$P', dmZlogGlobal.Settings._sentstr) > 0) and (aQSO.NewPowerStr = '') then begin
+      Exit;
+   end;
+
    S := SetStrNoAbbrev(dmZlogGlobal.Settings._sentstr, aQSO);
 
    S := StringReplace(S, '_', '', [rfReplaceAll]);
