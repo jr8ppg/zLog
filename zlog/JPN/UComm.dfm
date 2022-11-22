@@ -10,7 +10,7 @@ object CommForm: TCommForm
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = 'MS P'#12468#12471#12483#12463
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
@@ -235,7 +235,7 @@ object CommForm: TCommForm
   object timerReConnect: TTimer
     Enabled = False
     OnTimer = timerReConnectTimer
-    Left = 24
+    Left = 28
     Top = 88
   end
 end
