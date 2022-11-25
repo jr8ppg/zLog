@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44888.0036574074</prop>
+        <prop prop-type="SelfDateTime">44890.9689814815</prop>
         <prop prop-type="OrigDateTime">44887.9990509259</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
-        <prop prop-type="Translated">14</prop>
-        <prop prop-type="UnTranslated">346</prop>
+        <prop prop-type="XlatDateTime">44888.0117361111</prop>
+        <prop prop-type="Translated">16</prop>
+        <prop prop-type="UnTranslated">344</prop>
       </prop-group>
     </header>
     <body>
@@ -131,8 +131,9 @@
       </trans-unit>
       <trans-unit id="O:MenuForm.O:Label1.Left" resname="O:MenuForm.O:Label1.Left">
         <source>409</source>
+        <target>388</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925837847</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925837847</prop><prop prop-type="Status">1</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:Label1.Top" resname="O:MenuForm.O:Label1.Top">
         <source>281</source>
@@ -141,8 +142,9 @@
       </trans-unit>
       <trans-unit id="O:MenuForm.O:Label1.Width" resname="O:MenuForm.O:Label1.Width">
         <source>36</source>
+        <target>57</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925837847</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925837847</prop><prop prop-type="Status">1</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:Label1.Height" resname="O:MenuForm.O:Label1.Height">
         <source>13</source>

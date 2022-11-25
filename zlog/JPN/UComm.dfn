@@ -5,9 +5,9 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44883.971712963</prop>
+        <prop prop-type="SelfDateTime">44890.9689351852</prop>
         <prop prop-type="OrigDateTime">44883.9317592593</prop>
-        <prop prop-type="XlatDateTime">44868.6118287037</prop>
+        <prop prop-type="XlatDateTime">44888.0115509259</prop>
         <prop prop-type="Translated">11</prop>
         <prop prop-type="UnTranslated">181</prop>
       </prop-group>
@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="O:CommForm.Font.Name" resname="O:CommForm.Font.Name">
         <source>'MS Sans Serif'</source>
-        <target>'MS Pゴシック'</target>
+        <target>'ＭＳ Ｐゴシック'</target>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925189236</prop><prop prop-type="Status">1</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TCommForm</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>

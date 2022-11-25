@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44868.6271990741</prop>
+        <prop prop-type="SelfDateTime">44890.9689351852</prop>
         <prop prop-type="OrigDateTime">44863.8964814815</prop>
-        <prop prop-type="XlatDateTime">44853.9703472222</prop>
-        <prop prop-type="Translated">1</prop>
-        <prop prop-type="UnTranslated">242</prop>
+        <prop prop-type="XlatDateTime">44888.0081944444</prop>
+        <prop prop-type="Translated">21</prop>
+        <prop prop-type="UnTranslated">222</prop>
       </prop-group>
     </header>
     <body>
@@ -65,8 +65,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.Font.Name" resname="O:formExportHamlog.Font.Name">
         <source>'MS Sans Serif'</source>
+        <target>'ＭＳ　Ｐゴシック'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TformExportHamlog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">1</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TformExportHamlog</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'ＭＳ Ｐゴシック'</source>
           <target>'ＭＳ　Ｐゴシック'</target>
           <prop-group name="ITEFieldProp">
@@ -133,8 +134,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.Caption" resname="O:formExportHamlog.O:GroupBox1.Caption">
         <source>'Output settings for HAMLOG'</source>
+        <target>'HAMLOG用出力設定'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">1</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'HAMLOG出力設定'</source>
           <target>'HAMLOG用出力設定'</target>
           <prop-group name="ITEFieldProp">
@@ -167,8 +169,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.Caption">
         <source>'Output for Remarks1'</source>
+        <target>'Remarks1の出力内容'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">1</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.TabOrder">
         <source>0</source>
@@ -197,8 +200,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.Caption">
         <source>'Input'</source>
+        <target>'入力'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">1</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.TabOrder">
         <source>1</source>
@@ -302,8 +306,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.Caption">
         <source>'Nothing'</source>
+        <target>'何も出さない'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">1</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.TabOrder">
         <source>0</source>
@@ -366,8 +371,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.Caption">
         <source>'Output for Remarks2'</source>
+        <target>'Remarks2の出力内容'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">1</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.TabOrder">
         <source>1</source>
@@ -396,8 +402,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.Caption">
         <source>'Input'</source>
+        <target>'入力'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">1</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.TabOrder">
         <source>1</source>
@@ -501,8 +508,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.Caption">
         <source>'Nothing'</source>
+        <target>'何も出さない'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">1</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.TabOrder">
         <source>0</source>
@@ -577,8 +585,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.Caption">
         <source>'Output for Mark of QSL'</source>
+        <target>'QSLマークの出力内容'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">1</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.TabOrder">
         <source>4</source>
@@ -656,8 +665,9 @@
         </alt-trans></trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label2.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label2.Caption">
         <source>'None'</source>
+        <target>'設定無し(None)'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">1</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label3.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label3.Left">
         <source>25</source>
@@ -842,8 +852,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.Caption">
         <source>'Operation Place of UR'</source>
+        <target>'相手局の運用地コード'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">1</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.TabOrder">
         <source>2</source>
@@ -876,8 +887,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Caption">
         <source>'Nothing'</source>
+        <target>'何も出さない'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">1</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Checked" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Checked">
         <source>True</source>
@@ -925,8 +937,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.Caption">
         <source>'Received NR'</source>
+        <target>'受信ナンバー'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.892550706</prop><prop prop-type="Status">1</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.TabOrder">
         <source>1</source>
@@ -960,8 +973,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupName.Caption">
         <source>'Name of UR'</source>
+        <target>'相手局の名前・名称'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">1</prop><prop prop-type="Order">169</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupName.TabOrder">
         <source>3</source>
@@ -994,8 +1008,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Caption">
         <source>'Nothing'</source>
+        <target>'何も出さない'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">1</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Checked" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Checked">
         <source>True</source>
@@ -1043,8 +1058,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.Caption">
         <source>'Received NR'</source>
+        <target>'受信ナンバー'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">1</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.TabOrder">
         <source>1</source>
@@ -1078,8 +1094,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.Caption">
         <source>'Output for QSO time'</source>
+        <target>'交信時分の出力内容'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">1</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.TabOrder">
         <source>5</source>
@@ -1112,8 +1129,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Caption">
         <source>'Don'#39't care'</source>
+        <target>'そのまま'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">1</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'そのまま出力'</source>
           <target>'そのまま'</target>
           <prop-group name="ITEFieldProp">
@@ -1165,8 +1183,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.Caption">
         <source>'Change to JST'</source>
+        <target>'JSTに統一'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">0</prop><prop prop-type="Order">206</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">1</prop><prop prop-type="Order">206</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.TabOrder">
         <source>1</source>
@@ -1204,8 +1223,9 @@
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.Caption">
         <source>'Change to UTC'</source>
+        <target>'UTCに統一'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">0</prop><prop prop-type="Order">213</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925508912</prop><prop prop-type="Status">1</prop><prop prop-type="Order">213</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.TabOrder">
         <source>2</source>

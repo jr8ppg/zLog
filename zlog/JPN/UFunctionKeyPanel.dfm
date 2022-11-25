@@ -12,12 +12,14 @@ object formFunctionKeyPanel: TformFunctionKeyPanel
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
+  OnActivate = FormActivate
   OnCreate = FormCreate
+  OnDeactivate = FormDeactivate
   OnHide = FormHide
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 12
+  TextHeight = 13
   object ButtonGroup1: TButtonGroup
     Left = 0
     Top = 0
@@ -82,5 +84,14 @@ object formFunctionKeyPanel: TformFunctionKeyPanel
     OnTimer = Timer1Timer
     Left = 464
     Top = 16
+  end
+  object ActionList1: TActionList
+    State = asSuspended
+    Left = 552
+    Top = 11
+    object actionChangeCwBank: TAction
+      Caption = 'actionChangeCwBank'
+      OnExecute = actionChangeCwBankExecute
+    end
   end
 end

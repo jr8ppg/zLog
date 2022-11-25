@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44868.6271759259</prop>
+        <prop prop-type="SelfDateTime">44890.9689351852</prop>
         <prop prop-type="OrigDateTime">44868.6075</prop>
-        <prop prop-type="XlatDateTime">44868.6116435185</prop>
-        <prop prop-type="Translated">2</prop>
-        <prop prop-type="UnTranslated">232</prop>
+        <prop prop-type="XlatDateTime">44888.0074768519</prop>
+        <prop prop-type="Translated">5</prop>
+        <prop prop-type="UnTranslated">229</prop>
       </prop-group>
     </header>
     <body>
@@ -471,8 +471,9 @@
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.O:menuDeleteSpot.Caption" resname="O:BandScope2.O:BSMenu.O:menuDeleteSpot.Caption">
         <source>'Delete'</source>
+        <target>'このスポットを削除'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">1</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.O:menuDeleteSpot.OnClick" resname="O:BandScope2.O:BSMenu.O:menuDeleteSpot.OnClick">
         <source>menuDeleteSpotClick</source>
@@ -481,8 +482,9 @@
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.O:menuDeleteAllWorkedStations.Caption" resname="O:BandScope2.O:BSMenu.O:menuDeleteAllWorkedStations.Caption">
         <source>'Delete all worked stations'</source>
+        <target>'交信済みスポットを全て削除'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">1</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.O:menuDeleteAllWorkedStations.OnClick" resname="O:BandScope2.O:BSMenu.O:menuDeleteAllWorkedStations.OnClick">
         <source>menuDeleteAllWorkedStationsClick</source>
@@ -496,8 +498,9 @@
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.O:menuAddToDenyList.Caption" resname="O:BandScope2.O:BSMenu.O:menuAddToDenyList.Caption">
         <source>'Add this reporter to deny list'</source>
+        <target>'この報告者を拒否リストに追加'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">1</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.O:menuAddToDenyList.OnClick" resname="O:BandScope2.O:BSMenu.O:menuAddToDenyList.OnClick">
         <source>menuAddToDenyListClick</source>

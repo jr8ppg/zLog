@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44888.0036574074</prop>
+        <prop prop-type="SelfDateTime">44890.9689814815</prop>
         <prop prop-type="OrigDateTime">44883.9861111111</prop>
-        <prop prop-type="XlatDateTime">44883.9841203704</prop>
-        <prop prop-type="Translated">240</prop>
-        <prop prop-type="UnTranslated">4582</prop>
+        <prop prop-type="XlatDateTime">44888.0089814815</prop>
+        <prop prop-type="Translated">243</prop>
+        <prop prop-type="UnTranslated">4579</prop>
       </prop-group>
     </header>
     <body>
@@ -17431,8 +17431,9 @@
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.O:tabsheetPath.O:Label108.Caption" resname="O:formOptions.O:PageControl.O:tabsheetPath.O:Label108.Caption">
         <source>'Root Folder'</source>
+        <target>'ルートフォルダ'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44883.9717374769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3447</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44883.9717374769</prop><prop prop-type="Status">1</prop><prop prop-type="Order">3447</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'Root'</source>
           <target>'ルートフォルダ'</target>
           <prop-group name="ITEFieldProp">
@@ -24279,8 +24280,9 @@
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.FontName" resname="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.FontName">
         <source>'@KaiTi'</source>
+        <target>'@MingLiU'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925940741</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4776</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925940741</prop><prop prop-type="Status">1</prop><prop prop-type="Order">4776</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'HGｺﾞｼｯｸE'</source>
           <target>'@DFKai-SB'</target>
           <prop-group name="ITEFieldProp">
@@ -24313,8 +24315,9 @@
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.ItemIndex" resname="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.ItemIndex">
         <source>22</source>
+        <target>23</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925940741</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4782</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925940741</prop><prop prop-type="Status">1</prop><prop prop-type="Order">4782</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>47</source>
           <target>1</target>
           <prop-group name="ITEFieldProp">

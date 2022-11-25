@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44849.9786805556</prop>
+        <prop prop-type="SelfDateTime">44890.96875</prop>
         <prop prop-type="OrigDateTime">44846.9478472222</prop>
-        <prop prop-type="XlatDateTime">44846.9502546296</prop>
-        <prop prop-type="Translated">84</prop>
-        <prop prop-type="UnTranslated">2985</prop>
+        <prop prop-type="XlatDateTime">44888.0114814815</prop>
+        <prop prop-type="Translated">86</prop>
+        <prop prop-type="UnTranslated">2983</prop>
       </prop-group>
     </header>
     <body>
@@ -11601,9 +11601,9 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainMenu.O:PluginMenu.Caption" resname="O:MainForm.O:MainMenu.O:PluginMenu.Caption">
         <source></source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44849.9786677083</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2312</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
         <target>'プラグイン(&amp;P)'</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44890.9687662037</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2312</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainMenu.O:PluginMenu.Visible" resname="O:MainForm.O:MainMenu.O:PluginMenu.Visible">
         <source>False</source>
@@ -13365,8 +13365,9 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:ActionList1.O:actionCheckMulti.Caption" resname="O:MainForm.O:ActionList1.O:actionCheckMulti.Caption">
         <source>'Check Multi'</source>
+        <target>'マルチチェック'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8923307639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2658</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8923307639</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2658</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'actionCheckMulti'</source>
           <target>'マルチチェック'</target>
           <prop-group name="ITEFieldProp">

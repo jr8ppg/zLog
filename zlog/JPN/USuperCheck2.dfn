@@ -5,9 +5,9 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5685416667</prop>
+        <prop prop-type="SelfDateTime">44890.9694212963</prop>
         <prop prop-type="OrigDateTime">44801.4782638889</prop>
-        <prop prop-type="XlatDateTime">44801.4782638889</prop>
+        <prop prop-type="XlatDateTime">44888.0121296296</prop>
         <prop prop-type="Translated">6</prop>
         <prop prop-type="UnTranslated">74</prop>
       </prop-group>
@@ -75,7 +75,7 @@
       </trans-unit>
       <trans-unit id="O:SuperCheck2.Font.Name" resname="O:SuperCheck2.Font.Name">
         <source>'MS Sans Serif'</source>
-        <target>'MS Pゴシック'</target>
+        <target>'ＭＳ Ｐゴシック'</target>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">1</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>

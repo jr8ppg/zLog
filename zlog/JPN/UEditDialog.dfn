@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44888.0036342593</prop>
+        <prop prop-type="SelfDateTime">44890.9689351852</prop>
         <prop prop-type="OrigDateTime">44887.9994212963</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">501</prop>
+        <prop prop-type="XlatDateTime">44888.0096759259</prop>
+        <prop prop-type="Translated">15</prop>
+        <prop prop-type="UnTranslated">486</prop>
       </prop-group>
     </header>
     <body>
@@ -65,8 +65,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.Font.Name" resname="O:EditDialog.Font.Name">
         <source>'MS Sans Serif'</source>
+        <target>'ＭＳ Ｐゴシック'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TEditDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TEditDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.Font.Style" resname="O:EditDialog.Font.Style">
         <source>[]</source>
@@ -140,8 +141,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox1.Caption" resname="O:EditDialog.O:GroupBox1.Caption">
         <source>'QSL Status'</source>
+        <target>'QSLカード'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox1.TabOrder" resname="O:EditDialog.O:GroupBox1.TabOrder">
         <source>4</source>
@@ -260,8 +262,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.Caption" resname="O:EditDialog.O:GroupBox2.Caption">
         <source>'QSO Flags'</source>
+        <target>'QSOフラグ'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.TabOrder" resname="O:EditDialog.O:GroupBox2.TabOrder">
         <source>3</source>
@@ -355,8 +358,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.O:checkQsyViolation.Caption" resname="O:EditDialog.O:GroupBox2.O:checkQsyViolation.Caption">
         <source>'QSY Violation'</source>
+        <target>'QSY違反'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.O:checkQsyViolation.Enabled" resname="O:EditDialog.O:GroupBox2.O:checkQsyViolation.Enabled">
         <source>False</source>
@@ -370,8 +374,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.O:checkForced.Left" resname="O:EditDialog.O:GroupBox2.O:checkForced.Left">
         <source>210</source>
+        <target>190</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.O:checkForced.Top" resname="O:EditDialog.O:GroupBox2.O:checkForced.Top">
         <source>16</source>
@@ -380,8 +385,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.O:checkForced.Width" resname="O:EditDialog.O:GroupBox2.O:checkForced.Width">
         <source>51</source>
+        <target>64</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.O:checkForced.Height" resname="O:EditDialog.O:GroupBox2.O:checkForced.Height">
         <source>17</source>
@@ -390,8 +396,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.O:checkForced.Caption" resname="O:EditDialog.O:GroupBox2.O:checkForced.Caption">
         <source>'Forced'</source>
+        <target>'強制入力'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.O:checkForced.Enabled" resname="O:EditDialog.O:GroupBox2.O:checkForced.Enabled">
         <source>False</source>
@@ -405,8 +412,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.O:checkInvalid.Left" resname="O:EditDialog.O:GroupBox2.O:checkInvalid.Left">
         <source>275</source>
+        <target>270</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.O:checkInvalid.Top" resname="O:EditDialog.O:GroupBox2.O:checkInvalid.Top">
         <source>16</source>
@@ -425,8 +433,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.O:checkInvalid.Caption" resname="O:EditDialog.O:GroupBox2.O:checkInvalid.Caption">
         <source>'Invalid'</source>
+        <target>'無効'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox2.O:checkInvalid.TabOrder" resname="O:EditDialog.O:GroupBox2.O:checkInvalid.TabOrder">
         <source>4</source>
@@ -460,8 +469,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox3.Caption" resname="O:EditDialog.O:GroupBox3.Caption">
         <source>'Frequency'</source>
+        <target>'周波数'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox3.TabOrder" resname="O:EditDialog.O:GroupBox3.TabOrder">
         <source>2</source>
@@ -525,8 +535,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox4.Caption" resname="O:EditDialog.O:GroupBox4.Caption">
         <source>'Station'</source>
+        <target>'ステーション'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox4.TabOrder" resname="O:EditDialog.O:GroupBox4.TabOrder">
         <source>1</source>
@@ -595,8 +606,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox4.O:Label1.Caption" resname="O:EditDialog.O:GroupBox4.O:Label1.Caption">
         <source>'PCName'</source>
+        <target>'PC名'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox4.O:comboTxNo.Left" resname="O:EditDialog.O:GroupBox4.O:comboTxNo.Left">
         <source>171</source>
@@ -630,8 +642,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox4.O:editPCName.Left" resname="O:EditDialog.O:GroupBox4.O:editPCName.Left">
         <source>64</source>
+        <target>58</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:GroupBox4.O:editPCName.Top" resname="O:EditDialog.O:GroupBox4.O:editPCName.Top">
         <source>14</source>
@@ -785,8 +798,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:Panel2.O:CancelBtn.Caption" resname="O:EditDialog.O:Panel2.O:CancelBtn.Caption">
         <source>'Cancel'</source>
+        <target>'キャンセル'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">154</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">154</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:Panel2.O:CancelBtn.TabOrder" resname="O:EditDialog.O:Panel2.O:CancelBtn.TabOrder">
         <source>1</source>
@@ -820,8 +834,9 @@
       </trans-unit>
       <trans-unit id="O:EditDialog.O:groupQsoData.Caption" resname="O:EditDialog.O:groupQsoData.Caption">
         <source>'QSO Data'</source>
+        <target>'QSOデータ'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">0</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925221759</prop><prop prop-type="Status">1</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:groupQsoData.TabOrder" resname="O:EditDialog.O:groupQsoData.TabOrder">
         <source>0</source>

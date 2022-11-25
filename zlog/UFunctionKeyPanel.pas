@@ -5,12 +5,14 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ButtonGroup, Vcl.ActnList, Vcl.Menus,
-  Vcl.ExtCtrls, UzLogConst;
+  Vcl.ExtCtrls, UzLogConst, System.Actions;
 
 type
   TformFunctionKeyPanel = class(TForm)
     ButtonGroup1: TButtonGroup;
     Timer1: TTimer;
+    ActionList1: TActionList;
+    actionChangeCwBank: TAction;
     procedure FormCreate(Sender: TObject);
     procedure ButtonGroup1Items0Click(Sender: TObject);
     procedure ButtonGroup1Items1Click(Sender: TObject);
@@ -29,6 +31,9 @@ type
     procedure FormHide(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure CreateParams(var Params: TCreateParams); override;
+    procedure FormActivate(Sender: TObject);
+    procedure FormDeactivate(Sender: TObject);
+    procedure actionChangeCwBankExecute(Sender: TObject);
   protected
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
@@ -69,6 +74,19 @@ begin
       FFKeyAction1[i] := nil;
       FFKeyAction2[i] := nil;
    end;
+
+   actionChangeCwBank.ShortCut := MainForm.actionChangeCwBank.ShortCut;
+   actionChangeCwBank.SecondaryShortCuts.Assign(MainForm.actionChangeCwBank.SecondaryShortCuts);
+end;
+
+procedure TformFunctionKeyPanel.FormActivate(Sender: TObject);
+begin
+   ActionList1.State := asNormal;
+end;
+
+procedure TformFunctionKeyPanel.FormDeactivate(Sender: TObject);
+begin
+   ActionList1.State := asSuspended;
 end;
 
 procedure TformFunctionKeyPanel.FormHide(Sender: TObject);
@@ -110,6 +128,8 @@ var
    i: Integer;
    s: string;
    cb: Integer;
+const
+   title_prefix: array[1..2] of string = ('[A]', '[B]' );
 begin
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
    if FPrevShift = True then begin
@@ -146,6 +166,8 @@ begin
          end;
       end;
    end;
+
+   Caption := title_prefix[cb] + ' Function Key';
 end;
 
 procedure TformFunctionKeyPanel.ButtonGroup1Items0Click(Sender: TObject);
@@ -206,6 +228,12 @@ end;
 procedure TformFunctionKeyPanel.ButtonGroup1Items11Click(Sender: TObject);
 begin
    ButtonClick(12);
+end;
+
+procedure TformFunctionKeyPanel.actionChangeCwBankExecute(Sender: TObject);
+begin
+   MainForm.SwitchCWBank(0);
+   MainForm.LastFocus.SetFocus();
 end;
 
 procedure TformFunctionKeyPanel.ButtonClick(n: Integer);
