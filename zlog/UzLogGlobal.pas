@@ -79,6 +79,21 @@ type
     FBackColor3: TColor;
   end;
 
+  TRigSetting = record
+    FControlPort: Integer; {0 : none 1-4 : com#}
+    FSpeed: Integer;
+    FRigName: string;
+    FKeyingPort: Integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
+    FUseTransverter: Boolean;
+    FTransverterOffset: Integer;
+    FKeyingIsRTS: Boolean;
+  end;
+
+  TRigSet = record
+    FRig: array[b19..b10g] of Integer;
+    FAnt: array[b19..b10g] of Integer;
+  end;
+
   TSettingsParam = record
     _dontallowsameband : boolean; // same band on two rigs?
     _multiop : TContestCategory;  {multi op/ single op}
@@ -117,11 +132,8 @@ type
     CW : TCWSettingsParam;
     _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
 
-    _rigport:  array[1..2] of Integer; {0 : none 1-4 : com#}
-    _rigspeed: array[1..2] of Integer;
-    _rigname:  array[1..2] of string;
-    _keyingport: array[1..3] of Integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
-    _keying_signal_reverse: array[1..3] of Boolean;
+    FRigControl: array[1..5] of TRigSetting;
+    FRigSet: array[1..2] of TRigSet;
 
     _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
@@ -193,10 +205,6 @@ type
     _movetomemo : boolean; // move to memo w/ spacebar when editing past qsos
     _recrigfreq : boolean; // record rig freq in memo
 
-    _transverter1 : boolean;
-    _transverter2 : boolean;
-    _transverteroffset1 : integer;
-    _transverteroffset2 : integer;
     _syncserial : boolean; // synchronize serial # over network
     _switchcqsp : boolean; // switch cq/sp modes by shift+F
     _displaydatepartialcheck : boolean;
@@ -865,26 +873,26 @@ begin
       Settings._zlink_telnet.FLocalEcho := ini.ReadBool('Z-Link', 'TELNETlocalecho', False);
 
       // RIG1
-      Settings._rigport[1] := ini.ReadInteger('Hardware', 'Rig', 0);
-      Settings._rigname[1] := ini.ReadString('Hardware', 'RigName', '');
-      Settings._rigspeed[1] := ini.ReadInteger('Hardware', 'RigSpeed', 0);
-      Settings._transverter1 := ini.ReadBool('Hardware', 'Transverter1', False);
-      Settings._transverteroffset1 := ini.ReadInteger('Hardware', 'Transverter1Offset', 0);
-      Settings._keyingport[1] := ini.ReadInteger('Hardware', 'CWLPTPort', 0);
-      Settings._keying_signal_reverse[1] := ini.ReadBool('Hardware', 'keying_signal_reverse', False);
+      Settings.FRigControl[1].FControlPort      := ini.ReadInteger('Hardware', 'Rig', 0);
+      Settings.FRigControl[1].FRigName          := ini.ReadString('Hardware', 'RigName', '');
+      Settings.FRigControl[1].FSpeed            := ini.ReadInteger('Hardware', 'RigSpeed', 0);
+      Settings.FRigControl[1].FUseTransverter   := ini.ReadBool('Hardware', 'Transverter1', False);
+      Settings.FRigControl[1].FTransverterOffset := ini.ReadInteger('Hardware', 'Transverter1Offset', 0);
+      Settings.FRigControl[1].FKeyingPort       := ini.ReadInteger('Hardware', 'CWLPTPort', 0);
+      Settings.FRigControl[1].FKeyingIsRTS      := ini.ReadBool('Hardware', 'keying_signal_reverse', False);
 
       // RIG2
-      Settings._rigport[2] := ini.ReadInteger('Hardware', 'Rig2', 0);
-      Settings._rigname[2] := ini.ReadString('Hardware', 'RigName2', '');
-      Settings._rigspeed[2] := ini.ReadInteger('Hardware', 'RigSpeed2', 0);
-      Settings._transverter2 := ini.ReadBool('Hardware', 'Transverter2', False);
-      Settings._transverteroffset2 := ini.ReadInteger('Hardware', 'Transverter2Offset', 0);
-      Settings._keyingport[2] := ini.ReadInteger('Hardware', 'CWLPTPort2', 0);
-      Settings._keying_signal_reverse[2] := ini.ReadBool('Hardware', 'keying_signal_reverse2', False);
+      Settings.FRigControl[2].FControlPort      := ini.ReadInteger('Hardware', 'Rig2', 0);
+      Settings.FRigControl[2].FRigName          := ini.ReadString('Hardware', 'RigName2', '');
+      Settings.FRigControl[2].FSpeed            := ini.ReadInteger('Hardware', 'RigSpeed2', 0);
+      Settings.FRigControl[2].FUseTransverter   := ini.ReadBool('Hardware', 'Transverter2', False);
+      Settings.FRigControl[2].FTransverterOffset := ini.ReadInteger('Hardware', 'Transverter2Offset', 0);
+      Settings.FRigControl[2].FKeyingPort       := ini.ReadInteger('Hardware', 'CWLPTPort2', 0);
+      Settings.FRigControl[2].FKeyingIsRTS      := ini.ReadBool('Hardware', 'keying_signal_reverse2', False);
 
       // RIG3
-      Settings._keyingport[3] := ini.ReadInteger('Hardware', 'CWLPTPort3', 0);
-      Settings._keying_signal_reverse[3] := ini.ReadBool('Hardware', 'keying_signal_reverse3', False);
+      Settings.FRigControl[3].FKeyingPort       := ini.ReadInteger('Hardware', 'CWLPTPort3', 0);
+      Settings.FRigControl[3].FKeyingIsRTS      := ini.ReadBool('Hardware', 'keying_signal_reverse3', False);
 
       // USE TRANSCEIVE MODE(ICOM only)
       Settings._use_transceive_mode := ini.ReadBool('Hardware', 'UseTransceiveMode', True);
@@ -1477,26 +1485,26 @@ begin
       ini.WriteBool('Z-Link', 'TELNETlocalecho', Settings._zlink_telnet.FLocalEcho);
 
       // RIG1
-      ini.WriteInteger('Hardware', 'Rig', Settings._rigport[1]);
-      ini.WriteString('Hardware', 'RigName', Settings._rigname[1]);
-      ini.WriteInteger('Hardware', 'RigSpeed', Settings._rigspeed[1]);
-      ini.WriteBool('Hardware', 'Transverter1', Settings._transverter1);
-      ini.WriteInteger('Hardware', 'Transverter1Offset', Settings._transverteroffset1);
-      ini.WriteInteger('Hardware', 'CWLPTPort', Settings._keyingport[1]);
-      ini.WriteBool('Hardware', 'keying_signal_reverse', Settings._keying_signal_reverse[1]);
+      ini.WriteInteger('Hardware', 'Rig', Settings.FRigControl[1].FControlPort);
+      ini.WriteString('Hardware', 'RigName', Settings.FRigControl[1].FRigName);
+      ini.WriteInteger('Hardware', 'RigSpeed', Settings.FRigControl[1].FSpeed);
+      ini.WriteBool('Hardware', 'Transverter1', Settings.FRigControl[1].FUseTransverter);
+      ini.WriteInteger('Hardware', 'Transverter1Offset', Settings.FRigControl[1].FTransverterOffset);
+      ini.WriteInteger('Hardware', 'CWLPTPort', Settings.FRigControl[1].FKeyingPort);
+      ini.WriteBool('Hardware', 'keying_signal_reverse', Settings.FRigControl[1].FKeyingIsRTS);
 
       // RIG2
-      ini.WriteInteger('Hardware', 'Rig2', Settings._rigport[2]);
-      ini.WriteString('Hardware', 'RigName2', Settings._rigname[2]);
-      ini.WriteInteger('Hardware', 'RigSpeed2', Settings._rigspeed[2]);
-      ini.WriteBool('Hardware', 'Transverter2', Settings._transverter2);
-      ini.WriteInteger('Hardware', 'Transverter2Offset', Settings._transverteroffset2);
-      ini.WriteInteger('Hardware', 'CWLPTPort2', Settings._keyingport[2]);
-      ini.WriteBool('Hardware', 'keying_signal_reverse2', Settings._keying_signal_reverse[2]);
+      ini.WriteInteger('Hardware', 'Rig2', Settings.FRigControl[2].FControlPort);
+      ini.WriteString('Hardware', 'RigName2', Settings.FRigControl[2].FRigName);
+      ini.WriteInteger('Hardware', 'RigSpeed2', Settings.FRigControl[2].FSpeed);
+      ini.WriteBool('Hardware', 'Transverter2', Settings.FRigControl[2].FUseTransverter);
+      ini.WriteInteger('Hardware', 'Transverter2Offset', Settings.FRigControl[2].FTransverterOffset);
+      ini.WriteInteger('Hardware', 'CWLPTPort2', Settings.FRigControl[2].FKeyingPort);
+      ini.WriteBool('Hardware', 'keying_signal_reverse2', Settings.FRigControl[2].FKeyingIsRTS);
 
       // RIG3
-      ini.WriteInteger('Hardware', 'CWLPTPort3', Settings._keyingport[3]);
-      ini.WriteBool('Hardware', 'keying_signal_reverse3', Settings._keying_signal_reverse[3]);
+      ini.WriteInteger('Hardware', 'CWLPTPort3', Settings.FRigControl[3].FControlPort);
+      ini.WriteBool('Hardware', 'keying_signal_reverse3', Settings.FRigControl[3].FKeyingIsRTS);
 
       // USE TRANSCEIVE MODE(ICOM only)
       ini.WriteBool('Hardware', 'UseTransceiveMode', Settings._use_transceive_mode);
@@ -1869,18 +1877,18 @@ begin
 
    // RIGコントロールと同じポートの場合は無しとする
    for i := 0 to 1 do begin
-      if (Settings._rigport[i + 1] <> Settings._keyingport[i + 1]) then begin
-         dmZLogKeyer.KeyingPort[i] := TKeyingPort(Settings._keyingport[i + 1]);
+      if (Settings.FRigControl[i + 1].FControlPort <> Settings.FRigControl[i + 1].FKeyingPort) then begin
+         dmZLogKeyer.KeyingPort[i] := TKeyingPort(Settings.FRigControl[i + 1].FKeyingPort);
       end
       else begin
          dmZLogKeyer.KeyingPort[i] := tkpNone;
       end;
    end;
-   dmZLogKeyer.KeyingPort[2] := TKeyingPort(Settings._keyingport[3]);
+   dmZLogKeyer.KeyingPort[2] := TKeyingPort(Settings.FRigControl[3].FKeyingPort);
 
-   dmZLogKeyer.KeyingSignalReverse[0] := Settings._keying_signal_reverse[1];
-   dmZLogKeyer.KeyingSignalReverse[1] := Settings._keying_signal_reverse[2];
-   dmZLogKeyer.KeyingSignalReverse[2] := Settings._keying_signal_reverse[3];
+   dmZLogKeyer.KeyingSignalReverse[0] := Settings.FRigControl[1].FKeyingIsRTS;
+   dmZLogKeyer.KeyingSignalReverse[1] := Settings.FRigControl[2].FKeyingIsRTS;
+   dmZLogKeyer.KeyingSignalReverse[2] := Settings.FRigControl[3].FKeyingIsRTS;
 
    dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;
@@ -2034,7 +2042,7 @@ begin
    try
       dmZlogGlobal.MakeRigList(sl);
 
-      i := sl.IndexOf(Settings._rigname[Index]);
+      i := sl.IndexOf(Settings.FRigControl[Index].FRigName);
       if i = -1 then begin
          Result := sl[0];
       end

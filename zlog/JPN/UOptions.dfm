@@ -1994,7 +1994,6 @@ object formOptions: TformOptions
           ParentShowHint = False
           ShowHint = True
           TabOrder = 5
-          OnClick = PTTEnabledCheckBoxClick
         end
       end
       object groupRig2: TGroupBox
@@ -2149,7 +2148,6 @@ object formOptions: TformOptions
           ParentShowHint = False
           ShowHint = True
           TabOrder = 5
-          OnClick = PTTEnabledCheckBoxClick
         end
       end
       object groupRig3: TGroupBox
@@ -2209,7 +2207,6 @@ object formOptions: TformOptions
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
-          OnClick = PTTEnabledCheckBoxClick
         end
       end
       object groupWinKeyer: TGroupBox
@@ -4877,13 +4874,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@KaiTi'
+          FontName = 'Courier New Greek'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 22
+          ItemIndex = 39
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

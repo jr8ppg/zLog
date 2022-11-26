@@ -653,6 +653,9 @@ resourcestring
   // プラグインのフォルダが変更されました。インストールされたプラグインは無効になります。よろしいですか？
   Installed_Plugins_Disabled = 'Plugins folder changed. Installed plugins will be disabled. Are you sure?';
 
+  // 以降のバンドも同じ設定に変更しますか？
+  DoYouWantTheFollowingBandsToHaveTheSameSettins = 'Do you want the following bands to have the same settings?';
+
 implementation
 
 uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet,
@@ -702,6 +705,48 @@ procedure TformOptions.RenewSettings;
 var
    r: double;
    i, j: integer;
+
+   procedure SetRigControlParam(no: Integer; C, S, N, K: TComboBox; T, R: TCheckBox);
+   begin
+      with dmZlogGlobal do begin
+         if Assigned(C) then begin
+            Settings.FRigControl[no].FControlPort := C.ItemIndex;
+         end;
+
+         if Assigned(S) then begin
+            Settings.FRigControl[no].FSpeed := S.ItemIndex;
+         end;
+
+         if Assigned(N) then begin
+            if N.ItemIndex <= 0 then begin
+               Settings.FRigControl[no].FRigName := '';
+            end
+            else begin
+               Settings.FRigControl[no].FRigName := N.Text;
+            end;
+         end;
+
+         if Assigned(K) then begin
+            if (K.ItemIndex >= 1) and (K.ItemIndex <= 20) then begin
+               Settings.FRigControl[no].FKeyingPort := K.ItemIndex;
+            end
+            else if K.ItemIndex = 21 then begin    // USB
+               Settings.FRigControl[no].FKeyingPort := 21;
+            end
+            else begin
+               Settings.FRigControl[no].FKeyingPort := 0;
+            end;
+         end;
+
+         if Assigned(T) then begin
+            Settings.FRigControl[no].FUseTransverter := T.Checked;
+         end;
+
+         if Assigned(R) then begin
+            Settings.FRigControl[no].FKeyingIsRTS := R.Checked;
+         end;
+      end;
+   end;
 begin
    with dmZlogGlobal do begin
       Settings._savewhennocw := cbSaveWhenNoCW.Checked;
@@ -825,29 +870,12 @@ begin
       Settings._clusterport := ClusterCombo.ItemIndex;
    //   Settings._clusterbaud := ClusterCOMSet.BaudCombo.ItemIndex;
 
-      // RIG1
-      Settings._rigport[1] := comboRig1Port.ItemIndex;
-
-      if comboRig1Name.ItemIndex <= 0 then begin
-         Settings._rigname[1] := '';
-      end
-      else begin
-         Settings._rigname[1] := comboRig1Name.Text;
-      end;
-
-      Settings._rigspeed[1] := comboRig1Speed.ItemIndex;
-
-      // RIG2
-      Settings._rigport[2] := comboRig2Port.ItemIndex;
-
-      if comboRig2Name.ItemIndex <= 0 then begin
-         Settings._rigname[2] := '';
-      end
-      else begin
-         Settings._rigname[2] := comboRig2Name.Text;
-      end;
-
-      Settings._rigspeed[2] := comboRig2Speed.ItemIndex;
+      //
+      // RIG1-3
+      //
+      SetRigControlParam(1, comboRig1Port, comboRig1Speed, comboRig1Name, comboCwPttPort1, cbTransverter1, checkCwReverseSignal1);
+      SetRigControlParam(2, comboRig2Port, comboRig2Speed, comboRig2Name, comboCwPttPort2, cbTransverter2, checkCwReverseSignal2);
+      SetRigControlParam(3, nil,           nil,            nil,           comboCwPttPort3, nil,            checkCwReverseSignal3);
 
       if comboIcomMode.ItemIndex = 0 then begin
          Settings._use_transceive_mode := True;
@@ -895,43 +923,6 @@ begin
 
       i := Settings._pttafter;
       Settings._pttafter := StrToIntDef(AfterEdit.Text, i);
-
-      // CW/PTT port
-      // RIG1
-      if (comboCwPttPort1.ItemIndex >= 1) and (comboCwPttPort1.ItemIndex <= 20) then begin
-         Settings._keyingport[1] := comboCwPttPort1.ItemIndex;
-      end
-      else if comboCwPttPort1.ItemIndex = 21 then begin    // USB
-         Settings._keyingport[1] := 21;
-      end
-      else begin
-         Settings._keyingport[1] := 0;
-      end;
-      Settings._keying_signal_reverse[1] := checkCwReverseSignal1.Checked;
-
-      // RIG2
-      if (comboCwPttPort2.ItemIndex >= 1) and (comboCwPttPort2.ItemIndex <= 20) then begin
-         Settings._keyingport[2] := comboCwPttPort2.ItemIndex;
-      end
-      else if comboCwPttPort2.ItemIndex = 21 then begin    // USB
-         Settings._keyingport[2] := 21;
-      end
-      else begin
-         Settings._keyingport[2] := 0;
-      end;
-      Settings._keying_signal_reverse[2] := checkCwReverseSignal2.Checked;
-
-      // RIG3
-      if (comboCwPttPort3.ItemIndex >= 1) and (comboCwPttPort3.ItemIndex <= 20) then begin
-         Settings._keyingport[3] := comboCwPttPort3.ItemIndex;
-      end
-      else if comboCwPttPort3.ItemIndex = 21 then begin    // USB
-         Settings._keyingport[3] := 21;
-      end
-      else begin
-         Settings._keyingport[3] := 0;
-      end;
-      Settings._keying_signal_reverse[3] := checkCwReverseSignal3.Checked;
 
       // Use Winkeyer
       Settings._use_winkeyer := checkUseWinkeyer.Checked;
@@ -985,9 +976,6 @@ begin
       Settings._allowdupe := AllowDupeCheckBox.Checked;
       Settings._sameexchange := cbDispExchange.Checked;
       Settings._entersuperexchange := cbAutoEnterSuper.Checked;
-
-      Settings._transverter1 := cbTransverter1.Checked;
-      Settings._transverter2 := cbTransverter2.Checked;
 
       Settings._cluster_telnet := FTempClusterTelnet;
       Settings._cluster_com := FTempClusterCom;
@@ -1182,6 +1170,48 @@ end;
 procedure TformOptions.FormShow(Sender: TObject);
 var
    i, j: integer;
+
+   procedure GetRigControlParam(no: Integer; C, S, N, K: TComboBox; T, R: TCheckBox);
+   begin
+      with dmZlogGlobal do begin
+         if Assigned(C) then begin
+            C.ItemIndex := Settings.FRigControl[no].FControlPort;
+         end;
+
+         if Assigned(S) then begin
+            S.ItemIndex := Settings.FRigControl[no].FSpeed;
+         end;
+
+         if Assigned(N) then begin
+            if Settings.FRigControl[no].FRigName = '' then begin
+               N.ItemIndex := 0;
+            end
+            else begin
+               N.ItemIndex := N.Items.Indexof(Settings.FRigControl[no].FRigName);
+            end;
+         end;
+
+         if Assigned(K) then begin
+            if (Settings.FRigControl[no].FKeyingPort >= 1) and (Settings.FRigControl[no].FKeyingPort <= 20) then begin
+               K.ItemIndex := Settings.FRigControl[no].FKeyingPort;
+            end
+            else if Settings.FRigControl[no].FKeyingPort = 21 then begin    // USB
+               K.ItemIndex := 21;
+            end
+            else begin
+               K.ItemIndex := 0;
+            end;
+         end;
+
+         if Assigned(T) then begin
+            T.Checked := Settings.FRigControl[no].FUseTransverter;
+         end;
+
+         if Assigned(R) then begin
+            R.Checked := Settings.FRigControl[no].FKeyingIsRTS;
+         end;
+      end;
+   end;
 begin
    with dmZlogGlobal do begin
       FTempClusterTelnet := Settings._cluster_telnet;
@@ -1316,27 +1346,12 @@ begin
       editZLinkPcName.Text := Settings._pcname;
       checkZLinkSyncSerial.Checked := Settings._syncserial;
 
-      // RIG1
-      comboRig1Port.ItemIndex := Settings._rigport[1];
-
-      i := comboRig1Name.Items.IndexOf(Settings._rigname[1]);
-      if i = -1 then begin
-         i := 0;
-      end;
-      comboRig1Name.ItemIndex := i;
-
-      comboRig1Speed.ItemIndex := Settings._rigspeed[1];
-
-      // RIG2
-      comboRig2Port.ItemIndex := Settings._rigport[2];
-
-      i := comboRig2Name.Items.IndexOf(Settings._rigname[2]);
-      if i = -1 then begin
-         i := 0;
-      end;
-      comboRig2Name.ItemIndex := i;
-
-      comboRig2Speed.ItemIndex := Settings._rigspeed[2];
+      //
+      // RIG1-3
+      //
+      GetRigControlParam(1, comboRig1Port, comboRig1Speed, comboRig1Name, comboCwPttPort1, cbTransverter1, checkCwReverseSignal1);
+      GetRigControlParam(2, comboRig2Port, comboRig2Speed, comboRig2Name, comboCwPttPort2, cbTransverter2, checkCwReverseSignal2);
+      GetRigControlParam(3, nil,           nil,            nil,           comboCwPttPort3, nil,            checkCwReverseSignal3);
 
       if Settings._use_transceive_mode = True then begin
          comboIcomMode.ItemIndex := 0;
@@ -1365,43 +1380,6 @@ begin
       ZLinkComboChange(nil);
 
       SaveEvery.Value := Settings._saveevery;
-
-      // CW/PTT port
-      // RIG1
-      if (Settings._keyingport[1] >= 1) and (Settings._keyingport[1] <= 20) then begin
-         comboCwPttPort1.ItemIndex := Settings._keyingport[1];
-      end
-      else if (Settings._keyingport[1] >= 21) then begin
-         comboCwPttPort1.ItemIndex := 21;
-      end
-      else begin
-         comboCwPttPort1.ItemIndex := 0;
-      end;
-      checkCwReverseSignal1.Checked := Settings._keying_signal_reverse[1];
-
-      // RIG2
-      if (Settings._keyingport[2] >= 1) and (Settings._keyingport[2] <= 20) then begin
-         comboCwPttPort2.ItemIndex := Settings._keyingport[2];
-      end
-      else if (Settings._keyingport[2] >= 21) then begin
-         comboCwPttPort2.ItemIndex := 21;
-      end
-      else begin
-         comboCwPttPort2.ItemIndex := 0;
-      end;
-      checkCwReverseSignal2.Checked := Settings._keying_signal_reverse[2];
-
-      // RIG3
-      if (Settings._keyingport[3] >= 1) and (Settings._keyingport[3] <= 20) then begin
-         comboCwPttPort3.ItemIndex := Settings._keyingport[3];
-      end
-      else if (Settings._keyingport[3] >= 21) then begin
-         comboCwPttPort3.ItemIndex := 21;
-      end
-      else begin
-         comboCwPttPort3.ItemIndex := 0;
-      end;
-      checkCwReverseSignal3.Checked := Settings._keying_signal_reverse[3];
 
       // Use Winkeyer
       checkUseWinkeyer.Checked := Settings._use_winkeyer;
@@ -1495,9 +1473,6 @@ begin
 
       cbDispExchange.Checked := Settings._sameexchange;
       cbAutoEnterSuper.Checked := Settings._entersuperexchange;
-
-      cbTransverter1.Checked := Settings._transverter1;
-      cbTransverter2.Checked := Settings._transverter2;
 
       //
       // Rig Control
@@ -2180,12 +2155,7 @@ begin
       r := r - 100;
 
       if TCheckBox(Sender).Checked then begin
-         i := 0;
-         if r = 1 then
-            i := dmZlogGlobal.Settings._transverteroffset1;
-
-         if r = 2 then
-            i := dmZlogGlobal.Settings._transverteroffset2;
+         i := dmZlogGlobal.Settings.FRigControl[r].FTransverterOffset;
 
          F.Init(i, PLEASE_INPUT_OFFSET_FREQ);
          if F.ShowModal() <> mrOK then begin
@@ -2197,11 +2167,7 @@ begin
             Exit;
          end;
 
-         if r = 1 then
-            dmZlogGlobal.Settings._transverteroffset1 := i;
-
-         if r = 2 then
-            dmZlogGlobal.Settings._transverteroffset2 := i;
+         dmZlogGlobal.Settings.FRigControl[r].FTransverterOffset := i;
       end;
    finally
       F.Release();

@@ -1474,7 +1474,7 @@ begin
          btnOmniRig.Enabled := False;
       end;
 
-      if dmZlogGlobal.Settings._rigport[rignum] in [1 .. 20] then begin
+      if dmZlogGlobal.Settings.FRigControl[rignum].FControlPort in [1 .. 20] then begin
          rname := dmZlogGlobal.RigNameStr[rignum];
          if rname = 'None' then begin
             Exit;
@@ -1632,6 +1632,8 @@ begin
 end;
 
 procedure TRigControl.ImplementOptions(rig: Integer);
+var
+   i: Integer;
 begin
    Stop();
 
@@ -1646,21 +1648,14 @@ begin
    FRigs[2] := BuildRigObject(2);
    FRigs[3] := TVirtualRig.Create(3);
 
-   if FRigs[1] <> nil then begin
-      if dmZlogGlobal.Settings._transverter1 then begin
-         FRigs[1]._freqoffset := 1000 * dmZlogGlobal.Settings._transverteroffset1;
-      end
-      else begin
-         FRigs[1]._freqoffset := 0;
-      end;
-   end;
-
-   if FRigs[2] <> nil then begin
-      if dmZlogGlobal.Settings._transverter2 then begin
-         FRigs[2]._freqoffset := 1000 * dmZlogGlobal.Settings._transverteroffset2;
-      end
-      else begin
-         FRigs[2]._freqoffset := 0;
+   for i := 1 to 2 do begin
+      if FRigs[i] <> nil then begin
+         if dmZlogGlobal.Settings.FRigControl[i].FUseTransverter then begin
+            FRigs[i]._freqoffset := 1000 * dmZlogGlobal.Settings.FRigControl[i].FTransverterOffset;
+         end
+         else begin
+            FRigs[i]._freqoffset := 0;
+         end;
       end;
    end;
 
@@ -1670,8 +1665,8 @@ begin
 
    // RIGコントロールのCOMポートと、CWキーイングのポートが同じなら
    // CWキーイングのCPDrvをRIGコントロールの物にすり替える
-   if ((FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._keyingport[1])) and
-      ((FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._keyingport[2])) then begin
+   if ((FRigs[1] <> nil) and (dmZlogGlobal.Settings.FRigControl[1].FControlPort = dmZlogGlobal.Settings.FRigControl[1].FKeyingPort)) and
+      ((FRigs[2] <> nil) and (dmZlogGlobal.Settings.FRigControl[2].FControlPort = dmZlogGlobal.Settings.FRigControl[2].FKeyingPort)) then begin
       PollingTimer1.Enabled := False;
       dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
       PollingTimer1.Enabled := True;
@@ -1680,23 +1675,23 @@ begin
       dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
       PollingTimer2.Enabled := True;
    end
-   else if (FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._keyingport[1]) then begin
+   else if (FRigs[1] <> nil) and (dmZlogGlobal.Settings.FRigControl[1].FControlPort = dmZlogGlobal.Settings.FRigControl[1].FKeyingPort) then begin
       PollingTimer1.Enabled := False;
       dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
       PollingTimer1.Enabled := True;
 
-      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
    end
-   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._keyingport[2]) then begin
-      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
+   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings.FRigControl[2].FControlPort = dmZlogGlobal.Settings.FRigControl[2].FKeyingPort) then begin
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
 
       PollingTimer2.Enabled := False;
       dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
       PollingTimer2.Enabled := True;
    end
    else begin
-      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
-      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
    end;
 end;
 
@@ -1730,18 +1725,18 @@ begin
 
    _rignumber := RigNum;
    if _rignumber = 1 then begin
-      prtnr := dmZlogGlobal.Settings._rigport[1];
+      prtnr := dmZlogGlobal.Settings.FRigControl[1].FControlPort;
       FComm := MainForm.RigControl.ZCom1;
       FPollingTimer := MainForm.RigControl.PollingTimer1;
    end
    else begin
-      prtnr := dmZlogGlobal.Settings._rigport[2];
+      prtnr := dmZlogGlobal.Settings.FRigControl[2].FControlPort;
       FComm := MainForm.RigControl.ZCom2;
       FPollingTimer := MainForm.RigControl.PollingTimer2;
    end;
 
    // 9600bps以下は200msec, 19200bps以上は100msec
-   if dmZlogGlobal.Settings._rigspeed[RigNum] <= 4 then begin
+   if dmZlogGlobal.Settings.FRigControl[RigNum].FSpeed <= 4 then begin
       FPollingInterval := Min(dmZLogGlobal.Settings._polling_interval, 150);   // milisec
    end
    else begin
@@ -1750,7 +1745,7 @@ begin
 
    FComm.Disconnect;
    FComm.Port := TPortNumber(prtnr);
-   FComm.BaudRate := BaudRateToSpeed[ dmZlogGlobal.Settings._rigspeed[RigNum] ];
+   FComm.BaudRate := BaudRateToSpeed[ dmZlogGlobal.Settings.FRigControl[RigNum].FSpeed ];
    FComm.HwFlow := hfRTSCTS;
    FComm.SwFlow := sfNONE;
    FComm.EnableDTROnOpen := True;
