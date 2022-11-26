@@ -197,7 +197,7 @@ type
 
     // False: PTT=RTS,KEY=DTR
     // True:  PTT=DTR,KEY=RTS
-    FKeyingSignalReverse: Boolean;
+    FKeyingSignalReverse: array[0..2] of Boolean;
 
     FUsbDetecting: Boolean;
     FUsbif4cwSyncWpm: Boolean;
@@ -268,6 +268,9 @@ type
 
     procedure SetSo2rRxSelectPort(port: TKeyingPort);
     procedure SetSo2rTxSelectPort(port: TKeyingPort);
+
+    function GetKeyingSignalReverse(Index: Integer): Boolean;
+    procedure SetKeyingSignalReverse(Index: Integer; v: Boolean);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -320,7 +323,7 @@ type
     property OnSendFinishProc: TPlayMessageFinishedProc read FOnSendFinishProc write FOnSendFinishProc;
     property OnSpeedChanged: TNotifyEvent read FOnSpeedChanged write FOnSpeedChanged;
     property OnWkStatusProc: TWkStatusEvent read FOnWkStatusProc write FOnWkStatusProc;
-    property KeyingSignalReverse: Boolean read FKeyingSignalReverse write FKeyingSignalReverse;
+    property KeyingSignalReverse[Index: Integer]: Boolean read GetKeyingSignalReverse write SetKeyingSignalReverse;
 
     property Usbif4cwSyncWpm: Boolean read FUsbif4cwSyncWpm write FUsbif4cwSyncWpm;
     property PaddleReverse: Boolean read FPaddleReverse write SetPaddleReverse;
@@ -470,12 +473,12 @@ begin
    FOnCallsignSentProc := nil;
    FOnSendFinishProc := nil;
    FOnPaddleEvent := nil;
-   FKeyingSignalReverse := False;
    FUsbif4cwSyncWpm := False;
 
-   KeyingPort[0] := tkpNone;
-   KeyingPort[1] := tkpNone;
-   KeyingPort[2] := tkpNone;
+   for i := 0 to 2 do begin
+      KeyingPort[i] := tkpNone;
+      FKeyingSignalReverse[i] := False;
+   end;
 end;
 
 procedure TdmZLogKeyer.DataModuleDestroy(Sender: TObject);
@@ -817,7 +820,7 @@ begin
 
       // COM port
       if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-         if FKeyingSignalReverse = False then begin
+         if FKeyingSignalReverse[nID] = False then begin
             FComKeying[nID].ToggleRTS(PTTON);
          end
          else begin
@@ -861,7 +864,7 @@ begin
          end;
 
          if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-            if FKeyingSignalReverse = False then begin
+            if FKeyingSignalReverse[nID] = False then begin
                FComKeying[nID].ToggleRTS(False);
             end
             else begin
@@ -1185,7 +1188,7 @@ procedure TdmZLogKeyer.CW_ON(nID: Integer);
 begin
    case FKeyingPort[nID] of
       tkpSerial1..tkpSerial20: begin
-         if FKeyingSignalReverse = False then begin
+         if FKeyingSignalReverse[nID] = False then begin
             FComKeying[nID].ToggleDTR(True);
          end
          else begin
@@ -1208,7 +1211,7 @@ procedure TdmZLogKeyer.CW_OFF(nID: Integer);
 begin
    case FKeyingPort[nID] of
       tkpSerial1..tkpSerial20: begin
-         if FKeyingSignalReverse = False then begin
+         if FKeyingSignalReverse[nID] = False then begin
             FComKeying[nID].ToggleDTR(False);
          end
          else begin
@@ -3703,6 +3706,16 @@ end;
 procedure TdmZLogKeyer.SetSo2rTxSelectPort(port: TKeyingPort);
 begin
    FSo2rTxSelectPort := port;
+end;
+
+function TdmZLogKeyer.GetKeyingSignalReverse(Index: Integer): Boolean;
+begin
+   Result := FKeyingSignalReverse[Index];
+end;
+
+procedure TdmZLogKeyer.SetKeyingSignalReverse(Index: Integer; v: Boolean);
+begin
+   FKeyingSignalReverse[Index] := v;
 end;
 
 { TUSBPortInfo }

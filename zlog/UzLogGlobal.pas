@@ -31,7 +31,6 @@ type
     _eispacefactor : word;
     _send_nr_auto: Boolean;            // Send NR automatically
     _not_send_leading_zeros: Boolean;  // Not send leading zeros in serial number
-    _keying_signal_reverse: Boolean;
 
     CWStrImported: array[1..maxbank, 1..maxmessage] of Boolean;
 
@@ -122,6 +121,7 @@ type
     _rigspeed: array[1..2] of Integer;
     _rigname:  array[1..2] of string;
     _keyingport: array[1..3] of Integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
+    _keying_signal_reverse: array[1..3] of Boolean;
 
     _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
@@ -826,9 +826,6 @@ begin
       // Not send leading zeros in serial number
       Settings.CW._not_send_leading_zeros := ini.ReadBool('CW', 'not_send_leading_zeros', False);
 
-      // Keying Signal(DTR) reverse
-      Settings.CW._keying_signal_reverse := ini.ReadBool('CW', 'keying_signal_reverse', False);
-
       //
       // Hardware
       //
@@ -874,6 +871,7 @@ begin
       Settings._transverter1 := ini.ReadBool('Hardware', 'Transverter1', False);
       Settings._transverteroffset1 := ini.ReadInteger('Hardware', 'Transverter1Offset', 0);
       Settings._keyingport[1] := ini.ReadInteger('Hardware', 'CWLPTPort', 0);
+      Settings._keying_signal_reverse[1] := ini.ReadBool('Hardware', 'keying_signal_reverse', False);
 
       // RIG2
       Settings._rigport[2] := ini.ReadInteger('Hardware', 'Rig2', 0);
@@ -882,9 +880,11 @@ begin
       Settings._transverter2 := ini.ReadBool('Hardware', 'Transverter2', False);
       Settings._transverteroffset2 := ini.ReadInteger('Hardware', 'Transverter2Offset', 0);
       Settings._keyingport[2] := ini.ReadInteger('Hardware', 'CWLPTPort2', 0);
+      Settings._keying_signal_reverse[2] := ini.ReadBool('Hardware', 'keying_signal_reverse2', False);
 
       // RIG3
       Settings._keyingport[3] := ini.ReadInteger('Hardware', 'CWLPTPort3', 0);
+      Settings._keying_signal_reverse[3] := ini.ReadBool('Hardware', 'keying_signal_reverse3', False);
 
       // USE TRANSCEIVE MODE(ICOM only)
       Settings._use_transceive_mode := ini.ReadBool('Hardware', 'UseTransceiveMode', True);
@@ -1438,9 +1438,6 @@ begin
       // Not send leading zeros in serial number
       ini.ReadBool('CW', 'not_send_leading_zeros', Settings.CW._not_send_leading_zeros);
 
-      // Keying Signal(DTR) reverse
-      ini.WriteBool('CW', 'keying_signal_reverse', Settings.CW._keying_signal_reverse);
-
       //
       // Hardware
       //
@@ -1486,6 +1483,7 @@ begin
       ini.WriteBool('Hardware', 'Transverter1', Settings._transverter1);
       ini.WriteInteger('Hardware', 'Transverter1Offset', Settings._transverteroffset1);
       ini.WriteInteger('Hardware', 'CWLPTPort', Settings._keyingport[1]);
+      ini.WriteBool('Hardware', 'keying_signal_reverse', Settings._keying_signal_reverse[1]);
 
       // RIG2
       ini.WriteInteger('Hardware', 'Rig2', Settings._rigport[2]);
@@ -1494,9 +1492,11 @@ begin
       ini.WriteBool('Hardware', 'Transverter2', Settings._transverter2);
       ini.WriteInteger('Hardware', 'Transverter2Offset', Settings._transverteroffset2);
       ini.WriteInteger('Hardware', 'CWLPTPort2', Settings._keyingport[2]);
+      ini.WriteBool('Hardware', 'keying_signal_reverse2', Settings._keying_signal_reverse[2]);
 
       // RIG3
       ini.WriteInteger('Hardware', 'CWLPTPort3', Settings._keyingport[3]);
+      ini.WriteBool('Hardware', 'keying_signal_reverse3', Settings._keying_signal_reverse[3]);
 
       // USE TRANSCEIVE MODE(ICOM only)
       ini.WriteBool('Hardware', 'UseTransceiveMode', Settings._use_transceive_mode);
@@ -1878,7 +1878,10 @@ begin
    end;
    dmZLogKeyer.KeyingPort[2] := TKeyingPort(Settings._keyingport[3]);
 
-   dmZLogKeyer.KeyingSignalReverse := Settings.CW._keying_signal_reverse;
+   dmZLogKeyer.KeyingSignalReverse[0] := Settings._keying_signal_reverse[1];
+   dmZLogKeyer.KeyingSignalReverse[1] := Settings._keying_signal_reverse[2];
+   dmZLogKeyer.KeyingSignalReverse[2] := Settings._keying_signal_reverse[3];
+
    dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;
 

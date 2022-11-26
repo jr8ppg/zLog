@@ -272,7 +272,6 @@ type
     comboQuickQsyRig06: TComboBox;
     comboQuickQsyRig07: TComboBox;
     comboQuickQsyRig08: TComboBox;
-    checkCwReverseSignal: TCheckBox;
     tabsheetQuickMemo: TTabSheet;
     GroupBox11: TGroupBox;
     Label63: TLabel;
@@ -528,6 +527,9 @@ type
     Label121: TLabel;
     buttonBrowseSpcPath: TButton;
     editSpcFolder: TEdit;
+    checkCwReverseSignal3: TCheckBox;
+    checkCwReverseSignal2: TCheckBox;
+    checkCwReverseSignal1: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -868,7 +870,6 @@ begin
       Settings._syncserial := checkZLinkSyncSerial.Checked;
 
       Settings._pttenabled := PTTEnabledCheckBox.Checked;
-      Settings.CW._keying_signal_reverse := checkCwReverseSignal.Checked;
 
       Settings._saveevery        := SaveEvery.Value;
 
@@ -906,6 +907,7 @@ begin
       else begin
          Settings._keyingport[1] := 0;
       end;
+      Settings._keying_signal_reverse[1] := checkCwReverseSignal1.Checked;
 
       // RIG2
       if (comboCwPttPort2.ItemIndex >= 1) and (comboCwPttPort2.ItemIndex <= 20) then begin
@@ -917,6 +919,7 @@ begin
       else begin
          Settings._keyingport[2] := 0;
       end;
+      Settings._keying_signal_reverse[2] := checkCwReverseSignal2.Checked;
 
       // RIG3
       if (comboCwPttPort3.ItemIndex >= 1) and (comboCwPttPort3.ItemIndex <= 20) then begin
@@ -928,6 +931,7 @@ begin
       else begin
          Settings._keyingport[3] := 0;
       end;
+      Settings._keying_signal_reverse[3] := checkCwReverseSignal3.Checked;
 
       // Use Winkeyer
       Settings._use_winkeyer := checkUseWinkeyer.Checked;
@@ -1373,6 +1377,7 @@ begin
       else begin
          comboCwPttPort1.ItemIndex := 0;
       end;
+      checkCwReverseSignal1.Checked := Settings._keying_signal_reverse[1];
 
       // RIG2
       if (Settings._keyingport[2] >= 1) and (Settings._keyingport[2] <= 20) then begin
@@ -1384,6 +1389,7 @@ begin
       else begin
          comboCwPttPort2.ItemIndex := 0;
       end;
+      checkCwReverseSignal2.Checked := Settings._keying_signal_reverse[2];
 
       // RIG3
       if (Settings._keyingport[3] >= 1) and (Settings._keyingport[3] <= 20) then begin
@@ -1395,6 +1401,7 @@ begin
       else begin
          comboCwPttPort3.ItemIndex := 0;
       end;
+      checkCwReverseSignal3.Checked := Settings._keying_signal_reverse[3];
 
       // Use Winkeyer
       checkUseWinkeyer.Checked := Settings._use_winkeyer;
@@ -1448,7 +1455,6 @@ begin
       editSpcFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
 
       PTTEnabledCheckBox.Checked := Settings._pttenabled;
-      checkCwReverseSignal.Checked := Settings.CW._keying_signal_reverse;
 
       BeforeEdit.Text := IntToStr(Settings._pttbefore);
       AfterEdit.Text := IntToStr(Settings._pttafter);

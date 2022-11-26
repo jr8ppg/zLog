@@ -1756,7 +1756,7 @@ object formOptions: TformOptions
           Top = 35
           Width = 40
           Height = 21
-          TabOrder = 2
+          TabOrder = 1
           Text = 'CWPortEdit'
         end
         object AfterEdit: TEdit
@@ -1764,20 +1764,8 @@ object formOptions: TformOptions
           Top = 35
           Width = 40
           Height = 21
-          TabOrder = 3
+          TabOrder = 2
           Text = 'CWPortEdit'
-        end
-        object checkCwReverseSignal: TCheckBox
-          Left = 162
-          Top = 14
-          Width = 160
-          Height = 17
-          Hint = 'if checked, PTT is DTR, Keying is RTS'
-          Caption = 'PTT:DTR'#12289'KEY:RTS'#12392#12377#12427
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 1
-          OnClick = PTTEnabledCheckBoxClick
         end
       end
       object groupUsif4cw: TGroupBox
@@ -1986,13 +1974,27 @@ object formOptions: TformOptions
         object cbTransverter1: TCheckBox
           Tag = 101
           Left = 351
-          Top = 29
+          Top = 12
           Width = 41
           Height = 17
-          Hint = 'Check here if you are using a transverter'
+          Hint = #12488#12521#12531#12473#12496#12540#12479#12540#12434#20351#29992#12377#12427#22580#21512#12399#12481#12455#12483#12463#12375#12390#19979#12373#12356
           Caption = 'XVT'
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 4
           OnClick = cbTransverter1Click
+        end
+        object checkCwReverseSignal1: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = #12481#12455#12483#12463#12375#12383#22580#21512#12289#12461#12540#12452#12531#12464#12395'RTS'#65292'PTT'#12395'DTR'#12434#20351#29992#12375#12414#12377
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+          OnClick = PTTEnabledCheckBoxClick
         end
       end
       object groupRig2: TGroupBox
@@ -2033,11 +2035,13 @@ object formOptions: TformOptions
         object cbTransverter2: TCheckBox
           Tag = 102
           Left = 351
-          Top = 29
+          Top = 12
           Width = 41
           Height = 17
-          Hint = 'Check here if you are using a transverter'
+          Hint = #12488#12521#12531#12473#12496#12540#12479#12540#12434#20351#29992#12377#12427#22580#21512#12399#12481#12455#12483#12463#12375#12390#19979#12373#12356
           Caption = 'XVT'
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 4
           OnClick = cbTransverter1Click
         end
@@ -2135,6 +2139,18 @@ object formOptions: TformOptions
             'COM20'
             'USB')
         end
+        object checkCwReverseSignal2: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = #12481#12455#12483#12463#12375#12383#22580#21512#12289#12461#12540#12452#12531#12464#12395'RTS'#65292'PTT'#12395'DTR'#12434#20351#29992#12375#12414#12377
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+          OnClick = PTTEnabledCheckBoxClick
+        end
       end
       object groupRig3: TGroupBox
         Left = 6
@@ -2182,6 +2198,18 @@ object formOptions: TformOptions
             'COM19'
             'COM20'
             'USB')
+        end
+        object checkCwReverseSignal3: TCheckBox
+          Left = 352
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = #12481#12455#12483#12463#12375#12383#22580#21512#12289#12461#12540#12452#12531#12464#12395'RTS'#65292'PTT'#12395'DTR'#12434#20351#29992#12375#12414#12377
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 1
+          OnClick = PTTEnabledCheckBoxClick
         end
       end
       object groupWinKeyer: TGroupBox
@@ -4849,13 +4877,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@MingLiU'
+          FontName = '@KaiTi'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 23
+          ItemIndex = 22
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
