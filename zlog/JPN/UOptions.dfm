@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetHardware
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1768,6 +1768,17 @@ object formOptions: TformOptions
             'COM20'
             'USB')
         end
+        object checkRig3KeyIsRTS: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = #12481#12455#12483#12463#12375#12383#22580#21512#12289#12461#12540#12452#12531#12464#12395'RTS'#65292'PTT'#12395'DTR'#12434#20351#29992#12375#12414#12377
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 1
+        end
       end
       object groupRig2: TGroupBox
         Left = 6
@@ -1807,10 +1818,10 @@ object formOptions: TformOptions
         object checkRig1BXvt: TCheckBox
           Tag = 102
           Left = 351
-          Top = 29
+          Top = 12
           Width = 41
           Height = 17
-          Hint = 'Check here if you are using a transverter'
+          Hint = #12488#12521#12531#12473#12496#12540#12479#12540#12434#20351#29992#12377#12427#22580#21512#12399#12481#12455#12483#12463#12375#12390#19979#12373#12356
           Caption = 'XVT'
           TabOrder = 4
           OnClick = checkRig1AXvtClick
@@ -1908,6 +1919,17 @@ object formOptions: TformOptions
             'COM19'
             'COM20'
             'USB')
+        end
+        object checkRig1BKeyIsRTS: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = #12481#12455#12483#12463#12375#12383#22580#21512#12289#12461#12540#12452#12531#12464#12395'RTS'#65292'PTT'#12395'DTR'#12434#20351#29992#12375#12414#12377
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
         end
       end
       object groupRig1: TGroupBox
@@ -2042,13 +2064,24 @@ object formOptions: TformOptions
         object checkRig1AXvt: TCheckBox
           Tag = 101
           Left = 351
-          Top = 29
+          Top = 12
           Width = 41
           Height = 17
-          Hint = 'Check here if you are using a transverter'
+          Hint = #12488#12521#12531#12473#12496#12540#12479#12540#12434#20351#29992#12377#12427#22580#21512#12399#12481#12455#12483#12463#12375#12390#19979#12373#12356
           Caption = 'XVT'
           TabOrder = 4
           OnClick = checkRig1AXvtClick
+        end
+        object checkRig1AKeyIsRTS: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = #12481#12455#12483#12463#12375#12383#22580#21512#12289#12461#12540#12452#12531#12464#12395'RTS'#65292'PTT'#12395'DTR'#12434#20351#29992#12375#12414#12377
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
         end
       end
       object groupRig4: TGroupBox
@@ -2089,10 +2122,10 @@ object formOptions: TformOptions
         object checkRig2BXvt: TCheckBox
           Tag = 104
           Left = 351
-          Top = 29
+          Top = 12
           Width = 41
           Height = 17
-          Hint = 'Check here if you are using a transverter'
+          Hint = #12488#12521#12531#12473#12496#12540#12479#12540#12434#20351#29992#12377#12427#22580#21512#12399#12481#12455#12483#12463#12375#12390#19979#12373#12356
           Caption = 'XVT'
           TabOrder = 4
           OnClick = checkRig1AXvtClick
@@ -2191,6 +2224,17 @@ object formOptions: TformOptions
             'COM20'
             'USB')
         end
+        object checkRig2BKeyIsRTS: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = #12481#12455#12483#12463#12375#12383#22580#21512#12289#12461#12540#12452#12531#12464#12395'RTS'#65292'PTT'#12395'DTR'#12434#20351#29992#12375#12414#12377
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+        end
       end
       object groupRig3: TGroupBox
         Left = 6
@@ -2230,10 +2274,10 @@ object formOptions: TformOptions
         object checkRig2AXvt: TCheckBox
           Tag = 103
           Left = 351
-          Top = 29
+          Top = 12
           Width = 41
           Height = 17
-          Hint = 'Check here if you are using a transverter'
+          Hint = #12488#12521#12531#12473#12496#12540#12479#12540#12434#20351#29992#12377#12427#22580#21512#12399#12481#12455#12483#12463#12375#12390#19979#12373#12356
           Caption = 'XVT'
           TabOrder = 4
           OnClick = checkRig1AXvtClick
@@ -2331,6 +2375,17 @@ object formOptions: TformOptions
             'COM19'
             'COM20'
             'USB')
+        end
+        object checkRig2AKeyIsRTS: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = #12481#12455#12483#12463#12375#12383#22580#21512#12289#12461#12540#12452#12531#12464#12395'RTS'#65292'PTT'#12395'DTR'#12434#20351#29992#12375#12414#12377
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
         end
       end
     end
@@ -6091,13 +6146,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@MingLiU'
+          FontName = 'Courier New Greek'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 23
+          ItemIndex = 39
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

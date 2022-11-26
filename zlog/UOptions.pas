@@ -620,6 +620,11 @@ type
     editSpcFolder: TEdit;
     Label108: TLabel;
     Label109: TLabel;
+    checkRig1AKeyIsRTS: TCheckBox;
+    checkRig1BKeyIsRTS: TCheckBox;
+    checkRig2AKeyIsRTS: TCheckBox;
+    checkRig2BKeyIsRTS: TCheckBox;
+    checkRig3KeyIsRTS: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -806,7 +811,7 @@ var
    i, j: integer;
    b: TBand;
 
-   procedure SetRigControlParam(no: Integer; C, S, N, K: TComboBox; T: TCheckBox);
+   procedure SetRigControlParam(no: Integer; C, S, N, K: TComboBox; T, R: TCheckBox);
    begin
       with dmZlogGlobal do begin
          if Assigned(C) then begin
@@ -840,6 +845,10 @@ var
 
          if Assigned(T) then begin
             Settings.FRigControl[no].FUseTransverter := T.Checked;
+         end;
+
+         if Assigned(R) then begin
+            Settings.FRigControl[no].FKeyingIsRTS := R.Checked;
          end;
       end;
    end;
@@ -969,11 +978,11 @@ begin
       //
       // RIG1-5
       //
-      SetRigControlParam(1, comboRig1AControl, comboRig1ASpeed, comboRig1AName, comboRig1AKeying, checkRig1AXvt);
-      SetRigControlParam(2, comboRig1BControl, comboRig1BSpeed, comboRig1BName, comboRig1BKeying, checkRig1BXvt);
-      SetRigControlParam(3, comboRig2AControl, comboRig2ASpeed, comboRig2AName, comboRig2AKeying, checkRig2AXvt);
-      SetRigControlParam(4, comboRig2BControl, comboRig2BSpeed, comboRig2BName, comboRig2BKeying, checkRig2BXvt);
-      SetRigControlParam(5, nil,               nil,             nil,            comboRig3Keying,  nil);
+      SetRigControlParam(1, comboRig1AControl, comboRig1ASpeed, comboRig1AName, comboRig1AKeying, checkRig1AXvt, checkRig1AKeyIsRTS);
+      SetRigControlParam(2, comboRig1BControl, comboRig1BSpeed, comboRig1BName, comboRig1BKeying, checkRig1BXvt, checkRig1BKeyIsRTS);
+      SetRigControlParam(3, comboRig2AControl, comboRig2ASpeed, comboRig2AName, comboRig2AKeying, checkRig2AXvt, checkRig2AKeyIsRTS);
+      SetRigControlParam(4, comboRig2BControl, comboRig2BSpeed, comboRig2BName, comboRig2BKeying, checkRig2BXvt, checkRig2BKeyIsRTS);
+      SetRigControlParam(5, nil,               nil,             nil,            comboRig3Keying,  nil,           checkRig3KeyIsRTS);
 
       //
       // Set of RIG
@@ -1006,7 +1015,6 @@ begin
       Settings._syncserial := checkZLinkSyncSerial.Checked;
 
       Settings._pttenabled := PTTEnabledCheckBox.Checked;
-      Settings.CW._keying_signal_reverse := checkCwReverseSignal.Checked;
 
       Settings._saveevery        := SaveEvery.Value;
 
@@ -1263,7 +1271,7 @@ var
    i, j: integer;
    b: TBand;
 
-   procedure GetRigControlParam(no: Integer; C, S, N, K: TComboBox; T: TCheckBox);
+   procedure GetRigControlParam(no: Integer; C, S, N, K: TComboBox; T, R: TCheckBox);
    begin
       with dmZlogGlobal do begin
          if Assigned(C) then begin
@@ -1297,6 +1305,10 @@ var
 
          if Assigned(T) then begin
             T.Checked := Settings.FRigControl[no].FUseTransverter;
+         end;
+
+         if Assigned(R) then begin
+            R.Checked := Settings.FRigControl[no].FKeyingIsRTS;
          end;
       end;
    end;
@@ -1437,11 +1449,11 @@ begin
       //
       // RIG1-5
       //
-      GetRigControlParam(1, comboRig1AControl, comboRig1ASpeed, comboRig1AName, comboRig1AKeying, checkRig1AXvt);
-      GetRigControlParam(2, comboRig1BControl, comboRig1BSpeed, comboRig1BName, comboRig1BKeying, checkRig1BXvt);
-      GetRigControlParam(3, comboRig2AControl, comboRig2ASpeed, comboRig2AName, comboRig2AKeying, checkRig2AXvt);
-      GetRigControlParam(4, comboRig2BControl, comboRig2BSpeed, comboRig2BName, comboRig2BKeying, checkRig2BXvt);
-      GetRigControlParam(5, nil,               nil,             nil,            comboRig3Keying,  nil);
+      GetRigControlParam(1, comboRig1AControl, comboRig1ASpeed, comboRig1AName, comboRig1AKeying, checkRig1AXvt, checkRig1AKeyIsRTS);
+      GetRigControlParam(2, comboRig1BControl, comboRig1BSpeed, comboRig1BName, comboRig1BKeying, checkRig1BXvt, checkRig1BKeyIsRTS);
+      GetRigControlParam(3, comboRig2AControl, comboRig2ASpeed, comboRig2AName, comboRig2AKeying, checkRig2AXvt, checkRig2AKeyIsRTS);
+      GetRigControlParam(4, comboRig2BControl, comboRig2BSpeed, comboRig2BName, comboRig2BKeying, checkRig2BXvt, checkRig2BKeyIsRTS);
+      GetRigControlParam(5, nil,               nil,             nil,            comboRig3Keying,  nil,           checkRig3KeyIsRTS);
 
       //
       // Set of RIG
@@ -1533,7 +1545,6 @@ begin
       editSpcFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
 
       PTTEnabledCheckBox.Checked := Settings._pttenabled;
-      checkCwReverseSignal.Checked := Settings.CW._keying_signal_reverse;
 
       BeforeEdit.Text := IntToStr(Settings._pttbefore);
       AfterEdit.Text := IntToStr(Settings._pttafter);

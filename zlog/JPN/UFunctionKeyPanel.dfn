@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44890.9689583333</prop>
+        <prop prop-type="SelfDateTime">44891.9738888889</prop>
         <prop prop-type="OrigDateTime">44889.9274074074</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">62</prop>
+        <prop prop-type="XlatDateTime">44890.9745138889</prop>
+        <prop prop-type="Translated">1</prop>
+        <prop prop-type="UnTranslated">61</prop>
       </prop-group>
     </header>
     <body>
@@ -60,8 +60,9 @@
       </trans-unit>
       <trans-unit id="O:formFunctionKeyPanel.Font.Name" resname="O:formFunctionKeyPanel.Font.Name">
         <source>'MS Sans Serif'</source>
+        <target>'ＭＳ Ｐゴシック'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925530556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TformFunctionKeyPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925530556</prop><prop prop-type="Status">1</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TformFunctionKeyPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formFunctionKeyPanel.Font.Style" resname="O:formFunctionKeyPanel.Font.Style">
         <source>[]</source>

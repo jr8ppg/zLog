@@ -31,7 +31,6 @@ type
     _eispacefactor : word;
     _send_nr_auto: Boolean;            // Send NR automatically
     _not_send_leading_zeros: Boolean;  // Not send leading zeros in serial number
-    _keying_signal_reverse: Boolean;
 
     CWStrImported: array[1..maxbank, 1..maxmessage] of Boolean;
 
@@ -87,6 +86,7 @@ type
     FKeyingPort: Integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
     FUseTransverter: Boolean;
     FTransverterOffset: Integer;
+    FKeyingIsRTS: Boolean;
   end;
 
   TRigSet = record
@@ -833,9 +833,6 @@ begin
       // Not send leading zeros in serial number
       Settings.CW._not_send_leading_zeros := ini.ReadBool('CW', 'not_send_leading_zeros', False);
 
-      // Keying Signal(DTR) reverse
-      Settings.CW._keying_signal_reverse := ini.ReadBool('CW', 'keying_signal_reverse', False);
-
       //
       // Hardware
       //
@@ -882,9 +879,10 @@ begin
          Settings.FRigControl[i].FControlPort   := ini.ReadInteger(s, 'ControlPort', 0);
          Settings.FRigControl[i].FSpeed         := ini.ReadInteger(s, 'Speed', 0);
          Settings.FRigControl[i].FRigName       := ini.ReadString(s, 'RigName', '');
-         Settings.FRigControl[i].FKeyingPort    := ini.ReadInteger(s, 'KeyingPort', 0);
          Settings.FRigControl[i].FUseTransverter := ini.ReadBool(s, 'UseTransverter', False);
          Settings.FRigControl[i].FTransverterOffset := ini.ReadInteger(s, 'TransverterOffset', 0);
+         Settings.FRigControl[i].FKeyingPort    := ini.ReadInteger(s, 'KeyingPort', 0);
+	     Settings.FRigControl[i].FKeyingIsRTS   := ini.ReadBool(s, 'keying_signal_reverse', False);
       end;
 
       //
@@ -1432,9 +1430,6 @@ begin
       // Not send leading zeros in serial number
       ini.ReadBool('CW', 'not_send_leading_zeros', Settings.CW._not_send_leading_zeros);
 
-      // Keying Signal(DTR) reverse
-      ini.WriteBool('CW', 'keying_signal_reverse', Settings.CW._keying_signal_reverse);
-
       //
       // Hardware
       //
@@ -1484,6 +1479,7 @@ begin
          ini.WriteInteger(s, 'KeyingPort', Settings.FRigControl[i].FKeyingPort);
          ini.WriteBool(s, 'UseTransverter', Settings.FRigControl[i].FUseTransverter);
          ini.WriteInteger(s, 'TransverterOffset', Settings.FRigControl[i].FTransverterOffset);
+         ini.WriteBool(s, 'keying_signal_reverse', Settings.FRigControl[i].FKeyingIsRTS);
       end;
 
       //
@@ -1857,8 +1853,12 @@ begin
       end;
    end;
    dmZLogKeyer.KeyingPort[2] := TKeyingPort(Settings.FRigControl[5].FKeyingPort);
+   dmZLogKeyer.KeyingSignalReverse[0] := Settings.FRigControl[1].FKeyingIsRTS;
+   dmZLogKeyer.KeyingSignalReverse[1] := Settings.FRigControl[2].FKeyingIsRTS;
+   dmZLogKeyer.KeyingSignalReverse[2] := Settings.FRigControl[3].FKeyingIsRTS;
+   dmZLogKeyer.KeyingSignalReverse[3] := Settings.FRigControl[4].FKeyingIsRTS;
+   dmZLogKeyer.KeyingSignalReverse[4] := Settings.FRigControl[5].FKeyingIsRTS;
 
-   dmZLogKeyer.KeyingSignalReverse := Settings.CW._keying_signal_reverse;
    dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;
 

@@ -23,6 +23,7 @@ const
   MINWPM = 5;
   _inccw = $80;
   _deccw = $81;
+  MAXPORT = 4;
 
 const
   WM_USER_WKSENDNEXTCHAR = (WM_USER + 1);
@@ -112,8 +113,8 @@ type
       PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
   private
     { Private 宣言 }
-    FDefautCom: array[0..4] of TCommPortDriver;
-    FComKeying: array[0..4] of TCommPortDriver;
+    FDefautCom: array[0..MAXPORT] of TCommPortDriver;
+    FComKeying: array[0..MAXPORT] of TCommPortDriver;
 
     FMonitorThread: TKeyerMonitorThread;
 
@@ -122,7 +123,7 @@ type
     usbinflist: TList<TUsbPortInfo>;
     FUSBIF4CW_Detected: Boolean;
 
-    FUsbInfo: array[0..4] of TUsbInfo;
+    FUsbInfo: array[0..MAXPORT] of TUsbInfo;
 
     // 現在送信中のポートID
     FWkRx: Integer;
@@ -137,7 +138,7 @@ type
     FUserFlag: Boolean; // can be set to True by user. set to False only when ClrBuffer is called or "  is reached in the sending buffer. // 1.9z2 used in QTCForm
     FVoiceFlag: Integer;  //temporary
 
-    FKeyingPort: array[0..4] of TKeyingPort;
+    FKeyingPort: array[0..MAXPORT] of TKeyingPort;
 
     FSpaceFactor: Integer; {space length factor in %}
     FEISpaceFactor: Integer; {space length factor after E and I}
@@ -199,7 +200,7 @@ type
 
     // False: PTT=RTS,KEY=DTR
     // True:  PTT=DTR,KEY=RTS
-    FKeyingSignalReverse: Boolean;
+    FKeyingSignalReverse: array[0..MAXPORT] of Boolean;
 
     FUsbDetecting: Boolean;
     FUsbif4cwSyncWpm: Boolean;
@@ -270,6 +271,9 @@ type
 
     procedure SetSo2rRxSelectPort(port: TKeyingPort);
     procedure SetSo2rTxSelectPort(port: TKeyingPort);
+
+    function GetKeyingSignalReverse(Index: Integer): Boolean;
+    procedure SetKeyingSignalReverse(Index: Integer; v: Boolean);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -322,7 +326,7 @@ type
     property OnSendFinishProc: TPlayMessageFinishedProc read FOnSendFinishProc write FOnSendFinishProc;
     property OnSpeedChanged: TNotifyEvent read FOnSpeedChanged write FOnSpeedChanged;
     property OnWkStatusProc: TWkStatusEvent read FOnWkStatusProc write FOnWkStatusProc;
-    property KeyingSignalReverse: Boolean read FKeyingSignalReverse write FKeyingSignalReverse;
+    property KeyingSignalReverse[Index: Integer]: Boolean read GetKeyingSignalReverse write SetKeyingSignalReverse;
 
     property Usbif4cwSyncWpm: Boolean read FUsbif4cwSyncWpm write FUsbif4cwSyncWpm;
     property PaddleReverse: Boolean read FPaddleReverse write SetPaddleReverse;
@@ -456,7 +460,7 @@ begin
    HidController.OnEnumerate := DoEnumeration;
    FUSBIF4CW_Detected := False;
 
-   for i := 0 to 4 do begin
+   for i := 0 to MAXPORT do begin
       FUsbInfo[i].FUSBIF4CW := nil;
       FUsbInfo[i].FPORTDATA := nil;
    end;
@@ -476,14 +480,12 @@ begin
    FOnCallsignSentProc := nil;
    FOnSendFinishProc := nil;
    FOnPaddleEvent := nil;
-   FKeyingSignalReverse := False;
    FUsbif4cwSyncWpm := False;
 
-   KeyingPort[0] := tkpNone;
-   KeyingPort[1] := tkpNone;
-   KeyingPort[2] := tkpNone;
-   KeyingPort[3] := tkpNone;
-   KeyingPort[4] := tkpNone;
+   for i := 0 to MAXPORT do begin
+      KeyingPort[i] := tkpNone;
+      FKeyingSignalReverse[i] := False;
+   end;
 end;
 
 procedure TdmZLogKeyer.DataModuleDestroy(Sender: TObject);
@@ -714,7 +716,7 @@ begin
       Exit;
    end;
 
-   for i := 0 to 4 do begin
+   for i := 0 to MAXPORT do begin
       // USBIF4CWでのRIG SELECT
       if FKeyingPort[i] = tkpUSB then begin
          if Assigned(FUsbInfo[i].FPORTDATA) then begin
@@ -821,7 +823,7 @@ procedure TdmZLogKeyer.SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, e
 var
    i: Integer;
 begin
-   for i := 0 to 4 do begin
+   for i := 0 to MAXPORT do begin
       if FKeyingPort[i] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
          if Assigned(FUsbInfo[i].FPORTDATA) then begin
@@ -870,7 +872,7 @@ begin
 
       // COM port
       if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-         if FKeyingSignalReverse = False then begin
+         if FKeyingSignalReverse[nID] = False then begin
             FComKeying[nID].ToggleRTS(PTTON);
          end
          else begin
@@ -903,7 +905,7 @@ begin
    try
       FPTTFLAG := False;
 
-      for nID := 0 to 4 do begin
+      for nID := 0 to MAXPORT do begin
          if FKeyingPort[nID] = tkpUSB then begin
             EnterCriticalSection(FUsbPortDataLock);
             if Assigned(FUsbInfo[nID].FPORTDATA) then begin
@@ -914,7 +916,7 @@ begin
          end;
 
          if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-            if FKeyingSignalReverse = False then begin
+            if FKeyingSignalReverse[nID] = False then begin
                FComKeying[nID].ToggleRTS(False);
             end
             else begin
@@ -939,7 +941,7 @@ var
 begin
    FPTTEnabled := _on;
 
-   for i := 0 to 4 do begin
+   for i := 0 to MAXPORT do begin
       if FKeyingPort[i] = tkpUSB then begin
          if _on = True then begin
             usbif4cwSetPTTParam(i, FPttDelayBeforeTime, FPttDelayAfterTime);
@@ -1238,7 +1240,7 @@ procedure TdmZLogKeyer.CW_ON(nID: Integer);
 begin
    case FKeyingPort[nID] of
       tkpSerial1..tkpSerial20: begin
-         if FKeyingSignalReverse = False then begin
+         if FKeyingSignalReverse[nID] = False then begin
             FComKeying[nID].ToggleDTR(True);
          end
          else begin
@@ -1261,7 +1263,7 @@ procedure TdmZLogKeyer.CW_OFF(nID: Integer);
 begin
    case FKeyingPort[nID] of
       tkpSerial1..tkpSerial20: begin
-         if FKeyingSignalReverse = False then begin
+         if FKeyingSignalReverse[nID] = False then begin
             FComKeying[nID].ToggleDTR(False);
          end
          else begin
@@ -1496,7 +1498,7 @@ begin
 
       FKeyerWPM := wpm;
 
-      for i := 0 to 4 do begin
+   for i := 0 to MAXPORT do begin
          if (FKeyingPort[i] = tkpUSB) and (FUsbif4cwSyncWpm = True) then begin
             usbif4cwSetWPM(i, FKeyerWPM);
          end;
@@ -2401,7 +2403,7 @@ begin
 
    //
    usb_no := 0;
-   for i := 0 to 4 do begin
+   for i := 0 to MAXPORT do begin
       if (FKeyingPort[i] = tkpUSB) then begin
          FUsbInfo[i].FUSBIF4CW := GetUsbDev(usb_no);
          FUsbInfo[i].FPORTDATA := GetUsbInf(usb_no);
@@ -2587,7 +2589,7 @@ var
 begin
    FPaddleReverse := fReverse;
 
-   for i := 0 to 4 do begin
+   for i := 0 to MAXPORT do begin
       if FKeyingPort[i] = tkpUSB then begin
          if fReverse = True then begin
             usbif4cwSetPaddle(i, 1);
@@ -3761,6 +3763,16 @@ end;
 procedure TdmZLogKeyer.SetSo2rTxSelectPort(port: TKeyingPort);
 begin
    FSo2rTxSelectPort := port;
+end;
+
+function TdmZLogKeyer.GetKeyingSignalReverse(Index: Integer): Boolean;
+begin
+   Result := FKeyingSignalReverse[Index];
+end;
+
+procedure TdmZLogKeyer.SetKeyingSignalReverse(Index: Integer; v: Boolean);
+begin
+   FKeyingSignalReverse[Index] := v;
 end;
 
 { TUSBPortInfo }
