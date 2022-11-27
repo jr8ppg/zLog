@@ -430,7 +430,7 @@ begin
       end;
    end;
 
-   MainForm.WriteStatusLine('Invalid number', False);
+   MainForm.WriteStatusLine(TMainForm_Invalid_number, False);
 end;
 
 procedure TIOTAMulti.UpdateLabelPos();

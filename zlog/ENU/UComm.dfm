@@ -16,6 +16,7 @@ object CommForm: TCommForm
   OldCreateOrder = True
   Scaled = False
   OnActivate = FormActivate
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
@@ -235,7 +236,7 @@ object CommForm: TCommForm
   object timerReConnect: TTimer
     Enabled = False
     OnTimer = timerReConnectTimer
-    Left = 24
+    Left = 28
     Top = 88
   end
 end

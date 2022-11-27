@@ -1107,6 +1107,25 @@ resourcestring
   TMainForm_Change_TXNO_QSOs = 'Are you sure to change the TX# for these QSO''s?';
   TMainForm_Need_File_Name = 'Data will NOT be saved until you enter the file name';
   TMainForm_QTC_Sent = 'QTC can be sent by pressing Ctrl+Q';
+  TMainForm_Less_Than_10min = 'Less than 10 min since last QSY!';
+  TMainForm_QSY_Count_Exceeded = 'QSY count exceeded limit!';
+  TMainForm_Loading_now = 'Loading...';
+  TMainForm_Switch_CW_Bank_A = 'CW Bank A';
+  TMainForm_Switch_CW_Bank_B = 'CW Bank B';
+  TMainForm_This_QSO_is_locked = 'This QSO is currently locked';
+  TMainForm_Invalid_number = 'Invalid number';
+  TMainForm_Callsign_not_entered = 'Callsign not entered';
+  TMainForm_Dupe_qso = 'Dupe';
+  TMainForm_Thankyou_for_your_qso = 'Thank you for the QSO with JA1ZLO';
+  TMainForm_CW_port_is_no_set = 'CW port is not set';
+  TMainForm_Not_a_new_multi = 'NOT a new multiplier. (This is a multi stn)';
+  TMainForm_Cannot_merge_current_file = 'Cannot merge current file';
+  TMainForm_Merging_now = 'Merging...';
+  TMainForm_Some_qsos_merged = '%s QSO(s) merged.';
+  TMainForm_CtyDat_not_loaded = 'CTY.DAT not loaded';
+  TMainForm_RIT_XIT_Cleared = 'RIT/XIT Offset Cleared';
+  TMainForm_Anti_zeroin = '** Anti Zeroin **';
+  TMainForm_Set_CQ_Repeat_Int = 'CQ Repeat Int. %.1f sec.';
 
 var
   MainForm: TMainForm;
@@ -1485,11 +1504,11 @@ begin
    end;
 
    if dmZlogGlobal.Settings._countdown and (CountDownStartTime > 0) then begin
-      WriteStatusLineRed('Less than 10 min since last QSY!', False);
+      WriteStatusLineRed(TMainForm_Less_Than_10min, False);
    end;
 
    if dmZlogGlobal.Settings._qsycount and (QSYCount > dmZLogGlobal.Settings._countperhour) then begin
-      WriteStatusLineRed('QSY count exceeded limit!', False);
+      WriteStatusLineRed(TMainForm_QSY_Count_Exceeded, False);
    end;
 
    if RigControl.Rig = nil then begin
@@ -2128,7 +2147,7 @@ begin
 
    if OpenDialog.Execute then begin
       zyloContestClosed;
-      WriteStatusLine('Loading...', False);
+      WriteStatusLine(TMainForm_Loading_now, False);
       dmZLogGlobal.SetLogFileName(OpenDialog.filename);
       LoadNewContestFromFile(OpenDialog.filename);
       WriteStatusLine('', False);
@@ -2918,11 +2937,11 @@ begin
 
    if dmZlogGlobal.Settings.CW.CurrentBank = 1 then begin
       back_color := clGreen;
-      WriteStatusLine('CW Bank A', False)
+      WriteStatusLine(TMainForm_Switch_CW_Bank_A, False)
    end
    else begin
       back_color := clMaroon;
-      WriteStatusLine('CW Bank B', False);
+      WriteStatusLine(TMainForm_Switch_CW_Bank_B, False);
    end;
 
    CWF1.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 1);
@@ -3252,7 +3271,7 @@ begin
    if _top = _bottom then begin
       aQSO := TQSO(Grid.Objects[0, _top]);
       if aQSO.Reserve = actLock then begin
-         WriteStatusLine('This QSO is currently locked', True);
+         WriteStatusLine(TMainForm_This_QSO_is_locked, True);
          exit;
       end;
       R := MessageDlg(TMainForm_Comfirm_Delete_Qso, mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
@@ -3509,7 +3528,7 @@ begin
                zLogSendStr2(nID, S, CurrentQSO);
             end;
 
-            WriteStatusLine('Invalid number', False);
+            WriteStatusLine(TMainForm_Invalid_number, False);
             NumberEdit.SetFocus;
             NumberEdit.SelectAll;
             exit;
@@ -3529,7 +3548,7 @@ begin
             if FTTYConsole <> nil then begin
                FTTYConsole.SendStrNow(S);
             end;
-            WriteStatusLine('Invalid number', False);
+            WriteStatusLine(TMainForm_Invalid_number, False);
             NumberEdit.SetFocus;
             NumberEdit.SelectAll;
             FCQRepeatPlaying := False;
@@ -3549,7 +3568,7 @@ begin
       mSSB, mFM, mAM: begin
          if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
             PlayMessage(1, 5);
-            WriteStatusLine('Invalid number', False);
+            WriteStatusLine(TMainForm_Invalid_number, False);
             NumberEdit.SetFocus;
             NumberEdit.SelectAll;
             exit;
@@ -3638,7 +3657,7 @@ begin
 
    // Callsign入力チェック
    if CurrentQSO.Callsign = '' then begin
-      WriteStatusLine('Callsign not entered', False);
+      WriteStatusLine(TMainForm_Callsign_not_entered, False);
       CallsignEdit.SetFocus;
       Exit;
    end;
@@ -3663,7 +3682,7 @@ begin
          if dmZLogGlobal.Settings._allowdupe = False then begin
             CallsignEdit.SetFocus;
             CallsignEdit.SelectAll;
-            WriteStatusLine('Dupe', False);
+            WriteStatusLine(TMainForm_Dupe_qso, False);
             Exit;
          end
          else begin // DUPEをallow
@@ -3676,7 +3695,7 @@ begin
       else begin  // UNIQUE!
          // 無効マルチは入力できない
          if MyContest.MultiForm.ValidMulti(CurrentQSO) = False then begin
-            WriteStatusLine('Invalid number', False);
+            WriteStatusLine(TMainForm_Invalid_number, False);
             NumberEdit.SetFocus;
             NumberEdit.SelectAll;
             Exit;
@@ -3886,7 +3905,7 @@ begin
    WriteStatusLine('', False);
 
    if workedZLO then begin
-      WriteStatusLine('QSOありがとうございます', False);
+      WriteStatusLine(TMainForm_Thankyou_for_your_qso, False);
    end;
 
    // Analyzeウインドウが表示されている場合は表示更新する
@@ -4271,7 +4290,7 @@ begin
       end;
 
       if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
-         WriteStatusLineRed('CW port is not set', False);
+         WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
          FCQRepeatPlaying := False;
          Exit;
       end;
@@ -4619,7 +4638,7 @@ begin
          end;
 
          if FCheckCountry.NotNewMulti(Q.Band) then begin
-            WriteStatusLineRed('NOT a new multiplier. (This is a multi stn)', False);
+            WriteStatusLineRed(TMainForm_Not_a_new_multi, False);
             Exit;
          end;
       end;
@@ -5570,6 +5589,7 @@ var
    ff: string;
    ext: string;
    i: Integer;
+   S: string;
 begin
    FileImportDialog.InitialDir := dmZlogGlobal.LogPath;
    FileImportDialog.FileName := '';
@@ -5580,7 +5600,7 @@ begin
 
    ff := FileImportDialog.filename;
    if ff = CurrentFileName then begin
-      WriteStatusLine('Cannot merge current file', True);
+      WriteStatusLine(TMainForm_Cannot_merge_current_file, True);
       Exit;
    end;
 
@@ -5589,13 +5609,13 @@ begin
    ext := UpperCase(ExtractFileExt(ff));
 
    if ext = '.ZLO' then begin
-      WriteStatusLine('Merging...', False);
+      WriteStatusLine(TMainForm_Merging_now, False);
 
       i := Log.QsoList.MergeFile(ff, True);
    end;
 
    if ext = '.ZLOX' then begin
-      WriteStatusLine('Merging...', False);
+      WriteStatusLine(TMainForm_Merging_now, False);
 
       i := Log.QsoList.MergeFileEx(ff, True);
    end;
@@ -5615,7 +5635,8 @@ begin
       FileSave(Self);
    end;
 
-   WriteStatusLine(IntToStr(i) + ' QSO(s) merged.', True);
+   S := Format(TMainForm_Some_qsos_merged, [IntToStr(i)]);
+   WriteStatusLine(S, True);
 
    // Analyzeウインドウが表示されている場合は表示更新する
    if FZAnalyze.Visible then begin
@@ -5630,10 +5651,19 @@ begin
 end;
 
 procedure TMainForm.StatusLineDrawPanel(StatusBar: TStatusBar; Panel: TStatusPanel; const Rect: TRect);
+var
+   S: string;
+   R: TRect;
 begin
-   if Panel = StatusLine.Panels[0] then begin
+   S := Panel.Text;
+   R := Rect;
+   if Panel.Index = 0 then begin
       StatusBar.Canvas.Font.Color := clStatusLine;
-      StatusBar.Canvas.TextOut(Rect.Left + 1, Rect.top + 1, Panel.Text);
+      StatusBar.Canvas.TextRect(R, S, [tfLeft, tfVerticalCenter]);
+   end
+   else begin
+      StatusBar.Canvas.Font.Color := clWindowText;
+      StatusBar.Canvas.TextRect(R, S, [tfCenter, tfVerticalCenter]);
    end;
 end;
 
@@ -6304,7 +6334,7 @@ begin
 
       // CTY.DATが必要なコンテストでロードされていない場合はお知らせする
       if (MyContest.NeedCtyDat = True) and (dmZLogGlobal.CtyDatLoaded = False) then begin
-         WriteStatusLineRed('CTY.DAT not loaded', True);
+         WriteStatusLineRed(TMainForm_CtyDat_not_loaded, True);
       end;
 
       // 最初はRIG1から
@@ -7000,7 +7030,7 @@ begin
       mCW: begin
          nID := FCurrentTx;
          if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
-            WriteStatusLineRed('CW port is not set', False);
+            WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
             Exit;
          end;
          WriteStatusLine('', False);
@@ -8343,7 +8373,7 @@ end;
 procedure TMainForm.actionRitClearExecute(Sender: TObject);
 begin
    RigControl.SetRitOffset(0);
-   WriteStatusLine('RIT/XIT Offset Cleared', False);
+   WriteStatusLine(TMainForm_RIT_XIT_Cleared, False);
 end;
 
 // #129 Magical Calling機能のON/OFF
@@ -8384,7 +8414,7 @@ begin
    RigControl.Rig.Xit := True;
    RigControl.Rig.RitOffset := offset;
 
-   WriteStatusLine('** Anti Zeroin **', False);
+   WriteStatusLine(TMainForm_Anti_zeroin, False);
 end;
 
 // #131 Function Key Panel
@@ -9272,7 +9302,7 @@ begin
       dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec := interval;
    end;
 
-   msg := 'CQ Repeat Int. ' + Format('%.1f', [interval]) + ' sec.';
+   msg := Format(TMainForm_Set_CQ_Repeat_Int, [interval]);
    WriteStatusLine(msg, False);
 end;
 
@@ -10485,7 +10515,7 @@ begin
    end;
 
    if aQSO.Reserve = actLock then begin
-      WriteStatusLine('This QSO is currently locked', False);
+      WriteStatusLine(TMainForm_This_QSO_is_locked, False);
       exit;
    end;
 

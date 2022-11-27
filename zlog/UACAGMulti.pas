@@ -140,7 +140,7 @@ begin
       end;
    end;
 
-   MainForm.WriteStatusLine('Invalid number', False);
+   MainForm.WriteStatusLine(TMainForm_Invalid_number, False);
 end;
 
 function TACAGMulti.ExtractMulti(aQSO: TQSO): string;

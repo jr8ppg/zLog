@@ -410,7 +410,7 @@ begin
 
    K := KenToInt(str);
    if K = mError then begin
-      MainForm.WriteStatusLine('Invalid number', False);
+      MainForm.WriteStatusLine(TMainForm_Invalid_number, False);
       Exit;
    end;
 

@@ -9,7 +9,7 @@ object MainForm: TMainForm
   Constraints.MinWidth = 540
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -12
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   Menu = MainMenu
@@ -37,6 +37,11 @@ object MainForm: TMainForm
     Top = 383
     Width = 524
     Height = 20
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBtnText
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
     Panels = <
       item
         Style = psOwnerDraw
@@ -49,8 +54,10 @@ object MainForm: TMainForm
         Width = 50
       end>
     SizeGrip = False
+    UseSystemFont = False
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
+    ExplicitTop = 382
   end
   object MainPanel: TPanel
     Left = 0

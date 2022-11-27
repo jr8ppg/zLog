@@ -47,14 +47,14 @@ begin
 
    if aQSO.Band in [b19 .. b1200] then begin
       if not(length(str) in [2 .. 3]) then begin
-         MainForm.WriteStatusLine('Invalid number', false);
+         MainForm.WriteStatusLine(TMainForm_Invalid_number, false);
          exit;
       end;
    end;
 
    if aQSO.Band in [b2400 .. HiBand] then begin
       if not(length(str) in [4 .. 6]) then begin
-         MainForm.WriteStatusLine('Invalid number', false);
+         MainForm.WriteStatusLine(TMainForm_Invalid_number, false);
          exit;
       end;
    end;
@@ -74,7 +74,7 @@ begin
       end;
    end;
 
-   MainForm.WriteStatusLine('Invalid number', false);
+   MainForm.WriteStatusLine(TMainForm_Invalid_number, false);
 end;
 
 function TFDMulti.ValidMulti(aQSO: TQSO): Boolean;
