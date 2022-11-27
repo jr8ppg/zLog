@@ -646,7 +646,7 @@ begin
       if Sp.IsNewMulti = True then begin
          temp := temp + ' at ' + MHzString[aQSO.band]+ 'MHz';
 //         MainForm.CommForm.WriteStatusLine(temp);
-         MainForm.WriteStatusLineRed(temp, true);
+         MainForm.WriteStatusText(temp, True, True);
       end;
    finally
       aQSO.Free;

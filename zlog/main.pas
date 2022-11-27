@@ -45,6 +45,7 @@ const
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
   WM_ZLOG_SETTXINDICATOR = (WM_USER + 203);
   WM_ZLOG_SETFOCUS_CALLSIGN = (WM_USER + 204);
+  WM_ZLOG_SETSTATUSTEXT = (WM_USER + 205);
 
 type
   TEditPanel = record
@@ -630,6 +631,7 @@ type
     procedure OnZLogSetPttState( var Message: TMessage ); message WM_ZLOG_SETPTTSTATE;
     procedure OnZLogSetTxIndicator( var Message: TMessage ); message WM_ZLOG_SETTXINDICATOR;
     procedure OnZLogSetFocusCallsign( var Message: TMessage ); message WM_ZLOG_SETFOCUS_CALLSIGN;
+    procedure OnZLogSetStatusText( var Message: TMessage ); message WM_ZLOG_SETSTATUSTEXT;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -1006,8 +1008,9 @@ type
     procedure GridRefreshScreen(fSelectRow: Boolean = False);
 
     procedure SetQSOMode(aQSO : TQSO);
-    procedure WriteStatusLine(S : string; WriteConsole : Boolean);
-    procedure WriteStatusLineRed(S : string; WriteConsole : Boolean);
+    procedure WriteStatusLine(S: string; fWriteConsole: Boolean);
+    procedure WriteStatusLineRed(S: string; fWriteConsole: Boolean);
+    procedure WriteStatusText(S: string; fRed, fWriteConsole: Boolean);
     procedure ProcessConsoleCommand(S : string);
     procedure UpdateBand(B : TBand); // takes care of window disp
     procedure UpdateMode(M : TMode);
@@ -1184,36 +1187,37 @@ begin
    QSYCount := Log.EvaluateQSYCount(Log.TotalQSO);
 end;
 
-procedure TMainForm.WriteStatusLine(S: string; WriteConsole: Boolean);
+procedure TMainForm.WriteStatusLine(S: string; fWriteConsole: Boolean);
 begin
-   if ContainsDoubleByteChar(S) then begin
-      StatusLine.Font.Name := '‚l‚r ‚oƒSƒVƒbƒN';
-      StatusLine.Font.Charset := 128; // shift jis
-   end
-   else begin
-      StatusLine.Font.Name := 'MS Sans Serif';
-      StatusLine.Font.Charset := 0; // shift jis
-   end;
-   clStatusLine := clWindowText;
-   StatusLine.Panels[0].Text := S;
-   if WriteConsole then
-      FConsolePad.AddLine(S);
+   WriteStatusText(S, False, fWriteConsole);
 end;
 
-procedure TMainForm.WriteStatusLineRed(S: string; WriteConsole: Boolean);
+procedure TMainForm.WriteStatusLineRed(S: string; fWriteConsole: Boolean);
 begin
-   clStatusLine := clRed;
-   if ContainsDoubleByteChar(S) then begin
-      StatusLine.Font.Name := '‚l‚r ‚oƒSƒVƒbƒN';
-      StatusLine.Font.Charset := 128; // shift jis
+   WriteStatusText(S, True, fWriteConsole);
+end;
+
+procedure TMainForm.WriteStatusText(S: string; fRed, fWriteConsole: Boolean);
+var
+   text_atom: ATOM;
+   wRed, wConsole: WORD;
+begin
+   if fRed = False then begin
+      wRed := 0;
    end
    else begin
-      StatusLine.Font.Name := 'MS Sans Serif';
-      StatusLine.Font.Charset := 0; // shift jis
+      wRed := 1;
    end;
-   StatusLine.Panels[0].Text := S;
-   if WriteConsole then
-      FConsolePad.AddLine(S);
+
+   if fWriteConsole = False then begin
+      wConsole := 0;
+   end
+   else begin
+      wConsole := 1;
+   end;
+
+   text_atom := GlobalAddAtom(PChar(S));
+   SendMessage(Handle, WM_ZLOG_SETSTATUSTEXT, MAKEWPARAM(wRed, wConsole), MAKELPARAM(text_atom, 0));
 end;
 
 procedure TMainForm.PushQSO(aQSO: TQSO);
@@ -4361,6 +4365,7 @@ procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    FChatForm.RenewOptions();
    FCommForm.RenewOptions();
+   FCommForm.Close();
    FRateDialogEx.SaveSettings();
 
    Timer1.Enabled := False;
@@ -6407,6 +6412,50 @@ begin
          LastFocus := FEditPanel[nID].CallsignEdit;
       end;
    end;
+end;
+
+procedure TMainForm.OnZLogSetStatusText( var Message: TMessage );
+var
+   text_atom: ATOM;
+   szBuffer: array[0..255] of Char;
+   statustext: string;
+   fWriteConsole: Boolean;
+begin
+   if Message.WParamLo = 0 then begin
+      clStatusLine := clBlack;
+   end
+   else begin
+      clStatusLine := clRed;
+   end;
+
+   if Message.WParamHi = 0 then begin
+      fWriteConsole := False;
+   end
+   else begin
+      fWriteConsole := True;
+   end;
+
+   text_atom := Message.LParamLo;
+
+   ZeroMemory(@szBuffer, SizeOf(szBuffer));
+   GlobalGetAtomName(text_atom, @szBuffer, SizeOf(szBuffer));
+   GlobalDeleteAtom(text_atom);
+
+   statustext := StrPas(szBuffer);
+
+//   if ContainsDoubleByteChar(S) then begin
+//      StatusLine.Font.Name := '‚l‚r ‚oƒSƒVƒbƒN';
+//      StatusLine.Font.Charset := 128; // shift jis
+//   end
+//   else begin
+//      StatusLine.Font.Name := 'MS Sans Serif';
+//      StatusLine.Font.Charset := 0; // shift jis
+//   end;
+
+   StatusLine.Panels[0].Text := statustext;
+
+   if fWriteConsole then
+      FConsolePad.AddLine(statustext);
 end;
 
 procedure TMainForm.InitALLJA();
