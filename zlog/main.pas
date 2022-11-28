@@ -1235,7 +1235,7 @@ begin
       wConsole := 1;
    end;
 
-   text_atom := GlobalAddAtom(PChar(S));
+   text_atom := AddAtom(PChar(S));
    SendMessage(Handle, WM_ZLOG_SETSTATUSTEXT, MAKEWPARAM(wRed, wConsole), MAKELPARAM(text_atom, 0));
 end;
 
@@ -1935,7 +1935,7 @@ var
    b: TBand;
 begin
    FInitialized   := False;
-   InitAtomTable(1000);
+   InitAtomTable(509);
 
    // ÉtÉHÉìÉgê›íË
    Grid.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
@@ -6468,8 +6468,8 @@ begin
    text_atom := Message.LParamLo;
 
    ZeroMemory(@szBuffer, SizeOf(szBuffer));
-   GlobalGetAtomName(text_atom, @szBuffer, SizeOf(szBuffer));
-   GlobalDeleteAtom(text_atom);
+   GetAtomName(text_atom, @szBuffer, SizeOf(szBuffer));
+   DeleteAtom(text_atom);
 
    statustext := StrPas(szBuffer);
 
