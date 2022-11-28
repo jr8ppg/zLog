@@ -8,20 +8,21 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsProcessor 64304
-#define UExceptionDialog_RsMemory 64305
-#define UExceptionDialog_RsScreenRes 64306
-#define UExceptionDialog_RsActiveControl 64307
-#define UExceptionDialog_RsThread 64308
-#define UExceptionDialog_RsMissingVersionInfo 64309
-#define UExceptionDialog_RsExceptionStack 64310
-#define UExceptionDialog_RsMainThreadID 64311
-#define UExceptionDialog_RsExceptionThreadID 64312
-#define UExceptionDialog_RsMainThreadCallStack 64313
-#define UExceptionDialog_RsThreadCallStack 64314
-#define UExceptionDialog_RsErrorMessage 64315
-#define UExceptionDialog_RsDetailsIntro 64316
-#define UExceptionDialog_RsUnitVersioningIntro 64317
+#define UExceptionDialog_RsOSVersion 64304
+#define UExceptionDialog_RsProcessor 64305
+#define UExceptionDialog_RsMemory 64306
+#define UExceptionDialog_RsScreenRes 64307
+#define UExceptionDialog_RsActiveControl 64308
+#define UExceptionDialog_RsThread 64309
+#define UExceptionDialog_RsMissingVersionInfo 64310
+#define UExceptionDialog_RsExceptionStack 64311
+#define UExceptionDialog_RsMainThreadID 64312
+#define UExceptionDialog_RsExceptionThreadID 64313
+#define UExceptionDialog_RsMainThreadCallStack 64314
+#define UExceptionDialog_RsThreadCallStack 64315
+#define UExceptionDialog_RsErrorMessage 64316
+#define UExceptionDialog_RsDetailsIntro 64317
+#define UExceptionDialog_RsUnitVersioningIntro 64318
 #define Main_TMainForm_CW_port_is_no_set 64320
 #define Main_TMainForm_Not_a_new_multi 64321
 #define Main_TMainForm_Cannot_merge_current_file 64322
@@ -31,13 +32,13 @@
 #define Main_TMainForm_RIT_XIT_Cleared 64326
 #define Main_TMainForm_Anti_zeroin 64327
 #define Main_TMainForm_Set_CQ_Repeat_Int 64328
-#define UExceptionDialog_RsAppError 64329
-#define UExceptionDialog_RsExceptionClass 64330
-#define UExceptionDialog_RsExceptionMessage 64331
-#define UExceptionDialog_RsExceptionAddr 64332
-#define UExceptionDialog_RsStackList 64333
-#define UExceptionDialog_RsModulesList 64334
-#define UExceptionDialog_RsOSVersion 64335
+#define Main_TMainForm_Invalid_zone 64329
+#define UExceptionDialog_RsAppError 64330
+#define UExceptionDialog_RsExceptionClass 64331
+#define UExceptionDialog_RsExceptionMessage 64332
+#define UExceptionDialog_RsExceptionAddr 64333
+#define UExceptionDialog_RsStackList 64334
+#define UExceptionDialog_RsModulesList 64335
 #define Main_TMainForm_Change_Mode_QSOs 64336
 #define Main_TMainForm_Change_Operator_QSOs 64337
 #define Main_TMainForm_Change_Power_QSOs 64338
@@ -1240,6 +1241,7 @@
 #define System_SysConst_SFileNotFound 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
 	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
@@ -1263,13 +1265,13 @@ BEGIN
 	Main_TMainForm_RIT_XIT_Cleared,	L"RIT/XIT Offset Cleared"
 	Main_TMainForm_Anti_zeroin,	L"** Anti Zeroin **"
 	Main_TMainForm_Set_CQ_Repeat_Int,	L"CQ Repeat Int. %.1f sec."
+	Main_TMainForm_Invalid_zone,	L"Invalid zone"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
 	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
 	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
 	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
-	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
 	Main_TMainForm_Change_Mode_QSOs,	L"Are you sure to change the mode for these QSO's?"
 	Main_TMainForm_Change_Operator_QSOs,	L"Are you sure to change the operator names for these QSO's?"
 	Main_TMainForm_Change_Power_QSOs,	L"Are you sure to change the power for these QSO's?"

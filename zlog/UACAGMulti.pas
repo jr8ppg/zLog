@@ -126,13 +126,12 @@ begin
       C := TCity(CityList.List[i]);
       if str = C.CityNumber then begin
          Grid.TopRow := i;
-         str := C.Summary2;
 
          if C.Worked[aQSO.Band] then begin
-            str := 'Worked on this band. ' + str;
+            str := Format('[%s: %s] Worked on this band. %s', [C.CityNumber, C.CityName, C.WorkedOn]);
          end
          else begin
-            str := 'Needed on this band. ' + str;
+            str := Format('[%s: %s] Needed on this band. %s', [C.CityNumber, C.CityName, C.WorkedOn]);
          end;
 
          MainForm.WriteStatusLine(str, False);

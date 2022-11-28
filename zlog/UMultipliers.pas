@@ -107,6 +107,7 @@ type
     function SummaryGeneral : string;
     function Summary2 : string;
     function FDSummary(LowBand : TBand) : string;
+    function WorkedOn(): string;
   end;
 
   TCityList = class
@@ -682,6 +683,26 @@ begin
          temp := temp + ' ' + MHzString[B]
       else
          temp := temp + '';
+   end;
+
+   Result := temp;
+end;
+
+function TCity.WorkedOn(): string;
+var
+   temp: string;
+   B: TBand;
+begin
+   temp := '';
+
+   for B := b35 to HiBand do begin
+      if Worked[B] then begin
+         temp := temp + ' ' + MHzString[B];
+      end;
+   end;
+
+   if temp <> '' then begin
+      temp := 'Worked on:' + temp;
    end;
 
    Result := temp;

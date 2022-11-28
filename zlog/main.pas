@@ -1126,6 +1126,7 @@ resourcestring
   TMainForm_RIT_XIT_Cleared = 'RIT/XIT Offset Cleared';
   TMainForm_Anti_zeroin = '** Anti Zeroin **';
   TMainForm_Set_CQ_Repeat_Int = 'CQ Repeat Int. %.1f sec.';
+  TMainForm_Invalid_zone = 'Invalid zone';
 
 var
   MainForm: TMainForm;
@@ -5654,17 +5655,21 @@ procedure TMainForm.StatusLineDrawPanel(StatusBar: TStatusBar; Panel: TStatusPan
 var
    S: string;
    R: TRect;
+   x, y, h: Integer;
 begin
    S := Panel.Text;
    R := Rect;
    if Panel.Index = 0 then begin
       StatusBar.Canvas.Font.Color := clStatusLine;
-      StatusBar.Canvas.TextRect(R, S, [tfLeft, tfVerticalCenter]);
    end
    else begin
       StatusBar.Canvas.Font.Color := clWindowText;
-      StatusBar.Canvas.TextRect(R, S, [tfCenter, tfVerticalCenter]);
    end;
+
+   h := StatusBar.Canvas.TextHeight(S);
+   x := Rect.Left + 1;
+   y := Rect.Top + (((Rect.Bottom - Rect.Top) - h) div 2);
+   StatusBar.Canvas.TextOut(x, y, S);
 end;
 
 procedure TMainForm.mnChangeTXNrClick(Sender: TObject);

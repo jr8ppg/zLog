@@ -62,13 +62,15 @@ begin
    for i := 0 to CityList.List.Count - 1 do begin
       C := TCity(CityList.List[i]);
       if str = C.CityNumber then begin
-         // ListBox.TopIndex := i;
          Grid.TopRow := i;
-         str := C.Summary2;
-         if C.Worked[aQSO.Band] then
-            Insert('Worked on this band. ', str, 27)
-         else
-            Insert('Needed on this band. ', str, 27);
+
+         if C.Worked[aQSO.Band] then begin
+            str := Format('[%s: %s] Worked on this band. %s', [C.CityNumber, C.CityName, C.WorkedOn]);
+         end
+         else begin
+            str := Format('[%s: %s] Needed on this band. %s', [C.CityNumber, C.CityName, C.WorkedOn]);
+         end;
+
          MainForm.WriteStatusLine(str, false);
          exit;
       end;
