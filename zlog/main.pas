@@ -6267,6 +6267,7 @@ begin
          CurrentQSO.Band := GetFirstAvailableBand(dmZLogGlobal.LastBand);
       end
       else begin
+         AdjustActiveBands();
          CurrentQSO.Band := MyContest.BandLow;
       end;
       FRateDialogEx.Band := CurrentQSO.Band;
@@ -6938,8 +6939,9 @@ begin
    end;
 
    for b := b19 to HiBand do begin
-      if (BandMenu.Items[Ord(b)].Enabled = True) and
+      if (BandMenu.Items[Ord(b)].Visible = True) and
          (dmZlogGlobal.Settings._activebands[b] = True) then begin
+         BandMenu.Items[Ord(b)].Enabled := True;
          Result := b;
          Exit;
       end;

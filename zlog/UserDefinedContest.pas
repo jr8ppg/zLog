@@ -13,6 +13,8 @@ const
   PX_WPX    = 1;
   PX_NORMAL = 2;
 
+  band_without_warc_table: array[1..13] of TBand = ( b19, b35, b7, b14, b21, b28, b50, b144, b430, b1200, b2400, b5600, b10g );
+
 type
   TPointsTable = array[b19..HiBand, mCW..mOther] of Integer;
   PTPointsTable = ^TPointsTable;
@@ -890,7 +892,7 @@ var
 begin
    for i := 1 to 13 do begin
       if FPower[i] <> '-' then begin
-         Result := TBand(i - 1);
+         Result := band_without_warc_table[i];
          Exit;
       end;
    end;
@@ -903,7 +905,7 @@ var
 begin
    for i := 13 downto 1 do begin
       if FPower[i] <> '-' then begin
-         Result := TBand(i - 1);
+         Result := band_without_warc_table[i];
          Exit;
       end;
    end;
