@@ -4997,6 +4997,8 @@ begin
       // QSY Violation
       RenewScore();
 
+      // BandÄİ’è
+      UpdateBand(CurrentQSO.Band);
    finally
       f.Release();
 
