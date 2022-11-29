@@ -6903,7 +6903,7 @@ var
    b: TBand;
 begin
    c := 0;
-   for b := b19 to HiBand do begin
+   for b := MyContest.BandLow to MyContest.BandHigh do begin
       if (BandMenu.Items[Ord(b)].Enabled = True) and
          (dmZlogGlobal.Settings._activebands[b] = True) then begin
          Inc(c);
@@ -6918,8 +6918,9 @@ var
    b: TBand;
 begin
    for b := b19 to HiBand do begin
-      if (BandMenu.Items[Ord(b)].Enabled = True) then begin
+      if (BandMenu.Items[Ord(b)].Visible = True) then begin
          dmZlogGlobal.Settings._activebands[b] := True;
+         BandMenu.Items[Ord(b)].Enabled := True;
       end;
    end;
 end;

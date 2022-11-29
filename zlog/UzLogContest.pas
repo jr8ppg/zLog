@@ -985,7 +985,7 @@ begin
    dmZlogGlobal.Settings._sameexchange := SameExchange;
    FNeedCtyDat := True;
 
-   FBandLow := b19;
+   FBandLow := b28;
    FBandHigh := b28;
 end;
 
