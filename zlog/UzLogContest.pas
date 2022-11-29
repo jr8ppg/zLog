@@ -823,7 +823,7 @@ begin
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    SentStr := '$N';
-   FNeedCtyDat := True;
+   FNeedCtyDat := False;
 
    FBandLow := b19;
    FBandHigh := b28;
