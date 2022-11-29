@@ -163,40 +163,50 @@ begin
    Grid.Cells[4, 0] := 'Multi2';
 
    for band := b19 to b28 do begin
-      if NotWARC(band) then begin
-         TotQSO := TotQSO + QSO[band];
-         TotPts := TotPts + Points[band];
-         TotMulti := TotMulti + Multi[band];
-         TotMulti2 := TotMulti2 + Multi2[band];
-
-         Grid.Cells[0, row] := '*' + MHzString[band];
-         Grid.Cells[1, row] := IntToStr3(QSO[band]);
-         Grid.Cells[2, row] := IntToStr3(Points[band]);
-         Grid.Cells[3, row] := IntToStr3(Multi[band]);
-         Grid.Cells[4, row] := IntToStr3(Multi2[band]);
-
-         Inc(row);
+      // WARC除外
+      if IsWARC(band) = True then begin
+         Continue;
       end;
+
+      // QRVできないバンドは除外
+      if dmZlogGlobal.Settings._activebands[band] = False then begin
+         Continue;
+      end;
+
+      TotQSO := TotQSO + QSO[band];
+      TotPts := TotPts + Points[band];
+      TotMulti := TotMulti + Multi[band];
+      TotMulti2 := TotMulti2 + Multi2[band];
+
+      Grid.Cells[0, row] := '*' + MHzString[band];
+      Grid.Cells[1, row] := IntToStr3(QSO[band]);
+      Grid.Cells[2, row] := IntToStr3(Points[band]);
+      Grid.Cells[3, row] := IntToStr3(Multi[band]);
+      Grid.Cells[4, row] := IntToStr3(Multi2[band]);
+
+      Inc(row);
    end;
 
    // 合計行
-   Grid.Cells[0, 7] := 'Total';
-   Grid.Cells[1, 7] := IntToStr3(TotQSO);
-   Grid.Cells[2, 7] := IntToStr3(TotPts);
-   Grid.Cells[3, 7] := IntToStr3(TotMulti);
-   Grid.Cells[4, 7] := IntToStr3(TotMulti2);
+   Grid.Cells[0, row] := 'Total';
+   Grid.Cells[1, row] := IntToStr3(TotQSO);
+   Grid.Cells[2, row] := IntToStr3(TotPts);
+   Grid.Cells[3, row] := IntToStr3(TotMulti);
+   Grid.Cells[4, row] := IntToStr3(TotMulti2);
+   Inc(row);
 
    // スコア行
    strScore:= IntToStr3(TotPts * (TotMulti + TotMulti2));
-   Grid.Cells[0, 8] := 'Score';
-   Grid.Cells[1, 8] := '';
-   Grid.Cells[2, 8] := '';
-   Grid.Cells[3, 8] := '';
-   Grid.Cells[4, 8] := strScore;
+   Grid.Cells[0, row] := 'Score';
+   Grid.Cells[1, row] := '';
+   Grid.Cells[2, row] := '';
+   Grid.Cells[3, row] := '';
+   Grid.Cells[4, row] := strScore;
+   Inc(row);
 
    // 行数をセット
    Grid.ColCount := 5;
-   Grid.RowCount := 9;
+   Grid.RowCount := row;
 
    // カラム幅をセット
    w := Grid.Canvas.TextWidth('9');
