@@ -793,8 +793,6 @@ begin
          if str[j] = Chr($0D) then begin
             x := pos(ZLinkHeader, CommTemp);
             if x > 0 then begin
-               // MainForm.WriteStatusLine(CommTemp);
-               // CHATFORM.ADD(COMMTEMP);
                CommTemp := copy(CommTemp, x, 255);
                CommandQue.Add(CommTemp);
             end;

@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5687731481</prop>
-        <prop prop-type="OrigDateTime">44800.8836574074</prop>
+        <prop prop-type="SelfDateTime">44895.9711342593</prop>
+        <prop prop-type="OrigDateTime">44895.9488888889</prop>
         <prop prop-type="XlatDateTime">44800.8836574074</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">56</prop>
+        <prop prop-type="UnTranslated">77</prop>
       </prop-group>
     </header>
     <body>
@@ -33,265 +33,370 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TARRL10Multi</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="I:ARRL10Multi.OnDestroy" resname="I:ARRL10Multi.OnDestroy">
+        <source>FormDestroy</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TARRL10Multi</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="I:ARRL10Multi.ExplicitWidth" resname="I:ARRL10Multi.ExplicitWidth">
         <source>384</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TARRL10Multi</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TARRL10Multi</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.PixelsPerInch" resname="I:ARRL10Multi.PixelsPerInch">
         <source>96</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TARRL10Multi</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TARRL10Multi</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.TextHeight" resname="I:ARRL10Multi.TextHeight">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TARRL10Multi</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TARRL10Multi</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.Width" resname="I:ARRL10Multi.I:Panel.Width">
         <source>368</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.ExplicitWidth" resname="I:ARRL10Multi.I:Panel.ExplicitWidth">
         <source>368</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel1.Left" resname="I:ARRL10Multi.I:Panel.I:RotateLabel1.Left">
         <source>316</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel1.Width" resname="I:ARRL10Multi.I:Panel.I:RotateLabel1.Width">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel1.Height" resname="I:ARRL10Multi.I:Panel.I:RotateLabel1.Height">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel1.Caption" resname="I:ARRL10Multi.I:Panel.I:RotateLabel1.Caption">
         <source>'Ph'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel1.Visible" resname="I:ARRL10Multi.I:Panel.I:RotateLabel1.Visible">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel1.ExplicitLeft" resname="I:ARRL10Multi.I:Panel.I:RotateLabel1.ExplicitLeft">
         <source>316</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel1.ExplicitWidth" resname="I:ARRL10Multi.I:Panel.I:RotateLabel1.ExplicitWidth">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel1.ExplicitHeight" resname="I:ARRL10Multi.I:Panel.I:RotateLabel1.ExplicitHeight">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel2.Left" resname="I:ARRL10Multi.I:Panel.I:RotateLabel2.Left">
         <source>328</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel2.Width" resname="I:ARRL10Multi.I:Panel.I:RotateLabel2.Width">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel2.Height" resname="I:ARRL10Multi.I:Panel.I:RotateLabel2.Height">
         <source>17</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel2.Caption" resname="I:ARRL10Multi.I:Panel.I:RotateLabel2.Caption">
         <source>'CW'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel2.Visible" resname="I:ARRL10Multi.I:Panel.I:RotateLabel2.Visible">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel2.ExplicitLeft" resname="I:ARRL10Multi.I:Panel.I:RotateLabel2.ExplicitLeft">
         <source>328</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel2.ExplicitWidth" resname="I:ARRL10Multi.I:Panel.I:RotateLabel2.ExplicitWidth">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel2.ExplicitHeight" resname="I:ARRL10Multi.I:Panel.I:RotateLabel2.ExplicitHeight">
         <source>17</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel3.Left" resname="I:ARRL10Multi.I:Panel.I:RotateLabel3.Left">
         <source>292</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel3.Top" resname="I:ARRL10Multi.I:Panel.I:RotateLabel3.Top">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel3.Width" resname="I:ARRL10Multi.I:Panel.I:RotateLabel3.Width">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel3.Height" resname="I:ARRL10Multi.I:Panel.I:RotateLabel3.Height">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel3.Visible" resname="I:ARRL10Multi.I:Panel.I:RotateLabel3.Visible">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel3.ExplicitLeft" resname="I:ARRL10Multi.I:Panel.I:RotateLabel3.ExplicitLeft">
         <source>292</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel3.ExplicitTop" resname="I:ARRL10Multi.I:Panel.I:RotateLabel3.ExplicitTop">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel3.ExplicitWidth" resname="I:ARRL10Multi.I:Panel.I:RotateLabel3.ExplicitWidth">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel3.ExplicitHeight" resname="I:ARRL10Multi.I:Panel.I:RotateLabel3.ExplicitHeight">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel4.Left" resname="I:ARRL10Multi.I:Panel.I:RotateLabel4.Left">
         <source>303</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel4.Top" resname="I:ARRL10Multi.I:Panel.I:RotateLabel4.Top">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel4.Width" resname="I:ARRL10Multi.I:Panel.I:RotateLabel4.Width">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel4.Height" resname="I:ARRL10Multi.I:Panel.I:RotateLabel4.Height">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel4.Visible" resname="I:ARRL10Multi.I:Panel.I:RotateLabel4.Visible">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel4.ExplicitLeft" resname="I:ARRL10Multi.I:Panel.I:RotateLabel4.ExplicitLeft">
         <source>303</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel4.ExplicitTop" resname="I:ARRL10Multi.I:Panel.I:RotateLabel4.ExplicitTop">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel4.ExplicitWidth" resname="I:ARRL10Multi.I:Panel.I:RotateLabel4.ExplicitWidth">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel4.ExplicitHeight" resname="I:ARRL10Multi.I:Panel.I:RotateLabel4.ExplicitHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel5.Left" resname="I:ARRL10Multi.I:Panel.I:RotateLabel5.Left">
         <source>315</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel5.Top" resname="I:ARRL10Multi.I:Panel.I:RotateLabel5.Top">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel5.Width" resname="I:ARRL10Multi.I:Panel.I:RotateLabel5.Width">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504977</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel5.Height" resname="I:ARRL10Multi.I:Panel.I:RotateLabel5.Height">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504977</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel5.Visible" resname="I:ARRL10Multi.I:Panel.I:RotateLabel5.Visible">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel5.ExplicitLeft" resname="I:ARRL10Multi.I:Panel.I:RotateLabel5.ExplicitLeft">
         <source>315</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel5.ExplicitTop" resname="I:ARRL10Multi.I:Panel.I:RotateLabel5.ExplicitTop">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel5.ExplicitWidth" resname="I:ARRL10Multi.I:Panel.I:RotateLabel5.ExplicitWidth">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504977</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel5.ExplicitHeight" resname="I:ARRL10Multi.I:Panel.I:RotateLabel5.ExplicitHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504977</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel6.Left" resname="I:ARRL10Multi.I:Panel.I:RotateLabel6.Left">
         <source>327</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel6.Top" resname="I:ARRL10Multi.I:Panel.I:RotateLabel6.Top">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel6.Width" resname="I:ARRL10Multi.I:Panel.I:RotateLabel6.Width">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504977</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel6.Height" resname="I:ARRL10Multi.I:Panel.I:RotateLabel6.Height">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504977</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel6.Visible" resname="I:ARRL10Multi.I:Panel.I:RotateLabel6.Visible">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel6.ExplicitLeft" resname="I:ARRL10Multi.I:Panel.I:RotateLabel6.ExplicitLeft">
         <source>327</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel6.ExplicitTop" resname="I:ARRL10Multi.I:Panel.I:RotateLabel6.ExplicitTop">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel6.ExplicitWidth" resname="I:ARRL10Multi.I:Panel.I:RotateLabel6.ExplicitWidth">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504977</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:ARRL10Multi.I:Panel.I:RotateLabel6.ExplicitHeight" resname="I:ARRL10Multi.I:Panel.I:RotateLabel6.ExplicitHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44895.9711504977</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.O:Label1.Left" resname="I:ARRL10Multi.I:Panel.O:Label1.Left">
         <source>240</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TLabel [6]</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TLabel [6]</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.O:Label1.Top" resname="I:ARRL10Multi.I:Panel.O:Label1.Top">
         <source>24</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TLabel [6]</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TLabel [6]</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.O:Label1.Width" resname="I:ARRL10Multi.I:Panel.O:Label1.Width">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TLabel [6]</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TLabel [6]</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.O:Label1.Height" resname="I:ARRL10Multi.I:Panel.O:Label1.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TLabel [6]</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TLabel [6]</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.O:Label1.Caption" resname="I:ARRL10Multi.I:Panel.O:Label1.Caption">
         <source>'Ph'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TLabel [6]</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TLabel [6]</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.O:Label2.Left" resname="I:ARRL10Multi.I:Panel.O:Label2.Left">
         <source>256</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TLabel [7]</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931168634</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TLabel [7]</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.O:Label2.Top" resname="I:ARRL10Multi.I:Panel.O:Label2.Top">
         <source>24</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TLabel [7]</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TLabel [7]</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.O:Label2.Width" resname="I:ARRL10Multi.I:Panel.O:Label2.Width">
         <source>18</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TLabel [7]</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TLabel [7]</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.O:Label2.Height" resname="I:ARRL10Multi.I:Panel.O:Label2.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TLabel [7]</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TLabel [7]</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.O:Label2.Caption" resname="I:ARRL10Multi.I:Panel.O:Label2.Caption">
         <source>'CW'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TLabel [7]</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TLabel [7]</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel.I:SortBy.Visible" resname="I:ARRL10Multi.I:Panel.I:SortBy.Visible">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TRadioGroup</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TRadioGroup</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel1.Width" resname="I:ARRL10Multi.I:Panel1.Width">
         <source>368</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Panel1.ExplicitWidth" resname="I:ARRL10Multi.I:Panel1.ExplicitWidth">
         <source>368</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Grid.Width" resname="I:ARRL10Multi.I:Grid.Width">
         <source>368</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:ARRL10Multi.I:Grid.ExplicitWidth" resname="I:ARRL10Multi.I:Grid.ExplicitWidth">
         <source>368</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931170486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

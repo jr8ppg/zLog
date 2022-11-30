@@ -645,8 +645,7 @@ begin
 
       if Sp.IsNewMulti = True then begin
          temp := temp + ' at ' + MHzString[aQSO.band]+ 'MHz';
-//         MainForm.CommForm.WriteStatusLine(temp);
-         MainForm.WriteStatusLineRed(temp, true);
+         MainForm.WriteStatusText(temp, True, True);
       end;
    finally
       aQSO.Free;
@@ -692,7 +691,7 @@ begin
       MainForm.WriteStatusLine(str, false);
    end
    else begin
-      MainForm.WriteStatusLine('Invalid zone', false);
+      MainForm.WriteStatusLine(TMainForm_Invalid_zone, false);
    end;
 end;
 

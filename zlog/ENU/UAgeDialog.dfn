@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44873.9688425926</prop>
+        <prop prop-type="SelfDateTime">44895.9848148148</prop>
         <prop prop-type="OrigDateTime">44873.9630092593</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">48</prop>
+        <prop prop-type="XlatDateTime">44895.9775231481</prop>
+        <prop prop-type="Translated">1</prop>
+        <prop prop-type="UnTranslated">47</prop>
       </prop-group>
     </header>
     <body>
@@ -125,8 +125,9 @@
       </trans-unit>
       <trans-unit id="O:AgeDialog.O:Label1.Top" resname="O:AgeDialog.O:Label1.Top">
         <source>19</source>
+        <target>20</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931143403</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931143403</prop><prop prop-type="Status">1</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:AgeDialog.O:Label1.Width" resname="O:AgeDialog.O:Label1.Width">
         <source>105</source>

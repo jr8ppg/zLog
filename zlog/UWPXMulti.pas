@@ -224,8 +224,6 @@ begin
    if _cont = 'AS' then
       aQSO.Power2 := 777; // flag for all asian mode (dx side)
 
-   // MAINFORM.WRITESTATUSLINE(C.COUNTRY);
-
    if C.Country = dmZLogGlobal.MyCountry then begin
       aQSO.Points := 1;
       exit;
@@ -297,7 +295,6 @@ begin
 
    if Sp.IsNewMulti = True then begin
       temp := temp + ' at ' + MHzString[aQSO.Band] + 'MHz';
-//      MainForm.CommForm.WriteStatusLine(temp);
       MainForm.WriteStatusLineRed(temp, true);
       // CommForm.Show;
    end;

@@ -55,6 +55,7 @@ const
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
   WM_ZLOG_SETTXINDICATOR = (WM_USER + 203);
   WM_ZLOG_SETFOCUS_CALLSIGN = (WM_USER + 204);
+  WM_ZLOG_SETSTATUSTEXT = (WM_USER + 205);
 
 type
   TEditPanel = record
@@ -652,6 +653,7 @@ type
     procedure OnZLogSetPttState( var Message: TMessage ); message WM_ZLOG_SETPTTSTATE;
     procedure OnZLogSetTxIndicator( var Message: TMessage ); message WM_ZLOG_SETTXINDICATOR;
     procedure OnZLogSetFocusCallsign( var Message: TMessage ); message WM_ZLOG_SETFOCUS_CALLSIGN;
+    procedure OnZLogSetStatusText( var Message: TMessage ); message WM_ZLOG_SETSTATUSTEXT;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -1035,8 +1037,9 @@ type
     procedure GridRefreshScreen(fSelectRow: Boolean = False);
 
     procedure SetQSOMode(aQSO : TQSO);
-    procedure WriteStatusLine(S : string; WriteConsole : Boolean);
-    procedure WriteStatusLineRed(S : string; WriteConsole : Boolean);
+    procedure WriteStatusLine(S: string; fWriteConsole: Boolean);
+    procedure WriteStatusLineRed(S: string; fWriteConsole: Boolean);
+    procedure WriteStatusText(S: string; fRed, fWriteConsole: Boolean);
     procedure ProcessConsoleCommand(S : string);
     procedure UpdateBand(B : TBand); // takes care of window disp
     procedure UpdateMode(M : TMode);
@@ -1135,6 +1138,26 @@ resourcestring
   TMainForm_Change_TXNO_QSOs = 'Are you sure to change the TX# for these QSO''s?';
   TMainForm_Need_File_Name = 'Data will NOT be saved until you enter the file name';
   TMainForm_QTC_Sent = 'QTC can be sent by pressing Ctrl+Q';
+  TMainForm_Less_Than_10min = 'Less than 10 min since last QSY!';
+  TMainForm_QSY_Count_Exceeded = 'QSY count exceeded limit!';
+  TMainForm_Loading_now = 'Loading...';
+  TMainForm_Switch_CW_Bank_A = 'CW Bank A';
+  TMainForm_Switch_CW_Bank_B = 'CW Bank B';
+  TMainForm_This_QSO_is_locked = 'This QSO is currently locked';
+  TMainForm_Invalid_number = 'Invalid number';
+  TMainForm_Callsign_not_entered = 'Callsign not entered';
+  TMainForm_Dupe_qso = 'Dupe';
+  TMainForm_Thankyou_for_your_qso = 'Thank you for the QSO with JA1ZLO';
+  TMainForm_CW_port_is_no_set = 'CW port is not set';
+  TMainForm_Not_a_new_multi = 'NOT a new multiplier. (This is a multi stn)';
+  TMainForm_Cannot_merge_current_file = 'Cannot merge current file';
+  TMainForm_Merging_now = 'Merging...';
+  TMainForm_Some_qsos_merged = '%s QSO(s) merged.';
+  TMainForm_CtyDat_not_loaded = 'CTY.DAT not loaded';
+  TMainForm_RIT_XIT_Cleared = 'RIT/XIT Offset Cleared';
+  TMainForm_Anti_zeroin = '** Anti Zeroin **';
+  TMainForm_Set_CQ_Repeat_Int = 'CQ Repeat Int. %.1f sec.';
+  TMainForm_Invalid_zone = 'Invalid zone';
 
 var
   MainForm: TMainForm;
@@ -1215,36 +1238,37 @@ begin
    QSYCount := Log.EvaluateQSYCount(Log.TotalQSO);
 end;
 
-procedure TMainForm.WriteStatusLine(S: string; WriteConsole: Boolean);
+procedure TMainForm.WriteStatusLine(S: string; fWriteConsole: Boolean);
 begin
-   if ContainsDoubleByteChar(S) then begin
-      StatusLine.Font.Name := 'ＭＳ Ｐゴシック';
-      StatusLine.Font.Charset := 128; // shift jis
-   end
-   else begin
-      StatusLine.Font.Name := 'MS Sans Serif';
-      StatusLine.Font.Charset := 0; // shift jis
-   end;
-   clStatusLine := clWindowText;
-   StatusLine.Panels[0].Text := S;
-   if WriteConsole then
-      FConsolePad.AddLine(S);
+   WriteStatusText(S, False, fWriteConsole);
 end;
 
-procedure TMainForm.WriteStatusLineRed(S: string; WriteConsole: Boolean);
+procedure TMainForm.WriteStatusLineRed(S: string; fWriteConsole: Boolean);
 begin
-   clStatusLine := clRed;
-   if ContainsDoubleByteChar(S) then begin
-      StatusLine.Font.Name := 'ＭＳ Ｐゴシック';
-      StatusLine.Font.Charset := 128; // shift jis
+   WriteStatusText(S, True, fWriteConsole);
+end;
+
+procedure TMainForm.WriteStatusText(S: string; fRed, fWriteConsole: Boolean);
+var
+   text_atom: ATOM;
+   wRed, wConsole: WORD;
+begin
+   if fRed = False then begin
+      wRed := 0;
    end
    else begin
-      StatusLine.Font.Name := 'MS Sans Serif';
-      StatusLine.Font.Charset := 0; // shift jis
+      wRed := 1;
    end;
-   StatusLine.Panels[0].Text := S;
-   if WriteConsole then
-      FConsolePad.AddLine(S);
+
+   if fWriteConsole = False then begin
+      wConsole := 0;
+   end
+   else begin
+      wConsole := 1;
+   end;
+
+   text_atom := AddAtom(PChar(S));
+   SendMessage(Handle, WM_ZLOG_SETSTATUSTEXT, MAKEWPARAM(wRed, wConsole), MAKELPARAM(text_atom, 0));
 end;
 
 procedure TMainForm.PushQSO(aQSO: TQSO);
@@ -1513,11 +1537,11 @@ begin
    end;
 
    if dmZlogGlobal.Settings._countdown and (CountDownStartTime > 0) then begin
-      WriteStatusLineRed('Less than 10 min since last QSY!', False);
+      WriteStatusLineRed(TMainForm_Less_Than_10min, False);
    end;
 
    if dmZlogGlobal.Settings._qsycount and (QSYCount > dmZLogGlobal.Settings._countperhour) then begin
-      WriteStatusLineRed('QSY count exceeded limit!', False);
+      WriteStatusLineRed(TMainForm_QSY_Count_Exceeded, False);
    end;
 
    rig := RigControl.GetRig(FCurrentRigSet, B);
@@ -1948,7 +1972,7 @@ var
    b: TBand;
 begin
    FInitialized   := False;
-   InitAtomTable(1000);
+   InitAtomTable(509);
 
    FWaitForQsoFinish[0] := False;
    FWaitForQsoFinish[1] := False;
@@ -2165,7 +2189,7 @@ begin
 
    if OpenDialog.Execute then begin
       zyloContestClosed;
-      WriteStatusLine('Loading...', False);
+      WriteStatusLine(TMainForm_Loading_now, False);
       dmZLogGlobal.SetLogFileName(OpenDialog.filename);
       LoadNewContestFromFile(OpenDialog.filename);
       WriteStatusLine('', False);
@@ -2973,11 +2997,11 @@ begin
 
    if dmZlogGlobal.Settings.CW.CurrentBank = 1 then begin
       back_color := clGreen;
-      WriteStatusLine('CW Bank A', False)
+      WriteStatusLine(TMainForm_Switch_CW_Bank_A, False)
    end
    else begin
       back_color := clMaroon;
-      WriteStatusLine('CW Bank B', False);
+      WriteStatusLine(TMainForm_Switch_CW_Bank_B, False);
    end;
 
    CWF1.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 1);
@@ -3324,7 +3348,7 @@ begin
    if _top = _bottom then begin
       aQSO := TQSO(Grid.Objects[0, _top]);
       if aQSO.Reserve = actLock then begin
-         WriteStatusLine('This QSO is currently locked', True);
+         WriteStatusLine(TMainForm_This_QSO_is_locked, True);
          exit;
       end;
       R := MessageDlg(TMainForm_Comfirm_Delete_Qso, mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
@@ -3618,7 +3642,7 @@ begin
                FMessageManager.AddQue(FKeyPressedRigID + 10, S, CurrentQSO);
             end;
 
-            WriteStatusLine('Invalid number', False);
+            WriteStatusLine(TMainForm_Invalid_number, False);
             NumberEdit.SetFocus;
             NumberEdit.SelectAll;
             exit;
@@ -3644,7 +3668,7 @@ begin
             if FTTYConsole <> nil then begin
                FTTYConsole.SendStrNow(S);
             end;
-            WriteStatusLine('Invalid number', False);
+            WriteStatusLine(TMainForm_Invalid_number, False);
             NumberEdit.SetFocus;
             NumberEdit.SelectAll;
             FCQRepeatPlaying := False;
@@ -3664,7 +3688,7 @@ begin
       mSSB, mFM, mAM: begin
          if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
             PlayMessage(1, 5);
-            WriteStatusLine('Invalid number', False);
+            WriteStatusLine(TMainForm_Invalid_number, False);
             NumberEdit.SetFocus;
             NumberEdit.SelectAll;
             exit;
@@ -3796,7 +3820,7 @@ begin
 
    // Callsign入力チェック
    if CurrentQSO.Callsign = '' then begin
-      WriteStatusLine('Callsign not entered', False);
+      WriteStatusLine(TMainForm_Callsign_not_entered, False);
       CallsignEdit.SetFocus;
       Exit;
    end;
@@ -3821,7 +3845,7 @@ begin
          if dmZLogGlobal.Settings._allowdupe = False then begin
             CallsignEdit.SetFocus;
             CallsignEdit.SelectAll;
-            WriteStatusLine('Dupe', False);
+            WriteStatusLine(TMainForm_Dupe_qso, False);
             Exit;
          end
          else begin // DUPEをallow
@@ -3834,7 +3858,7 @@ begin
       else begin  // UNIQUE!
          // 無効マルチは入力できない
          if MyContest.MultiForm.ValidMulti(CurrentQSO) = False then begin
-            WriteStatusLine('Invalid number', False);
+            WriteStatusLine(TMainForm_Invalid_number, False);
             NumberEdit.SetFocus;
             NumberEdit.SelectAll;
             Exit;
@@ -4045,7 +4069,7 @@ begin
    WriteStatusLine('', False);
 
    if workedZLO then begin
-      WriteStatusLine('QSOありがとうございます', False);
+      WriteStatusLine(TMainForm_Thankyou_for_your_qso, False);
    end;
 
    // Analyzeウインドウが表示されている場合は表示更新する
@@ -4170,6 +4194,7 @@ end;
 procedure TMainForm.SpeedBarChange(Sender: TObject);
 begin
    dmZLogKeyer.WPM := SpeedBar.Position;
+   dmZLogKeyer.InitWPM := SpeedBar.Position;
    dmZLogGlobal.Settings.CW._speed := SpeedBar.Position;
    SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
 
@@ -4201,6 +4226,7 @@ begin
    if dmZLogKeyer.UseWinKeyer = True then begin
       dmZLogKeyer.WinKeyerClear();
    end;
+   dmZLogKeyer.ResetSpeed();
    FCQRepeatPlaying := False;
 end;
 
@@ -4440,7 +4466,7 @@ begin
       end;
 
       if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
-         WriteStatusLineRed('CW port is not set', False);
+         WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
          FCQRepeatPlaying := False;
          Exit;
       end;
@@ -4539,6 +4565,7 @@ procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    FChatForm.RenewOptions();
    FCommForm.RenewOptions();
+   FCommForm.Close();
    FRateDialogEx.SaveSettings();
 
    Timer1.Enabled := False;
@@ -4833,7 +4860,7 @@ begin
          end;
 
          if FCheckCountry.NotNewMulti(Q.Band) then begin
-            WriteStatusLineRed('NOT a new multiplier. (This is a multi stn)', False);
+            WriteStatusLineRed(TMainForm_Not_a_new_multi, False);
             Exit;
          end;
       end;
@@ -5191,6 +5218,8 @@ begin
       // QSY Violation
       RenewScore();
 
+      // Band再設定
+      UpdateBand(CurrentQSO.Band);
    finally
       f.Release();
 
@@ -5790,6 +5819,7 @@ var
    ff: string;
    ext: string;
    i: Integer;
+   S: string;
 begin
    FileImportDialog.InitialDir := dmZlogGlobal.LogPath;
    FileImportDialog.FileName := '';
@@ -5800,7 +5830,7 @@ begin
 
    ff := FileImportDialog.filename;
    if ff = CurrentFileName then begin
-      WriteStatusLine('Cannot merge current file', True);
+      WriteStatusLine(TMainForm_Cannot_merge_current_file, True);
       Exit;
    end;
 
@@ -5809,13 +5839,13 @@ begin
    ext := UpperCase(ExtractFileExt(ff));
 
    if ext = '.ZLO' then begin
-      WriteStatusLine('Merging...', False);
+      WriteStatusLine(TMainForm_Merging_now, False);
 
       i := Log.QsoList.MergeFile(ff, True);
    end;
 
    if ext = '.ZLOX' then begin
-      WriteStatusLine('Merging...', False);
+      WriteStatusLine(TMainForm_Merging_now, False);
 
       i := Log.QsoList.MergeFileEx(ff, True);
    end;
@@ -5835,7 +5865,8 @@ begin
       FileSave(Self);
    end;
 
-   WriteStatusLine(IntToStr(i) + ' QSO(s) merged.', True);
+   S := Format(TMainForm_Some_qsos_merged, [IntToStr(i)]);
+   WriteStatusLine(S, True);
 
    // Analyzeウインドウが表示されている場合は表示更新する
    if FZAnalyze.Visible then begin
@@ -5850,11 +5881,24 @@ begin
 end;
 
 procedure TMainForm.StatusLineDrawPanel(StatusBar: TStatusBar; Panel: TStatusPanel; const Rect: TRect);
+var
+   S: string;
+   R: TRect;
+   x, y, h: Integer;
 begin
-   if Panel = StatusLine.Panels[0] then begin
+   S := Panel.Text;
+   R := Rect;
+   if Panel.Index = 0 then begin
       StatusBar.Canvas.Font.Color := clStatusLine;
-      StatusBar.Canvas.TextOut(Rect.Left + 1, Rect.top + 1, Panel.Text);
+   end
+   else begin
+      StatusBar.Canvas.Font.Color := clWindowText;
    end;
+
+   h := StatusBar.Canvas.TextHeight(S);
+   x := Rect.Left + 1;
+   y := Rect.Top + (((Rect.Bottom - Rect.Top) - h) div 2);
+   StatusBar.Canvas.TextOut(x, y, S);
 end;
 
 procedure TMainForm.mnChangeTXNrClick(Sender: TObject);
@@ -6460,6 +6504,7 @@ begin
          CurrentQSO.Band := GetFirstAvailableBand(dmZLogGlobal.LastBand);
       end
       else begin
+         AdjustActiveBands();
          CurrentQSO.Band := MyContest.BandLow;
       end;
       FRateDialogEx.Band := CurrentQSO.Band;
@@ -6534,7 +6579,7 @@ begin
 
       // CTY.DATが必要なコンテストでロードされていない場合はお知らせする
       if (MyContest.NeedCtyDat = True) and (dmZLogGlobal.CtyDatLoaded = False) then begin
-         WriteStatusLineRed('CTY.DAT not loaded', True);
+         WriteStatusLineRed(TMainForm_CtyDat_not_loaded, True);
       end;
 
       // 最初はRIG1から
@@ -6763,6 +6808,50 @@ begin
          LastFocus := FEditPanel[nID].CallsignEdit;
       end;
    end;
+end;
+
+procedure TMainForm.OnZLogSetStatusText( var Message: TMessage );
+var
+   text_atom: ATOM;
+   szBuffer: array[0..255] of Char;
+   statustext: string;
+   fWriteConsole: Boolean;
+begin
+   if Message.WParamLo = 0 then begin
+      clStatusLine := clBlack;
+   end
+   else begin
+      clStatusLine := clRed;
+   end;
+
+   if Message.WParamHi = 0 then begin
+      fWriteConsole := False;
+   end
+   else begin
+      fWriteConsole := True;
+   end;
+
+   text_atom := Message.LParamLo;
+
+   ZeroMemory(@szBuffer, SizeOf(szBuffer));
+   GetAtomName(text_atom, @szBuffer, SizeOf(szBuffer));
+   DeleteAtom(text_atom);
+
+   statustext := StrPas(szBuffer);
+
+//   if ContainsDoubleByteChar(S) then begin
+//      StatusLine.Font.Name := 'ＭＳ Ｐゴシック';
+//      StatusLine.Font.Charset := 128; // shift jis
+//   end
+//   else begin
+//      StatusLine.Font.Name := 'MS Sans Serif';
+//      StatusLine.Font.Charset := 0; // shift jis
+//   end;
+
+   StatusLine.Panels[0].Text := statustext;
+
+   if fWriteConsole then
+      FConsolePad.AddLine(statustext);
 end;
 
 procedure TMainForm.InitALLJA();
@@ -7173,7 +7262,7 @@ var
    b: TBand;
 begin
    c := 0;
-   for b := b19 to HiBand do begin
+   for b := MyContest.BandLow to MyContest.BandHigh do begin
       if (BandMenu.Items[Ord(b)].Enabled = True) and
          (dmZlogGlobal.Settings._activebands[b] = True) then begin
          Inc(c);
@@ -7188,8 +7277,9 @@ var
    b: TBand;
 begin
    for b := b19 to HiBand do begin
-      if (BandMenu.Items[Ord(b)].Enabled = True) then begin
+      if (BandMenu.Items[Ord(b)].Visible = True) then begin
          dmZlogGlobal.Settings._activebands[b] := True;
+         BandMenu.Items[Ord(b)].Enabled := True;
       end;
    end;
 end;
@@ -7207,8 +7297,9 @@ begin
    end;
 
    for b := b19 to HiBand do begin
-      if (BandMenu.Items[Ord(b)].Enabled = True) and
+      if (BandMenu.Items[Ord(b)].Visible = True) and
          (dmZlogGlobal.Settings._activebands[b] = True) then begin
+         BandMenu.Items[Ord(b)].Enabled := True;
          Result := b;
          Exit;
       end;
@@ -7327,7 +7418,7 @@ begin
    case CurrentQSO.Mode of
       mCW: begin
          if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
-            WriteStatusLineRed('CW port is not set', False);
+            WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
             Exit;
          end;
          WriteStatusLine('', False);
@@ -8735,7 +8826,7 @@ begin
       rig.RitClear();
    end;
 
-   WriteStatusLine('RIT/XIT Offset Cleared', False);
+   WriteStatusLine(TMainForm_RIT_XIT_Cleared, False);
 end;
 
 // #129 Magical Calling機能のON/OFF
@@ -8780,7 +8871,7 @@ begin
       rig.RitOffset := offset;
    end;
 
-   WriteStatusLine('** Anti Zeroin **', False);
+   WriteStatusLine(TMainForm_Anti_zeroin, False);
 end;
 
 // #131 Function Key Panel
@@ -9705,7 +9796,7 @@ begin
       dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec := interval;
    end;
 
-   msg := 'CQ Repeat Int. ' + Format('%.1f', [interval]) + ' sec.';
+   msg := Format(TMainForm_Set_CQ_Repeat_Int, [interval]);
    WriteStatusLine(msg, False);
 end;
 
@@ -10945,7 +11036,7 @@ begin
    end;
 
    if aQSO.Reserve = actLock then begin
-      WriteStatusLine('This QSO is currently locked', False);
+      WriteStatusLine(TMainForm_This_QSO_is_locked, False);
       exit;
    end;
 

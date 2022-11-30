@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44891.9744444444</prop>
-        <prop prop-type="OrigDateTime">44891.9738657407</prop>
-        <prop prop-type="XlatDateTime">44883.9747222222</prop>
-        <prop prop-type="Translated">25</prop>
-        <prop prop-type="UnTranslated">1187</prop>
+        <prop prop-type="SelfDateTime">44895.9846296296</prop>
+        <prop prop-type="OrigDateTime">44895.9844212963</prop>
+        <prop prop-type="XlatDateTime">44895.9809722222</prop>
+        <prop prop-type="Translated">41</prop>
+        <prop prop-type="UnTranslated">1191</prop>
       </prop-group>
     </header>
     <body>
@@ -8558,8 +8558,9 @@
         <source>"Enter frequency in kHz"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44873.970776331</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"周波数をkHzで入力して下さい"</target>
       </trans-unit>
       <trans-unit id="UOptions_Installed_Plugins_Disabled" resname="UOptions_Installed_Plugins_Disabled">
         <source>"Plugins folder changed. Installed plugins will be disabled. Are you sure?"</source>
@@ -8584,6 +8585,161 @@
           <prop prop-type="Status">1</prop>
         </prop-group>
         <target>"再接続試行回数の上限を超えました"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Thankyou_for_your_qso" resname="Main_TMainForm_Thankyou_for_your_qso">
+        <source>"Thank you for the QSO with JA1ZLO"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709331134</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"QSOありがとうございます"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_CW_port_is_no_set" resname="Main_TMainForm_CW_port_is_no_set">
+        <source>"CW port is not set"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709331134</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"CWポートが未設定です"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Not_a_new_multi" resname="Main_TMainForm_Not_a_new_multi">
+        <source>"NOT a new multiplier. (This is a multi stn)"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.970933125</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"NEWマルチではありません(マルチステーションです)"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Cannot_merge_current_file" resname="Main_TMainForm_Cannot_merge_current_file">
+        <source>"Cannot merge current file"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709331366</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"現在のファイルをマージできません"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Merging_now" resname="Main_TMainForm_Merging_now">
+        <source>"Merging..."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709331366</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"マージ中..."</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Some_qsos_merged" resname="Main_TMainForm_Some_qsos_merged">
+        <source>"%s QSO(s) merged."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709331481</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"%s QSOをマージしました"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_CtyDat_not_loaded" resname="Main_TMainForm_CtyDat_not_loaded">
+        <source>"CTY.DAT not loaded"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709331481</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"CTY.DATファイルがロードできません"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Anti_zeroin" resname="Main_TMainForm_Anti_zeroin">
+        <source>"** Anti Zeroin **"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709331481</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Set_CQ_Repeat_Int" resname="Main_TMainForm_Set_CQ_Repeat_Int">
+        <source>"CQ Repeat Int. %.1f sec."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709331597</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Invalid_zone" resname="Main_TMainForm_Invalid_zone">
+        <source>"Invalid zone"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709331597</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"無効なZoneです"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Less_Than_10min" resname="Main_TMainForm_Less_Than_10min">
+        <source>"Less than 10 min since last QSY!"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709331944</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"前のQSYから10分経過していません"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_QSY_Count_Exceeded" resname="Main_TMainForm_QSY_Count_Exceeded">
+        <source>"QSY count exceeded limit!"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.970933206</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"QSY回数が上限を超えました!"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Loading_now" resname="Main_TMainForm_Loading_now">
+        <source>"Loading..."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.970933206</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Switch_CW_Bank_A" resname="Main_TMainForm_Switch_CW_Bank_A">
+        <source>"CW Bank A"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709332176</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"CW Bank Aに変更しました"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Switch_CW_Bank_B" resname="Main_TMainForm_Switch_CW_Bank_B">
+        <source>"CW Bank B"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709332176</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"CW Bank Bに変更しました"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_This_QSO_is_locked" resname="Main_TMainForm_This_QSO_is_locked">
+        <source>"This QSO is currently locked"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709332292</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"このQSOはロックされています"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Invalid_number" resname="Main_TMainForm_Invalid_number">
+        <source>"Invalid number"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709332292</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"無効なナンバーです"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Callsign_not_entered" resname="Main_TMainForm_Callsign_not_entered">
+        <source>"Callsign not entered"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709332292</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"コールサインを入力して下さい"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Dupe_qso" resname="Main_TMainForm_Dupe_qso">
+        <source>"Dupe"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9709332407</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_RIT_XIT_Cleared" resname="Main_TMainForm_RIT_XIT_Cleared">
+        <source>"RIT/XIT Offset Cleared"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44895.9846281597</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
       </trans-unit>
     </body>
   </file>

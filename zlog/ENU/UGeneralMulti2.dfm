@@ -3,6 +3,10 @@ inherited GeneralMulti2: TGeneralMulti2
   Top = 205
   PixelsPerInch = 96
   TextHeight = 13
+  inherited Panel1: TPanel
+    ExplicitTop = 241
+    ExplicitWidth = 360
+  end
   inherited Panel: TPanel
     inherited Label1R9: TRotateLabel
       Left = 197

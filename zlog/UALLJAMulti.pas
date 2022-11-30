@@ -398,6 +398,8 @@ end;
 procedure TALLJAMulti.CheckMulti(aQSO: TQSO);
 var
    str: string;
+   strKen: string;
+   strWorkedOn: string;
    K: TKen;
    B: TBand;
 begin
@@ -410,22 +412,29 @@ begin
 
    K := KenToInt(str);
    if K = mError then begin
-      MainForm.WriteStatusLine('Invalid number', False);
+      MainForm.WriteStatusLine(TMainForm_Invalid_number, False);
       Exit;
    end;
 
-   str := KenNames[K];
+   // ìsìπï{åßñº
+   strKen := KenNames[K];
 
-   if MultiTable[aQSO.band, K] = True then
-      str := str + '   Worked on this band. Worked on : '
-   else
-      str := str + '   Needed on this band. Worked on : ';
-
+   // åêMçœÇ›ÉoÉìÉh
+   strWorkedOn := '';
    for B := b19 to b50 do begin
-      if MultiTable[B, K] then
-         str := str + MHzString[B] + ' '
-      else
-         str := str + '';
+      if MultiTable[B, K] then begin
+         strWorkedOn := strWorkedOn + ' ' + MHzString[B];
+      end;
+   end;
+   if strWorkedOn <> '' then begin
+      strWorkedOn := 'Worked on:' + strWorkedOn;
+   end;
+
+   if MultiTable[aQSO.band, K] = True then begin
+      str := Format('[%s] Worked on this band. %s', [strKen, strWorkedOn]);
+   end
+   else begin
+      str := Format('[%s] Needed on this band. %s', [strKen, strWorkedOn]);
    end;
 
    MainForm.WriteStatusLine(str, False);

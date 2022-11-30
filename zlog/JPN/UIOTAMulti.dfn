@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5681712963</prop>
-        <prop prop-type="OrigDateTime">44800.8836574074</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">88</prop>
+        <prop prop-type="SelfDateTime">44895.9846064815</prop>
+        <prop prop-type="OrigDateTime">44895.9506481482</prop>
+        <prop prop-type="XlatDateTime">44895.975625</prop>
+        <prop prop-type="Translated">1</prop>
+        <prop prop-type="UnTranslated">87</prop>
       </prop-group>
     </header>
     <body>
@@ -439,9 +439,10 @@
         <prop prop-type="Created">44796.8925776273</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:IOTAMulti.I:Grid.Height" resname="I:IOTAMulti.I:Grid.Height">
-        <source>192</source>
+        <source>215</source>
+        <target>192</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925776273</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925776273</prop><prop prop-type="Status">1</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:IOTAMulti.I:Grid.ExplicitTop" resname="I:IOTAMulti.I:Grid.ExplicitTop">
         <source>49</source>

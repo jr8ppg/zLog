@@ -167,7 +167,7 @@ begin
    M := KCJCode(str);
 
    if M = -1 then begin
-      MainForm.WriteStatusLine('Invalid number', False);
+      MainForm.WriteStatusLine(TMainForm_Invalid_number, False);
       Exit;
    end;
 

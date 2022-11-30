@@ -823,7 +823,7 @@ begin
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    SentStr := '$N';
-   FNeedCtyDat := True;
+   FNeedCtyDat := False;
 
    FBandLow := b19;
    FBandHigh := b28;
@@ -985,7 +985,7 @@ begin
    dmZlogGlobal.Settings._sameexchange := SameExchange;
    FNeedCtyDat := True;
 
-   FBandLow := b19;
+   FBandLow := b28;
    FBandHigh := b28;
 end;
 

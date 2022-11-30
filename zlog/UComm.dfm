@@ -16,6 +16,7 @@ object CommForm: TCommForm
   OldCreateOrder = True
   Scaled = False
   OnActivate = FormActivate
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown

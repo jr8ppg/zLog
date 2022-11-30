@@ -77,6 +77,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure menuPasteCommandClick(Sender: TObject);
     procedure timerReConnectTimer(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     FCommBuffer : TStringList;
@@ -411,6 +412,13 @@ begin
    FClusterLogFileName := StringReplace(Application.ExeName, '.exe', '_telnet_log_' + FormatDateTime('yyyymmdd', Now) + '.txt', [rfReplaceAll]);
    FAutoLogined := False;
    FCommProcessThread := nil;
+end;
+
+procedure TCommForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   if Telnet.IsConnected = True then begin
+      Telnet.Close();
+   end;
 end;
 
 procedure TCommForm.RenewListBox;
