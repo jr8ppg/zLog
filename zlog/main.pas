@@ -1523,7 +1523,6 @@ begin
 
    if FBandScope.CurrentBand <> B then begin
       FBandScope.CurrentBand := B;
-      FBandScope.CopyList(FBandScopeEx[B]);
    end;
    FBandScope.Select := True;
 
