@@ -57,7 +57,6 @@ object MainForm: TMainForm
     UseSystemFont = False
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
-    ExplicitTop = 382
   end
   object MainPanel: TPanel
     Left = 0
