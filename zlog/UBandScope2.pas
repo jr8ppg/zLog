@@ -57,6 +57,7 @@ type
     actionIncreaseCwSpeed: TAction;
     N1: TMenuItem;
     menuAddToDenyList: TMenuItem;
+    buttonShowAllBands: TSpeedButton;
     procedure CreateParams(var Params: TCreateParams); override;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
@@ -163,6 +164,7 @@ begin
    FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
    IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
    buttonShowWorked.Down := True;
+   buttonShowAllBands.Down := False;
 end;
 
 procedure TBandScope2.CreateParams(var Params: TCreateParams);
@@ -260,7 +262,7 @@ procedure TBandScope2.AddClusterSpot(Sp: TSpot);
 var
    D: TBSData;
 begin
-   if (FNewMultiOnly = False) and (FCurrBand <> Sp.Band) then begin
+   if (FNewMultiOnly = False) and (FCurrBand <> Sp.Band) and (FCurrentBandOnly = False) then begin
       Exit;
    end;
 
@@ -406,7 +408,7 @@ begin
                Continue;
             end;
 
-            if (FNewMultiOnly = False) and (FCurrBand <> D.Band) then begin
+            if (FNewMultiOnly = False) and (FCurrBand <> D.Band) and (buttonShowAllBands.Down = False) then begin
                Continue;
             end;
 
@@ -523,7 +525,7 @@ begin
       j := 0;
       for i := 0 to FBSList.Count - 1 do begin
          D := FBSList[i];
-         if (FNewMultiOnly = False) and (FCurrBand <> D.Band) then begin
+         if (FNewMultiOnly = False) and (FCurrBand <> D.Band) and (buttonShowAllBands.Down = False) then begin
             Continue;
          end;
 
@@ -1088,13 +1090,6 @@ begin
       Exit;
    end;
 
-   Lock();
-   try
-      FBSList.Clear();
-   finally
-      Unlock();
-   end;
-
    FCurrBand := b;
    SetCaption();
    RewriteBandScope();
@@ -1116,6 +1111,7 @@ begin
       buttonShowWorked.Down := False;
       checkSyncVfo.Visible := False;
       buttonShowWorked.Visible := False;
+      buttonShowAllBands.Down := True;
    end
    else begin
       checkSyncVfo.Visible := True;
@@ -1127,14 +1123,19 @@ procedure TBandScope2.SetCaption();
 begin
    if FCurrentBandOnly = True then begin
       Caption := '[Current] ' + BandString[FCurrBand];
+      buttonShowAllBands.Visible := True;
    end
    else begin
       if FNewMultiOnly = True then begin
          Caption := '[New Multi]';
+         buttonShowAllBands.Visible := True;
+         buttonShowAllBands.Down := True;
       end
       else begin
          if FCurrBand <> bUnknown then begin
             Caption := BandString[FCurrBand];
+            buttonShowAllBands.Visible := False;
+            buttonShowAllBands.Down := False;
          end;
       end;
    end;

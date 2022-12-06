@@ -4,10 +4,10 @@ object BandScope2: TBandScope2
   BorderStyle = bsSizeToolWin
   Caption = 'Band Scope'
   ClientHeight = 416
-  ClientWidth = 194
+  ClientWidth = 234
   Color = clBtnFace
   Constraints.MinHeight = 140
-  Constraints.MinWidth = 210
+  Constraints.MinWidth = 250
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -29,7 +29,7 @@ object BandScope2: TBandScope2
   object Panel1: TPanel
     Left = 0
     Top = 19
-    Width = 194
+    Width = 234
     Height = 397
     Align = alClient
     BevelOuter = bvNone
@@ -38,10 +38,11 @@ object BandScope2: TBandScope2
     Color = clRed
     ParentBackground = False
     TabOrder = 0
+    ExplicitWidth = 194
     object Grid: TStringGrid
       Left = 4
       Top = 4
-      Width = 182
+      Width = 222
       Height = 385
       Align = alClient
       ColCount = 1
@@ -60,21 +61,23 @@ object BandScope2: TBandScope2
       OnDblClick = GridDblClick
       OnDrawCell = GridDrawCell
       OnMouseMove = GridMouseMove
+      ExplicitWidth = 182
     end
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 194
+    Width = 234
     Height = 19
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 194
     DesignSize = (
-      194
+      234
       19)
     object buttonShowWorked: TSpeedButton
-      Left = 116
+      Left = 156
       Top = 0
       Width = 78
       Height = 19
@@ -83,11 +86,23 @@ object BandScope2: TBandScope2
       GroupIndex = 1
       Caption = #20132#20449#28168#12434#34920#31034
       OnClick = buttonShowWorkedClick
+      ExplicitLeft = 116
+    end
+    object buttonShowAllBands: TSpeedButton
+      Left = 78
+      Top = 0
+      Width = 78
+      Height = 19
+      AllowAllUp = True
+      Anchors = [akTop, akRight]
+      GroupIndex = 2
+      Caption = #20840#12496#12531#12489#34920#31034
+      OnClick = buttonShowWorkedClick
     end
     object checkSyncVfo: TCheckBox
       Left = 4
       Top = 3
-      Width = 77
+      Width = 72
       Height = 13
       Caption = 'VFO'#21516#26399
       Checked = True
