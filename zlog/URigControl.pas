@@ -353,6 +353,14 @@ type
     procedure RitClear; override;
   end;
 
+  TFT710 = class(TFT991)
+    procedure RitClear; override;
+    procedure SetRit(flag: Boolean); override;
+    procedure SetXit(flag: Boolean); override;
+    procedure SetRitOffset(offset: Integer); override;
+    procedure AntSelect(no: Integer); override;
+  end;
+
   TJST145 = class(TRig) //  or JST245
     CommOn, CommOff : AnsiString;
     constructor Create(RigNum : integer); override;
@@ -841,6 +849,7 @@ begin
    Inherited;
    FPollingTimer.Enabled := True;
 end;
+
 //
 // OPERATING MODE
 //        0 1  2  3  4  5  6  7  8  9 10 11
@@ -1593,6 +1602,12 @@ begin
             rig:= TFT991.Create(rignum);
             rig._minband := b19;
             rig._maxband := b430;
+         end;
+
+         if rname = 'FT-710' then begin
+            rig:= TFT710.Create(rignum);
+            rig._minband := b19;
+            rig._maxband := b50;
          end;
 
          if rname = 'JST-145' then begin
@@ -3921,6 +3936,82 @@ begin
 
    freq := AnsiStrings.RightStr(AnsiString(DupeString('0', 9)) + AnsiString(IntToStr(Hz)), 9);  // freq 9桁
    WriteData(cmd[_currentvfo] + freq + ';');
+end;
+
+//
+// CLAR
+//        0 1  2  3  4  5  6  7  8  9 10
+// SET    C F P1 P2 P3 P4 P5 P6 P7 P8 ;
+// READ   C F P1 P2 P3;
+// ANSWER C F P1 P2 P3 P4 P5 P6 P7 P8 ;
+// P1: 0:MAIN 1:SUB
+// P2: 0:固定
+// P3: 0:CLAR設定 1:CLAR周波数
+// P3 = 0
+//     P4: 0:RX CLAR OFF 1:RX CLAR ON
+//     P5: 0:TX CLAR OFF 1:TX CLAR ON
+//     P6-P8: 0(固定)
+// P3 = 1
+//     P4: +:プラスシフト
+//         -:マイナスシフト
+//     P5-P8: 0000-9999Hz
+//
+procedure TFT710.RitClear;
+begin
+   Inherited;
+   WriteData('CF001+0000;');
+end;
+
+procedure TFT710.SetRit(flag: Boolean);
+begin
+   Inherited;
+   if flag = True then begin
+      WriteData('CF00010000;');
+   end
+   else begin
+      WriteData('CF00000000;');
+   end;
+end;
+
+procedure TFT710.SetXit(flag: Boolean);
+begin
+   Inherited;
+   if flag = True then begin
+      WriteData('CF00001000;');
+   end
+   else begin
+      WriteData('CF00000000;');
+   end;
+end;
+
+procedure TFT710.SetRitOffset(offset: Integer);
+var
+   CMD: AnsiString;
+begin
+   if FRitOffset = offset then begin
+      Exit;
+   end;
+
+   if offset = 0 then begin
+      WriteData('CF001+0000;');
+   end
+   else if offset < 0 then begin
+      WriteData('CF001+0000;');
+      CMD := AnsiString('CF001-' + RightStr('0000' + IntToStr(Abs(offset)), 4) + ';');
+      WriteData(CMD);
+   end
+   else if offset > 0 then begin
+      WriteData('CF001+0000;');
+      CMD := AnsiString('CF001+' + RightStr('0000' + IntToStr(Abs(offset)), 4) + ';');
+      WriteData(CMD);
+   end;
+
+   Inherited;
+end;
+
+procedure TFT710.AntSelect(no: Integer);
+begin
+//
 end;
 
 procedure TRig.UpdateStatus;
