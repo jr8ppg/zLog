@@ -30,7 +30,7 @@ uses
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
-  UWinKeyerTester, UStatusEdit, UzLogContest, UFreqTest,
+  UWinKeyerTester, UStatusEdit, UzLogContest, UFreqTest, UBandPlan,
   JvExControls, JvLED;
 
 const
@@ -5072,21 +5072,17 @@ procedure TMainForm.menuBandPlanSettingsClick(Sender: TObject);
 var
    f: TBandPlanEditDialog;
    m: TMode;
+   bandplan: TBandPlan;
 begin
    f := TBandPlanEditDialog.Create(Self);
    try
-      for m := mCW to mOther do begin
-         f.Limit[m] := dmZLogGlobal.BandPlan.Limit[m];
-      end;
-
       if f.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      for m := mCW to mOther do begin
-         dmZLogGlobal.BandPlan.Limit[m] := f.Limit[m];
+      for bandplan in dmZLogGlobal.BandPlans.Values do begin
+         bandplan.SaveToFile();
       end;
-      dmZLogGlobal.BandPlan.SaveToFile();
    finally
       f.Release();
    end;

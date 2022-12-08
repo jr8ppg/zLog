@@ -10,7 +10,7 @@ uses
 type
   TBandPlanEditDialog = class(TForm)
     Panel1: TPanel;
-    TabControl1: TTabControl;
+    tabctrlMode: TTabControl;
     buttonOK: TButton;
     buttonCancel: TButton;
     labelBand01: TLabel;
@@ -93,12 +93,14 @@ type
     Label46: TLabel;
     Label47: TLabel;
     Label48: TLabel;
-    buttonLoadDefaults: TButton;
+    buttonLoadJaDefaults: TButton;
+    tabctrlPreset: TTabControl;
+    buttonLoadDxDefaults: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure TabControl1Change(Sender: TObject);
+    procedure tabctrlModeChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
+    procedure tabctrlModeChanging(Sender: TObject; var AllowChange: Boolean);
     procedure buttonOKClick(Sender: TObject);
     procedure buttonLoadDefaultsClick(Sender: TObject);
   private
@@ -108,8 +110,8 @@ type
     FLowerEditArray: array[b19..HiBand] of TEdit;
     FUpperEditArray: array[b19..HiBand] of TEdit;
 
-    procedure ShowBandPlan(m: TMode);
-    procedure SaveBandPlan(m: TMode);
+    procedure ShowBandPlan(preset: string; m: TMode);
+    procedure SaveBandPlan(preset: string; m: TMode);
 
     function GetLimit(m: TMode): TFreqLimitArray;
     procedure SetLimit(m: TMode; v: TFreqLimitArray);
@@ -129,10 +131,6 @@ var
    m: TMode;
    b: TBand;
 begin
-   for m := mCW to mOther do begin
-      FTmpLimit[m] := dmZLogGlobal.BandPlan.Limit[m];
-   end;
-
    FLabelArray[b19]     := labelBand01;
    FLabelArray[b35]     := labelBand02;
    FLabelArray[b7]      := labelBand03;
@@ -195,51 +193,96 @@ begin
 end;
 
 procedure TBandPlanEditDialog.FormShow(Sender: TObject);
+var
+   preset: string;
 begin
-   ShowBandPlan(TMode(TTabControl(Sender).TabIndex));
+   preset := tabctrlPreset.Tabs[tabctrlPreset.TabIndex];
+   ShowBandPlan(preset, TMode(TTabControl(Sender).TabIndex));
 end;
 
 procedure TBandPlanEditDialog.buttonOKClick(Sender: TObject);
+var
+   m: TMode;
+   preset: string;
 begin
-   SaveBandPlan(TMode(TTabControl(Sender).TabIndex));
+   m := TMode(tabctrlMode.TabIndex);
+   preset := tabctrlPreset.Tabs[tabctrlPreset.TabIndex];
+   SaveBandPlan(preset, m);
 end;
 
 procedure TBandPlanEditDialog.buttonLoadDefaultsClick(Sender: TObject);
 var
    m: TMode;
+   preset: string;
+   Index: Integer;
 begin
-   m := TMode(TabControl1.TabIndex);
-   FTmpLimit[m] := dmZLogGlobal.BandPlan.Defaults[m];
-   ShowBandPlan(m);
+   m := TMode(tabctrlMode.TabIndex);
+   preset := tabctrlPreset.Tabs[tabctrlPreset.TabIndex];
+   Index := TButton(Sender).Tag;
+   FTmpLimit[m] := TBandPlan.GetDefaults(Index, m);
+   ShowBandPlan(preset, m);
 end;
 
-procedure TBandPlanEditDialog.TabControl1Change(Sender: TObject);
+procedure TBandPlanEditDialog.tabctrlModeChange(Sender: TObject);
+var
+   m: TMode;
+   preset: string;
 begin
-   ShowBandPlan(TMode(TTabControl(Sender).TabIndex));
+   m := TMode(tabctrlMode.TabIndex);
+   preset := tabctrlPreset.Tabs[tabctrlPreset.TabIndex];
+   ShowBandPlan(preset, m);
 end;
 
-procedure TBandPlanEditDialog.TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
+procedure TBandPlanEditDialog.tabctrlModeChanging(Sender: TObject; var AllowChange: Boolean);
+var
+   m: TMode;
+   preset: string;
 begin
-   SaveBandPlan(TMode(TTabControl(Sender).TabIndex));
+   m := TMode(tabctrlMode.TabIndex);
+   preset := tabctrlPreset.Tabs[tabctrlPreset.TabIndex];
+   SaveBandPlan(preset, m);
 end;
 
-procedure TBandPlanEditDialog.ShowBandPlan(m: TMode);
+procedure TBandPlanEditDialog.ShowBandPlan(preset: string; m: TMode);
 var
    b: TBand;
+   mm: TMode;
+   bandplan: TBandPlan;
 begin
+   if dmZLogGlobal.BandPlans.ContainsKey(preset) = True then begin
+      bandplan := dmZLogGlobal.BandPlans[preset];
+      for mm := mCW to mOther do begin
+         FTmpLimit[mm] := bandplan.Limit[mm];
+      end;
+   end
+   else begin
+      bandplan := TBandPlan.Create(preset);
+      bandplan.LoadFromFile();
+      dmZLogGlobal.BandPlans.Add(bandplan.PresetName, bandplan);
+   end;
+
    for b := b19 to Hiband do begin
       FLowerEditArray[b].Text := IntToStr(FTmpLimit[m][b].Lower div 1000);
       FUpperEditArray[b].Text := IntToStr(FTmpLimit[m][b].Upper div 1000);
    end;
 end;
 
-procedure TBandPlanEditDialog.SaveBandPlan(m: TMode);
+procedure TBandPlanEditDialog.SaveBandPlan(preset: string; m: TMode);
 var
+   mm: TMode;
    b: TBand;
+   bandplan: TBandPlan;
 begin
    for b := b19 to Hiband do begin
       FTmpLimit[m][b].Lower := StrToUInt64Def(FLowerEditArray[b].Text, 0) * 1000;
       FTmpLimit[m][b].Upper := StrToUInt64Def(FUpperEditArray[b].Text, 0) * 1000;
+   end;
+
+   if dmZLogGlobal.BandPlans.ContainsKey(preset) = True then begin
+      bandplan := dmZLogGlobal.BandPlans[preset];
+      for mm := mCW to mOther do begin
+         bandplan.Limit[mm] := FTmpLimit[mm];
+      end;
    end;
 end;
 
