@@ -329,6 +329,7 @@ type
     { Private 宣言 }
     FErrorLogFileName: string;
     FBandPlans: TDictionary<string, TBandPlan>;
+    FCurrentBandPlan: string;
     FOpList: TOperatorInfoList;
 
     FTarget: TContestTarget;
@@ -467,6 +468,8 @@ public
     property PluginPath: string read GetPluginPath write SetPluginPath;
     property SpcPath: string read GetSpcPath write SetSpcPath;
 
+    procedure SelectBandPlan(preset_name: string);
+
     procedure CreateFolders();
     procedure WriteErrorLog(msg: string);
   end;
@@ -595,6 +598,7 @@ begin
       FBandPlans.Add(bandplan.PresetName, bandplan);
    end;
    L.Free();
+   FCurrentBandPlan := 'JA';
 
    FTarget := TContestTarget.Create();
    FTarget.LoadFromFile();
@@ -3711,6 +3715,14 @@ begin
    end;
 end;
 
+procedure TdmZLogGlobal.SelectBandPlan(preset_name: string);
+begin
+   if FBandPlans.ContainsKey(preset_name) = False then begin
+      Exit;
+   end;
+   FCurrentBandPlan := preset_name;
+end;
+
 procedure TdmZLogGlobal.CreateFolders();
 var
    strPath: string;
@@ -3781,7 +3793,7 @@ end;
 
 function TdmZLogGlobal.GetCurrentBandPlan(): TBandPlan;
 begin
-   Result := BandPlans['JA'];
+   Result := BandPlans[FCurrentBandPlan];
 end;
 
 function LoadResourceString(uID: Integer): string;

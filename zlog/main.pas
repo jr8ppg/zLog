@@ -129,7 +129,6 @@ type
     buttonCwKeyboard: TSpeedButton;
     SpeedBar: TTrackBar;
     SpeedLabel: TLabel;
-    Button1: TButton;
     CWPlayButton: TSpeedButton;
     Timer1: TTimer;
     InsertQSO1: TMenuItem;
@@ -506,6 +505,7 @@ type
     menuSortByMemo: TMenuItem;
     N13: TMenuItem;
     menuEditStatus: TMenuItem;
+    comboBandPlan: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -544,7 +544,6 @@ type
     procedure CWFButtonClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure SpeedBarChange(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure CWStopButtonClick(Sender: TObject);
     procedure VoiceStopButtonClick(Sender: TObject);
     procedure SetCQ(CQ : Boolean);
@@ -761,6 +760,7 @@ type
     procedure menuSortByTxNoBandTimeClick(Sender: TObject);
     procedure menuSortByClick(Sender: TObject);
     procedure menuEditStatusClick(Sender: TObject);
+    procedure comboBandPlanChange(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1041,6 +1041,7 @@ type
     procedure BandScopeAddClusterSpot(Sp: TSpot);
     procedure BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
     procedure BandScopeUpdateSpot(aQSO: TQSO);
+    procedure BandScopeApplyBandPlan();
 
     procedure InitBandMenu();
 
@@ -2019,6 +2020,10 @@ begin
    defaultTextColor := CallsignEdit.Font.Color;
    OldCallsign := '';
    OldNumber := '';
+
+   // BandPlan Selector
+   comboBandPlan.Items.CommaText := dmZLogGlobal.Settings.FBandPlanPresetList;
+   comboBandPlan.ItemIndex := 0;
 
    EditScreen := nil;
    clStatusLine := clWindowText;
@@ -4043,11 +4048,6 @@ begin
    end;
 end;
 
-procedure TMainForm.Button1Click(Sender: TObject);
-begin
-   TIOTAMulti(MyContest.MultiForm).Show;
-end;
-
 procedure TMainForm.CWStopButtonClick(Sender: TObject);
 begin
 //   CancelCqRepeat();
@@ -5071,7 +5071,6 @@ end;
 procedure TMainForm.menuBandPlanSettingsClick(Sender: TObject);
 var
    f: TBandPlanEditDialog;
-   m: TMode;
    bandplan: TBandPlan;
 begin
    f := TBandPlanEditDialog.Create(Self);
@@ -5083,6 +5082,8 @@ begin
       for bandplan in dmZLogGlobal.BandPlans.Values do begin
          bandplan.SaveToFile();
       end;
+
+      BandScopeApplyBandPlan();
    finally
       f.Release();
    end;
@@ -6331,6 +6332,14 @@ begin
       if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
          checkUseRig3.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       end;
+
+      // Select BandPlan
+      i := comboBandPlan.Items.IndexOf(MyContest.BandPlan);
+      if i = -1 then begin
+         i := 0;
+      end;
+      comboBandPlan.ItemIndex := i;
+      dmZLogGlobal.SelectBandPlan(MyContest.BandPlan);
 
       // リグコントロール開始
       RigControl.ImplementOptions();
@@ -9251,6 +9260,17 @@ begin
    FBandScopeNewMulti.SetSpotWorked(aQSO);
 end;
 
+procedure TMainForm.BandScopeApplyBandPlan();
+var
+   b: TBand;
+begin
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      FBandScopeEx[b].JudgeEstimatedMode();
+   end;
+   FBandScope.JudgeEstimatedMode();
+   FBandScopeNewMulti.JudgeEstimatedMode();
+end;
+
 procedure TMainForm.InitBandMenu();
 var
    b: TBand;
@@ -9914,6 +9934,13 @@ end;
 procedure TMainForm.checkWithRigClick(Sender: TObject);
 begin
    //
+end;
+
+procedure TMainForm.comboBandPlanChange(Sender: TObject);
+begin
+   dmZLogGlobal.SelectBandPlan(comboBandPlan.Text);
+   SetLastFocus();
+   BandScopeApplyBandPlan();
 end;
 
 function TMainForm.GetNextRigID(curid: Integer): Integer;

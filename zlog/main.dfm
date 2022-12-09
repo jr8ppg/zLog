@@ -66,6 +66,8 @@ object MainForm: TMainForm
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 141
+    ExplicitHeight = 242
     object EditPanel1R: TPanel
       Left = 0
       Top = 207
@@ -79,6 +81,7 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
+      ExplicitTop = 132
       object RcvdRSTEdit1: TEdit
         Left = 117
         Top = 4
@@ -278,6 +281,7 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 1
+      ExplicitTop = 159
       object RigPanelC: TPanel
         Left = 1
         Top = 54
@@ -853,6 +857,7 @@ object MainForm: TMainForm
       OnMouseUp = GridMouseUp
       OnSelectCell = GridSelectCell
       OnTopLeftChanged = GridTopLeftChanged
+      ExplicitHeight = 132
       ColWidths = (
         38
         65
@@ -5215,6 +5220,9 @@ object MainForm: TMainForm
       Height = 33
       Align = alTop
       TabOrder = 2
+      DesignSize = (
+        524
+        33)
       object SpeedButton4: TSpeedButton
         Left = 8
         Top = 4
@@ -5567,7 +5575,7 @@ object MainForm: TMainForm
         OnClick = actionShowQsoRateExecute
       end
       object LogButton: TSpeedButton
-        Left = 280
+        Left = 250
         Top = 4
         Width = 25
         Height = 25
@@ -5589,7 +5597,7 @@ object MainForm: TMainForm
         OnClick = LogButtonClick
       end
       object OptionsButton: TSpeedButton
-        Left = 318
+        Left = 288
         Top = 4
         Width = 25
         Height = 25
@@ -5634,7 +5642,7 @@ object MainForm: TMainForm
         OnClick = actionShowSuperCheckExecute
       end
       object PacketClusterButton: TSpeedButton
-        Left = 352
+        Left = 322
         Top = 4
         Width = 25
         Height = 25
@@ -5658,7 +5666,7 @@ object MainForm: TMainForm
         OnClick = actionShowPacketClusterExecute
       end
       object ZServerIcon: TImage
-        Left = 384
+        Left = 354
         Top = 4
         Width = 30
         Height = 25
@@ -5727,17 +5735,6 @@ object MainForm: TMainForm
         Transparent = True
         Visible = False
       end
-      object Button1: TButton
-        Left = 262
-        Top = 4
-        Width = 25
-        Height = 25
-        Caption = 'Button1'
-        TabOrder = 0
-        TabStop = False
-        Visible = False
-        OnClick = Button1Click
-      end
       object panelCQMode: TPanel
         Left = 490
         Top = 1
@@ -5752,8 +5749,20 @@ object MainForm: TMainForm
         Font.Name = 'Arial'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 1
+        TabOrder = 0
         OnClick = panelCQModeClick
+      end
+      object comboBandPlan: TComboBox
+        Left = 420
+        Top = 6
+        Width = 65
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        ImeMode = imDisable
+        TabOrder = 1
+        TabStop = False
+        OnChange = comboBandPlanChange
       end
     end
   end
