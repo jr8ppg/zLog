@@ -58,6 +58,7 @@ object BandPlanEditDialog: TBandPlanEditDialog
     Width = 544
     Height = 334
     Align = alClient
+    PopupMenu = popupPreset
     TabOrder = 0
     Tabs.Strings = (
       'JA'
@@ -827,6 +828,21 @@ object BandPlanEditDialog: TBandPlanEditDialog
         TabOrder = 33
         OnClick = buttonLoadDefaultsClick
       end
+    end
+  end
+  object popupPreset: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    OnPopup = popupPresetPopup
+    Left = 388
+    Top = 16
+    object menuAddPreset: TMenuItem
+      Caption = #12503#12522#12475#12483#12488#36861#21152
+      OnClick = menuAddPresetClick
+    end
+    object menuDeletePreset: TMenuItem
+      Caption = #12503#12522#12475#12483#12488#21066#38500
+      OnClick = menuDeletePresetClick
     end
   end
 end

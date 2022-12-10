@@ -17,19 +17,19 @@ object IntegerDialog: TIntegerDialog
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 12
+  TextHeight = 13
   object Label1: TLabel
     Left = 32
     Top = 12
-    Width = 27
-    Height = 12
+    Width = 26
+    Height = 13
     Caption = 'Label'
   end
   object Edit: TEdit
     Left = 56
     Top = 32
     Width = 129
-    Height = 20
+    Height = 21
     TabOrder = 0
   end
   object Button1: TButton
@@ -48,7 +48,7 @@ object IntegerDialog: TIntegerDialog
     Width = 75
     Height = 25
     Cancel = True
-    Caption = 'Cancel'
+    Caption = #12461#12515#12531#12475#12523
     ModalResult = 2
     TabOrder = 2
     OnClick = Button2Click

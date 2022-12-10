@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls,
-  UBandPlan, UzLogConst;
+  Vcl.Menus,
+  UBandPlan, UzLogConst, UIntegerDialog;
 
 type
   TBandPlanEditDialog = class(TForm)
@@ -96,6 +97,9 @@ type
     buttonLoadJaDefaults: TButton;
     tabctrlPreset: TTabControl;
     buttonLoadDxDefaults: TButton;
+    popupPreset: TPopupMenu;
+    menuAddPreset: TMenuItem;
+    menuDeletePreset: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure tabctrlModeChange(Sender: TObject);
@@ -103,6 +107,11 @@ type
     procedure tabctrlModeChanging(Sender: TObject; var AllowChange: Boolean);
     procedure buttonOKClick(Sender: TObject);
     procedure buttonLoadDefaultsClick(Sender: TObject);
+    procedure popupPresetPopup(Sender: TObject);
+    procedure menuAddPresetClick(Sender: TObject);
+    procedure menuDeletePresetClick(Sender: TObject);
+    procedure tabctrlPresetContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
     { Private êÈåæ }
     FTmpLimit: array [mCW..mOther] of TFreqLimitArray;
@@ -119,6 +128,11 @@ type
     { Public êÈåæ }
     property Limit[m: TMode]: TFreqLimitArray read GetLimit write SetLimit;
   end;
+
+resourcestring
+  Input_Title = 'Add preset';
+  Input_Text = 'Please enter preset name';
+  Delete_Preset = 'Are you sure to delete the bandplan preset [%s]';
 
 implementation
 
@@ -185,6 +199,8 @@ begin
    FUpperEditArray[b2400]  := editUpper14;
    FUpperEditArray[b5600]  := editUpper15;
    FUpperEditArray[b10g]   := editUpper16;
+
+   tabctrlPreset.Tabs.CommaText := dmZLogGlobal.Settings.FBandPlanPresetList;
 end;
 
 procedure TBandPlanEditDialog.FormDestroy(Sender: TObject);
@@ -204,10 +220,17 @@ procedure TBandPlanEditDialog.buttonOKClick(Sender: TObject);
 var
    m: TMode;
    preset: string;
+   bandplan: TBandPlan;
 begin
    m := TMode(tabctrlMode.TabIndex);
    preset := tabctrlPreset.Tabs[tabctrlPreset.TabIndex];
    SaveBandPlan(preset, m);
+
+   for bandplan in dmZLogGlobal.BandPlans.Values do begin
+      bandplan.SaveToFile();
+   end;
+
+   dmZLogGlobal.Settings.FBandPlanPresetList := tabctrlPreset.Tabs.CommaText;
 end;
 
 procedure TBandPlanEditDialog.buttonLoadDefaultsClick(Sender: TObject);
@@ -219,7 +242,7 @@ begin
    m := TMode(tabctrlMode.TabIndex);
    preset := tabctrlPreset.Tabs[tabctrlPreset.TabIndex];
    Index := TButton(Sender).Tag;
-   FTmpLimit[m] := TBandPlan.GetDefaults(Index, m);
+   dmZLogGlobal.BandPlans[preset].Limit[m] := TBandPlan.GetDefaults(Index, m);
    ShowBandPlan(preset, m);
 end;
 
@@ -228,6 +251,9 @@ var
    m: TMode;
    preset: string;
 begin
+   if tabctrlPreset.TabIndex = -1 then begin
+      Exit;
+   end;
    m := TMode(tabctrlMode.TabIndex);
    preset := tabctrlPreset.Tabs[tabctrlPreset.TabIndex];
    ShowBandPlan(preset, m);
@@ -238,9 +264,22 @@ var
    m: TMode;
    preset: string;
 begin
+   if tabctrlPreset.TabIndex = -1 then begin
+      Exit;
+   end;
    m := TMode(tabctrlMode.TabIndex);
    preset := tabctrlPreset.Tabs[tabctrlPreset.TabIndex];
    SaveBandPlan(preset, m);
+end;
+
+procedure TBandPlanEditDialog.tabctrlPresetContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+var
+   pt: TPoint;
+begin
+   pt := TTabControl(Sender).ClientToScreen(MousePos);
+   popupPreset.Popup(pt.X, pt.Y);
+   Handled := True;
 end;
 
 procedure TBandPlanEditDialog.ShowBandPlan(preset: string; m: TMode);
@@ -294,6 +333,69 @@ end;
 procedure TBandPlanEditDialog.SetLimit(m: TMode; v: TFreqLimitArray);
 begin
    FTmpLimit[m] := v;
+end;
+
+procedure TBandPlanEditDialog.popupPresetPopup(Sender: TObject);
+var
+   S: string;
+begin
+   S := tabctrlPreset.Tabs[tabctrlPreset.TabIndex];
+   if (S = 'JA') or (S = 'DX') then begin
+      menuDeletePreset.Enabled := False;
+   end
+   else begin
+      menuDeletePreset.Enabled := True;
+   end;
+end;
+
+procedure TBandPlanEditDialog.menuAddPresetClick(Sender: TObject);
+var
+   S: string;
+   Index: Integer;
+   F: TIntegerDialog;
+begin
+   F := TIntegerDialog.Create(Self);
+   try
+      F.SetLabel(Input_Text);
+
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      S := F.GetValueString();
+      S := UpperCase(S);
+
+      Index := tabctrlPreset.Tabs.IndexOf(S);
+      if Index = -1 then begin
+         Index := tabctrlPreset.Tabs.Add(S);
+         dmZLogGlobal.BandPlans.Add(S, TBandPlan.Create(S));
+      end;
+      tabctrlPreset.TabIndex := Index;
+   finally
+      F.Release();
+   end;
+end;
+
+procedure TBandPlanEditDialog.menuDeletePresetClick(Sender: TObject);
+var
+   S: string;
+   preset: string;
+   Index: Integer;
+   bandplan: TBandPlan;
+begin
+   Index := tabctrlPreset.TabIndex;
+   preset := tabctrlPreset.Tabs[Index];
+   S := Format(Delete_Preset, [tabctrlPreset.Tabs[Index]]);
+   if MessageBox(Handle, PChar(S), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
+      Exit;
+   end;
+
+   tabctrlPreset.Tabs.Delete(Index);
+   tabctrlPreset.TabIndex := 0;
+
+   bandplan := dmZLogGlobal.BandPlans[preset];
+   dmZLogGlobal.BandPlans.Remove(preset);
+   bandplan.Free();
 end;
 
 end.

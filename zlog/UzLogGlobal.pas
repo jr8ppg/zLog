@@ -612,16 +612,11 @@ end;
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
 var
    bandplan: TBandPlan;
-   L: TStringList;
 begin
-   L := TStringList.Create();
    for bandplan in FBandPlans.Values do begin
-      L.Add(bandplan.PresetName);
       bandplan.Free();
    end;
    FBandPlans.Free();
-   Settings.FBandPlanPresetList := L.CommaText;
-   L.Free();
 
    FTarget.Free();
    FCountryList.Free();

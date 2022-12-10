@@ -5071,16 +5071,23 @@ end;
 procedure TMainForm.menuBandPlanSettingsClick(Sender: TObject);
 var
    f: TBandPlanEditDialog;
-   bandplan: TBandPlan;
+   Index: Integer;
 begin
    f := TBandPlanEditDialog.Create(Self);
    try
+      Index := comboBandPlan.ItemIndex;
+
       if f.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      for bandplan in dmZLogGlobal.BandPlans.Values do begin
-         bandplan.SaveToFile();
+      comboBandPlan.Items.CommaText := dmZLogGlobal.Settings.FBandPlanPresetList;
+
+      if comboBandPlan.Items.Count <= Index then begin
+         comboBandPlan.ItemIndex := 0;
+      end
+      else begin
+         comboBandPlan.ItemIndex := Index;
       end;
 
       BandScopeApplyBandPlan();
