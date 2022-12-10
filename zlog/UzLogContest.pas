@@ -1289,6 +1289,10 @@ begin
 
    FBandLow := FConfig.BandLow;
    FBandHigh := FConfig.BandHigh;
+
+   if FConfig.BandPlan <> '' then begin
+      FBandPlan := FConfig.BandPlan;
+   end;
 end;
 
 destructor TGeneralContest.Destroy();
