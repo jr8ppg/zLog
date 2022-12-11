@@ -20,9 +20,10 @@ type
     //Value : integer;
     Cancelled : boolean;
   public
-    procedure Init(i : integer; S : string);
-    function GetValue : integer;
-    function GetValueExtended : extended;
+    procedure Init(i: integer; S: string);
+    function GetValue(): integer;
+    function GetValueExtended(): Extended;
+    function GetValueString(): string;
     procedure SetLabel(S : string);
     { Public declarations }
   end;
@@ -52,6 +53,11 @@ begin
    Result := StrToFloatDef(Edit.Text, -1);
 end;
 
+function TIntegerDialog.GetValueString(): string;
+begin
+   Result := Edit.Text;
+end;
+
 procedure TIntegerDialog.SetLabel(S: string);
 var
    w: integer;
@@ -64,7 +70,7 @@ end;
 
 procedure TIntegerDialog.FormCreate(Sender: TObject);
 begin
-   Caption := ' ';
+   Caption := Application.Title;
 end;
 
 procedure TIntegerDialog.FormShow(Sender: TObject);

@@ -85,6 +85,8 @@ type
     FUseWarcBand: Boolean;
 
     FUseUTC: Boolean;
+
+    FBandPlan: string;
   private
     procedure SetFullPath(v: string);
     function GetCwMessageA(Index: Integer): string;
@@ -175,6 +177,8 @@ type
 
     property BandLow: TBand read GetBandLow;
     property BandHigh: TBand read GetBandHigh;
+
+    property BandPlan: string read FBandPlan;
   end;
 
   TUserDefinedContestList = class(TObjectList<TUserDefinedContest>)
@@ -258,6 +262,8 @@ begin
    for B := b19 to HiBand do begin
       FSerialArray[B] := 1;
    end;
+
+   FBandPlan := '';
 end;
 
 constructor TUserDefinedContest.Create(strFullPath: string);
@@ -637,6 +643,10 @@ begin
 
          if strCmd = 'EXIT' then begin
             Break;
+         end;
+
+         if strCmd = 'BANDPLAN' then begin
+            D.FBandPlan := UpperCase(strParam);
          end;
       end;
    finally

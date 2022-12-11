@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
-  System.Math, Vcl.Graphics, System.DateUtils,
+  System.Math, Vcl.Graphics, System.DateUtils, Generics.Collections, Generics.Defaults,
   UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
   UQsoTarget;
 
@@ -285,6 +285,9 @@ type
     FELogSeniorJuniorCategory: string;
     FELogNewComerCategory: string;
 
+    // Band Plan
+    FBandPlanPresetList: string;
+
     // Guard Time after RIG Switch
     FRigSwitchGuardTime: Integer;
 
@@ -324,7 +327,8 @@ type
   private
     { Private 宣言 }
     FErrorLogFileName: string;
-    FBandPlan: TBandPlan;
+    FBandPlans: TDictionary<string, TBandPlan>;
+    FCurrentBandPlan: string;
     FOpList: TOperatorInfoList;
 
     FTarget: TContestTarget;
@@ -383,6 +387,7 @@ type
     procedure SetPluginPath(v: string);
     function GetSpcPath(): string;
     procedure SetSpcPath(v: string);
+    function GetCurrentBandPlan(): TBandPlan;
 public
     { Public 宣言 }
     FCurrentFileName : string;
@@ -450,7 +455,8 @@ public
     property MyContinent: string read FMyContinent;
     property MyCQZone: string read FMyCQZone;
     property MyITUZone: string read FMyITUZone;
-    property BandPlan: TBandPlan read FBandPlan;
+    property BandPlans: TDictionary<string, TBandPlan> read FBandPlans;
+    property BandPlan: TBandPlan read GetCurrentBandPlan;
     property Target: TContestTarget read FTarget;
 
     property RootPath: string read GetRootPath write SetRootPath;
@@ -460,6 +466,8 @@ public
     property SoundPath: string read GetSoundPath write SetSoundPath;
     property PluginPath: string read GetPluginPath write SetPluginPath;
     property SpcPath: string read GetSpcPath write SetSpcPath;
+
+    procedure SelectBandPlan(preset_name: string);
 
     procedure CreateFolders();
     procedure WriteErrorLog(msg: string);
@@ -550,6 +558,10 @@ uses
 {$R *.dfm}
 
 procedure TdmZLogGlobal.DataModuleCreate(Sender: TObject);
+var
+   bandplan: TBandPlan;
+   L: TStringList;
+   i: Integer;
 begin
    FCurrentFileName := '';
    FLog := nil;
@@ -576,8 +588,16 @@ begin
    FPrefixList := TPrefixList.Create();
    FCtyDatLoaded := Load_CTYDAT();
 
-   FBandPlan := TBandPlan.Create();
-   FBandPlan.LoadFromFile();
+   L := TStringList.Create();
+   L.CommaText := Settings.FBandPlanPresetList;
+   FBandPlans := TDictionary<string, TBandPlan>.Create();
+   for i := 0 to L.Count - 1 do begin
+      bandplan := TBandPlan.Create(L.Strings[i]);
+      bandplan.LoadFromFile();
+      FBandPlans.Add(bandplan.PresetName, bandplan);
+   end;
+   L.Free();
+   FCurrentBandPlan := 'JA';
 
    FTarget := TContestTarget.Create();
    FTarget.LoadFromFile();
@@ -589,9 +609,15 @@ begin
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
+var
+   bandplan: TBandPlan;
 begin
+   for bandplan in FBandPlans.Values do begin
+      bandplan.Free();
+   end;
+   FBandPlans.Free();
+
    FTarget.Free();
-   FBandPlan.Free();
    FCountryList.Free();
    FPrefixList.Free();
    SaveCurrentSettings();
@@ -1249,6 +1275,9 @@ begin
       // JARL E-LOG
       Settings.FELogSeniorJuniorCategory  := ini.ReadString('ELOG', 'SeniorJunior', 'XS,CS,SOSV,SOJR');
       Settings.FELogNewComerCategory      := ini.ReadString('ELOG', 'NewComer', 'PN');
+
+      // Band Plan
+      Settings.FBandPlanPresetList := ini.ReadString('BandPlan', 'PresetNameList', 'JA,DX');
    finally
       ini.Free();
       slParam.Free();
@@ -1784,6 +1813,9 @@ begin
       // Quick Reference
       ini.WriteInteger('QuickReference', 'FontSize', Settings.FQuickRefFontSize);
       ini.WriteString('QuickReference', 'FontFace', Settings.FQuickRefFontFace);
+
+      // Band Plan
+      ini.WriteString('BandPlan', 'PresetNameList', Settings.FBandPlanPresetList);
    finally
       ini.Free();
       slParam.Free();
@@ -3647,6 +3679,14 @@ begin
    end;
 end;
 
+procedure TdmZLogGlobal.SelectBandPlan(preset_name: string);
+begin
+   if FBandPlans.ContainsKey(preset_name) = False then begin
+      Exit;
+   end;
+   FCurrentBandPlan := preset_name;
+end;
+
 procedure TdmZLogGlobal.CreateFolders();
 var
    strPath: string;
@@ -3713,6 +3753,11 @@ begin
    WriteLn( txt, str );
    Flush( txt );
    CloseFile( txt );
+end;
+
+function TdmZLogGlobal.GetCurrentBandPlan(): TBandPlan;
+begin
+   Result := BandPlans[FCurrentBandPlan];
 end;
 
 function LoadResourceString(uID: Integer): string;

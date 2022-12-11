@@ -139,7 +139,6 @@ type
     buttonCwKeyboard: TSpeedButton;
     SpeedBar: TTrackBar;
     SpeedLabel: TLabel;
-    Button1: TButton;
     CWPlayButton: TSpeedButton;
     Timer1: TTimer;
     InsertQSO1: TMenuItem;
@@ -516,6 +515,7 @@ type
     menuSortByMemo: TMenuItem;
     N13: TMenuItem;
     menuEditStatus: TMenuItem;
+    comboBandPlan: TComboBox;
     actionShowMsgMgr: TAction;
     ShowMessageManagerSO2R1: TMenuItem;
     procedure FormCreate(Sender: TObject);
@@ -556,7 +556,6 @@ type
     procedure CWFButtonClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure SpeedBarChange(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure CWStopButtonClick(Sender: TObject);
     procedure VoiceStopButtonClick(Sender: TObject);
     procedure SetCQ(CQ : Boolean);
@@ -783,6 +782,7 @@ type
     procedure menuSortByTxNoBandTimeClick(Sender: TObject);
     procedure menuSortByClick(Sender: TObject);
     procedure menuEditStatusClick(Sender: TObject);
+    procedure comboBandPlanChange(Sender: TObject);
     procedure actionShowMsgMgrExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
@@ -1070,6 +1070,7 @@ type
     procedure BandScopeAddClusterSpot(Sp: TSpot);
     procedure BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
     procedure BandScopeUpdateSpot(aQSO: TQSO);
+    procedure BandScopeApplyBandPlan();
 
     procedure InitBandMenu();
 
@@ -2059,6 +2060,10 @@ begin
    defaultTextColor := CallsignEdit.Font.Color;
    OldCallsign := '';
    OldNumber := '';
+
+   // BandPlan Selector
+   comboBandPlan.Items.CommaText := dmZLogGlobal.Settings.FBandPlanPresetList;
+   comboBandPlan.ItemIndex := 0;
 
    FCurrentRigSet := 1;
    EditScreen := nil;
@@ -4206,11 +4211,6 @@ begin
    end;
 end;
 
-procedure TMainForm.Button1Click(Sender: TObject);
-begin
-   TIOTAMulti(MyContest.MultiForm).Show;
-end;
-
 procedure TMainForm.CWStopButtonClick(Sender: TObject);
 begin
 //   CancelCqRepeat();
@@ -5292,22 +5292,26 @@ end;
 procedure TMainForm.menuBandPlanSettingsClick(Sender: TObject);
 var
    f: TBandPlanEditDialog;
-   m: TMode;
+   Index: Integer;
 begin
    f := TBandPlanEditDialog.Create(Self);
    try
-      for m := mCW to mOther do begin
-         f.Limit[m] := dmZLogGlobal.BandPlan.Limit[m];
-      end;
+      Index := comboBandPlan.ItemIndex;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      for m := mCW to mOther do begin
-         dmZLogGlobal.BandPlan.Limit[m] := f.Limit[m];
+      comboBandPlan.Items.CommaText := dmZLogGlobal.Settings.FBandPlanPresetList;
+
+      if comboBandPlan.Items.Count <= Index then begin
+         comboBandPlan.ItemIndex := 0;
+      end
+      else begin
+         comboBandPlan.ItemIndex := Index;
       end;
-      dmZLogGlobal.BandPlan.SaveToFile();
+
+      BandScopeApplyBandPlan();
    finally
       f.Release();
    end;
@@ -6572,6 +6576,14 @@ begin
       if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
          checkUseRig3.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       end;
+
+      // Select BandPlan
+      i := comboBandPlan.Items.IndexOf(MyContest.BandPlan);
+      if i = -1 then begin
+         i := 0;
+      end;
+      comboBandPlan.ItemIndex := i;
+      dmZLogGlobal.SelectBandPlan(MyContest.BandPlan);
 
       // リグコントロール開始
       RigControl.ImplementOptions();
@@ -9734,6 +9746,17 @@ begin
    FBandScopeNewMulti.SetSpotWorked(aQSO);
 end;
 
+procedure TMainForm.BandScopeApplyBandPlan();
+var
+   b: TBand;
+begin
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      FBandScopeEx[b].JudgeEstimatedMode();
+   end;
+   FBandScope.JudgeEstimatedMode();
+   FBandScopeNewMulti.JudgeEstimatedMode();
+end;
+
 procedure TMainForm.InitBandMenu();
 var
    b: TBand;
@@ -10393,6 +10416,13 @@ end;
 procedure TMainForm.checkWithRigClick(Sender: TObject);
 begin
    //
+end;
+
+procedure TMainForm.comboBandPlanChange(Sender: TObject);
+begin
+   dmZLogGlobal.SelectBandPlan(comboBandPlan.Text);
+   SetLastFocus();
+   BandScopeApplyBandPlan();
 end;
 
 function TMainForm.GetNextRigID(curid: Integer): Integer;

@@ -5,8 +5,8 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.5681712963</prop>
-        <prop prop-type="OrigDateTime">44800.8836574074</prop>
+        <prop prop-type="SelfDateTime">44906.6000231481</prop>
+        <prop prop-type="OrigDateTime">44906.5894444444</prop>
         <prop prop-type="XlatDateTime">44800.8836574074</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">46</prop>
@@ -64,7 +64,7 @@
         <prop prop-type="Created">44796.8925769097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TIntegerDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:IntegerDialog.Font.Name" resname="O:IntegerDialog.Font.Name">
-        <source>'ＭＳ Ｐゴシック'</source>
+        <source>'MS Sans Serif'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925769097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TIntegerDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -104,7 +104,7 @@
         <prop prop-type="Created">44796.8925769097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TIntegerDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:IntegerDialog.TextHeight" resname="O:IntegerDialog.TextHeight">
-        <source>12</source>
+        <source>13</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925769097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TIntegerDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -119,12 +119,12 @@
         <prop prop-type="Created">44796.8925769097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:IntegerDialog.O:Label1.Width" resname="O:IntegerDialog.O:Label1.Width">
-        <source>27</source>
+        <source>26</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925769097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:IntegerDialog.O:Label1.Height" resname="O:IntegerDialog.O:Label1.Height">
-        <source>12</source>
+        <source>13</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925769097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -149,7 +149,7 @@
         <prop prop-type="Created">44796.8925769097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:IntegerDialog.O:Edit.Height" resname="O:IntegerDialog.O:Edit.Height">
-        <source>20</source>
+        <source>21</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925769097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>

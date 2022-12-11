@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, Grids, Menus, DateUtils,
-  USpotClass, UzLogConst, UzLogGlobal, UzLogQSO, System.ImageList, Vcl.ImgList,
+  USpotClass, UzLogConst, UzLogGlobal, UzLogQSO, UBandPlan,
+  System.ImageList, Vcl.ImgList,
   System.UITypes, Vcl.Buttons, System.Actions, Vcl.ActnList;
 
 type
@@ -130,6 +131,7 @@ type
     procedure NotifyWorked(aQSO: TQSO);
     procedure CopyList(F: TBandScope2);
     procedure SetSpotWorked(aQSO: TQSO);
+    procedure JudgeEstimatedMode();
 
     property FontSize: Integer read GetFontSize write SetFontSize;
     property Select: Boolean write SetSelect;
@@ -1196,6 +1198,26 @@ begin
          end;
       end;
       FBSList.Pack;
+   finally
+      Unlock();
+   end;
+
+   RewriteBandScope();
+end;
+
+procedure TBandScope2.JudgeEstimatedMode();
+var
+   i: Integer;
+   S: TBaseSpot;
+   bandplan: TBandPlan;
+begin
+   Lock();
+   try
+      bandplan := dmZLogGlobal.BandPlan;
+      for i := 0 to FBSList.Count - 1 do begin
+         S := TBaseSpot(FBSList[i]);
+         S.Mode := bandplan.GetEstimatedMode(S.Band, S.FreqHz);
+      end;
    finally
       Unlock();
    end;
