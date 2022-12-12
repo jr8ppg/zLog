@@ -3676,6 +3676,7 @@ begin
    CurrentQSO.TX := dmZlogGlobal.TXNr;
    CurrentQSO.Forced := False;
    CurrentQSO.Dupe := False;
+   CurrentQSO.Freq := '';
 
    // DUPEチェック
    _dupe := Log.IsDupe(CurrentQSO);
@@ -3743,9 +3744,6 @@ begin
             BandScopeAddSelfSpot(CurrentQSO, j);
          end;
       end;
-   end
-   else begin
-      CurrentQSO.Freq := '';
    end;
 
    // QSY Violation
