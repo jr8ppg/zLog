@@ -107,7 +107,9 @@ type
     FComm : TCommPortDriver; // points to the right CommPortDriver
     FPollingTimer: TTimer;
     FPollingInterval: Integer;
-    LastFreq : Int64;
+
+    FLastFreq: Int64;
+    FLastMode: TMode;
 
     FRitCtrlSupported: Boolean;
     FXitCtrlSupported: Boolean;
@@ -134,13 +136,14 @@ type
     function CurrentFreqKHz : LongInt;
     function CurrentFreqkHzStr : string;
     procedure PollingProcess; virtual;
-    procedure SetMode(Q : TQSO); virtual; abstract;
-    procedure SetBand(Q : TQSO); virtual; // abstract;
+    procedure SetMode(Q: TQSO); overload; virtual;
+    procedure SetMode(M: TMode); overload; virtual;
+    procedure SetBand(Q: TQSO); virtual; // abstract;
     procedure ExecuteCommand(S : AnsiString); virtual; abstract;
     procedure PassOnRxData(S : AnsiString); virtual;
     procedure ParseBufferString; virtual; abstract;
     procedure RitClear(); virtual;
-    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); virtual; abstract;
+    procedure SetFreq(Hz: Int64; fSetLastFreq: Boolean); virtual;
     procedure Reset; virtual; abstract; // called when user wants to reset the rig
                                         // after power outage etc
     procedure SetVFO(i : integer); virtual; abstract; // A:0, B:1
@@ -854,6 +857,8 @@ procedure TFT2000.SetMode(Q: TQSO);
 var
    m: Integer;
 begin
+   Inherited SetMode(Q);
+
    case Q.Mode of
       mCW: m := 3;
 
@@ -977,9 +982,7 @@ const
 var
    freq: AnsiString;
 begin
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    freq := AnsiStrings.RightStr(AnsiString(DupeString('0', 8)) + AnsiString(IntToStr(Hz)), 8);
    WriteData(cmd[_currentvfo] + freq + ';');
@@ -1191,6 +1194,8 @@ var
    Command: AnsiString;
    para: byte;
 begin
+   Inherited SetMode(Q);
+
    para := 0;
 
    case Q.Mode of
@@ -1276,9 +1281,7 @@ begin
       UpdateStatus;
    end;
 
-   if fSetLastFreq = True then begin
-      LastFreq := Hz;
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    FPollingTimer.Enabled := True;
 end;
@@ -1781,7 +1784,8 @@ begin
    _currentvfo := 0; // VFO A
    FLastCall := '';
    FLastRcvd := '';
-   LastFreq := 0;
+   FLastFreq := 0;
+   FLastMode := _currentmode;
 
    // LastMode := mCW;
    for B := b19 to b10g do begin
@@ -1862,7 +1866,16 @@ end;
 
 procedure TRig.MoveToLastFreq;
 begin
-   SetFreq(LastFreq, False);
+   SetFreq(FLastFreq, False);
+
+   if FLastMode <> _currentmode then begin
+      SetMode(FLastMode);
+
+      // もう一度周波数を設定(side bandずれ対策)
+      if dmZLogGlobal.Settings._bandscope_setfreq_after_mode_change = True then begin
+         SetFreq(FLastFreq, False);
+      end;
+   end;
 end;
 
 procedure TRig.AntSelect(no: Integer);
@@ -2324,6 +2337,8 @@ var
    Command: AnsiString;
    para: AnsiChar;
 begin
+   Inherited SetMode(Q);
+
    { 1=LSB, 2=USB, 3=CW, 4=FM, 5=AM, 6=FSK, 7=CW-R, 8=FSK=R }
    para := '3';
    case Q.Mode of
@@ -2353,6 +2368,8 @@ procedure TJST145.SetMode(Q: TQSO);
 var
    para: AnsiString;
 begin
+   Inherited SetMode(Q);
+
    para := '';
    case Q.Mode of
       mSSB:
@@ -2382,6 +2399,8 @@ var
    Command: AnsiString;
    para: byte;
 begin
+   Inherited SetMode(Q);
+
    FPollingTimer.Enabled := False;
    try
       para := 3;
@@ -2419,6 +2438,8 @@ var
    Command: AnsiString;
    para: byte;
 begin
+   Inherited SetMode(Q);
+
    para := 0;
 
    case Q.Mode of
@@ -2441,6 +2462,25 @@ begin
 
    Command := _nil3 + AnsiChar(para) + AnsiChar($0C);
    WriteData(Command);
+end;
+
+procedure TRig.SetMode(Q: TQSO);
+begin
+   FLastMode := _currentmode;
+end;
+
+procedure TRig.SetMode(M: TMode);
+var
+   Q: TQSO;
+begin
+   Q := TQSO.Create();
+   try
+      Q.Mode := M;
+      Q.Band := dmZLogGlobal.BandPlan.FreqToBand(FLastFreq);
+      SetMode(Q);
+   finally
+      Q.Free();
+   end;
 end;
 
 procedure TRig.SetBand(Q: TQSO);
@@ -2478,6 +2518,14 @@ end;
 procedure TRig.RitClear();
 begin
    FRitOffset := 0;
+end;
+
+procedure TRig.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
+begin
+   if fSetLastFreq = True then begin
+      FLastFreq := _currentfreq[_currentvfo];
+      FLastMode := _currentmode;
+   end;
 end;
 
 procedure TTS690.RitClear;
@@ -2644,9 +2692,7 @@ procedure TTS690.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
 begin
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    fstr := AnsiString(IntToStr(Hz));
    while length(fstr) < 11 do begin
@@ -2663,9 +2709,7 @@ procedure TJST145.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
 begin
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    fstr := AnsiString(IntToStr(Hz));
    while length(fstr) < 8 do begin
@@ -2684,12 +2728,10 @@ var
    fstr: AnsiString;
    freq, i: Int64;
 begin
+   Inherited SetFreq(Hz, fSetLastFreq);
+
    FPollingTimer.Enabled := False;
    try
-      if fSetLastFreq = True then begin
-         LastFreq := _currentfreq[_currentvfo];
-      end;
-
       freq := Hz;
       if freq < 0 then // > 2.1GHz is divided by 100 and given a negative value. Not implemented yet
       begin
@@ -2838,7 +2880,8 @@ begin
    _currentfreq[0] := 0;
    _currentfreq[1] := 0;
    _currentvfo := 0; // VFO A
-   LastFreq := 0;
+   FLastFreq := 0;
+   FLastMode := _currentmode;
 
    for B := b19 to b10g do begin
       for M := mCW to mOther do begin
@@ -2900,9 +2943,7 @@ begin
       o_RIG := MainForm.RigControl.FOmniRig.Rig2;
    end;
 
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    if _currentvfo = 0 then
       o_RIG.FreqA := Hz
@@ -2914,6 +2955,8 @@ procedure TOmni.SetMode(Q: TQSO);
 var
    o_RIG: IRigX;
 begin
+   Inherited SetMode(Q);
+
    if _rignumber = 1 then begin
       o_RIG := MainForm.RigControl.FOmniRig.Rig1;
    end
@@ -3035,7 +3078,8 @@ begin
    _currentfreq[0] := 0;
    _currentfreq[1] := 0;
    _currentvfo := 0; // VFO A
-   LastFreq := 0;
+   FLastFreq := 0;
+   FLastMode := _currentmode;
 
    for B := b19 to b10g do begin
       for M := mCW to mOther do begin
@@ -3071,6 +3115,8 @@ end;
 
 procedure TVirtualRig.SetMode(Q: TQSO);
 begin
+   Inherited SetMode(Q);
+
    _currentmode := Q.Mode;
 end;
 
@@ -3113,9 +3159,7 @@ var
    fstr: AnsiString;
    i, j: Int64;
 begin
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    i := Hz;
    i := i div 10;
@@ -3741,9 +3785,7 @@ var
    fstr: AnsiString;
    i, j: Int64;
 begin
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    i := Hz;
    i := i div 10;
@@ -3774,6 +3816,8 @@ var
    Command: AnsiString;
    para: byte;
 begin
+   Inherited SetMode(Q);
+
    case Q.Mode of
       mSSB:
          if Q.Band <= b7 then
@@ -3803,38 +3847,20 @@ end;
 
 
 procedure TFT817.SetFreq(Hz: Int64; fSetLastFreq: Boolean);
-//var
-//   StartTime: TDateTime;
 begin
-   FPollingTimer.Enabled := False;
-//   BufferString := '';
-   inherited;
-{   StartTime := Now;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
-   repeat
-      SleepEx(10, False)
-   until (BufferString <> '') or ((Now - StartTime) > (250 / (24 * 60 * 60 * 1000)));
- }
- //  BufferString := '';
+   FPollingTimer.Enabled := False;
    Fchange := True;
    sleep(130);    //waitがないとコマンド連投時に後のコマンドが欠落する
    FPollingTimer.Enabled := True;
 end;
 
 procedure TFT817.SetMode(Q: TQSO);
-//var
-//   StartTime: TDateTime;
 begin
-   FPollingTimer.Enabled := False;
-//   BufferString := '';
-   inherited;
-{   StartTime := Now;
+   Inherited SetMode(Q);
 
-   repeat
-      SleepEx(10, False)
-   until (BufferString <> '') or ((Now - StartTime) > (250 / (24 * 60 * 60 * 1000)));
- }
- //  BufferString := '';
+   FPollingTimer.Enabled := False;
    Fchange := True;
    sleep(130);  //waitがないとコマンド連投時に後のコマンドが欠落する
    FPollingTimer.Enabled := True;
@@ -3892,9 +3918,7 @@ const
 var
    freq: AnsiString;
 begin
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    freq := AnsiStrings.RightStr(AnsiString(DupeString('0', 9)) + AnsiString(IntToStr(Hz)), 9);  // freq 9桁
    WriteData(cmd[_currentvfo] + freq + ';');
@@ -3993,7 +4017,7 @@ begin
    MainForm.RigControl.UpdateFreq(_currentvfo,
                                   _freqoffset + _currentfreq[0],
                                   _freqoffset + _currentfreq[1],
-                                  _freqoffset + LastFreq,
+                                  _freqoffset + FLastFreq,
                                   CurrentQSO.Band,
                                   CurrentQSO.Mode);
 
