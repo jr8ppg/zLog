@@ -274,7 +274,7 @@ end;
 function TMarketItem.CheckSum: string;
 begin
 	try
-		MarketForm.LoadText(Self.sum, Result);
+		MarketForm.LoadText(Self.url + '.md5', Result);
 	except
 		Result := Self.sum;
 	end;
@@ -359,7 +359,12 @@ begin
 	try
 		buf := TMemoryStream.Create;
 		res := NetHttpRequest.Get(url, buf);
-		txt := res.ContentAsString(TEncoding.UTF8);
+      if res.StatusCode = 200 then begin
+   		txt := res.ContentAsString(TEncoding.UTF8);
+      end
+      else begin
+         raise EXception.Create(res.StatusText);
+      end;
 	finally
 		FreeAndNil(buf);
 	end;
