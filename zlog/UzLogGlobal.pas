@@ -1015,7 +1015,7 @@ begin
       //
 
       // Root
-      Settings._rootpath := ini.ReadString('Preferences', 'RootPath', '');
+      Settings._rootpath := ini.ReadString('Preferences', 'RootPath', '%ZLOG_ROOT%');
 
       // CFG/DAT
       Settings._cfgdatpath := ini.ReadString('Preferences', 'CFGDATPath', '');
