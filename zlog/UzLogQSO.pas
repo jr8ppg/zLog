@@ -3391,7 +3391,6 @@ begin
    N := Trunc(E * 100);
    if FQsoList[0].RSTRcvd <> N then begin
       FQsoList[0].RSTRcvd := N;
-      Saved := False;
    end;
 end;
 
