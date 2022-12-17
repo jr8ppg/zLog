@@ -3890,7 +3890,14 @@ begin
          envstr2 := StringReplace(envstr, '%', '', [rfReplaceAll]);
 
          // 環境変数の値で置き換え
-         envvar_value := GetEnvironmentVariable(envstr2);
+         if envstr2 = 'ZLOG_ROOT' then begin
+            envvar_value := ExtractFilePath(Application.ExeName);
+         end
+         else begin
+            envvar_value := GetEnvironmentVariable(envstr2);
+         end;
+
+         // 展開
          strExpanded := StringReplace(strExpanded, envstr, envvar_value, [rfReplaceAll]);
       end;
    until I = -1;
