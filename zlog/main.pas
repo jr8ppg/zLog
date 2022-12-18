@@ -3187,18 +3187,22 @@ end;
 procedure TMainForm.LoadNewContestFromFile(filename: string);
 var
    Q: TQSO;
-   boo, Boo2: Boolean;
+   bak_acceptdiff: Boolean;
+   bak_counthigher: Boolean;
+   bak_coeff: Extended;
 begin
    // 一度はCreateLogされてる前提
    Q := TQSO.Create();
    Q.Assign(Log.QsoList[0]);
-   boo := Log.AcceptDifferentMode;
-   Boo2 := Log.CountHigherPoints;
+   bak_acceptdiff := Log.AcceptDifferentMode;
+   bak_counthigher := Log.CountHigherPoints;
+   bak_coeff := Log.ScoreCoeff;
 
    dmZLogGlobal.CreateLog();
 
-   Log.AcceptDifferentMode := boo;
-   Log.CountHigherPoints := Boo2;
+   Log.ScoreCoeff := bak_coeff;
+   Log.AcceptDifferentMode := bak_acceptdiff;
+   Log.CountHigherPoints := bak_counthigher;
    Log.QsoList[0].Assign(Q); // contest info is set to current contest.
    Q.Free();
 
@@ -6194,6 +6198,11 @@ begin
          CurrentQSO.RSTSent := 59;
       end;
 
+      // 局種係数
+      if MyContest.UseCoeff = True then begin
+         Log.ScoreCoeff := menu.ScoreCoeff;
+      end;
+
       // ファイル名の指定が無い場合は選択ダイアログを出す
       if CurrentFileName = '' then begin
          OpenDialog.InitialDir := dmZlogGlobal.LogPath;
@@ -6218,9 +6227,6 @@ begin
       end;
 
       SetWindowCaption();
-
-      // 局種係数
-      Log.ScoreCoeff := menu.ScoreCoeff;
 
       // Sentは各コンテストで設定された値
       dmZlogGlobal.Settings._sentstr := MyContest.SentStr;
