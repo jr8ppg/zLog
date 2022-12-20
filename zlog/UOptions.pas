@@ -656,6 +656,12 @@ resourcestring
   // 以降のバンドも同じ設定に変更しますか？
   DoYouWantTheFollowingBandsToHaveTheSameSettins = 'Do you want the following bands to have the same settings?';
 
+  // zLogルートフォルダはフルパスで入力して下さい。
+  EnterTheFullPathOfRootFolder = 'Enter the full path of the zLog root folder';
+
+  // zLogルートフォルダが存在しません
+  zLogRootFolderNotExist = 'zLog root folder does not exist';
+
 implementation
 
 uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet,
@@ -1144,10 +1150,29 @@ begin
 end;
 
 procedure TformOptions.buttonOKClick(Sender: TObject);
+var
+   S: string;
 begin
+   // zLogルートフォルダのチェック
+   S := editRootFolder.Text;
+   if (S <> '') and (S <> '%ZLOG_ROOT%') then begin
+      if IsFullPath(S) = False then begin
+         Application.MessageBox(PChar(EnterTheFullPathOfRootFolder), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         Exit;
+      end;
+      if SysUtils.DirectoryExists(S) = False then begin
+         Application.MessageBox(PChar(zLogRootFolderNotExist), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         Exit;
+      end;
+   end;
+
+   // 入力された設定を保存
    RenewSettings;
 
+   // 各種フォルダ作成
    dmZLogGlobal.CreateFolders();
+
+   ModalResult := mrOK;
 end;
 
 procedure TformOptions.RenewCWStrBankDisp;
