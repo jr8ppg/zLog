@@ -141,6 +141,8 @@ type
     procedure Lock();
     procedure Unlock();
 
+    procedure Disconnect();
+
     property FontSize: Integer read GetFontSize write SetFontSize;
     property SpotList: TSpotList read FSpotList;
 
@@ -416,9 +418,7 @@ end;
 
 procedure TCommForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   if Telnet.IsConnected = True then begin
-      Telnet.Close();
-   end;
+   Disconnect();
 end;
 
 procedure TCommForm.RenewListBox;
@@ -1112,6 +1112,13 @@ end;
 procedure TCommForm.Unlock();
 begin
    LeaveCriticalSection(FSpotListLock);
+end;
+
+procedure TCommForm.Disconnect();
+begin
+   if Telnet.IsConnected = True then begin
+      Telnet.Close();
+   end;
 end;
 
 function TCommForm.GetLocalEcho(): Boolean;

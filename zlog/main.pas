@@ -4386,7 +4386,7 @@ procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    FChatForm.RenewOptions();
    FCommForm.RenewOptions();
-   FCommForm.Close();
+   FCommForm.Disconnect();
    FRateDialogEx.SaveSettings();
 
    Timer1.Enabled := False;
