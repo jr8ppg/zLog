@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44906.6000231481</prop>
+        <prop prop-type="SelfDateTime">44917.8997453704</prop>
         <prop prop-type="OrigDateTime">44906.5894444444</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">46</prop>
+        <prop prop-type="XlatDateTime">44906.606412037</prop>
+        <prop prop-type="Translated">2</prop>
+        <prop prop-type="UnTranslated">44</prop>
       </prop-group>
     </header>
     <body>
@@ -65,8 +65,9 @@
       </trans-unit>
       <trans-unit id="O:IntegerDialog.Font.Name" resname="O:IntegerDialog.Font.Name">
         <source>'MS Sans Serif'</source>
+        <target>'ＭＳ Ｐゴシック'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925769097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TIntegerDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925769097</prop><prop prop-type="Status">1</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TIntegerDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:IntegerDialog.Font.Style" resname="O:IntegerDialog.Font.Style">
         <source>[]</source>
@@ -225,8 +226,9 @@
       </trans-unit>
       <trans-unit id="O:IntegerDialog.O:Button2.Caption" resname="O:IntegerDialog.O:Button2.Caption">
         <source>'Cancel'</source>
+        <target>'キャンセル'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925769097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925769097</prop><prop prop-type="Status">1</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:IntegerDialog.O:Button2.ModalResult" resname="O:IntegerDialog.O:Button2.ModalResult">
         <source>2</source>

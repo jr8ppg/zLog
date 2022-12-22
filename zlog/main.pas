@@ -6431,6 +6431,11 @@ begin
          CurrentQSO.RSTSent := 59;
       end;
 
+      // 局種係数
+      if MyContest.UseCoeff = True then begin
+         Log.ScoreCoeff := menu.ScoreCoeff;
+      end;
+
       // ファイル名の指定が無い場合は選択ダイアログを出す
       if CurrentFileName = '' then begin
          OpenDialog.InitialDir := dmZlogGlobal.LogPath;
@@ -6455,9 +6460,6 @@ begin
       end;
 
       SetWindowCaption();
-
-      // 局種係数
-      Log.ScoreCoeff := menu.ScoreCoeff;
 
       // Sentは各コンテストで設定された値
       dmZlogGlobal.Settings._sentstr := MyContest.SentStr;

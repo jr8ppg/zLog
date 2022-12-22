@@ -216,7 +216,10 @@ begin
       Exit;
    end;
 
-   dmZlogGlobal.CfgDatPath := FSelectDlg.CfgFolder;
+   // フォルダ未設定時は記録する
+   if dmZlogGlobal.CfgDatPath = '' then begin
+      dmZlogGlobal.CfgDatPath := FSelectDlg.CfgFolder;
+   end;
 
    FCFGFileName := FSelectDlg.SelectedContest.Fullpath;
    rbGeneral.Caption := FSelectDlg.SelectedContest.ContestName;

@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44906.6002777778</prop>
-        <prop prop-type="OrigDateTime">44906.5997916667</prop>
+        <prop prop-type="SelfDateTime">44917.9010416667</prop>
+        <prop prop-type="OrigDateTime">44917.8996990741</prop>
         <prop prop-type="XlatDateTime">44890.96875</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">1234</prop>
+        <prop prop-type="UnTranslated">1236</prop>
       </prop-group>
     </header>
     <body>
@@ -8704,6 +8704,20 @@
         <source>"Are you sure to delete the bandplan preset [%s]"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44906.6002894097</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_EnterTheFullPathOfRootFolder" resname="UOptions_EnterTheFullPathOfRootFolder">
+        <source>"Enter the full path of the zLog root folder"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44917.9010490162</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_zLogRootFolderNotExist" resname="UOptions_zLogRootFolderNotExist">
+        <source>"zLog root folder does not exist"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44917.9010490162</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
       </trans-unit>

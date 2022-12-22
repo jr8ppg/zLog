@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44891.9745138889</prop>
-        <prop prop-type="OrigDateTime">44891.9730555556</prop>
+        <prop prop-type="SelfDateTime">44917.9004398148</prop>
+        <prop prop-type="OrigDateTime">44917.8956018519</prop>
         <prop prop-type="XlatDateTime">44800.8836574074</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">4867</prop>
+        <prop prop-type="UnTranslated">4866</prop>
       </prop-group>
     </header>
     <body>
@@ -134,7 +134,7 @@
         <prop prop-type="Created">44796.8932046181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TPageControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.ActivePage" resname="O:formOptions.O:PageControl.ActivePage">
-        <source>tabsheetHardware</source>
+        <source>tabsheetPreferences</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932046181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TPageControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -17464,7 +17464,7 @@
         <prop prop-type="Created">44883.9723490394</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3489</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.O:tabsheetPath.O:Label108.Width" resname="O:formOptions.O:PageControl.O:tabsheetPath.O:Label108.Width">
-        <source>55</source>
+        <source>44</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44883.9723490394</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3490</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -17474,7 +17474,7 @@
         <prop prop-type="Created">44883.9723490394</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3491</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.O:tabsheetPath.O:Label108.Caption" resname="O:formOptions.O:PageControl.O:tabsheetPath.O:Label108.Caption">
-        <source>'Root Folder'</source>
+        <source>'zLog root'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44883.9723490509</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3492</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -24119,7 +24119,7 @@
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4820</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.FontName" resname="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.FontName">
-        <source>'Courier New Greek'</source>
+        <source>'@HG平成角ｺﾞｼｯｸ体W3'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4821</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -24149,7 +24149,7 @@
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4826</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.ItemIndex" resname="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.ItemIndex">
-        <source>39</source>
+        <source>14</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4827</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -24253,100 +24253,95 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4847</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:formOptions.O:Panel1.O:buttonOK.ModalResult" resname="O:formOptions.O:Panel1.O:buttonOK.ModalResult">
-        <source>1</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4848</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
       <trans-unit id="O:formOptions.O:Panel1.O:buttonOK.TabOrder" resname="O:formOptions.O:Panel1.O:buttonOK.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4849</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4848</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:Panel1.O:buttonOK.OnClick" resname="O:formOptions.O:Panel1.O:buttonOK.OnClick">
         <source>buttonOKClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4850</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4849</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:Panel1.O:buttonCancel.Left" resname="O:formOptions.O:Panel1.O:buttonCancel.Left">
         <source>229</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4851</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4850</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:Panel1.O:buttonCancel.Top" resname="O:formOptions.O:Panel1.O:buttonCancel.Top">
         <source>6</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4852</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4851</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:Panel1.O:buttonCancel.Width" resname="O:formOptions.O:Panel1.O:buttonCancel.Width">
         <source>75</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4853</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4852</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:Panel1.O:buttonCancel.Height" resname="O:formOptions.O:Panel1.O:buttonCancel.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4854</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4853</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:Panel1.O:buttonCancel.Anchors" resname="O:formOptions.O:Panel1.O:buttonCancel.Anchors">
         <source>[akLeft, akBottom]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4855</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4854</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:Panel1.O:buttonCancel.Cancel" resname="O:formOptions.O:Panel1.O:buttonCancel.Cancel">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4856</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4855</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:Panel1.O:buttonCancel.Caption" resname="O:formOptions.O:Panel1.O:buttonCancel.Caption">
         <source>'Cancel'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4857</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4856</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:Panel1.O:buttonCancel.ModalResult" resname="O:formOptions.O:Panel1.O:buttonCancel.ModalResult">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4858</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4857</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:Panel1.O:buttonCancel.TabOrder" resname="O:formOptions.O:Panel1.O:buttonCancel.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4859</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4858</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:Panel1.O:buttonCancel.OnClick" resname="O:formOptions.O:Panel1.O:buttonCancel.OnClick">
         <source>buttonCancelClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4860</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4859</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:OpenDialog.Filter" resname="O:formOptions.O:OpenDialog.Filter">
         <source>'sound files|*.wav;*.mp3|wav files|*.wav|mp3 files|*.mp3|all files|*.*'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4861</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4860</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:OpenDialog.Options" resname="O:formOptions.O:OpenDialog.Options">
         <source>[ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4862</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4861</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:OpenDialog.Left" resname="O:formOptions.O:OpenDialog.Left">
         <source>324</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4863</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4862</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:OpenDialog.Top" resname="O:formOptions.O:OpenDialog.Top">
         <source>428</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4864</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4863</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:ColorDialog1.Left" resname="O:formOptions.O:ColorDialog1.Left">
         <source>292</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4865</prop><prop prop-type="Type">TColorDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4864</prop><prop prop-type="Type">TColorDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:ColorDialog1.Top" resname="O:formOptions.O:ColorDialog1.Top">
         <source>428</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4866</prop><prop prop-type="Type">TColorDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4865</prop><prop prop-type="Type">TColorDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

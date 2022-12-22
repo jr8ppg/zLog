@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44906.6</prop>
+        <prop prop-type="SelfDateTime">44917.8997222222</prop>
         <prop prop-type="OrigDateTime">44906.5859259259</prop>
-        <prop prop-type="XlatDateTime">44800.8836574074</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">662</prop>
+        <prop prop-type="XlatDateTime">44906.6059490741</prop>
+        <prop prop-type="Translated">7</prop>
+        <prop prop-type="UnTranslated">655</prop>
       </prop-group>
     </header>
     <body>
@@ -40,8 +40,9 @@
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.ClientWidth" resname="O:BandPlanEditDialog.ClientWidth">
         <source>544</source>
+        <target>547</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925048495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TBandPlanEditDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925048495</prop><prop prop-type="Status">1</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TBandPlanEditDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.Color" resname="O:BandPlanEditDialog.Color">
         <source>clBtnFace</source>
@@ -65,8 +66,9 @@
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.Font.Name" resname="O:BandPlanEditDialog.Font.Name">
         <source>'MS Sans Serif'</source>
+        <target>'ＭＳ Ｐゴシック'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925048495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TBandPlanEditDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925048495</prop><prop prop-type="Status">1</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TBandPlanEditDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.Font.Style" resname="O:BandPlanEditDialog.Font.Style">
         <source>[]</source>
@@ -230,8 +232,9 @@
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:Panel1.O:buttonCancel.Caption" resname="O:BandPlanEditDialog.O:Panel1.O:buttonCancel.Caption">
         <source>'Cancel'</source>
+        <target>'キャンセル'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925050231</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925050231</prop><prop prop-type="Status">1</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:Panel1.O:buttonCancel.ModalResult" resname="O:BandPlanEditDialog.O:Panel1.O:buttonCancel.ModalResult">
         <source>2</source>
@@ -3220,8 +3223,9 @@
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:buttonLoadJaDefaults.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:buttonLoadJaDefaults.Caption">
         <source>'Load JA defaults'</source>
+        <target>'JA既定値ロード'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44906.6000142361</prop><prop prop-type="Status">0</prop><prop prop-type="Order">641</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44906.6000142361</prop><prop prop-type="Status">1</prop><prop prop-type="Order">641</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:buttonLoadJaDefaults.TabOrder" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:buttonLoadJaDefaults.TabOrder">
         <source>32</source>
@@ -3265,8 +3269,9 @@
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:buttonLoadDxDefaults.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:buttonLoadDxDefaults.Caption">
         <source>'Load DX defaults'</source>
+        <target>'DX既定値ロード'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44906.6000142477</prop><prop prop-type="Status">0</prop><prop prop-type="Order">650</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44906.6000142477</prop><prop prop-type="Status">1</prop><prop prop-type="Order">650</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:buttonLoadDxDefaults.TabOrder" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:buttonLoadDxDefaults.TabOrder">
         <source>33</source>
@@ -3305,8 +3310,9 @@
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:popupPreset.O:menuAddPreset.Caption" resname="O:BandPlanEditDialog.O:popupPreset.O:menuAddPreset.Caption">
         <source>'Add preset'</source>
+        <target>'プリセット追加'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44906.6000142593</prop><prop prop-type="Status">0</prop><prop prop-type="Order">658</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44906.6000142593</prop><prop prop-type="Status">1</prop><prop prop-type="Order">658</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:popupPreset.O:menuAddPreset.OnClick" resname="O:BandPlanEditDialog.O:popupPreset.O:menuAddPreset.OnClick">
         <source>menuAddPresetClick</source>
@@ -3315,8 +3321,9 @@
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:popupPreset.O:menuDeletePreset.Caption" resname="O:BandPlanEditDialog.O:popupPreset.O:menuDeletePreset.Caption">
         <source>'Delete preset'</source>
+        <target>'プリセット削除'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44906.6000142593</prop><prop prop-type="Status">0</prop><prop prop-type="Order">660</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44906.6000142593</prop><prop prop-type="Status">1</prop><prop prop-type="Order">660</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:popupPreset.O:menuDeletePreset.OnClick" resname="O:BandPlanEditDialog.O:popupPreset.O:menuDeletePreset.OnClick">
         <source>menuDeletePresetClick</source>

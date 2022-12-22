@@ -1553,7 +1553,7 @@ begin
    Q.Memo := Memo;
    Q.Time := 0;
    Q.RSTSent := 0;
-   Q.RSTRcvd := 0;
+   Q.RSTRcvd := 100;
    FQsoList.Add(Q);
 
    for B := b19 to HiBand do begin
@@ -3391,7 +3391,7 @@ begin
    N := Trunc(E * 100);
    if FQsoList[0].RSTRcvd <> N then begin
       FQsoList[0].RSTRcvd := N;
-      Saved := False;
+      FSaved := False;
    end;
 end;
 
