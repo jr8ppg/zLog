@@ -15,6 +15,8 @@ type
   TSo2rType = (so2rNone = 0, so2rCom, so2rNeo);
   TQslState = (qsNone = 0, qsPseQsl, qsNoQsl);
 
+  TFrequency = Int64;
+
 const
   HiBand = b10g;
 

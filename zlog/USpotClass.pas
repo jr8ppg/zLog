@@ -15,7 +15,7 @@ type
     FTime : TDateTime; // moved from TBSdata 2.6e
     FCall : string;
     FNumber : string;
-    FFreqHz : Int64;
+    FFreqHz : TFrequency;
     FCtyIndex : integer;
     FZone : integer;
     FNewCty : boolean;
@@ -46,7 +46,7 @@ type
     property Time: TDateTime read FTime write FTime;
     property Call: string read FCall write SetCall;
     property Number: string read FNumber write FNumber;
-    property FreqHz: Int64 read FFreqHz write FFreqHz;
+    property FreqHz: TFrequency read FFreqHz write FFreqHz;
     property CtyIndex: Integer read FCtyIndex write FCtyIndex;
     property Zone: Integer read FZone write FZone;
     property NewCty: Boolean read FNewCty write FNewCty;

@@ -1030,13 +1030,13 @@ type
     procedure HighlightCallsign(fHighlight: Boolean);
     procedure BandScopeNotifyWorked(aQSO: TQSO);
     procedure SetYourCallsign(strCallsign, strNumber: string);
-    procedure SetFrequency(freq: Int64);
+    procedure SetFrequency(freq: TFrequency);
     procedure BSRefresh();
     procedure BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
     procedure BuildTxNrMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
 
-    procedure BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Int64);
+    procedure BandScopeAddSelfSpot(aQSO: TQSO; nFreq: TFrequency);
     procedure BandScopeAddSelfSpotFromNetwork(BSText: string);
     procedure BandScopeAddClusterSpot(Sp: TSpot);
     procedure BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
@@ -1514,7 +1514,7 @@ begin
    end;
 
    if RigControl.Rig = nil then begin
-      FZLinkForm.SendFreqInfo(round(RigControl.TempFreq[B] * 1000));
+      FZLinkForm.SendFreqInfo(RigControl.TempFreq[B] * 1000);
    end;
 
    for bb := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -2397,9 +2397,9 @@ end;
 
 procedure TMainForm.ProcessConsoleCommand(S: string);
 var
-   i: double;
    j: Integer;
    temp, temp2: string;
+   khz: TFrequency;
 begin
    Delete(S, 1, 1);
    temp := S;
@@ -2675,19 +2675,19 @@ begin
       dmZLogGlobal.InitializeCW();
    end;
 
-   i := StrToFloatDef(S, 0);
+   khz := StrToIntDef(S, 0);
 
-   if (i > 1799) and (i < 1000000) then begin
+   if (khz > 1799) and (khz < 1000000) then begin
       if RigControl.Rig <> nil then begin
-         RigControl.Rig.SetFreq(round(i * 1000), IsCQ());
+         RigControl.Rig.SetFreq(khz * 1000, IsCQ());
          if CurrentQSO.Mode = mSSB then
             RigControl.Rig.SetMode(CurrentQSO);
          // ZLinkForm.SendRigStatus;
-         FZLinkForm.SendFreqInfo(round(i * 1000));
+         FZLinkForm.SendFreqInfo(khz * 1000);
       end
       else begin
-         RigControl.TempFreq[CurrentQSO.Band] := i;
-         FZLinkForm.SendFreqInfo(round(i * 1000));
+         RigControl.TempFreq[CurrentQSO.Band] := khz;
+         FZLinkForm.SendFreqInfo(khz * 1000);
       end;
    end;
 
@@ -4106,7 +4106,7 @@ begin
    FZLinkForm.SendRigStatus;
 
    if RigControl.Rig = nil then begin
-      FZLinkForm.SendFreqInfo(round(RigControl.TempFreq[CurrentQSO.Band] * 1000));
+      FZLinkForm.SendFreqInfo(RigControl.TempFreq[CurrentQSO.Band] * 1000);
    end;
 
    if dmZlogGlobal.Settings._switchcqsp then begin
@@ -9059,7 +9059,7 @@ begin
 end;
 
 // Cluster or BandScope‚©‚çŒÄ‚Î‚ê‚é
-procedure TMainForm.SetFrequency(freq: Int64);
+procedure TMainForm.SetFrequency(freq: TFrequency);
 var
    b: TBand;
    Q: TQSO;
@@ -9225,7 +9225,7 @@ begin
    end;
 end;
 
-procedure TMainForm.BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Int64);
+procedure TMainForm.BandScopeAddSelfSpot(aQSO: TQSO; nFreq: TFrequency);
 var
    b: TBand;
 begin

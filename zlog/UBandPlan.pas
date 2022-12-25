@@ -4,12 +4,12 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms,
   System.Math, System.DateUtils,
-  UzlogConst;
+  UzLogConst;
 
 type
   TFreqLimit = record
-    Lower: UInt64;
-    Upper: UInt64;
+    Lower: TFrequency;
+    Upper: TFrequency;
   end;
   TFreqLimitArray = array[b19..HiBand] of TFreqLimit;
 
@@ -26,11 +26,11 @@ type
     destructor Destroy(); override;
     procedure LoadFromFile();
     procedure SaveToFile();
-    function GetEstimatedMode(Hz: Integer): TMode; overload;
-    function GetEstimatedMode(b: TBand; Hz: Integer): TMode; overload;
-    function IsInBand(b: TBand; m: TMode; Hz: Integer): Boolean;
-    function IsOffBand(b: TBand; m: TMode; Hz: Integer): Boolean;
-    function FreqToBand(Hz: Int64): TBand; // Returns -1 if Hz is outside ham bands
+    function GetEstimatedMode(Hz: TFrequency): TMode; overload;
+    function GetEstimatedMode(b: TBand; Hz: TFrequency): TMode; overload;
+    function IsInBand(b: TBand; m: TMode; Hz: TFrequency): Boolean;
+    function IsOffBand(b: TBand; m: TMode; Hz: TFrequency): Boolean;
+    function FreqToBand(Hz: TFrequency): TBand; // Returns -1 if Hz is outside ham bands
     property Limit[m: TMode]: TFreqLimitArray read GetLimit write SetLimit;
     property PresetName: string read FPresetName write FPresetName;
     class function GetDefaults(Index: Integer; m: TMode): TFreqLimitArray;
@@ -387,7 +387,7 @@ begin
    end;
 end;
 
-function TBandPlan.GetEstimatedMode(Hz: Integer): TMode;
+function TBandPlan.GetEstimatedMode(Hz: TFrequency): TMode;
 var
    b: TBand;
 begin
@@ -400,10 +400,10 @@ begin
    Result := mOther;
 end;
 
-function TBandPlan.GetEstimatedMode(b: TBand; Hz: Integer): TMode;
+function TBandPlan.GetEstimatedMode(b: TBand; Hz: TFrequency): TMode;
 var
    m: TMode;
-   l, u: Integer;
+   l, u: TFrequency;
 begin
    for m := mCW to mOther do begin
       l := FLimit[m][b].Lower;
@@ -419,9 +419,9 @@ begin
    Result := mOther;
 end;
 
-function TBandPlan.IsInBand(b: TBand; m: TMode; Hz: Integer): Boolean;
+function TBandPlan.IsInBand(b: TBand; m: TMode; Hz: TFrequency): Boolean;
 var
-   l, u: Integer;
+   l, u: TFrequency;
 begin
    l := FLimit[m][b].Lower;
    u := FLimit[m][b].Upper;
@@ -449,9 +449,9 @@ begin
    end;
 end;
 
-function TBandPlan.IsOffBand(b: TBand; m: TMode; Hz: Integer): Boolean;
+function TBandPlan.IsOffBand(b: TBand; m: TMode; Hz: TFrequency): Boolean;
 var
-   l, u: Integer;
+   l, u: TFrequency;
 begin
    l := FLimit[m][b].Lower;
    u := FLimit[m][b].Upper;
@@ -469,7 +469,7 @@ begin
    end;
 end;
 
-function TBandPlan.FreqToBand(Hz: Int64): TBand; // Returns -1 if Hz is outside ham bands
+function TBandPlan.FreqToBand(Hz: TFrequency): TBand; // Returns -1 if Hz is outside ham bands
 var
    b: TBand;
 begin
