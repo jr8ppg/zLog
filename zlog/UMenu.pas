@@ -232,7 +232,6 @@ end;
 procedure TMenuForm.OKButtonClick(Sender: TObject);
 var
    i: Integer;
-   S: string;
 begin
    if editCallsign.Text = '' then begin
       Application.MessageBox(PChar(UMenu_PleaseEnterYourCallsign), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);

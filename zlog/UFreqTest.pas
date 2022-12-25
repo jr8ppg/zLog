@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls,
+  UzLogConst;
 
 type
   TformFreqTest = class(TForm)
@@ -38,7 +39,7 @@ end;
 
 procedure TformFreqTest.updownFreqClick(Sender: TObject; Button: TUDBtnType);
 begin
-   CurrentRigFrequency := Int64(updownFreq.Position) * 100;
+   CurrentRigFrequency := TFrequency(updownFreq.Position) * 100;
 end;
 
 end.

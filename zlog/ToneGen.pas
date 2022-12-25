@@ -417,12 +417,17 @@ end;
 procedure TToneGen.SetVolume;
 var
    newvol: DWORD;
+   L, R: DWORD;
 begin
-//combine percentages
-newvol:=(($ffff * fLeftVolume) div 100)+((($ffff * fRightVolume) div 100) shl $10);
+   //combine percentages
+   //newvol:=(($ffff * fLeftVolume) div 100)+((($ffff * fRightVolume) div 100) shl $10);
+   L := ($ffff * fLeftVolume) div 100;
+   R := ($ffff * fRightVolume) div 100;
+   R := R shl $10;
+   newvol := L + R;
 
-//set volume
-waveOutSetVolume(DeviceID,newvol);
+   //set volume
+   waveOutSetVolume(DeviceID,newvol);
 end;
 
 //return original volume setting **********************************************

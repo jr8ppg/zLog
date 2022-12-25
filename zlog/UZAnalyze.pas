@@ -524,6 +524,9 @@ begin
       s := Copy(strCallsign, p + 1);
       if CharInSet(s[1], ['0'..'9']) = True then begin
          Result := StrToIntdef(s[1], -1);
+         if Result = 0 then begin
+            Result := 10;
+         end;
          Exit;
       end;
    end;

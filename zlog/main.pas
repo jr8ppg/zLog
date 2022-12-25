@@ -1059,13 +1059,13 @@ type
     procedure HighlightCallsign(fHighlight: Boolean);
     procedure BandScopeNotifyWorked(aQSO: TQSO);
     procedure SetYourCallsign(strCallsign, strNumber: string);
-    procedure SetFrequency(freq: Int64);
+    procedure SetFrequency(freq: TFrequency);
     procedure BSRefresh();
     procedure BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
     procedure BuildTxNrMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
 
-    procedure BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Int64);
+    procedure BandScopeAddSelfSpot(aQSO: TQSO; nFreq: TFrequency);
     procedure BandScopeAddSelfSpotFromNetwork(BSText: string);
     procedure BandScopeAddClusterSpot(Sp: TSpot);
     procedure BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
@@ -4562,7 +4562,7 @@ procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    FChatForm.RenewOptions();
    FCommForm.RenewOptions();
-   FCommForm.Close();
+   FCommForm.Disconnect();
    FRateDialogEx.SaveSettings();
 
    Timer1.Enabled := False;
@@ -9523,7 +9523,7 @@ begin
 end;
 
 // Cluster or BandScope‚©‚çŒÄ‚Î‚ê‚é
-procedure TMainForm.SetFrequency(freq: Int64);
+procedure TMainForm.SetFrequency(freq: TFrequency);
 var
    b: TBand;
    Q: TQSO;
@@ -9700,7 +9700,7 @@ begin
    end;
 end;
 
-procedure TMainForm.BandScopeAddSelfSpot(aQSO: TQSO; nFreq: Int64);
+procedure TMainForm.BandScopeAddSelfSpot(aQSO: TQSO; nFreq: TFrequency);
 var
    b: TBand;
 begin

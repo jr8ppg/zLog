@@ -2286,7 +2286,7 @@ function TLog.GetActualFreq(b: TBand; strFreq: string): string;
 var
    p: Integer;
    s: string;
-   f: Int64;
+   f: TFrequency;
    b2: TBand;
 const
    FREQ: array[b19..b10g] of string = (

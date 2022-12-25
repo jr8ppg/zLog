@@ -142,7 +142,6 @@ uses UzLogGlobal;
 
 procedure TBandPlanEditDialog.FormCreate(Sender: TObject);
 var
-   m: TMode;
    b: TBand;
 begin
    FLabelArray[b19]     := labelBand01;
