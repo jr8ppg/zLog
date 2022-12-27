@@ -9537,11 +9537,11 @@ begin
 
    FQsyFromBS := True;
 
-   rigset := CurrentTx + 1;
+   rigset := CurrentRx + 1;
 
    b := dmZLogGlobal.BandPlan.FreqToBand(freq);
 
-   rig := RigControl.GetRig(FCurrentRigSet, b);
+   rig := RigControl.GetRig(rigset, b);
    if rig <> nil then begin
       // RIGにfreq設定
       rig.SetFreq(freq, IsCQ());
@@ -9556,7 +9556,7 @@ begin
          Q.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(freq);
 
          // 現在のモードと異なる or 常にモードセットなら
-         m := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
+         m := TextToMode(FEditPanel[rigset - 1].ModeEdit.Text);
          if (m <> Q.Mode) or (dmZLogGlobal.Settings._bandscope_always_change_mode = True) then begin
             // 推定モードセット
 	        rig.SetMode(Q);
