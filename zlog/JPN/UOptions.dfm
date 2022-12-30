@@ -1723,21 +1723,21 @@ object formOptions: TformOptions
       Caption = #12495#12540#12489#12454#12455#12450
       object groupOptCwPtt: TGroupBox
         Left = 6
-        Top = 237
-        Width = 423
-        Height = 62
+        Top = 264
+        Width = 202
+        Height = 88
         Caption = 'CW/PTT'#21046#24481
         TabOrder = 4
         object Label38: TLabel
           Left = 8
-          Top = 38
+          Top = 39
           Width = 70
           Height = 13
           Caption = #36865#20449#21069#12487#12451#12524#12452'(ms)'
         end
         object Label39: TLabel
-          Left = 162
-          Top = 38
+          Left = 8
+          Top = 63
           Width = 130
           Height = 13
           Caption = #36865#20449#24460#12487#12451#12524#12452'(ms)'
@@ -1752,16 +1752,16 @@ object formOptions: TformOptions
           OnClick = PTTEnabledCheckBoxClick
         end
         object BeforeEdit: TEdit
-          Left = 110
-          Top = 35
+          Left = 144
+          Top = 36
           Width = 40
           Height = 21
           TabOrder = 1
           Text = 'CWPortEdit'
         end
         object AfterEdit: TEdit
-          Left = 264
-          Top = 35
+          Left = 144
+          Top = 60
           Width = 40
           Height = 21
           TabOrder = 2
@@ -1769,8 +1769,8 @@ object formOptions: TformOptions
         end
       end
       object groupUsif4cw: TGroupBox
-        Left = 6
-        Top = 303
+        Left = 214
+        Top = 264
         Width = 213
         Height = 45
         Caption = 'USBIF4CW'
@@ -1786,7 +1786,7 @@ object formOptions: TformOptions
         object checkUsbif4cwPaddleReverse: TCheckBox
           Left = 93
           Top = 19
-          Width = 112
+          Width = 96
           Height = 17
           Caption = #12497#12489#12523#12434#24038#21491#21453#36578
           TabOrder = 1
@@ -1796,7 +1796,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 184
         Width = 423
-        Height = 49
+        Height = 74
         Caption = 'ICOM CI-V'#12458#12503#12471#12519#12531
         TabOrder = 3
         object Label83: TLabel
@@ -1812,6 +1812,13 @@ object formOptions: TformOptions
           Width = 36
           Height = 13
           Caption = #26041#27861
+        end
+        object Label122: TLabel
+          Left = 262
+          Top = 49
+          Width = 104
+          Height = 13
+          Caption = #24540#31572#12479#12452#12512#12450#12454#12488'(ms)'
         end
         object comboIcomMode: TComboBox
           Left = 42
@@ -1840,6 +1847,24 @@ object formOptions: TformOptions
           Items.Strings = (
             #21608#27874#25968#12392#12514#12540#12489#12434#21462#24471
             #21608#27874#25968#12398#12415#21462#24471)
+        end
+        object checkIcomStrictAck: TCheckBox
+          Left = 109
+          Top = 48
+          Width = 133
+          Height = 17
+          Caption = #24540#31572#12434#30906#35469#12377#12427
+          TabOrder = 2
+        end
+        object editIcomResponseTimout: TEdit
+          Left = 376
+          Top = 46
+          Width = 37
+          Height = 21
+          MaxLength = 4
+          NumbersOnly = True
+          TabOrder = 3
+          Text = '1000'
         end
       end
       object groupRig1: TGroupBox
@@ -2211,7 +2236,7 @@ object formOptions: TformOptions
       end
       object groupWinKeyer: TGroupBox
         Left = 6
-        Top = 352
+        Top = 356
         Width = 423
         Height = 45
         Caption = 'WinKeyer Option'
@@ -2219,14 +2244,14 @@ object formOptions: TformOptions
         object checkUseWinKeyer: TCheckBox
           Left = 8
           Top = 18
-          Width = 94
+          Width = 89
           Height = 17
           Caption = 'WinKeyer'#12434#20351#12358
           TabOrder = 0
           OnClick = checkUseWinKeyerClick
         end
         object checkWk9600: TCheckBox
-          Left = 110
+          Left = 101
           Top = 18
           Width = 89
           Height = 17
@@ -2234,7 +2259,7 @@ object formOptions: TformOptions
           TabOrder = 1
         end
         object checkWkOutportSelect: TCheckBox
-          Left = 200
+          Left = 190
           Top = 18
           Width = 112
           Height = 17

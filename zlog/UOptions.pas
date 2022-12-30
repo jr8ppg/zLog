@@ -530,6 +530,9 @@ type
     checkCwReverseSignal3: TCheckBox;
     checkCwReverseSignal2: TCheckBox;
     checkCwReverseSignal1: TCheckBox;
+    checkIcomStrictAck: TCheckBox;
+    editIcomResponseTimout: TEdit;
+    Label122: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -883,6 +886,9 @@ begin
       SetRigControlParam(2, comboRig2Port, comboRig2Speed, comboRig2Name, comboCwPttPort2, cbTransverter2, checkCwReverseSignal2);
       SetRigControlParam(3, nil,           nil,            nil,           comboCwPttPort3, nil,            checkCwReverseSignal3);
 
+      //
+      // ICOM CI-V options
+      //
       if comboIcomMode.ItemIndex = 0 then begin
          Settings._use_transceive_mode := True;
       end
@@ -896,6 +902,9 @@ begin
       else begin
          Settings._icom_polling_freq_and_mode := False;
       end;
+
+      Settings._icom_strict_ack_response := checkIcomStrictAck.Checked;
+      Settings._icom_response_timeout := StrToIntDef(editIcomResponseTimout.Text, 1000);
 
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
 
@@ -1378,6 +1387,9 @@ begin
       GetRigControlParam(2, comboRig2Port, comboRig2Speed, comboRig2Name, comboCwPttPort2, cbTransverter2, checkCwReverseSignal2);
       GetRigControlParam(3, nil,           nil,            nil,           comboCwPttPort3, nil,            checkCwReverseSignal3);
 
+      //
+      // ICOM CI-V options
+      //
       if Settings._use_transceive_mode = True then begin
          comboIcomMode.ItemIndex := 0;
       end
@@ -1393,6 +1405,9 @@ begin
       end;
 
       comboIcomModeChange(nil);
+
+      checkIcomStrictAck.Checked := Settings._icom_strict_ack_response;
+      editIcomResponseTimout.Text := IntToStr(Settings._icom_response_timeout);
 
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
 
