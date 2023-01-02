@@ -1123,6 +1123,8 @@ begin
    end;
 
    SetCWSendBufFinish(b);
+
+   cwstrptr := 1;
 end;
 
 procedure TdmZLogKeyer.SendStr(nID: Integer; sStr: string);
@@ -1149,7 +1151,7 @@ begin
    SS := CW + SS;
 
    SetCWSendBuf(0, SS);
-   cwstrptr := 1;
+
    FSendOK := True;
    FKeyingCounter := 1;
 end;
@@ -2234,7 +2236,7 @@ function TdmZLogKeyer.CallSignSent: Boolean;
 begin
    Result := False;
 
-   if callsignptr > 0 then begin
+   if (callsignptr > 0) and (cwstrptr > 1) then begin
       if FCWSendBuf[0, cwstrptr - 1] = $99 then begin
          Result := True;
          callsignptr := 0;
