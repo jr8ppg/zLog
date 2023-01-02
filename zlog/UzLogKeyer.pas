@@ -1183,6 +1183,8 @@ begin
    end;
 
    SetCWSendBufFinish(0);
+
+   cwstrptr := 1;
 end;
 
 procedure TdmZLogKeyer.CW_ON(nID: Integer);
@@ -1258,6 +1260,10 @@ begin
    end;
 
    if FSendOK = False then begin
+      Exit;
+   end;
+
+   if cwstrptr = 0 then begin
       Exit;
    end;
 
