@@ -1664,20 +1664,6 @@ begin
    FRigs[2] := BuildRigObject(2);
    FRigs[3] := TVirtualRig.Create(3);
 
-   for i := 1 to 2 do begin
-      if FRigs[i] <> nil then begin
-         if dmZlogGlobal.Settings.FRigControl[i].FUseTransverter then begin
-            FRigs[i]._freqoffset := 1000 * dmZlogGlobal.Settings.FRigControl[i].FTransverterOffset;
-         end
-         else begin
-            FRigs[i]._freqoffset := 0;
-         end;
-
-         // Initialize & Start
-         FRigs[i].Initialize();
-      end;
-   end;
-
    SetCurrentRig(rig);
 
    SetSendFreq();
@@ -1711,6 +1697,20 @@ begin
    else begin
       dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
       dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
+   end;
+
+   for i := 1 to 2 do begin
+      if FRigs[i] <> nil then begin
+         if dmZlogGlobal.Settings.FRigControl[i].FUseTransverter then begin
+            FRigs[i]._freqoffset := 1000 * dmZlogGlobal.Settings.FRigControl[i].FTransverterOffset;
+         end
+         else begin
+            FRigs[i]._freqoffset := 0;
+         end;
+
+         // Initialize & Start
+         FRigs[i].Initialize();
+      end;
    end;
 end;
 
