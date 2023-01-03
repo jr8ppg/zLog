@@ -929,7 +929,7 @@ begin
       Settings._icom_polling_freq_and_mode := ini.ReadBool('Hardware', 'PollingFreqAndMode', False);
 
       // Strict acknowledgment(ICOM only)
-      Settings._icom_strict_ack_response := ini.ReadBool('Hardware', 'IcomStrictAckResponse', False);
+      Settings._icom_strict_ack_response := ini.ReadBool('Hardware', 'IcomStrictAckResponse', True);
 
       // Response timeout(ICOM only)
       Settings._icom_response_timeout := ini.ReadInteger('Hardware', 'IcomResponseTimeout', 1000);
