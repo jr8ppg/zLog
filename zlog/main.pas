@@ -5004,6 +5004,7 @@ begin
       f.Release();
 
       // リグコントロール/Keying再開
+      WriteStatusLine('', False);
       RigControl.ImplementOptions(rig);
 
       // Accessibility

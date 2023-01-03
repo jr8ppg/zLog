@@ -222,6 +222,7 @@ type
     FUseTransceiveMode: Boolean;
     FGetBandAndMode: Boolean;
     FPollingCount: Integer;
+    FWaitForResponse: Boolean;
   public
     constructor Create(RigNum : integer); override;
     destructor Destroy; override;
@@ -1640,9 +1641,6 @@ begin
          end;
 
          rig.name := rname;
-
-         // Initialize & Start
-         rig.Initialize();
       end;
    finally
       Result := rig;
@@ -1674,6 +1672,9 @@ begin
          else begin
             FRigs[i]._freqoffset := 0;
          end;
+
+         // Initialize & Start
+         FRigs[i].Initialize();
       end;
    end;
 
@@ -1988,6 +1989,7 @@ begin
    FComm.HwFlow := hfNONE;
    FComm.SwFlow := sfNONE;
    FComm.EnableDTROnOpen := False;
+   FWaitForResponse := False;
    TerminatorCode := AnsiChar($FD);
 
    FMyAddr := $E0;
@@ -2002,8 +2004,36 @@ begin
 end;
 
 procedure TICOM.ICOMWriteData(S: AnsiString);
+var
+   dwTick: DWORD;
 begin
+   // コマンド送信時はポーリング中止
+   PollingTimer.Enabled := False;
+
+   FWaitForResponse := True;
+
    WriteData(AnsiChar($FE) + AnsiChar($FE) + AnsiChar(FRigAddr) + AnsiChar(FMyAddr) + S + AnsiChar($FD));
+
+   // 応答確認無しなら抜ける
+   if dmZLogGlobal.Settings._icom_strict_ack_response = False then begin
+      Exit;
+   end;
+
+   // $FA/$FB/Response受信まで待ち合わせ
+   dwTick := GetTickCount();
+   while FWaitForResponse = True do begin
+      // 待ってる間重い感じするなら↓
+      Application.ProcessMessages();
+
+      // とりあえず5秒だけど、1-3秒位で良さそう　iniファイルに出すか
+      if (GetTickCount() - dwTick) > dmZLogGlobal.Settings._icom_response_timeout then begin
+         FWaitForResponse := False;
+         MainForm.WriteStatusLineRed('No response from ' + Self.Name, True);
+         Break;
+      end;
+
+      Sleep(1);
+   end;
 end;
 
 constructor TFT1000MP.Create(RigNum: Integer);
@@ -3412,42 +3442,55 @@ var
    ss: AnsiString;
    Index: Integer;
 begin
+   ss := S;
+
+   // プリアンブルチェック
+   Index := pos(AnsiChar($FE) + AnsiChar($FE), ss);
+   if Index = 0 then begin
+      Exit;
+   end;
+
+   // プリアンブル以前のゴミデータ削除
+   if Index > 1 then begin
+      Delete(ss, 1, Index - 1);
+   end;
+
+   // 最低６バイト必要
+   if Length(ss) < 6 then begin
+      Exit;
+   end;
+
+   // 宛先アドレスチェック
+   if not(Ord(ss[3]) in [0, FMyAddr]) then begin
+      Exit;
+   end;
+
+   // 送信元アドレスチェック
+   if ss[4] <> AnsiChar(FRigAddr) then begin
+      Exit;
+   end;
+
    try
-      // RigControl.label1.caption := S;
-      ss := S;
-      Index := pos(AnsiChar($FE) + AnsiChar($FE), ss);
-
-      if Index = 0 then begin
-         Exit;
-      end;
-
-      if Index > 1 then begin
-         Delete(ss, 1, Index - 1);
-      end;
-
-      if Length(ss) < 6 then begin
-         Exit;
-      end;
-
-      if not(Ord(ss[3]) in [0, FMyAddr]) then begin
-         Exit;
-      end;
-
-      if ss[4] <> AnsiChar(FRigAddr) then begin
-         Exit;
-      end;
-
+      // プリアンブル、宛先アドレス、送信元アドレス削除
       Delete(ss, 1, 4);
+
+      // ポストアンブル削除
       Delete(ss, length(ss), 1);
 
+      // コマンド取りだし
       Command := Ord(ss[1]);
 
-      if length(ss) = 1 then begin
+      if Length(ss) = 1 then begin
          case Command of
-            $FA:
-               Exit; // ng message
-            $FB:
-               Exit; // ok message
+            // NG
+            $FA: begin
+               Exit;
+            end;
+
+            // OK
+            $FB: begin
+               Exit;
+            end;
          end;
          Exit;
       end;
@@ -3534,6 +3577,8 @@ begin
          ((FUseTransceiveMode = True) and (FGetBandAndMode = True) and  (FPollingCount < 2)) then begin
          FPollingTimer.Enabled := True;
       end;
+
+      FWaitForResponse := False;
    end;
 end;
 
@@ -4113,6 +4158,7 @@ var
    i: Integer;
    ptr: PAnsiChar;
    str: AnsiString;
+   n: Integer;
 begin
    str := '';
    ptr := PAnsiChar(DataPtr);
@@ -4121,7 +4167,12 @@ begin
       str := str + AnsiChar(ptr[i]);
    end;
 
-   FRigs[TCommPortDriver(Sender).Tag].PassOnRxData(str)
+   n := TCommPortDriver(Sender).Tag;
+   if (n >= Low(FRigs)) and (n <= High(FRigs)) then begin
+      if Assigned(FRigs[n]) then begin
+         FRigs[n].PassOnRxData(str)
+      end;
+   end;
 end;
 
 procedure TRigControl.btnOmniRigClick(Sender: TObject);
