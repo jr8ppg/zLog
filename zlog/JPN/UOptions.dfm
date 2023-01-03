@@ -1786,7 +1786,7 @@ object formOptions: TformOptions
         object checkUsbif4cwPaddleReverse: TCheckBox
           Left = 93
           Top = 19
-          Width = 96
+          Width = 110
           Height = 17
           Caption = #12497#12489#12523#12434#24038#21491#21453#36578
           TabOrder = 1
@@ -2244,14 +2244,14 @@ object formOptions: TformOptions
         object checkUseWinKeyer: TCheckBox
           Left = 8
           Top = 18
-          Width = 89
+          Width = 95
           Height = 17
           Caption = 'WinKeyer'#12434#20351#12358
           TabOrder = 0
           OnClick = checkUseWinKeyerClick
         end
         object checkWk9600: TCheckBox
-          Left = 101
+          Left = 110
           Top = 18
           Width = 89
           Height = 17
@@ -2259,7 +2259,7 @@ object formOptions: TformOptions
           TabOrder = 1
         end
         object checkWkOutportSelect: TCheckBox
-          Left = 190
+          Left = 200
           Top = 18
           Width = 112
           Height = 17
