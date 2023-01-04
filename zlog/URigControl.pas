@@ -237,6 +237,7 @@ type
     procedure InquireStatus; override;
     procedure AntSelect(no: Integer); override;
     procedure ICOMWriteData(S : AnsiString);
+    procedure StartPolling();
     procedure PollingProcess; override;
     procedure SetRit(flag: Boolean); override;
     procedure SetXit(flag: Boolean); override;
@@ -1664,10 +1665,6 @@ begin
    FRigs[2] := BuildRigObject(2);
    FRigs[3] := TVirtualRig.Create(3);
 
-   SetCurrentRig(rig);
-
-   SetSendFreq();
-
    // RIGコントロールのCOMポートと、CWキーイングのポートが同じなら
    // CWキーイングのCPDrvをRIGコントロールの物にすり替える
    if ((FRigs[1] <> nil) and (dmZlogGlobal.Settings.FRigControl[1].FControlPort = dmZlogGlobal.Settings.FRigControl[1].FKeyingPort)) and
@@ -1712,6 +1709,10 @@ begin
          FRigs[i].Initialize();
       end;
    end;
+
+   SetCurrentRig(rig);
+
+   SetSendFreq();
 end;
 
 procedure TRigControl.Stop();
@@ -2007,9 +2008,14 @@ procedure TICOM.ICOMWriteData(S: AnsiString);
 var
    dwTick: DWORD;
 begin
-   // コマンド送信時はポーリング中止
-   PollingTimer.Enabled := False;
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** Enter - TICOM.ICOMWriteData(' + IntToHex(Byte(S[1]), 2) + ') ---'));
+   {$ENDIF}
 
+   // コマンド送信時はポーリング中止
+   FPollingTimer.Enabled := False;
+
+   // 応答待ち中
    FWaitForResponse := True;
 
    WriteData(AnsiChar($FE) + AnsiChar($FE) + AnsiChar(FRigAddr) + AnsiChar(FMyAddr) + S + AnsiChar($FD));
@@ -2029,10 +2035,36 @@ begin
       if (GetTickCount() - dwTick) > dmZLogGlobal.Settings._icom_response_timeout then begin
          FWaitForResponse := False;
          MainForm.WriteStatusLineRed('No response from ' + Self.Name, True);
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('No response from ' + Self.Name));
+         {$ENDIF}
          Break;
       end;
 
       Sleep(1);
+   end;
+
+   // ポーリング再開
+   StartPolling();
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('--- Leave - TICOM.ICOMWriteData() ---'));
+   {$ENDIF}
+end;
+
+procedure TICOM.StartPolling();
+begin
+   // トランシーブモード使わない時はポーリング再開
+   if (FUseTransceiveMode = False) then begin
+      FPollingTimer.Enabled := True;
+   end;
+
+   // トランシーブモード使う場合は１回か２回ポーリングする
+   if (FUseTransceiveMode = True) then begin
+      if ((FGetBandAndMode = True) and  (FPollingCount < 2)) or
+         ((FGetBandAndMode = False) and  (FPollingCount < 1)) then begin
+         FPollingTimer.Enabled := True;
+      end;
    end;
 end;
 
@@ -3572,12 +3604,12 @@ begin
          end;
       end;
    finally
-      // トランシーブモード使わない時はポーリング再開
-      if (FUseTransceiveMode = False) or
-         ((FUseTransceiveMode = True) and (FGetBandAndMode = True) and  (FPollingCount < 2)) then begin
-         FPollingTimer.Enabled := True;
+      // 応答確認無しならここでポーリング再開
+      if dmZLogGlobal.Settings._icom_strict_ack_response = False then begin
+         StartPolling();
       end;
 
+      // 応答待ち終了
       FWaitForResponse := False;
    end;
 end;
