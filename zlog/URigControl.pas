@@ -2009,8 +2009,15 @@ var
    dwTick: DWORD;
 begin
    {$IFDEF DEBUG}
-   OutputDebugString(PChar('*** Enter - TICOM.ICOMWriteData(' + IntToHex(Byte(S[1]), 2) + ') ---'));
+   OutputDebugString(PChar('[' + IntToStr(_rignumber) + ']*** Enter - TICOM.ICOMWriteData(' + IntToHex(Byte(S[1]), 2) + ') ---'));
    {$ENDIF}
+
+   if FComm.Connected = False then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('[' + IntToStr(_rignumber) + '] @@@not connected@@@'));
+      {$ENDIF}
+      Exit;
+   end;
 
    // コマンド送信時はポーリング中止
    FPollingTimer.Enabled := False;
@@ -2036,7 +2043,7 @@ begin
          FWaitForResponse := False;
          MainForm.WriteStatusLineRed('No response from ' + Self.Name, True);
          {$IFDEF DEBUG}
-         OutputDebugString(PChar('No response from ' + Self.Name));
+         OutputDebugString(PChar('[' + IntToStr(_rignumber) + '] No response from ' + Self.Name));
          {$ENDIF}
          Break;
       end;
@@ -2048,7 +2055,7 @@ begin
    StartPolling();
 
    {$IFDEF DEBUG}
-   OutputDebugString(PChar('--- Leave - TICOM.ICOMWriteData() ---'));
+   OutputDebugString(PChar('[' + IntToStr(_rignumber) + ']*** Leave - TICOM.ICOMWriteData(' + IntToHex(Byte(S[1]), 2) + ') ---'));
    {$ENDIF}
 end;
 
@@ -2230,6 +2237,10 @@ end;
 
 procedure TICOM.PollingProcess;
 begin
+   if FWaitForResponse = True then begin
+      Exit;
+   end;
+
    FPollingTimer.Enabled := False;
 
    if FGetBandAndMode = False then begin
