@@ -488,11 +488,11 @@ object formOptions: TformOptions
       end
       object groupQsyAssist: TGroupBox
         Left = 222
-        Top = 300
+        Top = 304
         Width = 204
         Height = 89
         Caption = 'QSY Assist'
-        TabOrder = 8
+        TabOrder = 9
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -561,11 +561,11 @@ object formOptions: TformOptions
       end
       object GroupBox13: TGroupBox
         Left = 17
-        Top = 299
+        Top = 303
         Width = 101
         Height = 89
         Caption = 'QSL Default'
-        TabOrder = 7
+        TabOrder = 8
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -592,6 +592,14 @@ object formOptions: TformOptions
           Caption = 'NO QSL'
           TabOrder = 2
         end
+      end
+      object checkDispLongDateTime: TCheckBox
+        Left = 17
+        Top = 277
+        Width = 193
+        Height = 17
+        Caption = 'Display long date time'
+        TabOrder = 7
       end
     end
     object tabsheetCategories: TTabSheet
@@ -1723,21 +1731,21 @@ object formOptions: TformOptions
       Caption = 'Hardware'
       object groupOptCwPtt: TGroupBox
         Left = 6
-        Top = 237
-        Width = 423
-        Height = 62
+        Top = 264
+        Width = 202
+        Height = 88
         Caption = 'CW/PTT control'
         TabOrder = 4
         object Label38: TLabel
           Left = 8
-          Top = 38
+          Top = 39
           Width = 70
           Height = 13
           Caption = 'Before TX (ms)'
         end
         object Label39: TLabel
-          Left = 128
-          Top = 38
+          Left = 8
+          Top = 63
           Width = 130
           Height = 13
           Caption = 'After TX paddle/keybd (ms)'
@@ -1752,16 +1760,16 @@ object formOptions: TformOptions
           OnClick = PTTEnabledCheckBoxClick
         end
         object BeforeEdit: TEdit
-          Left = 80
-          Top = 35
+          Left = 144
+          Top = 36
           Width = 40
           Height = 21
           TabOrder = 1
           Text = 'CWPortEdit'
         end
         object AfterEdit: TEdit
-          Left = 264
-          Top = 35
+          Left = 144
+          Top = 60
           Width = 40
           Height = 21
           TabOrder = 2
@@ -1769,8 +1777,8 @@ object formOptions: TformOptions
         end
       end
       object groupUsif4cw: TGroupBox
-        Left = 6
-        Top = 303
+        Left = 214
+        Top = 264
         Width = 213
         Height = 45
         Caption = 'USBIF4CW'
@@ -1796,7 +1804,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 184
         Width = 423
-        Height = 49
+        Height = 74
         Caption = 'ICOM CI-V Options'
         TabOrder = 3
         object Label83: TLabel
@@ -2236,7 +2244,7 @@ object formOptions: TformOptions
       end
       object groupWinKeyer: TGroupBox
         Left = 6
-        Top = 352
+        Top = 356
         Width = 423
         Height = 45
         Caption = 'WinKeyer Option'
@@ -4899,13 +4907,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Code PL'
+          FontName = 'NSimSun'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 34
+          ItemIndex = 93
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

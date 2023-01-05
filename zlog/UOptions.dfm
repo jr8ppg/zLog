@@ -488,11 +488,11 @@ object formOptions: TformOptions
       end
       object groupQsyAssist: TGroupBox
         Left = 222
-        Top = 300
+        Top = 304
         Width = 204
         Height = 89
         Caption = 'QSY Assist'
-        TabOrder = 8
+        TabOrder = 9
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -561,11 +561,11 @@ object formOptions: TformOptions
       end
       object GroupBox13: TGroupBox
         Left = 17
-        Top = 299
+        Top = 303
         Width = 101
         Height = 89
         Caption = 'QSL Default'
-        TabOrder = 7
+        TabOrder = 8
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -592,6 +592,14 @@ object formOptions: TformOptions
           Caption = 'NO QSL'
           TabOrder = 2
         end
+      end
+      object checkDispLongDateTime: TCheckBox
+        Left = 17
+        Top = 277
+        Width = 193
+        Height = 17
+        Caption = 'Display long date time'
+        TabOrder = 7
       end
     end
     object tabsheetCategories: TTabSheet
@@ -4899,13 +4907,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Code PL'
+          FontName = 'NSimSun'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 34
+          ItemIndex = 93
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

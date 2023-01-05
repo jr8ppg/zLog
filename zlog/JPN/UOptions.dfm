@@ -488,11 +488,11 @@ object formOptions: TformOptions
       end
       object groupQsyAssist: TGroupBox
         Left = 222
-        Top = 300
+        Top = 304
         Width = 204
         Height = 89
         Caption = 'QSY'#12450#12471#12473#12488
-        TabOrder = 8
+        TabOrder = 9
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -561,11 +561,11 @@ object formOptions: TformOptions
       end
       object GroupBox13: TGroupBox
         Left = 17
-        Top = 299
+        Top = 303
         Width = 101
         Height = 89
         Caption = 'QSL'#21021#26399#20516
-        TabOrder = 7
+        TabOrder = 8
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -592,6 +592,14 @@ object formOptions: TformOptions
           Caption = 'NO QSL'
           TabOrder = 2
         end
+      end
+      object checkDispLongDateTime: TCheckBox
+        Left = 17
+        Top = 277
+        Width = 193
+        Height = 17
+        Caption = #38263#12356#26085#20184#12391#34920#31034#12377#12427
+        TabOrder = 7
       end
     end
     object tabsheetCategories: TTabSheet
@@ -1818,7 +1826,7 @@ object formOptions: TformOptions
           Top = 49
           Width = 104
           Height = 13
-          Caption = #24540#31572#12479#12452#12512#12450#12454#12488'(ms)'
+          Caption = 'Response timeout(ms)'
         end
         object comboIcomMode: TComboBox
           Left = 42
@@ -1853,7 +1861,7 @@ object formOptions: TformOptions
           Top = 48
           Width = 133
           Height = 17
-          Caption = #24540#31572#12434#30906#35469#12377#12427
+          Caption = 'Strict acknowledgment'
           TabOrder = 2
         end
         object editIcomResponseTimout: TEdit
@@ -4899,13 +4907,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@HG'#24179#25104#35282#65402#65438#65404#65391#65400#20307'W3'
+          FontName = 'NSimSun'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 14
+          ItemIndex = 93
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

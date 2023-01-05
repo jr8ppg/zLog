@@ -191,6 +191,7 @@ type
     _countdownminute: Integer;
     _countperhour: Integer;
 
+    _displongdatetime: Boolean;
     _sameexchange : boolean; //true if exchange is same for all bands. false if serial etc.
     _entersuperexchange : boolean;
     _jmode : boolean;
@@ -721,6 +722,9 @@ begin
 
       // Display exchange on other bands
       Settings._sameexchange := ini.ReadBool('Preferences', 'SameExchange', False);
+
+      // Display long date time
+      Settings._displongdatetime := ini.ReadBool('Preferences', 'DispLongDateTime', False);
 
       // Multi Station Warning
       Settings._multistationwarning := ini.ReadBool('Preferences', 'MultiStationWarning', True);
@@ -1364,6 +1368,9 @@ begin
 
       // Display exchange on other bands
       ini.WriteBool('Preferences', 'SameExchange', Settings._sameexchange);
+
+      // Display long date time
+      ini.WriteBool('Preferences', 'DispLongDateTime', Settings._displongdatetime);
 
       // Multi Station Warning
       ini.WriteBool('Preferences', 'MultiStationWarning', Settings._multistationwarning);

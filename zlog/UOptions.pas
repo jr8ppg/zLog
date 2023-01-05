@@ -533,6 +533,7 @@ type
     checkIcomStrictAck: TCheckBox;
     editIcomResponseTimout: TEdit;
     Label122: TLabel;
+    checkDispLongDateTime: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -991,6 +992,7 @@ begin
       Settings._allowdupe := AllowDupeCheckBox.Checked;
       Settings._sameexchange := cbDispExchange.Checked;
       Settings._entersuperexchange := cbAutoEnterSuper.Checked;
+      Settings._displongdatetime := checkDispLongDateTime.Checked;
 
       Settings._cluster_telnet := FTempClusterTelnet;
       Settings._cluster_com := FTempClusterCom;
@@ -1513,6 +1515,7 @@ begin
 
       cbDispExchange.Checked := Settings._sameexchange;
       cbAutoEnterSuper.Checked := Settings._entersuperexchange;
+      checkDispLongDateTime.Checked := Settings._displongdatetime;
 
       //
       // Rig Control
