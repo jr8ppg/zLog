@@ -123,6 +123,8 @@ type
     FLastCall: string;
     FLastRcvd: string;
 
+    FStopRequest: Boolean;
+
     procedure SetRit(flag: Boolean); virtual;
     procedure SetXit(flag: Boolean); virtual;
     procedure SetRitOffset(offset: Integer); virtual;
@@ -156,6 +158,8 @@ type
     procedure AntSelect(no: Integer); virtual;
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
+    procedure StopRequest(); virtual;
+
     property CommPortDriver: TCommPortDriver read FComm;
     property PollingTimer: TTimer read FPollingTimer write FPollingTimer;
     property FILO: Boolean read FFILO write FFILO;
@@ -205,7 +209,7 @@ type
 
   TTS2000P = class(TTS2000)
     constructor Create(RigNum : integer); override;
-    Procedure PollingProcess; override;
+    procedure PollingProcess; override;
     destructor Destroy; override;
     procedure Initialize(); override;
   end;
@@ -727,6 +731,11 @@ begin
    end;
 end;
 
+procedure TRig.StopRequest();
+begin
+   FStopRequest := True;
+end;
+
 function TRig.Selected: Boolean;
 begin
    if _rignumber = MainForm.RigControl.FCurrentRigNumber then
@@ -1052,6 +1061,10 @@ end;
 procedure TFT2000.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    WriteData('IF;');
 end;
 
@@ -1308,6 +1321,10 @@ end;
 procedure TFT1011.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    ExecuteCommand('');
 end;
 
@@ -1716,13 +1733,24 @@ begin
 end;
 
 procedure TRigControl.Stop();
+var
+   i: Integer;
 begin
+   for i := 1 to 3 do begin
+      if Assigned(FRigs[i]) then begin
+         FRigs[i].StopRequest();
+      end;
+   end;
+
    Timer1.Enabled := False;
    PollingTimer1.Enabled := False;
    PollingTimer2.Enabled := False;
-   FreeAndNil(FRigs[1]);
-   FreeAndNil(FRigs[2]);
-   FreeAndNil(FRigs[3]);
+
+   for i := 1 to 3 do begin
+      if Assigned(FRigs[i]) then begin
+         FreeAndNil(FRigs[i]);
+      end;
+   end;
    FCurrentRig := nil;
 end;
 
@@ -1802,6 +1830,8 @@ begin
    FRit := False;
    FXit := False;
    FRitOffset := 0;
+
+   FStopRequest := False;
 end;
 
 destructor TRig.Destroy;
@@ -1823,6 +1853,8 @@ begin
       FComm.ToggleDTR(False);
       FComm.ToggleRTS(False);
    end;
+
+   FStopRequest := False;
 end;
 
 procedure TRig.VFOAEqualsB;
@@ -2007,6 +2039,7 @@ end;
 procedure TICOM.ICOMWriteData(S: AnsiString);
 var
    dwTick: DWORD;
+   msg: string;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('[' + IntToStr(_rignumber) + ']*** Enter - TICOM.ICOMWriteData(' + IntToHex(Byte(S[1]), 2) + ') ---'));
@@ -2041,10 +2074,13 @@ begin
       // とりあえず5秒だけど、1-3秒位で良さそう　iniファイルに出すか
       if (GetTickCount() - dwTick) > dmZLogGlobal.Settings._icom_response_timeout then begin
          FWaitForResponse := False;
-         MainForm.WriteStatusLineRed('No response from ' + Self.Name, True);
+         //FStopRequest := True;
+         msg := 'No response from ' + Self.Name;
          {$IFDEF DEBUG}
-         OutputDebugString(PChar('[' + IntToStr(_rignumber) + '] No response from ' + Self.Name));
+         msg := msg + ' (' + IntToHex(Byte(S[1])) + ')';
+         OutputDebugString(PChar('[' + IntToStr(_rignumber) + '] ' + msg));
          {$ENDIF}
+         MainForm.WriteStatusLineRed(msg, True);
          Break;
       end;
 
@@ -2061,6 +2097,11 @@ end;
 
 procedure TICOM.StartPolling();
 begin
+   if FStopRequest = True then begin
+      FPollingTimer.Enabled := False;
+      Exit;
+   end;
+
    // トランシーブモード使わない時はポーリング再開
    if (FUseTransceiveMode = False) then begin
       FPollingTimer.Enabled := True;
@@ -2237,11 +2278,14 @@ end;
 
 procedure TICOM.PollingProcess;
 begin
+   FPollingTimer.Enabled := False;
+
    if FWaitForResponse = True then begin
       Exit;
    end;
-
-   FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
 
    if FGetBandAndMode = False then begin
       ICOMWriteData(AnsiChar($03));
@@ -2358,18 +2402,30 @@ end;
 procedure TFT1000MP.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    WriteData(_nil3 + AnsiChar($03) + AnsiChar($10));
 end;
 
 procedure TFT847.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    WriteData(_nil4 + AnsiChar($03));
 end;
 
 procedure TFT817.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    if Fchange then begin
       BufferString :='';
       Fchange := False;
@@ -2379,6 +2435,11 @@ end;
 
 procedure TTS2000P.PollingProcess;
 begin
+   FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    WriteData('IF;');
 end;
 
