@@ -625,6 +625,10 @@ type
     checkRig2AKeyIsRTS: TCheckBox;
     checkRig2BKeyIsRTS: TCheckBox;
     checkRig3KeyIsRTS: TCheckBox;
+    Label110: TLabel;
+    checkIcomStrictAck: TCheckBox;
+    editIcomResponseTimout: TEdit;
+    checkDispLongDateTime: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -1000,6 +1004,9 @@ begin
          Settings.FRigSet[2].FAnt[b] := FRigSetB_ant[b].ItemIndex;
       end;
 
+      //
+      // ICOM CI-V options
+      //
       if comboIcomMode.ItemIndex = 0 then begin
          Settings._use_transceive_mode := True;
       end
@@ -1013,6 +1020,9 @@ begin
       else begin
          Settings._icom_polling_freq_and_mode := False;
       end;
+
+      Settings._icom_strict_ack_response := checkIcomStrictAck.Checked;
+      Settings._icom_response_timeout := StrToIntDef(editIcomResponseTimout.Text, 1000);
 
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
 
@@ -1099,6 +1109,7 @@ begin
       Settings._allowdupe := AllowDupeCheckBox.Checked;
       Settings._sameexchange := cbDispExchange.Checked;
       Settings._entersuperexchange := cbAutoEnterSuper.Checked;
+      Settings._displongdatetime := checkDispLongDateTime.Checked;
 
       Settings._cluster_telnet := FTempClusterTelnet;
       Settings._cluster_com := FTempClusterCom;
@@ -1490,6 +1501,9 @@ begin
          FRigSetB_ant[b].ItemIndex := Settings.FRigSet[2].FAnt[b];
       end;
 
+      //
+      // ICOM CI-V options
+      //
       if Settings._use_transceive_mode = True then begin
          comboIcomMode.ItemIndex := 0;
       end
@@ -1505,6 +1519,9 @@ begin
       end;
 
       comboIcomModeChange(nil);
+
+      checkIcomStrictAck.Checked := Settings._icom_strict_ack_response;
+      editIcomResponseTimout.Text := IntToStr(Settings._icom_response_timeout);
 
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
 
@@ -1610,6 +1627,7 @@ begin
 
       cbDispExchange.Checked := Settings._sameexchange;
       cbAutoEnterSuper.Checked := Settings._entersuperexchange;
+      checkDispLongDateTime.Checked := Settings._displongdatetime;
 
       //
       // Rig Control

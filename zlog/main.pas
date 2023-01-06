@@ -5230,6 +5230,7 @@ begin
       f.Release();
 
       // リグコントロール/Keying再開
+      WriteStatusLine('', False);
       RigControl.ImplementOptions(rig);
 
       // Accessibility
@@ -6205,6 +6206,7 @@ var
    i, j: Integer;
    b: Integer;
    BB: TBand;
+   rigno: Integer;
 begin
    FInitialized := False;
 
@@ -6596,6 +6598,18 @@ begin
 
       // リグコントロール開始
       RigControl.ImplementOptions();
+
+      // 右側のバンドとモードを取得＆設定
+      if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+         for BB := b19 to b10g do begin
+            rigno := dmZLogGlobal.Settings.FRigSet[2].FRig[BB];
+            if rigno <> 0 then begin
+               FEditPanel[1].ModeEdit.Text := ModeString[RigControl.Rigs[rigno].CurrentMode];
+               FEditPanel[1].BandEdit.Text := MHzString[RigControl.Rigs[rigno].CurrentBand];
+               Break;
+            end;
+         end;
+      end;
 
       // CTY.DATが必要なコンテストでロードされていない場合はお知らせする
       if (MyContest.NeedCtyDat = True) and (dmZLogGlobal.CtyDatLoaded = False) then begin
@@ -7476,10 +7490,11 @@ begin
       Exit;
    end;
 
-   SetCurrentQSO(FCurrentRigSet - 1);
+//   SetCurrentQSO(FCurrentRigSet - 1);
+   SetCurrentQSO(FCurrentTx);
 
    FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
-   FMessageManager.AddQue(WM_ZLOG_RESET_TX, 0, 0);
+//   FMessageManager.AddQue(WM_ZLOG_RESET_TX, 0, 0);
    FMessageManager.AddQue(0, S, CurrentQSO);
    FMessageManager.AddQue(WM_ZLOG_SWITCH_TX, 2, FCurrentTx);
    if (FCQLoopRunning = True) then begin

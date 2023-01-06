@@ -496,7 +496,7 @@ type
 //    procedure SetRitOffset(offset: Integer);
 
 //    property Rig: TRig read FCurrentRig;
-//    property Rigs: TRigArray read FRigs;
+    property Rigs: TRigArray read FRigs;
     property MaxRig: Integer read FMaxRig write FMaxRig;
 
     function GetRig(setno: Integer; b: TBand): TRig;
@@ -3582,33 +3582,33 @@ var
    ss: AnsiString;
    Index: Integer;
 begin
-      ss := S;
+   ss := S;
 
    // プリアンブルチェック
-      Index := pos(AnsiChar($FE) + AnsiChar($FE), ss);
-      if Index = 0 then begin
-         Exit;
-      end;
+   Index := pos(AnsiChar($FE) + AnsiChar($FE), ss);
+   if Index = 0 then begin
+      Exit;
+   end;
 
    // プリアンブル以前のゴミデータ削除
-      if Index > 1 then begin
-         Delete(ss, 1, Index - 1);
-      end;
+   if Index > 1 then begin
+      Delete(ss, 1, Index - 1);
+   end;
 
    // 最低６バイト必要
-      if Length(ss) < 6 then begin
-         Exit;
-      end;
+   if Length(ss) < 6 then begin
+      Exit;
+   end;
 
    // 宛先アドレスチェック
-      if not(Ord(ss[3]) in [0, FMyAddr]) then begin
-         Exit;
-      end;
+   if not(Ord(ss[3]) in [0, FMyAddr]) then begin
+      Exit;
+   end;
 
    // 送信元アドレスチェック
-      if ss[4] <> AnsiChar(FRigAddr) then begin
-         Exit;
-      end;
+   if ss[4] <> AnsiChar(FRigAddr) then begin
+      Exit;
+   end;
 
    try
       // プリアンブル、宛先アドレス、送信元アドレス削除

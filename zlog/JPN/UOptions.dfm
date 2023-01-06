@@ -488,11 +488,11 @@ object formOptions: TformOptions
       end
       object groupQsyAssist: TGroupBox
         Left = 222
-        Top = 300
+        Top = 304
         Width = 204
         Height = 89
         Caption = 'QSY'#12450#12471#12473#12488
-        TabOrder = 8
+        TabOrder = 9
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -561,11 +561,11 @@ object formOptions: TformOptions
       end
       object GroupBox13: TGroupBox
         Left = 17
-        Top = 299
+        Top = 303
         Width = 101
         Height = 89
         Caption = 'QSL'#21021#26399#20516
-        TabOrder = 7
+        TabOrder = 8
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -592,6 +592,14 @@ object formOptions: TformOptions
           Caption = 'NO QSL'
           TabOrder = 2
         end
+      end
+      object checkDispLongDateTime: TCheckBox
+        Left = 17
+        Top = 277
+        Width = 193
+        Height = 17
+        Caption = #38263#12356#26085#20184#12391#34920#31034#12377#12427
+        TabOrder = 7
       end
     end
     object tabsheetCategories: TTabSheet
@@ -3686,9 +3694,9 @@ object formOptions: TformOptions
       ImageIndex = 14
       object groupOptCI_V: TGroupBox
         Left = 6
-        Top = 184
+        Top = 158
         Width = 423
-        Height = 49
+        Height = 74
         Caption = 'ICOM CI-V Options'
         TabOrder = 0
         object Label83: TLabel
@@ -3704,6 +3712,13 @@ object formOptions: TformOptions
           Width = 36
           Height = 13
           Caption = 'Method'
+        end
+        object Label110: TLabel
+          Left = 262
+          Top = 49
+          Width = 104
+          Height = 13
+          Caption = #24540#31572#12479#12452#12512#12450#12454#12488'(ms)'
         end
         object comboIcomMode: TComboBox
           Left = 42
@@ -3728,10 +3743,28 @@ object formOptions: TformOptions
           Style = csDropDownList
           ItemIndex = 0
           TabOrder = 1
-          Text = 'Get freq. and mode (slow)'
+          Text = #21608#27874#25968#12392#12514#12540#12489#12434#21462#24471
           Items.Strings = (
-            'Get freq. and mode (slow)'
-            'Get freq. only (fast)')
+            #21608#27874#25968#12392#12514#12540#12489#12434#21462#24471
+            #21608#27874#25968#12398#12415#21462#24471)
+        end
+        object checkIcomStrictAck: TCheckBox
+          Left = 109
+          Top = 48
+          Width = 133
+          Height = 17
+          Caption = #24540#31572#12434#30906#35469#12377#12427
+          TabOrder = 2
+        end
+        object editIcomResponseTimout: TEdit
+          Left = 376
+          Top = 46
+          Width = 37
+          Height = 21
+          MaxLength = 4
+          NumbersOnly = True
+          TabOrder = 3
+          Text = '1000'
         end
       end
       object groupOptCwPtt: TGroupBox
@@ -3827,14 +3860,14 @@ object formOptions: TformOptions
         object checkUseWinKeyer: TCheckBox
           Left = 8
           Top = 18
-          Width = 89
+          Width = 95
           Height = 17
           Caption = 'WinKeyer'#12434#20351#12358
           TabOrder = 0
           OnClick = checkUseWinKeyerClick
         end
         object checkWk9600: TCheckBox
-          Left = 101
+          Left = 110
           Top = 18
           Width = 89
           Height = 17
@@ -3842,7 +3875,7 @@ object formOptions: TformOptions
           TabOrder = 1
         end
         object checkWkOutportSelect: TCheckBox
-          Left = 190
+          Left = 200
           Top = 18
           Width = 112
           Height = 17
@@ -6146,13 +6179,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@HG'#24179#25104#35282#65402#65438#65404#65391#65400#20307'W3'
+          FontName = 'Cascadia Code PL'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 14
+          ItemIndex = 34
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
