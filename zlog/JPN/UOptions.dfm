@@ -1826,7 +1826,7 @@ object formOptions: TformOptions
           Top = 49
           Width = 104
           Height = 13
-          Caption = 'Response timeout(ms)'
+          Caption = #24540#31572#12479#12452#12512#12450#12454#12488'(ms)'
         end
         object comboIcomMode: TComboBox
           Left = 42
@@ -1861,7 +1861,7 @@ object formOptions: TformOptions
           Top = 48
           Width = 133
           Height = 17
-          Caption = 'Strict acknowledgment'
+          Caption = #24540#31572#12434#30906#35469#12377#12427
           TabOrder = 2
         end
         object editIcomResponseTimout: TEdit
