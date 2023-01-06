@@ -138,6 +138,7 @@ type
     procedure SetFileRecordEx(src: TQSODataEx);
 
     function GetSerialStr(): string;
+    function GetDateTimeStr(): string;
     function GetTimeStr(): string;
     function GetDateStr(): string;
     function GetBandStr(): string;
@@ -211,6 +212,7 @@ type
     property QsoId: Integer read GetQsoId;
 
     property SerialStr: string read GetSerialStr;
+    property DateTimeStr: string read GetDateTimeStr;
     property TimeStr: string read GetTimeStr;
     property DateStr: string read GetDateStr;
     property BandStr: string read GetBandStr;
@@ -626,6 +628,11 @@ end;
 function TQSO.QTCStr: string;
 begin
    Result := FormatDateTime('hhnn', Self.Time) + ' ' + Self.CallSign + ' ' + Self.NrRcvd;
+end;
+
+function TQSO.GetDateTimeStr: string;
+begin
+   Result := FormatDateTime('yyyy/mm/dd hh:nn', Self.Time);
 end;
 
 function TQSO.GetTimeStr: string;

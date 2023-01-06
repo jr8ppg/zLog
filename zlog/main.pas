@@ -1663,8 +1663,14 @@ begin
       if editor.colSerial >= 0 then
          Cells[editor.colSerial, R] := aQSO.SerialStr;
 
-      if editor.colTime >= 0 then
+      if editor.colTime >= 0 then begin
+         if dmZLogGlobal.Settings._displongdatetime = True then begin
+            Cells[editor.colTime, R] := aQSO.DateTimeStr;
+         end
+         else begin
          Cells[editor.colTime, R] := aQSO.TimeStr;
+         end;
+      end;
 
       if editor.colCall >= 0 then
          Cells[editor.colCall, R] := aQSO.Callsign;
@@ -1798,6 +1804,10 @@ begin
 
       // Time
       if editor.colTime >= 0 then begin
+         if dmZLogGlobal.Settings._displongdatetime = True then begin
+            editor.TimeWid := 16;
+         end;
+
          Cells[editor.colTime, 0] := 'time';
          ColWidths[editor.colTime] := editor.TimeWid * nColWidth;
       end;
