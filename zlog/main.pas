@@ -3151,12 +3151,10 @@ end;
 procedure TMainForm.CallsignEdit1Change(Sender: TObject);
 var
    C, N, B, M, SE: TEdit;
-   curQSO: TQSO;
 begin
    AssignControls(FCurrentRigSet - 1, C, N, B, M, SE);
 
-   curQSO := TQSO.Create();
-   curQSO.Callsign := C.Text;
+   CurrentQSO.Callsign := C.Text;
 
    // SO2Rなので送受が同じ場合のみコールセットする
    if (FCurrentRigSet - 1) = FCurrentTx then begin
@@ -3168,22 +3166,20 @@ begin
    end;
 
    if FPartialCheck.Visible and FPartialCheck._CheckCall then begin
-      FPartialCheck.CheckPartial(curQSO);
+      FPartialCheck.CheckPartial(CurrentQSO);
    end;
 
    if FSuperCheck.Visible then begin
-      CheckSuper(curQSO);
+      CheckSuper(CurrentQSO);
    end;
 
    if FSuperCheck2.Visible then begin
-      CheckSuper2(curQSO);
+      CheckSuper2(CurrentQSO);
    end;
 
    if FCheckCall2.Visible then begin
-      FCheckCall2.Renew(curQSO);
+      FCheckCall2.Renew(CurrentQSO);
    end;
-
-   curQSO.Free();
 end;
 
 procedure TMainForm.NumberEdit1Change(Sender: TObject);
