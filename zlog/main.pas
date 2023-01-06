@@ -1021,7 +1021,7 @@ type
     procedure ScrollGrid();
     procedure SetCurrentQSO(nID: Integer);
     procedure EditCurrentRow();
-    procedure AssignControls(nID: Integer; var C, N, B, M: TEdit);
+    procedure AssignControls(nID: Integer; var C, N, B, M, S: TEdit);
     procedure CallSpaceBarProc(C, N, B: TEdit);
     procedure SetCqRepeatMode(fOn: Boolean);
     procedure StartCqRepeatTimer();
@@ -3124,9 +3124,9 @@ procedure TMainForm.SpaceBarProc(nID: Integer);
 var
    Q: TQSO;
    S: string;
-   C, N, B, M: TEdit;
+   C, N, B, M, SE: TEdit;
 begin
-   AssignControls(nID, C, N, B, M);
+   AssignControls(nID, C, N, B, M, SE);
 
    Q := Log.QuickDupe(CurrentQSO);
    if Q <> nil then begin
@@ -3150,10 +3150,10 @@ end;
 
 procedure TMainForm.CallsignEdit1Change(Sender: TObject);
 var
-   C, N, B, M: TEdit;
+   C, N, B, M, SE: TEdit;
    curQSO: TQSO;
 begin
-   AssignControls(FCurrentRigSet - 1, C, N, B, M);
+   AssignControls(FCurrentRigSet - 1, C, N, B, M, SE);
 
    curQSO := TQSO.Create();
    curQSO.Callsign := C.Text;
@@ -3429,7 +3429,7 @@ var
    Q: TQSO;
    nID: Integer;
    curQSO: TQSO;
-   C, N, B, M: TEdit;
+   C, N, B, M, SE: TEdit;
 begin
    // TABキー連打対策か？ 100ミリ秒ではあまり対策になっていない
    if MilliSecondsBetween(Now(), FLastTabPress) <= 100 then begin
@@ -3469,7 +3469,7 @@ begin
    // 確定待ち
    FWaitForQsoFinish[FCurrentRigSet - 1] := True;
 
-   AssignControls(FKeyPressedRigID, C, N, B, M);
+   AssignControls(FKeyPressedRigID, C, N, B, M, SE);
 
    // 次のCQはキャンセル
    FCQLoopPause := True;
@@ -3481,6 +3481,7 @@ begin
    curQSO.Band     := TextToBand(B.Text);
    curQSO.Mode     := TextToMode(M.Text);
    curQSO.Power    := BandToPower(curQSO.Band);
+   curQSO.Serial   := StrToIntDef(SE.Text, 1);
 
    if FInformation.IsWait = False then begin
       FMessageManager.ClearQue();
@@ -4692,7 +4693,7 @@ var
 //   strNumber: string;
 //   str: string;
 //   strPower: string;
-   C, N, B, M: TEdit;
+   C, N, B, M, SE: TEdit;
 
    procedure WinKeyerQSO(aQSO: TQSO);
    begin
@@ -4712,7 +4713,7 @@ begin
    OutputDebugString(PChar('--- Begin CallsignSentProc() ID = [' + IntToStr(nID) + ']'));
    {$ENDIF}
    try
-      AssignControls(nID, C, N, B, M);
+      AssignControls(nID, C, N, B, M, SE);
 
       curQSO.Callsign := C.Text;
       curQSO.Band     := TextToBand(B.Text);
@@ -4782,19 +4783,21 @@ begin
    end;
 end;
 
-procedure TMainForm.AssignControls(nID: Integer; var C, N, B, M: TEdit);
+procedure TMainForm.AssignControls(nID: Integer; var C, N, B, M, S: TEdit);
 begin
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
       C := CallsignEdit1;
       N := NumberEdit1;
       B := BandEdit1;
       M := ModeEdit1;
+      S := SerialEdit1;
    end
    else begin
       C := FEditPanel[nID].CallsignEdit;
       N := FEditPanel[nID].rcvdNumber;
       B := FEditPanel[nID].BandEdit;
       M := FEditPanel[nID].ModeEdit;
+      S := FEditPanel[nID].SerialEdit;
    end;
 end;
 
@@ -9490,11 +9493,11 @@ end;
 procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
 var
    nID: Integer;
-   C, N, B, M: TEdit;
+   C, N, B, M, SE: TEdit;
 begin
    nID := FCurrentRx;
 
-   AssignControls(nID, C, N, B, M);
+   AssignControls(nID, C, N, B, M, SE);
 
    CurrentQSO.CallSign := strCallsign;
 
