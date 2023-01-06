@@ -123,6 +123,8 @@ type
     FLastCall: string;
     FLastRcvd: string;
 
+    FStopRequest: Boolean;
+
     procedure SetRit(flag: Boolean); virtual;
     procedure SetXit(flag: Boolean); virtual;
     procedure SetRitOffset(offset: Integer); virtual;
@@ -156,6 +158,8 @@ type
     procedure AntSelect(no: Integer); virtual;
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
+    procedure StopRequest(); virtual;
+
     property CommPortDriver: TCommPortDriver read FComm;
     property PollingTimer: TTimer read FPollingTimer write FPollingTimer;
     property FILO: Boolean read FFILO write FFILO;
@@ -206,7 +210,7 @@ type
 
   TTS2000P = class(TTS2000)
     constructor Create(RigNum : integer); override;
-    Procedure PollingProcess; override;
+    procedure PollingProcess; override;
     destructor Destroy; override;
     procedure Initialize(); override;
   end;
@@ -223,6 +227,7 @@ type
     FUseTransceiveMode: Boolean;
     FGetBandAndMode: Boolean;
     FPollingCount: Integer;
+    FWaitForResponse: Boolean;
   public
     constructor Create(RigNum : integer); override;
     destructor Destroy; override;
@@ -237,6 +242,7 @@ type
     procedure InquireStatus; override;
     procedure AntSelect(no: Integer); override;
     procedure ICOMWriteData(S : AnsiString);
+    procedure StartPolling();
     procedure PollingProcess; override;
     procedure SetRit(flag: Boolean); override;
     procedure SetXit(flag: Boolean); override;
@@ -734,6 +740,11 @@ begin
    end;
 end;
 
+procedure TRig.StopRequest();
+begin
+   FStopRequest := True;
+end;
+
 function TRig.Selected: Boolean;
 begin
    if _rignumber = MainForm.RigControl.FCurrentRigNumber then
@@ -1059,6 +1070,10 @@ end;
 procedure TFT2000.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    WriteData('IF;');
 end;
 
@@ -1315,6 +1330,10 @@ end;
 procedure TFT1011.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    ExecuteCommand('');
 end;
 
@@ -1649,9 +1668,6 @@ begin
          end;
 
          rig.name := rname;
-
-         // Initialize & Start
-         rig.Initialize();
       end;
    finally
       Result := rig;
@@ -1676,21 +1692,6 @@ begin
    FRigs[3] := BuildRigObject(3);
    FRigs[4] := BuildRigObject(4);
    FRigs[5] := TVirtualRig.Create(5);
-
-   for i := 1 to 4 do begin
-      if FRigs[i] <> nil then begin
-         if dmZlogGlobal.Settings.FRigControl[i].FUseTransverter then begin
-            FRigs[i]._freqoffset := 1000 * dmZlogGlobal.Settings.FRigControl[i].FTransverterOffset;
-         end
-         else begin
-            FRigs[i]._freqoffset := 0;
-         end;
-      end;
-   end;
-
-   SetCurrentRig(rig);
-
-   SetSendFreq();
 
    // RIGコントロールのCOMポートと、CWキーイングのポートが同じなら
    // CWキーイングのCPDrvをRIGコントロールの物にすり替える
@@ -1735,20 +1736,47 @@ begin
       dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
    end;
 *)
+
+   for i := 1 to 4 do begin
+      if FRigs[i] <> nil then begin
+         if dmZlogGlobal.Settings.FRigControl[i].FUseTransverter then begin
+            FRigs[i]._freqoffset := 1000 * dmZlogGlobal.Settings.FRigControl[i].FTransverterOffset;
+         end
+         else begin
+            FRigs[i]._freqoffset := 0;
+         end;
+
+         // Initialize & Start
+         FRigs[i].Initialize();
+      end;
+   end;
+
+   SetCurrentRig(rig);
+
+   SetSendFreq();
 end;
 
 procedure TRigControl.Stop();
+var
+   i: Integer;
 begin
+   for i := 1 to 3 do begin
+      if Assigned(FRigs[i]) then begin
+         FRigs[i].StopRequest();
+      end;
+   end;
+
    Timer1.Enabled := False;
    PollingTimer1.Enabled := False;
    PollingTimer2.Enabled := False;
    PollingTimer3.Enabled := False;
    PollingTimer4.Enabled := False;
-   FreeAndNil(FRigs[1]);
-   FreeAndNil(FRigs[2]);
-   FreeAndNil(FRigs[3]);
-   FreeAndNil(FRigs[4]);
-   FreeAndNil(FRigs[5]);
+
+   for i := 1 to 5 do begin
+      if Assigned(FRigs[i]) then begin
+         FreeAndNil(FRigs[i]);
+      end;
+   end;
    FCurrentRig := nil;
 end;
 
@@ -1838,6 +1866,8 @@ begin
    FRit := False;
    FXit := False;
    FRitOffset := 0;
+
+   FStopRequest := False;
 end;
 
 destructor TRig.Destroy;
@@ -1859,6 +1889,8 @@ begin
       FComm.ToggleDTR(False);
       FComm.ToggleRTS(False);
    end;
+
+   FStopRequest := False;
 end;
 
 procedure TRig.VFOAEqualsB;
@@ -2026,6 +2058,7 @@ begin
    FComm.HwFlow := hfNONE;
    FComm.SwFlow := sfNONE;
    FComm.EnableDTROnOpen := False;
+   FWaitForResponse := False;
    TerminatorCode := AnsiChar($FD);
 
    FMyAddr := $E0;
@@ -2040,8 +2073,83 @@ begin
 end;
 
 procedure TICOM.ICOMWriteData(S: AnsiString);
+var
+   dwTick: DWORD;
+   msg: string;
 begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('[' + IntToStr(_rignumber) + ']*** Enter - TICOM.ICOMWriteData(' + IntToHex(Byte(S[1]), 2) + ') ---'));
+   {$ENDIF}
+
+   if FComm.Connected = False then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('[' + IntToStr(_rignumber) + '] @@@not connected@@@'));
+      {$ENDIF}
+      Exit;
+   end;
+
+   // コマンド送信時はポーリング中止
+   FPollingTimer.Enabled := False;
+
+   // 応答待ち中
+   FWaitForResponse := True;
+
    WriteData(AnsiChar($FE) + AnsiChar($FE) + AnsiChar(FRigAddr) + AnsiChar(FMyAddr) + S + AnsiChar($FD));
+
+   // 応答確認無しなら抜ける
+   if dmZLogGlobal.Settings._icom_strict_ack_response = False then begin
+      Exit;
+   end;
+
+   // $FA/$FB/Response受信まで待ち合わせ
+   dwTick := GetTickCount();
+   while FWaitForResponse = True do begin
+      // 待ってる間重い感じするなら↓
+      Application.ProcessMessages();
+
+      // とりあえず5秒だけど、1-3秒位で良さそう　iniファイルに出すか
+      if (GetTickCount() - dwTick) > dmZLogGlobal.Settings._icom_response_timeout then begin
+         FWaitForResponse := False;
+         //FStopRequest := True;
+         msg := 'No response from ' + Self.Name;
+         {$IFDEF DEBUG}
+         msg := msg + ' (' + IntToHex(Byte(S[1])) + ')';
+         OutputDebugString(PChar('[' + IntToStr(_rignumber) + '] ' + msg));
+         {$ENDIF}
+         MainForm.WriteStatusLineRed(msg, True);
+         Break;
+      end;
+
+      Sleep(1);
+   end;
+
+   // ポーリング再開
+   StartPolling();
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('[' + IntToStr(_rignumber) + ']*** Leave - TICOM.ICOMWriteData(' + IntToHex(Byte(S[1]), 2) + ') ---'));
+   {$ENDIF}
+end;
+
+procedure TICOM.StartPolling();
+begin
+   if FStopRequest = True then begin
+      FPollingTimer.Enabled := False;
+      Exit;
+   end;
+
+   // トランシーブモード使わない時はポーリング再開
+   if (FUseTransceiveMode = False) then begin
+      FPollingTimer.Enabled := True;
+   end;
+
+   // トランシーブモード使う場合は１回か２回ポーリングする
+   if (FUseTransceiveMode = True) then begin
+      if ((FGetBandAndMode = True) and  (FPollingCount < 2)) or
+         ((FGetBandAndMode = False) and  (FPollingCount < 1)) then begin
+         FPollingTimer.Enabled := True;
+      end;
+   end;
 end;
 
 constructor TFT1000MP.Create(RigNum: Integer);
@@ -2208,6 +2316,13 @@ procedure TICOM.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
 
+   if FWaitForResponse = True then begin
+      Exit;
+   end;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    if FGetBandAndMode = False then begin
       ICOMWriteData(AnsiChar($03));
    end
@@ -2323,18 +2438,30 @@ end;
 procedure TFT1000MP.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    WriteData(_nil3 + AnsiChar($03) + AnsiChar($10));
 end;
 
 procedure TFT847.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    WriteData(_nil4 + AnsiChar($03));
 end;
 
 procedure TFT817.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    if Fchange then begin
       BufferString :='';
       Fchange := False;
@@ -2344,6 +2471,11 @@ end;
 
 procedure TTS2000P.PollingProcess;
 begin
+   FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    WriteData('IF;');
 end;
 
@@ -3450,42 +3582,55 @@ var
    ss: AnsiString;
    Index: Integer;
 begin
-   try
-      // RigControl.label1.caption := S;
       ss := S;
-      Index := pos(AnsiChar($FE) + AnsiChar($FE), ss);
 
+   // プリアンブルチェック
+      Index := pos(AnsiChar($FE) + AnsiChar($FE), ss);
       if Index = 0 then begin
          Exit;
       end;
 
+   // プリアンブル以前のゴミデータ削除
       if Index > 1 then begin
          Delete(ss, 1, Index - 1);
       end;
 
+   // 最低６バイト必要
       if Length(ss) < 6 then begin
          Exit;
       end;
 
+   // 宛先アドレスチェック
       if not(Ord(ss[3]) in [0, FMyAddr]) then begin
          Exit;
       end;
 
+   // 送信元アドレスチェック
       if ss[4] <> AnsiChar(FRigAddr) then begin
          Exit;
       end;
 
+   try
+      // プリアンブル、宛先アドレス、送信元アドレス削除
       Delete(ss, 1, 4);
+
+      // ポストアンブル削除
       Delete(ss, length(ss), 1);
 
+      // コマンド取りだし
       Command := Ord(ss[1]);
 
-      if length(ss) = 1 then begin
+      if Length(ss) = 1 then begin
          case Command of
-            $FA:
-               Exit; // ng message
-            $FB:
-               Exit; // ok message
+            // NG
+            $FA: begin
+               Exit;
+            end;
+
+            // OK
+            $FB: begin
+               Exit;
+            end;
          end;
          Exit;
       end;
@@ -3567,11 +3712,13 @@ begin
          end;
       end;
    finally
-      // トランシーブモード使わない時はポーリング再開
-      if (FUseTransceiveMode = False) or
-         ((FUseTransceiveMode = True) and (FGetBandAndMode = True) and  (FPollingCount < 2)) then begin
-         FPollingTimer.Enabled := True;
+      // 応答確認無しならここでポーリング再開
+      if dmZLogGlobal.Settings._icom_strict_ack_response = False then begin
+         StartPolling();
       end;
+
+      // 応答待ち終了
+      FWaitForResponse := False;
    end;
 end;
 
@@ -4158,6 +4305,7 @@ var
    i: Integer;
    ptr: PAnsiChar;
    str: AnsiString;
+   n: Integer;
 begin
    str := '';
    ptr := PAnsiChar(DataPtr);
@@ -4166,7 +4314,12 @@ begin
       str := str + AnsiChar(ptr[i]);
    end;
 
-   FRigs[TCommPortDriver(Sender).Tag].PassOnRxData(str)
+   n := TCommPortDriver(Sender).Tag;
+   if (n >= Low(FRigs)) and (n <= High(FRigs)) then begin
+      if Assigned(FRigs[n]) then begin
+         FRigs[n].PassOnRxData(str)
+      end;
+   end;
 end;
 
 procedure TRigControl.btnOmniRigClick(Sender: TObject);
