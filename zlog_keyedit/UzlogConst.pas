@@ -15,6 +15,8 @@ type
   TSo2rType = (so2rNone = 0, so2rCom, so2rNeo);
   TQslState = (qsNone = 0, qsPseQsl, qsNoQsl);
 
+  TFrequency = Int64;
+
 const
   HiBand = b10g;
 
@@ -37,7 +39,7 @@ const
   TXLIST_MS = '0,1';
 
 const
-  RIGNAMES : array[0..17] of string =
+  RIGNAMES : array[0..19] of string =
 ('None',
  'TS-690/450',
  'TS-850',
@@ -46,12 +48,14 @@ const
  'TS-2000/P',
  'TS-570',
  'TS-590/890/990',
+ 'FT-710',
  'FT-817',
  'FT-847',
  'FT-920',
  'FT-991',
  'FT-100',
  'FT-1000',
+ 'FT-1011(PC->RIG)',
  'FT-1000MP',
  'MarkV/FT-1000MP',
  'FT-1000MP Mark-V Field',
@@ -81,9 +85,9 @@ const
                        ('P', 'L', 'M', 'H',  '',  '',  '',  '',  '',  '',  '');
 
 const
-  MHzString: array[b19..HiBand] of string = ('1.9','3.5','7','10','14',
+  MHzString: array[b19..bUnknown] of string = ('1.9','3.5','7','10','14',
                                              '18','21','24','28','50','144',
-                                             '430','1200','2400','5600','10G');
+                                             '430','1200','2400','5600','10G','Target','Unknown');
 
   BandString: array[b19..HiBand] of string = ('1.9 MHz','3.5 MHz','7 MHz','10 MHz',
                                              '14 MHz', '18 MHz','21 MHz','24 MHz','28 MHz',
@@ -125,7 +129,7 @@ const
   );
 
 const
-  default_primary_shortcut: array[0..155] of string = (
+  default_primary_shortcut: array[0..159] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -281,10 +285,14 @@ const
     'Ctrl+1',           // #152 actionChangeTxNr1
     '',                 // #153 actionChangeTxNr2
     '',                 // #154 actionPseQsl
-    ''                  // #155 actionNoQsl
+    '',                 // #155 actionNoQsl
+    '',                 // #156 actionMsgMgr
+    'Shift+Ctrl+B',     // #157 actionChangeBand2
+    'Shift+Ctrl+M',     // #158 actionChangeMode2
+    'Shift+Ctrl+P'      // #159 actionChangePower2
   );
 
-  default_secondary_shortcut: array[0..155] of string = (
+  default_secondary_shortcut: array[0..159] of string = (
     '',                 // #00
     '',
     '',
@@ -440,7 +448,11 @@ const
     '',                 // #152 actionChangeTxNr1
     '',                 // #153 actionChangeTxNr2
     '',                 // #154 actionPseQsl
-    ''                  // #155 actionNoQsl
+    '',                 // #155 actionNoQsl
+    '',                 // #156 actionMsgMgr
+    '',                 // #157 actionChangeBand2
+    '',                 // #158 actionChangeMode2
+    ''                  // #159 actionChangePower2
   );
 
 const
