@@ -108,6 +108,9 @@ type
     checkInvalid: TCheckBox;
     DateTimePicker1: TDateTimePicker;
     DateTimePicker2: TDateTimePicker;
+    actionChangeBand2: TAction;
+    actionChangeMode2: TAction;
+    actionChangePower2: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -162,7 +165,7 @@ type
     workQSO : TQSO;
     origQSO : TQSO;
     Action : integer;
-    procedure ChangePower();
+    procedure ChangePower(fUp: Boolean);
   public
     { Public declarations }
     procedure Init(aQSO : TQSO; Action_ : integer);
@@ -271,6 +274,9 @@ begin
    actionToggleRx.ShortCut := MainForm.actionToggleRx.ShortCut;
    actionToggleTx.ShortCut := MainForm.actionToggleTx.ShortCut;
    actionSo2rToggleRigPair.ShortCut := MainForm.actionSo2rToggleRigPair.ShortCut;
+   actionChangeBand2.ShortCut := MainForm.actionChangeBand2.ShortCut;
+   actionChangeMode2.ShortCut := MainForm.actionChangeMode2.ShortCut;
+   actionChangePower2.ShortCut := MainForm.actionChangePower2.ShortCut;
 
    actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
    actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
@@ -318,6 +324,9 @@ begin
    actionToggleRx.SecondaryShortCuts.Assign(MainForm.actionToggleRx.SecondaryShortCuts);
    actionToggleTx.SecondaryShortCuts.Assign(MainForm.actionToggleTx.SecondaryShortCuts);
    actionSo2rToggleRigPair.SecondaryShortCuts.Assign(MainForm.actionSo2rToggleRigPair.SecondaryShortCuts);
+   actionChangeBand2.SecondaryShortCuts.Assign(MainForm.actionChangeBand2.SecondaryShortCuts);
+   actionChangeMode2.SecondaryShortCuts.Assign(MainForm.actionChangeMode2.SecondaryShortCuts);
+   actionChangePower2.SecondaryShortCuts.Assign(MainForm.actionChangePower2.SecondaryShortCuts);
 end;
 
 procedure TEditDialog.FormShow(Sender: TObject);
@@ -697,13 +706,23 @@ begin
    radioNoQsl.Checked := (workQSO.QslState = qsNoQsl);
 end;
 
-procedure TEditDialog.ChangePower;
+procedure TEditDialog.ChangePower(fUp: Boolean);
 begin
-   if workQSO.Power = pwrH then begin
-      workQSO.Power := pwrP;
+   if (fUp = True) then begin
+      if workQSO.Power = pwrH then begin
+         workQSO.Power := pwrP;
+      end
+      else begin
+         workQSO.Power := TPower(integer(workQSO.Power) + 1);
+      end;
    end
    else begin
-      workQSO.Power := TPower(integer(workQSO.Power) + 1);
+      if workQSO.Power = pwrP then begin
+         workQSO.Power := pwrH;
+      end
+      else begin
+         workQSO.Power := TPower(integer(workQSO.Power) - 1);
+      end;
    end;
 
    NewPowerEdit.Text := workQSO.NewPowerStr;
@@ -833,7 +852,6 @@ end;
 
 procedure TEditDialog.actionToggleRigExecute(Sender: TObject);
 begin
-//   MainForm.RigControl.ToggleCurrentRig;
    MainForm.actionToggleRigExecute(Sender);
 end;
 
@@ -857,15 +875,26 @@ end;
 
 procedure TEditDialog.actionChangeBandExecute(Sender: TObject);
 begin
-   workQSO.Band := MainForm.GetNextBand(workQSO.Band, True);
+   if TAction(Sender).Tag = 0 then begin
+      workQSO.Band := MainForm.GetNextBand(workQSO.Band, True);
+   end
+   else begin
+      workQSO.Band := MainForm.GetNextBand(workQSO.Band, False);
+   end;
    BandEdit.Text := MHzString[workQSO.Band];
 end;
 
 procedure TEditDialog.actionChangeModeExecute(Sender: TObject);
 begin
-   // ChangeMode;
-   MainForm.SetQSOMode(workQSO);
+   if TAction(Sender).Tag = 0 then begin
+      MainForm.SetQSOMode(workQSO, True);
+   end
+   else begin
+      MainForm.SetQSOMode(workQSO, False);
+   end;
+
    ModeEdit.Text := ModeString[workQSO.mode];
+
    if workQSO.mode in [mSSB, mFM, mAM] then begin
       workQSO.RSTrcvd := 59;
       workQSO.RSTsent := 59;
@@ -880,7 +909,12 @@ end;
 
 procedure TEditDialog.actionChangePowerExecute(Sender: TObject);
 begin
-   ChangePower;
+   if TAction(Sender).Tag = 0 then begin
+      ChangePower(True);
+   end
+   else begin
+      ChangePower(False);
+   end;
 end;
 
 procedure TEditDialog.actionChangeRExecute(Sender: TObject);

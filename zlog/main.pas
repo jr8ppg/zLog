@@ -506,6 +506,11 @@ type
     N13: TMenuItem;
     menuEditStatus: TMenuItem;
     comboBandPlan: TComboBox;
+    actionShowMsgMgr: TAction;
+    ShowMessageManagerSO2R1: TMenuItem;
+    actionChangeBand2: TAction;
+    actionChangeMode2: TAction;
+    actionChangePower2: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -761,6 +766,7 @@ type
     procedure menuSortByClick(Sender: TObject);
     procedure menuEditStatusClick(Sender: TObject);
     procedure comboBandPlanChange(Sender: TObject);
+    procedure actionShowMsgMgrExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1007,7 +1013,7 @@ type
 
     procedure GridRefreshScreen(fSelectRow: Boolean = False);
 
-    procedure SetQSOMode(aQSO : TQSO);
+    procedure SetQSOMode(aQSO: TQSO; fUp: Boolean);
     procedure WriteStatusLine(S: string; fWriteConsole: Boolean);
     procedure WriteStatusLineRed(S: string; fWriteConsole: Boolean);
     procedure WriteStatusText(S: string; fRed, fWriteConsole: Boolean);
@@ -1562,12 +1568,12 @@ begin
    FFunctionKeyPanel.UpdateInfo();
 end;
 
-procedure TMainForm.SetQSOMode(aQSO: TQSO);
+procedure TMainForm.SetQSOMode(aQSO: TQSO; fUp: Boolean);
 var
    maxmode: TMode;
 begin
    if dmZLogGlobal.ContestMode = cmAll then begin
-      maxmode := mOther;
+      maxmode := mRTTY;
    end
    else begin
       maxmode := mOther;
@@ -1587,11 +1593,21 @@ begin
       maxmode := mOther;
    end;
 
-   if aQSO.Mode < maxmode then begin
-      aQSO.Mode := TMode(Integer(aQSO.Mode) + 1);
+   if fUp = True then begin
+      if aQSO.Mode < maxmode then begin
+         aQSO.Mode := TMode(Integer(aQSO.Mode) + 1);
+      end
+      else begin
+         aQSO.Mode := mCW;
+      end;
    end
    else begin
-      aQSO.Mode := mCW;
+      if aQSO.Mode > mCW then begin
+         aQSO.Mode := TMode(Integer(aQSO.Mode) - 1);
+      end
+      else begin
+         aQSO.Mode := maxmode;
+      end;
    end;
 end;
 
@@ -8118,10 +8134,18 @@ begin
    end;
 end;
 
-// #89 バンド変更 Shift+B
+// #089, #157 バンド変更 Shift+B
 procedure TMainForm.actionChangeBandExecute(Sender: TObject);
+var
+   b: TBand;
 begin
-   UpdateBand(GetNextBand(CurrentQSO.Band, True));
+   if TAction(Sender).Tag = 0 then begin
+      b := GetNextBand(CurrentQSO.Band, True);
+   end
+   else begin
+      b := GetNextBand(CurrentQSO.Band, False);
+   end;
+   UpdateBand(b);
 
    if RigControl.Rig <> nil then begin
       RigControl.Rig.SetBand(CurrentQSO);
@@ -8132,10 +8156,15 @@ begin
    end;
 end;
 
-// #90 モード変更 Shift+M
+// #090, #158 モード変更 Shift+M
 procedure TMainForm.actionChangeModeExecute(Sender: TObject);
 begin
-   SetQSOMode(CurrentQSO);
+   if TAction(Sender).Tag = 0 then begin
+      SetQSOMode(CurrentQSO, True);
+   end
+   else begin
+      SetQSOMode(CurrentQSO, False);
+   end;
    UpdateMode(CurrentQSO.Mode);
 
    if RigControl.Rig <> nil then begin
@@ -8143,14 +8172,24 @@ begin
    end;
 end;
 
-// #91 パワー変更 Shift+P
+// #091, #159 パワー変更 Shift+P
 procedure TMainForm.actionChangePowerExecute(Sender: TObject);
 begin
-   if CurrentQSO.Power = pwrH then begin
-      CurrentQSO.Power := pwrP;
+   if TAction(Sender).Tag = 0 then begin
+      if CurrentQSO.Power = pwrH then begin
+         CurrentQSO.Power := pwrP;
+      end
+      else begin
+         CurrentQSO.Power := TPower(Integer(CurrentQSO.Power) + 1);
+      end;
    end
    else begin
-      CurrentQSO.Power := TPower(Integer(CurrentQSO.Power) + 1);
+      if CurrentQSO.Power = pwrP then begin
+         CurrentQSO.Power := pwrH;
+      end
+      else begin
+         CurrentQSO.Power := TPower(Integer(CurrentQSO.Power) - 1);
+      end;
    end;
 
    if Assigned(PowerEdit) then begin
@@ -8663,6 +8702,12 @@ procedure TMainForm.actionNoQslExecute(Sender: TObject);
 begin
    CurrentQSO.QslState := qsNoQsl;
    WriteStatusLine(MEMO_NO_QSL, False);
+end;
+
+// #156 Show MessageManager
+procedure TMainForm.actionShowMsgMgrExecute(Sender: TObject);
+begin
+//   FMessageManager.Show();
 end;
 
 procedure TMainForm.RestoreWindowsPos();
