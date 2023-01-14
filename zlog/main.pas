@@ -518,6 +518,9 @@ type
     comboBandPlan: TComboBox;
     actionShowMsgMgr: TAction;
     ShowMessageManagerSO2R1: TMenuItem;
+    actionChangeBand2: TAction;
+    actionChangeMode2: TAction;
+    actionChangePower2: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1036,7 +1039,7 @@ type
 
     procedure GridRefreshScreen(fSelectRow: Boolean = False);
 
-    procedure SetQSOMode(aQSO : TQSO);
+    procedure SetQSOMode(aQSO: TQSO; fUp: Boolean);
     procedure WriteStatusLine(S: string; fWriteConsole: Boolean);
     procedure WriteStatusLineRed(S: string; fWriteConsole: Boolean);
     procedure WriteStatusText(S: string; fRed, fWriteConsole: Boolean);
@@ -1598,12 +1601,12 @@ begin
    FFunctionKeyPanel.UpdateInfo();
 end;
 
-procedure TMainForm.SetQSOMode(aQSO: TQSO);
+procedure TMainForm.SetQSOMode(aQSO: TQSO; fUp: Boolean);
 var
    maxmode: TMode;
 begin
    if dmZLogGlobal.ContestMode = cmAll then begin
-      maxmode := mOther;
+      maxmode := mRTTY;
    end
    else begin
       maxmode := mOther;
@@ -1623,11 +1626,21 @@ begin
       maxmode := mOther;
    end;
 
-   if aQSO.Mode < maxmode then begin
-      aQSO.Mode := TMode(Integer(aQSO.Mode) + 1);
+   if fUp = True then begin
+      if aQSO.Mode < maxmode then begin
+         aQSO.Mode := TMode(Integer(aQSO.Mode) + 1);
+      end
+      else begin
+         aQSO.Mode := mCW;
+      end;
    end
    else begin
-      aQSO.Mode := mCW;
+      if aQSO.Mode > mCW then begin
+         aQSO.Mode := TMode(Integer(aQSO.Mode) - 1);
+      end
+      else begin
+         aQSO.Mode := maxmode;
+      end;
    end;
 end;
 
@@ -1668,7 +1681,7 @@ begin
             Cells[editor.colTime, R] := aQSO.DateTimeStr;
          end
          else begin
-         Cells[editor.colTime, R] := aQSO.TimeStr;
+            Cells[editor.colTime, R] := aQSO.TimeStr;
          end;
       end;
 
@@ -2445,7 +2458,9 @@ begin
       end;
 
       // Antenna Select
-      rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[Q.Band]);
+      if (FCurrentRigSet = 1) or (FCurrentRigSet = 2) then begin
+         rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[Q.Band]);
+      end;
    end;
 
    UpdateBand(Q.Band);
@@ -3269,18 +3284,22 @@ end;
 procedure TMainForm.LoadNewContestFromFile(filename: string);
 var
    Q: TQSO;
-   boo, Boo2: Boolean;
+   bak_acceptdiff: Boolean;
+   bak_counthigher: Boolean;
+   bak_coeff: Extended;
 begin
    // 一度はCreateLogされてる前提
    Q := TQSO.Create();
    Q.Assign(Log.QsoList[0]);
-   boo := Log.AcceptDifferentMode;
-   Boo2 := Log.CountHigherPoints;
+   bak_acceptdiff := Log.AcceptDifferentMode;
+   bak_counthigher := Log.CountHigherPoints;
+   bak_coeff := Log.ScoreCoeff;
 
    dmZLogGlobal.CreateLog();
 
-   Log.AcceptDifferentMode := boo;
-   Log.CountHigherPoints := Boo2;
+   Log.ScoreCoeff := bak_coeff;
+   Log.AcceptDifferentMode := bak_acceptdiff;
+   Log.CountHigherPoints := bak_counthigher;
    Log.QsoList[0].Assign(Q); // contest info is set to current contest.
    Q.Free();
 
@@ -6048,7 +6067,9 @@ begin
             end;
 
             // Antenna Select
-            rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
+            if (FCurrentRigSet = 1) or (FCurrentRigSet = 2) then begin
+               rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
+            end;
          end;
 
          UpdateMode(Log.QsoList[i].mode);
@@ -7425,9 +7446,9 @@ begin
 //      UpdateMode(m);
 //   end;
 //
-//   if rig <> nil then begin
-//      rig.SetMode(CurrentQSO);
-//   end;
+   if rig <> nil then begin
+      rig.SetMode(CurrentQSO);
+   end;
 end;
 
 procedure TMainForm.PlayMessage(bank: Integer; no: Integer);
@@ -8539,12 +8560,19 @@ begin
    end;
 end;
 
-// #89 バンド変更 Shift+B
+// #089, #157 バンド変更 Shift+B
 procedure TMainForm.actionChangeBandExecute(Sender: TObject);
 var
    rig: TRig;
+   b: TBand;
 begin
-   UpdateBand(GetNextBand(CurrentQSO.Band, True));
+   if TAction(Sender).Tag = 0 then begin
+      b := GetNextBand(CurrentQSO.Band, True);
+   end
+   else begin
+      b := GetNextBand(CurrentQSO.Band, False);
+   end;
+   UpdateBand(b);
 
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
@@ -8564,12 +8592,17 @@ begin
    end;
 end;
 
-// #90 モード変更 Shift+M
+// #090, #158 モード変更 Shift+M
 procedure TMainForm.actionChangeModeExecute(Sender: TObject);
 var
    rig: TRig;
 begin
-   SetQSOMode(CurrentQSO);
+   if TAction(Sender).Tag = 0 then begin
+      SetQSOMode(CurrentQSO, True);
+   end
+   else begin
+      SetQSOMode(CurrentQSO, False);
+   end;
    UpdateMode(CurrentQSO.Mode);
 
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
@@ -8578,14 +8611,24 @@ begin
    end;
 end;
 
-// #91 パワー変更 Shift+P
+// #091, #159 パワー変更 Shift+P
 procedure TMainForm.actionChangePowerExecute(Sender: TObject);
 begin
-   if CurrentQSO.Power = pwrH then begin
-      CurrentQSO.Power := pwrP;
+   if TAction(Sender).Tag = 0 then begin
+      if CurrentQSO.Power = pwrH then begin
+         CurrentQSO.Power := pwrP;
+      end
+      else begin
+         CurrentQSO.Power := TPower(Integer(CurrentQSO.Power) + 1);
+      end;
    end
    else begin
-      CurrentQSO.Power := TPower(Integer(CurrentQSO.Power) + 1);
+      if CurrentQSO.Power = pwrP then begin
+         CurrentQSO.Power := pwrH;
+      end
+      else begin
+         CurrentQSO.Power := TPower(Integer(CurrentQSO.Power) - 1);
+      end;
    end;
 
    if Assigned(PowerEdit) then begin
@@ -9597,7 +9640,9 @@ begin
       end;
 
       // Antenna Select
-      rig.AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[b]);
+      if (rigset = 1) or (rigset = 2) then begin
+         rig.AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[b]);
+      end;
 
       rig.UpdateStatus();
 
