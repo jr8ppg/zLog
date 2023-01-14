@@ -1547,7 +1547,7 @@ begin
       ini.WriteBool('Hardware', 'keying_signal_reverse2', Settings.FRigControl[2].FKeyingIsRTS);
 
       // RIG3
-      ini.WriteInteger('Hardware', 'CWLPTPort3', Settings.FRigControl[3].FControlPort);
+      ini.WriteInteger('Hardware', 'CWLPTPort3', Settings.FRigControl[3].FKeyingPort);
       ini.WriteBool('Hardware', 'keying_signal_reverse3', Settings.FRigControl[3].FKeyingIsRTS);
 
       // USE TRANSCEIVE MODE(ICOM only)
