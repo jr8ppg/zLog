@@ -7404,18 +7404,18 @@ begin
       UpdateBand(b);
 
       if rig <> nil then begin
+         // バンド変更
+         rig.SetBand(FCurrentRigSet, CurrentQSO);
+
          // RIG変更
          FRigControl.SetCurrentRig(rig.RigNumber);
 
-         // バンド変更
-         CurrentQSO.Band := b;
-         rig.SetBand(FCurrentRigSet, CurrentQSO);
-
          // Antenna Select
-         rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[b]);
+         if (FCurrentRigSet = 1) or (FCurrentRigSet = 2) then begin
+            rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[b]);
+         end;
 
          // RIG Select
-//         dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
          dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
       end;
    end;
@@ -8555,7 +8555,9 @@ begin
       end;
 
       // Antenna Select
-      rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
+      if (FCurrentRigSet = 1) or (FCurrentRigSet = 2) then begin
+         rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
+      end;
 
       RigControl.SetCurrentRig(rig.RigNumber);
       dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
