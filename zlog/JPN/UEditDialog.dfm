@@ -9,7 +9,7 @@ object EditDialog: TEditDialog
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+  Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
@@ -25,7 +25,7 @@ object EditDialog: TEditDialog
     Top = 114
     Width = 205
     Height = 42
-    Caption = 'QSL'#12459#12540#12489
+    Caption = 'QSL Status'
     TabOrder = 4
     object radioQslNone: TRadioButton
       Left = 16
@@ -57,7 +57,7 @@ object EditDialog: TEditDialog
     Top = 66
     Width = 351
     Height = 42
-    Caption = 'QSO'#12501#12521#12464
+    Caption = 'QSO Flags'
     TabOrder = 3
     object checkCQ: TCheckBox
       Left = 16
@@ -81,25 +81,25 @@ object EditDialog: TEditDialog
       Top = 16
       Width = 85
       Height = 17
-      Caption = 'QSY'#36949#21453
+      Caption = 'QSY Violation'
       Enabled = False
       TabOrder = 2
     end
     object checkForced: TCheckBox
-      Left = 190
+      Left = 210
       Top = 16
-      Width = 64
+      Width = 51
       Height = 17
-      Caption = #24375#21046#20837#21147
+      Caption = 'Forced'
       Enabled = False
       TabOrder = 3
     end
     object checkInvalid: TCheckBox
-      Left = 270
+      Left = 275
       Top = 16
       Width = 51
       Height = 17
-      Caption = #28961#21177
+      Caption = 'Invalid'
       TabOrder = 4
       OnClick = checkInvalidClick
     end
@@ -109,7 +109,7 @@ object EditDialog: TEditDialog
     Top = 66
     Width = 101
     Height = 42
-    Caption = #21608#27874#25968
+    Caption = 'Frequency'
     TabOrder = 2
     object editFrequency: TEdit
       Left = 16
@@ -126,7 +126,7 @@ object EditDialog: TEditDialog
     Top = 66
     Width = 221
     Height = 42
-    Caption = #12473#12486#12540#12471#12519#12531
+    Caption = 'Station'
     TabOrder = 1
     DesignSize = (
       221
@@ -144,7 +144,7 @@ object EditDialog: TEditDialog
       Width = 42
       Height = 13
       Anchors = [akTop, akRight]
-      Caption = 'PC'#21517
+      Caption = 'PCName'
     end
     object comboTxNo: TComboBox
       Left = 171
@@ -155,7 +155,7 @@ object EditDialog: TEditDialog
       TabOrder = 1
     end
     object editPCName: TEdit
-      Left = 58
+      Left = 64
       Top = 14
       Width = 73
       Height = 21
@@ -193,7 +193,7 @@ object EditDialog: TEditDialog
       Height = 25
       Anchors = [akTop, akRight]
       Cancel = True
-      Caption = #12461#12515#12531#12475#12523
+      Caption = 'Cancel'
       TabOrder = 1
       OnClick = CancelBtnClick
     end
@@ -203,7 +203,7 @@ object EditDialog: TEditDialog
     Top = 2
     Width = 685
     Height = 57
-    Caption = 'QSO'#12487#12540#12479
+    Caption = 'QSO Data'
     TabOrder = 0
     object SerialLabel: TLabel
       Left = 8
@@ -693,6 +693,21 @@ object EditDialog: TEditDialog
     object actionSo2rToggleRigPair: TAction
       Caption = 'actionSo2rToggleRigPair'
       OnExecute = actionSo2rToggleRigPairExecute
+    end
+    object actionChangeBand2: TAction
+      Tag = 1
+      Caption = 'actionChangeBand2'
+      OnExecute = actionChangeBandExecute
+    end
+    object actionChangeMode2: TAction
+      Tag = 1
+      Caption = 'actionChangeMode2'
+      OnExecute = actionChangeModeExecute
+    end
+    object actionChangePower2: TAction
+      Tag = 1
+      Caption = 'actionChangePower2'
+      OnExecute = actionChangePowerExecute
     end
   end
 end
