@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file original="D:\GITHUB\zLog_2bsiq\zlog\UMessageManager.dfm" source-language="ja-JP" target-language="en-US" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog_2bsiq\zlog\UMessageManager.dfm">
+  <file original="D:\github\zLog_2bsiq\zlog\UMessageManager.dfm" source-language="ja-JP" target-language="en-US" datatype="delphiform" tool="ETM v10.0" ts="D:\github\zLog_2bsiq\zlog\UMessageManager.dfm">
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.568912037</prop>
-        <prop prop-type="OrigDateTime">44749.8954861111</prop>
-        <prop prop-type="XlatDateTime">44749.8954861111</prop>
+        <prop prop-type="SelfDateTime">44940.9356481481</prop>
+        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">36</prop>
       </prop-group>

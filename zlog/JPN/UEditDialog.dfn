@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file original="D:\GITHUB\zLog_2bsiq\zlog\UEditDialog.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\GITHUB\zLog_2bsiq\zlog\UEditDialog.dfm">
+  <file original="D:\github\zLog_2bsiq\zlog\UEditDialog.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\github\zLog_2bsiq\zlog\UEditDialog.dfm">
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44890.9689351852</prop>
-        <prop prop-type="OrigDateTime">44887.9994212963</prop>
-        <prop prop-type="XlatDateTime">44888.0096759259</prop>
+        <prop prop-type="SelfDateTime">44940.9352314815</prop>
+        <prop prop-type="OrigDateTime">44940.932962963</prop>
+        <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">15</prop>
-        <prop prop-type="UnTranslated">486</prop>
+        <prop prop-type="UnTranslated">495</prop>
       </prop-group>
     </header>
     <body>
@@ -2532,6 +2532,51 @@
         <source>actionSo2rToggleRigPairExecute</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">500</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangeBand2.Tag" resname="O:EditDialog.O:ActionList1.O:actionChangeBand2.Tag">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">501</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangeBand2.Caption" resname="O:EditDialog.O:ActionList1.O:actionChangeBand2.Caption">
+        <source>'actionChangeBand2'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">502</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangeBand2.OnExecute" resname="O:EditDialog.O:ActionList1.O:actionChangeBand2.OnExecute">
+        <source>actionChangeBandExecute</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">503</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangeMode2.Tag" resname="O:EditDialog.O:ActionList1.O:actionChangeMode2.Tag">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">504</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangeMode2.Caption" resname="O:EditDialog.O:ActionList1.O:actionChangeMode2.Caption">
+        <source>'actionChangeMode2'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">505</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangeMode2.OnExecute" resname="O:EditDialog.O:ActionList1.O:actionChangeMode2.OnExecute">
+        <source>actionChangeModeExecute</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">506</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangePower2.Tag" resname="O:EditDialog.O:ActionList1.O:actionChangePower2.Tag">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">507</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangePower2.Caption" resname="O:EditDialog.O:ActionList1.O:actionChangePower2.Caption">
+        <source>'actionChangePower2'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">508</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangePower2.OnExecute" resname="O:EditDialog.O:ActionList1.O:actionChangePower2.OnExecute">
+        <source>actionChangePowerExecute</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">509</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

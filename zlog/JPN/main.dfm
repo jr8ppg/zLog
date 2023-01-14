@@ -7244,6 +7244,21 @@ object MainForm: TMainForm
       Caption = 'Show Message Manager (SO2R)'
       OnExecute = actionShowMsgMgrExecute
     end
+    object actionChangeBand2: TAction
+      Tag = 1
+      Caption = 'actionChangeBand2'
+      OnExecute = actionChangeBandExecute
+    end
+    object actionChangeMode2: TAction
+      Tag = 1
+      Caption = 'actionChangeMode2'
+      OnExecute = actionChangeModeExecute
+    end
+    object actionChangePower2: TAction
+      Tag = 1
+      Caption = 'actionChangePower2'
+      OnExecute = actionChangePowerExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual
