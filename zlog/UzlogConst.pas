@@ -85,9 +85,9 @@ const
                        ('P', 'L', 'M', 'H',  '',  '',  '',  '',  '',  '',  '');
 
 const
-  MHzString: array[b19..HiBand] of string = ('1.9','3.5','7','10','14',
+  MHzString: array[b19..bUnknown] of string = ('1.9','3.5','7','10','14',
                                              '18','21','24','28','50','144',
-                                             '430','1200','2400','5600','10G');
+                                             '430','1200','2400','5600','10G','Target','Unknown');
 
   BandString: array[b19..HiBand] of string = ('1.9 MHz','3.5 MHz','7 MHz','10 MHz',
                                              '14 MHz', '18 MHz','21 MHz','24 MHz','28 MHz',
