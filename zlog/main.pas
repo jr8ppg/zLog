@@ -10233,7 +10233,9 @@ begin
          SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rigno - 1, 0);
       end;
 
-      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rigno - 1, 0);
+      if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+         PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rigno - 1, 0);
+      end;
    end;
 
    // ShowTxIndicator();
@@ -10263,7 +10265,10 @@ begin
    FInformation.Rx := rx_rig - 1;
 
    FEditPanel[rx_rig - 1].CallsignEdit.SetFocus();
-   PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rx_rig - 1, 0);
+
+   if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rx_rig - 1, 0);
+   end;
 
    UpdateCurrentQSO();
 end;
@@ -10325,7 +10330,10 @@ begin
          SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rigno - 1, 0);
       end;
 //      FSo2rNeoCp.Rx := rig - 1;
-      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rigno - 1, 0);
+
+      if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+         PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rigno - 1, 0);
+      end;
 
       UpdateCurrentQSO();
    end;
@@ -10389,10 +10397,15 @@ begin
    OutputDebugString(PChar('*** DoWkStatusProc(' + IntToStr(tx) + ', ' + IntToStr(rx) + ', ' + BoolToStr(ptt) + ') ***'));
    {$ENDIF}
 //   FSo2rNeoCp.Rx := rx;
-   PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rx, 0);
+   if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rx, 0);
+   end;
 
    PostMessage(Handle, WM_ZLOG_SETPTTSTATE, Integer(ptt), 0);
-   PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETPTT, Integer(ptt), 0);
+
+   if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETPTT, Integer(ptt), 0);
+   end;
 end;
 
 procedure TMainForm.checkUseRig3Click(Sender: TObject);
