@@ -486,6 +486,9 @@ begin
       KeyingPort[i] := tkpNone;
       FKeyingSignalReverse[i] := False;
    end;
+
+   tailcwstrptr := 1;
+   cwstrptr := 0;
 end;
 
 procedure TdmZLogKeyer.DataModuleDestroy(Sender: TObject);
@@ -1075,28 +1078,16 @@ begin
 
       // SendOK := False;
 
-      // select keying port
-//      SetCWSendBufChar(0, Char($90 + nID));
-
       // set send char
-      for m := 1 to codemax do
+      for m := 1 to codemax do begin
          FCWSendBuf[0, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
-      //SetCWSendBufChar(0, C);
+      end;
 
       if FPTTEnabled then begin
          FPttHoldCounter := FPttDelayAfterCount;
 
          { holds PTT until pttafter expires }
-//         SetCWSendBufChar(0, ')');  //Char($A2));
          FCWSendBuf[0, codemax * (tailcwstrptr - 1) + codemax + 1] := $A2; { holds PTT until pttafter expires }
-
-         inc(tailcwstrptr);
-         if tailcwstrptr > charmax then begin
-            tailcwstrptr := 1;
-         end;
-
-         FSendOK := True;
-         Exit;
       end;
 
       inc(tailcwstrptr);
@@ -1106,6 +1097,10 @@ begin
 
       // set finish char
       SetCWSendBufFinish(0);
+
+      if cwstrptr = 0 then begin
+         cwstrptr := 1;
+      end;
 
       FSendOK := True;
    end;
