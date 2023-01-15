@@ -9,8 +9,8 @@ object MainForm: TMainForm
   Constraints.MinWidth = 540
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -12
-  Font.Name = 'MS Sans Serif'
+  Font.Height = -11
+  Font.Name = 'MS '#12468#12471#12483#12463
   Font.Style = []
   Menu = MainMenu
   OldCreateOrder = True
@@ -5767,44 +5767,44 @@ object MainForm: TMainForm
     Left = 24
     Top = 144
     object FileMenu: TMenuItem
-      Caption = '&File'
+      Caption = #12501#12449#12452#12523'(&F)'
       object FileNewItem: TMenuItem
-        Caption = '&New Contest'
+        Caption = #26032#12375#12356#12467#12531#12486#12473#12488'(&N)'
         Hint = 'Create a new file'
         OnClick = FileNew
       end
       object FileOpenItem: TMenuItem
-        Caption = '&Open Contest...'
+        Caption = #12467#12531#12486#12473#12488#12434#38283#12367'(&O)'
         Hint = 'Open an existing file'
         OnClick = FileOpen
       end
       object FileSaveItem: TMenuItem
-        Caption = '&Save'
+        Caption = #20445#23384'(&S)'
         Hint = 'Save current file'
         OnClick = FileSave
       end
       object FileSaveAsItem: TMenuItem
-        Caption = 'Save &As...'
+        Caption = #21517#21069#12434#20184#12369#12390#20445#23384'(&A)'
         Hint = 'Save current file under a new name'
         OnClick = FileSaveAs
       end
       object MergeFile1: TMenuItem
-        Caption = '&Import...'
+        Caption = #12452#12531#12509#12540#12488'...(&I)'
         OnClick = MergeFile1Click
       end
       object Backup1: TMenuItem
         Action = actionBackup
       end
       object Export1: TMenuItem
-        Caption = '&Export...'
+        Caption = #12456#12463#12473#12509#12540#12488'...(&E)'
         OnClick = Export1Click
       end
       object mSummaryFile: TMenuItem
-        Caption = 'Summary File'
+        Caption = #12469#12510#12522#12540#12501#12449#12452#12523#12398#20316#25104
         OnClick = mSummaryFileClick
       end
       object mPXListWPX: TMenuItem
-        Caption = 'Prefix List (WPX)'
+        Caption = #12503#12522#12501#12451#12483#12463#12473#12522#12473#12488'(WPX)'
         Visible = False
         OnClick = mPXListWPXClick
       end
@@ -5818,38 +5818,38 @@ object MainForm: TMainForm
         Caption = '-'
       end
       object FilePrintItem: TMenuItem
-        Caption = '&Print Log (ZPRINT)'
+        Caption = #12525#12464#12398#21360#21047'(&P)(ZPRINT)'
         Hint = 'Print current file'
         OnClick = FilePrint
       end
       object CreateELogJARL1: TMenuItem
-        Caption = 'Create E-Log (JARL 1.0)'
+        Caption = 'JARL E-Log 1.0'#12398#20316#25104
         OnClick = CreateELogJARL1Click
       end
       object CreateELogJARL2: TMenuItem
-        Caption = 'Create E-Log (&JARL 2.x)'
+        Caption = 'JARL E-Log 2.0'#12398#20316#25104
         OnClick = CreateELogJARL2Click
       end
       object CreateDupeCheckSheetZPRINT1: TMenuItem
-        Caption = 'Create Dupe Check Sheet (ZLIST)'
+        Caption = #12487#12517#12540#12503#12481#12455#12483#12463#12522#12473#12488#12398#20316#25104'(ZLIST)'
         OnClick = CreateDupeCheckSheetZPRINT1Click
       end
       object mnMMTTY: TMenuItem
-        Caption = 'Load MMTTY'
+        Caption = 'MMTTY'#12398#12525#12540#12489
         OnClick = mnMMTTYClick
       end
       object N4: TMenuItem
         Caption = '-'
       end
       object FileExitItem: TMenuItem
-        Caption = 'E&xit'
+        Caption = #32066#20102'(&X)'
         Hint = 'Exit this application'
         ShortCut = 32883
         OnClick = FileExit
       end
     end
     object Windows1: TMenuItem
-      Caption = '&Windows'
+      Caption = #12454#12452#12531#12489#12454'(&W)'
       object Score1: TMenuItem
         Action = actionShowScore
       end
@@ -5934,54 +5934,54 @@ object MainForm: TMainForm
       end
     end
     object menuSettings: TMenuItem
-      Caption = '&Settings'
+      Caption = #21508#31278#35373#23450'(&S)'
       object menuOptions: TMenuItem
-        Caption = '&Options'
+        Caption = #12458#12503#12471#12519#12531'(&O)'
         OnClick = menuOptionsClick
       end
       object menuBandPlanSettings: TMenuItem
-        Caption = '&Band Plan'
+        Caption = #12496#12531#12489#12503#12521#12531'(&B)'
         OnClick = menuBandPlanSettingsClick
       end
       object menuQSORateSettings: TMenuItem
-        Caption = 'QSO &Rate'
+        Caption = 'QSO'#12524#12540#12488'(&R)'
         OnClick = menuQSORateSettingsClick
       end
       object menuTargetEditor: TMenuItem
-        Caption = '&Target Editor'
+        Caption = #30446#27161#12456#12487#12451#12479'(&T)'
         OnClick = menuTargetEditorClick
       end
       object menuPluginManager: TMenuItem
-        Caption = '&Plugin Manager'
+        Caption = #12503#12521#12464#12452#12531#12510#12493#12540#12472#12515'(&P)'
         OnClick = menuPluginManagerClick
       end
     end
     object Network1: TMenuItem
-      Caption = '&Network'
+      Caption = #12493#12483#12488#12527#12540#12463'(&N)'
       object ConnecttoZServer1: TMenuItem
-        Caption = 'Connect to Z-Server'
+        Caption = 'Z-Server'#12395#25509#32154
         OnClick = ConnecttoZServer1Click
       end
       object N6: TMenuItem
         Caption = '-'
       end
       object mnDownload: TMenuItem
-        Caption = 'Download log from Z-Server (Erase local log)'
+        Caption = 'Z-Server'#12424#12426#12525#12464#12434#12480#12454#12531#12525#12540#12489'('#12525#12464#12399#28040#21435#12373#12428#12414#12377')'
         Enabled = False
         OnClick = Load1Click
       end
       object mnMerge: TMenuItem
-        Caption = 'Merge local log with Z-Server'
+        Caption = 'Z-Server'#12408#12525#12464#12434#12450#12483#12503#12525#12540#12489'('#12510#12540#12472')'
         Enabled = False
         OnClick = mnMergeClick
       end
     end
     object PluginMenu: TMenuItem
-      Caption = '&Plugins'
+      Caption = #12503#12521#12464#12452#12531'(&P)'
       Visible = False
     end
     object View1: TMenuItem
-      Caption = '&View'
+      Caption = #34920#31034'(&V)'
       object ShowCurrentBandOnly: TMenuItem
         Action = actionShowCurrentBandOnly
       end
@@ -5989,49 +5989,49 @@ object MainForm: TMainForm
         Caption = '-'
       end
       object Sort1: TMenuItem
-        Caption = 'Sort'
+        Caption = #20006#12403#26367#12360
         object menuSortByCallsign: TMenuItem
-          Caption = 'Sort by Callsign'
+          Caption = #12467#12540#12523#12469#12452#12531#12391#20006#12403#26367#12360
           OnClick = menuSortByClick
         end
         object menuSortByTime: TMenuItem
           Tag = 1
-          Caption = 'Sort by Time'
+          Caption = #26178#38291#12391#20006#12403#26367#12360
           OnClick = menuSortByClick
         end
         object menuSortByBand: TMenuItem
           Tag = 2
-          Caption = 'Sort by Band'
+          Caption = #12496#12531#12489#12391#20006#12403#26367#12360
           OnClick = menuSortByClick
         end
         object menuSortByMode: TMenuItem
           Tag = 3
-          Caption = 'Sort by Mode'
+          Caption = #12514#12540#12489#12391#20006#12403#26367#12360
           OnClick = menuSortByClick
         end
         object menuSortByPower: TMenuItem
           Tag = 4
-          Caption = 'Sort by Power'
+          Caption = #38651#21147#12391#20006#12403#26367#12360
           OnClick = menuSortByClick
         end
         object menuSortByTxNo: TMenuItem
           Tag = 5
-          Caption = 'Sort by TX#'
+          Caption = 'TX#'#12391#20006#12403#26367#12360
           OnClick = menuSortByClick
         end
         object menuSortByPoint: TMenuItem
           Tag = 6
-          Caption = 'Sort by Point'
+          Caption = #28857#25968#12391#20006#12403#26367#12360
           OnClick = menuSortByClick
         end
         object menuSortByOperator: TMenuItem
           Tag = 7
-          Caption = 'Sort by Operator'
+          Caption = #12458#12506#12524#12540#12479#12391#20006#12403#26367#12360
           OnClick = menuSortByClick
         end
         object menuSortByMemo: TMenuItem
           Tag = 8
-          Caption = 'Sort by Memo'
+          Caption = #12513#12514#27396#12391#20006#12403#26367#12360
           OnClick = menuSortByClick
         end
       end
@@ -6039,11 +6039,11 @@ object MainForm: TMainForm
         Caption = '-'
       end
       object mnHideCWPhToolBar: TMenuItem
-        Caption = 'Hide CW/Ph Tool Bar'
+        Caption = 'CW/Ph'#12484#12540#12523#12496#12540#12434#34920#31034#12375#12394#12356
         OnClick = mnHideCWPhToolBarClick
       end
       object mnHideMenuToolbar: TMenuItem
-        Caption = 'Hide Menu Tool Bar'
+        Caption = 'Menu'#12484#12540#12523#12496#12540#12434#34920#31034#12375#12394#12356
         OnClick = mnHideMenuToolbarClick
       end
       object N12: TMenuItem
@@ -6057,14 +6057,14 @@ object MainForm: TMainForm
       end
     end
     object Help1: TMenuItem
-      Caption = '&Help'
+      Caption = #12504#12523#12503'(&H)'
       object menuAbout: TMenuItem
-        Caption = '&About...'
+        Caption = 'zLog'#12395#12388#12356#12390'...(&A)'
         Hint = 'Show program information'
         OnClick = menuAboutClick
       end
       object menuQuickReference: TMenuItem
-        Caption = '&Quick Reference'
+        Caption = #12463#12452#12483#12463#12522#12501#12449#12524#12531#12473'(&Q)'
         OnClick = menuQuickReferenceClick
       end
       object N5: TMenuItem
@@ -6072,7 +6072,7 @@ object MainForm: TMainForm
         Visible = False
       end
       object HelpZyLO: TMenuItem
-        Caption = '&ZyLO Reference Manual'
+        Caption = 'ZyLO'#12522#12501#12449#12524#12531#12473#12510#12491#12517#12450#12523'(&Z)'
         Hint = 'How to make ZyLO plugin'
         OnClick = HelpZyLOClick
       end
@@ -6080,15 +6080,13 @@ object MainForm: TMainForm
   end
   object OpenDialog: TOpenDialog
     DefaultExt = 'ZLO'
-    Filter = 
-      'zLog binary file|*.ZLO|zLog Extended binary file|*.ZLOX|any file' +
-      '|*.*'
+    Filter = 'zLog'#12501#12449#12452#12523'|*.ZLO|zLog'#25313#24373#12501#12449#12452#12523'|*.ZLOX|'#20840#12390#12398#12501#12449#12452#12523'|*.*'
     Left = 418
     Top = 207
   end
   object SaveDialog: TSaveDialog
-    DefaultExt = 'zlo'
-    Filter = 'zLog binary file|*.ZLO|zLog Extended binary file|*.ZLOX'
+    DefaultExt = 'ZLO'
+    Filter = 'zLog'#12501#12449#12452#12523'|*.ZLO|zLog'#25313#24373#12501#12449#12452#12523'|*.ZLOX'
     Left = 376
     Top = 213
   end
@@ -6219,22 +6217,22 @@ object MainForm: TMainForm
     Left = 56
     Top = 212
     object EditQSO: TMenuItem
-      Caption = '&Edit QSO'
+      Caption = 'QSO'#12398#20462#27491'(&E)'
       OnClick = EditQSOClick
     end
     object DeleteQSO1: TMenuItem
-      Caption = '&Delete QSO'
+      Caption = 'QSO'#12398#21066#38500'(&D)'
       OnClick = DeleteQSO1Click
     end
     object InsertQSO1: TMenuItem
-      Caption = '&Insert QSO'
+      Caption = 'QSO'#12398#25407#20837'(&I)'
       OnClick = InsertQSO1Click
     end
     object N7: TMenuItem
       Caption = '-'
     end
     object GBand: TMenuItem
-      Caption = 'Change &Band'
+      Caption = #12496#12531#12489#12398#22793#26356'(&B)'
       object G1R9MHz: TMenuItem
         Caption = '1.9 MHz'
         OnClick = GridBandChangeClick
@@ -6319,7 +6317,7 @@ object MainForm: TMainForm
       end
     end
     object Changemode: TMenuItem
-      Caption = 'Change &Mode'
+      Caption = #12514#12540#12489#12398#22793#26356'(&M)'
       object CW2: TMenuItem
         Caption = 'CW'
         OnClick = GridModeChangeClick
@@ -6351,7 +6349,7 @@ object MainForm: TMainForm
       end
     end
     object mChangePower: TMenuItem
-      Caption = 'Change &Power'
+      Caption = #38651#21147#31526#21495#12398#22793#26356'(&P)'
       object H2: TMenuItem
         Caption = 'P (QRP)'
         OnClick = GridPowerChangeClick
@@ -6373,9 +6371,9 @@ object MainForm: TMainForm
       end
     end
     object GOperator: TMenuItem
-      Caption = 'Change &Operator'
+      Caption = #12458#12506#12524#12540#12479#12540#12398#22793#26356'(&O)'
       object Clear1: TMenuItem
-        Caption = 'Clear'
+        Caption = #12463#12522#12450
         OnClick = GridOperatorClick
       end
     end
@@ -6386,18 +6384,18 @@ object MainForm: TMainForm
       Caption = '-'
     end
     object menuEditStatus: TMenuItem
-      Caption = 'Edit Status'
+      Caption = #12473#12486#12540#12479#12473#20462#27491
       OnClick = menuEditStatusClick
     end
     object N8: TMenuItem
       Caption = '-'
     end
     object SendSpot1: TMenuItem
-      Caption = 'Send &Spot'
+      Caption = #12473#12509#12483#12488#24773#22577#12398#36865#20449'(&S)'
       OnClick = SendSpot1Click
     end
     object mnGridAddNewPX: TMenuItem
-      Caption = '&Add new prefix'
+      Caption = #26032#12375#12356#12503#12522#12501#12451#12483#12463#12473#12398#36861#21152'(&A)'
       OnClick = mnGridAddNewPXClick
     end
   end
@@ -6515,12 +6513,12 @@ object MainForm: TMainForm
       OnExecute = actionQuickQSYExecute
     end
     object actionShowSuperCheck: TAction
-      Caption = 'Super Check'
+      Caption = #12473#12540#12497#12540#12481#12455#12483#12463
       ShortCut = 16505
       OnExecute = actionShowSuperCheckExecute
     end
     object actionShowZlinkMonitor: TAction
-      Caption = '&Z-Link Monitor'
+      Caption = '&Z-Link'#12514#12491#12479#12540
       ShortCut = 16507
       OnExecute = actionShowZlinkMonitorExecute
     end
@@ -6573,11 +6571,11 @@ object MainForm: TMainForm
       OnExecute = actionPlayMessageAExecute
     end
     object actionCheckMulti: TAction
-      Caption = 'Check Multi'
+      Caption = #12510#12523#12481#12481#12455#12483#12463
       OnExecute = actionCheckMultiExecute
     end
     object actionShowCheckPartial: TAction
-      Caption = 'Partial Check'
+      Caption = #12497#12540#12471#12515#12523#12481#12455#12483#12463
       OnExecute = actionShowCheckPartialExecute
     end
     object actionPlayCQA2: TAction
@@ -6668,12 +6666,12 @@ object MainForm: TMainForm
       OnExecute = actionInsertBandScope3Execute
     end
     object actionIncreaseFontSize: TAction
-      Caption = 'Increase Font Size'
+      Caption = #12501#12457#12531#12488#12434#22823#12365#12367
       ShortCut = 16467
       OnExecute = actionIncreaseFontSizeExecute
     end
     object actionDecreaseFontSize: TAction
-      Caption = 'Decrease Font Size'
+      Caption = #12501#12457#12531#12488#12434#23567#12373#12367
       ShortCut = 24659
       OnExecute = actionDecreaseFontSizeExecute
     end
@@ -6738,7 +6736,7 @@ object MainForm: TMainForm
       OnExecute = actionClearCallAndRptExecute
     end
     object actionShowCurrentBandOnly: TAction
-      Caption = 'Show Current Band Only'
+      Caption = #29694#22312#12496#12531#12489#12398#12415#12434#34920#31034
       ShortCut = 16460
       OnExecute = actionShowCurrentBandOnlyExecute
     end
@@ -6783,7 +6781,7 @@ object MainForm: TMainForm
       OnExecute = actionCQRepeatExecute
     end
     object actionBackup: TAction
-      Caption = '&Back up'
+      Caption = #12496#12483#12463#12450#12483#12503'(&B)'
       ShortCut = 32834
       OnExecute = actionBackupExecute
     end
@@ -6813,7 +6811,7 @@ object MainForm: TMainForm
       OnExecute = actionFocusOpExecute
     end
     object actionShowPacketCluster: TAction
-      Caption = '&Packet Cluster'
+      Caption = 'Packet Cluster(&P)'
       ShortCut = 32848
       OnExecute = actionShowPacketClusterExecute
     end
@@ -6828,12 +6826,12 @@ object MainForm: TMainForm
       OnExecute = actionFocusRstExecute
     end
     object actionShowScratchSheet: TAction
-      Caption = 'Scratch Sheet'
+      Caption = #12473#12463#12521#12483#12481#12471#12540#12488
       ShortCut = 32851
       OnExecute = actionShowScratchSheetExecute
     end
     object actionShowRigControl: TAction
-      Caption = '&Rig Control'
+      Caption = #12522#12464#12467#12531#12488#12525#12540#12523
       ShortCut = 32852
       OnExecute = actionShowRigControlExecute
     end
@@ -6843,7 +6841,7 @@ object MainForm: TMainForm
       OnExecute = actoinClearCallAndNumAftFocusExecute
     end
     object actionShowZServerChat: TAction
-      Caption = 'Z-Server Messages'
+      Caption = 'Z-Server'#12513#12483#12475#12540#12472
       ShortCut = 32858
       OnExecute = actionShowZServerChatExecute
     end
@@ -6853,11 +6851,11 @@ object MainForm: TMainForm
       OnExecute = actionToggleRigExecute
     end
     object actionShowBandScope: TAction
-      Caption = '&Band Scope'
+      Caption = #12496#12531#12489#12473#12467#12540#12503'(&B)'
       OnExecute = actionShowBandScopeExecute
     end
     object actionShowFreqList: TAction
-      Caption = 'Running Frequencies'
+      Caption = 'Running'#21608#27874#25968
       OnExecute = actionShowFreqListExecute
     end
     object actionShowTeletypeConsole: TAction
@@ -6865,31 +6863,31 @@ object MainForm: TMainForm
       OnExecute = actionShowTeletypeConsoleExecute
     end
     object actionShowAnalyze: TAction
-      Caption = 'Analyze'
+      Caption = #20998#26512
       OnExecute = actionShowAnalyzeExecute
     end
     object actionShowScore: TAction
-      Caption = '&Score'
+      Caption = #12473#12467#12450'(&S)'
       OnExecute = actionShowScoreExecute
     end
     object actionShowMultipliers: TAction
-      Caption = '&Multipliers'
+      Caption = #12510#12523#12481#12503#12521#12452#12516#12540'(&M)'
       OnExecute = actionShowMultipliersExecute
     end
     object actionShowQsoRate: TAction
-      Caption = 'QSO &Rate'
+      Caption = 'QSO'#12524#12540#12488'(&R)'
       OnExecute = actionShowQsoRateExecute
     end
     object actionShowCheckCall: TAction
-      Caption = 'Check Call'
+      Caption = #12467#12540#12523#12469#12452#12531#12481#12455#12483#12463
       OnExecute = actionShowCheckCallExecute
     end
     object actionShowCheckMulti: TAction
-      Caption = 'Check Multi'
+      Caption = #12510#12523#12481#12481#12455#12483#12463
       OnExecute = actionShowCheckMultiExecute
     end
     object actionShowCheckCountry: TAction
-      Caption = 'Check Country'
+      Caption = #12459#12531#12488#12522#12540#12481#12455#12483#12463
       OnExecute = actionShowCheckCountryExecute
     end
     object actionQsoStart: TAction
@@ -6924,7 +6922,7 @@ object MainForm: TMainForm
       OnExecute = actionControlPTTExecute
     end
     object actionShowSuperCheck2: TAction
-      Caption = 'N+1'
+      Caption = #65326#65291#65297
       OnExecute = actionShowSuperCheck2Execute
     end
     object actionGetSuperCheck2: TAction
@@ -7006,7 +7004,7 @@ object MainForm: TMainForm
       OnExecute = actionCwMessagePadExecute
     end
     object actionCorrectSentNr: TAction
-      Caption = 'Correct Sent NR'
+      Caption = #36865#20449'NR'#12398#20462#27491
       OnExecute = actionCorrectSentNrExecute
     end
     object actionSetLastFreq: TAction
@@ -7139,7 +7137,7 @@ object MainForm: TMainForm
       OnExecute = actionFunctionKeyPanelExecute
     end
     object actionShowQsoRateEx: TAction
-      Caption = 'QSO Rate Ex'
+      Caption = 'QSO'#12524#12540#12488'Ex'
       OnExecute = actionShowQsoRateExExecute
     end
     object actionShowQsyInfo: TAction
@@ -7184,7 +7182,7 @@ object MainForm: TMainForm
       OnExecute = actionSo2rNeoCanRxSelExecute
     end
     object actionShowInformation: TAction
-      Caption = 'Show Information Window'
+      Caption = #24773#22577#12454#12452#12531#12489#12454
       OnExecute = actionShowInformationExecute
     end
     object actionToggleSo2r2bsiq: TAction
@@ -7273,7 +7271,7 @@ object MainForm: TMainForm
     Left = 420
     Top = 137
     object menuVoiceEdit: TMenuItem
-      Caption = 'Edit'
+      Caption = #20462#27491
       OnClick = menuVoiceEditClick
     end
   end
@@ -7284,9 +7282,7 @@ object MainForm: TMainForm
     Top = 171
   end
   object FileImportDialog: TOpenDialog
-    Filter = 
-      'zLog binary File|*.ZLO|zLog Extended binary File|*.ZLOX|zLog CSV' +
-      '|*.csv'
+    Filter = 'zLog'#12501#12449#12452#12523'|*.ZLO|zLog'#25313#24373#12501#12449#12452#12523'|*.ZLOX|zLog CSV|*.csv'
     Title = 'Import'
     Left = 472
     Top = 144

@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetBandScope1
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -4185,7 +4185,7 @@ object formOptions: TformOptions
           Caption = #29694#22312#12496#12531#12489
           Checked = True
           State = cbChecked
-          TabOrder = 16
+          TabOrder = 17
         end
         object checkBsNewMulti: TCheckBox
           Left = 301
@@ -4195,7 +4195,17 @@ object formOptions: TformOptions
           Caption = #12491#12517#12540#12510#12523#12481
           Checked = True
           State = cbChecked
-          TabOrder = 17
+          TabOrder = 18
+        end
+        object checkBsAllBands: TCheckBox
+          Left = 12
+          Top = 104
+          Width = 67
+          Height = 17
+          Caption = #20840#12496#12531#12489
+          Checked = True
+          State = cbChecked
+          TabOrder = 16
         end
       end
       object GroupBox10: TGroupBox
@@ -4907,13 +4917,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'NSimSun'
+          FontName = '@Small Fonts'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 93
+          ItemIndex = 16
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
