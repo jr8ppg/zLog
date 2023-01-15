@@ -789,6 +789,7 @@ type
     FBandScopeEx: TBandScopeArray;
     FBandScope: TBandScope2;
     FBandScopeNewMulti: TBandScope2;
+    FBandScopeAllBands: TBandScope2;
     FQuickRef: TQuickRef;              // Quick Reference
     FZAnalyze: TZAnalyze;              // Analyze window
     FCWMessagePad: TCwMessagePad;
@@ -2021,15 +2022,25 @@ begin
    FKeyPressedRigID := 0;
 
    FQsyFromBS := False;
+
+   // バンド別用
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
    end;
+
+   // 現在バンド用
    FBandScope := TBandScope2.Create(Self, b19);
    FBandScope.CurrentBandOnly := True;
 
+   // ニューマルチ用
    FBandScopeNewMulti := TBandScope2.Create(Self, bUnknown);
    FBandScopeNewMulti.NewMultiOnly := True;
 
+   // 全バンド用
+   FBandScopeAllBands := TBandScope2.Create(Self, bUnknown);
+   FBandScopeAllBands.AllBands := True;
+
+   // Super Check
    FNPlusOneThread := nil;
    FSuperCheckDataLoadThread := nil;
    FSpcDataLoading := False;
@@ -2293,6 +2304,7 @@ begin
    end;
    dmZlogGlobal.ReadWindowState(FBandScope, 'BandScope');
    dmZlogGlobal.ReadWindowState(FBandScopeNewMulti, 'BandScopeNewMulti');
+   dmZlogGlobal.ReadWindowState(FBandScopeAllBands, 'BandScopeAllBands');
 
    FSuperCheck.Columns := dmZlogGlobal.SuperCheckColumns;
    FSuperCheck2.Columns := dmZlogGlobal.SuperCheck2Columns;
@@ -2334,6 +2346,7 @@ begin
    end;
    dmZLogGlobal.WriteWindowState(FBandScope, 'BandScope');
    dmZLogGlobal.WriteWindowState(FBandScopeNewMulti, 'BandScopeNewMulti');
+   dmZLogGlobal.WriteWindowState(FBandScopeAllBands, 'BandScopeAllBands');
 
    dmZLogGlobal.WriteMainFormState(Left, top, Width, Height, mnHideCWPhToolBar.Checked, mnHideMenuToolbar.Checked);
    dmZLogGlobal.SuperCheckColumns := FSuperCheck.Columns;
@@ -2943,6 +2956,7 @@ begin
    end;
    FBandScope.FontSize := font_size;
    FBandScopeNewMulti.FontSize := font_size;
+   FBandScopeAllBands.FontSize := font_size;
 
    FCWMessagePad.FontSize := font_size;
 
@@ -4028,6 +4042,7 @@ begin
    end;
    FBandScope.Release();
    FBandScopeNewMulti.Release();
+   FBandScopeAllBands.Release();
 
    if MyContest <> nil then begin
       dmZlogGlobal.WriteWindowState(MyContest.MultiForm, 'MultiForm');
@@ -5013,6 +5028,8 @@ begin
       FBandScope.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
       FBandScopeNewMulti.FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
       FBandScopeNewMulti.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
+      FBandScopeAllBands.FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
+      FBandScopeAllBands.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
       actionShowBandScope.Execute();
 
       // OpList再ロード
@@ -7982,6 +7999,13 @@ begin
    else begin
       FBandScopeNewMulti.Hide();
    end;
+
+   if dmZLogGlobal.Settings._usebandscope_allbands = True then begin
+      FBandScopeAllBands.Show();
+   end
+   else begin
+      FBandScopeAllBands.Hide();
+   end;
 end;
 
 // #73 Running Frequencies
@@ -9087,6 +9111,7 @@ begin
       end;
       FBandScope.NotifyWorked(aQSO);
       FBandScopeNewMulti.NotifyWorked(aQSO);
+      FBandScopeAllBands.NotifyWorked(aQSO);
    end;
 end;
 
@@ -9187,6 +9212,7 @@ begin
    end;
    FBandScope.RewriteBandScope();
    FBandScopeNewMulti.RewriteBandScope();
+   FBandScopeAllBands.RewriteBandScope();
 end;
 
 procedure TMainForm.BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
@@ -9308,6 +9334,12 @@ begin
    if Sp.IsNewMulti = True then begin
       FBandScopeNewMulti.AddClusterSpot(Sp);
    end;
+
+   // コンテストが必要とするバンドかつ自分がQRVできるバンドのスポットのみ
+   if (BandMenu.Items[Ord(Sp.Band)].Enabled = True) and
+      (dmZlogGlobal.Settings._activebands[Sp.Band] = True) then begin
+      FBandScopeAllBands.AddClusterSpot(Sp);
+   end;
 end;
 
 procedure TMainForm.BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
@@ -9325,6 +9357,7 @@ begin
    end;
 
    FBandScopeNewMulti.SetSpotWorked(aQSO);
+   FBandScopeAllBands.SetSpotWorked(aQSO);
 end;
 
 procedure TMainForm.BandScopeApplyBandPlan();
@@ -9336,6 +9369,7 @@ begin
    end;
    FBandScope.JudgeEstimatedMode();
    FBandScopeNewMulti.JudgeEstimatedMode();
+   FBandScopeAllBands.JudgeEstimatedMode();
 end;
 
 procedure TMainForm.InitBandMenu();
@@ -10676,6 +10710,7 @@ begin
       end;
       FBandScope.NotifyWorked(FQso);
       FBandScopeNewMulti.NotifyWorked(FQso);
+      FBandScopeAllBands.NotifyWorked(FQso);
    end;
 
    FQso.Free();

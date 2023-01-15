@@ -534,6 +534,7 @@ type
     editIcomResponseTimout: TEdit;
     Label122: TLabel;
     checkDispLongDateTime: TCheckBox;
+    checkBsAllBands: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -1100,6 +1101,7 @@ begin
       Settings._usebandscope[b10g]  := checkBS16.Checked;
       Settings._usebandscope_current := checkBsCurrent.Checked;
       Settings._usebandscope_newmulti := checkBsNewMulti.Checked;
+      Settings._usebandscope_allbands := checkBsAllBands.Checked;
 
       for i := 1 to 7 do begin
          Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
@@ -1613,6 +1615,7 @@ begin
       checkBS16.Checked := Settings._usebandscope[b10g];
       checkBsCurrent.Checked := Settings._usebandscope_current;
       checkBsNewMulti.Checked := Settings._usebandscope_newmulti;
+      checkBsAllBands.Checked := Settings._usebandscope_allbands;
 
       for i := 1 to 7 do begin
          FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
