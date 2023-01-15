@@ -5457,7 +5457,7 @@ object formOptions: TformOptions
           Caption = #29694#22312#12496#12531#12489
           Checked = True
           State = cbChecked
-          TabOrder = 16
+          TabOrder = 17
         end
         object checkBsNewMulti: TCheckBox
           Left = 301
@@ -5467,7 +5467,17 @@ object formOptions: TformOptions
           Caption = #12491#12517#12540#12510#12523#12481
           Checked = True
           State = cbChecked
-          TabOrder = 17
+          TabOrder = 18
+        end
+        object checkBsAllBands: TCheckBox
+          Left = 12
+          Top = 104
+          Width = 67
+          Height = 17
+          Caption = #20840#12496#12531#12489
+          Checked = True
+          State = cbChecked
+          TabOrder = 16
         end
       end
       object GroupBox10: TGroupBox

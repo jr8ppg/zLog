@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Windows, Classes, Messages,
-  Generics.Collections, Generics.Defaults,
+  Generics.Collections, Generics.Defaults, System.DateUtils,
   UzLogConst, UzLogGlobal{$IFNDEF ZLOG_TELNET}, UzLogQSO, UzLogSpc{$ENDIF};
 
 type
@@ -80,6 +80,7 @@ type
   TBSData = class(TBaseSpot)
   protected
     FBold : boolean;
+    FIndex: Integer;
   public
     constructor Create; override;
     function LabelStr : string;
@@ -88,6 +89,7 @@ type
     procedure Assign(O: TBaseSpot); override;
 
     property Bold: Boolean read FBold write FBold;
+    property Index: Integer read FIndex write FIndex;
   end;
 
   TSpotList = class(TObjectList<TSpot>)
@@ -95,9 +97,39 @@ type
     constructor Create(OwnsObjects: Boolean = True);
   end;
 
+  TBSDataFreqAscComparer = class(TComparer<TBSData>)
+  public
+    function Compare(const Left, Right: TBSData): Integer; override;
+  end;
+
+  TBSDataFreqDescComparer = class(TComparer<TBSData>)
+  public
+    function Compare(const Left, Right: TBSData): Integer; override;
+  end;
+
+  TBSDataTimeAscComparer = class(TComparer<TBSData>)
+  public
+    function Compare(const Left, Right: TBSData): Integer; override;
+  end;
+
+  TBSDataTimeDescComparer = class(TComparer<TBSData>)
+  public
+    function Compare(const Left, Right: TBSData): Integer; override;
+  end;
+
+  TBSSortMethod = (soBsFreqAsc = 0, soBsFreqDesc, soBsTimeAsc, soBsTimeDesc );
+
   TBSList = class(TObjectList<TBSData>)
+  private
+    FFreqAscComparer: TBSDataFreqAscComparer;
+    FFreqDescComparer: TBSDataFreqDescComparer;
+    FTimeAscComparer: TBSDataTimeAscComparer;
+    FTimeDescComparer: TBSDataTimeDescComparer;
   public
     constructor Create(OwnsObjects: Boolean = True);
+    destructor Destroy(); override;
+    procedure Sort(SortMethod: TBSSortMethod); overload;
+    function BinarySearch(SortMethod: TBSSortMethod; D: TBSData): Integer; overload;
   end;
 
   {$IFNDEF ZLOG_TELNET}
@@ -152,6 +184,7 @@ constructor TBSData.Create;
 begin
    inherited;
    FBold := False;
+   FIndex := 0;
 end;
 
 function TBSData.LabelStr : string;
@@ -461,9 +494,118 @@ begin
    Inherited Create(OwnsObjects);
 end;
 
+{ TBSDataFreqAscComparer }
+
+function TBSDataFreqAscComparer.Compare(const Left, Right: TBSData): Integer;
+var
+   diff: TFrequency;
+begin
+   if (Left.FreqHz - Right.FreqHz) = 0 then begin
+      Result := (Left.Index - Right.Index);
+   end
+   else begin
+      diff := Left.FreqHz - Right.FreqHz;
+      if diff < 0 then begin
+         Result := -1;
+      end
+      else begin
+         Result := 1;
+      end;
+   end;
+end;
+
+{ TBSDataFreqDescComparer }
+
+function TBSDataFreqDescComparer.Compare(const Left, Right: TBSData): Integer;
+var
+   diff: TFrequency;
+begin
+   if (Left.FreqHz - Right.FreqHz) = 0 then begin
+      Result := (Right.Index - Left.Index);
+   end
+   else begin
+      diff := Right.FreqHz - Left.FreqHz;
+      if diff < 0 then begin
+         Result := -1;
+      end
+      else begin
+         Result := 1;
+      end;
+   end;
+end;
+
+{ TBSDataTimeAscComparer }
+
+function TBSDataTimeAscComparer.Compare(const Left, Right: TBSData): Integer;
+begin
+   if CompareDateTime(Left.Time, Right.Time) = 0 then begin
+      Result := (Left.Index - Right.Index);
+   end
+   else begin
+      Result := CompareDateTime(Left.Time, Right.Time);
+   end;
+end;
+
+{ TBSDataTimeDescComparer }
+
+function TBSDataTimeDescComparer.Compare(const Left, Right: TBSData): Integer;
+begin
+   if CompareDateTime(Left.Time, Right.Time) = 0 then begin
+      Result := (Right.Index - Left.Index);
+   end
+   else begin
+      Result := CompareDateTime(Right.Time, Left.Time);
+   end;
+end;
+
+{ TBSList }
+
 constructor TBSList.Create(OwnsObjects: Boolean);
 begin
    Inherited Create(OwnsObjects);
+   FFreqAscComparer := TBSDataFreqAscComparer.Create();
+   FFreqDescComparer := TBSDataFreqDescComparer.Create();
+   FTimeAscComparer := TBSDataTimeAscComparer.Create();
+   FTimeDescComparer := TBSDataTimeDescComparer.Create();
+end;
+
+destructor TBSList.Destroy();
+begin
+   Inherited;
+   FFreqAscComparer.Free();
+   FFreqDescComparer.Free();
+   FTimeAscComparer.Free();
+   FTimeDescComparer.Free();
+end;
+
+procedure TBSList.Sort(SortMethod: TBSSortMethod);
+var
+   i: Integer;
+begin
+   for i := 0 to Count - 1 do begin
+      Items[i].Index := i;
+   end;
+
+   case SortMethod of
+      soBsFreqAsc: Sort(FFreqAscComparer);
+      soBsFreqDesc: Sort(FFreqDescComparer);
+      soBsTimeAsc: Sort(FTimeAscComparer);
+      soBsTimeDesc: Sort(FTimeDescComparer);
+   end;
+end;
+
+function TBSList.BinarySearch(SortMethod: TBSSortMethod; D: TBSData): Integer;
+var
+   NewIndex: Integer;
+begin
+   NewIndex := 0;
+   case SortMethod of
+      soBsFreqAsc: BinarySearch(D, NewIndex, FFreqAscComparer);
+      soBsFreqDesc: BinarySearch(D, NewIndex, FFreqDescComparer);
+      soBsTimeAsc: BinarySearch(D, NewIndex, FTimeAscComparer);
+      soBsTimeDesc: BinarySearch(D, NewIndex, FTimeDescComparer);
+   end;
+   Result := NewIndex;
 end;
 
 {$IFNDEF ZLOG_TELNET}
