@@ -229,7 +229,6 @@ type
     FUseTransceiveMode: Boolean;
     FGetBandAndMode: Boolean;
     FPollingCount: Integer;
-    FWaitForResponse: Boolean;
 
     FCommThread: TIcomCommThread;
     FCommandList: TStringList;
@@ -238,7 +237,7 @@ type
     destructor Destroy; override;
     procedure Initialize(); override;
     procedure SetMode(Q : TQSO); override;
-    procedure ExecuteCommand(S : AnsiString; var fError: Boolean); overload;
+    procedure ExecuteCommand(S : AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
@@ -263,9 +262,9 @@ type
   private
     FRig: TICOM;
     FResponse: AnsiString;
-    FError: Boolean;
   protected
     procedure Execute(); override;
+    function RecvText(var nErrorCode: Integer): AnsiString;
     procedure SyncProc();
   public
     constructor Create(rig: TICOM);
@@ -2044,7 +2043,6 @@ begin
    FComm.HwFlow := hfNONE;
    FComm.SwFlow := sfNONE;
    FComm.EnableDTROnOpen := False;
-   FWaitForResponse := False;
    TerminatorCode := AnsiChar($FD);
 
    FMyAddr := $E0;
@@ -2063,9 +2061,6 @@ begin
 end;
 
 procedure TICOM.ICOMWriteData(S: AnsiString);
-var
-   dwTick: DWORD;
-   msg: string;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('[' + IntToStr(_rignumber) + ']*** Enter - TICOM.ICOMWriteData(' + IntToHex(Byte(S[1]), 2) + ') ---'));
@@ -2081,47 +2076,11 @@ begin
    // コマンド送信時はポーリング中止
    FPollingTimer.Enabled := False;
 
+   // コマンドキューに追加
    IcomLock.Enter();
    FCommandList.Add(S);
    IcomLock.Leave();
 
-
-(*
-   // 応答待ち中
-   FWaitForResponse := True;
-
-   WriteData(AnsiChar($FE) + AnsiChar($FE) + AnsiChar(FRigAddr) + AnsiChar(FMyAddr) + S + AnsiChar($FD));
-
-   // 応答確認無しなら抜ける
-   if dmZLogGlobal.Settings._icom_strict_ack_response = False then begin
-      Exit;
-   end;
-
-   // $FA/$FB/Response受信まで待ち合わせ
-   dwTick := GetTickCount();
-   while FWaitForResponse = True do begin
-      // 待ってる間重い感じするなら↓
-      Application.ProcessMessages();
-
-      // とりあえず5秒だけど、1-3秒位で良さそう　iniファイルに出すか
-      if (GetTickCount() - dwTick) > dmZLogGlobal.Settings._icom_response_timeout then begin
-         FWaitForResponse := False;
-         //FStopRequest := True;
-         msg := 'No response from ' + Self.Name;
-         {$IFDEF DEBUG}
-         msg := msg + ' (' + IntToHex(Byte(S[1])) + ')';
-         OutputDebugString(PChar('[' + IntToStr(_rignumber) + '] ' + msg));
-         {$ENDIF}
-         MainForm.WriteStatusLineRed(msg, True);
-         Break;
-      end;
-
-      Sleep(1);
-   end;
-
-   // ポーリング再開
-   StartPolling();
-*)
    {$IFDEF DEBUG}
    OutputDebugString(PChar('[' + IntToStr(_rignumber) + ']*** Leave - TICOM.ICOMWriteData(' + IntToHex(Byte(S[1]), 2) + ') ---'));
    {$ENDIF}
@@ -2307,7 +2266,6 @@ procedure TICOM.ParseBufferString; // same as ts690
 var
    i: Integer;
    temp: AnsiString;
-   fError: Boolean;
 begin
    i := pos(TerminatorCode, BufferString);
 
@@ -2315,7 +2273,7 @@ begin
       temp := copy(BufferString, 1, i);
       Delete(BufferString, 1, i);
 
-      ExecuteCommand(temp, fError); // string formatted at excecutecommand
+      ExecuteCommand(temp); // string formatted at excecutecommand
       i := pos(TerminatorCode, BufferString);
    end;
 end;
@@ -2324,9 +2282,6 @@ procedure TICOM.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
 
-   if FWaitForResponse = True then begin
-      Exit;
-   end;
    if FStopRequest = True then begin
       Exit;
    end;
@@ -3582,7 +3537,7 @@ begin
    end;
 end;
 
-procedure TICOM.ExecuteCommand(S: AnsiString; var fError: Boolean);
+procedure TICOM.ExecuteCommand(S: AnsiString);
 var
    Command: byte;
    temp: byte;
@@ -3596,7 +3551,6 @@ begin
    // プリアンブルチェック
    Index := pos(AnsiChar($FE) + AnsiChar($FE), ss);
    if Index = 0 then begin
-      fError := True;
       Exit;
    end;
 
@@ -3607,19 +3561,16 @@ begin
 
    // 最低６バイト必要
    if Length(ss) < 6 then begin
-      fError := True;
       Exit;
    end;
 
    // 宛先アドレスチェック
    if not(Ord(ss[3]) in [0, FMyAddr]) then begin
-      fError := True;
       Exit;
    end;
 
    // 送信元アドレスチェック
    if ss[4] <> AnsiChar(FRigAddr) then begin
-      fError := True;
       Exit;
    end;
 
@@ -3725,15 +3676,6 @@ begin
          end;
       end;
    finally
-//      // 応答確認無しならここでポーリング再開
-//      if dmZLogGlobal.Settings._icom_strict_ack_response = False then begin
-//         StartPolling();
-//      end;
-//
-//      // 応答待ち終了
-//      FWaitForResponse := False;
-
-      fError := False;
    end;
 end;
 
@@ -4440,25 +4382,34 @@ end;
 procedure TIcomCommThread.Execute();
 var
    S: AnsiString;
-   Buffer: array[0..100] of AnsiChar;
-   CH: AnsiChar;
-   dwTick: DWORD;
-   c: Integer;
+   R: AnsiString;
    msg: string;
    proc: TReceiveDataEvent;
-   str: string;
-   i: Integer;
+   E: Integer;
+
+   {$IFDEF DEBUG}
+   procedure DebugDump(T: string; S: AnsiString; E: Integer);
+   var
+      str: string;
+      i: Integer;
+   begin
+      str := '';
+      for i := 1 to Length(S) do begin
+         str := str + IntToHex(Byte(S[i]),2) + ' ';
+      end;
+      str := Trim(str);
+      OutputDebugString(PChar('*** ' + T + '=[' +
+      IntToStr(Length(S)) + '][' + str + '] *** (' + IntToStr(E) + ')'));
+   end;
+   {$ENDIF}
 begin
-   FRig.FComm.InputTimeout := 500;
+   FRig.FComm.InputTimeout := 200;
    while Terminated = False do begin
       // コマンドなし
       if FRig.FCommandList.Count = 0 then begin
          Sleep(50);
          Continue;
       end;
-
-      // バッファクリア
-      ZeroMemory(@Buffer, SizeOf(Buffer));
 
       // コマンド取りだし
       IcomLock.Enter();
@@ -4475,102 +4426,46 @@ begin
       S := AnsiChar($FE) + AnsiChar($FE) + AnsiChar(FRig.FRigAddr) + AnsiChar(FRig.FMyAddr) + S + AnsiChar($FD);
       FRig.WriteData(S);
       {$IFDEF DEBUG}
-      OutputDebugString(PChar('*** コマンド送信 *** [' +
-            IntToHex(Byte(S[1]),2) + ' ' +
-            IntToHex(Byte(S[2]),2) + ' ' +
-            IntToHex(Byte(S[3]),2) + ' ' +
-            IntToHex(Byte(S[4]),2) + ' ' +
-            IntToHex(Byte(S[5]),2) +
-            '] ***'));
+      DebugDump('コマンド', S, E);
       {$ENDIF}
 
-      Sleep(50);
+      // ちょっと待って
+      Sleep(10);
 
-      // 応答
-      FError := False;
-      c := 0;
-      dwTick := GetTickCount();
-      while True do begin
-         Sleep(1);
+      // 最初の応答電文受信
+      R := RecvText(E);
 
-         // 終了指示あるか？
-         if Terminated = True then begin
-            Exit;
+      {$IFDEF DEBUG}
+      if E >= 0 then begin
+         DebugDump('受信①', R, E);
+      end;
+      {$ENDIF}
+
+      // それはエコーバックか？
+      if S = R then begin
+         // 本当の応答電文受信
+         R := RecvText(E);
+
+         {$IFDEF DEBUG}
+         if E >= 0 then begin
+            DebugDump('受信②', R, E);
          end;
-
-         // 1文字受信
-         if FRig.FComm.ReadChar(CH) = False then begin
-            // タイムアウト判定１文字目が来るまで
-            if (c = 0) and
-               ((GetTickCount() - dwTick) > dmZLogGlobal.Settings._icom_response_timeout) then begin
-               {$IFDEF DEBUG}
-               OutputDebugString(PChar('*** レスポンスなし ***'));
-               {$ENDIF}
-               Break;
-            end;
-
-            // 文字間タイマー２文字目以降
-            if (c >= 1) then begin
-               {$IFDEF DEBUG}
-               str := '';
-               for i := 1 to c do begin
-                  str := str + IntToHex(Byte(Buffer[i]),2) + ' ';
-               end;
-               OutputDebugString(PChar('*** これ以降データなし *** [' + IntToStr(c) + '][' + str + ']'));
-               {$ENDIF}
-               Break;
-            end;
-
-            // 再度受信
-            Continue;
-         end;
-
-         // バッファいっぱい
-         if c >= 100 then begin
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('*** バッファーフル ***'));
-            {$ENDIF}
-            Break;
-         end;
-
-         // バッファに格納
-         Buffer[c] := CH;
-         Inc(c);
-
-         // 終端文字まで受信したら終了
-         if CH = FRig.TerminatorCode then begin
-            // レスポンス処理
-            FResponse := AnsiString(Buffer);
-            {$IFDEF DEBUG}
-            str := '';
-            for i := 1 to Length(FResponse) do begin
-               str := str + IntToHex(Byte(FResponse[i]),2) + ' ';
-            end;
-            OutputDebugString(PChar('*** コマンド処理=[' +
-            IntToStr(Length(FResponse)) + '][' + str + '] ***'));
-            {$ENDIF}
-
-            Synchronize(SyncProc);
-
-            // エラー無しなら終了
-            if FError = False then begin
-               {$IFDEF DEBUG}
-               OutputDebugString(PChar('*** コマンド処理終了 ***'));
-               {$ENDIF}
-               Break;
-            end;
-
-            // 続きあり再度受信
-            Sleep(10);
-            dwTick := GetTickCount();
-            c := 0;
-            CH := #00;
-            ZeroMemory(@Buffer,SizeOf(Buffer));
-         end;
+         {$ENDIF}
       end;
 
-      if Terminated = True then begin
-         Exit;
+      // エラー有り
+      if E = -1 then begin
+         msg := 'No response from ' + FRig.Name;
+         {$IFDEF DEBUG}
+         msg := msg + ' (' + IntToHex(Byte(S[5])) + ')';
+         OutputDebugString(PChar('[' + IntToStr(FRig._rignumber) + '] ' + msg));
+         {$ENDIF}
+         MainForm.WriteStatusLineRed(msg, True);
+      end
+      else begin
+         // レスポンス処理
+         FResponse := R;
+         Synchronize(SyncProc);
       end;
 
       // コマンド削除
@@ -4581,30 +4476,81 @@ begin
       FRig.FCommandList.Delete(0);
       IcomLock.Leave();
 
-      // エラー有り
-      if FError = True then begin
-         msg := 'No response from ' + FRig.Name;
-         {$IFDEF DEBUG}
-         msg := msg + ' (' + IntToHex(Byte(S[1])) + ')';
-         OutputDebugString(PChar('[' + IntToStr(FRig._rignumber) + '] ' + msg));
-         {$ENDIF}
-         MainForm.WriteStatusLineRed(msg, True);
-      end;
-
       // ポーリング再開
       FRig.StartPolling();
 
       IcomLock.Enter();
       FRig.FComm.OnReceiveData := proc;
       IcomLock.Leave();
+   end;
+end;
 
-      Sleep(50);
+function TIcomCommThread.RecvText(var nErrorCode: Integer): AnsiString;
+var
+   c: Integer;
+   dwTick: DWORD;
+   fStart: Boolean;
+   fResult: Boolean;
+   CH: AnsiChar;
+begin
+   // 応答受信 FE～FDまで受信
+   nErrorCode := 0;
+   fStart := False;
+   c := 0;
+   dwTick := GetTickCount();
+   Result := '';
+   while True do begin
+      CH := #00;
+      fResult := FRig.FComm.ReadChar(CH);
+      if fResult = False then begin
+         // タイムアウト判定１文字目が来るまで
+         if (c = 0) and
+            ((GetTickCount() - dwTick) > dmZLogGlobal.Settings._icom_response_timeout) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('*** レスポンスなし ***'));
+            {$ENDIF}
+            Result := '';
+            nErrorCode := -1;
+            Exit;
+         end;
+
+         // ２文字目以降
+         if (c >= 1) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('*** これ以降データなし ***'));
+            {$ENDIF}
+            nErrorCode := 1;
+            Break;
+         end;
+      end;
+
+      // スタートキャラクタ待ち
+      if (fStart = False) then begin
+         if (CH = #$FE) then begin
+            fStart := True;
+         end
+         else begin
+            Continue;
+         end;
+      end;
+
+      // スタートしたらバッファに格納
+      if fStart = True then begin
+         Result := Result + CH;
+         Inc(c);
+      end;
+
+      // 終端文字まで受信したら終了
+      if CH = FRig.TerminatorCode then begin
+         nErrorCode := 0;
+         Break;
+      end;
    end;
 end;
 
 procedure TIcomCommThread.SyncProc();
 begin
-   FRig.ExecuteCommand(FResponse, FError);
+   FRig.ExecuteCommand(FResponse);
 end;
 
 initialization
