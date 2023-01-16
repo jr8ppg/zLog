@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids, System.Math, System.StrUtils,
-  System.SyncObjs,
+  System.SyncObjs, Generics.Collections,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB, Vcl.Buttons;
 
 type
@@ -129,7 +129,7 @@ type
     procedure SetRit(flag: Boolean); virtual;
     procedure SetXit(flag: Boolean); virtual;
     procedure SetRitOffset(offset: Integer); virtual;
-    procedure UpdateFreqMem(vfo: Integer; Hz: Integer);
+    procedure UpdateFreqMem(vfo: Integer; Hz: TFrequency);
   public
     constructor Create(RigNum : Integer); virtual;
     destructor Destroy; override;
@@ -231,7 +231,7 @@ type
     FPollingCount: Integer;
 
     FCommThread: TIcomCommThread;
-    FCommandList: TStringList;
+    FCommandList: TList<AnsiString>;
   public
     constructor Create(RigNum : integer); override;
     destructor Destroy; override;
@@ -472,7 +472,7 @@ type
     { Private declarations }
     FRigs: TRigArray;
     FCurrentRig : TRig;
-    FPrevVfo: array[0..1] of Integer;
+    FPrevVfo: array[0..1] of TFrequency;
     FOnVFOChanged: TNotifyEvent;
     FFreqLabel: array[0..1] of TLabel;
 
@@ -728,7 +728,7 @@ begin
    FRitOffset := offset;
 end;
 
-procedure TRig.UpdateFreqMem(vfo: Integer; Hz: Integer);
+procedure TRig.UpdateFreqMem(vfo: Integer; Hz: TFrequency);
 var
    b: TBand;
 begin
@@ -2048,7 +2048,7 @@ begin
    FMyAddr := $E0;
    FRigAddr := $01;
 
-   FCommandList := TStringList.Create();
+   FCommandList := TList<AnsiString>.Create();
    FCommThread := TIcomCommThread.Create(Self);
 end;
 
@@ -2062,10 +2062,6 @@ end;
 
 procedure TICOM.ICOMWriteData(S: AnsiString);
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('[' + IntToStr(_rignumber) + ']*** Enter - TICOM.ICOMWriteData(' + IntToHex(Byte(S[1]), 2) + ') ---'));
-   {$ENDIF}
-
    if FComm.Connected = False then begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('[' + IntToStr(_rignumber) + '] @@@not connected@@@'));
@@ -2080,10 +2076,6 @@ begin
    IcomLock.Enter();
    FCommandList.Add(S);
    IcomLock.Leave();
-
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('[' + IntToStr(_rignumber) + ']*** Leave - TICOM.ICOMWriteData(' + IntToHex(Byte(S[1]), 2) + ') ---'));
-   {$ENDIF}
 end;
 
 procedure TICOM.StartPolling();
@@ -4305,7 +4297,7 @@ end;
 
 procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: TFrequency; b: TBand; m: TMode);
 var
-   vfo: array[0..1] of Integer;
+   vfo: array[0..1] of TFrequency;
 begin
    vfo[0] := VfoA;
    vfo[1] := VfoB;
@@ -4392,14 +4384,16 @@ var
    var
       str: string;
       i: Integer;
+      L: Integer;
    begin
+      L := Length(S);
       str := '';
-      for i := 1 to Length(S) do begin
+      for i := 1 to L do begin
          str := str + IntToHex(Byte(S[i]),2) + ' ';
       end;
       str := Trim(str);
       OutputDebugString(PChar('*** ' + T + '=[' +
-      IntToStr(Length(S)) + '][' + str + '] *** (' + IntToStr(E) + ')'));
+      IntToStr(L) + '][' + str + '] *** (' + IntToStr(E) + ')'));
    end;
    {$ENDIF}
 begin
@@ -4413,20 +4407,20 @@ begin
 
       // コマンド取りだし
       IcomLock.Enter();
-      S := AnsiString(FRig.FCommandList.Strings[0]);
+      S := FRig.FCommandList.Items[0];
       proc := FRig.FComm.OnReceiveData;
       FRig.FComm.OnReceiveData := nil;
       IcomLock.Leave();
 
-      if S = '' then begin
-         Continue;
-      end;
+      {$IFDEF DEBUG}
+//      DebugDump('コマンド', S, E);
+      {$ENDIF}
 
       // 送信
       S := AnsiChar($FE) + AnsiChar($FE) + AnsiChar(FRig.FRigAddr) + AnsiChar(FRig.FMyAddr) + S + AnsiChar($FD);
       FRig.WriteData(S);
       {$IFDEF DEBUG}
-      DebugDump('コマンド', S, E);
+      DebugDump('送信コマンド', S, E);
       {$ENDIF}
 
       // ちょっと待って
@@ -4500,6 +4494,7 @@ begin
    dwTick := GetTickCount();
    Result := '';
    while True do begin
+      Sleep(0);
       CH := #00;
       fResult := FRig.FComm.ReadChar(CH);
       if fResult = False then begin

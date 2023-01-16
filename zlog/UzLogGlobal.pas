@@ -138,7 +138,6 @@ type
 
     _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
-    _icom_strict_ack_response: Boolean;
     _icom_response_timeout: Integer;
     _usbif4cw_sync_wpm: Boolean;
     _polling_interval: Integer;
@@ -933,9 +932,6 @@ begin
       // Get band and mode when polling(ICOM only)
       Settings._icom_polling_freq_and_mode := ini.ReadBool('Hardware', 'PollingFreqAndMode', False);
 
-      // Strict acknowledgment(ICOM only)
-      Settings._icom_strict_ack_response := ini.ReadBool('Hardware', 'IcomStrictAckResponse', True);
-
       // Response timeout(ICOM only)
       Settings._icom_response_timeout := ini.ReadInteger('Hardware', 'IcomResponseTimeout', 1000);
 
@@ -1557,9 +1553,6 @@ begin
 
       // Get band and mode when polling(ICOM only)
       ini.WriteBool('Hardware', 'PollingFreqAndMode', Settings._icom_polling_freq_and_mode);
-
-      // Strict acknowledgment(ICOM only)
-      ini.WriteBool('Hardware', 'IcomStrictAckResponse', Settings._icom_strict_ack_response);
 
       // Response timeout(ICOM only)
       ini.WriteInteger('Hardware', 'IcomResponseTimeout', Settings._icom_response_timeout);

@@ -1046,7 +1046,7 @@ type
     procedure BandScopeAddSelfSpot(aQSO: TQSO; nFreq: TFrequency);
     procedure BandScopeAddSelfSpotFromNetwork(BSText: string);
     procedure BandScopeAddClusterSpot(Sp: TSpot);
-    procedure BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
+    procedure BandScopeMarkCurrentFreq(B: TBand; Hz: TFrequency);
     procedure BandScopeUpdateSpot(aQSO: TQSO);
     procedure BandScopeApplyBandPlan();
 
@@ -9342,7 +9342,7 @@ begin
    end;
 end;
 
-procedure TMainForm.BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
+procedure TMainForm.BandScopeMarkCurrentFreq(B: TBand; Hz: TFrequency);
 begin
    FBandScopeEx[B].MarkCurrentFreq(Hz);
    FBandScope.MarkCurrentFreq(Hz);
