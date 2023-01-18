@@ -855,6 +855,8 @@ type
     FDownKeyPressed: Boolean;
     FOtherKeyPressed: Boolean;
 
+    FTaskbarList: ITaskbarList;
+
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -1086,6 +1088,8 @@ type
     property MemoEdit: TEdit read GetMemoEdit;
     property NewMultiEdit1: TEdit read GetNewMulti1Edit;
     property NewMultiEdit2: TEdit read GetNewMulti2Edit;
+
+    property TaskbarList: ITaskbarList read FTaskbarList;
 
     procedure SetLastFocus();
   end;
@@ -1964,6 +1968,9 @@ var
 begin
    FInitialized   := False;
    InitAtomTable(509);
+
+   // taskbar表示用リスト
+   FTaskbarList := CreateComObject(CLSID_TaskbarList) as ITaskBarList;
 
    // フォント設定
    Grid.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
@@ -4068,6 +4075,8 @@ begin
    end;
 
    CurrentQSO.Free();
+
+   FTaskbarList := nil;
 
    SuperCheckFreeData();
 

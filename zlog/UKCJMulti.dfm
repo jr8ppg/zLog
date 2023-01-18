@@ -38,7 +38,6 @@ inherited KCJMulti: TKCJMulti
       Top = 9
       Width = 73
       Height = 21
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
       TabOrder = 2
       Text = 'combBand'
       OnChange = combBandChange

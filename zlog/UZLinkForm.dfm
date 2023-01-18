@@ -14,9 +14,11 @@ object ZLinkForm: TZLinkForm
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
   object StatusLine: TStatusBar
@@ -26,8 +28,6 @@ object ZLinkForm: TZLinkForm
     Height = 23
     Panels = <>
     SimplePanel = True
-    ExplicitTop = 310
-    ExplicitWidth = 364
   end
   object Panel1: TPanel
     Left = 0
@@ -37,8 +37,6 @@ object ZLinkForm: TZLinkForm
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 247
-    ExplicitWidth = 364
     object Edit: TEdit
       Left = 8
       Top = 6
@@ -50,7 +48,6 @@ object ZLinkForm: TZLinkForm
       Font.Height = -12
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
       ParentFont = False
       TabOrder = 0
       OnKeyPress = EditKeyPress
@@ -79,8 +76,6 @@ object ZLinkForm: TZLinkForm
     Font.Style = []
     Rows = 500
     LineBreak = CR
-    ExplicitWidth = 364
-    ExplicitHeight = 247
   end
   object Timer1: TTimer
     Enabled = False

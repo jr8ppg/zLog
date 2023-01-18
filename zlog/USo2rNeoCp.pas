@@ -51,6 +51,8 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure ToggleSwitch1Click(Sender: TObject);
     procedure actionSo2rNeoToggleAutoRxSelectExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
   private
     { Private êÈåæ }
     function GetRx(): Integer;
@@ -81,6 +83,13 @@ uses
 
 {$R *.dfm}
 
+procedure TformSo2rNeoCp.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
+   end;
+end;
+
 procedure TformSo2rNeoCp.FormCreate(Sender: TObject);
 begin
    ToggleSwitch1.State := tssOff;
@@ -105,6 +114,14 @@ begin
       VK_ESCAPE:
          MainForm.SetLastFocus();
       // VK_ALT
+   end;
+end;
+
+procedure TformSo2rNeoCp.FormShow(Sender: TObject);
+begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
    end;
 end;
 

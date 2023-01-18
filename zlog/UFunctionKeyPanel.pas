@@ -30,10 +30,10 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure FormHide(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
     procedure actionChangeCwBankExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   protected
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
@@ -58,10 +58,12 @@ implementation
 uses
   Main, UzLogGlobal;
 
-procedure TformFunctionKeyPanel.CreateParams(var Params: TCreateParams);
+procedure TformFunctionKeyPanel.FormClose(Sender: TObject;
+  var Action: TCloseAction);
 begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
+   end;
 end;
 
 procedure TformFunctionKeyPanel.FormCreate(Sender: TObject);
@@ -104,6 +106,11 @@ end;
 
 procedure TformFunctionKeyPanel.FormShow(Sender: TObject);
 begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
+   end;
+
    Timer1.Enabled := True;
    UpdateInfo();
 end;

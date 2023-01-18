@@ -45,7 +45,6 @@ object formClusterCOMSet: TformClusterCOMSet
     Top = 52
     Width = 65
     Height = 20
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     TabOrder = 0
     Text = 'Line break'
     Items.Strings = (
@@ -90,7 +89,6 @@ object formClusterCOMSet: TformClusterCOMSet
     Top = 18
     Width = 65
     Height = 20
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     TabOrder = 4
     Text = 'comboBaudRate'
     Items.Strings = (

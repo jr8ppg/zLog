@@ -54,7 +54,6 @@ type
     popupScore: TPopupMenu;
     menuAchievementRate: TMenuItem;
     menuWinLoss: TMenuItem;
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -106,12 +105,6 @@ uses
   Main;
 
 {$R *.DFM}
-
-procedure TRateDialogEx.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
-end;
 
 procedure TRateDialogEx.FormCreate(Sender: TObject);
 var
@@ -202,6 +195,11 @@ end;
 
 procedure TRateDialogEx.FormShow(Sender: TObject);
 begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
+   end;
+
    UpdateGraph;
    TimerTimer(nil);
    Timer.Enabled := True;
@@ -217,6 +215,10 @@ end;
 
 procedure TRateDialogEx.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
+   end;
+
    Timer.Enabled := False;
    SaveSettings();
 end;

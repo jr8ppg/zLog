@@ -25,9 +25,7 @@ type
     checkShowCurrentBandFirst: TCheckBox;
     ImageList1: TImageList;
     procedure FormCreate(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure CreateParams(var Params: TCreateParams); override;
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure CheckBox1Click(Sender: TObject);
     procedure MoreButtonClick(Sender: TObject);
     procedure ShowMaxEditChange(Sender: TObject);
@@ -39,6 +37,7 @@ type
     procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer;
       var Height: Integer);
     procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
   private
     { Private declarations }
@@ -79,12 +78,6 @@ begin
    if rbCall.Checked then begin
       Result := soCallsign;
    end;
-end;
-
-procedure TPartialCheck.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
 procedure TPartialCheck.CheckPartialNumber(aQSO: TQSO);
@@ -230,6 +223,13 @@ begin
    end;
 end;
 
+procedure TPartialCheck.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
+   end;
+end;
+
 procedure TPartialCheck.FormCreate(Sender: TObject);
 begin
    ListBox.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
@@ -249,6 +249,11 @@ end;
 
 procedure TPartialCheck.FormShow(Sender: TObject);
 begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
+   end;
+
    MoreButton.ImageIndex := 0;
    panelExtend.Visible := False;
 end;

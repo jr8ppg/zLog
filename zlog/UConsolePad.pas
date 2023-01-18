@@ -14,7 +14,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
-    procedure CreateParams(var Params: TCreateParams); override;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -25,18 +25,18 @@ type
 
 implementation
 
-uses Main;
+uses
+  Main;
 
 {$R *.DFM}
 
-procedure TConsolePad.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
-end;
-
 procedure TConsolePad.FormShow(Sender: TObject);
 begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
+   end;
+
    Left := MainForm.Left + 30;
    Top := MainForm.Top + MainForm.Height - 150;
    Edit.SetFocus;
@@ -78,6 +78,13 @@ begin
       ListBox.TopIndex := _TopRow
    else
       ListBox.TopIndex := 0;
+end;
+
+procedure TConsolePad.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
+   end;
 end;
 
 procedure TConsolePad.FormCreate(Sender: TObject);

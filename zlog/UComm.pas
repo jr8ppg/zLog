@@ -58,8 +58,6 @@ type
     procedure ConnectButtonClick(Sender: TObject);
     procedure TelnetSessionConnected(Sender: TTnCnx; Error: Word);
     procedure TelnetSessionClosed(Sender: TTnCnx; Error: Word);
-    procedure CreateParams(var Params: TCreateParams); override;
-    //procedure AsyncCommRxChar(Sender: TObject; Count: Integer);
     procedure FormShow(Sender: TObject);
     procedure ListBoxDblClick(Sender: TObject);
     procedure ListBoxKeyDown(Sender: TObject; var Key: Word;
@@ -242,12 +240,6 @@ begin
    end;
 end;
 
-procedure TCommForm.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
-end;
-
 procedure TCommForm.WriteData(str : string);
 begin
    case dmZlogGlobal.Settings._clusterport of
@@ -419,6 +411,10 @@ end;
 procedure TCommForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    Disconnect();
+
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
+   end;
 end;
 
 procedure TCommForm.RenewListBox;
@@ -902,6 +898,11 @@ end;
 
 procedure TCommForm.FormShow(Sender: TObject);
 begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
+   end;
+
    ConnectButton.Enabled := (dmZlogGlobal.Settings._clusterport = 7);
 end;
 

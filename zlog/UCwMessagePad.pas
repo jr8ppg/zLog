@@ -26,7 +26,6 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure CreateParams(var Params: TCreateParams); override;
   private
     { Private êÈåæ }
     function GetFontSize(): Integer;
@@ -42,12 +41,6 @@ uses
   UCwMessageEditor, Main, UzLogCW;
 
 {$R *.dfm}
-
-procedure TCwMessagePad.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
-end;
 
 procedure TCwMessagePad.FormCreate(Sender: TObject);
 var
@@ -90,12 +83,19 @@ end;
 
 procedure TCwMessagePad.FormShow(Sender: TObject);
 begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
+   end;
+
    CategoryButtons1.UpdateAllButtons();
 end;
 
 procedure TCwMessagePad.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-//
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
+   end;
 end;
 
 procedure TCwMessagePad.menuLoadFromFileClick(Sender: TObject);

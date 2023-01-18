@@ -80,9 +80,9 @@ type
     procedure buttonCopyClick(Sender: TObject);
     procedure TabControl1Change(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure OnAnalyzeUpdate( var Message: TMessage ); message WM_ANALYZE_UPDATE;
     procedure buttonSaveClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private êÈåæ }
     FStartHour: Integer;
@@ -131,10 +131,11 @@ uses
 
 {$R *.dfm}
 
-procedure TZAnalyze.CreateParams(var Params: TCreateParams);
+procedure TZAnalyze.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
+   end;
 end;
 
 procedure TZAnalyze.FormCreate(Sender: TObject);
@@ -165,6 +166,11 @@ end;
 
 procedure TZAnalyze.FormShow(Sender: TObject);
 begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
+   end;
+
    TotalTimeChart(Log.QsoList);
    ShowAll(Memo1.Lines);
    Memo1.SelStart := 0;

@@ -26,7 +26,6 @@ object ConsolePad: TConsolePad
     Font.Height = -12
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Style = []
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     ItemHeight = 12
     ParentFont = False
     TabOrder = 0
@@ -44,7 +43,6 @@ object ConsolePad: TConsolePad
       Width = 252
       Height = 20
       CharCase = ecUpperCase
-      ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
       TabOrder = 0
       OnKeyPress = EditKeyPress
     end

@@ -86,7 +86,6 @@ object SummaryInfo: TSummaryInfo
     Top = 71
     Width = 249
     Height = 20
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     TabOrder = 0
   end
   object NameEdit: TEdit
@@ -94,7 +93,6 @@ object SummaryInfo: TSummaryInfo
     Top = 392
     Width = 337
     Height = 20
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     TabOrder = 1
   end
   object ContestNameEdit: TEdit
@@ -102,7 +100,6 @@ object SummaryInfo: TSummaryInfo
     Top = 20
     Width = 337
     Height = 20
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     TabOrder = 2
   end
   object Button1: TButton
@@ -128,7 +125,6 @@ object SummaryInfo: TSummaryInfo
     Top = 214
     Width = 337
     Height = 81
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     TabOrder = 5
   end
   object CountryEdit: TEdit
@@ -136,7 +132,6 @@ object SummaryInfo: TSummaryInfo
     Top = 96
     Width = 249
     Height = 20
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     TabOrder = 6
   end
   object DecMemo: TMemo
@@ -144,7 +139,6 @@ object SummaryInfo: TSummaryInfo
     Top = 301
     Width = 337
     Height = 83
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     Lines.Strings = (
       
         'This is to certify that in this contest I have operated my trans' +
@@ -159,7 +153,6 @@ object SummaryInfo: TSummaryInfo
     Top = 128
     Width = 337
     Height = 81
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     TabOrder = 8
   end
   object AddrMemo: TMemo
@@ -167,7 +160,6 @@ object SummaryInfo: TSummaryInfo
     Top = 421
     Width = 337
     Height = 44
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     TabOrder = 9
   end
   object CallEdit: TEdit
@@ -175,7 +167,6 @@ object SummaryInfo: TSummaryInfo
     Top = 45
     Width = 249
     Height = 20
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     TabOrder = 10
   end
 end

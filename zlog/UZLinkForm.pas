@@ -22,7 +22,6 @@ type
     Console: TColorConsole2;
     Timer1: TTimer;
     ZSocket: TWSocket;
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure Button1Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -34,6 +33,8 @@ type
     procedure ZSocketSessionClosed(Sender: TObject; Error: Word);
     procedure ZSocketSessionConnected(Sender: TObject; Error: Word);
     procedure FormDestroy(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     CommTemp : string; {command work string}
@@ -106,12 +107,6 @@ begin
    if ZSocket.State = wsConnected then begin
       ZSocket.SendStr(str);
    end;
-end;
-
-procedure TZLinkForm.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
 procedure TZLinkForm.Button1Click(Sender: TObject);
@@ -812,6 +807,13 @@ begin
    CommProcessing := false;
 end;
 
+procedure TZLinkForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
+   end;
+end;
+
 procedure TZLinkForm.FormCreate(Sender: TObject);
 begin
    // Transparent := False;
@@ -878,6 +880,14 @@ begin
    case Key of
       VK_ESCAPE:
          MainForm.SetLastFocus();
+   end;
+end;
+
+procedure TZLinkForm.FormShow(Sender: TObject);
+begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
    end;
 end;
 

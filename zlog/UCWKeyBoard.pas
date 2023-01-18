@@ -56,7 +56,6 @@ type
     procedure ConsoleKeyPress(Sender: TObject; var Key: Char);
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure buttonClearClick(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -72,6 +71,7 @@ type
     procedure actionIncreaseCwSpeedExecute(Sender: TObject);
     procedure actionPlayMessageBTExecute(Sender: TObject);
     procedure actionPlayMessageVAExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     procedure PlayMessage(nID: Integer; cb: Integer; no: Integer);
@@ -87,10 +87,11 @@ uses
 
 {$R *.DFM}
 
-procedure TCWKeyBoard.CreateParams(var Params: TCreateParams);
+procedure TCWKeyBoard.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
+   end;
 end;
 
 procedure TCWKeyBoard.FormCreate(Sender: TObject);
@@ -100,6 +101,11 @@ end;
 
 procedure TCWKeyBoard.FormShow(Sender: TObject);
 begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
+   end;
+
    ApplyShortcut();
    Console.SetFocus;
 end;

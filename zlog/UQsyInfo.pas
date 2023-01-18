@@ -10,10 +10,11 @@ type
   TformQsyInfo = class(TForm)
     Panel1: TPanel;
     Label1: TLabel;
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
   private
     { Private êÈåæ }
   public
@@ -29,10 +30,11 @@ implementation
 uses
   Main;
 
-procedure TformQsyInfo.CreateParams(var Params: TCreateParams);
+procedure TformQsyInfo.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
+   end;
 end;
 
 procedure TformQsyInfo.FormCreate(Sender: TObject);
@@ -57,6 +59,14 @@ begin
    end
    else begin
       ClientWidth := ClientHeight;
+   end;
+end;
+
+procedure TformQsyInfo.FormShow(Sender: TObject);
+begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
    end;
 end;
 

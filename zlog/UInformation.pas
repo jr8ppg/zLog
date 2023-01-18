@@ -28,6 +28,7 @@ type
     procedure panelCQModeClick(Sender: TObject);
     procedure buttonWaitClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private êÈåæ }
     FSo2rMode: Boolean;
@@ -79,6 +80,13 @@ begin
    MainForm.SetLastFocus();
 end;
 
+procedure TformInformation.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
+   end;
+end;
+
 procedure TformInformation.FormCreate(Sender: TObject);
 begin
    FSo2rMode := False;
@@ -101,6 +109,11 @@ end;
 
 procedure TformInformation.FormShow(Sender: TObject);
 begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
+   end;
+
    DispUpdate();
 end;
 

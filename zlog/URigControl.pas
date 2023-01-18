@@ -448,8 +448,9 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
     procedure btnOmniRigClick(Sender: TObject);
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure buttonJumpLastFreqClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     FRigs: TRigArray;
@@ -4184,6 +4185,13 @@ begin
    MainForm.BandScopeMarkCurrentFreq(_currentband, _freqoffset + _currentfreq[_currentvfo]);
 end;
 
+procedure TRigControl.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
+   end;
+end;
+
 procedure TRigControl.FormCreate(Sender: TObject);
 var
    B: TBand;
@@ -4258,6 +4266,14 @@ begin
    end;
 end;
 
+procedure TRigControl.FormShow(Sender: TObject);
+begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
+   end;
+end;
+
 procedure TRigControl.ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
 var
    i: Integer;
@@ -4283,12 +4299,6 @@ end;
 procedure TRigControl.btnOmniRigClick(Sender: TObject);
 begin
    MainForm.RigControl.FOmniRig.DialogVisible := True;
-end;
-
-procedure TRigControl.CreateParams(var Params: TCreateParams);
-begin
-  inherited CreateParams(Params);
-  Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
 procedure TRigControl.SetSendFreq();

@@ -21,16 +21,15 @@ type
     procedure editMessageKeyPress(Sender: TObject; var Key: Char);
     procedure buttonSendClick(Sender: TObject);
     procedure Button2Click(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure checkStayOnTopClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure FormShow(Sender: TObject);
     procedure editMessageEnter(Sender: TObject);
     procedure editMessageExit(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure comboPromptTypeChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     FChatFileName: string;
@@ -53,16 +52,17 @@ uses
 
 {$R *.DFM}
 
-procedure TChatForm.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
-end;
-
 procedure TChatForm.FormActivate(Sender: TObject);
 begin
    if editMessage.Enabled = True then begin
       editMessage.SetFocus();
+   end;
+end;
+
+procedure TChatForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   if MainForm.TaskBarList <> nil then begin
+      MainForm.TaskBarList.DeleteTab(Self.Handle);
    end;
 end;
 
@@ -165,6 +165,11 @@ end;
 
 procedure TChatForm.FormShow(Sender: TObject);
 begin
+   if MainForm.TaskbarList <> nil then begin
+      MainForm.TaskBarList.AddTab(Self.Handle);
+      MainForm.TaskBarList.ActivateTab(Self.Handle);
+   end;
+
    if FileExists(FChatFileName) = True then begin
       ListBox.Items.LoadFromFile(FChatFileName);
       ListBox.ShowLast();
