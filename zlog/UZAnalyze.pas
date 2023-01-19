@@ -133,9 +133,7 @@ uses
 
 procedure TZAnalyze.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   if MainForm.TaskBarList <> nil then begin
-      MainForm.TaskBarList.DeleteTab(Self.Handle);
-   end;
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TZAnalyze.FormCreate(Sender: TObject);
@@ -166,10 +164,7 @@ end;
 
 procedure TZAnalyze.FormShow(Sender: TObject);
 begin
-   if MainForm.TaskbarList <> nil then begin
-      MainForm.TaskBarList.AddTab(Self.Handle);
-      MainForm.TaskBarList.ActivateTab(Self.Handle);
-   end;
+   MainForm.AddTaskbar(Handle);
 
    TotalTimeChart(Log.QsoList);
    ShowAll(Memo1.Lines);

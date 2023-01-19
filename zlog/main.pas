@@ -1089,7 +1089,8 @@ type
     property NewMultiEdit1: TEdit read GetNewMulti1Edit;
     property NewMultiEdit2: TEdit read GetNewMulti2Edit;
 
-    property TaskbarList: ITaskbarList read FTaskbarList;
+    procedure AddTaskbar(Handle: THandle);
+    procedure DelTaskbar(Handle: THandle);
 
     procedure SetLastFocus();
   end;
@@ -10696,6 +10697,21 @@ begin
 
    // バンドスコープリフレッシュ
    BSRefresh();
+end;
+
+procedure TMainForm.AddTaskbar(Handle: THandle);
+begin
+   if FTaskbarList <> nil then begin
+      FTaskBarList.AddTab(Handle);
+      FTaskBarList.ActivateTab(Handle);
+   end;
+end;
+
+procedure TMainForm.DelTaskbar(Handle: THandle);
+begin
+   if FTaskBarList <> nil then begin
+      FTaskBarList.DeleteTab(Handle);
+   end;
 end;
 
 { TBandScopeNotifyThread }

@@ -412,9 +412,7 @@ procedure TCommForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    Disconnect();
 
-   if MainForm.TaskBarList <> nil then begin
-      MainForm.TaskBarList.DeleteTab(Self.Handle);
-   end;
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TCommForm.RenewListBox;
@@ -898,10 +896,7 @@ end;
 
 procedure TCommForm.FormShow(Sender: TObject);
 begin
-   if MainForm.TaskbarList <> nil then begin
-      MainForm.TaskBarList.AddTab(Self.Handle);
-      MainForm.TaskBarList.ActivateTab(Self.Handle);
-   end;
+   MainForm.AddTaskbar(Handle);
 
    ConnectButton.Enabled := (dmZlogGlobal.Settings._clusterport = 7);
 end;

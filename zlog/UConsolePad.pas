@@ -32,10 +32,7 @@ uses
 
 procedure TConsolePad.FormShow(Sender: TObject);
 begin
-   if MainForm.TaskbarList <> nil then begin
-      MainForm.TaskBarList.AddTab(Self.Handle);
-      MainForm.TaskBarList.ActivateTab(Self.Handle);
-   end;
+   MainForm.AddTaskbar(Handle);
 
    Left := MainForm.Left + 30;
    Top := MainForm.Top + MainForm.Height - 150;
@@ -82,9 +79,7 @@ end;
 
 procedure TConsolePad.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   if MainForm.TaskBarList <> nil then begin
-      MainForm.TaskBarList.DeleteTab(Self.Handle);
-   end;
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TConsolePad.FormCreate(Sender: TObject);

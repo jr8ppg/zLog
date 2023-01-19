@@ -85,9 +85,7 @@ uses
 
 procedure TformSo2rNeoCp.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   if MainForm.TaskBarList <> nil then begin
-      MainForm.TaskBarList.DeleteTab(Self.Handle);
-   end;
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TformSo2rNeoCp.FormCreate(Sender: TObject);
@@ -119,10 +117,7 @@ end;
 
 procedure TformSo2rNeoCp.FormShow(Sender: TObject);
 begin
-   if MainForm.TaskbarList <> nil then begin
-      MainForm.TaskBarList.AddTab(Self.Handle);
-      MainForm.TaskBarList.ActivateTab(Self.Handle);
-   end;
+   MainForm.AddTaskbar(Handle);
 end;
 
 procedure TformSo2rNeoCp.OnZLogSo2rNeoSetRx( var Message: TMessage );

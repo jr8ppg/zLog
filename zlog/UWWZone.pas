@@ -80,17 +80,12 @@ end;
 
 procedure TWWZone.FormShow(Sender: TObject);
 begin
-   if MainForm.TaskbarList <> nil then begin
-      MainForm.TaskBarList.AddTab(Self.Handle);
-      MainForm.TaskBarList.ActivateTab(Self.Handle);
-   end;
+   MainForm.AddTaskbar(Handle);
 end;
 
 procedure TWWZone.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   if MainForm.TaskBarList <> nil then begin
-      MainForm.TaskBarList.DeleteTab(Self.Handle);
-   end;
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TWWZone.FormCreate(Sender: TObject);

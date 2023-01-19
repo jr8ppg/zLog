@@ -195,10 +195,7 @@ end;
 
 procedure TRateDialogEx.FormShow(Sender: TObject);
 begin
-   if MainForm.TaskbarList <> nil then begin
-      MainForm.TaskBarList.AddTab(Self.Handle);
-      MainForm.TaskBarList.ActivateTab(Self.Handle);
-   end;
+   MainForm.AddTaskbar(Handle);
 
    UpdateGraph;
    TimerTimer(nil);
@@ -215,12 +212,9 @@ end;
 
 procedure TRateDialogEx.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   if MainForm.TaskBarList <> nil then begin
-      MainForm.TaskBarList.DeleteTab(Self.Handle);
-   end;
-
    Timer.Enabled := False;
    SaveSettings();
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TRateDialogEx.TimerTimer(Sender: TObject);
