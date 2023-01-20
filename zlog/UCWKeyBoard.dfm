@@ -12,6 +12,7 @@ object CWKeyBoard: TCWKeyBoard
   Font.Style = []
   OldCreateOrder = True
   OnActivate = FormActivate
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDeactivate = FormDeactivate
   OnShow = FormShow

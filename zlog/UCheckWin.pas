@@ -12,13 +12,12 @@ type
     Button3: TButton;
     ListBox: TListBox;
     StayOnTop: TCheckBox;
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure Button3Click(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   protected
     FFontSize: Integer;
     function GetFontSize(): Integer; virtual;
@@ -36,15 +35,10 @@ type
 
 implementation
 
-uses Main;
+uses
+  Main;
 
 {$R *.DFM}
-
-procedure TCheckWin.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
-end;
 
 procedure TCheckWin.Button3Click(Sender: TObject);
 begin
@@ -106,6 +100,8 @@ end;
 
 procedure TCheckWin.FormShow(Sender: TObject);
 begin
+   MainForm.AddTaskbar(Handle);
+
    ResetListBox;
    Renew(Main.CurrentQSO);
 end;
@@ -116,6 +112,11 @@ begin
       VK_ESCAPE:
          MainForm.SetLastFocus();
    end;
+end;
+
+procedure TCheckWin.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TCheckWin.FormCreate(Sender: TObject);

@@ -106,7 +106,7 @@ library Zlog;
 {ITE} {DFMFileType} {UzLogGlobal.dfm}
 {ITE} {DFMFileType} {UzLogKeyer.dfm}
 {ITE} {DFMFileType} {UZServerInquiry.dfm}
-{ITE} {RCFileType} {Win64\Release\Zlog_DRC.rc}
+{ITE} {RCFileType} {Win64\Debug\Zlog_DRC.rc}
 
 {$R 'main.dfm' 'MainForm:TForm'}
 {$R 'Progress.dfm' 'formProgress:TForm'}
@@ -212,7 +212,7 @@ library Zlog;
 {$R 'UzLogGlobal.dfm' 'dmZLogGlobal:TDataModule'}
 {$R 'UzLogKeyer.dfm' 'dmZLogKeyer:TDataModule'}
 {$R 'UZServerInquiry.dfm' 'ZServerInquiry:TForm'}
-{$R 'Win64\Release\Zlog_DRC.res' 'Win64\Release\Zlog_DRC.rc'}
+{$R 'Win64\Debug\Zlog_DRC.res' 'Win64\Debug\Zlog_DRC.rc'}
 
 {$E JPN}
 

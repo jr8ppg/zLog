@@ -40,7 +40,6 @@ object SpotForm: TSpotForm
     Top = 16
     Width = 73
     Height = 20
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     TabOrder = 0
     Text = 'Freq'
   end
@@ -49,7 +48,6 @@ object SpotForm: TSpotForm
     Top = 16
     Width = 65
     Height = 20
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     TabOrder = 1
     Text = 'Callsign'
   end
@@ -58,7 +56,6 @@ object SpotForm: TSpotForm
     Top = 16
     Width = 145
     Height = 20
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     TabOrder = 2
     Text = 'Comment'
   end

@@ -855,6 +855,8 @@ type
     FDownKeyPressed: Boolean;
     FOtherKeyPressed: Boolean;
 
+    FTaskbarList: ITaskbarList;
+
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -1086,6 +1088,9 @@ type
     property MemoEdit: TEdit read GetMemoEdit;
     property NewMultiEdit1: TEdit read GetNewMulti1Edit;
     property NewMultiEdit2: TEdit read GetNewMulti2Edit;
+
+    procedure AddTaskbar(Handle: THandle);
+    procedure DelTaskbar(Handle: THandle);
 
     procedure SetLastFocus();
   end;
@@ -1964,6 +1969,9 @@ var
 begin
    FInitialized   := False;
    InitAtomTable(509);
+
+   // taskbar表示用リスト
+   FTaskbarList := CreateComObject(CLSID_TaskbarList) as ITaskBarList;
 
    // フォント設定
    Grid.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
@@ -3490,6 +3498,14 @@ begin
    end;
 
    // CW
+   nID := FCurrentTx;
+
+   // CWポート設定チェック
+   if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
+      WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
+      Exit;
+   end;
+
    if NumberEditEx.Text = '' then begin
       CurrentQSO.UpdateTime;
       TimeEdit.Text := CurrentQSO.TimeStr;
@@ -3505,7 +3521,6 @@ begin
    if dmZLogKeyer.UseWinKeyer = True then begin
 
       if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
-         nID := FCurrentTx;
          dmZLogKeyer.So2rNeoReverseRx(nID)
       end;
 
@@ -3570,6 +3585,12 @@ begin
 
    case CurrentQSO.Mode of
       mCW: begin
+         // CWポート設定チェック
+         if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
+            WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
+            Exit;
+         end;
+
          if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
             // NR?自動送出使う場合
             if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
@@ -4070,6 +4091,8 @@ begin
 
    CurrentQSO.Free();
 
+   FTaskbarList := nil;
+
    SuperCheckFreeData();
 
    zyloContestClosed;
@@ -4333,6 +4356,7 @@ begin
          S := SetStr(UpperCase(S), CurrentQSO);
       end;
 
+      // CWポート設定チェック
       if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
          WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
          FCQRepeatPlaying := False;
@@ -7099,6 +7123,8 @@ begin
    case CurrentQSO.Mode of
       mCW: begin
          nID := FCurrentTx;
+
+         // CWポート設定チェック
          if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
             WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
             Exit;
@@ -10688,6 +10714,21 @@ begin
 
    // バンドスコープリフレッシュ
    BSRefresh();
+end;
+
+procedure TMainForm.AddTaskbar(Handle: THandle);
+begin
+   if FTaskbarList <> nil then begin
+      FTaskBarList.AddTab(Handle);
+      FTaskBarList.ActivateTab(Handle);
+   end;
+end;
+
+procedure TMainForm.DelTaskbar(Handle: THandle);
+begin
+   if FTaskBarList <> nil then begin
+      FTaskBarList.DeleteTab(Handle);
+   end;
 end;
 
 { TBandScopeNotifyThread }

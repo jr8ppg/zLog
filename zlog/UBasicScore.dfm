@@ -13,8 +13,10 @@ object BasicScore: TBasicScore
   KeyPreview = True
   OldCreateOrder = True
   Scaled = False
+  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
   object Panel1: TPanel

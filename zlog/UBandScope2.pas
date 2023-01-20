@@ -64,7 +64,6 @@ type
     buttonSortByFreq: TSpeedButton;
     buttonSortByTime: TSpeedButton;
     ImageList2: TImageList;
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -181,12 +180,6 @@ begin
    buttonShowWorked.Down := True;
    buttonShowWorked2.Down := True;
    buttonShowAllBands.Down := False;
-end;
-
-procedure TBandScope2.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
 procedure TBandScope2.AddBSList(D: TBSData);
@@ -671,7 +664,7 @@ end;
 
 procedure TBandScope2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-//
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TBandScope2.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -689,6 +682,8 @@ end;
 
 procedure TBandScope2.FormShow(Sender: TObject);
 begin
+   MainForm.AddTaskbar(Handle);
+
    ApplyShortcut();
    Timer1.Enabled := True;
 end;

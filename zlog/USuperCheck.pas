@@ -18,12 +18,12 @@ type
     procedure Button3Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure ListBoxDblClick(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
     procedure SpinEditChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     function GetItems(): TStringList;
@@ -44,14 +44,13 @@ type
 implementation
 
 uses
-  Main, UOptions;
+  Main;
 
 {$R *.DFM}
 
-procedure TSuperCheck.CreateParams(var Params: TCreateParams);
+procedure TSuperCheck.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TSuperCheck.FormCreate(Sender: TObject);
@@ -74,7 +73,7 @@ end;
 
 procedure TSuperCheck.FormShow(Sender: TObject);
 begin
-//
+   MainForm.AddTaskbar(Handle);
 end;
 
 procedure TSuperCheck.Button3Click(Sender: TObject);
