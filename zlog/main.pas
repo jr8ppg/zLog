@@ -881,6 +881,8 @@ type
     FCurrentRigSet: Integer; // 現在のRIGSET 1/2/3
     FWaitForQsoFinish: array[0..2] of Boolean;
 
+    FTaskbarList: ITaskbarList;
+
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -1072,7 +1074,7 @@ type
     procedure BandScopeAddSelfSpot(aQSO: TQSO; nFreq: TFrequency);
     procedure BandScopeAddSelfSpotFromNetwork(BSText: string);
     procedure BandScopeAddClusterSpot(Sp: TSpot);
-    procedure BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
+    procedure BandScopeMarkCurrentFreq(B: TBand; Hz: TFrequency);
     procedure BandScopeUpdateSpot(aQSO: TQSO);
     procedure BandScopeApplyBandPlan();
 
@@ -1111,6 +1113,8 @@ type
     property PointEdit: TEdit read GetPointEdit;
     property OpEdit: TEdit read GetOpEdit;
     property MemoEdit: TEdit read GetMemoEdit;
+    procedure AddTaskbar(Handle: THandle);
+    procedure DelTaskbar(Handle: THandle);
 
     procedure SetLastFocus();
 
@@ -1997,6 +2001,9 @@ var
 begin
    FInitialized   := False;
    InitAtomTable(509);
+
+   // taskbar表示用リスト
+   FTaskbarList := CreateComObject(CLSID_TaskbarList) as ITaskBarList;
 
    FWaitForQsoFinish[0] := False;
    FWaitForQsoFinish[1] := False;
@@ -3589,6 +3596,14 @@ begin
    end;
 
    // CW
+   nID := FCurrentTx;
+
+   // CWポート設定チェック
+   if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
+      WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
+      Exit;
+   end;
+
    if N.Text = '' then begin
       curQSO.UpdateTime;
       TimeEdit.Text := curQSO.TimeStr;
@@ -3603,8 +3618,6 @@ begin
 
    if dmZLogKeyer.UseWinKeyer = True then begin
 
-      // TODO:ここも移動しないとだめ
-      nID := FCurrentTx;
       if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
          dmZLogKeyer.So2rNeoReverseRx(nID)
       end;
@@ -3679,6 +3692,12 @@ begin
 
    case CurrentQSO.Mode of
       mCW: begin
+         // CWポート設定チェック
+         if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
+            WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
+            Exit;
+         end;
+
          if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
             // NR?自動送出使う場合
             if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
@@ -3837,7 +3856,8 @@ end;
 
 procedure TMainForm.LogButtonClick(Sender: TObject);
 var
-   _dupe, i, j: Integer;
+   _dupe, i: Integer;
+   Hz: TFrequency;
    workedZLO: Boolean;
    st, st2: string;
    B: TBand;
@@ -3933,10 +3953,10 @@ begin
    rig := RigControl.GetRig(FCurrentRigSet, CurrentQSO.Band);
    if (rig <> nil) and (RigControl.GetCurrentRig() <> 5) then begin
       // RIGの周波数を取得
-      j := rig.CurrentFreqHz;
+      Hz := rig.CurrentFreqHz;
 
       // 周波数が取得できたら(>0)記録する
-      if j > 0 then begin
+      if Hz > 0 then begin
          // 周波数を記録
          if dmZlogGlobal.Settings._recrigfreq = True then begin
             CurrentQSO.Freq := rig.CurrentFreqkHzStr;
@@ -3944,7 +3964,7 @@ begin
 
          // 自動bandmap
          if dmZlogGlobal.Settings._autobandmap then begin
-            BandScopeAddSelfSpot(CurrentQSO, j);
+            BandScopeAddSelfSpot(CurrentQSO, Hz);
          end;
       end;
    end;
@@ -4228,6 +4248,8 @@ begin
 
    CurrentQSO.Free();
 
+   FTaskbarList := nil;
+
    SuperCheckFreeData();
 
    zyloContestClosed;
@@ -4503,6 +4525,7 @@ begin
          S := SetStr(UpperCase(S), CurrentQSO);
       end;
 
+      // CWポート設定チェック
       if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
          WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
          FCQRepeatPlaying := False;
@@ -7486,9 +7509,11 @@ begin
       FMessageManager.ClearQue();
    end;
 
-   nID := FCurrentTx;
    case CurrentQSO.Mode of
       mCW: begin
+         nID := FCurrentTx;
+
+         // CWポート設定チェック
          if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
             WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
             Exit;
@@ -7764,7 +7789,7 @@ end;
 // バンドスコープへ追加
 procedure TMainForm.InsertBandScope(fShiftKey: Boolean);
 var
-   nFreq: Integer;
+   nFreq: TFrequency;
    rig: TRig;
 
    function InputFreq(): Boolean;
@@ -9832,7 +9857,7 @@ begin
    end;
 end;
 
-procedure TMainForm.BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
+procedure TMainForm.BandScopeMarkCurrentFreq(B: TBand; Hz: TFrequency);
 begin
    FBandScopeEx[B].MarkCurrentFreq(Hz);
    FBandScope.MarkCurrentFreq(Hz);
@@ -11259,6 +11284,21 @@ end;
 procedure TMainForm.StopCqRepeatTimer();
 begin
    FInformation.CqRptCountDown := 0;
+end;
+
+procedure TMainForm.AddTaskbar(Handle: THandle);
+begin
+   if FTaskbarList <> nil then begin
+      FTaskBarList.AddTab(Handle);
+      FTaskBarList.ActivateTab(Handle);
+   end;
+end;
+
+procedure TMainForm.DelTaskbar(Handle: THandle);
+begin
+   if FTaskBarList <> nil then begin
+      FTaskBarList.DeleteTab(Handle);
+   end;
 end;
 
 { TBandScopeNotifyThread }

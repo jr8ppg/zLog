@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44940.9358564815</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">44946.9319444444</prop>
+        <prop prop-type="OrigDateTime">44946.9272916667</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">201</prop>
+        <prop prop-type="UnTranslated">203</prop>
       </prop-group>
     </header>
     <body>
@@ -98,925 +98,935 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:RigControl.OnClose" resname="O:RigControl.OnClose">
+        <source>FormClose</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44946.9319503125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:RigControl.OnCreate" resname="O:RigControl.OnCreate">
         <source>FormCreate</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.OnDestroy" resname="O:RigControl.OnDestroy">
         <source>FormDestroy</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.OnKeyDown" resname="O:RigControl.OnKeyDown">
         <source>FormKeyDown</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RigControl.OnShow" resname="O:RigControl.OnShow">
+        <source>FormShow</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44946.9319503241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.DesignSize[0]" resname="O:RigControl.DesignSize[0]">
         <source>314</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.DesignSize[1]" resname="O:RigControl.DesignSize[1]">
         <source>137</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.PixelsPerInch" resname="O:RigControl.PixelsPerInch">
         <source>96</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.TextHeight" resname="O:RigControl.TextHeight">
         <source>15</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TRigControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:dispMode.Left" resname="O:RigControl.O:dispMode.Left">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:dispMode.Top" resname="O:RigControl.O:dispMode.Top">
         <source>97</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:dispMode.Width" resname="O:RigControl.O:dispMode.Width">
         <source>30</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:dispMode.Height" resname="O:RigControl.O:dispMode.Height">
         <source>15</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:dispMode.Caption" resname="O:RigControl.O:dispMode.Caption">
         <source>'Mode'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:RigLabel.Left" resname="O:RigControl.O:RigLabel.Left">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:RigLabel.Top" resname="O:RigControl.O:RigLabel.Top">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:RigLabel.Width" resname="O:RigControl.O:RigLabel.Width">
         <source>50</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:RigLabel.Height" resname="O:RigControl.O:RigLabel.Height">
         <source>15</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:RigLabel.Caption" resname="O:RigControl.O:RigLabel.Caption">
         <source>'RigLabel'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label2.Left" resname="O:RigControl.O:Label2.Left">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label2.Top" resname="O:RigControl.O:Label2.Top">
         <source>45</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label2.Width" resname="O:RigControl.O:Label2.Width">
         <source>32</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label2.Height" resname="O:RigControl.O:Label2.Height">
         <source>15</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label2.Caption" resname="O:RigControl.O:Label2.Caption">
         <source>'VFO A'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label3.Left" resname="O:RigControl.O:Label3.Left">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label3.Top" resname="O:RigControl.O:Label3.Top">
         <source>72</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label3.Width" resname="O:RigControl.O:Label3.Width">
         <source>34</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label3.Height" resname="O:RigControl.O:Label3.Height">
         <source>15</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label3.Caption" resname="O:RigControl.O:Label3.Caption">
         <source>'VFO B'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label1.Left" resname="O:RigControl.O:Label1.Left">
         <source>201</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label1.Top" resname="O:RigControl.O:Label1.Top">
         <source>24</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label1.Width" resname="O:RigControl.O:Label1.Width">
         <source>55</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label1.Height" resname="O:RigControl.O:Label1.Height">
         <source>15</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label1.Caption" resname="O:RigControl.O:Label1.Caption">
         <source>'Last Freq.'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label4.Left" resname="O:RigControl.O:Label4.Left">
         <source>51</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label4.Top" resname="O:RigControl.O:Label4.Top">
         <source>24</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label4.Width" resname="O:RigControl.O:Label4.Width">
         <source>72</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label4.Height" resname="O:RigControl.O:Label4.Height">
         <source>15</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Label4.Caption" resname="O:RigControl.O:Label4.Caption">
         <source>'Current Freq.'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:buttonJumpLastFreq.Left" resname="O:RigControl.O:buttonJumpLastFreq.Left">
         <source>262</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:buttonJumpLastFreq.Top" resname="O:RigControl.O:buttonJumpLastFreq.Top">
         <source>19</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:buttonJumpLastFreq.Width" resname="O:RigControl.O:buttonJumpLastFreq.Width">
         <source>44</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:buttonJumpLastFreq.Height" resname="O:RigControl.O:buttonJumpLastFreq.Height">
         <source>20</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:buttonJumpLastFreq.Caption" resname="O:RigControl.O:buttonJumpLastFreq.Caption">
         <source>'Jump'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:buttonJumpLastFreq.OnClick" resname="O:RigControl.O:buttonJumpLastFreq.OnClick">
         <source>buttonJumpLastFreqClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Button1.Left" resname="O:RigControl.O:Button1.Left">
         <source>233</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Button1.Top" resname="O:RigControl.O:Button1.Top">
         <source>107</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Button1.Width" resname="O:RigControl.O:Button1.Width">
         <source>73</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Button1.Height" resname="O:RigControl.O:Button1.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Button1.Anchors" resname="O:RigControl.O:Button1.Anchors">
         <source>[akRight, akBottom]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Button1.Caption" resname="O:RigControl.O:Button1.Caption">
         <source>'Reset Rig'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Button1.TabOrder" resname="O:RigControl.O:Button1.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Button1.OnClick" resname="O:RigControl.O:Button1.OnClick">
         <source>Button1Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:dispVFO.Left" resname="O:RigControl.O:dispVFO.Left">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:dispVFO.Top" resname="O:RigControl.O:dispVFO.Top">
         <source>117</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:dispVFO.Width" resname="O:RigControl.O:dispVFO.Width">
         <source>27</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:dispVFO.Height" resname="O:RigControl.O:dispVFO.Height">
         <source>19</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:dispVFO.Caption" resname="O:RigControl.O:dispVFO.Caption">
         <source>'VFO'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:dispVFO.TabOrder" resname="O:RigControl.O:dispVFO.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:btnOmniRig.Left" resname="O:RigControl.O:btnOmniRig.Left">
         <source>155</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:btnOmniRig.Top" resname="O:RigControl.O:btnOmniRig.Top">
         <source>107</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:btnOmniRig.Width" resname="O:RigControl.O:btnOmniRig.Width">
         <source>73</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:btnOmniRig.Height" resname="O:RigControl.O:btnOmniRig.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:btnOmniRig.Anchors" resname="O:RigControl.O:btnOmniRig.Anchors">
         <source>[akRight, akBottom]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:btnOmniRig.Caption" resname="O:RigControl.O:btnOmniRig.Caption">
         <source>'Omni-Rig'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:btnOmniRig.TabOrder" resname="O:RigControl.O:btnOmniRig.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:btnOmniRig.OnClick" resname="O:RigControl.O:btnOmniRig.OnClick">
         <source>btnOmniRigClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.Left" resname="O:RigControl.O:Panel1.Left">
         <source>50</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.Top" resname="O:RigControl.O:Panel1.Top">
         <source>40</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.Width" resname="O:RigControl.O:Panel1.Width">
         <source>143</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.Height" resname="O:RigControl.O:Panel1.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.BevelOuter" resname="O:RigControl.O:Panel1.BevelOuter">
         <source>bvLowered</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.TabOrder" resname="O:RigControl.O:Panel1.TabOrder">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.O:dispFreqA.Left" resname="O:RigControl.O:Panel1.O:dispFreqA.Left">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.O:dispFreqA.Top" resname="O:RigControl.O:Panel1.O:dispFreqA.Top">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.O:dispFreqA.Width" resname="O:RigControl.O:Panel1.O:dispFreqA.Width">
         <source>136</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.O:dispFreqA.Height" resname="O:RigControl.O:Panel1.O:dispFreqA.Height">
         <source>15</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.O:dispFreqA.Alignment" resname="O:RigControl.O:Panel1.O:dispFreqA.Alignment">
         <source>taCenter</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.O:dispFreqA.AutoSize" resname="O:RigControl.O:Panel1.O:dispFreqA.AutoSize">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.O:dispFreqA.Caption" resname="O:RigControl.O:Panel1.O:dispFreqA.Caption">
         <source>'00000.000 kHz'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.O:dispFreqA.Font.Charset" resname="O:RigControl.O:Panel1.O:dispFreqA.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.O:dispFreqA.Font.Color" resname="O:RigControl.O:Panel1.O:dispFreqA.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.O:dispFreqA.Font.Height" resname="O:RigControl.O:Panel1.O:dispFreqA.Font.Height">
         <source>-16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.O:dispFreqA.Font.Name" resname="O:RigControl.O:Panel1.O:dispFreqA.Font.Name">
         <source>'Arial'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.O:dispFreqA.Font.Style" resname="O:RigControl.O:Panel1.O:dispFreqA.Font.Style">
         <source>[fsBold]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel1.O:dispFreqA.ParentFont" resname="O:RigControl.O:Panel1.O:dispFreqA.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.Left" resname="O:RigControl.O:Panel2.Left">
         <source>50</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.Top" resname="O:RigControl.O:Panel2.Top">
         <source>69</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.Width" resname="O:RigControl.O:Panel2.Width">
         <source>143</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.Height" resname="O:RigControl.O:Panel2.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.BevelOuter" resname="O:RigControl.O:Panel2.BevelOuter">
         <source>bvLowered</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.TabOrder" resname="O:RigControl.O:Panel2.TabOrder">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.O:dispFreqB.Left" resname="O:RigControl.O:Panel2.O:dispFreqB.Left">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.O:dispFreqB.Top" resname="O:RigControl.O:Panel2.O:dispFreqB.Top">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.O:dispFreqB.Width" resname="O:RigControl.O:Panel2.O:dispFreqB.Width">
         <source>136</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.O:dispFreqB.Height" resname="O:RigControl.O:Panel2.O:dispFreqB.Height">
         <source>15</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.O:dispFreqB.Alignment" resname="O:RigControl.O:Panel2.O:dispFreqB.Alignment">
         <source>taCenter</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.O:dispFreqB.AutoSize" resname="O:RigControl.O:Panel2.O:dispFreqB.AutoSize">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.O:dispFreqB.Caption" resname="O:RigControl.O:Panel2.O:dispFreqB.Caption">
         <source>'00000.000 kHz'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.O:dispFreqB.Font.Charset" resname="O:RigControl.O:Panel2.O:dispFreqB.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.O:dispFreqB.Font.Color" resname="O:RigControl.O:Panel2.O:dispFreqB.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.O:dispFreqB.Font.Height" resname="O:RigControl.O:Panel2.O:dispFreqB.Font.Height">
         <source>-16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.O:dispFreqB.Font.Name" resname="O:RigControl.O:Panel2.O:dispFreqB.Font.Name">
         <source>'Arial'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.O:dispFreqB.Font.Style" resname="O:RigControl.O:Panel2.O:dispFreqB.Font.Style">
         <source>[fsBold]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">120</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel2.O:dispFreqB.ParentFont" resname="O:RigControl.O:Panel2.O:dispFreqB.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">121</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.Left" resname="O:RigControl.O:Panel3.Left">
         <source>201</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">120</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">122</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.Top" resname="O:RigControl.O:Panel3.Top">
         <source>40</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">121</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.Width" resname="O:RigControl.O:Panel3.Width">
         <source>108</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">122</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.Height" resname="O:RigControl.O:Panel3.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">125</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.BevelOuter" resname="O:RigControl.O:Panel3.BevelOuter">
         <source>bvLowered</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">126</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.TabOrder" resname="O:RigControl.O:Panel3.TabOrder">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">125</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.Left" resname="O:RigControl.O:Panel3.O:dispLastFreq.Left">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">126</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">128</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.Top" resname="O:RigControl.O:Panel3.O:dispLastFreq.Top">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">129</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.Width" resname="O:RigControl.O:Panel3.O:dispLastFreq.Width">
         <source>99</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">128</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">130</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.Height" resname="O:RigControl.O:Panel3.O:dispLastFreq.Height">
         <source>20</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">129</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">131</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.Alignment" resname="O:RigControl.O:Panel3.O:dispLastFreq.Alignment">
         <source>taCenter</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">130</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.AutoSize" resname="O:RigControl.O:Panel3.O:dispLastFreq.AutoSize">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">131</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">133</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.Caption" resname="O:RigControl.O:Panel3.O:dispLastFreq.Caption">
         <source>'00000.000 kHz'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.Font.Charset" resname="O:RigControl.O:Panel3.O:dispLastFreq.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">133</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">135</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.Font.Color" resname="O:RigControl.O:Panel3.O:dispLastFreq.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">136</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.Font.Height" resname="O:RigControl.O:Panel3.O:dispLastFreq.Font.Height">
         <source>-13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">135</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">137</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.Font.Name" resname="O:RigControl.O:Panel3.O:dispLastFreq.Font.Name">
         <source>'Arial'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">136</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">138</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.Font.Style" resname="O:RigControl.O:Panel3.O:dispLastFreq.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">137</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">139</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.ParentFont" resname="O:RigControl.O:Panel3.O:dispLastFreq.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">138</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">140</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Panel3.O:dispLastFreq.TabOrder" resname="O:RigControl.O:Panel3.O:dispLastFreq.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">139</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">141</prop><prop prop-type="Type">TStaticText</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Timer1.Enabled" resname="O:RigControl.O:Timer1.Enabled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">140</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">142</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Timer1.Interval" resname="O:RigControl.O:Timer1.Interval">
         <source>60000</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">141</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">143</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Timer1.OnTimer" resname="O:RigControl.O:Timer1.OnTimer">
         <source>Timer1Timer</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">142</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">144</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Timer1.Left" resname="O:RigControl.O:Timer1.Left">
         <source>104</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">143</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">145</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:Timer1.Top" resname="O:RigControl.O:Timer1.Top">
         <source>144</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">144</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">146</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer1.Tag" resname="O:RigControl.O:PollingTimer1.Tag">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">145</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer1.Enabled" resname="O:RigControl.O:PollingTimer1.Enabled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">146</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">148</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer1.Interval" resname="O:RigControl.O:PollingTimer1.Interval">
         <source>100</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">149</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer1.OnTimer" resname="O:RigControl.O:PollingTimer1.OnTimer">
         <source>PollingTimerTimer</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">148</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">150</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer1.Left" resname="O:RigControl.O:PollingTimer1.Left">
         <source>132</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">149</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">151</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer1.Top" resname="O:RigControl.O:PollingTimer1.Top">
         <source>144</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">150</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">152</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom1.Tag" resname="O:RigControl.O:ZCom1.Tag">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">151</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom1.Port" resname="O:RigControl.O:ZCom1.Port">
         <source>pnCustom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">152</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">154</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom1.PortName" resname="O:RigControl.O:ZCom1.PortName">
         <source>'\\.\COM2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">155</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom1.HwFlow" resname="O:RigControl.O:ZCom1.HwFlow">
         <source>hfRTSCTS</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">154</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">156</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom1.InBufSize" resname="O:RigControl.O:ZCom1.InBufSize">
         <source>4096</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">155</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">157</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom1.OnReceiveData" resname="O:RigControl.O:ZCom1.OnReceiveData">
         <source>ZCom1ReceiveData</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">156</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">158</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom1.Left" resname="O:RigControl.O:ZCom1.Left">
         <source>212</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">157</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">159</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom1.Top" resname="O:RigControl.O:ZCom1.Top">
         <source>144</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">158</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">160</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom2.Tag" resname="O:RigControl.O:ZCom2.Tag">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">159</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom2.Port" resname="O:RigControl.O:ZCom2.Port">
         <source>pnCustom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">160</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom2.PortName" resname="O:RigControl.O:ZCom2.PortName">
         <source>'\\.\COM2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom2.HwFlow" resname="O:RigControl.O:ZCom2.HwFlow">
         <source>hfRTSCTS</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">164</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom2.InBufSize" resname="O:RigControl.O:ZCom2.InBufSize">
         <source>4096</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">165</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom2.OnReceiveData" resname="O:RigControl.O:ZCom2.OnReceiveData">
         <source>ZCom1ReceiveData</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">164</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">166</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom2.Left" resname="O:RigControl.O:ZCom2.Left">
         <source>240</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">165</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">167</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom2.Top" resname="O:RigControl.O:ZCom2.Top">
         <source>144</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">166</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer2.Tag" resname="O:RigControl.O:PollingTimer2.Tag">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">167</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer2.Enabled" resname="O:RigControl.O:PollingTimer2.Enabled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">170</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer2.Interval" resname="O:RigControl.O:PollingTimer2.Interval">
         <source>100</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">171</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer2.OnTimer" resname="O:RigControl.O:PollingTimer2.OnTimer">
         <source>PollingTimerTimer</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">170</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer2.Left" resname="O:RigControl.O:PollingTimer2.Left">
         <source>160</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">171</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">173</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer2.Top" resname="O:RigControl.O:PollingTimer2.Top">
         <source>144</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935140162</prop><prop prop-type="Status">0</prop><prop prop-type="Order">174</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom3.Tag" resname="O:RigControl.O:ZCom3.Tag">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">173</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom3.Port" resname="O:RigControl.O:ZCom3.Port">
         <source>pnCustom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">174</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom3.PortName" resname="O:RigControl.O:ZCom3.PortName">
         <source>'\\.\COM2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom3.HwFlow" resname="O:RigControl.O:ZCom3.HwFlow">
         <source>hfRTSCTS</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom3.InBufSize" resname="O:RigControl.O:ZCom3.InBufSize">
         <source>4096</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom3.OnReceiveData" resname="O:RigControl.O:ZCom3.OnReceiveData">
         <source>ZCom1ReceiveData</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom3.Left" resname="O:RigControl.O:ZCom3.Left">
         <source>212</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom3.Top" resname="O:RigControl.O:ZCom3.Top">
         <source>192</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom4.Tag" resname="O:RigControl.O:ZCom4.Tag">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">183</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom4.Port" resname="O:RigControl.O:ZCom4.Port">
         <source>pnCustom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom4.PortName" resname="O:RigControl.O:ZCom4.PortName">
         <source>'\\.\COM2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">183</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">185</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom4.HwFlow" resname="O:RigControl.O:ZCom4.HwFlow">
         <source>hfRTSCTS</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">186</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom4.InBufSize" resname="O:RigControl.O:ZCom4.InBufSize">
         <source>4096</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">185</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom4.OnReceiveData" resname="O:RigControl.O:ZCom4.OnReceiveData">
         <source>ZCom1ReceiveData</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">186</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom4.Left" resname="O:RigControl.O:ZCom4.Left">
         <source>240</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:ZCom4.Top" resname="O:RigControl.O:ZCom4.Top">
         <source>192</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">190</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer3.Tag" resname="O:RigControl.O:PollingTimer3.Tag">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer3.Enabled" resname="O:RigControl.O:PollingTimer3.Enabled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">190</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">192</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer3.Interval" resname="O:RigControl.O:PollingTimer3.Interval">
         <source>100</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">193</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer3.OnTimer" resname="O:RigControl.O:PollingTimer3.OnTimer">
         <source>PollingTimerTimer</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">192</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">194</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer3.Left" resname="O:RigControl.O:PollingTimer3.Left">
         <source>132</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">193</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">195</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer3.Top" resname="O:RigControl.O:PollingTimer3.Top">
         <source>196</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">194</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">196</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer4.Tag" resname="O:RigControl.O:PollingTimer4.Tag">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">195</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer4.Enabled" resname="O:RigControl.O:PollingTimer4.Enabled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">196</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">198</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer4.Interval" resname="O:RigControl.O:PollingTimer4.Interval">
         <source>100</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">199</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer4.OnTimer" resname="O:RigControl.O:PollingTimer4.OnTimer">
         <source>PollingTimerTimer</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">198</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">200</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer4.Left" resname="O:RigControl.O:PollingTimer4.Left">
         <source>160</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">199</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">201</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:PollingTimer4.Top" resname="O:RigControl.O:PollingTimer4.Top">
         <source>196</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">200</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7157145949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">202</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

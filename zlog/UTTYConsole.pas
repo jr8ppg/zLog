@@ -24,7 +24,6 @@ type
     Cleareverything1: TMenuItem;
     mnStayOnTop: TMenuItem;
     TXLog: TMemo;
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure TXLogKeyPress(Sender: TObject; var Key: Char);
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -39,6 +38,8 @@ type
     procedure Cleareverything1Click(Sender: TObject);
     procedure CallsignListClick(Sender: TObject);
     procedure CallsignListDblClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -58,12 +59,6 @@ implementation
 uses Main, UOptions;
 
 {$R *.DFM}
-
-procedure TTTYConsole.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
-end;
 
 procedure TTTYConsole.SetTTYMode(i: integer);
 begin
@@ -225,6 +220,11 @@ begin
    end;
 end;
 
+procedure TTTYConsole.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
+end;
+
 procedure TTTYConsole.FormCreate(Sender: TObject);
 begin
    RXLog.ClrScr;
@@ -285,6 +285,11 @@ begin
          SendStrNow(S);
       end;
    end;
+end;
+
+procedure TTTYConsole.FormShow(Sender: TObject);
+begin
+   MainForm.AddTaskbar(Handle);
 end;
 
 procedure TTTYConsole.StayOnTopClick(Sender: TObject);

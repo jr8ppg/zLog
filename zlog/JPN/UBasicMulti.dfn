@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44940.9352314815</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">44946.9318981481</prop>
+        <prop prop-type="OrigDateTime">44946.9159490741</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">1</prop>
-        <prop prop-type="UnTranslated">17</prop>
+        <prop prop-type="UnTranslated">19</prop>
       </prop-group>
     </header>
     <body>
@@ -84,25 +84,35 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925140509</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TBasicMulti</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:BasicMulti.OnClose" resname="O:BasicMulti.OnClose">
+        <source>FormClose</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44946.9319055556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TBasicMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:BasicMulti.OnCreate" resname="O:BasicMulti.OnCreate">
         <source>FormCreate</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925140509</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TBasicMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925140509</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TBasicMulti</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BasicMulti.OnKeyDown" resname="O:BasicMulti.OnKeyDown">
         <source>FormKeyDown</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925140509</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TBasicMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925140509</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TBasicMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:BasicMulti.OnShow" resname="O:BasicMulti.OnShow">
+        <source>FormShow</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44946.9319055556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TBasicMulti</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BasicMulti.PixelsPerInch" resname="O:BasicMulti.PixelsPerInch">
         <source>96</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925140509</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TBasicMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925140509</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TBasicMulti</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BasicMulti.TextHeight" resname="O:BasicMulti.TextHeight">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925140509</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TBasicMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925140509</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TBasicMulti</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

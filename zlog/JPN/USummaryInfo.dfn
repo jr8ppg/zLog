@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44940.9354861111</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">44946.9318981481</prop>
+        <prop prop-type="OrigDateTime">44946.9283333333</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">136</prop>
+        <prop prop-type="UnTranslated">127</prop>
       </prop-group>
     </header>
     <body>
@@ -353,345 +353,300 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:SummaryInfo.O:CategoryEdit.ImeName" resname="O:SummaryInfo.O:CategoryEdit.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
       <trans-unit id="O:SummaryInfo.O:CategoryEdit.TabOrder" resname="O:SummaryInfo.O:CategoryEdit.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:NameEdit.Left" resname="O:SummaryInfo.O:NameEdit.Left">
         <source>112</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:NameEdit.Top" resname="O:SummaryInfo.O:NameEdit.Top">
         <source>392</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:NameEdit.Width" resname="O:SummaryInfo.O:NameEdit.Width">
         <source>337</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:NameEdit.Height" resname="O:SummaryInfo.O:NameEdit.Height">
         <source>20</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:SummaryInfo.O:NameEdit.ImeName" resname="O:SummaryInfo.O:NameEdit.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:NameEdit.TabOrder" resname="O:SummaryInfo.O:NameEdit.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:ContestNameEdit.Left" resname="O:SummaryInfo.O:ContestNameEdit.Left">
         <source>112</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:ContestNameEdit.Top" resname="O:SummaryInfo.O:ContestNameEdit.Top">
         <source>20</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:ContestNameEdit.Width" resname="O:SummaryInfo.O:ContestNameEdit.Width">
         <source>337</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:ContestNameEdit.Height" resname="O:SummaryInfo.O:ContestNameEdit.Height">
         <source>20</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:SummaryInfo.O:ContestNameEdit.ImeName" resname="O:SummaryInfo.O:ContestNameEdit.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:ContestNameEdit.TabOrder" resname="O:SummaryInfo.O:ContestNameEdit.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button1.Left" resname="O:SummaryInfo.O:Button1.Left">
         <source>152</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button1.Top" resname="O:SummaryInfo.O:Button1.Top">
         <source>472</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button1.Width" resname="O:SummaryInfo.O:Button1.Width">
         <source>75</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button1.Height" resname="O:SummaryInfo.O:Button1.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button1.Caption" resname="O:SummaryInfo.O:Button1.Caption">
         <source>'OK'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button1.ModalResult" resname="O:SummaryInfo.O:Button1.ModalResult">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button1.TabOrder" resname="O:SummaryInfo.O:Button1.TabOrder">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button2.Left" resname="O:SummaryInfo.O:Button2.Left">
         <source>264</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button2.Top" resname="O:SummaryInfo.O:Button2.Top">
         <source>472</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button2.Width" resname="O:SummaryInfo.O:Button2.Width">
         <source>75</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button2.Height" resname="O:SummaryInfo.O:Button2.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button2.Caption" resname="O:SummaryInfo.O:Button2.Caption">
         <source>'Cancel'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button2.ModalResult" resname="O:SummaryInfo.O:Button2.ModalResult">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:Button2.TabOrder" resname="O:SummaryInfo.O:Button2.TabOrder">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:RemMemo.Left" resname="O:SummaryInfo.O:RemMemo.Left">
         <source>112</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:RemMemo.Top" resname="O:SummaryInfo.O:RemMemo.Top">
         <source>214</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:RemMemo.Width" resname="O:SummaryInfo.O:RemMemo.Width">
         <source>337</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:RemMemo.Height" resname="O:SummaryInfo.O:RemMemo.Height">
         <source>81</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:SummaryInfo.O:RemMemo.ImeName" resname="O:SummaryInfo.O:RemMemo.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:RemMemo.TabOrder" resname="O:SummaryInfo.O:RemMemo.TabOrder">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:CountryEdit.Left" resname="O:SummaryInfo.O:CountryEdit.Left">
         <source>112</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:CountryEdit.Top" resname="O:SummaryInfo.O:CountryEdit.Top">
         <source>96</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:CountryEdit.Width" resname="O:SummaryInfo.O:CountryEdit.Width">
         <source>249</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:CountryEdit.Height" resname="O:SummaryInfo.O:CountryEdit.Height">
         <source>20</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:SummaryInfo.O:CountryEdit.ImeName" resname="O:SummaryInfo.O:CountryEdit.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:CountryEdit.TabOrder" resname="O:SummaryInfo.O:CountryEdit.TabOrder">
         <source>6</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:DecMemo.Left" resname="O:SummaryInfo.O:DecMemo.Left">
         <source>112</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:DecMemo.Top" resname="O:SummaryInfo.O:DecMemo.Top">
         <source>301</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:DecMemo.Width" resname="O:SummaryInfo.O:DecMemo.Width">
         <source>337</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:DecMemo.Height" resname="O:SummaryInfo.O:DecMemo.Height">
         <source>83</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:SummaryInfo.O:DecMemo.ImeName" resname="O:SummaryInfo.O:DecMemo.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:DecMemo.Lines.Strings[0]" resname="O:SummaryInfo.O:DecMemo.Lines.Strings[0]">
         <source>'This is to certify that in this contest I have operated my transmitter'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:DecMemo.Lines.Strings[1]" resname="O:SummaryInfo.O:DecMemo.Lines.Strings[1]">
         <source>'within the limitations of my license and have fully observed the'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:DecMemo.Lines.Strings[2]" resname="O:SummaryInfo.O:DecMemo.Lines.Strings[2]">
         <source>'rules and regulations of the contest.'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:DecMemo.TabOrder" resname="O:SummaryInfo.O:DecMemo.TabOrder">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:DecMemo.WordWrap" resname="O:SummaryInfo.O:DecMemo.WordWrap">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:MiscMemo.Left" resname="O:SummaryInfo.O:MiscMemo.Left">
         <source>112</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:MiscMemo.Top" resname="O:SummaryInfo.O:MiscMemo.Top">
         <source>128</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:MiscMemo.Width" resname="O:SummaryInfo.O:MiscMemo.Width">
         <source>337</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">120</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:MiscMemo.Height" resname="O:SummaryInfo.O:MiscMemo.Height">
         <source>81</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">121</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:SummaryInfo.O:MiscMemo.ImeName" resname="O:SummaryInfo.O:MiscMemo.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">122</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:MiscMemo.TabOrder" resname="O:SummaryInfo.O:MiscMemo.TabOrder">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:AddrMemo.Left" resname="O:SummaryInfo.O:AddrMemo.Left">
         <source>112</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:AddrMemo.Top" resname="O:SummaryInfo.O:AddrMemo.Top">
         <source>421</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">125</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:AddrMemo.Width" resname="O:SummaryInfo.O:AddrMemo.Width">
         <source>337</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">126</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:AddrMemo.Height" resname="O:SummaryInfo.O:AddrMemo.Height">
         <source>44</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:SummaryInfo.O:AddrMemo.ImeName" resname="O:SummaryInfo.O:AddrMemo.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">128</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">120</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:AddrMemo.TabOrder" resname="O:SummaryInfo.O:AddrMemo.TabOrder">
         <source>9</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">129</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">121</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:CallEdit.Left" resname="O:SummaryInfo.O:CallEdit.Left">
         <source>112</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">130</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">122</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:CallEdit.Top" resname="O:SummaryInfo.O:CallEdit.Top">
         <source>45</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">131</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:CallEdit.Width" resname="O:SummaryInfo.O:CallEdit.Width">
         <source>249</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:CallEdit.Height" resname="O:SummaryInfo.O:CallEdit.Height">
         <source>20</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">133</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:SummaryInfo.O:CallEdit.ImeName" resname="O:SummaryInfo.O:CallEdit.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">125</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SummaryInfo.O:CallEdit.TabOrder" resname="O:SummaryInfo.O:CallEdit.TabOrder">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">135</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929066551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">126</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

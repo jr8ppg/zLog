@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44940.935625</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">44946.9319212963</prop>
+        <prop prop-type="OrigDateTime">44946.9256018518</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">59</prop>
+        <prop prop-type="UnTranslated">58</prop>
       </prop-group>
     </header>
     <body>
@@ -288,25 +288,20 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931898032</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:IOTACategory.O:GroupBox1.O:Edit1.ImeName" resname="O:IOTACategory.O:GroupBox1.O:Edit1.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931898032</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
       <trans-unit id="O:IOTACategory.O:GroupBox1.O:Edit1.MaxLength" resname="O:IOTACategory.O:GroupBox1.O:Edit1.MaxLength">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931898032</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931898032</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:IOTACategory.O:GroupBox1.O:Edit1.TabOrder" resname="O:IOTACategory.O:GroupBox1.O:Edit1.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931898032</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931898032</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:IOTACategory.O:GroupBox1.O:Edit1.Text" resname="O:IOTACategory.O:GroupBox1.O:Edit1.Text">
         <source>'AS007'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931898032</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931898032</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

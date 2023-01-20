@@ -5,8 +5,8 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44940.9358564815</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">44946.9319444444</prop>
+        <prop prop-type="OrigDateTime">44946.928912037</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">90</prop>
@@ -83,278 +83,278 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TTTYConsole</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:TTYConsole.OnClose" resname="O:TTYConsole.OnClose">
+        <source>FormClose</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44946.9319532986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TTTYConsole</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:TTYConsole.OnCreate" resname="O:TTYConsole.OnCreate">
         <source>FormCreate</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TTTYConsole</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TTTYConsole</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.OnKeyDown" resname="O:TTYConsole.OnKeyDown">
         <source>FormKeyDown</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TTTYConsole</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TTTYConsole</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:TTYConsole.OnShow" resname="O:TTYConsole.OnShow">
+        <source>FormShow</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44946.9319532986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TTTYConsole</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.PixelsPerInch" resname="O:TTYConsole.PixelsPerInch">
         <source>96</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TTTYConsole</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TTTYConsole</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.TextHeight" resname="O:TTYConsole.TextHeight">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TTTYConsole</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TTTYConsole</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.Left" resname="O:TTYConsole.O:[0]TPanel.Left">
         <source>161</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.Top" resname="O:TTYConsole.O:[0]TPanel.Top">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.Width" resname="O:TTYConsole.O:[0]TPanel.Width">
         <source>358</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.Height" resname="O:TTYConsole.O:[0]TPanel.Height">
         <source>355</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.Align" resname="O:TTYConsole.O:[0]TPanel.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.TabOrder" resname="O:TTYConsole.O:[0]TPanel.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:Splitter1.Left" resname="O:TTYConsole.O:[0]TPanel.O:Splitter1.Left">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:Splitter1.Top" resname="O:TTYConsole.O:[0]TPanel.O:Splitter1.Top">
         <source>203</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:Splitter1.Width" resname="O:TTYConsole.O:[0]TPanel.O:Splitter1.Width">
         <source>356</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:Splitter1.Height" resname="O:TTYConsole.O:[0]TPanel.O:Splitter1.Height">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:Splitter1.Cursor" resname="O:TTYConsole.O:[0]TPanel.O:Splitter1.Cursor">
         <source>crVSplit</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:Splitter1.Align" resname="O:TTYConsole.O:[0]TPanel.O:Splitter1.Align">
         <source>alBottom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:Splitter1.MinSize" resname="O:TTYConsole.O:[0]TPanel.O:Splitter1.MinSize">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:Splitter1.ExplicitTop" resname="O:TTYConsole.O:[0]TPanel.O:Splitter1.ExplicitTop">
         <source>196</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:Splitter1.ExplicitWidth" resname="O:TTYConsole.O:[0]TPanel.O:Splitter1.ExplicitWidth">
         <source>364</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TSplitter</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.Left" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.Left">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.Top" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.Top">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.Width" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.Width">
         <source>356</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.Height" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.Height">
         <source>202</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.Align" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.ParentColor" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.ParentColor">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.Font.Charset" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.Font.Color" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.Font.Height" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.Font.Height">
         <source>-12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.Font.Name" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.Font.Name">
         <source>'ＭＳ ゴシック'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.Font.Style" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.Options" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.Options">
         <source>[coAutoTracking, coCheckBreak, coLazyWrite, coFixedPitchOnly]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.Rows" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.Rows">
         <source>500</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:RXLog.LineBreak" resname="O:TTYConsole.O:[0]TPanel.O:RXLog.LineBreak">
         <source>CRLF</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:TXLog.Left" resname="O:TTYConsole.O:[0]TPanel.O:TXLog.Left">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:TXLog.Top" resname="O:TTYConsole.O:[0]TPanel.O:TXLog.Top">
         <source>207</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:TXLog.Width" resname="O:TTYConsole.O:[0]TPanel.O:TXLog.Width">
         <source>356</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:TXLog.Height" resname="O:TTYConsole.O:[0]TPanel.O:TXLog.Height">
         <source>147</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:TXLog.Align" resname="O:TTYConsole.O:[0]TPanel.O:TXLog.Align">
         <source>alBottom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:TTYConsole.O:[0]TPanel.O:TXLog.ImeName" resname="O:TTYConsole.O:[0]TPanel.O:TXLog.ImeName">
-        <source>'日本語 (MS-IME2002)'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:TXLog.Lines.Strings[0]" resname="O:TTYConsole.O:[0]TPanel.O:TXLog.Lines.Strings[0]">
         <source>'TXLog'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop><prop prop-type="Close">)</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop><prop prop-type="Close">)</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:TXLog.TabOrder" resname="O:TTYConsole.O:[0]TPanel.O:TXLog.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:TXLog.OnKeyDown" resname="O:TTYConsole.O:[0]TPanel.O:TXLog.OnKeyDown">
         <source>TXLogKeyDown</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:[0]TPanel.O:TXLog.OnKeyPress" resname="O:TTYConsole.O:[0]TPanel.O:TXLog.OnKeyPress">
         <source>TXLogKeyPress</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:Panel1.Left" resname="O:TTYConsole.O:Panel1.Left">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:Panel1.Top" resname="O:TTYConsole.O:Panel1.Top">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:Panel1.Width" resname="O:TTYConsole.O:Panel1.Width">
         <source>161</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:Panel1.Height" resname="O:TTYConsole.O:Panel1.Height">
         <source>355</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:Panel1.Align" resname="O:TTYConsole.O:Panel1.Align">
         <source>alLeft</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:Panel1.TabOrder" resname="O:TTYConsole.O:Panel1.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:Panel1.O:CallsignList.Left" resname="O:TTYConsole.O:Panel1.O:CallsignList.Left">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:Panel1.O:CallsignList.Top" resname="O:TTYConsole.O:Panel1.O:CallsignList.Top">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:Panel1.O:CallsignList.Width" resname="O:TTYConsole.O:Panel1.O:CallsignList.Width">
         <source>159</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:Panel1.O:CallsignList.Height" resname="O:TTYConsole.O:Panel1.O:CallsignList.Height">
         <source>240</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:TTYConsole.O:Panel1.O:CallsignList.Align" resname="O:TTYConsole.O:Panel1.O:CallsignList.Align">
         <source>alTop</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:TTYConsole.O:Panel1.O:CallsignList.ImeName" resname="O:TTYConsole.O:Panel1.O:CallsignList.ImeName">
-        <source>'Microsoft IME 2000'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8935214236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>

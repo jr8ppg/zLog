@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44940.9354861111</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">44946.9318981481</prop>
+        <prop prop-type="OrigDateTime">44946.9281712963</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">72</prop>
+        <prop prop-type="UnTranslated">69</prop>
       </prop-group>
     </header>
     <body>
@@ -183,195 +183,180 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:SpotForm.O:FreqEdit.ImeName" resname="O:SpotForm.O:FreqEdit.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
       <trans-unit id="O:SpotForm.O:FreqEdit.TabOrder" resname="O:SpotForm.O:FreqEdit.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:FreqEdit.Text" resname="O:SpotForm.O:FreqEdit.Text">
         <source>'Freq'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:CallsignEdit.Left" resname="O:SpotForm.O:CallsignEdit.Left">
         <source>88</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:CallsignEdit.Top" resname="O:SpotForm.O:CallsignEdit.Top">
         <source>16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:CallsignEdit.Width" resname="O:SpotForm.O:CallsignEdit.Width">
         <source>65</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:CallsignEdit.Height" resname="O:SpotForm.O:CallsignEdit.Height">
         <source>20</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:SpotForm.O:CallsignEdit.ImeName" resname="O:SpotForm.O:CallsignEdit.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:CallsignEdit.TabOrder" resname="O:SpotForm.O:CallsignEdit.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:CallsignEdit.Text" resname="O:SpotForm.O:CallsignEdit.Text">
         <source>'Callsign'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:CommentEdit.Left" resname="O:SpotForm.O:CommentEdit.Left">
         <source>160</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:CommentEdit.Top" resname="O:SpotForm.O:CommentEdit.Top">
         <source>16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:CommentEdit.Width" resname="O:SpotForm.O:CommentEdit.Width">
         <source>145</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:CommentEdit.Height" resname="O:SpotForm.O:CommentEdit.Height">
         <source>20</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:SpotForm.O:CommentEdit.ImeName" resname="O:SpotForm.O:CommentEdit.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:CommentEdit.TabOrder" resname="O:SpotForm.O:CommentEdit.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:CommentEdit.Text" resname="O:SpotForm.O:CommentEdit.Text">
         <source>'Comment'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.Left" resname="O:SpotForm.O:Panel1.Left">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.Top" resname="O:SpotForm.O:Panel1.Top">
         <source>27</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.Width" resname="O:SpotForm.O:Panel1.Width">
         <source>305</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.Height" resname="O:SpotForm.O:Panel1.Height">
         <source>29</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.Align" resname="O:SpotForm.O:Panel1.Align">
         <source>alBottom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.BevelOuter" resname="O:SpotForm.O:Panel1.BevelOuter">
         <source>bvNone</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.TabOrder" resname="O:SpotForm.O:Panel1.TabOrder">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:SendButton.Left" resname="O:SpotForm.O:Panel1.O:SendButton.Left">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:SendButton.Top" resname="O:SpotForm.O:Panel1.O:SendButton.Top">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:SendButton.Width" resname="O:SpotForm.O:Panel1.O:SendButton.Width">
         <source>65</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:SendButton.Height" resname="O:SpotForm.O:Panel1.O:SendButton.Height">
         <source>19</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:SendButton.Caption" resname="O:SpotForm.O:Panel1.O:SendButton.Caption">
         <source>'Send'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:SendButton.TabOrder" resname="O:SpotForm.O:Panel1.O:SendButton.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:SendButton.OnClick" resname="O:SpotForm.O:Panel1.O:SendButton.OnClick">
         <source>SendButtonClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:Button2.Left" resname="O:SpotForm.O:Panel1.O:Button2.Left">
         <source>80</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:Button2.Top" resname="O:SpotForm.O:Panel1.O:Button2.Top">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:Button2.Width" resname="O:SpotForm.O:Panel1.O:Button2.Width">
         <source>65</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:Button2.Height" resname="O:SpotForm.O:Panel1.O:Button2.Height">
         <source>19</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:Button2.Caption" resname="O:SpotForm.O:Panel1.O:Button2.Caption">
         <source>'Cancel'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:Button2.TabOrder" resname="O:SpotForm.O:Panel1.O:Button2.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SpotForm.O:Panel1.O:Button2.OnClick" resname="O:SpotForm.O:Panel1.O:Button2.OnClick">
         <source>Button2Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929055671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

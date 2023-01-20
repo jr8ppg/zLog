@@ -31,6 +31,7 @@ type
     procedure panelCQModeClick(Sender: TObject);
     procedure buttonWaitClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private êÈåæ }
     FSo2rMode: Boolean;
@@ -86,6 +87,11 @@ begin
    MainForm.SetLastFocus();
 end;
 
+procedure TformInformation.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
+end;
+
 procedure TformInformation.FormCreate(Sender: TObject);
 begin
    FSo2rMode := False;
@@ -108,6 +114,8 @@ end;
 
 procedure TformInformation.FormShow(Sender: TObject);
 begin
+   MainForm.AddTaskbar(Handle);
+
    DispUpdate();
 end;
 

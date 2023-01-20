@@ -16,9 +16,11 @@ object RigControl: TRigControl
   OldCreateOrder = True
   Position = poDesigned
   Scaled = False
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   DesignSize = (
     314
     137)

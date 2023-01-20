@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44940.935625</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">44946.9319444444</prop>
+        <prop prop-type="OrigDateTime">44946.9256944444</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">39</prop>
+        <prop prop-type="UnTranslated">38</prop>
       </prop-group>
     </header>
     <body>
@@ -188,25 +188,20 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.893190706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="I:JA0Multi.O:ListBox.ImeName" resname="I:JA0Multi.O:ListBox.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893190706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
       <trans-unit id="I:JA0Multi.O:ListBox.ItemHeight" resname="I:JA0Multi.O:ListBox.ItemHeight">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893190706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893190706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:JA0Multi.O:ListBox.ParentFont" resname="I:JA0Multi.O:ListBox.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893190706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893190706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="I:JA0Multi.O:ListBox.TabOrder" resname="I:JA0Multi.O:ListBox.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893190706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893190706</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

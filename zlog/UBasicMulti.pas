@@ -4,15 +4,15 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  Grids, Math,
-  UzLogGlobal, UzLogQSO, Menus, UComm, USpotClass;
+  Grids, Math, Menus,
+  UzLogGlobal, UzLogQSO, UComm, USpotClass;
 
 type
   TBasicMulti = class(TForm)
-    procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure CreateParams(var Params: TCreateParams); override;
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   protected
     FFontSize: Integer;
     function GetFontSize(): Integer; virtual;
@@ -54,7 +54,8 @@ type
 
 implementation
 
-uses Main, uBandScope2;
+uses
+  Main;
 
 {$R *.DFM}
 
@@ -64,12 +65,6 @@ end;
 
 procedure TBasicMulti.AddNewPrefix(PX: string; CtyIndex: integer);
 begin
-end;
-
-procedure TBasicMulti.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
 procedure TBasicMulti.Renew;
@@ -120,6 +115,11 @@ begin
       VK_ESCAPE:
          MainForm.SetLastFocus();
    end;
+end;
+
+procedure TBasicMulti.FormShow(Sender: TObject);
+begin
+   MainForm.AddTaskbar(Handle);
 end;
 
 procedure TBasicMulti.ProcessCluster(var Sp: TBaseSpot);
@@ -182,6 +182,11 @@ begin
    // BandScopeデータを交信済みに変更する
    MainForm.BandScopeUpdateSpot(aQSO);
    RenewBandScope;
+end;
+
+procedure TBasicMulti.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TBasicMulti.FormCreate(Sender: TObject);

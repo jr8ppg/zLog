@@ -17,14 +17,14 @@ type
     menuMultiRate: TMenuItem;
     menuPtsPerMulti: TMenuItem;
     menuPtsPerQSO: TMenuItem;
-    procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure CreateParams(var Params: TCreateParams); override;
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
     procedure CWButtonClick(Sender: TObject);
     procedure menuExtraInfoClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
   protected
     FFontSize: Integer;
     FExtraInfo: Integer;
@@ -70,12 +70,6 @@ uses
   Main, USummaryInfo;
 
 {$R *.DFM}
-
-procedure TBasicScore.CreateParams(var Params: TCreateParams);
-begin
-  inherited CreateParams(Params);
-  Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
-end;
 
 procedure TBasicScore.SummaryWriteScore(FileName: string);
 var
@@ -254,9 +248,19 @@ begin
    end;
 end;
 
+procedure TBasicScore.FormShow(Sender: TObject);
+begin
+   MainForm.AddTaskbar(Handle);
+end;
+
 procedure TBasicScore.Button1Click(Sender: TObject);
 begin
    Close;
+end;
+
+procedure TBasicScore.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TBasicScore.FormCreate(Sender: TObject);

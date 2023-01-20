@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44940.9352314815</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">44946.9318981481</prop>
+        <prop prop-type="OrigDateTime">44946.9240740741</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">44</prop>
+        <prop prop-type="UnTranslated">43</prop>
       </prop-group>
     </header>
     <body>
@@ -73,78 +73,78 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TConsolePad</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:ConsolePad.OnClose" resname="O:ConsolePad.OnClose">
+        <source>FormClose</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44946.9319077199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TConsolePad</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:ConsolePad.OnCreate" resname="O:ConsolePad.OnCreate">
         <source>FormCreate</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TConsolePad</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TConsolePad</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.OnShow" resname="O:ConsolePad.OnShow">
         <source>FormShow</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TConsolePad</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TConsolePad</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.PixelsPerInch" resname="O:ConsolePad.PixelsPerInch">
         <source>96</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TConsolePad</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TConsolePad</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.TextHeight" resname="O:ConsolePad.TextHeight">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TConsolePad</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TConsolePad</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.O:ListBox.Left" resname="O:ConsolePad.O:ListBox.Left">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.O:ListBox.Top" resname="O:ConsolePad.O:ListBox.Top">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.O:ListBox.Width" resname="O:ConsolePad.O:ListBox.Width">
         <source>263</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.O:ListBox.Height" resname="O:ConsolePad.O:ListBox.Height">
         <source>122</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.O:ListBox.Align" resname="O:ConsolePad.O:ListBox.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.O:ListBox.Font.Charset" resname="O:ConsolePad.O:ListBox.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.O:ListBox.Font.Color" resname="O:ConsolePad.O:ListBox.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.O:ListBox.Font.Height" resname="O:ConsolePad.O:ListBox.Font.Height">
         <source>-12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.O:ListBox.Font.Name" resname="O:ConsolePad.O:ListBox.Font.Name">
         <source>'ＭＳ ゴシック'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.O:ListBox.Font.Style" resname="O:ConsolePad.O:ListBox.Font.Style">
         <source>[]</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:ConsolePad.O:ListBox.ImeName" resname="O:ConsolePad.O:ListBox.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -218,20 +218,15 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:ConsolePad.O:Panel1.O:Edit.ImeName" resname="O:ConsolePad.O:Panel1.O:Edit.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
       <trans-unit id="O:ConsolePad.O:Panel1.O:Edit.TabOrder" resname="O:ConsolePad.O:Panel1.O:Edit.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ConsolePad.O:Panel1.O:Edit.OnKeyPress" resname="O:ConsolePad.O:Panel1.O:Edit.OnKeyPress">
         <source>EditKeyPress</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925201968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

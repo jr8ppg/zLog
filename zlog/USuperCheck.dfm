@@ -16,6 +16,7 @@ object SuperCheck: TSuperCheck
   KeyPreview = True
   OldCreateOrder = True
   Scaled = False
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
@@ -37,7 +38,7 @@ object SuperCheck: TSuperCheck
       Left = 153
       Top = 9
       Width = 40
-      Height = 17
+      Height = 13
       Anchors = [akTop, akRight]
       Caption = 'Columns'
       Layout = tlCenter

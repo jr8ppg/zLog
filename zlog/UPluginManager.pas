@@ -360,7 +360,7 @@ begin
 		buf := TMemoryStream.Create;
 		res := NetHttpRequest.Get(url, buf);
       if res.StatusCode = 200 then begin
-		txt := res.ContentAsString(TEncoding.UTF8);
+   		txt := res.ContentAsString(TEncoding.UTF8);
       end
       else begin
          raise EXception.Create(res.StatusText);

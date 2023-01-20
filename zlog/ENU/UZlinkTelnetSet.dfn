@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44940.9358564815</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">44946.9319444444</prop>
+        <prop prop-type="OrigDateTime">44946.9306018519</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">75</prop>
+        <prop prop-type="UnTranslated">73</prop>
       </prop-group>
     </header>
     <body>
@@ -288,105 +288,95 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:formZLinkTelnetSet.O:comboHostName.ImeName" resname="O:formZLinkTelnetSet.O:comboHostName.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:comboHostName.TabOrder" resname="O:formZLinkTelnetSet.O:comboHostName.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:comboHostName.Text" resname="O:formZLinkTelnetSet.O:comboHostName.Text">
         <source>'Host name'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:comboHostName.Items.Strings[0]" resname="O:formZLinkTelnetSet.O:comboHostName.Items.Strings[0]">
         <source>'ac4et.ampr.org'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop><prop prop-type="Close">)</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop><prop prop-type="Close">)</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:comboLineBreak.Left" resname="O:formZLinkTelnetSet.O:comboLineBreak.Left">
         <source>80</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:comboLineBreak.Top" resname="O:formZLinkTelnetSet.O:comboLineBreak.Top">
         <source>52</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:comboLineBreak.Width" resname="O:formZLinkTelnetSet.O:comboLineBreak.Width">
         <source>65</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:comboLineBreak.Height" resname="O:formZLinkTelnetSet.O:comboLineBreak.Height">
         <source>20</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:formZLinkTelnetSet.O:comboLineBreak.ImeName" resname="O:formZLinkTelnetSet.O:comboLineBreak.ImeName">
-        <source>'MS-IME97 日本語入力ｼｽﾃﾑ'</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:comboLineBreak.TabOrder" resname="O:formZLinkTelnetSet.O:comboLineBreak.TabOrder">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:comboLineBreak.Text" resname="O:formZLinkTelnetSet.O:comboLineBreak.Text">
         <source>'Line break'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:comboLineBreak.Items.Strings[0]" resname="O:formZLinkTelnetSet.O:comboLineBreak.Items.Strings[0]">
         <source>'CR + LF'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:comboLineBreak.Items.Strings[1]" resname="O:formZLinkTelnetSet.O:comboLineBreak.Items.Strings[1]">
         <source>'CR'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:comboLineBreak.Items.Strings[2]" resname="O:formZLinkTelnetSet.O:comboLineBreak.Items.Strings[2]">
         <source>'LF'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:checkLocalEcho.Left" resname="O:formZLinkTelnetSet.O:checkLocalEcho.Left">
         <source>16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:checkLocalEcho.Top" resname="O:formZLinkTelnetSet.O:checkLocalEcho.Top">
         <source>88</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:checkLocalEcho.Width" resname="O:formZLinkTelnetSet.O:checkLocalEcho.Width">
         <source>97</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:checkLocalEcho.Height" resname="O:formZLinkTelnetSet.O:checkLocalEcho.Height">
         <source>17</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:checkLocalEcho.Caption" resname="O:formZLinkTelnetSet.O:checkLocalEcho.Caption">
         <source>'Local echo'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formZLinkTelnetSet.O:checkLocalEcho.TabOrder" resname="O:formZLinkTelnetSet.O:checkLocalEcho.TabOrder">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935272106</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

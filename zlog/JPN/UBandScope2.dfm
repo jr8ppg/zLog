@@ -38,8 +38,6 @@ object BandScope2: TBandScope2
     Color = clRed
     ParentBackground = False
     TabOrder = 0
-    ExplicitTop = 19
-    ExplicitHeight = 397
     object Grid: TStringGrid
       Left = 4
       Top = 4
@@ -62,7 +60,6 @@ object BandScope2: TBandScope2
       OnDblClick = GridDblClick
       OnDrawCell = GridDrawCell
       OnMouseMove = GridMouseMove
-      ExplicitHeight = 385
     end
   end
   object panelStandardOption: TPanel
@@ -121,7 +118,6 @@ object BandScope2: TBandScope2
     ShowCaption = False
     TabOrder = 2
     Visible = False
-    ExplicitTop = 8
     DesignSize = (
       234
       19)

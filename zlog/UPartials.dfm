@@ -14,6 +14,7 @@ object PartialCheck: TPartialCheck
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
+  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
@@ -27,8 +28,6 @@ object PartialCheck: TPartialCheck
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 190
-    ExplicitWidth = 303
     object Label1: TLabel
       Left = 199
       Top = 18
@@ -104,8 +103,6 @@ object PartialCheck: TPartialCheck
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 303
-    ExplicitHeight = 190
     object Panel: TPanel
       Left = 0
       Top = 159
@@ -114,8 +111,6 @@ object PartialCheck: TPartialCheck
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitTop = 164
-      ExplicitWidth = 303
       DesignSize = (
         304
         26)
@@ -170,8 +165,6 @@ object PartialCheck: TPartialCheck
       OnDblClick = ListBoxDblClick
       OnDrawItem = ListBoxDrawItem
       OnMeasureItem = ListBoxMeasureItem
-      ExplicitWidth = 303
-      ExplicitHeight = 164
     end
   end
   object ImageList1: TImageList
