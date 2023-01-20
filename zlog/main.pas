@@ -1046,7 +1046,7 @@ type
     procedure BandScopeAddSelfSpot(aQSO: TQSO; nFreq: TFrequency);
     procedure BandScopeAddSelfSpotFromNetwork(BSText: string);
     procedure BandScopeAddClusterSpot(Sp: TSpot);
-    procedure BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
+    procedure BandScopeMarkCurrentFreq(B: TBand; Hz: TFrequency);
     procedure BandScopeUpdateSpot(aQSO: TQSO);
     procedure BandScopeApplyBandPlan();
 
@@ -3680,7 +3680,8 @@ end;
 
 procedure TMainForm.LogButtonClick(Sender: TObject);
 var
-   _dupe, i, j: Integer;
+   _dupe, i: Integer;
+   Hz: TFrequency;
    workedZLO: Boolean;
    st, st2: string;
    B: TBand;
@@ -3774,10 +3775,10 @@ begin
 
    if (RigControl.Rig <> nil) and (RigControl.GetCurrentRig() <> 3) then begin
       // RIGÇÃé¸îgêîÇéÊìæ
-      j := RigControl.Rig.CurrentFreqHz;
+      Hz := RigControl.Rig.CurrentFreqHz;
 
       // é¸îgêîÇ™éÊìæÇ≈Ç´ÇΩÇÁ(>0)ãLò^Ç∑ÇÈ
-      if j > 0 then begin
+      if Hz > 0 then begin
          // é¸îgêîÇãLò^
          if dmZlogGlobal.Settings._recrigfreq = True then begin
             CurrentQSO.Freq := RigControl.Rig.CurrentFreqkHzStr;
@@ -3785,7 +3786,7 @@ begin
 
          // é©ìÆbandmap
          if dmZlogGlobal.Settings._autobandmap then begin
-            BandScopeAddSelfSpot(CurrentQSO, j);
+            BandScopeAddSelfSpot(CurrentQSO, Hz);
          end;
       end;
    end;
@@ -7356,7 +7357,7 @@ end;
 // ÉoÉìÉhÉXÉRÅ[ÉvÇ÷í«â¡
 procedure TMainForm.InsertBandScope(fShiftKey: Boolean);
 var
-   nFreq: Integer;
+   nFreq: TFrequency;
 
    function InputFreq(): Boolean;
    var
@@ -9342,7 +9343,7 @@ begin
    end;
 end;
 
-procedure TMainForm.BandScopeMarkCurrentFreq(B: TBand; Hz: Integer);
+procedure TMainForm.BandScopeMarkCurrentFreq(B: TBand; Hz: TFrequency);
 begin
    FBandScopeEx[B].MarkCurrentFreq(Hz);
    FBandScope.MarkCurrentFreq(Hz);
