@@ -3498,6 +3498,14 @@ begin
    end;
 
    // CW
+   nID := FCurrentTx;
+
+   // CWポート設定チェック
+   if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
+      WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
+      Exit;
+   end;
+
    if NumberEditEx.Text = '' then begin
       CurrentQSO.UpdateTime;
       TimeEdit.Text := CurrentQSO.TimeStr;
@@ -3513,7 +3521,6 @@ begin
    if dmZLogKeyer.UseWinKeyer = True then begin
 
       if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
-         nID := FCurrentTx;
          dmZLogKeyer.So2rNeoReverseRx(nID)
       end;
 
@@ -3578,6 +3585,12 @@ begin
 
    case CurrentQSO.Mode of
       mCW: begin
+         // CWポート設定チェック
+         if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
+            WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
+            Exit;
+         end;
+
          if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
             // NR?自動送出使う場合
             if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
@@ -4342,6 +4355,7 @@ begin
          S := SetStr(UpperCase(S), CurrentQSO);
       end;
 
+      // CWポート設定チェック
       if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
          WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
          FCQRepeatPlaying := False;
@@ -7108,6 +7122,8 @@ begin
    case CurrentQSO.Mode of
       mCW: begin
          nID := FCurrentTx;
+
+         // CWポート設定チェック
          if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
             WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
             Exit;
