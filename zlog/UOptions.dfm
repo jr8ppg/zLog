@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetBandScope1
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1856,14 +1856,6 @@ object formOptions: TformOptions
             'Get freq. and mode (slow)'
             'Get freq. only (fast)')
         end
-        object checkIcomStrictAck: TCheckBox
-          Left = 109
-          Top = 48
-          Width = 133
-          Height = 17
-          Caption = 'Strict acknowledgment'
-          TabOrder = 2
-        end
         object editIcomResponseTimout: TEdit
           Left = 376
           Top = 46
@@ -1871,7 +1863,7 @@ object formOptions: TformOptions
           Height = 21
           MaxLength = 4
           NumbersOnly = True
-          TabOrder = 3
+          TabOrder = 2
           Text = '1000'
         end
       end
@@ -4917,13 +4909,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@Small Fonts'
+          FontName = '@HG'#25945#31185#26360#20307
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 16
+          ItemIndex = 5
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

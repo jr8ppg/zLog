@@ -5,6 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids, System.Math, System.StrUtils,
+  System.SyncObjs, Generics.Collections,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB, Vcl.Buttons;
 
 type
@@ -128,7 +129,7 @@ type
     procedure SetRit(flag: Boolean); virtual;
     procedure SetXit(flag: Boolean); virtual;
     procedure SetRitOffset(offset: Integer); virtual;
-    procedure UpdateFreqMem(vfo: Integer; Hz: Integer);
+    procedure UpdateFreqMem(vfo: Integer; Hz: TFrequency);
   public
     constructor Create(RigNum : Integer); virtual;
     destructor Destroy; override;
@@ -219,6 +220,8 @@ type
     procedure Initialize(); override;
   end;
 
+  TIcomCommThread = class;
+
   TICOM = class(TRig) // Icom CI-V
   private
     FMyAddr: Byte;
@@ -226,7 +229,9 @@ type
     FUseTransceiveMode: Boolean;
     FGetBandAndMode: Boolean;
     FPollingCount: Integer;
-    FWaitForResponse: Boolean;
+
+    FCommThread: TIcomCommThread;
+    FCommandList: TList<AnsiString>;
   public
     constructor Create(RigNum : integer); override;
     destructor Destroy; override;
@@ -242,6 +247,7 @@ type
     procedure AntSelect(no: Integer); override;
     procedure ICOMWriteData(S : AnsiString);
     procedure StartPolling();
+    procedure StopRequest(); override;
     procedure PollingProcess; override;
     procedure SetRit(flag: Boolean); override;
     procedure SetXit(flag: Boolean); override;
@@ -250,6 +256,18 @@ type
     property GetBandAndModeFlag: Boolean read FGetBandAndMode write FGetBandAndMode;
     property MyAddr: Byte read FMyAddr write FMyAddr;
     property RigAddr: Byte read FRigAddr write FRigAddr;
+  end;
+
+  TIcomCommThread = class(TThread)
+  private
+    FRig: TICOM;
+    FResponse: AnsiString;
+  protected
+    procedure Execute(); override;
+    function RecvText(var nErrorCode: Integer): AnsiString;
+    procedure SyncProc();
+  public
+    constructor Create(rig: TICOM);
   end;
 
   TIC756 = class(TICOM)
@@ -455,7 +473,7 @@ type
     { Private declarations }
     FRigs: TRigArray;
     FCurrentRig : TRig;
-    FPrevVfo: array[0..1] of Integer;
+    FPrevVfo: array[0..1] of TFrequency;
     FOnVFOChanged: TNotifyEvent;
     FFreqLabel: array[0..1] of TLabel;
 
@@ -498,6 +516,9 @@ type
   end;
 
 function dec2hex(i: Integer): Integer;
+
+var
+  IcomLock: TCriticalSection;
 
 implementation
 
@@ -708,7 +729,7 @@ begin
    FRitOffset := offset;
 end;
 
-procedure TRig.UpdateFreqMem(vfo: Integer; Hz: Integer);
+procedure TRig.UpdateFreqMem(vfo: Integer; Hz: TFrequency);
 var
    b: TBand;
 begin
@@ -2023,29 +2044,25 @@ begin
    FComm.HwFlow := hfNONE;
    FComm.SwFlow := sfNONE;
    FComm.EnableDTROnOpen := False;
-   FWaitForResponse := False;
    TerminatorCode := AnsiChar($FD);
 
    FMyAddr := $E0;
    FRigAddr := $01;
+
+   FCommandList := TList<AnsiString>.Create();
+   FCommThread := TIcomCommThread.Create(Self);
 end;
 
 procedure TICOM.Initialize();
 begin
    Inherited;
+   FCommThread.Start();
    SetVFO(0);
    FPollingTimer.Enabled := True;
 end;
 
 procedure TICOM.ICOMWriteData(S: AnsiString);
-var
-   dwTick: DWORD;
-   msg: string;
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('[' + IntToStr(_rignumber) + ']*** Enter - TICOM.ICOMWriteData(' + IntToHex(Byte(S[1]), 2) + ') ---'));
-   {$ENDIF}
-
    if FComm.Connected = False then begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('[' + IntToStr(_rignumber) + '] @@@not connected@@@'));
@@ -2056,44 +2073,10 @@ begin
    // コマンド送信時はポーリング中止
    FPollingTimer.Enabled := False;
 
-   // 応答待ち中
-   FWaitForResponse := True;
-
-   WriteData(AnsiChar($FE) + AnsiChar($FE) + AnsiChar(FRigAddr) + AnsiChar(FMyAddr) + S + AnsiChar($FD));
-
-   // 応答確認無しなら抜ける
-   if dmZLogGlobal.Settings._icom_strict_ack_response = False then begin
-      Exit;
-   end;
-
-   // $FA/$FB/Response受信まで待ち合わせ
-   dwTick := GetTickCount();
-   while FWaitForResponse = True do begin
-      // 待ってる間重い感じするなら↓
-      Application.ProcessMessages();
-
-      // とりあえず5秒だけど、1-3秒位で良さそう　iniファイルに出すか
-      if (GetTickCount() - dwTick) > dmZLogGlobal.Settings._icom_response_timeout then begin
-         FWaitForResponse := False;
-         //FStopRequest := True;
-         msg := 'No response from ' + Self.Name;
-         {$IFDEF DEBUG}
-         msg := msg + ' (' + IntToHex(Byte(S[1])) + ')';
-         OutputDebugString(PChar('[' + IntToStr(_rignumber) + '] ' + msg));
-         {$ENDIF}
-         MainForm.WriteStatusLineRed(msg, True);
-         Break;
-      end;
-
-      Sleep(1);
-   end;
-
-   // ポーリング再開
-   StartPolling();
-
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('[' + IntToStr(_rignumber) + ']*** Leave - TICOM.ICOMWriteData(' + IntToHex(Byte(S[1]), 2) + ') ---'));
-   {$ENDIF}
+   // コマンドキューに追加
+   IcomLock.Enter();
+   FCommandList.Add(S);
+   IcomLock.Leave();
 end;
 
 procedure TICOM.StartPolling();
@@ -2115,6 +2098,13 @@ begin
          FPollingTimer.Enabled := True;
       end;
    end;
+end;
+
+procedure TICOM.StopRequest();
+begin
+   Inherited;
+   FCommThread.Terminate();
+   FCommThread.WaitFor();
 end;
 
 constructor TFT1000MP.Create(RigNum: Integer);
@@ -2185,6 +2175,10 @@ end;
 destructor TICOM.Destroy;
 begin
    inherited;
+   FCommThread.Terminate();
+   FCommThread.WaitFor();
+   FCommThread.Free();
+   FCommandList.Free();
 end;
 
 destructor TFT1000MP.Destroy;
@@ -2281,9 +2275,6 @@ procedure TICOM.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
 
-   if FWaitForResponse = True then begin
-      Exit;
-   end;
    if FStopRequest = True then begin
       Exit;
    end;
@@ -3678,13 +3669,6 @@ begin
          end;
       end;
    finally
-      // 応答確認無しならここでポーリング再開
-      if dmZLogGlobal.Settings._icom_strict_ack_response = False then begin
-         StartPolling();
-      end;
-
-      // 応答待ち終了
-      FWaitForResponse := False;
    end;
 end;
 
@@ -4318,7 +4302,7 @@ end;
 
 procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: TFrequency; b: TBand; m: TMode);
 var
-   vfo: array[0..1] of Integer;
+   vfo: array[0..1] of TFrequency;
 begin
    vfo[0] := VfoA;
    vfo[1] := VfoB;
@@ -4383,5 +4367,196 @@ begin
       Rig.RitOffset := offset;
    end;
 end;
+
+{ TIcomCommThread }
+
+constructor TIcomCommThread.Create(rig: TICOM);
+begin
+   Inherited Create(True);
+   FRig := rig;
+end;
+
+procedure TIcomCommThread.Execute();
+var
+   S: AnsiString;
+   R: AnsiString;
+   msg: string;
+   proc: TReceiveDataEvent;
+   E: Integer;
+
+   {$IFDEF DEBUG}
+   procedure DebugDump(T: string; S: AnsiString; E: Integer);
+   var
+      str: string;
+      i: Integer;
+      L: Integer;
+   begin
+      L := Length(S);
+      str := '';
+      for i := 1 to L do begin
+         str := str + IntToHex(Byte(S[i]),2) + ' ';
+      end;
+      str := Trim(str);
+      OutputDebugString(PChar('*** ' + T + '=[' +
+      IntToStr(L) + '][' + str + '] *** (' + IntToStr(E) + ')'));
+   end;
+   {$ENDIF}
+begin
+   FRig.FComm.InputTimeout := 200;
+   while Terminated = False do begin
+      // コマンドなし
+      if FRig.FCommandList.Count = 0 then begin
+         Sleep(50);
+         Continue;
+      end;
+
+      // コマンド取りだし
+      IcomLock.Enter();
+      S := FRig.FCommandList.Items[0];
+      proc := FRig.FComm.OnReceiveData;
+      FRig.FComm.OnReceiveData := nil;
+      IcomLock.Leave();
+
+      {$IFDEF DEBUG}
+//      DebugDump('コマンド', S, E);
+      {$ENDIF}
+
+      // 送信
+      S := AnsiChar($FE) + AnsiChar($FE) + AnsiChar(FRig.FRigAddr) + AnsiChar(FRig.FMyAddr) + S + AnsiChar($FD);
+      FRig.WriteData(S);
+      {$IFDEF DEBUG}
+      DebugDump('送信コマンド', S, E);
+      {$ENDIF}
+
+      // ちょっと待って
+      Sleep(10);
+
+      // 最初の応答電文受信
+      R := RecvText(E);
+
+      {$IFDEF DEBUG}
+      if E >= 0 then begin
+         DebugDump('受信①', R, E);
+      end;
+      {$ENDIF}
+
+      // それはエコーバックか？
+      if S = R then begin
+         // 本当の応答電文受信
+         R := RecvText(E);
+
+         {$IFDEF DEBUG}
+         if E >= 0 then begin
+            DebugDump('受信②', R, E);
+         end;
+         {$ENDIF}
+      end;
+
+      // エラー有り
+      if E = -1 then begin
+         msg := 'No response from ' + FRig.Name;
+         {$IFDEF DEBUG}
+         msg := msg + ' (' + IntToHex(Byte(S[5])) + ')';
+         OutputDebugString(PChar('[' + IntToStr(FRig._rignumber) + '] ' + msg));
+         {$ENDIF}
+         MainForm.WriteStatusLineRed(msg, True);
+      end
+      else begin
+         // レスポンス処理
+         FResponse := R;
+         Synchronize(SyncProc);
+      end;
+
+      // コマンド削除
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('*** コマンド削除 ***'));
+      {$ENDIF}
+      IcomLock.Enter();
+      FRig.FCommandList.Delete(0);
+      IcomLock.Leave();
+
+      // ポーリング再開
+      FRig.StartPolling();
+
+      IcomLock.Enter();
+      FRig.FComm.OnReceiveData := proc;
+      IcomLock.Leave();
+   end;
+end;
+
+function TIcomCommThread.RecvText(var nErrorCode: Integer): AnsiString;
+var
+   c: Integer;
+   dwTick: DWORD;
+   fStart: Boolean;
+   fResult: Boolean;
+   CH: AnsiChar;
+begin
+   // 応答受信 FE～FDまで受信
+   nErrorCode := 0;
+   fStart := False;
+   c := 0;
+   dwTick := GetTickCount();
+   Result := '';
+   while True do begin
+      Sleep(0);
+      CH := #00;
+      fResult := FRig.FComm.ReadChar(CH);
+      if fResult = False then begin
+         // タイムアウト判定１文字目が来るまで
+         if (c = 0) and
+            ((GetTickCount() - dwTick) > dmZLogGlobal.Settings._icom_response_timeout) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('*** レスポンスなし ***'));
+            {$ENDIF}
+            Result := '';
+            nErrorCode := -1;
+            Exit;
+         end;
+
+         // ２文字目以降
+         if (c >= 1) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('*** これ以降データなし ***'));
+            {$ENDIF}
+            nErrorCode := 1;
+            Break;
+         end;
+      end;
+
+      // スタートキャラクタ待ち
+      if (fStart = False) then begin
+         if (CH = #$FE) then begin
+            fStart := True;
+         end
+         else begin
+            Continue;
+         end;
+      end;
+
+      // スタートしたらバッファに格納
+      if fStart = True then begin
+         Result := Result + CH;
+         Inc(c);
+      end;
+
+      // 終端文字まで受信したら終了
+      if CH = FRig.TerminatorCode then begin
+         nErrorCode := 0;
+         Break;
+      end;
+   end;
+end;
+
+procedure TIcomCommThread.SyncProc();
+begin
+   FRig.ExecuteCommand(FResponse);
+end;
+
+initialization
+   IcomLock := TCriticalSection.Create();
+
+finalization
+   IcomLock.Free();
 
 end.
