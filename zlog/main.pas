@@ -8497,6 +8497,12 @@ begin
    if CurrentQSO.CQ = True then begin
       Exit;
    end;
+   if RigControl.Rig = nil then begin
+      Exit;
+   end;
+   if RigControl.Rig.XitCtrlSupported = False then begin
+      Exit;
+   end;
 
    Randomize();
 
