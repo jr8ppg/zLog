@@ -3748,14 +3748,6 @@ object formOptions: TformOptions
             #21608#27874#25968#12392#12514#12540#12489#12434#21462#24471
             #21608#27874#25968#12398#12415#21462#24471)
         end
-        object checkIcomStrictAck: TCheckBox
-          Left = 109
-          Top = 48
-          Width = 133
-          Height = 17
-          Caption = #24540#31572#12434#30906#35469#12377#12427
-          TabOrder = 2
-        end
         object editIcomResponseTimout: TEdit
           Left = 376
           Top = 46

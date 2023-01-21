@@ -6072,6 +6072,14 @@ object MainForm: TMainForm
         Caption = '-'
         Visible = False
       end
+      object menuPortal: TMenuItem
+        Caption = 'zLog &portal'
+        OnClick = menuPortalClick
+      end
+      object menuUsersGuide: TMenuItem
+        Caption = 'zLog &Users Guide'
+        OnClick = menuUsersGuideClick
+      end
       object HelpZyLO: TMenuItem
         Caption = '&ZyLO Reference Manual'
         Hint = 'How to make ZyLO plugin'

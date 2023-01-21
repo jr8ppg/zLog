@@ -626,7 +626,6 @@ type
     checkRig2BKeyIsRTS: TCheckBox;
     checkRig3KeyIsRTS: TCheckBox;
     Label110: TLabel;
-    checkIcomStrictAck: TCheckBox;
     editIcomResponseTimout: TEdit;
     checkDispLongDateTime: TCheckBox;
     checkBsAllBands: TCheckBox;
@@ -1022,7 +1021,6 @@ begin
          Settings._icom_polling_freq_and_mode := False;
       end;
 
-      Settings._icom_strict_ack_response := checkIcomStrictAck.Checked;
       Settings._icom_response_timeout := StrToIntDef(editIcomResponseTimout.Text, 1000);
 
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
@@ -1522,7 +1520,6 @@ begin
 
       comboIcomModeChange(nil);
 
-      checkIcomStrictAck.Checked := Settings._icom_strict_ack_response;
       editIcomResponseTimout.Text := IntToStr(Settings._icom_response_timeout);
 
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;

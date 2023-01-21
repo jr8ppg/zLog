@@ -4,7 +4,7 @@ unit Main;
   zLog for Windows óﬂòaEdition
 
   Copyright 1997-2005 by Yohei Yokobayashi.
-  Portions created by JR8PPG are Copyright (C) 2022 JR8PPG.
+  Portions created by JR8PPG are Copyright (C) 2019-2023 JR8PPG.
 
   This software is released under the MIT License.
 }
@@ -30,7 +30,7 @@ uses
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
-  UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest,
+  UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan,
   JvExControls, JvLED;
 
 const
@@ -521,6 +521,8 @@ type
     actionChangeBand2: TAction;
     actionChangeMode2: TAction;
     actionChangePower2: TAction;
+    menuUsersGuide: TMenuItem;
+    menuPortal: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -787,6 +789,8 @@ type
     procedure menuEditStatusClick(Sender: TObject);
     procedure comboBandPlanChange(Sender: TObject);
     procedure actionShowMsgMgrExecute(Sender: TObject);
+    procedure menuUsersGuideClick(Sender: TObject);
+    procedure menuPortalClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -2490,10 +2494,10 @@ end;
 
 procedure TMainForm.ProcessConsoleCommand(S: string);
 var
-   i: double;
    j: Integer;
    temp, temp2: string;
    rig: TRig;
+   khz: TFrequency;
 begin
    Delete(S, 1, 1);
    temp := S;
@@ -2775,19 +2779,19 @@ begin
       dmZLogGlobal.InitializeCW();
    end;
 
-   i := StrToFloatDef(S, 0);
+   khz := StrToIntDef(S, 0);
 
-   if (i > 1799) and (i < 1000000) then begin
+   if (khz > 1799) and (khz < 1000000) then begin
       if rig <> nil then begin
-         rig.SetFreq(round(i * 1000), IsCQ());
+         rig.SetFreq(khz * 1000, IsCQ());
          if CurrentQSO.Mode = mSSB then begin
             rig.SetMode(CurrentQSO);
          end;
-         FZLinkForm.SendFreqInfo(round(i * 1000));
+         FZLinkForm.SendFreqInfo(khz * 1000);
       end
       else begin
-         RigControl.TempFreq[CurrentQSO.Band] := i;
-         FZLinkForm.SendFreqInfo(round(i * 1000));
+         RigControl.TempFreq[CurrentQSO.Band] := khz;
+         FZLinkForm.SendFreqInfo(khz * 1000);
       end;
    end;
 
@@ -6173,6 +6177,16 @@ begin
    FQuickRef.Show();
 end;
 
+procedure TMainForm.menuPortalClick(Sender: TObject);
+begin
+   ShellExecute(Handle, 'open', PChar('https://zlog.org/'), nil, nil, SW_SHOW);
+end;
+
+procedure TMainForm.menuUsersGuideClick(Sender: TObject);
+begin
+   ShellExecute(Handle, 'open', PChar('https://use.zlog.org/'), nil, nil, SW_SHOW);
+end;
+
 procedure TMainForm.Timer2Timer(Sender: TObject);
 begin
 //   AutoInput(TBSData(BSList2[0]));
@@ -6664,7 +6678,7 @@ begin
       if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
          for BB := b19 to b10g do begin
             rigno := dmZLogGlobal.Settings.FRigSet[2].FRig[BB];
-            if rigno <> 0 then begin
+            if (rigno <> 0) and (RigControl.Rigs[rigno] <> nil) then begin
                FEditPanel[1].ModeEdit.Text := ModeString[RigControl.Rigs[rigno].CurrentMode];
                FEditPanel[1].BandEdit.Text := MHzString[RigControl.Rigs[rigno].CurrentBand];
                Break;
@@ -8982,6 +8996,14 @@ begin
       Exit;
    end;
 
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig = nil then begin
+      Exit;
+   end;
+   if rig.XitCtrlSupported = False then begin
+      Exit;
+   end;
+
    Randomize();
 
    // êUÇÍïù
@@ -8993,12 +9015,9 @@ begin
       offset := offset * -1;
    end;
 
-   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
-   if rig <> nil then begin
-      rig.Rit := False;
-      rig.Xit := True;
-      rig.RitOffset := offset;
-   end;
+   rig.Rit := False;
+   rig.Xit := True;
+   rig.RitOffset := offset;
 
    WriteStatusLine(TMainForm_Anti_zeroin, False);
 end;

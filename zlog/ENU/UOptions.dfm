@@ -3748,14 +3748,6 @@ object formOptions: TformOptions
             'Get freq. and mode (slow)'
             'Get freq. only (fast)')
         end
-        object checkIcomStrictAck: TCheckBox
-          Left = 109
-          Top = 48
-          Width = 133
-          Height = 17
-          Caption = 'Strict acknowledgment'
-          TabOrder = 2
-        end
         object editIcomResponseTimout: TEdit
           Left = 376
           Top = 46
