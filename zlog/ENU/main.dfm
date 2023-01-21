@@ -5929,6 +5929,9 @@ object MainForm: TMainForm
       object menuShowInformation: TMenuItem
         Action = actionShowInformation
       end
+      object ShowMessageManagerSO2R1: TMenuItem
+        Action = actionShowMsgMgr
+      end
     end
     object menuSettings: TMenuItem
       Caption = '&Settings'
@@ -6067,6 +6070,14 @@ object MainForm: TMainForm
       object N5: TMenuItem
         Caption = '-'
         Visible = False
+      end
+      object menuPortal: TMenuItem
+        Caption = 'zLog &portal'
+        OnClick = menuPortalClick
+      end
+      object menuUsersGuide: TMenuItem
+        Caption = 'zLog &Users Guide'
+        OnClick = menuUsersGuideClick
       end
       object HelpZyLO: TMenuItem
         Caption = '&ZyLO Reference Manual'
@@ -7237,6 +7248,25 @@ object MainForm: TMainForm
     object actionNoQsl: TAction
       Caption = 'actionNoQsl'
       OnExecute = actionNoQslExecute
+    end
+    object actionShowMsgMgr: TAction
+      Caption = 'Show Message Manager (SO2R)'
+      OnExecute = actionShowMsgMgrExecute
+    end
+    object actionChangeBand2: TAction
+      Tag = 1
+      Caption = 'actionChangeBand2'
+      OnExecute = actionChangeBandExecute
+    end
+    object actionChangeMode2: TAction
+      Tag = 1
+      Caption = 'actionChangeMode2'
+      OnExecute = actionChangeModeExecute
+    end
+    object actionChangePower2: TAction
+      Tag = 1
+      Caption = 'actionChangePower2'
+      OnExecute = actionChangePowerExecute
     end
   end
   object SPCMenu: TPopupMenu

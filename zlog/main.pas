@@ -4,7 +4,7 @@ unit Main;
   zLog for Windows —ß˜aEdition
 
   Copyright 1997-2005 by Yohei Yokobayashi.
-  Portions created by JR8PPG are Copyright (C) 2022 JR8PPG.
+  Portions created by JR8PPG are Copyright (C) 2019-2023 JR8PPG.
 
   This software is released under the MIT License.
 }
@@ -511,6 +511,8 @@ type
     actionChangeBand2: TAction;
     actionChangeMode2: TAction;
     actionChangePower2: TAction;
+    menuUsersGuide: TMenuItem;
+    menuPortal: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -767,6 +769,8 @@ type
     procedure menuEditStatusClick(Sender: TObject);
     procedure comboBandPlanChange(Sender: TObject);
     procedure actionShowMsgMgrExecute(Sender: TObject);
+    procedure menuUsersGuideClick(Sender: TObject);
+    procedure menuPortalClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -5936,6 +5940,16 @@ end;
 procedure TMainForm.menuQuickReferenceClick(Sender: TObject);
 begin
    FQuickRef.Show();
+end;
+
+procedure TMainForm.menuPortalClick(Sender: TObject);
+begin
+   ShellExecute(Handle, 'open', PChar('https://zlog.org/'), nil, nil, SW_SHOW);
+end;
+
+procedure TMainForm.menuUsersGuideClick(Sender: TObject);
+begin
+   ShellExecute(Handle, 'open', PChar('https://use.zlog.org/'), nil, nil, SW_SHOW);
 end;
 
 procedure TMainForm.Timer2Timer(Sender: TObject);

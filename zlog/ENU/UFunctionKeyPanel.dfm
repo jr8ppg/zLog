@@ -13,6 +13,7 @@ object formFunctionKeyPanel: TformFunctionKeyPanel
   KeyPreview = True
   OldCreateOrder = False
   OnActivate = FormActivate
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDeactivate = FormDeactivate
   OnHide = FormHide

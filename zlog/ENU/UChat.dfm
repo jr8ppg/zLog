@@ -15,6 +15,7 @@ object ChatForm: TChatForm
   KeyPreview = True
   OldCreateOrder = True
   OnActivate = FormActivate
+  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
