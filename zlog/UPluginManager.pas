@@ -48,6 +48,7 @@ type
 		sum: string;
 		exp: string;
 		use: TList<string>;
+      sumfile: Boolean;
 		function ref: string;
 		function name: string;
 		function Exist: boolean;
@@ -254,6 +255,7 @@ begin
 end;
 procedure Verify(Item: TMarketItem);
 begin
+   if Item.sumfile = False then Exit;
 	if Item.IsUpToDate then Exit;
 	raise Exception.Create('checksum');
 end;
@@ -275,8 +277,10 @@ function TMarketItem.CheckSum: string;
 begin
 	try
 		MarketForm.LoadText(Self.url + '.md5', Result);
+      sumfile := True;
 	except
-		Result := Self.sum;
+		Result := '';
+      sumfile := False;
 	end;
 end;
 
