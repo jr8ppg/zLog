@@ -1007,7 +1007,7 @@ type
 
     procedure UpdateBandAndMode();
     procedure CancelCqRepeat();
-    procedure ResetTx();
+    procedure ResetTx(rigset: Integer);
     procedure StopMessage(mode: TMode);
     procedure ControlPTT(fOn: Boolean);
     procedure VoiceControl(fOn: Boolean);
@@ -3544,17 +3544,17 @@ begin
       // 現在RIGがRIG2(SP)ならRIG1(CQ)へ戻る
       if FInformation.Is2bsiq = False then begin
          // ResetTx();
-         FMessageManager.AddQue(WM_ZLOG_RESET_TX, 0, 0);
+         FMessageManager.AddQue(WM_ZLOG_RESET_TX, FCurrentRigSet, 0);
          SetSo2rCqMode();
       end;
 
       // 2BSIQ ON
       if FInformation.Is2bsiq = True then begin
          // TXをRXにあわせる
-         FMessageManager.AddQue(WM_ZLOG_RESET_TX, 0, 0);
+         FMessageManager.AddQue(WM_ZLOG_RESET_TX, FCurrentRigSet, 0);
 
          // RXを反対側へ
-         FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 0, 0);
+         FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 0, FCurrentRx);
       end;
    end;
 
@@ -3688,7 +3688,10 @@ begin
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
       (FInformation.Is2bsiq = True) then begin
       // TXをRXにあわせる
-      FMessageManager.AddQue(WM_ZLOG_RESET_TX, 0, 0);
+      FMessageManager.AddQue(WM_ZLOG_RESET_TX, FCurrentRigSet, 0);
+
+      // RXを反対側へ
+      FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 0, FCurrentRx);
    end;
 
    // 意味ない？
@@ -6755,7 +6758,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('>>> Enter - OnZLogResetTx() '));
    {$ENDIF}
-   ResetTx();
+   ResetTx(Message.WParam);
    {$IFDEF DEBUG}
    OutputDebugString(PChar('<<< Leave - OnZLogResetTx() '));
    {$ENDIF}
@@ -6782,13 +6785,13 @@ begin
    case Message.WParam of
       // 反対側へ
       0: begin
-         rx := GetNextRigID(FCurrentRx);
+         rx := GetNextRigID(Message.LParam);
          SwitchRx(rx + 1);
       end;
 
       // TXに合わせる
       1: begin
-         SwitchRx(FCurrentTx + 1);
+         SwitchRx(Message.LParam + 1);
       end;
    end;
 
@@ -7571,7 +7574,6 @@ begin
    SetCurrentQSO(FCurrentTx);
 
    FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
-//   FMessageManager.AddQue(WM_ZLOG_RESET_TX, 0, 0);
    FMessageManager.AddQue(0, S, CurrentQSO);
    FMessageManager.AddQue(WM_ZLOG_SWITCH_TX, 2, FCurrentTx);
    if (FCQLoopRunning = True) then begin
@@ -7725,7 +7727,7 @@ begin
 //                  FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 1, 0);
                end;
 
-               FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 1, 0);
+               FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 1, FCurrentTx);
 //                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RIG, 0, 1);
 //                  FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 1, 0);
 
@@ -9454,6 +9456,12 @@ var
    L: TSuperList;
    SI: TSuperIndex;
    j: Integer;
+   {$IFDEF DEBUG}
+   dwTick: DWORD;
+   loop_count: Integer;
+   {$ENDIF}
+label
+   loop_end;
 begin
    if FSpcDataLoading = True then begin
       Exit;
@@ -9497,8 +9505,10 @@ begin
 
    {$IFDEF DEBUG}
    OutputDebugString(PChar('[' + PartialStr + '] L=' + IntToStr(L.Count)));
+   dwTick := GetTickCount();
+   loop_count := 0;
    {$ENDIF}
-
+   FSuperCheck.BeginUpdate();
    for i := 0 to L.Count - 1 do begin
       SI := L[i];
 
@@ -9519,10 +9529,16 @@ begin
          end;
 
          if hit >= maxhit then begin
-            break;
+            goto loop_end;
          end;
+
+         {$IFDEF DEBUG}
+         Inc(loop_count);
+         {$ENDIF}
       end;
    end;
+loop_end:
+   FSuperCheck.EndUpdate();
 
    FSpcHitNumber := hit;
 
@@ -9535,6 +9551,10 @@ begin
    end;
 
    FSuperChecked := True;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('SuperCheck Finished [' + IntToStr(GetTickCount() - dwTick) + '] milisec loop_count=' +IntTostr(loop_count)));
+   {$ENDIF}
 end;
 
 // N+1検索の実行
@@ -9673,6 +9693,9 @@ begin
       Exit;
    end;
 
+   // SPモードへ変更
+   SetCQ(False);
+
    FQsyFromBS := True;
 
    rigset := CurrentRx + 1;
@@ -9728,9 +9751,6 @@ begin
       // バンド変更
       UpdateBand(b);
    end;
-
-   // SPモードへ変更
-   SetCQ(False);
 end;
 
 procedure TMainForm.BSRefresh();
@@ -10671,18 +10691,19 @@ begin
    SetCqRepeatMode(False);
 end;
 
-procedure TMainForm.ResetTx();
+procedure TMainForm.ResetTx(rigset: Integer);
 var
    rigno: Integer;
    rig: TRig;
 begin
-   rigno := FCurrentRigSet;   //RigControl.GetCurrentRig();
-   FCurrentTx := rigno - 1;
-   FInformation.Tx := rigno - 1;
+//   rigno := FCurrentRigSet;   //RigControl.GetCurrentRig();
+   rigno := rigset - 1;
+   FCurrentTx := rigno;
+   FInformation.Tx := rigno;
 
-   rig := RigControl.GetRig(rigno, TextToBand(BandEdit.Text));
+   rig := RigControl.GetRig(rigset, TextToBand(BandEdit.Text));
    if rig <> nil then begin
-      dmZLogKeyer.SetTxRigFlag(rigno);
+      dmZLogKeyer.SetTxRigFlag(rigset);
    end;
 
    // ShowTxIndicator();
@@ -10763,7 +10784,7 @@ begin
 
          // TXをRXに合わせる
          if FCurrentTx <> FCurrentRx then begin
-            ResetTx();
+            ResetTx(FCurrentRigSet);
          end;
 
          // PTT ON
@@ -10776,7 +10797,7 @@ begin
          else begin
             // TXをRXに合わせる
             if FCurrentTx <> FCurrentRx then begin
-               ResetTx();
+               ResetTx(FCurrentRigSet);
             end;
 
             if FCQLoopRunning = True then begin
