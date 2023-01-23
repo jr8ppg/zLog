@@ -402,14 +402,16 @@ begin
       // ÉXÉRÉAèáÇ…ï¿Ç—ë÷Ç¶
       L.SortByScore();
 
+      FListBox.Items.BeginUpdate();
       for i := 0 to Min(l.Count - 1, maxhit) do begin
          if L[i].EditDistance = 0 then begin
-            ListBox.Items.Add('*' + L[i].PartialStr);
+            FListBox.Items.Add('*' + L[i].PartialStr);
          end
          else begin
-            ListBox.Items.Add(L[i].PartialStr);
+            FListBox.Items.Add(L[i].PartialStr);
          end;
       end;
+      FListBox.Items.EndUpdate();
    finally
       L.Free();
    end;

@@ -35,7 +35,9 @@ type
     { Public declarations }
     procedure Clear();
     function Count(): Integer;
+    procedure BeginUpdate();
     procedure Add(text: string);
+    procedure EndUpdate();
     property Items: TStringList read GetItems;
     property FontSize: Integer read GetFontSize write SetFontSize;
     property Columns: Integer read GetColumns write SetColumns;
@@ -155,9 +157,19 @@ begin
    Result := ListBox.Items.Count;
 end;
 
+procedure TSuperCheck.BeginUpdate();
+begin
+   ListBox.Items.BeginUpdate();
+end;
+
 procedure TSuperCheck.Add(text: string);
 begin
    ListBox.Items.Add(text);
+end;
+
+procedure TSuperCheck.EndUpdate();
+begin
+   ListBox.Items.EndUpdate();
 end;
 
 end.

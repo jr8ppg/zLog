@@ -8991,6 +8991,12 @@ var
    L: TSuperList;
    SI: TSuperIndex;
    j: Integer;
+   {$IFDEF DEBUG}
+   dwTick: DWORD;
+   loop_count: Integer;
+   {$ENDIF}
+label
+   loop_end;
 begin
    if FSpcDataLoading = True then begin
       Exit;
@@ -9034,8 +9040,10 @@ begin
 
    {$IFDEF DEBUG}
    OutputDebugString(PChar('[' + PartialStr + '] L=' + IntToStr(L.Count)));
+   dwTick := GetTickCount();
+   loop_count := 0;
    {$ENDIF}
-
+   FSuperCheck.BeginUpdate();
    for i := 0 to L.Count - 1 do begin
       SI := L[i];
 
@@ -9056,10 +9064,16 @@ begin
          end;
 
          if hit >= maxhit then begin
-            break;
+            goto loop_end;
          end;
+
+         {$IFDEF DEBUG}
+         Inc(loop_count);
+         {$ENDIF}
       end;
    end;
+loop_end:
+   FSuperCheck.EndUpdate();
 
    FSpcHitNumber := hit;
 
@@ -9072,6 +9086,10 @@ begin
    end;
 
    FSuperChecked := True;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('SuperCheck Finished [' + IntToStr(GetTickCount() - dwTick) + '] milisec loop_count=' +IntTostr(loop_count)));
+   {$ENDIF}
 end;
 
 // N+1åüçıÇÃé¿çs
