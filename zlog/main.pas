@@ -9197,6 +9197,9 @@ begin
       Exit;
    end;
 
+   // SPモードへ変更
+   SetCQ(False);
+
    FQsyFromBS := True;
 
    b := dmZLogGlobal.BandPlan.FreqToBand(freq);
@@ -9241,9 +9244,6 @@ begin
       // バンド変更
       UpdateBand(b);
    end;
-
-   // SPモードへ変更
-   SetCQ(False);
 end;
 
 procedure TMainForm.BSRefresh();
