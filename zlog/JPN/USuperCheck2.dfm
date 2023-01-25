@@ -20,6 +20,7 @@ object SuperCheck2: TSuperCheck2
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
+  OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -36,7 +37,7 @@ object SuperCheck2: TSuperCheck2
       35)
     object Label1: TLabel
       Left = 170
-      Top = 11
+      Top = 12
       Width = 40
       Height = 13
       Anchors = [akTop, akRight]
@@ -63,7 +64,7 @@ object SuperCheck2: TSuperCheck2
     end
     object SpinEdit: TSpinEdit
       Left = 197
-      Top = 7
+      Top = 8
       Width = 33
       Height = 22
       Anchors = [akTop, akRight]
@@ -74,23 +75,19 @@ object SuperCheck2: TSuperCheck2
       OnChange = SpinEditChange
     end
   end
-  object ListBox: TListBox
+  object Grid: TStringGrid
     Left = 0
     Top = 0
     Width = 234
     Height = 77
-    Style = lbOwnerDrawVariable
     Align = alClient
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = #65325#65331' '#12468#12471#12483#12463
-    Font.Style = []
-    ItemHeight = 12
-    ParentFont = False
+    DefaultDrawing = False
+    FixedCols = 0
+    FixedRows = 0
+    GridLineWidth = 0
+    ScrollBars = ssVertical
     TabOrder = 1
-    OnDblClick = ListBoxDblClick
-    OnDrawItem = ListBoxDrawItem
-    OnMeasureItem = ListBoxMeasureItem
+    OnDblClick = GridDblClick
+    OnDrawCell = GridDrawCell
   end
 end
