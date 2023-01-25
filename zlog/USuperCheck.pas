@@ -4,28 +4,32 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Spin,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogSpc;
+  StdCtrls, ExtCtrls, Spin, Vcl.Grids,
+  UzLogConst, UzLogGlobal, Vcl.Menus;
 
 type
   TSuperCheck = class(TForm)
     Panel1: TPanel;
     Button3: TButton;
-    ListBox: TListBox;
     StayOnTop: TCheckBox;
     SpinEdit: TSpinEdit;
     Label1: TLabel;
+    Grid: TStringGrid;
     procedure Button3Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure ListBoxDblClick(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
     procedure SpinEditChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormResize(Sender: TObject);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect;
+      State: TGridDrawState);
+    procedure GridDblClick(Sender: TObject);
   private
     { Private declarations }
+    FList: TStringList;
     function GetItems(): TStringList;
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
@@ -33,6 +37,7 @@ type
     procedure SetColumns(v: Integer);
   public
     { Public declarations }
+    procedure DataLoad();
     procedure Clear();
     function Count(): Integer;
     procedure BeginUpdate();
@@ -46,7 +51,7 @@ type
 implementation
 
 uses
-  Main;
+  Main, UzLogSpc;
 
 {$R *.DFM}
 
@@ -57,12 +62,13 @@ end;
 
 procedure TSuperCheck.FormCreate(Sender: TObject);
 begin
-   ListBox.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+   FList := TStringList.Create();
+   Grid.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
 end;
 
 procedure TSuperCheck.FormDestroy(Sender: TObject);
 begin
-//
+   FList.Free();
 end;
 
 procedure TSuperCheck.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -70,6 +76,37 @@ begin
    case Key of
       VK_ESCAPE:
          MainForm.SetLastFocus();
+   end;
+end;
+
+procedure TSuperCheck.FormResize(Sender: TObject);
+var
+   w: Integer;
+   h: Integer;
+   i: Integer;
+   c: Integer;
+   r: Integer;
+begin
+   c := SpinEdit.Value;
+   r := FList.Count div c;
+   if (FList.Count mod c) > 0 then begin
+      Inc(r);
+   end;
+
+   Grid.ColCount := c;
+   w := (Grid.ClientWidth - GetSystemMetrics(SM_CXVSCROLL)) div c;
+
+   Grid.RowCount := r;
+   h := Abs(Grid.Font.Height) + 0;
+
+   Grid.DefaultColWidth := w;
+   for i := 0 to Grid.ColCount - 1 do begin
+      Grid.ColWidths[i] := w;
+   end;
+
+   Grid.DefaultRowHeight := h;
+   for i := 0 to Grid.RowCount - 1 do begin
+      Grid.RowHeights[i] := h;
    end;
 end;
 
@@ -85,48 +122,75 @@ end;
 
 function TSuperCheck.GetItems(): TStringList;
 begin
-   Result := TStringList(ListBox.Items);
+   Result := FList;
 end;
 
-function TSuperCheck.GetFontSize(): Integer;
-begin
-   Result := ListBox.Font.Size;
-end;
-
-procedure TSuperCheck.SetFontSize(v: Integer);
-begin
-   ListBox.Font.Size := v;
-end;
-
-function TSuperCheck.GetColumns(): Integer;
-begin
-   Result := ListBox.Columns;
-end;
-
-procedure TSuperCheck.SetColumns(v: Integer);
-begin
-   ListBox.Columns := v;
-   SpinEdit.Value := v;
-end;
-
-procedure TSuperCheck.ListBoxDblClick(Sender: TObject);
+procedure TSuperCheck.GridDblClick(Sender: TObject);
 var
-   i, j: integer;
    str: string;
+   c, r: Integer;
 begin
-   i := ListBox.ItemIndex;
-   str := ListBox.Items[i];
+   c := Grid.Col;
+   r := Grid.Row;
+   str := Grid.Cells[c, r];
 
    if str = SPC_LOADING_TEXT then begin
       Exit;
    end;
 
-   j := Pos(' ', str);
-   if j > 0 then begin
-      str := copy(str, 1, j - 1);
-   end;
+   str := StringReplace(str, ' ', '', [rfReplaceAll]);
+   str := StringReplace(str, '*', '', [rfReplaceAll]);
 
    MainForm.SetYourCallsign(str, '');
+end;
+
+procedure TSuperCheck.GridDrawCell(Sender: TObject; ACol, ARow: Integer;
+  Rect: TRect; State: TGridDrawState);
+var
+   fg: TColor;
+   bg: TColor;
+   txt: string;
+begin
+   txt := Grid.Cells[ACol, ARow];
+   with Grid.Canvas do begin
+      fg := clBlack;
+      bg := clWhite;
+
+      Pen.Color := bg;
+      Pen.Style := psSolid;
+      Brush.Color := bg;
+      Brush.Style := bsSolid;
+      FillRect(Rect);
+
+      Font.Color := fg;
+      Font.Size := Grid.Font.Size;
+      Font.Name := Grid.Font.Name;
+      TextRect(Rect, txt, [tfLeft, tfVerticalCenter]);
+
+      if (gdSelected in State) and (gdFocused in State) and (FList.Count > 0) then begin
+         DrawFocusRect(Rect);
+      end;
+   end;
+end;
+
+function TSuperCheck.GetFontSize(): Integer;
+begin
+   Result := Grid.Font.Size;
+end;
+
+procedure TSuperCheck.SetFontSize(v: Integer);
+begin
+   Grid.Font.Size := v;
+end;
+
+function TSuperCheck.GetColumns(): Integer;
+begin
+   Result := SpinEdit.Value;
+end;
+
+procedure TSuperCheck.SetColumns(v: Integer);
+begin
+   SpinEdit.Value := v;
 end;
 
 procedure TSuperCheck.StayOnTopClick(Sender: TObject);
@@ -139,37 +203,63 @@ end;
 
 procedure TSuperCheck.SpinEditChange(Sender: TObject);
 begin
-   if SpinEdit.Value <= 1 then begin
-      ListBox.Columns := 0;
-   end
-   else begin
-      ListBox.Columns := SpinEdit.Value;
-   end;
+   FormResize(nil);
 end;
 
 procedure TSuperCheck.Clear();
+var
+   r, c: Integer;
 begin
-   ListBox.Items.Clear();
+   FList.Clear();
+   for r := 0 to Grid.RowCount - 1 do begin
+      for c := 0 to Grid.ColCount - 1 do begin
+         Grid.Cells[c, r] := '';
+      end;
+   end;
+   Grid.Col := 0;
+   Grid.Row := 0;
+   Grid.Refresh();
+end;
+
+procedure TSuperCheck.DataLoad();
+begin
+   BeginUpdate();
+   FList.Add(SPC_LOADING_TEXT);
+   EndUpdate();
 end;
 
 function TSuperCheck.Count(): Integer;
 begin
-   Result := ListBox.Items.Count;
+   Result := FList.Count;
 end;
 
 procedure TSuperCheck.BeginUpdate();
 begin
-   ListBox.Items.BeginUpdate();
+   Grid.BeginUpdate();
+   Clear();
 end;
 
 procedure TSuperCheck.Add(text: string);
 begin
-   ListBox.Items.Add(text);
+   FList.Add(text);
 end;
 
 procedure TSuperCheck.EndUpdate();
+var
+   c, r, n: Integer;
+   cols: Integer;
 begin
-   ListBox.Items.EndUpdate();
+   FormResize(nil);
+
+   cols := SpinEdit.Value;
+   for n := 0 to FList.Count -1 do begin
+      r := n div cols;
+      c := n mod cols;
+      Grid.Cells[c, r] := FList[n];
+   end;
+
+   Grid.EndUpdate();
+   Grid.Refresh();
 end;
 
 end.
