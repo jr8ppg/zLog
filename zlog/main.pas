@@ -6467,8 +6467,8 @@ end;
 
 procedure TMainForm.OnZLogSpcDataLoaded( var Message: TMessage );
 begin
-   FSuperCheck.ListBox.Clear();
-   FSuperCheck2.ListBox.Clear();
+   FSuperCheck.Clear();
+   FSuperCheck2.Clear();
    FSpcDataLoading := False;
 end;
 
@@ -8935,10 +8935,8 @@ begin
    TerminateSuperCheckDataLoad();
 
    FSpcDataLoading := True;
-   FSuperCheck.ListBox.Clear();
-   FSuperCheck.ListBox.Items.Add(SPC_LOADING_TEXT);
-   FSuperCheck2.ListBox.Clear();
-   FSuperCheck2.ListBox.Items.Add(SPC_LOADING_TEXT);
+   FSuperCheck.DataLoad();
+   FSuperCheck2.DataLoad();
 
    SuperCheckInitData();
 
@@ -9124,7 +9122,7 @@ begin
 
    // N+1‚ÌŽÀs
    if (Length(PartialStr) >= 3) then begin
-      FNPlusOneThread := TSuperCheckNPlusOneThread.Create(FSuperCheckList, FSuperCheck2.ListBox, PartialStr);
+      FNPlusOneThread := TSuperCheckNPlusOneThread.Create(FSuperCheckList, FSuperCheck2, PartialStr);
    end;
 end;
 

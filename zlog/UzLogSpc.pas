@@ -9,7 +9,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   StdCtrls, System.Math, Generics.Collections, Generics.Defaults,
   System.Character, System.DateUtils,
-  UzLogConst, UzLogGlobal, UzLogQSO;
+  UzLogConst, UzLogGlobal, UzLogQSO, USuperCheck2;
 
 type
   TSuperData = class(TObject)
@@ -87,12 +87,12 @@ type
     procedure Execute(); override;
   private
     FSuperList: TSuperList;
-    FListBox: TListBox;
+    FForm: TSuperCheck2;
     FPartialStr: string;
   public
-    constructor Create(ASuperList: TSuperList; AListBox: TListBox; APartialStr: string);
+    constructor Create(ASuperList: TSuperList; form: TSuperCheck2; APartialStr: string);
     property SuperList: TSuperList read FSuperList write FSuperList;
-    property ListBox: TListBox read FListBox write FListBox;
+//    property ListBox: TListBox read FListBox write FListBox;
     property PartialStr: string read FPartialStr write FPartialStr;
   end;
 
@@ -354,10 +354,10 @@ end;
 
 { TSuperCheckNPlusOneThread }
 
-constructor TSuperCheckNPlusOneThread.Create(ASuperList: TSuperList; AListBox: TListBox; APartialStr: string);
+constructor TSuperCheckNPlusOneThread.Create(ASuperList: TSuperList; form: TSuperCheck2; APartialStr: string);
 begin
    FSuperList := ASuperList;
-   FListBox := AListBox;
+   FForm := form;
    FPartialStr := APartialStr;
    Inherited Create();
 end;
@@ -374,7 +374,6 @@ var
 begin
    L := TSuperResultList.Create();
    try
-      ListBox.Items.Clear();
       maxhit := dmZlogGlobal.Settings._maxsuperhit;
       for i := 0 to FSuperList.Count - 1 do begin
          SI := FSuperList[i];
@@ -402,16 +401,16 @@ begin
       // ÉXÉRÉAèáÇ…ï¿Ç—ë÷Ç¶
       L.SortByScore();
 
-      FListBox.Items.BeginUpdate();
+      FForm.BeginUpdate();
       for i := 0 to Min(l.Count - 1, maxhit) do begin
          if L[i].EditDistance = 0 then begin
-            FListBox.Items.Add('*' + L[i].PartialStr);
+            FForm.Add('*' + L[i].PartialStr);
          end
          else begin
-            FListBox.Items.Add(L[i].PartialStr);
+            FForm.Add(L[i].PartialStr);
          end;
       end;
-      FListBox.Items.EndUpdate();
+      FForm.EndUpdate();
    finally
       L.Free();
    end;
