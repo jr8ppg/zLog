@@ -547,6 +547,7 @@ function IsFullPath(strPath: string): Boolean;
 function AdjustPath(v: string): string;
 
 function ExpandEnvironmentVariables(strOriginal: string): string;
+procedure FormShowAndRestore(F: TForm);
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -3920,6 +3921,14 @@ begin
    until I = -1;
 
    Result := strExpanded;
+end;
+
+procedure FormShowAndRestore(F: TForm);
+begin
+   if F.WindowState = wsMinimized then begin
+      F.WindowState := wsNormal;
+   end;
+   F.Show();
 end;
 
 end.

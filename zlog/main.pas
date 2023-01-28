@@ -4386,7 +4386,7 @@ end;
 
 procedure TMainForm.buttonCwKeyboardClick(Sender: TObject);
 begin
-   FCWKeyBoard.Show;
+   FormShowAndRestore(FCWKeyBoard);
 end;
 
 procedure TMainForm.SideToneButtonClick(Sender: TObject);
@@ -4873,7 +4873,7 @@ end;
 
 procedure TMainForm.SpeedButton9Click(Sender: TObject);
 begin
-   FZLinkForm.Show;
+   FormShowAndRestore(FZLinkForm);
 end;
 
 procedure TMainForm.SerialEdit1Change(Sender: TObject);
@@ -5907,7 +5907,7 @@ begin
       FTTYConsole.SetTTYMode(ttyMMTTY);
       InitializeMMTTY(Handle);
 
-      FTTYConsole.Show;
+      FormShowAndRestore(FTTYConsole);
       FTTYConsole.SetFocus;
    end
    else begin
@@ -5939,7 +5939,7 @@ end;
 
 procedure TMainForm.menuQuickReferenceClick(Sender: TObject);
 begin
-   FQuickRef.Show();
+   FormShowAndRestore(FQuickRef);
 end;
 
 procedure TMainForm.menuPortalClick(Sender: TObject);
@@ -7475,7 +7475,7 @@ end;
 // #08 Super Checkウインドウの表示 Ctrl+F10
 procedure TMainForm.actionShowSuperCheckExecute(Sender: TObject);
 begin
-   FSuperCheck.Show;
+   FormShowAndRestore(FSuperCheck);
    CheckSuper(CurrentQSO);
 
    LastFocus.SetFocus;
@@ -7484,7 +7484,7 @@ end;
 // #09 Z-Link Monitor Ctrl+F12
 procedure TMainForm.actionShowZlinkMonitorExecute(Sender: TObject);
 begin
-   FZLinkForm.Show;
+   FormShowAndRestore(FZLinkForm);
 end;
 
 // #10-#17 F1～F8
@@ -7528,7 +7528,7 @@ end;
 // #19 F10
 procedure TMainForm.actionShowCheckPartialExecute(Sender: TObject);
 begin
-   FPartialCheck.Show;
+   FormShowAndRestore(FPartialCheck);
 
    if ActiveControl = NumberEdit then begin
       FPartialCheck.CheckPartialNumber(CurrentQSO);
@@ -7886,7 +7886,7 @@ end;
 // #60 CW Keyboard / Alt+K
 procedure TMainForm.actionShowCWKeyboardExecute(Sender: TObject);
 begin
-   FCWKeyBoard.Show;
+   FormShowAndRestore(FCWKeyBoard);
 end;
 
 // #61 Memo欄にフォーカス移動 / Alt+M
@@ -7919,14 +7919,14 @@ end;
 // #64 Packet Cluster / Alt+P
 procedure TMainForm.actionShowPacketClusterExecute(Sender: TObject);
 begin
-   FCommForm.Show;
+   FormShowAndRestore(FCommForm);
    LastFocus.SetFocus();
 end;
 
 // #65 Console Pad / Alt+Q
 procedure TMainForm.actionShowConsolePadExecute(Sender: TObject);
 begin
-   FConsolePad.Show;
+   FormShowAndRestore(FConsolePad);
 end;
 
 // #66 RST欄にフォーカス移動 / Alt+R
@@ -7941,13 +7941,13 @@ end;
 // #67 Scratch Sheet / Alt+S
 procedure TMainForm.actionShowScratchSheetExecute(Sender: TObject);
 begin
-   FScratchSheet.Show;
+   FormShowAndRestore(FScratchSheet);
 end;
 
 // #68 RIG Control / Alt+T
 procedure TMainForm.actionShowRigControlExecute(Sender: TObject);
 begin
-   RigControl.Show;
+   FormShowAndRestore(FRigControl);
    LastFocus.SetFocus();
 end;
 
@@ -7967,7 +7967,7 @@ end;
 // #70 Z-Serverのチャットウインドウ / Alt+Z
 procedure TMainForm.actionShowZServerChatExecute(Sender: TObject);
 begin
-   FChatForm.Show;
+   FormShowAndRestore(FChatForm);
 end;
 
 // #71 TX/RX RIG切り替え / Alt+. , Shift+X
@@ -8052,21 +8052,21 @@ end;
 // #73 Running Frequencies
 procedure TMainForm.actionShowFreqListExecute(Sender: TObject);
 begin
-   FFreqList.Show;
+   FormShowAndRestore(FFreqList);
 end;
 
 // #74 Teletype Console
 procedure TMainForm.actionShowTeletypeConsoleExecute(Sender: TObject);
 begin
    if Assigned(FTTYConsole) then begin
-      FTTYConsole.Show;
+      FormShowAndRestore(FTTYConsole);
    end;
 end;
 
 // #75 analyzeウインドウ
 procedure TMainForm.actionShowAnalyzeExecute(Sender: TObject);
 begin
-   FZAnalyze.Show();
+   FormShowAndRestore(FZAnalyze);
    LastFocus.SetFocus();
 end;
 
@@ -8085,27 +8085,27 @@ end;
 // #78 QSO Rateウインドウ
 procedure TMainForm.actionShowQsoRateExecute(Sender: TObject);
 begin
-   FRateDialog.Show;
+   FormShowAndRestore(FRateDialog);
 end;
 
 // #79 Check Callウインドウ
 procedure TMainForm.actionShowCheckCallExecute(Sender: TObject);
 begin
-   FCheckCall2.Show;
+   FormShowAndRestore(FCheckCall2);
    LastFocus.SetFocus();
 end;
 
 // #80 Check Multiウインドウ
 procedure TMainForm.actionShowCheckMultiExecute(Sender: TObject);
 begin
-   FCheckMulti.Show;
+   FormShowAndRestore(FCheckMulti);
    LastFocus.SetFocus();
 end;
 
 // #81 Check Countryウインドウ
 procedure TMainForm.actionShowCheckCountryExecute(Sender: TObject);
 begin
-   FCheckCountry.Show;
+   FormShowAndRestore(FCheckCountry);
    LastFocus.SetFocus();
 end;
 
@@ -8153,7 +8153,7 @@ end;
 // #87 N+1ウインドウの表示
 procedure TMainForm.actionShowSuperCheck2Execute(Sender: TObject);
 begin
-   FSuperCheck2.Show;
+   FormShowAndRestore(FSuperCheck2);
    CheckSuper2(CurrentQSO);
 
    LastFocus.SetFocus;
@@ -8336,7 +8336,7 @@ end;
 // #103 CW Message Pad
 procedure TMainForm.actionCwMessagePadExecute(Sender: TObject);
 begin
-   FCWMessagePad.Show();
+   FormShowAndRestore(FCWMessagePad);
 end;
 
 // #104 Correct NR
@@ -8566,26 +8566,26 @@ end;
 // #131 Function Key Panel
 procedure TMainForm.actionFunctionKeyPanelExecute(Sender: TObject);
 begin
-   FFunctionKeyPanel.Show();
+   FormShowAndRestore(FFunctionKeyPanel);
    LastFocus.SetFocus();
 end;
 
 // #132 Rate Dialog Ex
 procedure TMainForm.actionShowQsoRateExExecute(Sender: TObject);
 begin
-   FRateDialogEx.Show();
+   FormShowAndRestore(FRateDialogEx);
 end;
 
 // #133 QSY Infomation
 procedure TMainForm.actionShowQsyInfoExecute(Sender: TObject);
 begin
-   FQsyInfoForm.Show();
+   FormShowAndRestore(FQsyInfoForm);
 end;
 
 // #134 SO2R Neo Control Panel
 procedure TMainForm.actionShowSo2rNeoCpExecute(Sender: TObject);
 begin
-   FSo2rNeoCp.Show();
+   FormShowAndRestore(FSo2rNeoCp);
 end;
 
 // #135-137 SO2R Neo Select RX N
@@ -8621,7 +8621,7 @@ end;
 // #142 Information Window
 procedure TMainForm.actionShowInformationExecute(Sender: TObject);
 begin
-   FInformation.Show();
+   FormShowAndRestore(FInformation);
 end;
 
 // #143 SO2R Toggle 2BSIQ
