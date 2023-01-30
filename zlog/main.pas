@@ -5226,7 +5226,7 @@ end;
 
 procedure TMainForm.menuPluginManagerClick(Sender: TObject);
 begin
-   MarketForm.Show;
+   FormShowAndRestore(MarketForm);
 end;
 
 procedure TMainForm.CWFMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
