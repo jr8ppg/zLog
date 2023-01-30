@@ -2296,6 +2296,7 @@ begin
    dmZlogGlobal.ReadWindowState(FCWKeyBoard);
    dmZlogGlobal.ReadWindowState(FRigControl, '', True);
    dmZlogGlobal.ReadWindowState(FChatForm);
+   dmZlogGlobal.ReadWindowState(FConsolePad);
    dmZlogGlobal.ReadWindowState(FFreqList);
    dmZlogGlobal.ReadWindowState(FCommForm);
    dmZlogGlobal.ReadWindowState(FScratchSheet);
@@ -2338,6 +2339,7 @@ begin
    dmZlogGlobal.WriteWindowState(FCWKeyBoard);
    dmZlogGlobal.WriteWindowState(FRigControl);
    dmZlogGlobal.WriteWindowState(FChatForm);
+   dmZlogGlobal.WriteWindowState(FConsolePad);
    dmZlogGlobal.WriteWindowState(FFreqList);
    dmZlogGlobal.WriteWindowState(FCommForm);
    dmZlogGlobal.WriteWindowState(FScratchSheet);

@@ -2,7 +2,7 @@ object SpotForm: TSpotForm
   Left = 109
   Top = 202
   Caption = 'Send DX Spot'
-  ClientHeight = 56
+  ClientHeight = 71
   ClientWidth = 305
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -61,12 +61,13 @@ object SpotForm: TSpotForm
   end
   object Panel1: TPanel
     Left = 0
-    Top = 27
+    Top = 42
     Width = 305
     Height = 29
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
+    ExplicitTop = 27
     object SendButton: TButton
       Left = 8
       Top = 5
