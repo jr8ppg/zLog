@@ -438,7 +438,7 @@ type
 
   TRigControl = class(TForm)
     dispMode: TLabel;
-    Button1: TButton;
+    buttonReconnectRigs: TButton;
     RigLabel: TLabel;
     Timer1: TTimer;
     Label2: TLabel;
@@ -460,7 +460,7 @@ type
     buttonJumpLastFreq: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure buttonReconnectRigsClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure PollingTimerTimer(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -519,6 +519,9 @@ function dec2hex(i: Integer): Integer;
 
 var
   IcomLock: TCriticalSection;
+
+resourcestring
+  RECONNECT_ALL_RIGS = 'Reconnect all RIGs?';
 
 implementation
 
@@ -4205,11 +4208,24 @@ begin
    Stop();
 end;
 
-procedure TRigControl.Button1Click(Sender: TObject);
+procedure TRigControl.buttonReconnectRigsClick(Sender: TObject);
+var
+   rigno: Integer;
 begin
-   if FCurrentRig <> nil then begin
-      FCurrentRig.Reset;
+   if MessageBox(Handle, PChar(RECONNECT_ALL_RIGS), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
+      Exit;
    end;
+
+   MainForm.WriteStatusLine('', False);
+
+   rigno := GetCurrentRig();
+
+   // KeyingÇ∆RigControlÇàÍíUèIóπ
+   dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZlogGlobal.Settings.FRigControl[3].FKeyingPort));
+
+   ImplementOptions(rigno);
 end;
 
 procedure TRigControl.buttonJumpLastFreqClick(Sender: TObject);
