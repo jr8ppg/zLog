@@ -783,7 +783,6 @@ type
     FChatForm: TChatForm;
     FZServerInquiry: TZServerInquiry;
     FZLinkForm: TZLinkForm;
-    FSpotForm: TSpotForm;
     FConsolePad: TConsolePad;
     FFreqList: TFreqList;
     FCheckCall2: TCheckCall2;
@@ -1998,7 +1997,6 @@ begin
    FChatForm      := TChatForm.Create(Self);
    FZServerInquiry := TZServerInquiry.Create(Self);
    FZLinkForm     := TZLinkForm.Create(Self);
-   FSpotForm      := TSpotForm.Create(Self);
    FConsolePad    := TConsolePad.Create(Self);
    FFreqList      := TFreqList.Create(Self);
    FCheckCall2    := TCheckCall2.Create(Self);
@@ -4061,7 +4059,6 @@ begin
    FRateDialogEx.Release();
    FZServerInquiry.Release();
    FZLinkForm.Release();
-   FSpotForm.Release();
    FConsolePad.Release();
    FCheckCountry.Release();
 
@@ -5472,6 +5469,7 @@ procedure TMainForm.SendSpot1Click(Sender: TObject);
 var
    _top, _bottom: Integer;
    aQSO: TQSO;
+   F: TSpotForm;
 begin
    with Grid do begin
       _top := Selection.top;
@@ -5480,7 +5478,14 @@ begin
 
    if _top = _bottom then begin
       aQSO := TQSO(Grid.Objects[0, Grid.Row]);
-      FSpotForm.Open(aQSO);
+
+      F := TSpotForm.Create(Self);
+      try
+         F.Open(aQSO);
+         F.ShowModal();
+      finally
+         F.Release();
+      end;
    end;
 end;
 
