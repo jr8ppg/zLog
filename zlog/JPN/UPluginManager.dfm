@@ -9,7 +9,7 @@ object MarketForm: TMarketForm
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
@@ -88,7 +88,7 @@ object MarketForm: TMarketForm
       Width = 614
       Height = 18
       Align = alBottom
-      Caption = '<a href="https://zylo.pafelog.net">How to make plugin</a>'
+      Caption = '<a href="https://zylo.pafelog.net">'#12503#12521#12464#12452#12531#12398#20316#12426#26041'</a>'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
@@ -165,7 +165,7 @@ object MarketForm: TMarketForm
       Margins.Right = 10
       Margins.Bottom = 10
       Align = alBottom
-      Caption = 'Show unstable (experimental) plugins'
+      Caption = #23433#23450#29256#20197#22806#12398#12503#12521#12464#12452#12531#12418#34920#31034#12377#12427
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -225,7 +225,7 @@ object MarketForm: TMarketForm
       Width = 202
       Height = 34
       Align = alClient
-      Caption = 'Install'
+      Caption = #12452#12531#12473#12488#12540#12523
       Enabled = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -243,7 +243,7 @@ object MarketForm: TMarketForm
       Width = 202
       Height = 34
       Align = alClient
-      Caption = 'Disable'
+      Caption = #28961#21177#12395#12377#12427
       Enabled = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -261,7 +261,7 @@ object MarketForm: TMarketForm
       Width = 202
       Height = 34
       Align = alClient
-      Caption = 'Upgrade'
+      Caption = #12496#12540#12472#12519#12531#12450#12483#12503
       Enabled = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText

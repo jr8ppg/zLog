@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44951.9327546296</prop>
+        <prop prop-type="SelfDateTime">44959.9581018519</prop>
         <prop prop-type="OrigDateTime">44949.9581018519</prop>
-        <prop prop-type="XlatDateTime">44936.9525694444</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">236</prop>
+        <prop prop-type="XlatDateTime">44959.955462963</prop>
+        <prop prop-type="Translated">6</prop>
+        <prop prop-type="UnTranslated">230</prop>
       </prop-group>
     </header>
     <body>
@@ -65,8 +65,9 @@
       </trans-unit>
       <trans-unit id="O:MarketForm.Font.Name" resname="O:MarketForm.Font.Name">
         <source>'Tahoma'</source>
+        <target>'ＭＳ Ｐゴシック'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TMarketForm</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">1</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TMarketForm</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.Font.Style" resname="O:MarketForm.Font.Style">
         <source>[]</source>
@@ -420,8 +421,9 @@
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Caption" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Caption">
         <source>'&lt;a href="https://zylo.pafelog.net"&gt;How to make plugin&lt;/a&gt;'</source>
+        <target>'&lt;a href="https://zylo.pafelog.net"&gt;プラグインの作り方&lt;/a&gt;'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">1</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Charset" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Charset">
         <source>DEFAULT_CHARSET</source>
@@ -765,8 +767,9 @@
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Caption" resname="O:MarketForm.O:ListPanel.O:CheckBox.Caption">
         <source>'Show unstable (experimental) plugins'</source>
+        <target>'安定版以外のプラグインも表示する'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">150</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">1</prop><prop prop-type="Order">150</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ListPanel.O:CheckBox.Font.Charset" resname="O:MarketForm.O:ListPanel.O:CheckBox.Font.Charset">
         <source>DEFAULT_CHARSET</source>
@@ -960,8 +963,9 @@
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Caption" resname="O:MarketForm.O:GridPanel.O:InstallButton.Caption">
         <source>'Install'</source>
+        <target>'インストール'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">1</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:InstallButton.Enabled" resname="O:MarketForm.O:GridPanel.O:InstallButton.Enabled">
         <source>False</source>
@@ -1040,8 +1044,9 @@
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Caption" resname="O:MarketForm.O:GridPanel.O:DisableButton.Caption">
         <source>'Disable'</source>
+        <target>'無効にする'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">205</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">1</prop><prop prop-type="Order">205</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:DisableButton.Enabled" resname="O:MarketForm.O:GridPanel.O:DisableButton.Enabled">
         <source>False</source>
@@ -1120,8 +1125,9 @@
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Caption" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Caption">
         <source>'Upgrade'</source>
+        <target>'バージョンアップ'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">221</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">1</prop><prop prop-type="Order">221</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:GridPanel.O:UpgradeButton.Enabled" resname="O:MarketForm.O:GridPanel.O:UpgradeButton.Enabled">
         <source>False</source>

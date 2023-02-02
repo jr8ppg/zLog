@@ -76,7 +76,7 @@ object RigControl: TRigControl
     Caption = 'Jump'
     OnClick = buttonJumpLastFreqClick
   end
-  object Button1: TButton
+  object buttonReconnectRigs: TButton
     Left = 233
     Top = 107
     Width = 73
@@ -84,7 +84,7 @@ object RigControl: TRigControl
     Anchors = [akRight, akBottom]
     Caption = 'Reset Rig'
     TabOrder = 0
-    OnClick = Button1Click
+    OnClick = buttonReconnectRigsClick
   end
   object dispVFO: TStaticText
     Left = 8

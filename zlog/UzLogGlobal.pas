@@ -137,7 +137,6 @@ type
 
     _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
-    _icom_strict_ack_response: Boolean;
     _icom_response_timeout: Integer;
     _usbif4cw_sync_wpm: Boolean;
     _polling_interval: Integer;
@@ -547,6 +546,7 @@ function IsFullPath(strPath: string): Boolean;
 function AdjustPath(v: string): string;
 
 function ExpandEnvironmentVariables(strOriginal: string): string;
+procedure FormShowAndRestore(F: TForm);
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -3890,6 +3890,14 @@ begin
    until I = -1;
 
    Result := strExpanded;
+end;
+
+procedure FormShowAndRestore(F: TForm);
+begin
+   if F.WindowState = wsMinimized then begin
+      F.WindowState := wsNormal;
+   end;
+   F.Show();
 end;
 
 end.

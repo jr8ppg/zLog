@@ -427,7 +427,6 @@ end;
 
 procedure TMarketForm.ListBoxClick(Sender: TObject);
 begin
-	InstallButton.Caption := 'Install';
 	if ListBox.ItemIndex > -1 then begin
 		MarketItem := ListBox.Items.Objects[ListBox.ItemIndex] as TMarketItem;
 		TagLabel.Caption := MarketItem.tag;

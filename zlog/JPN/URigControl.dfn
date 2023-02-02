@@ -5,8 +5,8 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44946.9318981481</prop>
-        <prop prop-type="OrigDateTime">44946.9272916667</prop>
+        <prop prop-type="SelfDateTime">44959.9530787037</prop>
+        <prop prop-type="OrigDateTime">44959.9492592593</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">203</prop>
@@ -323,45 +323,45 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8929021412</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:RigControl.O:Button1.Left" resname="O:RigControl.O:Button1.Left">
+      <trans-unit id="O:RigControl.O:buttonReconnectRigs.Left" resname="O:RigControl.O:buttonReconnectRigs.Left">
         <source>233</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929021412</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44959.953097338</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:RigControl.O:Button1.Top" resname="O:RigControl.O:Button1.Top">
+      <trans-unit id="O:RigControl.O:buttonReconnectRigs.Top" resname="O:RigControl.O:buttonReconnectRigs.Top">
         <source>107</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929021412</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44959.953097338</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:RigControl.O:Button1.Width" resname="O:RigControl.O:Button1.Width">
+      <trans-unit id="O:RigControl.O:buttonReconnectRigs.Width" resname="O:RigControl.O:buttonReconnectRigs.Width">
         <source>73</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929021412</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44959.953097338</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:RigControl.O:Button1.Height" resname="O:RigControl.O:Button1.Height">
+      <trans-unit id="O:RigControl.O:buttonReconnectRigs.Height" resname="O:RigControl.O:buttonReconnectRigs.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929021412</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44959.953097338</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:RigControl.O:Button1.Anchors" resname="O:RigControl.O:Button1.Anchors">
+      <trans-unit id="O:RigControl.O:buttonReconnectRigs.Anchors" resname="O:RigControl.O:buttonReconnectRigs.Anchors">
         <source>[akRight, akBottom]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929021412</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44959.953097338</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:RigControl.O:Button1.Caption" resname="O:RigControl.O:Button1.Caption">
+      <trans-unit id="O:RigControl.O:buttonReconnectRigs.Caption" resname="O:RigControl.O:buttonReconnectRigs.Caption">
         <source>'Reset Rig'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929021412</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44959.953097338</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:RigControl.O:Button1.TabOrder" resname="O:RigControl.O:Button1.TabOrder">
+      <trans-unit id="O:RigControl.O:buttonReconnectRigs.TabOrder" resname="O:RigControl.O:buttonReconnectRigs.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929021412</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44959.953097338</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:RigControl.O:Button1.OnClick" resname="O:RigControl.O:Button1.OnClick">
-        <source>Button1Click</source>
+      <trans-unit id="O:RigControl.O:buttonReconnectRigs.OnClick" resname="O:RigControl.O:buttonReconnectRigs.OnClick">
+        <source>buttonReconnectRigsClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929021412</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44959.953097338</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RigControl.O:dispVFO.Left" resname="O:RigControl.O:dispVFO.Left">
         <source>8</source>

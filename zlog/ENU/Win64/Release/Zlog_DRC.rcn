@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44951.9328009259</prop>
-        <prop prop-type="OrigDateTime">44951.9327546296</prop>
+        <prop prop-type="SelfDateTime">44959.958125</prop>
+        <prop prop-type="OrigDateTime">44959.958125</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">1237</prop>
+        <prop prop-type="UnTranslated">1238</prop>
       </prop-group>
     </header>
     <body>
@@ -8725,6 +8725,13 @@
         <source>"Windows 11"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44940.9358762384</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URigControl_RECONNECT_ALL_RIGS" resname="URigControl_RECONNECT_ALL_RIGS">
+        <source>"Reconnect all RIGs?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44959.9531260185</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
       </trans-unit>

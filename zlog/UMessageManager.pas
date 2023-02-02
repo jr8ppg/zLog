@@ -38,6 +38,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private 宣言 }
     FMessageQueue: TList<TPlayMessage>;
@@ -69,6 +71,7 @@ type
     procedure SetOperator(op: TOperatorInfo);
 
     function IsPlaying(): Boolean;
+    function IsIdle(): Boolean;
 
     property OnNotifyStarted: TNotifyEvent read FOnNotifyStarted write FOnNotifyStarted;
     property OnNotifyFinished: TPlayMessageFinishedProc read FOnNotifyFinished write FOnNotifyFinished;
@@ -98,6 +101,17 @@ begin
    for i := 1 to High(FWaveSound) do begin
       FWaveSound[i] := TWaveSound.Create();
    end;
+end;
+
+procedure TformMessageManager.FormShow(Sender: TObject);
+begin
+   MainForm.AddTaskbar(Handle);
+end;
+
+procedure TformMessageManager.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TformMessageManager.FormDestroy(Sender: TObject);
@@ -536,6 +550,11 @@ begin
    else begin
       Result := FWaveSound[FCurrentVoice].Playing;
    end;
+end;
+
+function TformMessageManager.IsIdle(): Boolean;
+begin
+   Result := FMessageQueue.Count = 0;
 end;
 
 // Voice再生終了まで待つタイマー

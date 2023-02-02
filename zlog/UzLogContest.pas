@@ -746,12 +746,12 @@ end;
 
 procedure TContest.ShowScore;
 begin
-   ScoreForm.Show;
+   FormShowAndRestore(ScoreForm);
 end;
 
 procedure TContest.ShowMulti;
 begin
-   MultiForm.Show;
+   FormShowAndRestore(MultiForm);
 end;
 
 procedure TContest.Renew;

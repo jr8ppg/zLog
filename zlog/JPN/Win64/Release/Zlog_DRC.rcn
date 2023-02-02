@@ -5,10 +5,10 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44951.9327777778</prop>
-        <prop prop-type="OrigDateTime">44951.9327546296</prop>
+        <prop prop-type="SelfDateTime">44959.9581018519</prop>
+        <prop prop-type="OrigDateTime">44959.958125</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
-        <prop prop-type="Translated">46</prop>
+        <prop prop-type="Translated">47</prop>
         <prop prop-type="UnTranslated">1191</prop>
       </prop-group>
     </header>
@@ -8780,6 +8780,14 @@
           <prop prop-type="Created">44940.935515787</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
+      </trans-unit>
+      <trans-unit id="URigControl_RECONNECT_ALL_RIGS" resname="URigControl_RECONNECT_ALL_RIGS">
+        <source>"Reconnect all RIGs?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">44959.9531017477</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"すべての RIG を再接続しますか？"</target>
       </trans-unit>
     </body>
   </file>

@@ -11,8 +11,10 @@ object formMessageManager: TformMessageManager
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   OldCreateOrder = False
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnShow = FormShow
   DesignSize = (
     317
     153)
@@ -33,6 +35,7 @@ object formMessageManager: TformMessageManager
       'Memo1')
     ParentFont = False
     ReadOnly = True
+    ScrollBars = ssVertical
     TabOrder = 0
   end
   object Timer2: TTimer

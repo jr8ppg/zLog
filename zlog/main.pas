@@ -803,7 +803,6 @@ type
     FChatForm: TChatForm;
     FZServerInquiry: TZServerInquiry;
     FZLinkForm: TZLinkForm;
-    FSpotForm: TSpotForm;
     FConsolePad: TConsolePad;
     FFreqList: TFreqList;
     FCheckCall2: TCheckCall2;
@@ -834,8 +833,8 @@ type
     defaultTextColor : TColor;
 
     SaveInBackGround: Boolean;
-    TabPressed: Boolean;
-    TabPressed2: Boolean; // for moving focus to numberedit
+//    TabPressed: Boolean;
+//    TabPressed2: Boolean; // for moving focus to numberedit
     FLastTabPress: TDateTime;
 
     FPostContest: Boolean;
@@ -864,7 +863,7 @@ type
     FCurrentTx: Integer;
     FEditPanel: TEditPanelArray;
     FRigSwitchTime: TDateTime;
-    FKeyPressedRigID: Integer;
+    FKeyPressedRigID: array[0..2] of Integer;
 
     // NEW CQRepeat
     FCQLoopRunning: Boolean;
@@ -874,10 +873,9 @@ type
     FCwCtrlZCQLoop: Boolean;
     FPhCtrlZCQLoop: Boolean;
     FCQRepeatPlaying: Boolean;
-    FCancelAutoRigSwitch: Boolean;
-    FTabKeyPressed: Boolean;
-    FDownKeyPressed: Boolean;
-    FOtherKeyPressed: Boolean;
+    FTabKeyPressed: array[0..2] of Boolean;
+    FDownKeyPressed: array[0..2] of Boolean;
+    FOtherKeyPressed: array[0..2] of Boolean;
 
     FCQRepeatCount: Integer;
     FCQRepeatInterval: Integer;
@@ -949,7 +947,7 @@ type
     procedure ReadKeymap();
     procedure ResetKeymap();
     procedure SetShortcutEnabled(shortcut: string; fEnabled: Boolean);
-    procedure CQRepeatProc(fFirstCall: Boolean);
+    procedure CQRepeatProc();
 
     // Super Check関係
     procedure SuperCheckDataLoad();
@@ -1101,7 +1099,7 @@ type
     property CurrentRigID: Integer read GetCurrentRigID;
     property CurrentTX: Integer read FCurrentTX;
     property CurrentRX: Integer read FCurrentRX;
-    property TabKeyPressedRigID: Integer read FKeyPressedRigID;
+//    property TabKeyPressedRigID: Integer read FKeyPressedRigID;
     property CurrentEditPanel: TEditPanel read GetCurrentEditPanel;
     property EditPanel: TEditPanelArray read FEditPanel;
 
@@ -2034,7 +2032,6 @@ begin
    FChatForm      := TChatForm.Create(Self);
    FZServerInquiry := TZServerInquiry.Create(Self);
    FZLinkForm     := TZLinkForm.Create(Self);
-   FSpotForm      := TSpotForm.Create(Self);
    FConsolePad    := TConsolePad.Create(Self);
    FFreqList      := TFreqList.Create(Self);
    FCheckCall2    := TCheckCall2.Create(Self);
@@ -2062,12 +2059,14 @@ begin
    FCwCtrlZCQLoop := False;
    FPhCtrlZCQLoop := False;
    FCQRepeatPlaying := False;
-   FCancelAutoRigSwitch := False;
-   FTabKeyPressed := False;
-   FDownKeyPressed := False;
-   FOtherKeyPressed := False;
+
+   for i := 0 to 2 do begin
+      FTabKeyPressed[i] := False;
+      FDownKeyPressed[i] := False;
+      FOtherKeyPressed[i] := False;
+      FKeyPressedRigID[i] := 0;
+   end;
    FRigSwitchTime := Now();
-   FKeyPressedRigID := 0;
 
    FQsyFromBS := False;
 
@@ -2117,8 +2116,8 @@ begin
    S := '';
 
    SaveInBackGround := False;
-   TabPressed := False;
-   TabPressed2 := False;
+//   TabPressed := False;
+//   TabPressed2 := False;
    FLastTabPress := Now;
    FPostContest := False;
 
@@ -2333,6 +2332,7 @@ begin
    dmZlogGlobal.ReadWindowState(FCWKeyBoard);
    dmZlogGlobal.ReadWindowState(FRigControl, '', True);
    dmZlogGlobal.ReadWindowState(FChatForm);
+   dmZlogGlobal.ReadWindowState(FConsolePad);
    dmZlogGlobal.ReadWindowState(FFreqList);
    dmZlogGlobal.ReadWindowState(FCommForm);
    dmZlogGlobal.ReadWindowState(FScratchSheet);
@@ -2376,6 +2376,7 @@ begin
    dmZlogGlobal.WriteWindowState(FCWKeyBoard);
    dmZlogGlobal.WriteWindowState(FRigControl);
    dmZlogGlobal.WriteWindowState(FChatForm);
+   dmZlogGlobal.WriteWindowState(FConsolePad);
    dmZlogGlobal.WriteWindowState(FFreqList);
    dmZlogGlobal.WriteWindowState(FCommForm);
    dmZlogGlobal.WriteWindowState(FScratchSheet);
@@ -3128,8 +3129,8 @@ begin
                Exit;
             end;
 
-            FKeyPressedRigID := CurrentRigID;
-            SpaceBarProc(FKeyPressedRigID);
+            FKeyPressedRigID[FCurrentRigSet - 1] := CurrentRigID;
+            SpaceBarProc(FKeyPressedRigID[FCurrentRigSet - 1]);
          end
          else begin
             Key := #0;
@@ -3513,17 +3514,17 @@ begin
    timerCqRepeat.Enabled := False;
    FCQRepeatPlaying := True;
 
-   FTabKeyPressed := True;
-   FKeyPressedRigID := CurrentRigID;
+   FTabKeyPressed[FCurrentRigSet - 1] := True;
+   FOtherKeyPressed[FCurrentRigSet - 1] := False;
+   FKeyPressedRigID[FCurrentRigSet - 1] := CurrentRigID;
 
    // 確定待ち
    FWaitForQsoFinish[FCurrentRigSet - 1] := True;
 
-   AssignControls(FKeyPressedRigID, C, N, B, M, SE);
+   AssignControls(FKeyPressedRigID[FCurrentRigSet - 1], C, N, B, M, SE);
 
    // 次のCQはキャンセル
    FCQLoopPause := True;
-   FCancelAutoRigSwitch := True;
 
    curQSO := TQSO.Create();
    curQSO.Callsign := C.Text;
@@ -3533,6 +3534,7 @@ begin
    curQSO.Power    := BandToPower(curQSO.Band);
    curQSO.Serial   := StrToIntDef(SE.Text, 1);
 
+   // WAIT=OFFの場合はキューをクリア
    if FInformation.IsWait = False then begin
       FMessageManager.ClearQue();
    end;
@@ -3550,11 +3552,11 @@ begin
 
       // 2BSIQ ON
       if FInformation.Is2bsiq = True then begin
-         // TXをRXにあわせる
-         FMessageManager.AddQue(WM_ZLOG_RESET_TX, FCurrentRigSet, 0);
+         // TABキーを押した方にTXを合わせる
+         FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FKeyPressedRigID[FCurrentRigSet - 1]);
 
-         // RXを反対側へ
-         FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 0, FCurrentRx);
+         // RXは反対側へ
+         FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 3, 0);
       end;
    end;
 
@@ -3587,7 +3589,7 @@ begin
 
    // RTTY
    if curQSO.Mode = mRTTY then begin
-      TabPressed := True;
+//      TabPressed := True;
       if FTTYConsole <> nil then
          FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), curQSO));
 
@@ -3614,8 +3616,8 @@ begin
       DateEdit.Text := curQSO.DateStr;
    end;
 
-   TabPressed := True;
-   TabPressed2 := True;
+//   TabPressed := True;
+//   TabPressed2 := True;
 
    S := dmZlogGlobal.CWMessage(2);
    S := SetStr(S, curQSO);
@@ -3626,13 +3628,13 @@ begin
          dmZLogKeyer.So2rNeoReverseRx(nID)
       end;
 
-      FMessageManager.AddQue(FKeyPressedRigID + 10, S, nil);
+      FMessageManager.AddQue(FKeyPressedRigID[FCurrentRigSet - 1] + 10, S, nil);
    end
    else begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar(S));
       {$ENDIF}
-      FMessageManager.AddQue(FKeyPressedRigID + 10, S, curQSO);
+      FMessageManager.AddQue(FKeyPressedRigID[FCurrentRigSet - 1] + 10, S, curQSO);
 //      FMessageManager.AddQue(WM_ZLOG_CALLSIGNSENT, 0, FKeyPressedRigID);
    end;
 
@@ -3671,8 +3673,9 @@ begin
    timerCqRepeat.Enabled := False;
    FCQRepeatPlaying := True;
 
-   FDownKeyPressed := True;
-   FKeyPressedRigID := CurrentRigID;
+   FDownKeyPressed[FCurrentRigSet - 1] := True;
+   FOtherKeyPressed[FCurrentRigSet - 1] := False;
+   FKeyPressedRigID[FCurrentRigSet - 1] := CurrentRigID;
 
    // 確定待ちクリア
    FWaitForQsoFinish[FCurrentRigSet - 1] := False;
@@ -3681,17 +3684,15 @@ begin
       FMessageManager.ClearQue();
    end;
 
-   // 次のCQは実行
-   FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
+   // 2BSIQ時はRXにTXを合わせる
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+      if (FInformation.Is2bsiq = True) then begin
+         // ↓キーを押した方にTXを合わせる
+         FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FKeyPressedRigID[FCurrentRigSet - 1]);
 
-   // CQ Invert時は送信RIGを戻す
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
-      (FInformation.Is2bsiq = True) then begin
-      // TXをRXにあわせる
-      FMessageManager.AddQue(WM_ZLOG_RESET_TX, FCurrentRigSet, 0);
-
-      // RXを反対側へ
-      FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 0, FCurrentRx);
+         // RXは反対側へ
+         FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 3, 0);
+      end;
    end;
 
    // 意味ない？
@@ -3709,7 +3710,7 @@ begin
             // NR?自動送出使う場合
             if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
                S := dmZlogGlobal.CWMessage(5);
-               FMessageManager.AddQue(FKeyPressedRigID + 10, S, CurrentQSO);
+               FMessageManager.AddQue(FKeyPressedRigID[FCurrentRigSet - 1] + 10, S, CurrentQSO);
             end;
 
             WriteStatusLine(TMainForm_Invalid_number, False);
@@ -3724,7 +3725,7 @@ begin
          {$IFDEF DEBUG}
          OutputDebugString(PChar(S));
          {$ENDIF}
-         FMessageManager.AddQue(FKeyPressedRigID + 10, S, CurrentQSO);
+         FMessageManager.AddQue(FKeyPressedRigID[FCurrentRigSet - 1] + 10, S, CurrentQSO);
 
          FMessageManager.ContinueQue();
 
@@ -3766,44 +3767,6 @@ begin
 
          PlayMessage(1, 3);
          LogButtonClick(Self);
-      end;
-   end;
-
-   // 2R:すぐにCQ再開
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
-{ 不要との事
-            // CQ+SP
-            if (FInformation.Is2bsiq = False) and (FCQLoopRunning = True) then begin
-               // CQ開始時のRIGと違う場合はすぐにCQ開始
-               rig := RigControl.GetCurrentRig();
-               if rig <> FCQLoopStartRig then begin
-                  PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
-                  Exit;
-               end;
-            end;
-}
-
-      // 2BSIQ
-      if (FInformation.Is2bsiq = True) and (FCQLoopRunning = True) then begin
-         FCancelAutoRigSwitch := True;
-         FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
-//         FCQLoopPause := False;
-
-         rx := GetNextRigID(FCurrentRx);
-//               SwitchRx(rx + 1, True);
-         if (FEditPanel[rx].CallsignEdit.Text = '') and
-            (FEditPanel[rx].rcvdNumber.Text = '') then begin
-//            PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
-            FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
-         end
-         else begin
-//            FCQLoopPause := True;
-//            SendMessage(Handle, WM_ZLOG_SWITCH_RIG, rx + 1, 1);
-            FMessageManager.AddQue(WM_ZLOG_SWITCH_RIG, 0, 1);
-
-            FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 1, 0);
-         end;
-//         Exit;
       end;
    end;
 
@@ -4219,7 +4182,6 @@ begin
    FRateDialogEx.Release();
    FZServerInquiry.Release();
    FZLinkForm.Release();
-   FSpotForm.Release();
    FConsolePad.Release();
    FCheckCountry.Release();
 
@@ -4382,7 +4344,6 @@ begin
    FCwCtrlZCQLoop := False;
    FPhCtrlZCQLoop := False;
    SetCqRepeatMode(True);
-//   CQRepeatProc(True);
 end;
 
 procedure TMainForm.CQRepeatClick2(Sender: TObject);
@@ -4394,10 +4355,9 @@ begin
    FCwCtrlZCQLoop := True;
    FPhCtrlZCQLoop := True;
    SetCqRepeatMode(True);
-//   CQRepeatProc(True);
 end;
 
-procedure TMainForm.CQRepeatProc(fFirstCall: Boolean);
+procedure TMainForm.CQRepeatProc();
 var
    S: String;
    nID: Integer;
@@ -4411,13 +4371,20 @@ var
 //   dwTick: DWORD;
 begin
    {$IFDEF DEBUG}
-   OutputDebugString(PChar('**** CQRepeatProc(' + BoolToStr(fFirstCall, True) + ') ****'));
+   OutputDebugString(PChar('**** CQRepeatProc() ****'));
    {$ENDIF}
 
+   try
    // 確定待ち中で、現在の受信と次の送信が同じRIGの場合はパス
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
-      (FWaitForQsoFinish[FCurrentRigSet - 1] = True) and
-      (FCurrentRx = GetNextRigID(FCurrentTx)) then begin
+      (FWaitForQsoFinish[FCurrentRigSet - 1] = True) then begin
+//      (FCurrentRx = GetNextRigID(FCurrentTx)) then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**** QSO確定待ち ****'));
+      {$ENDIF}
+//      FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+//      FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
+//      StartCqRepeatTimer();
       Exit;
    end;
 
@@ -4426,13 +4393,6 @@ begin
 
    if FInformation.IsWait = False then begin
       FMessageManager.ClearQue();
-   end;
-
-   if fFirstCall = True then begin
-//      FCQLoopRunning := True;
-//      FCQLoopCount := 0;
-//      FCQLoopPause := False;
-//      FCQLoopStartRig := RigControl.GetCurrentRig();
    end;
 
    // CQ+S&P
@@ -4453,34 +4413,42 @@ begin
 
    currig := RigControl.GetCurrentRig();
 
-   // 次回キャンセルは不要か？
-//   FCancelAutoRigSwitch := False;
-
+   // SO2Rの場合
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
-      if (FInformation.Is2bsiq = True) and (fFirstCall = False) and (FCancelAutoRigSwitch = False) then begin
-         // SHIFTキー押下でキャンセル
-         if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-            Exit;
+      // 2BSIQの場合
+      if FInformation.Is2bsiq = True then begin
+         // TXとRXが違う場合、RXをTXに合わせてからInvertTxする
+         if CurrentTx <> CurrentRx then begin
+            FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 2, 0);
+            FMessageManager.AddQue(WM_ZLOG_AFTER_DELAY, 0, 0);
+            FMessageManager.AddQue(WM_ZLOG_INVERT_TX, 0, 0);
          end;
 
-         // RIG番号をトグル
-//         newrig := GetNextRigID(currig - 1) + 1;
+         // TXとRXが同じだったらInvertTxする
+         if CurrentTx = CurrentRx then begin
+            // InvertTx();
+            FMessageManager.AddQue(WM_ZLOG_INVERT_TX, 0, 0);
+         end;
 
-         // カレントRIGを変更
-         FMessageManager.AddQue(WM_ZLOG_SWITCH_RIG, 0, 0);
-//         SwitchRig(newrig);
-
-         // RIG変更後Wait
-         FMessageManager.AddQue(WM_ZLOG_AFTER_DELAY, 0, 0);
+         // 何かキーが押された
+         if (FOtherKeyPressed[FCurrentRigSet - 1] = True) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('**** Other Key ****'));
+            {$ENDIF}
+            Exit;
+         end;
       end;
 
-      // CQ Invert
-      if FInformation.Is2bsiq = True then begin
-         // InvertTx();
-         FMessageManager.AddQue(WM_ZLOG_INVERT_TX, 0, 0);
+      // TABか↓キー押されていたらここまで
+      if (FTabKeyPressed[FCurrentRigSet - 1] = True) or (FDownKeyPressed[FCurrentRigSet - 1] = True) then begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('**** TAB or DOWN ****'));
+         {$ENDIF}
+   //      FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+   //      FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
+         Exit;
       end;
    end;
-   FCancelAutoRigSwitch := False;
 
    // 自動リグ変更の場合Messageを切り替える
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
@@ -4547,7 +4515,9 @@ begin
       FMessageManager.AddQue(0, msgno);
    end;
 
-   FMessageManager.ContinueQue();
+   finally
+      FMessageManager.ContinueQue();
+   end;
 end;
 
 // CQリピートタイマー
@@ -4555,15 +4525,22 @@ procedure TMainForm.timerCqRepeatTimer(Sender: TObject);
 begin
    Dec(FCQRepeatCount);
    FInformation.CqRptCountDown := FCQRepeatCount div 10;
-   if FCQRepeatCount <= 0 then begin
+   if (FCQRepeatCount <= 0) then begin
       timerCqRepeat.Enabled := False;
-      CQRepeatProc(False);
+//      if (FMessageManager.IsIdle() = True) then begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('＊＊＊＊＊CQリピートタイマー＊＊＊＊＊'));
+         {$ENDIF}
+//         CQRepeatProc(False);
+         FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+         FMessageManager.ContinueQue();
+//      end;
    end;
 end;
 
 procedure TMainForm.buttonCwKeyboardClick(Sender: TObject);
 begin
-   FCWKeyBoard.Show;
+   FormShowAndRestore(FCWKeyBoard);
 end;
 
 procedure TMainForm.SideToneButtonClick(Sender: TObject);
@@ -4776,11 +4753,11 @@ var
       end;
    end;
 begin
-   nID := Integer(Sender); //FKeyPressedRigID;   //Integer(Sender);
+   nID := FCurrentTx;   //Integer(Sender); //FKeyPressedRigID;   //Integer(Sender);
    curQSO := TQSO.Create();
 
    {$IFDEF DEBUG}
-   OutputDebugString(PChar('--- Begin CallsignSentProc() ID = [' + IntToStr(nID) + ']'));
+   OutputDebugString(PChar('--- ☆☆☆Begin CallsignSentProc() ID = [' + IntToStr(nID) + ']'));
    {$ENDIF}
    try
       AssignControls(nID, C, N, B, M, SE);
@@ -4791,7 +4768,7 @@ begin
       curQSO.Power    := BandToPower(curQSO.Band);
 
       Q := Log.QuickDupe(curQSO);
-      if TabPressed2 and (Q <> nil) then begin
+      if FTabKeyPressed[nID] {TabPressed2} and (Q <> nil) then begin
          // ステータスバーにDUPE表示
          WriteStatusLineRed(Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck), True);
 
@@ -4835,7 +4812,8 @@ begin
          WinKeyerQSO(curQSO);
       end;
 
-      if TabPressed2 then begin
+//      if TabPressed2 then begin
+      if FTabKeyPressed[nID] then begin
          CallSpaceBarProc(C, N, B);
 
          EditedSinceTABPressed := tabstate_tabpressedbutnotedited; // UzLogCW
@@ -4844,8 +4822,8 @@ begin
 //      FMessageManager.ContinueQue();
    finally
       dmZLogKeyer.ResumeCW;
-      TabPressed := False;
-      TabPressed2 := False;
+//      TabPressed := False;
+//      TabPressed2 := False;
       curQSO.Free();
       {$IFDEF DEBUG}
       OutputDebugString(PChar('--- End CallsignSentProc() ---'));
@@ -5093,7 +5071,7 @@ end;
 
 procedure TMainForm.SpeedButton9Click(Sender: TObject);
 begin
-   FZLinkForm.Show;
+   FormShowAndRestore(FZLinkForm);
 end;
 
 procedure TMainForm.SerialEdit1Change(Sender: TObject);
@@ -5232,6 +5210,8 @@ begin
       dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
       dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
       dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZlogGlobal.Settings.FRigControl[3].FKeyingPort));
+      dmZLogKeyer.ResetCommPortDriver(3, TKeyingPort(dmZlogGlobal.Settings.FRigControl[4].FKeyingPort));
+      dmZLogKeyer.ResetCommPortDriver(4, TKeyingPort(dmZlogGlobal.Settings.FRigControl[5].FKeyingPort));
       RigControl.Stop();
       dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
 
@@ -5446,7 +5426,7 @@ end;
 
 procedure TMainForm.menuPluginManagerClick(Sender: TObject);
 begin
-   MarketForm.Show;
+   FormShowAndRestore(MarketForm);
 end;
 
 procedure TMainForm.CWFMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -5691,6 +5671,7 @@ procedure TMainForm.SendSpot1Click(Sender: TObject);
 var
    _top, _bottom: Integer;
    aQSO: TQSO;
+   F: TSpotForm;
 begin
    with Grid do begin
       _top := Selection.top;
@@ -5699,7 +5680,14 @@ begin
 
    if _top = _bottom then begin
       aQSO := TQSO(Grid.Objects[0, Grid.Row]);
-      FSpotForm.Open(aQSO);
+
+      F := TSpotForm.Create(Self);
+      try
+         F.Open(aQSO);
+         F.ShowModal();
+      finally
+         F.Release();
+      end;
    end;
 end;
 
@@ -6145,7 +6133,7 @@ begin
       FTTYConsole.SetTTYMode(ttyMMTTY);
       InitializeMMTTY(Handle);
 
-      FTTYConsole.Show;
+      FormShowAndRestore(FTTYConsole);
       FTTYConsole.SetFocus;
    end
    else begin
@@ -6177,7 +6165,7 @@ end;
 
 procedure TMainForm.menuQuickReferenceClick(Sender: TObject);
 begin
-   FQuickRef.Show();
+   FormShowAndRestore(FQuickRef);
 end;
 
 procedure TMainForm.menuPortalClick(Sender: TObject);
@@ -6246,7 +6234,7 @@ begin
    else begin
       // if Paused = False then
       if CurrentQSO.Mode = mCW then begin
-         TabPressed := False;
+//         TabPressed := False;
       end;
 
       if SaveInBackGround = True then begin
@@ -6261,7 +6249,7 @@ begin
    if CurrentQSO.Mode = mRTTY then begin
       if FTTYConsole <> nil then begin
          if FTTYConsole.Sending = False then begin
-            TabPressed := False;
+//            TabPressed := False;
          end;
       end;
    end;
@@ -6725,7 +6713,13 @@ end;
 
 procedure TMainForm.OnZLogCqRepeatContinue( var Message: TMessage );
 begin
-   CQRepeatProc(False);
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('>>> Enter - OnZLogCqRepeatContinue() '));
+   {$ENDIF}
+   CQRepeatProc();
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('>>> Leave - OnZLogCqRepeatContinue() '));
+   {$ENDIF}
 end;
 
 procedure TMainForm.OnZLogSpaceBarProc( var Message: TMessage );
@@ -6758,7 +6752,17 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('>>> Enter - OnZLogResetTx() '));
    {$ENDIF}
-   ResetTx(Message.WParam);
+   case Message.WParam of
+      // 現在のRXに合わせる
+      0: begin
+         ResetTx(FCurrentRx + 1);
+      end;
+
+      // 指定のRIG
+      1: begin
+         ResetTx(Message.LParam + 1);
+      end;
+   end;
    {$IFDEF DEBUG}
    OutputDebugString(PChar('<<< Leave - OnZLogResetTx() '));
    {$ENDIF}
@@ -6792,6 +6796,17 @@ begin
       // TXに合わせる
       1: begin
          SwitchRx(Message.LParam + 1);
+      end;
+
+      // TXに合わせる
+      2: begin
+         SwitchRx(FCurrentTx + 1);
+      end;
+
+      // TXの反対側へ
+      3: begin
+         rx := GetNextRigID(FCurrentTx);
+         SwitchRx(rx + 1);
       end;
    end;
 
@@ -7576,9 +7591,9 @@ begin
    FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
    FMessageManager.AddQue(0, S, CurrentQSO);
    FMessageManager.AddQue(WM_ZLOG_SWITCH_TX, 2, FCurrentTx);
-   if (FCQLoopRunning = True) then begin
-      FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
-   end;
+//   if (FCQLoopRunning = True) then begin
+//      FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
+//   end;
    FMessageManager.ContinueQue();
 end;
 
@@ -7636,8 +7651,6 @@ procedure TMainForm.OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: 
 var
    tx: Integer;
    rx: Integer;
-//   interval: Double;
-//   rig: Integer;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- OnPlayMessageFinished ---'));
@@ -7646,13 +7659,14 @@ begin
    FMessageManager.ClearText();
 
    try
+      tx := FCurrentTx;
+
       if mode = mCW then begin
          // PTT-OFF
          ControlPTT(False);
 
          if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
             if FSo2rNeoCp.UseRxSelect = True then begin
-               tx := FCurrentTx;
                dmZLogKeyer.So2rNeoNormalRx(tx);
             end;
       //      FSo2rNeoCp.CanRxSel := False;
@@ -7673,6 +7687,9 @@ begin
       Inc(FCQLoopCount);
       if FCQLoopCount >= dmZLogGlobal.Settings.CW._cqmax then begin
          CancelCqRepeat();
+         FTabKeyPressed[tx] := False;
+         FDownKeyPressed[tx] := False;
+         FOtherKeyPressed[tx] := False;
          Exit;
       end;
 
@@ -7680,6 +7697,9 @@ begin
       if (FCwCtrlZCQLoop = True) or (FPhCtrlZCQLoop = True) then begin
          if FCQLoopPause = True then begin
             CancelCqRepeat();
+            FTabKeyPressed[tx] := False;
+            FDownKeyPressed[tx] := False;
+            FOtherKeyPressed[tx] := False;
             Exit;
          end;
       end;
@@ -7687,111 +7707,75 @@ begin
       // 中止
       if fAbort = True then begin
          CancelCqRepeat();
+         FTabKeyPressed[tx] := False;
+         FDownKeyPressed[tx] := False;
+         FOtherKeyPressed[tx] := False;
          Exit;
       end;
 
       // TABキー押下後
-      if FTabKeyPressed = True then begin
+      if FTabKeyPressed[tx] = True then begin
          // SO2R
          if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
             // CQ+SP
             if (FInformation.Is2bsiq = False) and (FCQLoopRunning = True) then begin
                if (CurrentQSO.CQ = False) and (dmZlogGlobal.Settings._switchcqsp = True) then begin
-                  PostMessage(Handle, WM_ZLOG_SPACEBAR_PROC, FKeyPressedRigID, 0);
+                  PostMessage(Handle, WM_ZLOG_SPACEBAR_PROC, FKeyPressedRigID[tx], 0);
                end;
             end;
 
             // 2BSIQ
             if (FInformation.Is2bsiq = True) and (FCQLoopRunning = True) then begin
-               FCancelAutoRigSwitch := True;
-//               FCQLoopPause := False;
-               FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
-
-               // TODO:何故かCWの時はRXが逆になっている
-               if mode = mCW then begin
-//                  rx := GetNextRigID(FCurrentRx);
-//                  SwitchRx(rx + 1, True);
-//                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 0, 0);
-               end;
-
-               // 次のRIG入力欄
-               rx := GetNextRigID(FCurrentRx);
-//               SwitchRx(rx + 1, True);
-               if (FEditPanel[rx].CallsignEdit.Text = '') and
-                  (FEditPanel[rx].rcvdNumber.Text = '') then begin
-//                  FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
-               end
-               else begin
-//                  FCQLoopPause := True;
-//                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RIG, 0, 1);
-//                  FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 1, 0);
-               end;
-
-               FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 1, FCurrentTx);
-//                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RIG, 0, 1);
-//                  FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 1, 0);
-
-               FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
-               Exit;
             end;
          end;
       end;
 
       // DOWNキー押下後
-      if FDownKeyPressed = True then begin
+      if FDownKeyPressed[tx] = True then begin
          FCQLoopCount := 0;
 
-(*
-         // 2R:すぐにCQ再開
+         // SO2R
          if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
-{ 不要との事
-            // CQ+SP
-            if (FInformation.Is2bsiq = False) and (FCQLoopRunning = True) then begin
-               // CQ開始時のRIGと違う場合はすぐにCQ開始
-               rig := RigControl.GetCurrentRig();
-               if rig <> FCQLoopStartRig then begin
-                  PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
-                  Exit;
-               end;
-            end;
-}
-
             // 2BSIQ
             if (FInformation.Is2bsiq = True) and (FCQLoopRunning = True) then begin
-               FCancelAutoRigSwitch := True;
-               FCQLoopPause := False;
-
-               rx := GetNextRigID(FCurrentRx);
-//               SwitchRx(rx + 1, True);
-               if (FEditPanel[rx].CallsignEdit.Text = '') and
-                  (FEditPanel[rx].rcvdNumber.Text = '') then begin
-                  PostMessage(Handle, WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
-               end
-               else begin
-                  FCQLoopPause := True;
-                  PostMessage(Handle, WM_ZLOG_SWITCH_RIG, rx + 1, 1);
-               end;
-               Exit;
+               FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
             end;
          end;
-*)
       end;
 
-      if FOtherKeyPressed = True then begin
+      if FOtherKeyPressed[tx] = True then begin
          if (FCQLoopRunning = True) then begin
-//            FCQLoopPause := True;
             FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 1, 0);
          end;
-         FOtherKeyPressed := False;
+         FOtherKeyPressed[tx] := False;
+         Exit;
       end;
 
-      // CQリピート中で、一時停止無し
-      if (FCQLoopRunning = True) and (FCQLoopPause = False) then begin
-         FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
+      // CQリピート再開
+//      if (FCQLoopRunning = True) and (FCQLoopPause = False) then begin
+      if (FCQLoopRunning = True) then begin
+         // TAB or ↓キーは即実行
+         if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+            (FInformation.Is2bsiq = True) then begin
+            if ((FTabKeyPressed[tx] = True) or (FDownKeyPressed[tx] = True)) then begin
+               FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+               FTabKeyPressed[tx] := False;
+               FDownKeyPressed[tx] := False;
+               FOtherKeyPressed[tx] := False;
+            end
+            else begin
+               FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
+            end;
+         end
+         else begin  // タイマー再開
+            FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
+            FTabKeyPressed[tx] := False;
+            FDownKeyPressed[tx] := False;
+         end;
       end;
    finally
-      FTabKeyPressed := False;
-      FDownKeyPressed := False;
+//      FTabKeyPressed := False;
+//      FDownKeyPressed := False;
 
       FMessageManager.ContinueQue();
    end;
@@ -7887,7 +7871,7 @@ end;
 // #08 Super Checkウインドウの表示 Ctrl+F10
 procedure TMainForm.actionShowSuperCheckExecute(Sender: TObject);
 begin
-   FSuperCheck.Show;
+   FormShowAndRestore(FSuperCheck);
    CheckSuper(CurrentQSO);
 
    LastFocus.SetFocus;
@@ -7896,7 +7880,7 @@ end;
 // #09 Z-Link Monitor Ctrl+F12
 procedure TMainForm.actionShowZlinkMonitorExecute(Sender: TObject);
 begin
-   FZLinkForm.Show;
+   FormShowAndRestore(FZLinkForm);
 end;
 
 // #10-#17 F1～F8
@@ -7909,7 +7893,7 @@ var
 begin
    no := TAction(Sender).Tag;
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
-   FOtherKeyPressed := True;
+   FOtherKeyPressed[FCurrentRigSet - 1] := True;
 
    {$IFDEF DEBUG}
    OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
@@ -7942,7 +7926,7 @@ end;
 // #19 F10
 procedure TMainForm.actionShowCheckPartialExecute(Sender: TObject);
 begin
-   FPartialCheck.Show;
+   FormShowAndRestore(FPartialCheck);
 
    if ActiveControl = NumberEdit then begin
       FPartialCheck.CheckPartialNumber(CurrentQSO);
@@ -7964,7 +7948,7 @@ var
 begin
    no := TAction(Sender).Tag;
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
-   FOtherKeyPressed := True;
+   FOtherKeyPressed[FCurrentRigSet - 1] := True;
 
    if cb = 1 then
       cb := 2
@@ -8267,7 +8251,6 @@ begin
 
    FCwCtrlZCQLoop := True;
    FPhCtrlZCQLoop := True;
-   FCancelAutoRigSwitch := False;
    SetCqRepeatMode(True);
 end;
 
@@ -8302,7 +8285,7 @@ end;
 // #60 CW Keyboard / Alt+K
 procedure TMainForm.actionShowCWKeyboardExecute(Sender: TObject);
 begin
-   FCWKeyBoard.Show;
+   FormShowAndRestore(FCWKeyBoard);
 end;
 
 // #61 Memo欄にフォーカス移動 / Alt+M
@@ -8335,14 +8318,14 @@ end;
 // #64 Packet Cluster / Alt+P
 procedure TMainForm.actionShowPacketClusterExecute(Sender: TObject);
 begin
-   FCommForm.Show;
+   FormShowAndRestore(FCommForm);
    LastFocus.SetFocus();
 end;
 
 // #65 Console Pad / Alt+Q
 procedure TMainForm.actionShowConsolePadExecute(Sender: TObject);
 begin
-   FConsolePad.Show;
+   FormShowAndRestore(FConsolePad);
 end;
 
 // #66 RST欄にフォーカス移動 / Alt+R
@@ -8357,13 +8340,13 @@ end;
 // #67 Scratch Sheet / Alt+S
 procedure TMainForm.actionShowScratchSheetExecute(Sender: TObject);
 begin
-   FScratchSheet.Show;
+   FormShowAndRestore(FScratchSheet);
 end;
 
 // #68 RIG Control / Alt+T
 procedure TMainForm.actionShowRigControlExecute(Sender: TObject);
 begin
-   RigControl.Show;
+   FormShowAndRestore(FRigControl);
    LastFocus.SetFocus();
 end;
 
@@ -8383,7 +8366,7 @@ end;
 // #70 Z-Serverのチャットウインドウ / Alt+Z
 procedure TMainForm.actionShowZServerChatExecute(Sender: TObject);
 begin
-   FChatForm.Show;
+   FormShowAndRestore(FChatForm);
 end;
 
 // #71 TX/RX RIG切り替え / Alt+. , Shift+X
@@ -8404,8 +8387,8 @@ begin
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
    StopMessage(mode);
 
-   TabPressed := False;
-   TabPressed2 := False;
+//   TabPressed := False;
+//   TabPressed2 := False;
 
    // 1Rの場合
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
@@ -8468,21 +8451,21 @@ end;
 // #73 Running Frequencies
 procedure TMainForm.actionShowFreqListExecute(Sender: TObject);
 begin
-   FFreqList.Show;
+   FormShowAndRestore(FFreqList);
 end;
 
 // #74 Teletype Console
 procedure TMainForm.actionShowTeletypeConsoleExecute(Sender: TObject);
 begin
    if Assigned(FTTYConsole) then begin
-      FTTYConsole.Show;
+      FormShowAndRestore(FTTYConsole);
    end;
 end;
 
 // #75 analyzeウインドウ
 procedure TMainForm.actionShowAnalyzeExecute(Sender: TObject);
 begin
-   FZAnalyze.Show();
+   FormShowAndRestore(FZAnalyze);
    LastFocus.SetFocus();
 end;
 
@@ -8501,27 +8484,27 @@ end;
 // #78 QSO Rateウインドウ
 procedure TMainForm.actionShowQsoRateExecute(Sender: TObject);
 begin
-   FRateDialog.Show;
+   FormShowAndRestore(FRateDialog);
 end;
 
 // #79 Check Callウインドウ
 procedure TMainForm.actionShowCheckCallExecute(Sender: TObject);
 begin
-   FCheckCall2.Show;
+   FormShowAndRestore(FCheckCall2);
    LastFocus.SetFocus();
 end;
 
 // #80 Check Multiウインドウ
 procedure TMainForm.actionShowCheckMultiExecute(Sender: TObject);
 begin
-   FCheckMulti.Show;
+   FormShowAndRestore(FCheckMulti);
    LastFocus.SetFocus();
 end;
 
 // #81 Check Countryウインドウ
 procedure TMainForm.actionShowCheckCountryExecute(Sender: TObject);
 begin
-   FCheckCountry.Show;
+   FormShowAndRestore(FCheckCountry);
    LastFocus.SetFocus();
 end;
 
@@ -8579,7 +8562,7 @@ end;
 // #87 N+1ウインドウの表示
 procedure TMainForm.actionShowSuperCheck2Execute(Sender: TObject);
 begin
-   FSuperCheck2.Show;
+   FormShowAndRestore(FSuperCheck2);
    CheckSuper2(CurrentQSO);
 
    LastFocus.SetFocus;
@@ -8778,7 +8761,7 @@ end;
 // #103 CW Message Pad
 procedure TMainForm.actionCwMessagePadExecute(Sender: TObject);
 begin
-   FCWMessagePad.Show();
+   FormShowAndRestore(FCWMessagePad);
 end;
 
 // #104 Correct NR
@@ -9027,26 +9010,26 @@ end;
 // #131 Function Key Panel
 procedure TMainForm.actionFunctionKeyPanelExecute(Sender: TObject);
 begin
-   FFunctionKeyPanel.Show();
+   FormShowAndRestore(FFunctionKeyPanel);
    LastFocus.SetFocus();
 end;
 
 // #132 Rate Dialog Ex
 procedure TMainForm.actionShowQsoRateExExecute(Sender: TObject);
 begin
-   FRateDialogEx.Show();
+   FormShowAndRestore(FRateDialogEx);
 end;
 
 // #133 QSY Infomation
 procedure TMainForm.actionShowQsyInfoExecute(Sender: TObject);
 begin
-   FQsyInfoForm.Show();
+   FormShowAndRestore(FQsyInfoForm);
 end;
 
 // #134 SO2R Neo Control Panel
 procedure TMainForm.actionShowSo2rNeoCpExecute(Sender: TObject);
 begin
-   FSo2rNeoCp.Show();
+   FormShowAndRestore(FSo2rNeoCp);
 end;
 
 // #135-137 SO2R Neo Select RX N
@@ -9082,7 +9065,7 @@ end;
 // #142 Information Window
 procedure TMainForm.actionShowInformationExecute(Sender: TObject);
 begin
-   FInformation.Show();
+   FormShowAndRestore(FInformation);
 end;
 
 // #143 SO2R Toggle 2BSIQ
@@ -9243,7 +9226,7 @@ end;
 // #156 Show MessageManager
 procedure TMainForm.actionShowMsgMgrExecute(Sender: TObject);
 begin
-   FMessageManager.Show();
+   FormShowAndRestore(FMessageManager);
 end;
 
 procedure TMainForm.RestoreWindowsPos();
@@ -10465,7 +10448,7 @@ begin
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       UpdateQsoEditPanel(rigno);
       if LastFocus = FEditPanel[rigno - 1].rcvdNumber then begin
-         EditEnter(FEditPanel[rigno - 1].rcvdNumber);
+//         EditEnter(FEditPanel[rigno - 1].rcvdNumber);
       end
       else begin
          SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rigno - 1, 0);
@@ -10864,9 +10847,10 @@ begin
 //         timerCqRepeat.Enabled := False;
       end
       else begin
-         if FCQLoopRunning = True then begin
-            FCQLoopPause := True;
-         end;
+//         if FCQLoopRunning = True then begin
+//            FCQLoopPause := True;
+//         end;
+         FOtherKeyPressed[FCurrentRigSet - 1] := True;
       end;
    end;
 
@@ -10909,8 +10893,8 @@ begin
    StopMessage(mode);
    FMessageManager.ClearQue();
 
-   TabPressed := False;
-   TabPressed2 := False;
+//   TabPressed := False;
+//   TabPressed2 := False;
 
    // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
    if (dmZLogGlobal.Settings._pttenabled = False) and
@@ -11274,12 +11258,17 @@ begin
 end;
 
 procedure TMainForm.SetCqRepeatMode(fOn: Boolean);
+var
+   i: Integer;
 begin
    FInformation.CqRepeat := fOn;
 
-   FWaitForQsoFinish[0] := False;
-   FWaitForQsoFinish[1] := False;
-   FWaitForQsoFinish[2] := False;
+   for i := 0 to 2 do begin
+      FWaitForQsoFinish[i] := False;
+      FTabKeyPressed[i] := False;
+      FDownKeyPressed[i] := False;
+      FOtherKeyPressed[i] := False;
+   end;
 
    if fOn = False then begin
       timerCqRepeat.Enabled := False;
@@ -11296,7 +11285,7 @@ begin
       FCQLoopCount := 0;
       FCQLoopPause := False;
       FCQLoopStartRig := FCurrentRigSet;   //RigControl.GetCurrentRig();
-      CQRepeatProc(True);
+      CQRepeatProc();
    end;
 end;
 
