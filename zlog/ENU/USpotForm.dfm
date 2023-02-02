@@ -12,7 +12,7 @@ object SpotForm: TSpotForm
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   OldCreateOrder = True
-  Position = poScreenCenter
+  Position = poOwnerFormCenter
   PixelsPerInch = 96
   TextHeight = 12
   object Label1: TLabel
@@ -68,8 +68,6 @@ object SpotForm: TSpotForm
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitTop = 42
-    ExplicitWidth = 305
     object SendButton: TButton
       Left = 177
       Top = 2
