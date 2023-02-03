@@ -4627,8 +4627,18 @@ begin
    end;
 
    // Last Band/Mode
-   dmZLogGlobal.LastBand := CurrentQSO.Band;
-   dmZLogGlobal.LastMode := CurrentQSO.Mode;
+   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+      dmZLogGlobal.LastBand[0] := CurrentQSO.Band;
+      dmZLogGlobal.LastMode[0] := CurrentQSO.Mode;
+   end
+   else begin
+      dmZLogGlobal.LastBand[0] := TextToBand(FEditPanel[0].BandEdit.Text);
+      dmZLogGlobal.LastMode[0] := TextToMode(FEditPanel[0].ModeEdit.Text);
+      dmZLogGlobal.LastBand[1] := TextToBand(FEditPanel[1].BandEdit.Text);
+      dmZLogGlobal.LastMode[1] := TextToMode(FEditPanel[1].ModeEdit.Text);
+      dmZLogGlobal.LastBand[2] := TextToBand(FEditPanel[2].BandEdit.Text);
+      dmZLogGlobal.LastMode[2] := TextToMode(FEditPanel[2].ModeEdit.Text);
+   end;
 
    // SO2R
    dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
@@ -6273,6 +6283,7 @@ var
    b: Integer;
    BB: TBand;
    rigno: Integer;
+   Q: TQSO;
 begin
    FInitialized := False;
 
@@ -6480,7 +6491,12 @@ begin
       case menu.ContestMode of
          // PH/CW
          cmMix: begin
-            CurrentQSO.Mode := dmZLogGlobal.LastMode;
+            CurrentQSO.Mode := dmZLogGlobal.LastMode[0];
+            if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+               FEditPanel[0].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[0]);
+               FEditPanel[1].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[1]);
+               FEditPanel[2].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[2]);
+            end;
          end;
 
          // CW
@@ -6495,7 +6511,12 @@ begin
 
          // Other
          else begin
-            CurrentQSO.Mode := dmZLogGlobal.LastMode;
+            CurrentQSO.Mode := dmZLogGlobal.LastMode[0];
+            if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+               FEditPanel[0].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[0]);
+               FEditPanel[1].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[1]);
+               FEditPanel[2].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[2]);
+            end;
          end;
       end;
 
@@ -6580,12 +6601,18 @@ begin
       end;
 
       // 低いバンドから使用可能なバンドを探して最初のバンドとする
-      if (MyContest.BandLow <= dmZLogGlobal.LastBand) and (MyContest.BandHigh >= dmZLogGlobal.LastBand) then begin
-         CurrentQSO.Band := GetFirstAvailableBand(dmZLogGlobal.LastBand);
+      if (MyContest.BandLow <= dmZLogGlobal.LastBand[0]) and (MyContest.BandHigh >= dmZLogGlobal.LastBand[0]) then begin
+         CurrentQSO.Band := GetFirstAvailableBand(dmZLogGlobal.LastBand[0]);
       end
       else begin
          AdjustActiveBands();
          CurrentQSO.Band := MyContest.BandLow;
+      end;
+
+      if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+         for i := 0 to 2 do begin
+            FEditPanel[i].BandEdit.Text := BandToText(dmZLogGlobal.LastBand[i]);
+         end;
       end;
       FRateDialogEx.Band := CurrentQSO.Band;
 
@@ -6665,8 +6692,8 @@ begin
       // リグコントロール開始
       RigControl.ImplementOptions();
 
-      // 右側のバンドとモードを取得＆設定
       if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+         // 右側のバンドとモードを取得＆設定
          for BB := b19 to b10g do begin
             rigno := dmZLogGlobal.Settings.FRigSet[2].FRig[BB];
             if (rigno <> 0) and (RigControl.Rigs[rigno] <> nil) then begin
@@ -6674,6 +6701,16 @@ begin
                FEditPanel[1].BandEdit.Text := MHzString[RigControl.Rigs[rigno].CurrentBand];
                Break;
             end;
+         end;
+
+         // 下側のバンドとモードを設定
+         if (RigControl.Rigs[5] <> nil) then begin
+            Q := TQSO.Create();
+            Q.Band := dmZLogGlobal.LastBand[2];
+            Q.Mode := dmZLogGlobal.LastMode[2];
+            RigControl.Rigs[5].SetBand(2, Q);
+            RigControl.Rigs[5].SetMode(Q);
+            Q.Free();
          end;
       end;
 
@@ -7758,19 +7795,20 @@ begin
          if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
             (FInformation.Is2bsiq = True) then begin
             if ((FTabKeyPressed[tx] = True) or (FDownKeyPressed[tx] = True)) then begin
-               FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
                FTabKeyPressed[tx] := False;
                FDownKeyPressed[tx] := False;
                FOtherKeyPressed[tx] := False;
+               FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
             end
             else begin
                FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
             end;
          end
          else begin  // タイマー再開
-            FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
             FTabKeyPressed[tx] := False;
             FDownKeyPressed[tx] := False;
+            FOtherKeyPressed[tx] := False;
+            FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
          end;
       end;
    finally
@@ -10663,6 +10701,7 @@ begin
       UpdateMode(rig.CurrentMode);
    end
    else begin
+      UpdateBand(TextToBand(FEditPanel[FCurrentTx].BandEdit.Text));
       UpdateMode(TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));
    end;
 end;

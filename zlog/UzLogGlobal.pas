@@ -253,8 +253,8 @@ type
     FTimeToChangeGreetings: array[0..2] of Integer;
 
     // Last Band/Mode
-    FLastBand: Integer;
-    FLastMode: Integer;
+    FLastBand: array[0..2] of Integer;
+    FLastMode: array[0..2] of Integer;
 
     // QSO Rate Graph
     FGraphStyle: TQSORateStyle;
@@ -371,10 +371,10 @@ type
     function GetSuperCheck2Columns(): Integer;
     procedure SetSuperCheck2Columns(v: Integer);
     function GetPowerOfBand(band: TBand): TPower;
-    function GetLastBand(): TBand;
-    procedure SetLastBand(b: TBand);
-    function GetLastMode(): TMode;
-    procedure SetLastMode(m: TMode);
+    function GetLastBand(Index: Integer): TBand;
+    procedure SetLastBand(Index: Integer; b: TBand);
+    function GetLastMode(Index: Integer): TMode;
+    procedure SetLastMode(Index: Integer; m: TMode);
 
     function GetRootPath(): string;
     procedure SetRootPath(v: string);
@@ -448,8 +448,8 @@ public
 
     property PowerOfBand[b: TBand]: TPower read GetPowerOfBand;
 
-    property LastBand: TBand read GetLastBand write SetLastBand;
-    property LastMode: TMode read GetLastMode write SetLastMode;
+    property LastBand[Index: Integer]: TBand read GetLastBand write SetLastBand;
+    property LastMode[Index: Integer]: TMode read GetLastMode write SetLastMode;
 
     property CtyDatLoaded: Boolean read FCtyDatLoaded;
     property CountryList: TCountryList read FCountryList;
@@ -538,6 +538,8 @@ procedure ResetDupeQso(aQSO: TQSO);
 
 function TextToBand(text: string): TBand;
 function TextToMode(text: string): TMode;
+function BandToText(b: TBand): string;
+function ModeToText(m: TMode): string;
 function BandToPower(B: TBand): TPower;
 
 function LoadResourceString(uID: Integer): string;
@@ -1249,8 +1251,12 @@ begin
       Settings.FTimeToChangeGreetings[2] := ini.ReadInteger('greetings', 'evening', 18);
 
       // Last Band/Mode
-      Settings.FLastBand := ini.ReadInteger('main', 'last_band', 0);
-      Settings.FLastMode := ini.ReadInteger('main', 'last_mode', 0);
+      Settings.FLastBand[0] := ini.ReadInteger('main', 'last_band', 0);
+      Settings.FLastMode[0] := ini.ReadInteger('main', 'last_mode', 0);
+      Settings.FLastBand[1] := ini.ReadInteger('main', 'last_band1', 0);
+      Settings.FLastMode[1] := ini.ReadInteger('main', 'last_mode1', 0);
+      Settings.FLastBand[2] := ini.ReadInteger('main', 'last_band2', 0);
+      Settings.FLastMode[2] := ini.ReadInteger('main', 'last_mode2', 0);
 
       // QSO Rate Graph
       Settings.FGraphStyle := TQSORateStyle(ini.ReadInteger('Graph', 'Style', 0));
@@ -1798,8 +1804,12 @@ begin
       ini.WriteInteger('Score', 'ExtraInfo', Settings.FLastScoreExtraInfo);
 
       // Last Band/Mode
-      ini.WriteInteger('main', 'last_band', Settings.FLastBand);
-      ini.WriteInteger('main', 'last_mode', Settings.FLastMode);
+      ini.WriteInteger('main', 'last_band', Settings.FLastBand[0]);
+      ini.WriteInteger('main', 'last_mode', Settings.FLastMode[0]);
+      ini.WriteInteger('main', 'last_band1', Settings.FLastBand[1]);
+      ini.WriteInteger('main', 'last_mode1', Settings.FLastMode[1]);
+      ini.WriteInteger('main', 'last_band2', Settings.FLastBand[2]);
+      ini.WriteInteger('main', 'last_mode2', Settings.FLastMode[2]);
 
       // QSO Rate Graph
       ini.WriteInteger('Graph', 'Style', Integer(Settings.FGraphStyle));
@@ -2112,24 +2122,24 @@ begin
    end;
 end;
 
-function TdmZLogGlobal.GetLastBand(): TBand;
+function TdmZLogGlobal.GetLastBand(Index: Integer): TBand;
 begin
-   Result := TBand(Settings.FLastBand);
+   Result := TBand(Settings.FLastBand[Index]);
 end;
 
-procedure TdmZLogGlobal.SetLastBand(b: TBand);
+procedure TdmZLogGlobal.SetLastBand(Index: Integer; b: TBand);
 begin
-   Settings.FLastBand := Integer(b);
+   Settings.FLastBand[Index] := Integer(b);
 end;
 
-function TdmZLogGlobal.GetLastMode(): TMode;
+function TdmZLogGlobal.GetLastMode(Index: Integer): TMode;
 begin
-   Result := TMode(Settings.FLastMode);
+   Result := TMode(Settings.FLastMode[Index]);
 end;
 
-procedure TdmZLogGlobal.SetLastMode(m: TMode);
+procedure TdmZLogGlobal.SetLastMode(Index: Integer; m: TMode);
 begin
-   Settings.FLastMode := Integer(m);
+   Settings.FLastMode[Index] := Integer(m);
 end;
 
 procedure TdmZLogGlobal.SetPaddleReverse(boo: boolean);
@@ -3537,6 +3547,26 @@ begin
       end;
    end;
    Result := mOther;
+end;
+
+function BandToText(b: TBand): string;
+begin
+   if b = bUnknown then begin
+      Result := 'Unknown';
+   end
+   else begin
+      Result := MHzString[b];
+   end;
+end;
+
+function ModeToText(m: TMode): string;
+begin
+   if m = mOther then begin
+      Result := 'Other';
+   end
+   else begin
+      Result := ModeString[m];
+   end;
 end;
 
 function BandToPower(B: TBand): TPower;
