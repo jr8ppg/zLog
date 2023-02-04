@@ -9,7 +9,7 @@ object MainForm: TMainForm
   Constraints.MinWidth = 540
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -12
   Font.Name = 'MS '#12468#12471#12483#12463
   Font.Style = []
   Menu = MainMenu
