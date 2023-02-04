@@ -4,148 +4,289 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms,
   System.Math, System.DateUtils,
-  UzlogConst;
+  UzLogConst;
 
 type
   TFreqLimit = record
-    Lower: UInt64;
-    Upper: UInt64;
+    Lower: TFrequency;
+    Upper: TFrequency;
   end;
   TFreqLimitArray = array[b19..HiBand] of TFreqLimit;
 
   TBandPlan = class(TObject)
   private
+    FPresetName: string;
     FLimit: array [mCW..mOther] of TFreqLimitArray;
     function GetLimit(m: TMode): TFreqLimitArray;
     procedure SetLimit(m: TMode; v: TFreqLimitArray);
-    function GetDefaults(m: TMode): TFreqLimitArray;
+    function GetFileName(): string;
   public
-    constructor Create();
+    constructor Create(); overload;
+    constructor Create(preset: string); overload;
     destructor Destroy(); override;
     procedure LoadFromFile();
     procedure SaveToFile();
-    function GetEstimatedMode(Hz: Integer): TMode; overload;
-    function GetEstimatedMode(b: TBand; Hz: Integer): TMode; overload;
-    function IsInBand(b: TBand; m: TMode; Hz: Integer): Boolean;
-    function IsOffBand(b: TBand; m: TMode; Hz: Integer): Boolean;
-    function FreqToBand(Hz: Int64): TBand; // Returns -1 if Hz is outside ham bands
+    function GetEstimatedMode(Hz: TFrequency): TMode; overload;
+    function GetEstimatedMode(b: TBand; Hz: TFrequency): TMode; overload;
+    function IsInBand(b: TBand; m: TMode; Hz: TFrequency): Boolean;
+    function IsOffBand(b: TBand; m: TMode; Hz: TFrequency): Boolean;
+    function FreqToBand(Hz: TFrequency): TBand; // Returns -1 if Hz is outside ham bands
     property Limit[m: TMode]: TFreqLimitArray read GetLimit write SetLimit;
-    property Defaults[m: TMode]: TFreqLimitArray read GetDefaults;
+    property PresetName: string read FPresetName write FPresetName;
+    class function GetDefaults(Index: Integer; m: TMode): TFreqLimitArray;
   end;
 
 const
-  default_cw_limit: TFreqLimitArray = (
-    ( Lower:     1801000; Upper:     1820000 ),
-    ( Lower:     3510000; Upper:     3530000 ),
-    ( Lower:     7010000; Upper:     7040000 ),
-    ( Lower:    10100000; Upper:    10150000 ),
-    ( Lower:    14050000; Upper:    14080000 ),
-    ( Lower:    18068000; Upper:    18110000 ),
-    ( Lower:    21050000; Upper:    21080000 ),
-    ( Lower:    24890000; Upper:    24930000 ),
-    ( Lower:    28050000; Upper:    28080000 ),
-    ( Lower:    50050000; Upper:    50090000 ),
-    ( Lower:   144050000; Upper:   144090000 ),
-    ( Lower:   430050000; Upper:   430090000 ),
-    ( Lower:  1294000000; Upper:  1294500000 ),
-    ( Lower:  2424000000; Upper:  2424500000 ),
-    ( Lower:  5760000000; Upper:  5762000000 ),
-    ( Lower: 10240000000; Upper: 10242000000 )
+  // CW
+  default_cw_limit: array[0..1] of TFreqLimitArray = (
+    // JA
+    (
+      ( Lower:     1801000; Upper:     1820000 ),
+      ( Lower:     3510000; Upper:     3530000 ),
+      ( Lower:     7010000; Upper:     7040000 ),
+      ( Lower:    10100000; Upper:    10150000 ),
+      ( Lower:    14050000; Upper:    14080000 ),
+      ( Lower:    18068000; Upper:    18110000 ),
+      ( Lower:    21050000; Upper:    21080000 ),
+      ( Lower:    24890000; Upper:    24930000 ),
+      ( Lower:    28050000; Upper:    28080000 ),
+      ( Lower:    50050000; Upper:    50090000 ),
+      ( Lower:   144050000; Upper:   144090000 ),
+      ( Lower:   430050000; Upper:   430090000 ),
+      ( Lower:  1294000000; Upper:  1294500000 ),
+      ( Lower:  2424000000; Upper:  2424500000 ),
+      ( Lower:  5760000000; Upper:  5762000000 ),
+      ( Lower: 10240000000; Upper: 10242000000 )
+    ),
+    // DX
+    (
+      ( Lower:     1800000; Upper:     1912500 ),
+      ( Lower:     3500000; Upper:     3805000 ),
+      ( Lower:     7000000; Upper:     7200000 ),
+      ( Lower:    10100000; Upper:    10150000 ),
+      ( Lower:    14000000; Upper:    14100000 ),
+      ( Lower:    18068000; Upper:    18110000 ),
+      ( Lower:    21000000; Upper:    21150000 ),
+      ( Lower:    24890000; Upper:    24930000 ),
+      ( Lower:    28000000; Upper:    29000000 ),
+      ( Lower:    50000000; Upper:    51000000 ),
+      ( Lower:   144020000; Upper:   144500000 ),
+      ( Lower:   430000000; Upper:   430700000 ),
+      ( Lower:  1294000000; Upper:  1294500000 ),
+      ( Lower:  2424000000; Upper:  2424500000 ),
+      ( Lower:  5760000000; Upper:  5762000000 ),
+      ( Lower: 10240000000; Upper: 10242000000 )
+    )
   );
 
-  default_ssb_limit: TFreqLimitArray = (
-    ( Lower:     1850000; Upper:     1875000 ),
-    ( Lower:     3535000; Upper:     3570000 ),
-    ( Lower:     7060000; Upper:     7140000 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:    14250000; Upper:    14300000 ),
-    ( Lower:    18110000; Upper:    18168000 ),
-    ( Lower:    21350000; Upper:    21450000 ),
-    ( Lower:    24930000; Upper:    24990000 ),
-    ( Lower:    28600000; Upper:    28850000 ),
-    ( Lower:    50350000; Upper:    51000000 ),
-    ( Lower:   144250000; Upper:   144500000 ),
-    ( Lower:   430250000; Upper:   430700000 ),
-    ( Lower:  1294000000; Upper:  1294500000 ),
-    ( Lower:  2424000000; Upper:  2424500000 ),
-    ( Lower:  5760000000; Upper:  5762000000 ),
-    ( Lower: 10240000000; Upper: 10242000000 )
+  // SSB
+  default_ssb_limit: array[0..1] of TFreqLimitArray = (
+    // JA
+    (
+      ( Lower:     1850000; Upper:     1875000 ),
+      ( Lower:     3535000; Upper:     3570000 ),
+      ( Lower:     7060000; Upper:     7140000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    14250000; Upper:    14300000 ),
+      ( Lower:    18110000; Upper:    18168000 ),
+      ( Lower:    21350000; Upper:    21450000 ),
+      ( Lower:    24930000; Upper:    24990000 ),
+      ( Lower:    28600000; Upper:    28850000 ),
+      ( Lower:    50350000; Upper:    51000000 ),
+      ( Lower:   144250000; Upper:   144500000 ),
+      ( Lower:   430250000; Upper:   430700000 ),
+      ( Lower:  1294000000; Upper:  1294500000 ),
+      ( Lower:  2424000000; Upper:  2424500000 ),
+      ( Lower:  5760000000; Upper:  5762000000 ),
+      ( Lower: 10240000000; Upper: 10242000000 )
+    ),
+    // DX
+    (
+      ( Lower:     1845000; Upper:     1875000 ),
+      ( Lower:     3535000; Upper:     3805000 ),
+      ( Lower:     7045000; Upper:     7200000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    14100000; Upper:    14350000 ),
+      ( Lower:    18110000; Upper:    18168000 ),
+      ( Lower:    21150000; Upper:    21450000 ),
+      ( Lower:    24930000; Upper:    24990000 ),
+      ( Lower:    28200000; Upper:    29000000 ),
+      ( Lower:    50100000; Upper:    51000000 ),
+      ( Lower:   144100000; Upper:   144500000 ),
+      ( Lower:   430100000; Upper:   430700000 ),
+      ( Lower:  1294000000; Upper:  1294500000 ),
+      ( Lower:  2424000000; Upper:  2424500000 ),
+      ( Lower:  5760000000; Upper:  5762000000 ),
+      ( Lower: 10240000000; Upper: 10242000000 )
+    )
   );
 
-  default_fm_limit: TFreqLimitArray = (
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:    29200000; Upper:    29300000 ),
-    ( Lower:    51000000; Upper:    52000000 ),
-    ( Lower:   144750000; Upper:   145600000 ),
-    ( Lower:   432100000; Upper:   434000000 ),
-    ( Lower:  1294900000; Upper:  1295800000 ),
-    ( Lower:  2427000000; Upper:  2450000000 ),
-    ( Lower:  5762000000; Upper:  5765000000 ),
-    ( Lower: 10242000000; Upper: 10245000000 )
+  // FM
+  default_fm_limit: array[0..1] of TFreqLimitArray = (
+    // JA
+    (
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    29200000; Upper:    29300000 ),
+      ( Lower:    51000000; Upper:    52000000 ),
+      ( Lower:   144750000; Upper:   145600000 ),
+      ( Lower:   432100000; Upper:   434000000 ),
+      ( Lower:  1294900000; Upper:  1295800000 ),
+      ( Lower:  2427000000; Upper:  2450000000 ),
+      ( Lower:  5762000000; Upper:  5765000000 ),
+      ( Lower: 10242000000; Upper: 10245000000 )
+    ),
+    // DX
+    (
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    29200000; Upper:    29300000 ),
+      ( Lower:    51000000; Upper:    52000000 ),
+      ( Lower:   144750000; Upper:   145600000 ),
+      ( Lower:   432100000; Upper:   434000000 ),
+      ( Lower:  1294900000; Upper:  1295800000 ),
+      ( Lower:  2427000000; Upper:  2450000000 ),
+      ( Lower:  5762000000; Upper:  5765000000 ),
+      ( Lower: 10242000000; Upper: 10245000000 )
+    )
   );
 
-  default_am_limit: TFreqLimitArray = (
-    ( Lower:     1850000; Upper:     1875000 ),
-    ( Lower:     3535000; Upper:     3570000 ),
-    ( Lower:     7060000; Upper:     7140000 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:    14250000; Upper:    14300000 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:    21350000; Upper:    21450000 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:    28600000; Upper:    28850000 ),
-    ( Lower:    50350000; Upper:    51000000 ),
-    ( Lower:   144250000; Upper:   144500000 ),
-    ( Lower:   430250000; Upper:   430700000 ),
-    ( Lower:  1294900000; Upper:  1295800000 ),
-    ( Lower:  2427000000; Upper:  2450000000 ),
-    ( Lower:  5762000000; Upper:  5765000000 ),
-    ( Lower: 10242000000; Upper: 10245000000 )
+  // AM
+  default_am_limit: array[0..1] of TFreqLimitArray = (
+    // JA
+    (
+      ( Lower:     1850000; Upper:     1875000 ),
+      ( Lower:     3535000; Upper:     3570000 ),
+      ( Lower:     7060000; Upper:     7140000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    14250000; Upper:    14300000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    21350000; Upper:    21450000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    28600000; Upper:    28850000 ),
+      ( Lower:    50350000; Upper:    51000000 ),
+      ( Lower:   144250000; Upper:   144500000 ),
+      ( Lower:   430250000; Upper:   430700000 ),
+      ( Lower:  1294900000; Upper:  1295800000 ),
+      ( Lower:  2427000000; Upper:  2450000000 ),
+      ( Lower:  5762000000; Upper:  5765000000 ),
+      ( Lower: 10242000000; Upper: 10245000000 )
+    ),
+    // DX
+    (
+      ( Lower:     1850000; Upper:     1875000 ),
+      ( Lower:     3535000; Upper:     3570000 ),
+      ( Lower:     7060000; Upper:     7140000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    14250000; Upper:    14300000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    21350000; Upper:    21450000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    28600000; Upper:    28850000 ),
+      ( Lower:    50350000; Upper:    51000000 ),
+      ( Lower:   144250000; Upper:   144500000 ),
+      ( Lower:   430250000; Upper:   430700000 ),
+      ( Lower:  1294900000; Upper:  1295800000 ),
+      ( Lower:  2427000000; Upper:  2450000000 ),
+      ( Lower:  5762000000; Upper:  5765000000 ),
+      ( Lower: 10242000000; Upper: 10245000000 )
+    )
   );
 
-  default_rtty_limit: TFreqLimitArray = (
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:     3520000; Upper:     3535000 ),
-    ( Lower:     7030000; Upper:     7045000 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:    14070000; Upper:    14112000 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:    21070000; Upper:    21125000 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:    28070000; Upper:    28150000 ),
-    ( Lower:    50200000; Upper:    51000000 ),
-    ( Lower:   144400000; Upper:   144500000 ),
-    ( Lower:   430500000; Upper:   430700000 ),
-    ( Lower:  1293000000; Upper:  1294000000 ),
-    ( Lower:  2424000000; Upper:  2424500000 ),
-    ( Lower:  5760000000; Upper:  5762000000 ),
-    ( Lower: 10240000000; Upper: 10242000000 )
+  // RTTY
+  default_rtty_limit: array[0..1] of TFreqLimitArray = (
+    // JA
+    (
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:     3520000; Upper:     3535000 ),
+      ( Lower:     7030000; Upper:     7045000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    14070000; Upper:    14112000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    21070000; Upper:    21125000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    28070000; Upper:    28150000 ),
+      ( Lower:    50200000; Upper:    51000000 ),
+      ( Lower:   144400000; Upper:   144500000 ),
+      ( Lower:   430500000; Upper:   430700000 ),
+      ( Lower:  1293000000; Upper:  1294000000 ),
+      ( Lower:  2424000000; Upper:  2424500000 ),
+      ( Lower:  5760000000; Upper:  5762000000 ),
+      ( Lower: 10240000000; Upper: 10242000000 )
+    ),
+    // DX
+    (
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:     3520000; Upper:     3535000 ),
+      ( Lower:     7030000; Upper:     7045000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    14070000; Upper:    14112000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    21070000; Upper:    21125000 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:    28070000; Upper:    28150000 ),
+      ( Lower:    50200000; Upper:    51000000 ),
+      ( Lower:   144400000; Upper:   144500000 ),
+      ( Lower:   430500000; Upper:   430700000 ),
+      ( Lower:  1293000000; Upper:  1294000000 ),
+      ( Lower:  2424000000; Upper:  2424500000 ),
+      ( Lower:  5760000000; Upper:  5762000000 ),
+      ( Lower: 10240000000; Upper: 10242000000 )
+    )
   );
 
-  default_other_limit: TFreqLimitArray = (
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 ),
-    ( Lower:           0; Upper:           0 )
+  // OTHER
+  default_other_limit: array[0..1] of TFreqLimitArray = (
+    // JA
+    (
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 )
+    ),
+    // DX
+    (
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 )
+    )
   );
 
 implementation
@@ -155,6 +296,13 @@ implementation
 constructor TBandPlan.Create();
 begin
    Inherited Create();
+   FPresetName := 'JA';
+end;
+
+constructor TBandPlan.Create(preset: string);
+begin
+   Inherited Create();
+   FPresetName := preset;
 end;
 
 destructor TBandPlan.Destroy();
@@ -171,15 +319,22 @@ var
    strKey: string;
    SL: TStringList;
    filename: string;
+   Index: Integer;
 begin
-   filename := ExtractFilePath(Application.ExeName) + 'zlog_bandplan.ini';
+   filename := GetFileName();
    if FileExists(filename) = False then begin
-      FLimit[mCW]    := default_cw_limit;
-      FLimit[mSSB]   := default_ssb_limit;
-      FLimit[mFM]    := default_fm_limit;
-      FLimit[mAM]    := default_am_limit;
-      FLimit[mRTTY]  := default_rtty_limit;
-      FLimit[mOther] := default_other_limit;
+      if FPresetName = 'DX' then begin
+         Index := 1;
+      end
+      else begin
+         Index := 0;
+      end;
+      FLimit[mCW]    := default_cw_limit[Index];
+      FLimit[mSSB]   := default_ssb_limit[Index];
+      FLimit[mFM]    := default_fm_limit[Index];
+      FLimit[mAM]    := default_am_limit[Index];
+      FLimit[mRTTY]  := default_rtty_limit[Index];
+      FLimit[mOther] := default_other_limit[Index];
       Exit;
    end;
 
@@ -211,7 +366,7 @@ var
    SL: TStringList;
    filename: string;
 begin
-   filename := ExtractFilePath(Application.ExeName) + 'zlog_bandplan.ini';
+   filename := GetFileName();
 
    SL := TStringList.Create();
    ini := TIniFile.Create(filename);
@@ -232,7 +387,7 @@ begin
    end;
 end;
 
-function TBandPlan.GetEstimatedMode(Hz: Integer): TMode;
+function TBandPlan.GetEstimatedMode(Hz: TFrequency): TMode;
 var
    b: TBand;
 begin
@@ -245,10 +400,10 @@ begin
    Result := mOther;
 end;
 
-function TBandPlan.GetEstimatedMode(b: TBand; Hz: Integer): TMode;
+function TBandPlan.GetEstimatedMode(b: TBand; Hz: TFrequency): TMode;
 var
    m: TMode;
-   l, u: Integer;
+   l, u: TFrequency;
 begin
    for m := mCW to mOther do begin
       l := FLimit[m][b].Lower;
@@ -264,9 +419,9 @@ begin
    Result := mOther;
 end;
 
-function TBandPlan.IsInBand(b: TBand; m: TMode; Hz: Integer): Boolean;
+function TBandPlan.IsInBand(b: TBand; m: TMode; Hz: TFrequency): Boolean;
 var
-   l, u: Integer;
+   l, u: TFrequency;
 begin
    l := FLimit[m][b].Lower;
    u := FLimit[m][b].Upper;
@@ -294,9 +449,9 @@ begin
    end;
 end;
 
-function TBandPlan.IsOffBand(b: TBand; m: TMode; Hz: Integer): Boolean;
+function TBandPlan.IsOffBand(b: TBand; m: TMode; Hz: TFrequency): Boolean;
 var
-   l, u: Integer;
+   l, u: TFrequency;
 begin
    l := FLimit[m][b].Lower;
    u := FLimit[m][b].Upper;
@@ -314,7 +469,7 @@ begin
    end;
 end;
 
-function TBandPlan.FreqToBand(Hz: Int64): TBand; // Returns -1 if Hz is outside ham bands
+function TBandPlan.FreqToBand(Hz: TFrequency): TBand; // Returns -1 if Hz is outside ham bands
 var
    b: TBand;
 begin
@@ -388,15 +543,25 @@ begin
    FLimit[m] := v;
 end;
 
-function TBandPlan.GetDefaults(m: TMode): TFreqLimitArray;
+class function TBandPlan.GetDefaults(Index: Integer; m: TMode): TFreqLimitArray;
 begin
    case m of
-      mCW:   Result := default_cw_limit;
-      mSSB:  Result := default_ssb_limit;
-      mFM:   Result := default_fm_limit;
-      mAM:   Result := default_am_limit;
-      mRTTY: Result := default_rtty_limit;
-      else   Result := default_other_limit;
+      mCW:   Result := default_cw_limit[Index];
+      mSSB:  Result := default_ssb_limit[Index];
+      mFM:   Result := default_fm_limit[Index];
+      mAM:   Result := default_am_limit[Index];
+      mRTTY: Result := default_rtty_limit[Index];
+      else   Result := default_other_limit[Index];
+   end;
+end;
+
+function TBandPlan.GetFileName(): string;
+begin
+   if FPresetName = 'JA' then begin
+      Result := ExtractFilePath(Application.ExeName) + 'zlog_bandplan.ini';
+   end
+   else begin
+      Result := ExtractFilePath(Application.ExeName) + 'zlog_bandplan_' + FPresetName + '.ini';
    end;
 end;
 

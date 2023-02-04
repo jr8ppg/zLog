@@ -8,16 +8,19 @@ object formFunctionKeyPanel: TformFunctionKeyPanel
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+  Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
+  OnActivate = FormActivate
+  OnClose = FormClose
   OnCreate = FormCreate
+  OnDeactivate = FormDeactivate
   OnHide = FormHide
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 12
+  TextHeight = 13
   object ButtonGroup1: TButtonGroup
     Left = 0
     Top = 0
@@ -82,5 +85,14 @@ object formFunctionKeyPanel: TformFunctionKeyPanel
     OnTimer = Timer1Timer
     Left = 464
     Top = 16
+  end
+  object ActionList1: TActionList
+    State = asSuspended
+    Left = 552
+    Top = 11
+    object actionChangeCwBank: TAction
+      Caption = 'actionChangeCwBank'
+      OnExecute = actionChangeCwBankExecute
+    end
   end
 end

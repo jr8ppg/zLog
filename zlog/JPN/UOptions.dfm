@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetBandScope1
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -488,11 +488,11 @@ object formOptions: TformOptions
       end
       object groupQsyAssist: TGroupBox
         Left = 222
-        Top = 300
+        Top = 304
         Width = 204
         Height = 89
         Caption = 'QSY'#12450#12471#12473#12488
-        TabOrder = 8
+        TabOrder = 9
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -561,11 +561,11 @@ object formOptions: TformOptions
       end
       object GroupBox13: TGroupBox
         Left = 17
-        Top = 299
+        Top = 303
         Width = 101
         Height = 89
         Caption = 'QSL'#21021#26399#20516
-        TabOrder = 7
+        TabOrder = 8
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -592,6 +592,14 @@ object formOptions: TformOptions
           Caption = 'NO QSL'
           TabOrder = 2
         end
+      end
+      object checkDispLongDateTime: TCheckBox
+        Left = 17
+        Top = 277
+        Width = 193
+        Height = 17
+        Caption = #38263#12356#26085#20184#12391#34920#31034#12377#12427
+        TabOrder = 7
       end
     end
     object tabsheetCategories: TTabSheet
@@ -1723,21 +1731,21 @@ object formOptions: TformOptions
       Caption = #12495#12540#12489#12454#12455#12450
       object groupOptCwPtt: TGroupBox
         Left = 6
-        Top = 237
-        Width = 423
-        Height = 62
+        Top = 264
+        Width = 202
+        Height = 88
         Caption = 'CW/PTT'#21046#24481
         TabOrder = 4
         object Label38: TLabel
           Left = 8
-          Top = 38
+          Top = 39
           Width = 70
           Height = 13
           Caption = #36865#20449#21069#12487#12451#12524#12452'(ms)'
         end
         object Label39: TLabel
-          Left = 162
-          Top = 38
+          Left = 8
+          Top = 63
           Width = 130
           Height = 13
           Caption = #36865#20449#24460#12487#12451#12524#12452'(ms)'
@@ -1752,37 +1760,25 @@ object formOptions: TformOptions
           OnClick = PTTEnabledCheckBoxClick
         end
         object BeforeEdit: TEdit
-          Left = 110
-          Top = 35
+          Left = 144
+          Top = 36
+          Width = 40
+          Height = 21
+          TabOrder = 1
+          Text = 'CWPortEdit'
+        end
+        object AfterEdit: TEdit
+          Left = 144
+          Top = 60
           Width = 40
           Height = 21
           TabOrder = 2
           Text = 'CWPortEdit'
         end
-        object AfterEdit: TEdit
-          Left = 264
-          Top = 35
-          Width = 40
-          Height = 21
-          TabOrder = 3
-          Text = 'CWPortEdit'
-        end
-        object checkCwReverseSignal: TCheckBox
-          Left = 162
-          Top = 14
-          Width = 160
-          Height = 17
-          Hint = 'if checked, PTT is DTR, Keying is RTS'
-          Caption = 'PTT:DTR'#12289'KEY:RTS'#12392#12377#12427
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 1
-          OnClick = PTTEnabledCheckBoxClick
-        end
       end
       object groupUsif4cw: TGroupBox
-        Left = 6
-        Top = 303
+        Left = 214
+        Top = 264
         Width = 213
         Height = 45
         Caption = 'USBIF4CW'
@@ -1798,7 +1794,7 @@ object formOptions: TformOptions
         object checkUsbif4cwPaddleReverse: TCheckBox
           Left = 93
           Top = 19
-          Width = 112
+          Width = 110
           Height = 17
           Caption = #12497#12489#12523#12434#24038#21491#21453#36578
           TabOrder = 1
@@ -1808,7 +1804,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 184
         Width = 423
-        Height = 49
+        Height = 74
         Caption = 'ICOM CI-V'#12458#12503#12471#12519#12531
         TabOrder = 3
         object Label83: TLabel
@@ -1824,6 +1820,13 @@ object formOptions: TformOptions
           Width = 36
           Height = 13
           Caption = #26041#27861
+        end
+        object Label122: TLabel
+          Left = 262
+          Top = 49
+          Width = 104
+          Height = 13
+          Caption = #24540#31572#12479#12452#12512#12450#12454#12488'(ms)'
         end
         object comboIcomMode: TComboBox
           Left = 42
@@ -1852,6 +1855,16 @@ object formOptions: TformOptions
           Items.Strings = (
             #21608#27874#25968#12392#12514#12540#12489#12434#21462#24471
             #21608#27874#25968#12398#12415#21462#24471)
+        end
+        object editIcomResponseTimout: TEdit
+          Left = 376
+          Top = 46
+          Width = 37
+          Height = 21
+          MaxLength = 4
+          NumbersOnly = True
+          TabOrder = 2
+          Text = '1000'
         end
       end
       object groupRig1: TGroupBox
@@ -1986,13 +1999,26 @@ object formOptions: TformOptions
         object cbTransverter1: TCheckBox
           Tag = 101
           Left = 351
-          Top = 29
+          Top = 12
           Width = 41
           Height = 17
-          Hint = 'Check here if you are using a transverter'
+          Hint = #12488#12521#12531#12473#12496#12540#12479#12540#12434#20351#29992#12377#12427#22580#21512#12399#12481#12455#12483#12463#12375#12390#19979#12373#12356
           Caption = 'XVT'
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 4
           OnClick = cbTransverter1Click
+        end
+        object checkCwReverseSignal1: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = #12481#12455#12483#12463#12375#12383#22580#21512#12289#12461#12540#12452#12531#12464#12395'RTS'#65292'PTT'#12395'DTR'#12434#20351#29992#12375#12414#12377
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
         end
       end
       object groupRig2: TGroupBox
@@ -2033,11 +2059,13 @@ object formOptions: TformOptions
         object cbTransverter2: TCheckBox
           Tag = 102
           Left = 351
-          Top = 29
+          Top = 12
           Width = 41
           Height = 17
-          Hint = 'Check here if you are using a transverter'
+          Hint = #12488#12521#12531#12473#12496#12540#12479#12540#12434#20351#29992#12377#12427#22580#21512#12399#12481#12455#12483#12463#12375#12390#19979#12373#12356
           Caption = 'XVT'
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 4
           OnClick = cbTransverter1Click
         end
@@ -2135,6 +2163,17 @@ object formOptions: TformOptions
             'COM20'
             'USB')
         end
+        object checkCwReverseSignal2: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = #12481#12455#12483#12463#12375#12383#22580#21512#12289#12461#12540#12452#12531#12464#12395'RTS'#65292'PTT'#12395'DTR'#12434#20351#29992#12375#12414#12377
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+        end
       end
       object groupRig3: TGroupBox
         Left = 6
@@ -2183,10 +2222,21 @@ object formOptions: TformOptions
             'COM20'
             'USB')
         end
+        object checkCwReverseSignal3: TCheckBox
+          Left = 352
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = #12481#12455#12483#12463#12375#12383#22580#21512#12289#12461#12540#12452#12531#12464#12395'RTS'#65292'PTT'#12395'DTR'#12434#20351#29992#12375#12414#12377
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 1
+        end
       end
       object groupWinKeyer: TGroupBox
         Left = 6
-        Top = 352
+        Top = 356
         Width = 423
         Height = 45
         Caption = 'WinKeyer Option'
@@ -2194,7 +2244,7 @@ object formOptions: TformOptions
         object checkUseWinKeyer: TCheckBox
           Left = 8
           Top = 18
-          Width = 94
+          Width = 95
           Height = 17
           Caption = 'WinKeyer'#12434#20351#12358
           TabOrder = 0
@@ -2288,7 +2338,6 @@ object formOptions: TformOptions
           Width = 102
           Height = 21
           Caption = 'COM'#12509#12540#12488#35373#23450
-          Default = True
           TabOrder = 1
           OnClick = buttonClusterSettingsClick
         end
@@ -2298,7 +2347,7 @@ object formOptions: TformOptions
           Width = 73
           Height = 21
           Style = csDropDownList
-          TabOrder = 2
+          TabOrder = 3
           OnChange = ZLinkComboChange
           Items.Strings = (
             'None'
@@ -2310,8 +2359,7 @@ object formOptions: TformOptions
           Width = 102
           Height = 21
           Caption = 'TELNET'#35373#23450
-          Default = True
-          TabOrder = 5
+          TabOrder = 6
           OnClick = buttonZLinkSettingsClick
         end
         object editZLinkPcName: TEdit
@@ -2319,7 +2367,7 @@ object formOptions: TformOptions
           Top = 84
           Width = 101
           Height = 21
-          TabOrder = 3
+          TabOrder = 4
         end
         object checkZLinkSyncSerial: TCheckBox
           Left = 210
@@ -2327,8 +2375,17 @@ object formOptions: TformOptions
           Width = 150
           Height = 17
           Caption = #12471#12522#12450#12523#12490#12531#12496#12540#21516#26399
-          TabOrder = 4
+          TabOrder = 5
           OnClick = PTTEnabledCheckBoxClick
+        end
+        object buttonSpotterList: TButton
+          Left = 290
+          Top = 28
+          Width = 102
+          Height = 21
+          Caption = #35377#21487'/'#25298#21542#12522#12473#12488
+          TabOrder = 2
+          OnClick = buttonSpotterListClick
         end
       end
       object groupSo2rSupport: TGroupBox
@@ -3090,160 +3147,174 @@ object formOptions: TformOptions
       end
     end
     object tabsheetPath: TTabSheet
-      Caption = #21508#31278'PATH'
+      Caption = #21508#31278#12501#12457#12523#12480
       object Label50: TLabel
-        Left = 16
-        Top = 18
+        Left = 8
+        Top = 44
         Width = 48
         Height = 13
         Caption = 'CFG/DAT'
       end
       object Label51: TLabel
-        Left = 16
-        Top = 43
+        Left = 8
+        Top = 69
         Width = 23
         Height = 13
         Caption = #12525#12464#12501#12449#12452#12523
       end
       object Label56: TLabel
-        Left = 16
-        Top = 68
+        Left = 8
+        Top = 94
         Width = 40
         Height = 13
         Caption = #12496#12483#12463#12450#12483#12503
       end
       object Label74: TLabel
-        Left = 16
-        Top = 93
+        Left = 8
+        Top = 119
         Width = 31
         Height = 13
         Caption = #38899#22768#12501#12449#12452#12523
       end
       object Label90: TLabel
-        Left = 16
-        Top = 118
+        Left = 8
+        Top = 144
         Width = 34
         Height = 13
         Caption = #12503#12521#12464#12452#12531
       end
-      object edCFGDATPath: TEdit
+      object Label120: TLabel
+        Left = 8
+        Top = 19
+        Width = 44
+        Height = 13
+        Caption = 'zLog'#12523#12540#12488
+      end
+      object Label121: TLabel
+        Left = 8
+        Top = 169
+        Width = 62
+        Height = 13
+        Caption = 'Super Check'
+      end
+      object editCfgDatFolder: TEdit
         Left = 88
-        Top = 16
-        Width = 256
-        Height = 20
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 0
-        Text = 'BackUpPathEdit'
+        Top = 41
+        Width = 266
+        Height = 21
+        TabOrder = 2
       end
       object buttonBrowseCFGDATPath: TButton
         Tag = 10
-        Left = 350
-        Top = 16
-        Width = 65
-        Height = 20
-        Caption = #21442#29031'...'
-        TabOrder = 1
-        OnClick = BrowsePathClick
-      end
-      object edLogsPath: TEdit
-        Tag = 20
-        Left = 88
-        Top = 41
-        Width = 256
-        Height = 20
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 2
-        Text = 'BackUpPathEdit'
-      end
-      object buttonBrowseLogsPath: TButton
-        Tag = 20
-        Left = 350
-        Top = 41
+        Left = 360
+        Top = 42
         Width = 65
         Height = 20
         Caption = #21442#29031'...'
         TabOrder = 3
         OnClick = BrowsePathClick
       end
-      object buttonBrowseBackupPath: TButton
-        Tag = 30
-        Left = 350
+      object editLogsFolder: TEdit
+        Tag = 20
+        Left = 88
         Top = 66
+        Width = 266
+        Height = 21
+        TabOrder = 4
+      end
+      object buttonBrowseLogsPath: TButton
+        Tag = 20
+        Left = 360
+        Top = 67
         Width = 65
         Height = 20
         Caption = #21442#29031'...'
         TabOrder = 5
         OnClick = BrowsePathClick
       end
-      object BackUpPathEdit: TEdit
-        Left = 88
-        Top = 66
-        Width = 256
-        Height = 20
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 4
-        Text = 'BackUpPathEdit'
-      end
-      object buttonBrowseSoundPath: TButton
-        Tag = 40
-        Left = 350
-        Top = 91
+      object buttonBrowseBackupPath: TButton
+        Tag = 30
+        Left = 360
+        Top = 92
         Width = 65
         Height = 20
         Caption = #21442#29031'...'
         TabOrder = 7
         OnClick = BrowsePathClick
       end
-      object SoundPathEdit: TEdit
+      object editBackupFolder: TEdit
         Left = 88
         Top = 91
-        Width = 256
-        Height = 20
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
+        Width = 266
+        Height = 21
         TabOrder = 6
       end
-      object buttonBrowsePluginPath: TButton
-        Tag = 50
-        Left = 350
-        Top = 116
+      object buttonBrowseSoundPath: TButton
+        Tag = 40
+        Left = 360
+        Top = 117
         Width = 65
         Height = 20
         Caption = #21442#29031'...'
         TabOrder = 9
         OnClick = BrowsePathClick
       end
-      object PluginPathEdit: TEdit
+      object editSoundFolder: TEdit
         Left = 88
         Top = 116
-        Width = 256
-        Height = 20
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
+        Width = 266
+        Height = 21
         TabOrder = 8
+      end
+      object buttonBrowsePluginPath: TButton
+        Tag = 50
+        Left = 360
+        Top = 142
+        Width = 65
+        Height = 20
+        Caption = #21442#29031'...'
+        TabOrder = 11
+        OnClick = BrowsePathClick
+      end
+      object editPluginsFolder: TEdit
+        Left = 88
+        Top = 141
+        Width = 266
+        Height = 21
+        TabOrder = 10
+      end
+      object editRootFolder: TEdit
+        Left = 88
+        Top = 16
+        Width = 266
+        Height = 21
+        TabOrder = 0
+      end
+      object buttonBrowseRootFolder: TButton
+        Left = 360
+        Top = 17
+        Width = 65
+        Height = 20
+        Caption = #21442#29031'...'
+        TabOrder = 1
+        OnClick = BrowsePathClick
+      end
+      object buttonBrowseSpcPath: TButton
+        Tag = 60
+        Left = 360
+        Top = 167
+        Width = 65
+        Height = 20
+        Caption = #21442#29031'...'
+        TabOrder = 13
+        OnClick = BrowsePathClick
+      end
+      object editSpcFolder: TEdit
+        Left = 88
+        Top = 166
+        Width = 266
+        Height = 21
+        TabOrder = 12
       end
     end
     object tabsheetMisc: TTabSheet
@@ -3347,19 +3418,11 @@ object formOptions: TformOptions
       end
       object GroupBox8: TGroupBox
         Left = 6
-        Top = 133
+        Top = 155
         Width = 423
-        Height = 74
+        Height = 52
         Caption = #12473#12540#12497#12540#12481#12455#12483#12463
         TabOrder = 6
-        object buttonSuperCheckFolderRef: TSpeedButton
-          Left = 392
-          Top = 43
-          Width = 21
-          Height = 21
-          Caption = '...'
-          OnClick = buttonSuperCheckFolderRefClick
-        end
         object radioSuperCheck0: TRadioButton
           Left = 12
           Top = 20
@@ -3380,14 +3443,6 @@ object formOptions: TformOptions
           TabOrder = 1
           OnClick = OnNeedSuperCheckLoad
         end
-        object editSuperCheckFolder: TEdit
-          Left = 12
-          Top = 43
-          Width = 374
-          Height = 21
-          TabOrder = 3
-          OnChange = OnNeedSuperCheckLoad
-        end
         object radioSuperCheck2: TRadioButton
           Left = 153
           Top = 20
@@ -3395,6 +3450,15 @@ object formOptions: TformOptions
           Height = 17
           Caption = #20001#26041
           TabOrder = 2
+          OnClick = OnNeedSuperCheckLoad
+        end
+        object checkAcceptDuplicates: TCheckBox
+          Left = 296
+          Top = 20
+          Width = 117
+          Height = 17
+          Caption = #37325#35079#12434#21463#12369#20837#12428#12427
+          TabOrder = 3
           OnClick = OnNeedSuperCheckLoad
         end
       end
@@ -4113,7 +4177,7 @@ object formOptions: TformOptions
           Caption = #29694#22312#12496#12531#12489
           Checked = True
           State = cbChecked
-          TabOrder = 16
+          TabOrder = 17
         end
         object checkBsNewMulti: TCheckBox
           Left = 301
@@ -4123,7 +4187,17 @@ object formOptions: TformOptions
           Caption = #12491#12517#12540#12510#12523#12481
           Checked = True
           State = cbChecked
-          TabOrder = 17
+          TabOrder = 18
+        end
+        object checkBsAllBands: TCheckBox
+          Left = 12
+          Top = 104
+          Width = 67
+          Height = 17
+          Caption = #20840#12496#12531#12489
+          Checked = True
+          State = cbChecked
+          TabOrder = 16
         end
       end
       object GroupBox10: TGroupBox
@@ -4379,7 +4453,7 @@ object formOptions: TformOptions
           Width = 190
           Height = 17
           Caption = #21608#27874#25968#12424#12426#25512#23450#12375#12383#12514#12540#12489#12434#20351#12358
-          TabOrder = 2
+          TabOrder = 3
           OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
@@ -4392,7 +4466,7 @@ object formOptions: TformOptions
         end
         object checkShowOnlyDomestic: TCheckBox
           Left = 12
-          Top = 39
+          Top = 40
           Width = 165
           Height = 17
           Caption = #22269#20869#12473#12509#12483#12488#12398#12415#34920#31034
@@ -4400,11 +4474,11 @@ object formOptions: TformOptions
         end
         object checkUseLookupServer: TCheckBox
           Left = 12
-          Top = 61
+          Top = 63
           Width = 165
           Height = 17
           Caption = 'Lookup Server'#12434#20351#29992
-          TabOrder = 3
+          TabOrder = 2
         end
         object checkSetFreqAfterModeChange: TCheckBox
           Left = 225
@@ -4835,13 +4909,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@SimSun-ExtB'
+          FontName = '@HG'#25945#31185#26360#20307
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 28
+          ItemIndex = 5
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
@@ -4869,7 +4943,6 @@ object formOptions: TformOptions
       Anchors = [akLeft, akBottom]
       Caption = 'OK'
       Default = True
-      ModalResult = 1
       TabOrder = 0
       OnClick = buttonOKClick
     end

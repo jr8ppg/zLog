@@ -107,6 +107,7 @@ type
     function SummaryGeneral : string;
     function Summary2 : string;
     function FDSummary(LowBand : TBand) : string;
+    function WorkedOn(): string;
   end;
 
   TCityList = class
@@ -687,6 +688,26 @@ begin
    Result := temp;
 end;
 
+function TCity.WorkedOn(): string;
+var
+   temp: string;
+   B: TBand;
+begin
+   temp := '';
+
+   for B := b35 to HiBand do begin
+      if Worked[B] then begin
+         temp := temp + ' ' + MHzString[B];
+      end;
+   end;
+
+   if temp <> '' then begin
+      temp := 'Worked on:' + temp;
+   end;
+
+   Result := temp;
+end;
+
 constructor TCityList.Create;
 begin
    List := TList.Create;
@@ -737,7 +758,7 @@ var
 begin
    fullpath := filename;
    if FileExists(fullpath) = False then begin
-      fullpath := dmZLogGlobal.Settings._cfgdatpath + filename;
+      fullpath := dmZLogGlobal.CfgDatPath + filename;
       if FileExists(fullpath) = False then begin
          fullpath := ExtractFilePath(Application.ExeName) + filename;
          if FileExists(fullpath) = False then begin

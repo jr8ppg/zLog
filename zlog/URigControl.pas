@@ -5,6 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids, System.Math, System.StrUtils,
+  System.SyncObjs, Generics.Collections,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB, Vcl.Buttons;
 
 type
@@ -92,22 +93,24 @@ type
   private
     FFILO : Boolean; // FILO buffer flag used for YAESU
     Name : string;
-    _freqoffset : LongInt; // freq offset for transverters in Hz
+    _freqoffset: TFrequency; // freq offset for transverters in Hz
     _minband, _maxband : TBand;
     _rignumber : Integer;
 
-    FreqMem : array[b19..b10g, mCW..mOther] of LongInt;
+    FreqMem : array[b19..b10g, mCW..mOther] of TFrequency;
 
     TerminatorCode : AnsiChar;
     BufferString : AnsiString;
-    _currentfreq : array[0..1] of LongInt; // in Hz
+    _currentfreq : array[0..1] of TFrequency; // in Hz
     _currentband : TBand;
     _currentmode : TMode;
     _currentvfo : integer; // 0 : VFO A; 1 : VFO B
     FComm : TCommPortDriver; // points to the right CommPortDriver
     FPollingTimer: TTimer;
     FPollingInterval: Integer;
-    LastFreq : LongInt;
+
+    FLastFreq: TFrequency;
+    FLastMode: TMode;
 
     FRitCtrlSupported: Boolean;
     FXitCtrlSupported: Boolean;
@@ -121,26 +124,29 @@ type
     FLastCall: string;
     FLastRcvd: string;
 
+    FStopRequest: Boolean;
+
     procedure SetRit(flag: Boolean); virtual;
     procedure SetXit(flag: Boolean); virtual;
     procedure SetRitOffset(offset: Integer); virtual;
-    procedure UpdateFreqMem(vfo: Integer; Hz: Integer);
+    procedure UpdateFreqMem(vfo: Integer; Hz: TFrequency);
   public
     constructor Create(RigNum : Integer); virtual;
     destructor Destroy; override;
     procedure Initialize(); virtual;
     function Selected : boolean;
-    function CurrentFreqHz : LongInt; //in Hz
-    function CurrentFreqKHz : LongInt;
+    function CurrentFreqHz : TFrequency; //in Hz
+    function CurrentFreqKHz : TFrequency;
     function CurrentFreqkHzStr : string;
     procedure PollingProcess; virtual;
-    procedure SetMode(Q : TQSO); virtual; abstract;
-    procedure SetBand(Q : TQSO); virtual; // abstract;
+    procedure SetMode(Q: TQSO); overload; virtual;
+    procedure SetMode(M: TMode); overload; virtual;
+    procedure SetBand(Q: TQSO); virtual; // abstract;
     procedure ExecuteCommand(S : AnsiString); virtual; abstract;
     procedure PassOnRxData(S : AnsiString); virtual;
     procedure ParseBufferString; virtual; abstract;
     procedure RitClear(); virtual;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); virtual; abstract;
+    procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); virtual;
     procedure Reset; virtual; abstract; // called when user wants to reset the rig
                                         // after power outage etc
     procedure SetVFO(i : integer); virtual; abstract; // A:0, B:1
@@ -153,6 +159,8 @@ type
     procedure AntSelect(no: Integer); virtual;
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
+    procedure StopRequest(); virtual;
+
     property CommPortDriver: TCommPortDriver read FComm;
     property PollingTimer: TTimer read FPollingTimer write FPollingTimer;
     property FILO: Boolean read FFILO write FFILO;
@@ -185,7 +193,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
@@ -202,7 +210,7 @@ type
 
   TTS2000P = class(TTS2000)
     constructor Create(RigNum : integer); override;
-    Procedure PollingProcess; override;
+    procedure PollingProcess; override;
     destructor Destroy; override;
     procedure Initialize(); override;
   end;
@@ -212,6 +220,8 @@ type
     procedure Initialize(); override;
   end;
 
+  TIcomCommThread = class;
+
   TICOM = class(TRig) // Icom CI-V
   private
     FMyAddr: Byte;
@@ -219,6 +229,9 @@ type
     FUseTransceiveMode: Boolean;
     FGetBandAndMode: Boolean;
     FPollingCount: Integer;
+
+    FCommThread: TIcomCommThread;
+    FCommandList: TList<AnsiString>;
   public
     constructor Create(RigNum : integer); override;
     destructor Destroy; override;
@@ -227,12 +240,14 @@ type
     procedure ExecuteCommand(S : AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
     procedure AntSelect(no: Integer); override;
     procedure ICOMWriteData(S : AnsiString);
+    procedure StartPolling();
+    procedure StopRequest(); override;
     procedure PollingProcess; override;
     procedure SetRit(flag: Boolean); override;
     procedure SetXit(flag: Boolean); override;
@@ -241,6 +256,18 @@ type
     property GetBandAndModeFlag: Boolean read FGetBandAndMode write FGetBandAndMode;
     property MyAddr: Byte read FMyAddr write FMyAddr;
     property RigAddr: Byte read FRigAddr write FRigAddr;
+  end;
+
+  TIcomCommThread = class(TThread)
+  private
+    FRig: TICOM;
+    FResponse: AnsiString;
+  protected
+    procedure Execute(); override;
+    function RecvText(var nErrorCode: Integer): AnsiString;
+    procedure SyncProc();
+  public
+    constructor Create(rig: TICOM);
   end;
 
   TIC756 = class(TICOM)
@@ -257,7 +284,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
@@ -273,7 +300,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
@@ -301,7 +328,7 @@ type
     procedure SetMode(Q : TQSO); override;
     procedure ExecuteCommand(S: AnsiString); override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetVFO(i : integer); override;
     procedure PollingProcess(); override;
   end;
@@ -320,7 +347,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure RitClear; override;
     procedure SetVFO(i : integer); override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure PollingProcess; override;
   end;
@@ -329,7 +356,7 @@ type
     Fchange: Boolean;
     destructor Destroy; override;
     procedure Initialize(); override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure PollingProcess; override;
   end;
@@ -341,7 +368,7 @@ type
 
   TFT991 = class(TFT2000)
     procedure ExecuteCommand(S: AnsiString); override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
   end;
 
   TFT100 = class(TFT1000MP)
@@ -350,6 +377,14 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure SetVFO(i : integer); override;
     procedure RitClear; override;
+  end;
+
+  TFT710 = class(TFT991)
+    procedure RitClear; override;
+    procedure SetRit(flag: Boolean); override;
+    procedure SetXit(flag: Boolean); override;
+    procedure SetRitOffset(offset: Integer); override;
+    procedure AntSelect(no: Integer); override;
   end;
 
   TJST145 = class(TRig) //  or JST245
@@ -361,7 +396,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure Reset; override;
     procedure SetVFO(i : integer); override;
     procedure InquireStatus; override;
@@ -376,7 +411,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure InquireStatus; override;
     procedure SetVFO(i : integer); override;
@@ -390,7 +425,7 @@ type
     procedure Initialize(); override;
     procedure ExecuteCommand(S: AnsiString); override;
     procedure ParseBufferString; override;
-    procedure SetFreq(Hz : LongInt; fSetLastFreq: Boolean); override;
+    procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetBand(Q: TQSO); override;
     procedure InquireStatus; override;
@@ -399,11 +434,11 @@ type
   end;
 
   TRigArray = array[1..3] of TRig;
-  TFreqArray = array [b19..HiBand] of Double;
+  TFreqArray = array [b19..HiBand] of TFrequency;
 
   TRigControl = class(TForm)
     dispMode: TLabel;
-    Button1: TButton;
+    buttonReconnectRigs: TButton;
     RigLabel: TLabel;
     Timer1: TTimer;
     Label2: TLabel;
@@ -425,19 +460,20 @@ type
     buttonJumpLastFreq: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure buttonReconnectRigsClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure PollingTimerTimer(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
     procedure btnOmniRigClick(Sender: TObject);
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure buttonJumpLastFreqClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     FRigs: TRigArray;
     FCurrentRig : TRig;
-    FPrevVfo: array[0..1] of Integer;
+    FPrevVfo: array[0..1] of TFrequency;
     FOnVFOChanged: TNotifyEvent;
     FFreqLabel: array[0..1] of TLabel;
 
@@ -455,8 +491,8 @@ type
   public
     { Public declarations }
     TempFreq: TFreqArray; //  temp. freq storage when rig is not connected. in kHz
-    function StatusSummaryFreq(kHz : integer): string; // returns current rig's band freq mode
-    function StatusSummaryFreqHz(Hz : integer): string; // returns current rig's band freq mode
+    function StatusSummaryFreq(kHz : TFrequency): string; // returns current rig's band freq mode
+    function StatusSummaryFreqHz(Hz : TFrequency): string; // returns current rig's band freq mode
     function StatusSummary: string; // returns current rig's band freq mode
     procedure ImplementOptions(rig: Integer = 1);
     procedure Stop();
@@ -466,7 +502,7 @@ type
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
     function IsAvailableBand(B: TBand): Boolean;
     procedure SetSendFreq();
-    procedure UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer; b: TBand; m: TMode);
+    procedure UpdateFreq(currentvfo, VfoA, VfoB, Last: TFrequency; b: TBand; m: TMode);
 
     procedure SetRit(fOnOff: Boolean);
     procedure SetXit(fOnOff: Boolean);
@@ -481,6 +517,12 @@ type
 
 function dec2hex(i: Integer): Integer;
 
+var
+  IcomLock: TCriticalSection;
+
+resourcestring
+  RECONNECT_ALL_RIGS = 'Reconnect all RIGs?';
+
 implementation
 
 uses
@@ -488,7 +530,7 @@ uses
 
 {$R *.DFM}
 
-function kHzStr(Hz: LongInt): string;
+function kHzStr(Hz: TFrequency): string;
 var
    S: string;
 begin
@@ -502,7 +544,7 @@ begin
    Result := S;
 end;
 
-function TRigControl.StatusSummaryFreq(kHz: Integer): string; // returns current rig's band freq mode
+function TRigControl.StatusSummaryFreq(kHz: TFrequency): string; // returns current rig's band freq mode
 var
    S, ss: string;
 begin
@@ -535,7 +577,7 @@ begin
    Result := S;
 end;
 
-function TRigControl.StatusSummaryFreqHz(Hz: Integer): string; // returns current rig's band freq mode
+function TRigControl.StatusSummaryFreqHz(Hz: TFrequency): string; // returns current rig's band freq mode
 var
    S, ss: string;
 begin
@@ -690,7 +732,7 @@ begin
    FRitOffset := offset;
 end;
 
-procedure TRig.UpdateFreqMem(vfo: Integer; Hz: Integer);
+procedure TRig.UpdateFreqMem(vfo: Integer; Hz: TFrequency);
 var
    b: TBand;
 begin
@@ -712,6 +754,11 @@ begin
       19200:   FComm.BaudRate := br19200;
       38400:   FComm.BaudRate := br38400;
    end;
+end;
+
+procedure TRig.StopRequest();
+begin
+   FStopRequest := True;
 end;
 
 function TRig.Selected: Boolean;
@@ -832,6 +879,7 @@ begin
    Inherited;
    FPollingTimer.Enabled := True;
 end;
+
 //
 // OPERATING MODE
 //        0 1  2  3  4  5  6  7  8  9 10 11
@@ -845,6 +893,8 @@ procedure TFT2000.SetMode(Q: TQSO);
 var
    m: Integer;
 begin
+   Inherited SetMode(Q);
+
    case Q.Mode of
       mCW: m := 3;
 
@@ -962,15 +1012,13 @@ end;
 // READ   F A ;
 // ANSWER F A P1 P1 P1 P1 P1 P1 P1 P1 P1 ;
 //
-procedure TFT2000.SetFreq(Hz : LongInt; fSetLastFreq: Boolean);
+procedure TFT2000.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 const
    cmd: array[0..1] of AnsiString = ( 'FA', 'FB' );
 var
    freq: AnsiString;
 begin
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    freq := AnsiStrings.RightStr(AnsiString(DupeString('0', 8)) + AnsiString(IntToStr(Hz)), 8);
    WriteData(cmd[_currentvfo] + freq + ';');
@@ -1038,6 +1086,10 @@ end;
 procedure TFT2000.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    WriteData('IF;');
 end;
 
@@ -1095,7 +1147,7 @@ end;
 
 procedure TFT1000.ExecuteCommand(S: AnsiString);
 var
-   i: LongInt;
+   i: TFrequency;
    M: TMode;
 begin
    try
@@ -1182,6 +1234,8 @@ var
    Command: AnsiString;
    para: byte;
 begin
+   Inherited SetMode(Q);
+
    para := 0;
 
    case Q.Mode of
@@ -1233,10 +1287,10 @@ begin
    WriteData(_nil3 + AnsiChar($FF) + AnsiChar($09));
 end;
 
-procedure TFT1011.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TFT1011.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
-   i, j: LongInt;
+   i, j: TFrequency;
 begin
    i := Hz;
    i := i div 10;
@@ -1267,9 +1321,7 @@ begin
       UpdateStatus;
    end;
 
-   if fSetLastFreq = True then begin
-      LastFreq := Hz;
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    FPollingTimer.Enabled := True;
 end;
@@ -1294,12 +1346,16 @@ end;
 procedure TFT1011.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    ExecuteCommand('');
 end;
 
 procedure TMARKV.ExecuteCommand(S: AnsiString);
 var
-   i: LongInt;
+   i: TFrequency;
    M: TMode;
 begin
    try
@@ -1375,7 +1431,7 @@ end;
 
 procedure TMARKVF.ExecuteCommand(S: AnsiString);
 var
-   i: LongInt;
+   i: TFrequency;
    M: TMode;
 begin
    try
@@ -1474,7 +1530,7 @@ begin
          btnOmniRig.Enabled := False;
       end;
 
-      if dmZlogGlobal.Settings._rigport[rignum] in [1 .. 20] then begin
+      if dmZlogGlobal.Settings.FRigControl[rignum].FControlPort in [1 .. 20] then begin
          rname := dmZlogGlobal.RigNameStr[rignum];
          if rname = 'None' then begin
             Exit;
@@ -1586,6 +1642,12 @@ begin
             rig._maxband := b430;
          end;
 
+         if rname = 'FT-710' then begin
+            rig:= TFT710.Create(rignum);
+            rig._minband := b19;
+            rig._maxband := b50;
+         end;
+
          if rname = 'JST-145' then begin
             rig := TJST145.Create(rignum);
             rig._minband := b19;
@@ -1622,9 +1684,6 @@ begin
          end;
 
          rig.name := rname;
-
-         // Initialize & Start
-         rig.Initialize();
       end;
    finally
       Result := rig;
@@ -1632,6 +1691,8 @@ begin
 end;
 
 procedure TRigControl.ImplementOptions(rig: Integer);
+var
+   i: Integer;
 begin
    Stop();
 
@@ -1646,32 +1707,10 @@ begin
    FRigs[2] := BuildRigObject(2);
    FRigs[3] := TVirtualRig.Create(3);
 
-   if FRigs[1] <> nil then begin
-      if dmZlogGlobal.Settings._transverter1 then begin
-         FRigs[1]._freqoffset := 1000 * dmZlogGlobal.Settings._transverteroffset1;
-      end
-      else begin
-         FRigs[1]._freqoffset := 0;
-      end;
-   end;
-
-   if FRigs[2] <> nil then begin
-      if dmZlogGlobal.Settings._transverter2 then begin
-         FRigs[2]._freqoffset := 1000 * dmZlogGlobal.Settings._transverteroffset2;
-      end
-      else begin
-         FRigs[2]._freqoffset := 0;
-      end;
-   end;
-
-   SetCurrentRig(rig);
-
-   SetSendFreq();
-
    // RIGコントロールのCOMポートと、CWキーイングのポートが同じなら
    // CWキーイングのCPDrvをRIGコントロールの物にすり替える
-   if ((FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._keyingport[1])) and
-      ((FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._keyingport[2])) then begin
+   if ((FRigs[1] <> nil) and (dmZlogGlobal.Settings.FRigControl[1].FControlPort = dmZlogGlobal.Settings.FRigControl[1].FKeyingPort)) and
+      ((FRigs[2] <> nil) and (dmZlogGlobal.Settings.FRigControl[2].FControlPort = dmZlogGlobal.Settings.FRigControl[2].FKeyingPort)) then begin
       PollingTimer1.Enabled := False;
       dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
       PollingTimer1.Enabled := True;
@@ -1680,34 +1719,63 @@ begin
       dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
       PollingTimer2.Enabled := True;
    end
-   else if (FRigs[1] <> nil) and (dmZlogGlobal.Settings._rigport[1] = dmZlogGlobal.Settings._keyingport[1]) then begin
+   else if (FRigs[1] <> nil) and (dmZlogGlobal.Settings.FRigControl[1].FControlPort = dmZlogGlobal.Settings.FRigControl[1].FKeyingPort) then begin
       PollingTimer1.Enabled := False;
       dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
       PollingTimer1.Enabled := True;
 
-      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
    end
-   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings._rigport[2] = dmZlogGlobal.Settings._keyingport[2]) then begin
-      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
+   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings.FRigControl[2].FControlPort = dmZlogGlobal.Settings.FRigControl[2].FKeyingPort) then begin
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
 
       PollingTimer2.Enabled := False;
       dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
       PollingTimer2.Enabled := True;
    end
    else begin
-      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings._keyingport[1]));
-      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings._keyingport[2]));
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
    end;
+
+   for i := 1 to 2 do begin
+      if FRigs[i] <> nil then begin
+         if dmZlogGlobal.Settings.FRigControl[i].FUseTransverter then begin
+            FRigs[i]._freqoffset := 1000 * dmZlogGlobal.Settings.FRigControl[i].FTransverterOffset;
+         end
+         else begin
+            FRigs[i]._freqoffset := 0;
+         end;
+
+         // Initialize & Start
+         FRigs[i].Initialize();
+      end;
+   end;
+
+   SetCurrentRig(rig);
+
+   SetSendFreq();
 end;
 
 procedure TRigControl.Stop();
+var
+   i: Integer;
 begin
+   for i := 1 to 3 do begin
+      if Assigned(FRigs[i]) then begin
+         FRigs[i].StopRequest();
+      end;
+   end;
+
    Timer1.Enabled := False;
    PollingTimer1.Enabled := False;
    PollingTimer2.Enabled := False;
-   FreeAndNil(FRigs[1]);
-   FreeAndNil(FRigs[2]);
-   FreeAndNil(FRigs[3]);
+
+   for i := 1 to 3 do begin
+      if Assigned(FRigs[i]) then begin
+         FreeAndNil(FRigs[i]);
+      end;
+   end;
    FCurrentRig := nil;
 end;
 
@@ -1730,18 +1798,18 @@ begin
 
    _rignumber := RigNum;
    if _rignumber = 1 then begin
-      prtnr := dmZlogGlobal.Settings._rigport[1];
+      prtnr := dmZlogGlobal.Settings.FRigControl[1].FControlPort;
       FComm := MainForm.RigControl.ZCom1;
       FPollingTimer := MainForm.RigControl.PollingTimer1;
    end
    else begin
-      prtnr := dmZlogGlobal.Settings._rigport[2];
+      prtnr := dmZlogGlobal.Settings.FRigControl[2].FControlPort;
       FComm := MainForm.RigControl.ZCom2;
       FPollingTimer := MainForm.RigControl.PollingTimer2;
    end;
 
    // 9600bps以下は200msec, 19200bps以上は100msec
-   if dmZlogGlobal.Settings._rigspeed[RigNum] <= 4 then begin
+   if dmZlogGlobal.Settings.FRigControl[RigNum].FSpeed <= 4 then begin
       FPollingInterval := Min(dmZLogGlobal.Settings._polling_interval, 150);   // milisec
    end
    else begin
@@ -1750,7 +1818,7 @@ begin
 
    FComm.Disconnect;
    FComm.Port := TPortNumber(prtnr);
-   FComm.BaudRate := BaudRateToSpeed[ dmZlogGlobal.Settings._rigspeed[RigNum] ];
+   FComm.BaudRate := BaudRateToSpeed[ dmZlogGlobal.Settings.FRigControl[RigNum].FSpeed ];
    FComm.HwFlow := hfRTSCTS;
    FComm.SwFlow := sfNONE;
    FComm.EnableDTROnOpen := True;
@@ -1771,7 +1839,8 @@ begin
    _currentvfo := 0; // VFO A
    FLastCall := '';
    FLastRcvd := '';
-   LastFreq := 0;
+   FLastFreq := 0;
+   FLastMode := _currentmode;
 
    // LastMode := mCW;
    for B := b19 to b10g do begin
@@ -1786,6 +1855,8 @@ begin
    FRit := False;
    FXit := False;
    FRitOffset := 0;
+
+   FStopRequest := False;
 end;
 
 destructor TRig.Destroy;
@@ -1807,23 +1878,25 @@ begin
       FComm.ToggleDTR(False);
       FComm.ToggleRTS(False);
    end;
+
+   FStopRequest := False;
 end;
 
 procedure TRig.VFOAEqualsB;
 begin
 end;
 
-function TRig.CurrentFreqHz: LongInt;
+function TRig.CurrentFreqHz(): TFrequency;
 begin
    Result := _currentfreq[_currentvfo] + _freqoffset;
 end;
 
-function TRig.CurrentFreqKHz: LongInt;
+function TRig.CurrentFreqKHz(): TFrequency;
 begin
    Result := (_currentfreq[_currentvfo] + _freqoffset) div 1000;
 end;
 
-function TRig.CurrentFreqkHzStr: string;
+function TRig.CurrentFreqkHzStr(): string;
 begin
    Result := UzLogGlobal.kHzStr(CurrentFreqHz);
 end;
@@ -1852,7 +1925,16 @@ end;
 
 procedure TRig.MoveToLastFreq;
 begin
-   SetFreq(LastFreq, False);
+   SetFreq(FLastFreq, False);
+
+   if FLastMode <> _currentmode then begin
+      SetMode(FLastMode);
+
+      // もう一度周波数を設定(side bandずれ対策)
+      if dmZLogGlobal.Settings._bandscope_setfreq_after_mode_change = True then begin
+         SetFreq(FLastFreq, False);
+      end;
+   end;
 end;
 
 procedure TRig.AntSelect(no: Integer);
@@ -1969,18 +2051,63 @@ begin
 
    FMyAddr := $E0;
    FRigAddr := $01;
+
+   FCommandList := TList<AnsiString>.Create();
+   FCommThread := TIcomCommThread.Create(Self);
 end;
 
 procedure TICOM.Initialize();
 begin
    Inherited;
+   FCommThread.Start();
    SetVFO(0);
    FPollingTimer.Enabled := True;
 end;
 
 procedure TICOM.ICOMWriteData(S: AnsiString);
 begin
-   WriteData(AnsiChar($FE) + AnsiChar($FE) + AnsiChar(FRigAddr) + AnsiChar(FMyAddr) + S + AnsiChar($FD));
+   if FComm.Connected = False then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('[' + IntToStr(_rignumber) + '] @@@not connected@@@'));
+      {$ENDIF}
+      Exit;
+   end;
+
+   // コマンド送信時はポーリング中止
+   FPollingTimer.Enabled := False;
+
+   // コマンドキューに追加
+   IcomLock.Enter();
+   FCommandList.Add(S);
+   IcomLock.Leave();
+end;
+
+procedure TICOM.StartPolling();
+begin
+   if FStopRequest = True then begin
+      FPollingTimer.Enabled := False;
+      Exit;
+   end;
+
+   // トランシーブモード使わない時はポーリング再開
+   if (FUseTransceiveMode = False) then begin
+      FPollingTimer.Enabled := True;
+   end;
+
+   // トランシーブモード使う場合は１回か２回ポーリングする
+   if (FUseTransceiveMode = True) then begin
+      if ((FGetBandAndMode = True) and  (FPollingCount < 2)) or
+         ((FGetBandAndMode = False) and  (FPollingCount < 1)) then begin
+         FPollingTimer.Enabled := True;
+      end;
+   end;
+end;
+
+procedure TICOM.StopRequest();
+begin
+   Inherited;
+   FCommThread.Terminate();
+   FCommThread.WaitFor();
 end;
 
 constructor TFT1000MP.Create(RigNum: Integer);
@@ -2051,6 +2178,10 @@ end;
 destructor TICOM.Destroy;
 begin
    inherited;
+   FCommThread.Terminate();
+   FCommThread.WaitFor();
+   FCommThread.Free();
+   FCommandList.Free();
 end;
 
 destructor TFT1000MP.Destroy;
@@ -2146,6 +2277,10 @@ end;
 procedure TICOM.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+
+   if FStopRequest = True then begin
+      Exit;
+   end;
 
    if FGetBandAndMode = False then begin
       ICOMWriteData(AnsiChar($03));
@@ -2262,18 +2397,30 @@ end;
 procedure TFT1000MP.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    WriteData(_nil3 + AnsiChar($03) + AnsiChar($10));
 end;
 
 procedure TFT847.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    WriteData(_nil4 + AnsiChar($03));
 end;
 
 procedure TFT817.PollingProcess;
 begin
    FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    if Fchange then begin
       BufferString :='';
       Fchange := False;
@@ -2283,6 +2430,11 @@ end;
 
 procedure TTS2000P.PollingProcess;
 begin
+   FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
    WriteData('IF;');
 end;
 
@@ -2314,6 +2466,8 @@ var
    Command: AnsiString;
    para: AnsiChar;
 begin
+   Inherited SetMode(Q);
+
    { 1=LSB, 2=USB, 3=CW, 4=FM, 5=AM, 6=FSK, 7=CW-R, 8=FSK=R }
    para := '3';
    case Q.Mode of
@@ -2343,6 +2497,8 @@ procedure TJST145.SetMode(Q: TQSO);
 var
    para: AnsiString;
 begin
+   Inherited SetMode(Q);
+
    para := '';
    case Q.Mode of
       mSSB:
@@ -2372,6 +2528,8 @@ var
    Command: AnsiString;
    para: byte;
 begin
+   Inherited SetMode(Q);
+
    FPollingTimer.Enabled := False;
    try
       para := 3;
@@ -2409,6 +2567,8 @@ var
    Command: AnsiString;
    para: byte;
 begin
+   Inherited SetMode(Q);
+
    para := 0;
 
    case Q.Mode of
@@ -2433,9 +2593,29 @@ begin
    WriteData(Command);
 end;
 
+procedure TRig.SetMode(Q: TQSO);
+begin
+   _currentmode := Q.Mode;
+   FLastMode := _currentmode;
+end;
+
+procedure TRig.SetMode(M: TMode);
+var
+   Q: TQSO;
+begin
+   Q := TQSO.Create();
+   try
+      Q.Mode := M;
+      Q.Band := dmZLogGlobal.BandPlan.FreqToBand(FLastFreq);
+      SetMode(Q);
+   finally
+      Q.Free();
+   end;
+end;
+
 procedure TRig.SetBand(Q: TQSO);
 var
-   f: LongInt;
+   f: TFrequency;
 begin
    if (Q.Band < _minband) or (Q.Band > _maxband) then begin
       Exit;
@@ -2468,6 +2648,14 @@ end;
 procedure TRig.RitClear();
 begin
    FRitOffset := 0;
+end;
+
+procedure TRig.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
+begin
+   if fSetLastFreq = True then begin
+      FLastFreq := _currentfreq[_currentvfo];
+      FLastMode := _currentmode;
+   end;
 end;
 
 procedure TTS690.RitClear;
@@ -2630,13 +2818,11 @@ begin
    BufferString := '';
 end;
 
-procedure TTS690.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TTS690.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
 begin
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    fstr := AnsiString(IntToStr(Hz));
    while length(fstr) < 11 do begin
@@ -2649,13 +2835,11 @@ begin
       WriteData('FB' + fstr + ';');
 end;
 
-procedure TJST145.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TJST145.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
 begin
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    fstr := AnsiString(IntToStr(Hz));
    while length(fstr) < 8 do begin
@@ -2669,17 +2853,15 @@ begin
    WriteData('I1' + _CR);
 end;
 
-procedure TICOM.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TICOM.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
-   freq, i: LongInt;
+   freq, i: TFrequency;
 begin
+   Inherited SetFreq(Hz, fSetLastFreq);
+
    FPollingTimer.Enabled := False;
    try
-      if fSetLastFreq = True then begin
-         LastFreq := _currentfreq[_currentvfo];
-      end;
-
       freq := Hz;
       if freq < 0 then // > 2.1GHz is divided by 100 and given a negative value. Not implemented yet
       begin
@@ -2828,7 +3010,8 @@ begin
    _currentfreq[0] := 0;
    _currentfreq[1] := 0;
    _currentvfo := 0; // VFO A
-   LastFreq := 0;
+   FLastFreq := 0;
+   FLastMode := _currentmode;
 
    for B := b19 to b10g do begin
       for M := mCW to mOther do begin
@@ -2879,7 +3062,7 @@ begin
    end;
 end;
 
-procedure TOmni.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TOmni.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 var
    o_RIG: IRigX;
 begin
@@ -2890,9 +3073,7 @@ begin
       o_RIG := MainForm.RigControl.FOmniRig.Rig2;
    end;
 
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    if _currentvfo = 0 then
       o_RIG.FreqA := Hz
@@ -2904,6 +3085,8 @@ procedure TOmni.SetMode(Q: TQSO);
 var
    o_RIG: IRigX;
 begin
+   Inherited SetMode(Q);
+
    if _rignumber = 1 then begin
       o_RIG := MainForm.RigControl.FOmniRig.Rig1;
    end
@@ -3025,7 +3208,8 @@ begin
    _currentfreq[0] := 0;
    _currentfreq[1] := 0;
    _currentvfo := 0; // VFO A
-   LastFreq := 0;
+   FLastFreq := 0;
+   FLastMode := _currentmode;
 
    for B := b19 to b10g do begin
       for M := mCW to mOther do begin
@@ -3051,7 +3235,7 @@ begin
    Inherited;
 end;
 
-procedure TVirtualRig.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TVirtualRig.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 var
    b: TBand;
 begin
@@ -3061,6 +3245,8 @@ end;
 
 procedure TVirtualRig.SetMode(Q: TQSO);
 begin
+   Inherited SetMode(Q);
+
    _currentmode := Q.Mode;
 end;
 
@@ -3098,14 +3284,12 @@ begin
    end;
 end;
 
-procedure TFT1000MP.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TFT1000MP.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
-   i, j: LongInt;
+   i, j: TFrequency;
 begin
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    i := Hz;
    i := i div 10;
@@ -3135,7 +3319,7 @@ procedure TTS690.ExecuteCommand(S: AnsiString);
 var
    Command: AnsiString;
    strTemp: string;
-   i: LongInt;
+   i: TFrequency;
    aa: Integer;
    M: TMode;
    b: TBand;
@@ -3297,7 +3481,7 @@ procedure TJST145.ExecuteCommand(S: AnsiString);
 var
    Command: AnsiString;
    strTemp: string;
-   i: LongInt;
+   i: TFrequency;
    aa: Integer;
    // B : TBand;
    M: TMode;
@@ -3353,46 +3537,60 @@ procedure TICOM.ExecuteCommand(S: AnsiString);
 var
    Command: byte;
    temp: byte;
-   i, i1, i2, i3, i4, i5: LongInt;
+   freq, i1, i2, i3, i4, i5: TFrequency;
    M: TMode;
    ss: AnsiString;
+   Index: Integer;
 begin
+   ss := S;
+
+   // プリアンブルチェック
+   Index := pos(AnsiChar($FE) + AnsiChar($FE), ss);
+   if Index = 0 then begin
+      Exit;
+   end;
+
+   // プリアンブル以前のゴミデータ削除
+   if Index > 1 then begin
+      Delete(ss, 1, Index - 1);
+   end;
+
+   // 最低６バイト必要
+   if Length(ss) < 6 then begin
+      Exit;
+   end;
+
+   // 宛先アドレスチェック
+   if not(Ord(ss[3]) in [0, FMyAddr]) then begin
+      Exit;
+   end;
+
+   // 送信元アドレスチェック
+   if ss[4] <> AnsiChar(FRigAddr) then begin
+      Exit;
+   end;
+
    try
-      // RigControl.label1.caption := S;
-      ss := S;
-      i := pos(AnsiChar($FE) + AnsiChar($FE), ss);
-
-      if i = 0 then begin
-         Exit;
-      end;
-
-      if i > 1 then begin
-         Delete(ss, 1, i - 1);
-      end;
-
-      if length(ss) < 6 then begin
-         Exit;
-      end;
-
-      if not(Ord(ss[3]) in [0, FMyAddr]) then begin
-         Exit;
-      end;
-
-      if ss[4] <> AnsiChar(FRigAddr) then begin
-         Exit;
-      end;
-
+      // プリアンブル、宛先アドレス、送信元アドレス削除
       Delete(ss, 1, 4);
+
+      // ポストアンブル削除
       Delete(ss, length(ss), 1);
 
+      // コマンド取りだし
       Command := Ord(ss[1]);
 
-      if length(ss) = 1 then begin
+      if Length(ss) = 1 then begin
          case Command of
-            $FA:
-               Exit; // ng message
-            $FB:
-               Exit; // ok message
+            // NG
+            $FA: begin
+               Exit;
+            end;
+
+            // OK
+            $FB: begin
+               Exit;
+            end;
          end;
          Exit;
       end;
@@ -3462,11 +3660,11 @@ begin
                i5 := 0;
             end;
 
-            i := i1 + 100 * i2 + 10000 * i3 + 1000000 * i4 + 100000000 * i5;
-            _currentfreq[_currentvfo] := i;
-            i := i + _freqoffset;
+            freq := i1 + 100 * i2 + 10000 * i3 + 1000000 * i4 + 100000000 * i5;
+            _currentfreq[_currentvfo] := freq;
+            freq := freq + _freqoffset;
 
-            UpdateFreqMem(_currentvfo, i);
+            UpdateFreqMem(_currentvfo, freq);
 
             if Selected then begin
                UpdateStatus;
@@ -3474,11 +3672,6 @@ begin
          end;
       end;
    finally
-      // トランシーブモード使わない時はポーリング再開
-      if (FUseTransceiveMode = False) or
-         ((FUseTransceiveMode = True) and (FGetBandAndMode = True) and  (FPollingCount < 2)) then begin
-         FPollingTimer.Enabled := True;
-      end;
    end;
 end;
 
@@ -3489,7 +3682,7 @@ end;
 
 procedure TFT100.ExecuteCommand(S: AnsiString);
 var
-   i: LongInt;
+   i: TFrequency;
    M: TMode;
 begin
    try
@@ -3552,7 +3745,7 @@ end;
 
 procedure TFT920.ExecuteCommand(S: AnsiString);
 var
-   i: LongInt;
+   i: TFrequency;
    M: TMode;
 begin
    try
@@ -3607,7 +3800,7 @@ end;
 
 procedure TFT1000MP.ExecuteCommand(S: AnsiString);
 var
-   i: LongInt;
+   i: TFrequency;
    M: TMode;
 begin
    try
@@ -3662,7 +3855,7 @@ end;
 
 procedure TFT847.ExecuteCommand(S: AnsiString);
 var
-   i: LongInt;
+   i: TFrequency;
    M: TMode;
 begin
    try
@@ -3725,14 +3918,12 @@ procedure TFT847.SetVFO(i: Integer);
 begin
 end;
 
-procedure TFT847.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
+procedure TFT847.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
-   i, j: LongInt;
+   i, j: TFrequency;
 begin
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    i := Hz;
    i := i div 10;
@@ -3763,6 +3954,8 @@ var
    Command: AnsiString;
    para: byte;
 begin
+   Inherited SetMode(Q);
+
    case Q.Mode of
       mSSB:
          if Q.Band <= b7 then
@@ -3791,39 +3984,21 @@ begin
 end;
 
 
-procedure TFT817.SetFreq(Hz: LongInt; fSetLastFreq: Boolean);
-//var
-//   StartTime: TDateTime;
+procedure TFT817.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 begin
-   FPollingTimer.Enabled := False;
-//   BufferString := '';
-   inherited;
-{   StartTime := Now;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
-   repeat
-      SleepEx(10, False)
-   until (BufferString <> '') or ((Now - StartTime) > (250 / (24 * 60 * 60 * 1000)));
- }
- //  BufferString := '';
+   FPollingTimer.Enabled := False;
    Fchange := True;
    sleep(130);    //waitがないとコマンド連投時に後のコマンドが欠落する
    FPollingTimer.Enabled := True;
 end;
 
 procedure TFT817.SetMode(Q: TQSO);
-//var
-//   StartTime: TDateTime;
 begin
-   FPollingTimer.Enabled := False;
-//   BufferString := '';
-   inherited;
-{   StartTime := Now;
+   Inherited SetMode(Q);
 
-   repeat
-      SleepEx(10, False)
-   until (BufferString <> '') or ((Now - StartTime) > (250 / (24 * 60 * 60 * 1000)));
- }
- //  BufferString := '';
+   FPollingTimer.Enabled := False;
    Fchange := True;
    sleep(130);  //waitがないとコマンド連投時に後のコマンドが欠落する
    FPollingTimer.Enabled := True;
@@ -3875,18 +4050,92 @@ begin
    end;
 end;
 
-procedure TFT991.SetFreq(Hz : LongInt; fSetLastFreq: Boolean);
+procedure TFT991.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 const
    cmd: array[0..1] of AnsiString = ( 'FA', 'FB' );
 var
    freq: AnsiString;
 begin
-   if fSetLastFreq = True then begin
-      LastFreq := _currentfreq[_currentvfo];
-   end;
+   Inherited SetFreq(Hz, fSetLastFreq);
 
    freq := AnsiStrings.RightStr(AnsiString(DupeString('0', 9)) + AnsiString(IntToStr(Hz)), 9);  // freq 9桁
    WriteData(cmd[_currentvfo] + freq + ';');
+end;
+
+//
+// CLAR
+//        0 1  2  3  4  5  6  7  8  9 10
+// SET    C F P1 P2 P3 P4 P5 P6 P7 P8 ;
+// READ   C F P1 P2 P3;
+// ANSWER C F P1 P2 P3 P4 P5 P6 P7 P8 ;
+// P1: 0:MAIN 1:SUB
+// P2: 0:固定
+// P3: 0:CLAR設定 1:CLAR周波数
+// P3 = 0
+//     P4: 0:RX CLAR OFF 1:RX CLAR ON
+//     P5: 0:TX CLAR OFF 1:TX CLAR ON
+//     P6-P8: 0(固定)
+// P3 = 1
+//     P4: +:プラスシフト
+//         -:マイナスシフト
+//     P5-P8: 0000-9999Hz
+//
+procedure TFT710.RitClear;
+begin
+   Inherited;
+   WriteData('CF001+0000;');
+end;
+
+procedure TFT710.SetRit(flag: Boolean);
+begin
+   Inherited;
+   if flag = True then begin
+      WriteData('CF00010000;');
+   end
+   else begin
+      WriteData('CF00000000;');
+   end;
+end;
+
+procedure TFT710.SetXit(flag: Boolean);
+begin
+   Inherited;
+   if flag = True then begin
+      WriteData('CF00001000;');
+   end
+   else begin
+      WriteData('CF00000000;');
+   end;
+end;
+
+procedure TFT710.SetRitOffset(offset: Integer);
+var
+   CMD: AnsiString;
+begin
+   if FRitOffset = offset then begin
+      Exit;
+   end;
+
+   if offset = 0 then begin
+      WriteData('CF001+0000;');
+   end
+   else if offset < 0 then begin
+      WriteData('CF001+0000;');
+      CMD := AnsiString('CF001-' + RightStr('0000' + IntToStr(Abs(offset)), 4) + ';');
+      WriteData(CMD);
+   end
+   else if offset > 0 then begin
+      WriteData('CF001+0000;');
+      CMD := AnsiString('CF001+' + RightStr('0000' + IntToStr(Abs(offset)), 4) + ';');
+      WriteData(CMD);
+   end;
+
+   Inherited;
+end;
+
+procedure TFT710.AntSelect(no: Integer);
+begin
+//
 end;
 
 procedure TRig.UpdateStatus;
@@ -3906,7 +4155,7 @@ begin
    MainForm.RigControl.UpdateFreq(_currentvfo,
                                   _freqoffset + _currentfreq[0],
                                   _freqoffset + _currentfreq[1],
-                                  _freqoffset + LastFreq,
+                                  _freqoffset + FLastFreq,
                                   CurrentQSO.Band,
                                   CurrentQSO.Mode);
 
@@ -3921,6 +4170,11 @@ begin
    MainForm.StatusLine.Panels[1].Text := S;
 
    MainForm.BandScopeMarkCurrentFreq(_currentband, _freqoffset + _currentfreq[_currentvfo]);
+end;
+
+procedure TRigControl.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TRigControl.FormCreate(Sender: TObject);
@@ -3954,11 +4208,24 @@ begin
    Stop();
 end;
 
-procedure TRigControl.Button1Click(Sender: TObject);
+procedure TRigControl.buttonReconnectRigsClick(Sender: TObject);
+var
+   rigno: Integer;
 begin
-   if FCurrentRig <> nil then begin
-      FCurrentRig.Reset;
+   if MessageBox(Handle, PChar(RECONNECT_ALL_RIGS), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
+      Exit;
    end;
+
+   MainForm.WriteStatusLine('', False);
+
+   rigno := GetCurrentRig();
+
+   // KeyingとRigControlを一旦終了
+   dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZlogGlobal.Settings.FRigControl[3].FKeyingPort));
+
+   ImplementOptions(rigno);
 end;
 
 procedure TRigControl.buttonJumpLastFreqClick(Sender: TObject);
@@ -3997,11 +4264,17 @@ begin
    end;
 end;
 
+procedure TRigControl.FormShow(Sender: TObject);
+begin
+   MainForm.AddTaskbar(Handle);
+end;
+
 procedure TRigControl.ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
 var
    i: Integer;
    ptr: PAnsiChar;
    str: AnsiString;
+   n: Integer;
 begin
    str := '';
    ptr := PAnsiChar(DataPtr);
@@ -4010,18 +4283,17 @@ begin
       str := str + AnsiChar(ptr[i]);
    end;
 
-   FRigs[TCommPortDriver(Sender).Tag].PassOnRxData(str)
+   n := TCommPortDriver(Sender).Tag;
+   if (n >= Low(FRigs)) and (n <= High(FRigs)) then begin
+      if Assigned(FRigs[n]) then begin
+         FRigs[n].PassOnRxData(str)
+      end;
+   end;
 end;
 
 procedure TRigControl.btnOmniRigClick(Sender: TObject);
 begin
    MainForm.RigControl.FOmniRig.DialogVisible := True;
-end;
-
-procedure TRigControl.CreateParams(var Params: TCreateParams);
-begin
-  inherited CreateParams(Params);
-  Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
 procedure TRigControl.SetSendFreq();
@@ -4044,9 +4316,9 @@ begin
    end;
 end;
 
-procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: Integer; b: TBand; m: TMode);
+procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: TFrequency; b: TBand; m: TMode);
 var
-   vfo: array[0..1] of Integer;
+   vfo: array[0..1] of TFrequency;
 begin
    vfo[0] := VfoA;
    vfo[1] := VfoB;
@@ -4111,5 +4383,196 @@ begin
       Rig.RitOffset := offset;
    end;
 end;
+
+{ TIcomCommThread }
+
+constructor TIcomCommThread.Create(rig: TICOM);
+begin
+   Inherited Create(True);
+   FRig := rig;
+end;
+
+procedure TIcomCommThread.Execute();
+var
+   S: AnsiString;
+   R: AnsiString;
+   msg: string;
+   proc: TReceiveDataEvent;
+   E: Integer;
+
+   {$IFDEF DEBUG}
+   procedure DebugDump(T: string; S: AnsiString; E: Integer);
+   var
+      str: string;
+      i: Integer;
+      L: Integer;
+   begin
+      L := Length(S);
+      str := '';
+      for i := 1 to L do begin
+         str := str + IntToHex(Byte(S[i]),2) + ' ';
+      end;
+      str := Trim(str);
+      OutputDebugString(PChar('*** ' + T + '=[' +
+      IntToStr(L) + '][' + str + '] *** (' + IntToStr(E) + ')'));
+   end;
+   {$ENDIF}
+begin
+   FRig.FComm.InputTimeout := 200;
+   while Terminated = False do begin
+      // コマンドなし
+      if FRig.FCommandList.Count = 0 then begin
+         Sleep(50);
+         Continue;
+      end;
+
+      // コマンド取りだし
+      IcomLock.Enter();
+      S := FRig.FCommandList.Items[0];
+      proc := FRig.FComm.OnReceiveData;
+      FRig.FComm.OnReceiveData := nil;
+      IcomLock.Leave();
+
+      {$IFDEF DEBUG}
+//      DebugDump('コマンド', S, E);
+      {$ENDIF}
+
+      // 送信
+      S := AnsiChar($FE) + AnsiChar($FE) + AnsiChar(FRig.FRigAddr) + AnsiChar(FRig.FMyAddr) + S + AnsiChar($FD);
+      FRig.WriteData(S);
+      {$IFDEF DEBUG}
+      DebugDump('送信コマンド', S, E);
+      {$ENDIF}
+
+      // ちょっと待って
+      Sleep(10);
+
+      // 最初の応答電文受信
+      R := RecvText(E);
+
+      {$IFDEF DEBUG}
+      if E >= 0 then begin
+         DebugDump('受信①', R, E);
+      end;
+      {$ENDIF}
+
+      // それはエコーバックか？
+      if S = R then begin
+         // 本当の応答電文受信
+         R := RecvText(E);
+
+         {$IFDEF DEBUG}
+         if E >= 0 then begin
+            DebugDump('受信②', R, E);
+         end;
+         {$ENDIF}
+      end;
+
+      // エラー有り
+      if E = -1 then begin
+         msg := 'No response from ' + FRig.Name;
+         {$IFDEF DEBUG}
+         msg := msg + ' (' + IntToHex(Byte(S[5])) + ')';
+         OutputDebugString(PChar('[' + IntToStr(FRig._rignumber) + '] ' + msg));
+         {$ENDIF}
+         MainForm.WriteStatusLineRed(msg, True);
+      end
+      else begin
+         // レスポンス処理
+         FResponse := R;
+         Synchronize(SyncProc);
+      end;
+
+      // コマンド削除
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('*** コマンド削除 ***'));
+      {$ENDIF}
+      IcomLock.Enter();
+      FRig.FCommandList.Delete(0);
+      IcomLock.Leave();
+
+      // ポーリング再開
+      FRig.StartPolling();
+
+      IcomLock.Enter();
+      FRig.FComm.OnReceiveData := proc;
+      IcomLock.Leave();
+   end;
+end;
+
+function TIcomCommThread.RecvText(var nErrorCode: Integer): AnsiString;
+var
+   c: Integer;
+   dwTick: DWORD;
+   fStart: Boolean;
+   fResult: Boolean;
+   CH: AnsiChar;
+begin
+   // 応答受信 FE～FDまで受信
+   nErrorCode := 0;
+   fStart := False;
+   c := 0;
+   dwTick := GetTickCount();
+   Result := '';
+   while True do begin
+      Sleep(0);
+      CH := #00;
+      fResult := FRig.FComm.ReadChar(CH);
+      if fResult = False then begin
+         // タイムアウト判定１文字目が来るまで
+         if (c = 0) and
+            ((GetTickCount() - dwTick) > dmZLogGlobal.Settings._icom_response_timeout) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('*** レスポンスなし ***'));
+            {$ENDIF}
+            Result := '';
+            nErrorCode := -1;
+            Exit;
+         end;
+
+         // ２文字目以降
+         if (c >= 1) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('*** これ以降データなし ***'));
+            {$ENDIF}
+            nErrorCode := 1;
+            Break;
+         end;
+      end;
+
+      // スタートキャラクタ待ち
+      if (fStart = False) then begin
+         if (CH = #$FE) then begin
+            fStart := True;
+         end
+         else begin
+            Continue;
+         end;
+      end;
+
+      // スタートしたらバッファに格納
+      if fStart = True then begin
+         Result := Result + CH;
+         Inc(c);
+      end;
+
+      // 終端文字まで受信したら終了
+      if CH = FRig.TerminatorCode then begin
+         nErrorCode := 0;
+         Break;
+      end;
+   end;
+end;
+
+procedure TIcomCommThread.SyncProc();
+begin
+   FRig.ExecuteCommand(FResponse);
+end;
+
+initialization
+   IcomLock := TCriticalSection.Create();
+
+finalization
+   IcomLock.Free();
 
 end.

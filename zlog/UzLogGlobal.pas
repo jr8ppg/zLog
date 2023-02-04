@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
-  System.Math, Vcl.Graphics, System.DateUtils,
+  System.Math, Vcl.Graphics, System.DateUtils, Generics.Collections, Generics.Defaults,
   UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
   UQsoTarget;
 
@@ -31,7 +31,6 @@ type
     _eispacefactor : word;
     _send_nr_auto: Boolean;            // Send NR automatically
     _not_send_leading_zeros: Boolean;  // Not send leading zeros in serial number
-    _keying_signal_reverse: Boolean;
 
     CWStrImported: array[1..maxbank, 1..maxmessage] of Boolean;
 
@@ -56,6 +55,7 @@ type
   TSuperCheckParam = record
     FSuperCheckMethod: Integer;
     FSuperCheckFolder: string;
+    FAcceptDuplicates: Boolean;
     FFullMatchHighlight: Boolean;
     FFullMatchColor: TColor;
   end;
@@ -77,6 +77,21 @@ type
     FBold: Boolean;
     FBackColor2: TColor;
     FBackColor3: TColor;
+  end;
+
+  TRigSetting = record
+    FControlPort: Integer; {0 : none 1-4 : com#}
+    FSpeed: Integer;
+    FRigName: string;
+    FKeyingPort: Integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
+    FUseTransverter: Boolean;
+    FTransverterOffset: Integer;
+    FKeyingIsRTS: Boolean;
+  end;
+
+  TRigSet = record
+    FRig: array[b19..b10g] of Integer;
+    FAnt: array[b19..b10g] of Integer;
   end;
 
   TSettingsParam = record
@@ -103,6 +118,7 @@ type
     _usebandscope: array[b19..HiBand] of Boolean;
     _usebandscope_current: Boolean;
     _usebandscope_newmulti: Boolean;
+    _usebandscope_allbands: Boolean;
     _bandscopecolor: array[1..7] of TColorSetting;
     _bandscope_freshness_mode: Integer;
     _bandscope_freshness_icon: Integer;
@@ -117,13 +133,12 @@ type
     CW : TCWSettingsParam;
     _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
 
-    _rigport:  array[1..2] of Integer; {0 : none 1-4 : com#}
-    _rigspeed: array[1..2] of Integer;
-    _rigname:  array[1..2] of string;
-    _keyingport: array[1..3] of Integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
+    FRigControl: array[1..5] of TRigSetting;
+    FRigSet: array[1..2] of TRigSet;
 
     _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
+    _icom_response_timeout: Integer;
     _usbif4cw_sync_wpm: Boolean;
     _polling_interval: Integer;
 
@@ -154,10 +169,13 @@ type
     _multistationwarning : boolean; // true by default. turn off not new mult warning dialog
     _sentstr : string; {exchanges sent $Q$P$O etc. Set at menu select}
 
+    _rootpath: string;
     _soundpath : string;
     _backuppath : string;
     _cfgdatpath : string;
     _logspath : string;
+    _pluginpath: string;
+    _pluginlist: string;
 
     _pttenabled : boolean;
     _pttbefore : word;
@@ -173,6 +191,7 @@ type
     _countdownminute: Integer;
     _countperhour: Integer;
 
+    _displongdatetime: Boolean;
     _sameexchange : boolean; //true if exchange is same for all bands. false if serial etc.
     _entersuperexchange : boolean;
     _jmode : boolean;
@@ -189,10 +208,6 @@ type
     _movetomemo : boolean; // move to memo w/ spacebar when editing past qsos
     _recrigfreq : boolean; // record rig freq in memo
 
-    _transverter1 : boolean;
-    _transverter2 : boolean;
-    _transverteroffset1 : integer;
-    _transverteroffset2 : integer;
     _syncserial : boolean; // synchronize serial # over network
     _switchcqsp : boolean; // switch cq/sp modes by shift+F
     _displaydatepartialcheck : boolean;
@@ -255,6 +270,10 @@ type
     FClusterRelaySpot: Boolean;
     FClusterNotifyCurrentBand: Boolean;
     FClusterRecordLogs: Boolean;
+    FClusterUseAllowDenyLists: Boolean;
+    FClusterIgnoreSHDX: Boolean;
+    FClusterReConnectMax: Integer;
+    FClusterRetryIntervalSec: Integer;
 
     // Z-Server Messages(ChatForm)
     FChatFormPopupNewMsg: Boolean;
@@ -270,6 +289,9 @@ type
     FELogSeniorJuniorCategory: string;
     FELogNewComerCategory: string;
 
+    // Band Plan
+    FBandPlanPresetList: string;
+
     // Guard Time after RIG Switch
     FRigSwitchGuardTime: Integer;
 
@@ -278,6 +300,11 @@ type
 
     // Base FontFace Name
     FBaseFontName: string;
+
+    // Analyze Options
+    FAnalyzeExcludeZeroPoints: Boolean;
+    FAnalyzeExcludeZeroHour: Boolean;
+    FAnalyzeShowCW: Boolean;
   end;
 
 var
@@ -304,7 +331,8 @@ type
   private
     { Private 宣言 }
     FErrorLogFileName: string;
-    FBandPlan: TBandPlan;
+    FBandPlans: TDictionary<string, TBandPlan>;
+    FCurrentBandPlan: string;
     FOpList: TOperatorInfoList;
 
     FTarget: TContestTarget;
@@ -348,6 +376,22 @@ type
     procedure SetLastBand(b: TBand);
     function GetLastMode(): TMode;
     procedure SetLastMode(m: TMode);
+
+    function GetRootPath(): string;
+    procedure SetRootPath(v: string);
+    function GetCfgDatPath(): string;
+    procedure SetCfgDatPath(v: string);
+    function GetLogPath(): string;
+    procedure SetLogPath(v: string);
+    function GetBackupPath(): string;
+    procedure SetBackupPath(v: string);
+    function GetSoundPath(): string;
+    procedure SetSoundPath(v: string);
+    function GetPluginPath(): string;
+    procedure SetPluginPath(v: string);
+    function GetSpcPath(): string;
+    procedure SetSpcPath(v: string);
+    function GetCurrentBandPlan(): TBandPlan;
 public
     { Public 宣言 }
     FCurrentFileName : string;
@@ -415,9 +459,21 @@ public
     property MyContinent: string read FMyContinent;
     property MyCQZone: string read FMyCQZone;
     property MyITUZone: string read FMyITUZone;
-    property BandPlan: TBandPlan read FBandPlan;
+    property BandPlans: TDictionary<string, TBandPlan> read FBandPlans;
+    property BandPlan: TBandPlan read GetCurrentBandPlan;
     property Target: TContestTarget read FTarget;
 
+    property RootPath: string read GetRootPath write SetRootPath;
+    property CfgDatPath: string read GetCfgDatPath write SetCfgDatPath;
+    property LogPath: string read GetLogPath write SetLogPath;
+    property BackupPath: string read GetBackupPath write SetBackupPath;
+    property SoundPath: string read GetSoundPath write SetSoundPath;
+    property PluginPath: string read GetPluginPath write SetPluginPath;
+    property SpcPath: string read GetSpcPath write SetSpcPath;
+
+    procedure SelectBandPlan(preset_name: string);
+
+    procedure CreateFolders();
     procedure WriteErrorLog(msg: string);
   end;
 
@@ -426,7 +482,7 @@ function CurrentFileName(): string;
 function Random10 : integer;
 function UTCOffset : integer;   //in minutes; utc = localtime + utcoffset
 function ContainsDoubleByteChar(S : string) : boolean;
-function kHzStr(Hz : Int64) : string;
+function kHzStr(Hz : TFrequency) : string;
 procedure IncEditCounter(aQSO : TQSO);
 function ExtractKenNr(S : string) : string; //extracts ken nr from aja#+power
 function ExtractPower(S : string) : string;
@@ -487,6 +543,12 @@ function BandToPower(B: TBand): TPower;
 
 function LoadResourceString(uID: Integer): string;
 
+function IsFullPath(strPath: string): Boolean;
+function AdjustPath(v: string): string;
+
+function ExpandEnvironmentVariables(strOriginal: string): string;
+procedure FormShowAndRestore(F: TForm);
+
 var
   dmZLogGlobal: TdmZLogGlobal;
 
@@ -501,6 +563,10 @@ uses
 {$R *.dfm}
 
 procedure TdmZLogGlobal.DataModuleCreate(Sender: TObject);
+var
+   bandplan: TBandPlan;
+   L: TStringList;
+   i: Integer;
 begin
    FCurrentFileName := '';
    FLog := nil;
@@ -527,8 +593,16 @@ begin
    FPrefixList := TPrefixList.Create();
    FCtyDatLoaded := Load_CTYDAT();
 
-   FBandPlan := TBandPlan.Create();
-   FBandPlan.LoadFromFile();
+   L := TStringList.Create();
+   L.CommaText := Settings.FBandPlanPresetList;
+   FBandPlans := TDictionary<string, TBandPlan>.Create();
+   for i := 0 to L.Count - 1 do begin
+      bandplan := TBandPlan.Create(L.Strings[i]);
+      bandplan.LoadFromFile();
+      FBandPlans.Add(bandplan.PresetName, bandplan);
+   end;
+   L.Free();
+   FCurrentBandPlan := 'JA';
 
    FTarget := TContestTarget.Create();
    FTarget.LoadFromFile();
@@ -540,9 +614,15 @@ begin
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
+var
+   bandplan: TBandPlan;
 begin
+   for bandplan in FBandPlans.Values do begin
+      bandplan.Free();
+   end;
+   FBandPlans.Free();
+
    FTarget.Free();
-   FBandPlan.Free();
    FCountryList.Free();
    FPrefixList.Free();
    SaveCurrentSettings();
@@ -643,6 +723,9 @@ begin
 
       // Display exchange on other bands
       Settings._sameexchange := ini.ReadBool('Preferences', 'SameExchange', False);
+
+      // Display long date time
+      Settings._displongdatetime := ini.ReadBool('Preferences', 'DispLongDateTime', False);
 
       // Multi Station Warning
       Settings._multistationwarning := ini.ReadBool('Preferences', 'MultiStationWarning', True);
@@ -784,9 +867,6 @@ begin
       // Not send leading zeros in serial number
       Settings.CW._not_send_leading_zeros := ini.ReadBool('CW', 'not_send_leading_zeros', False);
 
-      // Keying Signal(DTR) reverse
-      Settings.CW._keying_signal_reverse := ini.ReadBool('CW', 'keying_signal_reverse', False);
-
       //
       // Hardware
       //
@@ -826,29 +906,35 @@ begin
       Settings._zlink_telnet.FLocalEcho := ini.ReadBool('Z-Link', 'TELNETlocalecho', False);
 
       // RIG1
-      Settings._rigport[1] := ini.ReadInteger('Hardware', 'Rig', 0);
-      Settings._rigname[1] := ini.ReadString('Hardware', 'RigName', '');
-      Settings._rigspeed[1] := ini.ReadInteger('Hardware', 'RigSpeed', 0);
-      Settings._transverter1 := ini.ReadBool('Hardware', 'Transverter1', False);
-      Settings._transverteroffset1 := ini.ReadInteger('Hardware', 'Transverter1Offset', 0);
-      Settings._keyingport[1] := ini.ReadInteger('Hardware', 'CWLPTPort', 0);
+      Settings.FRigControl[1].FControlPort      := ini.ReadInteger('Hardware', 'Rig', 0);
+      Settings.FRigControl[1].FRigName          := ini.ReadString('Hardware', 'RigName', '');
+      Settings.FRigControl[1].FSpeed            := ini.ReadInteger('Hardware', 'RigSpeed', 0);
+      Settings.FRigControl[1].FUseTransverter   := ini.ReadBool('Hardware', 'Transverter1', False);
+      Settings.FRigControl[1].FTransverterOffset := ini.ReadInteger('Hardware', 'Transverter1Offset', 0);
+      Settings.FRigControl[1].FKeyingPort       := ini.ReadInteger('Hardware', 'CWLPTPort', 0);
+      Settings.FRigControl[1].FKeyingIsRTS      := ini.ReadBool('Hardware', 'keying_signal_reverse', False);
 
       // RIG2
-      Settings._rigport[2] := ini.ReadInteger('Hardware', 'Rig2', 0);
-      Settings._rigname[2] := ini.ReadString('Hardware', 'RigName2', '');
-      Settings._rigspeed[2] := ini.ReadInteger('Hardware', 'RigSpeed2', 0);
-      Settings._transverter2 := ini.ReadBool('Hardware', 'Transverter2', False);
-      Settings._transverteroffset2 := ini.ReadInteger('Hardware', 'Transverter2Offset', 0);
-      Settings._keyingport[2] := ini.ReadInteger('Hardware', 'CWLPTPort2', 0);
+      Settings.FRigControl[2].FControlPort      := ini.ReadInteger('Hardware', 'Rig2', 0);
+      Settings.FRigControl[2].FRigName          := ini.ReadString('Hardware', 'RigName2', '');
+      Settings.FRigControl[2].FSpeed            := ini.ReadInteger('Hardware', 'RigSpeed2', 0);
+      Settings.FRigControl[2].FUseTransverter   := ini.ReadBool('Hardware', 'Transverter2', False);
+      Settings.FRigControl[2].FTransverterOffset := ini.ReadInteger('Hardware', 'Transverter2Offset', 0);
+      Settings.FRigControl[2].FKeyingPort       := ini.ReadInteger('Hardware', 'CWLPTPort2', 0);
+      Settings.FRigControl[2].FKeyingIsRTS      := ini.ReadBool('Hardware', 'keying_signal_reverse2', False);
 
       // RIG3
-      Settings._keyingport[3] := ini.ReadInteger('Hardware', 'CWLPTPort3', 0);
+      Settings.FRigControl[3].FKeyingPort       := ini.ReadInteger('Hardware', 'CWLPTPort3', 0);
+      Settings.FRigControl[3].FKeyingIsRTS      := ini.ReadBool('Hardware', 'keying_signal_reverse3', False);
 
       // USE TRANSCEIVE MODE(ICOM only)
       Settings._use_transceive_mode := ini.ReadBool('Hardware', 'UseTransceiveMode', True);
 
       // Get band and mode when polling(ICOM only)
       Settings._icom_polling_freq_and_mode := ini.ReadBool('Hardware', 'PollingFreqAndMode', False);
+
+      // Response timeout(ICOM only)
+      Settings._icom_response_timeout := ini.ReadInteger('Hardware', 'IcomResponseTimeout', 1000);
 
       // USBIF4CW Sync WPM
       Settings._usbif4cw_sync_wpm := ini.ReadBool('Hardware', 'Usbif4cwSyncWpm', True);
@@ -929,33 +1015,38 @@ begin
       // Base FontFace Name
       Settings.FBaseFontName           := ini.ReadString('Preferences', 'BaseFontName', 'ＭＳ ゴシック');
 
+      // Analyze Options
+      Settings.FAnalyzeExcludeZeroPoints  := ini.ReadBool('Analyze', 'exclude_zero_points', False);
+      Settings.FAnalyzeExcludeZeroHour    := ini.ReadBool('Analyze', 'exclude_zero_Hour', False);
+      Settings.FAnalyzeShowCW             := ini.ReadBool('Analyze', 'show_cw', False);
+
       //
       // Path
       //
 
+      // Root
+      Settings._rootpath := ini.ReadString('Preferences', 'RootPath', '%ZLOG_ROOT%');
+
       // CFG/DAT
       Settings._cfgdatpath := ini.ReadString('Preferences', 'CFGDATPath', '');
-      if Settings._cfgdatpath <> '' then begin
-         Settings._cfgdatpath := IncludeTrailingPathDelimiter(Settings._cfgdatpath);
-      end;
+      Settings._cfgdatpath := AdjustPath(Settings._cfgdatpath);
 
       // Logs
       Settings._logspath := ini.ReadString('Preferences', 'LogsPath', '');
-      if Settings._logspath <> '' then begin
-         Settings._logspath := IncludeTrailingPathDelimiter(Settings._logspath);
-      end;
+      Settings._logspath := AdjustPath(Settings._logspath);
 
       // Back up path
       Settings._backuppath := ini.ReadString('Preferences', 'BackUpPath', '');
-      if Settings._backuppath <> '' then begin
-         Settings._backuppath := IncludeTrailingPathDelimiter(Settings._backuppath);
-      end;
+      Settings._backuppath := AdjustPath(Settings._backuppath);
 
       // Sound path
       Settings._soundpath := ini.ReadString('Preferences', 'SoundPath', '');
-      if Settings._soundpath <> '' then begin
-         Settings._soundpath := IncludeTrailingPathDelimiter(Settings._soundpath);
-      end;
+      Settings._soundpath := AdjustPath(Settings._soundpath);
+
+      // Plugin path
+      Settings._pluginpath := ini.ReadString('zylo', 'path', '');
+      Settings._pluginpath := AdjustPath(Settings._pluginpath);
+      Settings._pluginlist := ini.ReadString('zylo', 'items', '');
 
       //
       // Misc
@@ -1016,6 +1107,7 @@ begin
       // SuperCheck
       Settings.FSuperCheck.FSuperCheckMethod := ini.ReadInteger('SuperCheck', 'Method', 0);
       Settings.FSuperCheck.FSuperCheckFolder := ini.ReadString('SuperCheck', 'Folder', '');
+      Settings.FSuperCheck.FAcceptDuplicates := ini.ReadBool('SuperCheck', 'AcceptDuplicates', True);
       Settings.FSuperCheck.FFullMatchHighlight := ini.ReadBool('SuperCheck', 'FullMatchHighlight', True);
       Settings.FSuperCheck.FFullMatchColor := ZStringToColorDef(ini.ReadString('SuperCheck', 'FullMatchColor', '$7fffff'), clYellow);
 
@@ -1065,6 +1157,7 @@ begin
       Settings._usebandscope[b10g]  := ini.ReadBool('BandScopeEx', 'BandScope10GHz', False);
       Settings._usebandscope_current := ini.ReadBool('BandScope', 'Current', False);
       Settings._usebandscope_newmulti := ini.ReadBool('BandScope', 'NewMulti', False);
+      Settings._usebandscope_allbands := ini.ReadBool('BandScope', 'AllBands', False);
       Settings._bandscopecolor[1].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor1', '$000000'), clBlack);
       Settings._bandscopecolor[1].FBackColor := clWhite; //ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor1', '$ffffff'), clWhite);
       Settings._bandscopecolor[1].FBold      := ini.ReadBool('BandScopeEx', 'Bold1', True);
@@ -1192,6 +1285,10 @@ begin
       Settings.FClusterRelaySpot       := ini.ReadBool('ClusterWindow', 'RelaySpot', False);
       Settings.FClusterNotifyCurrentBand := ini.ReadBool('ClusterWindow', 'NotifyCurrentBand', False);
       Settings.FClusterRecordLogs      := ini.ReadBool('ClusterWindow', 'RecordLogs', False);
+      Settings.FClusterUseAllowDenyLists := ini.ReadBool('ClusterWindow', 'UseAllowDenyLists', False);
+      Settings.FClusterIgnoreSHDX      := ini.ReadBool('ClusterWindow', 'IgnoreSHDX', True);
+      Settings.FClusterReConnectMax    := ini.ReadInteger('ClusterWindow', 'ReConnectMax', 10);
+      Settings.FClusterRetryIntervalSec := ini.ReadInteger('ClusterWindow', 'RetryIntervalSec', 180);
 
       // Z-Server Messages(ChatForm)
       Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
@@ -1206,6 +1303,9 @@ begin
       // JARL E-LOG
       Settings.FELogSeniorJuniorCategory  := ini.ReadString('ELOG', 'SeniorJunior', 'XS,CS,SOSV,SOJR');
       Settings.FELogNewComerCategory      := ini.ReadString('ELOG', 'NewComer', 'PN');
+
+      // Band Plan
+      Settings.FBandPlanPresetList := ini.ReadString('BandPlan', 'PresetNameList', 'JA,DX');
    finally
       ini.Free();
       slParam.Free();
@@ -1267,6 +1367,9 @@ begin
 
       // Display exchange on other bands
       ini.WriteBool('Preferences', 'SameExchange', Settings._sameexchange);
+
+      // Display long date time
+      ini.WriteBool('Preferences', 'DispLongDateTime', Settings._displongdatetime);
 
       // Multi Station Warning
       ini.WriteBool('Preferences', 'MultiStationWarning', Settings._multistationwarning);
@@ -1386,9 +1489,6 @@ begin
       // Not send leading zeros in serial number
       ini.ReadBool('CW', 'not_send_leading_zeros', Settings.CW._not_send_leading_zeros);
 
-      // Keying Signal(DTR) reverse
-      ini.WriteBool('CW', 'keying_signal_reverse', Settings.CW._keying_signal_reverse);
-
       //
       // Hardware
       //
@@ -1428,29 +1528,35 @@ begin
       ini.WriteBool('Z-Link', 'TELNETlocalecho', Settings._zlink_telnet.FLocalEcho);
 
       // RIG1
-      ini.WriteInteger('Hardware', 'Rig', Settings._rigport[1]);
-      ini.WriteString('Hardware', 'RigName', Settings._rigname[1]);
-      ini.WriteInteger('Hardware', 'RigSpeed', Settings._rigspeed[1]);
-      ini.WriteBool('Hardware', 'Transverter1', Settings._transverter1);
-      ini.WriteInteger('Hardware', 'Transverter1Offset', Settings._transverteroffset1);
-      ini.WriteInteger('Hardware', 'CWLPTPort', Settings._keyingport[1]);
+      ini.WriteInteger('Hardware', 'Rig', Settings.FRigControl[1].FControlPort);
+      ini.WriteString('Hardware', 'RigName', Settings.FRigControl[1].FRigName);
+      ini.WriteInteger('Hardware', 'RigSpeed', Settings.FRigControl[1].FSpeed);
+      ini.WriteBool('Hardware', 'Transverter1', Settings.FRigControl[1].FUseTransverter);
+      ini.WriteInteger('Hardware', 'Transverter1Offset', Settings.FRigControl[1].FTransverterOffset);
+      ini.WriteInteger('Hardware', 'CWLPTPort', Settings.FRigControl[1].FKeyingPort);
+      ini.WriteBool('Hardware', 'keying_signal_reverse', Settings.FRigControl[1].FKeyingIsRTS);
 
       // RIG2
-      ini.WriteInteger('Hardware', 'Rig2', Settings._rigport[2]);
-      ini.WriteString('Hardware', 'RigName2', Settings._rigname[2]);
-      ini.WriteInteger('Hardware', 'RigSpeed2', Settings._rigspeed[2]);
-      ini.WriteBool('Hardware', 'Transverter2', Settings._transverter2);
-      ini.WriteInteger('Hardware', 'Transverter2Offset', Settings._transverteroffset2);
-      ini.WriteInteger('Hardware', 'CWLPTPort2', Settings._keyingport[2]);
+      ini.WriteInteger('Hardware', 'Rig2', Settings.FRigControl[2].FControlPort);
+      ini.WriteString('Hardware', 'RigName2', Settings.FRigControl[2].FRigName);
+      ini.WriteInteger('Hardware', 'RigSpeed2', Settings.FRigControl[2].FSpeed);
+      ini.WriteBool('Hardware', 'Transverter2', Settings.FRigControl[2].FUseTransverter);
+      ini.WriteInteger('Hardware', 'Transverter2Offset', Settings.FRigControl[2].FTransverterOffset);
+      ini.WriteInteger('Hardware', 'CWLPTPort2', Settings.FRigControl[2].FKeyingPort);
+      ini.WriteBool('Hardware', 'keying_signal_reverse2', Settings.FRigControl[2].FKeyingIsRTS);
 
       // RIG3
-      ini.WriteInteger('Hardware', 'CWLPTPort3', Settings._keyingport[3]);
+      ini.WriteInteger('Hardware', 'CWLPTPort3', Settings.FRigControl[3].FKeyingPort);
+      ini.WriteBool('Hardware', 'keying_signal_reverse3', Settings.FRigControl[3].FKeyingIsRTS);
 
       // USE TRANSCEIVE MODE(ICOM only)
       ini.WriteBool('Hardware', 'UseTransceiveMode', Settings._use_transceive_mode);
 
       // Get band and mode when polling(ICOM only)
       ini.WriteBool('Hardware', 'PollingFreqAndMode', Settings._icom_polling_freq_and_mode);
+
+      // Response timeout(ICOM only)
+      ini.WriteInteger('Hardware', 'IcomResponseTimeout', Settings._icom_response_timeout);
 
       // USBIF4CW Sync WPM
       ini.WriteBool('Hardware', 'Usbif4cwSyncWpm', Settings._usbif4cw_sync_wpm);
@@ -1525,9 +1631,17 @@ begin
       // Base FontFace Name
       ini.WriteString('Preferences', 'BaseFontName', Settings.FBaseFontName);
 
+      // Analyze Options
+      ini.WriteBool('Analyze', 'exclude_zero_points', Settings.FAnalyzeExcludeZeroPoints);
+      ini.WriteBool('Analyze', 'exclude_zero_Hour', Settings.FAnalyzeExcludeZeroHour);
+      ini.WriteBool('Analyze', 'show_cw', Settings.FAnalyzeShowCW);
+
       //
       // Path
       //
+
+      // Root
+      ini.WriteString('Preferences', 'RootPath', Settings._rootpath);
 
       // CFG/DAT
       ini.WriteString('Preferences', 'CFGDATPath', Settings._cfgdatpath);
@@ -1540,6 +1654,10 @@ begin
 
       // Sound path
       ini.WriteString('Preferences', 'SoundPath', Settings._soundpath);
+
+      // Plugin path
+      ini.WriteString('zylo', 'path', Settings._pluginpath);
+      ini.WriteString('zylo', 'items', Settings._pluginlist);
 
       //
       // Misc
@@ -1594,6 +1712,7 @@ begin
       // SuperCheck
       ini.WriteInteger('SuperCheck', 'Method', Settings.FSuperCheck.FSuperCheckMethod);
       ini.WriteString('SuperCheck', 'Folder', Settings.FSuperCheck.FSuperCheckFolder);
+      ini.WriteBool('SuperCheck', 'AcceptDuplicates', Settings.FSuperCheck.FAcceptDuplicates);
       ini.WriteBool('SuperCheck', 'FullMatchHighlight', Settings.FSuperCheck.FFullMatchHighlight);
       ini.WriteString('SuperCheck', 'FullMatchColor', ZColorToString(Settings.FSuperCheck.FFullMatchColor));
 
@@ -1643,6 +1762,7 @@ begin
       ini.WriteBool('BandScopeEx', 'BandScope10GHz', Settings._usebandscope[b10g]);
       ini.WriteBool('BandScope', 'Current', Settings._usebandscope_current);
       ini.WriteBool('BandScope', 'NewMulti', Settings._usebandscope_newmulti);
+      ini.WriteBool('BandScope', 'AllBands', Settings._usebandscope_allbands);
       ini.WriteString('BandScopeEx', 'ForeColor1', ZColorToString(Settings._bandscopecolor[1].FForeColor));
       ini.WriteString('BandScopeEx', 'BackColor1', ZColorToString(Settings._bandscopecolor[1].FBackColor));
       ini.WriteBool('BandScopeEx', 'Bold1', Settings._bandscopecolor[1].FBold);
@@ -1729,6 +1849,10 @@ begin
       ini.WriteBool('ClusterWindow', 'RelaySpot', Settings.FClusterRelaySpot);
       ini.WriteBool('ClusterWindow', 'NotifyCurrentBand', Settings.FClusterNotifyCurrentBand);
       ini.WriteBool('ClusterWindow', 'RecordLogs', Settings.FClusterRecordLogs);
+      ini.WriteBool('ClusterWindow', 'UseAllowDenyLists', Settings.FClusterUseAllowDenyLists);
+      ini.WriteBool('ClusterWindow', 'IgnoreSHDX', Settings.FClusterIgnoreSHDX);
+      ini.WriteInteger('ClusterWindow', 'ReConnectMax', Settings.FClusterReConnectMax);
+      ini.WriteInteger('ClusterWindow', 'RetryIntervalSec', Settings.FClusterRetryIntervalSec);
 
       // Z-Server Messages(ChatForm)
       ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);
@@ -1739,6 +1863,9 @@ begin
       // Quick Reference
       ini.WriteInteger('QuickReference', 'FontSize', Settings.FQuickRefFontSize);
       ini.WriteString('QuickReference', 'FontFace', Settings.FQuickRefFontFace);
+
+      // Band Plan
+      ini.WriteString('BandPlan', 'PresetNameList', Settings.FBandPlanPresetList);
    finally
       ini.Free();
       slParam.Free();
@@ -1800,16 +1927,19 @@ begin
 
    // RIGコントロールと同じポートの場合は無しとする
    for i := 0 to 1 do begin
-      if (Settings._rigport[i + 1] <> Settings._keyingport[i + 1]) then begin
-         dmZLogKeyer.KeyingPort[i] := TKeyingPort(Settings._keyingport[i + 1]);
+      if (Settings.FRigControl[i + 1].FControlPort <> Settings.FRigControl[i + 1].FKeyingPort) then begin
+         dmZLogKeyer.KeyingPort[i] := TKeyingPort(Settings.FRigControl[i + 1].FKeyingPort);
       end
       else begin
          dmZLogKeyer.KeyingPort[i] := tkpNone;
       end;
    end;
-   dmZLogKeyer.KeyingPort[2] := TKeyingPort(Settings._keyingport[3]);
+   dmZLogKeyer.KeyingPort[2] := TKeyingPort(Settings.FRigControl[3].FKeyingPort);
 
-   dmZLogKeyer.KeyingSignalReverse := Settings.CW._keying_signal_reverse;
+   dmZLogKeyer.KeyingSignalReverse[0] := Settings.FRigControl[1].FKeyingIsRTS;
+   dmZLogKeyer.KeyingSignalReverse[1] := Settings.FRigControl[2].FKeyingIsRTS;
+   dmZLogKeyer.KeyingSignalReverse[2] := Settings.FRigControl[3].FKeyingIsRTS;
+
    dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;
 
@@ -1962,7 +2092,7 @@ begin
    try
       dmZlogGlobal.MakeRigList(sl);
 
-      i := sl.IndexOf(Settings._rigname[Index]);
+      i := sl.IndexOf(Settings.FRigControl[Index].FRigName);
       if i = -1 then begin
          Result := sl[0];
       end
@@ -2163,6 +2293,8 @@ end;
 procedure TdmZLogGlobal.ReadMainFormState(var X, Y, W, H: integer; var TB1, TB2: boolean);
 var
    ini: TIniFile;
+   pt: TPoint;
+   mon: TMonitor;
 begin
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
@@ -2170,6 +2302,23 @@ begin
       Y := ini.ReadInteger('Windows', 'Main_Y', 0);
       W := ini.ReadInteger('Windows', 'Main_W', 0);
       H := ini.ReadInteger('Windows', 'Main_H', 0);
+
+      pt.X := X;
+      pt.Y := Y;
+      mon := Screen.MonitorFromPoint(pt, mdNearest);
+      if X < mon.Left then begin
+         X := mon.Left;
+      end;
+      if (X + W) > (mon.Left + mon.Width) then begin
+         X := (mon.Left + mon.Width) - W;
+      end;
+      if Y < mon.Top then begin
+         Y := mon.Top;
+      end;
+      if (Y + H) > (mon.Top + mon.Height) then begin
+         Y := (mon.Top + mon.Height) - H;
+      end;
+
       TB1 := ini.ReadBool('Windows', 'Main_ToolBar1', False);
       TB2 := ini.ReadBool('Windows', 'Main_ToolBar2', False);
    finally
@@ -2627,16 +2776,16 @@ begin
       end;
 end;
 
-function kHzStr(Hz: Int64): string;
+function kHzStr(Hz: TFrequency): string;
 var
-   k, kk: Int64;
+   k, kk: TFrequency;
 begin
    k := Hz div 1000;
    kk := Hz mod 1000;
    kk := kk div 100;
-   if k > 100000 then
-      Result := IntToStr(k)
-   else
+//   if k > 100000 then
+//      Result := IntToStr(k)
+//   else
       Result := IntToStr(k) + '.' + IntToStr(kk);
 end;
 
@@ -3301,6 +3450,11 @@ var
    S2: Char;
    S3: Char;
 begin
+   if strCallsign = '' then begin
+      Result := True;
+      Exit;
+   end;
+
    S1 := strCallsign[1];
    S2 := strCallsign[2];
    S3 := strCallsign[3];
@@ -3428,6 +3582,207 @@ begin
    if strPower = 'P' then Result := pwrP;
 end;
 
+function TdmZLogGlobal.GetRootPath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._rootpath);
+   if Settings._rootpath = '' then begin
+      Result := ExtractFilePath(Application.ExeName);
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetRootPath(v: string);
+begin
+   Settings._rootpath := v;
+end;
+
+function TdmZLogGlobal.GetCfgDatPath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._cfgdatpath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._cfgdatpath;
+   end
+   else begin
+      Result := RootPath + Settings._cfgdatpath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetCfgDatPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._cfgdatpath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._cfgdatpath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetLogPath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._logspath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._logspath;
+   end
+   else begin
+      Result := RootPath + Settings._logspath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetLogPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._logspath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._logspath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetBackupPath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._backuppath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._backuppath;
+   end
+   else begin
+      Result := RootPath + Settings._backuppath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetBackupPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._backuppath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._backuppath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetSoundPath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._soundpath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._soundpath;
+   end
+   else begin
+      Result := RootPath + Settings._soundpath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetSoundPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._soundpath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._soundpath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetPluginPath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._pluginpath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._pluginpath;
+   end
+   else begin
+      Result := RootPath + Settings._pluginpath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetPluginPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._pluginpath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._pluginpath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetSpcPath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings.FSuperCheck.FSuperCheckFolder);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings.FSuperCheck.FSuperCheckFolder;
+   end
+   else begin
+      Result := RootPath + Settings.FSuperCheck.FSuperCheckFolder;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetSpcPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings.FSuperCheck.FSuperCheckFolder := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings.FSuperCheck.FSuperCheckFolder := v;
+   end;
+end;
+
+procedure TdmZLogGlobal.SelectBandPlan(preset_name: string);
+begin
+   if FBandPlans.ContainsKey(preset_name) = False then begin
+      Exit;
+   end;
+   FCurrentBandPlan := preset_name;
+end;
+
+procedure TdmZLogGlobal.CreateFolders();
+var
+   strPath: string;
+begin
+   // Root
+   strPath := RootPath;
+   if strPath <> '' then begin
+      ForceDirectories(strPath);
+   end;
+
+   // CFG/DAT folder
+   strPath := CfgDatPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Logs folder
+   strPath := LogPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Backup folder
+   strPath := BackupPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Sound folder
+   strPath := SoundPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Plugins folder
+   strPath := PluginPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Super Check folder
+   strPath := SpcPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+end;
+
 procedure TdmZLogGlobal.WriteErrorLog(msg: string);
 var
    str: string;
@@ -3449,6 +3804,11 @@ begin
    CloseFile( txt );
 end;
 
+function TdmZLogGlobal.GetCurrentBandPlan(): TBandPlan;
+begin
+   Result := BandPlans[FCurrentBandPlan];
+end;
+
 function LoadResourceString(uID: Integer): string;
 var
    szText: array[0..1024] of Char;
@@ -3464,6 +3824,111 @@ begin
    else begin
       Result := '';
    end;
+end;
+
+function IsFullPath(strPath: string): Boolean;
+begin
+   // ２文字目に :\ があるとフルパス判定
+   if Pos(':\', strPath) = 2 then begin
+      Result := True;
+      Exit;
+   end;
+
+   // 先頭が \\ の場合もフルパス判定
+   if Pos('\\', strPath) = 1 then begin
+      Result := True;
+      Exit;
+   end;
+
+   Result := False;
+end;
+
+function AdjustPath(v: string): string;
+begin
+   if v = '\' then begin
+      v := '';
+   end;
+   Result := v;
+end;
+
+function GetEnvVar(strIn: string; startpos: Integer; var strOut: string): Integer;
+var
+   I: Integer;
+   S: string;
+   ch: Char;
+   fStart: Boolean;
+   L: Integer;
+begin
+   L := Length(strIn);
+   S := Copy(strIn, startpos, L - (startpos - 1) );
+
+   strOut := '';
+   fStart := False;
+   for I := 1 to Length(S) do begin
+      ch := S[I];
+      if ch = '%' then begin
+         if fStart = True then begin
+            strOut := strOut + ch;
+            Result := (i + 1);
+            Exit;
+         end
+         else begin
+            fStart := True;
+            strOut := '';
+         end;
+      end;
+
+      if fStart = True then begin
+         strOut := strOut + ch;
+      end;
+   end;
+
+   Result := -1;
+end;
+
+function ExpandEnvironmentVariables(strOriginal: string): string;
+var
+   I: Integer;
+   envstr: string;
+   envstr2: string;
+   strExpanded: string;
+   envvar_value: string;
+begin
+   strExpanded := strOriginal;
+   repeat
+      // １文字目から
+      I := 1;
+
+      // %～%の文字列を取り出す
+      I := GetEnvVar(strExpanded, I, envstr);
+
+      // あった
+      if I <> -1 then begin
+         // %削除
+         envstr2 := StringReplace(envstr, '%', '', [rfReplaceAll]);
+
+         // 環境変数の値で置き換え
+         if envstr2 = 'ZLOG_ROOT' then begin
+            envvar_value := ExtractFilePath(Application.ExeName);
+         end
+         else begin
+            envvar_value := GetEnvironmentVariable(envstr2);
+         end;
+
+         // 展開
+         strExpanded := StringReplace(strExpanded, envstr, envvar_value, [rfReplaceAll]);
+      end;
+   until I = -1;
+
+   Result := strExpanded;
+end;
+
+procedure FormShowAndRestore(F: TForm);
+begin
+   if F.WindowState = wsMinimized then begin
+      F.WindowState := wsNormal;
+   end;
+   F.Show();
 end;
 
 end.

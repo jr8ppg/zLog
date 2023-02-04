@@ -37,6 +37,11 @@ object MainForm: TMainForm
     Top = 383
     Width = 524
     Height = 20
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBtnText
+    Font.Height = -12
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = []
     Panels = <
       item
         Style = psOwnerDraw
@@ -49,6 +54,7 @@ object MainForm: TMainForm
         Width = 50
       end>
     SizeGrip = False
+    UseSystemFont = False
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
   end
@@ -5209,6 +5215,9 @@ object MainForm: TMainForm
       Height = 33
       Align = alTop
       TabOrder = 2
+      DesignSize = (
+        524
+        33)
       object SpeedButton4: TSpeedButton
         Left = 8
         Top = 4
@@ -5561,7 +5570,7 @@ object MainForm: TMainForm
         OnClick = actionShowQsoRateExecute
       end
       object LogButton: TSpeedButton
-        Left = 280
+        Left = 250
         Top = 4
         Width = 25
         Height = 25
@@ -5583,7 +5592,7 @@ object MainForm: TMainForm
         OnClick = LogButtonClick
       end
       object OptionsButton: TSpeedButton
-        Left = 318
+        Left = 288
         Top = 4
         Width = 25
         Height = 25
@@ -5628,7 +5637,7 @@ object MainForm: TMainForm
         OnClick = actionShowSuperCheckExecute
       end
       object PacketClusterButton: TSpeedButton
-        Left = 352
+        Left = 322
         Top = 4
         Width = 25
         Height = 25
@@ -5652,7 +5661,7 @@ object MainForm: TMainForm
         OnClick = actionShowPacketClusterExecute
       end
       object ZServerIcon: TImage
-        Left = 384
+        Left = 354
         Top = 4
         Width = 30
         Height = 25
@@ -5721,17 +5730,6 @@ object MainForm: TMainForm
         Transparent = True
         Visible = False
       end
-      object Button1: TButton
-        Left = 262
-        Top = 4
-        Width = 25
-        Height = 25
-        Caption = 'Button1'
-        TabOrder = 0
-        TabStop = False
-        Visible = False
-        OnClick = Button1Click
-      end
       object panelCQMode: TPanel
         Left = 490
         Top = 1
@@ -5746,8 +5744,20 @@ object MainForm: TMainForm
         Font.Name = 'Arial'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 1
+        TabOrder = 0
         OnClick = panelCQModeClick
+      end
+      object comboBandPlan: TComboBox
+        Left = 420
+        Top = 6
+        Width = 65
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        ImeMode = imDisable
+        TabOrder = 1
+        TabStop = False
+        OnChange = comboBandPlanChange
       end
     end
   end
@@ -5919,6 +5929,9 @@ object MainForm: TMainForm
       object menuShowInformation: TMenuItem
         Action = actionShowInformation
       end
+      object ShowMessageManagerSO2R1: TMenuItem
+        Action = actionShowMsgMgr
+      end
     end
     object menuSettings: TMenuItem
       Caption = #21508#31278#35373#23450'(&S)'
@@ -5964,7 +5977,6 @@ object MainForm: TMainForm
       end
     end
     object PluginMenu: TMenuItem
-      Caption = '&Plugins'
       Caption = #12503#12521#12464#12452#12531'(&P)'
       Visible = False
     end
@@ -6059,8 +6071,16 @@ object MainForm: TMainForm
         Caption = '-'
         Visible = False
       end
+      object menuPortal: TMenuItem
+        Caption = 'zLog'#12509#12540#12479#12523#12469#12452#12488'(&P)'
+        OnClick = menuPortalClick
+      end
+      object menuUsersGuide: TMenuItem
+        Caption = 'zLog'#12518#12540#12470#12540#12474#12460#12452#12489'(&U)'
+        OnClick = menuUsersGuideClick
+      end
       object HelpZyLO: TMenuItem
-        Caption = 'ZyLO'#12522#12501#12449#12524#12531#12473#12510#12491#12517#12450#12523'(&Z)'
+        Caption = 'ZyLO'#12503#12521#12464#12452#12531#38283#30330#12510#12491#12517#12450#12523'(&Z)'
         Hint = 'How to make ZyLO plugin'
         OnClick = HelpZyLOClick
       end
@@ -7226,6 +7246,25 @@ object MainForm: TMainForm
     object actionNoQsl: TAction
       Caption = 'actionNoQsl'
       OnExecute = actionNoQslExecute
+    end
+    object actionShowMsgMgr: TAction
+      Caption = 'Show Message Manager (SO2R)'
+      OnExecute = actionShowMsgMgrExecute
+    end
+    object actionChangeBand2: TAction
+      Tag = 1
+      Caption = 'actionChangeBand2'
+      OnExecute = actionChangeBandExecute
+    end
+    object actionChangeMode2: TAction
+      Tag = 1
+      Caption = 'actionChangeMode2'
+      OnExecute = actionChangeModeExecute
+    end
+    object actionChangePower2: TAction
+      Tag = 1
+      Caption = 'actionChangePower2'
+      OnExecute = actionChangePowerExecute
     end
   end
   object SPCMenu: TPopupMenu

@@ -19,6 +19,8 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure toolbuttonPlusClick(Sender: TObject);
     procedure toolbuttonMinusClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
   private
     { Private êÈåæ }
   public
@@ -30,6 +32,11 @@ implementation
 uses Main;
 
 {$R *.dfm}
+
+procedure TQuickRef.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
+end;
 
 procedure TQuickRef.FormCreate(Sender: TObject);
 begin
@@ -48,6 +55,11 @@ end;
 procedure TQuickRef.FormDestroy(Sender: TObject);
 begin
    dmZlogGlobal.WriteWindowState(Self);
+end;
+
+procedure TQuickRef.FormShow(Sender: TObject);
+begin
+   MainForm.AddTaskbar(Handle);
 end;
 
 procedure TQuickRef.MemoKeyPress(Sender: TObject; var Key: Char);

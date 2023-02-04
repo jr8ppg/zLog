@@ -36,9 +36,11 @@ library Zlog;
 {ITE} {DFMFileType} {UELogJarl1.dfm}
 {ITE} {DFMFileType} {UELogJarl2.dfm}
 {ITE} {DFMFileType} {UExceptionDialog.dfm}
+{ITE} {DFMFileType} {UExportCabrillo.dfm}
 {ITE} {DFMFileType} {UExportHamlog.dfm}
 {ITE} {DFMFileType} {UFDMulti.dfm}
 {ITE} {DFMFileType} {UFreqList.dfm}
+{ITE} {DFMFileType} {UFreqTest.dfm}
 {ITE} {DFMFileType} {UFunctionKeyPanel.dfm}
 {ITE} {DFMFileType} {UGeneralMulti2.dfm}
 {ITE} {DFMFileType} {UGeneralScore.dfm}
@@ -80,6 +82,7 @@ library Zlog;
 {ITE} {DFMFileType} {USixDownMulti.dfm}
 {ITE} {DFMFileType} {USo2rNeoCp.dfm}
 {ITE} {DFMFileType} {USpotForm.dfm}
+{ITE} {DFMFileType} {USpotterListDlg.dfm}
 {ITE} {DFMFileType} {UStatusEdit.dfm}
 {ITE} {DFMFileType} {USummaryInfo.dfm}
 {ITE} {DFMFileType} {USuperCheck.dfm}
@@ -139,9 +142,11 @@ library Zlog;
 {$R 'UELogJarl1.dfm' 'formELogJarl1:TForm'}
 {$R 'UELogJarl2.dfm' 'formELogJarl2:TForm'}
 {$R 'UExceptionDialog.dfm' 'ExceptionDialog:TForm'}
+{$R 'UExportCabrillo.dfm' 'formExportCabrillo:TForm'}
 {$R 'UExportHamlog.dfm' 'formExportHamlog:TForm'}
 {$R 'UFDMulti.dfm' 'FDMulti:TForm(ACAGMulti)'}
 {$R 'UFreqList.dfm' 'FreqList:TForm(CheckWin)'}
+{$R 'UFreqTest.dfm' 'formFreqTest:TForm'}
 {$R 'UFunctionKeyPanel.dfm' 'formFunctionKeyPanel:TForm'}
 {$R 'UGeneralMulti2.dfm' 'GeneralMulti2:TForm(ACAGMulti)'}
 {$R 'UGeneralScore.dfm' 'GeneralScore:TForm(BasicScore)'}
@@ -183,6 +188,7 @@ library Zlog;
 {$R 'USixDownMulti.dfm' 'SixDownMulti:TForm(FDMulti)'}
 {$R 'USo2rNeoCp.dfm' 'formSo2rNeoCp:TForm'}
 {$R 'USpotForm.dfm' 'SpotForm:TForm'}
+{$R 'USpotterListDlg.dfm' 'formSpotterListDlg:TForm'}
 {$R 'UStatusEdit.dfm' 'formStatusEdit:TForm'}
 {$R 'USummaryInfo.dfm' 'SummaryInfo:TForm'}
 {$R 'USuperCheck.dfm' 'SuperCheck:TForm'}

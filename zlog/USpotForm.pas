@@ -13,11 +13,11 @@ type
     CommentEdit: TEdit;
     Panel1: TPanel;
     SendButton: TButton;
-    Button2: TButton;
+    CancelButton: TButton;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
-    procedure Button2Click(Sender: TObject);
+    procedure CancelButtonClick(Sender: TObject);
     procedure SendButtonClick(Sender: TObject);
   private
     { Private declarations }
@@ -75,10 +75,9 @@ begin
    FreqEdit.Text := str;
    CallsignEdit.Text := aQSO.CallSign;
    CommentEdit.Text := '';
-   ShowModal;
 end;
 
-procedure TSpotForm.Button2Click(Sender: TObject);
+procedure TSpotForm.CancelButtonClick(Sender: TObject);
 begin
    Close;
 end;

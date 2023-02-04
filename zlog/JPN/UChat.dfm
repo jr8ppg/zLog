@@ -15,6 +15,7 @@ object ChatForm: TChatForm
   KeyPreview = True
   OldCreateOrder = True
   OnActivate = FormActivate
+  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
@@ -86,7 +87,6 @@ object ChatForm: TChatForm
     Font.Height = -12
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Style = []
-    ImeName = 'MS-IME97 '#26085#26412#35486#20837#21147#65404#65405#65411#65425
     ItemHeight = 12
     ParentFont = False
     TabOrder = 1

@@ -87,24 +87,24 @@ object Options: TOptions
         'LF')
     end
     object checkAutoLogin: TCheckBox
-      Left = 285
-      Top = 67
+      Left = 277
+      Top = 49
       Width = 121
       Height = 17
       Caption = 'Auto Login'
       TabOrder = 4
     end
     object checkAutoReconnect: TCheckBox
-      Left = 285
-      Top = 86
+      Left = 277
+      Top = 68
       Width = 121
       Height = 17
       Caption = 'Auto Reconnect'
       TabOrder = 5
     end
     object checkRecordLogs: TCheckBox
-      Left = 285
-      Top = 105
+      Left = 277
+      Top = 87
       Width = 121
       Height = 17
       Caption = 'Record logs'
@@ -120,6 +120,14 @@ object Options: TOptions
       ImeMode = imClose
       ParentBiDiMode = False
       TabOrder = 3
+    end
+    object checkUseAllowDenyLists: TCheckBox
+      Left = 277
+      Top = 106
+      Width = 135
+      Height = 17
+      Caption = 'Use Allow/Deny Lists'
+      TabOrder = 7
     end
   end
   object GroupBox2: TGroupBox
@@ -261,8 +269,6 @@ object Options: TOptions
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitTop = 376
-    ExplicitWidth = 449
     DesignSize = (
       431
       30)

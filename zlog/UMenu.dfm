@@ -24,9 +24,9 @@ object MenuForm: TMenuForm
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
-    Left = 388
+    Left = 409
     Top = 281
-    Width = 57
+    Width = 36
     Height = 13
     Alignment = taRightJustify
     Anchors = [akRight, akBottom]

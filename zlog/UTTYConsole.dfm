@@ -13,8 +13,10 @@ object TTYConsole: TTTYConsole
   KeyPreview = True
   Menu = MainMenu1
   OldCreateOrder = True
+  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
   object TPanel
@@ -57,7 +59,6 @@ object TTYConsole: TTTYConsole
       Width = 356
       Height = 147
       Align = alBottom
-      ImeName = #26085#26412#35486' (MS-IME2002)'
       Lines.Strings = (
         'TXLog')
       TabOrder = 1
@@ -78,7 +79,6 @@ object TTYConsole: TTTYConsole
       Width = 159
       Height = 240
       Align = alTop
-      ImeName = 'Microsoft IME 2000'
       ItemHeight = 12
       TabOrder = 0
       OnClick = CallsignListClick

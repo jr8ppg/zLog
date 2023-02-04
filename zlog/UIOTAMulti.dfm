@@ -113,7 +113,7 @@ inherited IOTAMulti: TIOTAMulti
   end
   inherited Grid: TStringGrid
     Top = 49
-    Height = 192
+    Height = 215
     ExplicitTop = 49
     ExplicitHeight = 192
   end

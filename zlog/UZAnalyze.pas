@@ -42,11 +42,13 @@ type
     FQso: Integer;
     FCw: Integer;
     FMulti: Integer;
+    FMultiCw: Integer;
     FPts: Integer;
   end;
 
   TQsoCount2 = record
     FQso: array[1..12] of Integer;
+    FCw: array[1..12] of Integer;
     FUnknown: Integer;
   end;
 
@@ -70,6 +72,7 @@ type
     checkExcludeZeroPoint: TCheckBox;
     checkExcludeZeroHour: TCheckBox;
     buttonSave: TButton;
+    checkShowCW: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -77,9 +80,9 @@ type
     procedure buttonCopyClick(Sender: TObject);
     procedure TabControl1Change(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure OnAnalyzeUpdate( var Message: TMessage ); message WM_ANALYZE_UPDATE;
     procedure buttonSaveClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private 宣言 }
     FStartHour: Integer;
@@ -94,15 +97,31 @@ type
     function GetAreaNumber(strCallsign: string): Integer;
     function GetLastHour(): Integer;
     procedure ShowZAQ(sl: TStrings);
-    procedure ShowZAF(sl: TStrings);
-    procedure ShowZAA(sl: TStrings);
-    procedure ShowZAA2(sl: TStrings; b: TBand);
-    procedure ShowZAA_band(sl: TStrings; b: TBand; nLastHour: Integer);
+    procedure ShowZAF(sl: TStrings; fShowCW: Boolean);
+    procedure ShowZAF_Result(sl: TStrings; fShowCW: Boolean);
+    procedure ShowZAF_Time(nLastHour: Integer; sl: TStrings; fShowCW: Boolean);
+    procedure ShowZAF_Accumulation(nLastHour: Integer; sl: TStrings; fShowCW: Boolean);
+    procedure ShowZAF_Multi(nLastHour: Integer; sl: TStrings; fShowCW: Boolean);
+    procedure ShowZAA(sl: TStrings; fShowCW: Boolean);
+    procedure ShowZAA2(sl: TStrings; b: TBand; fShowCW: Boolean);
+    procedure ShowZAA_band(sl: TStrings; b: TBand; nLastHour: Integer; fShowCW: Boolean);
     function HourText(hh: Integer): string;
+    function QsoToStr(cnt: Integer; len: Integer; zero: Boolean = False): string;
+    function CwToStr(cnt: Integer; len: Integer): string;
+    function CwToStrR(cnt: Integer; len: Integer): string;
     procedure ShowZAD(sl: TStrings);
-    procedure ShowZOP(sl: TStrings);
+    procedure ShowZOP(sl: TStrings; fShowCW: Boolean);
+    function GetExcludeZeroPoint(): Boolean;
+    procedure SetExcludeZeroPoint(v: Boolean);
+    function GetExcludeZeroHour(): Boolean;
+    procedure SetExcludeZeroHour(v: Boolean);
+    function GetShowCW(): Boolean;
+    procedure SetShowCW(v: Boolean);
   public
     { Public 宣言 }
+    property ExcludeZeroPoints: Boolean read GetExcludeZeroPoint write SetExcludeZeroPoint;
+    property ExcludeZeroHour: Boolean read GetExcludeZeroHour write SetExcludeZeroHour;
+    property ShowCW: Boolean read GetShowCW write SetShowCW;
   end;
 
 implementation
@@ -112,10 +131,9 @@ uses
 
 {$R *.dfm}
 
-procedure TZAnalyze.CreateParams(var Params: TCreateParams);
+procedure TZAnalyze.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TZAnalyze.FormCreate(Sender: TObject);
@@ -146,6 +164,8 @@ end;
 
 procedure TZAnalyze.FormShow(Sender: TObject);
 begin
+   MainForm.AddTaskbar(Handle);
+
    TotalTimeChart(Log.QsoList);
    ShowAll(Memo1.Lines);
    Memo1.SelStart := 0;
@@ -214,38 +234,77 @@ begin
    end;
 end;
 
-procedure TZAnalyze.ShowAll(sl: TStrings);
+function TZAnalyze.GetExcludeZeroPoint(): Boolean;
 begin
-   case TabControl1.TabIndex of
-      // ZAF
-      0: begin
-         ShowZAF(sl);
-      end;
+   Result := checkExcludeZeroPoint.Checked;
+end;
 
-      // ZAQ
-      1: begin
-         ShowZAQ(sl);
-      end;
+procedure TZAnalyze.SetExcludeZeroPoint(v: Boolean);
+begin
+   checkExcludeZeroPoint.Checked := v;
+end;
 
-      // ZAA
-      2: begin
-         ShowZAA2(sl, Main.CurrentQSO.Band);
-      end;
+function TZAnalyze.GetExcludeZeroHour(): Boolean;
+begin
+   Result := checkExcludeZeroHour.Checked;
+end;
 
-      // ZAA(ALL)
-      3: begin
-         ShowZAA(sl);
-      end;
+procedure TZAnalyze.SetExcludeZeroHour(v: Boolean);
+begin
+   checkExcludeZeroHour.Checked := v;
+end;
 
-      // ZAD
-      4: begin
-         ShowZAD(sl);
-      end;
+function TZAnalyze.GetShowCW(): Boolean;
+begin
+   Result := checkShowCW.Checked;
+end;
 
-      // ZOP
-      5: begin
-         ShowZOP(sl);
+procedure TZAnalyze.SetShowCW(v: Boolean);
+begin
+   checkShowCW.Checked := v;
+end;
+
+procedure TZAnalyze.ShowAll(sl: TStrings);
+var
+   fShowCW: Boolean;
+begin
+   sl.BeginUpdate();
+   try
+      fShowCW := checkShowCW.Checked;
+
+      case TabControl1.TabIndex of
+         // ZAF
+         0: begin
+            ShowZAF(sl, fShowCW);
+         end;
+
+         // ZAQ
+         1: begin
+            ShowZAQ(sl);
+         end;
+
+         // ZAA
+         2: begin
+            ShowZAA2(sl, Main.CurrentQSO.Band, fShowCW);
+         end;
+
+         // ZAA(ALL)
+         3: begin
+            ShowZAA(sl, fShowCW);
+         end;
+
+         // ZAD
+         4: begin
+            ShowZAD(sl);
+         end;
+
+         // ZOP
+         5: begin
+            ShowZOP(sl, fShowCW);
+         end;
       end;
+   finally
+      sl.EndUpdate();
    end;
 end;
 
@@ -261,6 +320,7 @@ begin
          FCountData[t][b].FQso := 0;
          FCountData[t][b].FCw := 0;
          FCountData[t][b].FMulti := 0;
+         FCountData[t][b].FMultiCw := 0;
          FCountData[t][b].FPts := 0;
       end;
    end;
@@ -269,6 +329,7 @@ begin
       for b := b19 to TBand(17) do begin
          for a := 1 to 12 do begin
             FCountData2[t][b].FQso[a] := 0;
+            FCountData2[t][b].FCw[a] := 0;
             FCountData2[t][b].FUnknown := 0;
          end;
       end;
@@ -379,12 +440,18 @@ begin
       end;
 
       // マルチ
-//      if Trim(qso.QSO.Multi1) <> '' then begin
       if qso.NewMulti1 = True then begin
          Inc(FCountData[t][b].FMulti);
          Inc(FCountData[HTOTAL][b].FMulti);              // 横計
          Inc(FCountData[t][VTOTAL].FMulti);              // 縦計
          Inc(FCountData[HTOTAL][VTOTAL].FMulti);         // 縦横計
+
+         if qso.Mode = mCW then begin
+            Inc(FCountData[t][b].FMultiCw);
+            Inc(FCountData[HTOTAL][b].FMultiCw);              // 横計
+            Inc(FCountData[t][VTOTAL].FMultiCw);              // 縦計
+            Inc(FCountData[HTOTAL][VTOTAL].FMultiCw);         // 縦横計
+         end;
       end;
 
       // エリア別
@@ -396,6 +463,13 @@ begin
          Inc(FCountData2[t][b].FQso[11]);                // 横計
          Inc(FCountData2[HTOTAL][b].FQso[a]);            // 縦計
          Inc(FCountData2[HTOTAL][b].FQso[11]);           // 縦横計
+
+         if qso.Mode = mCW then begin
+            Inc(FCountData2[t][b].FCw[a]);
+            Inc(FCountData2[t][b].FCw[11]);                // 横計
+            Inc(FCountData2[HTOTAL][b].FCw[a]);            // 縦計
+            Inc(FCountData2[HTOTAL][b].FCw[11]);           // 縦横計
+         end;
       end;
 
       // マルチ
@@ -451,6 +525,9 @@ begin
       s := Copy(strCallsign, p + 1);
       if CharInSet(s[1], ['0'..'9']) = True then begin
          Result := StrToIntdef(s[1], -1);
+         if Result = 0 then begin
+            Result := 10;
+         end;
          Exit;
       end;
    end;
@@ -581,16 +658,32 @@ begin
    sl.Add(strText);
 end;
 
-procedure TZAnalyze.ShowZAF(sl: TStrings);
+procedure TZAnalyze.ShowZAF(sl: TStrings; fShowCW: Boolean);
 var
-   b: TBand;
-   strText: string;
-   i: Integer;
-   cumulative_count: array[b19..CTOTAL] of Integer;
    nLastHour: Integer;
 begin
    sl.Clear();
+   nLastHour := GetLastHour();
 
+   // ＜結果＞
+   ShowZAF_Result(sl, fShowCW);
+
+   //＜時間ごとの交信局数＞
+   ShowZAF_Time(nLastHour, sl, fShowCW);
+
+   //＜時間ごとの累積交信局数＞　（括弧内は電信の内数）
+   ShowZAF_Accumulation(nLastHour, sl, fShowCW);
+
+   // ＜マルチプライヤーの獲得状況＞　（括弧内は電信の内数）
+   ShowZAF_Multi(nLastHour, sl, fShowCW);
+end;
+
+//＜結果＞
+procedure TZAnalyze.ShowZAF_Result(sl: TStrings; fShowCW: Boolean);
+var
+   strText: string;
+   b: TBand;
+begin
    sl.Add('＜結果＞');
    sl.Add('');
 
@@ -601,32 +694,44 @@ begin
          Continue;
       end;
 
-      strText := ' ' + RightStr('    ' + MHzString[b], 4) + ' MHz     ' +
-                 RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FQso), 4) + '      ' +
-                 RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FPts), 4) + '    ' +
-                 RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FMulti), 4);
+      strText := ' ' + RightStr('    ' + MHzString[b], 4) + ' MHz    ' +
+                 RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FQso), 5) + '     ' +
+                 RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FPts), 5) + '   ' +
+                 RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FMulti), 5);
       sl.Add(strText);
    end;
 
-   strText := '  合　計     ' +
-              RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FQso), 5) + '     ' +
-              RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FPts), 5) + ' × ' +
-              RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FMulti), 4) + '  ＝  ' +
+   strText := '  合　計    ' +
+              RightStr('      ' + IntToStr(FCountData[HTOTAL][VTOTAL].FQso), 6) + '    ' +
+              RightStr('      ' + IntToStr(FCountData[HTOTAL][VTOTAL].FPts), 6) + ' ×' +
+              RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FMulti), 5) + '  ＝  ' +
               IntToStr(FCountData[HTOTAL][VTOTAL].FPts * FCountData[HTOTAL][VTOTAL].FMulti);
    sl.Add(strText);
    sl.Add('');
+end;
 
-   nLastHour := GetLastHour();
-
-{
-＜時間ごとの交信局数＞
-
-      XXXX     XXXX     XXXX     XXXX     XXXX     XXXX     XXXX      XXXX
-       3.5        7       14       21       50      144      430       ALL
-
- [21]    0       29        0        0        1        1        0        31
-}
-   sl.Add('＜時間ごとの交信局数＞');
+//＜時間ごとの交信局数＞
+//
+//      XXXX     XXXX     XXXX     XXXX     XXXX     XXXX     XXXX      XXXX
+//       3.5        7       14       21       50      144      430       ALL
+//
+// [21]    0       29        0        0        1        1        0        31
+// [22]  111(111) 118(118)  22(19)    0        0        0        0        0        0        41(38)
+// [20]    3       12        0        0        2        0        17
+//
+//Total  133(16)  423(2)    47        5        4        1       613(18)
+procedure TZAnalyze.ShowZAF_Time(nLastHour: Integer; sl: TStrings; fShowCW: Boolean);
+var
+   strText: string;
+   b: TBand;
+   i: Integer;
+begin
+   if fShowCW = True then begin
+      sl.Add('＜時間ごとの交信局数＞　（括弧内は電信の内数）');
+   end
+   else begin
+      sl.Add('＜時間ごとの交信局数＞');
+   end;
    sl.Add('');
 
    strText := '';
@@ -635,7 +740,7 @@ begin
          Continue;
       end;
 
-      strText := strText + '     ' + RightStr('    ' + MHzString[b], 4);
+      strText := strText + '    ' + RightStr('     ' + MHzString[b], 5);
    end;
 
    strText := strText + '       ALL';
@@ -658,14 +763,26 @@ begin
             Continue;
          end;
 
-         strText := strText + '     ' + RightStr('    ' + IntToStr(FCountData[i][b].FQso), 4);
+         if fShowCW = True then begin
+            strText := strText + RightStr('     ' + IntToStr(FCountData[i][b].FQso), 5) +
+                       CwToStr(FCountData[i][b].FCw, 5);
+         end
+         else begin
+            strText := strText + RightStr('     ' + IntToStr(FCountData[i][b].FQso), 5) + '    ';
+         end;
       end;
 
       // ALL
-      strText := strText + '      ' + RightStr('    ' + IntToStr(FCountData[i][VTOTAL].FQso), 4);
+      if fShowCW = True then begin
+         strText := strText + RightStr('    ' + IntToStr(FCountData[i][VTOTAL].FQso), 5) +
+                    Trim(CwToStr(FCountData[i][VTOTAL].FCw, 5));
+      end
+      else begin
+         strText := strText + RightStr('    ' + IntToStr(FCountData[i][VTOTAL].FQso), 5);
+      end;
 
       // 見出し
-      strText := ' [' + HourText(i) + ']' + Copy(strText, 5);
+      strText := ' [' + HourText(i) + ']' + strText;
 
       sl.Add(strText);
    end;
@@ -680,34 +797,68 @@ begin
          Continue;
       end;
 
-      strText := strText + '     ' + RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FQso), 4);
+      if fShowCW = True then begin
+         strText := strText + QsoToStr(FCountData[HTOTAL][b].FQso, 5) +
+                              CwToStr(FCountData[HTOTAL][b].FCw, 5);
+      end
+      else begin
+         strText := strText + QsoToStr(FCountData[HTOTAL][b].FQso, 5) + '    ';
+      end;
    end;
 
    // ALL
-   strText := strText + '      ' + RightStr('    ' + IntToStr(FCountData[HTOTAL][VTOTAL].FQso), 4);
-   strText := 'Total ' + Copy(strText, 6);
+   if fShowCW = True then begin
+      strText := strText + QsoToStr(FCountData[HTOTAL][VTOTAL].FQso, 5) +
+                           Trim(CwToStr(FCountData[HTOTAL][VTOTAL].FCw, 5));
+   end
+   else begin
+      strText := strText + QsoToStr(FCountData[HTOTAL][VTOTAL].FQso, 5);
+   end;
+   strText := 'Total' + strText;
 
    sl.Add(strText);
    sl.Add('');
    sl.Add('');
+end;
 
-
-
-   sl.Add('＜時間ごとの累積交信局数＞');
+//＜時間ごとの累積交信局数＞　（括弧内は電信の内数）
+//
+//       3.5        7       14       21       50      430       ALL
+//
+// [21]    0       50        0        0        2        0        52
+// [22]   19       60        0        0        2        1        82
+// [23]   56(5)    60        0        0        2        1       119(5)
+// [20]  133(16)  423(2)    47        5        4        1       613(18)
+procedure TZAnalyze.ShowZAF_Accumulation(nLastHour: Integer; sl: TStrings; fShowCW: Boolean);
+var
+   strText: string;
+   b: TBand;
+   i: Integer;
+   accumulation_count: array[b19..CTOTAL] of Integer;
+   accumulation_count2: array[b19..CTOTAL] of Integer;
+begin
+   if fShowCW = True then begin
+      sl.Add('＜時間ごとの累積交信局数＞　（括弧内は電信の内数）');
+   end
+   else begin
+      sl.Add('＜時間ごとの累積交信局数＞');
+   end;
    sl.Add('');
 
    strText := '';
    for b := b19 to HiBand do begin
-      cumulative_count[b] := 0;
+      accumulation_count[b] := 0;
+      accumulation_count2[b] := 0;
 
       if FCountData[HTOTAL][b].FQso = 0 then begin
          Continue;
       end;
 
-      strText := strText + '     ' + RightStr('    ' + MHzString[b], 4);
+      strText := strText + '    ' + RightStr('     ' + MHzString[b], 5);
    end;
 
-   cumulative_count[VTOTAL] := 0;
+   accumulation_count[VTOTAL] := 0;
+   accumulation_count2[VTOTAL] := 0;
    strText := strText + '       ALL';
 
    sl.Add('       ' + Trim(strText));
@@ -728,27 +879,63 @@ begin
             Continue;
          end;
 
-         cumulative_count[b] := cumulative_count[b] + FCountData[i][b].FQso;
+         accumulation_count[b] := accumulation_count[b] + FCountData[i][b].FQso;
+         accumulation_count2[b] := accumulation_count2[b] + FCountData[i][b].FCw;
 
-         strText := strText + '     ' + RightStr('    ' + IntToStr(cumulative_count[b]), 4);
+         if fShowCW = True then begin
+            strText := strText + QsoToStr(accumulation_count[b], 5) +
+                                 CwToStr(accumulation_count2[b], 5);
+         end
+         else begin
+            strText := strText + QsoToStr(accumulation_count[b], 5) + '    ';
+         end;
       end;
 
       // ALL
-      cumulative_count[VTOTAL] := cumulative_count[VTOTAL] + FCountData[i][VTOTAL].FQso;
-      strText := strText + '      ' + RightStr('    ' + IntToStr(cumulative_count[VTOTAL]), 4);
+      accumulation_count[VTOTAL] := accumulation_count[VTOTAL] + FCountData[i][VTOTAL].FQso;
+      accumulation_count2[VTOTAL] := accumulation_count2[VTOTAL] + FCountData[i][VTOTAL].FCw;
+
+      if fShowCW = True then begin
+         strText := strText + QsoToStr(accumulation_count[VTOTAL], 5) +
+                              Trim(CwToStr(accumulation_count2[VTOTAL], 5));
+      end
+      else begin
+         strText := strText + QsoToStr(accumulation_count[VTOTAL], 5);
+      end;
 
       // 見出し
-      strText := ' [' + HourText(i) + ']' + Copy(strText, 5);
+      strText := ' [' + HourText(i) + ']' + strText;
 
       sl.Add(strText);
    end;
 
    sl.Add('');
    sl.Add('');
+end;
 
-
-
-   sl.Add('＜マルチプライヤーの獲得状況＞');
+// ＜マルチプライヤーの獲得状況＞　（括弧内は電信の内数）
+//
+//       3.5        7       14       21       50      430       ALL
+//
+// [21]    -       43        -        -        2        -        45
+// [22]   19        9        -        -        -        1        29
+// [23]   31(4)     -        -        -        -        -        31(4)
+// [00]   12        1(1)     -        -        -        -        13(1)
+// [20]    3        6        -        -        2        -        11
+//
+//Total  111(13)  303(1)    44        5        4        1       468(14)
+procedure TZAnalyze.ShowZAF_Multi(nLastHour: Integer; sl: TStrings; fShowCW: Boolean);
+var
+   strText: string;
+   b: TBand;
+   i: Integer;
+begin
+   if fShowCW = True then begin
+      sl.Add('＜マルチプライヤーの獲得状況＞　（括弧内は電信の内数）');
+   end
+   else begin
+      sl.Add('＜マルチプライヤーの獲得状況＞');
+   end;
    sl.Add('');
 
    strText := '';
@@ -781,23 +968,35 @@ begin
          end;
 
          if FCountData[i][b].FMulti = 0 then begin
-            strText := strText + '     ' + '   -';
+            strText := strText + '   -' + '     ';
          end
          else begin
-            strText := strText + '     ' + RightStr('    ' + IntToStr(FCountData[i][b].FMulti), 4);
+            if fShowCW = True then begin
+               strText := strText + QsoToStr(FCountData[i][b].FMulti, 4) +
+                                    CwToStr(FCountData[i][b].FMultiCw, 5);
+            end
+            else begin
+               strText := strText + QsoToStr(FCountData[i][b].FMulti, 4) + '     ';
+            end;
          end;
       end;
 
       // ALL
       if FCountData[i][VTOTAL].FMulti = 0 then begin
-         strText := strText + '      ' + '   -';
+         strText := strText + '    -';
       end
       else begin
-         strText := strText + '      ' + RightStr('    ' + IntToStr(FCountData[i][VTOTAL].FMulti), 4);
+         if fShowCW = True then begin
+            strText := strText + QsoToStr(FCountData[i][VTOTAL].FMulti, 5) +
+                                 Trim(CwToStr(FCountData[i][VTOTAL].FMultiCw, 5));
+         end
+         else begin
+            strText := strText + QsoToStr(FCountData[i][VTOTAL].FMulti, 5);
+         end;
       end;
 
       // 見出し
-      strText := ' [' + HourText(i) + ']' + Copy(strText, 5);
+      strText := ' [' + HourText(i) + '] ' + strText;
 
       sl.Add(strText);
    end;
@@ -813,21 +1012,33 @@ begin
       end;
 
       if FCountData[HTOTAL][b].FMulti = 0 then begin
-         strText := strText + '     ' + '   -';
+         strText := strText + '   -' + '     ';
       end
       else begin
-         strText := strText + '     ' + RightStr('    ' + IntToStr(FCountData[HTOTAL][b].FMulti), 4);
+         if fShowCW = True then begin
+            strText := strText + QsoToStr(FCountData[HTOTAL][b].FMulti, 4) +
+                                 CwToStr(FCountData[HTOTAL][b].FMultiCw, 5);
+         end
+         else begin
+            strText := strText + QsoToStr(FCountData[HTOTAL][b].FMulti, 4) + '     ';
+         end;
       end;
    end;
 
    // ALL
    if FCountData[HTOTAL][VTOTAL].FMulti = 0 then begin
-      strText := strText + '      ' + '   -';
+      strText := strText + '    -';
    end
    else begin
-      strText := strText + '      ' + RightStr('    ' + IntToStr(FCountData[HTOTAL][VTOTAL].FMulti), 4);
+      if fShowCW = True then begin
+         strText := strText + QsoToStr(FCountData[HTOTAL][VTOTAL].FMulti, 5) +
+                              Trim(CwToStr(FCountData[HTOTAL][VTOTAL].FMultiCw, 5));
+      end
+      else begin
+         strText := strText + QsoToStr(FCountData[HTOTAL][VTOTAL].FMulti, 5);
+      end;
    end;
-   strText := 'Total ' + Copy(strText, 6);
+   strText := 'Total ' + strText;
 
    sl.Add(strText);
    sl.Add('');
@@ -835,7 +1046,7 @@ begin
 end;
 
 {
-＜時間およびエリアごとの交信局数＞
+＜時間およびエリアごとの交信局数＞　（括弧内は電信の内数）
 
 [7 MHz]
          1     2     3     4     5     6     7     8     9     0     合計    累積
@@ -854,11 +1065,11 @@ end;
  [16]    7     3     5     2     2     2     2     -     -     1     24     240
  [17]   14     -     5     1     -     1     2     -     1     1     25     265
  [18]    2     -     -     -     -     -     -     -     -     -      2     267
-
+ [22]    3(3)  6(4)  4(3)  1(1)  1(1)  5(5)  -     2(2)  -     -     22(19) 117(19)
 Total   91    27    33    21     8    29    18    17    10    13    267
 1234512345123456123456123456123456123456                        123456712345678
 }
-procedure TZAnalyze.ShowZAA(sl: TStrings);
+procedure TZAnalyze.ShowZAA(sl: TStrings; fShowCW: Boolean);
 var
    b: TBand;
    nLastHour: Integer;
@@ -868,7 +1079,13 @@ begin
 
    nLastHour := GetLastHour();
 
-   strText := '＜時間およびエリアごとの交信局数＞';
+   if fShowCW = True then begin
+      strText := '＜時間およびエリアごとの交信局数＞　（括弧内は電信の内数）';
+   end
+   else begin
+      strText := '＜時間およびエリアごとの交信局数＞';
+   end;
+
    sl.Add(strText);
    sl.Add('');
 
@@ -876,11 +1093,11 @@ begin
       if FCountData2[HTOTAL][b].FQso[11] = 0 then begin
          Continue;
       end;
-      ShowZAA_band(sl, b, nLastHour);
+      ShowZAA_band(sl, b, nLastHour, fShowCW);
    end;
 end;
 
-procedure TZAnalyze.ShowZAA2(sl: TStrings; b: TBand);
+procedure TZAnalyze.ShowZAA2(sl: TStrings; b: TBand; fShowCW: Boolean);
 var
    nLastHour: Integer;
    strText: string;
@@ -889,28 +1106,28 @@ begin
 
    nLastHour := GetLastHour();
 
-   strText := '＜時間およびエリアごとの交信局数＞';
+   if fShowCW = True then begin
+      strText := '＜時間およびエリアごとの交信局数＞　（括弧内は電信の内数）';
+   end
+   else begin
+      strText := '＜時間およびエリアごとの交信局数＞';
+   end;
+
    sl.Add(strText);
    sl.Add('');
 
-   ShowZAA_band(sl, b, nLastHour);
+   ShowZAA_band(sl, b, nLastHour, fShowCW);
 end;
 
-procedure TZAnalyze.ShowZAA_band(sl: TStrings; b: TBand; nLastHour: Integer);
+//        12123412123412123412123412123412123412123412123412123412123412312345
+// [22]    3(3)  6(4)  4(3)  1(1)  1(1)  5(5)  -     2(2)  -     -     22(19) 117(19)
+//Total   91(91)27    33    21     8    29    18    17    10    13    267
+procedure TZAnalyze.ShowZAA_band(sl: TStrings; b: TBand; nLastHour: Integer; fShowCW: Boolean);
 var
    i: Integer;
    strText: string;
    r: Integer;
-
-   function CountStr(cnt: Integer): string;
-   begin
-      if cnt = 0 then begin
-         Result := '-';
-      end
-      else begin
-         Result := IntToStr(cnt);
-      end;
-   end;
+   r2: Integer;
 begin
    strText := '[' + MHzString[b] + ' MHz]';
    sl.Add(strText);
@@ -919,6 +1136,7 @@ begin
    sl.Add('');
 
    r := 0;
+   r2 := 0;
    for i := 1 to nLastHour do begin
       // ０局の時間帯は除く
       if checkExcludeZeroHour.Checked = True then begin
@@ -928,38 +1146,85 @@ begin
       end;
 
       // 見出し
-      strText := ' [' + HourText(i) + ']';
+      strText := ' [' + HourText(i) + ']   ';
 
       r := r + FCountData2[i][b].FQso[11];
+      r2 := r2 + FCountData2[i][b].FCw[11];
 
-      strText := strText + RightStr('     ' + CountStr(FCountData2[i][b].FQso[1]), 5);
-      strText := strText + RightStr('      ' + CountStr(FCountData2[i][b].FQso[2]), 6);
-      strText := strText + RightStr('      ' + CountStr(FCountData2[i][b].FQso[3]), 6);
-      strText := strText + RightStr('      ' + CountStr(FCountData2[i][b].FQso[4]), 6);
-      strText := strText + RightStr('      ' + CountStr(FCountData2[i][b].FQso[5]), 6);
-      strText := strText + RightStr('      ' + CountStr(FCountData2[i][b].FQso[6]), 6);
-      strText := strText + RightStr('      ' + CountStr(FCountData2[i][b].FQso[7]), 6);
-      strText := strText + RightStr('      ' + CountStr(FCountData2[i][b].FQso[8]), 6);
-      strText := strText + RightStr('      ' + CountStr(FCountData2[i][b].FQso[9]), 6);
-      strText := strText + RightStr('      ' + CountStr(FCountData2[i][b].FQso[10]), 6);
-      strText := strText + RightStr('       ' + CountStr(FCountData2[i][b].FQso[11]), 7);
-      strText := strText + RightStr('        ' + CountStr(r), 8);
+      if fShowCW = True then begin
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[1], 2, True) +
+                              CwToStr(FCountData2[i][b].FCw[1], 4);
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[2], 2, True) +
+                              CwToStr(FCountData2[i][b].FCw[2], 4);
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[3], 2, True) +
+                              CwToStr(FCountData2[i][b].FCw[3], 4);
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[4], 2, True) +
+                              CwToStr(FCountData2[i][b].FCw[4], 4);
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[5], 2, True) +
+                              CwToStr(FCountData2[i][b].FCw[5], 4);
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[6], 2, True) +
+                              CwToStr(FCountData2[i][b].FCw[6], 4);
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[7], 2, True) +
+                              CwToStr(FCountData2[i][b].FCw[7], 4);
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[8], 2, True) +
+                              CwToStr(FCountData2[i][b].FCw[8], 4);
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[9], 2, True) +
+                              CwToStr(FCountData2[i][b].FCw[9], 4);
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[10], 2, True) +
+                              CwToStr(FCountData2[i][b].FCw[10], 4);
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[11], 3, True) +
+                              CwToStr(FCountData2[i][b].FCw[11], 5);
+         strText := strText + QsoToStr(r, 3, True) +
+                              Trim(CwToStr(r2, 5));
+      end
+      else begin
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[1], 2, True) + '    ';
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[2], 2, True) + '    ';
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[3], 2, True) + '    ';
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[4], 2, True) + '    ';
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[5], 2, True) + '    ';
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[6], 2, True) + '    ';
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[7], 2, True) + '    ';
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[8], 2, True) + '    ';
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[9], 2, True) + '    ';
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[10], 2, True) + '    ';
+         strText := strText + QsoToStr(FCountData2[i][b].FQso[11], 3, True) + '     ';
+         strText := strText + QsoToStr(r, 3, True);
+      end;
       sl.Add(strText);
    end;
 
-   strText := 'Total';
-   strText := strText + RightStr('     ' + CountStr(FCountData2[HTOTAL][b].FQso[1]), 5);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[2]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[3]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[4]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[5]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[6]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[7]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[8]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[9]), 6);
-   strText := strText + RightStr('      ' + CountStr(FCountData2[HTOTAL][b].FQso[10]), 6);
-   strText := strText + RightStr('       ' + CountStr(FCountData2[HTOTAL][b].FQso[11]), 7);
+   //Total   17     3     3     2     -     1     3     3     -     2     34
+   //       (17)   (3)   (3)   (2)         (1)   (3)   (3)         (2)   (34)
+   strText := 'Total  ';
+   strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[1], 3, True) + '   ';
+   strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[2], 3, True) + '   ';
+   strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[3], 3, True) + '   ';
+   strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[4], 3, True) + '   ';
+   strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[5], 3, True) + '   ';
+   strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[6], 3, True) + '   ';
+   strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[7], 3, True) + '   ';
+   strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[8], 3, True) + '   ';
+   strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[9], 3, True) + '   ';
+   strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[10], 3, True) + '   ';
+   strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[11], 4, True) + '   ';
    sl.Add(strText);
+
+   if fShowCW = True then begin
+      strText := '       ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[1], 4) + '  ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[2], 4) + '  ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[3], 4) + '  ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[4], 4) + '  ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[5], 4) + '  ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[6], 4) + '  ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[7], 4) + '  ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[8], 4) + '  ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[9], 4) + '  ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[10], 4) + '  ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[11], 5);
+      sl.Add(strText);
+   end;
 
    sl.Add('');
    sl.Add('');
@@ -976,6 +1241,41 @@ begin
    end;
 
    Result := RightStr('00' + IntToStr(t), 2);
+end;
+
+function TZAnalyze.QsoToStr(cnt: Integer; len: Integer; zero: Boolean): string;
+begin
+   if cnt = 0 then begin
+      if zero = True then begin
+         Result := DupeString(' ', len - 1) + '-';
+      end
+      else begin
+         Result := DupeString(' ', len - 1) + '0';
+      end;
+   end
+   else begin
+      Result := RightStr(DupeString(' ', len) + IntToStr(cnt), len);
+   end;
+end;
+
+function TZAnalyze.CwToStr(cnt: Integer; len: Integer): string;
+begin
+   if cnt = 0 then begin
+      Result := DupeString(' ', len);
+   end
+   else begin
+      Result := LeftStr('(' + IntToStr(cnt) + ')' + DupeString(' ', len), len);
+   end;
+end;
+
+function TZAnalyze.CwToStrR(cnt: Integer; len: Integer): string;
+begin
+   if cnt = 0 then begin
+      Result := DupeString(' ', len);
+   end
+   else begin
+      Result := RightStr(DupeString(' ', len) + '(' + IntToStr(cnt) + ')', len);
+   end;
 end;
 
 procedure TZAnalyze.OnAnalyzeUpdate( var Message: TMessage );
@@ -1160,7 +1460,7 @@ JH8xxx     5(5)    37(37)    9(9)     5(5)    18(18)    7(7)    14(14)    95(95)
 
 Total     43(43)   52(52)   57(57)   56(56)   53(53)   50(50)   41(41)   352(352)
 }
-procedure TZAnalyze.ShowZOP(sl: TStrings);
+procedure TZAnalyze.ShowZOP(sl: TStrings; fShowCW: Boolean);
 var
    b: TBand;
    strText: string;
@@ -1197,7 +1497,7 @@ var
          Inc(all_cw, cw);
          tt_str := RightStr('    ' + IntToStr(tt), 4);
          cw_str := IntToStr(cw);
-         if cw = 0 then begin
+         if (cw = 0) or (fShowCW = False) then begin
             strText2 := strText2 + LeftStr(tt_str + DupeString(' ', 9), 9);
          end
          else begin
@@ -1208,7 +1508,7 @@ var
       // ALL(横計)
       tt_str := RightStr('    ' + IntToStr(all_tt), 4);
       cw_str := IntToStr(all_cw);
-      if all_cw = 0 then begin
+      if (all_cw = 0) or (fShowCW = False) then begin
          strText2 := strText2 + LeftStr(tt_str + DupeString(' ', 10), 10);
       end
       else begin
@@ -1243,7 +1543,7 @@ var
          Inc(all_cw, cw);
          tt_str := RightStr('    ' + IntToStr(tt), 3);
          cw_str := IntToStr(cw);
-         if cw = 0 then begin
+         if (cw = 0) or (fShowCW = False) then begin
             strText2 := strText2 + LeftStr(tt_str + DupeString(' ', 9), 9);
          end
          else begin
@@ -1254,7 +1554,7 @@ var
       // ALL(横計)
       tt_str := RightStr('    ' + IntToStr(all_tt), 4);
       cw_str := IntToStr(all_cw);
-      if all_cw = 0 then begin
+      if (all_cw = 0) or (fShowCW = False) then begin
          strText2 := strText2 + LeftStr(tt_str + DupeString(' ', 10), 10);
       end
       else begin
@@ -1267,7 +1567,12 @@ begin
    sl.Clear();
 
    // OP別交信数
-   strText := '＜オペレータ別交信局数＞　（括弧内は電信の内数）';
+   if fShowCW = True then begin
+      strText := '＜オペレータ別交信局数＞　（括弧内は電信の内数）';
+   end
+   else begin
+      strText := '＜オペレータ別交信局数＞';
+   end;
    sl.Add(strText);
    sl.Add('');
 
@@ -1314,7 +1619,12 @@ begin
    sl.Add('');
 
    // OP別マルチ
-   strText := '＜オペレータ別取得マルチ＞　（括弧内は電信の内数）';
+   if fShowCW = True then begin
+      strText := '＜オペレータ別取得マルチ＞　（括弧内は電信の内数）';
+   end
+   else begin
+      strText := '＜オペレータ別取得マルチ＞';
+   end;
    sl.Add(strText);
    sl.Add('');
 

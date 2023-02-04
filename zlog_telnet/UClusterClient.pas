@@ -55,6 +55,7 @@ type
     FClusterAutoLogin: Boolean;
     FClusterAutoReconnect: Boolean;
     FClusterRecordLogs: Boolean;
+    FClusterUseAllowDenyLists: Boolean;
     FZServerClientName: string;
     FZServerHostname: string;
     FZServerPortNumber: string;
@@ -67,6 +68,10 @@ type
     FDisconnectClicked: Boolean;
     FAutoLogined: Boolean;
 
+    FSpotterList: TStringList;
+    FAllowList: TStringList;
+    FDenyList: TStringList;
+
     procedure LoadSettings();
     procedure SaveSettings();
     procedure ImplementOptions;
@@ -77,6 +82,7 @@ type
     procedure RelaySpot(S: string);
     procedure WriteLineConsole(str : string);
     procedure WriteConsole(strText: string);
+    procedure LoadAllowDenyList();
   public
     { Public declarations }
   end;
@@ -106,6 +112,19 @@ begin
    FDisconnectClicked := False;
    FUseClusterLog := False;
    FClusterLogFileName := StringReplace(Application.ExeName, '.exe', '_telnet_log_' + FormatDateTime('yyyymmdd', Now) + '.txt', [rfReplaceAll]);
+
+   FSpotterList := TStringList.Create();
+   FSpotterList.Sorted := True;
+   FSpotterList.CaseSensitive := False;
+   FSpotterList.Duplicates := dupIgnore;
+   FAllowList := TStringList.Create();
+   FAllowList.Sorted := True;
+   FAllowList.CaseSensitive := False;
+   FAllowList.Duplicates := dupIgnore;
+   FDenyList := TStringList.Create();
+   FDenyList.Sorted := True;
+   FDenyList.CaseSensitive := False;
+   FDenyList.Duplicates := dupIgnore;
 end;
 
 procedure TClusterClient.FormDestroy(Sender: TObject);
@@ -114,6 +133,10 @@ begin
    ZServer.Close();
    SaveSettings();
    FCommBuffer.Free();
+
+   FSpotterList.Free();
+   FAllowList.Free();
+   FDenyList.Free();
 end;
 
 procedure TClusterClient.WriteLine(str: string);
@@ -176,6 +199,7 @@ begin
       FClusterAutoLogin := ini.ReadBool('cluster', 'autologin', False);
       FClusterAutoReconnect := ini.ReadBool('cluster', 'autoreconnect', True);
       FClusterRecordLogs := ini.ReadBool('cluster', 'recordlogs', False);
+      FClusterUseAllowDenyLists := ini.ReadBool('cluster', 'use_allow_deny_list', False);
       FZServerClientName := ini.ReadString('zserver', 'clientname', '');
       FZServerHostName := ini.ReadString('zserver', 'hostname', '');
       FZServerPortNumber := ini.ReadString('zserver', 'port', '23');
@@ -204,6 +228,7 @@ begin
       ini.WriteBool('cluster', 'autologin', FClusterAutoLogin);
       ini.WriteBool('cluster', 'autoreconnect', FClusterAutoReconnect);
       ini.WriteBool('cluster', 'recordlogs', FClusterRecordLogs);
+      ini.WriteBool('cluster', 'use_allow_deny_list', FClusterUseAllowDenyLists);
 
       ini.WriteString('zserver', 'clientname', FZServerClientName);
       ini.WriteString('zserver', 'hostname', FZServerHostName);
@@ -315,10 +340,26 @@ begin
       end;
 
       for j := 1 to length(str) do begin
-         if (str[j] = Chr($0D)) or (str[j] = Chr($0A)) then begin
+         if str[j] = Chr($0A) then begin
+            FCommTemp := TrimCRLF(FCommTemp);
+
             Sp := TSpot.Create;
             if Sp.Analyze(FCommTemp) = True then begin
                ProcessSpot(Sp);
+
+               // Spotterのチェック
+               if FClusterUseAllowDenyLists = True then begin
+                  if (FDenyList.Count > 0) and (FDenyList.IndexOf(Sp.ReportedBy) >= 0) then begin
+                     Sp.Free();
+                     FCommTemp := '';
+                     Continue;
+                  end;
+                  if (FAllowList.Count > 0) and (FAllowList.IndexOf(Sp.ReportedBy) = -1) then begin
+                     Sp.Free();
+                     FCommTemp := '';
+                     Continue;
+                  end;
+               end;
 
                // Z-Serverへ送信
                if ZServer.State = wsConnected then begin
@@ -328,6 +369,10 @@ begin
                   ZServer.Addr := FZServerHostName;
                   ZServer.Port := FZServerPortNumber;
                   ZServer.Connect();
+               end;
+
+               if FSpotterList.IndexOf(Sp.ReportedBy) = -1 then begin
+                  FSpotterList.Add(Sp.ReportedBy);
                end;
             end
             else begin
@@ -375,6 +420,7 @@ begin
       ZServer.Close();
    end
    else begin
+      LoadAllowDenyList();
       Telnet.Connect;
       buttonConnect.Caption := 'Connecting...';
       FDisconnectClicked := False;
@@ -419,6 +465,8 @@ begin
 end;
 
 procedure TClusterClient.TelnetSessionClosed(Sender: TTnCnx; Error: Word);
+var
+   fname: string;
 begin
    WriteLineConsole('disconnected...');
 
@@ -429,6 +477,9 @@ begin
 
    buttonConnect.Caption := 'Connect';
    Caption := Application.Title;
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_list.txt';
+   FSpotterList.SaveToFile(fname);
 end;
 
 procedure TClusterClient.ListBoxMeasureItem(Control: TWinControl; Index: Integer;
@@ -455,7 +506,7 @@ begin
 
       S := (Control as TListBox).Items[Index];
       SP := TSpot(TListBox(Control).Items.Objects[Index]);
-      if SP.NewMulti then begin
+      if SP.IsNewMulti then begin
          if odSelected in State then begin
             Font.Color := clFuchsia;
          end
@@ -523,6 +574,7 @@ begin
       dlg.ClusterAutoLogin := FClusterAutoLogin;
       dlg.ClusterAutoReconnect := FClusterAutoReconnect;
       dlg.ClusterRecordLogs := FClusterRecordLogs;
+      dlg.ClusterUseAllowDenyLists := FClusterUseAllowDenyLists;
       dlg.ZServerClientName := FZServerClientName;
       dlg.ZServerHost := FZServerHostname;
       dlg.ZServerPort := FZServerPortNumber;
@@ -540,6 +592,7 @@ begin
       FClusterAutoLogin := dlg.ClusterAutoLogin;
       FClusterAutoReconnect := dlg.ClusterAutoReconnect;
       FClusterRecordLogs := dlg.ClusterRecordLogs;
+      FClusterUseAllowDenyLists := dlg.ClusterUseAllowDenyLists;
       FZServerClientName := dlg.ZServerClientName;
       FZServerHostname := dlg.ZServerHost;
       FZServerPortNumber := dlg.ZServerPort;
@@ -571,6 +624,30 @@ begin
          FUseClusterLog := False;
          CloseFile(FClusterLog);
       end;
+   end;
+end;
+
+procedure TClusterClient.LoadAllowDenyList();
+var
+   fname: string;
+begin
+   FSpotterList.Clear();
+   FAllowList.Clear();
+   FDenyList.Clear();
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_list.txt';
+   if FileExists(fname) then begin
+      FSpotterList.LoadFromFile(fname);
+   end;
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_allow.txt';
+   if FileExists(fname) then begin
+      FAllowList.LoadFromFile(fname);
+   end;
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_deny.txt';
+   if FileExists(fname) then begin
+      FDenyList.LoadFromFile(fname);
    end;
 end;
 

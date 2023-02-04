@@ -153,7 +153,7 @@ var
    SelectFolder: string;
 begin
    RootFolder := '';
-   SelectFolder := dmZLogGlobal.Settings._cfgdatpath;
+   SelectFolder := dmZLogGlobal.CfgDatPath;
 
    if SelectDirectory('フォルダの指定', RootFolder, SelectFolder, [sdNewUI, sdNewFolder, sdShowEdit], Self)= False then begin
       Exit;

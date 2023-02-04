@@ -48,6 +48,7 @@ type
 		sum: string;
 		exp: string;
 		use: TList<string>;
+      sumfile: Boolean;
 		function ref: string;
 		function name: string;
 		function Exist: boolean;
@@ -113,19 +114,12 @@ const
 	URL_MARKET = 'https://zylo.pafelog.net/market.json';
 	URL_MANUAL = 'https://zylo.pafelog.net';
 
-resourcestring
-	UPluginManager_Installed_Plugins_Disabled = 'Installed plugins will be disabled. Are you sure?';
-
 procedure BrowseURL(url: string);
 
-function GetItemPathINI: string;
 function GetItemListINI: TList<String>;
-procedure SetItemPathINI(path: String);
 procedure SetItemListINI(list: TList<String>);
 
 implementation
-
-//uses main;
 
 {$R *.dfm}
 
@@ -147,48 +141,16 @@ begin
 	MarketList.Free;
 end;
 
-function GetItemPathINI: string;
-var
-	init: TIniFile;
-begin
-	init := LoadIniFile;
-	Result := init.ReadString(KEY_ZYLO, KEY_PATH, GetCurrentDir);
-	init.Free;
-end;
-
 function GetItemListINI: TList<String>;
 var
 	init: TIniFile;
 	text: string;
 begin
 	init := LoadIniFile;
-	text := init.ReadString(KEY_ZYLO, KEY_LIST, '');
+   text := dmZLogGlobal.Settings._pluginlist;
 	Result := TList<String>.Create;
 	Result.AddRange(text.Split([',']));
 	init.Free;
-end;
-
-procedure SetItemPathINI(path: String);
-function Confirm: boolean;
-var
-	text: string;
-	icon: TMsgDlgType;
-	btns: TMsgDlgButtons;
-begin
-	icon := mtConfirmation;
-	btns := [mbYes, mbCancel];
-	text := UPluginManager_Installed_Plugins_Disabled;
-	Result := MessageDlg(text, icon, btns, 0, mbCancel) = mrYes;
-end;
-var
-	init: TIniFile;
-begin
-	if (path <> GetItemPathINI) and Confirm then begin
-		init := LoadIniFile;
-		init.WriteString(KEY_ZYLO, KEY_PATH, path);
-		init.WriteString(KEY_ZYLO, KEY_LIST, '');
-		init.Free;
-	end;
 end;
 
 procedure SetItemListINI(list: TList<String>);
@@ -200,22 +162,17 @@ begin
 	init := LoadIniFile;
 	text := TStringList.Create;
 	for item in list do text.Append(item);
-	init.WriteString(KEY_ZYLO, KEY_LIST, text.DelimitedText);
+   dmZLogGlobal.Settings._pluginlist := text.DelimitedText;
 	text.Free;
 	init.Free;
 end;
 
 function TMarketItem.ref: string;
-function dir: string;
-begin
-	Result := GetItemPathINI;
-	if isCFG then Result := dmZLogGlobal.Settings._cfgdatpath;
-	if isDAT then Result := dmZLogGlobal.Settings._cfgdatpath;
-end;
 begin
 	Result := TPath.GetFileName(url);
-	if isCFG then Result := TPath.Combine(dir, Result);
-	if isDAT then Result := TPath.Combine(dir, Result);
+	if isCFG then Result := TPath.Combine(dmZLogGlobal.CfgDatPath, Result)
+	else if isDAT then Result := TPath.Combine(dmZLogGlobal.CfgDatPath, Result)
+   else Result := TPath.Combine(dmZLogGlobal.PluginPath, Result);
 end;
 
 constructor TMarketItem.Create;
@@ -298,6 +255,7 @@ begin
 end;
 procedure Verify(Item: TMarketItem);
 begin
+   if Item.sumfile = False then Exit;
 	if Item.IsUpToDate then Exit;
 	raise Exception.Create('checksum');
 end;
@@ -318,9 +276,11 @@ end;
 function TMarketItem.CheckSum: string;
 begin
 	try
-		MarketForm.LoadText(Self.sum, Result);
+		MarketForm.LoadText(Self.url + '.md5', Result);
+      sumfile := True;
 	except
-		Result := Self.sum;
+		Result := '';
+      sumfile := False;
 	end;
 end;
 
@@ -403,7 +363,12 @@ begin
 	try
 		buf := TMemoryStream.Create;
 		res := NetHttpRequest.Get(url, buf);
-		txt := res.ContentAsString(TEncoding.UTF8);
+      if res.StatusCode = 200 then begin
+   		txt := res.ContentAsString(TEncoding.UTF8);
+      end
+      else begin
+         raise EXception.Create(res.StatusText);
+      end;
 	finally
 		FreeAndNil(buf);
 	end;
@@ -462,7 +427,6 @@ end;
 
 procedure TMarketForm.ListBoxClick(Sender: TObject);
 begin
-	InstallButton.Caption := 'Install';
 	if ListBox.ItemIndex > -1 then begin
 		MarketItem := ListBox.Items.Objects[ListBox.ItemIndex] as TMarketItem;
 		TagLabel.Caption := MarketItem.tag;

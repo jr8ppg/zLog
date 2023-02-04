@@ -3,7 +3,7 @@ unit USpotClass;
 interface
 
 uses
-  SysUtils, Windows, Classes,
+  SysUtils, Windows, Classes, Messages,
   Generics.Collections, Generics.Defaults,
   UzLogConst, UzLogGlobal{$IFNDEF ZLOG_TELNET}, UzLogQSO, UzLogSpc{$ENDIF};
 
@@ -28,16 +28,23 @@ type
     FCQ: Boolean;
     FNewJaMulti: Boolean;
     FReportedBy: string;
+    FIsDomestic: Boolean;
+    procedure SetCall(v: string);
+    function GetIsNewMulti(): Boolean; // newcty or newzone
+    function GetIsPortable(): Boolean;
   public
     constructor Create; virtual;
     function FreqKHzStr : string;
-    function NewMulti : boolean; // newcty or newzone
     function InText : string; virtual; abstract;
     procedure FromText(S : string); virtual; abstract;
     procedure Assign(O: TBaseSpot); virtual;
 
+    property IsNewMulti: Boolean read GetIsNewMulti;
+    property IsPortable: Boolean read GetIsPortable;
+    property IsDomestic: Boolean read FIsDomestic write FIsDomestic;
+
     property Time: TDateTime read FTime write FTime;
-    property Call: string read FCall write FCall;
+    property Call: string read FCall write SetCall;
     property Number: string read FNumber write FNumber;
     property FreqHz: Int64 read FFreqHz write FFreqHz;
     property CtyIndex: Integer read FCtyIndex write FCtyIndex;
@@ -94,8 +101,16 @@ type
   end;
 
   {$IFNDEF ZLOG_TELNET}
-  procedure SpotCheckWorked(Sp: TBaseSpot);
+  procedure SpotCheckWorked(Sp: TBaseSpot; fWorkedScrub: Boolean = False);
   {$ENDIF}
+
+var
+  hLookupServer: HWND;
+
+{$IFNDEF ZLOG_TELNET}
+  function ExecLookup(strCallsign: string): string;
+  function FindLookupServer(): HWND;
+{$ENDIF}
 
 implementation
 
@@ -122,6 +137,7 @@ begin
    FCQ := False;
    FNewJaMulti := False;
    FReportedBy := '';
+   FIsDomestic := True;
 end;
 
 constructor TSpot.Create;
@@ -151,6 +167,7 @@ function TSpot.Analyze(S : string) : boolean;
 var
    temp, temp2 : string;
    i : integer;
+   sjis: AnsiString;
 
    {$IFNDEF ZLOG_TELNET}
    b: TBand;
@@ -173,10 +190,19 @@ begin
    end;
 
    if pos('DX de', temp) = 1 then begin
-      //0000000001111111111222222222233333333334444444444555555555566666666667
-      //1234567890123456789012345678901234567890123456789012345678901234567890
+      //000000000111111111122222222223333333333444444444455555555556666666666777777
+      //123456789012345678901234567890123456789012345678901234567890123456789012345
       //DX de W1NT-6-#:  14045.0  V3MIWTJ      CW 16 dB 21 WPM CQ             1208Z
       //DX de W3LPL-#:   14010.6  SM5DYC       CW 14 dB 22 WPM CQ             1208Z
+      sjis := AnsiString(temp);
+      TimeStr := string(Copy(sjis, 71, 5));
+      Comment := string(Copy(sjis, 40, 30));
+      Call := Trim(string(Copy(sjis, 27, 12)));
+
+      if Pos('CQ', Comment) > 0 then begin
+         CQ := True;
+      end;
+
       i := pos(':', temp);
       if i > 0 then begin
          temp2 := copy(temp, 7, i - 7);
@@ -216,41 +242,10 @@ begin
       Band := b;
       {$ENDIF}
 
-      Delete(temp, 1, i);
-      temp := TrimLeft(temp);
-
-      // Callsign
-      i := pos(' ', temp);
-      if i > 0 then begin
-         Call := copy(temp, 1, i - 1);
-      end
-      else begin
-         exit;
-      end;
-
-      Delete(temp, 1, i);
-
-      // CQ/DE
-      // Callsignの後ろに'CQ 'の文字があればCQとみなす
-      i := Pos('CQ ', temp);
-      if i > 0 then begin
-         CQ := True;
-      end;
-
-      // 後ろから見て、時間を取得
-      for i := length(temp) downto 1 do begin
-         if temp[i] = ' ' then begin
-            break;
-         end;
-      end;
-
-      TimeStr := copy(temp, i + 1, 5);
-
-      // 時間を削除した残りはコメントとする
-      Delete(temp, i, 255);
-      Comment := temp;
-
       Result := True;
+   end
+   else if Pos('To ALL', temp) = 1 then begin
+      Exit;
    end
    else begin    // check for SH/DX responses
       i := length(temp);
@@ -364,9 +359,20 @@ begin
    FComment := TSpot(O).FComment;
 end;
 
-Function TBaseSpot.NewMulti : boolean;
+function TBaseSpot.GetIsNewMulti(): Boolean;
 begin
    Result := NewCty or NewZone or NewJaMulti;
+end;
+
+function TBaseSpot.GetIsPortable(): Boolean;
+begin
+   Result := (Pos('/', FCall) > 0);
+end;
+
+procedure TBaseSpot.SetCall(v: string);
+begin
+   FCall := v;
+   FIsDomestic := UzLogGlobal.IsDomestic(v);
 end;
 
 procedure TBaseSpot.Assign(O: TBaseSpot);
@@ -461,7 +467,7 @@ begin
 end;
 
 {$IFNDEF ZLOG_TELNET}
-procedure SpotCheckWorked(Sp: TBaseSpot);
+procedure SpotCheckWorked(Sp: TBaseSpot; fWorkedScrub: Boolean);
 var
    multi: string;
    SD, SD2: TSuperData;
@@ -471,7 +477,7 @@ begin
    Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
 
    // NR未入力の場合
-   if Sp.Number = '' then begin
+   if (Sp.Number = '') and (fWorkedScrub = False) then begin
       // 他のバンドで交信済みならマルチを取得
       if Log.IsOtherBandWorked(Sp.Call, Sp.Band, multi) = True then begin
          Sp.Number := multi;
@@ -483,6 +489,11 @@ begin
          SD2 := MainForm.SuperCheckList.ObjectOf(SD);
          if SD2 <> nil then begin
             Sp.Number := SD2.Number;
+         end;
+
+         // SPCからも取得できない場合はLookup Serverに依頼する
+         if (Sp.Number = '') and (Sp.IsPortable = False) and (Sp.IsDomestic = True) then begin
+            Sp.Number := ExecLookup(Sp.Call);
          end;
          SD.Free();
       end;
@@ -503,6 +514,72 @@ begin
       end;
    end;
 end;
+
+function ExecLookup(strCallsign: string): string;
+var
+   callsign_atom: ATOM;
+   number_atom: ATOM;
+   S: string;
+   r: LRESULT;
+   szWindowText: array[0..255] of Char;
+   nLen: Integer;
+   reqcode: Integer;
+begin
+   if dmZLogGlobal.Settings._bandscope_use_lookup_server = False then begin
+      Result := '';
+      Exit;
+   end;
+
+   if hLookupServer = 0 then begin
+      hLookupServer := FindLookupServer();
+   end;
+
+   if hLookupServer = 0 then begin
+      Result := '';
+      Exit;
+   end;
+
+   if Pos('$Q', MyContest.SentStr) > 0 then begin
+      reqcode := 1;
+   end
+   else begin
+      reqcode := 0;
+   end;
+
+
+   S := strCallsign;
+   callsign_atom := GlobalAddAtom(PChar(S));
+   r := SendMessage(hLookupServer, (WM_USER+501), callsign_atom, reqcode);
+   if r = 0 then begin
+      Result := '';
+      Exit;
+   end;
+
+   ZeroMemory(@szWindowText, SizeOf(szWindowText));
+   number_atom := LOWORD(r);
+   nLen := GlobalGetAtomName(number_atom, PChar(@szWindowText), SizeOf(szWindowText));
+   if (nLen = 0) then begin
+      Result := '';
+      Exit;
+   end;
+
+   GlobalDeleteAtom(number_atom);
+
+   Result := StrPas(szWindowText);
+end;
+
+function FindLookupServer(): HWND;
+var
+   wnd: HWND;
+begin
+   wnd := FindWindow(PChar('TformQthLookup'), nil);
+
+   Result := wnd;
+end;
+
+initialization
+  hLookupServer := FindLookupServer();
+
 {$ENDIF}
 
 end.

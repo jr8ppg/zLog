@@ -147,10 +147,10 @@ type
     cbTransverter2: TCheckBox;
     tabsheetPath: TTabSheet;
     Label50: TLabel;
-    edCFGDATPath: TEdit;
+    editCfgDatFolder: TEdit;
     buttonBrowseCFGDATPath: TButton;
     Label51: TLabel;
-    edLogsPath: TEdit;
+    editLogsFolder: TEdit;
     buttonBrowseLogsPath: TButton;
     rbRTTY: TRadioButton;
     cbCQSP: TCheckBox;
@@ -193,11 +193,9 @@ type
     GroupBox8: TGroupBox;
     radioSuperCheck0: TRadioButton;
     radioSuperCheck1: TRadioButton;
-    editSuperCheckFolder: TEdit;
     radioSuperCheck2: TRadioButton;
-    buttonSuperCheckFolderRef: TSpeedButton;
     buttonBrowseBackupPath: TButton;
-    BackUpPathEdit: TEdit;
+    editBackupFolder: TEdit;
     Label56: TLabel;
     comboPower19: TComboBox;
     comboPower35: TComboBox;
@@ -274,7 +272,6 @@ type
     comboQuickQsyRig06: TComboBox;
     comboQuickQsyRig07: TComboBox;
     comboQuickQsyRig08: TComboBox;
-    checkCwReverseSignal: TCheckBox;
     tabsheetQuickMemo: TTabSheet;
     GroupBox11: TGroupBox;
     Label63: TLabel;
@@ -323,10 +320,10 @@ type
     vButton10: TButton;
     Label74: TLabel;
     buttonBrowseSoundPath: TButton;
-    SoundPathEdit: TEdit;
+    editSoundFolder: TEdit;
     Label90: TLabel;
     buttonBrowsePluginPath: TButton;
-    PluginPathEdit: TEdit;
+    editPluginsFolder: TEdit;
     checkBsCurrent: TCheckBox;
     Label75: TLabel;
     editMessage11: TEdit;
@@ -522,6 +519,21 @@ type
     checkUseLookupServer: TCheckBox;
     checkSetFreqAfterModeChange: TCheckBox;
     checkAlwaysChangeMode: TCheckBox;
+    buttonSpotterList: TButton;
+    checkAcceptDuplicates: TCheckBox;
+    editRootFolder: TEdit;
+    Label120: TLabel;
+    buttonBrowseRootFolder: TButton;
+    Label121: TLabel;
+    buttonBrowseSpcPath: TButton;
+    editSpcFolder: TEdit;
+    checkCwReverseSignal3: TCheckBox;
+    checkCwReverseSignal2: TCheckBox;
+    checkCwReverseSignal1: TCheckBox;
+    editIcomResponseTimout: TEdit;
+    Label122: TLabel;
+    checkDispLongDateTime: TCheckBox;
+    checkBsAllBands: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -545,7 +557,6 @@ type
     procedure comboRig1NameChange(Sender: TObject);
     procedure comboRig2NameChange(Sender: TObject);
     procedure checkUseQuickQSYClick(Sender: TObject);
-    procedure buttonSuperCheckFolderRefClick(Sender: TObject);
     procedure OnNeedSuperCheckLoad(Sender: TObject);
     procedure buttonFullmatchSelectColorClick(Sender: TObject);
     procedure buttonFullmatchInitColorClick(Sender: TObject);
@@ -571,6 +582,7 @@ type
     procedure checkUseWinKeyerClick(Sender: TObject);
     procedure radioSo2rClick(Sender: TObject);
     procedure checkUseEstimatedModeClick(Sender: TObject);
+    procedure buttonSpotterListClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -626,10 +638,38 @@ const
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True )
   );
 
+resourcestring
+  // COMポート設定
+  COM_PORT_SETTING = 'COM port settings';
+
+  // TELNET設定
+  TELNET_SETTING = 'TELNET settings';
+
+  // SuperCheck用のファイルが保存されているフォルダを選択して下さい
+  SELECT_SPC_FOLDER = 'Select the folder where the files for SuperCheck';
+
+  // フォルダの参照
+  SELECT_FOLDER = 'Select folder';
+
+  // オフセット周波数を kHz で入力してください
+  PLEASE_INPUT_OFFSET_FREQ = 'Please input the offset frequency in kHz';
+
+  // プラグインのフォルダが変更されました。インストールされたプラグインは無効になります。よろしいですか？
+  Installed_Plugins_Disabled = 'Plugins folder changed. Installed plugins will be disabled. Are you sure?';
+
+  // 以降のバンドも同じ設定に変更しますか？
+  DoYouWantTheFollowingBandsToHaveTheSameSettins = 'Do you want the following bands to have the same settings?';
+
+  // zLogルートフォルダはフルパスで入力して下さい。
+  EnterTheFullPathOfRootFolder = 'Enter the full path of the zLog root folder';
+
+  // zLogルートフォルダが存在しません
+  zLogRootFolderNotExist = 'zLog root folder does not exist';
+
 implementation
 
 uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet,
-  UZlinkTelnetSet, UZLinkForm, URigControl, UPluginManager;
+  UZlinkTelnetSet, UZLinkForm, URigControl, UPluginManager, USpotterListDlg;
 
 {$R *.DFM}
 
@@ -675,6 +715,48 @@ procedure TformOptions.RenewSettings;
 var
    r: double;
    i, j: integer;
+
+   procedure SetRigControlParam(no: Integer; C, S, N, K: TComboBox; T, R: TCheckBox);
+   begin
+      with dmZlogGlobal do begin
+         if Assigned(C) then begin
+            Settings.FRigControl[no].FControlPort := C.ItemIndex;
+         end;
+
+         if Assigned(S) then begin
+            Settings.FRigControl[no].FSpeed := S.ItemIndex;
+         end;
+
+         if Assigned(N) then begin
+            if N.ItemIndex <= 0 then begin
+               Settings.FRigControl[no].FRigName := '';
+            end
+            else begin
+               Settings.FRigControl[no].FRigName := N.Text;
+            end;
+         end;
+
+         if Assigned(K) then begin
+            if (K.ItemIndex >= 1) and (K.ItemIndex <= 20) then begin
+               Settings.FRigControl[no].FKeyingPort := K.ItemIndex;
+            end
+            else if K.ItemIndex = 21 then begin    // USB
+               Settings.FRigControl[no].FKeyingPort := 21;
+            end
+            else begin
+               Settings.FRigControl[no].FKeyingPort := 0;
+            end;
+         end;
+
+         if Assigned(T) then begin
+            Settings.FRigControl[no].FUseTransverter := T.Checked;
+         end;
+
+         if Assigned(R) then begin
+            Settings.FRigControl[no].FKeyingIsRTS := R.Checked;
+         end;
+      end;
+   end;
 begin
    with dmZlogGlobal do begin
       Settings._savewhennocw := cbSaveWhenNoCW.Checked;
@@ -798,30 +880,16 @@ begin
       Settings._clusterport := ClusterCombo.ItemIndex;
    //   Settings._clusterbaud := ClusterCOMSet.BaudCombo.ItemIndex;
 
-      // RIG1
-      Settings._rigport[1] := comboRig1Port.ItemIndex;
+      //
+      // RIG1-3
+      //
+      SetRigControlParam(1, comboRig1Port, comboRig1Speed, comboRig1Name, comboCwPttPort1, cbTransverter1, checkCwReverseSignal1);
+      SetRigControlParam(2, comboRig2Port, comboRig2Speed, comboRig2Name, comboCwPttPort2, cbTransverter2, checkCwReverseSignal2);
+      SetRigControlParam(3, nil,           nil,            nil,           comboCwPttPort3, nil,            checkCwReverseSignal3);
 
-      if comboRig1Name.ItemIndex <= 0 then begin
-         Settings._rigname[1] := '';
-      end
-      else begin
-         Settings._rigname[1] := comboRig1Name.Text;
-      end;
-
-      Settings._rigspeed[1] := comboRig1Speed.ItemIndex;
-
-      // RIG2
-      Settings._rigport[2] := comboRig2Port.ItemIndex;
-
-      if comboRig2Name.ItemIndex <= 0 then begin
-         Settings._rigname[2] := '';
-      end
-      else begin
-         Settings._rigname[2] := comboRig2Name.Text;
-      end;
-
-      Settings._rigspeed[2] := comboRig2Speed.ItemIndex;
-
+      //
+      // ICOM CI-V options
+      //
       if comboIcomMode.ItemIndex = 0 then begin
          Settings._use_transceive_mode := True;
       end
@@ -836,6 +904,8 @@ begin
          Settings._icom_polling_freq_and_mode := False;
       end;
 
+      Settings._icom_response_timeout := StrToIntDef(editIcomResponseTimout.Text, 1000);
+
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
 
       Settings._zlinkport := ZLinkCombo.ItemIndex;
@@ -843,7 +913,6 @@ begin
       Settings._syncserial := checkZLinkSyncSerial.Checked;
 
       Settings._pttenabled := PTTEnabledCheckBox.Checked;
-      Settings.CW._keying_signal_reverse := checkCwReverseSignal.Checked;
 
       Settings._saveevery        := SaveEvery.Value;
 
@@ -869,40 +938,6 @@ begin
 
       i := Settings._pttafter;
       Settings._pttafter := StrToIntDef(AfterEdit.Text, i);
-
-      // CW/PTT port
-      // RIG1
-      if (comboCwPttPort1.ItemIndex >= 1) and (comboCwPttPort1.ItemIndex <= 20) then begin
-         Settings._keyingport[1] := comboCwPttPort1.ItemIndex;
-      end
-      else if comboCwPttPort1.ItemIndex = 21 then begin    // USB
-         Settings._keyingport[1] := 21;
-      end
-      else begin
-         Settings._keyingport[1] := 0;
-      end;
-
-      // RIG2
-      if (comboCwPttPort2.ItemIndex >= 1) and (comboCwPttPort2.ItemIndex <= 20) then begin
-         Settings._keyingport[2] := comboCwPttPort2.ItemIndex;
-      end
-      else if comboCwPttPort2.ItemIndex = 21 then begin    // USB
-         Settings._keyingport[2] := 21;
-      end
-      else begin
-         Settings._keyingport[2] := 0;
-      end;
-
-      // RIG3
-      if (comboCwPttPort3.ItemIndex >= 1) and (comboCwPttPort3.ItemIndex <= 20) then begin
-         Settings._keyingport[3] := comboCwPttPort3.ItemIndex;
-      end
-      else if comboCwPttPort3.ItemIndex = 21 then begin    // USB
-         Settings._keyingport[3] := 21;
-      end
-      else begin
-         Settings._keyingport[3] := 0;
-      end;
 
       // Use Winkeyer
       Settings._use_winkeyer := checkUseWinkeyer.Checked;
@@ -936,18 +971,27 @@ begin
 
 //      Settings._sentstr := SentEdit.Text;
 
-      UPluginManager.SetItemPathINI(IncludeTrailingPathDelimiter(PluginPathEdit.Text));
-      Settings._soundpath := IncludeTrailingPathDelimiter(SoundPathEdit.Text);
-      Settings._backuppath := IncludeTrailingPathDelimiter(BackUpPathEdit.Text);
-      Settings._cfgdatpath := IncludeTrailingPathDelimiter(edCFGDATPath.Text);
-      Settings._logspath := IncludeTrailingPathDelimiter(edLogsPath.Text);
+      //
+      // Folders
+      //
+      Settings._rootpath := editRootFolder.Text;
+      Settings._cfgdatpath := editCfgDatFolder.Text;
+      Settings._logspath := editLogsFolder.Text;
+      Settings._backuppath := editBackupFolder.Text;
+      Settings._soundpath := editSoundFolder.Text;
+
+      if IncludeTrailingPathDelimiter(editPluginsFolder.Text) <> IncludeTrailingPathDelimiter(Settings._pluginpath) then begin
+         if Application.MessageBox(PChar(Installed_Plugins_Disabled), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDYES then begin
+            Settings._pluginpath := editPluginsFolder.Text;
+         end;
+      end;
+
+      Settings.FSuperCheck.FSuperCheckFolder := editSpcFolder.Text;
 
       Settings._allowdupe := AllowDupeCheckBox.Checked;
       Settings._sameexchange := cbDispExchange.Checked;
       Settings._entersuperexchange := cbAutoEnterSuper.Checked;
-
-      Settings._transverter1 := cbTransverter1.Checked;
-      Settings._transverter2 := cbTransverter2.Checked;
+      Settings._displongdatetime := checkDispLongDateTime.Checked;
 
       Settings._cluster_telnet := FTempClusterTelnet;
       Settings._cluster_com := FTempClusterCom;
@@ -1023,7 +1067,7 @@ begin
       else begin
          Settings.FSuperCheck.FSuperCheckMethod := 2;
       end;
-      Settings.FSuperCheck.FSuperCheckFolder := editSuperCheckFolder.Text;
+      Settings.FSuperCheck.FAcceptDuplicates := checkAcceptDuplicates.Checked;
       Settings.FSuperCheck.FFullMatchHighlight := checkHighlightFullmatch.Checked;
       Settings.FSuperCheck.FFullMatchColor := editFullmatchColor.Color;
 
@@ -1055,6 +1099,7 @@ begin
       Settings._usebandscope[b10g]  := checkBS16.Checked;
       Settings._usebandscope_current := checkBsCurrent.Checked;
       Settings._usebandscope_newmulti := checkBsNewMulti.Checked;
+      Settings._usebandscope_allbands := checkBsAllBands.Checked;
 
       for i := 1 to 7 do begin
          Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
@@ -1116,8 +1161,29 @@ begin
 end;
 
 procedure TformOptions.buttonOKClick(Sender: TObject);
+var
+   S: string;
 begin
+   // zLogルートフォルダのチェック
+   S := editRootFolder.Text;
+   if (S <> '') and (S <> '%ZLOG_ROOT%') then begin
+      if IsFullPath(S) = False then begin
+         Application.MessageBox(PChar(EnterTheFullPathOfRootFolder), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         Exit;
+      end;
+      if SysUtils.DirectoryExists(S) = False then begin
+         Application.MessageBox(PChar(zLogRootFolderNotExist), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         Exit;
+      end;
+   end;
+
+   // 入力された設定を保存
    RenewSettings;
+
+   // 各種フォルダ作成
+   dmZLogGlobal.CreateFolders();
+
+   ModalResult := mrOK;
 end;
 
 procedure TformOptions.RenewCWStrBankDisp;
@@ -1140,6 +1206,48 @@ end;
 procedure TformOptions.FormShow(Sender: TObject);
 var
    i, j: integer;
+
+   procedure GetRigControlParam(no: Integer; C, S, N, K: TComboBox; T, R: TCheckBox);
+   begin
+      with dmZlogGlobal do begin
+         if Assigned(C) then begin
+            C.ItemIndex := Settings.FRigControl[no].FControlPort;
+         end;
+
+         if Assigned(S) then begin
+            S.ItemIndex := Settings.FRigControl[no].FSpeed;
+         end;
+
+         if Assigned(N) then begin
+            if Settings.FRigControl[no].FRigName = '' then begin
+               N.ItemIndex := 0;
+            end
+            else begin
+               N.ItemIndex := N.Items.Indexof(Settings.FRigControl[no].FRigName);
+            end;
+         end;
+
+         if Assigned(K) then begin
+            if (Settings.FRigControl[no].FKeyingPort >= 1) and (Settings.FRigControl[no].FKeyingPort <= 20) then begin
+               K.ItemIndex := Settings.FRigControl[no].FKeyingPort;
+            end
+            else if Settings.FRigControl[no].FKeyingPort = 21 then begin    // USB
+               K.ItemIndex := 21;
+            end
+            else begin
+               K.ItemIndex := 0;
+            end;
+         end;
+
+         if Assigned(T) then begin
+            T.Checked := Settings.FRigControl[no].FUseTransverter;
+         end;
+
+         if Assigned(R) then begin
+            R.Checked := Settings.FRigControl[no].FKeyingIsRTS;
+         end;
+      end;
+   end;
 begin
    with dmZlogGlobal do begin
       FTempClusterTelnet := Settings._cluster_telnet;
@@ -1274,28 +1382,16 @@ begin
       editZLinkPcName.Text := Settings._pcname;
       checkZLinkSyncSerial.Checked := Settings._syncserial;
 
-      // RIG1
-      comboRig1Port.ItemIndex := Settings._rigport[1];
+      //
+      // RIG1-3
+      //
+      GetRigControlParam(1, comboRig1Port, comboRig1Speed, comboRig1Name, comboCwPttPort1, cbTransverter1, checkCwReverseSignal1);
+      GetRigControlParam(2, comboRig2Port, comboRig2Speed, comboRig2Name, comboCwPttPort2, cbTransverter2, checkCwReverseSignal2);
+      GetRigControlParam(3, nil,           nil,            nil,           comboCwPttPort3, nil,            checkCwReverseSignal3);
 
-      i := comboRig1Name.Items.IndexOf(Settings._rigname[1]);
-      if i = -1 then begin
-         i := 0;
-      end;
-      comboRig1Name.ItemIndex := i;
-
-      comboRig1Speed.ItemIndex := Settings._rigspeed[1];
-
-      // RIG2
-      comboRig2Port.ItemIndex := Settings._rigport[2];
-
-      i := comboRig2Name.Items.IndexOf(Settings._rigname[2]);
-      if i = -1 then begin
-         i := 0;
-      end;
-      comboRig2Name.ItemIndex := i;
-
-      comboRig2Speed.ItemIndex := Settings._rigspeed[2];
-
+      //
+      // ICOM CI-V options
+      //
       if Settings._use_transceive_mode = True then begin
          comboIcomMode.ItemIndex := 0;
       end
@@ -1312,6 +1408,8 @@ begin
 
       comboIcomModeChange(nil);
 
+      editIcomResponseTimout.Text := IntToStr(Settings._icom_response_timeout);
+
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
 
       // Packet Cluster通信設定ボタン
@@ -1323,40 +1421,6 @@ begin
       ZLinkComboChange(nil);
 
       SaveEvery.Value := Settings._saveevery;
-
-      // CW/PTT port
-      // RIG1
-      if (Settings._keyingport[1] >= 1) and (Settings._keyingport[1] <= 20) then begin
-         comboCwPttPort1.ItemIndex := Settings._keyingport[1];
-      end
-      else if (Settings._keyingport[1] >= 21) then begin
-         comboCwPttPort1.ItemIndex := 21;
-      end
-      else begin
-         comboCwPttPort1.ItemIndex := 0;
-      end;
-
-      // RIG2
-      if (Settings._keyingport[2] >= 1) and (Settings._keyingport[2] <= 20) then begin
-         comboCwPttPort2.ItemIndex := Settings._keyingport[2];
-      end
-      else if (Settings._keyingport[2] >= 21) then begin
-         comboCwPttPort2.ItemIndex := 21;
-      end
-      else begin
-         comboCwPttPort2.ItemIndex := 0;
-      end;
-
-      // RIG3
-      if (Settings._keyingport[3] >= 1) and (Settings._keyingport[3] <= 20) then begin
-         comboCwPttPort3.ItemIndex := Settings._keyingport[3];
-      end
-      else if (Settings._keyingport[3] >= 21) then begin
-         comboCwPttPort3.ItemIndex := 21;
-      end
-      else begin
-         comboCwPttPort3.ItemIndex := 0;
-      end;
 
       // Use Winkeyer
       checkUseWinkeyer.Checked := Settings._use_winkeyer;
@@ -1398,14 +1462,18 @@ begin
       // Sent欄は表示専用
       SentEdit.Text := Settings._sentstr;
 
-      PluginPathEdit.Text := UPluginManager.GetItemPathINI;
-      SoundPathEdit.Text := Settings._soundpath;
-      BackUpPathEdit.Text := Settings._backuppath;
-      edCFGDATPath.Text := Settings._cfgdatpath;
-      edLogsPath.Text := Settings._logspath;
+      //
+      // Folders
+      //
+      editRootFolder.Text := Settings._rootpath;
+      editCfgDatFolder.Text := Settings._cfgdatpath;
+      editLogsFolder.Text := Settings._logspath;
+      editBackupFolder.Text := Settings._backuppath;
+      editSoundFolder.Text := Settings._soundpath;
+      editPluginsFolder.Text := Settings._pluginpath;
+      editSpcFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
 
       PTTEnabledCheckBox.Checked := Settings._pttenabled;
-      checkCwReverseSignal.Checked := Settings.CW._keying_signal_reverse;
 
       BeforeEdit.Text := IntToStr(Settings._pttbefore);
       AfterEdit.Text := IntToStr(Settings._pttafter);
@@ -1446,9 +1514,7 @@ begin
 
       cbDispExchange.Checked := Settings._sameexchange;
       cbAutoEnterSuper.Checked := Settings._entersuperexchange;
-
-      cbTransverter1.Checked := Settings._transverter1;
-      cbTransverter2.Checked := Settings._transverter2;
+      checkDispLongDateTime.Checked := Settings._displongdatetime;
 
       //
       // Rig Control
@@ -1514,7 +1580,7 @@ begin
          1: radioSuperCheck1.Checked := True;
          else radioSuperCheck2.Checked := True;
       end;
-      editSuperCheckFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
+      checkAcceptDuplicates.Checked := Settings.FSuperCheck.FAcceptDuplicates;
       checkHighlightFullmatch.Checked := Settings.FSuperCheck.FFullMatchHighlight;
       editFullmatchColor.Color := Settings.FSuperCheck.FFullMatchColor;
 
@@ -1546,6 +1612,7 @@ begin
       checkBS16.Checked := Settings._usebandscope[b10g];
       checkBsCurrent.Checked := Settings._usebandscope_current;
       checkBsNewMulti.Checked := Settings._usebandscope_newmulti;
+      checkBsAllBands.Checked := Settings._usebandscope_allbands;
 
       for i := 1 to 7 do begin
          FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
@@ -1856,7 +1923,7 @@ end;
 
 procedure TformOptions.vButtonClick(Sender: TObject);
 begin
-   OpenDialog.InitialDir := dmZLogGlobal.Settings._soundpath;
+   OpenDialog.InitialDir := dmZLogGlobal.SoundPath;
    if OpenDialog.Execute then begin
       FTempVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
@@ -1865,7 +1932,7 @@ end;
 
 procedure TformOptions.vAdditionalButtonClick(Sender: TObject);
 begin
-   OpenDialog.InitialDir := dmZLogGlobal.Settings._soundpath;
+   OpenDialog.InitialDir := dmZLogGlobal.SoundPath;
    if OpenDialog.Execute then begin
       FTempAdditionalVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
@@ -1875,13 +1942,21 @@ end;
 procedure TformOptions.ClusterComboChange(Sender: TObject);
 begin
    buttonClusterSettings.Enabled := True;
+   buttonSpotterList.Enabled := True;
+
    case ClusterCombo.ItemIndex of
-      0:
+      0: begin
          buttonClusterSettings.Enabled := False;
-      1 .. 6:
-         buttonClusterSettings.Caption := 'COM port settings';
-      7:
-         buttonClusterSettings.Caption := 'TELNET settings';
+         buttonSpotterList.Enabled := False;
+      end;
+
+      1 .. 6: begin
+         buttonClusterSettings.Caption := COM_PORT_SETTING;
+      end;
+
+      7: begin
+         buttonClusterSettings.Caption := TELNET_SETTING;
+      end;
    end;
 end;
 
@@ -1929,21 +2004,6 @@ begin
    end;
 end;
 
-procedure TformOptions.buttonSuperCheckFolderRefClick(Sender: TObject);
-var
-   fResult: Boolean;
-   strSelected: string;
-begin
-   strSelected := editSuperCheckFolder.Text;
-
-   fResult := SelectDirectory('SuperCheck用のファイルが保存されているフォルダを選択して下さい', '', strSelected, [sdNewUI, sdNewFolder, sdValidateDir], Self);
-   if fResult = False then begin
-      Exit;
-   end;
-
-   editSuperCheckFolder.Text := strSelected;
-end;
-
 procedure TformOptions.ZLinkComboChange(Sender: TObject);
 begin
    if ZLinkCombo.ItemIndex = 0 then begin
@@ -1981,33 +2041,56 @@ var
    strDir: string;
 begin
    case TButton(Sender).Tag of
+      0:
+         strDir := editRootFolder.Text;
       10:
-         strDir := edCFGDATPath.Text;
+         strDir := editCfgDatFolder.Text;
       20:
-         strDir := edLogsPath.Text;
+         strDir := editLogsFolder.Text;
       30:
-         strDir := BackUpPathEdit.Text;
+         strDir := editBackupFolder.Text;
       40:
-         strDir := SoundPathEdit.Text;
+         strDir := editSoundFolder.Text;
       50:
-         strDir := PluginPathEdit.Text;
+         strDir := editPluginsFolder.Text;
+      60:
+         strDir := editSpcFolder.Text;
    end;
 
-   if SelectDirectory('フォルダの参照', '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
+   if SelectDirectory(SELECT_FOLDER, '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
       exit;
    end;
 
    case TButton(Sender).Tag of
+      // Root
+      0:
+         editRootFolder.Text := strDir;
+
+      // CFG/DAT
       10:
-         edCFGDATPath.Text := strDir;
+         editCfgDatFolder.Text := strDir;
+
+      // Logs
       20:
-         edLogsPath.Text := strDir;
+         editLogsFolder.Text := strDir;
+
+      // Backup
       30:
-         BackUpPathEdit.Text := strDir;
+         editBackupFolder.Text := strDir;
+
+      // Sound(Voice)
       40:
-         SoundPathEdit.Text := strDir;
+         editSoundFolder.Text := strDir;
+
+      // Plugins
       50:
-         PluginPathEdit.Text := strDir;
+         editPluginsFolder.Text := strDir;
+
+      // Super Check
+      60: begin
+         editSpcFolder.Text := strDir;
+         FNeedSuperCheckLoad := True;
+      end;
    end;
 end;
 
@@ -2115,14 +2198,9 @@ begin
       r := r - 100;
 
       if TCheckBox(Sender).Checked then begin
-         i := 0;
-         if r = 1 then
-            i := dmZlogGlobal.Settings._transverteroffset1;
+         i := dmZlogGlobal.Settings.FRigControl[r].FTransverterOffset;
 
-         if r = 2 then
-            i := dmZlogGlobal.Settings._transverteroffset2;
-
-         F.Init(i, 'Please input the offset frequency in kHz');
+         F.Init(i, PLEASE_INPUT_OFFSET_FREQ);
          if F.ShowModal() <> mrOK then begin
             Exit;
          end;
@@ -2132,11 +2210,7 @@ begin
             Exit;
          end;
 
-         if r = 1 then
-            dmZlogGlobal.Settings._transverteroffset1 := i;
-
-         if r = 2 then
-            dmZlogGlobal.Settings._transverteroffset2 := i;
+         dmZlogGlobal.Settings.FRigControl[r].FTransverterOffset := i;
       end;
    finally
       F.Release();
@@ -2491,6 +2565,22 @@ procedure TformOptions.buttonStopVoiceClick(Sender: TObject);
 begin
    FVoiceSound.Stop();
    FVoiceSound.Close();
+end;
+
+procedure TformOptions.buttonSpotterListClick(Sender: TObject);
+var
+   dlg: TformSpotterListDlg;
+begin
+   dlg := TformSpotterListDlg.Create(Self);
+   try
+
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+   finally
+      dlg.Release();
+   end;
 end;
 
 end.

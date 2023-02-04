@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons, Math,
-  UzLogConst, UzLogGlobal, UzLogQSO;
+  UzLogConst, UzLogGlobal, UzLogQSO, Vcl.Menus;
 
 type
   TARRLDXScore = class(TBasicScore)
@@ -112,35 +112,45 @@ begin
    Grid.Cells[3,0] := 'Multi';
 
    for band := b19 to b28 do begin
-      if NotWARC(band) then begin
-         TotQSO := TotQSO + QSO[band];
-         TotPts := TotPts + Points[band];
-         TotMulti := TotMulti + Multi[band];
-
-         Grid.Cells[0, row] := '*' + MHzString[band];
-         Grid.Cells[1, row] := IntToStr(QSO[band]);
-         Grid.Cells[2, row] := IntToStr(Points[band]);
-         Grid.Cells[3, row] := IntToStr(Multi[band]);
-
-         Inc(row);
+      // WARC除外
+      if IsWARC(band) = True then begin
+         Continue;
       end;
+
+      // QRVできないバンドは除外
+      if dmZlogGlobal.Settings._activebands[band] = False then begin
+         Continue;
+      end;
+
+      TotQSO := TotQSO + QSO[band];
+      TotPts := TotPts + Points[band];
+      TotMulti := TotMulti + Multi[band];
+
+      Grid.Cells[0, row] := '*' + MHzString[band];
+      Grid.Cells[1, row] := IntToStr(QSO[band]);
+      Grid.Cells[2, row] := IntToStr(Points[band]);
+      Grid.Cells[3, row] := IntToStr(Multi[band]);
+
+      Inc(row);
    end;
 
    // 合計行
-   Grid.Cells[0, 7] := 'Total';
-   Grid.Cells[1, 7] := IntToStr3(TotQSO);
-   Grid.Cells[2, 7] := IntToStr3(TotPts);
-   Grid.Cells[3, 7] := IntToStr3(TotMulti);
+   Grid.Cells[0, row] := 'Total';
+   Grid.Cells[1, row] := IntToStr3(TotQSO);
+   Grid.Cells[2, row] := IntToStr3(TotPts);
+   Grid.Cells[3, row] := IntToStr3(TotMulti);
+   Inc(row);
 
    // スコア行
    strScore := IntToStr3(TotPts * TotMulti);
-   Grid.Cells[0, 8] := 'Score';
-   Grid.Cells[1, 8] := '';
-   Grid.Cells[2, 8] := '';
-   Grid.Cells[3, 8] := strScore;
+   Grid.Cells[0, row] := 'Score';
+   Grid.Cells[1, row] := '';
+   Grid.Cells[2, row] := '';
+   Grid.Cells[3, row] := strScore;
+   Inc(row);
 
    Grid.ColCount := 4;
-   Grid.RowCount := 9;
+   Grid.RowCount := row;
 
    // カラム幅をセット
    w := Grid.Canvas.TextWidth('9');

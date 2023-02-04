@@ -22,7 +22,6 @@ type
     Console: TColorConsole2;
     Timer1: TTimer;
     ZSocket: TWSocket;
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure Button1Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -34,6 +33,8 @@ type
     procedure ZSocketSessionClosed(Sender: TObject; Error: Word);
     procedure ZSocketSessionConnected(Sender: TObject; Error: Word);
     procedure FormDestroy(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     CommTemp : string; {command work string}
@@ -69,7 +70,7 @@ type
     procedure SendQSO(aQSO : TQSO);
     procedure RelaySpot(S : string); //called from CommForm to relay spot info
     procedure SendSpotViaNetwork(S : string);
-    procedure SendFreqInfo(Hz : integer);
+    procedure SendFreqInfo(Hz: TFrequency);
     procedure SendRigStatus;
     procedure MergeLogWithZServer;
     procedure DeleteQSO(aQSO : TQSO);
@@ -106,12 +107,6 @@ begin
    if ZSocket.State = wsConnected then begin
       ZSocket.SendStr(str);
    end;
-end;
-
-procedure TZLinkForm.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
 procedure TZLinkForm.Button1Click(Sender: TObject);
@@ -414,6 +409,7 @@ begin
          aQSO.TextToQSO(temp);
          MyContest.LogQSO(aQSO, false);
          MainForm.GridRefreshScreen;
+         MainForm.BandScopeNotifyWorked(aQSO);
          aQSO.Free;
       end;
 
@@ -609,7 +605,7 @@ begin
    end;
 end;
 
-procedure TZLinkForm.SendFreqInfo(Hz: integer);
+procedure TZLinkForm.SendFreqInfo(Hz: TFrequency);
 var
    str: string;
 begin
@@ -792,8 +788,6 @@ begin
          if str[j] = Chr($0D) then begin
             x := pos(ZLinkHeader, CommTemp);
             if x > 0 then begin
-               // MainForm.WriteStatusLine(CommTemp);
-               // CHATFORM.ADD(COMMTEMP);
                CommTemp := copy(CommTemp, x, 255);
                CommandQue.Add(CommTemp);
             end;
@@ -811,6 +805,11 @@ begin
    ProcessCommand;
 
    CommProcessing := false;
+end;
+
+procedure TZLinkForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TZLinkForm.FormCreate(Sender: TObject);
@@ -880,6 +879,11 @@ begin
       VK_ESCAPE:
          MainForm.SetLastFocus();
    end;
+end;
+
+procedure TZLinkForm.FormShow(Sender: TObject);
+begin
+   MainForm.AddTaskbar(Handle);
 end;
 
 function TZLinkForm.ZServerConnected: boolean;

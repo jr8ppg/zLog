@@ -142,7 +142,7 @@ begin
 
    S := GetState(aQSO, StateList);
    if S = nil then begin
-      MainForm.WriteStatusLine('Invalid number', False);
+      MainForm.WriteStatusLine(TMainForm_Invalid_number, False);
       exit;
    end;
 

@@ -18,7 +18,8 @@ type
     procedure cbStayOnTopClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-    procedure CreateParams(var Params: TCreateParams); override;
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -35,12 +36,6 @@ implementation
 uses Main;
 
 {$R *.DFM}
-
-procedure TWWZone.CreateParams(var Params: TCreateParams);
-begin
-  inherited CreateParams(Params);
-//  Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
-end;
 
 procedure TWWZone.Reset;
 var
@@ -81,6 +76,16 @@ begin
 //   if Self.Width > MaxWidth then begin
 //      Self.Width := MaxWidth;
 //   end;
+end;
+
+procedure TWWZone.FormShow(Sender: TObject);
+begin
+   MainForm.AddTaskbar(Handle);
+end;
+
+procedure TWWZone.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TWWZone.FormCreate(Sender: TObject);

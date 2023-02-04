@@ -24,6 +24,7 @@ type
     FMultiFound : Boolean; // used in spacebarproc
     FBandLow: TBand;
     FBandHigh: TBand;
+    FBandPlan: string;
     function DispExchangeOnOtherBands(strCallsign: string; aBand: TBand): string; virtual;
   public
     WantedList : TList;
@@ -69,6 +70,7 @@ type
     property MultiFound: Boolean read FMultiFound write FMultiFound;
     property BandLow: TBand read FBandLow;
     property BandHigh: TBand read FBandHigh;
+    property BandPlan: string read FBandPlan;
 
     procedure RenewScoreAndMulti();
   end;
@@ -451,7 +453,7 @@ begin
    Log.QsoList[0].Callsign := dmZlogGlobal.Settings._mycall; // Callsign
    Log.QsoList[0].Memo := N; // Contest name
    Log.QsoList[0].RSTsent := UTCOffset; // UTC = $FFFF else UTC + x hrs;
-   Log.QsoList[0].RSTRcvd := 0; // or Field Day coefficient
+   Log.QsoList[0].RSTRcvd := 100; // or Field Day coefficient
 
    SentStr := '';
 
@@ -460,6 +462,8 @@ begin
 
    FBandLow := b19;
    FBandHigh := b50;
+
+   FBandPlan := 'JA';
 end;
 
 procedure TContest.PostWanted(S: string);
@@ -556,6 +560,23 @@ procedure TContest.SetNrSent(aQSO: TQSO);
 var
    S: string;
 begin
+   // セットする値が無いならセットしない
+   if (Pos('$Q', dmZlogGlobal.Settings._sentstr) > 0) and (QTHString(aQSO) = '') then begin
+      Exit;
+   end;
+   if (Pos('$V', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._prov = '') then begin
+      Exit;
+   end;
+   if (Pos('$Z', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._cqzone = '') then begin
+      Exit;
+   end;
+   if (Pos('$I', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._iaruzone = '') then begin
+      Exit;
+   end;
+   if (Pos('$P', dmZlogGlobal.Settings._sentstr) > 0) and (aQSO.NewPowerStr = '') then begin
+      Exit;
+   end;
+
    S := SetStrNoAbbrev(dmZlogGlobal.Settings._sentstr, aQSO);
 
    S := StringReplace(S, '_', '', [rfReplaceAll]);
@@ -725,12 +746,12 @@ end;
 
 procedure TContest.ShowScore;
 begin
-   ScoreForm.Show;
+   FormShowAndRestore(ScoreForm);
 end;
 
 procedure TContest.ShowMulti;
 begin
-   MultiForm.Show;
+   FormShowAndRestore(MultiForm);
 end;
 
 procedure TContest.Renew;
@@ -789,6 +810,7 @@ begin
 
    FBandLow := b19;
    FBandHigh := b28;
+   FBandPlan := 'DX';
 end;
 
 procedure TJIDXContest.SetPoints(aQSO: TQSO);
@@ -806,10 +828,11 @@ begin
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    SentStr := '$N';
-   FNeedCtyDat := True;
+   FNeedCtyDat := False;
 
    FBandLow := b19;
    FBandHigh := b28;
+   FBandPlan := 'DX';
 end;
 
 constructor TARRLDXContestW.Create(AOwner: TComponent; N: string);
@@ -828,6 +851,7 @@ begin
 
    FBandLow := b19;
    FBandHigh := b28;
+   FBandPlan := 'DX';
 end;
 
 constructor TAllAsianContest.Create(AOwner: TComponent; N: string);
@@ -846,6 +870,7 @@ begin
 
    FBandLow := b19;
    FBandHigh := b28;
+   FBandPlan := 'DX';
 end;
 
 procedure TAllAsianContest.SetPoints(aQSO: TQSO);
@@ -863,6 +888,7 @@ begin
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    SentStr := '$V';
    FNeedCtyDat := True;
+   FBandPlan := 'DX';
 end;
 
 procedure TJIDXContestDX.SetPoints(aQSO: TQSO);
@@ -893,6 +919,7 @@ begin
 
    FBandLow := b19;
    FBandHigh := b28;
+   FBandPlan := 'DX';
 end;
 
 constructor TWAEContest.Create(AOwner: TComponent; N: string);
@@ -916,6 +943,7 @@ begin
 
    FBandLow := b19;
    FBandHigh := b28;
+   FBandPlan := 'DX';
 end;
 
 destructor TWAEContest.Destroy();
@@ -947,6 +975,7 @@ begin
 
    FBandLow := b35;
    FBandHigh := b28;
+   FBandPlan := 'DX';
 end;
 
 constructor TARRL10Contest.Create(AOwner: TComponent; N: string);
@@ -968,8 +997,9 @@ begin
    dmZlogGlobal.Settings._sameexchange := SameExchange;
    FNeedCtyDat := True;
 
-   FBandLow := b19;
+   FBandLow := b28;
    FBandHigh := b28;
+   FBandPlan := 'DX';
 end;
 
 constructor TJA0Contest.Create(AOwner: TComponent; N: string);
@@ -987,6 +1017,7 @@ begin
 
    FBandLow := b35;
    FBandHigh := b28;
+   FBandPlan := 'DX';
 end;
 
 constructor TJA0ContestZero.Create(AOwner: TComponent; N: string);
@@ -1028,6 +1059,7 @@ begin
 
    FBandLow := b19;
    FBandHigh := b28;
+   FBandPlan := 'DX';
 end;
 
 constructor TCQWWContest.Create(AOwner: TComponent; N: string; fJIDX: Boolean);
@@ -1051,6 +1083,7 @@ begin
 
    FBandLow := b19;
    FBandHigh := b28;
+   FBandPlan := 'DX';
 end;
 
 function TCQWWContest.SpaceBarProc(strCallsign: string; strNumber: string): string;
@@ -1098,6 +1131,7 @@ begin
 
    FBandLow := b19;
    FBandHigh := b28;
+   FBandPlan := 'DX';
 end;
 
 function TIARUContest.SpaceBarProc(strCallsign: string; strNumber: string): string;
@@ -1255,6 +1289,10 @@ begin
 
    FBandLow := FConfig.BandLow;
    FBandHigh := FConfig.BandHigh;
+
+   if FConfig.BandPlan <> '' then begin
+      FBandPlan := FConfig.BandPlan;
+   end;
 end;
 
 destructor TGeneralContest.Destroy();

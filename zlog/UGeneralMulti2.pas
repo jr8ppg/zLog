@@ -488,7 +488,7 @@ begin
    if FConfig.UndefMulti then
       MainForm.WriteStatusLine(str+ ' : '+'Not worked on any band', false)
    else
-      MainForm.WriteStatusLine('Invalid number', false);
+      MainForm.WriteStatusLine(TMainForm_Invalid_number, false);
 end;
 
 procedure TGeneralMulti2.FormShow(Sender: TObject);

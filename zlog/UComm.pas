@@ -45,6 +45,8 @@ type
     checkRecordLogs: TCheckBox;
     popupCommand: TPopupMenu;
     menuPasteCommand: TMenuItem;
+    checkUseAllowDenyLists: TCheckBox;
+    timerReConnect: TTimer;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -56,8 +58,6 @@ type
     procedure ConnectButtonClick(Sender: TObject);
     procedure TelnetSessionConnected(Sender: TTnCnx; Error: Word);
     procedure TelnetSessionClosed(Sender: TTnCnx; Error: Word);
-    procedure CreateParams(var Params: TCreateParams); override;
-    //procedure AsyncCommRxChar(Sender: TObject; Count: Integer);
     procedure FormShow(Sender: TObject);
     procedure ListBoxDblClick(Sender: TObject);
     procedure ListBoxKeyDown(Sender: TObject; var Key: Word;
@@ -74,6 +74,8 @@ type
     procedure menuSaveToFileClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure menuPasteCommandClick(Sender: TObject);
+    procedure timerReConnectTimer(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     FCommBuffer : TStringList;
@@ -91,6 +93,17 @@ type
     FAutoLogined: Boolean;
 
     FCommProcessThread: TCommProcessThread;
+
+    FSpotterList: TStringList;
+    FAllowList: TStringList;
+    FDenyList: TStringList;
+
+    // Auto Reconnect
+    FReConnectMax: Integer;
+    FReConnectCount: Integer;
+    FRetryIntervalSec: Integer;
+    FRetryIntervalCount: Integer;
+
     procedure DeleteSpot(_from, _to : integer);
 
     function GetFontSize(): Integer;
@@ -106,6 +119,7 @@ type
     procedure EnableConnectButton(boo : boolean);
     function GetLocalEcho(): Boolean;
     procedure TerminateCommProcessThread();
+    procedure LoadAllowDenyList();
   public
     { Public declarations }
     procedure PreProcessSpotFromZLink(S : string; N: Integer);
@@ -125,8 +139,12 @@ type
     procedure Lock();
     procedure Unlock();
 
+    procedure Disconnect();
+
     property FontSize: Integer read GetFontSize write SetFontSize;
     property SpotList: TSpotList read FSpotList;
+
+    property DenyList: TStringList read FDenyList;
   end;
 
 resourcestring
@@ -134,6 +152,8 @@ resourcestring
   UComm_Disconnect = 'Disconnect';
   UComm_Connecting = 'Connecting...';
   UComm_Disconnecting = 'Disconnecting...';
+  UComm_SecondsLeft = '%s seconds left to reconnect';
+  UComm_ExceededLimit = 'reconnection attempts exceeded limit';
 
 var
   CommBufferLock: TCriticalSection;
@@ -218,12 +238,6 @@ begin
          CloseFile(FClusterLog);
       end;
    end;
-end;
-
-procedure TCommForm.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
 end;
 
 procedure TCommForm.WriteData(str : string);
@@ -338,20 +352,22 @@ begin
       Telnet.Port := Copy(dmZlogGlobal.Settings._cluster_telnet.FHostName, i + 1);
    end;
 
-   checkAutoLogin.Checked     := dmZlogGlobal.Settings.FClusterAutoLogin;
-   checkAutoReconnect.Checked := dmZlogGlobal.Settings.FClusterAutoReconnect;
-   checkRelaySpot.Checked     := dmZlogGlobal.Settings.FClusterRelaySpot;
-   checkNotifyCurrentBand.Checked := dmZlogGlobal.Settings.FClusterNotifyCurrentBand;
-   checkRecordLogs.Checked    := dmZlogGlobal.Settings.FClusterRecordLogs;
+   checkAutoLogin.Checked     := dmZLogGlobal.Settings.FClusterAutoLogin;
+   checkAutoReconnect.Checked := dmZLogGlobal.Settings.FClusterAutoReconnect;
+   checkRelaySpot.Checked     := dmZLogGlobal.Settings.FClusterRelaySpot;
+   checkNotifyCurrentBand.Checked := dmZLogGlobal.Settings.FClusterNotifyCurrentBand;
+   checkRecordLogs.Checked    := dmZLogGlobal.Settings.FClusterRecordLogs;
+   checkUseAllowDenyLists.Checked := dmZLogGlobal.Settings.FClusterUseAllowDenyLists;
 end;
 
 procedure TCommForm.RenewOptions();
 begin
-   dmZlogGlobal.Settings.FClusterAutoLogin      := checkAutoLogin.Checked;
-   dmZlogGlobal.Settings.FClusterAutoReconnect  := checkAutoReconnect.Checked;
-   dmZlogGlobal.Settings.FClusterRelaySpot      := checkRelaySpot.Checked;
-   dmZlogGlobal.Settings.FClusterNotifyCurrentBand := checkNotifyCurrentBand.Checked;
-   dmZlogGlobal.Settings.FClusterRecordLogs     := checkRecordLogs.Checked;
+   dmZLogGlobal.Settings.FClusterAutoLogin      := checkAutoLogin.Checked;
+   dmZLogGlobal.Settings.FClusterAutoReconnect  := checkAutoReconnect.Checked;
+   dmZLogGlobal.Settings.FClusterRelaySpot      := checkRelaySpot.Checked;
+   dmZLogGlobal.Settings.FClusterNotifyCurrentBand := checkNotifyCurrentBand.Checked;
+   dmZLogGlobal.Settings.FClusterRecordLogs     := checkRecordLogs.Checked;
+   dmZLogGlobal.Settings.FClusterUseAllowDenyLists := checkUseAllowDenyLists.Checked;
 end;
 
 procedure TCommForm.FormCreate(Sender: TObject);
@@ -364,6 +380,24 @@ begin
    FCommStarted := False;
    FCommBuffer := TStringList.Create;
    FCommTemp := '';
+   FSpotterList := TStringList.Create();
+   FSpotterList.Duplicates := dupIgnore;
+   FSpotterList.Sorted := True;
+   FSpotterList.CaseSensitive := False;
+   FAllowList := TStringList.Create();
+   FAllowList.Duplicates := dupIgnore;
+   FAllowList.Sorted := True;
+   FAllowList.CaseSensitive := False;
+   FDenyList := TStringList.Create();
+   FDenyList.Duplicates := dupIgnore;
+   FDenyList.Sorted := True;
+   FDenyList.CaseSensitive := False;
+
+   FReConnectMax := dmZLogGlobal.Settings.FClusterReConnectMax;
+   FReConnectCount := 0;
+   FRetryIntervalSec := dmZLogGlobal.Settings.FClusterRetryIntervalSec;
+   FRetryIntervalCount := 0;
+   timerReConnect.Enabled := False;
 
    ImplementOptions();
 
@@ -372,6 +406,13 @@ begin
    FClusterLogFileName := StringReplace(Application.ExeName, '.exe', '_telnet_log_' + FormatDateTime('yyyymmdd', Now) + '.txt', [rfReplaceAll]);
    FAutoLogined := False;
    FCommProcessThread := nil;
+end;
+
+procedure TCommForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   Disconnect();
+
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TCommForm.RenewListBox;
@@ -573,13 +614,40 @@ begin
       end;
 
       for j := 1 to length(str) do begin
-         if (str[j] = Chr($0D)) or (str[j] = Chr($0A)) then begin
+         if (str[j] = Chr($0A)) then begin
+            FCommTemp := TrimCRLF(FCommTemp);
+
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('FCommTemp = [' + FCommTemp + ']'));
+            {$ENDIF}
+
             if FRelayPacketData then begin
-               MainForm.ZLinkForm.SendPacketData(TrimCRLF(FCommTemp));
+               MainForm.ZLinkForm.SendPacketData(FCommTemp);
             end;
 
             Sp := TSpot.Create;
             if Sp.Analyze(FCommTemp) = True then begin
+
+               // Spotterのチェック
+               if checkUseAllowDenyLists.Checked = True then begin
+                  if (FDenyList.Count > 0) and (FDenyList.IndexOf(Sp.ReportedBy) >= 0) then begin
+                     {$IFDEF DEBUG}
+                     OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been rejected by the deny list'));
+                     {$ENDIF}
+                     Sp.Free();
+                     FCommTemp := '';
+                     Continue;
+                  end;
+                  if (FAllowList.Count > 0) and (FAllowList.IndexOf(Sp.ReportedBy) = -1) then begin
+                     {$IFDEF DEBUG}
+                     OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] is not on the allow list'));
+                     {$ENDIF}
+                     Sp.Free();
+                     FCommTemp := '';
+                     Continue;
+                  end;
+               end;
+
                // データ発生源はCluster
                Sp.SpotSource := ssCluster;
 
@@ -587,6 +655,14 @@ begin
 
                if checkRelaySpot.Checked then begin
                   MainForm.ZLinkForm.RelaySpot(FCommTemp);
+               end;
+
+               // Spotterリストに登録
+               if (Sp.ReportedBy <> '') and (FSpotterList.IndexOf(Sp.ReportedBy) = -1) then begin
+                  FSpotterList.Add(Sp.ReportedBy);
+                  {$IFDEF DEBUG}
+                  OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been added to your spotter list'));
+                  {$ENDIF}
                end;
             end
             else begin
@@ -612,14 +688,45 @@ begin
    try
       // Auto Reconnect
       if (checkAutoReconnect.Checked = True) and (Telnet.IsConnected() = False) and
-         (FDisconnectClicked = False) and (ConnectButton.Caption = 'Connect') then begin
+         (FDisconnectClicked = False) and (ConnectButton.Caption = UComm_Connect) then begin
+
+         if (FReConnectCount >= FReConnectMax) then begin
+            WriteLineConsole(UComm_ExceededLimit);
+            WriteStatusLine('');
+            timerReconnect.Enabled := False;
+            FReConnectCount := 0;
+            FRetryIntervalCount := 0;
+            Exit;
+         end;
+
+         if (FRetryIntervalCount <= FRetryIntervalSec) then begin
+            Exit;
+         end;
+
          ConnectButton.Click();
+         Inc(FReConnectCount);
       end;
 
 //      CommProcess;
    finally
       Timer1.Enabled := True;
    end;
+end;
+
+procedure TCommForm.timerReConnectTimer(Sender: TObject);
+var
+   S: string;
+   C: Integer;
+begin
+   C := FRetryIntervalSec - FRetryIntervalCount;
+   if C < 0 then begin
+      C := 0;
+   end;
+
+   S := Format(UComm_SecondsLeft, [IntToStr(C)]);
+   WriteStatusLine(S);
+
+   Inc(FRetryIntervalCount);
 end;
 
 procedure TCommForm.FormDestroy(Sender: TObject);
@@ -633,6 +740,10 @@ begin
 
    FSpotList.Free();
    FCommBuffer.Free();
+
+   FSpotterList.Free();
+   FAllowList.Free();
+   FDenyList.Free();
 end;
 
 procedure TCommForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -655,6 +766,9 @@ begin
    try
       Edit.SetFocus;
 
+      WriteStatusLine('');
+      FRetryIntervalCount := 0;
+
       if dmZlogGlobal.Settings._clusterport = 0 then begin
          MainForm.ZLinkForm.PushRemoteConnect;
          exit;
@@ -664,9 +778,9 @@ begin
          ConnectButton.Caption := UComm_Disconnecting;
          FDisconnectClicked := True;
          Telnet.Close;
-         TerminateCommProcessThread();
       end
       else begin
+         LoadAllowDenyList();
          Telnet.Connect;
          ConnectButton.Caption := UComm_Connecting;
          FDisconnectClicked := False;
@@ -728,11 +842,19 @@ begin
       checkRelaySpot.Enabled := False;
       checkNotifyCurrentBand.Enabled := False;
       checkRecordLogs.Enabled := False;
+      checkUseAllowDenyLists.Enabled := False;
 
       ConnectButton.Caption := UComm_Disconnect;
       WriteLineConsole('connected to ' + Telnet.Host);
 
+      timerReConnect.Enabled := False;
+
       FAutoLogined := False;
+
+      FRetryIntervalCount := 0;
+      if Error = 0 then begin
+         FReConnectCount := 0;
+      end;
    except
       on E: Exception do begin
          Console.WriteString(E.Message);
@@ -742,6 +864,8 @@ begin
 end;
 
 procedure TCommForm.TelnetSessionClosed(Sender: TTnCnx; Error: Word);
+var
+   fname: string;
 begin
    WriteLineConsole('disconnected...');
 
@@ -755,11 +879,25 @@ begin
    checkRelaySpot.Enabled := True;
    checkNotifyCurrentBand.Enabled := True;
    checkRecordLogs.Enabled := True;
+   checkUseAllowDenyLists.Enabled := True;
    ConnectButton.Caption := UComm_Connect;
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_list.txt';
+   FSpotterList.SaveToFile(fname);
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_deny.txt';
+   FDenyList.SaveToFile(fname);
+
+   if FDisconnectClicked = False then begin
+      timerReConnect.Enabled := True;
+   end;
+   TerminateCommProcessThread();
 end;
 
 procedure TCommForm.FormShow(Sender: TObject);
 begin
+   MainForm.AddTaskbar(Handle);
+
    ConnectButton.Enabled := (dmZlogGlobal.Settings._clusterport = 7);
 end;
 
@@ -972,6 +1110,13 @@ begin
    LeaveCriticalSection(FSpotListLock);
 end;
 
+procedure TCommForm.Disconnect();
+begin
+   if Telnet.IsConnected = True then begin
+      Telnet.Close();
+   end;
+end;
+
 function TCommForm.GetLocalEcho(): Boolean;
 begin
    case dmZlogGlobal.Settings._clusterport of
@@ -988,6 +1133,30 @@ begin
       FCommProcessThread.WaitFor();
       FCommProcessThread.Free();
       FCommProcessThread := nil;
+   end;
+end;
+
+procedure TCommForm.LoadAllowDenyList();
+var
+   fname: string;
+begin
+   FSpotterList.Clear();
+   FAllowList.Clear();
+   FDenyList.Clear();
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_list.txt';
+   if FileExists(fname) then begin
+      FSpotterList.LoadFromFile(fname);
+   end;
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_allow.txt';
+   if FileExists(fname) then begin
+      FAllowList.LoadFromFile(fname);
+   end;
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_deny.txt';
+   if FileExists(fname) then begin
+      FDenyList.LoadFromFile(fname);
    end;
 end;
 

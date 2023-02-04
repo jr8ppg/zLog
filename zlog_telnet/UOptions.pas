@@ -39,6 +39,7 @@ type
     Panel1: TPanel;
     Label9: TLabel;
     editLoginID: TEdit;
+    checkUseAllowDenyLists: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -62,6 +63,8 @@ type
     procedure SetClusterAutoReconnect(v: Boolean);
     function GetClusterRecordLogs(): Boolean;
     procedure SetClusterRecordLogs(v: Boolean);
+    function GetClusterUseAllowDenyLists(): Boolean;
+    procedure SetClusterUseAllowDenyLists(v: Boolean);
     function GetZServerHost(): string;
     procedure SetZServerHost(v: string);
     function GetZServerPort(): string;
@@ -79,6 +82,7 @@ type
     property ClusterAutoLogin: Boolean read GetClusterAutoLogin write SetClusterAutoLogin;
     property ClusterAutoReconnect: Boolean read GetClusterAutoReconnect write SetClusterAutoReconnect;
     property ClusterRecordLogs: Boolean read GetClusterRecordLogs write SetClusterRecordLogs;
+    property ClusterUseAllowDenyLists: Boolean read GetClusterUseAllowDenyLists write SetClusterUseAllowDenyLists;
     property ZServerHost: string read GetZServerHost write SetZServerHost;
     property ZServerPort: string read GetZServerPort write SetZServerPort;
     property ZServerClientName: string read GetZServerClientName write SetZServerClientName;
@@ -231,6 +235,16 @@ end;
 procedure TOptions.SetClusterRecordLogs(v: Boolean);
 begin
    checkRecordLogs.Checked := v;
+end;
+
+function TOptions.GetClusterUseAllowDenyLists(): Boolean;
+begin
+   Result := checkUseAllowDenyLists.Checked;
+end;
+
+procedure TOptions.SetClusterUseAllowDenyLists(v: Boolean);
+begin
+   checkUseAllowDenyLists.Checked := v;
 end;
 
 function TOptions.GetZServerHost(): string;

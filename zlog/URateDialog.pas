@@ -45,7 +45,6 @@ type
     radioOriginCurrentTime: TRadioButton;
     radioOriginLastQSO: TRadioButton;
     radioOriginFirstQSO: TRadioButton;
-    procedure CreateParams(var Params: TCreateParams); override;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -85,12 +84,6 @@ uses
   Main;
 
 {$R *.DFM}
-
-procedure TRateDialog.CreateParams(var Params: TCreateParams);
-begin
-   inherited CreateParams(Params);
-   Params.ExStyle := Params.ExStyle or WS_EX_APPWINDOW;
-end;
 
 procedure TRateDialog.FormCreate(Sender: TObject);
 var
@@ -176,6 +169,8 @@ end;
 
 procedure TRateDialog.FormShow(Sender: TObject);
 begin
+   MainForm.AddTaskbar(Handle);
+
    UpdateGraph;
    Timer.Enabled := True;
 end;
@@ -191,6 +186,8 @@ end;
 procedure TRateDialog.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    Timer.Enabled := False;
+
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TRateDialog.TimerTimer(Sender: TObject);

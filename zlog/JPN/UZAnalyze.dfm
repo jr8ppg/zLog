@@ -14,6 +14,7 @@ object ZAnalyze: TZAnalyze
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
@@ -28,7 +29,6 @@ object ZAnalyze: TZAnalyze
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 233
     DesignSize = (
       684
       28)
@@ -48,7 +48,7 @@ object ZAnalyze: TZAnalyze
       Height = 25
       Anchors = [akTop, akRight]
       Caption = #12467#12500#12540
-      TabOrder = 4
+      TabOrder = 5
       OnClick = buttonCopyClick
     end
     object checkExcludeZeroPoint: TCheckBox
@@ -61,9 +61,9 @@ object ZAnalyze: TZAnalyze
       OnClick = buttonUpdateClick
     end
     object checkExcludeZeroHour: TCheckBox
-      Left = 183
+      Left = 189
       Top = 5
-      Width = 117
+      Width = 111
       Height = 17
       Caption = #65296#23616#12398#26178#38291#24111#12434#38500#12367
       TabOrder = 2
@@ -75,9 +75,18 @@ object ZAnalyze: TZAnalyze
       Width = 84
       Height = 25
       Anchors = [akTop, akRight]
-      Caption = #12501#12449#12452#12523#20445#23384
-      TabOrder = 3
+      Caption = #12501#12449#12452#12523#12395#20445#23384
+      TabOrder = 4
       OnClick = buttonSaveClick
+    end
+    object checkShowCW: TCheckBox
+      Left = 306
+      Top = 5
+      Width = 117
+      Height = 17
+      Caption = 'CW'#12434#20869#25968#12395#34920#31034
+      TabOrder = 3
+      OnClick = buttonUpdateClick
     end
   end
   object TabControl1: TTabControl
@@ -96,7 +105,6 @@ object ZAnalyze: TZAnalyze
       'ZOP')
     TabIndex = 0
     OnChange = TabControl1Change
-    ExplicitTop = -1
     object Memo1: TMemo
       Left = 4
       Top = 24
@@ -113,7 +121,6 @@ object ZAnalyze: TZAnalyze
       ScrollBars = ssVertical
       TabOrder = 0
       WordWrap = False
-      ExplicitHeight = 205
     end
   end
 end

@@ -8,7 +8,7 @@ object EditDialog: TEditDialog
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -12
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
@@ -693,6 +693,21 @@ object EditDialog: TEditDialog
     object actionSo2rToggleRigPair: TAction
       Caption = 'actionSo2rToggleRigPair'
       OnExecute = actionSo2rToggleRigPairExecute
+    end
+    object actionChangeBand2: TAction
+      Tag = 1
+      Caption = 'actionChangeBand2'
+      OnExecute = actionChangeBandExecute
+    end
+    object actionChangeMode2: TAction
+      Tag = 1
+      Caption = 'actionChangeMode2'
+      OnExecute = actionChangeModeExecute
+    end
+    object actionChangePower2: TAction
+      Tag = 1
+      Caption = 'actionChangePower2'
+      OnExecute = actionChangePowerExecute
     end
   end
 end

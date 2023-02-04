@@ -270,7 +270,7 @@ begin
 
    M := StrToIntDef(str, 0);
    if not(M in [1 .. 50]) then begin
-      MainForm.WriteStatusLine('Invalid number', False);
+      MainForm.WriteStatusLine(TMainForm_Invalid_number, False);
       exit;
    end;
 

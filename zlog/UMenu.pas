@@ -208,7 +208,7 @@ end;
 
 procedure TMenuForm.SelectButtonClick(Sender: TObject);
 begin
-   FSelectDlg.CfgFolder := dmZlogGlobal.Settings._cfgdatpath;
+   FSelectDlg.CfgFolder := dmZlogGlobal.CfgDatPath;
 
    FSelectDlg.InitialContestName := rbGeneral.Caption;
 
@@ -216,7 +216,10 @@ begin
       Exit;
    end;
 
-   dmZlogGlobal.Settings._cfgdatpath := FSelectDlg.CfgFolder;
+   // フォルダ未設定時は記録する
+   if dmZlogGlobal.CfgDatPath = '' then begin
+      dmZlogGlobal.CfgDatPath := FSelectDlg.CfgFolder;
+   end;
 
    FCFGFileName := FSelectDlg.SelectedContest.Fullpath;
    rbGeneral.Caption := FSelectDlg.SelectedContest.ContestName;
@@ -229,7 +232,6 @@ end;
 procedure TMenuForm.OKButtonClick(Sender: TObject);
 var
    i: Integer;
-   S: string;
 begin
    if editCallsign.Text = '' then begin
       Application.MessageBox(PChar(UMenu_PleaseEnterYourCallsign), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
