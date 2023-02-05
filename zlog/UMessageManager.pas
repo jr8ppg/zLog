@@ -62,6 +62,7 @@ type
     procedure AddQue(msg: TPlayMessage); overload;
     procedure ContinueQue();
     procedure ClearQue();
+    procedure ClearQue2();
     procedure StopCW();
     procedure ClearText();
 
@@ -219,6 +220,19 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('<<< Leave - TformMessageManager.ClearQue();'));
    {$ENDIF}
+end;
+
+procedure TformMessageManager.ClearQue2();
+var
+   i: Integer;
+   msg: TPlayMessage;
+begin
+   for i := 0 to FMessageQueue.Count - 1 do begin
+      msg := FMessageQueue[i];
+      msg.Free();
+   end;
+   FMessageQueue.Clear();
+   Memo1.Clear();
 end;
 
 procedure TformMessageManager.StopCW();
@@ -410,7 +424,7 @@ begin
          WM_ZLOG_SWITCH_RX:         strCmdText := 'SwitchRx';
          WM_ZLOG_SWITCH_TXRX:       strCmdText := 'SwitchTxRx';
          WM_ZLOG_AFTER_DELAY:       strCmdText := 'AfterDelay';
-         WM_ZLOG_SET_LOOP_PAUSE:    strCmdText := 'SetLoopPause';
+//         WM_ZLOG_SET_LOOP_PAUSE:    strCmdText := 'SetLoopPause';
          WM_ZLOG_SET_CQ_LOOP:       strCmdText := 'SetCqLoop';
          WM_ZLOG_CALLSIGNSENT:      strCmdText := 'CallsignSent';
       end;
