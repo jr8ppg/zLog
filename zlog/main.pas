@@ -932,8 +932,8 @@ type
     procedure DecFontSize();
     procedure SetFontSize(font_size: Integer);
     procedure QSY(b: TBand; m: TMode; r: Integer);
-    procedure PlayMessage(bank: Integer; no: Integer);
-    procedure PlayMessageCW(bank: Integer; no: Integer);
+    procedure PlayMessage(bank: Integer; no: Integer; fResetTx: Boolean);
+    procedure PlayMessageCW(bank: Integer; no: Integer; fResetTx: Boolean);
     procedure PlayMessagePH(no: Integer);
     procedure PlayMessageRTTY(no: Integer);
     procedure OnVoicePlayStarted(Sender: TObject);
@@ -3560,11 +3560,11 @@ begin
          if dmZLogGlobal.Settings._allowdupe = False then begin
             C.SelectAll;
             C.SetFocus;
-            PlayMessage(1, 4);
+            PlayMessage(1, 4, False);
          end
          else begin
             CallSpaceBarProc(C, N, B);
-            PlayMessage(1, 2);
+            PlayMessage(1, 2, False);
          end;
 
          S := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
@@ -3572,7 +3572,7 @@ begin
       end
       else begin  // not dupe
          CallSpaceBarProc(C, N, B);
-         PlayMessage(1, 2);
+         PlayMessage(1, 2, False);
       end;
 
       curQSO.Free();
@@ -3623,7 +3623,6 @@ begin
       OutputDebugString(PChar(S));
       {$ENDIF}
       FMessageManager.AddQue(FKeyPressedRigID[FCurrentRigSet - 1] + 10, S, curQSO);
-//      FMessageManager.AddQue(WM_ZLOG_CALLSIGNSENT, 0, FKeyPressedRigID);
    end;
 
    FMessageManager.ContinueQue();
@@ -3747,14 +3746,14 @@ begin
 
       mSSB, mFM, mAM: begin
          if Not(MyContest.MultiForm.ValidMulti(CurrentQSO)) then begin
-            PlayMessage(1, 5);
+            PlayMessage(1, 5, False);
             WriteStatusLine(TMainForm_Invalid_number, False);
             NumberEdit.SetFocus;
             NumberEdit.SelectAll;
             exit;
          end;
 
-         PlayMessage(1, 3);
+         PlayMessage(1, 3, False);
          LogButtonClick(Self);
       end;
    end;
@@ -4144,7 +4143,7 @@ var
    i: Integer;
 begin
    i := THemisphereButton(Sender).Tag;
-   PlayMessage(dmZlogGlobal.Settings.CW.CurrentBank, i);
+   PlayMessage(dmZlogGlobal.Settings.CW.CurrentBank, i, True);
 end;
 
 procedure TMainForm.FormDeactivate(Sender: TObject);
@@ -4357,7 +4356,6 @@ var
    currig: Integer;
    n: Integer;
    RandCQStr: array[1..2] of string;
-//   dwTick: DWORD;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('**** CQRepeatProc() ****'));
@@ -4367,19 +4365,16 @@ begin
    // 確定待ち中で、現在の受信と次の送信が同じRIGの場合はパス
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
       (FWaitForQsoFinish[FCurrentRigSet - 1] = True) then begin
-//      (FCurrentRx = GetNextRigID(FCurrentTx)) then begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('**** QSO確定待ち ****'));
       {$ENDIF}
-//      FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
-//      FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
-//      StartCqRepeatTimer();
       Exit;
    end;
 
    // CQリピート中
    FCQRepeatPlaying := True;
 
+   // Wait=OFFなら全部クリア
    if FInformation.IsWait = False then begin
       FMessageManager.ClearQue();
    end;
@@ -4433,8 +4428,6 @@ begin
          {$IFDEF DEBUG}
          OutputDebugString(PChar('**** TAB or DOWN ****'));
          {$ENDIF}
-   //      FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
-   //      FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
          Exit;
       end;
    end;
@@ -4516,14 +4509,11 @@ begin
    FInformation.CqRptCountDown := FCQRepeatCount div 10;
    if (FCQRepeatCount <= 0) then begin
       timerCqRepeat.Enabled := False;
-//      if (FMessageManager.IsIdle() = True) then begin
-         {$IFDEF DEBUG}
-         OutputDebugString(PChar('＊＊＊＊＊CQリピートタイマー＊＊＊＊＊'));
-         {$ENDIF}
-//         CQRepeatProc(False);
-         FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
-         FMessageManager.ContinueQue();
-//      end;
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('＊＊＊＊＊CQリピートタイマー＊＊＊＊＊'));
+      {$ENDIF}
+      FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+      FMessageManager.ContinueQue();
    end;
 end;
 
@@ -4972,7 +4962,7 @@ var
    n: Integer;
 begin
    n := THemisphereButton(Sender).Tag;
-   PlayMessage(1, n);
+   PlayMessage(1, n, True);
 end;
 
 procedure TMainForm.TimeEdit1Change(Sender: TObject);
@@ -7544,7 +7534,7 @@ begin
    end;
 end;
 
-procedure TMainForm.PlayMessage(bank: Integer; no: Integer);
+procedure TMainForm.PlayMessage(bank: Integer; no: Integer; fResetTx: Boolean);
 var
    nID: Integer;
 begin
@@ -7572,7 +7562,7 @@ begin
             Exit;
          end;
          WriteStatusLine('', False);
-         PlayMessageCW(bank, no);
+         PlayMessageCW(bank, no, fResetTx);
       end;
 
       mSSB, mFM, mAM: begin
@@ -7589,7 +7579,7 @@ begin
    end;
 end;
 
-procedure TMainForm.PlayMessageCW(bank: Integer; no: Integer);
+procedure TMainForm.PlayMessageCW(bank: Integer; no: Integer; fResetTx: Boolean);
 var
    S: string;
 begin
@@ -7609,28 +7599,24 @@ begin
 //   SetCurrentQSO(FCurrentRigSet - 1);
    SetCurrentQSO(FCurrentTx);
 
+   // リピート停止
    timerCqRepeat.Enabled := False;
    FMessageManager.ClearQue2();
 
-//   FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
-
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
-      (FInformation.Is2bsiq = True) and
-      ((no >= 4) and (no <= 12)) then begin
+   // Fキー操作ではTXをRXと同じにする
+   if (fResetTx = True) then begin
       FMessageManager.AddQue(WM_ZLOG_SWITCH_TX, 1, 0);
    end;
 
+   // 電文送信
    FMessageManager.AddQue(0, S, CurrentQSO);
 
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
-      (FInformation.Is2bsiq = True) and
-      ((no = 1) or (no = 2) or (no = 3) or (no = 101) or (no = 102) or (no = 103)) then begin
-      FMessageManager.AddQue(WM_ZLOG_SWITCH_TX, 2, FCurrentTx);
-   end;
-
-//   if (FCQLoopRunning = True) then begin
-//      FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
+//   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+//      (FInformation.Is2bsiq = True) and
+//      ((no = 1) or (no = 2) or (no = 3) or (no = 101) or (no = 102) or (no = 103)) then begin
+//      FMessageManager.AddQue(WM_ZLOG_SWITCH_TX, 2, FCurrentTx);
 //   end;
+
    FMessageManager.ContinueQue();
 end;
 
@@ -7811,9 +7797,6 @@ begin
          end;
       end;
    finally
-//      FTabKeyPressed := False;
-//      FDownKeyPressed := False;
-
       FMessageManager.ContinueQue();
    end;
 end;
@@ -7945,7 +7928,7 @@ begin
       end;
    end;
 
-   PlayMessage(cb, no);
+   PlayMessage(cb, no, True);
 end;
 
 // #18 F9
@@ -8005,7 +7988,7 @@ begin
       end;
    end;
 
-   PlayMessage(cb, no);
+   PlayMessage(cb, no, True);
 end;
 
 // #32, #33 CTRL+Enter, CTRL+N
