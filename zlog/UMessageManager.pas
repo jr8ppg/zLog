@@ -187,7 +187,22 @@ begin
 end;
 
 procedure TformMessageManager.AddQue(msg: TPlayMessage);
+var
+   i: Integer;
+   m: TPlayMessage;
 begin
+   for i := 0 to FMessageQueue.Count - 1 do begin
+      m := FMessageQueue[i];
+
+      if (m <> nil) and
+         (m.FCmd = msg.FCmd) and
+         (m.FWParam = msg.FWParam) and
+         (m.FLParam = msg.FLParam) and
+         (m.FRigID = msg.FRigID) then begin
+         Exit;
+      end;
+   end;
+
    // ––”ö‚É’Ç‰Á
    FMessageQueue.Add(msg);
 
