@@ -45,7 +45,7 @@ const
   WM_ZLOG_SWITCH_RX = (WM_USER + 108);
   WM_ZLOG_SWITCH_TXRX = (WM_USER + 109);
   WM_ZLOG_AFTER_DELAY = (WM_USER + 110);
-//  WM_ZLOG_SET_LOOP_PAUSE = (WM_USER + 111);
+  WM_ZLOG_SETCQ = (WM_USER + 111);
   WM_ZLOG_SET_CQ_LOOP = (WM_USER + 112);
   WM_ZLOG_CALLSIGNSENT = (WM_USER + 113);
   WM_ZLOG_SWITCH_TX = (WM_USER + 114);
@@ -648,7 +648,7 @@ type
     procedure OnZLogSwitchTx( var Message: TMessage ); message WM_ZLOG_SWITCH_TX;
     procedure OnZLogSwitchTxRx( var Message: TMessage ); message WM_ZLOG_SWITCH_TXRX;
     procedure OnZLogAfterDelay( var Message: TMessage ); message WM_ZLOG_AFTER_DELAY;
-//    procedure OnZLogSetLoopPause( var Message: TMessage ); message WM_ZLOG_SET_LOOP_PAUSE;
+    procedure OnZLogSetCq( var Message: TMessage ); message WM_ZLOG_SETCQ;
     procedure OnZLogSetCQLoop( var Message: TMessage ); message WM_ZLOG_SET_CQ_LOOP;
     procedure OnZLogCallsignSent( var Message: TMessage ); message WM_ZLOG_CALLSIGNSENT;
 
@@ -3537,9 +3537,13 @@ begin
       // CQ+S&P
       // 現在RIGがRIG2(SP)ならRIG1(CQ)へ戻る
       if FInformation.Is2bsiq = False then begin
-         // ResetTx();
-         FMessageManager.AddQue(WM_ZLOG_RESET_TX, FCurrentRigSet, 0);
-         SetSo2rCqMode();
+         if FCurrentTx <> FCurrentRx then begin
+            FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FKeyPressedRigID[FCurrentRigSet - 1]);
+            SetCQ(False);
+         end;
+
+//         FMessageManager.AddQue(WM_ZLOG_RESET_TX, FCurrentRigSet, 0);
+//         SetSo2rCqMode();
       end;
 
       // 2BSIQ ON
@@ -3625,6 +3629,18 @@ begin
       FMessageManager.AddQue(FKeyPressedRigID[FCurrentRigSet - 1] + 10, S, curQSO);
    end;
 
+   // SO2Rモードの場合
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+      // 2BSIQ=OFF
+      if (FInformation.Is2bsiq = False) then begin
+         // 送受が異なる場合はpickupなので、TXを戻す
+         if FCurrentTx <> FCurrentRx then begin
+            FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FCurrentTx);
+            SetCQ(True);
+         end;
+      end;
+   end;
+
    FMessageManager.ContinueQue();
 
    curQSO.Free();
@@ -3672,8 +3688,18 @@ begin
       FMessageManager.ClearQue();
    end;
 
-   // 2BSIQ時はRXにTXを合わせる
+   // SO2Rモードの場合
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+      // 2BSIQ=OFF
+      if (FInformation.Is2bsiq = False) then begin
+         // ↓キーを押した方にTXを合わせる
+         if FCurrentTx <> FCurrentRx then begin
+            FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FKeyPressedRigID[FCurrentRigSet - 1]);
+            SetCQ(False);
+         end;
+      end;
+
+      // 2BSIQ=ON
       if (FInformation.Is2bsiq = True) then begin
          // ↓キーを押した方にTXを合わせる
          FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FKeyPressedRigID[FCurrentRigSet - 1]);
@@ -3714,6 +3740,19 @@ begin
          OutputDebugString(PChar(S));
          {$ENDIF}
          FMessageManager.AddQue(FKeyPressedRigID[FCurrentRigSet - 1] + 10, S, CurrentQSO);
+
+         // SO2Rモードの場合
+         if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+            // 2BSIQ=OFF
+            if (FInformation.Is2bsiq = False) then begin
+               // 送受が異なる場合はpickupなので、TXを戻す
+               if FCurrentTx <> FCurrentRx then begin
+                  FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FCurrentTx);
+                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 2, 0);
+                  SetCQ(True);
+               end;
+            end;
+         end;
 
          FMessageManager.ContinueQue();
 
@@ -4391,8 +4430,6 @@ begin
 //      end;
    end;
 
-   SetCQ(True);
-
    WriteStatusLine('', False);
 
    currig := RigControl.GetCurrentRig();
@@ -4431,6 +4468,9 @@ begin
          Exit;
       end;
    end;
+
+//   SetCQ(True);
+   FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
 
    // 自動リグ変更の場合Messageを切り替える
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
@@ -4881,8 +4921,8 @@ begin
    end;
 
    if (dmZLogGlobal.Settings._so2r_type = so2rNone) or
-      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and
-      (FCurrentTX = FCurrentRx)) then begin
+      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (FInformation.Is2bsiq = False)) or
+      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (FInformation.Is2bsiq = True) and (FCurrentTX = FCurrentRx)) then begin
       N.SetFocus;
    end;
 
@@ -6875,17 +6915,15 @@ begin
 //   end;
 end;
 
-//procedure TMainForm.OnZLogSetLoopPause( var Message: TMessage );
-//begin
-//   if (Message.WParam = 0) then begin
-//      FCQLoopPause := False;
-////      timerCqRepeat.Enabled := True;
-//   end
-//   else begin
-//      FCQLoopPause := True;
-//      timerCqRepeat.Enabled := False;
-//   end;
-//end;
+procedure TMainForm.OnZLogSetCq( var Message: TMessage );
+begin
+   if (Message.WParam = 0) then begin
+      SetCQ(False);
+   end
+   else begin
+      SetCQ(True);
+   end;
+end;
 
 procedure TMainForm.OnZLogSetCQLoop( var Message: TMessage );
 begin
@@ -7606,16 +7644,40 @@ begin
    // Fキー操作ではTXをRXと同じにする
    if (fResetTx = True) then begin
       FMessageManager.AddQue(WM_ZLOG_SWITCH_TX, 1, 0);
+
+      // 2BSIQ=OFF
+      if (FInformation.Is2bsiq = False) then begin
+         // ↓キーを押した方にTXを合わせる
+         if FCurrentTx <> FCurrentRx then begin
+//            FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FKeyPressedRigID[FCurrentRigSet - 1]);
+            SetCQ(False);
+         end;
+      end;
+
+      // 2BSIQ=ON
+      if (FInformation.Is2bsiq = True) then begin
+         // ↓キーを押した方にTXを合わせる
+//         FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FKeyPressedRigID[FCurrentRigSet - 1]);
+
+         // RXは反対側へ
+         FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 3, 0);
+      end;
    end;
 
    // 電文送信
    FMessageManager.AddQue(0, S, CurrentQSO);
 
-//   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
-//      (FInformation.Is2bsiq = True) and
-//      ((no = 1) or (no = 2) or (no = 3) or (no = 101) or (no = 102) or (no = 103)) then begin
-//      FMessageManager.AddQue(WM_ZLOG_SWITCH_TX, 2, FCurrentTx);
-//   end;
+   // SO2Rモードの場合
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+      // 2BSIQ=OFF
+      if (FInformation.Is2bsiq = False) then begin
+         // 送受が異なる場合はpickupなので、TXを戻す
+         if FCurrentTx <> FCurrentRx then begin
+            FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FCurrentTx);
+            SetCQ(True);
+         end;
+      end;
+   end;
 
    FMessageManager.ContinueQue();
 end;
@@ -9961,7 +10023,9 @@ begin
       end;
    end;
 
-   SetCQ(False);
+   if FCurrentTX = FCurrentRx then begin
+      SetCQ(False);
+   end;
 
    FQsyFromBS := False;
 end;
