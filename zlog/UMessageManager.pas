@@ -268,6 +268,9 @@ var
    msg: TPlayMessage;
    msg2: TPlayMessage;
    nID: Integer;
+   callsign_atom: ATOM;
+   dwResult: DWORD;
+   szWindowText: array[0..255] of Char;
 begin
    // QUEUEÇ©ÇÁéÊÇËèoÇµ
    if FMessageQueue.Count = 0 then begin
@@ -301,6 +304,14 @@ begin
                else begin
                   nID := msg2.FRigID - 10;
                end;
+
+               ZeroMemory(@szWindowText, SizeOf(szWindowText));
+               dwResult := SendMessage(MainForm.Handle, WM_ZLOG_SETCURRENTQSO, nID, 0);
+               callsign_atom := LOWORD(dwResult);
+
+               GlobalGetAtomName(callsign_atom, PChar(@szWindowText), SizeOf(szWindowText));
+               GlobalDeleteAtom(callsign_atom);
+               msg2.FCallsign := StrPas(szWindowText);
 
                zLogSendStr(nID, msg2.FText, msg2.FCallsign);
             end;
