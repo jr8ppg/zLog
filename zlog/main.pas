@@ -868,7 +868,6 @@ type
     // NEW CQRepeat
     FCQLoopRunning: Boolean;
     FCQLoopCount: Integer;
-    FCQLoopStartRig: Integer;
     FCwCtrlZCQLoop: Boolean;
     FPhCtrlZCQLoop: Boolean;
     FCQRepeatPlaying: Boolean;
@@ -1016,7 +1015,6 @@ type
     procedure CQAbort(fReturnStartRig: Boolean);
     procedure SpaceBarProc(nID: Integer);
     procedure ShowToolBar(M: TMode);
-    procedure SetSo2rCqMode();
     procedure InitSerialPanel();
     procedure DispSerialNumber(B: TBand);
     procedure InitSerialNumber();
@@ -2056,7 +2054,6 @@ begin
 
    FCurrentCQMessageNo := 101;
    FCQLoopRunning := False;
-   FCQLoopStartRig := 1;
    FCwCtrlZCQLoop := False;
    FPhCtrlZCQLoop := False;
    FCQRepeatPlaying := False;
@@ -3544,11 +3541,8 @@ begin
       if Is2bsiq() = False then begin
          if FCurrentTx <> FCurrentRx then begin
             FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FKeyPressedRigID[FCurrentRigSet - 1]);
-            SetCQ(False);
+            FMessageManager.AddQue(WM_ZLOG_SETCQ, 0, 0);
          end;
-
-//         FMessageManager.AddQue(WM_ZLOG_RESET_TX, FCurrentRigSet, 0);
-//         SetSo2rCqMode();
       end;
 
       // 2BSIQ ON
@@ -3641,7 +3635,7 @@ begin
          // 送受が異なる場合はpickupなので、TXを戻す
          if FCurrentTx <> FCurrentRx then begin
             FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FCurrentTx);
-            SetCQ(True);
+            FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
          end;
       end;
    end;
@@ -3659,7 +3653,6 @@ procedure TMainForm.OnDownKeyPress;
 var
    S: String;
    nID: Integer;
-   rx: Integer;
 begin
    // RIG Switch後のガードタイム
    if MilliSecondsBetween(Now(), FRigSwitchTime) <= dmZLogGlobal.Settings.FRigSwitchGuardTime then begin
@@ -3700,7 +3693,7 @@ begin
          // ↓キーを押した方にTXを合わせる
          if FCurrentTx <> FCurrentRx then begin
             FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FKeyPressedRigID[FCurrentRigSet - 1]);
-            SetCQ(False);
+            FMessageManager.AddQue(WM_ZLOG_SETCQ, 0, 0);
          end;
       end;
 
@@ -3716,6 +3709,8 @@ begin
 
    // 意味ない？
    nID := FCurrentRx;
+
+   SetCurrentQso(nID);
 
    case CurrentQSO.Mode of
       mCW: begin
@@ -3735,7 +3730,9 @@ begin
             WriteStatusLine(TMainForm_Invalid_number, False);
             NumberEdit.SetFocus;
             NumberEdit.SelectAll;
-            exit;
+
+            FMessageManager.ContinueQue();
+            Exit;
          end;
 
          // TU $M TEST
@@ -3753,8 +3750,7 @@ begin
                // 送受が異なる場合はpickupなので、TXを戻す
                if FCurrentTx <> FCurrentRx then begin
                   FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FCurrentTx);
-//                  FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 2, 0);
-                  SetCQ(True);
+                  FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
                end;
             end;
          end;
@@ -4474,7 +4470,7 @@ begin
       end;
    end;
 
-//   SetCQ(True);
+   // CQモードに変更
    FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
 
    // 自動リグ変更の場合Messageを切り替える
@@ -7669,7 +7665,7 @@ begin
          // ↓キーを押した方にTXを合わせる
          if FCurrentTx <> FCurrentRx then begin
 //            FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FKeyPressedRigID[FCurrentRigSet - 1]);
-            SetCQ(False);
+            FMessageManager.AddQue(WM_ZLOG_SETCQ, 0, 0);
          end;
       end;
 
@@ -7693,7 +7689,7 @@ begin
          // 送受が異なる場合はpickupなので、TXを戻す
          if FCurrentTx <> FCurrentRx then begin
             FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FCurrentTx);
-            SetCQ(True);
+            FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
          end;
       end;
    end;
@@ -7711,17 +7707,17 @@ begin
 
       101: begin
          FMessageManager.AddQue(0, FCurrentCQMessageNo);
-         SetCQ(True);
+         FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
       end;
 
       102: begin
          FMessageManager.AddQue(0, 102);
-         SetCQ(True);
+         FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
       end;
 
       103: begin
          FMessageManager.AddQue(0, 103);
-         SetCQ(True);
+         FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
       end;
    end;
    FMessageManager.ContinueQue();
@@ -9194,8 +9190,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #145 ToggleTx ---'));
    {$ENDIF}
-   FCwCtrlZCQLoop := False;
-   FPhCtrlZCQLoop := False;
+   SetCqRepeatMode(False);
    FCQLoopCount := 999;
    dmZLogKeyer.ClrBuffer();
 
@@ -9212,11 +9207,6 @@ begin
    UpdateMode(TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));
 
    ShowTxIndicator();
-
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
-      (Is2bsiq() = False) then begin
-      SetSo2rCqMode();
-   end;
 end;
 
 // #146 SO2R Toggle Wait Message
@@ -10999,17 +10989,7 @@ begin
    // 2R:2BSIQ OFFの場合はRIG1に戻す
    if fReturnStartRig = True then begin
       if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
-         if (Is2bsiq() = False) then begin
-            // TXとRXが違う場合は、RXに合わせる
-            if FCurrentRx <> FCurrentTx then begin
-               SwitchTx(FCurrentRx + 1);
-//               SwitchRx(FCurrentTx + 1);
-            end
-            else if (FCQLoopRunning = True) and (FCurrentRx <> (FCQLoopStartRig - 1)) then begin
-               SwitchRig(FCQLoopStartRig);
-            end;
-         end
-         else begin
+         if FCurrentRx <> FCurrentTx then begin
             SwitchTx(FCurrentRx + 1);
          end;
       end;
@@ -11073,16 +11053,6 @@ begin
    end;
    if ToolBarPanel.Height <> h then begin
       ToolBarPanel.Height := h;
-   end;
-end;
-
-procedure TMainForm.SetSo2rCqMode();
-begin
-   if FCurrentTx = (FCQLoopStartRig - 1) then begin
-      SetCQ(True);
-   end
-   else begin
-      SetCQ(False);
    end;
 end;
 
@@ -11382,7 +11352,6 @@ begin
       FCQRepeatPlaying := True;
       FCQLoopRunning := True;
       FCQLoopCount := 0;
-      FCQLoopStartRig := FCurrentRigSet;   //RigControl.GetCurrentRig();
       CQRepeatProc();
    end;
 end;
