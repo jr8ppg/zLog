@@ -16,7 +16,7 @@ function LastCallsign : string;
 function SetStr(sendtext: string; aQSO : TQSO) : String;
 function SetStrNoAbbrev(sendtext: string; aQSO : TQSO) : String; {for QSO.NrSent}
 procedure zLogSendStr(nID: Integer; S: string; C: string = '');
-//procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
+procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
 
 implementation
 
@@ -261,16 +261,16 @@ begin
    end;
 end;
 
-//procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
-//begin
-//   if aQSO.Mode = mCW then begin
-//      S := SetStr(S, aQSO);
-//   end;
-//   if aQSO.Mode = mRTTY then begin
-//      S := SetStrNoAbbrev(S, aQSO);
-//   end;
-//
-//   zLogSendStr(nID, S);
-//end;
+procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
+begin
+   if aQSO.Mode = mCW then begin
+      S := SetStr(S, aQSO);
+   end;
+   if aQSO.Mode = mRTTY then begin
+      S := SetStrNoAbbrev(S, aQSO);
+   end;
+
+   zLogSendStr(nID, S, aQSO.Callsign);
+end;
 
 end.

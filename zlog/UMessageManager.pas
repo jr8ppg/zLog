@@ -458,6 +458,8 @@ begin
 //         WM_ZLOG_SET_LOOP_PAUSE:    strCmdText := 'SetLoopPause';
          WM_ZLOG_SET_CQ_LOOP:       strCmdText := 'SetCqLoop';
          WM_ZLOG_CALLSIGNSENT:      strCmdText := 'CallsignSent';
+         WM_ZLOG_TABKEYPRESS:       strCmdText := 'TabKeyPress';
+         WM_ZLOG_DOWNKEYPRESS:      strCmdText := 'DownKeyPress';
       end;
 
       Result := 'EXEC CMD [' + strCmdText + '][' + IntToStr(FWParam) + '][' + IntToStr(FLParam) + ']';
