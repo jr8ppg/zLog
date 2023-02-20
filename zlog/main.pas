@@ -3652,7 +3652,7 @@ begin
             if nTxID <> nRxID then begin
                nTxID := nRxID;
                ResetTx(nTxID + 1);
-               SetCQ(True);
+               //SetCQ(True);
             end;
          end;
       end;
@@ -4462,6 +4462,10 @@ begin
    // åªç›RIGÇ™RIG2(SP)Ç»ÇÁRIG1(CQ)Ç÷ñﬂÇÈ
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
       (Is2bsiq() = False) then begin
+      // äJénéûRIG(RUN)Ç∆åªç›TXÇ™àŸÇ»ÇÈèÍçáÇÕCQÇÕÇ©ÇØÇ»Ç¢
+      if ((FCQLoopStartRig - 1) <> FCurrentTx) then begin
+         Exit;
+      end;
 //      currig := FCurrentRigSet;  //RigControl.GetCurrentRig();
 //      if currig <> FCQLoopStartRig then begin
 //         newrig := FCQLoopStartRig;
@@ -11397,7 +11401,7 @@ begin
       FCQRepeatPlaying := True;
       FCQLoopRunning := True;
       FCQLoopCount := 0;
-      FCQLoopStartRig := FCurrentRigSet;
+      FCQLoopStartRig := (FCurrentTx + 1); //FCurrentRigSet;
       CQRepeatProc();
    end;
 end;
