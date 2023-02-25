@@ -290,6 +290,9 @@ begin
 
    // æ“ª‚ÌMSG‚ğæ‚èo‚µ
    msg := FMessageQueue[0];
+   if msg = nil then begin
+      Exit;
+   end;
 
    // íœ—\–ñ
    FMessageQueue[0] := nil;
