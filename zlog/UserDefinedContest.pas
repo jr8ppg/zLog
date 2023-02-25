@@ -399,7 +399,11 @@ begin
             if Length(strParam) >= 2 then begin
                D.FPointsTable[B, mSSB] := StrToIntDef(strParam[1], 1);
                D.FPointsTable[B, mCW]  := StrToIntDef(strParam[2], 1);
+            end;
+            if Length(strParam) >= 3 then begin
                D.FPointsTable[B, mFM]  := StrToIntDef(strParam[3], 1);
+            end;
+            if Length(strParam) >= 4 then begin
                D.FPointsTable[B, mAM]  := StrToIntDef(strParam[4], 1);
             end;
          end;
@@ -412,7 +416,11 @@ begin
             if Length(strParam) >= 2 then begin
                D.FLocalPointsTable[B, mSSB] := StrToIntDef(strParam[1], 1);
                D.FLocalPointsTable[B, mCW]  := StrToIntDef(strParam[2], 1);
+            end;
+            if Length(strParam) >= 3 then begin
                D.FLocalPointsTable[B, mFM]  := StrToIntDef(strParam[3], 1);
+            end;
+            if Length(strParam) >= 4 then begin
                D.FLocalPointsTable[B, mAM]  := StrToIntDef(strParam[4], 1);
             end;
          end;
@@ -425,7 +433,11 @@ begin
             if Length(strParam) >= 4 then begin
                D.FPointsTable[B, mSSB] := StrToIntDef(strParam[1] + strParam[2], 1);
                D.FPointsTable[B, mCW]  := StrToIntDef(strParam[3] + strParam[4], 1);
+            end;
+            if Length(strParam) >= 6 then begin
                D.FPointsTable[B, mFM]  := StrToIntDef(strParam[5] + strParam[6], 1);
+            end;
+            if Length(strParam) >= 8 then begin
                D.FPointsTable[B, mAM]  := StrToIntDef(strParam[7] + strParam[8], 1);
             end;
          end;
@@ -438,7 +450,11 @@ begin
             if Length(strParam) >= 4 then begin
                D.FLocalPointsTable[B, mSSB] := StrToIntDef(strParam[1] + strParam[2], 1);
                D.FLocalPointsTable[B, mCW]  := StrToIntDef(strParam[3] + strParam[4], 1);
+            end;
+            if Length(strParam) >= 6 then begin
                D.FLocalPointsTable[B, mFM]  := StrToIntDef(strParam[5] + strParam[6], 1);
+            end;
+            if Length(strParam) >= 8 then begin
                D.FLocalPointsTable[B, mAM]  := StrToIntDef(strParam[7] + strParam[8], 1);
             end;
          end;
