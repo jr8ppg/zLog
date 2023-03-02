@@ -100,6 +100,8 @@ type
     function ParseCommand(strLine: string; var strCmd, strParam: string): Boolean;
     procedure EditParam(strCommand, strNewValue: string);
     procedure ClearPointsTable(var PT: TPointsTable);
+    class procedure ParseAlphaPt(D: TUserDefinedContest; strParam: string);
+    class procedure ParseAlphaPt2(D: TUserDefinedContest; strParam: string);
     class function GetBand(strBand: string): TBand;
     class procedure SetPointsTable(PT: PTPointsTable; str: string);
     class function ParseOnOff(strOn: string): Boolean;
@@ -509,26 +511,16 @@ begin
             end;
          end;
 
-         if pos('ALPHAPT', strCmd) = 1 then begin
+         if strCmd = 'ALPHAPT' then begin
             strParam := UpperCase(strParam);
             D.FAlphabetPoints := True;
-            for j := 1 to (length(strParam) div 2) do begin
-               if strParam[2 * j - 1] = '?' then begin
-                  if CharInSet(strParam[2 * j], ['0' .. '9']) = True then begin
-                     for k := ord('0') to ord('Z') do begin
-                        D.FAlphabetPointsTable[k] := StrToIntDef(strParam[2 * j], 0);
-                     end;
-                  end;
-               end
-            end;
+            ParseAlphaPt(D, strParam);
+         end;
 
-            for j := 1 to (length(strParam) div 2) do begin
-               if CharInSet(strParam[2 * j - 1], ['0' .. 'Z']) = True then begin
-                  if CharInSet(strParam[2 * j], ['0' .. '9']) = True then begin
-                     D.FAlphabetPointsTable[ord(strParam[2 * j - 1])] := StrToIntDef(strParam[2 * j], 0);
-                  end;
-               end
-            end;
+         if strCmd = 'ALPHAPT2' then begin
+            strParam := UpperCase(strParam);
+            D.FAlphabetPoints := True;
+            ParseAlphaPt2(D, strParam);
          end;
 
          if strCmd = 'LOCMIN' then begin
@@ -668,6 +660,68 @@ begin
    finally
       SL.Free();
       Result := D;
+   end;
+end;
+
+class procedure TUserDefinedContest.ParseAlphaPt(D: TUserDefinedContest; strParam: string);
+var
+   i: Integer;
+   j: Integer;
+   n: Integer;
+   S: string;
+begin
+   n := Length(strParam) div 2;
+
+   for i := 1 to n do begin
+      if (i = n) then begin
+         S := Copy(strParam, i * 2 - 1);     // 最後は末尾まで取得
+      end
+      else begin
+         S := Copy(strParam, i * 2 - 1, 2);
+      end;
+
+      // ?nの場合は全要素に点数をセットする
+      if S[1] = '?' then begin
+         for j := ord('0') to ord('Z') do begin
+            D.FAlphabetPointsTable[j] := StrToIntDef(Copy(S, 2), 0);
+         end;
+      end;
+
+      // [0-Z]nの場合は該当要素に点数をセットする
+      if CharInSet(S[1], ['0' .. 'Z']) = True then begin
+         D.FAlphabetPointsTable[ord(strParam[2 * j - 1])] := StrToIntDef(Copy(S, 2), 0);
+      end
+   end;
+end;
+
+class procedure TUserDefinedContest.ParseAlphaPt2(D: TUserDefinedContest; strParam: string);
+var
+   i: Integer;
+   j: Integer;
+   n: Integer;
+   S: string;
+begin
+   n := Length(strParam) div 3;
+
+   for i := 1 to n do begin
+      if (i = n) then begin
+         S := Copy(strParam, i * 3 - 1);     // 最後は末尾まで取得
+      end
+      else begin
+         S := Copy(strParam, i * 3 - 1, 3);
+      end;
+
+      // ?nの場合は全要素に点数をセットする
+      if S[1] = '?' then begin
+         for j := ord('0') to ord('Z') do begin
+            D.FAlphabetPointsTable[j] := StrToIntDef(Copy(S, 2), 0);
+         end;
+      end;
+
+      // [0-Z]nの場合は該当要素に点数をセットする
+      if CharInSet(S[1], ['0' .. 'Z']) = True then begin
+         D.FAlphabetPointsTable[ord(strParam[2 * j - 1])] := StrToIntDef(Copy(S, 2), 0);
+      end
    end;
 end;
 
