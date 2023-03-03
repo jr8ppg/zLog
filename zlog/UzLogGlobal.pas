@@ -5,6 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.Math, Vcl.Graphics, System.DateUtils, Generics.Collections, Generics.Defaults,
+  Vcl.Dialogs, System.UITypes,
   UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
   UQsoTarget;
 
@@ -445,6 +446,7 @@ public
     function NewQSOID(): Integer;
 
     function GetGreetingsCode(): string;
+    function ExpandCfgDatFullPath(filename: string): string;
 
     function GetPrefix(strCallsign: string): TPrefix;
     function GetArea(str: string): Integer;
@@ -2447,6 +2449,23 @@ begin
    else begin
       Result := 'GE';
    end;
+end;
+
+function TdmZLogGlobal.ExpandCfgDatFullPath(filename: string): string;
+var
+   fullpath: string;
+begin
+   fullpath := CfgDatPath + filename;
+   if FileExists(fullpath) = False then begin
+      fullpath := ExtractFilePath(Application.ExeName) + filename;
+      if FileExists(fullpath) = False then begin
+         MessageDlg('DAT file [' + fullpath + '] cannot be opened', mtError, [mbOK], 0);
+         Result := '';
+         Exit;
+      end;
+   end;
+
+   Result := fullpath;
 end;
 
 function TdmZLogGlobal.Load_CTYDAT(): Boolean;
