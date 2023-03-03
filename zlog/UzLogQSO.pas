@@ -666,20 +666,8 @@ begin
 end;
 
 function TQSO.GetPowerStr: string;
-var
-   i: Integer;
 begin
-   i := Self.FPower2;
-   case i of
-      9999:
-         Result := 'KW';
-      10000:
-         Result := '1KW';
-      10001:
-         Result := 'K';
-      else
-         Result := IntToStr(i);
-   end;
+   Result := dmZLogGlobal.PowerOfBand2[Band];
 end;
 
 function TQSO.GetNewPowerStr: string;
