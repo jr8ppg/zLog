@@ -265,9 +265,14 @@ var
    f: textfile;
    str: string;
    S: TState;
+   fullpath: string;
 begin
-   assign(f, filename);
+   fullpath := dmZLogGlobal.ExpandCfgDatFullPath(filename);
+   if fullpath = '' then begin
+      Exit;
+   end;
 
+   Assign(f, fullpath);
    try
       Reset(f);
    except
