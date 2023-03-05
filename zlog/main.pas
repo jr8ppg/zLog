@@ -3915,7 +3915,7 @@ var
    end;
 
 begin
-   band_bakup := CurrentQSO.Band;
+   band_bakup := Q.Band;
 
    EditedSinceTABPressed := tabstate_normal;
 
@@ -4009,7 +4009,7 @@ begin
    // QSY Violation
    i := FindPrevQSO();
    if (i > 0) and (Log.QsoList[i].Band <> band_bakup) then begin
-      CurrentQSO.QsyViolation := FQsyViolation;
+      Q.QsyViolation := FQsyViolation;
       if FQsyViolation = False then begin
          CountDownStartTime := CurrentTime; // Now;
       end;
