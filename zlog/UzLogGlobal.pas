@@ -2146,6 +2146,11 @@ end;
 
 function TdmZLogGlobal.GetPowerOfBand(band: TBand): TPower;
 begin
+   if band > HiBand then begin
+      Result := pwrM;
+      Exit;
+   end;
+
    if Settings._power[band] = 'H' then begin
       Result := pwrH;
    end
@@ -2165,6 +2170,11 @@ end;
 
 function TdmZLogGlobal.GetPowerOfBand2(band: TBand): string;
 begin
+   if band > HiBand then begin
+      Result := Settings._powerM;
+      Exit;
+   end;
+
    if Settings._power[band] = 'H' then begin
       Result := Settings._powerH;
    end
