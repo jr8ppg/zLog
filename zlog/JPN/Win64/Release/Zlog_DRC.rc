@@ -2561,6 +2561,7 @@ END
 /* D:\github\zLog_2bsiq\zlog\UPluginManager.dfm */
 /* D:\github\zLog_2bsiq\zlog\USpotterListDlg.dfm */
 /* D:\github\zLog_2bsiq\zlog\UOptions.DFM */
+/* D:\github\zLog_2bsiq\zlog\UMessageManager.dfm */
 /* D:\github\zLog_2bsiq\zlog\UzLogGlobal.dfm */
 /* D:\github\zLog_2bsiq\zlog\UTTYConsole.DFM */
 /* D:\github\zLog_2bsiq\zlog\UELogJarl1.dfm */
@@ -2588,7 +2589,6 @@ END
 /* D:\github\zLog_2bsiq\zlog\UInformation.dfm */
 /* D:\github\zLog_2bsiq\zlog\UWinKeyerTester.dfm */
 /* D:\github\zLog_2bsiq\zlog\UStatusEdit.dfm */
-/* D:\github\zLog_2bsiq\zlog\UMessageManager.dfm */
 /* D:\github\zLog_2bsiq\zlog\UFreqTest.dfm */
 /* D:\github\zLog_2bsiq\zlog\UAbout.DFM */
 /* D:\github\zLog_2bsiq\zlog\UCFGEdit.dfm */

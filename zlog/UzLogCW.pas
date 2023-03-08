@@ -20,7 +20,8 @@ procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
 
 implementation
 
-uses Main;
+uses
+  Main, UMessageManager;
 
 function LastCallsign : string;
 var txnr, i : integer;
@@ -228,6 +229,7 @@ end;
 
 procedure zLogSendStr(nID: Integer; S: string; C: string);
 begin
+   MainForm.MessageManager.SetSendingText(nID + 1, S);
    if dmZLogKeyer.UseWinKeyer = True then begin
 
       if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin

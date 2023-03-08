@@ -35,6 +35,8 @@ type
   TformMessageManager = class(TForm)
     Memo1: TMemo;
     Timer2: TTimer;
+    editSendingNow: TEdit;
+    Label1: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
@@ -65,6 +67,8 @@ type
     procedure ClearQue2();
     procedure StopCW();
     procedure ClearText();
+    procedure SetSendingText(rigno: Integer; s: string);
+    procedure ClearSendingText();
 
     // Voice
     procedure Init();
@@ -624,5 +628,15 @@ begin
    {$ENDIF}
 end;
 
+procedure TformMessageManager.SetSendingText(rigno: Integer; s: string);
+begin
+//   editSendingNow.Text := '[' + IntToStr(rigno) + ']' + s;
+   editSendingNow.Text := s;
+end;
+
+procedure TformMessageManager.ClearSendingText();
+begin
+   editSendingNow.Text := '';
+end;
 
 end.

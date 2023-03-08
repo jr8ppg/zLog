@@ -1100,6 +1100,7 @@ type
     property FreqList: TFreqList read FFreqList;
     property ScratchSheet: TScratchSheet read FScratchSheet;
     property SuperCheckList: TSuperList read FSuperCheckList;
+    property MessageManager: TformMessageManager read FMessageManager;
 
     property CurrentRigID: Integer read GetCurrentRigID;
     property CurrentTX: Integer read FCurrentTX;
@@ -7800,6 +7801,7 @@ begin
    {$ENDIF}
 
    FMessageManager.ClearText();
+   FMessageManager.ClearSendingText();
 
    try
       tx := FCurrentTx;
@@ -11022,6 +11024,7 @@ begin
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
    StopMessage(mode);
    FMessageManager.ClearQue();
+   FMessageManager.ClearSendingText();
 
    // ‚Q‰ñ‚â‚ç‚È‚¢‚æ‚¤‚ÉPTT Control‚ªOFF‚Ìê‡‚ÉPTT OFF‚·‚é
    if (dmZLogGlobal.Settings._pttenabled = False) and

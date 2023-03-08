@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44959.9531018519</prop>
-        <prop prop-type="OrigDateTime">44954.6680555556</prop>
+        <prop prop-type="SelfDateTime">44993.9262268519</prop>
+        <prop prop-type="OrigDateTime">44993.9260185185</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">39</prop>
+        <prop prop-type="UnTranslated">57</prop>
       </prop-group>
     </header>
     <body>
@@ -29,12 +29,12 @@
         <prop prop-type="Created">44801.5689179861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TformMessageManager</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.ClientHeight" resname="O:formMessageManager.ClientHeight">
-        <source>153</source>
+        <source>124</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44801.5689179861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TformMessageManager</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.ClientWidth" resname="O:formMessageManager.ClientWidth">
-        <source>317</source>
+        <source>263</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44801.5689179861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TformMessageManager</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -94,12 +94,12 @@
         <prop prop-type="Created">44959.9531186574</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TformMessageManager</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.DesignSize[0]" resname="O:formMessageManager.DesignSize[0]">
-        <source>317</source>
+        <source>263</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TformMessageManager</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.DesignSize[1]" resname="O:formMessageManager.DesignSize[1]">
-        <source>153</source>
+        <source>124</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TformMessageManager</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
       </trans-unit>
@@ -113,100 +113,190 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TformMessageManager</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:formMessageManager.O:Label1.Left" resname="O:formMessageManager.O:Label1.Left">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9262491088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:Label1.Top" resname="O:formMessageManager.O:Label1.Top">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9262491088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:Label1.Width" resname="O:formMessageManager.O:Label1.Width">
+        <source>80</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9262491088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:Label1.Height" resname="O:formMessageManager.O:Label1.Height">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9262491088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:Label1.Caption" resname="O:formMessageManager.O:Label1.Caption">
+        <source>'Sending text'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9262491088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.Left" resname="O:formMessageManager.O:Memo1.Left">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.Top" resname="O:formMessageManager.O:Memo1.Top">
-        <source>4</source>
+        <source>56</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.Width" resname="O:formMessageManager.O:Memo1.Width">
-        <source>309</source>
+        <source>255</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.Height" resname="O:formMessageManager.O:Memo1.Height">
-        <source>145</source>
+        <source>64</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.Anchors" resname="O:formMessageManager.O:Memo1.Anchors">
         <source>[akLeft, akTop, akRight, akBottom]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.Font.Charset" resname="O:formMessageManager.O:Memo1.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.Font.Color" resname="O:formMessageManager.O:Memo1.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.Font.Height" resname="O:formMessageManager.O:Memo1.Font.Height">
         <source>-15</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.Font.Name" resname="O:formMessageManager.O:Memo1.Font.Name">
         <source>'ＭＳ ゴシック'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.Font.Style" resname="O:formMessageManager.O:Memo1.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.Lines.Strings[0]" resname="O:formMessageManager.O:Memo1.Lines.Strings[0]">
         <source>'Memo1'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop><prop prop-type="Close">)</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop><prop prop-type="Close">)</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.ParentFont" resname="O:formMessageManager.O:Memo1.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.ReadOnly" resname="O:formMessageManager.O:Memo1.ReadOnly">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.ScrollBars" resname="O:formMessageManager.O:Memo1.ScrollBars">
         <source>ssVertical</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44959.9531186574</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44959.9531186574</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Memo1.TabOrder" resname="O:formMessageManager.O:Memo1.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TMemo</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:editSendingNow.Left" resname="O:formMessageManager.O:editSendingNow.Left">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9223814236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:editSendingNow.Top" resname="O:formMessageManager.O:editSendingNow.Top">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9223814236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:editSendingNow.Width" resname="O:formMessageManager.O:editSendingNow.Width">
+        <source>255</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9223814236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:editSendingNow.Height" resname="O:formMessageManager.O:editSendingNow.Height">
+        <source>26</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9223814236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:editSendingNow.Anchors" resname="O:formMessageManager.O:editSendingNow.Anchors">
+        <source>[akLeft, akTop, akRight]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9223814236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:editSendingNow.Font.Charset" resname="O:formMessageManager.O:editSendingNow.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9223814236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:editSendingNow.Font.Color" resname="O:formMessageManager.O:editSendingNow.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9223814236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:editSendingNow.Font.Height" resname="O:formMessageManager.O:editSendingNow.Font.Height">
+        <source>-15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9223814236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:editSendingNow.Font.Name" resname="O:formMessageManager.O:editSendingNow.Font.Name">
+        <source>'Consolas'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9223814236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:editSendingNow.Font.Style" resname="O:formMessageManager.O:editSendingNow.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9223814236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:editSendingNow.ParentFont" resname="O:formMessageManager.O:editSendingNow.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9223814236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:editSendingNow.ReadOnly" resname="O:formMessageManager.O:editSendingNow.ReadOnly">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9223814236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formMessageManager.O:editSendingNow.TabOrder" resname="O:formMessageManager.O:editSendingNow.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44993.9223814236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Timer2.Enabled" resname="O:formMessageManager.O:Timer2.Enabled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Timer2.Interval" resname="O:formMessageManager.O:Timer2.Interval">
         <source>50</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Timer2.OnTimer" resname="O:formMessageManager.O:Timer2.OnTimer">
         <source>Timer2Timer</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.O:Timer2.Left" resname="O:formMessageManager.O:Timer2.Left">
         <source>196</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689181019</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>
