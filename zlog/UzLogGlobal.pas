@@ -2444,6 +2444,11 @@ function TdmZLogGlobal.ExpandCfgDatFullPath(filename: string): string;
 var
    fullpath: string;
 begin
+   if IsFullPath(filename) = True then begin
+      Result := filename;
+      Exit;
+   end;
+
    fullpath := CfgDatPath + filename;
    if FileExists(fullpath) = False then begin
       fullpath := ExtractFilePath(Application.ExeName) + filename;
