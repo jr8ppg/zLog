@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
   System.Generics.Collections,
-  UzLogQSO, UzLogConst, UzLogCW, UzLogSound, UzLogOperatorInfo;
+  UzLogQSO, UzLogConst, UzLogCW, UzLogSound, UzLogOperatorInfo, Vcl.Grids;
 
 const
   WM_MSGMAN_PLAYQUEUE = (WM_USER + 10);
@@ -35,13 +35,17 @@ type
   TformMessageManager = class(TForm)
     Memo1: TMemo;
     Timer2: TTimer;
-    editSendingNow: TEdit;
     Label1: TLabel;
+    PaintBox1: TPaintBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
+    procedure FormResize(Sender: TObject);
+    procedure PaintBox1Paint(Sender: TObject);
   private
     { Private êÈåæ }
     FMessageQueue: TList<TPlayMessage>;
@@ -52,6 +56,9 @@ type
     FCurrentVoice: Integer;
     FOnNotifyStarted: TNotifyEvent;
     FOnNotifyFinished: TPlayMessageFinishedProc;
+
+    FSendText: string;
+    FSendIndex: Integer;
 
     procedure WMPlayQueue( var Message: TMessage ); message WM_MSGMAN_PLAYQUEUE;
     procedure SendVoice(i: integer);
@@ -69,6 +76,7 @@ type
     procedure ClearText();
     procedure SetSendingText(rigno: Integer; s: string);
     procedure ClearSendingText();
+    procedure OneCharSentProc();
 
     // Voice
     procedure Init();
@@ -106,6 +114,9 @@ begin
    for i := 1 to High(FWaveSound) do begin
       FWaveSound[i] := TWaveSound.Create();
    end;
+
+   FSendText := '';
+   FSendIndex := 0;
 end;
 
 procedure TformMessageManager.FormShow(Sender: TObject);
@@ -128,6 +139,12 @@ begin
    for i := 1 to High(FWaveSound) do begin
       FWaveSound[i].Free();
    end;
+end;
+
+procedure TformMessageManager.FormResize(Sender: TObject);
+begin
+//   Grid.ColWidths[0] := Grid.Width - 4;
+//   Grid.RowHeights[0] := Grid.Height - 4;
 end;
 
 procedure TformMessageManager.AddQue(nCmd: Integer; wp: WPARAM; lp: LPARAM);
@@ -590,6 +607,38 @@ begin
    end;
 end;
 
+procedure TformMessageManager.GridDrawCell(Sender: TObject; ACol,
+  ARow: Integer; Rect: TRect; State: TGridDrawState);
+var
+   S: string;
+begin
+   with TStringGrid(Sender).Canvas do begin
+      Brush.Color := clBtnFace;
+      Brush.Style := bsSolid;
+      Pen.Color := clBtnFace;
+      Pen.Style := psSolid;
+      FillRect(Rect);
+      Rectangle(Rect);
+
+      if FSendText = '' then begin
+         Exit;
+      end;
+
+      Font.Color := clBlack;
+      TextRect(Rect, FSendText, [tfLeft, tfVerticalCenter, tfSingleLine]);
+
+      if FSendIndex > 0 then begin
+         S := Copy(FSendText, 1, FSendIndex);
+         Brush.Color := clBlue;
+         Brush.Style := bsSolid;
+         Pen.Style := psClear;
+         Font.Color := clWhite;
+//         Font.style := Font.Style + [fsUnderline];
+         TextRect(Rect, S, [tfLeft, tfVerticalCenter, tfSingleLine]);
+      end;
+   end;
+end;
+
 procedure TformMessageManager.SetOperator(op: TOperatorInfo);
 begin
    FCurrentOperator := op;
@@ -631,12 +680,61 @@ end;
 procedure TformMessageManager.SetSendingText(rigno: Integer; s: string);
 begin
 //   editSendingNow.Text := '[' + IntToStr(rigno) + ']' + s;
-   editSendingNow.Text := s;
+   FSendText := s;
+   FSendIndex := 1;
+   PaintBox1.Refresh();
 end;
 
 procedure TformMessageManager.ClearSendingText();
 begin
-   editSendingNow.Text := '';
+   FSendText := '';
+   FSendIndex := 1;
+   PaintBox1.Refresh();
+end;
+
+procedure TformMessageManager.OneCharSentProc();
+begin
+   Inc(FSendIndex);
+   PaintBox1.Refresh();
+end;
+
+procedure TformMessageManager.PaintBox1Paint(Sender: TObject);
+var
+   S: string;
+   Rect: TRect;
+begin
+   with TPaintBox(Sender).Canvas do begin
+      Rect.Top := 0;
+      Rect.Bottom := TPaintBox(Sender).Height - 2;
+      Rect.Left := 0;
+      Rect.Right := TPaintBox(Sender).Width - 1;
+
+      Brush.Color := clBtnFace;
+      Brush.Style := bsSolid;
+      Pen.Color := clGray;
+      Pen.Style := psSolid;
+      FillRect(Rect);
+      Rectangle(Rect);
+
+      if FSendText = '' then begin
+         Exit;
+      end;
+
+      Rect.Left := 2;
+      Rect.Right := Rect.Right - 2;
+      Font.Color := clBlack;
+      TextRect(Rect, FSendText, [tfLeft, tfVerticalCenter, tfSingleLine]);
+
+      if FSendIndex > 0 then begin
+         S := Copy(FSendText, 1, FSendIndex);
+         Brush.Color := clBlue;
+         Brush.Style := bsSolid;
+         Pen.Style := psClear;
+         Font.Color := clWhite;
+//         Font.style := Font.Style + [fsUnderline];
+         TextRect(Rect, S, [tfLeft, tfVerticalCenter, tfSingleLine]);
+      end;
+   end;
 end;
 
 end.

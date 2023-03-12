@@ -146,6 +146,7 @@ type
     FSelectedBuf: Integer; {0..2}
 
     FCWSendBuf: array[0..2, 1..charmax * codemax] of byte;
+    FSendChar: Boolean;
 
     FCodeTable: CodeTableType;
 
@@ -193,6 +194,7 @@ type
 
     FOnCallsignSentProc: TNotifyEvent;
     FOnPaddleEvent: TNotifyEvent;
+    FOnOneCharSentProc: TNotifyEvent;
     FOnSendFinishProc: TPlayMessageFinishedProc;
     FOnWkStatusProc: TWkStatusEvent;
     FOnSpeedChanged: TNotifyEvent;
@@ -323,6 +325,7 @@ type
 
     property OnCallsignSentProc: TNotifyEvent read FOnCallsignSentProc write FOnCallsignSentProc;
     property OnPaddle: TNotifyEvent read FOnPaddleEvent write FOnPaddleEvent;
+    property OnOneCharSentProc: TNotifyEvent read FOnOneCharSentProc write FOnOneCharSentProc;
     property OnSendFinishProc: TPlayMessageFinishedProc read FOnSendFinishProc write FOnSendFinishProc;
     property OnSpeedChanged: TNotifyEvent read FOnSpeedChanged write FOnSpeedChanged;
     property OnWkStatusProc: TWkStatusEvent read FOnWkStatusProc write FOnWkStatusProc;
@@ -478,6 +481,7 @@ begin
 
    FMonitorThread := nil;
    FOnCallsignSentProc := nil;
+   FOnOneCharSentProc := nil;
    FOnSendFinishProc := nil;
    FOnPaddleEvent := nil;
    FUsbif4cwSyncWpm := False;
@@ -1290,6 +1294,7 @@ procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: 
       mousetail := 1;
       tailcwstrptr := 1;
       FCWSendBuf[FSelectedBuf, 1] := $FF;
+      FSendChar := False;
 
       if FKeyingPort[FWkTx] <> tkpUSB then begin
          CW_OFF(FWkTx);
@@ -1359,6 +1364,7 @@ begin
          end;
 
          FKeyingCounter := FDotCount;
+         FSendChar := True;
       end;
 
       3: begin
@@ -1368,6 +1374,7 @@ begin
          end;
 
          FKeyingCounter := FDashCount;
+         FSendChar := True;
       end;
 
       // 4 : begin
@@ -1399,6 +1406,9 @@ begin
 
       9: begin
          cwstrptr := (cwstrptr div codemax + 1) * codemax;
+         if Assigned(FOnOneCharSentProc) and FSendChar then begin
+            FOnOneCharSentProc(Self);
+         end;
       end;
 
       $A1: begin
@@ -1525,6 +1535,7 @@ begin
 
    callsignptr := 0; { points to the 1st char of realtime updated callsign }
    FSelectedBuf := 0;
+   FSendChar := False;
    cwstrptr := 1;
    tailcwstrptr := 1;
    FTimerMilliSec := msec; { timer interval, default = 1}
@@ -2214,6 +2225,7 @@ begin
       end;
       cwstrptr := 0;
       FSelectedBuf := 0; // ver 2.1b
+      FSendChar := False;
       callsignptr := 0;
       mousetail := 1;
       tailcwstrptr := 1;

@@ -3,7 +3,8 @@ unit UzLogCW;
 interface
 
 uses
-  SysUtils, UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, UOptions;
+  System.SysUtils, System.StrUtils,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, UOptions;
 
 const tabstate_normal = 0;
       tabstate_tabpressedbutnotedited = 1;
@@ -17,6 +18,7 @@ function SetStr(sendtext: string; aQSO : TQSO) : String;
 function SetStrNoAbbrev(sendtext: string; aQSO : TQSO) : String; {for QSO.NrSent}
 procedure zLogSendStr(nID: Integer; S: string; C: string = '');
 procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
+procedure zLogSetSendText(nID: Integer; S, C: string);
 
 implementation
 
@@ -228,8 +230,11 @@ begin
 end;
 
 procedure zLogSendStr(nID: Integer; S: string; C: string);
+var
+   SS: string;
 begin
-   MainForm.MessageManager.SetSendingText(nID + 1, S);
+   zLogSetSendText(nID, S, C);
+
    if dmZLogKeyer.UseWinKeyer = True then begin
 
       if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
@@ -273,6 +278,17 @@ begin
    end;
 
    zLogSendStr(nID, S, aQSO.Callsign);
+end;
+
+procedure zLogSetSendText(nID: Integer; S, C: string);
+begin
+   if C = '' then begin
+      MainForm.MessageManager.SetSendingText(nID + 1, S);
+   end
+   else begin
+      S := StringReplace(S, ':***************', C + DupeString('*', 16 - Length(C)), [rfReplaceAll]);
+      MainForm.MessageManager.SetSendingText(nID + 1, S);
+   end;
 end;
 
 end.
