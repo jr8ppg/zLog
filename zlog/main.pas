@@ -9813,10 +9813,14 @@ var
    m: TMode;
    rig: TRig;
    rigset: Integer;
+   fSetLastFreq: Boolean;
 begin
    if freq = 0 then begin
       Exit;
    end;
+
+   // 現在のCQモード
+   fSetLastFreq := IsCQ();
 
    // SPモードへ変更
    SetCQ(False);
@@ -9830,7 +9834,7 @@ begin
    rig := RigControl.GetRig(rigset, b);
    if rig <> nil then begin
       // RIGにfreq設定
-      rig.SetFreq(freq, IsCQ());
+      rig.SetFreq(freq, fSetLastFreq);
 
       FRigControl.SetCurrentRig(rig.RigNumber);
 
@@ -9849,7 +9853,7 @@ begin
 
             // もう一度周波数を設定(side bandずれ対策)
             if dmZLogGlobal.Settings._bandscope_setfreq_after_mode_change = True then begin
-               rig.SetFreq(freq, IsCQ());
+               rig.SetFreq(freq, fSetLastFreq);
             end;
          end;
 
