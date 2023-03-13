@@ -1017,7 +1017,7 @@ begin
 
    FBandLow := b35;
    FBandHigh := b28;
-   FBandPlan := 'DX';
+   FBandPlan := 'JA';
 end;
 
 constructor TJA0ContestZero.Create(AOwner: TComponent; N: string);
