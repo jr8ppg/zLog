@@ -534,6 +534,15 @@ type
     Label122: TLabel;
     checkDispLongDateTime: TCheckBox;
     checkBsAllBands: TCheckBox;
+    groupPower: TGroupBox;
+    Label123: TLabel;
+    editPowerH: TEdit;
+    editPowerM: TEdit;
+    editPowerL: TEdit;
+    editPowerP: TEdit;
+    Label124: TLabel;
+    Label125: TLabel;
+    Label126: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -824,6 +833,10 @@ begin
       Settings._city := CityEdit.Text;
       Settings._cqzone := CQZoneEdit.Text;
       Settings._iaruzone := IARUZoneEdit.Text;
+      Settings._PowerH := editPowerH.Text;
+      Settings._PowerM := editPowerM.Text;
+      Settings._PowerL := editPowerL.Text;
+      Settings._PowerP := editPowerP.Text;
 
       {
         Settings.CW.CWStrBank[1,1] := Edit1.Text;
@@ -1374,6 +1387,10 @@ begin
 
       CQZoneEdit.Text := Settings._cqzone;
       IARUZoneEdit.Text := Settings._iaruzone;
+      editPowerH.Text := Settings._PowerH;
+      editPowerM.Text := Settings._PowerM;
+      editPowerL.Text := Settings._PowerL;
+      editPowerP.Text := Settings._PowerP;
 
       AllowDupeCheckBox.Checked := Settings._allowdupe;
 

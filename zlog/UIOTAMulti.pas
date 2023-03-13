@@ -116,8 +116,14 @@ var
    f: textfile;
    str: string;
    i: TIsland;
+   fullpath: string;
 begin
-   assign(f, filename);
+   fullpath := dmZLogGlobal.ExpandCfgDatFullPath(filename);
+   if fullpath = '' then begin
+      Exit;
+   end;
+
+   Assign(f, fullpath);
    try
       Reset(f);
    except
@@ -146,8 +152,14 @@ var
    str: string;
    i: TIsland;
    j: Integer;
+   fullpath: string;
 begin
-   assign(f, filename);
+   fullpath := dmZLogGlobal.ExpandCfgDatFullPath(filename);
+   if fullpath = '' then begin
+      Exit;
+   end;
+
+   Assign(f, fullpath);
    try
       rewrite(f);
    except

@@ -9215,10 +9215,14 @@ var
    b: TBand;
    Q: TQSO;
    m: TMode;
+   fSetLastFreq: Boolean;
 begin
    if freq = 0 then begin
       Exit;
    end;
+
+   // 現在のCQモード
+   fSetLastFreq := IsCQ();
 
    // SPモードへ変更
    SetCQ(False);
@@ -9229,7 +9233,7 @@ begin
 
    if RigControl.Rig <> nil then begin
       // RIGにfreq設定
-      RigControl.Rig.SetFreq(freq, IsCQ());
+      RigControl.Rig.SetFreq(freq, fSetLastFreq);
 
       if dmZLogGlobal.Settings._bandscope_use_estimated_mode = True then begin
          Q := TQSO.Create();
@@ -9246,7 +9250,7 @@ begin
 
             // もう一度周波数を設定(side bandずれ対策)
             if dmZLogGlobal.Settings._bandscope_setfreq_after_mode_change = True then begin
-               RigControl.Rig.SetFreq(freq, IsCQ());
+               RigControl.Rig.SetFreq(freq, fSetLastFreq);
             end;
          end;
 

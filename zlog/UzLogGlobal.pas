@@ -5,6 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.Math, Vcl.Graphics, System.DateUtils, Generics.Collections, Generics.Defaults,
+  Vcl.Dialogs, System.UITypes,
   UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
   UQsoTarget;
 
@@ -105,6 +106,10 @@ type
     _city : string;
     _cqzone : string;
     _iaruzone : string;
+    _powerH: string;
+    _powerM: string;
+    _powerL: string;
+    _powerP: string;
 
     _send_freq_interval: Integer;
 
@@ -372,6 +377,7 @@ type
     function GetSuperCheck2Columns(): Integer;
     procedure SetSuperCheck2Columns(v: Integer);
     function GetPowerOfBand(band: TBand): TPower;
+    function GetPowerOfBand2(band: TBand): string;
     function GetLastBand(): TBand;
     procedure SetLastBand(b: TBand);
     function GetLastMode(): TMode;
@@ -440,6 +446,7 @@ public
     function NewQSOID(): Integer;
 
     function GetGreetingsCode(): string;
+    function ExpandCfgDatFullPath(filename: string): string;
 
     function GetPrefix(strCallsign: string): TPrefix;
     function GetArea(str: string): Integer;
@@ -448,6 +455,7 @@ public
     function IsMultiStation(): Boolean;
 
     property PowerOfBand[b: TBand]: TPower read GetPowerOfBand;
+    property PowerOfBand2[b: TBand]: string read GetPowerOfBand2;
 
     property LastBand: TBand read GetLastBand write SetLastBand;
     property LastMode: TMode read GetLastMode write SetLastMode;
@@ -777,6 +785,12 @@ begin
 
       // ITU Zone
       Settings._iaruzone := ini.ReadString('Profiles', 'IARUZone', '');
+
+      // Power(HMLP)
+      Settings._powerH := ini.ReadString('Profiles', 'PowerH', '1KW');
+      Settings._powerM := ini.ReadString('Profiles', 'PowerM', '100');
+      Settings._powerL := ini.ReadString('Profiles', 'PowerL', '10');
+      Settings._powerP := ini.ReadString('Profiles', 'PowerP', '5');
 
       // Sent
 //      Settings._sentstr := ini.ReadString('Profiles', 'SentStr', '');
@@ -1423,6 +1437,12 @@ begin
 
       // ITU Zone
       ini.WriteString('Profiles', 'IARUZone', Settings._iaruzone);
+
+      // Power(HMLP)
+      ini.WriteString('Profiles', 'PowerH', Settings._powerH);
+      ini.WriteString('Profiles', 'PowerM', Settings._powerM);
+      ini.WriteString('Profiles', 'PowerL', Settings._powerL);
+      ini.WriteString('Profiles', 'PowerP', Settings._powerP);
 
       // Sent
 //      ini.WriteString('Profiles', 'SentStr', Settings._sentstr);
@@ -2126,6 +2146,11 @@ end;
 
 function TdmZLogGlobal.GetPowerOfBand(band: TBand): TPower;
 begin
+   if band > HiBand then begin
+      Result := pwrM;
+      Exit;
+   end;
+
    if Settings._power[band] = 'H' then begin
       Result := pwrH;
    end
@@ -2140,6 +2165,30 @@ begin
    end
    else begin
       Result := pwrM;
+   end;
+end;
+
+function TdmZLogGlobal.GetPowerOfBand2(band: TBand): string;
+begin
+   if band > HiBand then begin
+      Result := Settings._powerM;
+      Exit;
+   end;
+
+   if Settings._power[band] = 'H' then begin
+      Result := Settings._powerH;
+   end
+   else if Settings._power[band] = 'M' then begin
+      Result := Settings._powerM;
+   end
+   else if Settings._power[band] = 'L' then begin
+      Result := Settings._powerL;
+   end
+   else if Settings._power[band] = 'P' then begin
+      Result := Settings._powerP;
+   end
+   else begin
+      Result := Settings._powerM;
    end;
 end;
 
@@ -2410,6 +2459,28 @@ begin
    else begin
       Result := 'GE';
    end;
+end;
+
+function TdmZLogGlobal.ExpandCfgDatFullPath(filename: string): string;
+var
+   fullpath: string;
+begin
+   if IsFullPath(filename) = True then begin
+      Result := filename;
+      Exit;
+   end;
+
+   fullpath := CfgDatPath + filename;
+   if FileExists(fullpath) = False then begin
+      fullpath := ExtractFilePath(Application.ExeName) + filename;
+      if FileExists(fullpath) = False then begin
+         MessageDlg('DAT file [' + fullpath + '] cannot be opened', mtError, [mbOK], 0);
+         Result := '';
+         Exit;
+      end;
+   end;
+
+   Result := fullpath;
 end;
 
 function TdmZLogGlobal.Load_CTYDAT(): Boolean;
