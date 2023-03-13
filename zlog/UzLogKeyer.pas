@@ -3058,6 +3058,7 @@ begin
    FWkMessageSending := False;
    FWkMessageStr := '';
    FWkMessageIndex := 1;
+   WinKeyerControlPTT(False);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetSideTone(fOn: Boolean);
