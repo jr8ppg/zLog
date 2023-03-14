@@ -7192,19 +7192,19 @@ begin
    case BandGroupIndex of
       // 3.5M
       2: begin
-         MyContest.SetBand(b35);
+         TJA0Score(MyContest.ScoreForm).SetBand(b35);
          ShowBandMenu(b35);
       end;
 
       // 7M
       3: begin
-         MyContest.SetBand(b7);
+         TJA0Score(MyContest.ScoreForm).SetBand(b7);
          ShowBandMenu(b7);
       end;
 
       // 21/28M
       7, 9: begin
-         MyContest.SetBand(b21);
+         TJA0Score(MyContest.ScoreForm).SetBand(b21);
          dmZlogGlobal.Settings._band := 0;
          ShowBandMenu(b21);
          ShowBandMenu(b28);
