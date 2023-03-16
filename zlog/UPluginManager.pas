@@ -111,8 +111,8 @@ var
 	MarketList: TMarketList;
 
 const
-	URL_MARKET = 'https://zylo.pafelog.net/market.json';
-	URL_MANUAL = 'https://zylo.pafelog.net';
+	URL_MARKET = 'https://pkg.zlog.org/market.json';
+	URL_MANUAL = 'https://nextzlog.github.io/zylo/';
 
 procedure BrowseURL(url: string);
 
