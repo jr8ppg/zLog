@@ -1009,6 +1009,7 @@ type
     procedure ScrollGrid();
     procedure EditCurrentRow();
     procedure CallSpaceBarProc(C, N, B: TEdit);
+    procedure ShowSentNumber();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1057,7 +1058,7 @@ type
 
     procedure InitBandMenu();
 
-    procedure SetStatusLine(strText: string);
+    procedure ShowRigControlInfo(strText: string);
 
     procedure DoFunctionKey(no: Integer);
 
@@ -1543,6 +1544,8 @@ begin
    FBandScope.Select := True;
 
    FRateDialogEx.Band := CurrentQSO.Band;
+
+   ShowSentNumber();
 end;
 
 procedure TMainForm.UpdateMode(M: TMode);
@@ -1575,6 +1578,8 @@ begin
    PointEdit.Text := CurrentQSO.PointStr;
 
    FFunctionKeyPanel.UpdateInfo();
+
+   ShowSentNumber();
 end;
 
 procedure TMainForm.SetQSOMode(aQSO: TQSO; fUp: Boolean);
@@ -4570,7 +4575,7 @@ begin
       end;
    end;
 
-   StatusLine.Panels[2].Text := S;
+   StatusLine.Panels[3].Text := S;
    FInformation.Time := S;
 
    FQsyInfoForm.SetQsyInfo(fQsyOK, S2);
@@ -5590,12 +5595,16 @@ end;
 
 procedure TMainForm.StatusLineResize(Sender: TObject);
 begin
-   StatusLine.Panels[2].Width := 100;
+   StatusLine.Panels[3].Width := 60;
+
    if RigControl.Rig <> nil then
-      StatusLine.Panels[1].Width := 47
+      StatusLine.Panels[2].Width := 50
    else
-      StatusLine.Panels[1].Width := 0;
-   StatusLine.Panels[0].Width := StatusLine.Width - 100 - StatusLine.Panels[1].Width;
+      StatusLine.Panels[2].Width := 0;
+
+   StatusLine.Panels[1].Width := 80;
+
+   StatusLine.Panels[0].Width := StatusLine.Width - (StatusLine.Panels[1].Width + StatusLine.Panels[2].Width + StatusLine.Panels[3].Width);
 end;
 
 procedure TMainForm.mPXListWPXClick(Sender: TObject);
@@ -6457,6 +6466,9 @@ begin
       if FZAnalyze.Visible then begin
          PostMessage(FZAnalyze.Handle, WM_ANALYZE_UPDATE, 0, 0);
       end;
+
+      StatusLineResize(nil);
+      ShowSentNumber();
 
       // èâä˙âªäÆóπ
       FInitialized := True;
@@ -9483,11 +9495,6 @@ begin
    FQsyFromBS := False;
 end;
 
-procedure TMainForm.SetStatusLine(strText: string);
-begin
-   StatusLine.Panels[1].Text := strText;
-end;
-
 procedure TMainForm.ApplyCQRepeatInterval();
 var
    msg: string;
@@ -10574,6 +10581,8 @@ begin
          end;
       end;
    end;
+
+   ShowSentNumber();
 end;
 
 procedure TMainForm.InitSerialNumber();
@@ -10776,6 +10785,25 @@ begin
    if FTaskBarList <> nil then begin
       FTaskBarList.DeleteTab(Handle);
    end;
+end;
+
+procedure TMainForm.ShowSentNumber();
+var
+   RST: string;
+begin
+   if (CurrentQSO.Mode = mSSB) or (CurrentQSO.Mode = mFM) or (CurrentQSO.Mode = mAM) then begin
+      RST := '59';
+   end
+   else begin
+      RST := '599';
+   end;
+
+   StatusLine.Panels[1].Text := RST + ' ' + SetStrNoAbbrev(dmZLogGlobal.Settings._sentstr, CurrentQSO);
+end;
+
+procedure TMainForm.ShowRigControlInfo(strText: string);
+begin
+   StatusLine.Panels[2].Text := strText;
 end;
 
 { TBandScopeNotifyThread }

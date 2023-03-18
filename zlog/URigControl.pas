@@ -4167,7 +4167,7 @@ begin
       S := S + 'B';
    end;
 
-   MainForm.StatusLine.Panels[1].Text := S;
+   MainForm.ShowRigControlInfo(S);
 
    MainForm.BandScopeMarkCurrentFreq(_currentband, _freqoffset + _currentfreq[_currentvfo]);
 end;

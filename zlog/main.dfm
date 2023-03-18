@@ -48,9 +48,15 @@ object MainForm: TMainForm
         Width = 500
       end
       item
+        Alignment = taCenter
         Width = 50
       end
       item
+        Alignment = taCenter
+        Width = 50
+      end
+      item
+        Alignment = taCenter
         Width = 50
       end>
     SizeGrip = False
