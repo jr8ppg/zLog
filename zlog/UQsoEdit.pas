@@ -220,10 +220,11 @@ begin
    colMode := 5;
    colPoint := 6;
    colNewMulti1 := 7;
-   colOp := 8;
-   colMemo := 9;
+   colNewPower := 8;
+   colOp := 9;
+   colMemo := 10;
 
-   GridColCount := 10;
+   GridColCount := 11;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;
