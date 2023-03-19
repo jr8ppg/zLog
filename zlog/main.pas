@@ -5508,16 +5508,31 @@ begin
    PowerEdit.Text := NewPowerString[TPower(TMenuItem(Sender).Tag)];
    CurrentQSO.Power := TPower(TMenuItem(Sender).Tag);
    LastFocus.SetFocus;
+   ShowSentNumber();
 end;
 
 procedure TMainForm.PowerEdit1Click(Sender: TObject);
+var
+   e: TEdit;
+   pt: TPoint;
 begin
-   NewPowerMenu.Popup(Left + PowerEdit.Left + 20, Top + EditPanel1R.top + PowerEdit.top);
+   e := TEdit(Sender);
+   pt.X := e.Left + 20;
+   pt.Y := e.Top;
+   pt := TPanel(e.Parent).ClientToScreen(pt);
+   NewPowerMenu.Popup(pt.X, pt.Y);
 end;
 
 procedure TMainForm.OpEdit1Click(Sender: TObject);
+var
+   e: TEdit;
+   pt: TPoint;
 begin
-   OpMenu.Popup(Left + OpEdit.Left + 20, Top + EditPanel1R.top + OpEdit.top);
+   e := TEdit(Sender);
+   pt.X := e.Left + 20;
+   pt.Y := e.Top;
+   pt := TPanel(e.Parent).ClientToScreen(pt);
+   OpMenu.Popup(pt.X, pt.Y);
 end;
 
 procedure TMainForm.GridClick(Sender: TObject);
@@ -8279,6 +8294,8 @@ begin
    if Assigned(PowerEdit) then begin
       PowerEdit.Text := CurrentQSO.NewPowerStr;
    end;
+
+   ShowSentNumber();
 end;
 
 // #92 CWÉoÉìÉNïœçX Shift+F
@@ -9583,6 +9600,8 @@ begin
 
    // Change Voice Files
    FVoiceForm.SetOperator(op);
+
+   ShowSentNumber();
 end;
 
 procedure TMainForm.SetEditColor(edit: TEdit; fHighlight: Boolean);
@@ -10788,17 +10807,8 @@ begin
 end;
 
 procedure TMainForm.ShowSentNumber();
-var
-   RST: string;
 begin
-   if (CurrentQSO.Mode = mSSB) or (CurrentQSO.Mode = mFM) or (CurrentQSO.Mode = mAM) then begin
-      RST := '59';
-   end
-   else begin
-      RST := '599';
-   end;
-
-   StatusLine.Panels[1].Text := RST + ' ' + SetStrNoAbbrev(dmZLogGlobal.Settings._sentstr, CurrentQSO);
+   StatusLine.Panels[1].Text := CurrentQSO.RSTSentStr + ' ' + SetStrNoAbbrev(dmZLogGlobal.Settings._sentstr, CurrentQSO);
 end;
 
 procedure TMainForm.ShowRigControlInfo(strText: string);
