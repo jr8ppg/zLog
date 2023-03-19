@@ -1,9 +1,4 @@
-﻿{*******************************************************************************
- * Amateur Radio Operational Logging Software 'ZyLO' since 2020 June 22
- * License: The MIT License since 2021 October 28 (see LICENSE)
- * Author: Journal of Hamradio Informatics (http://pafelog.net)
-*******************************************************************************}
-unit UzLogExtension;
+﻿unit UzLogExtension;
 
 interface
 
@@ -70,6 +65,7 @@ type
 		ButtonEvent: procedure(idx, btn: integer); stdcall;
 		EditorEvent: procedure(idx, key: integer); stdcall;
 		constructor Create(path: string);
+		procedure ContestOpened;
 	private
 		hnd: THandle;
 	end;
@@ -174,7 +170,8 @@ function Request(v: string; qso: TQSO): string;
 implementation
 
 uses
-	main;
+	main,
+	UPluginManager;
 
 /// <summary>
 /// convert short string to ANSI string
@@ -627,7 +624,7 @@ begin
 		list.Add(path);
 		SetDLLsINI(list);
 	end;
-	if not Rules.ContainsKey(path) then TDLL.Create(path);
+	if not Rules.ContainsKey(path) then TDLL.Create(path).ContestOpened;
 	list.Free;
 end;
 
@@ -738,8 +735,10 @@ begin
 		RuleDLL := Rules[link];
 		RuleName := test;
 		RulePath := path;
-	end else if link <> '' then
+	end else if link <> '' then begin
+		UPluginManager.MarketForm.Browse(link);
 		TaskMessageDlg('not installed', link, mtWarning, [mbOK], 0);
+	end;
 	list.Free;
 end;
 
@@ -755,14 +754,11 @@ end;
 /// path to CFG file
 /// </param>
 procedure zyloContestOpened(test, path: string);
-var
-	dll: TDLL;
 begin
 	Enabled := True;
 	var tag := DtoC(RuleName);
 	var cfg := DtoC(RulePath);
-	for dll in Rules.Values do dll.OffsetEvent(UTCOffset);
-	for dll in Rules.Values do dll.AttachEvent(tag, cfg);
+	for var dll in Rules.Values do dll.ContestOpened;
 	if RuleDLL <> nil then RuleDLL.AssignEvent(tag, cfg);
 	MyContest.ScoreForm.UpdateData;
 	MyContest.MultiForm.UpdateData;
@@ -772,15 +768,11 @@ end;
 /// must be called when contest closed
 /// </summary>
 procedure zyloContestClosed;
-var
-	dll: TDLL;
-	tag: PAnsiChar;
-	cfg: PAnsiChar;
 begin
 	Enabled := False;
-	tag := DtoC(RuleName);
-	cfg := DtoC(RulePath);
-	for dll in Rules.Values do dll.DetachEvent(tag, cfg);
+	var tag := DtoC(RuleName);
+	var cfg := DtoC(RulePath);
+	for var dll in Rules.Values do dll.DetachEvent(tag, cfg);
 	RuleDLL := nil;
 end;
 
@@ -1073,6 +1065,14 @@ begin
 	except
 		LastDLL := nil;
 	end;
+end;
+
+procedure TDLL.ContestOpened;
+begin
+	var tag := DtoC(RuleName);
+	var cfg := DtoC(RulePath);
+	Self.OffsetEvent(UTCOffset);
+	Self.AttachEvent(tag, cfg);
 end;
 
 procedure FreeRules;
