@@ -2213,6 +2213,11 @@ begin
       FRateDialog.UpdateGraph();
       FRateDialogEx.UpdateGraph();
       dmZLogGlobal.Settings.FLastFileFilterIndex := OpenDialog.FilterIndex;
+      
+      if MyContest.ClassType = TGeneralContest then
+        zyloContestOpened(MyContest.Name, TGeneralContest(MyContest).Config.FileName)
+      else
+        zyloContestOpened(MyContest.Name, '');
    end;
 end;
 

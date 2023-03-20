@@ -1,8 +1,3 @@
-{*******************************************************************************
- * Amateur Radio Operational Logging Software 'ZyLO' since 2020 June 22
- * License: The MIT License since 2021 October 28 (see LICENSE)
- * Author: Journal of Hamradio Informatics (http://pafelog.net)
-*******************************************************************************}
 unit UPluginManager;
 
 interface
@@ -89,6 +84,7 @@ type
 		InstallButton: TButton;
 		DisableButton: TButton;
 		UpgradeButton: TButton;
+		procedure Browse(name: string);
 		procedure FormCreate(Sender: TObject);
 		procedure FormShow(Sender: TObject);
 		procedure LoadText(url: string; var txt: string);
@@ -129,6 +125,7 @@ var
 begin
 	for Item In MarketList do
 		Item.Free;
+	MarketDict.Clear;
 	MarketList.Clear;
 end;
 
@@ -341,6 +338,14 @@ begin
 	for Item in Self.use do list.Add(MarketDict[Item]);
 	Result := list.ToArray;
 	list.Free;
+end;
+
+procedure TMarketForm.Browse(name: string);
+begin
+	Show;
+	for var Item in MarketList do
+		if TPath.GetFileName(Item.ref) = name then
+			ListBox.Selected[MarketList.IndexOf(Item)] := true;
 end;
 
 procedure TMarketForm.FormCreate(Sender: TObject);
