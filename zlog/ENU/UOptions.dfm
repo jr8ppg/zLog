@@ -814,6 +814,86 @@ object formOptions: TformOptions
           OnClick = buttonOpDeleteClick
         end
       end
+      object groupPower: TGroupBox
+        Left = 296
+        Top = 246
+        Width = 129
+        Height = 127
+        Caption = 'Power($N)'
+        TabOrder = 8
+        object Label123: TLabel
+          Left = 16
+          Top = 23
+          Width = 34
+          Height = 13
+          AutoSize = False
+          Caption = 'H'
+        end
+        object Label124: TLabel
+          Left = 16
+          Top = 48
+          Width = 34
+          Height = 13
+          AutoSize = False
+          Caption = 'M'
+        end
+        object Label125: TLabel
+          Left = 16
+          Top = 73
+          Width = 34
+          Height = 13
+          AutoSize = False
+          Caption = 'L'
+        end
+        object Label126: TLabel
+          Left = 16
+          Top = 98
+          Width = 34
+          Height = 13
+          AutoSize = False
+          Caption = 'P'
+        end
+        object editPowerH: TEdit
+          Left = 72
+          Top = 20
+          Width = 41
+          Height = 21
+          CharCase = ecUpperCase
+          MaxLength = 4
+          TabOrder = 0
+          Text = '1KW'
+        end
+        object editPowerM: TEdit
+          Left = 72
+          Top = 45
+          Width = 41
+          Height = 21
+          CharCase = ecUpperCase
+          MaxLength = 4
+          TabOrder = 1
+          Text = '100'
+        end
+        object editPowerL: TEdit
+          Left = 72
+          Top = 70
+          Width = 41
+          Height = 21
+          CharCase = ecUpperCase
+          MaxLength = 4
+          TabOrder = 2
+          Text = '10'
+        end
+        object editPowerP: TEdit
+          Left = 72
+          Top = 95
+          Width = 41
+          Height = 21
+          CharCase = ecUpperCase
+          MaxLength = 4
+          TabOrder = 3
+          Text = '5'
+        end
+      end
     end
     object tabsheetCW: TTabSheet
       Caption = 'CW/RTTY'
@@ -4909,13 +4989,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@HG'#25945#31185#26360#20307
+          FontName = #65325#65331' '#12468#12471#12483#12463
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 5
+          ItemIndex = 42
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
