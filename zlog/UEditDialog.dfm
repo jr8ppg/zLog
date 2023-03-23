@@ -453,6 +453,7 @@ object EditDialog: TEditDialog
     Top = 120
   end
   object ActionList1: TActionList
+    Tag = 101
     State = asSuspended
     Left = 432
     Top = 120
@@ -670,6 +671,11 @@ object EditDialog: TEditDialog
     object actionPlayMessageA10: TAction
       Tag = 10
       Caption = 'actionPlayMessageA10'
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayCQA1: TAction
+      Tag = 101
+      Caption = 'actionPlayCQA1'
       OnExecute = actionPlayMessageAExecute
     end
     object actionPlayCQA2: TAction

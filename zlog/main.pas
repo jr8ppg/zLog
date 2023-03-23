@@ -40,6 +40,8 @@ const
   WM_ZLOG_CQREPEAT_CONTINUE = (WM_USER + 103);
   WM_ZLOG_SPACEBAR_PROC = (WM_USER + 104);
   WM_ZLOG_SWITCH_RIG = (WM_USER + 105);
+  WM_ZLOG_PLAYMESSAGEA = (WM_USER + 106);
+  WM_ZLOG_PLAYMESSAGEB = (WM_USER + 107);
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
@@ -632,6 +634,8 @@ type
     procedure OnZLogCqRepeatContinue( var Message: TMessage ); message WM_ZLOG_CQREPEAT_CONTINUE;
     procedure OnZLogSpaceBarProc( var Message: TMessage ); message WM_ZLOG_SPACEBAR_PROC;
     procedure OnZLogSwitchRig( var Message: TMessage ); message WM_ZLOG_SWITCH_RIG;
+    procedure OnZLogPlayMessageA( var Message: TMessage ); message WM_ZLOG_PLAYMESSAGEA;
+    procedure OnZLogPlayMessageB( var Message: TMessage ); message WM_ZLOG_PLAYMESSAGEB;
     procedure OnZLogGetCallsign( var Message: TMessage ); message WM_ZLOG_GETCALLSIGN;
     procedure OnZLogGetVersion( var Message: TMessage ); message WM_ZLOG_GETVERSION;
     procedure OnZLogSetPttState( var Message: TMessage ); message WM_ZLOG_SETPTTSTATE;
@@ -910,6 +914,8 @@ type
     procedure DecFontSize();
     procedure SetFontSize(font_size: Integer);
     procedure QSY(b: TBand; m: TMode; r: Integer);
+    procedure OnPlayMessageA(no: Integer);
+    procedure OnPlayMessageB(no: Integer);
     procedure PlayMessage(bank: Integer; no: Integer);
     procedure PlayMessageCW(bank: Integer; no: Integer);
     procedure PlayMessagePH(no: Integer);
@@ -1075,6 +1081,8 @@ type
     property CurrentRigID: Integer read GetCurrentRigID;
     property CurrentEditPanel: TEditPanel read GetCurrentEditPanel;
     property EditPanel: TEditPanelArray read FEditPanel;
+
+    property CurrentCQMessageNo: Integer read FCurrentCQMessageNo;
 
     property SerialEdit: TEdit read GetSerialEdit;
     property DateEdit: TEdit read GetDateEdit;
@@ -6538,6 +6546,16 @@ begin
    end;
 end;
 
+procedure TMainForm.OnZLogPlayMessageA( var Message: TMessage );
+begin
+   OnPlayMessageA(Message.WParam);
+end;
+
+procedure TMainForm.OnZLogPlayMessageB( var Message: TMessage );
+begin
+   OnPlayMessageB(Message.WParam);
+end;
+
 procedure TMainForm.OnZLogGetCallsign( var Message: TMessage );
 var
    callsign_atom: ATOM;
@@ -7159,6 +7177,55 @@ begin
    end;
 end;
 
+procedure TMainForm.OnPlayMessageA(no: Integer);
+var
+   cb: Integer;
+begin
+   cb := dmZlogGlobal.Settings.CW.CurrentBank;
+   FOtherKeyPressed := True;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
+   {$ENDIF}
+
+   if RigControl.Rig <> nil then begin
+      if dmZLogGlobal.Settings.FAntiZeroinXitOn2 = True then begin
+         if RigControl.Rig.Xit = False then begin
+            actionAntiZeroin.Execute();
+         end;
+      end;
+   end;
+
+   PlayMessage(cb, no);
+end;
+
+procedure TMainForm.OnPlayMessageB(no: Integer);
+var
+   cb: Integer;
+begin
+   cb := dmZlogGlobal.Settings.CW.CurrentBank;
+   FOtherKeyPressed := True;
+
+   if cb = 1 then
+      cb := 2
+   else
+      cb := 1;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('PlayMessageB(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
+   {$ENDIF}
+
+   if RigControl.Rig <> nil then begin
+      if dmZLogGlobal.Settings.FAntiZeroinXitOn2 = True then begin
+         if RigControl.Rig.Xit = False then begin
+            actionAntiZeroin.Execute();
+         end;
+      end;
+   end;
+
+   PlayMessage(cb, no);
+end;
+
 procedure TMainForm.PlayMessage(bank: Integer; no: Integer);
 var
    nID: Integer;
@@ -7531,25 +7598,26 @@ end;
 procedure TMainForm.actionPlayMessageAExecute(Sender: TObject);
 var
    no: Integer;
-   cb: Integer;
+//   cb: Integer;
 begin
    no := TAction(Sender).Tag;
-   cb := dmZlogGlobal.Settings.CW.CurrentBank;
-   FOtherKeyPressed := True;
-
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
-   {$ENDIF}
-
-   if RigControl.Rig <> nil then begin
-      if dmZLogGlobal.Settings.FAntiZeroinXitOn2 = True then begin
-         if RigControl.Rig.Xit = False then begin
-            actionAntiZeroin.Execute();
-         end;
-      end;
-   end;
-
-   PlayMessage(cb, no);
+   OnPlayMessageA(no);
+//   cb := dmZlogGlobal.Settings.CW.CurrentBank;
+//   FOtherKeyPressed := True;
+//
+//   {$IFDEF DEBUG}
+//   OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
+//   {$ENDIF}
+//
+//   if RigControl.Rig <> nil then begin
+//      if dmZLogGlobal.Settings.FAntiZeroinXitOn2 = True then begin
+//         if RigControl.Rig.Xit = False then begin
+//            actionAntiZeroin.Execute();
+//         end;
+//      end;
+//   end;
+//
+//   PlayMessage(cb, no);
 end;
 
 // #18 F9
@@ -7587,27 +7655,28 @@ var
    cb: Integer;
 begin
    no := TAction(Sender).Tag;
-   cb := dmZlogGlobal.Settings.CW.CurrentBank;
-   FOtherKeyPressed := True;
-
-   if cb = 1 then
-      cb := 2
-   else
-      cb := 1;
-
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('PlayMessageB(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
-   {$ENDIF}
-
-   if RigControl.Rig <> nil then begin
-      if dmZLogGlobal.Settings.FAntiZeroinXitOn2 = True then begin
-         if RigControl.Rig.Xit = False then begin
-            actionAntiZeroin.Execute();
-         end;
-      end;
-   end;
-
-   PlayMessage(cb, no);
+   OnPlayMessageB(no);
+//   cb := dmZlogGlobal.Settings.CW.CurrentBank;
+//   FOtherKeyPressed := True;
+//
+//   if cb = 1 then
+//      cb := 2
+//   else
+//      cb := 1;
+//
+//   {$IFDEF DEBUG}
+//   OutputDebugString(PChar('PlayMessageB(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
+//   {$ENDIF}
+//
+//   if RigControl.Rig <> nil then begin
+//      if dmZLogGlobal.Settings.FAntiZeroinXitOn2 = True then begin
+//         if RigControl.Rig.Xit = False then begin
+//            actionAntiZeroin.Execute();
+//         end;
+//      end;
+//   end;
+//
+//   PlayMessage(cb, no);
 end;
 
 // #32, #33 CTRL+Enter, CTRL+N
