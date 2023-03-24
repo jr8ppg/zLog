@@ -1035,6 +1035,7 @@ type
     procedure EditCurrentRow();
     procedure AssignControls(nID: Integer; var C, N, B, M, S: TEdit);
     procedure CallSpaceBarProc(C, N, B: TEdit);
+    procedure ShowSentNumber();
     procedure SetCqRepeatMode(fOn: Boolean);
     procedure StartCqRepeatTimer();
     procedure StopCqRepeatTimer();
@@ -1087,8 +1088,6 @@ type
     procedure BandScopeApplyBandPlan();
 
     procedure InitBandMenu();
-
-    procedure SetStatusLine(strText: string);
 
     procedure DoFunctionKey(no: Integer);
 
@@ -1581,6 +1580,8 @@ begin
    FBandScope.Select := True;
 
    FRateDialogEx.Band := CurrentQSO.Band;
+
+   ShowSentNumber();
 end;
 
 procedure TMainForm.UpdateMode(M: TMode);
@@ -1613,6 +1614,8 @@ begin
    PointEdit.Text := CurrentQSO.PointStr;
 
    FFunctionKeyPanel.UpdateInfo();
+
+   ShowSentNumber();
 end;
 
 procedure TMainForm.SetQSOMode(aQSO: TQSO; fUp: Boolean);
@@ -2252,6 +2255,11 @@ begin
       FRateDialog.UpdateGraph();
       FRateDialogEx.UpdateGraph();
       dmZLogGlobal.Settings.FLastFileFilterIndex := OpenDialog.FilterIndex;
+      
+      if MyContest.ClassType = TGeneralContest then
+        zyloContestOpened(MyContest.Name, TGeneralContest(MyContest).Config.FileName)
+      else
+        zyloContestOpened(MyContest.Name, '');
    end;
 end;
 
@@ -5778,16 +5786,31 @@ begin
    PowerEdit.Text := NewPowerString[TPower(TMenuItem(Sender).Tag)];
    CurrentQSO.Power := TPower(TMenuItem(Sender).Tag);
    LastFocus.SetFocus;
+   ShowSentNumber();
 end;
 
 procedure TMainForm.PowerEdit1Click(Sender: TObject);
+var
+   e: TEdit;
+   pt: TPoint;
 begin
-   NewPowerMenu.Popup(Left + PowerEdit.Left + 20, Top + EditPanel1R.top + PowerEdit.top);
+   e := TEdit(Sender);
+   pt.X := e.Left + 20;
+   pt.Y := e.Top;
+   pt := TPanel(e.Parent).ClientToScreen(pt);
+   NewPowerMenu.Popup(pt.X, pt.Y);
 end;
 
 procedure TMainForm.OpEdit1Click(Sender: TObject);
+var
+   e: TEdit;
+   pt: TPoint;
 begin
-   OpMenu.Popup(Left + OpEdit.Left + 20, Top + EditPanel1R.top + OpEdit.top);
+   e := TEdit(Sender);
+   pt.X := e.Left + 20;
+   pt.Y := e.Top;
+   pt := TPanel(e.Parent).ClientToScreen(pt);
+   OpMenu.Popup(pt.X, pt.Y);
 end;
 
 procedure TMainForm.GridClick(Sender: TObject);
@@ -5867,15 +5890,17 @@ procedure TMainForm.StatusLineResize(Sender: TObject);
 var
    rig: TRig;
 begin
-   StatusLine.Panels[2].Width := 100;
+   StatusLine.Panels[3].Width := 60;
 
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then
-      StatusLine.Panels[1].Width := 47
+      StatusLine.Panels[2].Width := 50
    else
-      StatusLine.Panels[1].Width := 0;
+      StatusLine.Panels[2].Width := 0;
 
-   StatusLine.Panels[0].Width := StatusLine.Width - 100 - StatusLine.Panels[1].Width;
+   StatusLine.Panels[1].Width := 80;
+
+   StatusLine.Panels[0].Width := StatusLine.Width - (StatusLine.Panels[1].Width + StatusLine.Panels[2].Width + StatusLine.Panels[3].Width);
 end;
 
 procedure TMainForm.mPXListWPXClick(Sender: TObject);
@@ -6787,6 +6812,9 @@ begin
       if FZAnalyze.Visible then begin
          PostMessage(FZAnalyze.Handle, WM_ANALYZE_UPDATE, 0, 0);
       end;
+
+      StatusLineResize(nil);
+      ShowSentNumber();
 
       // èâä˙âªäÆóπ
       FInitialized := True;
@@ -8828,6 +8856,8 @@ begin
    if Assigned(PowerEdit) then begin
       PowerEdit.Text := CurrentQSO.NewPowerStr;
    end;
+
+   ShowSentNumber();
 end;
 
 // #92 CWÉoÉìÉNïœçX Shift+F
@@ -10099,11 +10129,6 @@ begin
    FQsyFromBS := False;
 end;
 
-procedure TMainForm.SetStatusLine(strText: string);
-begin
-   StatusLine.Panels[1].Text := strText;
-end;
-
 procedure TMainForm.ApplyCQRepeatInterval();
 var
    msg: string;
@@ -10192,6 +10217,8 @@ begin
 
    // Change Voice Files
    FMessageManager.SetOperator(op);
+
+   ShowSentNumber();
 end;
 
 procedure TMainForm.SetEditColor(edit: TEdit; fHighlight: Boolean);
@@ -11175,6 +11202,8 @@ begin
          end;
       end;
    end;
+
+   ShowSentNumber();
 end;
 
 procedure TMainForm.InitSerialNumber();
@@ -11468,6 +11497,16 @@ begin
    if FTaskBarList <> nil then begin
       FTaskBarList.DeleteTab(Handle);
    end;
+end;
+
+procedure TMainForm.ShowSentNumber();
+begin
+   StatusLine.Panels[1].Text := CurrentQSO.RSTSentStr + ' ' + SetStrNoAbbrev(dmZLogGlobal.Settings._sentstr, CurrentQSO);
+end;
+
+procedure TMainForm.ShowRigControlInfo(strText: string);
+begin
+   StatusLine.Panels[2].Text := strText;
 end;
 
 { TBandScopeNotifyThread }

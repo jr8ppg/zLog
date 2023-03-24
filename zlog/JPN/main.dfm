@@ -10,7 +10,7 @@ object MainForm: TMainForm
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = #65325#65331' '#12468#12471#12483#12463
+  Font.Name = 'MS '#12468#12471#12483#12463
   Font.Style = []
   Menu = MainMenu
   OldCreateOrder = True
@@ -40,7 +40,7 @@ object MainForm: TMainForm
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBtnText
     Font.Height = -12
-    Font.Name = #12513#12452#12522#12458
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     Panels = <
       item
@@ -48,16 +48,21 @@ object MainForm: TMainForm
         Width = 500
       end
       item
+        Alignment = taCenter
         Width = 50
       end
       item
+        Alignment = taCenter
+        Width = 50
+      end
+      item
+        Alignment = taCenter
         Width = 50
       end>
     SizeGrip = False
     UseSystemFont = False
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
-    ExplicitTop = 382
   end
   object MainPanel: TPanel
     Left = 0
@@ -5978,7 +5983,7 @@ object MainForm: TMainForm
       end
     end
     object PluginMenu: TMenuItem
-      Caption = '&Plugins'
+      Caption = #12503#12521#12464#12452#12531'(&P)'
       Visible = False
     end
     object View1: TMenuItem

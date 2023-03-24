@@ -666,8 +666,27 @@ begin
 end;
 
 function TQSO.GetPowerStr: string;
+var
+   power: string;
 begin
-   Result := dmZLogGlobal.PowerOfBand2[Band];
+//   Result := dmZLogGlobal.PowerOfBand2[Band];
+   power := NewPowerString[Self.FPower];
+
+   if power = 'H' then begin
+      Result := dmZLogGlobal.Settings._powerH;
+   end
+   else if power = 'M' then begin
+      Result := dmZLogGlobal.Settings._powerM;
+   end
+   else if power = 'L' then begin
+      Result := dmZLogGlobal.Settings._powerL;
+   end
+   else if power = 'P' then begin
+      Result := dmZLogGlobal.Settings._powerP;
+   end
+   else begin
+      Result := dmZLogGlobal.Settings._powerM;
+   end;
 end;
 
 function TQSO.GetNewPowerStr: string;
