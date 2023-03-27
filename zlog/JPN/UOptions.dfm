@@ -1288,7 +1288,7 @@ object formOptions: TformOptions
         Hint = 
           'This option will switch the CW message sent when TAB or ; key is' +
           ' pressed to that in the current message bank. '
-        Caption = 'TAB/;'#12461#12540#25276#19979#26178#12289'CW'#12496#12531#12463#12434#20999#26367
+        Caption = 'CQ/SP'#12514#12540#12489#12395#24540#12376#12390'CW'#12496#12531#12463#20999#26367
         TabOrder = 12
         WordWrap = True
       end
