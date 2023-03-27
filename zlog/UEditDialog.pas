@@ -645,50 +645,9 @@ end;
 procedure TEditDialog.actionPlayMessageAExecute(Sender: TObject);
 var
    no: Integer;
-   bank: Integer;
-   S: string;
-   nID: Integer;
 begin
    no := TAction(Sender).Tag;
-
-   if workQSO.mode = mCW then begin
-      if no >= 101 then begin
-         MainForm.SetCQ(True);
-         bank := dmZlogGlobal.Settings.CW.CurrentBank;
-         S := dmZlogGlobal.CWMessage(bank, MainForm.CurrentCQMessageNo);
-      end
-      else begin
-         S := dmZlogGlobal.CWMessage(bank, no);
-      end;
-
-      if S = '' then begin
-         Exit;
-      end;
-
-      nID := MainForm.CurrentRigID;
-      zLogSendStr2(nID, S, workQSO);
-
-
-
-//      cb := dmZlogGlobal.Settings.CW.CurrentBank;
-//
-//      {$IFDEF DEBUG}
-//      OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
-//      {$ENDIF}
-//
-//      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-//         if cb = 1 then
-//            cb := 2
-//         else
-//            cb := 1;
-//      end;
-//
-//      S := dmZlogGlobal.CWMessage(cb, no);
-//      zLogSendStr2(MainForm.CurrentRigID, S, CurrentQSO);
-   end
-   else begin
-      // SendVoice(i);
-   end;
+   SendMessage(MainForm.Handle, WM_ZLOG_PLAYMESSAGEA, no, 0);
 end;
 
 procedure TEditDialog.actionShowCheckPartialExecute(Sender: TObject);

@@ -453,7 +453,6 @@ object EditDialog: TEditDialog
     Top = 120
   end
   object ActionList1: TActionList
-    Tag = 101
     State = asSuspended
     Left = 432
     Top = 120
