@@ -1,7 +1,7 @@
 object RateDialogEx: TRateDialogEx
   Left = 69
   Top = 213
-  ActiveControl = ShowLastCombo
+  ActiveControl = ScoreGrid2
   Caption = 'QSO Rate Ex'
   ClientHeight = 262
   ClientWidth = 390
@@ -11,7 +11,7 @@ object RateDialogEx: TRateDialogEx
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+  Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
@@ -79,11 +79,11 @@ object RateDialogEx: TRateDialogEx
     Top = 37
     Width = 390
     Height = 225
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
-      Caption = #12464#12521#12501
+      Caption = 'Graph'
       object Panel2: TPanel
         Left = 0
         Top = 167
@@ -97,20 +97,20 @@ object RateDialogEx: TRateDialogEx
           30)
         object Label4: TLabel
           Left = 303
-          Top = 9
+          Top = 8
           Width = 26
           Height = 13
           Anchors = [akRight]
-          Caption = #26178#38291
+          Caption = 'hours'
           ExplicitLeft = 255
         end
         object Label3: TLabel
           Left = 207
-          Top = 9
+          Top = 8
           Width = 46
           Height = 13
           Anchors = [akRight]
-          Caption = #26368#24460#12363#12425
+          Caption = 'Show last'
           ExplicitLeft = 159
         end
         object ShowLastCombo: TComboBox
@@ -157,18 +157,18 @@ object RateDialogEx: TRateDialogEx
             Top = 6
             Width = 54
             Height = 17
-            Caption = #29694#22312
+            Caption = 'Current'
             Checked = True
             TabOrder = 1
             TabStop = True
             OnClick = radioOriginClick
           end
           object radioOriginLastQSO: TRadioButton
-            Left = 96
+            Left = 112
             Top = 6
             Width = 40
             Height = 17
-            Caption = #26368#24460
+            Caption = 'Last'
             TabOrder = 2
             OnClick = radioOriginClick
           end
@@ -177,7 +177,7 @@ object RateDialogEx: TRateDialogEx
             Top = 6
             Width = 39
             Height = 17
-            Caption = #26368#21021
+            Caption = 'First'
             TabOrder = 0
             OnClick = radioOriginClick
           end
@@ -466,6 +466,32 @@ object RateDialogEx: TRateDialogEx
         PopupMenu = popupScore
         TabOrder = 0
         OnDrawCell = ScoreGridDrawCell
+        OnSelectCell = ScoreGridSelectCell
+        OnTopLeftChanged = ScoreGridTopLeftChanged
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'ZAQ2'
+      ImageIndex = 2
+      object ScoreGrid2: TStringGrid
+        Left = 0
+        Top = 0
+        Width = 382
+        Height = 197
+        Align = alClient
+        ColCount = 27
+        DefaultDrawing = False
+        RowCount = 36
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = #65325#65331' '#12468#12471#12483#12463
+        Font.Style = []
+        Options = [goFixedVertLine, goFixedHorzLine]
+        ParentFont = False
+        PopupMenu = popupScore
+        TabOrder = 0
+        OnDrawCell = ScoreGrid2DrawCell
         OnSelectCell = ScoreGridSelectCell
         OnTopLeftChanged = ScoreGridTopLeftChanged
       end
