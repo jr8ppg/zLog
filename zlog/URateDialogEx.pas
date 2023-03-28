@@ -428,7 +428,7 @@ begin
    if FNowHour < FStartHour then begin
       FNowHour := FNowHour + (24 - FStartHour);
    end;
-   for i := 0 to FNowHour do begin
+   for i := 0 to (FNowHour - FStartHour) do begin
       n := FStartHour + i;
       if n >= 24 then begin
          n := n - 24;
@@ -436,8 +436,8 @@ begin
       ScoreGrid2.Cells[i + 1, 0] := IntToStr(n);
    end;
 
-   if FNowHour < 23 then begin
-      ScoreGrid2.Cells[FNowHour + 1, 0] := '(+/-)';
+   if (FNowHour - FStartHour) < 23 then begin
+      ScoreGrid2.Cells[(FNowHour - FStartHour) + 1 + 1, 0] := '+/-';
    end;
 
    with Chart1 do begin
@@ -771,7 +771,7 @@ begin
       r := Ord(FBand) + 1;
 
       // 現在時刻の列
-      c := FNowHour;
+      c := FNowHour - FStartHour + 1;
 
       // 現在バンドの背景色
       if (ARow = r) or (ACol = c) then begin
@@ -812,7 +812,12 @@ begin
             strText := IntToStr(t);
          end;
 
-         Font.Color := clBlack;
+         if t >= 0 then begin
+            Font.Color := clBlack;
+         end
+         else begin
+            Font.Color := clRed;
+         end;
          TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
 
          // grid line
@@ -961,12 +966,15 @@ begin
    // 列見出し
    for i := 1 to 24 do begin
       ScoreGrid2.Cells[i, 0] := '';
-      ScoreGrid2.ColWidths[i] := 42;
+      ScoreGrid2.ColWidths[i] := 30;
    end;
+
    ScoreGrid2.Cells[25, 0] := 'Total';
-   ScoreGrid2.ColWidths[25] := 60;
-   ScoreGrid2.Cells[26, 0] := 'Difference';
+   ScoreGrid2.ColWidths[25] := 50;
+   ScoreGrid2.Cells[26, 0] := 'Target';
    ScoreGrid2.ColWidths[26] := 50;
+   ScoreGrid2.Cells[27, 0] := 'Diff.';
+   ScoreGrid2.ColWidths[27] := 50;
 
    // 行高さ
    for b := b19 to b10g do begin
@@ -1036,35 +1044,34 @@ var
 begin
    for b := b19 to b10g do begin
       R := Ord(b) + 1;
-      for i := 1 to FNowHour + 1 do begin
+      for i := 1 to (FNowHour - FStartHour) + 1 do begin
          ScoreGrid2.Cells[i, R]  := IntToStr(ATarget.Bands[b].Hours[i].Actual);   // 実績値
          ScoreGrid2.Cells[i, 17] := IntToStr(ATarget.Total.Hours[i].Actual);      // 合計
          ScoreGrid2.Cells[i, 18] := IntToStr(ATarget.Total.Hours[i].Actual);      // 累計
       end;
 
-      if FNowHour < 23 then begin
-         ScoreGrid2.Cells[FNowHour + 1, R] := IntToStr(ATarget.Bands[b].Total.Actual - ATarget.Bands[b].Total.Target);
+      if (FNowHour - FStartHour) < 23 then begin
+         ScoreGrid2.Cells[(FNowHour - FStartHour) + 1 + 1, R] := IntToStr(ATarget.Bands[b].Total.Actual - ATarget.Bands[b].Total.Target);
       end;
 
       // 合計列
       ScoreGrid2.Cells[25, R] := IntToStr(ATarget.Bands[b].Total.Actual);
 
-      if menuAchievementRate.Checked = True then begin
-         ScoreGrid2.Cells[26, R]   := FloatToStrF(ATarget.Bands[b].Total.Rate, ffFixed, 1000, 1);
-      end
-      else begin
-         ScoreGrid2.Cells[26, R]   := IntToStr(ATarget.Bands[b].Total.Actual - ATarget.Bands[b].Total.Target);
-      end;
+      // Target
+      ScoreGrid2.Cells[26, R] := IntToStr(ATarget.Bands[b].Total.Target);
+
+      // Diff.
+      ScoreGrid2.Cells[27, R] := IntToStr(ATarget.Bands[b].Total.Actual - ATarget.Bands[b].Total.Target);
    end;
 
+   // Total
    ScoreGrid2.Cells[25, 17]   := IntToStr(ATarget.TotalTotal.Actual);
 
-   if menuAchievementRate.Checked = True then begin
-      ScoreGrid2.Cells[26, 18]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
-   end
-   else begin
-      ScoreGrid2.Cells[26, 18]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
-   end;
+   // Target
+   ScoreGrid2.Cells[26, 17]   := IntToStr(ATarget.TotalTotal.Target);
+
+   // Diff.
+   ScoreGrid2.Cells[27, 17]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
 
    ScoreGrid2.Refresh();
 end;

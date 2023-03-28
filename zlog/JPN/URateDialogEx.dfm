@@ -479,9 +479,9 @@ object RateDialogEx: TRateDialogEx
         Width = 382
         Height = 197
         Align = alClient
-        ColCount = 27
+        ColCount = 28
         DefaultDrawing = False
-        RowCount = 36
+        RowCount = 19
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -15
