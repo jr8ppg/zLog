@@ -1081,6 +1081,7 @@ begin
    FBand := b;
    ScoreGrid.TopRow := Ord(b) * 2 + 1;
    ScoreGrid.Refresh();
+   ScoreGrid2.Refresh();
 end;
 
 end.
