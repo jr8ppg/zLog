@@ -824,7 +824,7 @@ begin
          Pen.Color := RGB(220, 220, 220);
          Brush.Style := bsClear;
 
-         if ScoreGrid.RowHeights[ARow] >= 2 then begin
+         if ScoreGrid2.RowHeights[ARow] >= 2 then begin
             Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
          end;
       end;
@@ -1047,7 +1047,7 @@ begin
       for i := 1 to (FNowHour - FStartHour) + 1 do begin
          ScoreGrid2.Cells[i, R]  := IntToStr(ATarget.Bands[b].Hours[i].Actual);   // 実績値
          ScoreGrid2.Cells[i, 17] := IntToStr(ATarget.Total.Hours[i].Actual);      // 合計
-         ScoreGrid2.Cells[i, 18] := IntToStr(ATarget.Total.Hours[i].Actual);      // 累計
+         ScoreGrid2.Cells[i, 18] := IntToStr(ATarget.Cumulative.Hours[i].Actual);      // 累計
       end;
 
       if (FNowHour - FStartHour) < 23 then begin

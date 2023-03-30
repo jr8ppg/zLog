@@ -46,6 +46,7 @@ type
   private
     FBandTarget: array[b19..b10g] of THourTarget;
     FBandTotal: THourTarget;   // cŒv
+    FBandCumulative: THourTarget;   // cŒv
     FTotal: TQsoTarget;    // c‰¡Œv
     FLast10QsoRate: Extended;
     FLast100QsoRate: Extended;
@@ -69,6 +70,7 @@ type
     property Bands[B: TBand]: THourTarget read GetBandTarget;
     property Total: THourTarget read FBandTotal;
     property TotalTotal: TQsoTarget read FTotal;
+    property Cumulative: THourTarget read FBandCumulative;
     property Last10QsoRate: Extended read FLast10QsoRate;
     property Last100QsoRate: Extended read FLast100QsoRate;
     property Last10QsoRateMax: Extended read FLast10QsoRateMax;
@@ -187,6 +189,7 @@ begin
       FBandTarget[b] := THourTarget.Create();
    end;
    FBandTotal := THourTarget.Create();
+   FBandCumulative := THourTarget.Create();
    FTotal := TQsoTarget.Create();
 
    FLast10QsoRateMax := 0;
@@ -202,6 +205,7 @@ begin
       FBandTarget[b].Free();
    end;
    FBandTotal.Free();
+   FBandCumulative.Free();
    FTotal.Free();
 end;
 
@@ -227,8 +231,18 @@ begin
       end;
    end;
 
-   FBandTotal.Refresh();
+   FBandCumulative.Clear();
+   for h := 1 to MAX_HOURS do begin
+      if h > 1 then begin
+         FBandCumulative.Hours[h].Actual := FBandCumulative.Hours[h - 1].Actual;
+         FBandCumulative.Hours[h].Target := FBandCumulative.Hours[h - 1].Target;
+      end;
+      FBandCumulative.Hours[h].Actual := FBandCumulative.Hours[h].Actual + FBandTotal.Hours[h].Actual;
+      FBandCumulative.Hours[h].Target := FBandCumulative.Hours[h].Target + FBandTotal.Hours[h].Target;
+   end;
 
+   FBandTotal.Refresh();
+   FBandCumulative.Refresh();
 
    FTotal.Clear();
 
@@ -375,6 +389,7 @@ begin
       FBandTarget[b].Clear();
    end;
    FBandTotal.Clear();
+   FBandCumulative.Clear();
    FTotal.Clear();
 end;
 
@@ -386,6 +401,7 @@ begin
       FBandTarget[b].ActualClear();
    end;
    FBandTotal.ActualClear();
+   FBandCumulative.ActualClear();
    FTotal.ActualClear();
 end;
 

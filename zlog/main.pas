@@ -5056,6 +5056,8 @@ begin
       FCheckMulti.ResetListBox();
       FCheckCountry.ResetListBox();
       FRateDialogEx.InitScoreGrid();
+      FRateDialogEx.InitScoreGrid2();
+      FRateDialogEx.UpdateGraph();
       FFunctionKeyPanel.UpdateInfo();
 
       SetWindowCaption();
