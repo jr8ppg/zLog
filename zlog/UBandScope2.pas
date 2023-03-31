@@ -160,7 +160,7 @@ var
 implementation
 
 uses
-  UOptions, Main, UZLinkForm, URigControl, UzLogKeyer, UzLogCW;
+  UOptions, Main, UZLinkForm, URigControl, UzLogKeyer;
 
 {$R *.dfm}
 
