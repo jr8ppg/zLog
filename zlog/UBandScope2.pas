@@ -128,7 +128,6 @@ type
     procedure SetColor();
     procedure Lock();
     procedure Unlock();
-    procedure PlayMessage(nID: Integer; cb: Integer; no: Integer);
     procedure ApplyShortcut();
   public
     { Public êÈåæ }
@@ -1327,40 +1326,19 @@ end;
 procedure TBandScope2.actionPlayMessageAExecute(Sender: TObject);
 var
    no: Integer;
-   cb: Integer;
-   nID: Integer;
 begin
    no := TAction(Sender).Tag;
-   cb := dmZlogGlobal.Settings.CW.CurrentBank;
-   nID := MainForm.CurrentRigID;
-
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
-   {$ENDIF}
-
-   PlayMessage(nID, cb, no);
+   SendMessage(MainForm.Handle, WM_ZLOG_PLAYMESSAGEA, no, 0);
+   MainForm.SetLastFocus();
 end;
 
 procedure TBandScope2.actionPlayMessageBExecute(Sender: TObject);
 var
    no: Integer;
-   cb: Integer;
-   nID: Integer;
 begin
    no := TAction(Sender).Tag;
-   cb := dmZlogGlobal.Settings.CW.CurrentBank;
-   nID := MainForm.CurrentRigID;
-
-   if cb = 1 then
-      cb := 2
-   else
-      cb := 1;
-
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('PlayMessageB(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
-   {$ENDIF}
-
-   PlayMessage(nID, cb, no);
+   SendMessage(MainForm.Handle, WM_ZLOG_PLAYMESSAGEB, no, 0);
+   MainForm.SetLastFocus();
 end;
 
 procedure TBandScope2.actionESCExecute(Sender: TObject);
@@ -1383,30 +1361,6 @@ end;
 procedure TBandScope2.actionDecreaseCwSpeedExecute(Sender: TObject);
 begin
    dmZLogKeyer.DecCWSpeed();
-end;
-
-procedure TBandScope2.PlayMessage(nID: Integer; cb: Integer; no: Integer);
-var
-   S: string;
-   i: Integer;
-begin
-   if CurrentQSO.Mode <> mCW then begin
-      Exit;
-   end;
-
-   S := dmZlogGlobal.CWMessage(cb, no);
-   if S = '' then begin
-      Exit;
-   end;
-
-   MainForm.MsgMgrAddQue(nID, S, CurrentQSO);
-   MainForm.MsgMgrContinueQue();
-
-   while Pos(':***********', S) > 0 do begin
-      i := Pos(':***********', S);
-      Delete(S, i, 12);
-      Insert(CurrentQSO.Callsign, S, i);
-   end;
 end;
 
 procedure TBandScope2.ApplyShortcut();

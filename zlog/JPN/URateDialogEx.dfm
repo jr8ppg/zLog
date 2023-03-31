@@ -470,6 +470,32 @@ object RateDialogEx: TRateDialogEx
         OnTopLeftChanged = ScoreGridTopLeftChanged
       end
     end
+    object TabSheet3: TTabSheet
+      Caption = 'ZAQ2'
+      ImageIndex = 2
+      object ScoreGrid2: TStringGrid
+        Left = 0
+        Top = 0
+        Width = 382
+        Height = 197
+        Align = alClient
+        ColCount = 28
+        DefaultDrawing = False
+        RowCount = 19
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = #65325#65331' '#12468#12471#12483#12463
+        Font.Style = []
+        Options = [goFixedVertLine, goFixedHorzLine]
+        ParentFont = False
+        PopupMenu = popupScore
+        TabOrder = 0
+        OnDrawCell = ScoreGrid2DrawCell
+        OnSelectCell = ScoreGridSelectCell
+        OnTopLeftChanged = ScoreGridTopLeftChanged
+      end
+    end
   end
   object Timer: TTimer
     Enabled = False

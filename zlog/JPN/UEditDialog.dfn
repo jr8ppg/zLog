@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44940.9352314815</prop>
-        <prop prop-type="OrigDateTime">44940.932962963</prop>
-        <prop prop-type="XlatDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">45016.7071990741</prop>
+        <prop prop-type="OrigDateTime">45016.694837963</prop>
+        <prop prop-type="XlatDateTime">44942.4054861111</prop>
         <prop prop-type="Translated">15</prop>
-        <prop prop-type="UnTranslated">495</prop>
+        <prop prop-type="UnTranslated">498</prop>
       </prop-group>
     </header>
     <body>
@@ -2473,110 +2473,125 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">488</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:EditDialog.O:ActionList1.O:actionPlayCQA1.Tag" resname="O:EditDialog.O:ActionList1.O:actionPlayCQA1.Tag">
+        <source>101</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7072041782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">489</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:EditDialog.O:ActionList1.O:actionPlayCQA1.Caption" resname="O:EditDialog.O:ActionList1.O:actionPlayCQA1.Caption">
+        <source>'actionPlayCQA1'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7072041782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">490</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:EditDialog.O:ActionList1.O:actionPlayCQA1.OnExecute" resname="O:EditDialog.O:ActionList1.O:actionPlayCQA1.OnExecute">
+        <source>actionPlayMessageAExecute</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7072041782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">491</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionPlayCQA2.Tag" resname="O:EditDialog.O:ActionList1.O:actionPlayCQA2.Tag">
         <source>102</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">489</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">492</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionPlayCQA2.Caption" resname="O:EditDialog.O:ActionList1.O:actionPlayCQA2.Caption">
         <source>'actionPlayCQA2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">490</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">493</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionPlayCQA2.OnExecute" resname="O:EditDialog.O:ActionList1.O:actionPlayCQA2.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">491</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">494</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionPlayCQA3.Tag" resname="O:EditDialog.O:ActionList1.O:actionPlayCQA3.Tag">
         <source>103</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">492</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">495</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionPlayCQA3.Caption" resname="O:EditDialog.O:ActionList1.O:actionPlayCQA3.Caption">
         <source>'actionPlayCQA3'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">493</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">496</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionPlayCQA3.OnExecute" resname="O:EditDialog.O:ActionList1.O:actionPlayCQA3.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">494</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">497</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionToggleRX.Caption" resname="O:EditDialog.O:ActionList1.O:actionToggleRX.Caption">
         <source>'actionToggleRX'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">495</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">498</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionToggleRX.OnExecute" resname="O:EditDialog.O:ActionList1.O:actionToggleRX.OnExecute">
         <source>actionToggleRXExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">496</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">499</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionToggleTX.Caption" resname="O:EditDialog.O:ActionList1.O:actionToggleTX.Caption">
         <source>'actionToggleTX'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">497</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">500</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionToggleTX.OnExecute" resname="O:EditDialog.O:ActionList1.O:actionToggleTX.OnExecute">
         <source>actionToggleTXExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">498</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">501</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionSo2rToggleRigPair.Caption" resname="O:EditDialog.O:ActionList1.O:actionSo2rToggleRigPair.Caption">
         <source>'actionSo2rToggleRigPair'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">499</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">502</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionSo2rToggleRigPair.OnExecute" resname="O:EditDialog.O:ActionList1.O:actionSo2rToggleRigPair.OnExecute">
         <source>actionSo2rToggleRigPairExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">500</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925223611</prop><prop prop-type="Status">0</prop><prop prop-type="Order">503</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangeBand2.Tag" resname="O:EditDialog.O:ActionList1.O:actionChangeBand2.Tag">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">501</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">504</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangeBand2.Caption" resname="O:EditDialog.O:ActionList1.O:actionChangeBand2.Caption">
         <source>'actionChangeBand2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">502</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">505</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangeBand2.OnExecute" resname="O:EditDialog.O:ActionList1.O:actionChangeBand2.OnExecute">
         <source>actionChangeBandExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">503</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">506</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangeMode2.Tag" resname="O:EditDialog.O:ActionList1.O:actionChangeMode2.Tag">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">504</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">507</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangeMode2.Caption" resname="O:EditDialog.O:ActionList1.O:actionChangeMode2.Caption">
         <source>'actionChangeMode2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">505</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">508</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangeMode2.OnExecute" resname="O:EditDialog.O:ActionList1.O:actionChangeMode2.OnExecute">
         <source>actionChangeModeExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">506</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">509</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangePower2.Tag" resname="O:EditDialog.O:ActionList1.O:actionChangePower2.Tag">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">507</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">510</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangePower2.Caption" resname="O:EditDialog.O:ActionList1.O:actionChangePower2.Caption">
         <source>'actionChangePower2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">508</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">511</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:EditDialog.O:ActionList1.O:actionChangePower2.OnExecute" resname="O:EditDialog.O:ActionList1.O:actionChangePower2.OnExecute">
         <source>actionChangePowerExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">509</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44940.935238669</prop><prop prop-type="Status">0</prop><prop prop-type="Order">512</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

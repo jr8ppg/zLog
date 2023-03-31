@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44940.9358564815</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
-        <prop prop-type="XlatDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">45016.7190277778</prop>
+        <prop prop-type="OrigDateTime">45016.7184722222</prop>
+        <prop prop-type="XlatDateTime">44869.4139814815</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">411</prop>
+        <prop prop-type="UnTranslated">433</prop>
       </prop-group>
     </header>
     <body>
@@ -1980,105 +1980,215 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">390</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.Caption" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.Caption">
+        <source>'ZAQ2'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">391</prop><prop prop-type="Type">TTabSheet</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.ImageIndex" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.ImageIndex">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">392</prop><prop prop-type="Type">TTabSheet</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Left" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">393</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Top" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">394</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Width" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Width">
+        <source>382</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">395</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Height" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Height">
+        <source>197</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">396</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Align" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Align">
+        <source>alClient</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">397</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.ColCount" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.ColCount">
+        <source>28</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">398</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.DefaultDrawing" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.DefaultDrawing">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">399</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.RowCount" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.RowCount">
+        <source>19</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">400</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Font.Charset" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">401</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Font.Color" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">402</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Font.Height" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Font.Height">
+        <source>-15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">403</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Font.Name" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Font.Name">
+        <source>'ＭＳ ゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">404</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Font.Style" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">405</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Options" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.Options">
+        <source>[goFixedVertLine, goFixedHorzLine]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">406</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.ParentFont" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">407</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.PopupMenu" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.PopupMenu">
+        <source>popupScore</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">408</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.TabOrder" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">409</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.OnDrawCell" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.OnDrawCell">
+        <source>ScoreGrid2DrawCell</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">410</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.OnSelectCell" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.OnSelectCell">
+        <source>ScoreGridSelectCell</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">411</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.OnTopLeftChanged" resname="O:RateDialogEx.O:PageControl1.O:TabSheet3.O:ScoreGrid2.OnTopLeftChanged">
+        <source>ScoreGridTopLeftChanged</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45016.7078066667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">412</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:RateDialogEx.O:Timer.Enabled" resname="O:RateDialogEx.O:Timer.Enabled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">391</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">413</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:Timer.Interval" resname="O:RateDialogEx.O:Timer.Interval">
         <source>3000</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">392</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">414</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:Timer.OnTimer" resname="O:RateDialogEx.O:Timer.OnTimer">
         <source>TimerTimer</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">393</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">415</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:Timer.Left" resname="O:RateDialogEx.O:Timer.Left">
         <source>288</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">394</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">416</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:Timer.Top" resname="O:RateDialogEx.O:Timer.Top">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">395</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">417</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.AutoHotkeys" resname="O:RateDialogEx.O:popupScore.AutoHotkeys">
         <source>maManual</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">396</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">418</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.AutoLineReduction" resname="O:RateDialogEx.O:popupScore.AutoLineReduction">
         <source>maManual</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">397</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">419</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.Left" resname="O:RateDialogEx.O:popupScore.Left">
         <source>200</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">398</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">420</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.Top" resname="O:RateDialogEx.O:popupScore.Top">
         <source>153</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">399</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">421</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.O:menuAchievementRate.AutoCheck" resname="O:RateDialogEx.O:popupScore.O:menuAchievementRate.AutoCheck">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">400</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">422</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.O:menuAchievementRate.Caption" resname="O:RateDialogEx.O:popupScore.O:menuAchievementRate.Caption">
         <source>'達成率表示'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">401</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">423</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.O:menuAchievementRate.Checked" resname="O:RateDialogEx.O:popupScore.O:menuAchievementRate.Checked">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">402</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">424</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.O:menuAchievementRate.GroupIndex" resname="O:RateDialogEx.O:popupScore.O:menuAchievementRate.GroupIndex">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">403</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">425</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.O:menuAchievementRate.RadioItem" resname="O:RateDialogEx.O:popupScore.O:menuAchievementRate.RadioItem">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">404</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">426</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.O:menuAchievementRate.OnClick" resname="O:RateDialogEx.O:popupScore.O:menuAchievementRate.OnClick">
         <source>menuAchievementRateClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">405</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">427</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.O:menuWinLoss.AutoCheck" resname="O:RateDialogEx.O:popupScore.O:menuWinLoss.AutoCheck">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">406</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">428</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.O:menuWinLoss.Caption" resname="O:RateDialogEx.O:popupScore.O:menuWinLoss.Caption">
         <source>'勝ち負け表示'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">407</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">429</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.O:menuWinLoss.GroupIndex" resname="O:RateDialogEx.O:popupScore.O:menuWinLoss.GroupIndex">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">408</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">430</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.O:menuWinLoss.RadioItem" resname="O:RateDialogEx.O:popupScore.O:menuWinLoss.RadioItem">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">409</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">431</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:RateDialogEx.O:popupScore.O:menuWinLoss.OnClick" resname="O:RateDialogEx.O:popupScore.O:menuWinLoss.OnClick">
         <source>menuAchievementRateClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">410</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8935100463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">432</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

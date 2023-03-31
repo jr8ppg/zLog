@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44959.9581018519</prop>
-        <prop prop-type="OrigDateTime">44949.9581018519</prop>
-        <prop prop-type="XlatDateTime">44959.955462963</prop>
-        <prop prop-type="Translated">6</prop>
-        <prop prop-type="UnTranslated">230</prop>
+        <prop prop-type="SelfDateTime">45016.7074305556</prop>
+        <prop prop-type="OrigDateTime">45009.3861111111</prop>
+        <prop prop-type="XlatDateTime">45009.3975462963</prop>
+        <prop prop-type="Translated">5</prop>
+        <prop prop-type="UnTranslated">231</prop>
       </prop-group>
     </header>
     <body>
@@ -420,11 +420,14 @@
         <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Caption" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Caption">
-        <source>'&lt;a href="https://zylo.pafelog.net"&gt;How to make plugin&lt;/a&gt;'</source>
-        <target>'&lt;a href="https://zylo.pafelog.net"&gt;プラグインの作り方&lt;/a&gt;'</target>
+        <source>'&lt;a href="https://nextzlog.github.io/zylo"&gt;How to make plugin&lt;/a&gt;'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">1</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      <alt-trans>  <source>'&lt;a href="https://zylo.pafelog.net"&gt;How to make plugin&lt;/a&gt;'</source>
+          <target>'&lt;a href="https://nextzlog.github.io/zylo"&gt;プラグインの作り方&lt;/a&gt;'</target>
+          <prop-group name="ITEFieldProp">
+          <prop prop-type="Modified">45016.3324371065</prop></prop-group>
+        </alt-trans></trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Charset" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">

@@ -5,9 +5,9 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44997.0140046296</prop>
-        <prop prop-type="OrigDateTime">44997.0138657407</prop>
-        <prop prop-type="XlatDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">45016.7072222222</prop>
+        <prop prop-type="OrigDateTime">44999.3847916667</prop>
+        <prop prop-type="XlatDateTime">44999.3847916667</prop>
         <prop prop-type="Translated">1</prop>
         <prop prop-type="UnTranslated">62</prop>
       </prop-group>
@@ -54,7 +54,7 @@
         <prop prop-type="Created">44801.568192338</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TformMessageManager</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.Font.Height" resname="O:formMessageManager.Font.Height">
-        <source>-15</source>
+        <source>-12</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44801.568192338</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TformMessageManager</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -114,7 +114,7 @@
         <prop prop-type="Created">44801.5681923495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TformMessageManager</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formMessageManager.TextHeight" resname="O:formMessageManager.TextHeight">
-        <source>15</source>
+        <source>12</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44801.5681923495</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TformMessageManager</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>

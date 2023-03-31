@@ -5,9 +5,9 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44951.9340509259</prop>
-        <prop prop-type="OrigDateTime">44951.9169212963</prop>
-        <prop prop-type="XlatDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">45016.7074305556</prop>
+        <prop prop-type="OrigDateTime">44953.4640740741</prop>
+        <prop prop-type="XlatDateTime">44953.4640740741</prop>
         <prop prop-type="Translated">6</prop>
         <prop prop-type="UnTranslated">72</prop>
       </prop-group>
@@ -16,797 +16,402 @@
       <trans-unit id="O:SuperCheck2.Left" resname="O:SuperCheck2.Left">
         <source>472</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">0</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.Top" resname="O:SuperCheck2.Top">
         <source>79</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">1</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.ActiveControl" resname="O:SuperCheck2.ActiveControl">
         <source>SpinEdit</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">2</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.Caption" resname="O:SuperCheck2.Caption">
         <source>'N+1'</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">3</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.ClientHeight" resname="O:SuperCheck2.ClientHeight">
         <source>112</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">4</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.ClientWidth" resname="O:SuperCheck2.ClientWidth">
         <source>234</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">5</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.Color" resname="O:SuperCheck2.Color">
         <source>clBtnFace</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">6</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.Constraints.MinHeight" resname="O:SuperCheck2.Constraints.MinHeight">
         <source>150</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">7</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.Constraints.MinWidth" resname="O:SuperCheck2.Constraints.MinWidth">
         <source>250</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">8</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.Font.Charset" resname="O:SuperCheck2.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">9</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.Font.Color" resname="O:SuperCheck2.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">10</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.Font.Height" resname="O:SuperCheck2.Font.Height">
         <source>-12</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">11</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.Font.Name" resname="O:SuperCheck2.Font.Name">
         <source>'MS Sans Serif'</source>
         <target>'ＭＳ Ｐゴシック'</target>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">1</prop>
-          <prop prop-type="Order">12</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">1</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.Font.Style" resname="O:SuperCheck2.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">13</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.KeyPreview" resname="O:SuperCheck2.KeyPreview">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">14</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.OldCreateOrder" resname="O:SuperCheck2.OldCreateOrder">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">15</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.Scaled" resname="O:SuperCheck2.Scaled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">16</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.OnClose" resname="O:SuperCheck2.OnClose">
         <source>FormClose</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44946.9319202199</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">17</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44946.9319202199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.OnCreate" resname="O:SuperCheck2.OnCreate">
         <source>FormCreate</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">18</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.OnDestroy" resname="O:SuperCheck2.OnDestroy">
         <source>FormDestroy</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">19</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.OnKeyDown" resname="O:SuperCheck2.OnKeyDown">
         <source>FormKeyDown</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">20</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.OnResize" resname="O:SuperCheck2.OnResize">
         <source>FormResize</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747454</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">21</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747454</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.OnShow" resname="O:SuperCheck2.OnShow">
         <source>FormShow</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">22</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.PixelsPerInch" resname="O:SuperCheck2.PixelsPerInch">
         <source>96</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">23</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.TextHeight" resname="O:SuperCheck2.TextHeight">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">24</prop>
-          <prop prop-type="Type">TSuperCheck2</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TSuperCheck2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.Left" resname="O:SuperCheck2.O:Panel1.Left">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">25</prop>
-          <prop prop-type="Type">TPanel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.Top" resname="O:SuperCheck2.O:Panel1.Top">
         <source>77</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">26</prop>
-          <prop prop-type="Type">TPanel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.Width" resname="O:SuperCheck2.O:Panel1.Width">
         <source>234</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">27</prop>
-          <prop prop-type="Type">TPanel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.Height" resname="O:SuperCheck2.O:Panel1.Height">
         <source>35</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">28</prop>
-          <prop prop-type="Type">TPanel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.Align" resname="O:SuperCheck2.O:Panel1.Align">
         <source>alBottom</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">29</prop>
-          <prop prop-type="Type">TPanel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.BevelOuter" resname="O:SuperCheck2.O:Panel1.BevelOuter">
         <source>bvNone</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">30</prop>
-          <prop prop-type="Type">TPanel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.TabOrder" resname="O:SuperCheck2.O:Panel1.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">31</prop>
-          <prop prop-type="Type">TPanel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.DesignSize[0]" resname="O:SuperCheck2.O:Panel1.DesignSize[0]">
         <source>234</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">32</prop>
-          <prop prop-type="Type">TPanel</prop>
-          <prop prop-type="Localize">1</prop>
-          <prop prop-type="Open">(</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.DesignSize[1]" resname="O:SuperCheck2.O:Panel1.DesignSize[1]">
         <source>35</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">33</prop>
-          <prop prop-type="Type">TPanel</prop>
-          <prop prop-type="Localize">1</prop>
-          <prop prop-type="Close">)</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Label1.Left" resname="O:SuperCheck2.O:Panel1.O:Label1.Left">
         <source>153</source>
         <target>170</target>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">1</prop>
-          <prop prop-type="Order">34</prop>
-          <prop prop-type="Type">TLabel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">1</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Label1.Top" resname="O:SuperCheck2.O:Panel1.O:Label1.Top">
         <source>11</source>
-        <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">1</prop>
-          <prop prop-type="Order">35</prop>
-          <prop prop-type="Type">TLabel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
         <target>12</target>
-        <alt-trans>
-          <source>9</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">1</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      <alt-trans>  <source>9</source>
           <target>11</target>
           <prop-group name="ITEFieldProp">
-            <prop prop-type="Modified">44951.5577747569</prop>
-          </prop-group>
-        </alt-trans>
-      </trans-unit>
+          <prop prop-type="Modified">44951.5577747569</prop></prop-group>
+        </alt-trans></trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Label1.Width" resname="O:SuperCheck2.O:Panel1.O:Label1.Width">
         <source>40</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">36</prop>
-          <prop prop-type="Type">TLabel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Label1.Height" resname="O:SuperCheck2.O:Panel1.O:Label1.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">37</prop>
-          <prop prop-type="Type">TLabel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Label1.Anchors" resname="O:SuperCheck2.O:Panel1.O:Label1.Anchors">
         <source>[akTop, akRight]</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">38</prop>
-          <prop prop-type="Type">TLabel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Label1.Caption" resname="O:SuperCheck2.O:Panel1.O:Label1.Caption">
         <source>'Columns'</source>
         <target>'列数'</target>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">1</prop>
-          <prop prop-type="Order">39</prop>
-          <prop prop-type="Type">TLabel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">1</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Label1.Layout" resname="O:SuperCheck2.O:Panel1.O:Label1.Layout">
         <source>tlCenter</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44801.4637355671</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">40</prop>
-          <prop prop-type="Type">TLabel</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44801.4637355671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Button3.Left" resname="O:SuperCheck2.O:Panel1.O:Button3.Left">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">41</prop>
-          <prop prop-type="Type">TButton</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Button3.Top" resname="O:SuperCheck2.O:Panel1.O:Button3.Top">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">42</prop>
-          <prop prop-type="Type">TButton</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Button3.Width" resname="O:SuperCheck2.O:Panel1.O:Button3.Width">
         <source>63</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">43</prop>
-          <prop prop-type="Type">TButton</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Button3.Height" resname="O:SuperCheck2.O:Panel1.O:Button3.Height">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">44</prop>
-          <prop prop-type="Type">TButton</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Button3.Caption" resname="O:SuperCheck2.O:Panel1.O:Button3.Caption">
         <source>'OK'</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">45</prop>
-          <prop prop-type="Type">TButton</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Button3.TabOrder" resname="O:SuperCheck2.O:Panel1.O:Button3.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">46</prop>
-          <prop prop-type="Type">TButton</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:Button3.OnClick" resname="O:SuperCheck2.O:Panel1.O:Button3.OnClick">
         <source>Button3Click</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">47</prop>
-          <prop prop-type="Type">TButton</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:StayOnTop.Left" resname="O:SuperCheck2.O:Panel1.O:StayOnTop.Left">
         <source>71</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">48</prop>
-          <prop prop-type="Type">TCheckBox</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:StayOnTop.Top" resname="O:SuperCheck2.O:Panel1.O:StayOnTop.Top">
         <source>9</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">49</prop>
-          <prop prop-type="Type">TCheckBox</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:StayOnTop.Width" resname="O:SuperCheck2.O:Panel1.O:StayOnTop.Width">
         <source>81</source>
         <target>100</target>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">1</prop>
-          <prop prop-type="Order">50</prop>
-          <prop prop-type="Type">TCheckBox</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">1</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:StayOnTop.Height" resname="O:SuperCheck2.O:Panel1.O:StayOnTop.Height">
         <source>17</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">51</prop>
-          <prop prop-type="Type">TCheckBox</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:StayOnTop.Caption" resname="O:SuperCheck2.O:Panel1.O:StayOnTop.Caption">
         <source>'Stay on top'</source>
         <target>'手前に表示'</target>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">1</prop>
-          <prop prop-type="Order">52</prop>
-          <prop prop-type="Type">TCheckBox</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">1</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:StayOnTop.TabOrder" resname="O:SuperCheck2.O:Panel1.O:StayOnTop.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">53</prop>
-          <prop prop-type="Type">TCheckBox</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:StayOnTop.OnClick" resname="O:SuperCheck2.O:Panel1.O:StayOnTop.OnClick">
         <source>StayOnTopClick</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">54</prop>
-          <prop prop-type="Type">TCheckBox</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:SpinEdit.Left" resname="O:SuperCheck2.O:Panel1.O:SpinEdit.Left">
         <source>197</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">55</prop>
-          <prop prop-type="Type">TSpinEdit</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:SpinEdit.Top" resname="O:SuperCheck2.O:Panel1.O:SpinEdit.Top">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">56</prop>
-          <prop prop-type="Type">TSpinEdit</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:SpinEdit.Width" resname="O:SuperCheck2.O:Panel1.O:SpinEdit.Width">
         <source>33</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">57</prop>
-          <prop prop-type="Type">TSpinEdit</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:SpinEdit.Height" resname="O:SuperCheck2.O:Panel1.O:SpinEdit.Height">
         <source>22</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">58</prop>
-          <prop prop-type="Type">TSpinEdit</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:SpinEdit.Anchors" resname="O:SuperCheck2.O:Panel1.O:SpinEdit.Anchors">
         <source>[akTop, akRight]</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">59</prop>
-          <prop prop-type="Type">TSpinEdit</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:SpinEdit.MaxValue" resname="O:SuperCheck2.O:Panel1.O:SpinEdit.MaxValue">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">60</prop>
-          <prop prop-type="Type">TSpinEdit</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:SpinEdit.MinValue" resname="O:SuperCheck2.O:Panel1.O:SpinEdit.MinValue">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">61</prop>
-          <prop prop-type="Type">TSpinEdit</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:SpinEdit.TabOrder" resname="O:SuperCheck2.O:Panel1.O:SpinEdit.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">62</prop>
-          <prop prop-type="Type">TSpinEdit</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:SpinEdit.Value" resname="O:SuperCheck2.O:Panel1.O:SpinEdit.Value">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">63</prop>
-          <prop prop-type="Type">TSpinEdit</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Panel1.O:SpinEdit.OnChange" resname="O:SuperCheck2.O:Panel1.O:SpinEdit.OnChange">
         <source>SpinEditChange</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44796.8929079167</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">64</prop>
-          <prop prop-type="Type">TSpinEdit</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44796.8929079167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Grid.Left" resname="O:SuperCheck2.O:Grid.Left">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747569</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">65</prop>
-          <prop prop-type="Type">TStringGrid</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747569</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Grid.Top" resname="O:SuperCheck2.O:Grid.Top">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747569</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">66</prop>
-          <prop prop-type="Type">TStringGrid</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747569</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Grid.Width" resname="O:SuperCheck2.O:Grid.Width">
         <source>234</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747569</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">67</prop>
-          <prop prop-type="Type">TStringGrid</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747569</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Grid.Height" resname="O:SuperCheck2.O:Grid.Height">
         <source>77</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747569</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">68</prop>
-          <prop prop-type="Type">TStringGrid</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747569</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Grid.Align" resname="O:SuperCheck2.O:Grid.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747569</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">69</prop>
-          <prop prop-type="Type">TStringGrid</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747569</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Grid.DefaultDrawing" resname="O:SuperCheck2.O:Grid.DefaultDrawing">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747569</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">70</prop>
-          <prop prop-type="Type">TStringGrid</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747569</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Grid.FixedCols" resname="O:SuperCheck2.O:Grid.FixedCols">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747569</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">71</prop>
-          <prop prop-type="Type">TStringGrid</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747569</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Grid.FixedRows" resname="O:SuperCheck2.O:Grid.FixedRows">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747569</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">72</prop>
-          <prop prop-type="Type">TStringGrid</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747569</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Grid.GridLineWidth" resname="O:SuperCheck2.O:Grid.GridLineWidth">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747569</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">73</prop>
-          <prop prop-type="Type">TStringGrid</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747569</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Grid.ScrollBars" resname="O:SuperCheck2.O:Grid.ScrollBars">
         <source>ssVertical</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747569</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">74</prop>
-          <prop prop-type="Type">TStringGrid</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747569</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Grid.TabOrder" resname="O:SuperCheck2.O:Grid.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747569</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">75</prop>
-          <prop prop-type="Type">TStringGrid</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747569</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Grid.OnDblClick" resname="O:SuperCheck2.O:Grid.OnDblClick">
         <source>GridDblClick</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747569</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">76</prop>
-          <prop prop-type="Type">TStringGrid</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747569</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:SuperCheck2.O:Grid.OnDrawCell" resname="O:SuperCheck2.O:Grid.OnDrawCell">
         <source>GridDrawCell</source>
         <prop-group name="ITEFieldProp">
-          <prop prop-type="Created">44951.9327747569</prop>
-          <prop prop-type="Status">0</prop>
-          <prop prop-type="Order">77</prop>
-          <prop prop-type="Type">TStringGrid</prop>
-          <prop prop-type="Localize">1</prop>
-        </prop-group>
+        <prop prop-type="Created">44951.9327747569</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

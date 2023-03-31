@@ -88,7 +88,7 @@ object MarketForm: TMarketForm
       Width = 614
       Height = 18
       Align = alBottom
-      Caption = '<a href="https://nextzlog.github.io/zylo">'#12503#12521#12464#12452#12531#12398#20316#12426#26041'</a>'
+      Caption = '<a href="https://nextzlog.github.io/zylo">How to make plugin</a>'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12

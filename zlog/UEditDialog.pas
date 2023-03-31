@@ -111,6 +111,7 @@ type
     actionChangeBand2: TAction;
     actionChangeMode2: TAction;
     actionChangePower2: TAction;
+    actionPlayCQA1: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -166,6 +167,7 @@ type
     origQSO : TQSO;
     Action : integer;
     procedure ChangePower(fUp: Boolean);
+    procedure ApplyShortcut();
   public
     { Public declarations }
     procedure Init(aQSO : TQSO; Action_ : integer);
@@ -228,105 +230,7 @@ begin
       NewPowerMenu.Items.Add(M);
    end;
 
-   actionPlayMessageA01.ShortCut := MainForm.actionPlayMessageA01.ShortCut;
-   actionPlayMessageA02.ShortCut := MainForm.actionPlayMessageA02.ShortCut;
-   actionPlayMessageA03.ShortCut := MainForm.actionPlayMessageA03.ShortCut;
-   actionPlayMessageA04.ShortCut := MainForm.actionPlayMessageA04.ShortCut;
-   actionPlayMessageA05.ShortCut := MainForm.actionPlayMessageA05.ShortCut;
-   actionPlayMessageA06.ShortCut := MainForm.actionPlayMessageA06.ShortCut;
-   actionPlayMessageA07.ShortCut := MainForm.actionPlayMessageA07.ShortCut;
-   actionPlayMessageA08.ShortCut := MainForm.actionPlayMessageA08.ShortCut;
-   actionPlayMessageA09.ShortCut := MainForm.actionPlayMessageA09.ShortCut;
-   actionPlayMessageA10.ShortCut := MainForm.actionPlayMessageA10.ShortCut;
-   actionShowCheckPartial.ShortCut := MainForm.actionShowCheckPartial.ShortCut;
-   actionPlayMessageA11.ShortCut := MainForm.actionPlayMessageA11.ShortCut;
-   actionPlayMessageA12.ShortCut := MainForm.actionPlayMessageA12.ShortCut;
-   actionClearCallAndRpt.ShortCut := MainForm.actionClearCallAndRpt.ShortCut;
-   actionDecreaseTime.ShortCut := MainForm.actionDecreaseTime.ShortCut;
-   actionIncreaseTime.ShortCut := MainForm.actionIncreaseTime.ShortCut;
-   actionReversePaddle.ShortCut := MainForm.actionReversePaddle.ShortCut;
-   actionFieldClear.ShortCut := MainForm.actionFieldClear.ShortCut;
-   actionCQRepeat.ShortCut := MainForm.actionCQRepeat.ShortCut;
-   actionFocusCallsign.ShortCut := MainForm.actionFocusCallsign.ShortCut;
-   actionFocusMemo.ShortCut := MainForm.actionFocusMemo.ShortCut;
-   actionFocusNumber.ShortCut := MainForm.actionFocusNumber.ShortCut;
-   actionFocusOp.ShortCut := MainForm.actionFocusOp.ShortCut;
-   actionFocusRst.ShortCut := MainForm.actionFocusRst.ShortCut;
-   actionToggleRig.ShortCut := MainForm.actionToggleRig.ShortCut;
-   actionControlPTT.ShortCut := MainForm.actionControlPTT.ShortCut;
-   actionChangeBand.ShortCut := MainForm.actionChangeBand.ShortCut;
-   actionChangeMode.ShortCut := MainForm.actionChangeMode.ShortCut;
-   actionChangePower.ShortCut := MainForm.actionChangePower.ShortCut;
-   actionChangeR.ShortCut := MainForm.actionChangeR.ShortCut;
-   actionChangeS.ShortCut := MainForm.actionChangeS.ShortCut;
-   actionSetCurTime.ShortCut := MainForm.actionSetCurTime.ShortCut;
-   actionDecreaseCwSpeed.ShortCut := MainForm.actionDecreaseCwSpeed.ShortCut;
-   actionIncreaseCwSpeed.ShortCut := MainForm.actionIncreaseCwSpeed.ShortCut;
-   actionCQRepeat2.ShortCut := MainForm.actionCQRepeat2.ShortCut;
-   actionToggleVFO.ShortCut := MainForm.actionToggleVFO.ShortCut;
-   actionQuickMemo1.ShortCut := MainForm.actionQuickMemo1.ShortCut;
-   actionQuickMemo2.ShortCut := MainForm.actionQuickMemo2.ShortCut;
-   actionQuickMemo3.ShortCut := MainForm.actionQuickMemo3.ShortCut;
-   actionQuickMemo4.ShortCut := MainForm.actionQuickMemo4.ShortCut;
-   actionQuickMemo5.ShortCut := MainForm.actionQuickMemo5.ShortCut;
-   actionPlayCQA2.ShortCut := MainForm.actionPlayCQA2.ShortCut;
-   actionPlayCQA3.ShortCut := MainForm.actionPlayCQA3.ShortCut;
-   actionToggleRx.ShortCut := MainForm.actionToggleRx.ShortCut;
-   actionToggleTx.ShortCut := MainForm.actionToggleTx.ShortCut;
-   actionSo2rToggleRigPair.ShortCut := MainForm.actionSo2rToggleRigPair.ShortCut;
-   actionChangeBand2.ShortCut := MainForm.actionChangeBand2.ShortCut;
-   actionChangeMode2.ShortCut := MainForm.actionChangeMode2.ShortCut;
-   actionChangePower2.ShortCut := MainForm.actionChangePower2.ShortCut;
-
-   actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
-   actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
-   actionPlayMessageA03.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA03.SecondaryShortCuts);
-   actionPlayMessageA04.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA04.SecondaryShortCuts);
-   actionPlayMessageA05.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA05.SecondaryShortCuts);
-   actionPlayMessageA06.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA06.SecondaryShortCuts);
-   actionPlayMessageA07.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA07.SecondaryShortCuts);
-   actionPlayMessageA08.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA08.SecondaryShortCuts);
-   actionPlayMessageA09.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA09.SecondaryShortCuts);
-   actionPlayMessageA10.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA10.SecondaryShortCuts);
-   actionShowCheckPartial.SecondaryShortCuts.Assign(MainForm.actionShowCheckPartial.SecondaryShortCuts);
-   actionPlayMessageA11.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA11.SecondaryShortCuts);
-   actionPlayMessageA12.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA12.SecondaryShortCuts);
-   actionClearCallAndRpt.SecondaryShortCuts.Assign(MainForm.actionClearCallAndRpt.SecondaryShortCuts);
-   actionDecreaseTime.SecondaryShortCuts.Assign(MainForm.actionDecreaseTime.SecondaryShortCuts);
-   actionIncreaseTime.SecondaryShortCuts.Assign(MainForm.actionIncreaseTime.SecondaryShortCuts);
-   actionReversePaddle.SecondaryShortCuts.Assign(MainForm.actionReversePaddle.SecondaryShortCuts);
-   actionFieldClear.SecondaryShortCuts.Assign(MainForm.actionFieldClear.SecondaryShortCuts);
-   actionCQRepeat.SecondaryShortCuts.Assign(MainForm.actionCQRepeat.SecondaryShortCuts);
-   actionFocusCallsign.SecondaryShortCuts.Assign(MainForm.actionFocusCallsign.SecondaryShortCuts);
-   actionFocusMemo.SecondaryShortCuts.Assign(MainForm.actionFocusMemo.SecondaryShortCuts);
-   actionFocusNumber.SecondaryShortCuts.Assign(MainForm.actionFocusNumber.SecondaryShortCuts);
-   actionFocusOp.SecondaryShortCuts.Assign(MainForm.actionFocusOp.SecondaryShortCuts);
-   actionFocusRst.SecondaryShortCuts.Assign(MainForm.actionFocusRst.SecondaryShortCuts);
-   actionToggleRig.SecondaryShortCuts.Assign(MainForm.actionToggleRig.SecondaryShortCuts);
-   actionControlPTT.SecondaryShortCuts.Assign(MainForm.actionControlPTT.SecondaryShortCuts);
-   actionChangeBand.SecondaryShortCuts.Assign(MainForm.actionChangeBand.SecondaryShortCuts);
-   actionChangeMode.SecondaryShortCuts.Assign(MainForm.actionChangeMode.SecondaryShortCuts);
-   actionChangePower.SecondaryShortCuts.Assign(MainForm.actionChangePower.SecondaryShortCuts);
-   actionChangeR.SecondaryShortCuts.Assign(MainForm.actionChangeR.SecondaryShortCuts);
-   actionChangeS.SecondaryShortCuts.Assign(MainForm.actionChangeS.SecondaryShortCuts);
-   actionSetCurTime.SecondaryShortCuts.Assign(MainForm.actionSetCurTime.SecondaryShortCuts);
-   actionDecreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionDecreaseCwSpeed.SecondaryShortCuts);
-   actionIncreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionIncreaseCwSpeed.SecondaryShortCuts);
-   actionCQRepeat2.SecondaryShortCuts.Assign(MainForm.actionCQRepeat2.SecondaryShortCuts);
-   actionToggleVFO.SecondaryShortCuts.Assign(MainForm.actionToggleVFO.SecondaryShortCuts);
-   actionQuickMemo1.SecondaryShortCuts.Assign(MainForm.actionQuickMemo1.SecondaryShortCuts);
-   actionQuickMemo2.SecondaryShortCuts.Assign(MainForm.actionQuickMemo2.SecondaryShortCuts);
-   actionQuickMemo3.SecondaryShortCuts.Assign(MainForm.actionQuickMemo3.SecondaryShortCuts);
-   actionQuickMemo4.SecondaryShortCuts.Assign(MainForm.actionQuickMemo4.SecondaryShortCuts);
-   actionQuickMemo5.SecondaryShortCuts.Assign(MainForm.actionQuickMemo5.SecondaryShortCuts);
-   actionPlayCQA2.SecondaryShortCuts.Assign(MainForm.actionPlayCQA2.SecondaryShortCuts);
-   actionPlayCQA3.SecondaryShortCuts.Assign(MainForm.actionPlayCQA3.SecondaryShortCuts);
-   actionToggleRx.SecondaryShortCuts.Assign(MainForm.actionToggleRx.SecondaryShortCuts);
-   actionToggleTx.SecondaryShortCuts.Assign(MainForm.actionToggleTx.SecondaryShortCuts);
-   actionSo2rToggleRigPair.SecondaryShortCuts.Assign(MainForm.actionSo2rToggleRigPair.SecondaryShortCuts);
-   actionChangeBand2.SecondaryShortCuts.Assign(MainForm.actionChangeBand2.SecondaryShortCuts);
-   actionChangeMode2.SecondaryShortCuts.Assign(MainForm.actionChangeMode2.SecondaryShortCuts);
-   actionChangePower2.SecondaryShortCuts.Assign(MainForm.actionChangePower2.SecondaryShortCuts);
+   ApplyShortcut();
 end;
 
 procedure TEditDialog.FormShow(Sender: TObject);
@@ -741,32 +645,9 @@ end;
 procedure TEditDialog.actionPlayMessageAExecute(Sender: TObject);
 var
    no: Integer;
-   cb: Integer;
-   S: string;
 begin
    no := TAction(Sender).Tag;
-
-   if workQSO.mode = mCW then begin
-      cb := dmZlogGlobal.Settings.CW.CurrentBank;
-
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
-      {$ENDIF}
-
-      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-         if cb = 1 then
-            cb := 2
-         else
-            cb := 1;
-      end;
-
-      S := dmZlogGlobal.CWMessage(cb, no);
-
-      MainForm.MsgMgrAddQue(MainForm.CurrentRigID, S, CurrentQSO);
-   end
-   else begin
-      // SendVoice(i);
-   end;
+   SendMessage(MainForm.Handle, WM_ZLOG_PLAYMESSAGEA, no, 0);
 end;
 
 procedure TEditDialog.actionShowCheckPartialExecute(Sender: TObject);
@@ -987,6 +868,111 @@ begin
    end;
 
    MemoEdit.Text := strTemp;
+end;
+
+procedure TEditDialog.ApplyShortcut();
+begin
+   actionPlayMessageA01.ShortCut := MainForm.actionPlayMessageA01.ShortCut;
+   actionPlayMessageA02.ShortCut := MainForm.actionPlayMessageA02.ShortCut;
+   actionPlayMessageA03.ShortCut := MainForm.actionPlayMessageA03.ShortCut;
+   actionPlayMessageA04.ShortCut := MainForm.actionPlayMessageA04.ShortCut;
+   actionPlayMessageA05.ShortCut := MainForm.actionPlayMessageA05.ShortCut;
+   actionPlayMessageA06.ShortCut := MainForm.actionPlayMessageA06.ShortCut;
+   actionPlayMessageA07.ShortCut := MainForm.actionPlayMessageA07.ShortCut;
+   actionPlayMessageA08.ShortCut := MainForm.actionPlayMessageA08.ShortCut;
+   actionPlayMessageA09.ShortCut := MainForm.actionPlayMessageA09.ShortCut;
+   actionPlayMessageA10.ShortCut := MainForm.actionPlayMessageA10.ShortCut;
+   actionShowCheckPartial.ShortCut := MainForm.actionShowCheckPartial.ShortCut;
+   actionPlayMessageA11.ShortCut := MainForm.actionPlayMessageA11.ShortCut;
+   actionPlayMessageA12.ShortCut := MainForm.actionPlayMessageA12.ShortCut;
+   actionClearCallAndRpt.ShortCut := MainForm.actionClearCallAndRpt.ShortCut;
+   actionDecreaseTime.ShortCut := MainForm.actionDecreaseTime.ShortCut;
+   actionIncreaseTime.ShortCut := MainForm.actionIncreaseTime.ShortCut;
+   actionReversePaddle.ShortCut := MainForm.actionReversePaddle.ShortCut;
+   actionFieldClear.ShortCut := MainForm.actionFieldClear.ShortCut;
+   actionCQRepeat.ShortCut := MainForm.actionCQRepeat.ShortCut;
+   actionFocusCallsign.ShortCut := MainForm.actionFocusCallsign.ShortCut;
+   actionFocusMemo.ShortCut := MainForm.actionFocusMemo.ShortCut;
+   actionFocusNumber.ShortCut := MainForm.actionFocusNumber.ShortCut;
+   actionFocusOp.ShortCut := MainForm.actionFocusOp.ShortCut;
+   actionFocusRst.ShortCut := MainForm.actionFocusRst.ShortCut;
+   actionToggleRig.ShortCut := MainForm.actionToggleRig.ShortCut;
+   actionControlPTT.ShortCut := MainForm.actionControlPTT.ShortCut;
+   actionChangeBand.ShortCut := MainForm.actionChangeBand.ShortCut;
+   actionChangeMode.ShortCut := MainForm.actionChangeMode.ShortCut;
+   actionChangePower.ShortCut := MainForm.actionChangePower.ShortCut;
+   actionChangeR.ShortCut := MainForm.actionChangeR.ShortCut;
+   actionChangeS.ShortCut := MainForm.actionChangeS.ShortCut;
+   actionSetCurTime.ShortCut := MainForm.actionSetCurTime.ShortCut;
+   actionDecreaseCwSpeed.ShortCut := MainForm.actionDecreaseCwSpeed.ShortCut;
+   actionIncreaseCwSpeed.ShortCut := MainForm.actionIncreaseCwSpeed.ShortCut;
+   actionCQRepeat2.ShortCut := MainForm.actionCQRepeat2.ShortCut;
+   actionToggleVFO.ShortCut := MainForm.actionToggleVFO.ShortCut;
+   actionQuickMemo1.ShortCut := MainForm.actionQuickMemo1.ShortCut;
+   actionQuickMemo2.ShortCut := MainForm.actionQuickMemo2.ShortCut;
+   actionQuickMemo3.ShortCut := MainForm.actionQuickMemo3.ShortCut;
+   actionQuickMemo4.ShortCut := MainForm.actionQuickMemo4.ShortCut;
+   actionQuickMemo5.ShortCut := MainForm.actionQuickMemo5.ShortCut;
+   actionPlayCQA1.ShortCut := MainForm.actionPlayCQA1.ShortCut;
+   actionPlayCQA2.ShortCut := MainForm.actionPlayCQA2.ShortCut;
+   actionPlayCQA3.ShortCut := MainForm.actionPlayCQA3.ShortCut;
+   actionToggleRx.ShortCut := MainForm.actionToggleRx.ShortCut;
+   actionToggleTx.ShortCut := MainForm.actionToggleTx.ShortCut;
+   actionSo2rToggleRigPair.ShortCut := MainForm.actionSo2rToggleRigPair.ShortCut;
+   actionChangeBand2.ShortCut := MainForm.actionChangeBand2.ShortCut;
+   actionChangeMode2.ShortCut := MainForm.actionChangeMode2.ShortCut;
+   actionChangePower2.ShortCut := MainForm.actionChangePower2.ShortCut;
+
+   actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
+   actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
+   actionPlayMessageA03.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA03.SecondaryShortCuts);
+   actionPlayMessageA04.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA04.SecondaryShortCuts);
+   actionPlayMessageA05.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA05.SecondaryShortCuts);
+   actionPlayMessageA06.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA06.SecondaryShortCuts);
+   actionPlayMessageA07.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA07.SecondaryShortCuts);
+   actionPlayMessageA08.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA08.SecondaryShortCuts);
+   actionPlayMessageA09.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA09.SecondaryShortCuts);
+   actionPlayMessageA10.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA10.SecondaryShortCuts);
+   actionShowCheckPartial.SecondaryShortCuts.Assign(MainForm.actionShowCheckPartial.SecondaryShortCuts);
+   actionPlayMessageA11.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA11.SecondaryShortCuts);
+   actionPlayMessageA12.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA12.SecondaryShortCuts);
+   actionClearCallAndRpt.SecondaryShortCuts.Assign(MainForm.actionClearCallAndRpt.SecondaryShortCuts);
+   actionDecreaseTime.SecondaryShortCuts.Assign(MainForm.actionDecreaseTime.SecondaryShortCuts);
+   actionIncreaseTime.SecondaryShortCuts.Assign(MainForm.actionIncreaseTime.SecondaryShortCuts);
+   actionReversePaddle.SecondaryShortCuts.Assign(MainForm.actionReversePaddle.SecondaryShortCuts);
+   actionFieldClear.SecondaryShortCuts.Assign(MainForm.actionFieldClear.SecondaryShortCuts);
+   actionCQRepeat.SecondaryShortCuts.Assign(MainForm.actionCQRepeat.SecondaryShortCuts);
+   actionFocusCallsign.SecondaryShortCuts.Assign(MainForm.actionFocusCallsign.SecondaryShortCuts);
+   actionFocusMemo.SecondaryShortCuts.Assign(MainForm.actionFocusMemo.SecondaryShortCuts);
+   actionFocusNumber.SecondaryShortCuts.Assign(MainForm.actionFocusNumber.SecondaryShortCuts);
+   actionFocusOp.SecondaryShortCuts.Assign(MainForm.actionFocusOp.SecondaryShortCuts);
+   actionFocusRst.SecondaryShortCuts.Assign(MainForm.actionFocusRst.SecondaryShortCuts);
+   actionToggleRig.SecondaryShortCuts.Assign(MainForm.actionToggleRig.SecondaryShortCuts);
+   actionControlPTT.SecondaryShortCuts.Assign(MainForm.actionControlPTT.SecondaryShortCuts);
+   actionChangeBand.SecondaryShortCuts.Assign(MainForm.actionChangeBand.SecondaryShortCuts);
+   actionChangeMode.SecondaryShortCuts.Assign(MainForm.actionChangeMode.SecondaryShortCuts);
+   actionChangePower.SecondaryShortCuts.Assign(MainForm.actionChangePower.SecondaryShortCuts);
+   actionChangeR.SecondaryShortCuts.Assign(MainForm.actionChangeR.SecondaryShortCuts);
+   actionChangeS.SecondaryShortCuts.Assign(MainForm.actionChangeS.SecondaryShortCuts);
+   actionSetCurTime.SecondaryShortCuts.Assign(MainForm.actionSetCurTime.SecondaryShortCuts);
+   actionDecreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionDecreaseCwSpeed.SecondaryShortCuts);
+   actionIncreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionIncreaseCwSpeed.SecondaryShortCuts);
+   actionCQRepeat2.SecondaryShortCuts.Assign(MainForm.actionCQRepeat2.SecondaryShortCuts);
+   actionToggleVFO.SecondaryShortCuts.Assign(MainForm.actionToggleVFO.SecondaryShortCuts);
+   actionQuickMemo1.SecondaryShortCuts.Assign(MainForm.actionQuickMemo1.SecondaryShortCuts);
+   actionQuickMemo2.SecondaryShortCuts.Assign(MainForm.actionQuickMemo2.SecondaryShortCuts);
+   actionQuickMemo3.SecondaryShortCuts.Assign(MainForm.actionQuickMemo3.SecondaryShortCuts);
+   actionQuickMemo4.SecondaryShortCuts.Assign(MainForm.actionQuickMemo4.SecondaryShortCuts);
+   actionQuickMemo5.SecondaryShortCuts.Assign(MainForm.actionQuickMemo5.SecondaryShortCuts);
+   actionPlayCQA1.SecondaryShortCuts.Assign(MainForm.actionPlayCQA1.SecondaryShortCuts);
+   actionPlayCQA2.SecondaryShortCuts.Assign(MainForm.actionPlayCQA2.SecondaryShortCuts);
+   actionPlayCQA3.SecondaryShortCuts.Assign(MainForm.actionPlayCQA3.SecondaryShortCuts);
+   actionToggleRx.SecondaryShortCuts.Assign(MainForm.actionToggleRx.SecondaryShortCuts);
+   actionToggleTx.SecondaryShortCuts.Assign(MainForm.actionToggleTx.SecondaryShortCuts);
+   actionSo2rToggleRigPair.SecondaryShortCuts.Assign(MainForm.actionSo2rToggleRigPair.SecondaryShortCuts);
+   actionChangeBand2.SecondaryShortCuts.Assign(MainForm.actionChangeBand2.SecondaryShortCuts);
+   actionChangeMode2.SecondaryShortCuts.Assign(MainForm.actionChangeMode2.SecondaryShortCuts);
+   actionChangePower2.SecondaryShortCuts.Assign(MainForm.actionChangePower2.SecondaryShortCuts);
 end;
 
 end.

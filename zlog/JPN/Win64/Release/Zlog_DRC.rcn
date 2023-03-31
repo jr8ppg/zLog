@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44997.0140046296</prop>
-        <prop prop-type="OrigDateTime">44997.0140046296</prop>
-        <prop prop-type="XlatDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">45016.7190046296</prop>
+        <prop prop-type="OrigDateTime">45016.7190046296</prop>
+        <prop prop-type="XlatDateTime">44999.3847916667</prop>
         <prop prop-type="Translated">47</prop>
-        <prop prop-type="UnTranslated">1191</prop>
+        <prop prop-type="UnTranslated">1197</prop>
       </prop-group>
     </header>
     <body>
@@ -8778,7 +8778,7 @@
         <source>"Windows 11"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44940.935515787</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">3</prop>
         </prop-group>
       </trans-unit>
       <trans-unit id="URigControl_RECONNECT_ALL_RIGS" resname="URigControl_RECONNECT_ALL_RIGS">
@@ -8788,6 +8788,55 @@
           <prop prop-type="Status">1</prop>
         </prop-group>
         <target>"すべての RIG を再接続しますか？"</target>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_WINLOSS_L" resname="URateDialogEx_SCOREGRID_WINLOSS_L">
+        <source>"Win/Loss"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45016.7190172801</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_WINLOSS_S" resname="URateDialogEx_SCOREGRID_WINLOSS_S">
+        <source>"W/L"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45016.7190172801</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_TOTAL" resname="URateDialogEx_SCOREGRID_TOTAL">
+        <source>"Total"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45016.7190173958</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_TARGET" resname="URateDialogEx_SCOREGRID_TARGET">
+        <source>"Target"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45016.7190173958</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_DIFF" resname="URateDialogEx_SCOREGRID_DIFF">
+        <source>"Diff"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45016.7190173958</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_DIFF2" resname="URateDialogEx_SCOREGRID_DIFF2">
+        <source>"+/-"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45016.7190173958</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_CUMULATIVE" resname="URateDialogEx_SCOREGRID_CUMULATIVE">
+        <source>"Cumulative"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45016.7190173958</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
       </trans-unit>
     </body>
   </file>

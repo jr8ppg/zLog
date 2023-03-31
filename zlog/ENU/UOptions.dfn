@@ -5,9 +5,9 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44990.5238657407</prop>
-        <prop prop-type="OrigDateTime">44990.5234722222</prop>
-        <prop prop-type="XlatDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">45016.7075925926</prop>
+        <prop prop-type="OrigDateTime">44999.3847916667</prop>
+        <prop prop-type="XlatDateTime">44999.3847916667</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">4955</prop>
       </prop-group>
@@ -24564,7 +24564,7 @@
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4909</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.FontName" resname="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.FontName">
-        <source>'@BIZ UD明朝 Medium'</source>
+        <source>'@Terminal'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4910</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -24594,7 +24594,7 @@
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4915</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.ItemIndex" resname="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.ItemIndex">
-        <source>1</source>
+        <source>17</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4916</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
