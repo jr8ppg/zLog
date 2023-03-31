@@ -111,6 +111,15 @@ type
     property Band: TBand read FBand write SetBand;
   end;
 
+resourcestring
+  SCOREGRID_TOTAL      = 'Total';
+  SCOREGRID_TARGET     = 'Target';
+  SCOREGRID_DIFF       = 'Diff';
+  SCOREGRID_DIFF2      = '+/-';
+  SCOREGRID_CUMULATIVE = 'Cumulative';
+  SCOREGRID_WINLOSS_L  = 'Win/Loss';
+  SCOREGRID_WINLOSS_S  = 'W/L';
+
 implementation
 
 uses
@@ -437,7 +446,7 @@ begin
    end;
 
    if (FNowHour - FStartHour) < 23 then begin
-      ScoreGrid2.Cells[(FNowHour - FStartHour) + 1 + 1, 0] := '+/-';
+      ScoreGrid2.Cells[(FNowHour - FStartHour) + 1 + 1, 0] := SCOREGRID_DIFF2;
    end;
 
    with Chart1 do begin
@@ -626,8 +635,8 @@ begin
       ScoreGrid.Cells[26, 0] := '%';
    end
    else begin
-      ScoreGrid.Cells[0, 35] := 'Win/Loss';
-      ScoreGrid.Cells[26, 0] := 'W/L';
+      ScoreGrid.Cells[0, 35] := SCOREGRID_WINLOSS_L;
+      ScoreGrid.Cells[26, 0] := SCOREGRID_WINLOSS_S;
    end;
 end;
 
@@ -910,7 +919,7 @@ begin
    ScoreGrid.Cells[0, 30] := '';
    ScoreGrid.Cells[0, 31] := MHzString[b10g];
    ScoreGrid.Cells[0, 32] := '';
-   ScoreGrid.Cells[0, 33] := 'Total';
+   ScoreGrid.Cells[0, 33] := SCOREGRID_TOTAL;
    ScoreGrid.Cells[0, 34] := '';
    ScoreGrid.Cells[0, 35] := '%';
 
@@ -918,7 +927,7 @@ begin
       ScoreGrid.Cells[i, 0] := '';
       ScoreGrid.ColWidths[i] := 42;
    end;
-   ScoreGrid.Cells[25, 0] := 'Total';
+   ScoreGrid.Cells[25, 0] := SCOREGRID_TOTAL;
    ScoreGrid.ColWidths[25] := 60;
    ScoreGrid.Cells[26, 0] := '%';
    ScoreGrid.ColWidths[26] := 50;
@@ -960,8 +969,8 @@ begin
    ScoreGrid2.Cells[0, 14] := MHzString[b2400];
    ScoreGrid2.Cells[0, 15] := MHzString[b5600];
    ScoreGrid2.Cells[0, 16] := MHzString[b10g];
-   ScoreGrid2.Cells[0, 17] := 'Total';
-   ScoreGrid2.Cells[0, 18] := 'Cumulative';
+   ScoreGrid2.Cells[0, 17] := SCOREGRID_TOTAL;
+   ScoreGrid2.Cells[0, 18] := SCOREGRID_CUMULATIVE;
 
    // —ñŒ©o‚µ
    for i := 1 to 24 do begin
@@ -969,11 +978,11 @@ begin
       ScoreGrid2.ColWidths[i] := 30;
    end;
 
-   ScoreGrid2.Cells[25, 0] := 'Total';
+   ScoreGrid2.Cells[25, 0] := SCOREGRID_TOTAL;
    ScoreGrid2.ColWidths[25] := 50;
-   ScoreGrid2.Cells[26, 0] := 'Target';
+   ScoreGrid2.Cells[26, 0] := SCOREGRID_TARGET;
    ScoreGrid2.ColWidths[26] := 50;
-   ScoreGrid2.Cells[27, 0] := 'Diff.';
+   ScoreGrid2.Cells[27, 0] := SCOREGRID_DIFF;
    ScoreGrid2.ColWidths[27] := 50;
 
    // s‚‚³
