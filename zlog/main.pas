@@ -957,7 +957,7 @@ type
     procedure ReadKeymap();
     procedure ResetKeymap();
     procedure SetShortcutEnabled(shortcut: string; fEnabled: Boolean);
-    procedure CQRepeatProc();
+    procedure CQRepeatProc(nSpeedUp: Integer);
 
     // Super CheckŠÖŒW
     procedure SuperCheckDataLoad();
@@ -4442,7 +4442,7 @@ begin
    SetCqRepeatMode(True);
 end;
 
-procedure TMainForm.CQRepeatProc();
+procedure TMainForm.CQRepeatProc(nSpeedUp: Integer);
 var
    S: String;
    nID: Integer;
@@ -4589,6 +4589,10 @@ begin
          WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
          FCQRepeatPlaying := False;
          Exit;
+      end;
+
+      if (nSpeedUp > 0) then begin
+         S := '\+' + IntToStr(nSpeedUp) + S + '\-' + IntToStr(nSpeedUp);
       end;
 
       // TODO: ‚±‚±‚ð1shot‚É‚·‚ê‚ÎOK
@@ -6851,7 +6855,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('>>> Enter - OnZLogCqRepeatContinue() '));
    {$ENDIF}
-   CQRepeatProc();
+   CQRepeatProc(Message.WParam);
    {$IFDEF DEBUG}
    OutputDebugString(PChar('>>> Leave - OnZLogCqRepeatContinue() '));
    {$ENDIF}
@@ -7902,11 +7906,13 @@ procedure TMainForm.OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: 
 var
    tx: Integer;
    rx: Integer;
+   nSpeedUp: Integer;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- OnPlayMessageFinished ---'));
    {$ENDIF}
 
+   nSpeedUp := 0;
    FMessageManager.ClearText();
    FMessageManager.ClearSendingText();
 
@@ -7977,6 +7983,7 @@ begin
 
             // 2BSIQ
             if (Is2bsiq() = True) and (FCQLoopRunning = True) then begin
+               nSpeedUp := dmZLogGlobal.Settings._so2r_2bsiq_pluswpm;
             end;
          end;
       end;
@@ -8012,7 +8019,7 @@ begin
                FTabKeyPressed[tx] := False;
                FDownKeyPressed[tx] := False;
                FOtherKeyPressed[rx] := False;
-               FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, 0, 0);
+               FMessageManager.AddQue(WM_ZLOG_CQREPEAT_CONTINUE, nSpeedUp, 0);
             end
             else begin
                FMessageManager.AddQue(WM_ZLOG_SET_CQ_LOOP, 0, 0);
@@ -11519,7 +11526,7 @@ begin
       FCQLoopRunning := True;
       FCQLoopCount := 0;
       FCQLoopStartRig := (FCurrentTx + 1); //FCurrentRigSet;
-      CQRepeatProc();
+      CQRepeatProc(0);
    end;
 end;
 

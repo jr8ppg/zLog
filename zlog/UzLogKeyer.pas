@@ -1465,10 +1465,12 @@ begin
 
       $41: begin
          IncWPM;
+         FSendChar := True;
       end;
 
       $42: begin
          DecWPM;
+         FSendChar := True;
       end;
 
       $0B: begin

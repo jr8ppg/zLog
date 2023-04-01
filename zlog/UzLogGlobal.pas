@@ -161,6 +161,7 @@ type
     _so2r_rigsw_after_delay: Integer;
     _so2r_cq_msg_bank: Integer;     // 0:Bank-A 1:Bank-B
     _so2r_cq_msg_number: Integer;   // 1-12
+    _so2r_2bsiq_pluswpm: Integer;
 
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
@@ -981,6 +982,7 @@ begin
       if (Settings._so2r_cq_msg_number < 1) or (Settings._so2r_cq_msg_number > 12) then begin
          Settings._so2r_cq_msg_number := 1;
       end;
+      Settings._so2r_2bsiq_pluswpm := ini.ReadInteger('SO2R', '2bsiq_pluswpm', 3);
 
       // CW PTT control
 
@@ -1592,6 +1594,7 @@ begin
       ini.WriteInteger('SO2R', 'rigsw_after_delay', Settings._so2r_rigsw_after_delay);
       ini.WriteInteger('SO2R', 'cq_msg_bank', Settings._so2r_cq_msg_bank);
       ini.WriteInteger('SO2R', 'cq_msg_number', Settings._so2r_cq_msg_number);
+      ini.WriteInteger('SO2R', '2bsiq_pluswpm', Settings._so2r_2bsiq_pluswpm);
 
       // CW PTT control
 

@@ -638,6 +638,9 @@ type
     editPowerM: TEdit;
     editPowerL: TEdit;
     editPowerP: TEdit;
+    Label115: TLabel;
+    Label116: TLabel;
+    spinSo2rAccelerateCW: TSpinEdit;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -1098,6 +1101,7 @@ begin
          Settings._so2r_cq_msg_bank := 2;
       end;
       Settings._so2r_cq_msg_number  := comboSo2rCqMsgNumber.ItemIndex + 1;
+      Settings._so2r_2bsiq_pluswpm  := spinSo2rAccelerateCW.Value;
 
 //      Settings._sentstr := SentEdit.Text;
 
@@ -1587,6 +1591,8 @@ begin
          radioSo2rCqMsgBankB.Checked := True;
       end;
       comboSo2rCqMsgNumber.ItemIndex := Settings._so2r_cq_msg_number - 1;
+
+      spinSo2rAccelerateCW.Value:= Settings._so2r_2bsiq_pluswpm;
 
       // Sent欄は表示専用
       SentEdit.Text := Settings._sentstr;

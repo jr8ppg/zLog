@@ -3923,7 +3923,7 @@ object formOptions: TformOptions
         end
       end
       object groupWinKeyer: TGroupBox
-        Left = 10
+        Left = 6
         Top = 356
         Width = 423
         Height = 45
@@ -4080,9 +4080,23 @@ object formOptions: TformOptions
         Left = 6
         Top = 147
         Width = 423
-        Height = 238
+        Height = 252
         Caption = 'SO2R Support'
         TabOrder = 1
+        object Label115: TLabel
+          Left = 8
+          Top = 225
+          Width = 210
+          Height = 13
+          Caption = 'Accelerate keying speed  after pressing TAB'
+        end
+        object Label116: TLabel
+          Left = 314
+          Top = 225
+          Width = 27
+          Height = 13
+          Caption = 'WPM'
+        end
         object GroupBox7: TGroupBox
           Left = 8
           Top = 20
@@ -4303,6 +4317,16 @@ object formOptions: TformOptions
             Text = '200'
             OnKeyPress = CQRepEditKeyPress
           end
+        end
+        object spinSo2rAccelerateCW: TSpinEdit
+          Left = 272
+          Top = 222
+          Width = 34
+          Height = 22
+          MaxValue = 9
+          MinValue = 0
+          TabOrder = 2
+          Value = 3
         end
       end
     end
@@ -6261,13 +6285,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@Terminal'
+          FontName = 'Courier'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 17
+          ItemIndex = 23
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
