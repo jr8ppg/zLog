@@ -1329,7 +1329,6 @@ var
 begin
    no := TAction(Sender).Tag;
    SendMessage(MainForm.Handle, WM_ZLOG_PLAYMESSAGEA, no, 0);
-   MainForm.SetLastFocus();
 end;
 
 procedure TBandScope2.actionPlayMessageBExecute(Sender: TObject);
@@ -1338,7 +1337,6 @@ var
 begin
    no := TAction(Sender).Tag;
    SendMessage(MainForm.Handle, WM_ZLOG_PLAYMESSAGEB, no, 0);
-   MainForm.SetLastFocus();
 end;
 
 procedure TBandScope2.actionESCExecute(Sender: TObject);
