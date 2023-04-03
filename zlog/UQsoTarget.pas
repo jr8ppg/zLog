@@ -31,6 +31,7 @@ type
   private
     FHourTarget: array[1..MAX_HOURS] of TQsoTarget;
     FHourTotal: TQsoTarget;   // â°åv
+    FTotal2: TQsoTarget;   // 1Å`tohourÇ‹Ç≈ÇÃó›åv
     function GetValues(Index: Integer): TQsoTarget;
   public
     constructor Create();
@@ -40,6 +41,7 @@ type
     procedure ActualClear();
     property Hours[Index: Integer]: TQsoTarget read GetValues;
     property Total: TQsoTarget read FHourTotal;
+    function Total2(tohour: Integer): TQsoTarget;
   end;
 
   TContestTarget = class(TObject)
@@ -131,6 +133,7 @@ begin
       FHourTarget[i] := TQsoTarget.Create();
    end;
    FHourTotal := TQsoTarget.Create();
+   FTotal2 := TQsoTarget.Create();
 end;
 
 destructor THourTarget.Destroy();
@@ -141,6 +144,7 @@ begin
       FHourTarget[i].Free();
    end;
    FHourTotal.Free();
+   FTotal2.Free();
 end;
 
 procedure THourTarget.Refresh();
@@ -172,6 +176,20 @@ begin
    for i := Low(FHourTarget) to High(FHourTarget) do begin
       FHourTarget[i].ActualClear();
    end;
+end;
+
+function THourTarget.Total2(tohour: Integer): TQsoTarget;
+var
+   i: Integer;
+begin
+   FTotal2.Clear();
+
+   for i := 1 to tohour do begin
+      FTotal2.Target := FTotal2.Target + FHourTarget[i].Target;
+      FTotal2.Actual := FTotal2.Actual + FHourTarget[i].Actual;
+   end;
+
+   Result := FTotal2;
 end;
 
 function THourTarget.GetValues(Index: Integer): TQsoTarget;

@@ -87,7 +87,7 @@ type
     FStartTime: TDateTime;       // グラフの表示開始日時
     FStartHour: Integer;         // 開始時
     FNowHour: Integer;           // 現在時
-
+    FPreHour: Integer;           // 前回timer時の時
     function UpdateGraphOriginal(hh: Integer): Integer;
     function UpdateGraphByBand(hh: Integer): Integer;
     function UpdateGraphByRange(hh: Integer): Integer;
@@ -208,6 +208,8 @@ begin
    InitScoreGrid2();
 
    LoadSettings();
+
+   FPreHour := GetHour(Now);
 end;
 
 procedure TRateDialogEx.FormDestroy(Sender: TObject);
@@ -240,6 +242,8 @@ begin
 end;
 
 procedure TRateDialogEx.TimerTimer(Sender: TObject);
+var
+   h: Integer;
 begin
    Timer.Enabled := False;
    try
@@ -247,11 +251,28 @@ begin
          Exit;
       end;
 
-      dmZLogGlobal.Target.UpdateLastRate();
-      Last10.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRate]) + ' QSOs/hr';
-      Max10.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRateMax]) + ' QSOs/hr';
-      Last100.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRate]) + ' QSOs/hr';
-      Max100.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRateMax]) + ' QSOs/hr';
+      // Graph
+      if PageControl1.ActivePageIndex = 0 then begin
+         dmZLogGlobal.Target.UpdateLastRate();
+         Last10.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRate]) + ' QSOs/hr';
+         Max10.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRateMax]) + ' QSOs/hr';
+         Last100.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRate]) + ' QSOs/hr';
+         Max100.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRateMax]) + ' QSOs/hr';
+      end;
+
+      // ZAQ/ZAQ2
+      if (PageControl1.ActivePageIndex = 1) or
+         (PageControl1.ActivePageIndex = 2) then begin
+         // 現在の時を取得
+         h := GetHour(Now);
+
+         // 前回時と変われば００分を過ぎたと判定
+         if FPreHour <> h then begin
+            UpdateGraph();
+            FPreHour := h;
+         end;
+      end;
+
    finally
       Timer.Enabled := True;
    end;
@@ -432,10 +453,9 @@ begin
    end;
 
    // ZAQ2の時間見出し
-   DecodeTime(Now, H, M, S, ms);
-   FNowHour := H;
+   FNowHour := GetHour(Now);
    if FNowHour < FStartHour then begin
-      FNowHour := FNowHour + (24 - FStartHour);
+      FNowHour := FNowHour + FStartHour + (24 - FStartHour);
    end;
    for i := 0 to (FNowHour - FStartHour) do begin
       n := FStartHour + i;
@@ -1050,17 +1070,29 @@ var
    b: TBand;
    i: Integer;
    R: Integer;
+   a: Integer;
+   t: Integer;
+   h: Integer;
 begin
    for b := b19 to b10g do begin
+      // 行位置
       R := Ord(b) + 1;
-      for i := 1 to (FNowHour - FStartHour) + 1 do begin
-         ScoreGrid2.Cells[i, R]  := IntToStr(ATarget.Bands[b].Hours[i].Actual);   // 実績値
-         ScoreGrid2.Cells[i, 17] := IntToStr(ATarget.Total.Hours[i].Actual);      // 合計
-         ScoreGrid2.Cells[i, 18] := IntToStr(ATarget.Cumulative.Hours[i].Actual);      // 累計
+
+      // 列位置MAX
+      h := (FNowHour - FStartHour) + 1;
+
+      // 各時間の列
+      for i := 1 to h do begin
+         ScoreGrid2.Cells[i, R]  := IntToStr(ATarget.Bands[b].Hours[i].Actual);     // 実績値
+         ScoreGrid2.Cells[i, 17] := IntToStr(ATarget.Total.Hours[i].Actual);        // 合計
+         ScoreGrid2.Cells[i, 18] := IntToStr(ATarget.Cumulative.Hours[i].Actual);   // 累計
       end;
 
-      if (FNowHour - FStartHour) < 23 then begin
-         ScoreGrid2.Cells[(FNowHour - FStartHour) + 1 + 1, R] := IntToStr(ATarget.Bands[b].Total.Actual - ATarget.Bands[b].Total.Target);
+      // (+/-)
+      if h < 24 then begin
+         a := ATarget.Bands[b].Total2(h).Actual;
+         t := ATarget.Bands[b].Total2(h).Target;
+         ScoreGrid2.Cells[h + 1, R] := IntToStr(a - t);
       end;
 
       // 合計列
