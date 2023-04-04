@@ -251,14 +251,12 @@ begin
          Exit;
       end;
 
-      // Graph
-      if PageControl1.ActivePageIndex = 0 then begin
-         dmZLogGlobal.Target.UpdateLastRate();
-         Last10.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRate]) + ' QSOs/hr';
-         Max10.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRateMax]) + ' QSOs/hr';
-         Last100.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRate]) + ' QSOs/hr';
-         Max100.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRateMax]) + ' QSOs/hr';
-      end;
+      // QSO Rate
+      dmZLogGlobal.Target.UpdateLastRate();
+      Last10.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRate]) + ' QSOs/hr';
+      Max10.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last10QsoRateMax]) + ' QSOs/hr';
+      Last100.Caption := Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRate]) + ' QSOs/hr';
+      Max100.Caption := 'max ' + Format('%3.2f', [dmZLogGlobal.Target.Last100QsoRateMax]) + ' QSOs/hr';
 
       // ZAQ/ZAQ2
       if (PageControl1.ActivePageIndex = 1) or

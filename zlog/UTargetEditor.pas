@@ -350,6 +350,7 @@ procedure TTargetEditor.ScoreGridDrawCell(Sender: TObject; ACol, ARow: Integer; 
 var
    strText: string;
    t: Integer;
+   b: TBand;
 begin
    with ScoreGrid.Canvas do begin
       Font.Size := ScoreGrid.Font.Size;
@@ -386,7 +387,13 @@ begin
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
       else begin                       // –Ú•W’l
-         t := FTarget.Bands[TBand(ARow - 1)].Hours[ACol].Target;
+         b := TBand(ARow - 1);
+         if (b >= b19) and (b <= b10g) then begin
+            t := FTarget.Bands[b].Hours[ACol].Target;
+         end
+         else begin
+            t := FTarget.Total.Hours[ACol].Target;
+         end;
 
          if checkShowZero.Checked = True then begin
             strText := IntToStr(t);
