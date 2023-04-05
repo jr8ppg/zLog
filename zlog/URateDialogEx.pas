@@ -1090,7 +1090,11 @@ begin
       if h < 24 then begin
          a := ATarget.Bands[b].Total2(h).Actual;
          t := ATarget.Bands[b].Total2(h).Target;
-         ScoreGrid2.Cells[h + 1, R] := IntToStr(a - t);
+         ScoreGrid2.Cells[h + 1, R] := IntToStr(a - t);        // ŽÀÑ‚Ì·
+
+         a := ATarget.Total.Total2(h).Actual;
+         t := ATarget.Total.Total2(h).Target;
+         ScoreGrid2.Cells[h + 1, 17] := IntToStr(a - t);       // ‡Œv‚Ì·
       end;
 
       // ‡Œv—ñ
