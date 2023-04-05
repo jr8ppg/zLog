@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45018.0059027778</prop>
-        <prop prop-type="OrigDateTime">45018.0057175926</prop>
+        <prop prop-type="SelfDateTime">45021.9021296296</prop>
+        <prop prop-type="OrigDateTime">45005.9608333333</prop>
         <prop prop-type="XlatDateTime">45016.8840972222</prop>
-        <prop prop-type="Translated">47</prop>
-        <prop prop-type="UnTranslated">1198</prop>
+        <prop prop-type="Translated">51</prop>
+        <prop prop-type="UnTranslated">1194</prop>
       </prop-group>
     </header>
     <body>
@@ -8807,22 +8807,25 @@
         <source>"Total"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">45016.7190173958</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"合計"</target>
       </trans-unit>
       <trans-unit id="URateDialogEx_SCOREGRID_TARGET" resname="URateDialogEx_SCOREGRID_TARGET">
         <source>"Target"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">45016.7190173958</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"目標"</target>
       </trans-unit>
       <trans-unit id="URateDialogEx_SCOREGRID_DIFF" resname="URateDialogEx_SCOREGRID_DIFF">
         <source>"Diff"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">45016.7190173958</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"差"</target>
       </trans-unit>
       <trans-unit id="URateDialogEx_SCOREGRID_DIFF2" resname="URateDialogEx_SCOREGRID_DIFF2">
         <source>"+/-"</source>
@@ -8835,8 +8838,9 @@
         <source>"Cumulative"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">45016.7190173958</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"累計"</target>
       </trans-unit>
     </body>
   </file>
