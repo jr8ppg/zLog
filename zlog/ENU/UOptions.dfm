@@ -1288,7 +1288,7 @@ object formOptions: TformOptions
         Hint = 
           'This option will switch the CW message sent when TAB or ; key is' +
           ' pressed to that in the current message bank. '
-        Caption = 'Switch TAB/; with CW bank'
+        Caption = 'Switch CW bank with CQ/SP mode'
         TabOrder = 12
         WordWrap = True
       end
@@ -4989,13 +4989,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = #65325#65331' '#12468#12471#12483#12463
+          FontName = '@NSimSun'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 42
+          ItemIndex = 14
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
