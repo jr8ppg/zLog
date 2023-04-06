@@ -31,6 +31,7 @@ type
   private
     FHourTarget: array[1..MAX_HOURS] of TQsoTarget;
     FHourTotal: TQsoTarget;   // ‰¡Œv
+    FTotal2: TQsoTarget;   // 1`tohour‚Ü‚Å‚Ì—ÝŒv
     function GetValues(Index: Integer): TQsoTarget;
   public
     constructor Create();
@@ -40,12 +41,14 @@ type
     procedure ActualClear();
     property Hours[Index: Integer]: TQsoTarget read GetValues;
     property Total: TQsoTarget read FHourTotal;
+    function Total2(tohour: Integer): TQsoTarget;
   end;
 
   TContestTarget = class(TObject)
   private
     FBandTarget: array[b19..b10g] of THourTarget;
     FBandTotal: THourTarget;   // cŒv
+    FBandCumulative: THourTarget;   // cŒv
     FTotal: TQsoTarget;    // c‰¡Œv
     FLast10QsoRate: Extended;
     FLast100QsoRate: Extended;
@@ -69,6 +72,7 @@ type
     property Bands[B: TBand]: THourTarget read GetBandTarget;
     property Total: THourTarget read FBandTotal;
     property TotalTotal: TQsoTarget read FTotal;
+    property Cumulative: THourTarget read FBandCumulative;
     property Last10QsoRate: Extended read FLast10QsoRate;
     property Last100QsoRate: Extended read FLast100QsoRate;
     property Last10QsoRateMax: Extended read FLast10QsoRateMax;
@@ -129,6 +133,7 @@ begin
       FHourTarget[i] := TQsoTarget.Create();
    end;
    FHourTotal := TQsoTarget.Create();
+   FTotal2 := TQsoTarget.Create();
 end;
 
 destructor THourTarget.Destroy();
@@ -139,6 +144,7 @@ begin
       FHourTarget[i].Free();
    end;
    FHourTotal.Free();
+   FTotal2.Free();
 end;
 
 procedure THourTarget.Refresh();
@@ -172,6 +178,20 @@ begin
    end;
 end;
 
+function THourTarget.Total2(tohour: Integer): TQsoTarget;
+var
+   i: Integer;
+begin
+   FTotal2.Clear();
+
+   for i := 1 to tohour do begin
+      FTotal2.Target := FTotal2.Target + FHourTarget[i].Target;
+      FTotal2.Actual := FTotal2.Actual + FHourTarget[i].Actual;
+   end;
+
+   Result := FTotal2;
+end;
+
 function THourTarget.GetValues(Index: Integer): TQsoTarget;
 begin
    Result := FHourTarget[Index];
@@ -187,6 +207,7 @@ begin
       FBandTarget[b] := THourTarget.Create();
    end;
    FBandTotal := THourTarget.Create();
+   FBandCumulative := THourTarget.Create();
    FTotal := TQsoTarget.Create();
 
    FLast10QsoRateMax := 0;
@@ -202,6 +223,7 @@ begin
       FBandTarget[b].Free();
    end;
    FBandTotal.Free();
+   FBandCumulative.Free();
    FTotal.Free();
 end;
 
@@ -227,8 +249,18 @@ begin
       end;
    end;
 
-   FBandTotal.Refresh();
+   FBandCumulative.Clear();
+   for h := 1 to MAX_HOURS do begin
+      if h > 1 then begin
+         FBandCumulative.Hours[h].Actual := FBandCumulative.Hours[h - 1].Actual;
+         FBandCumulative.Hours[h].Target := FBandCumulative.Hours[h - 1].Target;
+      end;
+      FBandCumulative.Hours[h].Actual := FBandCumulative.Hours[h].Actual + FBandTotal.Hours[h].Actual;
+      FBandCumulative.Hours[h].Target := FBandCumulative.Hours[h].Target + FBandTotal.Hours[h].Target;
+   end;
 
+   FBandTotal.Refresh();
+   FBandCumulative.Refresh();
 
    FTotal.Clear();
 
@@ -375,6 +407,7 @@ begin
       FBandTarget[b].Clear();
    end;
    FBandTotal.Clear();
+   FBandCumulative.Clear();
    FTotal.Clear();
 end;
 
@@ -386,6 +419,7 @@ begin
       FBandTarget[b].ActualClear();
    end;
    FBandTotal.ActualClear();
+   FBandCumulative.ActualClear();
    FTotal.ActualClear();
 end;
 
