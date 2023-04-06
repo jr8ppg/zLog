@@ -4820,7 +4820,7 @@ begin
       end;
    end;
 
-   StatusLine.Panels[2].Text := S;
+   StatusLine.Panels[3].Text := S;
    FInformation.Time := S;
 
    FQsyInfoForm.SetQsyInfo(fQsyOK, S2);
