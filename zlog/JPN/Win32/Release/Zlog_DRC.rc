@@ -8,69 +8,76 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsOSVersion 64304
-#define UExceptionDialog_RsProcessor 64305
-#define UExceptionDialog_RsMemory 64306
-#define UExceptionDialog_RsScreenRes 64307
-#define UExceptionDialog_RsActiveControl 64308
-#define UExceptionDialog_RsThread 64309
-#define UExceptionDialog_RsMissingVersionInfo 64310
-#define UExceptionDialog_RsExceptionStack 64311
-#define UExceptionDialog_RsMainThreadID 64312
-#define UExceptionDialog_RsExceptionThreadID 64313
-#define UExceptionDialog_RsMainThreadCallStack 64314
-#define UExceptionDialog_RsThreadCallStack 64315
-#define UExceptionDialog_RsErrorMessage 64316
-#define UExceptionDialog_RsDetailsIntro 64317
-#define UExceptionDialog_RsUnitVersioningIntro 64318
-#define Main_TMainForm_CW_port_is_no_set 64320
-#define Main_TMainForm_Not_a_new_multi 64321
-#define Main_TMainForm_Cannot_merge_current_file 64322
-#define Main_TMainForm_Merging_now 64323
-#define Main_TMainForm_Some_qsos_merged 64324
-#define Main_TMainForm_CtyDat_not_loaded 64325
-#define Main_TMainForm_RIT_XIT_Cleared 64326
-#define Main_TMainForm_Anti_zeroin 64327
-#define Main_TMainForm_Set_CQ_Repeat_Int 64328
-#define Main_TMainForm_Invalid_zone 64329
-#define UExceptionDialog_RsAppError 64330
-#define UExceptionDialog_RsExceptionClass 64331
-#define UExceptionDialog_RsExceptionMessage 64332
-#define UExceptionDialog_RsExceptionAddr 64333
-#define UExceptionDialog_RsStackList 64334
-#define UExceptionDialog_RsModulesList 64335
-#define Main_TMainForm_Change_Mode_QSOs 64336
-#define Main_TMainForm_Change_Operator_QSOs 64337
-#define Main_TMainForm_Change_Power_QSOs 64338
-#define Main_TMainForm_Change_TXNO_QSOs 64339
-#define Main_TMainForm_Need_File_Name 64340
-#define Main_TMainForm_QTC_Sent 64341
-#define Main_TMainForm_Less_Than_10min 64342
-#define Main_TMainForm_QSY_Count_Exceeded 64343
-#define Main_TMainForm_Loading_now 64344
-#define Main_TMainForm_Switch_CW_Bank_A 64345
-#define Main_TMainForm_Switch_CW_Bank_B 64346
-#define Main_TMainForm_This_QSO_is_locked 64347
-#define Main_TMainForm_Invalid_number 64348
-#define Main_TMainForm_Callsign_not_entered 64349
-#define Main_TMainForm_Dupe_qso 64350
-#define Main_TMainForm_Thankyou_for_your_qso 64351
+#define UExceptionDialog_RsExceptionThreadID 64288
+#define UExceptionDialog_RsMainThreadCallStack 64289
+#define UExceptionDialog_RsThreadCallStack 64290
+#define UExceptionDialog_RsErrorMessage 64291
+#define UExceptionDialog_RsDetailsIntro 64292
+#define UExceptionDialog_RsUnitVersioningIntro 64293
+#define Main_TMainForm_Invalid_zone 64304
+#define UExceptionDialog_RsAppError 64305
+#define UExceptionDialog_RsExceptionClass 64306
+#define UExceptionDialog_RsExceptionMessage 64307
+#define UExceptionDialog_RsExceptionAddr 64308
+#define UExceptionDialog_RsStackList 64309
+#define UExceptionDialog_RsModulesList 64310
+#define UExceptionDialog_RsOSVersion 64311
+#define UExceptionDialog_RsProcessor 64312
+#define UExceptionDialog_RsMemory 64313
+#define UExceptionDialog_RsScreenRes 64314
+#define UExceptionDialog_RsActiveControl 64315
+#define UExceptionDialog_RsThread 64316
+#define UExceptionDialog_RsMissingVersionInfo 64317
+#define UExceptionDialog_RsExceptionStack 64318
+#define UExceptionDialog_RsMainThreadID 64319
+#define Main_TMainForm_Switch_CW_Bank_A 64320
+#define Main_TMainForm_Switch_CW_Bank_B 64321
+#define Main_TMainForm_This_QSO_is_locked 64322
+#define Main_TMainForm_Invalid_number 64323
+#define Main_TMainForm_Callsign_not_entered 64324
+#define Main_TMainForm_Dupe_qso 64325
+#define Main_TMainForm_Thankyou_for_your_qso 64326
+#define Main_TMainForm_CW_port_is_no_set 64327
+#define Main_TMainForm_Not_a_new_multi 64328
+#define Main_TMainForm_Cannot_merge_current_file 64329
+#define Main_TMainForm_Merging_now 64330
+#define Main_TMainForm_Some_qsos_merged 64331
+#define Main_TMainForm_CtyDat_not_loaded 64332
+#define Main_TMainForm_RIT_XIT_Cleared 64333
+#define Main_TMainForm_Anti_zeroin 64334
+#define Main_TMainForm_Set_CQ_Repeat_Int 64335
+#define Main_TMainForm_Comfirm_Delete_Qso 64336
+#define Main_TMainForm_Comfirm_Delete_Qsos 64337
+#define Main_TMainForm_New_Multi_Only 64338
+#define Main_TMainForm_Change_Date 64339
+#define Main_TMainForm_Confirm_Save_Changes 64340
+#define Main_TMainForm_Active_Band_Adjusted 64341
+#define Main_TMainForm_Change_Band_QSOs 64342
+#define Main_TMainForm_Change_Mode_QSOs 64343
+#define Main_TMainForm_Change_Operator_QSOs 64344
+#define Main_TMainForm_Change_Power_QSOs 64345
+#define Main_TMainForm_Change_TXNO_QSOs 64346
+#define Main_TMainForm_Need_File_Name 64347
+#define Main_TMainForm_QTC_Sent 64348
+#define Main_TMainForm_Less_Than_10min 64349
+#define Main_TMainForm_QSY_Count_Exceeded 64350
+#define Main_TMainForm_Loading_now 64351
 #define System_Bindings_Consts_sTStringToStringDesc 64352
 #define System_Bindings_Consts_sStringToTStrings 64353
 #define System_Bindings_Consts_sStringToTStringsDesc 64354
 #define System_Bindings_Consts_sStringToChar 64355
 #define System_Bindings_Consts_sStringToCharDesc 64356
-#define UMenu_UMenu_PleaseEnterYourCallsign 64357
-#define UBandPlanEditDialog_Input_Text 64358
-#define UBandPlanEditDialog_Delete_Preset 64359
-#define Main_TMainForm_Enter_Frequency 64360
-#define Main_TMainForm_Comfirm_Delete_Qso 64361
-#define Main_TMainForm_Comfirm_Delete_Qsos 64362
-#define Main_TMainForm_New_Multi_Only 64363
-#define Main_TMainForm_Change_Date 64364
-#define Main_TMainForm_Confirm_Save_Changes 64365
-#define Main_TMainForm_Active_Band_Adjusted 64366
-#define Main_TMainForm_Change_Band_QSOs 64367
+#define URateDialogEx_SCOREGRID_TOTAL 64357
+#define URateDialogEx_SCOREGRID_TARGET 64358
+#define URateDialogEx_SCOREGRID_DIFF 64359
+#define URateDialogEx_SCOREGRID_DIFF2 64360
+#define URateDialogEx_SCOREGRID_CUMULATIVE 64361
+#define URateDialogEx_SCOREGRID_WINLOSS_L 64362
+#define URateDialogEx_SCOREGRID_WINLOSS_S 64363
+#define UMenu_UMenu_PleaseEnterYourCallsign 64364
+#define UBandPlanEditDialog_Input_Text 64365
+#define UBandPlanEditDialog_Delete_Preset 64366
+#define Main_TMainForm_Enter_Frequency 64367
 #define System_Bindings_Consts_sNilToVariantDesc 64368
 #define System_Bindings_Consts_sStringToVariant 64369
 #define System_Bindings_Consts_sStringToVariantDesc 64370
@@ -1241,6 +1248,19 @@
 #define System_SysConst_SFileNotFound 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
+	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
+	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
+	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
+	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
+	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	Main_TMainForm_Invalid_zone,	L"\x7121\x52B9\x306AZone\x3067\x3059"
+	UExceptionDialog_RsAppError,	L"%s - application error"
+	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
+	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
+	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
+	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
+	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
 	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
 	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
@@ -1250,12 +1270,13 @@ BEGIN
 	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
 	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
-	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
-	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
-	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
-	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
-	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
-	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	Main_TMainForm_Switch_CW_Bank_A,	L"CW Bank A\x306B\x5909\x66F4\x3057\x307E\x3057\x305F"
+	Main_TMainForm_Switch_CW_Bank_B,	L"CW Bank B\x306B\x5909\x66F4\x3057\x307E\x3057\x305F"
+	Main_TMainForm_This_QSO_is_locked,	L"\x3053\x306EQSO\x306F\x30ED\x30C3\x30AF\x3055\x308C\x3066\x3044\x307E\x3059"
+	Main_TMainForm_Invalid_number,	L"\x7121\x52B9\x306A\x30CA\x30F3\x30D0\x30FC\x3067\x3059"
+	Main_TMainForm_Callsign_not_entered,	L"\x30B3\x30FC\x30EB\x30B5\x30A4\x30F3\x3092\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
+	Main_TMainForm_Dupe_qso,	L"Dupe"
+	Main_TMainForm_Thankyou_for_your_qso,	L"QSO\x3042\x308A\x304C\x3068\x3046\x3054\x3056\x3044\x307E\x3059"
 	Main_TMainForm_CW_port_is_no_set,	L"CW\x30DD\x30FC\x30C8\x304C\x672A\x8A2D\x5B9A\x3067\x3059"
 	Main_TMainForm_Not_a_new_multi,	L"NEW\x30DE\x30EB\x30C1\x3067\x306F\x3042\x308A\x307E\x305B\x3093(\x30DE\x30EB\x30C1\x30B9\x30C6\x30FC\x30B7\x30E7\x30F3\x3067\x3059)"
 	Main_TMainForm_Cannot_merge_current_file,	L"\x73FE\x5728\x306E\x30D5\x30A1\x30A4\x30EB\x3092\x30DE\x30FC\x30B8\x3067\x304D\x307E\x305B\x3093"
@@ -1265,13 +1286,13 @@ BEGIN
 	Main_TMainForm_RIT_XIT_Cleared,	L"RIT/XIT\x3092\x30AF\x30EA\x30A2\x3057\x307E\x3057\x305F"
 	Main_TMainForm_Anti_zeroin,	L"** Anti Zeroin **"
 	Main_TMainForm_Set_CQ_Repeat_Int,	L"CQ Repeat Int. %.1f sec."
-	Main_TMainForm_Invalid_zone,	L"\x7121\x52B9\x306AZone\x3067\x3059"
-	UExceptionDialog_RsAppError,	L"%s - application error"
-	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
-	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
-	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
-	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
-	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
+	Main_TMainForm_Comfirm_Delete_Qso,	L"\x3053\x306EQSO\x3092\x524A\x9664\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
+	Main_TMainForm_Comfirm_Delete_Qsos,	L"\x3053\x308C\x3089\x306E QSO \x3092\x524A\x9664\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
+	Main_TMainForm_New_Multi_Only,	L"\x3053\x306E\x5C40\x306F\x30CB\x30E5\x30FC\x30DE\x30EB\x30C1\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x304C\x3001\x3068\x308A\x3042\x3048\x305A\x8A18\x9332\x3057\x307E\x3059"
+	Main_TMainForm_Change_Date,	L"\x65E5\x4ED8\x3092\x5909\x66F4\x3059\x308B\x306B\x306F\x3001\x6642\x523B\x30D5\x30A3\x30FC\x30EB\x30C9\x3092\x30C0\x30D6\x30EB\x30AF\x30EA\x30C3\x30AF\x3057\x3066\x304F\x3060\x3055\x3044\x3002"
+	Main_TMainForm_Confirm_Save_Changes,	L"\x5909\x66F4\x3092 %s \x306B\x4FDD\x5B58\x3057\x307E\x3059\x304B\xFF1F"
+	Main_TMainForm_Active_Band_Adjusted,	L"\x30A2\x30AF\x30C6\x30A3\x30D6\x306A\x30D0\x30F3\x30C9\x3092\x30B3\x30F3\x30C6\x30B9\x30C8\x306B\x5FC5\x8981\x306A\x30D0\x30F3\x30C9\x306B\x5408\x308F\x305B\x307E\x3057\x305F"
+	Main_TMainForm_Change_Band_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x30D0\x30F3\x30C9\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	Main_TMainForm_Change_Mode_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x30E2\x30FC\x30C9\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	Main_TMainForm_Change_Operator_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x30AA\x30DA\x30EC\x30FC\x30BF\x30FC\x540D\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	Main_TMainForm_Change_Power_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x96FB\x529B\x7B26\x53F7\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
@@ -1281,29 +1302,22 @@ BEGIN
 	Main_TMainForm_Less_Than_10min,	L"\x524D\x306EQSY\x304B\x308910\x5206\x7D4C\x904E\x3057\x3066\x3044\x307E\x305B\x3093"
 	Main_TMainForm_QSY_Count_Exceeded,	L"QSY\x56DE\x6570\x304C\x4E0A\x9650\x3092\x8D85\x3048\x307E\x3057\x305F!"
 	Main_TMainForm_Loading_now,	L"Loading..."
-	Main_TMainForm_Switch_CW_Bank_A,	L"CW Bank A\x306B\x5909\x66F4\x3057\x307E\x3057\x305F"
-	Main_TMainForm_Switch_CW_Bank_B,	L"CW Bank B\x306B\x5909\x66F4\x3057\x307E\x3057\x305F"
-	Main_TMainForm_This_QSO_is_locked,	L"\x3053\x306EQSO\x306F\x30ED\x30C3\x30AF\x3055\x308C\x3066\x3044\x307E\x3059"
-	Main_TMainForm_Invalid_number,	L"\x7121\x52B9\x306A\x30CA\x30F3\x30D0\x30FC\x3067\x3059"
-	Main_TMainForm_Callsign_not_entered,	L"\x30B3\x30FC\x30EB\x30B5\x30A4\x30F3\x3092\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
-	Main_TMainForm_Dupe_qso,	L"Dupe"
-	Main_TMainForm_Thankyou_for_your_qso,	L"QSO\x3042\x308A\x304C\x3068\x3046\x3054\x3056\x3044\x307E\x3059"
 	System_Bindings_Consts_sTStringToStringDesc,	L""
 	System_Bindings_Consts_sStringToTStrings,	L"StringToTStrings"
 	System_Bindings_Consts_sStringToTStringsDesc,	L""
 	System_Bindings_Consts_sStringToChar,	L"StringToChar"
 	System_Bindings_Consts_sStringToCharDesc,	L""
+	URateDialogEx_SCOREGRID_TOTAL,	L"Total"
+	URateDialogEx_SCOREGRID_TARGET,	L"Target"
+	URateDialogEx_SCOREGRID_DIFF,	L"Diff"
+	URateDialogEx_SCOREGRID_DIFF2,	L"+/-"
+	URateDialogEx_SCOREGRID_CUMULATIVE,	L"Cumulative"
+	URateDialogEx_SCOREGRID_WINLOSS_L,	L"Win/Loss"
+	URateDialogEx_SCOREGRID_WINLOSS_S,	L"W/L"
 	UMenu_UMenu_PleaseEnterYourCallsign,	L"\x8CB4\x5C40\x306E\x30B3\x30FC\x30EB\x30B5\x30A4\x30F3\x3092\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
 	UBandPlanEditDialog_Input_Text,	L"\x30D7\x30EA\x30BB\x30C3\x30C8\x540D\x3092\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
 	UBandPlanEditDialog_Delete_Preset,	L"\x30D7\x30EA\x30BB\x30C3\x30C8 [%s] \x3092\x524A\x9664\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	Main_TMainForm_Enter_Frequency,	L"\x5468\x6CE2\x6570\x3092kHz\x3067\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
-	Main_TMainForm_Comfirm_Delete_Qso,	L"\x3053\x306EQSO\x3092\x524A\x9664\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
-	Main_TMainForm_Comfirm_Delete_Qsos,	L"\x3053\x308C\x3089\x306E QSO \x3092\x524A\x9664\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
-	Main_TMainForm_New_Multi_Only,	L"\x3053\x306E\x5C40\x306F\x30CB\x30E5\x30FC\x30DE\x30EB\x30C1\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x304C\x3001\x3068\x308A\x3042\x3048\x305A\x8A18\x9332\x3057\x307E\x3059"
-	Main_TMainForm_Change_Date,	L"\x65E5\x4ED8\x3092\x5909\x66F4\x3059\x308B\x306B\x306F\x3001\x6642\x523B\x30D5\x30A3\x30FC\x30EB\x30C9\x3092\x30C0\x30D6\x30EB\x30AF\x30EA\x30C3\x30AF\x3057\x3066\x304F\x3060\x3055\x3044\x3002"
-	Main_TMainForm_Confirm_Save_Changes,	L"\x5909\x66F4\x3092 %s \x306B\x4FDD\x5B58\x3057\x307E\x3059\x304B\xFF1F"
-	Main_TMainForm_Active_Band_Adjusted,	L"\x30A2\x30AF\x30C6\x30A3\x30D6\x306A\x30D0\x30F3\x30C9\x3092\x30B3\x30F3\x30C6\x30B9\x30C8\x306B\x5FC5\x8981\x306A\x30D0\x30F3\x30C9\x306B\x5408\x308F\x305B\x307E\x3057\x305F"
-	Main_TMainForm_Change_Band_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x30D0\x30F3\x30C9\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	System_Bindings_Consts_sNilToVariantDesc,	L""
 	System_Bindings_Consts_sStringToVariant,	L"StringToVariant"
 	System_Bindings_Consts_sStringToVariantDesc,	L""
