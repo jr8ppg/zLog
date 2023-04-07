@@ -3206,6 +3206,7 @@ begin
 
       if dmZLogGlobal.Settings._allowdupe = True then begin
          CallSpacebarProc(C, N, B);
+         N.SetFocus();
       end
       else begin
          C.SelectAll;
@@ -3216,6 +3217,7 @@ begin
    end
    else begin { if not dupe }
       CallSpacebarProc(C, N, B);
+      N.SetFocus();
       WriteStatusLine('', False);
    end;
 end;
@@ -4176,11 +4178,14 @@ begin
    FEditPanel[nID].OpEdit.Text := Q.Operator;
    FEditPanel[nID].MemoEdit.Text := '';
 
-   if FPostContest then begin
-      TimeEdit.SetFocus;
-   end
-   else begin
-      CallsignEdit.SetFocus;
+   if (dmZLogGlobal.Settings._so2r_type = so2rNone) or
+      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (Is2bsiq() = False)) then begin
+      if FPostContest then begin
+         TimeEdit.SetFocus;
+      end
+      else begin
+         CallsignEdit.SetFocus;
+      end;
    end;
 
    WriteStatusLine('', False);
@@ -4986,11 +4991,11 @@ begin
       end;
    end;
 
-   if (dmZLogGlobal.Settings._so2r_type = so2rNone) or
-      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (Is2bsiq() = False)) or
-      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (Is2bsiq() = True) and (FCurrentTX = FCurrentRx)) then begin
-      N.SetFocus;
-   end;
+//   if (dmZLogGlobal.Settings._so2r_type = so2rNone) or
+//      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (Is2bsiq() = False)) or
+//      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (Is2bsiq() = True) and (FCurrentTX = FCurrentRx)) then begin
+//      N.SetFocus;
+//   end;
 
    if (MyContest is TCQWWContest) or
       (MyContest is TWAEContest) then begin
