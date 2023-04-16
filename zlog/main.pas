@@ -3729,8 +3729,11 @@ begin
       nTxID := Message.LParam;
 
       FDownKeyPressed[nRxID] := True;
-      FOtherKeyPressed[nRxID] := False;
       FKeyPressedRigID[nRxID] := nRxID;
+
+      FOtherKeyPressed[0] := False;
+      FOtherKeyPressed[1] := False;
+      FOtherKeyPressed[2] := False;
 
       // 確定待ちクリア
       FWaitForQsoFinish[nRxID] := False;
@@ -4528,12 +4531,12 @@ begin
       end;
 
       // TABか↓キー押されていたらここまで
-      if (FTabKeyPressed[FCurrentRigSet - 1] = True) or (FDownKeyPressed[FCurrentRigSet - 1] = True) then begin
-         {$IFDEF DEBUG}
-         OutputDebugString(PChar('**** TAB or DOWN ****'));
-         {$ENDIF}
-         Exit;
-      end;
+//      if (FTabKeyPressed[FCurrentRigSet - 1] = True) or (FDownKeyPressed[FCurrentRigSet - 1] = True) then begin
+//         {$IFDEF DEBUG}
+//         OutputDebugString(PChar('**** TAB or DOWN ****'));
+//         {$ENDIF}
+//         Exit;
+//      end;
    end;
 
    // CQモードに変更
