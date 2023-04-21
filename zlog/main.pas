@@ -4348,7 +4348,6 @@ begin
    if dmZLogKeyer.UseWinKeyer = True then begin
       dmZLogKeyer.WinKeyerClear();
    end;
-   dmZLogKeyer.ResetSpeed();
    FCQRepeatPlaying := False;
 end;
 

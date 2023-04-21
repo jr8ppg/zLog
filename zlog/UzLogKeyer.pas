@@ -2235,7 +2235,7 @@ begin
          NoSound();
       end;
       CW_OFF(FWkTx);
-
+      ResetSpeed();
       FUserFlag := False;
 
       FSendOK := True;
