@@ -24,7 +24,7 @@ const
   _nil3: AnsiString = AnsiChar($00) + AnsiChar($00) + AnsiChar($00);
   _nil4: AnsiString = AnsiChar($00) + AnsiChar($00) + AnsiChar($00) + AnsiChar($00);
 
-  MAXICOM = 51;
+  MAXICOM = 52;
 
   ICOMLIST : array[1..MAXICOM] of TIcomInfo =
      (
@@ -69,6 +69,7 @@ const
        (name: 'IC-575';       addr: $16; minband: b28; maxband: b50;    RitCtrl: False; XitCtrl: False),
        (name: 'IC-820';       addr: $42; minband: b144; maxband: b430;  RitCtrl: False; XitCtrl: False),
        (name: 'IC-821';       addr: $4C; minband: b144; maxband: b430;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-905';       addr: $AC; minband: b144; maxband: b10g;  RitCtrl: True;  XitCtrl: True),
        (name: 'IC-910/911';   addr: $60; minband: b144; maxband: b1200; RitCtrl: False; XitCtrl: False),
        (name: 'IC-970';       addr: $2E; minband: b144; maxband: b1200; RitCtrl: False; XitCtrl: False),
        (name: 'IC-271';       addr: $20; minband: b144; maxband: b144;  RitCtrl: False; XitCtrl: False),
@@ -232,6 +233,8 @@ type
 
     FCommThread: TIcomCommThread;
     FCommandList: TList<AnsiString>;
+
+    FFreq4Bytes: Boolean;
   public
     constructor Create(RigNum : integer); override;
     destructor Destroy; override;
@@ -256,6 +259,7 @@ type
     property GetBandAndModeFlag: Boolean read FGetBandAndMode write FGetBandAndMode;
     property MyAddr: Byte read FMyAddr write FMyAddr;
     property RigAddr: Byte read FRigAddr write FRigAddr;
+    property Freq4Bytes: Boolean read FFreq4Bytes write FFreq4Bytes;
   end;
 
   TIcomCommThread = class(TThread)
@@ -1681,6 +1685,10 @@ begin
             TICOM(rig).RigAddr := ICOMLIST[i].addr;
             TICOM(rig).RitCtrlSupported := ICOMLIST[i].RitCtrl;
             TICOM(rig).XitCtrlSupported := ICOMLIST[i].XitCtrl;
+
+            if Pos('IC-731', rname) > 0 then begin
+               TICOM(rig).Freq4Bytes := True;
+            end;
          end;
 
          rig.name := rname;
@@ -2054,6 +2062,8 @@ begin
 
    FCommandList := TList<AnsiString>.Create();
    FCommThread := TIcomCommThread.Create(Self);
+
+   FFreq4Bytes := False;
 end;
 
 procedure TICOM.Initialize();
@@ -2863,29 +2873,38 @@ begin
    FPollingTimer.Enabled := False;
    try
       freq := Hz;
-      if freq < 0 then // > 2.1GHz is divided by 100 and given a negative value. Not implemented yet
-      begin
-         fstr := AnsiChar(0);
-         freq := -1 * freq;
-      end
-      else begin
+      fstr := '';
+
+      // 100GHz / 10GHz
+      if (freq >= 10000000000) then begin
          i := freq mod 100;
-         fstr := AnsiChar((i div 10) * 16 + (i mod 10));
+         fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
          freq := freq div 100;
       end;
 
+      // 1000MHz / 100MHz (exclude IC-731)
+      if FFreq4Bytes = False then begin
+         i := freq mod 100;
+         fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+         freq := freq div 100;
+      end;
+
+      // 10MHz / 1MHz
       i := freq mod 100;
       fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
       freq := freq div 100;
 
+      // 100KHz / 10KHz
       i := freq mod 100;
       fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
       freq := freq div 100;
 
+      // 1KHz / 100Hz
       i := freq mod 100;
       fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
       freq := freq div 100;
 
+      // 10Hz / 1Hz
       i := freq mod 100;
       fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
 
@@ -3340,7 +3359,7 @@ begin
       strTemp := string(Copy(S, 3, 11));
       i := StrToIntDef(strTemp, 0);
       _currentfreq[aa] := i;
-      i := i + _freqoffset; // transverter
+//      i := i + _freqoffset; // transverter
 
       if _currentvfo = aa then begin
          UpdateFreqMem(aa, _currentfreq[aa]);
@@ -3537,10 +3556,13 @@ procedure TICOM.ExecuteCommand(S: AnsiString);
 var
    Command: byte;
    temp: byte;
-   freq, i1, i2, i3, i4, i5: TFrequency;
+   freq, i1, i2, i3, i4, i5, i6: TFrequency;
    M: TMode;
    ss: AnsiString;
    Index: Integer;
+   {$IFDEF DEBUG}
+   debug_ss: AnsiString;
+   {$ENDIF}
 begin
    ss := S;
 
@@ -3632,19 +3654,21 @@ begin
          end;
 
          $00, $03: begin
-            if length(ss) < 4 then begin
+            if Length(ss) < 4 then begin
                Exit;
             end;
 
             Delete(ss, 1, 1);
 
             {$IFDEF DEBUG}
+            debug_ss := ss + AnsiChar(0) + AnsiChar(0);
             OutputDebugString(PChar(
-            IntToHex(Ord(ss[5])) + ' ' +
-            IntToHex(Ord(ss[4])) + ' ' +
-            IntToHex(Ord(ss[3])) + ' ' +
-            IntToHex(Ord(ss[2])) + ' ' +
-            IntToHex(Ord(ss[1]))
+            IntToHex(Ord(debug_ss[6])) + ' ' +
+            IntToHex(Ord(debug_ss[5])) + ' ' +
+            IntToHex(Ord(debug_ss[4])) + ' ' +
+            IntToHex(Ord(debug_ss[3])) + ' ' +
+            IntToHex(Ord(debug_ss[2])) + ' ' +
+            IntToHex(Ord(debug_ss[1]))
             ));
             {$ENDIF}
 
@@ -3653,14 +3677,21 @@ begin
             i3 := (Ord(ss[3]) mod 16) + (Ord(ss[3]) div 16) * 10;
             i4 := (Ord(ss[4]) mod 16) + (Ord(ss[4]) div 16) * 10;
 
-            if length(ss) = 5 then begin
+            if Length(ss) >= 5 then begin
                i5 := (Ord(ss[5]) mod 16) + (Ord(ss[5]) div 16) * 10;
             end
             else begin
                i5 := 0;
             end;
 
-            freq := i1 + 100 * i2 + 10000 * i3 + 1000000 * i4 + 100000000 * i5;
+            if Length(ss) >= 6 then begin
+               i6 := (Ord(ss[6]) mod 16) + (Ord(ss[6]) div 16) * 10;
+            end
+            else begin
+               i6 := 0;
+            end;
+
+            freq := i1 + 100 * i2 + 10000 * i3 + 1000000 * i4 + 100000000 * i5 + 10000000000 * i6;
             _currentfreq[_currentvfo] := freq;
             freq := freq + _freqoffset;
 
@@ -4521,7 +4552,7 @@ begin
       if fResult = False then begin
          // タイムアウト判定１文字目が来るまで
          if (c = 0) and
-            ((GetTickCount() - dwTick) > dmZLogGlobal.Settings._icom_response_timeout) then begin
+            ((GetTickCount() - dwTick) > DWORD(dmZLogGlobal.Settings._icom_response_timeout)) then begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar('*** レスポンスなし ***'));
             {$ENDIF}
