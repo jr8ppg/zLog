@@ -4010,7 +4010,7 @@ begin
 
    Q.Reserve3 := i;
 
-   rig := RigControl.GetRig(FCurrentRigSet, Q.Band);
+   rig := RigControl.GetRig(nID + 1, Q.Band);
    if (rig <> nil) and (RigControl.GetCurrentRig() <> 5) then begin
       // RIG‚Ìü”g”‚ğæ“¾
       Hz := rig.CurrentFreqHz;
