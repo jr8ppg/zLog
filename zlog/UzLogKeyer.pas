@@ -151,6 +151,7 @@ type
 
     FPTTFLAG : Boolean; {internal PTT flag}
     FSendOK : Boolean;{TRUE if OK to send}
+    FTune: Boolean;
     FPTTEnabled : Boolean;
     FTimerID : UINT;  {CW timer ID}
 
@@ -432,6 +433,7 @@ begin
    FSo2rNeoUseRxSelect := False;
    FSo2rRxSelectPort := tkpNone;
    FSo2rTxSelectPort := tkpNone;
+   FTune := False;
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
@@ -2152,6 +2154,7 @@ procedure TdmZLogKeyer.ClrBuffer;
 var
    m: Integer;
 begin
+   FTune := False;
    if FUseWinKeyer = True then begin
       WinKeyerClear();
    end
@@ -2242,7 +2245,7 @@ end;
 function TdmZLogKeyer.IsPlaying: Boolean;
 begin
    if FUseWinKeyer = False then begin
-      if (cwstrptr > 1) and FSendOK then
+      if ((cwstrptr > 1) and FSendOK) or (FTune = True) then
          Result := True
       else
          Result := False;
@@ -2417,6 +2420,8 @@ procedure TdmZLogKeyer.TuneOn(nID: Integer);
 begin
    ClrBuffer;
    FSendOK := False;
+
+   FTune := True;
 
    if FPTTEnabled then begin
       ControlPTT(nID, True);
