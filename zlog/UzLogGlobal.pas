@@ -102,6 +102,8 @@ type
     _mode : TContestMode; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
     _contestmenuno : integer; {selected contest in the menu}
     _mycall : string;
+
+    _selectlastoperator: Boolean;
     _prov : string;
     _city : string;
     _cqzone : string;
@@ -774,6 +776,9 @@ begin
       // Mode
       Settings._mode := TContestMode(ini.ReadInteger('Categories', 'Mode', 0));
 
+      // Select last operator
+      Settings._selectlastoperator :=  ini.ReadBool('Categories', 'SelectLastOperator', True);
+
 //      // Prov/State($V)
 //      Settings._prov := ini.ReadString('Profiles', 'Province/State', '');
 //
@@ -1423,6 +1428,9 @@ begin
 
       // Mode
       ini.WriteInteger('Categories', 'Mode', Integer(Settings._mode));
+
+      // Select last operator
+      ini.WriteBool('Categories', 'SelectLastOperator', Settings._selectlastoperator);
 
       if Settings.ProvCityImported = False then begin
          // Prov/State($V)

@@ -775,7 +775,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 139
         Width = 143
-        Height = 222
+        Height = 246
         Caption = 'Operators'
         TabOrder = 7
         object OpListBox: TListBox
@@ -812,6 +812,17 @@ object formOptions: TformOptions
           Caption = 'Delete'
           TabOrder = 2
           OnClick = buttonOpDeleteClick
+        end
+        object checkSelectLastOperator: TCheckBox
+          Left = 11
+          Top = 218
+          Width = 121
+          Height = 17
+          Hint = 'Select last operator on startup.'
+          Caption = 'Select last operator'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 3
         end
       end
       object groupPower: TGroupBox
@@ -4989,13 +5000,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@NSimSun'
+          FontName = '@Terminal'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 14
+          ItemIndex = 17
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

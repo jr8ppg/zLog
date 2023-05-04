@@ -775,7 +775,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 139
         Width = 143
-        Height = 222
+        Height = 246
         Caption = #12458#12506#12524#12540#12479#12540
         TabOrder = 7
         object OpListBox: TListBox
@@ -812,6 +812,17 @@ object formOptions: TformOptions
           Caption = #21066#38500
           TabOrder = 2
           OnClick = buttonOpDeleteClick
+        end
+        object checkSelectLastOperator: TCheckBox
+          Left = 11
+          Top = 218
+          Width = 121
+          Height = 17
+          Hint = #36215#21205#26178#12289#26368#24460#12398#12458#12506#12524#12540#12479#12540#12434#36984#25246#12375#12414#12377#12290
+          Caption = #26368#24460#12398'OP'#12434#36984#25246
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 3
         end
       end
       object groupPower: TGroupBox
@@ -4989,13 +5000,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = #65325#65331' '#12468#12471#12483#12463
+          FontName = '@Terminal'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 42
+          ItemIndex = 17
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

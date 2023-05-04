@@ -543,6 +543,7 @@ type
     Label124: TLabel;
     Label125: TLabel;
     Label126: TLabel;
+    checkSelectLastOperator: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -828,6 +829,8 @@ begin
 
       // #TXNR
       Settings._txnr := StrToIntDef(comboTxNo.Text, 0);
+
+      Settings._selectlastoperator := checkSelectLastOperator.Checked;
 
       Settings._prov := ProvEdit.Text;
       Settings._city := CityEdit.Text;
@@ -1369,6 +1372,8 @@ begin
       ToneSpinEdit.Value := Settings.CW._tonepitch;
       CQmaxSpinEdit.Value := Settings.CW._cqmax;
       AbbrevEdit.Text := Settings.CW._zero + Settings.CW._one + Settings.CW._nine;
+
+      checkSelectLastOperator.Checked := Settings._selectlastoperator;
 
       ProvEdit.Text := Settings._prov;
       CityEdit.Text := Settings._city;

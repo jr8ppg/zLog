@@ -6414,7 +6414,12 @@ begin
       // マルチオペの場合は最後のOPをセット
       if (dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx]) and
          (Log.TotalQSO > 0) then begin
-         SelectOperator(Log.QsoList.Last.Operator);
+         if (dmZLogGlobal.Settings._selectlastoperator = True) then begin
+            SelectOperator(Log.QsoList.Last.Operator);
+         end
+         else begin
+            SelectOperator('Clear');
+         end;
       end;
 
       // 最初はCQモードから
