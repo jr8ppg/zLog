@@ -383,6 +383,7 @@ type
     property FixedSpeed: Integer read FFixedSpeed write FFixedSpeed;
 
     procedure Open();
+    procedure Close();
   end;
 
 var
@@ -2413,6 +2414,27 @@ begin
       ZComTxRigSelect.Connect();
       ZComTxRigSelect.ToggleDTR(False);
       ZComTxRigSelect.ToggleRTS(False);
+   end;
+end;
+
+procedure TdmZLogKeyer.Close();
+begin
+   COM_OFF();
+   USB_OFF();
+
+   // RIG選択用ポート
+   // RX
+   if FSo2rRxSelectPort <> tkpNone then begin
+      ZComRxRigSelect.ToggleDTR(False);
+      ZComRxRigSelect.ToggleRTS(False);
+      ZComRxRigSelect.Disconnect();
+   end;
+
+   // TX
+   if FSo2rTxSelectPort <> tkpNone then begin
+      ZComTxRigSelect.ToggleDTR(False);
+      ZComTxRigSelect.ToggleRTS(False);
+      ZComTxRigSelect.Disconnect();
    end;
 end;
 

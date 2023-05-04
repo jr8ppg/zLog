@@ -642,6 +642,7 @@ type
     procedure OnZLogSetTxIndicator( var Message: TMessage ); message WM_ZLOG_SETTXINDICATOR;
     procedure OnZLogSetFocusCallsign( var Message: TMessage ); message WM_ZLOG_SETFOCUS_CALLSIGN;
     procedure OnZLogSetStatusText( var Message: TMessage ); message WM_ZLOG_SETSTATUSTEXT;
+    procedure OnDeviceChange( var Message: TMessage ); message WM_DEVICECHANGE;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -5025,10 +5026,7 @@ begin
    rig := RigControl.GetCurrentRig();
    try
       // KeyingとRigControlを一旦終了
-      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
-      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
-      dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZlogGlobal.Settings.FRigControl[3].FKeyingPort));
-      RigControl.Stop();
+      FRigControl.PowerOff();
       dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
 
       f.EditMode := 0;
@@ -5095,7 +5093,7 @@ begin
 
       // リグコントロール/Keying再開
       WriteStatusLine('', False);
-      RigControl.ImplementOptions(rig);
+      FRigControl.PowerOn();
 
       // Accessibility
       if LastFocus.Visible then begin
@@ -6481,7 +6479,7 @@ begin
       dmZLogGlobal.SelectBandPlan(MyContest.BandPlan);
 
       // リグコントロール開始
-      RigControl.ImplementOptions();
+      FRigControl.PowerOn();
 
       // CTY.DATが必要なコンテストでロードされていない場合はお知らせする
       if (MyContest.NeedCtyDat = True) and (dmZLogGlobal.CtyDatLoaded = False) then begin
@@ -6650,6 +6648,22 @@ begin
 
    if fWriteConsole then
       FConsolePad.AddLine(statustext);
+end;
+
+procedure TMainForm.OnDeviceChange( var Message: TMessage );
+begin
+   case Message.WParam of
+      // DBT_DEVICEARRIVAL
+      $8000: begin
+         //
+      end;
+
+      // DBT_DEVICEREMOVECOMPLETE
+      $8004: begin
+         CQAbort(True);
+         FRigControl.ForcePowerOff();
+      end;
+   end;
 end;
 
 procedure TMainForm.InitALLJA();

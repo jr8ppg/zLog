@@ -385,7 +385,7 @@
         <DCCReference Include="UZAnalyze.pas">
             <Form>ZAnalyze</Form>
         </DCCReference>
-        <DCCReference Include="UzLogConst.pas"/>
+        <DCCReference Include="UzlogConst.pas"/>
         <DCCReference Include="UzLogQSO.pas"/>
         <DCCReference Include="USuperCheck.pas">
             <Form>SuperCheck</Form>
@@ -487,6 +487,10 @@
             <Form>formFreqTest</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="URigCtrlLib.pas"/>
+        <DCCReference Include="URigCtrlIcom.pas"/>
+        <DCCReference Include="URigCtrlKenwood.pas"/>
+        <DCCReference Include="URigCtrlYaesu.pas"/>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -670,8 +674,8 @@
                 </Resource_DLL_Projects>
                 <RDP_Source_Files>
                     <RDP_Source_Files Name="Item0">Win32\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item1">Win64\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item2">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item1">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item2">Win64\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item3">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item4">UBasicScore.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item5">UBasicMulti.dfm</RDP_Source_Files>
