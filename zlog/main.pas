@@ -5026,7 +5026,7 @@ begin
    rig := RigControl.GetCurrentRig();
    try
       // Keying‚ÆRigControl‚ğˆê’UI—¹
-      FRigControl.PowerOff();
+      FRigControl.ForcePowerOff();
       dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
 
       f.EditMode := 0;
