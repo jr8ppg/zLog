@@ -26,7 +26,6 @@ type
     Label17: TLabel;
     Label18: TLabel;
     Label19: TLabel;
-    Label20: TLabel;
     Label21: TLabel;
     Label23: TLabel;
     mOath: TMemo;
@@ -117,12 +116,17 @@ type
     buttonCreateLog: TButton;
     buttonSave: TButton;
     buttonCancel: TButton;
+    radioOrganizerJarl: TRadioButton;
+    radioOrganizerOther: TRadioButton;
+    GroupBox2: TGroupBox;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
     procedure buttonCancelClick(Sender: TObject);
     procedure checkBandClick(Sender: TObject);
     procedure editFDCOEFFChange(Sender: TObject);
+    procedure radioOrganizerJarlClick(Sender: TObject);
+    procedure radioOrganizerOtherClick(Sender: TObject);
   private
     { Private 宣言 }
     FScoreBand: array[b19..HiBand] of TCheckBox;
@@ -644,6 +648,16 @@ begin
    fScore := multi * points * fdcoeff;
 
    editTotalScore.Text := FloatToStr(fScore);
+end;
+
+procedure TformELogJarl1.radioOrganizerJarlClick(Sender: TObject);
+begin
+   mOath.Text := '私は、JARL制定のコンテスト規約および電波法令にしたがい運用した結果、ここに提出するサマリーシートおよびログシートなどが事実と相違ないものであることを、私の名誉において誓います。';
+end;
+
+procedure TformELogJarl1.radioOrganizerOtherClick(Sender: TObject);
+begin
+   mOath.Text := '私は、主催者制定のコンテスト規約および電波法令にしたがい運用した結果、ここに提出するサマリーシートおよびログシートなどが事実と相違ないものであることを、私の名誉において誓います。';
 end;
 
 end.
