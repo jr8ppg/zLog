@@ -240,12 +240,12 @@ end;
 
 procedure TformELogJarl1.InitializeFields;
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
    b: TBand;
    fSavedBack: Boolean;
 begin
    fSavedBack := Log.Saved;
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       edContestName.Text   := MyContest.Name;
       edCategoryCode.Text  := ini.ReadString('SummaryInfo', 'CategoryCode', '');
@@ -376,9 +376,9 @@ end;
 
 procedure TformELogJarl1.buttonSaveClick(Sender: TObject);
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
 begin
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       ini.WriteString('SummaryInfo', 'CategoryCode', edCategoryCode.Text);
       ini.WriteString('SummaryInfo', 'CategoryName', edCategoryName.Text);
@@ -426,6 +426,8 @@ begin
       ini.WriteString('SummaryInfo', 'Oath3', mOath.Lines[2]);
       ini.WriteString('SummaryInfo', 'Oath4', mOath.Lines[3]);
       ini.WriteString('SummaryInfo', 'Oath5', mOath.Lines[4]);
+
+      ini.UpdateFile();
    finally
       ini.Free();
    end;

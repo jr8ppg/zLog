@@ -118,7 +118,7 @@ end;
 
 procedure TOperatorInfoList.SaveToIniFile();
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
    i: Integer;
    j: Integer;
    obj: TOperatorInfo;
@@ -130,7 +130,7 @@ begin
       System.SysUtils.DeleteFile(fileName);
    end;
 
-   ini := TIniFile.Create(filename);
+   ini := TMemIniFile.Create(filename);
    try
      ini.WriteInteger('operators', 'num', Count);
 
@@ -150,6 +150,8 @@ begin
             ini.WriteString(section, 'AdditionalVoiceFile#' + IntToStr(j), obj.AdditionalVoiceFile[j]);
          end;
       end;
+
+      ini.UpdateFile();
    finally
       ini.Free();
    end;
@@ -157,7 +159,7 @@ end;
 
 procedure TOperatorInfoList.LoadFromIniFile();
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
    SL: TStringList;
    i: Integer;
    j: Integer;
@@ -167,7 +169,7 @@ var
    S: string;
 begin
    SL := TStringList.Create();
-   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_oplist.ini');;
+   ini := TMemIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_oplist.ini');;
    try
       ini.ReadSections(SL);
 

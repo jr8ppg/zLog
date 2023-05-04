@@ -356,7 +356,7 @@ type
     procedure AnalyzeMyCountry();
 
     procedure LoadIniFile; {loads Settings from zlog.ini}
-    procedure LoadCfgParams(ini: TIniFile);
+    procedure LoadCfgParams(ini: TCustomIniFile);
 
     function GetMyCall(): string;
     procedure SetMyCall(s: string);
@@ -644,7 +644,7 @@ procedure TdmZLogGlobal.ClearParamImportedFlag();
 var
    i: Integer;
    j: Integer;
-   ini: TIniFile;
+   ini: TMemIniFile;
 begin
    Settings.ProvCityImported := False;
 
@@ -655,7 +655,7 @@ begin
    end;
 
    // 対象項目を再ロード
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       LoadCfgParams(ini);
    finally
@@ -663,7 +663,7 @@ begin
    end;
 end;
 
-procedure TdmZLogGlobal.LoadCfgParams(ini: TIniFile);
+procedure TdmZLogGlobal.LoadCfgParams(ini: TCustomIniFile);
 begin
    // Prov/State($V)
    Settings._prov := ini.ReadString('Profiles', 'Province/State', '');
@@ -681,13 +681,13 @@ procedure TdmZLogGlobal.LoadIniFile;
 var
    i: integer;
    s: string;
-   ini: TIniFile;
+   ini: TMemIniFile;
    slParam: TStringList;
    b: TBand;
    strKey: string;
 begin
    slParam := TStringList.Create();
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       //
       // Preferences
@@ -1334,13 +1334,13 @@ end;
 procedure TdmZLogGlobal.SaveCurrentSettings;
 var
    i: integer;
-   ini: TIniFile;
+   ini: TMemIniFile;
    slParam: TStringList;
    b: TBand;
    strKey: string;
 begin
    slParam := TStringList.Create();
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       //
       // Preferences
@@ -1894,6 +1894,8 @@ begin
 
       // Band Plan
       ini.WriteString('BandPlan', 'PresetNameList', Settings.FBandPlanPresetList);
+
+      ini.UpdateFile();
    finally
       ini.Free();
       slParam.Free();
@@ -2277,12 +2279,12 @@ end;
 
 procedure TdmZLogGlobal.ReadWindowState(form: TForm; strWindowName: string; fPositionOnly: Boolean );
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
    l, t, w, h: Integer;
    pt: TPoint;
    mon: TMonitor;
 begin
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       if strWindowName = '' then begin
          strWindowName := form.Name;
@@ -2329,9 +2331,9 @@ end;
 
 procedure TdmZLogGlobal.WriteWindowState(form: TForm; strWindowName: string);
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
 begin
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       if strWindowName = '' then begin
          strWindowName := form.Name;
@@ -2342,6 +2344,8 @@ begin
       ini.WriteInteger('Windows', strWindowName + '_Y', form.Top);
       ini.WriteInteger('Windows', strWindowName + '_H', form.Height);
       ini.WriteInteger('Windows', strWindowName + '_W', form.Width);
+
+      ini.UpdateFile();
    finally
       ini.Free();
    end;
@@ -2349,11 +2353,11 @@ end;
 
 procedure TdmZLogGlobal.ReadMainFormState(var X, Y, W, H: integer; var TB1, TB2: boolean);
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
    pt: TPoint;
    mon: TMonitor;
 begin
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       X := ini.ReadInteger('Windows', 'Main_X', 0);
       Y := ini.ReadInteger('Windows', 'Main_Y', 0);
@@ -2385,9 +2389,9 @@ end;
 
 procedure TdmZLogGlobal.WriteMainFormState(X, Y, W, H: integer; TB1, TB2: boolean);
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
 begin
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       ini.WriteInteger('Windows', 'Main_X', X);
       ini.WriteInteger('Windows', 'Main_Y', Y);
@@ -2395,6 +2399,8 @@ begin
       ini.WriteInteger('Windows', 'Main_H', H);
       ini.WriteBool('Windows', 'Main_ToolBar1', TB1);
       ini.WriteBool('Windows', 'Main_ToolBar2', TB2);
+
+      ini.UpdateFile();
    finally
       ini.Free();
    end;

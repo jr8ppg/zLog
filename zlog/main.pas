@@ -8959,14 +8959,16 @@ end;
 procedure TMainForm.WriteKeymap();
 var
    i: Integer;
-   ini: TIniFile;
+   ini: TMemIniFile;
 begin
-   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_key.ini');
+   ini := TMemIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_key.ini');
    try
       for i := 0 to ActionList1.ActionCount - 1 do begin
          ini.WriteString('shortcut', IntToStr(i), ShortcutToText(ActionList1.Actions[i].ShortCut));
          ini.WriteString('secondary', IntToStr(i), ActionList1.Actions[i].SecondaryShortCuts.CommaText);
       end;
+
+      ini.UpdateFile();
    finally
       ini.Free();
    end;
@@ -8975,7 +8977,7 @@ end;
 procedure TMainForm.ReadKeymap();
 var
    i: Integer;
-   ini: TIniFile;
+   ini: TMemIniFile;
    filename: string;
    shortcut: TShortcut;
 
@@ -9013,7 +9015,7 @@ begin
       Exit;
    end;
 
-   ini := TIniFile.Create(filename);
+   ini := TMemIniFile.Create(filename);
    try
       // ˆê’U‘S•”ƒNƒŠƒA
       ClearShortcut();

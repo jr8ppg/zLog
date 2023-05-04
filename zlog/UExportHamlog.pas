@@ -310,9 +310,9 @@ end;
 
 procedure TformExportHamlog.Save();
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
 begin
-   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'hamlogexport.ini');
+   ini := TMemIniFile.Create(ExtractFilePath(Application.ExeName) + 'hamlogexport.ini');
    try
       ini.WriteInteger('OPTION', 'remarks1option', Remarks1Option);
       ini.WriteString('OPTION', 'remarks1text', Remarks1);
@@ -321,6 +321,8 @@ begin
       ini.WriteInteger('OPTION', 'codeoption', CodeOption);
       ini.WriteInteger('OPTION', 'nameoption', NameOption);
       ini.WriteInteger('OPTION', 'timeoption', TimeOption);
+
+      ini.UpdateFile();
    finally
       ini.Free();
    end;
@@ -328,9 +330,9 @@ end;
 
 procedure TformExportHamlog.Load();
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
 begin
-   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'hamlogexport.ini');
+   ini := TMemIniFile.Create(ExtractFilePath(Application.ExeName) + 'hamlogexport.ini');
    try
       Remarks1Option := ini.ReadInteger('OPTION', 'remarks1option', 2);
       Remarks1 := ini.ReadString('OPTION', 'remarks1text', '');
