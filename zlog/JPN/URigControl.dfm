@@ -204,7 +204,6 @@ object RigControl: TRigControl
       Top = 4
       Width = 79
       Height = 20
-      State = tssOn
       StateCaptions.CaptionOn = 'ON'
       StateCaptions.CaptionOff = 'OFF'
       TabOrder = 0
