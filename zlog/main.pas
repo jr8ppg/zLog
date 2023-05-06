@@ -1523,6 +1523,9 @@ begin
    if Assigned(PowerEdit) and PowerEdit.Visible then begin
       PowerEdit.Text := CurrentQSO.NewPowerStr;
    end;
+   if Assigned(OpEdit) and OpEdit.Visible then begin
+      OpEdit.Text := CurrentQSO.Operator;
+   end;
 
    if MyContest <> nil then begin
       if MyContest.MultiForm.Visible then begin

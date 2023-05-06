@@ -2017,6 +2017,8 @@ var
 begin
    op := FOpList.ObjectOf(aQSO.Operator);
    if op = nil then begin
+      // 今のOPがOpListにいなければ消す
+      aQSO.Operator := '';
       Exit;
    end;
 
