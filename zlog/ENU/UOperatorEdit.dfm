@@ -56,7 +56,7 @@ object formOperatorEdit: TformOperatorEdit
     Left = 4
     Top = 84
     Width = 357
-    Height = 288
+    Height = 289
     Caption = 'Voice Files'
     TabOrder = 1
     object Label20: TLabel
@@ -103,42 +103,42 @@ object formOperatorEdit: TformOperatorEdit
     end
     object Label26: TLabel
       Left = 8
-      Top = 153
+      Top = 154
       Width = 13
       Height = 13
       Caption = '#7'
     end
     object Label27: TLabel
       Left = 8
-      Top = 175
+      Top = 176
       Width = 13
       Height = 13
       Caption = '#8'
     end
     object Label72: TLabel
       Left = 8
-      Top = 197
+      Top = 198
       Width = 13
       Height = 13
       Caption = '#9'
     end
     object Label73: TLabel
       Left = 8
-      Top = 219
+      Top = 220
       Width = 19
       Height = 13
       Caption = '#10'
     end
     object Label77: TLabel
       Left = 8
-      Top = 241
+      Top = 242
       Width = 19
       Height = 13
       Caption = '#11'
     end
     object Label78: TLabel
       Left = 8
-      Top = 263
+      Top = 264
       Width = 19
       Height = 13
       Caption = '#12'
@@ -187,42 +187,42 @@ object formOperatorEdit: TformOperatorEdit
     end
     object editVoiceFile07: TEdit
       Left = 40
-      Top = 150
+      Top = 151
       Width = 280
       Height = 21
       TabOrder = 12
     end
     object editVoiceFile08: TEdit
       Left = 40
-      Top = 172
+      Top = 173
       Width = 280
       Height = 21
       TabOrder = 14
     end
     object editVoiceFile09: TEdit
       Left = 40
-      Top = 194
+      Top = 195
       Width = 280
       Height = 21
       TabOrder = 16
     end
     object editVoiceFile10: TEdit
       Left = 40
-      Top = 216
+      Top = 217
       Width = 280
       Height = 21
       TabOrder = 18
     end
     object editVoiceFile11: TEdit
       Left = 40
-      Top = 238
+      Top = 239
       Width = 280
       Height = 21
       TabOrder = 20
     end
     object editVoiceFile12: TEdit
       Left = 40
-      Top = 260
+      Top = 261
       Width = 280
       Height = 21
       TabOrder = 22
@@ -290,7 +290,7 @@ object formOperatorEdit: TformOperatorEdit
     object buttonVoiceRef07: TButton
       Tag = 7
       Left = 323
-      Top = 150
+      Top = 151
       Width = 21
       Height = 21
       Caption = '...'
@@ -300,7 +300,7 @@ object formOperatorEdit: TformOperatorEdit
     object buttonVoiceRef08: TButton
       Tag = 8
       Left = 323
-      Top = 172
+      Top = 173
       Width = 21
       Height = 21
       Caption = '...'
@@ -310,7 +310,7 @@ object formOperatorEdit: TformOperatorEdit
     object buttonVoiceRef09: TButton
       Tag = 9
       Left = 323
-      Top = 194
+      Top = 195
       Width = 21
       Height = 21
       Caption = '...'
@@ -320,7 +320,7 @@ object formOperatorEdit: TformOperatorEdit
     object buttonVoiceRef10: TButton
       Tag = 10
       Left = 323
-      Top = 216
+      Top = 217
       Width = 21
       Height = 21
       Caption = '...'
@@ -330,7 +330,7 @@ object formOperatorEdit: TformOperatorEdit
     object buttonVoiceRef11: TButton
       Tag = 11
       Left = 323
-      Top = 238
+      Top = 239
       Width = 21
       Height = 21
       Caption = '...'
@@ -340,7 +340,7 @@ object formOperatorEdit: TformOperatorEdit
     object buttonVoiceRef12: TButton
       Tag = 12
       Left = 323
-      Top = 260
+      Top = 261
       Width = 21
       Height = 21
       Caption = '...'

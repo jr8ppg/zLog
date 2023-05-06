@@ -1777,6 +1777,7 @@ procedure TformOptions.buttonOpAddClick(Sender: TObject);
 var
    F: TformOperatorEdit;
    obj: TOperatorInfo;
+   op: TOperatorInfo;
 begin
    F := TformOperatorEdit.Create(Self);
    try
@@ -1787,8 +1788,15 @@ begin
       obj := TOperatorInfo.Create();
       F.GetObject(obj);
 
-      OpListBox.Items.AddObject(obj.Callsign, obj);
-      dmZLogGlobal.OpList.Add(obj);
+      op := dmZLogGlobal.OpList.ObjectOf(obj.Callsign);
+      if op = nil then begin
+         OpListBox.Items.AddObject(obj.Callsign, obj);
+         dmZLogGlobal.OpList.Add(obj);
+      end
+      else begin
+         op.Assign(obj);
+         obj.Free();
+      end;
    finally
       F.Release();
    end;
