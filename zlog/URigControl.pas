@@ -72,6 +72,8 @@ type
     procedure UpdateFreq(currentvfo, VfoA, VfoB, Last: TFrequency; b: TBand; m: TMode);
     procedure SetSendFreq();
     function FreqStr(Hz: TFrequency): string;
+    procedure PowerOn();
+    procedure PowerOff();
   public
     { Public declarations }
     TempFreq: TFreqArray; //  temp. freq storage when rig is not connected. in kHz
@@ -95,9 +97,8 @@ type
     property CurrentRigNumber: Integer read FCurrentRigNumber;
     property OnVFOChanged: TNotifyEvent read FOnVFOChanged write FOnVFOChanged;
 
-    procedure PowerOn();
-    procedure PowerOff();
     procedure ForcePowerOff();
+    procedure ForcePowerOn();
   end;
 
 resourcestring
@@ -934,6 +935,11 @@ end;
 procedure TRigControl.ForcePowerOff();
 begin
    ToggleSwitch1.State := tssOff;
+end;
+
+procedure TRigControl.ForcePowerOn();
+begin
+   ToggleSwitch1.State := tssOn;
 end;
 
 end.

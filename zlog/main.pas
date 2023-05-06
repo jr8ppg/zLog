@@ -5104,7 +5104,7 @@ begin
 
       // リグコントロール/Keying再開
       WriteStatusLine('', False);
-      FRigControl.PowerOn();
+      FRigControl.ForcePowerOn();
 
       // Accessibility
       if LastFocus.Visible then begin
@@ -6495,7 +6495,7 @@ begin
       dmZLogGlobal.SelectBandPlan(MyContest.BandPlan);
 
       // リグコントロール開始
-      FRigControl.PowerOn();
+      FRigControl.ForcePowerOn();
 
       // CTY.DATが必要なコンテストでロードされていない場合はお知らせする
       if (MyContest.NeedCtyDat = True) and (dmZLogGlobal.CtyDatLoaded = False) then begin
