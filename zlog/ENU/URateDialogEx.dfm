@@ -429,12 +429,27 @@ object RateDialogEx: TRateDialogEx
           YValues.Name = 'Bar'
           YValues.Order = loNone
         end
-        object SeriesTotalQSOs: TLineSeries
+        object SeriesActualTotals: TLineSeries
           SeriesColor = 33023
+          Title = 'SeriesActualTotals'
           Brush.BackColor = clDefault
           Pointer.HorizSize = 3
           Pointer.InflateMargins = True
           Pointer.Style = psRectangle
+          Pointer.VertSize = 3
+          Pointer.Visible = True
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+        object SeriesTargetTotals: TLineSeries
+          SeriesColor = 11627079
+          Title = 'SeriesTargetTotals'
+          Brush.BackColor = clDefault
+          Pointer.HorizSize = 3
+          Pointer.InflateMargins = True
+          Pointer.Style = psCircle
           Pointer.VertSize = 3
           Pointer.Visible = True
           XValues.Name = 'X'

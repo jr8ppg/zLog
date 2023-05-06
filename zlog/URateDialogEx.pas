@@ -22,7 +22,8 @@ type
     Panel2: TPanel;
     Chart1: TChart;
     Series1: TBarSeries;
-    SeriesTotalQSOs: TLineSeries;
+    SeriesActualTotals: TLineSeries;
+    SeriesTargetTotals: TLineSeries;
     Label4: TLabel;
     ShowLastCombo: TComboBox;
     Label3: TLabel;
@@ -208,7 +209,12 @@ begin
       end;
    end;
 
-   with SeriesTotalQSOs do begin
+   with SeriesActualTotals do begin
+      Clear();
+      VertAxis := aRightAxis;
+   end;
+
+   with SeriesTargetTotals do begin
       Clear();
       VertAxis := aRightAxis;
    end;
@@ -319,8 +325,10 @@ end;
 
 procedure TRateDialogEx.UpdateGraph;
 var
-   hour_count: Integer;
-   total_count: Integer;
+   actual_hour_count: Integer;
+   target_hour_count: Integer;
+   actual_total_count: Integer;
+   target_total_count: Integer;
    hour_peak: Integer;
    Str: string;
    diff: TDateTime;
@@ -339,7 +347,8 @@ begin
    for b := b19 to bTarget do begin
       FGraphSeries[b].Clear();
    end;
-   SeriesTotalQSOs.Clear();
+   SeriesActualTotals.Clear();
+   SeriesTargetTotals.Clear();
    Chart1.Axes.Bottom.Items.Clear();
 
    // 基準時刻を求める
@@ -379,8 +388,14 @@ begin
    end;
 
    // グラフに展開
-   total_count := dmZLogGlobal.Target.BeforeGraphCount;
+   actual_total_count := dmZLogGlobal.Target.BeforeGraphCount;
    hour_peak := 0;
+
+   target_total_count := 0;
+   for i := 1 to H do begin
+      target_total_count := dmZLogGlobal.Target.Total.Hours[i].Target;
+   end;
+
    for i := 0 to FShowLast - 1 do begin
       n := GetHour(FStartTime + (1 / 24) * i);
       Str := IntToStr(n);
@@ -403,24 +418,32 @@ begin
       hindex := i * 2;
       Chart1.Axes.Bottom.Items.Add(hindex + 0, Str);
 
-      hour_count := 0;
+      // 時間帯での実績値
+      actual_hour_count := 0;
       if GraphStyle = rsOriginal then begin
-         hour_count := UpdateGraphOriginal(H + i + 1);
+         actual_hour_count := UpdateGraphOriginal(H + i + 1);
       end
       else if GraphStyle = rsByBand then begin
-         hour_count := UpdateGraphByBand(H + i + 1);
+         actual_hour_count := UpdateGraphByBand(H + i + 1);
       end
       else if GraphStyle = rsByFreqRange then begin
-         hour_count := UpdateGraphByRange(H + i + 1);
+         actual_hour_count := UpdateGraphByRange(H + i + 1);
       end;
 
-      // 縦軸目盛り調整のための値
-      total_count := total_count + hour_count;
-      hour_peak := Max(hour_peak, hour_count);
-      hour_peak := Max(hour_peak, dmZLogGlobal.Target.Total.Hours[H + i + 1].Target);
+      // 時間帯での目標値
+      target_hour_count := dmZLogGlobal.Target.Total.Hours[H + i + 1].Target;
 
-      // 累計
-      SeriesTotalQSOs.Add(total_count);
+      // 縦軸目盛り調整のための値
+      actual_total_count := actual_total_count + actual_hour_count;
+      target_total_count := target_total_count + target_hour_count;
+      hour_peak := Max(hour_peak, actual_hour_count);
+      hour_peak := Max(hour_peak, target_hour_count);
+
+      // 実績値累計
+      SeriesActualTotals.Add(actual_total_count);
+
+      // 目標値値累計
+      SeriesTargetTotals.Add(target_total_count);
 
       // 横軸目盛ラベル
       Chart1.Axes.Bottom.Items.Add(hindex + 1, ''{Str + 't'});
@@ -442,10 +465,13 @@ begin
       FGraphSeries[b2400].Add(0);
       FGraphSeries[b5600].Add(0);
       FGraphSeries[b10g].Add(0);
-      FGraphSeries[bTarget].Add(dmZLogGlobal.Target.Total.Hours[H + i + 1].Target);
+      FGraphSeries[bTarget].Add(target_hour_count);
 
-      // 累計
-      SeriesTotalQSOs.Add(total_count);
+      // 実績値累計
+      SeriesActualTotals.Add(actual_total_count);
+
+      // 実績値累計
+      SeriesTargetTotals.Add(target_total_count);
    end;
 
    // ZAQの時間見出し
@@ -465,7 +491,7 @@ begin
       end;
 
       // 右側目盛りの調整
-      Axes.Right.Maximum := ((total_count div 50) + 1) * 50;
+      Axes.Right.Maximum := ((Max(actual_total_count, target_total_count) div 50) + 1) * 50;
       if Axes.Right.Maximum <= 50 then begin
          Axes.Right.Increment := 10;
       end
