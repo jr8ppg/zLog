@@ -1052,7 +1052,6 @@ type
     procedure SetYourCallsign(strCallsign, strNumber: string);
     procedure SetFrequency(freq: TFrequency);
     procedure BSRefresh();
-    procedure BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
     procedure BuildTxNrMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
 
@@ -1510,8 +1509,17 @@ begin
 
    FZLinkForm.SendBand; // ver 0.41
 
-   CurrentQSO.Power := dmZlogGlobal.PowerOfBand[B];
-   dmZlogGlobal.SetOpPower(CurrentQSO);
+   // シングルＯＰ時は電力符号の設定を行う
+   if dmZLogGlobal.ContestCategory = ccSingleOp then begin
+      CurrentQSO.Power := dmZlogGlobal.PowerOfBand[B];
+   end
+   else begin
+      // マルチＯＰ時はバンド変更時のOP別電力符号のセットはオプション設定に従う
+      if dmZLogGlobal.Settings._applypoweronbandchg = True then begin
+         dmZLogGlobal.SetOpPower(CurrentQSO);
+      end;
+   end;
+
    if Assigned(PowerEdit) and PowerEdit.Visible then begin
       PowerEdit.Text := CurrentQSO.NewPowerStr;
    end;
@@ -2155,7 +2163,7 @@ begin
       Backup1.Enabled := False;
    end;
 
-   BuildOpListMenu(OpMenu, OpMenuClick);
+   BuildOpListMenu2(OpMenu.Items, OpMenuClick);
 
    FTempQSOList := TQSOList.Create();
 
@@ -5078,7 +5086,7 @@ begin
       actionShowBandScope.Execute();
 
       // OpList再ロード
-      BuildOpListMenu(OpMenu, OpMenuClick);
+      BuildOpListMenu2(OpMenu.Items, OpMenuClick);
 
       // Voice初期化
       FVoiceForm.Init();
@@ -9412,32 +9420,6 @@ begin
    FBandScope.RewriteBandScope();
    FBandScopeNewMulti.RewriteBandScope();
    FBandScopeAllBands.RewriteBandScope();
-end;
-
-procedure TMainForm.BuildOpListMenu(P: TPopupMenu; OnClickHandler: TNotifyEvent);
-var
-   i: Integer;
-   M: TMenuItem;
-begin
-   for i := P.Items.Count - 1 downto 0 do begin
-      P.Items.Delete(i);
-   end;
-
-   if dmZlogGlobal.OpList.Count = 0 then begin
-      Exit;
-   end;
-
-   M := TMenuItem.Create(Self);
-   M.Caption := 'Clear';
-   M.OnClick := OnClickHandler;
-   P.Items.Add(m);
-
-   for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
-      M := TMenuItem.Create(Self);
-      M.Caption := Trim(dmZlogGlobal.OpList[i].Callsign);
-      M.OnClick := OnClickHandler;
-      P.Items.Add(m);
-   end;
 end;
 
 procedure TMainForm.BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);

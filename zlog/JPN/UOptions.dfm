@@ -774,14 +774,14 @@ object formOptions: TformOptions
       object GroupBox24: TGroupBox
         Left = 6
         Top = 139
-        Width = 143
-        Height = 246
+        Width = 203
+        Height = 264
         Caption = #12458#12506#12524#12540#12479#12540
         TabOrder = 7
         object OpListBox: TListBox
           Left = 11
           Top = 19
-          Width = 121
+          Width = 182
           Height = 162
           TabStop = False
           Enabled = False
@@ -793,7 +793,7 @@ object formOptions: TformOptions
           ItemHeight = 12
           ParentFont = False
           TabOrder = 0
-          OnDblClick = OpListBoxDblClick
+          OnDblClick = buttonOpEditClick
         end
         object buttonOpAdd: TButton
           Left = 11
@@ -805,12 +805,12 @@ object formOptions: TformOptions
           OnClick = buttonOpAddClick
         end
         object buttonOpDelete: TButton
-          Left = 75
+          Left = 136
           Top = 187
           Width = 57
           Height = 25
           Caption = #21066#38500
-          TabOrder = 2
+          TabOrder = 3
           OnClick = buttonOpDeleteClick
         end
         object checkSelectLastOperator: TCheckBox
@@ -822,7 +822,27 @@ object formOptions: TformOptions
           Caption = #26368#24460#12398'OP'#12434#36984#25246
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 3
+          TabOrder = 4
+        end
+        object checkApplyPowerCodeOnBandChange: TCheckBox
+          Left = 11
+          Top = 239
+          Width = 190
+          Height = 17
+          Hint = #12496#12531#12489#22793#26356#26178#12289#12458#12506#12524#12540#12479#12540#27598#12398#38651#21147#31526#21495#12434#36969#29992#12375#12414#12377#12290
+          Caption = #12496#12531#12489#22793#26356#26178#12289#38651#21147#31526#21495#12434#36969#29992
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+        end
+        object buttonOpEdit: TButton
+          Left = 73
+          Top = 187
+          Width = 57
+          Height = 25
+          Caption = #20462#27491
+          TabOrder = 2
+          OnClick = buttonOpEditClick
         end
       end
       object groupPower: TGroupBox
@@ -5000,13 +5020,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@Terminal'
+          FontName = '@BIZ UD'#26126#26397' Medium'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 17
+          ItemIndex = 1
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

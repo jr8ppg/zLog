@@ -104,6 +104,7 @@ type
     _mycall : string;
 
     _selectlastoperator: Boolean;
+    _applypoweronbandchg: Boolean;
     _prov : string;
     _city : string;
     _cqzone : string;
@@ -779,6 +780,9 @@ begin
       // Select last operator
       Settings._selectlastoperator :=  ini.ReadBool('Categories', 'SelectLastOperator', True);
 
+      // Apply power code on band change
+      Settings._applypoweronbandchg :=  ini.ReadBool('Categories', 'ApplyPowerCodeOnBandChange', True);
+
 //      // Prov/State($V)
 //      Settings._prov := ini.ReadString('Profiles', 'Province/State', '');
 //
@@ -1431,6 +1435,9 @@ begin
 
       // Select last operator
       ini.WriteBool('Categories', 'SelectLastOperator', Settings._selectlastoperator);
+
+      // Apply power code on band change
+      ini.WriteBool('Categories', 'ApplyPowerCodeOnBandChange', Settings._applypoweronbandchg);
 
       if Settings.ProvCityImported = False then begin
          // Prov/State($V)
