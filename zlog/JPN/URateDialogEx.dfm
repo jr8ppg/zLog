@@ -509,18 +509,33 @@ object RateDialogEx: TRateDialogEx
     AutoLineReduction = maManual
     Left = 200
     Top = 153
-    object menuAchievementRate: TMenuItem
-      AutoCheck = True
-      Caption = #36948#25104#29575#34920#31034
+    object menuDispAlternating: TMenuItem
+      Caption = #12496#12531#12489#38918#12395#23455#32318#20516#65292#30446#27161#20516#12398#38918
       Checked = True
       GroupIndex = 1
+      RadioItem = True
+      OnClick = menuDispAlternatingClick
+    end
+    object menuDispOrder: TMenuItem
+      Caption = #23455#32318#20516#12496#12531#12489#38918#65292#30446#27161#20516#12496#12531#12489#38918
+      GroupIndex = 1
+      RadioItem = True
+      OnClick = menuDispAlternatingClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+      GroupIndex = 2
+    end
+    object menuAchievementRate: TMenuItem
+      Caption = #36948#25104#29575#34920#31034
+      Checked = True
+      GroupIndex = 2
       RadioItem = True
       OnClick = menuAchievementRateClick
     end
     object menuWinLoss: TMenuItem
-      AutoCheck = True
       Caption = #21213#12385#36000#12369#34920#31034
-      GroupIndex = 1
+      GroupIndex = 2
       RadioItem = True
       OnClick = menuAchievementRateClick
     end

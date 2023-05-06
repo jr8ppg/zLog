@@ -1,7 +1,7 @@
 object RateDialogEx: TRateDialogEx
   Left = 69
   Top = 213
-  ActiveControl = ShowLastCombo
+  ActiveControl = ScoreGrid
   Caption = 'QSO Rate Ex'
   ClientHeight = 262
   ClientWidth = 390
@@ -79,7 +79,7 @@ object RateDialogEx: TRateDialogEx
     Top = 37
     Width = 390
     Height = 225
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -509,18 +509,33 @@ object RateDialogEx: TRateDialogEx
     AutoLineReduction = maManual
     Left = 200
     Top = 153
-    object menuAchievementRate: TMenuItem
-      AutoCheck = True
-      Caption = #36948#25104#29575#34920#31034
+    object menuDispAlternating: TMenuItem
+      Caption = 'Alternating of actual and target '
       Checked = True
       GroupIndex = 1
+      RadioItem = True
+      OnClick = menuDispAlternatingClick
+    end
+    object menuDispOrder: TMenuItem
+      Caption = 'actual and target in order'
+      GroupIndex = 1
+      RadioItem = True
+      OnClick = menuDispAlternatingClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+      GroupIndex = 2
+    end
+    object menuAchievementRate: TMenuItem
+      Caption = 'Achievement'
+      Checked = True
+      GroupIndex = 2
       RadioItem = True
       OnClick = menuAchievementRateClick
     end
     object menuWinLoss: TMenuItem
-      AutoCheck = True
-      Caption = #21213#12385#36000#12369#34920#31034
-      GroupIndex = 1
+      Caption = 'Win/loss'
+      GroupIndex = 2
       RadioItem = True
       OnClick = menuAchievementRateClick
     end

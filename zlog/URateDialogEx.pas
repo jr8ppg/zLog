@@ -56,6 +56,9 @@ type
     menuWinLoss: TMenuItem;
     TabSheet3: TTabSheet;
     ScoreGrid2: TStringGrid;
+    N1: TMenuItem;
+    menuDispAlternating: TMenuItem;
+    menuDispOrder: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -71,8 +74,8 @@ type
     procedure ScoreGridTopLeftChanged(Sender: TObject);
     procedure ScoreGridSelectCell(Sender: TObject; ACol, ARow: Integer; var CanSelect: Boolean);
     procedure menuAchievementRateClick(Sender: TObject);
-    procedure ScoreGrid2DrawCell(Sender: TObject; ACol, ARow: Integer;
-      Rect: TRect; State: TGridDrawState);
+    procedure ScoreGrid2DrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+    procedure menuDispAlternatingClick(Sender: TObject);
   private
     { Private declarations }
     FBand: TBand;
@@ -96,13 +99,19 @@ type
     procedure SetGraphStartPosition(v: TQSORateStartPosition);
     procedure SetGraphStartPositionUI(v: TQSORateStartPosition);
     procedure TargetToGrid(ATarget: TContestTarget);
+    procedure TargetToGrid_type2(ATarget: TContestTarget);
     procedure TargetToGrid2(ATarget: TContestTarget);
     procedure SetBand(b: TBand);
+
+    procedure InitZaqGridTitle();
+    procedure InitZaq2GridTitle();
+    procedure InitScoreGrid_type1();
+    procedure InitScoreGrid_type2();
+    procedure InitScoreGrid2();
   public
     { Public declarations }
-    procedure UpdateGraph;
     procedure InitScoreGrid();
-    procedure InitScoreGrid2();
+    procedure UpdateGraph;
     property GraphSeries[b: TBand]: TBarSeries read GetGraphSeries;
     property GraphStyle: TQSORateStyle read FGraphStyle write SetGraphStyle;
     property GraphStartPosition: TQSORateStartPosition read FGraphStartPosition write SetGraphStartPosition;
@@ -205,7 +214,6 @@ begin
    end;
 
    InitScoreGrid();
-   InitScoreGrid2();
 
    LoadSettings();
 
@@ -441,31 +449,10 @@ begin
    end;
 
    // ZAQの時間見出し
-   FStartHour := GetHour(FOriginTime);
-   for i := 0 to 23 do begin
-      n := FStartHour + i;
-      if n >= 24 then begin
-         n := n - 24;
-      end;
-      ScoreGrid.Cells[i + 1, 0] := IntToStr(n);
-   end;
+   InitZaqGridTitle();
 
    // ZAQ2の時間見出し
-   FNowHour := GetHour(Now);
-   if FNowHour < FStartHour then begin
-      FNowHour := FNowHour + FStartHour + (24 - FStartHour);
-   end;
-   for i := 0 to (FNowHour - FStartHour) do begin
-      n := FStartHour + i;
-      if n >= 24 then begin
-         n := n - 24;
-      end;
-      ScoreGrid2.Cells[i + 1, 0] := IntToStr(n);
-   end;
-
-   if (FNowHour - FStartHour) < 23 then begin
-      ScoreGrid2.Cells[(FNowHour - FStartHour) + 1 + 1, 0] := SCOREGRID_DIFF2;
-   end;
+   InitZaq2GridTitle();
 
    with Chart1 do begin
       // 左側目盛りの調整
@@ -487,7 +474,13 @@ begin
       end;
    end;
 
-   TargetToGrid(dmZLogGlobal.Target);
+   if menuDispAlternating.Checked = True then begin
+      TargetToGrid(dmZLogGlobal.Target);
+   end
+   else begin
+      TargetToGrid_type2(dmZLogGlobal.Target);
+   end;
+
    TargetToGrid2(dmZLogGlobal.Target);
 end;
 
@@ -641,11 +634,19 @@ begin
    end;
    SetGraphStartPositionUI(FGraphStartPosition);
    menuAchievementRate.Checked := dmZLogGlobal.Settings.FZaqAchievement;
+   menuWinLoss.Checked := Not menuAchievementRate.Checked;
 end;
 
 procedure TRateDialogEx.menuAchievementRateClick(Sender: TObject);
 begin
-   TargetToGrid(dmZLogGlobal.Target);
+   TMenuItem(Sender).Checked := True;
+
+   if menuDispAlternating.Checked = True then begin
+      TargetToGrid(dmZLogGlobal.Target);
+   end
+   else begin
+      TargetToGrid_type2(dmZLogGlobal.Target);
+   end;
    ScoreGrid.Refresh();
 
    if menuAchievementRate.Checked = True then begin
@@ -656,6 +657,29 @@ begin
       ScoreGrid.Cells[0, 35] := SCOREGRID_WINLOSS_L;
       ScoreGrid.Cells[26, 0] := SCOREGRID_WINLOSS_S;
    end;
+end;
+
+procedure TRateDialogEx.menuDispAlternatingClick(Sender: TObject);
+var
+   R, C: Integer;
+begin
+   TMenuItem(Sender).Checked := True;
+   for R := 0 to ScoreGrid.RowCount - 1 do begin
+      for C := 0 to ScoreGrid.ColCount - 1 do begin
+         ScoreGrid.Cells[C, R] := '';
+      end;
+   end;
+
+   InitZaqGridTitle();
+   if menuDispAlternating.Checked = True then begin
+      InitScoreGrid_type1();
+      TargetToGrid(dmZLogGlobal.Target);
+   end
+   else begin
+      InitScoreGrid_type2();
+      TargetToGrid_type2(dmZLogGlobal.Target);
+   end;
+   ScoreGrid.Refresh();
 end;
 
 procedure TRateDialogEx.SaveSettings();
@@ -679,27 +703,51 @@ var
    strText: string;
    t: Integer;
    r: Integer;
+
+   procedure SetCurrentRowColor(C: TCanvas);
+   begin
+      C.Pen.Style := psSolid;
+      C.Pen.Color := RGB($9F, $FF, $FF);
+      C.Brush.Style := bsSolid;
+      C.Brush.Color := RGB($9F, $FF, $FF);
+   end;
+
+   procedure SetOtherRowColor(C: TCanvas);
+   begin
+      C.Pen.Style := psSolid;
+      C.Pen.Color := ScoreGrid.Color;
+      C.Brush.Style := bsSolid;
+      C.Brush.Color := ScoreGrid.Color;
+   end;
 begin
    with ScoreGrid.Canvas do begin
       Font.Size := ScoreGrid.Font.Size;
       Font.Name := ScoreGrid.Font.Name;
 
-      // 現在バンドの行（１行目）
-      r := (Ord(FBand) * 2) + 1;
+      if menuDispAlternating.Checked = True then begin
+         // 現在バンドの行（１行目）
+         r := (Ord(FBand) * 2) + 1;
 
-      // 現在バンドの背景色
-      if (ARow = (r + 0)) or
-         (ARow = (r + 1)) then begin
-         Pen.Style := psSolid;
-         Pen.Color := RGB($9F, $FF, $FF);
-         Brush.Style := bsSolid;
-         Brush.Color := RGB($9F, $FF, $FF);
+         // 現在バンドの背景色
+         if (ARow = (r + 0)) or
+            (ARow = (r + 1)) then begin
+            SetCurrentRowColor(ScoreGrid.Canvas);
+         end
+         else begin  // その他のバンドの背景色
+            SetOtherRowColor(ScoreGrid.Canvas);
+         end;
       end
-      else begin  // その他のバンドの背景色
-         Pen.Style := psSolid;
-         Pen.Color := ScoreGrid.Color;
-         Brush.Style := bsSolid;
-         Brush.Color := ScoreGrid.Color;
+      else begin
+         // 現在バンドの行
+         r := Ord(FBand) + 1;
+
+         // 現在バンドの背景色
+         if (ARow = r + 0) then begin
+            SetCurrentRowColor(ScoreGrid.Canvas);
+         end
+         else begin  // その他のバンドの背景色
+            SetOtherRowColor(ScoreGrid.Canvas);
+         end;
       end;
       FillRect(Rect);
 
@@ -927,7 +975,54 @@ begin
    radioOriginLastQSO.OnClick := proc;
 end;
 
+procedure TRateDialogEx.InitZaqGridTitle();
+var
+   i, n: Integer;
+begin
+   FStartHour := GetHour(FOriginTime);
+   for i := 0 to 23 do begin
+      n := FStartHour + i;
+      if n >= 24 then begin
+         n := n - 24;
+      end;
+      ScoreGrid.Cells[i + 1, 0] := IntToStr(n);
+   end;
+end;
+
+procedure TRateDialogEx.InitZaq2GridTitle();
+var
+   i, n: Integer;
+begin
+   FNowHour := GetHour(Now);
+   if FNowHour < FStartHour then begin
+      FNowHour := FNowHour + FStartHour + (24 - FStartHour);
+   end;
+   for i := 0 to (FNowHour - FStartHour) do begin
+      n := FStartHour + i;
+      if n >= 24 then begin
+         n := n - 24;
+      end;
+      ScoreGrid2.Cells[i + 1, 0] := IntToStr(n);
+   end;
+
+   if (FNowHour - FStartHour) < 23 then begin
+      ScoreGrid2.Cells[(FNowHour - FStartHour) + 1 + 1, 0] := SCOREGRID_DIFF2;
+   end;
+end;
+
 procedure TRateDialogEx.InitScoreGrid();
+begin
+   if menuDispAlternating.Checked = True then begin
+      InitScoreGrid_type1();
+   end
+   else begin
+      InitScoreGrid_type2();
+   end;
+
+   InitScoreGrid2();
+end;
+
+procedure TRateDialogEx.InitScoreGrid_type1();
 var
    i: Integer;
    b: TBand;
@@ -970,7 +1065,7 @@ begin
    ScoreGrid.Cells[0, 35] := '%';
 
    for i := 1 to 24 do begin
-      ScoreGrid.Cells[i, 0] := '';
+//      ScoreGrid.Cells[i, 0] := '';
       ScoreGrid.ColWidths[i] := 42;
    end;
    ScoreGrid.Cells[25, 0] := SCOREGRID_TOTAL;
@@ -988,6 +1083,84 @@ begin
          ScoreGrid.RowHeights[R + 1] := -1;
          ScoreGrid.RowHeights[R + 2] := -1;
       end;
+   end;
+end;
+
+procedure TRateDialogEx.InitScoreGrid_type2();
+var
+   i: Integer;
+   b: TBand;
+   R: Integer;
+begin
+   ScoreGrid.Cells[0, 1] := MHzString[b19];
+   ScoreGrid.Cells[0, 2] := MHzString[b35];
+   ScoreGrid.Cells[0, 3] := MHzString[b7];
+   ScoreGrid.Cells[0, 4] := MHzString[b10];
+   ScoreGrid.Cells[0, 5] := MHzString[b14];
+   ScoreGrid.Cells[0, 6] := MHzString[b18];
+   ScoreGrid.Cells[0, 7] := MHzString[b21];
+   ScoreGrid.Cells[0, 8] := MHzString[b24];
+   ScoreGrid.Cells[0, 9] := MHzString[b28];
+   ScoreGrid.Cells[0, 10] := MHzString[b50];
+   ScoreGrid.Cells[0, 11] := MHzString[b144];
+   ScoreGrid.Cells[0, 12] := MHzString[b430];
+   ScoreGrid.Cells[0, 13] := MHzString[b1200];
+   ScoreGrid.Cells[0, 14] := MHzString[b2400];
+   ScoreGrid.Cells[0, 15] := MHzString[b5600];
+   ScoreGrid.Cells[0, 16] := MHzString[b10g];
+   ScoreGrid.Cells[0, 17] := SCOREGRID_TOTAL;
+
+   ScoreGrid.Cells[0, 18] := MHzString[b19];
+   ScoreGrid.Cells[0, 19] := MHzString[b35];
+   ScoreGrid.Cells[0, 20] := MHzString[b7];
+   ScoreGrid.Cells[0, 21] := MHzString[b10];
+   ScoreGrid.Cells[0, 22] := MHzString[b14];
+   ScoreGrid.Cells[0, 23] := MHzString[b18];
+   ScoreGrid.Cells[0, 24] := MHzString[b21];
+   ScoreGrid.Cells[0, 25] := MHzString[b24];
+   ScoreGrid.Cells[0, 26] := MHzString[b28];
+   ScoreGrid.Cells[0, 27] := MHzString[b50];
+   ScoreGrid.Cells[0, 28] := MHzString[b144];
+   ScoreGrid.Cells[0, 29] := MHzString[b430];
+   ScoreGrid.Cells[0, 30] := MHzString[b1200];
+   ScoreGrid.Cells[0, 31] := MHzString[b2400];
+   ScoreGrid.Cells[0, 32] := MHzString[b5600];
+   ScoreGrid.Cells[0, 33] := MHzString[b10g];
+
+   ScoreGrid.Cells[0, 34] := SCOREGRID_TOTAL;
+   ScoreGrid.Cells[0, 35] := '%';
+
+   for i := 1 to 24 do begin
+//      ScoreGrid.Cells[i, 0] := '';
+      ScoreGrid.ColWidths[i] := 42;
+   end;
+   ScoreGrid.Cells[25, 0] := SCOREGRID_TOTAL;
+   ScoreGrid.ColWidths[25] := 60;
+   ScoreGrid.Cells[26, 0] := '%';
+   ScoreGrid.ColWidths[26] := 50;
+
+   // 使用しないバンド非表示(actual)
+   R := 1;
+   for b := b19 to b10g do begin
+      if dmZLogGlobal.Settings._activebands[b] = True then begin
+         ScoreGrid.RowHeights[R] := 24;
+      end
+      else begin
+         ScoreGrid.RowHeights[R] := -1;
+      end;
+      Inc(R);
+   end;
+
+   // 使用しないバンド非表示(target)
+   R := 17;
+   for b := b19 to b10g do begin
+      if dmZLogGlobal.Settings._activebands[b] = True then begin
+         ScoreGrid.RowHeights[R] := 24;
+      end
+      else begin
+         ScoreGrid.RowHeights[R] := -1;
+      end;
+      Inc(R);
    end;
 end;
 
@@ -1088,6 +1261,82 @@ begin
    ScoreGrid.Refresh();
 end;
 
+// ZAQの上段：actual，下段：target表示
+procedure TRateDialogEx.TargetToGrid_type2(ATarget: TContestTarget);
+var
+   b: TBand;
+   i: Integer;
+   R: Integer;
+begin
+   R := 1;
+
+   // まずはactual
+   for b := b19 to b10g do begin
+      for i := 1 to 24 do begin
+         ScoreGrid.Cells[i, R] := IntToStr(ATarget.Bands[b].Hours[i].Actual);
+      end;
+
+      ScoreGrid.Cells[25, R]   := IntToStr(ATarget.Bands[b].Total.Actual);
+
+      if menuAchievementRate.Checked = True then begin
+         ScoreGrid.Cells[26, R]   := FloatToStrF(ATarget.Bands[b].Total.Rate, ffFixed, 1000, 1);
+      end
+      else begin
+         ScoreGrid.Cells[26, R]   := IntToStr(ATarget.Bands[b].Total.Actual - ATarget.Bands[b].Total.Target);
+      end;
+
+      Inc(R);
+   end;
+
+   // actualの合計行
+   for i := 1 to 24 do begin
+      ScoreGrid.Cells[i, R]       := IntToStr(ATarget.Total.Hours[i].Actual);
+   end;
+   Inc(R);
+
+   // target
+   for b := b19 to b10g do begin
+      for i := 1 to 24 do begin
+         ScoreGrid.Cells[i, R] := IntToStr(ATarget.Bands[b].Hours[i].Target);
+      end;
+
+      ScoreGrid.Cells[25, R]   := '';
+      ScoreGrid.Cells[26, R]   := '';
+
+      Inc(R);
+   end;
+
+   // targetの合計行
+   for i := 1 to 24 do begin
+      ScoreGrid.Cells[i, R]       := IntToStr(ATarget.Total.Hours[i].Target);
+   end;
+   Inc(R);
+
+   // rate or win/loss
+   for i := 1 to 24 do begin
+      if menuAchievementRate.Checked = True then begin
+         ScoreGrid.Cells[i, R]    := FloatToStrF(ATarget.Total.Hours[i].Rate, ffFixed, 1000, 1);
+      end
+      else begin
+         ScoreGrid.Cells[i, R]    := IntToStr(ATarget.Total.Hours[i].Actual - ATarget.Total.Hours[i].Target);
+      end;
+   end;
+   Inc(R);
+
+   ScoreGrid.Cells[25, 33]   := IntToStr(ATarget.TotalTotal.Target);
+   ScoreGrid.Cells[25, 34]   := IntToStr(ATarget.TotalTotal.Actual);
+   if menuAchievementRate.Checked = True then begin
+      ScoreGrid.Cells[25, 35]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
+      ScoreGrid.Cells[26, 34]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
+   end
+   else begin
+      ScoreGrid.Cells[25, 35]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
+      ScoreGrid.Cells[26, 34]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
+   end;
+
+   ScoreGrid.Refresh();
+end;
+
 //
 // ZAQ2
 //
@@ -1153,7 +1402,13 @@ end;
 procedure TRateDialogEx.SetBand(b: TBand);
 begin
    FBand := b;
-   ScoreGrid.TopRow := Ord(b) * 2 + 1;
+
+   if menuDispAlternating.Checked = True then begin
+      ScoreGrid.TopRow := Ord(b) * 2 + 1;
+   end
+   else begin
+      ScoreGrid.TopRow := Ord(b) + 1;
+   end;
    ScoreGrid.Refresh();
    ScoreGrid2.Refresh();
 end;
