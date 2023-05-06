@@ -436,10 +436,10 @@ public
     function CWMessage(bank, no: Integer): string; overload;
     function CWMessage(no: Integer): string; overload;
 
-    procedure ReadWindowState(form: TForm; strWindowName: string = ''; fPositionOnly: Boolean = False);
-    procedure WriteWindowState(form: TForm; strWindowName: string = '');
-    procedure ReadMainFormState(var X, Y, W, H: integer; var TB1, TB2: boolean);
-    procedure WriteMainFormState(X, Y, W, H: integer; TB1, TB2: boolean);
+    procedure ReadWindowState(ini: TMemIniFile; form: TForm; strWindowName: string = ''; fPositionOnly: Boolean = False);
+    procedure WriteWindowState(ini: TMemIniFile; form: TForm; strWindowName: string = '');
+    procedure ReadMainFormState(ini: TMemIniFile; var X, Y, W, H: integer; var TB1, TB2: boolean);
+    procedure WriteMainFormState(ini: TMemIniFile; X, Y, W, H: integer; TB1, TB2: boolean);
 
     procedure CreateLog();
     procedure SetLogFileName(filename: string);
@@ -2286,133 +2286,103 @@ begin
    Result := S;
 end;
 
-procedure TdmZLogGlobal.ReadWindowState(form: TForm; strWindowName: string; fPositionOnly: Boolean );
+procedure TdmZLogGlobal.ReadWindowState(ini: TMemIniFile; form: TForm; strWindowName: string; fPositionOnly: Boolean );
 var
-   ini: TMemIniFile;
    l, t, w, h: Integer;
    pt: TPoint;
    mon: TMonitor;
 begin
-   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      if strWindowName = '' then begin
-         strWindowName := form.Name;
-      end;
+   if strWindowName = '' then begin
+      strWindowName := form.Name;
+   end;
 
-      l := ini.ReadInteger('Windows', strWindowName + '_X', -1);
-      t := ini.ReadInteger('Windows', strWindowName + '_Y', -1);
-      h := ini.ReadInteger('Windows', strWindowName + '_H', -1);
-      w := ini.ReadInteger('Windows', strWindowName + '_W', -1);
+   l := ini.ReadInteger('Windows', strWindowName + '_X', -1);
+   t := ini.ReadInteger('Windows', strWindowName + '_Y', -1);
+   h := ini.ReadInteger('Windows', strWindowName + '_H', -1);
+   w := ini.ReadInteger('Windows', strWindowName + '_W', -1);
 
-      form.Visible := ini.ReadBool('Windows', strWindowName + '_Open', False);
+   form.Visible := ini.ReadBool('Windows', strWindowName + '_Open', False);
 
-      pt.X := l;
-      pt.Y := t;
-      mon := Screen.MonitorFromPoint(pt, mdNearest);
-      if l < mon.Left then begin
-         l := mon.Left;
-      end;
-      if (l + w) > (mon.Left + mon.Width) then begin
-         l := (mon.Left + mon.Width) - w;
-      end;
-      if t < mon.Top then begin
-         t := mon.Top;
-      end;
-      if (t + h) > (mon.Top + mon.Height) then begin
-         t := (mon.Top + mon.Height) - H;
-      end;
+   pt.X := l;
+   pt.Y := t;
+   mon := Screen.MonitorFromPoint(pt, mdNearest);
+   if l < mon.Left then begin
+      l := mon.Left;
+   end;
+   if (l + w) > (mon.Left + mon.Width) then begin
+      l := (mon.Left + mon.Width) - w;
+   end;
+   if t < mon.Top then begin
+      t := mon.Top;
+   end;
+   if (t + h) > (mon.Top + mon.Height) then begin
+      t := (mon.Top + mon.Height) - H;
+   end;
 
-      form.Left := l;
-      form.Top := t;
+   form.Left := l;
+   form.Top := t;
 
-      if fPositionOnly = False then begin
-         if h >= 0 then begin
-            form.Height  := ini.ReadInteger('Windows', strWindowName + '_H', -1);
-         end;
-         if w >= 0 then begin
-            form.Width   := ini.ReadInteger('Windows', strWindowName + '_W', -1);
-         end;
+   if fPositionOnly = False then begin
+      if h >= 0 then begin
+         form.Height  := ini.ReadInteger('Windows', strWindowName + '_H', -1);
       end;
-   finally
-      ini.Free();
+      if w >= 0 then begin
+         form.Width   := ini.ReadInteger('Windows', strWindowName + '_W', -1);
+      end;
    end;
 end;
 
-procedure TdmZLogGlobal.WriteWindowState(form: TForm; strWindowName: string);
-var
-   ini: TMemIniFile;
+procedure TdmZLogGlobal.WriteWindowState(ini: TMemIniFile; form: TForm; strWindowName: string);
 begin
-   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      if strWindowName = '' then begin
-         strWindowName := form.Name;
-      end;
-
-      ini.WriteBool('Windows', strWindowName + '_Open', form.Visible);
-      ini.WriteInteger('Windows', strWindowName + '_X', form.Left);
-      ini.WriteInteger('Windows', strWindowName + '_Y', form.Top);
-      ini.WriteInteger('Windows', strWindowName + '_H', form.Height);
-      ini.WriteInteger('Windows', strWindowName + '_W', form.Width);
-
-      ini.UpdateFile();
-   finally
-      ini.Free();
+   if strWindowName = '' then begin
+      strWindowName := form.Name;
    end;
+
+   ini.WriteBool('Windows', strWindowName + '_Open', form.Visible);
+   ini.WriteInteger('Windows', strWindowName + '_X', form.Left);
+   ini.WriteInteger('Windows', strWindowName + '_Y', form.Top);
+   ini.WriteInteger('Windows', strWindowName + '_H', form.Height);
+   ini.WriteInteger('Windows', strWindowName + '_W', form.Width);
 end;
 
-procedure TdmZLogGlobal.ReadMainFormState(var X, Y, W, H: integer; var TB1, TB2: boolean);
+procedure TdmZLogGlobal.ReadMainFormState(ini: TMemIniFile; var X, Y, W, H: integer; var TB1, TB2: boolean);
 var
-   ini: TMemIniFile;
    pt: TPoint;
    mon: TMonitor;
 begin
-   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      X := ini.ReadInteger('Windows', 'Main_X', 0);
-      Y := ini.ReadInteger('Windows', 'Main_Y', 0);
-      W := ini.ReadInteger('Windows', 'Main_W', 0);
-      H := ini.ReadInteger('Windows', 'Main_H', 0);
+   X := ini.ReadInteger('Windows', 'Main_X', 0);
+   Y := ini.ReadInteger('Windows', 'Main_Y', 0);
+   W := ini.ReadInteger('Windows', 'Main_W', 0);
+   H := ini.ReadInteger('Windows', 'Main_H', 0);
 
-      pt.X := X;
-      pt.Y := Y;
-      mon := Screen.MonitorFromPoint(pt, mdNearest);
-      if X < mon.Left then begin
-         X := mon.Left;
-      end;
-      if (X + W) > (mon.Left + mon.Width) then begin
-         X := (mon.Left + mon.Width) - W;
-      end;
-      if Y < mon.Top then begin
-         Y := mon.Top;
-      end;
-      if (Y + H) > (mon.Top + mon.Height) then begin
-         Y := (mon.Top + mon.Height) - H;
-      end;
-
-      TB1 := ini.ReadBool('Windows', 'Main_ToolBar1', False);
-      TB2 := ini.ReadBool('Windows', 'Main_ToolBar2', False);
-   finally
-      ini.Free();
+   pt.X := X;
+   pt.Y := Y;
+   mon := Screen.MonitorFromPoint(pt, mdNearest);
+   if X < mon.Left then begin
+      X := mon.Left;
    end;
+   if (X + W) > (mon.Left + mon.Width) then begin
+      X := (mon.Left + mon.Width) - W;
+   end;
+   if Y < mon.Top then begin
+      Y := mon.Top;
+   end;
+   if (Y + H) > (mon.Top + mon.Height) then begin
+      Y := (mon.Top + mon.Height) - H;
+   end;
+
+   TB1 := ini.ReadBool('Windows', 'Main_ToolBar1', False);
+   TB2 := ini.ReadBool('Windows', 'Main_ToolBar2', False);
 end;
 
-procedure TdmZLogGlobal.WriteMainFormState(X, Y, W, H: integer; TB1, TB2: boolean);
-var
-   ini: TMemIniFile;
+procedure TdmZLogGlobal.WriteMainFormState(ini: TMemIniFile; X, Y, W, H: integer; TB1, TB2: boolean);
 begin
-   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      ini.WriteInteger('Windows', 'Main_X', X);
-      ini.WriteInteger('Windows', 'Main_Y', Y);
-      ini.WriteInteger('Windows', 'Main_W', W);
-      ini.WriteInteger('Windows', 'Main_H', H);
-      ini.WriteBool('Windows', 'Main_ToolBar1', TB1);
-      ini.WriteBool('Windows', 'Main_ToolBar2', TB2);
-
-      ini.UpdateFile();
-   finally
-      ini.Free();
-   end;
+   ini.WriteInteger('Windows', 'Main_X', X);
+   ini.WriteInteger('Windows', 'Main_Y', Y);
+   ini.WriteInteger('Windows', 'Main_W', W);
+   ini.WriteInteger('Windows', 'Main_H', H);
+   ini.WriteBool('Windows', 'Main_ToolBar1', TB1);
+   ini.WriteBool('Windows', 'Main_ToolBar2', TB2);
 end;
 
 procedure TdmZLogGlobal.CreateLog();

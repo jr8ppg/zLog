@@ -2314,89 +2314,111 @@ end;
 
 procedure TMainForm.RestoreWindowStates;
 var
+   ini: TMemIniFile;
    b: TBand;
 begin
-   dmZlogGlobal.ReadWindowState(FCheckCall2);
-   dmZlogGlobal.ReadWindowState(FPartialCheck);
-   dmZlogGlobal.ReadWindowState(FSuperCheck);
-   dmZlogGlobal.ReadWindowState(FSuperCheck2);
-   dmZlogGlobal.ReadWindowState(FCheckMulti);
-   dmZlogGlobal.ReadWindowState(FCWKeyBoard);
-   dmZlogGlobal.ReadWindowState(FRigControl, '', True);
-   dmZlogGlobal.ReadWindowState(FChatForm);
-   dmZlogGlobal.ReadWindowState(FConsolePad);
-   dmZlogGlobal.ReadWindowState(FFreqList);
-   dmZlogGlobal.ReadWindowState(FCommForm);
-   dmZlogGlobal.ReadWindowState(FScratchSheet);
-   dmZlogGlobal.ReadWindowState(FRateDialog);
-   dmZlogGlobal.ReadWindowState(FRateDialogEx);
-   dmZlogGlobal.ReadWindowState(FZAnalyze);
-   dmZlogGlobal.ReadWindowState(FCwMessagePad);
-   dmZlogGlobal.ReadWindowState(FFunctionKeyPanel);
-   dmZlogGlobal.ReadWindowState(FQsyInfoForm);
-   dmZlogGlobal.ReadWindowState(FSo2rNeoCp, '', True);
-   dmZlogGlobal.ReadWindowState(FInformation);
-   dmZlogGlobal.ReadWindowState(FZLinkForm);
-   dmZlogGlobal.ReadWindowState(FWinKeyerTester);
-   dmZlogGlobal.ReadWindowState(FFreqTest);
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   try
+      dmZlogGlobal.ReadWindowState(ini, FCheckCall2);
+      dmZlogGlobal.ReadWindowState(ini, FPartialCheck);
+      dmZlogGlobal.ReadWindowState(ini, FSuperCheck);
+      dmZlogGlobal.ReadWindowState(ini, FSuperCheck2);
+      dmZlogGlobal.ReadWindowState(ini, FCheckMulti);
+      dmZlogGlobal.ReadWindowState(ini, FCWKeyBoard);
+      dmZlogGlobal.ReadWindowState(ini, FRigControl, '', True);
+      dmZlogGlobal.ReadWindowState(ini, FChatForm);
+      dmZlogGlobal.ReadWindowState(ini, FConsolePad);
+      dmZlogGlobal.ReadWindowState(ini, FFreqList);
+      dmZlogGlobal.ReadWindowState(ini, FCommForm);
+      dmZlogGlobal.ReadWindowState(ini, FScratchSheet);
+      dmZlogGlobal.ReadWindowState(ini, FRateDialog);
+      dmZlogGlobal.ReadWindowState(ini, FRateDialogEx);
+      dmZlogGlobal.ReadWindowState(ini, FZAnalyze);
+      dmZlogGlobal.ReadWindowState(ini, FCwMessagePad);
+      dmZlogGlobal.ReadWindowState(ini, FFunctionKeyPanel);
+      dmZlogGlobal.ReadWindowState(ini, FQsyInfoForm);
+      dmZlogGlobal.ReadWindowState(ini, FSo2rNeoCp, '', True);
+      dmZlogGlobal.ReadWindowState(ini, FInformation);
+      dmZlogGlobal.ReadWindowState(ini, FZLinkForm);
+      dmZlogGlobal.ReadWindowState(ini, FWinKeyerTester);
+      dmZlogGlobal.ReadWindowState(ini, FFreqTest);
 
-   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      dmZlogGlobal.ReadWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
+      for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+         FBandScopeEx[b].LoadSettings(ini, 'BandScope(' + MHzString[b] + ')');
+      end;
+      FBandScope.LoadSettings(ini, 'BandScope');
+      FBandScopeNewMulti.LoadSettings(ini, 'BandScopeNewMulti');
+      FBandScopeAllBands.LoadSettings(ini, 'BandScopeAllBands');
+
+      FSuperCheck.Columns := dmZlogGlobal.SuperCheckColumns;
+      FSuperCheck2.Columns := dmZlogGlobal.SuperCheck2Columns;
+
+      FZAnalyze.ExcludeZeroPoints := dmZLogGlobal.Settings.FAnalyzeExcludeZeroPoints;
+      FZAnalyze.ExcludeZeroHour := dmZLogGlobal.Settings.FAnalyzeExcludeZeroHour;
+      FZAnalyze.ShowCW := dmZLogGlobal.Settings.FAnalyzeShowCW;
+
+      dmZlogGlobal.ReadWindowState(ini, MyContest.MultiForm, 'MultiForm', False);
+      dmZlogGlobal.ReadWindowState(ini, MyContest.ScoreForm, 'ScoreForm', True);
+   finally
+      ini.Free();
    end;
-   dmZlogGlobal.ReadWindowState(FBandScope, 'BandScope');
-   dmZlogGlobal.ReadWindowState(FBandScopeNewMulti, 'BandScopeNewMulti');
-   dmZlogGlobal.ReadWindowState(FBandScopeAllBands, 'BandScopeAllBands');
-
-   FSuperCheck.Columns := dmZlogGlobal.SuperCheckColumns;
-   FSuperCheck2.Columns := dmZlogGlobal.SuperCheck2Columns;
-
-   FZAnalyze.ExcludeZeroPoints := dmZLogGlobal.Settings.FAnalyzeExcludeZeroPoints;
-   FZAnalyze.ExcludeZeroHour := dmZLogGlobal.Settings.FAnalyzeExcludeZeroHour;
-   FZAnalyze.ShowCW := dmZLogGlobal.Settings.FAnalyzeShowCW;
 end;
 
 procedure TMainForm.RecordWindowStates;
 var
+   ini: TMemIniFile;
    b: TBand;
 begin
-   dmZlogGlobal.WriteWindowState(FCheckCall2);
-   dmZlogGlobal.WriteWindowState(FPartialCheck);
-   dmZlogGlobal.WriteWindowState(FSuperCheck);
-   dmZlogGlobal.WriteWindowState(FSuperCheck2);
-   dmZlogGlobal.WriteWindowState(FCheckMulti);
-   dmZlogGlobal.WriteWindowState(FCWKeyBoard);
-   dmZlogGlobal.WriteWindowState(FRigControl);
-   dmZlogGlobal.WriteWindowState(FChatForm);
-   dmZlogGlobal.WriteWindowState(FConsolePad);
-   dmZlogGlobal.WriteWindowState(FFreqList);
-   dmZlogGlobal.WriteWindowState(FCommForm);
-   dmZlogGlobal.WriteWindowState(FScratchSheet);
-   dmZlogGlobal.WriteWindowState(FRateDialog);
-   dmZlogGlobal.WriteWindowState(FRateDialogEx);
-   dmZlogGlobal.WriteWindowState(FZAnalyze);
-   dmZlogGlobal.WriteWindowState(FCwMessagePad);
-   dmZlogGlobal.WriteWindowState(FFunctionKeyPanel);
-   dmZlogGlobal.WriteWindowState(FQsyInfoForm);
-   dmZlogGlobal.WriteWindowState(FSo2rNeoCp);
-   dmZlogGlobal.WriteWindowState(FInformation);
-   dmZlogGlobal.WriteWindowState(FZLinkForm);
-   dmZlogGlobal.WriteWindowState(FWinKeyerTester);
-   dmZlogGlobal.WriteWindowState(FFreqTest);
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   try
+      dmZlogGlobal.WriteWindowState(ini, FCheckCall2);
+      dmZlogGlobal.WriteWindowState(ini, FPartialCheck);
+      dmZlogGlobal.WriteWindowState(ini, FSuperCheck);
+      dmZlogGlobal.WriteWindowState(ini, FSuperCheck2);
+      dmZlogGlobal.WriteWindowState(ini, FCheckMulti);
+      dmZlogGlobal.WriteWindowState(ini, FCWKeyBoard);
+      dmZlogGlobal.WriteWindowState(ini, FRigControl);
+      dmZlogGlobal.WriteWindowState(ini, FChatForm);
+      dmZlogGlobal.WriteWindowState(ini, FConsolePad);
+      dmZlogGlobal.WriteWindowState(ini, FFreqList);
+      dmZlogGlobal.WriteWindowState(ini, FCommForm);
+      dmZlogGlobal.WriteWindowState(ini, FScratchSheet);
+      dmZlogGlobal.WriteWindowState(ini, FRateDialog);
+      dmZlogGlobal.WriteWindowState(ini, FRateDialogEx);
+      dmZlogGlobal.WriteWindowState(ini, FZAnalyze);
+      dmZlogGlobal.WriteWindowState(ini, FCwMessagePad);
+      dmZlogGlobal.WriteWindowState(ini, FFunctionKeyPanel);
+      dmZlogGlobal.WriteWindowState(ini, FQsyInfoForm);
+      dmZlogGlobal.WriteWindowState(ini, FSo2rNeoCp);
+      dmZlogGlobal.WriteWindowState(ini, FInformation);
+      dmZlogGlobal.WriteWindowState(ini, FZLinkForm);
+      dmZlogGlobal.WriteWindowState(ini, FWinKeyerTester);
+      dmZlogGlobal.WriteWindowState(ini, FFreqTest);
 
-   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      dmZLogGlobal.WriteWindowState(FBandScopeEx[b], 'BandScope(' + MHzString[b] + ')');
+      for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+         FBandScopeEx[b].SaveSettings(ini, 'BandScope(' + MHzString[b] + ')');
+      end;
+      FBandScope.SaveSettings(ini, 'BandScope');
+      FBandScopeNewMulti.SaveSettings(ini, 'BandScopeNewMulti');
+      FBandScopeAllBands.SaveSettings(ini, 'BandScopeAllBands');
+
+      dmZLogGlobal.WriteMainFormState(ini, Left, top, Width, Height, mnHideCWPhToolBar.Checked, mnHideMenuToolbar.Checked);
+      dmZLogGlobal.SuperCheckColumns := FSuperCheck.Columns;
+      dmZLogGlobal.SuperCheck2Columns := FSuperCheck2.Columns;
+
+      dmZLogGlobal.Settings.FAnalyzeExcludeZeroPoints := FZAnalyze.ExcludeZeroPoints;
+      dmZLogGlobal.Settings.FAnalyzeExcludeZeroHour := FZAnalyze.ExcludeZeroHour;
+      dmZLogGlobal.Settings.FAnalyzeShowCW := FZAnalyze.ShowCW;
+
+      if MyContest <> nil then begin
+         dmZlogGlobal.WriteWindowState(ini, MyContest.MultiForm, 'MultiForm');
+         dmZlogGlobal.WriteWindowState(ini, MyContest.ScoreForm, 'ScoreForm');
+      end;
+
+      ini.UpdateFile();
+   finally
+      ini.Free();
    end;
-   dmZLogGlobal.WriteWindowState(FBandScope, 'BandScope');
-   dmZLogGlobal.WriteWindowState(FBandScopeNewMulti, 'BandScopeNewMulti');
-   dmZLogGlobal.WriteWindowState(FBandScopeAllBands, 'BandScopeAllBands');
-
-   dmZLogGlobal.WriteMainFormState(Left, top, Width, Height, mnHideCWPhToolBar.Checked, mnHideMenuToolbar.Checked);
-   dmZLogGlobal.SuperCheckColumns := FSuperCheck.Columns;
-   dmZLogGlobal.SuperCheck2Columns := FSuperCheck2.Columns;
-
-   dmZLogGlobal.Settings.FAnalyzeExcludeZeroPoints := FZAnalyze.ExcludeZeroPoints;
-   dmZLogGlobal.Settings.FAnalyzeExcludeZeroHour := FZAnalyze.ExcludeZeroHour;
-   dmZLogGlobal.Settings.FAnalyzeShowCW := FZAnalyze.ShowCW;
 end;
 
 procedure TMainForm.FileExit(Sender: TObject);
@@ -4029,32 +4051,38 @@ end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 var
+   ini: TMemIniFile;
    X, Y, W, H: Integer;
    B, BB: Boolean;
 begin
-   dmZlogGlobal.ReadMainFormState(X, Y, W, H, B, BB);
-   if (W > 0) and (H > 0) then begin
-      if B then begin
-         mnHideCWPhToolBar.Checked := True;
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   try
+      dmZlogGlobal.ReadMainFormState(ini, X, Y, W, H, B, BB);
+      if (W > 0) and (H > 0) then begin
+         if B then begin
+            mnHideCWPhToolBar.Checked := True;
+         end;
+         if BB then begin
+            mnHideMenuToolbar.Checked := True;
+         end;
+         ShowToolBar(mOther);
+
+         Left := X;
+         top := Y;
+         Width := W;
+         Height := H;
       end;
-      if BB then begin
-         mnHideMenuToolbar.Checked := True;
+
+      if FPostContest then begin
+         MessageDlg(TMainForm_Change_Date, mtInformation, [mbOK], 0); { HELP context 0 }
       end;
-      ShowToolBar(mOther);
 
-      Left := X;
-      top := Y;
-      Width := W;
-      Height := H;
+      PostMessage(Handle, WM_ZLOG_INIT, 0, 0);
+
+   //   zyloRuntimeLaunch;
+   finally
+      ini.Free();
    end;
-
-   if FPostContest then begin
-      MessageDlg(TMainForm_Change_Date, mtInformation, [mbOK], 0); { HELP context 0 }
-   end;
-
-   PostMessage(Handle, WM_ZLOG_INIT, 0, 0);
-
-//   zyloRuntimeLaunch;
 end;
 
 procedure TMainForm.CWFButtonClick(Sender: TObject);
@@ -4100,8 +4128,6 @@ begin
    FBandScopeAllBands.Release();
 
    if MyContest <> nil then begin
-      dmZlogGlobal.WriteWindowState(MyContest.MultiForm, 'MultiForm');
-      dmZlogGlobal.WriteWindowState(MyContest.ScoreForm, 'ScoreForm');
       MyContest.Free;
    end;
 
@@ -5946,37 +5972,45 @@ begin
 end;
 
 procedure TMainForm.mnMMTTYClick(Sender: TObject);
+var
+   ini: TMemIniFile;
 begin
-   if mnMMTTY.Tag = 0 then begin
-      mnMMTTY.Tag := 1;
-      mnMMTTY.Caption := 'Exit MMTTY';
-      mnTTYConsole.Visible := True;
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   try
+      if mnMMTTY.Tag = 0 then begin
+         mnMMTTY.Tag := 1;
+         mnMMTTY.Caption := 'Exit MMTTY';
+         mnTTYConsole.Visible := True;
 
-      FTTYConsole := TTTYConsole.Create(Self);
-      dmZlogGlobal.ReadWindowState(FTTYConsole);
+         FTTYConsole := TTTYConsole.Create(Self);
+         dmZlogGlobal.ReadWindowState(ini, FTTYConsole);
 
-      dmZLogKeyer.CloseBGK();
+         dmZLogKeyer.CloseBGK();
 
-      FTTYConsole.SetTTYMode(ttyMMTTY);
-      InitializeMMTTY(Handle);
+         FTTYConsole.SetTTYMode(ttyMMTTY);
+         InitializeMMTTY(Handle);
 
-      FormShowAndRestore(FTTYConsole);
-      FTTYConsole.SetFocus;
-   end
-   else begin
-      mnMMTTY.Tag := 0;
-      mnMMTTY.Caption := 'Load MMTTY';
-      mnTTYConsole.Visible := False;
+         FormShowAndRestore(FTTYConsole);
+         FTTYConsole.SetFocus;
+      end
+      else begin
+         mnMMTTY.Tag := 0;
+         mnMMTTY.Caption := 'Load MMTTY';
+         mnTTYConsole.Visible := False;
 
-      dmZlogGlobal.WriteWindowState(FTTYConsole);
+         dmZlogGlobal.WriteWindowState(ini, FTTYConsole);
+         ini.UpdateFile();
 
-      FTTYConsole.Close();
-      FTTYConsole.Release();
+         FTTYConsole.Close();
+         FTTYConsole.Release();
 
-      ExitMMTTY;
+         ExitMMTTY;
 
-      dmZLogKeyer.InitializeBGK(dmZlogGlobal.Settings.CW._interval);
-      dmZLogGlobal.InitializeCW();
+         dmZLogKeyer.InitializeBGK(dmZlogGlobal.Settings.CW._interval);
+         dmZLogGlobal.InitializeCW();
+      end;
+   finally
+      ini.Free();
    end;
 end;
 
@@ -6385,8 +6419,6 @@ begin
       SideToneButton.Down := dmZlogGlobal.Settings.CW._sidetone;
 
       RestoreWindowStates;
-      dmZlogGlobal.ReadWindowState(MyContest.MultiForm, 'MultiForm', False);
-      dmZlogGlobal.ReadWindowState(MyContest.ScoreForm, 'ScoreForm', True);
 
       if Pos('WAEDC', MyContest.Name) > 0 then begin
          MessageBox(Handle, PChar(TMainForm_QTC_Sent), PChar(Application.Title), MB_ICONINFORMATION or MB_OK);
@@ -8927,42 +8959,48 @@ var
    B, BB: Boolean;
    mon: TMonitor;
    pt: TPoint;
+   ini: TMemIniFile;
 begin
-   dmZlogGlobal.ReadMainFormState(X, Y, W, H, B, BB);
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   try
+      dmZlogGlobal.ReadMainFormState(ini, X, Y, W, H, B, BB);
 
-   if (W > 0) and (H > 0) then begin
-      pt.X := X;
-      pt.Y := Y;
-      mon := Screen.MonitorFromPoint(pt, mdNearest);
-      if X < mon.Left then begin
-         X := mon.Left;
-      end;
-      if X > (mon.Left + mon.Width) then begin
-         X := (mon.Left + mon.Width) - W;
-      end;
-      if Y < mon.Top then begin
-         Y := mon.Top;
-      end;
-      if Y > (mon.Top + mon.Height) then begin
-         Y := (mon.Top + mon.Height) - H;
-      end;
+      if (W > 0) and (H > 0) then begin
+         pt.X := X;
+         pt.Y := Y;
+         mon := Screen.MonitorFromPoint(pt, mdNearest);
+         if X < mon.Left then begin
+            X := mon.Left;
+         end;
+         if X > (mon.Left + mon.Width) then begin
+            X := (mon.Left + mon.Width) - W;
+         end;
+         if Y < mon.Top then begin
+            Y := mon.Top;
+         end;
+         if Y > (mon.Top + mon.Height) then begin
+            Y := (mon.Top + mon.Height) - H;
+         end;
 
-      if B then begin
-         mnHideCWPhToolBar.Checked := True;
-      end;
-      if BB then begin
-         mnHideMenuToolbar.Checked := True;
-      end;
-      ShowToolBar(mOther);
+         if B then begin
+            mnHideCWPhToolBar.Checked := True;
+         end;
+         if BB then begin
+            mnHideMenuToolbar.Checked := True;
+         end;
+         ShowToolBar(mOther);
 
-      Position := poDesigned;
-      Left := X;
-      top := Y;
-      Width := W;
-      Height := H;
-   end
-   else begin
-      Position := poScreenCenter;
+         Position := poDesigned;
+         Left := X;
+         top := Y;
+         Width := W;
+         Height := H;
+      end
+      else begin
+         Position := poScreenCenter;
+      end;
+   finally
+      ini.Free();
    end;
 end;
 
