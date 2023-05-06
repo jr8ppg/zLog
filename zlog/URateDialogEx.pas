@@ -785,9 +785,10 @@ end;
 procedure TRateDialogEx.ScoreGrid2DrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
 var
    strText: string;
-   t: Integer;
    r: Integer;
    c: Integer;
+   Index: Integer;
+   nTarget, nActual: Integer;
 begin
    strText := ScoreGrid2.Cells[ACol, ARow];
    with ScoreGrid2.Canvas do begin
@@ -831,15 +832,42 @@ begin
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
       else begin     // TARGET数、QSO数表示
-         t := StrToIntDef(strText, 0);
-         if t = 0 then begin
-            strText := '';
+         Index := Pos('/', strText);
+         if Index <= 0 then begin
+            nActual := StrToIntDef(strText, 0);
+            nTarget := 0;
+            if nActual = 0 then begin
+               strText := '';
+            end
+            else begin
+               strText := IntToStr(nActual);
+            end;
          end
          else begin
-            strText := IntToStr(t);
+            nTarget := StrToIntDef(Copy(strText, Index + 1), 0);
+            nActual := StrToIntDef(Copy(strText, 1, Index - 1), 0);
+
+            // 現在時刻の列はactual/targetの表示にする
+            if ACol = c then begin
+               // strText := IntToStr(nActual) + '/' + IntToStr(Target);
+               ScoreGrid2.ColWidths[ACol] := 80;
+            end
+            else begin
+               ScoreGrid2.ColWidths[ACol] := 30;
+               if nActual = 0 then begin
+                  strText := '';
+               end
+               else begin
+                  strText := IntToStr(nActual);
+               end;
+            end;
+
+            if (nTarget = 0) and (nActual = 0) then begin
+               strText := '';
+            end;
          end;
 
-         if t >= 0 then begin
+         if nActual >= 0 then begin
             Font.Color := clBlack;
          end
          else begin
@@ -1081,9 +1109,12 @@ begin
 
       // 各時間の列
       for i := 1 to h do begin
-         ScoreGrid2.Cells[i, R]  := IntToStr(ATarget.Bands[b].Hours[i].Actual);     // 実績値
-         ScoreGrid2.Cells[i, 17] := IntToStr(ATarget.Total.Hours[i].Actual);        // 合計
-         ScoreGrid2.Cells[i, 18] := IntToStr(ATarget.Cumulative.Hours[i].Actual);   // 累計
+         ScoreGrid2.Cells[i, R]  := IntToStr(ATarget.Bands[b].Hours[i].Actual) + '/' +     // 実績値
+                                    IntToStr(ATarget.Bands[b].Hours[i].Target);
+         ScoreGrid2.Cells[i, 17] := IntToStr(ATarget.Total.Hours[i].Actual) + '/' +        // 合計
+                                    IntToStr(ATarget.Total.Hours[i].Target);
+         ScoreGrid2.Cells[i, 18] := IntToStr(ATarget.Cumulative.Hours[i].Actual) + '/' +   // 累計
+                                    IntToStr(ATarget.Cumulative.Hours[i].Target);
       end;
 
       // (+/-)
