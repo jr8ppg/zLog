@@ -10507,15 +10507,17 @@ begin
    // CQループ中のキー入力割り込み
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
       if (FCwCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
-         FCQLoopPause := True;
-         timerCqRepeat.Enabled := False;
-         dmZLogKeyer.ClrBuffer;
+         if FTabKeyPressed = False then begin
+            CancelCqRepeat();
+            dmZLogKeyer.ClrBuffer;
+         end;
       end;
 
       if (FPhCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
-         FCQLoopPause := True;
-         timerCqRepeat.Enabled := False;
-         FVoiceForm.StopVoice();
+         if FTabKeyPressed = False then begin
+            CancelCqRepeat();
+            FVoiceForm.StopVoice();
+         end;
       end;
    end
    else begin
