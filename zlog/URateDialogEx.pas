@@ -1177,8 +1177,10 @@ begin
       Inc(R);
    end;
 
+   // 合計行分進める
+   Inc(R);
+
    // 使用しないバンド非表示(target)
-   R := 17;
    for b := b19 to b10g do begin
       if dmZLogGlobal.Settings._activebands[b] = True then begin
          ScoreGrid.RowHeights[R] := 24;
