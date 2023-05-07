@@ -138,7 +138,8 @@ uses
   URigCtrlLib in 'URigCtrlLib.pas',
   URigCtrlIcom in 'URigCtrlIcom.pas',
   URigCtrlKenwood in 'URigCtrlKenwood.pas',
-  URigCtrlYaesu in 'URigCtrlYaesu.pas';
+  URigCtrlYaesu in 'URigCtrlYaesu.pas',
+  UStartTimeDialog in 'UStartTimeDialog.pas' {StartTimeDialog};
 
 {$R *.RES}
 

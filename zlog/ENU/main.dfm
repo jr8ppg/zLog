@@ -5817,6 +5817,10 @@ object MainForm: TMainForm
       object N1: TMenuItem
         Caption = '-'
       end
+      object menuCorrectStartTime: TMenuItem
+        Caption = 'Correct start time'
+        OnClick = menuCorrectStartTimeClick
+      end
       object menuCorrectNR: TMenuItem
         Action = actionCorrectSentNr
       end

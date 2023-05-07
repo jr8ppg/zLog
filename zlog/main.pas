@@ -515,6 +515,7 @@ type
     actionChangePower2: TAction;
     menuUsersGuide: TMenuItem;
     menuPortal: TMenuItem;
+    menuCorrectStartTime: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -776,6 +777,7 @@ type
     procedure actionShowMsgMgrExecute(Sender: TObject);
     procedure menuUsersGuideClick(Sender: TObject);
     procedure menuPortalClick(Sender: TObject);
+    procedure menuCorrectStartTimeClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1017,6 +1019,7 @@ type
     procedure EditCurrentRow();
     procedure CallSpaceBarProc(C, N, B: TEdit);
     procedure ShowSentNumber();
+    function InputStartTime(): TDateTime;
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1175,7 +1178,7 @@ uses
   UIntegerDialog, UNewPrefix, UKCJScore,
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension,
-  UTargetEditor, UExportHamlog, UExportCabrillo;
+  UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog;
 
 {$R *.DFM}
 
@@ -3763,6 +3766,9 @@ var
    st, st2: string;
    B: TBand;
    band_bakup: TBand;
+   sthh: Integer;
+   yy1, mm1, dd1, hh1, nn1, ss1, ms1: Word;
+   basedt: TDatetime;
 
    function FindPrevQSO(): Integer;
    var
@@ -3897,6 +3903,16 @@ begin
    // if MyContest.Name = 'Pedition mode' then
    if not FPostContest then begin
       CurrentQSO.UpdateTime;
+   end;
+
+   // コンテスト開始前かチェック
+   sthh := MyContest.StartTime;
+   if sthh > -1 then begin
+      // 基準日時前ならInvalid
+      if CurrentQSO.Time < Log.BaseTime then begin
+         CurrentQSO.Invalid := True;
+         CurrentQSO.Memo := 'BEFORE CONTEST';
+      end;
    end;
 
    // ログに記録
@@ -5705,6 +5721,12 @@ begin
       MyContest.ScoreForm.SaveSummary(GeneralSaveDialog.filename);
 end;
 
+// Correct start time
+procedure TMainForm.menuCorrectStartTimeClick(Sender: TObject);
+begin
+   Log.BaseTime := InputStartTime();
+end;
+
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
 var
    i, _top, _bottom: Integer;
@@ -6133,6 +6155,7 @@ var
    i, j: Integer;
    b: Integer;
    BB: TBand;
+   dt: TDateTime;
 begin
    FInitialized := False;
 
@@ -6394,6 +6417,12 @@ begin
          else begin // user hit cancel
             MessageDlg(TMainForm_Need_File_Name, mtWarning, [mbOK], 0); { HELP context 0 }
          end;
+      end;
+
+      // 開始時刻
+      if Log.BaseTime = 0 then begin
+         dt := InputStartTime();
+         Log.BaseTime := dt;
       end;
 
       SetWindowCaption();
@@ -10934,6 +10963,38 @@ end;
 procedure TMainForm.ShowRigControlInfo(strText: string);
 begin
    StatusLine.Panels[2].Text := strText;
+end;
+
+function TMainForm.InputStartTime(): TDateTime;
+var
+   dlg: TStartTimeDialog;
+   dt: TDateTime;
+   yy, mm, dd, hh, nn, ss, ms: Word;
+begin
+   dlg := TStartTimeDialog.Create(Self);
+   try
+      if Log.BaseTime = 0 then begin
+         dt := Now;
+         if MyContest.StartTime = 0 then begin
+            dt := IncDay(dt, 1);
+         end;
+
+         DecodeDateTime(dt, yy, mm, dd, hh, nn, ss, ms);
+         dlg.BaseTime := EncodeDateTime(yy, mm, dd, MyContest.StartTime, 0, 0, 0);
+      end
+      else begin
+         dlg.BaseTime := Log.BaseTime;
+      end;
+
+      if dlg.ShowModal() <> mrOK then begin
+         Result := dlg.BaseTime;
+         Exit;
+      end;
+
+      Result := dlg.BaseTime;
+   finally
+      dlg.Release();
+   end;
 end;
 
 { TBandScopeNotifyThread }

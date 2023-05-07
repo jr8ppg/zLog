@@ -76,6 +76,9 @@ type
     property BandHigh: TBand read FBandHigh;
     property BandPlan: string read FBandPlan;
 
+    property StartTime: Integer read FStartTime write FStartTime;
+    property Period: Integer read FPeriod write FPeriod;
+
     procedure RenewScoreAndMulti();
   end;
 

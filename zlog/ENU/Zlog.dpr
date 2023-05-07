@@ -83,6 +83,7 @@ library Zlog;
 {ITE} {DFMFileType} {USo2rNeoCp.dfm}
 {ITE} {DFMFileType} {USpotForm.dfm}
 {ITE} {DFMFileType} {USpotterListDlg.dfm}
+{ITE} {DFMFileType} {UStartTimeDialog.dfm}
 {ITE} {DFMFileType} {UStatusEdit.dfm}
 {ITE} {DFMFileType} {USummaryInfo.dfm}
 {ITE} {DFMFileType} {USuperCheck.dfm}
@@ -189,6 +190,7 @@ library Zlog;
 {$R 'USo2rNeoCp.dfm' 'formSo2rNeoCp:TForm'}
 {$R 'USpotForm.dfm' 'SpotForm:TForm'}
 {$R 'USpotterListDlg.dfm' 'formSpotterListDlg:TForm'}
+{$R 'UStartTimeDialog.dfm' 'StartTimeDialog:TForm'}
 {$R 'UStatusEdit.dfm' 'formStatusEdit:TForm'}
 {$R 'USummaryInfo.dfm' 'SummaryInfo:TForm'}
 {$R 'USuperCheck.dfm' 'SuperCheck:TForm'}
