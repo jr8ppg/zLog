@@ -25,6 +25,10 @@ type
     FBandLow: TBand;
     FBandHigh: TBand;
     FBandPlan: string;
+
+    FStartTime: Integer;   // ŠJŽnŽžŠÔ 21‚â0‚È‚Ç UTC‚©‚Ç‚¤‚©‚ÍLog.QsoList[0].RSTsent‚Å”»’f‚·‚é
+    FPeriod: Integer;      // ŠúŠÔ 12,24,48‚È‚Ç
+
     function DispExchangeOnOtherBands(strCallsign: string; aBand: TBand): string; virtual;
   public
     WantedList : TList;
@@ -464,6 +468,9 @@ begin
    FBandHigh := b50;
 
    FBandPlan := 'JA';
+
+   FStartTime := 21;
+   FPeriod := 18;
 end;
 
 procedure TContest.PostWanted(S: string);
@@ -811,6 +818,9 @@ begin
    FBandLow := b19;
    FBandHigh := b28;
    FBandPlan := 'DX';
+
+   FStartTime := 7;  // UTC
+   FPeriod := 6;
 end;
 
 procedure TJIDXContest.SetPoints(aQSO: TQSO);
@@ -833,6 +843,9 @@ begin
    FBandLow := b19;
    FBandHigh := b28;
    FBandPlan := 'DX';
+
+   FStartTime := 0;  // UTC
+   FPeriod := 48;
 end;
 
 constructor TARRLDXContestW.Create(AOwner: TComponent; N: string);
@@ -852,6 +865,9 @@ begin
    FBandLow := b19;
    FBandHigh := b28;
    FBandPlan := 'DX';
+
+   FStartTime := 0;  // UTC
+   FPeriod := 48;
 end;
 
 constructor TAllAsianContest.Create(AOwner: TComponent; N: string);
@@ -871,6 +887,9 @@ begin
    FBandLow := b19;
    FBandHigh := b28;
    FBandPlan := 'DX';
+
+   FStartTime := 0;  // UTC
+   FPeriod := 48;
 end;
 
 procedure TAllAsianContest.SetPoints(aQSO: TQSO);
@@ -889,6 +908,9 @@ begin
    SentStr := '$V';
    FNeedCtyDat := True;
    FBandPlan := 'DX';
+
+   FStartTime := 7;  // UTC
+   FPeriod := 6;
 end;
 
 procedure TJIDXContestDX.SetPoints(aQSO: TQSO);
@@ -920,6 +942,9 @@ begin
    FBandLow := b19;
    FBandHigh := b28;
    FBandPlan := 'DX';
+
+   FStartTime := 0;  // UTC
+   FPeriod := 48;
 end;
 
 constructor TWAEContest.Create(AOwner: TComponent; N: string);
@@ -944,6 +969,9 @@ begin
    FBandLow := b19;
    FBandHigh := b28;
    FBandPlan := 'DX';
+
+   FStartTime := 0;  // UTC
+   FPeriod := 48;
 end;
 
 destructor TWAEContest.Destroy();
@@ -976,6 +1004,9 @@ begin
    FBandLow := b35;
    FBandHigh := b28;
    FBandPlan := 'DX';
+
+   FStartTime := 12; // UTC
+   FPeriod := 24;
 end;
 
 constructor TARRL10Contest.Create(AOwner: TComponent; N: string);
@@ -1000,6 +1031,9 @@ begin
    FBandLow := b28;
    FBandHigh := b28;
    FBandPlan := 'DX';
+
+   FStartTime := 0;  // UTC
+   FPeriod := 48;
 end;
 
 constructor TJA0Contest.Create(AOwner: TComponent; N: string);
@@ -1018,6 +1052,9 @@ begin
    FBandLow := b35;
    FBandHigh := b28;
    FBandPlan := 'JA';
+
+   FStartTime := -1;
+   FPeriod := 0;
 end;
 
 constructor TJA0ContestZero.Create(AOwner: TComponent; N: string);
@@ -1060,6 +1097,9 @@ begin
    FBandLow := b19;
    FBandHigh := b28;
    FBandPlan := 'DX';
+
+   FStartTime := -1;
+   FPeriod := 0;
 end;
 
 constructor TCQWWContest.Create(AOwner: TComponent; N: string; fJIDX: Boolean);
@@ -1084,6 +1124,9 @@ begin
    FBandLow := b19;
    FBandHigh := b28;
    FBandPlan := 'DX';
+
+   FStartTime := 0;  // UTC
+   FPeriod := 48;
 end;
 
 function TCQWWContest.SpaceBarProc(strCallsign: string; strNumber: string): string;
@@ -1132,6 +1175,9 @@ begin
    FBandLow := b19;
    FBandHigh := b28;
    FBandPlan := 'DX';
+
+   FStartTime := 12; // UTC
+   FPeriod := 24;
 end;
 
 function TIARUContest.SpaceBarProc(strCallsign: string; strNumber: string): string;
@@ -1168,6 +1214,9 @@ begin
 
    FBandLow := b19;
    FBandHigh := b10g;
+
+   FStartTime := -1;
+   FPeriod := 0;
 end;
 
 constructor TALLJAContest.Create(AOwner: TComponent; N: string);
@@ -1177,6 +1226,8 @@ begin
    ScoreForm := TALLJAScore.Create(AOwner, b19, b50);
    PastEditForm := TEditDialog.Create(AOwner);
    SentStr := '$V$P';
+   FStartTime := 21;
+   FPeriod := 24;
 end;
 
 function TALLJAContest.QTHString(aQSO: TQSO): string;
@@ -1222,6 +1273,8 @@ begin
    SentStr := '$Q$P';
    FBandLow := b19;
    FBandHigh := b10g;
+   FStartTime := 21;
+   FPeriod := 24;
 end;
 
 constructor TFDContest.Create(AOwner: TComponent; N: string);
@@ -1234,6 +1287,8 @@ begin
    FUseCoeff := True;
    FBandLow := b19;
    FBandHigh := b10g;
+   FStartTime := 21;
+   FPeriod := 18;
 end;
 
 constructor TSixDownContest.Create(AOwner: TComponent; N: string);
@@ -1248,6 +1303,8 @@ begin
    SentStr := '$Q$P';
    FBandLow := b50;
    FBandHigh := b10g;
+   FStartTime := 21;
+   FPeriod := 18;
 end;
 
 constructor TGeneralContest.Create(AOwner: TComponent; N, CFGFileName: string);
@@ -1293,6 +1350,9 @@ begin
    if FConfig.BandPlan <> '' then begin
       FBandPlan := FConfig.BandPlan;
    end;
+
+   FStartTime := FConfig.StartTime;
+   FPeriod := FConfig.Period;
 end;
 
 destructor TGeneralContest.Destroy();

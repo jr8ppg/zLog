@@ -14,6 +14,7 @@ object CFGEdit: TCFGEdit
   OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
+  OnShow = FormShow
   DesignSize = (
     609
     257)
@@ -27,7 +28,7 @@ object CFGEdit: TCFGEdit
     Anchors = [akTop, akRight]
     Caption = 'OK'
     Default = True
-    TabOrder = 3
+    TabOrder = 4
     OnClick = buttonOKClick
   end
   object buttonCancel: TButton
@@ -39,7 +40,7 @@ object CFGEdit: TCFGEdit
     Cancel = True
     Caption = #12461#12515#12531#12475#12523
     ModalResult = 2
-    TabOrder = 4
+    TabOrder = 5
   end
   object GroupBox1: TGroupBox
     Left = 8
@@ -288,10 +289,104 @@ object CFGEdit: TCFGEdit
     object checkBand16: TCheckBox
       Left = 204
       Top = 77
-      Width = 50
+      Width = 69
       Height = 17
-      Caption = '10Gup'
+      Caption = '10G&&up'
       TabOrder = 15
+    end
+  end
+  object GroupBox4: TGroupBox
+    Left = 323
+    Top = 115
+    Width = 186
+    Height = 134
+    Caption = 'Time'
+    TabOrder = 3
+    object Label4: TLabel
+      Left = 16
+      Top = 76
+      Width = 51
+      Height = 12
+      Caption = 'Start hour'
+    end
+    object Label9: TLabel
+      Left = 16
+      Top = 102
+      Width = 32
+      Height = 12
+      Caption = 'Period'
+    end
+    object Label10: TLabel
+      Left = 128
+      Top = 102
+      Width = 28
+      Height = 12
+      Caption = 'hours'
+    end
+    object comboStartTime: TComboBox
+      Left = 81
+      Top = 73
+      Width = 41
+      Height = 20
+      MaxLength = 2
+      TabOrder = 2
+      Items.Strings = (
+        '0'
+        '1'
+        '2'
+        '3'
+        '4'
+        '5'
+        '6'
+        '7'
+        '8'
+        '9'
+        '10'
+        '11'
+        '12'
+        '13'
+        '14'
+        '15'
+        '16'
+        '17'
+        '18'
+        '19'
+        '20'
+        '21'
+        '22'
+        '23')
+    end
+    object comboPeriod: TComboBox
+      Left = 81
+      Top = 99
+      Width = 41
+      Height = 20
+      MaxLength = 2
+      TabOrder = 3
+      Items.Strings = (
+        '4'
+        '6'
+        '12'
+        '18'
+        '24'
+        '48')
+    end
+    object checkUseUTC: TCheckBox
+      Left = 16
+      Top = 23
+      Width = 129
+      Height = 17
+      Caption = 'Use UTC'
+      TabOrder = 0
+    end
+    object checkNoDefinedStartTime: TCheckBox
+      Left = 16
+      Top = 49
+      Width = 129
+      Height = 17
+      Caption = 'no defined start time'
+      TabOrder = 1
+      OnClick = checkNoDefinedStartTimeClick
     end
   end
 end
