@@ -66,6 +66,7 @@ library Zlog;
 {ITE} {DFMFileType} {UNewPrefix.dfm}
 {ITE} {DFMFileType} {UNRDialog.dfm}
 {ITE} {DFMFileType} {UOperatorEdit.dfm}
+{ITE} {DFMFileType} {UOperatorPowerDialog.dfm}
 {ITE} {DFMFileType} {UOptions.dfm}
 {ITE} {DFMFileType} {UPackageLoader.dfm}
 {ITE} {DFMFileType} {UPartials.dfm}
@@ -173,6 +174,7 @@ library Zlog;
 {$R 'UNewPrefix.dfm' 'NewPrefix:TForm'}
 {$R 'UNRDialog.dfm' 'NRDialog:TForm'}
 {$R 'UOperatorEdit.dfm' 'formOperatorEdit:TForm'}
+{$R 'UOperatorPowerDialog.dfm' 'OperatorPowerDialog:TForm'}
 {$R 'UOptions.dfm' 'formOptions:TForm'}
 {$R 'UPackageLoader.dfm' 'PackageLoader:TForm'}
 {$R 'UPartials.dfm' 'PartialCheck:TForm'}
