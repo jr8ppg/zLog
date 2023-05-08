@@ -37,6 +37,7 @@ type
     Label12: TLabel;
     comboPower10g: TComboBox;
     Label13: TLabel;
+    GroupBox1: TGroupBox;
     procedure FormCreate(Sender: TObject);
     procedure comboPowerChange(Sender: TObject);
   private

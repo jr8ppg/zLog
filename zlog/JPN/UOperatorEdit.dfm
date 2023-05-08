@@ -401,6 +401,7 @@ object formOperatorEdit: TformOperatorEdit
       ImeMode = imDisable
       TabOrder = 1
       Text = 'HHHHHHHHHHHHH'
+      OnDblClick = editPowerDblClick
       OnExit = editPowerExit
     end
     object editAge: TEdit
