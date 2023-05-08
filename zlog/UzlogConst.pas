@@ -196,6 +196,14 @@ const
     $00FFFFFF, $00000000, $00FFFFFF, $00400040
   );
 
+  default_zaq_bg_color: array[0..2] of TColor = (
+    $00FFFF80, $00EAD5CF, $00F5EBE9
+  );
+
+  default_zaq_fg_color: array[0..2] of TColor = (
+    $00000000, $00000000, $00000000
+  );
+
 const
   default_primary_shortcut: array[0..159] of string = (
     'Ctrl+F1',          // #00

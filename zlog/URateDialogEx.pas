@@ -92,6 +92,11 @@ type
     FStartHour: Integer;         // 開始時
     FNowHour: Integer;           // 現在時
     FPreHour: Integer;           // 前回timer時の時
+
+    FZaqBgColor: array[0..2] of TColor;
+    FZaqFgColor: array[0..2] of TColor;
+    FZaqRowBgColor: array[0..35] of TColor;
+    FZaqRowFgColor: array[0..35] of TColor;
     function UpdateGraphOriginal(hh: Integer): Integer;
     function UpdateGraphByBand(hh: Integer): Integer;
     function UpdateGraphByRange(hh: Integer): Integer;
@@ -109,6 +114,12 @@ type
     procedure InitScoreGrid_type1();
     procedure InitScoreGrid_type2();
     procedure InitScoreGrid2();
+    procedure InitScoreGridRowColor();
+
+    function GetZaqBgColor(n: Integer): TColor;
+    procedure SetZaqBgColor(n: Integer; c: TColor);
+    function GetZaqFgColor(n: Integer): TColor;
+    procedure SetZaqFgColor(n: Integer; c: TColor);
   public
     { Public declarations }
     procedure InitScoreGrid();
@@ -119,6 +130,8 @@ type
     procedure LoadSettings();
     procedure SaveSettings();
     property Band: TBand read FBand write SetBand;
+    property ZaqBgColor[n: Integer]: TColor read GetZaqBgColor write SetZaqBgColor;
+    property ZaqFgColor[n: Integer]: TColor read GetZaqFgColor write SetZaqFgColor;
   end;
 
 resourcestring
@@ -219,9 +232,9 @@ begin
       VertAxis := aRightAxis;
    end;
 
-   InitScoreGrid();
-
    LoadSettings();
+
+   InitScoreGrid();
 
    FPreHour := GetHour(Now);
 end;
@@ -651,6 +664,7 @@ end;
 procedure TRateDialogEx.LoadSettings();
 var
    b: TBand;
+   i: Integer;
 begin
    FGraphStyle := dmZLogGlobal.Settings.FGraphStyle;
    FGraphStartPosition := dmZLogGlobal.Settings.FGraphStartPosition;
@@ -661,6 +675,11 @@ begin
    SetGraphStartPositionUI(FGraphStartPosition);
    menuAchievementRate.Checked := dmZLogGlobal.Settings.FZaqAchievement;
    menuWinLoss.Checked := Not menuAchievementRate.Checked;
+
+   for i := 0 to 2 do begin
+      FZaqBgColor[i] := dmZLogGlobal.Settings.FZaqBgColor[i];
+      FZaqFgColor[i] := dmZLogGlobal.Settings.FZaqFgColor[i];
+   end;
 end;
 
 procedure TRateDialogEx.menuAchievementRateClick(Sender: TObject);
@@ -696,6 +715,7 @@ begin
       end;
    end;
 
+   ScoreGrid.TopRow := 1;
    InitZaqGridTitle();
    if menuDispAlternating.Checked = True then begin
       InitScoreGrid_type1();
@@ -705,12 +725,16 @@ begin
       InitScoreGrid_type2();
       TargetToGrid_type2(dmZLogGlobal.Target);
    end;
+
+   InitScoreGridRowColor();
+
    ScoreGrid.Refresh();
 end;
 
 procedure TRateDialogEx.SaveSettings();
 var
    b: TBand;
+   i: Integer;
 begin
    dmZLogGlobal.Settings.FGraphStyle := GraphStyle;
    dmZLogGlobal.Settings.FGraphStartPosition := GraphStartPosition;
@@ -719,6 +743,11 @@ begin
       dmZLogGlobal.Settings.FGraphTextColor[b] := GraphSeries[b].Marks.Font.Color;
    end;
    dmZLogGlobal.Settings.FZaqAchievement := menuAchievementRate.Checked;
+
+   for i := 0 to 2 do begin
+      dmZLogGlobal.Settings.FZaqBgColor[i] := FZaqBgColor[i];
+      dmZLogGlobal.Settings.FZaqFgColor[i] := FZaqFgColor[i];
+   end;
 end;
 
 //
@@ -733,17 +762,17 @@ var
    procedure SetCurrentRowColor(C: TCanvas);
    begin
       C.Pen.Style := psSolid;
-      C.Pen.Color := RGB($9F, $FF, $FF);
+      C.Pen.Color := FZaqBgColor[0];
       C.Brush.Style := bsSolid;
-      C.Brush.Color := RGB($9F, $FF, $FF);
+      C.Brush.Color := FZaqBgColor[0];
    end;
 
    procedure SetOtherRowColor(C: TCanvas);
    begin
       C.Pen.Style := psSolid;
-      C.Pen.Color := ScoreGrid.Color;
+      C.Pen.Color := FZaqRowBgColor[ARow];
       C.Brush.Style := bsSolid;
-      C.Brush.Color := ScoreGrid.Color;
+      C.Brush.Color := FZaqRowBgColor[ARow];
    end;
 begin
    with ScoreGrid.Canvas do begin
@@ -758,9 +787,13 @@ begin
          if (ARow = (r + 0)) or
             (ARow = (r + 1)) then begin
             SetCurrentRowColor(ScoreGrid.Canvas);
+            Font.Color := FZaqFgColor[0];
+            Font.Style := [fsBold];
          end
          else begin  // その他のバンドの背景色
             SetOtherRowColor(ScoreGrid.Canvas);
+            Font.Color := FZaqRowFgColor[ARow];
+            Font.Style := [];
          end;
       end
       else begin
@@ -770,16 +803,19 @@ begin
          // 現在バンドの背景色
          if (ARow = r + 0) then begin
             SetCurrentRowColor(ScoreGrid.Canvas);
+            Font.Color := FZaqFgColor[0];
+            Font.Style := [fsBold];
          end
          else begin  // その他のバンドの背景色
             SetOtherRowColor(ScoreGrid.Canvas);
+            Font.Color := FZaqRowFgColor[ARow];
+            Font.Style := [];
          end;
       end;
       FillRect(Rect);
 
       if ACol = 0 then begin        // バンド名表示
          strText := ScoreGrid.Cells[ACol, ARow];
-         Font.Color := clBlack;
          TextRect(Rect, strText, [tfLeft, tfVerticalCenter, tfSingleLine]);
 
          Pen.Color := RGB(220, 220, 220);
@@ -787,9 +823,11 @@ begin
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
       else if ARow = 0 then begin   // タイトル行（１行目）の表示
+         // 文字
          strText := ScoreGrid.Cells[ACol, ARow];
-         Font.Color := clBlack;
          TextRect(Rect, strText, [tfCenter, tfVerticalCenter, tfSingleLine]);
+
+         // grid line
          Pen.Color := RGB(220, 220, 220);
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
@@ -825,21 +863,13 @@ begin
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
       else begin     // TARGET数、QSO数表示
-//         t := dmZLogGlobal.Target.Bands[TBand(ARow - 1)].Hours[ACol].Target;
          t := StrToIntDef(ScoreGrid.Cells[ACol, ARow], 0);
-
-//         if checkShowZero.Checked = True then begin
-//            strText := IntToStr(t);
-//         end
-//         else begin
-            if t = 0 then begin
-               strText := '';
-            end
-            else begin
-               strText := IntToStr(t);
-            end;
-//         end;
-         Font.Color := clBlack;
+         if t = 0 then begin
+            strText := '';
+         end
+         else begin
+            strText := IntToStr(t);
+         end;
          TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
 
          // grid line
@@ -1046,6 +1076,26 @@ begin
    end;
 
    InitScoreGrid2();
+
+   InitScoreGridRowColor();
+end;
+
+procedure TRateDialogEx.InitScoreGridRowColor();
+var
+   R: Integer;
+   n: Integer;
+begin
+   n := 0;
+   for R := Low(FZaqRowBgColor) to High(FZaqRowBgColor) do begin
+      if ScoreGrid.RowHeights[R] = -1 then begin
+         Continue;
+      end;
+
+      FZaqRowBgColor[R] := FZaqBgColor[n + 1];
+      FZaqRowFgColor[R] := FZaqFgColor[n + 1];
+      Inc(n);
+      n := n and 1;
+   end;
 end;
 
 procedure TRateDialogEx.InitScoreGrid_type1();
@@ -1435,10 +1485,30 @@ begin
       ScoreGrid.TopRow := Ord(b) * 2 + 1;
    end
    else begin
-      ScoreGrid.TopRow := Ord(b) + 1;
+      ScoreGrid.TopRow := 1;
    end;
    ScoreGrid.Refresh();
    ScoreGrid2.Refresh();
+end;
+
+function TRateDialogEx.GetZaqBgColor(n: Integer): TColor;
+begin
+   Result := FZaqBgColor[n];
+end;
+
+procedure TRateDialogEx.SetZaqBgColor(n: Integer; c: TColor);
+begin
+   FZaqBgColor[n] := c;
+end;
+
+function TRateDialogEx.GetZaqFgColor(n: Integer): TColor;
+begin
+   Result := FZaqFgColor[n];
+end;
+
+procedure TRateDialogEx.SetZaqFgColor(n: Integer; c: TColor);
+begin
+   FZaqFgColor[n] := c;
 end;
 
 end.

@@ -111,14 +111,35 @@ type
     buttonFG16: TButton;
     buttonReset16: TButton;
     buttonBG16: TButton;
+    TabSheet4: TTabSheet;
+    GroupBox6: TGroupBox;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    editZaqTitleLine: TEdit;
+    buttonZaqFgTitle: TButton;
+    buttonZaqResetTitle: TButton;
+    buttonZaqBgTitle: TButton;
+    editZaqOddLine: TEdit;
+    buttonZaqFgOdd: TButton;
+    buttonZaqResetOdd: TButton;
+    buttonZaqBgOdd: TButton;
+    editZaqEvenLine: TEdit;
+    buttonZaqFgEven: TButton;
+    buttonZaqResetEven: TButton;
+    buttonZaqBgEven: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonFGClick(Sender: TObject);
     procedure buttonBGClick(Sender: TObject);
     procedure buttonResetClick(Sender: TObject);
+    procedure buttonZaqFgClick(Sender: TObject);
+    procedure buttonZaqBgClick(Sender: TObject);
+    procedure buttonZaqResetClick(Sender: TObject);
   private
     { Private êÈåæ }
     FGraphColor: array[b19..HiBand] of TEdit;
+    FZaqColor: array[0..2] of TEdit;
     function GetBarColor(b: TBand): TColor;
     procedure SetBarColor(b: TBand; c: TColor);
     function GetTextColor(b: TBand): TColor;
@@ -127,12 +148,18 @@ type
     procedure SetStyle(v: TQSORateStyle);
     function GetStartPosition(): TQSORateStartPosition;
     procedure SetStartPosition(v: TQSORateStartPosition);
+    function GetZaqBgColor(n: Integer): TColor;
+    procedure SetZaqBgColor(n: Integer; c: TColor);
+    function GetZaqFgColor(n: Integer): TColor;
+    procedure SetZaqFgColor(n: Integer; c: TColor);
   public
     { Public êÈåæ }
     property BarColor[b: TBand]: TColor read GetBarColor write SetBarColor;
     property TextColor[b: TBand]: TColor read GetTextColor write SetTextColor;
     property Style: TQSORateStyle read GetStyle write SetStyle;
     property StartPosition: TQSORateStartPosition read GetStartPosition write SetStartPosition;
+    property ZaqBgColor[n: Integer]: TColor read GetZaqBgColor write SetZaqBgColor;
+    property ZaqFgColor[n: Integer]: TColor read GetZaqFgColor write SetZaqFgColor;
   end;
 
 implementation
@@ -190,6 +217,9 @@ begin
    FGraphColor[b2400]   := editColor14;
    FGraphColor[b5600]   := editColor15;
    FGraphColor[b10g]    := editColor16;
+   FZaqColor[0]         := editZaqTitleLine;
+   FZaqColor[1]         := editZaqOddLine;
+   FZaqColor[2]         := editZaqEvenLine;
 end;
 
 procedure TGraphColorDialog.FormDestroy(Sender: TObject);
@@ -267,6 +297,60 @@ begin
       spLastQSO:     radioDrawStartPos3.Checked := True;
       else           radioDrawStartPos1.Checked := True;
    end;
+end;
+
+procedure TGraphColorDialog.buttonZaqBgClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   ColorDialog1.Color := FZaqColor[n].Color;
+   if ColorDialog1.Execute = True then begin
+      FZaqColor[n].Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TGraphColorDialog.buttonZaqFgClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   ColorDialog1.Color := FZaqColor[n].Font.Color;
+   if ColorDialog1.Execute = True then begin
+      FZaqColor[n].Font.Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TGraphColorDialog.buttonZaqResetClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   FZaqColor[n].Color := default_zaq_bg_color[n];
+   FZaqColor[n].Font.Color := default_zaq_fg_color[n];
+end;
+
+function TGraphColorDialog.GetZaqBgColor(n: Integer): TColor;
+begin
+   Result := FZaqColor[n].Color;
+end;
+
+procedure TGraphColorDialog.SetZaqBgColor(n: Integer; c: TColor);
+begin
+   FZaqColor[n].Color := c;
+end;
+
+function TGraphColorDialog.GetZaqFgColor(n: Integer): TColor;
+begin
+   Result := FZaqColor[n].Font.Color;
+end;
+
+procedure TGraphColorDialog.SetZaqFgColor(n: Integer; c: TColor);
+begin
+   FZaqColor[n].Font.Color := c;
 end;
 
 end.

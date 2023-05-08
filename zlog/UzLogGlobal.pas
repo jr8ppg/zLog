@@ -271,6 +271,8 @@ type
     FGraphBarColor: array[b19..HiBand] of TColor;
     FGraphTextColor: array[b19..HiBand] of TColor;
     FZaqAchievement: Boolean;
+    FZaqBgColor: array[0..2] of TColor;
+    FZaqFgColor: array[0..2] of TColor;
 
     // Cluster Window(Comm)
     FClusterAutoLogin: Boolean;
@@ -1302,6 +1304,12 @@ begin
       end;
       Settings.FZaqAchievement      := ini.ReadBool('rateex_zaq', 'achievement', True);
 
+      for i := 0 to 2 do begin
+         strKey := IntToStr(i);
+         Settings.FZaqBgColor[i] := ZStringToColorDef(ini.ReadString('ZAQ', 'BgColor' + strKey, ''), default_zaq_bg_color[i]);
+         Settings.FZaqFgColor[i] := ZStringToColorDef(ini.ReadString('ZAQ', 'FgColor' + strKey, ''), default_zaq_fg_color[i]);
+      end;
+
       // Cluster Window(Comm)
       Settings.FClusterAutoLogin       := ini.ReadBool('ClusterWindow', 'AutoLogin', True);
       Settings.FClusterAutoReconnect   := ini.ReadBool('ClusterWindow', 'AutoReconnect', True);
@@ -1877,6 +1885,12 @@ begin
          ini.WriteString('Graph', strKey + '_TextColor', ZColorToString(Settings.FGraphTextColor[b]));
       end;
       ini.WriteBool('rateex_zaq', 'achievement', Settings.FZaqAchievement);
+
+      for i := 0 to 2 do begin
+         strKey := IntToStr(i);
+         ini.WriteString('ZAQ', 'BgColor' + strKey, ZColorToString(Settings.FZaqBgColor[i]));
+         ini.WriteString('ZAQ', 'FgColor' + strKey, ZColorToString(Settings.FZaqFgColor[i]));
+      end;
 
       // Cluster Window(Comm)
       ini.WriteBool('ClusterWindow', 'AutoLogin', Settings.FClusterAutoLogin);

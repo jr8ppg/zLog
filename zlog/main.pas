@@ -3767,8 +3767,6 @@ var
    B: TBand;
    band_bakup: TBand;
    sthh: Integer;
-   yy1, mm1, dd1, hh1, nn1, ss1, ms1: Word;
-   basedt: TDatetime;
 
    function FindPrevQSO(): Integer;
    var
@@ -5243,6 +5241,7 @@ procedure TMainForm.menuQSORateSettingsClick(Sender: TObject);
 var
    f: TGraphColorDialog;
    b: TBand;
+   i: Integer;
 begin
    f := TGraphColorDialog.Create(Self);
    try
@@ -5251,6 +5250,10 @@ begin
       for b := b19 to HiBand do begin
          f.BarColor[b] := FRateDialog.GraphSeries[b].SeriesColor;
          f.TextColor[b] := FRateDialog.GraphSeries[b].Marks.Font.Color;
+      end;
+      for i := 0 to 2 do begin
+         f.ZaqBgColor[i] := FRateDialogEx.ZaqBgColor[i];
+         f.ZaqFgColor[i] := FRateDialogEx.ZaqFgColor[i];
       end;
 
       if f.ShowModal() <> mrOK then begin
@@ -5270,6 +5273,10 @@ begin
       for b := b19 to HiBand do begin
          FRateDialogEx.GraphSeries[b].SeriesColor := f.BarColor[b];
          FRateDialogEx.GraphSeries[b].Marks.Font.Color := f.TextColor[b];
+      end;
+      for i := 0 to 2 do begin
+         FRateDialogEx.ZaqBgColor[i] := f.ZaqBgColor[i];
+         FRateDialogEx.ZaqFgColor[i] := f.ZaqFgColor[i];
       end;
    finally
       f.Release();
