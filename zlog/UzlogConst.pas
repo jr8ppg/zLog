@@ -204,12 +204,12 @@ const
     $00FFFFFF, $00FFFFFF
   );
 
-  default_zaq_bg_color: array[0..2] of TColor = (
-    $00FFFF80, $00EAD5CF, $00F5EBE9
+  default_zaq_bg_color: array[0..3] of TColor = (
+    $00FFFF80, $00EAD5CF, $00F5EBE9, $00DCDCDC
   );
 
-  default_zaq_fg_color: array[0..2] of TColor = (
-    $00000000, $00000000, $00000000
+  default_zaq_fg_color: array[0..3] of TColor = (
+    $00000000, $00000000, $00000000, $00000000
   );
 
 const

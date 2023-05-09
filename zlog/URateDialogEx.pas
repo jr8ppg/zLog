@@ -93,8 +93,8 @@ type
     FNowHour: Integer;           // 現在時
     FPreHour: Integer;           // 前回timer時の時
 
-    FZaqBgColor: array[0..2] of TColor;
-    FZaqFgColor: array[0..2] of TColor;
+    FZaqBgColor: array[0..3] of TColor;
+    FZaqFgColor: array[0..3] of TColor;
     FZaqRowBgColor: array[0..35] of TColor;
     FZaqRowFgColor: array[0..35] of TColor;
     function UpdateGraphOriginal(hh: Integer): Integer;
@@ -133,6 +133,7 @@ type
     property GraphStartPosition: TQSORateStartPosition read FGraphStartPosition write SetGraphStartPosition;
     procedure LoadSettings();
     procedure SaveSettings();
+    procedure Refresh(); overload;
     property Band: TBand read FBand write SetBand;
     property ZaqBgColor[n: Integer]: TColor read GetZaqBgColor write SetZaqBgColor;
     property ZaqFgColor[n: Integer]: TColor read GetZaqFgColor write SetZaqFgColor;
@@ -682,7 +683,7 @@ begin
    menuAchievementRate.Checked := dmZLogGlobal.Settings.FZaqAchievement;
    menuWinLoss.Checked := Not menuAchievementRate.Checked;
 
-   for i := 0 to 2 do begin
+   for i := Low(FZaqBgColor) to High(FZaqBgColor) do begin
       FZaqBgColor[i] := dmZLogGlobal.Settings.FZaqBgColor[i];
       FZaqFgColor[i] := dmZLogGlobal.Settings.FZaqFgColor[i];
    end;
@@ -754,7 +755,7 @@ begin
    end;
    dmZLogGlobal.Settings.FZaqAchievement := menuAchievementRate.Checked;
 
-   for i := 0 to 2 do begin
+   for i := Low(FZaqBgColor) to High(FZaqBgColor) do begin
       dmZLogGlobal.Settings.FZaqBgColor[i] := FZaqBgColor[i];
       dmZLogGlobal.Settings.FZaqFgColor[i] := FZaqFgColor[i];
    end;
@@ -763,6 +764,17 @@ begin
    dmZLogGlobal.Settings.FGraphOtherBgColor[0] := SeriesActualTotals.SeriesColor;
    dmZLogGlobal.Settings.FGraphOtherBgColor[1] := SeriesTargetTotals.SeriesColor;
 end;
+
+procedure TRateDialogEx.Refresh();
+begin
+   Inherited;
+   case PageControl1.ActivePageIndex of
+      0: Chart1.Refresh();
+      1: ScoreGrid.Refresh();
+      2: ScoreGrid2.Refresh();
+   end;
+end;
+
 
 //
 // ZAQグリッドの描画
@@ -832,7 +844,7 @@ begin
          strText := ScoreGrid.Cells[ACol, ARow];
          TextRect(Rect, strText, [tfLeft, tfVerticalCenter, tfSingleLine]);
 
-         Pen.Color := RGB(220, 220, 220);
+         Pen.Color := FZaqBgColor[3];
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
@@ -842,7 +854,7 @@ begin
          TextRect(Rect, strText, [tfCenter, tfVerticalCenter, tfSingleLine]);
 
          // grid line
-         Pen.Color := RGB(220, 220, 220);
+         Pen.Color := FZaqBgColor[3];
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
@@ -872,7 +884,7 @@ begin
 
          TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
 
-         Pen.Color := RGB(220, 220, 220);
+         Pen.Color := FZaqBgColor[3];
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
@@ -887,7 +899,7 @@ begin
          TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
 
          // grid line
-         Pen.Color := RGB(220, 220, 220);
+         Pen.Color := FZaqBgColor[3];
          Brush.Style := bsClear;
 
          if ScoreGrid.RowHeights[ARow] >= 2 then begin

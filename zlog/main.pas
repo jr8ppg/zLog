@@ -5251,7 +5251,7 @@ begin
          f.BarColor[b] := FRateDialog.GraphSeries[b].SeriesColor;
          f.TextColor[b] := FRateDialog.GraphSeries[b].Marks.Font.Color;
       end;
-      for i := 0 to 2 do begin
+      for i := 0 to 3 do begin
          f.ZaqBgColor[i] := FRateDialogEx.ZaqBgColor[i];
          f.ZaqFgColor[i] := FRateDialogEx.ZaqFgColor[i];
       end;
@@ -5278,7 +5278,7 @@ begin
          FRateDialogEx.GraphSeries[b].SeriesColor := f.BarColor[b];
          FRateDialogEx.GraphSeries[b].Marks.Font.Color := f.TextColor[b];
       end;
-      for i := 0 to 2 do begin
+      for i := 0 to 3 do begin
          FRateDialogEx.ZaqBgColor[i] := f.ZaqBgColor[i];
          FRateDialogEx.ZaqFgColor[i] := f.ZaqFgColor[i];
       end;
@@ -5286,6 +5286,8 @@ begin
          FRateDialogEx.OtherBgColor[i] := f.OtherBgColor[i];
          FRateDialogEx.OtherFgColor[i] := f.OtherFgColor[i];
       end;
+
+      FRateDialogEx.Refresh();
    finally
       f.Release();
    end;

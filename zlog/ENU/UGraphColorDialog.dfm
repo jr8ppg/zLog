@@ -1077,7 +1077,7 @@ object GraphColorDialog: TGraphColorDialog
         Left = 4
         Top = 4
         Width = 393
-        Height = 105
+        Height = 141
         Caption = 'Spread sheet'
         TabOrder = 0
         object Label16: TLabel
@@ -1096,7 +1096,7 @@ object GraphColorDialog: TGraphColorDialog
           Height = 12
           Alignment = taRightJustify
           AutoSize = False
-          Caption = 'Odd line'
+          Caption = 'Odd row'
         end
         object Label18: TLabel
           Left = 6
@@ -1105,7 +1105,16 @@ object GraphColorDialog: TGraphColorDialog
           Height = 12
           Alignment = taRightJustify
           AutoSize = False
-          Caption = 'Even line'
+          Caption = 'Even row'
+        end
+        object Label21: TLabel
+          Left = 6
+          Top = 99
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = 'Grid line'
         end
         object editZaqTitleLine: TEdit
           Left = 89
@@ -1222,6 +1231,46 @@ object GraphColorDialog: TGraphColorDialog
           Height = 20
           Caption = 'Back...'
           TabOrder = 10
+          OnClick = buttonZaqBgClick
+        end
+        object editZaqGridLine: TEdit
+          Left = 89
+          Top = 96
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 15
+        end
+        object buttonZaqFgGrid: TButton
+          Tag = 3
+          Left = 167
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          TabOrder = 12
+          Visible = False
+          OnClick = buttonZaqFgClick
+        end
+        object buttonZaqResetGrid: TButton
+          Tag = 3
+          Left = 314
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 14
+          OnClick = buttonZaqResetClick
+        end
+        object buttonZaqBgGrid: TButton
+          Tag = 3
+          Left = 216
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 13
           OnClick = buttonZaqBgClick
         end
       end

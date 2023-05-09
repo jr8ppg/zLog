@@ -140,6 +140,11 @@ type
     buttonTargetFg: TButton;
     buttonTargetReset: TButton;
     buttonTargetBg: TButton;
+    Label21: TLabel;
+    editZaqGridLine: TEdit;
+    buttonZaqFgGrid: TButton;
+    buttonZaqResetGrid: TButton;
+    buttonZaqBgGrid: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonFGClick(Sender: TObject);
@@ -155,7 +160,7 @@ type
     { Private êÈåæ }
     FGraphColor: array[b19..b10g] of TEdit;
     FOtherColor: array[0..1] of TEdit;
-    FZaqColor: array[0..2] of TEdit;
+    FZaqColor: array[0..3] of TEdit;
     function GetBarColor(b: TBand): TColor;
     procedure SetBarColor(b: TBand; c: TColor);
     function GetTextColor(b: TBand): TColor;
@@ -244,6 +249,7 @@ begin
    FZaqColor[0]         := editZaqTitleLine;
    FZaqColor[1]         := editZaqOddLine;
    FZaqColor[2]         := editZaqEvenLine;
+   FZaqColor[3]         := editZaqGridLine;
 end;
 
 procedure TGraphColorDialog.FormDestroy(Sender: TObject);

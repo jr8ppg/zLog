@@ -964,14 +964,14 @@ object GraphColorDialog: TGraphColorDialog
       end
     end
     object TabSheet5: TTabSheet
-      Caption = 'Color3'
+      Caption = #33394#35373#23450#65299
       ImageIndex = 4
       object GroupBox7: TGroupBox
         Left = 4
         Top = 4
         Width = 393
         Height = 78
-        Caption = 'Cumulative graph'
+        Caption = #32047#35336#12464#12521#12501
         TabOrder = 0
         object Label19: TLabel
           Left = 6
@@ -980,7 +980,7 @@ object GraphColorDialog: TGraphColorDialog
           Height = 12
           Alignment = taRightJustify
           AutoSize = False
-          Caption = 'Actual'
+          Caption = #23455#32318#20516
         end
         object Label20: TLabel
           Left = 6
@@ -989,7 +989,7 @@ object GraphColorDialog: TGraphColorDialog
           Height = 12
           Alignment = taRightJustify
           AutoSize = False
-          Caption = 'Target'
+          Caption = #30446#27161#20516
         end
         object editActualColor: TEdit
           Left = 89
@@ -1005,7 +1005,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 18
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 1
           Visible = False
           OnClick = buttonOtherFgClick
@@ -1015,7 +1015,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 18
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #21021#26399#20516
           TabOrder = 3
           OnClick = buttonOtherResetClick
         end
@@ -1024,7 +1024,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 18
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 2
           OnClick = buttonOtherBgClick
         end
@@ -1043,7 +1043,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 44
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 5
           Visible = False
           OnClick = buttonOtherFgClick
@@ -1054,7 +1054,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 44
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #21021#26399#20516
           TabOrder = 7
           OnClick = buttonOtherResetClick
         end
@@ -1064,7 +1064,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 44
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 6
           OnClick = buttonOtherBgClick
         end
@@ -1077,7 +1077,7 @@ object GraphColorDialog: TGraphColorDialog
         Left = 4
         Top = 4
         Width = 393
-        Height = 105
+        Height = 141
         Caption = 'Spread sheet'
         TabOrder = 0
         object Label16: TLabel
@@ -1087,7 +1087,7 @@ object GraphColorDialog: TGraphColorDialog
           Height = 12
           Alignment = taRightJustify
           AutoSize = False
-          Caption = 'Current band'
+          Caption = #29694#22312#12496#12531#12489
         end
         object Label17: TLabel
           Left = 6
@@ -1096,7 +1096,7 @@ object GraphColorDialog: TGraphColorDialog
           Height = 12
           Alignment = taRightJustify
           AutoSize = False
-          Caption = 'Odd line'
+          Caption = #22855#25968#34892
         end
         object Label18: TLabel
           Left = 6
@@ -1105,7 +1105,16 @@ object GraphColorDialog: TGraphColorDialog
           Height = 12
           Alignment = taRightJustify
           AutoSize = False
-          Caption = 'Even line'
+          Caption = #20598#25968#34892
+        end
+        object Label21: TLabel
+          Left = 6
+          Top = 99
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = #26528#32218
         end
         object editZaqTitleLine: TEdit
           Left = 89
@@ -1122,7 +1131,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 18
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 1
           OnClick = buttonZaqFgClick
         end
@@ -1131,7 +1140,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 18
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #21021#26399#20516
           TabOrder = 3
           OnClick = buttonZaqResetClick
         end
@@ -1140,7 +1149,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 18
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 2
           OnClick = buttonZaqBgClick
         end
@@ -1160,7 +1169,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 44
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 5
           OnClick = buttonZaqFgClick
         end
@@ -1170,7 +1179,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 44
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #21021#26399#20516
           TabOrder = 7
           OnClick = buttonZaqResetClick
         end
@@ -1180,7 +1189,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 44
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 6
           OnClick = buttonZaqBgClick
         end
@@ -1200,7 +1209,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 70
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 9
           OnClick = buttonZaqFgClick
         end
@@ -1210,7 +1219,7 @@ object GraphColorDialog: TGraphColorDialog
           Top = 70
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #21021#26399#20516
           TabOrder = 11
           OnClick = buttonZaqResetClick
         end
@@ -1220,8 +1229,48 @@ object GraphColorDialog: TGraphColorDialog
           Top = 70
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 10
+          OnClick = buttonZaqBgClick
+        end
+        object editZaqGridLine: TEdit
+          Left = 89
+          Top = 96
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 15
+        end
+        object buttonZaqFgGrid: TButton
+          Tag = 3
+          Left = 167
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = #25991#23383#33394
+          TabOrder = 12
+          Visible = False
+          OnClick = buttonZaqFgClick
+        end
+        object buttonZaqResetGrid: TButton
+          Tag = 3
+          Left = 314
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = #21021#26399#20516
+          TabOrder = 14
+          OnClick = buttonZaqResetClick
+        end
+        object buttonZaqBgGrid: TButton
+          Tag = 3
+          Left = 216
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = #32972#26223#33394
+          TabOrder = 13
           OnClick = buttonZaqBgClick
         end
       end
