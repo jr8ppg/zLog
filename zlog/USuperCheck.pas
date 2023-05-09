@@ -97,7 +97,7 @@ begin
    w := (Grid.ClientWidth - GetSystemMetrics(SM_CXVSCROLL)) div c;
 
    Grid.RowCount := r;
-   h := Abs(Grid.Font.Height) + 0;
+   h := Grid.Canvas.TextHeight('A');
 
    Grid.DefaultColWidth := w;
    for i := 0 to Grid.ColCount - 1 do begin

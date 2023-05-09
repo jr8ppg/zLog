@@ -2984,7 +2984,7 @@ var
    h: Integer;
 begin
    Grid.Font.Size := font_size;
-   h := Abs(Grid.Font.Height);
+   h := Grid.Canvas.TextHeight('A');
    Grid.DefaultRowHeight := h + 4;
    Grid.Refresh();
 
