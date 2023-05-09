@@ -196,6 +196,14 @@ const
     $00FFFFFF, $00000000, $00FFFFFF, $00400040
   );
 
+  default_other_bg_color: array[0..1] of TColor = (
+    $000080FF, $00B16A47
+  );
+
+  default_other_fg_color: array[0..1] of TColor = (
+    $00FFFFFF, $00FFFFFF
+  );
+
   default_zaq_bg_color: array[0..2] of TColor = (
     $00FFFF80, $00EAD5CF, $00F5EBE9
   );

@@ -5255,6 +5255,10 @@ begin
          f.ZaqBgColor[i] := FRateDialogEx.ZaqBgColor[i];
          f.ZaqFgColor[i] := FRateDialogEx.ZaqFgColor[i];
       end;
+      for i := 0 to 1 do begin
+         f.OtherBgColor[i] := FRateDialogEx.OtherBgColor[i];
+         f.OtherFgColor[i] := FRateDialogEx.OtherFgColor[i];
+      end;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
@@ -5277,6 +5281,10 @@ begin
       for i := 0 to 2 do begin
          FRateDialogEx.ZaqBgColor[i] := f.ZaqBgColor[i];
          FRateDialogEx.ZaqFgColor[i] := f.ZaqFgColor[i];
+      end;
+      for i := 0 to 1 do begin
+         FRateDialogEx.OtherBgColor[i] := f.OtherBgColor[i];
+         FRateDialogEx.OtherFgColor[i] := f.OtherFgColor[i];
       end;
    finally
       f.Release();

@@ -120,6 +120,10 @@ type
     procedure SetZaqBgColor(n: Integer; c: TColor);
     function GetZaqFgColor(n: Integer): TColor;
     procedure SetZaqFgColor(n: Integer; c: TColor);
+    function GetOtherBgColor(n: Integer): TColor;
+    procedure SetOtherBgColor(n: Integer; c: TColor);
+    function GetOtherFgColor(n: Integer): TColor;
+    procedure SetOtherFgColor(n: Integer; c: TColor);
   public
     { Public declarations }
     procedure InitScoreGrid();
@@ -132,6 +136,8 @@ type
     property Band: TBand read FBand write SetBand;
     property ZaqBgColor[n: Integer]: TColor read GetZaqBgColor write SetZaqBgColor;
     property ZaqFgColor[n: Integer]: TColor read GetZaqFgColor write SetZaqFgColor;
+    property OtherBgColor[n: Integer]: TColor read GetOtherBgColor write SetOtherBgColor;
+    property OtherFgColor[n: Integer]: TColor read GetOtherFgColor write SetOtherFgColor;
   end;
 
 resourcestring
@@ -680,6 +686,10 @@ begin
       FZaqBgColor[i] := dmZLogGlobal.Settings.FZaqBgColor[i];
       FZaqFgColor[i] := dmZLogGlobal.Settings.FZaqFgColor[i];
    end;
+
+   // 折れ線グラフの色
+   SeriesActualTotals.SeriesColor := dmZLogGlobal.Settings.FGraphOtherBgColor[0];
+   SeriesTargetTotals.SeriesColor := dmZLogGlobal.Settings.FGraphOtherBgColor[1];
 end;
 
 procedure TRateDialogEx.menuAchievementRateClick(Sender: TObject);
@@ -748,6 +758,10 @@ begin
       dmZLogGlobal.Settings.FZaqBgColor[i] := FZaqBgColor[i];
       dmZLogGlobal.Settings.FZaqFgColor[i] := FZaqFgColor[i];
    end;
+
+   // 折れ線グラフの色
+   dmZLogGlobal.Settings.FGraphOtherBgColor[0] := SeriesActualTotals.SeriesColor;
+   dmZLogGlobal.Settings.FGraphOtherBgColor[1] := SeriesTargetTotals.SeriesColor;
 end;
 
 //
@@ -1509,6 +1523,40 @@ end;
 procedure TRateDialogEx.SetZaqFgColor(n: Integer; c: TColor);
 begin
    FZaqFgColor[n] := c;
+end;
+
+function TRateDialogEx.GetOtherBgColor(n: Integer): TColor;
+begin
+   case n of
+      0: Result := SeriesActualTotals.Color;
+      1: Result := SeriesTargetTotals.Color;
+      else Result := clRed;
+   end;
+end;
+
+procedure TRateDialogEx.SetOtherBgColor(n: Integer; c: TColor);
+begin
+   case n of
+      0: SeriesActualTotals.Color := c;
+      1: SeriesTargetTotals.Color := c;
+   end;
+end;
+
+function TRateDialogEx.GetOtherFgColor(n: Integer): TColor;
+begin
+   case n of
+      0: Result := SeriesActualTotals.Marks.Color;
+      1: Result := SeriesTargetTotals.Marks.Color;
+      else Result := clBlack;
+   end;
+end;
+
+procedure TRateDialogEx.SetOtherFgColor(n: Integer; c: TColor);
+begin
+   case n of
+      0: SeriesActualTotals.Marks.Color := c;
+      1: SeriesTargetTotals.Marks.Color := c;
+   end;
 end;
 
 end.

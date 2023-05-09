@@ -963,6 +963,113 @@ object GraphColorDialog: TGraphColorDialog
         end
       end
     end
+    object TabSheet5: TTabSheet
+      Caption = 'Color3'
+      ImageIndex = 4
+      object GroupBox7: TGroupBox
+        Left = 4
+        Top = 4
+        Width = 393
+        Height = 78
+        Caption = 'Cumulative graph'
+        TabOrder = 0
+        object Label19: TLabel
+          Left = 6
+          Top = 21
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = 'Actual'
+        end
+        object Label20: TLabel
+          Left = 6
+          Top = 47
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = 'Target'
+        end
+        object editActualColor: TEdit
+          Left = 89
+          Top = 18
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 0
+        end
+        object buttonActualFg: TButton
+          Left = 167
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          TabOrder = 1
+          Visible = False
+          OnClick = buttonOtherFgClick
+        end
+        object buttonActualReset: TButton
+          Left = 314
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 3
+          OnClick = buttonOtherResetClick
+        end
+        object buttonActualBg: TButton
+          Left = 216
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 2
+          OnClick = buttonOtherBgClick
+        end
+        object editTargetColor: TEdit
+          Left = 89
+          Top = 44
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 4
+        end
+        object buttonTargetFg: TButton
+          Tag = 1
+          Left = 167
+          Top = 44
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          TabOrder = 5
+          Visible = False
+          OnClick = buttonOtherFgClick
+        end
+        object buttonTargetReset: TButton
+          Tag = 1
+          Left = 314
+          Top = 44
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 7
+          OnClick = buttonOtherResetClick
+        end
+        object buttonTargetBg: TButton
+          Tag = 1
+          Left = 216
+          Top = 44
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 6
+          OnClick = buttonOtherBgClick
+        end
+      end
+    end
     object TabSheet4: TTabSheet
       Caption = 'ZAQ'
       ImageIndex = 3
