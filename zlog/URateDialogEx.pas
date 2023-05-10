@@ -97,6 +97,8 @@ type
     FZaqFgColor: array[0..3] of TColor;
     FZaqRowBgColor: array[0..35] of TColor;
     FZaqRowFgColor: array[0..35] of TColor;
+    FZaq2RowBgColor: array[0..35] of TColor;
+    FZaq2RowFgColor: array[0..35] of TColor;
     function UpdateGraphOriginal(hh: Integer): Integer;
     function UpdateGraphByBand(hh: Integer): Integer;
     function UpdateGraphByRange(hh: Integer): Integer;
@@ -378,13 +380,13 @@ begin
    end
    else begin
       case GraphStartPosition of
-         spFirstQSO:    FStartTime := Log.QsoList[1].Time;
+         spFirstQSO:    FStartTime := Log.BaseTime;   // Log.QsoList[1].Time;
          spCurrentTime: FStartTime := CalcStartTime( IncHour(CurrentTime(), (FShowLast div 2) - 1) );
          spLastQSO:     FStartTime := CalcStartTime( Log.QsoList[Log.TotalQSO].Time );
          else           FStartTime := CalcStartTime( CurrentTime() );
       end;
 
-      FOriginTime := Log.QsoList[1].Time;
+      FOriginTime := Log.BaseTime;  //Log.QsoList[1].Time;
    end;
 
    DecodeTime(FOriginTime, H, M, S, ms);
@@ -394,14 +396,14 @@ begin
    FStartTime := Int(FStartTime) + EncodeTime(H, 0, 0, 0);
 
    // バンド別時間別の集計データを作成
-   dmZLogGlobal.Target.UpdateActualQSOs(FOriginTime);
+   dmZLogGlobal.Target.UpdateActualQSOs(FOriginTime, FStartTime);
 
    if (FStartTime >= FOriginTime) then begin
       diff := FStartTime - FOriginTime;
       DecodeTime(diff, H, M, S, ms);
    end
    else begin
-      FStartTime := Log.QsoList[1].Time;
+      FStartTime := Log.BaseTime;   //Log.QsoList[1].Time;
       DecodeTime(FStartTime, H, M, S, ms);
       FStartTime := Int(FStartTime) + EncodeTime(H, 0, 0, 0);
       H := 0;
@@ -413,7 +415,7 @@ begin
 
    target_total_count := 0;
    for i := 1 to H do begin
-      target_total_count := dmZLogGlobal.Target.Total.Hours[i].Target;
+      target_total_count := target_total_count + dmZLogGlobal.Target.Total.Hours[i].Target;
    end;
 
    for i := 0 to FShowLast - 1 do begin
@@ -934,15 +936,15 @@ begin
       // 現在バンドの背景色
       if (ARow = r) or (ACol = c) then begin
          Pen.Style := psSolid;
-         Pen.Color := RGB($9F, $FF, $FF);
+         Pen.Color := FZaqBgColor[0];
          Brush.Style := bsSolid;
-         Brush.Color := RGB($9F, $FF, $FF);
+         Brush.Color := FZaqBgColor[0];
       end
       else begin  // その他のバンドの背景色
          Pen.Style := psSolid;
-         Pen.Color := ScoreGrid.Color;
+         Pen.Color := FZaq2RowBgColor[ARow];
          Brush.Style := bsSolid;
-         Brush.Color := ScoreGrid.Color;
+         Brush.Color := FZaq2RowBgColor[ARow];
       end;
       FillRect(Rect);
 
@@ -950,14 +952,14 @@ begin
          Font.Color := clBlack;
          TextRect(Rect, strText, [tfLeft, tfVerticalCenter, tfSingleLine]);
 
-         Pen.Color := RGB(220, 220, 220);
+         Pen.Color := FZaqBgColor[3];
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
       else if ARow = 0 then begin   // タイトル行（１行目）の表示
          Font.Color := clBlack;
          TextRect(Rect, strText, [tfCenter, tfVerticalCenter, tfSingleLine]);
-         Pen.Color := RGB(220, 220, 220);
+         Pen.Color := FZaqBgColor[3];
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
@@ -984,6 +986,7 @@ begin
             end
             else begin
                ScoreGrid2.ColWidths[ACol] := 30;
+               Font.Style := [];
                if nActual = 0 then begin
                   strText := '';
                end
@@ -1003,10 +1006,23 @@ begin
          else begin
             Font.Color := clRed;
          end;
-         TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
+
+         if (ARow = r) and (ACol = c) then begin
+            Font.Style := [fsBold];
+         end
+         else begin
+            Font.Style := [];
+         end;
+
+         if (ACol = c) then begin
+            TextRect(Rect, strText, [tfCenter, tfVerticalCenter, tfSingleLine]);
+         end
+         else begin
+            TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
+         end;
 
          // grid line
-         Pen.Color := RGB(220, 220, 220);
+         Pen.Color := FZaqBgColor[3];
          Brush.Style := bsClear;
 
          if ScoreGrid2.RowHeights[ARow] >= 2 then begin
@@ -1111,6 +1127,7 @@ var
    R: Integer;
    n: Integer;
 begin
+   // ZAQ
    n := 0;
    for R := Low(FZaqRowBgColor) to High(FZaqRowBgColor) do begin
       if ScoreGrid.RowHeights[R] = -1 then begin
@@ -1119,6 +1136,19 @@ begin
 
       FZaqRowBgColor[R] := FZaqBgColor[n + 1];
       FZaqRowFgColor[R] := FZaqFgColor[n + 1];
+      Inc(n);
+      n := n and 1;
+   end;
+
+   // ZAQ2
+   n := 0;
+   for R := Low(FZaq2RowBgColor) to High(FZaq2RowBgColor) do begin
+      if ScoreGrid2.RowHeights[R] = -1 then begin
+         Continue;
+      end;
+
+      FZaq2RowBgColor[R] := FZaqBgColor[n + 1];
+      FZaq2RowFgColor[R] := FZaqFgColor[n + 1];
       Inc(n);
       n := n and 1;
    end;

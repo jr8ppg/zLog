@@ -67,7 +67,7 @@ type
     procedure ActualClear();
     procedure Refresh();
     procedure Adjust(n: Integer);
-    function UpdateActualQSOs(origin: TDateTime): Integer;
+    function UpdateActualQSOs(origin, start: TDateTime): Integer;
     procedure UpdateLastRate();
     property Bands[B: TBand]: THourTarget read GetBandTarget;
     property Total: THourTarget read FBandTotal;
@@ -292,7 +292,7 @@ begin
    Refresh();
 end;
 
-function TContestTarget.UpdateActualQSOs(origin: TDateTime): Integer;
+function TContestTarget.UpdateActualQSOs(origin, start: TDateTime): Integer;
 var
    i: Integer;
    aQSO: TQSO;
@@ -319,7 +319,7 @@ begin
          Continue;
       end;
 
-      if (aQSO.Time < origin) then begin // グラフ化以前の交信
+      if (aQSO.Time < start) then begin // グラフ化以前の交信
          Inc(FBeforeGraphCount);
       end
       else begin
