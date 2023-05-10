@@ -376,7 +376,7 @@ begin
    // 基準時刻を求める
    if Log.TotalQSO = 0 then begin
       FStartTime := CalcStartTime( CurrentTime() );
-      FOriginTime := FStartTime;
+      FOriginTime := Log.BaseTime;  //FStartTime;
    end
    else begin
       case GraphStartPosition of
@@ -409,32 +409,20 @@ begin
       H := 0;
    end;
 
-   // グラフに展開
+   // グラフ化以前のactual数
    actual_total_count := dmZLogGlobal.Target.BeforeGraphCount;
-   hour_peak := 0;
 
+   // グラフ化以前のtarget数の累計を求める
    target_total_count := 0;
    for i := 1 to H do begin
       target_total_count := target_total_count + dmZLogGlobal.Target.Total.Hours[i].Target;
    end;
 
+   // グラフに値セット
+   hour_peak := 0;
    for i := 0 to FShowLast - 1 do begin
       n := GetHour(FStartTime + (1 / 24) * i);
       Str := IntToStr(n);
-
-//      ScoreGrid.Cells[i + 1, 0] := str;
-
-//      if FShowLast > 12 then begin
-//         if (start_hour mod 2) = 1 then begin
-//            Str := '';
-//         end;
-//      end;
-//
-//      if FShowLast > 24 then begin
-//         if (start_hour mod 4) <> 0 then begin
-//            Str := '';
-//         end;
-//      end;
 
       // 横軸目盛ラベル
       hindex := i * 2;
