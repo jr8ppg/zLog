@@ -4546,6 +4546,9 @@ begin
 
    // SO2R
    dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
+
+   // Last CQ mode
+   dmZLogGlobal.Settings.FLastCQMode := IsCQ();
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -6511,7 +6514,7 @@ begin
       end;
 
       // ç≈èâÇÕCQÉÇÅ[ÉhÇ©ÇÁ
-      SetCQ(True);
+      SetCQ(dmZLogGlobal.Settings.FLastCQMode);
 
       ShowToolBar(CurrentQSO.Mode);
 

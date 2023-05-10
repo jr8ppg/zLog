@@ -821,7 +821,8 @@ begin
    vfo[0] := VfoA;
    vfo[1] := VfoB;
 
-   if Abs(FPrevVfo[currentvfo] - vfo[currentvfo]) > 20 then begin
+   if (FPrevVfo[currentvfo] > 0) and
+      (Abs(FPrevVfo[currentvfo] - vfo[currentvfo]) > 20) then begin
       if Assigned(FOnVFOChanged) then begin
          FOnVFOChanged(TObject(currentvfo));
       end;

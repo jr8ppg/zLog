@@ -265,6 +265,9 @@ type
     FLastBand: Integer;
     FLastMode: Integer;
 
+    // Last CQ mode
+    FLastCQMode: Boolean;
+
     // QSO Rate Graph
     FGraphStyle: TQSORateStyle;
     FGraphStartPosition: TQSORateStartPosition;
@@ -1296,6 +1299,9 @@ begin
       Settings.FLastBand := ini.ReadInteger('main', 'last_band', 0);
       Settings.FLastMode := ini.ReadInteger('main', 'last_mode', 0);
 
+      // Last CQ mode
+      Settings.FLastCQMode := ini.ReadBool('main', 'last_cqmode', False);
+
       // QSO Rate Graph
       Settings.FGraphStyle := TQSORateStyle(ini.ReadInteger('Graph', 'Style', 0));
       Settings.FGraphStartPosition := TQSORateStartPosition(ini.ReadInteger('Graph', 'StartPosition', 1));
@@ -1884,6 +1890,9 @@ begin
       // Last Band/Mode
       ini.WriteInteger('main', 'last_band', Settings.FLastBand);
       ini.WriteInteger('main', 'last_mode', Settings.FLastMode);
+
+      // Last CQ mode
+      ini.WriteBool('main', 'last_cqmode', Settings.FLastCQMode);
 
       // QSO Rate Graph
       ini.WriteInteger('Graph', 'Style', Integer(Settings.FGraphStyle));
