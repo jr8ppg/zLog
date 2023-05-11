@@ -6891,14 +6891,13 @@ begin
    try
       F.ShowModal();
 
-      UseUTC := F.UseUTC;
-
       MultiButton.Enabled := False; // toolbar
       Multipliers1.Enabled := False; // menu
 
       EditScreen := TGeneralEdit.Create(Self);
 
       MyContest := TPedi.Create(Self, 'Pedition mode');
+      MyContest.UseUTC := F.UseUTC;
    finally
       F.Release();
    end;
@@ -11005,6 +11004,8 @@ begin
       else begin
          dlg.BaseTime := Log.BaseTime;
       end;
+
+      dlg.UseUtc := MyContest.UseUTC;
 
       if dlg.ShowModal() <> mrOK then begin
          Result := dlg.BaseTime;

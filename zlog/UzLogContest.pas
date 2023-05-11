@@ -28,8 +28,11 @@ type
 
     FStartTime: Integer;   // ŠJŽnŽžŠÔ 21‚â0‚È‚Ç UTC‚©‚Ç‚¤‚©‚ÍLog.QsoList[0].RSTsent‚Å”»’f‚·‚é
     FPeriod: Integer;      // ŠúŠÔ 12,24,48‚È‚Ç
+    FUseUTC: Boolean;
 
     function DispExchangeOnOtherBands(strCallsign: string; aBand: TBand): string; virtual;
+    function GetUseUTC(): Boolean;
+    procedure SetUseUTC(v: Boolean);
   public
     WantedList : TList;
 
@@ -78,6 +81,7 @@ type
 
     property StartTime: Integer read FStartTime write FStartTime;
     property Period: Integer read FPeriod write FPeriod;
+    property UseUTC: Boolean read GetUseUTC write SetUseUTC;
 
     procedure RenewScoreAndMulti();
   end;
@@ -459,7 +463,6 @@ begin
 
    Log.QsoList[0].Callsign := dmZlogGlobal.Settings._mycall; // Callsign
    Log.QsoList[0].Memo := N; // Contest name
-   Log.QsoList[0].RSTsent := UTCOffset; // UTC = $FFFF else UTC + x hrs;
    Log.QsoList[0].RSTRcvd := 100; // or Field Day coefficient
 
    SentStr := '';
@@ -474,6 +477,7 @@ begin
 
    FStartTime := 21;
    FPeriod := 18;
+   UseUTC := False;
 end;
 
 procedure TContest.PostWanted(S: string);
@@ -592,6 +596,23 @@ begin
    S := StringReplace(S, '_', '', [rfReplaceAll]);
 
    aQSO.NrSent := S;
+end;
+
+function TContest.GetUseUTC(): Boolean;
+begin
+   Result := FUseUTC;   //(Log.QsoList[0].RSTsent = _USEUTC);
+end;
+
+procedure TContest.SetUseUTC(v: Boolean);
+begin
+   FUseUTC := v;
+
+   if FUseUTC then begin
+      Log.QsoList[0].RSTsent := _USEUTC;
+   end
+   else begin
+      Log.QsoList[0].RSTsent := UTCOffset();
+   end;
 end;
 
 function TContest.ADIF_ExchangeRX_FieldName: string;

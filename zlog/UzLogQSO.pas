@@ -153,6 +153,7 @@ type
     function GetFreqStr(): string;
     function GetFreqStr2(): string;
     function GetMemoStr(): string;
+    procedure SetInvalid(v: Boolean);
   public
     constructor Create;
     procedure IncTime;
@@ -208,7 +209,7 @@ type
     property PCName: string read FPCName write FPCName;
     property Forced: Boolean read FForced write FForced;
     property QslState: TQslState read FQslState write FQslState;
-    property Invalid: Boolean read FInvalid write FInvalid;
+    property Invalid: Boolean read FInvalid write SetInvalid;
     property QsoId: Integer read GetQsoId;
 
     property SerialStr: string read GetSerialStr;
@@ -605,7 +606,7 @@ end;
 
 procedure TQSO.UpdateTime;
 begin
-   if UseUTC then begin
+   if Assigned(MyContest) and (MyContest.UseUTC) then begin
       FTime := GetUTC();
    end
    else begin
@@ -804,6 +805,15 @@ begin
    end;
 
    Result := strMemo;
+end;
+
+procedure TQSO.SetInvalid(v: Boolean);
+begin
+   FInvalid := v;
+   if v = True then begin
+      FMulti1 := '';
+      FMulti2 := '';
+   end;
 end;
 
 function TQSO.PartialSummary(DispDate: Boolean): string;

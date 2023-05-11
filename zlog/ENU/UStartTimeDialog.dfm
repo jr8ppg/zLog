@@ -4,7 +4,7 @@ object StartTimeDialog: TStartTimeDialog
   BorderStyle = bsDialog
   Caption = 'Start time'
   ClientHeight = 115
-  ClientWidth = 282
+  ClientWidth = 284
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,8 +13,9 @@ object StartTimeDialog: TStartTimeDialog
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
+  OnCreate = FormCreate
   DesignSize = (
-    282
+    284
     115)
   PixelsPerInch = 96
   TextHeight = 15
@@ -32,9 +33,9 @@ object StartTimeDialog: TStartTimeDialog
     ParentFont = False
   end
   object TimePicker1: TTimePicker
-    Left = 183
+    Left = 143
     Top = 35
-    Width = 42
+    Width = 74
     Height = 33
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -43,10 +44,10 @@ object StartTimeDialog: TStartTimeDialog
     Font.Style = []
     TabOrder = 0
     Time = 45053.894611794000000000
-    TimeFormat = 'hh'
+    TimeFormat = 'hhmm'
   end
   object DatePicker1: TDatePicker
-    Left = 48
+    Left = 8
     Top = 35
     Width = 129
     Height = 33
@@ -60,7 +61,7 @@ object StartTimeDialog: TStartTimeDialog
     TabOrder = 1
   end
   object OKBtn: TButton
-    Left = 126
+    Left = 128
     Top = 86
     Width = 75
     Height = 25
@@ -69,11 +70,10 @@ object StartTimeDialog: TStartTimeDialog
     Default = True
     ModalResult = 1
     TabOrder = 2
-    ExplicitLeft = 195
-    ExplicitTop = 82
+    ExplicitLeft = 126
   end
   object CancelBtn: TButton
-    Left = 202
+    Left = 204
     Top = 86
     Width = 75
     Height = 25
@@ -82,7 +82,21 @@ object StartTimeDialog: TStartTimeDialog
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 3
-    ExplicitLeft = 271
-    ExplicitTop = 82
+    ExplicitLeft = 202
+  end
+  object panelTimeZone: TPanel
+    Left = 223
+    Top = 35
+    Width = 50
+    Height = 33
+    BevelOuter = bvLowered
+    Caption = 'JST'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -15
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 4
   end
 end

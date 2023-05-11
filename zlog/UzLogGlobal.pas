@@ -327,9 +327,6 @@ var
   QSYCount : integer = 0;
 
 var
-  UseUTC : boolean = False;
-
-var
   SerialContestType : integer;  // 0 if no serial # or SER_ALL, SER_BAND
   SerialNumber: Integer;
   SerialArrayBand : array[b19..HiBand] of Integer;  // initialized in TContest.Create;
@@ -2962,7 +2959,7 @@ end;
 
 function CurrentTime: TDateTime;
 begin
-   if UseUTC then
+   if MyContest.UseUTC then
       Result := GetUTC
    else
       Result := Now;
