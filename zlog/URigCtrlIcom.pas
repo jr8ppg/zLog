@@ -69,6 +69,11 @@ type
     procedure SetVFO(i : integer); override;
   end;
 
+  TIC7851 = class(TICOM)
+  public
+    procedure AntSelect(no: Integer); override;
+  end;
+
 var
   IcomLock: TCriticalSection;
 
@@ -597,6 +602,19 @@ begin
 
    if Selected then begin
       UpdateStatus;
+   end;
+end;
+
+{ TIC7851 }
+
+procedure TIC7851.AntSelect(no: Integer);
+begin
+   case no of
+      0: Exit;
+      1: ICOMWriteData(AnsiChar($12) + AnsiChar($00) + AnsiChar($00));
+      2: ICOMWriteData(AnsiChar($12) + AnsiChar($01) + AnsiChar($00));
+      3: ICOMWriteData(AnsiChar($12) + AnsiChar($02) + AnsiChar($00));
+      4: ICOMWriteData(AnsiChar($12) + AnsiChar($03) + AnsiChar($00));
    end;
 end;
 

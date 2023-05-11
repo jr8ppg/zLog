@@ -3045,13 +3045,14 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 0
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt35: TComboBox
           Left = 55
@@ -3059,13 +3060,14 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 1
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt7: TComboBox
           Left = 55
@@ -3073,13 +3075,14 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 2
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt10: TComboBox
           Left = 55
@@ -3087,13 +3090,14 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 3
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt14: TComboBox
           Left = 55
@@ -3101,13 +3105,14 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 4
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt18: TComboBox
           Left = 55
@@ -3115,13 +3120,14 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 5
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt21: TComboBox
           Left = 55
@@ -3129,13 +3135,14 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 6
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt24: TComboBox
           Left = 55
@@ -3143,117 +3150,126 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 7
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt28: TComboBox
           Left = 180
           Top = 18
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 8
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt50: TComboBox
           Left = 180
           Top = 39
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 9
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt144: TComboBox
           Left = 180
           Top = 60
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 10
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt430: TComboBox
           Left = 180
           Top = 81
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 11
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt1200: TComboBox
           Left = 180
           Top = 102
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 12
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt2400: TComboBox
           Left = 180
           Top = 123
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 13
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt5600: TComboBox
           Left = 180
           Top = 144
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 14
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt10g: TComboBox
           Left = 180
           Top = 165
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 15
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
       end
     end
@@ -5020,13 +5036,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@BIZ UD'#26126#26397' Medium'
+          FontName = 'BIZ UD'#26126#26397' Medium'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 1
+          ItemIndex = 23
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

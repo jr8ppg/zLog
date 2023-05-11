@@ -130,6 +130,16 @@ type
     procedure RitClear; override;
   end;
 
+  TFTDX3000 = class(TFT2000)
+  public
+    procedure AntSelect(no: Integer); override;
+  end;
+
+  TFTDX5000 = class(TFT2000)
+  public
+    procedure AntSelect(no: Integer); override;
+  end;
+
 implementation
 
 { TFT1000MP }
@@ -1473,6 +1483,31 @@ begin
    end
    else begin
       WriteData('CF00000000;');
+   end;
+end;
+
+{ TFTDX3000 }
+
+procedure TFTDX3000.AntSelect(no: Integer);
+begin
+   case no of
+      0: Exit;
+      1: WriteData('AN01;');
+      2: WriteData('AN02;');
+      3: WriteData('AN03;');
+   end;
+end;
+
+{ TFTDX5000 }
+
+procedure TFTDX5000.AntSelect(no: Integer);
+begin
+   case no of
+      0: Exit;
+      1: WriteData('AN01;');
+      2: WriteData('AN02;');
+      3: WriteData('AN03;');
+      4: WriteData('AN04;');
    end;
 end;
 

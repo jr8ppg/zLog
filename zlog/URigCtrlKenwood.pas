@@ -32,6 +32,7 @@ type
     procedure SetVFO(i : integer); override;
   end;
 
+  // TS-2000,TS-480,TS-590,TS-890
   TTS2000 = class(TTS690)
   protected
     procedure SetRitOffset(offset: Integer); override;
@@ -52,6 +53,10 @@ type
     procedure Initialize(); override;
   end;
 
+  TTS990 = class(TTS2000)
+  public
+    procedure AntSelect(no: Integer); override;
+  end;
 
 implementation
 
@@ -505,6 +510,19 @@ begin
    WriteData('TC 1;');
    WriteData('AI2;');
    WriteData('IF;');
+end;
+
+{ TTS990 }
+
+procedure TTS990.AntSelect(no: Integer);
+begin
+   case no of
+      0: Exit;
+      1: WriteData('AN1;');
+      2: WriteData('AN2;');
+      3: WriteData('AN3;');
+      4: WriteData('AN4;');
+   end;
 end;
 
 end.

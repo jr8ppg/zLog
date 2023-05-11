@@ -107,7 +107,7 @@ const
      );
 
 const
-  RIGNAMES : array[0..19] of string =
+  RIGNAMES : array[0..22] of string =
 ('None',
  'TS-690/450',
  'TS-850',
@@ -115,7 +115,8 @@ const
  'TS-2000',
  'TS-2000/P',
  'TS-570',
- 'TS-590/890/990',
+ 'TS-590/890',
+ 'TS-990',
  'FT-710',
  'FT-817',
  'FT-847',
@@ -127,7 +128,9 @@ const
  'FT-1000MP',
  'MarkV/FT-1000MP',
  'FT-1000MP Mark-V Field',
- 'FT-2000'
+ 'FT-2000',
+ 'FTDX-3000',
+ 'FTDX-5000/9000'
  );
 
 const

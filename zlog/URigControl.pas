@@ -460,8 +460,12 @@ begin
             rig := TTS570.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
 
-         if rname = 'TS-590/890/990' then begin
+         if rname = 'TS-590/890' then begin
             rig := TTS2000.Create(rignum, Port, Comm, Timer, b19, b50);
+         end;
+
+         if rname = 'TS990' then begin
+            rig := TTS990.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
 
          if rname = 'TS-2000' then begin
@@ -516,6 +520,14 @@ begin
             rig:= TFT991.Create(rignum, Port, Comm, Timer, b19, b430);
          end;
 
+         if rname = 'FTDX-3000' then begin
+            rig:= TFTDX3000.Create(rignum, Port, Comm, Timer, b19, b50);
+         end;
+
+         if rname = 'FTDX-5000/9000' then begin
+            rig:= TFTDX5000.Create(rignum, Port, Comm, Timer, b19, b50);
+         end;
+
          if rname = 'FT-710' then begin
             rig:= TFT710.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
@@ -537,6 +549,9 @@ begin
 
             if (pos('IC-775', rname) = 1) or (pos('IC-756', rname) = 1) then begin
                rig := TIC756.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
+            end
+            else if (rname = 'IC-7851') then begin
+               rig := TIC7851.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
             end
             else begin
                rig := TICOM.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
