@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45017.9697916667</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">45058.9950694444</prop>
+        <prop prop-type="OrigDateTime">45055.9243287037</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">67</prop>
-        <prop prop-type="UnTranslated">697</prop>
+        <prop prop-type="UnTranslated">941</prop>
       </prop-group>
     </header>
     <body>
@@ -4026,15 +4026,1235 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925545023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">761</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.Caption">
+        <source>'Color3'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">762</prop><prop prop-type="Type">TTabSheet</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.ImageIndex" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.ImageIndex">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">763</prop><prop prop-type="Type">TTabSheet</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.Left">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">764</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.Top">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">765</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.Width">
+        <source>393</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">766</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.Height">
+        <source>78</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">767</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.Caption">
+        <source>'Cumulative graph'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">768</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">769</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Left">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">770</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Top">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">771</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Width">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">772</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Height">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">773</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Alignment" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Alignment">
+        <source>taRightJustify</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">774</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.AutoSize" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.AutoSize">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">775</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Caption">
+        <source>'Actual'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">776</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Left">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">777</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Top">
+        <source>47</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">778</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Width">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">779</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Height">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">780</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Alignment" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Alignment">
+        <source>taRightJustify</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">781</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.AutoSize" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.AutoSize">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">782</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Caption">
+        <source>'Target'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">783</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.Left">
+        <source>89</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">784</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.Top">
+        <source>18</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">785</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.Width">
+        <source>70</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">786</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">787</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.TabStop" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.TabStop">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">788</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.ReadOnly" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.ReadOnly">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">789</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">790</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Left">
+        <source>167</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">791</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Top">
+        <source>18</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">792</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">793</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">794</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Caption">
+        <source>'Fore...'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">795</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">796</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Visible" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">797</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.OnClick">
+        <source>buttonOtherFgClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">798</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.Left">
+        <source>314</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">799</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.Top">
+        <source>18</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">800</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">801</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">802</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.Caption">
+        <source>'Reset'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">803</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.TabOrder">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">804</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.OnClick">
+        <source>buttonOtherResetClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">805</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.Left">
+        <source>216</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">806</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.Top">
+        <source>18</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">807</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">808</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">809</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.Caption">
+        <source>'Back...'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">810</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">811</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.OnClick">
+        <source>buttonOtherBgClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">812</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.Left">
+        <source>89</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">813</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.Top">
+        <source>44</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">814</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.Width">
+        <source>70</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">815</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">816</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.TabStop" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.TabStop">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">817</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.ReadOnly" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.ReadOnly">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">818</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editTargetColor.TabOrder">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">819</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Tag" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Tag">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">820</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Left">
+        <source>167</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">821</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Top">
+        <source>44</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">822</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">823</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">824</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Caption">
+        <source>'Fore...'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">825</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.TabOrder">
+        <source>5</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">826</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Visible" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">827</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.OnClick">
+        <source>buttonOtherFgClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">828</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Tag" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Tag">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">829</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Left">
+        <source>314</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">830</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Top">
+        <source>44</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">831</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">832</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">833</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Caption">
+        <source>'Reset'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">834</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.TabOrder">
+        <source>7</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">835</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.OnClick">
+        <source>buttonOtherResetClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">836</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Tag" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Tag">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">837</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Left">
+        <source>216</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">838</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Top">
+        <source>44</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">839</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">840</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">841</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Caption">
+        <source>'Back...'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">842</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.TabOrder">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">843</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.OnClick">
+        <source>buttonOtherBgClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">844</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.Caption">
+        <source>'ZAQ'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">845</prop><prop prop-type="Type">TTabSheet</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.ImageIndex" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.ImageIndex">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">846</prop><prop prop-type="Type">TTabSheet</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.Left">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">847</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.Top">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">848</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.Width">
+        <source>393</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">849</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.Height">
+        <source>141</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">850</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.Caption">
+        <source>'Spread sheet'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">851</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">852</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Left">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">853</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Top">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">854</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Width">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">855</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Height">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">856</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Alignment" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Alignment">
+        <source>taRightJustify</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">857</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.AutoSize" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.AutoSize">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">858</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Caption">
+        <source>'Current band'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">859</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Left">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">860</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Top">
+        <source>47</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">861</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Width">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">862</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Height">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">863</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Alignment" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Alignment">
+        <source>taRightJustify</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">864</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.AutoSize" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.AutoSize">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">865</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Caption">
+        <source>'Odd row'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">866</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Left">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">867</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Top">
+        <source>73</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">868</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Width">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">869</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Height">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">870</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Alignment" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Alignment">
+        <source>taRightJustify</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">871</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.AutoSize" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.AutoSize">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">872</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Caption">
+        <source>'Even row'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">873</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Left">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">874</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Top">
+        <source>99</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">875</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Width">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">876</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Height">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">877</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Alignment" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Alignment">
+        <source>taRightJustify</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">878</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.AutoSize" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.AutoSize">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">879</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Caption">
+        <source>'Grid line'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">880</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.Left">
+        <source>89</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">881</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.Top">
+        <source>18</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">882</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.Width">
+        <source>70</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">883</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">884</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.TabStop" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.TabStop">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">885</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.ReadOnly" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.ReadOnly">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">886</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">887</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.Text" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.Text">
+        <source>'TEXT'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">888</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.Left">
+        <source>167</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">889</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.Top">
+        <source>18</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">890</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">891</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">892</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.Caption">
+        <source>'Fore...'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">893</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">894</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.OnClick">
+        <source>buttonZaqFgClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">895</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.Left">
+        <source>314</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">896</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.Top">
+        <source>18</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">897</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">898</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">899</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.Caption">
+        <source>'Reset'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">900</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.TabOrder">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">901</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.OnClick">
+        <source>buttonZaqResetClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">902</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.Left">
+        <source>216</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">903</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.Top">
+        <source>18</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">904</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">905</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">906</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.Caption">
+        <source>'Back...'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">907</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">908</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.OnClick">
+        <source>buttonZaqBgClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">909</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.Left">
+        <source>89</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">910</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.Top">
+        <source>44</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">911</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.Width">
+        <source>70</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">912</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">913</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.TabStop" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.TabStop">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">914</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.ReadOnly" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.ReadOnly">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">915</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.TabOrder">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">916</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.Text" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqOddLine.Text">
+        <source>'TEXT'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">917</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Tag" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Tag">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">918</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Left">
+        <source>167</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">919</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Top">
+        <source>44</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">920</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">921</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">922</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Caption">
+        <source>'Fore...'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">923</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.TabOrder">
+        <source>5</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">924</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.OnClick">
+        <source>buttonZaqFgClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">925</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Tag" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Tag">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">926</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Left">
+        <source>314</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">927</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Top">
+        <source>44</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">928</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">929</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">930</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Caption">
+        <source>'Reset'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">931</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.TabOrder">
+        <source>7</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">932</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.OnClick">
+        <source>buttonZaqResetClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">933</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Tag" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Tag">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">934</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Left">
+        <source>216</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">935</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Top">
+        <source>44</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">936</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">937</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">938</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Caption">
+        <source>'Back...'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">939</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.TabOrder">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">940</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.OnClick">
+        <source>buttonZaqBgClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">941</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.Left">
+        <source>89</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">942</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.Top">
+        <source>70</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">943</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.Width">
+        <source>70</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">944</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">945</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.TabStop" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.TabStop">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">946</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.ReadOnly" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.ReadOnly">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">947</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.TabOrder">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">948</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.Text" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqEvenLine.Text">
+        <source>'TEXT'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">949</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Tag" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Tag">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">950</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Left">
+        <source>167</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">951</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Top">
+        <source>70</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">952</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">953</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">954</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Caption">
+        <source>'Fore...'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">955</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.TabOrder">
+        <source>9</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">956</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.OnClick">
+        <source>buttonZaqFgClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">957</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Tag" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Tag">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">958</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Left">
+        <source>314</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">959</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Top">
+        <source>70</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">960</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">961</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">962</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Caption">
+        <source>'Reset'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">963</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.TabOrder">
+        <source>11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">964</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.OnClick">
+        <source>buttonZaqResetClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">965</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Tag" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Tag">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">966</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Left">
+        <source>216</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">967</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Top">
+        <source>70</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">968</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">969</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">970</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Caption">
+        <source>'Back...'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">971</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.TabOrder">
+        <source>10</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">972</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.OnClick">
+        <source>buttonZaqBgClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">973</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.Left">
+        <source>89</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">974</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.Top">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">975</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.Width">
+        <source>70</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">976</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">977</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.TabStop" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.TabStop">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">978</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.ReadOnly" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.ReadOnly">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">979</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqGridLine.TabOrder">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">980</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Tag" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Tag">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">981</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Left">
+        <source>167</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">982</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Top">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">983</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">984</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">985</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Caption">
+        <source>'Fore...'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">986</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.TabOrder">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">987</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Visible" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">988</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.OnClick">
+        <source>buttonZaqFgClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">989</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Tag" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Tag">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">990</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Left">
+        <source>314</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">991</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Top">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">992</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">993</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">994</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Caption">
+        <source>'Reset'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">995</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.TabOrder">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">996</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.OnClick">
+        <source>buttonZaqResetClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">997</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Tag" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Tag">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">998</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Left">
+        <source>216</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">999</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Top" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Top">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1000</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Width" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Width">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1001</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Height" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896296</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1002</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Caption">
+        <source>'Back...'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896296</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1003</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.TabOrder">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896296</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1004</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.OnClick" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.OnClick">
+        <source>buttonZaqBgClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9950896296</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1005</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:ColorDialog1.Left" resname="O:GraphColorDialog.O:ColorDialog1.Left">
         <source>16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925545023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">762</prop><prop prop-type="Type">TColorDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925545023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1006</prop><prop prop-type="Type">TColorDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:ColorDialog1.Top" resname="O:GraphColorDialog.O:ColorDialog1.Top">
         <source>344</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925545023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">763</prop><prop prop-type="Type">TColorDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925545023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1007</prop><prop prop-type="Type">TColorDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

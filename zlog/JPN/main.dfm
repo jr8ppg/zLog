@@ -5817,6 +5817,10 @@ object MainForm: TMainForm
       object N1: TMenuItem
         Caption = '-'
       end
+      object menuCorrectStartTime: TMenuItem
+        Caption = #38283#22987#26085#26178#12398#20462#27491
+        OnClick = menuCorrectStartTimeClick
+      end
       object menuCorrectNR: TMenuItem
         Action = actionCorrectSentNr
       end
@@ -6078,11 +6082,11 @@ object MainForm: TMainForm
         Visible = False
       end
       object menuPortal: TMenuItem
-        Caption = 'zLog '#12509#12540#12479#12523#12469#12452#12488'(&P)'
+        Caption = 'zLog'#12509#12540#12479#12523#12469#12452#12488'(&P)'
         OnClick = menuPortalClick
       end
       object menuUsersGuide: TMenuItem
-        Caption = 'zLog '#12518#12540#12470#12540#12474#12460#12452#12489'(&U)'
+        Caption = 'zLog'#12518#12540#12470#12540#12474#12460#12452#12489'(&U)'
         OnClick = menuUsersGuideClick
       end
       object HelpZyLO: TMenuItem

@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, System.StrUtils,
-  UzlogConst, UzLogOperatorInfo;
+  UzlogConst, UzLogOperatorInfo, UOperatorPowerDialog;
 
 type
   TformOperatorEdit = class(TForm)
@@ -72,6 +72,7 @@ type
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonCQMessageRefClick(Sender: TObject);
+    procedure editPowerDblClick(Sender: TObject);
   private
     { Private êÈåæ }
     FVoiceFileEdit: array[1..maxmessage] of TEdit;
@@ -126,6 +127,24 @@ begin
    end;
 
    FAdditionalVoiceFileEdit[n].Text := OpenDialog1.FileName;
+end;
+
+procedure TformOperatorEdit.editPowerDblClick(Sender: TObject);
+var
+   dlg: TOperatorPowerDialog;
+begin
+   dlg := TOperatorPowerDialog.Create(Self);
+   try
+      dlg.Power := editPower.Text;
+
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      editPower.Text := dlg.Power;
+   finally
+      dlg.Release();
+   end;
 end;
 
 procedure TformOperatorEdit.editPowerExit(Sender: TObject);

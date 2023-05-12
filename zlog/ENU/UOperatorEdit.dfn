@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45017.970162037</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">45058.9954861111</prop>
+        <prop prop-type="OrigDateTime">45054.8773148148</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">1</prop>
-        <prop prop-type="UnTranslated">364</prop>
+        <prop prop-type="UnTranslated">365</prop>
       </prop-group>
     </header>
     <body>
@@ -260,7 +260,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.Height" resname="O:formOperatorEdit.O:GroupBox1.Height">
-        <source>288</source>
+        <source>289</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -430,7 +430,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:Label26.Top" resname="O:formOperatorEdit.O:GroupBox1.O:Label26.Top">
-        <source>153</source>
+        <source>154</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -455,7 +455,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:Label27.Top" resname="O:formOperatorEdit.O:GroupBox1.O:Label27.Top">
-        <source>175</source>
+        <source>176</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -480,7 +480,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:Label72.Top" resname="O:formOperatorEdit.O:GroupBox1.O:Label72.Top">
-        <source>197</source>
+        <source>198</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -505,7 +505,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:Label73.Top" resname="O:formOperatorEdit.O:GroupBox1.O:Label73.Top">
-        <source>219</source>
+        <source>220</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -530,7 +530,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:Label77.Top" resname="O:formOperatorEdit.O:GroupBox1.O:Label77.Top">
-        <source>241</source>
+        <source>242</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -555,7 +555,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:Label78.Top" resname="O:formOperatorEdit.O:GroupBox1.O:Label78.Top">
-        <source>263</source>
+        <source>264</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -730,7 +730,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">142</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:editVoiceFile07.Top" resname="O:formOperatorEdit.O:GroupBox1.O:editVoiceFile07.Top">
-        <source>150</source>
+        <source>151</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">143</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -755,7 +755,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:editVoiceFile08.Top" resname="O:formOperatorEdit.O:GroupBox1.O:editVoiceFile08.Top">
-        <source>172</source>
+        <source>173</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">148</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -780,7 +780,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">152</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:editVoiceFile09.Top" resname="O:formOperatorEdit.O:GroupBox1.O:editVoiceFile09.Top">
-        <source>194</source>
+        <source>195</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -805,7 +805,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">157</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:editVoiceFile10.Top" resname="O:formOperatorEdit.O:GroupBox1.O:editVoiceFile10.Top">
-        <source>216</source>
+        <source>217</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">158</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -830,7 +830,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:editVoiceFile11.Top" resname="O:formOperatorEdit.O:GroupBox1.O:editVoiceFile11.Top">
-        <source>238</source>
+        <source>239</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -855,7 +855,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">167</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:editVoiceFile12.Top" resname="O:formOperatorEdit.O:GroupBox1.O:editVoiceFile12.Top">
-        <source>260</source>
+        <source>261</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1125,7 +1125,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">221</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:buttonVoiceRef07.Top" resname="O:formOperatorEdit.O:GroupBox1.O:buttonVoiceRef07.Top">
-        <source>150</source>
+        <source>151</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">222</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1165,7 +1165,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">229</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:buttonVoiceRef08.Top" resname="O:formOperatorEdit.O:GroupBox1.O:buttonVoiceRef08.Top">
-        <source>172</source>
+        <source>173</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">230</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1205,7 +1205,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">237</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:buttonVoiceRef09.Top" resname="O:formOperatorEdit.O:GroupBox1.O:buttonVoiceRef09.Top">
-        <source>194</source>
+        <source>195</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">238</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1245,7 +1245,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">245</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:buttonVoiceRef10.Top" resname="O:formOperatorEdit.O:GroupBox1.O:buttonVoiceRef10.Top">
-        <source>216</source>
+        <source>217</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">246</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1285,7 +1285,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">253</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:buttonVoiceRef11.Top" resname="O:formOperatorEdit.O:GroupBox1.O:buttonVoiceRef11.Top">
-        <source>238</source>
+        <source>239</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">254</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1325,7 +1325,7 @@
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">261</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox1.O:buttonVoiceRef12.Top" resname="O:formOperatorEdit.O:GroupBox1.O:buttonVoiceRef12.Top">
-        <source>260</source>
+        <source>261</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">262</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1559,285 +1559,290 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">308</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:formOperatorEdit.O:GroupBox2.O:editPower.OnDblClick" resname="O:formOperatorEdit.O:GroupBox2.O:editPower.OnDblClick">
+        <source>editPowerDblClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45058.9954877083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">309</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox2.O:editPower.OnExit" resname="O:formOperatorEdit.O:GroupBox2.O:editPower.OnExit">
         <source>editPowerExit</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">309</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">310</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox2.O:editAge.Left" resname="O:formOperatorEdit.O:GroupBox2.O:editAge.Left">
         <source>304</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">310</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">311</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox2.O:editAge.Top" resname="O:formOperatorEdit.O:GroupBox2.O:editAge.Top">
         <source>44</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">311</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">312</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox2.O:editAge.Width" resname="O:formOperatorEdit.O:GroupBox2.O:editAge.Width">
         <source>42</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">312</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">313</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox2.O:editAge.Height" resname="O:formOperatorEdit.O:GroupBox2.O:editAge.Height">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">313</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">314</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox2.O:editAge.ImeMode" resname="O:formOperatorEdit.O:GroupBox2.O:editAge.ImeMode">
         <source>imDisable</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">314</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">315</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox2.O:editAge.TabOrder" resname="O:formOperatorEdit.O:GroupBox2.O:editAge.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">315</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">316</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.Left" resname="O:formOperatorEdit.O:GroupBox3.Left">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">316</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">317</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.Top" resname="O:formOperatorEdit.O:GroupBox3.Top">
         <source>378</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">317</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">318</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.Width" resname="O:formOperatorEdit.O:GroupBox3.Width">
         <source>357</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">318</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">319</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.Height" resname="O:formOperatorEdit.O:GroupBox3.Height">
         <source>71</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">319</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">320</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.Caption" resname="O:formOperatorEdit.O:GroupBox3.Caption">
         <source>'Additional CQ Messages'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">320</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">321</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.TabOrder" resname="O:formOperatorEdit.O:GroupBox3.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">321</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">322</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:Label5.Left" resname="O:formOperatorEdit.O:GroupBox3.O:Label5.Left">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">322</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">323</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:Label5.Top" resname="O:formOperatorEdit.O:GroupBox3.O:Label5.Top">
         <source>22</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">323</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">324</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:Label5.Width" resname="O:formOperatorEdit.O:GroupBox3.O:Label5.Width">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">324</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">325</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:Label5.Height" resname="O:formOperatorEdit.O:GroupBox3.O:Label5.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">325</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">326</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:Label5.Caption" resname="O:formOperatorEdit.O:GroupBox3.O:Label5.Caption">
         <source>'CQ2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">326</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">327</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:Label6.Left" resname="O:formOperatorEdit.O:GroupBox3.O:Label6.Left">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">327</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">328</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:Label6.Top" resname="O:formOperatorEdit.O:GroupBox3.O:Label6.Top">
         <source>44</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">328</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">329</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:Label6.Width" resname="O:formOperatorEdit.O:GroupBox3.O:Label6.Width">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">329</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">330</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:Label6.Height" resname="O:formOperatorEdit.O:GroupBox3.O:Label6.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">330</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">331</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:Label6.Caption" resname="O:formOperatorEdit.O:GroupBox3.O:Label6.Caption">
         <source>'CQ3'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">331</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">332</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:editCQMessage2.Left" resname="O:formOperatorEdit.O:GroupBox3.O:editCQMessage2.Left">
         <source>40</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">332</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">333</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:editCQMessage2.Top" resname="O:formOperatorEdit.O:GroupBox3.O:editCQMessage2.Top">
         <source>19</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">333</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">334</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:editCQMessage2.Width" resname="O:formOperatorEdit.O:GroupBox3.O:editCQMessage2.Width">
         <source>280</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">334</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">335</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:editCQMessage2.Height" resname="O:formOperatorEdit.O:GroupBox3.O:editCQMessage2.Height">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">335</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">336</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:editCQMessage2.TabOrder" resname="O:formOperatorEdit.O:GroupBox3.O:editCQMessage2.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">336</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">337</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:editCQMessage3.Left" resname="O:formOperatorEdit.O:GroupBox3.O:editCQMessage3.Left">
         <source>40</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">337</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">338</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:editCQMessage3.Top" resname="O:formOperatorEdit.O:GroupBox3.O:editCQMessage3.Top">
         <source>41</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">338</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">339</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:editCQMessage3.Width" resname="O:formOperatorEdit.O:GroupBox3.O:editCQMessage3.Width">
         <source>280</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">339</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">340</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:editCQMessage3.Height" resname="O:formOperatorEdit.O:GroupBox3.O:editCQMessage3.Height">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">340</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">341</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:editCQMessage3.TabOrder" resname="O:formOperatorEdit.O:GroupBox3.O:editCQMessage3.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">341</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">342</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.Tag" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.Tag">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">342</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">343</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.Left" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.Left">
         <source>323</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">343</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">344</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.Top" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.Top">
         <source>19</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">344</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">345</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.Width" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.Width">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">345</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">346</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.Height" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.Height">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">346</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">347</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.Caption" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.Caption">
         <source>'...'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">347</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">348</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.TabOrder" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">348</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">349</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.OnClick" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage2Ref.OnClick">
         <source>buttonCQMessageRefClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">349</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">350</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.Tag" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.Tag">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">350</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932011806</prop><prop prop-type="Status">0</prop><prop prop-type="Order">351</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.Left" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.Left">
         <source>323</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">351</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">352</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.Top" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.Top">
         <source>41</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">352</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">353</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.Width" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.Width">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">353</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">354</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.Height" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.Height">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">354</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">355</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.Caption" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.Caption">
         <source>'...'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">355</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">356</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.TabOrder" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.TabOrder">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">356</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">357</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.OnClick" resname="O:formOperatorEdit.O:GroupBox3.O:buttonCQMessage3Ref.OnClick">
         <source>buttonCQMessageRefClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">357</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">358</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:OpenDialog1.DefaultExt" resname="O:formOperatorEdit.O:OpenDialog1.DefaultExt">
         <source>'WAV'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">358</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">359</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:OpenDialog1.Filter" resname="O:formOperatorEdit.O:OpenDialog1.Filter">
         <source>'Wave Files|*.wav|MP3 Files|*.mp|All Files|*.*'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">359</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">360</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:OpenDialog1.FilterIndex" resname="O:formOperatorEdit.O:OpenDialog1.FilterIndex">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">360</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">361</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:OpenDialog1.Options" resname="O:formOperatorEdit.O:OpenDialog1.Options">
         <source>[ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofNoTestFileCreate, ofEnableSizing]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">361</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">362</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:OpenDialog1.Title" resname="O:formOperatorEdit.O:OpenDialog1.Title">
         <source>'Select a voice file'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">362</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">363</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:OpenDialog1.Left" resname="O:formOperatorEdit.O:OpenDialog1.Left">
         <source>304</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">363</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">364</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:OpenDialog1.Top" resname="O:formOperatorEdit.O:OpenDialog1.Top">
         <source>457</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">364</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8932013657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">365</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

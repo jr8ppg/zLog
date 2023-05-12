@@ -774,14 +774,14 @@ object formOptions: TformOptions
       object GroupBox24: TGroupBox
         Left = 6
         Top = 139
-        Width = 143
-        Height = 222
+        Width = 203
+        Height = 264
         Caption = #12458#12506#12524#12540#12479#12540
         TabOrder = 7
         object OpListBox: TListBox
           Left = 11
           Top = 19
-          Width = 121
+          Width = 182
           Height = 162
           TabStop = False
           Enabled = False
@@ -793,7 +793,7 @@ object formOptions: TformOptions
           ItemHeight = 12
           ParentFont = False
           TabOrder = 0
-          OnDblClick = OpListBoxDblClick
+          OnDblClick = buttonOpEditClick
         end
         object buttonOpAdd: TButton
           Left = 11
@@ -805,13 +805,44 @@ object formOptions: TformOptions
           OnClick = buttonOpAddClick
         end
         object buttonOpDelete: TButton
-          Left = 75
+          Left = 136
           Top = 187
           Width = 57
           Height = 25
           Caption = #21066#38500
-          TabOrder = 2
+          TabOrder = 3
           OnClick = buttonOpDeleteClick
+        end
+        object checkSelectLastOperator: TCheckBox
+          Left = 11
+          Top = 218
+          Width = 121
+          Height = 17
+          Hint = #36215#21205#26178#12289#26368#24460#12398#12458#12506#12524#12540#12479#12540#12434#36984#25246#12375#12414#12377#12290
+          Caption = #26368#24460#12398'OP'#12434#36984#25246
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 4
+        end
+        object checkApplyPowerCodeOnBandChange: TCheckBox
+          Left = 11
+          Top = 239
+          Width = 190
+          Height = 17
+          Hint = #12496#12531#12489#22793#26356#26178#12289#12458#12506#12524#12540#12479#12540#27598#12398#38651#21147#31526#21495#12434#36969#29992#12375#12414#12377#12290
+          Caption = #12496#12531#12489#22793#26356#26178#12289#38651#21147#31526#21495#12434#36969#29992
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+        end
+        object buttonOpEdit: TButton
+          Left = 73
+          Top = 187
+          Width = 57
+          Height = 25
+          Caption = #20462#27491
+          TabOrder = 2
+          OnClick = buttonOpEditClick
         end
       end
       object groupPower: TGroupBox
@@ -1288,7 +1319,7 @@ object formOptions: TformOptions
         Hint = 
           'This option will switch the CW message sent when TAB or ; key is' +
           ' pressed to that in the current message bank. '
-        Caption = 'TAB/;'#12461#12540#25276#19979#26178#12289'CW'#12496#12531#12463#12434#20999#26367
+        Caption = 'CQ/SP'#12514#12540#12489#12395#24540#12376#12390'CW'#12496#12531#12463#20999#26367
         TabOrder = 12
         WordWrap = True
       end
@@ -4564,7 +4595,7 @@ object formOptions: TformOptions
         Top = 19
         Width = 44
         Height = 13
-        Caption = 'zLog root'
+        Caption = 'zLog'#12523#12540#12488
       end
       object Label109: TLabel
         Left = 8
@@ -6285,13 +6316,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Courier'
+          FontName = '@HG'#65402#65438#65404#65391#65400'M'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 23
+          ItemIndex = 4
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

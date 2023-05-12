@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45021.9021296296</prop>
-        <prop prop-type="OrigDateTime">45005.9608333333</prop>
+        <prop prop-type="SelfDateTime">45058.9953472222</prop>
+        <prop prop-type="OrigDateTime">45058.9949768518</prop>
         <prop prop-type="XlatDateTime">45016.8840972222</prop>
         <prop prop-type="Translated">51</prop>
-        <prop prop-type="UnTranslated">1194</prop>
+        <prop prop-type="UnTranslated">1217</prop>
       </prop-group>
     </header>
     <body>
@@ -8841,6 +8841,167 @@
           <prop prop-type="Status">1</prop>
         </prop-group>
         <target>"累計"</target>
+      </trans-unit>
+      <trans-unit id="UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins" resname="UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins">
+        <source>"Do you want the higher bands to have the same settings?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477546</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SStyleHookClassNotFound" resname="Vcl_Consts_SStyleHookClassNotFound">
+        <source>"StyleHook クラスが %s 用に登録されていません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477662</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SNoOwner" resname="Vcl_Consts_SNoOwner">
+        <source>"%s にはオーナーがありません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477662</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SRequireSameOwner" resname="Vcl_Consts_SRequireSameOwner">
+        <source>"ソースとターゲットではオーナーが同じでなければなりません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477662</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SDirect2DInvalidOwner" resname="Vcl_Consts_SDirect2DInvalidOwner">
+        <source>"別のキャンバスで %s を所有することはできません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477662</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SDirect2DInvalidSolidBrush" resname="Vcl_Consts_SDirect2DInvalidSolidBrush">
+        <source>"単色ブラシではありません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477778</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SDirect2DInvalidBrushStyle" resname="Vcl_Consts_SDirect2DInvalidBrushStyle">
+        <source>"ブラシのスタイルが無効です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477778</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SStyleFileDescription" resname="Vcl_Consts_SStyleFileDescription">
+        <source>"VCL スタイル ファイル"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477778</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SInvalidCanvasOperation" resname="Vcl_Consts_SInvalidCanvasOperation">
+        <source>"キャンバス操作が無効です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477778</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_sArgumentOutOfRange_StringIndex" resname="System_RTLConsts_sArgumentOutOfRange_StringIndex">
+        <source>"文字列インデックスが範囲外です (%d)。%d 以上 %d 以下でなければなりません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477778</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_sArgumentOutOfRange_InvalidUTF32" resname="System_RTLConsts_sArgumentOutOfRange_InvalidUTF32">
+        <source>"UTF32 文字値が無効です。サロゲート ペアの範囲を除き、0 以上 $10FFFF 以下でなければなりません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477778</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_sArgument_InvalidHighSurrogate" resname="System_RTLConsts_sArgument_InvalidHighSurrogate">
+        <source>"上位サロゲート文字のインデックス %d より後に下位サロゲート文字がありません。文字列が正しくエンコードされているか確認してください"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477894</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_sArgument_InvalidLowSurrogate" resname="System_RTLConsts_sArgument_InvalidLowSurrogate">
+        <source>"下位サロゲート文字のインデックス %d より前に上位サロゲート文字がありません。文字列が正しくエンコードされているか確認してください"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477894</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SSymbolExpected" resname="System_RTLConsts_SSymbolExpected">
+        <source>"%s が必要です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477894</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SNumberExpected" resname="System_RTLConsts_SNumberExpected">
+        <source>"数値が必要です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477894</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SAnsiUTF8Expected" resname="System_RTLConsts_SAnsiUTF8Expected">
+        <source>"ANSI または UTF8 エンコーディングが必要です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477894</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SParseError" resname="System_RTLConsts_SParseError">
+        <source>"%d 行目: %s"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477894</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SStringExpected" resname="System_RTLConsts_SStringExpected">
+        <source>"文字列が必要です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477894</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SIdentifierExpected" resname="System_RTLConsts_SIdentifierExpected">
+        <source>"識別子が必要です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477894</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SInvalidBinary" resname="System_RTLConsts_SInvalidBinary">
+        <source>"バイナリ値が無効です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477894</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SInvalidString" resname="System_RTLConsts_SInvalidString">
+        <source>"文字列定数が無効です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477894</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SLineTooLong" resname="System_RTLConsts_SLineTooLong">
+        <source>"行が長すぎます"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953477894</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SCharExpected" resname="System_RTLConsts_SCharExpected">
+        <source>"''%s'' が必要です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45058.9953478009</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
       </trans-unit>
     </body>
   </file>

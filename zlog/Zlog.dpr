@@ -135,7 +135,13 @@ uses
   UMessageManager in 'UMessageManager.pas' {formMessageManager},
   UExportCabrillo in 'UExportCabrillo.pas' {formExportCabrillo},
   USpotterListDlg in 'USpotterListDlg.pas' {formSpotterListDlg},
-  UFreqTest in 'UFreqTest.pas' {formFreqTest};
+  UFreqTest in 'UFreqTest.pas' {formFreqTest},
+  URigCtrlLib in 'URigCtrlLib.pas',
+  URigCtrlIcom in 'URigCtrlIcom.pas',
+  URigCtrlKenwood in 'URigCtrlKenwood.pas',
+  URigCtrlYaesu in 'URigCtrlYaesu.pas',
+  UStartTimeDialog in 'UStartTimeDialog.pas' {StartTimeDialog},
+  UOperatorPowerDialog in 'UOperatorPowerDialog.pas' {OperatorPowerDialog};
 
 {$R *.RES}
 

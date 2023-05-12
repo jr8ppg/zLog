@@ -153,6 +153,7 @@ type
     function GetFreqStr(): string;
     function GetFreqStr2(): string;
     function GetMemoStr(): string;
+    procedure SetInvalid(v: Boolean);
   public
     constructor Create;
     procedure IncTime;
@@ -208,7 +209,7 @@ type
     property PCName: string read FPCName write FPCName;
     property Forced: Boolean read FForced write FForced;
     property QslState: TQslState read FQslState write FQslState;
-    property Invalid: Boolean read FInvalid write FInvalid;
+    property Invalid: Boolean read FInvalid write SetInvalid;
     property QsoId: Integer read GetQsoId;
 
     property SerialStr: string read GetSerialStr;
@@ -345,6 +346,7 @@ type
     FBandList: TQSOListArray;
     FAllPhone: Boolean;    // True: SSB, FM, AM are same
     FQsoIdDic: TDictionary<Integer, string>;
+    FBaseTime: TDateTime;
     procedure Delete(i : Integer);
     procedure ProcessDelete(beforeQSO: TQSO);
     procedure ProcessEdit(afterQSO: TQSO; fAdd: Boolean);
@@ -432,6 +434,8 @@ type
     property ScoreCoeff: Extended read GetScoreCoeff write SetScoreCoeff;
 
     property AllPhone: Boolean read FAllPhone write FAllPhone;
+
+    property BaseTime: TDateTime read FBaseTime write FBaseTime;
   end;
 
 implementation
@@ -602,7 +606,7 @@ end;
 
 procedure TQSO.UpdateTime;
 begin
-   if UseUTC then begin
+   if Assigned(MyContest) and (MyContest.UseUTC) then begin
       FTime := GetUTC();
    end
    else begin
@@ -801,6 +805,15 @@ begin
    end;
 
    Result := strMemo;
+end;
+
+procedure TQSO.SetInvalid(v: Boolean);
+begin
+   FInvalid := v;
+   if v = True then begin
+      FMulti1 := '';
+      FMulti2 := '';
+   end;
 end;
 
 function TQSO.PartialSummary(DispDate: Boolean): string;
@@ -1581,6 +1594,7 @@ begin
    FDifferentModePointer := 0;
    FAllPhone := True;
    FQsoIdDic := TDictionary<Integer, string>.Create(120000);
+   FBaseTime := 0;
 end;
 
 destructor TLog.Destroy;
@@ -2027,6 +2041,11 @@ begin
 
    for i := 0 to TotalQSO do begin // changed from 1 to TotalQSO to 0 to TotalQSO
       D := FQsoList[i].FileRecord;
+
+      if i = 0 then begin
+         PDateTime(@D.Reserve2)^ := FBaseTime;
+      end;
+
       Write(f, D);
    end;
 
@@ -2053,6 +2072,7 @@ begin
          D.Header.MagicNo[2] := Ord('O');
          D.Header.MagicNo[3] := Ord('X');
          D.Header.NumRecords := TotalQSO;
+         PDateTime(Pointer(@D.Reserve2))^ := FBaseTime;
       end;
 
       Write(f, D);
@@ -3008,6 +3028,8 @@ begin
       Exit;
    end;
 
+   FBaseTime := PDateTime(@D.Reserve2)^;
+
    {$IFDEF DEBUG}
    dwTick := GetTickCount();
    {$ENDIF}
@@ -3079,6 +3101,8 @@ begin
    AssignFile(f, filename);
    Reset(f);
    Read(f, D);
+
+   FBaseTime := PDateTime(@D.Reserve2)^;
 
    Q := nil;
    GLOBALSERIAL := 0;

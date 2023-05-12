@@ -641,6 +641,9 @@ type
     Label115: TLabel;
     Label116: TLabel;
     spinSo2rAccelerateCW: TSpinEdit;
+    checkSelectLastOperator: TCheckBox;
+    checkApplyPowerCodeOnBandChange: TCheckBox;
+    buttonOpEdit: TButton;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -673,7 +676,6 @@ type
     procedure buttonBSResetClick(Sender: TObject);
     procedure buttonPlayVoiceClick(Sender: TObject);
     procedure buttonStopVoiceClick(Sender: TObject);
-    procedure OpListBoxDblClick(Sender: TObject);
     procedure vAdditionalButtonClick(Sender: TObject);
     procedure comboIcomModeChange(Sender: TObject);
     procedure radioQsyAssistClick(Sender: TObject);
@@ -694,6 +696,7 @@ type
     procedure comboRigB_Antb19Change(Sender: TObject);
     procedure checkUseEstimatedModeClick(Sender: TObject);
     procedure buttonSpotterListClick(Sender: TObject);
+    procedure buttonOpEditClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -792,6 +795,16 @@ uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet,
 procedure TformOptions.radioCategoryClick(Sender: TObject);
 var
    n: Integer;
+
+   procedure OperatorsEnable(f: Boolean);
+   begin
+      OpListBox.Enabled := f;
+      buttonOpAdd.Enabled := f;
+      buttonOpEdit.Enabled := f;
+      buttonOpDelete.Enabled := f;
+      checkSelectLastOperator.Enabled := f;
+      checkApplyPowerCodeOnBandChange.Enabled := f;
+   end;
 begin
    n := TRadioButton(Sender).Tag;
    case n of
@@ -800,9 +813,7 @@ begin
          comboTxNo.Enabled := False;
          comboTxNo.Items.CommaText := '0,1';
          comboTxNo.ItemIndex := 0;
-         OpListBox.Enabled := False;
-         buttonOpAdd.Enabled := False;
-         buttonOpDelete.Enabled := False;
+         OperatorsEnable(False);
       end;
 
       // Multi-Op/Multi-Tx
@@ -810,9 +821,7 @@ begin
          comboTxNo.Enabled := True;
          comboTxNo.Items.CommaText := TXLIST_MM;
          comboTxNo.ItemIndex := 0;
-         OpListBox.Enabled := True;
-         buttonOpAdd.Enabled := True;
-         buttonOpDelete.Enabled := True;
+         OperatorsEnable(True);
       end;
 
       // Multi-Op/Single-Tx, Multi-Op/Two-Tx
@@ -820,9 +829,7 @@ begin
          comboTxNo.Enabled := True;
          comboTxNo.Items.CommaText := TXLIST_MS;
          comboTxNo.ItemIndex := 0;
-         OpListBox.Enabled := True;
-         buttonOpAdd.Enabled := True;
-         buttonOpDelete.Enabled := True;
+         OperatorsEnable(True);
       end;
    end;
 end;
@@ -936,6 +943,9 @@ begin
 
       // #TXNR
       Settings._txnr := StrToIntDef(comboTxNo.Text, 0);
+
+      Settings._selectlastoperator := checkSelectLastOperator.Checked;
+      Settings._applypoweronbandchg :=  checkApplyPowerCodeOnBandChange.Checked;
 
       Settings._prov := ProvEdit.Text;
       Settings._city := CityEdit.Text;
@@ -1474,6 +1484,9 @@ begin
       CQmaxSpinEdit.Value := Settings.CW._cqmax;
       AbbrevEdit.Text := Settings.CW._zero + Settings.CW._one + Settings.CW._nine;
 
+      checkSelectLastOperator.Checked := Settings._selectlastoperator;
+      checkApplyPowerCodeOnBandChange.Checked := Settings._applypoweronbandchg;
+
       ProvEdit.Text := Settings._prov;
       CityEdit.Text := Settings._city;
       if Settings.ProvCityImported = True then begin
@@ -1845,12 +1858,26 @@ begin
    end;
 
    FNeedSuperCheckLoad := False;
+
+   if radioSingleOp.Checked = True then begin
+      radioCategoryClick(radioSingleOp);
+   end
+   else if radioMultiOpMultiTx.Checked = True then begin
+      radioCategoryClick(radioMultiOpMultiTx);
+   end
+   else if radioMultiOpSingleTx.Checked = True then begin
+      radioCategoryClick(radioMultiOpSingleTx);
+   end
+   else if radioMultiOpTwoTx.Checked = True then begin
+      radioCategoryClick(radioMultiOpTwoTx);
+   end;
 end;
 
 procedure TformOptions.buttonOpAddClick(Sender: TObject);
 var
    F: TformOperatorEdit;
    obj: TOperatorInfo;
+   op: TOperatorInfo;
 begin
    F := TformOperatorEdit.Create(Self);
    try
@@ -1861,10 +1888,43 @@ begin
       obj := TOperatorInfo.Create();
       F.GetObject(obj);
 
-      OpListBox.Items.AddObject(obj.Callsign, obj);
-      dmZLogGlobal.OpList.Add(obj);
+      op := dmZLogGlobal.OpList.ObjectOf(obj.Callsign);
+      if op = nil then begin
+         OpListBox.Items.AddObject(obj.Callsign, obj);
+         dmZLogGlobal.OpList.Add(obj);
+      end
+      else begin
+         op.Assign(obj);
+         obj.Free();
+      end;
    finally
       F.Release();
+   end;
+end;
+
+procedure TformOptions.buttonOpEditClick(Sender: TObject);
+var
+   F: TformOperatorEdit;
+   obj: TOperatorInfo;
+begin
+   if OpListBox.ItemIndex = -1 then begin
+      Exit;
+   end;
+
+   F := TformOperatorEdit.Create(Self);
+   try
+      obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
+
+      F.SetObject(obj);
+
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      F.GetObject(obj);
+
+   finally
+      F.Free();
    end;
 end;
 
@@ -2064,32 +2124,6 @@ end;
 procedure TformOptions.buttonCancelClick(Sender: TObject);
 begin
 //   Close;
-end;
-
-procedure TformOptions.OpListBoxDblClick(Sender: TObject);
-var
-   F: TformOperatorEdit;
-   obj: TOperatorInfo;
-begin
-   if OpListBox.ItemIndex = -1 then begin
-      Exit;
-   end;
-
-   F := TformOperatorEdit.Create(Self);
-   try
-      obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
-
-      F.SetObject(obj);
-
-      if F.ShowModal() <> mrOK then begin
-         Exit;
-      end;
-
-      F.GetObject(obj);
-
-   finally
-      F.Free();
-   end;
 end;
 
 procedure TformOptions.SpeedBarChange(Sender: TObject);

@@ -963,6 +963,318 @@ object GraphColorDialog: TGraphColorDialog
         end
       end
     end
+    object TabSheet5: TTabSheet
+      Caption = #33394#35373#23450#65299
+      ImageIndex = 4
+      object GroupBox7: TGroupBox
+        Left = 4
+        Top = 4
+        Width = 393
+        Height = 78
+        Caption = #32047#35336#12464#12521#12501
+        TabOrder = 0
+        object Label19: TLabel
+          Left = 6
+          Top = 21
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = #23455#32318#20516
+        end
+        object Label20: TLabel
+          Left = 6
+          Top = 47
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = #30446#27161#20516
+        end
+        object editActualColor: TEdit
+          Left = 89
+          Top = 18
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 0
+        end
+        object buttonActualFg: TButton
+          Left = 167
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = #25991#23383#33394
+          TabOrder = 1
+          Visible = False
+          OnClick = buttonOtherFgClick
+        end
+        object buttonActualReset: TButton
+          Left = 314
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = #21021#26399#20516
+          TabOrder = 3
+          OnClick = buttonOtherResetClick
+        end
+        object buttonActualBg: TButton
+          Left = 216
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = #32972#26223#33394
+          TabOrder = 2
+          OnClick = buttonOtherBgClick
+        end
+        object editTargetColor: TEdit
+          Left = 89
+          Top = 44
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 4
+        end
+        object buttonTargetFg: TButton
+          Tag = 1
+          Left = 167
+          Top = 44
+          Width = 45
+          Height = 20
+          Caption = #25991#23383#33394
+          TabOrder = 5
+          Visible = False
+          OnClick = buttonOtherFgClick
+        end
+        object buttonTargetReset: TButton
+          Tag = 1
+          Left = 314
+          Top = 44
+          Width = 45
+          Height = 20
+          Caption = #21021#26399#20516
+          TabOrder = 7
+          OnClick = buttonOtherResetClick
+        end
+        object buttonTargetBg: TButton
+          Tag = 1
+          Left = 216
+          Top = 44
+          Width = 45
+          Height = 20
+          Caption = #32972#26223#33394
+          TabOrder = 6
+          OnClick = buttonOtherBgClick
+        end
+      end
+    end
+    object TabSheet4: TTabSheet
+      Caption = 'ZAQ'
+      ImageIndex = 3
+      object GroupBox6: TGroupBox
+        Left = 4
+        Top = 4
+        Width = 393
+        Height = 141
+        Caption = 'Spread sheet'
+        TabOrder = 0
+        object Label16: TLabel
+          Left = 6
+          Top = 21
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = #29694#22312#12496#12531#12489
+        end
+        object Label17: TLabel
+          Left = 6
+          Top = 47
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = #22855#25968#34892
+        end
+        object Label18: TLabel
+          Left = 6
+          Top = 73
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = #20598#25968#34892
+        end
+        object Label21: TLabel
+          Left = 6
+          Top = 99
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = #26528#32218
+        end
+        object editZaqTitleLine: TEdit
+          Left = 89
+          Top = 18
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 0
+          Text = 'TEXT'
+        end
+        object buttonZaqFgTitle: TButton
+          Left = 167
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = #25991#23383#33394
+          TabOrder = 1
+          OnClick = buttonZaqFgClick
+        end
+        object buttonZaqResetTitle: TButton
+          Left = 314
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = #21021#26399#20516
+          TabOrder = 3
+          OnClick = buttonZaqResetClick
+        end
+        object buttonZaqBgTitle: TButton
+          Left = 216
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = #32972#26223#33394
+          TabOrder = 2
+          OnClick = buttonZaqBgClick
+        end
+        object editZaqOddLine: TEdit
+          Left = 89
+          Top = 44
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 4
+          Text = 'TEXT'
+        end
+        object buttonZaqFgOdd: TButton
+          Tag = 1
+          Left = 167
+          Top = 44
+          Width = 45
+          Height = 20
+          Caption = #25991#23383#33394
+          TabOrder = 5
+          OnClick = buttonZaqFgClick
+        end
+        object buttonZaqResetOdd: TButton
+          Tag = 1
+          Left = 314
+          Top = 44
+          Width = 45
+          Height = 20
+          Caption = #21021#26399#20516
+          TabOrder = 7
+          OnClick = buttonZaqResetClick
+        end
+        object buttonZaqBgOdd: TButton
+          Tag = 1
+          Left = 216
+          Top = 44
+          Width = 45
+          Height = 20
+          Caption = #32972#26223#33394
+          TabOrder = 6
+          OnClick = buttonZaqBgClick
+        end
+        object editZaqEvenLine: TEdit
+          Left = 89
+          Top = 70
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 8
+          Text = 'TEXT'
+        end
+        object buttonZaqFgEven: TButton
+          Tag = 2
+          Left = 167
+          Top = 70
+          Width = 45
+          Height = 20
+          Caption = #25991#23383#33394
+          TabOrder = 9
+          OnClick = buttonZaqFgClick
+        end
+        object buttonZaqResetEven: TButton
+          Tag = 2
+          Left = 314
+          Top = 70
+          Width = 45
+          Height = 20
+          Caption = #21021#26399#20516
+          TabOrder = 11
+          OnClick = buttonZaqResetClick
+        end
+        object buttonZaqBgEven: TButton
+          Tag = 2
+          Left = 216
+          Top = 70
+          Width = 45
+          Height = 20
+          Caption = #32972#26223#33394
+          TabOrder = 10
+          OnClick = buttonZaqBgClick
+        end
+        object editZaqGridLine: TEdit
+          Left = 89
+          Top = 96
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 15
+        end
+        object buttonZaqFgGrid: TButton
+          Tag = 3
+          Left = 167
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = #25991#23383#33394
+          TabOrder = 12
+          Visible = False
+          OnClick = buttonZaqFgClick
+        end
+        object buttonZaqResetGrid: TButton
+          Tag = 3
+          Left = 314
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = #21021#26399#20516
+          TabOrder = 14
+          OnClick = buttonZaqResetClick
+        end
+        object buttonZaqBgGrid: TButton
+          Tag = 3
+          Left = 216
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = #32972#26223#33394
+          TabOrder = 13
+          OnClick = buttonZaqBgClick
+        end
+      end
+    end
   end
   object ColorDialog1: TColorDialog
     Left = 16

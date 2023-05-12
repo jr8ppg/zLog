@@ -429,12 +429,27 @@ object RateDialogEx: TRateDialogEx
           YValues.Name = 'Bar'
           YValues.Order = loNone
         end
-        object SeriesTotalQSOs: TLineSeries
+        object SeriesActualTotals: TLineSeries
           SeriesColor = 33023
+          Title = 'SeriesActualTotals'
           Brush.BackColor = clDefault
           Pointer.HorizSize = 3
           Pointer.InflateMargins = True
           Pointer.Style = psRectangle
+          Pointer.VertSize = 3
+          Pointer.Visible = True
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+        object SeriesTargetTotals: TLineSeries
+          SeriesColor = 11627079
+          Title = 'SeriesTargetTotals'
+          Brush.BackColor = clDefault
+          Pointer.HorizSize = 3
+          Pointer.InflateMargins = True
+          Pointer.Style = psCircle
           Pointer.VertSize = 3
           Pointer.Visible = True
           XValues.Name = 'X'
@@ -509,18 +524,33 @@ object RateDialogEx: TRateDialogEx
     AutoLineReduction = maManual
     Left = 200
     Top = 153
-    object menuAchievementRate: TMenuItem
-      AutoCheck = True
-      Caption = #36948#25104#29575#34920#31034
+    object menuDispAlternating: TMenuItem
+      Caption = 'Alternating of actual and target '
       Checked = True
       GroupIndex = 1
+      RadioItem = True
+      OnClick = menuDispAlternatingClick
+    end
+    object menuDispOrder: TMenuItem
+      Caption = 'actual and target in order'
+      GroupIndex = 1
+      RadioItem = True
+      OnClick = menuDispAlternatingClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+      GroupIndex = 2
+    end
+    object menuAchievementRate: TMenuItem
+      Caption = 'Achievement'
+      Checked = True
+      GroupIndex = 2
       RadioItem = True
       OnClick = menuAchievementRateClick
     end
     object menuWinLoss: TMenuItem
-      AutoCheck = True
-      Caption = #21213#12385#36000#12369#34920#31034
-      GroupIndex = 1
+      Caption = 'Win/loss'
+      GroupIndex = 2
       RadioItem = True
       OnClick = menuAchievementRateClick
     end

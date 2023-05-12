@@ -47,7 +47,7 @@ object MarketForm: TMarketForm
       AlignWithMargins = True
       Left = 10
       Top = 13
-      Width = 614
+      Width = 333
       Height = 29
       Margins.Left = 0
       Margins.Right = 0
@@ -60,7 +60,6 @@ object MarketForm: TMarketForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      ExplicitWidth = 333
     end
     object MsgLabel: TLinkLabel
       Left = 10
@@ -88,7 +87,7 @@ object MarketForm: TMarketForm
       Width = 614
       Height = 18
       Align = alBottom
-      Caption = '<a href="https://nextzlog.github.io/zylo">How to make plugin</a>'
+      Caption = '<a href="https://nextzlog.github.io/zylo">'#12503#12521#12464#12452#12531#12398#20316#12426#26041'</a>'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12

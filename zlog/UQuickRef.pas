@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, UzLogGlobal, Vcl.ComCtrls, Vcl.ToolWin, System.ImageList,
-  Vcl.ImgList;
+  Vcl.ImgList, System.IniFiles;
 
 type
   TQuickRef = class(TForm)
@@ -39,22 +39,38 @@ begin
 end;
 
 procedure TQuickRef.FormCreate(Sender: TObject);
+var
+   ini: TMemIniFile;
 begin
-   dmZlogGlobal.ReadWindowState(Self);
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   try
+      dmZlogGlobal.ReadWindowState(ini, Self);
 
-   if FileExists('ZLOGHELP.TXT') then begin
-      Memo.Lines.LoadFromFile('ZLOGHELP.TXT');
-   end
-   else
-      Memo.Lines.Clear;
+      if FileExists('ZLOGHELP.TXT') then begin
+         Memo.Lines.LoadFromFile('ZLOGHELP.TXT');
+      end
+      else
+         Memo.Lines.Clear;
 
-   Memo.Font.Size := dmZLogGlobal.Settings.FQuickRefFontSize;
-   Memo.Font.Name := dmZLogGlobal.Settings.FQuickRefFontFace;
+      Memo.Font.Size := dmZLogGlobal.Settings.FQuickRefFontSize;
+      Memo.Font.Name := dmZLogGlobal.Settings.FQuickRefFontFace;
+   finally
+      ini.Free();
+   end;
 end;
 
 procedure TQuickRef.FormDestroy(Sender: TObject);
+var
+   ini: TMemIniFile;
 begin
-   dmZlogGlobal.WriteWindowState(Self);
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   try
+      dmZlogGlobal.WriteWindowState(ini, Self);
+      ini.UpdateFile();
+   finally
+      ini.Free();
+   end;
+
 end;
 
 procedure TQuickRef.FormShow(Sender: TObject);

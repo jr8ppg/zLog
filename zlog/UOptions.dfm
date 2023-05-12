@@ -774,14 +774,14 @@ object formOptions: TformOptions
       object GroupBox24: TGroupBox
         Left = 6
         Top = 139
-        Width = 143
-        Height = 222
+        Width = 203
+        Height = 264
         Caption = 'Operators'
         TabOrder = 7
         object OpListBox: TListBox
           Left = 11
           Top = 19
-          Width = 121
+          Width = 182
           Height = 162
           TabStop = False
           Enabled = False
@@ -793,7 +793,7 @@ object formOptions: TformOptions
           ItemHeight = 12
           ParentFont = False
           TabOrder = 0
-          OnDblClick = OpListBoxDblClick
+          OnDblClick = buttonOpEditClick
         end
         object buttonOpAdd: TButton
           Left = 11
@@ -805,13 +805,44 @@ object formOptions: TformOptions
           OnClick = buttonOpAddClick
         end
         object buttonOpDelete: TButton
-          Left = 75
+          Left = 136
           Top = 187
           Width = 57
           Height = 25
           Caption = 'Delete'
-          TabOrder = 2
+          TabOrder = 3
           OnClick = buttonOpDeleteClick
+        end
+        object checkSelectLastOperator: TCheckBox
+          Left = 11
+          Top = 218
+          Width = 121
+          Height = 17
+          Hint = 'Select last operator on startup.'
+          Caption = 'Select last operator'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 4
+        end
+        object checkApplyPowerCodeOnBandChange: TCheckBox
+          Left = 11
+          Top = 239
+          Width = 190
+          Height = 17
+          Hint = 'Apply per-operator power code on band change.'
+          Caption = 'Apply power code on band change'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+        end
+        object buttonOpEdit: TButton
+          Left = 73
+          Top = 187
+          Width = 57
+          Height = 25
+          Caption = 'Edit'
+          TabOrder = 2
+          OnClick = buttonOpEditClick
         end
       end
       object groupPower: TGroupBox
@@ -1288,7 +1319,7 @@ object formOptions: TformOptions
         Hint = 
           'This option will switch the CW message sent when TAB or ; key is' +
           ' pressed to that in the current message bank. '
-        Caption = 'Switch TAB/; with CW bank'
+        Caption = 'Switch CW bank with CQ/SP mode'
         TabOrder = 12
         WordWrap = True
       end
@@ -6285,13 +6316,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Courier'
+          FontName = '@HG'#65402#65438#65404#65391#65400'M'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 23
+          ItemIndex = 4
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

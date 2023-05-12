@@ -24,10 +24,8 @@ type
     Label16: TLabel;
     Label17: TLabel;
     Label18: TLabel;
-    Label20: TLabel;
     Label21: TLabel;
     Label23: TLabel;
-    mOath: TMemo;
     edContestName: TEdit;
     edCallsign: TEdit;
     edOpCallsign: TEdit;
@@ -51,16 +49,22 @@ type
     buttonCreateLog: TButton;
     buttonSave: TButton;
     buttonCancel: TButton;
-    checkFieldExtend: TCheckBox;
     Label11: TLabel;
     datetimeLicenseDate: TDateTimePicker;
     Label12: TLabel;
     comboAge: TComboBox;
+    checkFieldExtend: TCheckBox;
+    GroupBox1: TGroupBox;
+    mOath: TMemo;
+    radioOrganizerJarl: TRadioButton;
+    radioOrganizerOther: TRadioButton;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
     procedure buttonCancelClick(Sender: TObject);
     procedure edFDCoefficientChange(Sender: TObject);
+    procedure radioOrganizerJarlClick(Sender: TObject);
+    procedure radioOrganizerOtherClick(Sender: TObject);
   private
     { Private 宣言 }
     procedure RemoveBlankLines(M : TMemo);
@@ -106,13 +110,13 @@ end;
 
 procedure TformELogJarl2.InitializeFields;
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
    i: Integer;
    str: string;
    fSavedBack: Boolean;
 begin
    fSavedBack := Log.Saved;
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       edContestName.Text   := MyContest.Name;
       edCategoryCode.Text  := ini.ReadString('SummaryInfo', 'CategoryCode', '');
@@ -238,9 +242,9 @@ end;
 
 procedure TformELogJarl2.buttonSaveClick(Sender: TObject);
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
 begin
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       ini.WriteString('SummaryInfo', 'CategoryCode', edCategoryCode.Text);
       ini.WriteString('SummaryInfo', 'OperatorCallsign', edOpCallsign.Text);
@@ -282,6 +286,8 @@ begin
       ini.WriteString('SummaryInfo', 'Oath5', mOath.Lines[4]);
 
       ini.WriteBool('LogSheet', 'FieldExtend', checkFieldExtend.Checked);
+
+      ini.UpdateFile();
    finally
       ini.Free();
    end;
@@ -509,6 +515,16 @@ begin
    finally
       list.Free();
    end;
+end;
+
+procedure TformELogJarl2.radioOrganizerJarlClick(Sender: TObject);
+begin
+   mOath.Text := '私は、JARL制定のコンテスト規約および電波法令にしたがい運用した結果、ここに提出するサマリーシートおよびログシートなどが事実と相違ないものであることを、私の名誉において誓います。';
+end;
+
+procedure TformELogJarl2.radioOrganizerOtherClick(Sender: TObject);
+begin
+   mOath.Text := '私は、主催者制定のコンテスト規約および電波法令にしたがい運用した結果、ここに提出するサマリーシートおよびログシートなどが事実と相違ないものであることを、私の名誉において誓います。';
 end;
 
 end.

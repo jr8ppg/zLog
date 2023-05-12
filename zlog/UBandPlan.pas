@@ -312,7 +312,7 @@ end;
 
 procedure TBandPlan.LoadFromFile();
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
    m: TMode;
    b: TBand;
    strSection: string;
@@ -339,7 +339,7 @@ begin
    end;
 
    SL := TStringList.Create();
-   ini := TIniFile.Create(filename);
+   ini := TMemIniFile.Create(filename);
    try
       for m := mCW to mOther do begin
          for b := b19 to b10g do begin
@@ -358,7 +358,7 @@ end;
 
 procedure TBandPlan.SaveToFile();
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
    m: TMode;
    b: TBand;
    strSection: string;
@@ -369,7 +369,7 @@ begin
    filename := GetFileName();
 
    SL := TStringList.Create();
-   ini := TIniFile.Create(filename);
+   ini := TMemIniFile.Create(filename);
    try
       for m := mCW to mOther do begin
          for b := b19 to b10g do begin
@@ -381,6 +381,8 @@ begin
             ini.WriteString(strSection, strKey, SL.CommaText);
          end;
       end;
+
+      ini.UpdateFile();
    finally
       ini.Free();
       SL.Free();

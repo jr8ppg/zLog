@@ -154,6 +154,7 @@ type
 
     FPTTFLAG : Boolean; {internal PTT flag}
     FSendOK : Boolean;{TRUE if OK to send}
+    FTune: Boolean;
     FPTTEnabled : Boolean;
     FTimerID : UINT;  {CW timer ID}
 
@@ -387,6 +388,7 @@ type
     property FixedSpeed: Integer read FFixedSpeed write FFixedSpeed;
 
     procedure Open();
+    procedure Close();
   end;
 
 var
@@ -441,6 +443,7 @@ begin
    FSo2rNeoUseRxSelect := False;
    FSo2rRxSelectPort := tkpNone;
    FSo2rTxSelectPort := tkpNone;
+   FTune := False;
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
@@ -2216,6 +2219,7 @@ procedure TdmZLogKeyer.ClrBuffer;
 var
    m: Integer;
 begin
+   FTune := False;
    if FUseWinKeyer = True then begin
       WinKeyerClear();
    end
@@ -2307,7 +2311,7 @@ end;
 function TdmZLogKeyer.IsPlaying: Boolean;
 begin
    if FUseWinKeyer = False then begin
-      if (cwstrptr > 1) and FSendOK then
+      if ((cwstrptr > 1) and FSendOK) or (FTune = True) then
          Result := True
       else
          Result := False;
@@ -2480,10 +2484,33 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.Close();
+begin
+   COM_OFF();
+   USB_OFF();
+
+   // RIG選択用ポート
+   // RX
+   if FSo2rRxSelectPort <> tkpNone then begin
+      ZComRxRigSelect.ToggleDTR(False);
+      ZComRxRigSelect.ToggleRTS(False);
+      ZComRxRigSelect.Disconnect();
+   end;
+
+   // TX
+   if FSo2rTxSelectPort <> tkpNone then begin
+      ZComTxRigSelect.ToggleDTR(False);
+      ZComTxRigSelect.ToggleRTS(False);
+      ZComTxRigSelect.Disconnect();
+   end;
+end;
+
 procedure TdmZLogKeyer.TuneOn(nID: Integer);
 begin
    ClrBuffer;
    FSendOK := False;
+
+   FTune := True;
 
    if FPTTEnabled then begin
       ControlPTT(nID, True);
@@ -2537,7 +2564,7 @@ begin
       Exit;
    end;
 
-   for i := 0 to 2 do begin
+   for i := 0 to MAXPORT do begin
       if FComKeying[i] = nil then begin
          Continue;
       end;
