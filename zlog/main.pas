@@ -4916,7 +4916,9 @@ begin
 
       if FTabKeyPressed[nID] then begin
          CallSpaceBarProc(C, N, B);
-
+         if Is2bsiq() = False then begin
+            N.SetFocus();
+         end;
          EditedSinceTABPressed := tabstate_tabpressedbutnotedited; // UzLogCW
       end;
 
@@ -7983,9 +7985,9 @@ begin
          if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
             // CQ+SP
             if (Is2bsiq() = False) and (FCQLoopRunning = True) then begin
-               if (CurrentQSO.CQ = False) and (dmZlogGlobal.Settings._switchcqsp = True) then begin
-                  PostMessage(Handle, WM_ZLOG_SPACEBAR_PROC, FKeyPressedRigID[tx], 0);
-               end;
+//               if (CurrentQSO.CQ = False) and (dmZlogGlobal.Settings._switchcqsp = True) then begin
+//                  PostMessage(Handle, WM_ZLOG_SPACEBAR_PROC, FKeyPressedRigID[tx], 0);
+//               end;
             end;
 
             // 2BSIQ
