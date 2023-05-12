@@ -924,6 +924,7 @@ type
     procedure PlayMessagePH(no: Integer);
     procedure PlayMessageRTTY(no: Integer);
     procedure OnVoicePlayStarted(Sender: TObject);
+    procedure OnOneCharSentProc(Sender: TObject);
     procedure OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: Boolean);
     procedure OnPaddle(Sender: TObject);
     procedure InsertBandScope(fShiftKey: Boolean);
@@ -2132,6 +2133,7 @@ begin
          dmZLogKeyer.OnCallsignSentProc := CallsignSentProc;
          dmZLogKeyer.OnPaddle := OnPaddle;
          dmZLogKeyer.OnSpeedChanged := DoCwSpeedChange;
+         dmZLogKeyer.OnOneCharSentProc := OnOneCharSentProc;
          dmZLogKeyer.OnSendFinishProc := OnPlayMessageFinished;
          dmZLogKeyer.OnWkStatusProc := DoWkStatusProc;
 //         dmZLogKeyer.OnSendRepeatEvent := DoSendRepeatProc;
@@ -7446,6 +7448,11 @@ procedure TMainForm.OnVoicePlayStarted(Sender: TObject);
 begin
    VoiceStopButton.Enabled := True;
    VoiceControl(True);
+end;
+
+procedure TMainForm.OnOneCharSentProc(Sender: TObject);
+begin
+//   FMessageManager.OneCharSentProc();
 end;
 
 procedure TMainForm.OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: Boolean);
