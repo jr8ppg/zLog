@@ -570,8 +570,11 @@ begin
 
          rig.Name := rname;
       end;
-      rig.OnUpdateStatus := OnUpdateStatusProc;
-      rig.OnError := OnErrorProc;
+
+      if Assigned(rig) then begin
+         rig.OnUpdateStatus := OnUpdateStatusProc;
+         rig.OnError := OnErrorProc;
+      end;
    finally
       Result := rig;
    end;
@@ -911,7 +914,9 @@ begin
    ToggleSwitch1.FrameColor := clBlack;
    ToggleSwitch1.ThumbColor := clBlack;
    dmZLogKeyer.Open();
-   if (FRigs[1].Name = 'Omni-Rig') or (FRigs[2].Name = 'Omni-Rig') then begin
+
+   if (Assigned(FRigs[1]) and (FRigs[1].Name = 'Omni-Rig')) or
+      (Assigned(FRigs[2]) and (FRigs[2].Name = 'Omni-Rig')) then begin
       buttonOmniRig.Enabled := True;
    end
    else begin
