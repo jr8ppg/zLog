@@ -546,6 +546,7 @@ type
     checkSelectLastOperator: TCheckBox;
     checkApplyPowerCodeOnBandChange: TCheckBox;
     buttonOpEdit: TButton;
+    checkOutputOutofPeriod: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -1012,6 +1013,7 @@ begin
       Settings.FSuperCheck.FSuperCheckFolder := editSpcFolder.Text;
 
       Settings._allowdupe := AllowDupeCheckBox.Checked;
+      Settings._output_outofperiod := checkOutputOutofPeriod.Checked;
       Settings._sameexchange := cbDispExchange.Checked;
       Settings._entersuperexchange := cbAutoEnterSuper.Checked;
       Settings._displongdatetime := checkDispLongDateTime.Checked;
@@ -1406,6 +1408,7 @@ begin
       editPowerP.Text := Settings._PowerP;
 
       AllowDupeCheckBox.Checked := Settings._allowdupe;
+      checkOutputOutofPeriod.Checked := Settings._output_outofperiod;
 
       ClusterCombo.ItemIndex := Settings._clusterport;
       ZLinkCombo.ItemIndex := Settings._zlinkport;

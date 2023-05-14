@@ -530,6 +530,11 @@ begin
          Continue;
       end;
 
+      if (dmZLogGlobal.Settings._output_outofperiod = False) and
+         (Log.IsOutOfPeriod(Q) = True) then begin
+         Continue;
+      end;
+
       s := FormatQSO(Q, FScoreBand[Q.Band].Checked);
 
       WriteLn(f, s);

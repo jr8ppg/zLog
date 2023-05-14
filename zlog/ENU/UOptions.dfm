@@ -436,8 +436,8 @@ object formOptions: TformOptions
         end
       end
       object AllowDupeCheckBox: TCheckBox
-        Left = 316
-        Top = 87
+        Left = 273
+        Top = 89
         Width = 113
         Height = 17
         Caption = 'Allow to log dupes'
@@ -451,7 +451,7 @@ object formOptions: TformOptions
         AutoSize = False
         MaxValue = 99
         MinValue = 1
-        TabOrder = 4
+        TabOrder = 5
         Value = 3
       end
       object cbDispExchange: TCheckBox
@@ -460,11 +460,11 @@ object formOptions: TformOptions
         Width = 193
         Height = 17
         Caption = 'Display exchange on other bands'
-        TabOrder = 6
+        TabOrder = 7
       end
       object cbJMode: TCheckBox
-        Left = 316
-        Top = 66
+        Left = 273
+        Top = 68
         Width = 97
         Height = 17
         Caption = 'J-mode'
@@ -476,7 +476,7 @@ object formOptions: TformOptions
         Width = 161
         Height = 17
         Caption = 'Save when not sending CW'
-        TabOrder = 3
+        TabOrder = 4
       end
       object cbAutoEnterSuper: TCheckBox
         Left = 17
@@ -484,7 +484,7 @@ object formOptions: TformOptions
         Width = 260
         Height = 17
         Caption = 'Automatically enter exchange from SuperCheck'
-        TabOrder = 5
+        TabOrder = 6
       end
       object groupQsyAssist: TGroupBox
         Left = 222
@@ -492,7 +492,7 @@ object formOptions: TformOptions
         Width = 204
         Height = 89
         Caption = 'QSY Assist'
-        TabOrder = 9
+        TabOrder = 10
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -565,7 +565,7 @@ object formOptions: TformOptions
         Width = 101
         Height = 89
         Caption = 'QSL Default'
-        TabOrder = 8
+        TabOrder = 9
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -599,7 +599,15 @@ object formOptions: TformOptions
         Width = 193
         Height = 17
         Caption = 'Display long date time'
-        TabOrder = 7
+        TabOrder = 8
+      end
+      object checkOutputOutofPeriod: TCheckBox
+        Left = 273
+        Top = 110
+        Width = 160
+        Height = 17
+        Caption = 'Output logs out of period'
+        TabOrder = 3
       end
     end
     object tabsheetCategories: TTabSheet
@@ -5036,13 +5044,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'BIZ UD'#26126#26397' Medium'
+          FontName = 'Cascadia Code'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 23
+          ItemIndex = 22
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

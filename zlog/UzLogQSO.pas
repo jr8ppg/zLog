@@ -417,6 +417,7 @@ type
     function IsNewMulti(band: TBand; multi: string): Boolean;
     procedure RenewMulti();
     function IsContainsSameQSO(Q: TQSO): Boolean;
+    function IsOutOfPeriod(Q: TQSO): Boolean;
 
     {$IFNDEF ZSERVER}
     function IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
@@ -2417,6 +2418,11 @@ begin
    for i := 1 to FQSOList.Count - 1 do begin
       Q := FQSOList[i];
 
+      if (dmZLogGlobal.Settings._output_outofperiod = False) and
+         (IsOutOfPeriod(Q) = True) then begin
+         Continue;
+      end;
+
       if Q.Invalid = True then begin
          strText := 'X-QSO: ';
       end
@@ -3530,6 +3536,16 @@ begin
          Result := True;
          Exit;
       end;
+   end;
+
+   Result := False;
+end;
+
+function TLog.IsOutOfPeriod(Q: TQSO): Boolean;
+begin
+   if Q.Time < FStartTime then begin
+      Result := True;
+      Exit;
    end;
 
    Result := False;

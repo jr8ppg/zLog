@@ -436,8 +436,8 @@ object formOptions: TformOptions
         end
       end
       object AllowDupeCheckBox: TCheckBox
-        Left = 316
-        Top = 87
+        Left = 273
+        Top = 89
         Width = 113
         Height = 17
         Caption = #12487#12517#12540#12503#12434#35377#21487
@@ -451,7 +451,7 @@ object formOptions: TformOptions
         AutoSize = False
         MaxValue = 99
         MinValue = 1
-        TabOrder = 4
+        TabOrder = 5
         Value = 3
       end
       object cbDispExchange: TCheckBox
@@ -460,11 +460,11 @@ object formOptions: TformOptions
         Width = 240
         Height = 17
         Caption = #20182#12398#12496#12531#12489#12391#20132#25563#12375#12383#12490#12531#12496#12540#12434#34920#31034#12377#12427
-        TabOrder = 6
+        TabOrder = 7
       end
       object cbJMode: TCheckBox
-        Left = 316
-        Top = 66
+        Left = 273
+        Top = 68
         Width = 97
         Height = 17
         Caption = #65322#12514#12540#12489
@@ -476,7 +476,7 @@ object formOptions: TformOptions
         Width = 161
         Height = 17
         Caption = #20445#23384#12399'CW'#38750#36865#20449#26178
-        TabOrder = 3
+        TabOrder = 4
       end
       object cbAutoEnterSuper: TCheckBox
         Left = 17
@@ -484,7 +484,7 @@ object formOptions: TformOptions
         Width = 260
         Height = 17
         Caption = #12473#12540#12497#12540#12481#12455#12483#12463#12424#12426#12490#12531#12496#12540#33258#21205#20837#21147
-        TabOrder = 5
+        TabOrder = 6
       end
       object groupQsyAssist: TGroupBox
         Left = 222
@@ -492,7 +492,7 @@ object formOptions: TformOptions
         Width = 204
         Height = 89
         Caption = 'QSY'#12450#12471#12473#12488
-        TabOrder = 9
+        TabOrder = 10
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -565,7 +565,7 @@ object formOptions: TformOptions
         Width = 101
         Height = 89
         Caption = 'QSL'#21021#26399#20516
-        TabOrder = 8
+        TabOrder = 9
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -599,7 +599,15 @@ object formOptions: TformOptions
         Width = 193
         Height = 17
         Caption = #38263#12356#26085#20184#12391#34920#31034#12377#12427
-        TabOrder = 7
+        TabOrder = 8
+      end
+      object checkOutputOutofPeriod: TCheckBox
+        Left = 273
+        Top = 110
+        Width = 160
+        Height = 17
+        Caption = #26399#38291#22806#12398#20132#20449#12418#12525#12464#20986#21147
+        TabOrder = 3
       end
     end
     object tabsheetCategories: TTabSheet
@@ -5036,13 +5044,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'BIZ UD'#26126#26397' Medium'
+          FontName = 'Cascadia Code'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 23
+          ItemIndex = 22
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

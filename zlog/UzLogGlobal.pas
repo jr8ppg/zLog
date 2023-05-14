@@ -194,6 +194,7 @@ type
     _scorecoeff : extended;
     _age : string; // all asian
     _allowdupe : boolean;
+    _output_outofperiod: Boolean;
     _countdown : boolean;
     _qsycount : boolean;
     _countdownminute: Integer;
@@ -758,6 +759,9 @@ begin
 
       // Allow to log dupes
       Settings._allowdupe := ini.ReadBool('Preferences', 'AllowDupe', True);
+
+      // Output out of contest period
+      Settings._output_outofperiod := ini.ReadBool('Preferences', 'OutputOutOfPeriod', False);
 
       // Save when not sending CW
       Settings._savewhennocw := ini.ReadBool('Preferences', 'SaveWhenNoCW', False);
@@ -1430,6 +1434,9 @@ begin
 
       // Allow to log dupes
       ini.WriteBool('Preferences', 'AllowDupe', Settings._allowdupe);
+
+      // Output out of contest period
+      ini.WriteBool('Preferences', 'OutputOutOfPeriod', Settings._output_outofperiod);
 
       // Save when not sending CW
       ini.WriteBool('Preferences', 'SaveWhenNoCW', Settings._savewhennocw);
