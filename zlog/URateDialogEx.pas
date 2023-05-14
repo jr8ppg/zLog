@@ -376,17 +376,17 @@ begin
    // äÓèÄéûçèÇãÅÇﬂÇÈ
    if Log.TotalQSO = 0 then begin
       FStartTime := CalcStartTime( CurrentTime() );
-      FOriginTime := Log.BaseTime;  //FStartTime;
+      FOriginTime := Log.StartTime;
    end
    else begin
       case GraphStartPosition of
-         spFirstQSO:    FStartTime := Log.BaseTime;   // Log.QsoList[1].Time;
+         spFirstQSO:    FStartTime := Log.StartTime;   // Log.QsoList[1].Time;
          spCurrentTime: FStartTime := CalcStartTime( IncHour(CurrentTime(), (FShowLast div 2) - 1) );
          spLastQSO:     FStartTime := CalcStartTime( Log.QsoList[Log.TotalQSO].Time );
          else           FStartTime := CalcStartTime( CurrentTime() );
       end;
 
-      FOriginTime := Log.BaseTime;  //Log.QsoList[1].Time;
+      FOriginTime := Log.StartTime;  //Log.QsoList[1].Time;
    end;
 
    DecodeTime(FOriginTime, H, M, S, ms);
@@ -403,7 +403,7 @@ begin
       DecodeTime(diff, H, M, S, ms);
    end
    else begin
-      FStartTime := Log.BaseTime;   //Log.QsoList[1].Time;
+      FStartTime := Log.StartTime;   //Log.QsoList[1].Time;
       DecodeTime(FStartTime, H, M, S, ms);
       FStartTime := Int(FStartTime) + EncodeTime(H, 0, 0, 0);
       H := 0;

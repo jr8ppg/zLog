@@ -5774,6 +5774,7 @@ object MainForm: TMainForm
     Top = 144
     object FileMenu: TMenuItem
       Caption = '&File'
+      OnClick = FileMenuClick
       object FileNewItem: TMenuItem
         Caption = '&New Contest'
         Hint = 'Create a new file'

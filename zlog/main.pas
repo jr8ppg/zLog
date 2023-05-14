@@ -778,6 +778,7 @@ type
     procedure menuUsersGuideClick(Sender: TObject);
     procedure menuPortalClick(Sender: TObject);
     procedure menuCorrectStartTimeClick(Sender: TObject);
+    procedure FileMenuClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -2426,6 +2427,11 @@ begin
    end;
 end;
 
+procedure TMainForm.FileMenuClick(Sender: TObject);
+begin
+   menuCorrectStartTime.Enabled := MyContest.UseContestPeriod;
+end;
+
 procedure TMainForm.FileExit(Sender: TObject);
 begin
    Close();
@@ -3909,7 +3915,7 @@ begin
    sthh := MyContest.StartTime;
    if sthh > -1 then begin
       // 基準日時前ならInvalid
-      if CurrentQSO.Time < Log.BaseTime then begin
+      if CurrentQSO.Time < Log.StartTime then begin
          CurrentQSO.Invalid := True;
          CurrentQSO.Memo := 'BEFORE CONTEST';
       end;
@@ -5746,7 +5752,7 @@ end;
 // Correct start time
 procedure TMainForm.menuCorrectStartTimeClick(Sender: TObject);
 begin
-   Log.BaseTime := InputStartTime();
+   Log.StartTime := InputStartTime();
 end;
 
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
@@ -6442,9 +6448,9 @@ begin
       end;
 
       // 開始時刻
-      if Log.BaseTime = 0 then begin
+      if (MyContest.UseContestPeriod = True) and (Log.StartTime = 0) then begin
          dt := InputStartTime();
-         Log.BaseTime := dt;
+         Log.StartTime := dt;
       end;
 
       SetWindowCaption();
@@ -10999,7 +11005,8 @@ var
 begin
    dlg := TStartTimeDialog.Create(Self);
    try
-      if Log.BaseTime = 0 then begin
+      // 開始時間が未設定なら現在日時よりそれっぽい開始時間を設定する
+      if Log.StartTime = 0 then begin
          dt := Now;
          if MyContest.StartTime = 0 then begin
             dt := IncDay(dt, 1);
@@ -11008,8 +11015,8 @@ begin
          DecodeDateTime(dt, yy, mm, dd, hh, nn, ss, ms);
          dlg.BaseTime := EncodeDateTime(yy, mm, dd, MyContest.StartTime, 0, 0, 0);
       end
-      else begin
-         dlg.BaseTime := Log.BaseTime;
+      else begin  // 設定済みはファイルより
+         dlg.BaseTime := Log.StartTime;
       end;
 
       dlg.UseUtc := MyContest.UseUTC;

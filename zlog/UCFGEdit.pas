@@ -50,11 +50,11 @@ type
     comboStartTime: TComboBox;
     comboPeriod: TComboBox;
     checkUseUTC: TCheckBox;
-    checkNoDefinedStartTime: TCheckBox;
+    checkUseContestPeriod: TCheckBox;
     Label10: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure checkNoDefinedStartTimeClick(Sender: TObject);
+    procedure checkUseContestPeriodClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     { Private êÈåæ }
@@ -72,6 +72,8 @@ type
     procedure SetCwMessageA(Index: Integer; v: string);
     function GetUseUTC(): Boolean;
     procedure SetUseUTC(v: Boolean);
+    function GetUseContestPeriod(): Boolean;
+    procedure SetUseContestPeriod(v: Boolean);
     function GetStartTime(): Integer;
     procedure SetStartTime(v: Integer);
     function GetPeriod(): Integer;
@@ -84,6 +86,7 @@ type
     property Power: string read GetPower write SetPower;
     property CwMessageA[Index: Integer]: string read GetCwMessageA write SetCwMessageA;
     property UseUTC: Boolean read GetUseUTC write SetUseUTC;
+    property UseContestPeriod: Boolean read GetUseContestPeriod write SetUseContestPeriod;
     property StartTime: Integer read GetStartTime write SetStartTime;
     property Period: Integer read GetPeriod write SetPeriod;
   end;
@@ -120,7 +123,7 @@ end;
 
 procedure TCFGEdit.FormShow(Sender: TObject);
 begin
-   checkNoDefinedStartTimeClick(nil);
+   checkUseContestPeriodClick(nil);
 end;
 
 procedure TCFGEdit.buttonOKClick(Sender: TObject);
@@ -128,16 +131,13 @@ begin
    ModalResult := mrOK;
 end;
 
-procedure TCFGEdit.checkNoDefinedStartTimeClick(Sender: TObject);
+procedure TCFGEdit.checkUseContestPeriodClick(Sender: TObject);
+var
+   f: Boolean;
 begin
-   if checkNoDefinedStartTime.Checked = True then begin
-      comboStartTime.Enabled := False;
-      comboPeriod.Enabled := False;
-   end
-   else begin
-      comboStartTime.Enabled := True;
-      comboPeriod.Enabled := True;
-   end;
+   f := checkUseContestPeriod.Checked;
+   comboStartTime.Enabled := f;
+   comboPeriod.Enabled := f;
 end;
 
 function TCFGEdit.GetSent(): string;
@@ -224,9 +224,19 @@ begin
    checkUseUTC.Checked := v;
 end;
 
+function TCFGEdit.GetUseContestPeriod(): Boolean;
+begin
+   Result := checkUseContestPeriod.Checked;
+end;
+
+procedure TCFGEdit.SetUseContestPeriod(v: Boolean);
+begin
+   checkUseContestPeriod.Checked := v;
+end;
+
 function TCFGEdit.GetStartTime(): Integer;
 begin
-   if checkNoDefinedStartTime.Checked = True then begin
+   if UseContestPeriod = False then begin
       Result := -1;
    end
    else begin
@@ -237,11 +247,11 @@ end;
 procedure TCFGEdit.SetStartTime(v: Integer);
 begin
    if v = -1 then begin
-      checkNoDefinedStartTime.Checked := True;
+      UseContestPeriod := False;
       comboStartTime.Text := '';
    end
    else begin
-      checkNoDefinedStartTime.Checked := False;
+      UseContestPeriod := True;
       comboStartTime.Text := IntToStr(v);
    end;
 end;

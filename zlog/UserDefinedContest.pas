@@ -88,6 +88,7 @@ type
 
     FBandPlan: string;
 
+    FUseContestPeriod: Boolean;
     FStartTime: Integer;
     FPeriod: Integer;
   private
@@ -187,6 +188,7 @@ type
 
     property BandPlan: string read FBandPlan;
 
+    property UseContestPeriod: Boolean read FUseContestPeriod write FUseContestPeriod;
     property StartTime: Integer read FStartTime write SetStartTime;
     property Period: Integer read FPeriod write SetPeriod;
   end;
@@ -275,6 +277,7 @@ begin
 
    FBandPlan := '';
 
+   FUseContestPeriod := True;
    FStartTime := -1;
    FPeriod := 0;
 end;
@@ -666,6 +669,10 @@ begin
 
          if strCmd = 'BANDPLAN' then begin
             D.FBandPlan := UpperCase(strParam);
+         end;
+
+         if strCmd = 'USECONTESTPERIOD' then begin
+            D.FUseContestPeriod := ParseOnOff(strParam);
          end;
 
          if strCmd = 'STARTTIME' then begin
