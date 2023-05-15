@@ -1899,7 +1899,7 @@ object formOptions: TformOptions
         Left = 214
         Top = 264
         Width = 213
-        Height = 45
+        Height = 69
         Caption = 'USBIF4CW'
         TabOrder = 5
         object checkUsbif4cwSyncWpm: TCheckBox
@@ -1917,6 +1917,14 @@ object formOptions: TformOptions
           Height = 17
           Caption = #12497#12489#12523#12434#24038#21491#21453#36578
           TabOrder = 1
+        end
+        object checkGen3MicSelect: TCheckBox
+          Left = 8
+          Top = 42
+          Width = 193
+          Height = 17
+          Caption = 'Gen.3'#12398#12510#12452#12463#20837#21147#20999#26367#12434#12377#12427
+          TabOrder = 2
         end
       end
       object groupOptCI_V: TGroupBox
@@ -5044,13 +5052,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Code'
+          FontName = 'Fira Code Retina'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 22
+          ItemIndex = 53
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

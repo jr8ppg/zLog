@@ -148,6 +148,7 @@ type
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
     _icom_response_timeout: Integer;
     _usbif4cw_sync_wpm: Boolean;
+    _usbif4cw_gen3_micsel: Boolean;
     _polling_interval: Integer;
 
     // WinKeyer
@@ -970,6 +971,9 @@ begin
       // USBIF4CW Sync WPM
       Settings._usbif4cw_sync_wpm := ini.ReadBool('Hardware', 'Usbif4cwSyncWpm', True);
 
+      // USBIF4CW Use Gen.3 mic. select
+      Settings._usbif4cw_gen3_micsel := ini.ReadBool('Hardware', 'Usbif4cwGen3MicSelect', False);
+
       // Polling Interval
       Settings._polling_interval := ini.ReadInteger('Hardware', 'PollingInterval', 200);
 
@@ -1623,6 +1627,9 @@ begin
       // USBIF4CW Sync WPM
       ini.WriteBool('Hardware', 'Usbif4cwSyncWpm', Settings._usbif4cw_sync_wpm);
 
+      // USBIF4CW Use Gen.3 mic. select
+      ini.WriteBool('Hardware', 'Usbif4cwGen3MicSelect', Settings._usbif4cw_gen3_micsel);
+
       // Polling Interval
       ini.WriteInteger('Hardware', 'PollingInterval', Settings._polling_interval);
 
@@ -2022,6 +2029,7 @@ begin
 
    dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;
+   dmZLogKeyer.Gen3MicSelect := Settings._usbif4cw_gen3_micsel;
 
    dmZLogKeyer.FixedSpeed := Settings.CW._fixwpm;
 

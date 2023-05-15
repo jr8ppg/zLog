@@ -10494,16 +10494,18 @@ begin
    nID := FCurrentTx;
 
    if fOn = True then begin
+      dmZLogKeyer.SetVoiceFlag(1);
       if dmZLogGlobal.Settings._pttenabled then begin
-         dmZlogKeyer.ControlPTT(nID, True);
+         dmZLogKeyer.ControlPTT(nID, True);
          Sleep(dmZLogGlobal.Settings._pttbefore);
       end;
    end
    else begin
       if dmZLogGlobal.Settings._pttenabled then begin
          Sleep(dmZLogGlobal.Settings._pttafter);
-         dmZlogKeyer.ControlPTT(nID, False);
+         dmZLogKeyer.ControlPTT(nID, False);
       end;
+      dmZLogKeyer.SetVoiceFlag(0);
    end;
 end;
 

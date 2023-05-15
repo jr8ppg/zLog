@@ -547,6 +547,7 @@ type
     checkApplyPowerCodeOnBandChange: TCheckBox;
     buttonOpEdit: TButton;
     checkOutputOutofPeriod: TCheckBox;
+    checkGen3MicSelect: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -879,7 +880,6 @@ begin
 
       Settings.CW._speed := SpeedBar.Position;
       Settings.CW._weight := WeightBar.Position;
-      Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
       Settings.CW._FIFO := FIFOCheck.Checked;
       Settings.CW._sidetone := SideToneCheck.Checked;
       Settings.CW._sidetone_volume := VolumeSpinEdit.Value;
@@ -930,13 +930,16 @@ begin
 
       Settings._icom_response_timeout := StrToIntDef(editIcomResponseTimout.Text, 1000);
 
-      Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
-
       Settings._zlinkport := ZLinkCombo.ItemIndex;
       Settings._pcname := editZLinkPcName.Text;
       Settings._syncserial := checkZLinkSyncSerial.Checked;
 
       Settings._pttenabled := PTTEnabledCheckBox.Checked;
+
+      // USBIF4CW
+      Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
+      Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
+      Settings._usbif4cw_gen3_micsel := checkGen3MicSelect.Checked;
 
       Settings._saveevery        := SaveEvery.Value;
 
@@ -1373,7 +1376,6 @@ begin
       SpeedBar.Position := Settings.CW._speed;
       SpeedLabel.Caption := IntToStr(Settings.CW._speed) + ' wpm';
       WeightBar.Position := Settings.CW._weight;
-      checkUsbif4cwPaddleReverse.Checked := Settings.CW._paddlereverse;
       WeightLabel.Caption := IntToStr(Settings.CW._weight) + ' %';
       FIFOCheck.Checked := Settings.CW._FIFO;
       SideToneCheck.Checked := Settings.CW._sidetone;
@@ -1443,8 +1445,6 @@ begin
 
       editIcomResponseTimout.Text := IntToStr(Settings._icom_response_timeout);
 
-      checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
-
       // Packet Cluster通信設定ボタン
       buttonClusterSettings.Enabled := True;
       ClusterComboChange(nil);
@@ -1452,6 +1452,11 @@ begin
       // ZLink通信設定ボタン
       buttonZLinkSettings.Enabled := True;
       ZLinkComboChange(nil);
+
+      // USBIF4CW
+      checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
+      checkUsbif4cwPaddleReverse.Checked := Settings.CW._paddlereverse;
+      checkGen3MicSelect.Checked := Settings._usbif4cw_gen3_micsel;
 
       SaveEvery.Value := Settings._saveevery;
 
