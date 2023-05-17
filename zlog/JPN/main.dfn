@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45058.9949768518</prop>
+        <prop prop-type="SelfDateTime">45063.9423842593</prop>
         <prop prop-type="OrigDateTime">45058.9724768518</prop>
-        <prop prop-type="XlatDateTime">45010.6055092593</prop>
-        <prop prop-type="Translated">88</prop>
-        <prop prop-type="UnTranslated">3008</prop>
+        <prop prop-type="XlatDateTime">45059.0125</prop>
+        <prop prop-type="Translated">89</prop>
+        <prop prop-type="UnTranslated">3007</prop>
       </prop-group>
     </header>
     <body>
@@ -11305,8 +11305,9 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainMenu.O:FileMenu.O:menuCorrectStartTime.Caption" resname="O:MainForm.O:MainMenu.O:FileMenu.O:menuCorrectStartTime.Caption">
         <source>'Correct start time'</source>
+        <target>'開始日時の修正'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9949922222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2256</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9949922222</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2256</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainMenu.O:FileMenu.O:menuCorrectStartTime.OnClick" resname="O:MainForm.O:MainMenu.O:FileMenu.O:menuCorrectStartTime.OnClick">
         <source>menuCorrectStartTimeClick</source>
@@ -11933,7 +11934,7 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainMenu.O:Help1.O:menuPortal.Caption" resname="O:MainForm.O:MainMenu.O:Help1.O:menuPortal.Caption">
         <source>'zLog &amp;portal'</source>
-        <target>'zLog ポータルサイト(&amp;P)'</target>
+        <target>'zLogポータルサイト(&amp;P)'</target>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44947.8886559144</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2374</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -11944,7 +11945,7 @@
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainMenu.O:Help1.O:menuUsersGuide.Caption" resname="O:MainForm.O:MainMenu.O:Help1.O:menuUsersGuide.Caption">
         <source>'zLog &amp;Users Guide'</source>
-        <target>'zLog ユーザーズガイド(&amp;U)'</target>
+        <target>'zLogユーザーズガイド(&amp;U)'</target>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44947.8886559144</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2376</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>

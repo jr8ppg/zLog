@@ -26,9 +26,10 @@ type
     FBandHigh: TBand;
     FBandPlan: string;
 
+    FUseContestPeriod: Boolean;
     FStartTime: Integer;   // ŠJŽnŽžŠÔ 21‚â0‚È‚Ç UTC‚©‚Ç‚¤‚©‚ÍLog.QsoList[0].RSTsent‚Å”»’f‚·‚é
     FPeriod: Integer;      // ŠúŠÔ 12,24,48‚È‚Ç
-    FUseUTC: Boolean;
+    FUseUTC: Boolean;      // False:JST True:UTC
 
     function DispExchangeOnOtherBands(strCallsign: string; aBand: TBand): string; virtual;
     function GetUseUTC(): Boolean;
@@ -79,6 +80,7 @@ type
     property BandHigh: TBand read FBandHigh;
     property BandPlan: string read FBandPlan;
 
+    property UseContestPeriod: Boolean read FUseContestPeriod write FUseContestPeriod;
     property StartTime: Integer read FStartTime write FStartTime;
     property Period: Integer read FPeriod write FPeriod;
     property UseUTC: Boolean read GetUseUTC write SetUseUTC;
@@ -475,6 +477,7 @@ begin
 
    FBandPlan := 'JA';
 
+   FUseContestPeriod := True;
    FStartTime := 21;
    FPeriod := 18;
    UseUTC := False;
@@ -759,13 +762,15 @@ end;
 
 procedure TContest.LogQSO(var aQSO: TQSO; Local: Boolean);
 begin
-   if Local = False then
-      aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
+   if aQSO.Invalid = False then begin
+      if Local = False then
+         aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
 
-   MultiForm.AddNoUpdate(aQSO);
+      MultiForm.AddNoUpdate(aQSO);
 
-   aQSO.Reserve2 := $00;
-   ScoreForm.AddNoUpdate(aQSO);
+      aQSO.Reserve2 := $00;
+      ScoreForm.AddNoUpdate(aQSO);
+   end;
 
    aQSO.Reserve := actAdd;
    Log.AddQue(aQSO);
@@ -1239,6 +1244,7 @@ begin
    FBandLow := b19;
    FBandHigh := b10g;
 
+   FUseContestPeriod := False;
    FStartTime := -1;
    FPeriod := 0;
 end;
@@ -1356,7 +1362,6 @@ begin
       Log.QsoList[0].RSTSent := _USEUTC; // JST = 0; UTC = $FFFF
    end;
 
-
    SerialContestType := FConfig.SerialContestType;
 
    for B := b19 to High(FConfig.SerialArray) do begin
@@ -1375,6 +1380,7 @@ begin
       FBandPlan := FConfig.BandPlan;
    end;
 
+   FUseContestPeriod := FConfig.UseContestPeriod;
    FStartTime := FConfig.StartTime;
    FPeriod := FConfig.Period;
 end;

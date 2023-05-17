@@ -436,7 +436,7 @@ object formOptions: TformOptions
         end
       end
       object AllowDupeCheckBox: TCheckBox
-        Left = 316
+        Left = 273
         Top = 87
         Width = 113
         Height = 17
@@ -463,7 +463,7 @@ object formOptions: TformOptions
         TabOrder = 6
       end
       object cbJMode: TCheckBox
-        Left = 316
+        Left = 273
         Top = 66
         Width = 97
         Height = 17
@@ -476,7 +476,7 @@ object formOptions: TformOptions
         Width = 161
         Height = 17
         Caption = 'Save when not sending CW'
-        TabOrder = 3
+        TabOrder = 7
       end
       object cbAutoEnterSuper: TCheckBox
         Left = 17
@@ -565,7 +565,7 @@ object formOptions: TformOptions
         Width = 101
         Height = 89
         Caption = 'QSL Default'
-        TabOrder = 8
+        TabOrder = 10
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -599,7 +599,15 @@ object formOptions: TformOptions
         Width = 193
         Height = 17
         Caption = 'Display long date time'
-        TabOrder = 7
+        TabOrder = 8
+      end
+      object checkOutputOutofPeriod: TCheckBox
+        Left = 273
+        Top = 110
+        Width = 160
+        Height = 17
+        Caption = 'Output logs out of period'
+        TabOrder = 3
       end
     end
     object tabsheetCategories: TTabSheet
@@ -3905,7 +3913,7 @@ object formOptions: TformOptions
           Top = 35
           Width = 40
           Height = 21
-          TabOrder = 2
+          TabOrder = 1
           Text = 'CWPortEdit'
         end
         object AfterEdit: TEdit
@@ -3913,26 +3921,14 @@ object formOptions: TformOptions
           Top = 35
           Width = 40
           Height = 21
-          TabOrder = 3
+          TabOrder = 2
           Text = 'CWPortEdit'
-        end
-        object checkCwReverseSignal: TCheckBox
-          Left = 162
-          Top = 14
-          Width = 144
-          Height = 17
-          Hint = 'if checked, PTT is DTR, Keying is RTS'
-          Caption = 'Reverse the Signal Lines'
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 1
-          OnClick = PTTEnabledCheckBoxClick
         end
       end
       object groupUsif4cw: TGroupBox
         Left = 6
         Top = 303
-        Width = 213
+        Width = 423
         Height = 45
         Caption = 'USBIF4CW'
         TabOrder = 2
@@ -3951,6 +3947,14 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'Paddle Reverse'
           TabOrder = 1
+        end
+        object checkGen3MicSelect: TCheckBox
+          Left = 200
+          Top = 19
+          Width = 193
+          Height = 17
+          Caption = 'Select mic input for Gen.3'
+          TabOrder = 2
         end
       end
       object groupWinKeyer: TGroupBox
@@ -6316,13 +6320,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@HG'#65402#65438#65404#65391#65400'M'
+          FontName = 'HG'#34892#26360#20307
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 4
+          ItemIndex = 60
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45058.9950694444</prop>
-        <prop prop-type="OrigDateTime">45058.9276388889</prop>
-        <prop prop-type="XlatDateTime">44936.9525694444</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">301</prop>
+        <prop prop-type="SelfDateTime">45063.9590509259</prop>
+        <prop prop-type="OrigDateTime">45063.9209027778</prop>
+        <prop prop-type="XlatDateTime">45063.9436111111</prop>
+        <prop prop-type="Translated">13</prop>
+        <prop prop-type="UnTranslated">288</prop>
       </prop-group>
     </header>
     <body>
@@ -485,8 +485,9 @@
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox2.O:Label1.Caption" resname="O:CFGEdit.O:GroupBox2.O:Label1.Caption">
         <source>'Sent'</source>
+        <target>'送信NR'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">1</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox2.O:Label2.Left" resname="O:CFGEdit.O:GroupBox2.O:Label2.Left">
         <source>16</source>
@@ -510,8 +511,9 @@
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox2.O:Label2.Caption" resname="O:CFGEdit.O:GroupBox2.O:Label2.Caption">
         <source>'Prov'</source>
+        <target>'都道府県'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">1</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox2.O:Label3.Left" resname="O:CFGEdit.O:GroupBox2.O:Label3.Left">
         <source>16</source>
@@ -535,13 +537,15 @@
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox2.O:Label3.Caption" resname="O:CFGEdit.O:GroupBox2.O:Label3.Caption">
         <source>'City'</source>
+        <target>'市郡'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">1</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox2.O:editCity.Left" resname="O:CFGEdit.O:GroupBox2.O:editCity.Left">
         <source>53</source>
+        <target>70</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">1</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox2.O:editCity.Top" resname="O:CFGEdit.O:GroupBox2.O:editCity.Top">
         <source>69</source>
@@ -565,8 +569,9 @@
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox2.O:editProv.Left" resname="O:CFGEdit.O:GroupBox2.O:editProv.Left">
         <source>53</source>
+        <target>70</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">1</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox2.O:editProv.Top" resname="O:CFGEdit.O:GroupBox2.O:editProv.Top">
         <source>43</source>
@@ -590,8 +595,9 @@
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox2.O:editSent.Left" resname="O:CFGEdit.O:GroupBox2.O:editSent.Left">
         <source>53</source>
+        <target>70</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">1</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox2.O:editSent.Top" resname="O:CFGEdit.O:GroupBox2.O:editSent.Top">
         <source>17</source>
@@ -635,8 +641,9 @@
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox3.Caption" resname="O:CFGEdit.O:GroupBox3.Caption">
         <source>'Band to use'</source>
+        <target>'使用するバンド'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925147801</prop><prop prop-type="Status">1</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox3.TabOrder" resname="O:CFGEdit.O:GroupBox3.TabOrder">
         <source>1</source>
@@ -1190,8 +1197,9 @@
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox4.O:Label4.Caption" resname="O:CFGEdit.O:GroupBox4.O:Label4.Caption">
         <source>'Start hour'</source>
+        <target>'開始時'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950745255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">235</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950745255</prop><prop prop-type="Status">1</prop><prop prop-type="Order">235</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox4.O:Label9.Left" resname="O:CFGEdit.O:GroupBox4.O:Label9.Left">
         <source>16</source>
@@ -1215,8 +1223,9 @@
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox4.O:Label9.Caption" resname="O:CFGEdit.O:GroupBox4.O:Label9.Caption">
         <source>'Period'</source>
+        <target>'期間'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950745255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">240</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950745255</prop><prop prop-type="Status">1</prop><prop prop-type="Order">240</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox4.O:Label10.Left" resname="O:CFGEdit.O:GroupBox4.O:Label10.Left">
         <source>128</source>
@@ -1240,8 +1249,9 @@
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox4.O:Label10.Caption" resname="O:CFGEdit.O:GroupBox4.O:Label10.Caption">
         <source>'hours'</source>
+        <target>'時間'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.995074537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">245</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.995074537</prop><prop prop-type="Status">1</prop><prop prop-type="Order">245</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox4.O:comboStartTime.Left" resname="O:CFGEdit.O:GroupBox4.O:comboStartTime.Left">
         <source>81</source>
@@ -1475,48 +1485,51 @@
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseUTC.Caption" resname="O:CFGEdit.O:GroupBox4.O:checkUseUTC.Caption">
         <source>'Use UTC'</source>
+        <target>'UTCを使用する'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950745602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">292</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950745602</prop><prop prop-type="Status">1</prop><prop prop-type="Order">292</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseUTC.TabOrder" resname="O:CFGEdit.O:GroupBox4.O:checkUseUTC.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">45058.9950745602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">293</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Left" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Left">
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Left" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Left">
         <source>16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950745602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">294</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9424745718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">294</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Top" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Top">
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Top" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Top">
         <source>49</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950745602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">295</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9424745718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">295</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Width" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Width">
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Width" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Width">
         <source>129</source>
+        <target>160</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950745602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">296</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9424745718</prop><prop prop-type="Status">1</prop><prop prop-type="Order">296</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Height" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Height">
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Height" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Height">
         <source>17</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950745602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">297</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9424745718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">297</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Caption" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Caption">
-        <source>'no defined start time'</source>
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Caption" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Caption">
+        <source>'Use contest period'</source>
+        <target>'コンテスト期間を使用する'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950745602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">298</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9424745718</prop><prop prop-type="Status">1</prop><prop prop-type="Order">298</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.TabOrder" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.TabOrder">
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.TabOrder" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950745602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">299</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9424745718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">299</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.OnClick" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.OnClick">
-        <source>checkNoDefinedStartTimeClick</source>
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.OnClick" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.OnClick">
+        <source>checkUseContestPeriodClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950745718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">300</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9424745718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">300</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

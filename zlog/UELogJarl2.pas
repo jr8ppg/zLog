@@ -408,6 +408,7 @@ procedure TformELogJarl2.WriteLogSheet(var f: TextFile; fExtend: Boolean);
 var
    i: Integer;
    s: string;
+   Q: TQSO;
 begin
    WriteLn(f, '<LOGSHEET TYPE=ZLOG>');
 
@@ -425,7 +426,14 @@ begin
    WriteLn(f, '');
 
    for i := 1 to Log.TotalQSO do begin
-      s := FormatQSO(Log.QsoList[i], fExtend);
+      Q := Log.QsoList[i];
+
+      if (dmZLogGlobal.Settings._output_outofperiod = False) and
+         (Log.IsOutOfPeriod(Q) = True) then begin
+         Continue;
+      end;
+
+      s := FormatQSO(Q, fExtend);
       WriteLn(f, s);
    end;
 

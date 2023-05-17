@@ -436,7 +436,7 @@ object formOptions: TformOptions
         end
       end
       object AllowDupeCheckBox: TCheckBox
-        Left = 316
+        Left = 273
         Top = 87
         Width = 113
         Height = 17
@@ -463,7 +463,7 @@ object formOptions: TformOptions
         TabOrder = 6
       end
       object cbJMode: TCheckBox
-        Left = 316
+        Left = 273
         Top = 66
         Width = 97
         Height = 17
@@ -476,7 +476,7 @@ object formOptions: TformOptions
         Width = 161
         Height = 17
         Caption = #20445#23384#12399'CW'#38750#36865#20449#26178
-        TabOrder = 3
+        TabOrder = 7
       end
       object cbAutoEnterSuper: TCheckBox
         Left = 17
@@ -565,7 +565,7 @@ object formOptions: TformOptions
         Width = 101
         Height = 89
         Caption = 'QSL'#21021#26399#20516
-        TabOrder = 8
+        TabOrder = 10
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -599,7 +599,15 @@ object formOptions: TformOptions
         Width = 193
         Height = 17
         Caption = #38263#12356#26085#20184#12391#34920#31034#12377#12427
-        TabOrder = 7
+        TabOrder = 8
+      end
+      object checkOutputOutofPeriod: TCheckBox
+        Left = 273
+        Top = 110
+        Width = 160
+        Height = 17
+        Caption = #26399#38291#22806#12398#20132#20449#12418#12525#12464#20986#21147
+        TabOrder = 3
       end
     end
     object tabsheetCategories: TTabSheet
@@ -3808,21 +3816,21 @@ object formOptions: TformOptions
         Top = 158
         Width = 423
         Height = 74
-        Caption = 'ICOM CI-V Options'
+        Caption = 'ICOM CI-V'#12458#12503#12471#12519#12531
         TabOrder = 0
         object Label83: TLabel
           Left = 9
           Top = 23
           Width = 27
           Height = 13
-          Caption = 'Mode'
+          Caption = #12514#12540#12489
         end
         object Label84: TLabel
           Left = 209
           Top = 23
           Width = 36
           Height = 13
-          Caption = 'Method'
+          Caption = #26041#27861
         end
         object Label110: TLabel
           Left = 262
@@ -3875,64 +3883,52 @@ object formOptions: TformOptions
         Top = 237
         Width = 423
         Height = 62
-        Caption = 'CW/PTT control'
+        Caption = 'CW/PTT'#21046#24481
         TabOrder = 1
         object Label38: TLabel
           Left = 8
           Top = 38
-          Width = 70
+          Width = 90
           Height = 13
-          Caption = 'Before TX (ms)'
+          Caption = #36865#20449#21069#12487#12451#12524#12452'(ms)'
         end
         object Label39: TLabel
-          Left = 128
+          Left = 180
           Top = 38
           Width = 130
           Height = 13
-          Caption = 'After TX paddle/keybd (ms)'
+          Caption = #36865#20449#24460#12487#12451#12524#12452'(ms)'
         end
         object PTTEnabledCheckBox: TCheckBox
           Left = 8
           Top = 14
           Width = 129
           Height = 17
-          Caption = 'Enable PTT control'
+          Caption = 'PTT'#21046#24481#26377#21177
           TabOrder = 0
           OnClick = PTTEnabledCheckBoxClick
         end
         object BeforeEdit: TEdit
-          Left = 80
+          Left = 120
+          Top = 35
+          Width = 40
+          Height = 21
+          TabOrder = 1
+          Text = 'CWPortEdit'
+        end
+        object AfterEdit: TEdit
+          Left = 290
           Top = 35
           Width = 40
           Height = 21
           TabOrder = 2
           Text = 'CWPortEdit'
         end
-        object AfterEdit: TEdit
-          Left = 264
-          Top = 35
-          Width = 40
-          Height = 21
-          TabOrder = 3
-          Text = 'CWPortEdit'
-        end
-        object checkCwReverseSignal: TCheckBox
-          Left = 162
-          Top = 14
-          Width = 144
-          Height = 17
-          Hint = 'if checked, PTT is DTR, Keying is RTS'
-          Caption = 'Reverse the Signal Lines'
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 1
-          OnClick = PTTEnabledCheckBoxClick
-        end
       end
       object groupUsif4cw: TGroupBox
         Left = 6
         Top = 303
-        Width = 213
+        Width = 423
         Height = 45
         Caption = 'USBIF4CW'
         TabOrder = 2
@@ -3941,16 +3937,24 @@ object formOptions: TformOptions
           Top = 19
           Width = 82
           Height = 17
-          Caption = 'Sync WPM'
+          Caption = 'WPM'#21516#26399
           TabOrder = 0
         end
         object checkUsbif4cwPaddleReverse: TCheckBox
           Left = 93
           Top = 19
-          Width = 96
+          Width = 110
           Height = 17
-          Caption = 'Paddle Reverse'
+          Caption = #12497#12489#12523#12434#24038#21491#21453#36578
           TabOrder = 1
+        end
+        object checkGen3MicSelect: TCheckBox
+          Left = 210
+          Top = 19
+          Width = 193
+          Height = 17
+          Caption = 'Gen.3'#12398#12510#12452#12463#20837#21147#20999#26367#12434#12377#12427
+          TabOrder = 2
         end
       end
       object groupWinKeyer: TGroupBox
@@ -6316,13 +6320,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@HG'#65402#65438#65404#65391#65400'M'
+          FontName = 'HG'#34892#26360#20307
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 4
+          ItemIndex = 60
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

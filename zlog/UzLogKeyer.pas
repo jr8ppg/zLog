@@ -122,6 +122,7 @@ type
     usbdevlist: TList<TJvHIDDevice>;
     usbinflist: TList<TUsbPortInfo>;
     FUSBIF4CW_Detected: Boolean;
+    FGen3MicSelect: Boolean;
 
     FUsbInfo: array[0..MAXPORT] of TUsbInfo;
 
@@ -334,6 +335,7 @@ type
 
     property Usbif4cwSyncWpm: Boolean read FUsbif4cwSyncWpm write FUsbif4cwSyncWpm;
     property PaddleReverse: Boolean read FPaddleReverse write SetPaddleReverse;
+    property Gen3MicSelect: Boolean read FGen3MicSelect write FGen3MicSelect;
 
     // USBIF4CW support
     function usbif4cwSetWPM(nID: Integer; nWPM: Integer): Long;
@@ -488,6 +490,7 @@ begin
    FOnSendFinishProc := nil;
    FOnPaddleEvent := nil;
    FUsbif4cwSyncWpm := False;
+   FGen3MicSelect := False;
 
    for i := 0 to MAXPORT do begin
       KeyingPort[i] := tkpNone;
@@ -833,6 +836,10 @@ procedure TdmZLogKeyer.SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, e
 var
    i: Integer;
 begin
+   if FGen3MicSelect = False then begin
+      Exit;
+   end;
+
    for i := 0 to MAXPORT do begin
       if FKeyingPort[i] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);

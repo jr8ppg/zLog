@@ -5,8 +5,8 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45058.9954398148</prop>
-        <prop prop-type="OrigDateTime">45058.9276388889</prop>
+        <prop prop-type="SelfDateTime">45063.9427546296</prop>
+        <prop prop-type="OrigDateTime">45063.9209027778</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">301</prop>
@@ -1483,40 +1483,40 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">45058.9954497454</prop><prop prop-type="Status">0</prop><prop prop-type="Order">293</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Left" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Left">
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Left" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Left">
         <source>16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9954497454</prop><prop prop-type="Status">0</prop><prop prop-type="Order">294</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9427577894</prop><prop prop-type="Status">0</prop><prop prop-type="Order">294</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Top" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Top">
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Top" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Top">
         <source>49</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9954497454</prop><prop prop-type="Status">0</prop><prop prop-type="Order">295</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9427577894</prop><prop prop-type="Status">0</prop><prop prop-type="Order">295</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Width" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Width">
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Width" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Width">
         <source>129</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9954497454</prop><prop prop-type="Status">0</prop><prop prop-type="Order">296</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9427577894</prop><prop prop-type="Status">0</prop><prop prop-type="Order">296</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Height" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Height">
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Height" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Height">
         <source>17</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9954497454</prop><prop prop-type="Status">0</prop><prop prop-type="Order">297</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9427577894</prop><prop prop-type="Status">0</prop><prop prop-type="Order">297</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Caption" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.Caption">
-        <source>'no defined start time'</source>
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Caption" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.Caption">
+        <source>'Use contest period'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9954497454</prop><prop prop-type="Status">0</prop><prop prop-type="Order">298</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9427577894</prop><prop prop-type="Status">0</prop><prop prop-type="Order">298</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.TabOrder" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.TabOrder">
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.TabOrder" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9954497454</prop><prop prop-type="Status">0</prop><prop prop-type="Order">299</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9427577894</prop><prop prop-type="Status">0</prop><prop prop-type="Order">299</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.OnClick" resname="O:CFGEdit.O:GroupBox4.O:checkNoDefinedStartTime.OnClick">
-        <source>checkNoDefinedStartTimeClick</source>
+      <trans-unit id="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.OnClick" resname="O:CFGEdit.O:GroupBox4.O:checkUseContestPeriod.OnClick">
+        <source>checkUseContestPeriodClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9954497454</prop><prop prop-type="Status">0</prop><prop prop-type="Order">300</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45063.9427577894</prop><prop prop-type="Status">0</prop><prop prop-type="Order">300</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

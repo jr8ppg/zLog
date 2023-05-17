@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45058.9950694444</prop>
+        <prop prop-type="SelfDateTime">45063.9424768519</prop>
         <prop prop-type="OrigDateTime">45050.4870138889</prop>
-        <prop prop-type="XlatDateTime">44936.9525694444</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">922</prop>
+        <prop prop-type="XlatDateTime">45059.0128935185</prop>
+        <prop prop-type="Translated">1</prop>
+        <prop prop-type="UnTranslated">921</prop>
       </prop-group>
     </header>
     <body>
@@ -540,8 +540,9 @@
       </trans-unit>
       <trans-unit id="O:formELogJarl1.O:Label21.Height" resname="O:formELogJarl1.O:Label21.Height">
         <source>12</source>
+        <target>15</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925281366</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925281366</prop><prop prop-type="Status">1</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formELogJarl1.O:Label21.Caption" resname="O:formELogJarl1.O:Label21.Caption">
         <source>'日付'</source>

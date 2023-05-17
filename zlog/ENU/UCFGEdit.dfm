@@ -379,14 +379,14 @@ object CFGEdit: TCFGEdit
       Caption = 'Use UTC'
       TabOrder = 0
     end
-    object checkNoDefinedStartTime: TCheckBox
+    object checkUseContestPeriod: TCheckBox
       Left = 16
       Top = 49
       Width = 129
       Height = 17
-      Caption = 'no defined start time'
+      Caption = 'Use contest period'
       TabOrder = 1
-      OnClick = checkNoDefinedStartTimeClick
+      OnClick = checkUseContestPeriodClick
     end
   end
 end

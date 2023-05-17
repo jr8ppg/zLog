@@ -338,7 +338,7 @@ begin
    sthh := MyContest.StartTime;
    if sthh > -1 then begin
       // Šî€“ú‘O‚È‚çInvalid
-      if workQSO.Time < Log.BaseTime then begin
+      if workQSO.Time < Log.StartTime then begin
          checkInvalid.Checked := True;
          workQSO.Memo := 'BEFORE CONTEST';
       end;

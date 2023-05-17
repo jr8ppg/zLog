@@ -346,7 +346,7 @@ type
     FBandList: TQSOListArray;
     FAllPhone: Boolean;    // True: SSB, FM, AM are same
     FQsoIdDic: TDictionary<Integer, string>;
-    FBaseTime: TDateTime;
+    FStartTime: TDateTime;
     procedure Delete(i : Integer);
     procedure ProcessDelete(beforeQSO: TQSO);
     procedure ProcessEdit(afterQSO: TQSO; fAdd: Boolean);
@@ -417,6 +417,7 @@ type
     function IsNewMulti(band: TBand; multi: string): Boolean;
     procedure RenewMulti();
     function IsContainsSameQSO(Q: TQSO): Boolean;
+    function IsOutOfPeriod(Q: TQSO): Boolean;
 
     {$IFNDEF ZSERVER}
     function IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
@@ -435,7 +436,7 @@ type
 
     property AllPhone: Boolean read FAllPhone write FAllPhone;
 
-    property BaseTime: TDateTime read FBaseTime write FBaseTime;
+    property StartTime: TDateTime read FStartTime write FStartTime;
   end;
 
 implementation
@@ -1594,7 +1595,7 @@ begin
    FDifferentModePointer := 0;
    FAllPhone := True;
    FQsoIdDic := TDictionary<Integer, string>.Create(120000);
-   FBaseTime := 0;
+   FStartTime := 0;
 end;
 
 destructor TLog.Destroy;
@@ -2043,7 +2044,7 @@ begin
       D := FQsoList[i].FileRecord;
 
       if i = 0 then begin
-         PDateTime(@D.Reserve2)^ := FBaseTime;
+         PDateTime(@D.Reserve2)^ := FStartTime;
       end;
 
       Write(f, D);
@@ -2072,7 +2073,7 @@ begin
          D.Header.MagicNo[2] := Ord('O');
          D.Header.MagicNo[3] := Ord('X');
          D.Header.NumRecords := TotalQSO;
-         PDateTime(Pointer(@D.Reserve2))^ := FBaseTime;
+         PDateTime(Pointer(@D.Reserve2))^ := FStartTime;
       end;
 
       Write(f, D);
@@ -2416,6 +2417,11 @@ begin
 
    for i := 1 to FQSOList.Count - 1 do begin
       Q := FQSOList[i];
+
+      if (dmZLogGlobal.Settings._output_outofperiod = False) and
+         (IsOutOfPeriod(Q) = True) then begin
+         Continue;
+      end;
 
       if Q.Invalid = True then begin
          strText := 'X-QSO: ';
@@ -3028,7 +3034,7 @@ begin
       Exit;
    end;
 
-   FBaseTime := PDateTime(@D.Reserve2)^;
+   FStartTime := PDateTime(@D.Reserve2)^;
 
    {$IFDEF DEBUG}
    dwTick := GetTickCount();
@@ -3102,7 +3108,7 @@ begin
    Reset(f);
    Read(f, D);
 
-   FBaseTime := PDateTime(@D.Reserve2)^;
+   FStartTime := PDateTime(@D.Reserve2)^;
 
    Q := nil;
    GLOBALSERIAL := 0;
@@ -3530,6 +3536,16 @@ begin
          Result := True;
          Exit;
       end;
+   end;
+
+   Result := False;
+end;
+
+function TLog.IsOutOfPeriod(Q: TQSO): Boolean;
+begin
+   if Q.Time < FStartTime then begin
+      Result := True;
+      Exit;
    end;
 
    Result := False;

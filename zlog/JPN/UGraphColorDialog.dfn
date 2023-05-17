@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45058.9950694444</prop>
+        <prop prop-type="SelfDateTime">45063.9424768519</prop>
         <prop prop-type="OrigDateTime">45055.9243287037</prop>
-        <prop prop-type="XlatDateTime">44936.9525694444</prop>
-        <prop prop-type="Translated">67</prop>
-        <prop prop-type="UnTranslated">941</prop>
+        <prop prop-type="XlatDateTime">45059.0131944444</prop>
+        <prop prop-type="Translated">93</prop>
+        <prop prop-type="UnTranslated">915</prop>
       </prop-group>
     </header>
     <body>
@@ -4028,8 +4028,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.Caption">
         <source>'Color3'</source>
+        <target>'色設定３'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">762</prop><prop prop-type="Type">TTabSheet</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">1</prop><prop prop-type="Order">762</prop><prop prop-type="Type">TTabSheet</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.ImageIndex" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.ImageIndex">
         <source>4</source>
@@ -4058,8 +4059,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.Caption">
         <source>'Cumulative graph'</source>
+        <target>'累計グラフ'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">768</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">1</prop><prop prop-type="Order">768</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.TabOrder">
         <source>0</source>
@@ -4098,8 +4100,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label19.Caption">
         <source>'Actual'</source>
+        <target>'実績値'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">0</prop><prop prop-type="Order">776</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950894907</prop><prop prop-type="Status">1</prop><prop prop-type="Order">776</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Left">
         <source>6</source>
@@ -4133,8 +4136,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:Label20.Caption">
         <source>'Target'</source>
+        <target>'目標値'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">783</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">1</prop><prop prop-type="Order">783</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:editActualColor.Left">
         <source>89</source>
@@ -4193,8 +4197,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.Caption">
         <source>'Fore...'</source>
+        <target>'文字色'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">0</prop><prop prop-type="Order">795</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895023</prop><prop prop-type="Status">1</prop><prop prop-type="Order">795</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualFg.TabOrder">
         <source>1</source>
@@ -4233,8 +4238,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.Caption">
         <source>'Reset'</source>
+        <target>'初期値'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">803</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">1</prop><prop prop-type="Order">803</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualReset.TabOrder">
         <source>3</source>
@@ -4268,8 +4274,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.Caption">
         <source>'Back...'</source>
+        <target>'背景色'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">0</prop><prop prop-type="Order">810</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895139</prop><prop prop-type="Status">1</prop><prop prop-type="Order">810</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonActualBg.TabOrder">
         <source>2</source>
@@ -4343,8 +4350,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.Caption">
         <source>'Fore...'</source>
+        <target>'文字色'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">825</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">1</prop><prop prop-type="Order">825</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetFg.TabOrder">
         <source>5</source>
@@ -4388,8 +4396,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.Caption">
         <source>'Reset'</source>
+        <target>'初期値'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">0</prop><prop prop-type="Order">834</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895255</prop><prop prop-type="Status">1</prop><prop prop-type="Order">834</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetReset.TabOrder">
         <source>7</source>
@@ -4428,8 +4437,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.Caption">
         <source>'Back...'</source>
+        <target>'背景色'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">842</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">1</prop><prop prop-type="Order">842</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet5.O:GroupBox7.O:buttonTargetBg.TabOrder">
         <source>6</source>
@@ -4513,8 +4523,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label16.Caption">
         <source>'Current band'</source>
+        <target>'現在バンド'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">859</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.995089537</prop><prop prop-type="Status">1</prop><prop prop-type="Order">859</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Left">
         <source>6</source>
@@ -4548,8 +4559,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label17.Caption">
         <source>'Odd row'</source>
+        <target>'奇数行'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">866</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">1</prop><prop prop-type="Order">866</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Left">
         <source>6</source>
@@ -4583,8 +4595,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label18.Caption">
         <source>'Even row'</source>
+        <target>'偶数行'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">873</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895486</prop><prop prop-type="Status">1</prop><prop prop-type="Order">873</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Left">
         <source>6</source>
@@ -4618,8 +4631,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:Label21.Caption">
         <source>'Grid line'</source>
+        <target>'枠線'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">880</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">1</prop><prop prop-type="Order">880</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.Left" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:editZaqTitleLine.Left">
         <source>89</source>
@@ -4683,8 +4697,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.Caption">
         <source>'Fore...'</source>
+        <target>'文字色'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">0</prop><prop prop-type="Order">893</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895602</prop><prop prop-type="Status">1</prop><prop prop-type="Order">893</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgTitle.TabOrder">
         <source>1</source>
@@ -4718,8 +4733,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.Caption">
         <source>'Reset'</source>
+        <target>'初期値'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">900</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">1</prop><prop prop-type="Order">900</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetTitle.TabOrder">
         <source>3</source>
@@ -4753,8 +4769,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.Caption">
         <source>'Back...'</source>
+        <target>'背景色'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">0</prop><prop prop-type="Order">907</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895718</prop><prop prop-type="Status">1</prop><prop prop-type="Order">907</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgTitle.TabOrder">
         <source>2</source>
@@ -4833,8 +4850,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.Caption">
         <source>'Fore...'</source>
+        <target>'文字色'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">923</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">1</prop><prop prop-type="Order">923</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgOdd.TabOrder">
         <source>5</source>
@@ -4873,8 +4891,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.Caption">
         <source>'Reset'</source>
+        <target>'初期値'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">931</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">1</prop><prop prop-type="Order">931</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetOdd.TabOrder">
         <source>7</source>
@@ -4913,8 +4932,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.Caption">
         <source>'Back...'</source>
+        <target>'背景色'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">0</prop><prop prop-type="Order">939</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895833</prop><prop prop-type="Status">1</prop><prop prop-type="Order">939</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgOdd.TabOrder">
         <source>6</source>
@@ -4993,8 +5013,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.Caption">
         <source>'Fore...'</source>
+        <target>'文字色'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">0</prop><prop prop-type="Order">955</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950895949</prop><prop prop-type="Status">1</prop><prop prop-type="Order">955</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgEven.TabOrder">
         <source>9</source>
@@ -5033,8 +5054,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.Caption">
         <source>'Reset'</source>
+        <target>'初期値'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">963</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">1</prop><prop prop-type="Order">963</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetEven.TabOrder">
         <source>11</source>
@@ -5073,8 +5095,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.Caption">
         <source>'Back...'</source>
+        <target>'背景色'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">0</prop><prop prop-type="Order">971</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950896065</prop><prop prop-type="Status">1</prop><prop prop-type="Order">971</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgEven.TabOrder">
         <source>10</source>
@@ -5148,8 +5171,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.Caption">
         <source>'Fore...'</source>
+        <target>'文字色'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">986</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">1</prop><prop prop-type="Order">986</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqFgGrid.TabOrder">
         <source>12</source>
@@ -5193,8 +5217,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.Caption">
         <source>'Reset'</source>
+        <target>'初期値'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">995</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950896181</prop><prop prop-type="Status">1</prop><prop prop-type="Order">995</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqResetGrid.TabOrder">
         <source>14</source>
@@ -5233,8 +5258,9 @@
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Caption" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.Caption">
         <source>'Back...'</source>
+        <target>'背景色'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45058.9950896296</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1003</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45058.9950896296</prop><prop prop-type="Status">1</prop><prop prop-type="Order">1003</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.TabOrder" resname="O:GraphColorDialog.O:PageControl1.O:TabSheet4.O:GroupBox6.O:buttonZaqBgGrid.TabOrder">
         <source>13</source>

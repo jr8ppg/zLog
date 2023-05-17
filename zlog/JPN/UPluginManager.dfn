@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45058.9953240741</prop>
+        <prop prop-type="SelfDateTime">45063.9427083333</prop>
         <prop prop-type="OrigDateTime">45058.9288425926</prop>
-        <prop prop-type="XlatDateTime">45016.8840972222</prop>
-        <prop prop-type="Translated">5</prop>
-        <prop prop-type="UnTranslated">230</prop>
+        <prop prop-type="XlatDateTime">45059.0143055556</prop>
+        <prop prop-type="Translated">6</prop>
+        <prop prop-type="UnTranslated">229</prop>
       </prop-group>
     </header>
     <body>
@@ -416,8 +416,9 @@
       </trans-unit>
       <trans-unit id="O:MarketForm.O:ShowPanel.O:WebLabel.Caption" resname="O:MarketForm.O:ShowPanel.O:WebLabel.Caption">
         <source>'&lt;a href="https://nextzlog.github.io/zylo"&gt;How to make plugin&lt;/a&gt;'</source>
+        <target>'&lt;a href="https://nextzlog.github.io/zylo"&gt;プラグインの作り方&lt;/a&gt;'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8928916551</prop><prop prop-type="Status">1</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TLinkLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'&lt;a href="https://zylo.pafelog.net"&gt;How to make plugin&lt;/a&gt;'</source>
           <target>'&lt;a href="https://nextzlog.github.io/zylo"&gt;プラグインの作り方&lt;/a&gt;'</target>
           <prop-group name="ITEFieldProp">
