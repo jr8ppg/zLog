@@ -762,13 +762,15 @@ end;
 
 procedure TContest.LogQSO(var aQSO: TQSO; Local: Boolean);
 begin
-   if Local = False then
-      aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
+   if aQSO.Invalid = False then begin
+      if Local = False then
+         aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
 
-   MultiForm.AddNoUpdate(aQSO);
+      MultiForm.AddNoUpdate(aQSO);
 
-   aQSO.Reserve2 := $00;
-   ScoreForm.AddNoUpdate(aQSO);
+      aQSO.Reserve2 := $00;
+      ScoreForm.AddNoUpdate(aQSO);
+   end;
 
    aQSO.Reserve := actAdd;
    Log.AddQue(aQSO);
