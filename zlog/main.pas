@@ -3912,13 +3912,8 @@ begin
    end;
 
    // コンテスト開始前かチェック
-   sthh := MyContest.StartTime;
-   if sthh > -1 then begin
-      // 基準日時前ならInvalid
-      if CurrentQSO.Time < Log.StartTime then begin
-         CurrentQSO.Invalid := True;
-         CurrentQSO.Memo := 'BEFORE CONTEST';
-      end;
+   if MyContest.UseContestPeriod = True then begin
+      CurrentQSO.Invalid := Log.IsOutOfPeriod(CurrentQSO);
    end;
 
    // ログに記録
@@ -6452,6 +6447,9 @@ begin
          dt := InputStartTime();
          Log.StartTime := dt;
       end;
+
+      // コンテスト期間
+      Log.Period := MyContest.Period;
 
       SetWindowCaption();
 
