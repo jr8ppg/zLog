@@ -1022,6 +1022,7 @@ type
     procedure CallSpaceBarProc(C, N, B: TEdit);
     procedure ShowSentNumber();
     function InputStartTime(): TDateTime;
+    procedure EnableShiftKeyAction(fEnable: Boolean);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -5359,6 +5360,11 @@ begin
 
    actionQsoStart.Enabled:= True;
    actionQsoComplete.Enabled:= True;
+
+   // memo欄ではSHIFTキーを使うaction禁止
+   if TEdit(Sender).Tag = 1000 then begin
+      EnableShiftKeyAction(False);
+   end;
 end;
 
 procedure TMainForm.EditExit(Sender: TObject);
@@ -5371,6 +5377,11 @@ begin
 
    actionQsoStart.Enabled:= False;
    actionQsoComplete.Enabled:= False;
+
+   // memo欄ではSHIFTキーを使うaction禁止
+   if TEdit(Sender).Tag = 1000 then begin
+      EnableShiftKeyAction(True);
+   end;
 end;
 
 procedure TMainForm.mnMergeClick(Sender: TObject);
@@ -11033,6 +11044,29 @@ begin
       Result := dlg.BaseTime;
    finally
       dlg.Release();
+   end;
+end;
+
+procedure TMainForm.EnableShiftKeyAction(fEnable: Boolean);
+var
+   i: Integer;
+   j: Integer;
+   act: TContainedAction;
+   shortcut: TShortcut;
+begin
+   for i := 0 to ActionList1.ActionCount - 1 do begin
+      act := ActionList1.Actions[i];
+      shortcut := act.ShortCut;
+      if (shortcut and scShift) <> 0 then begin
+         act.Enabled := fEnable;
+      end;
+
+      for j := 0 to act.SecondaryShortCuts.Count - 1 do begin
+         shortcut := act.SecondaryShortCuts.ShortCuts[j];
+         if (shortcut and scShift) <> 0 then begin
+            act.Enabled := fEnable;
+         end;
+      end;
    end;
 end;
 
