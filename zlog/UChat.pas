@@ -138,7 +138,9 @@ end;
 
 procedure TChatForm.editMessageKeyPress(Sender: TObject; var Key: Char);
 begin
-//
+   if Key = Chr(VK_ESCAPE) then begin
+      Key := #0;
+   end;
 end;
 
 procedure TChatForm.buttonSendClick(Sender: TObject);
