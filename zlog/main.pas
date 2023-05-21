@@ -2146,6 +2146,7 @@ begin
    LastFocus := CallsignEdit; { the place to set focus when ESC is pressed from Grid }
 
    CurrentQSO := TQSO.Create;
+   CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
    Randomize;
    GLOBALSERIAL := Random10 * 1000; // for qso id
 
@@ -3806,7 +3807,6 @@ begin
    CurrentQSO.NewMulti1 := False;
    CurrentQSO.NewMulti2 := False;
    CurrentQSO.Invalid := False;
-   CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
    CurrentQSO.TX := dmZlogGlobal.TXNr;
    CurrentQSO.Forced := False;
    CurrentQSO.Dupe := False;
@@ -4011,6 +4011,7 @@ begin
    CurrentQSO.Callsign := '';
    CurrentQSO.NrRcvd := '';
    CurrentQSO.Memo := '';
+   CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
 
    CurrentQSO.Dupe := False;
    // CurrentQSO.CQ := False;
@@ -5144,6 +5145,9 @@ begin
 
       // Bandçƒê›íË
       UpdateBand(CurrentQSO.Band);
+
+      // QSLåä∑èâä˙íl
+      CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
    finally
       f.Release();
 
