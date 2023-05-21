@@ -175,6 +175,8 @@ end;
 
 procedure TChatForm.checkStayOnTopClick(Sender: TObject);
 begin
+   RenewOptions();
+
    if checkStayOnTop.Checked then
       FormStyle := fsStayOnTop
    else
@@ -183,7 +185,7 @@ end;
 
 procedure TChatForm.comboPromptTypeChange(Sender: TObject);
 begin
-   dmZlogGlobal.Settings.FChatFormPrompt := comboPromptType.ItemIndex;
+   RenewOptions();
 end;
 
 procedure TChatForm.Chat(S: string);
