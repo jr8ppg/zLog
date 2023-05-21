@@ -445,6 +445,8 @@ begin
             para := 2;
          mRTTY:
             para := 4;
+         else
+            Exit;
       end;
 
       Command := AnsiChar($06) + AnsiChar(para);

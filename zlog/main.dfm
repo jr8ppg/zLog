@@ -6226,8 +6226,18 @@ object MainForm: TMainForm
       Caption = 'RTTY'
       OnClick = ModeMenuClick
     end
-    object Other1: TMenuItem
+    object FT41: TMenuItem
       Tag = 5
+      Caption = 'FT4'
+      OnClick = ModeMenuClick
+    end
+    object FT81: TMenuItem
+      Tag = 6
+      Caption = 'FT8'
+      OnClick = ModeMenuClick
+    end
+    object Other1: TMenuItem
+      Tag = 7
       Caption = 'Other'
       OnClick = ModeMenuClick
     end

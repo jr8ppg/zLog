@@ -1096,7 +1096,7 @@ end;
 
 function TQSO.GetMode2(): TMode;
 const
-   Mode2: array[mCW..mOther] of TMode = (mCW, mSSB, mSSB, mSSB, mRTTY, mOther );
+   Mode2: array[mCW..mOther] of TMode = (mCW, mSSB, mSSB, mSSB, mRTTY, mFT4, mFT8, mOther );
 begin
    Result := Mode2[Self.Mode];
 end;
@@ -2454,6 +2454,12 @@ begin
       end
       else if Q.Mode = mRTTY then begin
          strText := strText + 'RY ';
+      end
+      else if Q.Mode = mFT4 then begin
+         strText := strText + 'DG ';
+      end
+      else if Q.Mode = mFT8 then begin
+         strText := strText + 'DG ';
       end
       else begin
          strText := strText + '   ';

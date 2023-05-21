@@ -516,6 +516,8 @@ type
     menuUsersGuide: TMenuItem;
     menuPortal: TMenuItem;
     menuCorrectStartTime: TMenuItem;
+    FT41: TMenuItem;
+    FT81: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
