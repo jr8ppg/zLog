@@ -9367,7 +9367,7 @@ begin
    FSuperCheck2.Clear();
 
    // ポータブル除く
-   PartialStr := CoreCall(PartialStr);
+//   PartialStr := CoreCall(PartialStr);
 
    // 検索対象無し
    if PartialStr = '' then begin
