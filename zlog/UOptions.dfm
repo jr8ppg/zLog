@@ -4981,7 +4981,6 @@ object formOptions: TformOptions
           Top = 21
           Width = 113
           Height = 21
-          ReadOnly = True
           TabOrder = 0
         end
         object editQuickMemo2: TEdit
@@ -4989,7 +4988,6 @@ object formOptions: TformOptions
           Top = 48
           Width = 113
           Height = 21
-          ReadOnly = True
           TabOrder = 1
         end
         object editQuickMemo3: TEdit
@@ -5052,13 +5050,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Fira Code Retina'
+          FontName = 'JetBrains Mono NL ExtraLight'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 53
+          ItemIndex = 73
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
