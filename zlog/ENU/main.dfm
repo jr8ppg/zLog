@@ -223,6 +223,7 @@ object MainForm: TMainForm
         TabOnEnter = False
       end
       object MemoEdit1: TOvrEdit
+        Tag = 1000
         Left = 432
         Top = 4
         Width = 73
@@ -6225,8 +6226,18 @@ object MainForm: TMainForm
       Caption = 'RTTY'
       OnClick = ModeMenuClick
     end
-    object Other1: TMenuItem
+    object FT41: TMenuItem
       Tag = 5
+      Caption = 'FT4'
+      OnClick = ModeMenuClick
+    end
+    object FT81: TMenuItem
+      Tag = 6
+      Caption = 'FT8'
+      OnClick = ModeMenuClick
+    end
+    object Other1: TMenuItem
+      Tag = 7
       Caption = 'Other'
       OnClick = ModeMenuClick
     end
