@@ -722,8 +722,8 @@ begin
       if FKeyingPort[i] = tkpUSB then begin
          if Assigned(FUsbInfo[i].FPORTDATA) then begin
             EnterCriticalSection(FUsbPortDataLock);
-            FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTx);
             if FGen3MicSelect = False then begin
+               FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTx);
                FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTx);
             end;
             SendUsbPortData(i);
@@ -795,6 +795,7 @@ begin
       if FKeyingPort[i] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
          if Assigned(FUsbInfo[i].FPORTDATA) then begin
+            FUsbInfo[i].FPORTDATA.SetRigFlag(flag);
             FUsbInfo[i].FPORTDATA.SetVoiceFlag(flag);
             SendUsbPortData(i);
          end;
