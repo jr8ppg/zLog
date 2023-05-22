@@ -50,10 +50,12 @@ type
     FOnUpdateStatus: TRigUpdateStatusEvent;
     FOnError: TRigErrorEvent;
 
+    FIgnoreRigMode: Boolean;
+
     procedure SetRit(flag: Boolean); virtual;
     procedure SetXit(flag: Boolean); virtual;
     procedure SetRitOffset(offset: Integer); virtual;
-    procedure UpdateFreqMem(vfo: Integer; Hz: TFrequency);
+    procedure UpdateFreqMem(vfo: Integer; Hz: TFrequency; M: TMode);
   private
     FLastFreq: TFrequency;
     FLastMode: TMode;
@@ -109,6 +111,7 @@ type
     property CurrentFreq[Index: Integer]: TFrequency read GetCurrentFreq write SetCurrentFreq;
     property FreqMem[b: TBand; m: TMode]: TFrequency read GetFreqMem write SetFreqMem;
 //    property PollingInterval: Integer read FPollingInterval write FPollingInterval;
+    property IgnoreMode: Boolean read FIgnoreRigMode write FIgnoreRigMode;
 
     property RitCtrlSupported: Boolean read FRitCtrlSupported write FRitCtrlSupported;
     property XitCtrlSupported: Boolean read FXitCtrlSupported write FXitCtrlSupported;
@@ -250,6 +253,7 @@ begin
    FLastRcvd := '';
    FLastFreq := 0;
    FLastMode := _currentmode;
+   FIgnoreRigMode := False;
 
    // LastMode := mCW;
    for B := b19 to b10g do begin
@@ -381,7 +385,7 @@ begin
    FXit := flag;
 end;
 
-procedure TRig.UpdateFreqMem(vfo: Integer; Hz: TFrequency);
+procedure TRig.UpdateFreqMem(vfo: Integer; Hz: TFrequency; M: TMode);
 var
    b: TBand;
 begin
@@ -389,7 +393,7 @@ begin
    if b <> bUnknown then begin
       _currentband := b;
    end;
-   FreqMem[_currentband, _currentmode] := _currentfreq[vfo];
+   FreqMem[_currentband, M] := _currentfreq[vfo];
 end;
 
 procedure TRig.SetBaudRate(i: Integer);
@@ -585,9 +589,12 @@ begin
             else
                M := mOther;
          end;
-         _currentmode := M;
 
-         UpdateFreqMem(aa, i);
+         if FIgnoreRigMode = False then begin
+            _currentmode := M;
+         end;
+
+         UpdateFreqMem(aa, i, M);
       end;
 
       if Selected then

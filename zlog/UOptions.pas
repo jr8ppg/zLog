@@ -548,6 +548,7 @@ type
     buttonOpEdit: TButton;
     checkOutputOutofPeriod: TCheckBox;
     checkGen3MicSelect: TCheckBox;
+    checkIgnoreRigMode: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -1035,6 +1036,7 @@ begin
       Settings._recrigfreq := cbRecordRigFreq.Checked;
       Settings._autobandmap := cbAutoBandMap.Checked;
       Settings._send_freq_interval := updownSendFreqInterval.Position;
+      Settings._ignore_rig_mode := checkIgnoreRigMode.Checked;
 
       // Ant Control
       Settings._useant[b19]   := comboAnt19.ItemIndex;
@@ -1564,6 +1566,7 @@ begin
       cbRecordRigFreq.Checked := Settings._recrigfreq;
       cbAutoBandMap.Checked := Settings._autobandmap;
       updownSendFreqInterval.Position := Settings._send_freq_interval;
+      checkIgnoreRigMode.Checked := Settings._ignore_rig_mode;
 
       // Ant Control
       comboAnt19.ItemIndex    := Settings._useant[b19];

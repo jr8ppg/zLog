@@ -201,7 +201,10 @@ begin
                else
                   M := mOther;
             end;
-            _currentmode := M;
+
+            if FIgnoreRigMode = False then begin
+               _currentmode := M;
+            end;
 
             if length(ss) >= 3 then begin
                if Ord(ss[3]) in [1 .. 3] then begin
@@ -212,7 +215,7 @@ begin
             // 処理タイミングによって、_currentfreqと_currentbandの食い違いが起きるので
             // 一致している場合にFreqMemを更新する
             if dmZLogGlobal.BandPlan.FreqToBand(_currentfreq[_currentvfo]) = _currentband then begin
-               FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
+               FreqMem[_currentband, M] := _currentfreq[_currentvfo];
             end;
 
             if Selected then begin
@@ -262,7 +265,7 @@ begin
             _currentfreq[_currentvfo] := freq;
             freq := freq + _freqoffset;
 
-            UpdateFreqMem(_currentvfo, freq);
+            UpdateFreqMem(_currentvfo, freq, M);
 
             if Selected then begin
                UpdateStatus;

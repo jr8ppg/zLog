@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetRigControl
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -2812,7 +2812,7 @@ object formOptions: TformOptions
         Width = 423
         Height = 167
         Caption = 'Magical Calling'
-        TabOrder = 7
+        TabOrder = 8
         object Label28: TLabel
           Left = 185
           Top = 21
@@ -2934,7 +2934,7 @@ object formOptions: TformOptions
         Associate = SendFreqEdit
         Max = 300
         Position = 60
-        TabOrder = 5
+        TabOrder = 6
       end
       object GroupBox25: TGroupBox
         Left = 181
@@ -2942,7 +2942,7 @@ object formOptions: TformOptions
         Width = 248
         Height = 206
         Caption = 'ANT Control'
-        TabOrder = 6
+        TabOrder = 7
         object Label104: TLabel
           Left = 8
           Top = 21
@@ -3319,6 +3319,14 @@ object formOptions: TformOptions
             'ANT3'
             'ANT4')
         end
+      end
+      object checkIgnoreRigMode: TCheckBox
+        Left = 8
+        Top = 172
+        Width = 141
+        Height = 18
+        Caption = 'Ignore rig mode'
+        TabOrder = 5
       end
     end
     object tabsheetPath: TTabSheet
@@ -5082,13 +5090,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'NSimSun'
+          FontName = '@Small Fonts'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 85
+          ItemIndex = 16
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

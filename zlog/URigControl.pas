@@ -571,6 +571,7 @@ begin
       if Assigned(rig) then begin
          rig.OnUpdateStatus := OnUpdateStatusProc;
          rig.OnError := OnErrorProc;
+         rig.IgnoreMode := dmZLogGlobal.Settings._ignore_rig_mode;
       end;
    finally
       Result := rig;
