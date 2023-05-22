@@ -341,6 +341,7 @@ type
     function usbif4cwSetPTT(nId: Integer; tx: Byte): Long;
     function usbif4cwGetVersion(nId: Integer): Long;
     function usbif4cwSetPaddle(nId: Integer; param: Byte): Long;
+    procedure usbif4cwSetPort(port: Integer; value: Boolean);
 
     // 1Port Control support
     procedure SetCommPortDriver(Index: Integer; CP: TCommPortDriver);
@@ -722,8 +723,8 @@ begin
       if FKeyingPort[i] = tkpUSB then begin
          if Assigned(FUsbInfo[i].FPORTDATA) then begin
             EnterCriticalSection(FUsbPortDataLock);
+            FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTx);
             if FGen3MicSelect = False then begin
-               FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTx);
                FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTx);
             end;
             SendUsbPortData(i);
@@ -795,7 +796,6 @@ begin
       if FKeyingPort[i] = tkpUSB then begin
          EnterCriticalSection(FUsbPortDataLock);
          if Assigned(FUsbInfo[i].FPORTDATA) then begin
-            FUsbInfo[i].FPORTDATA.SetRigFlag(flag);
             FUsbInfo[i].FPORTDATA.SetVoiceFlag(flag);
             SendUsbPortData(i);
          end;
@@ -2819,6 +2819,29 @@ begin
    Result := 0;
 end;
 
+procedure TdmZLogKeyer.usbif4cwSetPort(port: Integer; value: Boolean);
+var
+   i: Integer;
+   v: Integer;
+begin
+   if value then v := 1 else v := 0;
+   for i := 0 to MAXPORT do begin
+      if FKeyingPort[i] = tkpUSB then begin
+         EnterCriticalSection(FUsbPortDataLock);
+         if Assigned(FUsbInfo[i].FPORTDATA) then begin
+            case port of
+               0: FUsbInfo[i].FPORTDATA.SetKeyFlag(value);
+               1: FUsbInfo[i].FPORTDATA.SetPttFlag(value);
+               2: FUsbInfo[i].FPORTDATA.SetRigFlag(v);
+               3: FUsbInfo[i].FPORTDATA.SetVoiceFlag(v);
+            end;
+            SendUsbPortData(i);
+         end;
+         LeaveCriticalSection(FUsbPortDataLock);
+      end;
+   end;
+end;
+
 procedure TdmZLogKeyer.SetCommPortDriver(Index: Integer; CP: TCommPortDriver);
 begin
    if FComKeying[Index] = CP then begin
@@ -3814,17 +3837,17 @@ end;
 
 procedure TUsbPortInfo.SetRigFlag(flag: Integer);
 begin
-   if flag = 0 then begin
+   if flag = 1 then begin
       FUsbPortData := FUsbPortData and USBIF4CW_RIG_MASK;
    end
-   else if flag = 1 then begin
+   else if flag = 0 then begin
       FUsbPortData := FUsbPortData or USBIF4CW_RIG;
    end;
 end;
 
 procedure TUsbPortInfo.SetVoiceFlag(flag: Integer);
 begin
-   if flag = 0 then begin
+   if flag = 1 then begin
       FUsbPortData := FUsbPortData and USBIF4CW_MIC_MASK;
    end
    else begin
