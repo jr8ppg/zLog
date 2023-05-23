@@ -152,7 +152,6 @@ type
     procedure InquireStatus; override;
     procedure ParseBufferString; override;
     procedure PassOnRxData(S : AnsiString); override;
-    procedure PollingProcess();
     procedure Reset; override;
     procedure RitClear; override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
@@ -758,8 +757,7 @@ end;
 
 procedure TOmni.Initialize();
 begin
-   FPollingTimer.Interval := 1000;
-   FPollingTimer.Enabled := True;
+//
 end;
 
 procedure TOmni.InquireStatus;
@@ -773,8 +771,10 @@ begin
       o_RIG := FOmniRig.Rig2;
    end;
 
-   _currentfreq[0] := o_RIG.FreqA;
-   _currentfreq[1] := o_RIG.FreqB;
+   case o_RIG.Vfo of
+      1: _currentfreq[0] := o_RIG.Freq;
+      2: _currentfreq[1] := o_RIG.Freq;
+   end;
 
    UpdateStatus;
 end;
@@ -799,18 +799,12 @@ begin
 //
 end;
 
-procedure TOmni.PollingProcess();
-begin
-   InquireStatus();
-end;
-
 procedure TOmni.Reset;
 begin
 end;
 
 destructor TOmni.Destroy;
 begin
-   FPollingTimer.Enabled := False;
    inherited;
 end;
 

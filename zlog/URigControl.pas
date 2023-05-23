@@ -710,14 +710,22 @@ begin
    end;
 
    case o_RIG.Vfo of
-      PM_VFOA:
-         R.CurrentVFO := 0;
-      PM_VFOB:
-         R.CurrentVFO := 1;
+      1: begin
+         R.CurrentFreq[0] := o_RIG.Freq;
+      end;
+
+      2: begin
+         R.CurrentFreq[1] := o_RIG.Freq;
+      end;
+
+//      PM_VFOA:
+//         R.CurrentVFO := 0;
+//      PM_VFOB:
+//         R.CurrentVFO := 1;
    end;
 
-   R.CurrentFreq[0] := o_RIG.FreqA;
-   R.CurrentFreq[1] := o_RIG.FreqB;
+//   R.CurrentFreq[0] := o_RIG.FreqA;
+//   R.CurrentFreq[1] := o_RIG.FreqB;
 
    case o_RIG.Mode of
       PM_CW_U, PM_CW_L:
