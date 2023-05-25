@@ -6,7 +6,7 @@ uses
   Graphics;
 
 type
-  TMode = (mCW, mSSB, mFM, mAM, mRTTY, mOther);
+  TMode = (mCW, mSSB, mFM, mAM, mRTTY, mFT4, mFT8, mOther);
   TBand = (b19, b35, b7, b10, b14, b18, b21, b24, b28, b50, b144, b430, b1200, b2400, b5600, b10g, bTarget, bUnknown);
   TPower = (p001, p002, p005, p010, p020, p025, p050, p100, p200, p500, p1000);
 
@@ -38,8 +38,76 @@ const
   TXLIST_MM = '0,1,2,3,4,5,6,7,8,9';
   TXLIST_MS = '0,1';
 
+type
+  TIcomInfo = record
+    name : string;
+    addr : byte;
+    minband, maxband : TBand;
+    RitCtrl: Boolean;
+    XitCtrl: Boolean;
+  end;
+
 const
-  RIGNAMES : array[0..19] of string =
+  MAXICOM = 52;
+
+  ICOMLIST : array[1..MAXICOM] of TIcomInfo =
+     (
+       (name: 'IC-703';       addr: $68; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-705';       addr: $A4; minband: b19; maxband: b430;   RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-706';       addr: $48; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-706MkII';   addr: $4E; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-706MkII-G'; addr: $58; minband: b19; maxband: b430;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-707';       addr: $3E; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-718';       addr: $5E; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-721(IC-725)'; addr: $28; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-726';       addr: $30; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-728';       addr: $38; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-729';       addr: $3A; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-731(IC-735)'; addr: $04; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-732(IC-737)'; addr: $04; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-736';       addr: $40; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-738';       addr: $44; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-746';       addr: $56; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-746PRO(IC-7400)'; addr: $66; minband: b19; maxband: b144; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7000';      addr: $70; minband: b19; maxband: b430;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7100';      addr: $88; minband: b19; maxband: b430;   RitCtrl: True;  XitCtrl: False),
+       (name: 'IC-7200';      addr: $76; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7300';      addr: $94; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-7400';      addr: $66; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7410';      addr: $80; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-750/750A(IC-751)'; addr: $1C; minband: b19; maxband: b28; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-756';       addr: $50; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-756PRO';    addr: $5C; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-756PROII';  addr: $64; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-756PRO3';   addr: $6E; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7600';      addr: $7A; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-7610';      addr: $98; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-7700';      addr: $74; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-78';        addr: $62; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-7800';      addr: $6A; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-7851';      addr: $8E; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-760(IC-761)'; addr: $1E; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-760PRO(IC-765)'; addr: $2C; minband: b19; maxband: b28; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-775';       addr: $46; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-780(IC-781)'; addr: $26; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-575';       addr: $16; minband: b28; maxband: b50;    RitCtrl: False; XitCtrl: False),
+       (name: 'IC-820';       addr: $42; minband: b144; maxband: b430;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-821';       addr: $4C; minband: b144; maxband: b430;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-905';       addr: $AC; minband: b144; maxband: b10g;  RitCtrl: True;  XitCtrl: True),
+       (name: 'IC-910/911';   addr: $60; minband: b144; maxband: b1200; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-970';       addr: $2E; minband: b144; maxband: b1200; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-271';       addr: $20; minband: b144; maxband: b144;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-275';       addr: $10; minband: b144; maxband: b144;  RitCtrl: False; XitCtrl: False),
+       (name: 'IC-371(IC-471)'; addr: $22; minband: b430; maxband: b430; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-375(IC-475)'; addr: $14; minband: b430; maxband: b430; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-9100';      addr: $7C; minband: b19; maxband: b1200;   RitCtrl: False; XitCtrl: False),
+       (name: 'IC-9700';      addr: $A2; minband: b144; maxband: b1200;  RitCtrl: True;  XitCtrl: False),
+       (name: 'IC-1271';      addr: $24; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False),
+       (name: 'IC-1275';      addr: $18; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False)
+     );
+
+const
+  RIGNAMES : array[0..22] of string =
 ('None',
  'TS-690/450',
  'TS-850',
@@ -47,7 +115,8 @@ const
  'TS-2000',
  'TS-2000/P',
  'TS-570',
- 'TS-590/890/990',
+ 'TS-590/890',
+ 'TS-990',
  'FT-710',
  'FT-817',
  'FT-847',
@@ -59,7 +128,9 @@ const
  'FT-1000MP',
  'MarkV/FT-1000MP',
  'FT-1000MP Mark-V Field',
- 'FT-2000'
+ 'FT-2000',
+ 'FTDX-3000',
+ 'FTDX-5000/9000'
  );
 
 const
@@ -99,8 +170,8 @@ const
                                              '6m','2m','70cm','23cm','13cm',
                                              '6cm','3cm');
 
-  ModeString : array[mCW..mOther] of string = ('CW','SSB','FM','AM','RTTY','Other');
-  ModeString2 : array[mCW..mOther] of string = ('CW','PH','PH','PH','RTTY','Other');
+  ModeString : array[mCW..mOther] of string = ('CW','SSB','FM','AM','RTTY','FT4','FT8','Other');
+  ModeString2 : array[mCW..mOther] of string = ('CW','PH','PH','PH','RTTY','DG','DG','Other');
 
   pwrP = TPower(0);
   pwrL = TPower(1);
@@ -126,6 +197,22 @@ const
     $00000000, $00FFFFFF, $00000000, $00FFFFFF,
     $00000000, $00FFFFFF, $00FFFFFF, $00000000,
     $00FFFFFF, $00000000, $00FFFFFF, $00400040
+  );
+
+  default_other_bg_color: array[0..1] of TColor = (
+    $000080FF, $00B16A47
+  );
+
+  default_other_fg_color: array[0..1] of TColor = (
+    $00FFFFFF, $00FFFFFF
+  );
+
+  default_zaq_bg_color: array[0..3] of TColor = (
+    $00FFFF80, $00EAD5CF, $00F5EBE9, $00DCDCDC
+  );
+
+  default_zaq_fg_color: array[0..3] of TColor = (
+    $00000000, $00000000, $00000000, $00000000
   );
 
 const
@@ -182,7 +269,7 @@ const
     'Ctrl+L',
     'Ctrl+O',           // #50
     'Ctrl+P',
-    'Ctrl+Q',
+    '',
     'Ctrl+R',
     'Ctrl+T',
     'Ctrl+U',           // #55
@@ -284,8 +371,8 @@ const
     'Ctrl+0',           // #151 actionChangeTxNr0
     'Ctrl+1',           // #152 actionChangeTxNr1
     '',                 // #153 actionChangeTxNr2
-    '',                 // #154 actionPseQsl
-    '',                 // #155 actionNoQsl
+    'Ctrl+Q',           // #154 actionPseQsl
+    'Shift+Ctrl+Q',     // #155 actionNoQsl
     '',                 // #156 actionMsgMgr
     'Shift+Ctrl+B',     // #157 actionChangeBand2
     'Shift+Ctrl+M',     // #158 actionChangeMode2

@@ -269,7 +269,7 @@ const
     'Ctrl+L',
     'Ctrl+O',           // #50
     'Ctrl+P',
-    'Ctrl+Q',
+    '',
     'Ctrl+R',
     'Ctrl+T',
     'Ctrl+U',           // #55
@@ -371,8 +371,8 @@ const
     'Ctrl+0',           // #151 actionChangeTxNr0
     'Ctrl+1',           // #152 actionChangeTxNr1
     '',                 // #153 actionChangeTxNr2
-    '',                 // #154 actionPseQsl
-    '',                 // #155 actionNoQsl
+    'Ctrl+Q',           // #154 actionPseQsl
+    'Shift+Ctrl+Q',     // #155 actionNoQsl
     '',                 // #156 actionMsgMgr
     'Shift+Ctrl+B',     // #157 actionChangeBand2
     'Shift+Ctrl+M',     // #158 actionChangeMode2
