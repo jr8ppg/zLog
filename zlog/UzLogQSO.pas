@@ -3576,7 +3576,7 @@ end;
 
 function TLog.IsOutOfPeriod(Q: TQSO): Boolean;
 begin
-   if (Q.Time < FStartTime) or (Q.Time > FEndTime) then begin
+   if (Q.Time < FStartTime) or (Q.Time > EndTime) then begin
       Result := True;
       Exit;
    end;

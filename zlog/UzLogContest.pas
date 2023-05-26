@@ -1082,6 +1082,7 @@ begin
    FBandHigh := b28;
    FBandPlan := 'JA';
 
+   FUseContestPeriod := False;
    FStartTime := -1;
    FPeriod := 0;
 end;
@@ -1127,6 +1128,7 @@ begin
    FBandHigh := b28;
    FBandPlan := 'DX';
 
+   FUseContestPeriod := False;
    FStartTime := -1;
    FPeriod := 0;
 end;
