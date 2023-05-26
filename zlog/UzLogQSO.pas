@@ -358,6 +358,7 @@ type
     procedure SetScoreCoeff(E: Extended);
     function GetScoreCoeff(): Extended;
     function GetActualFreq(b: TBand; strFreq: string): string;
+    function GetEndTime(): TDateTime;
     procedure SetPeriod(v: Integer);
   public
     constructor Create(memo : string);
@@ -440,7 +441,7 @@ type
     property AllPhone: Boolean read FAllPhone write FAllPhone;
 
     property StartTime: TDateTime read FStartTime write FStartTime;
-    property EndTime: TDateTime read FEndTime;
+    property EndTime: TDateTime read GetEndTime;
     property Period: Integer read FPeriod write SetPeriod;
   end;
 
@@ -2359,6 +2360,21 @@ begin
 
    s := Copy(s, 1, p - 1);
    Result := RightStr('     ' + s, 5);
+end;
+
+function TLog.GetEndTime(): TDateTime;
+begin
+   if FPeriod = 0 then begin
+      if (FStartTime <= Now) then begin
+         Result := Now;
+      end
+      else begin
+         Result := FStartTime;
+      end;
+   end
+   else begin
+      Result := FEndTime;
+   end;
 end;
 
 procedure TLog.SetPeriod(v: Integer);

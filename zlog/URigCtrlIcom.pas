@@ -265,7 +265,7 @@ begin
             _currentfreq[_currentvfo] := freq;
             freq := freq + _freqoffset;
 
-            UpdateFreqMem(_currentvfo, freq, M);
+            UpdateFreqMem(_currentvfo, freq, _currentmode);
 
             if Selected then begin
                UpdateStatus;
@@ -433,7 +433,6 @@ begin
 
    FPollingTimer.Enabled := False;
    try
-      para := 3;
       case Q.Mode of
          mSSB:
             if Q.Band <= b7 then

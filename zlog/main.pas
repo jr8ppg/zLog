@@ -3967,7 +3967,6 @@ var
    st, st2: string;
    B: TBand;
    band_bakup: TBand;
-   sthh: Integer;
    rig: TRig;
 
    function FindPrevQSO(): Integer;
@@ -11723,7 +11722,14 @@ begin
          end;
 
          DecodeDateTime(dt, yy, mm, dd, hh, nn, ss, ms);
-         dlg.BaseTime := EncodeDateTime(yy, mm, dd, MyContest.StartTime, 0, 0, 0);
+
+         // 開始時間未定義か
+         if MyContest.StartTime = -1 then begin
+            dlg.BaseTime := EncodeDateTime(yy, mm, dd, hh, 0, 0, 0);
+         end
+         else begin
+            dlg.BaseTime := EncodeDateTime(yy, mm, dd, MyContest.StartTime, 0, 0, 0);
+         end;
       end
       else begin  // 設定済みはファイルより
          dlg.BaseTime := Log.StartTime;
