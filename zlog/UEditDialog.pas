@@ -318,7 +318,6 @@ end;
 procedure TEditDialog.OKBtnClick(Sender: TObject);
 var
    i, j: integer;
-   sthh: Integer;
 begin
    // QSO Data
 
