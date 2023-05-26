@@ -2,7 +2,6 @@ inherited PediScore: TPediScore
   Left = 85
   Top = 203
   Caption = 'Statistics'
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
   object Grid: TStringGrid [1]

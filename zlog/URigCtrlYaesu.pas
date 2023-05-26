@@ -182,7 +182,10 @@ begin
             else
                M := mOther;
          end;
-         _currentmode := M;
+
+         if FIgnoreRigMode = False then begin
+            _currentmode := M;
+         end;
 
          i := Ord(S[2]) * 256 * 256 * 256 + Ord(S[3]) * 256 * 256 + Ord(S[4]) * 256 + Ord(S[5]);
          i := round(i / 1.60);
@@ -190,7 +193,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 0 then begin
-            UpdateFreqMem(0, i);
+            UpdateFreqMem(0, i, M);
          end;
 
          i := Ord(S[18]) * 256 * 256 * 256 + Ord(S[19]) * 256 * 256 + Ord(S[20]) * 256 + Ord(S[21]);
@@ -199,7 +202,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 1 then begin
-            UpdateFreqMem(1, i);
+            UpdateFreqMem(1, i, M);
          end;
       end;
 
@@ -417,7 +420,10 @@ begin
          6, 9: M := mRTTY;
          else  M := mOther;
       end;
-      _currentmode := M;
+
+      if FIgnoreRigMode = False then begin
+         _currentmode := M;
+      end;
 
       // é¸îgêî(Hz)
       strTemp := string(Copy(S, 6, 8));
@@ -426,7 +432,7 @@ begin
 
       // ÉoÉìÉh(VFO-A)
       if _currentvfo = 0 then begin
-         UpdateFreqMem(0, i);
+         UpdateFreqMem(0, i, M);
       end;
 
       // RIT/XIT offset
@@ -674,7 +680,10 @@ begin
             else
                M := mOther;
          end;
-         _currentmode := M;
+
+         if FIgnoreRigMode = False then begin
+            _currentmode := M;
+         end;
 
          i := Ord(S[2]) * 256 * 256 * 256 + Ord(S[3]) * 256 * 256 + Ord(S[4]) * 256 + Ord(S[5]);
          i := i * 10;
@@ -682,7 +691,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 0 then begin
-            UpdateFreqMem(0, i);
+            UpdateFreqMem(0, i, M);
          end;
 
          i := Ord(S[18]) * 256 * 256 * 256 + Ord(S[19]) * 256 * 256 + Ord(S[20]) * 256 + Ord(S[21]);
@@ -691,7 +700,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 1 then begin
-            UpdateFreqMem(1, i);
+            UpdateFreqMem(1, i, M);
          end;
       end;
 
@@ -738,7 +747,10 @@ begin
             else
                M := mOther;
          end;
-         _currentmode := M;
+
+         if FIgnoreRigMode = False then begin
+            _currentmode := M;
+         end;
 
          i := Ord(S[2]) * 256 * 256 + Ord(S[3]) * 256 + Ord(S[4]);
          i := i * 10;
@@ -746,7 +758,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 0 then begin
-            UpdateFreqMem(0, i);
+            UpdateFreqMem(0, i, M);
          end;
 
          i := Ord(S[18]) * 256 * 256 + Ord(S[19]) * 256 + Ord(S[20]);
@@ -755,7 +767,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 1 then begin
-            UpdateFreqMem(1, i);
+            UpdateFreqMem(1, i, M);
          end;
       end;
 
@@ -797,8 +809,8 @@ begin
    try
       _currentfreq[0] := 0;
       _currentfreq[1] := 0;
-      UpdateFreqMem(0, 0);
-      UpdateFreqMem(1, 0);
+      UpdateFreqMem(0, 0, _currentmode);
+      UpdateFreqMem(1, 0, _currentmode);
 
       if Selected then begin
          UpdateStatus;
@@ -859,7 +871,7 @@ begin
    WriteData(fstr);
 
    _currentfreq[_currentvfo] := Hz;
-   UpdateFreqMem(_currentvfo, Hz);
+   UpdateFreqMem(_currentvfo, Hz, _currentmode);
    if Selected then begin
       UpdateStatus;
    end;
@@ -950,7 +962,10 @@ begin
             else
                M := mOther;
          end;
-         _currentmode := M;
+
+         if FIgnoreRigMode = False then begin
+            _currentmode := M;
+         end;
 
          i := (Ord(S[5]) mod 16) * 100000000 + (Ord(S[5]) div 16) * 10000000 + (Ord(S[4]) mod 16) * 1000000 + (Ord(S[4]) div 16) * 100000 +
            (Ord(S[3]) mod 16) * 10000 + (Ord(S[3]) div 16) * 1000 + (Ord(S[2]) mod 16) * 100 + (Ord(S[2]) div 16) * 10;
@@ -958,7 +973,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 0 then begin
-            UpdateFreqMem(0, i);
+            UpdateFreqMem(0, i, M);
          end;
 
          i := (Ord(S[21]) div 16) * 100000000 + (Ord(S[21]) mod 16) * 10000000 + (Ord(S[20]) div 16) * 1000000 + (Ord(S[20]) mod 16) * 100000 +
@@ -967,7 +982,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 1 then begin
-            UpdateFreqMem(1, i);
+            UpdateFreqMem(1, i, M);
          end;
       end;
 
@@ -1050,7 +1065,10 @@ begin
             else
                M := mOther;
          end;
-         _currentmode := M;
+
+         if FIgnoreRigMode = False then begin
+            _currentmode := M;
+         end;
 
          i := (Ord(S[1]) div 16) * 100000000 +
               (Ord(S[1]) mod 16) * 10000000 +
@@ -1063,7 +1081,7 @@ begin
          _currentfreq[_currentvfo] := i;
          i := i + _freqoffset;
 
-         UpdateFreqMem(0, i);
+         UpdateFreqMem(0, i, M);
       end;
 
       if Selected then begin
@@ -1243,7 +1261,10 @@ begin
             else
                M := mOther;
          end;
-         _currentmode := M;
+
+         if FIgnoreRigMode = False then begin
+            _currentmode := M;
+         end;
 
          i := Ord(S[2]) * 256 * 256 * 256 + Ord(S[3]) * 256 * 256 + Ord(S[4]) * 256 + Ord(S[5]);
          // i := round(i / 1.60);
@@ -1251,7 +1272,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 0 then begin
-            UpdateFreqMem(0, i);
+            UpdateFreqMem(0, i, M);
          end;
 
          i := Ord(S[16]) * 256 * 256 * 256 + Ord(S[17]) * 256 * 256 + Ord(S[18]) * 256 + Ord(S[19]);
@@ -1260,7 +1281,7 @@ begin
          i := i + _freqoffset;
 
          if _currentvfo = 1 then begin
-            UpdateFreqMem(1, i);
+            UpdateFreqMem(1, i, M);
          end;
       end;
 
@@ -1301,7 +1322,10 @@ begin
             else
                M := mOther;
          end;
-         _currentmode := M;
+
+         if FIgnoreRigMode = False then begin
+            _currentmode := M;
+         end;
 
          i := Ord(S[2]) * 256 * 256 * 256 + Ord(S[3]) * 256 * 256 + Ord(S[4]) * 256 + Ord(S[5]);
          i := round(i * 1.25);
@@ -1312,7 +1336,7 @@ begin
 
          i := _currentfreq[_currentvfo] + _freqoffset;
 
-         UpdateFreqMem(0, i);
+         UpdateFreqMem(0, i, M);
       end;
 
       if Selected then begin
@@ -1376,7 +1400,10 @@ begin
          6, 9: M := mRTTY;
          else  M := mOther;
       end;
-      _currentmode := M;
+
+      if FIgnoreRigMode = False then begin
+         _currentmode := M;
+      end;
 
       // é¸îgêî(Hz)
       strTemp := string(Copy(S, 6, 9));        // 6åÖñ⁄Ç©ÇÁ9ï∂éö
@@ -1385,7 +1412,7 @@ begin
 
       // ÉoÉìÉh(VFO-A)
       if _currentvfo = 0 then begin
-         UpdateFreqMem(0, i);
+         UpdateFreqMem(0, i, M);
       end;
 
       if Selected then begin

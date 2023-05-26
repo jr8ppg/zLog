@@ -380,9 +380,9 @@ begin
    end
    else begin
       case GraphStartPosition of
-         spFirstQSO:    FStartTime := Log.StartTime;   // Log.QsoList[1].Time;
+         spFirstQSO:    FStartTime := Log.StartTime;  // Log.QsoList[1].Time;
          spCurrentTime: FStartTime := CalcStartTime( IncHour(CurrentTime(), (FShowLast div 2) - 1) );
-         spLastQSO:     FStartTime := CalcStartTime( Log.QsoList[Log.TotalQSO].Time );
+         spLastQSO:     FStartTime := IncHour(Log.EndTime, (FShowLast * -1));    // CalcStartTime( Log.QsoList[Log.TotalQSO].Time );
          else           FStartTime := CalcStartTime( CurrentTime() );
       end;
 

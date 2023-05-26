@@ -102,6 +102,7 @@ type
     procedure SetCity(v: string);
     procedure SetPower(v: string);
     procedure SetUseUTC(v: Boolean);
+    procedure SetUseContestPeriod(v: Boolean);
     procedure SetStartTime(v: Integer);
     procedure SetPeriod(v: Integer);
     function ParseCommand(strLine: string; var strCmd, strParam: string): Boolean;
@@ -188,7 +189,7 @@ type
 
     property BandPlan: string read FBandPlan;
 
-    property UseContestPeriod: Boolean read FUseContestPeriod write FUseContestPeriod;
+    property UseContestPeriod: Boolean read FUseContestPeriod write SetUseContestPeriod;
     property StartTime: Integer read FStartTime write SetStartTime;
     property Period: Integer read FPeriod write SetPeriod;
   end;
@@ -671,7 +672,7 @@ begin
             D.FBandPlan := UpperCase(strParam);
          end;
 
-         if strCmd = 'USECONTESTPERIOD' then begin
+         if strCmd = 'USEPERIOD' then begin
             D.FUseContestPeriod := ParseOnOff(strParam);
          end;
 
@@ -906,6 +907,17 @@ begin
    end
    else begin
       EditParam('TIME', 'JST');
+   end;
+end;
+
+procedure TUserDefinedContest.SetUseContestPeriod(v: Boolean);
+begin
+   FUseContestPeriod := v;
+   if v = True then begin
+      EditParam('USEPERIOD', 'ON');
+   end
+   else begin
+      EditParam('USEPERIOD', 'OFF');
    end;
 end;
 

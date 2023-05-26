@@ -543,7 +543,7 @@ begin
       Exit;
    end;
 
-   newvol := (($ffff * FVolume) div 100) + ((($ffff * FVolume) div 100) shl $10);
+   newvol := (($ffff * DWORD(FVolume)) div 100) + ((($ffff * DWORD(FVolume)) div 100) shl $10);
 
    waveOutSetVolume(m_uDeviceID, newvol);
 

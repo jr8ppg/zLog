@@ -236,29 +236,24 @@ end;
 
 function TCFGEdit.GetStartTime(): Integer;
 begin
-   if UseContestPeriod = False then begin
-      Result := -1;
-   end
-   else begin
-      Result := StrToIntDef(comboStartTime.Text, -1);
-   end;
+   Result := StrToIntDef(comboStartTime.Text, 21);
 end;
 
 procedure TCFGEdit.SetStartTime(v: Integer);
 begin
    if v = -1 then begin
       UseContestPeriod := False;
-      comboStartTime.Text := '';
+      v := 21;
    end
    else begin
       UseContestPeriod := True;
-      comboStartTime.Text := IntToStr(v);
    end;
+   comboStartTime.Text := IntToStr(v);
 end;
 
 function TCFGEdit.GetPeriod(): Integer;
 begin
-   Result := StrToIntDef(comboPeriod.Text, -1);
+   Result := StrToIntDef(comboPeriod.Text, 24);
 end;
 
 procedure TCFGEdit.SetPeriod(v: Integer);

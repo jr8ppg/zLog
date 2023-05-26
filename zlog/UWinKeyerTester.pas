@@ -25,12 +25,18 @@ type
     groupMessage: TGroupBox;
     editMessage: TEdit;
     buttonSendMessage: TButton;
+    GroupBox1: TGroupBox;
+    buttonUsbif4cwP02: TSpeedButton;
+    buttonUsbif4cwP03: TSpeedButton;
+    buttonUsbif4cwP04: TSpeedButton;
+    SpeedButton1: TSpeedButton;
     procedure buttonPinCfgBitClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonPttCmdClick(Sender: TObject);
     procedure buttonSetPinCfgClick(Sender: TObject);
     procedure buttonSendMessageClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure buttonUsbif4cwP00Click(Sender: TObject);
   private
     { Private êÈåæ }
     FPinCfgBit: array[0..7] of TSpeedButton;
@@ -99,6 +105,19 @@ begin
    dmZLogKeyer.WinKeyerSendCommand(WK_SET_PINCFG_CMD, p);
 
    dmZLogKeyer.WinKeyerSendCommand(WK_PTT_CMD, 0);
+end;
+
+procedure TformWinkeyerTester.buttonUsbif4cwP00Click(Sender: TObject);
+var
+   port: Integer;
+begin
+   port := TSpeedButton(Sender).Tag;
+   if (TSpeedButton(Sender).Down = True) then begin
+      dmZLogKeyer.usbif4cwSetPort(port, True);
+   end
+   else begin
+      dmZLogKeyer.usbif4cwSetPort(port, False);
+   end;
 end;
 
 function TformWinKeyerTester.GetPinCfgParam(): Byte;

@@ -96,7 +96,6 @@ type
   end;
 
   TSettingsParam = record
-    _dontallowsameband : boolean; // same band on two rigs?
     _multiop : TContestCategory;  {multi op/ single op}
     _band : integer; {0 = all band; 1 = 1.9MHz 2 = 3.5MHz ...}
     _mode : TContestMode; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
@@ -114,12 +113,9 @@ type
     _powerL: string;
     _powerP: string;
 
-    _send_freq_interval: Integer;
-
     ProvCityImported: Boolean;
     ReadOnlyParamImported: Boolean;
 
-    _autobandmap: boolean;
     _activebands: array[b19..HiBand] of Boolean;
     _power: array[b19..HiBand] of string;
     _usebandscope: array[b19..HiBand] of Boolean;
@@ -207,8 +203,15 @@ type
     _jmode : boolean;
     _mainfontsize : integer;
     _mainrowheight : integer;
-    //_updatetimeonenter : boolean;
+
+    // RIG Control/general
     _ritclear : boolean; // clear rit after each qso
+    _dontallowsameband : boolean; // same band on two rigs?
+    _recrigfreq : boolean; // record rig freq in memo
+    _autobandmap: boolean;
+    _send_freq_interval: Integer;
+    _ignore_rig_mode: Boolean;
+
     _searchafter : integer; // 0 default. for super / partial check
     _savewhennocw : boolean; // def=false. save when cw is not being sent
     _maxsuperhit : integer; // max # qso hit
@@ -216,7 +219,6 @@ type
     _spotexpire : integer; // spot expiration time in minutes
     _renewbythread : boolean;
     _movetomemo : boolean; // move to memo w/ spacebar when editing past qsos
-    _recrigfreq : boolean; // record rig freq in memo
 
     _syncserial : boolean; // synchronize serial # over network
     _switchcqsp : boolean; // switch cq/sp modes by shift+F
@@ -1035,6 +1037,9 @@ begin
       // Send current freq every
       Settings._send_freq_interval := ini.ReadInteger('Rig', 'SendFreqSec', 30);
 
+      // Ignore RIG mode
+      Settings._ignore_rig_mode := ini.ReadBool('Rig', 'IgnoreRigMode', False);
+
       // Anti Zeroin
       Settings.FUseAntiZeroin := ini.ReadBool('Rig', 'use_anti_zeroin', True);
       Settings.FAntiZeroinShiftMax := Min(ini.ReadInteger('Rig', 'anti_zeroin_shift_max', 100), 200);
@@ -1674,6 +1679,9 @@ begin
 
       // Send current freq every
       ini.WriteInteger('Rig', 'SendFreqSec', Settings._send_freq_interval);
+
+      // Ignore RIG mode
+      ini.WriteBool('Rig', 'IgnoreRigMode', Settings._ignore_rig_mode);
 
       // Anti Zeroin
       ini.WriteBool('Rig', 'use_anti_zeroin', Settings.FUseAntiZeroin);

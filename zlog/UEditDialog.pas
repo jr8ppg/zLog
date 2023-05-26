@@ -318,7 +318,6 @@ end;
 procedure TEditDialog.OKBtnClick(Sender: TObject);
 var
    i, j: integer;
-   sthh: Integer;
 begin
    // QSO Data
 
@@ -335,13 +334,8 @@ begin
    workQSO.Time := Trunc(DateTimePicker1.Date) + Frac(DateTimePicker2.Time);
 
    // コンテスト開始前かチェック
-   sthh := MyContest.StartTime;
-   if sthh > -1 then begin
-      // 基準日時前ならInvalid
-      if workQSO.Time < Log.StartTime then begin
-         checkInvalid.Checked := True;
-         workQSO.Memo := 'BEFORE CONTEST';
-      end;
+   if MyContest.UseContestPeriod = True then begin
+      checkInvalid.Checked := Log.IsOutOfPeriod(workQSO);
    end;
 
    // Call

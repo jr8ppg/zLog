@@ -347,6 +347,8 @@ type
     FAllPhone: Boolean;    // True: SSB, FM, AM are same
     FQsoIdDic: TDictionary<Integer, string>;
     FStartTime: TDateTime;
+    FEndTime: TDateTime;
+    FPeriod: Integer;
     procedure Delete(i : Integer);
     procedure ProcessDelete(beforeQSO: TQSO);
     procedure ProcessEdit(afterQSO: TQSO; fAdd: Boolean);
@@ -356,6 +358,7 @@ type
     procedure SetScoreCoeff(E: Extended);
     function GetScoreCoeff(): Extended;
     function GetActualFreq(b: TBand; strFreq: string): string;
+    procedure SetPeriod(v: Integer);
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -437,6 +440,8 @@ type
     property AllPhone: Boolean read FAllPhone write FAllPhone;
 
     property StartTime: TDateTime read FStartTime write FStartTime;
+    property EndTime: TDateTime read FEndTime;
+    property Period: Integer read FPeriod write SetPeriod;
   end;
 
 implementation
@@ -1091,7 +1096,7 @@ end;
 
 function TQSO.GetMode2(): TMode;
 const
-   Mode2: array[mCW..mOther] of TMode = (mCW, mSSB, mSSB, mSSB, mRTTY, mOther );
+   Mode2: array[mCW..mOther] of TMode = (mCW, mSSB, mSSB, mSSB, mRTTY, mFT4, mFT8, mOther );
 begin
    Result := Mode2[Self.Mode];
 end;
@@ -2356,6 +2361,12 @@ begin
    Result := RightStr('     ' + s, 5);
 end;
 
+procedure TLog.SetPeriod(v: Integer);
+begin
+   FPeriod := v;
+   FEndTime := IncHour(FStartTime, FPeriod);
+end;
+
 // https://wwrof.org/cabrillo/
 // https://wwrof.org/cabrillo/cabrillo-qso-data/
 //                              --------info sent------- -------info rcvd--------
@@ -2443,6 +2454,12 @@ begin
       end
       else if Q.Mode = mRTTY then begin
          strText := strText + 'RY ';
+      end
+      else if Q.Mode = mFT4 then begin
+         strText := strText + 'DG ';
+      end
+      else if Q.Mode = mFT8 then begin
+         strText := strText + 'DG ';
       end
       else begin
          strText := strText + '   ';
@@ -3543,11 +3560,10 @@ end;
 
 function TLog.IsOutOfPeriod(Q: TQSO): Boolean;
 begin
-   if Q.Time < FStartTime then begin
+   if (Q.Time < FStartTime) or (Q.Time > FEndTime) then begin
       Result := True;
       Exit;
    end;
-
    Result := False;
 end;
 

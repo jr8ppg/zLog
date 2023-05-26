@@ -4554,6 +4554,14 @@ object formOptions: TformOptions
         Associate = SendFreqEdit
         Max = 300
         Position = 60
+        TabOrder = 7
+      end
+      object checkIgnoreRigMode: TCheckBox
+        Left = 8
+        Top = 172
+        Width = 141
+        Height = 18
+        Caption = 'Ignore rig mode'
         TabOrder = 5
       end
     end
@@ -6249,7 +6257,6 @@ object formOptions: TformOptions
           Top = 21
           Width = 113
           Height = 21
-          ReadOnly = True
           TabOrder = 0
         end
         object editQuickMemo2: TEdit
@@ -6257,7 +6264,6 @@ object formOptions: TformOptions
           Top = 48
           Width = 113
           Height = 21
-          ReadOnly = True
           TabOrder = 1
         end
         object editQuickMemo3: TEdit
@@ -6320,13 +6326,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'HG'#34892#26360#20307
+          FontName = 'Cascadia Mono Light'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 60
+          ItemIndex = 34
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

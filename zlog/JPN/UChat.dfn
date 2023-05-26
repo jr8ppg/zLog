@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45017.9697685185</prop>
-        <prop prop-type="OrigDateTime">44946.9154398148</prop>
+        <prop prop-type="SelfDateTime">45072.9594675926</prop>
+        <prop prop-type="OrigDateTime">45072.9253935185</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">119</prop>
+        <prop prop-type="UnTranslated">120</prop>
       </prop-group>
     </header>
     <body>
@@ -488,125 +488,130 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:ChatForm.O:Panel2.O:checkPopup.OnClick" resname="O:ChatForm.O:Panel2.O:checkPopup.OnClick">
+        <source>comboPromptTypeChange</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45072.9594789468</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:Button2.Left" resname="O:ChatForm.O:Panel2.O:Button2.Left">
         <source>304</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:Button2.Top" resname="O:ChatForm.O:Panel2.O:Button2.Top">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:Button2.Width" resname="O:ChatForm.O:Panel2.O:Button2.Width">
         <source>67</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:Button2.Height" resname="O:ChatForm.O:Panel2.O:Button2.Height">
         <source>18</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:Button2.Anchors" resname="O:ChatForm.O:Panel2.O:Button2.Anchors">
         <source>[akTop, akRight]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:Button2.Caption" resname="O:ChatForm.O:Panel2.O:Button2.Caption">
         <source>'Clear'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:Button2.TabOrder" resname="O:ChatForm.O:Panel2.O:Button2.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:Button2.OnClick" resname="O:ChatForm.O:Panel2.O:Button2.OnClick">
         <source>Button2Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkStayOnTop.Left" resname="O:ChatForm.O:Panel2.O:checkStayOnTop.Left">
         <source>155</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkStayOnTop.Top" resname="O:ChatForm.O:Panel2.O:checkStayOnTop.Top">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkStayOnTop.Width" resname="O:ChatForm.O:Panel2.O:checkStayOnTop.Width">
         <source>79</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkStayOnTop.Height" resname="O:ChatForm.O:Panel2.O:checkStayOnTop.Height">
         <source>17</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkStayOnTop.Caption" resname="O:ChatForm.O:Panel2.O:checkStayOnTop.Caption">
         <source>'Stay on top'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkStayOnTop.TabOrder" resname="O:ChatForm.O:Panel2.O:checkStayOnTop.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkStayOnTop.OnClick" resname="O:ChatForm.O:Panel2.O:checkStayOnTop.OnClick">
         <source>checkStayOnTopClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkRecord.Left" resname="O:ChatForm.O:Panel2.O:checkRecord.Left">
         <source>240</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkRecord.Top" resname="O:ChatForm.O:Panel2.O:checkRecord.Top">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkRecord.Width" resname="O:ChatForm.O:Panel2.O:checkRecord.Width">
         <source>60</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkRecord.Height" resname="O:ChatForm.O:Panel2.O:checkRecord.Height">
         <source>17</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkRecord.Caption" resname="O:ChatForm.O:Panel2.O:checkRecord.Caption">
         <source>'Record'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkRecord.Checked" resname="O:ChatForm.O:Panel2.O:checkRecord.Checked">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkRecord.State" resname="O:ChatForm.O:Panel2.O:checkRecord.State">
         <source>cbChecked</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkRecord.TabOrder" resname="O:ChatForm.O:Panel2.O:checkRecord.TabOrder">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ChatForm.O:Panel2.O:checkRecord.OnClick" resname="O:ChatForm.O:Panel2.O:checkRecord.OnClick">
-        <source>checkStayOnTopClick</source>
+        <source>comboPromptTypeChange</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

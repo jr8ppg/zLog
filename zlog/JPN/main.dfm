@@ -5774,6 +5774,7 @@ object MainForm: TMainForm
     Top = 144
     object FileMenu: TMenuItem
       Caption = #12501#12449#12452#12523'(&F)'
+      OnClick = FileMenuClick
       object FileNewItem: TMenuItem
         Caption = #26032#12375#12356#12467#12531#12486#12473#12488'(&N)'
         Hint = 'Create a new file'
@@ -6222,8 +6223,18 @@ object MainForm: TMainForm
       Caption = 'RTTY'
       OnClick = ModeMenuClick
     end
-    object Other1: TMenuItem
+    object FT41: TMenuItem
       Tag = 5
+      Caption = 'FT4'
+      OnClick = ModeMenuClick
+    end
+    object FT81: TMenuItem
+      Tag = 6
+      Caption = 'FT8'
+      OnClick = ModeMenuClick
+    end
+    object Other1: TMenuItem
+      Tag = 7
       Caption = 'Other'
       OnClick = ModeMenuClick
     end

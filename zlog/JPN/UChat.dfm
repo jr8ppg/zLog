@@ -109,6 +109,7 @@ object ChatForm: TChatForm
       Height = 17
       Caption = 'Pop up on new message'
       TabOrder = 0
+      OnClick = comboPromptTypeChange
     end
     object Button2: TButton
       Left = 304
@@ -138,7 +139,7 @@ object ChatForm: TChatForm
       Checked = True
       State = cbChecked
       TabOrder = 3
-      OnClick = checkStayOnTopClick
+      OnClick = comboPromptTypeChange
     end
   end
 end

@@ -645,6 +645,7 @@ type
     buttonOpEdit: TButton;
     checkOutputOutofPeriod: TCheckBox;
     checkGen3MicSelect: TCheckBox;
+    checkIgnoreRigMode: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -1155,6 +1156,7 @@ begin
       Settings._recrigfreq := cbRecordRigFreq.Checked;
       Settings._autobandmap := cbAutoBandMap.Checked;
       Settings._send_freq_interval := updownSendFreqInterval.Position;
+      Settings._ignore_rig_mode := checkIgnoreRigMode.Checked;
 
       // Anti Zeroin
       Settings.FUseAntiZeroin := checkUseAntiZeroin.Checked;
@@ -1681,6 +1683,7 @@ begin
       cbRecordRigFreq.Checked := Settings._recrigfreq;
       cbAutoBandMap.Checked := Settings._autobandmap;
       updownSendFreqInterval.Position := Settings._send_freq_interval;
+      checkIgnoreRigMode.Checked := Settings._ignore_rig_mode;
 
       // Anti Zeroin
       checkUseAntiZeroin.Checked := Settings.FUseAntiZeroin;

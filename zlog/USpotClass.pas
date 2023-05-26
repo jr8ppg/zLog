@@ -140,7 +140,7 @@ var
   hLookupServer: HWND;
 
 {$IFNDEF ZLOG_TELNET}
-  function ExecLookup(strCallsign: string): string;
+  function ExecLookup(strCallsign: string; b: TBand): string;
   function FindLookupServer(): HWND;
 {$ENDIF}
 
@@ -635,7 +635,7 @@ begin
 
          // SPC‚©‚ç‚àæ“¾‚Å‚«‚È‚¢ê‡‚ÍLookup Server‚ÉˆË—Š‚·‚é
          if (Sp.Number = '') and (Sp.IsPortable = False) and (Sp.IsDomestic = True) then begin
-            Sp.Number := ExecLookup(Sp.Call);
+            Sp.Number := ExecLookup(Sp.Call, Sp.Band);
          end;
          SD.Free();
       end;
@@ -657,7 +657,7 @@ begin
    end;
 end;
 
-function ExecLookup(strCallsign: string): string;
+function ExecLookup(strCallsign: string; b: TBand): string;
 var
    callsign_atom: ATOM;
    number_atom: ATOM;
@@ -682,10 +682,17 @@ begin
    end;
 
    if Pos('$Q', MyContest.SentStr) > 0 then begin
+      // city
       reqcode := 1;
    end
    else begin
-      reqcode := 0;
+      // prov
+      if (b >= b2400) then begin
+         reqcode := 1;
+      end
+      else begin
+         reqcode := 0;
+      end;
    end;
 
 

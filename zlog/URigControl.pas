@@ -440,9 +440,6 @@ begin
          end;
 
          buttonOmniRig.Enabled := True;
-      end
-      else begin
-         buttonOmniRig.Enabled := False;
       end;
 
       if dmZlogGlobal.Settings.FRigControl[rignum].FControlPort in [1 .. 20] then begin
@@ -600,6 +597,7 @@ begin
       if Assigned(rig) then begin
          rig.OnUpdateStatus := OnUpdateStatusProc;
          rig.OnError := OnErrorProc;
+         rig.IgnoreMode := dmZLogGlobal.Settings._ignore_rig_mode;
       end;
    finally
       Result := rig;
@@ -618,6 +616,10 @@ begin
    else begin
       FMaxRig := 3;
    end;
+
+   // OmniRigは最初にOFFにしておく
+   // その後、OmniRigがあればBuildRigObject()でONになる
+   buttonOmniRig.Enabled := False;
 
    FRigs[1] := BuildRigObject(1);
    FRigs[2] := BuildRigObject(2);
@@ -751,14 +753,22 @@ begin
    end;
 
    case o_RIG.Vfo of
-      PM_VFOA:
-         R.CurrentVFO := 0;
-      PM_VFOB:
-         R.CurrentVFO := 1;
+      1: begin
+         R.CurrentFreq[0] := o_RIG.Freq;
+      end;
+
+      2: begin
+         R.CurrentFreq[1] := o_RIG.Freq;
+      end;
+
+//      PM_VFOA:
+//         R.CurrentVFO := 0;
+//      PM_VFOB:
+//         R.CurrentVFO := 1;
    end;
 
-   R.CurrentFreq[0] := o_RIG.FreqA;
-   R.CurrentFreq[1] := o_RIG.FreqB;
+//   R.CurrentFreq[0] := o_RIG.FreqA;
+//   R.CurrentFreq[1] := o_RIG.FreqB;
 
    case o_RIG.Mode of
       PM_CW_U, PM_CW_L:
@@ -975,25 +985,30 @@ procedure TRigControl.PowerOn();
 var
    rigno: Integer;
 begin
+   // リグ設定を反映
    rigno := GetCurrentRig();
    ImplementOptions(rigno);
+
+   // RIG1/2両方とも設定無しならOFFにする
+   if (FRigs[1] = nil) and (FRigs[2] = nil) and
+      (FRigs[3] = nil) and (FRigs[4] = nil) then begin
+      ForcePowerOff();
+      Exit;
+   end;
+
+   // ONの場合の色
    ToggleSwitch1.FrameColor := clBlack;
    ToggleSwitch1.ThumbColor := clBlack;
-   dmZLogKeyer.Open();
-
-   if (Assigned(FRigs[1]) and (FRigs[1].Name = 'Omni-Rig')) or
-      (Assigned(FRigs[2]) and (FRigs[2].Name = 'Omni-Rig')) then begin
-      buttonOmniRig.Enabled := True;
-   end
-   else begin
-      buttonOmniRig.Enabled := False;
-   end;
    buttonReconnectRigs.Enabled := True;
    buttonJumpLastFreq.Enabled := True;
+
+   // CW開始
+   dmZLogKeyer.Open();
 end;
 
 procedure TRigControl.PowerOff();
 begin
+   // CW停止
    dmZLogKeyer.ClrBuffer();
    dmZLogKeyer.Close();
    dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
@@ -1001,7 +1016,11 @@ begin
    dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZlogGlobal.Settings.FRigControl[3].FKeyingPort));
    dmZLogKeyer.ResetCommPortDriver(3, TKeyingPort(dmZlogGlobal.Settings.FRigControl[4].FKeyingPort));
    dmZLogKeyer.ResetCommPortDriver(4, TKeyingPort(dmZlogGlobal.Settings.FRigControl[5].FKeyingPort));
+
+   // リグコン停止
    Stop();
+
+   // OFFの色
    ToggleSwitch1.FrameColor := clSilver;
    ToggleSwitch1.ThumbColor := clSilver;
 
@@ -1016,6 +1035,7 @@ begin
    dispLastFreq.Font.Color := clSilver;
    dispMode.Font.Color := clSilver;
    dispVFO.Font.Color := clSilver;
+
    buttonOmniRig.Enabled := False;
    buttonReconnectRigs.Enabled := False;
    buttonJumpLastFreq.Enabled := False;

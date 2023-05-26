@@ -114,7 +114,7 @@ begin
 //      i := i + _freqoffset; // transverter
 
       if _currentvfo = aa then begin
-         UpdateFreqMem(aa, _currentfreq[aa]);
+         UpdateFreqMem(aa, _currentfreq[aa], _currentmode);
       end;
 
       if Selected then
@@ -131,7 +131,7 @@ begin
 
       _currentvfo := aa;
 
-      UpdateFreqMem(aa, _currentfreq[aa]);
+      UpdateFreqMem(aa, _currentfreq[aa], _currentmode);
 
       if Selected then
          UpdateStatus;
@@ -190,9 +190,12 @@ begin
             M := mOther;
          end;
       end;
-      _currentmode := M;
 
-      FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
+      if FIgnoreRigMode = False then begin
+         _currentmode := M;
+      end;
+
+      FreqMem[_currentband, M] := _currentfreq[_currentvfo];
 
       // RIT/XIT offset
       strTemp := string(Copy(S, 19, 5));
@@ -232,8 +235,13 @@ begin
          else
             M := mOther;
       end;
-      _currentmode := M;
-      FreqMem[_currentband, _currentmode] := _currentfreq[_currentvfo];
+
+      if FIgnoreRigMode = False then begin
+         _currentmode := M;
+      end;
+
+      FreqMem[_currentband, M] := _currentfreq[_currentvfo];
+
       if Selected then
          UpdateStatus;
    end;

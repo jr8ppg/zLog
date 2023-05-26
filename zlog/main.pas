@@ -1051,6 +1051,7 @@ type
     function Is2bsiq(): Boolean;
     procedure LogButtonProc(nID: Integer; Q: TQSO);
     function InputStartTime(): TDateTime;
+    procedure EnableShiftKeyAction(fEnable: Boolean);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -2185,6 +2186,7 @@ begin
    LastFocus := CallsignEdit; { the place to set focus when ESC is pressed from Grid }
 
    CurrentQSO := TQSO.Create;
+   CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
    Randomize;
    GLOBALSERIAL := Random10 * 1000; // for qso id
 
@@ -3998,7 +4000,6 @@ begin
    Q.NewMulti1 := False;
    Q.NewMulti2 := False;
    Q.Invalid := False;
-   Q.QslState := dmZLogGlobal.Settings._qsl_default;
    Q.TX := dmZlogGlobal.TXNr;
    Q.Forced := False;
    Q.Dupe := False;
@@ -4105,13 +4106,8 @@ begin
    end;
 
    // コンテスト開始前かチェック
-   sthh := MyContest.StartTime;
-   if sthh > -1 then begin
-      // 基準日時前ならInvalid
-      if Q.Time < Log.StartTime then begin
-         Q.Invalid := True;
-         Q.Memo := 'BEFORE CONTEST';
-      end;
+   if MyContest.UseContestPeriod = True then begin
+      CurrentQSO.Invalid := Log.IsOutOfPeriod(CurrentQSO);
    end;
 
    // ログに記録
@@ -4209,6 +4205,7 @@ begin
    Q.Callsign := '';
    Q.NrRcvd := '';
    Q.Memo := '';
+   Q.QslState := dmZLogGlobal.Settings._qsl_default;
 
    Q.Dupe := False;
    // CurrentQSO.CQ := False;
@@ -5430,6 +5427,9 @@ begin
 
       // Band再設定
       UpdateBand(CurrentQSO.Band);
+
+      // QSL交換初期値
+      CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
    finally
       f.Release();
 
@@ -5642,6 +5642,11 @@ begin
 
    actionQsoStart.Enabled:= True;
    actionQsoComplete.Enabled:= True;
+
+   // memo欄ではSHIFTキーを使うaction禁止
+   if TEdit(Sender).Tag = 1000 then begin
+      EnableShiftKeyAction(False);
+   end;
 end;
 
 procedure TMainForm.EditExit(Sender: TObject);
@@ -5654,6 +5659,11 @@ begin
 
    actionQsoStart.Enabled:= False;
    actionQsoComplete.Enabled:= False;
+
+   // memo欄ではSHIFTキーを使うaction禁止
+   if TEdit(Sender).Tag = 1000 then begin
+      EnableShiftKeyAction(True);
+   end;
 end;
 
 procedure TMainForm.mnMergeClick(Sender: TObject);
@@ -6759,6 +6769,9 @@ begin
          dt := InputStartTime();
          Log.StartTime := dt;
       end;
+
+      // コンテスト期間
+      Log.Period := MyContest.Period;
 
       SetWindowCaption();
 
@@ -9946,7 +9959,7 @@ begin
    FSuperCheck2.Clear();
 
    // ポータブル除く
-   PartialStr := CoreCall(PartialStr);
+//   PartialStr := CoreCall(PartialStr);
 
    // 検索対象無し
    if PartialStr = '' then begin
@@ -11726,6 +11739,29 @@ begin
       Result := dlg.BaseTime;
    finally
       dlg.Release();
+   end;
+end;
+
+procedure TMainForm.EnableShiftKeyAction(fEnable: Boolean);
+var
+   i: Integer;
+   j: Integer;
+   act: TContainedAction;
+   shortcut: TShortcut;
+begin
+   for i := 0 to ActionList1.ActionCount - 1 do begin
+      act := ActionList1.Actions[i];
+      shortcut := act.ShortCut;
+      if (shortcut and scShift) <> 0 then begin
+         act.Enabled := fEnable;
+      end;
+
+      for j := 0 to act.SecondaryShortCuts.Count - 1 do begin
+         shortcut := act.SecondaryShortCuts.ShortCuts[j];
+         if (shortcut and scShift) <> 0 then begin
+            act.Enabled := fEnable;
+         end;
+      end;
    end;
 end;
 

@@ -6,7 +6,7 @@ uses
   Graphics;
 
 type
-  TMode = (mCW, mSSB, mFM, mAM, mRTTY, mOther);
+  TMode = (mCW, mSSB, mFM, mAM, mRTTY, mFT4, mFT8, mOther);
   TBand = (b19, b35, b7, b10, b14, b18, b21, b24, b28, b50, b144, b430, b1200, b2400, b5600, b10g, bTarget, bUnknown);
   TPower = (p001, p002, p005, p010, p020, p025, p050, p100, p200, p500, p1000);
 
@@ -170,8 +170,8 @@ const
                                              '6m','2m','70cm','23cm','13cm',
                                              '6cm','3cm');
 
-  ModeString : array[mCW..mOther] of string = ('CW','SSB','FM','AM','RTTY','Other');
-  ModeString2 : array[mCW..mOther] of string = ('CW','PH','PH','PH','RTTY','Other');
+  ModeString : array[mCW..mOther] of string = ('CW','SSB','FM','AM','RTTY','FT4','FT8','Other');
+  ModeString2 : array[mCW..mOther] of string = ('CW','PH','PH','PH','RTTY','DG','DG','Other');
 
   pwrP = TPower(0);
   pwrL = TPower(1);
@@ -269,7 +269,7 @@ const
     'Ctrl+L',
     'Ctrl+O',           // #50
     'Ctrl+P',
-    'Ctrl+Q',
+    '',
     'Ctrl+R',
     'Ctrl+T',
     'Ctrl+U',           // #55
@@ -371,8 +371,8 @@ const
     'Ctrl+0',           // #151 actionChangeTxNr0
     'Ctrl+1',           // #152 actionChangeTxNr1
     '',                 // #153 actionChangeTxNr2
-    '',                 // #154 actionPseQsl
-    '',                 // #155 actionNoQsl
+    'Ctrl+Q',           // #154 actionPseQsl
+    'Shift+Ctrl+Q',     // #155 actionNoQsl
     '',                 // #156 actionMsgMgr
     'Shift+Ctrl+B',     // #157 actionChangeBand2
     'Shift+Ctrl+M',     // #158 actionChangeMode2
