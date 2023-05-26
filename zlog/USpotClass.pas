@@ -148,7 +148,7 @@ implementation
 
 {$IFNDEF ZLOG_TELNET}
 uses
-  Main;
+  UzLogContest, Main;
 {$ENDIF}
 
 constructor TBaseSpot.Create;
@@ -681,20 +681,25 @@ begin
       Exit;
    end;
 
-   if Pos('$Q', MyContest.SentStr) > 0 then begin
-      // city
-      reqcode := 1;
-   end
-   else begin
-      // prov
+   if (MyContest is TFDContest) or
+      (MyContest is TSixDownContest) then begin
       if (b >= b2400) then begin
          reqcode := 1;
       end
       else begin
          reqcode := 0;
       end;
+   end
+   else begin
+      if Pos('$Q', MyContest.SentStr) > 0 then begin
+         // city
+         reqcode := 1;
+      end
+      else begin
+         // prov
+         reqcode := 0;
+      end;
    end;
-
 
    S := strCallsign;
    callsign_atom := GlobalAddAtom(PChar(S));
