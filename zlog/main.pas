@@ -5764,6 +5764,7 @@ end;
 procedure TMainForm.menuCorrectStartTimeClick(Sender: TObject);
 begin
    Log.StartTime := InputStartTime();
+   Log.Period := MyContest.Period;
 end;
 
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
