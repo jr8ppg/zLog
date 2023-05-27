@@ -772,8 +772,8 @@ begin
    end;
 
    case o_RIG.Vfo of
-      PM_VFOA: _currentfreq[0] := o_RIG.FreqA;
-      PM_VFOB: _currentfreq[1] := o_RIG.FreqB;
+      PM_VFOA, PM_VFOAA: _currentfreq[0] := o_RIG.FreqA;
+      PM_VFOB, PM_VFOAB: _currentfreq[1] := o_RIG.FreqB;
       else     _currentfreq[0] := o_RIG.Freq;
    end;
 
@@ -823,10 +823,23 @@ begin
    Inherited SetFreq(Hz, fSetLastFreq);
 
    case o_RIG.Vfo of
-      PM_VFOA: o_RIG.FreqA := Hz;
-      PM_VFOB: o_RIG.FreqB := Hz;
-      else     o_RIG.Freq  := Hz;
+      PM_VFOA, PM_VFOAA: begin
+         _currentfreq[0] := Hz;
+         o_RIG.FreqA := Hz;
+      end;
+
+      PM_VFOB, PM_VFOAB: begin
+         _currentfreq[1] := Hz;
+         o_RIG.FreqB := Hz;
+      end;
+
+      else begin
+         _currentfreq[0] := Hz;
+         o_RIG.FreqA := Hz;
+      end;
    end;
+
+   UpdateStatus();
 end;
 
 procedure TOmni.SetMode(Q: TQSO);
