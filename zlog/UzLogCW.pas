@@ -241,7 +241,7 @@ begin
    else begin
       dmZLogKeyer.PauseCW;
 
-      if dmZLogGlobal.FIFO then begin
+      if dmZLogGlobal.Settings.CW._FIFO then begin
          dmZLogKeyer.SendStrFIFO(nID, S);
       end
       else begin

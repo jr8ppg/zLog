@@ -377,8 +377,6 @@ type
     procedure SetMultiOp(i: TContestCategory);
     function GetContestMenuNo() : Integer;
     procedure SetContestMenuNo(i: Integer);
-    function GetFIFO(): Boolean;
-    procedure SetFIFO(b: Boolean);
     function GetTXNr(): Byte;
     procedure SetTXNr(i: Byte);
     function GetPTTEnabled(): Boolean;
@@ -428,7 +426,6 @@ public
     property ContestMode: TContestMode read GetMode write SetMode;
     property ContestCategory: TContestCategory read GetMultiOp write SetMultiOp;
     property ContestMenuNo: Integer read GetContestMenuNo write SetContestMenuNo;
-    property FIFO: Boolean read GetFIFO write SetFIFO;
     property TXNr: Byte read GetTXNr write SetTXNr;
     property PTTEnabled: Boolean read GetPTTEnabled;
     property RigNameStr[Index: Integer]: string read GetRigNameStr;
@@ -2154,16 +2151,6 @@ end;
 procedure TdmZLogGlobal.SetContestMenuNo(i: integer);
 begin
    Settings._contestmenuno := i;
-end;
-
-function TdmZLogGlobal.GetFIFO(): Boolean;
-begin
-   Result := Settings.CW._FIFO;
-end;
-
-procedure TdmZLogGlobal.SetFIFO(b: boolean);
-begin
-   Settings.CW._FIFO := b;
 end;
 
 function TdmZLogGlobal.GetTXNr(): Byte;
