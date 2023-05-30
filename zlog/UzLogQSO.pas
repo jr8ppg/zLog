@@ -2363,10 +2363,19 @@ begin
 end;
 
 function TLog.GetEndTime(): TDateTime;
+var
+   dtNow: TDateTime;
 begin
    if FPeriod = 0 then begin
-      if (FStartTime <= Now) then begin
-         Result := Now;
+      if MyContest.UseUTC = True then begin
+         dtNow := GetUTC();
+      end
+      else begin
+         dtNow := Now;
+      end;
+
+      if (FStartTime <= dtNow) then begin
+         Result := dtNow;
       end
       else begin
          Result := FStartTime;

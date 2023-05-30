@@ -246,13 +246,13 @@ begin
       dmZLogKeyer.WinKeyerSendStr2(S);
    end
    else begin
-      dmZLogKeyer.ClrBuffer();
       dmZLogKeyer.PauseCW;
 
-      if dmZLogGlobal.FIFO then begin
+      if dmZLogGlobal.Settings.CW._FIFO then begin
          dmZLogKeyer.SendStrFIFO(nID, S);
       end
       else begin
+         dmZLogKeyer.ClrBuffer();
          dmZLogKeyer.SendStr(nID, S);
       end;
 

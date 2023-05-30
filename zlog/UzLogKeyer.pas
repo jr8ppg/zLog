@@ -1249,7 +1249,9 @@ begin
 
    SetCWSendBufFinish(0);
 
-   cwstrptr := 1;
+   if cwstrptr = 0 then begin
+      cwstrptr := 1;
+   end;
 end;
 
 procedure TdmZLogKeyer.CW_ON(nID: Integer);

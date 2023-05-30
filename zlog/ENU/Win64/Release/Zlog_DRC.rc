@@ -2563,9 +2563,12 @@ END
 /* D:\github\zLog_2bsiq\zlog\UOperatorPowerDialog.dfm */
 /* D:\github\zLog_2bsiq\zlog\UOperatorEdit.dfm */
 /* D:\github\zLog_2bsiq\zlog\USuperCheck2.DFM */
-/* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\CategoryButtons.res */
+/* D:\github\zLog_2bsiq\zlog\UBasicMulti.DFM */
+/* D:\github\zLog_2bsiq\zlog\USummaryInfo.DFM */
+/* D:\github\zLog_2bsiq\zlog\UBasicScore.DFM */
 /* D:\github\zLog_2bsiq\zlog\UConsolePad.DFM */
 /* D:\github\zLog_2bsiq\zlog\UScratchSheet.DFM */
+/* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\CategoryButtons.res */
 /* D:\github\zLog_2bsiq\zlog\UChat.DFM */
 /* D:\github\zLog_2bsiq\zlog\UZServerInquiry.DFM */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\WinXCtrls.res */
@@ -2573,9 +2576,7 @@ END
 /* D:\github\zLog_2bsiq\zlog\UFreqList.DFM */
 /* D:\github\zLog_2bsiq\zlog\UBandScope2.dfm */
 /* D:\github\zLog_2bsiq\zlog\URigControl.DFM */
-/* D:\github\zLog_2bsiq\zlog\UBasicMulti.DFM */
-/* D:\github\zLog_2bsiq\zlog\USummaryInfo.DFM */
-/* D:\github\zLog_2bsiq\zlog\UBasicScore.DFM */
+/* D:\github\zLog_2bsiq\zlog\UZLinkForm.DFM */
 /* D:\github\zLog_2bsiq\zlog\UQTCForm.DFM */
 /* D:\github\zLog_2bsiq\zlog\UPartials.DFM */
 /* D:\github\zLog_2bsiq\zlog\UEditDialog.DFM */
@@ -2613,7 +2614,6 @@ END
 /* D:\github\zLog_2bsiq\zlog\USixDownMulti.DFM */
 /* D:\github\zLog_2bsiq\zlog\UGeneralScore.DFM */
 /* D:\github\zLog_2bsiq\zlog\UGeneralMulti2.DFM */
-/* D:\github\zLog_2bsiq\zlog\UZLinkForm.DFM */
 /* D:\github\zLog_2bsiq\zlog\UComm.DFM */
 /* D:\github\zLog_2bsiq\zlog\UClusterTelnetSet.DFM */
 /* D:\github\zLog_2bsiq\zlog\UClusterCOMSet.DFM */

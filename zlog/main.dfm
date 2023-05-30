@@ -223,6 +223,7 @@ object MainForm: TMainForm
         TabOnEnter = False
       end
       object MemoEdit1: TOvrEdit
+        Tag = 1000
         Left = 432
         Top = 4
         Width = 73
