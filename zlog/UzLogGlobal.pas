@@ -2056,7 +2056,7 @@ function TdmZLogGlobal.GetAge(aQSO: TQSO): string;
 var
    op: TOperatorInfo;
 begin
-   op := FOpList.ObjectOf(aQSO.Callsign);
+   op := FOpList.ObjectOf(aQSO.Operator);
    if op = nil then begin
       Result := Settings._age;
       Exit;
