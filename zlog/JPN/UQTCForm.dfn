@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\github\zLog_v2850\zlog\UQTCForm.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\github\zLog_v2850\zlog\UQTCForm.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">45050.4403240741</prop>
+        <prop prop-type="OrigDateTime">45042.8616435185</prop>
+        <prop prop-type="XlatDateTime">45042.8616435185</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">106</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="O:QTCForm.Left" resname="O:QTCForm.Left">
+        <source>578</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.Top" resname="O:QTCForm.Top">
+        <source>204</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.Caption" resname="O:QTCForm.Caption">
+        <source>'QTC'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.ClientHeight" resname="O:QTCForm.ClientHeight">
+        <source>316</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.ClientWidth" resname="O:QTCForm.ClientWidth">
+        <source>249</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.Color" resname="O:QTCForm.Color">
+        <source>clBtnFace</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.Font.Charset" resname="O:QTCForm.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.Font.Color" resname="O:QTCForm.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.Font.Height" resname="O:QTCForm.Font.Height">
+        <source>-12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.Font.Name" resname="O:QTCForm.Font.Name">
+        <source>'ＭＳ Ｐゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.Font.Style" resname="O:QTCForm.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.KeyPreview" resname="O:QTCForm.KeyPreview">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.OldCreateOrder" resname="O:QTCForm.OldCreateOrder">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.Position" resname="O:QTCForm.Position">
+        <source>poOwnerFormCenter</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.Scaled" resname="O:QTCForm.Scaled">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.OnClose" resname="O:QTCForm.OnClose">
+        <source>FormClose</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.OnCreate" resname="O:QTCForm.OnCreate">
+        <source>FormCreate</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.OnDestroy" resname="O:QTCForm.OnDestroy">
+        <source>FormDestroy</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.OnKeyDown" resname="O:QTCForm.OnKeyDown">
+        <source>FormKeyDown</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.OnKeyPress" resname="O:QTCForm.OnKeyPress">
+        <source>FormKeyPress</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.PixelsPerInch" resname="O:QTCForm.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.TextHeight" resname="O:QTCForm.TextHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TQTCForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label1.Left" resname="O:QTCForm.O:Label1.Left">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label1.Top" resname="O:QTCForm.O:Label1.Top">
+        <source>56</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label1.Width" resname="O:QTCForm.O:Label1.Width">
+        <source>43</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label1.Height" resname="O:QTCForm.O:Label1.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label1.Caption" resname="O:QTCForm.O:Label1.Caption">
+        <source>'Label1'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label1.Font.Charset" resname="O:QTCForm.O:Label1.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label1.Font.Color" resname="O:QTCForm.O:Label1.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label1.Font.Height" resname="O:QTCForm.O:Label1.Font.Height">
+        <source>-15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label1.Font.Name" resname="O:QTCForm.O:Label1.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label1.Font.Style" resname="O:QTCForm.O:Label1.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label1.ParentFont" resname="O:QTCForm.O:Label1.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label2.Left" resname="O:QTCForm.O:Label2.Left">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label2.Top" resname="O:QTCForm.O:Label2.Top">
+        <source>32</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label2.Width" resname="O:QTCForm.O:Label2.Width">
+        <source>43</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label2.Height" resname="O:QTCForm.O:Label2.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label2.Caption" resname="O:QTCForm.O:Label2.Caption">
+        <source>'Label2'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label2.Font.Charset" resname="O:QTCForm.O:Label2.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label2.Font.Color" resname="O:QTCForm.O:Label2.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label2.Font.Height" resname="O:QTCForm.O:Label2.Font.Height">
+        <source>-15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label2.Font.Name" resname="O:QTCForm.O:Label2.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label2.Font.Style" resname="O:QTCForm.O:Label2.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label2.ParentFont" resname="O:QTCForm.O:Label2.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label3.Left" resname="O:QTCForm.O:Label3.Left">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303241</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label3.Top" resname="O:QTCForm.O:Label3.Top">
+        <source>11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label3.Width" resname="O:QTCForm.O:Label3.Width">
+        <source>136</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label3.Height" resname="O:QTCForm.O:Label3.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label3.Caption" resname="O:QTCForm.O:Label3.Caption">
+        <source>'# of QTCs to be sent'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label3.Font.Charset" resname="O:QTCForm.O:Label3.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label3.Font.Color" resname="O:QTCForm.O:Label3.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label3.Font.Height" resname="O:QTCForm.O:Label3.Font.Height">
+        <source>-15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label3.Font.Name" resname="O:QTCForm.O:Label3.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label3.Font.Style" resname="O:QTCForm.O:Label3.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:Label3.ParentFont" resname="O:QTCForm.O:Label3.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnSend.Left" resname="O:QTCForm.O:btnSend.Left">
+        <source>22</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnSend.Top" resname="O:QTCForm.O:btnSend.Top">
+        <source>272</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnSend.Width" resname="O:QTCForm.O:btnSend.Width">
+        <source>75</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnSend.Height" resname="O:QTCForm.O:btnSend.Height">
+        <source>25</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnSend.Caption" resname="O:QTCForm.O:btnSend.Caption">
+        <source>'Send'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnSend.Default" resname="O:QTCForm.O:btnSend.Default">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnSend.TabOrder" resname="O:QTCForm.O:btnSend.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnSend.OnClick" resname="O:QTCForm.O:btnSend.OnClick">
+        <source>btnSendClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnBack.Left" resname="O:QTCForm.O:btnBack.Left">
+        <source>112</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnBack.Top" resname="O:QTCForm.O:btnBack.Top">
+        <source>272</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303356</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnBack.Width" resname="O:QTCForm.O:btnBack.Width">
+        <source>75</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnBack.Height" resname="O:QTCForm.O:btnBack.Height">
+        <source>25</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnBack.Caption" resname="O:QTCForm.O:btnBack.Caption">
+        <source>'Back (BS)'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnBack.TabOrder" resname="O:QTCForm.O:btnBack.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:btnBack.OnClick" resname="O:QTCForm.O:btnBack.OnClick">
+        <source>btnBackClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.Left" resname="O:QTCForm.O:SpinEdit.Left">
+        <source>176</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.Top" resname="O:QTCForm.O:SpinEdit.Top">
+        <source>7</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.Width" resname="O:QTCForm.O:SpinEdit.Width">
+        <source>41</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.Height" resname="O:QTCForm.O:SpinEdit.Height">
+        <source>26</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.Font.Charset" resname="O:QTCForm.O:SpinEdit.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.Font.Color" resname="O:QTCForm.O:SpinEdit.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.Font.Height" resname="O:QTCForm.O:SpinEdit.Font.Height">
+        <source>-13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.Font.Name" resname="O:QTCForm.O:SpinEdit.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.Font.Style" resname="O:QTCForm.O:SpinEdit.Font.Style">
+        <source>[fsBold]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.MaxValue" resname="O:QTCForm.O:SpinEdit.MaxValue">
+        <source>10</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.MinValue" resname="O:QTCForm.O:SpinEdit.MinValue">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.ParentFont" resname="O:QTCForm.O:SpinEdit.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.TabOrder" resname="O:QTCForm.O:SpinEdit.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.Value" resname="O:QTCForm.O:SpinEdit.Value">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303472</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:SpinEdit.OnChange" resname="O:QTCForm.O:SpinEdit.OnChange">
+        <source>SpinEditChange</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TSpinEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Left" resname="O:QTCForm.O:ListBox.Left">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Top" resname="O:QTCForm.O:ListBox.Top">
+        <source>80</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Width" resname="O:QTCForm.O:ListBox.Width">
+        <source>212</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Height" resname="O:QTCForm.O:ListBox.Height">
+        <source>177</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Font.Charset" resname="O:QTCForm.O:ListBox.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Font.Color" resname="O:QTCForm.O:ListBox.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Font.Height" resname="O:QTCForm.O:ListBox.Font.Height">
+        <source>-13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Font.Name" resname="O:QTCForm.O:ListBox.Font.Name">
+        <source>'Courier New'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Font.Style" resname="O:QTCForm.O:ListBox.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Items.Strings[0]" resname="O:QTCForm.O:ListBox.Items.Strings[0]">
+        <source>'line1'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Items.Strings[1]" resname="O:QTCForm.O:ListBox.Items.Strings[1]">
+        <source>'2'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Items.Strings[2]" resname="O:QTCForm.O:ListBox.Items.Strings[2]">
+        <source>'3'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Items.Strings[3]" resname="O:QTCForm.O:ListBox.Items.Strings[3]">
+        <source>'4'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Items.Strings[4]" resname="O:QTCForm.O:ListBox.Items.Strings[4]">
+        <source>'5'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Items.Strings[5]" resname="O:QTCForm.O:ListBox.Items.Strings[5]">
+        <source>'6'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Items.Strings[6]" resname="O:QTCForm.O:ListBox.Items.Strings[6]">
+        <source>'7'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Items.Strings[7]" resname="O:QTCForm.O:ListBox.Items.Strings[7]">
+        <source>'8'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Items.Strings[8]" resname="O:QTCForm.O:ListBox.Items.Strings[8]">
+        <source>'9'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303588</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.Items.Strings[9]" resname="O:QTCForm.O:ListBox.Items.Strings[9]">
+        <source>'10'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303704</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.ParentFont" resname="O:QTCForm.O:ListBox.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303704</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:QTCForm.O:ListBox.TabOrder" resname="O:QTCForm.O:ListBox.TabOrder">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403303704</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

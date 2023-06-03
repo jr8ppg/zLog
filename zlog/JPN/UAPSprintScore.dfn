@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\github\zLog_v2850\zlog\UAPSprintScore.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\github\zLog_v2850\zlog\UAPSprintScore.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">45050.4401388889</prop>
+        <prop prop-type="OrigDateTime">45042.8616435185</prop>
+        <prop prop-type="XlatDateTime">45042.8616435185</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">46</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="I:APSprintScore.Left" resname="I:APSprintScore.Left">
+        <source>144</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TAPSprintScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.Top" resname="I:APSprintScore.Top">
+        <source>188</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TAPSprintScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.Caption" resname="I:APSprintScore.Caption">
+        <source>'Score'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TAPSprintScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.Position" resname="I:APSprintScore.Position">
+        <source>poScreenCenter</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TAPSprintScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.OnShow" resname="I:APSprintScore.OnShow">
+        <source>FormShow</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TAPSprintScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.PixelsPerInch" resname="I:APSprintScore.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TAPSprintScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.TextHeight" resname="I:APSprintScore.TextHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TAPSprintScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.Left" resname="I:APSprintScore.O:Grid.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.Top" resname="I:APSprintScore.O:Grid.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.Width" resname="I:APSprintScore.O:Grid.Width">
+        <source>281</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.Height" resname="I:APSprintScore.O:Grid.Height">
+        <source>202</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.Align" resname="I:APSprintScore.O:Grid.Align">
+        <source>alClient</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.DefaultDrawing" resname="I:APSprintScore.O:Grid.DefaultDrawing">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.FixedCols" resname="I:APSprintScore.O:Grid.FixedCols">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowCount" resname="I:APSprintScore.O:Grid.RowCount">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.FixedRows" resname="I:APSprintScore.O:Grid.FixedRows">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.Font.Charset" resname="I:APSprintScore.O:Grid.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.Font.Color" resname="I:APSprintScore.O:Grid.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.Font.Height" resname="I:APSprintScore.O:Grid.Font.Height">
+        <source>-15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.Font.Name" resname="I:APSprintScore.O:Grid.Font.Name">
+        <source>'ＭＳ ゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.Font.Style" resname="I:APSprintScore.O:Grid.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.Options" resname="I:APSprintScore.O:Grid.Options">
+        <source>[goHorzLine]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.ParentFont" resname="I:APSprintScore.O:Grid.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.ScrollBars" resname="I:APSprintScore.O:Grid.ScrollBars">
+        <source>ssNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.TabOrder" resname="I:APSprintScore.O:Grid.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.OnDrawCell" resname="I:APSprintScore.O:Grid.OnDrawCell">
+        <source>GridDrawCell</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.ColWidths[0]" resname="I:APSprintScore.O:Grid.ColWidths[0]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.ColWidths[1]" resname="I:APSprintScore.O:Grid.ColWidths[1]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.ColWidths[2]" resname="I:APSprintScore.O:Grid.ColWidths[2]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604282</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.ColWidths[3]" resname="I:APSprintScore.O:Grid.ColWidths[3]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.ColWidths[4]" resname="I:APSprintScore.O:Grid.ColWidths[4]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[0]" resname="I:APSprintScore.O:Grid.RowHeights[0]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[1]" resname="I:APSprintScore.O:Grid.RowHeights[1]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[2]" resname="I:APSprintScore.O:Grid.RowHeights[2]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[3]" resname="I:APSprintScore.O:Grid.RowHeights[3]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[4]" resname="I:APSprintScore.O:Grid.RowHeights[4]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[5]" resname="I:APSprintScore.O:Grid.RowHeights[5]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[6]" resname="I:APSprintScore.O:Grid.RowHeights[6]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[7]" resname="I:APSprintScore.O:Grid.RowHeights[7]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[8]" resname="I:APSprintScore.O:Grid.RowHeights[8]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[9]" resname="I:APSprintScore.O:Grid.RowHeights[9]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[10]" resname="I:APSprintScore.O:Grid.RowHeights[10]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[11]" resname="I:APSprintScore.O:Grid.RowHeights[11]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[12]" resname="I:APSprintScore.O:Grid.RowHeights[12]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[13]" resname="I:APSprintScore.O:Grid.RowHeights[13]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:APSprintScore.O:Grid.RowHeights[14]" resname="I:APSprintScore.O:Grid.RowHeights[14]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401604398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

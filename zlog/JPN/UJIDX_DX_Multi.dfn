@@ -1,0 +1,1290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\github\zLog_v2850\zlog\UJIDX_DX_Multi.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\github\zLog_v2850\zlog\UJIDX_DX_Multi.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">45050.4401851852</prop>
+        <prop prop-type="OrigDateTime">45042.8616435185</prop>
+        <prop prop-type="XlatDateTime">45042.8616435185</prop>
+        <prop prop-type="Translated">12</prop>
+        <prop prop-type="UnTranslated">240</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="I:JIDX_DX_Multi.Left" resname="I:JIDX_DX_Multi.Left">
+        <source>-31</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440192662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TJIDX_DX_Multi</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.Top" resname="I:JIDX_DX_Multi.Top">
+        <source>248</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440192662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TJIDX_DX_Multi</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.Caption" resname="I:JIDX_DX_Multi.Caption">
+        <source>'Multipliers'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440192662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TJIDX_DX_Multi</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.OnShow" resname="I:JIDX_DX_Multi.OnShow">
+        <source>FormShow</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440192662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TJIDX_DX_Multi</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.PixelsPerInch" resname="I:JIDX_DX_Multi.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440192662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TJIDX_DX_Multi</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.TextHeight" resname="I:JIDX_DX_Multi.TextHeight">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440192662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TJIDX_DX_Multi</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Left" resname="I:JIDX_DX_Multi.O:TabControl.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440192662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Top" resname="I:JIDX_DX_Multi.O:TabControl.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440192662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Width" resname="I:JIDX_DX_Multi.O:TabControl.Width">
+        <source>314</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Height" resname="I:JIDX_DX_Multi.O:TabControl.Height">
+        <source>262</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Align" resname="I:JIDX_DX_Multi.O:TabControl.Align">
+        <source>alClient</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Font.Charset" resname="I:JIDX_DX_Multi.O:TabControl.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Font.Color" resname="I:JIDX_DX_Multi.O:TabControl.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Font.Height" resname="I:JIDX_DX_Multi.O:TabControl.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Font.Name" resname="I:JIDX_DX_Multi.O:TabControl.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Font.Style" resname="I:JIDX_DX_Multi.O:TabControl.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.ParentFont" resname="I:JIDX_DX_Multi.O:TabControl.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.TabOrder" resname="I:JIDX_DX_Multi.O:TabControl.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[0]" resname="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[0]">
+        <source>'1.9MHz'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[1]" resname="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[1]">
+        <source>'3.5 MHz'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[2]" resname="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[2]">
+        <source>'7 MHz'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[3]" resname="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[3]">
+        <source>'14 MHz'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[4]" resname="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[4]">
+        <source>'21 MHz'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[5]" resname="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[5]">
+        <source>'28 MHz'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[6]" resname="I:JIDX_DX_Multi.O:TabControl.Tabs.Strings[6]">
+        <source>'ALL'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.TabIndex" resname="I:JIDX_DX_Multi.O:TabControl.TabIndex">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.OnChange" resname="I:JIDX_DX_Multi.O:TabControl.OnChange">
+        <source>TabControlChange</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TTabControl</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Left" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Left">
+        <source>253</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Top" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Top">
+        <source>57</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Width" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Width">
+        <source>57</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Height">
+        <source>201</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.OnClickCheck" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.OnClickCheck">
+        <source>CheckListBoxClickCheck</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Align" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Align">
+        <source>alClient</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.BorderStyle" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.BorderStyle">
+        <source>bsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Color" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Color">
+        <source>clBtnFace</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Font.Charset" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Font.Color" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Font.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Font.Height">
+        <source>-12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Font.Name" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Font.Name">
+        <source>'ＭＳ ゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Font.Pitch" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Font.Pitch">
+        <source>fpFixed</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Font.Style" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.ItemHeight" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.ItemHeight">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[0]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[0]">
+        <source>'01 Hokkaido'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[1]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[1]">
+        <source>'02 Aomori'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[2]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[2]">
+        <source>'03 Iwate'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[3]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[3]">
+        <source>'04 Akita'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[4]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[4]">
+        <source>'05 Yamagata'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[5]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[5]">
+        <source>'06 Miyagi'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[6]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[6]">
+        <source>'07 Fukushima'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[7]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[7]">
+        <source>'08 Niigata'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[8]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[8]">
+        <source>'09 Nagano'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[9]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[9]">
+        <source>'10 Tokyo'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[10]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[10]">
+        <source>'11 Kanagawa'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[11]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[11]">
+        <source>'12 Chiba'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[12]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[12]">
+        <source>'13 Saitama'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[13]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[13]">
+        <source>'14 Ibaraki'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[14]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[14]">
+        <source>'15 Tochigi'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[15]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[15]">
+        <source>'16 Gumma'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[16]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[16]">
+        <source>'17 Yamanashi'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[17]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[17]">
+        <source>'18 Shizuoka'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[18]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[18]">
+        <source>'19 Gifu'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[19]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[19]">
+        <source>'20 Aichi'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[20]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[20]">
+        <source>'21 Mie'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[21]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[21]">
+        <source>'22 Kyoto'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[22]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[22]">
+        <source>'23 Shiga'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[23]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[23]">
+        <source>'24 Nara'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401926968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[24]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[24]">
+        <source>'25 Osaka'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[25]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[25]">
+        <source>'26 Wakayama'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[26]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[26]">
+        <source>'27 Hyogo'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[27]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[27]">
+        <source>'28 Toyama'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[28]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[28]">
+        <source>'29 Fukui'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[29]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[29]">
+        <source>'30 Ishikawa'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[30]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[30]">
+        <source>'31 Okayama'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[31]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[31]">
+        <source>'32 Shimane'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[32]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[32]">
+        <source>'33 Yamaguchi'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[33]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[33]">
+        <source>'34 Tottori'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[34]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[34]">
+        <source>'35 Hiroshima'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[35]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[35]">
+        <source>'36 Kagawa'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[36]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[36]">
+        <source>'37 Tokushima'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[37]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[37]">
+        <source>'38 Ehime'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[38]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[38]">
+        <source>'39 Kochi'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[39]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[39]">
+        <source>'40 Fukuoka'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[40]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[40]">
+        <source>'41 Saga'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[41]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[41]">
+        <source>'42 Nagasaki'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[42]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[42]">
+        <source>'43 Kumamoto'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[43]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[43]">
+        <source>'44 Oita'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[44]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[44]">
+        <source>'45 Miyazaki'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[45]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[45]">
+        <source>'46 Kagoshima'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[46]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[46]">
+        <source>'47 Okinawa'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[47]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[47]">
+        <source>'48 Ogasawara'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[48]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[48]">
+        <source>'49 Okinotorishima'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[49]" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.Items.Strings[49]">
+        <source>'50 Minami-torishima'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.ParentFont" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.TabOrder" resname="I:JIDX_DX_Multi.O:TabControl.O:CheckListBox.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TCheckListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.Left" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.Left">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.Top" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.Top">
+        <source>25</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.Width" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.Width">
+        <source>306</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.Height">
+        <source>32</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.Align" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.Align">
+        <source>alTop</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.BevelOuter" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.BevelOuter">
+        <source>bvNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.TabOrder" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Left" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Left">
+        <source>152</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Top" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Top">
+        <source>9</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Width" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Width">
+        <source>15</source>
+        <target>14</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">1</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Height">
+        <source>14</source>
+        <target>15</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927199</prop><prop prop-type="Status">1</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Escapement" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.TextStyle" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Caption" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Caption">
+        <source>'3.5'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Font.Charset" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Font.Color" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Font.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Font.Name" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Font.Style" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.ParentFont" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Visible" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel2.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Left" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Left">
+        <source>138</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Top" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Top">
+        <source>9</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Width" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Width">
+        <source>15</source>
+        <target>14</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">1</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Height">
+        <source>14</source>
+        <target>15</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">1</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Escapement" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.TextStyle" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">120</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Caption" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Caption">
+        <source>'1.9'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">121</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Font.Charset" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">122</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Font.Color" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Font.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Font.Name" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">125</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Font.Style" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">126</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.ParentFont" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Visible" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel1.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">128</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Left" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Left">
+        <source>166</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">129</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Top" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Top">
+        <source>9</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">130</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Width" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Width">
+        <source>15</source>
+        <target>14</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">1</prop><prop prop-type="Order">131</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Height">
+        <source>14</source>
+        <target>15</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">1</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Escapement" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">133</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.TextStyle" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Caption" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Caption">
+        <source>'7   '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">135</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Font.Charset" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">136</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Font.Color" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">137</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Font.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">138</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Font.Name" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">139</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Font.Style" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">140</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.ParentFont" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">141</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Visible" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel3.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">142</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Left" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Left">
+        <source>181</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">143</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Top" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Top">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">144</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Width" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Width">
+        <source>12</source>
+        <target>14</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">1</prop><prop prop-type="Order">145</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Height">
+        <source>14</source>
+        <target>12</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">1</prop><prop prop-type="Order">146</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Escapement" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.TextStyle" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">148</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Caption" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Caption">
+        <source>'14'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">149</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Font.Charset" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">150</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Font.Color" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">151</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Font.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">152</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Font.Name" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Font.Style" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">154</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.ParentFont" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">155</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Visible" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel4.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">156</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Left" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Left">
+        <source>195</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">157</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Top" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Top">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">158</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Width" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Width">
+        <source>12</source>
+        <target>14</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">1</prop><prop prop-type="Order">159</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Height">
+        <source>14</source>
+        <target>12</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">1</prop><prop prop-type="Order">160</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Escapement" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.TextStyle" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Caption" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Caption">
+        <source>'21'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Font.Charset" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">164</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Font.Color" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">165</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Font.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">166</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Font.Name" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">167</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Font.Style" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.ParentFont" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Visible" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel5.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">170</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Left" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Left">
+        <source>209</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">171</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Top" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Top">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Width" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Width">
+        <source>12</source>
+        <target>14</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">1</prop><prop prop-type="Order">173</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Height">
+        <source>14</source>
+        <target>12</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">1</prop><prop prop-type="Order">174</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Escapement" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Escapement">
+        <source>90</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.TextStyle" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.TextStyle">
+        <source>tsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Caption" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Caption">
+        <source>'28'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Font.Charset" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Font.Color" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Font.Color">
+        <source>clBlack</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Font.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Font.Name" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Font.Style" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.ParentFont" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">183</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Visible" resname="I:JIDX_DX_Multi.O:TabControl.O:Panel1.O:RotateLabel6.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Left" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Left">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">185</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Top" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Top">
+        <source>57</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">186</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Width" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Width">
+        <source>249</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Height">
+        <source>201</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Align" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Align">
+        <source>alLeft</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.BorderStyle" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.BorderStyle">
+        <source>bsNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">190</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Color" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Color">
+        <source>clBtnFace</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Font.Charset" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">192</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Font.Color" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">193</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Font.Height" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Font.Height">
+        <source>-12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">194</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Font.Name" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Font.Name">
+        <source>'ＭＳ ゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">195</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Font.Pitch" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Font.Pitch">
+        <source>fpFixed</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">196</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Font.Style" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.ItemHeight" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.ItemHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">198</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[0]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[0]">
+        <source>'01 Hokkaido         . . . . . .                      '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">199</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[1]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[1]">
+        <source>'02 Aomori                '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">200</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[2]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[2]">
+        <source>'03 Iwate                 '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">201</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[3]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[3]">
+        <source>'04 Akita                '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">202</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[4]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[4]">
+        <source>'05 Yamagata                  '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">203</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[5]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[5]">
+        <source>'06 Miyagi                  '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">204</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[6]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[6]">
+        <source>'07 Fukushima              '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">205</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[7]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[7]">
+        <source>'08 Niigata                    '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">206</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[8]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[8]">
+        <source>'09 Nagano                  '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">207</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[9]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[9]">
+        <source>'10 Tokyo                  '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">208</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[10]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[10]">
+        <source>'11 Kanagawa                    '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">209</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[11]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[11]">
+        <source>'12 Chiba                   '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">210</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[12]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[12]">
+        <source>'13 Saitama                  '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">211</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[13]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[13]">
+        <source>'14 Ibaraki                     '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">212</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[14]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[14]">
+        <source>'15 Tochigi                 '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">213</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[15]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[15]">
+        <source>'16 Gumma                   '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">214</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[16]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[16]">
+        <source>'17 Yamanashi               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">215</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[17]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[17]">
+        <source>'18 Shizuoka              '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">216</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[18]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[18]">
+        <source>'19 Gifu                  '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">217</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[19]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[19]">
+        <source>'20 Aichi               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">218</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[20]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[20]">
+        <source>'21 Mie                '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401927893</prop><prop prop-type="Status">0</prop><prop prop-type="Order">219</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[21]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[21]">
+        <source>'22 Kyoto                 '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">220</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[22]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[22]">
+        <source>'23 Shiga               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">221</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[23]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[23]">
+        <source>'24 Nara               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">222</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[24]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[24]">
+        <source>'25 Osaka               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">223</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[25]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[25]">
+        <source>'26 Wakayama               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">224</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[26]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[26]">
+        <source>'27 Hyogo               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">225</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[27]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[27]">
+        <source>'28 Toyama                '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">226</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[28]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[28]">
+        <source>'29 Fukui               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">227</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[29]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[29]">
+        <source>'30 Ishikawa               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">228</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[30]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[30]">
+        <source>'31 Okayama               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">229</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[31]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[31]">
+        <source>'32 Shimane               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">230</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[32]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[32]">
+        <source>'33 Yamaguchi                '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">231</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[33]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[33]">
+        <source>'34 Tottori                '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">232</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[34]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[34]">
+        <source>'35 Hiroshima               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">233</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[35]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[35]">
+        <source>'36 Kagawa               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">234</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[36]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[36]">
+        <source>'37 Tokushima               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">235</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[37]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[37]">
+        <source>'38 Ehime               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">236</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[38]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[38]">
+        <source>'39 Kochi               '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">237</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[39]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[39]">
+        <source>'40 Fukuoka                 '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928009</prop><prop prop-type="Status">0</prop><prop prop-type="Order">238</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[40]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[40]">
+        <source>'41 Saga                        '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">239</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[41]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[41]">
+        <source>'42 Nagasaki                   '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">240</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[42]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[42]">
+        <source>'43 Kumamoto                     '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">241</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[43]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[43]">
+        <source>'44 Oita                     '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">242</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[44]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[44]">
+        <source>'45 Miyazaki                    '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">243</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[45]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[45]">
+        <source>'46 Kagoshima                   '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">244</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[46]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[46]">
+        <source>'47 Okinawa                    '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">245</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[47]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[47]">
+        <source>'48 Ogasawara                   '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">246</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[48]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[48]">
+        <source>'49 Okinotorishima                     '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">247</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[49]" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Items.Strings[49]">
+        <source>'50 Minami-torishima         '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">248</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.ParentFont" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">249</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.TabOrder" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">250</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Visible" resname="I:JIDX_DX_Multi.O:TabControl.O:ListBox.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401928125</prop><prop prop-type="Status">0</prop><prop prop-type="Order">251</prop><prop prop-type="Type">TListBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

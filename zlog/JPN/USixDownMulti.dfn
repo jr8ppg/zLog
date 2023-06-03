@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\github\zLog_v2850\zlog\USixDownMulti.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\github\zLog_v2850\zlog\USixDownMulti.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">45050.4403240741</prop>
+        <prop prop-type="OrigDateTime">45042.8616435185</prop>
+        <prop prop-type="XlatDateTime">45042.8616435185</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">48</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="I:SixDownMulti.Left" resname="I:SixDownMulti.Left">
+        <source>264</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TSixDownMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.Top" resname="I:SixDownMulti.Top">
+        <source>195</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TSixDownMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.PixelsPerInch" resname="I:SixDownMulti.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TSixDownMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.TextHeight" resname="I:SixDownMulti.TextHeight">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TSixDownMulti</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel." resname="I:SixDownMulti.I:Panel.">
+        <source></source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">0</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label1R9.Left" resname="I:SixDownMulti.I:Panel.I:Label1R9.Left">
+        <source>7</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label1R9.Top" resname="I:SixDownMulti.I:Panel.I:Label1R9.Top">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label1R9.Visible" resname="I:SixDownMulti.I:Panel.I:Label1R9.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label1R9.ExplicitLeft" resname="I:SixDownMulti.I:Panel.I:Label1R9.ExplicitLeft">
+        <source>7</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label1R9.ExplicitTop" resname="I:SixDownMulti.I:Panel.I:Label1R9.ExplicitTop">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label3R5.Left" resname="I:SixDownMulti.I:Panel.I:Label3R5.Left">
+        <source>19</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label3R5.Top" resname="I:SixDownMulti.I:Panel.I:Label3R5.Top">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label3R5.Visible" resname="I:SixDownMulti.I:Panel.I:Label3R5.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label3R5.ExplicitLeft" resname="I:SixDownMulti.I:Panel.I:Label3R5.ExplicitLeft">
+        <source>19</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label3R5.ExplicitTop" resname="I:SixDownMulti.I:Panel.I:Label3R5.ExplicitTop">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label7.Left" resname="I:SixDownMulti.I:Panel.I:Label7.Left">
+        <source>31</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label7.Top" resname="I:SixDownMulti.I:Panel.I:Label7.Top">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label7.Visible" resname="I:SixDownMulti.I:Panel.I:Label7.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403368982</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label7.ExplicitLeft" resname="I:SixDownMulti.I:Panel.I:Label7.ExplicitLeft">
+        <source>31</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label7.ExplicitTop" resname="I:SixDownMulti.I:Panel.I:Label7.ExplicitTop">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label14.Left" resname="I:SixDownMulti.I:Panel.I:Label14.Left">
+        <source>43</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label14.Top" resname="I:SixDownMulti.I:Panel.I:Label14.Top">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label14.Visible" resname="I:SixDownMulti.I:Panel.I:Label14.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label14.ExplicitLeft" resname="I:SixDownMulti.I:Panel.I:Label14.ExplicitLeft">
+        <source>43</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label14.ExplicitTop" resname="I:SixDownMulti.I:Panel.I:Label14.ExplicitTop">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label21.Left" resname="I:SixDownMulti.I:Panel.I:Label21.Left">
+        <source>55</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label21.Top" resname="I:SixDownMulti.I:Panel.I:Label21.Top">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label21.Visible" resname="I:SixDownMulti.I:Panel.I:Label21.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label21.ExplicitLeft" resname="I:SixDownMulti.I:Panel.I:Label21.ExplicitLeft">
+        <source>55</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label21.ExplicitTop" resname="I:SixDownMulti.I:Panel.I:Label21.ExplicitTop">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label28.Left" resname="I:SixDownMulti.I:Panel.I:Label28.Left">
+        <source>67</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label28.Top" resname="I:SixDownMulti.I:Panel.I:Label28.Top">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label28.Visible" resname="I:SixDownMulti.I:Panel.I:Label28.Visible">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label28.ExplicitLeft" resname="I:SixDownMulti.I:Panel.I:Label28.ExplicitLeft">
+        <source>67</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label28.ExplicitTop" resname="I:SixDownMulti.I:Panel.I:Label28.ExplicitTop">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label50.Left" resname="I:SixDownMulti.I:Panel.I:Label50.Left">
+        <source>174</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label50.ExplicitLeft" resname="I:SixDownMulti.I:Panel.I:Label50.ExplicitLeft">
+        <source>174</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label144.Left" resname="I:SixDownMulti.I:Panel.I:Label144.Left">
+        <source>186</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369097</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label144.ExplicitLeft" resname="I:SixDownMulti.I:Panel.I:Label144.ExplicitLeft">
+        <source>186</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369213</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label430.Left" resname="I:SixDownMulti.I:Panel.I:Label430.Left">
+        <source>198</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369213</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label430.ExplicitLeft" resname="I:SixDownMulti.I:Panel.I:Label430.ExplicitLeft">
+        <source>198</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369213</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label1200.Left" resname="I:SixDownMulti.I:Panel.I:Label1200.Left">
+        <source>210</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369213</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label1200.ExplicitLeft" resname="I:SixDownMulti.I:Panel.I:Label1200.ExplicitLeft">
+        <source>210</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369213</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label2400.Left" resname="I:SixDownMulti.I:Panel.I:Label2400.Left">
+        <source>222</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369213</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label2400.ExplicitLeft" resname="I:SixDownMulti.I:Panel.I:Label2400.ExplicitLeft">
+        <source>222</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369213</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label5600.Left" resname="I:SixDownMulti.I:Panel.I:Label5600.Left">
+        <source>234</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369213</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label5600.ExplicitLeft" resname="I:SixDownMulti.I:Panel.I:Label5600.ExplicitLeft">
+        <source>234</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369213</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label10g.Left" resname="I:SixDownMulti.I:Panel.I:Label10g.Left">
+        <source>246</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369213</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:SixDownMulti.I:Panel.I:Label10g.ExplicitLeft" resname="I:SixDownMulti.I:Panel.I:Label10g.ExplicitLeft">
+        <source>246</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4403369213</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TRotateLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

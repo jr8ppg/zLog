@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\github\zLog_v2850\zlog\UStartTimeDialog.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\github\zLog_v2850\zlog\UStartTimeDialog.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">45057.9196064815</prop>
+        <prop prop-type="OrigDateTime">45057.9020833333</prop>
+        <prop prop-type="XlatDateTime">45053.9011111111</prop>
+        <prop prop-type="Translated">3</prop>
+        <prop prop-type="UnTranslated">84</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="O:StartTimeDialog.Left" resname="O:StartTimeDialog.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367593</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.Top" resname="O:StartTimeDialog.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367593</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.BorderStyle" resname="O:StartTimeDialog.BorderStyle">
+        <source>bsDialog</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.Caption" resname="O:StartTimeDialog.Caption">
+        <source>'Start time'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.ClientHeight" resname="O:StartTimeDialog.ClientHeight">
+        <source>115</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.ClientWidth" resname="O:StartTimeDialog.ClientWidth">
+        <source>284</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.Color" resname="O:StartTimeDialog.Color">
+        <source>clBtnFace</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.Font.Charset" resname="O:StartTimeDialog.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.Font.Color" resname="O:StartTimeDialog.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.Font.Height" resname="O:StartTimeDialog.Font.Height">
+        <source>-12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.Font.Name" resname="O:StartTimeDialog.Font.Name">
+        <source>'Arial'</source>
+        <target>'ＭＳ Ｐゴシック'</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">1</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.Font.Style" resname="O:StartTimeDialog.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.OldCreateOrder" resname="O:StartTimeDialog.OldCreateOrder">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.Position" resname="O:StartTimeDialog.Position">
+        <source>poOwnerFormCenter</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.OnCreate" resname="O:StartTimeDialog.OnCreate">
+        <source>FormCreate</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196248958</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.DesignSize[0]" resname="O:StartTimeDialog.DesignSize[0]">
+        <source>284</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.DesignSize[1]" resname="O:StartTimeDialog.DesignSize[1]">
+        <source>115</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.PixelsPerInch" resname="O:StartTimeDialog.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.TextHeight" resname="O:StartTimeDialog.TextHeight">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TStartTimeDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:Label1.Left" resname="O:StartTimeDialog.O:Label1.Left">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:Label1.Top" resname="O:StartTimeDialog.O:Label1.Top">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:Label1.Width" resname="O:StartTimeDialog.O:Label1.Width">
+        <source>236</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:Label1.Height" resname="O:StartTimeDialog.O:Label1.Height">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367708</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:Label1.Caption" resname="O:StartTimeDialog.O:Label1.Caption">
+        <source>'Enter the contest start date and time'</source>
+        <target>'コンテスト開始日時を入力して下さい'</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">1</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:Label1.Font.Charset" resname="O:StartTimeDialog.O:Label1.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:Label1.Font.Color" resname="O:StartTimeDialog.O:Label1.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:Label1.Font.Height" resname="O:StartTimeDialog.O:Label1.Font.Height">
+        <source>-15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:Label1.Font.Name" resname="O:StartTimeDialog.O:Label1.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:Label1.Font.Style" resname="O:StartTimeDialog.O:Label1.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:Label1.ParentFont" resname="O:StartTimeDialog.O:Label1.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:TimePicker1.Left" resname="O:StartTimeDialog.O:TimePicker1.Left">
+        <source>143</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TTimePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:TimePicker1.Top" resname="O:StartTimeDialog.O:TimePicker1.Top">
+        <source>35</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TTimePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:TimePicker1.Width" resname="O:StartTimeDialog.O:TimePicker1.Width">
+        <source>74</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TTimePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:TimePicker1.Height" resname="O:StartTimeDialog.O:TimePicker1.Height">
+        <source>33</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TTimePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:TimePicker1.Font.Charset" resname="O:StartTimeDialog.O:TimePicker1.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TTimePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:TimePicker1.Font.Color" resname="O:StartTimeDialog.O:TimePicker1.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TTimePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:TimePicker1.Font.Height" resname="O:StartTimeDialog.O:TimePicker1.Font.Height">
+        <source>-19</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TTimePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:TimePicker1.Font.Name" resname="O:StartTimeDialog.O:TimePicker1.Font.Name">
+        <source>'Consolas'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TTimePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:TimePicker1.Font.Style" resname="O:StartTimeDialog.O:TimePicker1.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TTimePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:TimePicker1.TabOrder" resname="O:StartTimeDialog.O:TimePicker1.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TTimePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:TimePicker1.Time" resname="O:StartTimeDialog.O:TimePicker1.Time">
+        <source>45053.894611794</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TTimePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:TimePicker1.TimeFormat" resname="O:StartTimeDialog.O:TimePicker1.TimeFormat">
+        <source>'hhmm'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TTimePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:DatePicker1.Left" resname="O:StartTimeDialog.O:DatePicker1.Left">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441367824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TDatePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:DatePicker1.Top" resname="O:StartTimeDialog.O:DatePicker1.Top">
+        <source>35</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TDatePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:DatePicker1.Width" resname="O:StartTimeDialog.O:DatePicker1.Width">
+        <source>129</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TDatePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:DatePicker1.Height" resname="O:StartTimeDialog.O:DatePicker1.Height">
+        <source>33</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TDatePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:DatePicker1.Date" resname="O:StartTimeDialog.O:DatePicker1.Date">
+        <source>45053</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TDatePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:DatePicker1.DateFormat" resname="O:StartTimeDialog.O:DatePicker1.DateFormat">
+        <source>'yyyy/MM/dd'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TDatePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:DatePicker1.Font.Charset" resname="O:StartTimeDialog.O:DatePicker1.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TDatePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:DatePicker1.Font.Color" resname="O:StartTimeDialog.O:DatePicker1.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TDatePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:DatePicker1.Font.Height" resname="O:StartTimeDialog.O:DatePicker1.Font.Height">
+        <source>-19</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TDatePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:DatePicker1.Font.Name" resname="O:StartTimeDialog.O:DatePicker1.Font.Name">
+        <source>'Consolas'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TDatePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:DatePicker1.Font.Style" resname="O:StartTimeDialog.O:DatePicker1.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TDatePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:DatePicker1.TabOrder" resname="O:StartTimeDialog.O:DatePicker1.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TDatePicker</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:OKBtn.Left" resname="O:StartTimeDialog.O:OKBtn.Left">
+        <source>128</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:OKBtn.Top" resname="O:StartTimeDialog.O:OKBtn.Top">
+        <source>86</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:OKBtn.Width" resname="O:StartTimeDialog.O:OKBtn.Width">
+        <source>75</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:OKBtn.Height" resname="O:StartTimeDialog.O:OKBtn.Height">
+        <source>25</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:OKBtn.Anchors" resname="O:StartTimeDialog.O:OKBtn.Anchors">
+        <source>[akRight, akBottom]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:OKBtn.Caption" resname="O:StartTimeDialog.O:OKBtn.Caption">
+        <source>'OK'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:OKBtn.Default" resname="O:StartTimeDialog.O:OKBtn.Default">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:OKBtn.ModalResult" resname="O:StartTimeDialog.O:OKBtn.ModalResult">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:OKBtn.TabOrder" resname="O:StartTimeDialog.O:OKBtn.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.944136794</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:OKBtn.ExplicitLeft" resname="O:StartTimeDialog.O:OKBtn.ExplicitLeft">
+        <source>126</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441368056</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:CancelBtn.Left" resname="O:StartTimeDialog.O:CancelBtn.Left">
+        <source>204</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441368056</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:CancelBtn.Top" resname="O:StartTimeDialog.O:CancelBtn.Top">
+        <source>86</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441368056</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:CancelBtn.Width" resname="O:StartTimeDialog.O:CancelBtn.Width">
+        <source>75</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441368056</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:CancelBtn.Height" resname="O:StartTimeDialog.O:CancelBtn.Height">
+        <source>25</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441368056</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:CancelBtn.Anchors" resname="O:StartTimeDialog.O:CancelBtn.Anchors">
+        <source>[akRight, akBottom]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441368056</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:CancelBtn.Cancel" resname="O:StartTimeDialog.O:CancelBtn.Cancel">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441368056</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:CancelBtn.Caption" resname="O:StartTimeDialog.O:CancelBtn.Caption">
+        <source>'Cancel'</source>
+        <target>'キャンセル'</target>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441368056</prop><prop prop-type="Status">1</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:CancelBtn.ModalResult" resname="O:StartTimeDialog.O:CancelBtn.ModalResult">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441368056</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:CancelBtn.TabOrder" resname="O:StartTimeDialog.O:CancelBtn.TabOrder">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441368056</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:CancelBtn.ExplicitLeft" resname="O:StartTimeDialog.O:CancelBtn.ExplicitLeft">
+        <source>202</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45053.9441368056</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:panelTimeZone.Left" resname="O:StartTimeDialog.O:panelTimeZone.Left">
+        <source>223</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196249074</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:panelTimeZone.Top" resname="O:StartTimeDialog.O:panelTimeZone.Top">
+        <source>35</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196249074</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:panelTimeZone.Width" resname="O:StartTimeDialog.O:panelTimeZone.Width">
+        <source>50</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196249074</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:panelTimeZone.Height" resname="O:StartTimeDialog.O:panelTimeZone.Height">
+        <source>33</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196249074</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:panelTimeZone.BevelOuter" resname="O:StartTimeDialog.O:panelTimeZone.BevelOuter">
+        <source>bvLowered</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196249074</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:panelTimeZone.Caption" resname="O:StartTimeDialog.O:panelTimeZone.Caption">
+        <source>'JST'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196249074</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:panelTimeZone.Font.Charset" resname="O:StartTimeDialog.O:panelTimeZone.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196249074</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:panelTimeZone.Font.Color" resname="O:StartTimeDialog.O:panelTimeZone.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196249074</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:panelTimeZone.Font.Height" resname="O:StartTimeDialog.O:panelTimeZone.Font.Height">
+        <source>-15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196249074</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:panelTimeZone.Font.Name" resname="O:StartTimeDialog.O:panelTimeZone.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196249074</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:panelTimeZone.Font.Style" resname="O:StartTimeDialog.O:panelTimeZone.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196249074</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:panelTimeZone.ParentFont" resname="O:StartTimeDialog.O:panelTimeZone.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196249074</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:StartTimeDialog.O:panelTimeZone.TabOrder" resname="O:StartTimeDialog.O:panelTimeZone.TabOrder">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45057.9196249074</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\github\zLog_v2850\zlog\UVoiceForm.dfm" source-language="ja-JP" target-language="en-US" datatype="delphiform" tool="ETM v10.0" ts="D:\github\zLog_v2850\zlog\UVoiceForm.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">45050.4406018518</prop>
+        <prop prop-type="OrigDateTime">45042.8616435185</prop>
+        <prop prop-type="XlatDateTime">45042.8616435185</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">20</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="O:VoiceForm.Left" resname="O:VoiceForm.Left">
+        <source>675</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.Top" resname="O:VoiceForm.Top">
+        <source>184</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.Caption" resname="O:VoiceForm.Caption">
+        <source>'Voice Control'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.ClientHeight" resname="O:VoiceForm.ClientHeight">
+        <source>28</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.ClientWidth" resname="O:VoiceForm.ClientWidth">
+        <source>264</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.Color" resname="O:VoiceForm.Color">
+        <source>clBtnFace</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.Font.Charset" resname="O:VoiceForm.Font.Charset">
+        <source>SHIFTJIS_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.Font.Color" resname="O:VoiceForm.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.Font.Height" resname="O:VoiceForm.Font.Height">
+        <source>-12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.Font.Name" resname="O:VoiceForm.Font.Name">
+        <source>'ＭＳ Ｐゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.Font.Style" resname="O:VoiceForm.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.OldCreateOrder" resname="O:VoiceForm.OldCreateOrder">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.OnCreate" resname="O:VoiceForm.OnCreate">
+        <source>FormCreate</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.OnDestroy" resname="O:VoiceForm.OnDestroy">
+        <source>FormDestroy</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.PixelsPerInch" resname="O:VoiceForm.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.TextHeight" resname="O:VoiceForm.TextHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TVoiceForm</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.O:Timer2.Enabled" resname="O:VoiceForm.O:Timer2.Enabled">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.O:Timer2.Interval" resname="O:VoiceForm.O:Timer2.Interval">
+        <source>50</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.O:Timer2.OnTimer" resname="O:VoiceForm.O:Timer2.OnTimer">
+        <source>Timer2Timer</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188426</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:VoiceForm.O:Timer2.Left" resname="O:VoiceForm.O:Timer2.Left">
+        <source>196</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406188542</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

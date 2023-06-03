@@ -1,0 +1,1073 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\github\zLog_v2850\zlog\UWinKeyerTester.dfm" source-language="ja-JP" target-language="en-US" datatype="delphiform" tool="ETM v10.0" ts="D:\github\zLog_v2850\zlog\UWinKeyerTester.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">45080.0143518519</prop>
+        <prop prop-type="OrigDateTime">45068.9685416667</prop>
+        <prop prop-type="XlatDateTime">45042.8616435185</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">211</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="O:formWinkeyerTester.Left" resname="O:formWinkeyerTester.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190741</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.Top" resname="O:formWinkeyerTester.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190741</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.BorderStyle" resname="O:formWinkeyerTester.BorderStyle">
+        <source>bsSizeToolWin</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190741</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.Caption" resname="O:formWinkeyerTester.Caption">
+        <source>'KeyerTester'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190741</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.ClientHeight" resname="O:formWinkeyerTester.ClientHeight">
+        <source>185</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.ClientWidth" resname="O:formWinkeyerTester.ClientWidth">
+        <source>434</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.Color" resname="O:formWinkeyerTester.Color">
+        <source>clBtnFace</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.Font.Charset" resname="O:formWinkeyerTester.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.Font.Color" resname="O:formWinkeyerTester.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.Font.Height" resname="O:formWinkeyerTester.Font.Height">
+        <source>-12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.Font.Name" resname="O:formWinkeyerTester.Font.Name">
+        <source>'ＭＳ Ｐゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.Font.Style" resname="O:formWinkeyerTester.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.OldCreateOrder" resname="O:formWinkeyerTester.OldCreateOrder">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.OnCreate" resname="O:formWinkeyerTester.OnCreate">
+        <source>FormCreate</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.OnShow" resname="O:formWinkeyerTester.OnShow">
+        <source>FormShow</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.PixelsPerInch" resname="O:formWinkeyerTester.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.TextHeight" resname="O:formWinkeyerTester.TextHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TformWinkeyerTester</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.Left" resname="O:formWinkeyerTester.O:groupPinCfg.Left">
+        <source>99</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.Top" resname="O:formWinkeyerTester.O:groupPinCfg.Top">
+        <source>63</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.Width" resname="O:formWinkeyerTester.O:groupPinCfg.Width">
+        <source>325</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.Height" resname="O:formWinkeyerTester.O:groupPinCfg.Height">
+        <source>49</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190972</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.Caption" resname="O:formWinkeyerTester.O:groupPinCfg.Caption">
+        <source>'PinCfg'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190972</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.TabOrder" resname="O:formWinkeyerTester.O:groupPinCfg.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190972</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Tag" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Tag">
+        <source>7</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190972</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Left" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Left">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190972</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Top" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190972</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Width" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Width">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190972</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Height" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Height">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190972</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Hint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Hint">
+        <source>'Ult Priority 1'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190972</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.AllowAllUp" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.AllowAllUp">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190972</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.GroupIndex" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.GroupIndex">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190972</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Caption" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.Caption">
+        <source>'b7'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190972</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.ParentShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.ParentShowHint">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406190972</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.ShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.ShowHint">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.OnClick" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB7.OnClick">
+        <source>buttonPinCfgBitClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Tag" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Tag">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Left" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Left">
+        <source>36</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Top" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Width" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Width">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Height" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Height">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Hint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Hint">
+        <source>'Ult Priority 0'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.AllowAllUp" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.AllowAllUp">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.GroupIndex" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.GroupIndex">
+        <source>7</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Caption" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.Caption">
+        <source>'b6'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.ParentShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.ParentShowHint">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.ShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.ShowHint">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.OnClick" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB6.OnClick">
+        <source>buttonPinCfgBitClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Tag" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Tag">
+        <source>5</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Left" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Left">
+        <source>60</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Top" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Width" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Width">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191088</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Height" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Height">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Hint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Hint">
+        <source>'Hang Time 1'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.AllowAllUp" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.AllowAllUp">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.GroupIndex" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.GroupIndex">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Caption" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.Caption">
+        <source>'b5'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.ParentShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.ParentShowHint">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.ShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.ShowHint">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.OnClick" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB5.OnClick">
+        <source>buttonPinCfgBitClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Tag" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Tag">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Left" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Left">
+        <source>84</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Top" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Width" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Width">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Height" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Height">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Hint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Hint">
+        <source>'Hang Time 0'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.AllowAllUp" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.AllowAllUp">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.GroupIndex" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.GroupIndex">
+        <source>5</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Caption" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.Caption">
+        <source>'b4'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.ParentShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.ParentShowHint">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.ShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.ShowHint">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.OnClick" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB4.OnClick">
+        <source>buttonPinCfgBitClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191204</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Tag" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Tag">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Left" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Left">
+        <source>108</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Top" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Width" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Width">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Height" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Height">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Hint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Hint">
+        <source>'KeyOut1 Enable'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.AllowAllUp" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.AllowAllUp">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.GroupIndex" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.GroupIndex">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Caption" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.Caption">
+        <source>'b3'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.ParentShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.ParentShowHint">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.ShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.ShowHint">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.OnClick" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB3.OnClick">
+        <source>buttonPinCfgBitClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Tag" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Tag">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Left" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Left">
+        <source>132</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Top" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Width" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Width">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Height" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Height">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Hint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Hint">
+        <source>'KeyOut2 Enable'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.AllowAllUp" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.AllowAllUp">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.GroupIndex" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.GroupIndex">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191319</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Caption" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.Caption">
+        <source>'b2'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.ParentShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.ParentShowHint">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.ShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.ShowHint">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.OnClick" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB2.OnClick">
+        <source>buttonPinCfgBitClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Tag" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Tag">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Left" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Left">
+        <source>156</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Top" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Width" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Width">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Height" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Height">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Hint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Hint">
+        <source>'Sidetone Enable'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.AllowAllUp" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.AllowAllUp">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.GroupIndex" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.GroupIndex">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Caption" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.Caption">
+        <source>'b1'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.ParentShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.ParentShowHint">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191435</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.ShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.ShowHint">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.OnClick" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB1.OnClick">
+        <source>buttonPinCfgBitClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.Left" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.Left">
+        <source>180</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.Top" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.Width" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.Width">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.Height" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.Height">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.Hint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.Hint">
+        <source>'PTT Enable'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.AllowAllUp" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.AllowAllUp">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.GroupIndex" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.GroupIndex">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.Caption" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.Caption">
+        <source>'b0'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.ParentShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.ParentShowHint">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.ShowHint" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.ShowHint">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.OnClick" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonPinCfgB0.OnClick">
+        <source>buttonPinCfgBitClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:Label1.Left" resname="O:formWinkeyerTester.O:groupPinCfg.O:Label1.Left">
+        <source>210</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:Label1.Top" resname="O:formWinkeyerTester.O:groupPinCfg.O:Label1.Top">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:Label1.Width" resname="O:formWinkeyerTester.O:groupPinCfg.O:Label1.Width">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">120</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:Label1.Height" resname="O:formWinkeyerTester.O:groupPinCfg.O:Label1.Height">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191551</prop><prop prop-type="Status">0</prop><prop prop-type="Order">121</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:Label1.Caption" resname="O:formWinkeyerTester.O:groupPinCfg.O:Label1.Caption">
+        <source>'→'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">122</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.Left" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.Left">
+        <source>275</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.Top" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.Top">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.Width" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.Width">
+        <source>33</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">125</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.Height" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.Height">
+        <source>25</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">126</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.Caption" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.Caption">
+        <source>'Set'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.TabOrder" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">128</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.OnClick" resname="O:formWinkeyerTester.O:groupPinCfg.O:buttonSetPinCfg.OnClick">
+        <source>buttonSetPinCfgClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">129</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.Left" resname="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.Left">
+        <source>228</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">130</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.Top" resname="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">131</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.Width" resname="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.Width">
+        <source>41</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.Height" resname="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.Height">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">133</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.BevelOuter" resname="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.BevelOuter">
+        <source>bvLowered</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.Caption" resname="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.Caption">
+        <source>'FF'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">135</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.TabOrder" resname="O:formWinkeyerTester.O:groupPinCfg.O:panelPinCfgParam.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191667</prop><prop prop-type="Status">0</prop><prop prop-type="Order">136</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.Left" resname="O:formWinkeyerTester.O:groupPtt.Left">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">137</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.Top" resname="O:formWinkeyerTester.O:groupPtt.Top">
+        <source>63</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">138</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.Width" resname="O:formWinkeyerTester.O:groupPtt.Width">
+        <source>85</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">139</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.Height" resname="O:formWinkeyerTester.O:groupPtt.Height">
+        <source>49</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">140</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.Caption" resname="O:formWinkeyerTester.O:groupPtt.Caption">
+        <source>'PTT'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">141</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.TabOrder" resname="O:formWinkeyerTester.O:groupPtt.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">142</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.Left" resname="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.Left">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">143</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.Top" resname="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">144</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.Width" resname="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.Width">
+        <source>69</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">145</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.Height" resname="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.Height">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">146</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.AllowAllUp" resname="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.AllowAllUp">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.GroupIndex" resname="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.GroupIndex">
+        <source>10</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">148</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.Caption" resname="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.Caption">
+        <source>'PTT'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">149</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.OnClick" resname="O:formWinkeyerTester.O:groupPtt.O:buttonPttCmd.OnClick">
+        <source>buttonPttCmdClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">150</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.Left" resname="O:formWinkeyerTester.O:groupMessage.Left">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">151</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.Top" resname="O:formWinkeyerTester.O:groupMessage.Top">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">152</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.Width" resname="O:formWinkeyerTester.O:groupMessage.Width">
+        <source>370</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191782</prop><prop prop-type="Status">0</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.Height" resname="O:formWinkeyerTester.O:groupMessage.Height">
+        <source>49</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">154</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.Caption" resname="O:formWinkeyerTester.O:groupMessage.Caption">
+        <source>'Message'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">155</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.TabOrder" resname="O:formWinkeyerTester.O:groupMessage.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">156</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.O:editMessage.Left" resname="O:formWinkeyerTester.O:groupMessage.O:editMessage.Left">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">157</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.O:editMessage.Top" resname="O:formWinkeyerTester.O:groupMessage.O:editMessage.Top">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">158</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.O:editMessage.Width" resname="O:formWinkeyerTester.O:groupMessage.O:editMessage.Width">
+        <source>314</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">159</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.O:editMessage.Height" resname="O:formWinkeyerTester.O:groupMessage.O:editMessage.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">160</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.O:editMessage.TabOrder" resname="O:formWinkeyerTester.O:groupMessage.O:editMessage.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.O:editMessage.Text" resname="O:formWinkeyerTester.O:groupMessage.O:editMessage.Text">
+        <source>'CQ TEST CQ TEST DE JR8PPG PSE K'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.Left" resname="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.Left">
+        <source>328</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.Top" resname="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.Top">
+        <source>17</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">164</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.Width" resname="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.Width">
+        <source>33</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">165</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.Height" resname="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.Height">
+        <source>25</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">166</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.Caption" resname="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.Caption">
+        <source>'Set'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">167</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.TabOrder" resname="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.OnClick" resname="O:formWinkeyerTester.O:groupMessage.O:buttonSendMessage.OnClick">
+        <source>buttonSendMessageClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4406191898</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.Left" resname="O:formWinkeyerTester.O:GroupBox1.Left">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.959495544</prop><prop prop-type="Status">0</prop><prop prop-type="Order">170</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.Top" resname="O:formWinkeyerTester.O:GroupBox1.Top">
+        <source>120</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.959495544</prop><prop prop-type="Status">0</prop><prop prop-type="Order">171</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.Width" resname="O:formWinkeyerTester.O:GroupBox1.Width">
+        <source>417</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.959495544</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.Height" resname="O:formWinkeyerTester.O:GroupBox1.Height">
+        <source>57</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.959495544</prop><prop prop-type="Status">0</prop><prop prop-type="Order">173</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.Caption" resname="O:formWinkeyerTester.O:GroupBox1.Caption">
+        <source>'USBIF4CW'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.959495544</prop><prop prop-type="Status">0</prop><prop prop-type="Order">174</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.TabOrder" resname="O:formWinkeyerTester.O:GroupBox1.TabOrder">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.Tag" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.Tag">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.Left" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.Left">
+        <source>87</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.Top" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.Width" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.Width">
+        <source>73</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.Height" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.Height">
+        <source>33</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.AllowAllUp" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.AllowAllUp">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.GroupIndex" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.GroupIndex">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.Caption" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.Caption">
+        <source>'P01(PTT)'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">183</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.OnClick" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP02.OnClick">
+        <source>buttonUsbif4cwP00Click</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.Tag" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.Tag">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">185</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.Left" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.Left">
+        <source>166</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">186</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.Top" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.Width" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.Width">
+        <source>73</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.Height" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.Height">
+        <source>33</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.AllowAllUp" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.AllowAllUp">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">190</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.GroupIndex" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.GroupIndex">
+        <source>22</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.Caption" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.Caption">
+        <source>'P02(RIG)'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">192</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.OnClick" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP03.OnClick">
+        <source>buttonUsbif4cwP00Click</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">193</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.Tag" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.Tag">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">194</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.Left" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.Left">
+        <source>245</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">195</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.Top" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">196</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.Width" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.Width">
+        <source>73</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.Height" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.Height">
+        <source>33</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">198</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.AllowAllUp" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.AllowAllUp">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">199</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.GroupIndex" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.GroupIndex">
+        <source>23</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">200</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.Caption" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.Caption">
+        <source>'P03(MIC)'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">201</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.OnClick" resname="O:formWinkeyerTester.O:GroupBox1.O:buttonUsbif4cwP04.OnClick">
+        <source>buttonUsbif4cwP00Click</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">202</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.Left" resname="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.Left">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">203</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.Top" resname="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">204</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.Width" resname="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.Width">
+        <source>73</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">205</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.Height" resname="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.Height">
+        <source>33</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">206</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.AllowAllUp" resname="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.AllowAllUp">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">207</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.GroupIndex" resname="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.GroupIndex">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">208</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.Caption" resname="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.Caption">
+        <source>'P00(Key)'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">209</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.OnClick" resname="O:formWinkeyerTester.O:GroupBox1.O:SpeedButton1.OnClick">
+        <source>buttonUsbif4cwP00Click</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45068.9594955671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">210</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

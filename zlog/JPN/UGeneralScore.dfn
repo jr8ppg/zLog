@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\github\zLog_v2850\zlog\UGeneralScore.dfm" source-language="ja-JP" target-language="ja-JP" datatype="delphiform" tool="ETM v10.0" ts="D:\github\zLog_v2850\zlog\UGeneralScore.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">45050.4401851852</prop>
+        <prop prop-type="OrigDateTime">45042.8616435185</prop>
+        <prop prop-type="XlatDateTime">45042.8616435185</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">55</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="I:GeneralScore.Left" resname="I:GeneralScore.Left">
+        <source>133</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854514</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TGeneralScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.Top" resname="I:GeneralScore.Top">
+        <source>136</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854514</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TGeneralScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.Caption" resname="I:GeneralScore.Caption">
+        <source>'Score'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TGeneralScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.ClientWidth" resname="I:GeneralScore.ClientWidth">
+        <source>200</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TGeneralScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.OnShow" resname="I:GeneralScore.OnShow">
+        <source>FormShow</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TGeneralScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.ExplicitWidth" resname="I:GeneralScore.ExplicitWidth">
+        <source>216</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TGeneralScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.PixelsPerInch" resname="I:GeneralScore.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TGeneralScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.TextHeight" resname="I:GeneralScore.TextHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TGeneralScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.I:Panel1.Width" resname="I:GeneralScore.I:Panel1.Width">
+        <source>200</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.I:Panel1.ExplicitWidth" resname="I:GeneralScore.I:Panel1.ExplicitWidth">
+        <source>200</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.I:Panel1.I:CWButton.Left" resname="I:GeneralScore.I:Panel1.I:CWButton.Left">
+        <source>160</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.I:Panel1.I:CWButton.ExplicitLeft" resname="I:GeneralScore.I:Panel1.I:CWButton.ExplicitLeft">
+        <source>160</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.I:Panel1.I:StayOnTop.Caption" resname="I:GeneralScore.I:Panel1.I:StayOnTop.Caption">
+        <source>'Stay on Top'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.Left" resname="I:GeneralScore.O:Grid.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.Top" resname="I:GeneralScore.O:Grid.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.Width" resname="I:GeneralScore.O:Grid.Width">
+        <source>200</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.Height" resname="I:GeneralScore.O:Grid.Height">
+        <source>202</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.Align" resname="I:GeneralScore.O:Grid.Align">
+        <source>alClient</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.ColCount" resname="I:GeneralScore.O:Grid.ColCount">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.DefaultDrawing" resname="I:GeneralScore.O:Grid.DefaultDrawing">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.FixedCols" resname="I:GeneralScore.O:Grid.FixedCols">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowCount" resname="I:GeneralScore.O:Grid.RowCount">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.FixedRows" resname="I:GeneralScore.O:Grid.FixedRows">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.440185463</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.Font.Charset" resname="I:GeneralScore.O:Grid.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.Font.Color" resname="I:GeneralScore.O:Grid.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.Font.Height" resname="I:GeneralScore.O:Grid.Font.Height">
+        <source>-15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.Font.Name" resname="I:GeneralScore.O:Grid.Font.Name">
+        <source>'ＭＳ ゴシック'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.Font.Style" resname="I:GeneralScore.O:Grid.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.Options" resname="I:GeneralScore.O:Grid.Options">
+        <source>[goHorzLine]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.ParentFont" resname="I:GeneralScore.O:Grid.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.PopupMenu" resname="I:GeneralScore.O:Grid.PopupMenu">
+        <source>popupExtraInfo</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.ScrollBars" resname="I:GeneralScore.O:Grid.ScrollBars">
+        <source>ssNone</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.TabOrder" resname="I:GeneralScore.O:Grid.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.OnDrawCell" resname="I:GeneralScore.O:Grid.OnDrawCell">
+        <source>GridDrawCell</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.ColWidths[0]" resname="I:GeneralScore.O:Grid.ColWidths[0]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.ColWidths[1]" resname="I:GeneralScore.O:Grid.ColWidths[1]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.ColWidths[2]" resname="I:GeneralScore.O:Grid.ColWidths[2]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.ColWidths[3]" resname="I:GeneralScore.O:Grid.ColWidths[3]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.ColWidths[4]" resname="I:GeneralScore.O:Grid.ColWidths[4]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.ColWidths[5]" resname="I:GeneralScore.O:Grid.ColWidths[5]">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[0]" resname="I:GeneralScore.O:Grid.RowHeights[0]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[1]" resname="I:GeneralScore.O:Grid.RowHeights[1]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[2]" resname="I:GeneralScore.O:Grid.RowHeights[2]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854745</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[3]" resname="I:GeneralScore.O:Grid.RowHeights[3]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[4]" resname="I:GeneralScore.O:Grid.RowHeights[4]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[5]" resname="I:GeneralScore.O:Grid.RowHeights[5]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[6]" resname="I:GeneralScore.O:Grid.RowHeights[6]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[7]" resname="I:GeneralScore.O:Grid.RowHeights[7]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[8]" resname="I:GeneralScore.O:Grid.RowHeights[8]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[9]" resname="I:GeneralScore.O:Grid.RowHeights[9]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[10]" resname="I:GeneralScore.O:Grid.RowHeights[10]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[11]" resname="I:GeneralScore.O:Grid.RowHeights[11]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[12]" resname="I:GeneralScore.O:Grid.RowHeights[12]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[13]" resname="I:GeneralScore.O:Grid.RowHeights[13]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:GeneralScore.O:Grid.RowHeights[14]" resname="I:GeneralScore.O:Grid.RowHeights[14]">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4401854861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TStringGrid [1]</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

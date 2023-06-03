@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\github\zLog_v2850\zlog\UJIDXScore.dfm" source-language="ja-JP" target-language="en-US" datatype="delphiform" tool="ETM v10.0" ts="D:\github\zLog_v2850\zlog\UJIDXScore.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">45050.440462963</prop>
+        <prop prop-type="OrigDateTime">45042.8616435185</prop>
+        <prop prop-type="XlatDateTime">45042.8616435185</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">5</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="I:JIDXScore.Left" resname="I:JIDXScore.Left">
+        <source>62</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4404737153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TJIDXScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore.Top" resname="I:JIDXScore.Top">
+        <source>278</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4404737153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TJIDXScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore.Caption" resname="I:JIDXScore.Caption">
+        <source>'JIDXScore'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4404737153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TJIDXScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore.PixelsPerInch" resname="I:JIDXScore.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4404737153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TJIDXScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="I:JIDXScore.TextHeight" resname="I:JIDXScore.TextHeight">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45050.4404737153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TJIDXScore</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
