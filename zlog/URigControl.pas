@@ -926,8 +926,11 @@ begin
    rigno := GetCurrentRig();
    ImplementOptions(rigno);
 
-   // RIG1/2óºï˚Ç∆Ç‡ê›íËñ≥ÇµÇ»ÇÁOFFÇ…Ç∑ÇÈ
-   if (FRigs[1] = nil) and (FRigs[2] = nil) then begin
+   // RIG1/2óºï˚,CW1/2/3ëSÇƒê›íËñ≥ÇµÇ»ÇÁOFFÇ…Ç∑ÇÈ
+   if (FRigs[1] = nil) and (FRigs[2] = nil) and
+      (dmZLogKeyer.KeyingPort[0] = tkpNone) and
+      (dmZLogKeyer.KeyingPort[1] = tkpNone) and
+      (dmZLogKeyer.KeyingPort[2] = tkpNone) then begin
       ForcePowerOff();
       Exit;
    end;
