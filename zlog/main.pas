@@ -1052,7 +1052,7 @@ type
     procedure StopCqRepeatTimer();
     function Is2bsiq(): Boolean;
     procedure LogButtonProc(nID: Integer; Q: TQSO);
-    function InputStartTime(): TDateTime;
+    procedure InputStartTime();
     procedure EnableShiftKeyAction(fEnable: Boolean);
   public
     EditScreen : TBasicEdit;
@@ -6048,7 +6048,8 @@ end;
 // Correct start time
 procedure TMainForm.menuCorrectStartTimeClick(Sender: TObject);
 begin
-   Log.StartTime := InputStartTime();
+   InputStartTime();
+   Log.Period := MyContest.Period;
 end;
 
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
@@ -6767,8 +6768,7 @@ begin
 
       // 開始時刻
       if (MyContest.UseContestPeriod = True) and (Log.StartTime = 0) then begin
-         dt := InputStartTime();
-         Log.StartTime := dt;
+         InputStartTime();
       end;
 
       // コンテスト期間
@@ -11708,7 +11708,7 @@ begin
    StatusLine.Panels[2].Text := strText;
 end;
 
-function TMainForm.InputStartTime(): TDateTime;
+procedure TMainForm.InputStartTime();
 var
    dlg: TStartTimeDialog;
    dt: TDateTime;
@@ -11718,7 +11718,13 @@ begin
    try
       // 開始時間が未設定なら現在日時よりそれっぽい開始時間を設定する
       if Log.StartTime = 0 then begin
-         dt := Now;
+         if MyContest.UseUTC = True then begin
+            dt := GetUTC();
+         end
+         else begin
+            dt := Now;
+         end;
+
          if MyContest.StartTime = 0 then begin
             dt := IncDay(dt, 1);
          end;
@@ -11740,11 +11746,14 @@ begin
       dlg.UseUtc := MyContest.UseUTC;
 
       if dlg.ShowModal() <> mrOK then begin
-         Result := dlg.BaseTime;
          Exit;
       end;
 
-      Result := dlg.BaseTime;
+      Log.StartTime := dlg.BaseTime;
+      Log.Saved := False;
+      if (CurrentFileName <> '') then begin
+         Log.SaveToFile(CurrentFileName);
+      end;
    finally
       dlg.Release();
    end;

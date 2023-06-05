@@ -23,7 +23,7 @@ procedure zLogSetSendText(nID: Integer; S, C: string);
 implementation
 
 uses
-  Main, UMessageManager;
+  Main, UMessageManager, UzLogContest;
 
 function LastCallsign : string;
 var txnr, i : integer;
@@ -96,7 +96,13 @@ begin
    temp := StringReplace(temp, '$Q', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$q', S, [rfReplaceAll]);
 
-   S := dmZLogGlobal.Settings._prov;
+   if ((MyContest is TSixDownContest) or (MyContest is TFDContest)) and
+      (aQSO.Band >= b2400) then begin
+      S := MyContest.QTHString(aQSO);
+   end
+   else begin
+      S := dmZLogGlobal.Settings._prov;
+   end;
    temp := StringReplace(temp, '$V', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$v', S, [rfReplaceAll]);
 
@@ -208,7 +214,15 @@ begin
    temp := StringReplace(temp, '$Z', dmZLogGlobal.Settings._cqzone, [rfReplaceAll]);
    temp := StringReplace(temp, '$I', dmZLogGlobal.Settings._iaruzone, [rfReplaceAll]);
    temp := StringReplace(temp, '$Q', MyContest.QTHString(aQSO), [rfReplaceAll]);
-   temp := StringReplace(temp, '$V', dmZLogGlobal.Settings._prov, [rfReplaceAll]);
+
+   if ((MyContest is TSixDownContest) or (MyContest is TFDContest)) and
+      (aQSO.Band >= b2400) then begin
+      temp := StringReplace(temp, '$V', MyContest.QTHString(aQSO), [rfReplaceAll]);
+   end
+   else begin
+      temp := StringReplace(temp, '$V', dmZLogGlobal.Settings._prov, [rfReplaceAll]);
+   end;
+
    temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
 
    if dmZLogGlobal.Settings.CW._not_send_leading_zeros = False then begin
@@ -230,8 +244,6 @@ begin
 end;
 
 procedure zLogSendStr(nID: Integer; S: string; C: string);
-var
-   SS: string;
 begin
    zLogSetSendText(nID, S, C);
 

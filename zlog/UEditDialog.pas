@@ -318,6 +318,7 @@ end;
 procedure TEditDialog.OKBtnClick(Sender: TObject);
 var
    i, j: integer;
+   fInvalid: Boolean;
 begin
    // QSO Data
 
@@ -335,7 +336,10 @@ begin
 
    // コンテスト開始前かチェック
    if MyContest.UseContestPeriod = True then begin
-      checkInvalid.Checked := Log.IsOutOfPeriod(workQSO);
+      fInvalid := Log.IsOutOfPeriod(workQSO);
+      if fInvalid = True then begin
+         checkInvalid.Checked := True;
+      end;
    end;
 
    // Call
