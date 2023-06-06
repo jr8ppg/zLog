@@ -228,6 +228,7 @@ end;
 
 procedure zLogSendStr(nID: Integer; S: string);
 begin
+   dmZLogKeyer.ResetSpeed();
    if dmZLogKeyer.UseWinKeyer = True then begin
 
       if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
