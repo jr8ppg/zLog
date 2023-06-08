@@ -1244,7 +1244,7 @@ begin
       // Quick Memo
       Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', '');
       Settings.FQuickMemoText[2] := ini.ReadString('QuickMemo', '#2', '');
-      Settings.FQuickMemoText[3] := ini.ReadString('QuickMemo', '#3', 'NR?');
+      Settings.FQuickMemoText[3] := ini.ReadString('QuickMemo', '#3', '');
       Settings.FQuickMemoText[4] := ini.ReadString('QuickMemo', '#4', '');
       Settings.FQuickMemoText[5] := ini.ReadString('QuickMemo', '#5', '');
 
