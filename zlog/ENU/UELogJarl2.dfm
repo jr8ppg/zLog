@@ -2,7 +2,7 @@ object formELogJarl2: TformELogJarl2
   Left = 103
   Top = 10
   BorderStyle = bsDialog
-  Caption = 'E-Log (JARL 2.0)'
+  Caption = 'E-Log (JARL 2.1)'
   ClientHeight = 651
   ClientWidth = 516
   Color = clBtnFace
@@ -13,6 +13,7 @@ object formELogJarl2: TformELogJarl2
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnClick = checkBandClick
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 12
@@ -292,6 +293,7 @@ object formELogJarl2: TformELogJarl2
     ParentFont = False
     TabOrder = 1
     Text = #12467#12531#12486#12473#12488
+    OnExit = edCategoryCodeExit
   end
   object edFDCoefficient: TEdit
     Left = 163
@@ -621,6 +623,645 @@ object formELogJarl2: TformELogJarl2
       Caption = #20027#20652#32773
       TabOrder = 2
       OnClick = radioOrganizerOtherClick
+    end
+  end
+  object groupScoreAdjust: TGroupBox
+    Left = 504
+    Top = 8
+    Width = 281
+    Height = 454
+    Caption = #12473#12467#12450#35519#25972
+    TabOrder = 21
+    object Label22: TLabel
+      Left = 16
+      Top = 397
+      Width = 48
+      Height = 12
+      Caption = #23616#31278#20418#25968
+    end
+    object labelTotalScore: TLabel
+      Left = 16
+      Top = 423
+      Width = 58
+      Height = 12
+      Caption = 'Total score'
+    end
+    object Label19: TLabel
+      Left = 16
+      Top = 369
+      Width = 49
+      Height = 12
+      Caption = 'Sub Total'
+    end
+    object Label20: TLabel
+      Left = 118
+      Top = 14
+      Width = 29
+      Height = 12
+      Caption = 'QSOs'
+    end
+    object Label25: TLabel
+      Left = 164
+      Top = 14
+      Width = 31
+      Height = 12
+      Caption = 'Multis'
+    end
+    object Label26: TLabel
+      Left = 219
+      Top = 14
+      Width = 32
+      Height = 12
+      Caption = 'Points'
+    end
+    object checkBand00: TCheckBox
+      Left = 16
+      Top = 30
+      Width = 81
+      Height = 17
+      Caption = '1.9MHz'
+      Checked = True
+      State = cbChecked
+      TabOrder = 0
+      OnClick = checkBandClick
+    end
+    object editQso00: TEdit
+      Left = 112
+      Top = 28
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 1
+    end
+    object editMulti00: TEdit
+      Left = 159
+      Top = 28
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 2
+    end
+    object editPoints00: TEdit
+      Left = 206
+      Top = 28
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 3
+    end
+    object checkBand01: TCheckBox
+      Tag = 1
+      Left = 16
+      Top = 56
+      Width = 81
+      Height = 17
+      Caption = '3.5MHz'
+      Checked = True
+      State = cbChecked
+      TabOrder = 4
+      OnClick = checkBandClick
+    end
+    object editQso01: TEdit
+      Tag = 1
+      Left = 112
+      Top = 54
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 5
+    end
+    object editMulti01: TEdit
+      Tag = 1
+      Left = 159
+      Top = 54
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 6
+    end
+    object editPoints01: TEdit
+      Tag = 1
+      Left = 206
+      Top = 54
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 7
+    end
+    object checkBand02: TCheckBox
+      Tag = 2
+      Left = 16
+      Top = 82
+      Width = 81
+      Height = 17
+      Caption = '7MHz'
+      Checked = True
+      State = cbChecked
+      TabOrder = 8
+      OnClick = checkBandClick
+    end
+    object editQso02: TEdit
+      Tag = 2
+      Left = 112
+      Top = 80
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 9
+    end
+    object editMulti02: TEdit
+      Tag = 2
+      Left = 159
+      Top = 80
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 10
+    end
+    object editPoints02: TEdit
+      Tag = 2
+      Left = 206
+      Top = 80
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 11
+    end
+    object checkBand04: TCheckBox
+      Tag = 4
+      Left = 16
+      Top = 108
+      Width = 81
+      Height = 17
+      Caption = '14MHz'
+      Checked = True
+      State = cbChecked
+      TabOrder = 12
+      OnClick = checkBandClick
+    end
+    object editQso04: TEdit
+      Tag = 4
+      Left = 112
+      Top = 106
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 13
+    end
+    object editMulti04: TEdit
+      Tag = 4
+      Left = 159
+      Top = 106
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 14
+    end
+    object editPoints04: TEdit
+      Tag = 4
+      Left = 206
+      Top = 106
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 15
+    end
+    object checkBand06: TCheckBox
+      Tag = 6
+      Left = 16
+      Top = 134
+      Width = 81
+      Height = 17
+      Caption = '21MHz'
+      Checked = True
+      State = cbChecked
+      TabOrder = 16
+      OnClick = checkBandClick
+    end
+    object editQso06: TEdit
+      Tag = 6
+      Left = 112
+      Top = 132
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 17
+    end
+    object editMulti06: TEdit
+      Tag = 6
+      Left = 159
+      Top = 132
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 18
+    end
+    object editPoints06: TEdit
+      Tag = 6
+      Left = 206
+      Top = 132
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 19
+    end
+    object checkBand08: TCheckBox
+      Tag = 8
+      Left = 16
+      Top = 160
+      Width = 81
+      Height = 17
+      Caption = '28MHz'
+      Checked = True
+      State = cbChecked
+      TabOrder = 20
+      OnClick = checkBandClick
+    end
+    object editQso08: TEdit
+      Tag = 8
+      Left = 112
+      Top = 158
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 21
+    end
+    object editMulti08: TEdit
+      Tag = 8
+      Left = 159
+      Top = 158
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 22
+    end
+    object editPoints08: TEdit
+      Tag = 8
+      Left = 206
+      Top = 158
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 23
+    end
+    object checkBand09: TCheckBox
+      Tag = 9
+      Left = 16
+      Top = 186
+      Width = 81
+      Height = 17
+      Caption = '50MHz'
+      Checked = True
+      State = cbChecked
+      TabOrder = 24
+      OnClick = checkBandClick
+    end
+    object editQso09: TEdit
+      Tag = 9
+      Left = 112
+      Top = 184
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 25
+    end
+    object editMulti09: TEdit
+      Tag = 9
+      Left = 159
+      Top = 184
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 26
+    end
+    object editPoints09: TEdit
+      Tag = 9
+      Left = 206
+      Top = 184
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 27
+    end
+    object checkBand10: TCheckBox
+      Tag = 10
+      Left = 16
+      Top = 212
+      Width = 81
+      Height = 17
+      Caption = '144MHz'
+      Checked = True
+      State = cbChecked
+      TabOrder = 28
+      OnClick = checkBandClick
+    end
+    object editQso10: TEdit
+      Tag = 10
+      Left = 112
+      Top = 210
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 29
+    end
+    object editMulti10: TEdit
+      Tag = 10
+      Left = 159
+      Top = 210
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 30
+    end
+    object editPoints10: TEdit
+      Tag = 10
+      Left = 206
+      Top = 210
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 31
+    end
+    object checkBand11: TCheckBox
+      Tag = 11
+      Left = 16
+      Top = 238
+      Width = 81
+      Height = 17
+      Caption = '430MHz'
+      Checked = True
+      State = cbChecked
+      TabOrder = 32
+      OnClick = checkBandClick
+    end
+    object editQso11: TEdit
+      Tag = 11
+      Left = 112
+      Top = 236
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 33
+    end
+    object editMulti11: TEdit
+      Tag = 11
+      Left = 159
+      Top = 236
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 34
+    end
+    object editPoints11: TEdit
+      Tag = 11
+      Left = 206
+      Top = 236
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 35
+    end
+    object checkBand12: TCheckBox
+      Tag = 12
+      Left = 16
+      Top = 264
+      Width = 81
+      Height = 17
+      Caption = '1200MHz'
+      Checked = True
+      State = cbChecked
+      TabOrder = 36
+      OnClick = checkBandClick
+    end
+    object editQso12: TEdit
+      Tag = 12
+      Left = 112
+      Top = 262
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 37
+    end
+    object editMulti12: TEdit
+      Tag = 12
+      Left = 159
+      Top = 262
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 38
+    end
+    object editPoints12: TEdit
+      Tag = 12
+      Left = 206
+      Top = 262
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 39
+    end
+    object checkBand13: TCheckBox
+      Tag = 13
+      Left = 16
+      Top = 290
+      Width = 81
+      Height = 17
+      Caption = '2400MHz'
+      Checked = True
+      State = cbChecked
+      TabOrder = 40
+      OnClick = checkBandClick
+    end
+    object editQso13: TEdit
+      Tag = 13
+      Left = 112
+      Top = 288
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 41
+    end
+    object editMulti13: TEdit
+      Tag = 13
+      Left = 159
+      Top = 288
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 42
+    end
+    object editPoints13: TEdit
+      Tag = 13
+      Left = 206
+      Top = 288
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 43
+    end
+    object checkBand14: TCheckBox
+      Tag = 14
+      Left = 16
+      Top = 316
+      Width = 81
+      Height = 17
+      Caption = '5600MHz'
+      Checked = True
+      State = cbChecked
+      TabOrder = 44
+      OnClick = checkBandClick
+    end
+    object editQso14: TEdit
+      Tag = 14
+      Left = 112
+      Top = 314
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 45
+    end
+    object editMulti14: TEdit
+      Tag = 14
+      Left = 159
+      Top = 314
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 46
+    end
+    object editPoints14: TEdit
+      Tag = 14
+      Left = 206
+      Top = 314
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 47
+    end
+    object checkBand15: TCheckBox
+      Tag = 15
+      Left = 16
+      Top = 342
+      Width = 81
+      Height = 17
+      Caption = '10G && Up'
+      Checked = True
+      State = cbChecked
+      TabOrder = 48
+      OnClick = checkBandClick
+    end
+    object editQso15: TEdit
+      Tag = 15
+      Left = 112
+      Top = 340
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 49
+    end
+    object editMulti15: TEdit
+      Tag = 15
+      Left = 159
+      Top = 340
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 50
+    end
+    object editPoints15: TEdit
+      Tag = 15
+      Left = 206
+      Top = 340
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 51
+    end
+    object editFDCOEFF: TEdit
+      Left = 206
+      Top = 394
+      Width = 59
+      Height = 20
+      ReadOnly = True
+      TabOrder = 55
+    end
+    object editTotalScore: TEdit
+      Left = 206
+      Top = 420
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 56
+    end
+    object editQsoTotal: TEdit
+      Tag = 15
+      Left = 112
+      Top = 366
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 52
+    end
+    object editMultiTotal: TEdit
+      Tag = 15
+      Left = 159
+      Top = 366
+      Width = 41
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 53
+    end
+    object editPointsTotal: TEdit
+      Tag = 15
+      Left = 206
+      Top = 366
+      Width = 59
+      Height = 20
+      NumbersOnly = True
+      ReadOnly = True
+      TabOrder = 54
     end
   end
   object SaveDialog1: TSaveDialog

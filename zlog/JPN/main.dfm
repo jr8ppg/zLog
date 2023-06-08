@@ -5839,7 +5839,7 @@ object MainForm: TMainForm
         OnClick = CreateELogJARL1Click
       end
       object CreateELogJARL2: TMenuItem
-        Caption = 'JARL E-Log 2.0'#12398#20316#25104
+        Caption = 'JARL E-Log 2.1'#12398#20316#25104
         OnClick = CreateELogJARL2Click
       end
       object CreateDupeCheckSheetZPRINT1: TMenuItem
