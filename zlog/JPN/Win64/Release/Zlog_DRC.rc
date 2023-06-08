@@ -8,25 +8,26 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsErrorMessage 64256
-#define UExceptionDialog_RsDetailsIntro 64257
-#define UExceptionDialog_RsUnitVersioningIntro 64258
-#define UExceptionDialog_RsExceptionMessage 64272
-#define UExceptionDialog_RsExceptionAddr 64273
-#define UExceptionDialog_RsStackList 64274
-#define UExceptionDialog_RsModulesList 64275
-#define UExceptionDialog_RsOSVersion 64276
-#define UExceptionDialog_RsProcessor 64277
-#define UExceptionDialog_RsMemory 64278
-#define UExceptionDialog_RsScreenRes 64279
-#define UExceptionDialog_RsActiveControl 64280
-#define UExceptionDialog_RsThread 64281
-#define UExceptionDialog_RsMissingVersionInfo 64282
-#define UExceptionDialog_RsExceptionStack 64283
-#define UExceptionDialog_RsMainThreadID 64284
-#define UExceptionDialog_RsExceptionThreadID 64285
-#define UExceptionDialog_RsMainThreadCallStack 64286
-#define UExceptionDialog_RsThreadCallStack 64287
+#define UExceptionDialog_RsThreadCallStack 64256
+#define UExceptionDialog_RsErrorMessage 64257
+#define UExceptionDialog_RsDetailsIntro 64258
+#define UExceptionDialog_RsUnitVersioningIntro 64259
+#define UExceptionDialog_RsExceptionClass 64272
+#define UExceptionDialog_RsExceptionMessage 64273
+#define UExceptionDialog_RsExceptionAddr 64274
+#define UExceptionDialog_RsStackList 64275
+#define UExceptionDialog_RsModulesList 64276
+#define UExceptionDialog_RsOSVersion 64277
+#define UExceptionDialog_RsProcessor 64278
+#define UExceptionDialog_RsMemory 64279
+#define UExceptionDialog_RsScreenRes 64280
+#define UExceptionDialog_RsActiveControl 64281
+#define UExceptionDialog_RsThread 64282
+#define UExceptionDialog_RsMissingVersionInfo 64283
+#define UExceptionDialog_RsExceptionStack 64284
+#define UExceptionDialog_RsMainThreadID 64285
+#define UExceptionDialog_RsExceptionThreadID 64286
+#define UExceptionDialog_RsMainThreadCallStack 64287
 #define Main_TMainForm_Invalid_number 64288
 #define Main_TMainForm_Callsign_not_entered 64289
 #define Main_TMainForm_Dupe_qso 64290
@@ -41,8 +42,8 @@
 #define Main_TMainForm_Anti_zeroin 64299
 #define Main_TMainForm_Set_CQ_Repeat_Int 64300
 #define Main_TMainForm_Invalid_zone 64301
-#define UExceptionDialog_RsAppError 64302
-#define UExceptionDialog_RsExceptionClass 64303
+#define Main_TMainForm_JudgePeriod 64302
+#define UExceptionDialog_RsAppError 64303
 #define Main_TMainForm_Change_Date 64304
 #define Main_TMainForm_Confirm_Save_Changes 64305
 #define Main_TMainForm_Active_Band_Adjusted 64306
@@ -1277,9 +1278,11 @@
 #define System_SysConst_SFileNotFound 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
 	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
 	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
@@ -1295,7 +1298,6 @@ BEGIN
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
-	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
 	Main_TMainForm_Invalid_number,	L"\x7121\x52B9\x306A\x30CA\x30F3\x30D0\x30FC\x3067\x3059"
 	Main_TMainForm_Callsign_not_entered,	L"\x30B3\x30FC\x30EB\x30B5\x30A4\x30F3\x3092\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
 	Main_TMainForm_Dupe_qso,	L"Dupe"
@@ -1310,8 +1312,8 @@ BEGIN
 	Main_TMainForm_Anti_zeroin,	L"** Anti Zeroin **"
 	Main_TMainForm_Set_CQ_Repeat_Int,	L"CQ Repeat Int. %.1f sec."
 	Main_TMainForm_Invalid_zone,	L"\x7121\x52B9\x306AZone\x3067\x3059"
+	Main_TMainForm_JudgePeriod,	L"\x5168\x3066\x306EQSO\x3092\x30B3\x30F3\x30C6\x30B9\x30C8\x671F\x9593\x5185\x3067\x3042\x308B\x304B\x5224\x5B9A\x3057\x307E\x3059\x304B\xFF1F"
 	UExceptionDialog_RsAppError,	L"%s - application error"
-	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	Main_TMainForm_Change_Date,	L"\x65E5\x4ED8\x3092\x5909\x66F4\x3059\x308B\x306B\x306F\x3001\x6642\x523B\x30D5\x30A3\x30FC\x30EB\x30C9\x3092\x30C0\x30D6\x30EB\x30AF\x30EA\x30C3\x30AF\x3057\x3066\x304F\x3060\x3055\x3044\x3002"
 	Main_TMainForm_Confirm_Save_Changes,	L"\x5909\x66F4\x3092 %s \x306B\x4FDD\x5B58\x3057\x307E\x3059\x304B\xFF1F"
 	Main_TMainForm_Active_Band_Adjusted,	L"\x30A2\x30AF\x30C6\x30A3\x30D6\x306A\x30D0\x30F3\x30C9\x3092\x30B3\x30F3\x30C6\x30B9\x30C8\x306B\x5FC5\x8981\x306A\x30D0\x30F3\x30C9\x306B\x5408\x308F\x305B\x307E\x3057\x305F"

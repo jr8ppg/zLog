@@ -422,6 +422,7 @@ type
     procedure RenewMulti();
     function IsContainsSameQSO(Q: TQSO): Boolean;
     function IsOutOfPeriod(Q: TQSO): Boolean;
+    procedure JudgeOutOfPeriod();
 
     {$IFNDEF ZSERVER}
     function IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
@@ -3591,6 +3592,18 @@ begin
    end;
    Result := False;
 end;
+
+procedure TLog.JudgeOutOfPeriod();
+var
+   i: Integer;
+   Q: TQSO;
+begin
+   for i := 1 to TotalQSO do begin
+      Q := FQsoList[i];
+      Q.Invalid := IsOutOfPeriod(Q);
+   end;
+end;
+
 
 { TQSOCallsignComparer }
 
