@@ -1052,7 +1052,7 @@ begin
       Settings.FRigSwitchGuardTime     := ini.ReadInteger('Rig', 'RigSwitchGuardTime', 100);
 
       // Last FileFilter Index
-      Settings.FLastFileFilterIndex    := ini.ReadInteger('Preferences', 'LastFileFilterIndex', 0);
+      Settings.FLastFileFilterIndex    := ini.ReadInteger('Preferences', 'LastFileFilterIndex', 1);
 
       // Base FontFace Name
       Settings.FBaseFontName           := ini.ReadString('Preferences', 'BaseFontName', 'ＭＳ ゴシック');
@@ -1231,7 +1231,7 @@ begin
       // Quick Memo
       Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', '');
       Settings.FQuickMemoText[2] := ini.ReadString('QuickMemo', '#2', '');
-      Settings.FQuickMemoText[3] := ini.ReadString('QuickMemo', '#3', 'NR?');
+      Settings.FQuickMemoText[3] := ini.ReadString('QuickMemo', '#3', '');
       Settings.FQuickMemoText[4] := ini.ReadString('QuickMemo', '#4', '');
       Settings.FQuickMemoText[5] := ini.ReadString('QuickMemo', '#5', '');
 
@@ -2044,7 +2044,14 @@ begin
       Exit;
    end;
 
-   Result := op.Age;
+   // 2023年のAADXルール改正で、マルチOP時は運用者の平均年齢とするため
+   // OP別の年齢が設定されていない場合は、全体設定の年齢を使う
+   if op.Age = '' then begin
+      Result := Settings._age;
+   end
+   else begin
+      Result := op.Age;
+   end;
 end;
 
 procedure TdmZLogGlobal.SetOpPower(aQSO: TQSO);

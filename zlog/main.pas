@@ -1052,7 +1052,7 @@ type
     procedure StopCqRepeatTimer();
     function Is2bsiq(): Boolean;
     procedure LogButtonProc(nID: Integer; Q: TQSO);
-    procedure InputStartTime();
+    procedure InputStartTime(fNeedSave: Boolean);
     procedure EnableShiftKeyAction(fEnable: Boolean);
   public
     EditScreen : TBasicEdit;
@@ -1189,6 +1189,7 @@ resourcestring
   TMainForm_Anti_zeroin = '** Anti Zeroin **';
   TMainForm_Set_CQ_Repeat_Int = 'CQ Repeat Int. %.1f sec.';
   TMainForm_Invalid_zone = 'Invalid zone';
+  TMainForm_JudgePeriod = 'Do you want to judge whether all QSOs are within the contest period?';
 
 var
   MainForm: TMainForm;
@@ -6048,8 +6049,22 @@ end;
 // Correct start time
 procedure TMainForm.menuCorrectStartTimeClick(Sender: TObject);
 begin
-   InputStartTime();
+   InputStartTime(False);
    Log.Period := MyContest.Period;
+
+   if MessageBox(Handle, PChar(TMainForm_JudgePeriod), PChar(Application.Title), MB_YESNO or MB_ICONQUESTION or MB_DEFBUTTON2) = IDYES then begin
+      // 期間内再判定
+      Log.JudgeOutOfPeriod();
+   end;
+
+   // 保存する
+   Log.Saved := False;
+   if (CurrentFileName <> '') then begin
+      Log.SaveToFile(CurrentFileName);
+   end;
+
+   // 画面リフレッシュ
+   GridRefreshScreen(False);
 end;
 
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
@@ -6768,7 +6783,7 @@ begin
 
       // 開始時刻
       if (MyContest.UseContestPeriod = True) and (Log.StartTime = 0) then begin
-         InputStartTime();
+         InputStartTime(True);
       end;
 
       // コンテスト期間
@@ -11708,7 +11723,7 @@ begin
    StatusLine.Panels[2].Text := strText;
 end;
 
-procedure TMainForm.InputStartTime();
+procedure TMainForm.InputStartTime(fNeedSave: Boolean);
 var
    dlg: TStartTimeDialog;
    dt: TDateTime;
@@ -11751,7 +11766,7 @@ begin
 
       Log.StartTime := dlg.BaseTime;
       Log.Saved := False;
-      if (CurrentFileName <> '') then begin
+      if (fNeedSave = True) and (CurrentFileName <> '') then begin
          Log.SaveToFile(CurrentFileName);
       end;
    finally

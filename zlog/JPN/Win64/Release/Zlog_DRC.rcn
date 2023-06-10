@@ -5,10 +5,10 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45079.9989814815</prop>
-        <prop prop-type="OrigDateTime">45079.9983101852</prop>
+        <prop prop-type="SelfDateTime">45087.428912037</prop>
+        <prop prop-type="OrigDateTime">45038.3534490741</prop>
         <prop prop-type="XlatDateTime">45016.8840972222</prop>
-        <prop prop-type="Translated">51</prop>
+        <prop prop-type="Translated">52</prop>
         <prop prop-type="UnTranslated">1217</prop>
       </prop-group>
     </header>
@@ -9002,6 +9002,14 @@
           <prop prop-type="Created">45058.9953478009</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_JudgePeriod" resname="Main_TMainForm_JudgePeriod">
+        <source>"Do you want to judge whether all QSOs are within the contest period?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45087.423378912</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"全てのQSOをコンテスト期間内であるか判定しますか？"</target>
       </trans-unit>
     </body>
   </file>

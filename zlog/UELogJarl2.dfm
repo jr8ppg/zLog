@@ -2,7 +2,7 @@ object formELogJarl2: TformELogJarl2
   Left = 103
   Top = 10
   BorderStyle = bsDialog
-  Caption = 'E-Log (JARL 2.0)'
+  Caption = 'E-Log (JARL 2.1)'
   ClientHeight = 651
   ClientWidth = 794
   Color = clBtnFace
@@ -486,7 +486,6 @@ object formELogJarl2: TformELogJarl2
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 20
-    ExplicitWidth = 516
     object buttonCreateLog: TButton
       Left = 360
       Top = 3

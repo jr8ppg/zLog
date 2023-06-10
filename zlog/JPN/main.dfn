@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45077.0063888889</prop>
-        <prop prop-type="OrigDateTime">45077.00375</prop>
-        <prop prop-type="XlatDateTime">45059.0125</prop>
-        <prop prop-type="Translated">89</prop>
-        <prop prop-type="UnTranslated">3015</prop>
+        <prop prop-type="SelfDateTime">45087.4232638889</prop>
+        <prop prop-type="OrigDateTime">45087.4204861111</prop>
+        <prop prop-type="XlatDateTime">45087.4206712963</prop>
+        <prop prop-type="Translated">88</prop>
+        <prop prop-type="UnTranslated">3016</prop>
       </prop-group>
     </header>
     <body>
@@ -11362,11 +11362,14 @@
         <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2266</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MainForm.O:MainMenu.O:FileMenu.O:CreateELogJARL2.Caption" resname="O:MainForm.O:MainMenu.O:FileMenu.O:CreateELogJARL2.Caption">
-        <source>'Create E-Log (&amp;JARL 2.x)'</source>
-        <target>'JARL E-Log 2.0の作成'</target>
+        <source>'Create E-Log (&amp;JARL 2.1)'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">1</prop><prop prop-type="Order">2267</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
+        <prop prop-type="Created">44796.8923305903</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2267</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      <alt-trans>  <source>'Create E-Log (&amp;JARL 2.x)'</source>
+          <target>'JARL E-Log 2.1の作成'</target>
+          <prop-group name="ITEFieldProp">
+          <prop prop-type="Modified">45087.0482772222</prop></prop-group>
+        </alt-trans></trans-unit>
       <trans-unit id="O:MainForm.O:MainMenu.O:FileMenu.O:CreateELogJARL2.OnClick" resname="O:MainForm.O:MainMenu.O:FileMenu.O:CreateELogJARL2.OnClick">
         <source>CreateELogJARL2Click</source>
         <prop-group name="ITEFieldProp">
