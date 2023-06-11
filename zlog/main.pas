@@ -10522,18 +10522,28 @@ begin
    nID := FCurrentTx;
 
    if fOn = True then begin
-      dmZLogKeyer.SetVoiceFlag(1);
-      if dmZLogGlobal.Settings._pttenabled then begin
-         dmZLogKeyer.ControlPTT(nID, True);
-         Sleep(dmZLogGlobal.Settings._pttbefore);
+      // USBIF4CW gen3‚ÌŽž‚ÍVOICE-PTT‚Ì‚Ý
+      if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
+         dmZLogKeyer.SetVoiceFlag(1);
+      end
+      else begin
+         if dmZLogGlobal.Settings._pttenabled then begin
+            Sleep(dmZLogGlobal.Settings._pttbefore);
+            dmZLogKeyer.ControlPTT(nID, True);
+         end;
       end;
    end
    else begin
-      if dmZLogGlobal.Settings._pttenabled then begin
-         Sleep(dmZLogGlobal.Settings._pttafter);
-         dmZLogKeyer.ControlPTT(nID, False);
+      // USBIF4CW gen3‚ÌŽž‚ÍVOICE-PTT‚Ì‚Ý
+      if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
+         dmZLogKeyer.SetVoiceFlag(0);
+      end
+      else begin
+         if dmZLogGlobal.Settings._pttenabled then begin
+            Sleep(dmZLogGlobal.Settings._pttafter);
+            dmZLogKeyer.ControlPTT(nID, False);
+         end;
       end;
-      dmZLogKeyer.SetVoiceFlag(0);
    end;
 end;
 
