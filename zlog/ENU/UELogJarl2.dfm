@@ -4,7 +4,7 @@ object formELogJarl2: TformELogJarl2
   BorderStyle = bsDialog
   Caption = 'E-Log (JARL 2.1)'
   ClientHeight = 651
-  ClientWidth = 516
+  ClientWidth = 794
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -68,7 +68,7 @@ object formELogJarl2: TformELogJarl2
   end
   object Label6: TLabel
     Left = 23
-    Top = 97
+    Top = 93
     Width = 95
     Height = 12
     Caption = #23616#31278#20418#25968'(FD'#24517#38920')'
@@ -180,7 +180,7 @@ object formELogJarl2: TformELogJarl2
     Caption = #30331#37682#12463#12521#12502#30058#21495
   end
   object Label21: TLabel
-    Left = 23
+    Left = 321
     Top = 595
     Width = 24
     Height = 12
@@ -193,7 +193,7 @@ object formELogJarl2: TformELogJarl2
     ParentFont = False
   end
   object Label23: TLabel
-    Left = 280
+    Left = 578
     Top = 595
     Width = 24
     Height = 12
@@ -214,7 +214,7 @@ object formELogJarl2: TformELogJarl2
   end
   object Label11: TLabel
     Left = 247
-    Top = 450
+    Top = 456
     Width = 119
     Height = 12
     Caption = #23616#20813#35377#24180#26376#26085'(PN'#24517#38920')'
@@ -227,7 +227,7 @@ object formELogJarl2: TformELogJarl2
   end
   object Label12: TLabel
     Left = 247
-    Top = 474
+    Top = 480
     Width = 151
     Height = 12
     Caption = #24180#40802'(XS,CS,SOSV,SOJR'#24517#38920')'
@@ -297,7 +297,7 @@ object formELogJarl2: TformELogJarl2
   end
   object edFDCoefficient: TEdit
     Left = 163
-    Top = 93
+    Top = 89
     Width = 45
     Height = 21
     Font.Charset = DEFAULT_CHARSET
@@ -423,7 +423,7 @@ object formELogJarl2: TformELogJarl2
     TabOrder = 12
   end
   object edDate: TEdit
-    Left = 107
+    Left = 405
     Top = 591
     Width = 121
     Height = 21
@@ -437,7 +437,7 @@ object formELogJarl2: TformELogJarl2
     Text = #12467#12531#12486#12473#12488
   end
   object edSignature: TEdit
-    Left = 368
+    Left = 666
     Top = 591
     Width = 121
     Height = 21
@@ -481,14 +481,14 @@ object formELogJarl2: TformELogJarl2
   object Panel1: TPanel
     Left = 0
     Top = 620
-    Width = 516
+    Width = 794
     Height = 31
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 20
     ExplicitTop = 656
     object buttonCreateLog: TButton
-      Left = 313
+      Left = 360
       Top = 3
       Width = 89
       Height = 23
@@ -497,7 +497,7 @@ object formELogJarl2: TformELogJarl2
       OnClick = buttonCreateLogClick
     end
     object buttonSave: TButton
-      Left = 209
+      Left = 256
       Top = 3
       Width = 89
       Height = 23
@@ -506,7 +506,7 @@ object formELogJarl2: TformELogJarl2
       OnClick = buttonSaveClick
     end
     object buttonCancel: TButton
-      Left = 417
+      Left = 464
       Top = 3
       Width = 89
       Height = 23
@@ -526,7 +526,7 @@ object formELogJarl2: TformELogJarl2
   end
   object datetimeLicenseDate: TDateTimePicker
     Left = 372
-    Top = 445
+    Top = 451
     Width = 101
     Height = 20
     Date = 36526
@@ -535,7 +535,7 @@ object formELogJarl2: TformELogJarl2
   end
   object comboAge: TComboBox
     Left = 412
-    Top = 471
+    Top = 477
     Width = 61
     Height = 20
     DropDownCount = 10
@@ -576,7 +576,7 @@ object formELogJarl2: TformELogJarl2
   object GroupBox1: TGroupBox
     Left = 23
     Top = 514
-    Width = 482
+    Width = 762
     Height = 72
     Caption = #23459#35475#25991
     Font.Charset = DEFAULT_CHARSET
@@ -589,7 +589,7 @@ object formELogJarl2: TformELogJarl2
     object mOath: TMemo
       Left = 72
       Top = 14
-      Width = 401
+      Width = 681
       Height = 49
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -597,8 +597,8 @@ object formELogJarl2: TformELogJarl2
       Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Font.Style = []
       Lines.Strings = (
-        #31169#12399#12289'JARL'#21046#23450#12398#12467#12531#12486#12473#12488#35215#32004#12362#12424#12403#38651#27874#27861#20196#12395#12375#12383#12364#12356#36939#29992#12375
-        #12383#32080#26524#12289#12371#12371#12395#25552#20986#12377#12427#12469#12510#12522#12540#12471#12540#12488#12362#12424#12403#12525#12464#12471#12540#12488#12394#12393#12364#20107#23455#12392
+        #31169#12399#12289'JARL'#21046#23450#12398#12467#12531#12486#12473#12488#35215#32004#12362#12424#12403#38651#27874#27861#20196#12395#12375#12383#12364#12356#36939#29992#12375#12383#32080#26524#12289#12371#12371#12395#25552#20986#12377#12427#12469#12510#12522#12540#12471#12540#12488#12362#12424#12403#12525#12464#12471#12540
+        #12488#12394#12393#12364#20107#23455#12392#30456#36949#12394#12356#12418#12398#12391#12354#12427#12371#12392#12434#12289#31169#12398#21517#35465#12395#12362#12356#12390#35475#12356#12414#12377#12290
         #30456#36949#12394#12356#12418#12398#12391#12354#12427#12371#12392#12434#12289#31169#12398#21517#35465#12395#12362#12356#12390#35475#12356#12414#12377#12290)
       ParentFont = False
       ScrollBars = ssVertical
