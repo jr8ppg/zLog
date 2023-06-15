@@ -1585,11 +1585,21 @@ begin
       CurrentQSO.RSTRcvd := 59;
       CurrentQSO.RSTsent := 59;
       RcvdRSTEdit.Text := '59';
+
+      // USBIF4CW gen3で音声使う際は、PHでPTT制御あり
+      if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
+         dmZLogGlobal.Settings._pttenabled := True;
+      end;
    end
    else begin
       CurrentQSO.RSTRcvd := 599;
       CurrentQSO.RSTsent := 599;
       RcvdRSTEdit.Text := '599';
+
+      // USBIF4CW gen3で音声使う際は、CWでPTT制御なし
+      if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
+         dmZLogGlobal.Settings._pttenabled := False;
+      end;
    end;
 
    ShowToolBar(M);
@@ -10522,28 +10532,18 @@ begin
    nID := FCurrentTx;
 
    if fOn = True then begin
-      // USBIF4CW gen3の時はVOICE-PTTのみ
-      if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
-         dmZLogKeyer.SetVoiceFlag(1);
-      end
-      else begin
-         if dmZLogGlobal.Settings._pttenabled then begin
-            Sleep(dmZLogGlobal.Settings._pttbefore);
-            dmZLogKeyer.ControlPTT(nID, True);
-         end;
+      dmZLogKeyer.SetVoiceFlag(1);
+      if dmZLogGlobal.Settings._pttenabled then begin
+         dmZLogKeyer.ControlPTT(nID, True);
+         Sleep(dmZLogGlobal.Settings._pttbefore);
       end;
    end
    else begin
-      // USBIF4CW gen3の時はVOICE-PTTのみ
-      if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
-         dmZLogKeyer.SetVoiceFlag(0);
-      end
-      else begin
-         if dmZLogGlobal.Settings._pttenabled then begin
-            Sleep(dmZLogGlobal.Settings._pttafter);
-            dmZLogKeyer.ControlPTT(nID, False);
-         end;
+      if dmZLogGlobal.Settings._pttenabled then begin
+         Sleep(dmZLogGlobal.Settings._pttafter);
+         dmZLogKeyer.ControlPTT(nID, False);
       end;
+      dmZLogKeyer.SetVoiceFlag(0);
    end;
 end;
 
