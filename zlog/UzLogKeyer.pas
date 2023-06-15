@@ -3225,6 +3225,8 @@ begin
       Exit;
    end;
 
+   S := StringReplace(S, '.', '?', [rfReplaceAll]);
+
    FWkAbort := False;
    FWkCallsignIndex := 1;
    FWkCallsignStr := S;
