@@ -896,6 +896,8 @@ type
     FCurrentRigSet: Integer; // 現在のRIGSET 1/2/3
     FWaitForQsoFinish: array[0..2] of Boolean;
 
+    FPrev2bsiqMode: Boolean;
+
     FTaskbarList: ITaskbarList;
 
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
@@ -1052,7 +1054,7 @@ type
     procedure StopCqRepeatTimer();
     function Is2bsiq(): Boolean;
     procedure LogButtonProc(nID: Integer; Q: TQSO);
-    procedure InputStartTime(fNeedSave: Boolean);
+    function InputStartTime(fNeedSave: Boolean): Boolean;
     procedure EnableShiftKeyAction(fEnable: Boolean);
   public
     EditScreen : TBasicEdit;
@@ -1088,6 +1090,7 @@ type
     procedure BandScopeNotifyWorked(aQSO: TQSO);
     procedure SetYourCallsign(strCallsign, strNumber: string);
     procedure SetFrequency(freq: TFrequency);
+    procedure Restore2bsiqMode();
     procedure BSRefresh();
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
     procedure BuildTxNrMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
@@ -4924,6 +4927,12 @@ begin
    try
       AssignControls(nID, C, N, B, M, SE);
 
+      // .か?があるときは以降の送信は行わない
+      if (Pos('.', C.Text) > 0) or (Pos('?', C.Text) > 0) then begin
+         dmZLogKeyer.ClrBuffer();
+         Exit;
+      end;
+
       curQSO.Callsign := C.Text;
       curQSO.Band     := TextToBand(B.Text);
       curQSO.Mode     := TextToMode(M.Text);
@@ -6049,7 +6058,9 @@ end;
 // Correct start time
 procedure TMainForm.menuCorrectStartTimeClick(Sender: TObject);
 begin
-   InputStartTime(False);
+   if InputStartTime(False) = False then begin
+      Exit;
+   end;
    Log.Period := MyContest.Period;
 
    if MessageBox(Handle, PChar(TMainForm_JudgePeriod), PChar(Application.Title), MB_YESNO or MB_ICONQUESTION or MB_DEFBUTTON2) = IDYES then begin
@@ -6065,6 +6076,7 @@ begin
 
    // 画面リフレッシュ
    GridRefreshScreen(False);
+   MyContest.Renew();
 end;
 
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
@@ -10089,6 +10101,13 @@ begin
       Exit;
    end;
 
+   // 現在の2BSIQ状態を保存してOFFにする
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and (Is2bsiq()) then begin
+      FPrev2bsiqMode := FInformation.Is2bsiq;
+      FInformation.Is2bsiq := False;
+      F2bsiqStart := False;
+   end;
+
    // 現在のCQモード
    fSetLastFreq := IsCQ();
 
@@ -10149,6 +10168,13 @@ begin
    else begin
       // バンド変更
       UpdateBand(b);
+   end;
+end;
+
+procedure TMainForm.Restore2bsiqMode();
+begin
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+      FInformation.Is2bsiq := FPrev2bsiqMode;
    end;
 end;
 
@@ -11723,7 +11749,7 @@ begin
    StatusLine.Panels[2].Text := strText;
 end;
 
-procedure TMainForm.InputStartTime(fNeedSave: Boolean);
+function TMainForm.InputStartTime(fNeedSave: Boolean): Boolean;
 var
    dlg: TStartTimeDialog;
    dt: TDateTime;
@@ -11761,6 +11787,7 @@ begin
       dlg.UseUtc := MyContest.UseUTC;
 
       if dlg.ShowModal() <> mrOK then begin
+         Result := False;
          Exit;
       end;
 
@@ -11769,6 +11796,8 @@ begin
       if (fNeedSave = True) and (CurrentFileName <> '') then begin
          Log.SaveToFile(CurrentFileName);
       end;
+
+      Result := True;
    finally
       dlg.Release();
    end;

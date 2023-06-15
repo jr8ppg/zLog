@@ -176,6 +176,8 @@ begin
       FCurrentRig.MoveToLastFreq();
    end;
 
+   MainForm.Restore2bsiqMode();
+
    MainForm.CallsignEdit.SetFocus;
    MainForm.SetLastFocus();
 end;
