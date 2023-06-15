@@ -1023,7 +1023,7 @@ type
     procedure EditCurrentRow();
     procedure CallSpaceBarProc(C, N, B: TEdit);
     procedure ShowSentNumber();
-    procedure InputStartTime(fNeedSave: Boolean);
+    function InputStartTime(fNeedSave: Boolean): Boolean;
     procedure EnableShiftKeyAction(fEnable: Boolean);
   public
     EditScreen : TBasicEdit;
@@ -5774,7 +5774,9 @@ end;
 // Correct start time
 procedure TMainForm.menuCorrectStartTimeClick(Sender: TObject);
 begin
-   InputStartTime(False);
+   if InputStartTime(False) = False then begin
+      Exit;
+   end;
    Log.Period := MyContest.Period;
 
    if MessageBox(Handle, PChar(TMainForm_JudgePeriod), PChar(Application.Title), MB_YESNO or MB_ICONQUESTION or MB_DEFBUTTON2) = IDYES then begin
@@ -5790,6 +5792,7 @@ begin
 
    // ‰æ–ÊƒŠƒtƒŒƒbƒVƒ…
    GridRefreshScreen(False);
+   MyContest.Renew();
 end;
 
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
@@ -11037,7 +11040,7 @@ begin
    StatusLine.Panels[2].Text := strText;
 end;
 
-procedure TMainForm.InputStartTime(fNeedSave: Boolean);
+function TMainForm.InputStartTime(fNeedSave: Boolean): Boolean;
 var
    dlg: TStartTimeDialog;
    dt: TDateTime;
@@ -11075,6 +11078,7 @@ begin
       dlg.UseUtc := MyContest.UseUTC;
 
       if dlg.ShowModal() <> mrOK then begin
+         Result := False;
          Exit;
       end;
 
@@ -11083,6 +11087,8 @@ begin
       if (fNeedSave = True) and (CurrentFileName <> '') then begin
          Log.SaveToFile(CurrentFileName);
       end;
+
+      Result := True;
    finally
       dlg.Release();
    end;
