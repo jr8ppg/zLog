@@ -96,12 +96,14 @@ type
   end;
 
   TSettingsParam = record
-    _dontallowsameband : boolean; // same band on two rigs?
     _multiop : TContestCategory;  {multi op/ single op}
     _band : integer; {0 = all band; 1 = 1.9MHz 2 = 3.5MHz ...}
     _mode : TContestMode; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
     _contestmenuno : integer; {selected contest in the menu}
     _mycall : string;
+
+    _selectlastoperator: Boolean;
+    _applypoweronbandchg: Boolean;
     _prov : string;
     _city : string;
     _cqzone : string;
@@ -111,12 +113,9 @@ type
     _powerL: string;
     _powerP: string;
 
-    _send_freq_interval: Integer;
-
     ProvCityImported: Boolean;
     ReadOnlyParamImported: Boolean;
 
-    _autobandmap: boolean;
     _activebands: array[b19..HiBand] of Boolean;
     _power: array[b19..HiBand] of string;
     _useant: array[b19..HiBand] of Integer;
@@ -145,6 +144,7 @@ type
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
     _icom_response_timeout: Integer;
     _usbif4cw_sync_wpm: Boolean;
+    _usbif4cw_gen3_micsel: Boolean;
     _polling_interval: Integer;
 
     // WinKeyer
@@ -191,6 +191,7 @@ type
     _scorecoeff : extended;
     _age : string; // all asian
     _allowdupe : boolean;
+    _output_outofperiod: Boolean;
     _countdown : boolean;
     _qsycount : boolean;
     _countdownminute: Integer;
@@ -202,8 +203,15 @@ type
     _jmode : boolean;
     _mainfontsize : integer;
     _mainrowheight : integer;
-    //_updatetimeonenter : boolean;
+
+    // RIG Control/general
     _ritclear : boolean; // clear rit after each qso
+    _dontallowsameband : boolean; // same band on two rigs?
+    _recrigfreq : boolean; // record rig freq in memo
+    _autobandmap: boolean;
+    _send_freq_interval: Integer;
+    _ignore_rig_mode: Boolean;
+
     _searchafter : integer; // 0 default. for super / partial check
     _savewhennocw : boolean; // def=false. save when cw is not being sent
     _maxsuperhit : integer; // max # qso hit
@@ -211,7 +219,6 @@ type
     _spotexpire : integer; // spot expiration time in minutes
     _renewbythread : boolean;
     _movetomemo : boolean; // move to memo w/ spacebar when editing past qsos
-    _recrigfreq : boolean; // record rig freq in memo
 
     _syncserial : boolean; // synchronize serial # over network
     _switchcqsp : boolean; // switch cq/sp modes by shift+F
@@ -262,12 +269,19 @@ type
     FLastBand: Integer;
     FLastMode: Integer;
 
+    // Last CQ mode
+    FLastCQMode: Boolean;
+
     // QSO Rate Graph
     FGraphStyle: TQSORateStyle;
     FGraphStartPosition: TQSORateStartPosition;
     FGraphBarColor: array[b19..HiBand] of TColor;
     FGraphTextColor: array[b19..HiBand] of TColor;
+    FGraphOtherBgColor: array[0..1] of TColor;
+    FGraphOtherFgColor: array[0..1] of TColor;
     FZaqAchievement: Boolean;
+    FZaqBgColor: array[0..3] of TColor;
+    FZaqFgColor: array[0..3] of TColor;
 
     // Cluster Window(Comm)
     FClusterAutoLogin: Boolean;
@@ -317,9 +331,6 @@ var
   QSYCount : integer = 0;
 
 var
-  UseUTC : boolean = False;
-
-var
   SerialContestType : integer;  // 0 if no serial # or SER_ALL, SER_BAND
   SerialNumber: Integer;
   SerialArrayBand : array[b19..HiBand] of Integer;  // initialized in TContest.Create;
@@ -354,7 +365,7 @@ type
     procedure AnalyzeMyCountry();
 
     procedure LoadIniFile; {loads Settings from zlog.ini}
-    procedure LoadCfgParams(ini: TIniFile);
+    procedure LoadCfgParams(ini: TCustomIniFile);
 
     function GetMyCall(): string;
     procedure SetMyCall(s: string);
@@ -366,8 +377,6 @@ type
     procedure SetMultiOp(i: TContestCategory);
     function GetContestMenuNo() : Integer;
     procedure SetContestMenuNo(i: Integer);
-    function GetFIFO(): Boolean;
-    procedure SetFIFO(b: Boolean);
     function GetTXNr(): Byte;
     procedure SetTXNr(i: Byte);
     function GetPTTEnabled(): Boolean;
@@ -417,7 +426,6 @@ public
     property ContestMode: TContestMode read GetMode write SetMode;
     property ContestCategory: TContestCategory read GetMultiOp write SetMultiOp;
     property ContestMenuNo: Integer read GetContestMenuNo write SetContestMenuNo;
-    property FIFO: Boolean read GetFIFO write SetFIFO;
     property TXNr: Byte read GetTXNr write SetTXNr;
     property PTTEnabled: Boolean read GetPTTEnabled;
     property RigNameStr[Index: Integer]: string read GetRigNameStr;
@@ -433,10 +441,10 @@ public
     function CWMessage(bank, no: Integer): string; overload;
     function CWMessage(no: Integer): string; overload;
 
-    procedure ReadWindowState(form: TForm; strWindowName: string = ''; fPositionOnly: Boolean = False);
-    procedure WriteWindowState(form: TForm; strWindowName: string = '');
-    procedure ReadMainFormState(var X, Y, W, H: integer; var TB1, TB2: boolean);
-    procedure WriteMainFormState(X, Y, W, H: integer; TB1, TB2: boolean);
+    procedure ReadWindowState(ini: TMemIniFile; form: TForm; strWindowName: string = ''; fPositionOnly: Boolean = False);
+    procedure WriteWindowState(ini: TMemIniFile; form: TForm; strWindowName: string = '');
+    procedure ReadMainFormState(ini: TMemIniFile; var X, Y, W, H: integer; var TB1, TB2: boolean);
+    procedure WriteMainFormState(ini: TMemIniFile; X, Y, W, H: integer; TB1, TB2: boolean);
 
     procedure CreateLog();
     procedure SetLogFileName(filename: string);
@@ -642,7 +650,7 @@ procedure TdmZLogGlobal.ClearParamImportedFlag();
 var
    i: Integer;
    j: Integer;
-   ini: TIniFile;
+   ini: TMemIniFile;
 begin
    Settings.ProvCityImported := False;
 
@@ -653,7 +661,7 @@ begin
    end;
 
    // 対象項目を再ロード
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       LoadCfgParams(ini);
    finally
@@ -661,7 +669,7 @@ begin
    end;
 end;
 
-procedure TdmZLogGlobal.LoadCfgParams(ini: TIniFile);
+procedure TdmZLogGlobal.LoadCfgParams(ini: TCustomIniFile);
 begin
    // Prov/State($V)
    Settings._prov := ini.ReadString('Profiles', 'Province/State', '');
@@ -679,13 +687,13 @@ procedure TdmZLogGlobal.LoadIniFile;
 var
    i: integer;
    s: string;
-   ini: TIniFile;
+   ini: TMemIniFile;
    slParam: TStringList;
    b: TBand;
    strKey: string;
 begin
    slParam := TStringList.Create();
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       //
       // Preferences
@@ -752,6 +760,9 @@ begin
       // Allow to log dupes
       Settings._allowdupe := ini.ReadBool('Preferences', 'AllowDupe', True);
 
+      // Output out of contest period
+      Settings._output_outofperiod := ini.ReadBool('Preferences', 'OutputOutOfPeriod', False);
+
       // Save when not sending CW
       Settings._savewhennocw := ini.ReadBool('Preferences', 'SaveWhenNoCW', False);
 
@@ -773,6 +784,12 @@ begin
 
       // Mode
       Settings._mode := TContestMode(ini.ReadInteger('Categories', 'Mode', 0));
+
+      // Select last operator
+      Settings._selectlastoperator :=  ini.ReadBool('Categories', 'SelectLastOperator', True);
+
+      // Apply power code on band change
+      Settings._applypoweronbandchg :=  ini.ReadBool('Categories', 'ApplyPowerCodeOnBandChange', True);
 
 //      // Prov/State($V)
 //      Settings._prov := ini.ReadString('Profiles', 'Province/State', '');
@@ -953,6 +970,9 @@ begin
       // USBIF4CW Sync WPM
       Settings._usbif4cw_sync_wpm := ini.ReadBool('Hardware', 'Usbif4cwSyncWpm', True);
 
+      // USBIF4CW Use Gen.3 mic. select
+      Settings._usbif4cw_gen3_micsel := ini.ReadBool('Hardware', 'Usbif4cwGen3MicSelect', False);
+
       // Polling Interval
       Settings._polling_interval := ini.ReadInteger('Hardware', 'PollingInterval', 200);
 
@@ -1009,6 +1029,9 @@ begin
       // Send current freq every
       Settings._send_freq_interval := ini.ReadInteger('Rig', 'SendFreqSec', 30);
 
+      // Ignore RIG mode
+      Settings._ignore_rig_mode := ini.ReadBool('Rig', 'IgnoreRigMode', False);
+
       // Anti Zeroin
       Settings.FUseAntiZeroin := ini.ReadBool('Rig', 'use_anti_zeroin', True);
       Settings.FAntiZeroinShiftMax := Min(ini.ReadInteger('Rig', 'anti_zeroin_shift_max', 100), 200);
@@ -1024,7 +1047,7 @@ begin
       Settings.FRigSwitchGuardTime     := ini.ReadInteger('Rig', 'RigSwitchGuardTime', 100);
 
       // Last FileFilter Index
-      Settings.FLastFileFilterIndex    := ini.ReadInteger('Preferences', 'LastFileFilterIndex', 0);
+      Settings.FLastFileFilterIndex    := ini.ReadInteger('Preferences', 'LastFileFilterIndex', 1);
 
       // Base FontFace Name
       Settings.FBaseFontName           := ini.ReadString('Preferences', 'BaseFontName', 'ＭＳ ゴシック');
@@ -1221,7 +1244,7 @@ begin
       // Quick Memo
       Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', '');
       Settings.FQuickMemoText[2] := ini.ReadString('QuickMemo', '#2', '');
-      Settings.FQuickMemoText[3] := ini.ReadString('QuickMemo', '#3', 'NR?');
+      Settings.FQuickMemoText[3] := ini.ReadString('QuickMemo', '#3', '');
       Settings.FQuickMemoText[4] := ini.ReadString('QuickMemo', '#4', '');
       Settings.FQuickMemoText[5] := ini.ReadString('QuickMemo', '#5', '');
 
@@ -1283,6 +1306,9 @@ begin
       Settings.FLastBand := ini.ReadInteger('main', 'last_band', 0);
       Settings.FLastMode := ini.ReadInteger('main', 'last_mode', 0);
 
+      // Last CQ mode
+      Settings.FLastCQMode := ini.ReadBool('main', 'last_cqmode', False);
+
       // QSO Rate Graph
       Settings.FGraphStyle := TQSORateStyle(ini.ReadInteger('Graph', 'Style', 0));
       Settings.FGraphStartPosition := TQSORateStartPosition(ini.ReadInteger('Graph', 'StartPosition', 1));
@@ -1291,7 +1317,20 @@ begin
          Settings.FGraphBarColor[b]  := ZStringToColorDef(ini.ReadString('Graph', strKey + '_BarColor',  ''), default_graph_bar_color[b]);
          Settings.FGraphTextColor[b] := ZStringToColorDef(ini.ReadString('Graph', strKey + '_TextColor', ''), default_graph_text_color[b]);
       end;
+
+      for i := 0 to 1 do begin
+         strKey := IntToStr(i);
+         Settings.FGraphOtherBgColor[i] := ZStringToColorDef(ini.ReadString('Graph', 'BgColor' + strKey, ''), default_other_bg_color[i]);
+         Settings.FGraphOtherFgColor[i] := ZStringToColorDef(ini.ReadString('Graph', 'FgColor' + strKey, ''), default_other_fg_color[i]);
+      end;
+
       Settings.FZaqAchievement      := ini.ReadBool('rateex_zaq', 'achievement', True);
+
+      for i := 0 to 3 do begin
+         strKey := IntToStr(i);
+         Settings.FZaqBgColor[i] := ZStringToColorDef(ini.ReadString('rateex_zaq', 'BgColor' + strKey, ''), default_zaq_bg_color[i]);
+         Settings.FZaqFgColor[i] := ZStringToColorDef(ini.ReadString('rateex_zaq', 'FgColor' + strKey, ''), default_zaq_fg_color[i]);
+      end;
 
       // Cluster Window(Comm)
       Settings.FClusterAutoLogin       := ini.ReadBool('ClusterWindow', 'AutoLogin', True);
@@ -1329,13 +1368,13 @@ end;
 procedure TdmZLogGlobal.SaveCurrentSettings;
 var
    i: integer;
-   ini: TIniFile;
+   ini: TMemIniFile;
    slParam: TStringList;
    b: TBand;
    strKey: string;
 begin
    slParam := TStringList.Create();
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       //
       // Preferences
@@ -1402,6 +1441,9 @@ begin
       // Allow to log dupes
       ini.WriteBool('Preferences', 'AllowDupe', Settings._allowdupe);
 
+      // Output out of contest period
+      ini.WriteBool('Preferences', 'OutputOutOfPeriod', Settings._output_outofperiod);
+
       // Save when not sending CW
       ini.WriteBool('Preferences', 'SaveWhenNoCW', Settings._savewhennocw);
 
@@ -1423,6 +1465,12 @@ begin
 
       // Mode
       ini.WriteInteger('Categories', 'Mode', Integer(Settings._mode));
+
+      // Select last operator
+      ini.WriteBool('Categories', 'SelectLastOperator', Settings._selectlastoperator);
+
+      // Apply power code on band change
+      ini.WriteBool('Categories', 'ApplyPowerCodeOnBandChange', Settings._applypoweronbandchg);
 
       if Settings.ProvCityImported = False then begin
          // Prov/State($V)
@@ -1581,6 +1629,9 @@ begin
       // USBIF4CW Sync WPM
       ini.WriteBool('Hardware', 'Usbif4cwSyncWpm', Settings._usbif4cw_sync_wpm);
 
+      // USBIF4CW Use Gen.3 mic. select
+      ini.WriteBool('Hardware', 'Usbif4cwGen3MicSelect', Settings._usbif4cw_gen3_micsel);
+
       // Polling Interval
       ini.WriteInteger('Hardware', 'PollingInterval', Settings._polling_interval);
 
@@ -1630,6 +1681,9 @@ begin
 
       // Send current freq every
       ini.WriteInteger('Rig', 'SendFreqSec', Settings._send_freq_interval);
+
+      // Ignore RIG mode
+      ini.WriteBool('Rig', 'IgnoreRigMode', Settings._ignore_rig_mode);
 
       // Anti Zeroin
       ini.WriteBool('Rig', 'use_anti_zeroin', Settings.FUseAntiZeroin);
@@ -1853,6 +1907,9 @@ begin
       ini.WriteInteger('main', 'last_band', Settings.FLastBand);
       ini.WriteInteger('main', 'last_mode', Settings.FLastMode);
 
+      // Last CQ mode
+      ini.WriteBool('main', 'last_cqmode', Settings.FLastCQMode);
+
       // QSO Rate Graph
       ini.WriteInteger('Graph', 'Style', Integer(Settings.FGraphStyle));
       ini.WriteInteger('Graph', 'StartPosition', Integer(Settings.FGraphStartPosition));
@@ -1861,7 +1918,20 @@ begin
          ini.WriteString('Graph', strKey + '_BarColor', ZColorToString(Settings.FGraphBarColor[b]));
          ini.WriteString('Graph', strKey + '_TextColor', ZColorToString(Settings.FGraphTextColor[b]));
       end;
+
+      for i := 0 to 1 do begin
+         strKey := IntToStr(i);
+         ini.WriteString('Graph', 'BgColor' + strKey, ZColorToString(Settings.FGraphOtherBgColor[i]));
+         ini.WriteString('Graph', 'FgColor' + strKey, ZColorToString(Settings.FGraphOtherFgColor[i]));
+      end;
+
       ini.WriteBool('rateex_zaq', 'achievement', Settings.FZaqAchievement);
+
+      for i := 0 to 3 do begin
+         strKey := IntToStr(i);
+         ini.WriteString('rateex_zaq', 'BgColor' + strKey, ZColorToString(Settings.FZaqBgColor[i]));
+         ini.WriteString('rateex_zaq', 'FgColor' + strKey, ZColorToString(Settings.FZaqFgColor[i]));
+      end;
 
       // Cluster Window(Comm)
       ini.WriteBool('ClusterWindow', 'AutoLogin', Settings.FClusterAutoLogin);
@@ -1886,6 +1956,8 @@ begin
 
       // Band Plan
       ini.WriteString('BandPlan', 'PresetNameList', Settings.FBandPlanPresetList);
+
+      ini.UpdateFile();
    finally
       ini.Free();
       slParam.Free();
@@ -1962,6 +2034,7 @@ begin
 
    dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;
+   dmZLogKeyer.Gen3MicSelect := Settings._usbif4cw_gen3_micsel;
 
    dmZLogKeyer.FixedSpeed := Settings.CW._fixwpm;
 
@@ -1983,13 +2056,20 @@ function TdmZLogGlobal.GetAge(aQSO: TQSO): string;
 var
    op: TOperatorInfo;
 begin
-   op := FOpList.ObjectOf(aQSO.Callsign);
+   op := FOpList.ObjectOf(aQSO.Operator);
    if op = nil then begin
       Result := Settings._age;
       Exit;
    end;
 
-   Result := op.Age;
+   // 2023年のAADXルール改正で、マルチOP時は運用者の平均年齢とするため
+   // OP別の年齢が設定されていない場合は、全体設定の年齢を使う
+   if op.Age = '' then begin
+      Result := Settings._age;
+   end
+   else begin
+      Result := op.Age;
+   end;
 end;
 
 procedure TdmZLogGlobal.SetOpPower(aQSO: TQSO);
@@ -2000,6 +2080,8 @@ var
 begin
    op := FOpList.ObjectOf(aQSO.Operator);
    if op = nil then begin
+      // 今のOPがOpListにいなければ消す
+      aQSO.Operator := '';
       Exit;
    end;
 
@@ -2076,16 +2158,6 @@ end;
 procedure TdmZLogGlobal.SetContestMenuNo(i: integer);
 begin
    Settings._contestmenuno := i;
-end;
-
-function TdmZLogGlobal.GetFIFO(): Boolean;
-begin
-   Result := Settings.CW._FIFO;
-end;
-
-procedure TdmZLogGlobal.SetFIFO(b: boolean);
-begin
-   Settings.CW._FIFO := b;
 end;
 
 function TdmZLogGlobal.GetTXNr(): Byte;
@@ -2267,129 +2339,103 @@ begin
    Result := S;
 end;
 
-procedure TdmZLogGlobal.ReadWindowState(form: TForm; strWindowName: string; fPositionOnly: Boolean );
+procedure TdmZLogGlobal.ReadWindowState(ini: TMemIniFile; form: TForm; strWindowName: string; fPositionOnly: Boolean );
 var
-   ini: TIniFile;
    l, t, w, h: Integer;
    pt: TPoint;
    mon: TMonitor;
 begin
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      if strWindowName = '' then begin
-         strWindowName := form.Name;
-      end;
+   if strWindowName = '' then begin
+      strWindowName := form.Name;
+   end;
 
-      l := ini.ReadInteger('Windows', strWindowName + '_X', -1);
-      t := ini.ReadInteger('Windows', strWindowName + '_Y', -1);
-      h := ini.ReadInteger('Windows', strWindowName + '_H', -1);
-      w := ini.ReadInteger('Windows', strWindowName + '_W', -1);
+   l := ini.ReadInteger('Windows', strWindowName + '_X', -1);
+   t := ini.ReadInteger('Windows', strWindowName + '_Y', -1);
+   h := ini.ReadInteger('Windows', strWindowName + '_H', -1);
+   w := ini.ReadInteger('Windows', strWindowName + '_W', -1);
 
-      form.Visible := ini.ReadBool('Windows', strWindowName + '_Open', False);
+   form.Visible := ini.ReadBool('Windows', strWindowName + '_Open', False);
 
-      pt.X := l;
-      pt.Y := t;
-      mon := Screen.MonitorFromPoint(pt, mdNearest);
-      if l < mon.Left then begin
-         l := mon.Left;
-      end;
-      if (l + w) > (mon.Left + mon.Width) then begin
-         l := (mon.Left + mon.Width) - w;
-      end;
-      if t < mon.Top then begin
-         t := mon.Top;
-      end;
-      if (t + h) > (mon.Top + mon.Height) then begin
-         t := (mon.Top + mon.Height) - H;
-      end;
+   pt.X := l;
+   pt.Y := t;
+   mon := Screen.MonitorFromPoint(pt, mdNearest);
+   if l < mon.Left then begin
+      l := mon.Left;
+   end;
+   if (l + w) > (mon.Left + mon.Width) then begin
+      l := (mon.Left + mon.Width) - w;
+   end;
+   if t < mon.Top then begin
+      t := mon.Top;
+   end;
+   if (t + h) > (mon.Top + mon.Height) then begin
+      t := (mon.Top + mon.Height) - H;
+   end;
 
-      form.Left := l;
-      form.Top := t;
+   form.Left := l;
+   form.Top := t;
 
-      if fPositionOnly = False then begin
-         if h >= 0 then begin
-            form.Height  := ini.ReadInteger('Windows', strWindowName + '_H', -1);
-         end;
-         if w >= 0 then begin
-            form.Width   := ini.ReadInteger('Windows', strWindowName + '_W', -1);
-         end;
+   if fPositionOnly = False then begin
+      if h >= 0 then begin
+         form.Height  := ini.ReadInteger('Windows', strWindowName + '_H', -1);
       end;
-   finally
-      ini.Free();
+      if w >= 0 then begin
+         form.Width   := ini.ReadInteger('Windows', strWindowName + '_W', -1);
+      end;
    end;
 end;
 
-procedure TdmZLogGlobal.WriteWindowState(form: TForm; strWindowName: string);
-var
-   ini: TIniFile;
+procedure TdmZLogGlobal.WriteWindowState(ini: TMemIniFile; form: TForm; strWindowName: string);
 begin
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      if strWindowName = '' then begin
-         strWindowName := form.Name;
-      end;
-
-      ini.WriteBool('Windows', strWindowName + '_Open', form.Visible);
-      ini.WriteInteger('Windows', strWindowName + '_X', form.Left);
-      ini.WriteInteger('Windows', strWindowName + '_Y', form.Top);
-      ini.WriteInteger('Windows', strWindowName + '_H', form.Height);
-      ini.WriteInteger('Windows', strWindowName + '_W', form.Width);
-   finally
-      ini.Free();
+   if strWindowName = '' then begin
+      strWindowName := form.Name;
    end;
+
+   ini.WriteBool('Windows', strWindowName + '_Open', form.Visible);
+   ini.WriteInteger('Windows', strWindowName + '_X', form.Left);
+   ini.WriteInteger('Windows', strWindowName + '_Y', form.Top);
+   ini.WriteInteger('Windows', strWindowName + '_H', form.Height);
+   ini.WriteInteger('Windows', strWindowName + '_W', form.Width);
 end;
 
-procedure TdmZLogGlobal.ReadMainFormState(var X, Y, W, H: integer; var TB1, TB2: boolean);
+procedure TdmZLogGlobal.ReadMainFormState(ini: TMemIniFile; var X, Y, W, H: integer; var TB1, TB2: boolean);
 var
-   ini: TIniFile;
    pt: TPoint;
    mon: TMonitor;
 begin
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      X := ini.ReadInteger('Windows', 'Main_X', 0);
-      Y := ini.ReadInteger('Windows', 'Main_Y', 0);
-      W := ini.ReadInteger('Windows', 'Main_W', 0);
-      H := ini.ReadInteger('Windows', 'Main_H', 0);
+   X := ini.ReadInteger('Windows', 'Main_X', 0);
+   Y := ini.ReadInteger('Windows', 'Main_Y', 0);
+   W := ini.ReadInteger('Windows', 'Main_W', 0);
+   H := ini.ReadInteger('Windows', 'Main_H', 0);
 
-      pt.X := X;
-      pt.Y := Y;
-      mon := Screen.MonitorFromPoint(pt, mdNearest);
-      if X < mon.Left then begin
-         X := mon.Left;
-      end;
-      if (X + W) > (mon.Left + mon.Width) then begin
-         X := (mon.Left + mon.Width) - W;
-      end;
-      if Y < mon.Top then begin
-         Y := mon.Top;
-      end;
-      if (Y + H) > (mon.Top + mon.Height) then begin
-         Y := (mon.Top + mon.Height) - H;
-      end;
-
-      TB1 := ini.ReadBool('Windows', 'Main_ToolBar1', False);
-      TB2 := ini.ReadBool('Windows', 'Main_ToolBar2', False);
-   finally
-      ini.Free();
+   pt.X := X;
+   pt.Y := Y;
+   mon := Screen.MonitorFromPoint(pt, mdNearest);
+   if X < mon.Left then begin
+      X := mon.Left;
    end;
+   if (X + W) > (mon.Left + mon.Width) then begin
+      X := (mon.Left + mon.Width) - W;
+   end;
+   if Y < mon.Top then begin
+      Y := mon.Top;
+   end;
+   if (Y + H) > (mon.Top + mon.Height) then begin
+      Y := (mon.Top + mon.Height) - H;
+   end;
+
+   TB1 := ini.ReadBool('Windows', 'Main_ToolBar1', False);
+   TB2 := ini.ReadBool('Windows', 'Main_ToolBar2', False);
 end;
 
-procedure TdmZLogGlobal.WriteMainFormState(X, Y, W, H: integer; TB1, TB2: boolean);
-var
-   ini: TIniFile;
+procedure TdmZLogGlobal.WriteMainFormState(ini: TMemIniFile; X, Y, W, H: integer; TB1, TB2: boolean);
 begin
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      ini.WriteInteger('Windows', 'Main_X', X);
-      ini.WriteInteger('Windows', 'Main_Y', Y);
-      ini.WriteInteger('Windows', 'Main_W', W);
-      ini.WriteInteger('Windows', 'Main_H', H);
-      ini.WriteBool('Windows', 'Main_ToolBar1', TB1);
-      ini.WriteBool('Windows', 'Main_ToolBar2', TB2);
-   finally
-      ini.Free();
-   end;
+   ini.WriteInteger('Windows', 'Main_X', X);
+   ini.WriteInteger('Windows', 'Main_Y', Y);
+   ini.WriteInteger('Windows', 'Main_W', W);
+   ini.WriteInteger('Windows', 'Main_H', H);
+   ini.WriteBool('Windows', 'Main_ToolBar1', TB1);
+   ini.WriteBool('Windows', 'Main_ToolBar2', TB2);
 end;
 
 procedure TdmZLogGlobal.CreateLog();
@@ -2930,7 +2976,7 @@ end;
 
 function CurrentTime: TDateTime;
 begin
-   if UseUTC then
+   if MyContest.UseUTC then
       Result := GetUTC
    else
       Result := Now;

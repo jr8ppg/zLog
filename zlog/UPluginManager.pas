@@ -140,28 +140,22 @@ end;
 
 function GetItemListINI: TList<String>;
 var
-	init: TIniFile;
 	text: string;
 begin
-	init := LoadIniFile;
    text := dmZLogGlobal.Settings._pluginlist;
 	Result := TList<String>.Create;
 	Result.AddRange(text.Split([',']));
-	init.Free;
 end;
 
 procedure SetItemListINI(list: TList<String>);
 var
-	init: TIniFile;
 	text: TStringList;
 	item: string;
 begin
-	init := LoadIniFile;
 	text := TStringList.Create;
 	for item in list do text.Append(item);
    dmZLogGlobal.Settings._pluginlist := text.DelimitedText;
 	text.Free;
-	init.Free;
 end;
 
 function TMarketItem.ref: string;

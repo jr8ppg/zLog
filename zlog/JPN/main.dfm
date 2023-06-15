@@ -223,6 +223,7 @@ object MainForm: TMainForm
         TabOnEnter = False
       end
       object MemoEdit1: TOvrEdit
+        Tag = 1000
         Left = 432
         Top = 4
         Width = 73
@@ -5774,6 +5775,7 @@ object MainForm: TMainForm
     Top = 144
     object FileMenu: TMenuItem
       Caption = #12501#12449#12452#12523'(&F)'
+      OnClick = FileMenuClick
       object FileNewItem: TMenuItem
         Caption = #26032#12375#12356#12467#12531#12486#12473#12488'(&N)'
         Hint = 'Create a new file'
@@ -5817,6 +5819,10 @@ object MainForm: TMainForm
       object N1: TMenuItem
         Caption = '-'
       end
+      object menuCorrectStartTime: TMenuItem
+        Caption = #38283#22987#26085#26178#12398#20462#27491
+        OnClick = menuCorrectStartTimeClick
+      end
       object menuCorrectNR: TMenuItem
         Action = actionCorrectSentNr
       end
@@ -5833,7 +5839,7 @@ object MainForm: TMainForm
         OnClick = CreateELogJARL1Click
       end
       object CreateELogJARL2: TMenuItem
-        Caption = 'JARL E-Log 2.0'#12398#20316#25104
+        Caption = 'JARL E-Log 2.1'#12398#20316#25104
         OnClick = CreateELogJARL2Click
       end
       object CreateDupeCheckSheetZPRINT1: TMenuItem
@@ -6218,8 +6224,18 @@ object MainForm: TMainForm
       Caption = 'RTTY'
       OnClick = ModeMenuClick
     end
-    object Other1: TMenuItem
+    object FT41: TMenuItem
       Tag = 5
+      Caption = 'FT4'
+      OnClick = ModeMenuClick
+    end
+    object FT81: TMenuItem
+      Tag = 6
+      Caption = 'FT8'
+      OnClick = ModeMenuClick
+    end
+    object Other1: TMenuItem
+      Tag = 7
       Caption = 'Other'
       OnClick = ModeMenuClick
     end

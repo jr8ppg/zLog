@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, Grids, Menus, DateUtils,
   USpotClass, UzLogConst, UzLogGlobal, UzLogQSO, UBandPlan,
-  System.ImageList, Vcl.ImgList,
+  System.ImageList, Vcl.ImgList, System.IniFiles,
   System.UITypes, Vcl.Buttons, System.Actions, Vcl.ActnList;
 
 type
@@ -141,6 +141,8 @@ type
     procedure CopyList(F: TBandScope2);
     procedure SetSpotWorked(aQSO: TQSO);
     procedure JudgeEstimatedMode();
+    procedure SaveSettings(ini: TMemIniFile; section: string);
+    procedure LoadSettings(ini: TMemIniFile; section: string);
 
     property FontSize: Integer read GetFontSize write SetFontSize;
     property Select: Boolean write SetSelect;
@@ -1432,6 +1434,48 @@ begin
 
    actionDecreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionDecreaseCwSpeed.SecondaryShortCuts);
    actionIncreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionIncreaseCwSpeed.SecondaryShortCuts);
+end;
+
+procedure TBandScope2.SaveSettings(ini: TMemIniFile; section: string);
+begin
+   dmZLogGlobal.WriteWindowState(ini, Self, section);
+   ini.WriteBool(section, 'SyncVFO', checkSyncVFO.Checked);
+
+   if FCurrentBandOnly = True then begin
+      ini.WriteBool(section, 'ShowAllBands', buttonShowAllBands.Down);
+      ini.WriteBool(section, 'ShowWorked', buttonShowWorked.Down);
+   end
+   else if FNewMultiOnly = True then begin
+   end
+   else if FAllBands = True then begin
+      ini.WriteInteger(section, 'FreqSortOrder', buttonSortByFreq.ImageIndex);
+      ini.WriteInteger(section, 'TimeSortOrder', buttonSortByTime.ImageIndex);
+      ini.WriteBool(section, 'ShowWorked2', buttonShowWorked2.Down);
+   end
+   else begin
+      ini.WriteBool(section, 'ShowWorked', buttonShowWorked.Down);
+   end;
+end;
+
+procedure TBandScope2.LoadSettings(ini: TMemIniFile; section: string);
+begin
+   dmZLogGlobal.ReadWindowState(ini, Self, section);
+   checkSyncVFO.Checked := ini.ReadBool(section, 'SyncVFO', True);
+
+   if FCurrentBandOnly = True then begin
+      buttonShowAllBands.Down := ini.ReadBool(section, 'ShowAllBands', False);
+      buttonShowWorked.Down := ini.ReadBool(section, 'ShowWorked', True);
+   end
+   else if FNewMultiOnly = True then begin
+   end
+   else if FAllBands = True then begin
+      buttonSortByFreq.ImageIndex := ini.ReadInteger(section, 'FreqSortOrder', 0);
+      buttonSortByTime.ImageIndex := ini.ReadInteger(section, 'TimeSortOrder', -1);
+      buttonShowWorked2.Down := ini.ReadBool(section, 'ShowWorked2', True);
+   end
+   else begin
+      buttonShowWorked.Down := ini.ReadBool(section, 'ShowWorked', True);
+   end;
 end;
 
 initialization

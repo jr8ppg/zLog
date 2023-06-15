@@ -112,7 +112,9 @@ begin
    Grid.Cells[4, 0] := 'FM';
    Grid.Cells[5, 0] := 'AM';
    Grid.Cells[6, 0] := 'RTTY';
-   Grid.Cells[7, 0] := 'Other';
+   Grid.Cells[7, 0] := 'FT4';
+   Grid.Cells[8, 0] := 'FT8';
+   Grid.Cells[9, 0] := 'Other';
 
    for M := mCW to mOther do begin
       ModeQSO[M] := 0;
@@ -141,7 +143,7 @@ begin
       Grid.Cells[ord(M) + 2, ord(HiBand) + 2] := IntToStr3(ModeQSO[M]);
    end;
 
-   Grid.ColCount := 8;
+   Grid.ColCount := 10;
    Grid.RowCount := 18;
 
    // カラム幅をセット
@@ -154,6 +156,8 @@ begin
    Grid.ColWidths[5] := w * 7;
    Grid.ColWidths[6] := w * 7;
    Grid.ColWidths[7] := w * 7;
+   Grid.ColWidths[8] := w * 7;
+   Grid.ColWidths[9] := w * 7;
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);

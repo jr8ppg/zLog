@@ -67,7 +67,7 @@ type
     procedure ActualClear();
     procedure Refresh();
     procedure Adjust(n: Integer);
-    function UpdateActualQSOs(origin: TDateTime): Integer;
+    function UpdateActualQSOs(origin, start: TDateTime): Integer;
     procedure UpdateLastRate();
     property Bands[B: TBand]: THourTarget read GetBandTarget;
     property Total: THourTarget read FBandTotal;
@@ -292,7 +292,7 @@ begin
    Refresh();
 end;
 
-function TContestTarget.UpdateActualQSOs(origin: TDateTime): Integer;
+function TContestTarget.UpdateActualQSOs(origin, start: TDateTime): Integer;
 var
    i: Integer;
    aQSO: TQSO;
@@ -312,14 +312,20 @@ begin
    mytx := dmZlogGlobal.TXNr;
 
    for i := Log.TotalQSO downto 1 do begin
-//   for i := 1 to Log.TotalQSO do begin
       aQSO := Log.QsoList[i];
 
-      if (aQSO.Points = 0) then begin    // 得点無しはスキップ
+      if (aQSO.Points = 0) then begin        // 得点無しはスキップ
          Continue;
       end;
 
-      if (aQSO.Time < origin) then begin // グラフ化以前の交信
+      if (aQSO.Invalid = True) then begin    // 無効もスキップ
+         Continue;
+      end;
+
+      if (aQSO.Time < origin) then begin     // コンテスト開始前の交信
+         Continue;
+      end
+      else if (aQSO.Time < start) then begin // グラフ化以前の交信
          Inc(FBeforeGraphCount);
       end
       else begin

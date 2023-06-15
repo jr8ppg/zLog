@@ -543,6 +543,12 @@ type
     Label124: TLabel;
     Label125: TLabel;
     Label126: TLabel;
+    checkSelectLastOperator: TCheckBox;
+    checkApplyPowerCodeOnBandChange: TCheckBox;
+    buttonOpEdit: TButton;
+    checkOutputOutofPeriod: TCheckBox;
+    checkGen3MicSelect: TCheckBox;
+    checkIgnoreRigMode: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -575,7 +581,6 @@ type
     procedure buttonBSResetClick(Sender: TObject);
     procedure buttonPlayVoiceClick(Sender: TObject);
     procedure buttonStopVoiceClick(Sender: TObject);
-    procedure OpListBoxDblClick(Sender: TObject);
     procedure vAdditionalButtonClick(Sender: TObject);
     procedure comboIcomModeChange(Sender: TObject);
     procedure radioQsyAssistClick(Sender: TObject);
@@ -592,6 +597,7 @@ type
     procedure radioSo2rClick(Sender: TObject);
     procedure checkUseEstimatedModeClick(Sender: TObject);
     procedure buttonSpotterListClick(Sender: TObject);
+    procedure buttonOpEditClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -685,6 +691,16 @@ uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet,
 procedure TformOptions.radioCategoryClick(Sender: TObject);
 var
    n: Integer;
+
+   procedure OperatorsEnable(f: Boolean);
+   begin
+      OpListBox.Enabled := f;
+      buttonOpAdd.Enabled := f;
+      buttonOpEdit.Enabled := f;
+      buttonOpDelete.Enabled := f;
+      checkSelectLastOperator.Enabled := f;
+      checkApplyPowerCodeOnBandChange.Enabled := f;
+   end;
 begin
    n := TRadioButton(Sender).Tag;
    case n of
@@ -693,9 +709,7 @@ begin
          comboTxNo.Enabled := False;
          comboTxNo.Items.CommaText := '0,1';
          comboTxNo.ItemIndex := 0;
-         OpListBox.Enabled := False;
-         buttonOpAdd.Enabled := False;
-         buttonOpDelete.Enabled := False;
+         OperatorsEnable(False);
       end;
 
       // Multi-Op/Multi-Tx
@@ -703,9 +717,7 @@ begin
          comboTxNo.Enabled := True;
          comboTxNo.Items.CommaText := TXLIST_MM;
          comboTxNo.ItemIndex := 0;
-         OpListBox.Enabled := True;
-         buttonOpAdd.Enabled := True;
-         buttonOpDelete.Enabled := True;
+         OperatorsEnable(True);
       end;
 
       // Multi-Op/Single-Tx, Multi-Op/Two-Tx
@@ -713,9 +725,7 @@ begin
          comboTxNo.Enabled := True;
          comboTxNo.Items.CommaText := TXLIST_MS;
          comboTxNo.ItemIndex := 0;
-         OpListBox.Enabled := True;
-         buttonOpAdd.Enabled := True;
-         buttonOpDelete.Enabled := True;
+         OperatorsEnable(True);
       end;
    end;
 end;
@@ -829,6 +839,9 @@ begin
       // #TXNR
       Settings._txnr := StrToIntDef(comboTxNo.Text, 0);
 
+      Settings._selectlastoperator := checkSelectLastOperator.Checked;
+      Settings._applypoweronbandchg :=  checkApplyPowerCodeOnBandChange.Checked;
+
       Settings._prov := ProvEdit.Text;
       Settings._city := CityEdit.Text;
       Settings._cqzone := CQZoneEdit.Text;
@@ -868,7 +881,6 @@ begin
 
       Settings.CW._speed := SpeedBar.Position;
       Settings.CW._weight := WeightBar.Position;
-      Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
       Settings.CW._FIFO := FIFOCheck.Checked;
       Settings.CW._sidetone := SideToneCheck.Checked;
       Settings.CW._sidetone_volume := VolumeSpinEdit.Value;
@@ -919,13 +931,16 @@ begin
 
       Settings._icom_response_timeout := StrToIntDef(editIcomResponseTimout.Text, 1000);
 
-      Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
-
       Settings._zlinkport := ZLinkCombo.ItemIndex;
       Settings._pcname := editZLinkPcName.Text;
       Settings._syncserial := checkZLinkSyncSerial.Checked;
 
       Settings._pttenabled := PTTEnabledCheckBox.Checked;
+
+      // USBIF4CW
+      Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
+      Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
+      Settings._usbif4cw_gen3_micsel := checkGen3MicSelect.Checked;
 
       Settings._saveevery        := SaveEvery.Value;
 
@@ -1002,6 +1017,7 @@ begin
       Settings.FSuperCheck.FSuperCheckFolder := editSpcFolder.Text;
 
       Settings._allowdupe := AllowDupeCheckBox.Checked;
+      Settings._output_outofperiod := checkOutputOutofPeriod.Checked;
       Settings._sameexchange := cbDispExchange.Checked;
       Settings._entersuperexchange := cbAutoEnterSuper.Checked;
       Settings._displongdatetime := checkDispLongDateTime.Checked;
@@ -1020,6 +1036,7 @@ begin
       Settings._recrigfreq := cbRecordRigFreq.Checked;
       Settings._autobandmap := cbAutoBandMap.Checked;
       Settings._send_freq_interval := updownSendFreqInterval.Position;
+      Settings._ignore_rig_mode := checkIgnoreRigMode.Checked;
 
       // Ant Control
       Settings._useant[b19]   := comboAnt19.ItemIndex;
@@ -1361,7 +1378,6 @@ begin
       SpeedBar.Position := Settings.CW._speed;
       SpeedLabel.Caption := IntToStr(Settings.CW._speed) + ' wpm';
       WeightBar.Position := Settings.CW._weight;
-      checkUsbif4cwPaddleReverse.Checked := Settings.CW._paddlereverse;
       WeightLabel.Caption := IntToStr(Settings.CW._weight) + ' %';
       FIFOCheck.Checked := Settings.CW._FIFO;
       SideToneCheck.Checked := Settings.CW._sidetone;
@@ -1369,6 +1385,9 @@ begin
       ToneSpinEdit.Value := Settings.CW._tonepitch;
       CQmaxSpinEdit.Value := Settings.CW._cqmax;
       AbbrevEdit.Text := Settings.CW._zero + Settings.CW._one + Settings.CW._nine;
+
+      checkSelectLastOperator.Checked := Settings._selectlastoperator;
+      checkApplyPowerCodeOnBandChange.Checked := Settings._applypoweronbandchg;
 
       ProvEdit.Text := Settings._prov;
       CityEdit.Text := Settings._city;
@@ -1393,6 +1412,7 @@ begin
       editPowerP.Text := Settings._PowerP;
 
       AllowDupeCheckBox.Checked := Settings._allowdupe;
+      checkOutputOutofPeriod.Checked := Settings._output_outofperiod;
 
       ClusterCombo.ItemIndex := Settings._clusterport;
       ZLinkCombo.ItemIndex := Settings._zlinkport;
@@ -1427,8 +1447,6 @@ begin
 
       editIcomResponseTimout.Text := IntToStr(Settings._icom_response_timeout);
 
-      checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
-
       // Packet Cluster通信設定ボタン
       buttonClusterSettings.Enabled := True;
       ClusterComboChange(nil);
@@ -1436,6 +1454,11 @@ begin
       // ZLink通信設定ボタン
       buttonZLinkSettings.Enabled := True;
       ZLinkComboChange(nil);
+
+      // USBIF4CW
+      checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
+      checkUsbif4cwPaddleReverse.Checked := Settings.CW._paddlereverse;
+      checkGen3MicSelect.Checked := Settings._usbif4cw_gen3_micsel;
 
       SaveEvery.Value := Settings._saveevery;
 
@@ -1543,6 +1566,7 @@ begin
       cbRecordRigFreq.Checked := Settings._recrigfreq;
       cbAutoBandMap.Checked := Settings._autobandmap;
       updownSendFreqInterval.Position := Settings._send_freq_interval;
+      checkIgnoreRigMode.Checked := Settings._ignore_rig_mode;
 
       // Ant Control
       comboAnt19.ItemIndex    := Settings._useant[b19];
@@ -1745,12 +1769,26 @@ begin
    end;
 
    FNeedSuperCheckLoad := False;
+
+   if radioSingleOp.Checked = True then begin
+      radioCategoryClick(radioSingleOp);
+   end
+   else if radioMultiOpMultiTx.Checked = True then begin
+      radioCategoryClick(radioMultiOpMultiTx);
+   end
+   else if radioMultiOpSingleTx.Checked = True then begin
+      radioCategoryClick(radioMultiOpSingleTx);
+   end
+   else if radioMultiOpTwoTx.Checked = True then begin
+      radioCategoryClick(radioMultiOpTwoTx);
+   end;
 end;
 
 procedure TformOptions.buttonOpAddClick(Sender: TObject);
 var
    F: TformOperatorEdit;
    obj: TOperatorInfo;
+   op: TOperatorInfo;
 begin
    F := TformOperatorEdit.Create(Self);
    try
@@ -1761,10 +1799,43 @@ begin
       obj := TOperatorInfo.Create();
       F.GetObject(obj);
 
-      OpListBox.Items.AddObject(obj.Callsign, obj);
-      dmZLogGlobal.OpList.Add(obj);
+      op := dmZLogGlobal.OpList.ObjectOf(obj.Callsign);
+      if op = nil then begin
+         OpListBox.Items.AddObject(obj.Callsign, obj);
+         dmZLogGlobal.OpList.Add(obj);
+      end
+      else begin
+         op.Assign(obj);
+         obj.Free();
+      end;
    finally
       F.Release();
+   end;
+end;
+
+procedure TformOptions.buttonOpEditClick(Sender: TObject);
+var
+   F: TformOperatorEdit;
+   obj: TOperatorInfo;
+begin
+   if OpListBox.ItemIndex = -1 then begin
+      Exit;
+   end;
+
+   F := TformOperatorEdit.Create(Self);
+   try
+      obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
+
+      F.SetObject(obj);
+
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      F.GetObject(obj);
+
+   finally
+      F.Free();
    end;
 end;
 
@@ -1895,32 +1966,6 @@ end;
 procedure TformOptions.buttonCancelClick(Sender: TObject);
 begin
 //   Close;
-end;
-
-procedure TformOptions.OpListBoxDblClick(Sender: TObject);
-var
-   F: TformOperatorEdit;
-   obj: TOperatorInfo;
-begin
-   if OpListBox.ItemIndex = -1 then begin
-      Exit;
-   end;
-
-   F := TformOperatorEdit.Create(Self);
-   try
-      obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
-
-      F.SetObject(obj);
-
-      if F.ShowModal() <> mrOK then begin
-         Exit;
-      end;
-
-      F.GetObject(obj);
-
-   finally
-      F.Free();
-   end;
 end;
 
 procedure TformOptions.SpeedBarChange(Sender: TObject);

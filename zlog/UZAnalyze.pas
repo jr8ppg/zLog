@@ -399,6 +399,10 @@ begin
       m := qso.Mode;
       dt := qso.Time;
 
+      if (qso.Invalid = True) then begin    // 無効もスキップ
+         Continue;
+      end;
+
       if checkExcludeZeroPoint.Checked = True then begin
          if qso.Points = 0 then begin
             Continue;

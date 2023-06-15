@@ -6,41 +6,11 @@ uses
   Windows, Messages, SysUtils;
 
 type
-  HINSTANCE = THandle;
-
-type
-  CREATESTRUCT = record
-    lpCreateParams: LPVOID;
-    hInstance: HINSTANCE;
-    hMenu: HMENU;
-    hwndParent: HWND;
-    cy: Integer;
-    cx: Integer;
-    y: Integer;
-    x: Integer;
-    style: LONG;
-    lpszName: LPCTSTR;
-    lpszClass: LPCTSTR;
-    dwExStyle: DWORD;
-  end;
-  LPCREATESTRUCT = ^CREATESTRUCT;
-
   CBT_CREATEWND = record
-    lpcs: LPCREATESTRUCT;
+    lpcs: PCreateStruct;
     hwndInsertAfter: HWND;
   end;
   LPCBT_CREATEWND = ^CBT_CREATEWND;
-  LONG_PTR = ^LONG;
-
-const
-  GWLP_WNDPROC: Integer =  (-4);
-  GWLP_HINSTANCE: Integer = (-6);
-  GWLP_HWNDPARENT: Integer = (-8);
-  GWLP_USERDATA: Integer = (-21);
-  GWLP_ID: Integer = (-12);
-
-function SetWindowLongPtr(wnd: HWND; nIndex: Integer; dwNewLong: LONG_PTR): LONG_PTR stdcall;
-function GetWindowLongPtr(wnd: HWND; nIndex: Integer): LONG_PTR stdcall;
 
 implementation
 
@@ -49,9 +19,6 @@ const
 
 var
   hHookHandle: HHOOK;
-
-function SetWindowLongPtr; external 'user32.dll' name 'SetWindowLongW';
-function GetWindowLongPtr; external 'user32.dll' name 'GetWindowLongW';
 
 function HookWndProc(wnd: HWND; nMsg: UINT; wpara: WPARAM; lPara: LPARAM): LRESULT stdcall;
 var
@@ -72,7 +39,7 @@ begin
    end;
 
    if nMsg = WM_NCDESTROY then begin
-      SetWindowLongPtr(wnd, GWLP_WNDPROC, oldWndProc);
+      SetWindowLongPtr(wnd, GWLP_WNDPROC, LONG_PTR(oldWndProc));
    end;
 
 {
@@ -105,7 +72,7 @@ end;
 
 function CbtFilterHook(nCode: Integer; wPara: WPARAM; lPara: LPARAM): LRESULT stdcall;
 var
-   lpcs: LPCREATESTRUCT;
+   lpcs: PCreateStruct;
    wnd: HWND;
    oldWndProc: pointer;
 begin
@@ -125,7 +92,7 @@ begin
       SetProp(wnd, PROP_OLD_WNDPROC_NAME, THandle(0));
    end
    else begin
-      oldWndProc := SetWindowLongPtr(wnd, GWLP_WNDPROC, LONG_PTR(@HookWndProc));
+      oldWndProc := Pointer(SetWindowLongPtr(wnd, GWLP_WNDPROC, LONG_PTR(@HookWndProc)));
       SetProp(wnd, PROP_OLD_WNDPROC_NAME, THandle(oldWndProc));
    end;
 

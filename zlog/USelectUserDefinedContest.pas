@@ -121,6 +121,10 @@ begin
       f.CwMessageA[2] := D.CwMessageA[2];
       f.CwMessageA[3] := D.CwMessageA[3];
       f.CwMessageA[4] := D.CwMessageA[4];
+      f.UseContestPeriod := D.UseContestPeriod;
+      f.UseUTC := D.UseUTC;
+      f.StartTime := D.StartTime;
+      f.Period := D.Period;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
@@ -134,6 +138,10 @@ begin
       D.CwMessageA[2] := f.CwMessageA[2];
       D.CwMessageA[3] := f.CwMessageA[3];
       D.CwMessageA[4] := f.CwMessageA[4];
+      D.UseUTC := f.UseUTC;
+      D.UseContestPeriod := f.UseContestPeriod;
+      D.StartTime := f.StartTime;
+      D.Period := f.Period;
       D.Save();
 
       ListView1.Selected.SubItems[1] := D.Prov;

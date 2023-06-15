@@ -23,6 +23,7 @@ type
   public
     constructor Create();
     destructor Destroy(); override;
+    procedure Assign(src: TOperatorInfo);
     property Callsign: string read FCallsign write FCallsign;
     property Power: string read FPower write SetPower;
     property Age: string read FAge write FAge;
@@ -62,6 +63,21 @@ end;
 destructor TOperatorInfo.Destroy();
 begin
    Inherited;
+end;
+
+procedure TOperatorInfo.Assign(src: TOperatorInfo);
+var
+   i: Integer;
+begin
+   FPower := src.Power;
+   FAge := src.Age;
+
+   for i := Low(FVoiceFiles) to High(FVoiceFiles) do begin
+      FVoiceFiles[i] := src.FVoiceFiles[i];
+   end;
+   for i := Low(FAdditionalVoiceFiles) to High(FAdditionalVoiceFiles) do begin
+      FAdditionalVoiceFiles[i] := src.FAdditionalVoiceFiles[i];
+   end;
 end;
 
 function TOperatorInfo.GetVoiceFile(Index: Integer): string;
@@ -118,7 +134,7 @@ end;
 
 procedure TOperatorInfoList.SaveToIniFile();
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
    i: Integer;
    j: Integer;
    obj: TOperatorInfo;
@@ -130,7 +146,7 @@ begin
       System.SysUtils.DeleteFile(fileName);
    end;
 
-   ini := TIniFile.Create(filename);
+   ini := TMemIniFile.Create(filename);
    try
      ini.WriteInteger('operators', 'num', Count);
 
@@ -150,6 +166,8 @@ begin
             ini.WriteString(section, 'AdditionalVoiceFile#' + IntToStr(j), obj.AdditionalVoiceFile[j]);
          end;
       end;
+
+      ini.UpdateFile();
    finally
       ini.Free();
    end;
@@ -157,7 +175,7 @@ end;
 
 procedure TOperatorInfoList.LoadFromIniFile();
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
    SL: TStringList;
    i: Integer;
    j: Integer;
@@ -167,7 +185,7 @@ var
    S: string;
 begin
    SL := TStringList.Create();
-   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_oplist.ini');;
+   ini := TMemIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_oplist.ini');;
    try
       ini.ReadSections(SL);
 
@@ -208,7 +226,12 @@ begin
             obj.AdditionalVoiceFile[j] := strVoiceFile;
          end;
 
-         Add(obj);
+         if ObjectOf(obj.Callsign) = nil then begin
+            Add(obj);
+         end
+         else begin
+            obj.Free();
+         end;
       end;
    finally
       ini.Free();

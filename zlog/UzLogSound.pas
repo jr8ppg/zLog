@@ -543,7 +543,7 @@ begin
       Exit;
    end;
 
-   newvol := (($ffff * FVolume) div 100) + ((($ffff * FVolume) div 100) shl $10);
+   newvol := (($ffff * DWORD(FVolume)) div 100) + ((($ffff * DWORD(FVolume)) div 100) shl $10);
 
    waveOutSetVolume(m_uDeviceID, newvol);
 
@@ -635,7 +635,8 @@ begin
       ZeroMemory(@m_wh, SizeOf(m_wh));
       m_wh.lpData          := PAnsiChar(m_lpWaveData);
       m_wh.dwBufferLength  := m_dwWaveSize;
-      m_wh.dwFlags         := 0;
+      m_wh.dwFlags         := WHDR_BEGINLOOP or WHDR_ENDLOOP;
+      m_wh.dwLoops         := 1000;
 
       waveOutPrepareHeader(m_hwo, @m_wh, sizeof(m_wh));
 

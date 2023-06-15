@@ -87,6 +87,10 @@ type
     FUseUTC: Boolean;
 
     FBandPlan: string;
+
+    FUseContestPeriod: Boolean;
+    FStartTime: Integer;
+    FPeriod: Integer;
   private
     procedure SetFullPath(v: string);
     function GetCwMessageA(Index: Integer): string;
@@ -97,6 +101,10 @@ type
     procedure SetProv(v: string);
     procedure SetCity(v: string);
     procedure SetPower(v: string);
+    procedure SetUseUTC(v: Boolean);
+    procedure SetUseContestPeriod(v: Boolean);
+    procedure SetStartTime(v: Integer);
+    procedure SetPeriod(v: Integer);
     function ParseCommand(strLine: string; var strCmd, strParam: string): Boolean;
     procedure EditParam(strCommand, strNewValue: string);
     procedure ClearPointsTable(var PT: TPointsTable);
@@ -174,12 +182,16 @@ type
     property CountHigherPoints: Boolean read FCountHigherPoints;
     property UseWarcBand: Boolean read FUseWarcBand;
 
-    property UseUTC: Boolean read FUseUTC;
+    property UseUTC: Boolean read FUseUTC write SetUseUTC;
 
     property BandLow: TBand read GetBandLow;
     property BandHigh: TBand read GetBandHigh;
 
     property BandPlan: string read FBandPlan;
+
+    property UseContestPeriod: Boolean read FUseContestPeriod write SetUseContestPeriod;
+    property StartTime: Integer read FStartTime write SetStartTime;
+    property Period: Integer read FPeriod write SetPeriod;
   end;
 
   TUserDefinedContestList = class(TObjectList<TUserDefinedContest>)
@@ -265,6 +277,10 @@ begin
    end;
 
    FBandPlan := '';
+
+   FUseContestPeriod := True;
+   FStartTime := -1;
+   FPeriod := 0;
 end;
 
 constructor TUserDefinedContest.Create(strFullPath: string);
@@ -655,6 +671,18 @@ begin
          if strCmd = 'BANDPLAN' then begin
             D.FBandPlan := UpperCase(strParam);
          end;
+
+         if strCmd = 'USEPERIOD' then begin
+            D.FUseContestPeriod := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'STARTTIME' then begin
+            D.FStartTime := StrToIntDef(strParam, -1);
+         end;
+
+         if strCmd = 'PERIOD' then begin
+            D.FPeriod := StrToIntDef(strParam, 0);
+         end;
       end;
    finally
       SL.Free();
@@ -869,6 +897,40 @@ begin
    v := LeftStr(v + '----------------', 13);
    FPower := v;
    EditParam('POWER', v);
+end;
+
+procedure TUserDefinedContest.SetUseUTC(v: Boolean);
+begin
+   FUseUTC := v;
+   if v = True then begin
+      EditParam('TIME', 'UTC');
+   end
+   else begin
+      EditParam('TIME', 'JST');
+   end;
+end;
+
+procedure TUserDefinedContest.SetUseContestPeriod(v: Boolean);
+begin
+   FUseContestPeriod := v;
+   if v = True then begin
+      EditParam('USEPERIOD', 'ON');
+   end
+   else begin
+      EditParam('USEPERIOD', 'OFF');
+   end;
+end;
+
+procedure TUserDefinedContest.SetStartTime(v: Integer);
+begin
+   FStartTime := v;
+   EditParam('STARTTIME', IntToStr(v));
+end;
+
+procedure TUserDefinedContest.SetPeriod(v: Integer);
+begin
+   FPeriod := v;
+   EditParam('PERIOD', IntToStr(v));
 end;
 
 function TUserDefinedContest.ParseCommand(strLine: string; var strCmd, strParam: string): Boolean;

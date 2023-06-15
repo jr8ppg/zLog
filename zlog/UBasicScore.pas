@@ -222,6 +222,10 @@ end;
 
 procedure TBasicScore.Add(var aQSO: TQSO);
 begin
+   if aQSO.Invalid = True then begin
+      Exit;
+   end;
+
    AddNoUpdate(aQSO);
    UpdateData;
 end;

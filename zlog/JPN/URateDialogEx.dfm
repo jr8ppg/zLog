@@ -11,7 +11,7 @@ object RateDialogEx: TRateDialogEx
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = 'MS Sans Serif'
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
@@ -83,7 +83,7 @@ object RateDialogEx: TRateDialogEx
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
-      Caption = 'Graph'
+      Caption = #12464#12521#12501
       object Panel2: TPanel
         Left = 0
         Top = 167
@@ -97,20 +97,20 @@ object RateDialogEx: TRateDialogEx
           30)
         object Label4: TLabel
           Left = 303
-          Top = 8
+          Top = 9
           Width = 26
           Height = 13
           Anchors = [akRight]
-          Caption = 'hours'
+          Caption = #26178#38291
           ExplicitLeft = 255
         end
         object Label3: TLabel
           Left = 207
-          Top = 8
+          Top = 9
           Width = 46
           Height = 13
           Anchors = [akRight]
-          Caption = 'Show last'
+          Caption = #26368#24460#12363#12425
           ExplicitLeft = 159
         end
         object ShowLastCombo: TComboBox
@@ -157,18 +157,18 @@ object RateDialogEx: TRateDialogEx
             Top = 6
             Width = 54
             Height = 17
-            Caption = 'Current'
+            Caption = #29694#22312
             Checked = True
             TabOrder = 1
             TabStop = True
             OnClick = radioOriginClick
           end
           object radioOriginLastQSO: TRadioButton
-            Left = 112
+            Left = 96
             Top = 6
             Width = 40
             Height = 17
-            Caption = 'Last'
+            Caption = #26368#24460
             TabOrder = 2
             OnClick = radioOriginClick
           end
@@ -177,7 +177,7 @@ object RateDialogEx: TRateDialogEx
             Top = 6
             Width = 39
             Height = 17
-            Caption = 'First'
+            Caption = #26368#21021
             TabOrder = 0
             OnClick = radioOriginClick
           end
@@ -429,12 +429,27 @@ object RateDialogEx: TRateDialogEx
           YValues.Name = 'Bar'
           YValues.Order = loNone
         end
-        object SeriesTotalQSOs: TLineSeries
+        object SeriesActualTotals: TLineSeries
           SeriesColor = 33023
+          Title = 'SeriesActualTotals'
           Brush.BackColor = clDefault
           Pointer.HorizSize = 3
           Pointer.InflateMargins = True
           Pointer.Style = psRectangle
+          Pointer.VertSize = 3
+          Pointer.Visible = True
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+        object SeriesTargetTotals: TLineSeries
+          SeriesColor = 11627079
+          Title = 'SeriesTargetTotals'
+          Brush.BackColor = clDefault
+          Pointer.HorizSize = 3
+          Pointer.InflateMargins = True
+          Pointer.Style = psCircle
           Pointer.VertSize = 3
           Pointer.Visible = True
           XValues.Name = 'X'
@@ -509,18 +524,33 @@ object RateDialogEx: TRateDialogEx
     AutoLineReduction = maManual
     Left = 200
     Top = 153
-    object menuAchievementRate: TMenuItem
-      AutoCheck = True
-      Caption = #36948#25104#29575#34920#31034
+    object menuDispAlternating: TMenuItem
+      Caption = #12496#12531#12489#38918#12395#23455#32318#20516#65292#30446#27161#20516#12398#38918
       Checked = True
       GroupIndex = 1
+      RadioItem = True
+      OnClick = menuDispAlternatingClick
+    end
+    object menuDispOrder: TMenuItem
+      Caption = #23455#32318#20516#12496#12531#12489#38918#65292#30446#27161#20516#12496#12531#12489#38918
+      GroupIndex = 1
+      RadioItem = True
+      OnClick = menuDispAlternatingClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+      GroupIndex = 2
+    end
+    object menuAchievementRate: TMenuItem
+      Caption = #36948#25104#29575#34920#31034
+      Checked = True
+      GroupIndex = 2
       RadioItem = True
       OnClick = menuAchievementRateClick
     end
     object menuWinLoss: TMenuItem
-      AutoCheck = True
       Caption = #21213#12385#36000#12369#34920#31034
-      GroupIndex = 1
+      GroupIndex = 2
       RadioItem = True
       OnClick = menuAchievementRateClick
     end

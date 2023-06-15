@@ -153,6 +153,7 @@ type
     function GetFreqStr(): string;
     function GetFreqStr2(): string;
     function GetMemoStr(): string;
+    procedure SetInvalid(v: Boolean);
   public
     constructor Create;
     procedure IncTime;
@@ -208,7 +209,7 @@ type
     property PCName: string read FPCName write FPCName;
     property Forced: Boolean read FForced write FForced;
     property QslState: TQslState read FQslState write FQslState;
-    property Invalid: Boolean read FInvalid write FInvalid;
+    property Invalid: Boolean read FInvalid write SetInvalid;
     property QsoId: Integer read GetQsoId;
 
     property SerialStr: string read GetSerialStr;
@@ -345,6 +346,9 @@ type
     FBandList: TQSOListArray;
     FAllPhone: Boolean;    // True: SSB, FM, AM are same
     FQsoIdDic: TDictionary<Integer, string>;
+    FStartTime: TDateTime;
+    FEndTime: TDateTime;
+    FPeriod: Integer;
     procedure Delete(i : Integer);
     procedure ProcessDelete(beforeQSO: TQSO);
     procedure ProcessEdit(afterQSO: TQSO; fAdd: Boolean);
@@ -354,6 +358,8 @@ type
     procedure SetScoreCoeff(E: Extended);
     function GetScoreCoeff(): Extended;
     function GetActualFreq(b: TBand; strFreq: string): string;
+    function GetEndTime(): TDateTime;
+    procedure SetPeriod(v: Integer);
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -415,6 +421,8 @@ type
     function IsNewMulti(band: TBand; multi: string): Boolean;
     procedure RenewMulti();
     function IsContainsSameQSO(Q: TQSO): Boolean;
+    function IsOutOfPeriod(Q: TQSO): Boolean;
+    procedure JudgeOutOfPeriod();
 
     {$IFNDEF ZSERVER}
     function IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
@@ -432,6 +440,10 @@ type
     property ScoreCoeff: Extended read GetScoreCoeff write SetScoreCoeff;
 
     property AllPhone: Boolean read FAllPhone write FAllPhone;
+
+    property StartTime: TDateTime read FStartTime write FStartTime;
+    property EndTime: TDateTime read GetEndTime;
+    property Period: Integer read FPeriod write SetPeriod;
   end;
 
 implementation
@@ -602,7 +614,7 @@ end;
 
 procedure TQSO.UpdateTime;
 begin
-   if UseUTC then begin
+   if Assigned(MyContest) and (MyContest.UseUTC) then begin
       FTime := GetUTC();
    end
    else begin
@@ -801,6 +813,15 @@ begin
    end;
 
    Result := strMemo;
+end;
+
+procedure TQSO.SetInvalid(v: Boolean);
+begin
+   FInvalid := v;
+   if v = True then begin
+      FMulti1 := '';
+      FMulti2 := '';
+   end;
 end;
 
 function TQSO.PartialSummary(DispDate: Boolean): string;
@@ -1077,7 +1098,7 @@ end;
 
 function TQSO.GetMode2(): TMode;
 const
-   Mode2: array[mCW..mOther] of TMode = (mCW, mSSB, mSSB, mSSB, mRTTY, mOther );
+   Mode2: array[mCW..mOther] of TMode = (mCW, mSSB, mSSB, mSSB, mRTTY, mFT4, mFT8, mOther );
 begin
    Result := Mode2[Self.Mode];
 end;
@@ -1581,6 +1602,7 @@ begin
    FDifferentModePointer := 0;
    FAllPhone := True;
    FQsoIdDic := TDictionary<Integer, string>.Create(120000);
+   FStartTime := 0;
 end;
 
 destructor TLog.Destroy;
@@ -2027,6 +2049,11 @@ begin
 
    for i := 0 to TotalQSO do begin // changed from 1 to TotalQSO to 0 to TotalQSO
       D := FQsoList[i].FileRecord;
+
+      if i = 0 then begin
+         PDateTime(@D.Reserve2)^ := FStartTime;
+      end;
+
       Write(f, D);
    end;
 
@@ -2053,6 +2080,7 @@ begin
          D.Header.MagicNo[2] := Ord('O');
          D.Header.MagicNo[3] := Ord('X');
          D.Header.NumRecords := TotalQSO;
+         PDateTime(Pointer(@D.Reserve2))^ := FStartTime;
       end;
 
       Write(f, D);
@@ -2335,6 +2363,36 @@ begin
    Result := RightStr('     ' + s, 5);
 end;
 
+function TLog.GetEndTime(): TDateTime;
+var
+   dtNow: TDateTime;
+begin
+   if FPeriod = 0 then begin
+      if MyContest.UseUTC = True then begin
+         dtNow := GetUTC();
+      end
+      else begin
+         dtNow := Now;
+      end;
+
+      if (FStartTime <= dtNow) then begin
+         Result := dtNow;
+      end
+      else begin
+         Result := FStartTime;
+      end;
+   end
+   else begin
+      Result := FEndTime;
+   end;
+end;
+
+procedure TLog.SetPeriod(v: Integer);
+begin
+   FPeriod := v;
+   FEndTime := IncHour(FStartTime, FPeriod);
+end;
+
 // https://wwrof.org/cabrillo/
 // https://wwrof.org/cabrillo/cabrillo-qso-data/
 //                              --------info sent------- -------info rcvd--------
@@ -2397,6 +2455,11 @@ begin
    for i := 1 to FQSOList.Count - 1 do begin
       Q := FQSOList[i];
 
+      if (dmZLogGlobal.Settings._output_outofperiod = False) and
+         (IsOutOfPeriod(Q) = True) then begin
+         Continue;
+      end;
+
       if Q.Invalid = True then begin
          strText := 'X-QSO: ';
       end
@@ -2417,6 +2480,12 @@ begin
       end
       else if Q.Mode = mRTTY then begin
          strText := strText + 'RY ';
+      end
+      else if Q.Mode = mFT4 then begin
+         strText := strText + 'DG ';
+      end
+      else if Q.Mode = mFT8 then begin
+         strText := strText + 'DG ';
       end
       else begin
          strText := strText + '   ';
@@ -3008,6 +3077,8 @@ begin
       Exit;
    end;
 
+   FStartTime := PDateTime(@D.Reserve2)^;
+
    {$IFDEF DEBUG}
    dwTick := GetTickCount();
    {$ENDIF}
@@ -3079,6 +3150,8 @@ begin
    AssignFile(f, filename);
    Reset(f);
    Read(f, D);
+
+   FStartTime := PDateTime(@D.Reserve2)^;
 
    Q := nil;
    GLOBALSERIAL := 0;
@@ -3510,6 +3583,27 @@ begin
 
    Result := False;
 end;
+
+function TLog.IsOutOfPeriod(Q: TQSO): Boolean;
+begin
+   if (Q.Time < FStartTime) or (Q.Time > EndTime) then begin
+      Result := True;
+      Exit;
+   end;
+   Result := False;
+end;
+
+procedure TLog.JudgeOutOfPeriod();
+var
+   i: Integer;
+   Q: TQSO;
+begin
+   for i := 1 to TotalQSO do begin
+      Q := FQsoList[i];
+      Q.Invalid := IsOutOfPeriod(Q);
+   end;
+end;
+
 
 { TQSOCallsignComparer }
 

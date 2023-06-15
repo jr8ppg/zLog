@@ -141,6 +141,12 @@ begin
       K := UpCase(Key);
    end;
 
+   // 送信可能文字以外ならパス
+   if (Not CharInSet(K, ['A'..'Z', '0'..'9', '?', '/', '-', '=', 'a', 'b', 't', 'k', 's', 'v', '~', '_', '.', '(', ')',' '])) then begin
+      Key := #00;
+      Exit;
+   end;
+
    nID := MainForm.CurrentRigID;
 
    dmZLogKeyer.SetCWSendBufCharPTT(nID, K);

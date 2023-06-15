@@ -47,7 +47,7 @@ object MarketForm: TMarketForm
       AlignWithMargins = True
       Left = 10
       Top = 13
-      Width = 614
+      Width = 333
       Height = 29
       Margins.Left = 0
       Margins.Right = 0
@@ -60,7 +60,6 @@ object MarketForm: TMarketForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      ExplicitWidth = 333
     end
     object MsgLabel: TLinkLabel
       Left = 10

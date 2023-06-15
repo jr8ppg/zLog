@@ -318,8 +318,7 @@ end;
 procedure TEditDialog.OKBtnClick(Sender: TObject);
 var
    i, j: integer;
-   // aQSO : TQSO;
-//   T: TDateTime;
+   fInvalid: Boolean;
 begin
    // QSO Data
 
@@ -334,6 +333,14 @@ begin
 
    // Date & Time
    workQSO.Time := Trunc(DateTimePicker1.Date) + Frac(DateTimePicker2.Time);
+
+   // コンテスト開始前かチェック
+   if MyContest.UseContestPeriod = True then begin
+      fInvalid := Log.IsOutOfPeriod(workQSO);
+      if fInvalid = True then begin
+         checkInvalid.Checked := True;
+      end;
+   end;
 
    // Call
    workQSO.Callsign := CallsignEdit.Text;

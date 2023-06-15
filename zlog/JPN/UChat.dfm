@@ -55,7 +55,7 @@ object ChatForm: TChatForm
       Width = 51
       Height = 20
       Anchors = [akTop, akRight]
-      Caption = 'Send'
+      Caption = #36865#20449
       TabOrder = 1
       OnClick = buttonSendClick
     end
@@ -105,10 +105,11 @@ object ChatForm: TChatForm
     object checkPopup: TCheckBox
       Left = 4
       Top = 4
-      Width = 145
+      Width = 155
       Height = 17
-      Caption = 'Pop up on new message'
+      Caption = #26032#12513#12483#12475#12540#12472#12391#12509#12483#12503#12450#12483#12503
       TabOrder = 0
+      OnClick = comboPromptTypeChange
     end
     object Button2: TButton
       Left = 304
@@ -121,24 +122,24 @@ object ChatForm: TChatForm
       OnClick = Button2Click
     end
     object checkStayOnTop: TCheckBox
-      Left = 155
+      Left = 165
       Top = 4
-      Width = 79
+      Width = 95
       Height = 17
-      Caption = 'Stay on top'
+      Caption = #26368#21069#38754#12395#34920#31034
       TabOrder = 2
       OnClick = checkStayOnTopClick
     end
     object checkRecord: TCheckBox
-      Left = 240
+      Left = 260
       Top = 4
-      Width = 60
+      Width = 40
       Height = 17
-      Caption = 'Record'
+      Caption = #35352#37682
       Checked = True
       State = cbChecked
       TabOrder = 3
-      OnClick = checkStayOnTopClick
+      OnClick = comboPromptTypeChange
     end
   end
 end

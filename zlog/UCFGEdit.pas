@@ -44,8 +44,18 @@ type
     checkBand14: TCheckBox;
     checkBand15: TCheckBox;
     checkBand16: TCheckBox;
+    GroupBox4: TGroupBox;
+    Label4: TLabel;
+    Label9: TLabel;
+    comboStartTime: TComboBox;
+    comboPeriod: TComboBox;
+    checkUseUTC: TCheckBox;
+    checkUseContestPeriod: TCheckBox;
+    Label10: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure checkUseContestPeriodClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private êÈåæ }
     FCwMessageA: array[1..4] of TEdit;
@@ -60,6 +70,14 @@ type
     procedure SetPower(v: string);
     function GetCwMessageA(Index: Integer): string;
     procedure SetCwMessageA(Index: Integer; v: string);
+    function GetUseUTC(): Boolean;
+    procedure SetUseUTC(v: Boolean);
+    function GetUseContestPeriod(): Boolean;
+    procedure SetUseContestPeriod(v: Boolean);
+    function GetStartTime(): Integer;
+    procedure SetStartTime(v: Integer);
+    function GetPeriod(): Integer;
+    procedure SetPeriod(v: Integer);
   public
     { Public êÈåæ }
     property Sent: string read GetSent write SetSent;
@@ -67,6 +85,10 @@ type
     property City: string read GetCity write SetCity;
     property Power: string read GetPower write SetPower;
     property CwMessageA[Index: Integer]: string read GetCwMessageA write SetCwMessageA;
+    property UseUTC: Boolean read GetUseUTC write SetUseUTC;
+    property UseContestPeriod: Boolean read GetUseContestPeriod write SetUseContestPeriod;
+    property StartTime: Integer read GetStartTime write SetStartTime;
+    property Period: Integer read GetPeriod write SetPeriod;
   end;
 
 implementation
@@ -99,9 +121,23 @@ begin
    FBandToUse[13] := checkBand16;      // 10Gup
 end;
 
+procedure TCFGEdit.FormShow(Sender: TObject);
+begin
+   checkUseContestPeriodClick(nil);
+end;
+
 procedure TCFGEdit.buttonOKClick(Sender: TObject);
 begin
    ModalResult := mrOK;
+end;
+
+procedure TCFGEdit.checkUseContestPeriodClick(Sender: TObject);
+var
+   f: Boolean;
+begin
+   f := checkUseContestPeriod.Checked;
+   comboStartTime.Enabled := f;
+   comboPeriod.Enabled := f;
 end;
 
 function TCFGEdit.GetSent(): string;
@@ -176,6 +212,53 @@ end;
 procedure TCFGEdit.SetCwMessageA(Index: Integer; v: string);
 begin
    FCwMessageA[Index].Text := v;
+end;
+
+function TCFGEdit.GetUseUTC(): Boolean;
+begin
+   Result := checkUseUTC.Checked;
+end;
+
+procedure TCFGEdit.SetUseUTC(v: Boolean);
+begin
+   checkUseUTC.Checked := v;
+end;
+
+function TCFGEdit.GetUseContestPeriod(): Boolean;
+begin
+   Result := checkUseContestPeriod.Checked;
+end;
+
+procedure TCFGEdit.SetUseContestPeriod(v: Boolean);
+begin
+   checkUseContestPeriod.Checked := v;
+end;
+
+function TCFGEdit.GetStartTime(): Integer;
+begin
+   Result := StrToIntDef(comboStartTime.Text, 21);
+end;
+
+procedure TCFGEdit.SetStartTime(v: Integer);
+begin
+   if v = -1 then begin
+      UseContestPeriod := False;
+      v := 21;
+   end
+   else begin
+      UseContestPeriod := True;
+   end;
+   comboStartTime.Text := IntToStr(v);
+end;
+
+function TCFGEdit.GetPeriod(): Integer;
+begin
+   Result := StrToIntDef(comboPeriod.Text, 24);
+end;
+
+procedure TCFGEdit.SetPeriod(v: Integer);
+begin
+   comboPeriod.Text := IntToStr(v);
 end;
 
 end.

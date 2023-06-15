@@ -2,8 +2,8 @@ object formWinkeyerTester: TformWinkeyerTester
   Left = 0
   Top = 0
   BorderStyle = bsSizeToolWin
-  Caption = 'WinKeyerTester'
-  ClientHeight = 116
+  Caption = 'KeyerTester'
+  ClientHeight = 185
   ClientWidth = 434
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -201,6 +201,57 @@ object formWinkeyerTester: TformWinkeyerTester
       Caption = 'Set'
       TabOrder = 1
       OnClick = buttonSendMessageClick
+    end
+  end
+  object GroupBox1: TGroupBox
+    Left = 8
+    Top = 120
+    Width = 417
+    Height = 57
+    Caption = 'USBIF4CW'
+    TabOrder = 3
+    object buttonUsbif4cwP02: TSpeedButton
+      Tag = 1
+      Left = 87
+      Top = 16
+      Width = 73
+      Height = 33
+      AllowAllUp = True
+      GroupIndex = 21
+      Caption = 'P01(PTT)'
+      OnClick = buttonUsbif4cwP00Click
+    end
+    object buttonUsbif4cwP03: TSpeedButton
+      Tag = 2
+      Left = 166
+      Top = 16
+      Width = 73
+      Height = 33
+      AllowAllUp = True
+      GroupIndex = 22
+      Caption = 'P02(RIG)'
+      OnClick = buttonUsbif4cwP00Click
+    end
+    object buttonUsbif4cwP04: TSpeedButton
+      Tag = 3
+      Left = 245
+      Top = 16
+      Width = 73
+      Height = 33
+      AllowAllUp = True
+      GroupIndex = 23
+      Caption = 'P03(MIC)'
+      OnClick = buttonUsbif4cwP00Click
+    end
+    object SpeedButton1: TSpeedButton
+      Left = 8
+      Top = 16
+      Width = 73
+      Height = 33
+      AllowAllUp = True
+      GroupIndex = 20
+      Caption = 'P00(Key)'
+      OnClick = buttonUsbif4cwP00Click
     end
   end
 end

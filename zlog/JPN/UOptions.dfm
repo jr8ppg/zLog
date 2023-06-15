@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetRigControl
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -436,8 +436,8 @@ object formOptions: TformOptions
         end
       end
       object AllowDupeCheckBox: TCheckBox
-        Left = 316
-        Top = 87
+        Left = 273
+        Top = 89
         Width = 113
         Height = 17
         Caption = #12487#12517#12540#12503#12434#35377#21487
@@ -451,7 +451,7 @@ object formOptions: TformOptions
         AutoSize = False
         MaxValue = 99
         MinValue = 1
-        TabOrder = 4
+        TabOrder = 5
         Value = 3
       end
       object cbDispExchange: TCheckBox
@@ -460,11 +460,11 @@ object formOptions: TformOptions
         Width = 240
         Height = 17
         Caption = #20182#12398#12496#12531#12489#12391#20132#25563#12375#12383#12490#12531#12496#12540#12434#34920#31034#12377#12427
-        TabOrder = 6
+        TabOrder = 7
       end
       object cbJMode: TCheckBox
-        Left = 316
-        Top = 66
+        Left = 273
+        Top = 68
         Width = 97
         Height = 17
         Caption = #65322#12514#12540#12489
@@ -476,7 +476,7 @@ object formOptions: TformOptions
         Width = 161
         Height = 17
         Caption = #20445#23384#12399'CW'#38750#36865#20449#26178
-        TabOrder = 3
+        TabOrder = 4
       end
       object cbAutoEnterSuper: TCheckBox
         Left = 17
@@ -484,7 +484,7 @@ object formOptions: TformOptions
         Width = 260
         Height = 17
         Caption = #12473#12540#12497#12540#12481#12455#12483#12463#12424#12426#12490#12531#12496#12540#33258#21205#20837#21147
-        TabOrder = 5
+        TabOrder = 6
       end
       object groupQsyAssist: TGroupBox
         Left = 222
@@ -492,7 +492,7 @@ object formOptions: TformOptions
         Width = 204
         Height = 89
         Caption = 'QSY'#12450#12471#12473#12488
-        TabOrder = 9
+        TabOrder = 10
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -565,7 +565,7 @@ object formOptions: TformOptions
         Width = 101
         Height = 89
         Caption = 'QSL'#21021#26399#20516
-        TabOrder = 8
+        TabOrder = 9
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -599,7 +599,15 @@ object formOptions: TformOptions
         Width = 193
         Height = 17
         Caption = #38263#12356#26085#20184#12391#34920#31034#12377#12427
-        TabOrder = 7
+        TabOrder = 8
+      end
+      object checkOutputOutofPeriod: TCheckBox
+        Left = 273
+        Top = 110
+        Width = 160
+        Height = 17
+        Caption = #26399#38291#22806#12398#20132#20449#12418#12525#12464#20986#21147
+        TabOrder = 3
       end
     end
     object tabsheetCategories: TTabSheet
@@ -774,14 +782,14 @@ object formOptions: TformOptions
       object GroupBox24: TGroupBox
         Left = 6
         Top = 139
-        Width = 143
-        Height = 222
+        Width = 203
+        Height = 264
         Caption = #12458#12506#12524#12540#12479#12540
         TabOrder = 7
         object OpListBox: TListBox
           Left = 11
           Top = 19
-          Width = 121
+          Width = 182
           Height = 162
           TabStop = False
           Enabled = False
@@ -793,7 +801,7 @@ object formOptions: TformOptions
           ItemHeight = 12
           ParentFont = False
           TabOrder = 0
-          OnDblClick = OpListBoxDblClick
+          OnDblClick = buttonOpEditClick
         end
         object buttonOpAdd: TButton
           Left = 11
@@ -805,13 +813,44 @@ object formOptions: TformOptions
           OnClick = buttonOpAddClick
         end
         object buttonOpDelete: TButton
-          Left = 75
+          Left = 136
           Top = 187
           Width = 57
           Height = 25
           Caption = #21066#38500
-          TabOrder = 2
+          TabOrder = 3
           OnClick = buttonOpDeleteClick
+        end
+        object checkSelectLastOperator: TCheckBox
+          Left = 11
+          Top = 218
+          Width = 121
+          Height = 17
+          Hint = #36215#21205#26178#12289#26368#24460#12398#12458#12506#12524#12540#12479#12540#12434#36984#25246#12375#12414#12377#12290
+          Caption = #26368#24460#12398'OP'#12434#36984#25246
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 4
+        end
+        object checkApplyPowerCodeOnBandChange: TCheckBox
+          Left = 11
+          Top = 239
+          Width = 190
+          Height = 17
+          Hint = #12496#12531#12489#22793#26356#26178#12289#12458#12506#12524#12540#12479#12540#27598#12398#38651#21147#31526#21495#12434#36969#29992#12375#12414#12377#12290
+          Caption = #12496#12531#12489#22793#26356#26178#12289#38651#21147#31526#21495#12434#36969#29992
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+        end
+        object buttonOpEdit: TButton
+          Left = 73
+          Top = 187
+          Width = 57
+          Height = 25
+          Caption = #20462#27491
+          TabOrder = 2
+          OnClick = buttonOpEditClick
         end
       end
       object groupPower: TGroupBox
@@ -1860,7 +1899,7 @@ object formOptions: TformOptions
         Left = 214
         Top = 264
         Width = 213
-        Height = 45
+        Height = 69
         Caption = 'USBIF4CW'
         TabOrder = 5
         object checkUsbif4cwSyncWpm: TCheckBox
@@ -1878,6 +1917,14 @@ object formOptions: TformOptions
           Height = 17
           Caption = #12497#12489#12523#12434#24038#21491#21453#36578
           TabOrder = 1
+        end
+        object checkGen3MicSelect: TCheckBox
+          Left = 8
+          Top = 42
+          Width = 193
+          Height = 17
+          Caption = 'Gen.3'#12398#12510#12452#12463#20837#21147#20999#26367#12434#12377#12427
+          TabOrder = 2
         end
       end
       object groupOptCI_V: TGroupBox
@@ -2765,7 +2812,7 @@ object formOptions: TformOptions
         Width = 423
         Height = 167
         Caption = 'Magical Calling'
-        TabOrder = 7
+        TabOrder = 8
         object Label28: TLabel
           Left = 185
           Top = 21
@@ -2887,15 +2934,15 @@ object formOptions: TformOptions
         Associate = SendFreqEdit
         Max = 300
         Position = 60
-        TabOrder = 5
+        TabOrder = 6
       end
       object GroupBox25: TGroupBox
         Left = 181
         Top = 11
         Width = 248
-        Height = 202
+        Height = 206
         Caption = #12450#12531#12486#12490#20999#26367
-        TabOrder = 6
+        TabOrder = 7
         object Label104: TLabel
           Left = 8
           Top = 21
@@ -2905,49 +2952,49 @@ object formOptions: TformOptions
         end
         object Label105: TLabel
           Left = 8
-          Top = 42
+          Top = 43
           Width = 40
           Height = 13
           Caption = '3.5 MHz'
         end
         object Label106: TLabel
           Left = 8
-          Top = 63
+          Top = 65
           Width = 31
           Height = 13
           Caption = '7 MHz'
         end
         object Label107: TLabel
           Left = 8
-          Top = 84
+          Top = 87
           Width = 37
           Height = 13
           Caption = '10 MHz'
         end
         object Label108: TLabel
           Left = 8
-          Top = 105
+          Top = 109
           Width = 37
           Height = 13
           Caption = '14 MHz'
         end
         object Label109: TLabel
           Left = 8
-          Top = 126
+          Top = 131
           Width = 37
           Height = 13
           Caption = '18 MHz'
         end
         object Label110: TLabel
           Left = 8
-          Top = 147
+          Top = 153
           Width = 37
           Height = 13
           Caption = '21 MHz'
         end
         object Label111: TLabel
           Left = 8
-          Top = 168
+          Top = 175
           Width = 37
           Height = 13
           Caption = '24 MHz'
@@ -2961,49 +3008,49 @@ object formOptions: TformOptions
         end
         object Label113: TLabel
           Left = 123
-          Top = 42
+          Top = 43
           Width = 37
           Height = 13
           Caption = '50 MHz'
         end
         object Label114: TLabel
           Left = 123
-          Top = 63
+          Top = 65
           Width = 43
           Height = 13
           Caption = '144 MHz'
         end
         object Label115: TLabel
           Left = 123
-          Top = 84
+          Top = 87
           Width = 43
           Height = 13
           Caption = '430 MHz'
         end
         object Label116: TLabel
           Left = 123
-          Top = 105
+          Top = 109
           Width = 49
           Height = 13
           Caption = '1200 MHz'
         end
         object Label117: TLabel
           Left = 123
-          Top = 126
+          Top = 131
           Width = 49
           Height = 13
           Caption = '2400 MHz'
         end
         object Label118: TLabel
           Left = 123
-          Top = 147
+          Top = 153
           Width = 49
           Height = 13
           Caption = '5600 MHz'
         end
         object Label119: TLabel
           Left = 123
-          Top = 168
+          Top = 175
           Width = 47
           Height = 13
           Caption = '10 G && up'
@@ -3013,6 +3060,7 @@ object formOptions: TformOptions
           Top = 18
           Width = 54
           Height = 21
+          Style = csDropDownList
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 0
@@ -3020,13 +3068,16 @@ object formOptions: TformOptions
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt35: TComboBox
           Left = 55
-          Top = 39
+          Top = 40
           Width = 54
           Height = 21
+          Style = csDropDownList
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 1
@@ -3034,13 +3085,16 @@ object formOptions: TformOptions
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt7: TComboBox
           Left = 55
-          Top = 60
+          Top = 62
           Width = 54
           Height = 21
+          Style = csDropDownList
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 2
@@ -3048,13 +3102,16 @@ object formOptions: TformOptions
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt10: TComboBox
           Left = 55
-          Top = 81
+          Top = 84
           Width = 54
           Height = 21
+          Style = csDropDownList
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 3
@@ -3062,13 +3119,16 @@ object formOptions: TformOptions
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt14: TComboBox
           Left = 55
-          Top = 102
+          Top = 106
           Width = 54
           Height = 21
+          Style = csDropDownList
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 4
@@ -3076,13 +3136,16 @@ object formOptions: TformOptions
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt18: TComboBox
           Left = 55
-          Top = 123
+          Top = 128
           Width = 54
           Height = 21
+          Style = csDropDownList
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 5
@@ -3090,13 +3153,16 @@ object formOptions: TformOptions
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt21: TComboBox
           Left = 55
-          Top = 144
+          Top = 150
           Width = 54
           Height = 21
+          Style = csDropDownList
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 6
@@ -3104,13 +3170,16 @@ object formOptions: TformOptions
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt24: TComboBox
           Left = 55
-          Top = 165
+          Top = 172
           Width = 54
           Height = 21
+          Style = csDropDownList
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 7
@@ -3118,112 +3187,146 @@ object formOptions: TformOptions
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt28: TComboBox
           Left = 180
           Top = 18
           Width = 54
           Height = 21
+          Style = csDropDownList
           ItemIndex = 0
           TabOrder = 8
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt50: TComboBox
           Left = 180
-          Top = 39
+          Top = 40
           Width = 54
           Height = 21
+          Style = csDropDownList
           ItemIndex = 0
           TabOrder = 9
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt144: TComboBox
           Left = 180
-          Top = 60
+          Top = 62
           Width = 54
           Height = 21
+          Style = csDropDownList
           ItemIndex = 0
           TabOrder = 10
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt430: TComboBox
           Left = 180
-          Top = 81
+          Top = 84
           Width = 54
           Height = 21
+          Style = csDropDownList
           ItemIndex = 0
           TabOrder = 11
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt1200: TComboBox
           Left = 180
-          Top = 102
+          Top = 106
           Width = 54
           Height = 21
+          Style = csDropDownList
           ItemIndex = 0
           TabOrder = 12
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt2400: TComboBox
           Left = 180
-          Top = 123
+          Top = 128
           Width = 54
           Height = 21
+          Style = csDropDownList
           ItemIndex = 0
           TabOrder = 13
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt5600: TComboBox
           Left = 180
-          Top = 144
+          Top = 150
           Width = 54
           Height = 21
+          Style = csDropDownList
           ItemIndex = 0
           TabOrder = 14
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboAnt10g: TComboBox
           Left = 180
-          Top = 165
+          Top = 172
           Width = 54
           Height = 21
+          Style = csDropDownList
           ItemIndex = 0
           TabOrder = 15
           Text = 'none'
           Items.Strings = (
             'none'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
+      end
+      object checkIgnoreRigMode: TCheckBox
+        Left = 8
+        Top = 172
+        Width = 141
+        Height = 18
+        Caption = #12522#12464#12398#12514#12540#12489#12434#28961#35222
+        TabOrder = 5
       end
     end
     object tabsheetPath: TTabSheet
@@ -4918,7 +5021,6 @@ object formOptions: TformOptions
           Top = 21
           Width = 113
           Height = 21
-          ReadOnly = True
           TabOrder = 0
         end
         object editQuickMemo2: TEdit
@@ -4926,7 +5028,6 @@ object formOptions: TformOptions
           Top = 48
           Width = 113
           Height = 21
-          ReadOnly = True
           TabOrder = 1
         end
         object editQuickMemo3: TEdit
@@ -4989,13 +5090,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = #65325#65331' '#12468#12471#12483#12463
+          FontName = '@Small Fonts'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 42
+          ItemIndex = 16
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

@@ -325,9 +325,9 @@ begin
    end
    else begin
       case GraphStartPosition of
-         spFirstQSO:    _start := Log.QsoList[1].Time;
+         spFirstQSO:    _start := Log.StartTime;   // Log.QsoList[1].Time;
          spCurrentTime: _start := CalcStartTime( CurrentTime() );
-         spLastQSO:     _start := CalcStartTime( Log.QsoList[Log.TotalQSO].Time );
+         spLastQSO:     _start := IncHour(Log.EndTime, (FShowLast * -1));  // CalcStartTime( Log.QsoList[Log.TotalQSO].Time );
          else           _start := CalcStartTime( CurrentTime() );
       end;
    end;
@@ -354,6 +354,10 @@ begin
       aQSO := Log.QsoList[i];
 
       if (aQSO.Points = 0) then begin    // 得点無しはスキップ
+         Continue;
+      end;
+
+      if (aQSO.Invalid = True) then begin    // 無効もスキップ
          Continue;
       end;
 
