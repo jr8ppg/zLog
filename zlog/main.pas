@@ -4921,18 +4921,18 @@ begin
    nID := FCurrentTx;   //Integer(Sender); //FKeyPressedRigID;   //Integer(Sender);
    curQSO := TQSO.Create();
 
+   AssignControls(nID, C, N, B, M, SE);
+
+   // .‚©?‚ª‚ ‚é‚Æ‚«‚ÍˆÈ~‚Ì‘—M‚Ís‚í‚È‚¢
+   if (Pos('.', C.Text) > 0) or (Pos('?', C.Text) > 0) then begin
+      dmZLogKeyer.ClrBuffer();
+      Exit;
+   end;
+
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- ™™™Begin CallsignSentProc() ID = [' + IntToStr(nID) + ']'));
    {$ENDIF}
    try
-      AssignControls(nID, C, N, B, M, SE);
-
-      // .‚©?‚ª‚ ‚é‚Æ‚«‚ÍˆÈ~‚Ì‘—M‚Ís‚í‚È‚¢
-      if (Pos('.', C.Text) > 0) or (Pos('?', C.Text) > 0) then begin
-         dmZLogKeyer.ClrBuffer();
-         Exit;
-      end;
-
       curQSO.Callsign := C.Text;
       curQSO.Band     := TextToBand(B.Text);
       curQSO.Mode     := TextToMode(M.Text);
