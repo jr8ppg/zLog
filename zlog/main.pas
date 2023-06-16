@@ -4684,13 +4684,14 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- Begin CallsignSentProc() ---'));
    {$ENDIF}
-   try
-      // .か?があるときは以降の送信は行わない
-      if ((Pos('.', CurrentQSO.Callsign) > 0) or (Pos('?', CurrentQSO.Callsign) > 0)) then begin
-         dmZLogKeyer.ClrBuffer();
-         Exit;
-      end;
 
+   // .か?があるときは以降の送信は行わない
+   if ((Pos('.', CurrentQSO.Callsign) > 0) or (Pos('?', CurrentQSO.Callsign) > 0)) then begin
+      dmZLogKeyer.ClrBuffer();
+      Exit;
+   end;
+
+   try
       Q := Log.QuickDupe(CurrentQSO);
       if TabPressed2 and (Q <> nil) then begin
          // ステータスバーにDUPE表示
