@@ -259,7 +259,6 @@ type
     procedure COM_OFF();
     procedure USB_ON();
     procedure USB_OFF();
-    procedure SetPaddleReverse(fReverse: Boolean);
     procedure SetUseSideTone(fUse: Boolean);
     procedure SetSideToneVolume(v: Integer);
 
@@ -332,7 +331,7 @@ type
     property KeyingSignalReverse[Index: Integer]: Boolean read GetKeyingSignalReverse write SetKeyingSignalReverse;
 
     property Usbif4cwSyncWpm: Boolean read FUsbif4cwSyncWpm write FUsbif4cwSyncWpm;
-    property PaddleReverse: Boolean read FPaddleReverse write SetPaddleReverse;
+    property PaddleReverse: Boolean read FPaddleReverse write FPaddleReverse;
     property Gen3MicSelect: Boolean read FGen3MicSelect write FGen3MicSelect;
 
     // USBIF4CW support
@@ -523,8 +522,6 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('***HidControllerDeviceChanges()***'));
    {$ENDIF}
-
-   USB_OFF();
 
    Open();
 end;
@@ -2361,6 +2358,7 @@ var
       end;
    end;
 begin
+   USB_OFF();
    HidController.Enumerate;
    repeat
       Sleep(1);
@@ -2562,6 +2560,12 @@ begin
       if FUsbInfo[i].FUSBIF4CW <> nil then begin
          FUsbInfo[i].FPORTDATA.Clear();
          SendUsbPortData(i);
+         if FPaddleReverse = True then begin
+            usbif4cwSetPaddle(i, 1);
+         end
+         else begin
+            usbif4cwSetPaddle(i, 0);
+         end;
       end;
    end;
 end;
@@ -2582,24 +2586,6 @@ begin
    FUsbInfo[2].FUSBIF4CW := nil;
 
    FUSBIF4CW_Detected := False;
-end;
-
-procedure TdmZLogKeyer.SetPaddleReverse(fReverse: Boolean);
-var
-   i: Integer;
-begin
-   FPaddleReverse := fReverse;
-
-   for i := 0 to MAXPORT do begin
-      if FKeyingPort[i] = tkpUSB then begin
-         if fReverse = True then begin
-            usbif4cwSetPaddle(i, 1);
-         end
-         else begin
-            usbif4cwSetPaddle(i, 0);
-         end;
-      end;
-   end;
 end;
 
 procedure TdmZLogKeyer.SetUseSideTone(fUse: Boolean);

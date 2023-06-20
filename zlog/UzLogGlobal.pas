@@ -2048,8 +2048,6 @@ begin
 
    dmZLogKeyer.SpaceFactor := Settings.CW._spacefactor;
    dmZLogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
-
-   dmZLogKeyer.Open();
 end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;
