@@ -5789,6 +5789,7 @@ begin
    if MessageBox(Handle, PChar(TMainForm_JudgePeriod), PChar(Application.Title), MB_YESNO or MB_ICONQUESTION or MB_DEFBUTTON2) = IDYES then begin
       // ŠúŠÔ“àÄ”»’è
       Log.JudgeOutOfPeriod();
+      Log.SetDupeFlags;
    end;
 
    // •Û‘¶‚·‚é
@@ -5798,8 +5799,7 @@ begin
    end;
 
    // ‰æ–ÊƒŠƒtƒŒƒbƒVƒ…
-   GridRefreshScreen(False);
-   MyContest.Renew();
+   RenewScore();
 end;
 
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
