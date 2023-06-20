@@ -2238,6 +2238,8 @@ var
    SS: string;
    i: word;
 begin
+   S := StringReplace(S, '.', '?', [rfReplaceAll]);
+
    FWkCallsignStr := S;
 
    if callsignptr = 0 then begin
@@ -2245,10 +2247,6 @@ begin
    end;
 
    SS := S + '*********************';
-
-   while pos('.', SS) > 0 do begin
-      SS[pos('.', SS)] := '?';
-   end;
 
    SS[BGKCALLMAX] := '^'; { pause }
 
