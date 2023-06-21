@@ -314,7 +314,7 @@ type
     // Guard Time after RIG Switch
     FRigSwitchGuardTime: Integer;
 
-    // Last FileFilter Index 0:ZLO 1:ZLOX
+    // Last FileFilter Index 1:ZLO 2:ZLOX
     FLastFileFilterIndex: Integer;
 
     // Base FontFace Name
@@ -1052,7 +1052,7 @@ begin
       Settings.FRigSwitchGuardTime     := ini.ReadInteger('Rig', 'RigSwitchGuardTime', 100);
 
       // Last FileFilter Index
-      Settings.FLastFileFilterIndex    := ini.ReadInteger('Preferences', 'LastFileFilterIndex', 1);
+      Settings.FLastFileFilterIndex    := ini.ReadInteger('Preferences', 'LastFileFilterIndex', 2);
 
       // Base FontFace Name
       Settings.FBaseFontName           := ini.ReadString('Preferences', 'BaseFontName', 'ＭＳ ゴシック');
@@ -2030,8 +2030,6 @@ begin
 
    dmZLogKeyer.SpaceFactor := Settings.CW._spacefactor;
    dmZLogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
-
-   dmZLogKeyer.Open();
 end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;
