@@ -79,6 +79,9 @@ type
     function FreqStr(Hz: TFrequency): string;
     procedure PowerOn();
     procedure PowerOff();
+
+    procedure SetLastFreq(v: TFrequency);
+    function GetLastFreq(): TFrequency;
   public
     { Public declarations }
     TempFreq: TFreqArray; //  temp. freq storage when rig is not connected. in kHz
@@ -107,6 +110,8 @@ type
 
     procedure ForcePowerOff();
     procedure ForcePowerOn();
+
+    property LastFreq: TFrequency read GetLastFreq write SetLastFreq;
   end;
 
 resourcestring
@@ -172,14 +177,9 @@ end;
 
 procedure TRigControl.buttonJumpLastFreqClick(Sender: TObject);
 begin
-   if FCurrentRig <> nil then begin
-      FCurrentRig.MoveToLastFreq();
-   end;
-
-   MainForm.Restore2bsiqMode();
-
    MainForm.CallsignEdit.SetFocus;
    MainForm.SetLastFocus();
+   PostMessage(MainForm.Handle, WM_ZLOG_MOVELASTFREQ, 0, 0);
 end;
 
 procedure TRigControl.ToggleSwitch1Click(Sender: TObject);
@@ -906,7 +906,7 @@ begin
 
    dispFreqA.Caption := FreqStr(VfoA) + ' kHz';
    dispFreqB.Caption := FreqStr(VfoB) + ' kHz';
-   dispLastFreq.Caption := FreqStr(Last) + ' kHz';
+//   dispLastFreq.Caption := FreqStr(Last) + ' kHz';
    FPrevVfo[0] := VfoA;
    FPrevVfo[1] := VfoB;
 
@@ -1059,6 +1059,16 @@ end;
 procedure TRigControl.ForcePowerOn();
 begin
    ToggleSwitch1.State := tssOn;
+end;
+
+procedure TRigControl.SetLastFreq(v: TFrequency);
+begin
+   dispLastFreq.Caption := FreqStr(v) + ' kHz';
+end;
+
+function TRigControl.GetLastFreq(): TFrequency;
+begin
+   Result := 0;
 end;
 
 end.

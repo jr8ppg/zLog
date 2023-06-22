@@ -92,7 +92,7 @@ type
     procedure UpdateStatus; virtual;// Renews RigControl Window and Main Window
     procedure WriteData(str : AnsiString);
     procedure InquireStatus; virtual; abstract;
-    procedure MoveToLastFreq; virtual;
+    procedure MoveToLastFreq(fFreq: TFrequency); virtual;
     procedure AntSelect(no: Integer); virtual;
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
@@ -423,16 +423,16 @@ begin
       Result := False;
 end;
 
-procedure TRig.MoveToLastFreq;
+procedure TRig.MoveToLastFreq(fFreq: TFrequency);
 begin
-   SetFreq(FLastFreq, False);
+   SetFreq(fFreq, False);
 
    if FLastMode <> _currentmode then begin
       SetMode(FLastMode);
 
       // ‚à‚¤ˆê“xü”g”‚ğİ’è(side band‚¸‚ê‘Îô)
       if dmZLogGlobal.Settings._bandscope_setfreq_after_mode_change = True then begin
-         SetFreq(FLastFreq, False);
+         SetFreq(fFreq, False);
       end;
    end;
 end;

@@ -60,6 +60,7 @@ const
   WM_ZLOG_SETTXINDICATOR = (WM_USER + 203);
   WM_ZLOG_SETFOCUS_CALLSIGN = (WM_USER + 204);
   WM_ZLOG_SETSTATUSTEXT = (WM_USER + 205);
+  WM_ZLOG_MOVELASTFREQ = (WM_USER + 206);
 
 type
   TEditPanel = record
@@ -670,6 +671,7 @@ type
     procedure OnZLogSetTxIndicator( var Message: TMessage ); message WM_ZLOG_SETTXINDICATOR;
     procedure OnZLogSetFocusCallsign( var Message: TMessage ); message WM_ZLOG_SETFOCUS_CALLSIGN;
     procedure OnZLogSetStatusText( var Message: TMessage ); message WM_ZLOG_SETSTATUSTEXT;
+    procedure OnZLogMoveLastFreq( var Message: TMessage ); message WM_ZLOG_MOVELASTFREQ;
     procedure OnDeviceChange( var Message: TMessage ); message WM_DEVICECHANGE;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
@@ -896,7 +898,10 @@ type
     FCurrentRigSet: Integer; // 現在のRIGSET 1/2/3
     FWaitForQsoFinish: array[0..2] of Boolean;
 
+    // バンドスコープからのJUMP用
     FPrev2bsiqMode: Boolean;
+    FLastFreq: TFrequency;
+    FLastMode: TMode;
 
     FTaskbarList: ITaskbarList;
 
@@ -6066,6 +6071,7 @@ begin
    if MessageBox(Handle, PChar(TMainForm_JudgePeriod), PChar(Application.Title), MB_YESNO or MB_ICONQUESTION or MB_DEFBUTTON2) = IDYES then begin
       // 期間内再判定
       Log.JudgeOutOfPeriod();
+      Log.SetDupeFlags;
    end;
 
    // 保存する
@@ -6075,8 +6081,7 @@ begin
    end;
 
    // 画面リフレッシュ
-   GridRefreshScreen(False);
-   MyContest.Renew();
+   RenewScore();
 end;
 
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
@@ -7288,6 +7293,11 @@ begin
 
    if fWriteConsole then
       FConsolePad.AddLine(statustext);
+end;
+
+procedure TMainForm.OnZLogMoveLastFreq( var Message: TMessage );
+begin
+   actionSetLastFreq.Execute();
 end;
 
 procedure TMainForm.OnDeviceChange( var Message: TMessage );
@@ -9246,15 +9256,29 @@ end;
 procedure TMainForm.actionSetLastFreqExecute(Sender: TObject);
 var
    rig: TRig;
+   b: TBand;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actionSetLastFreqExecute---'));
    {$ENDIF}
 
-   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
-   if rig <> nil then begin
-      rig.MoveToLastFreq;
+   // last freq.が無ければ何もしない
+   if FLastFreq = 0 then begin
+      Exit;
    end;
+
+   // last freqのバンドを求める
+   b := dmZLogGlobal.BandPlan.FreqToBand(FLastFreq);
+
+   // last freqに適したリグを探す
+   rig := RigControl.GetRig(FCurrentRigSet, b);
+   if rig <> nil then begin
+      FRigControl.SetCurrentRig(rig.RigNumber);
+
+      rig.MoveToLastFreq(FLastFreq);
+   end;
+
+   Restore2bsiqMode();
 
    SetCQ(True);
 
@@ -10096,6 +10120,8 @@ var
    rig: TRig;
    rigset: Integer;
    fSetLastFreq: Boolean;
+   nID: Integer;
+   mode: TMode;
 begin
    if freq = 0 then begin
       Exit;
@@ -10107,6 +10133,19 @@ begin
       FInformation.Is2bsiq := False;
       F2bsiqStart := False;
    end;
+
+   // 現在の周波数とモードを記憶
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if (rig = nil) then begin
+      FLastFreq := 0;
+   end
+   else begin
+      FLastFreq := rig.CurrentFreqHz;
+   end;
+   FLastMode := TextToMode(ModeEdit.Text);
+
+   // リグコントロール画面に表示
+   RigControl.LastFreq := FLastFreq;
 
    // 現在のCQモード
    fSetLastFreq := IsCQ();
@@ -10168,6 +10207,21 @@ begin
    else begin
       // バンド変更
       UpdateBand(b);
+   end;
+
+   // CQをかける
+
+   // 送信側RIGのモードを判定
+   nID := FCurrentTx;
+
+   // TX側のモードを取得する
+   mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
+
+   // 送信していなければCQをかける
+   if (mode = mCW) and (dmZLogKeyer.IsPlaying = False) then begin
+      if FCurrentTx <> FCurrentRx then begin
+         actionCQRepeat.Execute();
+      end;
    end;
 end;
 
