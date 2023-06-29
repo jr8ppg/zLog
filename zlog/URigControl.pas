@@ -461,7 +461,7 @@ begin
             rig := TTS2000.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
 
-         if rname = 'TS990' then begin
+         if rname = 'TS-990' then begin
             rig := TTS990.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
 
@@ -564,11 +564,10 @@ begin
                TICOM(rig).Freq4Bytes := True;
             end;
          end;
-
-         rig.Name := rname;
       end;
 
       if Assigned(rig) then begin
+         rig.Name := rname;
          rig.OnUpdateStatus := OnUpdateStatusProc;
          rig.OnError := OnErrorProc;
          rig.IgnoreMode := dmZLogGlobal.Settings._ignore_rig_mode;
