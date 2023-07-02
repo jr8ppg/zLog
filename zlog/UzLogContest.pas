@@ -58,7 +58,7 @@ type
     procedure Renew; virtual;
     {procedure LoadFromFile(FileName : string); virtual; }
 
-    function SpaceBarProc(strCallsign: string; strNumber: string): string; virtual; {called when space is pressed when Callsign Edit
+    function SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string; virtual; {called when space is pressed when Callsign Edit
                                       is in focus AND the callsign is not DUPE}
     procedure SetNrSent(aQSO: TQSO); virtual;
     procedure SetPoints(aQSO: TQSO); virtual; {Sets QSO.points according to band/mode}
@@ -145,7 +145,7 @@ type
   TIOTAContest = class(TContest)
     constructor Create(AOwner: TComponent; N : string); override;
     function QTHString(aQSO: TQSO): string; override;
-    function SpaceBarProc(strCallsign: string; strNumber: string): string; override;
+    function SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string; override;
   end;
 
   TARRL10Contest = class(TContest)
@@ -168,7 +168,7 @@ type
 
   TCQWWContest = class(TContest)
     constructor Create(AOwner: TComponent; N : string; fJIDX: Boolean = False); reintroduce;
-    function SpaceBarProc(strCallsign: string; strNumber: string): string; override;
+    function SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string; override;
     procedure ShowMulti; override;
     function CheckWinSummary(aQSO : TQSO) : string; override;
     function ADIF_ExchangeRX_FieldName : string; override;
@@ -176,7 +176,7 @@ type
 
   TIARUContest = class(TContest)
     constructor Create(AOwner: TComponent; N : string); override;
-    function SpaceBarProc(strCallsign: string; strNumber: string): string; override;
+    function SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string; override;
     function ADIF_ExchangeRX_FieldName : string; override;
   end;
 
@@ -414,12 +414,12 @@ begin
    end;
 end;
 
-function TContest.SpaceBarProc(strCallsign: string; strNumber: string): string;
+function TContest.SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string;
 begin
    FMultiFound := False;
 
    if (strNumber = '') and (SameExchange = True) then begin
-      strNumber := DispExchangeOnOtherBands(strCallsign, bUnknown);
+      strNumber := DispExchangeOnOtherBands(strCallsign, b);
 
       if strNumber <> '' then begin
          FMultiFound := True;
@@ -429,11 +429,11 @@ begin
    Result := strNumber;
 end;
 
-function TIOTAContest.SpaceBarProc(strCallsign: string; strNumber: string): string;
+function TIOTAContest.SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string;
 var
    Q: TQSO;
 begin
-   strNumber := inherited SpaceBarProc(strCallsign, strNumber);
+   strNumber := inherited SpaceBarProc(strCallsign, strNumber, b);
 
    Q := TQSO.Create();
    Q.Callsign := strCallsign;
@@ -1160,14 +1160,14 @@ begin
    FPeriod := 48;
 end;
 
-function TCQWWContest.SpaceBarProc(strCallsign: string; strNumber: string): string;
+function TCQWWContest.SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string;
 var
    temp: string;
 begin
    temp := MultiForm.GuessZone(strCallsign);
    Result := temp;
 
-   DispExchangeOnOtherBands(strCallsign, bUnknown);
+   DispExchangeOnOtherBands(strCallsign, b);
 end;
 
 procedure TCQWWContest.ShowMulti;
@@ -1211,11 +1211,11 @@ begin
    FPeriod := 24;
 end;
 
-function TIARUContest.SpaceBarProc(strCallsign: string; strNumber: string): string;
+function TIARUContest.SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string;
 var
    temp: string;
 begin
-   Result := inherited SpaceBarProc(strCallsign, strNumber);
+   Result := inherited SpaceBarProc(strCallsign, strNumber, b);
 
    if (FMultiFound = False) and (strNumber = '') then begin
       temp := MultiForm.GuessZone(strCallsign);

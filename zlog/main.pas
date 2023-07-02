@@ -4757,7 +4757,7 @@ begin
    Q.NrRcvd := N.Text;
    Q.Band := TextToBand(B.Text);
 
-   strNumber := MyContest.SpaceBarProc(C.Text, N.Text);
+   strNumber := MyContest.SpaceBarProc(C.Text, N.Text, Q.Band);
 
    if dmZlogGlobal.Settings._entersuperexchange and (MainForm.FSpcRcvd_Estimate <> '') then begin
       if strNumber = '' then begin
