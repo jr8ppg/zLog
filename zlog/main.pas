@@ -4759,7 +4759,7 @@ begin
 
    strNumber := MyContest.SpaceBarProc(C.Text, N.Text, Q.Band);
 
-   if dmZlogGlobal.Settings._entersuperexchange and (MainForm.FSpcRcvd_Estimate <> '') then begin
+   if dmZlogGlobal.Settings._entersuperexchange and (FSpcRcvd_Estimate <> '') then begin
       if strNumber = '' then begin
          if CoreCall(FSpcFirstDataCall) = CoreCall(C.Text) then begin
             strNumber := TrimRight(FSpcRcvd_Estimate);
@@ -9272,6 +9272,7 @@ end;
 procedure TMainForm.CheckSuper(aQSO: TQSO);
 var
    PartialStr: string;
+   PartialStrOrg: string;
    i: integer;
    maxhit, hit: integer;
    sd, FirstData: TSuperData;
@@ -9309,6 +9310,7 @@ begin
    maxhit := dmZlogGlobal.Settings._maxsuperhit;
 
    // ポータブル除く
+   PartialStrOrg := PartialStr;
    PartialStr := CoreCall(PartialStr);
 
    // 検索対象無し
@@ -9336,7 +9338,12 @@ begin
 
       for j := 0 to SI.List.Count - 1 do begin
          sd := SI.List[j];
+
          if FSuperCheck.Count = 0 then begin
+            FirstData := sd;
+         end;
+
+         if sd.Callsign = PartialStrOrg then begin
             FirstData := sd;
          end;
 
