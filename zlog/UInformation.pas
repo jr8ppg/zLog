@@ -188,6 +188,7 @@ end;
 procedure TformInformation.SetIs2bsiq(fOn: Boolean);
 begin
    button2bsiq.Down := fOn;
+   button2bsiqClick(nil);
 end;
 
 procedure TformInformation.SetSo2rMode(fOn: Boolean);

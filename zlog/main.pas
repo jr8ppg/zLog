@@ -10218,7 +10218,8 @@ begin
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
 
    // ‘—M‚µ‚Ä‚¢‚È‚¯‚ê‚ÎCQ‚ğ‚©‚¯‚é
-   if (mode = mCW) and (dmZLogKeyer.IsPlaying = False) then begin
+   if (mode = mCW) and (dmZLogKeyer.IsPlaying = False) and
+      (Is2bsiq() = True) then begin
       if FCurrentTx <> FCurrentRx then begin
          actionCQRepeat.Execute();
       end;
