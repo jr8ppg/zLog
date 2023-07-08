@@ -2284,9 +2284,13 @@ end;
 procedure TdmZLogKeyer.SetCallSign(S: string);
 var
    SS: string;
-   i: word;
+   i: Integer;
 begin
    S := StringReplace(S, '.', '?', [rfReplaceAll]);
+   i := Pos('?', S);
+   if i > 0 then begin
+      S := Copy(S, 1, i);
+   end;
 
    FWkCallsignStr := S;
 

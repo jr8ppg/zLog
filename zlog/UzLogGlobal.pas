@@ -679,7 +679,7 @@ begin
    // CITY
    Settings._city := ini.ReadString('Profiles', 'City', '');
 
-   Settings.CW.CWStrBank[1, 1] := ini.ReadString('CW', 'F1', 'CQ TEST $M $M TEST');
+   Settings.CW.CWStrBank[1, 1] := ini.ReadString('CW', 'F1', 'CQ TEST $M TEST');
    Settings.CW.CWStrBank[1, 2] := ini.ReadString('CW', 'F2', '$C 5NN$X');
    Settings.CW.CWStrBank[1, 3] := ini.ReadString('CW', 'F3', 'TU $M TEST');
    Settings.CW.CWStrBank[1, 4] := ini.ReadString('CW', 'F4', 'QSO B4 TU');
@@ -826,11 +826,14 @@ begin
 //      Settings.CW.CWStrBank[1, 2] := ini.ReadString('CW', 'F2', '$C 5NN$X');
 //      Settings.CW.CWStrBank[1, 3] := ini.ReadString('CW', 'F3', 'TU $M TEST');
 //      Settings.CW.CWStrBank[1, 4] := ini.ReadString('CW', 'F4', 'QSO B4 TU');
-      Settings.CW.CWStrBank[1, 5] := ini.ReadString('CW', 'F5', 'NR?');
-
-      for i := 6 to maxmessage do begin
-         Settings.CW.CWStrBank[1, i] := ini.ReadString('CW', 'F' + IntToStr(i), '');
-      end;
+      Settings.CW.CWStrBank[1, 5]  := ini.ReadString('CW', 'F5', 'NR?');
+      Settings.CW.CWStrBank[1, 6]  := ini.ReadString('CW', 'F6', '$C?');
+      Settings.CW.CWStrBank[1, 7]  := ini.ReadString('CW', 'F7', '$M');
+      Settings.CW.CWStrBank[1, 8]  := ini.ReadString('CW', 'F8', '5NN$X');
+      Settings.CW.CWStrBank[1, 9]  := ini.ReadString('CW', 'F9', '');
+      Settings.CW.CWStrBank[1, 10] := ini.ReadString('CW', 'F10', '');
+      Settings.CW.CWStrBank[1, 11] := ini.ReadString('CW', 'F11', '');
+      Settings.CW.CWStrBank[1, 12] := ini.ReadString('CW', 'F12', '');
 
       // Additional CQ Messages
       Settings.CW.AdditionalCQMessages[2] := ini.ReadString('CW', 'CQ2', '');
