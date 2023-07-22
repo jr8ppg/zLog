@@ -3056,6 +3056,7 @@ begin
    FCheckMulti.FontSize := font_size;
    FCheckCountry.FontSize := font_size;
    FFunctionKeyPanel.FontSize := font_size;
+   FChatForm.FontSize := font_size;
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
