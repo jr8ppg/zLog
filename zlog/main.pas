@@ -3048,6 +3048,7 @@ begin
    FBandScopeNewMulti.FontSize := font_size;
    FBandScopeAllBands.FontSize := font_size;
 
+   FCWKeyboard.FontSize := font_size;
    FCWMessagePad.FontSize := font_size;
 
    FFreqList.FontSize := font_size;

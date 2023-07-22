@@ -74,10 +74,14 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
+    FFontSize: Integer;
     procedure PlayMessage(nID: Integer; cb: Integer; no: Integer);
     procedure ApplyShortcut();
+    function GetFontSize(): Integer;
+    procedure SetFontSize(v: Integer);
   public
     { Public declarations }
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -364,6 +368,17 @@ begin
 
    actionDecreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionDecreaseCwSpeed.SecondaryShortCuts);
    actionIncreaseCwSpeed.SecondaryShortCuts.Assign(MainForm.actionIncreaseCwSpeed.SecondaryShortCuts);
+end;
+
+function TCWKeyBoard.GetFontSize(): Integer;
+begin
+   Result := FFontSize;
+end;
+
+procedure TCWKeyBoard.SetFontSize(v: Integer);
+begin
+   FFontSize := v;
+   Console.Font.Size := v;
 end;
 
 end.
