@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, System.IniFiles;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, System.IniFiles,
+  Vcl.Buttons, Vcl.Menus;
 
 type
   TformExportHamlog = class(TForm)
@@ -41,6 +42,25 @@ type
     radioTimeOpt2: TRadioButton;
     editRemarks1Opt1: TEdit;
     editRemarks2Opt1: TEdit;
+    buttonShowReplaceKeywords1: TSpeedButton;
+    buttonShowReplaceKeywords2: TSpeedButton;
+    popupReplaceKeywords: TPopupMenu;
+    menuReplaceKeyword0: TMenuItem;
+    menuReplaceKeyword1: TMenuItem;
+    menuReplaceKeyword2: TMenuItem;
+    menuReplaceKeyword3: TMenuItem;
+    menuReplaceKeyword4: TMenuItem;
+    menuReplaceKeyword5: TMenuItem;
+    menuReplaceKeyword6: TMenuItem;
+    menuReplaceKeyword7: TMenuItem;
+    menuReplaceKeyword8: TMenuItem;
+    menuReplaceKeyword9: TMenuItem;
+    menuReplaceKeyword10: TMenuItem;
+    menuReplaceKeyword11: TMenuItem;
+    menuReplaceKeyword12: TMenuItem;
+    menuReplaceKeyword13: TMenuItem;
+    menuReplaceKeyword14: TMenuItem;
+    menuReplaceKeyword15: TMenuItem;
     procedure radioRemarks1Opt1Click(Sender: TObject);
     procedure radioRemarks1Opt2Click(Sender: TObject);
     procedure radioRemarks1Opt3Click(Sender: TObject);
@@ -49,6 +69,8 @@ type
     procedure radioRemarks2Opt3Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
+    procedure buttonShowReplaceKeywordsClick(Sender: TObject);
+    procedure menuReplaceKeywordClick(Sender: TObject);
   private
     { Private êÈåæ }
     function GetRemarks1Option(): Integer;
@@ -91,11 +113,13 @@ begin
 
    if radioRemarks2Opt1.Checked = True then begin
       editRemarks2Opt1.Enabled := True;
+      buttonShowReplaceKeywords2.Enabled := True;
       editRemarks2Opt1.SetFocus();
    end;
 
    if radioRemarks1Opt1.Checked = True then begin
       editRemarks1Opt1.Enabled := True;
+      buttonShowReplaceKeywords1.Enabled := True;
       editRemarks1Opt1.SetFocus();
    end;
 end;
@@ -108,33 +132,86 @@ end;
 procedure TformExportHamlog.radioRemarks1Opt1Click(Sender: TObject);
 begin
    editRemarks1Opt1.Enabled := True;
+   buttonShowReplaceKeywords1.Enabled := True;
    editRemarks1Opt1.SetFocus();
 end;
 
 procedure TformExportHamlog.radioRemarks1Opt2Click(Sender: TObject);
 begin
    editRemarks1Opt1.Enabled := False;
+   buttonShowReplaceKeywords1.Enabled := False;
 end;
 
 procedure TformExportHamlog.radioRemarks1Opt3Click(Sender: TObject);
 begin
    editRemarks1Opt1.Enabled := False;
+   buttonShowReplaceKeywords1.Enabled := False;
 end;
 
 procedure TformExportHamlog.radioRemarks2Opt1Click(Sender: TObject);
 begin
    editRemarks2Opt1.Enabled := True;
+   buttonShowReplaceKeywords2.Enabled := True;
    editRemarks2Opt1.SetFocus();
 end;
 
 procedure TformExportHamlog.radioRemarks2Opt2Click(Sender: TObject);
 begin
    editRemarks2Opt1.Enabled := False;
+   buttonShowReplaceKeywords2.Enabled := False;
 end;
 
 procedure TformExportHamlog.radioRemarks2Opt3Click(Sender: TObject);
 begin
    editRemarks2Opt1.Enabled := False;
+   buttonShowReplaceKeywords2.Enabled := False;
+end;
+
+procedure TformExportHamlog.buttonShowReplaceKeywordsClick(Sender: TObject);
+var
+   n: Integer;
+   pt: TPoint;
+begin
+   n := TSpeedButton(Sender).Tag;
+   pt.X := TSpeedButton(Sender).Left;
+   pt.Y := TSpeedButton(Sender).Top + TSpeedButton(Sender).Height;
+
+   if n = 0 then begin
+      editRemarks1Opt1.SetFocus();
+      editRemarks1Opt1.SelStart := Length(editRemarks1Opt1.Text);
+      pt := groupRemarks1.ClientToScreen(pt);
+   end
+   else begin
+      editRemarks2Opt1.SetFocus();
+      editRemarks2Opt1.SelStart := Length(editRemarks2Opt1.Text);
+      pt := groupRemarks2.ClientToScreen(pt);
+   end;
+
+   popupReplaceKeywords.Popup(pt.X, pt.Y);
+end;
+
+procedure TformExportHamlog.menuReplaceKeywordClick(Sender: TObject);
+var
+   n: Integer;
+   S: string;
+   I: Integer;
+   edit: TEdit;
+begin
+   n := TMenuItem(Sender).Tag;
+   S := TMenuItem(Sender).Caption;
+   I := Pos(' ', S);
+   S := Copy(S, 1, I - 1);
+
+   edit := TEdit(ActiveControl);
+
+   if edit.Text = '' then begin
+      edit.Text := S;
+   end
+   else begin
+      edit.Text := edit.Text + ' ' + S;
+   end;
+
+   edit.SelStart := Length(edit.Text);
 end;
 
 function TformExportHamlog.GetRemarks1Option(): Integer;
