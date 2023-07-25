@@ -518,6 +518,7 @@ type
     menuCorrectStartTime: TMenuItem;
     FT41: TMenuItem;
     FT81: TMenuItem;
+    actionToggleTxNr: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -781,6 +782,7 @@ type
     procedure menuPortalClick(Sender: TObject);
     procedure menuCorrectStartTimeClick(Sender: TObject);
     procedure FileMenuClick(Sender: TObject);
+    procedure actionToggleTxNrExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -915,7 +917,7 @@ type
     procedure CallsignSentProc(Sender: TObject); // called when callsign is sent;
     procedure Update10MinTimer; //10 min countdown
     procedure SaveFileAndBackUp;
-    procedure ChangeTxNr(txnr: Byte);
+    procedure ChangeTxNr(txnr: Integer);
     procedure IncFontSize();
     procedure DecFontSize();
     procedure SetFontSize(font_size: Integer);
@@ -2927,7 +2929,7 @@ begin
    end;
 end;
 
-procedure TMainForm.ChangeTxNr(txnr: Byte);
+procedure TMainForm.ChangeTxNr(txnr: Integer);
 begin
    case dmZLogGlobal.ContestCategory of
       ccSingleOp: Exit;
@@ -4603,6 +4605,7 @@ var
    S2: string;
    fQsyOK: Boolean;
    nCountDownMinute: Integer;
+   strTxNo: string;
 begin
    S := TimeToStr(CurrentTime);
    if length(S) = 7 then begin
@@ -4664,7 +4667,15 @@ begin
    StatusLine.Panels[3].Text := S;
    FInformation.Time := S;
 
-   FQsyInfoForm.SetQsyInfo(fQsyOK, S2);
+   // SingleOPˆÈŠO‚ÍTX#‚ð•\Ž¦‚·‚é
+   if dmZLogGlobal.ContestCategory = ccSingleOp then begin
+      strTxNo := '';
+   end
+   else begin
+      strTxNo := 'TX#' + IntToStr(dmZLogGlobal.TXNr);
+   end;
+
+   FQsyInfoForm.SetQsyInfo(fQsyOK, strTxNo, S2);
 end;
 
 procedure TMainForm.CallsignSentProc(Sender: TObject);
@@ -9062,6 +9073,19 @@ end;
 procedure TMainForm.actionShowMsgMgrExecute(Sender: TObject);
 begin
 //   FMessageManager.Show();
+end;
+
+// #160 Toggle TxNr
+procedure TMainForm.actionToggleTxNrExecute(Sender: TObject);
+var
+   txnr: Integer;
+begin
+   txnr := dmZlogGlobal.TXNr;
+   Inc(txnr);
+   if txnr > 1 then begin
+      txnr := 0;
+   end;
+   ChangeTxNr(txnr);
 end;
 
 procedure TMainForm.RestoreWindowsPos();

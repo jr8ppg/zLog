@@ -7288,6 +7288,11 @@ object MainForm: TMainForm
       Caption = 'actionChangePower2'
       OnExecute = actionChangePowerExecute
     end
+    object actionToggleTxNr: TAction
+      Caption = 'actionToggleTxNr'
+      ShortCut = 32857
+      OnExecute = actionToggleTxNrExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual
