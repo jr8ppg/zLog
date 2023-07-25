@@ -59,7 +59,6 @@ type
     menuReplaceKeyword11: TMenuItem;
     menuReplaceKeyword12: TMenuItem;
     menuReplaceKeyword13: TMenuItem;
-    menuReplaceKeyword14: TMenuItem;
     menuReplaceKeyword15: TMenuItem;
     procedure radioRemarks1Opt1Click(Sender: TObject);
     procedure radioRemarks1Opt2Click(Sender: TObject);

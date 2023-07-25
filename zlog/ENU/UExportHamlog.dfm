@@ -370,7 +370,6 @@ object formExportHamlog: TformExportHamlog
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 483
     DesignSize = (
       530
       29)
@@ -472,11 +471,6 @@ object formExportHamlog: TformExportHamlog
     object menuReplaceKeyword13: TMenuItem
       Tag = 13
       Caption = '$MODE    Mode(ex. SSB)'
-      OnClick = menuReplaceKeywordClick
-    end
-    object menuReplaceKeyword14: TMenuItem
-      Tag = 14
-      Caption = '$QSL     Mark of QSL state'
       OnClick = menuReplaceKeywordClick
     end
     object menuReplaceKeyword15: TMenuItem
