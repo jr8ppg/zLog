@@ -66,15 +66,15 @@ object MainForm: TMainForm
   end
   object MainPanel: TPanel
     Left = 0
-    Top = 66
+    Top = 94
     Width = 524
-    Height = 317
+    Height = 289
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
     object EditPanel1R: TPanel
       Left = 0
-      Top = 207
+      Top = 179
       Width = 524
       Height = 27
       Align = alBottom
@@ -274,7 +274,7 @@ object MainForm: TMainForm
     end
     object EditPanel2R: TPanel
       Left = 0
-      Top = 234
+      Top = 206
       Width = 524
       Height = 83
       Align = alBottom
@@ -834,7 +834,7 @@ object MainForm: TMainForm
       Left = 0
       Top = 0
       Width = 524
-      Height = 207
+      Height = 179
       TabStop = False
       Align = alClient
       ColCount = 10
@@ -985,6 +985,7 @@ object MainForm: TMainForm
     DoubleBuffered = False
     ParentDoubleBuffered = False
     TabOrder = 2
+    ExplicitTop = 28
     object CWToolBar: TPanel
       Left = 0
       Top = 0
@@ -5768,6 +5769,27 @@ object MainForm: TMainForm
       end
     end
   end
+  object panelOutOfPeriod: TPanel
+    Left = 0
+    Top = 66
+    Width = 524
+    Height = 28
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'Out of contest period'
+    Color = clYellow
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 3
+    Visible = False
+    ExplicitLeft = -1
+    ExplicitTop = 94
+  end
   object MainMenu: TMainMenu
     AutoHotkeys = maManual
     AutoLineReduction = maManual
@@ -7325,5 +7347,12 @@ object MainForm: TMainForm
     Title = 'Import'
     Left = 472
     Top = 144
+  end
+  object timerOutOfPeriod: TTimer
+    Enabled = False
+    Interval = 20
+    OnTimer = timerOutOfPeriodTimer
+    Left = 304
+    Top = 147
   end
 end

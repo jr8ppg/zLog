@@ -985,6 +985,7 @@ object MainForm: TMainForm
     DoubleBuffered = False
     ParentDoubleBuffered = False
     TabOrder = 2
+    ExplicitTop = 28
     object CWToolBar: TPanel
       Left = 0
       Top = 0
@@ -5768,6 +5769,27 @@ object MainForm: TMainForm
       end
     end
   end
+  object panelOutOfPeriod: TPanel
+    Left = 0
+    Top = 66
+    Width = 524
+    Height = 28
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = #12467#12531#12486#12473#12488#26399#38291#22806#12391#12377#12290
+    Color = clYellow
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 3
+    Visible = False
+    ExplicitLeft = -1
+    ExplicitTop = 94
+  end
   object MainMenu: TMainMenu
     AutoHotkeys = maManual
     AutoLineReduction = maManual
@@ -7321,5 +7343,12 @@ object MainForm: TMainForm
     Title = 'Import'
     Left = 472
     Top = 144
+  end
+  object timerOutOfPeriod: TTimer
+    Enabled = False
+    Interval = 20
+    OnTimer = timerOutOfPeriodTimer
+    Left = 304
+    Top = 147
   end
 end

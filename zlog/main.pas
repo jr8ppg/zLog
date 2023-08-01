@@ -519,6 +519,8 @@ type
     FT41: TMenuItem;
     FT81: TMenuItem;
     actionToggleTxNr: TAction;
+    panelOutOfPeriod: TPanel;
+    timerOutOfPeriod: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -783,6 +785,7 @@ type
     procedure menuCorrectStartTimeClick(Sender: TObject);
     procedure FileMenuClick(Sender: TObject);
     procedure actionToggleTxNrExecute(Sender: TObject);
+    procedure timerOutOfPeriodTimer(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -872,6 +875,9 @@ type
 
     FTaskbarList: ITaskbarList;
 
+    FFirstOutOfContestPeriod: Boolean;
+    FOutOfContestPeriod: Boolean;
+    FPrevOutOfContestPeriod: Boolean;
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -1027,6 +1033,7 @@ type
     procedure ShowSentNumber();
     function InputStartTime(fNeedSave: Boolean): Boolean;
     procedure EnableShiftKeyAction(fEnable: Boolean);
+    procedure ShowOutOfContestPeriod(fShow: Boolean);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -2076,6 +2083,12 @@ begin
    FOtherKeyPressed := False;
    FRigSwitchTime := Now();
    FKeyPressedRigID := 0;
+
+   // Out of contest period表示
+   FFirstOutOfContestPeriod := True;
+   FOutOfContestPeriod := False;
+   FPrevOutOfContestPeriod := False;
+   panelOutOfPeriod.Height := 0;
 
    FQsyFromBS := False;
 
@@ -3930,7 +3943,7 @@ begin
 
    // コンテスト開始前かチェック
    if MyContest.UseContestPeriod = True then begin
-      CurrentQSO.Invalid := Log.IsOutOfPeriod(CurrentQSO);
+      CurrentQSO.Invalid := FOutOfContestPeriod;
    end;
 
    // ログに記録
@@ -4473,6 +4486,31 @@ begin
    CQRepeatProc(False);
 end;
 
+// Out of contest period表示用
+procedure TMainForm.timerOutOfPeriodTimer(Sender: TObject);
+begin
+   if TTimer(Sender).Tag = 0 then begin   // OFF
+      if panelOutOfPeriod.Height <= 0 then begin
+         panelOutOfPeriod.Height := 0;
+         panelOutOfPeriod.Visible := False;
+         TTimer(Sender).Enabled := False;
+      end
+      else begin
+         panelOutOfPeriod.Height := panelOutOfPeriod.Height - 2;
+      end;
+   end
+   else begin     // ON
+      if panelOutOfPeriod.Height >= 28 then begin
+         panelOutOfPeriod.Height := 28;
+         TTimer(Sender).Enabled := False;
+      end
+      else begin
+         panelOutOfPeriod.Visible := True;
+         panelOutOfPeriod.Height := panelOutOfPeriod.Height + 2;
+      end;
+   end;
+end;
+
 procedure TMainForm.buttonCwKeyboardClick(Sender: TObject);
 begin
    FormShowAndRestore(FCWKeyBoard);
@@ -4845,6 +4883,16 @@ begin
          S := CurrentQSO.TimeStr;
          if S <> TimeEdit.Text then begin
             TimeEdit.Text := S;
+         end;
+      end;
+
+      // Out of contest period表示
+      FOutOfContestPeriod := Log.IsOutOfPeriod(CurrentQSO);
+      if (FPrevOutOfContestPeriod <> FOutOfContestPeriod) or (FFirstOutOfContestPeriod = True) then begin
+         if panelOutOfPeriod.Visible <> FOutOfContestPeriod then begin
+            ShowOutOfContestPeriod(FOutOfContestPeriod);
+            FPrevOutOfContestPeriod := FOutOfContestPeriod;
+            FFirstOutOfContestPeriod := False;
          end;
       end;
    finally
@@ -5813,6 +5861,9 @@ begin
 
    // 画面リフレッシュ
    RenewScore();
+
+   // 期間外再表示
+   FFirstOutOfContestPeriod := True;
 end;
 
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
@@ -11155,6 +11206,18 @@ begin
          end;
       end;
    end;
+end;
+
+procedure TMainForm.ShowOutOfContestPeriod(fShow: Boolean);
+begin
+   panelOutOfPeriod.Visible := True;
+   if fShow = True then begin
+      timerOutOfPeriod.Tag := 1;
+   end
+   else begin
+      timerOutOfPeriod.Tag := 0;
+   end;
+   timerOutOfPeriod.Enabled := True;
 end;
 
 { TBandScopeNotifyThread }
