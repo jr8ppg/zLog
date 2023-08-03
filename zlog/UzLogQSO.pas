@@ -3659,6 +3659,11 @@ end;
 
 function TLog.IsOutOfPeriod(Q: TQSO): Boolean;
 begin
+   if dmZLogGlobal.Settings._use_contest_period = False then begin
+      Result := False;
+      Exit;
+   end;
+
    if (Q.Time < FStartTime) or (Q.Time > EndTime) then begin
       Result := True;
       Exit;

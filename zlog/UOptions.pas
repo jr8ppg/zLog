@@ -549,6 +549,7 @@ type
     checkOutputOutofPeriod: TCheckBox;
     checkGen3MicSelect: TCheckBox;
     checkIgnoreRigMode: TCheckBox;
+    checkUseContestPeriod: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -1018,6 +1019,7 @@ begin
 
       Settings._allowdupe := AllowDupeCheckBox.Checked;
       Settings._output_outofperiod := checkOutputOutofPeriod.Checked;
+      Settings._use_contest_period := checkUseContestPeriod.Checked;
       Settings._sameexchange := cbDispExchange.Checked;
       Settings._entersuperexchange := cbAutoEnterSuper.Checked;
       Settings._displongdatetime := checkDispLongDateTime.Checked;
@@ -1413,6 +1415,7 @@ begin
 
       AllowDupeCheckBox.Checked := Settings._allowdupe;
       checkOutputOutofPeriod.Checked := Settings._output_outofperiod;
+      checkUseContestPeriod.Checked := Settings._use_contest_period;
 
       ClusterCombo.ItemIndex := Settings._clusterport;
       ZLinkCombo.ItemIndex := Settings._zlinkport;
