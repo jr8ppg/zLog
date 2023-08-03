@@ -7,7 +7,7 @@ uses
   StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids, System.Math, System.StrUtils,
   System.SyncObjs, Generics.Collections, Vcl.Buttons, Vcl.WinXCtrls,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB,
-  URigCtrlLib, URigCtrlIcom, URigCtrlKenwood, URigCtrlYaesu;
+  URigCtrlLib, URigCtrlIcom, URigCtrlKenwood, URigCtrlYaesu, URigCtrlElecraft;
 
 type
   TRigControl = class(TForm)
@@ -535,6 +535,10 @@ begin
 
          if rname = 'JST-245' then begin
             rig := TJST145.Create(rignum, Port, Comm, Timer, b19, b50);
+         end;
+
+         if rname = 'Elecraft K3S/K3/KX3/KX2' then begin
+            rig := TElecraft.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
 
          if pos('IC-', rname) = 1 then begin

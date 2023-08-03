@@ -140,7 +140,8 @@ uses
   URigCtrlKenwood in 'URigCtrlKenwood.pas',
   URigCtrlYaesu in 'URigCtrlYaesu.pas',
   UStartTimeDialog in 'UStartTimeDialog.pas' {StartTimeDialog},
-  UOperatorPowerDialog in 'UOperatorPowerDialog.pas' {OperatorPowerDialog};
+  UOperatorPowerDialog in 'UOperatorPowerDialog.pas' {OperatorPowerDialog},
+  URigCtrlElecraft in 'URigCtrlElecraft.pas';
 
 {$R *.RES}
 

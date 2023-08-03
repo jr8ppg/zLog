@@ -2476,6 +2476,7 @@ begin
       sl.Add(ICOMLIST[i].name);
    end;
 
+   sl.Add('Elecraft K3S/K3/KX3/KX2');
    sl.Add('JST-145');
    sl.Add('JST-245');
    sl.Add('Omni-Rig');
