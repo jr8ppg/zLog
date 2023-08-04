@@ -9616,7 +9616,7 @@ begin
 
             // ‚à‚¤ˆê“xü”g”‚ğİ’è(side band‚¸‚ê‘Îô)
             if dmZLogGlobal.Settings._bandscope_setfreq_after_mode_change = True then begin
-               RigControl.Rig.SetFreq(freq, fSetLastFreq);
+               RigControl.Rig.SetFreq(freq, False);
             end;
          end;
 
