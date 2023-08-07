@@ -2091,21 +2091,23 @@ var
 begin
    op := FOpList.ObjectOf(aQSO.Operator);
    if op = nil then begin
-      // 今のOPがOpListにいなければ消す
-      aQSO.Operator := '';
-      Exit;
-   end;
+      // 今のOPがOpListにいない
+      if dmZLogGlobal.Settings._pcname <> '' then begin
+         aQSO.Operator := dmZLogGlobal.Settings._pcname;
+      end
+      else begin
+         aQSO.Operator := '';
+      end;
 
-   str := op.Power;
+      P := dmZLogGlobal.Settings._power[aQSO.Band][1];
+   end
+   else begin
+      str := op.Power;
 
-//   if OldBandOrd(aQSO.Band) + 1 <= length(str) then
-//      P := str[OldBandOrd(aQSO.Band) + 1]
-//   else
-//      P := UpCase(str[1]);
-
-   P := str[OldBandOrd(aQSO.Band) + 1];
-   if P = '-' then begin
-      P := UpCase(str[1]);
+      P := str[OldBandOrd(aQSO.Band) + 1];
+      if P = '-' then begin
+         P := UpCase(str[1]);
+      end;
    end;
 
    case P of
