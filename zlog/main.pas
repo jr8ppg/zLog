@@ -1170,6 +1170,7 @@ resourcestring
   TMainForm_Set_CQ_Repeat_Int = 'CQ Repeat Int. %.1f sec.';
   TMainForm_Invalid_zone = 'Invalid zone';
   TMainForm_JudgePeriod = 'Do you want to judge whether all QSOs are within the contest period?';
+  TMainForm_EmptyOpList = 'Operator list is empty.';
 
 var
   MainForm: TMainForm;
@@ -5710,6 +5711,11 @@ var
    e: TEdit;
    pt: TPoint;
 begin
+   if dmZlogGlobal.OpList.Count = 0 then begin
+      MessageBox(Handle, PChar(TMainForm_EmptyOpList), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
    e := TEdit(Sender);
    pt.X := e.Left + 20;
    pt.Y := e.Top;
@@ -8256,7 +8262,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actionFocusOpExecute---'));
    {$ENDIF}
-   OpEdit1Click(Self);
+   OpEdit1Click(OpEdit);
 end;
 
 // #64 Packet Cluster / Alt+P

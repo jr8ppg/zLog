@@ -985,7 +985,6 @@ object MainForm: TMainForm
     DoubleBuffered = False
     ParentDoubleBuffered = False
     TabOrder = 2
-    ExplicitTop = 28
     object CWToolBar: TPanel
       Left = 0
       Top = 0
@@ -5787,8 +5786,6 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 3
     Visible = False
-    ExplicitLeft = -1
-    ExplicitTop = 94
   end
   object MainMenu: TMainMenu
     AutoHotkeys = maManual
