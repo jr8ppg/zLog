@@ -32,17 +32,21 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
+    FFontSize: Integer;
     FChatFileName: string;
     procedure SendMessage(S: string);
     procedure Chat(S: string);
     procedure RecordChat(S: string);
     function GetPrompt(): string;
+    function GetFontSize(): Integer;
+    procedure SetFontSize(v: Integer);
   public
     { Public declarations }
     procedure Add(S : string);
     procedure SetConnectStatus(fConnected: Boolean);
     procedure ImplementOptions();
     procedure RenewOptions();
+    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -285,6 +289,17 @@ begin
    dmZlogGlobal.Settings.FChatFormStayOnTop     := checkStayOnTop.Checked;
    dmZlogGlobal.Settings.FChatFormRecordLogs    := checkRecord.Checked;
    dmZlogGlobal.Settings.FChatFormPrompt        := comboPromptType.ItemIndex;
+end;
+
+function TChatForm.GetFontSize(): Integer;
+begin
+   Result := FFontSize;
+end;
+
+procedure TChatForm.SetFontSize(v: Integer);
+begin
+   FFontSize := v;
+   ListBox.Font.Size := v;
 end;
 
 end.

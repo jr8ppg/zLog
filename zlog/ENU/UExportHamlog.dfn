@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45017.9701388889</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">45149.9560648148</prop>
+        <prop prop-type="OrigDateTime">45149.9368055556</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">243</prop>
+        <prop prop-type="UnTranslated">309</prop>
       </prop-group>
     </header>
     <body>
@@ -39,7 +39,7 @@
         <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TformExportHamlog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.ClientWidth" resname="O:formExportHamlog.ClientWidth">
-        <source>372</source>
+        <source>530</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TformExportHamlog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -117,7 +117,7 @@
         <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.Width" resname="O:formExportHamlog.O:GroupBox1.Width">
-        <source>372</source>
+        <source>530</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -156,7 +156,7 @@
         <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.Width">
-        <source>349</source>
+        <source>501</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -179,30 +179,65 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.Left">
+        <source>469</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.Top">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.Width">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.Flat" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.Flat">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.Glyph.Data" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.Glyph.Data">
+        <source>36040000424D36040000000000003600000028000000100000001000000001002000000000000004000000000000000000000000000000000000FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF000000000000000000FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF0000000000000000000000000000000000FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00000000000000000000000000000000000000000000000000FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF000000000000000000000000000000000000000000000000000000000000000000FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">{</prop><prop prop-type="Close">}</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:buttonShowReplaceKeywords1.OnClick">
+        <source>buttonShowReplaceKeywordsClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.Top">
         <source>49</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.Width">
         <source>60</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.Caption">
         <source>'Input'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'入力'</source>
           <target>'Input'</target>
           <prop-group name="ITEFieldProp">
@@ -211,107 +246,107 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt1.OnClick">
         <source>radioRemarks1Opt1Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.Top">
         <source>75</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.Width">
         <source>69</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.Caption">
         <source>'Operator'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.TabOrder">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt2.OnClick">
         <source>radioRemarks1Opt2Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.Top">
         <source>101</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.Width">
         <source>69</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.Caption">
         <source>'Memo'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.TabOrder">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt3.OnClick">
         <source>radioRemarks1Opt3Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.Top">
         <source>23</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.Width">
         <source>92</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.Caption">
         <source>'Nothing'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'何も出さない'</source>
           <target>'Nothing'</target>
           <prop-group name="ITEFieldProp">
@@ -320,32 +355,32 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:radioRemarks1Opt0.OnClick">
         <source>radioRemarks1Opt3Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:editRemarks1Opt1.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:editRemarks1Opt1.Left">
         <source>100</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:editRemarks1Opt1.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:editRemarks1Opt1.Top">
         <source>45</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:editRemarks1Opt1.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:editRemarks1Opt1.Width">
-        <source>241</source>
+        <source>366</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:editRemarks1Opt1.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:editRemarks1Opt1.Height">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>20</source>
           <target>21</target>
           <prop-group name="ITEFieldProp">
@@ -354,32 +389,32 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:editRemarks1Opt1.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks1.O:editRemarks1Opt1.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.Left">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.Top">
         <source>163</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.Width">
-        <source>349</source>
+        <source>501</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.Height">
         <source>130</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.Caption">
         <source>'Output for Remarks2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'Remarks2の出力内容'</source>
           <target>'Output for Remarks2'</target>
           <prop-group name="ITEFieldProp">
@@ -388,32 +423,72 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Tag" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Tag">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Left">
+        <source>469</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Top">
+        <source>45</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Width">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Height">
+        <source>21</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Flat" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Flat">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Glyph.Data" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.Glyph.Data">
+        <source>36040000424D36040000000000003600000028000000100000001000000001002000000000000004000000000000000000000000000000000000FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF000000000000000000FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF0000000000000000000000000000000000FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00000000000000000000000000000000000000000000000000FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF000000000000000000000000000000000000000000000000000000000000000000FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">{</prop><prop prop-type="Close">}</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:buttonShowReplaceKeywords2.OnClick">
+        <source>buttonShowReplaceKeywordsClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.Top">
         <source>49</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.Width">
         <source>56</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.Caption">
         <source>'Input'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'入力'</source>
           <target>'Input'</target>
           <prop-group name="ITEFieldProp">
@@ -422,107 +497,107 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt1.OnClick">
         <source>radioRemarks2Opt1Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.Top">
         <source>75</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.Width">
         <source>69</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.Caption">
         <source>'Operator'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.TabOrder">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt2.OnClick">
         <source>radioRemarks2Opt2Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.Top">
         <source>101</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.Width">
         <source>69</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.Caption">
         <source>'Memo'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.TabOrder">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt3.OnClick">
         <source>radioRemarks2Opt3Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.Top">
         <source>23</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.Width">
         <source>92</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.Caption">
         <source>'Nothing'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'何も出さない'</source>
           <target>'Nothing'</target>
           <prop-group name="ITEFieldProp">
@@ -531,12 +606,12 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:radioRemarks2Opt0.OnClick">
         <source>radioRemarks2Opt3Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>radioRemarks1Opt3Click</source>
           <target>radioRemarks2Opt3Click</target>
           <prop-group name="ITEFieldProp">
@@ -545,7 +620,7 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:editRemarks2Opt1.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:editRemarks2Opt1.Left">
         <source>100</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>96</source>
           <target>100</target>
           <prop-group name="ITEFieldProp">
@@ -554,21 +629,21 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:editRemarks2Opt1.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:editRemarks2Opt1.Top">
         <source>45</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>46</source>
           <target>45</target>
           <prop-group name="ITEFieldProp">
           <prop prop-type="Modified">44868.2527133912</prop></prop-group>
         </alt-trans></trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:editRemarks2Opt1.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:editRemarks2Opt1.Width">
-        <source>241</source>
+        <source>366</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:editRemarks2Opt1.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:editRemarks2Opt1.Height">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>20</source>
           <target>21</target>
           <prop-group name="ITEFieldProp">
@@ -577,32 +652,32 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:editRemarks2Opt1.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupRemarks2.O:editRemarks2Opt1.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.Left">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.Top">
         <source>381</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.Width">
         <source>170</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.Height">
         <source>96</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">120</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.Caption">
         <source>'Output for Mark of QSL'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">121</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'QSLマークの出力内容'</source>
           <target>'Output for Mark of QSL'</target>
           <prop-group name="ITEFieldProp">
@@ -611,17 +686,17 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.TabOrder">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">122</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label1.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label1.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label1.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label1.Top">
         <source>46</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>45</source>
           <target>46</target>
           <prop-group name="ITEFieldProp">
@@ -630,7 +705,7 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label1.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label1.Width">
         <source>45</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">125</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>46</source>
           <target>45</target>
           <prop-group name="ITEFieldProp">
@@ -639,7 +714,7 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label1.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label1.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">126</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>12</source>
           <target>13</target>
           <prop-group name="ITEFieldProp">
@@ -648,17 +723,17 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label1.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label1.Caption">
         <source>'PSE QSL'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label2.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label2.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">128</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label2.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label2.Top">
         <source>23</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">129</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>22</source>
           <target>23</target>
           <prop-group name="ITEFieldProp">
@@ -667,7 +742,7 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label2.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label2.Width">
         <source>26</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">130</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>79</source>
           <target>26</target>
           <prop-group name="ITEFieldProp">
@@ -676,7 +751,7 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label2.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label2.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">131</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>12</source>
           <target>13</target>
           <prop-group name="ITEFieldProp">
@@ -685,7 +760,7 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label2.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label2.Caption">
         <source>'None'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'設定無し(None)'</source>
           <target>'None'</target>
           <prop-group name="ITEFieldProp">
@@ -694,12 +769,12 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label3.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label3.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">133</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label3.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label3.Top">
         <source>69</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>68</source>
           <target>69</target>
           <prop-group name="ITEFieldProp">
@@ -708,7 +783,7 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label3.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label3.Width">
         <source>40</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">120</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">135</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>41</source>
           <target>40</target>
           <prop-group name="ITEFieldProp">
@@ -717,7 +792,7 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label3.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label3.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">121</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">136</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>12</source>
           <target>13</target>
           <prop-group name="ITEFieldProp">
@@ -726,17 +801,17 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label3.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:Label3.Caption">
         <source>'NO QSL'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">122</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">137</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editQslNone.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editQslNone.Left">
         <source>121</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">138</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editQslNone.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editQslNone.Top">
         <source>20</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">139</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>19</source>
           <target>20</target>
           <prop-group name="ITEFieldProp">
@@ -745,12 +820,12 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editQslNone.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editQslNone.Width">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">125</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">140</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editQslNone.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editQslNone.Height">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">126</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">141</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>20</source>
           <target>21</target>
           <prop-group name="ITEFieldProp">
@@ -759,22 +834,22 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editQslNone.MaxLength" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editQslNone.MaxLength">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">142</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editQslNone.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editQslNone.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">128</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">143</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.Left">
         <source>121</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">129</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">144</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.Top">
         <source>43</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">130</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">145</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>42</source>
           <target>43</target>
           <prop-group name="ITEFieldProp">
@@ -783,12 +858,12 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.Width">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">131</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">146</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.Height">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>20</source>
           <target>21</target>
           <prop-group name="ITEFieldProp">
@@ -797,27 +872,27 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.MaxLength" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.MaxLength">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">133</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">148</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">149</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.Text" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editPseQsl.Text">
         <source>'J'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">135</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">150</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.Left">
         <source>121</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">136</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">151</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.Top">
         <source>66</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">137</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">152</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>65</source>
           <target>66</target>
           <prop-group name="ITEFieldProp">
@@ -826,12 +901,12 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.Width">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">138</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.Height">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">139</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">154</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>20</source>
           <target>21</target>
           <prop-group name="ITEFieldProp">
@@ -840,42 +915,42 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.MaxLength" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.MaxLength">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">140</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">155</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">141</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">156</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.Text" resname="O:formExportHamlog.O:GroupBox1.O:groupQslMark.O:editNoQsl.Text">
         <source>'N'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">142</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">157</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.Left">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">143</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">158</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.Top">
         <source>302</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">144</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">159</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.Width">
         <source>170</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">145</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">160</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.Height">
         <source>71</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">146</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.Caption">
         <source>'Operation Place of UR'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'相手局の運用地コード'</source>
           <target>'Operation Place of UR'</target>
           <prop-group name="ITEFieldProp">
@@ -884,17 +959,17 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">148</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">149</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">164</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Top">
         <source>23</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">150</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">165</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>19</source>
           <target>23</target>
           <prop-group name="ITEFieldProp">
@@ -903,17 +978,17 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Width">
         <source>92</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">151</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">166</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">152</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">167</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Caption">
         <source>'Nothing'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'何も出さない'</source>
           <target>'Nothing'</target>
           <prop-group name="ITEFieldProp">
@@ -922,32 +997,32 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Checked" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.Checked">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">154</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">155</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">170</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.TabStop" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.TabStop">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">156</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">171</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt0.OnClick">
         <source>radioRemarks1Opt3Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">157</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">158</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">173</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.Top">
         <source>48</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">159</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">174</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>44</source>
           <target>48</target>
           <prop-group name="ITEFieldProp">
@@ -956,17 +1031,17 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.Width">
         <source>92</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">160</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.Caption">
         <source>'Received NR'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'受信ナンバー'</source>
           <target>'Received NR'</target>
           <prop-group name="ITEFieldProp">
@@ -975,37 +1050,37 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupCode.O:radioCodeOpt1.OnClick">
         <source>radioRemarks1Opt3Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">164</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupName.Left">
         <source>191</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">165</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupName.Top">
         <source>302</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">166</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupName.Width">
         <source>170</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">167</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupName.Height">
         <source>71</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">183</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupName.Caption">
         <source>'Name of UR'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'相手局の名前・名称'</source>
           <target>'Name of UR'</target>
           <prop-group name="ITEFieldProp">
@@ -1014,17 +1089,17 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupName.TabOrder">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">170</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">185</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">171</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">186</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Top">
         <source>23</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>19</source>
           <target>23</target>
           <prop-group name="ITEFieldProp">
@@ -1033,17 +1108,17 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Width">
         <source>92</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">173</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">174</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Caption">
         <source>'Nothing'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">190</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'何も出さない'</source>
           <target>'Nothing'</target>
           <prop-group name="ITEFieldProp">
@@ -1052,32 +1127,32 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Checked" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.Checked">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">192</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.TabStop" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.TabStop">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">193</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt0.OnClick">
         <source>radioRemarks1Opt3Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">194</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">195</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.Top">
         <source>48</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">196</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>44</source>
           <target>48</target>
           <prop-group name="ITEFieldProp">
@@ -1086,17 +1161,17 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.Width">
         <source>92</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">183</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">198</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.Caption">
         <source>'Received NR'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">199</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'受信ナンバー'</source>
           <target>'Received NR'</target>
           <prop-group name="ITEFieldProp">
@@ -1105,37 +1180,37 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">185</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">200</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupName.O:radioNameOpt1.OnClick">
         <source>radioRemarks1Opt3Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">186</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">201</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.Left">
         <source>191</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">202</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.Top">
         <source>381</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">203</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.Width">
         <source>170</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">204</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.Height">
         <source>96</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">190</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">205</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.Caption">
         <source>'Output for QSO time'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">206</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'交信時分の出力内容'</source>
           <target>'Output for QSO time'</target>
           <prop-group name="ITEFieldProp">
@@ -1144,17 +1219,17 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.TabOrder">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">192</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">207</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">193</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">208</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Top">
         <source>23</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">194</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">209</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>19</source>
           <target>23</target>
           <prop-group name="ITEFieldProp">
@@ -1163,17 +1238,17 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Width">
         <source>92</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">195</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">210</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">196</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">211</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Caption">
         <source>'Don'#39't care'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">212</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'そのまま出力'</source>
           <target>'Don'#39't care'</target>
           <prop-group name="ITEFieldProp">
@@ -1182,32 +1257,32 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Checked" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.Checked">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">198</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">213</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">199</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">214</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.TabStop" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.TabStop">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">200</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">215</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt0.OnClick">
         <source>radioRemarks1Opt3Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">201</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">216</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">202</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">217</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.Top">
         <source>46</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">203</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">218</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>42</source>
           <target>46</target>
           <prop-group name="ITEFieldProp">
@@ -1216,17 +1291,17 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.Width">
         <source>92</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">204</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">219</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">205</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">220</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.Caption">
         <source>'Change to JST'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">206</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">221</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'JSTに統一'</source>
           <target>'Change to JST'</target>
           <prop-group name="ITEFieldProp">
@@ -1235,22 +1310,22 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">207</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">222</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt1.OnClick">
         <source>radioRemarks1Opt3Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">208</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">223</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.Left" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.Left">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">209</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">224</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.Top" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.Top">
         <source>69</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">210</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">225</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>65</source>
           <target>69</target>
           <prop-group name="ITEFieldProp">
@@ -1259,17 +1334,17 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.Width" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.Width">
         <source>92</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">211</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">226</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.Height" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">212</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">227</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.Caption" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.Caption">
         <source>'Change to UTC'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">213</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">228</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>'UTCに統一'</source>
           <target>'Change to UTC'</target>
           <prop-group name="ITEFieldProp">
@@ -1278,147 +1353,402 @@
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.TabOrder" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">214</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">229</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.OnClick" resname="O:formExportHamlog.O:GroupBox1.O:groupTime.O:radioTimeOpt2.OnClick">
         <source>radioRemarks1Opt3Click</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">215</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">230</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.Left" resname="O:formExportHamlog.O:Panel1.Left">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">216</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">231</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.Top" resname="O:formExportHamlog.O:Panel1.Top">
         <source>485</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">217</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">232</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.Width" resname="O:formExportHamlog.O:Panel1.Width">
-        <source>372</source>
+        <source>530</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">218</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">233</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.Height" resname="O:formExportHamlog.O:Panel1.Height">
         <source>29</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">219</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">234</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.Align" resname="O:formExportHamlog.O:Panel1.Align">
         <source>alBottom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">220</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">235</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.BevelOuter" resname="O:formExportHamlog.O:Panel1.BevelOuter">
         <source>bvNone</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">221</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">236</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.TabOrder" resname="O:formExportHamlog.O:Panel1.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">222</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">237</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.DesignSize[0]" resname="O:formExportHamlog.O:Panel1.DesignSize[0]">
-        <source>372</source>
+        <source>530</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">223</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">238</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">(</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.DesignSize[1]" resname="O:formExportHamlog.O:Panel1.DesignSize[1]">
         <source>29</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">224</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">239</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop><prop prop-type="Close">)</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonCancel.Left" resname="O:formExportHamlog.O:Panel1.O:buttonCancel.Left">
-        <source>189</source>
+        <source>268</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">225</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">240</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonCancel.Top" resname="O:formExportHamlog.O:Panel1.O:buttonCancel.Top">
-        <source>1</source>
+        <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">226</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">241</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonCancel.Width" resname="O:formExportHamlog.O:Panel1.O:buttonCancel.Width">
         <source>90</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">227</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">242</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonCancel.Height" resname="O:formExportHamlog.O:Panel1.O:buttonCancel.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">228</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">243</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonCancel.Anchors" resname="O:formExportHamlog.O:Panel1.O:buttonCancel.Anchors">
         <source>[akLeft, akBottom]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">229</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">244</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonCancel.Cancel" resname="O:formExportHamlog.O:Panel1.O:buttonCancel.Cancel">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">230</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">245</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonCancel.Caption" resname="O:formExportHamlog.O:Panel1.O:buttonCancel.Caption">
         <source>'Cancel'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">231</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">246</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonCancel.ModalResult" resname="O:formExportHamlog.O:Panel1.O:buttonCancel.ModalResult">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">232</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">247</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonCancel.TabOrder" resname="O:formExportHamlog.O:Panel1.O:buttonCancel.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">233</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">248</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonOK.Left" resname="O:formExportHamlog.O:Panel1.O:buttonOK.Left">
-        <source>93</source>
+        <source>172</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">234</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">249</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonOK.Top" resname="O:formExportHamlog.O:Panel1.O:buttonOK.Top">
-        <source>1</source>
+        <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">235</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">250</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonOK.Width" resname="O:formExportHamlog.O:Panel1.O:buttonOK.Width">
         <source>90</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">236</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">251</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonOK.Height" resname="O:formExportHamlog.O:Panel1.O:buttonOK.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">237</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">252</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonOK.Anchors" resname="O:formExportHamlog.O:Panel1.O:buttonOK.Anchors">
         <source>[akLeft, akBottom]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">238</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">253</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonOK.Caption" resname="O:formExportHamlog.O:Panel1.O:buttonOK.Caption">
         <source>'OK'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">239</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">254</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonOK.ModalResult" resname="O:formExportHamlog.O:Panel1.O:buttonOK.ModalResult">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">240</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">255</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonOK.TabOrder" resname="O:formExportHamlog.O:Panel1.O:buttonOK.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">241</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931636227</prop><prop prop-type="Status">0</prop><prop prop-type="Order">256</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formExportHamlog.O:Panel1.O:buttonOK.OnClick" resname="O:formExportHamlog.O:Panel1.O:buttonOK.OnClick">
         <source>buttonOKClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44868.6277133449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">242</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44868.6277133449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">257</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.Tag">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">258</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.AutoHotkeys" resname="O:formExportHamlog.O:popupReplaceKeywords.AutoHotkeys">
+        <source>maManual</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">259</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.AutoLineReduction" resname="O:formExportHamlog.O:popupReplaceKeywords.AutoLineReduction">
+        <source>maManual</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">260</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.Left" resname="O:formExportHamlog.O:popupReplaceKeywords.Left">
+        <source>328</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">261</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.Top" resname="O:formExportHamlog.O:popupReplaceKeywords.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">262</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword0.AutoHotkeys" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword0.AutoHotkeys">
+        <source>maManual</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">263</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword0.AutoLineReduction" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword0.AutoLineReduction">
+        <source>maManual</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">264</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword0.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword0.Caption">
+        <source>'$URCALL  Ur callsign'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">265</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword0.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword0.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">266</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword1.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword1.Tag">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">267</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword1.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword1.Caption">
+        <source>'$MYCALL  My callsign'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">268</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword1.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword1.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">269</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword2.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword2.Tag">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">270</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword2.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword2.Caption">
+        <source>'$RSTSENT Sent RST'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">271</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword2.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword2.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">272</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword3.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword3.Tag">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">273</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword3.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword3.Caption">
+        <source>'$RSTRECV Recieved RST'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">274</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword3.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword3.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">275</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword4.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword4.Tag">
+        <source>4</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">276</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword4.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword4.Caption">
+        <source>'$NRSENT  Sent NR'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774769</prop><prop prop-type="Status">0</prop><prop prop-type="Order">277</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword4.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword4.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">278</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword5.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword5.Tag">
+        <source>5</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">279</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword5.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword5.Caption">
+        <source>'$NRRECV  Recieved NR'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">280</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword5.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword5.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">281</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword6.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword6.Tag">
+        <source>6</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">282</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword6.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword6.Caption">
+        <source>'$MEMO    Contents of Memo'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">283</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword6.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword6.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">284</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword7.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword7.Tag">
+        <source>7</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">285</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword7.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword7.Caption">
+        <source>'$CTNAME  Contest name'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">286</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword7.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword7.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">287</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword8.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword8.Tag">
+        <source>8</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">288</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword8.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword8.Caption">
+        <source>'$DATE    QSO date(ex. yyyy/mm/dd)'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">289</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword8.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword8.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">290</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword9.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword9.Tag">
+        <source>9</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">291</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword9.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword9.Caption">
+        <source>'$TIME    QSO time(ex. HH:MM)'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">292</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword9.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword9.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">293</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword10.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword10.Tag">
+        <source>10</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">294</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword10.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword10.Caption">
+        <source>'$FREQ    Frequency(ex. 71000.0)'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">295</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword10.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword10.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">296</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword11.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword11.Tag">
+        <source>11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">297</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword11.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword11.Caption">
+        <source>'$BANDF   Band by frequency(ex. 7M)'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560774884</prop><prop prop-type="Status">0</prop><prop prop-type="Order">298</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword11.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword11.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560775</prop><prop prop-type="Status">0</prop><prop prop-type="Order">299</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword12.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword12.Tag">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560775</prop><prop prop-type="Status">0</prop><prop prop-type="Order">300</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword12.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword12.Caption">
+        <source>'$BANDW   Band by wavelength(ex. 40m)'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560775</prop><prop prop-type="Status">0</prop><prop prop-type="Order">301</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword12.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword12.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560775</prop><prop prop-type="Status">0</prop><prop prop-type="Order">302</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword13.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword13.Tag">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560775</prop><prop prop-type="Status">0</prop><prop prop-type="Order">303</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword13.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword13.Caption">
+        <source>'$MODE    Mode(ex. SSB)'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560775</prop><prop prop-type="Status">0</prop><prop prop-type="Order">304</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword13.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword13.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560775</prop><prop prop-type="Status">0</prop><prop prop-type="Order">305</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword15.Tag" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword15.Tag">
+        <source>15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560775</prop><prop prop-type="Status">0</prop><prop prop-type="Order">306</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword15.Caption" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword15.Caption">
+        <source>'$OP      Operator name'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560775</prop><prop prop-type="Status">0</prop><prop prop-type="Order">307</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword15.OnClick" resname="O:formExportHamlog.O:popupReplaceKeywords.O:menuReplaceKeyword15.OnClick">
+        <source>menuReplaceKeywordClick</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45149.9560775</prop><prop prop-type="Status">0</prop><prop prop-type="Order">308</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

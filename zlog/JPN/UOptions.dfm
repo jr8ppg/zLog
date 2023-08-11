@@ -451,7 +451,7 @@ object formOptions: TformOptions
         AutoSize = False
         MaxValue = 99
         MinValue = 1
-        TabOrder = 4
+        TabOrder = 6
         Value = 3
       end
       object cbDispExchange: TCheckBox
@@ -460,7 +460,7 @@ object formOptions: TformOptions
         Width = 240
         Height = 17
         Caption = #20182#12398#12496#12531#12489#12391#20132#25563#12375#12383#12490#12531#12496#12540#12434#34920#31034#12377#12427
-        TabOrder = 6
+        TabOrder = 8
       end
       object cbJMode: TCheckBox
         Left = 273
@@ -476,7 +476,7 @@ object formOptions: TformOptions
         Width = 161
         Height = 17
         Caption = #20445#23384#12399'CW'#38750#36865#20449#26178
-        TabOrder = 7
+        TabOrder = 5
       end
       object cbAutoEnterSuper: TCheckBox
         Left = 17
@@ -484,7 +484,7 @@ object formOptions: TformOptions
         Width = 260
         Height = 17
         Caption = #12473#12540#12497#12540#12481#12455#12483#12463#12424#12426#12490#12531#12496#12540#33258#21205#20837#21147
-        TabOrder = 5
+        TabOrder = 7
       end
       object groupQsyAssist: TGroupBox
         Left = 222
@@ -492,7 +492,7 @@ object formOptions: TformOptions
         Width = 204
         Height = 89
         Caption = 'QSY'#12450#12471#12473#12488
-        TabOrder = 9
+        TabOrder = 11
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -599,14 +599,22 @@ object formOptions: TformOptions
         Width = 193
         Height = 17
         Caption = #38263#12356#26085#20184#12391#34920#31034#12377#12427
-        TabOrder = 8
+        TabOrder = 9
       end
       object checkOutputOutofPeriod: TCheckBox
         Left = 273
-        Top = 110
+        Top = 131
         Width = 160
         Height = 17
         Caption = #26399#38291#22806#12398#20132#20449#12418#12525#12464#20986#21147
+        TabOrder = 4
+      end
+      object checkUseContestPeriod: TCheckBox
+        Left = 273
+        Top = 109
+        Width = 160
+        Height = 17
+        Caption = #12467#12531#12486#12473#12488#26399#38291#12434#20351#12358
         TabOrder = 3
       end
     end
@@ -6326,13 +6334,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'HG'#21109#33521#65420#65439#65434#65406#65438#65437#65405'EB'
+          FontName = 'Cascadia Mono ExtraLight Italic'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 61
+          ItemIndex = 44
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

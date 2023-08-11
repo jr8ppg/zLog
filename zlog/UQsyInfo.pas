@@ -10,6 +10,8 @@ type
   TformQsyInfo = class(TForm)
     Panel1: TPanel;
     Label1: TLabel;
+    Panel2: TPanel;
+    Label2: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -19,7 +21,7 @@ type
     { Private êÈåæ }
   public
     { Public êÈåæ }
-    procedure SetQsyInfo(qsyok: Boolean; S: string);
+    procedure SetQsyInfo(qsyok: Boolean; txno: string; S: string);
   end;
 
 
@@ -40,6 +42,9 @@ begin
    Panel1.Color := clBtnFace;
    Panel1.Font.Color := clWindow;
    Panel1.Caption := '';
+   Panel2.Color := clBtnFace;
+   Panel2.Font.Color := clWindow;
+   Panel2.Caption := '';
 end;
 
 procedure TformQsyInfo.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -65,21 +70,27 @@ begin
    MainForm.AddTaskbar(Handle);
 end;
 
-procedure TformQsyInfo.SetQsyInfo(qsyok: Boolean; S: string);
+procedure TformQsyInfo.SetQsyInfo(qsyok: Boolean; txno: string; S: string);
 begin
    if S = '' then begin
       Panel1.Color := clBtnFace;
       Panel1.Font.Color := clBlack;
+      Panel2.Color := clBtnFace;
+      Panel2.Font.Color := clBlack;
       S := 'None';
    end
    else begin
       if qsyok = True then begin
          Panel1.Color := clLime;
          Panel1.Font.Color := clBlue;
+         Panel2.Color := clLime;
+         Panel2.Font.Color := clBlue;
       end
       else begin
          Panel1.Color := clYellow;
          Panel1.Font.Color := clRed;
+         Panel2.Color := clYellow;
+         Panel2.Font.Color := clRed;
       end;
 
       if Visible = False then begin
@@ -87,6 +98,7 @@ begin
       end;
    end;
    Label1.Caption := S;
+   Label2.Caption := txno;
 end;
 
 end.

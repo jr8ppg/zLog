@@ -445,7 +445,6 @@ end;
 procedure TRig.SetMode(Q: TQSO);
 begin
    _currentmode := Q.Mode;
-   FLastMode := _currentmode;
 end;
 
 procedure TRig.SetMode(M: TMode);
@@ -823,22 +822,8 @@ begin
 
    Inherited SetFreq(Hz, fSetLastFreq);
 
-   case o_RIG.Vfo of
-      PM_VFOA, PM_VFOAA: begin
-         _currentfreq[0] := Hz;
-         o_RIG.FreqA := Hz;
-      end;
-
-      PM_VFOB, PM_VFOAB: begin
-         _currentfreq[1] := Hz;
-         o_RIG.FreqB := Hz;
-      end;
-
-      else begin
-         _currentfreq[0] := Hz;
-         o_RIG.FreqA := Hz;
-      end;
-   end;
+   o_RIG.SetSimplexMode(Hz);
+   _currentfreq[0] := Hz;
 
    UpdateStatus();
 end;

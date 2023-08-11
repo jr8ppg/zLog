@@ -2895,7 +2895,12 @@ begin
    FComKeying[Index] := CP;
 //   COM_ON(FKeyingPort);
 
-   FKeyingPort[Index] := TKeyingPort(CP.Port);
+   if Assigned(CP) then begin
+      FKeyingPort[Index] := TKeyingPort(CP.Port);
+   end
+   else begin
+      FKeyingPort[Index] := tkpNone;
+   end;
 end;
 
 procedure TdmZLogKeyer.ResetCommPortDriver(Index: Integer; port: TKeyingPort);

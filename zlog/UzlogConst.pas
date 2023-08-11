@@ -216,7 +216,7 @@ const
   );
 
 const
-  default_primary_shortcut: array[0..159] of string = (
+  default_primary_shortcut: array[0..160] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -376,10 +376,11 @@ const
     '',                 // #156 actionMsgMgr
     'Shift+Ctrl+B',     // #157 actionChangeBand2
     'Shift+Ctrl+M',     // #158 actionChangeMode2
-    'Shift+Ctrl+P'      // #159 actionChangePower2
+    'Shift+Ctrl+P',     // #159 actionChangePower2
+    'Alt+Y'             // #160 actionToggleTxNr
   );
 
-  default_secondary_shortcut: array[0..159] of string = (
+  default_secondary_shortcut: array[0..160] of string = (
     '',                 // #00
     '',
     '',
@@ -539,7 +540,8 @@ const
     '',                 // #156 actionMsgMgr
     '',                 // #157 actionChangeBand2
     '',                 // #158 actionChangeMode2
-    ''                  // #159 actionChangePower2
+    '',                 // #159 actionChangePower2
+    ''                  // #160 actionToggleTxNr
   );
 
 const

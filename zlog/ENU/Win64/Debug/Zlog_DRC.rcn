@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">44801.7865046296</prop>
-        <prop prop-type="OrigDateTime">44801.7855787037</prop>
-        <prop prop-type="XlatDateTime">44801.4782638889</prop>
-        <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">1083</prop>
+        <prop prop-type="SelfDateTime">45149.9637037037</prop>
+        <prop prop-type="OrigDateTime">45149.9632175926</prop>
+        <prop prop-type="XlatDateTime">44936.9525694444</prop>
+        <prop prop-type="Translated">11</prop>
+        <prop prop-type="UnTranslated">1259</prop>
       </prop-group>
     </header>
     <body>
@@ -7591,7 +7591,1334 @@
         <source>"Do you want the following bands to have the same settings?"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44801.7865228588</prop>
+          <prop prop-type="Status">3</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_EmptyOpList" resname="Main_TMainForm_EmptyOpList">
+        <source>"Operator list is empty."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560915972</prop>
           <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_This_QSO_is_locked" resname="Main_TMainForm_This_QSO_is_locked">
+        <source>"This QSO is currently locked"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560915972</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Invalid_number" resname="Main_TMainForm_Invalid_number">
+        <source>"Invalid number"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560915972</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Callsign_not_entered" resname="Main_TMainForm_Callsign_not_entered">
+        <source>"Callsign not entered"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560915972</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Dupe_qso" resname="Main_TMainForm_Dupe_qso">
+        <source>"Dupe"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560915972</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Thankyou_for_your_qso" resname="Main_TMainForm_Thankyou_for_your_qso">
+        <source>"Thank you for the QSO with JA1ZLO"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916088</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_CW_port_is_no_set" resname="Main_TMainForm_CW_port_is_no_set">
+        <source>"CW port is not set"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916088</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Not_a_new_multi" resname="Main_TMainForm_Not_a_new_multi">
+        <source>"NOT a new multiplier. (This is a multi stn)"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916088</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Cannot_merge_current_file" resname="Main_TMainForm_Cannot_merge_current_file">
+        <source>"Cannot merge current file"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916088</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Merging_now" resname="Main_TMainForm_Merging_now">
+        <source>"Merging..."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916088</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Some_qsos_merged" resname="Main_TMainForm_Some_qsos_merged">
+        <source>"%s QSO(s) merged."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916088</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_CtyDat_not_loaded" resname="Main_TMainForm_CtyDat_not_loaded">
+        <source>"CTY.DAT not loaded"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916204</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_RIT_XIT_Cleared" resname="Main_TMainForm_RIT_XIT_Cleared">
+        <source>"RIT/XIT Offset Cleared"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916204</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Anti_zeroin" resname="Main_TMainForm_Anti_zeroin">
+        <source>"** Anti Zeroin **"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916204</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Set_CQ_Repeat_Int" resname="Main_TMainForm_Set_CQ_Repeat_Int">
+        <source>"CQ Repeat Int. %.1f sec."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916204</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Invalid_zone" resname="Main_TMainForm_Invalid_zone">
+        <source>"Invalid zone"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916204</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_JudgePeriod" resname="Main_TMainForm_JudgePeriod">
+        <source>"Do you want to judge whether all QSOs are within the contest period?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916319</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_New_Multi_Only" resname="Main_TMainForm_New_Multi_Only">
+        <source>"This station is not a new multiplier, but will be logged anyway."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916319</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Change_Date" resname="Main_TMainForm_Change_Date">
+        <source>"To change the date, double click the time field."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916319</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Confirm_Save_Changes" resname="Main_TMainForm_Confirm_Save_Changes">
+        <source>"Save changes to %s ?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916319</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Active_Band_Adjusted" resname="Main_TMainForm_Active_Band_Adjusted">
+        <source>"Active Bands adjusted to the required bands"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916319</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Change_Band_QSOs" resname="Main_TMainForm_Change_Band_QSOs">
+        <source>"Are you sure to change the band for these QSO's?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916319</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Change_Mode_QSOs" resname="Main_TMainForm_Change_Mode_QSOs">
+        <source>"Are you sure to change the mode for these QSO's?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916435</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Change_Operator_QSOs" resname="Main_TMainForm_Change_Operator_QSOs">
+        <source>"Are you sure to change the operator names for these QSO's?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916435</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Change_Power_QSOs" resname="Main_TMainForm_Change_Power_QSOs">
+        <source>"Are you sure to change the power for these QSO's?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916435</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Change_TXNO_QSOs" resname="Main_TMainForm_Change_TXNO_QSOs">
+        <source>"Are you sure to change the TX# for these QSO's?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916435</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Need_File_Name" resname="Main_TMainForm_Need_File_Name">
+        <source>"Data will NOT be saved until you enter the file name"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916435</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_QTC_Sent" resname="Main_TMainForm_QTC_Sent">
+        <source>"QTC can be sent by pressing Ctrl+Q"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916551</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Less_Than_10min" resname="Main_TMainForm_Less_Than_10min">
+        <source>"Less than 10 min since last QSY!"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916551</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_QSY_Count_Exceeded" resname="Main_TMainForm_QSY_Count_Exceeded">
+        <source>"QSY count exceeded limit!"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916551</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Loading_now" resname="Main_TMainForm_Loading_now">
+        <source>"Loading..."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916551</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Switch_CW_Bank_A" resname="Main_TMainForm_Switch_CW_Bank_A">
+        <source>"CW Bank A"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916551</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Switch_CW_Bank_B" resname="Main_TMainForm_Switch_CW_Bank_B">
+        <source>"CW Bank B"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916551</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStringToTStringsDesc" resname="System_Bindings_Consts_sStringToTStringsDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916667</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStringToChar" resname="System_Bindings_Consts_sStringToChar">
+        <source>"StringToChar"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916667</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStringToCharDesc" resname="System_Bindings_Consts_sStringToCharDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916667</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_TOTAL" resname="URateDialogEx_SCOREGRID_TOTAL">
+        <source>"Total"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916667</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_TARGET" resname="URateDialogEx_SCOREGRID_TARGET">
+        <source>"Target"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916667</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_DIFF" resname="URateDialogEx_SCOREGRID_DIFF">
+        <source>"Diff"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916667</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_DIFF2" resname="URateDialogEx_SCOREGRID_DIFF2">
+        <source>"+/-"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916782</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_CUMULATIVE" resname="URateDialogEx_SCOREGRID_CUMULATIVE">
+        <source>"Cumulative"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916782</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_WINLOSS_L" resname="URateDialogEx_SCOREGRID_WINLOSS_L">
+        <source>"Win/Loss"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916782</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URateDialogEx_SCOREGRID_WINLOSS_S" resname="URateDialogEx_SCOREGRID_WINLOSS_S">
+        <source>"W/L"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916782</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UBandPlanEditDialog_Input_Text" resname="UBandPlanEditDialog_Input_Text">
+        <source>"Please enter preset name"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916782</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UBandPlanEditDialog_Delete_Preset" resname="UBandPlanEditDialog_Delete_Preset">
+        <source>"Are you sure to delete the bandplan preset [%s]"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916782</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Enter_Frequency" resname="Main_TMainForm_Enter_Frequency">
+        <source>"Enter frequency in kHz"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916898</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Comfirm_Delete_Qso" resname="Main_TMainForm_Comfirm_Delete_Qso">
+        <source>"Are you sure to delete this QSO?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916898</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Comfirm_Delete_Qsos" resname="Main_TMainForm_Comfirm_Delete_Qsos">
+        <source>"Are you sure to delete these QSO's?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916898</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStringToVariantDesc" resname="System_Bindings_Consts_sStringToVariantDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916898</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sFloatToVariant" resname="System_Bindings_Consts_sFloatToVariant">
+        <source>"FloatToVariant"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916898</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sFloatToVariantDesc" resname="System_Bindings_Consts_sFloatToVariantDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560916898</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sIntToVariant" resname="System_Bindings_Consts_sIntToVariant">
+        <source>"IntToVariant"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917014</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sIntToVariantDesc" resname="System_Bindings_Consts_sIntToVariantDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917014</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sBoolToVariant" resname="System_Bindings_Consts_sBoolToVariant">
+        <source>"BoolToVariant"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917014</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sBoolToVariantDesc" resname="System_Bindings_Consts_sBoolToVariantDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917014</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sVariantToBool" resname="System_Bindings_Consts_sVariantToBool">
+        <source>"VariantToBool"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917014</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sVariantToBoolDesc" resname="System_Bindings_Consts_sVariantToBoolDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917014</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStrToFloat" resname="System_Bindings_Consts_sStrToFloat">
+        <source>"StrToFloat"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091713</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStrToFloatDesc" resname="System_Bindings_Consts_sStrToFloatDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091713</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sFloatToInteger" resname="System_Bindings_Consts_sFloatToInteger">
+        <source>"FloatToInteger"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091713</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sFloatToIntegerDesc" resname="System_Bindings_Consts_sFloatToIntegerDesc">
+        <source>"浮動小数点数を Round() で整数に変換"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091713</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sTStringsToString" resname="System_Bindings_Consts_sTStringsToString">
+        <source>"TStringsToString"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091713</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sTStringToStringDesc" resname="System_Bindings_Consts_sTStringToStringDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091713</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStringToTStrings" resname="System_Bindings_Consts_sStringToTStrings">
+        <source>"StringToTStrings"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917245</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sFloatToStringDesc" resname="System_Bindings_Consts_sFloatToStringDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917245</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStrToTDateTime" resname="System_Bindings_Consts_sStrToTDateTime">
+        <source>"StrToTDateTime"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917245</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStrToTDateTimeDesc" resname="System_Bindings_Consts_sStrToTDateTimeDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917245</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sTDateTimeToStr" resname="System_Bindings_Consts_sTDateTimeToStr">
+        <source>"TDateTimeToStr"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917245</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sTDateTimeToStrDesc" resname="System_Bindings_Consts_sTDateTimeToStrDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917245</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStrToTDate" resname="System_Bindings_Consts_sStrToTDate">
+        <source>"TStrTDate"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917245</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStrToTDateDesc" resname="System_Bindings_Consts_sStrToTDateDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917361</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStrToTTime" resname="System_Bindings_Consts_sStrToTTime">
+        <source>"TStrTTime"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917361</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStrToTTimeDesc" resname="System_Bindings_Consts_sStrToTTimeDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917361</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNilToString" resname="System_Bindings_Consts_sNilToString">
+        <source>"NilToString"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917361</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNilToStringDesc" resname="System_Bindings_Consts_sNilToStringDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917361</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNilToBoolean" resname="System_Bindings_Consts_sNilToBoolean">
+        <source>"NilToBoolean"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917361</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNilToBooleanDesc" resname="System_Bindings_Consts_sNilToBooleanDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917477</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNilToVariant" resname="System_Bindings_Consts_sNilToVariant">
+        <source>"Nil からバリアントへ"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917477</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNilToVariantDesc" resname="System_Bindings_Consts_sNilToVariantDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917477</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStringToVariant" resname="System_Bindings_Consts_sStringToVariant">
+        <source>"StringToVariant"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917477</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStringToBoolDesc" resname="System_Bindings_Consts_sStringToBoolDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917477</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sBoolToInteger" resname="System_Bindings_Consts_sBoolToInteger">
+        <source>"BoolToInteger"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917477</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sBoolToIntegerDesc" resname="System_Bindings_Consts_sBoolToIntegerDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917477</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sIntegerToBool" resname="System_Bindings_Consts_sIntegerToBool">
+        <source>"IntegerToBool"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917593</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sIntegerToBoolDesc" resname="System_Bindings_Consts_sIntegerToBoolDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917593</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sBoolToFloat" resname="System_Bindings_Consts_sBoolToFloat">
+        <source>"BoolToFloat"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917593</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sBoolToFloatDesc" resname="System_Bindings_Consts_sBoolToFloatDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917593</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sFloatToBool" resname="System_Bindings_Consts_sFloatToBool">
+        <source>"FloatToBool"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917593</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sFloatToBoolDesc" resname="System_Bindings_Consts_sFloatToBoolDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917708</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNilToNumber" resname="System_Bindings_Consts_sNilToNumber">
+        <source>"NilToNumber"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917708</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNilToNumberDesc" resname="System_Bindings_Consts_sNilToNumberDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917708</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sIntegerToString" resname="System_Bindings_Consts_sIntegerToString">
+        <source>"IntegerToString"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917708</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sIntegerToStringDesc" resname="System_Bindings_Consts_sIntegerToStringDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917708</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStringToInteger" resname="System_Bindings_Consts_sStringToInteger">
+        <source>"StringToInteger"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917708</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStringToIntegerDesc" resname="System_Bindings_Consts_sStringToIntegerDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917708</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sFloatToString" resname="System_Bindings_Consts_sFloatToString">
+        <source>"FloatToString"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917824</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNoGetterOrSetter" resname="System_Bindings_Consts_sNoGetterOrSetter">
+        <source>"少なくとも取得アクセサまたは設定アクセサが必要です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917824</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sUpdateOutputLocFailed" resname="System_Bindings_Consts_sUpdateOutputLocFailed">
+        <source>"%s の出力式を再コンパイルできません (%s)"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917824</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNoOutputScopes" resname="System_Bindings_Consts_sNoOutputScopes">
+        <source>"出力範囲は必須です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917824</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sVirtualMemberReadOnly" resname="System_Bindings_Consts_sVirtualMemberReadOnly">
+        <source>"仮想メンバは読み取り専用です。"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560917824</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sConvertWrapperFail" resname="System_Bindings_Consts_sConvertWrapperFail">
+        <source>"ラッパーを変換できません。%s をサポートしていません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091794</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNilToTDateTime" resname="System_Bindings_Consts_sNilToTDateTime">
+        <source>"NilToDateTime"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091794</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNilToTDateTimeDesc" resname="System_Bindings_Consts_sNilToTDateTimeDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091794</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNilToTStrings" resname="System_Bindings_Consts_sNilToTStrings">
+        <source>"NilToTStrings"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091794</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNilToTStringsDesc" resname="System_Bindings_Consts_sNilToTStringsDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091794</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sPersistentToPersistent" resname="System_Bindings_Consts_sPersistentToPersistent">
+        <source>"PersistentToPersistent"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091794</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sPersistentToPersistentDesc" resname="System_Bindings_Consts_sPersistentToPersistentDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091794</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sPersistentToString" resname="System_Bindings_Consts_sPersistentToString">
+        <source>"PersistentToString"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918056</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sPersistentToStringDesc" resname="System_Bindings_Consts_sPersistentToStringDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918056</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sBoolToString" resname="System_Bindings_Consts_sBoolToString">
+        <source>"BoolToString"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918056</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sBoolToStringDesc" resname="System_Bindings_Consts_sBoolToStringDesc">
+        <source>""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918056</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sStringToBool" resname="System_Bindings_Consts_sStringToBool">
+        <source>"StringToBool"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918056</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sInvalidOperator" resname="System_Bindings_Consts_sInvalidOperator">
+        <source>"ソース (%s%s) 内に無効な演算子があります"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918056</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sInvalidOperatorNum" resname="System_Bindings_Consts_sInvalidOperatorNum">
+        <source>"ソース (#%d) 内に無効な文字があります"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918171</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sExpectedEOF" resname="System_Bindings_Consts_sExpectedEOF">
+        <source>"EOF が必要ですが、式の中にまだテキストが続いています"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918171</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sTooManyArgs" resname="System_Bindings_Consts_sTooManyArgs">
+        <source>"引数が多すぎます"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918171</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sExpectedIdentifier" resname="System_Bindings_Consts_sExpectedIdentifier">
+        <source>"識別子、数値、または文字列が必要です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918171</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sExpressionTooComplex" resname="System_Bindings_Consts_sExpressionTooComplex">
+        <source>"式が複雑すぎます (定数が多すぎます)"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918171</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sEvalStackOverflow" resname="System_Bindings_Consts_sEvalStackOverflow">
+        <source>"スタック アンダーフロー"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918287</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sLookupError" resname="System_Bindings_Consts_sLookupError">
+        <source>"%s が見つかりませんでした"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918287</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sInvokeError" resname="System_Bindings_Consts_sInvokeError">
+        <source>"関数/インデックス付きプロパティ以外のものを呼び出そうとしました"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918287</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sUnsupportedWrapper" resname="System_Bindings_Consts_sUnsupportedWrapper">
+        <source>"ラッパーが IValue をサポートしていないため値を決定できません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918287</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sUnsupportedGroup" resname="System_Bindings_Consts_sUnsupportedGroup">
+        <source>"メンバ ラッパーが IGroup をサポートしていないため、結果ラッパーが見つかりません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918287</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sObjectTypeNotRegistered" resname="System_Bindings_Consts_sObjectTypeNotRegistered">
+        <source>"オブジェクト型 %s は登録されていません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918287</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sScopeClassNotRegistered" resname="System_Bindings_Consts_sScopeClassNotRegistered">
+        <source>"スコープ クラス %s は登録されていません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918403</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sScopeClassAlreadyRegistered" resname="System_Bindings_Consts_sScopeClassAlreadyRegistered">
+        <source>"スコープ クラス %s は既に登録されています"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918403</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sInvalidCustomWrapper" resname="System_Bindings_Consts_sInvalidCustomWrapper">
+        <source>"指定されたカスタム ラッパーは %s をサポートしていません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918403</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sPropertyNotFound" resname="System_Bindings_Consts_sPropertyNotFound">
+        <source>"プロパティ %s が見つかりません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918403</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sConverterIDNotRegistered" resname="System_Bindings_Consts_sConverterIDNotRegistered">
+        <source>"%s という名前の変換コンポーネントは登録されていません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918403</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sDuplicatedConverterType" resname="System_Bindings_Consts_sDuplicatedConverterType">
+        <source>"入力型 (%s) および出力型 (%s) が同じである \"%s\" という名前の変換コンポーネントが既に追加されています"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918403</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sDuplicatedConverterType2" resname="System_Bindings_Consts_sDuplicatedConverterType2">
+        <source>"コンバータ \"%s\" はコンバータ \"%s(%s, %s)\" と重複しています"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918519</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sMismatchArgCount" resname="System_Bindings_Consts_sMismatchArgCount">
+        <source>"引数の数が正しくありません。%d 個必要ですが、受け取ったのは %d 個です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918519</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sAddOpFail" resname="System_Bindings_Consts_sAddOpFail">
+        <source>"\"%s\" と \"%s\" の加算方法が不明です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918519</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sSubtractOpFail" resname="System_Bindings_Consts_sSubtractOpFail">
+        <source>"\"%s\" と \"%s\" の減算方法が不明です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918519</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sMultiplyOpFail" resname="System_Bindings_Consts_sMultiplyOpFail">
+        <source>"\"%s\" と \"%s\" の乗算方法が不明です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918519</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sDivideOpFail" resname="System_Bindings_Consts_sDivideOpFail">
+        <source>"\"%s\" と \"%s\" の除算方法が不明です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918634</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sNegateOpFail" resname="System_Bindings_Consts_sNegateOpFail">
+        <source>"\"%s\" の否定方法が不明です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918634</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sCompareOpFail" resname="System_Bindings_Consts_sCompareOpFail">
+        <source>"\"%s\" と \"%s\" の比較方法が不明です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918634</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sBoolOpFail" resname="System_Bindings_Consts_sBoolOpFail">
+        <source>"\"%s\" と \"%s\" での論理演算の実行方法が不明です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918634</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sBoolNegateOpFail" resname="System_Bindings_Consts_sBoolNegateOpFail">
+        <source>"\"%s\" 論理否定演算子の実行方法が不明です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918634</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sParserUnexpected" resname="System_Bindings_Consts_sParserUnexpected">
+        <source>"%s が必要ですが受け取ったのは %s です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918634</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sInvalidFloatingPt" resname="System_Bindings_Consts_sInvalidFloatingPt">
+        <source>"浮動小数点定数が無効です。\".\" の後に 1 桁以上の数字が必要です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091875</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sInvalidFloatingPtExpt" resname="System_Bindings_Consts_sInvalidFloatingPtExpt">
+        <source>"浮動小数点定数が無効です。指数部には 1 桁以上の数字が必要です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091875</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sUnterminatedString" resname="System_Bindings_Consts_sUnterminatedString">
+        <source>"終端のない文字列が見つかりました"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091875</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sOwnerNotFound" resname="System_Bindings_Consts_sOwnerNotFound">
+        <source>"Owner に Nil を指定できません。"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091875</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sScopeObjNull" resname="System_Bindings_Consts_sScopeObjNull">
+        <source>"スコープ オブジェクトは Nil にできません。"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091875</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sUncompiledExpression" resname="System_Bindings_Consts_sUncompiledExpression">
+        <source>"式がまだコンパイルされていません。"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918866</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sUnsupportedManager" resname="System_Bindings_Consts_sUnsupportedManager">
+        <source>"マネージャが IBindingNotification をサポートしていません。"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918866</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sClassTypeNotFound" resname="System_Bindings_Consts_sClassTypeNotFound">
+        <source>"ClassType を指定する必要があります。"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918866</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sOutputIsReadOnly" resname="System_Bindings_Consts_sOutputIsReadOnly">
+        <source>"出力式で読み取り専用値を評価しています"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918866</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sUnavailNotifier" resname="System_Bindings_Consts_sUnavailNotifier">
+        <source>"通知オブジェクトを作成できません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918866</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sConverterNotFound" resname="System_Bindings_Consts_sConverterNotFound">
+        <source>"%s 型と %s 型の間でキャストができず、変換コンポーネントも見つかりません。"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918866</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_Bindings_Consts_sConverterIDNotFound" resname="System_Bindings_Consts_sConverterIDNotFound">
+        <source>"変換コンポーネント ID を指定する必要があります"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918982</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_COM_PORT_SETTING" resname="UOptions_COM_PORT_SETTING">
+        <source>"COM port settings"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918982</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_TELNET_SETTING" resname="UOptions_TELNET_SETTING">
+        <source>"TELNET settings"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918982</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_SELECT_FOLDER" resname="UOptions_SELECT_FOLDER">
+        <source>"Select folder"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918982</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_PLEASE_INPUT_OFFSET_FREQ" resname="UOptions_PLEASE_INPUT_OFFSET_FREQ">
+        <source>"Please input the offset frequency in kHz"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918982</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_Installed_Plugins_Disabled" resname="UOptions_Installed_Plugins_Disabled">
+        <source>"Plugins folder changed. Installed plugins will be disabled. Are you sure?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560918982</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins" resname="UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins">
+        <source>"Do you want the following bands to have the same settings?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919097</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_EnterTheFullPathOfRootFolder" resname="UOptions_EnterTheFullPathOfRootFolder">
+        <source>"Enter the full path of the zLog root folder"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919097</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOptions_zLogRootFolderNotExist" resname="UOptions_zLogRootFolderNotExist">
+        <source>"zLog root folder does not exist"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919097</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="URigControl_RECONNECT_ALL_RIGS" resname="URigControl_RECONNECT_ALL_RIGS">
+        <source>"Reconnect all RIGs?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919213</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UComm_UComm_SecondsLeft" resname="UComm_UComm_SecondsLeft">
+        <source>"%s seconds left to reconnect"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919213</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UComm_UComm_ExceededLimit" resname="UComm_UComm_ExceededLimit">
+        <source>"reconnection attempts exceeded limit"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919213</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins" resname="UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins">
+        <source>"Do you want the higher bands to have the same settings?"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919213</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="JclResources_RsOSVersionWin11" resname="JclResources_RsOSVersionWin11">
+        <source>"Windows 11"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919329</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SStyleHookClassNotFound" resname="Vcl_Consts_SStyleHookClassNotFound">
+        <source>"StyleHook クラスが %s 用に登録されていません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919444</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SNoOwner" resname="Vcl_Consts_SNoOwner">
+        <source>"%s にはオーナーがありません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919444</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SRequireSameOwner" resname="Vcl_Consts_SRequireSameOwner">
+        <source>"ソースとターゲットではオーナーが同じでなければなりません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919444</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SDirect2DInvalidOwner" resname="Vcl_Consts_SDirect2DInvalidOwner">
+        <source>"別のキャンバスで %s を所有することはできません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919444</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SDirect2DInvalidSolidBrush" resname="Vcl_Consts_SDirect2DInvalidSolidBrush">
+        <source>"単色ブラシではありません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919444</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SDirect2DInvalidBrushStyle" resname="Vcl_Consts_SDirect2DInvalidBrushStyle">
+        <source>"ブラシのスタイルが無効です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919444</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SStyleFileDescription" resname="Vcl_Consts_SStyleFileDescription">
+        <source>"VCL スタイル ファイル"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919444</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SInvalidCanvasOperation" resname="Vcl_Consts_SInvalidCanvasOperation">
+        <source>"キャンバス操作が無効です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919444</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_sArgumentOutOfRange_StringIndex" resname="System_RTLConsts_sArgumentOutOfRange_StringIndex">
+        <source>"文字列インデックスが範囲外です (%d)。%d 以上 %d 以下でなければなりません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091956</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_sArgumentOutOfRange_InvalidUTF32" resname="System_RTLConsts_sArgumentOutOfRange_InvalidUTF32">
+        <source>"UTF32 文字値が無効です。サロゲート ペアの範囲を除き、0 以上 $10FFFF 以下でなければなりません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091956</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_sArgument_InvalidHighSurrogate" resname="System_RTLConsts_sArgument_InvalidHighSurrogate">
+        <source>"上位サロゲート文字のインデックス %d より後に下位サロゲート文字がありません。文字列が正しくエンコードされているか確認してください"</source>
+        <target>"High surrogate char without a following low surrogate char at index: %d. Check that the string is encoded properly"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091956</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_sArgument_InvalidLowSurrogate" resname="System_RTLConsts_sArgument_InvalidLowSurrogate">
+        <source>"下位サロゲート文字のインデックス %d より前に上位サロゲート文字がありません。文字列が正しくエンコードされているか確認してください"</source>
+        <target>"Low surrogate char without a preceding high surrogate char at index: %d. Check that the string is encoded properly"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091956</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SSymbolExpected" resname="System_RTLConsts_SSymbolExpected">
+        <source>"%s が必要です"</source>
+        <target>"%s expected"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091956</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SNumberExpected" resname="System_RTLConsts_SNumberExpected">
+        <source>"数値が必要です"</source>
+        <target>"Number expected"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091956</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SAnsiUTF8Expected" resname="System_RTLConsts_SAnsiUTF8Expected">
+        <source>"ANSI または UTF8 エンコーディングが必要です"</source>
+        <target>"ANSI or UTF8 encoding expected"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.956091956</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SParseError" resname="System_RTLConsts_SParseError">
+        <source>"%d 行目: %s"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919676</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SStringExpected" resname="System_RTLConsts_SStringExpected">
+        <source>"文字列が必要です"</source>
+        <target>"String expected"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919676</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SIdentifierExpected" resname="System_RTLConsts_SIdentifierExpected">
+        <source>"識別子が必要です"</source>
+        <target>"Identifier expected"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919676</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SInvalidBinary" resname="System_RTLConsts_SInvalidBinary">
+        <source>"バイナリ値が無効です"</source>
+        <target>"Invalid binary value"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919676</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SInvalidString" resname="System_RTLConsts_SInvalidString">
+        <source>"文字列定数が無効です"</source>
+        <target>"Invalid string constant"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919676</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SLineTooLong" resname="System_RTLConsts_SLineTooLong">
+        <source>"行が長すぎます"</source>
+        <target>"Line too long"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919676</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SCharExpected" resname="System_RTLConsts_SCharExpected">
+        <source>"''%s'' が必要です"</source>
+        <target>"''%s'' expected"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.9560919676</prop>
+          <prop prop-type="Status">2</prop>
         </prop-group>
       </trans-unit>
     </body>

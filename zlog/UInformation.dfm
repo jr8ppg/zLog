@@ -50,7 +50,6 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 1
-    ExplicitLeft = 221
   end
   object panelTime: TPanel
     Left = 508
@@ -66,7 +65,6 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 2
-    ExplicitLeft = 451
   end
   object panelRxInfo: TPanel
     Left = 447
@@ -81,7 +79,6 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 3
-    ExplicitLeft = 390
   end
   object Panel1: TPanel
     Left = 42
@@ -96,7 +93,6 @@ object formInformation: TformInformation
     Font.Style = []
     ParentFont = False
     TabOrder = 4
-    ExplicitWidth = 179
     object ledPtt: TJvLED
       Left = 7
       Top = 12
@@ -217,6 +213,5 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 5
-    ExplicitLeft = 329
   end
 end

@@ -192,6 +192,7 @@ type
     _age : string; // all asian
     _allowdupe : boolean;
     _output_outofperiod: Boolean;
+    _use_contest_period: Boolean;
     _countdown : boolean;
     _qsycount : boolean;
     _countdownminute: Integer;
@@ -258,6 +259,7 @@ type
     // Select User Defined Contest
     FImpProvCity: Boolean;
     FImpCwMessage: array[1..4] of Boolean;
+    FLastCFGFileName: string;
 
     // スコア表示の追加情報(評価用指数)
     FLastScoreExtraInfo: Integer;
@@ -566,6 +568,7 @@ function AdjustPath(v: string): string;
 
 function ExpandEnvironmentVariables(strOriginal: string): string;
 procedure FormShowAndRestore(F: TForm);
+function LoadFromResourceName(hinst: THandle; filename: string): TStringList;
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -764,6 +767,9 @@ begin
 
       // Output out of contest period
       Settings._output_outofperiod := ini.ReadBool('Preferences', 'OutputOutOfPeriod', False);
+
+      // Use contest period
+      Settings._use_contest_period := ini.ReadBool('Preferences', 'UseContestPeriod', True);
 
       // Save when not sending CW
       Settings._savewhennocw := ini.ReadBool('Preferences', 'SaveWhenNoCW', False);
@@ -1029,7 +1035,7 @@ begin
       Settings._dontallowsameband := ini.ReadBool('Rig', 'DontAllowSameBand', False);
 
       // Record rig frequency in memo
-      Settings._recrigfreq := ini.ReadBool('Rig', 'RecordFreqInMemo', False);
+      Settings._recrigfreq := ini.ReadBool('Rig', 'RecordFreqInMemo', True);
 
       // Automatically create band scope
       Settings._autobandmap := ini.ReadBool('Rig', 'AutoBandMap', False);
@@ -1283,6 +1289,7 @@ begin
       Settings.FImpCwMessage[2] := ini.ReadBool('UserDefinedContest', 'imp_f2a', True);
       Settings.FImpCwMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_f3a', False);
       Settings.FImpCwMessage[4] := ini.ReadBool('UserDefinedContest', 'imp_f4a', False);
+      Settings.FLastCFGFileName := ini.ReadString('UserDefinedContest', 'last_cfgfilename', '');
 
       // スコア表示の追加情報(評価用指数)
       Settings.FLastScoreExtraInfo := ini.ReadInteger('Score', 'ExtraInfo', 0);
@@ -1438,6 +1445,9 @@ begin
 
       // Output out of contest period
       ini.WriteBool('Preferences', 'OutputOutOfPeriod', Settings._output_outofperiod);
+
+      // Use contest period
+      ini.WriteBool('Preferences', 'UseContestPeriod', Settings._use_contest_period);
 
       // Save when not sending CW
       ini.WriteBool('Preferences', 'SaveWhenNoCW', Settings._savewhennocw);
@@ -1879,6 +1889,7 @@ begin
       ini.WriteBool('UserDefinedContest', 'imp_f2a', Settings.FImpCwMessage[2]);
       ini.WriteBool('UserDefinedContest', 'imp_f3a', Settings.FImpCwMessage[3]);
       ini.WriteBool('UserDefinedContest', 'imp_f4a', Settings.FImpCwMessage[4]);
+      ini.WriteString('UserDefinedContest', 'last_cfgfilename', Settings.FLastCFGFileName);
 
       // スコア表示の追加情報(評価用指数)
       ini.WriteInteger('Score', 'ExtraInfo', Settings.FLastScoreExtraInfo);
@@ -2063,21 +2074,23 @@ var
 begin
    op := FOpList.ObjectOf(aQSO.Operator);
    if op = nil then begin
-      // 今のOPがOpListにいなければ消す
-      aQSO.Operator := '';
-      Exit;
-   end;
+      // 今のOPがOpListにいない
+      if dmZLogGlobal.Settings._pcname <> '' then begin
+         aQSO.Operator := dmZLogGlobal.Settings._pcname;
+      end
+      else begin
+         aQSO.Operator := '';
+      end;
 
-   str := op.Power;
+      P := dmZLogGlobal.Settings._power[aQSO.Band][1];
+   end
+   else begin
+      str := op.Power;
 
-//   if OldBandOrd(aQSO.Band) + 1 <= length(str) then
-//      P := str[OldBandOrd(aQSO.Band) + 1]
-//   else
-//      P := UpCase(str[1]);
-
-   P := str[OldBandOrd(aQSO.Band) + 1];
-   if P = '-' then begin
-      P := UpCase(str[1]);
+      P := str[OldBandOrd(aQSO.Band) + 1];
+      if P = '-' then begin
+         P := UpCase(str[1]);
+      end;
    end;
 
    case P of
@@ -2448,6 +2461,7 @@ begin
       sl.Add(ICOMLIST[i].name);
    end;
 
+   sl.Add('Elecraft K3S/K3/KX3/KX2');
    sl.Add('JST-145');
    sl.Add('JST-245');
    sl.Add('Omni-Rig');
@@ -2503,7 +2517,7 @@ begin
    if FileExists(fullpath) = False then begin
       fullpath := ExtractFilePath(Application.ExeName) + filename;
       if FileExists(fullpath) = False then begin
-         MessageDlg('DAT file [' + fullpath + '] cannot be opened', mtError, [mbOK], 0);
+//         MessageDlg('DAT file [' + fullpath + '] cannot be opened', mtError, [mbOK], 0);
          Result := '';
          Exit;
       end;
@@ -4049,6 +4063,25 @@ begin
       F.WindowState := wsNormal;
    end;
    F.Show();
+end;
+
+function LoadFromResourceName(hinst: THandle; filename: string): TStringList;
+var
+   RS: TResourceStream;
+   SL: TStringList;
+   resname: string;
+begin
+   resname := 'IDF_' + StringReplace(filename, '.', '_', [rfReplaceAll]);
+
+   RS := TResourceStream.Create(hinst, resname, RT_RCDATA);
+   SL := TStringList.Create();
+   SL.StrictDelimiter := True;
+   try
+      SL.LoadFromStream(RS);
+   finally
+      RS.Free();
+      Result := SL;
+   end;
 end;
 
 end.

@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45017.970162037</prop>
-        <prop prop-type="OrigDateTime">44946.9253009259</prop>
+        <prop prop-type="SelfDateTime">45149.9560648148</prop>
+        <prop prop-type="OrigDateTime">45115.8942361111</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">190</prop>
+        <prop prop-type="UnTranslated">185</prop>
       </prop-group>
     </header>
     <body>
@@ -253,715 +253,690 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:formInformation.O:panelWpmInfo.ExplicitLeft" resname="O:formInformation.O:panelWpmInfo.ExplicitLeft">
-        <source>221</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689028819</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
       <trans-unit id="O:formInformation.O:panelTime.Left" resname="O:formInformation.O:panelTime.Left">
         <source>508</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTime.Top" resname="O:formInformation.O:panelTime.Top">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTime.Width" resname="O:formInformation.O:panelTime.Width">
         <source>86</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTime.Height" resname="O:formInformation.O:panelTime.Height">
         <source>32</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTime.Align" resname="O:formInformation.O:panelTime.Align">
         <source>alRight</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTime.Caption" resname="O:formInformation.O:panelTime.Caption">
         <source>'21:00:00'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTime.Font.Charset" resname="O:formInformation.O:panelTime.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTime.Font.Color" resname="O:formInformation.O:panelTime.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTime.Font.Height" resname="O:formInformation.O:panelTime.Font.Height">
         <source>-16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTime.Font.Name" resname="O:formInformation.O:panelTime.Font.Name">
         <source>'Arial'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTime.Font.Style" resname="O:formInformation.O:panelTime.Font.Style">
         <source>[fsBold]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTime.ParentFont" resname="O:formInformation.O:panelTime.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTime.TabOrder" resname="O:formInformation.O:panelTime.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:formInformation.O:panelTime.ExplicitLeft" resname="O:formInformation.O:panelTime.ExplicitLeft">
-        <source>451</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689028819</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelRxInfo.Left" resname="O:formInformation.O:panelRxInfo.Left">
         <source>447</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelRxInfo.Top" resname="O:formInformation.O:panelRxInfo.Top">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelRxInfo.Width" resname="O:formInformation.O:panelRxInfo.Width">
         <source>61</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelRxInfo.Height" resname="O:formInformation.O:panelRxInfo.Height">
         <source>32</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelRxInfo.Align" resname="O:formInformation.O:panelRxInfo.Align">
         <source>alRight</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelRxInfo.Font.Charset" resname="O:formInformation.O:panelRxInfo.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelRxInfo.Font.Color" resname="O:formInformation.O:panelRxInfo.Font.Color">
         <source>clBlue</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelRxInfo.Font.Height" resname="O:formInformation.O:panelRxInfo.Font.Height">
         <source>-21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelRxInfo.Font.Name" resname="O:formInformation.O:panelRxInfo.Font.Name">
         <source>'Arial'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelRxInfo.Font.Style" resname="O:formInformation.O:panelRxInfo.Font.Style">
         <source>[fsBold]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelRxInfo.ParentFont" resname="O:formInformation.O:panelRxInfo.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelRxInfo.TabOrder" resname="O:formInformation.O:panelRxInfo.TabOrder">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:formInformation.O:panelRxInfo.ExplicitLeft" resname="O:formInformation.O:panelRxInfo.ExplicitLeft">
-        <source>390</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689028935</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.Left" resname="O:formInformation.O:Panel1.Left">
         <source>42</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.Top" resname="O:formInformation.O:Panel1.Top">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.Width" resname="O:formInformation.O:Panel1.Width">
         <source>236</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.Height" resname="O:formInformation.O:Panel1.Height">
         <source>32</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.Align" resname="O:formInformation.O:Panel1.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.Font.Charset" resname="O:formInformation.O:Panel1.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.Font.Color" resname="O:formInformation.O:Panel1.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.Font.Height" resname="O:formInformation.O:Panel1.Font.Height">
         <source>-13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.Font.Name" resname="O:formInformation.O:Panel1.Font.Name">
         <source>'Arial'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.Font.Style" resname="O:formInformation.O:Panel1.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.ParentFont" resname="O:formInformation.O:Panel1.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.TabOrder" resname="O:formInformation.O:Panel1.TabOrder">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:formInformation.O:Panel1.ExplicitWidth" resname="O:formInformation.O:Panel1.ExplicitWidth">
-        <source>179</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689029051</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:ledPtt.Left" resname="O:formInformation.O:Panel1.O:ledPtt.Left">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:ledPtt.Top" resname="O:formInformation.O:Panel1.O:ledPtt.Top">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:ledPtt.ColorOff" resname="O:formInformation.O:Panel1.O:ledPtt.ColorOff">
         <source>clSilver</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:ledPtt.Status" resname="O:formInformation.O:Panel1.O:ledPtt.Status">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label1.Left" resname="O:formInformation.O:Panel1.O:Label1.Left">
         <source>6</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label1.Top" resname="O:formInformation.O:Panel1.O:Label1.Top">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label1.Width" resname="O:formInformation.O:Panel1.O:Label1.Width">
         <source>19</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label1.Height" resname="O:formInformation.O:Panel1.O:Label1.Height">
         <source>11</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label1.Caption" resname="O:formInformation.O:Panel1.O:Label1.Caption">
         <source>'PTT'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label1.Font.Charset" resname="O:formInformation.O:Panel1.O:Label1.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label1.Font.Color" resname="O:formInformation.O:Panel1.O:Label1.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label1.Font.Height" resname="O:formInformation.O:Panel1.O:Label1.Font.Height">
         <source>-11</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label1.Font.Name" resname="O:formInformation.O:Panel1.O:Label1.Font.Name">
         <source>'ＭＳ Ｐゴシック'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label1.Font.Style" resname="O:formInformation.O:Panel1.O:Label1.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label1.ParentFont" resname="O:formInformation.O:Panel1.O:Label1.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.Left" resname="O:formInformation.O:Panel1.O:button2bsiq.Left">
         <source>60</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.Top" resname="O:formInformation.O:Panel1.O:button2bsiq.Top">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.Width" resname="O:formInformation.O:Panel1.O:button2bsiq.Width">
         <source>57</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.Height" resname="O:formInformation.O:Panel1.O:button2bsiq.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.AllowAllUp" resname="O:formInformation.O:Panel1.O:button2bsiq.AllowAllUp">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.GroupIndex" resname="O:formInformation.O:Panel1.O:button2bsiq.GroupIndex">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.Caption" resname="O:formInformation.O:Panel1.O:button2bsiq.Caption">
         <source>'2BSIQ'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.Font.Charset" resname="O:formInformation.O:Panel1.O:button2bsiq.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.Font.Color" resname="O:formInformation.O:Panel1.O:button2bsiq.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.Font.Height" resname="O:formInformation.O:Panel1.O:button2bsiq.Font.Height">
         <source>-13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.Font.Name" resname="O:formInformation.O:Panel1.O:button2bsiq.Font.Name">
         <source>'ＭＳ Ｐゴシック'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.Font.Style" resname="O:formInformation.O:Panel1.O:button2bsiq.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.ParentFont" resname="O:formInformation.O:Panel1.O:button2bsiq.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:button2bsiq.OnClick" resname="O:formInformation.O:Panel1.O:button2bsiq.OnClick">
         <source>button2bsiqClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">113</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.Left" resname="O:formInformation.O:Panel1.O:buttonWait.Left">
         <source>116</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">114</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.Top" resname="O:formInformation.O:Panel1.O:buttonWait.Top">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">115</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.Width" resname="O:formInformation.O:Panel1.O:buttonWait.Width">
         <source>57</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">120</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">116</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.Height" resname="O:formInformation.O:Panel1.O:buttonWait.Height">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">121</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">117</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.AllowAllUp" resname="O:formInformation.O:Panel1.O:buttonWait.AllowAllUp">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">122</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">118</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.GroupIndex" resname="O:formInformation.O:Panel1.O:buttonWait.GroupIndex">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">119</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.Down" resname="O:formInformation.O:Panel1.O:buttonWait.Down">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">120</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.Caption" resname="O:formInformation.O:Panel1.O:buttonWait.Caption">
         <source>'Wait'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">125</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">121</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.Font.Charset" resname="O:formInformation.O:Panel1.O:buttonWait.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">126</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">122</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.Font.Color" resname="O:formInformation.O:Panel1.O:buttonWait.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">123</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.Font.Height" resname="O:formInformation.O:Panel1.O:buttonWait.Font.Height">
         <source>-13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">128</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">124</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.Font.Name" resname="O:formInformation.O:Panel1.O:buttonWait.Font.Name">
         <source>'ＭＳ Ｐゴシック'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">129</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">125</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.Font.Style" resname="O:formInformation.O:Panel1.O:buttonWait.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">130</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">126</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.ParentFont" resname="O:formInformation.O:Panel1.O:buttonWait.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">131</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">127</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:buttonWait.OnClick" resname="O:formInformation.O:Panel1.O:buttonWait.OnClick">
         <source>buttonWaitClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">128</prop><prop prop-type="Type">TSpeedButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:ledWait.Left" resname="O:formInformation.O:Panel1.O:ledWait.Left">
         <source>30</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">133</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">129</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:ledWait.Top" resname="O:formInformation.O:Panel1.O:ledWait.Top">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">130</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:ledWait.ColorOn" resname="O:formInformation.O:Panel1.O:ledWait.ColorOn">
         <source>clRed</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">135</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">131</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:ledWait.ColorOff" resname="O:formInformation.O:Panel1.O:ledWait.ColorOff">
         <source>clLime</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">136</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">132</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:ledWait.Status" resname="O:formInformation.O:Panel1.O:ledWait.Status">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">137</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">133</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label2.Left" resname="O:formInformation.O:Panel1.O:Label2.Left">
         <source>30</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">138</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">134</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label2.Top" resname="O:formInformation.O:Panel1.O:Label2.Top">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">139</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">135</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label2.Width" resname="O:formInformation.O:Panel1.O:Label2.Width">
         <source>19</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">140</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">136</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label2.Height" resname="O:formInformation.O:Panel1.O:Label2.Height">
         <source>11</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">141</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">137</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label2.Caption" resname="O:formInformation.O:Panel1.O:Label2.Caption">
         <source>'Wait'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">142</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">138</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label2.Font.Charset" resname="O:formInformation.O:Panel1.O:Label2.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">143</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">139</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label2.Font.Color" resname="O:formInformation.O:Panel1.O:Label2.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">144</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">140</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label2.Font.Height" resname="O:formInformation.O:Panel1.O:Label2.Font.Height">
         <source>-11</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">145</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">141</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label2.Font.Name" resname="O:formInformation.O:Panel1.O:Label2.Font.Name">
         <source>'ＭＳ Ｐゴシック'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">146</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">142</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label2.Font.Style" resname="O:formInformation.O:Panel1.O:Label2.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">143</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label2.ParentFont" resname="O:formInformation.O:Panel1.O:Label2.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">148</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">144</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:ledCqRepeat.Left" resname="O:formInformation.O:Panel1.O:ledCqRepeat.Left">
         <source>179</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689029051</prop><prop prop-type="Status">0</prop><prop prop-type="Order">149</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689029051</prop><prop prop-type="Status">0</prop><prop prop-type="Order">145</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:ledCqRepeat.Top" resname="O:formInformation.O:Panel1.O:ledCqRepeat.Top">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689029051</prop><prop prop-type="Status">0</prop><prop prop-type="Order">150</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689029051</prop><prop prop-type="Status">0</prop><prop prop-type="Order">146</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:ledCqRepeat.ColorOff" resname="O:formInformation.O:Panel1.O:ledCqRepeat.ColorOff">
         <source>clSilver</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689029051</prop><prop prop-type="Status">0</prop><prop prop-type="Order">151</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689029051</prop><prop prop-type="Status">0</prop><prop prop-type="Order">147</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:ledCqRepeat.Status" resname="O:formInformation.O:Panel1.O:ledCqRepeat.Status">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689029051</prop><prop prop-type="Status">0</prop><prop prop-type="Order">152</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689029051</prop><prop prop-type="Status">0</prop><prop prop-type="Order">148</prop><prop prop-type="Type">TJvLED</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label3.Left" resname="O:formInformation.O:Panel1.O:Label3.Left">
         <source>179</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689029167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689029167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">149</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label3.Top" resname="O:formInformation.O:Panel1.O:Label3.Top">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030324</prop><prop prop-type="Status">0</prop><prop prop-type="Order">154</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030324</prop><prop prop-type="Status">0</prop><prop prop-type="Order">150</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label3.Width" resname="O:formInformation.O:Panel1.O:Label3.Width">
         <source>51</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030324</prop><prop prop-type="Status">0</prop><prop prop-type="Order">155</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030324</prop><prop prop-type="Status">0</prop><prop prop-type="Order">151</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label3.Height" resname="O:formInformation.O:Panel1.O:Label3.Height">
         <source>11</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030324</prop><prop prop-type="Status">0</prop><prop prop-type="Order">156</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030324</prop><prop prop-type="Status">0</prop><prop prop-type="Order">152</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label3.Caption" resname="O:formInformation.O:Panel1.O:Label3.Caption">
         <source>'CQ Repeat'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">157</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">153</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label3.Font.Charset" resname="O:formInformation.O:Panel1.O:Label3.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">158</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">154</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label3.Font.Color" resname="O:formInformation.O:Panel1.O:Label3.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">159</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">155</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label3.Font.Height" resname="O:formInformation.O:Panel1.O:Label3.Font.Height">
         <source>-11</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">160</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">156</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label3.Font.Name" resname="O:formInformation.O:Panel1.O:Label3.Font.Name">
         <source>'ＭＳ Ｐゴシック'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">157</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label3.Font.Style" resname="O:formInformation.O:Panel1.O:Label3.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">158</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:Label3.ParentFont" resname="O:formInformation.O:Panel1.O:Label3.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.568903044</prop><prop prop-type="Status">0</prop><prop prop-type="Order">159</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:panelCqRepeat.Left" resname="O:formInformation.O:Panel1.O:panelCqRepeat.Left">
         <source>198</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">164</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">160</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:panelCqRepeat.Top" resname="O:formInformation.O:Panel1.O:panelCqRepeat.Top">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">165</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:panelCqRepeat.Width" resname="O:formInformation.O:Panel1.O:panelCqRepeat.Width">
         <source>32</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">166</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:panelCqRepeat.Height" resname="O:formInformation.O:Panel1.O:panelCqRepeat.Height">
         <source>17</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">167</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:panelCqRepeat.BevelOuter" resname="O:formInformation.O:Panel1.O:panelCqRepeat.BevelOuter">
         <source>bvLowered</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">164</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:panelCqRepeat.Caption" resname="O:formInformation.O:Panel1.O:panelCqRepeat.Caption">
         <source>'9'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">165</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:panelCqRepeat.Font.Charset" resname="O:formInformation.O:Panel1.O:panelCqRepeat.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">170</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">166</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:panelCqRepeat.Font.Color" resname="O:formInformation.O:Panel1.O:panelCqRepeat.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">171</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">167</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:panelCqRepeat.Font.Height" resname="O:formInformation.O:Panel1.O:panelCqRepeat.Font.Height">
         <source>-12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030556</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:panelCqRepeat.Font.Name" resname="O:formInformation.O:Panel1.O:panelCqRepeat.Font.Name">
         <source>'Arial'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">173</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:panelCqRepeat.Font.Style" resname="O:formInformation.O:Panel1.O:panelCqRepeat.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">174</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">170</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:panelCqRepeat.ParentFont" resname="O:formInformation.O:Panel1.O:panelCqRepeat.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">171</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:Panel1.O:panelCqRepeat.TabOrder" resname="O:formInformation.O:Panel1.O:panelCqRepeat.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.5689030671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTxInfo.Left" resname="O:formInformation.O:panelTxInfo.Left">
         <source>386</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">173</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTxInfo.Top" resname="O:formInformation.O:panelTxInfo.Top">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">174</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTxInfo.Width" resname="O:formInformation.O:panelTxInfo.Width">
         <source>61</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTxInfo.Height" resname="O:formInformation.O:panelTxInfo.Height">
         <source>32</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTxInfo.Align" resname="O:formInformation.O:panelTxInfo.Align">
         <source>alRight</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTxInfo.Font.Charset" resname="O:formInformation.O:panelTxInfo.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTxInfo.Font.Color" resname="O:formInformation.O:panelTxInfo.Font.Color">
         <source>clBlue</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">183</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTxInfo.Font.Height" resname="O:formInformation.O:panelTxInfo.Font.Height">
         <source>-21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTxInfo.Font.Name" resname="O:formInformation.O:panelTxInfo.Font.Name">
         <source>'Arial'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">185</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTxInfo.Font.Style" resname="O:formInformation.O:panelTxInfo.Font.Style">
         <source>[fsBold]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">186</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTxInfo.ParentFont" resname="O:formInformation.O:panelTxInfo.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">183</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formInformation.O:panelTxInfo.TabOrder" resname="O:formInformation.O:panelTxInfo.TabOrder">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:formInformation.O:panelTxInfo.ExplicitLeft" resname="O:formInformation.O:panelTxInfo.ExplicitLeft">
-        <source>329</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.5689030671</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8931887269</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

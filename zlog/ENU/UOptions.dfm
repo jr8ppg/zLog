@@ -451,7 +451,7 @@ object formOptions: TformOptions
         AutoSize = False
         MaxValue = 99
         MinValue = 1
-        TabOrder = 4
+        TabOrder = 6
         Value = 3
       end
       object cbDispExchange: TCheckBox
@@ -460,7 +460,7 @@ object formOptions: TformOptions
         Width = 193
         Height = 17
         Caption = 'Display exchange on other bands'
-        TabOrder = 6
+        TabOrder = 8
       end
       object cbJMode: TCheckBox
         Left = 273
@@ -476,7 +476,7 @@ object formOptions: TformOptions
         Width = 161
         Height = 17
         Caption = 'Save when not sending CW'
-        TabOrder = 7
+        TabOrder = 5
       end
       object cbAutoEnterSuper: TCheckBox
         Left = 17
@@ -484,7 +484,7 @@ object formOptions: TformOptions
         Width = 260
         Height = 17
         Caption = 'Automatically enter exchange from SuperCheck'
-        TabOrder = 5
+        TabOrder = 7
       end
       object groupQsyAssist: TGroupBox
         Left = 222
@@ -492,7 +492,7 @@ object formOptions: TformOptions
         Width = 204
         Height = 89
         Caption = 'QSY Assist'
-        TabOrder = 9
+        TabOrder = 11
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -599,14 +599,22 @@ object formOptions: TformOptions
         Width = 193
         Height = 17
         Caption = 'Display long date time'
-        TabOrder = 8
+        TabOrder = 9
       end
       object checkOutputOutofPeriod: TCheckBox
         Left = 273
-        Top = 110
+        Top = 131
         Width = 160
         Height = 17
         Caption = 'Output logs out of period'
+        TabOrder = 4
+      end
+      object checkUseContestPeriod: TCheckBox
+        Left = 273
+        Top = 109
+        Width = 160
+        Height = 17
+        Caption = 'Use contest period'
         TabOrder = 3
       end
     end
@@ -6326,13 +6334,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'HG'#21109#33521#65420#65439#65434#65406#65438#65437#65405'EB'
+          FontName = 'Cascadia Mono ExtraLight Italic'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 61
+          ItemIndex = 44
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

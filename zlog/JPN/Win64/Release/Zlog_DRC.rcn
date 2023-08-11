@@ -5,10 +5,10 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45087.428912037</prop>
-        <prop prop-type="OrigDateTime">45038.3534490741</prop>
+        <prop prop-type="SelfDateTime">45149.9837731481</prop>
+        <prop prop-type="OrigDateTime">45134.9315740741</prop>
         <prop prop-type="XlatDateTime">45016.8840972222</prop>
-        <prop prop-type="Translated">52</prop>
+        <prop prop-type="Translated">53</prop>
         <prop prop-type="UnTranslated">1217</prop>
       </prop-group>
     </header>
@@ -9010,6 +9010,14 @@
           <prop prop-type="Status">1</prop>
         </prop-group>
         <target>"全てのQSOをコンテスト期間内であるか判定しますか？"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_EmptyOpList" resname="Main_TMainForm_EmptyOpList">
+        <source>"Operator list is empty."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45149.964156875</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"オペレーターは登録されていません"</target>
       </trans-unit>
     </body>
   </file>

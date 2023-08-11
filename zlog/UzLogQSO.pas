@@ -142,6 +142,7 @@ type
     function GetTimeStr(): string;
     function GetDateStr(): string;
     function GetBandStr(): string;
+    function GetBandStr2(): string;
     function GetModeStr(): string;
     function GetMode2Str(): string;
     function GetPowerStr(): string;
@@ -217,6 +218,7 @@ type
     property TimeStr: string read GetTimeStr;
     property DateStr: string read GetDateStr;
     property BandStr: string read GetBandStr;
+    property BandStr2: string read GetBandStr2;
     property ModeStr: string read GetModeStr;
     property Mode2Str: string read GetMode2Str;
     property PowerStr: string read GetPowerStr;
@@ -664,6 +666,16 @@ begin
    end
    else begin
       Result := MHzString[Self.FBand];
+   end;
+end;
+
+function TQSO.GetBandStr2: string;
+begin
+   if FBand = bUnknown then begin
+      Result := 'Unknown';
+   end
+   else begin
+      Result := ADIFBandString[Self.FBand];
    end;
 end;
 
@@ -2565,6 +2577,65 @@ var
    strMulti: string;
    newoffsetmin: Integer;
    offsethour: Integer;
+   S: string;
+
+   {
+   $URCALL 相手コールサイン
+   $MYCALL 自分のコールサイン
+   $RSTSENT 送ったRST
+   $RSTRECV もらったRST
+   $NRSENT  送ったNR
+   $NRRECV  もらったNR
+   $MEMO Memo欄の内容
+   $CTNAME コンテスト名
+   $DATE 交信日付(yyyy/mm/dd)
+   $TIME 交信時刻(HH:MM)
+   $FREQ 71000.0形式
+   $BANDF 周波数形式 7M
+   $BANDW 波長形式 40m
+   $MODE SSB/CW
+   $QSL  " JN"のどれか
+   $OP   OP名
+
+   $URCALL  Ur callsign
+   $MYCALL  My callsign
+   $RSTSENT Sent RST
+   $RSTRECV Recieved RST
+   $NRSENT  Sent NR
+   $NRRECV  Recieved NR
+   $MEMO    Contents of Memo
+   $CTNAME  Contest name
+   $DATE    QSO date(ex. yyyy/mm/dd)
+   $TIME    QSO time(ex. HH:MM)
+   $FREQ    Frequency(ex. 71000.0)
+   $BANDF   Band by frequency(ex. 7M)
+   $BANDW   Band by wavelength(ex. 40m)
+   $MODE    Mode(ex. SSB)
+   $QSL     Mark of QSL state
+   $OP      Operator name
+   }
+   function ReplaceHamlogKeyword(Q: TQSO; S: string): string;
+   begin
+      S := StringReplace(S, '$URCALL',  Q.Callsign, [rfReplaceALL]);
+      S := StringReplace(S, '$MYCALL',  dmZLogGlobal.MyCall, [rfReplaceALL]);
+      S := StringReplace(S, '$RSTSENT', Q.RSTSentStr, [rfReplaceALL]);
+      S := StringReplace(S, '$RSTRECV', Q.RSTRcvdStr, [rfReplaceALL]);
+      S := StringReplace(S, '$NRSENT',  Q.NrSent, [rfReplaceALL]);
+      S := StringReplace(S, '$NRRECV',  Q.NrRcvd, [rfReplaceALL]);
+      S := StringReplace(S, '$MEMO',    Q.Memo, [rfReplaceALL]);
+      S := StringReplace(S, '$CTNAME',  MyContest.Name, [rfReplaceALL]);
+      S := StringReplace(S, '$DATE',    FormatDateTime('yyyy/mm/dd', Q.Time), [rfReplaceALL]);
+      S := StringReplace(S, '$TIME',    FormatDateTime('HH:MM', Q.Time), [rfReplaceALL]);
+      S := StringReplace(S, '$FREQ',    Q.FreqStr, [rfReplaceALL]);
+      S := StringReplace(S, '$BANDF',   Q.BandStr, [rfReplaceALL]);
+      S := StringReplace(S, '$BANDW',   Q.BandStr2, [rfReplaceALL]);
+      S := StringReplace(S, '$MODE',    Q.ModeStr, [rfReplaceALL]);
+      S := StringReplace(S, '$QSL',     strQslState[Q.QslState], [rfReplaceALL]);
+      S := StringReplace(S, '$OP',      Q.Operator, [rfReplaceALL]);
+      S := StringReplace(S, ',',        '_', [rfReplaceALL]);
+      S := StringReplace(S, '"',        '\"', [rfReplaceALL]);
+      Result := S;
+   end;
 begin
    strQslState[qsNone]   := Copy(strQslStateText, 1, 1);
    strQslState[qsPseQsl] := Copy(strQslStateText, 2, 1);
@@ -2674,7 +2745,8 @@ begin
          //13列目　Remarks1
          case nRemarks1Option of
             1: begin
-               slCsv.Add(strRemarks1);
+               S := ReplaceHamlogKeyword(Q, strRemarks1);
+               slCsv.Add(S);
             end;
 
             2: begin
@@ -2693,7 +2765,8 @@ begin
          //14列目　Remarks2
          case nRemarks2Option of
             1: begin
-               slCsv.Add(strRemarks2);
+               S := ReplaceHamlogKeyword(Q, strRemarks2);
+               slCsv.Add(S);
             end;
 
             2: begin
@@ -3586,6 +3659,11 @@ end;
 
 function TLog.IsOutOfPeriod(Q: TQSO): Boolean;
 begin
+   if dmZLogGlobal.Settings._use_contest_period = False then begin
+      Result := False;
+      Exit;
+   end;
+
    if (Q.Time < FStartTime) or (Q.Time > EndTime) then begin
       Result := True;
       Exit;

@@ -5768,6 +5768,25 @@ object MainForm: TMainForm
       end
     end
   end
+  object panelOutOfPeriod: TPanel
+    Left = 0
+    Top = 66
+    Width = 524
+    Height = 28
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = #12467#12531#12486#12473#12488#26399#38291#22806#12391#12377#12290
+    Color = clYellow
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 3
+    Visible = False
+  end
   object MainMenu: TMainMenu
     AutoHotkeys = maManual
     AutoLineReduction = maManual
@@ -5839,7 +5858,7 @@ object MainForm: TMainForm
         OnClick = CreateELogJARL1Click
       end
       object CreateELogJARL2: TMenuItem
-        Caption = 'Create E-Log (&JARL 2.1)'
+        Caption = 'JARL E-Log 2.1'#12398#20316#25104
         OnClick = CreateELogJARL2Click
       end
       object CreateDupeCheckSheetZPRINT1: TMenuItem
@@ -7288,6 +7307,11 @@ object MainForm: TMainForm
       Caption = 'actionChangePower2'
       OnExecute = actionChangePowerExecute
     end
+    object actionToggleTxNr: TAction
+      Caption = 'actionToggleTxNr'
+      ShortCut = 32857
+      OnExecute = actionToggleTxNrExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual
@@ -7317,5 +7341,12 @@ object MainForm: TMainForm
     Title = 'Import'
     Left = 472
     Top = 144
+  end
+  object timerOutOfPeriod: TTimer
+    Enabled = False
+    Interval = 20
+    OnTimer = timerOutOfPeriodTimer
+    Left = 304
+    Top = 147
   end
 end

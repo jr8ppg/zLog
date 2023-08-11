@@ -531,6 +531,9 @@ type
     menuCorrectStartTime: TMenuItem;
     FT41: TMenuItem;
     FT81: TMenuItem;
+    actionToggleTxNr: TAction;
+    panelOutOfPeriod: TPanel;
+    timerOutOfPeriod: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -808,6 +811,8 @@ type
     procedure menuPortalClick(Sender: TObject);
     procedure menuCorrectStartTimeClick(Sender: TObject);
     procedure FileMenuClick(Sender: TObject);
+    procedure actionToggleTxNrExecute(Sender: TObject);
+    procedure timerOutOfPeriodTimer(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -905,6 +910,9 @@ type
 
     FTaskbarList: ITaskbarList;
 
+    FFirstOutOfContestPeriod: Boolean;
+    FOutOfContestPeriod: Boolean;
+    FPrevOutOfContestPeriod: Boolean;
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -950,7 +958,7 @@ type
     procedure CallsignSentProc(Sender: TObject); // called when callsign is sent;
     procedure Update10MinTimer; //10 min countdown
     procedure SaveFileAndBackUp;
-    procedure ChangeTxNr(txnr: Byte);
+    procedure ChangeTxNr(txnr: Integer);
     procedure IncFontSize();
     procedure DecFontSize();
     procedure SetFontSize(font_size: Integer);
@@ -1061,6 +1069,7 @@ type
     procedure LogButtonProc(nID: Integer; Q: TQSO);
     function InputStartTime(fNeedSave: Boolean): Boolean;
     procedure EnableShiftKeyAction(fEnable: Boolean);
+    procedure ShowOutOfContestPeriod(fShow: Boolean);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1198,6 +1207,7 @@ resourcestring
   TMainForm_Set_CQ_Repeat_Int = 'CQ Repeat Int. %.1f sec.';
   TMainForm_Invalid_zone = 'Invalid zone';
   TMainForm_JudgePeriod = 'Do you want to judge whether all QSOs are within the contest period?';
+  TMainForm_EmptyOpList = 'Operator list is empty.';
 
 var
   MainForm: TMainForm;
@@ -1627,11 +1637,21 @@ begin
       CurrentQSO.RSTRcvd := 59;
       CurrentQSO.RSTsent := 59;
       RcvdRSTEdit.Text := '59';
+
+      // USBIF4CW gen3で音声使う際は、PHでPTT制御あり
+      if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
+         dmZLogGlobal.Settings._pttenabled := True;
+      end;
    end
    else begin
       CurrentQSO.RSTRcvd := 599;
       CurrentQSO.RSTsent := 599;
       RcvdRSTEdit.Text := '599';
+
+      // USBIF4CW gen3で音声使う際は、CWでPTT制御なし
+      if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
+         dmZLogGlobal.Settings._pttenabled := False;
+      end;
    end;
 
    ShowToolBar(M);
@@ -2112,6 +2132,12 @@ begin
       FKeyPressedRigID[i] := 0;
    end;
    FRigSwitchTime := Now();
+
+   // Out of contest period表示
+   FFirstOutOfContestPeriod := True;
+   FOutOfContestPeriod := False;
+   FPrevOutOfContestPeriod := False;
+   panelOutOfPeriod.Height := 0;
 
    FQsyFromBS := False;
 
@@ -2984,7 +3010,7 @@ begin
    end;
 end;
 
-procedure TMainForm.ChangeTxNr(txnr: Byte);
+procedure TMainForm.ChangeTxNr(txnr: Integer);
 begin
    case dmZLogGlobal.ContestCategory of
       ccSingleOp: Exit;
@@ -3105,6 +3131,7 @@ begin
    FBandScopeNewMulti.FontSize := font_size;
    FBandScopeAllBands.FontSize := font_size;
 
+   FCWKeyboard.FontSize := font_size;
    FCWMessagePad.FontSize := font_size;
 
    FFreqList.FontSize := font_size;
@@ -3112,6 +3139,7 @@ begin
    FCheckMulti.FontSize := font_size;
    FCheckCountry.FontSize := font_size;
    FFunctionKeyPanel.FontSize := font_size;
+   FChatForm.FontSize := font_size;
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
@@ -4034,16 +4062,16 @@ begin
             Q.Multi2 := '';
             Q.Reserve2 := $00;
          end;
-      end
-      else begin  // UNIQUE!
-         // 無効マルチは入力できない
-         if MyContest.MultiForm.ValidMulti(Q) = False then begin
-            WriteStatusLine(TMainForm_Invalid_number, False);
-            FEditPanel[nID].NumberEdit.SetFocus;
-            FEditPanel[nID].NumberEdit.SelectAll;
-            Exit;
-         end;
       end;
+
+      // 無効マルチは入力できない
+      if MyContest.MultiForm.ValidMulti(Q) = False then begin
+         WriteStatusLine(TMainForm_Invalid_number, False);
+         FEditPanel[nID].NumberEdit.SetFocus;
+         FEditPanel[nID].NumberEdit.SelectAll;
+         Exit;
+      end;
+
       Q.Forced := False;
    end
    else begin     // 強制入力
@@ -4695,6 +4723,31 @@ begin
    end;
 end;
 
+// Out of contest period表示用
+procedure TMainForm.timerOutOfPeriodTimer(Sender: TObject);
+begin
+   if TTimer(Sender).Tag = 0 then begin   // OFF
+      if panelOutOfPeriod.Height <= 0 then begin
+         panelOutOfPeriod.Height := 0;
+         panelOutOfPeriod.Visible := False;
+         TTimer(Sender).Enabled := False;
+      end
+      else begin
+         panelOutOfPeriod.Height := panelOutOfPeriod.Height - 2;
+      end;
+   end
+   else begin     // ON
+      if panelOutOfPeriod.Height >= 28 then begin
+         panelOutOfPeriod.Height := 28;
+         TTimer(Sender).Enabled := False;
+      end
+      else begin
+         panelOutOfPeriod.Visible := True;
+         panelOutOfPeriod.Height := panelOutOfPeriod.Height + 2;
+      end;
+   end;
+end;
+
 procedure TMainForm.buttonCwKeyboardClick(Sender: TObject);
 begin
    FormShowAndRestore(FCWKeyBoard);
@@ -4837,6 +4890,7 @@ var
    S2: string;
    fQsyOK: Boolean;
    nCountDownMinute: Integer;
+   strTxNo: string;
 begin
    S := TimeToStr(CurrentTime);
    if length(S) = 7 then begin
@@ -4898,7 +4952,15 @@ begin
    StatusLine.Panels[3].Text := S;
    FInformation.Time := S;
 
-   FQsyInfoForm.SetQsyInfo(fQsyOK, S2);
+   // SingleOP以外はTX#を表示する
+   if dmZLogGlobal.ContestCategory = ccSingleOp then begin
+      strTxNo := '';
+   end
+   else begin
+      strTxNo := 'TX#' + IntToStr(dmZLogGlobal.TXNr);
+   end;
+
+   FQsyInfoForm.SetQsyInfo(fQsyOK, strTxNo, S2);
 end;
 
 procedure TMainForm.CallsignSentProc(Sender: TObject);
@@ -5110,6 +5172,16 @@ begin
          S := CurrentQSO.TimeStr;
          if S <> TimeEdit.Text then begin
             TimeEdit.Text := S;
+         end;
+      end;
+
+      // Out of contest period表示
+      FOutOfContestPeriod := Log.IsOutOfPeriod(CurrentQSO);
+      if (FPrevOutOfContestPeriod <> FOutOfContestPeriod) or (FFirstOutOfContestPeriod = True) then begin
+         if panelOutOfPeriod.Visible <> FOutOfContestPeriod then begin
+            ShowOutOfContestPeriod(FOutOfContestPeriod);
+            FPrevOutOfContestPeriod := FOutOfContestPeriod;
+            FFirstOutOfContestPeriod := False;
          end;
       end;
    finally
@@ -5928,6 +6000,11 @@ var
    e: TEdit;
    pt: TPoint;
 begin
+   if dmZlogGlobal.OpList.Count = 0 then begin
+      MessageBox(Handle, PChar(TMainForm_EmptyOpList), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
    e := TEdit(Sender);
    pt.X := e.Left + 20;
    pt.Y := e.Top;
@@ -6082,6 +6159,9 @@ begin
 
    // 画面リフレッシュ
    RenewScore();
+
+   // 期間外再表示
+   FFirstOutOfContestPeriod := True;
 end;
 
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
@@ -8743,7 +8823,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actionFocusOpExecute---'));
    {$ENDIF}
-   OpEdit1Click(Self);
+   OpEdit1Click(OpEdit);
 end;
 
 // #64 Packet Cluster / Alt+P
@@ -9671,6 +9751,19 @@ begin
    FormShowAndRestore(FMessageManager);
 end;
 
+// #160 Toggle TxNr
+procedure TMainForm.actionToggleTxNrExecute(Sender: TObject);
+var
+   txnr: Integer;
+begin
+   txnr := dmZlogGlobal.TXNr;
+   Inc(txnr);
+   if txnr > 1 then begin
+      txnr := 0;
+   end;
+   ChangeTxNr(txnr);
+end;
+
 procedure TMainForm.RestoreWindowsPos();
 var
    X, Y, W, H: Integer;
@@ -9881,6 +9974,7 @@ end;
 procedure TMainForm.CheckSuper(aQSO: TQSO);
 var
    PartialStr: string;
+   PartialStrOrg: string;
    i: integer;
    maxhit, hit: integer;
    sd, FirstData: TSuperData;
@@ -9918,6 +10012,7 @@ begin
    maxhit := dmZlogGlobal.Settings._maxsuperhit;
 
    // ポータブル除く
+   PartialStrOrg := PartialStr;
    PartialStr := CoreCall(PartialStr);
 
    // 検索対象無し
@@ -9945,7 +10040,12 @@ begin
 
       for j := 0 to SI.List.Count - 1 do begin
          sd := SI.List[j];
+
          if FSuperCheck.Count = 0 then begin
+            FirstData := sd;
+         end;
+
+         if sd.Callsign = PartialStrOrg then begin
             FirstData := sd;
          end;
 
@@ -10181,7 +10281,7 @@ begin
 
             // もう一度周波数を設定(side bandずれ対策)
             if dmZLogGlobal.Settings._bandscope_setfreq_after_mode_change = True then begin
-               rig.SetFreq(freq, fSetLastFreq);
+               rig.SetFreq(freq, False);
             end;
          end;
 
@@ -11879,6 +11979,18 @@ begin
          end;
       end;
    end;
+end;
+
+procedure TMainForm.ShowOutOfContestPeriod(fShow: Boolean);
+begin
+   panelOutOfPeriod.Visible := True;
+   if fShow = True then begin
+      timerOutOfPeriod.Tag := 1;
+   end
+   else begin
+      timerOutOfPeriod.Tag := 0;
+   end;
+   timerOutOfPeriod.Enabled := True;
 end;
 
 { TBandScopeNotifyThread }

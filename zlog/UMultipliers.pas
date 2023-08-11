@@ -111,14 +111,59 @@ type
   end;
 
   TCityList = class
-    List : TList;
-    SortedMultiList : TStringList;
+  private
+    FList: TList;
+    FSortedMultiList: TStringList;
+  public
     constructor Create;
     destructor Destroy; override;
     procedure Reset;
-    function GetCity(Name : string) : TCity;
+    function GetCity(Name : string): TCity;
+    procedure LoadFromFile(filename: string);
+    function AddAndSort(C : TCity): integer; // returns the index inserted
+    property List: TList read FList;
+    property SortedMultiList: TStringList read FSortedMultiList;
+  end;
+
+  TState = class
+    StateName : string;
+    StateAbbrev : string;
+    AltAbbrev : string;
+    Worked : array[b19..HiBand] of boolean;
+    Index : integer;
+    constructor Create;
+    function Summary : string;
+    function Summary2 : string;
+    function SummaryARRL10 : string;
+  end;
+
+  TStateList = class
+  private
+    FList: TList;
+  public
+    constructor Create;
+    procedure LoadFromFile(filename: string);
+    destructor Destroy; override;
+    property List: TList read FList;
+  end;
+
+  TIsland = class
+    RefNumber : string;
+    Name : string;
+    Worked : array[b19..HiBand, mCW..mSSB] of boolean;
+    constructor Create;
+    function Summary : string;
+  end;
+
+  TIslandList = class
+  private
+    FList : TList;
+  public
+    constructor Create;
+    destructor Destroy; override;
     procedure LoadFromFile(filename : string);
-    function AddAndSort(C : TCity) : integer; // returns the index inserted
+//    procedure SaveToFile(filename : string);
+    property List: TList read FList;
   end;
 
 implementation
@@ -544,6 +589,8 @@ begin
    Result := CompareText(Right.Prefix, Left.Prefix);
 end;
 
+{ TCity }
+
 constructor TCity.Create;
 var
    B: TBand;
@@ -710,9 +757,9 @@ end;
 
 constructor TCityList.Create;
 begin
-   List := TList.Create;
-   SortedMultiList := TStringList.Create;
-   SortedMultiList.Sorted := true;
+   FList := TList.Create;
+   FSortedMultiList := TStringList.Create;
+   FSortedMultiList.Sorted := true;
 end;
 
 procedure TCityList.Reset;
@@ -730,43 +777,46 @@ var
    i: integer;
 begin
    Result := nil;
-   i := SortedMultiList.IndexOf(Name);
+   i := FSortedMultiList.IndexOf(Name);
    if i >= 0 then
-      Result := TCity(SortedMultiList.Objects[i]);
+      Result := TCity(FSortedMultiList.Objects[i]);
 end;
 
 destructor TCityList.Destroy;
 var
    i: integer;
 begin
-   for i := 0 to List.Count - 1 do begin
-      if List[i] <> nil then
-         TCity(List[i]).Free;
+   for i := 0 to FList.Count - 1 do begin
+      if FList[i] <> nil then
+         TCity(FList[i]).Free;
    end;
-   List.Free;
-   SortedMultiList.Clear;
-   SortedMultiList.Free;
+   FList.Free;
+   FSortedMultiList.Clear;
+   FSortedMultiList.Free;
 end;
 
 procedure TCityList.LoadFromFile(filename: string);
 var
-   f: textfile;
    str: string;
    C: TCity;
    i: integer;
    fullpath: string;
+   SL: TStringList;
+   L: Integer;
 begin
    fullpath := dmZLogGlobal.ExpandCfgDatFullPath(filename);
    if fullpath = '' then begin
-      Exit;
+      SL := LoadFromResourceName(SysInit.HInstance, filename);
+   end
+   else begin
+      SL := TStringList.Create();
+      SL.LoadFromFile(fullpath);
    end;
 
-   Assign(f, fullpath);
-   System.Reset(f);
-   ReadLn(f, str);
+   for L := 1 to SL.Count - 1 do begin
 
-   while not(eof(f)) do begin
-      ReadLn(f, str);
+      str := SL[L];
+
       if pos('end of file', LowerCase(str)) > 0 then begin
          break;
       end;
@@ -783,34 +833,292 @@ begin
 
       C.Index := List.Count;
 
-      List.Add(C);
-      SortedMultiList.AddObject(C.CityNumber, C);
+      FList.Add(C);
+      FSortedMultiList.AddObject(C.CityNumber, C);
    end;
 
-   closefile(f);
+   SL.Free();
 end;
 
 function TCityList.AddAndSort(C: TCity): integer;
 var
    i: integer;
 begin
-   if List.Count = 0 then begin
-      List.Add(C);
+   if FList.Count = 0 then begin
+      FList.Add(C);
       Result := 0;
       exit;
    end;
 
    for i := 0 to List.Count - 1 do begin
       if StrMore(TCity(List[i]).CityNumber, C.CityNumber) then begin
-         List.Insert(i, C);
+         FList.Insert(i, C);
          Result := i;
          exit;
       end;
    end;
 
-   List.Add(C);
+   FList.Add(C);
 
    Result := List.Count - 1;
 end;
+
+{ TState }
+
+constructor TState.Create;
+var
+   B: TBand;
+begin
+   for B := b19 to HiBand do
+      Worked[B] := False;
+
+   StateName := '';
+   StateAbbrev := '';
+   AltAbbrev := '';
+   Index := 0;
+end;
+
+function TState.Summary: string;
+var
+   temp: string;
+   B: TBand;
+begin
+   temp := FillRight(StateName, 22) + FillRight(StateAbbrev, 4) + '  ';
+
+   for B := b19 to b28 do begin
+      if NotWARC(B) then
+         if Worked[B] then
+            temp := temp + '* '
+         else
+            temp := temp + '. ';
+   end;
+
+   Result := ' ' + temp;
+end;
+
+function TState.SummaryARRL10: string;
+var
+   temp: string;
+   B: TBand;
+begin
+   temp := ' ' + FillRight(StateAbbrev, 7) + FillRight(StateName, 32);
+
+   for B := b19 to b35 do begin
+      if Worked[B] then
+         temp := temp + '*  '
+      else
+         temp := temp + '.  ';
+   end;
+
+   Result := temp;
+end;
+
+function TState.Summary2: string;
+var
+   temp: string;
+   B: TBand;
+begin
+   temp := FillRight(StateName, 22) + FillRight(StateAbbrev, 4);
+
+   for B := b19 to b28 do begin
+      if Worked[B] then
+         temp := temp + ' ' + MHzString[B]
+      else
+         temp := temp + '';
+   end;
+
+   Result := temp;
+end;
+
+{ TStateList }
+
+constructor TStateList.Create;
+begin
+   FList := TList.Create;
+end;
+
+destructor TStateList.Destroy;
+var
+   i: integer;
+begin
+   for i := 0 to FList.Count - 1 do begin
+      if FList[i] <> nil then
+         TState(FList[i]).Free;
+   end;
+
+   FList.Free;
+end;
+
+procedure TStateList.LoadFromFile(filename: string);
+var
+   str: string;
+   S: TState;
+   fullpath: string;
+   SL: TStringList;
+   L: Integer;
+begin
+   fullpath := dmZLogGlobal.ExpandCfgDatFullPath(filename);
+   if fullpath = '' then begin
+      SL := LoadFromResourceName(SysInit.HInstance, filename);
+   end
+   else begin
+      SL := TStringList.Create();
+      SL.LoadFromFile(fullpath);
+   end;
+
+   L := 1;
+   while (L < SL.Count - 1) do begin
+      str := SL[L];
+
+      if pos('end of file', LowerCase(str)) > 0 then begin
+         break;
+      end;
+
+      S := TState.Create;
+      S.Index := List.Count;
+      S.StateName := TrimRight(Copy(str, 1, 22));
+      S.StateAbbrev := TrimLeft(TrimRight(Copy(str, 30, 25)));
+
+      Inc(L);
+
+      if (L < SL.Count - 1) then begin
+         str := SL[L];
+         str := TrimRight(str);
+         str := TrimLeft(str);
+         if not CharInSet(str[length(str)], ['a' .. 'z', 'A' .. 'Z', '0' .. '9']) then
+            System.Delete(str, length(str), 1);
+
+         S.AltAbbrev := str;
+
+         Inc(L);
+      end;
+
+      List.Add(S);
+   end;
+
+   SL.Free();
+end;
+
+{ TIsland }
+
+constructor TIsland.Create;
+var
+   B: TBand;
+   M: TMode;
+begin
+   RefNumber := '';
+   Name := '';
+   for B := b19 to HiBand do
+      for M := mCW to mSSB do
+         Worked[B, M] := False;
+end;
+
+function TIsland.Summary: string;
+var
+   str: string;
+   strname: string;
+   B: TBand;
+   M: TMode;
+begin
+   strname := Name;
+   str := FillRight(RefNumber, 6) +
+          StringReplace(FillRight(strname, 31), '&', '&&', [rfReplaceAll]);
+
+   for B := b35 to b28 do begin
+      if NotWARC(B) then begin
+         for M := mCW to mSSB do begin
+            if Worked[B, M] = True then
+               str := str + '* '
+            else
+               str := str + '. ';
+         end;
+      end;
+   end;
+
+   Result := str;
+end;
+
+{ TIslandList }
+
+constructor TIslandList.Create;
+begin
+   FList := TList.Create;
+end;
+
+destructor TIslandList.Destroy;
+var
+   i: Integer;
+begin
+   for i := 0 to FList.Count - 1 do begin
+      if FList[i] <> nil then
+         TIsland(FList[i]).Free;
+   end;
+   FList.Free;
+end;
+
+procedure TIslandList.LoadFromFile(filename: string);
+var
+   str: string;
+   i: TIsland;
+   fullpath: string;
+   SL: TStringList;
+   L: Integer;
+begin
+   fullpath := dmZLogGlobal.ExpandCfgDatFullPath(filename);
+   if fullpath = '' then begin
+      SL := LoadFromResourceName(SysInit.HInstance, filename);
+   end
+   else begin
+      SL := TStringList.Create();
+      SL.LoadFromFile(fullpath);
+   end;
+
+   for L := 1 to SL.Count - 1 do begin
+      str := SL[L];
+
+      if Pos('end of file', LowerCase(str)) > 0 then
+         break;
+
+      i := TIsland.Create;
+      i.RefNumber := Copy(str, 1, 5);
+      Delete(str, 1, 6);
+      i.Name := str;
+      FList.Add(i);
+   end;
+
+   SL.Free();
+end;
+
+(*
+procedure TIslandList.SaveToFile(filename: string);
+var
+   f: textfile;
+   str: string;
+   i: TIsland;
+   j: Integer;
+   fullpath: string;
+begin
+   fullpath := dmZLogGlobal.ExpandCfgDatFullPath(filename);
+   if fullpath = '' then begin
+      Exit;
+   end;
+
+   Assign(f, fullpath);
+   try
+      rewrite(f);
+   except
+      on EFOpenError do begin
+         MessageDlg('DAT file ' + filename + ' cannot be opened', mtError, [mbOK], 0);
+         exit; { Alert that the file cannot be opened \\ }
+      end;
+   end;
+   for j := 0 to FList.Count - 1 do begin
+      i := TIsland(FList[j]);
+      str := i.RefNumber + ' ' + i.Name;
+      writeln(f, str);
+   end;
+   system.close(f);
+end;
+*)
 
 end.

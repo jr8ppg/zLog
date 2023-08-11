@@ -8,27 +8,28 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMainThreadCallStack 64256
-#define UExceptionDialog_RsThreadCallStack 64257
-#define UExceptionDialog_RsErrorMessage 64258
-#define UExceptionDialog_RsDetailsIntro 64259
-#define UExceptionDialog_RsUnitVersioningIntro 64260
-#define UExceptionDialog_RsAppError 64272
-#define UExceptionDialog_RsExceptionClass 64273
-#define UExceptionDialog_RsExceptionMessage 64274
-#define UExceptionDialog_RsExceptionAddr 64275
-#define UExceptionDialog_RsStackList 64276
-#define UExceptionDialog_RsModulesList 64277
-#define UExceptionDialog_RsOSVersion 64278
-#define UExceptionDialog_RsProcessor 64279
-#define UExceptionDialog_RsMemory 64280
-#define UExceptionDialog_RsScreenRes 64281
-#define UExceptionDialog_RsActiveControl 64282
-#define UExceptionDialog_RsThread 64283
-#define UExceptionDialog_RsMissingVersionInfo 64284
-#define UExceptionDialog_RsExceptionStack 64285
-#define UExceptionDialog_RsMainThreadID 64286
-#define UExceptionDialog_RsExceptionThreadID 64287
+#define UExceptionDialog_RsExceptionThreadID 64256
+#define UExceptionDialog_RsMainThreadCallStack 64257
+#define UExceptionDialog_RsThreadCallStack 64258
+#define UExceptionDialog_RsErrorMessage 64259
+#define UExceptionDialog_RsDetailsIntro 64260
+#define UExceptionDialog_RsUnitVersioningIntro 64261
+#define Main_TMainForm_EmptyOpList 64272
+#define UExceptionDialog_RsAppError 64273
+#define UExceptionDialog_RsExceptionClass 64274
+#define UExceptionDialog_RsExceptionMessage 64275
+#define UExceptionDialog_RsExceptionAddr 64276
+#define UExceptionDialog_RsStackList 64277
+#define UExceptionDialog_RsModulesList 64278
+#define UExceptionDialog_RsOSVersion 64279
+#define UExceptionDialog_RsProcessor 64280
+#define UExceptionDialog_RsMemory 64281
+#define UExceptionDialog_RsScreenRes 64282
+#define UExceptionDialog_RsActiveControl 64283
+#define UExceptionDialog_RsThread 64284
+#define UExceptionDialog_RsMissingVersionInfo 64285
+#define UExceptionDialog_RsExceptionStack 64286
+#define UExceptionDialog_RsMainThreadID 64287
 #define Main_TMainForm_This_QSO_is_locked 64288
 #define Main_TMainForm_Invalid_number 64289
 #define Main_TMainForm_Callsign_not_entered 64290
@@ -1279,11 +1280,13 @@
 #define System_SysConst_SFileNotFound 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
 	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	Main_TMainForm_EmptyOpList,	L"Operator list is empty."
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1299,7 +1302,6 @@ BEGIN
 	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
 	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
-	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	Main_TMainForm_This_QSO_is_locked,	L"This QSO is currently locked"
 	Main_TMainForm_Invalid_number,	L"Invalid number"
 	Main_TMainForm_Callsign_not_entered,	L"Callsign not entered"
@@ -2674,6 +2676,7 @@ END
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\MPlayer.res */
 /* D:\github\zLog_2bsiq\zlog\UVoiceForm.dfm */
 /* D:\github\zLog_2bsiq\zlog\UExceptionDialog.dfm */
+/* D:\github\zLog_2bsiq\zlog\resource.res */
 /* D:\github\zLog_2bsiq\zlog\zLog.dres */
-/* D:\github\zLog_2bsiq\zlog\zLog.RES */
+/* D:\github\zLog_2bsiq\zlog\zLog.res */
 /* D:\github\zLog_2bsiq\zlog\zLog.drf */

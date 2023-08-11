@@ -1,0 +1,196 @@
+arrl10.dat (2022/12/01)
+Alabama (W4)                   AL       
+  AL;
+Alaska (KL7)                   AK       
+  AK;
+Arizona (W7)                   AZ       
+  AZ,ARI;
+Arkansas (W5)                  AR       
+  AR;
+California (W6)                CA       
+  CA;
+Cololado (W0)                  CO       
+  CO;
+Connecticut (W1)               CT       
+  CT,CON,CONN;
+Dist. of Columbia (W3)         DC       
+  DC;
+Delaware (W3)                  DE       
+  DE,DL;
+Florida (W4)                   FL       
+  FL;
+Georgia (W4)                   GA       
+  GA;
+Hawaii (KH6,KH7)               HI       
+  HI;
+Idaho (W7)                     ID       
+  ID;
+Illinois (W9)                  IL       
+  IL,ILL;
+Indiana (W9)                   IN       
+  IN;
+Iowa (W0)                      IA       
+  IA,IO;
+Kansas (W0)                    KS       
+  KS,KA;
+Kentucky (W4)                  KY       
+  KY,KTY;
+Louisiana (W5)                 LA       
+  LA,LOU;
+Maine (W1)                     ME       
+  ME,MAI;
+Maryland (W3)                  MD       
+  MD;
+Massachussetts (W1)            MA       
+  MA;
+Michigan (W8)                  MI       
+  MI,MIC;
+Minnesota (W0)                 MN       
+  MN,MIN;
+Mississippi (W5)               MS       
+  MS,MIS;
+Missouri (W0)                  MO       
+  MO;
+Montana (W7)                   MT       
+  MT,MON;
+Nebraska (W0)                  NE       
+  NE,NEB;
+Nevada (W7)                    NV       
+  NV,NEV;
+New Hampshire (W1)             NH       
+  NH;
+New Jersey (W2)                NJ       
+  NJ;
+New Mexico (W5)                NM       
+  NM;
+New York (W2)                  NY       
+  NY;
+North Carolina (W6)            NC       
+  NC;
+North Dakota (W0)              ND       
+  ND;
+Ohio (W8)                      OH       
+  OH;
+Oklahoma (W5)                  OK       
+  OK,OKL;
+Oregon (W7)                    OR       
+  OR,ORE;
+Pennsylvania (W3)              PA       
+  PA;
+Rhode Island (W1)              RI       
+  RI;
+South Carolina (W4)            SC       
+  SC;
+South Dakota (W0)              SD       
+  SD;
+Tennessee (W4)                 TN       
+  TN,TEN;
+Texas (W5)                     TX       
+  TX,TEX;
+Utah (W7)                      UT       
+  UT;
+Vermont (W1)                   VT       
+  VT;
+Virginia (W4)                  VA       
+  VA;
+Washington (W7)                WA       
+  WA,WAS;
+West Virginia (W8)             WV       
+  WV;
+Wisconsin (W9)                 WI       
+  WI,WS,WIS;
+Wyoming (W7)                   WY       
+  WY;
+Alberta (VE6)                  AB       
+  AB;
+Br. Columbia (VE7)             BC       
+  BC;
+Labrador (VO2)                 LB       
+  LB,LAB;
+Manitoba (VE4)                 MB       
+  MB;
+New Brunswick (VE9)            NB       
+  NB;
+Newfo.l./Lab.(VO1/VO2)         NF       
+  NF;
+Nova Scotia (VE1)              NS       
+  NS;
+Northwest Terr. (VE8)          NT       
+  NT,NWT;
+Nunavut (VY0)                  NU       
+  NU,VY,VY0;
+Ontario (VE3)                  ON       
+  ON;
+Prince Edward Is.(VY2)         PE       
+  PE,PEI;
+Quebec (VE2)                   QC       
+  QC,PQ;
+Saskatchewan (VE5)             SK       
+  SK;
+Yukon Terr. (VY1)              YT       
+  YT,YUK;
+Aguascalientes (XE2)           AGS      
+  AGS;
+Baja California (XE2)          BAC      
+  BAC;
+Baja CaliforniaS.(XE2)         BCS      
+  BCS;
+Campeche (XE3)                 CAM      
+  CAM,CAMP;
+Chiapas (XE3)                  CHI      
+  CHI,CHIS;
+Chihuahua (XE2)                CHH      
+  CHH,CHIH;
+Ciudad de Mexico (XE1)         CMX      
+  CMX,DF;
+Coahuila (XE2)                 COA      
+  COA,COAH;
+Colima (XE1)                   COL      
+  COL;
+Durango (XE2)                  DGO      
+  DGO;
+Estado de Mexico (XE1)         EMX      
+  EMX,MEX;
+Guanajuato (XE1)               GTO      
+  GTO;
+Guerrero (XE3)                 GRO      
+  GRO;
+Hidalgo (XE1)                  HGO      
+  HGO;
+Jalisco (XE1)                  JAL      
+  JAL;
+Michoacan (XE1)                MIC      
+  MIC,MICH;
+Morelos (XE1)                  MOR      
+  MOR;
+Nayarit (XE1)                  NAY      
+  NAY;
+Nuevo Leon (XE2)               NLE      
+  NLE,NL;
+Oaxaca (XE3)                   OAX      
+  OAX;
+Puebla (XE1)                   PUE      
+  PUE;
+Queretaro (XE1)                QRO      
+  QRO;
+Quintana Roo (XE3)             QUI      
+  QUI,QR;
+San Luis Potosi (XE2)          SLP      
+  SLP;
+Sinaloa (XE2)                  SIN      
+  SIN;
+Sonora (XE2)                   SON      
+  SON;
+Tabasco (XE3)                  TAB      
+  TAB;
+Tamaulipas (XE2)               TAM      
+  TAM,TAMPS;
+Tlaxcala (XE1)                 TLX      
+  TLX,TLAX;
+Veracruz (XE1)                 VER      
+  VER;
+Yucatan (XE3)                  YUC      
+  YUC;
+Zacatecas (XE2)                ZAC      
+  ZAC;
+end of file arrl10.dat

@@ -2,6 +2,7 @@
 // JCL_DEBUG_EXPERT_INSERTJDBG ON
 program zLog;
 
+{$R 'resource.res' 'resource.rc'}
 {$R *.dres}
 
 uses
@@ -141,9 +142,10 @@ uses
   URigCtrlKenwood in 'URigCtrlKenwood.pas',
   URigCtrlYaesu in 'URigCtrlYaesu.pas',
   UStartTimeDialog in 'UStartTimeDialog.pas' {StartTimeDialog},
-  UOperatorPowerDialog in 'UOperatorPowerDialog.pas' {OperatorPowerDialog};
+  UOperatorPowerDialog in 'UOperatorPowerDialog.pas' {OperatorPowerDialog},
+  URigCtrlElecraft in 'URigCtrlElecraft.pas';
 
-{$R *.RES}
+{$R *.res}
 
 begin
   {$IFDEF DEBUG}
