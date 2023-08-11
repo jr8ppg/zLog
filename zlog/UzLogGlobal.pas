@@ -566,6 +566,7 @@ function AdjustPath(v: string): string;
 
 function ExpandEnvironmentVariables(strOriginal: string): string;
 procedure FormShowAndRestore(F: TForm);
+function LoadFromResourceName(hinst: THandle; filename: string): TStringList;
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -2534,7 +2535,7 @@ begin
    if FileExists(fullpath) = False then begin
       fullpath := ExtractFilePath(Application.ExeName) + filename;
       if FileExists(fullpath) = False then begin
-         MessageDlg('DAT file [' + fullpath + '] cannot be opened', mtError, [mbOK], 0);
+//         MessageDlg('DAT file [' + fullpath + '] cannot be opened', mtError, [mbOK], 0);
          Result := '';
          Exit;
       end;
@@ -4060,6 +4061,25 @@ begin
       F.WindowState := wsNormal;
    end;
    F.Show();
+end;
+
+function LoadFromResourceName(hinst: THandle; filename: string): TStringList;
+var
+   RS: TResourceStream;
+   SL: TStringList;
+   resname: string;
+begin
+   resname := 'IDF_' + StringReplace(filename, '.', '_', [rfReplaceAll]);
+
+   RS := TResourceStream.Create(hinst, resname, RT_RCDATA);
+   SL := TStringList.Create();
+   SL.StrictDelimiter := True;
+   try
+      SL.LoadFromStream(RS);
+   finally
+      RS.Free();
+      Result := SL;
+   end;
 end;
 
 end.

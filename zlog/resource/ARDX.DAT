@@ -1,0 +1,129 @@
+ardx.dat (2022/11/30 same as ARRL10.dat except KH6,KL7,XE)
+Alabama (W4)                   AL       
+  AL;
+Arizona (W7)                   AZ       
+  AZ,ARI;
+Arkansas (W5)                  AR       
+  AR;
+California (W6)                CA       
+  CA;
+Cololado (W0)                  CO       
+  CO;
+Connecticut (W1)               CT       
+  CT,CON,CONN;
+Dist. of Columbia (W3)         DC       
+  DC;
+Delaware (W3)                  DE       
+  DE,DL;
+Florida (W4)                   FL       
+  FL;
+Georgia (W4)                   GA       
+  GA;
+Idaho (W7)                     ID       
+  ID;
+Illinois (W9)                  IL       
+  IL,ILL;
+Indiana (W9)                   IN       
+  IN;
+Iowa (W0)                      IA       
+  IA,IO;
+Kansas (W0)                    KS       
+  KS,KA;
+Kentucky (W4)                  KY       
+  KY,KTY;
+Louisiana (W5)                 LA       
+  LA,LOU;
+Maine (W1)                     ME       
+  ME,MAI;
+Maryland (W3)                  MD       
+  MD;
+Massachussetts (W1)            MA       
+  MA;
+Michigan (W8)                  MI       
+  MI,MIC;
+Minnesota (W0)                 MN       
+  MN,MIN;
+Mississippi (W5)               MS       
+  MS,MIS;
+Missouri (W0)                  MO       
+  MO;
+Montana (W7)                   MT       
+  MT,MON;
+Nebraska (W0)                  NE       
+  NE,NEB;
+Nevada (W7)                    NV       
+  NV,NEV;
+New Hampshire (W1)             NH       
+  NH;
+New Jersey (W2)                NJ       
+  NJ;
+New Mexico (W5)                NM       
+  NM;
+New York (W2)                  NY       
+  NY;
+North Carolina (W6)            NC       
+  NC;
+North Dakota (W0)              ND       
+  ND;
+Ohio (W8)                      OH       
+  OH;
+Oklahoma (W5)                  OK       
+  OK,OKL;
+Oregon (W7)                    OR       
+  OR,ORE;
+Pennsylvania (W3)              PA       
+  PA;
+Rhode Island (W1)              RI       
+  RI;
+South Carolina (W4)            SC       
+  SC;
+South Dakota (W0)              SD       
+  SD;
+Tennessee (W4)                 TN       
+  TN,TEN;
+Texas (W5)                     TX       
+  TX,TEX;
+Utah (W7)                      UT       
+  UT;
+Vermont (W1)                   VT       
+  VT;
+Virginia (W4)                  VA       
+  VA;
+Washington (W7)                WA       
+  WA,WAS;
+West Virginia (W8)             WV       
+  WV;
+Wisconsin (W9)                 WI       
+  WI,WS,WIS;
+Wyoming (W7)                   WY       
+  WY;
+Alberta (VE6)                  AB       
+  AB;
+Br. Columbia (VE7)             BC       
+  BC;
+Labrador (VO2)                 LB       
+  LB,LAB;
+Manitoba (VE4)                 MB       
+  MB;
+New Brunswick (VE9)            NB       
+  NB;
+Newfo.l./Lab.(VO1/VO2)         NF       
+  NF;
+Nova Scotia (VE1)              NS       
+  NS;
+Northwest Terr. (VE8)          NT       
+  NT,NWT;
+Nunavut (VY0)                  NU       
+  NU,VY,VY0;
+Ontario (VE3)                  ON       
+  ON;
+Prince Edward Is.(VY2)         PE       
+  PE,PEI;
+Quebec (VE2)                   QC       
+  QC,PQ;
+Saskatchewan (VE5)             SK       
+  SK;
+Yukon Terr. (VY1)              YT       
+  YT,YUK;
+end of file ardx.dat
+

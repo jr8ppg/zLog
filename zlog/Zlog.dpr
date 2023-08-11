@@ -2,6 +2,7 @@
 // JCL_DEBUG_EXPERT_INSERTJDBG ON
 program zLog;
 
+{$R 'resource.res' 'resource.rc'}
 {$R *.dres}
 
 uses
@@ -143,7 +144,7 @@ uses
   UOperatorPowerDialog in 'UOperatorPowerDialog.pas' {OperatorPowerDialog},
   URigCtrlElecraft in 'URigCtrlElecraft.pas';
 
-{$R *.RES}
+{$R *.res}
 
 begin
   {$IFDEF DEBUG}

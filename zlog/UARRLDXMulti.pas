@@ -8,26 +8,6 @@ uses
   UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers;
 
 type
-  TState = class
-    StateName : string;
-    StateAbbrev : string;
-    AltAbbrev : string;
-    Worked : array[b19..HiBand] of boolean;
-    Index : integer;
-    constructor Create;
-    function Summary : string;
-    function Summary2 : string;
-    function SummaryARRL10 : string;
-  end;
-
-  TStateList = class
-    List : TList;
-    constructor Create;
-    procedure LoadFromFile(filename : string);
-    destructor Destroy; override;
-  end;
-
-type
   TARRLDXMulti = class(TACAGMulti)
     procedure FormCreate(Sender: TObject);
     procedure GoButtonClick2(Sender: TObject);
@@ -39,7 +19,7 @@ type
     procedure GoForwardMatch(strCode: string);
   public
     { Public declarations }
-    StateList : TStateList;
+    StateList: TStateList;
     function ExtractMulti(aQSO : TQSO) : string; override;
     procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
@@ -175,130 +155,6 @@ begin
    else begin
       aQSO.Multi1 := '';
       aQSO.Memo := 'INVALID EXCHANGE ' + aQSO.Memo;
-   end;
-end;
-
-constructor TState.Create;
-var
-   B: TBand;
-begin
-   for B := b19 to HiBand do
-      Worked[B] := False;
-
-   StateName := '';
-   StateAbbrev := '';
-   AltAbbrev := '';
-   Index := 0;
-end;
-
-function TState.Summary: string;
-var
-   temp: string;
-   B: TBand;
-begin
-   temp := FillRight(StateName, 22) + FillRight(StateAbbrev, 4) + '  ';
-
-   for B := b19 to b28 do begin
-      if NotWARC(B) then
-         if Worked[B] then
-            temp := temp + '* '
-         else
-            temp := temp + '. ';
-   end;
-
-   Result := ' ' + temp;
-end;
-
-function TState.SummaryARRL10: string;
-var
-   temp: string;
-   B: TBand;
-begin
-   temp := ' ' + FillRight(StateAbbrev, 7) + FillRight(StateName, 32);
-
-   for B := b19 to b35 do begin
-      if Worked[B] then
-         temp := temp + '*  '
-      else
-         temp := temp + '.  ';
-   end;
-
-   Result := temp;
-end;
-
-function TState.Summary2: string;
-var
-   temp: string;
-   B: TBand;
-begin
-   temp := FillRight(StateName, 22) + FillRight(StateAbbrev, 4);
-
-   for B := b19 to b28 do begin
-      if Worked[B] then
-         temp := temp + ' ' + MHzString[B]
-      else
-         temp := temp + '';
-   end;
-
-   Result := temp;
-end;
-
-constructor TStateList.Create;
-begin
-   List := TList.Create;
-end;
-
-destructor TStateList.Destroy;
-var
-   i: integer;
-begin
-   for i := 0 to List.Count - 1 do begin
-      if List[i] <> nil then
-         TState(List[i]).Free;
-   end;
-
-   List.Free;
-end;
-
-procedure TStateList.LoadFromFile(filename: string);
-var
-   f: textfile;
-   str: string;
-   S: TState;
-   fullpath: string;
-begin
-   fullpath := dmZLogGlobal.ExpandCfgDatFullPath(filename);
-   if fullpath = '' then begin
-      Exit;
-   end;
-
-   Assign(f, fullpath);
-   try
-      Reset(f);
-   except
-      on EFOpenError do begin
-         exit; { Alert that the file cannot be opened \\ }
-      end;
-   end;
-
-   readln(f, str);
-   while not(eof(f)) do begin
-      readln(f, str);
-      if pos('end of file', LowerCase(str)) > 0 then
-         break;
-      S := TState.Create;
-      S.Index := List.Count;
-      S.StateName := TrimRight(Copy(str, 1, 22));
-      S.StateAbbrev := TrimLeft(TrimRight(Copy(str, 30, 25)));
-      if not(eof(f)) then begin
-         readln(f, str);
-         str := TrimRight(str);
-         str := TrimLeft(str);
-         if not CharInSet(str[length(str)], ['a' .. 'z', 'A' .. 'Z', '0' .. '9']) then
-            System.Delete(str, length(str), 1);
-         S.AltAbbrev := str;
-      end;
-      List.Add(S);
    end;
 end;
 
