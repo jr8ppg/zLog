@@ -3862,16 +3862,16 @@ begin
             CurrentQSO.Multi2 := '';
             CurrentQSO.Reserve2 := $00;
          end;
-      end
-      else begin  // UNIQUE!
-         // 無効マルチは入力できない
-         if MyContest.MultiForm.ValidMulti(CurrentQSO) = False then begin
-            WriteStatusLine(TMainForm_Invalid_number, False);
-            NumberEdit.SetFocus;
-            NumberEdit.SelectAll;
-            Exit;
-         end;
       end;
+
+      // 無効マルチは入力できない
+      if MyContest.MultiForm.ValidMulti(CurrentQSO) = False then begin
+         WriteStatusLine(TMainForm_Invalid_number, False);
+         NumberEdit.SetFocus;
+         NumberEdit.SelectAll;
+         Exit;
+      end;
+
       CurrentQSO.Forced := False;
    end
    else begin     // 強制入力
