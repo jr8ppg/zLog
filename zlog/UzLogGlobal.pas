@@ -1030,7 +1030,7 @@ begin
       Settings._dontallowsameband := ini.ReadBool('Rig', 'DontAllowSameBand', False);
 
       // Record rig frequency in memo
-      Settings._recrigfreq := ini.ReadBool('Rig', 'RecordFreqInMemo', False);
+      Settings._recrigfreq := ini.ReadBool('Rig', 'RecordFreqInMemo', True);
 
       // Automatically create band scope
       Settings._autobandmap := ini.ReadBool('Rig', 'AutoBandMap', False);
