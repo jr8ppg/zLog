@@ -232,10 +232,32 @@ end;
 // SET/RSP format: AIn; where n is 0-3. See Meta-commands for details. Note: The AI power-up default is
 // normally AI0, corresponding to K3 menu setting CONFIG:AUTOINF = NOR. AUTOINF can also be set to
 // AUTO 1, which makes the default AI1 on power-up. This is useful for K3s controlling a StepIR antenna, etc.
+
+// AI (Auto-info mode): The AI meta-command can be used to enable automatic responses from the K3 to a
+// computer in response to K3 front panel control changes by the operator. Application software may use AI1 or AI2
+// mode as an alternative to continuous polling. (Not appropriate for switch macros.)
+
+// AI0, No Auto-info: This is the default. The PC must poll for all radio information using GET commands; the
+// K3 will not send any information automatically.
+
+// AI1, Auto-Info Mode 1: The K3 sends an IF (info) response within 1 second when any frequency or moderelated
+// event occurs, either manually (at the radio itself) or when the PC sends commands. These events
+// include: band change, mode change, VFO movement, RIT/XIT offset change or clear, and several additional
+// switches (e.g., A/B, REV, A=B, SPLIT, CW REV, RIT, XIT). IF responses are suppressed during VFO
+// movement. Notes: (1) putting the K3 into auto-info mode 1 (by sending AI1;) causes an initial IF response.
+// (2) The K3 can be placed into AI1 mode without a PC by setting CONFIG:AUTOINF to AUTO 1. The user
+// may do this to support non-PC devices that make use of auto-info, such as a SteppIR antenna controller.
+// Application software can check for unexpected IF responses and turn AI off if required.
+
+// AI2, Auto-Info Mode 2: The K3 sends an appropriate response (FA, FB, IF, GT, MD, RA, PC, etc.) whenever
+// any front-panel event occurs. This applies to all of the events mentioned for mode AI1, and ultimately to all
+// rotary control changes and switch presses. At present only a subset of controls generate responses.
+
+// AI3, Combination: This is similar to mode AI2 and is provided only for compatibility with existing programs.
 procedure TElecraft.Initialize();
 begin
    Inherited;
-   WriteData('AI1;');
+   WriteData('AI2;');
 end;
 
 // IF (Transceiver Information; GET only)
