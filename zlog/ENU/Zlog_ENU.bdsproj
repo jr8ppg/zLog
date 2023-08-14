@@ -137,6 +137,7 @@
       <File FileName="UZServerInquiry.dfm" ContainerId="W32Form" ModuleName="UZServerInquiry.dfm"/>
       <File FileName="Win64\Release\Zlog_DRC.rc" ContainerId="W32RC" ModuleName="Zlog_DRC.rc"/>
       <File FileName="Win32\Release\Zlog_DRC.rc" ContainerId="W32RC" ModuleName="Zlog_DRC.rc"/>
+      <File FileName="resource.rc" ContainerId="W32RC" ModuleName="resource.rc"/>
     </FileList>
   </W32ResourceDLL.Personality>
 </BorlandProject>

@@ -19,7 +19,6 @@ type
     Grid: TStringGrid;
     ImageList1: TImageList;
     panelStandardOption: TPanel;
-    checkSyncVfo: TCheckBox;
     timerCleanup: TTimer;
     buttonShowWorked: TSpeedButton;
     ActionList1: TActionList;
@@ -64,6 +63,8 @@ type
     buttonSortByFreq: TSpeedButton;
     buttonSortByTime: TSpeedButton;
     ImageList2: TImageList;
+    buttonSyncVfo: TSpeedButton;
+    buttonFreqCenter: TSpeedButton;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -113,6 +114,8 @@ type
     procedure DeleteFromBSList(i : integer);
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
+    function IsShowData(D: TBSData): Boolean;
+    function FormatSpotInfo(D: TBSData): string;
     function EstimateNumRows(): Integer;
     procedure SetSelect(fSelect: Boolean);
     procedure Cleanup(D: TBSData);
@@ -136,6 +139,8 @@ type
     procedure AddSelfSpotFromNetwork(BSText : string);
     procedure AddClusterSpot(Sp: TSpot);
     procedure RewriteBandScope();
+    procedure RewriteBandScope1();
+    procedure RewriteBandScope2();
     procedure MarkCurrentFreq(Hz: TFrequency);
     procedure NotifyWorked(aQSO: TQSO);
     procedure CopyList(F: TBandScope2);
@@ -338,6 +343,19 @@ begin
 end;
 
 procedure TBandScope2.RewriteBandScope();
+begin
+   if (FNewMultiOnly = False) and
+      (FAllBands = False) and
+      (dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand) and
+      (buttonFreqCenter.Down = True) then begin
+      RewriteBandScope2();
+   end
+   else begin
+      RewriteBandScope1();
+   end;
+end;
+
+procedure TBandScope2.RewriteBandScope1();
 var
    D: TBSData;
    i: Integer;
@@ -403,15 +421,7 @@ begin
          for i := 0 to FBSList.Count - 1 do begin
             D := FBSList[i];
 
-            if (FAllBands = False) and (buttonShowWorked.Down = False) and (D.Worked = True) then begin
-               Continue;
-            end;
-
-            if (FAllBands = True) and (buttonShowWorked2.Down = False) and (D.Worked = True) then begin
-               Continue;
-            end;
-
-            if (FNewMultiOnly = False) and (FCurrBand <> D.Band) and (buttonShowAllBands.Down = False) then begin
+            if IsShowData(D) = False then begin
                Continue;
             end;
 
@@ -432,21 +442,7 @@ begin
                end;
             end;
 
-            str := FillRight(D.LabelStr, 24);
-
-            if D.SpotSource <> ssSelf then begin
-               str := str + '+ ';
-            end
-            else begin
-               str := str + '  ';
-            end;
-
-            if D.CQ = True then begin
-               str := str + 'CQ';
-            end
-            else begin
-               str := str + '  ';
-            end;
+            str := FormatSpotInfo(D);
 
             if (fOnFreq = True) or
                ((FAllBands = True) and (D.Band = CurrentQSO.Band)) then begin
@@ -478,7 +474,7 @@ begin
          Grid.RowCount := R;
       end;
 
-      if checkSyncVfo.Checked = True then begin
+      if buttonSyncVfo.Down = True then begin
          if markrow = -1 then begin
             if toprow <= Grid.RowCount - 1 then begin
                Grid.TopRow := toprow;
@@ -516,6 +512,174 @@ begin
       Grid.EndUpdate();
       FProcessing := False;
    end;
+end;
+
+procedure TBandScope2.RewriteBandScope2();
+var
+   D: TBSData;
+   i: Integer;
+   R: Integer;
+   str: string;
+   Index: Integer;
+   FreqDispIndex: Integer;
+   fFound: Boolean;
+   DataIndex: Integer;
+begin
+   if FProcessing = True then begin
+      Exit;
+   end;
+
+   FProcessing := True;
+   Grid.BeginUpdate();
+   try
+   try
+      if FBSList.Count = 0 then begin
+         Exit;
+      end;
+
+      // 仮に100行とする
+      Grid.RowCount := 100;
+
+      // 全部クリア
+      for i := 0 to Grid.RowCount - 1 do begin
+         Grid.Objects[0, i] := nil;
+      end;
+
+      // 表示可能な行数に変更
+      Grid.RowCount := Grid.VisibleRowCount;
+
+      Lock();
+      try
+         // 周波数の描画位置  VisibleRowCountの真ん中
+         FreqDispIndex := (Grid.VisibleRowCount div 2);
+
+         // 周波数順に並び替え
+         FBSList.Sort(soBsFreqAsc);
+
+         // 現在周波数の位置にあるスポットを求める
+         D := TBSData.Create();
+         D.FreqHz := CurrentRigFrequency;
+         Index := FBSList.BinarySearch(soBsFreqAsc, D, fFound);
+         D.Free();
+
+         if fFound = True then begin   // あった
+            R := FreqDispIndex;
+            D := FBSList[Index];
+            str := FormatSpotInfo(D);
+            str := '>>' + str + '<<';
+            Grid.Cells[0, R] := str;
+            Grid.Objects[0, R] := D;
+         end
+         else begin  // なかった
+            R := FreqDispIndex;
+            Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
+            Grid.Objects[0, R] := nil;
+         end;
+
+         // 周波数より上
+         DataIndex := Index - 1;
+         for R := FreqDispIndex - 1 downto 0 do begin
+            if (DataIndex >= 0) and (FBSList.Count > DataIndex) then begin
+               D := FBSList[DataIndex];
+
+               if IsShowData(D) = True then begin
+                  str := FormatSpotInfo(D);
+                  Grid.Cells[0, R] := str;
+                  Grid.Objects[0, R] := D;
+               end
+               else begin
+                  Grid.Cells[0, R] := '';
+                  Grid.Objects[0, R] := nil;
+               end;
+            end
+            else begin
+               Grid.Cells[0, R] := '';
+               Grid.Objects[0, R] := nil;
+            end;
+
+            Dec(DataIndex);
+         end;
+
+         // 周波数より下
+         DataIndex := Index + 1;
+         for R := FreqDispIndex + 1 to (Grid.VisibleRowCount - 1) do begin
+            if (DataIndex >= 0) and (FBSList.Count > DataIndex) then begin
+               D := FBSList[DataIndex];
+
+               if IsShowData(D) = True then begin
+                  str := FormatSpotInfo(D);
+                  Grid.Cells[0, R] := str;
+                  Grid.Objects[0, R] := D;
+               end
+               else begin
+                  Grid.Cells[0, R] := '';
+                  Grid.Objects[0, R] := nil;
+               end;
+            end
+            else begin
+               Grid.Cells[0, R] := '';
+               Grid.Objects[0, R] := nil;
+            end;
+
+            Inc(DataIndex);
+         end;
+      finally
+         Unlock();
+      end;
+
+   except
+      on E: Exception do begin
+         dmZLogGlobal.WriteErrorLog(E.Message);
+         dmZLogGlobal.WriteErrorLog(E.StackTrace);
+      end;
+   end;
+   finally
+      Grid.EndUpdate();
+      FProcessing := False;
+   end;
+end;
+
+function TBandScope2.IsShowData(D: TBSData): Boolean;
+begin
+   if (FAllBands = False) and (buttonShowWorked.Down = False) and (D.Worked = True) then begin
+      Result := False;
+      Exit;
+   end;
+
+   if (FAllBands = True) and (buttonShowWorked2.Down = False) and (D.Worked = True) then begin
+      Result := False;
+      Exit;
+   end;
+
+   if (FNewMultiOnly = False) and (FCurrBand <> D.Band) and (buttonShowAllBands.Down = False) then begin
+      Result := False;
+      Exit;
+   end;
+
+   Result := True;
+end;
+
+function TBandScope2.FormatSpotInfo(D: TBSData): string;
+var
+   str: string;
+begin
+   str := FillRight(D.LabelStr, 24);
+
+   if D.SpotSource <> ssSelf then begin
+      str := str + '+ ';
+   end
+   else begin
+      str := str + '  ';
+   end;
+
+   if D.CQ = True then begin
+      str := str + 'CQ';
+   end
+   else begin
+      str := str + '  ';
+   end;
+
+   Result := str;
 end;
 
 function TBandScope2.EstimateNumRows(): Integer;
@@ -1123,14 +1287,17 @@ begin
    SetCaption();
    SetColor();
    if v = True then begin
-      checkSyncVfo.Checked := False;
+      buttonSyncVfo.Down := False;
       buttonShowWorked.Down := False;
-      checkSyncVfo.Visible := False;
+      buttonFreqCenter.Down := False;
+      buttonSyncVfo.Visible := False;
+      buttonFreqCenter.Visible := False;
       buttonShowWorked.Visible := False;
       buttonShowAllBands.Down := True;
    end
    else begin
-      checkSyncVfo.Visible := True;
+      buttonSyncVfo.Visible := True;
+      buttonFreqCenter.Visible := True;
       buttonShowWorked.Visible := True;
    end;
 end;
@@ -1141,8 +1308,10 @@ begin
    SetCaption();
    SetColor();
    if v = True then begin
-      checkSyncVfo.Checked := False;
-      checkSyncVfo.Visible := False;
+      buttonSyncVfo.Down := False;
+      buttonSyncVfo.Visible := False;
+      buttonFreqCenter.Down := False;
+      buttonFreqCenter.Visible := False;
       buttonShowWorked2.Down := False;
       buttonShowWorked2.Visible := True;
       panelStandardOption.Visible := False;
@@ -1151,7 +1320,8 @@ begin
       FSortOrder := 0;
    end
    else begin
-      checkSyncVfo.Visible := True;
+      buttonSyncVfo.Visible := True;
+      buttonFreqCenter.Visible := True;
       buttonShowWorked2.Visible := True;
    end;
 end;
@@ -1439,7 +1609,8 @@ end;
 procedure TBandScope2.SaveSettings(ini: TMemIniFile; section: string);
 begin
    dmZLogGlobal.WriteWindowState(ini, Self, section);
-   ini.WriteBool(section, 'SyncVFO', checkSyncVFO.Checked);
+   ini.WriteBool(section, 'SyncVFO', buttonSyncVFO.Down);
+   ini.WriteBool(section, 'FreqCenter', buttonFreqCenter.Down);
 
    if FCurrentBandOnly = True then begin
       ini.WriteBool(section, 'ShowAllBands', buttonShowAllBands.Down);
@@ -1460,7 +1631,8 @@ end;
 procedure TBandScope2.LoadSettings(ini: TMemIniFile; section: string);
 begin
    dmZLogGlobal.ReadWindowState(ini, Self, section);
-   checkSyncVFO.Checked := ini.ReadBool(section, 'SyncVFO', True);
+   buttonSyncVFO.Down := ini.ReadBool(section, 'SyncVFO', True);
+   buttonFreqCenter.Down := ini.ReadBool(section, 'FreqCenter', False);
 
    if FCurrentBandOnly = True then begin
       buttonShowAllBands.Down := ini.ReadBool(section, 'ShowAllBands', False);

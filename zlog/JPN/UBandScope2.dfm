@@ -74,38 +74,60 @@ object BandScope2: TBandScope2
       234
       19)
     object buttonShowWorked: TSpeedButton
-      Left = 156
+      Left = 174
       Top = 0
-      Width = 78
+      Width = 60
       Height = 19
+      Hint = #20132#20449#28168#12415#12434#34920#31034#12375#12414#12377
       AllowAllUp = True
       Anchors = [akTop, akRight]
       GroupIndex = 1
-      Caption = #20132#20449#28168#12434#34920#31034
+      Caption = #20132#20449#28168#12415
+      ParentShowHint = False
+      ShowHint = True
       OnClick = buttonShowWorkedClick
-      ExplicitLeft = 116
     end
     object buttonShowAllBands: TSpeedButton
-      Left = 78
+      Left = 115
       Top = 0
-      Width = 78
+      Width = 60
       Height = 19
+      Hint = #20840#12496#12531#12489#12434#34920#31034#12375#12414#12377
       AllowAllUp = True
       Anchors = [akTop, akRight]
       GroupIndex = 2
-      Caption = #20840#12496#12531#12489#34920#31034
+      Caption = #20840#12496#12531#12489
+      ParentShowHint = False
+      ShowHint = True
       OnClick = buttonShowWorkedClick
     end
-    object checkSyncVfo: TCheckBox
+    object buttonSyncVfo: TSpeedButton
       Left = 4
-      Top = 3
-      Width = 72
-      Height = 13
+      Top = 0
+      Width = 53
+      Height = 19
+      Hint = 'VFO'#12395#21516#26399#12375#12390#34920#31034#12375#12414#12377
+      AllowAllUp = True
+      Anchors = [akTop, akRight]
+      GroupIndex = 4
       Caption = 'VFO'#21516#26399
-      Checked = True
-      State = cbChecked
-      TabOrder = 0
-      OnClick = checkSyncVfoClick
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = buttonShowWorkedClick
+    end
+    object buttonFreqCenter: TSpeedButton
+      Left = 56
+      Top = 0
+      Width = 60
+      Height = 19
+      Hint = #20013#22830#12395#21608#27874#25968#12434#22266#23450#12375#12414#12377
+      AllowAllUp = True
+      Anchors = [akTop, akRight]
+      GroupIndex = 5
+      Caption = #20013#22830#22266#23450
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = buttonShowWorkedClick
     end
   end
   object panelAllBandsOption: TPanel
@@ -122,16 +144,18 @@ object BandScope2: TBandScope2
       234
       19)
     object buttonShowWorked2: TSpeedButton
-      Left = 156
+      Left = 174
       Top = 0
-      Width = 78
+      Width = 60
       Height = 19
+      Hint = #20132#20449#28168#12415#12434#34920#31034#12375#12414#12377
       AllowAllUp = True
       Anchors = [akTop, akRight]
       GroupIndex = 3
-      Caption = #20132#20449#28168#12434#34920#31034
+      Caption = #20132#20449#28168#12415
+      ParentShowHint = False
+      ShowHint = True
       OnClick = buttonShowWorkedClick
-      ExplicitLeft = 116
     end
     object buttonSortByFreq: TSpeedButton
       Left = 4
