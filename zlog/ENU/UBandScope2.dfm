@@ -60,6 +60,9 @@ object BandScope2: TBandScope2
       OnDblClick = GridDblClick
       OnDrawCell = GridDrawCell
       OnMouseMove = GridMouseMove
+      OnMouseWheelDown = GridMouseWheelDown
+      OnMouseWheelUp = GridMouseWheelUp
+      ExplicitLeft = 2
     end
   end
   object panelStandardOption: TPanel

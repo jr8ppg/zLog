@@ -90,6 +90,10 @@ type
     procedure menuAddToDenyListClick(Sender: TObject);
     procedure buttonSortByFreqClick(Sender: TObject);
     procedure buttonSortByTimeClick(Sender: TObject);
+    procedure GridMouseWheelDown(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
+    procedure GridMouseWheelUp(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
   private
     { Private 宣言 }
     FProcessing: Boolean;
@@ -132,6 +136,8 @@ type
     procedure Lock();
     procedure Unlock();
     procedure ApplyShortcut();
+    procedure SetButtonEnabled();
+    procedure ApplyFontSize(font_size: Integer);
   public
     { Public 宣言 }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -1123,6 +1129,52 @@ begin
    end;
 end;
 
+procedure TBandScope2.GridMouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+var
+   font_size: Integer;
+begin
+   // CTRL+UPでフォントサイズDOWN
+   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+      font_size := FontSize;
+      Dec(font_size);
+      if font_size < 6 then begin
+         font_size := 6;
+      end;
+      FontSize := font_size;
+
+      // さらにSHIFTキーを押していると他のBandScopeも変更する
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         ApplyFontSize(font_size);
+      end;
+
+      Grid.Refresh();
+      Handled := True;
+   end;
+end;
+
+procedure TBandScope2.GridMouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+var
+   font_size: Integer;
+begin
+   // CTRL+UPでフォントサイズUP
+   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+      font_size := FontSize;
+      Inc(font_size);
+      if font_size > 28 then begin
+         font_size := 28;
+      end;
+      FontSize := font_size;
+      Grid.Refresh();
+
+      // さらにSHIFTキーを押していると他のBandScopeも変更する
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         ApplyFontSize(font_size);
+      end;
+
+      Handled := True;
+   end;
+end;
+
 function TBandScope2.GetFontSize(): Integer;
 begin
    Result := Grid.Font.Size;
@@ -1448,6 +1500,8 @@ end;
 
 procedure TBandScope2.buttonShowWorkedClick(Sender: TObject);
 begin
+   SetButtonEnabled();
+
    RewriteBandScope();
 end;
 
@@ -1609,6 +1663,7 @@ end;
 procedure TBandScope2.SaveSettings(ini: TMemIniFile; section: string);
 begin
    dmZLogGlobal.WriteWindowState(ini, Self, section);
+   ini.WriteInteger(section, 'FontSize', FontSize);
    ini.WriteBool(section, 'SyncVFO', buttonSyncVFO.Down);
    ini.WriteBool(section, 'FreqCenter', buttonFreqCenter.Down);
 
@@ -1631,6 +1686,7 @@ end;
 procedure TBandScope2.LoadSettings(ini: TMemIniFile; section: string);
 begin
    dmZLogGlobal.ReadWindowState(ini, Self, section);
+   FontSize := ini.ReadInteger(section, 'FontSize', 9);
    buttonSyncVFO.Down := ini.ReadBool(section, 'SyncVFO', True);
    buttonFreqCenter.Down := ini.ReadBool(section, 'FreqCenter', False);
 
@@ -1647,6 +1703,31 @@ begin
    end
    else begin
       buttonShowWorked.Down := ini.ReadBool(section, 'ShowWorked', True);
+   end;
+
+   SetButtonEnabled();
+end;
+
+procedure TBandScope2.SetButtonEnabled();
+begin
+   if buttonFreqCenter.Down = True then begin
+      buttonSyncVfo.Enabled := False;
+   end
+   else begin
+      buttonSyncVfo.Enabled := True;
+   end;
+end;
+
+procedure TBandScope2.ApplyFontSize(font_size: Integer);
+var
+   i: Integer;
+begin
+   for i := 0 to (Screen.FormCount - 1) do begin
+      if Screen.Forms[i] is TBandScope2 then begin
+         if Screen.Forms[i] <> Self then begin
+            TBandScope2(Screen.Forms[i]).FontSize := font_size;
+         end;
+      end;
    end;
 end;
 
