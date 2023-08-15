@@ -7511,10 +7511,10 @@ begin
    if no >= 101 then begin
       SetCQ(True);
       bank := dmZlogGlobal.Settings.CW.CurrentBank;
-      S := dmZlogGlobal.CWMessage(bank, FCurrentCQMessageNo);
+      S := dmZLogGlobal.CWMessage(bank, FCurrentCQMessageNo);
    end
    else begin
-      S := dmZlogGlobal.CWMessage(bank, no);
+      S := dmZLogGlobal.CWMessage(bank, no);
    end;
 
    if S = '' then begin
@@ -9914,6 +9914,9 @@ begin
    dmZlogGlobal.SetOpPower(CurrentQSO);
    PowerEdit.Text := CurrentQSO.NewPowerStr;
    FZLinkForm.SendOperator;
+
+   // Set current operator
+   dmZLogGlobal.CurrentOperator := op;
 
    // Change Voice Files
    FVoiceForm.SetOperator(op);

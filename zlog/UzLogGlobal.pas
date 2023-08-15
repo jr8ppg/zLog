@@ -378,6 +378,8 @@ type
 
     FCommPortList: TList<TCommPort>;
 
+    FCurrentOperator: TOperatorInfo;
+
     FMyCountry: string;
     FMyContinent: string;
     FMyCQZone: string;
@@ -459,6 +461,7 @@ public
     property RigNameStr[Index: Integer]: string read GetRigNameStr;
     property SuperCheckColumns: Integer read GetSuperCheckColumns write SetSuperCheckColumns;
     property SuperCheck2Columns: Integer read GetSuperCheck2Columns write SetSuperCheck2Columns;
+    property CurrentOperator: TOperatorInfo read FCurrentOperator write FCurrentOperator;
 
     function GetAge(aQSO : TQSO) : string;
     procedure SetOpPower(aQSO : TQSO);
@@ -657,6 +660,9 @@ begin
 
    // COMポートリスト
    FCommPortList := nil;
+
+   // 現在のオペレーター
+   FCurrentOperator := nil;
 
    // エラーログファイル名
    FErrorLogFileName := ExtractFileName(Application.ExeName);
@@ -2367,6 +2373,35 @@ begin
 
       else begin
          S := '';
+      end;
+   end;
+
+   // OP別メッセージオーバーライド
+   if FCurrentOperator <> nil then begin
+      case no of
+         1..12: begin
+            if FCurrentOperator.CwMessages[bank, no] <> '' then begin
+               S := FCurrentOperator.CwMessages[bank, no];
+            end;
+         end;
+
+         101: begin
+            if FCurrentOperator.CwMessages[bank, 1] <> '' then begin
+               S := FCurrentOperator.CwMessages[bank, 1];
+            end;
+         end;
+
+         102: begin
+            if FCurrentOperator.AdditionalCwMessages[2] <> '' then begin
+               S := FCurrentOperator.AdditionalCwMessages[2];
+            end;
+         end;
+
+         103: begin
+            if FCurrentOperator.AdditionalCwMessages[3] <> '' then begin
+               S := FCurrentOperator.AdditionalCwMessages[3];
+            end;
+         end;
       end;
    end;
 

@@ -59,7 +59,7 @@ object OperatorPowerDialog: TOperatorPowerDialog
     Top = 8
     Width = 529
     Height = 73
-    Caption = 'Power code by band'
+    Caption = #12496#12531#12489#27598#12398#38651#21147#31526#21495
     TabOrder = 0
     object Label1: TLabel
       Left = 16
