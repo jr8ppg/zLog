@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 138
   VertScrollBar.Visible = False
   Caption = 'zLog for Windows'
-  ClientHeight = 403
+  ClientHeight = 423
   ClientWidth = 524
   Color = clBtnFace
   Constraints.MinWidth = 540
@@ -34,7 +34,7 @@ object MainForm: TMainForm
   end
   object StatusLine: TStatusBar
     Left = 0
-    Top = 383
+    Top = 403
     Width = 524
     Height = 20
     Font.Charset = DEFAULT_CHARSET
@@ -63,18 +63,20 @@ object MainForm: TMainForm
     UseSystemFont = False
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
+    ExplicitTop = 383
   end
   object MainPanel: TPanel
     Left = 0
     Top = 66
     Width = 524
-    Height = 317
+    Height = 309
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitHeight = 289
     object EditPanel1R: TPanel
       Left = 0
-      Top = 207
+      Top = 199
       Width = 524
       Height = 27
       Align = alBottom
@@ -85,6 +87,7 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
+      ExplicitTop = 179
       object RcvdRSTEdit1: TEdit
         Left = 117
         Top = 4
@@ -274,7 +277,7 @@ object MainForm: TMainForm
     end
     object EditPanel2R: TPanel
       Left = 0
-      Top = 234
+      Top = 226
       Width = 524
       Height = 83
       Align = alBottom
@@ -285,6 +288,7 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 1
+      ExplicitTop = 206
       object RigPanelC: TPanel
         Left = 1
         Top = 54
@@ -834,7 +838,7 @@ object MainForm: TMainForm
       Left = 0
       Top = 0
       Width = 524
-      Height = 207
+      Height = 199
       TabStop = False
       Align = alClient
       ColCount = 10
@@ -860,6 +864,7 @@ object MainForm: TMainForm
       OnMouseUp = GridMouseUp
       OnSelectCell = GridSelectCell
       OnTopLeftChanged = GridTopLeftChanged
+      ExplicitHeight = 179
       ColWidths = (
         38
         65
@@ -6280,8 +6285,8 @@ object MainForm: TMainForm
     object N7: TMenuItem
       Caption = '-'
     end
-    object GBand: TMenuItem
-      Caption = #12496#12531#12489#12398#22793#26356'(&B)'
+    object menuChangeBand: TMenuItem
+      Caption = 'Change &Band'
       object G1R9MHz: TMenuItem
         Caption = '1.9 MHz'
         OnClick = GridBandChangeClick
@@ -6365,8 +6370,8 @@ object MainForm: TMainForm
         OnClick = GridBandChangeClick
       end
     end
-    object Changemode: TMenuItem
-      Caption = #12514#12540#12489#12398#22793#26356'(&M)'
+    object menuChangeMode: TMenuItem
+      Caption = 'Change &Mode'
       object CW2: TMenuItem
         Caption = 'CW'
         OnClick = GridModeChangeClick
@@ -6397,8 +6402,8 @@ object MainForm: TMainForm
         OnClick = GridModeChangeClick
       end
     end
-    object mChangePower: TMenuItem
-      Caption = #38651#21147#31526#21495#12398#22793#26356'(&P)'
+    object menuChangePower: TMenuItem
+      Caption = 'Change &Power'
       object H2: TMenuItem
         Caption = 'P (QRP)'
         OnClick = GridPowerChangeClick
@@ -6419,15 +6424,23 @@ object MainForm: TMainForm
         OnClick = GridPowerChangeClick
       end
     end
-    object GOperator: TMenuItem
-      Caption = #12458#12506#12524#12540#12479#12540#12398#22793#26356'(&O)'
+    object menuChangeOperator: TMenuItem
+      Caption = 'Change &Operator'
       object Clear1: TMenuItem
-        Caption = #12463#12522#12450
+        Caption = 'Clear'
         OnClick = GridOperatorClick
       end
     end
-    object mnChangeTXNr: TMenuItem
+    object menuChangeTXNr: TMenuItem
       Caption = 'Change &TX#'
+    end
+    object menuChangeSentNr: TMenuItem
+      Caption = 'Change Sent &NR'
+      OnClick = menuChangeSentNrClick
+    end
+    object menuChangeDate: TMenuItem
+      Caption = 'Change Da&te'
+      OnClick = menuChangeDateClick
     end
     object N13: TMenuItem
       Caption = '-'

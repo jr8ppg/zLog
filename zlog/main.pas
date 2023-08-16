@@ -161,9 +161,9 @@ type
     PacketCluster1: TMenuItem;
     SuperCheck1: TMenuItem;
     PartialCheck1: TMenuItem;
-    GBand: TMenuItem;
-    Changemode: TMenuItem;
-    GOperator: TMenuItem;
+    menuChangeBand: TMenuItem;
+    menuChangeMode: TMenuItem;
+    menuChangeOperator: TMenuItem;
     G1R9MHz: TMenuItem;
     G3R5MHz: TMenuItem;
     G7MHz: TMenuItem;
@@ -224,7 +224,7 @@ type
     GeneralSaveDialog: TSaveDialog;
     mPXListWPX: TMenuItem;
     mSummaryFile: TMenuItem;
-    mChangePower: TMenuItem;
+    menuChangePower: TMenuItem;
     H2: TMenuItem;
     M2: TMenuItem;
     L2: TMenuItem;
@@ -252,7 +252,7 @@ type
     VoiceCQ2: THemisphereButton;
     VoiceCQ3: THemisphereButton;
     Bandscope1: TMenuItem;
-    mnChangeTXNr: TMenuItem;
+    menuChangeTXNr: TMenuItem;
     mnGridAddNewPX: TMenuItem;
     mnHideCWPhToolBar: TMenuItem;
     mnHideMenuToolbar: TMenuItem;
@@ -521,6 +521,8 @@ type
     actionToggleTxNr: TAction;
     panelOutOfPeriod: TPanel;
     timerOutOfPeriod: TTimer;
+    menuChangeSentNr: TMenuItem;
+    menuChangeDate: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -786,6 +788,8 @@ type
     procedure FileMenuClick(Sender: TObject);
     procedure actionToggleTxNrExecute(Sender: TObject);
     procedure timerOutOfPeriodTimer(Sender: TObject);
+    procedure menuChangeSentNrClick(Sender: TObject);
+    procedure menuChangeDateClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1194,7 +1198,7 @@ uses
   UIntegerDialog, UNewPrefix, UKCJScore,
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension,
-  UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog;
+  UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog;
 
 {$R *.DFM}
 
@@ -3309,18 +3313,20 @@ end;
 procedure TMainForm.GridMenuPopup(Sender: TObject);
 var
    i: Integer;
+   dt: TDateTime;
+   aQSO: TQSO;
 begin
    SendSpot1.Enabled := FCommForm.MaybeConnected;
 
-   mChangePower.Visible := PowerEdit1.Visible;
+   menuChangePower.Visible := PowerEdit1.Visible;
 
    for i := 0 to Ord(HiBand) do begin
-      GBand.Items[i].Visible := BandMenu.Items[i].Visible;
-      GBand.Items[i].Enabled := BandMenu.Items[i].Enabled;
+      menuChangeBand.Items[i].Visible := BandMenu.Items[i].Visible;
+      menuChangeBand.Items[i].Enabled := BandMenu.Items[i].Enabled;
    end;
 
-   BuildOpListMenu2(GOperator, GridOperatorClick);
-   BuildTxNrMenu2(mnChangeTXNr, mnChangeTXNrClick);
+   BuildOpListMenu2(menuChangeOperator, GridOperatorClick);
+   BuildTxNrMenu2(menuChangeTXNr, mnChangeTXNrClick);
 
    if Grid.Row > Log.TotalQSO then begin
       for i := 0 to GridMenu.Items.Count - 1 do
@@ -3329,6 +3335,16 @@ begin
    else begin
       for i := 0 to GridMenu.Items.Count - 1 do
          GridMenu.Items[i].Enabled := True;
+   end;
+
+   // 選択範囲が全て同じ日付かチェックする
+   menuChangeDate.Enabled := True;
+   aQSO := TQSO(Grid.Objects[0, Grid.Selection.Top]);
+   for i := Grid.Selection.Top + 1 to Grid.Selection.Bottom do begin
+      if aQSO.DateStr <> TQSO(Grid.Objects[0, i]).DateStr then begin
+         menuChangeDate.Enabled := False;
+         Break;
+      end;
    end;
 end;
 
@@ -5911,6 +5927,93 @@ begin
    Log.Saved := False;
 end;
 
+procedure TMainForm.menuChangeDateClick(Sender: TObject);
+var
+   F: TDateDialog;
+   i: Integer;
+   newDate: TDateTime;
+   Q: TQSO;
+   seltop, selbottom: Integer;
+begin
+   F := TDateDialog.Create(Self);
+   try
+      seltop := Grid.Selection.Top;
+      selbottom := Grid.Selection.Bottom;
+
+      F.CurrentDate := TQSO(Grid.Objects[0, seltop]).Time;
+
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      newDate := F.NewDate;
+
+      for i := seltop to selbottom do begin
+         Q := TQSO(Grid.Objects[0, i]);
+         Q.Time := DateOf(newDate) + TimeOf(Q.Time);
+      end;
+
+      ScrollGrid();
+      Log.Saved := False;
+   finally
+      F.Release();
+   end;
+end;
+
+procedure TMainForm.menuChangeSentNrClick(Sender: TObject);
+var
+   F: TNRDialog;
+   i: Integer;
+   strNewNR: string;
+   strNewNR2: string;
+   B: TBand;
+   Q: TQSO;
+   seltop, selbottom: Integer;
+begin
+   F := TNRDialog.Create(Self);
+   try
+      seltop := Grid.Selection.Top;
+      selbottom := Grid.Selection.Bottom;
+
+      F.NewSentNR := TQSO(Grid.Objects[0, seltop]).NrSent;
+      F.NewSentNR2 := TQSO(Grid.Objects[0, seltop]).NrSent;
+
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      strNewNR := F.NewSentNR;
+      strNewNR2 := F.NewSentNR2;
+
+      for i := seltop to selbottom do begin
+         Q := TQSO(Grid.Objects[0, i]);
+
+         B := Q.Band;
+         if B < b2400 then begin
+            if F.AutoAddPowerCode = True then begin
+               Q.NrSent := strNewNR + dmZlogGlobal.Settings._power[B];
+            end
+            else begin
+               Q.NrSent := strNewNR;
+            end;
+         end
+         else begin
+            if F.AutoAddPowerCode = True then begin
+               Q.NrSent := strNewNR2 + dmZlogGlobal.Settings._power[B];
+            end
+            else begin
+               Q.NrSent := strNewNR2;
+            end;
+         end;
+      end;
+
+      ScrollGrid();
+      Log.Saved := False;
+   finally
+      F.Release();
+   end;
+end;
+
 procedure TMainForm.MergeFile1Click(Sender: TObject);
 var
    ff: string;
@@ -7893,7 +7996,7 @@ end;
 procedure TMainForm.actionPlayMessageBExecute(Sender: TObject);
 var
    no: Integer;
-   cb: Integer;
+//   cb: Integer;
 begin
    no := TAction(Sender).Tag;
    OnPlayMessageB(no);

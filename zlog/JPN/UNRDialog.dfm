@@ -18,7 +18,7 @@ object NRDialog: TNRDialog
     260
     152)
   PixelsPerInch = 96
-  TextHeight = 12
+  TextHeight = 13
   object OKBtn: TButton
     Left = 106
     Top = 124
@@ -29,8 +29,6 @@ object NRDialog: TNRDialog
     Default = True
     ModalResult = 1
     TabOrder = 2
-    ExplicitLeft = 124
-    ExplicitTop = 71
   end
   object CancelBtn: TButton
     Left = 182
@@ -42,8 +40,6 @@ object NRDialog: TNRDialog
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 3
-    ExplicitLeft = 200
-    ExplicitTop = 71
   end
   object checkAutoAddPowerCode: TCheckBox
     Left = 8
@@ -63,29 +59,29 @@ object NRDialog: TNRDialog
     object Label2: TLabel
       Left = 17
       Top = 50
-      Width = 95
-      Height = 12
+      Width = 90
+      Height = 13
       Caption = '2400MHz or higher'
     end
     object Label1: TLabel
       Left = 17
       Top = 24
-      Width = 85
-      Height = 12
+      Width = 79
+      Height = 13
       Caption = '1200MHz or less'
     end
     object editSentNR: TEdit
       Left = 126
       Top = 21
       Width = 87
-      Height = 20
+      Height = 21
       TabOrder = 0
     end
     object editSentNR2: TEdit
       Left = 126
       Top = 47
       Width = 87
-      Height = 20
+      Height = 21
       TabOrder = 1
     end
   end
