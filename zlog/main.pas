@@ -48,6 +48,7 @@ const
   WM_ZLOG_SETTXINDICATOR = (WM_USER + 203);
   WM_ZLOG_SETFOCUS_CALLSIGN = (WM_USER + 204);
   WM_ZLOG_SETSTATUSTEXT = (WM_USER + 205);
+  WM_ZLOG_SHOWOPTIONS = (WM_USER + 206);
 
 type
   TEditPanel = record
@@ -650,6 +651,7 @@ type
     procedure OnZLogSetTxIndicator( var Message: TMessage ); message WM_ZLOG_SETTXINDICATOR;
     procedure OnZLogSetFocusCallsign( var Message: TMessage ); message WM_ZLOG_SETFOCUS_CALLSIGN;
     procedure OnZLogSetStatusText( var Message: TMessage ); message WM_ZLOG_SETSTATUSTEXT;
+    procedure OnZLogShowOptions( var Message: TMessage ); message WM_ZLOG_SHOWOPTIONS;
     procedure OnDeviceChange( var Message: TMessage ); message WM_DEVICECHANGE;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
@@ -1038,6 +1040,7 @@ type
     function InputStartTime(fNeedSave: Boolean): Boolean;
     procedure EnableShiftKeyAction(fEnable: Boolean);
     procedure ShowOutOfContestPeriod(fShow: Boolean);
+    procedure ShowOptionsDialog(nEditMode: Integer; nEditNumer: Integer; nEditBank: Integer; nActiveTab: Integer);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1175,6 +1178,7 @@ resourcestring
   TMainForm_Invalid_zone = 'Invalid zone';
   TMainForm_JudgePeriod = 'Do you want to judge whether all QSOs are within the contest period?';
   TMainForm_EmptyOpList = 'Operator list is empty.';
+  TMainForm_Setup_SentNR_first = 'Setup Prov/State and City code first';
 
 var
   MainForm: TMainForm;
@@ -3023,7 +3027,7 @@ end;
 
 procedure TMainForm.SetFontSize(font_size: Integer);
 var
-   b: TBand;
+//   b: TBand;
    h: Integer;
 begin
    Grid.Font.Size := font_size;
@@ -3313,7 +3317,6 @@ end;
 procedure TMainForm.GridMenuPopup(Sender: TObject);
 var
    i: Integer;
-   dt: TDateTime;
    aQSO: TQSO;
 begin
    SendSpot1.Enabled := FCommForm.MaybeConnected;
@@ -4540,24 +4543,10 @@ begin
 end;
 
 procedure TMainForm.buttonVoiceOptionClick(Sender: TObject);
-var
-   f: TformOptions;
 begin
-   f := TformOptions.Create(Self);
-   try
-      f.EditMode := 2;
-      f.EditNumber := 1;
-
-      if f.ShowModal() <> mrOK then begin
-         Exit;
-      end;
-
-      RenewVoiceToolBar;
-
-      LastFocus.SetFocus;
-   finally
-      f.Release();
-   end;
+   ShowOptionsDialog(2, 1, 0, 0);
+   RenewVoiceToolBar;
+   LastFocus.SetFocus;
 end;
 
 procedure TMainForm.OpMenuClick(Sender: TObject);
@@ -5173,6 +5162,11 @@ begin
 end;
 
 procedure TMainForm.menuOptionsClick(Sender: TObject);
+begin
+   ShowOptionsDialog(0, 0, 0, 0);
+end;
+
+procedure TMainForm.ShowOptionsDialog(nEditMode: Integer; nEditNumer: Integer; nEditBank: Integer; nActiveTab: Integer);
 var
    f: TformOptions;
    b: TBand;
@@ -5185,7 +5179,10 @@ begin
       FRigControl.ForcePowerOff();
       dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
 
-      f.EditMode := 0;
+      f.EditMode := nEditMode;
+      f.EditNumber := nEditNumer;
+      f.EditBank := nEditBank;
+      f.ActiveTab := nActiveTab;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
@@ -5264,57 +5261,31 @@ end;
 
 procedure TMainForm.Edit1Click(Sender: TObject);
 var
-   f: TformOptions;
+   nEditBank: Integer;
 begin
-   f := TformOptions.Create(Self);
-   try
-      f.EditMode := 1;
-      f.EditNumber := TMenuItem(Sender).Tag;
-      case CurrentQSO.Mode of
-         mCW, mOther: begin
-            if TMenuItem(Sender).Tag >= 101 then begin
-               f.EditBank := 1;
-            end
-            else begin
-               f.EditBank := dmZLogGlobal.Settings.CW.CurrentBank;
-            end;
+   case CurrentQSO.Mode of
+      mCW, mOther: begin
+         if TMenuItem(Sender).Tag >= 101 then begin
+            nEditBank := 1;
+         end
+         else begin
+            nEditBank := dmZLogGlobal.Settings.CW.CurrentBank;
          end;
-         mRTTY: f.EditBank := 3;
       end;
-
-      if f.ShowModal() <> mrOK then begin
-         Exit;
-      end;
-
-      RenewCWToolBar;
-      FFunctionKeyPanel.UpdateInfo();
-
-      LastFocus.SetFocus;
-   finally
-      f.Release();
+      mRTTY: nEditBank := 3;
    end;
+
+   ShowOptionsDialog(1, TMenuItem(Sender).Tag, nEditBank, 0);
+   RenewCWToolBar;
+   FFunctionKeyPanel.UpdateInfo();
+   LastFocus.SetFocus;
 end;
 
 procedure TMainForm.menuVoiceEditClick(Sender: TObject);
-var
-   f: TformOptions;
 begin
-   f := TformOptions.Create(Self);
-   try
-      f.EditMode := 2;
-      f.EditNumber := TMenuItem(Sender).Tag;
-
-      if f.ShowModal() <> mrOK then begin
-         Exit;
-      end;
-
-      RenewVoiceToolBar;
-      FFunctionKeyPanel.UpdateInfo();
-
-      LastFocus.SetFocus;
-   finally
-      f.Release();
-   end;
+   ShowOptionsDialog(2, TMenuItem(Sender).Tag, 0, 0);
+   RenewVoiceToolBar;
+   FFunctionKeyPanel.UpdateInfo();
 end;
 
 procedure TMainForm.menuBandPlanSettingsClick(Sender: TObject);
@@ -6826,6 +6797,12 @@ begin
       FInitialized := True;
       Timer1.Enabled := True;
       zyloContestOpened(MyContest.Name, menu.CFGFileName);
+
+      // Sent NRチェック
+      if (dmZLogGlobal.Settings._prov = '') or (dmZLogGlobal.Settings._city = '') then begin
+         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
+      end;
    finally
       menu.Release();
    end;
@@ -6973,6 +6950,11 @@ begin
 
    if fWriteConsole then
       FConsolePad.AddLine(statustext);
+end;
+
+procedure TMainForm.OnZLogShowOptions( var Message: TMessage );
+begin
+   ShowOptionsDialog(3, 0, 0, 1);
 end;
 
 procedure TMainForm.OnDeviceChange( var Message: TMessage );

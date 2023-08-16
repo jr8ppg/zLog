@@ -8,28 +8,29 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsExceptionThreadID 64256
-#define UExceptionDialog_RsMainThreadCallStack 64257
-#define UExceptionDialog_RsThreadCallStack 64258
-#define UExceptionDialog_RsErrorMessage 64259
-#define UExceptionDialog_RsDetailsIntro 64260
-#define UExceptionDialog_RsUnitVersioningIntro 64261
+#define UExceptionDialog_RsMainThreadID 64256
+#define UExceptionDialog_RsExceptionThreadID 64257
+#define UExceptionDialog_RsMainThreadCallStack 64258
+#define UExceptionDialog_RsThreadCallStack 64259
+#define UExceptionDialog_RsErrorMessage 64260
+#define UExceptionDialog_RsDetailsIntro 64261
+#define UExceptionDialog_RsUnitVersioningIntro 64262
 #define Main_TMainForm_EmptyOpList 64272
-#define UExceptionDialog_RsAppError 64273
-#define UExceptionDialog_RsExceptionClass 64274
-#define UExceptionDialog_RsExceptionMessage 64275
-#define UExceptionDialog_RsExceptionAddr 64276
-#define UExceptionDialog_RsStackList 64277
-#define UExceptionDialog_RsModulesList 64278
-#define UExceptionDialog_RsOSVersion 64279
-#define UExceptionDialog_RsProcessor 64280
-#define UExceptionDialog_RsMemory 64281
-#define UExceptionDialog_RsScreenRes 64282
-#define UExceptionDialog_RsActiveControl 64283
-#define UExceptionDialog_RsThread 64284
-#define UExceptionDialog_RsMissingVersionInfo 64285
-#define UExceptionDialog_RsExceptionStack 64286
-#define UExceptionDialog_RsMainThreadID 64287
+#define Main_TMainForm_Setup_SentNR_first 64273
+#define UExceptionDialog_RsAppError 64274
+#define UExceptionDialog_RsExceptionClass 64275
+#define UExceptionDialog_RsExceptionMessage 64276
+#define UExceptionDialog_RsExceptionAddr 64277
+#define UExceptionDialog_RsStackList 64278
+#define UExceptionDialog_RsModulesList 64279
+#define UExceptionDialog_RsOSVersion 64280
+#define UExceptionDialog_RsProcessor 64281
+#define UExceptionDialog_RsMemory 64282
+#define UExceptionDialog_RsScreenRes 64283
+#define UExceptionDialog_RsActiveControl 64284
+#define UExceptionDialog_RsThread 64285
+#define UExceptionDialog_RsMissingVersionInfo 64286
+#define UExceptionDialog_RsExceptionStack 64287
 #define Main_TMainForm_This_QSO_is_locked 64288
 #define Main_TMainForm_Invalid_number 64289
 #define Main_TMainForm_Callsign_not_entered 64290
@@ -1280,6 +1281,7 @@
 #define System_SysConst_SFileNotFound 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
 	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
@@ -1287,6 +1289,7 @@ BEGIN
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
 	Main_TMainForm_EmptyOpList,	L"\x30AA\x30DA\x30EC\x30FC\x30BF\x30FC\x306F\x767B\x9332\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
+	Main_TMainForm_Setup_SentNR_first,	L"\x6700\x521D\x306B\x90FD\x9053\x5E9C\x770C\x30B3\x30FC\x30C9\x3068\x5E02\x533A\x90E1\x30B3\x30FC\x30C9\x3092\x8A2D\x5B9A\x3057\x3066\x304F\x3060\x3055\x3044"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1301,7 +1304,6 @@ BEGIN
 	UExceptionDialog_RsThread,	L"Thread: %s"
 	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
 	UExceptionDialog_RsExceptionStack,	L"Exception stack"
-	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	Main_TMainForm_This_QSO_is_locked,	L"\x3053\x306EQSO\x306F\x30ED\x30C3\x30AF\x3055\x308C\x3066\x3044\x307E\x3059"
 	Main_TMainForm_Invalid_number,	L"\x7121\x52B9\x306A\x30CA\x30F3\x30D0\x30FC\x3067\x3059"
 	Main_TMainForm_Callsign_not_entered,	L"\x30B3\x30FC\x30EB\x30B5\x30A4\x30F3\x3092\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"

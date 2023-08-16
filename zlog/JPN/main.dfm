@@ -6490,7 +6490,7 @@ object MainForm: TMainForm
     Left = 376
     Top = 137
     object Edit1: TMenuItem
-      Caption = 'Edit'
+      Caption = #20462#27491
       OnClick = Edit1Click
     end
   end
