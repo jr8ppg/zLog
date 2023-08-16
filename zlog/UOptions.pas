@@ -6,6 +6,7 @@ uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
+  Generics.Collections, Generics.Defaults,
   UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit, UzLogOperatorInfo;
 
 type
@@ -844,10 +845,12 @@ var
    b: TBand;
 
    procedure SetRigControlParam(no: Integer; C, S, N, K: TComboBox; T, R: TCheckBox);
+   var
+      KeyPort: Integer;
    begin
       with dmZlogGlobal do begin
          if Assigned(C) then begin
-            Settings.FRigControl[no].FControlPort := C.ItemIndex;
+            Settings.FRigControl[no].FControlPort := TCommPort(C.Items.Objects[C.ItemIndex]).Number;
          end;
 
          if Assigned(S) then begin
@@ -864,10 +867,11 @@ var
          end;
 
          if Assigned(K) then begin
-            if (K.ItemIndex >= 1) and (K.ItemIndex <= 20) then begin
-               Settings.FRigControl[no].FKeyingPort := K.ItemIndex;
+            KeyPort := TCommPort(K.Items.Objects[K.ItemIndex]).Number;
+            if (KeyPort >= 1) and (KeyPort <= 20) then begin
+               Settings.FRigControl[no].FKeyingPort := KeyPort;
             end
-            else if K.ItemIndex = 21 then begin    // USB
+            else if KeyPort = 21 then begin    // USB
                Settings.FRigControl[no].FKeyingPort := 21;
             end
             else begin
@@ -1343,10 +1347,18 @@ var
    b: TBand;
 
    procedure GetRigControlParam(no: Integer; C, S, N, K: TComboBox; T, R: TCheckBox);
+   var
+      i: Integer;
    begin
       with dmZlogGlobal do begin
          if Assigned(C) then begin
-            C.ItemIndex := Settings.FRigControl[no].FControlPort;
+            C.ItemIndex := 0;
+            for i := 0 to C.Items.Count - 1 do begin
+               if TCommPort(C.Items.Objects[i]).Number = Settings.FRigControl[no].FControlPort then begin
+                  C.ItemIndex := i;
+                  Break;
+               end;
+            end;
          end;
 
          if Assigned(S) then begin
@@ -1363,14 +1375,12 @@ var
          end;
 
          if Assigned(K) then begin
-            if (Settings.FRigControl[no].FKeyingPort >= 1) and (Settings.FRigControl[no].FKeyingPort <= 20) then begin
-               K.ItemIndex := Settings.FRigControl[no].FKeyingPort;
-            end
-            else if Settings.FRigControl[no].FKeyingPort = 21 then begin    // USB
-               K.ItemIndex := 21;
-            end
-            else begin
-               K.ItemIndex := 0;
+            K.ItemIndex := 0;
+            for i := 0 to K.Items.Count - 1 do begin
+               if TCommPort(K.Items.Objects[i]).Number = Settings.FRigControl[no].FKeyingPort then begin
+                  K.ItemIndex := i;
+                  Break;
+               end;
             end;
          end;
 
@@ -1962,6 +1972,8 @@ var
    i: integer;
    b: TBand;
    m: TMode;
+   CP: TCommPort;
+   list: TList<TCommPort>;
 begin
    FQuickQSYCheck[1]    := checkUseQuickQSY01;
    FQuickQSYBand[1]     := comboQuickQsyBand01;
@@ -2132,6 +2144,35 @@ begin
    FEditNumber := 0;
 
    FNeedSuperCheckLoad := False;
+
+   // CommPorts
+   comboRig1AControl.Items.Clear();
+   comboRig1BControl.Items.Clear();
+   comboRig2AControl.Items.Clear();
+   comboRig2BControl.Items.Clear();
+   comboRig1AKeying.Items.Clear();
+   comboRig1BKeying.Items.Clear();
+   comboRig2AKeying.Items.Clear();
+   comboRig2BKeying.Items.Clear();
+   comboRig3Keying.Items.Clear();
+
+   list := dmZLogGlobal.CommPortList;
+   for i := 0 to list.Count - 1 do begin
+      CP := list[i];
+      if CP.RigControl = True then begin
+         comboRig1AControl.Items.AddObject(CP.Name, CP);
+         comboRig1BControl.Items.AddObject(CP.Name, CP);
+         comboRig2AControl.Items.AddObject(CP.Name, CP);
+         comboRig2BControl.Items.AddObject(CP.Name, CP);
+      end;
+      if CP.Keying = True then begin
+         comboRig1AKeying.Items.AddObject(CP.Name, CP);
+         comboRig1BKeying.Items.AddObject(CP.Name, CP);
+         comboRig2AKeying.Items.AddObject(CP.Name, CP);
+         comboRig2BKeying.Items.AddObject(CP.Name, CP);
+         comboRig3Keying.Items.AddObject(CP.Name, CP);
+      end;
+   end;
 end;
 
 procedure TformOptions.buttonCancelClick(Sender: TObject);

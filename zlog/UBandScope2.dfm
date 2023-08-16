@@ -60,6 +60,9 @@ object BandScope2: TBandScope2
       OnDblClick = GridDblClick
       OnDrawCell = GridDrawCell
       OnMouseMove = GridMouseMove
+      OnMouseWheelDown = GridMouseWheelDown
+      OnMouseWheelUp = GridMouseWheelUp
+      ExplicitLeft = 2
     end
   end
   object panelStandardOption: TPanel
@@ -74,38 +77,60 @@ object BandScope2: TBandScope2
       234
       19)
     object buttonShowWorked: TSpeedButton
-      Left = 156
+      Left = 174
       Top = 0
-      Width = 78
+      Width = 60
       Height = 19
+      Hint = 'Show worked'
       AllowAllUp = True
       Anchors = [akTop, akRight]
       GroupIndex = 1
-      Caption = 'Show worked'
+      Caption = 'WORKED'
+      ParentShowHint = False
+      ShowHint = True
       OnClick = buttonShowWorkedClick
-      ExplicitLeft = 116
     end
     object buttonShowAllBands: TSpeedButton
-      Left = 78
+      Left = 115
       Top = 0
-      Width = 78
+      Width = 60
       Height = 19
+      Hint = 'Show all bands'
       AllowAllUp = True
       Anchors = [akTop, akRight]
       GroupIndex = 2
-      Caption = 'All bands'
+      Caption = 'ALL'
+      ParentShowHint = False
+      ShowHint = True
       OnClick = buttonShowWorkedClick
     end
-    object checkSyncVfo: TCheckBox
+    object buttonSyncVfo: TSpeedButton
       Left = 4
-      Top = 3
-      Width = 72
-      Height = 13
-      Caption = 'Sync VFO'
-      Checked = True
-      State = cbChecked
-      TabOrder = 0
-      OnClick = checkSyncVfoClick
+      Top = 0
+      Width = 53
+      Height = 19
+      Hint = 'Synchronize frequency to VFO'
+      AllowAllUp = True
+      Anchors = [akTop, akRight]
+      GroupIndex = 4
+      Caption = 'S.VFO'
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = buttonShowWorkedClick
+    end
+    object buttonFreqCenter: TSpeedButton
+      Left = 56
+      Top = 0
+      Width = 60
+      Height = 19
+      Hint = 'Fixed frequency display in the center'
+      AllowAllUp = True
+      Anchors = [akTop, akRight]
+      GroupIndex = 5
+      Caption = 'F.CENTER'
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = buttonShowWorkedClick
     end
   end
   object panelAllBandsOption: TPanel
@@ -122,16 +147,18 @@ object BandScope2: TBandScope2
       234
       19)
     object buttonShowWorked2: TSpeedButton
-      Left = 156
+      Left = 174
       Top = 0
-      Width = 78
+      Width = 60
       Height = 19
+      Hint = 'Show worked'
       AllowAllUp = True
       Anchors = [akTop, akRight]
       GroupIndex = 3
-      Caption = 'Show worked'
+      Caption = 'WORKED'
+      ParentShowHint = False
+      ShowHint = True
       OnClick = buttonShowWorkedClick
-      ExplicitLeft = 116
     end
     object buttonSortByFreq: TSpeedButton
       Left = 4

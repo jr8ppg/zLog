@@ -79,6 +79,8 @@ type
       FCFGFileName: string;
       FSelectDlg: TSelectUserDefinedContest;
       FModernStyle: Boolean;
+      FSelectedContest: TUserDefinedContest;
+      FNeedFree: Boolean;
 
       procedure EnableEveryThing;
 
@@ -93,6 +95,7 @@ type
       function GetGeneralName(): string;
       function GetPostContest(): Boolean;
       procedure SelectFirstBand();
+      procedure FreeSelectedContest();
    public
       property CFGFileName: string read FCFGFileName;
       property ContestCategory: TContestCategory read GetContestCategory;
@@ -140,14 +143,20 @@ begin
 
    FSelectDlg := TSelectUserDefinedContest.Create(Self);
    FModernStyle := True;
+
+   FSelectedContest := nil;
+   FNeedFree := False;
 end;
 
 procedure TMenuForm.FormDestroy(Sender: TObject);
 begin
+   FreeSelectedContest();
    FSelectDlg.Release();
 end;
 
 procedure TMenuForm.FormShow(Sender: TObject);
+var
+   parser: TUserDefinedContest;
 begin
    if dmZlogGlobal.Band = 0 then begin
       BandGroup.ItemIndex := 0;
@@ -183,6 +192,33 @@ begin
    ContestNumber := dmZlogGlobal.ContestMenuNo;
 
    if rbGeneral.Checked then begin
+      // 前回使用のCFGファイル
+      FCFGFileName := dmZLogGlobal.Settings.FLastCFGFileName;
+
+      // 無ければCFGDATパスの同名ファイル
+      if (FCFGFileName <> '') and (FileExists(FCFGFileName) = False) then begin
+         FCFGFileName := dmZlogGlobal.CfgDatPath + ExtractFileName(FCFGFileName);
+
+         // さらに無ければ前回選択コンテストはなし
+         if FileExists(FCFGFileName) = False then begin
+            FCFGFileName := '';
+         end;
+      end;
+
+      if FCFGFileName <> '' then begin
+         parser := TUserDefinedContest.Parse(FCFGFileName);
+
+         FCFGFileName := parser.Fullpath;
+         rbGeneral.Caption := parser.ContestName;
+         ScoreCoeffEdit.Enabled := parser.Coeff;
+
+         FreeSelectedContest();
+         FSelectedContest := parser;
+         FNeedFree := True;
+
+         OKButton.Enabled := True;
+      end;
+
       SelectButton.Enabled := True;
    end;
 end;
@@ -201,7 +237,7 @@ end;
 
 procedure TMenuForm.rbGeneralExit(Sender: TObject);
 begin
-   if FSelectDlg.SelectedContest <> nil then begin
+   if FSelectedContest <> nil then begin
       OKButton.Enabled := True;
    end;
 end;
@@ -225,6 +261,9 @@ begin
    rbGeneral.Caption := FSelectDlg.SelectedContest.ContestName;
    ScoreCoeffEdit.Enabled := FSelectDlg.SelectedContest.Coeff;
 
+   FreeSelectedContest();
+   FSelectedContest := FSelectDlg.SelectedContest;
+
    FModernStyle := True;
    OKButton.Enabled := True;
 end;
@@ -239,20 +278,23 @@ begin
       Exit;
    end;
 
+   dmZLogGlobal.Settings.FLastCFGFileName := FCFGFileName;
+
    dmZLogGlobal.ClearParamImportedFlag();
 
+   // User defined Contestで新スタイルの場合
    if (rbGeneral.Checked = True) and (FModernStyle = True) then begin
       // prov,city取込
       if FSelectDlg.ImportProvCity = True then begin
-         dmZLogGlobal.Settings._prov := FSelectDlg.SelectedContest.Prov;
-         dmZLogGlobal.Settings._city := FSelectDlg.SelectedContest.City;
+         dmZLogGlobal.Settings._prov := FSelectedContest.Prov;
+         dmZLogGlobal.Settings._city := FSelectedContest.City;
          dmZLogGlobal.Settings.ProvCityImported := True;
       end;
 
       // f1～f4取込
       for i := 1 to 4 do begin
          if FSelectDlg.ImportCwMessage[i] = True then begin
-            dmZLogGlobal.Settings.CW.CWStrBank[1, i] := FSelectDlg.SelectedContest.CwMessageA[i];
+            dmZLogGlobal.Settings.CW.CWStrBank[1, i] := FSelectedContest.CwMessageA[i];
             dmZLogGlobal.Settings.CW.CWStrImported[1, i] := True;
          end;
       end;
@@ -632,6 +674,15 @@ begin
          Exit;
       end;
    end;
+end;
+
+procedure TMenuForm.FreeSelectedContest();
+begin
+   if Assigned(FSelectedContest) and FNeedFree then begin
+      FSelectedContest.Free();
+   end;
+   FSelectedContest := nil;
+   FNeedFree := False;
 end;
 
 end.

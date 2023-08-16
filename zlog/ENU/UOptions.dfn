@@ -5,8 +5,8 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45149.9635185185</prop>
-        <prop prop-type="OrigDateTime">45149.962662037</prop>
+        <prop prop-type="SelfDateTime">45154.4808564815</prop>
+        <prop prop-type="OrigDateTime">45154.4767361111</prop>
         <prop prop-type="XlatDateTime">45016.8840972222</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">5010</prop>
@@ -134,7 +134,7 @@
         <prop prop-type="Created">44796.8932046181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TPageControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.ActivePage" resname="O:formOptions.O:PageControl.ActivePage">
-        <source>tabsheetPreferences</source>
+        <source>tabsheetHardware</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932046181</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TPageControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -24839,7 +24839,7 @@
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4964</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.FontName" resname="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.FontName">
-        <source>'Cascadia Mono ExtraLight Italic'</source>
+        <source>'Fira Code Retina'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4965</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -24869,7 +24869,7 @@
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4970</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.ItemIndex" resname="O:formOptions.O:PageControl.O:tabsheetFont.O:GroupBox21.O:comboFontBase.ItemIndex">
-        <source>44</source>
+        <source>69</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8932064236</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4971</prop><prop prop-type="Type">TJvFontComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>

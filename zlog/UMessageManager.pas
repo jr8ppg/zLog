@@ -543,21 +543,21 @@ begin
    else begin
       case i of
          1..12: begin
-            filename := FCurrentOperator.VoiceFile[i];
+            filename := FCurrentOperator.VoiceFiles[i];
          end;
 
          101: begin
-            filename := FCurrentOperator.VoiceFile[1];
+            filename := FCurrentOperator.VoiceFiles[1];
             i := 1;
          end;
 
          102: begin
-            filename := FCurrentOperator.AdditionalVoiceFile[2];
+            filename := FCurrentOperator.AdditionalVoiceFiles[2];
             i := 13;
          end;
 
          103: begin
-            filename := FCurrentOperator.AdditionalVoiceFile[3];
+            filename := FCurrentOperator.AdditionalVoiceFiles[3];
             i := 14;
          end;
       end;

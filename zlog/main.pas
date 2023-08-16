@@ -3124,12 +3124,12 @@ begin
       MyContest.MultiForm.FontSize := font_size;
    end;
 
-   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      FBandScopeEx[b].FontSize := font_size;
-   end;
-   FBandScope.FontSize := font_size;
-   FBandScopeNewMulti.FontSize := font_size;
-   FBandScopeAllBands.FontSize := font_size;
+//   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+//      FBandScopeEx[b].FontSize := font_size;
+//   end;
+//   FBandScope.FontSize := font_size;
+//   FBandScopeNewMulti.FontSize := font_size;
+//   FBandScopeAllBands.FontSize := font_size;
 
    FCWKeyboard.FontSize := font_size;
    FCWMessagePad.FontSize := font_size;
