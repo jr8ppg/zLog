@@ -4544,7 +4544,7 @@ end;
 
 procedure TMainForm.buttonVoiceOptionClick(Sender: TObject);
 begin
-   ShowOptionsDialog(2, 1, 0, 0);
+   ShowOptionsDialog(2, 1, 1, 0);
    RenewVoiceToolBar;
    LastFocus.SetFocus;
 end;
@@ -5163,7 +5163,7 @@ end;
 
 procedure TMainForm.menuOptionsClick(Sender: TObject);
 begin
-   ShowOptionsDialog(0, 0, 0, 0);
+   ShowOptionsDialog(0, 0, 1, 0);
 end;
 
 procedure TMainForm.ShowOptionsDialog(nEditMode: Integer; nEditNumer: Integer; nEditBank: Integer; nActiveTab: Integer);
@@ -5283,7 +5283,7 @@ end;
 
 procedure TMainForm.menuVoiceEditClick(Sender: TObject);
 begin
-   ShowOptionsDialog(2, TMenuItem(Sender).Tag, 0, 0);
+   ShowOptionsDialog(2, TMenuItem(Sender).Tag, 1, 0);
    RenewVoiceToolBar;
    FFunctionKeyPanel.UpdateInfo();
 end;
@@ -6954,7 +6954,7 @@ end;
 
 procedure TMainForm.OnZLogShowOptions( var Message: TMessage );
 begin
-   ShowOptionsDialog(3, 0, 0, 1);
+   ShowOptionsDialog(3, 0, 1, 1);
 end;
 
 procedure TMainForm.OnDeviceChange( var Message: TMessage );
