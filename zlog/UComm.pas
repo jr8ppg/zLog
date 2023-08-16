@@ -47,6 +47,7 @@ type
     menuPasteCommand: TMenuItem;
     checkUseAllowDenyLists: TCheckBox;
     timerReConnect: TTimer;
+    checkIgnoreBEL: TCheckBox;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -357,6 +358,7 @@ begin
    checkRelaySpot.Checked     := dmZLogGlobal.Settings.FClusterRelaySpot;
    checkNotifyCurrentBand.Checked := dmZLogGlobal.Settings.FClusterNotifyCurrentBand;
    checkRecordLogs.Checked    := dmZLogGlobal.Settings.FClusterRecordLogs;
+   checkIgnoreBEL.Checked     := dmZLogGlobal.Settings.FClusterIgnoreBEL;
    checkUseAllowDenyLists.Checked := dmZLogGlobal.Settings.FClusterUseAllowDenyLists;
 end;
 
@@ -367,6 +369,7 @@ begin
    dmZLogGlobal.Settings.FClusterRelaySpot      := checkRelaySpot.Checked;
    dmZLogGlobal.Settings.FClusterNotifyCurrentBand := checkNotifyCurrentBand.Checked;
    dmZLogGlobal.Settings.FClusterRecordLogs     := checkRecordLogs.Checked;
+   dmZLogGlobal.Settings.FClusterIgnoreBEL      := checkIgnoreBEL.Checked;
    dmZLogGlobal.Settings.FClusterUseAllowDenyLists := checkUseAllowDenyLists.Checked;
 end;
 
@@ -842,6 +845,7 @@ begin
       checkRelaySpot.Enabled := False;
       checkNotifyCurrentBand.Enabled := False;
       checkRecordLogs.Enabled := False;
+      checkIgnoreBEL.Enabled := False;
       checkUseAllowDenyLists.Enabled := False;
 
       ConnectButton.Caption := UComm_Disconnect;
@@ -879,6 +883,7 @@ begin
    checkRelaySpot.Enabled := True;
    checkNotifyCurrentBand.Enabled := True;
    checkRecordLogs.Enabled := True;
+   checkIgnoreBEL.Enabled := True;
    checkUseAllowDenyLists.Enabled := True;
    ConnectButton.Caption := UComm_Connect;
 
@@ -1030,11 +1035,21 @@ end;
 
 procedure TCommForm.TelnetDataAvailable(Sender: TTnCnx; Buffer: Pointer; Len: Integer);
 var
-   str : string;
+   str: string;
+   S: string;
 begin
    str := string(AnsiStrings.StrPas(PAnsiChar(Buffer)));
+
+   S := '';
+   if checkIgnoreBEL.Checked = True then begin
+      S := StringReplace(str, #07, '', [rfReplaceAll]);
+   end
+   else begin
+      S := str;
+   end;
+
    CommBufferLock.Enter();
-   FCommBuffer.Add(str);
+   FCommBuffer.Add(S);
    CommBufferLock.Leave();
 end;
 

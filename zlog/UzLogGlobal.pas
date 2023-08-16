@@ -291,6 +291,7 @@ type
     FClusterRelaySpot: Boolean;
     FClusterNotifyCurrentBand: Boolean;
     FClusterRecordLogs: Boolean;
+    FClusterIgnoreBEL: Boolean;
     FClusterUseAllowDenyLists: Boolean;
     FClusterIgnoreSHDX: Boolean;
     FClusterReConnectMax: Integer;
@@ -1388,6 +1389,7 @@ begin
       Settings.FClusterRelaySpot       := ini.ReadBool('ClusterWindow', 'RelaySpot', False);
       Settings.FClusterNotifyCurrentBand := ini.ReadBool('ClusterWindow', 'NotifyCurrentBand', False);
       Settings.FClusterRecordLogs      := ini.ReadBool('ClusterWindow', 'RecordLogs', False);
+      Settings.FClusterIgnoreBEL       := ini.ReadBool('ClusterWindow', 'IgnoreBEL', True);
       Settings.FClusterUseAllowDenyLists := ini.ReadBool('ClusterWindow', 'UseAllowDenyLists', False);
       Settings.FClusterIgnoreSHDX      := ini.ReadBool('ClusterWindow', 'IgnoreSHDX', True);
       Settings.FClusterReConnectMax    := ini.ReadInteger('ClusterWindow', 'ReConnectMax', 10);
@@ -1993,6 +1995,7 @@ begin
       ini.WriteBool('ClusterWindow', 'RelaySpot', Settings.FClusterRelaySpot);
       ini.WriteBool('ClusterWindow', 'NotifyCurrentBand', Settings.FClusterNotifyCurrentBand);
       ini.WriteBool('ClusterWindow', 'RecordLogs', Settings.FClusterRecordLogs);
+      ini.WriteBool('ClusterWindow', 'IgnoreBEL', Settings.FClusterIgnoreBEL);
       ini.WriteBool('ClusterWindow', 'UseAllowDenyLists', Settings.FClusterUseAllowDenyLists);
       ini.WriteBool('ClusterWindow', 'IgnoreSHDX', Settings.FClusterIgnoreSHDX);
       ini.WriteInteger('ClusterWindow', 'ReConnectMax', Settings.FClusterReConnectMax);
