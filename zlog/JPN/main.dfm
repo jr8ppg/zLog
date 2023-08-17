@@ -63,7 +63,6 @@ object MainForm: TMainForm
     UseSystemFont = False
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
-    ExplicitTop = 383
   end
   object MainPanel: TPanel
     Left = 0
@@ -73,7 +72,6 @@ object MainForm: TMainForm
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitHeight = 289
     object EditPanel1R: TPanel
       Left = 0
       Top = 199
@@ -87,7 +85,6 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitTop = 179
       object RcvdRSTEdit1: TEdit
         Left = 117
         Top = 4
@@ -288,7 +285,6 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = 206
       object RigPanelC: TPanel
         Left = 1
         Top = 54
@@ -864,7 +860,6 @@ object MainForm: TMainForm
       OnMouseUp = GridMouseUp
       OnSelectCell = GridSelectCell
       OnTopLeftChanged = GridTopLeftChanged
-      ExplicitHeight = 179
       ColWidths = (
         38
         65
@@ -5968,6 +5963,9 @@ object MainForm: TMainForm
       object ShowMessageManagerSO2R1: TMenuItem
         Action = actionShowMsgMgr
       end
+      object menuShowCWMonitor: TMenuItem
+        Action = actionShowCWMonitor
+      end
     end
     object menuSettings: TMenuItem
       Caption = #21508#31278#35373#23450'(&S)'
@@ -7302,7 +7300,7 @@ object MainForm: TMainForm
       OnExecute = actionNoQslExecute
     end
     object actionShowMsgMgr: TAction
-      Caption = 'Show Message Manager (SO2R)'
+      Caption = 'Message Manager (SO2R)'
       OnExecute = actionShowMsgMgrExecute
     end
     object actionChangeBand2: TAction
@@ -7324,6 +7322,10 @@ object MainForm: TMainForm
       Caption = 'actionToggleTxNr'
       ShortCut = 32857
       OnExecute = actionToggleTxNrExecute
+    end
+    object actionShowCWMonitor: TAction
+      Caption = 'CW'#12514#12491#12479#12540
+      OnExecute = actionShowCWMonitorExecute
     end
   end
   object SPCMenu: TPopupMenu

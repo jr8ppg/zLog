@@ -30,7 +30,7 @@ uses
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UVoiceForm, UzLogOperatorInfo, UFunctionKeyPanel,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
-  UWinKeyerTester, UStatusEdit, UzLogContest, UFreqTest, UBandPlan,
+  UWinKeyerTester, UStatusEdit, UzLogContest, UFreqTest, UBandPlan, UCWMonitor,
   JvExControls, JvLED;
 
 const
@@ -524,6 +524,8 @@ type
     timerOutOfPeriod: TTimer;
     menuChangeSentNr: TMenuItem;
     menuChangeDate: TMenuItem;
+    actionShowCWMonitor: TAction;
+    menuShowCWMonitor: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -792,6 +794,7 @@ type
     procedure timerOutOfPeriodTimer(Sender: TObject);
     procedure menuChangeSentNrClick(Sender: TObject);
     procedure menuChangeDateClick(Sender: TObject);
+    procedure actionShowCWMonitorExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -825,6 +828,7 @@ type
     FTTYConsole: TTTYConsole;
     FWinKeyerTester: TformWinKeyerTester;
     FFreqTest: TformFreqTest;
+    FCWMonitor: TformCWMonitor;
 
     FInitialized: Boolean;
 
@@ -1101,6 +1105,7 @@ type
     property FreqList: TFreqList read FFreqList;
     property ScratchSheet: TScratchSheet read FScratchSheet;
     property SuperCheckList: TSuperList read FSuperCheckList;
+    property CWMonitor: TformCWMonitor read FCWMonitor;
 
     property CurrentRigID: Integer read GetCurrentRigID;
     property CurrentEditPanel: TEditPanel read GetCurrentEditPanel;
@@ -2078,6 +2083,7 @@ begin
    FTTYConsole    := nil;
    FWinKeyerTester := TformWinKeyerTester.Create(Self);
    FFreqTest      := TformFreqTest.Create(Self);
+   FCWMonitor     := TformCWMonitor.Create(Self);
 
    FCurrentCQMessageNo := 101;
    FCQLoopRunning := False;
@@ -2387,6 +2393,7 @@ begin
       dmZlogGlobal.ReadWindowState(ini, FZLinkForm);
       dmZlogGlobal.ReadWindowState(ini, FWinKeyerTester);
       dmZlogGlobal.ReadWindowState(ini, FFreqTest);
+      dmZlogGlobal.ReadWindowState(ini, FCWMonitor);
 
       for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
          FBandScopeEx[b].LoadSettings(ini, 'BandScope(' + MHzString[b] + ')');
@@ -2439,6 +2446,7 @@ begin
       dmZlogGlobal.WriteWindowState(ini, FZLinkForm);
       dmZlogGlobal.WriteWindowState(ini, FWinKeyerTester);
       dmZlogGlobal.WriteWindowState(ini, FFreqTest);
+      dmZlogGlobal.WriteWindowState(ini, FCWMonitor);
 
       for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
          FBandScopeEx[b].SaveSettings(ini, 'BandScope(' + MHzString[b] + ')');
@@ -3643,6 +3651,22 @@ begin
          dmZLogKeyer.So2rNeoReverseRx(nID)
       end;
 
+      zLogSendStr2(nID, S, CurrentQSO);
+   end
+   else begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar(S));
+      {$ENDIF}
+      zLogSendStr2(nID, S, CurrentQSO);
+   end;
+
+(*
+   if dmZLogKeyer.UseWinKeyer = True then begin
+
+      if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+         dmZLogKeyer.So2rNeoReverseRx(nID)
+      end;
+
       dmZLogKeyer.WinKeyerClear();
       dmZLogKeyer.WinKeyerControlPTT(True);
 
@@ -3667,6 +3691,7 @@ begin
       end;
       dmZLogKeyer.ResumeCW;
    end;
+*)
 end;
 
 procedure TMainForm.OnDownKeyPress;
@@ -4211,6 +4236,7 @@ begin
    FInformation.Release();
    FWinKeyerTester.Release();
    FFreqTest.Release();
+   FCWMonitor.Release();
 
    if Assigned(FTTYConsole) then begin
       FTTYConsole.Release();
@@ -4772,7 +4798,7 @@ begin
             S := ' ' + SetStr(dmZlogGlobal.CWMessage(1, 4), CurrentQSO);
             nID := FCurrentTx;
             if dmZLogKeyer.UseWinKeyer = True then begin
-               zLogSendStr(nID, S);
+               zLogSendStr2(nID, S, CurrentQSO);
             end
             else begin
                dmZLogKeyer.SendStr(nID, S);
@@ -7661,7 +7687,7 @@ end;
 
 procedure TMainForm.OnOneCharSentProc(Sender: TObject);
 begin
-//   FMessageManager.OneCharSentProc();
+   FCWMonitor.OneCharSentProc();
 end;
 
 procedure TMainForm.OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: Boolean);
@@ -7674,6 +7700,9 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- OnPlayMessageFinished ---'));
    {$ENDIF}
+
+   FCWMonitor.ClearSendingText();
+
    try
       if mode = mCW then begin
          // PTT-OFF
@@ -9228,6 +9257,12 @@ begin
       txnr := 0;
    end;
    ChangeTxNr(txnr);
+end;
+
+// #161 Show CW Monitor
+procedure TMainForm.actionShowCWMonitorExecute(Sender: TObject);
+begin
+   FCWMonitor.Show();
 end;
 
 procedure TMainForm.RestoreWindowsPos();
@@ -10859,6 +10894,8 @@ begin
    nID := FCurrentTx;
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
    StopMessage(mode);
+
+   FCWMonitor.ClearSendingText();
 
    TabPressed := False;
    TabPressed2 := False;

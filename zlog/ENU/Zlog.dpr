@@ -32,6 +32,7 @@ library Zlog;
 {ITE} {DFMFileType} {UConsolePad.dfm}
 {ITE} {DFMFileType} {UCWKeyBoard.dfm}
 {ITE} {DFMFileType} {UCwMessagePad.dfm}
+{ITE} {DFMFileType} {UCWMonitor.dfm}
 {ITE} {DFMFileType} {UDateDialog.dfm}
 {ITE} {DFMFileType} {UEditDialog.dfm}
 {ITE} {DFMFileType} {UELogJarl1.dfm}
@@ -142,6 +143,7 @@ library Zlog;
 {$R 'UConsolePad.dfm' 'ConsolePad:TForm'}
 {$R 'UCWKeyBoard.dfm' 'CWKeyBoard:TForm'}
 {$R 'UCwMessagePad.dfm' 'CwMessagePad:TForm'}
+{$R 'UCWMonitor.dfm' 'formCWMonitor:TForm'}
 {$R 'UDateDialog.dfm' 'DateDialog:TForm'}
 {$R 'UEditDialog.dfm' 'EditDialog:TForm'}
 {$R 'UELogJarl1.dfm' 'formELogJarl1:TForm'}
