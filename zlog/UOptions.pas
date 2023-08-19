@@ -2330,8 +2330,10 @@ procedure TformOptions.comboCwPttPortChange(Sender: TObject);
 var
    Index: Integer;
    rigno: Integer;
+   combo: TComboBox;
 begin
-   Index := TComboBox(Sender).ItemIndex;
+   combo := TComboBox(Sender);
+   Index := TCommPort(combo.Items.Objects[combo.ItemIndex]).Number;
    rigno := TComboBox(Sender).Tag;
 
    if (Index = 0) or (Index = 21) then begin
@@ -2342,6 +2344,7 @@ begin
          checkWkOutportSelect.Enabled := False;
          checkWkIgnoreSpeedPot.Enabled := False;
       end;
+      checkUseWinKeyer.Checked := False;
    end
    else begin
       checkUseWinKeyer.Enabled := True;
