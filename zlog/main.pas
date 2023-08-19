@@ -9716,6 +9716,9 @@ begin
    // 現在のCQモード
    fSetLastFreq := IsCQ();
 
+   // CQ中止
+   CQAbort(True);
+
    // SPモードへ変更
    SetCQ(False);
 
