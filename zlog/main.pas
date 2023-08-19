@@ -30,7 +30,7 @@ uses
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
-  UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan,
+  UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan, UCWMonitor,
   JvExControls, JvLED;
 
 const
@@ -61,6 +61,7 @@ const
   WM_ZLOG_SETFOCUS_CALLSIGN = (WM_USER + 204);
   WM_ZLOG_SETSTATUSTEXT = (WM_USER + 205);
   WM_ZLOG_MOVELASTFREQ = (WM_USER + 206);
+  WM_ZLOG_SHOWOPTIONS = (WM_USER + 207);
 
 type
   TEditPanel = record
@@ -174,9 +175,9 @@ type
     PacketCluster1: TMenuItem;
     SuperCheck1: TMenuItem;
     PartialCheck1: TMenuItem;
-    GBand: TMenuItem;
-    Changemode: TMenuItem;
-    GOperator: TMenuItem;
+    menuChangeBand: TMenuItem;
+    menuChangeMode: TMenuItem;
+    menuChangeOperator: TMenuItem;
     G1R9MHz: TMenuItem;
     G3R5MHz: TMenuItem;
     G7MHz: TMenuItem;
@@ -237,7 +238,7 @@ type
     GeneralSaveDialog: TSaveDialog;
     mPXListWPX: TMenuItem;
     mSummaryFile: TMenuItem;
-    mChangePower: TMenuItem;
+    menuChangePower: TMenuItem;
     H2: TMenuItem;
     M2: TMenuItem;
     L2: TMenuItem;
@@ -265,7 +266,7 @@ type
     VoiceCQ2: THemisphereButton;
     VoiceCQ3: THemisphereButton;
     Bandscope1: TMenuItem;
-    mnChangeTXNr: TMenuItem;
+    menuChangeTXNr: TMenuItem;
     mnGridAddNewPX: TMenuItem;
     mnHideCWPhToolBar: TMenuItem;
     mnHideMenuToolbar: TMenuItem;
@@ -534,6 +535,10 @@ type
     actionToggleTxNr: TAction;
     panelOutOfPeriod: TPanel;
     timerOutOfPeriod: TTimer;
+    menuChangeSentNr: TMenuItem;
+    menuChangeDate: TMenuItem;
+    actionShowCWMonitor: TAction;
+    menuShowCWMonitor: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -675,6 +680,7 @@ type
     procedure OnZLogSetFocusCallsign( var Message: TMessage ); message WM_ZLOG_SETFOCUS_CALLSIGN;
     procedure OnZLogSetStatusText( var Message: TMessage ); message WM_ZLOG_SETSTATUSTEXT;
     procedure OnZLogMoveLastFreq( var Message: TMessage ); message WM_ZLOG_MOVELASTFREQ;
+    procedure OnZLogShowOptions( var Message: TMessage ); message WM_ZLOG_SHOWOPTIONS;
     procedure OnDeviceChange( var Message: TMessage ); message WM_DEVICECHANGE;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
@@ -813,6 +819,9 @@ type
     procedure FileMenuClick(Sender: TObject);
     procedure actionToggleTxNrExecute(Sender: TObject);
     procedure timerOutOfPeriodTimer(Sender: TObject);
+    procedure menuChangeSentNrClick(Sender: TObject);
+    procedure menuChangeDateClick(Sender: TObject);
+    procedure actionShowCWMonitorExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -838,6 +847,7 @@ type
     FQuickRef: TQuickRef;              // Quick Reference
     FZAnalyze: TZAnalyze;              // Analyze window
     FCWMessagePad: TCwMessagePad;
+    FMessageManager: TformMessageManager;
     FFunctionKeyPanel: TformFunctionKeyPanel;
     FQsyInfoForm: TformQsyInfo;
     FSo2rNeoCp: TformSo2rNeoCp;
@@ -845,7 +855,7 @@ type
     FTTYConsole: TTTYConsole;
     FWinKeyerTester: TformWinKeyerTester;
     FFreqTest: TformFreqTest;
-    FMessageManager: TformMessageManager;
+    FCWMonitor: TformCWMonitor;
 
     FInitialized: Boolean;
 
@@ -1070,6 +1080,7 @@ type
     function InputStartTime(fNeedSave: Boolean): Boolean;
     procedure EnableShiftKeyAction(fEnable: Boolean);
     procedure ShowOutOfContestPeriod(fShow: Boolean);
+    procedure ShowOptionsDialog(nEditMode: Integer; nEditNumer: Integer; nEditBank: Integer; nActiveTab: Integer);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1132,6 +1143,7 @@ type
     property ScratchSheet: TScratchSheet read FScratchSheet;
     property SuperCheckList: TSuperList read FSuperCheckList;
     property MessageManager: TformMessageManager read FMessageManager;
+    property CWMonitor: TformCWMonitor read FCWMonitor;
 
     property CurrentRigID: Integer read GetCurrentRigID;
     property CurrentTX: Integer read FCurrentTX;
@@ -1208,6 +1220,7 @@ resourcestring
   TMainForm_Invalid_zone = 'Invalid zone';
   TMainForm_JudgePeriod = 'Do you want to judge whether all QSOs are within the contest period?';
   TMainForm_EmptyOpList = 'Operator list is empty.';
+  TMainForm_Setup_SentNR_first = 'Setup Prov/State and City code first';
 
 var
   MainForm: TMainForm;
@@ -1231,7 +1244,7 @@ uses
   UIntegerDialog, UNewPrefix, UKCJScore,
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension,
-  UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog;
+  UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog;
 
 {$R *.DFM}
 
@@ -2107,6 +2120,9 @@ begin
    FQuickRef      := TQuickRef.Create(Self);
    FZAnalyze      := TZAnalyze.Create(Self);
    FCWMessagePad  := TCwMessagePad.Create(Self);
+   FMessageManager := TformMessageManager.Create(Self);
+   FMessageManager.OnNotifyStarted  := OnVoicePlayStarted;
+   FMessageManager.OnNotifyFinished := OnPlayMessageFinished;
    FFunctionKeyPanel := TformFunctionKeyPanel.Create(Self);
    FQsyInfoForm   := TformQsyInfo.Create(Self);
    FSo2rNeoCp     := TformSo2rNeoCp.Create(Self);
@@ -2114,9 +2130,7 @@ begin
    FTTYConsole    := nil;
    FWinKeyerTester := TformWinKeyerTester.Create(Self);
    FFreqTest      := TformFreqTest.Create(Self);
-   FMessageManager := TformMessageManager.Create(Self);
-   FMessageManager.OnNotifyStarted  := OnVoicePlayStarted;
-   FMessageManager.OnNotifyFinished := OnPlayMessageFinished;
+   FCWMonitor     := TformCWMonitor.Create(Self);
 
    FCurrentCQMessageNo := 101;
    FCQLoopRunning := False;
@@ -2427,6 +2441,7 @@ begin
       dmZlogGlobal.ReadWindowState(ini, FWinKeyerTester);
       dmZlogGlobal.ReadWindowState(ini, FFreqTest);
       dmZlogGlobal.ReadWindowState(ini, FMessageManager);
+      dmZlogGlobal.ReadWindowState(ini, FCWMonitor);
 
       for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
          FBandScopeEx[b].LoadSettings(ini, 'BandScope(' + MHzString[b] + ')');
@@ -2480,6 +2495,7 @@ begin
       dmZlogGlobal.WriteWindowState(ini, FWinKeyerTester);
       dmZlogGlobal.WriteWindowState(ini, FFreqTest);
       dmZlogGlobal.WriteWindowState(ini, FMessageManager);
+      dmZlogGlobal.WriteWindowState(ini, FCWMonitor);
 
       for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
          FBandScopeEx[b].SaveSettings(ini, 'BandScope(' + MHzString[b] + ')');
@@ -3086,7 +3102,6 @@ end;
 
 procedure TMainForm.SetFontSize(font_size: Integer);
 var
-   b: TBand;
    h: Integer;
 begin
    Grid.Font.Size := font_size;
@@ -3123,13 +3138,6 @@ begin
       MyContest.ScoreForm.FontSize := font_size;
       MyContest.MultiForm.FontSize := font_size;
    end;
-
-//   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-//      FBandScopeEx[b].FontSize := font_size;
-//   end;
-//   FBandScope.FontSize := font_size;
-//   FBandScopeNewMulti.FontSize := font_size;
-//   FBandScopeAllBands.FontSize := font_size;
 
    FCWKeyboard.FontSize := font_size;
    FCWMessagePad.FontSize := font_size;
@@ -3391,18 +3399,19 @@ end;
 procedure TMainForm.GridMenuPopup(Sender: TObject);
 var
    i: Integer;
+   aQSO: TQSO;
 begin
    SendSpot1.Enabled := FCommForm.MaybeConnected;
 
-   mChangePower.Visible := PowerEdit1.Visible;
+   menuChangePower.Visible := PowerEdit1.Visible;
 
    for i := 0 to Ord(HiBand) do begin
-      GBand.Items[i].Visible := BandMenu.Items[i].Visible;
-      GBand.Items[i].Enabled := BandMenu.Items[i].Enabled;
+      menuChangeBand.Items[i].Visible := BandMenu.Items[i].Visible;
+      menuChangeBand.Items[i].Enabled := BandMenu.Items[i].Enabled;
    end;
 
-   BuildOpListMenu2(GOperator, GridOperatorClick);
-   BuildTxNrMenu2(mnChangeTXNr, mnChangeTXNrClick);
+   BuildOpListMenu2(menuChangeOperator, GridOperatorClick);
+   BuildTxNrMenu2(menuChangeTXNr, mnChangeTXNrClick);
 
    if Grid.Row > Log.TotalQSO then begin
       for i := 0 to GridMenu.Items.Count - 1 do
@@ -3411,6 +3420,16 @@ begin
    else begin
       for i := 0 to GridMenu.Items.Count - 1 do
          GridMenu.Items[i].Enabled := True;
+   end;
+
+   // 選択範囲が全て同じ日付かチェックする
+   menuChangeDate.Enabled := True;
+   aQSO := TQSO(Grid.Objects[0, Grid.Selection.Top]);
+   for i := Grid.Selection.Top + 1 to Grid.Selection.Bottom do begin
+      if aQSO.DateStr <> TQSO(Grid.Objects[0, i]).DateStr then begin
+         menuChangeDate.Enabled := False;
+         Break;
+      end;
    end;
 end;
 
@@ -4389,13 +4408,14 @@ begin
    FQuickRef.Release();
    FZAnalyze.Release();
    FCWMessagePad.Release();
+   FMessageManager.Release();
    FFunctionKeyPanel.Release();
    FQsyInfoForm.Release();
    FSo2rNeoCp.Release();
    FInformation.Release();
    FWinKeyerTester.Release();
    FFreqTest.Release();
-   FMessageManager.Release();
+   FCWMonitor.Release();
 
    if Assigned(FTTYConsole) then begin
       FTTYConsole.Release();
@@ -4760,24 +4780,10 @@ begin
 end;
 
 procedure TMainForm.buttonVoiceOptionClick(Sender: TObject);
-var
-   f: TformOptions;
 begin
-   f := TformOptions.Create(Self);
-   try
-      f.EditMode := 2;
-      f.EditNumber := 1;
-
-      if f.ShowModal() <> mrOK then begin
-         Exit;
-      end;
-
-      RenewVoiceToolBar;
-
-      LastFocus.SetFocus;
-   finally
-      f.Release();
-   end;
+   ShowOptionsDialog(2, 1, 1, 0);
+   RenewVoiceToolBar;
+   LastFocus.SetFocus;
 end;
 
 procedure TMainForm.OpMenuClick(Sender: TObject);
@@ -5445,6 +5451,11 @@ begin
 end;
 
 procedure TMainForm.menuOptionsClick(Sender: TObject);
+begin
+   ShowOptionsDialog(0, 0, 1, 0);
+end;
+
+procedure TMainForm.ShowOptionsDialog(nEditMode: Integer; nEditNumer: Integer; nEditBank: Integer; nActiveTab: Integer);
 var
    f: TformOptions;
    b: TBand;
@@ -5457,7 +5468,10 @@ begin
       FRigControl.ForcePowerOff();
       dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
 
-      f.EditMode := 0;
+      f.EditMode := nEditMode;
+      f.EditNumber := nEditNumer;
+      f.EditBank := nEditBank;
+      f.ActiveTab := nActiveTab;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
@@ -5536,57 +5550,32 @@ end;
 
 procedure TMainForm.Edit1Click(Sender: TObject);
 var
-   f: TformOptions;
+   nEditBank: Integer;
 begin
-   f := TformOptions.Create(Self);
-   try
-      f.EditMode := 1;
-      f.EditNumber := TMenuItem(Sender).Tag;
-      case CurrentQSO.Mode of
-         mCW, mOther: begin
-            if TMenuItem(Sender).Tag >= 101 then begin
-               f.EditBank := 1;
-            end
-            else begin
-               f.EditBank := dmZLogGlobal.Settings.CW.CurrentBank;
-            end;
+   case CurrentQSO.Mode of
+      mCW, mOther: begin
+         if TMenuItem(Sender).Tag >= 101 then begin
+            nEditBank := 1;
+         end
+         else begin
+            nEditBank := dmZLogGlobal.Settings.CW.CurrentBank;
          end;
-         mRTTY: f.EditBank := 3;
       end;
-
-      if f.ShowModal() <> mrOK then begin
-         Exit;
-      end;
-
-      RenewCWToolBar;
-      FFunctionKeyPanel.UpdateInfo();
-
-      LastFocus.SetFocus;
-   finally
-      f.Release();
+      mRTTY: nEditBank := 3;
+      else nEditBank := 1;
    end;
+
+   ShowOptionsDialog(1, TMenuItem(Sender).Tag, nEditBank, 0);
+   RenewCWToolBar;
+   FFunctionKeyPanel.UpdateInfo();
+   LastFocus.SetFocus;
 end;
 
 procedure TMainForm.menuVoiceEditClick(Sender: TObject);
-var
-   f: TformOptions;
 begin
-   f := TformOptions.Create(Self);
-   try
-      f.EditMode := 2;
-      f.EditNumber := TMenuItem(Sender).Tag;
-
-      if f.ShowModal() <> mrOK then begin
-         Exit;
-      end;
-
-      RenewVoiceToolBar;
-      FFunctionKeyPanel.UpdateInfo();
-
-      LastFocus.SetFocus;
-   finally
-      f.Release();
-   end;
+   ShowOptionsDialog(2, TMenuItem(Sender).Tag, 1, 0);
+   RenewVoiceToolBar;
+   FFunctionKeyPanel.UpdateInfo();
 end;
 
 procedure TMainForm.menuBandPlanSettingsClick(Sender: TObject);
@@ -6203,6 +6192,93 @@ begin
    Log.Saved := False;
 end;
 
+procedure TMainForm.menuChangeDateClick(Sender: TObject);
+var
+   F: TDateDialog;
+   i: Integer;
+   newDate: TDateTime;
+   Q: TQSO;
+   seltop, selbottom: Integer;
+begin
+   F := TDateDialog.Create(Self);
+   try
+      seltop := Grid.Selection.Top;
+      selbottom := Grid.Selection.Bottom;
+
+      F.CurrentDate := TQSO(Grid.Objects[0, seltop]).Time;
+
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      newDate := F.NewDate;
+
+      for i := seltop to selbottom do begin
+         Q := TQSO(Grid.Objects[0, i]);
+         Q.Time := DateOf(newDate) + TimeOf(Q.Time);
+      end;
+
+      ScrollGrid();
+      Log.Saved := False;
+   finally
+      F.Release();
+   end;
+end;
+
+procedure TMainForm.menuChangeSentNrClick(Sender: TObject);
+var
+   F: TNRDialog;
+   i: Integer;
+   strNewNR: string;
+   strNewNR2: string;
+   B: TBand;
+   Q: TQSO;
+   seltop, selbottom: Integer;
+begin
+   F := TNRDialog.Create(Self);
+   try
+      seltop := Grid.Selection.Top;
+      selbottom := Grid.Selection.Bottom;
+
+      F.NewSentNR := TQSO(Grid.Objects[0, seltop]).NrSent;
+      F.NewSentNR2 := TQSO(Grid.Objects[0, seltop]).NrSent;
+
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      strNewNR := F.NewSentNR;
+      strNewNR2 := F.NewSentNR2;
+
+      for i := seltop to selbottom do begin
+         Q := TQSO(Grid.Objects[0, i]);
+
+         B := Q.Band;
+         if B < b2400 then begin
+            if F.AutoAddPowerCode = True then begin
+               Q.NrSent := strNewNR + dmZlogGlobal.Settings._power[B];
+            end
+            else begin
+               Q.NrSent := strNewNR;
+            end;
+         end
+         else begin
+            if F.AutoAddPowerCode = True then begin
+               Q.NrSent := strNewNR2 + dmZlogGlobal.Settings._power[B];
+            end
+            else begin
+               Q.NrSent := strNewNR2;
+            end;
+         end;
+      end;
+
+      ScrollGrid();
+      Log.Saved := False;
+   finally
+      F.Release();
+   end;
+end;
+
 procedure TMainForm.MergeFile1Click(Sender: TObject);
 var
    ff: string;
@@ -6602,7 +6678,6 @@ var
    i, j: Integer;
    b: Integer;
    BB: TBand;
-   dt: TDateTime;
    rigno: Integer;
    Q: TQSO;
 begin
@@ -7066,6 +7141,12 @@ begin
       FInitialized := True;
       Timer1.Enabled := True;
       zyloContestOpened(MyContest.Name, menu.CFGFileName);
+
+      // Sent NRチェック
+      if (dmZLogGlobal.Settings._prov = '') or (dmZLogGlobal.Settings._city = '') then begin
+         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
+      end;
    finally
       menu.Release();
    end;
@@ -7378,6 +7459,11 @@ end;
 procedure TMainForm.OnZLogMoveLastFreq( var Message: TMessage );
 begin
    actionSetLastFreq.Execute();
+end;
+
+procedure TMainForm.OnZLogShowOptions( var Message: TMessage );
+begin
+   ShowOptionsDialog(3, 0, 1, 1);
 end;
 
 procedure TMainForm.OnDeviceChange( var Message: TMessage );
@@ -8042,10 +8128,10 @@ begin
    if no >= 101 then begin
       SetCQ(True);
       bank := dmZlogGlobal.Settings.CW.CurrentBank;
-      S := dmZlogGlobal.CWMessage(bank, FCurrentCQMessageNo);
+      S := dmZLogGlobal.CWMessage(bank, FCurrentCQMessageNo);
    end
    else begin
-      S := dmZlogGlobal.CWMessage(bank, no);
+      S := dmZLogGlobal.CWMessage(bank, no);
    end;
 
    if S = '' then begin
@@ -8152,7 +8238,7 @@ end;
 
 procedure TMainForm.OnOneCharSentProc(Sender: TObject);
 begin
-   FMessageManager.OneCharSentProc();
+   FCWMonitor.OneCharSentProc();
 end;
 
 procedure TMainForm.OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: Boolean);
@@ -8167,7 +8253,7 @@ begin
 
    nSpeedUp := 0;
    FMessageManager.ClearText();
-   FMessageManager.ClearSendingText();
+   FCWMonitor.ClearSendingText();
 
    try
       tx := FCurrentTx;
@@ -8453,7 +8539,7 @@ end;
 procedure TMainForm.actionPlayMessageBExecute(Sender: TObject);
 var
    no: Integer;
-   cb: Integer;
+//   cb: Integer;
 //   rig: TRig;
 begin
    no := TAction(Sender).Tag;
@@ -9764,6 +9850,12 @@ begin
    ChangeTxNr(txnr);
 end;
 
+// #161 Show CW Monitor
+procedure TMainForm.actionShowCWMonitorExecute(Sender: TObject);
+begin
+   FCWMonitor.Show();
+end;
+
 procedure TMainForm.RestoreWindowsPos();
 var
    X, Y, W, H: Integer;
@@ -10250,6 +10342,9 @@ begin
    // 現在のCQモード
    fSetLastFreq := IsCQ();
 
+   // CQ中止
+   CQAbort(True);
+
    // SPモードへ変更
    SetCQ(False);
 
@@ -10609,6 +10704,9 @@ begin
    dmZlogGlobal.SetOpPower(CurrentQSO);
    PowerEdit.Text := CurrentQSO.NewPowerStr;
    FZLinkForm.SendOperator;
+
+   // Set current operator
+   dmZLogGlobal.CurrentOperator := op;
 
    // Change Voice Files
    FMessageManager.SetOperator(op);
@@ -11296,14 +11394,14 @@ begin
 
    if fOn = True then begin
       if dmZLogGlobal.Settings._pttenabled then begin
-         dmZlogKeyer.ControlPTT(nID, True);
+         dmZLogKeyer.ControlPTT(nID, True);
          Sleep(dmZLogGlobal.Settings._pttbefore);
       end;
    end
    else begin
       if dmZLogGlobal.Settings._pttenabled then begin
          Sleep(dmZLogGlobal.Settings._pttafter);
-         dmZlogKeyer.ControlPTT(nID, False);
+         dmZLogKeyer.ControlPTT(nID, False);
       end;
    end;
 end;
@@ -11457,7 +11555,7 @@ begin
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
    StopMessage(mode);
    FMessageManager.ClearQue();
-   FMessageManager.ClearSendingText();
+   FCWMonitor.ClearSendingText();
 
    // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
    if (dmZLogGlobal.Settings._pttenabled = False) and

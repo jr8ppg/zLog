@@ -3529,6 +3529,11 @@ begin
             OutputDebugString(PChar('WinKey ECHOBACK=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
             {$ENDIF}
 
+            // CWモニターを１文字進める
+            if Assigned(FOnOneCharSentProc) then begin
+               FOnOneCharSentProc(Self);
+            end;
+
             // コールサイン送信
             if (FWkCallsignSending = True) and
                (Length(FWkCallsignStr) >= FWkCallsignIndex) and

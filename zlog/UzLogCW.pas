@@ -22,8 +22,7 @@ procedure zLogSetSendText(nID: Integer; S, C: string);
 
 implementation
 
-uses
-  Main, UMessageManager;
+uses Main;
 
 function LastCallsign : string;
 var txnr, i : integer;
@@ -282,11 +281,11 @@ end;
 procedure zLogSetSendText(nID: Integer; S, C: string);
 begin
    if C = '' then begin
-      MainForm.MessageManager.SetSendingText(nID + 1, S);
+      MainForm.CWMonitor.SetSendingText(nID + 1, S);
    end
    else begin
       S := StringReplace(S, ':***************', C + DupeString('*', 16 - Length(C)), [rfReplaceAll]);
-      MainForm.MessageManager.SetSendingText(nID + 1, S);
+      MainForm.CWMonitor.SetSendingText(nID + 1, S);
    end;
 end;
 

@@ -704,6 +704,7 @@ type
   private
     FEditMode: Integer;
     FEditNumber: Integer;
+    FActiveTab: Integer;
     FTempVoiceFiles : array[1..maxmessage] of string;
     FTempAdditionalVoiceFiles : array[2..3] of string;
     TempCurrentBank : integer;
@@ -748,6 +749,7 @@ type
     property EditNumber: Integer read FEditNumber write SetEditNumber;
     property NeedSuperCheckLoad: Boolean read FNeedSuperCheckLoad;
     property EditBank: Integer read TempCurrentBank write TempCurrentBank;
+    property ActiveTab: Integer read FActiveTab write FActiveTab;
   end;
 
 const
@@ -1831,6 +1833,7 @@ begin
       tabsheetCW.TabVisible := True;
       tabsheetVoice.TabVisible := True;
       tabsheetHardware.TabVisible := True;
+      tabsheetNetwork.TabVisible := True;
       tabsheetRigControl.TabVisible := True;
       tabsheetPath.TabVisible := True;
       tabsheetMisc.TabVisible := True;
@@ -1838,6 +1841,7 @@ begin
       tabsheetBandScope1.TabVisible := True;
       tabsheetBandScope2.TabVisible := True;
       tabsheetQuickMemo.TabVisible := True;
+      tabsheetFont.TabVisible := True;
    end
    else if FEditMode = 1 then begin // CW
       PageControl.ActivePage := tabsheetCW;
@@ -1847,6 +1851,7 @@ begin
       tabsheetCW.TabVisible := True;
       tabsheetVoice.TabVisible := False;
       tabsheetHardware.TabVisible := False;
+      tabsheetNetwork.TabVisible := False;
       tabsheetRigControl.TabVisible := False;
       tabsheetPath.TabVisible := False;
       tabsheetMisc.TabVisible := False;
@@ -1854,6 +1859,7 @@ begin
       tabsheetBandScope1.TabVisible := False;
       tabsheetBandScope2.TabVisible := False;
       tabsheetQuickMemo.TabVisible := False;
+      tabsheetFont.TabVisible := False;
 
       if FEditNumber > 0 then begin
          FEditMessage[FEditNumber].SetFocus;
@@ -1867,6 +1873,7 @@ begin
       tabsheetCW.TabVisible := False;
       tabsheetVoice.TabVisible := True;
       tabsheetHardware.TabVisible := False;
+      tabsheetNetwork.TabVisible := False;
       tabsheetRigControl.TabVisible := False;
       tabsheetPath.TabVisible := False;
       tabsheetMisc.TabVisible := False;
@@ -1874,10 +1881,14 @@ begin
       tabsheetBandScope1.TabVisible := False;
       tabsheetBandScope2.TabVisible := False;
       tabsheetQuickMemo.TabVisible := False;
+      tabsheetFont.TabVisible := False;
 
       if FEditNumber > 0 then begin
          FVoiceButton[FEditNumber].SetFocus();
       end;
+   end
+   else if FEditMode = 3 then begin
+      PageControl.ActivePageIndex := FActiveTab;
    end;
 
    FNeedSuperCheckLoad := False;
@@ -2495,8 +2506,10 @@ procedure TformOptions.comboCwPttPortChange(Sender: TObject);
 var
    Index: Integer;
    rigno: Integer;
+   combo: TComboBox;
 begin
-   Index := TComboBox(Sender).ItemIndex;
+   combo := TComboBox(Sender);
+   Index := TCommPort(combo.Items.Objects[combo.ItemIndex]).Number;
    rigno := TComboBox(Sender).Tag;
 
    if (Index = 0) or (Index = 21) then begin
@@ -2507,6 +2520,7 @@ begin
          checkWkOutportSelect.Enabled := False;
          checkWkIgnoreSpeedPot.Enabled := False;
       end;
+      checkUseWinKeyer.Checked := False;
    end
    else begin
       checkUseWinKeyer.Enabled := True;

@@ -143,7 +143,9 @@ uses
   URigCtrlYaesu in 'URigCtrlYaesu.pas',
   UStartTimeDialog in 'UStartTimeDialog.pas' {StartTimeDialog},
   UOperatorPowerDialog in 'UOperatorPowerDialog.pas' {OperatorPowerDialog},
-  URigCtrlElecraft in 'URigCtrlElecraft.pas';
+  URigCtrlElecraft in 'URigCtrlElecraft.pas',
+  UDateDialog in 'UDateDialog.pas' {DateDialog},
+  UCWMonitor in 'UCWMonitor.pas' {formCWMonitor};
 
 {$R *.res}
 

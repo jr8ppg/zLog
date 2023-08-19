@@ -140,6 +140,8 @@
       <File FileName="UOperatorPowerDialog.dfm" ContainerId="W32Form" ModuleName="UOperatorPowerDialog.dfm"/>
       <File FileName="UStartTimeDialog.dfm" ContainerId="W32Form" ModuleName="UStartTimeDialog.dfm"/>
       <File FileName="resource.rc" ContainerId="W32RC" ModuleName="resource.rc"/>
+      <File FileName="UCWMonitor.dfm" ContainerId="W32Form" ModuleName="UCWMonitor.dfm"/>
+      <File FileName="UDateDialog.dfm" ContainerId="W32Form" ModuleName="UDateDialog.dfm"/>
     </FileList>
   </W32ResourceDLL.Personality>
 </BorlandProject>

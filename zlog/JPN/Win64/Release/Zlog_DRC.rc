@@ -8,29 +8,30 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMainThreadID 64256
-#define UExceptionDialog_RsExceptionThreadID 64257
-#define UExceptionDialog_RsMainThreadCallStack 64258
-#define UExceptionDialog_RsThreadCallStack 64259
-#define UExceptionDialog_RsErrorMessage 64260
-#define UExceptionDialog_RsDetailsIntro 64261
-#define UExceptionDialog_RsUnitVersioningIntro 64262
+#define UExceptionDialog_RsExceptionStack 64256
+#define UExceptionDialog_RsMainThreadID 64257
+#define UExceptionDialog_RsExceptionThreadID 64258
+#define UExceptionDialog_RsMainThreadCallStack 64259
+#define UExceptionDialog_RsThreadCallStack 64260
+#define UExceptionDialog_RsErrorMessage 64261
+#define UExceptionDialog_RsDetailsIntro 64262
+#define UExceptionDialog_RsUnitVersioningIntro 64263
 #define Main_TMainForm_JudgePeriod 64272
 #define Main_TMainForm_EmptyOpList 64273
-#define UExceptionDialog_RsAppError 64274
-#define UExceptionDialog_RsExceptionClass 64275
-#define UExceptionDialog_RsExceptionMessage 64276
-#define UExceptionDialog_RsExceptionAddr 64277
-#define UExceptionDialog_RsStackList 64278
-#define UExceptionDialog_RsModulesList 64279
-#define UExceptionDialog_RsOSVersion 64280
-#define UExceptionDialog_RsProcessor 64281
-#define UExceptionDialog_RsMemory 64282
-#define UExceptionDialog_RsScreenRes 64283
-#define UExceptionDialog_RsActiveControl 64284
-#define UExceptionDialog_RsThread 64285
-#define UExceptionDialog_RsMissingVersionInfo 64286
-#define UExceptionDialog_RsExceptionStack 64287
+#define Main_TMainForm_Setup_SentNR_first 64274
+#define UExceptionDialog_RsAppError 64275
+#define UExceptionDialog_RsExceptionClass 64276
+#define UExceptionDialog_RsExceptionMessage 64277
+#define UExceptionDialog_RsExceptionAddr 64278
+#define UExceptionDialog_RsStackList 64279
+#define UExceptionDialog_RsModulesList 64280
+#define UExceptionDialog_RsOSVersion 64281
+#define UExceptionDialog_RsProcessor 64282
+#define UExceptionDialog_RsMemory 64283
+#define UExceptionDialog_RsScreenRes 64284
+#define UExceptionDialog_RsActiveControl 64285
+#define UExceptionDialog_RsThread 64286
+#define UExceptionDialog_RsMissingVersionInfo 64287
 #define Main_TMainForm_Switch_CW_Bank_B 64288
 #define Main_TMainForm_This_QSO_is_locked 64289
 #define Main_TMainForm_Invalid_number 64290
@@ -1281,6 +1282,7 @@
 #define System_SysConst_SFileNotFound 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
@@ -1290,6 +1292,7 @@ BEGIN
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
 	Main_TMainForm_JudgePeriod,	L"\x5168\x3066\x306EQSO\x3092\x30B3\x30F3\x30C6\x30B9\x30C8\x671F\x9593\x5185\x3067\x3042\x308B\x304B\x5224\x5B9A\x3057\x307E\x3059\x304B\xFF1F"
 	Main_TMainForm_EmptyOpList,	L"\x30AA\x30DA\x30EC\x30FC\x30BF\x30FC\x306F\x767B\x9332\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
+	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State and City code first"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1303,7 +1306,6 @@ BEGIN
 	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
 	UExceptionDialog_RsThread,	L"Thread: %s"
 	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
-	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	Main_TMainForm_Switch_CW_Bank_B,	L"CW Bank B\x306B\x5909\x66F4\x3057\x307E\x3057\x305F"
 	Main_TMainForm_This_QSO_is_locked,	L"\x3053\x306EQSO\x306F\x30ED\x30C3\x30AF\x3055\x308C\x3066\x3044\x307E\x3059"
 	Main_TMainForm_Invalid_number,	L"\x7121\x52B9\x306A\x30CA\x30F3\x30D0\x30FC\x3067\x3059"
@@ -2628,7 +2630,7 @@ END
 /* D:\github\zLog_2bsiq\zlog\UPluginManager.dfm */
 /* D:\github\zLog_2bsiq\zlog\USpotterListDlg.dfm */
 /* D:\github\zLog_2bsiq\zlog\UOptions.DFM */
-/* D:\github\zLog_2bsiq\zlog\UMessageManager.dfm */
+/* D:\github\zLog_2bsiq\zlog\UCWMonitor.dfm */
 /* D:\github\zLog_2bsiq\zlog\UzLogGlobal.dfm */
 /* D:\github\zLog_2bsiq\zlog\UTTYConsole.DFM */
 /* D:\github\zLog_2bsiq\zlog\UELogJarl1.dfm */
@@ -2656,6 +2658,7 @@ END
 /* D:\github\zLog_2bsiq\zlog\UInformation.dfm */
 /* D:\github\zLog_2bsiq\zlog\UWinKeyerTester.dfm */
 /* D:\github\zLog_2bsiq\zlog\UStatusEdit.dfm */
+/* D:\github\zLog_2bsiq\zlog\UMessageManager.dfm */
 /* D:\github\zLog_2bsiq\zlog\UFreqTest.dfm */
 /* D:\github\zLog_2bsiq\zlog\UAbout.DFM */
 /* D:\github\zLog_2bsiq\zlog\UCFGEdit.dfm */
@@ -2674,6 +2677,7 @@ END
 /* D:\github\zLog_2bsiq\zlog\UExportHamlog.dfm */
 /* D:\github\zLog_2bsiq\zlog\UExportCabrillo.dfm */
 /* D:\github\zLog_2bsiq\zlog\UStartTimeDialog.dfm */
+/* D:\github\zLog_2bsiq\zlog\UDateDialog.dfm */
 /* D:\github\zLog_2bsiq\zlog\Main.DFM */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\MPlayer.res */
 /* D:\github\zLog_2bsiq\zlog\UVoiceForm.dfm */

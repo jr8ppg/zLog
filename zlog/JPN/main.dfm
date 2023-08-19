@@ -5963,6 +5963,9 @@ object MainForm: TMainForm
       object ShowMessageManagerSO2R1: TMenuItem
         Action = actionShowMsgMgr
       end
+      object menuShowCWMonitor: TMenuItem
+        Action = actionShowCWMonitor
+      end
     end
     object menuSettings: TMenuItem
       Caption = #21508#31278#35373#23450'(&S)'
@@ -6280,8 +6283,8 @@ object MainForm: TMainForm
     object N7: TMenuItem
       Caption = '-'
     end
-    object GBand: TMenuItem
-      Caption = #12496#12531#12489#12398#22793#26356'(&B)'
+    object menuChangeBand: TMenuItem
+      Caption = 'Change &Band'
       object G1R9MHz: TMenuItem
         Caption = '1.9 MHz'
         OnClick = GridBandChangeClick
@@ -6365,8 +6368,8 @@ object MainForm: TMainForm
         OnClick = GridBandChangeClick
       end
     end
-    object Changemode: TMenuItem
-      Caption = #12514#12540#12489#12398#22793#26356'(&M)'
+    object menuChangeMode: TMenuItem
+      Caption = 'Change &Mode'
       object CW2: TMenuItem
         Caption = 'CW'
         OnClick = GridModeChangeClick
@@ -6397,8 +6400,8 @@ object MainForm: TMainForm
         OnClick = GridModeChangeClick
       end
     end
-    object mChangePower: TMenuItem
-      Caption = #38651#21147#31526#21495#12398#22793#26356'(&P)'
+    object menuChangePower: TMenuItem
+      Caption = 'Change &Power'
       object H2: TMenuItem
         Caption = 'P (QRP)'
         OnClick = GridPowerChangeClick
@@ -6419,15 +6422,23 @@ object MainForm: TMainForm
         OnClick = GridPowerChangeClick
       end
     end
-    object GOperator: TMenuItem
-      Caption = #12458#12506#12524#12540#12479#12540#12398#22793#26356'(&O)'
+    object menuChangeOperator: TMenuItem
+      Caption = 'Change &Operator'
       object Clear1: TMenuItem
-        Caption = #12463#12522#12450
+        Caption = 'Clear'
         OnClick = GridOperatorClick
       end
     end
-    object mnChangeTXNr: TMenuItem
+    object menuChangeTXNr: TMenuItem
       Caption = 'Change &TX#'
+    end
+    object menuChangeSentNr: TMenuItem
+      Caption = 'Change Sent &NR'
+      OnClick = menuChangeSentNrClick
+    end
+    object menuChangeDate: TMenuItem
+      Caption = 'Change Da&te'
+      OnClick = menuChangeDateClick
     end
     object N13: TMenuItem
       Caption = '-'
@@ -7231,7 +7242,7 @@ object MainForm: TMainForm
       OnExecute = actionSo2rNeoCanRxSelExecute
     end
     object actionShowInformation: TAction
-      Caption = #24773#22577#12454#12452#12531#12489#12454
+      Caption = 'Information Window'
       OnExecute = actionShowInformationExecute
     end
     object actionToggleSo2r2bsiq: TAction
@@ -7289,7 +7300,7 @@ object MainForm: TMainForm
       OnExecute = actionNoQslExecute
     end
     object actionShowMsgMgr: TAction
-      Caption = 'Show Message Manager (SO2R)'
+      Caption = 'Message Manager (SO2R)'
       OnExecute = actionShowMsgMgrExecute
     end
     object actionChangeBand2: TAction
@@ -7311,6 +7322,10 @@ object MainForm: TMainForm
       Caption = 'actionToggleTxNr'
       ShortCut = 32857
       OnExecute = actionToggleTxNrExecute
+    end
+    object actionShowCWMonitor: TAction
+      Caption = 'CW'#12514#12491#12479#12540
+      OnExecute = actionShowCWMonitorExecute
     end
   end
   object SPCMenu: TPopupMenu
