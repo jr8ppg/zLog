@@ -93,7 +93,7 @@ uses
   UzLogKeyer in 'UzLogKeyer.pas' {dmZLogKeyer: TDataModule},
   DialogHook in 'DialogHook.pas',
   UZAnalyze in 'UZAnalyze.pas' {ZAnalyze},
-  UzlogConst in 'UzlogConst.pas',
+  UzLogConst in 'UzLogConst.pas',
   UzLogQSO in 'UzLogQSO.pas',
   USuperCheck in 'USuperCheck.pas' {SuperCheck},
   UzLogSpc in 'UzLogSpc.pas',

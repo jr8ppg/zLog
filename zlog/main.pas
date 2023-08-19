@@ -48,7 +48,7 @@ const
   WM_ZLOG_SETTXINDICATOR = (WM_USER + 203);
   WM_ZLOG_SETFOCUS_CALLSIGN = (WM_USER + 204);
   WM_ZLOG_SETSTATUSTEXT = (WM_USER + 205);
-  WM_ZLOG_SHOWOPTIONS = (WM_USER + 206);
+  WM_ZLOG_SHOWOPTIONS = (WM_USER + 207);
 
 type
   TEditPanel = record
@@ -3660,38 +3660,6 @@ begin
       zLogSendStr2(nID, S, CurrentQSO);
    end;
 
-(*
-   if dmZLogKeyer.UseWinKeyer = True then begin
-
-      if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
-         dmZLogKeyer.So2rNeoReverseRx(nID)
-      end;
-
-      dmZLogKeyer.WinKeyerClear();
-      dmZLogKeyer.WinKeyerControlPTT(True);
-
-      if (CurrentQSO.CQ = True) or (dmZlogGlobal.Settings._switchcqsp = False) then begin
-         dmZLogKeyer.WinkeyerSendCallsign(CurrentQSO.Callsign);
-      end
-      else begin
-         CallsignSentProc(nil);
-      end;
-   end
-   else begin
-      dmZLogKeyer.ClrBuffer;
-
-      dmZLogKeyer.PauseCW;
-      if dmZlogGlobal.PTTEnabled then begin
-         S := S + ')'; // PTT is turned on in ResumeCW
-      end;
-
-      dmZLogKeyer.SetCWSendBuf(0, S);
-      if (CurrentQSO.CQ = True) or (dmZlogGlobal.Settings._switchcqsp = False) then begin
-         dmZLogKeyer.SetCallSign(CurrentQSO.Callsign);
-      end;
-      dmZLogKeyer.ResumeCW;
-   end;
-*)
 end;
 
 procedure TMainForm.OnDownKeyPress;
@@ -5299,6 +5267,7 @@ begin
          end;
       end;
       mRTTY: nEditBank := 3;
+      else nEditBank := 1;
    end;
 
    ShowOptionsDialog(1, TMenuItem(Sender).Tag, nEditBank, 0);

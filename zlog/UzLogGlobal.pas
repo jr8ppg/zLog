@@ -589,6 +589,8 @@ procedure ResetDupeQso(aQSO: TQSO);
 
 function TextToBand(text: string): TBand;
 function TextToMode(text: string): TMode;
+function BandToText(b: TBand): string;
+function ModeToText(m: TMode): string;
 function BandToPower(B: TBand): TPower;
 
 function LoadResourceString(uID: Integer): string;
@@ -4089,6 +4091,26 @@ begin
       end;
    end;
    Result := mOther;
+end;
+
+function BandToText(b: TBand): string;
+begin
+   if b = bUnknown then begin
+      Result := 'Unknown';
+   end
+   else begin
+      Result := MHzString[b];
+   end;
+end;
+
+function ModeToText(m: TMode): string;
+begin
+   if m = mOther then begin
+      Result := 'Other';
+   end
+   else begin
+      Result := ModeString[m];
+   end;
 end;
 
 function BandToPower(B: TBand): TPower;
