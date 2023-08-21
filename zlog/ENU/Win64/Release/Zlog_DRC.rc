@@ -8,61 +8,65 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMainThreadID 64256
-#define UExceptionDialog_RsExceptionThreadID 64257
-#define UExceptionDialog_RsMainThreadCallStack 64258
-#define UExceptionDialog_RsThreadCallStack 64259
-#define UExceptionDialog_RsErrorMessage 64260
-#define UExceptionDialog_RsDetailsIntro 64261
-#define UExceptionDialog_RsUnitVersioningIntro 64262
-#define Main_TMainForm_EmptyOpList 64272
-#define Main_TMainForm_Setup_SentNR_first 64273
-#define UExceptionDialog_RsAppError 64274
-#define UExceptionDialog_RsExceptionClass 64275
-#define UExceptionDialog_RsExceptionMessage 64276
-#define UExceptionDialog_RsExceptionAddr 64277
-#define UExceptionDialog_RsStackList 64278
-#define UExceptionDialog_RsModulesList 64279
-#define UExceptionDialog_RsOSVersion 64280
-#define UExceptionDialog_RsProcessor 64281
-#define UExceptionDialog_RsMemory 64282
-#define UExceptionDialog_RsScreenRes 64283
-#define UExceptionDialog_RsActiveControl 64284
-#define UExceptionDialog_RsThread 64285
-#define UExceptionDialog_RsMissingVersionInfo 64286
-#define UExceptionDialog_RsExceptionStack 64287
-#define Main_TMainForm_This_QSO_is_locked 64288
-#define Main_TMainForm_Invalid_number 64289
-#define Main_TMainForm_Callsign_not_entered 64290
-#define Main_TMainForm_Dupe_qso 64291
-#define Main_TMainForm_Thankyou_for_your_qso 64292
-#define Main_TMainForm_CW_port_is_no_set 64293
-#define Main_TMainForm_Not_a_new_multi 64294
-#define Main_TMainForm_Cannot_merge_current_file 64295
-#define Main_TMainForm_Merging_now 64296
-#define Main_TMainForm_Some_qsos_merged 64297
-#define Main_TMainForm_CtyDat_not_loaded 64298
-#define Main_TMainForm_RIT_XIT_Cleared 64299
-#define Main_TMainForm_Anti_zeroin 64300
-#define Main_TMainForm_Set_CQ_Repeat_Int 64301
-#define Main_TMainForm_Invalid_zone 64302
-#define Main_TMainForm_JudgePeriod 64303
-#define Main_TMainForm_New_Multi_Only 64304
-#define Main_TMainForm_Change_Date 64305
-#define Main_TMainForm_Confirm_Save_Changes 64306
-#define Main_TMainForm_Active_Band_Adjusted 64307
-#define Main_TMainForm_Change_Band_QSOs 64308
-#define Main_TMainForm_Change_Mode_QSOs 64309
-#define Main_TMainForm_Change_Operator_QSOs 64310
-#define Main_TMainForm_Change_Power_QSOs 64311
-#define Main_TMainForm_Change_TXNO_QSOs 64312
-#define Main_TMainForm_Need_File_Name 64313
-#define Main_TMainForm_QTC_Sent 64314
-#define Main_TMainForm_Less_Than_10min 64315
-#define Main_TMainForm_QSY_Count_Exceeded 64316
-#define Main_TMainForm_Loading_now 64317
-#define Main_TMainForm_Switch_CW_Bank_A 64318
-#define Main_TMainForm_Switch_CW_Bank_B 64319
+#define UExceptionDialog_RsActiveControl 64256
+#define UExceptionDialog_RsThread 64257
+#define UExceptionDialog_RsMissingVersionInfo 64258
+#define UExceptionDialog_RsExceptionStack 64259
+#define UExceptionDialog_RsMainThreadID 64260
+#define UExceptionDialog_RsExceptionThreadID 64261
+#define UExceptionDialog_RsMainThreadCallStack 64262
+#define UExceptionDialog_RsThreadCallStack 64263
+#define UExceptionDialog_RsErrorMessage 64264
+#define UExceptionDialog_RsDetailsIntro 64265
+#define UExceptionDialog_RsUnitVersioningIntro 64266
+#define Main_TMainForm_Anti_zeroin 64272
+#define Main_TMainForm_Set_CQ_Repeat_Int 64273
+#define Main_TMainForm_Invalid_zone 64274
+#define Main_TMainForm_JudgePeriod 64275
+#define Main_TMainForm_EmptyOpList 64276
+#define Main_TMainForm_Setup_SentNR_first 64277
+#define UExceptionDialog_RsAppError 64278
+#define UExceptionDialog_RsExceptionClass 64279
+#define UExceptionDialog_RsExceptionMessage 64280
+#define UExceptionDialog_RsExceptionAddr 64281
+#define UExceptionDialog_RsStackList 64282
+#define UExceptionDialog_RsModulesList 64283
+#define UExceptionDialog_RsOSVersion 64284
+#define UExceptionDialog_RsProcessor 64285
+#define UExceptionDialog_RsMemory 64286
+#define UExceptionDialog_RsScreenRes 64287
+#define Main_TMainForm_QSY_Count_Exceeded 64288
+#define Main_TMainForm_Loading_now 64289
+#define Main_TMainForm_Switch_CW_Bank_A 64290
+#define Main_TMainForm_Switch_CW_Bank_B 64291
+#define Main_TMainForm_This_QSO_is_locked 64292
+#define Main_TMainForm_Invalid_number 64293
+#define Main_TMainForm_Callsign_not_entered 64294
+#define Main_TMainForm_Dupe_qso 64295
+#define Main_TMainForm_Thankyou_for_your_qso 64296
+#define Main_TMainForm_CW_port_is_no_set 64297
+#define Main_TMainForm_Not_a_new_multi 64298
+#define Main_TMainForm_Cannot_merge_current_file 64299
+#define Main_TMainForm_Merging_now 64300
+#define Main_TMainForm_Some_qsos_merged 64301
+#define Main_TMainForm_CtyDat_not_loaded 64302
+#define Main_TMainForm_RIT_XIT_Cleared 64303
+#define UBandPlanEditDialog_Delete_Preset 64304
+#define Main_TMainForm_Enter_Frequency 64305
+#define Main_TMainForm_Comfirm_Delete_Qso 64306
+#define Main_TMainForm_Comfirm_Delete_Qsos 64307
+#define Main_TMainForm_New_Multi_Only 64308
+#define Main_TMainForm_Change_Date 64309
+#define Main_TMainForm_Confirm_Save_Changes 64310
+#define Main_TMainForm_Active_Band_Adjusted 64311
+#define Main_TMainForm_Change_Band_QSOs 64312
+#define Main_TMainForm_Change_Mode_QSOs 64313
+#define Main_TMainForm_Change_Operator_QSOs 64314
+#define Main_TMainForm_Change_Power_QSOs 64315
+#define Main_TMainForm_Change_TXNO_QSOs 64316
+#define Main_TMainForm_Need_File_Name 64317
+#define Main_TMainForm_QTC_Sent 64318
+#define Main_TMainForm_Less_Than_10min 64319
 #define System_Bindings_Consts_sStringToTStringsDesc 64320
 #define System_Bindings_Consts_sStringToChar 64321
 #define System_Bindings_Consts_sStringToCharDesc 64322
@@ -73,12 +77,12 @@
 #define URateDialogEx_SCOREGRID_CUMULATIVE 64327
 #define URateDialogEx_SCOREGRID_WINLOSS_L 64328
 #define URateDialogEx_SCOREGRID_WINLOSS_S 64329
-#define UMenu_UMenu_PleaseEnterYourCallsign 64330
-#define UBandPlanEditDialog_Input_Text 64331
-#define UBandPlanEditDialog_Delete_Preset 64332
-#define Main_TMainForm_Enter_Frequency 64333
-#define Main_TMainForm_Comfirm_Delete_Qso 64334
-#define Main_TMainForm_Comfirm_Delete_Qsos 64335
+#define UCFGEdit_Please_enter_the_prov_code 64330
+#define UCFGEdit_Please_enter_the_city_code 64331
+#define USelectUserDefinedContest_Setup_prov_first 64332
+#define USelectUserDefinedContest_Setup_city_first 64333
+#define UMenu_UMenu_PleaseEnterYourCallsign 64334
+#define UBandPlanEditDialog_Input_Text 64335
 #define System_Bindings_Consts_sStringToVariantDesc 64336
 #define System_Bindings_Consts_sFloatToVariant 64337
 #define System_Bindings_Consts_sFloatToVariantDesc 64338
@@ -1281,6 +1285,10 @@
 #define System_SysConst_SFileNotFound 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
+	UExceptionDialog_RsThread,	L"Thread: %s"
+	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
+	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
@@ -1288,6 +1296,10 @@ BEGIN
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	Main_TMainForm_Anti_zeroin,	L"** Anti Zeroin **"
+	Main_TMainForm_Set_CQ_Repeat_Int,	L"CQ Repeat Int. %.1f sec."
+	Main_TMainForm_Invalid_zone,	L"Invalid zone"
+	Main_TMainForm_JudgePeriod,	L"Do you want to judge whether all QSOs are within the contest period?"
 	Main_TMainForm_EmptyOpList,	L"Operator list is empty."
 	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State and City code first"
 	UExceptionDialog_RsAppError,	L"%s - application error"
@@ -1300,10 +1312,10 @@ BEGIN
 	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
-	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
-	UExceptionDialog_RsThread,	L"Thread: %s"
-	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
-	UExceptionDialog_RsExceptionStack,	L"Exception stack"
+	Main_TMainForm_QSY_Count_Exceeded,	L"QSY count exceeded limit!"
+	Main_TMainForm_Loading_now,	L"Loading..."
+	Main_TMainForm_Switch_CW_Bank_A,	L"CW Bank A"
+	Main_TMainForm_Switch_CW_Bank_B,	L"CW Bank B"
 	Main_TMainForm_This_QSO_is_locked,	L"This QSO is currently locked"
 	Main_TMainForm_Invalid_number,	L"Invalid number"
 	Main_TMainForm_Callsign_not_entered,	L"Callsign not entered"
@@ -1316,10 +1328,10 @@ BEGIN
 	Main_TMainForm_Some_qsos_merged,	L"%s QSO(s) merged."
 	Main_TMainForm_CtyDat_not_loaded,	L"CTY.DAT not loaded"
 	Main_TMainForm_RIT_XIT_Cleared,	L"RIT/XIT Offset Cleared"
-	Main_TMainForm_Anti_zeroin,	L"** Anti Zeroin **"
-	Main_TMainForm_Set_CQ_Repeat_Int,	L"CQ Repeat Int. %.1f sec."
-	Main_TMainForm_Invalid_zone,	L"Invalid zone"
-	Main_TMainForm_JudgePeriod,	L"Do you want to judge whether all QSOs are within the contest period?"
+	UBandPlanEditDialog_Delete_Preset,	L"Are you sure to delete the bandplan preset [%s]"
+	Main_TMainForm_Enter_Frequency,	L"Enter frequency in kHz"
+	Main_TMainForm_Comfirm_Delete_Qso,	L"Are you sure to delete this QSO?"
+	Main_TMainForm_Comfirm_Delete_Qsos,	L"Are you sure to delete these QSO's?"
 	Main_TMainForm_New_Multi_Only,	L"This station is not a new multiplier, but will be logged anyway."
 	Main_TMainForm_Change_Date,	L"To change the date, double click the time field."
 	Main_TMainForm_Confirm_Save_Changes,	L"Save changes to %s ?"
@@ -1332,10 +1344,6 @@ BEGIN
 	Main_TMainForm_Need_File_Name,	L"Data will NOT be saved until you enter the file name"
 	Main_TMainForm_QTC_Sent,	L"QTC can be sent by pressing Ctrl+Q"
 	Main_TMainForm_Less_Than_10min,	L"Less than 10 min since last QSY!"
-	Main_TMainForm_QSY_Count_Exceeded,	L"QSY count exceeded limit!"
-	Main_TMainForm_Loading_now,	L"Loading..."
-	Main_TMainForm_Switch_CW_Bank_A,	L"CW Bank A"
-	Main_TMainForm_Switch_CW_Bank_B,	L"CW Bank B"
 	System_Bindings_Consts_sStringToTStringsDesc,	L""
 	System_Bindings_Consts_sStringToChar,	L"StringToChar"
 	System_Bindings_Consts_sStringToCharDesc,	L""
@@ -1346,12 +1354,12 @@ BEGIN
 	URateDialogEx_SCOREGRID_CUMULATIVE,	L"Cumulative"
 	URateDialogEx_SCOREGRID_WINLOSS_L,	L"Win/Loss"
 	URateDialogEx_SCOREGRID_WINLOSS_S,	L"W/L"
+	UCFGEdit_Please_enter_the_prov_code,	L"Please enter the Prov/State code"
+	UCFGEdit_Please_enter_the_city_code,	L"Please enter the City code"
+	USelectUserDefinedContest_Setup_prov_first,	L"Setup Prov/State code first"
+	USelectUserDefinedContest_Setup_city_first,	L"Setup City code first"
 	UMenu_UMenu_PleaseEnterYourCallsign,	L"Please enter your callsign"
 	UBandPlanEditDialog_Input_Text,	L"Please enter preset name"
-	UBandPlanEditDialog_Delete_Preset,	L"Are you sure to delete the bandplan preset [%s]"
-	Main_TMainForm_Enter_Frequency,	L"Enter frequency in kHz"
-	Main_TMainForm_Comfirm_Delete_Qso,	L"Are you sure to delete this QSO?"
-	Main_TMainForm_Comfirm_Delete_Qsos,	L"Are you sure to delete these QSO's?"
 	System_Bindings_Consts_sStringToVariantDesc,	L""
 	System_Bindings_Consts_sFloatToVariant,	L"FloatToVariant"
 	System_Bindings_Consts_sFloatToVariantDesc,	L""

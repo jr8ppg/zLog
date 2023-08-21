@@ -91,6 +91,10 @@ type
     property Period: Integer read GetPeriod write SetPeriod;
   end;
 
+resourcestring
+  Please_enter_the_prov_code = 'Please enter the Prov/State code';
+  Please_enter_the_city_code = 'Please enter the City code';
+
 implementation
 
 {$R *.dfm}
@@ -128,6 +132,16 @@ end;
 
 procedure TCFGEdit.buttonOKClick(Sender: TObject);
 begin
+   if (Pos('$V', editSent.Text) > 0) and (editProv.Text = '') then begin
+      MessageBox(Handle, PChar(Please_enter_the_prov_code), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
+   if (Pos('$Q', editSent.Text) > 0) and (editCity.Text = '') then begin
+      MessageBox(Handle, PChar(Please_enter_the_city_code), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
    ModalResult := mrOK;
 end;
 
@@ -242,11 +256,11 @@ end;
 procedure TCFGEdit.SetStartTime(v: Integer);
 begin
    if v = -1 then begin
-      UseContestPeriod := False;
+//      UseContestPeriod := False;
       v := 21;
-   end
-   else begin
-      UseContestPeriod := True;
+//   end
+//   else begin
+//      UseContestPeriod := True;
    end;
    comboStartTime.Text := IntToStr(v);
 end;
