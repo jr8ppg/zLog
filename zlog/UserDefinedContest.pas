@@ -278,9 +278,9 @@ begin
 
    FBandPlan := '';
 
-   FUseContestPeriod := True;
+   FUseContestPeriod := False;
    FStartTime := -1;
-   FPeriod := 0;
+   FPeriod := 24;
 end;
 
 constructor TUserDefinedContest.Create(strFullPath: string);
@@ -989,7 +989,12 @@ begin
       end;
 
       if strCmd = strCommand then begin
-         CfgSource[i] := StringReplace(CfgSource[i], strParam, strNewValue, [rfReplaceAll]);
+         if strParam = '' then begin
+            CfgSource[i] := StringReplace(CfgSource[i], strCommand + #09, strCommand + #09 + strNewValue, [rfReplaceAll,rfIgnoreCase]);
+         end
+         else begin
+            CfgSource[i] := StringReplace(CfgSource[i], strParam, strNewValue, [rfReplaceAll,rfIgnoreCase]);
+         end;
          Exit;
       end;
    end;
