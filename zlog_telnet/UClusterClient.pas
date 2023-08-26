@@ -333,7 +333,8 @@ begin
       // Auto Login
       if (FClusterAutoLogin = True) and (FClusterLoginID <> '') and (FAutoLogined = False) then begin
          if (Pos('login:', str) > 0) or
-            (Pos('Please enter your call:', str) > 0) then begin
+            (Pos('Please enter your call:', str) > 0) or
+            (Pos('Please enter your callsign:', str) > 0) then begin
             Sleep(500);
             WriteLine(FClusterLoginID);
             FAutoLogined := True;
