@@ -44,6 +44,7 @@ type
     procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer; var Height: Integer);
     procedure menuSettingsClick(Sender: TObject);
     procedure menuExitClick(Sender: TObject);
+    procedure ZServerSessionConnected(Sender: TObject; ErrCode: Word);
   private
     { Private declarations }
     FSpotExpireMin: Integer; // spot expiration time in minutes
@@ -607,6 +608,19 @@ end;
 procedure TClusterClient.WriteLineConsole(str : string);
 begin
    WriteConsole(str + LineBreakCode[ord(Console.LineBreak)]);
+end;
+
+procedure TClusterClient.ZServerSessionConnected(Sender: TObject; ErrCode: Word);
+var
+   S: string;
+begin
+   // BANDコマンド
+   S := ZLinkHeader + ' BAND ' + IntToStr(Ord(bUnknown));
+   ZServer.SendStr(S + LineBreakCode[Ord(Console.LineBreak)]);
+
+   // OPERATORコマンドで端末名を送る
+   S := ZLinkHeader + ' OPERATOR ' + FZServerClientName;
+   ZServer.SendStr(S + LineBreakCode[Ord(Console.LineBreak)]);
 end;
 
 procedure TClusterClient.WriteConsole(strText: string);

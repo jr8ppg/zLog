@@ -166,6 +166,7 @@ object ClusterClient: TClusterClient
     ExclusiveAddr = False
     ComponentOptions = []
     ListenBacklog = 15
+    OnSessionConnected = ZServerSessionConnected
     SocketErrs = wsErrTech
     Left = 88
     Top = 112
