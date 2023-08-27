@@ -8,33 +8,34 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsActiveControl 64256
-#define UExceptionDialog_RsThread 64257
-#define UExceptionDialog_RsMissingVersionInfo 64258
-#define UExceptionDialog_RsExceptionStack 64259
-#define UExceptionDialog_RsMainThreadID 64260
-#define UExceptionDialog_RsExceptionThreadID 64261
-#define UExceptionDialog_RsMainThreadCallStack 64262
-#define UExceptionDialog_RsThreadCallStack 64263
-#define UExceptionDialog_RsErrorMessage 64264
-#define UExceptionDialog_RsDetailsIntro 64265
-#define UExceptionDialog_RsUnitVersioningIntro 64266
+#define UExceptionDialog_RsScreenRes 64256
+#define UExceptionDialog_RsActiveControl 64257
+#define UExceptionDialog_RsThread 64258
+#define UExceptionDialog_RsMissingVersionInfo 64259
+#define UExceptionDialog_RsExceptionStack 64260
+#define UExceptionDialog_RsMainThreadID 64261
+#define UExceptionDialog_RsExceptionThreadID 64262
+#define UExceptionDialog_RsMainThreadCallStack 64263
+#define UExceptionDialog_RsThreadCallStack 64264
+#define UExceptionDialog_RsErrorMessage 64265
+#define UExceptionDialog_RsDetailsIntro 64266
+#define UExceptionDialog_RsUnitVersioningIntro 64267
 #define Main_TMainForm_Anti_zeroin 64272
 #define Main_TMainForm_Set_CQ_Repeat_Int 64273
 #define Main_TMainForm_Invalid_zone 64274
 #define Main_TMainForm_JudgePeriod 64275
 #define Main_TMainForm_EmptyOpList 64276
 #define Main_TMainForm_Setup_SentNR_first 64277
-#define UExceptionDialog_RsAppError 64278
-#define UExceptionDialog_RsExceptionClass 64279
-#define UExceptionDialog_RsExceptionMessage 64280
-#define UExceptionDialog_RsExceptionAddr 64281
-#define UExceptionDialog_RsStackList 64282
-#define UExceptionDialog_RsModulesList 64283
-#define UExceptionDialog_RsOSVersion 64284
-#define UExceptionDialog_RsProcessor 64285
-#define UExceptionDialog_RsMemory 64286
-#define UExceptionDialog_RsScreenRes 64287
+#define Main_TMainForm_New_QSO_Arrived 64278
+#define UExceptionDialog_RsAppError 64279
+#define UExceptionDialog_RsExceptionClass 64280
+#define UExceptionDialog_RsExceptionMessage 64281
+#define UExceptionDialog_RsExceptionAddr 64282
+#define UExceptionDialog_RsStackList 64283
+#define UExceptionDialog_RsModulesList 64284
+#define UExceptionDialog_RsOSVersion 64285
+#define UExceptionDialog_RsProcessor 64286
+#define UExceptionDialog_RsMemory 64287
 #define Main_TMainForm_QSY_Count_Exceeded 64288
 #define Main_TMainForm_Loading_now 64289
 #define Main_TMainForm_Switch_CW_Bank_A 64290
@@ -1285,6 +1286,7 @@
 #define System_SysConst_SFileNotFound 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
 	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
 	UExceptionDialog_RsThread,	L"Thread: %s"
 	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
@@ -1302,6 +1304,7 @@ BEGIN
 	Main_TMainForm_JudgePeriod,	L"Do you want to judge whether all QSOs are within the contest period?"
 	Main_TMainForm_EmptyOpList,	L"Operator list is empty."
 	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State and City code first"
+	Main_TMainForm_New_QSO_Arrived,	L"New QSO data has arrived. click here to view."
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1311,7 +1314,6 @@ BEGIN
 	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
 	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
-	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
 	Main_TMainForm_QSY_Count_Exceeded,	L"QSY count exceeded limit!"
 	Main_TMainForm_Loading_now,	L"Loading..."
 	Main_TMainForm_Switch_CW_Bank_A,	L"CW Bank A"

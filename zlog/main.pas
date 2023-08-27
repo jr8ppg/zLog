@@ -527,6 +527,9 @@ type
     menuChangeDate: TMenuItem;
     actionShowCWMonitor: TAction;
     menuShowCWMonitor: TMenuItem;
+    panelShowInfo: TPanel;
+    linklabelInfo: TLinkLabel;
+    timerShowInfo: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -797,6 +800,7 @@ type
     procedure menuChangeSentNrClick(Sender: TObject);
     procedure menuChangeDateClick(Sender: TObject);
     procedure actionShowCWMonitorExecute(Sender: TObject);
+    procedure timerShowInfoTimer(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -884,6 +888,8 @@ type
     FTabKeyPressed: Boolean;
     FDownKeyPressed: Boolean;
     FOtherKeyPressed: Boolean;
+
+    FPastEditMode: Boolean;
 
     FTaskbarList: ITaskbarList;
 
@@ -1047,6 +1053,8 @@ type
     procedure EnableShiftKeyAction(fEnable: Boolean);
     procedure ShowOutOfContestPeriod(fShow: Boolean);
     procedure ShowOptionsDialog(nEditMode: Integer; nEditNumer: Integer; nEditBank: Integer; nActiveTab: Integer);
+    procedure ShowInfoPanel(text: string; handler: TSysLinkEvent; fShow: Boolean);
+    procedure DoNewDataArrived(Sender: TObject; const Link: string; LinkType: TSysLinkType);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1186,6 +1194,7 @@ resourcestring
   TMainForm_JudgePeriod = 'Do you want to judge whether all QSOs are within the contest period?';
   TMainForm_EmptyOpList = 'Operator list is empty.';
   TMainForm_Setup_SentNR_first = 'Setup Prov/State and City code first';
+  TMainForm_New_QSO_Arrived = 'New QSO data has arrived. click here to view.';
 
 var
   MainForm: TMainForm;
@@ -1802,6 +1811,11 @@ var
    i: Integer;
    L: TQSOList;
 begin
+   if FPastEditMode = True then begin
+      ShowInfoPanel(TMainForm_New_QSO_Arrived, DoNewDataArrived, True);
+      Exit;
+   end;
+
    Grid.BeginUpdate();
    try
       if ShowCurrentBandOnly.Checked then begin
@@ -2100,6 +2114,7 @@ begin
    FOtherKeyPressed := False;
    FRigSwitchTime := Now();
    FKeyPressedRigID := 0;
+   FPastEditMode := False;
 
    // Out of contest period表示
    FFirstOutOfContestPeriod := True;
@@ -2959,6 +2974,13 @@ begin
    if S = 'RENEW' then begin
       RenewScore();
    end;
+
+   if S = 'SHOWINFO' then begin
+      ShowInfoPanel(TMainForm_New_QSO_Arrived, DoNewDataArrived, True);
+   end;
+   if S = 'HIDEINFO' then begin
+      ShowInfoPanel('', nil, False);
+   end;
 end;
 
 procedure TMainForm.ChangeTxNr(txnr: Integer);
@@ -3795,6 +3817,7 @@ end;
 
 procedure TMainForm.GridEnter(Sender: TObject);
 begin
+   FPastEditMode := True;
    SetShortcutEnabled('Esc', False);
 end;
 
@@ -4523,6 +4546,31 @@ begin
       else begin
          panelOutOfPeriod.Visible := True;
          panelOutOfPeriod.Height := panelOutOfPeriod.Height + 2;
+      end;
+   end;
+end;
+
+// 汎用のInfoPanel
+procedure TMainForm.timerShowInfoTimer(Sender: TObject);
+begin
+   if TTimer(Sender).Tag = 0 then begin   // OFF
+      if panelShowInfo.Height <= 0 then begin
+         panelShowInfo.Height := 0;
+         panelShowInfo.Visible := False;
+         TTimer(Sender).Enabled := False;
+      end
+      else begin
+         panelShowInfo.Height := panelShowInfo.Height - 2;
+      end;
+   end
+   else begin     // ON
+      if panelShowInfo.Height >= 28 then begin
+         panelShowInfo.Height := 28;
+         TTimer(Sender).Enabled := False;
+      end
+      else begin
+         panelShowInfo.Visible := True;
+         panelShowInfo.Height := panelShowInfo.Height + 2;
       end;
    end;
 end;
@@ -5404,6 +5452,12 @@ begin
    LastFocus := TEdit(Sender);
    edit := TEdit(Sender);
    rig := edit.Tag;
+
+   if FPastEditMode = True then begin
+      ShowInfoPanel('', nil, False);
+      GridRefreshScreen();
+      FPastEditMode := False;
+   end;
 
    // SO2Rの場合、現在RIGとクリックされたControlのRIGが違うと強制切り替え
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
@@ -11344,6 +11398,34 @@ begin
       timerOutOfPeriod.Tag := 0;
    end;
    timerOutOfPeriod.Enabled := True;
+end;
+
+procedure TMainForm.ShowInfoPanel(text: string; handler: TSysLinkEvent; fShow: Boolean);
+begin
+   if (panelShowInfo.Visible = fShow) then begin
+      Exit;
+   end;
+
+   panelShowInfo.Visible := True;
+   if fShow = True then begin
+      linklabelInfo.Caption := '<A HREF="' + text + '">' + text + '</A>';
+      linklabelInfo.OnLinkClick := handler;
+      linklabelInfo.Left := (panelShowInfo.Width - linklabelInfo.width) div 2;
+      timerShowInfo.Tag := 1;
+   end
+   else begin
+      timerShowInfo.Tag := 0;
+      linklabelInfo.OnLinkClick := nil;
+   end;
+   timerShowInfo.Enabled := True;
+end;
+
+procedure TMainForm.DoNewDataArrived(Sender: TObject; const Link: string; LinkType: TSysLinkType);
+begin
+   FPastEditMode := False;
+   GridRefreshScreen();
+   ShowInfoPanel('', nil, False);
+   SetLastFocus();
 end;
 
 { TBandScopeNotifyThread }
