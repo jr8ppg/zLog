@@ -46,7 +46,6 @@ type
     actionPlayMessageB10: TAction;
     actionPlayMessageB11: TAction;
     actionPlayMessageB12: TAction;
-    actionESC: TAction;
     actionPlayCQA1: TAction;
     actionPlayCQA2: TAction;
     actionPlayCQA3: TAction;
@@ -84,7 +83,6 @@ type
     procedure FormDeactivate(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
-    procedure actionESCExecute(Sender: TObject);
     procedure actionDecreaseCwSpeedExecute(Sender: TObject);
     procedure actionIncreaseCwSpeedExecute(Sender: TObject);
     procedure menuAddToDenyListClick(Sender: TObject);
@@ -841,8 +839,9 @@ end;
 procedure TBandScope2.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
    case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
+      VK_ESCAPE: begin
+         PostMessage(MainForm.Handle, WM_ZLOG_CQABORT, 0, 1);
+      end;
    end;
 end;
 
@@ -1563,18 +1562,6 @@ var
 begin
    no := TAction(Sender).Tag;
    SendMessage(MainForm.Handle, WM_ZLOG_PLAYMESSAGEB, no, 0);
-end;
-
-procedure TBandScope2.actionESCExecute(Sender: TObject);
-begin
-   if dmZLogKeyer.IsPlaying then begin
-      dmZLogKeyer.ClrBuffer;
-      dmZLogKeyer.ControlPTT(MainForm.CurrentRigID, False);
-   end
-   else begin
-      dmZLogKeyer.ControlPTT(MainForm.CurrentRigID, False);
-      MainForm.SetLastFocus();
-   end;
 end;
 
 procedure TBandScope2.actionIncreaseCwSpeedExecute(Sender: TObject);

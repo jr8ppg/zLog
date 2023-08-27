@@ -10,11 +10,13 @@ object CWKeyBoard: TCWKeyBoard
   Font.Height = -12
   Font.Name = #65325#65331' '#12468#12471#12483#12463
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = True
   OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   OnDeactivate = FormDeactivate
+  OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
@@ -222,11 +224,6 @@ object CWKeyBoard: TCWKeyBoard
       Caption = 'actionPlayMessageSK'
       ShortCut = 8275
       OnExecute = actionPlayMessageSKExecute
-    end
-    object actionESC: TAction
-      Caption = 'actionESC'
-      ShortCut = 27
-      OnExecute = actionESCExecute
     end
     object actionPlayCQA1: TAction
       Tag = 101

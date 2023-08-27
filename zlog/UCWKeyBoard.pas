@@ -38,7 +38,6 @@ type
     actionPlayMessageBK: TAction;
     actionPlayMessageKN: TAction;
     actionPlayMessageSK: TAction;
-    actionESC: TAction;
     actionPlayMessageA09: TAction;
     actionPlayMessageA10: TAction;
     actionPlayMessageB09: TAction;
@@ -64,7 +63,6 @@ type
     procedure actionPlayMessageKNExecute(Sender: TObject);
     procedure actionPlayMessageSKExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure actionESCExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
     procedure actionDecreaseCwSpeedExecute(Sender: TObject);
@@ -72,6 +70,7 @@ type
     procedure actionPlayMessageBTExecute(Sender: TObject);
     procedure actionPlayMessageVAExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
     FFontSize: Integer;
@@ -120,6 +119,19 @@ begin
    ActionList1.State := asSuspended;
 end;
 
+procedure TCWKeyBoard.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+   case Key of
+      VK_ESCAPE: begin
+         PostMessage(MainForm.Handle, WM_ZLOG_CQABORT, 0, 0);
+
+         if dmZLogKeyer.IsPlaying = False then begin
+            MainForm.SetLastFocus();
+         end;
+      end;
+   end;
+end;
+
 procedure TCWKeyBoard.ConsoleKeyPress(Sender: TObject; var Key: Char);
 var
    K: Char;
@@ -150,6 +162,9 @@ begin
       Key := #00;
       Exit;
    end;
+
+   // CQÉãÅ[ÉvíÜÇ»ÇÁíÜé~Ç∑ÇÈ
+   SendMessage(MainForm.Handle, WM_ZLOG_CQABORT, 1, 0);
 
    nID := MainForm.CurrentRigID;
 
@@ -249,18 +264,6 @@ begin
    dmZLogKeyer.SetCWSendBufCharPTT(MainForm.CurrentRigID,'s');
    Console.Text := Console.Text + '[VA]';
    Console.SelStart := Length(Console.Text);
-end;
-
-procedure TCWKeyBoard.actionESCExecute(Sender: TObject);
-begin
-   if dmZLogKeyer.IsPlaying then begin
-      dmZLogKeyer.ClrBuffer;
-      dmZLogKeyer.ControlPTT(MainForm.CurrentRigID, False);
-   end
-   else begin
-      dmZLogKeyer.ControlPTT(MainForm.CurrentRigID, False);
-      MainForm.SetLastFocus();
-   end;
 end;
 
 procedure TCWKeyBoard.actionIncreaseCwSpeedExecute(Sender: TObject);

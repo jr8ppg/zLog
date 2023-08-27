@@ -2215,7 +2215,10 @@ begin
    end
    else begin
       if ((tailcwstrptr - 1) * codemax + 1) > (cwstrptr) then begin
-         dec(tailcwstrptr, 1);
+         Dec(tailcwstrptr, 1);
+         if tailcwstrptr <= 0 then begin
+            tailcwstrptr := 1;
+         end;
          SetCWSendBufFinish(0);
       end;
    end;

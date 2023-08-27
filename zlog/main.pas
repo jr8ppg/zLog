@@ -49,6 +49,7 @@ const
   WM_ZLOG_SETFOCUS_CALLSIGN = (WM_USER + 204);
   WM_ZLOG_SETSTATUSTEXT = (WM_USER + 205);
   WM_ZLOG_SHOWOPTIONS = (WM_USER + 207);
+  WM_ZLOG_CQABORT = (WM_USER + 208);
 
 type
   TEditPanel = record
@@ -654,6 +655,7 @@ type
     procedure OnZLogSetFocusCallsign( var Message: TMessage ); message WM_ZLOG_SETFOCUS_CALLSIGN;
     procedure OnZLogSetStatusText( var Message: TMessage ); message WM_ZLOG_SETSTATUSTEXT;
     procedure OnZLogShowOptions( var Message: TMessage ); message WM_ZLOG_SHOWOPTIONS;
+    procedure OnZLogCqAbortProc( var Message: TMessage ); message WM_ZLOG_CQABORT;
     procedure OnDeviceChange( var Message: TMessage ); message WM_DEVICECHANGE;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
@@ -6950,6 +6952,27 @@ end;
 procedure TMainForm.OnZLogShowOptions( var Message: TMessage );
 begin
    ShowOptionsDialog(3, 0, 1, 1);
+end;
+
+procedure TMainForm.OnZLogCqAbortProc( var Message: TMessage );
+begin
+   case Message.WParam of
+      // ñ≥èåèÇ…íÜé~
+      0: begin
+         CQAbort(True);
+      end;
+
+      // CQLoopé¿çsíÜÇ»ÇÁíÜé~
+      1: begin
+         if FCQLoopRunning = True then begin
+            CQAbort(True);
+         end;
+      end;
+   end;
+
+   if Message.LParam = 1 then begin
+      SetLastFocus();
+   end;
 end;
 
 procedure TMainForm.OnDeviceChange( var Message: TMessage );
