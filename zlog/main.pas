@@ -7009,7 +7009,13 @@ begin
 end;
 
 procedure TMainForm.OnZLogCqAbortProc( var Message: TMessage );
+var
+   fRun: Boolean;
+   fPlay: Boolean;
 begin
+   fRun := FCQLoopRunning;
+   fPlay := FCQRepeatPlaying;
+
    case Message.WParam of
       // 無条件に中止
       0: begin
@@ -7018,14 +7024,22 @@ begin
 
       // CQLoop実行中なら中止
       1: begin
-         if FCQLoopRunning = True then begin
+         if fRun = True then begin
             CQAbort(True);
          end;
       end;
    end;
 
+   // フォーカス移動
    if Message.LParam = 1 then begin
       SetLastFocus();
+   end;
+
+   // CQループ中で送信中なら中止後フォーカス移動
+   if Message.LParam = 2 then begin
+      if (fRun = False) or ((fRun = True) and (fPlay = True)) then begin
+         SetLastFocus();
+      end;
    end;
 end;
 

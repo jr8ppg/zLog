@@ -123,11 +123,7 @@ procedure TCWKeyBoard.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftS
 begin
    case Key of
       VK_ESCAPE: begin
-         PostMessage(MainForm.Handle, WM_ZLOG_CQABORT, 0, 0);
-
-         if dmZLogKeyer.IsPlaying = False then begin
-            MainForm.SetLastFocus();
-         end;
+         PostMessage(MainForm.Handle, WM_ZLOG_CQABORT, 0, 2);
       end;
    end;
 end;

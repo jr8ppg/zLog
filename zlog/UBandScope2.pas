@@ -840,7 +840,7 @@ procedure TBandScope2.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftS
 begin
    case Key of
       VK_ESCAPE: begin
-         PostMessage(MainForm.Handle, WM_ZLOG_CQABORT, 0, 1);
+         MainForm.SetLastFocus();
       end;
    end;
 end;
