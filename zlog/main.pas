@@ -7035,9 +7035,9 @@ begin
       SetLastFocus();
    end;
 
-   // CQループ中で送信中なら中止後フォーカス移動
+   // CQループ中なしならフォーカス移動
    if Message.LParam = 2 then begin
-      if (fRun = False) or ((fRun = True) and (fPlay = True)) then begin
+      if (fRun = False) then begin
          SetLastFocus();
       end;
    end;
