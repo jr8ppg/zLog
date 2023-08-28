@@ -4283,6 +4283,7 @@ var
    S: string;
    P: PULONG;
    c: ULONG;
+   portnum: Integer;
 begin
    slKey := TStringList.Create();
    reg := TRegistry.Create(KEY_READ);
@@ -4303,9 +4304,12 @@ begin
 
          S := StringReplace(S, 'COM', '', [rfReplaceAll]);
 
-         P^ := StrToIntDef(S, 0);
-         Inc(P);
-         Inc(c);
+         portnum := StrToIntDef(S, 0);
+         if (portnum >= 1) and (portnum <= 20) then begin
+            P^ := portnum;
+            Inc(P);
+            Inc(c);
+         end;
       end;
 
       puPortNumbersFound := c;
