@@ -1195,6 +1195,7 @@ resourcestring
   TMainForm_EmptyOpList = 'Operator list is empty.';
   TMainForm_Setup_SentNR_first = 'Setup Prov/State and City code first';
   TMainForm_New_QSO_Arrived = 'New QSO data has arrived. click here to view.';
+  TMainForm_Select_Operator = 'Please select an operator';
 
 var
   MainForm: TMainForm;
@@ -3984,6 +3985,19 @@ begin
       CurrentQSO.Invalid := FOutOfContestPeriod;
    end;
 
+   // MOP
+   if dmZLogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
+      if dmZLogGlobal.CurrentOperator = nil then begin
+         // ç°ÇÃOPÇ™OpListÇ…Ç¢Ç»Ç¢
+         if dmZLogGlobal.Settings._pcname <> '' then begin
+            CurrentQSO.Operator := dmZLogGlobal.Settings._pcname;
+         end
+         else begin
+            CurrentQSO.Operator := '';
+         end;
+      end;
+   end;
+
    // ÉçÉOÇ…ãLò^
    CurrentQSO.Band := band_bakup;
    MyContest.LogQSO(CurrentQSO, True);
@@ -4092,6 +4106,10 @@ begin
    end
    else begin
       CurrentQSO.RSTRcvd := 59;
+   end;
+
+   if dmZLogGlobal.CurrentOperator = nil then begin
+      CurrentQSO.Operator := '';
    end;
 
    TimeEdit.Text := CurrentQSO.TimeStr;
@@ -6403,6 +6421,18 @@ begin
       if FTTYConsole <> nil then begin
          if FTTYConsole.Sending = False then begin
             TabPressed := False;
+         end;
+      end;
+   end;
+
+   // MOPÇ≈OPÇ™ñ¢ëIëÇÃèÍçá
+   if FPastEditMode = False then begin
+      if dmZLogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
+         if dmZLogGlobal.CurrentOperator = nil then begin
+            ShowInfoPanel(TMainForm_Select_Operator, nil, True);
+         end
+         else begin
+            ShowInfoPanel('', nil, False);
          end;
       end;
    end;
@@ -11422,7 +11452,13 @@ begin
 
    panelShowInfo.Visible := True;
    if fShow = True then begin
-      linklabelInfo.Caption := '<A HREF="' + text + '">' + text + '</A>';
+      if Assigned(handler) then begin
+         linklabelInfo.Caption := '<A HREF="' + text + '">' + text + '</A>';
+      end
+      else begin
+         linklabelInfo.Caption := text;
+      end;
+
       linklabelInfo.OnLinkClick := handler;
       linklabelInfo.Left := (panelShowInfo.Width - linklabelInfo.width) div 2;
       timerShowInfo.Tag := 1;

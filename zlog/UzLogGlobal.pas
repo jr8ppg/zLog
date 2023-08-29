@@ -2137,14 +2137,6 @@ var
 begin
    op := FOpList.ObjectOf(aQSO.Operator);
    if op = nil then begin
-      // 今のOPがOpListにいない
-      if dmZLogGlobal.Settings._pcname <> '' then begin
-         aQSO.Operator := dmZLogGlobal.Settings._pcname;
-      end
-      else begin
-         aQSO.Operator := '';
-      end;
-
       P := dmZLogGlobal.Settings._power[aQSO.Band][1];
    end
    else begin
