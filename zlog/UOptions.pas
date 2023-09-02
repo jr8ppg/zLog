@@ -1347,20 +1347,14 @@ begin
          radioSingleOp.Checked := True;
       end
       else if ContestCategory = ccMultiOpMultiTx then begin
-         radioMultiOpMultiTx.Checked := True
+         radioMultiOpMultiTx.Checked := True;
       end
       else if ContestCategory = ccMultiOpSingleTx then begin
-         radioMultiOpSingleTx.Checked := True
+         radioMultiOpSingleTx.Checked := True;
       end
       else if ContestCategory = ccMultiOpTwoTx then begin
-         radioMultiOpTwoTx.Checked := True
+         radioMultiOpTwoTx.Checked := True;
       end;
-//      case ContestCategory of
-//         ccSingleOp:          radioSingleOp.Checked := True;
-//         ccMultiOpMultiTx:    radioMultiOpMultiTx.Checked := True;
-//         ccMultiOpSingleTx:   radioMultiOpSingleTx.Checked := True;
-//         ccMultiOpTwoTx:      radioMultiOpTwoTx.Checked := True;
-//      end;
 
       // #TXNR
       comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(Settings._txnr));
@@ -1793,19 +1787,6 @@ begin
    end;
 
    FNeedSuperCheckLoad := False;
-
-   if radioSingleOp.Checked = True then begin
-      radioCategoryClick(radioSingleOp);
-   end
-   else if radioMultiOpMultiTx.Checked = True then begin
-      radioCategoryClick(radioMultiOpMultiTx);
-   end
-   else if radioMultiOpSingleTx.Checked = True then begin
-      radioCategoryClick(radioMultiOpSingleTx);
-   end
-   else if radioMultiOpTwoTx.Checked = True then begin
-      radioCategoryClick(radioMultiOpTwoTx);
-   end;
 end;
 
 procedure TformOptions.buttonOpAddClick(Sender: TObject);
