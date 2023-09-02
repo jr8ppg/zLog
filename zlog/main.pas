@@ -7044,7 +7044,7 @@ var
    fPlay: Boolean;
 begin
    fRun := FCQLoopRunning;
-   fPlay := FCQRepeatPlaying;
+   fPlay := FCQRepeatPlaying or dmZLogKeyer.IsPlaying();
 
    case Message.WParam of
       // 無条件に中止
@@ -7065,9 +7065,9 @@ begin
       SetLastFocus();
    end;
 
-   // CQループ中なしならフォーカス移動
+   // CQループなし＆送信なしならフォーカス移動
    if Message.LParam = 2 then begin
-      if (fRun = False) then begin
+      if (fRun = False) and (fPlay = False) then begin
          SetLastFocus();
       end;
    end;
