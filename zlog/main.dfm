@@ -835,7 +835,7 @@ object MainForm: TMainForm
       Left = 0
       Top = 0
       Width = 524
-      Height = 179
+      Height = 171
       TabStop = False
       Align = alClient
       ColCount = 10
@@ -861,6 +861,7 @@ object MainForm: TMainForm
       OnMouseUp = GridMouseUp
       OnSelectCell = GridSelectCell
       OnTopLeftChanged = GridTopLeftChanged
+      ExplicitHeight = 179
       ColWidths = (
         38
         65

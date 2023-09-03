@@ -2611,6 +2611,8 @@ begin
    Q := TQSO.Create;
    Q.Band := B;
 
+   UpdateBand(Q.Band);
+
    rig := RigControl.GetRig(FCurrentRigSet, B);
    if rig <> nil then begin
       rig.SetBand(FCurrentRigSet, Q);
@@ -2623,9 +2625,10 @@ begin
       if (FCurrentRigSet = 1) or (FCurrentRigSet = 2) then begin
          rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[Q.Band]);
       end;
-   end;
 
-   UpdateBand(Q.Band);
+      RigControl.SetCurrentRig(rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
+   end;
 
    Q.Free;
 end;
