@@ -62,6 +62,7 @@ const
   WM_ZLOG_SETSTATUSTEXT = (WM_USER + 205);
   WM_ZLOG_MOVELASTFREQ = (WM_USER + 206);
   WM_ZLOG_SHOWOPTIONS = (WM_USER + 207);
+  WM_ZLOG_CQABORT = (WM_USER + 208);
 
 type
   TEditPanel = record
@@ -539,6 +540,9 @@ type
     menuChangeDate: TMenuItem;
     actionShowCWMonitor: TAction;
     menuShowCWMonitor: TMenuItem;
+    panelShowInfo: TPanel;
+    linklabelInfo: TLinkLabel;
+    timerShowInfo: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -681,6 +685,7 @@ type
     procedure OnZLogSetStatusText( var Message: TMessage ); message WM_ZLOG_SETSTATUSTEXT;
     procedure OnZLogMoveLastFreq( var Message: TMessage ); message WM_ZLOG_MOVELASTFREQ;
     procedure OnZLogShowOptions( var Message: TMessage ); message WM_ZLOG_SHOWOPTIONS;
+    procedure OnZLogCqAbortProc( var Message: TMessage ); message WM_ZLOG_CQABORT;
     procedure OnDeviceChange( var Message: TMessage ); message WM_DEVICECHANGE;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
@@ -822,6 +827,7 @@ type
     procedure menuChangeSentNrClick(Sender: TObject);
     procedure menuChangeDateClick(Sender: TObject);
     procedure actionShowCWMonitorExecute(Sender: TObject);
+    procedure timerShowInfoTimer(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -917,6 +923,8 @@ type
     FPrev2bsiqMode: Boolean;
     FLastFreq: TFrequency;
     FLastMode: TMode;
+
+    FPastEditMode: Boolean;
 
     FTaskbarList: ITaskbarList;
 
@@ -1081,6 +1089,8 @@ type
     procedure EnableShiftKeyAction(fEnable: Boolean);
     procedure ShowOutOfContestPeriod(fShow: Boolean);
     procedure ShowOptionsDialog(nEditMode: Integer; nEditNumer: Integer; nEditBank: Integer; nActiveTab: Integer);
+    procedure ShowInfoPanel(text: string; handler: TSysLinkEvent; fShow: Boolean);
+    procedure DoNewDataArrived(Sender: TObject; const Link: string; LinkType: TSysLinkType);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1221,6 +1231,8 @@ resourcestring
   TMainForm_JudgePeriod = 'Do you want to judge whether all QSOs are within the contest period?';
   TMainForm_EmptyOpList = 'Operator list is empty.';
   TMainForm_Setup_SentNR_first = 'Setup Prov/State and City code first';
+  TMainForm_New_QSO_Arrived = 'New QSO data has arrived. click here to view.';
+  TMainForm_Select_Operator = 'Please select an operator';
 
 var
   MainForm: TMainForm;
@@ -1842,6 +1854,11 @@ var
    i: Integer;
    L: TQSOList;
 begin
+   if FPastEditMode = True then begin
+      ShowInfoPanel(TMainForm_New_QSO_Arrived, DoNewDataArrived, True);
+      Exit;
+   end;
+
    Grid.BeginUpdate();
    try
       if ShowCurrentBandOnly.Checked then begin
@@ -2146,6 +2163,7 @@ begin
       FKeyPressedRigID[i] := 0;
    end;
    FRigSwitchTime := Now();
+   FPastEditMode := False;
 
    // Out of contest period表示
    FFirstOutOfContestPeriod := True;
@@ -3023,6 +3041,13 @@ begin
 
    if S = 'RENEW' then begin
       RenewScore();
+   end;
+
+   if S = 'SHOWINFO' then begin
+      ShowInfoPanel(TMainForm_New_QSO_Arrived, DoNewDataArrived, True);
+   end;
+   if S = 'HIDEINFO' then begin
+      ShowInfoPanel('', nil, False);
    end;
 end;
 
@@ -3994,6 +4019,7 @@ end;
 
 procedure TMainForm.GridEnter(Sender: TObject);
 begin
+   FPastEditMode := True;
    SetShortcutEnabled('Esc', False);
 end;
 
@@ -4164,7 +4190,20 @@ begin
 
    // コンテスト開始前かチェック
    if MyContest.UseContestPeriod = True then begin
-      CurrentQSO.Invalid := Log.IsOutOfPeriod(CurrentQSO);
+      Q.Invalid := FOutOfContestPeriod;
+   end;
+
+   // MOP
+   if dmZLogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
+      if dmZLogGlobal.CurrentOperator = nil then begin
+         // 今のOPがOpListにいない
+         if dmZLogGlobal.Settings._pcname <> '' then begin
+            Q.Operator := dmZLogGlobal.Settings._pcname;
+         end
+         else begin
+            Q.Operator := '';
+         end;
+      end;
    end;
 
    // ログに記録
@@ -4275,6 +4314,10 @@ begin
    end
    else begin
       Q.RSTRcvd := 59;
+   end;
+
+   if dmZLogGlobal.CurrentOperator = nil then begin
+      Q.Operator := '';
    end;
 
    FEditPanel[nID].TimeEdit.Text := Q.TimeStr;
@@ -4764,6 +4807,31 @@ begin
       else begin
          panelOutOfPeriod.Visible := True;
          panelOutOfPeriod.Height := panelOutOfPeriod.Height + 2;
+      end;
+   end;
+end;
+
+// 汎用のInfoPanel
+procedure TMainForm.timerShowInfoTimer(Sender: TObject);
+begin
+   if TTimer(Sender).Tag = 0 then begin   // OFF
+      if panelShowInfo.Height <= 0 then begin
+         panelShowInfo.Height := 0;
+         panelShowInfo.Visible := False;
+         TTimer(Sender).Enabled := False;
+      end
+      else begin
+         panelShowInfo.Height := panelShowInfo.Height - 2;
+      end;
+   end
+   else begin     // ON
+      if panelShowInfo.Height >= 28 then begin
+         panelShowInfo.Height := 28;
+         TTimer(Sender).Enabled := False;
+      end
+      else begin
+         panelShowInfo.Visible := True;
+         panelShowInfo.Height := panelShowInfo.Height + 2;
       end;
    end;
 end;
@@ -5696,6 +5764,12 @@ begin
    LastFocus := TEdit(Sender);
    edit := TEdit(Sender);
    FCurrentRigSet := edit.Tag;
+
+   if FPastEditMode = True then begin
+      ShowInfoPanel('', nil, False);
+      GridRefreshScreen();
+      FPastEditMode := False;
+   end;
 
    // SO2Rの場合、現在RIGとクリックされたControlのRIGが違うと強制切り替え
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
@@ -6660,6 +6734,18 @@ begin
       end;
    end;
 
+   // MOPでOPが未選択の場合
+   if FPastEditMode = False then begin
+      if dmZLogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
+         if dmZLogGlobal.CurrentOperator = nil then begin
+            ShowInfoPanel(TMainForm_Select_Operator, nil, True);
+         end
+         else begin
+            ShowInfoPanel('', nil, False);
+         end;
+      end;
+   end;
+
    Done := True;
 end;
 
@@ -7464,6 +7550,41 @@ end;
 procedure TMainForm.OnZLogShowOptions( var Message: TMessage );
 begin
    ShowOptionsDialog(3, 0, 1, 1);
+end;
+
+procedure TMainForm.OnZLogCqAbortProc( var Message: TMessage );
+var
+   fRun: Boolean;
+   fPlay: Boolean;
+begin
+   fRun := FCQLoopRunning;
+   fPlay := FCQRepeatPlaying or dmZLogKeyer.IsPlaying();
+
+   case Message.WParam of
+      // 無条件に中止
+      0: begin
+         CQAbort(True);
+      end;
+
+      // CQLoop実行中なら中止
+      1: begin
+         if fRun = True then begin
+            CQAbort(True);
+         end;
+      end;
+   end;
+
+   // フォーカス移動
+   if Message.LParam = 1 then begin
+      SetLastFocus();
+   end;
+
+   // CQループなし＆送信なしならフォーカス移動
+   if Message.LParam = 2 then begin
+      if (fRun = False) and (fPlay = False) then begin
+         SetLastFocus();
+      end;
+   end;
 end;
 
 procedure TMainForm.OnDeviceChange( var Message: TMessage );
@@ -12089,6 +12210,40 @@ begin
       timerOutOfPeriod.Tag := 0;
    end;
    timerOutOfPeriod.Enabled := True;
+end;
+
+procedure TMainForm.ShowInfoPanel(text: string; handler: TSysLinkEvent; fShow: Boolean);
+begin
+   if (panelShowInfo.Visible = fShow) then begin
+      Exit;
+   end;
+
+   panelShowInfo.Visible := True;
+   if fShow = True then begin
+      if Assigned(handler) then begin
+         linklabelInfo.Caption := '<A HREF="' + text + '">' + text + '</A>';
+      end
+      else begin
+         linklabelInfo.Caption := text;
+      end;
+
+      linklabelInfo.OnLinkClick := handler;
+      linklabelInfo.Left := (panelShowInfo.Width - linklabelInfo.width) div 2;
+      timerShowInfo.Tag := 1;
+   end
+   else begin
+      timerShowInfo.Tag := 0;
+      linklabelInfo.OnLinkClick := nil;
+   end;
+   timerShowInfo.Enabled := True;
+end;
+
+procedure TMainForm.DoNewDataArrived(Sender: TObject; const Link: string; LinkType: TSysLinkType);
+begin
+   FPastEditMode := False;
+   GridRefreshScreen();
+   ShowInfoPanel('', nil, False);
+   SetLastFocus();
 end;
 
 { TBandScopeNotifyThread }

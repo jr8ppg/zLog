@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 138
   VertScrollBar.Visible = False
   Caption = 'zLog for Windows'
-  ClientHeight = 403
+  ClientHeight = 423
   ClientWidth = 524
   Color = clBtnFace
   Constraints.MinWidth = 540
@@ -34,7 +34,7 @@ object MainForm: TMainForm
   end
   object StatusLine: TStatusBar
     Left = 0
-    Top = 383
+    Top = 403
     Width = 524
     Height = 20
     Font.Charset = DEFAULT_CHARSET
@@ -67,15 +67,15 @@ object MainForm: TMainForm
   end
   object MainPanel: TPanel
     Left = 0
-    Top = 94
+    Top = 122
     Width = 524
-    Height = 289
+    Height = 281
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
     object EditPanel1R: TPanel
       Left = 0
-      Top = 179
+      Top = 171
       Width = 524
       Height = 27
       Align = alBottom
@@ -86,6 +86,7 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
+      ExplicitTop = 199
       object RcvdRSTEdit1: TEdit
         Left = 117
         Top = 4
@@ -5788,6 +5789,33 @@ object MainForm: TMainForm
     TabOrder = 3
     Visible = False
   end
+  object panelShowInfo: TPanel
+    Left = 0
+    Top = 94
+    Width = 524
+    Height = 28
+    Align = alTop
+    BevelOuter = bvNone
+    Color = clAqua
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 4
+    Visible = False
+    ExplicitTop = 74
+    object linklabelInfo: TLinkLabel
+      Left = 117
+      Top = 5
+      Width = 150
+      Height = 20
+      Caption = 'new qso data arrived'
+      TabOrder = 0
+    end
+  end
   object MainMenu: TMainMenu
     AutoHotkeys = maManual
     AutoLineReduction = maManual
@@ -7368,5 +7396,12 @@ object MainForm: TMainForm
     OnTimer = timerOutOfPeriodTimer
     Left = 304
     Top = 147
+  end
+  object timerShowInfo: TTimer
+    Enabled = False
+    Interval = 20
+    OnTimer = timerShowInfoTimer
+    Left = 320
+    Top = 195
   end
 end

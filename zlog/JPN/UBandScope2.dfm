@@ -62,7 +62,6 @@ object BandScope2: TBandScope2
       OnMouseMove = GridMouseMove
       OnMouseWheelDown = GridMouseWheelDown
       OnMouseWheelUp = GridMouseWheelUp
-      ExplicitLeft = 2
     end
   end
   object panelStandardOption: TPanel
@@ -366,11 +365,6 @@ object BandScope2: TBandScope2
       Caption = 'actionPlayMessageB12'
       ShortCut = 8315
       OnExecute = actionPlayMessageBExecute
-    end
-    object actionESC: TAction
-      Caption = 'actionESC'
-      ShortCut = 27
-      OnExecute = actionESCExecute
     end
     object actionPlayCQA1: TAction
       Tag = 101

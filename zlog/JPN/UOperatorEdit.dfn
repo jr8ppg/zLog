@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45154.4805092593</prop>
+        <prop prop-type="SelfDateTime">45157.9344907407</prop>
         <prop prop-type="OrigDateTime">45153.991712963</prop>
-        <prop prop-type="XlatDateTime">44936.9525694444</prop>
-        <prop prop-type="Translated">4</prop>
-        <prop prop-type="UnTranslated">626</prop>
+        <prop prop-type="XlatDateTime">45154.4847685185</prop>
+        <prop prop-type="Translated">20</prop>
+        <prop prop-type="UnTranslated">610</prop>
       </prop-group>
     </header>
     <body>
@@ -341,8 +341,9 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:groupCwMessages1.Caption" resname="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:groupCwMessages1.Caption">
         <source>'Override messages'</source>
+        <target>'CWメッセージの上書き'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805202546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805202546</prop><prop prop-type="Status">1</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:groupCwMessages1.TabOrder" resname="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:groupCwMessages1.TabOrder">
         <source>0</source>
@@ -1321,8 +1322,9 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:groupCwMessages2.Caption" resname="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:groupCwMessages2.Caption">
         <source>'Override additional CQ messages'</source>
+        <target>'追加のCQメッセージの上書き'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805204167</prop><prop prop-type="Status">0</prop><prop prop-type="Order">260</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805204167</prop><prop prop-type="Status">1</prop><prop prop-type="Order">260</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:groupCwMessages2.TabOrder" resname="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:groupCwMessages2.TabOrder">
         <source>1</source>
@@ -1451,8 +1453,9 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:buttonCopyDefaultMsgs.Caption" resname="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:buttonCopyDefaultMsgs.Caption">
         <source>'Copy default messages'</source>
+        <target>'CWメッセージをコピー'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805204398</prop><prop prop-type="Status">0</prop><prop prop-type="Order">286</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805204398</prop><prop prop-type="Status">1</prop><prop prop-type="Order">286</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:buttonCopyDefaultMsgs.TabOrder" resname="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:buttonCopyDefaultMsgs.TabOrder">
         <source>2</source>
@@ -1486,8 +1489,9 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:buttonClearAll.Caption" resname="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:buttonClearAll.Caption">
         <source>'Clear all'</source>
+        <target>'全てクリア'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805204514</prop><prop prop-type="Status">0</prop><prop prop-type="Order">293</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805204514</prop><prop prop-type="Status">1</prop><prop prop-type="Order">293</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:buttonClearAll.TabOrder" resname="O:formOperatorEdit.O:PageControl1.O:tabsheetCwMessages.O:buttonClearAll.TabOrder">
         <source>3</source>
@@ -1531,8 +1535,9 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:PageControl1.O:tabsheetVoiceFiles.O:groupVoiceFiles2.Caption" resname="O:formOperatorEdit.O:PageControl1.O:tabsheetVoiceFiles.O:groupVoiceFiles2.Caption">
         <source>'Additional CQ Messages'</source>
+        <target>'追加のCQメッセージ'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805204514</prop><prop prop-type="Status">0</prop><prop prop-type="Order">302</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805204514</prop><prop prop-type="Status">1</prop><prop prop-type="Order">302</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:PageControl1.O:tabsheetVoiceFiles.O:groupVoiceFiles2.TabOrder" resname="O:formOperatorEdit.O:PageControl1.O:tabsheetVoiceFiles.O:groupVoiceFiles2.TabOrder">
         <source>0</source>
@@ -1741,8 +1746,9 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:PageControl1.O:tabsheetVoiceFiles.O:groupVoiceFiles1.Caption" resname="O:formOperatorEdit.O:PageControl1.O:tabsheetVoiceFiles.O:groupVoiceFiles1.Caption">
         <source>'Voice Files'</source>
+        <target>'音声ファイル'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805204861</prop><prop prop-type="Status">0</prop><prop prop-type="Order">344</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805204861</prop><prop prop-type="Status">1</prop><prop prop-type="Order">344</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:PageControl1.O:tabsheetVoiceFiles.O:groupVoiceFiles1.TabOrder" resname="O:formOperatorEdit.O:PageControl1.O:tabsheetVoiceFiles.O:groupVoiceFiles1.TabOrder">
         <source>1</source>
@@ -2891,8 +2897,9 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.Caption" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.Caption">
         <source>'Operator Info.'</source>
+        <target>'オペレーター情報'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805206366</prop><prop prop-type="Status">0</prop><prop prop-type="Order">574</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805206366</prop><prop prop-type="Status">1</prop><prop prop-type="Order">574</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.TabOrder" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.TabOrder">
         <source>0</source>
@@ -2921,8 +2928,9 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label1.Caption" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label1.Caption">
         <source>'Callsign'</source>
+        <target>'コールサイン'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805206366</prop><prop prop-type="Status">0</prop><prop prop-type="Order">580</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805206366</prop><prop prop-type="Status">1</prop><prop prop-type="Order">580</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label2.Left" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label2.Left">
         <source>8</source>
@@ -2946,8 +2954,9 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label2.Caption" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label2.Caption">
         <source>'Power'</source>
+        <target>'電力符号'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805206366</prop><prop prop-type="Status">0</prop><prop prop-type="Order">585</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805206366</prop><prop prop-type="Status">1</prop><prop prop-type="Order">585</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label3.Left" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label3.Left">
         <source>292</source>
@@ -2971,13 +2980,15 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label3.Caption" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label3.Caption">
         <source>'Age'</source>
+        <target>'年齢'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805206481</prop><prop prop-type="Status">0</prop><prop prop-type="Order">590</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805206481</prop><prop prop-type="Status">1</prop><prop prop-type="Order">590</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label4.Left" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label4.Left">
         <source>185</source>
+        <target>205</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805206481</prop><prop prop-type="Status">0</prop><prop prop-type="Order">591</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805206481</prop><prop prop-type="Status">1</prop><prop prop-type="Order">591</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label4.Top" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label4.Top">
         <source>47</source>
@@ -2996,13 +3007,15 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label4.Caption" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:Label4.Caption">
         <source>'(Exclude WARC)'</source>
+        <target>'(WARC除く)'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805206481</prop><prop prop-type="Status">0</prop><prop prop-type="Order">595</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805206481</prop><prop prop-type="Status">1</prop><prop prop-type="Order">595</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editCallsign.Left" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editCallsign.Left">
         <source>58</source>
+        <target>78</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805206481</prop><prop prop-type="Status">0</prop><prop prop-type="Order">596</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805206481</prop><prop prop-type="Status">1</prop><prop prop-type="Order">596</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editCallsign.Top" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editCallsign.Top">
         <source>21</source>
@@ -3036,8 +3049,9 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editPower.Left" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editPower.Left">
         <source>58</source>
+        <target>78</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805206481</prop><prop prop-type="Status">0</prop><prop prop-type="Order">603</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805206481</prop><prop prop-type="Status">1</prop><prop prop-type="Order">603</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editPower.Top" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editPower.Top">
         <source>44</source>
@@ -3056,8 +3070,9 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editPower.Hint" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editPower.Hint">
         <source>'Double click here to power code editor'</source>
+        <target>'ここをダブルクリックで電力符号エディタを表示します'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805206597</prop><prop prop-type="Status">0</prop><prop prop-type="Order">607</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805206597</prop><prop prop-type="Status">1</prop><prop prop-type="Order">607</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editPower.CharCase" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editPower.CharCase">
         <source>ecUpperCase</source>
@@ -3091,8 +3106,9 @@
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editPower.TextHint" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editPower.TextHint">
         <source>'Double click here to power code editor'</source>
+        <target>'ここをダブルクリックで電力符号エディタを表示します'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45154.4805206597</prop><prop prop-type="Status">0</prop><prop prop-type="Order">614</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45154.4805206597</prop><prop prop-type="Status">1</prop><prop prop-type="Order">614</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editPower.OnDblClick" resname="O:formOperatorEdit.O:Panel2.O:groupOpsInfo.O:editPower.OnDblClick">
         <source>editPowerDblClick</source>

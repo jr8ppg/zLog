@@ -2117,14 +2117,6 @@ var
 begin
    op := FOpList.ObjectOf(aQSO.Operator);
    if op = nil then begin
-      // 今のOPがOpListにいない
-      if dmZLogGlobal.Settings._pcname <> '' then begin
-         aQSO.Operator := dmZLogGlobal.Settings._pcname;
-      end
-      else begin
-         aQSO.Operator := '';
-      end;
-
       P := dmZLogGlobal.Settings._power[aQSO.Band][1];
    end
    else begin
@@ -4263,6 +4255,7 @@ var
    S: string;
    P: PULONG;
    c: ULONG;
+   portnum: Integer;
 begin
    slKey := TStringList.Create();
    reg := TRegistry.Create(KEY_READ);
@@ -4283,9 +4276,12 @@ begin
 
          S := StringReplace(S, 'COM', '', [rfReplaceAll]);
 
-         P^ := StrToIntDef(S, 0);
-         Inc(P);
-         Inc(c);
+         portnum := StrToIntDef(S, 0);
+         if (portnum >= 1) and (portnum <= 20) then begin
+            P^ := portnum;
+            Inc(P);
+            Inc(c);
+         end;
       end;
 
       puPortNumbersFound := c;

@@ -609,7 +609,8 @@ begin
       // Auto Login
       if (checkAutoLogin.Checked = True) and (FAutoLogined = False) then begin
          if (Pos('login:', str) > 0) or
-            (Pos('Please enter your call:', str) > 0) then begin
+            (Pos('Please enter your call:', str) > 0) or
+            (Pos('Please enter your callsign:', str) > 0) then begin
             Sleep(500);
             WriteLine(dmZlogGlobal.MyCall);
             FAutoLogined := True;

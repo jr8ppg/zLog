@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45157.9344907407</prop>
-        <prop prop-type="OrigDateTime">45157.9343981482</prop>
+        <prop prop-type="SelfDateTime">45172.7498148148</prop>
+        <prop prop-type="OrigDateTime">45134.9315740741</prop>
         <prop prop-type="XlatDateTime">45154.4880092593</prop>
-        <prop prop-type="Translated">55</prop>
-        <prop prop-type="UnTranslated">1217</prop>
+        <prop prop-type="Translated">62</prop>
+        <prop prop-type="UnTranslated">1216</prop>
       </prop-group>
     </header>
     <body>
@@ -9032,8 +9032,57 @@
         <source>"Setup Prov/State and City code first"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">45157.9345095139</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"最初に都道府県コードと市区郡コードを設定してください"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_New_QSO_Arrived" resname="Main_TMainForm_New_QSO_Arrived">
+        <source>"New QSO data has arrived. click here to view."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45172.7471700926</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"新しいQSOが届いています。表示するにはここをクリック！"</target>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Select_Operator" resname="Main_TMainForm_Select_Operator">
+        <source>"Please select an operator"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45172.7471700926</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"オペレーターを選択してください"</target>
+      </trans-unit>
+      <trans-unit id="UCFGEdit_Please_enter_the_prov_code" resname="UCFGEdit_Please_enter_the_prov_code">
+        <source>"Please enter the Prov/State code"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45172.7471701736</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"都道府県コードを入力してください"</target>
+      </trans-unit>
+      <trans-unit id="UCFGEdit_Please_enter_the_city_code" resname="UCFGEdit_Please_enter_the_city_code">
+        <source>"Please enter the City code"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45172.7471701736</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"市区郡コードを入力してください"</target>
+      </trans-unit>
+      <trans-unit id="USelectUserDefinedContest_Setup_prov_first" resname="USelectUserDefinedContest_Setup_prov_first">
+        <source>"Setup Prov/State code first"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45172.7471701736</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"最初に都道府県コードを設定してください"</target>
+      </trans-unit>
+      <trans-unit id="USelectUserDefinedContest_Setup_city_first" resname="USelectUserDefinedContest_Setup_city_first">
+        <source>"Setup City code first"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45172.7471701736</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"最初に市区郡コードを設定してください"</target>
       </trans-unit>
     </body>
   </file>
