@@ -408,7 +408,7 @@ begin
          temp := copy(temp, 8, 255);
          aQSO.TextToQSO(temp);
          MyContest.LogQSO(aQSO, false);
-         MainForm.GridRefreshScreen;
+         MainForm.GridRefreshScreen(False, True);
          MainForm.BandScopeNotifyWorked(aQSO);
          aQSO.Free;
       end;
@@ -444,7 +444,7 @@ begin
          Log.AddQue(aQSO);
          // Log.ProcessQue;
          // MyContest.Renew;
-         MainForm.GridRefreshScreen;
+         MainForm.GridRefreshScreen(False, True);
          aQSO.Free;
       end;
 
@@ -492,7 +492,7 @@ begin
          Log.AddQue(aQSO);
          Log.ProcessQue;
          MyContest.Renew;
-         MainForm.GridRefreshScreen;
+         MainForm.GridRefreshScreen(False, True);
          aQSO.Free;
       end;
 
@@ -750,11 +750,12 @@ begin
 
       if fFoundQso = False then begin
          SendQSO_PUTLOG(aQSO);
-         fNeedToRenew := true;
          // add aQSO to ToSendList;
          // or just send putlog ...
          // renew after done.
       end;
+
+      fNeedToRenew := true;
    end;
 
    // getqsos from MergeTempList; (whatever is left)
@@ -943,6 +944,7 @@ var
    count: integer;
    P: PAnsiChar;
 begin
+   ZeroMemory(@Buf, SizeOf(Buf));
    if Error <> 0 then begin
       exit;
    end;

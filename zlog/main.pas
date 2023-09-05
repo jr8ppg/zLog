@@ -1063,7 +1063,7 @@ type
 
     function GetNextBand(BB : TBand; Up : Boolean) : TBand;
 
-    procedure GridRefreshScreen(fSelectRow: Boolean = False);
+    procedure GridRefreshScreen(fSelectRow: Boolean = False; fNewData: Boolean = False);
 
     procedure SetQSOMode(aQSO: TQSO; fUp: Boolean);
     procedure WriteStatusLine(S: string; fWriteConsole: Boolean);
@@ -1807,12 +1807,12 @@ begin
    end;
 end;
 
-procedure TMainForm.GridRefreshScreen(fSelectRow: Boolean);
+procedure TMainForm.GridRefreshScreen(fSelectRow: Boolean; fNewData: Boolean);
 var
    i: Integer;
    L: TQSOList;
 begin
-   if FPastEditMode = True then begin
+   if (FPastEditMode = True) and (fNewData = True) then begin
       ShowInfoPanel(TMainForm_New_QSO_Arrived, DoNewDataArrived, True);
       Exit;
    end;
