@@ -1943,6 +1943,7 @@ begin
    end;
 
    aQSO := FQsoList[i];
+   zyloLogUpdated(evDeleteQSO, aQSO, nil);
 
    Index := FBandList[aQSO.Band].IndexOf(aQSO);
    if Index > -1 then begin
@@ -1955,8 +1956,6 @@ begin
    RebuildDupeCheckList;
 
    FQsoIdDic.Remove(aQSO.QsoId);
-
-   zyloLogUpdated(evDeleteQSO, aQSO, nil);
 end;
 
 procedure TLog.DeleteQSO(aQSO: TQSO);

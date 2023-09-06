@@ -91,6 +91,10 @@ type
     procedure PushRemoteConnect; // connect button in cluster win
   end;
 
+resourcestring
+    This_will_delete_all_data_and_loads_data_using_zlink = 'This will delete all data and loads data using Z-Link';
+    ZServer_connection_failed = 'Z-Server connection failed.';
+
 implementation
 
 uses
@@ -917,7 +921,7 @@ procedure TZLinkForm.LoadLogFromZLink;
 var
    R: Word;
 begin
-   R := MessageDlg('This will delete all data and loads data using Z-Link', mtConfirmation, [mbOK, mbCancel], 0); { HELP context 0 }
+   R := MessageDlg(This_will_delete_all_data_and_loads_data_using_zlink, mtConfirmation, [mbOK, mbCancel], 0); { HELP context 0 }
    if R = mrCancel then begin
       exit;
    end;
@@ -971,7 +975,7 @@ begin
    MainForm.ChatForm.SetConnectStatus(False);
 
    if DisconnectedByMenu = false then begin
-      MessageDlg('Z-Server connection failed.', mtError, [mbOK], 0); { HELP context 0 }
+      MessageDlg(ZServer_connection_failed, mtError, [mbOK], 0); { HELP context 0 }
    end
    else begin
       DisconnectedByMenu := false;
