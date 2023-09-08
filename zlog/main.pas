@@ -3351,6 +3351,7 @@ procedure TMainForm.GridMenuPopup(Sender: TObject);
 var
    i: Integer;
    aQSO: TQSO;
+   C: Integer;
 begin
    SendSpot1.Enabled := FCommForm.MaybeConnected;
 
@@ -3374,13 +3375,21 @@ begin
    end;
 
    // 選択範囲が全て同じ日付かチェックする
+   C := 0;
    menuChangeDate.Enabled := True;
    aQSO := TQSO(Grid.Objects[0, Grid.Selection.Top]);
    for i := Grid.Selection.Top + 1 to Grid.Selection.Bottom do begin
-      if aQSO.DateStr <> TQSO(Grid.Objects[0, i]).DateStr then begin
+      if (Grid.Objects[0, i] = nil) or (aQSO.DateStr <> TQSO(Grid.Objects[0, i]).DateStr) then begin
          menuChangeDate.Enabled := False;
          Break;
+      end
+      else begin
+         Inc(C);
       end;
+   end;
+
+   if C = 0 then begin
+      menuChangeDate.Enabled := False;
    end;
 end;
 
