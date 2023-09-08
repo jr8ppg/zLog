@@ -72,8 +72,6 @@ object MainForm: TMainForm
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 94
-    ExplicitHeight = 309
     object EditPanel1R: TPanel
       Left = 0
       Top = 171
@@ -87,7 +85,6 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitTop = 199
       object RcvdRSTEdit1: TEdit
         Left = 117
         Top = 4
@@ -288,7 +285,6 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = 226
       object RigPanelC: TPanel
         Left = 1
         Top = 54
@@ -864,7 +860,6 @@ object MainForm: TMainForm
       OnMouseUp = GridMouseUp
       OnSelectCell = GridSelectCell
       OnTopLeftChanged = GridTopLeftChanged
-      ExplicitHeight = 199
       ColWidths = (
         38
         65
@@ -5809,7 +5804,6 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 4
     Visible = False
-    ExplicitTop = 74
     object linklabelInfo: TLinkLabel
       Left = 117
       Top = 5
