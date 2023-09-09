@@ -881,8 +881,8 @@ type
     FCQLoopPause: Boolean;
     FCQLoopCount: Integer;
     FCQLoopStartRig: Integer;
-    FCwCtrlZCQLoop: Boolean;
-    FPhCtrlZCQLoop: Boolean;
+    FCtrlZCQLoop: Boolean;
+    FCQRepeatStartMode: TMode;
     FCQRepeatPlaying: Boolean;
     FCancelAutoRigSwitch: Boolean;
     FTabKeyPressed: Boolean;
@@ -2106,8 +2106,7 @@ begin
    FCQLoopRunning := False;
    FCQLoopPause := False;
    FCQLoopStartRig := 1;
-   FCwCtrlZCQLoop := False;
-   FPhCtrlZCQLoop := False;
+   FCtrlZCQLoop := False;
    FCQRepeatPlaying := False;
    FCancelAutoRigSwitch := False;
    FTabKeyPressed := False;
@@ -4384,8 +4383,7 @@ begin
       Exit;
    end;
 
-   FCwCtrlZCQLoop := False;
-   FPhCtrlZCQLoop := False;
+   FCtrlZCQLoop := False;
    CQRepeatProc(True);
 end;
 
@@ -4395,8 +4393,7 @@ begin
       Exit;
    end;
 
-   FCwCtrlZCQLoop := True;
-   FPhCtrlZCQLoop := True;
+   FCtrlZCQLoop := True;
    CQRepeatProc(True);
 end;
 
@@ -4498,6 +4495,7 @@ begin
       mode := CurrentQSO.Mode;
    end;
 
+   FCQRepeatStartMode := mode;
 
    if mode = mCW then begin
       if (dmZLogGlobal.Settings.CW._cq_random_repeat = True) and (FCQLoopCount > 4) then begin
@@ -7834,7 +7832,7 @@ begin
       end;
 
       // Ctrl+Zでのキー入力
-      if (FCwCtrlZCQLoop = True) or (FPhCtrlZCQLoop = True) then begin
+      if (FCtrlZCQLoop = True) then begin
          if FCQLoopPause = True then begin
             CancelCqRepeat();
             Exit;
@@ -8379,7 +8377,7 @@ var
    nID: Integer;
 begin
    if CurrentQSO.Mode = mCW then begin
-      FCwCtrlZCQLoop := True;
+      FCtrlZCQLoop := True;
       nID := FCurrentTx;
       dmZLogKeyer.TuneOn(nID);
    end;
@@ -8411,8 +8409,7 @@ begin
       Exit;
    end;
 
-   FCwCtrlZCQLoop := True;
-   FPhCtrlZCQLoop := True;
+   FCtrlZCQLoop := True;
    FCancelAutoRigSwitch := False;
    CQRepeatProc(True);
 end;
@@ -8873,8 +8870,7 @@ begin
       Exit;
    end;
 
-   FCwCtrlZCQLoop := False;
-   FPhCtrlZCQLoop := False;
+   FCtrlZCQLoop := False;
    CQRepeatProc(True);
 end;
 
@@ -9211,8 +9207,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #145 ToggleTx ---'));
    {$ENDIF}
-   FCwCtrlZCQLoop := False;
-   FPhCtrlZCQLoop := False;
+   FCtrlZCQLoop := False;
    FCQLoopCount := 999;
    dmZLogKeyer.ClrBuffer();
 
@@ -10806,11 +10801,11 @@ end;
 procedure TMainForm.CancelCqRepeat();
 begin
    timerCqRepeat.Enabled := False;
+   FCQRepeatPlaying := False;
    FCQLoopCount := 0;
    FCQLoopRunning := False;
    FCQLoopPause := False;
-   FCwCtrlZCQLoop := False;
-   FPhCtrlZCQLoop := False;
+   FCtrlZCQLoop := False;
 end;
 
 procedure TMainForm.ResetTx();
@@ -10932,17 +10927,16 @@ procedure TMainForm.OnAlphaNumericKeyProc(Sender: TObject; var Key: word);
 begin
    // CQループ中のキー入力割り込み
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
-      if (FCwCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
+      if (FCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
          if FTabKeyPressed = False then begin
             CancelCqRepeat();
-            dmZLogKeyer.ClrBuffer;
-         end;
-      end;
-
-      if (FPhCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
-         if FTabKeyPressed = False then begin
-            CancelCqRepeat();
-            FVoiceForm.StopVoice();
+            if FCQRepeatStartMode = mCW then begin
+               dmZLogKeyer.ClrBuffer;
+            end
+            else begin
+               FVoiceForm.StopVoice();
+               VoiceControl(False);
+            end;
          end;
       end;
    end
