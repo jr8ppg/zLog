@@ -5246,6 +5246,7 @@ begin
    try
       // Keying‚ÆRigControl‚ğˆê’UI—¹
       FRigControl.ForcePowerOff();
+      CancelCqRepeat();
       dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
 
       f.EditMode := nEditMode;
