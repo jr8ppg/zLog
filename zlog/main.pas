@@ -5847,7 +5847,7 @@ end;
 
 procedure TMainForm.GridTopLeftChanged(Sender: TObject);
 begin
-//   EditScreen.RefreshScreen;
+   FPastEditMode := True;
 
    if Grid.LeftCol <> 0 then
       Grid.LeftCol := 0;
