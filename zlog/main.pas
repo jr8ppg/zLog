@@ -10933,6 +10933,7 @@ begin
             CancelCqRepeat();
             if FCQRepeatStartMode = mCW then begin
                dmZLogKeyer.ClrBuffer;
+               FCWMonitor.ClearSendingText();
             end
             else begin
                FVoiceForm.StopVoice();
@@ -10943,11 +10944,19 @@ begin
    end
    else begin
       if FInformation.Is2bsiq = False then begin
-//         if FCurrentTx = FCurrentRx then begin
-//            FCQLoopPause := True;
-//         end;
-//         FCQLoopRunning := False;
-//         timerCqRepeat.Enabled := False;
+         if (FCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
+            if FTabKeyPressed = False then begin
+               CancelCqRepeat();
+               if FCQRepeatStartMode = mCW then begin
+                  dmZLogKeyer.ClrBuffer;
+                  FCWMonitor.ClearSendingText();
+               end
+               else begin
+                  FVoiceForm.StopVoice();
+                  VoiceControl(False);
+               end;
+            end;
+         end;
       end
       else begin
          if FCQLoopRunning = True then begin
