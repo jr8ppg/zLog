@@ -5,10 +5,10 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45172.7498148148</prop>
+        <prop prop-type="SelfDateTime">45180.9556018518</prop>
         <prop prop-type="OrigDateTime">45134.9315740741</prop>
         <prop prop-type="XlatDateTime">45154.4880092593</prop>
-        <prop prop-type="Translated">62</prop>
+        <prop prop-type="Translated">64</prop>
         <prop prop-type="UnTranslated">1216</prop>
       </prop-group>
     </header>
@@ -9083,6 +9083,22 @@
           <prop prop-type="Status">1</prop>
         </prop-group>
         <target>"最初に市区郡コードを設定してください"</target>
+      </trans-unit>
+      <trans-unit id="UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink" resname="UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink">
+        <source>"This will delete all data and loads data using Z-Link"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45180.9380009375</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"全てのデータが削除され、Z-Linkを使用してデータをロードします。 よろしいですか？"</target>
+      </trans-unit>
+      <trans-unit id="UZLinkForm_ZServer_connection_failed" resname="UZLinkForm_ZServer_connection_failed">
+        <source>"Z-Server connection failed."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45180.9380009375</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"Z-Serverとの接続に失敗しました。"</target>
       </trans-unit>
     </body>
   </file>

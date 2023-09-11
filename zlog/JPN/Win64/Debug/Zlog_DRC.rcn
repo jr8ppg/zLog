@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45149.9634953704</prop>
-        <prop prop-type="OrigDateTime">45149.9632175926</prop>
+        <prop prop-type="SelfDateTime">45180.9441203704</prop>
+        <prop prop-type="OrigDateTime">45180.9440277778</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">5</prop>
-        <prop prop-type="UnTranslated">1265</prop>
+        <prop prop-type="UnTranslated">1275</prop>
       </prop-group>
     </header>
     <body>
@@ -8913,6 +8913,76 @@
         <source>"''%s'' が必要です"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">45149.9559777546</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Setup_SentNR_first" resname="Main_TMainForm_Setup_SentNR_first">
+        <source>"Setup Prov/State and City code first"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45180.9441200926</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_New_QSO_Arrived" resname="Main_TMainForm_New_QSO_Arrived">
+        <source>"New QSO data has arrived. click here to view."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45180.9441201042</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Select_Operator" resname="Main_TMainForm_Select_Operator">
+        <source>"Please select an operator"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45180.9441201042</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="USelectUserDefinedContest_Setup_city_first" resname="USelectUserDefinedContest_Setup_city_first">
+        <source>"Setup City code first"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45180.9441201273</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UCFGEdit_Please_enter_the_prov_code" resname="UCFGEdit_Please_enter_the_prov_code">
+        <source>"Please enter the Prov/State code"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45180.9441201736</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UCFGEdit_Please_enter_the_city_code" resname="UCFGEdit_Please_enter_the_city_code">
+        <source>"Please enter the City code"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45180.9441201736</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="USelectUserDefinedContest_Setup_prov_first" resname="USelectUserDefinedContest_Setup_prov_first">
+        <source>"Setup Prov/State code first"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45180.9441201736</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink" resname="UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink">
+        <source>"This will delete all data and loads data using Z-Link"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45180.9441203472</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UZLinkForm_ZServer_connection_failed" resname="UZLinkForm_ZServer_connection_failed">
+        <source>"Z-Server connection failed."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45180.9441203472</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN" resname="UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN">
+        <source>"Please enter the operator's callsign"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45180.9441203588</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
       </trans-unit>

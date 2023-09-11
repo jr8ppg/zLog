@@ -85,7 +85,6 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitTop = 199
       object RcvdRSTEdit1: TEdit
         Left = 117
         Top = 4
@@ -275,7 +274,7 @@ object MainForm: TMainForm
     end
     object EditPanel2R: TPanel
       Left = 0
-      Top = 234
+      Top = 198
       Width = 524
       Height = 83
       Align = alBottom
@@ -835,7 +834,7 @@ object MainForm: TMainForm
       Left = 0
       Top = 0
       Width = 524
-      Height = 207
+      Height = 171
       TabStop = False
       Align = alClient
       ColCount = 10
@@ -5805,7 +5804,6 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 4
     Visible = False
-    ExplicitTop = 74
     object linklabelInfo: TLinkLabel
       Left = 117
       Top = 5

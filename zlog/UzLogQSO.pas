@@ -1943,6 +1943,7 @@ begin
    end;
 
    aQSO := FQsoList[i];
+   zyloLogUpdated(evDeleteQSO, aQSO, nil);
 
    Index := FBandList[aQSO.Band].IndexOf(aQSO);
    if Index > -1 then begin
@@ -1955,8 +1956,6 @@ begin
    RebuildDupeCheckList;
 
    FQsoIdDic.Remove(aQSO.QsoId);
-
-   zyloLogUpdated(evDeleteQSO, aQSO, nil);
 end;
 
 procedure TLog.DeleteQSO(aQSO: TQSO);
@@ -3563,6 +3562,7 @@ var
    bQSO: TQSO;
    i: Integer;
    Diff: Integer;
+   basetime: TDateTime;
 begin
    if dmZlogGlobal.Settings._qsycount = False then begin
       Result := 0;
@@ -3571,12 +3571,12 @@ begin
 
    nQsyCount := 0;
    aQSO := FQsoList[nStartIndex];
-
+   basetime := aQSO.Time;
    for i := nStartIndex - 1 downto 1 do begin
       bQSO := FQsoList[i];
 
       // ŽžŠÔ·‚ª1hour‚ ‚é‚©
-      Diff := SecondsBetween(aQSO.Time, bQSO.Time);
+      Diff := SecondsBetween(basetime, bQSO.Time);
       if (Diff / 60) > 60 then begin
          Break;
       end;
@@ -3585,6 +3585,8 @@ begin
       if (aQSO.TX = bQSO.TX) and (aQSO.Band <> bQSO.Band) then begin
          Inc(nQsyCount);
       end;
+
+      aQSO := bQSO;
    end;
 
    Result := nQsyCount;

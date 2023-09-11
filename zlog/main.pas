@@ -905,8 +905,8 @@ type
     FCQLoopRunning: Boolean;
     FCQLoopCount: Integer;
     FCQLoopStartRig: Integer;
-    FCwCtrlZCQLoop: Boolean;
-    FPhCtrlZCQLoop: Boolean;
+    FCtrlZCQLoop: Boolean;
+    FCQRepeatStartMode: TMode;
     FCQRepeatPlaying: Boolean;
     FTabKeyPressed: array[0..2] of Boolean;
     FDownKeyPressed: array[0..2] of Boolean;
@@ -1099,7 +1099,7 @@ type
 
     function GetNextBand(BB : TBand; Up : Boolean) : TBand;
 
-    procedure GridRefreshScreen(fSelectRow: Boolean = False);
+    procedure GridRefreshScreen(fSelectRow: Boolean = False; fNewData: Boolean = False);
 
     procedure SetQSOMode(aQSO: TQSO; fUp: Boolean);
     procedure WriteStatusLine(S: string; fWriteConsole: Boolean);
@@ -1849,12 +1849,12 @@ begin
    end;
 end;
 
-procedure TMainForm.GridRefreshScreen(fSelectRow: Boolean);
+procedure TMainForm.GridRefreshScreen(fSelectRow: Boolean; fNewData: Boolean);
 var
    i: Integer;
    L: TQSOList;
 begin
-   if FPastEditMode = True then begin
+   if (FPastEditMode = True) and (fNewData = True) then begin
       ShowInfoPanel(TMainForm_New_QSO_Arrived, DoNewDataArrived, True);
       Exit;
    end;
@@ -2152,8 +2152,7 @@ begin
    FCurrentCQMessageNo := 101;
    FCQLoopRunning := False;
    FCQLoopStartRig := 1;
-   FCwCtrlZCQLoop := False;
-   FPhCtrlZCQLoop := False;
+   FCtrlZCQLoop := False;
    FCQRepeatPlaying := False;
 
    for i := 0 to 2 do begin
@@ -3428,6 +3427,7 @@ procedure TMainForm.GridMenuPopup(Sender: TObject);
 var
    i: Integer;
    aQSO: TQSO;
+   C: Integer;
 begin
    SendSpot1.Enabled := FCommForm.MaybeConnected;
 
@@ -3451,13 +3451,21 @@ begin
    end;
 
    // 選択範囲が全て同じ日付かチェックする
+   C := 0;
    menuChangeDate.Enabled := True;
    aQSO := TQSO(Grid.Objects[0, Grid.Selection.Top]);
    for i := Grid.Selection.Top + 1 to Grid.Selection.Bottom do begin
-      if aQSO.DateStr <> TQSO(Grid.Objects[0, i]).DateStr then begin
+      if (Grid.Objects[0, i] = nil) or (aQSO.DateStr <> TQSO(Grid.Objects[0, i]).DateStr) then begin
          menuChangeDate.Enabled := False;
          Break;
+      end
+      else begin
+         Inc(C);
       end;
+   end;
+
+   if C = 0 then begin
+      menuChangeDate.Enabled := False;
    end;
 end;
 
@@ -4592,8 +4600,7 @@ begin
       Exit;
    end;
 
-   FCwCtrlZCQLoop := False;
-   FPhCtrlZCQLoop := False;
+   FCtrlZCQLoop := False;
    SetCqRepeatMode(True);
 end;
 
@@ -4603,8 +4610,7 @@ begin
       Exit;
    end;
 
-   FCwCtrlZCQLoop := True;
-   FPhCtrlZCQLoop := True;
+   FCtrlZCQLoop := True;
    SetCqRepeatMode(True);
 end;
 
@@ -4720,6 +4726,7 @@ begin
       mode := CurrentQSO.Mode;
    end;
 
+   FCQRepeatStartMode := mode;
 
    if mode = mCW then begin
       if (dmZLogGlobal.Settings.CW._cq_random_repeat = True) and (FCQLoopCount > 4) then begin
@@ -5537,6 +5544,7 @@ begin
    try
       // KeyingとRigControlを一旦終了
       FRigControl.ForcePowerOff();
+      CancelCqRepeat();
       dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
 
       f.EditMode := nEditMode;
@@ -6138,7 +6146,7 @@ end;
 
 procedure TMainForm.GridTopLeftChanged(Sender: TObject);
 begin
-//   EditScreen.RefreshScreen;
+   FPastEditMode := True;
 
    if Grid.LeftCol <> 0 then
       Grid.LeftCol := 0;
@@ -8416,7 +8424,7 @@ begin
       end;
 
       // Ctrl+Zでのキー入力
-      if (FCwCtrlZCQLoop = True) or (FPhCtrlZCQLoop = True) then begin
+      if (FCtrlZCQLoop = True) then begin
          CancelCqRepeat();
          FTabKeyPressed[tx] := False;
          FDownKeyPressed[tx] := False;
@@ -8938,7 +8946,7 @@ var
    nID: Integer;
 begin
    if CurrentQSO.Mode = mCW then begin
-      FCwCtrlZCQLoop := True;
+      FCtrlZCQLoop := True;
       nID := FCurrentTx;
       dmZLogKeyer.TuneOn(nID);
    end;
@@ -8970,8 +8978,7 @@ begin
       Exit;
    end;
 
-   FCwCtrlZCQLoop := True;
-   FPhCtrlZCQLoop := True;
+   FCtrlZCQLoop := True;
    SetCqRepeatMode(True);
 end;
 
@@ -9455,8 +9462,7 @@ begin
       F2bsiqStart := True;
    end;
 
-   FCwCtrlZCQLoop := False;
-   FPhCtrlZCQLoop := False;
+   FCtrlZCQLoop := False;
    SetCqRepeatMode(True);
 end;
 
@@ -11625,16 +11631,31 @@ begin
 
    // CQループ中のキー入力割り込み
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
-      if (FCwCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
-         dmZLogKeyer.ClrBuffer;
-      end;
-
-      if (FPhCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
-         FMessageManager.StopVoice();
+      if (FCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
+         CancelCqRepeat();
+         if FCQRepeatStartMode = mCW then begin
+            dmZLogKeyer.ClrBuffer;
+            FCWMonitor.ClearSendingText();
+         end
+         else begin
+            FMessageManager.StopVoice();
+            VoiceControl(False);
+         end;
       end;
    end
    else begin
       if Is2bsiq() = False then begin
+         if (FCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
+            CancelCqRepeat();
+            if FCQRepeatStartMode = mCW then begin
+               dmZLogKeyer.ClrBuffer;
+               FCWMonitor.ClearSendingText();
+            end
+            else begin
+               FMessageManager.StopVoice();
+               VoiceControl(False);
+            end;
+         end;
       end
       else begin
          FOtherKeyPressed[FCurrentRigSet - 1] := True;
@@ -12053,8 +12074,7 @@ begin
       timerCqRepeat.Enabled := False;
       FCQLoopCount := 0;
       FCQLoopRunning := False;
-      FCwCtrlZCQLoop := False;
-      FPhCtrlZCQLoop := False;
+      FCtrlZCQLoop := False;
       FCQRepeatPlaying := False;
    end
    else begin
